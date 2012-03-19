@@ -178,7 +178,7 @@ public class  CommandButtonRenderer extends CoreRenderer {
             ///would never use this with singleSubmit so always false when using with panelConfirmation
             //panelConf either has ajax request behaviors or regular ice.submit.
             if (hasBehaviors){
-                String behaviors = this.encodeClientBehaviors(facesContext, cbh, "change").toString();
+                String behaviors = this.encodeClientBehaviors(facesContext, cbh, "click").toString();
                 behaviors = behaviors.replace("\"", "\'");
                 builder.append(behaviors);
             }
@@ -194,6 +194,11 @@ public class  CommandButtonRenderer extends CoreRenderer {
             }
         } else {  //no panelConfirmation requested so button does job
             StringBuilder noPanelConf = this.getCall(clientId, builder.toString());
+            if (hasBehaviors){
+                String behaviors = this.encodeClientBehaviors(facesContext, cbh, "click").toString();
+                behaviors = behaviors.replace("\"", "\'");
+                noPanelConf.append(behaviors);
+            }
             noPanelConf.append("});");
             writer.writeAttribute(HTML.ONCLICK_ATTR, noPanelConf.toString(), HTML.ONCLICK_ATTR);
         }

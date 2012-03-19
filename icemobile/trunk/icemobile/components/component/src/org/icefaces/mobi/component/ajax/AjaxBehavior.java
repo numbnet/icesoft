@@ -31,9 +31,6 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.BehaviorEvent;
 
-/*@ResourceDependencies({
-	@ResourceDependency(library="org.icefaces.component.utils", name="component.js")
-})    */
 @FacesBehavior("org.icefaces.mobi.component.AjaxBehavior")
 public class AjaxBehavior extends ClientBehaviorBase {
 
@@ -173,13 +170,19 @@ public class AjaxBehavior extends ClientBehaviorBase {
                 values = new Object[] { superState };
             }
         } else {
-            values = new Object[3];
-
+            values = new Object[11];
             values[0] = superState;
             values[1] = listener;
             values[2] = render;
+			values[3] = execute;
+			values[4] = onComplete;
+			values[5] = onError;
+			values[6] = onSuccess;
+			values[7] = onStart;
+			values[8] = Boolean.valueOf(immediate);
+			values[9] = Boolean.valueOf(immediateSet);
+			values[10] = Boolean.valueOf(disabled);
         }
-
         return values;
     }
 
@@ -193,12 +196,20 @@ public class AjaxBehavior extends ClientBehaviorBase {
             super.restoreState(context, values[0]);
 
             if (values.length != 1) {
-                listener = (MethodExpression)values[1];
-                render = (String)values[2];
+                  listener = (MethodExpression)values[1];
+                  render = (String)values[2];
+                  execute = (String)values[3];
+                  onComplete = (String)values[4];
+                  onError = (String)values[5];
+                  onSuccess = (String)values[6];
+                  onStart = (String)values[7];
+                  immediate = ((Boolean)values[8]).booleanValue();
+                  immediateSet = ((Boolean)values[9]).booleanValue();
+                  disabled = ((Boolean)values[10]).booleanValue();
 
-                // If we saved state last time, save state again next time.
-                clearInitialState();
-            }
+                  // If we saved state last time, save state again next time.
+                  clearInitialState();
+              }
         }
     }
 

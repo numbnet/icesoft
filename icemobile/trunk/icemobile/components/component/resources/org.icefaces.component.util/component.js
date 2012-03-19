@@ -25,7 +25,7 @@ mobi.findForm = function (sourceId) {
     while (node.nodeName.toLowerCase() != "form" && node.parentNode) {
         node = node.parentNode;
     }
-    ice.log.debug(ice.log, 'parent form node =' + node.name);
+  //  ice.log.debug(ice.log, 'parent form node =' + node.name);
     return node;
 };
 mobi.AjaxRequest = function (cfg) {
@@ -35,12 +35,25 @@ mobi.AjaxRequest = function (cfg) {
     }
     ice.log.debug(ice.log, 'creating ajax request');
     var form = mobi.findForm(cfg.source);
-    if (form) {
+ /*   if (form) {
         ice.log.debug(ice.log, 'found form with name=' + form.name);
         ice.log.debug(ice.log, ' length of forms =' + form.length);
-    }
-
+    }*/
     var source = (typeof cfg.source == 'string') ? document.getElementById(cfg.source) : cfg.source;
+	if (!document.getElementById(cfg.source)) {
+		if (cfg.node) {
+			source = cfg.node;
+			source.id = cfg.source;
+		}
+	}
+    if (form.length == 0){
+        form = source.form;
+ //       ice.log.debug(ice.log, "had to find form via element form length = "+form.length);
+    }
+    if (form.length == 0){
+       form = document.forms[0]; //just return first form in the page
+ //      ice.log.debug(ice.log, 'had to find first form on page');
+    }
     var jsfExecute = cfg.execute || '@all';
     var jsfRender = cfg.render || '@all';
 

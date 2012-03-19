@@ -99,12 +99,12 @@ public class AjaxTestBean implements Serializable {
 	 	}
 	 }
 
-	 public void aceAjaxEventListener(AjaxBehaviorEvent event) {
+	 public void mobiAjaxEventListener(AjaxBehaviorEvent event) {
 	 	if (event != null) {
-	 	   statusMsg = new String( statusMsg + "aceAjax ");
+	 	   statusMsg = new String( statusMsg + "mobiAjax ");
 
 	 	} else {
-	 	   statusMsg = "FAIL! - Null aceAjaxBehaviorEvent received!";
+	 	   statusMsg = "FAIL! - Null mobiAjaxBehaviorEvent received!";
 	 	}
 	 }
 
