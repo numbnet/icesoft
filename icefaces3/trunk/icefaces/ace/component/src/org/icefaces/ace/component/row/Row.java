@@ -50,7 +50,6 @@ public class Row extends RowBase {
     /**
      * Return true if this conditional row should render at the given index, either before it or after it.
      * @param index the index of the row being rendered
-     * @param before a flag to indicate if this evaluation is
      * @return True if this conditional row should render.
      */
     public boolean evaluateCondition(int index) {
