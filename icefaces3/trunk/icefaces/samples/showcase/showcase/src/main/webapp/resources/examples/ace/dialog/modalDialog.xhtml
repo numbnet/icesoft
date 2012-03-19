@@ -33,20 +33,21 @@
     <ui:param name="tldResources" value="#{dialogResources.tldResources}"/>
 
     <ui:define name="example">
-        <h:form id="inputForm">
-        <icecore:singleSubmit/>
         
         <ace:panel id="inputPanel" header="Dialog customization panel">
-            
+            <h:form id="inputForm">
+                <icecore:singleSubmit/>
             <h:panelGrid columns="2" width="100%">
                 <h:selectBooleanCheckbox id="draggableSelector" value="#{modalDialogBean.draggable}"/>
-                <h:outputLabel for="draggableSelector" value="select me if you want to drag the dialog window arround"/>
+                <h:outputLabel for="draggableSelector" value="select me if you want to drag the dialog window around"/>
                 <h:selectBooleanCheckbox id="modalSelector" value="#{modalDialogBean.modal}"/>
                 <h:outputLabel for="modalSelector" value="select me if you want to make the dialog modal"/>
             </h:panelGrid>
-            
+            </h:form>
             <center>
-                <h:commandButton id="show" value="Show Dialog"  onclick="sampleDialog.show();"/>
+			<h:form>
+                <h:commandButton id="show" value="Show Dialog"  onclick="sampleDialog.show();return false;"/>
+			</h:form>
             </center>
             
         </ace:panel>
@@ -64,6 +65,5 @@
 
         </ace:dialog>
         
-      </h:form>
     </ui:define>
 </ui:composition>
