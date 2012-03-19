@@ -20,17 +20,15 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.icefaces.tutorial</groupId>
-    <artifactId>parent</artifactId>
+    <artifactId>base</artifactId>
     <version>1.0</version>
 
     <packaging>pom</packaging>
-    
+
     <properties>
-        <ice.version>3.0.0</ice.version>
         <compiler.plugins.version>2.0.2</compiler.plugins.version>
-        <jsf.version>2.1.6</jsf.version>
     </properties>
-    
+
     <repositories>
         <repository>
             <id>ICEsoft Release Repository</id>
@@ -49,21 +47,6 @@
     
     <dependencies>
         <dependency>
-            <groupId>org.icefaces</groupId>
-            <artifactId>icefaces</artifactId>
-            <version>${ice.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.icefaces</groupId>
-            <artifactId>icefaces-ace</artifactId>
-            <version>${ice.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.icepush</groupId>
-            <artifactId>icepush</artifactId>
-            <version>${ice.version}</version>
-        </dependency>
-        <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>servlet-api</artifactId>
             <version>2.5</version>
@@ -81,37 +64,7 @@
             <scope>provided</scope>
         </dependency>
     </dependencies>
-    
-    <profiles>
-        <profile>
-            <id>servlet</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
-            <dependencies>
-                <dependency>
-                    <groupId>org.glassfish</groupId>
-                    <artifactId>javax.faces</artifactId>
-                    <version>${jsf.version}</version>
-                </dependency>
-            </dependencies>
-        </profile>
-        <profile>
-            <id>app</id>
-            <activation>
-                <activeByDefault>false</activeByDefault>
-            </activation>
-            <dependencies>
-                <dependency>
-                    <groupId>org.glassfish</groupId>
-                    <artifactId>javax.faces</artifactId>
-                    <version>${jsf.version}</version>
-                    <scope>provided</scope>
-                </dependency>
-            </dependencies>
-        </profile>
-    </profiles>
-    
+
     
     <build>
         <finalName>${project.artifactId}</finalName>
