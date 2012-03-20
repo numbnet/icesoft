@@ -23,6 +23,8 @@
     <artifactId>base</artifactId>
     <version>1.0</version>
 
+    <name>ICEfaces ACE Tutorial Base POM</name>
+
     <parent>
         <groupId>org.icefaces.tutorial</groupId>
         <artifactId>base</artifactId>
@@ -35,7 +37,7 @@
         <ice.version>3.0.0</ice.version>
         <jsf.version>2.1.6</jsf.version>
     </properties>
-    
+
     <dependencies>
         <dependency>
             <groupId>org.icefaces</groupId>
