@@ -146,4 +146,10 @@
             }
         });
     }
+
+    //ICE-7916 -- fix IE6 flicker
+    try {
+        document.execCommand("BackgroundImageCache", false, true);
+    } catch(err) {
+    }
 })();
