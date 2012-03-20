@@ -63,7 +63,6 @@ public class DataTableSelector extends ComponentExampleImpl<DataTableSelector> i
                                                           new SelectItem("singlecell", "Single Cell"),
                                                           new SelectItem("multiplecell", "Multiple Cell") };
 
-
     private RowStateMap stateMap = new RowStateMap();
     private ArrayList<Car> selectedRows;
     private CellSelections[] singleCell;
@@ -76,7 +75,12 @@ public class DataTableSelector extends ComponentExampleImpl<DataTableSelector> i
         super(DataTableSelector.class);
     }
     
-
+    public void changedMode(ValueChangeEvent event) {
+        stateMap.setAllSelected(false);
+        singleCell = null;
+        multiCell = null;
+    }
+    
     public RowStateMap getStateMap() { return stateMap; }
     public ArrayList<Car> getMultiRow() { return (ArrayList<Car>) stateMap.getSelected(); }
     public CellSelections[] getSingleCell() { return singleCell; }
@@ -107,13 +111,4 @@ public class DataTableSelector extends ComponentExampleImpl<DataTableSelector> i
     public void setSelectionMode(String selectionMode) { this.selectionMode = selectionMode; }
     public void setDblClick(boolean dblClick) { this.dblClick = dblClick; }
     public void setInstantUpdate(boolean instantUpdate) { this.instantUpdate = instantUpdate; }
-
-
-
-
-    public void changedMode(ValueChangeEvent event) {
-        stateMap.setAllSelected(false);
-        singleCell = null;
-        multiCell = null;
-    }
 }

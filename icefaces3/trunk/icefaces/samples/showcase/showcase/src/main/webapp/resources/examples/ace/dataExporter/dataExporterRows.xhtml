@@ -25,21 +25,21 @@
     xmlns:ui="http://java.sun.com/jsf/facelets"
     template="/resources/templates/content-template.xhtml">
 
-    <ui:param name="title" value="#{msgs[dataExporterBean.title]}"/>
-    <ui:param name="description" value="#{msgs[dataExporterBean.description]}"/>
-    <ui:param name="subMenuTitle" value="#{msgs[dataExporterBean.subMenuTitle]}"/>
-    <ui:param name="subMenuLinks" value="#{dataExporterBean.subMenuLinks}"/>
-    <ui:param name="resourceValue" value="#{dataExporterBean.exampleResource}"/>
+    <ui:param name="title" value="#{msgs[dataExporterRows.title]}"/>
+    <ui:param name="description" value="#{msgs[dataExporterRows.description]}"/>
+    <ui:param name="resourceValue" value="#{dataExporterRows.exampleResource}"/>
     
     <ui:param name="wikiResources" value="#{dataExporterResources.wikiResources}"/>
     <ui:param name="tldResources" value="#{dataExporterResources.tldResources}"/>
 
     <ui:define name="example">
-        <h:form id="form1">
-            <ace:panel>
-                <h:panelGrid columns="2" styleClass="centeredPanelGrid">
+        
+        <ace:panel>
+            <h:panelGrid styleClass="centeredPanelGridWithBorderSpacing">
+            <h:form id="form1">
+                <h:panelGrid columns="2">
                         <h:outputLabel for="typeIn" value="Export As:"/>
-                        <h:selectOneRadio id="typeIn" value="#{dataExporterBean.type}" required="true">
+                        <h:selectOneRadio id="typeIn" value="#{dataExporterRows.type}" required="true">
                             <f:ajax disabled="false"/>
                             <f:selectItem itemValue="csv" itemLabel="CSV"/>
                             <f:selectItem itemValue="pdf" itemLabel="PDF"/>
@@ -47,42 +47,44 @@
                             <f:selectItem itemValue="xml" itemLabel="XML"/>
                         </h:selectOneRadio>
                 </h:panelGrid>
+            </h:form>
+
+            <h:form id="form3">
                 <h:panelGrid styleClass="centeredPanelGrid">
-                    <ace:dataExporter id="dataExporter" label="Export File" type="#{dataExporterBean.type}" target="carTable" fileName="cars"/>
+                    <ace:dataExporter id="dataExporter" label="Export File" type="#{dataExporterRows.type}" target="carData" fileName="cars" selectedRowsOnly="true" />
                 </h:panelGrid>
-            </ace:panel>
-        </h:form>
+            </h:form>
+            </h:panelGrid>
+        </ace:panel>
+        
         <br/>
-        <h:form id="form2">
-           <ace:dataTable id="carTable"
-                                    value="#{dataTableSort.carsData}"
-                                    var="car" 
-                                    rows="15">
-               
-               <ace:column headerText="ID">
+        <h:form id="form4">
+           <ace:dataTable id="carData"
+                          value="#{dataExporterRows.cars}"
+                          var="car"
+                          rows="15"
+                          stateMap="#{dataExporterRows.stateMap}"
+                          selectionMode="multiple">
+                <ace:ajax event="select" render="@this form4:status" execute="@this" />
+                
+                <ace:column headerText="ID">
                     <h:outputText value="#{car.id}" />
                 </ace:column>
-               
-                <ace:column headerText="Name">
+               <ace:column headerText="Name">
                     <h:outputText value="#{car.name}" />
                 </ace:column>
-               
                 <ace:column headerText="Chassis">
-                    <h:outputText value="#{car.chassis}"/>
+                    <h:outputText value="#{car.chassis}" />
                 </ace:column>
-               
                 <ace:column headerText="Weight">
-                    <h:outputText value="#{car.weight}lbs."/>
+                    <h:outputText value="#{car.weight}lbs." />
                 </ace:column>
-               
                 <ace:column headerText="Accel">
-                    <h:outputText value="#{car.acceleration}"/>
+                    <h:outputText value="#{car.acceleration}" />
                 </ace:column>
-               
                 <ace:column headerText="MPG">
-                    <h:outputText value="#{car.mpg}"/>
+                    <h:outputText value="#{car.mpg}" />
                 </ace:column>
-               
                 <ace:column headerText="Cost">
                     <ice:outputText value="#{car.cost}">
                         <f:convertNumber type="currency"
@@ -92,7 +94,6 @@
                                          maxFractionDigits="2"/>
                     </ice:outputText>
                 </ace:column>
-               
             </ace:dataTable>
         </h:form>
     </ui:define>

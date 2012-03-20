@@ -62,7 +62,6 @@ public class DataExporterColumns extends ComponentExampleImpl<DataExporterColumn
     }
     
     /////////////---- PRIVATE METHODS BEGIN
-    
     private void initializeVariables() {
         this.options = new LinkedHashMap<String, Integer> ();
         this.options.put("ID", 0);
@@ -129,10 +128,11 @@ public class DataExporterColumns extends ComponentExampleImpl<DataExporterColumn
         this.chosenColumns = chosenColumns;
         //creaate an array with unselected columns based on all options and chosen columns
         ArrayList<Integer> unselectedColumns = processSelection(options, chosenColumns);
-        //convert ArrayList<Integer> into Integer[] and parse it as String
-        Integer[] arrayWithIntegers = convertIntoArray(unselectedColumns);
         
-        //Integer[] testArray = Arrays.copyOf(array, array.length, Integer[].class); -- does not work on JDK 1.5
+        //Integer[] arrayWithIntegers = Arrays.copyOf(array, array.length, Integer[].class); -- does not work on JDK 1.5
+        //Work Around for Java 5: convert ArrayList<Integer> into Integer[]
+        Integer[] arrayWithIntegers = convertIntoArray(unselectedColumns);
+        //parse converted array as String
         chosenColumnsString = parseArrayToCommas( arrayWithIntegers);
     }
 
