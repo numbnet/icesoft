@@ -25,56 +25,42 @@ import org.icefaces.samples.showcase.example.compat.dataTable.Car;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import org.icefaces.samples.showcase.dataGenerators.utilityClasses.DataTableData;
 
 @ComponentExample(
         parent = DataTableBean.BEAN_NAME,
-        title = "example.ace.dataTable.columnReordering.title",
-        description = "example.ace.dataTable.columnReordering.description",
-        example = "/resources/examples/ace/dataTable/dataTableColumnReordering.xhtml"
+        title = "example.ace.dataTable.columnResizing.title",
+        description = "example.ace.dataTable.columnResizing.description",
+        example = "/resources/examples/ace/dataTable/dataTableResizableColumns.xhtml"
 )
 @ExampleResources(
         resources ={
                 // xhtml
                 @ExampleResource(type = ResourceType.xhtml,
-                        title="dataTableColumnReordering.xhtml",
-                        resource = "/resources/examples/ace/dataTable/dataTableColumnReordering.xhtml"),
+                        title="dataTableResizableColumns.xhtml",
+                        resource = "/resources/examples/ace/dataTable/dataTableResizableColumns.xhtml"),
                 // Java Source
                 @ExampleResource(type = ResourceType.java,
-                        title="DataTableColumnReordering.java",
+                        title="DataTableColumnResizing.java",
                         resource = "/WEB-INF/classes/org/icefaces/samples/showcase"+
-                                "/example/ace/dataTable/DataTableColumnReordering.java")
+                                "/example/ace/dataTable/DataTableColumnResizing.java")
         }
 )
-@ManagedBean(name= DataTableColumnReordering.BEAN_NAME)
+@ManagedBean(name= DataTableColumnResizing.BEAN_NAME)
 @CustomScoped(value = "#{window}")
-public class DataTableColumnReordering extends ComponentExampleImpl<DataTableColumnReordering> implements Serializable
-{
-    public static final String BEAN_NAME = "dataTableColumnReordering";
+public class DataTableColumnResizing extends ComponentExampleImpl<DataTableColumnResizing> implements Serializable {
+    public static final String BEAN_NAME = "dataTableColumnResizing";
+    
     private List<Car> cars;
-    private List<Integer> ordering = new ArrayList<Integer>();
 
-    public DataTableColumnReordering() 
+    public DataTableColumnResizing() 
     {
-        super(DataTableColumnReordering.class);
+        super(DataTableColumnResizing.class);
         this.cars = new ArrayList<Car>(DataTableData.getDefaultData());
     }
 
-    public List<Car> getCars() {
-        return cars;
-    }
-
-    public void setCars(List<Car> cars) {
-        this.cars = cars;
-    }
-
-    public List<Integer> getOrdering() {
-        return ordering;
-    }
-    public void setOrdering(List<Integer> ordering) {
-        this.ordering = ordering;
-    }
+    public List<Car> getCars() { return cars; }
+    public void setCars(List<Car> cars) { this.cars = cars; }
 }
