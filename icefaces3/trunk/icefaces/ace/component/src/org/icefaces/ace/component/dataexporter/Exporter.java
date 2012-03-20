@@ -179,7 +179,7 @@ public abstract class Exporter {
 	
 		for (UIComponent child : component.getChildren()) {
             if (child instanceof ExcludeFromExport) {	
-				return true;
+				if (child.isRendered()) return true;
 			}
 		}
 		return false;
