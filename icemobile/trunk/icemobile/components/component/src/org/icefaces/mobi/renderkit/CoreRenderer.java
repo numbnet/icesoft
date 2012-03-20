@@ -175,10 +175,13 @@ public class CoreRenderer extends Renderer {
         }
     }
 
-    protected void writeJavascriptFile(FacesContext facesContext, UIComponent component, String JS_NAME,
-                                     String JS_MIN_NAME, String JS_LIBRARY) throws IOException {
+    protected void writeJavascriptFile(FacesContext facesContext, 
+            UIComponent component, String JS_NAME, String JS_MIN_NAME, 
+            String JS_LIBRARY) throws IOException {
         ResponseWriter writer = facesContext.getResponseWriter();
         String clientId = component.getClientId(facesContext);
+        writer.startElement(HTML.SPAN_ELEM, component);
+        writer.writeAttribute(HTML.ID_ATTR, clientId+"_libJS", HTML.ID_ATTR);
         if (!isScriptLoaded(facesContext, JS_NAME)) {
             String jsFname = JS_NAME;
             if (facesContext.isProjectStage(ProjectStage.Production)){
@@ -187,33 +190,21 @@ public class CoreRenderer extends Renderer {
             //set jsFname to min if development stage
             Resource jsFile = facesContext.getApplication().getResourceHandler().createResource(jsFname, JS_LIBRARY);
             String src = jsFile.getRequestPath();
-            writer.startElement(HTML.SPAN_ELEM, component);
-            writer.writeAttribute(HTML.ID_ATTR, clientId+"_libJS", HTML.ID_ATTR);
             writer.startElement("script", component);
             writer.writeAttribute("text", "text/javascript", null);
             writer.writeAttribute("src", src, null);
             writer.endElement("script");
-            writer.endElement(HTML.SPAN_ELEM);
             setScriptLoaded(facesContext, JS_NAME);
         } 
+        writer.endElement(HTML.SPAN_ELEM);
     }
 
     protected void setScriptLoaded(FacesContext facesContext, 
             String JS_NAME) {
-        Map viewMap = facesContext.getViewRoot().getViewMap();
-        Map requestMap = facesContext.getExternalContext().getRequestMap();
-        requestMap.put(JS_NAME, "true");
-        viewMap.put(JS_NAME, "true");
+        InlineScriptEventListener.setScriptLoaded(facesContext, JS_NAME);
     }
 
     protected boolean isScriptLoaded(FacesContext facesContext, String JS_NAME) {
-        Map viewMap = facesContext.getViewRoot().getViewMap();
-        Map requestMap = facesContext.getExternalContext().getRequestMap();
-        if (!facesContext.getPartialViewContext().isAjaxRequest())  {
-            if (!requestMap.containsKey(JS_NAME))  {
-                return false;
-            }
-        }
-        return viewMap.containsKey(JS_NAME);
+        return InlineScriptEventListener.isScriptLoaded(facesContext, JS_NAME);
     }
 }
