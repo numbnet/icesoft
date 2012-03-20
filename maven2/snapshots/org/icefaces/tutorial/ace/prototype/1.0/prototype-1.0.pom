@@ -9,6 +9,8 @@
     <version>1.0</version>
     <packaging>maven-archetype</packaging>
 
+    <name>ICEFaces ACE Tutorial Skeleton Project</name>
+
     <build>
         <extensions>
             <extension>
