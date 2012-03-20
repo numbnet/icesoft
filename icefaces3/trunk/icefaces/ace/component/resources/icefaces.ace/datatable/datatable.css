@@ -247,6 +247,7 @@
     cursor:pointer;
 }
 .ui-datatable .ui-row-toggler-parent {
+    white-space: nowrap;
     text-align: left;
 }
 .ui-datatable .ui-row-toggler-span {
