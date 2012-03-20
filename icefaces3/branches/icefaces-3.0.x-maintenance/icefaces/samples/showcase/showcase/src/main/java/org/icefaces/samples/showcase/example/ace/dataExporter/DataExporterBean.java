@@ -43,11 +43,10 @@ import java.io.Serializable;
 @Menu(
 	title = "menu.ace.dataExporter.subMenu.title",
 	menuLinks = {
-	        @MenuLink(title = "menu.ace.dataExporter.subMenu.main",
-	                isDefault = true,
-                    exampleBeanName = DataExporterBean.BEAN_NAME),
-	        @MenuLink(title = "menu.ace.dataExporter.subMenu.columns",
-                    exampleBeanName = DataExporterColumns.BEAN_NAME)
+	        @MenuLink(title = "menu.ace.dataExporter.subMenu.main", isDefault = true, exampleBeanName = DataExporterBean.BEAN_NAME),
+	        @MenuLink(title = "menu.ace.dataExporter.subMenu.columns", exampleBeanName = DataExporterColumns.BEAN_NAME),
+                        @MenuLink(title = "menu.ace.dataExporter.subMenu.rows", exampleBeanName = DataExporterRows.BEAN_NAME),
+                        @MenuLink(title = "menu.ace.dataExporter.subMenu.excludeFromExport", exampleBeanName = ExcludeFromExport.BEAN_NAME)
     }
 )
 @ManagedBean(name= DataExporterBean.BEAN_NAME)
