@@ -20,6 +20,11 @@
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_2_0.xsd">
  <application>
     <resource-handler>org.icefaces.mobi.component.qrcode.generator.QRCodeResourceHandler</resource-handler>
+        <system-event-listener>
+            <system-event-listener-class>org.icefaces.mobi.renderkit.InlineScriptEventListener</system-event-listener-class>
+            <system-event-class>javax.faces.event.PreRenderViewEvent</system-event-class>
+        </system-event-listener>
+
  </application>
 
 </faces-config>
