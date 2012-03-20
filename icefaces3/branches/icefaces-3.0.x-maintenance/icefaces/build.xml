@@ -125,7 +125,11 @@
 	</target>
 
     <!-- Only delete these files here and now if this is not the EE build. -->
-	<target name="delete.bundle.bin.files" depends="checkIfEEBundle" if="isOSBundle" >
+	<target name="if.not.ee.delete.bundle.bin.files" depends="checkIfEEBundle" if="isOSBundle" >
+		<antcall target="delete.bundle.bin.files" />
+	</target>	
+
+	<target name="delete.bundle.bin.files" >
 	    <!-- Remove the following files and directories as they are not required for the binary bundle -->
 			<delete>
 				<fileset dir="${bundle.dir.bin}">
@@ -236,7 +240,7 @@
         </subant>
         <move file="${bundle.dir.bin}/ace/component/build/doc/tld" tofile="${bundle.dir.bin}/docs/ace/tld"/>
 
-        <antcall target="delete.bundle.bin.files" />
+        <antcall target="if.not.ee.delete.bundle.bin.files" />
 
         <subant target="clean">
             <fileset dir="${bundle.dir.bin}/samples/showcase/showcase-portlet" includes="build.xml"/>
