@@ -31,35 +31,36 @@ import org.icefaces.samples.showcase.dataGenerators.utilityClasses.DataTableData
 
 @ComponentExample(
         parent = DataTableBean.BEAN_NAME,
-        title = "example.ace.dataTable.columnResizing.title",
-        description = "example.ace.dataTable.columnResizing.description",
-        example = "/resources/examples/ace/dataTable/dataTableResizableColumns.xhtml"
+        title = "example.ace.dataTable.multiRowHeader.title",
+        description = "example.ace.dataTable.multiRowHeader.description",
+        example = "/resources/examples/ace/dataTable/dataTableMultiRowHeader.xhtml"
 )
 @ExampleResources(
         resources ={
                 // xhtml
                 @ExampleResource(type = ResourceType.xhtml,
-                        title="dataTableResizableColumns.xhtml",
-                        resource = "/resources/examples/ace/dataTable/dataTableResizableColumns.xhtml"),
+                        title="dataTableMultiRowHeader.xhtml",
+                        resource = "/resources/examples/ace/dataTable/dataTableMultiRowHeader.xhtml"),
                 // Java Source
                 @ExampleResource(type = ResourceType.java,
-                        title="DataTableColumnResizing.java",
+                        title="DataTableMultiRowHeader.java",
                         resource = "/WEB-INF/classes/org/icefaces/samples/showcase"+
                                 "/example/ace/dataTable/DataTableColumnResizing.java")
         }
 )
-@ManagedBean(name= DataTableColumnResizing.BEAN_NAME)
+@ManagedBean(name= DataTableMultiRowHeader.BEAN_NAME)
 @CustomScoped(value = "#{window}")
-public class DataTableColumnResizing extends ComponentExampleImpl<DataTableColumnResizing> implements Serializable {
-    public static final String BEAN_NAME = "dataTableColumnResizing";
+public class DataTableMultiRowHeader extends ComponentExampleImpl<DataTableMultiRowHeader> implements Serializable {
     
+    public static final String BEAN_NAME = "dataTableMultiRowHeader";
     private List<Car> cars;
+    
     /////////////---- CONSTRUCTOR BEGIN
-    public DataTableColumnResizing() 
-    {
-        super(DataTableColumnResizing.class);
+    public DataTableMultiRowHeader() {
+        super(DataTableMultiRowHeader.class);
         this.cars = new ArrayList<Car>(DataTableData.getDefaultData());
     }
+    
     /////////////---- GETTERS & SETTERS BEGIN
     public List<Car> getCars() { return cars; }
     public void setCars(List<Car> cars) { this.cars = cars; }
