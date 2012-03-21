@@ -78,7 +78,7 @@ public class ExtendedExceptionHandler extends ExceptionHandlerWrapper {
 
             FacesContext fc = FacesContext.getCurrentInstance();
             if(fc.isProjectStage(ProjectStage.Development)){
-                log.log(Level.FINE,"queued exception", ex);
+                log.log(Level.WARNING,"queued exception", ex);
             }
 
             if (ex instanceof ViewExpiredException) {
