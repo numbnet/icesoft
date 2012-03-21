@@ -697,7 +697,7 @@
                 <file name="iscroll.js"/>
             </filelist>
             <fileset dir="${resources}">
-                <include name="org.icefaces.component.button/button.js"/>
+           <!--     <include name="org.icefaces.component.button/button.js"/>  MOBI-200-->
                 <include name="org.icefaces.component.button/menubutton.js"/>
                 <include name="org.icefaces.component.carousel/carousel.js"/>
                 <include
@@ -778,31 +778,6 @@
         </move>
     </target>
 
-    <!--     <target name="res-css-combine">
-     <delete file="${resources}/icefaces.ace/util/combined.css"
-             verbose="true"/>
-     <concat destfile="${resources}/icefaces.ace/util/combined.css"
-             force="true" fixlastline="true">
-         <fileset dir="${resources}">
-             <include name="icefaces.ace/*/*.css"/>
-             <exclude name="icefaces.ace/util/*.css"/>
-             <exclude name="${skins.lib}/*.css"/>
-         </fileset>
-     </concat>
- </target>
-
- <target name="res-copy"
-         description="Copy the resources into the exploded dir ">
-     <copy todir="${exploded}/META-INF">
-         <fileset dir="${meta-include}">
-             <exclude name="primefaces-p.taglib.xml"/>
-         </fileset>
-     </copy>
-     <copy todir="${exploded}/META-INF/resources">
-         <fileset dir="${resources}"/>
-     </copy>
-     <delete dir="${exploded}/META-INF/resources/icefaces.ace/META-INCLUDE"/>
- </target>   -->
 
 
 </project>
