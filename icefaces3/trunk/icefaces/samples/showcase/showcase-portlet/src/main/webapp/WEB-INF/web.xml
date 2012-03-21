@@ -65,7 +65,7 @@
         <param-name>com.icesoft.faces.gmapKey</param-name>
         <param-value>ABQIAAAAnyVJpYb9Fn-DpQ355-7u3RRt_xk8THLBnsEGa1iENo1M77z_IxRSfO_8K2owIHx-GLAeupZ-GtB6gQ</param-value>
     </context-param>
-    
+
     <!-- Servlet declarations and mappings -->
     <servlet>
         <servlet-name>Faces Servlet</servlet-name>
@@ -108,6 +108,15 @@
     <session-config>
         <session-timeout>30</session-timeout>
     </session-config>
+
+    <!--
+        This MIME type is not registered by default in WebSphere 7 so we add it
+        here to be sure the samples and components that use .png images work properly.
+    -->
+    <mime-mapping>
+        <extension>png</extension>
+        <mime-type>image/png</mime-type>
+    </mime-mapping>
 
     <welcome-file-list>
         <welcome-file>index.jsp</welcome-file>
