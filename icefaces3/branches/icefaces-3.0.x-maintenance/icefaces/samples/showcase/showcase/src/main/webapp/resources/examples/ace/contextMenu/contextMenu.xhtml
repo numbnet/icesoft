@@ -41,12 +41,21 @@
                 <h:outputText id="txt" value="Right-click anywhere on this page to display the global menu"/>
             </ace:panel>
         
-            <ace:contextMenu id="contextMenu" effect="puff" effectDuration="200">
-                <ace:menuItem value="Save" icon="ui-icon ui-icon-disk"/>  
-                <ace:menuItem value="Update" icon="ui-icon ui-icon-arrowrefresh-1-w"/>  
-                <ace:menuItem value="Delete" icon="ui-icon ui-icon-close"/>
-                <ace:menuItem value="Homepage" icon="ui-icon ui-icon-extlink"
-                              url="http://www.icefaces.org" target="_blank"/>
+            <ace:contextMenu id="contextMenu" effect="slide" effectDuration="200">
+                <ace:menuItem value="Homepage" icon="ui-icon ui-icon-extlink" url="http://www.icefaces.org" target="_blank"/>
+                <ace:submenu id="edit" label="Edit" icon="ui-icon ui-icon-pencil">  
+                     <ace:menuItem id="cut" value="Cut"/>
+                     <ace:menuItem id="copy" value="Copy"/>
+                     <ace:menuItem id="paste" value="Paste"/>
+                     <ace:menuItem id="find" value="Find"/>
+                 </ace:submenu>
+                
+                <ace:submenu id="file" label="File" icon="ui-icon ui-icon-document">
+                    <ace:menuItem value="Save" icon="ui-icon ui-icon-disk"/>
+                    <ace:menuItem value="Update" icon="ui-icon ui-icon-arrowrefresh-1-w"/>  
+                    <ace:menuItem value="Delete" icon="ui-icon ui-icon-close"/>
+                </ace:submenu>
+                
             </ace:contextMenu>
             <p><i><b>Note: </b>Save, Update and Delete menu items associated with the context menu are just placeholders in this example and do not perform any functionality.</i></p>
             
