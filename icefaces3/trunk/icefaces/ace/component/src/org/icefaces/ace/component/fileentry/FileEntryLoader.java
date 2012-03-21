@@ -21,9 +21,9 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ApplicationScoped;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.application.Application;
-import javax.faces.event.PostAddToViewEvent;
-import javax.faces.event.PhaseListener;
 import javax.faces.context.FacesContext;
+import javax.faces.event.PhaseListener;
+import javax.faces.event.PreRenderComponentEvent;
 import javax.faces.lifecycle.LifecycleFactory;
 import javax.faces.lifecycle.Lifecycle;
 import javax.faces.FactoryFinder;
@@ -36,7 +36,7 @@ public class FileEntryLoader {
 //System.out.println("FileEntryLoader");
         Application application =
             FacesContext.getCurrentInstance().getApplication();
-        application.subscribeToEvent(PostAddToViewEvent.class, null,
+        application.subscribeToEvent(PreRenderComponentEvent.class, null,
             new FileEntryFormSubmit());
 
         PhaseListener phaseListener = new FileEntryPhaseListener();
