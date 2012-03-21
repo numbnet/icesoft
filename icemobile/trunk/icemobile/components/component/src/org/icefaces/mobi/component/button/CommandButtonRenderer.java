@@ -38,9 +38,6 @@ import java.util.List;
 
 public class  CommandButtonRenderer extends CoreRenderer {
     private static Logger logger = Logger.getLogger(CommandButtonRenderer.class.getName());
-    private static final String JS_NAME = "button.js";
-    private static final String JS_MIN_NAME = "button-min.js";
-    private static final String JS_LIBRARY = "org.icefaces.component.button";
     List <UIParameter> uiParamChildren;
 
     public void decode(FacesContext facesContext, UIComponent uiComponent) {
@@ -66,7 +63,6 @@ public class  CommandButtonRenderer extends CoreRenderer {
         String clientId = uiComponent.getClientId(facesContext);
         CommandButton commandButton = (CommandButton) uiComponent;
         // root element
-        writeJavascriptFile(facesContext, uiComponent, JS_NAME, JS_MIN_NAME, JS_LIBRARY);
         writer.startElement(HTML.INPUT_ELEM, uiComponent);
         writer.writeAttribute(HTML.ID_ATTR, clientId, HTML.ID_ATTR);
 

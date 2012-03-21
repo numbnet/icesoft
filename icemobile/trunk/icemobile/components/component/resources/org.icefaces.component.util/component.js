@@ -357,3 +357,36 @@ if (window.addEventListener) {
         }
     }, false);
 }
+/* javascript for mobi:commandButton component put into component.js as per MOBI-200 */
+mobi.button = {
+    cfg: {},
+    select: function(clientId, cfg){
+        //if panelConf, then we want this to display and set the submitNotifyId if present
+        this.cfg[clientId] = cfg;
+        if (cfg.snId){
+            mobi.submitnotify.open(cfg.snId);
+            //if here, then no panelConfirmation as this action is responsible for submit
+        }
+        //otherwise, just check for behaviors, singleSubmit and go
+        var singleSubmit = false;
+        if (cfg.singleSubmit){
+            singleSubmit=true;
+        }
+        var hasBehaviors = cfg.behaviors;
+        if (hasBehaviors){
+            singleSubmit=false; //hasBehaviors takes precedence and singlessubmit is ignored
+            //show the submitNotification panel
+            if (cfg.behaviors.click){
+                cfg.behaviors.click();
+            }
+            return;
+        }
+        var event = cfg.elVal.event;
+        var params = cfg.params;
+        if (singleSubmit){
+            ice.se(event, clientId, params);
+        } else {
+            ice.s(event, clientId, params);
+        }
+    }
+};
