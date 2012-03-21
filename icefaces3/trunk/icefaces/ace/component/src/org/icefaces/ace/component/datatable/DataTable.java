@@ -1421,9 +1421,11 @@ public class DataTable extends DataTableBase {
                                 this.setRowIndex(dataModel.getRowIndex() + 1);
                             } else if (!currentRootId.equals("")) {
                                 // changing currrent node id to reflect pop
-                                this.setRowIndex(dataModel.pop() + 1);
-                                currentRootId = (currentRootId.lastIndexOf('.') != -1)  ? currentRootId.substring(0,currentRootId.lastIndexOf('.')) : "";
-                                if (log.isLoggable(Level.FINEST)) log.finest("Popping Root: " + currentRootId);
+                                do {
+                                    this.setRowIndex(dataModel.pop() + 1);
+                                    currentRootId = (currentRootId.lastIndexOf('.') != -1)  ? currentRootId.substring(0,currentRootId.lastIndexOf('.')) : "";
+                                    if (log.isLoggable(Level.FINEST)) log.finest("Popping Root: " + currentRootId);
+                                } while (!isRowAvailable() && !currentRootId.equals(""));
                             }
                             // Break out of expansion recursion to continue root node
                             if (currentRootId.equals("")) break;
@@ -1873,7 +1875,7 @@ public class DataTable extends DataTableBase {
         Boolean expanded;
         TreeDataModel treeDataModel;
 
-        while (true) {
+        iteration: while (true) {
             // Have we processed the requested number of rows?
             if (!inSubrows) processed = processed + 1;
             if ((rows > 0) && (processed > rows)) {
@@ -1887,16 +1889,29 @@ public class DataTable extends DataTableBase {
             if (!isRowAvailable()) {
                 if (model instanceof TreeDataModel) {
                     treeDataModel = (TreeDataModel)model;
-                    if (treeDataModel.isRootIndexSet()) {
-                        rowIndex = treeDataModel.pop()+1;
-                        setRowIndex(rowIndex);
-                        if (!treeDataModel.isRootIndexSet()) {
-                            inSubrows = false;
-                            // Scrolled past the last row
-                            if (!isRowAvailable()) break;
+
+                    // While we are at a map where the next row in unavailable...
+                    while (!isRowAvailable()) {
+                        // If we can pop, continue to pop...
+                        if (treeDataModel.isRootIndexSet()) {
+                            rowIndex = treeDataModel.pop()+1;
+                            setRowIndex(rowIndex);
+
+                            // If we are at the root after popping...
+                            if (!treeDataModel.isRootIndexSet()) {
+                                // Indicate that we are at the root
+                                inSubrows = false;
+                                // If the root index we are at is invalid, break
+                                if (!isRowAvailable()) break iteration;
+                            }
+                            // If we can continue to pop following, let loop continue until we are at root,
+                            // or row is available and this loop terminates.
                         }
-                    } else break;
-                } else break; // Scrolled past the last row
+                        // If we can't pop, break
+                        else break iteration;
+                    }
+                }
+                else break; // Scrolled past the last row
             }
 
             rowState = map.get(getRowData());
