@@ -149,7 +149,7 @@ public class DataTableRenderer extends CoreRenderer {
         if (dblSelect) json.entry("dblclickSelect", true);
         if (ajaxSelect) json.entry("instantSelect", true);
         if (resize) json.entry("resizableColumns", true);
-        if (resize) json.entry("reorderableColumns", true);
+        if (reorder) json.entry("reorderableColumns", true);
         if (snglSrt) json.entry("singleSort", true);
         if (disable) json.entry("disable", true);
         if (scroll) {
@@ -187,7 +187,7 @@ public class DataTableRenderer extends CoreRenderer {
         configJson.beginMap();
         configJson.entry("rowsPerPage", table.getRows());
         configJson.entry("totalRecords", table.getRowCount());
-        configJson.entry("initalRecords", table.getPage());
+        configJson.entry("initialPage", table.getPage());
         configJson.entry("containers", "[" + paginatorContainers + "]", true);
         configJson.entryNonNullValue("template", template);
         configJson.entryNonNullValue("rowsPerPageOptions", rowTemplate);
