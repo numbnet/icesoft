@@ -5,6 +5,7 @@ import org.icefaces.ace.util.collections.ExpressionListToValueListTransformer;
 import javax.el.ELContext;
 import javax.el.ELResolver;
 import javax.faces.context.FacesContext;
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -24,7 +25,7 @@ import java.util.List;
  * limitations under the License.
  *
  */
-public class CellSelections {
+public class CellSelections implements Serializable {
     private Object rowObject;
     private List<String> selectedFieldNames;
 
