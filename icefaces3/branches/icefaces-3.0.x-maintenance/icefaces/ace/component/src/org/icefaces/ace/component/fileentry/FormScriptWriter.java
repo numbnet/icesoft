@@ -61,7 +61,9 @@ public class FormScriptWriter extends UIOutput {
 
     @Override
     public void encodeBegin(FacesContext context) throws IOException {
+//System.out.println("FormScriptWriter  id: "+getId());
         UIForm form = Utils.findParentForm(this);
+//System.out.println("FormScriptWriter  form: "+(form == null ? "null" : form.getId()));
         if (form == null) {
             return;
         }
