@@ -53,6 +53,7 @@ import java.io.Serializable;
             @MenuLink(title = "menu.ace.dataTable.subMenu.find", exampleBeanName = DataTableFind.BEAN_NAME),
             @MenuLink(title = "menu.ace.dataTable.subMenu.grouping", exampleBeanName = DataTableGrouping.BEAN_NAME),
             @MenuLink(title = "menu.ace.dataTable.subMenu.lazyLoading", exampleBeanName = DataTableLazyLoading.BEAN_NAME),
+            @MenuLink(title = "menu.ace.dataTable.subMenu.multiRowHeader", exampleBeanName = DataTableMultiRowHeader.BEAN_NAME),
             @MenuLink(title = "menu.ace.dataTable.subMenu.paginator", exampleBeanName = DataTablePaginator.BEAN_NAME),
             @MenuLink(title = "menu.ace.dataTable.subMenu.panelexpansion", exampleBeanName = DataTablePanelExpansion.BEAN_NAME),
             @MenuLink(title = "menu.ace.dataTable.subMenu.rowexpansion", exampleBeanName = DataTableRowExpansion.BEAN_NAME),
