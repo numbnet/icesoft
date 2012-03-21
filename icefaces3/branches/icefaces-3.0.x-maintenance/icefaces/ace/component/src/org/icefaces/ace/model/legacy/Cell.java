@@ -27,7 +27,9 @@
  */
 package org.icefaces.ace.model.legacy;
 
-public class Cell {
+import java.io.Serializable;
+
+public class Cell implements Serializable {
 	
 	private Object rowData;
 	
