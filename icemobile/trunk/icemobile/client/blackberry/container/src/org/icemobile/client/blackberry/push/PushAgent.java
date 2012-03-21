@@ -68,9 +68,8 @@ public class PushAgent {
     private static final String ALREADY_UNSUSCRIBED_BY_PROVIDER = "rc=10005";
 
     private static final String PUSH_PORT = "30391";
-    private static final String BPAS_URL = "http://pushapi.eval.blackberry.com";
-    private static final String APP_ID = "1868-72162e8r2m8tr292r9D3o2i7890921k9s66";
-//                                        1868-72162e8r2m8tr292r9D3o2i7890921k9s66
+    private static final String BPAS_URL = "http://pushapi.na.blackberry.com";
+    private static final String APP_ID = "141-s892ac7241r5i639n57r444M4c75a2994ik7";
     private static final String WAP2_SUFFIX = ";deviceside=true;ConnectionUID=";
     private static final String HTTP_SUFFIX = ";deviceside=true";
     private static final String BIS_SUFFIX = ";deviceside=true;ConnectionUID=";
