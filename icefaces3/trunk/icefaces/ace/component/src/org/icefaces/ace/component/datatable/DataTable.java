@@ -1890,7 +1890,7 @@ public class DataTable extends DataTableBase {
                 if (model instanceof TreeDataModel) {
                     treeDataModel = (TreeDataModel)model;
 
-                    // While we are at a map where the next row in unavailable...
+                    // While we are at a level where the next row in unavailable...
                     while (!isRowAvailable()) {
                         // If we can pop, continue to pop...
                         if (treeDataModel.isRootIndexSet()) {
@@ -1907,7 +1907,7 @@ public class DataTable extends DataTableBase {
                             // If we can continue to pop following, let loop continue until we are at root,
                             // or row is available and this loop terminates.
                         }
-                        // If we can't pop, break
+                        // If we can't pop, row isn't available, so break
                         else break iteration;
                     }
                 }
