@@ -52,6 +52,9 @@ import org.icefaces.ace.component.excludefromexport.ExcludeFromExport;
 import org.icefaces.ace.component.celleditor.CellEditor;
 
 public abstract class Exporter {
+
+	protected SpanningRows spanningRows = this.new SpanningRows();
+
     public abstract String export(FacesContext facesContext, DataTable table,
 		                    	String outputFileName, boolean pageOnly, int[] excludedColumnIndexes,
 			                    String encodingType, MethodExpression preProcessor,
@@ -115,25 +118,40 @@ public abstract class Exporter {
         List<UIColumn> columns = new ArrayList<UIColumn>();
 		ArrayList<UIColumn> rowColumns = new ArrayList<UIColumn>();
         int columnIndex = -1;
-		int rowColumnIndex = -1;
+		int rowColumnIndex = 0;
 
+		SpanningRow spanningRow = spanningRows.getNextRow(); // fetch the set of previous columns that span to this row
         for (UIComponent child : row.getChildren()) {
 			if (child instanceof UIColumn) {
 				if (shouldExcludeFromExport(child)) continue;
 				UIColumn uiColumn = (UIColumn) child;
 				if (uiColumn.isRendered()) {
 					if (uiColumn instanceof Column) {
+
+						if (spanningRow != null) { // add previous columns that span multiple rows
+							int added = spanningRow.addColumnsTo(rowColumns, rowColumnIndex);
+							rowColumnIndex = rowColumnIndex + added;
+						}
 						Column column = (Column) uiColumn;
 						int colspan = column.getColspan();
+						int rowspan = column.getRowspan();
 						for (int i = 0; i < colspan; i++) {
 							rowColumns.add(column);
+							for (int j = 1; j < rowspan; j++) { // register which columns span multiple rows
+								spanningRows.addColumn(column, j-1, rowColumnIndex);
+							}
+							rowColumnIndex++;
 						}
 					} else {
 						rowColumns.add(uiColumn);
+						rowColumnIndex++;
 					}
 				}
 			}
 		}
+		
+		if (spanningRow != null) spanningRow.addColumnsTo(rowColumns, rowColumnIndex);
+		rowColumnIndex = -1;
 		
 		for (UIComponent child : table.getChildren()) {
             if (child instanceof UIColumn) {
@@ -283,4 +301,64 @@ public abstract class Exporter {
             return facet;
         }
     }
+	
+	protected class SpanningRows {
+	
+		protected ArrayList<SpanningRow> rows = new ArrayList<SpanningRow>();
+		protected int currentIndex = 0;
+		
+		protected SpanningRow getNextRow() {
+			if (currentIndex < rows.size()) {
+				int index = currentIndex;
+				currentIndex++;
+				return rows.get(index);
+			} else {
+				return null;
+			}
+		}
+		
+		protected void addColumn(UIColumn column, int to, int index) {
+			if ((currentIndex + to) >= rows.size()) {
+				rows.add(currentIndex + to, new SpanningRow());
+			}
+			rows.get(currentIndex + to).addColumn(column, index);
+		}
+	}
+	
+	protected static class SpanningRow {
+	
+		protected ArrayList<SpanningColumn> spanningColumns = new ArrayList<SpanningColumn>();
+		
+		protected int addColumnsTo(ArrayList<UIColumn> columns, int index) {
+			boolean found = false;
+			int myIndex = index;
+			int added = 0;
+			do {
+				found = false;
+				for (int i = 0; i < spanningColumns.size(); i++) {
+					SpanningColumn spanningColumn = spanningColumns.get(i);
+					if (spanningColumn.index == myIndex) {
+						columns.add(spanningColumn.column);
+						added++;
+						myIndex++; // try to add the next one
+						found = true;
+					}
+				}
+			} while (found);
+			return added;
+		}
+		
+		protected void addColumn(UIColumn column, int index) {
+			SpanningColumn spanningColumn = new SpanningColumn();
+			spanningColumn.column = column;
+			spanningColumn.index = index;
+			spanningColumns.add(spanningColumn);
+		}
+	}
+	
+	protected static class SpanningColumn {
+	
+		protected UIColumn column;
+		protected int index;
+	}
 }
