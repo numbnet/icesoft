@@ -23,13 +23,11 @@ import org.icefaces.impl.context.IceFacesContextFactory;
 import javax.faces.event.SystemEventListener;
 import javax.faces.event.SystemEvent;
 import javax.faces.event.AbortProcessingException;
-import javax.faces.event.PostAddToViewEvent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIOutput;
-import javax.faces.component.UINamingContainer;
 import javax.faces.component.UIForm;
 import java.util.Iterator;
 import java.util.Map;
@@ -50,9 +48,9 @@ public class FileEntryFormSubmit implements SystemEventListener {
     public void processEvent(SystemEvent event) throws AbortProcessingException {
 //System.out.println("FileEntryFormSubmit.processEvent()  event: " + event);
         FacesContext context = FacesContext.getCurrentInstance();
+//System.out.println("FileEntryFormSubmit.processEvent()  phase: " + context.getCurrentPhaseId());
 
-        //using PostAddToViewEvent ensures that the component resource is added to the view only once
-        UIForm form = (UIForm) ((PostAddToViewEvent) event).getComponent();
+        UIForm form = (UIForm) event.getSource();
 //System.out.println("FileEntryFormSubmit.processEvent()  form.clientId: " + form.getClientId(context));
 
         if (!partialStateSaving)  {
@@ -70,7 +68,8 @@ public class FileEntryFormSubmit implements SystemEventListener {
 //System.out.println("FileEntryFormSubmit  !foundFileEntry");
             return;
         }
-        
+//System.out.println("FileEntryFormSubmit  foundFileEntry!");
+
         forceAjaxOnView(context);
         form.getAttributes().put(FormSubmit.DISABLE_CAPTURE_SUBMIT, "true");
 
