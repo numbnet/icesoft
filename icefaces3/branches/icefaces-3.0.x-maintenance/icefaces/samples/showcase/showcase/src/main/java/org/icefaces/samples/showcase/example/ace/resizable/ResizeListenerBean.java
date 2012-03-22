@@ -39,7 +39,7 @@ import org.icefaces.samples.showcase.dataGenerators.ImageSet;
                     resource = "/resources/examples/ace/resizable/resizeListener.xhtml"),
             // Java Source
             @ExampleResource(type = ResourceType.java,
-                    title="ResizeListener.java",
+                    title="ResizeListenerBean.java",
                     resource = "/WEB-INF/classes/org/icefaces/samples/showcase"+
                     "/example/ace/resizable/ResizeListenerBean.java"),
             
@@ -59,7 +59,7 @@ public class ResizeListenerBean extends ComponentExampleImpl<ResizeListenerBean>
     private boolean showImage;
     private final int MIN_WIDTH_TO_DISPLAY_IMAGE = 255;
     private final int MIN_HEIGHT_TO_DISPLAY_IMAGE = 235;
-    
+    /////////////---- CONSTRUCTOR BEGIN
     public ResizeListenerBean() 
     {
         super(ResizeListenerBean.class);
@@ -68,7 +68,7 @@ public class ResizeListenerBean extends ComponentExampleImpl<ResizeListenerBean>
         imageLocation = ImageSet.getImage(ImageSet.ImageSelect.PICTURE).getPath();
     }
     
-    
+    /////////////---- EVENT LISTENERS BEGIN
     public void handleResizeEvent(ResizeEvent event)
     {
         showImage = customLogic(event.getWidth(), event.getHeight());
@@ -77,34 +77,17 @@ public class ResizeListenerBean extends ComponentExampleImpl<ResizeListenerBean>
         else
             resizeParameters = "My size changed to: "+event.getWidth() +" x "+ event.getHeight();
     }
-    
+    /////////////---- PRIVATE METHODS BEGIN
     private boolean customLogic(int width, int height)
     {
         if(width>=MIN_WIDTH_TO_DISPLAY_IMAGE && height >=MIN_HEIGHT_TO_DISPLAY_IMAGE) return true;
         else return false;
     }
-
-    public String getResizeParameters() {
-        return resizeParameters;
-    }
-
-    public void setResizeParameters(String resizeParameters) {
-        this.resizeParameters = resizeParameters;
-    }
-
-    public boolean isShowImage() {
-        return showImage;
-    }
-
-    public void setShowImage(boolean showImage) {
-        this.showImage = showImage;
-    }
-
-    public String getImageLocation() {
-        return imageLocation;
-    }
-
-    public void setImageLocation(String imageLocation) {
-        this.imageLocation = imageLocation;
-    }
+    /////////////---- GETTERS & SETTERS BEGIN
+    public String getResizeParameters() { return resizeParameters; }
+    public void setResizeParameters(String resizeParameters) { this.resizeParameters = resizeParameters; }
+    public boolean isShowImage() { return showImage; }
+    public void setShowImage(boolean showImage) { this.showImage = showImage; }
+    public String getImageLocation() { return imageLocation; }
+    public void setImageLocation(String imageLocation) { this.imageLocation = imageLocation; }
 }
