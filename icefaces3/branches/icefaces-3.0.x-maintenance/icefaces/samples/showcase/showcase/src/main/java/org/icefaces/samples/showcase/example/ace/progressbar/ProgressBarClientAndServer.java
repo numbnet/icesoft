@@ -22,8 +22,6 @@ import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import java.io.Serializable;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
 import org.icefaces.ace.event.ProgressBarChangeEvent;
 
 
@@ -41,7 +39,7 @@ import org.icefaces.ace.event.ProgressBarChangeEvent;
                     resource = "/resources/examples/ace/progressbar/progressBarClientAndServer.xhtml"),
             // Java Source
             @ExampleResource(type = ResourceType.java,
-                    title="progressBarClientAndServer.java",
+                    title="ProgressBarClientAndServer.java",
                     resource = "/WEB-INF/classes/org/icefaces/samples/showcase/example/ace/progressbar/progressBarClientAndServer.java")
         }
 )
@@ -52,32 +50,21 @@ public class ProgressBarClientAndServer extends ComponentExampleImpl<ProgressBar
     public static final String BEAN_NAME = "progressBarClientAndServer";
     private int progressValue;
     private String message;
-    
+    /////////////---- CONSTRUCTOR BEGIN
     public ProgressBarClientAndServer() 
     {
         super(ProgressBarClientAndServer.class);
         progressValue = 0;
         message = "";
     }
-    
+    /////////////---- EVENT LISTENERS BEGIN
     public void changeListener(ProgressBarChangeEvent event) 
     {
          message = (int)event.getPercentage() + "%";
     }
-    
-    public int getProgressValue() {
-        return progressValue;
-    }
-
-    public void setProgressValue(int progressValue) {
-        this.progressValue = progressValue;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
+    /////////////---- GETTERS & SETTERS BEGIN
+    public int getProgressValue() { return progressValue; }
+    public void setProgressValue(int progressValue) { this.progressValue = progressValue; }
+    public String getMessage() { return message; }
+    public void setMessage(String message) { this.message = message; }
 }
