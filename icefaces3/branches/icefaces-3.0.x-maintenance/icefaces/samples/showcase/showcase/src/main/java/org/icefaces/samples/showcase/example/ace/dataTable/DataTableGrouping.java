@@ -28,6 +28,10 @@ import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import org.icefaces.samples.showcase.dataGenerators.utilityClasses.DataTableData;
+import org.icefaces.samples.showcase.example.compat.dataTable.Car;
 
 @ComponentExample(
         parent = DataTableBean.BEAN_NAME,
@@ -53,19 +57,20 @@ import java.io.Serializable;
 public class DataTableGrouping extends ComponentExampleImpl<DataTableGrouping> implements Serializable {
     public static final String BEAN_NAME = "dataTableGrouping";
     private DataTable table;
-
+    private List<Car> carsData;
+    /////////////---- CONSTRUCTOR BEGIN
     public DataTableGrouping() {
         super(DataTableGrouping.class);
+        carsData = new ArrayList<Car>(DataTableData.getDefaultData());
     }
-
-    public DataTable getTable() {
-        return table;
-    }
-
-    public void setTable(DataTable table) {
-        this.table = table;
-    }
-
+    
+    /////////////---- GETTERS & SETTERS BEGIN
+    public List<Car> getCarsData() { return carsData; }
+    public void setCarsData(List<Car> carsData) { this.carsData = carsData; }
+    public DataTable getTable() { return table; }
+    public void setTable(DataTable table) { this.table = table; }
+    
+    /////////////---- METHOD INVOCATION VIA VIEW EL
     public double groupTotal(String groupProperty, String valueProperty, int index) {
         double total = 0;
         boolean nextRowInGroup = false;

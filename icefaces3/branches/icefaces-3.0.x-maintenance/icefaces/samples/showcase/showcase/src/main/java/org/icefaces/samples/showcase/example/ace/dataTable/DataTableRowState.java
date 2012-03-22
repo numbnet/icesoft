@@ -31,7 +31,9 @@ import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.event.ActionEvent;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
+import org.icefaces.samples.showcase.dataGenerators.utilityClasses.DataTableData;
 
 @ComponentExample(
         parent = DataTableBean.BEAN_NAME,
@@ -60,35 +62,25 @@ public class DataTableRowState extends ComponentExampleImpl<DataTableRowState> i
     private RowStateMap stateMap = new RowStateMap();
     private DataTable table;
     private List<Car> selection;
-
+    private List<Car> carsData;
+    /////////////---- CONSTRUCTOR BEGIN
     public DataTableRowState() {
         super(DataTableRowState.class);
+        carsData = new ArrayList<Car>(DataTableData.getDefaultData());
     }
-
-    public RowStateMap getStateMap() {
-        return stateMap;
-    }
-
-    public void setStateMap(RowStateMap stateMap) {
-        this.stateMap = stateMap;
-    }
-
-    public List<Car> getSelection() {
-        return stateMap.getSelected();
-    }
-
+    /////////////---- GETTERS & SETTERS BEGIN
+    public RowStateMap getStateMap() { return stateMap; }
+    public void setStateMap(RowStateMap stateMap) { this.stateMap = stateMap; }
+    public List<Car> getSelection() { return stateMap.getSelected(); }
     public void setSelection(List<Car> selection) {}
-
-    public DataTable getTable() {
-        return table;
-    }
-
-    public void setTable(DataTable table) {
-        this.table = table;
-    }
-
+    public DataTable getTable() { return table; }
+    public void setTable(DataTable table) { this.table = table; }
+    public List<Car> getCarsData() { return carsData; }
+    public void setCarsData(List<Car> carsData) { this.carsData = carsData; }
+    
+    /////////////---- ACTION LISTENERS BEGIN
     public void enableAllSelection(ActionEvent e) {
-        stateMap.setAllSelectable(true);
+        stateMap.setAllSelectable(true); 
     }
     public void disableSelection(ActionEvent e) {
         for (Object rowData : stateMap.getSelected()) {
