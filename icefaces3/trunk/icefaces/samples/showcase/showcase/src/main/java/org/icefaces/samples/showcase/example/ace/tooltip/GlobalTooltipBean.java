@@ -38,7 +38,7 @@ import java.io.Serializable;
                     resource = "/resources/examples/ace/tooltip/globalTooltip.xhtml"),
             // Java Source
             @ExampleResource(type = ResourceType.java,
-                    title="GlobalTooltip.java",
+                    title="GlobalTooltipBean.java",
                     resource = "/WEB-INF/classes/org/icefaces/samples/showcase/example/ace/tooltip/GlobalTooltipBean.java")
         }
 )
@@ -48,7 +48,7 @@ import java.io.Serializable;
 public class GlobalTooltipBean extends ComponentExampleImpl<GlobalTooltipBean> implements Serializable {
 
     public static final String BEAN_NAME = "globalTooltipBean";
-    
+    /////////////---- CONSTRUCTOR BEGIN
     public GlobalTooltipBean() {
         super(GlobalTooltipBean.class);
     }

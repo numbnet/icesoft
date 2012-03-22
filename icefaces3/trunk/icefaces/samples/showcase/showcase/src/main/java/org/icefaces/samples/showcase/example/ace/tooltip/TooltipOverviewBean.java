@@ -39,7 +39,7 @@ import org.icefaces.samples.showcase.dataGenerators.ImageSet.ImageInfo;
                     resource = "/resources/examples/ace/tooltip/toolTip.xhtml"),
             // Java Source
             @ExampleResource(type = ResourceType.java,
-                    title="TooltipOverview.java",
+                    title="TooltipOverviewBean.java",
                     resource = "/WEB-INF/classes/org/icefaces/samples/showcase"+
                     "/example/ace/tooltip/TooltipOverviewBean.java"),
             @ExampleResource(type = ResourceType.java,
@@ -68,71 +68,30 @@ public class TooltipOverviewBean extends ComponentExampleImpl<TooltipOverviewBea
     private String tooltipPosition = "topRight";
     private Integer showEffectLength = 500;
     private Integer hideEffectLength = 500;
+    private boolean renderSpeechBuble;
     
-    
+    /////////////---- CONSTRUCTOR BEGIN
     public TooltipOverviewBean() 
     {
         super(TooltipOverviewBean.class);
         carSet = ImageSet.getImages(ImageSet.ImagesSelect.CARS);
     }
-
-    public String getTooltipEffect() {
-        return tooltipEffect;
-    }
-    
-    public void setTooltipEffect(String tooltipEffect) {
-        this.tooltipEffect = tooltipEffect;
-    }
-    
-    public Integer getTooltipHideDelay() {
-        return tooltipHideDelay;
-    }
-
-    public void setTooltipHideDelay(Integer tooltipHideDelay) {
-        this.tooltipHideDelay = tooltipHideDelay;
-    }
-
-    public Integer getTooltipShowDelay() {
-        return tooltipShowDelay;
-    }
-
-    public void setTooltipShowDelay(Integer tooltipShowDelay) {
-        this.tooltipShowDelay = tooltipShowDelay;
-    }
-
-    public String getTooltipTargetPosition() {
-        return tooltipTargetPosition;
-    }
-
-    public void setTooltipTargetPosition(String tooltipTargetPosition) {
-        this.tooltipTargetPosition = tooltipTargetPosition;
-    }
-
-    public String getTooltipPosition() {
-        return tooltipPosition;
-    }
-
-    public void setTooltipPosition(String tooltipPosition) {
-        this.tooltipPosition = tooltipPosition;
-    }
-
-    public Integer getHideEffectLength() {
-        return hideEffectLength;
-    }
-
-    public void setHideEffectLength(Integer hideEffectLength) {
-        this.hideEffectLength = hideEffectLength;
-    }
-
-    public Integer getShowEffectLength() {
-        return showEffectLength;
-    }
-
-    public void setShowEffectLength(Integer showEffectLength) {
-        this.showEffectLength = showEffectLength;
-    }
-
-    public ArrayList<ImageInfo> getCarSet() {
-        return carSet;
-    }
+    /////////////---- GETTERS & SETTERS BEGIN
+    public String getTooltipEffect() { return tooltipEffect; }
+    public void setTooltipEffect(String tooltipEffect) { this.tooltipEffect = tooltipEffect; }
+    public Integer getTooltipHideDelay() { return tooltipHideDelay; }
+    public void setTooltipHideDelay(Integer tooltipHideDelay) { this.tooltipHideDelay = tooltipHideDelay; }
+    public Integer getTooltipShowDelay() { return tooltipShowDelay; }
+    public void setTooltipShowDelay(Integer tooltipShowDelay) { this.tooltipShowDelay = tooltipShowDelay; }
+    public String getTooltipTargetPosition() { return tooltipTargetPosition; }
+    public void setTooltipTargetPosition(String tooltipTargetPosition) { this.tooltipTargetPosition = tooltipTargetPosition; }
+    public String getTooltipPosition() { return tooltipPosition; }
+    public void setTooltipPosition(String tooltipPosition) { this.tooltipPosition = tooltipPosition; }
+    public Integer getHideEffectLength() { return hideEffectLength; }
+    public void setHideEffectLength(Integer hideEffectLength) { this.hideEffectLength = hideEffectLength; }
+    public Integer getShowEffectLength() { return showEffectLength; }
+    public void setShowEffectLength(Integer showEffectLength) { this.showEffectLength = showEffectLength; }
+    public ArrayList<ImageInfo> getCarSet() { return carSet; }
+    public boolean isRenderSpeechBuble() { return renderSpeechBuble; }
+    public void setRenderSpeechBuble(boolean renderSpeechBuble) { this.renderSpeechBuble = renderSpeechBuble; }
 }

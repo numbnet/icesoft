@@ -40,7 +40,7 @@ import org.icefaces.samples.showcase.dataGenerators.ImageSet;
                     resource = "/resources/examples/ace/progressbar/progressBar.xhtml"),
             // Java Source
             @ExampleResource(type = ResourceType.java,
-                    title="ProgressBar.java",
+                    title="ProgressBarBean.java",
                     resource = "/WEB-INF/classes/org/icefaces/samples/showcase"+
                     "/example/ace/progressbar/ProgressBarBean.java")
         }
@@ -67,7 +67,8 @@ public class ProgressBarBean extends ComponentExampleImpl<ProgressBarBean> imple
     private String message;
     private ImageSet.ImageInfo arrowForwardImage;
     private ImageSet.ImageInfo arrowBackwardImage;
-
+    
+    /////////////---- CONSTRUCTOR BEGIN
     public ProgressBarBean() {
         super(ProgressBarBean.class);
         
@@ -77,7 +78,7 @@ public class ProgressBarBean extends ComponentExampleImpl<ProgressBarBean> imple
         currentIndex = 0;
         setBeanVariables(currentIndex);
     }
-    
+    /////////////---- ACTION LISTENERS BEGIN
     public void returnToPreviousImage(ActionEvent event)
     {
         if(currentIndex > 0 && currentIndex<imagesOfCars.size())
@@ -86,7 +87,6 @@ public class ProgressBarBean extends ComponentExampleImpl<ProgressBarBean> imple
             setBeanVariables(currentIndex);
         }
     }
-    
     public void proceedToNextImage(ActionEvent event)
     {
         if(currentIndex!=imagesOfCars.size()-1)
@@ -96,7 +96,7 @@ public class ProgressBarBean extends ComponentExampleImpl<ProgressBarBean> imple
         }
     }
 	
-    
+    /////////////---- PRIVATE METHODS BEGIN
     private void setBeanVariables(int currentIndex) 
     {
         this.progressValue = findProgressValue(currentIndex);
@@ -117,40 +117,15 @@ public class ProgressBarBean extends ComponentExampleImpl<ProgressBarBean> imple
     {
         return ++indexValue*(100/imagesOfCars.size());
     }
-
-    public ArrayList<ImageSet.ImageInfo> getImagesOfCars() {
-        return imagesOfCars;
-    }
-
-    public Integer getProgressValue() {
-        return progressValue;
-    }
-
-    public void setProgressValue(Integer progressValue) {
-        this.progressValue = progressValue;
-    }
-
-    public ImageSet.ImageInfo getCurrentImage() {
-        return currentImage;
-    }
     
-    public String getMessage() {
-            return message;
-    }
-
-    public ImageInfo getArrowBackwardImage() {
-        return arrowBackwardImage;
-    }
-
-    public void setArrowBackwardImage(ImageInfo arrowBackwardImage) {
-        this.arrowBackwardImage = arrowBackwardImage;
-    }
-
-    public ImageInfo getArrowForwardImage() {
-        return arrowForwardImage;
-    }
-
-    public void setArrowForwardImage(ImageInfo arrowForwardImage) {
-        this.arrowForwardImage = arrowForwardImage;
-    }
+    /////////////---- GETTERS & SETTERS BEGIN
+    public ArrayList<ImageSet.ImageInfo> getImagesOfCars() { return imagesOfCars; }
+    public Integer getProgressValue() { return progressValue; }
+    public void setProgressValue(Integer progressValue) { this.progressValue = progressValue; }
+    public ImageSet.ImageInfo getCurrentImage() { return currentImage; }
+    public String getMessage() { return message; }
+    public ImageInfo getArrowBackwardImage() { return arrowBackwardImage; }
+    public void setArrowBackwardImage(ImageInfo arrowBackwardImage) { this.arrowBackwardImage = arrowBackwardImage; }
+    public ImageInfo getArrowForwardImage() { return arrowForwardImage; }
+    public void setArrowForwardImage(ImageInfo arrowForwardImage) { this.arrowForwardImage = arrowForwardImage; }
 }
