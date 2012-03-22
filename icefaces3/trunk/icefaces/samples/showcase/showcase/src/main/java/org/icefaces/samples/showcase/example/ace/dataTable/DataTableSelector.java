@@ -28,6 +28,8 @@ import javax.faces.event.ValueChangeEvent;
 import java.io.Serializable;
 import javax.faces.model.SelectItem;
 import java.util.ArrayList;
+import java.util.List;
+import org.icefaces.samples.showcase.dataGenerators.utilityClasses.DataTableData;
 
 @ComponentExample(
         parent = DataTableBean.BEAN_NAME,
@@ -70,17 +72,20 @@ public class DataTableSelector extends ComponentExampleImpl<DataTableSelector> i
     private String selectionMode = AVAILABLE_MODES[0].getValue().toString();
     private boolean dblClick = false;
     private boolean instantUpdate = true;
-
+    private List<Car> carsData;
+    
+    /////////////---- CONSTRUCTOR BEGIN
     public DataTableSelector() {
         super(DataTableSelector.class);
+        carsData = new ArrayList<Car>(DataTableData.getDefaultData());
     }
-    
+    /////////////---- VALUE CHANGE LISTENERS BEGIN
     public void changedMode(ValueChangeEvent event) {
         stateMap.setAllSelected(false);
         singleCell = null;
         multiCell = null;
     }
-    
+    /////////////---- GETTERS & SETTERS BEGIN
     public RowStateMap getStateMap() { return stateMap; }
     public ArrayList<Car> getMultiRow() { return (ArrayList<Car>) stateMap.getSelected(); }
     public CellSelections[] getSingleCell() { return singleCell; }
@@ -89,6 +94,7 @@ public class DataTableSelector extends ComponentExampleImpl<DataTableSelector> i
     public boolean getDblClick() { return dblClick; }
     public boolean getInstantUpdate() { return instantUpdate; }
     public SelectItem[] getAvailableModes() { return AVAILABLE_MODES; }
+    public List<Car> getCarsData() { return carsData; }
     public Object getSelectionObject() {
         if (SELECT_SINGLE_ROW.equals(selectionMode) || SELECT_MULTI_ROW.equals(selectionMode)) {
             return selectedRows;
@@ -111,4 +117,5 @@ public class DataTableSelector extends ComponentExampleImpl<DataTableSelector> i
     public void setSelectionMode(String selectionMode) { this.selectionMode = selectionMode; }
     public void setDblClick(boolean dblClick) { this.dblClick = dblClick; }
     public void setInstantUpdate(boolean instantUpdate) { this.instantUpdate = instantUpdate; }
+    public void setCarsData(List<Car> carsData) { this.carsData = carsData; }
 }

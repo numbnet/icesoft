@@ -22,6 +22,10 @@ import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import org.icefaces.samples.showcase.dataGenerators.utilityClasses.DataTableData;
+import org.icefaces.samples.showcase.example.compat.dataTable.Car;
 
 @ComponentExample(
         title = "example.ace.dataTable.title",
@@ -38,7 +42,16 @@ import java.io.Serializable;
             @ExampleResource(type = ResourceType.java,
                     title="DataTableBean.java",
                     resource = "/WEB-INF/classes/org/icefaces/samples/showcase"+
-                    "/example/ace/dataTable/DataTableBean.java")
+                    "/example/ace/dataTable/DataTableBean.java"),
+            @ExampleResource(type = ResourceType.java,
+                    title="DataTableData.java",
+                    resource = "/WEB-INF/classes/org/icefaces/samples/showcase"+
+                    "/dataGenerators/utilityClasses/DataTableData.java"),
+            @ExampleResource(type = ResourceType.java,
+                    title="VehicleGenerator.java",
+                    resource = "/WEB-INF/classes/org/icefaces/samples/showcase"+
+                    "/dataGenerators/VehicleGenerator.java")
+            
         }
 )
 //! Menu links in alphabetical order based on description in messages.proporties file
@@ -70,8 +83,14 @@ import java.io.Serializable;
 @CustomScoped(value = "#{window}")
 public class DataTableBean extends ComponentExampleImpl<DataTableBean> implements Serializable {
     public static final String BEAN_NAME = "dataTableBean";
-
+    
+    private List<Car> carsData;
+    /////////////---- CONSTRUCTOR BEGIN
     public DataTableBean() {
         super(DataTableBean.class);
+        carsData = new ArrayList<Car>(DataTableData.getDefaultData());
     }
+    /////////////---- GETTERS & SETTERS BEGIN
+    public List<Car> getCarsData() { return carsData; }
+    public void setCarsData(List<Car> carsData) { this.carsData = carsData; }
 }

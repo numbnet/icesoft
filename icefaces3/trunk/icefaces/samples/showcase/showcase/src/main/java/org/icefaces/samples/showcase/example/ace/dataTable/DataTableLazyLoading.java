@@ -66,7 +66,7 @@ public class DataTableLazyLoading extends ComponentExampleImpl<DataTableLazyLoad
             {
                 List<Car> randomCars;
                 VehicleGenerator generator = new VehicleGenerator();
-                randomCars = generator.getRandomCars(pageSize);
+                randomCars = generator.getCarsForLazyLoading(pageSize);
                 return randomCars;
             }
         };
@@ -74,11 +74,6 @@ public class DataTableLazyLoading extends ComponentExampleImpl<DataTableLazyLoad
         carsData.setRowCount(3000000);
     }
 
-    public LazyDataModel<Car> getCarsData() {
-        return carsData;
-    }
-
-    public void setCarsData(LazyDataModel<Car> carsData) {
-        this.carsData = carsData;
-    }
+    public LazyDataModel<Car> getCarsData() { return carsData; }
+    public void setCarsData(LazyDataModel<Car> carsData) { this.carsData = carsData; }
 }
