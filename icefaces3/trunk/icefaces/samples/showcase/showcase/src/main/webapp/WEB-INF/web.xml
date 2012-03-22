@@ -110,8 +110,8 @@
         here to be sure the samples and components that use .png images work properly.
     -->
     <mime-mapping>
-        <extension>png</extension>
-        <mime-type>image/png</mime-type>
+        <extension>png</extension>
+        <mime-type>image/png</mime-type>
     </mime-mapping>
 
     <welcome-file-list>
