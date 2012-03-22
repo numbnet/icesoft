@@ -52,17 +52,16 @@ public class TimeSpinnerRenderer extends BaseInputRenderer {
             return;
         }
         String inputField = clientId + "_input";
-        String inputValue =  context.getExternalContext().getRequestParameterMap().get(inputField);
-  //      String twelveHrString = convertToClock(inputValue , 12);
+        String inputValue = context.getExternalContext().getRequestParameterMap().get(inputField);
+        //      String twelveHrString = convertToClock(inputValue , 12);
         if (shouldUseNative(timeSpinner)) {
-             inputValue = context.getExternalContext().getRequestParameterMap().get(clientId);
-             if (isValueBlank(inputValue))return;
-             String twenty4HrString = convertToClock(inputValue, 24);
-             timeSpinner.setSubmittedValue(twenty4HrString);
-        }
-        else {
-             if (isValueBlank(inputValue))return;
-             timeSpinner.setSubmittedValue(inputValue);
+            inputValue = context.getExternalContext().getRequestParameterMap().get(clientId);
+            if (isValueBlank(inputValue)) return;
+            String twenty4HrString = convertToClock(inputValue, 24);
+            timeSpinner.setSubmittedValue(twenty4HrString);
+        } else {
+            if (isValueBlank(inputValue)) return;
+            timeSpinner.setSubmittedValue(inputValue);
         }
         decodeBehaviors(context, timeSpinner);
     }
@@ -91,12 +90,12 @@ public class TimeSpinnerRenderer extends BaseInputRenderer {
                 Date aDate = new Date();
                 writer.writeAttribute("value", df2.format(aDate), "value");
             } else {
-                String clockVal24   = initialValue;
-                if (!isFormattedDate(initialValue, "HH:mm")){
-                   clockVal24 = convertStringInput("EEE MMM dd hh:mm:ss zzz yyyy", defaultPattern, initialValue);
+                String clockVal24 = initialValue;
+                if (!isFormattedDate(initialValue, "HH:mm")) {
+                    clockVal24 = convertStringInput("EEE MMM dd hh:mm:ss zzz yyyy", defaultPattern, initialValue);
                 }
-                 //check that only 24 hour clock came in.... as html5 input type="date" uses 24 hr clock
-                 writer.writeAttribute("value", clockVal24, "value");
+                //check that only 24 hour clock came in.... as html5 input type="date" uses 24 hr clock
+                writer.writeAttribute("value", clockVal24, "value");
             }
             if (disabled) {
                 writer.writeAttribute("disabled", component, "disabled");
@@ -163,7 +162,9 @@ public class TimeSpinnerRenderer extends BaseInputRenderer {
         if (timeEntry.isDisabled())
             writer.writeAttribute("disabled", "disabled", null);
         else {
-            writer.writeAttribute(eventStr, "mobi.timespinner.toggle('" + clientId + "');", null);
+            // touch event can be problematic sometime not actualy getting called
+            // for ui widgets that don't require rapid response then stick with onClick
+            writer.writeAttribute(CLICK_EVENT, "mobi.timespinner.toggle('" + clientId + "');", null);
         }
         writer.endElement("input");
         // div that is use to hide/show the popup screen black out.
@@ -288,14 +289,14 @@ public class TimeSpinnerRenderer extends BaseInputRenderer {
         builder.append("});");
         String jsCall = builder.toString();
         if (!timeEntry.isDisabled() || !timeEntry.isReadonly()) {
-            writer.writeAttribute(eventStr, jsCall, null);
+            writer.writeAttribute(CLICK_EVENT, jsCall, null);
         }
         writer.endElement("input");
         writer.startElement("input", uiComponent);
         writer.writeAttribute("class", "mobi-button mobi-button-default", null);
         writer.writeAttribute("type", "button", "type");
         writer.writeAttribute("value", "Cancel", null);
-        writer.writeAttribute(eventStr, "mobi.timespinner.close('" + clientId + "');", null);
+        writer.writeAttribute(CLICK_EVENT, "mobi.timespinner.close('" + clientId + "');", null);
         writer.endElement("input");
         writer.endElement("div");                                        //end of button container
 
@@ -337,11 +338,10 @@ public class TimeSpinnerRenderer extends BaseInputRenderer {
 
         try {
             Locale locale = spinner.calculateLocale(context);
-            if (!shouldUseNative(spinner)){
+            if (!shouldUseNative(spinner)) {
                 SimpleDateFormat format = new SimpleDateFormat(spinner.getPattern(), locale);
                 return customConversion(context, spinner, format, submittedValue);
-            }
-            else {
+            } else {
                 SimpleDateFormat format = new SimpleDateFormat("HH:mm", locale);
                 return customConversion(context, spinner, format, submittedValue);
             }
@@ -351,7 +351,7 @@ public class TimeSpinnerRenderer extends BaseInputRenderer {
     }
 
     private Object customConversion(FacesContext context, TimeSpinner spinner,
-                                          SimpleDateFormat format, String submittedValue) throws ParseException {
+                                    SimpleDateFormat format, String submittedValue) throws ParseException {
         Locale locale = spinner.calculateLocale(context);
         format.setTimeZone(spinner.calculateTimeZone());
         Date nativeValue = format.parse(submittedValue);
@@ -426,18 +426,17 @@ public class TimeSpinnerRenderer extends BaseInputRenderer {
             try {
                 int hour = Integer.parseInt(hr);
                 int minute = Integer.parseInt(min);
-                if (hours ==  12){
+                if (hours == 12) {
                     if (hour < 13 && minute <= 59) {
                         retVal = hr + ":" + min + " AM";
                     } else {
                         retVal = String.valueOf(hour - 12) + ":" + min + " PM";
                     }
-                }
-                else{
-                    retVal = hr+":"+min;
+                } else {
+                    retVal = hr + ":" + min;
                 }
             } catch (NumberFormatException nfe) {
-                logger.info("not able to convert iOS5 input to "+hours+"hour clock");
+                logger.info("not able to convert iOS5 input to " + hours + "hour clock");
             }
             return retVal;
         } else {

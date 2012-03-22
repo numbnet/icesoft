@@ -132,12 +132,12 @@ public class DateSpinnerRenderer extends BaseInputRenderer {
         // check for a touch enable device and setup events accordingly
         String eventStr = dateSpinner.isTouchEnabled() ?
                 TOUCH_START_EVENT : CLICK_EVENT;
-         //prep for ajax submit
+        //prep for ajax submit
         boolean singleSubmit = dateSpinner.isSingleSubmit();
         StringBuilder builder = new StringBuilder(255);
         StringBuilder builder2 = new StringBuilder(255);
         String inputCallStart = "mobi.datespinner.inputSubmit('";
-        String jsCallStart = "mobi.datespinner.select('" ;
+        String jsCallStart = "mobi.datespinner.select('";
         builder2.append(clientId).append("',{ event: event,");
         builder2.append("singleSubmit: ").append(singleSubmit);
         if (hasBehaviors) {
@@ -158,7 +158,7 @@ public class DateSpinnerRenderer extends BaseInputRenderer {
         writer.startElement("input", uiComponent);
         writer.writeAttribute("id", clientId + "_input", "id");
         writer.writeAttribute("name", clientId + "_input", "name");
-        writer.writeAttribute("onblur", inputCall.toString(), null );
+        writer.writeAttribute("onblur", inputCall.toString(), null);
 
         // apply class attribute and pass though attributes for style.
         PassThruAttributeWriter.renderNonBooleanAttributes(writer, uiComponent,
@@ -195,7 +195,9 @@ public class DateSpinnerRenderer extends BaseInputRenderer {
         if (dateSpinner.isDisabled()) {
             writer.writeAttribute("disabled", "disabled", null);
         } else {
-            writer.writeAttribute(eventStr, "mobi.datespinner.toggle('" + clientId + "');", null);
+            // touch event can be problematic sometime not actualy getting called
+            // for ui widgets that don't require rapid response then stick with onClick
+            writer.writeAttribute(CLICK_EVENT, "mobi.datespinner.toggle('" + clientId + "');", null);
         }
         writer.endElement("input");
 
@@ -269,7 +271,7 @@ public class DateSpinnerRenderer extends BaseInputRenderer {
         writer.writeAttribute("type", "button", "type");
         writer.writeAttribute("value", "Set", null);
         if (!dateSpinner.isDisabled() && !dateSpinner.isReadonly()) {
-            writer.writeAttribute(eventStr, jsCall, null);
+            writer.writeAttribute(CLICK_EVENT, jsCall, null);
         }
         writer.endElement("input");
 
@@ -277,7 +279,7 @@ public class DateSpinnerRenderer extends BaseInputRenderer {
         writer.writeAttribute("class", "mobi-button mobi-button-default", null);
         writer.writeAttribute("type", "button", "type");
         writer.writeAttribute("value", "Cancel", null);
-        writer.writeAttribute(eventStr, "mobi.datespinner.close('" + clientId + "');", null);
+        writer.writeAttribute(CLICK_EVENT, "mobi.datespinner.close('" + clientId + "');", null);
         writer.endElement("input");
 
         writer.endElement("div");                                        //end of button container
