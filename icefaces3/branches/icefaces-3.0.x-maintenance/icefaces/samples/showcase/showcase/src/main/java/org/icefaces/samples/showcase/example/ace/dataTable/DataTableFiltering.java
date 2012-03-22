@@ -22,6 +22,10 @@ import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import org.icefaces.samples.showcase.dataGenerators.utilityClasses.DataTableData;
+import org.icefaces.samples.showcase.example.compat.dataTable.Car;
 
 @ComponentExample(
         parent = DataTableBean.BEAN_NAME,
@@ -46,8 +50,13 @@ import java.io.Serializable;
 @CustomScoped(value = "#{window}")
 public class DataTableFiltering extends ComponentExampleImpl<DataTableFiltering> implements Serializable {
     public static final String BEAN_NAME = "dataTableFiltering";
-    
+    private List<Car> carsData;
+    /////////////---- CONSTRUCTOR BEGIN
     public DataTableFiltering() {
         super(DataTableFiltering.class);
+        carsData = new ArrayList<Car>(DataTableData.getDefaultData());
     }
+    /////////////---- GETTERS & SETTERS BEGIN
+    public List<Car> getCarsData() { return carsData; }
+    public void setCarsData(List<Car> carsData) { this.carsData = carsData; }
 }

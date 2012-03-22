@@ -21,13 +21,14 @@ import org.icefaces.samples.showcase.metadata.annotation.ExampleResources;
 import org.icefaces.samples.showcase.metadata.annotation.ResourceType;
 import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
 
-import org.icefaces.samples.showcase.example.compat.dataTable.Car;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
-
+import org.icefaces.samples.showcase.dataGenerators.utilityClasses.DataTableData;
+import org.icefaces.samples.showcase.example.compat.dataTable.Car;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
-import org.icefaces.samples.showcase.dataGenerators.VehicleGenerator;
+
 
 @ComponentExample(
         parent = DataTableBean.BEAN_NAME,
@@ -54,19 +55,13 @@ public class DataTableRowEditing extends ComponentExampleImpl<DataTableRowEditin
 {
     public static final String BEAN_NAME = "dataTableRowEditing";
     private List<Car> cars;
-
+    /////////////---- CONSTRUCTOR BEGIN
     public DataTableRowEditing() 
     {
         super(DataTableRowEditing.class);
-        VehicleGenerator generator = new VehicleGenerator();
-        cars = generator.getRandomCars(10);
+        cars = new ArrayList<Car>(DataTableData.getDefaultData());
     }
-
-    public List<Car> getCars() {
-        return cars;
-    }
-
-    public void setCars(List<Car> cars) {
-        this.cars = cars;
-    }
+    /////////////---- GETTERS & SETTERS BEGIN
+    public List<Car> getCars() { return cars; }
+    public void setCars(List<Car> cars) { this.cars = cars; }
 }

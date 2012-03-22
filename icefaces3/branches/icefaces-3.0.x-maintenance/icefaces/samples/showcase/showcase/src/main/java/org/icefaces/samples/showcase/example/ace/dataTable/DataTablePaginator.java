@@ -18,7 +18,10 @@ package org.icefaces.samples.showcase.example.ace.dataTable;
 
 import org.icefaces.samples.showcase.metadata.annotation.*;
 import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
-
+import java.util.ArrayList;
+import java.util.List;
+import org.icefaces.samples.showcase.dataGenerators.utilityClasses.DataTableData;
+import org.icefaces.samples.showcase.example.compat.dataTable.Car;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import java.io.Serializable;
@@ -54,19 +57,22 @@ public class DataTablePaginator extends ComponentExampleImpl<DataTablePaginator>
     
     private boolean paginator = true;
     private String position = POSITION_AVAILABLE[0].getValue().toString();
-
+    private List<Car> carsData;
     private int rows = 10;
     private int startPage = 1;
-
+    
+    /////////////---- CONSTRUCTOR BEGIN
     public DataTablePaginator() {
         super(DataTablePaginator.class);
+        carsData = new ArrayList<Car>(DataTableData.getDefaultData());
     }
-    
+    /////////////---- GETTERS & SETTERS BEGIN
     public boolean getPaginator() { return paginator; }
     public String getPosition() { return position; }
     public int getRows() { return rows; }
     public int getStartPage() { return startPage; }
     public SelectItem[] getPositionAvailable() { return POSITION_AVAILABLE; }
+    public List<Car> getCarsData() { return carsData; }
     public int getStartPageMaximum() {
         return (int)Math.ceil(30.0/(double)rows);
     }
@@ -75,4 +81,5 @@ public class DataTablePaginator extends ComponentExampleImpl<DataTablePaginator>
     public void setPosition(String position) { this.position = position; }
     public void setRows(int rows) { this.rows = rows; }
     public void setStartPage(int startPage) { this.startPage = startPage; }
+    public void setCarsData(List<Car> carsData) { this.carsData = carsData; }
 }
