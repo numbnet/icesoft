@@ -71,7 +71,8 @@ public class DataTableGrouping extends ComponentExampleImpl<DataTableGrouping> i
     public void setTable(DataTable table) { this.table = table; }
     
     /////////////---- METHOD INVOCATION VIA VIEW EL
-    public double groupTotal(String groupProperty, String valueProperty, int index) {
+    public double groupTotal(String groupProperty, String valueProperty, Object i) {
+        Integer index = (Integer) i;
         double total = 0;
         boolean nextRowInGroup = false;
         FacesContext context = FacesContext.getCurrentInstance();
