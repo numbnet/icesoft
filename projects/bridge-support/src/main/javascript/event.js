@@ -29,7 +29,7 @@ var yes = any;
 var no = none;
 
 function isIEEvent(event) {
-    return event.srcElement && !event.preventDefault;
+    return !event.preventDefault;
 }
 
 function Event(event, capturingElement) {
@@ -308,7 +308,7 @@ var MouseListenerNames = [ 'onclick', 'ondblclick', 'onmousedown', 'onmousemove'
 var KeyListenerNames = [ 'onkeydown', 'onkeypress', 'onkeyup', 'onhelp' ];
 
 function $event(e, element) {
-    var capturedEvent = window.event || e;
+    var capturedEvent = e || window.event;
     if (capturedEvent && capturedEvent.type) {
         var eventType = 'on' + capturedEvent.type;
         if (contains(KeyListenerNames, eventType)) {
