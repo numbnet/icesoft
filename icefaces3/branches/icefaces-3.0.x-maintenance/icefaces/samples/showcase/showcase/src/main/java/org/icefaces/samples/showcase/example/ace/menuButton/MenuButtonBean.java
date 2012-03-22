@@ -14,73 +14,66 @@
  * governing permissions and limitations under the License.
  */
 
-package org.icefaces.samples.showcase.example.ace.menu;
+package org.icefaces.samples.showcase.example.ace.menuButton;
 
 import org.icefaces.samples.showcase.metadata.annotation.*;
 import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
 
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
-import javax.faces.event.ActionEvent;
 import java.io.Serializable;
 import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import javax.faces.event.ActionEvent;
 
 @ComponentExample(
-        title = "example.ace.menu.title",
-        description = "example.ace.menu.description",
-        example = "/resources/examples/ace/menu/menu.xhtml"
+        title = "example.ace.menuButton.title",
+        description = "example.ace.menuButton.description",
+        example = "/resources/examples/ace/menuButton/menuButtonOverview.xhtml"
 )
 @ExampleResources(
         resources ={
             // xhtml
             @ExampleResource(type = ResourceType.xhtml,
-                    title="menu.xhtml",
-                    resource = "/resources/examples/ace/menu/menu.xhtml"),
+                    title="menuButton.xhtml",
+                    resource = "/resources/examples/ace/menuButton/menuButtonOverview.xhtml"),
             // Java Source
             @ExampleResource(type = ResourceType.java,
-                    title="MenuBean.java",
+                    title="MenuButtonBean.java",
                     resource = "/WEB-INF/classes/org/icefaces/samples/showcase"+
-                    "/example/ace/menu/MenuBean.java")
+                    "/example/ace/menuButton/MenuButtonBean.java")
         }
 )
 @Menu(
-	title = "menu.ace.menu.subMenu.title",
-	menuLinks = {
-	        @MenuLink(title = "menu.ace.menu.subMenu.main",
-	                isDefault = true,
-                    exampleBeanName = MenuBean.BEAN_NAME),
-            @MenuLink(title = "menu.ace.menu.subMenu.type",
-                exampleBeanName = MenuType.BEAN_NAME),
-            @MenuLink(title = "menu.ace.menu.subMenu.events",
-                exampleBeanName = MenuEvents.BEAN_NAME),
-            @MenuLink(title = "menu.ace.menu.subMenu.effect",
-                exampleBeanName = MenuEffect.BEAN_NAME),
-            @MenuLink(title = "menu.ace.menu.subMenu.display",
-                exampleBeanName = MenuDisplay.BEAN_NAME)
+    title = "menu.ace.menuButton.subMenu.title", 
+    menuLinks = {
+        @MenuLink(title = "menu.ace.menuButton.subMenu.main", isDefault = true, exampleBeanName = MenuButtonBean.BEAN_NAME)
     }
 )
-@ManagedBean(name= MenuBean.BEAN_NAME)
+
+@ManagedBean(name = MenuButtonBean.BEAN_NAME)
 @CustomScoped(value = "#{window}")
-public class MenuBean extends ComponentExampleImpl<MenuBean> implements Serializable {
+public class MenuButtonBean extends ComponentExampleImpl<MenuButtonBean> implements Serializable {
+    public static final String BEAN_NAME = "menuButtonBean";
     
-    public static final String BEAN_NAME = "menuBean";
-    public final String DEFAULT_MESSAGE = "please select any menu item on the left";
-    public final int MAX_LIST_SIZE = 17;
     private Format formatter;
     private String message;
-    private ArrayList<String> list;
+    private List<String> list;
+    public final String DEFAULT_MESSAGE = "please click on a button and select any menu item without icon";
+    public final int MAX_LIST_SIZE = 5;
     
     /////////////---- CONSTRUCTORS BEGIN
-    public MenuBean() {
-        super(MenuBean.class);
+    public MenuButtonBean() {
+        super(MenuButtonBean.class);
         formatter = new SimpleDateFormat("HH:mm:ss");
         list = new ArrayList<String>(MAX_LIST_SIZE);
         list.add(DEFAULT_MESSAGE);
     }
-    /////////////---- ACTION LISTENER
+    
+    /////////////---- ACTION LISTENERS BEGIN
     public void fireAction(ActionEvent event) 
     {
         String [] results = event.getComponent().getParent().getClientId().split(":");
@@ -90,7 +83,7 @@ public class MenuBean extends ComponentExampleImpl<MenuBean> implements Serializ
         message += " - selected @ "+formatter.format(new Date()) + " (server time)";
         
         if(list.get(0).equals(DEFAULT_MESSAGE)) {
-            list.clear();
+            list.clear(); 
         }
         if (list.size()<MAX_LIST_SIZE) {
             list.add(message);
@@ -101,6 +94,6 @@ public class MenuBean extends ComponentExampleImpl<MenuBean> implements Serializ
         }
     }
     /////////////---- GETTERS & SETTERS BEGIN
-    public ArrayList<String> getList() { return list; }
-    public void setList(ArrayList<String> list) { this.list = list; }
+    public List<String> getList() { return list; }
+    public void setList(List<String> list) { this.list = list; }
 }
