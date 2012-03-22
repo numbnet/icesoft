@@ -28,7 +28,7 @@ import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import java.io.Serializable;
 import java.util.*;
-import org.icefaces.samples.showcase.dataGenerators.VehicleGenerator;
+import org.icefaces.samples.showcase.dataGenerators.utilityClasses.DataTableData;
 
 @ComponentExample(
         parent = DataTableBean.BEAN_NAME,
@@ -55,28 +55,21 @@ public class DataTableRowExpansion extends ComponentExampleImpl<DataTableRowExpa
     public static final String BEAN_NAME = "dataTableRowExpansion";
 
     ArrayList<Map.Entry<Car,List>> carsData = null;
-
+    /////////////---- CONSTRUCTOR BEGIN
     public DataTableRowExpansion() {
         super(DataTableRowExpansion.class);
-
         generateCarsData();
     }
-
+    /////////////---- PRIVATE METHODS BEGIN
     private void generateCarsData() {
         carsData = new ArrayList<Map.Entry<Car, List>>();
-        VehicleGenerator generator = new VehicleGenerator();
-        for (Car c : generator.getRandomCars(30)) {
+        for (Car c : DataTableData.getDefaultData()) {
             ArrayList<Map.Entry<Car, List>> detailData = new ArrayList<Map.Entry<Car, List>>();
             detailData.add(new SimpleEntry(new Car(c.getId()+1000, c.getName()+" Custom Spec", c.getChassis(), c.getWeight(), c.getAcceleration()*2, c.getMpg()/2, c.getCost()*3), null));
             carsData.add(new SimpleEntry(c, detailData));
         }
     }
-
-    public ArrayList<Map.Entry<Car,List>> getCarsData() {
-        return carsData;
-    }
-
-    public void setCarsData(ArrayList<Map.Entry<Car,List>> carsData) {
-        this.carsData = carsData;
-    }
+    /////////////---- GETTERS & SETTERS BEGIN
+    public ArrayList<Map.Entry<Car,List>> getCarsData() { return carsData;}
+    public void setCarsData(ArrayList<Map.Entry<Car,List>> carsData) {this.carsData = carsData;}
 }

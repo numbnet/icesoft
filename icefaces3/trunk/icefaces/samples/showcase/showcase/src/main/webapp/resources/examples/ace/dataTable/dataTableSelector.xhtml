@@ -56,7 +56,7 @@
         
         <h:form id="selectForm">
            <ace:dataTable id="instantCarTableSingleRow"
-                          value="#{dataTableSort.carsData}"
+                          value="#{dataTableSelector.carsData}"
                           var="car"
                           rows="7"
                           stateMap="${dataTableSelector.stateMap}"
@@ -116,7 +116,7 @@
             </ace:dataTable>
 
            <ace:dataTable id="carTableSingleRow"
-                          value="#{dataTableSort.carsData}"
+                          value="#{dataTableSelector.carsData}"
                           var="car"
                           rows="7"
                           stateMap="${dataTableSelector.stateMap}"
@@ -174,7 +174,7 @@
            </ace:dataTable>
 
             <ace:dataTable id="instantCarTableMultiRow"
-                          value="#{dataTableSort.carsData}"
+                          value="#{dataTableSelector.carsData}"
                           var="car"
                           rows="7"
                           stateMap="#{dataTableSelector.stateMap}"
@@ -234,7 +234,7 @@
             </ace:dataTable>
 
            <ace:dataTable id="carTableMultiRow"
-                          value="#{dataTableSort.carsData}"
+                          value="#{dataTableSelector.carsData}"
                           var="car"
                           rows="7"
                           stateMap="#{dataTableSelector.stateMap}"
@@ -292,7 +292,7 @@
            </ace:dataTable>
 
             <ace:dataTable id="instantCarTableSingleCell"
-                          value="#{dataTableSort.carsData}"
+                          value="#{dataTableSelector.carsData}"
                           var="car"
                           rows="7"
                           selectedCells="#{dataTableSelector.singleCell}"
@@ -352,7 +352,7 @@
             </ace:dataTable>
 
            <ace:dataTable id="carTableSingleCell"
-                          value="#{dataTableSort.carsData}"
+                          value="#{dataTableSelector.carsData}"
                           var="car"
                           rows="7"
                           selectedCells="#{dataTableSelector.singleCell}"
@@ -411,7 +411,7 @@
            </ace:dataTable>
 
            <ace:dataTable id="carTableInstantMultiCell"
-                          value="#{dataTableSort.carsData}"
+                          value="#{dataTableSelector.carsData}"
                           var="car"
                           rows="7"
                           selectedCells="#{dataTableSelector.multiCell}"
@@ -471,7 +471,7 @@
            </ace:dataTable>
 
            <ace:dataTable id="carTableMultiCell"
-                          value="#{dataTableSort.carsData}"
+                          value="#{dataTableSelector.carsData}"
                           var="car"
                           rows="7"
                           selectedCells="#{dataTableSelector.multiCell}"

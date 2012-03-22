@@ -35,7 +35,7 @@
     <ui:define name="example">
         <h:form id="form">
            <ace:dataTable id="carTableSingleRow"
-                          value="#{dataTableSort.carsData}"
+                          value="#{dataTableFiltering.carsData}"
                           var="car">
                 <ace:column id="car" headerText="ID" filterBy="#{car.id}" filterMatchMode="contains">
                     <h:outputText id="carCell" value="#{car.id}"/>

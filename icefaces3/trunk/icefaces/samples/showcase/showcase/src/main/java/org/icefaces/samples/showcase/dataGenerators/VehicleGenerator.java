@@ -142,6 +142,11 @@ public class VehicleGenerator implements Serializable
         return listWithCars;
     }
     
+    public ArrayList<Car> getCarsForLazyLoading(int quantity)
+    {
+        return new ArrayList<Car>(generateRandomCars(quantity));
+    }
+    
     public List<String> getChassisPool() { return chassisPool; }
     public List<String> getNamesPool() { return namesPool; }
     
