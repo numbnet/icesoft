@@ -29,8 +29,8 @@ import org.icefaces.samples.showcase.metadata.context.ResourceRootPath;
                 
                 // WIKI Resources
                 @ExampleResource(type = ResourceType.wiki,
-                    title="ace:menu",
-                    resource = ResourceRootPath.FOR_WIKI +"Menu+and+Menubar"),
+                    title="ace:contextMenu",
+                    resource = ResourceRootPath.FOR_WIKI +"ContextMenu"),
                 @ExampleResource(type = ResourceType.wiki,
                     title="ace:menuItem",
                     resource = ResourceRootPath.FOR_WIKI +"MenuItem"),

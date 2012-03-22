@@ -45,6 +45,7 @@ import javax.faces.bean.ApplicationScoped;
 import javax.faces.bean.ManagedBean;
 import java.io.Serializable;
 import org.icefaces.samples.showcase.example.ace.animation.AnimationBean;
+import org.icefaces.samples.showcase.example.ace.menuButton.MenuButtonBean;
 import org.icefaces.samples.showcase.example.ace.overview.AceSuiteOverviewBean;
 import org.icefaces.samples.showcase.example.ace.printer.PrinterBean;
 
@@ -67,6 +68,7 @@ import org.icefaces.samples.showcase.example.ace.printer.PrinterBean;
                 @MenuLink(title = "menu.ace.maskedEntry.title", exampleBeanName = MaskedEntryBean.BEAN_NAME),
                 @MenuLink(title = "menu.ace.menu.title", exampleBeanName = MenuBean.BEAN_NAME),
                 @MenuLink(title = "menu.ace.menuBar.title", exampleBeanName = MenuBarBean.BEAN_NAME),
+                @MenuLink(title = "menu.ace.menuButton.title", exampleBeanName = MenuButtonBean.BEAN_NAME),
                 @MenuLink(title = "menu.ace.notificationpanel.title", exampleBeanName = NotificationPanelBean.BEAN_NAME),
                 @MenuLink(title = "menu.ace.panel.title", exampleBeanName = PanelBean.BEAN_NAME),
                 @MenuLink(title = "menu.ace.printer.title", exampleBeanName = PrinterBean.BEAN_NAME),
