@@ -1416,6 +1416,9 @@ public class DataTable extends DataTableBase {
                             if (rowState != null && rowState.isExpanded() && dataModel.getCurrentRowChildCount() > 0) {
                                 currentRootId =  currentRootId.equals("") ? (this.getRowIndex()+"") : (currentRootId + "." + getRowIndex());
                                 dataModel.setRootIndex(currentRootId);
+                                // Need to change from possible current row index of 0 before setting to first row index
+                                // of new row set (0), otherwise setRowIndex doesn't trigger descendant saving.
+                                this.setRowIndex(-1);
                                 this.setRowIndex(0);
                             } else if (dataModel.getRowIndex() < dataModel.getRowCount()-1) {
                                 this.setRowIndex(dataModel.getRowIndex() + 1);
