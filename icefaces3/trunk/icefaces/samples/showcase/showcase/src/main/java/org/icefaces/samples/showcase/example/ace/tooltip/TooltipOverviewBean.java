@@ -44,8 +44,8 @@ import org.icefaces.samples.showcase.dataGenerators.ImageSet.ImageInfo;
                     "/example/ace/tooltip/TooltipOverviewBean.java"),
             @ExampleResource(type = ResourceType.java,
                     title="ImageSet.java",
-                    resource = "/WEB-INF/classes/org/icefaces/samples/showcase"+
-                    "/example/ace/accordionpanel/ImageSet.java")
+                   resource = "/WEB-INF/classes/org/icefaces/samples/showcase"+
+                    "/dataGenerators/ImageSet.java")
         }
 )
 @Menu(
