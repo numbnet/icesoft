@@ -57,7 +57,7 @@ import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
             @MenuLink(title = "menu.compat.map.subMenu.latlong", exampleBeanName = MapLatLong.BEAN_NAME),
             @MenuLink(title = "menu.compat.map.subMenu.controls", exampleBeanName = MapControls.BEAN_NAME),
             @MenuLink(title = "menu.compat.map.subMenu.zoom", exampleBeanName = MapZoom.BEAN_NAME),
-            //@MenuLink(title = "menu.compat.map.subMenu.type", exampleBeanName = MapType.BEAN_NAME),
+            @MenuLink(title = "menu.compat.map.subMenu.type", exampleBeanName = MapType.BEAN_NAME),
             @MenuLink(title = "menu.compat.map.subMenu.load", exampleBeanName = MapLoad.BEAN_NAME)
 })
 @ManagedBean(name= MapBean.BEAN_NAME)
