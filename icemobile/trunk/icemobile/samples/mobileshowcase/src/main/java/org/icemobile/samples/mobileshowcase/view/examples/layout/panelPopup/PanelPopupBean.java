@@ -15,6 +15,7 @@
  */
 package org.icemobile.samples.mobileshowcase.view.examples.layout.panelPopup;
 
+import org.icemobile.samples.mobileshowcase.util.FacesUtils;
 import org.icemobile.samples.mobileshowcase.view.metadata.annotation.*;
 import org.icemobile.samples.mobileshowcase.view.metadata.context.ExampleImpl;
 
@@ -56,6 +57,7 @@ public class PanelPopupBean extends ExampleImpl<PanelPopupBean> implements
     public static final String BEAN_NAME = "panelPopupBean";
 
     public boolean rendered;
+    public String selectedListItem;
 
     public PanelPopupBean() {
         super(PanelPopupBean.class);
@@ -69,7 +71,17 @@ public class PanelPopupBean extends ExampleImpl<PanelPopupBean> implements
         this.rendered = rendered;
     }
 
-    public void toggleRendered(ActionEvent actionEvent) {
+    public String toggleRendered() {
         rendered = !rendered;
+        return null;
     }
+
+    public void selectListItemAction(ActionEvent actionEvent) {
+        selectedListItem = FacesUtils.getRequestParameter("listItem");
+    }
+
+    public String getSelectedListItem() {
+        return selectedListItem;
+    }
+
 }

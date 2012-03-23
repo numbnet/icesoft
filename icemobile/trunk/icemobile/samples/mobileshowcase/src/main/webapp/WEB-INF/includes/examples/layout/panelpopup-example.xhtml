@@ -26,11 +26,15 @@
             <mobi:fieldsetRow>
                 The panelPopup is a container component that renders a popup panel
                 that hovers on top of a web page. Click the "Show Popup" button
-                to display a popup.<br/>
+                to display a popup.<br/><br/>
+            </mobi:fieldsetRow>
+        </mobi:fieldsetGroup>
+        <mobi:fieldsetGroup>
+            <mobi:fieldsetRow>
+                Selected Value: #{panelPopupBean.selectedListItem}<br/>
                 <mobi:commandButton style="margin-top:5px;float:left;"
                                     value="Show Popup"
                                     actionListener="#{panelPopupBean.toggleRendered}"/>
-
                 <mobi:panelPopup id="panelConfirmation"
                                  style="width:300px"
                                  visible="#{panelPopupBean.rendered}">
@@ -40,31 +44,42 @@
                         </mobi:outputListItem>
                         <mobi:outputListItem>
                             <h:commandLink
-                                    actionListener="#{panelPopupBean.toggleRendered}">
+                                    actionListener="#{panelPopupBean.selectListItemAction}"
+                                    action="#{panelPopupBean.toggleRendered}">
+                                <f:param name="listItem" value="System Update"/>
                                 System Update
                             </h:commandLink>
                         </mobi:outputListItem>
                         <mobi:outputListItem>
                             <h:commandLink
-                                    actionListener="#{panelPopupBean.toggleRendered}">
+                                    actionListener="#{panelPopupBean.selectListItemAction}"
+                                    action="#{panelPopupBean.toggleRendered}">
+                                <f:param name="listItem" value="Status"/>
                                 Status
                             </h:commandLink>
                         </mobi:outputListItem>
                         <mobi:outputListItem>
                             <h:commandLink
-                                    actionListener="#{panelPopupBean.toggleRendered}">
+                                    actionListener="#{panelPopupBean.selectListItemAction}"
+                                    action="#{panelPopupBean.toggleRendered}">
+                                <f:param name="listItem" value="Battery Use"/>
                                 Battery use
                             </h:commandLink>
                         </mobi:outputListItem>
                         <mobi:outputListItem>
                             <h:commandLink
-                                    actionListener="#{panelPopupBean.toggleRendered}">
+                                    actionListener="#{panelPopupBean.selectListItemAction}"
+                                    action="#{panelPopupBean.toggleRendered}">
+                                <f:param name="listItem"
+                                         value="Device Information"/>
                                 Device Information
                             </h:commandLink>
                         </mobi:outputListItem>
                         <mobi:outputListItem>
                             <h:commandLink
-                                    actionListener="#{panelPopupBean.toggleRendered}">
+                                    actionListener="#{panelPopupBean.selectListItemAction}"
+                                    action="#{panelPopupBean.toggleRendered}">
+                                <f:param name="listItem" value="Model Number"/>
                                 Model Number
                             </h:commandLink>
                         </mobi:outputListItem>
