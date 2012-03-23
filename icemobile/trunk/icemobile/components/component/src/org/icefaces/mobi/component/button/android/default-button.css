@@ -84,8 +84,10 @@
 }
 
 .mobi-button-group .mobi-button-selected {
+    border: 1px solid #737173;
     background-color: #ADADAD;
-    border: 1px solid #999999;
+    border-left: 1px solid #999999;
+    border-right: 1px solid #999999;
     color: #000;
 }
 
