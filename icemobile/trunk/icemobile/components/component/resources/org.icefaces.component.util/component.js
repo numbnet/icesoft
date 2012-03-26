@@ -250,7 +250,6 @@ function html5getViewState(form) {
     // concatenate the array
     return qString.join("");
 }
-;
 
 function html5handleResponse(context, data) {
     if (null == context.sourceid) {
@@ -314,13 +313,14 @@ function html5submitFunction(element, event, options) {
     }
 
     var context = {
-        sourceid:sourceId,
-        formid:formId,
-        onevent:null,
-        onerror:function (param) {
+        sourceid: sourceId,
+        formid: formId,
+        //'begin' event is not triggered since we do not invoke jsf.ajax.request -- onBeforeSubmit relies on this event
+        onevent: options.onevent,
+        onerror: options.onerror || function (param) {
             alert("JSF error " + param.source + " " + param.description);
         }
-    }
+    };
 
     var xhr = new XMLHttpRequest();
     xhr.open("POST", form.getAttribute("action"));
