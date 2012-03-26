@@ -244,6 +244,11 @@ public class DOMResponseWriter extends ResponseWriterWrapper {
     }
 
     public void startElement(String name, UIComponent component) throws IOException {
+if (null != component)  {
+System.out.println("<" + name + " " + component.getId());
+} else {
+System.out.println("<" + name + " (null component)");
+}
 
         if (suppressNextNode) {
             //this node has already been created and is just a placeholder
@@ -260,6 +265,12 @@ public class DOMResponseWriter extends ResponseWriterWrapper {
     }
 
     public void endElement(String name) throws IOException {
+if (cursor.getParentNode() instanceof Element)  {
+System.out.println("/" + name + " closing  " + cursor.getParentNode() + 
+    " id=" + ((Element) cursor.getParentNode()).getAttribute("id"));
+} else {
+System.out.println("/" + name + " closing  " + cursor.getParentNode());
+}
         pointCursorAt(cursor.getParentNode());
     }
 
@@ -278,7 +289,9 @@ public class DOMResponseWriter extends ResponseWriterWrapper {
                 stateNodes.add(cursor);
             }
         }
-
+if ("id".equals(name))  {
+    System.out.println(name + "=" + String.valueOf(value));
+}
         Attr attribute = document.createAttribute(name.trim());
         attribute.setValue(String.valueOf(value));
         appendToCursor(attribute);
