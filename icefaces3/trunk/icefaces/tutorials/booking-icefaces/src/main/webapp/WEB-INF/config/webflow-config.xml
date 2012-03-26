@@ -29,6 +29,7 @@
 		<webflow:flow-execution-listeners>
 			<webflow:listener ref="facesContextListener"/>
 			<webflow:listener ref="securityFlowExecutionListener" />
+            <webflow:listener ref="icefacesFlowListener" />
 		</webflow:flow-execution-listeners>
 	</webflow:flow-executor>
 	
@@ -45,5 +46,7 @@
 	
 	<!-- Installs a listener to apply Spring Security authorities -->
 	<bean id="securityFlowExecutionListener" class="org.springframework.webflow.security.SecurityFlowExecutionListener" />
+
+    <bean id="icefacesFlowListener" class="com.icesoft.spring.security.WebflowListener" />
 
 </beans>
