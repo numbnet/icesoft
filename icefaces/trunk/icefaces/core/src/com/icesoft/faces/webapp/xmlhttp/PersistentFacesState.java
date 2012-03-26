@@ -177,7 +177,9 @@ public class PersistentFacesState implements Serializable {
             String viewID = "Unknown View"; 
             try {
                 viewID = facesContext.getViewRoot().getViewId();
-            } catch (NullPointerException npe)  { }
+            } catch (NullPointerException npe)  {
+                view.dispose();
+            }
             log.error("Exception occured during execute push on " + viewID, e);
             throwRenderingException(e);
         } finally {
@@ -289,7 +291,9 @@ public class PersistentFacesState implements Serializable {
             String viewID = "Unknown View"; 
             try {
                 viewID = facesContext.getViewRoot().getViewId();
-            } catch (NullPointerException npe)  { }
+            } catch (NullPointerException npe)  { 
+                view.dispose();
+            }
             log.error("Exception occured during execute push on " + viewID, e);
             throwRenderingException(e);
         }
