@@ -28,5 +28,5 @@
     <property file="../build/build.properties"/>
     <property file="./build.properties"/>
     
-    <import file="./common.xml" />
+    <import file="../common.xml" />
 </project>
