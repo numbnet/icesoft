@@ -22,14 +22,14 @@
     <parent>
        <groupId>org.icefaces.samples</groupId>
        <artifactId>core</artifactId>
-       <version>3.0.0</version>
+       <version>3.0.1</version>
     </parent>
     <artifactId>chat-portlet</artifactId>
     <packaging>war</packaging>
     <name>ICEfaces Chat Portlet sample</name>
     <properties>
         <parent.root>../chat</parent.root>
-        <pluto.version>2.0.2</pluto.version>
+        <pluto.version>2.0.3</pluto.version>
     </properties>
     <repositories>
          <repository>
@@ -103,14 +103,10 @@
             </activation>
             <dependencies>
                 <dependency>
-                    <groupId>com.sun.faces</groupId>
-                    <artifactId>jsf-impl</artifactId>
+                    <groupId>org.glassfish</groupId>
+                    <artifactId>javax.faces</artifactId>
                     <version>${jsf.version}</version>
-                </dependency>
-                <dependency>
-                    <groupId>com.sun.faces</groupId>
-                    <artifactId>jsf-api</artifactId>
-                    <version>${jsf.version}</version>
+                    <scope>compile</scope>
                 </dependency>
             </dependencies>
         </profile>
@@ -121,16 +117,10 @@
            </activation>
            <dependencies>
                <dependency>
-                   <groupId>com.sun.faces</groupId>
-                   <artifactId>jsf-impl</artifactId>
+                   <groupId>org.glassfish</groupId>
+                   <artifactId>javax.faces</artifactId>
                    <version>${jsf.version}</version>
-                   <scope>provided</scope>
-               </dependency>
-               <dependency>
-                   <groupId>com.sun.faces</groupId>
-                   <artifactId>jsf-api</artifactId>
-                   <version>${jsf.version}</version>
-                   <scope>provided</scope>
+                   <scope>compile</scope>
                </dependency>
            </dependencies>
        </profile>
@@ -172,14 +162,10 @@
            </build>
            <dependencies>
                <dependency>
-                   <groupId>com.sun.faces</groupId>
-                   <artifactId>jsf-impl</artifactId>
+                   <groupId>org.glassfish</groupId>
+                   <artifactId>javax.faces</artifactId>
                    <version>${jsf.version}</version>
-               </dependency>
-               <dependency>
-                   <groupId>com.sun.faces</groupId>
-                   <artifactId>jsf-api</artifactId>
-                   <version>${jsf.version}</version>
+                   <scope>compile</scope>
                </dependency>
                <dependency>
                  <groupId>org.apache.portals.pluto</groupId>

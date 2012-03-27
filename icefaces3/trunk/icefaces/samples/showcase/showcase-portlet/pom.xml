@@ -21,114 +21,26 @@
     <parent>
         <groupId>org.icefaces.samples</groupId>
         <artifactId>showcase</artifactId>
-        <version>3.0.0</version>
+        <version>3.0.1</version>
     </parent>
 
     <artifactId>showcase-portlet</artifactId>
     <packaging>war</packaging>
-    <name>ICEfaces 3 Showcase Portlets</name>
-    <url>http://www.icefaces.org/</url>
-    <version>3.0.0</version>
-    <properties>
+    <name>ICEfaces Showcase Portlets</name>
+    <url>http://www.icesoft.org/</url>
+    <version>3.0.1</version>
+   <properties>
         <private.demo>true</private.demo>
         <parent.root>../showcase</parent.root>
+        <pluto.version>2.0.3</pluto.version>
     </properties>
     <repositories>
-        <!--  <repository>
-            <id>kore</id>
-            <url>http://kore.fi.muni.cz:9999/repository/</url>
-        </repository> -->
         <repository>
 			<id>maven2-repository-portletfaces.org</id>
 			<url>http://repository.portletfaces.org/content/repositories/portletfaces-releases</url>
 		</repository>
     </repositories>
     <dependencies>
-          <dependency>
-            <groupId>org.icepush</groupId>
-            <artifactId>icepush</artifactId>
-            <version>${ice.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.icefaces</groupId>
-            <artifactId>icefaces-compat</artifactId>
-            <version>${ice.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>javax.servlet</groupId>
-                    <artifactId>servlet-api</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>javax.el</groupId>
-                    <artifactId>el-api</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-           <dependency>
-            <groupId>javax.annotation</groupId>
-            <artifactId>jsr250-api</artifactId>
-            <version>1.0</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.uwyn</groupId>
-            <artifactId>jhighlight</artifactId>
-            <version>1.0</version>
-        </dependency>
-        <dependency>
-            <groupId>net.sourceforge.jexcelapi</groupId>
-            <artifactId>jxl</artifactId>
-            <version>2.6.8</version>
-            <exclusions>
-              <exclusion>
-                <groupId>log4j</groupId>
-                <artifactId>log4j</artifactId>
-              </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>net.sf.jcharts</groupId>
-            <artifactId>krysalis-jCharts</artifactId>
-            <version>1.0.0-alpha-1</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>log4j</groupId>
-                    <artifactId>log4j</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>commons-collections</groupId>
-            <artifactId>commons-collections</artifactId>
-            <version>3.2</version>
-        </dependency>
-        <dependency>
-            <groupId>commons-beanutils</groupId>
-            <artifactId>commons-beanutils</artifactId>
-            <version>1.7.0</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>jstl</artifactId>
-            <version>1.1.2</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.poi</groupId>
-            <artifactId>poi</artifactId>
-            <version>3.2-FINAL</version>
-        </dependency>
-        <dependency>
-            <groupId>com.lowagie</groupId>
-            <artifactId>itext</artifactId>
-            <version>2.1.7</version>
-        </dependency>
-        <dependency>
-            <groupId>javax.el</groupId>
-            <artifactId>el-api</artifactId>
-            <version>1.0</version> 
-            <scope>provided</scope>
-        </dependency>        
         <dependency>
             <groupId>javax.portlet</groupId>
             <artifactId>portlet-api</artifactId>
@@ -170,6 +82,61 @@
 								</dependency> 
             </dependencies>
         </profile>
+       <profile>
+           <id>pluto.servlet-profile</id>
+           <activation>
+               <activeByDefault>true</activeByDefault>
+           </activation>
+           <build>
+               <plugins>
+                   <plugin>
+                       <artifactId>maven-war-plugin</artifactId>
+                       <configuration>
+                           <webXml>${project.build.directory}/pluto-resources/web.xml</webXml>
+                           <webResources>
+                               <resource>
+                                   <directory>${parent.root}/src/main/webapp</directory>
+                                   <excludes>
+                                       <exclude>resources/templates/content-template.xhtml</exclude>
+                                       <exclude>resources/templates/main-template.xhtml</exclude>
+                                   </excludes>
+                               </resource>
+                           </webResources>
+                       </configuration>
+                   </plugin>
+                   <plugin>
+                       <groupId>org.apache.portals.pluto</groupId>
+                       <artifactId>maven-pluto-plugin</artifactId>
+                       <version>${pluto.version}</version>
+                       <configuration>
+                           <webXml>${parent.root}/src/main/webapp/WEB-INF/web.xml</webXml>
+                       </configuration>
+                       <executions>
+                           <execution>
+                               <phase>generate-resources</phase>
+                               <goals>
+                                   <goal>assemble</goal>
+                               </goals>
+                           </execution>
+                       </executions>
+                   </plugin>
+               </plugins>
+           </build>
+           <dependencies>
+                <dependency>
+                  <groupId>org.glassfish</groupId>
+                  <artifactId>javax.faces</artifactId>
+                  <version>${jsf.version}</version>						
+                  <scope>compile</scope>
+                </dependency> 
+               <dependency>
+                 <groupId>org.apache.portals.pluto</groupId>
+                 <artifactId>pluto-util</artifactId>
+                 <version>${pluto.version}</version>
+                 <scope>provided</scope>
+               </dependency>
+           </dependencies>
+       </profile>
     </profiles>
     <build>
         <finalName>${artifactId}</finalName>
@@ -200,6 +167,10 @@
                     <webResources>
                         <resource>
                             <directory>${parent.root}/src/main/webapp</directory>
+                            <excludes>
+                                <exclude>resources/templates/content-template.xhtml</exclude>
+                                <exclude>resources/templates/main-template.xhtml</exclude>
+                            </excludes>
                         </resource>
                     </webResources>
                 </configuration>
