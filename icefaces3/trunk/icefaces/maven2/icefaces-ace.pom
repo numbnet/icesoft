@@ -21,10 +21,10 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.icefaces</groupId>
   <artifactId>icefaces-ace</artifactId>
-  <version>3.0.0</version>
+  <version>3.0.1</version>
   <packaging>jar</packaging>
   <name>ICEfaces ACE Components</name>
-  <url>http://www.icefaces.org</url> 
+  <url>http://www.icesoft.org</url> 
   <description>ICEfaces ACE (Advanced Components Environment) Components library.</description> 
   <licenses>
     <license>
@@ -38,7 +38,7 @@
      <dependency>
             <groupId>org.icefaces</groupId>
             <artifactId>icefaces</artifactId>
-            <version>3.0.0</version>
+            <version>3.0.1</version>
      </dependency>
   </dependencies>
 
