@@ -125,13 +125,14 @@ public class ICEmobileContainer extends Activity
     private boolean accelerated;
     private boolean c2dmIntent=false;
     private boolean reloadOnC2dm=true;
+    private boolean paused;
 
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 	self = this;
-	
+	paused = false;
 
 	/* Bind to network connectivity monitoring service */
 	Intent bindingIntent = new Intent(self,ConnectionChangeService.class);
@@ -229,7 +230,11 @@ public class ICEmobileContainer extends Activity
     @Override
     protected void onResume() {
 	super.onResume();
-	utilInterface.loadURL("javascript:ice.push.connection.resumeConnection();");
+    //reload the page only when arriving from 'pause' state
+	if (paused) {
+        paused = false;
+        mWebView.reload();
+    }
 	if (!newURL.equals(currentURL)) {
 	    loadUrl();
 	} else if ((c2dmIntent) ||
@@ -246,6 +251,7 @@ public class ICEmobileContainer extends Activity
     @Override
     protected void onPause() {
 	super.onPause();
+    paused = true;
 	mAudioPlayer.release();
 	utilInterface.loadURL("javascript:ice.push.connection.pauseConnection();");
     }
