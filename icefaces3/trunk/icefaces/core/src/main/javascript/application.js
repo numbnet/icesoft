@@ -409,6 +409,34 @@ if (!window.ice.icefaces) {
                         }
                     });
                 });
+
+                function clearEventHandlers(element) {
+                    element.onkeypress = null;
+                    element.onmousedown = null;
+                    element.onmousemove = null;
+                    element.onmouseout = null;
+                    element.onmouseover = null;
+                    element.onclick = null;
+                    element.oncontextmenu = null;
+                    element.onchange = null;
+                    element.onfocus = null;
+                    element.onblur = null;
+                }
+
+                //clear the event handlers on the elements that will most likely create a memory leak
+                onUnload(function() {
+                    container.configuration = null;
+
+                    each(['a', 'iframe'], function(type) {
+                        each(container.getElementsByTagName(type), clearEventHandlers);
+                    });
+
+                    each(container.getElementsByTagName('form'), function(form) {
+                        form.submit = null;
+                        form.onsubmit = null;
+                        each(form.elements, clearEventHandlers);
+                    });
+                });
             }
         };
 
@@ -450,7 +478,7 @@ if (!window.ice.icefaces) {
                     //a
                     var maybeCaller = null;
                     maybeCaller = arguments.callee.caller.caller;
-                    if (null == maybeCaller)  {
+                    if (null == maybeCaller) {
                         maybeCaller = arguments.callee.caller;
                     }
                     var maybeEvent = maybeCaller.arguments[0];
