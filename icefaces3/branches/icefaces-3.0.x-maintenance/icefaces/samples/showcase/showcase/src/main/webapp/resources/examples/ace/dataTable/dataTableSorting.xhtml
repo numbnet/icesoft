@@ -43,13 +43,13 @@
                 <ace:column id="name" headerText="Name" sortBy="#{car.name}">
                     <h:outputText id="nameCell" value="#{car.name}"/>
                 </ace:column>
-                <ace:column id="chassis" headerText="Chassis" sortBy="#{car.chassis}" groupBy="#{car.chassis}">
+                <ace:column id="chassis" headerText="Chassis" sortBy="#{car.chassis}" >
                     <h:outputText id="chassisCell" value="#{car.chassis}"/>
                 </ace:column>
                 <ace:column id="weight" headerText="Weight (lbs)" sortBy="#{car.weight}">
                     <h:outputText id="weightCell" value="#{car.weight}"/>
                 </ace:column>
-                <ace:column id="accel" headerText="Accel" sortBy="#{car.acceleration}" groupBy="#{car.acceleration}">
+                <ace:column id="accel" headerText="Accel" sortBy="#{car.acceleration}" >
                     <h:outputText id="accelCell" value="#{car.acceleration}"/>
                 </ace:column>
                 <ace:column id="mpg" headerText="MPG" sortBy="#{car.mpg}">
