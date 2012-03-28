@@ -33,7 +33,7 @@
 package com.icesoft.faces.component;
 
 /**
- * All style class names are extracted from JSR-168 spec 
+ * All style class names were chosen in accordance with JSR-168 spec
  *
  */
 public class PORTLET_CSS_DEFAULT {
