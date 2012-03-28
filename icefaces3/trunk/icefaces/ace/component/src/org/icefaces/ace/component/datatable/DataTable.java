@@ -308,6 +308,7 @@ public class DataTable extends DataTableBase {
         Map<String, Object> requestMap = FacesContext.getCurrentInstance().getExternalContext().getRequestMap();
 
         super.setRowIndex(index);
+
         if (index > -1 && isRowAvailable()) {
             requestMap.put(getRowStateVar(), getStateMap().get(getRowData()));
         }
@@ -1384,7 +1385,6 @@ public class DataTable extends DataTableBase {
 
             if (!visitRows || isRowAvailable()) {
                 RowState rowState = null;
-                if (visitRows) rowState = stateMap.get(getRowData());
 
                 // Check for tree case
                 if (hasTreeDataModel()) {
@@ -1393,69 +1393,69 @@ public class DataTable extends DataTableBase {
                     // Handle row and loop down the tree if expanded.
                     try {
                         do {
-                            if (log.isLoggable(Level.FINEST)) log.finest("Visiting Row Id: " + dataModel.getRowIndex());
-
-                            // Visit row in tree case.
-                            if (getChildCount() > 0) {
-                                for (UIComponent kid : getChildren()) {
-                                    if (!(kid instanceof UIColumn) && !(kid instanceof PanelExpansion)) {
-                                        continue;
-                                    }
-                                    if (kid.getChildCount() > 0) {
-                                        for (UIComponent grandkid : kid.getChildren()) {
-                                            if (grandkid.visitTree(context, callback)) {
-                                                return true;
-                                            }
-                                        }
-                                    }
-                                }
-                            }
+                            if (doVisitRow(context, callback)) return true;
+                            if (visitRows) rowState = stateMap.get(getRowData());
 
                             // Handle recursive case
                             // If this row is expanded and has children, set it as the root & keep looping.
                             if (rowState != null && rowState.isExpanded() && dataModel.getCurrentRowChildCount() > 0) {
-                                currentRootId =  currentRootId.equals("") ? (this.getRowIndex()+"") : (currentRootId + "." + getRowIndex());
+                                currentRootId = currentRootId.equals("") ? (this.getRowIndex()+"") : (currentRootId + "." + getRowIndex());
+
+                                // Done to force MyFaces state saving before setting the root index
+                                // otherwise state saving uses the wrong clientId
+                                this.setRowIndex(Integer.MAX_VALUE);
                                 dataModel.setRootIndex(currentRootId);
-                                // Need to change from possible current row index of 0 before setting to first row index
-                                // of new row set (0), otherwise setRowIndex doesn't trigger descendant saving.
-                                this.setRowIndex(-1);
                                 this.setRowIndex(0);
-                            } else if (dataModel.getRowIndex() < dataModel.getRowCount()-1) {
+                            } else if (!currentRootId.equals("") && (dataModel.getRowIndex() < dataModel.getRowCount()-1)) {
                                 this.setRowIndex(dataModel.getRowIndex() + 1);
                             } else if (!currentRootId.equals("")) {
-                                // changing currrent node id to reflect pop
+                                // changing current node id to reflect pop
                                 do {
-                                    this.setRowIndex(dataModel.pop() + 1);
+                                    // Force state saving while still in unpopped state
+                                    this.setRowIndex(Integer.MAX_VALUE);
+                                    // Set row index popped
+                                    int returningIndex = dataModel.pop();
+                                    // If we are leaving the tree case, do not increment the index we are at,
+                                    // the outer loop will take care of that.
+                                    if (!currentRootId.equals("")) this.setRowIndex(returningIndex + 1);
+
                                     currentRootId = (currentRootId.lastIndexOf('.') != -1)  ? currentRootId.substring(0,currentRootId.lastIndexOf('.')) : "";
-                                    if (log.isLoggable(Level.FINEST)) log.finest("Popping Root: " + currentRootId);
                                 } while (!isRowAvailable() && !currentRootId.equals(""));
                             }
-                            // Break out of expansion recursion to continue root node
+                            // Break out of expansion recursion to continue to next root node
                             if (currentRootId.equals("")) break;
                         } while (true);
-                    } finally { dataModel.setRootIndex(null); }
-                } else {
-                    // Visit row in plain model case.
-                    if (getChildCount() > 0) {
-                        for (UIComponent kid : getChildren()) {
-                            if (!(kid instanceof UIColumn) && !(kid instanceof PanelExpansion)) {
-                                continue;
-                            }
-                            if (kid.getChildCount() > 0) {
-                                for (UIComponent grandkid : kid.getChildren()) {
-                                    if (grandkid.visitTree(context, callback)) {
-                                        return true;
-                                    }
-                                }
-                            }
-                        }
+                    } finally {
+                        dataModel.setRootIndex(null);
                     }
+                } else {
+                    if (doVisitRow(context, callback)) return true;
                 }
             } else return false;
 
             if (!visitRows) break;
             offset++;
         }
+        return false;
+    }
+    
+    private boolean doVisitRow(VisitContext context, VisitCallback callback) {
+        // Visit row in plain model case.
+        if (getChildCount() > 0) {
+            for (UIComponent kid : getChildren()) {
+                if (!(kid instanceof UIColumn) && !(kid instanceof PanelExpansion)) {
+                    continue;
+                }
+                if (kid.getChildCount() > 0) {
+                    for (UIComponent grandkid : kid.getChildren()) {
+                        if (grandkid.visitTree(context, callback)) {
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+        
         return false;
     }
 
@@ -1958,9 +1958,9 @@ public class DataTable extends DataTableBase {
                 if (treeDataModel.getCurrentRowChildCount() > 0) {
                     inSubrows = true;
                     treeDataModel.setRootIndex(
-                            treeDataModel.getRootIndex().equals("") ?
-                                    ""+getRowIndex() :
-                                    treeDataModel.getRootIndex() + "." + getRowIndex());
+                            treeDataModel.getRootIndex().equals("")
+                                    ? ""+getRowIndex()
+                                    : treeDataModel.getRootIndex() + "." + getRowIndex());
                     rowIndex = -1;
                 }
             }
