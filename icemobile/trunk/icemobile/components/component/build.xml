@@ -745,8 +745,6 @@
         <echo message="Compressing individual javascript files"/>
         <compressjs comp="component"
                     path="${resources}/org.icefaces.component.util"/>
-        <compressjs comp="button"
-                    path="${resources}/org.icefaces.component.button"/>
         <compressjs comp="menubutton"
                     path="${resources}/org.icefaces.component.button"/>
         <compressjs comp="carousel"
