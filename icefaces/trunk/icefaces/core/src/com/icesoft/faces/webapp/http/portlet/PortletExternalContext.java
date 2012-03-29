@@ -154,7 +154,7 @@ public class PortletExternalContext extends BridgeExternalContext {
         //          avoid memory leaks but that means that ExternalContext.getResponse() will return
         //          null and can't be used. Here we provide a proxy that is mostly unimplemented except
         //          specific methods required to help with bugs.
-        boolean useProxyPortletResponse = configuration.getAttributeAsBoolean("useProxyPortletResponse", true);
+        boolean useProxyPortletResponse = configuration.getAttributeAsBoolean("portlet.useProxyPortletResponse", true);
         if(useProxyPortletResponse){
             return new ProxyPortletResponse(getOriginalResponse());
         }
