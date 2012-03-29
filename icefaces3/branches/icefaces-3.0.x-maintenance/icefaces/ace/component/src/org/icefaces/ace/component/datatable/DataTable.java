@@ -1764,8 +1764,10 @@ public class DataTable extends DataTableBase {
 
                      // While we are at a map where the next row in unavailable...
                      while (!isRowAvailable()) {
-                         // If we can pop, continue to pop...
-                         if (treeDataModel.isRootIndexSet()) {
+                        // If we can pop, continue to pop...
+                        if (treeDataModel.isRootIndexSet()) {
+                             // Force state saving for this row prior to pop (ensures correct ID for saved state)
+                             setRowIndex(Integer.MAX_VALUE);
                              rowIndex = treeDataModel.pop()+1;
                              setRowIndex(rowIndex);
 
@@ -1826,10 +1828,9 @@ public class DataTable extends DataTableBase {
                 treeDataModel = (TreeDataModel)model;
                 if (treeDataModel.getCurrentRowChildCount() > 0) {
                     inSubrows = true;
-                    treeDataModel.setRootIndex(
-                        treeDataModel.getRootIndex().equals("")
-                            ? ""+getRowIndex()
-                            : treeDataModel.getRootIndex() + "." + getRowIndex());
+                    String root = treeDataModel.getRootIndex().equals("") ? ""+getRowIndex() : treeDataModel.getRootIndex() + "." + getRowIndex();
+                    setRowIndex(Integer.MAX_VALUE);
+                    treeDataModel.setRootIndex(root);                   
                     rowIndex = -1;
                 }
             }
