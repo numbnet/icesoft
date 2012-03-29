@@ -40,6 +40,8 @@ import com.icesoft.faces.context.Resource;
 import com.icesoft.faces.context.ResourceRegistry;
 import com.icesoft.faces.context.ResourceRegistryLocator;
 
+import com.icesoft.faces.component.tree.Tree;
+
 public class OutputResource extends UIComponentBase {
 
 	public static final String COMPONENT_FAMILY = "com.icesoft.faces.OutputResource";
@@ -407,7 +409,7 @@ public class OutputResource extends UIComponentBase {
             UIDataChild = Boolean.FALSE;
             UIComponent parent = this.getParent();
             while(parent != null) {
-                if (parent instanceof UIData) {
+                if (parent instanceof UIData || parent instanceof Tree) {
                     UIDataChild = Boolean.TRUE;
                     break;
                 }
