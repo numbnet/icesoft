@@ -497,7 +497,9 @@ if (!window.ice.icefaces) {
                         //update and form.onsubmit callback is called directly (by application or third party library code)
                         if (element.name && !element.id) {
                             //verify that the id is not already in use
-                            if (!document.getElementById(element.name)) {
+                            //second check is for IE9 which will lookup by name also when getElementById is invoked
+                            var lookedUpElement = document.getElementById(element.name);
+                            if (!lookedUpElement || !lookedUpElement.id) {
                                 element.id = element.name;
                             }
                         }
