@@ -146,7 +146,20 @@ public class PortletExternalContext extends BridgeExternalContext {
     }
 
     public Object getResponse() {
-        return response;
+        if(response != null){
+            return response;
+        }
+
+        //ICE-6929: As part of the fix for ICE-6197, we released the response reference in order to
+        //          avoid memory leaks but that means that ExternalContext.getResponse() will return
+        //          null and can't be used. Here we provide a proxy that is mostly unimplemented except
+        //          specific methods required to help with bugs.
+        boolean useProxyPortletResponse = configuration.getAttributeAsBoolean("useProxyPortletResponse", true);
+        if(useProxyPortletResponse){
+            return new ProxyPortletResponse(getOriginalResponse());
+        }
+
+        return null;
     }
 
     public void update(final HttpServletRequest request, HttpServletResponse response) {
