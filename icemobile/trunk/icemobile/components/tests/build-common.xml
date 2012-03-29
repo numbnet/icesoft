@@ -48,7 +48,7 @@
                  	<include name="${icefaces.lib.name}.jar"/>
                     <include name="${icepush.lib.name}.jar"/>
                     <include name="mobi.jar"/>
-                    <include name="icefaces-mobi.jar"/>
+                    <include name="${icefaces-mobi.lib.name}.jar"/>
                     <include name="javax.faces.jar"/>
                     <include name="el-api-2.2.1-b03.jar"/>
                     <include name="javax.servlet.jar"/>
@@ -69,7 +69,7 @@
              webxml="${web.dir}/WEB-INF/web.xml">
             <lib dir="${lib.dir}"  erroronmissingdir="false">
 	            	 <include name="${icefaces.lib.name}.jar"/>
-	            	 <include name="icefaces-mobi.jar"/>
+	            	 <include name="${icefaces-mobi.lib.name}.jar"/>
                     <include name="${icepush.lib.name}.jar"/>
                     <include name="mobi.jar"/>
                     <include name="jstl-1.1.2.jar"/>
@@ -84,7 +84,7 @@
 	             webxml="${web.dir}/WEB-INF/web.xml">
 	            <lib dir="${lib.dir}"  erroronmissingdir="false">
 	            	 <include name="${icefaces.lib.name}.jar"/>
-	            	 <include name="icefaces-mobi.jar"/>
+	            	 <include name="${icefaces-mobi.lib.name}.jar"/>
 	                 <include name="javax.faces.jar"/>
                     <include name="${icepush.lib.name}.jar"/>
                     <include name="mobi.jar"/>
