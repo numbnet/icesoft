@@ -34,7 +34,7 @@
     <packaging>pom</packaging>
     
     <properties>
-        <ice.version>3.0.0</ice.version>
+        <ice.version>3.0.1</ice.version>
         <jsf.version>2.1.6</jsf.version>
     </properties>
 
