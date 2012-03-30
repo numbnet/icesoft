@@ -43,7 +43,7 @@ public class UserAgentInfo {
     public static final String deviceBBCurve = "blackberry89"; //curve2
     public static final String deviceBBTorch = "blackberry 98"; //torch
     public static final String vndRIM = "vnd.rim";  //found when emulating IE or FF on BB
-    public static final String deviceIOS5 = " os 5_0";
+    public static final String deviceIOS5 = " os 5_";
 
     public UserAgentInfo(String userAgent, String httpAcc) {
         if (userAgent != null) {
