@@ -63,8 +63,7 @@ public class DateBean extends ExampleImpl<DateBean> implements
     private Date timeInput;
 
     public DateBean() {
-        super(DateBean.class);
-       // try{
+       super(DateBean.class);
        this.timeZone = java.util.TimeZone.getDefault().getID();
     }
 
