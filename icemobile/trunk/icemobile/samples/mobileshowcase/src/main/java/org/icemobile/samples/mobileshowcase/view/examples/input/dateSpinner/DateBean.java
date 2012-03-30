@@ -56,7 +56,7 @@ public class DateBean extends ExampleImpl<DateBean> implements
         Serializable {
 
     public static final String BEAN_NAME = "dateBean";
-
+    private String timeZone = "America/Edmonton";
     // date input/echo
     private Date dateInput;
     // time input/echo
@@ -64,6 +64,8 @@ public class DateBean extends ExampleImpl<DateBean> implements
 
     public DateBean() {
         super(DateBean.class);
+       // try{
+       this.timeZone = java.util.TimeZone.getDefault().getID();
     }
 
     public Date getDateInput() {
@@ -81,5 +83,11 @@ public class DateBean extends ExampleImpl<DateBean> implements
     public void setTimeInput(Date timeInput) {
         this.timeInput = timeInput;
     }
+    public String getTimeZone() {
+        return timeZone;
+    }
 
+    public void setTimeZone(String timeZone) {
+        this.timeZone = timeZone;
+    }
 }
