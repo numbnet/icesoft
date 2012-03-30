@@ -32,7 +32,7 @@
                     <mobi:dateSpinner style="width:100px;"
                                       useNative="true"
                                      value="#{dateBean.dateInput}">
-                        <f:convertDateTime type="date" pattern="yyyy-MM-dd" timeZone="MST"/>
+                        <f:convertDateTime type="date" pattern="yyyy-MM-dd" timeZone="#{dateBean.timeZone}"/>
                     </mobi:dateSpinner>
                 </h:panelGroup>
             </mobi:fieldsetRow>
@@ -41,7 +41,7 @@
                 <h:outputLabel value="Time: "/>
                 <h:panelGroup style="float:right;">
                     <mobi:timeSpinner style="width:100px;"
-                                      useNative="true"  timeZone="MST"
+                                      useNative="true"  timeZone="#{dateBean.timeZone}"
                                      value="#{dateBean.timeInput}">
                     </mobi:timeSpinner>
                 </h:panelGroup>
@@ -68,7 +68,7 @@
             <h:outputLabel value="Time:"/>
             <h:outputText styleClass="fr"
                           value="#{dateBean.timeInput}">
-                <f:convertDateTime type="time" pattern="hh:mm a" timeZone="MST"/>
+                <f:convertDateTime type="time" pattern="hh:mm a" timeZone="#{dateBean.timeZone}"/>
             </h:outputText>
         </mobi:fieldsetRow>
 
