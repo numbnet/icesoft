@@ -831,7 +831,7 @@ public class DataTableRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
         writer.startElement(HTML.TR_ELEM, null);
         if (r.getStyle() != null) writer.writeAttribute(HTML.STYLE_ATTR, r.getStyle(), null);
-        if (r.getStyleClass() != null) writer.writeAttribute(HTML.CLASS_ATTR, r.getStyleClass(), null);
+        if (r.getStyleClass() != null) writer.writeAttribute(HTML.CLASS_ATTR, "dt-cond-row " + r.getStyleClass(), null);
 
         List<UIComponent> children = r.getChildren();
         List<Column> rowColumns = new ArrayList<Column>(children.size());

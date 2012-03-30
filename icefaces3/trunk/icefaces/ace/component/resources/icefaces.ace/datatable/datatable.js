@@ -469,7 +469,9 @@ ice.ace.DataTable.prototype.setupSelectionEvents = function() {
             .die()
             .live('mouseenter', function() {
                 var element = ice.ace.jq(this);
-                element.addClass('ui-state-hover');
+                if (!element.hasClass('dt-cond-row') &&
+                    (!_self.isCellSelectionEnabled() || !element.parent().hasClass('dt-cond-row')))
+                    element.addClass('ui-state-hover');
 
                 element.siblings('.ui-state-hover')
                        .removeClass('ui-state-hover');
