@@ -24,7 +24,10 @@
         <h1>ICEfaces Converter Example - Custom</h1>
         <p>The following example uses standard JSF converters to convert
            input data to the appropriate data type.  In addition to standard
-           converters a custom converter is also implemented on the phone number field.</p>
+           converters a custom converter is also implemented on the phone number field.
+           For the phone number, enter a full Canadian/USA number, starting with a 1
+           followed by ten digits, using spaces, dashes or round brackets as 
+           optional delimiters.</p>
 
         First Name:
         <h:inputText id="firstname" value="#{user.firstName}" />
@@ -54,6 +57,7 @@
         <h:inputText id="phone" value="#{user.phone}">
             <f:converter converterId="icefaces.PhoneConverter" />
         </h:inputText>
+        <h:outputText value="Input: 1 (xxx) xxx-xxxx  Output: 1-xxx-xxx-xxxx" style="color:gray;"/>
         <ice:message style="color:red;" id="phoneError" for="phone" />
         <br/>
 
