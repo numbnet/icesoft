@@ -20,7 +20,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.icefaces.tutorial</groupId>
-    <artifactId>conditionalRowMessages</artifactId>
+    <artifactId>conditional-row-messages</artifactId>
     <version>1.0</version>
 
     <repositories>
