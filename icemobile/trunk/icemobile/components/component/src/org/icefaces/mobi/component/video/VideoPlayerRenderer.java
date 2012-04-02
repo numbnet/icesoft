@@ -87,6 +87,7 @@ public class VideoPlayerRenderer extends BaseResourceRenderer {
             writer.startElement("br", uiComponent);
             writer.endElement("br");
             writer.startElement("a", uiComponent);
+            writer.writeAttribute("target", "_blank", null);
             writer.writeAttribute("href", srcAttribute, null);
             writer.writeText(video.getLinkLabel(), null);
             writer.endElement("a");
