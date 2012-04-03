@@ -125,7 +125,7 @@ public class GroupRenderer
                 String clientId = uiComponent.getClientId(facesContext);
                 Element script = domContext.createElement(HTML.SCRIPT_ELEM);
                 script.setAttribute(HTML.ID_ATTR, ClientIdPool.get(clientId + "script"));
-                script.appendChild(domContext.createTextNode(dropCall.toString()));
+                script.appendChild(domContext.createTextNodeUnescaped(dropCall.toString()));
                 rootSpan.appendChild(script);
                 Map rendererJavascriptDraggable = new HashMap();
                 rendererJavascriptDraggable.put(HTML.ONMOUSEOUT_ATTR,
