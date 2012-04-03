@@ -171,7 +171,7 @@ if (!window.ice.mobile) {
         namespace.formOf = function(element)  {
             var parent = element;
             while (null != parent)  {
-                if ("form" == parent.nodeName)  {
+		if ("form" == parent.nodeName.toLowerCase()) {
                     return parent;
                 }
                 parent = parent.parentNode;
