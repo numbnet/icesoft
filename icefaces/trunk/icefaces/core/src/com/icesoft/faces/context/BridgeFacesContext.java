@@ -716,7 +716,12 @@ public class
                     Iterator facesMessagesForClientId = facesContext.getMessages(clientId);
                     while (facesMessagesForClientId.hasNext()) {
                         message = (FacesMessage) facesMessagesForClientId.next();
-                        result.addMessage(clientId, message);
+                        // ICE-6853
+                        if (isGlobalMessage(clientId)) {
+                            result.addMessage(null, message);
+                        } else {
+                            result.addMessage(clientId, message);
+                        }
                     }
                 }
                 Iterator facesMessagesWithNoId = facesContext.getMessages(null);
@@ -732,6 +737,15 @@ public class
         }
 
         return result;
+    }
+
+    /**
+     * Check if a message is intended for all clients.
+     * @param clientId
+     * @return true if message is not identified with any clientId
+     */
+    private static boolean isGlobalMessage(String clientId) {
+        return clientId == null || clientId.equals("null");
     }
 
     public void processPostback(Request request) throws Exception {
