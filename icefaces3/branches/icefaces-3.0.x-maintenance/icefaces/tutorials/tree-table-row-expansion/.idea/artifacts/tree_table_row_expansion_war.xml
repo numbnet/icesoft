@@ -1,8 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="war" name="tree-table-row-expansion:war">
-    <output-path>$PROJECT_DIR$/target</output-path>
-    <root id="archive" name="tree-table-row-expansion.war">
-      <element id="artifact" artifact-name="tree-table-row-expansion:war exploded" />
-    </root>
-  </artifact>
-</component>
