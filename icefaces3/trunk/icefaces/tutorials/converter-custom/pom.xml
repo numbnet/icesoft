@@ -85,11 +85,6 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>com.uwyn</groupId>
-            <artifactId>jhighlight</artifactId>
-            <version>1.0</version>
-        </dependency>
-        <dependency>
             <groupId>net.sourceforge.jexcelapi</groupId>
             <artifactId>jxl</artifactId>
             <version>2.6.8</version>
@@ -116,11 +111,6 @@
      	    <artifactId>krysalis-jCharts</artifactId>
      	    <version>1.0.0-alpha-1</version>
         </dependency> 
-        <dependency>
-          <groupId>commons-lang</groupId>
-          <artifactId>commons-lang</artifactId>
-          <version>2.6</version>
-        </dependency>       
     </dependencies>
     
     <profiles>
