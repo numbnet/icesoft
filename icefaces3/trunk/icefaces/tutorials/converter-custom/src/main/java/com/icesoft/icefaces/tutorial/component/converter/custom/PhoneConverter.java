@@ -19,7 +19,6 @@ package com.icesoft.icefaces.tutorial.component.converter.custom;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
-import org.apache.commons.lang.StringUtils;
 
 /*
  * User defined converter for phone numbers.  Converts a String into a
@@ -32,13 +31,14 @@ public class PhoneConverter implements Converter{
 
     public Object getAsObject(FacesContext context, UIComponent component,
             String value){
-        if(StringUtils.isEmpty(value)){
+        if(value == null || value.trim().length() == 0){
             return null;
         }
 
         PhoneNumber phone = new PhoneNumber();
 
-        String [] phoneComps = StringUtils.split(value," ,()-");
+        String delim = "[\\+\\s,\\(\\)\\-]+";
+        String[] phoneComps = value.replaceFirst("^"+delim, "").split(delim);
 
         String countryCode = phoneComps[0];
 

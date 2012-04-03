@@ -28,8 +28,8 @@
     
     <property name="lib.compile.application.includes" value=""/>
     <property name="lib.distribute.application.includes" value=""/>
-    <property name="lib.distribute.compat.includes" value="jstl.jar jhighlight.jar commons-digester.jar commons-beanutils.jar commons-collections.jar jxl.jar krysalis-jCharts-1.0.0-alpha-1.jar"/>
-    <property name="lib.compile.compat.includes" value="jstl.jar jhighlight.jar commons-digester.jar commons-beanutils.jar commons-collections.jar jxl.jar krysalis-jCharts-1.0.0-alpha-1.jar el-api.jar" />
+    <property name="lib.distribute.compat.includes" value="jstl.jar commons-digester.jar commons-beanutils.jar commons-collections.jar jxl.jar krysalis-jCharts-1.0.0-alpha-1.jar"/>
+    <property name="lib.compile.compat.includes" value="jstl.jar commons-digester.jar commons-beanutils.jar commons-collections.jar jxl.jar krysalis-jCharts-1.0.0-alpha-1.jar el-api.jar" />
 	<property name="lib.mojarra.dir" location="${lib.dir}/mojarra" />
 	<property name="lib.compile.mojarra.includes" value="javax.faces.jar" />
 	<property name="lib.distribute.mojarra.includes" value="javax.faces.jar" />
