@@ -42,7 +42,7 @@ Ice.treeNavigator = {
            var ele = Event.element(event);
            var kc= event.keyCode;
            var imgSrc = null;
-           if (ele && ele.firstChild.getAttribute) {
+           if (ele && ele.firstChild && ele.firstChild.getAttribute) {
               imgSrc = ele.firstChild.getAttribute('src');
            }
           if (!imgSrc) return;
