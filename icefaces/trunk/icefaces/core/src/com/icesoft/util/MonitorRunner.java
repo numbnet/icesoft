@@ -42,15 +42,17 @@ import java.util.Iterator;
 public class MonitorRunner {
     private static final Log log = LogFactory.getLog(MonitorRunner.class);
     private Collection monitors = new ArrayList();
+    private Thread thread;
     private boolean run = true;
 
     public MonitorRunner(final long interval) {
         try {
-            Thread thread = new Thread("Monitor Runner") {
+            thread = new Thread("Monitor Runner") {
                 public void run() {
+                    int count = 0;
                     while (run) {
-                        try {
-                            Thread.sleep(interval);
+                        if (count * 1000 >= interval) {
+                            count = 0;
                             Iterator i = new ArrayList(monitors).iterator();
                             while (i.hasNext()) {
                                 Runnable monitor = (Runnable) i.next();
@@ -60,9 +62,13 @@ public class MonitorRunner {
                                     log.warn("Failed to run monitor: " + monitor, t);
                                 }
                             }
+                        }
+                        try {
+                            Thread.sleep(1000);
                         } catch (InterruptedException e) {
                             //do nothing
                         }
+                        count++;
                     }
                 }
             };
@@ -83,5 +89,10 @@ public class MonitorRunner {
 
     public void stop() {
         run = false;
+        try {
+            thread.join(1000);
+        } catch (InterruptedException exception) {
+            // Ignore
+        }
     }
 }
