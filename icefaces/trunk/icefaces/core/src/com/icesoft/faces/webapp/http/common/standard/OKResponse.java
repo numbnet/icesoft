@@ -40,5 +40,7 @@ public class OKResponse implements ResponseHandler {
 
     public void respond(Response response) throws Exception {
         response.setStatus(200);
+        response.setHeader("Content-Length", 0);
+        response.setHeader("Content-Type", "text/plain");
     }
 }
