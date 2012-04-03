@@ -116,15 +116,8 @@ public class MessageRenderer extends DomBasicRenderer {
         boolean isEscape = escape == null || escape.booleanValue();
 		
 		String[] summaryAndDetail = getSummaryAndDetail(facesMessage);
-		String summary;
-		String detail;
-		if (isEscape) {
-			summary = DOMUtils.escapeAnsi(summaryAndDetail[0]);
-			detail = DOMUtils.escapeAnsi(summaryAndDetail[1]);
-		} else {
-			summary = summaryAndDetail[0];
-			detail = summaryAndDetail[1];		
-		}
+		String summary = summaryAndDetail[0];
+		String detail = summaryAndDetail[1];
 
         // showSummary
         boolean showSummary = ((UIMessage) uiComponent).isShowSummary();
@@ -147,17 +140,30 @@ public class MessageRenderer extends DomBasicRenderer {
         if (title !=null) root.setAttribute(HTML.TITLE_ATTR, title);
 
         if (tooltip && showSummary && showDetail) {
-            Text textNode = domContext.createTextNode(detail);
+            Text textNode = null;
+            if (isEscape)  {
+                textNode = domContext.createTextNode(detail);
+            } else {
+                textNode = domContext.createTextNodeUnescaped(detail);
+            }
             root.appendChild(textNode);
-
         } else {
             if (showSummary) {
-                Text textNode =
-                        domContext.createTextNode(summary);
+                Text textNode = null;
+                if (isEscape)  {
+                    textNode = domContext.createTextNode(summary);
+                } else {
+                    textNode = domContext.createTextNodeUnescaped(summary);
+                }
                 root.appendChild(textNode);
             }
             if (showDetail) {
-                Text textNode = domContext.createTextNode(detail);
+                Text textNode = null;
+                if (isEscape)  {
+                    textNode = domContext.createTextNode(detail);
+                } else {
+                    textNode = domContext.createTextNodeUnescaped(detail);
+                }
                 root.appendChild(textNode);
             }
         }
