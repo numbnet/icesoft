@@ -38,84 +38,101 @@
         <listener-class>org.icefaces.impl.application.SessionExpiredListener</listener-class>
     </listener>
 
-	<tag>
-		<description><![CDATA[This tag can be used to adjust behaviour on a per-page basis.
+    <tag>
+        <description><![CDATA[This tag can be used to adjust behaviour on a per-page basis.
 		These settings take precedence over corresponding application global settings specified via context-param entries in the web.xml file.]]></description>
-		<name>config</name>
-		<tag-class/>
-		<body-content>JSP</body-content>
-		<attribute>
-			<description><![CDATA[A value of "true" indicates that ICEfaces rendering Direct-to-DOM should be applied to the current view.
+        <name>config</name>
+        <tag-class/>
+        <body-content>JSP</body-content>
+        <attribute>
+            <description><![CDATA[A value of "true" indicates that ICEfaces rendering Direct-to-DOM should be applied to the current view.
                 A value of "false" indicates that stock JSF rendering should be used. The default value is "true", since the presence of this tag indicates the use of ICEfaces.]]></description>
-			<name>render</name>
-			<required>no</required>
-			<rtexprvalue>false</rtexprvalue>
-			<type>boolean</type>
-		</attribute>
+            <name>render</name>
+            <required>no</required>
+            <rtexprvalue>false</rtexprvalue>
+            <type>boolean</type>
+        </attribute>
 
-<!-- *** Comment out ARIA support config. as it is not officially supported as of ICEfaces 3.0	
-		<attribute>
-			<description><![CDATA[A value of "true" indicates that ARIA support will be applied to the current view. The default value is "true".
-			ARIA support can also be enabled at an application level by setting the "org.icefaces.aria.enabled" context parameter to true in the web.xml file.
-            If ARIA is enabled application level, this attribute can disable ARIA for the current view.]]></description>
-			<name>ariaEnabled</name>
-			<required>no</required>
-			<rtexprvalue>false</rtexprvalue>
-			<type>boolean</type>
-		</attribute>
--->
-	
-		<attribute>
-			<description><![CDATA[A space-delimited list of component tag-names (or fully qualified Java class-names) that will have their requisite resources pre-loaded on this page. The pre-loading allows the components to function correctly even if they are later added to the page dynamically.  The values "none" (which is the default) and "all" are also valid.  The value of this attribute on a page takes precedence over the values specified by the context
+        <!-- *** Comment out ARIA support config. as it is not officially supported as of ICEfaces 3.0
+                <attribute>
+                    <description><![CDATA[A value of "true" indicates that ARIA support will be applied to the current view. The default value is "true".
+                    ARIA support can also be enabled at an application level by setting the "org.icefaces.aria.enabled" context parameter to true in the web.xml file.
+                    If ARIA is enabled application level, this attribute can disable ARIA for the current view.]]></description>
+                    <name>ariaEnabled</name>
+                    <required>no</required>
+                    <rtexprvalue>false</rtexprvalue>
+                    <type>boolean</type>
+                </attribute>
+        -->
+
+        <attribute>
+            <description><![CDATA[A space-delimited list of component tag-names (or fully qualified Java class-names) that will have their requisite resources pre-loaded on this page. The pre-loading allows the components to function correctly even if they are later added to the page dynamically.  The values "none" (which is the default) and "all" are also valid.  The value of this attribute on a page takes precedence over the values specified by the context
                 parameter org.icefaces.mandatoryResourceConfiguration in the web.xml file.]]></description>
-			<name>mandatoryResource</name>
-			<required>no</required>
-			<rtexprvalue>false</rtexprvalue>
-			<type>java.lang.String</type>
-		</attribute>
-	
-		<attribute>
-			<description><![CDATA[A value of "true" indicates that faces messages are persisted
+            <name>mandatoryResource</name>
+            <required>no</required>
+            <rtexprvalue>false</rtexprvalue>
+            <type>java.lang.String</type>
+        </attribute>
+
+        <attribute>
+            <description><![CDATA[A value of "true" indicates that faces messages are persisted
                 across single submits.  This attribute takes precedence over the
                 org.icefaces.messagePersistence context parameter in the web.xml fule on a per-view basis.]]></description>
-			<name>messagePersistence</name>
-			<required>no</required>
-			<rtexprvalue>false</rtexprvalue>
-			<type>boolean</type>
-		</attribute>
-	
-	</tag>
+            <name>messagePersistence</name>
+            <required>no</required>
+            <rtexprvalue>false</rtexprvalue>
+            <type>boolean</type>
+        </attribute>
 
-	<tag>
-		<description><![CDATA[This tag can be used to configure push behavior on a per-view basis.]]></description>
-		<name>push</name>
-		<tag-class/>
-		<body-content>JSP</body-content>
-	
-		<attribute>
-			<description><![CDATA[The push group name the current view should be added to.]]></description>
-			<name>group</name>
-			<required>yes</required>
-			<rtexprvalue>false</rtexprvalue>
-			<type>java.lang.String</type>
-		</attribute>
-	
-	</tag>
-	
-	<tag>
-		<description><![CDATA[This tag allows form submission from just the component generating the event and then update the page with any changes from all components (equivilant to &lt;f:ajax execute=&quot;@this&quot; render=&quot;@all&quot;&gt;).]]></description>
-		<name>singleSubmit</name>
-		<tag-class/>
-		<body-content>JSP</body-content>
-	
-		<attribute>
-			<description><![CDATA[Perform a singleSubmit in reponse to blur events.]]></description>
-			<name>submitOnBlur</name>
-			<required>no</required>
-			<rtexprvalue>false</rtexprvalue>
-			<type>boolean</type>
-		</attribute>
-	
-	</tag>
+    </tag>
+
+    <tag>
+        <description><![CDATA[This tag can be used to configure push behavior on a per-view basis.]]></description>
+        <name>refresh</name>
+        <tag-class/>
+        <body-content>JSP</body-content>
+
+        <attribute>
+            <description><![CDATA[The push group name the current view should be added to.]]></description>
+            <name>interval</name>
+            <required>yes</required>
+            <rtexprvalue>false</rtexprvalue>
+            <type>java.lang.Long</type>
+        </attribute>
+
+    </tag>
+
+    <tag>
+        <description><![CDATA[This tag can be used to configure push behavior on a per-view basis.]]></description>
+        <name>push</name>
+        <tag-class/>
+        <body-content>JSP</body-content>
+
+        <attribute>
+            <description><![CDATA[The push group name the current view should be added to.]]></description>
+            <name>group</name>
+            <required>yes</required>
+            <rtexprvalue>false</rtexprvalue>
+            <type>java.lang.String</type>
+        </attribute>
+
+    </tag>
+
+    <tag>
+        <description>
+            <![CDATA[This tag allows form submission from just the component generating the event and then update the page with any changes from all components (equivilant to &lt;f:ajax execute=&quot;@this&quot; render=&quot;@all&quot;&gt;).]]></description>
+        <name>singleSubmit</name>
+        <tag-class/>
+        <body-content>JSP</body-content>
+
+        <attribute>
+            <description><![CDATA[Perform a singleSubmit in reponse to blur events.]]></description>
+            <name>submitOnBlur</name>
+            <required>no</required>
+            <rtexprvalue>false</rtexprvalue>
+            <type>boolean</type>
+        </attribute>
+
+    </tag>
 
 </taglib>

@@ -444,6 +444,12 @@ if (!window.ice.icefaces) {
             ice.push.register([viewID], retrieveUpdate(viewID));
         };
 
+        namespace.setupRefresh = function(viewID, interval, duration) {
+            var times = duration == -1 ? null : Math.floor(duration / interval);
+            var requestUpdate = retrieveUpdate(viewID);
+            run(Delay(requestUpdate, interval), times);
+        };
+
         namespace.captureEnterKey = function(id) {
             var f = document.getElementById(id);
             f.onkeypress = function(ev) {
