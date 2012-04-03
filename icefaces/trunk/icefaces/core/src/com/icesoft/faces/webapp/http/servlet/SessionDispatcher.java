@@ -287,14 +287,17 @@ public abstract class SessionDispatcher implements PseudoServlet {
     }
 
     public static class Listener implements ServletContextListener, HttpSessionListener {
+        private Thread monitor;
         private boolean run = true;
 
         public void contextInitialized(ServletContextEvent servletContextEvent) {
             try {
-                Thread monitor = new Thread("Session Monitor") {
+                monitor = new Thread("Session Monitor") {
                     public void run() {
+                        int count = 0;
                         while (run) {
-                            try {
+                            if (count == 10) { // do this every 10 sec
+                                count = 0;
                                 Iterator iterator;
                                 synchronized (SessionMonitors) {
                                     // Iterate over the session monitors using a copying iterator
@@ -307,10 +310,13 @@ public abstract class SessionDispatcher implements PseudoServlet {
                                     ThreadLocalUtility.checkThreadLocals(ThreadLocalUtility.EXITING_SESSION_MONITOR);
                                 }
 
-                                Thread.sleep(10000);
+                            }
+                            try {
+                                Thread.sleep(1000);
                             } catch (InterruptedException e) {
                                 //ignore interrupts
                             }
+                            count++;
                         }
                     }
                 };
@@ -323,6 +329,11 @@ public abstract class SessionDispatcher implements PseudoServlet {
 
         public void contextDestroyed(ServletContextEvent servletContextEvent) {
             run = false;
+            try {
+                monitor.join(1000);
+            } catch (InterruptedException exception) {
+                // Ignore
+            }
         }
 
         public void sessionCreated(HttpSessionEvent event) {
