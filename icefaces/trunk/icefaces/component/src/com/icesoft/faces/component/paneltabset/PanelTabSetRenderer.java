@@ -544,8 +544,6 @@ public class PanelTabSetRenderer
             label = "Tab " + tabIndex;
         }
 
-        label = DOMUtils.escapeAnsi(label);
-
         String tabPlacement = "";
         if (tabSet.getTabPlacement()
                 .equalsIgnoreCase(PanelTabSet.TABPLACEMENT_BOTTOM)) {
