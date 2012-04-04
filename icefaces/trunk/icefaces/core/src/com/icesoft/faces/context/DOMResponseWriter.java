@@ -423,11 +423,13 @@ public class DOMResponseWriter extends ResponseWriter {
         }
         context.setStartupScript(startupScript);
 
+        Element configurationWrapper = (Element) body.appendChild(document.createElement("span"));
         Element configurationElement = (Element) body.appendChild(document.createElement("script"));
-        configurationElement.setAttribute("id", configurationID);
+        configurationWrapper.setAttribute("id", configurationID);
         configurationElement.setAttribute("type", "text/javascript");
         configurationElement.appendChild(document.createTextNode(startupScript));
-        body.insertBefore(configurationElement, body.getFirstChild());
+        configurationWrapper.appendChild(configurationElement);
+        body.insertBefore(configurationWrapper, body.getFirstChild());
 
         Element iframe = document.createElement("iframe");
         body.insertBefore(iframe, body.getFirstChild());
