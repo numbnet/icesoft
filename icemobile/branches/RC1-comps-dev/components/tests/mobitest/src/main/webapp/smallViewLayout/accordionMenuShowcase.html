@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0'/>
+    <title>accordion menu</title>
+    <style type="text/css">
+        .AccordionTitle, .AccordionContent, .AccordionContainer
+        {
+          position:relative;
+          width:200px;
+        }
+
+        .AccordionTitle
+        {
+          height:20px;
+          overflow:hidden;
+          cursor:pointer;
+          font-family:Arial;
+          font-size:8pt;
+          font-weight:bold;
+          vertical-align:middle;
+          text-align:center;
+          display:table-cell;
+     background: -moz-linear-gradient(top, #f4f5f7, #a8acb9) repeat scroll 0 0 #a8acb9;
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0, #f4f5f7), color-stop(1, #a8acb9));
+    filter:  progid:DXImageTransform.Microsoft.gradient(startColorStr='#f4f5f7', EndColorStr='#a8acb9');
+    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#f4f5f7', EndColorStr='#a8acb9')";
+          -moz-user-select:none;
+        }
+
+        .AccordionContent
+        {
+          height:0px;
+          overflow:auto;
+          display:none;
+        }
+
+        .AccordionContainer
+        {
+          border-top: solid 1px #C1C1C1;
+          border-bottom: solid 1px #C1C1C1;
+          border-left: solid 2px #C1C1C1;
+          border-right: solid 2px #C1C1C1;
+        }
+
+    </style>
+    <script type="text/javascript">
+
+        var ContentHeight = 200;
+        var TimeToSlide = 250.0;
+
+        var openAccordion = '';
+
+function runAccordion(index)
+{
+  var nID = "Accordion" + index + "Content";
+  if(openAccordion == nID)
+    nID = '';
+
+  setTimeout("animate(" + new Date().getTime() + "," + TimeToSlide + ",'"
+      + openAccordion + "','" + nID + "')", 33);
+
+  openAccordion = nID;
+}
+        function animate(lastTick, timeLeft, closingId, openingId)
+        {
+          var curTick = new Date().getTime();
+          var elapsedTicks = curTick - lastTick;
+
+
+          var opening = (openingId == '') ? null : document.getElementById(openingId);
+          var closing = (closingId == '') ? null : document.getElementById(closingId);
+
+          if(timeLeft <= elapsedTicks)
+          {
+            if(opening != null)  {
+              var divHeight = document.getElementById(openingId).offsetHeight;
+              if (divHeight> 0){
+              ContentHeight = divHeight;
+            }
+              opening.style.height = ContentHeight + 'px';
+
+            }
+            if(closing != null)
+            {
+              closing.style.display = 'none';
+              closing.style.height = '0px';
+            }
+            return;
+          }
+
+          timeLeft -= elapsedTicks;
+          var newClosedHeight = Math.round((timeLeft/TimeToSlide) * ContentHeight);
+
+          if(opening != null)
+          {
+            if(opening.style.display != 'block')
+              opening.style.display = 'block';
+            opening.style.height = (ContentHeight - newClosedHeight) + 'px';
+          }
+
+          if(closing != null)
+            closing.style.height = newClosedHeight + 'px';
+
+          setTimeout("animate(" + curTick + "," + timeLeft + ",'"
+              + closingId + "','" + openingId + "')", 50);
+        }
+
+    </script>
+</head>
+<body>
+ <div id="AccordionContainer" class="AccordionContainer">
+
+  <div onclick="runAccordion(1);">
+    <div class="AccordionTitle" onselectstart="return false;">
+      Layout And Navigation
+    </div>
+  </div>
+  <div id="Accordion1Content" class="AccordionContent">
+    <ul>
+        <li>Carousel</li>
+        <li>Device Themes</li>
+        <li>Fieldset</li>
+        <li>Lists></li>
+        <li>Confirmation Panel</li>
+        <li>Popup Panel</li>
+    </ul>
+  </div>
+
+  <div onclick="runAccordion(2);">
+    <div class="AccordionTitle" onselectstart="return false;">
+      Input and Selection
+    </div>
+  </div>
+  <div id="Accordion2Content" class="AccordionContent">
+       <ul>
+        <li>Buttons</li>
+        <li>Flip Switch</li>
+        <li>Geolocation</li>
+        <li>HTML5 Input></li>
+        <li>Date and Time</li>
+        <li>Menu Button</li>
+        <li>Submit Notification</li>
+    </ul>
+  </div>
+
+  <div onclick="runAccordion(3);">
+    <div class="AccordionTitle" onselectstart="return false;">
+      Media Components
+    </div>
+  </div>
+  <div id="Accordion3Content" class="AccordionContent">
+       <ul>
+        <li>Audio</li>
+        <li>Image</li>
+        <li>Video</li>
+    </ul>
+  </div>
+
+  <div onclick="runAccordion(4);">
+    <div class="AccordionTitle" onselectstart="return false;">
+      Native Components
+    </div>
+  </div>
+  <div id="Accordion4Content" class="AccordionContent">
+       <ul>
+        <li>Camcorder</li>
+        <li>Camera</li>
+        <li>Microphone</li>
+        <li>Notification</li>
+        <li>QR Code</li>
+    </ul>
+  </div>
+
+
+</div>
+ <!--this should be out of view until selected -->
+ <div id="contentPane">
+
+ </div>
+ <section id="footer">
+     <a href="../layoutComponents.html">index page</a>
+ </section>
+<!-- based on code from http://www.ajaxlines.com/ajax/stuff/article/javascript_and_css_tutorial_accordion_menus.php-->
+</body>
+</html>
