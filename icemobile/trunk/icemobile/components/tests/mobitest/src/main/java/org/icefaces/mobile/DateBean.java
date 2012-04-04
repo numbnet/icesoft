@@ -16,7 +16,6 @@
 
 package org.icefaces.mobile;
 
-import com.sun.org.apache.xml.internal.serializer.utils.Utils;
 
 import javax.faces.bean.ManagedBean;
 import java.io.Serializable;
@@ -27,8 +26,9 @@ import java.text.ParseException;
 import java.util.List;
 import java.util.TimeZone;
 import javax.faces.bean.ViewScoped;
-
 import javax.faces.event.ActionEvent;
+
+import org.icefaces.mobi.utils.Utils;
 
 @ManagedBean(name="date")
 @ViewScoped
@@ -130,7 +130,7 @@ public class DateBean implements Serializable{
         this.timeZone = timeZone;
     }
     public String getTimePattern() {
-        if (this.isUseNative() && (org.icefaces.mobi.utils.Utils.isIOS5() || org.icefaces.mobi.utils.Utils.isBlackBerry())){
+        if (this.isUseNative() && (Utils.isIOS5() || Utils.isBlackBerry())){
             return "HH:mm";
         } else {
               return timePattern;
