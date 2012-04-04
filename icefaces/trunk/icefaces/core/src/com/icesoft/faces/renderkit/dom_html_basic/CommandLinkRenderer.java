@@ -142,7 +142,7 @@ public class CommandLinkRenderer extends DomBasicRenderer {
         Object currentValue = ((UICommand) uiComponent).getValue();
         String linkText = null;
         if (currentValue != null) {
-            linkText = DOMUtils.escapeAnsi(currentValue.toString());
+            linkText = currentValue.toString();
         }
         // create a new or update the old text node for the label
         if (linkText != null && linkText.length() != 0) {
