@@ -2762,6 +2762,15 @@ else if (Prototype.Browser.IE) {
                 return element['offset' + style.capitalize()] + 'px';
             return null;
         }
+        //return value in pixels
+        if (value.endsWith && (value.endsWith('%') || value.endsWith('em'))) {
+            if (style == 'top') {
+                value = element.cumulativeOffset().top;
+            } else if (style == 'left') {
+                value = element.cumulativeOffset().left;
+            }
+        }
+
         return value;
     };
 
