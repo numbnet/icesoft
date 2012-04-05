@@ -32,7 +32,7 @@ public class RefreshHandler extends TagHandler {
 
         interval = intervalAttribute == null ? 10000 : Long.valueOf(intervalAttribute.getValue());
         duration = durationAttribute == null ? -1 : Long.valueOf(durationAttribute.getValue());
-        disabled = disabledAttribute == null ? true : Boolean.parseBoolean(disabledAttribute.getValue());
+        disabled = disabledAttribute == null ? false : Boolean.parseBoolean(disabledAttribute.getValue());
         disabled = duration == 0 ? true : disabled;
     }
 
