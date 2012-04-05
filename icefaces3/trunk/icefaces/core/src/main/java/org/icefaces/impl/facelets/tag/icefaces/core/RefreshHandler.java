@@ -30,9 +30,10 @@ public class RefreshHandler extends TagHandler {
         TagAttribute durationAttribute = getAttribute("duration");
         TagAttribute disabledAttribute = getAttribute("disabled");
 
-        interval = Long.valueOf(intervalAttribute.getValue());
-        duration = Long.valueOf(durationAttribute.getValue());
-        disabled = duration == 0 ? true : Boolean.parseBoolean(disabledAttribute.getValue());
+        interval = intervalAttribute == null ? 10000 : Long.valueOf(intervalAttribute.getValue());
+        duration = durationAttribute == null ? -1 : Long.valueOf(durationAttribute.getValue());
+        disabled = disabledAttribute == null ? true : Boolean.parseBoolean(disabledAttribute.getValue());
+        disabled = duration == 0 ? true : disabled;
     }
 
     public void apply(FaceletContext ctx, UIComponent parent) throws IOException {
