@@ -96,7 +96,8 @@ public class IntervalPushRenderer {
      * Starts our interval timer task. Intended to keep running until this
      * Application scoped bean is shutdown by the server.
      */
-    @PostConstruct
+    //do not start clock timer, icecore:refresh tag is used instead for acquiring the updates
+    //@PostConstruct
     public void initializeIntervalRender() {
         if (null != intervalTimer) {
             intervalTimer.cancel();
@@ -108,7 +109,8 @@ public class IntervalPushRenderer {
     /**
      * Stops the interval timer, generally only for server shutdown.
      */
-    @PreDestroy
+    //disable timer shutdown since we don't start it anymore
+    //@PreDestroy
     public void cleanup() {
         if (null != intervalTimer) {
             intervalTimer.purge();
