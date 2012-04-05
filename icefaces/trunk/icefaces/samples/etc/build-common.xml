@@ -434,6 +434,12 @@ Combinations:
         </antcall>
         <echo message="For Help Information, please use 'ant help'"/>
     </target>
+	<target name="tomcat7" description="build war file for Tomcat 7">
+        <antcall target="build.war">
+            <param name="jsf12" value=""/>
+			<param name="noelri" value=""/>
+        </antcall>        
+    </target>
     <target name="jetty6.1" description="build war file for Jetty 6.1">
         <antcall target="build.war">
             <param name="serverel" value=""/>
