@@ -189,7 +189,13 @@ window.console && window.console.firebug ? new Ice.Log.FirebugLogHandler(window.
                         window.location.reload();
                     } else {
                         var queryPrefix = url.contains('?') ? '&' : '?';
-                        window.location.href = url + queryPrefix + 'rvn=' + view;
+                        var hash = window.location.hash;
+                        if (hash && hash.length > 0) {
+                            var originalURL = url.substr(0, url.length - hash.length);
+                            window.location.href = originalURL + queryPrefix + 'rvn=' + view + hash;
+                        } else {
+                            window.location.href = url + queryPrefix + 'rvn=' + view;
+                        }
                     }
                 }
             });
