@@ -167,12 +167,20 @@
             <!-- WebSpace is essentially Liferay on Glassfish V2 -->
     </target>
     
-    <target name="websphere6.1.portal" description="build a portlet application for Websphere6.1 portal">
+    <target name="websphere6.1.portal" description="build a portlet application for Websphere 6.1 portal">
         <antcall target="build.portlet.war" >
             <param name="comp.xml" value="./conf/web.sunri.icefaces.portlet.xml"/>
             <param name="jsf12" value=""/>
             <param name="serverjsf" value=""/>
             <param name="el-api" value=""/>
+        </antcall>
+    </target>
+
+    <target name="websphere7.portal" description="build a portlet application for Websphere 7 portal">
+        <antcall target="build.portlet.war" >
+            <param name="comp.xml" value="./conf/web.sunri.icefaces.portlet.xml"/>
+            <param name="jsf12" value=""/>
+            <param name="serverjsf" value=""/>
         </antcall>
     </target>
 
