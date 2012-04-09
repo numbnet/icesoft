@@ -98,7 +98,7 @@
             <!-- WebSpace is essentially Liferay on Glassfish V2 -->
     </target>
     
-    <target name="build.portlet.websphere6.1.portal.war" description="build a portlet application for Websphere6.1 portal">
+    <target name="build.portlet.websphere6.1.portal.war" description="build a portlet application for Websphere 6.1 portal">
         <antcall target="build.portlet" >
             <param name="conf.xml" value="./conf/${general.xml}"/>
             <param name="jsf12" value=""/>
@@ -107,5 +107,13 @@
         </antcall>
     </target>
     
+    <target name="build.portlet.websphere7.portal.war" description="build a portlet application for Websphere 7 portal">
+        <antcall target="build.portlet" >
+            <param name="conf.xml" value="./conf/${general.xml}"/>
+            <param name="jsf12" value=""/>
+            <param name="serverjsf" value=""/>
+        </antcall>
+    </target>
+
 </project>
 
