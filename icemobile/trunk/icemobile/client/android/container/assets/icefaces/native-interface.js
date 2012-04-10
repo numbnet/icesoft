@@ -164,14 +164,13 @@ if (!window.ice.mobile) {
 
             context.sourceid = sourceId;
             context.formid = formId;
-            context.serialized = ice.serialize(form.id);
             ice.upload(formId);
         };
 
         namespace.formOf = function(element)  {
             var parent = element;
             while (null != parent)  {
-		if ("form" == parent.nodeName.toLowerCase()) {
+                if ("form" == parent.nodeName.toLowerCase()) {
                     return parent;
                 }
                 parent = parent.parentNode;
@@ -180,7 +179,8 @@ if (!window.ice.mobile) {
 
         namespace.upload = function(id)  {
             var form = document.getElementById(id);
-            window.ICEutil.submitForm(form.action, ice.getCurrentSerialized());
+            context.serialized = ice.serialize(id);
+            window.ICEutil.submitForm(form.action, context.serialized);
         }
 
         namespace.addHidden = function(target, name, value)  {
