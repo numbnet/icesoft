@@ -87,7 +87,7 @@ extends HttpServlet {
         pushServerMessageService.tearDownNow();
         pushServerMessageService.close();
         pathDispatcher.shutdown();
-        scheduledThreadPoolExecutor.shutdown();
+        scheduledThreadPoolExecutor.shutdownNow();
         try {
             scheduledThreadPoolExecutor.awaitTermination(3, TimeUnit.SECONDS);
             // Arbitrary thread sleep to ensure clean-up of threads before finishing shutdown.
