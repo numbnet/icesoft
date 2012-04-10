@@ -85,6 +85,22 @@
 		</attribute>
 	
 	</tag>
+	
+	<tag>
+        <description><![CDATA[This tag can be used to configure push behavior on a per-view basis.]]></description>
+        <name>refresh</name>
+        <tag-class/>
+        <body-content>JSP</body-content>
+
+        <attribute>
+            <description><![CDATA[The push group name the current view should be added to.]]></description>
+            <name>interval</name>
+            <required>yes</required>
+            <rtexprvalue>false</rtexprvalue>
+            <type>java.lang.Long</type>
+        </attribute>
+
+    </tag>
 
 	<tag>
 		<description><![CDATA[This tag can be used to configure push behavior on a per-view basis.]]></description>

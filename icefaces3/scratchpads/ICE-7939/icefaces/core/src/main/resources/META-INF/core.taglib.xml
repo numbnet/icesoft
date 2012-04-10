@@ -78,6 +78,40 @@
             <type>java.lang.Boolean</type>
         </attribute>
     </tag>
+	
+	<tag>
+        <tag-name>refresh</tag-name>
+        <description>
+            This tag can be used to poll for updates.
+        </description>
+        <handler-class>org.icefaces.impl.facelets.tag.icefaces.core.RefreshHandler</handler-class>
+        <attribute>
+            <description>
+                The pooling interval.
+            </description>
+            <name>interval</name>
+            <required>true</required>
+            <type>java.lang.Long</type>
+        </attribute>
+        <attribute>
+            <description>
+                If the duration is not specified, the page will be continually refreshed until the user leaves the page.
+                A duration of -1 is equivalent to an infinite duration.
+                A duration of 0 is equivalent to disabling the control.
+            </description>
+            <name>duration</name>
+            <required>false</required>
+            <type>java.lang.Long</type>
+        </attribute>
+        <attribute>
+            <description>
+                Disable refresh feature.
+            </description>
+            <name>disabled</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+    </tag>
 
     <tag>
         <tag-name>push</tag-name>
