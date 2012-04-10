@@ -112,9 +112,6 @@ public class OutputConnectionStatusRenderer extends DomBasicRenderer {
         if ( (null == label) || ("".equals(label)) )  {
             return div;
         }
-        if (label != null) {
-            label = DOMUtils.escapeAnsi(label);
-        }
         Text text = (Text) domContext.createTextNode(label);
         div.appendChild(text);
         return div;
