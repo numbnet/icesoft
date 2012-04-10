@@ -31,6 +31,7 @@
  */
 package com.icesoft.net.messaging;
 
+import com.icesoft.net.messaging.http.HttpAdapter;
 import edu.emory.mathcs.backport.java.util.concurrent.ScheduledFuture;
 import edu.emory.mathcs.backport.java.util.concurrent.ScheduledThreadPoolExecutor;
 import edu.emory.mathcs.backport.java.util.concurrent.TimeUnit;
@@ -83,10 +84,20 @@ public class MessagePipeline {
 
     private Message message;
     private PublishTask publishTask;
+    private boolean closed = false;
 
     public MessagePipeline(final MessageServiceClient messageServiceClient, final String topicName) {
         this.messageServiceClient = messageServiceClient;
         this.topicName = topicName;
+    }
+
+    public void close() {
+        closed = true;
+        if (publishTask != null) {
+            publishTask.cancel();
+            publishTask = null;
+            message = null;
+        }
     }
 
     /**
@@ -118,53 +129,30 @@ public class MessagePipeline {
      */
     public void enqueue(final Message message) {
         synchronized (messageLock) {
-            if (this.message == null) {
-                this.message = message;
-                if (this.message.getLength() >=
-                        messageServiceClient.getMessageServiceConfiguration().getMessageMaxLength()) {
+            if (!closed) {
+                if (this.message == null) {
+                    this.message = message;
+                    if (this.message.getLength() >=
+                            messageServiceClient.getMessageServiceConfiguration().getMessageMaxLength()) {
 
-                    publishTask = new PublishTask(0, messageServiceClient.getScheduledThreadPoolExecutor());
-                    publishTask.execute();
-                } else {
-                    publishTask =
-                        new PublishTask(
-                            messageServiceClient.getMessageServiceConfiguration().getMessageMaxDelay(),
-                            messageServiceClient.getScheduledThreadPoolExecutor());
-                    publishTask.execute();
-                }
-            } else {
-                this.message.append(message);
-                if (this.message.getLength() >=
-                        messageServiceClient.getMessageServiceConfiguration().getMessageMaxLength()) {
-
-                    publishTask.cancel();
-                    publishTask = new PublishTask(0, messageServiceClient.getScheduledThreadPoolExecutor());
-                    publishTask.execute();
-                }
-            }
-        }
-    }
-
-    void publish() {                  
-        synchronized (messageLock) {
-            try {
-                messageServiceClient.getMessageServiceAdapter().publish(message, topicName);
-                publishTask.cancel();
-                publishTask = null;
-                message = null;
-            } catch (MessageServiceException exception) {
-                LOG.error("", exception);
-                if (messageServiceClient.getAdministrator().reconnectNow()) {
-                    publish();
-                } else {
-                    if (LOG.isDebugEnabled()) {
-                        LOG.debug(
-                            exception.getMessage() + "\r\n" +
-                                "Unable to publish message:\r\n\r\n" + message);
+                        publishTask = new PublishTask(0, messageServiceClient.getScheduledThreadPoolExecutor());
+                        publishTask.execute();
+                    } else {
+                        publishTask =
+                            new PublishTask(
+                                messageServiceClient.getMessageServiceConfiguration().getMessageMaxDelay(),
+                                messageServiceClient.getScheduledThreadPoolExecutor());
+                        publishTask.execute();
                     }
-                    publishTask.cancel();
-                    publishTask = null;
-                    message = null;
+                } else {
+                    this.message.append(message);
+                    if (this.message.getLength() >=
+                            messageServiceClient.getMessageServiceConfiguration().getMessageMaxLength()) {
+
+                        publishTask.cancel();
+                        publishTask = new PublishTask(0, messageServiceClient.getScheduledThreadPoolExecutor());
+                        publishTask.execute();
+                    }
                 }
             }
         }
@@ -186,17 +174,50 @@ public class MessagePipeline {
         }
 
         public void run() {
-            publish();
-            cancel();
+            synchronized (messageLock) {
+                if (!closed) {
+                    publish();
+                }
+            }
             succeeded = true;
         }
 
         private void cancel() {
+            cancel(true);
+        }
+
+        private void cancel(final boolean mayInterruptIfRunning) {
             if (scheduledFuture != null) {
-                scheduledFuture.cancel(false);
+                cancelled = scheduledFuture.cancel(mayInterruptIfRunning);
                 scheduledFuture = null;
+            } else {
+                cancelled = true;
             }
-            cancelled = true;
+        }
+
+        private void publish() {
+            try {
+                messageServiceClient.getMessageServiceAdapter().publish(message, topicName);
+                cancel(false);
+                publishTask = null;
+                message = null;
+            } catch (MessageServiceException exception) {
+                LOG.error("", exception);
+                if (!(messageServiceClient.getMessageServiceAdapter() instanceof HttpAdapter) &&
+                    messageServiceClient.getAdministrator().reconnectNow()) {
+
+                    publish();
+                } else {
+                    if (LOG.isDebugEnabled()) {
+                        LOG.debug(
+                            exception.getMessage() + "\r\n" +
+                                "Unable to publish message:\r\n\r\n" + message);
+                    }
+                    cancel(false);
+                    publishTask = null;
+                    message = null;
+                }
+            }
         }
 
         private void execute() {
