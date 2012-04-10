@@ -31,6 +31,8 @@ import org.icefaces.ace.component.menu.AbstractMenu;
 import org.icefaces.ace.component.menu.BaseMenuRenderer;
 import org.icefaces.ace.component.menuitem.MenuItem;
 import org.icefaces.ace.component.submenu.Submenu;
+import org.icefaces.ace.component.multicolumnmenu.MultiColumnMenu;
+import org.icefaces.ace.component.menucolumn.MenuColumn;
 import org.icefaces.ace.util.JSONBuilder;
 import org.icefaces.ace.util.Utils;
 import org.icefaces.render.MandatoryResourceComponent;
@@ -41,6 +43,8 @@ import javax.faces.context.ResponseWriter;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.logging.Logger;
+import java.util.List;
+import java.util.ArrayList;
 
 @MandatoryResourceComponent(tagName="menubar", value="org.icefaces.ace.component.menubar.MenuBar")
 public class MenuBarRenderer extends BaseMenuRenderer {
@@ -124,7 +128,9 @@ public class MenuBarRenderer extends BaseMenuRenderer {
                     encodeMenuItem(context, (MenuItem) child);
                 } else if(child instanceof Submenu) {
                     encodeSubmenu(context, (Submenu) child);
-                }
+                } else if(child instanceof MultiColumnMenu) {
+					encodeMultiColumnMenu(context, (MultiColumnMenu) child);
+				}
 
                 writer.endElement("li");
             }
@@ -176,5 +182,98 @@ public class MenuBarRenderer extends BaseMenuRenderer {
 
 			writer.endElement("ul");
 		}
+	}
+	
+	protected void encodeMultiColumnMenu(FacesContext context, MultiColumnMenu mcMenu) throws IOException {
+		ResponseWriter writer = context.getResponseWriter();
+		String label = mcMenu.getLabel();
+		
+		List<MenuColumn> menuColumns = new ArrayList<MenuColumn>();
+		for (UIComponent child : mcMenu.getChildren()) {
+			if (child instanceof MenuColumn) menuColumns.add((MenuColumn) child);
+		}
+
+		writer.startElement("a", null);
+		writer.writeAttribute("href", "#", null);
+
+		if(label != null) {
+			writer.startElement("span", null);
+			String style = mcMenu.getStyle();
+			if (style != null && style.trim().length() > 0) {
+				writer.writeAttribute("style", style, "style");
+			}
+			Utils.writeConcatenatedStyleClasses(writer, "wijmo-wijmenu-text", mcMenu.getStyleClass());
+			writer.write(mcMenu.getLabel());
+			writer.endElement("span");
+		}
+
+		writer.endElement("a");
+		
+		int width = 0;
+		for (MenuColumn menuColumn : menuColumns) {
+			width += menuColumn.getWidth();
+		}
+		
+		writer.startElement("div", null);
+		writer.writeAttribute("class", "wijmo-wijmenu multi .ui-helper-reset", "class");
+		writer.writeAttribute("style", "width: " + width + "px; padding: 0;", "style");
+			
+		for (MenuColumn menuColumn : menuColumns) {
+			writer.startElement("div", null);
+			writer.writeAttribute("style", "float:left; display: inline; padding:0; width: " + menuColumn.getWidth() + "px;", "style");
+
+			if(menuColumn.getChildCount() > 0) {
+				writer.startElement("ul", null);
+
+				encodePlainMenuContent(context, menuColumn);
+
+				writer.endElement("ul");
+			}
+
+			writer.endElement("div");
+		}
+		
+		writer.endElement("div");
+	}
+	
+    protected void encodePlainMenuContent(FacesContext context, UIComponent component) throws IOException{
+		ResponseWriter writer = context.getResponseWriter();
+
+        for(Iterator<UIComponent> iterator = component.getChildren().iterator(); iterator.hasNext();) {
+            UIComponent child = (UIComponent) iterator.next();
+
+            if(child.isRendered()) {
+
+                if(child instanceof MenuItem) {
+                    writer.startElement("li", null);
+                    encodeMenuItem(context, (MenuItem) child);
+                    writer.endElement("li");
+                } else if(child instanceof Submenu) {
+                    encodePlainSubmenu(context, (Submenu) child);
+                }
+                
+            }
+        }
+    }
+
+    protected void encodePlainSubmenu(FacesContext context, Submenu submenu) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        String label = submenu.getLabel();
+
+        //title
+        writer.startElement("li", null);
+        writer.startElement("h3", null);
+        if(label != null) {
+            String style = submenu.getStyle();
+            if (style != null && style.trim().length() > 0) {
+                writer.writeAttribute("style", style, "style");
+            }
+            Utils.writeConcatenatedStyleClasses(writer, "", submenu.getStyleClass());
+            writer.write(label);
+        }
+        writer.endElement("h3");
+        writer.endElement("li");
+
+        encodePlainMenuContent(context, submenu);
 	}
 }

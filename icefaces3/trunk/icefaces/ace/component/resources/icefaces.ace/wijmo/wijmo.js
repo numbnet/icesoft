@@ -3504,7 +3504,7 @@ __wijReadOptionEvents = function (eventsArr, widgetInstance) {
             }
             $("li", self.rootMenu).each(function (i, n) {
                 //var isFirstLevel = $(n).parent().parent().parent().is(".wijmo-wijmenu");
-                var hasSubmenu = $(">ul:first", n).length > 0,
+                var hasSubmenu = ($(">ul:first", n).length > 0) || ($(">div:first", n).length > 0), // ICE-7827 
 					li = $(n),
 					icon, link = $(">:first", li);
 
@@ -3555,7 +3555,8 @@ __wijReadOptionEvents = function (eventsArr, widgetInstance) {
                 }
             });
             ele.show();
-            $("ul", self.rootMenu).each(function () {
+            $("ul,div", self.rootMenu).each(function () { // ICE-7827 
+			if ($(this).parents(".multi").size() > 0) return; // ICE-7827 
                 $(this).addClass(menuCss + "-list ui-widget-content ui-corner-all " +
 					"ui-helper-clearfix " + menuCss + "-child"); // ICE-7668 removed ui-helper-reset
                 $(this).hide();
@@ -3655,17 +3656,17 @@ __wijReadOptionEvents = function (eventsArr, widgetInstance) {
             container.attr("role", "menu");
             if (o.orientation === "horizontal") {
                 container.attr("role", "menubar");
-                self.rootMenu.children("li:has(ul)").each(function () {
+                self.rootMenu.children("li:has(ul),li:has(div)").each(function () { // ICE-7827 
                     $(this).children("." + linkCss).find("." + eastIconCss)
 					.removeClass(eastIconCss).addClass(southIconCss);
                 });
             }
-            container.find('li:has(ul)').each(function () {
+            container.find('li:has(ul),li:has(div)').each(function () { // ICE-7827 
                 var nameSpace = ".wijmenu",
 					li = $(this).attr("aria-haspopup", true), showTimer, hideTimer,
 					triggerEvent = self._getItemTriggerEvent(li), link, subList;
 
-                li.children("ul").attr("role", "menu")
+                li.children("ul,div").attr("role", "menu") // ICE-7827 
 				.attr("aria-activedescendant", "ui-active-menuitem")
                 .bind("mouseleave." + nameSpace, function () {
                 	var subel = $(this).parent();
@@ -3715,10 +3716,10 @@ __wijReadOptionEvents = function (eventsArr, widgetInstance) {
 					}).bind("mouseleave" + nameSpace,
 					function () {
 					    clearTimeout(showTimer);
-					    var subList = $(this).next();
+					    var subList = $(this).next(); // ICE-7827 
 					    //In slide effects, before animation, 
 					    //it wraped a div to the ul element.
-					    if (!subList.is("ul")) {
+					    if (!subList.is("ul") || !subList.is("div")) { // ICE-7827 
 					        subList = subList.children("ul:first");
 					    }
 					    hideTimer = setTimeout(function () {
@@ -3728,6 +3729,7 @@ __wijReadOptionEvents = function (eventsArr, widgetInstance) {
 
 
                     $(this).find("ul ." + linkCss + ",ul >.ui-widget-header,ul " +
+						'>.wijmo-wijmenu-separator, div .' + linkCss + ",div >.ui-widget-header,div " + // ICE-7827 
 						'>.wijmo-wijmenu-separator').bind("mouseenter" + nameSpace,
 					function (e) {
 					    clearTimeout(hideTimer);
@@ -3782,7 +3784,7 @@ __wijReadOptionEvents = function (eventsArr, widgetInstance) {
             var self = this, container, outerTrigger, i, ul,
 				ele = self.rootMenu;
 
-            ul = ele.find("ul");
+            ul = ele.find("ul,div"); // ICE-7827 
             for (i = ul.length - 1; i >= 0; i--) {
                 self._hideSubmenu($(ul[i]));
             }
@@ -4271,6 +4273,7 @@ __wijReadOptionEvents = function (eventsArr, widgetInstance) {
             });
         },
         _hideSubmenu: function (sublist) {
+		if (sublist.parents(".multi").size() > 0) return; // ICE-7827 
             var self = this,
 				o = self.options,
 				animations = $.wijmo.wijmenu.animations,
