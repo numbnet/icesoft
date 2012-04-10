@@ -293,7 +293,7 @@ public class MainServlet extends HttpServlet {
             coreMessageService.tearDownNow();
             coreMessageService.close();
         }
-        scheduledThreadPoolExecutor.shutdown();
+        scheduledThreadPoolExecutor.shutdownNow();
         try {
             scheduledThreadPoolExecutor.awaitTermination(3, TimeUnit.SECONDS);
             // Arbitrary thread sleep to ensure clean-up of threads before finishing shutdown.
