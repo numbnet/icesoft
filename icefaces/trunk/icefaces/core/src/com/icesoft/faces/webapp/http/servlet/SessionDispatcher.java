@@ -330,7 +330,7 @@ public abstract class SessionDispatcher implements PseudoServlet {
         public void contextDestroyed(ServletContextEvent servletContextEvent) {
             run = false;
             try {
-                monitor.join(1000);
+                monitor.join(2000);
             } catch (InterruptedException exception) {
                 // Ignore
             }
