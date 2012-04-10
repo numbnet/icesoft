@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<!--
+  ~ Version: MPL 1.1
+  ~
+  ~ The contents of this file are subject to the Mozilla Public License
+  ~ Version 1.1 (the "License"); you may not use this file except in
+  ~ compliance with the License. You may obtain a copy of the License at
+  ~ http://www.mozilla.org/MPL/
+  ~
+  ~ Software distributed under the License is distributed on an "AS IS"
+  ~ basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+  ~ License for the specific language governing rights and limitations under
+  ~ the License.
+  ~
+  ~ The Original Code is ICEfaces 1.5 open source software code, released
+  ~ November 5, 2006. The Initial Developer of the Original Code is ICEsoft
+  ~ Technologies Canada, Corp. Portions created by ICEsoft are Copyright (C)
+  ~ 2004-2011 ICEsoft Technologies Canada, Corp. All Rights Reserved.
+  ~
+  ~ Contributor(s): _____________________.
+  -->
+
+&base-props;
+&ice-att-userrole-enabled-props;
+&ice-att-userrole-rendered-props;
+&ice-att-immediate-props;
+  <property>
+	<description>
+        <![CDATA[  	
+		Indicates whether an arrow, that shows the sort direction should be 
+		rendered. Default: false <br/>
+		Note: This is deprecated. It no longer has any effect in 1.7. To alter 
+		the appearance of the arrow images, the following style classes need to be
+		customized:
+		<ul>
+		  <li>iceCmdSrtHdrAsc</li>
+		  <li>iceCmdSrtHdrDesc</li>
+		</ul>
+		
+        ]]>		
+	</description>
+    <property-name>arrow</property-name>
+    <property-class>boolean</property-class>
+    <property-extension>
+      <category>ICE_LAYOUT</category>
+    </property-extension>
+  </property>
+
+  <property>
+	<description>
+		The name of this column. This name must uniquely identify this column among 
+		all other (sortable) columns in the same data_table. The sortColumn attribute 
+		of the embedding data_table reflects the current sort column (see extended 
+		data_table).
+	</description>
+    <property-name>columnName</property-name>
+    <property-class>java.lang.String</property-class>
+    <property-extension>
+      <category>ICE_LAYOUT</category>
+      <editor-class>&stringEditor;</editor-class>
+    </property-extension>
+  </property>
+  
+  <property>
+    <description>
+        <![CDATA[    
+		The base name for all style classes. Default value is <b>iceCmdSrtHdr</b> 
+		if enabled and <b>iceCmdSrtHdr-dis</b> if disabled.
+		]]>
+    </description>
+    <property-name>styleClass</property-name>
+    <property-class>java.lang.String</property-class>
+    <property-extension>
+        <category>ADVANCED</category>
+        <editor-class>
+            &stringEditor;
+        </editor-class>
+    </property-extension>
+</property>
