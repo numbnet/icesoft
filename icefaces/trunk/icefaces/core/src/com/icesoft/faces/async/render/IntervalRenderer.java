@@ -32,7 +32,6 @@
 
 package com.icesoft.faces.async.render;
 
-import edu.emory.mathcs.backport.java.util.concurrent.ScheduledExecutorService;
 import edu.emory.mathcs.backport.java.util.concurrent.ScheduledFuture;
 import edu.emory.mathcs.backport.java.util.concurrent.TimeUnit;
 import org.apache.commons.logging.Log;
@@ -103,7 +102,7 @@ public class IntervalRenderer extends OnDemandRenderer implements Runnable {
     public void requestStop() {
         super.requestStop();
         if (future != null && !future.isDone()) {
-            future.cancel(false);
+            future.cancel(true);
         }
         isStarted = false;
     }

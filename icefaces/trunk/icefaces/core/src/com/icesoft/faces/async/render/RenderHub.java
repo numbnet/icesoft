@@ -80,6 +80,7 @@ public class RenderHub {
      */
     private ScheduledThreadPoolExecutor scheduledService;
     private int schedulePoolSize = 5;
+    private boolean disposing = false;
 
     /**
      * Used by the ThreadPoolExector as a callback for rejected Runnable
@@ -209,10 +210,12 @@ public class RenderHub {
      * @param renderable The Renderable instance to add to the rendering queue.
      */
     public void requestRender(Renderable renderable) {
-        if (renderService == null) {
-            createCoreService();
+        if (!disposing) {
+            if (renderService == null) {
+                createCoreService();
+            }
+            renderService.execute(new RunnableRender(renderable));
         }
-        renderService.execute(new RunnableRender(renderable));
     }
 
     /**
@@ -252,10 +255,14 @@ public class RenderHub {
      * @return A scheduling service.
      */
     public ScheduledThreadPoolExecutor getScheduledService() {
-        if (scheduledService == null) {
-            createScheduledService();
+        if (!disposing) {
+            if (scheduledService == null) {
+                createScheduledService();
+            }
+            return scheduledService;
+        } else {
+            return null;
         }
-        return scheduledService;
     }
 
     protected synchronized void createScheduledService() {
@@ -296,13 +303,14 @@ public class RenderHub {
      * when the application shuts down.
      */
     public void dispose() {
+        disposing = true;
         if (renderService != null) {
-            renderService.shutdown();
+            renderService.shutdownNow();
             renderService = null;
         }
 
         if (scheduledService != null) {
-            scheduledService.shutdown();
+            scheduledService.shutdownNow();
             scheduledService = null;
         }
     }
