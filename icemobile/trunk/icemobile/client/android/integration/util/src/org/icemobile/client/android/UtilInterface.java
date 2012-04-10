@@ -99,13 +99,21 @@ public class UtilInterface implements JavascriptInterface,
 	    BasicNameValuePair[] params = getNameValuePairs(serializedForm, "&", "=");
 	    for (int i=0; i<params.length; i++) {
 		if (params[i].getName().contains("file")) {
-		    String fname = params[i].getValue().replaceAll("%2F","/");
-		    InputStream is = new BufferedInputStream(new FileInputStream(fname));
-		    byte[] data = IOUtils.toByteArray(is);
-		    InputStreamBody isb = new InputStreamBody(new ByteArrayInputStream(data), getMimeType(fname), params[i].getValue());
-		    contentSize += data.length;
-		    content.addPart(URLDecoder.decode(params[i].getName(),"UTF_8"), isb);
-		    is.close();
+            String fname = "undefined";
+            try {
+                fname = params[i].getValue().replaceAll("%2F","/");
+
+                InputStream is = new BufferedInputStream(new FileInputStream(fname));
+                byte[] data = IOUtils.toByteArray(is);
+                InputStreamBody isb = new InputStreamBody(
+                        new ByteArrayInputStream(data), 
+                        getMimeType(fname), params[i].getValue());
+                contentSize += data.length;
+                content.addPart(URLDecoder.decode(params[i].getName(),"UTF_8"), isb);
+                is.close();
+            } catch (Exception e)  {
+                Log.e("ICEutil", "Error Opening file " + fname, e);
+            }
 		} else {
 		    StringBody sb = new StringBody(URLDecoder.decode(params[i].getValue(),"UTF-8"));
 		    contentSize += sb.getContentLength();
