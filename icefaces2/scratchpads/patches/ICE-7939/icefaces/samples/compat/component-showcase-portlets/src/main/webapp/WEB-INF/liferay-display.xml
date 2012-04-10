@@ -1,0 +1,82 @@
+<?xml version="1.0"?>
+<!--
+  ~ Version: MPL 1.1
+  ~
+  ~ The contents of this file are subject to the Mozilla Public License
+  ~ Version 1.1 (the "License"); you may not use this file except in
+  ~ compliance with the License. You may obtain a copy of the License at
+  ~ http://www.mozilla.org/MPL/
+  ~
+  ~ Software distributed under the License is distributed on an "AS IS"
+  ~ basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+  ~ License for the specific language governing rights and limitations under
+  ~ the License.
+  ~
+  ~ The Original Code is ICEfaces 1.5 open source software code, released
+  ~ November 5, 2006. The Initial Developer of the Original Code is ICEsoft
+  ~ Technologies Canada, Corp. Portions created by ICEsoft are Copyright (C)
+  ~ 2004-2011 ICEsoft Technologies Canada, Corp. All Rights Reserved.
+  ~
+  ~ Contributor(s): _____________________.
+  -->
+
+<!DOCTYPE display PUBLIC "-//Liferay//DTD Display 5.1.0//EN" "http://www.liferay.com/dtd/liferay-display_5_1_0.dtd">
+
+<display>
+
+    <category name="ICEfaces2">
+    
+        <category name="Input">
+            <portlet id="buttonsAndLinks"/>
+            <portlet id="textFields"/>
+            <portlet id="selectionTags"/>
+            <portlet id="dragDrop"/>
+            <portlet id="gmap"/>
+            <portlet id="inputRichText"/>
+            <portlet id="menuBar"/>
+            <portlet id="menuPopup"/>
+            <portlet id="selectInputDate"/>
+            <portlet id="selectInputText"/>
+            <portlet id="tree"/>
+        </category>
+        
+        <category name="Output">
+            <portlet id="outputChart"/>
+            <portlet id="outputConnectionStatus"/>
+            <portlet id="outputMedia"/>
+            <portlet id="outputProgress"/>
+            <portlet id="outputResource"/>
+        </category>
+        
+        <category name="Datatable">
+            <portlet id="dataTable-columns"/>
+            <portlet id="dataTable-commandSortHeader"/>
+            <portlet id="dataTable-dataExporter"/>
+            <portlet id="dataTable-dataScrolling"/>
+            <portlet id="dataTable-expandable"/>
+            <portlet id="dataTable-grouping"/>
+            <portlet id="dataTable-resizableColumns"/>
+            <portlet id="dataTable-rowSelection"/>
+        </category>
+        
+        <category name="Panel">
+            <portlet id="panelBorder"/>
+            <portlet id="panelCollapsible"/>
+            <portlet id="panelDivider"/>
+            <portlet id="panelPopup"/>
+            <portlet id="panelPositioned"/>
+            <portlet id="panelSeries"/>
+            <portlet id="panelStack"/>
+            <portlet id="panelTabSet-dynamic"/>
+            <portlet id="panelTabSet-static"/>
+            <portlet id="panelTooltip"/>
+        </category>
+        
+        <category name="Miscellaneous">
+            <portlet id="effects"/>
+            <portlet id="setEventPhase"/>
+        </category>
+        
+    </category>
+
+</display>

@@ -1,0 +1,76 @@
+/*
+ * Version: MPL 1.1
+ *
+ * The contents of this file are subject to the Mozilla Public License
+ * Version 1.1 (the "License"); you may not use this file except in
+ * compliance with the License. You may obtain a copy of the License at
+ * http://www.mozilla.org/MPL/
+ *
+ * Software distributed under the License is distributed on an "AS IS"
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+ * License for the specific language governing rights and limitations under
+ * the License.
+ *
+ * The Original Code is ICEfaces 1.5 open source software code, released
+ * November 5, 2006. The Initial Developer of the Original Code is ICEsoft
+ * Technologies Canada, Corp. Portions created by ICEsoft are Copyright (C)
+ * 2004-2011 ICEsoft Technologies Canada, Corp. All Rights Reserved.
+ *
+ * Contributor(s): _____________________.
+ */
+
+package org.icefaces.application.showcase.view.bean.examples.component.commandSortHeader;
+
+import org.icefaces.application.showcase.view.bean.examples.component.dataTable.DataTableBase;
+import org.icefaces.application.showcase.view.bean.BeanNames;
+import org.icefaces.application.showcase.model.entity.Employee;
+import org.icefaces.application.showcase.util.FacesUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ViewScoped;
+import javax.faces.event.PhaseListener;
+import javax.faces.event.PhaseEvent;
+import javax.faces.event.PhaseId;
+
+/**
+ *
+ */
+@ManagedBean
+@ViewScoped
+public class SortHeaderModel extends DataTableBase {
+
+    private static final Log logger =
+            LogFactory.getLog(SortHeaderModel.class);
+
+    private boolean descending = true;
+    private String columnName = Employee.DEPARTMENT_NAME_COLUMN;
+
+
+    protected void init() {
+        // build employee list form employee service.
+        employees = employeeService.getEmployees(50, descending,
+                columnName);
+    }
+
+    public void sort() {
+        init();
+    }
+
+    public boolean isDescending() {
+        return descending;
+    }
+
+    public void setDescending(boolean descending) {
+        this.descending = descending;
+    }
+
+    public String getColumnName() {
+        return columnName;
+    }
+
+    public void setColumnName(String columnName) {
+        this.columnName = columnName;
+    }
+}
