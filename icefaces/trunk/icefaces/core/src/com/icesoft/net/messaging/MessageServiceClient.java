@@ -35,6 +35,7 @@ import com.icesoft.util.ServerUtility;
 import com.icesoft.util.ThreadFactory;
 
 import edu.emory.mathcs.backport.java.util.concurrent.ScheduledThreadPoolExecutor;
+import edu.emory.mathcs.backport.java.util.concurrent.TimeUnit;
 
 import java.io.Serializable;
 import java.net.InetAddress;
@@ -61,6 +62,7 @@ public class MessageServiceClient {
     private MessageServiceAdapter messageServiceAdapter;
     private String name;
     private ScheduledThreadPoolExecutor scheduledThreadPoolExecutor;
+    private boolean closed = false;
 
     public MessageServiceClient(
         final MessageServiceAdapter messageServiceAdapter,
@@ -175,7 +177,17 @@ public class MessageServiceClient {
      */
     public void close()
     throws MessageServiceException {
+        closed = true;
+        Iterator _messagePipelines = messagePipelineMap.values().iterator();
+        while (_messagePipelines.hasNext()) {
+            ((MessagePipeline)_messagePipelines.next()).close();
+        }
         scheduledThreadPoolExecutor.shutdownNow();
+        try {
+            scheduledThreadPoolExecutor.awaitTermination(3, TimeUnit.SECONDS);
+        } catch (InterruptedException exception) {
+            // Do nothing.
+        }
         try {
             messageServiceAdapter.close();
         } finally {
@@ -1589,18 +1601,20 @@ public class MessageServiceClient {
     }
 
     private void publishTo(final String topicName, final Message message) {
-        String _messagePipelineId =
-            topicName + "/" +
-                message.getStringProperty(Message.MESSAGE_TYPE) + "/" +
-                message.getStringProperty(Message.DESTINATION_SERVLET_CONTEXT_PATH);
-        MessagePipeline _messagePipeline;
-        if (messagePipelineMap.containsKey(_messagePipelineId)) {
-            _messagePipeline = (MessagePipeline)messagePipelineMap.get(_messagePipelineId);
-        } else {
-            _messagePipeline = new MessagePipeline(this, topicName);
-            messagePipelineMap.put(_messagePipelineId,  _messagePipeline);
+        if (!closed) {
+            String _messagePipelineId =
+                topicName + "/" +
+                    message.getStringProperty(Message.MESSAGE_TYPE) + "/" +
+                    message.getStringProperty(Message.DESTINATION_SERVLET_CONTEXT_PATH);
+            MessagePipeline _messagePipeline;
+            if (messagePipelineMap.containsKey(_messagePipelineId)) {
+                _messagePipeline = (MessagePipeline)messagePipelineMap.get(_messagePipelineId);
+            } else {
+                _messagePipeline = new MessagePipeline(this, topicName);
+                messagePipelineMap.put(_messagePipelineId, _messagePipeline);
+            }
+            _messagePipeline.enqueue(message);
         }
-        _messagePipeline.enqueue(message);
     }
 
     private void publishNowTo(final String topicName, final Message message)
