@@ -90,7 +90,7 @@ public class MonitorRunner {
     public void stop() {
         run = false;
         try {
-            thread.join(1000);
+            thread.join(2000);
         } catch (InterruptedException exception) {
             // Ignore
         }
