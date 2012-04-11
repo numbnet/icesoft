@@ -445,7 +445,7 @@ if (!window.ice.icefaces) {
         };
 
         namespace.setupRefresh = function(viewID, interval, duration) {
-            var times = duration == -1 ? null : Math.floor(duration / interval);
+            var times = duration < 0 ? null : Math.floor(duration / interval);
             var requestUpdate = retrieveUpdate(viewID);
             run(Delay(requestUpdate, interval), times);
         };
