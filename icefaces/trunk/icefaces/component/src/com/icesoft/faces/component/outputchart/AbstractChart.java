@@ -85,8 +85,12 @@ public abstract class AbstractChart implements Serializable {
             bos.flush();
             bos.close();
             bos = null;
+            ChartResource oldResource = outputChart.getChartResource();
             outputChart.setChartResource(new ChartResource(data));
             outputChart.setChartURI(((ResourceRegistry) context).registerResource(outputChart.getChartResource()));
+            if (null != oldResource) {
+                ((ResourceRegistry) context).deregisterResource(oldResource);
+            }
         } else {
             log.equals("The jchart is not defined for the " +
                     outputChart.getClientId(FacesContext.getCurrentInstance()) +

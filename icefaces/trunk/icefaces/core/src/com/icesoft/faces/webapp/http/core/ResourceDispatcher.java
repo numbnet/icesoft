@@ -94,7 +94,7 @@ public class ResourceDispatcher implements Server {
         return registerResource(resource, NOOPHandler);
     }
 
-    public URI registerResource(Resource resource, ResourceLinker.Handler handler) {
+    public synchronized URI registerResource(Resource resource, ResourceLinker.Handler handler) {
         if (handler == null)
             handler = NOOPHandler;
         final FileNameOption options = new FileNameOption();
@@ -144,14 +144,19 @@ public class ResourceDispatcher implements Server {
         return resourceToServerMapping.containsKey(resource);
     }
 
-    public void deregisterResource(Resource resource) {
+    public synchronized void deregisterResource(Resource resource) {
         Server server = (Server) resourceToServerMapping.get(resource);
         if (server != null) {
             dispatcher.stopDispatchFor(server);
             resourceToServerMapping.remove(resource);
         }
         final String name = prefix + encode(resource) + "/";
-        registered.remove(name);
+        boolean res = registered.remove(name);
+        if (! res) {
+                log.debug("Resource not found " + name);
+        } else {
+            log.debug("Removed resource " + name);
+        }
     }
 
     public void shutdown() {

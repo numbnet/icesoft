@@ -38,20 +38,24 @@ import java.io.Serializable;
 
 public class ChartResource extends ByteArrayResource implements Serializable {
     private static long prevDigest = 0;
+    private String stringDigest;
     
     public ChartResource(byte[] content) {
         super(content);
     }
 
     public String calculateDigest() {
-        long digest = System.currentTimeMillis();
-        synchronized (getClass()) { // ICE-3052
-            if (digest <= prevDigest) {
-                digest = prevDigest + 1;
+        if (null == stringDigest) {
+            long digest = System.currentTimeMillis();
+            synchronized (getClass()) { // ICE-3052
+                if (digest <= prevDigest) {
+                    digest = prevDigest + 1;
+                }
+                prevDigest = digest;
             }
-            prevDigest = digest;
+            stringDigest = String.valueOf("CHART" + digest);
         }
-        return String.valueOf("CHART"+digest);
+        return stringDigest;
     }
     
     public boolean equals(Object obj) {
