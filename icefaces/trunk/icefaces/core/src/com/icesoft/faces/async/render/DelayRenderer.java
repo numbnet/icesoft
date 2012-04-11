@@ -81,10 +81,10 @@ public class DelayRenderer extends OnDemandRenderer implements Runnable {
     }
 
     public void requestStop() {
-        super.requestStop();
         if (future != null && !future.isDone()) {
             future.cancel(false);
         }
+        super.requestStop();
     }
 
     public void run() {
