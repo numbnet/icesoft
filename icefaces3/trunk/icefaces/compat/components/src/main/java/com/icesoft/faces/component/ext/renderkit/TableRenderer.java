@@ -460,6 +460,10 @@ public class TableRenderer
 
                 if (sortColumn.equals(columnName)) {
                     styles += CSS_DEFAULT.TABLE_ACTIVE_SORT_COLUMN;
+                    Element columnHeaderDiv = domContext.createElement(HTML.DIV_ELEM);
+                    columnHeaderDiv.setAttribute(HTML.STYLE_ATTR, "display:inline-table");
+                    th.appendChild(columnHeaderDiv);
+                    cursorParent = columnHeaderDiv;                    
                 }
             }
 
