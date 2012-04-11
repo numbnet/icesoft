@@ -35,10 +35,7 @@ public class MenuColumnMeta extends UIComponentBaseMeta {
 
     @Property(tlddoc = "Width of the column in pixels.", defaultValue="200")
     private int width;
-	
-    @Property(tlddoc = "Style of the submenu label.")
-    private String style;
 
-    @Property(tlddoc = "StyleClass of the submenu label.")
-    private String styleClass;
+    @Property(tlddoc = "Maximum number of items in this column. If there are more items than the maximum, new columns will be created as necessary. When the value is 0, there is no limit.", defaultValue="0")
+    private int autoflow;	
 }
