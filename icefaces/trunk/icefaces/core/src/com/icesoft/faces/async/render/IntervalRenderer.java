@@ -100,11 +100,11 @@ public class IntervalRenderer extends OnDemandRenderer implements Runnable {
     }
 
     public void requestStop() {
-        super.requestStop();
         if (future != null && !future.isDone()) {
             future.cancel(true);
         }
         isStarted = false;
+        super.requestStop();
     }
 
     public void run() {
