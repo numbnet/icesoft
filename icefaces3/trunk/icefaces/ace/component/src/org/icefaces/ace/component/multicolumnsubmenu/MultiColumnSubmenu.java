@@ -14,8 +14,8 @@
  * governing permissions and limitations under the License.
  */
 
-package org.icefaces.ace.component.multicolumnmenu;
+package org.icefaces.ace.component.multicolumnsubmenu;
 
-public class MultiColumnMenu extends MultiColumnMenuBase implements java.io.Serializable {
+public class MultiColumnSubmenu extends MultiColumnSubmenuBase implements java.io.Serializable {
 
 }

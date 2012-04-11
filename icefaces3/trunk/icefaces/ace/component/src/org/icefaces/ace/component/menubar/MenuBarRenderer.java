@@ -31,7 +31,7 @@ import org.icefaces.ace.component.menu.AbstractMenu;
 import org.icefaces.ace.component.menu.BaseMenuRenderer;
 import org.icefaces.ace.component.menuitem.MenuItem;
 import org.icefaces.ace.component.submenu.Submenu;
-import org.icefaces.ace.component.multicolumnmenu.MultiColumnMenu;
+import org.icefaces.ace.component.multicolumnsubmenu.MultiColumnSubmenu;
 import org.icefaces.ace.component.menucolumn.MenuColumn;
 import org.icefaces.ace.util.JSONBuilder;
 import org.icefaces.ace.util.Utils;
@@ -128,8 +128,8 @@ public class MenuBarRenderer extends BaseMenuRenderer {
                     encodeMenuItem(context, (MenuItem) child);
                 } else if(child instanceof Submenu) {
                     encodeSubmenu(context, (Submenu) child);
-                } else if(child instanceof MultiColumnMenu) {
-					encodeMultiColumnMenu(context, (MultiColumnMenu) child);
+                } else if(child instanceof MultiColumnSubmenu) {
+					encodeMultiColumnSubmenu(context, (MultiColumnSubmenu) child);
 				}
 
                 writer.endElement("li");
@@ -184,12 +184,12 @@ public class MenuBarRenderer extends BaseMenuRenderer {
 		}
 	}
 	
-	protected void encodeMultiColumnMenu(FacesContext context, MultiColumnMenu mcMenu) throws IOException {
+	protected void encodeMultiColumnSubmenu(FacesContext context, MultiColumnSubmenu submenu) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
-		String label = mcMenu.getLabel();
+		String label = submenu.getLabel();
 		
 		List<MenuColumn> menuColumns = new ArrayList<MenuColumn>();
-		for (UIComponent child : mcMenu.getChildren()) {
+		for (UIComponent child : submenu.getChildren()) {
 			if (child instanceof MenuColumn) menuColumns.add((MenuColumn) child);
 		}
 
@@ -198,12 +198,12 @@ public class MenuBarRenderer extends BaseMenuRenderer {
 
 		if(label != null) {
 			writer.startElement("span", null);
-			String style = mcMenu.getStyle();
+			String style = submenu.getStyle();
 			if (style != null && style.trim().length() > 0) {
 				writer.writeAttribute("style", style, "style");
 			}
-			Utils.writeConcatenatedStyleClasses(writer, "wijmo-wijmenu-text", mcMenu.getStyleClass());
-			writer.write(mcMenu.getLabel());
+			Utils.writeConcatenatedStyleClasses(writer, "wijmo-wijmenu-text", submenu.getStyleClass());
+			writer.write(submenu.getLabel());
 			writer.endElement("span");
 		}
 
