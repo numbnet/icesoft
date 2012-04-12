@@ -104,6 +104,7 @@ public class DateTimeEntryRenderer extends InputRenderer {
         writer.writeAttribute("id", inputId, null);
         writer.writeAttribute("name", inputId, null);
         writer.writeAttribute("type", type, null);
+		writer.writeAttribute("tabindex", dateTimeEntry.getTabindex(), null);
 
         if(!isValueBlank(value)) {
             writer.writeAttribute("value", value, null);

@@ -160,4 +160,7 @@ public class DateTimeEntryMeta extends UIInputMeta {
 
     @Property(defaultValue = "0", tlddoc = "Zero-based offset indicating which month should be displayed in the leftmost position.")
     private int leftMonthOffset;
+	
+    @Property(tlddoc = "Position of the text field in the tabbing order for the current page. This value must be an integer between 0 and 32767.")
+    private String tabindex;
 }
