@@ -234,14 +234,14 @@ public abstract class BaseMenuRenderer extends CoreRenderer {
 		}
 		
 		writer.startElement("div", null);
-		writer.writeAttribute("class", "wijmo-wijmenu multi .ui-helper-reset", "class");
-		writer.writeAttribute("style", "width: " + totalWidth + "px; padding: 0;", "style");
+		writer.writeAttribute("class", "wijmo-wijmenu ui-menu-multicolumn", "class");
+		writer.writeAttribute("style", "width: " + totalWidth + "px;", "style");
 			
 		for (MenuColumn menuColumn : menuColumns) {
 			if (menuColumn.isRendered()) {
 				for (ArrayList<UIComponent> sublist : columnMap.get(menuColumn)) {
 					writer.startElement("div", null);
-					writer.writeAttribute("style", "float:left; display: inline; padding:0; width: " + menuColumn.getWidth() + "px;", "style");
+					writer.writeAttribute("style", "width: " + menuColumn.getWidth() + "px;", "style");
 
 					if(sublist.size() > 0) {
 						writer.startElement("ul", null);
