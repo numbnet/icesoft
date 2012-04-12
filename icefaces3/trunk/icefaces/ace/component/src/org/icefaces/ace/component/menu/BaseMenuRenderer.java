@@ -35,6 +35,9 @@ import javax.faces.component.UIParameter;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import org.icefaces.ace.component.menuitem.MenuItem;
+import org.icefaces.ace.component.menucolumn.MenuColumn;
+import org.icefaces.ace.component.multicolumnsubmenu.MultiColumnSubmenu;
+import org.icefaces.ace.component.submenu.Submenu;
 import org.icefaces.ace.renderkit.CoreRenderer;
 import org.icefaces.ace.util.ComponentUtils;
 import org.icefaces.ace.util.Utils;
@@ -173,5 +176,166 @@ public abstract class BaseMenuRenderer extends CoreRenderer {
     @Override
 	public boolean getRendersChildren() {
 		return true;
+	}
+	
+	protected void encodeMultiColumnSubmenu(FacesContext context, MultiColumnSubmenu submenu) throws IOException {
+		ResponseWriter writer = context.getResponseWriter();
+		String label = submenu.getLabel();
+		String icon = submenu.getIcon();
+		
+		List<MenuColumn> menuColumns = new ArrayList<MenuColumn>();
+		for (UIComponent child : submenu.getChildren()) {
+			if (child instanceof MenuColumn) menuColumns.add((MenuColumn) child);
+		}
+
+		writer.startElement("a", null);
+		writer.writeAttribute("href", "#", null);
+		
+		if(icon != null) {
+			writer.startElement("span", null);
+			writer.writeAttribute("class", icon + " wijmo-wijmenu-icon-left", null);
+			writer.endElement("span");
+		}
+
+		if(label != null) {
+			writer.startElement("span", null);
+			String style = submenu.getStyle();
+			if (style != null && style.trim().length() > 0) {
+				writer.writeAttribute("style", style, "style");
+			}
+			Utils.writeConcatenatedStyleClasses(writer, "wijmo-wijmenu-text", submenu.getStyleClass());
+			writer.write(submenu.getLabel());
+			writer.endElement("span");
+		}
+
+		writer.endElement("a");
+		
+		
+		int totalChildren = 0;
+		Map<MenuColumn, ArrayList<ArrayList<UIComponent>>> columnMap = new HashMap<MenuColumn, ArrayList<ArrayList<UIComponent>>>();
+		for (MenuColumn menuColumn : menuColumns) {
+			columnMap.put(menuColumn, divideColumn(menuColumn));
+			for (ArrayList<UIComponent> sublist : columnMap.get(menuColumn)) {
+				totalChildren += sublist.size();
+			}
+		}
+		int totalWidth = 0;
+		for (MenuColumn menuColumn : menuColumns) {
+			if (menuColumn.isRendered()) {
+				int columnWidth = menuColumn.getWidth();
+				int autoflow = menuColumn.getAutoflow();
+				int multiplier = 1;
+				if (autoflow > 0) {
+					multiplier = totalChildren / autoflow;
+					if ((totalChildren % autoflow) > 0) multiplier++;
+				}
+				totalWidth += (columnWidth * multiplier);
+			}
+		}
+		
+		writer.startElement("div", null);
+		writer.writeAttribute("class", "wijmo-wijmenu multi .ui-helper-reset", "class");
+		writer.writeAttribute("style", "width: " + totalWidth + "px; padding: 0;", "style");
+			
+		for (MenuColumn menuColumn : menuColumns) {
+			if (menuColumn.isRendered()) {
+				for (ArrayList<UIComponent> sublist : columnMap.get(menuColumn)) {
+					writer.startElement("div", null);
+					writer.writeAttribute("style", "float:left; display: inline; padding:0; width: " + menuColumn.getWidth() + "px;", "style");
+
+					if(sublist.size() > 0) {
+						writer.startElement("ul", null);
+
+						for (UIComponent item : sublist) {
+							if(item.isRendered()) {
+
+								if(item instanceof MenuItem) {
+									writer.startElement("li", null);
+									encodeMenuItem(context, (MenuItem) item);
+									writer.endElement("li");
+								} else if(item instanceof Submenu) {
+									encodeFlatSubmenu(context, (Submenu) item);
+								}
+								
+							}
+						}
+
+						writer.endElement("ul");
+					}
+
+					writer.endElement("div");
+				}
+			}
+		}
+		
+		writer.endElement("div");
+	}
+
+    protected void encodeFlatSubmenu(FacesContext context, Submenu submenu) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        String label = submenu.getLabel();
+
+        writer.startElement("li", null);
+        writer.startElement("h3", null);
+        if(label != null) {
+            String style = submenu.getStyle();
+            if (style != null && style.trim().length() > 0) {
+                writer.writeAttribute("style", style, "style");
+            }
+            Utils.writeConcatenatedStyleClasses(writer, "", submenu.getStyleClass());
+            writer.write(label);
+        }
+        writer.endElement("h3");
+        writer.endElement("li");
+	}
+	
+	protected ArrayList<ArrayList<UIComponent>> divideColumn(MenuColumn menuColumn) {
+	
+		ArrayList<ArrayList<UIComponent>> columnList = new ArrayList<ArrayList<UIComponent>>();
+		if (!menuColumn.isRendered()) return columnList;
+		int maxRows = menuColumn.getAutoflow();
+		if (maxRows == 0) {
+			ArrayList<UIComponent> column = flattenContents(menuColumn, new ArrayList<UIComponent>());
+			columnList.add(column);
+		} else {
+			ArrayList<UIComponent> children = flattenContents(menuColumn, new ArrayList<UIComponent>());
+			
+			if (children.size() <= maxRows) {
+				columnList.add(children);
+			} else {
+				int rowCount = 0;
+				ArrayList<UIComponent> currentColumn = new ArrayList<UIComponent>();
+				for (UIComponent child : children) {
+					rowCount++;
+					currentColumn.add(child);
+					if (rowCount == maxRows) {
+						rowCount = 0;
+						columnList.add(currentColumn);
+						currentColumn = new ArrayList<UIComponent>();
+					}
+				}
+				if (rowCount > 0) {
+					columnList.add(currentColumn);
+				}
+			}
+		}
+		
+		return columnList;
+	}
+	
+	protected ArrayList<UIComponent> flattenContents(UIComponent component, ArrayList<UIComponent> result) {
+		
+		for (UIComponent child : component.getChildren()) {
+			if (child.isRendered()) {
+				if (child instanceof MenuItem || child instanceof Submenu) {
+					result.add(child);
+					if (child instanceof Submenu) {
+						flattenContents(child, result);
+					}
+				}
+			}
+		}
+		
+		return result;
 	}
 }
