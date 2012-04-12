@@ -167,7 +167,7 @@
         on: function() {
             if (/MSIE/.test(navigator.userAgent)) {
                 this.overlay = document.createElement('iframe');
-                this.overlay.setAttribute('src', 'javascript:document.write(\'<html><body style="cursor: wait;"></body><html>\');');
+                this.overlay.setAttribute('src', 'javascript:try{document.write(\'<html><body style="cursor: wait;"></body><html>\');}catch(e){};');
                 this.overlay.setAttribute('frameborder', '0');
                 document.body.appendChild(this.overlay);
             } else {
