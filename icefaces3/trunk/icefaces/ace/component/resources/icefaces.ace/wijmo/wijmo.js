@@ -3556,7 +3556,7 @@ __wijReadOptionEvents = function (eventsArr, widgetInstance) {
             });
             ele.show();
             $("ul,div", self.rootMenu).each(function () { // ICE-7827 
-			if ($(this).parents(".multi").size() > 0) return; // ICE-7827 
+			if ($(this).parents(".ui-menu-multicolumn").size() > 0) return; // ICE-7827 
                 $(this).addClass(menuCss + "-list ui-widget-content ui-corner-all " +
 					"ui-helper-clearfix " + menuCss + "-child"); // ICE-7668 removed ui-helper-reset
                 $(this).hide();
@@ -4273,7 +4273,7 @@ __wijReadOptionEvents = function (eventsArr, widgetInstance) {
             });
         },
         _hideSubmenu: function (sublist) {
-		if (sublist.parents(".multi").size() > 0) return; // ICE-7827 
+		if (sublist.parents(".ui-menu-multicolumn").size() > 0) return; // ICE-7827 
             var self = this,
 				o = self.options,
 				animations = $.wijmo.wijmenu.animations,

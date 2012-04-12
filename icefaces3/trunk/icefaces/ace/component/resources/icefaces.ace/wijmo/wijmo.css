@@ -396,3 +396,13 @@
     padding: 0;
     text-decoration: none;
 }*/
+
+.wijmo-wijmenu .ui-menu-multicolumn {
+	padding: 0;
+}
+
+.wijmo-wijmenu .ui-menu-multicolumn div {
+	padding: 0;
+	float:left;
+	display: inline;
+}
