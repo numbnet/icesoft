@@ -36,7 +36,7 @@ import javax.faces.context.ResponseWriter;
 import org.icefaces.ace.component.menu.AbstractMenu;
 import org.icefaces.ace.component.menu.BaseMenuRenderer;
 import org.icefaces.ace.component.submenu.Submenu;
-
+import org.icefaces.ace.component.multicolumnsubmenu.MultiColumnSubmenu;
 import org.icefaces.ace.component.menuitem.MenuItem;
 import org.icefaces.ace.util.JSONBuilder;
 import org.icefaces.ace.util.Utils;
@@ -115,7 +115,9 @@ public class ContextMenuRenderer extends BaseMenuRenderer {
                     encodeMenuItem(context, (MenuItem) child);
                 } else if(child instanceof Submenu) {
                     encodeSubmenu(context, (Submenu) child);
-                }
+                } else if(child instanceof MultiColumnSubmenu) {
+					encodeMultiColumnSubmenu(context, (MultiColumnSubmenu) child);
+				}
 
                 writer.endElement("li");
             }
