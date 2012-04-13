@@ -41,7 +41,6 @@
 		  	</fieldset>
 
 		  	<fieldset>
-               <input id="file" type="file" name="file" />
                <mobi:camera />
                <img style="height:60px;width:65px;vertical-align:middle;" id="camera-thumb" >
 		  	</fieldset>
