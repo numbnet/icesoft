@@ -16,8 +16,12 @@
 
 <project name="spring-mvc-basic" default="web-profile">
 
+    <property name="no-icefaces" value="no-icefaces"/>
     <property file="./build.properties"/>
     <property file="../build/build.properties"/>
     <import file="../build/common.xml"/>
+
+    <patternset id="lib.distribute.application.mobi" includes="icemobile-jsp.jar">
+    </patternset>
 
 </project>
