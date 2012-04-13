@@ -104,6 +104,7 @@ public class BridgeSetup implements SystemEventListener {
         }
         //always add ICEfaces bridge code
         root.addComponentResource(context, new JavascriptResourceOutput(resourceHandler, "bridge.js", null, version), "head");
+        root.addComponentResource(context, new TestScript());
         //add custom scripts added by different component renderers
 
         List<UIComponent> bodyResources = getBodyResources(context);
@@ -375,7 +376,7 @@ public class BridgeSetup implements SystemEventListener {
         }
         addedResDeps.add(resDep);
         addMandatoryResource(facesContext, root, compClassName, resDep.name(),
-                resDep.library(), version, resDep.target(), collectedResourceComponents);
+                resDep.library(), version, "body", collectedResourceComponents);
     }
 
     private static void addMandatoryResource(FacesContext facesContext,
@@ -582,6 +583,20 @@ public class BridgeSetup implements SystemEventListener {
 
         public PhaseId getPhaseId() {
             return PhaseId.RESTORE_VIEW;
+        }
+    }
+
+    private static class TestScript extends UIOutput {
+        private TestScript() {
+            setTransient(true);
+        }
+
+        public void encodeBegin(FacesContext context) throws IOException {
+            ResponseWriter writer = context.getResponseWriter();
+            writer.startElement("script", this);
+            writer.writeAttribute("type", "text/javascript", null);
+            writer.write("document.documentElement.isHeadUpdateSuccessful=true;");
+            writer.endElement("script");
         }
     }
 }
