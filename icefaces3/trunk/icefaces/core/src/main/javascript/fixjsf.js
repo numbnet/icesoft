@@ -14,7 +14,6 @@
  * governing permissions and limitations under the License.
  */
 
-//fix for ICE-6481, effective only when the document found in the DOM update is not valid XML
 (function() {
     function globalEval(src) {
         if (window.execScript) {
@@ -56,6 +55,32 @@
 
     var scriptElementMatcher = /<script[^>]*>([\S\s]*?)<\/script>/igm;
     var client = Client();
+
+    //fix for ICE-6481, effective only when the document found in the DOM update is not valid XML
+    function extractAndEvaluateScripts(content) {
+        var scriptTags = content.match(scriptElementMatcher);
+        var scripts = collect(scriptTags, function(script) {
+            var src = extractSrcAttribute(script);
+            var code;
+            if (src) {
+                if (contains(document.scriptRefs, unescapeHtml(src))) {
+                    code = '';
+                } else {
+                    getSynchronously(client, src, noop, noop, function(response) {
+                        code = contentAsText(response);
+                    });
+                    append(document.scriptRefs, src);
+                }
+            } else {
+                code = unescapeHtml(extractTagContent('script', script));
+            }
+            return code;
+        });
+
+        //select only non empty scripts
+        each(select(scripts, identity), globalEval);
+    }
+
     //remember loaded script references
     document.scriptRefs = document.scriptRefs ? document.scriptRefs : [];
     onLoad(window, function() {
@@ -80,33 +105,30 @@
         document.documentElement.isHeadUpdateSuccessful = null;
     });
 
+    namespace.onBeforeUpdate(function(content) {
+        var headUpdate = detect(content.getElementsByTagName('extension'), function(update) {
+            return update.getAttribute('type') == 'javax.faces.ViewHead';
+        });
+
+        var originalDocumentWrite = document.write;
+        //disable document.write function since we don't evaluate the code while HTML is parsed
+        //by disabling the function we avoid page reloads caused by out of context document.write invocations
+        document.write = noop;
+
+        if (headUpdate) {
+            extractAndEvaluateScripts(headUpdate.firstChild.data);
+        }
+        //restore original function
+        document.write = originalDocumentWrite;
+    });
+
     namespace.onAfterUpdate(function(content) {
         var rootUpdate = findViewRootUpdate(content);
 
         //isHeadUpdateSuccessful property is set when a script element rendered in the head is properly evaluated
         if (rootUpdate && !document.documentElement.isHeadUpdateSuccessful) {
             var headContent = extractTagContent('head', rootUpdate.firstChild.data);
-            var scriptTags = headContent.match(scriptElementMatcher);
-            var scripts = collect(scriptTags, function(script) {
-                var src = extractSrcAttribute(script);
-                var code;
-                if (src) {
-                    if (contains(document.scriptRefs, unescapeHtml(src))) {
-                        code = '';
-                    } else {
-                        getSynchronously(client, src, noop, noop, function(response) {
-                            code = contentAsText(response);
-                        });
-                        append(document.scriptRefs, src);
-                    }
-                } else {
-                    code = unescapeHtml(extractTagContent('script', script));
-                }
-                return code;
-            });
-
-            //select only non empty scripts
-            each(select(scripts, identity), globalEval);
+            extractAndEvaluateScripts(headContent);
         } else {
             //clear the flag for the next update
             document.documentElement.isHeadUpdateSuccessful = null;
@@ -125,8 +147,8 @@
             var updatedElement = lookupElementById(id);
             if (updatedElement) {
                 each(updatedElement.getElementsByTagName('iframe'), function(iframe) {
-                    if( iframe && iframe.parentNode ) {
-                    	iframe.parentNode.removeChild(iframe);
+                    if (iframe && iframe.parentNode) {
+                        iframe.parentNode.removeChild(iframe);
                     }
                 });
             }

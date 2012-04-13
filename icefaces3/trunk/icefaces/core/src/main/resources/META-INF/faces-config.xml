@@ -71,6 +71,11 @@
             <system-event-class>javax.faces.event.PreRenderComponentEvent</system-event-class>
         </system-event-listener>
         <system-event-listener>
+            <system-event-listener-class>org.icefaces.impl.event.RestoreResourceDependencies
+            </system-event-listener-class>
+            <system-event-class>javax.faces.event.PreRenderComponentEvent</system-event-class>
+        </system-event-listener>
+        <system-event-listener>
             <system-event-listener-class>org.icefaces.impl.event.BridgeSetup</system-event-listener-class>
             <system-event-class>javax.faces.event.PreRenderComponentEvent</system-event-class>
         </system-event-listener>
