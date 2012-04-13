@@ -24,10 +24,6 @@ public class RestoreResourceDependencies implements SystemEventListener {
             public VisitResult visit(VisitContext context, UIComponent target) {
                 VisitResult result = VisitResult.ACCEPT;
                 Class<UIComponent> compClass = (Class<UIComponent>) target.getClass();
-                // Iterate over ResourceDependencies, ResourceDependency
-                // annotations, creating ResourceOutput components for
-                // each unique one, so they'll add the mandatory
-                // resources.
                 ResourceDependencies resourceDependencies = compClass.getAnnotation(ResourceDependencies.class);
                 if (resourceDependencies != null) {
                     for (ResourceDependency resDep : resourceDependencies.value()) {
