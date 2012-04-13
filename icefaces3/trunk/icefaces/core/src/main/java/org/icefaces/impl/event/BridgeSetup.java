@@ -246,7 +246,7 @@ public class BridgeSetup implements SystemEventListener {
                     //determine if windowScope map contains any beans during render phase -- this is when is certain
                     //that the beans were already instantiated
                     boolean sendDisposeWindow = !EnvUtils.isLazyWindowScope(context) ||
-                            (windowScope != null && EnvUtils.containsBeans(windowScope)) || (viewScope != null && EnvUtils.containsBeans(viewScope));
+                            (windowScope != null && EnvUtils.containsBeans(windowScope)) || (viewScope != null && EnvUtils.containsDisposedBeans(viewScope));
 
                     String clientID = getClientId(context);
                     writer.startElement("span", this);
