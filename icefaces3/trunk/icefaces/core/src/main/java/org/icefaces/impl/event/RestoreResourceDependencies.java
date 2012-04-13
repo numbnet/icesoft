@@ -31,19 +31,19 @@ public class RestoreResourceDependencies implements SystemEventListener {
                 ResourceDependencies resourceDependencies = compClass.getAnnotation(ResourceDependencies.class);
                 if (resourceDependencies != null) {
                     for (ResourceDependency resDep : resourceDependencies.value()) {
-                        addMandatoryResourceDependency(facesContext, resDep);
+                        addResourceDependency(facesContext, resDep);
                     }
                 }
                 ResourceDependency resourceDependency = compClass.getAnnotation(ResourceDependency.class);
                 if (resourceDependency != null) {
-                    addMandatoryResourceDependency(facesContext, resourceDependency);
+                    addResourceDependency(facesContext, resourceDependency);
                 }
                 return result;
             }
         });
     }
 
-    private void addMandatoryResourceDependency(FacesContext context, ResourceDependency resourceDependency) {
+    private void addResourceDependency(FacesContext context, ResourceDependency resourceDependency) {
         ResourceHandler resourceHandler = context.getApplication().getResourceHandler();
         String name = resourceDependency.name();
         String library = resourceDependency.library();
@@ -62,8 +62,7 @@ public class RestoreResourceDependencies implements SystemEventListener {
         public ResourceOutput() {
         }
 
-        public ResourceOutput(String rendererType, String name,
-                              String library) {
+        public ResourceOutput(String rendererType, String name, String library) {
             setRendererType(rendererType);
             if (name != null && name.length() > 0) {
                 getAttributes().put("name", name);
@@ -73,5 +72,4 @@ public class RestoreResourceDependencies implements SystemEventListener {
             }
         }
     }
-
 }
