@@ -14,7 +14,7 @@
  * governing permissions and limitations under the License.
   -->
 
-<project name="icemobile-jsp" default="jar" basedir=".">
+<project name="icemobile-jsp" default="all" basedir=".">
 
     <property file="local.properties"/>
     <property file="../build.properties"/>
@@ -58,6 +58,9 @@
         <compile/>
     </target>
 
+    <target name="all" depends="jar" description="build all">
+    </target>
+
     <target name="jar" depends="compile" description="fill the jar">
         <jar destfile="${dist.dir}/${jar.file.name}" duplicate="fail">
             <fileset dir="${build.dir}/classes">
@@ -83,6 +86,10 @@
             </manifest>
         </jar>			
         <antcall target="clean.product.info"/>
+
+        <copy file="${dist.dir}/${jar.file.name}" todir="${lib.dir}"
+              overwrite="true"/>
+
     </target>
 
 	<macrodef name="compile">
