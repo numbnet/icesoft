@@ -95,7 +95,9 @@
         <exclude name="el-api.jar"         if="noelapi" />
         <exclude name="jstl.jar"           if="serverjsf" />
         <exclude name="xercesImpl.jar"     if="websphere6"/>
+        <exclude name="xercesImpl.jar"     if="websphere8" />
         <exclude name="xml-apis.jar"       if="websphere6" />
+        <exclude name="xml-apis.jar"       if="websphere8" />
         <exclude name="xercesImpl.jar"     if="jsf12" />
         <exclude name="xercesImpl.jar"     if="serverel" />
         <exclude name="xml-apis.jar"       if="jsf12" />
@@ -131,9 +133,13 @@
         <include name="jsf-api.jar"  unless="myfaces" />
         <include name="jsf-impl.jar" unless="myfaces" />
         <exclude name="jsf-api.jar"      if="jsf12" />
+        <exclude name="jsf-api.jar"      if="websphere8" />
         <exclude name="jsf-impl.jar"     if="jsf12" />
+        <exclude name="jsf-impl.jar"     if="websphere8" />
         <include name="jsf-api-1.2.jar"  if="jsf12" unless="myfaces"/>
+        <exclude name="jsf-api-1.2.jar"  if="websphere8" />
         <include name="jsf-impl-1.2.jar" if="jsf12" unless="myfaces"/>
+        <exclude name="jsf-impl-1.2.jar" if="websphere8" />
         <exclude name="*.jar" if="serverjsf" />
     </patternset>
 
@@ -392,7 +398,7 @@ Combinations:
         </antcall>
 	</target>
     
-    <target name="websphere6.1" description="IBM Websphere 6.1">
+    <target name="websphere6.1" description="IBM WebSphere Application Server 6.1">
 	       <antcall target="build.war">
             <param name="websphere6" value=""/>
         </antcall>
@@ -415,18 +421,25 @@ Combinations:
     </target>
     -->
 	
-	<target name="websphere6.0" description="IBM Websphere 6.0.2">
+	<target name="websphere6.0" description="IBM WebSphere Application Server 6.0.2">
         <antcall target="build.war">
             <param name="websphere6" value=""/>
         </antcall>	
 	</target>
-    <target name="websphere7" description="IBM Websphere 7">
+    <target name="websphere7" description="IBM WebSphere Application Server 7">
 	       <antcall target="build.war">
             <param name="websphere6" value=""/>
 			<param name="noelapi" value="" />
 			<param name="noelri" value=""/>
         </antcall>
-	</target>	
+    </target>	
+    <target name="websphere8" description="IBM WebSphere Application Server 8">
+        <antcall target="build.war">
+            <param name="websphere8" value="" />
+            <param name="noelapi" value="" />
+            <param name="noelri" value="" />
+        </antcall>
+    </target>
     <target name="tomcat6.0" description="build war file for Tomcat 6.0">
         <antcall target="build.war">
             <param name="jsf12" value=""/>
