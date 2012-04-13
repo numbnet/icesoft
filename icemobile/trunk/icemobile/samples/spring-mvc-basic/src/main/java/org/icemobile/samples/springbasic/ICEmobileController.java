@@ -35,7 +35,7 @@ public class ICEmobileController {
 	}
 
 	@RequestMapping(method=RequestMethod.POST)
-	public void processUpload(HttpServletRequest request, ModelBean modelBean, @RequestParam(value = "camera-file", required = false) MultipartFile file, @RequestParam(value = "file", required = false) MultipartFile inputFile, Model model) throws IOException {
+	public void processUpload(HttpServletRequest request, ModelBean modelBean, @RequestParam(value = "camera-file", required = false) MultipartFile file, @RequestParam(value = "camera", required = false) MultipartFile inputFile, Model model) throws IOException {
         String fileName = "empty";
         if (null != file)  {
             fileName = file.getOriginalFilename();
