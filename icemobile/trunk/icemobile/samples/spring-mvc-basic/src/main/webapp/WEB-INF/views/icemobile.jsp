@@ -1,6 +1,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://www.springframework.org/tags" prefix="s" %>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
+<%@ taglib uri="http://www.icemobile.org/tags" prefix="mobi" %>
 <%@ page session="false" %>
 <c:if test="${!ajaxRequest}">
 <html>
@@ -41,9 +42,7 @@
 
 		  	<fieldset>
                <input id="file" type="file" name="file" />
-               <input type="button" id="camera" class="camera"
-                   onclick="ice.camera('camera');"
-                   value="camera">
+               <mobi:camera />
                <img style="height:60px;width:65px;vertical-align:middle;" id="camera-thumb" >
 		  	</fieldset>
 

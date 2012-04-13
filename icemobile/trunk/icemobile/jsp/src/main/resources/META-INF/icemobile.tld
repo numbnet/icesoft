@@ -22,7 +22,7 @@
 	<display-name>ICEmobile JSP Tag Library</display-name>
     <tlib-version>2.0.0</tlib-version>
     <short-name>icemobile</short-name>
-    <uri>http://www.icesoft.org/icemobile/jsp/icemobile.tld</uri>
+    <uri>http://www.icemobile.org/tags</uri>
     <tag>
         <description>Capture image with device camera.</description>
         <display-name>ICEmobile Camera</display-name>
