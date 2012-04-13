@@ -21,6 +21,7 @@ import org.icefaces.impl.push.servlet.ICEpushResourceHandler;
 import org.icefaces.impl.push.servlet.ProxyHttpServletRequest;
 import org.icefaces.impl.push.servlet.ProxyHttpServletResponse;
 import org.icefaces.impl.push.servlet.ProxySession;
+import org.icefaces.bean.WindowDisposed;
 
 import javax.faces.application.Resource;
 import javax.faces.component.UIViewRoot;
@@ -656,6 +657,19 @@ public class EnvUtils {
         }
         return false;
     }
+
+    public static boolean containsDisposedBeans(Map<String, Object> scopeMap) {
+        //skip the objects saved in the map by ICEfaces framework while testing for the existence of beans
+        for (Map.Entry entry : scopeMap.entrySet()) {
+            String key = (String) entry.getKey();
+            Object value = entry.getValue();
+            if (value.getClass().isAnnotationPresent(WindowDisposed.class)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 }
 
 class EnvConfig {
