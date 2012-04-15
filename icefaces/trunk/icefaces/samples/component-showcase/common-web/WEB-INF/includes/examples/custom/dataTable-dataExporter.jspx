@@ -54,6 +54,7 @@ with more data than can be displayed in a single page.
             <f:selectItem itemLabel="Select a type" itemValue=""/>
             <f:selectItem itemLabel="MS Excel" itemValue="excel"/>
             <f:selectItem itemLabel="CSV (comma separated values)" itemValue="csv"/>
+            <f:selectItem itemLabel="PDF" itemValue="pdf"/>
         </ice:selectOneMenu>
         <br/>
        <ice:panelGroup effect="#{dataExporter.changeEffect}" style="width:180px;">
