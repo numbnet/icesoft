@@ -1,6 +1,6 @@
                      COMPONENT SHOWCASE GETTING STARTED GUIDE
                            
-                         (www.icefaces.org)
+                         (www.icesoft.org)
 --------------------------------------------------------------------------------
 
 TOPICS (DEVELOPER NOTES)
@@ -72,4 +72,9 @@ ICEfaces component can be configured to run in the respective environment.
    that you used the ant property -DisJDK16 to exclude the JAXB libraries from
    the component-showcase.war
 
+   The ice:dataExporter PDF exporter requires the 3rd party iText-2.1.7.jar. This 
+   jar is not included in the the ICEfaces release bundle due to its LGPL license.
+   If you wish to use the PDF export function, you must first source the appropriate
+   itext-2.x.x.jar and copy it in to the icefaces/samples/component-showcase/lib dir.
+   
 
