@@ -43,6 +43,7 @@
 		  	<fieldset>
                <mobi:camera />
                <img style="height:60px;width:65px;vertical-align:middle;" id="camera-thumb" >
+               <img style="float:right;height:120px;width:120px;" src="resources/uploaded.jpg" >
 		  	</fieldset>
 
 			<fieldset class="checkbox">

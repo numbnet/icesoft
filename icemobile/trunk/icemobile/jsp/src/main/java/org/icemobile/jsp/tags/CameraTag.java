@@ -19,10 +19,7 @@ package org.icemobile.jsp.tags;
 
 import javax.servlet.jsp.tagext.SimpleTagSupport;
 import javax.servlet.jsp.PageContext;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.Cookie;
 
-import java.util.Arrays;
 import java.io.Writer;
 import java.io.IOException;
 
@@ -30,31 +27,18 @@ public class CameraTag extends SimpleTagSupport {
 
     public void doTag() throws IOException {
         PageContext pageContext = (PageContext) getJspContext();
-        boolean isEnhanced = isEnhancedBrowser(pageContext);
+        boolean isEnhanced = TagUtil.isEnhancedBrowser(pageContext);
         Writer out = pageContext.getOut();
         if (isEnhanced)  {
             out.write("<input type='button' id='camera' class='camera' onclick='ice.camera(\"camera\");' value='camera'>");
         } else {
             out.write("<input id='camera' type='file' name='camera' />");
+            //or for iOS until we can store the ICEmobile-SX registration
+            //without a session (likely a cookie)
+            out.write("<input type='button' id='camerasx' class='camera' onclick='");
+            out.write(TagUtil.getICEmobileSXScript(pageContext, "camera", "camera"));
+            out.write("' value='camera (ICEmobile-SX)'>");
         }
     }
 
-    private static String USER_AGENT_COOKIE = "com.icesoft.user-agent";
-    private static String HYPERBROWSER = "HyperBrowser";
-
-    public static boolean isEnhancedBrowser(PageContext pageContext) {
-        HttpServletRequest request = (HttpServletRequest) 
-                pageContext.getRequest();
-        Cookie[] cookies = request.getCookies();
-        if (null == cookies)  {
-            return false;
-        }
-        for (int i = 0; i < cookies.length; i++)  {
-            if ( USER_AGENT_COOKIE.equals(cookies[i].getName()) &&
-                 cookies[i].getValue().startsWith(HYPERBROWSER)) {
-            return true;
-            }
-        }
-        return false;
-    }
 }
