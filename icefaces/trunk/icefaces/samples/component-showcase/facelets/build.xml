@@ -111,8 +111,12 @@
             <fileset dir="${icefaces.lib.dir}">
                 <patternset refid="faclets.jars"/>
             </fileset>
+
+            <fileset dir="${proj.war.lib.dir}" includes="itext-*.jar" />
+
             <!--<fileset dir="${proj.war.lib.dir}" includes="*.jar"/>-->
         </copy>
+        
         <build.war web.xml="./web/WEB-INF/web.xml">
             <add.filesets>
                 <fileset dir="../common-web"/>
