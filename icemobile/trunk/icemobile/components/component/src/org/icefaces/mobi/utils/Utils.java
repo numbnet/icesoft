@@ -423,19 +423,13 @@ public class Utils {
         File dirFile = new File(folder);
         File newFile = new File(dirFile, fileName);
 
-        File tempDir = (File) ( request.getServletContext()
-                .getAttribute(TEMP_DIR) );
-        File tempFile = File.createTempFile("ice", ".tmp", tempDir);
-        FileOutputStream tempStream = new FileOutputStream(tempFile);
-
         boolean success = false;
         if (!dirFile.exists()) {
             success = dirFile.mkdirs();
         }
         try {
-            InputStream partStream = part.getInputStream();
-            copyStream(partStream, tempStream);
-            tempFile.renameTo(newFile);
+            copyStream( part.getInputStream(), 
+                    new FileOutputStream(newFile) );
         } catch (IOException e) {
             logger.log(Level.WARNING, "Error writing uploaded file to disk ", e);
         }
