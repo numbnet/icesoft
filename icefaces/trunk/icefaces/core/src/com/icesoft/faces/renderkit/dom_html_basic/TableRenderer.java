@@ -135,7 +135,7 @@ public class TableRenderer extends DomBasicRenderer {
             scrollState.setAttribute("name", inputID);
             scrollState.setAttribute("type", "hidden");
             scrollState.setAttribute("value", Integer.toString(scrollPosition));
-            bodyDiv.setAttribute("onscroll", "var input = document.getElementById('" + inputID + "'); clearTimeout(ice.pid); ice.pid = setTimeout(function() { input.value = document.getElementById('" + id + "').scrollTop; window.iceSubmitPartial(null, input, event); }, 400);");
+            bodyDiv.setAttribute("onscroll", "var input = document.getElementById('" + inputID + "'); clearTimeout(Ice.pid); Ice.pid = setTimeout(function() { input.value = document.getElementById('" + id + "').scrollTop; window.iceSubmitPartial(null, input, event); }, 400);");
 
             Element scrollInitializeWrapper = (Element) bodyDiv.appendChild(domContext.createElement("span"));
             scrollInitializeWrapper.setAttribute("id", id + "_initialize");
