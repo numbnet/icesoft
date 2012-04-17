@@ -52,6 +52,7 @@ import javax.faces.event.AbortProcessingException;
 import javax.faces.event.FacesEvent;
 import java.io.IOException;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 public class PanelTooltip extends PanelPopup {
 
@@ -66,6 +67,7 @@ public class PanelTooltip extends PanelPopup {
             "com.icesoft.faces.PanelTooltipRenderer";
 
     public static String ICE_TOOLTIP_INFO = "iceTooltipInfo";
+    private static final Pattern PX = Pattern.compile("px");
 
     private Integer hoverDelay;
 
@@ -213,7 +215,7 @@ public class PanelTooltip extends PanelPopup {
             if (getState().equals("show")) {
                 updatedStyle = CustomComponentUtils.setPropertyValue(updatedStyle, "top", getTooltipY(), true);
                 updatedStyle = CustomComponentUtils.setPropertyValue(updatedStyle, "left", getTooltipX(), true);
-                JavascriptContext.addJavascriptCall(facesContext, "ToolTipPanelPopupUtil.showPopup('" + root.getAttribute("id") + "'," + getTooltipX().replace("px", "") + "," + getTooltipY().replace("px", "") + ");");
+                JavascriptContext.addJavascriptCall(facesContext, "ToolTipPanelPopupUtil.showPopup('" + root.getAttribute("id") + "'," + PX.matcher(getTooltipX()).replaceAll("") + "," + PX.matcher(getTooltipY()).replaceAll("") + ");");
             }
         }
 
