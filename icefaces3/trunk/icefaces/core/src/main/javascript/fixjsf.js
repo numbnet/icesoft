@@ -36,9 +36,14 @@
         }
     }
 
+    function extractAttributeValue(html, name, defaultValue) {
+        var re = new RegExp(name + '="([\\S]*?)"', 'im');
+        var result = html.match(re);
+        return result ? result[1] : defaultValue;
+    }
+
     function extractSrcAttribute(html) {
-        var result = html.match(/src="([\S]*?)"/im);
-        return result ? result[1] : null;
+        return extractAttributeValue(html, 'src');
     }
 
     function unescapeHtml(text) {
@@ -53,45 +58,82 @@
         }
     }
 
-    var scriptElementMatcher = /<script[^>]*>([\S\s]*?)<\/script>/igm;
     var client = Client();
 
     //fix for ICE-6481, effective only when the document found in the DOM update is not valid XML
+    var scriptElementMatcher = /<script[^>]*>([\S\s]*?)<\/script>/igm;
+
     function extractAndEvaluateScripts(content) {
         var scriptTags = content.match(scriptElementMatcher);
-        var scripts = collect(scriptTags, function(script) {
-            var src = extractSrcAttribute(script);
-            var code;
-            if (src) {
-                if (contains(document.scriptRefs, unescapeHtml(src))) {
-                    code = '';
+        if (scriptTags) {
+            var scripts = collect(scriptTags, function(script) {
+                var src = extractSrcAttribute(script);
+                var code;
+                if (src) {
+                    if (contains(document.scriptRefs, unescapeHtml(src))) {
+                        code = '';
+                    } else {
+                        getSynchronously(client, src, noop, noop, function(response) {
+                            code = contentAsText(response);
+                        });
+                        append(document.scriptRefs, src);
+                    }
                 } else {
-                    getSynchronously(client, src, noop, noop, function(response) {
-                        code = contentAsText(response);
-                    });
-                    append(document.scriptRefs, src);
+                    code = unescapeHtml(extractTagContent('script', script));
                 }
-            } else {
-                code = unescapeHtml(extractTagContent('script', script));
-            }
-            return code;
-        });
+                return code;
+            });
 
-        //select only non empty scripts
-        each(select(scripts, identity), globalEval);
+            //select only non empty scripts
+            each(select(scripts, identity), globalEval);
+        }
+    }
+
+    var linkElementMatcher = /<link[^>]*>/igm;
+
+    function extractAndAppendStyles(content) {
+        var linkTags = content.match(linkElementMatcher);
+        if (linkTags) {
+            each(linkTags, function(link) {
+                if (extractAttributeValue(link, 'type') == 'text/css') {
+                    var src = extractAttributeValue(link, 'href');
+                    if (src && not(contains(document.linkRefs, unescapeHtml(src)))) {
+                        var headElement = document.getElementsByTagName("head")[0];
+                        var linkElement = document.createElement('link');
+                        linkElement.type = 'text/css';
+                        linkElement.rel = 'stylesheet';
+                        linkElement.href = src;
+                        linkElement.media = extractAttributeValue('media', 'screen');
+                        headElement.appendChild(linkElement);
+                        //add link to the list of CSS resources that have been loaded
+                        append(document.linkRefs, src);
+                    }
+                }
+            });
+        }
     }
 
     //remember loaded script references
     document.scriptRefs = document.scriptRefs ? document.scriptRefs : [];
-    onLoad(window, function() {
-        var scriptElements = document.documentElement.getElementsByTagName('script');
-        inject(scriptElements, document.scriptRefs, function(result, s) {
-            var src = s.getAttribute('src');
+    document.linkRefs = document.linkRefs ? document.linkRefs : [];
+    function createResourceMatching(attribute) {
+        return function(result, s) {
+            var src = s.getAttribute(attribute);
             if (src) {
                 append(result, src);
             }
             return result;
-        });
+        };
+    }
+
+    onLoad(window, function() {
+        var scriptElements = document.documentElement.getElementsByTagName('script');
+        inject(scriptElements, document.scriptRefs, createResourceMatching('src'));
+    });
+
+    onLoad(window, function() {
+        var linkElements = document.documentElement.getElementsByTagName('link');
+        inject(linkElements, document.linkRefs, createResourceMatching('href'));
     });
 
     function findViewRootUpdate(content) {
@@ -116,7 +158,9 @@
         document.write = noop;
 
         if (headUpdate) {
-            extractAndEvaluateScripts(headUpdate.firstChild.data);
+            var innerContent = headUpdate.firstChild.data;
+            extractAndEvaluateScripts(innerContent);
+            extractAndAppendStyles(innerContent);
         }
         //restore original function
         document.write = originalDocumentWrite;
