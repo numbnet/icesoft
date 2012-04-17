@@ -25,47 +25,34 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import javax.faces.application.ProjectStage;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIViewRoot;
 import javax.faces.component.visit.VisitCallback;
 import javax.faces.component.visit.VisitContext;
 import javax.faces.component.visit.VisitHint;
 import javax.faces.component.visit.VisitResult;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ExternalContext;
-import javax.faces.context.FacesContext;
-import javax.faces.context.PartialResponseWriter;
-import javax.faces.context.PartialViewContext;
-import javax.faces.context.PartialViewContextWrapper;
-import javax.faces.context.ResponseWriter;
+import javax.faces.context.*;
 import javax.faces.event.PhaseId;
-import javax.faces.application.ProjectStage;
 import java.io.IOException;
-import java.io.Writer;
 import java.io.StringWriter;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.EnumSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.HashMap;
-import java.util.regex.Pattern;
-import java.util.regex.Matcher;
+import java.io.Writer;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class DOMPartialViewContext extends PartialViewContextWrapper {
     private static final String JAVAX_FACES_VIEW_HEAD = "javax.faces.ViewHead";
     private static final String JAVAX_FACES_VIEW_BODY = "javax.faces.ViewBody";
     private static final Logger log = Logger.getLogger(DOMPartialViewContext.class.getName());
     private static final Pattern SPACE_SEPARATED = Pattern.compile("[ ]+");
-    private static final Pattern OPTION_TAG = 
+    private static final Pattern OPTION_TAG =
             Pattern.compile("<option ([^>]*)>");
-    private static final Pattern OPTION_VALUE = 
+    private static final Pattern OPTION_VALUE =
             Pattern.compile("value=\"([^\"]*)\"");
-    private static final Pattern OPTION_SELECTED = 
+    private static final Pattern OPTION_SELECTED =
             Pattern.compile("(selected=\"[^\"]*\")");
     public static final String CUSTOM_UPDATE = "ice.customUpdate";
 
@@ -79,7 +66,7 @@ public class DOMPartialViewContext extends PartialViewContextWrapper {
         this.wrapped = partialViewContext;
         this.facesContext = facesContext;
         String diffConfigString = EnvUtils.getDiffConfig(facesContext);
-        if (null != diffConfigString)  {
+        if (null != diffConfigString) {
             diffConfig = new DOMUtils.DiffConfig(diffConfigString);
         }
     }
@@ -112,14 +99,14 @@ public class DOMPartialViewContext extends PartialViewContextWrapper {
             wrapped.processPartial(phaseId);
             return;
         }
-        if (!isRenderAll() && !EnvUtils.isSubtreeDiff(facesContext))  {
+        if (!isRenderAll() && !EnvUtils.isSubtreeDiff(facesContext)) {
             wrapped.processPartial(phaseId);
             return;
         }
         ExternalContext ec = facesContext.getExternalContext();
         String customUpdate = ec.getRequestParameterMap().get(CUSTOM_UPDATE);
         //custom update set for entire response
-        if ("true".equals(customUpdate))  {
+        if ("true".equals(customUpdate)) {
             wrapped.processPartial(phaseId);
             return;
         }
@@ -163,7 +150,7 @@ public class DOMPartialViewContext extends PartialViewContextWrapper {
                     writer.startSubtreeRendering();
                     Collection<String> renderIds = getRenderIds();
                     customIds = getCustomIds(customUpdate);
-                    if (null != customIds)  {
+                    if (null != customIds) {
                         renderIds.removeAll(customIds);
                     }
                     if (renderIds == null || renderIds.isEmpty()) {
@@ -175,7 +162,7 @@ public class DOMPartialViewContext extends PartialViewContextWrapper {
                 }
 
                 partialWriter.startDocument();
-                if (null != customIds)  {
+                if (null != customIds) {
                     customRenderSubtrees(viewRoot, customIds);
                 }
 
@@ -184,32 +171,37 @@ public class DOMPartialViewContext extends PartialViewContextWrapper {
                     writeXMLPreamble(outputWriter);
                     DOMUtils.printNodeCDATA(newDOM.getDocumentElement(), outputWriter);
                     partialWriter.endUpdate();
-                } else if (null != diffs)  {
-                    for (DOMUtils.EditOperation op : diffs)  {
+                } else if (null != diffs) {
+                    for (DOMUtils.EditOperation op : diffs) {
 
-                        //client throws error on receving an update for the 'head' element
+                        //client throws error on receiving an update for the 'head' element
                         //avoid sending 'head' tag to not compromise the other updates
                         //todo: remove this test once the 'head' updates are applied by the client
                         String tagName = "";
-                        if ( (null != op.element) && 
-                             (op.element instanceof Element) )  {
+                        if ((null != op.element) &&
+                                (op.element instanceof Element)) {
                             tagName = ((Element) op.element).getTagName();
                         }
-                        if ( ("head".equalsIgnoreCase(tagName)) ||
-                            (JAVAX_FACES_VIEW_HEAD.equals(op.id)) )  {
-                            continue;
-                        }
-                        if (op instanceof DOMUtils.InsertOperation)  {
+                        if (("head".equalsIgnoreCase(tagName)) ||
+                                (JAVAX_FACES_VIEW_HEAD.equals(op.id))) {
+                            HashMap<String, String> attributes = new HashMap();
+                            attributes.put("type", JAVAX_FACES_VIEW_HEAD);
+                            partialWriter.startExtension(attributes);
+                            partialWriter.startCDATA();
+                            DOMUtils.printNodeCDATA(op.element, partialWriter);
+                            partialWriter.endCDATA();
+                            partialWriter.endExtension();
+                        } else if (op instanceof DOMUtils.InsertOperation) {
                             partialWriter.startInsertAfter(op.id);
                             DOMUtils.printNodeCDATA(op.element, outputWriter);
                             partialWriter.endInsert();
-                        } else if (op instanceof DOMUtils.DeleteOperation)  {
+                        } else if (op instanceof DOMUtils.DeleteOperation) {
                             partialWriter.delete(op.id);
-                        } else if (op instanceof DOMUtils.ReplaceOperation)  {
+                        } else if (op instanceof DOMUtils.ReplaceOperation) {
                             //we allow for the case where the "element" is a
                             //text node generated by means other than DOM diff
                             String updateId = op.id;
-                            if (null == op.id)  {
+                            if (null == op.id) {
                                 updateId = getUpdateId((Element) op.element);
                             }
                             partialWriter.startUpdate(updateId);
@@ -256,7 +248,7 @@ public class DOMPartialViewContext extends PartialViewContextWrapper {
         }
     }
 
-    private Collection<String> getCustomIds(String idList)  {
+    private Collection<String> getCustomIds(String idList) {
         if (null == idList) {
             return null;
         } else {
@@ -370,9 +362,9 @@ public class DOMPartialViewContext extends PartialViewContextWrapper {
                     //string as the default so we guard against that.
                     String value = "";
                     Object rawValue = parameters.get(id);
-                    if( rawValue != null){
-                        if(rawValue instanceof String[]){
-                            value =  ((String[])rawValue)[0];
+                    if (rawValue != null) {
+                        if (rawValue instanceof String[]) {
+                            value = ((String[]) rawValue)[0];
                         }
                     }
                     //empty string is implied (default) when 'value' attribute is missing
@@ -467,7 +459,7 @@ public class DOMPartialViewContext extends PartialViewContextWrapper {
 
                 //if we cannot loop through optionElements, we must have
                 //just a text node
-                if (0 == optionElementsLength)  {
+                if (0 == optionElementsLength) {
                     Node optionBodyNode = selectElement.getFirstChild();
                     String optionBody = optionBodyNode.getNodeValue();
 
@@ -475,30 +467,30 @@ public class DOMPartialViewContext extends PartialViewContextWrapper {
                     String SELECTED = "selected=\"true\"";
                     Matcher tagMatcher = OPTION_TAG.matcher(optionBody);
                     StringBuffer outBuffer = new StringBuffer();
-                    while (tagMatcher.find())  {
+                    while (tagMatcher.find()) {
                         String optionTag = tagMatcher.group(0);
                         Matcher valueMatcher = OPTION_VALUE.matcher(optionTag);
-                        Matcher selectedMatcher = 
+                        Matcher selectedMatcher =
                                 OPTION_SELECTED.matcher(optionTag);
                         String valuePair = null;
                         String value = null;
                         String selected = null;
-                        if (valueMatcher.find())  {
+                        if (valueMatcher.find()) {
                             valuePair = valueMatcher.group(0);
                             value = valueMatcher.group(1);
                         }
-                        if (selectedMatcher.find())  {
+                        if (selectedMatcher.find()) {
                             selected = selectedMatcher.group(1);
                             SELECTED = selected;
                         }
 
                         if (values.contains(value)) {
-                            if (null == selected)  {
-                                optionTag = optionTag.replace(valuePair, 
+                            if (null == selected) {
+                                optionTag = optionTag.replace(valuePair,
                                         valuePair + " " + SELECTED);
                             }
                         } else {
-                            if (null != selected)  {
+                            if (null != selected) {
                                 optionTag = optionTag.replace(
                                         " " + selected, "");
                             }
@@ -566,8 +558,8 @@ class DOMPartialRenderCallback implements VisitCallback {
     private boolean exception;
 
 
-    public DOMPartialRenderCallback(DOMUtils.DiffConfig diffConfig, 
-            FacesContext facesContext) {
+    public DOMPartialRenderCallback(DOMUtils.DiffConfig diffConfig,
+                                    FacesContext facesContext) {
         this.facesContext = facesContext;
         this.diffs = new ArrayList<DOMUtils.EditOperation>();
         this.exception = false;
@@ -576,25 +568,25 @@ class DOMPartialRenderCallback implements VisitCallback {
 
     public VisitResult visit(VisitContext visitContext, UIComponent component) {
         FacesContext facesContext = visitContext.getFacesContext();
-        boolean isDevMode = 
+        boolean isDevMode =
                 !facesContext.isProjectStage(ProjectStage.Production);
         String clientId = component.getClientId(facesContext);
         DOMResponseWriter domWriter = (DOMResponseWriter)
                 facesContext.getResponseWriter();
         Node oldSubtree = domWriter.seekSubtree(clientId);
-        if (null == oldSubtree)  {
+        if (null == oldSubtree) {
             log.fine("DOM Subtree rendering for " + clientId +
-                " could not be found and is reverting to standard rendering.");
+                    " could not be found and is reverting to standard rendering.");
             ResponseWriter originalWriter = facesContext.getResponseWriter();
             StringWriter stringWriter = new StringWriter();
             ResponseWriter captureWriter = facesContext.getRenderKit()
-                .createResponseWriter(stringWriter,
-                    originalWriter.getContentType(), 
-                    originalWriter.getCharacterEncoding() );
+                    .createResponseWriter(stringWriter,
+                            originalWriter.getContentType(),
+                            originalWriter.getCharacterEncoding());
             facesContext.setResponseWriter(captureWriter);
             try {
                 component.encodeAll(facesContext);
-            } catch (IOException e)  {
+            } catch (IOException e) {
                 exception = true;
                 if (log.isLoggable(Level.SEVERE)) {
                     log.log(Level.SEVERE, "Subtree rendering failed for " +
@@ -602,10 +594,10 @@ class DOMPartialRenderCallback implements VisitCallback {
                 }
             }
             facesContext.setResponseWriter(originalWriter);
-            DOMUtils.ReplaceOperation replaceOp = 
-                new DOMUtils.ReplaceOperation( clientId,
-                    domWriter.getDocument()
-                    .createTextNode(stringWriter.toString()) );
+            DOMUtils.ReplaceOperation replaceOp =
+                    new DOMUtils.ReplaceOperation(clientId,
+                            domWriter.getDocument()
+                                    .createTextNode(stringWriter.toString()));
             diffs.add(replaceOp);
             return VisitResult.REJECT;
         }
@@ -614,31 +606,31 @@ class DOMPartialRenderCallback implements VisitCallback {
             Node newSubtree = domWriter.getDocument().getElementById(clientId);
             //these should be non-overlapping by application design
             if (log.isLoggable(Level.FINEST)) {
-                log.finest("Subtree rendering for " + clientId + 
-                " oldSubtree: " + oldSubtree + " newSubtree: " + newSubtree);
+                log.finest("Subtree rendering for " + clientId +
+                        " oldSubtree: " + oldSubtree + " newSubtree: " + newSubtree);
             }
             if (null == oldSubtree) {
                 //ReplaceOperation may be discarded by the client
                 //and likely indicates an application design flaw
-                if (null != newSubtree)  {
+                if (null != newSubtree) {
                     diffs.add(new DOMUtils.ReplaceOperation(newSubtree));
                 }
-                if (isDevMode)  {
+                if (isDevMode) {
                     log.warning("Subtree rendering " + clientId +
-                        " which not exist on client and replace may fail.");
+                            " which not exist on client and replace may fail.");
                 }
             } else {
-                if (null != newSubtree)  {
+                if (null != newSubtree) {
                     //typical case
-                    diffs.addAll((DOMUtils.nodeDiff(diffConfig, 
+                    diffs.addAll((DOMUtils.nodeDiff(diffConfig,
                             oldSubtree, newSubtree)));
                 } else {
                     //delete component no longer rendered, but there is now
                     //no way to add it again
                     diffs.add(new DOMUtils.DeleteOperation(clientId));
-                    if (isDevMode)  {
+                    if (isDevMode) {
                         log.warning("Subtree rendering deleting " + clientId +
-                            " and subsequent updates may fail.");
+                                " and subsequent updates may fail.");
                     }
                 }
             }
@@ -682,10 +674,10 @@ class CustomPartialRenderCallback implements VisitCallback {
 
             ResponseWriter originalWriter = facesContext.getResponseWriter();
             ResponseWriter updateWriter = facesContext.getRenderKit()
-                .createResponseWriter(
-                    facesContext.getExternalContext().getResponseOutputWriter(),
-                    originalWriter.getContentType(), 
-                    originalWriter.getCharacterEncoding() );
+                    .createResponseWriter(
+                            facesContext.getExternalContext().getResponseOutputWriter(),
+                            originalWriter.getContentType(),
+                            originalWriter.getCharacterEncoding());
             facesContext.setResponseWriter(updateWriter);
             Map extensionAttributes = new HashMap();
             extensionAttributes.put("id", clientId);
@@ -698,8 +690,7 @@ class CustomPartialRenderCallback implements VisitCallback {
             updateWriter.startCDATA();
             try {
                 component.encodeAll(facesContext);
-            }
-            catch (Exception x) {
+            } catch (Exception x) {
                 if (log.isLoggable(Level.SEVERE)) {
                     log.log(Level.SEVERE, "Subtree rendering failed for " +
                             component.getClass() + " " + clientId, x);
