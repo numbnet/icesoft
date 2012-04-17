@@ -115,5 +115,14 @@
         </antcall>
     </target>
 
+    <target name="build.portlet.weblogic10.portal.war" description="build a portlet application for WebLogic 10 portal">
+        <antcall target="build.portlet" >
+            <param name="comp.xml" value="./conf/${general.xml}"/>
+            <param name="jsf12" value=""/>
+            <param name="serverjsf" value=""/>
+        </antcall>
+    </target>
+
+
 </project>
 

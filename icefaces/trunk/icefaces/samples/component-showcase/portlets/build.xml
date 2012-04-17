@@ -184,6 +184,14 @@
         </antcall>
     </target>
 
+    <target name="weblogic10.portal" description="build a portlet application for WebLogic 10 portal">
+        <antcall target="build.portlet.war" >
+            <param name="comp.xml" value="./conf/web.sunri.icefaces.portlet.xml"/>
+            <param name="jsf12" value=""/>
+            <param name="serverjsf" value=""/>
+        </antcall>
+    </target>
+
     <!--
     <target name="build.facelet.ear" description="facelets version for Seam" depends="build.facelet.war">
         <copy todir="conf" preservelastmodified="true">
