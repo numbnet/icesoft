@@ -77,5 +77,18 @@ public class ExporterColumn extends ComponentExampleImpl<ExporterColumn> impleme
 	public String[] getIncludedColumns() { return includedColumns; }
 	public String getColumnString() { return FacesUtils.join(includedColumns); }
 	
-	public void setIncludedColumns(String[] includedColumns) { this.includedColumns = includedColumns; }
+	public void setIncludedColumns(String[] includedColumns) {
+        // We can get includedColumns unsorted. Want it sorted by sequence in availableColumns
+        int index = 0;
+        this.includedColumns = new String[includedColumns.length];
+        for (SelectItem si : availableColumns) {
+            String val = si.getValue().toString();
+            for (String inc : includedColumns) {
+                if (val.equals(inc)) {
+                    this.includedColumns[index++] = val;
+                    break;
+                }
+            }
+        }
+    }
 }

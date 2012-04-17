@@ -56,10 +56,12 @@ public class ExporterType extends ComponentExampleImpl<ExporterType> implements 
 	
 	private static final String TYPE_EXCEL = "excel";
 	private static final String TYPE_CSV = "csv";
-	
+    private static final String TYPE_PDF = "pdf";
+
 	private SelectItem[] availableTypes = new SelectItem[] {
 	    new SelectItem(TYPE_EXCEL, "Excel"),
-	    new SelectItem(TYPE_CSV, "CSV")
+	    new SelectItem(TYPE_CSV, "CSV"),
+        new SelectItem(TYPE_PDF, "PDF")
 	};
 	private String type = availableTypes[0].getValue().toString();
 	
@@ -69,7 +71,13 @@ public class ExporterType extends ComponentExampleImpl<ExporterType> implements 
 	
 	public SelectItem[] getAvailableTypes() { return availableTypes; }
 	public String getType() { return type; }
-	public boolean getTypeExcel() { return TYPE_EXCEL.equals(type); }
-	
 	public void setType(String type) { this.type = type; }
+    public String getTypeLabel() {
+        for (SelectItem si : availableTypes) {
+            if (si.getValue().toString().equals(type)) {
+                return si.getLabel();
+            }
+        }
+        return type;
+    }
 }

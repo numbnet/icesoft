@@ -52,7 +52,12 @@
                               ignorePagination="#{exporterPagination.ignore}"
                               label="Download as CSV"
                               popupBlockerLabel="Popup Blocker detected - click here to resume download..."/>
-                              
+            <ice:dataExporter for="carData"
+                              type="pdf"
+                              ignorePagination="#{exporterPagination.ignore}"
+                              label="Download as PDF"
+                              popupBlockerLabel="Popup Blocker detected - click here to resume download..."/>
+
             <ice:dataTable id="carData"
                            value="#{exporter.cars}"
                            var="car"

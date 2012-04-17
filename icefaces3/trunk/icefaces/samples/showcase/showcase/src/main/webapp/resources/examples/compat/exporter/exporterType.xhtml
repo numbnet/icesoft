@@ -46,7 +46,7 @@
         <h:form>
             <ice:dataExporter for="carData"
                               type="#{exporterType.type}"
-                              label="Download as #{exporterType.typeExcel ? 'Excel' : 'CSV'}"
+                              label="Download as #{exporterType.typeLabel}"
                               popupBlockerLabel="Popup Blocker detected - click here to resume download..."/>
         
             <ice:dataTable id="carData"
