@@ -64,11 +64,13 @@
         <ul>
            <li>excel</li>
            <li>csv</li>
+           <li>pdf</li>
         </ul>
-        
+
         <b>Note:</b> If the custom handler has been defined using the <i>outputTypeHandler</i>
-        attribute then it will take percedence over this attribute. 
-        </p>         ]]>        
+        attribute then it will take precedence over this attribute. Exporting to PDF requires
+        the presence of the iText jar in your application, which can be downloaded from itextpdf.com
+        </p>         ]]>
     </description>
     <property-name>type</property-name>
 

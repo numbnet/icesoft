@@ -79,6 +79,7 @@ public class DataExporter extends OutputResource {
 	private transient int _origDataModelHash = 0;
 	public final static String EXCEL_TYPE = "excel";
 	public final static String CSV_TYPE = "csv";
+    public final static String PDF_TYPE = "pdf";
 	private Boolean ignorePagination;
     private Boolean renderLabelAsButton;
     private String styleClass;
@@ -331,6 +332,9 @@ public class DataExporter extends OutputResource {
                     fc, uiData.getId());
         } else if (DataExporter.CSV_TYPE.equals(getType())) {
             outputHandler = new CSVOutputHandler(pathWithoutExt + ".csv");
+        } else if (DataExporter.PDF_TYPE.equals(getType())) {
+            outputHandler = new PDFOutputHandler(pathWithoutExt + ".pdf",
+                    uiData.getId());
         } else {
             outputHandler = NoopOutputHandler;
         }

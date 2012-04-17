@@ -54,7 +54,12 @@
                               label="Download as CSV"
                               includeColumns="#{exporterColumn.columnString}"
                               popupBlockerLabel="Popup Blocker detected - click here to resume download..."/>
-                              
+            <ice:dataExporter for="carData"
+                              type="pdf"
+                              label="Download as PDF"
+                              includeColumns="#{exporterColumn.columnString}"
+                              popupBlockerLabel="Popup Blocker detected - click here to resume download..."/>
+
             <ice:dataTable id="carData"
                            value="#{exporter.cars}"
                            var="car"
