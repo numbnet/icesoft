@@ -156,7 +156,7 @@ public class BridgeSetup implements SystemEventListener {
                     if (log.isLoggable(Level.WARNING)) {
                         log.log(Level.WARNING, "When processing mandatory " +
                                 "resource components, could not create instance " +
-                                "of '" + compClassName + "'");
+                                "of '" + compClassName + "'", e);
                     }
                 }
             }
