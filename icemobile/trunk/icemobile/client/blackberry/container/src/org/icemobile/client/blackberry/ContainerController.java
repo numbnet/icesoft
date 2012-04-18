@@ -65,7 +65,16 @@ public interface ContainerController {
      */
     public void testJavascript();
 
-    public InputConnection postRequest(String request,
+    /**
+     * Post a request to the server
+     *
+     * @param actionMethod action method from the form
+     * @param request      Body of the request
+     * @param headers      pre set header fields
+     * @return InputConnection for reading response
+     * @throws Exception
+     */
+    public InputConnection postRequest(String actionField, String request,
                                        HttpHeaders headers) throws Exception;
 
     /**
