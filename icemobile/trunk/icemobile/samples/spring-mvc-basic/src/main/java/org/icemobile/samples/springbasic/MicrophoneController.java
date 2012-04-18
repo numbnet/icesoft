@@ -16,38 +16,37 @@ import java.io.File;
 import javax.servlet.http.HttpServletRequest;
 
 @Controller
-@RequestMapping("/icemobile")
-@SessionAttributes("icemobileBean")
-public class ICEmobileController {
+@SessionAttributes("microphoneBean")
+public class MicrophoneController {
 
 	@ModelAttribute
 	public void ajaxAttribute(WebRequest request, Model model) {
 		model.addAttribute("ajaxRequest", AjaxUtils.isAjaxRequest(request));
 	}
 
-	@RequestMapping(value="/icemobile", method=RequestMethod.GET)
-	public void fileUploadForm() {
-	}
-
-	@ModelAttribute("icemobileBean")
+	@ModelAttribute("microphoneBean")
 	public ModelBean createBean() {
 		return new ModelBean();
 	}
 
-	@RequestMapping(value="/icemobile", method=RequestMethod.POST)
-	public void processUpload(HttpServletRequest request, ModelBean modelBean, @RequestParam(value = "camera-file", required = false) MultipartFile file, @RequestParam(value = "camera", required = false) MultipartFile inputFile, Model model) throws IOException {
+	@RequestMapping(value = "/microphone", method=RequestMethod.GET)
+    public void processMicrophone()  {
+    }
+
+	@RequestMapping(value = "/microphone", method=RequestMethod.POST)
+	public void processMicrophone(HttpServletRequest request, ModelBean modelBean, @RequestParam(value = "microphone-file", required = false) MultipartFile file, @RequestParam(value = "camera", required = false) MultipartFile inputFile, Model model) throws IOException {
 
         String fileName = "empty";
         if (null != file)  {
             fileName = file.getOriginalFilename();
-            file.transferTo(new File(request.getRealPath("/resources/uploaded.jpg")));
+            file.transferTo(new File(request.getRealPath("/resources/clip.m4a")));
         }
         if (null != inputFile)  {
             fileName = inputFile.getOriginalFilename();
-            inputFile.transferTo(new File(request.getRealPath("/resources/uploaded.jpg")));
+            inputFile.transferTo(new File(request.getRealPath("/resources/clip.m4a")));
         }
-		model.addAttribute("message", "Hello " + modelBean.getName() + ", your file '" + fileName + "' was uploaded successfully.");
-        
-	}
-	
+		model.addAttribute("message", "Hello " + modelBean.getName() + ", your audio file '" + fileName + "' was uploaded successfully.");
+
+    }
+
 }
