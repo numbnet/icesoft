@@ -127,7 +127,9 @@ if (!window.ice.mobile) {
         var tempInputs = [];
 
         //override primitive submit function
+
         namespace.submitFunction = function(element, event, options) {
+
             var source = event ? event.target : element;
             var form = ice.formOf(element);
             var formId = form.id;
@@ -172,10 +174,22 @@ if (!window.ice.mobile) {
 
             context.sourceid = sourceId;
             context.formid = formId;
-            context.serialized = ice.serialize(form.id);
+            //context.serialized = ice.serialize(form.id);
+
             ice.upload(formId);
 
-        };
+        }
+
+        namespace.upload = function(id) {
+            try {
+                var form = document.getElementById(id);
+                context.serialized = ice.serialize(id);
+                var result = icefaces.ajaxUpload(form.action, context.serialized);
+
+            } catch (e) {
+                alert('Exception in ajaxUpload: ' + e);
+            }
+        }
 
 
         namespace.handleResponse = function(data, isSimulator) {
@@ -234,14 +248,6 @@ if (!window.ice.mobile) {
             }
         }
 
-        namespace.upload = function(id) {
-            try {
-                var result = icefaces.ajaxUpload(context.serialized);
-
-            } catch (e) {
-                alert('Exception in ajaxUpload: ' + e);
-            }
-        }
 
         namespace.deviceToken = "blackberrybeef";
 
