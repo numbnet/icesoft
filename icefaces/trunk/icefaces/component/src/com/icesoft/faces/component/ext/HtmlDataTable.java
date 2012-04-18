@@ -602,7 +602,7 @@ public class HtmlDataTable
                     for (int i = 0; i < fields.length; i++) {
                         ValueBinding rowFieldBinding = app.createValueBinding("#{"+ rowVar +"."+ fields[i] +"}");
                         String rowFieldString = rowFieldBinding.getValue(context).toString();
-                        if (!caseSensitive) rowFieldString = rowFieldString.toString();
+                        if (!caseSensitive) rowFieldString = rowFieldString.toString().toLowerCase();
                         if (rowFieldString.contains(query))
                             return getRowIndex();
                     }
@@ -615,7 +615,7 @@ public class HtmlDataTable
                     for (int i = 0; i < fields.length; i++) {
                         ValueBinding rowFieldBinding = app.createValueBinding("#{"+ rowVar +"."+ fields[i] +"}");
                         String rowFieldString = rowFieldBinding.getValue(context).toString();
-                        if (!caseSensitive) rowFieldString = rowFieldString.toString();
+                        if (!caseSensitive) rowFieldString = rowFieldString.toString().toLowerCase();
                         if (rowFieldString.endsWith(query))
                             return getRowIndex();
                     }
@@ -628,7 +628,7 @@ public class HtmlDataTable
                     for (int i = 0; i < fields.length; i++) {
                         ValueBinding rowFieldBinding = app.createValueBinding("#{"+ rowVar +"."+ fields[i] +"}");
                         String rowFieldString = rowFieldBinding.getValue(context).toString();
-                        if (!caseSensitive) rowFieldString = rowFieldString.toString();
+                        if (!caseSensitive) rowFieldString = rowFieldString.toString().toLowerCase();
                         if (rowFieldString.startsWith(query))
                             return getRowIndex();
                     }
@@ -641,7 +641,7 @@ public class HtmlDataTable
                     for (int i = 0; i < fields.length; i++) {
                         ValueBinding rowFieldBinding = app.createValueBinding("#{"+ rowVar +"."+ fields[i] +"}");
                         String rowFieldString = rowFieldBinding.getValue(context).toString();
-                        if (!caseSensitive) rowFieldString = rowFieldString.toString();
+                        if (!caseSensitive) rowFieldString = rowFieldString.toString().toLowerCase();
                         if (rowFieldString.equals(query))
                             return getRowIndex();
                     }
