@@ -137,7 +137,7 @@ public class ICEmobileContainer extends UiApplication implements SystemListener,
             try {
                 if (mParkScript != null && mRealDevice) {
                     mScriptEngine.executeScript(mParkScript, null);
-                    Logger.TRACE("ICEmobile - parkScript success");
+                    Logger.TRACE("ICEmobile - parkScript success: " + mParkScript);
                 }
             } catch (Throwable t) {
                 Logger.DEBUG("ICEmobile - ParkScript Exception is: " + t);
@@ -454,7 +454,7 @@ public class ICEmobileContainer extends UiApplication implements SystemListener,
      * to load the intitial request must be used for all subsequent requests in order to maintain
      * the correct cookie setup.
      */
-    public InputConnection postRequest(String request,
+    public InputConnection postRequest(String actionField, String request,
                                        HttpHeaders headers) throws Exception {
 
         BrowserFieldConnectionManager bfconman = mBrowserField.getConnectionManager();
