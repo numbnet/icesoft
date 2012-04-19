@@ -34,7 +34,7 @@ public class MicrophoneController {
     }
 
 	@RequestMapping(value = "/microphone", method=RequestMethod.POST)
-	public void processMicrophone(HttpServletRequest request, ModelBean modelBean, @RequestParam(value = "microphone-file", required = false) MultipartFile file, @RequestParam(value = "camera", required = false) MultipartFile inputFile, Model model) throws IOException {
+	public void processMicrophone(HttpServletRequest request, ModelBean modelBean, @RequestParam(value = "mic-file", required = false) MultipartFile file, @RequestParam(value = "camera", required = false) MultipartFile inputFile, Model model) throws IOException {
 
         String fileName = "empty";
         if (null != file)  {

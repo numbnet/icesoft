@@ -26,7 +26,7 @@ public class MicrophoneTag extends SimpleTagSupport {
 
     public void doTag() throws IOException {
         Writer out = getJspContext().getOut();
-        out.write("<input type='button' id='microphone' class='microphone' onclick='if(this.value==\"stop\"){this.value=\"record\";}else{ this.value=\"stop\";}ice.microphone(\"microphone\");' value='record'>");
+        out.write("<input type='button' id='mic' class='microphone' onclick='if(this.value==\"stop\"){this.value=\"record\";}else{ this.value=\"stop\";}ice.microphone(\"mic\");' value='record'>");
     }
 
 }
