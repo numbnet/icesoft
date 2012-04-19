@@ -12,12 +12,12 @@
 </head>
 <body>
 </c:if>
-	<div id="formsContent">
+	<div id="camContent">
 		<h2>ICEmobile</h2>
 		<p>
 			ICEmobile simple MediaCast	
 		</p>
-		<form:form id="form" method="POST" enctype="multipart/form-data" modelAttribute="icemobileBean" cssClass="cleanform">
+		<form:form id="camform" method="POST" enctype="multipart/form-data" modelAttribute="icemobileBean" cssClass="cleanform">
 			<div class="header">
 		  		<h2>Form</h2>
 		  		<c:if test="${not empty message}">
@@ -59,10 +59,10 @@
 		<script type="text/javascript">
 
 			$(document).ready(function() {
-				$("#form").submit(function() {
+				$("#camform").submit(function() {
                     if (window.ice && ice.upload)  {
                         window.ice.handleResponse = function(data)  {
-						    $("#formsContent").replaceWith(unescape(data));
+						    $("#camContent").replaceWith(unescape(data));
 						    $('html, body').animate({ scrollTop: $("#message").offset().top }, 500);
                         }
                         ice.upload($(this).attr("id"));
@@ -79,7 +79,7 @@
                         processData: false,
                         type: 'POST',
                         success: function(html) {
-						    $("#formsContent").replaceWith(html);
+						    $("#camContent").replaceWith(html);
 						    $('html, body').animate({ scrollTop: $("#message").offset().top }, 500);
 					    }
                     });

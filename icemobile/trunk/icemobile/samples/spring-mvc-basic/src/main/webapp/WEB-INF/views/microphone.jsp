@@ -12,12 +12,12 @@
 </head>
 <body>
 </c:if>
-	<div id="formsContent">
+	<div id="micContent">
 		<h2>Microphone</h2>
 		<p>
 			ICEmobile Microphone Sample	
 		</p>
-		<form:form id="form" method="POST" enctype="multipart/form-data" modelAttribute="microphoneBean" cssClass="cleanform">
+		<form:form id="micform" method="POST" enctype="multipart/form-data" modelAttribute="microphoneBean" cssClass="cleanform">
 			<div class="header">
 		  		<h2>Form</h2>
 		  		<c:if test="${not empty message}">
@@ -58,10 +58,10 @@
 		<script type="text/javascript">
 
 			$(document).ready(function() {
-				$("#form").submit(function() {
+				$("#micform").submit(function() {
                     if (window.ice && ice.upload)  {
                         window.ice.handleResponse = function(data)  {
-						    $("#formsContent").replaceWith(unescape(data));
+						    $("#micContent").replaceWith(unescape(data));
 						    $('html, body').animate({ scrollTop: $("#message").offset().top }, 500);
                         }
                         ice.upload($(this).attr("id"));
@@ -78,7 +78,7 @@
                         processData: false,
                         type: 'POST',
                         success: function(html) {
-						    $("#formsContent").replaceWith(html);
+						    $("#micContent").replaceWith(html);
 						    $('html, body').animate({ scrollTop: $("#message").offset().top }, 500);
 					    }
                     });
