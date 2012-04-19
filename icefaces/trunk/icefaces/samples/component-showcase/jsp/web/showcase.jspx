@@ -477,6 +477,7 @@
                     './xmlhttp/css/rime/css-images/theme_bg.gif',
                     './xmlhttp/css/rime/css-images/theme_change_bg.gif',
                     './xmlhttp/css/rime/css-images/tree_document.gif',
+                    './xmlhttp/css/rime/css-images/tree_folder_closed.gif',
                     './xmlhttp/css/rime/css-images/tree_folder_doc.gif',
                     './xmlhttp/css/rime/css-images/tree_folder_open.gif',
                     './xmlhttp/css/rime/css-images/tree_line_blank.gif',
@@ -491,6 +492,13 @@
                     './xmlhttp/css/rime/css-images/tree_nav_top_close_no_siblings.gif',
                     './xmlhttp/css/rime/css-images/tree_nav_top_open.gif',
                     './xmlhttp/css/rime/css-images/tree_nav_top_open_no_siblings.gif',
+
+                    './css/images/navigation_tree/tree_folder_closed.gif',
+                    './css/images/navigation_tree/tree_folder_open.gif',
+                    './css/images/navigation_tree/tree_node.gif',
+                    './css/images/navigation_tree/tree_node_rollover.gif',
+                    './css/images/navigation_tree/tree_node_selected.gif',
+
                     './images/panelStack/address-thumb.png',
                     './images/panelStack/auction-thumb.png',
                     './images/panelStack/mobility-thumb.png',
