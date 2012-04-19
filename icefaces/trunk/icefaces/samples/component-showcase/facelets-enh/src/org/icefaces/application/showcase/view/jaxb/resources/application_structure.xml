@@ -161,12 +161,15 @@
                       label="node.resizable.label"
                       leaf="true" link="true"
                       contentRef="resizableContentDesc"/>
-
+ 				<node id="commandSortHeaderNode"
+                      label="node.commandSortHeader.label"
+                      leaf="true" link="true"
+                      contentRef="commandSortHeaderContentDesc"/>           
                 <node id="findNode"
                       label="node.find.label"
                       leaf="true" link="true"
                       contentRef="findDesc"/>                
-            </node>
+            	</node>
         </node>
         <node id="layoutPanelsNode"
               label="node.layoutPanels.label"
