@@ -458,7 +458,7 @@ public class ICEmobileContainer extends UiApplication implements SystemListener,
                                        HttpHeaders headers) throws Exception {
 
         BrowserFieldConnectionManager bfconman = mBrowserField.getConnectionManager();
-        BrowserFieldRequest bfr = new BrowserFieldRequest(getCurrentURL(), request.getBytes(), headers);
+        BrowserFieldRequest bfr = new BrowserFieldRequest(actionField, request.getBytes(), headers);
         return bfconman.makeRequest(bfr);
     }
 
