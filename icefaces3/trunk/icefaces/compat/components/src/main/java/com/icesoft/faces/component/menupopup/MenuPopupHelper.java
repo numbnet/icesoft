@@ -101,7 +101,7 @@ public class MenuPopupHelper {
             String clientId = menuPopupComponent.getClientId(facesContext);
             String displayListenerId = clientId + "_sub" + MenuPopup.DISPLAY_LISTENER_ID;
             if (requestMap.containsKey(displayListenerId) && 
-                    requestMap.get("ice.event.captured").equals(displayListenerId) ) {
+            		displayListenerId.equals(requestMap.get("ice.event.captured"))) {
                 String displayListenerValue = (String) requestMap.get(displayListenerId);
                 if (displayListenerValue != null) {
                     String xy[] = displayListenerValue.split(",");
