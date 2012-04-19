@@ -121,11 +121,9 @@ Autocompleter.Base.prototype = {
         this.element.setAttribute('autocomplete', 'off');
         Element.hide(this.update);
         Event.observe(this.element, "blur", this.onBlur.bindAsEventListener(this));
-        var keyEvent = "keypress";
-        if (Prototype.Browser.IE ||  Prototype.Browser.WebKit ) {
-        	keyEvent = "keyup";	
-        }
-        Event.observe(this.element, keyEvent, this.onKeyPress.bindAsEventListener(this));
+        Event.observe(this.element, "keypress", this.onKeyPress.bindAsEventListener(this));
+        if (Prototype.Browser.IE || Prototype.Browser.WebKit)
+            Event.observe(this.element, "keydown", this.onKeyDown.bindAsEventListener(this));
         // ICE-3830
         if (Prototype.Browser.IE || Prototype.Browser.WebKit)
             Event.observe(this.element, "paste", this.onPaste.bindAsEventListener(this));
