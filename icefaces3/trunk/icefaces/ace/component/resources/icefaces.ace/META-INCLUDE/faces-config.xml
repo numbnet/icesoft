@@ -20,6 +20,7 @@
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_2_0.xsd">
     <application>
         <resource-handler>org.icefaces.ace.component.fileentry.FileEntryResourceHandler</resource-handler>
+        <resource-handler>org.icefaces.ace.component.richtextentry.RichTextEntryResourceHandler</resource-handler>
     </application>
    <factory>
         <partial-view-context-factory>

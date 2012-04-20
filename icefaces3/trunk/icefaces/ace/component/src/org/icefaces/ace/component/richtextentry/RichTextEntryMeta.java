@@ -1,0 +1,91 @@
+/*
+ * Copyright 2004-2012 ICEsoft Technologies Canada Corp.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the
+ * License. You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an "AS
+ * IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ * express or implied. See the License for the specific language
+ * governing permissions and limitations under the License.
+ */
+
+package org.icefaces.ace.component.richtextentry;
+
+import org.icefaces.ace.meta.annotation.Component;
+import org.icefaces.ace.meta.annotation.Property;
+import org.icefaces.ace.meta.baseMeta.UIInputMeta;
+
+import javax.faces.application.ResourceDependencies;
+import javax.faces.application.ResourceDependency;
+
+import org.icefaces.ace.meta.annotation.ClientBehaviorHolder;
+import org.icefaces.ace.meta.annotation.ClientEvent;
+import org.icefaces.ace.api.IceClientBehaviorHolder;
+
+@Component(
+        tagName = "richTextEntry",
+        componentClass = "org.icefaces.ace.component.richtextentry.RichTextEntry",
+        generatedClass = "org.icefaces.ace.component.richtextentry.RichTextEntryBase",
+        extendsClass = "javax.faces.component.UIInput",
+        componentFamily = "org.icefaces.ace.component.Menu",
+        componentType = "org.icefaces.ace.component.RichTextEntry",
+        rendererClass = "org.icefaces.ace.component.richtextentry.RichTextEntryRenderer",
+        rendererType = "org.icefaces.ace.component.RichTextEntryRenderer",
+        tlddoc = "RichTextEntry is a rich text editor." +
+                 "<p>For more information, see the " +
+                 "<a href=\"http://wiki.icefaces.org/display/ICE/RichTextEntry\">RichTextEntry Wiki Documentation</a>."
+)
+@ResourceDependencies({
+        @ResourceDependency(name = "icefaces.ace/richtextentry/ckeditor/ckeditor.mapping.js"),
+        @ResourceDependency(library="icefaces.ace", name = "richtextentry/ckeditor/ckeditor.js"),
+		@ResourceDependency(library="icefaces.ace", name = "richtextentry/richtextentry.js")
+})
+@ClientBehaviorHolder(events = {
+	@ClientEvent( name="save",
+		javadoc="Fired when the 'Save' button is clicked and the contents of the editor are saved.",
+		tlddoc="Fired when the 'Save' button is clicked and the contents of the editor are saved.",
+		defaultRender="@all", defaultExecute="@all" ) },
+	defaultEvent="save" )
+public class RichTextEntryMeta extends UIInputMeta {
+
+    @Property(tlddoc = "", defaultValue="en")
+    private String language;
+
+	@Property(name="for", tlddoc="", defaultValue="")
+	private String forValue;
+	
+    @Property(tlddoc = "")
+    private String style;
+	
+    @Property(tlddoc = "")
+    private String styleClass;
+	
+    @Property(tlddoc = "", defaultValue="100%")
+    private String width;
+	
+    @Property(tlddoc = "", defaultValue="100%")
+    private String height;
+	
+    @Property(tlddoc = "", defaultValue="Default")
+    private String toolbar;
+
+    @Property(tlddoc = "", defaultValue="")
+    private String customConfigPath;
+
+    @Property(tlddoc = "", defaultValue="default")
+    private String skin;
+	
+    @Property(tlddoc = "", defaultValue="false")
+    private boolean partialSubmit;
+	
+    @Property(tlddoc = "", defaultValue="false")
+    private boolean disabled;
+	
+    @Property(tlddoc = "", defaultValue="false")
+    private boolean saveOnSubmit;
+}
