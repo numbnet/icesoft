@@ -171,7 +171,7 @@
     </macrodef>
 
     <target name="compile"
-            depends="prepare, generator-dist, compile-meta, generate, compile-base, compile-manual, compile-support, res-js-compress, res-js-no-compress, res-css-combine, res-copy"
+            depends="prepare, generator-dist, compile-meta, generate, compile-base, compile-manual, compile-support, richtextentry-resources, res-js-compress, res-js-no-compress, res-css-combine, res-copy"
             description="compile the source ">
     </target>
 
@@ -614,5 +614,9 @@
     <target name="tlddoc"
             description="Generate the component TLD Documentation in HTML format.">
         <gen.tld.doc tld.file="${tld.file}"/>
+    </target>
+	
+    <target name="richtextentry-resources">
+        <ant antfile="src/org/icefaces/ace/component/richtextentry/build.xml"/>
     </target>
 </project>
