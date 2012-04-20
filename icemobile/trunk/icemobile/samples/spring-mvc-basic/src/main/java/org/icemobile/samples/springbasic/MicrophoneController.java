@@ -29,6 +29,15 @@ public class MicrophoneController {
 		return new ModelBean();
 	}
 
+	@RequestMapping(value = "/jqmmic", method=RequestMethod.GET)
+    public void processJqmmic()  {
+    }
+    
+	@RequestMapping(value = "/jqmmic", method=RequestMethod.POST)
+	public void processJqmmic(HttpServletRequest request, ModelBean modelBean, @RequestParam(value = "mic-file", required = false) MultipartFile file, @RequestParam(value = "camera", required = false) MultipartFile inputFile, Model model) throws IOException {
+        this.processMicrophone(request, modelBean, file, inputFile, model);
+    }
+
 	@RequestMapping(value = "/microphone", method=RequestMethod.GET)
     public void processMicrophone()  {
     }
