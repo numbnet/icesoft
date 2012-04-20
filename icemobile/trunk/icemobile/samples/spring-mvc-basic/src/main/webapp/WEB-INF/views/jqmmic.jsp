@@ -25,7 +25,7 @@
 		<p>
 			ICEmobile Microphone Sample	
 		</p>
-		<form:form id="micform" method="POST" enctype="multipart/form-data" modelAttribute="microphoneBean" cssClass="cleanform">
+		<form:form id="micform" method="POST" enctype="multipart/form-data" modelAttribute="microphoneBean" >
 			<div class="header">
 		  		<h2>Form</h2>
 		  		<c:if test="${not empty message}">
@@ -50,7 +50,7 @@
 
 		  	<fieldset>
                <mobi:microphone />
-               <audio style="float:right;height:120px;width:120px;" src="resources/clip.m4a" controls="controls" >
+               <audio style="float:right;" src="resources/clip.m4a" controls="controls" >
 		  	</fieldset>
 
 			<fieldset class="checkbox">
