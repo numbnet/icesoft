@@ -13,6 +13,18 @@
 <body>
 </c:if>
 	<div id="micContent">
+        <style>
+        .anchorbuttons a {
+            appearance: button;
+            -moz-appearance: button;
+            -webkit-appearance: button;
+            text-decoration: none; font: menu; color: ButtonText;
+            display: inline-block; padding: 2px 8px;
+        }
+        .recordstyle {
+            background: red;
+        }
+        </style>
 		<h2>Microphone</h2>
 		<p>
 			ICEmobile Microphone Sample	
@@ -40,7 +52,7 @@
 		
 		  	</fieldset>
 
-		  	<fieldset>
+		  	<fieldset class="anchorbuttons">
                <mobi:microphone />
                <audio style="float:right;height:120px;width:120px;" src="resources/clip.m4a" controls="controls" >
 		  	</fieldset>
