@@ -26,7 +26,8 @@ public class MicrophoneTag extends SimpleTagSupport {
 
     public void doTag() throws IOException {
         Writer out = getJspContext().getOut();
-        out.write("<a id=\"mic\" onclick=\"var subtext = this.firstChild; if(1===subtext.nodeType){subtext=subtext.firstChild.firstChild};if(subtext.data=='Stop'){subtext.data='Record';this.classList.remove('recordstyle')}else{subtext.data='Stop';this.classList.add('recordstyle')}ice.microphone('mic');\">Record</a>");
+        //note the data-role button which is harmless, but should be generalized
+        out.write("<a data-role=\"button\" id=\"mic\" onclick=\"var subtext = this.firstChild; if(1===subtext.nodeType){subtext=subtext.firstChild.firstChild};if(subtext.data=='Stop'){subtext.data='Record';this.classList.remove('recordstyle')}else{subtext.data='Stop';this.classList.add('recordstyle')}ice.microphone('mic');\">Record</a>");
     }
 
 }
