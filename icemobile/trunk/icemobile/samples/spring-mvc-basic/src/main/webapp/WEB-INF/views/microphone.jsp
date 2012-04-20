@@ -15,11 +15,11 @@
 	<div id="micContent">
         <style>
         .anchorbuttons a {
-            appearance: button;
-            -moz-appearance: button;
-            -webkit-appearance: button;
-            text-decoration: none; font: menu; color: ButtonText;
+            text-decoration: none; font: menu;
             display: inline-block; padding: 2px 8px;
+            border-style: solid; border-width: 2px;
+            border-color: ButtonHighlight ButtonShadow ButtonShadow ButtonHighlight;
+            border-radius: 10px;
         }
         .recordstyle {
             background: red;
