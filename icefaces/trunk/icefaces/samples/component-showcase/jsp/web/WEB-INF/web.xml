@@ -258,6 +258,12 @@
       <session-timeout>30</session-timeout>
     </session-config>
 
+		<!-- Now required for older servers such as WebLogic 8 as IE9 enforces mime-type matching with file types -->
+	  <mime-mapping>
+        <extension>css</extension>
+        <mime-type>text/css</mime-type>
+    </mime-mapping>
+
     <!-- Welcome files -->
     <welcome-file-list>
         <welcome-file>index.jsp</welcome-file>
