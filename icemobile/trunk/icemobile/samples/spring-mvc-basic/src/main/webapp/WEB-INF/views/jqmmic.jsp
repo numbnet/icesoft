@@ -23,14 +23,14 @@
         </style>
 		<h2>Microphone</h2>
 		<p>
-			ICEmobile Microphone Sample	
+			jQuery ICEobile Microphone	
 		</p>
 		<form:form id="micform" method="POST" enctype="multipart/form-data" modelAttribute="microphoneBean" >
 			<div class="header">
 		  		<h2>Form</h2>
 		  		<c:if test="${not empty message}">
 					<div id="message" class="success">${message}<br/>
-                    <audio src="resources/clip.mp4" controls="controls" >
+                    <audio src="media/clip.mp4" controls="controls" >
                     </div>	
 		  		</c:if>
 		  		<s:bind path="*">
@@ -50,7 +50,7 @@
 
 		  	<fieldset>
                <mobi:microphone />
-               <audio style="float:right;" src="resources/clip.mp4" controls="controls" >
+               <audio style="float:right;" src="media/clip.mp4" controls="controls" >
 		  	</fieldset>
 
 			<fieldset class="checkbox">
@@ -70,6 +70,7 @@
                     if (window.ice && ice.upload)  {
                         window.ice.handleResponse = function(data)  {
 						    $("#micContent").replaceWith(unescape(data));
+                            $("#micContent").trigger("create");
 						    $('html, body').animate({ scrollTop: $("#message").offset().top }, 500);
                         }
                         ice.upload($(this).attr("id"));
@@ -87,6 +88,7 @@
                         type: 'POST',
                         success: function(html) {
 						    $("#micContent").replaceWith(html);
+                            $("#micContent").trigger("create");
 						    $('html, body').animate({ scrollTop: $("#message").offset().top }, 500);
 					    }
                     });
