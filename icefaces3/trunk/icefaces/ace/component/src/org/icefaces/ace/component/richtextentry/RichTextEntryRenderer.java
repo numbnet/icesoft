@@ -18,9 +18,11 @@ package org.icefaces.ace.component.richtextentry;
 
 import org.icefaces.ace.renderkit.InputRenderer;
 import org.icefaces.render.MandatoryResourceComponent;
+import org.icefaces.ace.util.JSONBuilder;
 import org.w3c.dom.Element;
 
 import javax.faces.component.UIComponent;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import java.io.IOException;
@@ -61,17 +63,38 @@ public class RichTextEntryRenderer extends InputRenderer {
 		writer.writeAttribute("id", clientId + "scrpt", null);
 		writer.startElement("script", null);
 		writer.writeAttribute("type", "text/javascript", null);
-		String customConfig =  (richTextEntry.getCustomConfigPath() == null)? "": richTextEntry.getCustomConfigPath();
-		writer.writeText("ice.ace.richtextentry.renderEditor('"+ clientId +"', '"+ richTextEntry.getToolbar() +"'," +
-				"'"+ richTextEntry.getLanguage()+"'," +
-				"'"+ richTextEntry.getSkin().toLowerCase()+"'," +
-				"'"+ richTextEntry.getHeight() + "'," +
-				"'"+ richTextEntry.getWidth() +"'," +
-				"'"+ customConfig + "'," +
-				richTextEntry.isSaveOnSubmit() + ", {p:''", null);
-		encodeClientBehaviors(facesContext, richTextEntry);
-		writer.writeText("});", null);
+		String customConfig =  richTextEntry.getCustomConfigPath();
+		customConfig = customConfig == null ? "" : resolveResourceURL(facesContext, customConfig);
+		
+		JSONBuilder jb = JSONBuilder.create();
+		jb.beginFunction("ice.ace.richtextentry.renderEditor")
+			.item(clientId)
+			.item(richTextEntry.getToolbar())
+			.item(richTextEntry.getLanguage())
+			.item(richTextEntry.getSkin().toLowerCase())
+			.item(richTextEntry.getHeight())
+			.item(richTextEntry.getWidth())
+			.item(customConfig)
+			.item(richTextEntry.isSaveOnSubmit())
+			.beginMap()
+			.entry("p", ""); // dummy property
+			encodeClientBehaviors(facesContext, richTextEntry, jb);
+        jb.endMap().endFunction();
+		writer.write(jb.toString());
+		
 		writer.endElement("script");
 		writer.endElement("span");
+    }
+	
+    // taken from com.icesoft.faces.util.CoreUtils
+	public static String resolveResourceURL(FacesContext facesContext, String path) {
+        ExternalContext ec = facesContext.getExternalContext();
+        String ctxtPath = ec.getRequestContextPath();
+
+        if (path.length() > 0 && path.charAt(0) == '/' && path.startsWith(ctxtPath)) {
+            path = path.substring(ctxtPath.length());
+        }
+
+        return facesContext.getApplication().getViewHandler().getResourceURL(facesContext, path);
     }
 }

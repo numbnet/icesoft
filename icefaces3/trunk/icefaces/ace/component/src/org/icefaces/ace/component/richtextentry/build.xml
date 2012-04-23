@@ -17,7 +17,7 @@
     <property name="resources.dir" value="${basedir}/resources/"/>
 
     <target name="clean-richtextentry-resources">
-		    <delete file="${resources.dir}/richtextentry/ckeditor.resources" />
+		    <delete file="${resources.dir}/icefaces.ace/richtextentry/ckeditor.resources" />
     </target>
 
     <target name="resource-list">

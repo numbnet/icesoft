@@ -36,7 +36,7 @@ import org.icefaces.ace.api.IceClientBehaviorHolder;
         componentType = "org.icefaces.ace.component.RichTextEntry",
         rendererClass = "org.icefaces.ace.component.richtextentry.RichTextEntryRenderer",
         rendererType = "org.icefaces.ace.component.RichTextEntryRenderer",
-        tlddoc = "RichTextEntry is a rich text editor." +
+        tlddoc = "RichTextEntry uses the CKEditor API to provide JSF based rich text editor component." +
                  "<p>For more information, see the " +
                  "<a href=\"http://wiki.icefaces.org/display/ICE/RichTextEntry\">RichTextEntry Wiki Documentation</a>."
 )
@@ -53,39 +53,33 @@ import org.icefaces.ace.api.IceClientBehaviorHolder;
 	defaultEvent="save" )
 public class RichTextEntryMeta extends UIInputMeta {
 
-    @Property(tlddoc = "", defaultValue="en")
+    @Property(tlddoc = "Specifies the language to be used for the user interface.", defaultValue="en")
     private String language;
-
-	@Property(name="for", tlddoc="", defaultValue="")
-	private String forValue;
 	
-    @Property(tlddoc = "")
+    @Property(tlddoc = "Inline CSS styling for the editor.")
     private String style;
 	
-    @Property(tlddoc = "")
+    @Property(tlddoc = "The CSS style class of the editor.")
     private String styleClass;
 	
-    @Property(tlddoc = "", defaultValue="100%")
+    @Property(tlddoc = "The width of the editor. It can be expressed in the following units: px, em, %. If no unit is specified, the value is assumed to be in pixels.", defaultValue="100%")
     private String width;
 	
-    @Property(tlddoc = "", defaultValue="100%")
+    @Property(tlddoc = "The height of the editor. It can be expressed in the following units: px, em, %. If no unit is specified, the value is assumed to be in pixels.", defaultValue="100%")
     private String height;
 	
-    @Property(tlddoc = "", defaultValue="Default")
+    @Property(tlddoc = "Specifies the type of toolbar. There are two valid values for this field (case sensitive): 'Default' and 'Basic'.", defaultValue="Default")
     private String toolbar;
 
-    @Property(tlddoc = "", defaultValue="")
+    @Property(tlddoc = "This attribute defines the path of the custom config file, the path is relative to the web app.")
     private String customConfigPath;
 
-    @Property(tlddoc = "", defaultValue="default")
+    @Property(tlddoc = "Specify the pre-defined skin for the editor. Possible values are 'v2', 'office2003', and 'kama' ('default' is synonymous of 'v2').", defaultValue="default")
     private String skin;
 	
-    @Property(tlddoc = "", defaultValue="false")
-    private boolean partialSubmit;
-	
-    @Property(tlddoc = "", defaultValue="false")
+    @Property(tlddoc = "Boolean value to disable and re-enable the component.", defaultValue="false")
     private boolean disabled;
 	
-    @Property(tlddoc = "", defaultValue="false")
+    @Property(tlddoc = "By default the data of the editor will only be saved when its 'Save' button is clicked. Any other submit request will not save its data. In order to save its data on any submit request like inputText does, this attribute can be set to true.", defaultValue="false")
     private boolean saveOnSubmit;
 }
