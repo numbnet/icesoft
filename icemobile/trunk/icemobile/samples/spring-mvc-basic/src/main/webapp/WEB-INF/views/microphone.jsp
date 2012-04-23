@@ -34,7 +34,7 @@
 		  		<h2>Form</h2>
 		  		<c:if test="${not empty message}">
 					<div id="message" class="success">${message}<br/>
-                    <audio src="resources/clip.m4a" controls="controls" >
+                    <audio src="media/clip.mp4" controls="controls" >
                     </div>	
 		  		</c:if>
 		  		<s:bind path="*">
@@ -54,7 +54,7 @@
 
 		  	<fieldset class="anchorbuttons">
                <mobi:microphone />
-               <audio style="float:right;height:120px;width:120px;" src="resources/clip.m4a" controls="controls" >
+               <audio style="float:right;height:120px;width:120px;" src="media/clip.mp4" controls="controls" >
 		  	</fieldset>
 
 			<fieldset class="checkbox">

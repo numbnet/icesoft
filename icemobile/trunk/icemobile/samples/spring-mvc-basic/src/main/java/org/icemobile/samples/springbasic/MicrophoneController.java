@@ -48,11 +48,11 @@ public class MicrophoneController {
         String fileName = "empty";
         if (null != file)  {
             fileName = file.getOriginalFilename();
-            file.transferTo(new File(request.getRealPath("/resources/clip.m4a")));
+            file.transferTo(new File(request.getRealPath("/media/clip.mp4")));
         }
         if (null != inputFile)  {
             fileName = inputFile.getOriginalFilename();
-            inputFile.transferTo(new File(request.getRealPath("/resources/clip.m4a")));
+            inputFile.transferTo(new File(request.getRealPath("/media/clip.mp4")));
         }
 		model.addAttribute("message", "Hello " + modelBean.getName() + ", your audio file '" + fileName + "' was uploaded successfully.");
 
