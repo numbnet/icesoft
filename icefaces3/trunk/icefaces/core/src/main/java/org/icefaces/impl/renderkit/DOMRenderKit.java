@@ -194,7 +194,7 @@ public class DOMRenderKit extends RenderKitWrapper {
 
                 //render BridgeSetup immediately after form if missing body
                 if (!EnvUtils.hasHeadAndBodyComponents(context)) {
-                    List<UIComponent> bodyResources = context.getViewRoot().getComponentResources(context, "body");
+                    List<UIComponent> bodyResources = BridgeSetup.getBridgeSetup(context).getBodyResources(context);
                     for (UIComponent bodyResource : bodyResources) {
                         bodyResource.encodeBegin(context);
                         bodyResource.encodeEnd(context);

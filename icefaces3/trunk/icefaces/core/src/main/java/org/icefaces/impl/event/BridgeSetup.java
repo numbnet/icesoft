@@ -94,6 +94,16 @@ public class BridgeSetup implements SystemEventListener {
         }
     }
 
+    /**
+     * Return the current BridgeSetup instance for use in non-body contexts.
+     *
+     * @return current BridgeSetup instance
+     */
+    public static BridgeSetup getBridgeSetup(FacesContext facesContext) {
+        return (BridgeSetup) facesContext.getExternalContext().
+                getApplicationMap().get(BRIDGE_SETUP);
+    }
+
     private List<UIComponent> getHeadResources(FacesContext context) {
         ArrayList<UIComponent> resources = new ArrayList();
         ResourceHandler resourceHandler = context.getApplication().getResourceHandler();
@@ -108,20 +118,6 @@ public class BridgeSetup implements SystemEventListener {
         resources.add(new TestScript());
 
         return resources;
-    }
-
-    private static String assignViewID(ExternalContext externalContext) {
-        final String viewIDParameter = externalContext.getRequestParameterMap().get("ice.view");
-        //keep viewID sticky until page is unloaded
-        BridgeSetup bridgeSetup = (BridgeSetup) externalContext.getApplicationMap().get(BRIDGE_SETUP);
-        final String viewID = viewIDParameter == null ? bridgeSetup.generateViewID() : viewIDParameter;
-        //save the calculated view state key so that other parts of the framework will use the same key
-        externalContext.getRequestMap().put(ViewState, viewID);
-        return viewID;
-    }
-
-    private String generateViewID() {
-        return "v" + Integer.toString(hashCode(), 36) + Integer.toString(++seed, 36);
     }
 
     public List<UIComponent> getBodyResources(FacesContext context) {
@@ -244,6 +240,20 @@ public class BridgeSetup implements SystemEventListener {
             log.log(Level.WARNING, "Failed to generate JS bridge setup.", e);
         }
         return bodyResources;
+    }
+
+    private static String assignViewID(ExternalContext externalContext) {
+        final String viewIDParameter = externalContext.getRequestParameterMap().get("ice.view");
+        //keep viewID sticky until page is unloaded
+        BridgeSetup bridgeSetup = (BridgeSetup) externalContext.getApplicationMap().get(BRIDGE_SETUP);
+        final String viewID = viewIDParameter == null ? bridgeSetup.generateViewID() : viewIDParameter;
+        //save the calculated view state key so that other parts of the framework will use the same key
+        externalContext.getRequestMap().put(ViewState, viewID);
+        return viewID;
+    }
+
+    private String generateViewID() {
+        return "v" + Integer.toString(hashCode(), 36) + Integer.toString(++seed, 36);
     }
 
     /**
