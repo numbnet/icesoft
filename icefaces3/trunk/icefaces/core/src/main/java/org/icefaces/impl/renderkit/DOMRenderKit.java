@@ -51,8 +51,8 @@ public class DOMRenderKit extends RenderKitWrapper {
     private static final String MESSAGES_CLASS =
             "org.icefaces.impl.renderkit.html_basic.MessagesRenderer";
     private ArrayList<MandatoryResourceComponent> mandatoryResourceComponents = new ArrayList<MandatoryResourceComponent>();
-	public static final String ACE_THEME_PARAM = "org.icefaces.ace.theme";
-	public static final String ACE_HEAD_RENDERER_CLASSNAME = "org.icefaces.ace.renderkit.HeadRenderer";
+    public static final String ACE_THEME_PARAM = "org.icefaces.ace.theme";
+    public static final String ACE_HEAD_RENDERER_CLASSNAME = "org.icefaces.ace.renderkit.HeadRenderer";
 
     //Announce ICEfaces
     static {
@@ -84,16 +84,16 @@ public class DOMRenderKit extends RenderKitWrapper {
     public RenderKit getWrapped() {
         return delegate;
     }
-	
-	private boolean useAceHeadRenderer() {
-	
-		FacesContext facesContext = FacesContext.getCurrentInstance();
-		String aceThemeParam = facesContext.getExternalContext().getInitParameter(ACE_THEME_PARAM);
-		if (aceThemeParam != null) {
-			if (aceThemeParam.trim().equalsIgnoreCase("none")) return false;
-		}
-		return true;
-	}
+
+    private boolean useAceHeadRenderer() {
+
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        String aceThemeParam = facesContext.getExternalContext().getInitParameter(ACE_THEME_PARAM);
+        if (aceThemeParam != null) {
+            if (aceThemeParam.trim().equalsIgnoreCase("none")) return false;
+        }
+        return true;
+    }
 
     /**
      * Check if renderer has an annotation for adding custom scripts
@@ -104,11 +104,11 @@ public class DOMRenderKit extends RenderKitWrapper {
      */
     public void addRenderer(String family, String rendererType, Renderer r) {
         Class clazz = r.getClass();
-		
-		if (ACE_HEAD_RENDERER_CLASSNAME.equals(clazz.getName())) {
-			if (!useAceHeadRenderer()) return; // see if org.icefaces.ace.theme context param is set to none
-		}
-		
+
+        if (ACE_HEAD_RENDERER_CLASSNAME.equals(clazz.getName())) {
+            if (!useAceHeadRenderer()) return; // see if org.icefaces.ace.theme context param is set to none
+        }
+
         MandatoryResourceComponent mrc = (MandatoryResourceComponent)
                 clazz.getAnnotation(MandatoryResourceComponent.class);
         if (mrc != null) {
@@ -194,14 +194,12 @@ public class DOMRenderKit extends RenderKitWrapper {
 
                 //render BridgeSetup immediately after form if missing body
                 if (!EnvUtils.hasHeadAndBodyComponents(context)) {
-                    BridgeSetup bridgeSetup = BridgeSetup.getBridgeSetup(context);
-                    List<UIComponent> bodyResources = bridgeSetup.getBodyResources(context);
+                    List<UIComponent> bodyResources = context.getViewRoot().getComponentResources(context, "body");
                     for (UIComponent bodyResource : bodyResources) {
                         bodyResource.encodeBegin(context);
                         bodyResource.encodeEnd(context);
                     }
                 }
-
             } else {
                 super.encodeEnd(context, component);
             }
