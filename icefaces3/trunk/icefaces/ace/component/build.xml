@@ -462,6 +462,7 @@
         <delete dir="${build}"/>
         <delete dir="${dist}"/>
         <antcall target="clean-skins"/>
+        <antcall target="clean-richtextentry-resources"/>
         <subant buildpath="${cssurlmapper.rootdir}" target="clean"/>
 	 	<delete file="${ace-yui.js.tmp}" />
 	 	<delete file="${ace-yui.js}" />
@@ -618,5 +619,9 @@
 	
     <target name="richtextentry-resources">
         <ant antfile="src/org/icefaces/ace/component/richtextentry/build.xml"/>
+    </target>
+	
+    <target name="clean-richtextentry-resources">
+        <ant antfile="src/org/icefaces/ace/component/richtextentry/build.xml" target="clean-richtextentry-resources" />
     </target>
 </project>
