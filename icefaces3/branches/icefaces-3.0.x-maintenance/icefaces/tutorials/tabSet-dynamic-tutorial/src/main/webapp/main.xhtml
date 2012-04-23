@@ -42,7 +42,7 @@
                         <ace:tabPane label="#{tab.title}" id="tab_#{tab.id}">
                             <f:subview id="sub_#{tab.id}">
                                 <h:panelGroup id="pnlGrp">
-                                    <h3>Plot Synopsis</h3>
+                                    <h3><h:outputText value="#{msgs['content.tab.plot.label']}"/></h3>
                                     <h:outputText id="spn" value="#{tab.plot}"/>
                                 </h:panelGroup>
                             </f:subview>
@@ -54,8 +54,8 @@
         <br />
         <h:form id="addRemForm">
             <icecore:singleSubmit/>
-            <h:commandButton value="Add " actionListener="#{dynamic.addTab}" />
-            <h:commandButton value="RemoveCurrent" actionListener="#{dynamic.removeCurrent}"/>
+            <h:commandButton value="#{msgs['content.button.addTab']}" actionListener="#{dynamic.addTab}" />
+            <h:commandButton value="#{msgs['content.button.removeCurrent']}" actionListener="#{dynamic.removeCurrent}"/>
         </h:form>
     </ui:define>
 </ui:composition>

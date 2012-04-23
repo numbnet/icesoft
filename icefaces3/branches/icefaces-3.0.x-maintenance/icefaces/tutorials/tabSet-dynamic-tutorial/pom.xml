@@ -20,13 +20,13 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.icefaces.tutorial</groupId>
-    <artifactId>tabSet-dynamic</artifactId>
+    <artifactId>tabSet-dynamic-tutorial</artifactId>
     <version>1.0</version>
 
     <repositories>
         <repository>
-            <id>ICEsoft Snapshot Repository</id>
-            <url>http://anonsvn.icefaces.org/repo/maven2/snapshots</url>
+            <id>ICEsoft Release Repository</id>
+            <url>http://anonsvn.icefaces.org/repo/maven2/releases</url>
         </repository>
     </repositories>
 
@@ -37,7 +37,7 @@
     </parent>
 
     <name>ACE TabSet with Dynamic TabPane Children Tutorial</name>
-    <url>http://www.icefaces.org</url>
+    <url>http://wiki.icesoft.org/display/ICE/TabSet+Dynamic+TabPanes</url>
 
     <packaging>war</packaging>
 </project>
