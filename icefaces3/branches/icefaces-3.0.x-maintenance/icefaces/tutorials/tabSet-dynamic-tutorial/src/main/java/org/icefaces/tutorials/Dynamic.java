@@ -68,7 +68,9 @@ public class Dynamic implements Serializable {
 
     public void addTab(ActionEvent event) {
         int i = counter++;
-        Movie movie = new Movie("movie"+i, "Dynamic Movie "+i, "Movie Plot "+i);
+        String title = TutorialMessageUtils.formatMessage("action.tabAdd.template.title", new Object[] {i});
+        String plot = TutorialMessageUtils.formatMessage("action.tabAdd.template.plot", new Object[] {i});
+        Movie movie = new Movie("movie"+i, title, plot);
         movies.add(movie);
         richText = TutorialMessageUtils.formatMessage("action.tabAdd", new Object[] {movie.getTitle()});
     }
