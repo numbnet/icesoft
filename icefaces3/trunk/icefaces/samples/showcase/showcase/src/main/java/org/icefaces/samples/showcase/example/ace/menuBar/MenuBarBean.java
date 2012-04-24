@@ -55,7 +55,11 @@ import javax.faces.component.UIComponent;
             @MenuLink(title = "menu.ace.menuBar.subMenu.effect",
                 exampleBeanName = MenuBarEffect.BEAN_NAME),
             @MenuLink(title = "menu.ace.menuBar.subMenu.click",
-                exampleBeanName = MenuBarClick.BEAN_NAME)
+                exampleBeanName = MenuBarClick.BEAN_NAME),
+            @MenuLink(title = "menu.ace.menuBar.subMenu.dynamic",
+                exampleBeanName = MenuBarDynamic.BEAN_NAME),
+            @MenuLink(title = "menu.ace.menuBar.subMenu.multicolumn",
+                exampleBeanName = MenuBarMultiColumn.BEAN_NAME)
     }
 )
 @ManagedBean(name= MenuBarBean.BEAN_NAME)
