@@ -1,42 +1,36 @@
-<html>
-<head>
+<!DOCTYPE html> 
+<html> 
+	<head> 
 	<title>ICEmobile | mvc-showcase</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1"> 
-
 	<link rel="stylesheet" href="http://code.jquery.com/mobile/1.1.0/jquery.mobile-1.1.0.min.css" />
 	<script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
 	<script src="http://code.jquery.com/mobile/1.1.0/jquery.mobile-1.1.0.min.js"></script>
-</head>
-<body>
+    <style>
+    .recordstyle {
+        background: red;
+    }
+    </style>
+</head> 
+<body> 
 
-	<div id="micContent">
-        <style>
-        .recordstyle {
-            background: red;
-        }
-        </style>
-		<h2>Microphone</h2>
-		<p>
-			jQuery ICEobile Microphone	
-		</p>
+<div data-role="page">
+	<div data-role="header">
+		<h1>ICEmobile Mic</h1>
+	</div>
+
+	<div data-role="content">	
+
 		<form id="micform" action="/springy/jsonmic" method="POST" enctype="multipart/form-data">
-			<div class="header">
-		  		<h2>Form</h2>
-		  		
-			</div>
 		  	<fieldset>
-		  		<legend>Personal Info</legend>
-		  		<label for="name">
-		  			Name 
-		 		</label>
-		  		<input id="name" name="name" type="text" value=""/>
+		  		<input id="name" name="name" type="text" placeholder="Name" value=""/>
 		
 		  	</fieldset>
 
 		  	<fieldset>
                <a data-role="button" id="mic" onclick="var subtext = this.firstChild; if(1===subtext.nodeType){subtext=subtext.firstChild.firstChild};if(subtext.data=='Stop'){subtext.data='Record';this.classList.remove('recordstyle')}else{subtext.data='Stop';this.classList.add('recordstyle')}ice.microphone('mic');">Record</a>
                <span id="thanks"></span>
-               <audio id="clip" src="media/clip.mp4" controls="controls" ></audio>
+               <audio id="clip" style="width:100%;padding-top:10px;" src="media/clip.mp4" controls="controls" ></audio>
 		  	</fieldset>
 
 			<fieldset class="checkbox">
@@ -54,8 +48,10 @@
 			$(document).ready(function() {
 				$("#micform").submit(function() {
                     if (window.ice && ice.upload)  {
-                        window.ice.handleResponse = function(data)  {
-                            alert($.parseJSON(data).clipLocation);
+                        window.ice.handleResponse = function(text)  {
+                            var data = $.parseJSON(unescape(text));
+                            $("#clip").attr("src", data.clipLocation);
+                            $("#thanks").text(data.message);
                             $("#micContent").trigger("create");
 						    $('html, body').animate({ scrollTop: $("#message").offset().top }, 500);
                         }
@@ -86,7 +82,7 @@
 
 		</script>
 	</div>
-
+</div>
 </body>
 </html>
 
