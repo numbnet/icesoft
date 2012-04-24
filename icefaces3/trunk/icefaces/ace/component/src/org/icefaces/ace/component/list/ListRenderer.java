@@ -330,6 +330,8 @@ public class ListRenderer extends CoreRenderer {
         if (component.isControlsEnabled())
             cfgBuilder.entry("controls", component.isControlsEnabled());
 
+        encodeClientBehaviors(context, component, cfgBuilder);
+
         cfgBuilder.endMap();
 
         writer.write("var " + widgetVar + " = new ice.ace.List('" + clientId + "', " + cfgBuilder +");");

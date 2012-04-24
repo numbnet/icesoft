@@ -55,23 +55,25 @@
                 </h:panelGrid>
             </h:panelGroup>
 
-            <!--<hr style="margin:1em .6em;"/>-->
+            <hr style="margin:1em .6em;"/>
 
-            <!--<h3>Ajax Reordering</h3>-->
-            <!--<h:panelGroup style="padding: 0 0.5em;" layout="block">-->
-                <!--<h:panelGrid columns="2" style="margin-left:auto; margin-right:auto;" cellspacing="30">-->
-                    <!--<ace:list value="#{backing.ajaxStringList}"-->
-                              <!--selection="true"-->
-                              <!--dragging="false"-->
-                              <!--controlsEnabled="true"/>-->
+            <h3>Ajax Reordering</h3>
+            <h:panelGroup style="padding: 0 0.5em;" layout="block">
+                <h:panelGrid columns="2" style="margin-left:auto; margin-right:auto;" cellspacing="30">
+                    <ace:list value="#{backing.ajaxStringList}"
+                              selection="true"
+                              dragging="false"
+                              controlsEnabled="true">
+                        <ace:ajax event="move" render="@all" />
+                    </ace:list>
 
-                    <!--<h:panelGroup>-->
-                        <!--<ui:repeat value="#{backing.ajaxStringList}" var="selectItem">-->
-                            <!--<h:outputText value="#{selectItem.value}" /><br/>-->
-                        <!--</ui:repeat>-->
-                    <!--</h:panelGroup>-->
-                <!--</h:panelGrid>-->
-            <!--</h:panelGroup>-->
+                    <h:panelGroup>
+                        <ui:repeat value="#{backing.ajaxStringList}" var="selectItem">
+                            <h:outputText value="#{selectItem.value}" /><br/>
+                        </ui:repeat>
+                    </h:panelGroup>
+                </h:panelGrid>
+            </h:panelGroup>
         </h:form>
     </ui:define>
 </ui:composition>

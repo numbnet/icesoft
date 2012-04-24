@@ -11,6 +11,7 @@ ice.ace.List = function(id, cfg) {
     this.cfg = cfg;
     this.sep = String.fromCharCode(this.cfg.separator);
     this.element = ice.ace.jq(this.jqId);
+    this.behaviors = cfg.behaviors;
 
     // global list of list objects, used by a component
     // to rebuild widget lists following an inserting update.
@@ -97,6 +98,12 @@ ice.ace.List.prototype.sendMigrateRequest = function() {
 
         return true;
     };
+
+    if (this.behaviors)
+        if (this.behaviors.migrate) {
+            ice.ace.ab(ice.ace.extendAjaxArguments(this.behaviors.migrate, options));
+            return;
+        }
 
     ice.ace.AjaxRequest(options);
 };
@@ -230,7 +237,9 @@ ice.ace.List.prototype.addSelectedItem = function(item) {
     this.write('selections', selections);
     this.write('deselections', deselections);
 
-    // select cb event
+    if (this.behaviors)
+        if (this.behaviors.select)
+            ice.ace.ab(this.behaviors.select);
 };
 
 ice.ace.List.prototype.removeSelectedItem = function(item) {
@@ -249,13 +258,13 @@ ice.ace.List.prototype.removeSelectedItem = function(item) {
     this.write('selections', selections);
     this.write('deselections', deselections);
 
-    // deselect cb event
+    if (this.behaviors)
+        if (this.behaviors.deselect)
+            ice.ace.ab(this.behaviors.deselect);
 };
 
 ice.ace.List.prototype.moveItems = function(dir) {
     var selectedItems = this.element.find('.ui-state-active');
-
-    // move cb event
 
     // do element swaps
     var swapRecords = this.read('reorderings');
@@ -327,6 +336,10 @@ ice.ace.List.prototype.moveItems = function(dir) {
 
     // write swaps or ajax submit
     this.write('reorderings', swapRecords);
+
+    if (this.behaviors)
+        if (this.behaviors.move)
+            ice.ace.ab(this.behaviors.move);
 };
 
 // Used to keep id for each child in place, so per-item updates
