@@ -31,6 +31,13 @@
         <body-content>empty</body-content>
     </tag>
     <tag>
+        <description>Capture video with device camera.</description>
+        <display-name>ICEmobile Camcorder</display-name>
+        <name>camcorder</name>
+        <tag-class>org.icemobile.jsp.tags.CamcorderTag</tag-class>
+        <body-content>empty</body-content>
+    </tag>
+    <tag>
         <description>Capture audio clip with device microphone.</description>
         <display-name>ICEmobile Microphone</display-name>
         <name>microphone</name>
