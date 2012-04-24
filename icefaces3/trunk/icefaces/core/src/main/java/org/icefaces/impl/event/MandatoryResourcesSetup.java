@@ -183,7 +183,7 @@ public class MandatoryResourcesSetup implements SystemEventListener {
             UIComponent c = componentResources.get(i);
             Map<String, Object> attributes = c.getAttributes();
             String resourceName = (String) attributes.get("name");
-            String resourceLibrary = (String) attributes.get("library");
+            String resourceLibrary = fixResourceParameter((String) attributes.get("library"));
             String normalizedLibrary = fixResourceParameter(library);
             if (name.equals(resourceName) && (normalizedLibrary == resourceLibrary/*both null*/ || normalizedLibrary.equals(resourceLibrary))) {
                 position = i;
