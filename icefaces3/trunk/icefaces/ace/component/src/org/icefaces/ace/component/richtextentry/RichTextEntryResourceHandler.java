@@ -44,6 +44,7 @@ public class RichTextEntryResourceHandler extends ResourceHandlerWrapper {
     private HashMap<String, ResourceEntry> cssResources = new HashMap();
     private ResourceEntry codeResource;
     private String prefixMapping;
+	private int countInvokations = 0; // workaround for issue with not correctly mapping the urls the first time
 
     public RichTextEntryResourceHandler(ResourceHandler handler) {
         this.handler = handler;
@@ -73,6 +74,7 @@ public class RichTextEntryResourceHandler extends ResourceHandlerWrapper {
                 public void processEvent(SystemEvent event) throws AbortProcessingException {
                     FacesContext context = FacesContext.getCurrentInstance();
                     try {
+						countInvokations++;
                         calculateExtensionMapping();
                         calculateMappings(context, allResources, cssResources, imageResources);
                     } catch (UnsupportedEncodingException e) {
@@ -113,7 +115,7 @@ public class RichTextEntryResourceHandler extends ResourceHandlerWrapper {
         Map applicationMap = externalContext.getApplicationMap();
 
         String value = (String) applicationMap.get(RichTextEntryResourceHandler.class.getName());
-        //if (value == null) {
+        if (value == null || countInvokations == 2) {
             //rewrite relative request paths
             Iterator<ResourceEntry> i = cssResources.values().iterator();
             while (i.hasNext()) {
@@ -158,9 +160,9 @@ public class RichTextEntryResourceHandler extends ResourceHandlerWrapper {
 
             value = code.toString();
             applicationMap.put(RichTextEntryResourceHandler.class.getName(), value);
-        //}
+        }
 
-        if (codeResource == null) {
+        if (codeResource == null || countInvokations == 2) {
             codeResource = new ResourceEntry(INPUTRICHTEXT_CKEDITOR_DIR + CKEDITOR_MAPPING_JS, value.getBytes("UTF-8"));
         }
     }
