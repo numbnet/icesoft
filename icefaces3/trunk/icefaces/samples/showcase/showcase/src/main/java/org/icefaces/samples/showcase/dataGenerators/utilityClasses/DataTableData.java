@@ -16,11 +16,12 @@
 
 package org.icefaces.samples.showcase.dataGenerators.utilityClasses;
 
-import java.io.Serializable;
-import java.util.List;
 import org.icefaces.samples.showcase.dataGenerators.VehicleGenerator;
 import org.icefaces.samples.showcase.example.compat.dataTable.Car;
 import org.icefaces.samples.showcase.example.compat.selector.SelectableCar;
+
+import java.io.Serializable;
+import java.util.List;
 
 public class DataTableData implements Serializable {
     
@@ -28,7 +29,7 @@ public class DataTableData implements Serializable {
 
         public static final int DEFAULT_ROWS;
         public static final int DEFAULT_LIST_SIZE;
-        private static final String[] CHASSIS_ALL;
+        public static final String[] CHASSIS_ALL;
         //static data initialization
         static {
             DEFAULT_ROWS = 8;

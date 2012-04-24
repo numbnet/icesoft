@@ -17,6 +17,7 @@
 package org.icefaces.samples.showcase.view.navigation;
 
 import org.icefaces.samples.showcase.example.ace.file.FileEntryBean;
+import org.icefaces.samples.showcase.example.ace.list.ListBean;
 import org.icefaces.samples.showcase.example.ace.slider.SliderBean;
 import org.icefaces.samples.showcase.example.ace.tab.TabSetBean;
 import org.icefaces.samples.showcase.example.ace.date.DateEntryBean;
@@ -35,7 +36,6 @@ import org.icefaces.samples.showcase.example.ace.progressbar.ProgressBarBean;
 import org.icefaces.samples.showcase.example.ace.dialog.DialogBean;
 import org.icefaces.samples.showcase.example.ace.maskedEntry.MaskedEntryBean;
 import org.icefaces.samples.showcase.example.ace.resizable.ResizableBean;
-import org.icefaces.samples.showcase.example.ace.richtextentry.RichTextEntryBean;
 import org.icefaces.samples.showcase.example.ace.dragDrop.DragDropOverviewBean;
 import org.icefaces.samples.showcase.example.ace.tooltip.TooltipOverviewBean;
 import org.icefaces.samples.showcase.example.ace.linkButton.LinkButtonBean;
@@ -66,6 +66,7 @@ import org.icefaces.samples.showcase.example.ace.printer.PrinterBean;
                 @MenuLink(title = "menu.ace.fileentry.title", exampleBeanName = FileEntryBean.BEAN_NAME),
 //@MenuLink(title = "menu.ace.logger.title", exampleBeanName = LoggerBean.BEAN_NAME),
                 @MenuLink(title = "menu.ace.linkButton.title", exampleBeanName = LinkButtonBean.BEAN_NAME),
+                @MenuLink(title = "menu.ace.list.title", exampleBeanName = ListBean.BEAN_NAME),
                 @MenuLink(title = "menu.ace.maskedEntry.title", exampleBeanName = MaskedEntryBean.BEAN_NAME),
                 @MenuLink(title = "menu.ace.menu.title", exampleBeanName = MenuBean.BEAN_NAME),
                 @MenuLink(title = "menu.ace.menuBar.title", exampleBeanName = MenuBarBean.BEAN_NAME),
@@ -76,7 +77,6 @@ import org.icefaces.samples.showcase.example.ace.printer.PrinterBean;
                 @MenuLink(title = "menu.ace.progressbar.title", exampleBeanName = ProgressBarBean.BEAN_NAME),
                 @MenuLink(title = "menu.ace.pushButton.title", exampleBeanName = PushButtonBean.BEAN_NAME),
                 @MenuLink(title = "menu.ace.resizable.title", exampleBeanName = ResizableBean.BEAN_NAME),
-				@MenuLink(title = "menu.ace.richtextentry.title", exampleBeanName = RichTextEntryBean.BEAN_NAME),
                 @MenuLink(title = "menu.ace.slider.title", exampleBeanName = SliderBean.BEAN_NAME),
                 @MenuLink(title = "menu.ace.tabSet.title", exampleBeanName = TabSetBean.BEAN_NAME),
                 @MenuLink(title = "menu.ace.tooltip.title", exampleBeanName = TooltipOverviewBean.BEAN_NAME)

@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright 2004-2012 ICEsoft Technologies Canada Corp.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the
+  ~ License. You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an "AS
+  ~ IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+  ~ express or implied. See the License for the specific language
+  ~ governing permissions and limitations under the License.
+  -->
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                xmlns:ace="http://www.icefaces.org/icefaces/components"
+                xmlns:ice="http://www.icesoft.com/icefaces/component"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="/resources/templates/content-template.xhtml">
+
+    <ui:param value="#{listDragBean}" name="backing" />
+    <ui:param name="title" value="#{msgs[backing.title]}"/>
+    <ui:param name="description" value="#{msgs[backing.description]}"/>
+    <ui:param name="subMenuTitle" value="#{msgs[backing.subMenuTitle]}"/>
+    <ui:param name="subMenuLinks" value="#{backing.subMenuLinks}"/>
+    <ui:param name="resourceValue" value="#{backing.exampleResource}"/>
+
+    <ui:param name="wikiResources" value="#{listDragBeanResources.wikiResources}"/>
+    <ui:param name="tldResources" value="#{listDragBeanResources.tldResources}"/>
+
+    <ui:define name="example">
+        <h:form id="form">
+            <h3>Drag Reordering</h3>
+            <h:panelGroup style="padding: 0.5em;" layout="block">
+                <style type="text/css">
+                        /* To layout lists side by side if space is available */
+                    .inlineList {
+                        display: inline-block;
+                        vertical-align: top;
+                    }
+                </style>
+                <h:panelGrid columns="3" cellspacing="10" style="margin:0 auto 0 auto;">
+                    <ace:list value="#{backing.stringList}"
+                              dropGroup="textGroup"
+                              selection="true"
+                              styleClass="inlineList"/>
+
+                    <h:commandButton value="Submit Reorder" />
+
+                    <h:panelGroup>
+                        <ui:repeat value="#{backing.stringList}" var="selectItem">
+                            <h:outputText value="#{selectItem.value}" /><br/>
+                        </ui:repeat>
+                    </h:panelGroup>
+                </h:panelGrid>
+            </h:panelGroup>
+
+            <!--<hr style="margin:1em .6em;"/>-->
+
+            <!--<h3>Two-Way Drag Migrations</h3>-->
+            <!--<h:panelGroup style="padding: 0.5em;" layout="block">-->
+                <!--<style type="text/css">-->
+                        <!--/* To layout lists side by side if space is available */-->
+                    <!--.inlineList {-->
+                        <!--font-size: 80% !important;-->
+                        <!--display: inline-block;-->
+                        <!--vertical-align: top;-->
+                    <!--}-->
+                <!--</style>-->
+                <!--<h:panelGrid columns="4" cellspacing="10">-->
+                    <!--<ace:list value="#{backing.oneWaySourceList}"-->
+                              <!--dropGroup="textGroup"-->
+                              <!--selection="true"-->
+                              <!--styleClass="inlineList" />-->
+
+                    <!--<ace:list value="#{backing.oneWayDestList}"-->
+                              <!--dropGroup="textGroup"-->
+                              <!--selection="true"-->
+                              <!--styleClass="inlineList" />-->
+
+                    <!--<h:panelGroup>-->
+                        <!--<ui:repeat value="#{backing.oneWaySourceList}" var="selectItem">-->
+                            <!--<h:outputText value="#{selectItem.value}" /><br/>-->
+                        <!--</ui:repeat>-->
+                    <!--</h:panelGroup>-->
+
+                    <!--<h:panelGroup>-->
+                        <!--<ui:repeat value="#{backing.oneWayDestList}" var="selectItem">-->
+                            <!--<h:outputText value="#{selectItem.value}" /><br/>-->
+                        <!--</ui:repeat>-->
+                    <!--</h:panelGroup>-->
+                <!--</h:panelGrid>-->
+            <!--</h:panelGroup>-->
+
+            <!--<hr style="margin:1em .6em;"/>-->
+
+            <!--<h3>One-Way Drag Migrations</h3>-->
+            <!--<h:panelGroup style="padding: 0.5em;" layout="block">-->
+                <!--<style type="text/css">-->
+                        <!--/* To layout lists side by side if space is available */-->
+                    <!--.inlineList {-->
+                        <!--font-size: 80% !important;-->
+                        <!--display: inline-block;-->
+                        <!--vertical-align: top;-->
+                    <!--}-->
+                <!--</style>-->
+                <!--<ace:list value="#{backing.twoWaySourceList}"-->
+                          <!--dropGroup="textGroup"-->
+                          <!--selection="true"-->
+                          <!--styleClass="inlineList"/>-->
+
+                <!--<ace:list value="#{backing.twoWayDestList}"-->
+                          <!--dropGroup="textGroup"-->
+                          <!--selection="true"-->
+                          <!--styleClass="inlineList"/>-->
+            <!--</h:panelGroup>-->
+        </h:form>
+    </ui:define>
+</ui:composition>
