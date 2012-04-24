@@ -1,0 +1,78 @@
+<html>
+<head>
+	<title>ICEmobile | mvc-showcase</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1"> 
+
+	<link rel="stylesheet" href="http://code.jquery.com/mobile/1.1.0/jquery.mobile-1.1.0.min.css" />
+	<script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+	<script src="http://code.jquery.com/mobile/1.1.0/jquery.mobile-1.1.0.min.js"></script>
+</head>
+<body>
+	<div id="cameraContent">
+		<h2>jQuery ICEmobile Camera</h2>
+		<form id="camform" action="/springy/jsoncam" method="POST" enctype="multipart/form-data">
+		  	<fieldset>
+		  		<input id="name" name="name" type="text" placeholder="Name" value=""/>
+		  	</fieldset>
+
+		  	<fieldset>
+               <a data-role="button" id="camera" onclick="ice.camera('camera');">Camera
+               <img style="height:60px;width:65px;vertical-align:middle;padding-left:20px;" id="camera-thumb" ></a>
+               <div style="text-align:center">
+                   <img style="width:100px;height:100px;background:white;" id="result" src="resources/uploaded.jpg" >
+                </div>
+               <span style="align:center;" id="thanks"></span>
+		  	</fieldset>
+
+			<fieldset class="checkbox">
+				<label><input id="additionalInfomvc1" name="additionalInfo[mvc]" type="checkbox" value="true"/><input type="hidden" name="_additionalInfo[mvc]" value="on"/>on Spring MVC</label>
+				<label><input id="additionalInfojava1" name="additionalInfo[java]" type="checkbox" value="true"/><input type="hidden" name="_additionalInfo[java]" value="on"/>on Java (4-ever)</label>				
+			</fieldset>
+		  		  		
+			<p><button type="submit">Submit</button></p>
+		</form>
+
+
+		<script type="text/javascript">
+
+			$(document).ready(function() {
+				$("#camform").submit(function() {
+                    if (window.ice && ice.upload)  {
+                        window.ice.handleResponse = function(text)  {
+                            var data = $.parseJSON(unescape(text));
+                            $("#result").attr("src", data.path);
+                            $("#thanks").text(data.message);
+                            $("#cameraContent").trigger("create");
+						    $('html, body').animate({ scrollTop: $("#message").offset().top }, 500);
+                        }
+                        ice.upload($(this).attr("id"));
+                        return false;  
+                    }
+
+                    var formData = new FormData(this);
+
+                    $.ajax({
+                        url: $(this).attr("action"),
+                        data: formData,
+                        cache: false,
+                        contentType: false,
+                        processData: false,
+                        type: 'POST',
+                        success: function(data) {
+                            $("#result").attr("src", data.path);
+                            $("#thanks").text(data.message);
+                            $("#cameraContent").trigger("create");
+						    $('html, body').animate({ scrollTop: $("#message").offset().top }, 500);
+					    }
+                    });
+
+					return false;  
+				});			
+			});
+
+		</script>
+	</div>
+
+</body>
+</html>
+

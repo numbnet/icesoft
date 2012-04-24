@@ -1,0 +1,92 @@
+<html>
+<head>
+	<title>ICEmobile | mvc-showcase</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1"> 
+
+	<link rel="stylesheet" href="http://code.jquery.com/mobile/1.1.0/jquery.mobile-1.1.0.min.css" />
+	<script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+	<script src="http://code.jquery.com/mobile/1.1.0/jquery.mobile-1.1.0.min.js"></script>
+</head>
+<body>
+
+	<div id="micContent">
+        <style>
+        .recordstyle {
+            background: red;
+        }
+        </style>
+		<h2>Microphone</h2>
+		<p>
+			jQuery ICEobile Microphone	
+		</p>
+		<form id="micform" action="/springy/jsonmic" method="POST" enctype="multipart/form-data">
+			<div class="header">
+		  		<h2>Form</h2>
+		  		
+			</div>
+		  	<fieldset>
+		  		<legend>Personal Info</legend>
+		  		<label for="name">
+		  			Name 
+		 		</label>
+		  		<input id="name" name="name" type="text" value=""/>
+		
+		  	</fieldset>
+
+		  	<fieldset>
+               <a data-role="button" id="mic" onclick="var subtext = this.firstChild; if(1===subtext.nodeType){subtext=subtext.firstChild.firstChild};if(subtext.data=='Stop'){subtext.data='Record';this.classList.remove('recordstyle')}else{subtext.data='Stop';this.classList.add('recordstyle')}ice.microphone('mic');">Record</a>
+               <span id="thanks"></span>
+               <audio id="clip" src="media/clip.mp4" controls="controls" ></audio>
+		  	</fieldset>
+
+			<fieldset class="checkbox">
+				<legend>Request Additional Info</legend>
+				<label><input id="additionalInfomvc1" name="additionalInfo[mvc]" type="checkbox" value="true"/><input type="hidden" name="_additionalInfo[mvc]" value="on"/>on Spring MVC</label>
+				<label><input id="additionalInfojava1" name="additionalInfo[java]" type="checkbox" value="true"/><input type="hidden" name="_additionalInfo[java]" value="on"/>on Java (4-ever)</label>				
+			</fieldset>
+		  		  		
+			<p><button type="submit">Submit</button></p>
+		</form>
+
+
+		<script type="text/javascript">
+
+			$(document).ready(function() {
+				$("#micform").submit(function() {
+                    if (window.ice && ice.upload)  {
+                        window.ice.handleResponse = function(data)  {
+                            alert($.parseJSON(data).clipLocation);
+                            $("#micContent").trigger("create");
+						    $('html, body').animate({ scrollTop: $("#message").offset().top }, 500);
+                        }
+                        ice.upload($(this).attr("id"));
+                        return false;  
+                    }
+
+                    var formData = new FormData(this);
+
+                    $.ajax({
+                        url: $(this).attr("action"),
+                        data: formData,
+                        cache: false,
+                        contentType: false,
+                        processData: false,
+                        type: 'POST',
+                        success: function(data) {
+                            $("#clip").attr("src", data.clipLocation);
+                            $("#thanks").text(data.message);
+                            $("#micContent").trigger("create");
+						    $('html, body').animate({ scrollTop: $("#message").offset().top }, 500);
+					    }
+                    });
+
+					return false;  
+				});			
+			});
+
+		</script>
+	</div>
+
+</body>
+</html>
+
