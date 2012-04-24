@@ -1,0 +1,55 @@
+.if-list .if-list-body {
+    min-height: 1.6em;
+    min-width: 100px;
+    margin: 3px 0 0 0;
+    padding: 0;
+}
+
+.if-list .if-list-item {
+    margin: 0 3px 3px 3px;
+    padding: 0.3em;
+    padding-left: 1.5em;
+    padding-right: 1em;
+}
+
+.if-list .if-list-item.if-pntr {
+    cursor:pointer;
+}
+
+.if-list .if-list-plhld {
+    height: 1.6em;
+    line-height: 1.6em;
+}
+
+.if-list .if-list-head {
+    margin: 3px;
+    padding: 0.3em;
+    padding-left: 1em;
+    padding-right: 1em;
+}
+
+.if-list .if-list-ctrls {
+    margin: 3px;
+    padding: 0.3em;
+    padding-left: 1em;
+    padding-right: 1em;
+    text-align: center;
+}
+
+.if-list-ctrl-spcr {
+    width:25%;
+    /* IE7 width fix */
+    *width: 24%;
+    display:inline-block;
+}
+
+.if-list .if-list-ctrl {
+    display:inline-block;
+}
+
+.if-list .if-list-foot {
+    margin: 3px;
+    padding: 0.3em;
+    padding-left: 1em;
+    padding-right: 1em;
+}

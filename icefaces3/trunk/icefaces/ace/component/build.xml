@@ -233,12 +233,15 @@
                 <file name="icefaces.ace/sliderentry/slider.js"/>
                 <file name="icefaces.ace/confirmationdialog/confirmationdialog.js"/>
                 <file name="icefaces.ace/panel/panel.js"/>
+                <file name="icefaces.ace/list/list.js"/>
+                <file name="icefaces.ace/listcontrol/listcontrol.js"/>
                 <file name="icefaces.ace/animation/animation.js"/>
                 <file name="icefaces.ace/accordion/accordion.js"/>
                 <file name="icefaces.ace/notificationpanel/notificationpanel.js"/>
                 <file name="icefaces.ace/printer/printer.js"/>
                 <file name="icefaces.ace/tooltip/jquery.qtip-1.0.0-rc3.js"/>
                 <file name="icefaces.ace/tooltip/tooltip.js"/>
+                <file name="icefaces.ace/json/json2.js"/>
             </filelist>
         </concat>
     </target>
