@@ -118,7 +118,7 @@ var ComponentIndicators;
         var head = document.getElementsByTagName('head')[0];
         var style = document.createElement('style');
         style.setAttribute('type', 'text/css');
-        var defaultStyle = '.busyIndicator {cursor: wait;}';
+        var defaultStyle = '.ice-busyIndicator {cursor: wait;}';
         try {
             //FF and Safari
             style.appendChild(document.createTextNode(defaultStyle));
@@ -138,7 +138,7 @@ var ComponentIndicators;
             //prepare cursor shape rollback
             function toggleElementCursor(e) {
                 var c = e.className;
-                e.className += ' busyIndicator';
+                e.className += ' ice-busyIndicator';
                 return function() {
                     e.className = c;
                 };
@@ -179,7 +179,7 @@ var ComponentIndicators;
             privateOn = noop;
             //prepare cursor shape rollback
             var elementClassName = element.className;
-            element.className += ' busyIndicator';
+            element.className += ' ice-busyIndicator';
 
             privateOff = function() {
                 element.className = elementClassName;
