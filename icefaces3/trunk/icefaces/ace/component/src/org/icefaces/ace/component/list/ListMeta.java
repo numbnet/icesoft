@@ -25,24 +25,14 @@ import java.util.Set;
     @ResourceDependency(library = "icefaces.ace", name = "util/ace-components.js")
 })
 @ClientBehaviorHolder(events = {
-        @ClientEvent(name="select", defaultRender="@none", defaultExecute="@this",
-                javadoc="",
-                tlddoc=""),
-        @ClientEvent(name="deselect", defaultRender="@none", defaultExecute="@this",
-                javadoc="",
-                tlddoc=""),
-        @ClientEvent(name="click", defaultRender="@none", defaultExecute="@none",
-                javadoc="",
-                tlddoc=""),
-        @ClientEvent(name="hover", defaultRender="@none", defaultExecute="@none",
-                javadoc="",
-                tlddoc=""),
+        @ClientEvent(name="select", defaultRender="@this", defaultExecute="@this",
+                javadoc="", tlddoc=""),
+        @ClientEvent(name="deselect", defaultRender="@this", defaultExecute="@this",
+                javadoc="", tlddoc=""),
         @ClientEvent(name="move", defaultRender="@this", defaultExecute="@this",
-                javadoc="",
-                tlddoc=""),
-        @ClientEvent(name="migrate", defaultRender="@all", defaultExecute="@this",
-                javadoc="",
-                tlddoc="")
+                javadoc="", tlddoc=""),
+        @ClientEvent(name="migrate", defaultRender="@all", defaultExecute="@all",
+                javadoc="", tlddoc="")
     },
     defaultEvent = "select"
 )

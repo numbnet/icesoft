@@ -61,42 +61,48 @@
                 </h:panelGrid>
             </h:panelGroup>
 
-            <!--<hr style="margin:1em .6em;"/>-->
+            <hr style="margin:1em .6em;"/>
 
-            <!--<h3>Two-Way Drag Migrations</h3>-->
-            <!--<h:panelGroup style="padding: 0.5em;" layout="block">-->
-                <!--<style type="text/css">-->
-                        <!--/* To layout lists side by side if space is available */-->
-                    <!--.inlineList {-->
-                        <!--font-size: 80% !important;-->
-                        <!--display: inline-block;-->
-                        <!--vertical-align: top;-->
-                    <!--}-->
-                <!--</style>-->
-                <!--<h:panelGrid columns="4" cellspacing="10">-->
-                    <!--<ace:list value="#{backing.oneWaySourceList}"-->
-                              <!--dropGroup="textGroup"-->
-                              <!--selection="true"-->
-                              <!--styleClass="inlineList" />-->
+            <h3>Two-Way Drag Migrations</h3>
+            <h:panelGroup style="padding: 0.5em;" layout="block">
+                <style type="text/css">
+                        /* To layout lists side by side if space is available */
+                    .inlineList {
+                        font-size: 80% !important;
+                        display: inline-block;
+                        vertical-align: top;
+                    }
+                </style>
+                <h:panelGrid columns="4" cellspacing="10" style="margin:0 auto 0 auto;">
+                    <ace:list value="#{backing.oneWaySourceList}"
+                              dropGroup="textGroup"
+                              selection="true"
+                              styleClass="inlineList">
+                        <!-- causes render @all by default -->
+                        <ace:ajax event="migrate" />
+                    </ace:list>
 
-                    <!--<ace:list value="#{backing.oneWayDestList}"-->
-                              <!--dropGroup="textGroup"-->
-                              <!--selection="true"-->
-                              <!--styleClass="inlineList" />-->
+                    <ace:list value="#{backing.oneWayDestList}"
+                              dropGroup="textGroup"
+                              selection="true"
+                              styleClass="inlineList">
+                        <!-- causes render @all by default -->
+                        <ace:ajax event="migrate" />
+                     </ace:list>
 
-                    <!--<h:panelGroup>-->
-                        <!--<ui:repeat value="#{backing.oneWaySourceList}" var="selectItem">-->
-                            <!--<h:outputText value="#{selectItem.value}" /><br/>-->
-                        <!--</ui:repeat>-->
-                    <!--</h:panelGroup>-->
+                    <h:panelGroup>
+                        <ui:repeat value="#{backing.oneWaySourceList}" var="selectItem">
+                            <h:outputText value="#{selectItem.value}" /><br/>
+                        </ui:repeat>
+                    </h:panelGroup>
 
-                    <!--<h:panelGroup>-->
-                        <!--<ui:repeat value="#{backing.oneWayDestList}" var="selectItem">-->
-                            <!--<h:outputText value="#{selectItem.value}" /><br/>-->
-                        <!--</ui:repeat>-->
-                    <!--</h:panelGroup>-->
-                <!--</h:panelGrid>-->
-            <!--</h:panelGroup>-->
+                    <h:panelGroup>
+                        <ui:repeat value="#{backing.oneWayDestList}" var="selectItem">
+                            <h:outputText value="#{selectItem.value}" /><br/>
+                        </ui:repeat>
+                    </h:panelGroup>
+                </h:panelGrid>
+            </h:panelGroup>
 
             <!--<hr style="margin:1em .6em;"/>-->
 
