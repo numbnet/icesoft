@@ -23,6 +23,7 @@
 		<li><a href="<c:url value="/fileupload" />" title="fileupload">File Upload</a></li>
 		<li><a href="<c:url value="/icemobile" />" title="icemobile">ICEmobile</a></li>
 		<li><a href="<c:url value="/microphone" />" title="microphone">Microphone</a></li>
+		<li><a href="<c:url value="/camcorder" />" title="camcorder">Camcorder</a></li>
 		<li><a href="#exceptions">Exception Handling</a></li>
 		<li><a href="#redirect">Redirecting</a></li>
     </ul>
