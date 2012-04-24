@@ -118,7 +118,14 @@ var ComponentIndicators;
         var head = document.getElementsByTagName('head')[0];
         var style = document.createElement('style');
         style.setAttribute('type', 'text/css');
-        style.appendChild(document.createTextNode('.busyIndicator {cursor: wait;}'));
+        var defaultStyle = '.busyIndicator {cursor: wait;}';
+        try {
+            //FF and Safari
+            style.appendChild(document.createTextNode(defaultStyle));
+        } catch (e) {
+            //IE
+            style.cssText = defaultStyle;
+        }
         head.insertBefore(style, head.firstChild);
     });
 
