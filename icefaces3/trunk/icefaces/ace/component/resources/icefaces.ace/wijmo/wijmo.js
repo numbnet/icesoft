@@ -3719,7 +3719,7 @@ __wijReadOptionEvents = function (eventsArr, widgetInstance) {
 					    var subList = $(this).next(); // ICE-7827 
 					    //In slide effects, before animation, 
 					    //it wraped a div to the ul element.
-					    if (!subList.is("ul") || !subList.is("div")) { // ICE-7827 
+					    if (!subList.is("ul") && !subList.is("div")) { // ICE-7827 
 					        subList = subList.children("ul:first");
 					    }
 					    hideTimer = setTimeout(function () {
