@@ -6,7 +6,7 @@
   ~ you may not use this file except in compliance with the
   ~ License. You may obtain a copy of the License at
   ~
-  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~ http://www.apache.org/licenses/LICENSE-2.0     <uri>http://www.springframework.org/tags/form</uri>
   ~
   ~ Unless required by applicable law or agreed to in writing,
   ~ software distributed under the License is distributed on an "AS
@@ -18,8 +18,8 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-jsptaglibrary_2_1.xsd"
         version="2.1">
-	<description>ICEmobile JSP Tag Library</description>
-	<display-name>ICEmobile JSP Tag Library</display-name>
+    <description>ICEmobile JSP Tag Library</description>
+    <display-name>ICEmobile JSP Tag Library</display-name>
     <tlib-version>2.0.0</tlib-version>
     <short-name>icemobile</short-name>
     <uri>http://www.icemobile.org/tags</uri>
@@ -30,6 +30,7 @@
         <tag-class>org.icemobile.jsp.tags.CameraTag</tag-class>
         <body-content>empty</body-content>
     </tag>
+
     <tag>
         <description>Capture video with device camera.</description>
         <display-name>ICEmobile Camcorder</display-name>
@@ -43,5 +44,122 @@
         <name>microphone</name>
         <tag-class>org.icemobile.jsp.tags.MicrophoneTag</tag-class>
         <body-content>empty</body-content>
+    </tag>
+
+    <tag>
+        <description>Content Pane Tag</description>
+        <display-name>ICEmobile ContentPane</display-name>
+        <name>contentPane</name>
+        <tag-class>org.icemobile.jsp.tags.ContentPaneTag</tag-class>
+        <body-content>JSP</body-content>
+        <attribute>
+            <name>id</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+        </attribute>
+        <attribute>
+            <name>styleClass</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+        </attribute>
+        <attribute>
+            <name>style</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+        </attribute>
+    </tag>
+
+    <tag>
+        <description>Pane Panel Tag</description>
+        <name>panePanel</name>
+        <display-name>ICEmobile PanePanel Tag</display-name>
+        <tag-class>org.icemobile.jsp.tags.PanePanelTag</tag-class>
+        <body-content>JSP</body-content>
+        <attribute>
+            <name>id</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+        </attribute>
+        <!-- TODO: determine the xact nature of the children -->
+    </tag>
+
+    <tag>
+        <description>Geolocation Tag</description>
+        <display-name>ICEmobile Geolocation Tag</display-name>
+        <name>geolocation</name>
+        <tag-class>org.icemobile.jsp.tags.GeolocationTag</tag-class>
+        <body-content>empty</body-content>
+        <attribute>
+            <name>id</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+        </attribute>
+        <attribute>
+            <name>disabled</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+        </attribute>
+    </tag>
+
+    <tag>
+        <name>qrscan</name>
+        <description>QRCode Scan Tag</description>
+        <display-name>QRScan Tag</display-name>
+        <tag-class>org.icemobile.jsp.tags.QRScanTag</tag-class>
+        <attribute>
+            <name>id</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+        </attribute>
+    </tag>
+
+    <tag>
+        <name>fieldSetGroup</name>
+        <description>Parent Field Group Tag</description>
+        <display-name>fieldGroup</display-name>
+        <tag-class>org.icemobile.jsp.tags.FieldSetGroupTag</tag-class>
+        <body-content>JSP</body-content>
+        <attribute>
+            <name>id</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+        </attribute>
+        <attribute>
+            <name>styleClass</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+        </attribute>
+        <attribute>
+            <name>style</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+        </attribute>
+    </tag>
+    <tag>
+        <name>fieldSetRow</name>
+        <description>Field Row Tag</description>
+        <display-name>FieldRow</display-name>
+        <tag-class>org.icemobile.jsp.tags.FieldSetRowTag</tag-class>
+        <body-content>JSP</body-content>
+        <attribute>
+            <name>id</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+        </attribute>
+        <attribute>
+            <name>styleClass</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+        </attribute>
+        <attribute>
+            <name>style</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+        </attribute>
+        <attribute>
+            <name>group</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+        </attribute>
     </tag>
 </taglib>
