@@ -13,9 +13,9 @@
 <body>
 </c:if>
 	<div id="camContent">
-		<h2>ICEmobile</h2>
+		<h2>Camera</h2>
 		<p>
-			ICEmobile simple MediaCast	
+			ICEmobile Camera Sample	
 		</p>
 		<form:form id="camform" method="POST" enctype="multipart/form-data" modelAttribute="icemobileBean" cssClass="cleanform">
 			<div class="header">
