@@ -53,6 +53,22 @@
 			</fieldset>
 		  		  		
 			<p><button type="submit">Submit</button></p>
+
+
+
+
+            <br/><h3>New tags </h3><br/>
+
+            <mobi:fieldSetGroup id="parent" >
+	            <mobi:fieldSetRow id="first" >
+	                <h2> This element in first field set row</h2>
+                </mobi:fieldSetRow>
+                <mobi:fieldSetRow id="second">
+                    <h3> This element is in the second row </h3>
+                </mobi:fieldSetRow>
+	        </mobi:fieldSetGroup>
+
+
 		</form:form>
 
 
