@@ -1,3 +1,9 @@
+if (!window.ice['ace']) {
+    window.ice.ace = {};
+}
+
+ice.ace.ListControls = {};
+
 ice.ace.ListControl = function(id, cfg) {
     this.id = id;
     this.jqId = ice.ace.escapeClientId(this.id);
@@ -5,6 +11,11 @@ ice.ace.ListControl = function(id, cfg) {
     this.element = ice.ace.jq(this.jqId);
     this.selector = cfg.selector;
     this.sep = String.fromCharCode(this.cfg.separator);
+
+    // global list of list control objects, used by lists to
+    // find lists they share migration controls with, in order
+    // to enforce mutually exclusive selection
+    ice.ace.ListControls[id] = this;
 
     this.setupControls();
 };
