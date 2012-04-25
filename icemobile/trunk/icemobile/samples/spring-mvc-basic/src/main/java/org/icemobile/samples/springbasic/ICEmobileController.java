@@ -17,7 +17,7 @@ import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
 
 @Controller
-@SessionAttributes("icemobileBean")
+//@SessionAttributes("icemobileBean")
 public class ICEmobileController {
 
 	@ModelAttribute
@@ -53,17 +53,28 @@ public class ICEmobileController {
 	@RequestMapping(value = "/jsoncam", method=RequestMethod.POST)
 	public @ResponseBody CamUpdate jsonCamera(HttpServletRequest request, ModelBean modelBean, @RequestParam(value = "camera-file", required = false) MultipartFile file, @RequestParam(value = "camera", required = false) MultipartFile inputFile, Model model) throws IOException {
 
-        String fileName = "empty";
+        String fileName = null;
         String uuid = Long.toString(
                 Math.abs(UUID.randomUUID().getMostSignificantBits()), 32 );
         String newFileName = "/resources/img-" + uuid + ".jpg";
         if (null != file)  {
             fileName = file.getOriginalFilename();
             file.transferTo(new File(request.getRealPath(newFileName)));
+            request.getServletContext().setAttribute(
+                    this.getClass().getName(), newFileName );
         }
         if (null != inputFile)  {
             fileName = inputFile.getOriginalFilename();
             inputFile.transferTo(new File(request.getRealPath(newFileName)));
+            request.getServletContext().setAttribute(
+                    this.getClass().getName(), newFileName );
+        }
+
+        if (null == fileName)  {
+            //use previously uploaded file, such as from ICEmobile-SX
+            newFileName = (String) request.getServletContext().getAttribute(
+                    this.getClass().getName());
+
         }
 
         return new CamUpdate("Thanks for the photo, " + modelBean.getName(), 
