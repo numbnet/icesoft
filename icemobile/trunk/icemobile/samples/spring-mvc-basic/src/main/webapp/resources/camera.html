@@ -6,6 +6,7 @@
 	<link rel="stylesheet" href="http://code.jquery.com/mobile/1.1.0/jquery.mobile-1.1.0.min.css" />
 	<script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
 	<script src="http://code.jquery.com/mobile/1.1.0/jquery.mobile-1.1.0.min.js"></script>
+	<script src="icemobile.js"></script>
 </head>
 <body>
 	<div id="cameraContent">
@@ -16,8 +17,13 @@
 		  	</fieldset>
 
 		  	<fieldset>
-               <a data-role="button" id="camera" onclick="ice.camera('camera');">Camera
+               <a data-role="button" id="camera1" onclick="ice.camera('camera');">Camera
                <img style="height:60px;width:65px;vertical-align:middle;padding-left:20px;" id="camera-thumb" ></a>
+               
+               
+               <a data-role="button" data-command="camera" id="camera" class="camera" onclick="ice.mobilesx(this);" >Camera ICEmobile-SX</a>
+
+
                <div style="text-align:center">
                    <img style="width:100px;height:100px;background:white;" id="result" src="resources/uploaded.jpg" >
                 </div>
@@ -69,6 +75,11 @@
 					return false;  
 				});			
 			});
+
+            window.onhashchange = function()  {
+                $("#name").attr("value","ICEmobile-SX upload");
+                $("#camform").submit();
+            }
 
 		</script>
 	</div>
