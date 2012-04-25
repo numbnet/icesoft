@@ -229,6 +229,9 @@ ice.ace.List.prototype.addSelectedItem = function(item) {
         index = id.substr(id.lastIndexOf(this.sep)+1),
         origIndex = this.getUnshiftedIndex(item.siblings().length, reorderings, parseInt(index));
 
+    // find connected lists and deselect all
+    this.deselectConnectedLists();
+
     item.addClass('ui-state-active');
 
     deselections = ice.ace.jq.grep(deselections, function(r) { return r != index; });
@@ -241,6 +244,20 @@ ice.ace.List.prototype.addSelectedItem = function(item) {
         if (this.behaviors.select)
             ice.ace.ab(this.behaviors.select);
 };
+
+
+ice.ace.List.prototype.deselectConnectedLists = function(list) {
+    for(var controlId in ice.ace.ListControls) {
+        if(ice.ace.ListControls.hasOwnProperty(controlId)) {
+            var listSet = ice.ace.jq(ice.ace.ListControls[controlId].selector);
+            if (listSet.is(this.element))
+                listSet.not(this.element)
+                        .each(function (i, elem) {
+                            ice.ace.Lists[ice.ace.jq(elem).attr('id')].deselectAll();
+                        });
+        }
+    }
+}
 
 ice.ace.List.prototype.removeSelectedItem = function(item) {
     var selections = this.read('selections'),
@@ -262,6 +279,25 @@ ice.ace.List.prototype.removeSelectedItem = function(item) {
         if (this.behaviors.deselect)
             ice.ace.ab(this.behaviors.deselect);
 };
+
+ice.ace.List.prototype.deselectAll = function() {
+    var self = this,
+        reorderings = this.read('reorderings'),
+        selections = this.read('selections'),
+        deselections = this.read('deselections');
+
+    this.element.find('.if-list-body:first > .if-list-item')
+            .removeClass('ui-state-active').each(function(i, elem) {{
+                var item = ice.ace.jq(elem),
+                    id = item.attr('id'),
+                    index = id.substr(id.lastIndexOf(self.sep)+1);
+                deselections.push(self
+                        .getUnshiftedIndex(item.siblings().length, reorderings, parseInt(index)));
+            }});
+
+    this.write('selections', []);
+    this.write('deselections', deselections);
+}
 
 ice.ace.List.prototype.moveItems = function(dir) {
     var selectedItems = this.element.find('.ui-state-active');
