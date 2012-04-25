@@ -115,7 +115,7 @@ public class RichTextEntryResourceHandler extends ResourceHandlerWrapper {
         Map applicationMap = externalContext.getApplicationMap();
 
         String value = (String) applicationMap.get(RichTextEntryResourceHandler.class.getName());
-        if (value == null || countInvokations == 2) {
+        if (value == null || countInvokations == 1) {
             //rewrite relative request paths
             Iterator<ResourceEntry> i = cssResources.values().iterator();
             while (i.hasNext()) {
@@ -162,7 +162,7 @@ public class RichTextEntryResourceHandler extends ResourceHandlerWrapper {
             applicationMap.put(RichTextEntryResourceHandler.class.getName(), value);
         }
 
-        if (codeResource == null || countInvokations == 2) {
+        if (codeResource == null || countInvokations == 1) {
             codeResource = new ResourceEntry(INPUTRICHTEXT_CKEDITOR_DIR + CKEDITOR_MAPPING_JS, value.getBytes("UTF-8"));
         }
     }
