@@ -41,7 +41,7 @@ import org.icefaces.samples.showcase.example.compat.dataTable.Car;
             @ExampleResource(type = ResourceType.java,
                     title="RichTextEntryBean.java",
                     resource = "/WEB-INF/classes/org/icefaces/samples/showcase"+
-                    "/example/ace/richtextentry/PrinterBean.java")
+                    "/example/ace/richtextentry/RichTextEntryBean.java")
         }
 )
 @Menu(
