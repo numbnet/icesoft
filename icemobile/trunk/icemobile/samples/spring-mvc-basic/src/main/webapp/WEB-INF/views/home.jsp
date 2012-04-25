@@ -21,9 +21,10 @@
 		<li><a href="#validation">Validation</a></li>
 		<li><a href="<c:url value="/form" />" title="forms">Forms</a></li>
 		<li><a href="<c:url value="/fileupload" />" title="fileupload">File Upload</a></li>
-		<li><a href="<c:url value="/icemobile" />" title="icemobile">ICEmobile</a></li>
+		<li><a href="<c:url value="/icemobile" />" title="icemobile">Camera</a></li>
 		<li><a href="<c:url value="/microphone" />" title="microphone">Microphone</a></li>
 		<li><a href="<c:url value="/camcorder" />" title="camcorder">Camcorder</a></li>
+		<li><a href="#icehtml">ICEmobile HTML</a></li>
 		<li><a href="#exceptions">Exception Handling</a></li>
 		<li><a href="#redirect">Redirecting</a></li>
     </ul>
@@ -351,6 +352,20 @@
 		<ul>
 			<li>
 				<a id="exception" class="textLink" href="<c:url value="/exception" />">@Controller Exception handling</a>
+			</li>
+		</ul>
+	</div>
+	<div id="icehtml">
+		<h2>ICEmobile HTML</h2>
+		<p>
+			ICEmobile applications can be developed with a pure HTML/JavaScript front-end and a Spring Controller back-end.	
+		</p>
+		<ul>
+			<li>
+				<a id="camlink" href="<c:url value="/resources/camera.html" />">Camera HTML Example</a>
+			</li>
+			<li>
+				<a id="miclink" href="<c:url value="/resources/microphone.html" />">Microphone HTML Example</a>
 			</li>
 		</ul>
 	</div>
