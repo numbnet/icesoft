@@ -1,0 +1,560 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <title>Basic Spring Security with ICEfaces</title>
+    <link href="css/styles.css" rel="stylesheet" type="text/css">
+  </head>
+  <body>
+    <!-- header section -->
+    <p class="tutoralHeaderText">The ICEfaces + Spring Security Tutorial<br>
+      <a href="index.html">Table of Contents</a>
+    </p>
+    <hr>
+
+    <!-- tutorial content section -->
+
+    <h1>Basic Spring Security with ICEfaces</h1>
+
+      <img src="images/spring_security_login.png" title="Login page using Spring Security" alt="Login page using Spring Security" height="465" width="726">
+      <p>
+         This tutorial will walk you through the process of using Spring Security for authentication of an ICEfaces/JSF web application. Additionally, Spring Security and ICEfaces components will be used to authorize access to different pages and functions in the application.
+      </p>
+      <p>
+          The application uses Spring Security 3.0 and ICEfaces 1.8.  Initially, the application will present a login page to the user. The potential user can log in with one of several username/password pairs, and will be redirected to a page with details visible based on the users permission levels. Spring Security will ensure the user ID has been authenticated. The main page of the application shows time zone that the server exists in, as well as a Time Zone that the user has selected. If the User is authenticated in the supervisor role, he/she can see a field that shows the current time in both the server and user's time zones. 
+      </p>
+
+      <p>
+          This tutorial will discuss the following topics related to Spring Security with ICEfaces:
+      </p>
+      <ul>
+          <li><a href="#add">Add Spring Security to an ICEfaces Application</a></li>
+          <ul>
+              <li><a href="#jars">1: jars</a></li>
+              <li><a href="#webxml">2: web.xml</a></li>
+              <li><a href="#applicationContext">3: applicationContext.xml</a></li>
+          </ul>
+          <li><a href="#springAuth">Spring Authentication and Authorization</a></li>
+          <ul>
+              <li><a href="#success">1: Successful Authentication and Authorization</a></li>
+              <li><a href="#failed">2: Failed Authentication</a></li>
+              <li><a href="#successfailed">3: Successful Authentication, Failed Authorization</a></li>
+          </ul>
+          <li><a href="#icefacesAuth">ICEfaces Authorization</a></li>
+      </ul>
+
+      <a name="add">&nbsp;</a>
+
+      <h2>Add Spring Security to an ICEfaces Application</h2>
+
+      <a name="jars">&nbsp;</a>
+
+      <h3>1: jars</h3>
+
+      <p>
+         Spring-Security 3 requires Spring Framework 3.0 to run. The application requires the following spring security jars:
+      </p>
+          <ul> 
+           <li>spring-security-core-3.0.4.jar</li>
+           <li>spring-security-config-3.0.4.jar</li>
+           <li>spring-security-web-3.0.4.jar</li>
+	  </ul>
+      <p> 
+	Spring-Security 3 requires Spring Framework 3.0 to run. The application requires the following spring security jars: 
+      <ul>
+	<li>org.springframework.aop-3.0.3.RELEASE.jar</li>
+	<li>org.springframework.asm-3.0.3.RELEASE.jar </li>
+          <li>org.springframework.aspects-3.0.3.RELEASE.jar </li>
+          <li>org.springframework.beans-3.0.3.RELEASE.jar </li>
+          <li>org.springframework.core-3.0.3.RELEASE.jar </li>
+          <li>org.springframework.expression-3.0.3.RELEASE.jar </li>
+          <li>org.springframework.transaction-3.0.3.RELEASE.jar </li>
+          <li>org.springframework.web-3.0.3.RELEASE.jar </li>
+          <li>org.springframework.web-servlet-3.0.3.RELEASE.jar </li>
+       </ul>
+      <p>
+          Although the spring.jar is included, knowledge of Spring is not required for basic authentication and authorization
+          using Spring Security.
+      </p>
+
+      <a name="webxml">&nbsp;</a>
+
+      <h3>2: web.xml</h3>
+
+      <p>
+          The following entries will be added to your existing ICEfaces application web.xml:
+      </p>
+
+      <pre>    &lt;listener-class&gt;
+            org.springframework.web.context.ContextLoaderListener
+        &lt;/listener-class&gt;
+    &lt;/listener&gt;
+
+    &lt;!-- Spring Security --&gt;
+    &lt;filter&gt;
+        &lt;filter-name&gt;springSecurityFilterChain&lt;/filter-name&gt;
+        &lt;filter-class&gt;
+            org.springframework.web.filter.DelegatingFilterProxy
+        &lt;/filter-class&gt;
+    &lt;/filter&gt;
+
+    &lt;filter-mapping&gt;
+        &lt;filter-name&gt;springSecurityFilterChain&lt;/filter-name&gt;
+        &lt;url-pattern&gt;/*&lt;/url-pattern&gt;
+    &lt;/filter-mapping&gt;
+      </pre>
+
+      <p>
+          The org.springframework.web.context.ContextLoaderListener will load the Spring application context when the
+          application starts up.  This allows us to access Spring-managed beans
+      </p>
+      <p>
+          Spring Security uses servlet filters for authentication and authorization.  The appropriate filter fetches
+          authentication request information such as username and password, and passes this information to Spring Security's
+          authentication manager, which is configured as a Spring bean.  The filter-mapping "/*" ensures all requests will be
+          processed by Spring Security filters.
+      </p>
+
+      <a name="applicationContext">&nbsp;</a>
+
+      <h3>4: applicationContext.xml</h3>
+
+      <p>
+
+	  A Spring ApplicationContext is essentially a registry of
+	  application objects. Spring Security 3.0 has revisited the
+	  namespace-based configuration and created a
+	  &quot;beans&quot; namespace element which substantially
+	  reduces the amount of xml in this file. For detail on how
+	  these tags work, please consult the
+	  <a href="http://static.springsource.org/spring-security/site/docs/3.0.x/reference/springsecurity.html">Spring
+3.0.x Security Spring Security documentation. </a>
+
+      </p>
+      <pre>
+
+	&lt;xmlns:beans="http://www.springframework.org/schema/beans"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+           http://www.springframework.org/schema/security
+           http://www.springframework.org/schema/security/spring-security-3.0.xsd" &gt;
+
+    &lt;http&gt;
+        &lt;intercept-url pattern=&quot;/login.jsp*&quot; access=&quot;IS_AUTHENTICATED_ANONYMOUSLY&quot;/&gt;
+       &lt;intercept-url pattern="/**" access="ROLE_USER" /&gt;
+       &lt;form-login /&gt;
+       &lt;logout /&gt;
+    &lt;/httpgt;
+
+    &lt;authentication-manager alias="authenticationManager" &gt;
+        &lt;authentication-provider&gt;
+          &lt;user-service&gt;
+            &lt;user name="steve"; password="icefaces authorities="ROLE_USER, ROLE_SUPERVISOR" /&gt;
+            &lt;user name="philip" password="koala" authorities="ROLE_USER, ROLE_SUPERVISOR" /&gt;
+            &lt;user name="dianne" password="emu" authorities="" /&gt;
+            &lt;user name="scott" password="wombat" authorities="ROLE_USER" /&gt;
+          &lt;/user-service&gt;
+        &lt;/authentication-provider&gt;
+    &lt;/authentication-manager&gt;
+
+    &lt;beans:bean
+        id="renderManager"
+        class="com.icesoft.faces.async.render.RenderManager"
+        scope="application" /&gt;
+
+    &lt;beans:bean
+        id="timeZoneBean"
+        class="com.icesoft.icefaces.samples.TimeZoneBean"
+        scope="request" &gt;
+        &lt;beans:property name="renderManager"
+                        ref="renderManager" /&gt;
+    &lt;/beans:bean&gt;
+
+    &lt;beans:bean
+        
+        id="clientController"
+        class="com.icesoft.icefaces.samples.security.ClientController"
+        scope="application" &gt;
+        &lt;beans:property
+            name="renderManager"
+            ref="renderManager" /&gt;
+    &lt;/beans:bean&gt;
+
+    &lt;!-- Managed Bean for dynamic style examples --&gt;
+    &lt;beans:bean
+        id="styleBean"
+        class="com.icesoft.icefaces.samples.security.StyleBean"
+        scope="application" /&gt; 
+
+        &lt;beans:bean
+                 id="ReadmeBean"
+         class="com.icesoft.icefaces.samples.security.ReadmeBean"
+                scope="request" /&gt;
+
+    &lt;beans:bean
+        id="user"
+        class="com.icesoft.icefaces.samples.security.UserBean"
+        scope="session" &gt;
+         &lt;beans:property
+            name="clientController"
+            ref="clientController" /&gt;
+         &lt;beans:property
+            name="authenticationManager"
+            ref="authenticationManager" /&gt;
+    &lt;/beans:bean&gt;
+
+&lt;/beans:beans&gt;
+
+      </pre>
+      <p>
+	If you are familiar with previous versions of Spring Security,
+	you can probably guess what's going on here. The &lt;http&gt;
+	element is responsible for creating a FilterChainProxy and the
+	filter beans which it uses. Common issues with acegi like
+	incorrect filter ordering are no longer an issue as the filter
+	positions are predefined.
+      </p> 
+      <p>
+	The &lt;intercept-url&gt; element is used to define the set of
+	URL patterns that the application is interested in and to
+	configure how they should be handled. In this case, all pages
+	are viewable with ROLE_USER, but certain fields on that page
+	are viewable only with ROLE_SUPERVISOR.
+      </p>
+      <p>
+	The &lt;form-login&gt; element is used to add filters to
+	provide authentication on demand. The namespace now provides
+	common defaults.
+      </p>
+      <p>The &lt;logout&gt; element adds a LogoutFilter to the filter
+      stack. The logout-success-url is the URL a user will be taken to
+      after logging out.
+      </p>
+      <p>
+        The &lt;authenticationManager&gt; element directly configures
+        some simple authentication details directly via
+        XML. 
+      </p>
+
+     
+
+     <p>
+       User is the representation of a user in our bean logic. In a
+       more sophisticated application you would likely add other
+       properties such as first name, last name, email, etc.
+     </p>
+
+      <pre>
+public class User implements Renderable, HttpSessionListener {
+
+    private static Log log = LogFactory.getLog(User.class);
+    
+    protected String userName;
+    protected String role;
+    protected int roleNumber;
+    private AuthenticationManager am; 
+
+    protected ClientController clientController;
+    // Local instance of the persistent faces state, required by the render api
+    // this var must be thread local.
+    private PersistentFacesState persistentFacesState;
+    
+    private static boolean initialized = false;
+    
+    public User(){
+        persistentFacesState = PersistentFacesState.getInstance();
+        log.debug(&quot;constructor &quot; + persistentFacesState.toString());
+        // For some reason, this flag is always true after the first login, even though User bean is session scoped. 
+//        if(!initialized){
+            initializeApplication();
+//            initialized = true;
+//        }
+    }
+
+    public void initializeApplication(){
+//        ((ClientController)persistentFacesState.getFacesContext().getApplication().getVariableResolver().resolveVariable(persistentFacesState.getFacesContext(), &quot;clientController&quot;)).init();
+         SecurityContext sc = SecurityContextHolder.getContext();
+        Authentication a = sc.getAuthentication();
+
+        role = &quot;&quot;;
+        if (a != null) {
+            userName = a.getName();
+            Collection gas = a.getAuthorities();
+            Iterator i = gas.iterator();
+            GrantedAuthority ga;
+            while (i.hasNext()) {
+                ga = (GrantedAuthority) i.next();
+                    role += ga.getAuthority() + &quot; &quot;;
+            }
+        }
+    }
+    
+    //Getters
+    /**
+     * Runnable interface call back for this class persistent faces tate.
+     *
+     * @return persistent faces state of this class.
+     */
+    public PersistentFacesState getState() { return persistentFacesState; }
+
+    public String getUserName() {
+        persistentFacesState = PersistentFacesState.getInstance();
+        return userName; 
+    }
+    public String getRole() { return role; }
+    public ClientController getClientController(){ return clientController; }
+
+    //Setters
+    public void setUserName(String userName) { this.userName = userName; }
+    public void setRole(String role) { this.role = role; }
+    public void setClientController(ClientController clientController) { this.clientController = clientController; }
+    
+    /**
+     * Callback method that is called if any exception occurs during an attempt
+     * to render this Renderable.
+     *
+     * @param renderingException The exception that occurred when attempting
+     * to render this Renderable.
+     */
+    public void renderingException(RenderingException renderingException) {
+
+        if (log.isDebugEnabled() &amp;&amp;
+                renderingException instanceof TransientRenderingException ){
+            log.debug(&quot;Transient Rendering exception:&quot;, renderingException);
+
+            clientController.removeFromRenderer(this);
+        }
+        else if(renderingException instanceof FatalRenderingException){
+            if (log.isDebugEnabled()) {
+                log.debug(&quot;Fatal rendering exception: &quot;, renderingException);
+            }
+
+            clientController.removeFromRenderer(this);
+        }
+    }
+    
+    public void sessionCreated(HttpSessionEvent httpSessionEvent) {
+
+    }
+
+    public void sessionDestroyed(HttpSessionEvent httpSessionEvent) {
+        if (log.isDebugEnabled()){
+            log.debug(&quot;Servlet Context Distroyed&quot;);
+        }
+        clientController.removeFromRenderer(this);
+        log.debug(&quot;Removing User from Renderer&quot;);
+    }
+
+    public AuthenticationManager getAm() {
+        return am;
+    }
+
+    public void setAm(AuthenticationManager am) {
+        this.am = am;
+    }
+}
+
+      </pre>
+
+We have four users with the following username/password/roles:
+
+   &lt;user-service&gt; <ul>
+      <li>&lt;user name="steve" password="icefaces" authorities="ROLE_USER, ROLE_SUPERVISOR" /&gt;</li>
+      <li>&lt;user name="philip" password="koala" authorities="ROLE_USER, ROLE_SUPERVISOR" /&gt;</li>
+      <li>&lt;user name="dianne" password="emu" authorities="" /&gt;</li>
+      <li>&lt;user name="scott" password="wombat" authorities="ROLE_USER" /&gt; </li>
+   </ul>
+&lt;/user-service&gt;   
+
+      <a name="springAuth">&nbsp;</a>
+
+      <h2>Spring Authentication and Authorization</h2>
+
+      <p>
+          A user enters our JSF/ICEfaces application via index.jsp.
+      </p>
+
+      <pre>&lt;%
+	response.sendRedirect("./secure/main.iface");
+%&gt;
+      </pre>
+
+      <p>
+	This redirects us to a URL which all authenticated users can
+	access, but which only users with ROLE_SUPERVISOR can view the
+	server time and serverTimeZone fields.
+      </p>
+
+      <pre>
+
+&lt;f:view xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:jsp="http://java.sun.com/JSP/Page"
+        xmlns:ice="http://www.icesoft.com/icefaces/component">
+    
+    <!--  content type declaration -->
+    &lt;ice:outputDeclaration doctypeRoot="HTML"
+                           doctypePublic="-//W3C//DTD HTML 4.01 Transitional//EN"
+                           doctypeSystem="http://www.w3.org/TR/html4/loose.dtd"/>
+    
+    <!-- define resource bundle location -->
+    &lt;f:loadBundle basename="com.icesoft.icefaces.samples.security.resources.messages"
+                  var="msgs"/>
+    
+    &lt;html>
+        &lt;head>
+            &lt;meta http-equiv="Content-Type"
+                  content="text/html; charset=iso-8859-1">&lt;/meta>
+            &lt;title>
+                Spring security 3.0 application
+            &lt;/title>
+            &lt;h:outputText value="#{styleBean.style}" 
+                          escape="false"/>
+            &lt;link href="./../css/style.css" 
+                  rel="stylesheet" 
+                  type="text/css"/>
+        &lt;/head>
+        
+        &lt;body>
+            &lt;ice:form id="iceform">
+                
+                
+          
+            &lt;ice:panelGrid columns="2">
+                &lt;ice:outputText style="font-weight:600" value="Server Time Zone"/>
+                &lt;ice:outputText style="font-weight:600" value="Time Zone Selected "/>
+                &lt;ice:outputText value="#{timeZoneBean.serverTimeZoneName}"/>
+                &lt;ice:outputText value="#{timeZoneBean.selectedTimeZoneName}"/>
+                &lt;ice:outputText style="font-weight:800" value="#{timeZoneBean.serverTime}" renderedOnUserRole="ROLE_SUPERVISOR"/>
+                &lt;ice:outputText style="font-weight:800" value="#{timeZoneBean.selectedTime}" renderedOnUserRole="ROLE_SUPERVISOR"/>
+            &lt;/ice:panelGrid>
+           
+ 
+            &lt;br/>
+            &lt;a href="../j_spring_security_logout"  >Logout&lt;/a>
+
+                             &lt;br/>
+                            &lt;ice:outputText styleClass="loggedinLabelText"
+                                            value="#{msgs['Header.login.label']}"/>
+                            &lt;ice:outputText styleClass="loggedinValueText"
+                                            value="#{user.userName}"/>
+                            &lt;ice:outputText styleClass="loggedinValueText"
+                                            value=" #{user.role}"/>
+                            &lt;br/>
+                            &lt;ice:outputText styleClass="timestampLabelText"
+                                            value="#{msgs['Header.timestamp.label']}"/>
+                            &lt;ice:outputText styleClass="timestampValueText"
+                                            value="#{clientController.serverTime}">
+                                &lt;f:convertDateTime dateStyle="long"
+                                                   timeStyle="long"/>
+                            &lt;/ice:outputText>
+
+            &lt;/ice:form>
+        &lt;/body>
+    &lt;/html>
+    
+&lt;/f:view>
+
+
+
+      </pre>
+
+
+      <img src="images/spring_security_login.png" title="Timezone page using Spring Security" alt="Timezone page using Spring Security" height="465" width="726">
+
+      <p>
+	  In Spring Security 3, form based authentication can be auto
+	  generated by Spring since we didn't set a URL for a login
+	  page in the &lt;http&gt; element. The namespace
+	  allows plenty of opportunity to customize these options. See 
+	  <a href="http://static.springsource.org/spring-security/site/docs/3.0.x/reference/ns-config.html#ns-minimal" > here </a>
+      </p
+
+  
+
+      <a name="success">&nbsp;</a>
+
+      <h3>1: Successful Authentication and Authorization</h3>
+      <p>
+	All authenticated users can access main.jspx, but only those
+	authenticated with ROLE_SUPERVISOR can view the current server
+	time or client time fields. Logging in with username "Steve" 
+	shows the page with the server and client time fields visible. 
+      </p>
+
+      <img src="images/spring_security_welcome.png" title="Welcome page using Spring Security" alt="Welcome page using Spring Security" height="465" width="726">
+
+      <a name="failed">&nbsp;</a>
+
+      <h3>2: Failed Authentication</h3>
+    
+      <p>
+	Failed attempts at page authentication in the sample have an automated error message generated as shown below: 
+      </p>
+
+
+      <img src="images/spring_security_error.png" title="Error message using Spring Security" alt="Error message using Spring Security" height="465" width="726">
+
+      <a name="successfailed">&nbsp;</a>
+
+      <h3>3: Successful Authentication, Failed Authorization</h3>
+      <p>
+	Logging in with the "deanna" username will fail with the
+          following error, because that account has no ROLE assigned
+          available to view any page or field.
+      </p>
+
+      <img src="images/spring_security_access_denied.png" title="Access Denied page using Spring Security" alt="Access Denied page using Spring Security" height="465" width="726">
+
+      <a name="icefacesAuth">&nbsp;</a>
+
+      <h2>ICEfaces Authorization</h2>
+
+      <p>
+         The final username of interest is "scott" who has an account, but "ROLE_USER" authorization 
+	 to view the page and selected timezones, but not to see the server or selected client time. 
+          Selected elements on a page can be completely added or removed with the renderedOnUserRole
+          attribute.  Interactive elements can be enabled or disabled with the enabledOnUserRole attribute.
+      </p>
+
+     
+      <img src="images/spring_security_icefaces.png" title="ICEfaces components using Spring Security" alt="ICEfaces components using Spring Security" height="465" width="726">
+
+      <p>
+          This concludes the tutorial.  You may view the source code by following the links below.
+      </p>
+      <a name="examples">&nbsp;</a>
+
+      <h2>Example</h2>
+
+      The following consists of a self contained example including all jars required to build the 
+code. The project directory is meant to be installed under the icefaces/samples/ directory in the icefaces 1.8_p04 bundle. 
+
+      <table class="examplesTable" cellpadding="1" cellspacing="0" width="100%">
+          <thead>
+              <tr>
+                  <td class="headerTitle">Example</td>
+                  <td class="headerTitle">Source</td>
+                  <td class="headerTitle">Notes</td>
+              </tr>
+          </thead>
+          <tbody>
+              <tr>
+                  <td class="bodyExample">springsecurity-Time</td>
+                  <td class="bodySource"><a href="springsecurity-Time.zip">springsecurity-Time source code</a></td>
+                  <td class="bodyNotes">Spring Security form-login using ICEfaces enabledOnUserRole/renderedOnUserRole attribute.</td>
+              </tr>
+          </tbody>
+      </table>
+
+      <!-- footer section -->
+
+      <hr>
+
+      <p class="tutorialFooterText">The ICEfaces Tutorial<br>
+          <a href="index.html">Table of Contents</a>
+      </p>
+
+      <p>Copyright 2012 ICEsoft Technologies Inc. All rights reserved.</p>
+
+</body></html>
