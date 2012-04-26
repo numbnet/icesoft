@@ -633,9 +633,10 @@ ice.ace.DataTable.prototype.resizeScrolling = function() {
         dupeHead = bodyTable.find('thead:first'),
         dupeFoot = bodyTable.find('tfoot:first');
 
-    // Reattempt resize in 300ms if a parent of mine is currently hidden,
-    // sizing will not be accurate if the table is not being displayed, like at tabset load.
-    if (dupeHead.parentsUntil('.yui-navset',':hidden').length > 0) {
+    // Reattempt resize in 100ms if I or a parent of mine is currently hidden.
+    // Sizing will not be accurate if the table is not being displayed, like at tabset load.
+    // Hidden is true if any ancestors are hidden.
+    if (scrollableTable.is(':hidden')) {
         var _self = this;
         setTimeout(function () { _self.resizeScrolling() }, 100);
     } else {
