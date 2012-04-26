@@ -634,7 +634,7 @@ ice.ace.DataTable.prototype.resizeScrolling = function() {
 
     // Reattempt resize in 300ms if a parent of mine is currently hidden,
     // sizing will not be accurate if the table is not being displayed, like at tabset load.
-    if (dupeHead.parentsUntil('.yui-navset',':hidden').length > 0) {
+    if (scrollableTable.is(':hidden')) {
         var _self = this;
         setTimeout(function () { _self.resizeScrolling() }, 100);
     } else {
