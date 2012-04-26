@@ -113,22 +113,6 @@ var ComponentIndicators;
         return instance;
     }
 
-    //define default style class for the pointer indicators
-    namespace.onLoad(function() {
-        var head = document.getElementsByTagName('head')[0];
-        var style = document.createElement('style');
-        style.setAttribute('type', 'text/css');
-        var defaultStyle = '.ice-busyIndicator {cursor: wait;}';
-        try {
-            //FF and Safari
-            style.appendChild(document.createTextNode(defaultStyle));
-        } catch (e) {
-            //IE
-            style.cssText = defaultStyle;
-        }
-        head.insertBefore(style, head.firstChild);
-    });
-
     function PointerIndicator(element) {
         var privateOff = noop;
 
@@ -137,10 +121,10 @@ var ComponentIndicators;
             privateOn = noop;
             //prepare cursor shape rollback
             function toggleElementCursor(e) {
-                var c = e.className;
-                e.className += ' ice-busyIndicator';
+                var c = e.style.cursor;
+                e.style.cursor = 'wait';
                 return function() {
-                    e.className = c;
+                    e.style.cursor = c;
                 };
             }
 
@@ -178,11 +162,12 @@ var ComponentIndicators;
             //block any other action from triggering the indicator before being in 'off' state again
             privateOn = noop;
             //prepare cursor shape rollback
-            var elementClassName = element.className;
-            element.className += ' ice-busyIndicator';
+            var elementStyle = element.style;
+            var previousCursor = elementStyle.cursor;
+            elementStyle.cursor = 'wait';
 
             privateOff = function() {
-                element.className = elementClassName;
+                elementStyle.cursor = previousCursor;
                 privateOn = toggle;
                 privateOff = noop;
             };
