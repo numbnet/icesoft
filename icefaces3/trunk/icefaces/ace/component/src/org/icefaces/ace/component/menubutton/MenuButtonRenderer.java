@@ -37,6 +37,7 @@ import org.icefaces.ace.component.menu.AbstractMenu;
 import org.icefaces.ace.component.menu.BaseMenuRenderer;
 
 import org.icefaces.ace.component.menuitem.MenuItem;
+import org.icefaces.ace.component.menuseparator.MenuSeparator;
 import org.icefaces.ace.util.ComponentUtils;
 import org.icefaces.ace.util.JSONBuilder;
 import org.icefaces.render.MandatoryResourceComponent;
@@ -74,11 +75,11 @@ public class MenuButtonRenderer extends BaseMenuRenderer {
 		writer.writeAttribute("id", menuId, null);
 
 		for(UIComponent child : button.getChildren()) {
-			MenuItem item = (MenuItem) child;
 
-			if(item.isRendered()) {
-                writer.startElement("li", item);
-                encodeMenuItem(context, item);
+			if(child.isRendered()) {
+                writer.startElement("li", child);
+                if (child instanceof MenuItem)
+                    encodeMenuItem(context, (MenuItem) child);
                 writer.endElement("li");
 			}
 		}

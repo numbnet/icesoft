@@ -38,6 +38,7 @@ import org.icefaces.ace.component.menu.BaseMenuRenderer;
 import org.icefaces.ace.component.submenu.Submenu;
 import org.icefaces.ace.component.multicolumnsubmenu.MultiColumnSubmenu;
 import org.icefaces.ace.component.menuitem.MenuItem;
+import org.icefaces.ace.component.menuseparator.MenuSeparator;
 import org.icefaces.ace.util.JSONBuilder;
 import org.icefaces.ace.util.Utils;
 import org.icefaces.render.MandatoryResourceComponent;
@@ -115,6 +116,8 @@ public class ContextMenuRenderer extends BaseMenuRenderer {
                     encodeMenuItem(context, (MenuItem) child);
                 } else if(child instanceof Submenu) {
                     encodeSubmenu(context, (Submenu) child);
+                } else if(child instanceof MenuSeparator) {
+                    // we just need <li></li>
                 } else if(child instanceof MultiColumnSubmenu) {
 					encodeMultiColumnSubmenu(context, (MultiColumnSubmenu) child);
 				}
