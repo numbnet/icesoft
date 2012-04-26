@@ -27,20 +27,23 @@
  */
 package org.icefaces.ace.event;
 
+import org.icefaces.ace.component.list.ACEList;
+
 import javax.faces.component.UIComponent;
 import javax.faces.event.FacesEvent;
 import javax.faces.event.FacesListener;
+import java.util.Set;
 
 public class ListSelectEvent extends FacesEvent {
 
 	private Object[] objects;
 
-	public ListSelectEvent(UIComponent component, Object[] objects) {
+	public ListSelectEvent(UIComponent component, Set<Object> objects) {
 		super(component);
-		this.objects = objects;
+		this.objects = objects.toArray();
 	}
 
-	@Override
+    @Override
 	public boolean isAppropriateListener(FacesListener faceslistener) {
 		return false;
 	}

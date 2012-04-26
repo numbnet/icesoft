@@ -17,7 +17,12 @@ import java.util.Set;
     rendererType  = "org.icefaces.ace.component.ListRenderer",
     rendererClass = "org.icefaces.ace.component.list.ListRenderer",
     componentFamily = "org.icefaces.ace.List",
-    tlddoc = ""
+    tlddoc = "Renders an Array or List of objects as a styled HTML UL element. Supports dual & multi" +
+            "list configurations, reordering, item drag/drop, selection & block style layout.  The component " +
+            "strives to be exceptionally easy to style and adjust layout.The List can optionally " +
+            "take SelectItem objects to use their String value representations as list item contents; or" +
+            "the ace:list tag defines child components that are iteratively rendered for each object." +
+            "The components are associated with the iterative object via bindings of the 'var' property."
 )
 @ResourceDependencies({
     @ResourceDependency(library="icefaces.ace", name="util/combined.css"),
@@ -26,13 +31,17 @@ import java.util.Set;
 })
 @ClientBehaviorHolder(events = {
         @ClientEvent(name="select", defaultRender="@this", defaultExecute="@this",
-                javadoc="", tlddoc=""),
+                javadoc="Fired when an item is clicked & selected in the List.",
+                tlddoc ="Fired when an item is clicked & selected in the List."),
         @ClientEvent(name="deselect", defaultRender="@this", defaultExecute="@this",
-                javadoc="", tlddoc=""),
+                javadoc="Fired when an item is clicked & deselected in the List.",
+                tlddoc ="Fired when an item is clicked & deselected in the List."),
         @ClientEvent(name="move", defaultRender="@this", defaultExecute="@this",
-                javadoc="", tlddoc=""),
+                javadoc="Fired when an item is moved within the List.",
+                tlddoc ="Fired when an item is moved within the List."),
         @ClientEvent(name="migrate", defaultRender="@all", defaultExecute="@all",
-                javadoc="", tlddoc="")
+                javadoc="Fired when an item is migrated to this List.",
+                tlddoc ="Fired when an item is migrated to this List.")
     },
     defaultEvent = "select"
 )
@@ -90,56 +99,60 @@ public class ListMeta extends UIDataMeta {
 
 
 
-    @Property(tlddoc = "",
+    @Property(tlddoc = "Enables item selection via clicking.",
             defaultValue = "false", defaultValueType = DefaultValueType.EXPRESSION)
     private Boolean selection;
 
-    @Property(tlddoc = "",
-            defaultValue = "false", defaultValueType = DefaultValueType.EXPRESSION)
-    private Boolean singleSelection;
-
-    @Property(tlddoc = "")
+    @Property(tlddoc = "Defines the set of Objects from the source List that are selected.")
     private Set<Object> selections;
 
     @Property(expression = Expression.METHOD_EXPRESSION,
             methodExpressionArgument = "org.icefaces.ace.event.ListSelectEvent",
-            tlddoc = "")
+            tlddoc = "Define a method listener that is passed a ListSelectEvent wrapping the array" +
+                    "of items newly selected in a single request.")
     private MethodExpression selectionListener;
 
 
 
-    @Property(tlddoc = "",
+    @Property(tlddoc = "Enable a set of buttons to control reordering of items within this list." +
+            "Requires selection of determine items to adjust via buttons.",
             defaultValue = "false", defaultValueType = DefaultValueType.EXPRESSION)
     private Boolean controlsEnabled;
 
-    @Property(tlddoc = "", defaultValue = "top up dwn btm",
+    @Property(tlddoc = "Defines the order in which the reordering buttons render.",
+            defaultValue = "top up dwn btm",
             defaultValueType = DefaultValueType.STRING_LITERAL)
     private String controlsFormat;
 
-    @Property(tlddoc = "", defaultValue = "",
+    @Property(tlddoc = "", defaultValue = "Style class to apply to the DIV surrounding the reordering controls.",
             defaultValueType = DefaultValueType.STRING_LITERAL)
     private String controlsContainerClass;
 
-    @Property(tlddoc = "", defaultValue = "ui-state-default ui-corner-all",
+    @Property(tlddoc = "Style class to apply to the div surrounding the individual reordering icons.",
+            defaultValue = "ui-state-default ui-corner-all",
             defaultValueType = DefaultValueType.STRING_LITERAL)
     private String controlsItemClass;
 
     @Property(tlddoc="Style class to apply to the spacer container around each button element.")
     private String controlsSpacerClass;
 
-    @Property(tlddoc = "", defaultValue = "ui-icon ui-icon-arrowstop-1-n",
+    @Property(tlddoc = "Style class to apply to the span defining the top button icon.",
+            defaultValue = "ui-icon ui-icon-arrowstop-1-n",
             defaultValueType = DefaultValueType.STRING_LITERAL)
     private String topButtonClass;
 
-    @Property(tlddoc = "", defaultValue = "ui-icon ui-icon-arrow-1-n",
+    @Property(tlddoc = "Style class to apply to the span defining the up button icon.",
+            defaultValue = "ui-icon ui-icon-arrow-1-n",
             defaultValueType = DefaultValueType.STRING_LITERAL)
     private String upButtonClass;
 
-    @Property(tlddoc = "", defaultValue = "ui-icon ui-icon-arrow-1-s",
+    @Property(tlddoc = "Style class to apply to the span defining the down button icon.",
+            defaultValue = "ui-icon ui-icon-arrow-1-s",
             defaultValueType = DefaultValueType.STRING_LITERAL)
     private String downButtonClass;
 
-    @Property(tlddoc = "", defaultValue = "ui-icon ui-icon-arrowstop-1-s",
+    @Property(tlddoc = "Style class to apply to the span defining the bottom button icon.",
+            defaultValue = "ui-icon ui-icon-arrowstop-1-s",
             defaultValueType = DefaultValueType.STRING_LITERAL)
     private String bottomButtonClass;
 
