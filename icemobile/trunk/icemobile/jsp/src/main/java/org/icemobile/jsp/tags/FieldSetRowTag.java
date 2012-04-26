@@ -1,11 +1,7 @@
 package org.icemobile.jsp.tags;
 
-import org.icefaces.mobi.component.fieldset.FieldSetRow;
 
 import javax.servlet.jsp.JspTagException;
-import javax.servlet.jsp.PageContext;
-import javax.servlet.jsp.tagext.BodyTagSupport;
-import javax.servlet.jsp.tagext.SimpleTagSupport;
 import javax.servlet.jsp.tagext.TagSupport;
 import java.io.IOException;
 import java.io.Writer;
@@ -15,6 +11,8 @@ import java.io.Writer;
  */
 public class FieldSetRowTag extends TagSupport {
 
+    public static final String FIELDSETROW_CLASS = "mobi-fieldset-row";
+    public static final String FIELDSETGROUP_CLASS = "mobi-fieldset-row-group";
     private String id;
     private String styleClass;
     private String style;
@@ -39,7 +37,7 @@ public class FieldSetRowTag extends TagSupport {
             }
 
             // Apply default Field Row Class.
-            StringBuilder classBuilder = new StringBuilder(FieldSetRow.FIELDSETROW_CLASS);
+            StringBuilder classBuilder = new StringBuilder(FIELDSETROW_CLASS);
 
             // apply user defined class
             String styleClass = getStyleClass();
@@ -49,7 +47,7 @@ public class FieldSetRowTag extends TagSupport {
 
             // todo: ??
             if (isGroup()) {
-                classBuilder.append(" ").append(FieldSetRow.FIELDSETGROUP_CLASS);
+                classBuilder.append(" ").append(FIELDSETGROUP_CLASS);
             }
 
             out.write(" class=\'" + classBuilder.toString() + "\'");
