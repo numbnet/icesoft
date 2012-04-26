@@ -100,6 +100,7 @@ ice.ace.DataTable = function(id, cfg) {
     this.filterSource = null;
     this.behaviors = cfg.behaviors;
     this.parentSize = 0;
+    this.lastClickedIndex = -1;
     var rowEditors = this.getRowEditors();
 
     if (this.cfg.paginator) this.setupPaginator();
@@ -1014,7 +1015,7 @@ ice.ace.DataTable.prototype.doSelectionEvent = function(type, deselection, eleme
         targetId = rowId + '#' + columnIndex;
     }
 
-    firstRowSelected = ice.ace.jq(element).closest('tr').parent().children(':first').hasClass('ui-selected');
+    var firstRowSelected = ice.ace.jq(element).closest('tr').parent().children(':first').hasClass('ui-selected');
 
     // Sync State //
     this.readSelections();
@@ -1069,11 +1070,11 @@ ice.ace.DataTable.prototype.doSelectionEvent = function(type, deselection, eleme
         if (type == 'row') {
             if (!deselection) {
                 // Submit selected index and deselection if single selection enabled
-                params[this.id + '_instantSelectedRowIndex'] = targetId;
-                if (deselectedId) params[this.id + '_instantUnselectedRowIndex'] = deselectedId;
+                params[this.id + '_instantSelectedRowIndexes'] = targetId;
+                if (deselectedId) params[this.id + '_instantUnselectedRowIndexes'] = deselectedId;
             } else {
                 // Submit deselected index
-                params[this.id + '_instantUnselectedRowIndex'] = targetId;
+                params[this.id + '_instantUnselectedRowIndexes'] = targetId;
             }
         }
 
@@ -1115,8 +1116,15 @@ ice.ace.DataTable.prototype.onRowClick = function(event, rowElement) {
     //Check if rowclick triggered this event not an element in row content
     if (ice.ace.jq(event.target).is('td,span,div')) {
         var row = ice.ace.jq(rowElement);
-        if (row.hasClass('ui-selected')) this.doSelectionEvent('row', true, row);
-        else this.doSelectionEvent('row', false, row);
+
+        if (!this.isSingleSelection() && event.shiftKey && this.lastClickedIndex > -1)
+            this.doMultiRowSelectionEvent(this.lastClickedIndex, row);
+        else if (row.hasClass('ui-selected'))
+            this.doSelectionEvent('row', true, row);
+        else
+            this.doSelectionEvent('row', false, row);
+
+        this.lastClickedIndex = row.index();
     }
 }
 
@@ -1129,7 +1137,69 @@ ice.ace.DataTable.prototype.onCellClick = function(event, cellElement) {
     }
 }
 
+ice.ace.DataTable.prototype.doMultiRowSelectionEvent = function(lastIndex, current) {
+    var self = this,
+        tbody = current.closest('tbody'),
+        last = ice.ace.jq(tbody.children().get(lastIndex)),
+        lower = current.index() < lastIndex,
+        elemRange = lower ? last.prevUntil(current.prev()) : last.nextUntil(current.next()),
+        deselectedId, firstRowSelected;
 
+    // Sync State //
+    self.readSelections();
+
+    elemRange.each(function(i, elem) {
+        var element = ice.ace.jq(elem),
+            targetId = element.attr('id').split('_row_')[1];
+
+        // Adjust State //
+        element.addClass('ui-state-active ui-selected');
+        self.deselection = ice.ace.jq.grep(self.deselection, function(r) { return r != targetId; });
+        self.selection.push(targetId);
+    });
+
+    // Write State //
+    self.writeSelections();
+
+    // Submit State //
+    if (self.cfg.instantSelect) {
+        var options = {
+            source: self.id,
+            execute: self.id,
+            formId: self.cfg.formId
+        };
+
+        var params = {};
+        params[self.id + '_instantSelectedRowIndexes'] = this.selection;
+
+        var firstRowSelected = tbody.children(':first').hasClass('ui-selected');
+
+        // If first row is in this selection, deselection, or will be implicitly deselected by singleSelection
+        // resize the scrollable table.
+        if (self.cfg.scrollable && (ice.ace.jq.inArray("0", self.selection) > -1 || ice.ace.jq.inArray("0", self.deselection) > -1 || (firstRowSelected && self.isSingleSelection()))) {
+            options.onsuccess = function(responseXML) {
+                ice.ace.selectCustomUpdates(responseXML, function(id, content) {
+                    ice.ace.AjaxUtils.updateElement(id, content);
+                });
+                self.resizeScrolling();
+                return false;
+            };
+        }
+
+        options.params = params;
+
+        if (this.behaviors)
+            if (this.behaviors.select) {
+                ice.ace.ab(ice.ace.extendAjaxArguments(
+                        this.behaviors.select,
+                        ice.ace.removeExecuteRenderOptions(options)
+                ));
+                return;
+            }
+
+        ice.ace.AjaxRequest(options);
+    }
+}
 
 
 

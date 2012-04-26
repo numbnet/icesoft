@@ -57,27 +57,32 @@ public class DataTableDecoder {
         if (table.isInstantSelectionRequest(context)) {
             Object model = table.getDataModel();
             TreeDataModel treeModel = null;
-            String selection = params.get(clientId + "_instantSelectedRowIndex");
+            String selection = params.get(clientId + "_instantSelectedRowIndexes");
+            String[] indexes = selection.split(",");
+            Object[] objs = new Object[indexes.length];
 
-            // If selection occurs with a TreeModel and non-root index
-            if (table.hasTreeDataModel() && selection.indexOf('.') > 0) {
-                treeModel = (TreeDataModel) model;
-                int lastSepIndex = selection.lastIndexOf('.');
-                treeModel.setRootIndex(selection.substring(0, lastSepIndex));
-                selection = selection.substring(lastSepIndex+1);
+            for (int i = 0; i < indexes.length; i++) {
+                // If selection occurs with a TreeModel and non-root index
+                if (table.hasTreeDataModel() && selection.indexOf('.') > 0) {
+                    treeModel = (TreeDataModel) model;
+                    int lastSepIndex = indexes[i].lastIndexOf('.');
+                    treeModel.setRootIndex(indexes[i].substring(0, lastSepIndex));
+                    selection = indexes[i].substring(lastSepIndex+1);
+                }
+
+                table.setRowIndex(Integer.parseInt(selection));
+                objs[i] = table.getRowData();
             }
-
-            int selectedRowIndex = Integer.parseInt(selection);
-            table.setRowIndex(selectedRowIndex);
-            SelectEvent selectEvent = new SelectEvent(table, table.getRowData());
+            SelectEvent selectEvent = new SelectEvent(table, objs);
             selectEvent.setPhaseId(PhaseId.INVOKE_APPLICATION);
             table.queueEvent(selectEvent);
+
             if (treeModel != null) treeModel.setRootIndex(null);
         }
         else if (table.isInstantUnselectionRequest(context)) {
             Object model = table.getDataModel();
             TreeDataModel treeModel = null;
-            String selection = params.get(clientId + "_instantUnselectedRowIndex");
+            String selection = params.get(clientId + "_instantUnselectedRowIndexes");
 
             // If unselection occurs with a TreeModel and non-root index
             if (table.hasTreeDataModel() && selection.indexOf('.') > 0) {
@@ -92,8 +97,10 @@ public class DataTableDecoder {
             UnselectEvent unselectEvent = new UnselectEvent(table, table.getRowData());
             unselectEvent.setPhaseId(PhaseId.INVOKE_APPLICATION);
             table.queueEvent(unselectEvent);
+
             if (treeModel != null) treeModel.setRootIndex(null);
         }
+
         table.setRowIndex(-1);
     }
 
