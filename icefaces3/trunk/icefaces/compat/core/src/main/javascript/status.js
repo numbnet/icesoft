@@ -145,7 +145,7 @@ var ComponentIndicators;
         var privateOn = toggle;
 
         return object(function (method) {
-            method(on, /Safari/.test(navigator.userAgent) ? noop : function(self) {
+            method(on, function(self) {
                 privateOn();
             });
 
@@ -176,7 +176,7 @@ var ComponentIndicators;
         var privateOn = toggle;
 
         return object(function (method) {
-            method(on, /Safari/.test(navigator.userAgent) ? noop : function(self) {
+            method(on, function(self) {
                 privateOn();
             });
 
