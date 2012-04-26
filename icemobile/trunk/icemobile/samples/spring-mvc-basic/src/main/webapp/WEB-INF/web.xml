@@ -24,7 +24,26 @@
 		</init-param>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
-		
+
+
+
+
+<!-- need to convert this to SpringMVC dispatch -->
+    <servlet>
+        <servlet-name>icepush</servlet-name>
+        <servlet-class>org.icepush.servlet.ICEpushServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>icepush</servlet-name>
+        <url-pattern>*.icepush</url-pattern>
+    </servlet-mapping>
+
+	
+
+
+
+	
 	<servlet-mapping>
 		<servlet-name>appServlet</servlet-name>
 		<url-pattern>/</url-pattern>

@@ -21,7 +21,7 @@
     <property file="../build/build.properties"/>
     <import file="../build/common.xml"/>
 
-    <patternset id="lib.distribute.application.mobi" includes="icemobile-jsp.jar">
+    <patternset id="lib.distribute.application.mobi" includes="icepush.jar,icemobile-jsp.jar">
     </patternset>
 
 </project>
