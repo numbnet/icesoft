@@ -1,8 +1,5 @@
 package org.icemobile.jsp.tags;
 
-import org.icefaces.mobi.component.fieldset.FieldSetGroup;
-import org.icefaces.mobi.component.fieldset.FieldSetRow;
-
 import javax.servlet.jsp.JspTagException;
 import javax.servlet.jsp.tagext.TagSupport;
 import java.io.IOException;
@@ -12,6 +9,10 @@ import java.io.Writer;
  *
  */
 public class FieldSetGroupTag extends TagSupport {
+
+    public static final String FIELDSET_CLASS = "mobi-fieldset";
+    public static final String FIELDSETINSET_CLASS = "mobi-fieldset-inset";
+
 
     private String id;
     private boolean inset;
@@ -33,10 +34,10 @@ public class FieldSetGroupTag extends TagSupport {
             }
 
             // Apply default Field Group Class.
-            StringBuilder classBuilder = new StringBuilder(FieldSetGroup.FIELDSET_CLASS);
+            StringBuilder classBuilder = new StringBuilder(FIELDSET_CLASS);
 
             if (isInset()) {
-                classBuilder.append(" ").append(FieldSetGroup.FIELDSETINSET_CLASS);
+                classBuilder.append(" ").append(FIELDSETINSET_CLASS);
             }
 
             // apply user defined class
@@ -69,7 +70,7 @@ public class FieldSetGroupTag extends TagSupport {
 
         Writer out = pageContext.getOut();
         try {
-            out.write("</div>");
+            out.write("</fieldset>");
         } catch (IOException ieo) {
         }
 
