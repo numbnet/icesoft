@@ -406,3 +406,9 @@
 	float:left;
 	display: inline;
 }
+
+.wijmo-wijmenu .ui-menu-multicolumn ul {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+}
