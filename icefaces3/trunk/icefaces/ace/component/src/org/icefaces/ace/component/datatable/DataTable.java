@@ -831,7 +831,8 @@ public class DataTable extends DataTableBase {
         while (!compsToIdReinit.empty()) {
             UIComponent c = compsToIdReinit.pop();
             c.setId(c.getId());
-            for (UIComponent cc : c.getChildren()) compsToIdReinit.push(cc);
+            Iterator<UIComponent> fnc = c.getFacetsAndChildren();
+            while (fnc.hasNext()) compsToIdReinit.push(fnc.next());
         }
 
         isInDuplicateSegment = inFakeHeader;
