@@ -38,6 +38,7 @@ import org.icefaces.ace.component.menuitem.MenuItem;
 import org.icefaces.ace.component.menucolumn.MenuColumn;
 import org.icefaces.ace.component.multicolumnsubmenu.MultiColumnSubmenu;
 import org.icefaces.ace.component.submenu.Submenu;
+import org.icefaces.ace.component.menuseparator.MenuSeparator;
 import org.icefaces.ace.renderkit.CoreRenderer;
 import org.icefaces.ace.util.ComponentUtils;
 import org.icefaces.ace.util.Utils;
@@ -167,6 +168,12 @@ public abstract class BaseMenuRenderer extends CoreRenderer {
             writer.endElement("a");
 		}
 	}
+	
+	protected void encodeMenuSeparator(FacesContext context) throws IOException {
+		ResponseWriter writer = context.getResponseWriter();
+		writer.startElement("li", null);
+		writer.endElement("li");
+	}
 
     @Override
 	public void encodeChildren(FacesContext facesContext, UIComponent component) throws IOException {
@@ -253,6 +260,8 @@ public abstract class BaseMenuRenderer extends CoreRenderer {
 									writer.startElement("li", null);
 									encodeMenuItem(context, (MenuItem) item);
 									writer.endElement("li");
+								} else if(item instanceof MenuSeparator) {
+									encodeMenuSeparator(context);
 								} else if(item instanceof Submenu) {
 									encodeFlatSubmenu(context, (Submenu) item);
 								}
@@ -327,7 +336,7 @@ public abstract class BaseMenuRenderer extends CoreRenderer {
 		
 		for (UIComponent child : component.getChildren()) {
 			if (child.isRendered()) {
-				if (child instanceof MenuItem || child instanceof Submenu) {
+				if (child instanceof MenuItem || child instanceof MenuSeparator || child instanceof Submenu) {
 					result.add(child);
 					if (child instanceof Submenu) {
 						flattenContents(child, result);
