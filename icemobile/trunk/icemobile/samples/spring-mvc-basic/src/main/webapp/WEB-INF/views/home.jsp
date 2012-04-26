@@ -5,6 +5,7 @@
 	<title>spring-mvc-showcase</title>
 	<link href="<c:url value="/resources/form.css" />" rel="stylesheet"  type="text/css" />		
 	<link href="<c:url value="/resources/jqueryui/1.8/themes/base/jquery.ui.all.css" />" rel="stylesheet" type="text/css"/>
+	<script type="text/javascript" src="code.icepush"></script>
 </head>
 <body>
 <h1><a href="<c:url value="/" />">spring-mvc-showcase</a></h1>
@@ -22,6 +23,7 @@
 		<li><a href="<c:url value="/form" />" title="forms">Forms</a></li>
 		<li><a href="<c:url value="/fileupload" />" title="fileupload">File Upload</a></li>
 		<li><a href="<c:url value="/icemobile" />" title="icemobile">Camera</a></li>
+		<li><a href="<c:url value="/campush" />" title="campush">Camera Push</a></li>
 		<li><a href="<c:url value="/microphone" />" title="microphone">Microphone</a></li>
 		<li><a href="<c:url value="/camcorder" />" title="camcorder">Camcorder</a></li>
 		<li><a href="#icehtml">ICEmobile HTML</a></li>
