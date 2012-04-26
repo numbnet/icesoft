@@ -1,4 +1,9 @@
 .if-list .if-list-body {
+    /* Scroll by default if contents exceed fixed size. */
+    overflow:auto;
+}
+
+.if-list .if-list-body {
     min-height: 1.6em;
     min-width: 100px;
     margin: 3px 0 0 0;
