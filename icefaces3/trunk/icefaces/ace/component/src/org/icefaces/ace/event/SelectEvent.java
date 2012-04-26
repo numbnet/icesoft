@@ -27,20 +27,22 @@
  */
 package org.icefaces.ace.event;
 
+import org.icefaces.ace.component.datatable.DataTable;
+
 import javax.faces.component.UIComponent;
 import javax.faces.event.FacesEvent;
 import javax.faces.event.FacesListener;
 
 public class SelectEvent extends FacesEvent {
 
-	private Object object;
-	
-	public SelectEvent(UIComponent component, Object object) {
-		super(component);
-		this.object = object;
-	}
+	private Object[] objects;
 
-	@Override
+    public SelectEvent(UIComponent table, Object[] objs) {
+        super(table);
+        objects = objs;
+    }
+
+    @Override
 	public boolean isAppropriateListener(FacesListener faceslistener) {
 		return false;
 	}
@@ -51,6 +53,11 @@ public class SelectEvent extends FacesEvent {
 	}
 	
 	public Object getObject() {
-		return object;
+        if (objects == null) return null;
+		return objects[0];
 	}
+
+    public Object[] getObjects() {
+        return objects;
+    }
 }
