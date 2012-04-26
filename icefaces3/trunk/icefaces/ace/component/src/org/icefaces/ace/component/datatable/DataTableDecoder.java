@@ -62,15 +62,16 @@ public class DataTableDecoder {
             Object[] objs = new Object[indexes.length];
 
             for (int i = 0; i < indexes.length; i++) {
+                String index = indexes[i];
                 // If selection occurs with a TreeModel and non-root index
                 if (table.hasTreeDataModel() && selection.indexOf('.') > 0) {
                     treeModel = (TreeDataModel) model;
-                    int lastSepIndex = indexes[i].lastIndexOf('.');
-                    treeModel.setRootIndex(indexes[i].substring(0, lastSepIndex));
-                    selection = indexes[i].substring(lastSepIndex+1);
+                    int lastSepIndex = index.lastIndexOf('.');
+                    treeModel.setRootIndex(index.substring(0, lastSepIndex));
+                    index = index.substring(lastSepIndex+1);
                 }
 
-                table.setRowIndex(Integer.parseInt(selection));
+                table.setRowIndex(Integer.parseInt(index));
                 objs[i] = table.getRowData();
             }
             SelectEvent selectEvent = new SelectEvent(table, objs);
