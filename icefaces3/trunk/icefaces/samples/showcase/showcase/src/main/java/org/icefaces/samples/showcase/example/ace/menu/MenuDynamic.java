@@ -25,6 +25,7 @@ import javax.faces.event.ActionEvent;
 import javax.faces.component.UIComponent;
 import java.io.Serializable;
 import java.util.List;
+import java.util.ArrayList;
 
 import org.icefaces.ace.model.MenuModel;
 import org.icefaces.ace.model.DefaultMenuModel;
@@ -111,11 +112,17 @@ public class MenuDynamic extends ComponentExampleImpl<MenuDynamic> implements Se
     }
     
     public void removeSubmenu(ActionEvent event) {
-        List<UIComponent> submenus = menuModel.getSubmenus();
+        List<UIComponent> menus = menuModel.getMenus();
         
-        // Ensure we don't remove the last submenu
-        if ((submenus != null) && (submenus.size() > 1)) {
-            submenus.remove(submenus.size()-1);
+        if ((menus != null) && (menus.size() > 0)) {
+			ArrayList<UIComponent> orderedMenus = new ArrayList<UIComponent>(menus);
+            for (int i = orderedMenus.size() - 1 ; i >= 0; i--) {
+				UIComponent menu = orderedMenus.get(i);
+				if (menu instanceof Submenu) {
+					menus.remove(menu);
+					break;
+				}
+			}
         }
         
         forceRedirectWorkaround();
