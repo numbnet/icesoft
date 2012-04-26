@@ -52,7 +52,9 @@ import java.io.Serializable;
 	        @MenuLink(title = "menu.ace.contextMenu.subMenu.table",
                     exampleBeanName = ContextMenuTable.BEAN_NAME),
 	        @MenuLink(title = "menu.ace.contextMenu.subMenu.effect",
-                    exampleBeanName = ContextMenuEffect.BEAN_NAME)
+                    exampleBeanName = ContextMenuEffect.BEAN_NAME),
+	        @MenuLink(title = "menu.ace.contextMenu.subMenu.multicolumn",
+                    exampleBeanName = ContextMenuMultiColumn.BEAN_NAME)
     }
 )
 @ManagedBean(name= ContextMenuBean.BEAN_NAME)
