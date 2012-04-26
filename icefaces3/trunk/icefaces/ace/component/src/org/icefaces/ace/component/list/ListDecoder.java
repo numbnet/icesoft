@@ -1,5 +1,6 @@
 package org.icefaces.ace.component.list;
 
+import org.icefaces.ace.event.ListSelectEvent;
 import org.icefaces.ace.json.JSONArray;
 import org.icefaces.ace.json.JSONException;
 
@@ -39,12 +40,17 @@ public class ListDecoder {
 
         final JSONArray array = new JSONArray(raw);
         final Set<Object> selections = list.getSelections();
+        final Set<Object> newSelections = new HashSet<Object>();
 
         for (int i = 0; i < array.length(); i++) {
             final int index = array.getInt(i);
             list.setRowIndex(index);
-            selections.add(list.getRowData());
+            newSelections.add(list.getRowData());
         }
+
+        list.queueEvent(new ListSelectEvent(list, newSelections));
+
+        selections.addAll(newSelections);
 
         list.setRowIndex(-1);
 

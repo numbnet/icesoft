@@ -16,7 +16,11 @@ import javax.faces.application.ResourceDependency;
     componentType = "org.icefaces.ace.component.ListControl",
     rendererType  = "org.icefaces.ace.component.ListControlRenderer",
     componentFamily = "org.icefaces.ace.ListControl",
-    tlddoc = ""
+    tlddoc = "Renders a set of controls for moving items among ace:list components. Requires a " +
+            " selector that defines the set of ace:list components to move items between. Defaults " +
+            "to all lists. " +
+            "Optionally if this component has two nested ace:list children, they will be rendered " +
+            "within a styled container, and connected via this control without configuration."
 )
 @ResourceDependencies({
     @ResourceDependency(library="icefaces.ace", name="util/combined.css"),
@@ -77,17 +81,21 @@ public class ListControlMeta extends UIComponentBaseMeta {
     private String style;
 
     @Property(tlddoc="JQuery/CSS selector defining the group of lists this " +
-            "control navigates and creates mutually exclusive selection between.",
+            "control navigates and creates mutually exclusive selection between. " +
+            "Default selects all lists. When in dual list mode, this property " +
+            "has no effect.",
             defaultValue = ".if-list",
             defaultValueType = DefaultValueType.STRING_LITERAL)
     private String selector;
 
-    @Property(tlddoc = "", defaultValue = "alll lft rgt allr",
+    @Property(tlddoc = "Defines the order that the movement controls appear in.",
+            defaultValue = "alll lft rgt allr",
             defaultValueType = DefaultValueType.STRING_LITERAL)
     private String format;
 
     @Property(tlddoc = "When dual list mode is used, this property will determine " +
-            "if we render the migration control on top, bottom or both.",
+            "if we render the migration control on the top, bottom or both ends of the " +
+            "nested lists.",
             defaultValue = "top",
             defaultValueType = DefaultValueType.STRING_LITERAL
     )
