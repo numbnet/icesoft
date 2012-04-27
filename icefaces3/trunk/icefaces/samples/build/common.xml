@@ -74,6 +74,12 @@
             <exclude name="${icepush.lib.name}.jar"         if="no-icefaces"/>
             <exclude name="${icepush.lib.name}.jar"         if="no-icepush"/>
         </patternset>
+
+        <!-- By default, include these libs in all compat and ace samples unless explicity excluded  -->
+        <patternset id="lib.distribute.common">
+            <include name="jstl.jar"                unless="no-jstl"/>
+        </patternset>
+
     </patternset>
 
     <patternset id="lib.distribute.jsf">
