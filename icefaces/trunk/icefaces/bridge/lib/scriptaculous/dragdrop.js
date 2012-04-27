@@ -168,7 +168,8 @@ var Draggables = {
                 Draggables.activeDraggable = draggable;
             }.bind(this), draggable.options.delay);
         } else {
-            window.focus(); // allows keypress events if window isn't currently focused, fails for Safari
+            //ICE-8012
+            //window.focus(); // allows keypress events if window isn't currently focused, fails for Safari
             this.activeDraggable = draggable;
         }
     },
