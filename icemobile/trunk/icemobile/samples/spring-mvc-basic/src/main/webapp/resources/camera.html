@@ -7,6 +7,14 @@
 	<script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
 	<script src="http://code.jquery.com/mobile/1.1.0/jquery.mobile-1.1.0.min.js"></script>
 	<script src="icemobile.js"></script>
+    <style>
+    .mobi-container .mobi-stock {
+        display: none;
+    }
+    .mobi-stock .mobi-container {
+        display: none;
+    }
+    </style>
 </head>
 <body>
 	<div id="cameraContent">
@@ -17,11 +25,11 @@
 		  	</fieldset>
 
 		  	<fieldset>
-               <a data-role="button" id="camera" onclick="ice.camera(this.id);">Camera
+               <a data-role="button" class="mobi-container" id="camera" onclick="ice.camera(this.id);">Camera
                <img style="height:60px;width:65px;vertical-align:middle;padding-left:20px;" id="camera-thumb" ></a>
                
                
-               <a data-role="button" data-command="camera" data-id="camera" class="camera" onclick="ice.mobilesx(this);" >Camera ICEmobile-SX</a>
+               <a data-role="button" data-command="camera" data-id="camera" class="mobi-stock camera" onclick="ice.mobilesx(this);" >Camera ICEmobile-SX</a>
 
 
                <div style="text-align:center">
@@ -47,6 +55,11 @@
                     return;
                 }
                 $("#camform").attr("data-ajax","enabled");
+                if (-1 === document.cookie.indexOf("HyperBrowser"))  {
+                    $("#camform").addClass("mobi-stock");
+                } else {
+                    $("#camform").addClass("mobi-container");
+                }
 
 				$("#camform").submit(function() {
                     if (window.ice && ice.upload)  {
