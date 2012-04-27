@@ -141,6 +141,7 @@ public class TooltipRenderer extends CoreRenderer {
 				.entry("event", tooltip.getHideEvent())
 			.endMap()
 			.entry("delay", tooltip.getHideDelay())
+			.entry("fixed", true)
 			.beginMap("effect")
 				.entry("length", tooltip.getHideEffectLength())
 				.entry("type", tooltip.getHideEffect())
