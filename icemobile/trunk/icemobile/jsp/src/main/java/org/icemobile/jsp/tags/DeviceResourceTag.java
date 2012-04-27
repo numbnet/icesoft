@@ -58,6 +58,8 @@ public class DeviceResourceTag extends SimpleTagSupport {
 
     private String view;
 
+    private String jqversion;
+
 
     public void doTag() throws JspTagException {
 
@@ -166,10 +168,14 @@ public class DeviceResourceTag extends SimpleTagSupport {
 
         try {
             out.write("<link type=\"text/css\" rel=\"stylesheet\" href=\"" + cssfile + "\" />");
-
-
-            out.write("<script type=\"text/javascript\" src=\"" + resourceRoot + "/jquery/1.6/jquery.js\" />");
             out.write("<script type=\"text/javascript\" src=\"" + resourceRoot + "/icemobile.js\" />");
+
+            String jqv = getJqversion();
+            if (jqv != null && !"".equals(jqv)) {
+                out.write("<script type=\"text/javascript\" src=\"" + resourceRoot + "/jquery/" +
+                                  jqv + "/jquery.js\" />");
+            }
+
 
         } catch (IOException ioe) {
             log.severe("Exception writing to JSPWriter: " + ioe);
@@ -199,5 +205,13 @@ public class DeviceResourceTag extends SimpleTagSupport {
 
     public void setView(String view) {
         this.view = view;
+    }
+
+    public String getJqversion() {
+        return jqversion;
+    }
+
+    public void setJqversion(String jqversion) {
+        this.jqversion = jqversion;
     }
 }
