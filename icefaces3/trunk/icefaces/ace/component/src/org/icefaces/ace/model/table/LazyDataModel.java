@@ -27,11 +27,10 @@
  */
 package org.icefaces.ace.model.table;
 
+import javax.faces.model.DataModel;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
-
-import javax.faces.model.DataModel;
 
 /**
  * Custom lazy loading DataModel to deal with huge datasets
@@ -42,7 +41,7 @@ public abstract class LazyDataModel<T> extends DataModel implements Serializable
 
 	private int rowCount;
 
-	private int pageSize;
+	private int pageSize = 1;
 
 	private List<T> data;
 

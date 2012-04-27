@@ -541,12 +541,12 @@
 
                <h:outputLabel for="singleCellOut" value="Single Cell:"/>
                <ui:repeat id="singleCellOut" value="#{dataTableSelector.singleCell}" var="selCell">
-                   #{selCell.rowObject} : #{selCell.getSelectedFieldValues()}
+                   #{selCell.rowObject} : #{selCell.selectedFieldValues}
                </ui:repeat>
 
                <h:outputLabel for="multiCellOut" value="Multiple Cell:"/>
                <ui:repeat id="multiCellOut" value="#{dataTableSelector.multiCell}" var="selCell">
-                   #{selCell.rowObject} : #{selCell.getSelectedFieldValues()}
+                   #{selCell.rowObject} : #{selCell.selectedFieldValues}
                </ui:repeat>
 
                <f:facet name="footer">
