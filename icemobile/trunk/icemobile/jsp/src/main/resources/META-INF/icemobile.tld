@@ -47,6 +47,29 @@
     </tag>
 
     <tag>
+        <description>Device detection and script/css insertion</description>
+        <display-name>ICEmobile Device Detection</display-name>
+        <name>deviceResource</name>
+        <tag-class>org.icemobile.jsp.tags.DeviceResourceTag</tag-class>
+        <body-content>empty</body-content>
+        <attribute>
+            <name>name</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+        </attribute>
+        <attribute>
+            <name>library</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+        </attribute>
+        <attribute>
+            <name>view</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+        </attribute>
+    </tag>
+
+    <tag>
         <description>Content Pane Tag</description>
         <display-name>ICEmobile ContentPane</display-name>
         <name>contentPane</name>
