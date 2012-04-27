@@ -31,6 +31,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import javax.el.MethodExpression;
 import javax.el.ValueExpression;
@@ -53,6 +54,7 @@ import org.icefaces.ace.component.celleditor.CellEditor;
 
 public abstract class Exporter {
 
+	protected static final Pattern htmlTagPattern = Pattern.compile("\\<.*?\\>");
 	protected SpanningRows spanningRows = this.new SpanningRows();
 
     public abstract String export(FacesContext facesContext, DataTable table,
@@ -274,6 +276,9 @@ public abstract class Exporter {
 			String objectReference = component.getClass().getName() + "@" + Integer.toHexString(System.identityHashCode(component));
 			if (!value.equals(objectReference)) ret = value;
 		}
+		
+		// strip HTML tags
+		ret = htmlTagPattern.matcher(ret).replaceAll("");
 		
 		if (component.getChildren().size() > 0) {
 			StringBuilder builder = new StringBuilder();
