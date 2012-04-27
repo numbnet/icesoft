@@ -8,7 +8,6 @@
 	<link href="<c:url value="/resources/form.css" />" rel="stylesheet"  type="text/css" />		
 	<link href="<c:url value="/resources/jqueryui/1.8/themes/base/jquery.ui.all.css" />" rel="stylesheet" type="text/css"/>
 	<script type="text/javascript" src="code.icepush"></script>
-    <script type="text/javascript" src="<c:url value="/resources/icemobile.js" />"></script>
 </head>
 <body>
 <h1><a href="<c:url value="/" />">spring-mvc-showcase</a></h1>
