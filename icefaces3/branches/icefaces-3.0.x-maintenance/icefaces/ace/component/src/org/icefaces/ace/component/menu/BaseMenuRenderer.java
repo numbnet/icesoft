@@ -35,6 +35,7 @@ import javax.faces.component.UIParameter;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import org.icefaces.ace.component.menuitem.MenuItem;
+import org.icefaces.ace.component.menuseparator.MenuSeparator;
 import org.icefaces.ace.renderkit.CoreRenderer;
 import org.icefaces.ace.util.ComponentUtils;
 import org.icefaces.ace.util.Utils;
@@ -162,6 +163,12 @@ public abstract class BaseMenuRenderer extends CoreRenderer {
 
             writer.endElement("a");
 		}
+	}
+	
+	protected void encodeMenuSeparator(FacesContext context) throws IOException {
+		ResponseWriter writer = context.getResponseWriter();
+		writer.startElement("li", null);
+		writer.endElement("li");
 	}
 
     @Override
