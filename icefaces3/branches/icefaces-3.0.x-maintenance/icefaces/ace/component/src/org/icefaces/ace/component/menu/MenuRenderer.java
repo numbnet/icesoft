@@ -36,6 +36,7 @@ import javax.faces.context.ResponseWriter;
 
 import org.icefaces.ace.component.menuitem.MenuItem;
 import org.icefaces.ace.component.submenu.Submenu;
+import org.icefaces.ace.component.menuseparator.MenuSeparator;
 import org.icefaces.ace.util.JSONBuilder;
 import org.icefaces.ace.util.Utils;
 import org.icefaces.render.MandatoryResourceComponent;
@@ -135,6 +136,8 @@ public class MenuRenderer extends BaseMenuRenderer {
 
                 if(child instanceof MenuItem) {
                     encodeMenuItem(context, (MenuItem) child);
+                } else if(child instanceof MenuSeparator) {
+                    // we just need <li></li>
                 } else if(child instanceof Submenu) {
                     encodeTieredSubmenu(context, (Submenu) child);
                 }
@@ -194,6 +197,8 @@ public class MenuRenderer extends BaseMenuRenderer {
                     writer.startElement("li", null);
                     encodeMenuItem(context, (MenuItem) child);
                     writer.endElement("li");
+                } else if(child instanceof MenuSeparator) {
+                    encodeMenuSeparator(context);
                 } else if(child instanceof Submenu) {
                     encodePlainSubmenu(context, (Submenu) child);
                 }
