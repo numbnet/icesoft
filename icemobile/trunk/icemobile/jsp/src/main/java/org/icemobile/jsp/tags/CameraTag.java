@@ -35,9 +35,9 @@ public class CameraTag extends SimpleTagSupport {
             out.write("<input id='camera' type='file' name='camera' />");
             //or for iOS until we can store the ICEmobile-SX registration
             //without a session (likely a cookie)
-            out.write("<input type='button' id='camerasx' class='camera' onclick='");
-            out.write(TagUtil.getICEmobileSXScript(pageContext, "camera", "camera"));
-            out.write("' value='camera (ICEmobile-SX)'>");
+            out.write("<input type='button' data-id='camera' class='camera' ");
+            out.write("data-command='camera' onclick='ice.mobilesx(this)' ");
+            out.write(" value='camera (ICEmobile-SX)'>");
         }
     }
 
