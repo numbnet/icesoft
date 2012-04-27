@@ -55,9 +55,33 @@
                           value="#{dataTableScrolling.carsData}"
                           var="car"
                           scrollable="#{dataTableScrolling.scrolling}"
-                          height="#{dataTableScrolling.height}">
+                          selectionMode="single"
+                          height="#{dataTableScrolling.height}"
+                   >
+               <ace:ajax event="select" />
+
                 <ace:column headerText="ID" footerText="ID">
-                    <h:outputText id="idCell" value="#{car.id}"/>
+                    <h:outputText  value="#{car.id}"/>
+                    &#160;
+                    <h:outputText  value="#{car.id}"/>
+                    &#160;
+                    <h:outputText  value="#{car.id}"/>
+                    &#160;
+                    <h:outputText  value="#{car.id}"/>
+                    &#160;
+                    <h:outputText  value="#{car.id}"/>
+                    &#160;
+                    <h:outputText  value="#{car.id}"/>
+                    &#160;
+                    <h:outputText  value="#{car.id}"/>
+                    &#160;
+                    <h:outputText  value="#{car.id}"/>
+                    &#160;
+                    <h:outputText  value="#{car.id}"/>
+                    &#160;
+                    <h:outputText  value="#{car.id}"/>
+                    &#160;
+                    <h:outputText  value="#{car.id}"/>
                 </ace:column>
                 <ace:column headerText="Name" footerText="Name">
                     <h:outputText id="nameCell" value="#{car.name}"/>
@@ -94,19 +118,37 @@
                         widgetVar="sampleDialog"
                         closable="true"
                         modal="true"
+                        width="400"
                         draggable="true"
                         showEffect="fade"
                         hideEffect="fade"
                         resizable="true"
-                        width="415"
-                        height="295">
+                        position="center">
+                <style type="text/css">
+                    .scrollingTable > div:not(.ui-paginator) {
+                        overflow: auto;
+                        height:200px;
+                    }
+                </style>
                     <ace:dataTable id="carTable"
+                                   styleClass="scrollingTable"
                                    value="#{dataTableScrolling.carsData}"
                                    var="car"
-                                   scrollable="#{dataTableScrolling.scrolling}"
-                                   height="#{dataTableScrolling.height}">
+                                   height="#{dataTableScrolling.height}"
+                                   paginator="true"
+                                   rows="10">
                         <ace:column headerText="ID" footerText="ID">
-                            <h:outputText id="idCell" value="#{car.id}"/>
+                            <h:outputText  value="#{car.id}"/>
+                            <h:outputText  value="#{car.id}"/>
+                            <h:outputText  value="#{car.id}"/>
+                            <h:outputText  value="#{car.id}"/>
+                            <h:outputText  value="#{car.id}"/>
+                            <h:outputText  value="#{car.id}"/>
+                            <h:outputText  value="#{car.id}"/>
+                            <h:outputText  value="#{car.id}"/>
+                            <h:outputText  value="#{car.id}"/>
+                            <h:outputText  value="#{car.id}"/>
+                            <h:outputText  value="#{car.id}"/>
                         </ace:column>
                         <ace:column headerText="Name" footerText="Name">
                             <h:outputText id="nameCell" value="#{car.name}"/>
