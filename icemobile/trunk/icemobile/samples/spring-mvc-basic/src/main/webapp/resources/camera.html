@@ -17,11 +17,11 @@
 		  	</fieldset>
 
 		  	<fieldset>
-               <a data-role="button" id="camera1" onclick="ice.camera('camera');">Camera
+               <a data-role="button" id="camera" onclick="ice.camera(this.id);">Camera
                <img style="height:60px;width:65px;vertical-align:middle;padding-left:20px;" id="camera-thumb" ></a>
                
                
-               <a data-role="button" data-command="camera" id="camera" class="camera" onclick="ice.mobilesx(this);" >Camera ICEmobile-SX</a>
+               <a data-role="button" data-command="camera" data-id="camera" class="camera" onclick="ice.mobilesx(this);" >Camera ICEmobile-SX</a>
 
 
                <div style="text-align:center">
@@ -42,14 +42,18 @@
 		<script type="text/javascript">
 
 			$(document).ready(function() {
+                if ($("#camform").attr("data-ajax")) {
+                    //avoid double onready registration
+                    return;
+                }
+                $("#camform").attr("data-ajax","enabled");
+
 				$("#camform").submit(function() {
                     if (window.ice && ice.upload)  {
                         window.ice.handleResponse = function(text)  {
                             var data = $.parseJSON(unescape(text));
                             $("#result").attr("src", data.path);
                             $("#thanks").text(data.message);
-                            $("#cameraContent").trigger("create");
-						    $('html, body').animate({ scrollTop: $("#message").offset().top }, 500);
                         }
                         ice.upload($(this).attr("id"));
                         return false;  
@@ -67,8 +71,6 @@
                         success: function(data) {
                             $("#result").attr("src", data.path);
                             $("#thanks").text(data.message);
-                            $("#cameraContent").trigger("create");
-						    $('html, body').animate({ scrollTop: $("#message").offset().top }, 500);
 					    }
                     });
 
@@ -78,7 +80,10 @@
 
             window.onhashchange = function()  {
                 $("#name").attr("value","ICEmobile-SX upload");
-                $("#camform").submit();
+                if ("#icemobilesx" === window.location.hash)  {
+                    window.location.hash = "";
+                    $("#camform").submit();
+                }
             }
 
 		</script>

@@ -19,7 +19,6 @@ import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
 
 @Controller
-//@SessionAttributes("icemobileBean")
 public class ICEmobileController {
 
 	@ModelAttribute
@@ -32,9 +31,9 @@ public class ICEmobileController {
 	}
 
 	@RequestMapping(value="/campush", method=RequestMethod.GET)
-	public void camPush(Model model) {
+	public void camPush(HttpServletRequest request, Model model) {
 		model.addAttribute("isGET", Boolean.TRUE);
-		model.addAttribute("imgPath", "resources/uploaded.jpg");
+		model.addAttribute("imgPath", getCurrentFileName(request));
 	}
 
 	@ModelAttribute("icemobileBean")
@@ -68,7 +67,7 @@ public class ICEmobileController {
                     .push("camPush");
         }
         if (null != newFileName)  {
-            model.addAttribute("imgPath", newFileName.substring(1));
+            model.addAttribute("imgPath", newFileName);
         } else {
             model.addAttribute("imgPath", "resources/uploaded.jpg");
         }
@@ -80,7 +79,7 @@ public class ICEmobileController {
         String newFileName = saveImage(request, file, inputFile);
 
         return new CamUpdate("Thanks for the photo, " + modelBean.getName(), 
-                request.getContextPath() + newFileName);
+                request.getContextPath() + "/" + newFileName);
     }
 
     private String saveImage(HttpServletRequest request, 
@@ -89,30 +88,38 @@ public class ICEmobileController {
         String fileName = null;
         String uuid = Long.toString(
                 Math.abs(UUID.randomUUID().getMostSignificantBits()), 32 );
-        String newFileName = "/resources/img-" + uuid + ".jpg";
+        String newFileName = "resources/img-" + uuid + ".jpg";
         if ((null != file) && !file.isEmpty())  {
             fileName = file.getOriginalFilename();
-            file.transferTo(new File(request.getRealPath(newFileName)));
+            file.transferTo(new File(request.getRealPath("/" + newFileName)));
             request.getServletContext().setAttribute(
                     this.getClass().getName(), newFileName );
         }
         if ((null != inputFile) && !inputFile.isEmpty())  {
             fileName = inputFile.getOriginalFilename();
-            inputFile.transferTo(new File(request.getRealPath(newFileName)));
+            inputFile.transferTo(
+                    new File(request.getRealPath("/" + newFileName)) );
             request.getServletContext().setAttribute(
                     this.getClass().getName(), newFileName );
         }
 
         if (null == fileName)  {
             //use previously uploaded file, such as from ICEmobile-SX
-            newFileName = (String) request.getServletContext().getAttribute(
-                    this.getClass().getName());
+            newFileName = getCurrentFileName(request);
 
         }
         
         return newFileName;
     }
 
+    private String getCurrentFileName(HttpServletRequest request)  {
+        String currentName = (String) request.getServletContext().getAttribute(
+                    this.getClass().getName() );
+        if (null == currentName)  {
+            return "resources/uploaded.jpg";
+        }
+        return currentName;
+    }
 }
 
 class CamUpdate  {

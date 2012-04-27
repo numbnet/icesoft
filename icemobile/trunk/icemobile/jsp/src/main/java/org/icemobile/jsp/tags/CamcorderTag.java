@@ -34,10 +34,10 @@ public class CamcorderTag extends SimpleTagSupport {
         } else {
             out.write("<input id='camcorder' type='file' name='camcorder' />");
             //or for iOS until we can store the ICEmobile-SX registration
-            //without a session (likely a cookie)
-            out.write("<input type='button' id='camcordersx' class='camcorder' onclick='");
-            out.write(TagUtil.getICEmobileSXScript(pageContext, "cam", "cam"));
-            out.write("' value='camcorder (ICEmobile-SX)'>");
+            //without a session (likely a cookie)            
+            out.write("<input type='button' data-id='cam' class='camcorder' ");
+            out.write("data-command='camcorder' onclick='ice.mobilesx(this)' ");
+            out.write(" value='camcorder (ICEmobile-SX)'>");
         }
     }
 

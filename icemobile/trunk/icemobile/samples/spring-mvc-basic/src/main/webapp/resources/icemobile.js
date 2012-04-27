@@ -37,7 +37,7 @@ ice.registerAuxUpload = function (sessionid, uploadURL) {
 ice.mobilesx = function (element) {
     var formAction = ice.formOf(element).getAttribute("action");
     var command = element.getAttribute("data-command");
-    var id = element.getAttribute("id");
+    var id = element.getAttribute("data-id");
     var uploadURL;
     if (0 === formAction.indexOf("/"))  {
         uploadURL = window.location.origin + formAction;
@@ -49,7 +49,11 @@ ice.mobilesx = function (element) {
         uploadURL = baseURL.substring(0, baseURL.lastIndexOf("/")) +
             "/" + formAction;
     }
-    var returnURL = window.location + "#icemobilesx";
+
+    var returnURL = window.location;
+    if ("" == returnURL.hash)  {
+        returnURL += "#icemobilesx";
+    }
 
     var sxURL = "icemobile://c=" + escape(command + "?id=" + id) +
         "&u=" + escape(uploadURL) + "&r=" + escape(returnURL);
