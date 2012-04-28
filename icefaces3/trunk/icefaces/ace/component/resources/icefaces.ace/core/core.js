@@ -178,7 +178,7 @@ ice.ace.extendAjaxArguments = function(callArguments, options) {
             var existingSuccessCall = callArguments['onsuccess'];
             callArguments['onsuccess'] = function(data, status, xhr, args) {
                 existingSuccessCall(data, status, xhr, args);
-                onerror(data, status, xhr, args);
+                onsuccess(data, status, xhr, args);
             }
         } else {
             callArguments['onsuccess'] = onsuccess;
