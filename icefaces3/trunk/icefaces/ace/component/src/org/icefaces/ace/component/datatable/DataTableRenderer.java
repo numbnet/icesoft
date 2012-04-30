@@ -267,11 +267,13 @@ public class DataTableRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
         List<Column> columns = table.getColumns();
         encodeUtilityChildren(context, table);
+        writer.startElement(HTML.DIV_ELEM, null);
         writer.startElement(HTML.TABLE_ELEM, null);
         if (table.hasHeaders()) encodeTableHead(context, table, columns);
         encodeTableBody(context, table, columns);
         encodeTableFoot(context, table, columns);
         writer.endElement(HTML.TABLE_ELEM);
+        writer.endElement(HTML.DIV_ELEM);
     }
 
     protected void encodeScrollableTable(FacesContext context, DataTable table) throws IOException {
