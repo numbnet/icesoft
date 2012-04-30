@@ -153,9 +153,7 @@ public class EnvUtils {
      * @return Returns the current setting of org.icefaces.aria.enabled.  The default is true.
      */
     public static boolean isAriaEnabled(FacesContext facesContext) {
-        UIViewRoot viewRoot = facesContext.getViewRoot();
-        Map viewMap = viewRoot.getViewMap();
-        Object ariaEnabled = viewMap.get(ARIA_ENABLED);
+        Object ariaEnabled = getViewParam(facesContext, ARIA_ENABLED);
         if (null == ariaEnabled) {
             return EnvConfig.getEnvConfig(facesContext).ariaEnabled;
         }
@@ -197,9 +195,7 @@ public class EnvUtils {
      * @return Returns the current setting of org.icefaces.blockUIOnSubmit.  The default is false.
      */
     public static boolean isBlockUIOnSubmit(FacesContext facesContext) {
-        UIViewRoot viewRoot = facesContext.getViewRoot();
-        Map viewMap = viewRoot.getViewMap();
-        Object blockUIOnSubmit = viewMap.get(BLOCK_UI_ON_SUBMIT);
+        Object blockUIOnSubmit = getViewParam(facesContext, BLOCK_UI_ON_SUBMIT);
         if (null == blockUIOnSubmit) {
             return EnvConfig.getEnvConfig(facesContext).blockUIOnSubmit;
         }
@@ -279,9 +275,7 @@ public class EnvUtils {
      * @return Returns the current setting of org.icefaces.lazyPush.  The default is true.
      */
     public static boolean isLazyPush(FacesContext facesContext) {
-        UIViewRoot viewRoot = facesContext.getViewRoot();
-        Map viewMap = viewRoot.getViewMap();
-        Object lazyPush = viewMap.get(LAZY_PUSH);
+        Object lazyPush = getViewParam(facesContext, LAZY_PUSH);
         if (null == lazyPush) {
             return EnvConfig.getEnvConfig(facesContext).lazyPush;
         }
@@ -368,9 +362,7 @@ public class EnvUtils {
      * @return Returns the current setting of org.icefaces.subtreeDiff.  The default is true.
      */
     public static boolean isSubtreeDiff(FacesContext facesContext) {
-        UIViewRoot viewRoot = facesContext.getViewRoot();
-        Map viewMap = viewRoot.getViewMap();
-        Object subtreeDiff = viewMap.get(SUBTREE_DIFF);
+        Object subtreeDiff = getViewParam(facesContext, SUBTREE_DIFF);
         if (null == subtreeDiff) {
             return EnvConfig.getEnvConfig(facesContext).subtreeDiff;
         }
@@ -394,9 +386,7 @@ public class EnvUtils {
         String configValue = EnvConfig.getEnvConfig(facesContext)
                 .mandatoryResourceConfig;
         String result = configValue;
-        UIViewRoot viewRoot = facesContext.getViewRoot();
-        Map viewMap = viewRoot.getViewMap();
-        String overValue = (String) viewMap.get(MANDATORY_RESOURCE_CONFIG);
+        String overValue = (String) getViewParam(facesContext, MANDATORY_RESOURCE_CONFIG);
         if (null != overValue) {
             result = overValue;
         }
@@ -670,6 +660,12 @@ public class EnvUtils {
         return false;
     }
 
+    //utility method to get per-view configuration values
+    static Object getViewParam(FacesContext facesContext, String name)  {
+        UIViewRoot viewRoot = facesContext.getViewRoot();
+        Map viewMap = viewRoot.getViewMap();
+        return viewMap.get(name);
+    }
 }
 
 class EnvConfig {
