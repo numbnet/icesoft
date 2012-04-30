@@ -116,16 +116,17 @@ ice.ace.ListControl.prototype.getDestinationList = function(source, dir) {
 };
 
 ice.ace.ListControl.prototype.getRecords = function(source, dest, all) {
-    var childSelector = all ? '' : '.ui-state-active' ,
-        sourceIds = ice.ace.jq(source.element).find('.if-list-body:first')
-            .children(childSelector)
-            .map(function() { return ice.ace.jq(this).attr('id'); }),
+    var childSelector = all ? '*' : '.ui-state-active' ,
+        sourceChildren = ice.ace.jq(source.element).find('.if-list-body:first').children(),
+        sourceIds = sourceChildren.filter(childSelector).map(function() { return ice.ace.jq(this).attr('id'); }),
+        sourceLength = sourceChildren.length,
+        sourceReorderings = source.read('reorderings'),
         records = [],
         destIndex = ice.ace.jq(dest.element).find('.if-list-body:first').children().length;
 
     for (var i = 0; i < sourceIds.length; i++) {
         var record = [], id = sourceIds[i];
-        record.push(parseInt(id.substr(id.lastIndexOf(this.sep)+1)));
+        record.push(source.getUnshiftedIndex(sourceLength, sourceReorderings, parseInt(id.substr(id.lastIndexOf(this.sep)+1))));
         record.push(destIndex + i);
         records.push(record);
     }
