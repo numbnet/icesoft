@@ -34,19 +34,18 @@
 
     <ui:define name="example">
         <h:form id="carForm">
-            <ace:tableConfigPanel id="tableConfig"
-                                  for="carTable"
-                                  columnNameConfigurable="true"
-                                  columnVisibilityConfigurable="true"
-                                  columnOrderingConfigurable="true"
-                                  columnSortingConfigurable="true"
-                                  type="last-col"/>
             
             <ace:dataTable id="carTable"
                            value="#{dataTableConfigPanel.carsData}"
                            var="car"
                            rows="10">
-                
+                <ace:tableConfigPanel id="tableConfig"
+                                      columnNameConfigurable="true"
+                                      columnVisibilityConfigurable="true"
+                                      columnOrderingConfigurable="true"
+                                      columnSortingConfigurable="true"
+                                      type="last-col"/>
+
                         <ace:column id="id" headerText="ID">
                             #{car.id}
                         </ace:column>
