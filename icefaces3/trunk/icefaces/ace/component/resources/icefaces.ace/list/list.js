@@ -60,7 +60,13 @@ ice.ace.List.prototype.itemReceiveHandler = function(event, ui) {
     var item = ui.item,
         id = item.attr('id'),
         fromIndex = parseInt(id.substr(id.lastIndexOf(this.sep)+1)),
-        srcId = ui.sender.closest('.if-list').attr('id');
+        srcId = ui.sender.closest('.if-list').attr('id'),
+        src = ice.ace.Lists[srcId];
+
+    fromIndex = src.getUnshiftedIndex(
+            src.element.find('.if-list-body:first').children().length,
+            src.read('reorderings'),
+            fromIndex);
 
     this.immigrantMessage = [];
     this.immigrantMessage.push(srcId);
@@ -70,7 +76,6 @@ ice.ace.List.prototype.itemReceiveHandler = function(event, ui) {
 };
 
 ice.ace.List.prototype.sendMigrateRequest = function() {
-    // migrate cb event
     var destList = this,
         sourceListId = destList.immigrantMessage[0],
         sourceList = ice.ace.Lists[sourceListId],
