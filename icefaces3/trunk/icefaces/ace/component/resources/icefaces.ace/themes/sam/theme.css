@@ -425,3 +425,6 @@
 .wijmo-wijmenu .ui-state-default a.ui-state-active .ui-icon{
     background-image:url("#{resource['icefaces.ace:themes/sam/images/ui-icons_454545_256x240.png']}");
 }
+
+/* input field prompt label */
+.ui-inputfield.ui-prompt-label {color: #aaa;}
