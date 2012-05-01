@@ -40,6 +40,7 @@ public class ConfigHandler extends TagHandler {
     private final TagAttribute blockUIOnSubmit;
     private final TagAttribute lazyPush;
     private final TagAttribute subtreeDiff;
+    private final TagAttribute diffConfig;
     private final TagAttribute mandatoryResource;
     private final TagAttribute messagePersistence;
 
@@ -50,6 +51,7 @@ public class ConfigHandler extends TagHandler {
         this.blockUIOnSubmit = this.getAttribute("blockUIOnSubmit");
         this.lazyPush = this.getAttribute("lazyPush");
         this.subtreeDiff = this.getAttribute("subtreeDiff");
+        this.diffConfig = this.getAttribute("diffConfig");
         this.mandatoryResource = this.getAttribute("mandatoryResource");
         this.messagePersistence = this.getAttribute("messagePersistence");
     }
@@ -83,6 +85,10 @@ public class ConfigHandler extends TagHandler {
         if (subtreeDiff != null) {
             viewMap.put(EnvUtils.SUBTREE_DIFF,
                     new Boolean(subtreeDiff.getValue()));
+        }
+        if (diffConfig != null) {
+            viewMap.put(EnvUtils.DIFF_CONFIG,
+                    new String(diffConfig.getValue()));
         }
 
         if (null != mandatoryResource) {

@@ -26,7 +26,7 @@
     <title>ICEfaces Ajax</title>
 </h:head>
 <h:body>
-    <icecore:config render="true" />
+    <icecore:config render="true" diffConfig="insDel debug" />
     <h:form id="form1" prependId="false">
 
         <h2>ICEfaces: Show / Hide based on backing bean</h2>
@@ -64,6 +64,19 @@
         <br/>
         <h:outputText id="time" value="#{basic.time}"/>
         <br/>
+        <h:inputText value="#{basic.newItem}" /><h:commandButton value="Add" action="#{basic.add}" />
+        <br/>
+        <h:panelGroup>
+            <ui:repeat var="item" value="#{basic.items}" >
+                <h:panelGroup>
+                    <h:outputText value="#{item}" />
+                    <h:commandButton action="#{basic.delete}" value="Delete" >
+                        <f:setPropertyActionListener target="#{basic.target}" value="#{item}" />
+                    </h:commandButton>
+                    <br/>
+                </h:panelGroup>
+            </ui:repeat>
+        </h:panelGroup>
         <h:messages/>
     </h:form>
 

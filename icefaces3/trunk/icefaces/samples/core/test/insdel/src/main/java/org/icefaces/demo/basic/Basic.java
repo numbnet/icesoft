@@ -17,6 +17,8 @@
 package org.icefaces.demo.basic;
 
 import java.io.Serializable;
+import java.util.List;
+import java.util.ArrayList;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -39,4 +41,34 @@ public class Basic implements Serializable  {
         return Long.toString(System.currentTimeMillis());
     }
 
+    String newItem = "";
+    
+    public String getNewItem()  {
+        return newItem;
+    }
+
+    public void setNewItem(String newItem)  {
+        this.newItem = newItem;
+    }
+
+    List<String> list = new ArrayList();
+    public String add()  {
+        list.add(newItem);
+        return "";
+    }
+
+    public List<String> getItems()  {
+        return list;
+    }
+
+    String target = "";
+    public void setTarget(String target)  {
+        this.target = target;
+    }
+    
+    public String delete()  {
+        list.remove(target);
+        return "";
+    }
+    
 }

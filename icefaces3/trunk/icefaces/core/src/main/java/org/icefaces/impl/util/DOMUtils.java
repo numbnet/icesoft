@@ -139,7 +139,11 @@ public class DOMUtils {
     public static class DiffConfig  {
 
         public int maxDiffs = Integer.MAX_VALUE;
+        public boolean isInsDel = false;
+        public boolean isDebug = false;
         private static String MAXDIFFS = "maxDiffs";
+        private static String INSDEL = "insDel";
+        private static String DEBUG = "debug";
         private static Pattern SPACE_PATTERN = Pattern.compile(" ");
 
         public DiffConfig(String config)  {
@@ -149,14 +153,29 @@ public class DOMUtils {
                 String[] paramPairs = SPACE_PATTERN.split(config);
                 for (String pair: paramPairs)  {
                     int center = pair.indexOf("=");
-                    String key = pair.substring(0,center);
-                    String value = pair.substring(center + 1);
-                    params.put(key, value);
+                    if (-1 != center)  {
+                        String key = pair.substring(0,center);
+                        String value = pair.substring(center + 1);
+                        params.put(key, value);
+                    } else {
+                        //singleton values act as flags
+                        params.put(pair, "true");
+                    }
                 }
                 
                 String maxDiffsParam = (String) params.get(MAXDIFFS);
                 if (null != maxDiffsParam)  {
                     maxDiffs = Integer.parseInt(maxDiffsParam);
+                }
+                
+                String insDelParam = (String) params.get(INSDEL);
+                if (null != insDelParam)  {
+                    isInsDel = true;
+                }
+
+                String debugParam = (String) params.get(DEBUG);
+                if (null != debugParam)  {
+                    isDebug = true;
                 }
 
             } catch (Exception e)  {
@@ -164,6 +183,13 @@ public class DOMUtils {
             }
         }
 
+        public String toString()  {
+            String values = 
+                    MAXDIFFS + ": " + String.valueOf(maxDiffs) + " " +
+                    DEBUG + ": " + String.valueOf(isDebug) + " " +
+                    INSDEL + ": " + String.valueOf(isInsDel);
+            return values;
+        }
     }
 
     static {
@@ -426,6 +452,9 @@ public class DOMUtils {
             Node oldNode, Node newNode) {
         CursorList nodeDiffs = new CursorList();
         try {
+            if (isDebug(config))  {
+                log.log(Level.INFO, "nodeDiff debug " + config);
+            }
             boolean success;
             success = compareNodes(config, nodeDiffs, oldNode, newNode);
             if (!success)  {
@@ -475,6 +504,7 @@ public class DOMUtils {
                 return false;
             }
             nodeDiffs.add(new ReplaceOperation(newNode));
+            diffDebug(config, "replace: attributes differ ", newNode);
             return true;
         }
         if (!compareStrings(oldNode.getNodeValue(),
@@ -484,11 +514,12 @@ public class DOMUtils {
                 return false;
             }
             nodeDiffs.add(new ReplaceOperation(newNode));
+            diffDebug(config, "replace: text differs ", newNode);
             return true;
         }
 
         //if insert/delete is not enabled perform simple DOM diff below
-        if (!isInsDel(newNode))  {
+        if (!isInsDel(config, newNode))  {
             NodeList oldChildNodes = oldNode.getChildNodes();
             NodeList newChildNodes = newNode.getChildNodes();
 
@@ -501,6 +532,7 @@ public class DOMUtils {
                     return false;
                 }
                 nodeDiffs.add(new ReplaceOperation(newNode));
+                diffDebug(config, "replace: differing child count ", newNode);
                 return true;
             }
 
@@ -514,6 +546,7 @@ public class DOMUtils {
                         //subtree was unable to process the diff
                         nodeDiffs.cursor = startCursor;
                         nodeDiffs.add(new ReplaceOperation(newNode));
+                        diffDebug(config, "replace: diff from below ", newNode);
                         return true;
                     }
                     return false;
@@ -532,6 +565,7 @@ public class DOMUtils {
                         //subtree generated a diff that was too large
                         nodeDiffs.cursor = startCursor;
                         nodeDiffs.add(new ReplaceOperation(newNode));
+                        diffDebug(config, "replace: exceeded maxDiffs ", newNode);
                         return true;
                     }
                 }
@@ -540,9 +574,21 @@ public class DOMUtils {
         }
 
         //searching for insert/delete is enabled
+        int startCursor = nodeDiffs.cursor;
+        if (!findChildOps(config, nodeDiffs, oldNode, newNode))  {
+            String id = getNodeId(newNode);
+            if (null != id)  {
+                //subtree was unable to process the diff
+                nodeDiffs.cursor = startCursor;
+                nodeDiffs.add(new ReplaceOperation(newNode));
+                diffDebug(config, "replace: diff below ", newNode);
+                return true;
+            }
+            return false;
+        }
         
-        return findChildOps(config, nodeDiffs, oldNode, newNode);
-    }
+        return true;
+   }
 
     private static String PAD = "not_an_id_of_any_element";
 
@@ -553,7 +599,7 @@ public class DOMUtils {
      * @param nodeDiffs
      * @param oldNode
      * @param newNode
-     * @return true if oldNode and newNode are equivalent
+     * @return true if diff was handled fully
      */
     private static boolean findChildOps(DiffConfig config, CursorList nodeDiffs, 
             Node oldNode, Node newNode) {
@@ -576,7 +622,8 @@ public class DOMUtils {
                 return false;
             }
             nodeDiffs.add(new ReplaceOperation(newNode));
-            return false;
+            diffDebug(config, "replace: cleared ", newNode);
+            return true;
         }
 
         List<String> oldList = getListOfIds(oldNode.getChildNodes());
@@ -591,6 +638,7 @@ public class DOMUtils {
         int newListLen = newList.size();
         int oldIndex = 0;
         int newIndex = 0;
+
         while (keepRunning)  {
             //mainly operate on IDs to detect insert and delete
             String currentOld = paddedGet(oldList, oldIndex);
@@ -608,11 +656,13 @@ public class DOMUtils {
                         return false;
                     }
                     nodeDiffs.add(new ReplaceOperation(newNode));
+                    diffDebug(config, "replace: swap  ", newNode);
                     ops = null;
                     break;
                 }
                 if (newInOld && !oldInNew)  {
                     operation = new DeleteOperation(currentOld);
+                    diffDebug(config, "delete: ins/del " + currentOld, null);
                     oldIndex++;
                 }
                 if (!newInOld && oldInNew)  {
@@ -625,6 +675,7 @@ public class DOMUtils {
                             return false;
                         }
                         nodeDiffs.add(new ReplaceOperation(newNode));
+                        diffDebug(config, "replace: insert before ", newNode);
                         ops = null;
                         break;
                     }
@@ -634,17 +685,21 @@ public class DOMUtils {
                             return false;
                         }
                         nodeDiffs.add(new ReplaceOperation(newNode));
+                        diffDebug(config, "replace1: no insert id ", newNode);
                         ops = null;
                         break;
                     } else {
                         operation = new InsertOperation(insertAnchor, 
                                 newChildNodes.item(newIndex) );
+                        diffDebug(config, "insert: !new old ", 
+                                newChildNodes.item(newIndex));
                     }
                     newIndex++;
                 }
                 if (!newInOld && !oldInNew)  {
                     if (PAD == currentNew)  {
                         operation = new DeleteOperation(currentOld);
+                        diffDebug(config, "delete: ins/del " + currentOld, null);
                     } else if (PAD == currentOld)  {
                         if (newIndex > 0)  {
                             insertAnchor = paddedGet(newList, newIndex - 1);
@@ -656,6 +711,7 @@ public class DOMUtils {
                                 return false;
                             }
                             nodeDiffs.add(new ReplaceOperation(newNode));
+                            diffDebug(config, "replace: new child ", newNode);
                             ops = null;
                             break;
                         }
@@ -665,11 +721,14 @@ public class DOMUtils {
                                 return false;
                             }
                             nodeDiffs.add(new ReplaceOperation(newNode));
+                            diffDebug(config, "replace2: no insert id ", newNode);
                             ops = null;
                             break;
                         } else {
                             operation = new InsertOperation(insertAnchor, 
                                     newChildNodes.item(newIndex) );
+                            diffDebug(config, "insert2 ", 
+                                    newChildNodes.item(newIndex));
                         }
                     } else {
                         //two completely different IDs at this location
@@ -678,6 +737,7 @@ public class DOMUtils {
                             return false;
                         }
                         nodeDiffs.add(new ReplaceOperation(newNode));
+                        diffDebug(config, "replace: different IDs ", newNode);
                         ops = null;
                         break;
                     }
@@ -699,22 +759,24 @@ public class DOMUtils {
                 keepRunning = false;
             }
         }
-//TODO look at this below        
+
+        //examine the subtrees below the identified insert/delete locations
         if (null != ops)  {
             nodeDiffs.addAll(ops);
 
             int newChildLength = newDirectCompare.size();
-            boolean allChildrenMatch = true;
+            boolean handledBelow = true;
             for (int i = 0; i < newChildLength; i++) {
                 if (!compareNodes(config, nodeDiffs, oldDirectCompare.get(i),
                         newDirectCompare.get(i))) {
-                    allChildrenMatch = false;
+                    handledBelow = false;
                 }
             }
     
-            return (allChildrenMatch && (0 == ops.size()));
+            return handledBelow;
         }
-        return false;
+
+        return true;
     }
 
     private static String paddedGet(List<String> theList, int theIndex)  {
@@ -853,8 +915,28 @@ public class DOMUtils {
         return isDOMDiffFeature(DIFF_SUPPRESS, newNode);
     }
 
-    public static boolean isInsDel(Node newNode)  {
+    public static boolean isInsDel(DiffConfig config, Node newNode)  {
+        if ((null != config) && config.isInsDel)  {
+            return true;
+        }
         return isDOMDiffFeature(DIFF_INSDEL, newNode);
+    }
+
+    static void diffDebug(DiffConfig config, String message, Node node)  {
+        if (!isDebug(config))  {
+            return;
+        }
+        String nodePath = "";
+        Node parent = node;
+        while (null != parent)  {
+            nodePath = toDebugString(parent) + " " + nodePath;
+            parent = parent.getParentNode();
+        }
+        log.info(message + nodePath);
+    }
+
+    static boolean isDebug(DiffConfig config)  {
+        return ((null != config) && config.isDebug);
     }
 
     public static String getNodeId(Node node)  {

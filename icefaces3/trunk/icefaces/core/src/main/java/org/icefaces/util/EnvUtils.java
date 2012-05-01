@@ -247,7 +247,11 @@ public class EnvUtils {
      * @return Returns the current setting of org.icefaces.diffConfig.  The default is null.
      */
     public static String getDiffConfig(FacesContext facesContext) {
-        return EnvConfig.getEnvConfig(facesContext).diffConfig;
+        Object diffConfig = getViewParam(facesContext, DIFF_CONFIG);
+        if (null == diffConfig) {
+            return EnvConfig.getEnvConfig(facesContext).diffConfig;
+        }
+        return (String) diffConfig;
     }
 
     /**
@@ -663,6 +667,9 @@ public class EnvUtils {
     //utility method to get per-view configuration values
     static Object getViewParam(FacesContext facesContext, String name)  {
         UIViewRoot viewRoot = facesContext.getViewRoot();
+        if (null == viewRoot)  {
+            return null;
+        }
         Map viewMap = viewRoot.getViewMap();
         return viewMap.get(name);
     }
