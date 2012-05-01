@@ -14,7 +14,7 @@
   ~ governing permissions and limitations under the License.
   -->
 
-<project name="tree-table-expansion-tutorial" default="servlet-profile">
+<project name="tree-table-row-expansion" default="servlet-profile">
     <property file="build.properties"/>
     <import file="../common.xml"/>
 

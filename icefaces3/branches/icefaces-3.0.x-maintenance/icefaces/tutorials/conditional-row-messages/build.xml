@@ -14,7 +14,7 @@
   ~ governing permissions and limitations under the License.
   -->
 
-<project name="conditional-row-tutorial-tutorial" default="servlet-profile">
+<project name="conditional-row-messages" default="servlet-profile">
     <property file="build.properties"/>
     <import file="../common.xml"/>
 
