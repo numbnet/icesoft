@@ -159,7 +159,7 @@ ice.ace.DataTable.prototype.setupFilterEvents = function() {
             return false; // Don't run form level enter key handling
         }
     });
-    else if (this.cfg.filterEvent == "change") ice.ace.jq(this.jqId + ' th .ui-column-filter').die('keyup').live('keyup', function(event) {
+    else if (this.cfg.filterEvent == "change") ice.ace.jq(document).off('keyup', this.jqId + ' th .ui-column-filter').on('keyup', this.jqId + ' th .ui-column-filter', function(event) {
         var _event = event;
         if (event.which != 9) {
             if (_self.delayedFilterCall) clearTimeout(_self.delayedFilterCall);
@@ -430,10 +430,10 @@ ice.ace.DataTable.prototype.setupSortEvents = function() {
 
     // Bind keypress kb-navigable sort icons
     var sortableControls = ice.ace.jq(this.jqId + ' th > div.ui-sortable-column .ui-sortable-control');
-
-    sortableControls
-            .find('.ui-icon-triangle-1-n')
-            .die('keypress').live('keypress',function(event) {
+    var sortableControlsSelector = this.jqId + ' th > div.ui-sortable-column .ui-sortable-control';
+    ice.ace.jq(document)
+            .off('keypress', sortableControlsSelector + ' .ui-icon-triangle-1-n')
+            .on('keypress', sortableControlsSelector + ' .ui-icon-triangle-1-n', function(event) {
                 if (event.which == 32 || event.which == 13) {
                     var $currentTarget = ice.ace.jq(event.currentTarget);
                     $currentTarget.closest('.ui-sortable-control')
@@ -441,9 +441,9 @@ ice.ace.DataTable.prototype.setupSortEvents = function() {
                     return false;
                 }});
 
-    sortableControls
-            .find('.ui-icon-triangle-1-s')
-            .die('keypress').live('keypress',function(event) {
+    ice.ace.jq(document)
+            .off('keypress', sortableControlsSelector + ' .ui-icon-triangle-1-s')
+            .on('keypress', sortableControlsSelector + ' .ui-icon-triangle-1-s', function(event) {
                 if (event.which == 32 || event.which == 13) {
                     var $currentTarget = ice.ace.jq(event.currentTarget);
                     $currentTarget.closest('.ui-sortable-control')
@@ -467,8 +467,18 @@ ice.ace.DataTable.prototype.setupSelectionEvents = function() {
 
     ice.ace.jq(selector)
             .css('cursor', 'pointer')
-            .die()
-            .live('mouseenter', function() {
+            .closest('table').bind('mouseleave',function() {
+                var element = (_self.isCellSelectionEnabled() ? 'td' : 'tr');
+                ice.ace.jq(this).find('tbody ' + element + ".ui-state-hover")
+                    .removeClass('ui-state-hover');
+            }).find('thead').bind('mouseenter', function() {
+                var element = (_self.isCellSelectionEnabled() ? 'td' : 'tr');
+                ice.ace.jq(this).siblings().find(element + ".ui-state-hover")
+                    .removeClass('ui-state-hover');
+            });
+    ice.ace.jq(document)
+            .off('mouseenter', selector)
+            .on('mouseenter', selector, function() {
                 var element = ice.ace.jq(this);
                 if (!element.hasClass('dt-cond-row') &&
                     (!_self.isCellSelectionEnabled() || !element.parent().hasClass('dt-cond-row')))
@@ -481,18 +491,9 @@ ice.ace.DataTable.prototype.setupSelectionEvents = function() {
                            .removeClass('ui-state-hover');
                 }
             })
-            .live(selectEvent, function(event) {
+            .on(selectEvent, selector, function(event) {
                 if (this.nodeName == 'TR') _self.onRowClick(event, this);
                 else _self.onCellClick(event, this);
-            })
-            .closest('table').bind('mouseleave',function() {
-                var element = (_self.isCellSelectionEnabled() ? 'td' : 'tr');
-                ice.ace.jq(this).find('tbody ' + element + ".ui-state-hover")
-                    .removeClass('ui-state-hover');
-            }).find('thead').bind('mouseenter', function() {
-                var element = (_self.isCellSelectionEnabled() ? 'td' : 'tr');
-                ice.ace.jq(this).siblings().find(element + ".ui-state-hover")
-                    .removeClass('ui-state-hover');
             });
 }
 
@@ -515,18 +516,20 @@ ice.ace.DataTable.prototype.setupReorderableColumns = function() {
 
 ice.ace.DataTable.prototype.setupRowExpansionEvents = function() {
     var table = this;
-    ice.ace.jq(this.jqId + ' tbody.ui-datatable-data:first tr td a.ui-row-toggler')
-            .die()
-            .live('keyup', function(event) { if (event.which == 32 || event.which == 13) { table.toggleExpansion(this); }})
-            .live('click', function(event) { event.stopPropagation(); table.toggleExpansion(this); });
+    var selector = this.jqId + ' tbody.ui-datatable-data:first tr td a.ui-row-toggler';
+    ice.ace.jq(document)
+            .off('keyup click', selector)
+            .on('keyup', selector, function(event) { if (event.which == 32 || event.which == 13) { table.toggleExpansion(this); }})
+            .on('click', selector, function(event) { event.stopPropagation(); table.toggleExpansion(this); });
 }
 
 ice.ace.DataTable.prototype.setupPanelExpansionEvents = function() {
     var table = this;
-    ice.ace.jq(this.jqId + ' tbody.ui-datatable-data:first > tr:not(.ui-expanded-row-content) td a.ui-row-panel-toggler')
-            .die()
-            .live('keyup', function(event) { if (event.which == 32 || event.which == 13) { table.toggleExpansion(this); }})
-            .live('click', function(event) { event.stopPropagation(); table.toggleExpansion(this); });
+    var selector = this.jqId + ' tbody.ui-datatable-data:first > tr:not(.ui-expanded-row-content) td a.ui-row-panel-toggler';
+    ice.ace.jq(document)
+            .off('keyup click', selector)
+            .on('keyup', selector, function(event) { if (event.which == 32 || event.which == 13) { table.toggleExpansion(this); }})
+            .on('click', selector, function(event) { event.stopPropagation(); table.toggleExpansion(this); });
 }
 
 ice.ace.DataTable.prototype.setupScrolling = function() {
