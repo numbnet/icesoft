@@ -43,6 +43,60 @@ if (!window.ice['ace']) {
 
 
 (function($) {
+    var rootrx = /^(?:html)$/i;
+
+    var converter = {
+        vertical: { x: false, y: true },
+        horizontal: { x: true, y: false },
+        both: { x: true, y: true },
+        x: { x: true, y: false },
+        y: { x: false, y: true }
+    };
+
+    var scrollValue = {
+        auto: true,
+        scroll: true,
+        visible: false,
+        hidden: false
+    };
+
+    $.extend($.expr[":"], {
+        scrollable: function (element, index, meta, stack) {
+            var direction = converter[typeof (meta[3]) === "string" && meta[3].toLowerCase()] || converter.both;
+            var styles = (document.defaultView && document.defaultView.getComputedStyle ? document.defaultView.getComputedStyle(element, null) : element.currentStyle);
+            var overflow = {
+                x: scrollValue[styles.overflowX.toLowerCase()] || false,
+                y: scrollValue[styles.overflowY.toLowerCase()] || false,
+                isRoot: rootrx.test(element.nodeName)
+            };
+
+            // check if completely unscrollable (exclude HTML element because it's special)
+            if (!overflow.x && !overflow.y && !overflow.isRoot)
+            {
+                return false;
+            }
+
+            var size = {
+                height: {
+                    scroll: element.scrollHeight,
+                    client: element.clientHeight
+                },
+                width: {
+                    scroll: element.scrollWidth,
+                    client: element.clientWidth
+                },
+                // check overflow.x/y because iPad (and possibly other tablets) don't dislay scrollbars
+                scrollableX: function () {
+                    return (overflow.x || overflow.isRoot) && this.width.scroll > this.width.client;
+                },
+                scrollableY: function () {
+                    return (overflow.y || overflow.isRoot) && this.height.scroll > this.height.client;
+                }
+            };
+            return direction.y && size.scrollableY() || direction.x && size.scrollableX();
+        }
+    });
+
     var OSDetect = {
         init: function () {
             this.OS = this.searchString(this.dataOS) || "an unknown OS";
@@ -662,6 +716,8 @@ ice.ace.DataTable.prototype.resizeScrolling = function() {
         for (i = 0; i < bodySingleCols.length; i++)
             ice.ace.jq(bodySingleCols[i]).css('width', 'auto');
 
+        var unsizedVScrollShown = !bodyTable.parent().is(':scrollable');
+
         // Show Duplicate Header / Footer
         dupeHead.css('display', 'table-header-group');
         dupeFoot.css('display', 'table-footer-group');
@@ -675,22 +731,35 @@ ice.ace.DataTable.prototype.resizeScrolling = function() {
                 ie9 = ice.ace.jq.browser.msie && ice.ace.jq.browser.version == 9,
                 firefox = ice.ace.jq.browser.mozilla;
 
+        // If duplicate header/footer row causes body table to barely
+        // exceed min-table size (causing scrollbar)
+        var dupeCausesScrollChange = false,
+            vScrollShown = bodyTable.parent().is(':scrollable');
+        if (!unsizedVScrollShown && vScrollShown)
+            dupeCausesScrollChange = true;
+
         // Change table rendering algorithm to get more accurate sizing
         if (!ie7) bodyTable.css('table-layout','auto');
 
         // IE7 scrollbar fix
-        if (bodyTable.size() > 0 && ie7 && bodyTable.parent().get()[0].scrollWidth <= bodyTable.parent().get()[0].offsetWidth) {
+        if (bodyTable.size() > 0 && ie7 && bodyTable.parent().is(':scrollable')) {
             bodyTable.parent().css('overflow-x', 'hidden');
             bodyTable.parent().css('padding-right', '17px');
             headerTable.parent().css('padding-right', '17px');
             footerTable.parent().css('padding-right', '17px');
         }
 
+        // Return overflow to visible so sizing doesn't have scrollbar errors
+        if (dupeCausesScrollChange) bodyTable.parent().css('overflow', 'visible');
+
         for (i = 0; i < bodySingleCols.length; i++) {
             dupeHeadColumn = ice.ace.jq(dupeHeadSingleCols[i]);
             if (!ie7) dupeHeadColumnWidths[i] = dupeHeadColumn.width();
             else dupeHeadColumnWidths[i] = dupeHeadColumn.parent().width();
         }
+
+        // Return overflow value
+        if (dupeCausesScrollChange) bodyTable.parent().css('overflow', '');
 
         // Change table rendering algorithm so fixed sizes are strictly followed
         headerTable.css('table-layout','fixed');
@@ -742,15 +811,30 @@ ice.ace.DataTable.prototype.resizeScrolling = function() {
         // Browser / Platform specific scrollbar fixes
         // Fix body scrollbar overlapping content
         // Instance check to prevent IE7 dynamic scrolling change errors
-        var vScrollShown = bodyTable.size() > 0 && (bodyTable.parent().get()[0].scrollHeight > bodyTable.parent().get()[0].offsetHeight);
         if (vScrollShown) {
-            if ((webkit && !mac) || (ie9 || ie8)) {
+            if (((webkit && !mac) || (ie9 || ie8)) && !dupeCausesScrollChange) {
                 headerTable.parent().css('margin-right', '17px');
                 footerTable.parent().css('margin-right', '17px');
             }
             else if (firefox) {
                 headerTable.find('tr th:last').css('padding-right','27px');
                 footerTable.find('tr td:last').css('padding-right','27px');
+            } else if (dupeCausesScrollChange) {
+                /* Correct scrollbars added by Win Chrome when unnecessary. */
+                if (webkit && !mac) {
+                    bodyTable.parent().css('overflow', 'visible');
+                    setTimeout(function() {
+                        var o = bodyTable.parent();
+                        if (o.clientHeight < o.scrollHeight || o.clientWidth < o.scrollWidth)
+                            o.css('overflow', '');
+                    }, 10);
+                }
+
+                /* Clean up IE 8/9 sizing bug in dupe scroll change case */
+                headerTable.parent().css('margin-right', '');
+                footerTable.parent().css('margin-right', '');
+                headerTable.find('tr th:last').css('padding-right','');
+                footerTable.find('tr td:last').css('padding-right','');
             }
         } else {
             headerTable.parent().css('margin-right', '');
