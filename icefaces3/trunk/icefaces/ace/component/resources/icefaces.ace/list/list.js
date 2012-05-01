@@ -150,16 +150,16 @@ ice.ace.List.prototype.dragToHandler = function(event, ui) {
 ice.ace.List.prototype.setupControls = function() {
     var self = this;
 
-    this.element.find('.if-list-ctrls:first .if-list-ctrl')
-            .die('mouseenter').live('mouseenter', function(e) {
+    this.element
+            .off('mouseenter').on('mouseenter', '.if-list-ctrls:first .if-list-ctrl', function(e) {
                 var ctrl = e.currentTarget;
                 ice.ace.jq(ctrl).addClass('ui-state-hover');
             })
-            .die('mouseleave').live('mouseleave', function(e) {
+            .off('mouseleave').on('mouseleave', '.if-list-ctrls:first .if-list-ctrl', function(e) {
                 var ctrl = e.currentTarget;
                 ice.ace.jq(ctrl).removeClass('ui-state-hover');
             })
-            .die('click').live('click', function(e) { self.controlClickHandler.call(self, e); });
+            .off('click').on('click', '.if-list-ctrls:first .if-list-ctrl', function(e) { self.controlClickHandler.call(self, e); });
 };
 
 ice.ace.List.prototype.controlClickHandler = function(e) {
@@ -185,11 +185,11 @@ ice.ace.List.prototype.controlClickHandler = function(e) {
 ice.ace.List.prototype.setupSelection = function() {
     var self = this;
 
-    this.element.find('ul:first > li')
-            .die()
-            .live('mouseenter', this.itemHover)
-            .live('mouseleave', this.itemHover)
-            .live('click', function(e) { self.itemClickHandler.call(self, e); });
+    ice.ace.jq(document)
+            .off('mouseenter mouseleave click', this.jqId + ' ul:first > li')
+            .on('mouseenter', this.jqId + ' ul:first > li', this.itemHover)
+            .on('mouseleave', this.jqId + ' ul:first > li', this.itemHover)
+            .on('click', this.jqId + ' ul:first > li', function(e) { self.itemClickHandler.call(self, e); });
 };
 
 ice.ace.List.prototype.itemHover = function(e) {
