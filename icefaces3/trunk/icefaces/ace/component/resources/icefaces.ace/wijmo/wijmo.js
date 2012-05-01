@@ -3372,24 +3372,24 @@ __wijReadOptionEvents = function (eventsArr, widgetInstance) {
                 
                 switch(event) {
                     case "click":
-                        triggers.die(event + namespace).live(event + namespace, function (e) {
+                        $(document).off(event + namespace, this.options.trigger).on(event + namespace, this.options.trigger, function (e) {
                             if (o.mode !== "popup") {
                                 self._displaySubmenu(e, triggerEle, menuContainer);
                             }
                         });
                         break;
                     case "mouseenter":
-                        triggers.die(event + namespace).live(event + namespace, function (e) {
+                        $(document).off(event + namespace, this.options.trigger).on(event + namespace, this.options.trigger, function (e) {
                             self._displaySubmenu(e, triggerEle, menuContainer);
                         });
                         break;
                     case "dblclick":
-                        triggers.die(event + namespace).live(event + namespace, function (e) {
+                        $(document).off(event + namespace, this.options.trigger).on(event + namespace, this.options.trigger, function (e) {
                             self._displaySubmenu(e, triggerEle, menuContainer);
                         });
                         break;
                     case "rtclick":
-                        triggers.die("contextmenu" + namespace).live("contextmenu" + namespace, function (e) {
+                        $(document).off(event + namespace, this.options.trigger).on(event + namespace, this.options.trigger, function (e) {
                             menuContainer.hide();
                             self._displaySubmenu(e, triggerEle, menuContainer);
                             e.preventDefault();

@@ -1560,9 +1560,10 @@ ice.ace.DataTable.prototype.setupCellEditorEvents = function(rowEditors) {
             saveRowEditors = function(event) { event.stopPropagation(); _self.saveRowEdit(event.target); },
             cancelRowEditors = function(event) { event.stopPropagation(); _self.cancelRowEdit(event.target); },
             inputCellKeypress = function(event) { if (event.which == 13) return false; };
-    rowEditors.find('a.ui-icon-pencil').die().live('click', showEditors).live('keyup', function(event) { if (event.which == 32 || event.which == 13) { showEditors(event); }} );
-    rowEditors.find('a.ui-icon-check').die().live('click', saveRowEditors).live('keyup', function(event) { if (event.which == 32 || event.which == 13) { saveRowEditors(event); }} );
-    rowEditors.find('a.ui-icon-close').die().live('click', cancelRowEditors).live('keyup', function(event) { if (event.which == 32 || event.which == 13) { cancelRowEditors(event); }} );
+    var selector = this.jqId + ' tbody.ui-datatable-data tr td div.ui-row-editor';
+    ice.ace.jq(document).off('click keyup', selector + ' a.ui-icon-pencil').on('click', selector + ' a.ui-icon-pencil', showEditors).on('keyup', selector + ' a.ui-icon-pencil', function(event) { if (event.which == 32 || event.which == 13) { showEditors(event); }} );
+    ice.ace.jq(document).off('click keyup', selector + ' a.ui-icon-check').on('click', selector + ' a.ui-icon-check', saveRowEditors).on('keyup', selector + ' a.ui-icon-check', function(event) { if (event.which == 32 || event.which == 13) { saveRowEditors(event); }} );
+    ice.ace.jq(document).off('click keyup', selector + ' a.ui-icon-close').on('click', selector + ' a.ui-icon-close', cancelRowEditors).on('keyup', selector + ' a.ui-icon-close', function(event) { if (event.which == 32 || event.which == 13) { cancelRowEditors(event); }} );
     rowEditors.closest('tr').children().find('span input').bind('keypress', inputCellKeypress);
 }
 
