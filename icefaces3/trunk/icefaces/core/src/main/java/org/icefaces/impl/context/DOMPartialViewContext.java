@@ -65,10 +65,6 @@ public class DOMPartialViewContext extends PartialViewContextWrapper {
     public DOMPartialViewContext(PartialViewContext partialViewContext, FacesContext facesContext) {
         this.wrapped = partialViewContext;
         this.facesContext = facesContext;
-        String diffConfigString = EnvUtils.getDiffConfig(facesContext);
-        if (null != diffConfigString) {
-            diffConfig = new DOMUtils.DiffConfig(diffConfigString);
-        }
     }
 
     @Override
@@ -118,6 +114,11 @@ public class DOMPartialViewContext extends PartialViewContextWrapper {
                 Writer outputWriter = getResponseOutputWriter();
                 ec.setResponseContentType("text/xml");
                 ec.addResponseHeader("Cache-Control", "no-cache");
+
+                String diffConfigString = EnvUtils.getDiffConfig(facesContext);
+                if (null != diffConfigString) {
+                    diffConfig = new DOMUtils.DiffConfig(diffConfigString);
+                }
 
                 DOMResponseWriter writer = new DOMResponseWriter(outputWriter,
                         ec.getResponseCharacterEncoding(),
