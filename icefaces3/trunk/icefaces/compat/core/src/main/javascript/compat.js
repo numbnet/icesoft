@@ -31,6 +31,16 @@ if (!window.ice.compat) {
         //include window.js
         //include delay.js
 
+        function findBridgeContainer(element) {
+            while (element) {
+                if (element.configuration) {
+                    return element;
+                }
+                element = element.parentNode;
+            }
+            return document.body;
+        }
+
         //include status.js
         namespace.DefaultIndicators = DefaultIndicators;
         namespace.ComponentIndicators = ComponentIndicators;

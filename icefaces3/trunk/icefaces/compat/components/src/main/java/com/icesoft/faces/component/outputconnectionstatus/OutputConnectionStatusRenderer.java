@@ -20,7 +20,6 @@ import com.icesoft.faces.context.DOMContext;
 import com.icesoft.faces.renderkit.dom_html_basic.DomBasicRenderer;
 import com.icesoft.faces.renderkit.dom_html_basic.HTML;
 import com.icesoft.util.pooling.ClientIdPool;
-import org.icefaces.impl.util.DOMUtils;
 import org.w3c.dom.Element;
 import org.w3c.dom.Text;
 
@@ -74,7 +73,7 @@ public class OutputConnectionStatusRenderer extends DomBasicRenderer {
             script.setAttribute(HTML.TYPE_ATTR, "text/javascript");
             script.setAttribute(HTML.ID_ATTR, ClientIdPool.get(id + "script"));
             script.appendChild(domContext.createTextNodeUnescaped(
-                    "ice.onLoad(function(){ice.ComponentIndicators('" + workingID + "', '" + idleID + "', '" + troubleID + "', '" + lostID + "', " + component.isShowPopupOnDisconnect() + ", " + component.isDisplayHourglassWhenActive() + ");});"
+                    "ice.ComponentIndicators('" + workingID + "', '" + idleID + "', '" + troubleID + "', '" + lostID + "', " + component.isShowPopupOnDisconnect() + ", " + component.isDisplayHourglassWhenActive() + ");"
             ));
             root.appendChild(script);
         }
