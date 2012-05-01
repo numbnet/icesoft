@@ -34,24 +34,27 @@
             <ace:dataTable value="#{backing.data}"
                     var="row"
                     selectionMode="multiple"
-                    stateMap="#{backing.stateMap}">
+                    stateMap="#{backing.stateMap}"
+					id="table">
                 <ace:column headerText="ID">
                     <h:outputText id="idOutput" value="#{row.id}" binding="#{backing.idOutput}" />
                 </ace:column>
 
                 <ace:row condition="predicate" predicate="#{backing.predicate}">
                     <ace:column>
-                        <h:messages for="idOutput" style="font-size: 10pt; color:red; margin: 0.3em 0 0.5em 0;"/>
+                        <h:messages for="idOutput" style="font-size: 10pt; color:red; margin: 0.3em 0 0.5em 0;" id="message"/>
                     </ace:column>
                 </ace:row>
             </ace:dataTable>
 
             <h:commandButton value="Check Even"
                              actionListener="#{backing.validateRows(true)}"
-                             style="width:50%"/>
+                             style="width:50%"
+							 id="checkEven"/>
             <h:commandButton value="Check Odd"
                              actionListener="#{backing.validateRows(false)}"
-                             style="width:50%"/>
+                             style="width:50%"
+							 id="checkOdd"/>
         </h:form>
     </ui:define>
 </ui:composition>
