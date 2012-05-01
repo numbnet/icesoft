@@ -313,105 +313,126 @@ var ComponentIndicators;
     DefaultIndicators = function(configuration, setupID) {
         var container = document.getElementById(setupID).parentNode;
 
-        //wire indicators only when the popups are not disabled by core
-        if (container.configuration.disableDefaultErrorPopups) {
-            indctrs = {
-                busy: NOOPIndicator,
-                sessionExpired: NOOPIndicator,
-                connectionLost: NOOPIndicator,
-                serverError: NOOPIndicator,
-                connectionTrouble: NOOPIndicator
-            }
-        } else {
-            //disable core's default indicators/popups
-            container.configuration.disableDefaultErrorPopups = true;
+        container.compatDefaultIndicatorsSetupCount = container.compatDefaultIndicatorsSetupCount ? (container.compatDefaultIndicatorsSetupCount + 1) : 1;
+        //make sure the indicators are not setup multiple times when body/portlet-container is updated
+        if (container.compatDefaultIndicatorsSetupCount == 1) {
+            //wire indicators only when the popups are not disabled by core
+            if (container.configuration.disableDefaultErrorPopups) {
+                indctrs = {
+                    busy: NOOPIndicator,
+                    sessionExpired: NOOPIndicator,
+                    connectionLost: NOOPIndicator,
+                    serverError: NOOPIndicator,
+                    connectionTrouble: NOOPIndicator
+                }
+            } else {
+                //disable core's default indicators/popups
+                container.configuration.disableDefaultErrorPopups = true;
 
-            var connectionLostURI = configuration.connectionLostRedirectURI;
-            if (connectionLostURI == "null") {
-                connectionLostURI = null;
-            }
+                var connectionLostURI = configuration.connectionLostRedirectURI;
+                if (connectionLostURI == "null") {
+                    connectionLostURI = null;
+                }
 
-            var sessionExpiredURI = configuration.sessionExpiredRedirectURI;
-            if (sessionExpiredURI == "null") {
-                sessionExpiredURI = null;
-            }
+                var sessionExpiredURI = configuration.sessionExpiredRedirectURI;
+                if (sessionExpiredURI == "null") {
+                    sessionExpiredURI = null;
+                }
 
-            var connectionLostRedirect = connectionLostURI ? RedirectIndicator(connectionLostURI) : null;
-            var sessionExpiredRedirect = sessionExpiredURI ? RedirectIndicator(sessionExpiredURI) : null;
-            var messages = configuration.messages;
-            var sessionExpiredIcon = configuration.connection.context + '/xmlhttp/css/xp/css-images/connect_disconnected.gif';
-            var connectionLostIcon = configuration.connection.context + '/xmlhttp/css/xp/css-images/connect_caution.gif';
-            var busyIndicator = configuration.fastBusyIndicator ? FastPointerIndicator(container) : PointerIndicator(container);
-            var overlay = object(function(method) {
-                method(on, function(self) {
-                    var overlay = container.ownerDocument.createElement('iframe');
-                    overlay.setAttribute('src', 'about:blank');
-                    overlay.setAttribute('frameborder', '0');
-                    var overlayStyle = overlay.style;
-                    overlayStyle.position = 'absolute';
-                    overlayStyle.display = 'block';
-                    overlayStyle.visibility = 'visible';
-                    overlayStyle.backgroundColor = 'white';
-                    overlayStyle.zIndex = '28000';
-                    overlayStyle.top = '0';
-                    overlayStyle.left = '0';
-                    overlayStyle.opacity = 0.22;
-                    overlayStyle.filter = 'alpha(opacity=22)';
-                    container.appendChild(overlay);
+                var connectionLostRedirect = connectionLostURI ? RedirectIndicator(connectionLostURI) : null;
+                var sessionExpiredRedirect = sessionExpiredURI ? RedirectIndicator(sessionExpiredURI) : null;
+                var messages = configuration.messages;
+                var sessionExpiredIcon = configuration.connection.context + '/xmlhttp/css/xp/css-images/connect_disconnected.gif';
+                var connectionLostIcon = configuration.connection.context + '/xmlhttp/css/xp/css-images/connect_caution.gif';
+                var busyIndicator = configuration.fastBusyIndicator ? FastPointerIndicator(container) : PointerIndicator(container);
+                var overlay = object(function(method) {
+                    method(on, function(self) {
+                        var overlay = container.ownerDocument.createElement('iframe');
+                        overlay.setAttribute('src', 'about:blank');
+                        overlay.setAttribute('frameborder', '0');
+                        var overlayStyle = overlay.style;
+                        overlayStyle.position = 'absolute';
+                        overlayStyle.display = 'block';
+                        overlayStyle.visibility = 'visible';
+                        overlayStyle.backgroundColor = 'white';
+                        overlayStyle.zIndex = '28000';
+                        overlayStyle.top = '0';
+                        overlayStyle.left = '0';
+                        overlayStyle.opacity = 0.22;
+                        overlayStyle.filter = 'alpha(opacity=22)';
+                        container.appendChild(overlay);
 
-                    var resize = container.tagName.toLowerCase() == 'body' ?
-                        function() {
-                            overlayStyle.width = Math.max(document.documentElement.scrollWidth, document.body.scrollWidth) + 'px';
-                            overlayStyle.height = Math.max(document.documentElement.scrollHeight, document.body.scrollHeight) + 'px';
-                        } :
-                        function() {
-                            overlayStyle.width = container.offsetWidth + 'px';
-                            overlayStyle.height = container.offsetHeight + 'px';
-                        };
-                    resize();
-                    onResize(window, resize);
+                        var resize = container.tagName.toLowerCase() == 'body' ?
+                            function() {
+                                overlayStyle.width = Math.max(document.documentElement.scrollWidth, document.body.scrollWidth) + 'px';
+                                overlayStyle.height = Math.max(document.documentElement.scrollHeight, document.body.scrollHeight) + 'px';
+                            } :
+                            function() {
+                                overlayStyle.width = container.offsetWidth + 'px';
+                                overlayStyle.height = container.offsetHeight + 'px';
+                            };
+                        resize();
+                        onResize(window, resize);
+                    });
+
+                    method(off, noop);
                 });
 
-                method(off, noop);
-            });
+                indctrs = {
+                    busy: busyIndicator,
+                    sessionExpired: sessionExpiredRedirect ? sessionExpiredRedirect : PopupIndicator(messages.sessionExpired, messages.description, messages.buttonText, sessionExpiredIcon, overlay),
+                    connectionLost: connectionLostRedirect ? connectionLostRedirect : PopupIndicator(messages.connectionLost, messages.description, messages.buttonText, connectionLostIcon, overlay),
+                    serverError: PopupIndicator(messages.serverError, messages.description, messages.buttonText, connectionLostIcon, overlay),
+                    connectionTrouble: NOOPIndicator
+                };
+            }
+        }
 
-            indctrs = {
-                busy: busyIndicator,
-                sessionExpired: sessionExpiredRedirect ? sessionExpiredRedirect : PopupIndicator(messages.sessionExpired, messages.description, messages.buttonText, sessionExpiredIcon, overlay),
-                connectionLost: connectionLostRedirect ? connectionLostRedirect : PopupIndicator(messages.connectionLost, messages.description, messages.buttonText, connectionLostIcon, overlay),
-                serverError: PopupIndicator(messages.serverError, messages.description, messages.buttonText, connectionLostIcon, overlay),
-                connectionTrouble: NOOPIndicator
-            };
+        //initialize component indicators if they're present in the page/portlet
+        if (container.compatComponentIndicatorsInit) {
+            container.compatComponentIndicatorsInit();
         }
     };
 
+    var workingIDs = [];
     ComponentIndicators = function(workingID, idleID, troubleID, lostID, showPopups, displayHourglassWhenActive) {
-        var indicators = [];
-        var connectionWorking = ElementIndicator(workingID, indicators);
-        var connectionIdle = ElementIndicator(idleID, indicators);
-        var connectionLost = ElementIndicator(lostID, indicators);
-        var busyElementIndicator = ToggleIndicator(connectionWorking, connectionIdle);
-        //avoid displaying the overlay twice
-        var busyIndicator = displayHourglassWhenActive ? busyElementIndicator : MuxIndicator(busyElementIndicator, OverlayIndicator());
-
-        var busy = OverlappingStateProtector(displayHourglassWhenActive ? MuxIndicator(indctrs.busy, busyIndicator) : busyIndicator);
-        var connectionTrouble = ElementIndicator(troubleID, indicators);
-        if (showPopups) {
-            indctrs = {
-                busy: busy,
-                connectionTrouble: connectionTrouble,
-                connectionLost: MuxIndicator(connectionLost, indctrs.connectionLost),
-                sessionExpired: MuxIndicator(connectionLost, indctrs.sessionExpired),
-                serverError: MuxIndicator(connectionLost, indctrs.serverError)
-            };
+        var container = findBridgeContainer(document.getElementById(workingID));
+        if (contains(workingIDs, workingID)) {
+            container.compatComponentIndicatorsInit = noop;
+            return;
         } else {
-            indctrs = {
-                busy: busy,
-                connectionTrouble: connectionTrouble,
-                connectionLost: indctrs.connectionLostRedirect ? indctrs.connectionLostRedirect : connectionLost,
-                sessionExpired: indctrs.sessionExpiredRedirect ? indctrs.sessionExpiredRedirect : connectionLost,
-                serverError: connectionLost
-            };
+            //register id to later check if indicators were already created
+            append(workingIDs, workingID);
+            //setup initializing function to be invoked by the default indicators setup
+            container.compatComponentIndicatorsInit = function() {
+                var indicators = [];
+                var connectionWorking = ElementIndicator(workingID, indicators);
+                var connectionIdle = ElementIndicator(idleID, indicators);
+                var connectionLost = ElementIndicator(lostID, indicators);
+                var busyElementIndicator = ToggleIndicator(connectionWorking, connectionIdle);
+                //avoid displaying the overlay twice
+                var busyIndicator = displayHourglassWhenActive ? busyElementIndicator : MuxIndicator(busyElementIndicator, OverlayIndicator());
+
+                var busy = OverlappingStateProtector(displayHourglassWhenActive ? MuxIndicator(indctrs.busy, busyIndicator) : busyIndicator);
+                var connectionTrouble = ElementIndicator(troubleID, indicators);
+                if (showPopups) {
+                    indctrs = {
+                        busy: busy,
+                        connectionTrouble: connectionTrouble,
+                        connectionLost: MuxIndicator(connectionLost, indctrs.connectionLost),
+                        sessionExpired: MuxIndicator(connectionLost, indctrs.sessionExpired),
+                        serverError: MuxIndicator(connectionLost, indctrs.serverError)
+                    };
+                } else {
+                    indctrs = {
+                        busy: busy,
+                        connectionTrouble: connectionTrouble,
+                        connectionLost: indctrs.connectionLostRedirect ? indctrs.connectionLostRedirect : connectionLost,
+                        sessionExpired: indctrs.sessionExpiredRedirect ? indctrs.sessionExpiredRedirect : connectionLost,
+                        serverError: connectionLost
+                    };
+                }
+            }
         }
     };
 
