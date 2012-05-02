@@ -37,7 +37,13 @@
     <property name="lib.compile.application.includes" value=""/>
     <property name="lib.distribute.application.includes" value=""/>
 
-    <property name="lib.portlet.dir" location="${lib.dir}/portlets"/>
+    <!-- Default to PortletFaces bridge but is checked and potentially changed to
+         Liferay Faces in commmon-portlet.xml  -->
+    <property name="bridge.lib.dir" location="${lib.dir}/portlets/portletfaces"/>
+    <property name="lib.portlet.dir" location="${bridge.lib.dir}"/>
+
+    <echo message="Bridge lib dir: ${bridge.lib.dir}"/>
+    <echo message="Portlet lib dir: ${lib.portlet.dir}"/>
 
     <property name="java.dir" location="./src/main/java"/>
     <property name="res.dir" location="./src/main/resources"/>
