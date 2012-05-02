@@ -110,7 +110,18 @@ public class TextEntryRenderer extends InputRenderer {
         String defaultClass = themeForms() ? TextEntry.THEME_INPUT_CLASS : TextEntry.PLAIN_INPUT_CLASS;
         String styleClass = textEntry.getStyleClass();
 
-		writer.startElement("input", null);
+        if (!textEntry.isValid()) {
+            defaultClass += " ui-state-error";
+        }
+        if (textEntry.isRequired()) {
+            defaultClass += " ui-state-required";
+        } else {
+            defaultClass += " ui-state-optional";
+        }
+
+        writeIndicatorSpan(writer, textEntry, clientId, "left");
+
+        writer.startElement("input", null);
 		writer.writeAttribute("id", clientId, null);
 //		writer.writeAttribute("name", clientId, null);
 		writer.writeAttribute("type", "text", null);
@@ -136,5 +147,28 @@ public class TextEntryRenderer extends InputRenderer {
 		Utils.writeConcatenatedStyleClasses(writer, defaultClass, styleClass);
 
         writer.endElement("input");
-	}
+
+        writeIndicatorSpan(writer, textEntry, clientId, "right");
+    }
+
+    private void writeIndicatorSpan(ResponseWriter writer, TextEntry textEntry, String clientId, String position) throws IOException {
+        String requiredIndicator = textEntry.getRequiredIndicator();
+        String requiredIndPosition = textEntry.getRequiredIndPosition();
+        String optionalIndicator = textEntry.getOptionalIndicator();
+        String optionalIndPosition = textEntry.getOptionalIndPosition();
+
+        if (textEntry.isRequired() && requiredIndicator != null && requiredIndPosition.equalsIgnoreCase(position)) {
+            writer.startElement("span", textEntry);
+            writer.writeAttribute("id", clientId + "_requiredIndicator", "clientId");
+            writer.writeAttribute("class", "ui-required-indicator", null);
+            writer.write(requiredIndicator);
+            writer.endElement("span");
+        } else if (!textEntry.isRequired() && optionalIndicator != null && optionalIndPosition.equalsIgnoreCase(position)) {
+            writer.startElement("span", textEntry);
+            writer.writeAttribute("id", clientId + "_optionalIndicator", "clientId");
+            writer.writeAttribute("class", "ui-optional-indicator", null);
+            writer.write(optionalIndicator);
+            writer.endElement("span");
+        }
+    }
 }
