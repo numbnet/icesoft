@@ -38,6 +38,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Map;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -67,9 +68,10 @@ public class DOMUtils {
     public static String DIFF_TRUE = "true";
 
     public static class EditOperation {
-        public String id;
+        public String id = null;
         //will be Element once pruning is integrated
-        public Node element;
+        public Node element = null;
+        public Map<String, String> attributes = null;
         
         public String toString()  {
             return this.getClass().getName() + ":" + id + ":" + element;
@@ -97,6 +99,15 @@ public class DOMUtils {
         }
         public ReplaceOperation(Node element)  {
             this(null, element);
+        }
+    }
+
+    public static class AttributeOperation extends EditOperation {
+        public AttributeOperation(String id, Node element, 
+                Map<String, String> attributes)  {
+            this.id = id;
+            this.element = element;
+            this.attributes = attributes;
         }
     }
 
@@ -141,9 +152,11 @@ public class DOMUtils {
         public int maxDiffs = Integer.MAX_VALUE;
         public boolean isInsDel = false;
         public boolean isDebug = false;
+        public boolean isAtt = false;
         private static String MAXDIFFS = "maxDiffs";
         private static String INSDEL = "insDel";
         private static String DEBUG = "debug";
+        private static String ATT = "att";
         private static Pattern SPACE_PATTERN = Pattern.compile(" ");
 
         public DiffConfig(String config)  {
@@ -177,6 +190,11 @@ public class DOMUtils {
                 if (null != debugParam)  {
                     isDebug = true;
                 }
+                
+                String attParam = (String) params.get(ATT);
+                if (null != attParam)  {
+                    isAtt = true;
+                }
 
             } catch (Exception e)  {
                 log.log(Level.SEVERE, "Malformed DiffConfig " + config, e);
@@ -187,6 +205,7 @@ public class DOMUtils {
             String values = 
                     MAXDIFFS + ": " + String.valueOf(maxDiffs) + " " +
                     DEBUG + ": " + String.valueOf(isDebug) + " " +
+                    ATT + ": " + String.valueOf(isAtt) + " " +
                     INSDEL + ": " + String.valueOf(isInsDel);
             return values;
         }
@@ -489,6 +508,8 @@ public class DOMUtils {
     private static boolean compareNodes(DiffConfig config, CursorList nodeDiffs, 
             Node oldNode, Node newNode) {
 
+        int startCursor = nodeDiffs.cursor;
+
         if (!oldNode.getNodeName().equals(newNode.getNodeName())) {
             return false;
         }
@@ -498,14 +519,33 @@ public class DOMUtils {
         if (isSuppressed(newNode))  {
             return true;
         }
-        if (!compareAttributes(oldNode, newNode)) {
+        if (isAtt(config))  {
             String id = getNodeId(newNode);
-            if (null == id)  {
-                return false;
+            AttributeOperation op = detectAttributes(id, oldNode, newNode);
+            if (null != op)  {
+                if (null == id)  {
+                    //attributes differ, but no id to apply change
+                    return false;
+                }
+                if (op.attributes.containsKey("value"))  {
+                    //value update will require a special case in jsf.js
+                    nodeDiffs.add(new ReplaceOperation(newNode));
+                    diffDebug(config, "replace: attributes value ", newNode);
+                    return true;
+                }
+                nodeDiffs.add(op);
+                diffDebug(config, "attribute: attributes differ ", newNode);
             }
-            nodeDiffs.add(new ReplaceOperation(newNode));
-            diffDebug(config, "replace: attributes differ ", newNode);
-            return true;
+        } else {
+            if (!compareAttributes(oldNode, newNode)) {
+                String id = getNodeId(newNode);
+                if (null == id)  {
+                    return false;
+                }
+                nodeDiffs.add(new ReplaceOperation(newNode));
+                diffDebug(config, "replace: attributes differ ", newNode);
+                return true;
+            }
         }
         if (!compareStrings(oldNode.getNodeValue(),
                 newNode.getNodeValue())) {
@@ -535,8 +575,6 @@ public class DOMUtils {
                 diffDebug(config, "replace: differing child count ", newNode);
                 return true;
             }
-
-            int startCursor = nodeDiffs.cursor;
 
             for (int i = 0; i < newChildLength; i++) {
                 if (!compareNodes(config, nodeDiffs, oldChildNodes.item(i),
@@ -574,7 +612,6 @@ public class DOMUtils {
         }
 
         //searching for insert/delete is enabled
-        int startCursor = nodeDiffs.cursor;
         if (!findChildOps(config, nodeDiffs, oldNode, newNode))  {
             String id = getNodeId(newNode);
             if (null != id)  {
@@ -893,6 +930,62 @@ public class DOMUtils {
 
     }
 
+    /** The attribute operation sets attributes on the target node, so
+     *  deleted attributes are simply cleared.
+     * @param oldNode
+     * @param newNode
+     * @return op if Nodes have different attributes
+     */
+    public static AttributeOperation detectAttributes(String id, 
+            Node oldNode, Node newNode) {
+        boolean oldHasAttributes = oldNode.hasAttributes();
+        boolean newHasAttributes = newNode.hasAttributes();
+
+        if (!oldHasAttributes && !newHasAttributes) {
+            return null;
+        }
+
+        Map<String, String> output = new HashMap();
+
+        NamedNodeMap oldMap = oldNode.getAttributes();
+        NamedNodeMap newMap = newNode.getAttributes();
+
+        int oldLength = oldMap.getLength();
+        int newLength = newMap.getLength();
+
+        Node newAttribute = null;
+        Node oldAttribute = null;
+        for (int i = 0; i < newLength; i++) {
+            newAttribute = newMap.item(i);
+            String newName = newAttribute.getNodeName();
+            String newValue = newAttribute.getNodeValue();
+            oldAttribute = oldMap.getNamedItem(newName);
+            if (null == oldAttribute) {
+                output.put(newName, newValue);
+            } else {
+                if (!newValue.equals(oldAttribute.getNodeValue()))  {
+                    output.put(newName, newValue);
+                }
+            }
+        }
+
+        for (int i = 0; i < oldLength; i++) {
+            oldAttribute = oldMap.item(i);
+            String oldName = oldAttribute.getNodeName();
+            newAttribute = newMap.getNamedItem(oldName);
+            if (null == newAttribute) {
+                //clear values of old attributes no longer present
+                output.put(oldName, "");
+            } 
+        }
+
+        if (output.size() > 0)  {
+            return new AttributeOperation(id, newNode, output);
+        }
+        return null;
+
+    }
+
     public static boolean isDOMDiffFeature(String feature, Node newNode)  {
         if (!newNode.hasAttributes())  {
             return false;
@@ -920,6 +1013,13 @@ public class DOMUtils {
             return true;
         }
         return isDOMDiffFeature(DIFF_INSDEL, newNode);
+    }
+
+    public static boolean isAtt(DiffConfig config)  {
+        if ((null != config) && config.isAtt)  {
+            return true;
+        }
+        return false;
     }
 
     static void diffDebug(DiffConfig config, String message, Node node)  {

@@ -26,15 +26,15 @@
     <title>ICEfaces Ajax</title>
 </h:head>
 <h:body>
-    <icecore:config render="true" diffConfig="insDel debug" />
+    <icecore:config render="true" diffConfig="insDel debug att" />
     <h:form id="form1" prependId="false">
 
         <h2>ICEfaces: Show / Hide based on backing bean</h2>
         <h:panelGroup id="pg1">
-        <h:outputText id="out1" value="Show" rendered="#{basic.visible}"/>
+        <h:outputText id="out1" value="Show" style="#{basic.oneStyle}"/>
         </h:panelGroup>
         <h:panelGroup id="pg2">
-        <h:outputText id="out2" value="Or Not" rendered="#{!basic.visible}"/>
+        <h:outputText id="out2" value="Or Not" style="#{basic.twoStyle}"/>
         </h:panelGroup>
         <br/>
         <h:commandButton id="button1" value="Show/Hide"
