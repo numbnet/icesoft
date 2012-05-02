@@ -28,6 +28,8 @@ import javax.faces.event.ActionEvent;
 @SessionScoped
 public class Basic implements Serializable  {
     Boolean visible = false;
+    static String VISIBLE = "display: block";
+    static String INVISIBLE = "display: none";
 
     public Boolean getVisible() {
         return visible;
@@ -37,6 +39,20 @@ public class Basic implements Serializable  {
         visible = !visible;
     }
     
+    public String getOneStyle()  {
+        if (visible)  {
+            return VISIBLE;
+        }
+        return INVISIBLE;
+    }
+
+    public String getTwoStyle()  {
+        if (visible)  {
+            return INVISIBLE;
+        }
+        return VISIBLE;
+    }
+
     public String getTime()  {
         return Long.toString(System.currentTimeMillis());
     }
@@ -54,6 +70,7 @@ public class Basic implements Serializable  {
     List<String> list = new ArrayList();
     public String add()  {
         list.add(newItem);
+        newItem = "";
         return "";
     }
 
