@@ -23,11 +23,21 @@
     <property name="parent.res.dir" location="${parent.dir}/src/main/resources"/>
     <property name="parent.web.dir" location="${parent.dir}/src/main/webapp"/>
 
+    <property name="base.portlet.dir" location="../../../lib/portlets"/>
+    <property name="portletfaces.lib.dir" location="${base.portlet.dir}/portletfaces"/>
+    <property name="liferayfaces.lib.dir" location="${base.portlet.dir}/liferayfaces"/>
+
     <patternset id="portlet.jars">
         <include name="*.jar"/>
     </patternset>
 
     <patternset id="portlet.files"/>
+
+    <!-- Check which portlet bridge implementation to use and set the appropriate sub-directory. The
+         default is PortletFaces but can be changed to Liferay Faces by setting liferayfaces property. -->
+    <condition property="bridge.lib.dir" value="${liferayfaces.lib.dir}" else="${portletfaces.lib.dir}">
+        <isset property="liferayfaces"/>
+    </condition>
 
     <target name="clean" depends="clean.parent.resources">
         <delete dir="${build.dir}"/>
