@@ -33,24 +33,33 @@ public class LayoutBean implements Serializable {
     private static final String SECONDPANE="panel2";
     private static final String THIRDPANE="panel3";
 
-    private String selectedPane = null;
-
+    private String selectedPane ;
+    private int accordionIndex = 0;
 
 	public LayoutBean(){
-      this.selectedPane = SECONDPANE;
+       this.selectedPane = FIRSTPANE;
 	}
+    public void changeToPane3(){
+        this.selectedPane = THIRDPANE;
+    }
 
     public void changeToPane3(ActionEvent ae){
         this.selectedPane = THIRDPANE;
     }
 
     public String getSelectedPane() {
-        logger.info("getting selectedPane="+this.selectedPane);
         return selectedPane;
     }
 
     public void setSelectedPane(String selectedPane) {
-        logger.info("setting selected to"+selectedPane);
         this.selectedPane = selectedPane;
+    }
+
+    public int getAccordionIndex() {
+        return accordionIndex;
+    }
+
+    public void setAccordionIndex(int accordionIndex) {
+        this.accordionIndex = accordionIndex;
     }
 }
