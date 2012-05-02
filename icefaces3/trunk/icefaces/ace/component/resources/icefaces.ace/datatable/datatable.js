@@ -90,7 +90,7 @@ if (!window.ice['ace']) {
                     return (overflow.x || overflow.isRoot) && this.width.scroll > this.width.client;
                 },
                 scrollableY: function () {
-                    return (overflow.y || overflow.isRoot) && this.height.scroll > this.height.client;
+                    return (overflow.y || overflow.isRoot) && this.height.scroll > (this.height.client + 1);
                 }
             };
             return direction.y && size.scrollableY() || direction.x && size.scrollableX();
@@ -718,7 +718,7 @@ ice.ace.DataTable.prototype.resizeScrolling = function() {
         for (i = 0; i < bodySingleCols.length; i++)
             ice.ace.jq(bodySingleCols[i]).css('width', 'auto');
 
-        var unsizedVScrollShown = !bodyTable.parent().is(':scrollable');
+        var unsizedVScrollShown = bodyTable.parent().is(':scrollable');
 
         // Show Duplicate Header / Footer
         dupeHead.css('display', 'table-header-group');
@@ -823,12 +823,18 @@ ice.ace.DataTable.prototype.resizeScrolling = function() {
                 footerTable.find('tr td:last').css('padding-right','27px');
             } else if (dupeCausesScrollChange) {
                 /* Correct scrollbars added by Win Chrome when unnecessary. */
+                var table;
                 if (webkit && !mac) {
-                    bodyTable.parent().css('overflow', 'visible');
+                    table = bodyTable.parent().css('overflow', 'visible');
                     setTimeout(function() {
-                        var o = bodyTable.parent();
-                        if (o.clientHeight < o.scrollHeight || o.clientWidth < o.scrollWidth)
+                        if (table.clientHeight < table.scrollHeight || table.clientWidth < table.scrollWidth)
                             o.css('overflow', '');
+                    }, 10);
+                } else if (ie9) {
+                    // IE will sometimes add useless scrollbars, toggling overflow fixes this
+                    table = bodyTable.parent().css('overflow', 'visible');
+                    setTimeout(function() {
+                        table.css('overflow', '');
                     }, 10);
                 }
 
