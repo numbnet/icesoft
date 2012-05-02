@@ -8,6 +8,8 @@ import org.icefaces.ace.meta.annotation.ClientBehaviorHolder;
 import org.icefaces.ace.meta.annotation.ClientEvent;
 import org.icefaces.ace.meta.annotation.Required;
 
+import javax.faces.component.UIComponent;
+
 @Component(
         tagName = "contentPane",
         componentClass = "org.icefaces.mobi.component.contentpane.ContentPane",
@@ -29,17 +31,22 @@ public class ContentPaneMeta extends UIPanelMeta{
      private String selectedId;
 
      @Property(defaultValue="false", tlddoc=" makes sense to have the scrollable here as it will need certain style attributes for " +
-            " and child panel to scroll within it ")
+            " and child panel to scroll within it. If accordionTitle is not null, then this should default to false")
      private boolean scrollable;
 
-     @Property( required = Required.yes,
-               tlddoc = "id of layoutContainer this component resides in")
-     private String containerId;
-       @Property(tlddoc = "style will be rendered on the root element of this " +
+     @Property(defaultValue=" ", tlddoc="used when ContentPane is child of Accordion")
+     private String accordionTitle;
+
+     @Property(tlddoc = "style will be rendered on the root element of this " +
      "component.")
      private String style;
 
      @Property(tlddoc = "style class will be rendered on the root element of " +
         "this component.")
      private String styleClass;
+
+     @Property(defaultValue="constructed",
+             tlddoc = "cache type.  Options currently include client, constructed and tobeconstructed")
+     private String cacheType;
+
 }
