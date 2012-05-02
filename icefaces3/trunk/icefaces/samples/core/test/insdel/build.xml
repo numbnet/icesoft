@@ -14,7 +14,7 @@
   ~ governing permissions and limitations under the License.
   -->
 
-<project name="insdel" default="servlet-profile">
+<project name="diffconfig" default="servlet-profile">
     
     <property file="./build.properties"/>
     <property file="../build/build.properties"/>
