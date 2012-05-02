@@ -53,6 +53,18 @@ public class TextEntryMeta extends HtmlInputTextMeta {
     @Property(tlddoc = "Text to display inside the input field when the component doesn't have a value and is not focussed. Default = \"\".")
     private String promptLabel;
 
+    @Property(tlddoc = "Indicator indicating that the user is required to provide a submitted value for this input component.")
+    private String requiredIndicator;
+
+    @Property(tlddoc = "Position of the input-required indicator. \"left\" or \"right\"", defaultValue = "right")
+    private String requiredIndPosition;
+
+    @Property(tlddoc = "Indicator indicating that the user is NOT required to provide a submitted value for this input component.")
+    private String optionalIndicator;
+
+    @Property(tlddoc = "Position of the input-optional indicator. \"left\" or \"right\"", defaultValue = "right")
+    private String optionalIndPosition;
+
     @Property(implementation = Implementation.EXISTS_IN_SUPERCLASS, tlddoc = "Access key that, when pressed, transfers focus to this element.")
     private String accesskey;
 

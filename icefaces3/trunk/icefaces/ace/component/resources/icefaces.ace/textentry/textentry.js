@@ -6,9 +6,9 @@ ice.ace.TextEntry = function(id, cfg) {
     this.jq = jQ(this.jqId);
     var promptLabelName = id + "_promptLabel";
 
-    if(this.cfg.theme != false) {
-        ice.ace.skinInput(this.jq);
-    }
+//    if(this.cfg.theme != false) {
+//        ice.ace.skinInput(this.jq);
+//    }
 
     this.jq.focus(
         function() {
