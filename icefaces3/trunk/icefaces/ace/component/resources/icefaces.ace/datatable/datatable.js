@@ -238,7 +238,7 @@ ice.ace.DataTable.prototype.setupSortRequest = function(_self, $this, event, hea
         controlOffset = $this.offset(),
         controlHeight = !_self.cfg.singleSort ? $this.outerHeight() : 22,
         descending = false,
-        metaKey = (altMeta == undefined) ? event.metaKey : altMeta,
+        metaKey = (altMeta == undefined) ? (event.metaKey || event.ctrlKey ) : altMeta,
         ieOffset = ice.ace.jq.browser.msie ? 7 : 0;
     // altY and altMeta allow these event parameters to be optionally passed in
     // from an event triggering this event artificially
