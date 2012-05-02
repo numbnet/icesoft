@@ -58,6 +58,23 @@
         }
     }
 
+    function stripPathParameters(url) {
+        try {
+            //see if the URL has path parameters
+            var semicolonPosition = indexOf(url, ';');
+            var newURL = substring(url, 0, semicolonPosition);
+            //see if the URL has a query string
+            try {
+                var questionPosition = indexOf(url, '?');
+                return newURL + substring(url, questionPosition, url.length);
+            } catch (e) {
+                return newURL;
+            }
+        } catch (e) {
+            return url;
+        }
+    }
+
     var client = Client();
 
     //fix for ICE-6481, effective only when the document found in the DOM update is not valid XML
@@ -70,7 +87,8 @@
                 var src = extractSrcAttribute(script);
                 var code;
                 if (src) {
-                    if (contains(document.scriptRefs, unescapeHtml(src))) {
+                    src = stripPathParameters(unescapeHtml(src));
+                    if (contains(document.scriptRefs, src)) {
                         code = '';
                     } else {
                         getSynchronously(client, src, noop, noop, function(response) {
@@ -120,7 +138,7 @@
         return function(result, s) {
             var src = s.getAttribute(attribute);
             if (src) {
-                append(result, src);
+                append(result, stripPathParameters(unescapeHtml(src)));
             }
             return result;
         };
