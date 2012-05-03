@@ -17,18 +17,20 @@
                 var styleSh = document.styleSheets[i];
                 var index = 0;
                 var found = false;
+                var cssRule;
                 do {
                     if (styleSh.cssRules) {
-                        cssRule = styleSheet.cssRules[index] ;
+                        cssRule = styleSh.cssRules[index] ;
                     }
                     else {
                         cssRule = styleSh.rules[index];
                     }
-                    if (cssrule) {
+                    if (cssRule) {
                         if (cssRule.selectorText.toLowerCase() == ruleName) {
                             //update height and maxheight
-                            ruleName.style.maxHeight = height;
-                            ruleName.style.height = height;
+                            cssRule.style.maxHeight = height;
+                            cssRule.style.height = height;
+                            break;
                         }
                     }
                     index ++;
@@ -42,8 +44,8 @@
         //find all sections of the clientId and calc height.  set maxheight and height to max height of the divs
         var children =  document.getElementById(clientId).getElementsByTagName('section');
         for (var i= 0; i < children.length; i++){
-           if ( children[0].offsetHeight > mxht) {
-               mxht= children[0].offsetHeight;
+           if ( children[0].scrollHeight > mxht) {
+               mxht= children[0].scrollHeight;
            }
         }
         return mxht;
@@ -56,8 +58,9 @@
     function Accordion(clientId, cfgIn) {
         //local variables are not public but public open, close, visible and updateProperties functions can operate on them
         var theContainer = document.getElementById(clientId);
+        var openClass = ".mobi-accordion .open";
         var myclient = clientId;
-        var alreadyOpenId = theContainer.getAttribute('data-opened');
+        var alreadyOpenId = theContainer.getAttribute('data-opened'); //do I care about this?
         var scrollEvent = 'ontouchstart' in window ? "touchmove" : "scroll";
         var cgfObj = cfgIn;
         var autoheight = cfgIn.autoheight || false;
@@ -65,6 +68,8 @@
         if (autoheight == true){
             maxheight = calcMaxDivHeight(clientId);
         }
+        var heightString = maxheight+"px";
+        updateHeightInOpenClass(openClass, heightString);
         //as you can see all the 'this' noise is gone
         //object properly encapsulates state
         return {
