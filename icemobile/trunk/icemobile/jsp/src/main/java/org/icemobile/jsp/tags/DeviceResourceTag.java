@@ -18,8 +18,7 @@ public class DeviceResourceTag extends SimpleTagSupport {
     // <link href="<c:url value="/resources/form.css" />" rel="stylesheet"  type="text/css" />
     // <script type="text/javascript" src="<c:url value="/resources/jquery/1.6/jquery.js" />"></script>
 
-    static Logger log = Logger.getLogger(
-                                                DeviceResourceTag.class.getName());
+    static Logger log = Logger.getLogger(DeviceResourceTag.class.getName());
 
     // CSS style extension circa 2011
     private static final String CSS_EXT = ".css";
@@ -106,7 +105,6 @@ public class DeviceResourceTag extends SimpleTagSupport {
          *     value resource.
          */
 
-
         // check for the existence of the name and library attributes.
         String nameVal = getName();
         String libVal = getLibrary();
@@ -145,9 +143,11 @@ public class DeviceResourceTag extends SimpleTagSupport {
                 nameVal = TagUtil.getDeviceType(userAgent).name();
             }
 
+            nameVal.concat(CSS_EXT);
+
             // load compressed css if this is production environment.
             if (applicationStage != null && "production".equalsIgnoreCase(applicationStage)) {
-                nameVal = nameVal.concat(CSS_EXT);
+                nameVal = nameVal.concat(CSS_COMPRESSION_POSTFIX);
             }
             libVal = DEFAULT_LIBRARY;
 
@@ -163,11 +163,11 @@ public class DeviceResourceTag extends SimpleTagSupport {
             // if the resource can't be found.
         }
 
-
+//        String cssfile =  libVal + "/" + nameVal;
         String cssfile = resourceRoot + "/" + libVal + "/" + nameVal;
 
         try {
-            out.write("<link type=\"text/css\" rel=\"stylesheet\" href=\"" + cssfile + "\" />");
+            out.write("<link type=\"text/css\" rel=\"stylesheet\" href=\"" + cssfile + ".css\" />");
             out.write("<script type=\"text/javascript\" src=\"" + resourceRoot + "/icemobile.js\" />");
 
             String jqv = getJqversion();
