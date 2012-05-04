@@ -52,11 +52,11 @@
 
 /* Begin PBXFileReference section */
 		9C403FC114845A2200FBA6BC /* ZXingWidget.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ZXingWidget.xcodeproj; path = ../zxing/ZXingWidget/ZXingWidget.xcodeproj; sourceTree = "<group>"; };
-		9C403FCA14845E4200FBA6BC /* QRScanner.h */ = {isa = PBXFileReference; fileEncoding = 4; name = QRScanner.h; path = Shared/QRScanner.h; sourceTree = "<group>"; };
-		9C403FCB14845E4200FBA6BC /* QRScanner.mm */ = {isa = PBXFileReference; fileEncoding = 4; name = QRScanner.mm; path = Shared/QRScanner.mm; sourceTree = "<group>"; };
-		9C4F8C3614859D3600A2B288 /* AudioController.h */ = {isa = PBXFileReference; fileEncoding = 4; name = AudioController.h; path = Shared/AudioController.h; sourceTree = "<group>"; };
-		9C4F8C3714859D3600A2B288 /* AudioController.m */ = {isa = PBXFileReference; fileEncoding = 4; name = AudioController.m; path = Shared/AudioController.m; sourceTree = "<group>"; };
-		9C4F8C3814859D3600A2B288 /* AudioController.xib */ = {isa = PBXFileReference; fileEncoding = 4; name = AudioController.xib; path = Shared/AudioController.xib; sourceTree = "<group>"; };
+		9C403FCA14845E4200FBA6BC /* QRScanner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = QRScanner.h; path = Shared/QRScanner.h; sourceTree = "<group>"; };
+		9C403FCB14845E4200FBA6BC /* QRScanner.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = QRScanner.mm; path = Shared/QRScanner.mm; sourceTree = "<group>"; };
+		9C4F8C3614859D3600A2B288 /* AudioController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AudioController.h; path = Shared/AudioController.h; sourceTree = "<group>"; };
+		9C4F8C3714859D3600A2B288 /* AudioController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AudioController.m; path = Shared/AudioController.m; sourceTree = "<group>"; };
+		9C4F8C3814859D3600A2B288 /* AudioController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = AudioController.xib; path = Shared/AudioController.xib; sourceTree = "<group>"; };
 		9C5CD03B14BCBCA70070662F /* camcorder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = camcorder.png; sourceTree = "<group>"; };
 		9C5CD03C14BCBCA70070662F /* camcorder@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "camcorder@2x.png"; sourceTree = "<group>"; };
 		9C5CD03D14BCBCA70070662F /* camera.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = camera.png; sourceTree = "<group>"; };
@@ -67,7 +67,7 @@
 		9C5CD04214BCBCA70070662F /* qr@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "qr@2x.png"; sourceTree = "<group>"; };
 		9C6E1972148560C300ADDAA7 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		9C77C78C147310B80079FDF5 /* NativeInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NativeInterface.h; path = Shared/NativeInterface.h; sourceTree = "<group>"; };
-		9C77C78D147310B80079FDF5 /* NativeInterface.m */ = {isa = PBXFileReference; fileEncoding = 4; name = NativeInterface.m; path = Shared/NativeInterface.m; sourceTree = "<group>"; };
+		9C77C78D147310B80079FDF5 /* NativeInterface.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NativeInterface.m; path = Shared/NativeInterface.m; sourceTree = "<group>"; };
 		9C77C78E147310B80079FDF5 /* NativeInterfaceViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NativeInterfaceViewController.h; sourceTree = "<group>"; };
 		9C77C791147310F90079FDF5 /* icon-72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-72.png"; sourceTree = "<group>"; };
 		9C77C792147310F90079FDF5 /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon.png; sourceTree = "<group>"; };
