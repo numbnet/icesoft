@@ -45,7 +45,7 @@ import java.util.Map;
 
 public class HeadRenderer extends Renderer {
 
-	@Override
+    @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         writer.startElement("head", component);
@@ -54,24 +54,22 @@ public class HeadRenderer extends Renderer {
         String theme = null;
         String themeParamValue = context.getExternalContext().getInitParameter(Constants.THEME_PARAM);
 
-       if(themeParamValue != null) {
+        if (themeParamValue != null) {
             ELContext elContext = context.getELContext();
             ExpressionFactory expressionFactory = context.getApplication().getExpressionFactory();
             ValueExpression ve = expressionFactory.createValueExpression(elContext, themeParamValue, String.class);
 
             theme = (String) ve.getValue(elContext);
         }
-		
-		if (theme == null) theme = "";
-		else theme = theme.trim();
+
+        if (theme == null) theme = "";
+        else theme = theme.trim();
 
         if ("".equals(theme) || theme.equalsIgnoreCase("sam")) {
             encodeTheme(context, "icefaces.ace", "themes/sam/theme.css");
-        } else if(theme.equalsIgnoreCase("rime")) {
+        } else if (theme.equalsIgnoreCase("rime")) {
             encodeTheme(context, "icefaces.ace", "themes/rime/theme.css");
-        }
-
-        else if(!theme.equalsIgnoreCase("none")) {
+        } else if (!theme.equalsIgnoreCase("none")) {
             encodeTheme(context, "ace-" + theme, "theme.css");
         }
 
@@ -79,7 +77,6 @@ public class HeadRenderer extends Renderer {
         UIViewRoot viewRoot = context.getViewRoot();
         ListIterator<UIComponent> iter = (viewRoot.getComponentResources(context, "head")).listIterator();
         while (iter.hasNext()) {
-            writer.write("\n");
             UIComponent resource = (UIComponent) iter.next();
             resource.encodeAll(context);
         }
@@ -93,19 +90,19 @@ public class HeadRenderer extends Renderer {
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-       
+
         writer.endElement("head");
     }
 
     private UIComponent createThemeResource(FacesContext fc, String library, String resourceName) {
         UIComponent resource = fc.getApplication().createComponent("javax.faces.Output");
         resource.setRendererType("javax.faces.resource.Stylesheet");
-        
+
         Map<String, Object> attrs = resource.getAttributes();
         attrs.put("name", resourceName);
         attrs.put("library", library);
         attrs.put("target", "head");
-       
+
         return resource;
     }
 
@@ -114,10 +111,9 @@ public class HeadRenderer extends Renderer {
         writer.write("\n");
 
         Resource themeResource = context.getApplication().getResourceHandler().createResource(resource, library);
-        if(themeResource == null) {
+        if (themeResource == null) {
             throw new FacesException("Error loading theme, cannot find \"" + resource + "\" resource of \"" + library + "\" library");
-        }
-        else {
+        } else {
             writer.startElement("link", null);
             writer.writeAttribute("type", "text/css", null);
             writer.writeAttribute("rel", "stylesheet", null);
@@ -125,6 +121,6 @@ public class HeadRenderer extends Renderer {
             writer.endElement("link");
         }
 
-        
+
     }
 }
