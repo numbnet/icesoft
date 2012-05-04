@@ -168,12 +168,12 @@ public class DeviceResourceTag extends SimpleTagSupport {
 
         try {
             out.write("<link type=\"text/css\" rel=\"stylesheet\" href=\"" + cssfile + ".css\" />");
-            out.write("<script type=\"text/javascript\" src=\"" + resourceRoot + "/icemobile.js\" />");
+            out.write("<script type=\"text/javascript\" src=\"" + resourceRoot + "/icemobile.js\" > </script>");
 
             String jqv = getJqversion();
             if (jqv != null && !"".equals(jqv)) {
-                out.write("<script type=\"text/javascript\" src=\"" + resourceRoot + "/jquery/" +
-                                  jqv + "/jquery.js\" />");
+                out.write("<script type=\"text/javascript\" src=\"/" + resourceRoot + "/jquery/" +
+                                  jqv + "/jquery.js\" > </script>");
             }
 
 
