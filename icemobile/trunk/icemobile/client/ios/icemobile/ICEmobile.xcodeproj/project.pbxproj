@@ -16,6 +16,8 @@
 		2860E32F111B888700E27156 /* MainWindow_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2860E32D111B888700E27156 /* MainWindow_iPad.xib */; };
 		288765FD0DF74451002DB57D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765FC0DF74451002DB57D /* CoreGraphics.framework */; };
 		9C113907132ACD2E00FB7919 /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C113906132ACD2E00FB7919 /* icon.png */; };
+		9C1923F815547FBA00A6BE22 /* AudioController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C1923F615547FBA00A6BE22 /* AudioController.m */; };
+		9C1923F915547FBA00A6BE22 /* AudioController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9C1923F715547FBA00A6BE22 /* AudioController.xib */; };
 		9C2A9F6513B8E78F0068D894 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C2A9F6413B8E78F0068D894 /* MobileCoreServices.framework */; };
 		9C31404E13200264005F0E8F /* NativeInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C31404D13200264005F0E8F /* NativeInterface.m */; };
 		9C31408713201B67005F0E8F /* main.html in Resources */ = {isa = PBXBuildFile; fileRef = 9C31408613201B67005F0E8F /* main.html */; };
@@ -61,6 +63,10 @@
 		32CA4F630368D1EE00C91783 /* ICEmobile_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ICEmobile_Prefix.pch; path = Container/ICEmobile_Prefix.pch; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* ICEmobile-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "ICEmobile-Info.plist"; path = "Container/ICEmobile-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
 		9C113906132ACD2E00FB7919 /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon.png; path = Container/icon.png; sourceTree = "<group>"; };
+		9C1923F515547FBA00A6BE22 /* AudioController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AudioController.h; path = Shared/AudioController.h; sourceTree = "<group>"; };
+		9C1923F615547FBA00A6BE22 /* AudioController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AudioController.m; path = Shared/AudioController.m; sourceTree = "<group>"; };
+		9C1923F715547FBA00A6BE22 /* AudioController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = AudioController.xib; path = Shared/AudioController.xib; sourceTree = "<group>"; };
+		9C19240115548F7800A6BE22 /* NativeInterfaceViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NativeInterfaceViewController.h; path = Shared/NativeInterfaceViewController.h; sourceTree = "<group>"; };
 		9C2A9F6413B8E78F0068D894 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		9C31404C13200264005F0E8F /* NativeInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NativeInterface.h; path = Container/NativeInterface.h; sourceTree = "<group>"; };
 		9C31404D13200264005F0E8F /* NativeInterface.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NativeInterface.m; path = Container/NativeInterface.m; sourceTree = "<group>"; };
@@ -161,6 +167,7 @@
 				2860E32A111B888700E27156 /* iPad */,
 				2860E324111B887F00E27156 /* iPhone */,
 				28EEBF621118D79A00187D67 /* Container */,
+				9C1923F415547F9500A6BE22 /* Shared */,
 				29B97315FDCFA39411CA2CEA /* Other Sources */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
@@ -192,6 +199,17 @@
 				288765FC0DF74451002DB57D /* CoreGraphics.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		9C1923F415547F9500A6BE22 /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				9C19240115548F7800A6BE22 /* NativeInterfaceViewController.h */,
+				9C1923F515547FBA00A6BE22 /* AudioController.h */,
+				9C1923F615547FBA00A6BE22 /* AudioController.m */,
+				9C1923F715547FBA00A6BE22 /* AudioController.xib */,
+			);
+			name = Shared;
 			sourceTree = "<group>";
 		};
 		9C3B27871427A1B500409376 /* Dependencies */ = {
@@ -287,6 +305,7 @@
 				9C65FC2F137C9E5500530472 /* Preferences.xib in Resources */,
 				9C77A01E139E9E9B00A2B1EC /* icon@2x.png in Resources */,
 				9CACFD5E141AD389009D0C3C /* icon-72.png in Resources */,
+				9C1923F915547FBA00A6BE22 /* AudioController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -304,6 +323,7 @@
 				9C31404E13200264005F0E8F /* NativeInterface.m in Sources */,
 				9C3140D613203841005F0E8F /* native-interface.js in Sources */,
 				9C65FC2E137C9E5500530472 /* Preferences.m in Sources */,
+				9C1923F815547FBA00A6BE22 /* AudioController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
