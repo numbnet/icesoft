@@ -68,7 +68,7 @@
 		9C6E1972148560C300ADDAA7 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		9C77C78C147310B80079FDF5 /* NativeInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NativeInterface.h; path = Shared/NativeInterface.h; sourceTree = "<group>"; };
 		9C77C78D147310B80079FDF5 /* NativeInterface.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NativeInterface.m; path = Shared/NativeInterface.m; sourceTree = "<group>"; };
-		9C77C78E147310B80079FDF5 /* NativeInterfaceViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NativeInterfaceViewController.h; sourceTree = "<group>"; };
+		9C77C78E147310B80079FDF5 /* NativeInterfaceViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NativeInterfaceViewController.h; path = Shared/NativeInterfaceViewController.h; sourceTree = "<group>"; };
 		9C77C791147310F90079FDF5 /* icon-72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-72.png"; sourceTree = "<group>"; };
 		9C77C792147310F90079FDF5 /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon.png; sourceTree = "<group>"; };
 		9C77C793147310F90079FDF5 /* icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon@2x.png"; sourceTree = "<group>"; };
@@ -117,6 +117,7 @@
 		9C1BEADD155473E400795020 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				9C77C78E147310B80079FDF5 /* NativeInterfaceViewController.h */,
 				9C77C78C147310B80079FDF5 /* NativeInterface.h */,
 				9C77C78D147310B80079FDF5 /* NativeInterface.m */,
 				9C403FCA14845E4200FBA6BC /* QRScanner.h */,
@@ -182,7 +183,6 @@
 		9CA51B6914730D110065F681 /* ICEmobile-SX */ = {
 			isa = PBXGroup;
 			children = (
-				9C77C78E147310B80079FDF5 /* NativeInterfaceViewController.h */,
 				9CA51B7214730D120065F681 /* AppDelegate.h */,
 				9CA51B7314730D120065F681 /* AppDelegate.m */,
 				9CA51B7514730D120065F681 /* ViewController.h */,
