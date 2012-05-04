@@ -16,6 +16,7 @@
 
 #import "NativeInterface.h"
 #import "MainViewController.h"
+#import "AudioController.h"
 #import "MobileCoreServices/MobileCoreServices.h"
 #import "MediaPlayer/MediaPlayer.h"
 
@@ -26,11 +27,14 @@
 @synthesize activeDOMElementId;
 @synthesize maxwidth;
 @synthesize maxheight;
+@synthesize soundFilePath;
 @synthesize recording;
 @synthesize uploading;
 @synthesize soundRecorder;
 @synthesize receivedData;
 @synthesize camPopover;
+@synthesize audioPopover;
+@synthesize popoverSource;
 
 static char base64EncodingTable[64] = {
   'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P',
@@ -38,6 +42,17 @@ static char base64EncodingTable[64] = {
   'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v',
   'w', 'x', 'y', 'z', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '+', '/'
 };
+
+- (id)init  {
+    self = [super init];
+    if (self) {
+        NSString *tempDir = NSTemporaryDirectory ();
+        self.soundFilePath = [tempDir stringByAppendingString: @"sound.mp4"];
+        self.popoverSource = CGRectMake(200.0, 200.0, 0.0, 0.0);
+    }
+    
+    return self;
+}
 
 /*Return YES to indicate that the command was successfully dispatched
 */
@@ -102,7 +117,7 @@ static char base64EncodingTable[64] = {
     return YES;
 }
 
-- (BOOL)microphone: (NSString*)micId  {
+- (BOOL)Xmicrophone: (NSString*)micId  {
     self.activeDOMElementId = micId;
     NSString *micName = [micId stringByAppendingString:@"-file"];
     NSLog(@"called microphone for %@", micId);
@@ -154,6 +169,94 @@ static char base64EncodingTable[64] = {
     self.recording = YES;
 
     return YES;
+}
+
+- (BOOL)microphone: (NSString*)micId  {
+    self.activeDOMElementId = micId;
+    UIView *controllerView = self.controller.view;
+
+
+    AudioController *audioController = [[AudioController alloc] init];
+    [[NSBundle mainBundle] loadNibNamed:@"AudioController" 
+            owner:audioController options:nil];
+    audioController.nativeInterface = self;
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)  {
+        if (nil == self.audioPopover)  {
+            self.audioPopover = [[UIPopoverController alloc] 
+                    initWithContentViewController:audioController];
+            self.audioPopover.popoverContentSize = CGSizeMake(320, 480);
+        }
+        [self.audioPopover presentPopoverFromRect:popoverSource 
+                                 inView:controllerView
+               permittedArrowDirections:UIPopoverArrowDirectionAny 
+                               animated:YES];
+    } else {
+        [controller presentModalViewController:audioController animated:YES];
+    }
+    [audioController release];
+    
+    return YES;
+}
+
+- (void)recordStart  {
+    NSString *micName = [self.activeDOMElementId stringByAppendingString:@"-file"];
+    NSLog(@"called microphone for %@", micName);
+
+    NSURL *soundFileURL = [[NSURL alloc] 
+            initFileURLWithPath: self.soundFilePath];
+
+ 
+    AVAudioSession *audioSession = [AVAudioSession sharedInstance];
+//    audioSession.delegate = self;
+    [audioSession setActive: YES error: nil];
+
+    [[AVAudioSession sharedInstance]
+            setCategory: AVAudioSessionCategoryRecord error: nil];
+ 
+    NSDictionary *recordSettings =
+        [[NSDictionary alloc] initWithObjectsAndKeys:
+            [NSNumber numberWithFloat: 44100.0], AVSampleRateKey,
+            [NSNumber numberWithInt: kAudioFormatMPEG4AAC], AVFormatIDKey,
+//             [NSNumber numberWithInt: kAudioFormatLinearPCM], AVFormatIDKey,
+//             [NSNumber numberWithInt: kAudioFormatAppleIMA4], AVFormatIDKey,
+//             [NSNumber numberWithInt: kAudioFormatAppleLossless], AVFormatIDKey,
+            [NSNumber numberWithInt: 1], AVNumberOfChannelsKey,
+            [NSNumber numberWithInt: AVAudioQualityMax], AVEncoderAudioQualityKey,
+            nil];
+ 
+    AVAudioRecorder *avRecorder =
+        [[AVAudioRecorder alloc] initWithURL: soundFileURL
+                                    settings: recordSettings
+                                       error: nil];
+    self.soundRecorder = avRecorder;
+//    soundRecorder.delegate = self;
+    [soundRecorder prepareToRecord];
+    NSLog(@"recording started");
+    [soundRecorder record];
+    self.recording = YES;
+
+}
+
+- (void)recordStop  {
+    NSLog(@"recording stopped");
+    [self.soundRecorder stop];
+}
+
+//TODO reconcile naming difference
+- (void)recordDone  {
+    [self recordDismiss];
+    NSString *audioName = 
+            [self.activeDOMElementId stringByAppendingString:@"-file"];
+    [controller completeFile:self.soundFilePath 
+            forComponent:self.activeDOMElementId withName:audioName];
+}
+
+- (void)recordDismiss  {
+    if (nil != self.audioPopover)  {
+        [self.audioPopover dismissPopoverAnimated:YES];
+    } else {
+        [controller dismissModalViewControllerAnimated:YES];
+    }
 }
 
 

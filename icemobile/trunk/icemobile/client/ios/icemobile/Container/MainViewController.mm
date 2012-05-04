@@ -177,6 +177,21 @@
     }
 }
 
+- (void)completePost:(NSString *)value forComponent:(NSString *)componentID withName:(NSString *)componentName   {
+NSLog(@"Warning: completePost should not be invoked with ICEmobile Container");
+}
+
+
+- (void)completeFile:(NSString *)path forComponent:(NSString *)componentID withName:(NSString *)componentName   {
+    NSString *scriptTemplate;
+    NSString *script;
+    NSString *result;
+
+    scriptTemplate = @"ice.addHidden(\"%@\", \"%@\", \"%@\");";
+    script = [NSString stringWithFormat:scriptTemplate, componentID, componentName, path];
+NSLog(@"completeFile %@", script);
+    result = [self.webView stringByEvaluatingJavaScriptFromString: script];
+}
 
 - (IBAction)doPreferences {
     NSLog(@"Preferences pressed");

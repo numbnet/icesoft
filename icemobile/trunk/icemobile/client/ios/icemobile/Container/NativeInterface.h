@@ -24,22 +24,28 @@
     NSString *activeDOMElementId;
     NSString *maxwidth;
     NSString *maxheight;
+    NSString *soundFilePath;
     BOOL recording;
     BOOL uploading;
     AVAudioRecorder *soundRecorder;
     NSMutableData *receivedData;
     UIPopoverController *camPopover;
+    UIPopoverController *audioPopover;
+    CGRect popoverSource;
 }
 
 @property (retain) MainViewController *controller;
 @property (retain) NSString *activeDOMElementId;
 @property (retain) NSString *maxwidth;
 @property (retain) NSString *maxheight;
+@property (retain) NSString *soundFilePath;
 @property (nonatomic, assign) BOOL recording;
 @property (assign) BOOL uploading;
 @property (retain) AVAudioRecorder *soundRecorder;
 @property (retain) NSMutableData *receivedData;
 @property (nonatomic, retain) UIPopoverController *camPopover;
+@property (nonatomic, retain) UIPopoverController *audioPopover;
+@property (nonatomic, assign) CGRect popoverSource;
 
 - (BOOL)dispatch: (NSString*)command;
 - (BOOL)camera: (NSString*)cameraId maxwidth: (NSString*)maxw maxheight: (NSString*)maxh;
