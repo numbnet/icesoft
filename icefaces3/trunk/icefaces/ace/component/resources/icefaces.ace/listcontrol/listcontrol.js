@@ -28,16 +28,16 @@ ice.ace.ListControl.prototype.setupControls = function(){
     else
         selector = '.if-list-nctrls:first .if-list-nctrl';
 
-    this.element
-        .off('mouseenter').on('mouseenter', selector, function(e) {
+    this.element.find(selector)
+        .off('mouseenter').on('mouseenter', function(e) {
             var ctrl = e.currentTarget;
             ice.ace.jq(ctrl).addClass('ui-state-hover');
         })
-        .off('mouseleave').on('mouseleave', selector, function(e) {
+        .off('mouseleave').on('mouseleave', function(e) {
             var ctrl = e.currentTarget;
             ice.ace.jq(ctrl).removeClass('ui-state-hover');
         })
-        .off('click').on('click', selector, function(e) { self.controlClickHandler.call(self, e); });
+        .off('click').on('click', function(e) { self.controlClickHandler.call(self, e); });
 };
 
 
