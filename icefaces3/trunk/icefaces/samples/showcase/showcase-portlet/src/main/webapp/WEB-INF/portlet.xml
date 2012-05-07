@@ -39,8 +39,7 @@
         </supports>
         <portlet-info>
             <title>ACE Accordion Panel</title>
-            <short-title>ICEfaces Component Suite Showcase ACE Accordion Panel</short-title>
-            <keywords/>
+            <keywords>ICEfaces Component Suite Showcase ACE Accordion Panel</keywords>
         </portlet-info>
     </portlet>
     <portlet>
@@ -61,8 +60,7 @@
         </supports>
         <portlet-info>
             <title>ACE Accordion Panel Dynamic</title>
-            <short-title>ICEfaces Component Suite Showcase ACE Accordion Panel Dynamic</short-title>
-            <keywords/>
+            <keywords>ICEfaces Component Suite Showcase ACE Accordion Panel Dynamic</keywords>
         </portlet-info>
     </portlet>
     <portlet>
@@ -83,8 +81,7 @@
         </supports>
         <portlet-info>
             <title>ACE Accordion Panel Effect</title>
-            <short-title>ICEfaces Component Suite Showcase ACE Accordion Panel Effect</short-title>
-            <keywords/>
+            <keywords>ICEfaces Component Suite Showcase ACE Accordion Panel Effect</keywords>
         </portlet-info>
     </portlet>
     <portlet>
@@ -105,8 +102,7 @@
         </supports>
         <portlet-info>
             <title>ACE Animation</title>
-            <short-title>ICEfaces Component Suite Showcase ACE Animation</short-title>
-            <keywords/>
+            <keywords>ICEfaces Component Suite Showcase ACE Animation</keywords>
         </portlet-info>
     </portlet>
     <portlet>
@@ -127,8 +123,7 @@
         </supports>
         <portlet-info>
             <title>ACE Checkbox Button</title>
-            <short-title>ICEfaces Component Suite Showcase ACE Checkbox Button</short-title>
-            <keywords/>
+            <keywords>ICEfaces Component Suite Showcase ACE Checkbox Button</keywords>
         </portlet-info>
     </portlet>
     <portlet>
@@ -149,8 +144,7 @@
         </supports>
         <portlet-info>
             <title>ACE Confirmation Dialog</title>
-            <short-title>ICEfaces Component Suite Showcase ACE Confirmation Dialog</short-title>
-            <keywords/>
+            <keywords>ICEfaces Component Suite Showcase ACE Confirmation Dialog</keywords>
         </portlet-info>
     </portlet>
     <portlet>
@@ -171,8 +165,7 @@
         </supports>
         <portlet-info>
             <title>ACE Confirmation Dialog Effect</title>
-            <short-title>ICEfaces Component Suite Showcase ACE Confirmation Dialog Effect</short-title>
-            <keywords/>
+            <keywords>ICEfaces Component Suite Showcase ACE Confirmation Dialog Effect</keywords>
         </portlet-info>
     </portlet>
     <portlet>
@@ -193,8 +186,7 @@
         </supports>
         <portlet-info>
             <title>ACE Confirmation Dialog Modal</title>
-            <short-title>ICEfaces Component Suite Showcase ACE Confirmation Dialog Modal</short-title>
-            <keywords/>
+            <keywords>ICEfaces Component Suite Showcase ACE Confirmation Dialog Modal</keywords>
         </portlet-info>
     </portlet>
     <portlet>
@@ -215,8 +207,7 @@
         </supports>
         <portlet-info>
             <title>ACE Context Menu</title>
-            <short-title>ICEfaces Component Suite Showcase ACE Context Menu</short-title>
-            <keywords/>
+            <keywords>ICEfaces Component Suite Showcase ACE Context Menu</keywords>
         </portlet-info>
     </portlet>
     <portlet>
@@ -237,8 +228,7 @@
         </supports>
         <portlet-info>
             <title>ACE Context Menu Component</title>
-            <short-title>ICEfaces Component Suite Showcase ACE Context Menu Component</short-title>
-            <keywords/>
+            <keywords>ICEfaces Component Suite Showcase ACE Context Menu Component</keywords>
         </portlet-info>
     </portlet>
     <portlet>
@@ -259,8 +249,28 @@
         </supports>
         <portlet-info>
             <title>ACE Context Menu Effect</title>
-            <short-title>ICEfaces Component Suite Showcase ACE Context Menu Effect</short-title>
-            <keywords/>
+            <keywords>ICEfaces Component Suite Showcase ACE Context Menu Effect</keywords>
+        </portlet-info>
+    </portlet>
+    <portlet>
+        <portlet-name>contextMenuMultiColumn</portlet-name>
+        <display-name>ACE Context Menu Multi Column</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/portlet-view.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/contextMenu/contextMenuMultiColumn.xhtml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>ACE Context Menu Multi Column</title>
+            <keywords>ICEfaces Component Suite Showcase ACE Context Menu Multi Column</keywords>
         </portlet-info>
     </portlet>
     <portlet>
@@ -281,8 +291,7 @@
         </supports>
         <portlet-info>
             <title>ACE Context Menu Table</title>
-            <short-title>ICEfaces Component Suite Showcase ACE Context Menu Table</short-title>
-            <keywords/>
+            <keywords>ICEfaces Component Suite Showcase ACE Context Menu Table</keywords>
         </portlet-info>
     </portlet>
     <portlet>
@@ -303,8 +312,7 @@
         </supports>
         <portlet-info>
             <title>ACE Data Exporter</title>
-            <short-title>ICEfaces Component Suite Showcase ACE Data Exporter</short-title>
-            <keywords/>
+            <keywords>ICEfaces Component Suite Showcase ACE Data Exporter</keywords>
         </portlet-info>
     </portlet>
     <portlet>
@@ -325,8 +333,49 @@
         </supports>
         <portlet-info>
             <title>ACE Data Exporter Columns</title>
-            <short-title>ICEfaces Component Suite Showcase ACE Data Exporter Columns</short-title>
-            <keywords/>
+            <keywords>ICEfaces Component Suite Showcase ACE Data Exporter Columns</keywords>
+        </portlet-info>
+    </portlet>
+    <portlet>
+        <portlet-name>dataExporterExcludeFromExport</portlet-name>
+        <display-name>ACE Data Exporter Exclude From Export</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/portlet-view.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/dataExporter/dataExporterExcludeFromExport.xhtml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>ACE Data Exporter Exclude From Export</title>
+            <keywords>ICEfaces Component Suite Showcase ACE Data Exporter Exclude Export</keywords>
+        </portlet-info>
+    </portlet>
+    <portlet>
+        <portlet-name>dataExporterRows</portlet-name>
+        <display-name>ACE Data Exporter Rows</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/portlet-view.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/dataExporter/dataExporterRows.xhtml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>ACE Data Exporter Rows</title>
+            <keywords>ICEfaces Component Suite Showcase ACE Data Exporter Rows</keywords>
         </portlet-info>
     </portlet>
     <portlet>
@@ -347,8 +396,7 @@
         </supports>
         <portlet-info>
             <title>ACE Data Table</title>
-            <short-title>ICEfaces Component Suite Showcase ACE Data Table</short-title>
-            <keywords/>
+            <keywords>ICEfaces Component Suite Showcase ACE Data Table</keywords>
         </portlet-info>
     </portlet>
     <portlet>
@@ -369,8 +417,7 @@
         </supports>
         <portlet-info>
             <title>ACE Data Table Column Reordering</title>
-            <short-title>ICEfaces Component Suite Showcase ACE Data Table Column Reordering</short-title>
-            <keywords/>
+            <keywords>ICEfaces Component Suite Showcase ACE Data Table Column Reordering</keywords>
         </portlet-info>
     </portlet>
     <portlet>
@@ -391,8 +438,7 @@
         </supports>
         <portlet-info>
             <title>ACE Data Table Config Panel</title>
-            <short-title>ICEfaces Component Suite Showcase ACE Data Table Config Panel</short-title>
-            <keywords/>
+            <keywords>ICEfaces Component Suite Showcase ACE Data Table Config Panel</keywords>
         </portlet-info>
     </portlet>
     <portlet>
@@ -413,8 +459,49 @@
         </supports>
         <portlet-info>
             <title>ACE Data Table Filtering</title>
-            <short-title>ICEfaces Component Suite Showcase ACE Data Table Filtering</short-title>
-            <keywords/>
+            <keywords>ICEfaces Component Suite Showcase ACE Data Table Filtering</keywords>
+        </portlet-info>
+    </portlet>
+    <portlet>
+        <portlet-name>dataTableFind</portlet-name>
+        <display-name>ACE Data Table Find</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/portlet-view.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/dataTable/dataTableFind.xhtml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>ACE Data Table Find</title>
+            <keywords>ICEfaces Component Suite Showcase ACE Data Table Find</keywords>
+        </portlet-info>
+    </portlet>
+    <portlet>
+        <portlet-name>dataTableGrouping</portlet-name>
+        <display-name>ACE Data Table Grouping</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/portlet-view.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/dataTable/dataTableGrouping.xhtml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>ACE Data Table Grouping</title>
+            <keywords>ICEfaces Component Suite Showcase ACE Data Table Grouping</keywords>
         </portlet-info>
     </portlet>
     <portlet>
@@ -435,8 +522,7 @@
         </supports>
         <portlet-info>
             <title>ACE Data Table Lazy Loading</title>
-            <short-title>ICEfaces Component Suite Showcase ACE Data Table Lazy Loading</short-title>
-            <keywords/>
+            <keywords>ICEfaces Component Suite Showcase ACE Data Table Lazy Loading</keywords>
         </portlet-info>
     </portlet>
     <portlet>
@@ -457,8 +543,28 @@
         </supports>
         <portlet-info>
             <title>ACE Data Table Listener</title>
-            <short-title>ICEfaces Component Suite Showcase ACE Data Table Listener</short-title>
-            <keywords/>
+            <keywords>ICEfaces Component Suite Showcase ACE Data Table Listener</keywords>
+        </portlet-info>
+    </portlet>
+    <portlet>
+        <portlet-name>dataTableMultiRowHeader</portlet-name>
+        <display-name>ACE Data Table Multi Row Header</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/portlet-view.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/dataTable/dataTableMultiRowHeader.xhtml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>ACE Data Table Multi Row Header</title>
+            <keywords>ICEfaces Component Suite Showcase ACE Data Table Multi Row Header</keywords>
         </portlet-info>
     </portlet>
     <portlet>
@@ -479,8 +585,7 @@
         </supports>
         <portlet-info>
             <title>ACE Data Table Paginator</title>
-            <short-title>ICEfaces Component Suite Showcase ACE Data Table Paginator</short-title>
-            <keywords/>
+            <keywords>ICEfaces Component Suite Showcase ACE Data Table Paginator</keywords>
         </portlet-info>
     </portlet>
     <portlet>
@@ -501,8 +606,28 @@
         </supports>
         <portlet-info>
             <title>ACE Data Table Panel Expansion</title>
-            <short-title>ICEfaces Component Suite Showcase ACE Data Table Panel Expansion</short-title>
-            <keywords/>
+            <keywords>ICEfaces Component Suite Showcase ACE Data Table Panel Expansion</keywords>
+        </portlet-info>
+    </portlet>
+    <portlet>
+        <portlet-name>dataTableResizableColumns</portlet-name>
+        <display-name>ACE Data Table Resizable Columns</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/portlet-view.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/dataTable/dataTableResizableColumns.xhtml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>ACE Data Table Resizable Columns</title>
+            <keywords>ICEfaces Component Suite Showcase ACE Data Table Resizable Columns</keywords>
         </portlet-info>
     </portlet>
     <portlet>
@@ -523,8 +648,7 @@
         </supports>
         <portlet-info>
             <title>ACE Data Table Row Editing</title>
-            <short-title>ICEfaces Component Suite Showcase ACE Data Table Row Editing</short-title>
-            <keywords/>
+            <keywords>ICEfaces Component Suite Showcase ACE Data Table Row Editing</keywords>
         </portlet-info>
     </portlet>
     <portlet>
@@ -545,8 +669,7 @@
         </supports>
         <portlet-info>
             <title>ACE Data Table Row Expansion</title>
-            <short-title>ICEfaces Component Suite Showcase ACE Data Table Row Expansion</short-title>
-            <keywords/>
+            <keywords>ICEfaces Component Suite Showcase ACE Data Table Row Expansion</keywords>
         </portlet-info>
     </portlet>
     <portlet>
@@ -567,8 +690,7 @@
         </supports>
         <portlet-info>
             <title>ACE Data Table Row State</title>
-            <short-title>ICEfaces Component Suite Showcase ACE Data Table Row State</short-title>
-            <keywords/>
+            <keywords>ICEfaces Component Suite Showcase ACE Data Table Row State</keywords>
         </portlet-info>
     </portlet>
     <portlet>
@@ -589,8 +711,7 @@
         </supports>
         <portlet-info>
             <title>ACE Data Table Scrolling</title>
-            <short-title>ICEfaces Component Suite Showcase ACE Data Table Scrolling</short-title>
-            <keywords/>
+            <keywords>ICEfaces Component Suite Showcase ACE Data Table Scrolling</keywords>
         </portlet-info>
     </portlet>
     <portlet>
@@ -611,8 +732,7 @@
         </supports>
         <portlet-info>
             <title>ACE Data Table Selector</title>
-            <short-title>ICEfaces Component Suite Showcase ACE Data Table Selector</short-title>
-            <keywords/>
+            <keywords>ICEfaces Component Suite Showcase ACE Data Table Selector</keywords>
         </portlet-info>
     </portlet>
     <portlet>
@@ -633,8 +753,7 @@
         </supports>
         <portlet-info>
             <title>ACE Data Table Sorting</title>
-            <short-title>ICEfaces Component Suite Showcase ACE Data Table Sorting</short-title>
-            <keywords/>
+            <keywords>ICEfaces Component Suite Showcase ACE Data Table Sorting</keywords>
         </portlet-info>
     </portlet>
     <portlet>
@@ -655,8 +774,7 @@
         </supports>
         <portlet-info>
             <title>ACE Data Table Stackable</title>
-            <short-title>ICEfaces Component Suite Showcase ACE Data Table Stackable</short-title>
-            <keywords/>
+            <keywords>ICEfaces Component Suite Showcase ACE Data Table Stackable</keywords>
         </portlet-info>
     </portlet>
     <portlet>
@@ -677,8 +795,7 @@
         </supports>
         <portlet-info>
             <title>ACE Date Ajax</title>
-            <short-title>ICEfaces Component Suite Showcase ACE Date Ajax</short-title>
-            <keywords/>
+            <keywords>ICEfaces Component Suite Showcase ACE Date Ajax</keywords>
         </portlet-info>
     </portlet>
     <portlet>
@@ -699,8 +816,7 @@
         </supports>
         <portlet-info>
             <title>ACE Date Entry</title>
-            <short-title>ICEfaces Component Suite Showcase ACE Date Entry</short-title>
-            <keywords/>
+            <keywords>ICEfaces Component Suite Showcase ACE Date Entry</keywords>
         </portlet-info>
     </portlet>
     <portlet>
@@ -721,8 +837,7 @@
         </supports>
         <portlet-info>
             <title>ACE Date Navigator</title>
-            <short-title>ICEfaces Component Suite Showcase ACE Date Navigator</short-title>
-            <keywords/>
+            <keywords>ICEfaces Component Suite Showcase ACE Date Navigator</keywords>
         </portlet-info>
     </portlet>
     <portlet>
@@ -743,8 +858,7 @@
         </supports>
         <portlet-info>
             <title>ACE Date Pages</title>
-            <short-title>ICEfaces Component Suite Showcase ACE Date Pages</short-title>
-            <keywords/>
+            <keywords>ICEfaces Component Suite Showcase ACE Date Pages</keywords>
         </portlet-info>
     </portlet>
     <portlet>
@@ -765,8 +879,7 @@
         </supports>
         <portlet-info>
             <title>ACE Date Popup</title>
-            <short-title>ICEfaces Component Suite Showcase ACE Date Popup</short-title>
-            <keywords/>
+            <keywords>ICEfaces Component Suite Showcase ACE Date Popup</keywords>
         </portlet-info>
     </portlet>
     <portlet>
@@ -787,8 +900,7 @@
         </supports>
         <portlet-info>
             <title>ACE Dialog</title>
-            <short-title>ICEfaces Component Suite Showcase ACE Dialog</short-title>
-            <keywords/>
+            <keywords>ICEfaces Component Suite Showcase ACE Dialog</keywords>
         </portlet-info>
     </portlet>
     <portlet>
@@ -809,8 +921,7 @@
         </supports>
         <portlet-info>
             <title>ACE Dialog Effects And Size</title>
-            <short-title>ICEfaces Component Suite Showcase ACE Dialog Effects And Size</short-title>
-            <keywords/>
+            <keywords>ICEfaces Component Suite Showcase ACE Dialog Effects And Size</keywords>
         </portlet-info>
     </portlet>
     <portlet>
@@ -831,13 +942,12 @@
         </supports>
         <portlet-info>
             <title>ACE Modal Dialog</title>
-            <short-title>ICEfaces Component Suite Showcase ACE Modal Dialog</short-title>
-            <keywords/>
+            <keywords>ICEfaces Component Suite Showcase ACE Modal Dialog</keywords>
         </portlet-info>
     </portlet>
     <portlet>
         <portlet-name>dataTableIntegration</portlet-name>
-        <display-name>ACE Data Table Integration</display-name>
+        <display-name>ACE Drag Drop Data Table Integration</display-name>
         <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
         <init-param>
             <name>javax.portlet.faces.defaultViewId.view</name>
@@ -852,9 +962,8 @@
             <portlet-mode>view</portlet-mode>
         </supports>
         <portlet-info>
-            <title>ACE Data Table Integration</title>
-            <short-title>ICEfaces Component Suite Showcase ACE Data Table Integration</short-title>
-            <keywords/>
+            <title>ACE Drag Drop Data Table Integration</title>
+            <keywords>ICEfaces Component Suite Showcase ACE Drag Drop Data Table Integration</keywords>
         </portlet-info>
     </portlet>
     <portlet>
@@ -875,8 +984,7 @@
         </supports>
         <portlet-info>
             <title>ACE Drag Drop Overview</title>
-            <short-title>ICEfaces Component Suite Showcase ACE Drag Drop Overview</short-title>
-            <keywords/>
+            <keywords>ICEfaces Component Suite Showcase ACE Drag Drop Overview</keywords>
         </portlet-info>
     </portlet>
     <portlet>
@@ -897,13 +1005,12 @@
         </supports>
         <portlet-info>
             <title>ACE Draggable Overview</title>
-            <short-title>ICEfaces Component Suite Showcase ACE Draggable Overview</short-title>
-            <keywords/>
+            <keywords>ICEfaces Component Suite Showcase ACE Draggable Overview</keywords>
         </portlet-info>
     </portlet>
     <portlet>
-        <portlet-name>fileEntryListener</portlet-name>
-        <display-name>ACE File Entry Listener</display-name>
+        <portlet-name>fileEntryFailPop</portlet-name>
+        <display-name>ACE File Entry Failure Popup</display-name>
         <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
         <init-param>
             <name>javax.portlet.faces.defaultViewId.view</name>
@@ -911,16 +1018,15 @@
         </init-param>
         <init-param>
             <name>org.icefaces.demo.viewPath</name>
-            <value>/resources/examples/ace/fileentry/fileEntryListener.xhtml</value>
+            <value>/resources/examples/ace/fileentry/failpop.xhtml</value>
         </init-param>
         <supports>
             <mime-type>text/html</mime-type>
             <portlet-mode>view</portlet-mode>
         </supports>
         <portlet-info>
-            <title>ACE File Entry Listener</title>
-            <short-title>ICEfaces Component Suite Showcase ACE File Entry Listener</short-title>
-            <keywords/>
+            <title>ACE File Entry Failure Popup</title>
+            <keywords>ICEfaces Component Suite Showcase ACE File Failure Popup</keywords>
         </portlet-info>
     </portlet>
     <portlet>
@@ -941,8 +1047,28 @@
         </supports>
         <portlet-info>
             <title>ACE File Entry</title>
-            <short-title>ICEfaces Component Suite Showcase ACE File Entry</short-title>
-            <keywords/>
+            <keywords>ICEfaces Component Suite Showcase ACE File Entry</keywords>
+        </portlet-info>
+    </portlet>
+    <portlet>
+        <portlet-name>fileEntryListener</portlet-name>
+        <display-name>ACE File Entry Listener</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/portlet-view.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/fileentry/fileEntryListener.xhtml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>ACE File Entry Listener</title>
+            <keywords>ICEfaces Component Suite Showcase ACE File Entry Listener</keywords>
         </portlet-info>
     </portlet>
     <portlet>
@@ -963,8 +1089,7 @@
         </supports>
         <portlet-info>
             <title>ACE File Entry Multiple</title>
-            <short-title>ICEfaces Component Suite Showcase ACE File Entry Multiple</short-title>
-            <keywords/>
+            <keywords>ICEfaces Component Suite Showcase ACE File Entry Multiple</keywords>
         </portlet-info>
     </portlet>
     <portlet>
@@ -985,8 +1110,7 @@
         </supports>
         <portlet-info>
             <title>ACE File Entry Validation</title>
-            <short-title>ICEfaces Component Suite Showcase ACE File Entry Validation</short-title>
-            <keywords/>
+            <keywords>ICEfaces Component Suite Showcase ACE File Entry Validation</keywords>
         </portlet-info>
     </portlet>
     <portlet>
@@ -1007,8 +1131,175 @@
         </supports>
         <portlet-info>
             <title>ACE Link Button</title>
-            <short-title>ICEfaces Component Suite Showcase ACE Link Button</short-title>
-            <keywords/>
+            <keywords>ICEfaces Component Suite Showcase ACE Link Button</keywords>
+        </portlet-info>
+    </portlet>
+    <portlet>
+        <portlet-name>list</portlet-name>
+        <display-name>ACE List</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/portlet-view.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/list/list.xhtml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>ACE List</title>
+            <keywords>ICEfaces Component Suite Showcase ACE List</keywords>
+        </portlet-info>
+    </portlet>
+    <portlet>
+        <portlet-name>listBlock</portlet-name>
+        <display-name>ACE List Block</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/portlet-view.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/list/listBlock.xhtml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>ACE List Block</title>
+            <keywords>ICEfaces Component Suite Showcase ACE List Block</keywords>
+        </portlet-info>
+    </portlet>
+    <portlet>
+        <portlet-name>listDrag</portlet-name>
+        <display-name>ACE List Drag</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/portlet-view.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/list/listDrag.xhtml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>ACE List Drag</title>
+            <keywords>ICEfaces Component Suite Showcase ACE List Drag</keywords>
+        </portlet-info>
+    </portlet>
+    <portlet>
+        <portlet-name>listDual</portlet-name>
+        <display-name>ACE List Dual</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/portlet-view.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/list/listDual.xhtml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>ACE List Dual</title>
+            <keywords>ICEfaces Component Suite Showcase ACE List Dual</keywords>
+        </portlet-info>
+    </portlet>
+    <portlet>
+        <portlet-name>listMulti</portlet-name>
+        <display-name>ACE List Multi</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/portlet-view.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/list/listMulti.xhtml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>ACE List Multi</title>
+            <keywords>ICEfaces Component Suite Showcase ACE List Multi</keywords>
+        </portlet-info>
+    </portlet>
+    <portlet>
+        <portlet-name>listReorder</portlet-name>
+        <display-name>ACE List Reorder</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/portlet-view.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/list/listReorder.xhtml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>ACE List Reorder</title>
+            <keywords>ICEfaces Component Suite Showcase ACE List Reorder</keywords>
+        </portlet-info>
+    </portlet>
+    <portlet>
+        <portlet-name>listSelection</portlet-name>
+        <display-name>ACE List Selection</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/portlet-view.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/list/listSelection.xhtml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>ACE List Selection</title>
+            <keywords>ICEfaces Component Suite Showcase ACE List Selection</keywords>
+        </portlet-info>
+    </portlet>
+    <portlet>
+        <portlet-name>logger</portlet-name>
+        <display-name>ACE Logger</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/portlet-view.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/logger/logger.xhtml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>ACE Logger</title>
+            <keywords>ICEfaces Component Suite Showcase ACE Logger</keywords>
         </portlet-info>
     </portlet>
     <portlet>
@@ -1029,8 +1320,7 @@
         </supports>
         <portlet-info>
             <title>ACE Masked Entry</title>
-            <short-title>ICEfaces Component Suite Showcase ACE Masked Entry</short-title>
-            <keywords/>
+            <keywords>ICEfaces Component Suite Showcase ACE Masked Entry</keywords>
         </portlet-info>
     </portlet>
     <portlet>
@@ -1051,8 +1341,7 @@
         </supports>
         <portlet-info>
             <title>ACE Menu</title>
-            <short-title>ICEfaces Component Suite Showcase ACE Menu</short-title>
-            <keywords/>
+            <keywords>ICEfaces Component Suite Showcase ACE Menu</keywords>
         </portlet-info>
     </portlet>
     <portlet>
@@ -1073,8 +1362,7 @@
         </supports>
         <portlet-info>
             <title>ACE Menu Display</title>
-            <short-title>ICEfaces Component Suite Showcase ACE Menu Display</short-title>
-            <keywords/>
+            <keywords>ICEfaces Component Suite Showcase ACE Menu Display</keywords>
         </portlet-info>
     </portlet>
     <portlet>
@@ -1095,8 +1383,7 @@
         </supports>
         <portlet-info>
             <title>ACE Menu Dynamic</title>
-            <short-title>ICEfaces Component Suite Showcase ACE Menu Dynamic</short-title>
-            <keywords/>
+            <keywords>ICEfaces Component Suite Showcase ACE Menu Dynamic</keywords>
         </portlet-info>
     </portlet>
     <portlet>
@@ -1117,8 +1404,7 @@
         </supports>
         <portlet-info>
             <title>ACE Menu Effect</title>
-            <short-title>ICEfaces Component Suite Showcase ACE Menu Effect</short-title>
-            <keywords/>
+            <keywords>ICEfaces Component Suite Showcase ACE Menu Effect</keywords>
         </portlet-info>
     </portlet>
     <portlet>
@@ -1139,8 +1425,7 @@
         </supports>
         <portlet-info>
             <title>ACE Menu Events</title>
-            <short-title>ICEfaces Component Suite Showcase ACE Menu Events</short-title>
-            <keywords/>
+            <keywords>ICEfaces Component Suite Showcase ACE Menu Events</keywords>
         </portlet-info>
     </portlet>
     <portlet>
@@ -1161,8 +1446,7 @@
         </supports>
         <portlet-info>
             <title>ACE Menu Type</title>
-            <short-title>ICEfaces Component Suite Showcase ACE Menu Type</short-title>
-            <keywords/>
+            <keywords>ICEfaces Component Suite Showcase ACE Menu Type</keywords>
         </portlet-info>
     </portlet>
     <portlet>
@@ -1183,8 +1467,7 @@
         </supports>
         <portlet-info>
             <title>ACE Menu Bar</title>
-            <short-title>ICEfaces Component Suite Showcase ACE Menu Bar</short-title>
-            <keywords/>
+            <keywords>ICEfaces Component Suite Showcase ACE Menu Bar</keywords>
         </portlet-info>
     </portlet>
     <portlet>
@@ -1205,8 +1488,7 @@
         </supports>
         <portlet-info>
             <title>ACE Menu Bar Click</title>
-            <short-title>ICEfaces Component Suite Showcase ACE Menu Bar Click</short-title>
-            <keywords/>
+            <keywords>ICEfaces Component Suite Showcase ACE Menu Bar Click</keywords>
         </portlet-info>
     </portlet>
     <portlet>
@@ -1227,8 +1509,7 @@
         </supports>
         <portlet-info>
             <title>ACE Menu Bar Dynamic</title>
-            <short-title>ICEfaces Component Suite Showcase ACE Menu Bar Dynamic</short-title>
-            <keywords/>
+            <keywords>ICEfaces Component Suite Showcase ACE Menu Bar Dynamic</keywords>
         </portlet-info>
     </portlet>
     <portlet>
@@ -1249,8 +1530,49 @@
         </supports>
         <portlet-info>
             <title>ACE Menu Bar Effect</title>
-            <short-title>ICEfaces Component Suite Showcase ACE Menu Bar Effect</short-title>
-            <keywords/>
+            <keywords>ICEfaces Component Suite Showcase ACE Menu Bar Effect</keywords>
+        </portlet-info>
+    </portlet>
+    <portlet>
+        <portlet-name>menuBarMultiColumn</portlet-name>
+        <display-name>ACE Menu Bar Multi Column</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/portlet-view.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/menuBar/menuBarMultiColumn.xhtml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>ACE Menu Bar MultiColumn</title>
+            <keywords>ICEfaces Component Suite Showcase ACE Menu Bar MultiColumn</keywords>
+        </portlet-info>
+    </portlet>
+    <portlet>
+        <portlet-name>menuButton</portlet-name>
+        <display-name>ACE Menu Button</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/portlet-view.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/menuButton/menuButtonOverview.xhtml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>ACE Menu Button</title>
+            <keywords>ICEfaces Component Suite Showcase ACE Menu Button</keywords>
         </portlet-info>
     </portlet>
     <portlet>
@@ -1271,8 +1593,28 @@
         </supports>
         <portlet-info>
             <title>ACE Notification Panel</title>
-            <short-title>ICEfaces Component Suite Showcase ACE Notification Panel</short-title>
-            <keywords/>
+            <keywords>ICEfaces Component Suite Showcase ACE Notification Panel</keywords>
+        </portlet-info>
+    </portlet>
+    <portlet>
+        <portlet-name>notificationPanelClient</portlet-name>
+        <display-name>ACE Notification Panel Client</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/portlet-view.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/notificationpanel/notificationPanelClient.xhtml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>ACE Notification Panel Client</title>
+            <keywords>ICEfaces Component Suite Showcase ACE Notification Panel Client</keywords>
         </portlet-info>
     </portlet>
     <portlet>
@@ -1293,8 +1635,7 @@
         </supports>
         <portlet-info>
             <title>ACE Panel</title>
-            <short-title>ICEfaces Component Suite Showcase ACE Panel</short-title>
-            <keywords/>
+            <keywords>ICEfaces Component Suite Showcase ACE Panel</keywords>
         </portlet-info>
     </portlet>
     <portlet>
@@ -1315,8 +1656,7 @@
         </supports>
         <portlet-info>
             <title>ACE Panel Close</title>
-            <short-title>ICEfaces Component Suite Showcase ACE Panel Close</short-title>
-            <keywords/>
+            <keywords>ICEfaces Component Suite Showcase ACE Panel Close</keywords>
         </portlet-info>
     </portlet>
     <portlet>
@@ -1337,8 +1677,7 @@
         </supports>
         <portlet-info>
             <title>ACE Panel Header</title>
-            <short-title>ICEfaces Component Suite Showcase ACE Panel Header</short-title>
-            <keywords/>
+            <keywords>ICEfaces Component Suite Showcase ACE Panel Header</keywords>
         </portlet-info>
     </portlet>
     <portlet>
@@ -1359,8 +1698,7 @@
         </supports>
         <portlet-info>
             <title>ACE Panel Listener</title>
-            <short-title>ICEfaces Component Suite Showcase ACE Panel Listener</short-title>
-            <keywords/>
+            <keywords>ICEfaces Component Suite Showcase ACE Panel Listener</keywords>
         </portlet-info>
     </portlet>
     <portlet>
@@ -1381,8 +1719,7 @@
         </supports>
         <portlet-info>
             <title>ACE Panel Menu</title>
-            <short-title>ICEfaces Component Suite Showcase ACE Panel Menu</short-title>
-            <keywords/>
+            <keywords>ICEfaces Component Suite Showcase ACE Panel Menu</keywords>
         </portlet-info>
     </portlet>
     <portlet>
@@ -1403,8 +1740,7 @@
         </supports>
         <portlet-info>
             <title>ACE Panel Toggle</title>
-            <short-title>ICEfaces Component Suite Showcase ACE Panel Toggle</short-title>
-            <keywords/>
+            <keywords>ICEfaces Component Suite Showcase ACE Panel Toggle</keywords>
         </portlet-info>
     </portlet>
     <portlet>
@@ -1425,8 +1761,7 @@
         </supports>
         <portlet-info>
             <title>ACE Printer Overview</title>
-            <short-title>ICEfaces Component Suite Showcase ACE Printer Overview</short-title>
-            <keywords/>
+            <keywords>ICEfaces Component Suite Showcase ACE Printer Overview</keywords>
         </portlet-info>
     </portlet>
     <portlet>
@@ -1447,8 +1782,7 @@
         </supports>
         <portlet-info>
             <title>ACE Progress Bar</title>
-            <short-title>ICEfaces Component Suite Showcase ACE Progress Bar</short-title>
-            <keywords/>
+            <keywords>ICEfaces Component Suite Showcase ACE Progress Bar</keywords>
         </portlet-info>
     </portlet>
     <portlet>
@@ -1469,8 +1803,7 @@
         </supports>
         <portlet-info>
             <title>ACE Progress Bar Client</title>
-            <short-title>ICEfaces Component Suite Showcase ACE Progress Bar Client</short-title>
-            <keywords/>
+            <keywords>ICEfaces Component Suite Showcase ACE Progress Bar Client</keywords>
         </portlet-info>
     </portlet>
     <portlet>
@@ -1491,8 +1824,7 @@
         </supports>
         <portlet-info>
             <title>ACE Progress Bar Client And Server</title>
-            <short-title>ICEfaces Component Suite Showcase ACE Progress Bar Client And Server</short-title>
-            <keywords/>
+            <keywords>ICEfaces Component Suite Showcase ACE Progress Bar Client And Server</keywords>
         </portlet-info>
     </portlet>
     <portlet>
@@ -1513,8 +1845,7 @@
         </supports>
         <portlet-info>
             <title>ACE Progress Bar Polling</title>
-            <short-title>ICEfaces Component Suite Showcase ACE Progress Bar Polling</short-title>
-            <keywords/>
+            <keywords>ICEfaces Component Suite Showcase ACE Progress Bar Polling</keywords>
         </portlet-info>
     </portlet>
     <portlet>
@@ -1535,8 +1866,7 @@
         </supports>
         <portlet-info>
             <title>ACE Progress Bar Push</title>
-            <short-title>ICEfaces Component Suite Showcase ACE Progress Bar Push</short-title>
-            <keywords/>
+            <keywords>ICEfaces Component Suite Showcase ACE Progress Bar Push</keywords>
         </portlet-info>
     </portlet>
     <portlet>
@@ -1557,8 +1887,7 @@
         </supports>
         <portlet-info>
             <title>ACE Push Button</title>
-            <short-title>ICEfaces Component Suite Showcase ACE Push Button</short-title>
-            <keywords/>
+            <keywords>ICEfaces Component Suite Showcase ACE Push Button</keywords>
         </portlet-info>
     </portlet>
     <portlet>
@@ -1579,8 +1908,7 @@
         </supports>
         <portlet-info>
             <title>ACE Resizable</title>
-            <short-title>ICEfaces Component Suite Showcase ACE Resizable</short-title>
-            <keywords/>
+            <keywords>ICEfaces Component Suite Showcase ACE Resizable</keywords>
         </portlet-info>
     </portlet>
     <portlet>
@@ -1601,13 +1929,33 @@
         </supports>
         <portlet-info>
             <title>ACE Resize Listener</title>
-            <short-title>ICEfaces Component Suite Showcase ACE Resize Listener</short-title>
-            <keywords/>
+            <keywords>ICEfaces Component Suite Showcase ACE Resize Listener</keywords>
         </portlet-info>
     </portlet>
     <portlet>
-        <portlet-name>slider-async-input</portlet-name>
-        <display-name>ACE Slider-async-input</display-name>
+        <portlet-name>richTextEntry</portlet-name>
+        <display-name>ACE Rich Text Entry</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/portlet-view.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/richtextentry/richTextEntryOverview.xhtml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>ACE Rich Text Entry</title>
+            <keywords>ICEfaces Component Suite Showcase ACE Rich Text Entry</keywords>
+        </portlet-info>
+    </portlet>
+    <portlet>
+        <portlet-name>sliderAsyncInput</portlet-name>
+        <display-name>ACE Slider Async</display-name>
         <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
         <init-param>
             <name>javax.portlet.faces.defaultViewId.view</name>
@@ -1622,53 +1970,8 @@
             <portlet-mode>view</portlet-mode>
         </supports>
         <portlet-info>
-            <title>ACE Slider-async-input</title>
-            <short-title>ICEfaces Component Suite Showcase ACE Slider-async-input</short-title>
-            <keywords/>
-        </portlet-info>
-    </portlet>
-    <portlet>
-        <portlet-name>slider-async</portlet-name>
-        <display-name>ACE Slider-async</display-name>
-        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
-        <init-param>
-            <name>javax.portlet.faces.defaultViewId.view</name>
-            <value>/portlet-view.xhtml</value>
-        </init-param>
-        <init-param>
-            <name>org.icefaces.demo.viewPath</name>
-            <value>/resources/examples/ace/slider/slider-async.xhtml</value>
-        </init-param>
-        <supports>
-            <mime-type>text/html</mime-type>
-            <portlet-mode>view</portlet-mode>
-        </supports>
-        <portlet-info>
-            <title>ACE Slider-async</title>
-            <short-title>ICEfaces Component Suite Showcase ACE Slider-async</short-title>
-            <keywords/>
-        </portlet-info>
-    </portlet>
-    <portlet>
-        <portlet-name>slider-basic</portlet-name>
-        <display-name>ACE Slider-basic</display-name>
-        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
-        <init-param>
-            <name>javax.portlet.faces.defaultViewId.view</name>
-            <value>/portlet-view.xhtml</value>
-        </init-param>
-        <init-param>
-            <name>org.icefaces.demo.viewPath</name>
-            <value>/resources/examples/ace/slider/slider-basic.xhtml</value>
-        </init-param>
-        <supports>
-            <mime-type>text/html</mime-type>
-            <portlet-mode>view</portlet-mode>
-        </supports>
-        <portlet-info>
-            <title>ACE Slider-basic</title>
-            <short-title>ICEfaces Component Suite Showcase ACE Slider-basic</short-title>
-            <keywords/>
+            <title>ACE Slider Async</title>
+            <keywords>ICEfaces Component Suite Showcase ACE Slider Async</keywords>
         </portlet-info>
     </portlet>
     <portlet>
@@ -1689,8 +1992,49 @@
         </supports>
         <portlet-info>
             <title>ACE Slider</title>
-            <short-title>ICEfaces Component Suite Showcase ACE Slider</short-title>
-            <keywords/>
+            <keywords>ICEfaces Component Suite Showcase ACE Slider</keywords>
+        </portlet-info>
+    </portlet>
+    <portlet>
+        <portlet-name>sliderListener</portlet-name>
+        <display-name>ACE Slider Listener</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/portlet-view.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/slider/sliderListener.xhtml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>ACE Slider Listener</title>
+            <keywords>ICEfaces Component Suite Showcase ACE Slider Listener</keywords>
+        </portlet-info>
+    </portlet>
+    <portlet>
+        <portlet-name>sliderSubmission</portlet-name>
+        <display-name>ACE Slider Submission</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/portlet-view.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/slider/sliderSubmition.xhtml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>ACE Slider Submission</title>
+            <keywords>ICEfaces Component Suite Showcase ACE Slider Submission</keywords>
         </portlet-info>
     </portlet>
     <portlet>
@@ -1711,8 +2055,7 @@
         </supports>
         <portlet-info>
             <title>ACE Tabset Client Side</title>
-            <short-title>ICEfaces Component Suite Showcase ACE Tabset Client Side</short-title>
-            <keywords/>
+            <keywords>ICEfaces Component Suite Showcase ACE Tabset Client Side</keywords>
         </portlet-info>
     </portlet>
     <portlet>
@@ -1733,8 +2076,7 @@
         </supports>
         <portlet-info>
             <title>ACE Tabset Proxy</title>
-            <short-title>ICEfaces Component Suite Showcase ACE Tabset Proxy</short-title>
-            <keywords/>
+            <keywords>ICEfaces Component Suite Showcase ACE Tabset Proxy</keywords>
         </portlet-info>
     </portlet>
     <portlet>
@@ -1755,8 +2097,7 @@
         </supports>
         <portlet-info>
             <title>ACE Tabset Server Side</title>
-            <short-title>ICEfaces Component Suite Showcase ACE Tabset Server Side</short-title>
-            <keywords/>
+            <keywords>ICEfaces Component Suite Showcase ACE Tabset Server Side</keywords>
         </portlet-info>
     </portlet>
     <portlet>
@@ -1777,8 +2118,7 @@
         </supports>
         <portlet-info>
             <title>ACE Tabset</title>
-            <short-title>ICEfaces Component Suite Showcase ACE Tabset</short-title>
-            <keywords/>
+            <keywords>ICEfaces Component Suite Showcase ACE Tabset</keywords>
         </portlet-info>
     </portlet>
     <portlet>
@@ -1799,8 +2139,7 @@
         </supports>
         <portlet-info>
             <title>ACE Global Tooltip</title>
-            <short-title>ICEfaces Component Suite Showcase ACE Global Tooltip</short-title>
-            <keywords/>
+            <keywords>ICEfaces Component Suite Showcase ACE Global Tooltip</keywords>
         </portlet-info>
     </portlet>
     <portlet>
@@ -1821,8 +2160,7 @@
         </supports>
         <portlet-info>
             <title>ACE Tool Tip</title>
-            <short-title>ICEfaces Component Suite Showcase ACE Tool Tip</short-title>
-            <keywords/>
+            <keywords>ICEfaces Component Suite Showcase ACE Tool Tip</keywords>
         </portlet-info>
     </portlet>
 </portlet-app>

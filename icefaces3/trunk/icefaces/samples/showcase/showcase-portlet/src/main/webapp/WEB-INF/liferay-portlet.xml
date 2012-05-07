@@ -76,6 +76,11 @@
         <ajaxable>false</ajaxable>
     </portlet>
     <portlet>
+        <portlet-name>contextMenuMultiColumn</portlet-name>
+        <instanceable>false</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+    <portlet>
         <portlet-name>contextMenuTable</portlet-name>
         <instanceable>false</instanceable>
         <ajaxable>false</ajaxable>
@@ -87,6 +92,16 @@
     </portlet>
     <portlet>
         <portlet-name>dataExporterColumns</portlet-name>
+        <instanceable>false</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+    <portlet>
+        <portlet-name>dataExporterExcludeFromExport</portlet-name>
+        <instanceable>false</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+    <portlet>
+        <portlet-name>dataExporterRows</portlet-name>
         <instanceable>false</instanceable>
         <ajaxable>false</ajaxable>
     </portlet>
@@ -111,6 +126,16 @@
         <ajaxable>false</ajaxable>
     </portlet>
     <portlet>
+        <portlet-name>dataTableFind</portlet-name>
+        <instanceable>false</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+    <portlet>
+        <portlet-name>dataTableGrouping</portlet-name>
+        <instanceable>false</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+    <portlet>
         <portlet-name>dataTableLazyLoading</portlet-name>
         <instanceable>false</instanceable>
         <ajaxable>false</ajaxable>
@@ -121,12 +146,22 @@
         <ajaxable>false</ajaxable>
     </portlet>
     <portlet>
+        <portlet-name>dataTableMultiRowHeader</portlet-name>
+        <instanceable>false</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+    <portlet>
         <portlet-name>dataTablePaginator</portlet-name>
         <instanceable>false</instanceable>
         <ajaxable>false</ajaxable>
     </portlet>
     <portlet>
         <portlet-name>dataTablePanelExpansion</portlet-name>
+        <instanceable>false</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+    <portlet>
+        <portlet-name>dataTableResizableColumns</portlet-name>
         <instanceable>false</instanceable>
         <ajaxable>false</ajaxable>
     </portlet>
@@ -221,12 +256,17 @@
         <ajaxable>false</ajaxable>
     </portlet>
     <portlet>
-        <portlet-name>fileEntryListener</portlet-name>
+        <portlet-name>fileEntry</portlet-name>
         <instanceable>false</instanceable>
         <ajaxable>false</ajaxable>
     </portlet>
     <portlet>
-        <portlet-name>fileEntry</portlet-name>
+        <portlet-name>fileEntryFailPop</portlet-name>
+        <instanceable>false</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+    <portlet>
+        <portlet-name>fileEntryListener</portlet-name>
         <instanceable>false</instanceable>
         <ajaxable>false</ajaxable>
     </portlet>
@@ -242,6 +282,46 @@
     </portlet>
     <portlet>
         <portlet-name>linkButton</portlet-name>
+        <instanceable>false</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+    <portlet>
+        <portlet-name>list</portlet-name>
+        <instanceable>false</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+    <portlet>
+        <portlet-name>listBlock</portlet-name>
+        <instanceable>false</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+    <portlet>
+        <portlet-name>listDrag</portlet-name>
+        <instanceable>false</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+    <portlet>
+        <portlet-name>listDual</portlet-name>
+        <instanceable>false</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+    <portlet>
+        <portlet-name>listMulti</portlet-name>
+        <instanceable>false</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+    <portlet>
+        <portlet-name>listReorder</portlet-name>
+        <instanceable>false</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+    <portlet>
+        <portlet-name>listSelection</portlet-name>
+        <instanceable>false</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+    <portlet>
+        <portlet-name>logger</portlet-name>
         <instanceable>false</instanceable>
         <ajaxable>false</ajaxable>
     </portlet>
@@ -301,7 +381,22 @@
         <ajaxable>false</ajaxable>
     </portlet>
     <portlet>
+        <portlet-name>menuBarMultiColumn</portlet-name>
+        <instanceable>false</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+    <portlet>
+        <portlet-name>menuButton</portlet-name>
+        <instanceable>false</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+    <portlet>
         <portlet-name>notificationPanel</portlet-name>
+        <instanceable>false</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+    <portlet>
+        <portlet-name>notificationPanelClient</portlet-name>
         <instanceable>false</instanceable>
         <ajaxable>false</ajaxable>
     </portlet>
@@ -381,22 +476,27 @@
         <ajaxable>false</ajaxable>
     </portlet>
     <portlet>
-        <portlet-name>slider-async-input</portlet-name>
+        <portlet-name>richTextEntry</portlet-name>
         <instanceable>false</instanceable>
         <ajaxable>false</ajaxable>
     </portlet>
     <portlet>
-        <portlet-name>slider-async</portlet-name>
-        <instanceable>false</instanceable>
-        <ajaxable>false</ajaxable>
-    </portlet>
-    <portlet>
-        <portlet-name>slider-basic</portlet-name>
+        <portlet-name>sliderAsyncInput</portlet-name>
         <instanceable>false</instanceable>
         <ajaxable>false</ajaxable>
     </portlet>
     <portlet>
         <portlet-name>slider</portlet-name>
+        <instanceable>false</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+    <portlet>
+        <portlet-name>sliderListener</portlet-name>
+        <instanceable>false</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+    <portlet>
+        <portlet-name>sliderSubmission</portlet-name>
         <instanceable>false</instanceable>
         <ajaxable>false</ajaxable>
     </portlet>
