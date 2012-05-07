@@ -29,35 +29,35 @@
 
     <ui:define name="example">
 		<h:form id="exampleForm">
-			<table style="font-size: x-small;">
+			<table style="font-size: x-small;" id="overTable">
 				<tr>
 					<td valign="top" style="width:600px;">
-						<ace:dataTable value="#{todoListBean.items}" var="item" selectionMode="single" rowSelectListener="#{todoListBean.rowSelectListener}">
-							<ace:ajax event="deselect" render="@form" execute="@form" listener="#{todoListBean.rowDeselectListener}" />
-							<ace:column headerText="Description" sortBy="#{item.description}">
-								<h:outputText value="#{item.description}"/>
+						<ace:dataTable value="#{todoListBean.items}" var="item" selectionMode="single" rowSelectListener="#{todoListBean.rowSelectListener}" id="dynamicTable">
+							<ace:ajax event="deselect" render="@form" execute="@form" listener="#{todoListBean.rowDeselectListener}"/>
+							<ace:column headerText="Description" sortBy="#{item.description}" id="description">
+								<h:outputText value="#{item.description}" id="descriptionText"/>
 							</ace:column>
-							<ace:column headerText="Status" sortBy="#{item.status}">
-								<h:outputText value="#{item.status}"/>
+							<ace:column headerText="Status" sortBy="#{item.status}" id="status">
+								<h:outputText value="#{item.status}" id="statusText"/>
 							</ace:column>
-							<ace:column headerText="Created" sortBy="#{item.created}">
-								<h:outputText value="#{item.created}"/>
+							<ace:column headerText="Created" sortBy="#{item.created}" id="created">
+								<h:outputText value="#{item.created}" id="createdText"/>
 							</ace:column>
-							<ace:column headerText="Finished" sortBy="#{item.finished}">
-								<h:outputText value="#{item.finished}"/>
+							<ace:column headerText="Finished" sortBy="#{item.finished}" id="finished">
+								<h:outputText value="#{item.finished}" id="finishedText"/>
 							</ace:column>
 						</ace:dataTable>
 					</td>
 					<td valign="top">
-						<ace:menu type="plain" model="#{todoListBean.menu}"/>
+						<ace:menu type="plain" model="#{todoListBean.menu}"	id="activeMenu"/>
 					</td>
 				</tr>
 			</table>
 		</h:form>
-		<h:form>
+		<h:form id="inputForm">
 			<h:outputText value="Enter description: " />
-			<h:inputText style="width:400px;"  value="#{todoListBean.newItem}" />
-			<h:commandButton value="Add new task" actionListener="#{todoListBean.addNewItem}"/>
+			<h:inputText style="width:400px;"  value="#{todoListBean.newItem}" id="description"/>
+			<h:commandButton value="Add new task" actionListener="#{todoListBean.addNewItem}" id="submitButton"/>
 		</h:form>
     </ui:define>
 </ui:composition>

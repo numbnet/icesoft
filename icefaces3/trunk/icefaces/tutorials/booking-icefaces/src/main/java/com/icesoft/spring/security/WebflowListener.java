@@ -9,19 +9,37 @@ import org.icefaces.impl.application.WindowScopeManager;
 
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import java.lang.reflect.Method;
+import java.util.logging.Logger;
 
 /**
- *  WebflowListener to check to duplicate PhaseListener junk.
+ *  WebflowListener to check to duplicate the missing
+ *  functionality provided by AssignViewID PhaseListener
  */
 public class WebflowListener extends FlowExecutionListenerAdapter {
 
+    private Method mAssignViewId;
+    private final static Logger log = Logger.getLogger(WebflowListener.class.getName());
+
+    public WebflowListener() {
+
+        try {
+            mAssignViewId = BridgeSetup.class.
+            getDeclaredMethod("assignViewID",
+                                     new Class[]{javax.faces.context.ExternalContext.class});
+            mAssignViewId.setAccessible( true );
+
+        } catch (Throwable t) {
+            log.severe("Exception finding BridgeSetup.assignViewId method: " + t);
+        }
+    }
     /**
-	 * Called when a view is about to render in a view-state, before any render actions are executed.
-	 * @param context the current flow request context
-	 * @param view the view that is about to render
-	 * @param viewState the current view state
-	 */
-	public void viewRendering(RequestContext context, View view, StateDefinition viewState) {
+     * Called when a view is about to render in a view-state, before any render actions are executed.
+     * @param context the current flow request context
+     * @param view the view that is about to render
+     * @param viewState the current view state
+     */
+    public void viewRendering(RequestContext context, View view, StateDefinition viewState) {
 
 
         FacesContext fc = FacesContext.getCurrentInstance();
@@ -30,7 +48,14 @@ public class WebflowListener extends FlowExecutionListenerAdapter {
         String viewId = BridgeSetup.getViewID(ec);
         if (viewId == null ) {
             WindowScopeManager.determineWindowID( fc );
-            BridgeSetup.assignViewID( ec );
+            if (mAssignViewId != null) {
+                try {
+                    mAssignViewId.invoke( BridgeSetup.class,
+                                                new Object[] { ec }  );
+                } catch (Throwable t) {
+                    log.severe("Exception executing assignViewId: " + t);
+                }
+            }
         }
     }
 }
