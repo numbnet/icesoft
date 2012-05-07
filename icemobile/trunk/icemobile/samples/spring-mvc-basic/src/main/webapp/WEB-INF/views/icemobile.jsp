@@ -22,7 +22,7 @@
 		  		<h2>Form</h2>
 		  		<c:if test="${not empty message}">
 					<div id="message" class="success">${message}<br/>
-                        <img style="height:60px;width:60px;" src="resources/uploaded.jpg" >
+                        <img style="height:60px;width:60px;" src="${imgPath}" >
                     </div>	
 		  		</c:if>
 		  		<s:bind path="*">
@@ -43,7 +43,7 @@
 		  	<fieldset>
                <mobi:camera />
                <img style="height:60px;width:65px;vertical-align:middle;" id="camera-thumb" >
-               <img style="float:right;height:120px;width:120px;" src="resources/uploaded.jpg" >
+               <img style="float:right;height:120px;width:120px;" src="${imgPath}" >
 		  	</fieldset>
 
 			<fieldset class="checkbox">

@@ -55,18 +55,15 @@ public class ICEmobileController {
 
 	@RequestMapping(value="/icemobile", method=RequestMethod.POST)
 	public void processUpload(HttpServletRequest request, ModelBean modelBean, @RequestParam(value = "camera-file", required = false) MultipartFile file, @RequestParam(value = "camera", required = false) MultipartFile inputFile, Model model) throws IOException {
-
-        String fileName = "empty";
-        if (null != file)  {
-            fileName = file.getOriginalFilename();
-            file.transferTo(new File(request.getRealPath("/resources/uploaded.jpg")));
+        String newFileName = saveImage(request, file, inputFile);
+        if (((null != file) && !file.isEmpty()) || ((null != inputFile) && !inputFile.isEmpty()))  {
+            model.addAttribute("message", "Hello " + modelBean.getName() + ", your file '" + newFileName + "' was uploaded successfully.");
         }
-        if (null != inputFile)  {
-            fileName = inputFile.getOriginalFilename();
-            inputFile.transferTo(new File(request.getRealPath("/resources/uploaded.jpg")));
+        if (null != newFileName)  {
+            model.addAttribute("imgPath", newFileName);
+        } else {
+            model.addAttribute("imgPath", "resources/uploaded.jpg");
         }
-		model.addAttribute("message", "Hello " + modelBean.getName() + ", your file '" + fileName + "' was uploaded successfully.");
-		model.addAttribute("imgPath", "resources/uploaded.jpg");
 	}
 
 	@RequestMapping(value = "/campushr", method=RequestMethod.POST)
