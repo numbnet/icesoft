@@ -30,8 +30,8 @@
     <ui:define name="example">
         <h:form id="exampleForm">
             <ace:fileEntry id="fileEntry" callback="#{fileMD5EncodingCallback}" styleClass="ib" />
-            <h:commandButton styleClass="ib" value="Get MD5 Checksum" />
-            <div class="messages-holder"><h:messages styleClass="messages" showDetail="true" /></div>
+            <h:commandButton id="getMD5" styleClass="ib" value="Get MD5 Checksum" />
+            <div id="messages-holder" class="messages-holder"><h:messages id="messages" styleClass="messages" showDetail="true" /></div>
 
             <div style="clear:both; height:0px;">&#160;</div>
         </h:form>
