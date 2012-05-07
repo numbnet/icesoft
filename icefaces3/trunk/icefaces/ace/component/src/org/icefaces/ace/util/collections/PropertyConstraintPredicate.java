@@ -21,6 +21,8 @@ import org.icefaces.ace.model.filter.FilterConstraint;
 import javax.el.ELResolver;
 import javax.el.ValueExpression;
 import javax.faces.context.FacesContext;
+import java.text.DateFormat;
+import java.util.Date;
 
 public class PropertyConstraintPredicate implements Predicate {
     ValueExpression filterBy;
@@ -37,6 +39,9 @@ public class PropertyConstraintPredicate implements Predicate {
 
     public boolean evaluate(Object object) {
         Object value = filterBy.getValue(facesContext.getELContext());
+
+        if (value instanceof Date)
+            value = DateFormat.getDateInstance().format(value);
 
         if (value != null)
             return filterConstraint.applies(value.toString(), filterValue);
