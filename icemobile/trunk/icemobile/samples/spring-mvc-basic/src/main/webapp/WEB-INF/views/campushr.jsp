@@ -46,7 +46,6 @@
                <mobi:camera />
                <img style="height:60px;width:65px;vertical-align:middle;" id="camera-thumb" >
                <push:region group="camPush" page="/camregion" />
-               Yer image not here.
 		  	</fieldset>
 
 			<fieldset class="checkbox">
