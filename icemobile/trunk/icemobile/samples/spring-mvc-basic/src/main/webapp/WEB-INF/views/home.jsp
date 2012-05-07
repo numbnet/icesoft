@@ -26,6 +26,7 @@
 		<li><a href="<c:url value="/fileupload" />" title="fileupload">File Upload</a></li>
 		<li><a href="<c:url value="/icemobile" />" title="icemobile">Camera</a></li>
 		<li><a href="<c:url value="/campush" />" title="campush">Camera Push</a></li>
+		<li><a href="<c:url value="/campushr" />" title="campushr">Push Region</a></li>
 		<li><a href="<c:url value="/microphone" />" title="microphone">Microphone</a></li>
 		<li><a href="<c:url value="/camcorder" />" title="camcorder">Camcorder</a></li>
 		<li><a href="#icehtml">ICEmobile HTML</a></li>

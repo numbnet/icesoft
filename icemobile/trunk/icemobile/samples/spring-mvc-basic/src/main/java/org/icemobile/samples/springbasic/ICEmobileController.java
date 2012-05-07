@@ -30,8 +30,20 @@ public class ICEmobileController {
 	public void fileUploadForm() {
 	}
 
+	@RequestMapping(value="/camregion", method=RequestMethod.GET)
+	public void camRegion(HttpServletRequest request, Model model) {
+		model.addAttribute("isGET", Boolean.TRUE);
+		model.addAttribute("imgPath", getCurrentFileName(request));
+	}
+
 	@RequestMapping(value="/campush", method=RequestMethod.GET)
 	public void camPush(HttpServletRequest request, Model model) {
+		model.addAttribute("isGET", Boolean.TRUE);
+		model.addAttribute("imgPath", getCurrentFileName(request));
+	}
+
+	@RequestMapping(value="/campushr", method=RequestMethod.GET)
+	public void camPushr(HttpServletRequest request, Model model) {
 		model.addAttribute("isGET", Boolean.TRUE);
 		model.addAttribute("imgPath", getCurrentFileName(request));
 	}
@@ -56,6 +68,12 @@ public class ICEmobileController {
 		model.addAttribute("message", "Hello " + modelBean.getName() + ", your file '" + fileName + "' was uploaded successfully.");
 		model.addAttribute("imgPath", "resources/uploaded.jpg");
 	}
+
+	@RequestMapping(value = "/campushr", method=RequestMethod.POST)
+	public void pushCamerar(HttpServletRequest request, ModelBean modelBean, @RequestParam(value = "camera-file", required = false) MultipartFile file, @RequestParam(value = "camera", required = false) MultipartFile inputFile, Model model) throws IOException {
+        
+        this.pushCamera(request, modelBean, file, inputFile, model);
+    }
 
 	@RequestMapping(value = "/campush", method=RequestMethod.POST)
 	public void pushCamera(HttpServletRequest request, ModelBean modelBean, @RequestParam(value = "camera-file", required = false) MultipartFile file, @RequestParam(value = "camera", required = false) MultipartFile inputFile, Model model) throws IOException {
