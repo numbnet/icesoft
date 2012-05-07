@@ -14,59 +14,60 @@
   ~ express or implied. See the License for the specific language
   ~ governing permissions and limitations under the License.
   -->
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" 
-	    xmlns:h="http://java.sun.com/jsf/html"
-	    xmlns:f="http://java.sun.com/jsf/core" 
-	    xmlns:ui="http://java.sun.com/jsf/facelets"
-	    xmlns:ice="http://www.icesoft.com/icefaces/component">
-    <ui:insert name="metadata"/>
-	
-    <h:head>
-        <title id="title">#{msgs['showcase.title']}</title>
-        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-        <h:outputStylesheet library="css" name="demo_template.css"/>
-        <h:outputStylesheet library="css" name="override_styles.css"/>
-        <h:outputStylesheet library="css" name="showcase_styles.css"/>
-        <ice:outputStyle href="./xmlhttp/css/rime/rime.css" />
-    </h:head>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:ice="http://www.icesoft.com/icefaces/component">
+<ui:insert name="metadata"/>
 
-    <h:body styleClass="suite ice-skin-rime">
-        <f:view contentType="text/html">
-            <div id="header">
-                <ui:insert name="suite-select-menu"/>
-            </div>
-            
-            <div id="container">
-                <div id="mid" class="full-width">
+<h:head>
+    <title id="title">#{msgs['showcase.title']}</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <ice:outputStyle href="./xmlhttp/css/rime/rime.css"/>
+</h:head>
+
+<h:body styleClass="suite ice-skin-rime">
+    <h:outputStylesheet library="css" name="demo_template.css" target="head"/>
+    <h:outputStylesheet library="css" name="override_styles.css" target="head"/>
+    <h:outputStylesheet library="css" name="showcase_styles.css" target="head"/>
+    <f:view contentType="text/html">
+        <div id="header">
+            <ui:insert name="suite-select-menu"/>
+        </div>
+
+        <div id="container">
+            <div id="mid" class="full-width">
                     <span id="menu">
                         <div class="menuContainer">
-                                <ui:insert name="suite-menu"/>
+                            <ui:insert name="suite-menu"/>
                         </div>
                     </span>
                     <span id="primary">
-                        <!-- TODO: Implement bread crumbs--> 
+                        <!-- TODO: Implement bread crumbs-->
                         <div class="breadCrumbs">
                         </div>
-                        <!-- todo implement theme selection, going to be tricky... --> 
+                        <!-- todo implement theme selection, going to be tricky... -->
                         <div class="themeSelect">
                         </div>
 
                         <ui:insert name="component-example"/>
                     </span>
-                </div>
-
-                <div id="footer">
-                    <!--
-                    <ul class="footer-nav">
-                            <li><a>about</a></li>
-                            <li><a>contact</a></li>
-                            <li><a>components....</a></li>
-                    </ul>
-                    -->
-                    <p>&#xA9; 2012 ICEsoft Technologies Inc.</p>
-                </div>
             </div>
-        </f:view>
-    </h:body>
+
+            <div id="footer">
+                <!--
+                <ul class="footer-nav">
+                        <li><a>about</a></li>
+                        <li><a>contact</a></li>
+                        <li><a>components....</a></li>
+                </ul>
+                -->
+                <p>&#xA9; 2012 ICEsoft Technologies Inc.</p>
+            </div>
+        </div>
+    </f:view>
+</h:body>
 </html>
