@@ -714,7 +714,7 @@ class EnvConfig {
         ariaEnabled = decodeBoolean(initMap, EnvUtils.ARIA_ENABLED, true, info);
         blockUIOnSubmit = decodeBoolean(initMap, EnvUtils.BLOCK_UI_ON_SUBMIT, false, info);
         compressDOM = decodeBoolean(initMap, EnvUtils.COMPRESS_DOM, false, info);
-        compressResources = decodeBoolean(initMap, EnvUtils.COMPRESS_RESOURCES, true, info);
+        compressResources = decodeBoolean(initMap, EnvUtils.COMPRESS_RESOURCES, false, info);
         connectionLostRedirectURI = decodeString(initMap, EnvUtils.CONNECTION_LOST_REDIRECT_URI, null, info);
         diffConfig = decodeString(initMap, EnvUtils.DIFF_CONFIG, null, info);
         deltaSubmit = decodeBoolean(initMap, EnvUtils.DELTA_SUBMT, false, info);
