@@ -90,7 +90,7 @@
                 <ace:column headerText="Name" sortBy="#{car.name}">
                     <h:outputText id="nameCell" value="#{car.name}"/>
                 </ace:column>
-                <ace:column headerText="Chassis" sortBy="#{car.chassis}" groupBy="#{car.chassis}">
+                <ace:column headerText="Chassis" sortBy="#{car.chassis}" groupBy="#{car.chassis}" sortAscending="true">
                     <h:outputText id="chassisCell" value="#{car.chassis}"/>
                 </ace:column>
                 <ace:column headerText="Weight (lbs)" sortBy="#{car.weight}" filterBy="#{car.weight}">
