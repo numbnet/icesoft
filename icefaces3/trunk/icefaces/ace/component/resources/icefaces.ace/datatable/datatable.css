@@ -257,6 +257,7 @@
 }
 .ui-datatable .ui-row-toggler-parent > a.ui-icon {
     display:inline-block;
+    *display:block; /* IE7 hack */
 }
 .ui-datatable .ui-icon-pencil, .ui-datatable .ui-icon-check, .ui-datatable .ui-icon-close {
     margin-left:auto;
