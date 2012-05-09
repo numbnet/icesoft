@@ -9201,7 +9201,7 @@ $.widget("ui.dialog", {
 			titleId = $.ui.dialog.getTitleId(self.element),
 
 			uiDialog = (self.uiDialog = $('<div></div>'))
-				.appendTo(document.body)
+				.appendTo(this.element.parent())
 				.hide()
 				.addClass(uiDialogClasses + options.dialogClass)
 				.css({
