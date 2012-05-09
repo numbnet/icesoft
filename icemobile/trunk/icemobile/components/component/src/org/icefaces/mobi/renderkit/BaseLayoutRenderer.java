@@ -16,8 +16,10 @@
 
 package org.icefaces.mobi.renderkit;
 
+
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
 import java.io.IOException;
 
 
@@ -45,5 +47,38 @@ public class BaseLayoutRenderer extends CoreRenderer {
         }
         child.encodeEnd(facesContext);
     }
+    /**
+     * used by content pane controllers...implement ContentPaneController
+     * @param context
+     * @param uiComponent
+     * @throws IOException
+     */
+    protected void encodeHidden(FacesContext context, UIComponent uiComponent) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        String clientId = uiComponent.getClientId(context);
+        writer.startElement("span", uiComponent);
+        writer.startElement("input", uiComponent);
+        writer.writeAttribute("type", "hidden", "type");
+        writer.writeAttribute("id", clientId+"_hidden", "id");
+        writer.writeAttribute("name", clientId+"_hidden", "name");
+        writer.endElement("input");
+        writer.endElement("span");
+    }
 
+    /**
+     * used by classes which implement ContentPaneController
+     * @param context
+     * @param component
+     * @param oldIndex
+     * @param id
+     * @return
+     */
+     protected int findIndex(FacesContext context, UIComponent component, int oldIndex, String id){
+        for (int i=0; i < component.getChildCount();i++){
+            if (component.getChildren().get(i).getClientId(context).equals(id)){
+                  return i;
+            }
+        }
+        return oldIndex;
+    }
 }

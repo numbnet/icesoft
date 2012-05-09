@@ -19,9 +19,15 @@ import javax.faces.component.UIComponent;
         rendererType = "org.icefaces.ContentPaneRenderer",
         extendsClass = "javax.faces.component.UIPanel",
         componentFamily = "org.icefaces.ContentPane",
-        tlddoc = "This mobility component controls the which of it's child panels is rendered.  No client behavior" +
+        tlddoc = "This mobility component is a child of several different layout containers.  No client behavior" +
                 " goes with this component.  In order to have any client-side behavior, it must be used with one" +
-                " of the other layout components. "
+                " of the other layout components.  Children of contentStack, accordion or tabSet, or any other mobility" +
+                " component which implements ContentPaneController.  The cacheType determines whether the children" +
+                " of this component/panel  are " +
+                " a) tobeconstructed = constructed in the server side component tree" +
+                " b) constructed = children are constructed and present in server side component tree" +
+                " c) client = children of this component are not only constructed but also are rendered" +
+                "    on the client --best for static dataa  "
 )
 
 public class ContentPaneMeta extends UIPanelMeta{
@@ -34,8 +40,8 @@ public class ContentPaneMeta extends UIPanelMeta{
             " and child panel to scroll within it. If accordionTitle is not null, then this should default to false")
      private boolean scrollable;
 
-     @Property(defaultValue=" ", tlddoc="used when ContentPane is child of Accordion")
-     private String accordionTitle;
+     @Property(defaultValue=" ", tlddoc="used when ContentPane is child of Accordion or tabSet")
+     private String title;
 
      @Property(tlddoc = "style will be rendered on the root element of this " +
      "component.")

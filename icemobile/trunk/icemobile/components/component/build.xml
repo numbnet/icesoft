@@ -576,16 +576,19 @@
                 name="pagepanel" skin="honeycomb"/>
         <includeresources dir="src/org/icefaces/mobi/component/pagepanel/bberry"
                           name="pagepanel" skin="bberry"/>
-       <!-- Accordion-->
-        <includeresources dir="src/org/icefaces/mobi/component/accordion/iphone"
-                          name="accordion" skin="iphone"/>
-        <includeresources dir="src/org/icefaces/mobi/component/accordion/ipad"
-                          name="accordion" skin="ipad"/>
         <!-- ContentPane-->
          <includeresources dir="src/org/icefaces/mobi/component/contentpane/ipad"
                            name="contentpane" skin="ipad"/>
         <includeresources dir="src/org/icefaces/mobi/component/contentpane/ipad"
                            name="contentpane" skin="iphone"/>
+       <!-- Accordion-->
+        <includeresources dir="src/org/icefaces/mobi/component/accordion/iphone"
+                          name="accordion" skin="iphone"/>
+        <includeresources dir="src/org/icefaces/mobi/component/accordion/ipad"
+                          name="accordion" skin="ipad"/>
+       <!-- TabSet-->
+        <includeresources dir="src/org/icefaces/mobi/component/tabset/ipad"
+                          name="tabset" skin="ipad"/>
         <!-- Process sprites, if use.sprites is set -->
         <antcall target="sprites"/>
 
