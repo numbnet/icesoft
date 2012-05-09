@@ -29,6 +29,12 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
+import android.view.LayoutInflater;
+import android.widget.EditText;
+import android.content.DialogInterface;
+import android.webkit.HttpAuthHandler;
+import android.view.ViewGroup;
 import android.os.Bundle;
 import android.content.res.Configuration;
 import android.view.Window;
@@ -96,6 +102,9 @@ public class ICEmobileContainer extends Activity
     protected static final int PROGRESS_DIALOG = 0;
     private static final String PREFERENCE_PROGRESS_BAR_KEY = "progressBar";
 
+    // Authentication dialog
+    protected static final int AUTH_DIALOG = 2;
+
     private WebView mWebView;
     private Handler mHandler = new Handler();
     private UtilInterface utilInterface;
@@ -125,6 +134,8 @@ public class ICEmobileContainer extends Activity
     private boolean accelerated;
     private boolean c2dmIntent=false;
     private boolean reloadOnC2dm=true;
+    private String authUser;
+    private String authPw;
 
     /** Called when the activity is first created. */
     @Override
@@ -412,6 +423,17 @@ public class ICEmobileContainer extends Activity
 	    public void onLoadResource(WebView view, String url) {
 	    super.onLoadResource(view, url);
 	}
+
+	@Override
+	    public void onReceivedHttpAuthRequest(WebView view, HttpAuthHandler handler, 
+						  String host, String realm) {
+	    self.showDialog(AUTH_DIALOG);
+	    if (authUser != null && authPw != null) {
+		handler.proceed(authUser, authPw);
+	    } else {
+		handler.cancel();
+	    }
+	}
     }    
 
     final class ICEfacesWebChromeClient extends WebChromeClient 
@@ -663,6 +685,36 @@ public class ICEmobileContainer extends Activity
             progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
             progressDialog.setMessage("Loading...");
             return progressDialog;
+	case AUTH_DIALOG:
+	    AlertDialog.Builder builder;
+	    AlertDialog authDialog;
+
+	    LayoutInflater inflater = (LayoutInflater) self.getSystemService(LAYOUT_INFLATER_SERVICE);
+	    View layout = inflater.inflate(R.layout.auth_dialog,
+					   (ViewGroup) findViewById(R.id.auth_root));
+	    final EditText user = (EditText) layout.findViewById(R.id.auth_user_input);
+	    final EditText pw = (EditText) layout.findViewById(R.id.auth_pw_input);
+
+	    builder = new AlertDialog.Builder(self);
+	    builder.setTitle(R.string.auth_title);
+	    builder.setView(layout);
+	    builder.setNegativeButton(R.string.auth_cancel, new DialogInterface.OnClickListener() {
+		    public void onClick(DialogInterface dialog, int whichButton) {
+			authUser = null;
+			authPw = null;
+			removeDialog(AUTH_DIALOG);
+		    }
+		});
+ 
+	    builder.setPositiveButton(R.string.auth_login, new DialogInterface.OnClickListener() {
+		    public void onClick(DialogInterface dialog, int which) {
+			authUser = user.getText().toString();
+			authPw = pw.getText().toString();
+			removeDialog(AUTH_DIALOG);
+		    }
+		    });
+	    authDialog = builder.create();
+	    return authDialog;
         default:
             return null;
         }
