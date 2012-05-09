@@ -26,4 +26,9 @@
     <string name="stop">Stop</string>
     <string name="networkDialogTitle">Internet Unavailable</string>
     <string name="networkDialogMsg">Check your network settings</string>
+    <string name="auth_title">Please Login</string>
+    <string name="auth_user_title">User Name: </string>
+    <string name="auth_pw_title">Password: </string>
+    <string name="auth_login">Login</string>
+    <string name="auth_cancel">Cancel</string>
 </resources>
