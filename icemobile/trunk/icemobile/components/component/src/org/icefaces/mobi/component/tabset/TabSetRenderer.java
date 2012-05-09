@@ -101,11 +101,15 @@ public class TabSetRenderer extends BaseLayoutRenderer {
                 if (cp.getCacheType().equals(ContentPane.CacheType.client.name())) {
                     client = true;
                 }
+                String height = controller.getFixedHeight();
                 writer.startElement(HTML.LI_ELEM, uiComponent);
                 writer.writeAttribute(HTML.ID_ATTR, clientId+"tab_"+i, HTML.ID_ATTR);
                 StringBuilder sb = new StringBuilder("mobi.tabsetController.showContent('").append(clientId);
                 sb.append("', this, ").append("{");
                 sb.append("singleSubmit: true, tIndex: ").append(i);
+                if (null!=height){
+                    sb.append(",height: ").append(height);
+                }
                 sb.append(",client: ").append(client);
                 sb.append("});");
                 writer.writeAttribute("onclick", sb.toString(), "onclick");
@@ -145,7 +149,7 @@ public class TabSetRenderer extends BaseLayoutRenderer {
         writer.writeAttribute("text", "text/javascript", null);
         StringBuilder cfg = new StringBuilder("{singleSubmit: false");
    /*     boolean autoheight = pane.isAutoHeight();  */
-        cfg.append(", index: ").append(index);
+        cfg.append(", tIndex: ").append(index);
         cfg.append("}");
          //just have to add behaviors if we are going to use them.
         writer.write("mobi.tabsetController.initClient('" + clientId + "'," +cfg.toString()+");");

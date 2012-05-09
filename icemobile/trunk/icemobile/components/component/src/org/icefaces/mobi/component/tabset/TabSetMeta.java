@@ -32,17 +32,20 @@ public class TabSetMeta extends UIPanelMeta {
      @Property(tlddoc="Style class of the container element.")
      private String styleClass;
 
-     @Property(tlddoc = "If true then all tabs except the active one will " +
+ /*    @Property(tlddoc = "If true then all tabs except the active one will " +
         "be disabled and can not be selected.")
-     private boolean disabled;
+     private boolean disabled; */
 
-     @Property(tlddoc="Effect to use when toggling the panes.", defaultValue="fade")
-     private String effect;
+     @Property(
+         tlddoc="fixeHeight can be used to fix the height of the container. Must be valid height for element.style.height, " +
+                 "for example: 200px.  If this attribute it not used, a calculation will be made to fix the height of the" +
+                 " container to the largest height of its children")
+     private String fixedHeight;
 
      @Property(tlddoc="MethodExpression representing a method that will be " +
         "invoked when the selected TabPane has changed. The expression " +
         "must evaluate to a public method that takes a ValueChangeEvent " +
-        "parameter, with a return type of void.",
+        "parameter, with a return type of void. NOT IMPLEMENTED YET!!!",
         expression= Expression.METHOD_EXPRESSION,
         methodExpressionArgument="javax.faces.event.ValueChangeEvent")
      private MethodExpression tabChangeListener;
