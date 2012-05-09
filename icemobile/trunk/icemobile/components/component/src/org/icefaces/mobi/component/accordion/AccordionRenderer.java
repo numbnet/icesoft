@@ -110,31 +110,4 @@ public class AccordionRenderer extends BaseLayoutRenderer {
         writer.endElement("script");
         writer.endElement("span");
     }
-
-    /**
-     * move this into one of the base renderer classes for reuse
-     * @param context
-     * @param uiComponent
-     * @throws IOException
-     */
-    public void encodeHidden(FacesContext context, UIComponent uiComponent) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
-        Accordion accordion = (Accordion) uiComponent;
-        String clientId = accordion.getClientId(context);
-        writer.startElement("span", uiComponent);
-        writer.startElement("input", uiComponent);
-        writer.writeAttribute("type", "hidden", "type");
-        writer.writeAttribute("id", clientId+"_hidden", "id");
-        writer.writeAttribute("name", clientId+"_hidden", "name");
-        writer.endElement("input");
-        writer.endElement("span");
-    }
-    private int findIndex(FacesContext context, Accordion accordion, int oldIndex, String id){
-        for (int i=0; i < accordion.getChildCount();i++){
-            if (accordion.getChildren().get(i).getClientId(context).equals(id)){
-                  return i;
-            }
-        }
-        return oldIndex;
-    }
 }

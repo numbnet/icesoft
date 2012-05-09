@@ -2,13 +2,13 @@ package org.icefaces.mobi.component.contentpane;
 
 import org.icefaces.mobi.component.accordion.Accordion;
 import org.icefaces.mobi.component.contentstack.ContentStack;
+import org.icefaces.mobi.component.tabset.TabSet;
 import org.icefaces.mobi.renderkit.BaseLayoutRenderer;
 import org.icefaces.mobi.utils.HTML;
 import org.icefaces.mobi.utils.Utils;
 import org.icefaces.mobi.api.ContentPaneController;
 
 import javax.faces.component.UIComponent;
-import javax.faces.component.UIForm;
 import javax.faces.component.UIPanel;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -27,10 +27,12 @@ public class ContentPaneRenderer extends BaseLayoutRenderer {
         ContentPane pane = (ContentPane) uiComponent;
         String cacheType = checkCacheType(pane.getCacheType().toLowerCase().trim());
         if (parent instanceof Accordion){
-              Accordion accordion = (Accordion)parent;
+             Accordion accordion = (Accordion)parent;
               //eventually this will be replaced by facet to allow developer to design their own?
-              encodePaneAccordionHandle(facesContext, uiComponent, accordion);
-        }else {
+             encodePaneAccordionHandle(facesContext, uiComponent, accordion);
+        } else if (parent instanceof TabSet){
+            encodeTabSetPage(facesContext, uiComponent);
+        }  else {
             ResponseWriter writer = facesContext.getResponseWriter();
             String clientId = uiComponent.getClientId(facesContext);
             String contentClass = ContentPane.CONTENT_HIDDEN_CLASS.toString();
@@ -59,16 +61,17 @@ public class ContentPaneRenderer extends BaseLayoutRenderer {
 
         //if I am clientSide, I will always be present and always render
         if (cacheType.equals("client")){
-            logger.info("cacheType is client for id="+uiComponent.getId());
-            super.renderChildren(facesContext, uiComponent);
-            return;
+      //      logger.info("rendering the children of client cachetype="+uiComponent.getClientId(facesContext));
+            Utils.renderChildren(facesContext, uiComponent);
         }
         //am I the selected pane?  Can I count on the taghandler to already have
         //things constructed?? assume so for now.
     //    logger.info("selectedId="+selectedId+" clientId="+clientId);
-        if (iAmSelected(facesContext, uiComponent)){
-            super.renderChildren(facesContext, uiComponent);
+         else if (iAmSelected(facesContext, uiComponent)){
+         //   logger.info("rendering the children of "+uiComponent.getClientId(facesContext));
+            Utils.renderChildren(facesContext, uiComponent);
         }
+
     }
 
 
@@ -85,7 +88,6 @@ public class ContentPaneRenderer extends BaseLayoutRenderer {
             logger.info("Parent must implement ContentPaneController-> has instead="+parent.getClass().getName());
             return false;
         }
-        ContentPane pane = (ContentPane)uiComponent;
         String clientId = uiComponent.getClientId(facesContext);
         return (selectedId.equals(clientId));
     }
@@ -98,36 +100,33 @@ public class ContentPaneRenderer extends BaseLayoutRenderer {
     }
 
 
-    /* if we only want to render the selected child of the accordion */
-    public void encodeAccordionChildren(FacesContext facesContext, UIComponent uiComponent, Object parent)
-           throws IOException {
-        Accordion accordion = (Accordion)parent;
-        int activeIndex = accordion.getActiveIndex();
-        if (accordion.getChildCount() <=0){
-                // || logger.isLoggable(Level.FINER)) {
-            logger.finer("this component must have panels defined as children. Please read DOCS.");
-            return;
+    private void encodeTabSetPage(FacesContext facesContext, UIComponent uiComponent)
+            throws IOException{
+        TabSet tabSet = (TabSet)uiComponent.getParent();
+        String pageClass = TabSet.TABSET_HIDDEN_PAGECLASS.toString();
+        if (iAmSelected(facesContext, uiComponent)){
+            pageClass = TabSet.TABSET_VISIBLE_PAGECLASS.toString();
         }
-        UIComponent defaultPane = accordion.getChildren().get(0);
-        if (activeIndex>0 && activeIndex <=accordion.getChildCount()) {
-            defaultPane = accordion.getChildren().get(activeIndex);
-        }
-        if (defaultPane instanceof UIPanel) {
-            Utils.renderChildren(facesContext, defaultPane);
-        }
-
-
+        ResponseWriter writer = facesContext.getResponseWriter();
+        String clientId = uiComponent.getClientId(facesContext);
+            /* write out root tag.  For current incarnation html5 semantic markup is ignored */
+        writer.startElement(HTML.DIV_ELEM, uiComponent);
+        writer.writeAttribute(HTML.ID_ATTR, clientId, HTML.ID_ATTR);
+            // apply default style class for panel-stack  ??
+            //if cacheType is client and not selected must use invisible rendering
+        writer.writeAttribute("class", pageClass, "class");
     }
-
 
     public void encodeEnd(FacesContext facesContext, UIComponent uiComponent)
           throws IOException {
          ResponseWriter writer = facesContext.getResponseWriter();
+      //   logger.info(" PARENT FOR SECTION END IS ="+uiComponent.getParent().getClass().getName());
          if (uiComponent.getParent() instanceof Accordion){
              writer.endElement(HTML.SECTION_ELEM);
              return;
+         }  else {
+             writer.endElement(HTML.DIV_ELEM);
          }
-         writer.endElement(HTML.DIV_ELEM);
     }
 
     public void encodePaneAccordionHandle(FacesContext facesContext, UIComponent uiComponent, Accordion accordion)
@@ -171,7 +170,7 @@ public class ContentPaneRenderer extends BaseLayoutRenderer {
          writer.writeAttribute("class", pointerClass, "class");
          writer.write(Accordion.ACCORDION_RIGHT_POINTING_POINTER);
          writer.endElement(HTML.DIV_ELEM);
-         String title = pane.getAccordionTitle();
+         String title = pane.getTitle();
          writer.write(title);
          writer.endElement(HTML.DIV_ELEM);
     }
