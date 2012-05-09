@@ -40,6 +40,10 @@
         <component-type>org.icefaces.impl.component.Push</component-type>
         <component-class>org.icefaces.impl.component.Push</component-class>
     </component>
+    <component>
+        <component-type>org.icefaces.impl.component.NavigationNotifier</component-type>
+        <component-class>org.icefaces.impl.component.NavigationNotifier</component-class>
+    </component>
     <lifecycle>
         <phase-listener>org.icefaces.impl.event.DeltaSubmitPhaseListener</phase-listener>
         <phase-listener>org.icefaces.impl.event.FacesMessagesPhaseListener</phase-listener>
@@ -55,6 +59,7 @@
         <resource-handler>org.icefaces.impl.push.DynamicResourceDispatcher</resource-handler>
         <resource-handler>org.icefaces.application.ResourceRegistry</resource-handler>
         <resource-handler>org.icefaces.impl.application.WindowScopeManager</resource-handler>
+        <resource-handler>org.icefaces.impl.component.NavigationNotifierHandler</resource-handler>
         <!-- SessionTimeoutMonitor needs be the last in the list of resource handlers so that it executes first. -->
         <resource-handler>org.icefaces.impl.application.SessionTimeoutMonitor</resource-handler>
         <el-resolver>org.icefaces.impl.application.WindowELResolver</el-resolver>
