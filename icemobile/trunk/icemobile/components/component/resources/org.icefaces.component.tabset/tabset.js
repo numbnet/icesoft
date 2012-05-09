@@ -8,11 +8,23 @@
             hidden.value = value;
         }
     }
+     /* taken from accordion with slight modifications */
+    function calcMaxChildHeight(containerEl){
+        var mxht = 0;
+        //find all sections of the clientId and calc height.  set maxheight and height to max height of the divs
+        var children = containerEl.getElementsByTagName('div');
+        for (var i= 0; i < children.length; i++){
+           if ( children[0].scrollHeight > mxht) {
+               mxht= children[0].scrollHeight;
+           }
+        }
+        return mxht;
+    }
     function hasClass(ele,cls) {
 	       return ele.className.match(new RegExp('(\\s|^)'+cls+'(\\s|$)'));
     }
     function addClass(ele,cls) {
-            if (!this.hasClass(ele,cls)) ele.className =cls;
+            if (hasClass(ele,cls)) ele.className =cls;
     }
     function removeClass(ele,cls) {
          if (hasClass(ele,cls)) {
@@ -30,7 +42,18 @@
         var tabContainer = document.getElementById(clientId);
         var tabContent = document.getElementById(clientId+"_tabContent");
         var cfg = cfgIn;
+        var tabIndex = cfgIn.tIndex;
+        if (cfgIn.height){
+            tabContainer.style.height = height;
+        } else {
+             var ht =  calcMaxChildHeight(tabContent);
+             tabContent.style.height =  ht+"px";
+        }
+        var contents = tabContent.childNodes;
+        var newPage = contents[tabIndex];
+        newPage.className="mobi-tabpage";
         // set current tab
+     //   var tabIndex = cfgIn.tIndex || 0;
         //hide two tab contents we don't need
     /*    var pages = tabContent.getElementsByTagName("div");
         for (var i = 1; i < pages.length; i++) {
@@ -50,27 +73,36 @@
               var current = parent.getAttribute("data-current");
               var tabIndex = cfgIn.tIndex || 0;
               var isClient = cfgIn.client || false;
-              updateHidden(myTabId, tabIndex);
-              if (!isClient){
-                    ice.se(null, myTabId);
-              }
-              //remove class of activetabheader and hide old contents
               var currCtrl = myTabId+"tab_"+current;
               var oldCtrl =  document.getElementById(currCtrl);
-              removeClass(oldCtrl, "activeTab ");
-
-              var navitem = el;
-              navitem.setAttribute("class","activeTab");
               var contents = tabContent.childNodes;
-              contents[current].style.opacity = 0;
-              contents[current].style.visibility = "hidden";
-              contents[tabIndex].style.opacity = 1;
-              contents[tabIndex].style.visibility = "visible";
+              updateHidden(myTabId, tabIndex);
               parent.setAttribute("data-current",tabIndex);
-           },
+              if (!isClient){
+                    ice.se(null, myTabId);
+              } else {
+                  var newPage = contents[tabIndex];
+                  newPage.className="mobi-tabpage";
+              //remove class of activetabheader and hide old contents
+                 removeClass(oldCtrl, "activeTab ");
+                 el.setAttribute("class","activeTab");
+              }
+              var oldPage = contents[current];
+              oldPage.className = "mobi-tabpage-hidden";
+        },
        updateProperties: function (clientId, cfgUpd) {
-                cfg = cfgUpd; //not sure I need to keep this?
-                //server may want to push new dynamic values ??
+                if (cfgUpd.tIndex != tabIndex){
+                    tabIndex = cfgUpd.tIndex;
+                    var tabsId = clientId+"_tabs";
+                    var tabElem = document.getElementById(tabsId);
+                    if (tabElem){
+                        var lis = tabElem.getElementsByTagName("li");
+                        var contents = tabContent.childNodes;
+                        var newPage = contents[tabIndex];
+                        newPage.className = "mobi-tabpage";
+                    }
+                }
+
             }
        }
     }

@@ -1,0 +1,104 @@
+<!--
+  ~ Copyright 2004-2012 ICEsoft Technologies Canada Corp.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the
+  ~ License. You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an "AS
+  ~ IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+  ~ express or implied. See the License for the specific language
+  ~ governing permissions and limitations under the License.
+  -->
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
+<h:head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport"
+          content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;"/>
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <meta name="apple-mobile-web-app-status-bar-style" content="black"/>
+    <title>ContentPane</title>
+
+    <mobi:deviceStylesheet
+            name="#{themeSwitcher.theme}" media="screen" />
+</h:head>
+
+<h:body>
+
+     <h:form id="selectForm">
+       <h:panelGroup id="selectorGroup">
+         <h:outputText  value="select the pane to open:-"/>
+         <h:selectOneMenu id="selectPane"  value="#{layoutBean.tabIndex}">
+             <f:selectItem itemValue="0" itemLabel="Open First tab"/>
+             <f:selectItem itemValue="1" itemLabel="Open 2nd tab" />
+             <f:selectItem itemValue="2" itemLabel="Open 3rd tab" />
+             <f:ajax execute="@this" render="@all"/>
+         </h:selectOneMenu>
+       </h:panelGroup>
+      </h:form>
+      <h1> test page for tabSet </h1>
+      <br />
+     <h:form id="contentForm">
+       <mobi:tabSet id="test1" tabIndex="#{layoutBean.tabIndex}">
+              <mobi:contentPane id="panel1" title="panel1" cacheType="client">
+                  <fieldset title="panel1">
+                      <legend>Panel1</legend>
+                    <h3> header for panel 1</h3>
+                     <p> content for panel 1 - king of clubs </p>
+                       <figure>
+                         <img width="85" height="150"
+                          src="../images/kingOfClubs.jpg"
+                            alt="king of clubs" />
+                         <figcaption>King of Clubs</figcaption>
+                        </figure>
+
+                  </fieldset>
+              </mobi:contentPane>
+               <mobi:contentPane id="panel2" title="panel2" >
+                 <fieldset title="panel2">
+                   <legend>Panel2</legend>
+                  <h3> header for panel 2</h3>
+                  <p> content for panel 2 - ace of diamonds   </p>
+                     <figure>
+                         <img width="85" height="150"
+                          src="../images/queen.jpg"
+                            alt="queen of clubs" />
+                         <figcaption>Queen of Clubs</figcaption>
+                        </figure>
+                      <br />
+                  </fieldset>
+              </mobi:contentPane>
+             <mobi:contentPane id="panel3" title="panel3">
+                 <fieldset title="panel3">
+                      <legend>Panel3</legend>
+                  <h3> header for panel 3</h3>
+                  <p> content for panel 3 - some other card..</p>
+                     <figure>
+                         <img width="85" height="150"
+                          src="../images/Joker.jpg"
+                            alt="joker" />
+                         <figcaption>joker</figcaption>
+                        </figure>
+                  </fieldset>
+              </mobi:contentPane>
+       </mobi:tabSet>
+
+     </h:form>
+         <div id="output" style="display:block;">
+          selected Tab ... <mark>#{layoutBean.tabIndex}</mark> ... is selected tab
+       </div>
+    <footer>
+        <a href="../layoutComponents.html">index page</a>
+    </footer>
+
+</h:body>
+</html>

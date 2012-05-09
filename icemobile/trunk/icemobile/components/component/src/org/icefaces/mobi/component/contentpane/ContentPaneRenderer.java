@@ -104,9 +104,9 @@ public class ContentPaneRenderer extends BaseLayoutRenderer {
             throws IOException{
         TabSet tabSet = (TabSet)uiComponent.getParent();
         String pageClass = TabSet.TABSET_HIDDEN_PAGECLASS.toString();
-        if (iAmSelected(facesContext, uiComponent)){
+ /*       if (iAmSelected(facesContext, uiComponent)){
             pageClass = TabSet.TABSET_VISIBLE_PAGECLASS.toString();
-        }
+        }*/
         ResponseWriter writer = facesContext.getResponseWriter();
         String clientId = uiComponent.getClientId(facesContext);
             /* write out root tag.  For current incarnation html5 semantic markup is ignored */
