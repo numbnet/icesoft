@@ -3,7 +3,13 @@ package org.icefaces.ace.component.list;
 import org.icefaces.ace.event.ListSelectEvent;
 import org.icefaces.ace.json.JSONArray;
 import org.icefaces.ace.json.JSONException;
+import org.icefaces.util.CoreComponentUtils;
 
+import javax.faces.component.UIComponent;
+import javax.faces.component.visit.VisitCallback;
+import javax.faces.component.visit.VisitContext;
+import javax.faces.component.visit.VisitHint;
+import javax.faces.component.visit.VisitResult;
 import javax.faces.context.FacesContext;
 import java.util.*;
 
@@ -29,7 +35,7 @@ import java.util.*;
  */
 public class ListDecoder {
     private ACEList list;
-    private ACEList destList = null;
+    private List<ImmigrationRecord> emigrants;
 
     public ListDecoder(ACEList list) {
         this.list = list;
@@ -97,42 +103,77 @@ public class ListDecoder {
     public ListDecoder attachEmigrants(FacesContext context, String destListId) throws JSONException {
         if (destListId == null || destListId.length() == 0) return this;
 
-        ACEList destList = (ACEList)(context.getViewRoot().findComponent(destListId));
+        // Init list to be attached to dest list and carry our records for detaching later
+        emigrants = new ArrayList<ImmigrationRecord>();
 
-        // List has already had immigrants attached by itself,
-        // and doesn't need us to attach immigrants
-        if (destList.getImmigrants() != null) return this;
-
-        // Get immigration list from-to index records to do our
-        // removals, and push built record objects if needed
-        List<ImmigrationRecord> immigrants = new ArrayList<ImmigrationRecord>();
-        Map<String, String> params = context.getExternalContext().getRequestParameterMap();
-        String raw = params.get(destListId + "_immigration");
-        JSONArray records = new JSONArray(raw).getJSONArray(1);
-
-        Set<Object> selected = list.getSelections();
-        Object value = list.getValue();
-        List collection = null;
-
-        if (value instanceof List) collection = (List) value;
-        else if (value.getClass().isArray()) collection = Arrays.asList(value);
-
-        for (int i = 0; i < records.length(); i++) {
-            JSONArray record = records.getJSONArray(i);
-            Object val = collection.get(((Integer)record.get(0)).intValue());
-            immigrants.add(new ImmigrationRecord(val, (Integer) record.get(1), selected.contains(val)));
-        }
-
-        destList.setImmigrants(immigrants);
+        context.getViewRoot().visitTree(
+                VisitContext.createVisitContext(
+                        context,
+                        Arrays.asList(new String[] {destListId}),
+                        EnumSet.of(VisitHint.SKIP_TRANSIENT, VisitHint.SKIP_UNRENDERED)),
+                new EmigrantAttachingVisit(list, emigrants)
+        );
 
         return this;
+    }
+
+    private class EmigrantAttachingVisit implements VisitCallback {
+        ACEList sourceList;
+        List<ImmigrationRecord> migrants;
+
+        private EmigrantAttachingVisit(ACEList sourceList, List<ImmigrationRecord> migrants) {
+            this.migrants = migrants;
+            this.sourceList = sourceList;
+        }
+
+        public VisitResult visit(VisitContext visitContext, UIComponent targetComponent) {
+            ACEList destList = (ACEList)targetComponent;
+
+            // List has already had immigrants attached by itself,
+            // and doesn't need us to attach immigrants.
+            // We'll take this list of immigrants so we know who
+            // to detach from ourselves later.
+            if (destList.getImmigrants() != null) {
+                migrants.addAll(destList.getImmigrants());
+                return null;
+            }
+
+            // Get immigration list from-to index records to do our
+            // removals, and push built record objects if needed
+            FacesContext context = visitContext.getFacesContext();
+            Map<String, String> params = context.getExternalContext().getRequestParameterMap();
+            String raw = params.get(destList.getClientId() + "_immigration");
+
+            try {
+                JSONArray records = new JSONArray(raw).getJSONArray(1);
+                Set<Object> selected = sourceList.getSelections();
+                Object value = sourceList.getValue();
+                List collection = null;
+
+                if (value instanceof List) collection = (List) value;
+                else if (value.getClass().isArray()) collection = Arrays.asList(value);
+
+                if (records != null)
+                for (int i = 0; i < records.length(); i++) {
+                    JSONArray record = records.getJSONArray(i);
+                    Object val = collection.get(((Integer)record.get(0)).intValue());
+                    migrants.add(new ImmigrationRecord(val, (Integer) record.get(1), selected.contains(val)));
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            destList.setImmigrants(migrants);
+
+            return VisitResult.COMPLETE;
+        }
     }
 
     public ListDecoder removeEmigrants(FacesContext context, String destListId) {
         if (destListId == null || destListId.length() == 0) return this;
 
-        if (destList == null)
-            destList = (ACEList)(context.getViewRoot().findComponent(destListId));
+        // We'll have either created or fetched the records of our moves in the
+        // attach emigrants phase.
 
         Object value = list.getValue();
         List collection = null;
@@ -140,7 +181,7 @@ public class ListDecoder {
         if (value instanceof List) collection = (List) value;
         else if (value.getClass().isArray()) collection = Arrays.asList(value);
 
-        for (ImmigrationRecord r : destList.getImmigrants()) {
+        for (ImmigrationRecord r : emigrants) {
             collection.remove(r.getValue());
             selected.remove(r.getValue());
         }
@@ -157,59 +198,87 @@ public class ListDecoder {
 
         JSONArray array = new JSONArray(raw);
         String sourceListId = array.getString(0);
-        ACEList sourceList = (ACEList)(context.getViewRoot().findComponent(sourceListId));
-        Set<Object> sourceSelected = sourceList.getSelections();
-        JSONArray records = array.getJSONArray(1);
 
         List<ImmigrationRecord> immigrants = new ArrayList<ImmigrationRecord>();
-        for (int i = 0; i < records.length(); i++) {
-            JSONArray record = records.getJSONArray(i);
-            int from = record.getInt(0);
-            int to = record.getInt(1);
+        context.getViewRoot().visitTree(
+                VisitContext.createVisitContext(
+                        context,
+                        Arrays.asList(new String[] {sourceListId}),
+                        EnumSet.of(VisitHint.SKIP_TRANSIENT, VisitHint.SKIP_UNRENDERED)),
+                new ImmigrantFetchingVisit(immigrants, array.getJSONArray(1))
+        );
 
-            sourceList.setRowIndex(from);
-            Object value = sourceList.getRowData();
-
-            // If selected, but not deselected this request
-            // decode that information for the dest list.
-            boolean selected = !indexDeselectedThisRequest(context, sourceListId, from);
-            if (selected)
-                selected = sourceSelected.contains(value) || indexSelectedThisRequest(context, sourceListId, from);
-
-            immigrants.add(new ImmigrationRecord(value, to, selected));
-        }
         list.setImmigrants(immigrants);
-
-        sourceList.setRowIndex(-1);
 
         return this;
     }
 
-    JSONArray sourceSelections;
-    private boolean indexSelectedThisRequest(FacesContext context, String listId, int from) throws JSONException {
-        if (sourceSelections == null) {
-            String raw = context.getExternalContext().getRequestParameterMap().get(listId+"_selections");
-            if (raw == null || raw.length() == 0) return false;
-            sourceSelections = new JSONArray(raw);
+    private class ImmigrantFetchingVisit implements VisitCallback {
+        List<ImmigrationRecord> immigrants;
+        JSONArray records;
+
+        public ImmigrantFetchingVisit(List<ImmigrationRecord> immigrants, JSONArray records) {
+            this.immigrants = immigrants;
+            this.records = records;
         }
-        for (int i = 0; i < sourceSelections.length(); i++)
-            if (sourceSelections.getInt(i) == from) return true;
 
-        return false;
-    }
+        public VisitResult visit(VisitContext visitContext, UIComponent uiComponent) {
+            ACEList sourceList = (ACEList) uiComponent;
+            String sourceListId = sourceList.getClientId();
+            FacesContext context = visitContext.getFacesContext();
+            Set<Object> sourceSelected = sourceList.getSelections();
 
+            try {
+                for (int i = 0; i < records.length(); i++) {
+                    JSONArray record = records.getJSONArray(i);
+                    int from = record.getInt(0);
+                    int to = record.getInt(1);
 
-    JSONArray sourceDeselections;
-    private boolean indexDeselectedThisRequest(FacesContext context, String listId, int from) throws JSONException {
-        if (sourceDeselections == null) {
-            String raw = context.getExternalContext().getRequestParameterMap().get(listId+"_deselections");
-            if (raw == null || raw.length() == 0) return false;
-            sourceDeselections = new JSONArray(raw);
+                    sourceList.setRowIndex(from);
+                    Object value = sourceList.getRowData();
+
+                    // If selected, but not deselected this request
+                    // decode that information for the dest list.
+                    boolean selected = !indexDeselectedThisRequest(context, sourceListId, from);
+                    if (selected)
+                        selected = sourceSelected.contains(value) || indexSelectedThisRequest(context, sourceListId, from);
+
+                    immigrants.add(new ImmigrationRecord(value, to, selected));
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            sourceList.setRowIndex(-1);
+            return VisitResult.COMPLETE;
         }
-        for (int i = 0; i < sourceDeselections.length(); i++)
-            if (sourceDeselections.getInt(i) == from) return true;
 
-        return false;
+        JSONArray sourceSelections;
+        private boolean indexSelectedThisRequest(FacesContext context, String listId, int from) throws JSONException {
+            if (sourceSelections == null) {
+                String raw = context.getExternalContext().getRequestParameterMap().get(listId+"_selections");
+                if (raw == null || raw.length() == 0) return false;
+                sourceSelections = new JSONArray(raw);
+            }
+            for (int i = 0; i < sourceSelections.length(); i++)
+                if (sourceSelections.getInt(i) == from) return true;
+
+            return false;
+        }
+
+
+        JSONArray sourceDeselections;
+        private boolean indexDeselectedThisRequest(FacesContext context, String listId, int from) throws JSONException {
+            if (sourceDeselections == null) {
+                String raw = context.getExternalContext().getRequestParameterMap().get(listId+"_deselections");
+                if (raw == null || raw.length() == 0) return false;
+                sourceDeselections = new JSONArray(raw);
+            }
+            for (int i = 0; i < sourceDeselections.length(); i++)
+                if (sourceDeselections.getInt(i) == from) return true;
+
+            return false;
+        }
     }
 
     public ListDecoder insertImmigrants() {
