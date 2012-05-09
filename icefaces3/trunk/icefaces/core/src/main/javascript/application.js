@@ -449,7 +449,10 @@ if (!window.ice.icefaces) {
             var requestUpdate = retrieveUpdate(viewID);
             var delay = Delay(requestUpdate, interval);
             run(delay, times);
-            namespace.onSessionExpiry(curry(stop, delay))
+            var stopDelay = curry(stop, delay);
+            namespace.onSessionExpiry(stopDelay);
+            namespace.onNetworkError(stopDelay);
+            namespace.onServerError(stopDelay);
         };
 
         namespace.captureEnterKey = function(id) {
