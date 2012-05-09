@@ -39,34 +39,70 @@ ice.mobilesx = function (element) {
     var command = element.getAttribute("data-command");
     var id = element.getAttribute("data-id");
     var uploadURL;
-    if (0 === formAction.indexOf("/"))  {
+    if (0 === formAction.indexOf("/")) {
         uploadURL = window.location.origin + formAction;
-    } else if ((0 === formAction.indexOf("http://")) || 
-        (0 === formAction.indexOf("https://"))) {
+    } else if ((0 === formAction.indexOf("http://")) ||
+            (0 === formAction.indexOf("https://"))) {
         uploadURL = formAction;
     } else {
         var baseURL = window.location.toString();
         uploadURL = baseURL.substring(0, baseURL.lastIndexOf("/")) +
-            "/" + formAction;
+                "/" + formAction;
     }
 
     var returnURL = window.location;
-    if ("" == returnURL.hash)  {
+    if ("" == returnURL.hash) {
         returnURL += "#icemobilesx";
     }
 
     var sxURL = "icemobile://c=" + escape(command + "?id=" + id) +
-        "&u=" + escape(uploadURL) + "&r=" + escape(returnURL);
-        
+            "&u=" + escape(uploadURL) + "&r=" + escape(returnURL);
+
     window.location = sxURL;
 }
 
-ice.formOf = function(element)  {
+ice.formOf = function(element) {
     var parent = element;
-    while (null != parent)  {
-        if ("form" == parent.nodeName.toLowerCase())  {
+    while (null != parent) {
+        if ("form" == parent.nodeName.toLowerCase()) {
             return parent;
         }
         parent = parent.parentNode;
     }
 }
+if (!window['ice.mobi']) {
+    window.ice.mobi = {};
+}
+
+ice.mobi.flipvalue = function(id, vars) {
+
+    try {
+        this.id = id;
+        this.flipperEl = vars.elVal;
+
+        this.event = vars.event;
+        var hasBehaviors = false;
+
+        if (this.flipperEl) {
+            var oldClass = this.flipperEl.className;
+            var value = "off";
+            if (oldClass.indexOf('-off ') > 0) {
+                this.flipperEl.className = 'mobi-flip-switch mobi-flip-switch-on ';
+                value = true;
+            } else {
+                this.flipperEl.className = 'mobi-flip-switch mobi-flip-switch-off ';
+                value = false;
+            }
+            var hidden = this.id + "_hidden";
+            var thisEl = document.getElementById(hidden);
+            if (thisEl) {
+                thisEl.value = value.toString();
+            }
+        }
+
+    } catch (e) {
+        alert('Exception finding switcher: ' + e);
+    }
+}
+
+
