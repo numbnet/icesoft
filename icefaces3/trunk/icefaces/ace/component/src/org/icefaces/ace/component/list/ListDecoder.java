@@ -3,7 +3,6 @@ package org.icefaces.ace.component.list;
 import org.icefaces.ace.event.ListSelectEvent;
 import org.icefaces.ace.json.JSONArray;
 import org.icefaces.ace.json.JSONException;
-import org.icefaces.util.CoreComponentUtils;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.visit.VisitCallback;
