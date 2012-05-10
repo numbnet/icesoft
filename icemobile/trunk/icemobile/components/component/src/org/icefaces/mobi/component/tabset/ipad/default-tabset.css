@@ -91,9 +91,9 @@
     top: 0;
     opacity: 0;
     visibility: hidden;
-    -webkit-transition: opacity 2s linear;
-    -webkit-transition-duration: 2s;
-    -webkit-transition-delay: 1s;
+    -webkit-transition: opacity 2s ease-in-out, visibility 2s ease-in-out;
+    -webkit-transition-duration: 2s, 2s;
+    -webkit-transition-delay: 1s, 1s;
 }
 .mobi-tabpage {
     width: 100%;
@@ -103,9 +103,9 @@
     position: absolute;
     left: 0;
     top: 0;
-    -webkit-transition: opacity 2s linear;
-    -webkit-transition-duration: 1s;
-    -webkit-transition-delay: 1s;
+    -webkit-transition: opacity 1s linear, visibility 1s linear;
+    -webkit-transition-duration: 1s, 1s;
+    -webkit-transition-delay: 0.5s, 0.5s;
 	 -moz-transition: opacity 2s linear;
      -moz-transition-delay: 2s;
 	 -o-transition: opacity 1s linear;

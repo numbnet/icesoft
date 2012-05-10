@@ -68,17 +68,18 @@
               removeClass(oldCtrl, "activeTab ");
               var contents = tabContent.childNodes;
               var isClient = cfgIn.client || false;
+              var oldPage = contents[current];
+              oldPage.className = "mobi-tabpage-hidden";
               if (!isClient){
                     updateHidden(myTabId, cfgIn.tIndex);
-                    parent.setAttribute("data-current",cfgIn.tIndex);
                     ice.se(null, myTabId);
-              } else {
+                  contents[cfgIn.tIndex].className="mobi-tabpage";
+               } else {
                   tabIndex = cfgIn.tIndex || 0;
                   var newPage = contents[tabIndex];
                   newPage.className="mobi-tabpage";
-              }
-              var oldPage = contents[current];
-              oldPage.className = "mobi-tabpage-hidden";
+                  parent.setAttribute("data-current",cfgIn.tIndex);
+             }
               //remove class of activetabheader and hide old contents
               el.setAttribute("class","activeTab");
            },
@@ -91,9 +92,10 @@
                     if (tabElem){
                         var lis = tabElem.getElementsByTagName("li");
                         var contents = tabContent.getElementsByTagName("div");
-                        contents[oldIdx].className = "mobi-tabpage-hidden";
+                        contents[tabIndex].style.opacity = 0;
                         var newPage = contents[tabIndex];
                         newPage.className = "mobi-tabpage";
+                        newPage.style.opacity = 1;
                         if (cfgUpd.height && cfgUpd.height != tabContainer.style.height){
                            tabContainer.style.height = height;
                         }
