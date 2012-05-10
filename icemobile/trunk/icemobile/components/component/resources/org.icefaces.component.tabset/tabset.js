@@ -49,61 +49,57 @@
              var ht =  calcMaxChildHeight(tabContent);
              tabContent.style.height =  ht+"px";
         }
-        var contents = tabContent.childNodes;
+        var contents = tabContent.getElementsByTagName("div");
         var newPage = contents[tabIndex];
         newPage.className="mobi-tabpage";
-        // set current tab
-     //   var tabIndex = cfgIn.tIndex || 0;
-        //hide two tab contents we don't need
-    /*    var pages = tabContent.getElementsByTagName("div");
-        for (var i = 1; i < pages.length; i++) {
-            if (i==curIdx){
-               pages.item(i).style.opacity="1";
-            } else {
-                pages.item(i).style.opacity=0;
-                pages.item(i).style.visibility = "visible";
-            }
-        }; */
-     return {
-          showContent: function( el, cfgIn) {
+
+        return {
+           showContent: function( el, cfgIn) {
+              if (cfgIn.tIndex == tabIndex){
+                  return;
+              }
               var parent = el.parentNode;
               if (!parent){
                   parent = el.parentElement;
               }
               var current = parent.getAttribute("data-current");
-              var tabIndex = cfgIn.tIndex || 0;
-              var isClient = cfgIn.client || false;
               var currCtrl = myTabId+"tab_"+current;
               var oldCtrl =  document.getElementById(currCtrl);
+              removeClass(oldCtrl, "activeTab ");
               var contents = tabContent.childNodes;
-              updateHidden(myTabId, tabIndex);
-              parent.setAttribute("data-current",tabIndex);
+              var isClient = cfgIn.client || false;
               if (!isClient){
+                    updateHidden(myTabId, cfgIn.tIndex);
+                    parent.setAttribute("data-current",cfgIn.tIndex);
                     ice.se(null, myTabId);
               } else {
+                  tabIndex = cfgIn.tIndex || 0;
                   var newPage = contents[tabIndex];
                   newPage.className="mobi-tabpage";
-              //remove class of activetabheader and hide old contents
-                 removeClass(oldCtrl, "activeTab ");
-                 el.setAttribute("class","activeTab");
               }
               var oldPage = contents[current];
               oldPage.className = "mobi-tabpage-hidden";
-        },
-       updateProperties: function (clientId, cfgUpd) {
+              //remove class of activetabheader and hide old contents
+              el.setAttribute("class","activeTab");
+           },
+           updateProperties: function (clientId, cfgUpd) {
                 if (cfgUpd.tIndex != tabIndex){
+                    var oldIdx = tabIndex;
                     tabIndex = cfgUpd.tIndex;
                     var tabsId = clientId+"_tabs";
                     var tabElem = document.getElementById(tabsId);
                     if (tabElem){
                         var lis = tabElem.getElementsByTagName("li");
-                        var contents = tabContent.childNodes;
+                        var contents = tabContent.getElementsByTagName("div");
+                        contents[oldIdx].className = "mobi-tabpage-hidden";
                         var newPage = contents[tabIndex];
                         newPage.className = "mobi-tabpage";
+                        if (cfgUpd.height && cfgUpd.height != tabContainer.style.height){
+                           tabContainer.style.height = height;
+                        }
                     }
                 }
-
-            }
+           }
        }
     }
     mobi.tabsetController = {

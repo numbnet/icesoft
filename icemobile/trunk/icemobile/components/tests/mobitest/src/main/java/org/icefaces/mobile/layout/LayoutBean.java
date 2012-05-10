@@ -35,7 +35,7 @@ public class LayoutBean implements Serializable {
 
     private String selectedPane ;
     private int accordionIndex = 0;
-    private int tabIndex = 0;
+    private int tabIndex = 1;
 
 	public LayoutBean(){
        this.selectedPane = FIRSTPANE;
