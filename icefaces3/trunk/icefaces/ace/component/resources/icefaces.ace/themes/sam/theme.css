@@ -427,4 +427,5 @@
 }
 
 /* input field prompt label */
-.ui-inputfield.ui-prompt-label {color: #aaa;}
+.ui-inputfield.ui-embedded-label {color: #aaa;}
+.ui-input-label.hidden {visibility: hidden;}
