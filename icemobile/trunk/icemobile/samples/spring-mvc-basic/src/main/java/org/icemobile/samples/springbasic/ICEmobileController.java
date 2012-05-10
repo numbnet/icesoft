@@ -17,7 +17,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
-import javax.xml.ws.http.HTTPException;
 
 @Controller
 public class ICEmobileController {
