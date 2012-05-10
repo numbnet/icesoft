@@ -589,6 +589,8 @@
        <!-- TabSet-->
         <includeresources dir="src/org/icefaces/mobi/component/tabset/ipad"
                           name="tabset" skin="ipad"/>
+        <includeresources dir="src/org/icefaces/mobi/component/tabset/iphone"
+                          name="tabset" skin="iphone"/>
         <!-- Process sprites, if use.sprites is set -->
         <antcall target="sprites"/>
 
