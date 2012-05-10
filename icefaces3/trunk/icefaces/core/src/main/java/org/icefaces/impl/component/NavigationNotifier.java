@@ -35,7 +35,15 @@ public class NavigationNotifier extends UICommand {
         ResponseWriter writer = context.getResponseWriter();
         String id = getClientId();
         writer.startElement("span", this);
+        writer.writeAttribute("id", id + "_notifier", null);
+
+        writer.startElement("input", this);
         writer.writeAttribute("id", id, null);
+        writer.writeAttribute("name", id, null);
+        writer.writeAttribute("type", "hidden", null);
+        writer.writeAttribute("value", "", null);
+        writer.endElement("input");
+
         writer.startElement("script", this);
         writer.writeAttribute("type", "text/javascript", null);
         writer.write("window.dhtmlHistory.create();\n");
@@ -47,6 +55,7 @@ public class NavigationNotifier extends UICommand {
         writer.write("};\n");
         writer.write("if (window.addEventListener) { window.addEventListener('load', init, false) } else { window.attachEvent('onload', init); }");
         writer.endElement("script");
+
         writer.endElement("span");
     }
 }
