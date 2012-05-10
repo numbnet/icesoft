@@ -129,7 +129,7 @@ ice.ace.ProgressBar.prototype.changeListener = function(ev, ui) {
         options.params[this.id] = this.id; // also triggers listener, if any
         ice.ace.ab(ice.ace.extendAjaxArguments(
                 changeListener,
-                ice.ace.extendAjaxArguments(options)
+                ice.ace.removeExecuteRenderOptions(options)
         ));
     } else ice.ace.AjaxRequest(options);
 };
@@ -159,7 +159,7 @@ ice.ace.ProgressBar.prototype.cancel = function() {
         options.params[this.id] = this.id; // also triggers listener, if any
         ice.ace.ab(ice.ace.extendAjaxArguments(
                 cancelListener,
-                ice.ace.extendAjaxArguments(options)
+                ice.ace.removeExecuteRenderOptions(options)
         ));
         this.setValue(0);
     } else ice.ace.AjaxRequest(options);
