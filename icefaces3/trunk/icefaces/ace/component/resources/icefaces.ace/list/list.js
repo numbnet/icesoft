@@ -140,11 +140,12 @@ ice.ace.List.prototype.dragToHandler = function(event, ui) {
         } while (to.index() != this.startIndex);
 
         this.write('reorderings', swapRecords);
-    }
-    // If migrating between lists
-    else {
 
+        if (this.behaviors)
+            if (this.behaviors.move)
+                ice.ace.ab(this.behaviors.move);
     }
+    // Migrating between lists handled by new item insertion handler, not this drop handler
 };
 
 ice.ace.List.prototype.setupControls = function() {
