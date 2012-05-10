@@ -211,7 +211,7 @@ public class AutoCompleteEntry extends AutoCompleteEntryBase implements NamingCo
     }
 	
     public UIComponent getSelectFacet() {
-        return (UIComponent) getFacet("selectInputText");
+        return (UIComponent) getFacet("row");
     }
 
     protected void setSelectedIndex(int index) {

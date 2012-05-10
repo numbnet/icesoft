@@ -138,58 +138,61 @@ public class AutoCompleteEntryRenderer extends InputRenderer {
 
 
     public void populateList(FacesContext facesContext, AutoCompleteEntry autoCompleteEntry) throws IOException {
+		ResponseWriter writer = facesContext.getResponseWriter();
+		String clientId = autoCompleteEntry.getClientId(facesContext);
         autoCompleteEntry.populateItemList();
         Iterator matches = autoCompleteEntry.getItemList();
         int rows = autoCompleteEntry.getRows();
         if (rows == 0) rows = Integer.MAX_VALUE;
         int rowCounter = 0;
+            writer.startElement("div", null);
+			writer.writeAttribute("id", clientId + "update", null);
         if (autoCompleteEntry.getSelectFacet() != null) {
-			/*
+
             UIComponent facet = autoCompleteEntry.getSelectFacet();
 
-            Element listDiv = domContext.createElement(HTML.DIV_ELEM);
+            writer.startElement("div", null);
+			//writer.writeAttribute("id", clientId + "content", null);
+			writer.writeAttribute("style", "display: none;", null);
             Map requestMap =
                     facesContext.getExternalContext().getRequestMap();
             //set index to 0, so child components can get client id from autoComplete component
             autoCompleteEntry.setIndex(0);
             while (matches.hasNext() && rowCounter++ < rows) {
 
-                Element div = domContext.createElement(HTML.DIV_ELEM);
+                writer.startElement("div", null);
                 SelectItem item = (SelectItem) matches.next();
                 requestMap.put(autoCompleteEntry.getListVar(), item.getValue());
-                listDiv.appendChild(div);
+                
                 // When HTML is display we still need a selected value. Hidding the value in a hidden span
                 // accomplishes this.
-                Element spanToDisplay =
-                        domContext.createElement(HTML.SPAN_ELEM);
-                spanToDisplay.setAttribute(HTML.CLASS_ATTR, "informal");
-                div.appendChild(spanToDisplay);
-                domContext.setCursorParent(spanToDisplay);
+				writer.startElement("span", null); // span to display
+                writer.writeAttribute("class", "informal", null);
                 encodeParentAndChildren(facesContext, facet);
-                Element spanToSelect =
-                        domContext.createElement(HTML.SPAN_ELEM);
-                spanToSelect.setAttribute(HTML.STYLE_ATTR,
-                        "visibility:hidden;display:none;");
+				writer.endElement("span");
+				writer.startElement("span", null); // span to select
+				writer.writeAttribute("style", "visibility:hidden;display:none;", null);
                 String itemLabel = item.getLabel();
                 if (itemLabel == null) {
-                    itemLabel = converterGetAsString(
-                            facesContext, autoCompleteEntry, item.getValue());
+                    /*itemLabel = converterGetAsString(
+                            facesContext, autoCompleteEntry, item.getValue());*/
+					itemLabel = item.getValue().toString();
                 }
-                Text label = domContext.createTextNode((itemLabel));
-                spanToSelect.appendChild(label);
-                div.appendChild(spanToSelect);
+				writer.writeText(itemLabel, null);
+                writer.endElement("span");
                 autoCompleteEntry.resetId(facet);
-				
+				writer.endElement("div");
             }
             autoCompleteEntry.setIndex(-1);
 
-            String nodeValue =
-                    DOMUtils.nodeToString(listDiv).replaceAll("\n", "");
-            String call = "Ice.Scriptaculous.Autocompleter.Finder.find('" +
+            //String nodeValue =
+                    //DOMUtils.nodeToString(listDiv).replaceAll("\n", "");
+					// ice.ace.jq(ice.ace.escapeClientId(id)).get(0).innerHTML
+            String call = "ice.ace.Autocompleters[\"" +
                     autoCompleteEntry.getClientId(facesContext) +
-                    "').updateNOW('" + escapeSingleQuote(nodeValue) + "');";
+                    "\"].updateNOW(ice.ace.jq(ice.ace.escapeClientId('" + clientId + "update')).get(0).firstChild.innerHTML);";
             encodeDynamicScript(facesContext, autoCompleteEntry, call);
-*/
+			writer.endElement("div");
         } else {
             if (matches.hasNext()) {
                 StringBuffer sb = new StringBuffer("<div>");
@@ -211,6 +214,7 @@ public class AutoCompleteEntryRenderer extends InputRenderer {
                 encodeDynamicScript(facesContext, autoCompleteEntry, call);
             }
         }
+		writer.endElement("div");
     }
 
     public void encodeDynamicScript(FacesContext facesContext, UIComponent uiComponent, String call) throws IOException {
@@ -218,7 +222,7 @@ public class AutoCompleteEntryRenderer extends InputRenderer {
         String clientId = uiComponent.getClientId(facesContext);
 		
 		writer.startElement("span", null);
-		writer.writeAttribute("id", clientId + "dynamic_script", null);
+		//writer.writeAttribute("id", clientId + "dynamic_script", null);
 		writer.startElement("script", null);
 		writer.writeAttribute("type", "text/javascript", null);
 		writer.writeText(call, null);
