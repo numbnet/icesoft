@@ -15,7 +15,7 @@
  */
 
 function identifier(element) {
-    return element.id;
+    return element ? element.id : null;
 }
 
 function tag(element) {
@@ -66,7 +66,9 @@ function serializeElementOn(element, query) {
             switch (element.type) {
                 case 'image':
                 case 'submit':
-                case 'button': addNameValue(query, element.name, element.value); break;
+                case 'button':
+                    addNameValue(query, element.name, element.value);
+                    break;
             }
             break;
         case 'button':
