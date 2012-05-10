@@ -131,6 +131,7 @@ public class DateTimeEntryRenderer extends InputRenderer {
         writer.writeAttribute("type", "text/javascript", null);
 
         String showOn = dateTimeEntry.getShowOn();
+        boolean timeOnly = dateTimeEntry.isTimeOnly();
         StringBuilder script = new StringBuilder();
         JSONBuilder json = JSONBuilder.create();
 
@@ -140,7 +141,7 @@ public class DateTimeEntryRenderer extends InputRenderer {
             beginMap().
                 entry("popup", dateTimeEntry.isPopup()).
                 entry("locale", dateTimeEntry.calculateLocale(context).toString());
-                if(!isValueBlank(value)) json.entry("defaultDate", value);
+                if(!isValueBlank(value) && !timeOnly) json.entry("defaultDate", value);
                 json.entryNonNullValue("pattern", DateTimeEntryUtils.convertPattern(dateTimeEntry.getPattern()));
                 if(dateTimeEntry.getPages() != 1) json.entry("numberOfMonths", dateTimeEntry.getPages());
                 json.entryNonNullValue("minDate", DateTimeEntryUtils.getDateAsString(dateTimeEntry, dateTimeEntry.getMindate())).
@@ -173,8 +174,8 @@ public class DateTimeEntryRenderer extends InputRenderer {
 
                 //time
                 if(dateTimeEntry.hasTime()) {
-                    json.entry("timeOnly", dateTimeEntry.isTimeOnly()).
-        
+                    json.entry("timeOnly", timeOnly).
+
                     //step
                     entry("stepHour", dateTimeEntry.getStepHour()).
                     entry("stepMinute", dateTimeEntry.getStepMinute()).
@@ -238,14 +239,11 @@ public class DateTimeEntryRenderer extends InputRenderer {
 
     public static void printParams() {
         Map<String, String[]> paramValuesMap = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterValuesMap();
-        Iterator<Map.Entry<String, String[]>> it = paramValuesMap.entrySet().iterator();
-        Map.Entry entry;
         String key;
         String[] values;
-        while (it.hasNext()) {
-            entry = it.next();
-            key = (String) entry.getKey();
-            values = (String[]) entry.getValue();
+        for (Map.Entry<String, String[]> entry : paramValuesMap.entrySet()) {
+            key = entry.getKey();
+            values = entry.getValue();
             System.out.print(key);
             System.out.print(" = ");
             for (String value : values) {
