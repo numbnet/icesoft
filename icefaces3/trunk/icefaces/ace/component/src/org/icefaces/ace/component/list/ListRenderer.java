@@ -66,6 +66,8 @@ public class ListRenderer extends CoreRenderer {
         } catch (JSONException e) {
             throw new FacesException(e);
         }
+
+        decodeBehaviors(context, component);
     }
 
     @Override
