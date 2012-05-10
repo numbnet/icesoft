@@ -27,7 +27,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import java.io.IOException;
 
-@MandatoryResourceComponent(tagName="richTextEntry", value="com.icesoft.faces.component.richtextentry.RichTextEntry")
+@MandatoryResourceComponent(tagName="richTextEntry", value="org.icefaces.ace.component.richtextentry.RichTextEntry")
 public class RichTextEntryRenderer extends InputRenderer {
 
     public void decode(FacesContext context, UIComponent component) {
