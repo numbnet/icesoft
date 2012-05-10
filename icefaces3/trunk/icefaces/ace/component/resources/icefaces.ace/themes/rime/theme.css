@@ -290,4 +290,5 @@
 .ui-widget-shadow { margin: -5px 0 0 -5px; padding: 5px; background: #000000 url("#{resource['icefaces.ace:themes/rime/images/ui-bg_flat_10_000000_40x100.png']}") 50% 50% repeat-x; opacity: .20;filter:Alpha(Opacity=20); -moz-border-radius: 5px; -khtml-border-radius: 5px; -webkit-border-radius: 5px; border-radius: 5px; }
 
 /* input field prompt label */
-.ui-inputfield.ui-prompt-label {color: #aaa;}
+.ui-inputfield.ui-embedded-label {color: #aaa;}
+.ui-input-label.hidden {visibility: hidden;}
