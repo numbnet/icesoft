@@ -25,8 +25,11 @@ import javax.servlet.http.Part;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Method;
+import java.util.Arrays;
 import java.util.Map;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -164,9 +167,8 @@ public class ProxyHttpServletRequest implements HttpServletRequest {
     }
 
     public  java.util.Enumeration getParameterNames()  {
-        log.severe("ProxyHttpServletRequest unsupported operation");
-        if (true) throw new UnsupportedOperationException();
-        return null;
+        Set paramNames = facesContext.getExternalContext().getRequestParameterMap().keySet();
+        return Collections.enumeration(paramNames);
     }
 
     public  java.lang.String[] getParameterValues(java.lang.String name)  {
@@ -174,9 +176,7 @@ public class ProxyHttpServletRequest implements HttpServletRequest {
     }
 
     public  java.util.Map getParameterMap()  {
-        log.severe("ProxyHttpServletRequest unsupported operation");
-        if (true) throw new UnsupportedOperationException();
-        return null;
+        return facesContext.getExternalContext().getRequestParameterMap();
     }
 
     public  java.lang.String getProtocol()  {
@@ -312,15 +312,13 @@ public class ProxyHttpServletRequest implements HttpServletRequest {
     }
 
     public  java.util.Enumeration<java.lang.String> getHeaders(String name) {
-        log.severe("ProxyHttpServletRequest unsupported operation");
-        if (true) throw new UnsupportedOperationException();
-        return null;
+        String[] headers = facesContext.getExternalContext().getRequestHeaderValuesMap().get(name);
+        return Collections.enumeration(Arrays.asList(headers));
     }
 
     public  java.util.Enumeration<java.lang.String> getHeaderNames() {
-        log.severe("ProxyHttpServletRequest unsupported operation");
-        if (true) throw new UnsupportedOperationException();
-        return null;
+        Set headerNames = facesContext.getExternalContext().getRequestHeaderMap().keySet();
+        return Collections.enumeration(headerNames);
     }
 
     public  int getIntHeader(String name) {

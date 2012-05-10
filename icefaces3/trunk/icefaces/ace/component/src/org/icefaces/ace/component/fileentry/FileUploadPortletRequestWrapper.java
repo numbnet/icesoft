@@ -56,7 +56,8 @@ public class FileUploadPortletRequestWrapper extends PortletRequestWrapper {
     public String getParameter(String name) {
         if (parameterMap != null) {
             if (!parameterMap.containsKey(name)) {
-                return null;
+                //ICE-8008: defer to the actual request if the key can't be found
+                return super.getParameter(name);
             }
             String[] values = parameterMap.get(name);
             if (values != null && values.length >= 1) {
