@@ -34,6 +34,7 @@ import org.icefaces.samples.showcase.example.ace.confirmationdialog.Confirmation
 import org.icefaces.samples.showcase.example.ace.notificationpanel.NotificationPanelBean;
 import org.icefaces.samples.showcase.example.ace.progressbar.ProgressBarBean;
 import org.icefaces.samples.showcase.example.ace.dialog.DialogBean;
+import org.icefaces.samples.showcase.example.ace.chart.ChartBean;
 import org.icefaces.samples.showcase.example.ace.maskedEntry.MaskedEntryBean;
 import org.icefaces.samples.showcase.example.ace.resizable.ResizableBean;
 import org.icefaces.samples.showcase.example.ace.richtextentry.RichTextEntryBean;
@@ -59,6 +60,7 @@ import org.icefaces.samples.showcase.example.ace.printer.PrinterBean;
                 @MenuLink(title = "menu.ace.checkboxButton.title", exampleBeanName = CheckboxButtonBean.BEAN_NAME),
                 @MenuLink(title = "menu.ace.confirmationdialog.title", exampleBeanName = ConfirmationDialogBean.BEAN_NAME),
                 @MenuLink(title = "menu.ace.contextMenu.title", exampleBeanName = ContextMenuBean.BEAN_NAME),
+                @MenuLink(title = "menu.ace.chart.title", exampleBeanName = ChartBean.BEAN_NAME),
                 @MenuLink(title = "menu.ace.dataExporter.title", exampleBeanName = DataExporterBean.BEAN_NAME),
                 @MenuLink(title = "menu.ace.dataTable.title", exampleBeanName = DataTableBean.BEAN_NAME),
                 @MenuLink(title = "menu.ace.dateentry.title", exampleBeanName = DateEntryBean.BEAN_NAME),

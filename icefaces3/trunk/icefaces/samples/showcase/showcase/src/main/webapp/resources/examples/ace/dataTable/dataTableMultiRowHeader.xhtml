@@ -53,10 +53,10 @@
                     
                     <ace:row>
                         <ace:column headerText="Name"/>
-                        <ace:column headerText="Chassis"/>
+                        <ace:column headerText="Chassis" sortBy="#{car.chassis}" groupBy="#{car.chassis}"/>
                         <ace:column headerText="Weight"/>
                         <ace:column headerText="Accel"/>
-                        <ace:column headerText="MPG"/>
+                        <ace:column headerText="MPG" sortBy="#{car.mpg}" groupBy="#{car.mpg}" sortAscending="true"/>
                     </ace:row>
                 </ace:columnGroup>
                 

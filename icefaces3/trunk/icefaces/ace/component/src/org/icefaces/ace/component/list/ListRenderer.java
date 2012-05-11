@@ -61,7 +61,8 @@ public class ListRenderer extends CoreRenderer {
                         //// records attached to List
                         .insertImmigrants()
                          ///// If source, check destination list for attached
-                         ///// immigrants and remove them from our attached list
+                         ///// immigrants (if we did not earlier put them there)
+                         ///// and remove them from our attached list
                          .removeEmigrants(context, emigrationInput);
         } catch (JSONException e) {
             throw new FacesException(e);
