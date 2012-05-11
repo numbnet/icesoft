@@ -3,6 +3,7 @@ package org.icefaces.samples.showcase.example.ace.chart;
 import org.icefaces.ace.component.chart.Axis;
 import org.icefaces.ace.component.chart.AxisType;
 import org.icefaces.ace.event.SelectEvent;
+import org.icefaces.ace.event.SeriesSelectionEvent;
 import org.icefaces.ace.event.UnselectEvent;
 import org.icefaces.ace.model.chart.CartesianSeries;
 import org.icefaces.samples.showcase.metadata.annotation.*;
@@ -82,6 +83,11 @@ public class ChartBean extends ComponentExampleImpl<ChartBean> implements Serial
     public void clearChartListener(UnselectEvent e) {
         CartesianSeries s = lineData.get(0);
         s.clear();
+    }
+
+    public void selectionListener(SeriesSelectionEvent s) {
+        System.out.println(s.getSeriesIndex());
+        System.out.println(s.getPointIndex());
     }
 
     public List<CartesianSeries> getLineData() {

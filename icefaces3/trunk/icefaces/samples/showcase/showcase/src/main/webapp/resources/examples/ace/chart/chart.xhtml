@@ -63,7 +63,8 @@
                        xAxis="#{backing.defaultAxis}"
                        legend="true"
                        legendLocation="NW"
-                       legendPlacement="INSIDE_GRID" />
+                       legendPlacement="INSIDE_GRID"
+                        selectListener="#{backing.selectionListener}"/>
         </h:form>
     </ui:define>
 </ui:composition>
