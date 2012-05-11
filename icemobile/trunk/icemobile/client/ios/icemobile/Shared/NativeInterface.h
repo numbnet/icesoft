@@ -20,6 +20,7 @@
 
 @class MainViewController;
 @class QRScanner;
+@class ARViewController;
 
 @interface NativeInterface : NSObject<UIImagePickerControllerDelegate, UINavigationControllerDelegate> {
 
@@ -36,6 +37,8 @@
     UIPopoverController *camPopover;
     UIPopoverController *scanPopover;
     UIPopoverController *audioPopover;
+    UIPopoverController *augPopover;
+    ARViewController *augController;
     CGRect popoverSource;
 }
 
@@ -52,8 +55,11 @@
 @property (nonatomic, retain) UIPopoverController *camPopover;
 @property (nonatomic, retain) UIPopoverController *scanPopover;
 @property (nonatomic, retain) UIPopoverController *audioPopover;
+@property (nonatomic, retain) UIPopoverController *augPopover;
+@property (nonatomic, retain) ARViewController *augController;
 @property (nonatomic, assign) CGRect popoverSource;
 
+- (void) applicationWillResignActive;
 - (BOOL)dispatch: (NSString*)command;
 - (BOOL)camera: (NSString*)cameraId maxwidth: (NSString*)maxw maxheight: (NSString*)maxh;
 - (BOOL)register;
@@ -61,6 +67,7 @@
 - (BOOL)upload: (NSString*)formId;
 - (BOOL)camcorder: (NSString*)cameraId;
 - (BOOL)microphone: (NSString*)micId;
+- (BOOL)aug: (NSString*)augId locations: (NSDictionary*)places;
 - (void)recordStart;
 - (void)recordStop;
 - (void)recordDismiss;

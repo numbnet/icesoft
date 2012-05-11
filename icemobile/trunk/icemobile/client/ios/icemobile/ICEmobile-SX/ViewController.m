@@ -247,6 +247,7 @@ NSLog(@"Alert dismissed via button %d", buttonIndex);
             @"Video Upload", @"camcorder", 
             @"Audio Upload", @"microphone", 
             @"QR Code Scan", @"scan", 
+            @"Augmented Reality View", @"aug", 
             nil];
     self.confirmMessages = [NSDictionary dictionaryWithObjectsAndKeys:
             @"Register with server ", @"register", 
@@ -254,12 +255,14 @@ NSLog(@"Alert dismissed via button %d", buttonIndex);
             @"Upload video to ", @"camcorder", 
             @"Upload audio recording to ", @"microphone", 
             @"Send QR Code to ", @"scan", 
+            @"Send augmented reality location to ", @"aug", 
             nil];
     self.commandNames = [NSArray arrayWithObjects:
             @"camera", 
             @"camcorder", 
             @"microphone", 
             @"scan", 
+            @"aug", 
             nil];
 }
 
@@ -302,6 +305,10 @@ NSLog(@"Alert dismissed via button %d", buttonIndex);
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event  {
     [urlField resignFirstResponder];
+}
+
+- (void)applicationWillResignActive {
+    [self.nativeInterface applicationWillResignActive];
 }
 
 @end
