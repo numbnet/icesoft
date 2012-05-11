@@ -54,6 +54,7 @@
 @property (nonatomic, retain) IBOutlet UITextField *urlField;
 @property (nonatomic, retain) IBOutlet UISegmentedControl *actionSelector;
 
+- (void) applicationWillResignActive;
 - (void) dispatchCurrentCommand;
 - (void) reloadCurrentURL;
 - (void) hideProgress;

@@ -10,6 +10,14 @@
 		9C403FCC14845E4200FBA6BC /* QRScanner.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9C403FCB14845E4200FBA6BC /* QRScanner.mm */; };
 		9C4F8C3914859D3600A2B288 /* AudioController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C4F8C3714859D3600A2B288 /* AudioController.m */; };
 		9C4F8C3A14859D3600A2B288 /* AudioController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9C4F8C3814859D3600A2B288 /* AudioController.xib */; };
+		9C51732F155DA6E600090828 /* ARViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C51732D155DA6E600090828 /* ARViewController.m */; };
+		9C517330155DA6E600090828 /* ARViewController_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9C51732E155DA6E600090828 /* ARViewController_iPad.xib */; };
+		9C517334155DA7FB00090828 /* ARViewController_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9C517333155DA7FB00090828 /* ARViewController_iPhone.xib */; };
+		9C517337155DA99C00090828 /* PlaceLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C517336155DA99C00090828 /* PlaceLabel.m */; };
+		9C51733A155DACE300090828 /* ARView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C517339155DACE300090828 /* ARView.m */; };
+		9C517346155DB13C00090828 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C517345155DB13C00090828 /* CoreLocation.framework */; };
+		9C517348155DB16700090828 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C517347155DB16700090828 /* QuartzCore.framework */; };
+		9C51734A155DB17900090828 /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C517349155DB17900090828 /* CoreMotion.framework */; };
 		9C5CD04314BCBCA70070662F /* camcorder.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C5CD03B14BCBCA70070662F /* camcorder.png */; };
 		9C5CD04414BCBCA70070662F /* camcorder@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C5CD03C14BCBCA70070662F /* camcorder@2x.png */; };
 		9C5CD04514BCBCA70070662F /* camera.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C5CD03D14BCBCA70070662F /* camera.png */; };
@@ -57,6 +65,17 @@
 		9C4F8C3614859D3600A2B288 /* AudioController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AudioController.h; path = Shared/AudioController.h; sourceTree = "<group>"; };
 		9C4F8C3714859D3600A2B288 /* AudioController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AudioController.m; path = Shared/AudioController.m; sourceTree = "<group>"; };
 		9C4F8C3814859D3600A2B288 /* AudioController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = AudioController.xib; path = Shared/AudioController.xib; sourceTree = "<group>"; };
+		9C51732C155DA6E600090828 /* ARViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ARViewController.h; path = Shared/ARViewController.h; sourceTree = "<group>"; };
+		9C51732D155DA6E600090828 /* ARViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ARViewController.m; path = Shared/ARViewController.m; sourceTree = "<group>"; };
+		9C51732E155DA6E600090828 /* ARViewController_iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = ARViewController_iPad.xib; path = Shared/ARViewController_iPad.xib; sourceTree = "<group>"; };
+		9C517333155DA7FB00090828 /* ARViewController_iPhone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = ARViewController_iPhone.xib; path = Shared/ARViewController_iPhone.xib; sourceTree = "<group>"; };
+		9C517335155DA99C00090828 /* PlaceLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PlaceLabel.h; path = Shared/PlaceLabel.h; sourceTree = "<group>"; };
+		9C517336155DA99C00090828 /* PlaceLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PlaceLabel.m; path = Shared/PlaceLabel.m; sourceTree = "<group>"; };
+		9C517338155DACE200090828 /* ARView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ARView.h; path = Shared/ARView.h; sourceTree = "<group>"; };
+		9C517339155DACE300090828 /* ARView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ARView.m; path = Shared/ARView.m; sourceTree = "<group>"; };
+		9C517345155DB13C00090828 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
+		9C517347155DB16700090828 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		9C517349155DB17900090828 /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
 		9C5CD03B14BCBCA70070662F /* camcorder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = camcorder.png; sourceTree = "<group>"; };
 		9C5CD03C14BCBCA70070662F /* camcorder@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "camcorder@2x.png"; sourceTree = "<group>"; };
 		9C5CD03D14BCBCA70070662F /* camera.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = camera.png; sourceTree = "<group>"; };
@@ -98,6 +117,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9C51734A155DB17900090828 /* CoreMotion.framework in Frameworks */,
+				9C517348155DB16700090828 /* QuartzCore.framework in Frameworks */,
+				9C517346155DB13C00090828 /* CoreLocation.framework in Frameworks */,
 				9C6E1973148560C300ADDAA7 /* MobileCoreServices.framework in Frameworks */,
 				9C931481148556EC00B21FA1 /* CoreMedia.framework in Frameworks */,
 				9C93147F148556B100B21FA1 /* CoreVideo.framework in Frameworks */,
@@ -117,6 +139,10 @@
 		9C1BEADD155473E400795020 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				9C517338155DACE200090828 /* ARView.h */,
+				9C517339155DACE300090828 /* ARView.m */,
+				9C517335155DA99C00090828 /* PlaceLabel.h */,
+				9C517336155DA99C00090828 /* PlaceLabel.m */,
 				9C77C78E147310B80079FDF5 /* NativeInterfaceViewController.h */,
 				9C77C78C147310B80079FDF5 /* NativeInterface.h */,
 				9C77C78D147310B80079FDF5 /* NativeInterface.m */,
@@ -125,6 +151,10 @@
 				9C4F8C3614859D3600A2B288 /* AudioController.h */,
 				9C4F8C3714859D3600A2B288 /* AudioController.m */,
 				9C4F8C3814859D3600A2B288 /* AudioController.xib */,
+				9C51732C155DA6E600090828 /* ARViewController.h */,
+				9C51732D155DA6E600090828 /* ARViewController.m */,
+				9C51732E155DA6E600090828 /* ARViewController_iPad.xib */,
+				9C517333155DA7FB00090828 /* ARViewController_iPhone.xib */,
 			);
 			name = Shared;
 			sourceTree = "<group>";
@@ -168,6 +198,9 @@
 			isa = PBXGroup;
 			children = (
 				9C9314781485505200B21FA1 /* libiconv.dylib */,
+				9C517349155DB17900090828 /* CoreMotion.framework */,
+				9C517347155DB16700090828 /* QuartzCore.framework */,
+				9C517345155DB13C00090828 /* CoreLocation.framework */,
 				9C6E1972148560C300ADDAA7 /* MobileCoreServices.framework */,
 				9C931480148556EC00B21FA1 /* CoreMedia.framework */,
 				9C93147C1485507900B21FA1 /* AVFoundation.framework */,
@@ -298,6 +331,8 @@
 				9C5CD04814BCBCA70070662F /* microphone@2x.png in Resources */,
 				9C5CD04914BCBCA70070662F /* qr.png in Resources */,
 				9C5CD04A14BCBCA70070662F /* qr@2x.png in Resources */,
+				9C517330155DA6E600090828 /* ARViewController_iPad.xib in Resources */,
+				9C517334155DA7FB00090828 /* ARViewController_iPhone.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -314,6 +349,9 @@
 				9C77C78F147310B80079FDF5 /* NativeInterface.m in Sources */,
 				9C403FCC14845E4200FBA6BC /* QRScanner.mm in Sources */,
 				9C4F8C3914859D3600A2B288 /* AudioController.m in Sources */,
+				9C51732F155DA6E600090828 /* ARViewController.m in Sources */,
+				9C517337155DA99C00090828 /* PlaceLabel.m in Sources */,
+				9C51733A155DACE300090828 /* ARView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
