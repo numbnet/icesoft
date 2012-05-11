@@ -819,13 +819,8 @@ ice.ace.DataTable.prototype.resizeScrolling = function() {
                 footerTable.parent().css('margin-right', '17px');
             }
             else if (firefox) {
-                var rgtMostHeadCell = headerTable.find('tr > th.last-cell');
-                if (rgtMostHeadCell.length == 0) rgtMostHeadCell = headerTable.find('tr th:last');
-                var rgtMostFootCell = footerTable.find('tr > td.last-cell');
-                if (rgtMostHeadCell.length == 0) rgtMostFootCell = footerTable.find('tr td:last');
-
-                rgtMostFootCell.css('padding-right','27px');
-                rgtMostHeadCell.css('padding-right','27px');
+                headerTable.find('tr th:last').css('padding-right','27px');
+                footerTable.find('tr td:last').css('padding-right','27px');
             } else if (dupeCausesScrollChange) {
                 /* Correct scrollbars added by Win Chrome when unnecessary. */
                 var table;
@@ -843,29 +838,17 @@ ice.ace.DataTable.prototype.resizeScrolling = function() {
                     }, 10);
                 }
 
-                /* Clean up sizing bug in dupe scroll change case */
+                /* Clean up IE 8/9 sizing bug in dupe scroll change case */
                 headerTable.parent().css('margin-right', '');
                 footerTable.parent().css('margin-right', '');
-
-                var rgtMostHeadCell = headerTable.find('tr > th.last-cell');
-                if (rgtMostHeadCell.length == 0) rgtMostHeadCell = headerTable.find('tr th:last');
-                var rgtMostFootCell = footerTable.find('tr > td.last-cell');
-                if (rgtMostHeadCell.length == 0) rgtMostFootCell = footerTable.find('tr td:last');
-
-                rgtMostHeadCell.css('padding-right','');
-                rgtMostFootCell.css('padding-right','');
+                headerTable.find('tr th:last').css('padding-right','');
+                footerTable.find('tr td:last').css('padding-right','');
             }
         } else {
             headerTable.parent().css('margin-right', '');
             footerTable.parent().css('margin-right', '');
-
-            var rgtMostHeadCell = headerTable.find('tr > th.last-cell');
-            if (rgtMostHeadCell.length == 0) rgtMostHeadCell = headerTable.find('tr th:last');
-            var rgtMostFootCell = footerTable.find('tr > td.last-cell');
-            if (rgtMostHeadCell.length == 0) rgtMostFootCell = footerTable.find('tr td:last');
-
-            rgtMostHeadCell.css('padding-right','');
-            rgtMostFootCell.css('padding-right','');
+            headerTable.find('tr th:last').css('padding-right','');
+            footerTable.find('tr td:last').css('padding-right','');
         }
 
         // Hide Duplicate Segments
