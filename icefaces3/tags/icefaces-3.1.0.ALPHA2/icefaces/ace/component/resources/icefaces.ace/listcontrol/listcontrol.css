@@ -1,0 +1,52 @@
+.if-list-nctrl {
+    display:inline-block;
+}
+
+.if-list-nctrls {
+    margin: 3px;
+    padding: 0.3em;
+    padding-left: 1em;
+    padding-right: 1em;
+    text-align: center;
+}
+
+.if-list-dl {
+    margin: 3px;
+    padding: 0.3em .7em .5em .7em;
+}
+
+.if-list-nctrl-head {
+    margin: 3px;
+    padding: 0.3em;
+    padding-left: 1em;
+    padding-right: 1em;
+}
+
+.if-list-nctrl-foot {
+    margin: 3px;
+    padding: 0.3em;
+    padding-left: 1em;
+    padding-right: 1em;
+}
+
+.if-list-dl-1 {
+    vertical-align: top;
+    display: inline-block;
+    width: 50%;
+    position: relative;
+    right:0.3em;
+}
+
+.if-list-dl-2 {
+    vertical-align: top;
+    display: inline-block;
+    width: 50%;
+    /* IE7 width fix */
+    *width: 49%;
+    position: relative;
+    left:0.3em;
+}
+
+.if-list-dl .if-list {
+    width:100%;
+}
