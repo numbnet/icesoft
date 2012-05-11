@@ -254,6 +254,7 @@
                 <file name="icefaces.ace/chart/jquery.jqplot.js"/>
                 <file name="icefaces.ace/chart/plugins/jqplot.barRenderer.js"/>
                 <file name="icefaces.ace/chart/plugins/jqplot.categoryAxisRenderer.js"/>
+                <file name="icefaces.ace/chart/plugins/jqplot.highlighter.js"/>
                 <file name="icefaces.ace/chart/plugins/jqplot.pointLabels.js"/>
                 <file name="icefaces.ace/chart/chart.js"/>
             </filelist>
