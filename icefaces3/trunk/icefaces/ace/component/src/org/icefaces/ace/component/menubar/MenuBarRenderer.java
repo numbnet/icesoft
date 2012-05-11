@@ -44,7 +44,7 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.logging.Logger;
 
-@MandatoryResourceComponent(tagName="menubar", value="org.icefaces.ace.component.menubar.MenuBar")
+@MandatoryResourceComponent(tagName="menuBar", value="org.icefaces.ace.component.menubar.MenuBar")
 public class MenuBarRenderer extends BaseMenuRenderer {
 
     private final static Logger logger = Logger.getLogger(MenuBarRenderer.class.getName());
