@@ -1,0 +1,90 @@
+<?xml version="1.0"?>
+<!--
+  ~ Copyright 2004-2012 ICEsoft Technologies Canada Corp.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the
+  ~ License. You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an "AS
+  ~ IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+  ~ express or implied. See the License for the specific language
+  ~ governing permissions and limitations under the License.
+  -->
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:c="http://java.sun.com/jsp/jstl/core"
+    xmlns:ace="http://www.icefaces.org/icefaces/components"
+    xmlns:ice="http://www.icesoft.com/icefaces/component"
+    xmlns:icecore="http://www.icefaces.org/icefaces/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    template="/resources/templates/content-template.xhtml">
+
+    <ui:param name="title" value="#{msgs[textEntryBean.title]}"/>
+    <ui:param name="description" value="#{msgs[textEntryBean.description]}"/>
+    <ui:param name="subMenuTitle" value="#{msgs[textEntryBean.subMenuTitle]}"/>
+    <ui:param name="subMenuLinks" value="#{textEntryBean.subMenuLinks}"/>
+    <ui:param name="resourceValue" value="#{textEntryBean.exampleResource}"/>
+    
+    <ui:param name="wikiResources" value="#{textEntryResources.wikiResources}"/>
+    <ui:param name="tldResources" value="#{textEntryResources.tldResources}"/>
+
+    <ui:define name="example">
+        <h:form id="textEngryForm">
+            <ace:panel id="personalInfoInputPanel" header="Personal Info">
+                
+                <h:panelGrid id="inputGrid" columns="2" width="100%">
+                    <ace:textEntry id="firstNameInput" value="#{textEntryBean.firstName}" label="first name" optionalIndicator="[optional]" indicatorPosition="labelLeft">
+                        <ace:ajax render="@this firstNameOutput"/>
+                    </ace:textEntry>
+                    
+                    <ace:textEntry id="lastNameInput" value="#{textEntryBean.lastName}" label="last name" required="true" requiredIndicator="(required)" indicatorPosition="labelRight">
+                        <ace:ajax render="@this lastNameOutput lastNameMsg"/>
+                    </ace:textEntry>
+                    
+                    <ace:textEntry id="cityInput" value="#{textEntryBean.city}" label="city" labelPosition="left" required="true" requiredIndicator="*">
+                        <ace:ajax render="@this cityOutput cityMsg"/>
+                    </ace:textEntry>
+                    
+                    <ace:textEntry id="provinceInput" value="#{textEntryBean.province}" label="province" labelPosition="right" optionalIndicator="optional" indicatorPosition="left">
+                        <ace:ajax render="@this provinceOutput"/>
+                    </ace:textEntry>
+
+                    <ace:textEntry id="provinceCodeInput" value="#{textEntryBean.provinceCode}" label="province code (max. 2 chars)"  labelPosition="top" optionalIndicator="optional" indicatorPosition="bottom" maxlength="2">
+                        <ace:ajax render="@this provinceCodeOutput"/>
+                    </ace:textEntry>
+
+                    <ace:textEntry id="countryInput" value="#{textEntryBean.country}" label="country" labelPosition="bottom" required="true" requiredIndicator="[*]" indicatorPosition="labelRight">
+                        <ace:ajax render="@this countryOutput countryNameMsg"/>
+                    </ace:textEntry>
+                </h:panelGrid>
+                <h:panelGrid width="100%">
+                    <h:message id="lastNameMsg" for="lastNameInput" errorClass="ui-state-error-text"/>
+                    <h:message id="cityMsg" for="cityInput" errorClass="ui-state-error-text"/>
+                    <h:message id="countryNameMsg" for="countryInput" errorClass="ui-state-error-text"/>
+                </h:panelGrid>
+            </ace:panel>
+            
+            <ace:panel id="personalInfoOutputPanel" header="Entered data">
+                
+                <h:panelGrid id="outputGrid" width="100%" style="text-align: left;">
+                    <h:outputText id="firstNameOutput" value="first name: #{textEntryBean.firstName}"/>
+                    <h:outputText id="lastNameOutput" value="last name: #{textEntryBean.lastName}"/>
+                    <h:outputText id="cityOutput" value="city: #{textEntryBean.city}"/>
+                    <h:outputText id="provinceOutput" value="province: #{textEntryBean.province}"/>
+                    <h:outputText id="provinceCodeOutput" value="province code: #{textEntryBean.provinceCode}"/>
+                    <h:outputText id="countryOutput" value="country: #{textEntryBean.country}"/>
+                </h:panelGrid>
+                
+            </ace:panel>
+            
+        </h:form>
+        
+    </ui:define>
+</ui:composition>
+
