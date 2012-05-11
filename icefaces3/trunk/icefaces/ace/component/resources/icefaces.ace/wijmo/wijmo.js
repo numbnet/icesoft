@@ -3602,7 +3602,7 @@ function wijmoASPNetParseOptions(o) {
 			if (triggerEle.is("iframe")) {
 				triggerEle = $(triggerEle.get(0).contentWindow.document);
 			}
-			if (typeof this.options.trigger == 'string') {
+			if (typeof this.options.trigger == 'string' && event != "rtclick") {
 				switch (event) {
 					case "click":
 						$(document).off(event + namespace, o.trigger).on(event + namespace, o.trigger, function (e) {
