@@ -256,7 +256,20 @@ NSLog(@"Warning: play not implemented for ICEmobile Container");
 }
 
 - (void) setThumbnail: (UIImage*)image at: (NSString *)thumbID  {
-NSLog(@"Warning: setThumbnail not implemented for ICEmobile Container");
+    NSData *scaledData =  UIImageJPEGRepresentation(image, 0.5);
+    NSString *image64 = [self.nativeInterface  base64StringFromData:scaledData];
+    NSString *dataURL = [@"data:image/jpg;base64," 
+            stringByAppendingString:image64];
+    NSLog(@"scaled and encoded thumbnail %d", [image64 length]);
+
+    NSString *scriptTemplate;
+    NSString *script;
+    NSString *result;
+
+    NSString *thumbName = [thumbID stringByAppendingString:@"-thumb"];
+    scriptTemplate = @"ice.setThumbnail(\"%@\", \"%@\");";
+    script = [NSString stringWithFormat:scriptTemplate, thumbName, dataURL];
+    result = [self.webView stringByEvaluatingJavaScriptFromString: script];
 }
 
 - (void) handleResponse:(NSString *)responseString  {
