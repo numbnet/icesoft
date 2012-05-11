@@ -17,6 +17,8 @@
 #import "NativeInterface.h"
 #import "MainViewController.h"
 #import "AudioController.h"
+#import "ARViewController.h"
+#import "PlaceLabel.h"
 #import "MobileCoreServices/MobileCoreServices.h"
 #import "MediaPlayer/MediaPlayer.h"
 
@@ -34,6 +36,8 @@
 @synthesize receivedData;
 @synthesize camPopover;
 @synthesize audioPopover;
+@synthesize augPopover;
+@synthesize augController;
 @synthesize popoverSource;
 
 static char base64EncodingTable[64] = {
@@ -78,6 +82,8 @@ static char base64EncodingTable[64] = {
         [self play:[params objectForKey:@"id"]];
     } else if ([@"scan" isEqualToString:commandName])  {
         [self scan:[params objectForKey:@"id"]];
+    } else if ([@"aug" isEqualToString:commandName])  {
+        [self aug:[params objectForKey:@"id"] locations:params];
     }
     return YES;
 }
@@ -436,6 +442,51 @@ static char base64EncodingTable[64] = {
     return imagePath;
 }
 
+- (BOOL)aug: (NSString*)augId locations:(NSDictionary *)places {
+    self.activeDOMElementId = augId;
+    NSLog(@"NativeInterface aug ");
+    if (nil == self.augController)  {
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)  {
+            self.augController = [[ARViewController alloc] 
+                    initWithNibName:@"ARViewController_iPad" bundle:nil];
+        } else {
+            augController = [[ARViewController alloc] 
+                    initWithNibName:@"ARViewController_iPhone" bundle:nil];
+        }
+    }
+	NSMutableArray *placeLabels = [NSMutableArray array];
+    for (NSString *name in places)  {
+        if (![name isEqualToString:@"id"])  {
+            NSArray *pairs = [[places objectForKey:name] 
+                    componentsSeparatedByString:@","];
+            double lat = [[pairs objectAtIndex:0] doubleValue];
+            double lon = [[pairs objectAtIndex:1] doubleValue];
+            PlaceLabel *label = [PlaceLabel 
+                    placeLabelWithText:name initWithLatitude:lat longitude:lon];
+            [placeLabels addObject:label];
+            NSLog(@"found place %@ coords %f,%f", name, lat,lon );
+        } 
+    }
+    [self.augController setPlaceLabels:placeLabels];
+
+
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)  {
+        if (nil == self.augPopover)  {
+            augPopover = [[UIPopoverController alloc] 
+                    initWithContentViewController:augController];
+            self.augPopover.popoverContentSize = CGSizeMake(320, 480);
+        }
+        [self.augPopover presentPopoverFromRect:popoverSource
+                                 inView:self.controller.view
+               permittedArrowDirections:UIPopoverArrowDirectionAny 
+                               animated:YES];
+    } else {
+        [controller presentModalViewController:augController animated:YES];
+    }
+
+    return YES;
+}
+
 - (BOOL)upload: (NSString*)formId  {
     if (self.uploading)  {
     NSLog(@" already uploading, ignoring request");
@@ -655,6 +706,15 @@ static char base64EncodingTable[64] = {
     [connection release];
     [receivedData release];
     self.uploading = NO;
+}
+
+- (void)applicationWillResignActive {
+
+    if (nil != self.augController)  {
+        [self.augController dismissModalViewControllerAnimated:YES];
+    }
+
+    NSLog(@"NativeInterface applicationWillResignActive, dismissing augController");
 }
 
 @end
