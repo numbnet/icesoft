@@ -86,6 +86,10 @@ public class ChartMeta {
                 "interpret a configuration if undefined.")
     private List<Axis> yAxes;
 
+    @Property(tlddoc =
+                "Enables drawing an info string at the cursor position when hovering " +
+                "at data points. Default configuration displays x, y values." )
+    private Boolean highlighter;
 
     @Property(expression = Expression.METHOD_EXPRESSION,
             methodExpressionArgument = "org.icefaces.ace.event.SeriesSelectionEvent",
