@@ -31,6 +31,12 @@ public class AudioInterface implements JavascriptInterface {
 	return recorder.toggleMic(maxDuration);
     }
 
+    public String recordAudio(String attr) {
+	AttributeExtractor attributes = new AttributeExtractor(attr);
+	int maxDuration = Integer.parseInt(attributes.getAttribute("maxtime", "-1"));
+	return recorder.recordAudio(maxDuration);
+    }
+
     public void playUrl(String url, boolean autoRelease) {
 	prepareAudio(url, autoRelease);
 	startAudio();
