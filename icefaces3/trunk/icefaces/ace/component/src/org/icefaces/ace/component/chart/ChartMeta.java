@@ -3,6 +3,8 @@ package org.icefaces.ace.component.chart;
 import org.icefaces.ace.meta.annotation.Component;
 import org.icefaces.ace.model.chart.ChartSeries;
 import org.icefaces.ace.meta.annotation.*;
+
+import javax.el.MethodExpression;
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
 import java.util.List;
@@ -83,4 +85,12 @@ public class ChartMeta {
                 "Defines the configuration of the y axes (up to 9). Attempts are made to " +
                 "interpret a configuration if undefined.")
     private List<Axis> yAxes;
+
+
+    @Property(expression = Expression.METHOD_EXPRESSION,
+            methodExpressionArgument = "org.icefaces.ace.event.SeriesSelectionEvent",
+            tlddoc = "MethodExpression reference called whenever a series " +
+                    "element is selected. The method receives a single " +
+                    "argument, SeriesSelectionEvent.")
+    private MethodExpression selectListener;
 }

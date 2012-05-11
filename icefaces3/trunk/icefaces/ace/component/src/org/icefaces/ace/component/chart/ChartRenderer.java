@@ -2,6 +2,7 @@ package org.icefaces.ace.component.chart;
 
 import com.sun.org.apache.xpath.internal.axes.AxesWalker;
 import org.apache.poi.hssf.record.chart.AxisUsedRecord;
+import org.icefaces.ace.event.SeriesSelectionEvent;
 import org.icefaces.ace.model.chart.ChartSeries;
 import org.icefaces.ace.renderkit.CoreRenderer;
 import org.icefaces.ace.util.HTML;
@@ -24,12 +25,13 @@ public class ChartRenderer extends CoreRenderer {
 
         String selectInput = params.get(select);
 
-        processSelections(selectInput.split(","));
+        processSelections(chart, selectInput.split(","));
     }
 
-    private void processSelections(String[] select) {
+    private void processSelections(Chart chart, String[] select) {
         int seriesIndex = Integer.parseInt(select[0]);
         int pointIndex = Integer.parseInt(select[1]);
+        chart.queueEvent(new SeriesSelectionEvent(chart, seriesIndex, pointIndex));
     }
 
     @Override
@@ -76,7 +78,8 @@ public class ChartRenderer extends CoreRenderer {
         if (stacking) cfgBuilder.entry("stackSeries", true);
         if (animated == null) cfgBuilder.entry("animate", "!ice.ace.jq.jqplot.use_excanvas", true);
         else if (animated) cfgBuilder.entry("animate", true);
-        cfgBuilder.entry("handlePointClick", true);
+        if (component.getSelectListener() != null)
+            cfgBuilder.entry("handlePointClick", true);
         cfgBuilder.endMap();
 
 

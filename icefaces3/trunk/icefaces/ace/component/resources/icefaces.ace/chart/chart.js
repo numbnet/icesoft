@@ -23,7 +23,7 @@ ice.ace.Chart = function (id, data, cfg) {
     ice.ace.Charts[id] = self;
 
     if (cfg.handlePointClick)
-        ice.ace.jq(this.jqId).on(
+        ice.ace.jq(this.jqId).off("jqplotDataClick").on(
             "jqplotDataClick",
             function(e, seriesIndex, pointIndex, data) {
                 self.handlePointClick.call(self, e, seriesIndex, pointIndex, data);
