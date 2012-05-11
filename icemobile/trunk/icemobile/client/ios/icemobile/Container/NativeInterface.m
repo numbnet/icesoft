@@ -390,20 +390,7 @@ static char base64EncodingTable[64] = {
 }
 
 - (void)setThumbnail: (UIImage*)image at: (NSString *)thumbId  {
-    NSData *scaledData =  UIImageJPEGRepresentation(image, 0.5);
-    NSString *image64 = [self  base64StringFromData:scaledData];
-    NSString *dataURL = [@"data:image/jpg;base64," 
-            stringByAppendingString:image64];
-    NSLog(@"scaled and encoded thumbnail %d", [image64 length]);
-
-    NSString *scriptTemplate;
-    NSString *script;
-    NSString *result;
-
-    NSString *thumbName = [thumbId stringByAppendingString:@"-thumb"];
-    scriptTemplate = @"ice.setThumbnail(\"%@\", \"%@\");";
-    script = [NSString stringWithFormat:scriptTemplate, thumbName, dataURL];
-    result = [controller.webView stringByEvaluatingJavaScriptFromString: script];
+    [controller setThumbnail:image at:thumbId];
 }
 
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
