@@ -23,13 +23,13 @@
 @interface MainViewController : UIViewController<NativeInterfaceViewController,UIWebViewDelegate,
     ZXingDelegate,UINavigationControllerDelegate,UIActionSheetDelegate> {
 
-	UIWebView *webView;
+    UIWebView *webView;
     NSURLRequest *currentRequest;
     NSURLResponse *currentResponse;
     NSMutableData *receivedData;
     NSURLAuthenticationChallenge *currentChallenge;
-	NativeInterface *nativeInterface;
-	Preferences *preferences;
+    NativeInterface *nativeInterface;
+    Preferences *preferences;
     NSString *userAgent;
     NSString *hexDeviceToken;
     NSString *notificationEmail;

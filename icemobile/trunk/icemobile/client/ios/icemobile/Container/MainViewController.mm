@@ -136,13 +136,15 @@
     return YES;
 }
 
-- (void)webViewDidFinishLoad:(UIWebView *)webView  {
+- (void)webViewDidFinishLoad:(UIWebView *)wView  {
     NSLog(@"webViewDidFinishLoad ");
+    NSError *error = nil;
     //eval native-interface.js
     NSString *localPath = [[NSBundle mainBundle] 
             pathForResource:@"native-interface" ofType:@"js"];
-    NSString *script = [[NSString alloc] initWithContentsOfFile:localPath];
-    NSString *result = [webView stringByEvaluatingJavaScriptFromString: script];
+    NSString *script = [[NSString alloc] initWithContentsOfFile:localPath
+            encoding:NSUTF8StringEncoding error:&error];
+    NSString *result = [wView stringByEvaluatingJavaScriptFromString: script];
 
     if ( (nil != self.notificationEmail) && 
          ([self.notificationEmail length] > 0) )  {
@@ -157,7 +159,7 @@
         script = [NSString stringWithFormat:scriptTemplate, self.hexDeviceToken];
     }
     NSLog(@"ICEpush parking: %@", script );
-    result = [webView stringByEvaluatingJavaScriptFromString: script];
+    result = [wView stringByEvaluatingJavaScriptFromString: script];
 }
 
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error  {
@@ -220,7 +222,6 @@
 NSLog(@"Warning: completePost should not be invoked with ICEmobile Container");
 }
 
-
 - (void)completeFile:(NSString *)path forComponent:(NSString *)componentID withName:(NSString *)componentName   {
     NSString *scriptTemplate;
     NSString *script;
@@ -230,6 +231,36 @@ NSLog(@"Warning: completePost should not be invoked with ICEmobile Container");
     script = [NSString stringWithFormat:scriptTemplate, componentID, componentName, path];
 NSLog(@"completeFile %@", script);
     result = [self.webView stringByEvaluatingJavaScriptFromString: script];
+}
+
+- (NSString *) prepareUpload:(NSString *)formID  {
+NSLog(@"Warning: prepareUpload should not be invoked with ICEmobile Container");
+    return @"void";
+}
+
+- (void) register {
+NSLog(@"Warning: register should not be invoked with ICEmobile Container");
+}
+
+- (void) setProgress:(NSInteger) percent {
+NSLog(@"Warning: setProgress not implemented for ICEmobile Container");
+}
+
+- (NSString *) getFormData:(NSString *)formID  {
+NSLog(@"Warning: getFormData not implemented for ICEmobile Container");
+    return @"";
+}
+
+- (void) play:(NSString *)audioID  {
+NSLog(@"Warning: play not implemented for ICEmobile Container");
+}
+
+- (void) setThumbnail: (UIImage*)image at: (NSString *)thumbID  {
+NSLog(@"Warning: setThumbnail not implemented for ICEmobile Container");
+}
+
+- (void) handleResponse:(NSString *)responseString  {
+NSLog(@"Warning: handleResponse not implemented for ICEmobile Container");
 }
 
 - (IBAction)doPreferences {
