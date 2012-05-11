@@ -3602,31 +3602,60 @@ function wijmoASPNetParseOptions(o) {
 			if (triggerEle.is("iframe")) {
 				triggerEle = $(triggerEle.get(0).contentWindow.document);
 			}
-			switch (event) {
-			case "click":
-				triggerEle.bind(event + namespace, function (e) {
-					if (o.mode !== "popup") {
-						self._displaySubmenu(e, triggerEle, menuContainer);
+			if (typeof this.options.trigger == 'string') {
+				switch (event) {
+					case "click":
+						$(document).off(event + namespace, o.trigger).on(event + namespace, o.trigger, function (e) {
+							if (o.mode !== "popup") {
+								self._displaySubmenu(e, triggerEle, menuContainer);
+							}
+						});
+						break;
+					case "mouseenter":
+						$(document).off(event + namespace, o.trigger).on(event + namespace, o.trigger, function (e) {
+							self._displaySubmenu(e, triggerEle, menuContainer);
+						});
+						break;
+					case "dblclick":
+						$(document).off(event + namespace, o.trigger).on(event + namespace, o.trigger, function (e) {
+							self._displaySubmenu(e, triggerEle, menuContainer);
+						});
+						break;
+					case "rtclick":
+						$(document).off(event + namespace, o.trigger).on(event + namespace, o.trigger, function (e) {
+							menuContainer.hide();
+							self._displaySubmenu(e, triggerEle, menuContainer);
+							e.preventDefault();
+						});
+						break;
+					}			
+			} else {
+				switch (event) {
+					case "click":
+						triggerEle.bind(event + namespace, function (e) {
+							if (o.mode !== "popup") {
+								self._displaySubmenu(e, triggerEle, menuContainer);
+							}
+						});
+						break;
+					case "mouseenter":
+						triggerEle.bind(event + namespace, function (e) {
+							self._displaySubmenu(e, triggerEle, menuContainer);
+						});
+						break;
+					case "dblclick":
+						triggerEle.bind(event + namespace, function (e) {
+							self._displaySubmenu(e, triggerEle, menuContainer);
+						});
+						break;
+					case "rtclick":
+						triggerEle.bind("contextmenu" + namespace, function (e) {
+							menuContainer.hide();
+							self._displaySubmenu(e, triggerEle, menuContainer);
+							e.preventDefault();
+						});
+						break;
 					}
-				});
-				break;
-			case "mouseenter":
-				triggerEle.bind(event + namespace, function (e) {
-					self._displaySubmenu(e, triggerEle, menuContainer);
-				});
-				break;
-			case "dblclick":
-				triggerEle.bind(event + namespace, function (e) {
-					self._displaySubmenu(e, triggerEle, menuContainer);
-				});
-				break;
-			case "rtclick":
-				triggerEle.bind("contextmenu" + namespace, function (e) {
-					menuContainer.hide();
-					self._displaySubmenu(e, triggerEle, menuContainer);
-					e.preventDefault();
-				});
-				break;
 			}
 
 		},
@@ -3894,65 +3923,34 @@ function wijmoASPNetParseOptions(o) {
 					.addClass(parentItemCss);
 					link = $(this).find("." + linkCss + ":eq(0)");
 					subList = link.next();
-					var selector = "." + linkCss + ":eq(0)";
-
-					if(typeof this.options.trigger == 'string') {
-						switch (o.triggerEvent) {
-							case "click":
-								$(this).off(o.triggerEvent + nameSpace, this.options.trigger).on(o.triggerEvent + nameSpace, this.options.trigger, function (e) {
-									if (o.disabled || $(this).hasClass("ui-state-disabled")) {
-										return;
-									}
-									self._showFlyoutSubmenu(e, li, subList);
-								});
-								break;
-							case "dblclick":
-								$(this).off(o.triggerEvent + nameSpace, this.options.trigger).on(o.triggerEvent + nameSpace, this.options.trigger, function (e) {
-									if (o.disabled || $(this).hasClass("ui-state-disabled")) {
-										return;
-									}
-									self._showFlyoutSubmenu(e, li, subList);
-								});
-								break;
-							case "rtclick":
-								$(this).off(o.triggerEvent + nameSpace, this.options.trigger).on(o.triggerEvent + nameSpace, this.options.trigger, function (e) {
-									if (o.disabled || $(this).hasClass("ui-state-disabled")) {
-										return;
-									}
-									self._showFlyoutSubmenu(e, li, subList);
-									e.preventDefault();
-								});
-								break;
-							}
-					} else {
-						switch (o.triggerEvent) {
-							case "click":
-								link.bind("click" + nameSpace, function (e) {
-									if (o.disabled || $(this).hasClass("ui-state-disabled")) {
-										return;
-									}
-									self._showFlyoutSubmenu(e, li, subList);
-								});
-								break;
-							case "dblclick":
-								link.bind("dblclick" + nameSpace, function (e) {
-									if (o.disabled || $(this).hasClass("ui-state-disabled")) {
-										return;
-									}
-									self._showFlyoutSubmenu(e, li, subList);
-								});
-								break;
-							case "rtclick":
-								link.bind("contextmenu" + nameSpace, function (e) {
-									if (o.disabled || $(this).hasClass("ui-state-disabled")) {
-										return;
-									}
-									self._showFlyoutSubmenu(e, li, subList);
-									e.preventDefault();
-								});
-								break;
-							}
-					}
+					
+					switch (o.triggerEvent) {
+						case "click":
+							link.bind("click" + nameSpace, function (e) {
+								if (o.disabled || $(this).hasClass("ui-state-disabled")) {
+									return;
+								}
+								self._showFlyoutSubmenu(e, li, subList);
+							});
+							break;
+						case "dblclick":
+							link.bind("dblclick" + nameSpace, function (e) {
+								if (o.disabled || $(this).hasClass("ui-state-disabled")) {
+									return;
+								}
+								self._showFlyoutSubmenu(e, li, subList);
+							});
+							break;
+						case "rtclick":
+							link.bind("contextmenu" + nameSpace, function (e) {
+								if (o.disabled || $(this).hasClass("ui-state-disabled")) {
+									return;
+								}
+								self._showFlyoutSubmenu(e, li, subList);
+								e.preventDefault();
+							});
+							break;
+						}
 					subList.data("notClose", true);
 				}
 				else {
