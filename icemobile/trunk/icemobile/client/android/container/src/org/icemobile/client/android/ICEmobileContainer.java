@@ -95,6 +95,7 @@ public class ICEmobileContainer extends Activity
     protected static final int TAKE_VIDEO_CODE = 2;
     protected static final int HISTORY_CODE = 3;
     public static final int SCAN_CODE = 4;
+    protected static final int RECORD_CODE = 5;
     
     public static final String SCAN_ID = "org.icemobile.id";
 
@@ -233,6 +234,10 @@ public class ICEmobileContainer extends Activity
                     scanResult + "');");
 	    reloadOnC2dm = false;
 		break;
+	    case RECORD_CODE:
+		mAudioRecorder.gotAudio(data);
+		reloadOnC2dm = false;
+		break;
 	    }
 	}
     }
@@ -285,28 +290,32 @@ public class ICEmobileContainer extends Activity
 
     @Override
 	public boolean onOptionsItemSelected(MenuItem item) {
+	Intent intent;
 	switch (item.getItemId()) {
 	case R.id.reload:
 	    mWebView.clearCache(true);
 	    mWebView.reload();
 	    return true;
 	case R.id.preferences:
-	    Intent intent = new Intent(this, ContainerPreferences.class);
+	    intent = new Intent(this, ContainerPreferences.class);
 	    intent.putExtra("url",currentURL);
 	    startActivity(intent);
 	    return true;
 	case R.id.history:
-	    Intent historyIntent = new Intent();
-	    historyIntent.setClass(this, HistoryList.class);
+	    intent = new Intent();
+	    intent.setClass(this, HistoryList.class);
 	    String[] historyList = (String[])history.toArray(new String[history.size()]);
-	    historyIntent.putExtra("history", historyList);
-	    startActivityForResult(historyIntent, HISTORY_CODE);
+	    intent.putExtra("history", historyList);
+	    startActivityForResult(intent, HISTORY_CODE);
 	    return true;
 	case R.id.stop:
 	    if (mC2dmHandler != null) {
 		mC2dmHandler.stop();
 	    }
 	    finish();
+	    return true;
+	case R.id.record:
+	    String audioFile = mAudioRecorder.recordAudio(RECORD_CODE);
 	    return true;
 	default:
 	    return super.onOptionsItemSelected(item);
@@ -545,7 +554,7 @@ public class ICEmobileContainer extends Activity
     }
 
     private void includeAudio() {
-	mAudioRecorder = new AudioRecorder(this, utilInterface);
+	mAudioRecorder = new AudioRecorder(this, utilInterface, RECORD_CODE);
 	mAudioPlayer = new AudioPlayer();
 	mAudioInterface = new AudioInterface(mAudioRecorder, mAudioPlayer);
         mWebView.addJavascriptInterface(mAudioInterface, "ICEaudio");

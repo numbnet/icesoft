@@ -16,10 +16,14 @@
 
 package org.icemobile.client.android;
 
-import android.content.Context;
+import android.app.Activity;
 import android.util.Log;
 import android.media.MediaRecorder;
 import android.media.MediaPlayer;
+import android.provider.MediaStore;
+import android.database.Cursor;
+import android.net.Uri;
+import android.content.Intent;
 import android.os.Environment;
 import java.io.IOException;
 import java.io.File;
@@ -28,19 +32,21 @@ import android.os.Build;
 
 public class AudioRecorder {
 
-    private Context context;
+    private Activity container;
     private boolean recording;
     private MediaRecorder mRecorder;
     private File audioFile;
     private UtilInterface utilInterface;
     private boolean cantStop;
     private boolean stopPending;
+    private int recordCode;
 
-    public AudioRecorder (Context context, UtilInterface util) {
-	this.context = context;
+    public AudioRecorder (Activity container, UtilInterface util, int recordCode) {
+	this.container = container;
 	utilInterface = util;
+	this.recordCode = recordCode;
 	recording = false;
-	audioFile = new File(utilInterface.getTempPath(), "micCapture.mpga");
+	audioFile = new File(utilInterface.getTempPath(), "micCapture.3gpp");
     }
 
     public String toggleMic(int maxDuration) {
@@ -135,4 +141,32 @@ public class AudioRecorder {
 	    stopPending = false;
 	}
     }
+
+    public String recordAudio(int maxDuration) {
+	Intent intent = new Intent(MediaStore.Audio.Media.RECORD_SOUND_ACTION);
+	// Would like to set the location, but it does not work;
+	//intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(audioFile));
+	if (maxDuration > 0) {
+	    intent.putExtra(MediaStore.EXTRA_DURATION_LIMIT, maxDuration);
+	}
+	container.startActivityForResult(intent, recordCode);
+	return audioFile.getAbsolutePath();
+    }
+
+    public void gotAudio(Intent data) {
+	Uri uri = data.getData();
+	String[] projection = { MediaStore.Audio.Media.DATA };
+	Cursor cursor = container.managedQuery(uri, projection, null, null, null); 
+	int column_index_data = cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DATA); 
+	cursor.moveToFirst(); 
+	String recordedAudioFilePath = cursor.getString(column_index_data);
+
+	// Move the file
+	File file = new File(recordedAudioFilePath);
+	file.renameTo(audioFile);
+	int rows = container.getContentResolver().delete(uri,null,null);
+	
+    }
 }
+
+
