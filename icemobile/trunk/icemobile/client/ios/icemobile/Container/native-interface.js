@@ -255,6 +255,10 @@ if (!window.ice.mobile) {
             ice.native('scan?id=' + id);
         }
 
+        namespace.aug = function(id, atts)  {
+            ice.native('aug?id=' + id + (atts ? '&' + atts : ''));
+        }
+
         namespace.deviceToken = "cafebeef";
 
     })(window.ice)

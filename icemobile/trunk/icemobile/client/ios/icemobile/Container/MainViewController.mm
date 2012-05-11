@@ -101,6 +101,7 @@
     [webView stringByEvaluatingJavaScriptFromString: 
             @"ice.push.pauseBlockingConnection(ice.deviceToken)"];
     [webView stopLoading];
+    [self.nativeInterface applicationWillResignActive];
 }
 
 - (void)setDeviceToken:(NSData *)deviceToken {

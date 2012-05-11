@@ -17,6 +17,7 @@
 #import <Foundation/Foundation.h>
 #import <AVFoundation/AVFoundation.h>
 @class MainViewController;
+@class ARViewController;
 
 @interface NativeInterface : NSObject<UIImagePickerControllerDelegate, UINavigationControllerDelegate, AVAudioRecorderDelegate> {
 
@@ -31,6 +32,8 @@
     NSMutableData *receivedData;
     UIPopoverController *camPopover;
     UIPopoverController *audioPopover;
+    UIPopoverController *augPopover;
+    ARViewController *augController;
     CGRect popoverSource;
 }
 
@@ -45,8 +48,11 @@
 @property (retain) NSMutableData *receivedData;
 @property (nonatomic, retain) UIPopoverController *camPopover;
 @property (nonatomic, retain) UIPopoverController *audioPopover;
+@property (nonatomic, retain) UIPopoverController *augPopover;
+@property (nonatomic, retain) ARViewController *augController;
 @property (nonatomic, assign) CGRect popoverSource;
 
+- (void) applicationWillResignActive;
 - (BOOL)dispatch: (NSString*)command;
 - (BOOL)camera: (NSString*)cameraId maxwidth: (NSString*)maxw maxheight: (NSString*)maxh;
 - (BOOL)camcorder: (NSString*)cameraId;
