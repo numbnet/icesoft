@@ -75,6 +75,7 @@ public class ChartRenderer extends CoreRenderer {
         encodeAxesConfig(cfgBuilder, component);
         encodeSeriesConfig(cfgBuilder, seriesDefaults, data);
         encodeLegendConfig(cfgBuilder, component);
+        encodeHighlighterConfig(cfgBuilder, component);
         if (stacking) cfgBuilder.entry("stackSeries", true);
         if (animated == null) cfgBuilder.entry("animate", "!ice.ace.jq.jqplot.use_excanvas", true);
         else if (animated) cfgBuilder.entry("animate", true);
@@ -88,6 +89,14 @@ public class ChartRenderer extends CoreRenderer {
 
         writer.endElement(HTML.SCRIPT_ELEM);
         writer.endElement(HTML.SPAN_ELEM);
+    }
+
+    private void encodeHighlighterConfig(JSONBuilder cfgBuilder, Chart component) {
+        if (component.isHighlighter() != null && component.isHighlighter()) {
+            cfgBuilder.beginMap("highlighter");
+            cfgBuilder.entry("show", true);
+            cfgBuilder.endMap();
+        }
     }
 
     private void encodeSeriesConfig(JSONBuilder cfg, ChartSeries defaults, List<ChartSeries> series) {
