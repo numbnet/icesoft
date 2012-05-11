@@ -27,9 +27,14 @@
 @implementation MainViewController
 
 @synthesize webView;
+@synthesize receivedData;
+@synthesize currentRequest;
+@synthesize currentResponse;
+@synthesize currentChallenge;
 @synthesize prefsButton;
 @synthesize nativeInterface;
 @synthesize preferences;
+@synthesize userAgent;
 @synthesize hexDeviceToken;
 @synthesize notificationEmail;
 @synthesize popover;
@@ -82,8 +87,8 @@
 - (void)didBecomeActive  {
     NSLog(@"MainViewController didBecomeActive.");
     if (nil == [self getCurrentURL])  {
-        [self.webView loadRequest: [NSURLRequest requestWithURL:[NSURL 
-                URLWithString:@"http://www.icemobile.org/demos.html"] ]];
+        self.userAgent = [self.webView stringByEvaluatingJavaScriptFromString:@"navigator.userAgent"];
+        [self loadURL:@"http://www.icemobile.org/demos.html"];
     } else {
         [self.webView reload];
         [self.webView stringByEvaluatingJavaScriptFromString: 
@@ -126,16 +131,7 @@
     }
 
     //add cookie for every domain
-    NSDictionary *properties = [[NSDictionary alloc] initWithObjectsAndKeys:
-            @"com.icesoft.user-agent", NSHTTPCookieName,
-            @"HyperBrowser/1.0", NSHTTPCookieValue,
-            @"/", NSHTTPCookiePath,
-            [[req URL] host], NSHTTPCookieDomain,
-            nil ];
-
-    NSHTTPCookie *cookie = [NSHTTPCookie cookieWithProperties:properties];
-    NSLog(@"setCookie %@ for request %@ ", cookie, reqString );
-    [[NSHTTPCookieStorage sharedHTTPCookieStorage] setCookie: cookie];
+    [self setCustomCookie:req];
 
     return YES;
 }
@@ -175,6 +171,49 @@
         [self.webView loadRequest:request];
         self.canRetry = NO;
     }
+}
+
+- (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response  {
+    self.currentResponse = response;
+    [receivedData setLength:0];
+}
+
+- (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data  {
+    [receivedData appendData:data];
+}
+
+- (void)connection:(NSURLConnection *)connection didSendBodyData:(NSInteger)bytesWritten totalBytesWritten:(NSInteger)totalBytesWritten totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite  {
+    NSLog(@"MainViewController didSendBodyData ");
+}
+
+- (void)connectionDidFinishLoading:(NSURLConnection *)connection  {
+    [self.webView loadData:receivedData MIMEType:[self.currentResponse MIMEType] textEncodingName:[self.currentResponse textEncodingName] baseURL:[self.currentRequest URL ]];
+    [connection release];
+    [self.receivedData release];
+}
+
+- (void)connection:(NSURLConnection *)connection willSendRequestForAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge  {
+    UIAlertView *alert = [[UIAlertView alloc] 
+            initWithTitle:@"Authentication Required" 
+            message:[[self.currentRequest URL] host]
+            delegate:self cancelButtonTitle:@"Log In" 
+            otherButtonTitles:@"Cancel",nil];
+    alert.alertViewStyle = UIAlertViewStyleLoginAndPasswordInput;
+    self.currentChallenge = challenge;
+    [alert show];
+    [alert release];
+}
+
+- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error {
+    NSLog(@"MainViewController connection:didFailWithError %@ ", error);
+}
+
+- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
+    [[self.currentChallenge sender] useCredential:[NSURLCredential 
+            credentialWithUser:[[alertView textFieldAtIndex:0] text] 
+            password:[[alertView textFieldAtIndex:1] text] 
+            persistence:NSURLCredentialPersistencePermanent] 
+            forAuthenticationChallenge:self.currentChallenge];
 }
 
 - (void)completePost:(NSString *)value forComponent:(NSString *)componentID withName:(NSString *)componentName   {
@@ -273,10 +312,30 @@ NSLog(@"completeFile %@", script);
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:
             [NSURL URLWithString:url] ]; 
     [request setCachePolicy:NSURLRequestReloadIgnoringLocalCacheData];
+    [request setValue:self.userAgent forHTTPHeaderField:@"User-Agent"];
+    self.currentRequest = request;
 
-    [self.webView loadRequest: request];
+    NSURLConnection *theConnection = [[NSURLConnection alloc] 
+            initWithRequest:request  delegate:self];
+    if (theConnection) {
+        receivedData = [[NSMutableData data] retain];
+    } else {
+        NSLog(@"unable to connect to %@", theConnection);
+    }
 }
 
+- (void)setCustomCookie:(NSURLRequest*) req {
+    NSDictionary *properties = [[NSDictionary alloc] initWithObjectsAndKeys:
+            @"com.icesoft.user-agent", NSHTTPCookieName,
+            @"HyperBrowser/1.0", NSHTTPCookieValue,
+            @"/", NSHTTPCookiePath,
+            [[req URL] host], NSHTTPCookieDomain,
+            nil ];
+
+    NSHTTPCookie *cookie = [NSHTTPCookie cookieWithProperties:properties];
+    NSLog(@"setCookie %@ for request %@ ", cookie, [[req URL] absoluteString] );
+    [[NSHTTPCookieStorage sharedHTTPCookieStorage] setCookie: cookie];
+}
 
 - (void)reloadCurrentPage {
     NSLog(@"reloadCurrentPage %@", [self.webView.request URL]);

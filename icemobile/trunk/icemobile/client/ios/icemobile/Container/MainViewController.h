@@ -24,8 +24,13 @@
     ZXingDelegate,UINavigationControllerDelegate,UIActionSheetDelegate> {
 
 	UIWebView *webView;
+    NSURLRequest *currentRequest;
+    NSURLResponse *currentResponse;
+    NSMutableData *receivedData;
+    NSURLAuthenticationChallenge *currentChallenge;
 	NativeInterface *nativeInterface;
 	Preferences *preferences;
+    NSString *userAgent;
     NSString *hexDeviceToken;
     NSString *notificationEmail;
     UIButton *prefsButton;
@@ -36,8 +41,13 @@
 
 @property (nonatomic, retain) IBOutlet UIWebView *webView;
 @property (nonatomic, retain) IBOutlet UIButton *prefsButton;
+@property (retain) NSURLRequest *currentRequest;
+@property (retain) NSURLResponse *currentResponse;
+@property (retain) NSMutableData *receivedData;
+@property (retain) NSURLAuthenticationChallenge *currentChallenge;
 @property (retain) NativeInterface *nativeInterface;
 @property (retain) Preferences *preferences;
+@property (nonatomic, retain) NSString *userAgent;
 @property (nonatomic, retain) NSString *hexDeviceToken;
 @property (nonatomic, retain) NSString *notificationEmail;
 @property (nonatomic, retain) UIPopoverController *popover;
