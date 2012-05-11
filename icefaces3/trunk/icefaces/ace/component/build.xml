@@ -61,6 +61,8 @@
     <property name="ace-menu.js.tmp" location="${ace-menu.js}.tmp.js"/>
     <property name="ace-components.js" location="${resources}/icefaces.ace/util/ace-components.js"/>
     <property name="ace-components.js.tmp" location="${ace-components.js}.tmp.js"/>
+    <property name="ace-chart.js" location="${resources}/icefaces.ace/chart/ace-chart.js"/>
+    <property name="ace-chart.js.tmp" location="${ace-chart.js}.tmp.js"/>
 
     <property name="root.dir.path" location="${build}/skins/in"/>
     <property name="output.dir.path" location="${build}/skins/out"/>
@@ -244,6 +246,17 @@
                 <file name="icefaces.ace/json/json2.js"/>
             </filelist>
         </concat>
+        <!-- ace-chart.js -->
+        <delete file="${ace-chart.js.tmp}" verbose="true"/>
+        <concat destfile="${ace-chart.js.tmp}" force="true" fixlastline="true">
+            <filelist dir="${resources}">
+                <file name="icefaces.ace/chart/jquery.jqplot.js"/>
+                <file name="icefaces.ace/chart/plugins/jqplot.barRenderer.js"/>
+                <file name="icefaces.ace/chart/plugins/jqplot.categoryAxisRenderer.js"/>
+                <file name="icefaces.ace/chart/plugins/jqplot.pointLabels.js"/>
+                <file name="icefaces.ace/chart/chart.js"/>
+            </filelist>
+        </concat>
     </target>
 
     <target name="res-js-compress" depends="res-js-combine"
@@ -284,6 +297,13 @@
             <arg value="${ace-components.js.tmp}"/>
         </java>
         <delete file="${ace-components.js.tmp}" verbose="true"/>
+        <java jar="${lib.dir}/yui-compressor.jar" fork="yes">
+            <arg line="--preserve-semi"/>
+            <arg value="-o"/>
+            <arg value="${ace-chart.js}"/>
+            <arg value="${ace-chart.js.tmp}"/>
+        </java>
+        <delete file="${ace-chart.js.tmp}" verbose="true"/>
     </target>
 
     <target name="res-js-no-compress" depends="res-js-combine" if="no-compress">
@@ -297,6 +317,8 @@
         <move file="${ace-menu.js.tmp}" tofile="${ace-menu.js}" overwrite="yes">
         </move>
         <move file="${ace-components.js.tmp}" tofile="${ace-components.js}" overwrite="yes">
+        </move>
+        <move file="${ace-chart.js.tmp}" tofile="${ace-chart.js}" overwrite="yes">
         </move>
     </target>
 

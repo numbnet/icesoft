@@ -66,6 +66,16 @@ public class JSONBuilder {
         return this;
     }
 
+    /**
+     * Begins an anonymous array.
+     * @return a reference to this object.
+     */
+    public JSONBuilder beginArray() {
+        conditionallyAppendComma();
+        params.append("[");
+        return this;
+    }
+
     public JSONBuilder beginArray(String key) {
         appendCommaAndKey(key);
         params.append("[");
