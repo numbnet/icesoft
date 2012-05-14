@@ -9,15 +9,21 @@ ice.ace.TextEntry = function(id, cfg) {
 
     this.jq.keyup(
         function(e) {
+            var maxLength = this.maxLength, nextTabElement;
 //            console.log("value: ", this.value);
-            var maxLength = this.maxLength;
 //            console.log("maxLength:", maxLength);
+//            console.log("e.which: ", e.which);
+//            console.dir(e);
             if (jQ.isNumeric(maxLength) && maxLength > 0 && this.value.length >= maxLength) {
+                nextTabElement = ice.ace.util.findNextTabElement.call(this);
+                if (nextTabElement) nextTabElement.focus();
+/*
                 var fields = jQ(this).parents('form:eq(0),body').find(':input').not('[type=hidden]');
                 var index = fields.index(this);
                 if (index > -1 && ( index + 1 ) < fields.length) {
                     fields.eq(index + 1).focus();
                 }
+*/
             }
         }
     );
@@ -27,14 +33,14 @@ ice.ace.TextEntry = function(id, cfg) {
                 var input = jQ(this);
                 if (input.attr("name") == labelName) {
                     input.attr({name: inputId, value: ""});
-                    input.removeClass("ui-embedded-label");
+                    input.removeClass("ui-input-label-infield");
                 }
             }).blur(
             function() {
                 var input = jQ(this);
                 if (jQ.trim(input.val()) == "") {
                     input.attr({name: labelName, value: cfg.embeddedLabel});
-                    input.addClass("ui-embedded-label");
+                    input.addClass("ui-input-label-infield");
                 }
 //                setFocus();
             });
