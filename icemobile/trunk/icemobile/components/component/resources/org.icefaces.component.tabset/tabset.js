@@ -49,7 +49,7 @@
              var ht =  calcMaxChildHeight(tabContent);
              tabContent.style.height =  ht+"px";
         }
-        var contents = tabContent.getElementsByTagName("div");
+        var contents = tabContent.getElementsByClassName("mobi-tabpage-hidden");
         var newPage = contents[tabIndex];
         newPage.className="mobi-tabpage";
 
@@ -91,7 +91,7 @@
                     var tabElem = document.getElementById(tabsId);
                     if (tabElem){
                         var lis = tabElem.getElementsByTagName("li");
-                        var contents = tabContent.getElementsByTagName("div");
+                        var contents = tabContent.childNodes;
                         contents[tabIndex].style.opacity = 0;
                         var newPage = contents[tabIndex];
                         newPage.className = "mobi-tabpage";
