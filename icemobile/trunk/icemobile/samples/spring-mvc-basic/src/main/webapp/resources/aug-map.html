@@ -101,6 +101,14 @@
                 var command = element.getAttribute("data-command");
                 var params = element.getAttribute("data-params");
                 var id = element.getAttribute("data-id");
+
+                if (window.ice  && ice.aug)  {
+                    if ("aug" == command)  {
+                        ice.aug(id, params);
+                    }
+                    return;
+                }
+
                 var uploadURL;
                 if (0 === formAction.indexOf("/"))  {
                     uploadURL = window.location.origin + formAction;
