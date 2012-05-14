@@ -107,7 +107,7 @@ public class TextEntryRenderer extends InputRenderer {
         writer.writeAttribute("id", clientId + "_markup", null);
 
         if (hasLabel && labelPosition.equals("top")) {
-            writeLabel(writer, label, indicator, indicatorPosition, required, hasIndicator);
+            writeLabel(writer, label, labelPosition, indicator, indicatorPosition, required, hasIndicator);
             writer.startElement("br", null);
             writer.endElement("br");
         }
@@ -115,13 +115,13 @@ public class TextEntryRenderer extends InputRenderer {
             if (hasLabel && labelPosition.equals("left")) {
                 writeHiddenLabel(writer, label);
             }
-            writeIndicator(writer, required, indicator);
+            writeIndicator(writer, required, indicator, indicatorPosition);
             writer.startElement("br", null);
             writer.endElement("br");
         }
         if (hasLabel) {
             if (labelPosition.equals("left")/* || labelPosition.equals("top")*/) {
-                writeLabel(writer, label, indicator, indicatorPosition, required, hasIndicator);
+                writeLabel(writer, label, labelPosition, indicator, indicatorPosition, required, hasIndicator);
             }
             if (labelPosition.equals("top")) {
 //                writer.startElement("br", null);
@@ -133,7 +133,7 @@ public class TextEntryRenderer extends InputRenderer {
 //                writer.startElement("span", null);
             }
             if (indicatorPosition.equals("left")/* || indicatorPosition.equals("top")*/) {
-                writeIndicator(writer, required, indicator);
+                writeIndicator(writer, required, indicator, indicatorPosition);
             }
             if (indicatorPosition.equals("top")) {
 //                writer.startElement("br", null);
@@ -158,7 +158,7 @@ public class TextEntryRenderer extends InputRenderer {
                     valueToRender = embeddedLabel = valueToRender + indicator;
                 }
             }
-            defaultClass += " ui-embedded-label";
+            defaultClass += " " + LABEL_STYLE_CLASS + "-infield";
         }
         writer.writeAttribute("name", nameToRender, null);
         writer.writeAttribute("value", valueToRender , null);
@@ -175,10 +175,10 @@ public class TextEntryRenderer extends InputRenderer {
         writer.endElement("input");
 
         if (hasIndicator && indicatorPosition.equals("right")) {
-            writeIndicator(writer, required, indicator);
+            writeIndicator(writer, required, indicator, indicatorPosition);
         }
         if (hasLabel && labelPosition.equals("right")) {
-            writeLabel(writer, label, indicator, indicatorPosition, required, hasIndicator);
+            writeLabel(writer, label, labelPosition, indicator, indicatorPosition, required, hasIndicator);
         }
         if (hasIndicator) {
             if (indicatorPosition.equals("bottom")) {
@@ -189,7 +189,7 @@ public class TextEntryRenderer extends InputRenderer {
                 if (hasLabel && labelPosition.equals("left")) {
                     writeHiddenLabel(writer, label);
                 }
-                writeIndicator(writer, required, indicator);
+                writeIndicator(writer, required, indicator, indicatorPosition);
             }
             if (indicatorPosition.equals("top") || indicatorPosition.equals("bottom")) {
 //                writer.endElement("span");
@@ -201,7 +201,7 @@ public class TextEntryRenderer extends InputRenderer {
                 writer.endElement("br");
             }
             if (/*labelPosition.equals("right") || */labelPosition.equals("bottom")) {
-                writeLabel(writer, label, indicator, indicatorPosition, required, hasIndicator);
+                writeLabel(writer, label, labelPosition, indicator, indicatorPosition, required, hasIndicator);
             }
         }
         writer.endElement("span");
@@ -241,41 +241,67 @@ public class TextEntryRenderer extends InputRenderer {
         writer.endElement("span");
     }
 
-    private void writeLabel(ResponseWriter writer, String label, String indicator, String indicatorPosition, boolean required, boolean hasIndicator) throws IOException {
+    private void writeLabel(ResponseWriter writer, String label, String labelPosition, String indicator, String indicatorPosition, boolean required, boolean hasIndicator) throws IOException {
         if (hasIndicator) {
+            if (indicatorPosition.equals("labelLeft") || indicatorPosition.equals("labelRight")) {
+                writer.startElement("span", null);
+                writer.writeAttribute("class", LABEL_STYLE_CLASS + " " + LABEL_STYLE_CLASS + "-" + labelPosition, null);
+            }
+/*
             if (indicatorPosition.equals("labelTop") || indicatorPosition.equals("labelBottom")) {
                 writer.startElement("span", null);
                 writer.writeAttribute("style", "float:left;", null);
             }
-            if (indicatorPosition.equals("labelLeft") || indicatorPosition.equals("labelTop")) {
-                writeIndicator(writer, required, indicator);
+*/
+            if (indicatorPosition.equals("labelLeft")/* || indicatorPosition.equals("labelTop")*/) {
+                writeIndicator(writer, required, indicator, indicatorPosition);
             }
+/*
             if (indicatorPosition.equals("labelTop")) {
                 writer.startElement("br", null);
                 writer.endElement("br");
             }
+*/
         }
         writer.startElement("span", null);
-        writer.writeAttribute("class", LABEL_STYLE_CLASS, null);
+        if (!hasIndicator || (!indicatorPosition.equals("labelLeft") && !indicatorPosition.equals("labelRight"))) {
+            writer.writeAttribute("class", LABEL_STYLE_CLASS + " " + LABEL_STYLE_CLASS + "-" + labelPosition, null);
+        }
         writer.write(label);
         writer.endElement("span");
         if (hasIndicator) {
+/*
             if (indicatorPosition.equals("labelBottom")) {
                 writer.startElement("br", null);
                 writer.endElement("br");
             }
-            if (indicatorPosition.equals("labelRight") || indicatorPosition.equals("labelBottom")) {
-                writeIndicator(writer, required, indicator);
+*/
+            if (indicatorPosition.equals("labelRight")/* || indicatorPosition.equals("labelBottom")*/) {
+                writeIndicator(writer, required, indicator, indicatorPosition);
             }
+/*
             if (indicatorPosition.equals("labelTop") || indicatorPosition.equals("labelBottom")) {
+                writer.endElement("span");
+            }
+*/
+            if (indicatorPosition.equals("labelLeft") || indicatorPosition.equals("labelRight")) {
                 writer.endElement("span");
             }
         }
     }
 
-    private void writeIndicator(ResponseWriter writer, boolean required, String indicator) throws IOException {
+    private void writeIndicator(ResponseWriter writer, boolean required, String indicator, String indicatorPosition) throws IOException {
+        String class1 = "ui-" + (required ? "required" : "optional") + "-indicator";
+        String class2;
+        if (indicatorPosition.equals("labelLeft")) {
+            class2 = class1 + "-label-left";
+        } else if (indicatorPosition.equals("labelRight")) {
+            class2 = class1 + "-label-right";
+        } else {
+            class2 = class1 + "-" + indicatorPosition;
+        }
         writer.startElement("span", null);
-        writer.writeAttribute("class", "ui-" + (required ? "required" : "optional") + "-indicator", null);
+        writer.writeAttribute("class", class1 + " " + class2, null);
         writer.write(indicator);
         writer.endElement("span");
     }

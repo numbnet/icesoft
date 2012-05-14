@@ -426,6 +426,8 @@
     background-image:url("#{resource['icefaces.ace:themes/sam/images/ui-icons_454545_256x240.png']}");
 }
 
-/* input field prompt label */
-.ui-inputfield.ui-embedded-label {color: #aaa;}
+/* input field label */
+.ui-inputfield.ui-input-label-infield {color: #aaa;}
 .ui-input-label.hidden {visibility: hidden;}
+.ui-input-label-left, .ui-optional-indicator-left, .ui-required-indicator-left {margin-right: 4px;}
+.ui-input-label-right, .ui-optional-indicator-right, .ui-required-indicator-right {margin-left: 4px;}
