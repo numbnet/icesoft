@@ -29,14 +29,6 @@ public class ARViewInterface implements JavascriptInterface {
     }
 
     public String arView(String id, String attr) {
-        Map<String,String> attributes = 
-                new AttributeExtractor(attr).getAttributes();
-        HashMap<String,String> places = new HashMap();
-        for (String name : attributes.keySet())  {
-            if ("id" != name)  {
-                places.put(name, attributes.get(name));
-            }
-        }
-        return handler.arView(id, places);
+        return handler.arView(id, attr);
     }
 }
