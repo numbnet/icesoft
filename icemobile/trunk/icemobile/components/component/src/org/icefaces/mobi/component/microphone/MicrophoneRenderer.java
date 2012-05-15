@@ -72,10 +72,10 @@ public class MicrophoneRenderer extends Renderer {
 
         String partUploadName = clientId;
         if (EnvUtils.isEnhancedBrowser(facesContext)){
-           partUploadName+="_mic-file";
+           partUploadName+="-file";
         }
         if (EnvUtils.isAuxUploadBrowser(facesContext)) {
-           partUploadName+="_mic-file";
+           partUploadName+="-file";
         }
         Part part = null;
         try {
@@ -139,7 +139,7 @@ public class MicrophoneRenderer extends Renderer {
         // button element
         writer.startElement("input", uiComponent);
         writer.writeAttribute(HTML.TYPE_ATTR, "button", null);
-        writer.writeAttribute("id", clientId + "_mic", null);
+        writer.writeAttribute("id", clientId , null);
         // write out style for input button, same as default device button.
         Utils.writeConcatenatedStyleClasses(writer,
                 "mobi-button mobi-button-default",
@@ -171,14 +171,11 @@ public class MicrophoneRenderer extends Renderer {
 
     private StringBuilder writeJSCall(String clientId, int maxtime) {
         final StringBuilder script = new StringBuilder();
-        script.append("if(this.value=='stop'){this.className='mobi-button mobi-button-default'; this.value='record';}");
-        script.append("else{this.className='mobi-button mobi-button-default mobi-mic-stop'; this.value='stop';}");
-
         if (maxtime != Integer.MIN_VALUE) {
             script.append("ice.microphone( '").append(clientId).
-                    append("_mic','maxtime=").append(maxtime).append("');");
+                    append(",'maxtime=").append(maxtime).append("');");
         } else {
-            script.append("ice.microphone( '").append(clientId).append("_mic');");
+            script.append("ice.microphone( '").append(clientId).append("');");
         }
         return script;
     }
