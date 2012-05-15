@@ -38,7 +38,7 @@
 
         <h:form id="form">
             <ace:dataTable id="table"
-                    value="#{backing.data}" var="row"
+                    value="#{backing.tableData}" var="row"
                     selectionMode="single"
                     rowSelectListener="#{backing.redrawChartListener}"
                     rowUnselectListener="#{backing.clearChartListener}">
@@ -60,12 +60,33 @@
                        animated="false"
                        value="#{backing.lineData}"
                        stackSeries="false"
-                       xAxis="#{backing.defaultAxis}"
+                       xAxis="#{backing.tableDemoAxis}"
                        legend="true"
                        legendLocation="NW"
-                       legendPlacement="INSIDE_GRID"
                        selectListener="#{backing.selectionListener}"
-                       highlighter="true" />
+                       highlighter="true"
+                       highlighterAxes="Y"
+                       highlighterShowMarker="false"/>
         </h:form>
+
+        <hr/>
+
+        <h:form>
+            <ace:chart id="chart"
+                       animated="false"
+                       value="#{backing.barData}"
+                       stackSeries="false"
+                       defaultAxesConfig="#{backing.barDemoDefaultAxis}"
+                       xAxis="#{backing.barDemoX1Axis}"
+                       x2Axis="#{backing.barDemoX2Axis}"
+                       yAxes="#{backing.barDemoYAxes}"
+                       legend="true"
+                       legendPlacement="OUTSIDE_GRID"
+                       highlighter="true"
+                       highlighterLocation="N"
+                       highlighterShowMarker="false"
+                       highlighterBringSeriesToFront="true"/>
+        </h:form>
+
     </ui:define>
 </ui:composition>

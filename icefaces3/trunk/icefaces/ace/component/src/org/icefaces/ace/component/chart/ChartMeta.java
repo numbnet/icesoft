@@ -27,6 +27,10 @@ import java.util.List;
         @ResourceDependency(library = "icefaces.ace", name = "chart/jquery.jqplot.css")
 })
 public class ChartMeta {
+    @Property(tlddoc =
+                "Define a title of the entire chart.")
+    private String title;
+
     @Property(tlddoc = 
                 "Define a collection of ChartSeries object to draw on this plot.")
     private List<ChartSeries> value;
@@ -43,7 +47,7 @@ public class ChartMeta {
                 "Defines the location of legend relative to the bounds of the chart. " +
                 "All of the cardinal directions are available in the following format: " +
                 "N, NE, E, SE, S, etc.")
-    private LegendLocation legendLocation;
+    private Location legendLocation;
     @Property(tlddoc = 
                 "Defines the placement of the legend relative to the content of the " +
                 "chart. The available configurations are: INSIDE_GRID, OUTSIDE_GRID " +
@@ -84,12 +88,42 @@ public class ChartMeta {
     @Property(tlddoc =
                 "Defines the configuration of the y axes (up to 9). Attempts are made to " +
                 "interpret a configuration if undefined.")
-    private List<Axis> yAxes;
+    private Axis[] yAxes;
 
     @Property(tlddoc =
                 "Enables drawing an info string at the cursor position when hovering " +
                 "at data points. Default configuration displays x, y values." )
     private Boolean highlighter;
+
+    @Property(tlddoc =
+                "Enables drawing an 'active' styled point marker while the highlighter " +
+                "tooltip is shown. Is true by default.")
+    private Boolean highlighterShowMarker;
+
+    @Property(tlddoc =
+                "Defines the direction the highlighter tooltip is located relative to " +
+                "the cursor. Is 'NW' by default.")
+    private Location highlighterLocation;
+
+    @Property(tlddoc =
+                "Defines the point values passed to the highlighter tooltip, either " +
+                "X, Y, XY or YX. Default is XY.")
+    private HighlighterTooltipAxes highlighterAxes;
+
+    @Property(tlddoc =
+                "Defines a format string populated with the x, y values indicated by the " +
+                "highlighterAxes. Takes C-style string format options ex. 'Date: %s, number of cats: %d' ")
+    private String highlighterFormatString;
+
+    @Property(tlddoc =
+                "Defines how many Y values a highlighter should expect in the data points array. " +
+                "Typically this is 1.  Certain plots, like OHLC, will have more y values in each " +
+                "data point array and will need this property adjusted to parse correctly.")
+    private Integer highlighterYValueCount;
+
+    @Property(tlddoc =
+                "Enables the highlighted series being temporarily reordered to be entirely visible.")
+    private Boolean highlighterBringSeriesToFront;
 
     @Property(expression = Expression.METHOD_EXPRESSION,
             methodExpressionArgument = "org.icefaces.ace.event.SeriesSelectionEvent",

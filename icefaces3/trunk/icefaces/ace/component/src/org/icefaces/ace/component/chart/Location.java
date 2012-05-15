@@ -1,6 +1,6 @@
 package org.icefaces.ace.component.chart;
 
-public enum LegendLocation {
+public enum Location {
     NW, N, NE, E, SE, S, SW, W;
 
     @Override

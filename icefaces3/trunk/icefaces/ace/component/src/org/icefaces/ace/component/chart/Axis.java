@@ -25,25 +25,22 @@ import java.io.Serializable;
  * Time: 10:44 AM
  */
 public class Axis implements Serializable {
-//    // Unimplemented
-//    private boolean forceTickAt0;
-//    // Unimplemented
-//    private boolean forceTickAt100;
-//
-//    // Unimplemented
-//    private boolean show;
-//
-//    // Unimplemented
-//    private double min;
-//    // Unimplemented
-//    private double max;
-//
-//    // Unimplemented
-//    private double pad;
-
-    private boolean sortMergedLabels;
+    private Boolean forceTickAt0;
+    private Boolean forceTickAt100;
+    private Boolean show;
+    private String label;
+    // Needs to be Object to support date ranges
+    private Object min;
+    private Object max;
+    private Boolean autoscale;
+    private Boolean sortMergedLabels;
     private String[] ticks;
+    private Integer tickAngle;
+    private String tickFontSize;
     private AxisType type;
+    private Double pad;
+    private Double padMin;
+    private Double padMax;
 
     /**
      * Used by the ChartRenderer to produce a JSON representation of the configuration of this axis.
@@ -52,26 +49,96 @@ public class Axis implements Serializable {
     @Override
     public String toString() {
         JSONBuilder json = JSONBuilder.create();
+        Object max = this.getMax();
+        Object min = this.getMin();
+        Double pad = this.getPad();
+        Double padMin = this.getPadMin();
+        Double padMax = this.getPadMax();
+        Boolean show = this.getShow();
+        Integer tickAngle = this.getTickAngle();
+        Boolean autoscale = this.getAutoscale();
 
         json.beginMap();
+
+        if (label != null)
+            json.entry("label", label);
+
+        // Add date support
+        if (max != null)
+            if (max instanceof Number)
+                json.entry("max", ((Number)max).doubleValue());
+            else
+                json.entry("max", max.toString());
+
+        if (min != null)
+            if (min instanceof Number)
+                json.entry("min", ((Number)min).doubleValue());
+            else
+                json.entry("min", min.toString());
+
+        if (show != null)
+            json.entry("show", show);
+
+        if (autoscale != null)
+            json.entry("autoscale", autoscale);
+
+        if (pad != null)
+           json.entry("pad", pad);
+        if (padMin != null)
+            json.entry("padMin", padMin);
+        if (padMax != null)
+            json.entry("padMax", padMax);
+
         if (type != null)
             json.entry("renderer", type.toString(), true);
         if (hasRendererOptionsSet()) {
             json.beginMap("rendererOptions");
-            if (type == AxisType.CATEGORY && sortMergedLabels)
-                json.entry("sortMergedLabels", true);
+            if (type == AxisType.CATEGORY && isSortMergedLabels() != null)
+                json.entry("sortMergedLabels", isSortMergedLabels());
+            if (isForceTickAt0() != null)
+                json.entry("forceTickAt0", isForceTickAt0());
+            if (isForceTickAt100() != null)
+                json.entry("forceTickAt100", isForceTickAt100());
             json.endMap();
         }
 
         if (ticks != null)
             encodeTicks(json);
+
+        if (hasTickOptionsSet()) {
+            json.entry("tickRenderer", "ice.ace.jq.jqplot.CanvasAxisTickRenderer", true);
+            encodeTickOptions(json);
+        }
+
         json.endMap();
 
         return json.toString();
     }
 
+    private void encodeTickOptions(JSONBuilder json) {
+        json.beginMap("tickOptions");
+        String fontSize = getTickFontSize();
+        Integer angle = getTickAngle();
+
+        if (angle != null) json.entry("angle", angle);
+        if (fontSize!= null) json.entry("fontSize", fontSize);
+
+        json.endMap();
+    }
+
+    private boolean hasTickOptionsSet() {
+        return (getTickAngle() != null || getTickFontSize() != null);
+    }
+
+    // Add date support
+    private Object getDoubleIfPossible(Object max) {
+        if (max instanceof Number)
+            return ((Number)max).doubleValue();
+        else return max.toString();
+    }
+
     private boolean hasRendererOptionsSet() {
-        if (type == AxisType.CATEGORY && sortMergedLabels)
+        if ((type == AxisType.CATEGORY && sortMergedLabels != null) || forceTickAt0 != null || forceTickAt100 != null)
             return true;
         return false;
     }
@@ -94,56 +161,93 @@ public class Axis implements Serializable {
         json.endArray();
     }
 
-//    public boolean isForceTickAt0() {
-//        return forceTickAt0;
-//    }
-//
-//    public void setForceTickAt0(boolean forceTickAt0) {
-//        this.forceTickAt0 = forceTickAt0;
-//    }
-//
-//    public boolean isForceTickAt100() {
-//        return forceTickAt100;
-//    }
-//
-//    public void setForceTickAt100(boolean forceTickAt100) {
-//        this.forceTickAt100 = forceTickAt100;
-//    }
-//
-//    public boolean isShow() {
-//        return show;
-//    }
-//
-//    public void setShow(boolean show) {
-//        this.show = show;
-//    }
-//
-//    public double getMin() {
-//        return min;
-//    }
-//
-//    public void setMin(double min) {
-//        this.min = min;
-//    }
-//
-//    public double getMax() {
-//        return max;
-//    }
-//
-//    public void setMax(double max) {
-//        this.max = max;
-//    }
-//
-//    public double getPad() {
-//        return pad;
-//    }
-//
-//    public void setPad(double pad) {
-//        this.pad = pad;
-//    }
+    /**
+     * Get whether or not to force 0 to be shown on this axis.
+     * @return whether or not to force 0 on this axis
+     */
+    public Boolean isForceTickAt0() {
+        return forceTickAt0;
+    }
 
     /**
-     *
+     * Set whether or not to force 0 to be shown on this axis.
+     * @param forceTickAt0 whether or not to force 0 on this axis
+     */
+    public void setForceTickAt0(Boolean forceTickAt0) {
+        this.forceTickAt0 = forceTickAt0;
+    }
+
+    /**
+     * Get whether or not to force 100 to be shown on this axis.
+     * @return whether or not to force 100 on this axis
+     */
+    public Boolean isForceTickAt100() {
+        return forceTickAt100;
+    }
+
+    /**
+     * Set whether or not to force 100 to be shown on this axis.
+     * @param forceTickAt100 whether or not to force 100 on this axis
+     */
+    public void setForceTickAt100(Boolean forceTickAt100) {
+        this.forceTickAt100 = forceTickAt100;
+    }
+
+    /**
+     * Get the value of the axis rendering toggle.
+     * @return whether or not to render this axis
+     */
+    public Boolean getShow() {
+        return show;
+    }
+
+    /**
+     * Set the value of the axis rendering toggle.
+     * @param show whether or not to render this axis
+     */
+    public void setShow(Boolean show) {
+        this.show = show;
+    }
+
+    /**
+     * Get the minimum value of this axis. Either a Date or Numeral.
+     * If null, interpreted on the client from the x/y values of the series or from the explicit ticks given.
+     * @return minimum axis value
+     */
+    public Object getMin() {
+        return min;
+    }
+
+    /**
+     * Set the minimum value of this axis. Either a Date or Numeral.
+     * If null, interpreted on the client from the x/y values of the series or from the explicit ticks given.
+     * @param min either a Date or Number
+     */
+    public void setMin(String min) {
+        this.min = min;
+    }
+
+    /**
+     * Get the maximum value of this axis. Either a Date or Numeral.
+     * If null, interpreted on the client from the x/y values of the series or from the explicit ticks given.
+     * @return maximum axis value
+     */
+    public Object getMax() {
+        return max;
+    }
+
+    /**
+     * Set the maximum value of this axis. Either a Date or Numeral.
+     * If null, interpreted on the client from the x/y values of the series or from the explicit ticks given.
+     * @param max either a Date or Number
+     */
+    public void setMax(Object max) {
+        this.max = max;
+    }
+
+    /**
+     * Get the type of this Axis
+     * If null, defaults on the client to Linear.
      * @return
      */
     public AxisType getType() {
@@ -151,7 +255,12 @@ public class Axis implements Serializable {
     }
 
     /**
-     *
+     * Sets the type of this Axis, altering default tick behaviour and point alignment.
+     * Potential modes are:
+     * AxisType.LINEAR - The default. Renders tick every even integer.
+     * AxisType.CATEGORY - Oft used for Bar Charts. Renders ticks between grid lines. Accepts string tick values.
+     * AxisType.DATE - Renders dates in a variety of formats, including date ranges.
+     * AxisType.LOGARITHMIC - Similar to linear, however tick placement is on a logarithmic scale.
      * @param type
      */
     public void setType(AxisType type) {
@@ -159,15 +268,15 @@ public class Axis implements Serializable {
     }
 
     /**
-     *
-     * @return
+     * Get the list of String used as explicit ticks on this axis.
+     * @return array of tick values
      */
     public String[] getTicks() {
         return ticks;
     }
 
     /**
-     *
+     * Set a list of String values to be used as explicit ticks on this axis.
      * @param ticks
      */
     public void setTicks(String[] ticks) {
@@ -175,18 +284,130 @@ public class Axis implements Serializable {
     }
 
     /**
-     *
-     * @return
+     * Is this axis sorting the ticks it is given from series definitions into an ordered axis?
+     * @return merged ticks truth value
      */
-    public boolean isSortMergedLabels() {
+    public Boolean isSortMergedLabels() {
         return sortMergedLabels;
     }
 
     /**
-     *
+     * Set this axis to sort together the lists of values it interprets as its ticks.
      * @param sortMergedLabels
      */
-    public void setSortMergedLabels(boolean sortMergedLabels) {
+    public void setSortMergedLabels(Boolean sortMergedLabels) {
         this.sortMergedLabels = sortMergedLabels;
+    }
+
+    /**
+     * Get the multiplier that determines how far to extend the range above and below the data bounds. A value of 0 interpreted as no padding (pad=1.0).
+     * @return the double value that is multiplied by the data range to determine padding
+     */
+    public Double getPad() {
+        return pad;
+    }
+
+    /**
+     * Set the multiplier that determines how far to extend the range above and below the data bounds. A value of 0 interpreted as no padding and is interpreted on the client as 1.0.
+     * @param pad the double value that is multiplied by the data range to determine padding
+     */
+    public void setPad(Double pad) {
+        this.pad = pad;
+    }
+
+    /**
+     * Get the multiplier that determines how far to extend the range above the data bounds. A value of 0 interpreted as no padding and is interpreted on the client as 1.0.
+     * @return the double value that is multiplied by the data range to determine padding
+     */
+    public Double getPadMax() {
+        return padMax;
+    }
+
+    /**
+     * Set the multiplier that determines how far to extend the range above the data bounds. A value of 0 interpreted as no padding and is interpreted on the client as 1.0.
+     * @param padMax the double value that is multiplied by the data range to determine padding
+     */
+    public void setPadMax(Double padMax) {
+        this.padMax = padMax;
+    }
+
+    /**
+     * Get the multiplier that determines how far to extend the range below the data bounds. A value of 0 interpreted as no padding and is interpreted on the client as 1.0.
+     * @return the double value that is multiplied by the data range to determine padding
+     */
+    public Double getPadMin() {
+        return padMin;
+    }
+
+    /**
+     * Set the multiplier that determines how far to extend the range below the data bounds. A value of 0 interpreted as no padding and is interpreted on the client as 1.0.
+     * @param padMin the double value that is multiplied by the data range to determine padding
+     */
+    public void setPadMin(Double padMin) {
+        this.padMin = padMin;
+    }
+
+    /**
+     * Get the String used to label this axis when rendered.
+     * @return the name string
+     */
+    public String getLabel() {
+        return label;
+    }
+
+    /**
+     * Set the String used to label this axis when rendered.
+     * @param label the name of this axis
+     */
+    public void setLabel(String label) {
+        this.label = label;
+    }
+
+    /**
+     * Get the angle of the ticks in degrees.
+     * @return degrees of rotation (+ or -) of the ticks from 0 degrees
+     */
+    public Integer getTickAngle() {
+        return tickAngle;
+    }
+
+    /**
+     * Set the angle of the ticks in degrees
+     * @param tickAngle degrees of rotation (+ or -) of the ticks from 0 degrees
+     */
+    public void setTickAngle(Integer tickAngle) {
+        this.tickAngle = tickAngle;
+    }
+
+    /**
+     * Get the font size for the ticks.
+     * @return css-style font size definition
+     */
+    public String getTickFontSize() {
+        return tickFontSize;
+    }
+
+    /**
+     * Set the font size for the ticks.
+     * @param tickFontSize css-style font size definition
+     */
+    public void setTickFontSize(String tickFontSize) {
+        this.tickFontSize = tickFontSize;
+    }
+
+    /**
+     * Get if this axis will draw its scale so that it shares grid lines with other autoscaled axes.
+     * @return whether or not this axis is autoscaling
+     */
+    public Boolean getAutoscale() {
+        return autoscale;
+    }
+
+    /**
+     * Set if this axis will draw its scale so that it shares grid lines with other autoscaled axes.
+     * @param autoscale whether or not this axis is autoscaling
+     */
+    public void setAutoscale(Boolean autoscale) {
+        this.autoscale = autoscale;
     }
 }

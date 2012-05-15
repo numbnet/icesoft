@@ -52,10 +52,6 @@ public abstract class ChartSeries {
         this.data = data;
     }
 
-    public void clear() {
-        this.data = null;
-    }
-
     public ChartType getType() {
         return type;
     }
@@ -66,4 +62,8 @@ public abstract class ChartSeries {
 
     abstract public String getDataJSON();
     abstract public String getConfigJSON();
+
+    public void clear() {
+        data.clear();
+    }
 }

@@ -26,6 +26,8 @@ import java.util.Map;
  * Time: 12:53 PM
  */
 public class CartesianSeries extends ChartSeries {
+
+
     public static enum CartesianType implements ChartType {
         BAR,
         LINE;
@@ -33,12 +35,16 @@ public class CartesianSeries extends ChartSeries {
 
     boolean show;
     boolean showLine;
-    boolean showMarker;
+    Boolean showMarker;
     boolean disableStack;
     boolean breakOnNull;
     boolean useNegativeColors;
-    String xAxis;
-    String yAxis;
+    Boolean pointLabels;
+    Integer pointLabelTolerance;
+    Boolean pointLabelStacked;
+    String[] pointLabelList;
+    Integer xAxis;
+    Integer yAxis;
     int neighborThreshold; // How close a cursor must be to a point to trigger hover
     String markerStyle; // Diamond, circle, square, x, plus, dash, filledDiamond, filledCircle, filledSquare
     int markerLineWidth; // For unfilled
@@ -60,7 +66,7 @@ public class CartesianSeries extends ChartSeries {
     int shadowAlpha; // 0 - 100 alpha
     boolean fill;
     boolean fillAndStroke;
-    boolean fillToZero;
+    Boolean fillToZero;
     long fillToValue;
     String fillAxis; // x or y
     String fillColor; // CSS
@@ -71,7 +77,7 @@ public class CartesianSeries extends ChartSeries {
     int barMargin;
     int barPadding;
     int barWidth;
-    String barDirection; // horizontal or vertical
+    Boolean horizontalBar;
     boolean varyBarColor;
     boolean waterfall;
     int groups;
@@ -157,11 +163,23 @@ public class CartesianSeries extends ChartSeries {
         JSONBuilder cfg = JSONBuilder.create();
         Class valueType = null;
         String label = getLabel();
+        Boolean showMarker = isShowMarker();
+        Integer xAxis = getXAxis();
+        Integer yAxis = getYAxis();
 
         cfg.beginMap();
 
         if (label != null)
             cfg.entry("label", label);
+
+        if (xAxis != null)
+            cfg.entry("xaxis", "x"+xAxis+"axis");
+
+        if (yAxis != null)
+            cfg.entry("yaxis", "y"+yAxis+"axis");
+
+        if (showMarker != null)
+            cfg.entry("showMarker", showMarker);
 
         if (type != null) {
             if (type.equals(CartesianType.BAR))
@@ -170,12 +188,15 @@ public class CartesianSeries extends ChartSeries {
                 cfg.entry("renderer", "ice.ace.jq.jqplot.LineRenderer", true) ;
         }
 
+        if (hasPointLabelOptionSet()) encodePointLabelOptions(cfg);
 
         if (hasRenderOptionsSet()) {
             cfg.beginMap("rendererOptions");
             Boolean ftz = isFillToZero();
+            Boolean horiz = isHorizontalBar();
 
-            if (ftz != null & ftz) cfg.entry("fillToZero", ftz);
+            if (ftz != null) cfg.entry("fillToZero", ftz);
+            if (horiz != null) cfg.entry("barDirection", horiz ? "horizontal" : "vertical");
             cfg.endMap();
         }
 
@@ -183,11 +204,78 @@ public class CartesianSeries extends ChartSeries {
         return cfg.toString();
     }
 
-    private boolean hasRenderOptionsSet() {
-        return (isFillToZero());
+    private void encodePointLabelOptions(JSONBuilder cfg) {
+        cfg.beginMap("pointLabels");
+
+        if (pointLabels != null)
+            cfg.entry("show", pointLabels);
+
+        if (pointLabelList != null) {
+            cfg.beginArray("labels");
+            for (String s : pointLabelList)
+                cfg.item(s);
+            cfg.endArray();
+        }
+
+        if (pointLabelTolerance != null)
+            cfg.entry("edgeTolerance", pointLabelTolerance);
+
+        if (pointLabelStacked != null)
+            cfg.entry("stackedValue", pointLabelStacked);
+
+        cfg.endMap();
     }
 
-//    /**
+    private boolean hasPointLabelOptionSet() {
+        return (pointLabels != null || pointLabelList != null || pointLabelTolerance != null || pointLabelStacked != null);
+    }
+
+    private boolean hasRenderOptionsSet() {
+        return (isFillToZero() != null || isHorizontalBar() != null);
+    }
+
+    public Boolean isHorizontalBar() {
+        return horizontalBar;
+    }
+
+    public void setHorizontalBar(Boolean horizontalBar) {
+        this.horizontalBar = horizontalBar;
+    }
+
+    public Boolean isPointLabels() {
+        return pointLabels;
+    }
+
+    public void setPointLabels(Boolean pointLabels) {
+        this.pointLabels = pointLabels;
+    }
+
+
+    public Integer getPointLabelTolerance() {
+        return pointLabelTolerance;
+    }
+
+    public void setPointLabelTolerance(Integer pointLabelTolerance) {
+        this.pointLabelTolerance = pointLabelTolerance;
+    }
+
+    public Boolean getPointLabelStacked() {
+        return pointLabelStacked;
+    }
+
+    public void setPointLabelStacked(Boolean pointLabelStacked) {
+        this.pointLabelStacked = pointLabelStacked;
+    }
+
+    public String[] getPointLabelList() {
+        return pointLabelList;
+    }
+
+    public void setPointLabelList(String[] pointLabelList) {
+        this.pointLabelList = pointLabelList;
+    }
+
+    //    /**
 //     * Return the truth value of this series visibility.
 //     * @return series visibility truth value
 //     */
@@ -219,21 +307,21 @@ public class CartesianSeries extends ChartSeries {
 //        this.showLine = showLine;
 //    }
 //
-//    /**
-//     * Return the truth value of the point marker visibility
-//     * @return point marker visibility truth value
-//     */
-//    public boolean isShowMarker() {
-//        return showMarker;
-//    }
-//
-//    /**
-//     * Set the visibility of the point markers of this series
-//     * @param showMarker point marker visibility truth value
-//     */
-//    public void setShowMarker(boolean showMarker) {
-//        this.showMarker = showMarker;
-//    }
+    /**
+     * Return the truth value of the point marker visibility
+     * @return point marker visibility truth value
+     */
+    public Boolean isShowMarker() {
+        return showMarker;
+    }
+
+    /**
+     * Set the visibility of the point markers of this series
+     * @param showMarker point marker visibility truth value
+     */
+    public void setShowMarker(Boolean showMarker) {
+        this.showMarker = showMarker;
+    }
 //
 //    /**
 //     * Return the truth value of the stack disabling behaviour on this series.
@@ -269,21 +357,38 @@ public class CartesianSeries extends ChartSeries {
 //        this.useNegativeColors = useNegativeColors;
 //    }
 //
-//    public String getxAxis() {
-//        return xAxis;
-//    }
-//
-//    public void setxAxis(String xAxis) {
-//        this.xAxis = xAxis;
-//    }
-//
-//    public String getyAxis() {
-//        return yAxis;
-//    }
-//
-//    public void setyAxis(String yAxis) {
-//        this.yAxis = yAxis;
-//    }
+
+    /**
+     * Get a integer defining which axis this Series is plotted against.
+     * @return the index of the x axis
+     */
+    public Integer getXAxis() {
+        return xAxis;
+    }
+
+    /**
+     * Set a integer defining which axis this Series is plotted against.
+     * @param xAxis the index of the x axis
+     */
+    public void setXAxis(Integer xAxis) {
+        this.xAxis = xAxis;
+    }
+
+    /**
+     * Get a integer defining which axis this Series is plotted against.
+     * @return the index of the y axis
+     */
+    public Integer getYAxis() {
+        return yAxis;
+    }
+
+    /**
+     * Set a integer defining which axis this Series is plotted against.
+     * @param yAxis the index of the y axis
+     */
+    public void setYAxis(Integer  yAxis) {
+        this.yAxis = yAxis;
+    }
 //
 //    public int getNeighborThreshold() {
 //        return neighborThreshold;
@@ -458,7 +563,7 @@ public class CartesianSeries extends ChartSeries {
      * Return fillToZero behaviour truth value
      * @return fillToZero behaviour truth value
      */
-    public boolean isFillToZero() {
+    public Boolean isFillToZero() {
         return fillToZero;
     }
 
@@ -467,7 +572,7 @@ public class CartesianSeries extends ChartSeries {
      * where scale shows the bars extending beyond 0 undesirably.
      * @param fillToZero
      */
-    public void setFillToZero(boolean fillToZero) {
+    public void setFillToZero(Boolean fillToZero) {
         this.fillToZero = fillToZero;
     }
 //
