@@ -29,8 +29,6 @@ import javax.faces.application.ResourceDependency;
 import javax.el.MethodExpression;
 import javax.el.ValueExpression;
 
-import javax.faces.model.SelectItem;
-
 import java.util.List;
 
 @Component(
@@ -64,8 +62,8 @@ public class AutoCompleteEntryMeta extends HtmlInputTextMeta {
     @Property(tlddoc = "", defaultValue="150")
     private int width;
 	
-    /*@Property(tlddoc = "")
-    private SelectItem selectedItem;*/
+    @Property(tlddoc = "")
+    private Object selectedItem;
 	
     @Property(tlddoc = "")
     private List listValue;

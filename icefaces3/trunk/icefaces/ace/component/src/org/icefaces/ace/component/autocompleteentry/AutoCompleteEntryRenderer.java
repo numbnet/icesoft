@@ -165,6 +165,7 @@ public class AutoCompleteEntryRenderer extends InputRenderer {
             writer.startElement("div", null);
 			//writer.writeAttribute("id", clientId + "content", null);
 			writer.writeAttribute("style", "display: none;", null);
+			writer.startElement("div", null);
             Map requestMap =
                     facesContext.getExternalContext().getRequestMap();
             //set index to 0, so child components can get client id from autoComplete component
@@ -207,6 +208,7 @@ public class AutoCompleteEntryRenderer extends InputRenderer {
             //String nodeValue =
                     //DOMUtils.nodeToString(listDiv).replaceAll("\n", "");
 					// ice.ace.jq(ice.ace.escapeClientId(id)).get(0).innerHTML
+			writer.endElement("div");
             String call = "ice.ace.Autocompleters[\"" +
                     autoCompleteEntry.getClientId(facesContext) +
                     "\"].updateNOW(ice.ace.jq(ice.ace.escapeClientId('" + clientId + "update')).get(0).firstChild.innerHTML);";

@@ -207,14 +207,14 @@ public class AutoCompleteEntry extends AutoCompleteEntryBase implements NamingCo
     }
 
     protected void setSelectedIndex(int index) {
-        SelectItem selItm = null;
+        Object selItm = null;
         if (index >= 0) {
             if (itemList == null) {
                 populateItemList();
             }
             if (itemList != null) {
                 if (index < itemList.size()) {
-                    selItm = (SelectItem) itemList.get(index);
+                    selItm = itemList.get(index);
                 }
             }
         }
