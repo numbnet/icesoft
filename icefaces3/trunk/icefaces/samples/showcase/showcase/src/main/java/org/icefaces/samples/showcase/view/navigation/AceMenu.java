@@ -49,6 +49,7 @@ import javax.faces.bean.ApplicationScoped;
 import javax.faces.bean.ManagedBean;
 import java.io.Serializable;
 import org.icefaces.samples.showcase.example.ace.animation.AnimationBean;
+import org.icefaces.samples.showcase.example.ace.autocompleteentry.AutoCompleteEntryBean;
 import org.icefaces.samples.showcase.example.ace.menuButton.MenuButtonBean;
 import org.icefaces.samples.showcase.example.ace.overview.AceSuiteOverviewBean;
 import org.icefaces.samples.showcase.example.ace.printer.PrinterBean;
@@ -58,6 +59,7 @@ import org.icefaces.samples.showcase.example.ace.printer.PrinterBean;
                 @MenuLink(title = "menu.ace.aceSuiteOverview.title", isDefault = true, exampleBeanName = AceSuiteOverviewBean.BEAN_NAME),
                 @MenuLink(title = "menu.ace.accordionpanel.title", exampleBeanName = AccordionPanelBean.BEAN_NAME),
                 @MenuLink(title = "menu.ace.animation.title", exampleBeanName = AnimationBean.BEAN_NAME),
+                @MenuLink(title = "menu.ace.autocompleteentry.title", exampleBeanName = AutoCompleteEntryBean.BEAN_NAME),
                 @MenuLink(title = "menu.ace.checkboxButton.title", exampleBeanName = CheckboxButtonBean.BEAN_NAME),
                 @MenuLink(title = "menu.ace.confirmationdialog.title", exampleBeanName = ConfirmationDialogBean.BEAN_NAME),
                 @MenuLink(title = "menu.ace.contextMenu.title", exampleBeanName = ContextMenuBean.BEAN_NAME),
