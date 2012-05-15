@@ -24,31 +24,40 @@ import org.icefaces.ace.meta.annotation.Required;
 
 public class TabSetMeta extends UIPanelMeta {
     @Property(tlddoc="Int of the active pane.", defaultValue="0")
-     private int tabIndex;
+    private int tabIndex;
 
-     @Property(tlddoc="Inline style of the container element.")
-     private String style;
+    @Property(tlddoc="Inline style of the container element.")
+    private String style;
 
-     @Property(tlddoc="Style class of the container element.")
-     private String styleClass;
+    @Property(tlddoc="Style class of the container element.")
+    private String styleClass;
 
  /*    @Property(tlddoc = "If true then all tabs except the active one will " +
         "be disabled and can not be selected.")
      private boolean disabled; */
 
-     @Property(
+    @Property(
          tlddoc="fixeHeight can be used to fix the height of the container. Must be valid height for element.style.height, " +
                  "for example: 200px.  If this attribute it not used, a calculation will be made to fix the height of the" +
                  " container to the largest height of its children")
-     private String fixedHeight;
+    private String fixedHeight;
 
-     @Property(tlddoc="MethodExpression representing a method that will be " +
+    @Property(tlddoc="MethodExpression representing a method that will be " +
         "invoked when the selected TabPane has changed. The expression " +
         "must evaluate to a public method that takes a ValueChangeEvent " +
         "parameter, with a return type of void. NOT IMPLEMENTED YET!!!",
         expression= Expression.METHOD_EXPRESSION,
         methodExpressionArgument="javax.faces.event.ValueChangeEvent")
-     private MethodExpression tabChangeListener;
+    private MethodExpression tabChangeListener;
 
+    @Property(defaultValue = "false", tlddoc = "The default value of this attribute is false. If true then value change event will happen in APPLY_REQUEST_VALUES phase and if the value of this attribute is false then event change will happen in INVOKE_APPLICATION phase")
+    private boolean immediate;
 
+    @Property(defaultValue = "true",
+            tlddoc = "When singleSubmit is true, triggering an action on this component will submit" +
+                    " and execute this component only. Equivalent to <f:ajax execute='@this' render='@all'>." +
+                    " When singleSubmit is false, triggering an action on this component will submit and execute " +
+                    " the full form that this component is contained within." +
+                    " The default value is true in case this component is not placed within a form.")
+     private boolean singleSubmit;
 }
