@@ -374,6 +374,7 @@ if (!window.ice.icefaces) {
         namespace.submit = submit;
         namespace.s = submit;
         namespace.fullSubmit = fullSubmit;
+        namespace.retrieveUpdate = retrieveUpdate;
 
         namespace.setupBridge = function(setupID, viewID, windowID, configuration) {
             var container = document.getElementById(setupID).parentNode;
