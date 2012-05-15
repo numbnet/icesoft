@@ -38,7 +38,7 @@
         <h:form id="textEngryForm">
             <ace:panel id="personalInfoInputPanel" header="Personal Info">
                 
-                <h:panelGrid id="inputGrid" columns="2" width="100%">
+                <h:panelGrid id="inputGrid" columns="2" width="100%" styleClass="textEntryInputTable">
                     <ace:textEntry id="firstNameInput" value="#{textEntryBean.firstName}" label="first name" optionalIndicator="[optional]" indicatorPosition="labelLeft">
                         <ace:ajax render="@this firstNameOutput"/>
                     </ace:textEntry>
@@ -51,7 +51,7 @@
                         <ace:ajax render="@this cityOutput cityMsg"/>
                     </ace:textEntry>
                     
-                    <ace:textEntry id="provinceInput" value="#{textEntryBean.province}" label="province" labelPosition="right" optionalIndicator="optional" indicatorPosition="left">
+                    <ace:textEntry id="provinceInput" value="#{textEntryBean.province}" label="province" labelPosition="right" optionalIndicator="(o)" indicatorPosition="left">
                         <ace:ajax render="@this provinceOutput"/>
                     </ace:textEntry>
 
