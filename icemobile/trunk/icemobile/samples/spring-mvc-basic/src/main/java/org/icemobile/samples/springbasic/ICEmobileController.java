@@ -97,15 +97,6 @@ public class ICEmobileController {
         }
     }
 
-    @RequestMapping(value = "/various", method = RequestMethod.GET)
-    public String variousGet(HttpServletRequest request, Model model) {
-        return "various";
-    }
-
-    @RequestMapping(value = "/various", method = RequestMethod.POST)
-    public String variousPost(HttpServletRequest request, Model model) {
-        return "various";
-    }
 
     @RequestMapping(value = "/jsoncam", method = RequestMethod.POST)
     public
