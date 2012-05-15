@@ -16,9 +16,13 @@
 
 package org.icemobile.client.android;
 
+import java.util.Map;
+import java.util.HashMap;
+
 public class AttributeExtractor {
 
     private String[] attribute;
+    private Map<String,String> attributes = new HashMap();
 
     public AttributeExtractor(String attr) {
 	if (attr == null) {
@@ -26,6 +30,20 @@ public class AttributeExtractor {
 	} else {
 	    attribute = attr.split("&");
 	}
+        for (String pair : attribute)  {
+            int split = pair.indexOf("=");
+            if (split > 0)  {
+                attributes.put(pair.substring(0, split - 1),
+                    pair.substring(split + 1));
+            } else {
+                attributes.put(pair, null);
+            }
+
+        } 
+    }
+
+    public Map<String,String> getAttributes()  {
+        return attributes;
     }
 
     public String getAttribute(String attrName, String attrDefault) {
