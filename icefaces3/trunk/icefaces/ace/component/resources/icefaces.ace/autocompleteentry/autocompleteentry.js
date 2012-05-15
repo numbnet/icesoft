@@ -144,7 +144,7 @@ ice.ace.Autocompleter.prototype = {
                                 update.style.top = (element.offsetTop + element.offsetHeight) + "px";
                             } else {
                                 var scrollTop = pos.top - document.documentElement.scrollTop; //@ cumulativeScrollOffset #
-                                update.style.top = (element.offsetTop - scrollTop + element.offsetHeight) + "px";
+                                update.style.top = (element.offsetTop + element.offsetHeight) + "px";
                             }
                             element.style.position = savedPos;
                         }
@@ -187,13 +187,13 @@ ice.ace.Autocompleter.prototype = {
                 (navigator.appVersion.indexOf('MSIE') > 0) &&
                 (navigator.userAgent.indexOf('Opera') < 0) &&
                 (ice.ace.jq(this.update).css('position') == 'absolute')) { //@ jq css #
-                new Insertion.After(this.update, //@ jq insert
-                    '<iframe id="' + this.update.id + '_iefix" title="IE6_Fix" ' +
+                ice.ace.jq('<iframe id="' + this.update.id + '_iefix" title="IE6_Fix" ' +
                         'style="display:none;position:absolute;filter:progid:DXImageTransform.Microsoft.Alpha(opacity=0);" ' +
-                        'src="javascript:\'<html></html>\'" frameborder="0" scrolling="no"></iframe>');
+                        'src="javascript:\'<html></html>\'" frameborder="0" scrolling="no"></iframe>').insertAfter(this.update);
                 this.iefix = ice.ace.jq('#' + this.update.id + '_iefix').get(0); //@ ice.ace.jq #
             }
-            if (this.iefix) setTimeout(this.fixIEOverlapping.bind(this), 50);
+		  var self = this;
+            if (this.iefix) setTimeout(function() { self.fixIEOverlapping.call(self) }, 50);
             this.element.focus();
         } catch (e) {
             //logger.info(e);
