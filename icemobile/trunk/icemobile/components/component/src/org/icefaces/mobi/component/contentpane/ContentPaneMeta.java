@@ -32,10 +32,6 @@ import javax.faces.component.UIComponent;
 
 public class ContentPaneMeta extends UIPanelMeta{
 
-     @Property(tlddoc="the selectedId must the id of a child panel to be displayed. Only one child may be selected" +
-            " at a time.  If this is null, the first child panel will be shown.")
-     private String selectedId;
-
      @Property(defaultValue="false", tlddoc=" makes sense to have the scrollable here as it will need certain style attributes for " +
             " and child panel to scroll within it. If accordionTitle is not null, then this should default to false")
      private boolean scrollable;
