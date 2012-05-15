@@ -22,14 +22,10 @@
         var overlay = container.ownerDocument.createElement('iframe');
         overlay.setAttribute('src', 'about:blank');
         overlay.setAttribute('frameborder', '0');
+        overlay.className = 'ice-blockui-overlay';
         var overlayStyle = overlay.style;
-        overlayStyle.position = 'absolute';
-        overlayStyle.backgroundColor = 'white';
-        overlayStyle.zIndex = '28000';
         overlayStyle.top = '0';
         overlayStyle.left = '0';
-        overlayStyle.opacity = 0.22;
-        overlayStyle.filter = 'alpha(opacity=22)';
 
         if (container.tagName.toLowerCase() == 'body') {
             overlayStyle.width = Math.max(document.documentElement.scrollWidth, document.body.scrollWidth) + 'px';

@@ -68,16 +68,10 @@ var setupDefaultIndicators;
             var overlay = container.ownerDocument.createElement('iframe');
             overlay.setAttribute('src', 'about:blank');
             overlay.setAttribute('frameborder', '0');
+            overlay.className = 'ice-status-indicator-overlay';
             var overlayStyle = overlay.style;
-            overlayStyle.position = 'absolute';
-            overlayStyle.display = 'block';
-            overlayStyle.visibility = 'visible';
-            overlayStyle.backgroundColor = 'white';
-            overlayStyle.zIndex = '28000';
             overlayStyle.top = '0';
             overlayStyle.left = '0';
-            overlayStyle.opacity = 0.22;
-            overlayStyle.filter = 'alpha(opacity=22)';
             container.appendChild(overlay);
 
             var resize = container.tagName.toLowerCase() == 'body' ?

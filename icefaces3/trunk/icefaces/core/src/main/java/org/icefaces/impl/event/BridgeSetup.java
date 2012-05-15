@@ -116,6 +116,7 @@ public class BridgeSetup implements SystemEventListener {
         //always add ICEfaces bridge code
         resources.add(new JavascriptResourceOutput(resourceHandler, "bridge.js", null, version));
         resources.add(new TestScript());
+        resources.add(new ResourceOutput("javax.faces.resource.Stylesheet", "core.css", null));
 
         return resources;
     }
