@@ -234,12 +234,17 @@ public class AutoCompleteEntry extends AutoCompleteEntryBase implements NamingCo
                 for (int i = 0; i < itemList.size(); i++) {
 					// SelectItem item = (SelectItem) itemList.get(i);
                     Object item = itemList.get(i);
-                    String itemLabel = getMainValue(item);
-                    //if (itemLabel == null) {
-                        /*itemLabel = DomBasicRenderer.converterGetAsString(
-                            facesContext, this, item.getValue());*/
-							//itemLabel = item.getValue().toString();
-                    //}
+                    String itemLabel;
+					if (item instanceof SelectItem) {
+						itemLabel = ((SelectItem) item).getLabel();
+						if (itemLabel == null) {
+							/*itemLabel = DomBasicRenderer.converterGetAsString(
+								facesContext, this, item.getValue());*/
+								itemLabel = ((SelectItem) item).getValue().toString();
+						}
+					} else {
+						itemLabel = getMainValue(item);
+					}
                     if (key.equals(itemLabel)) {
                         if (selectedItem != null && selectedItem.equals(item)) {
                             sticky = item;
