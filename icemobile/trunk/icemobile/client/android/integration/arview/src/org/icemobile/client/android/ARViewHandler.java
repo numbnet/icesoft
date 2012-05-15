@@ -47,7 +47,6 @@ public class ARViewHandler {
     private int code;
     private String url;
     private Handler handler;
-    private File photoFile;
     private ARViewInterface arViewInterface;
     int height, width;
     int thumbHeight, thumbWidth;
@@ -72,10 +71,12 @@ public class ARViewHandler {
         url = URL;
     }
 
-    public String arView(String id, Map<String,String>places ) {
-        for (String label : places.keySet())  {
-            Log.d("ARView", "Display " + label + " at " + places.get(label));
-        }
+    public String arView(String id, String attr) {
+        Log.d("ARView", "starting ARViewActivity");
+        Intent arIntent = new Intent(container.getApplicationContext(), ARViewActivity.class);
+        arIntent.putExtra(id, code);
+        arIntent.putExtra("attributes", attr);
+        container.startActivityForResult(arIntent, code);
         return "selectedlabel";
     }
 }

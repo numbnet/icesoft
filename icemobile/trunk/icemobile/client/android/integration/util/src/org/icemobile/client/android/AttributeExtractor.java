@@ -33,7 +33,7 @@ public class AttributeExtractor {
         for (String pair : attribute)  {
             int split = pair.indexOf("=");
             if (split > 0)  {
-                attributes.put(pair.substring(0, split - 1),
+                attributes.put(pair.substring(0, split),
                     pair.substring(split + 1));
             } else {
                 attributes.put(pair, null);
