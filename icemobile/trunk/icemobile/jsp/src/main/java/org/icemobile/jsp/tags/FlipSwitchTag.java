@@ -1,7 +1,6 @@
 package org.icemobile.jsp.tags;
 
 import javax.servlet.ServletRequest;
-import javax.servlet.jsp.JspTagException;
 import javax.servlet.jsp.PageContext;
 import javax.servlet.jsp.tagext.SimpleTagSupport;
 import java.io.IOException;
@@ -55,11 +54,6 @@ public class FlipSwitchTag extends SimpleTagSupport {
         StringBuilder builder = new StringBuilder(255);
         builder.append("ice.mobi.flipvalue('").append(getId()).append("', { event: event, elVal: this  }); ");
 
-
-//        StringBuilder builder = new StringBuilder("mobi.flipswitch.init('").
-//                                append("',{ event: event, elVal: this, ");
-//        builder.append("singleSubmit: ").append("");
-//
         if (!isDisabled() | !isReadOnly()) {
             out.write(" onclick=\"" + builder.toString() + "\"");
         }
@@ -71,6 +65,8 @@ public class FlipSwitchTag extends SimpleTagSupport {
         out.write(getLabelOn());
         out.write("</span>");
 
+        // Concat _hidden to the id for uniqueness, but keep the name stock
+        // to make the MVC mapping easier
         out.write("<input id=\"" + getId() + "_hidden\" name=\"" + getId() + "\"");
         out.write(" value=\"" + getValue() + "\" type=\"hidden\">");
 
@@ -79,26 +75,10 @@ public class FlipSwitchTag extends SimpleTagSupport {
         out.write("</span>");
 
         out.write("</input>");
-
         out.write("</a>");
 
     }
 
-    // unused as of yet.
-    public void writeJavascriptFile(PageContext page,
-                                    String jsName,
-                                    String jsLibrary) throws IOException {
-
-
-        String clientId = getId();
-        Writer out = page.getOut();
-
-        // for this component clientId is mandatory.
-        out.write("<span id=\"" + clientId + "_libJS\" >");
-        out.write("<script type=\"text/javascript\" src=\"jsName\" > </script></span>");
-
-
-    }
 
     private boolean isChecked(String hiddenValue) {
         if (hiddenValue == null) {
