@@ -63,17 +63,18 @@
                   parent = el.parentElement;
               }
               var current = parent.getAttribute("data-current");
+              var contents = tabContent.childNodes;
+              var oldPage = contents[current];
+              oldPage.className = "mobi-tabpage-hidden";
               var currCtrl = myTabId+"tab_"+current;
               var oldCtrl =  document.getElementById(currCtrl);
               removeClass(oldCtrl, "activeTab ");
-              var contents = tabContent.childNodes;
               var isClient = cfgIn.client || false;
-              var oldPage = contents[current];
-              oldPage.className = "mobi-tabpage-hidden";
               if (!isClient){
-                    updateHidden(myTabId, cfgIn.tIndex);
+                    var hiddenVal = tabIndex+"," +cfgIn.tIndex;
+                    updateHidden(myTabId, hiddenVal);
+                    contents[cfgIn.tIndex].className="mobi-tabpage-hidden";
                     ice.se(null, myTabId);
-                  contents[cfgIn.tIndex].className="mobi-tabpage";
                } else {
                   tabIndex = cfgIn.tIndex || 0;
                   var newPage = contents[tabIndex];
@@ -84,23 +85,21 @@
               el.setAttribute("class","activeTab");
            },
            updateProperties: function (clientId, cfgUpd) {
-                if (cfgUpd.tIndex != tabIndex){
-                    var oldIdx = tabIndex;
-                    tabIndex = cfgUpd.tIndex;
-                    var tabsId = clientId+"_tabs";
-                    var tabElem = document.getElementById(tabsId);
-                    if (tabElem){
-                        var lis = tabElem.getElementsByTagName("li");
-                        var contents = tabContent.childNodes;
-                        contents[tabIndex].style.opacity = 0;
-                        var newPage = contents[tabIndex];
-                        newPage.className = "mobi-tabpage";
-                        newPage.style.opacity = 1;
-                        if (cfgUpd.height && cfgUpd.height != tabContainer.style.height){
-                           tabContainer.style.height = height;
-                        }
-                    }
-                }
+               var oldIdx = tabIndex;
+               if (cfgUpd.tIndex != tabIndex){
+                   tabIndex = cfgUpd.tIndex;
+                   var tabsId = clientId+"_tabs";
+                   var tabElem = document.getElementById(tabsId);
+                   if (tabElem){
+                     var lis = tabElem.getElementsByTagName("li");
+                     var contents = tabContent.childNodes;
+                     contents[oldIdx].className = "mobi-tabpage-hidden"; //need in case change is from server
+                     contents[tabIndex].className = "mobi-tabpage";
+                     if (cfgUpd.height && cfgUpd.height != tabContainer.style.height){
+                        tabContainer.style.height = height;
+                     }
+                  }
+               }
            }
        }
     }

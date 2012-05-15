@@ -8,6 +8,7 @@ import org.icefaces.mobi.utils.Utils;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+import javax.faces.event.ValueChangeEvent;
 import java.io.IOException;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -26,19 +27,35 @@ public class TabSetRenderer extends BaseLayoutRenderer {
          Map<String, String> params = context.getExternalContext().getRequestParameterMap();
        // no ajax behavior defined yet
          String indexStr = params.get(clientId + "_hidden");
+         logger.info("indexStr = "+indexStr);
          int oldIndex = tabset.getTabIndex();
+         //with some panes having client cacheType, the oldIndex on server
+         // may not match that of the client, so decode the last
          if( null != indexStr) {
              //find the activeIndex and set it
              try {
-                 int index = Integer.parseInt(indexStr);
-                 if (oldIndex!=index){
+                 String delims= "[,]";
+                 String[] indices = indexStr.split(delims);
+                 if (indices.length >1 ){
+                     logger.info(" first index submitted="+indices[0]+" second="+indices[1]);
+                 int oldClientInd = Integer.parseInt(indices[0]);
+                 int index = Integer.parseInt(indices[1]);
+                 if (oldClientInd!=index){
                      tabset.setTabIndex(index);
-                     ///will eventually queue the PanechangeEvent here
+                     component.queueEvent(new ValueChangeEvent(component, oldClientInd, index)) ;
+                     tabset.setUpdatePropScriptTag(true);
+                     //TO Do decode behaviors for mobi ajax support
+                 }
                  }
              }catch (NumberFormatException nfe){
                  logger.info("problem decoding tabIndex from client");
              }
          }
+
+         else {
+             tabset.setUpdatePropScriptTag(false);
+         }
+
      }
 
     public void encodeBegin(FacesContext facesContext, UIComponent uiComponent)throws IOException {
@@ -137,19 +154,24 @@ public class TabSetRenderer extends BaseLayoutRenderer {
      public void encodeScript(FacesContext context, UIComponent uiComponent) throws IOException {
         //need to initialize the component on the page and can also
         ResponseWriter writer = context.getResponseWriter();
-        TabSet pane = (TabSet) uiComponent;
-        int index = pane.getTabIndex();
-        if (index <0 || index >= pane.getChildCount()){
+        TabSet tabset = (TabSet) uiComponent;
+        int index = tabset.getTabIndex();
+        if (index <0 || index >= tabset.getChildCount()){
             index = 0;
         }
-        String clientId = pane.getClientId(context);
+
+        String clientId = tabset.getClientId(context);
         writer.startElement("span", uiComponent);
         writer.writeAttribute("id", clientId + "_script", "id");
         writer.startElement("script", null);
         writer.writeAttribute("text", "text/javascript", null);
-        StringBuilder cfg = new StringBuilder("{singleSubmit: false");
-   /*     boolean autoheight = pane.isAutoHeight();  */
+        StringBuilder cfg = new StringBuilder("{singleSubmit: ");
+        cfg.append(tabset.isSingleSubmit());
+   /*     boolean autoheight = tabset.isAutoHeight();  */
         cfg.append(", tIndex: ").append(index);
+        if (tabset.isUpdatePropScriptTag()){
+             cfg.append(", stmp: ").append(System.currentTimeMillis());
+        }
         cfg.append("}");
          //just have to add behaviors if we are going to use them.
         writer.write("mobi.tabsetController.initClient('" + clientId + "'," +cfg.toString()+");");

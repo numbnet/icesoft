@@ -106,12 +106,12 @@
     -webkit-transition: opacity 1s linear, visibility 1s linear;
     -webkit-transition-duration: 1s, 1s;
     -webkit-transition-delay: 0.5s, 0.5s;
-	 -moz-transition: opacity 2s linear;
-     -moz-transition-delay: 2s;
+	 -moz-transition: opacity 1s linear;
+     -moz-transition-delay: 1s;
 	 -o-transition: opacity 1s linear;
      -o-transition-delay: 0.5s;
 	 -ms-transition: opacity 1s linear;
      -ms-transition-delay: 0.5s;
-	 transition:  opacity 1s linear;
+	 transition:  opacity 1s linear ;
      transition: 0.5s;
 }
