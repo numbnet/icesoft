@@ -48,8 +48,10 @@
       <h1> test page for tabSet </h1>
       <br />
      <h:form id="contentForm">
-       <mobi:tabSet id="test1" tabIndex="#{layoutBean.tabIndex}">
+       <mobi:tabSet id="test1" tabIndex="#{layoutBean.tabIndex}"
+                    tabChangeListener="#{layoutBean.tabChangeListener}">
               <mobi:contentPane id="panel1" title="panel1" cacheType="client">
+                 <div id="inner1">
                   <fieldset title="panel1">
                       <legend>Panel1</legend>
                     <h3> header for panel 1</h3>
@@ -60,10 +62,11 @@
                             alt="king of clubs" />
                          <figcaption>King of Clubs</figcaption>
                         </figure>
-
                   </fieldset>
+                 </div>
               </mobi:contentPane>
                <mobi:contentPane id="panel2" title="panel2" >
+                 <div id="inner2">
                  <fieldset title="panel2">
                    <legend>Panel2</legend>
                   <h3> header for panel 2</h3>
@@ -76,8 +79,10 @@
                         </figure>
                       <br />
                   </fieldset>
+                </div>
               </mobi:contentPane>
              <mobi:contentPane id="panel3" title="panel3">
+                <div id="inner3">
                  <fieldset title="panel3">
                       <legend>Panel3</legend>
                   <h3> header for panel 3</h3>
@@ -89,6 +94,7 @@
                          <figcaption>joker</figcaption>
                         </figure>
                   </fieldset>
+                </div>
               </mobi:contentPane>
        </mobi:tabSet>
 

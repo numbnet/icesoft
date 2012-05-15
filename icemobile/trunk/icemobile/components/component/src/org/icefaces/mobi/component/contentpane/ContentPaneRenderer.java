@@ -102,19 +102,17 @@ public class ContentPaneRenderer extends BaseLayoutRenderer {
 
     private void encodeTabSetPage(FacesContext facesContext, UIComponent uiComponent)
             throws IOException{
-        TabSet tabSet = (TabSet)uiComponent.getParent();
-        String pageClass = TabSet.TABSET_HIDDEN_PAGECLASS.toString();
- /*       if (iAmSelected(facesContext, uiComponent)){
-            pageClass = TabSet.TABSET_VISIBLE_PAGECLASS.toString();
-        }*/
         ResponseWriter writer = facesContext.getResponseWriter();
         String clientId = uiComponent.getClientId(facesContext);
-            /* write out root tag.  For current incarnation html5 semantic markup is ignored */
+        writer.startElement(HTML.DIV_ELEM, uiComponent);
+        writer.writeAttribute(HTML.ID_ATTR, clientId+"_wrapper", HTML.ID_ATTR);
+        TabSet tabSet = (TabSet)uiComponent.getParent();
+        String pageClass = TabSet.TABSET_HIDDEN_PAGECLASS.toString();
+        writer.writeAttribute("class", pageClass, "class");
+         /* write out root tag.  For current incarnation html5 semantic markup is ignored */
         writer.startElement(HTML.DIV_ELEM, uiComponent);
         writer.writeAttribute(HTML.ID_ATTR, clientId, HTML.ID_ATTR);
-            // apply default style class for panel-stack  ??
-            //if cacheType is client and not selected must use invisible rendering
-        writer.writeAttribute("class", pageClass, "class");
+        //if cacheType is client and not selected must use invisible rendering
     }
 
     public void encodeEnd(FacesContext facesContext, UIComponent uiComponent)
@@ -124,7 +122,12 @@ public class ContentPaneRenderer extends BaseLayoutRenderer {
          if (uiComponent.getParent() instanceof Accordion){
              writer.endElement(HTML.SECTION_ELEM);
              return;
-         }  else {
+         }
+         else if (uiComponent.getParent() instanceof TabSet){
+             writer.endElement(HTML.DIV_ELEM);
+             writer.endElement(HTML.DIV_ELEM);
+             return;
+         } else {
              writer.endElement(HTML.DIV_ELEM);
          }
     }
