@@ -96,6 +96,7 @@ public class ICEmobileContainer extends Activity
     protected static final int HISTORY_CODE = 3;
     public static final int SCAN_CODE = 4;
     protected static final int RECORD_CODE = 5;
+    protected static final int ARVIEW_CODE = 6;
     
     public static final String SCAN_ID = "org.icemobile.id";
 
@@ -119,6 +120,8 @@ public class ICEmobileContainer extends Activity
     private C2dmHandler mC2dmHandler;
     private VideoHandler mVideoHandler;
     private VideoInterface mVideoInterface;
+    private ARViewHandler mARViewHandler;
+    private ARViewInterface mARViewInterface;
     private AssetManager assetManager;
     private FileLoader fileLoader;
     private Activity self;
@@ -188,6 +191,7 @@ public class ICEmobileContainer extends Activity
 	setHwAccelerate(accelerated, false);
 	includeUtil();
 	includeQRCode();
+	includeARView();
 	if (INCLUDE_CAMERA) includeCamera();
 	if (INCLUDE_AUDIO) includeAudio();
 	if (INCLUDE_VIDEO) includeVideo();
@@ -236,6 +240,10 @@ public class ICEmobileContainer extends Activity
 		break;
 	    case RECORD_CODE:
 		mAudioRecorder.gotAudio(data);
+		reloadOnC2dm = false;
+		break;
+	    case ARVIEW_CODE:
+//		mARViewHandler.arViewComplete(data);
 		reloadOnC2dm = false;
 		break;
 	    }
@@ -540,6 +548,12 @@ public class ICEmobileContainer extends Activity
         mCameraHandler = new CameraHandler(this,mWebView, utilInterface, TAKE_PHOTO_CODE);
         mCameraInterface = new CameraInterface(mCameraHandler);
         mWebView.addJavascriptInterface(mCameraInterface, "ICEcamera");
+    }
+
+    private void includeARView() {
+        mARViewHandler = new ARViewHandler(this,mWebView, utilInterface, ARVIEW_CODE);
+        mARViewInterface = new ARViewInterface(mARViewHandler);
+        mWebView.addJavascriptInterface(mARViewInterface, "ARView");
     }
 
     private void includeQRCode() {

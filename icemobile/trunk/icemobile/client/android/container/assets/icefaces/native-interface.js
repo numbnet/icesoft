@@ -52,6 +52,10 @@ if (!window.ice.mobile) {
             imageTag.setAttribute("src", value);
         }
 
+        namespace.aug = function(id, attr)  {
+            var result = window.ARView.arView(id ,attr);					
+        }
+
         namespace.camera = function(id, attr)  {
 	    alert('into camera');
             var result = window.ICEcamera.shootPhoto(id ,attr);					
