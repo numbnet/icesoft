@@ -47,26 +47,74 @@ import java.util.List;
 public class ChartBean extends ComponentExampleImpl<ChartBean> implements Serializable {
     public static final String BEAN_NAME = "chartBean";
 
-    private Integer[][] data = new Integer[][] {
-            {1,2,3,4},
-            {5,6,7,8},
-            {9,10,11,12},
+    private Integer[][] tableData = new Integer[][] {
+            {2,3,1,4},
+            {5,6,8,7},
+            {10,9,12,11},
     };
 
     private List<CartesianSeries> lineData = new ArrayList<CartesianSeries>() {{
         add(new CartesianSeries() {{
-            setType(CartesianType.BAR);
+            setType(CartesianType.LINE);
+            setShowMarker(false);
             setLabel("Bar Data");
         }});
     }};
 
     private List<CartesianSeries> barData = new ArrayList<CartesianSeries>() {{
+        add(new CartesianSeries() {{
+            setType(CartesianType.BAR);
+            add("HDTV Receiver", 15);
+            add("Cup Holder Pinion Bob", 7);
+            add("Generic Fog Lamp", 9);
+            add("8 Track Control Module", 12);
+            add("Sludge Pump Fourier Modulator", 3);
+            add("Transcender/Spice Rack", 6);
+            add("Hair Spray Danger Indicator", 18);
+            setLabel("Product / Sales");
+        }});
 
+        add(new CartesianSeries() {{
+            add("Nickle", 28);
+            add("Aluminum", 13);
+            add("Xenon", 54);
+            add("Silver", 47);
+            add("Sulfer", 16);
+            add("Silicon", 14);
+            add("Vanadium", 23);
+            setLabel("Resources / Demand");
+            setYAxis(2);
+            setXAxis(2);
+        }});
     }};
 
-    private Axis defaultAxis = new Axis() {{
+    private Axis tableDemoAxis = new Axis() {{
         setType(AxisType.CATEGORY);
+        setLabel("Letter Axis");
         setTicks(new String[]{"A","B","C","D"});
+    }};
+
+    private Axis barDemoDefaultAxis = new Axis() {{
+        setTickAngle(-30);
+    }};
+
+    private Axis barDemoX1Axis = new Axis() {{
+        setType(AxisType.CATEGORY);
+    }};
+
+    private Axis[] barDemoYAxes = new Axis[] {
+        new Axis() {{
+            setAutoscale(true);
+            setLabel("USD Millions");
+        }},
+        new Axis() {{
+            setAutoscale(true);
+            setLabel("Tonnes");
+        }}
+    };
+
+    private Axis barDemoX2Axis = new Axis() {{
+        setType(AxisType.CATEGORY);
     }};
 
     public ChartBean() {
@@ -106,19 +154,51 @@ public class ChartBean extends ComponentExampleImpl<ChartBean> implements Serial
         this.barData = barData;
     }
 
-    public Axis getDefaultAxis() {
-        return defaultAxis;
+    public Axis getTableDemoAxis() {
+        return tableDemoAxis;
     }
 
-    public void setDefaultAxis(Axis defaultAxis) {
-        this.defaultAxis = defaultAxis;
+    public void setTableDemoAxis(Axis tableDemoAxis) {
+        this.tableDemoAxis = tableDemoAxis;
     }
 
-    public Integer[][] getData() {
-        return data;
+    public Integer[][] getTableData() {
+        return tableData;
     }
 
-    public void setData(Integer[][] data) {
-        this.data = data;
+    public void setTableData(Integer[][] data) {
+        this.tableData = data;
+    }
+
+    public Axis getBarDemoX1Axis() {
+        return barDemoX1Axis;
+    }
+
+    public void setBarDemoX1Axis(Axis barDemoX1Axis) {
+        this.barDemoX1Axis = barDemoX1Axis;
+    }
+
+    public Axis getBarDemoDefaultAxis() {
+        return barDemoDefaultAxis;
+    }
+
+    public void setBarDemoDefaultAxis(Axis barDemoDefaultAxis) {
+        this.barDemoDefaultAxis = barDemoDefaultAxis;
+    }
+
+    public Axis getBarDemoX2Axis() {
+        return barDemoX2Axis;
+    }
+
+    public void setBarDemoX2Axis(Axis barDemoX2Axis) {
+        this.barDemoX2Axis = barDemoX2Axis;
+    }
+
+    public Axis[] getBarDemoYAxes() {
+        return barDemoYAxes;
+    }
+
+    public void setBarDemoYAxes(Axis[] barDemoYAxes) {
+        this.barDemoYAxes = barDemoYAxes;
     }
 }

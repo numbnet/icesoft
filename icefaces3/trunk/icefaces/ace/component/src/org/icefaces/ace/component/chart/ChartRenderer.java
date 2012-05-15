@@ -1,7 +1,5 @@
 package org.icefaces.ace.component.chart;
 
-import com.sun.org.apache.xpath.internal.axes.AxesWalker;
-import org.apache.poi.hssf.record.chart.AxisUsedRecord;
 import org.icefaces.ace.event.SeriesSelectionEvent;
 import org.icefaces.ace.model.chart.ChartSeries;
 import org.icefaces.ace.renderkit.CoreRenderer;
@@ -53,12 +51,13 @@ public class ChartRenderer extends CoreRenderer {
         ChartSeries seriesDefaults = component.getDefaultSeriesConfig();
         Boolean stacking = component.isStackSeries();
         Boolean animated = component.isAnimated();
+        String title = component.getTitle();
 
         JSONBuilder dataBuilder = new JSONBuilder();
         JSONBuilder cfgBuilder = new JSONBuilder();
 
         writer.startElement(HTML.SPAN_ELEM, null);
-        writer.writeAttribute(HTML.ID_ATTR, clientId+"_script", null);
+        writer.writeAttribute(HTML.ID_ATTR, clientId + "_script", null);
         writer.startElement(HTML.SCRIPT_ELEM, null);
         writer.writeAttribute(HTML.TYPE_ATTR, "text/javascript", null);
 
@@ -76,6 +75,7 @@ public class ChartRenderer extends CoreRenderer {
         encodeSeriesConfig(cfgBuilder, seriesDefaults, data);
         encodeLegendConfig(cfgBuilder, component);
         encodeHighlighterConfig(cfgBuilder, component);
+        if (title != null) cfgBuilder.entry("title", title);
         if (stacking) cfgBuilder.entry("stackSeries", true);
         if (animated == null) cfgBuilder.entry("animate", "!ice.ace.jq.jqplot.use_excanvas", true);
         else if (animated) cfgBuilder.entry("animate", true);
@@ -95,10 +95,25 @@ public class ChartRenderer extends CoreRenderer {
         if (component.isHighlighter() != null && component.isHighlighter()) {
             cfgBuilder.beginMap("highlighter");
             cfgBuilder.entry("show", true);
+
+            Boolean showMarker = component.isHighlighterShowMarker();
+            Location location = component.getHighlighterLocation();
+            HighlighterTooltipAxes axes = component.getHighlighterAxes();
+            String formatString = component.getHighlighterFormatString();
+            Integer yvals = component.getHighlighterYValueCount();
+            Boolean btf = component.isHighlighterBringSeriesToFront();
+
+            if (showMarker != null) cfgBuilder.entry("showMarker", showMarker);
+            if (location != null) cfgBuilder.entry("tooltipLocation", location.toString());
+            if (axes != null) cfgBuilder.entry("tooltipAxes", axes.toString());
+            if (formatString != null) cfgBuilder.entry("formatString", formatString);
+            if (yvals != null) cfgBuilder.entry("yvalues", yvals);
+            if (btf != null) cfgBuilder.entry("bringSeriesToFront", btf);
+
             cfgBuilder.endMap();
         }
     }
-
+    
     private void encodeSeriesConfig(JSONBuilder cfg, ChartSeries defaults, List<ChartSeries> series) {
         // If defined, add default series config
         if (defaults != null)
@@ -121,16 +136,15 @@ public class ChartRenderer extends CoreRenderer {
         if (component.hasAxisConfig()) {
             Axis xAxis = component.getXAxis();
             Axis x2Axis = component.getX2Axis();
-            List<Axis> yAxes = component.getYAxes();
+            Axis[] yAxes = component.getYAxes();
             cfgBuilder.beginMap("axes");
             if (xAxis != null)
                 cfgBuilder.entry("xaxis", xAxis.toString(), true);
             if (x2Axis != null)
                 cfgBuilder.entry("x2axis", xAxis.toString(), true);
             if (yAxes != null)
-                for (int i = 0; i < yAxes.size(); i++)
-                    cfgBuilder.entry(i == 0 ? "yaxis" : "y"+(i+1)+"axis",
-                            yAxes.get(i).toString());
+                for (int i = 0; i < yAxes.length; i++)
+                    cfgBuilder.entry(i == 0 ? "yaxis" : "y"+(i+1)+"axis", yAxes[i].toString(), true);
             cfgBuilder.endMap();
         }
     }
@@ -141,7 +155,7 @@ public class ChartRenderer extends CoreRenderer {
             cfgBuilder.beginMap("legend");
             cfgBuilder.entry("show", true);
 
-            LegendLocation pos = component.getLegendLocation();
+            Location pos = component.getLegendLocation();
             LegendPlacement place = component.getLegendPlacement();
 
             if (place != null) cfgBuilder.entry("placement", place.toString());

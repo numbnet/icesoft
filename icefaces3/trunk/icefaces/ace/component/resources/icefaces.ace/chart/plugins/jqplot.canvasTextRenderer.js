@@ -445,4 +445,4 @@
          ctx.restore();
     };
     
-})(jQuery);
+})(ice.ace.jq);
