@@ -19,6 +19,7 @@ package org.icefaces.mobile.layout;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
+import javax.faces.event.ValueChangeEvent;
 import java.awt.event.ActionEvent;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -33,13 +34,22 @@ public class LayoutBean implements Serializable {
     private static final String SECONDPANE="panel2";
     private static final String THIRDPANE="panel3";
 
+    private List menuList = new ArrayList<MenuValue>();
     private String selectedPane ;
     private int accordionIndex = 0;
     private int tabIndex = 1;
 
 	public LayoutBean(){
        this.selectedPane = FIRSTPANE;
+       this.menuList.add(new MenuValue("Menu Example", "none", true));
+       this.menuList.add(new MenuValue("splash", FIRSTPANE, false));
+       this.menuList.add(new MenuValue("date/time", SECONDPANE, false));
+       this.menuList.add(new MenuValue("tabSet", THIRDPANE, false));
 	}
+
+    public void tabChangeListener(ValueChangeEvent vce){
+        logger.info("in tabChangeListener old val="+vce.getOldValue()+" new index="+vce.getNewValue());
+    }
     public void changeToPane3(){
         this.selectedPane = THIRDPANE;
     }
@@ -70,5 +80,67 @@ public class LayoutBean implements Serializable {
 
     public void setTabIndex(int tabIndex) {
         this.tabIndex = tabIndex;
+    }
+
+    public List getMenuList() {
+        return menuList;
+    }
+
+    public void setMenuList(List menuList) {
+        this.menuList = menuList;
+    }
+
+    public class MenuValue implements Serializable{
+        private String label;
+        private String value;
+        private String url;
+        private String icon;
+        private boolean menuHeader;
+
+        public MenuValue (String label, String value, boolean menuHeader){
+            this.label = label;
+            this.value = value;
+            this.menuHeader = menuHeader;
+        }
+
+        public String getLabel() {
+            return label;
+        }
+
+        public void setLabel(String label) {
+            this.label = label;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        public void setValue(String value) {
+            this.value = value;
+        }
+
+        public String getUrl() {
+            return url;
+        }
+
+        public void setUrl(String url) {
+            this.url = url;
+        }
+
+        public String getIcon() {
+            return icon;
+        }
+
+        public void setIcon(String icon) {
+            this.icon = icon;
+        }
+
+        public boolean isMenuHeader() {
+            return menuHeader;
+        }
+
+        public void setMenuHeader(boolean menuHeader) {
+            this.menuHeader = menuHeader;
+        }
     }
 }
