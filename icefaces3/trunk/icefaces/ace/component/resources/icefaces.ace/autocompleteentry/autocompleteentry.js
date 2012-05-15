@@ -72,12 +72,13 @@ ice.ace.Autocompleter.collectTextNodes = function(element) {
 };
 
 ice.ace.Autocompleter.collectTextNodesIgnoreClass = function(element, className) {
-    return $A($(element).childNodes).collect(
-            function(node) {
-                return (node.nodeType == 3 ? node.nodeValue :
-                        ((node.hasChildNodes() && !Element.hasClassName(node, className)) ?
-                                Element.collectTextNodesIgnoreClass(node, className) : ''));
-            }).flatten().join('');
+	var children = element.childNodes;
+	var str = '';
+	for (var i = 0; i < children.length; i++) {
+		var node = children[i];
+		str += node.nodeType == 3 ? node.nodeValue : ( node.childNodes.length > 0 && !ice.ace.jq(node).hasClass(className) ? ice.ace.Autocompleter.collectTextNodesIgnoreClass(node, className) : '' );
+	}
+	return str;
 };
 
 ice.ace.Autocompleter.cleanWhitespace = function(element) {
@@ -489,7 +490,7 @@ ice.ace.Autocompleter.prototype = {
             var nodes = document.getElementsByClassName(this.options.select, selectedElement) || [];
             if (nodes.length > 0) value = ice.ace.Autocompleter.collectTextNodes(nodes[0], this.options.select); //@ jq custom fn #
         } else {
-            value = ice.ace.Autocompleter.collectTextNodes(selectedElement, 'informal'); //@ jq custom fn # TODO: collectTextNodesIgnoreClass
+            value = ice.ace.Autocompleter.collectTextNodesIgnoreClass(selectedElement, 'informal'); //@ jq custom fn # TODO: collectTextNodesIgnoreClass
 	}
 
         var lastTokenPos = this.findLastToken();
