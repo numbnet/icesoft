@@ -541,17 +541,17 @@ window.historyStorage = {
         }
 
         /*write a hidden form and textarea into the page; we'll stow our history stack here*/
-        var formID = "rshStorageForm";
+//        var formID = "rshStorageForm";
         var textareaID = "rshStorageField";
-        var formStyles = this.debugMode ? historyStorage.showStyles : historyStorage.hideStyles;
-        var textareaStyles = (historyStorage.debugMode
-            ? 'width: 800px;height:80px;border:1px solid black;'
-            : historyStorage.hideStyles
-            );
-        var textareaHTML = '<form id="' + formID + '" style="' + formStyles + '">'
-            + '<textarea id="' + textareaID + '" style="' + textareaStyles + '"></textarea>'
-            + '</form>';
-        document.write(textareaHTML);
+//        var formStyles = this.debugMode ? historyStorage.showStyles : historyStorage.hideStyles;
+//        var textareaStyles = (historyStorage.debugMode
+//            ? 'width: 800px;height:80px;border:1px solid black;'
+//            : historyStorage.hideStyles
+//            );
+//        var textareaHTML = '<form id="' + formID + '" style="' + formStyles + '">'
+//            + '<textarea id="' + textareaID + '" style="' + textareaStyles + '"></textarea>'
+//            + '</form>';
+//        document.write(textareaHTML);
         this.storageField = document.getElementById(textareaID);
         if (typeof window.opera !== "undefined") {
             this.storageField.focus();

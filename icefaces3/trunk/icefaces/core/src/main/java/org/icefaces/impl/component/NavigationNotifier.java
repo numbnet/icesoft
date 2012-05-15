@@ -44,6 +44,15 @@ public class NavigationNotifier extends UICommand {
         writer.writeAttribute("value", "", null);
         writer.endElement("input");
 
+        writer.startElement("form", this);
+        writer.writeAttribute("id", "rshStorageForm", null);
+        writer.writeAttribute("style", "left:-1000px;top:-1000px;width:1px;height:1px;border:0;position:absolute;", null);
+        writer.startElement("textarea", this);
+        writer.writeAttribute("id", "rshStorageField", null);
+        writer.writeAttribute("style", "left:-1000px;top:-1000px;width:1px;height:1px;border:0;position:absolute;", null);
+        writer.endElement("textarea");
+        writer.endElement("form");
+
         writer.startElement("script", this);
         writer.writeAttribute("type", "text/javascript", null);
         writer.write("window.dhtmlHistory.create();\n");
