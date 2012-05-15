@@ -100,3 +100,6 @@ This also overrides the indeterminate progress imagery. But the themes don't sup
     font-size: 9pt;
 }
 
+.textEntryInputTable td {
+    padding-top: 8px;
+}
