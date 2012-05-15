@@ -25,6 +25,8 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
 import javax.el.MethodExpression;
+import javax.el.ValueExpression;
+import javax.el.ELContext;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.FacesEvent;
@@ -37,9 +39,9 @@ import java.util.*;
 
 public class AutoCompleteEntry extends AutoCompleteEntryBase implements NamingContainer {
 
-    private transient List itemList;
+    private transient List<Object> itemList;
     private transient int index = -1;
-	private SelectItem selectedItem;
+	private Object selectedItem;
 	private transient List changedComponentIds;
 	
     public void encodeBegin(FacesContext context) throws IOException {
@@ -67,25 +69,20 @@ public class AutoCompleteEntry extends AutoCompleteEntryBase implements NamingCo
         Map requestMap =
                 facesContext.getExternalContext().getRequestParameterMap();
         String clientId = getClientId(facesContext);
-//System.out.println("SelectInputText.setSelectedItem()  clientId: " + clientId);
         String value = (String) requestMap.get(clientId);
         if(value != null) {
 		setSubmittedValue(value);
             boolean changed = true; //isPartialSubmitKeypress(requestMap, clientId);
-//System.out.println("SelectInputText.setSelectedItem()  changed: " + changed);
             if(changed) {
                 setChangedComponentId( clientId );
                 
-//System.out.println("SelectInputText.setSelectedItem()  textChangeListener: " + getTextChangeListener());
                 if( getTextChangeListener() != null ) {
-//System.out.println("SelectInputText.setSelectedItem()  submittedValue: " + value);
                     Object oldValue = getSubmittedValue();
                     if(oldValue == null) {
                         /*oldValue = DomBasicRenderer.converterGetAsString(
                             facesContext, this, getValue());*/
 							oldValue = getValue();
                     }
-//System.out.println("SelectInputText.setSelectedItem()  oldValue: " + oldValue);
                     TextChangeEvent event = new TextChangeEvent(this, oldValue, value);
                     event.setPhaseId(PhaseId.APPLY_REQUEST_VALUES);
                     queueEvent(event);
@@ -94,7 +91,6 @@ public class AutoCompleteEntry extends AutoCompleteEntryBase implements NamingCo
         }
         String selIdxStr = (String) requestMap.get(
             clientId + AutoCompleteEntryRenderer.AUTOCOMPLETE_INDEX);
-//System.out.println("SIT.decode()  selIdxStr: " + selIdxStr);
         if (selIdxStr != null && selIdxStr.trim().length() > 0) {
             int selIdx = Integer.parseInt(selIdxStr);
             setSelectedIndex(selIdx);
@@ -195,18 +191,14 @@ public class AutoCompleteEntry extends AutoCompleteEntryBase implements NamingCo
     public void broadcast(FacesEvent event) throws AbortProcessingException {
         //keyevent should be process by this component
         super.broadcast(event);
-//System.out.println("SelectInputText.broadcast()  clientId: " + getClientId(FacesContext.getCurrentInstance()));
-//System.out.println("SelectInputText.broadcast()  event: " + event);
         if (event instanceof TextChangeEvent) {
             MethodExpression mb = getTextChangeListener();
-//System.out.println("SelectInputText.broadcast()  TextChangeEvent  mb: " + mb);
             if(mb != null) {
                 mb.invoke( FacesContext.getCurrentInstance().getELContext(),
                            new Object[] {event} );
             }
         }
 //        else if (event instanceof ValueChangeEvent) {
-//System.out.println("SelectInputText.broadcast()  ValueChangeEvent  old: " + ((ValueChangeEvent)event).getOldValue() + "new: " + ((ValueChangeEvent)event).getNewValue());
 //        }
     }
 	
@@ -215,7 +207,6 @@ public class AutoCompleteEntry extends AutoCompleteEntryBase implements NamingCo
     }
 
     protected void setSelectedIndex(int index) {
-//System.out.println("SIT.setSelectedIndex()  index: " + index);
         SelectItem selItm = null;
         if (index >= 0) {
             if (itemList == null) {
@@ -224,7 +215,6 @@ public class AutoCompleteEntry extends AutoCompleteEntryBase implements NamingCo
             if (itemList != null) {
                 if (index < itemList.size()) {
                     selItm = (SelectItem) itemList.get(index);
-//System.out.println("SIT.setSelectedIndex()  selItm: " + selItm);
                 }
             }
         }
@@ -232,32 +222,29 @@ public class AutoCompleteEntry extends AutoCompleteEntryBase implements NamingCo
     }
 	
     public void setSelectedItem(String key) {
-//System.out.println("SIT.setSelectedItem()  key: " + key);
-        SelectItem selItm = null;
+        Object selItm = null;
         if (key != null) {
             if (itemList == null) {
                 populateItemList();
             }
             if (itemList != null) {
-                SelectItem sticky = null;
+                Object sticky = null;
                 boolean multipleMatches = false;
                 FacesContext facesContext = FacesContext.getCurrentInstance();
                 for (int i = 0; i < itemList.size(); i++) {
-                    SelectItem item = (SelectItem) itemList.get(i);
-                    String itemLabel = item.getLabel();
-                    if (itemLabel == null) {
+					// SelectItem item = (SelectItem) itemList.get(i);
+                    Object item = itemList.get(i);
+                    String itemLabel = getMainValue(item);
+                    //if (itemLabel == null) {
                         /*itemLabel = DomBasicRenderer.converterGetAsString(
                             facesContext, this, item.getValue());*/
-							itemLabel = item.getValue().toString();
-                    }
+							//itemLabel = item.getValue().toString();
+                    //}
                     if (key.equals(itemLabel)) {
-//System.out.println("SIT.setSelectedItem()  MATCHED with index: " + i);
                         if (selectedItem != null && selectedItem.equals(item)) {
-//System.out.println("SIT.setSelectedItem()  MATCHED with selectedItem");
                             sticky = item;
                         }
                         multipleMatches |= (selItm != null);
-//if(selItm != null)System.out.println("SIT.setSelectedItem()  MULTIPLE MATCHES - UNMATCHING  (if no sticky)");
                         selItm = item;
                     }
                 }
@@ -271,11 +258,23 @@ public class AutoCompleteEntry extends AutoCompleteEntryBase implements NamingCo
         }
         selectedItem = selItm;
     }
+	
+	private String getMainValue(Object o) {
+		FacesContext context = FacesContext.getCurrentInstance();
+		ELContext elContext = context.getELContext();
+		String listVar = getListVar();
+		context.getExternalContext().getRequestMap().put(listVar, o);
+		Object value = getValueExpression("filterBy").getValue(elContext);
+		context.getExternalContext().getRequestMap().remove(listVar);
+
+		if (value == null) return "null";
+		return (String) value;
+	}
 
     /**
      * <p>Return the value of the <code>selectedItem</code> property.</p>
      */
-    public SelectItem getSelectedItem() {
+    public Object getSelectedItem() {
         return selectedItem;
     }
 	

@@ -34,6 +34,8 @@ import org.w3c.dom.Text;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
+import javax.el.ELContext;
+import javax.el.ValueExpression;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.Map;
@@ -47,6 +49,10 @@ public class AutoCompleteEntryRenderer extends InputRenderer {
     public boolean getRendersChildren() {
         return true;
     }
+	
+	public void decode(FacesContext facesContext, UIComponent uiComponent) {
+		
+	}
 	
     public void encodeBegin(FacesContext facesContext, UIComponent uiComponent) throws IOException {
         
@@ -142,6 +148,8 @@ public class AutoCompleteEntryRenderer extends InputRenderer {
 		String clientId = autoCompleteEntry.getClientId(facesContext);
         autoCompleteEntry.populateItemList();
         Iterator matches = autoCompleteEntry.getItemList();
+		String filter = ((String) autoCompleteEntry.getValue()).toLowerCase();
+		FilterMatchMode filterMatchMode = getFilterMatchMode(autoCompleteEntry);
         int rows = autoCompleteEntry.getRows();
         if (rows == 0) rows = Integer.MAX_VALUE;
         int rowCounter = 0;
@@ -150,6 +158,9 @@ public class AutoCompleteEntryRenderer extends InputRenderer {
         if (autoCompleteEntry.getSelectFacet() != null) {
 
             UIComponent facet = autoCompleteEntry.getSelectFacet();
+			ValueExpression filterBy = autoCompleteEntry.getValueExpression("filterBy");
+			ELContext elContext = facesContext.getELContext();
+			String listVar = autoCompleteEntry.getListVar();
 
             writer.startElement("div", null);
 			//writer.writeAttribute("id", clientId + "content", null);
@@ -158,30 +169,38 @@ public class AutoCompleteEntryRenderer extends InputRenderer {
                     facesContext.getExternalContext().getRequestMap();
             //set index to 0, so child components can get client id from autoComplete component
             autoCompleteEntry.setIndex(0);
-            while (matches.hasNext() && rowCounter++ < rows) {
+            while (matches.hasNext() && rowCounter <= rows) {
 
-                writer.startElement("div", null);
-                SelectItem item = (SelectItem) matches.next();
-                requestMap.put(autoCompleteEntry.getListVar(), item.getValue());
-                
-                // When HTML is display we still need a selected value. Hidding the value in a hidden span
-                // accomplishes this.
-				writer.startElement("span", null); // span to display
-                writer.writeAttribute("class", "informal", null);
-                encodeParentAndChildren(facesContext, facet);
-				writer.endElement("span");
-				writer.startElement("span", null); // span to select
-				writer.writeAttribute("style", "visibility:hidden;display:none;", null);
-                String itemLabel = item.getLabel();
-                if (itemLabel == null) {
-                    /*itemLabel = converterGetAsString(
-                            facesContext, autoCompleteEntry, item.getValue());*/
-					itemLabel = item.getValue().toString();
-                }
-				writer.writeText(itemLabel, null);
-                writer.endElement("span");
-                autoCompleteEntry.resetId(facet);
-				writer.endElement("div");
+				requestMap.put(listVar, matches.next());
+				String value = (String) filterBy.getValue(elContext);
+			
+				if (satisfiesFilter(value, filter, filterMatchMode)) {
+					rowCounter++;
+					writer.startElement("div", null);
+					//SelectItem item = (SelectItem) matches.next();
+					//requestMap.put(autoCompleteEntry.getListVar(), item.getValue());
+					
+					// When HTML is display we still need a selected value. Hidding the value in a hidden span
+					// accomplishes this.
+					writer.startElement("span", null); // span to display
+					writer.writeAttribute("class", "informal", null);
+					encodeParentAndChildren(facesContext, facet);
+					writer.endElement("span");
+					writer.startElement("span", null); // span to select
+					writer.writeAttribute("style", "visibility:hidden;display:none;", null);
+					String itemLabel = value;
+					if (itemLabel == null) {
+						/*itemLabel = converterGetAsString(
+								facesContext, autoCompleteEntry, item.getValue());*/
+						itemLabel = value;
+					}
+					writer.writeText(itemLabel, null);
+					writer.endElement("span");
+					autoCompleteEntry.resetId(facet);
+					writer.endElement("div");
+				}
+				
+				requestMap.remove(listVar);
             }
             autoCompleteEntry.setIndex(-1);
 
@@ -197,7 +216,7 @@ public class AutoCompleteEntryRenderer extends InputRenderer {
             if (matches.hasNext()) {
                 StringBuffer sb = new StringBuffer("<div>");
                 SelectItem item = null;
-                while (matches.hasNext() && rowCounter++ < rows) {
+                while (matches.hasNext() && rowCounter <= rows) {
                     item = (SelectItem) matches.next();
                     String itemLabel = item.getLabel();
                     if (itemLabel == null) {
@@ -205,8 +224,11 @@ public class AutoCompleteEntryRenderer extends InputRenderer {
                                 facesContext, autoCompleteEntry, item.getValue());*/ // TODO: add converter support
 						itemLabel = item.getValue().toString();
                     }
+					if (satisfiesFilter(itemLabel, filter, filterMatchMode)) {
                     sb.append("<div>").append(itemLabel)
                             .append("</div>");
+							rowCounter++;
+					}
                 }
                 sb.append("</div>");
                 String call = "ice.ace.Autocompleters[\"" + autoCompleteEntry.getClientId(facesContext) + "\"]" +
@@ -270,4 +292,46 @@ public class AutoCompleteEntryRenderer extends InputRenderer {
         }
         parent.encodeEnd(facesContext);
     }
+	
+	private FilterMatchMode getFilterMatchMode(AutoCompleteEntry autoCompleteEntry) {
+		String filterMatchMode = autoCompleteEntry.getFilterMatchMode();
+		if ("contains".equalsIgnoreCase(filterMatchMode)) return FilterMatchMode.contains;
+		if ("exact".equalsIgnoreCase(filterMatchMode)) return FilterMatchMode.exact;
+		if ("endsWith".equalsIgnoreCase(filterMatchMode)) return FilterMatchMode.endsWith;
+		if ("none".equalsIgnoreCase(filterMatchMode)) return FilterMatchMode.none;
+		return FilterMatchMode.startsWith;
+	}
+	
+	private enum FilterMatchMode {
+		contains,
+		exact,
+		startsWith,
+		endsWith,
+		none
+	}
+	
+	private boolean satisfiesFilter(String string, String filter, FilterMatchMode filterMatchMode) {
+		
+		if (string != null) {
+			string = string.toLowerCase();
+			switch (filterMatchMode) {
+				case contains:
+					if (string.indexOf(filter) >= 0) return true;
+					break;
+				case exact:
+					if (string.equals(filter)) return true;
+					break;
+				case startsWith:
+					if (string.startsWith(filter)) return true;
+					break;
+				case endsWith:
+					if (string.endsWith(filter)) return true;
+					break;
+				default:
+					return true;
+			}
+		}
+		
+		return false;
+	}
 }

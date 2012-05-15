@@ -27,6 +27,7 @@ import org.icefaces.ace.api.IceClientBehaviorHolder;
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
 import javax.el.MethodExpression;
+import javax.el.ValueExpression;
 
 import javax.faces.model.SelectItem;
 
@@ -74,4 +75,14 @@ public class AutoCompleteEntryMeta extends HtmlInputTextMeta {
 	
     @Property(expression= Expression.METHOD_EXPRESSION, methodExpressionArgument="org.icefaces.ace.component.autocompleteentry.TextChangeEvent", tlddoc = "")
     private MethodExpression textChangeListener;
+	
+	@Property(tlddoc="Defines the method of filter comparison used, default is \"startsWith\". " +
+            "Types available include: \"contains\", \"exact\", \"startsWith\", \"endsWith\" and \"none\". " +
+			"Typically, \"none\" will be used in cases where more complex, custom filtering is needed.", defaultValue="startsWith")
+	private String filterMatchMode;
+	
+	@Property(expression = Expression.VALUE_EXPRESSION,
+            tlddoc="ValueExpression that specifies the property of the data object to use for filtering values. " +
+			"This only applies when listvar is used and the rendering is done by means of a facet.")
+	private Object filterBy;
 }
