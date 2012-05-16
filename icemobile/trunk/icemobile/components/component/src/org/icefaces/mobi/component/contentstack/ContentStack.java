@@ -1,13 +1,28 @@
+/*
+ * Copyright 2004-2012 ICEsoft Technologies Canada Corp.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the
+ * License. You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an "AS
+ * IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ * express or implied. See the License for the specific language
+ * governing permissions and limitations under the License.
+ */
 package org.icefaces.mobi.component.contentstack;
 
 
 import org.icefaces.mobi.api.ContentPaneController;
 
+import javax.annotation.PostConstruct;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
 public class ContentStack extends ContentStackBase implements ContentPaneController {
-//public class ContentStack extends ContentStackBase  {
      public static final String CONTENT_WRAPPER_CLASS = "mobi-content-stack ";
 
      private String selectedId;
@@ -23,24 +38,34 @@ public class ContentStack extends ContentStackBase implements ContentPaneControl
      * @return
      */
      public String getSelectedId(){
-         int childCount = getChildCount();
-         if (childCount== 0) {
-             return null;
-         }
-         String id = getCurrentId();
-         UIComponent uiC = findComponent(id);
-         if (uiC!=null){
-             selectedId = uiC.getClientId();
-         }
-         //for tagHandler do I need to ensure all children are of type ContentPane here??
-         if (null!=selectedId){
-            return selectedId;
-         } else {  // return client Id of first child
-            return null;
-         }
+         return this.selectedId;
      }
 
-    public int getChildCount(){
-        return 3;
-    }
+     @PostConstruct
+     public void init(){
+        this.findMySelectedId();
+     }
+
+     public void findMySelectedId(){
+        int childCount = getChildCount();
+        if (childCount > 0 ){
+            String id = getCurrentId();
+            if (null!=id){
+                UIComponent uiC = findComponent(id);
+                if (null!= uiC ){
+                    if (null!= uiC.getClientId()) {
+                        this.selectedId = uiC.getClientId();
+                    }
+                    else {
+                        this.selectedId = uiC.getChildren().get(0).getClientId();
+                    }
+                }
+            }
+        }
+        else {
+          this.selectedId= null;
+        }
+     }
+
+
 }
