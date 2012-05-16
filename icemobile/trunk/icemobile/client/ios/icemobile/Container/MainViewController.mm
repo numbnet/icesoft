@@ -228,7 +228,7 @@ NSLog(@"Warning: completePost should not be invoked with ICEmobile Container");
     NSString *script;
     NSString *result;
 
-    scriptTemplate = @"ice.addHidden(\"%@\", \"%@\", \"%@\");";
+    scriptTemplate = @"ice.addHidden('%@', '%@', '%@', 'file');";
     script = [NSString stringWithFormat:scriptTemplate, componentID, componentName, path];
 NSLog(@"completeFile %@", script);
     result = [self.webView stringByEvaluatingJavaScriptFromString: script];

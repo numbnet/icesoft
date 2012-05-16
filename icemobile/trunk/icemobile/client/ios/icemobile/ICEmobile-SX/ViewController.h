@@ -58,6 +58,7 @@
 - (void) dispatchCurrentCommand;
 - (void) reloadCurrentURL;
 - (void) hideProgress;
+- (void) decorateParams:(NSMutableDictionary*) params;
 - (IBAction) doMediacast;
 - (IBAction) doMobileshowcase;
 - (IBAction) chooseAction;

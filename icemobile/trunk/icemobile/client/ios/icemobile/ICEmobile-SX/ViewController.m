@@ -61,11 +61,13 @@
 
         [params setValue:hexToken forKey:@"iceCloudPushId"];
     }
+    [self decorateParams: params];
     [nativeInterface multipartPost:params toURL:self.currentURL];
 }
 
 - (void)completePost:(NSString *)value forComponent:(NSString *)componentID withName:(NSString *)componentName   {
     NSMutableDictionary *params = [nativeInterface parseQuery:currentParameters];
+    [self decorateParams: params];
     if (nil != componentName)  {
         [params setValue:value forKey:componentName];
     } else {
@@ -86,7 +88,8 @@
 }
 
 - (void)completeFile:(NSString *)path forComponent:(NSString *)componentID withName:(NSString *)componentName   {
-    [self completePost:path forComponent:componentID withName:componentName];
+    [self completePost:path forComponent:componentID 
+            withName:[@"file-" stringByAppendingString: componentName]];
 }
 
 - (NSString *) prepareUpload:(NSString *)formID  {
@@ -101,6 +104,14 @@ NSLog(@"Hitch just upload what would have been scripted %@", script);
 NSLog(@"Hitch just upload what would have been scripted %@", script);
 
     return @"unknown";
+}
+
+- (void) decorateParams:(NSMutableDictionary*) params {
+    for (NSString *key in params)  {
+        NSString *value = [params objectForKey:key];
+        [params removeObjectForKey:key];
+        [params setValue:value forKey:[@"hidden-" stringByAppendingString:key]];
+    }
 }
 
 - (NSString *) getFormData:(NSString *)formID  {

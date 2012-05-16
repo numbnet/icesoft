@@ -125,7 +125,7 @@ static char base64EncodingTable[64] = {
 
 - (BOOL)Xmicrophone: (NSString*)micId  {
     self.activeDOMElementId = micId;
-    NSString *micName = [micId stringByAppendingString:@"-file"];
+    NSString *micName = micId;
     NSLog(@"called microphone for %@", micId);
 
     NSString *tempDir = NSTemporaryDirectory ();
@@ -205,7 +205,7 @@ static char base64EncodingTable[64] = {
 }
 
 - (void)recordStart  {
-    NSString *micName = [self.activeDOMElementId stringByAppendingString:@"-file"];
+    NSString *micName = self.activeDOMElementId;
     NSLog(@"called microphone for %@", micName);
 
     NSURL *soundFileURL = [[NSURL alloc] 
@@ -251,8 +251,7 @@ static char base64EncodingTable[64] = {
 //TODO reconcile naming difference
 - (void)recordDone  {
     [self recordDismiss];
-    NSString *audioName = 
-            [self.activeDOMElementId stringByAppendingString:@"-file"];
+    NSString *audioName = self.activeDOMElementId;
     [controller completeFile:self.soundFilePath 
             forComponent:self.activeDOMElementId withName:audioName];
 }
@@ -307,7 +306,7 @@ static char base64EncodingTable[64] = {
                     didFinishPickingImage:(UIImage *)image
                     editingInfo:(NSDictionary *)editingInfo  {
     NSString *cameraId = self.activeDOMElementId;
-    NSString *cameraName = [cameraId stringByAppendingString:@"-file"];
+    NSString *cameraName = cameraId;
 
     UIImage *uploadImage = image;
     if ((nil != self.maxwidth) && (nil != self.maxheight))  {
@@ -331,7 +330,7 @@ static char base64EncodingTable[64] = {
     NSString *script;
     NSString *result;
 
-    scriptTemplate = @"ice.addHidden(\"%@\", \"%@\", \"%@\");";
+    scriptTemplate = @"ice.addHidden('%@', '%@', '%@', 'file');";
     script = [NSString stringWithFormat:scriptTemplate, cameraId, cameraName, savedPath];
     result = [controller.webView stringByEvaluatingJavaScriptFromString: script];
 }
@@ -346,7 +345,7 @@ static char base64EncodingTable[64] = {
         return;
     }
     NSString *cameraId = self.activeDOMElementId;
-    NSString *cameraName = [cameraId stringByAppendingString:@"-file"];
+    NSString *cameraName = cameraId;
     NSURL *movieURL = [info objectForKey: UIImagePickerControllerMediaURL];
     NSString *moviePath = [movieURL path];
 
@@ -365,7 +364,7 @@ static char base64EncodingTable[64] = {
     UIImage *scaledImage = [self scaleImage:image toSize:64];
     [self setThumbnail:scaledImage at:cameraId];
 
-    scriptTemplate = @"ice.addHidden(\"%@\", \"%@\", \"%@\");";
+    scriptTemplate = @"ice.addHidden('%@', '%@', '%@', 'file');";
     script = [NSString stringWithFormat:scriptTemplate, cameraId, cameraName, moviePath];
     result = [controller.webView stringByEvaluatingJavaScriptFromString: script];
 
@@ -524,6 +523,7 @@ static char base64EncodingTable[64] = {
     result = [controller.webView 
             stringByEvaluatingJavaScriptFromString: script];
 
+    NSLog(@"upload will post data %@", result );
     NSDictionary *parts = [self parseQuery:result];
     [self multipartPost:parts toURL:[actionURL absoluteString]];
 
@@ -641,18 +641,21 @@ static char base64EncodingTable[64] = {
         NSLog(@"multipartPost part %@ equals %@", key, [parts objectForKey:key] );
         NSString *value = [parts objectForKey:key];
         NSString *mimeTypeHeader = [self guessMimeType:value];
-        if ([key hasSuffix:@"-file"] ) {
-            NSLog(@"    writing file part for %@ %@", key, filename );
+        int nameSplit = [key rangeOfString:@"-"].location;
+        NSString *partName = [key substringFromIndex:nameSplit + 1];
+        NSString *partType = [key substringToIndex:nameSplit];
+        if ([partType isEqualToString:@"file"] ) {
+            NSLog(@"    writing file part for %@ %@", partName, filename );
             [postbody appendData:[[NSString stringWithFormat:@"\r\n--%@\r\n",boundary] dataUsingEncoding:NSUTF8StringEncoding]];
-            [postbody appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"%@\"; filename=\"%@\"\r\n", key, filename] dataUsingEncoding:NSUTF8StringEncoding]];
+            [postbody appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"%@\"; filename=\"%@\"\r\n", partName, filename] dataUsingEncoding:NSUTF8StringEncoding]];
             [postbody appendData:[[NSString stringWithString:mimeTypeHeader] dataUsingEncoding:NSUTF8StringEncoding]];
             [postbody appendData:[NSData dataWithContentsOfFile:value]];
         } else  {
             //normal form field
             //Content-Disposition: form-data; name="text1"
-            NSLog(@"    writing normal part for %@", key );
+            NSLog(@"    writing normal part for %@", partName );
             [postbody appendData:[[NSString stringWithFormat:@"\r\n--%@\r\n",boundary] dataUsingEncoding:NSUTF8StringEncoding]];
-            [postbody appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"%@\"\r\n\r\n", key] dataUsingEncoding:NSUTF8StringEncoding]];
+            [postbody appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"%@\"\r\n\r\n", partName] dataUsingEncoding:NSUTF8StringEncoding]];
             [postbody appendData:[value dataUsingEncoding:NSUTF8StringEncoding]];
         }
     }
