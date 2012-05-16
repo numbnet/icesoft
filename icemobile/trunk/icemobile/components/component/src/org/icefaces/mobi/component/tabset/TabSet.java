@@ -1,7 +1,23 @@
+/*
+ * Copyright 2004-2012 ICEsoft Technologies Canada Corp.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the
+ * License. You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an "AS
+ * IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ * express or implied. See the License for the specific language
+ * governing permissions and limitations under the License.
+ */
 package org.icefaces.mobi.component.tabset;
 
 import org.icefaces.mobi.api.ContentPaneController;
 
+import javax.annotation.PostConstruct;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.el.MethodExpression;
@@ -25,28 +41,38 @@ public class TabSet extends TabSetBase implements ContentPaneController {
      public static final StringBuilder TABSET_HIDDEN_PAGECLASS = new StringBuilder("mobi-tabpage-hidden");
 
      private boolean updatePropScriptTag = false;
+     private String selectedId;
+
+     public void setSelectedId(String selectedIn){
+         this.selectedId=selectedIn;
+     }
      public String getSelectedId(){
-         int childCount = getChildCount();
-         if (childCount== 0) {
-             return null;
-         }
-         int index = getTabIndex();
-         // String clientId = this.getClientId(FacesContext.getCurrentInstance());
-         if (index< 0 || index > childCount){
-             index = 0;
-         }
-         String id = getChildren().get(index).getId();
-         UIComponent selectedComp = this.findComponent(id);
-         FacesContext facesContext = FacesContext.getCurrentInstance();
-         String panelClientId = selectedComp.getClientId(facesContext);
-         //for tagHandler do I need to ensure all children are of type ContentPane here??
-         if (null!=panelClientId){
-            return panelClientId;
-         } else {
-            return null;
-         }
+        return this.selectedId;
+     }
+     @PostConstruct
+     public void init(){
+        this.findMySelectedId();
      }
 
+     public void findMySelectedId(){
+        int childCount = getChildCount();
+        if (childCount > 0 ){
+            int index = getTabIndex();
+            if (index< 0 || index > childCount){
+                index = 0;
+            }
+            String id = getChildren().get(index).getId();
+            UIComponent selectedComp = this.findComponent(id);
+            FacesContext facesContext = FacesContext.getCurrentInstance();
+            String panelClientId = selectedComp.getClientId(facesContext);
+            //for tagHandler do I need to ensure all children are of type ContentPane here??
+            if (null!=panelClientId){
+                this.selectedId =  panelClientId;
+                return;
+            }
+        }
+        this.selectedId = null;
+     }
       public void broadcast(FacesEvent event)
             throws AbortProcessingException {
         if (event instanceof ValueChangeEvent) {
