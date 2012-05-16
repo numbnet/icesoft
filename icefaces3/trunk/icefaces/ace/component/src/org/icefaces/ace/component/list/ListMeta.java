@@ -2,6 +2,7 @@ package org.icefaces.ace.component.list;
 
 import org.icefaces.ace.meta.annotation.*;
 import org.icefaces.ace.meta.baseMeta.UIDataMeta;
+import org.icefaces.render.MandatoryResourceComponent;
 
 import javax.el.MethodExpression;
 import javax.faces.application.ResourceDependencies;
@@ -24,6 +25,7 @@ import java.util.Set;
             "the ace:list tag defines child components that are iteratively rendered for each object." +
             "The components are associated with the iterative object via bindings of the 'var' property."
 )
+@MandatoryResourceComponent(tagName="list", value="org.icefaces.ace.component.list.ACEList")
 @ResourceDependencies({
     @ResourceDependency(library="icefaces.ace", name="util/combined.css"),
     @ResourceDependency(library = "icefaces.ace", name = "util/ace-jquery.js"),

@@ -3,6 +3,7 @@ package org.icefaces.ace.component.chart;
 import org.icefaces.ace.meta.annotation.Component;
 import org.icefaces.ace.model.chart.ChartSeries;
 import org.icefaces.ace.meta.annotation.*;
+import org.icefaces.render.MandatoryResourceComponent;
 
 import javax.el.MethodExpression;
 import javax.faces.application.ResourceDependencies;
@@ -21,6 +22,7 @@ import java.util.List;
         tlddoc =
         ""
 )
+@MandatoryResourceComponent(tagName="chart", value="org.icefaces.ace.component.chart.Chart")
 @ResourceDependencies({
         @ResourceDependency(library = "icefaces.ace", name = "util/ace-jquery.js"),
         @ResourceDependency(library = "icefaces.ace", name = "chart/ace-chart.js"),
