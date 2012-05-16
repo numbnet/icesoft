@@ -85,18 +85,10 @@ public class GMapDirection extends UIPanel{
     	String from = getFrom();
     	String to = getTo();
     	if((isLocateAddress() || !initilized)) {
-    		 if (from != null && from.length() > 2) {
-    			 query = "from: "+ from + " ";
-    		 }
-    		 if (to != null && to.length() > 2) {
-    			 query += "to: "+ to;
-    		 }
-    		 if (query.length() > 2 ) {
-    			 JavascriptContext.addJavascriptCall(context, 
-    					 "Ice.GoogleMap.loadDirection('"+ mapId +"', '"+ 
-    					 textualDivClientId +"', '"+ query +"');");
-    		 }
-    		 initilized = true;    		
+			JavascriptContext.addJavascriptCall(context, 
+    			"Ice.GoogleMap.loadDirection('"+ mapId +"', '"+ 
+    			textualDivClientId +"', '"+ from +"', '" + to +"');");
+    	initilized = true;    		
     	}
     }
 

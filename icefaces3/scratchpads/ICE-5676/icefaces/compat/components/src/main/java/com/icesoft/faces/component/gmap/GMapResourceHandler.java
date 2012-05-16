@@ -49,20 +49,22 @@ public class GMapResourceHandler extends ResourceHandlerWrapper {
         if (GMAP_JS.equals(resourceName) && gmapKey != null) {
             if (gmapJS == null) {
                 //change returned resource to point to a different URI
-                return gmapJS = recreateResource(resource, "http://maps.google.com/maps?file=api&v=2&key=" + gmapKey);
+                return gmapJS = recreateResource(resource, "http://maps.googleapis.com/maps/api/js?key=" + gmapKey + "&sensor=true");
             } else {
                 //return cached resource
                 return gmapJS;
             }
-        } else if (GMAP_MAIN_JS.equals(resourceName)) {
+        } 
+		else if (GMAP_MAIN_JS.equals(resourceName)) {
             if (mainJS == null) {
                 //change returned resource to point to a different URI
-                return mainJS = recreateResource(resource, "http://maps.gstatic.com/intl/en_ALL/mapfiles/400d/maps2.api/main.js");
+                return mainJS = recreateResource(resource, "http://maps.gstatic.com/intl/en_ALL/mapfiles/400d/maps3.api/main.js");
             } else {
                 //return cached resource
                 return mainJS;
             }
-        } else {
+        }
+		else {
             return resource;
         }
     }

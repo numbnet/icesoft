@@ -69,12 +69,12 @@ public class GMapMarker extends UIPanel{
     	            !currentLon.equals(oldLongitude)) {
     	        //to dynamic support first to remove if any
                 JavascriptContext.addJavascriptCall(context, 
-                        "Ice.GoogleMap.removeOverlay('"+ this.getParent()
+                        "Ice.GoogleMap.removeMarker('"+ this.getParent()
                         .getClientId(context)+"', '"+ getClientId(context)+"');"); 
                 JavascriptContext.addJavascriptCall(context, "Ice.GoogleMap." +
-                        "addOverlay('"+ this.getParent().getClientId(context)+
+                        "addMarker('"+ this.getParent().getClientId(context)+
                         "', '"+ getClientId(context)+"', " +
-                      "'new GMarker(new GLatLng("+ currentLat+","+ currentLon +"))');");                
+                      "'new google.maps.Marker({map:map, position:new google.maps.LatLng("+ currentLat+","+ currentLon +")})');");                
                 
     	    }
     	    oldLatitude = currentLat;
