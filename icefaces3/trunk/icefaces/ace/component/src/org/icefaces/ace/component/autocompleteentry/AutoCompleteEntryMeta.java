@@ -51,24 +51,30 @@ import java.util.List;
 	@ResourceDependency(library = "icefaces.ace", name = "util/ace-jquery.js"),
 	@ResourceDependency(library = "icefaces.ace", name = "autocompleteentry/autocompleteentry.js")
 })
+@ClientBehaviorHolder(events = {
+	@ClientEvent( name="submit",
+		javadoc="Fired any time the value of the text input field is submitted to the server, either by typing a symbol, clicking on an option or pressing enter.",
+		tlddoc="Fired any time the value of the text input field is submitted to the server, either by typing a symbol, clicking on an option or pressing enter",
+		defaultRender="@all", defaultExecute="@all" ) },
+	defaultEvent="submit" )
 public class AutoCompleteEntryMeta extends HtmlInputTextMeta {
 	
-    @Property(tlddoc = "", defaultValue="")
+    @Property(tlddoc = "Style class name of the container element.", defaultValue="")
     private int styleClass;
 	
-    @Property(tlddoc = "")
+    @Property(tlddoc = "Variable name to use for referencing each data object in the list when rendering via a facet.")
     private String listVar;
 	
-    @Property(tlddoc = "", defaultValue="10")
+    @Property(tlddoc = "The maximum number of possible options to show to the user.", defaultValue="10")
     private int rows;
 	
-    @Property(tlddoc = "", defaultValue="150")
+    @Property(tlddoc = "The width of the text input field, in pixels.", defaultValue="150")
     private int width;
 	
-    @Property(tlddoc = "")
+    @Property(tlddoc = "The SelectItem or arbitrary data object that is currently selected, if any.")
     private Object selectedItem;
 	
-    @Property(tlddoc = "")
+    @Property(tlddoc = "When rendering via a facet, this attribute specifies the list of data objects that contains all possible options.")
     private List listValue;
 	
     @Property(tlddoc = "", defaultValue="")
@@ -76,7 +82,8 @@ public class AutoCompleteEntryMeta extends HtmlInputTextMeta {
 	
 	@Property(tlddoc="Defines the method of filter comparison used, default is \"startsWith\". " +
             "Types available include: \"contains\", \"exact\", \"startsWith\", \"endsWith\" and \"none\". " +
-			"Typically, \"none\" will be used in cases where more complex, custom filtering is needed.", defaultValue="startsWith")
+			"Typically, \"none\" will be used in cases where more complex, custom filtering is needed or when " +
+			"option values need to be loaded lazily (e.g. from a data base).", defaultValue="startsWith")
 	private String filterMatchMode;
 	
 	@Property(expression = Expression.VALUE_EXPRESSION,
