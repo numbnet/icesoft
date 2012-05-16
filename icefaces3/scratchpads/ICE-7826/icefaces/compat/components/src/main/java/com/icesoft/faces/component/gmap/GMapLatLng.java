@@ -51,7 +51,7 @@ public class GMapLatLng extends UIPanel implements Serializable  {
     
     public void encodeBegin(FacesContext context) throws IOException {
     	setRendererType(null);
-        super.encodeBegin(context);    	
+        super.encodeBegin(context);
     	generateLatLngScript();
     }
     

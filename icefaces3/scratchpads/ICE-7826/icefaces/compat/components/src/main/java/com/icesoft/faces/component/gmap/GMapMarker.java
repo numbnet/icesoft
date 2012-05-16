@@ -38,6 +38,7 @@ public class GMapMarker extends UIPanel{
 	private Boolean draggable;
     private String longitude;
     private String latitude;
+	private String options;
     private transient String oldLongitude;
     private transient String oldLatitude;    
     private List point = new ArrayList();
@@ -68,69 +69,12 @@ public class GMapMarker extends UIPanel{
     	    if (!currentLat.equals(oldLatitude) || 
     	            !currentLon.equals(oldLongitude)) {
     	        //to dynamic support first to remove if any
-                JavascriptContext.addJavascriptCall(context, 
-                        "Ice.GoogleMap.removeOverlay('"+ this.getParent()
-                        .getClientId(context)+"', '"+ getClientId(context)+"');"); 
-                JavascriptContext.addJavascriptCall(context, "Ice.GoogleMap." +
-                        "addOverlay('"+ this.getParent().getClientId(context)+
-                        "', '"+ getClientId(context)+"', " +
-                      "'new GMarker(new GLatLng("+ currentLat+","+ currentLon +"))');");                
-                
+                JavascriptContext.addJavascriptCall(context, "Ice.GoogleMap.addMarker('" + this.getParent().getClientId(context) +
+                        "', '"+ currentLat + "', '" + currentLon + "', \"" + getOptions() + "\");");                
     	    }
     	    oldLatitude = currentLat;
     	    oldLongitude = currentLon;
     	}
-    }
-    
-    public void encodeChildren(FacesContext context) throws IOException {
-         if (getChildCount() == 0 )return;
-	     Iterator kids = getChildren().iterator();
-	     while (kids.hasNext()) {
-		    UIComponent kid = (UIComponent) kids.next();
-  
-		    	kid.encodeBegin(context);
-			    if (kid.getRendersChildren()) {
-			    	kid.encodeChildren(context);
-			    }
-			    kid.encodeEnd(context);
-			    if (kid instanceof GMapLatLng) {
-			    	String call = kid.getAttributes().get("latLngScript").toString();
-                    //if dynamically changed then remove the previous one
-			    	if (call.endsWith("changed") || !kid.isRendered() || !isRendered()) {
-			    	    call = call.substring(0, call.length() - "changed".length());
-			    	    JavascriptContext.addJavascriptCall(context, 
-			    	            "Ice.GoogleMap.removeOverlay('"+ this.getParent()
-			    	            .getClientId(context)+"', '"+ kid.getClientId(context)+"');");
-			    	} 
-			    	if (!kid.isRendered() || !isRendered()) continue;
-			    	JavascriptContext.addJavascriptCall(context, "Ice.GoogleMap." +
-			    			"addOverlay('"+ this.getParent().getClientId(context)+
-			    			"', '"+ kid.getClientId(context)+"', 'new GMarker("+ call +")');");
-			    } else if(kid instanceof GMapLatLngs) {
-			        //The list of GMapLatLngs can be dynamic so first remove previously 
-			        //added markers
-			        Iterator it = point.iterator();
-			        while (it.hasNext()) {
-			            JavascriptContext.addJavascriptCall(context, "Ice.GoogleMap." +
-			            		"removeOverlay('"+ this.getParent()
-			            		.getClientId(context)+"', '"+ it.next() +"');");		            
-			        }
-			        point.clear();
-			        if (!kid.isRendered() || !isRendered()) continue;
-			        //now add the fresh list of the markers
-			        StringTokenizer st = new StringTokenizer(kid.getAttributes()
-			                .get("latLngsScript").toString(), ";");
-			    	while(st.hasMoreTokens()) {
-			    		String[] scriptInfo =st.nextToken().split("kid-id");
-			    		String call = scriptInfo[0];
-			    		String latLngId = scriptInfo[1];
-			    		point.add(latLngId);
-			    		JavascriptContext.addJavascriptCall(context, "Ice.GoogleMap." +
-			    				"addOverlay('"+ this.getParent().getClientId(context)+
-			    				"', '"+ latLngId +"', 'new GMarker("+ call +")');");
-			    	}
-			    }
-	     }
     }
     
     
@@ -163,6 +107,14 @@ public class GMapMarker extends UIPanel{
         ValueBinding vb = getValueBinding("latitude");
         return vb != null ? (String) vb.getValue(getFacesContext()) : null;
 	}
+	
+	public String getOptions() {
+       if (options != null) {
+            return options;
+        }
+        ValueBinding vb = getValueBinding("options");
+        return vb != null ? (String) vb.getValue(getFacesContext()) : "title:'default'";
+	}
 
 	public void setLongitude(String longitude) {
 		this.longitude = longitude;
@@ -170,6 +122,10 @@ public class GMapMarker extends UIPanel{
 
 	public void setLatitude(String latitude) {
 		this.latitude = latitude;
+	}
+	
+	public void setOptions(String options) {
+		this.options = options;
 	}
 
     private transient Object values[];
@@ -179,18 +135,20 @@ public class GMapMarker extends UIPanel{
         latitude = (String)values[1];
         longitude = (String)values[2];
         draggable = (Boolean)values[3];        
-        point = (List) values[4];        
+        point = (List) values[4]; 
+		options = (String) values[5];
     }
 
     public Object saveState(FacesContext context) {
         if(values == null){
-            values = new Object[5];
+            values = new Object[6];
         }
         values[0] = super.saveState(context);
         values[1] = latitude;
         values[2] = longitude;
         values[3] = draggable;        
-        values[4] = point;        
+        values[4] = point;
+		values[5] = options;
         return values;
     }
     
