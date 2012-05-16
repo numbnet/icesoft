@@ -3,8 +3,6 @@ if (!window.ice['ace']) window.ice.ace = {};
 ice.ace.Autocompleters = {};
 
 ice.ace.Autocompleter = function(id, updateId, options, rowClass, selectedRowClass, partialSubmit, behaviors) {
-	rowClass = 'iceSelInpTxtRow';
-	selectedRowClass = 'iceSelInpTxtSelRow';
 	this.id = id;
 	ice.ace.Autocompleters[this.id] = this;
 	this.partialSubmit = partialSubmit;
