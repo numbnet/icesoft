@@ -23,8 +23,16 @@ import javax.annotation.PostConstruct;
 import javax.faces.component.UIComponent;
 import javax.faces.component.behavior.FacesBehavior;
 import javax.faces.context.FacesContext;
+import javax.faces.event.AbortProcessingException;
+import javax.el.MethodExpression;
+import javax.faces.event.FacesEvent;
+import javax.faces.event.PhaseId;
+import javax.faces.event.ValueChangeEvent;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Accordion extends AccordionBase implements ContentPaneController {
+     private static Logger logger = Logger.getLogger(Accordion.class.getName());
      public static final String ACCORDION_CLASS = "mobi-accordion";
      public static final String ACCORDION_RIGHT_POINTING_TRIANGLE = "&#9654;";
      public static final String ACCORDION_RIGHT_POINTING_POINTER= "&#9658;";
@@ -73,4 +81,22 @@ public class Accordion extends AccordionBase implements ContentPaneController {
         }
         this.selectedId = null;
      }
+       public void queueEvent(FacesEvent event) {
+        if (event.getComponent() instanceof Accordion) {
+            if (logger.isLoggable(Level.FINEST)){
+                logger.finest("invoked event for Accordion with selectedId= " + this.getSelectedId());
+            }   //no immediate for this component
+            event.setPhaseId(PhaseId.INVOKE_APPLICATION);
+        }
+        super.queueEvent(event);
+    }
+     public void broadcast(javax.faces.event.FacesEvent event) throws AbortProcessingException {
+        super.broadcast(event);
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        MethodExpression me = getPaneChangeListener();
+        if(me != null && event instanceof ValueChangeEvent) {
+            me.invoke(facesContext.getELContext(), new Object[] {event});
+        }
+     }
+
 }

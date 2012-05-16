@@ -62,7 +62,9 @@ public class AccordionMeta extends UIPanelMeta {
             tlddoc="fixeHeight can be used when autoHeight is false. Must be valid height for element.style.height")
     private String fixedHeight;
 
- 	@Property(tlddoc="Server side listener to invoke when active pane changes", expression= Expression.METHOD_EXPRESSION, methodExpressionArgument="org.icefaces.mobi.event.AccordionPaneChangeEvent")
+ 	@Property(tlddoc="Server side listener to invoke when active pane changes",
+                  expression= Expression.METHOD_EXPRESSION,
+                  methodExpressionArgument="javax.faces.event.ValueChangeEvent")
 	private MethodExpression paneChangeListener;
 
 
