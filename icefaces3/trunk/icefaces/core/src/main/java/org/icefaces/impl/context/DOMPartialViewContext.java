@@ -185,6 +185,10 @@ public class DOMPartialViewContext extends PartialViewContextWrapper {
                         }
                         if (("head".equalsIgnoreCase(tagName)) ||
                                 (JAVAX_FACES_VIEW_HEAD.equals(op.id))) {
+                            if (!EnvUtils.generateHeadUpdate(facesContext)) {
+                                continue;
+                            }
+
                             HashMap<String, String> attributes = new HashMap();
                             attributes.put("type", JAVAX_FACES_VIEW_HEAD);
                             partialWriter.startExtension(attributes);
