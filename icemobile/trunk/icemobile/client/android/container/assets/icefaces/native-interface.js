@@ -183,21 +183,25 @@ if (!window.ice.mobile) {
 
         namespace.upload = function(id)  {
             var form = document.getElementById(id);
-            context.serialized = ice.serialize(id);
+            context.serialized = ice.serialize(id, true);
             window.ICEutil.submitForm(form.action, context.serialized);
         }
 
-        namespace.addHidden = function(target, name, value)  {
-            var existing = document.getElementById(name);
+        namespace.addHidden = function(target, name, value, vtype)  {
+            var hiddenID = name + "-hid";
+            var existing = document.getElementById(hiddenID);
             if (existing)  {
                 existing.parentNode.removeChild(existing);
             }
             var targetElm = document.getElementById(target);
             var hidden = document.createElement("input");
             hidden.setAttribute("type", "hidden");
-            hidden.setAttribute("id", name);
+            hidden.setAttribute("id", hiddenID);
             hidden.setAttribute("name", name);
             hidden.setAttribute("value", value);
+            if (vtype)  {
+                hidden.setAttribute("data-type", vtype);
+            }
             targetElm.parentNode.insertBefore(hidden, targetElm);
         }
 
@@ -215,7 +219,7 @@ if (!window.ice.mobile) {
             return context.serialized;
         }
 
-        namespace.serialize = function(formId)  {
+        namespace.serialize = function(formId, typed)  {
             var form = document.getElementById(formId);
             var els = form.elements;
             var len = els.length;
@@ -231,6 +235,15 @@ if (!window.ice.mobile) {
             for (var i = 0; i < len; i++) {
                 var el = els[i];
                 if (!el.disabled) {
+                    var prefix = "";
+                    if (typed)  {
+                        var vtype = el.getAttribute("data-type");
+                        if (vtype)  {
+                            prefix = vtype + "-";
+                        } else {
+                            prefix = el.type + "-";
+                        }
+                    }
                     switch (el.type) {
                         case 'submit':
                         case 'button':
@@ -239,28 +252,28 @@ if (!window.ice.mobile) {
                         case 'password':
                         case 'hidden':
                         case 'textarea':
-                            addField(el.name, el.value);
+                            addField(prefix + el.name, el.value);
                             break;
                         case 'select-one':
                             if (el.selectedIndex >= 0) {
-                                addField(el.name, el.options[el.selectedIndex].value);
+                                addField(prefix + el.name, el.options[el.selectedIndex].value);
                             }
                             break;
                         case 'select-multiple':
                             for (var j = 0; j < el.options.length; j++) {
                                 if (el.options[j].selected) {
-                                    addField(el.name, el.options[j].value);
+                                    addField(prefix + el.name, el.options[j].value);
                                 }
                             }
                             break;
                         case 'checkbox':
                         case 'radio':
                             if (el.checked) {
-                                addField(el.name, el.value);
+                                addField(prefix + el.name, el.value);
                             }
                             break;
                         default:
-                            addField(el.name, el.value);
+                            addField(prefix + el.name, el.value);
                     }
                 }
             }

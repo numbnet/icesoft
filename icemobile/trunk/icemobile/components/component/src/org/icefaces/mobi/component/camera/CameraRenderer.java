@@ -81,15 +81,7 @@ public class CameraRenderer extends Renderer {
                 facesContext.getExternalContext().getRequest();
         boolean isValid=false;
 
-        //if it's a container upload then the name of part if <clientId>-file
-        //if desktop browser it's just the clientId
         String partUploadName = clientId;
-        if (EnvUtils.isEnhancedBrowser(facesContext)){
-           partUploadName+="-file";
-        }
-        if (EnvUtils.isAuxUploadBrowser(facesContext)) {
-           partUploadName+="-file";
-        }
         Part part = null;
         try {
             part = request.getPart(partUploadName);

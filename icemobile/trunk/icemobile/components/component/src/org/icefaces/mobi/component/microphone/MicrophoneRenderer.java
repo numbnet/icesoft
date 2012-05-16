@@ -71,12 +71,6 @@ public class MicrophoneRenderer extends Renderer {
         boolean isValid=false;
 
         String partUploadName = clientId;
-        if (EnvUtils.isEnhancedBrowser(facesContext)){
-           partUploadName+="-file";
-        }
-        if (EnvUtils.isAuxUploadBrowser(facesContext)) {
-           partUploadName+="-file";
-        }
         Part part = null;
         try {
             part = request.getPart(partUploadName);
