@@ -149,6 +149,24 @@
     </tag>
 
     <tag>
+        <tag-name>redirect</tag-name>
+        <description>
+            This tag can be used to trigger a redirect by push.
+        </description>
+        <component>
+            <component-type>org.icefaces.impl.component.Redirect</component-type>
+        </component>
+        <attribute>
+            <description>
+                The absolute or relative location to redirect to.
+            </description>
+            <name>href</name>
+            <required>true</required>
+            <type>java.lang.String</type>
+        </attribute>
+    </tag>
+
+    <tag>
         <tag-name>singleSubmit</tag-name>
         <description>
             This tag allows form submission from just the component generating the event and then update the page with
