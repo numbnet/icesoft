@@ -136,8 +136,10 @@ if (!window.ice['ace']) {
     };
 
     OSDetect.init();
-
-   $.browser['os'] = OSDetect.OS;
+    $.browser.chrome = /chrome/.test(navigator.userAgent.toLowerCase());
+    // Chrome has 'safari' in its user string so we need to exclude it explicitly
+    $.browser.safari = /safari/.test(navigator.userAgent.toLowerCase()) && !/chrome/.test(navigator.userAgent.toLowerCase());
+    $.browser['os'] = OSDetect.OS;
 })(ice.ace.jq);
 
 
@@ -726,7 +728,8 @@ ice.ace.DataTable.prototype.resizeScrolling = function() {
 
         // Get Duplicate Header/Footer Sizing
         var dupeHeadColumn, dupeHeadColumnWidths = [], realHeadColumn, realFootColumn, bodyColumn,
-                webkit = (ice.ace.jq.browser.webkit),
+                safari = ice.ace.jq.browser.safari,
+                chrome = ice.ace.jq.browser.chrome,
                 mac = ice.ace.jq.browser.os == 'mac',
                 ie7 = ice.ace.jq.browser.msie && ice.ace.jq.browser.version == 7,
                 ie8 = ice.ace.jq.browser.msie && ice.ace.jq.browser.version == 8,
@@ -777,11 +780,11 @@ ice.ace.DataTable.prototype.resizeScrolling = function() {
             // Work around webkit bug described here: https://bugs.webkit.org/show_bug.cgi?id=13339
             var realHeadColumnWidth = dupeHeadColumnWidths[i];
 
-            var bodyColumnWidth = webkit ? dupeHeadColumnWidths[i] + parseInt(bodyColumn.parent().css('padding-right')) +
+            var bodyColumnWidth = (safari) ? dupeHeadColumnWidths[i] + parseInt(bodyColumn.parent().css('padding-right')) +
                     parseInt(bodyColumn.parent().css('padding-left')) + 1
                     : dupeHeadColumnWidths[i];
 
-            var realFootColumnWidth = webkit ? dupeHeadColumnWidths[i] + parseInt(realFootColumn.parent().css('padding-right')) +
+            var realFootColumnWidth = (safari) ? dupeHeadColumnWidths[i] + parseInt(realFootColumn.parent().css('padding-right')) +
                     parseInt(realFootColumn.parent().css('padding-left'))
                     : dupeHeadColumnWidths[i];
 
@@ -794,7 +797,7 @@ ice.ace.DataTable.prototype.resizeScrolling = function() {
 
             // Set Duplicate Header Sizing to Body Columns
             // Equiv of max width
-            if (!webkit) bodyColumnWidth = i == 0 ? bodyColumnWidth - 1 : bodyColumnWidth;
+            if (!(safari || chrome)) bodyColumnWidth = i == 0 ? bodyColumnWidth - 1 : bodyColumnWidth;
             if (!ie7) bodyColumn.parent().width(bodyColumnWidth);
             // Equiv of min width
             if (!ie7) {
@@ -814,7 +817,7 @@ ice.ace.DataTable.prototype.resizeScrolling = function() {
         // Fix body scrollbar overlapping content
         // Instance check to prevent IE7 dynamic scrolling change errors
         if (vScrollShown) {
-            if (((webkit && !mac) || (ie9 || ie8)) && !dupeCausesScrollChange) {
+            if ((((safari || chrome) && !mac) || (ie9 || ie8)) && !dupeCausesScrollChange) {
                 headerTable.parent().css('margin-right', '17px');
                 footerTable.parent().css('margin-right', '17px');
             }
@@ -824,7 +827,7 @@ ice.ace.DataTable.prototype.resizeScrolling = function() {
             } else if (dupeCausesScrollChange) {
                 /* Correct scrollbars added by Win Chrome when unnecessary. */
                 var table;
-                if (webkit && !mac) {
+                if ((safari || chrome) && !mac) {
                     table = bodyTable.parent().css('overflow', 'visible');
                     setTimeout(function() {
                         if (table.clientHeight < table.scrollHeight || table.clientWidth < table.scrollWidth)
