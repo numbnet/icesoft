@@ -3,6 +3,7 @@
 }
 
 .if-list-nctrls {
+    display: block;
     margin: 3px;
     padding: 0.3em;
     padding-left: 1em;
@@ -13,6 +14,14 @@
 .if-list-dl {
     margin: 3px;
     padding: 0.3em .7em .5em .7em;
+    position: relative;
+    min-height: 152px;
+    white-space: nowrap;
+}
+
+/* Break nowrap inheritance */
+.if-list-dl > * > * {
+    white-space: normal;
 }
 
 .if-list-nctrl-head {
@@ -49,4 +58,20 @@
 
 .if-list-dl .if-list {
     width:100%;
+}
+
+.if-list-dl .if-list-dl-2 {
+    left:0.1em;
+}
+
+.if-list-dl .if-list-nctrls {
+    display: inline-block;
+    padding: 1em 0.3em 1.5em;
+    margin-left: -12px;
+    margin-top: 0px;
+}
+
+.if-list-dl .if-list-nctrls .if-list-ctrl-spcr {
+    display: block;
+    padding: 0.5em 0;
 }

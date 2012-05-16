@@ -35,7 +35,7 @@ public class ListControlRenderer extends CoreRenderer {
         ListControl control = (ListControl)component;
 
         String style = control.getStyle();
-        String position = control.getPosition();
+        DualListPosition position = control.getPosition();
         String styleClass = control.getStyleClass();
         UIComponent facet = control.getFacet("header");
         dualListMode = hasTwoListChildren(control);
@@ -55,7 +55,7 @@ public class ListControlRenderer extends CoreRenderer {
 
         encodeHeader(context, writer, control, facet);
 
-        if (!dualListMode || position.equals("top") || position.equals("both")) {
+        if (!dualListMode || position.equals(DualListPosition.TOP) || position.equals(DualListPosition.BOTH) || position.equals(DualListPosition.ALL)) {
             if (dualListMode) {
                 writer.startElement(HTML.DIV_ELEM, null);
                 writer.writeAttribute(HTML.CLASS_ATTR, containerStyleClass+"-content", null);
@@ -166,17 +166,42 @@ public class ListControlRenderer extends CoreRenderer {
     }
 
     private void renderDualListLayout(FacesContext context, ResponseWriter writer, ListControl control, ACEList one, ACEList two) throws IOException {
+        DualListPosition position = control.getPosition();
+        Boolean middleMode = position.equals(DualListPosition.MIDDLE) || position.equals(DualListPosition.ALL);
+
         writer.startElement(HTML.DIV_ELEM, null);
         writer.writeAttribute(HTML.CLASS_ATTR, dualListStyleClass, null);
 
         writer.startElement(HTML.SPAN_ELEM, null);
-        writer.writeAttribute(HTML.CLASS_ATTR, firstStyleClass, null);
+        writer.writeAttribute(HTML.CLASS_ATTR,  firstStyleClass, null);
+        if (middleMode) {
+            writer.startElement(HTML.DIV_ELEM, null);
+            writer.writeAttribute(HTML.STYLE_ATTR, "margin-right:1.1em;", null);
+        }
+
         one.encodeAll(context);
+
+        if (middleMode)
+            writer.endElement(HTML.DIV_ELEM);
         writer.endElement(HTML.SPAN_ELEM);
+
+        if (middleMode) {
+            writer.startElement(HTML.SPAN_ELEM, null);
+            writer.writeAttribute(HTML.CLASS_ATTR, containerStyleClass+"-content ui-corner-all", null);
+            encodeControls(context, writer, control);
+            writer.endElement(HTML.SPAN_ELEM);
+        }
 
         writer.startElement(HTML.SPAN_ELEM, null);
         writer.writeAttribute(HTML.CLASS_ATTR, secondStyleClass, null);
+        if (middleMode) {
+            writer.startElement(HTML.DIV_ELEM, null);
+            writer.writeAttribute(HTML.STYLE_ATTR, "margin-right:1.4em;", null);
+        }
         two.encodeAll(context);
+
+        if (middleMode)
+            writer.endElement(HTML.DIV_ELEM);
         writer.endElement(HTML.SPAN_ELEM);
 
         writer.endElement(HTML.DIV_ELEM);
@@ -187,9 +212,9 @@ public class ListControlRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
         UIComponent facet = component.getFacet("footer");
         ListControl control = (ListControl) component;
-        String position = control.getPosition();
+        DualListPosition position = control.getPosition();
 
-        if (dualListMode && position.equals("bottom") || position.equals("both")) {
+        if (dualListMode && position.equals(DualListPosition.BOTTOM) || position.equals(DualListPosition.BOTH) || position.equals(DualListPosition.ALL)) {
             if (dualListMode) {
                 writer.startElement(HTML.DIV_ELEM, null);
                 writer.writeAttribute(HTML.CLASS_ATTR, containerStyleClass+"-content", null);

@@ -26,7 +26,7 @@ ice.ace.ListControl.prototype.setupControls = function(){
     if (this.element.hasClass('if-list-nctrls'))
         selector = '> .if-list-ctrl-spcr > .if-list-nctrl';
     else
-        selector = '.if-list-nctrls:first .if-list-nctrl';
+        selector = '> .if-list-nctrls .if-list-nctrl, > .if-list-dl > .if-list-nctrls .if-list-nctrl';
 
     this.element.find(selector)
         .off('mouseenter').on('mouseenter', function(e) {
@@ -87,9 +87,9 @@ ice.ace.ListControl.prototype.getSourceList = function(dir, all) {
     if (all && this.element.hasClass('if-list-dl-cnt')) {
         var list;
         if (dir.substr(dir.length-1) == 'r')
-            list = this.element.find('.if-list-dl-1:first > .if-list');
+            list = this.element.find('.if-list-dl-1:first .if-list:first');
         else
-            list = this.element.find('.if-list-dl-2:first > .if-list');
+            list = this.element.find('.if-list-dl-2:first .if-list:first');
 
         return ice.ace.Lists[list.attr('id')];
     }
