@@ -224,6 +224,9 @@ public class TextEntryRenderer extends InputRenderer {
         if(!themeForms()) {
             jb.entry("theme", false);
         }
+        StringBuilder sb = new StringBuilder();
+        sb.append(indicatorPosition).append(labelPosition);
+        jb.entry("hashCode", sb.toString().hashCode());
 
         jb.endMap().endFunction();
         writer.write(jb.toString());

@@ -57,15 +57,18 @@ public class TextEntryBean extends ComponentExampleImpl<TextEntryBean> implement
     
     private String firstName;
     private String lastName;
+    private String address1;
+    private String address2;
     private String city;
     private String province;
-    private String provinceCode;
     private String country;
+    private String indicatorPosition = "right";
+    private String labelPosition = "inField";
+
     public TextEntryBean()
     {
         super(TextEntryBean.class);
     }
-    
 
     public String getFirstName() {
         return firstName;
@@ -99,19 +102,43 @@ public class TextEntryBean extends ComponentExampleImpl<TextEntryBean> implement
         this.lastName = lastName;
     }
 
-    public String getProvinceCode() {
-        return provinceCode;
-    }
-
-    public void setProvinceCode(String provinceCode) {
-        this.provinceCode = provinceCode;
-    }
-
     public String getCountry() {
         return country;
     }
 
     public void setCountry(String country) {
         this.country = country;
+    }
+
+    public String getIndicatorPosition() {
+        return indicatorPosition;
+    }
+
+    public void setIndicatorPosition(String indicatorPosition) {
+        this.indicatorPosition = indicatorPosition;
+    }
+
+    public String getLabelPosition() {
+        return labelPosition;
+    }
+
+    public void setLabelPosition(String labelPosition) {
+        this.labelPosition = labelPosition;
+    }
+
+    public String getAddress1() {
+        return address1;
+    }
+
+    public void setAddress1(String address1) {
+        this.address1 = address1;
+    }
+
+    public String getAddress2() {
+        return address2;
+    }
+
+    public void setAddress2(String address2) {
+        this.address2 = address2;
     }
 }
