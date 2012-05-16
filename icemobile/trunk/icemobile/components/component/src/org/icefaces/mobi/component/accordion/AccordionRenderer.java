@@ -1,3 +1,19 @@
+/*
+ * Copyright 2004-2012 ICEsoft Technologies Canada Corp.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the
+ * License. You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an "AS
+ * IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ * express or implied. See the License for the specific language
+ * governing permissions and limitations under the License.
+ */
+
 package org.icefaces.mobi.component.accordion;
 
 import org.icefaces.mobi.renderkit.BaseLayoutRenderer;
@@ -42,6 +58,7 @@ public class AccordionRenderer extends BaseLayoutRenderer {
         ResponseWriter writer = facesContext.getResponseWriter();
         String clientId = uiComponent.getClientId(facesContext);
         Accordion accordion = (Accordion) uiComponent;
+        accordion.findMySelectedId();
         writeJavascriptFile(facesContext, uiComponent, JS_NAME, JS_MIN_NAME, JS_LIBRARY);
         /* write out root tag.  For current incarnation html5 semantic markup is ignored */
         writer.startElement(HTML.DIV_ELEM, uiComponent);
