@@ -84,25 +84,25 @@
                 <ace:column id="exp">
                     <ace:expansionToggler />
                 </ace:column>
-                <ace:column headerText="ID" sortBy="#{car.id}">
+                <ace:column id="id" headerText="ID" sortBy="#{car.id}">
                     <h:outputText id="idCell" value="#{car.id}"/>
                 </ace:column>
-                <ace:column headerText="Name" sortBy="#{car.name}">
+                <ace:column id="name" headerText="Name" sortBy="#{car.name}">
                     <h:outputText id="nameCell" value="#{car.name}"/>
                 </ace:column>
-                <ace:column headerText="Chassis" sortBy="#{car.chassis}" groupBy="#{car.chassis}" sortAscending="true">
+                <ace:column id="chassis" headerText="Chassis" sortBy="#{car.chassis}" groupBy="#{car.chassis}" sortAscending="true">
                     <h:outputText id="chassisCell" value="#{car.chassis}"/>
                 </ace:column>
-                <ace:column headerText="Weight (lbs)" sortBy="#{car.weight}" filterBy="#{car.weight}">
+                <ace:column id="weight" headerText="Weight (lbs)" sortBy="#{car.weight}" filterBy="#{car.weight}">
                     <h:outputText id="weightCell" value="#{car.weight}"/>
                 </ace:column>
-                <ace:column headerText="Accel" sortBy="#{car.acceleration}" groupBy="#{car.acceleration}">
+                <ace:column id="accel" headerText="Accel" sortBy="#{car.acceleration}" groupBy="#{car.acceleration}">
                     <h:outputText id="accelCell" value="#{car.acceleration}"/>
                 </ace:column>
-                <ace:column headerText="MPG" sortBy="#{car.mpg}">
+                <ace:column id="mpg" headerText="MPG" sortBy="#{car.mpg}">
                     <h:outputText id="mpgCell" value="#{car.mpg}"/>
                 </ace:column>
-                <ace:column headerText="Cost" sortBy="#{car.cost}">
+                <ace:column id="cost" headerText="Cost" sortBy="#{car.cost}">
                     <h:outputText id="costCell" value="#{car.cost}">
                         <f:convertNumber type="currency"
                                          currencySymbol="$"
