@@ -24,6 +24,7 @@ import javax.faces.component.UIComponent;
 
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+import javax.faces.event.ValueChangeEvent;
 import java.io.IOException;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -49,7 +50,9 @@ public class AccordionRenderer extends BaseLayoutRenderer {
              int index = findIndex(context, accordion, oldIndex, indexStr);
              if (oldIndex!=index){
                  accordion.setActiveIndex(index);
-                 ///will eventually queue the PanechangeEvent here
+                 /* old index will be old index that server knew about */
+                 component.queueEvent(new ValueChangeEvent(component, oldIndex, index)) ;
+                 ///will eventually queue the ValuechangeEvent here
              }
          }
      }
