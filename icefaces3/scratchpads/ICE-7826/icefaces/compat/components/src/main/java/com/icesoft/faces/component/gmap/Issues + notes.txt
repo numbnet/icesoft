@@ -1,0 +1,22 @@
+For my own organization, or anyone else working on this.
+API ref: https://developers.google.com/maps/documentation/javascript/reference
+Issues:
+Needs to be re-updated to work smoothly with repeated updates. (eg, updating the bean when markers are bound to values from it produces multiple markers)
+
+Services need to have an actual return. Wasn't sure of the best method for this. Currently just outputting values in an alert of proof of functionality.
+
+Update 'style' attribute. Still left over from ice:gmap and unsure as to whether it's functional or merely confusing. Either case, should be redone.
+
+Currently using eval() function. Bad press associated with it (cost/security) Workaround for it would probably be a good idea.
+
+Housecleaning. Still a lot of garbage code from the old version laying around, and the descriptions need to be updated.
+
+Possible extensions:
+Major:
+Google API features not yet implemented: MapTypes, Layers, Streetview, Events(?), Libraries. Events is top priority.
+Implement a server-side geocode method to convert addresses to LatLngs for classes that only take points? (Ease of use + and restrictions down, makes program heavier.)
+Minor:
+Info Window for Markers?
+Add a backdoor to marker creation in the services tag?
+Overlay View
+Ground Overlay

@@ -23,16 +23,18 @@ import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
 
 import com.icesoft.faces.context.effects.JavascriptContext;
-
+//CURRENTLY SET UP AS GMapServices
 public class GMapGeoXml extends UIPanel{
 	public static final String COMPONENT_TYPE = "com.icesoft.faces.GMapGeoXml";
     public static final String COMPONENT_FAMILY = "com.icesoft.faces.GMapGeoXml";
-	private String url;
-	
+	private String options;
+	private String name;
+	private String points;
+    
 	public GMapGeoXml() {
 		setRendererType(null);
 	}
-
+	 
     public String getFamily() {
         return COMPONENT_FAMILY;
     }
@@ -41,45 +43,81 @@ public class GMapGeoXml extends UIPanel{
         return COMPONENT_TYPE;
     }
     
-    public void encodeBegin(FacesContext context) throws IOException {
-        setRendererType(null);
-        super.encodeBegin(context);        
-        if (!isRendered()) {
-            JavascriptContext.addJavascriptCall(context, "Ice.GoogleMap.removeOverlay('"+ this.getParent().getClientId(context)+"', '"+ this.getClientId(context) +"');");
-        } else {
-            JavascriptContext.addJavascriptCall(context, "Ice.GoogleMap.addOverlay('"+ this.getParent().getClientId(context)+"', '"+ this.getClientId(context) +"', 'new GGeoXml(\""+ getUrl() +"\")');");
-        }
+    public boolean getRendersChildren() {
+    	return true;
     }
-
-	public String getUrl() {
-       if (url != null) {
-            return url;
+	
+    public void encodeBegin(FacesContext context) throws IOException {
+    	setRendererType(null);
+        super.encodeBegin(context);    
+		if (getPoints() != null && getName() != null){
+			JavascriptContext.addJavascriptCall(context, "Ice.GoogleMap.gService('" + this.getParent().getClientId(context) +
+                "', '"+ getName() + "', '" + getPoints() + "', \"" + getOptions() + "\");");
+		}
+    }
+	
+	public String getOptions() {
+       if (options != null) {
+            return options;
         }
-        ValueBinding vb = getValueBinding("url");
+        ValueBinding vb = getValueBinding("options");
+        return vb != null ? (String) vb.getValue(getFacesContext()) : null;
+	}
+	
+	public void setOptions(String options) {
+		this.options = options;
+	}
+	
+	public String getName() {
+       if (name != null) {
+            return name;
+        }
+        ValueBinding vb = getValueBinding("name");
         return vb != null ? (String) vb.getValue(getFacesContext()) : null;
 	}
 
-	public void setUrl(String url) {
-		this.url = url;
+	public void setPoints(String points) {
+		this.points = points;
 	}
+
+	public String getPoints() {
+       if (points != null) {
+            return points;
+        }
+        ValueBinding vb = getValueBinding("points");
+        return vb != null ? (String) vb.getValue(getFacesContext()) : null;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}	
+
 
     private transient Object values[];
     public void restoreState(FacesContext context, Object state) {
         values = (Object[])state;
-        super.restoreState(context, values[0]);
-        url = (String)values[1];
+        super.restoreState(context, values[0]); 
+		options = (String) values[1];
+		name = (String) values[2];
+		points = (String) values[3];
     }
 
     public Object saveState(FacesContext context) {
-
         if(values == null){
-            values = new Object[2];
+            values = new Object[4];
         }
-        values[0] = super.saveState(context);
-        values[1] = url;
+        values[0] = super.saveState(context);       
+		values[1] = options;
+		values[2] = name;
+		values[3] = points;
         return values;
     }
-        
-        
     
+    public boolean isRendered() {
+        boolean rendered = super.isRendered();
+        if (!rendered) {
+            FacesContext context = getFacesContext();  
+        }
+        return rendered;
+    }
 }

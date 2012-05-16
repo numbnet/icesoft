@@ -2812,53 +2812,23 @@ Ice.GoogleMap = {
         gmapWrapper.overlays = newOvrLyArray;
     },
 
-    locateAddress: function(clientId, address) {
-        var gLatLng = function(point) {
-            if (!point) {
-                alert(address + ' not found');
-            } else {
-                var gmapWrapper = Ice.GoogleMap.getGMapWrapper(clientId);
-                if (gmapWrapper) {
-                    gmapWrapper.getRealGMap().setCenter(point, 13);
-                    var marker = new GMarker(point);
-                    gmapWrapper.getRealGMap().addOverlay(marker);
-                    marker.openInfoWindowHtml(address);
-                    gmapWrapper.geoMarker = marker;
-                    gmapWrapper.geoMarkerAddress = address;
-                    Ice.GoogleMap.submitEvent(clientId, gmapWrapper.getRealGMap(), "geocoder");
-                } else {
-                    //FOR IS DEFINED BUT MAP IS NOT FOUND,
-                    //LOGGING CAN BE DONE HERE
-                }
-            } //outer if
-        }; //function ends here
-
-        var geocoder = Ice.GoogleMap.getGeocoder(clientId);
-        geocoder.getLatLng(address, gLatLng);
-    },
+     locateAddress:function (clientId, address) {
+		var map = Ice.GoogleMap.getGMapWrapper(clientId).getRealGMap();
+        var geocoder = new google.maps.Geocoder();
+		geocoder.geocode( {'address': address}, function(results, status) {
+			if (status == google.maps.GeocoderStatus.OK) {
+				map.setCenter(results[0].geometry.location);
+			} else {
+				alert("Geocode was not successful for the following reason: " + status);
+			}
+		}); 
+	},
 
     create:function (ele) {
-        var gmapWrapper = new GMapWrapper(ele, new GMap2(document.getElementById(ele)));
-        var hiddenField = document.getElementById(ele + 'hdn');
+        var gmapWrapper = new GMapWrapper(ele, new google.maps.Map(document.getElementById(ele),{mapTypeId: google.maps.MapTypeId.ROADMAP}));
+		var hiddenField = document.getElementById(ele + 'hdn');
         var mapTypedRegistered = false;
-
-        GEvent.addListener(gmapWrapper.getRealGMap(), "zoomend", function(oldLevel, newLevel) {
-            if (oldLevel != null)
-                Ice.GoogleMap.submitEvent(ele, gmapWrapper.getRealGMap(), "zoomend", newLevel);
-        });
-
-        GEvent.addListener(gmapWrapper.getRealGMap(), "dragend", function() {
-            Ice.GoogleMap.submitEvent(ele, gmapWrapper.getRealGMap(), "dragend");
-        });
-
-        GEvent.addListener(gmapWrapper.getRealGMap(), "maptypechanged", function() {
-            if (mapTypedRegistered) {
-                var type = $(ele + 'type');
-                type.value = gmapWrapper.getRealGMap().getCurrentMapType().getName();
-                Ice.GoogleMap.submitEvent(ele, gmapWrapper.getRealGMap(), "maptypechanged");
-            }
-            mapTypedRegistered = true;
-        });
+		
         initializing = false;
         GMapRepository[ele] = gmapWrapper;
         return gmapWrapper;
@@ -2911,7 +2881,7 @@ Ice.GoogleMap = {
         }
         return gmapWrapper;
     },
-
+	
     addControl:function(ele, controlName) {
         var gmapWrapper = Ice.GoogleMap.getGMapWrapper(ele);
         var control = gmapWrapper.controls[controlName];
@@ -2946,7 +2916,148 @@ Ice.GoogleMap = {
         }
         GMapRepository = newRepository;
     },
-
+	
+	addMarker:function(ele, Lat, Lon, options) {
+		var map = Ice.GoogleMap.getGMapWrapper(ele).getRealGMap();
+		var markerOps = "({position: new google.maps.LatLng(" + Lat + "," + Lon + "), " + options + "});";
+		var marker = new google.maps.Marker(eval(markerOps));
+		marker.setMap(map);
+	},
+	
+	addOptions:function(ele, options){
+		var map = Ice.GoogleMap.getGMapWrapper(ele).getRealGMap();
+		var fullOps="({" + options + "})";
+		map.setOptions(eval(fullOps));
+	},
+	
+	gService:function(ele, name, locationList, options)
+	{
+		var map = Ice.GoogleMap.getGMapWrapper(ele).getRealGMap();
+		var service;
+		var points = locationList.split(":");
+		switch (name) {
+                case "Directions"||"DirectionsService":
+				//Required options: travelMode, 2 points/addresses (First=origin, second=dest, 3+=waypoints
+                    service=new google.maps.DirectionsService();
+					var origin = (points[0].charAt(0) == "(") ? "origin: new google.maps.LatLng" + points[0] + ", " : "origin: \"" + points[0] + "\", ";
+					var destination = (points[1].charAt(0) == "(") ? "destination: new google.maps.LatLng" + points[1] + ", " : "destination: \"" + points[1] + "\", ";
+					if(points.length >= 3){
+						var waypoints = [];
+						for (var i = 2; i < points.length; i++){
+							var point = (points[i].charAt(0) == "(") ? "{location:new google.maps.LatLng" + points[i] + "}": "{location:\"" + points[i] + "\"}";
+							waypoints[i-2] = point;
+						}
+						var waypointsString = "waypoints: [" + waypoints + "], ";
+						var request = "({" + origin + destination + waypointsString + options + "})";
+					}else{ 
+					var request = "({" + origin + destination + options + "})";
+					}
+					function directionsCallback(response, status) {
+					if (status != google.maps.DirectionsStatus.OK) {
+						alert('Error was: ' + status);
+						} else {
+						var renderer = new google.maps.DirectionsRenderer();
+						renderer.setMap(map);
+						renderer.setDirections(response);
+						}
+					}
+					service.route(eval(request), directionsCallback);
+                    break;
+                case "Elevation"||"ElevationService":
+                    //Required options: travelMode, 2 points/addresses
+					service=new google.maps.ElevationService();
+					var waypoints = [];
+						for (var i = 0; i < points.length; i++){
+							var point = "new google.maps.LatLng" + points[i];
+							waypoints[i] = point;
+						}
+					var waypointsString = "locations: [" + waypoints + "]";
+					var request = "({"+ waypointsString +"})";
+					alert(request);
+					function elevationCallback(response, status) {
+					if (status != google.maps.ElevationStatus.OK) {
+						alert('Error was: ' + status);
+						} else {
+						for (var i = 0; i < response.length; i++){
+							alert(response[i].elevation);
+						}
+						}
+					}
+					service.getElevationForLocations(eval(request), elevationCallback);
+                    break;
+                case "MaxZoom"||"MaxZoomService":
+                    service=new google.maps.MaxZoomService();
+					var point = eval("new google.maps.LatLng" + points[0]);
+					function maxZoomCallback(response){
+						if (response.status != google.maps.MaxZoomStatus.OK) {
+							alert('Error occurred in contacting Google servers');
+							} else {
+							alert("Max zoom at point is: " + response.zoom);
+							}
+						}
+					service.getMaxZoomAtLatLng(point, maxZoomCallback);
+                    break;
+				case "Distance"||"DistanceMatrix"||"DistanceMatrixService":
+                    //Required options: travelMode, 2 points/addresses
+					service=new google.maps.DistanceMatrixService();
+					var origin = (points[0].charAt(0) == "(") ? "origins: [new google.maps.LatLng" + points[0] + "], " : "origins: [\"" + points[0] + "\"], ";
+					var destination = (points[1].charAt(0) == "(") ? "destinations: [new google.maps.LatLng" + points[1] + "], " : "destinations: [\"" + points[1] + "\"], ";
+					var request = "({" + origin + destination + options + "})";
+					function distanceCallback(response, status) {
+					if (status != google.maps.DistanceMatrixStatus.OK) {
+						alert('Error was: ' + status);
+						} else {
+						alert("Distance is:" + response.rows[0].elements[0].distance.text + " in " + response.rows[0].elements[0].duration.text);
+						}
+					}
+					service.getDistanceMatrix(eval(request), distanceCallback);
+                    break;
+				default:
+					console.log("Not a valid service name");
+					return;
+                }//switch	
+	},
+	
+	gOverlay:function(ele, shape, locationList, options) {
+        var map = Ice.GoogleMap.getGMapWrapper(ele).getRealGMap();
+		var overlay;
+		var points = locationList.split(":");
+		for (var i=0; i<points.length ; i++){
+			points[i] = "new google.maps.LatLng" + points[i] + "";
+		}
+		switch (shape) {
+                case "Line"||"line"||"Polyline":
+					var overlayOptions = (options != null && options.length>0) ? "({map:map, path:[" + points + "], " + options + "})" : "({map:map, path:[" + points + "]})";
+					overlay = new google.maps.Polyline(eval(overlayOptions));
+                    break;
+                case "Polygon"||"polygon":
+					var overlayOptions = (options != null && options.length>0) ? "({map:map, paths:[" + points + "], " + options + "})" : "({map:map, paths:[" + points + "]})";
+					overlay = new google.maps.Polygon(eval(overlayOptions));
+                    break;
+				case "Rectangle"||"rectangle":
+					//needs SW corner in first point, NE in second
+					var overlayOptions = (options != null && options.length>0) ? "({map:map, bounds:new google.maps.LatLngBounds(" + points[0] + 
+						","  + points[1] + "), " + options + "})" : "({map:map, bounds:new google.maps.LatLngBounds(" + points[0] + ","  + points[1] + ")})";
+					overlay = new google.maps.Rectangle(eval(overlayOptions));
+                    break;
+				case "Circle"||"circle":
+					//Requires radius option
+					var overlayOptions = (options != null && options.length>0) ? "({map:map, center: " + points[0] + ", " + options + "})" : "({map:map, center: " + points[0] + "})";
+					overlay = new google.maps.Circle(eval(overlayOptions));
+                    break;
+				case "GroundOverlay"||"Overlay":
+                    break;
+				case "Marker"||"marker":
+                    break;
+				default:
+					console.log("Not a valid shape");
+					return;
+                }//switch
+    },
+	
+	
+	
+	
     setMapType:function(ele, type) {
         var gmapWrapper = Ice.GoogleMap.getGMapWrapper(ele);
         //if the chart is recreated, so add any geoCoderMarker that was exist before.
@@ -2958,21 +3069,21 @@ Ice.GoogleMap = {
             gmapWrapper.geoMarker.openInfoWindowHtml(gmapWrapper.geoMarkerAddress);
             gmapWrapper.geoMarkerSet = false;
         }
-        if (gmapWrapper.getRealGMap().getCurrentMapType() != null) {
-            //set the map type only when difference found
-            if (gmapWrapper.getRealGMap().getCurrentMapType().getName() != type) {
-                switch (type) {
-                    case "Satellite":
-                        gmapWrapper.getRealGMap().setMapType(G_SATELLITE_MAP);
-                        break
-                    case "Hybrid":
-                        gmapWrapper.getRealGMap().setMapType(G_HYBRID_MAP);
-                        break
-                    case "Map":
-                        gmapWrapper.getRealGMap().setMapType(G_NORMAL_MAP);
-                        break
+        if (gmapWrapper.getRealGMap().getMapTypeId() != null) {
+            switch (type) {
+                case "Satellite":
+                    gmapWrapper.getRealGMap().setMapTypeId(google.maps.MapTypeId.SATELLITE);
+                    break
+                case "Hybrid":
+                    gmapWrapper.getRealGMap().setMapTypeId(google.maps.MapTypeId.HYBRID);
+                    break
+                case "Map":
+                    gmapWrapper.getRealGMap().setMapTypeId(google.maps.MapTypeId.ROADMAP);
+                    break
+				case "Terrain":
+                    gmapWrapper.getRealGMap().setMapTypeId(google.maps.MapTypeId.TERRAIN);
+                    break
                 }//switch
-            }//inner if
         }//outer if        
     }//setMapType    
 }

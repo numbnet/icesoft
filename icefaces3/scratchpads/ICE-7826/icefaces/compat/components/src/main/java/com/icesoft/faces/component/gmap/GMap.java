@@ -40,7 +40,7 @@ public class GMap extends UIPanel {
     private String longitude;
     private String latitude;
     private Integer zoomLevel;
-
+	private String options;
 
     private Boolean locateAddress;
     private boolean initilized = false;
@@ -127,9 +127,13 @@ public class GMap extends UIPanel {
         }
         if ((isLocateAddress() || !initilized) && (getAddress() != null
                 && getAddress().length() > 2)) {
-            JavascriptContext.addJavascriptCall(context,
+				JavascriptContext.addJavascriptCall(context,
                     "Ice.GoogleMap.locateAddress('" + getClientId(context) + "', '" +
                             getAddress() + "');");
+				JavascriptContext.addJavascriptCall(context,
+                        "Ice.GoogleMap.getGMapWrapper('" + getClientId(context) +
+                                "').getRealGMap().setZoom(" + getZoomLevel() + ");");
+							
             initilized = true;
         } else {
             if (isLocatedByGeocoder(context)) {
@@ -148,13 +152,21 @@ public class GMap extends UIPanel {
                 }
                 JavascriptContext.addJavascriptCall(context,
                         "Ice.GoogleMap.getGMapWrapper('" + getClientId(context) +
-                                "').getRealGMap().setCenter(new GLatLng(" + latitude
-                                + ", " + longitude + "), " + getZoomLevel() + ");");
+                                "').getRealGMap().setCenter(new google.maps.LatLng("+ latitude + "," + longitude + "));");
+				JavascriptContext.addJavascriptCall(context,
+                        "Ice.GoogleMap.getGMapWrapper('" + getClientId(context) +
+                                "').getRealGMap().setZoom(" + getZoomLevel() + ");");
             }
         }
-        JavascriptContext.addJavascriptCall(context,
-                "Ice.GoogleMap.setMapType('" + getClientId(context) + "', '" +
+		
+		JavascriptContext.addJavascriptCall(context,
+                "Ice.GoogleMap.setMapType('" + getClientId(context) + "','" +
                         getType() + "');");
+		if (options != null){
+		JavascriptContext.addJavascriptCall(context,
+                "Ice.GoogleMap.addOptions('" + getClientId(context) + "','" +
+                        getOptions() + "');");
+		}
     }
 
     public int getZoomLevel() {
@@ -162,9 +174,9 @@ public class GMap extends UIPanel {
             return zoomLevel.intValue();
         }
         ValueBinding vb = getValueBinding("zoomLevel");
-        return vb != null ? ((Integer) vb.getValue(getFacesContext())).intValue() : 3;
+        return vb != null ? ((Integer) vb.getValue(getFacesContext())).intValue() : 5;
     }
-
+	
     public void setZoomLevel(int zoomLevel) {
         this.zoomLevel = new Integer(zoomLevel);
     }
@@ -203,6 +215,18 @@ public class GMap extends UIPanel {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+	
+	public String getOptions() {
+        if (options != null) {
+            return options;
+        }
+        ValueBinding vb = getValueBinding("options");
+        return vb != null ? (String) vb.getValue(getFacesContext()) : null;
+    }
+
+    public void setOptions(String options) {
+        this.options = options;
     }
 
     public String getType() {
@@ -305,11 +329,12 @@ public class GMap extends UIPanel {
         address = (String) values[8];
         locateAddress = (Boolean) values[9];
         initilized = ((Boolean) values[10]).booleanValue();
+		options = (String) values[11];
     }
 
     public Object saveState(FacesContext context) {
         if (values == null) {
-            values = new Object[11];
+            values = new Object[12];
         }
         values[0] = super.saveState(context);
         values[1] = renderedOnUserRole;
@@ -322,7 +347,8 @@ public class GMap extends UIPanel {
         values[8] = address;
         values[9] = locateAddress;
         values[10] = initilized ? Boolean.TRUE : Boolean.FALSE;
-        return values;
+        values[11] = options;
+		return values;
     }
 }
 
