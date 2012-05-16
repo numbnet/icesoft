@@ -34,7 +34,7 @@
 
     <ui:define name="example">
         <h:form id="form">
-             <ace:menuBar autoSubmenuDisplay="true">
+             <ace:menuBar id="menubar" autoSubmenuDisplay="true">
 			<ace:submenu label="Single 1">
 				<ace:menuItem value="Item 1">
 					<ace:ajax event="activate" execute="@this" render="message" />
