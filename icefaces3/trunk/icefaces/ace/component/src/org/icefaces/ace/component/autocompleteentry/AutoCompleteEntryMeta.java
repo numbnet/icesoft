@@ -26,7 +26,6 @@ import org.icefaces.ace.api.IceClientBehaviorHolder;
 
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
-import javax.el.MethodExpression;
 import javax.el.ValueExpression;
 
 import java.util.List;
@@ -40,7 +39,11 @@ import java.util.List;
         componentFamily = "org.icefaces.ace.AutoCompleteEntry",
         componentType = "org.icefaces.ace.component.AutoCompleteEntry",
 		rendererType    = "org.icefaces.ace.component.AutoCompleteEntryRenderer",
-        tlddoc = "AutoCompleteEntry is an text input component that presents available value options as the user types." +
+        tlddoc = "AutoCompleteEntry is a text input component that presents possible valid options as the user types. " +
+				"The options can be a list of SelectItem's specified in a child <f:selectItems /> tag. It is also possible " +
+				"to specify a list of arbitrary data objects (i.e. POJOs) through the listValue attribute. In this case, a facet " +
+				"named \"row\" should be nested inside this component. This allows for more flexible rendering of each row, making it possible " +
+				"to render other components or HTML for each row and to display different properties of the data object. " +
                  "<p>For more information, see the " +
                  "<a href=\"http://wiki.icefaces.org/display/ICE/AutoCompleteEntry\">AutoCompleteEntry Wiki Documentation</a>."
 )
@@ -70,9 +73,6 @@ public class AutoCompleteEntryMeta extends HtmlInputTextMeta {
 	
     @Property(tlddoc = "", defaultValue="")
     private String options;
-	
-    @Property(expression= Expression.METHOD_EXPRESSION, methodExpressionArgument="org.icefaces.ace.component.autocompleteentry.TextChangeEvent", tlddoc = "")
-    private MethodExpression textChangeListener;
 	
 	@Property(tlddoc="Defines the method of filter comparison used, default is \"startsWith\". " +
             "Types available include: \"contains\", \"exact\", \"startsWith\", \"endsWith\" and \"none\". " +
