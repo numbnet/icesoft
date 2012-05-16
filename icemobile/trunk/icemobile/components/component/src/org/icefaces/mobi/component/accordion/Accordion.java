@@ -1,8 +1,25 @@
+/*
+ * Copyright 2004-2012 ICEsoft Technologies Canada Corp.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the
+ * License. You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an "AS
+ * IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ * express or implied. See the License for the specific language
+ * governing permissions and limitations under the License.
+ */
+
 package org.icefaces.mobi.component.accordion;
 
 
 import org.icefaces.mobi.api.ContentPaneController;
 
+import javax.annotation.PostConstruct;
 import javax.faces.component.UIComponent;
 import javax.faces.component.behavior.FacesBehavior;
 import javax.faces.context.FacesContext;
@@ -13,6 +30,7 @@ public class Accordion extends AccordionBase implements ContentPaneController {
      public static final String ACCORDION_RIGHT_POINTING_POINTER= "&#9658;";
      public static final String ACCORDION_LEFT_POINTING_TRIANGLE = "&#9664;";
      public static final String ACCORDION_LEFT_POINTING_POINTER= "&#9668;";
+     private String selectedId;
      /**
      * method is required by ContentPaneController interface
      * returns null if their are no children of type contentPane or no children at all.
@@ -20,27 +38,39 @@ public class Accordion extends AccordionBase implements ContentPaneController {
      * valid value is the first child.
      * @return
      */
-
-     public String getSelectedId(){
-         int childCount = getChildCount();
-         if (childCount== 0) {
-             return null;
-         }
-         int index = getActiveIndex();
-         // String clientId = this.getClientId(FacesContext.getCurrentInstance());
-         if (index< 0 || index > childCount){
-             index = 0;
-         }
-         String id = getChildren().get(index).getId();
-         UIComponent selectedComp = this.findComponent(id);
-         FacesContext facesContext = FacesContext.getCurrentInstance();
-         String panelClientId = selectedComp.getClientId(facesContext);
-         //for tagHandler do I need to ensure all children are of type ContentPane here??
-         if (null!=panelClientId){
-            return panelClientId;
-         } else {
-            return null;
-         }
+     public Accordion(){
+         super();
      }
 
+     public void setSelectedId(String selectIn){
+         this.selectedId = selectIn;
+     }
+
+     public String getSelectedId(){
+          return this.selectedId;
+     }
+     @PostConstruct
+     public void init(){
+        this.findMySelectedId();
+     }
+
+     public void findMySelectedId(){
+        int childCount = getChildCount();
+        if (childCount > 0 ){
+            int index = getActiveIndex();
+            if (index< 0 || index > childCount){
+                index = 0;
+            }
+            String id = getChildren().get(index).getId();
+            UIComponent selectedComp = this.findComponent(id);
+            FacesContext facesContext = FacesContext.getCurrentInstance();
+            String panelClientId = selectedComp.getClientId(facesContext);
+            //for tagHandler do I need to ensure all children are of type ContentPane here??
+            if (null!=panelClientId){
+                this.selectedId =  panelClientId;
+                return;
+            }
+        }
+        this.selectedId = null;
+     }
 }
