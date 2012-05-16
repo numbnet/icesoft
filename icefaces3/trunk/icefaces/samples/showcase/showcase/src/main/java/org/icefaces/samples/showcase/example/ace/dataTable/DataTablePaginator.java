@@ -79,7 +79,18 @@ public class DataTablePaginator extends ComponentExampleImpl<DataTablePaginator>
     
     public void setPaginator(boolean paginator) { this.paginator = paginator; }
     public void setPosition(String position) { this.position = position; }
-    public void setRows(int rows) { this.rows = rows; }
-    public void setStartPage(int startPage) { this.startPage = startPage; }
+    public void setRows(int rows) {
+        this.rows = rows;
+        setStartPage(getStartPage());
+    }
+    public void setStartPage(int startPage) {
+        this.startPage = startPage;
+        int maxPages = getStartPageMaximum();
+        if( this.startPage < 1 ){
+            this.startPage = 1;
+        } else if( startPage > maxPages ){
+            this.startPage = maxPages;
+        }
+    }
     public void setCarsData(List<Car> carsData) { this.carsData = carsData; }
 }
