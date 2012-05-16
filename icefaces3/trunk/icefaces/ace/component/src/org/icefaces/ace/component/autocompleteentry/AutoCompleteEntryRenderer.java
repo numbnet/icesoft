@@ -126,8 +126,8 @@ public class AutoCompleteEntryRenderer extends InputRenderer {
 				.item(clientId)
 				.item(divId)
 				.item(null, false) // TODO: re-add autoCompleteEntry.getOptions()
-				.item("rowClass") // TODO: remove rowClass
-				.item("selectedRowClass") // TODO: remove selectedRowClass
+				.item("ui-widget-content")
+				.item("ui-state-active")
 				.item(partialSubmit)
 				.beginMap()
 				.entry("p", ""); // dummy property
