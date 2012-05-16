@@ -36,8 +36,9 @@ public class ComponentHandlerArtifact extends Artifact{
 
 	@Override
 	public void build() {
-        if (!getComponentContext().isHasMethodExpression()) return;
         Component component = (Component) getComponentContext().getActiveClass().getAnnotation(Component.class);
+        if (!"".equals(component.handlerClass())) return;
+        if (!getComponentContext().isHasMethodExpression()) return;
         startComponentClass(getComponentContext().getActiveClass(), component);
         addRules(getComponentContext().getPropertyFieldsForComponentClassAsList());
         endComponentClass();

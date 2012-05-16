@@ -59,11 +59,13 @@ public class FaceletTagLibBuilder extends XMLBuilder{
  
         } catch (Exception e) {
             e.printStackTrace();
-        } 
-        if (GeneratorContext.getInstance().getActiveMetaContext().isHasMethodExpression()) {
+        }
+        if (!"".equals(component.handlerClass())) {
+            addNode(component_element, "handler-class", component.handlerClass());
+        }
+        else if (GeneratorContext.getInstance().getActiveMetaContext().isHasMethodExpression()) {
             addNode(component_element, "handler-class", clazz.getName()+ "Handler");
         }
-        //addNode(component_element, "handler-class", component.handlerClass());
     }
 	
     public void addTagInfo(TagHandler tagHandler) {

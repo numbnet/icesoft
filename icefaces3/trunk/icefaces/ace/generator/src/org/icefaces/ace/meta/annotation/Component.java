@@ -104,7 +104,7 @@ public @interface Component {
    * developer want to use its own handler class.
    * @return facelets handler class.
    */
-  String handlerClass() default "";
+  String handlerClass() default EMPTY;
   
   /**
    * javadocs for the component class. Goes into the component class.
