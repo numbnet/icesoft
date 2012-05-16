@@ -40,23 +40,23 @@
                                      var="car"
                                      rows="15">
                 
-                <ace:columnGroup type="header">
+                <ace:columnGroup id="columnGroup" type="header">
                     <ace:row>
-                        <ace:column colspan="6" headerText="Vehicles Data"/>
+                        <ace:column id="vehiclesData" colspan="6" headerText="Vehicles Data"/>
                     </ace:row>
 
                     <ace:row>
-                        <ace:column colspan="2" headerText="General Info"/>
-                        <ace:column colspan="3" headerText="Vehicle Parameters"/>
-                        <ace:column rowspan="2" headerText="Cost"/>
+                        <ace:column id="generalInfo" colspan="2" headerText="General Info"/>
+                        <ace:column id="vehicleParameters" colspan="3" headerText="Vehicle Parameters"/>
+                        <ace:column id="headerCost" rowspan="2" headerText="Cost"/>
                     </ace:row>
                     
                     <ace:row>
-                        <ace:column headerText="Name"/>
-                        <ace:column headerText="Chassis" sortBy="#{car.chassis}" groupBy="#{car.chassis}"/>
-                        <ace:column headerText="Weight"/>
-                        <ace:column headerText="Accel"/>
-                        <ace:column headerText="MPG" sortBy="#{car.mpg}" groupBy="#{car.mpg}" sortAscending="true"/>
+                        <ace:column id="headerName" headerText="Name"/>
+                        <ace:column id="headerChassis" headerText="Chassis" sortBy="#{car.chassis}" groupBy="#{car.chassis}"/>
+                        <ace:column id="headerWeight" headerText="Weight"/>
+                        <ace:column id="headerAccel" headerText="Accel"/>
+                        <ace:column id="headerMpg" headerText="MPG" sortBy="#{car.mpg}" groupBy="#{car.mpg}" sortAscending="true"/>
                     </ace:row>
                 </ace:columnGroup>
                 
