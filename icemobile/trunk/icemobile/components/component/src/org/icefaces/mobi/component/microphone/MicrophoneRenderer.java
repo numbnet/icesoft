@@ -114,7 +114,7 @@ public class MicrophoneRenderer extends Renderer {
         return isValid;
     }
 
-    public void encodeBegin(FacesContext facesContext, UIComponent uiComponent)
+    public void encodeEnd(FacesContext facesContext, UIComponent uiComponent)
             throws IOException {
         ResponseWriter writer = facesContext.getResponseWriter();
         String clientId = uiComponent.getClientId(facesContext);
@@ -133,8 +133,6 @@ public class MicrophoneRenderer extends Renderer {
             writer.endElement(HTML.INPUT_ELEM);
             return;
         }
-        writer.startElement(HTML.SPAN_ELEM, uiComponent);
-        writer.writeAttribute(HTML.ID_ATTR, clientId, null);
         int maxtime = microphone.getMaxtime();
         // button element
         writer.startElement("input", uiComponent);
@@ -159,14 +157,6 @@ public class MicrophoneRenderer extends Renderer {
 
         writer.writeAttribute("value", "record", null);
         writer.endElement("input");
-    }
-
-    public void encodeEnd(FacesContext facesContext, UIComponent uiComponent)
-            throws IOException {
-        ResponseWriter writer = facesContext.getResponseWriter();
-        String clientId = uiComponent.getClientId(facesContext);
-        Microphone microphone = (Microphone) uiComponent;
-        writer.endElement(HTML.SPAN_ELEM);
     }
 
     private StringBuilder writeJSCall(String clientId, int maxtime) {
