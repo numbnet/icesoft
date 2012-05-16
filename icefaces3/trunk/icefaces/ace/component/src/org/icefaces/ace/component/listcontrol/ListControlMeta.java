@@ -94,10 +94,10 @@ public class ListControlMeta extends UIComponentBaseMeta {
     private String format;
 
     @Property(tlddoc = "When dual list mode is used, this property will determine " +
-            "if we render the migration control on the top, bottom or both ends of the " +
-            "nested lists.",
-            defaultValue = "top",
-            defaultValueType = DefaultValueType.STRING_LITERAL
+            "if we render the migration control in the \"MIDDLE\", on the \"TOP\", \"BOTTOM\" or \"BOTH\" ends of the " +
+            "nested lists. \"ALL\" renders controls in every position",
+            defaultValue = "DualListPosition.TOP",
+            defaultValueType = DefaultValueType.EXPRESSION
     )
-    private String position;
+    private DualListPosition position;
 }
