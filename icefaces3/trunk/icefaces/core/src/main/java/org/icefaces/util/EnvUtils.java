@@ -16,12 +16,12 @@
 
 package org.icefaces.util;
 
+import org.icefaces.bean.WindowDisposed;
 import org.icefaces.impl.application.AuxUploadResourceHandler;
 import org.icefaces.impl.push.servlet.ICEpushResourceHandler;
 import org.icefaces.impl.push.servlet.ProxyHttpServletRequest;
 import org.icefaces.impl.push.servlet.ProxyHttpServletResponse;
 import org.icefaces.impl.push.servlet.ProxySession;
-import org.icefaces.bean.WindowDisposed;
 
 import javax.faces.application.Resource;
 import javax.faces.component.UIViewRoot;
@@ -60,6 +60,7 @@ public class EnvUtils {
     public static String DISABLE_DEFAULT_ERROR_POPUPS = "org.icefaces.disableDefaultErrorPopups";
     public static String FAST_BUSY_INDICATOR = "org.icefaces.fastBusyIndicator";
     public static String REPLAY_NAVIGATION_ON_RELOAD = "org.icefaces.replayNavigationOnReload";
+    public static String GENERATE_HEAD_UPDATE = "org.icefaces.generateHeadUpdate";
 
     //Parameters configurable using context parameters but only in compatibility mode
     public static String CONNECTION_LOST_REDIRECT_URI = "org.icefaces.connectionLostRedirectURI";
@@ -507,7 +508,7 @@ public class EnvUtils {
 
     private static String[] extractPathTemplate(String path) {
         int start = path.indexOf(DUMMY_RESOURCE);
-        if( start < 0 ){
+        if (start < 0) {
             return null;
         }
         String pre = path.substring(0, start);
@@ -560,11 +561,11 @@ public class EnvUtils {
     }
 
     public static HttpSession getSafePortletScopeSession(FacesContext fc) {
-        return getSafeSession(fc,ProxySession.PORTLET_SCOPE);
+        return getSafeSession(fc, ProxySession.PORTLET_SCOPE);
     }
 
     public static HttpSession getSafeApplicationScopeSession(FacesContext fc) {
-        return getSafeSession(fc,ProxySession.APPLICATION_SCOPE);
+        return getSafeSession(fc, ProxySession.APPLICATION_SCOPE);
     }
 
     public static boolean isPushRequest(FacesContext facesContext) {
@@ -611,14 +612,14 @@ public class EnvUtils {
         return isMyFaces;
     }
 
-    private static void testImpl()  {
-        if (!isImplTested)  {
+    private static void testImpl() {
+        if (!isImplTested) {
             String implName = FacesContext.getCurrentInstance()
                     .getClass().getName();
-            if (implName.startsWith("com.sun"))  {
+            if (implName.startsWith("com.sun")) {
                 isMojarra = true;
                 isImplTested = true;
-            } else if (implName.startsWith("org.apache"))  {
+            } else if (implName.startsWith("org.apache")) {
                 isMyFaces = true;
                 isImplTested = true;
             }
@@ -665,13 +666,17 @@ public class EnvUtils {
     }
 
     //utility method to get per-view configuration values
-    static Object getViewParam(FacesContext facesContext, String name)  {
+    static Object getViewParam(FacesContext facesContext, String name) {
         UIViewRoot viewRoot = facesContext.getViewRoot();
-        if (null == viewRoot)  {
+        if (null == viewRoot) {
             return null;
         }
         Map viewMap = viewRoot.getViewMap();
         return viewMap.get(name);
+    }
+
+    public static boolean generateHeadUpdate(FacesContext context) {
+        return EnvConfig.getEnvConfig(context).generateHeadUpdate;
     }
 }
 
@@ -701,6 +706,7 @@ class EnvConfig {
     public boolean disableDefaultErrorPopups;
     public boolean fastBusyIndicator;
     boolean replayNavigationOnReload;
+    boolean generateHeadUpdate;
 
     public EnvConfig(Map initMap) {
         init(initMap);
@@ -719,6 +725,7 @@ class EnvConfig {
         diffConfig = decodeString(initMap, EnvUtils.DIFF_CONFIG, null, info);
         deltaSubmit = decodeBoolean(initMap, EnvUtils.DELTA_SUBMT, false, info);
         lazyPush = decodeBoolean(initMap, EnvUtils.LAZY_PUSH, true, info);
+        generateHeadUpdate = decodeBoolean(initMap, EnvUtils.GENERATE_HEAD_UPDATE, false, info);
         sessionExpiredRedirectURI = decodeString(initMap, EnvUtils.SESSION_EXPIRED_REDIRECT_URI, null, info);
         standardFormSerialization = decodeBoolean(initMap, EnvUtils.STANDARD_FORM_SERIALIZATION, false, info);
         strictSessionTimeout = decodeBoolean(initMap, EnvUtils.STRICT_SESSION_TIMEOUT, false, info);
