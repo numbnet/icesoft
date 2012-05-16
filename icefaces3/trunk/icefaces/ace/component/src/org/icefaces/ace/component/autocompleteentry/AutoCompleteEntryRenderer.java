@@ -51,7 +51,7 @@ public class AutoCompleteEntryRenderer extends InputRenderer {
     }
 	
 	public void decode(FacesContext facesContext, UIComponent uiComponent) {
-		
+		decodeBehaviors(facesContext, uiComponent);
 	}
 	
     public void encodeBegin(FacesContext facesContext, UIComponent uiComponent) throws IOException {
@@ -121,10 +121,21 @@ public class AutoCompleteEntryRenderer extends InputRenderer {
 		writer.writeAttribute("type", "text/javascript", null);
 		boolean partialSubmit = false; // TODO: remove
 		if (!autoCompleteEntry.isDisabled() && !autoCompleteEntry.isReadonly()) {
-			writer.writeText("new ice.ace.Autocompleter('" + clientId + "','" + divId +
-					"', " + "null" + " ,'" + "rowClass" + "','" + // TODO: remove rowClass, re-add autoCompleteEntry.getOptions()
-					"selectedRowClass" + "'," + partialSubmit + ");", null); // TODO: remove selectedRowClass
+			JSONBuilder jb = JSONBuilder.create();
+			jb.beginFunction("ice.ace.Autocompleter")
+				.item(clientId)
+				.item(divId)
+				.item(null, false) // TODO: re-add autoCompleteEntry.getOptions()
+				.item("rowClass") // TODO: remove rowClass
+				.item("selectedRowClass") // TODO: remove selectedRowClass
+				.item(partialSubmit)
+				.beginMap()
+				.entry("p", ""); // dummy property
+				encodeClientBehaviors(facesContext, autoCompleteEntry, jb);
+			jb.endMap().endFunction();
+			writer.writeText("new " + jb.toString(), null);
 		}
+		
 		writer.endElement("script");
 		writer.endElement("div");
     }

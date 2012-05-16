@@ -2,7 +2,7 @@ if (!window['ice']) window.ice = {};
 if (!window.ice['ace']) window.ice.ace = {};
 ice.ace.Autocompleters = {};
 
-ice.ace.Autocompleter = function(id, updateId, options, rowClass, selectedRowClass, partialSubmit) {
+ice.ace.Autocompleter = function(id, updateId, options, rowClass, selectedRowClass, partialSubmit, behaviors) {
 	rowClass = 'iceSelInpTxtRow';
 	selectedRowClass = 'iceSelInpTxtSelRow';
 	this.id = id;
@@ -24,6 +24,11 @@ ice.ace.Autocompleter = function(id, updateId, options, rowClass, selectedRowCla
 	var self = this;
 	this.options.onComplete = function() { self.onComplete() }; //@ self technique #
 	this.options.defaultParams = this.options.parameters || null;
+	
+	if (behaviors) {
+		if (behaviors.behaviors && behaviors.behaviors.submit)
+			this.ajaxSubmit = behaviors.behaviors.submit;
+	}
 	//this.monitor = new Ice.AutocompleterMonitor(element, ue, options, rowClass, selectedRowClass);
 	//this.monitor.object = this;
 	//if (!Prototype.Browser.IE) { //@ custom detection
@@ -626,11 +631,19 @@ ice.ace.Autocompleter.prototype = {
         //     form.focus_hidden_field.value=this.element.id;
         if (isEnterKey && !this.partialSubmit) {
             //iceSubmit(form, this.element, event);
+		if (this.ajaxSubmit) {	
+			ice.ace.ab(this.ajaxSubmit);
+		} else {
 			ice.s(event, this.element);
+		}
         }
         else {
             //iceSubmitPartial(form, this.element, event);
+		if (this.ajaxSubmit) {	
+			ice.ace.ab(this.ajaxSubmit);
+		} else {
 			ice.s(event, this.element);
+		}
         }
 
         var indexName = this.element.id + "_idx";
