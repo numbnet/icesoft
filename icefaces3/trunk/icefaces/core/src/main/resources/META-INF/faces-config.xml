@@ -41,6 +41,10 @@
         <component-class>org.icefaces.impl.component.Push</component-class>
     </component>
     <component>
+        <component-type>org.icefaces.impl.component.Redirect</component-type>
+        <component-class>org.icefaces.impl.component.Redirect</component-class>
+    </component>
+    <component>
         <component-type>org.icefaces.impl.component.NavigationNotifier</component-type>
         <component-class>org.icefaces.impl.component.NavigationNotifier</component-class>
     </component>
