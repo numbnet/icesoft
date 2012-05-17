@@ -23,7 +23,6 @@ import org.icemobile.samples.mediacast.MediaController;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import java.io.Serializable;
-import java.util.HashMap;
 import java.util.Stack;
 
 /**
@@ -37,64 +36,31 @@ import java.util.Stack;
 public class NavigationModel implements Serializable {
 
     public static final String BEAN_NAME = "navigationModel";
-
-    public static final Destination DESTINATION_HOME =
-            new Destination("1", "Mediacast", "home", "/WEB-INF/includes/content/home.xhtml", true);
-    public static final Destination DESTINATION_GALLERY =
-            new Destination("2", "Gallery", "Gallery", "/WEB-INF/includes/content/gallery.xhtml");
-    public static final Destination DESTINATION_VIEWER =
-            new Destination("3", "Viewer", "Viewer", "/WEB-INF/includes/content/media-viewer.xhtml");
-
-
-    private static HashMap<String, Destination> destinationMap =
-            new HashMap<String, Destination>(2);
-
-    static {
-        destinationMap.put(DESTINATION_HOME.getKey(), DESTINATION_HOME);
-        destinationMap.put(DESTINATION_GALLERY.getKey(), DESTINATION_GALLERY);
-        destinationMap.put(DESTINATION_VIEWER.getKey(), DESTINATION_VIEWER);
-    }
-
-    private Stack<Destination> navigationStack;
-
-    private Destination backDestination;
+    // selected panel in stack, default id is 'home'.
+    private String selectedPanelId = "home";
+    private Stack<String> history = new Stack<String>();
 
     public NavigationModel() {
-        navigationStack = new Stack<Destination>();
-        navigationStack.push(DESTINATION_HOME);
         // add the current view the session group
         PushRenderer.addCurrentSession(MediaController.RENDER_GROUP);
     }
 
-    public void goForward(String key) {
-        backDestination = navigationStack.peek();
-        navigationStack.push(destinationMap.get(key));
+    public void goForward(String panelId) {
+        history.push(selectedPanelId);
+        selectedPanelId = panelId;
     }
 
     public void goBack() {
-        navigationStack.pop();
-        if (navigationStack.size() > 1) {
-            backDestination = navigationStack.get(navigationStack.size() - 2);
+        if (!history.isEmpty()) {
+            selectedPanelId = history.pop();
         }
     }
 
-    public Destination getCurrentDestination() {
-        return navigationStack.peek();
+    public boolean isCanGoBack() {
+        return !history.isEmpty();
     }
 
-    public Destination getBackDestination() {
-        return backDestination;
-    }
-
-    public Destination getDestinationHome() {
-        return DESTINATION_HOME;
-    }
-
-    public Destination getDestinationGallery() {
-        return DESTINATION_GALLERY;
-    }
-
-    public Destination getDestinationViewer() {
-        return DESTINATION_VIEWER;
+    public String getSelectedPanelId() {
+        return selectedPanelId;
     }
 }

@@ -35,17 +35,17 @@ public class NavigationController implements Serializable {
 
     public static final String BEAN_NAME = "navigationController";
 
-    public void navigateToPage(ActionEvent event) {
+    public String navigateToPage(String panelId) {
         NavigationModel navigationModel = getNavigationModel();
-        String destinationKey =
-                FacesUtils.getRequestParameter("navigateTo");
-        navigationModel.goForward(destinationKey);
-        JavaScriptRunner.runScript(FacesContext.getCurrentInstance(),"javascript:scroll(0,0);");
+        navigationModel.goForward(panelId);
+        scrollToTop();
+        return null;
     }
 
     public String navigateBack() {
         NavigationModel navigationModel = getNavigationModel();
         navigationModel.goBack();
+        scrollToTop();
         return null;
     }
 
@@ -54,4 +54,7 @@ public class NavigationController implements Serializable {
                 FacesUtils.getManagedBean(NavigationModel.BEAN_NAME);
     }
 
+    protected void scrollToTop(){
+        JavaScriptRunner.runScript(FacesContext.getCurrentInstance(),"javascript:scroll(0,0);");
+    }
 }

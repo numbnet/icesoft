@@ -18,11 +18,24 @@
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
-                template="/WEB-INF/includes/templates/mobi-template.xhtml">
+                xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component"
+                template="/WEB-INF/includes/templates/mobile-template.xhtml">
 
     <ui:define name="panelContent">
 
-        <ui:include src="#{navigationModel.currentDestination.path}"/>
+        <!-- mediacast consists of three pages controled by this content stack-->
+        <mobi:contentStack currentId="#{navigationModel.selectedPanelId}">
+            <mobi:contentPane id="home">
+                <ui:include src="WEB-INF/includes/content/home.xhtml" />
+            </mobi:contentPane>
+            <mobi:contentPane id="gallery">
+                <ui:include src="WEB-INF/includes/content/gallery.xhtml" />
+            </mobi:contentPane>
+            <mobi:contentPane id="media">
+                <ui:include src="WEB-INF/includes/content/media-viewer.xhtml" />
+            </mobi:contentPane>
+
+        </mobi:contentStack>
 
     </ui:define>
 
