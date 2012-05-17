@@ -251,6 +251,7 @@
         <delete file="${ace-chart.js.tmp}" verbose="true"/>
         <concat destfile="${ace-chart.js.tmp}" force="true" fixlastline="true">
             <filelist dir="${resources}">
+                <file name="icefaces.ace/chart/excanvas.js"/>
                 <file name="icefaces.ace/chart/jquery.jqplot.js"/>
                 <file name="icefaces.ace/chart/plugins/jqplot.barRenderer.js"/>
                 <file name="icefaces.ace/chart/plugins/jqplot.categoryAxisRenderer.js"/>
