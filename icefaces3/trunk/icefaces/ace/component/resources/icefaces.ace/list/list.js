@@ -168,8 +168,10 @@ ice.ace.List.prototype.controlClickHandler = function(e) {
         jqCtrl = ice.ace.jq(ctrl),
         dir;
 
-    jqCtrl.toggleClass('ui-state-active', 50)
+    if (!ice.ace.jq.browser.msie || ice.ace.jq.browser.version != 8) {
+        jqCtrl.toggleClass('ui-state-active', 50)
             .toggleClass('ui-state-active', 50);
+    }
 
     if (jqCtrl.hasClass('if-list-ctrl-top'))
         dir = "top";
