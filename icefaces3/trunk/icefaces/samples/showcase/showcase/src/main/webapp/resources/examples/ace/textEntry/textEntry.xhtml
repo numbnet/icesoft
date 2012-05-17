@@ -38,6 +38,17 @@
         <h:form id="textEntryForm">
             <ace:panel id="personalInfoInputPanel" header="Personal Info">
                 <h:panelGroup layout="block" style="width:50%; float:left;">
+                    <h:outputLabel for="labelPosition" value="label position: "/>
+                    <h:selectOneMenu id="labelPosition" value="#{textEntryBean.labelPosition}">
+                        <f:ajax execute="@this" render="inputGrid"/>
+                        <f:selectItem itemLabel="left" itemValue="left"/>
+                        <f:selectItem itemLabel="right" itemValue="right"/>
+                        <f:selectItem itemLabel="top" itemValue="top"/>
+                        <f:selectItem itemLabel="bottom" itemValue="bottom"/>
+                        <f:selectItem itemLabel="inField" itemValue="inField"/>
+                    </h:selectOneMenu>
+                </h:panelGroup>
+                <h:panelGroup layout="block" style="width:50%; float:left;">
                     <h:outputLabel for="indicatorPosition" value="indicator position: "/>
                     <h:selectOneMenu id="indicatorPosition" value="#{textEntryBean.indicatorPosition}">
                         <f:ajax execute="@this" render="inputGrid"/>
@@ -47,17 +58,6 @@
                         <f:selectItem itemLabel="bottom" itemValue="bottom"/>
                         <f:selectItem itemLabel="labelLeft" itemValue="labelLeft"/>
                         <f:selectItem itemLabel="labelRight" itemValue="labelRight"/>
-                    </h:selectOneMenu>
-                </h:panelGroup>
-                <h:panelGroup layout="block" style="width:50%; float:left;">
-                    <h:outputLabel for="labelPosition" value="label position: "/>
-                    <h:selectOneMenu id="labelPosition" value="#{textEntryBean.labelPosition}">
-                        <f:ajax execute="@this" render="inputGrid"/>
-                        <f:selectItem itemLabel="left" itemValue="left"/>
-                        <f:selectItem itemLabel="right" itemValue="right"/>
-                        <f:selectItem itemLabel="top" itemValue="top"/>
-                        <f:selectItem itemLabel="bottom" itemValue="bottom"/>
-                        <f:selectItem itemLabel="inField" itemValue="inField"/>
                     </h:selectOneMenu>
                 </h:panelGroup>
 
