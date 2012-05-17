@@ -17,8 +17,8 @@ ice.ace.Chart = function (id, data, cfg) {
             ice.ace.jq(this.jqId+'_chart').html('');
     }
 
-//    ice.ace.jq.jqplot.config.catchErrors = true;
-//    ice.ace.jq.jqplot.config.errorBorder = '1px solid #aaaaaa';
+    ice.ace.jq.jqplot.config.catchErrors = true;
+    ice.ace.jq.jqplot.config.errorBorder = '1px solid #aaaaaa';
     this.plot = ice.ace.jq.jqplot(this.jqId.substring(1)+'_chart', data, cfg);
     ice.ace.Charts[id] = self;
 
