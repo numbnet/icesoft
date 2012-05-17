@@ -29,8 +29,7 @@ import java.io.Serializable;
 @Destination(
         title = "example.layout.list.destination.title.short",
         titleExt = "example.layout.list.destination.title.long",
-        titleBack = "example.layout.list.destination.title.back",
-        contentPath = "/WEB-INF/includes/examples/layout/list.xhtml"
+        titleBack = "example.layout.list.destination.title.back"
 )
 @Example(
         descriptionPath = "/WEB-INF/includes/examples/layout/list-desc.xhtml",

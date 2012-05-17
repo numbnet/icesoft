@@ -27,8 +27,7 @@ import java.util.ArrayList;
 @Destination(
         title = "example.input.menuButton.destination.title.short",
         titleExt = "example.input.menuButton.destination.title.long",
-        titleBack = "example.input.menuButton.destination.title.back",
-        contentPath = "/WEB-INF/includes/examples/input/menubutton.xhtml"
+        titleBack = "example.input.menuButton.destination.title.back"
 )
 @Example(
         descriptionPath = "/WEB-INF/includes/examples/input/menubutton-desc.xhtml",

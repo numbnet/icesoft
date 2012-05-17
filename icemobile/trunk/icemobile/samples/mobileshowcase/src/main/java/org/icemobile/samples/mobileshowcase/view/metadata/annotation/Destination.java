@@ -36,6 +36,4 @@ public @interface Destination {
 
     String titleBack() default EMPTY;
 
-    String contentPath() default EMPTY;
-
 }

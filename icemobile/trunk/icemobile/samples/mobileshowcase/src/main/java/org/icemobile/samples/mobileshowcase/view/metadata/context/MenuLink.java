@@ -26,6 +26,7 @@ public class MenuLink {
     private boolean isDefault;
     private boolean isNew;
     private String exampleBeanName;
+    private String examplePanelId;
 
     public MenuLink(String title, boolean aDefault, boolean aNew, boolean isDisabled, String exampleBeanName) {
         this.title = title;
@@ -33,6 +34,14 @@ public class MenuLink {
         isDefault = aDefault;
         isNew = aNew;
         this.exampleBeanName = exampleBeanName;
+    }
+
+    public MenuLink(String title, boolean aDefault, boolean aNew, boolean isDisabled, String exampleBeanName, String examplePanelId) {
+        this.title = title;
+        isDefault = aDefault;
+        isNew = aNew;
+        this.exampleBeanName = exampleBeanName;
+        this.examplePanelId = examplePanelId;
     }
 
     public String getTitle() {
@@ -53,5 +62,9 @@ public class MenuLink {
 
     public String getExampleBeanName() {
         return exampleBeanName;
+    }
+
+    public String getExamplePanelId() {
+        return examplePanelId;
     }
 }

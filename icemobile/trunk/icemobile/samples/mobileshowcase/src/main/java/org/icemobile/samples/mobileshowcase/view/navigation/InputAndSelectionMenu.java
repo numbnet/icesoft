@@ -38,19 +38,26 @@ import java.io.Serializable;
         title = "menu.input.title",
         menuLinks = {
                 @MenuLink(title = "menu.input.button.title",
-                        exampleBeanName = ButtonBean.BEAN_NAME),
+                        exampleBeanName = ButtonBean.BEAN_NAME,
+                        examplePanelId = "button"),
                 @MenuLink(title = "menu.input.flipswitch.title",
-                        exampleBeanName = FlipSwitchBean.BEAN_NAME),
+                        exampleBeanName = FlipSwitchBean.BEAN_NAME,
+                        examplePanelId = "flipswitch"),
                 @MenuLink(title = "menu.input.geolocation.title",
-                        exampleBeanName = GeoLocationBean.BEAN_NAME),
+                        exampleBeanName = GeoLocationBean.BEAN_NAME,
+                        examplePanelId = "geolocation"),
                 @MenuLink(title = "menu.input.input.title",
-                        exampleBeanName = InputBean.BEAN_NAME),
+                        exampleBeanName = InputBean.BEAN_NAME,
+                        examplePanelId = "input"),
                 @MenuLink(title = "menu.input.date.title",
-                        exampleBeanName = DateBean.BEAN_NAME),
+                        exampleBeanName = DateBean.BEAN_NAME,
+                        examplePanelId = "date"),
                 @MenuLink(title = "menu.input.menuButton.title",
-                exampleBeanName = MenuButtonBean.BEAN_NAME),
+                exampleBeanName = MenuButtonBean.BEAN_NAME,
+                        examplePanelId = "menubutton"),
                 @MenuLink(title = "menu.input.submitNotification.title",
-                        exampleBeanName = SubmitNotificationBean.BEAN_NAME)
+                        exampleBeanName = SubmitNotificationBean.BEAN_NAME,
+                        examplePanelId = "submitnotification")
         })
 @ManagedBean(name = InputAndSelectionMenu.BEAN_NAME)
 @ApplicationScoped

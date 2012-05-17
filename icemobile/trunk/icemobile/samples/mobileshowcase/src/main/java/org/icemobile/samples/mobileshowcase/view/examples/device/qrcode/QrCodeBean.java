@@ -38,8 +38,7 @@ import java.io.Serializable;
 @Destination(
         title = "example.device.qrcode.destination.title.short",
         titleExt = "example.device.qrcode.destination.title.long",
-        titleBack = "example.device.qrcode.destination.title.back",
-        contentPath = "/WEB-INF/includes/examples/device/qrcode.xhtml"
+        titleBack = "example.device.qrcode.destination.title.back"
 )
 @Example(
         descriptionPath = "/WEB-INF/includes/examples/device/qrcode-desc.xhtml",

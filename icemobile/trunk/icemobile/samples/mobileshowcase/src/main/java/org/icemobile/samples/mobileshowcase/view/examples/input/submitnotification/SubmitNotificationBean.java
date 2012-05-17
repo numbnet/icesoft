@@ -26,8 +26,7 @@ import java.io.Serializable;
 @Destination(
         title = "example.input.submitNotification.destination.title.short",
         titleExt = "example.input.submitNotification.destination.title.long",
-        titleBack = "example.input.submitNotification.destination.title.back",
-        contentPath = "/WEB-INF/includes/examples/input/submitnotification.xhtml"
+        titleBack = "example.input.submitNotification.destination.title.back"
 )
 @Example(
         descriptionPath = "/WEB-INF/includes/examples/input/submitnotification-desc.xhtml",

@@ -27,8 +27,7 @@ import java.io.Serializable;
 @Destination(
         title = "example.input.geolocation.destination.title.short",
         titleExt = "example.input.geolocation.destination.title.long",
-        titleBack = "example.input.geolocation.destination.title.back",
-        contentPath = "/WEB-INF/includes/examples/input/geolocation.xhtml"
+        titleBack = "example.input.geolocation.destination.title.back"
 )
 @Example(
         descriptionPath = "/WEB-INF/includes/examples/input/geolocation-desc.xhtml",

@@ -28,8 +28,7 @@ import java.io.Serializable;
 @Destination(
         title = "example.input.flipswitch.destination.title.short",
         titleExt = "example.input.flipswitch.destination.title.long",
-        titleBack = "example.input.flipswitch.destination.title.back",
-        contentPath = "/WEB-INF/includes/examples/input/flip-switch.xhtml"
+        titleBack = "example.input.flipswitch.destination.title.back"
 )
 @Example(
         descriptionPath = "/WEB-INF/includes/examples/input/flip-switch-desc.xhtml",

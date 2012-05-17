@@ -28,8 +28,7 @@ import java.io.Serializable;
 @Destination(
         title = "example.layout.panelconfirmation.destination.title.short",
         titleExt = "example.layout.panelconfirmation.destination.title.long",
-        titleBack = "example.layout.panelconfirmation.destination.title.back",
-        contentPath = "/WEB-INF/includes/examples/layout/panelconfirmation.xhtml"
+        titleBack = "example.layout.panelconfirmation.destination.title.back"
 )
 @Example(
         descriptionPath = "/WEB-INF/includes/examples/layout/panelconfirmation-desc.xhtml",

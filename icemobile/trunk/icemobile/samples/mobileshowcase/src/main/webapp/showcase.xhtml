@@ -35,9 +35,6 @@
     <link href="./resources/images/favicon.ico" rel="icon"
           type="image/x-icon"></link>
     <title>ICEfaces Mobile Showcase</title>
-  <h:outputScript library="org.icefaces.component.util"
-                    name="iscroll-min.js"/>
- <!--     <h:outputScript library="org.icefaces.component.carousel" name="carousel.js"/> -->
 
     <mobi:deviceStylesheet
             name="#{themeBean.currentTheme}" media="screen"/>
@@ -47,9 +44,15 @@
 <h:body>
 
     <!-- select small or large -->
-    <util:viewSelector defaulType="small"
-                   small="/WEB-INF/includes/view/small.xhtml"
-                   large="/WEB-INF/includes/view/large.xhtml" />
+    <mobi:viewSelector>
+        <f:facet name="small">
+            <ui:include src="WEB-INF/includes/view/small.xhtml" />
+        </f:facet>
+        <f:facet name="large">
+            <ui:include src="WEB-INF/includes/view/large.xhtml" />
+        </f:facet>
+    </mobi:viewSelector>
+
 
 </h:body>
 </html>

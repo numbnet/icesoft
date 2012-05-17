@@ -28,8 +28,7 @@ import java.util.Date;
 @Destination(
         title = "example.input.dateSpinner.destination.title.short",
         titleExt = "example.input.dateSpinner.destination.title.long",
-        titleBack = "example.input.dateSpinner.destination.title.back",
-        contentPath = "/WEB-INF/includes/examples/input/date.xhtml"
+        titleBack = "example.input.dateSpinner.destination.title.back"
 )
 @Example(
         descriptionPath = "/WEB-INF/includes/examples/input/date-desc.xhtml",

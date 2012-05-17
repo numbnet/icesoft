@@ -30,9 +30,7 @@
                 <mobi:outputListItem>
                     <h:commandLink
                             value="#{mmsgs[menuLinks.title]}"
-                            action="#{mobiNavigationController.navigateToExample}">
-                        <f:param name="#{mobiNavigationController.navDestination}"
-                                 value="#{menuLinks.exampleBeanName}"/>
+                            action="#{navigationModel.navigateTo(menuLinks.examplePanelId, menuLinks.exampleBeanName)}">
                     </h:commandLink>
                 </mobi:outputListItem>
             </ui:repeat>
@@ -45,9 +43,7 @@
                 <mobi:outputListItem>
                     <h:commandLink
                             value="#{mmsgs[menuLinks.title]}"
-                            action="#{mobiNavigationController.navigateToExample}">
-                        <f:param name="#{mobiNavigationController.navDestination}"
-                                 value="#{menuLinks.exampleBeanName}"/>
+                            action="#{navigationModel.navigateTo(menuLinks.examplePanelId, menuLinks.exampleBeanName)}">
                     </h:commandLink>
                 </mobi:outputListItem>
             </ui:repeat>
@@ -59,9 +55,7 @@
                 <mobi:outputListItem>
                     <h:commandLink
                             value="#{mmsgs[menuLinks.title]}"
-                            action="#{mobiNavigationController.navigateToExample}">
-                        <f:param name="#{mobiNavigationController.navDestination}"
-                                 value="#{menuLinks.exampleBeanName}"/>
+                            action="#{navigationModel.navigateTo(menuLinks.examplePanelId, menuLinks.exampleBeanName)}">
                     </h:commandLink>
                 </mobi:outputListItem>
             </ui:repeat>
@@ -73,9 +67,7 @@
                 <mobi:outputListItem>
                     <h:commandLink
                             value="#{mmsgs[menuLinks.title]}"
-                            action="#{mobiNavigationController.navigateToExample}">
-                        <f:param name="#{mobiNavigationController.navDestination}"
-                                 value="#{menuLinks.exampleBeanName}"/>
+                            action="#{navigationModel.navigateTo(menuLinks.examplePanelId, menuLinks.exampleBeanName)}">
                     </h:commandLink>
                 </mobi:outputListItem>
             </ui:repeat>

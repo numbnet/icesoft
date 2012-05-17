@@ -28,8 +28,7 @@ import java.io.Serializable;
 @Destination(
         title = "example.input.button.destination.title.short",
         titleExt = "example.input.button.destination.title.long",
-        titleBack = "example.input.button.destination.title.back",
-        contentPath = "/WEB-INF/includes/examples/input/button.xhtml"
+        titleBack = "example.input.button.destination.title.back"
 )
 @Example(
         descriptionPath = "/WEB-INF/includes/examples/input/button-desc.xhtml",
