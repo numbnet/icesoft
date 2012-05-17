@@ -81,4 +81,30 @@ public class BaseLayoutRenderer extends CoreRenderer {
         }
         return oldIndex;
     }
+
+       /**
+     *  returns null if their are no children of type contentPane or no children at all.
+     * If activeIndex is outside of the range of 0 -> number of children -1, then the default
+     * valid value is the first child.
+     * @return  String if get valid clientId from user input of currentId
+     */
+
+     public String findMySelectedClientId(UIComponent parent, String id){
+       System.out.println("trying to find id="+id);
+        int childCount = parent.getChildCount();
+        if (childCount > 0 ){
+            if (null!=id){
+                UIComponent me = parent.findComponent(id);
+                if (null!= me ){
+                    if (null!= me.getClientId()) {
+                        return me.getClientId();
+                    }
+                    else {
+                        return parent.getChildren().get(0).getClientId();
+                    }
+                }
+            }
+        }
+          return null;
+     }
 }
