@@ -171,6 +171,7 @@ ice.ace.Autocompleter.prototype = {
         //Event.observe(this.element, "blur", this.onBlur.bindAsEventListener(this)); //@ jq event #
 		var self = this;
 		ice.ace.jq(this.element).on("blur", function(e) { self.onBlur.call(self, e); });
+		ice.ace.jq(this.element).on("focus", function(e) { self.onFocus.call(self, e); });
         var keyEvent = "keypress";
         if (ice.ace.Autocompleter.Browser.IE || ice.ace.Autocompleter.Browser.WebKit) { //@ custom detection #
             keyEvent = "keyup";
@@ -402,6 +403,22 @@ ice.ace.Autocompleter.prototype = {
         setTimeout(function () { self.hide(); }, 250); //@ self technique #
         this.hasFocus = false;
         this.active = false;
+    },
+
+    onFocus: function(event) {	
+      if (this.element.createTextRange) {  
+       //IE  
+	  this.element.focus();
+       var fieldRange = this.element.createTextRange();  
+       fieldRange.moveStart('character', this.element.value.length);  
+       fieldRange.collapse(false);  
+       fieldRange.select();
+       }  
+      else {
+       this.element.focus();
+       var length = this.element.value.length;  
+       this.element.setSelectionRange(length, length);  
+      } 
     },
 
     // ICE-3830
