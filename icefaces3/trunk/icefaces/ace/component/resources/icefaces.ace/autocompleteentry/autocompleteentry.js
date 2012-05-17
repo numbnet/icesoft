@@ -138,7 +138,7 @@ ice.ace.Autocompleter.prototype = {
                         //    offsetLeft: element.offsetLeft - element.parentNode.offsetLeft});
 						var jqElement = ice.ace.jq(element);
 						var pos = jqElement.offset();
-						ice.ace.jq(update).css({ position: "absolute", top: pos.top + jqElement.height(), left: pos.left, marginTop: 0, marginLeft: 0, width: jqElement.width(), height: 'auto'});
+						ice.ace.jq(update).css({ position: "absolute", top: pos.top + element.offsetHeight, left: pos.left, marginTop: 0, marginLeft: 0, width: jqElement.width(), height: 'auto'});
                         if (ieEngine >= 7) {
                             var savedPos = element.style.position;
                             element.style.position = "relative";
