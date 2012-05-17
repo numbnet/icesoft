@@ -65,7 +65,12 @@ public class ServletFileUpload extends FileUpload {
      */
     public static final boolean isMultipartContent(
             HttpServletRequest request) {
-        if (!"post".equals(request.getMethod().toLowerCase())) {
+        String meth = request.getMethod();
+        //Not all portlet requests return a method.
+        if(meth == null){
+            return false;
+        }
+        if (!"post".equalsIgnoreCase(meth)) {
             return false;
         }
         String contentType = request.getContentType();
