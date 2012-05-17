@@ -258,10 +258,9 @@ public class ListRenderer extends CoreRenderer {
             encodeFooter(context, writer, list);
 
         encodeHiddenFields(context, writer, list);
+        encodeScript(context, writer, list);
 
         writer.endElement(HTML.DIV_ELEM);
-
-        encodeScript(context, writer, list);
     }
 
     private void encodeHiddenFields(FacesContext context, ResponseWriter writer, ACEList list) throws IOException {
