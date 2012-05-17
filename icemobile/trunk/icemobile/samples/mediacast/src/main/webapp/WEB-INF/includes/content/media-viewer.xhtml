@@ -14,55 +14,63 @@
   ~ governing permissions and limitations under the License.
   -->
 
-<ui:fragment xmlns="http://www.w3.org/1999/xhtml"
+<ui:decorate mlns="http://www.w3.org/1999/xhtml"
              xmlns:h="http://java.sun.com/jsf/html"
              xmlns:f="http://java.sun.com/jsf/core"
              xmlns:ui="http://java.sun.com/jsf/facelets"
-             xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
-
-    <mobi:fieldsetGroup styleClass="message-details">
-
-
-        <mobi:fieldsetRow>
-            <label>Comment: </label>
-            <h:outputText
-                    value="#{uploadModel.selectedPhoto.comment}"/>
-        </mobi:fieldsetRow>
+             xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component"
+             template="/WEB-INF/includes/templates/page-template.xhtml">
 
 
-        <mobi:fieldsetRow>
-          <h:panelGroup rendered="#{uploadModel.selectedPhoto.showPhoto}" >
-            <label>Image:</label>
-            <mobi:graphicImage
-                    value="#{uploadModel.selectedPhoto.largePhoto.data}"
-                    styleClass="imageViewer"
-                    style="margin-bottom:10px;"/>
-          </h:panelGroup>
-          <h:panelGroup rendered="#{uploadModel.selectedPhoto.showVideo}" >
-            <label>Video:</label>
-            <mobi:videoPlayer
-                    value="#{uploadModel.selectedPhoto.video.data}"
-                    styleClass="imageViewer"
-                    linkLabel="Play"
-                    style="margin-bottom:10px;"/>
-          </h:panelGroup>
-          <h:panelGroup rendered="#{uploadModel.selectedPhoto.showAudio}" >
-            <label>Audio:</label>
-            <mobi:audioPlayer
-                    value="#{uploadModel.selectedPhoto.audio.data}"
-                    styleClass="imageViewer"
-                    linkLabel="Play"
-                    style="margin-bottom:10px;"/>
-          </h:panelGroup>
-        </mobi:fieldsetRow>
-        <mobi:fieldsetRow>
-            <h:form>
-                <mobi:commandButton value="Delete" buttonType="attention"
-                        style="float:right"
-                        actionListener="#{mediaController.deleteCurrentMedia}"
-                        />
-            </h:form>
-        </mobi:fieldsetRow>
-    </mobi:fieldsetGroup>
+    <ui:define name="title">
+        Viewer
+    </ui:define>
 
-</ui:fragment>
+    <ui:define name="bodyContent">
+        <mobi:fieldsetGroup styleClass="message-details">
+
+
+            <mobi:fieldsetRow>
+                <label>Comment: </label>
+                <h:outputText
+                        value="#{uploadModel.selectedPhoto.comment}"/>
+            </mobi:fieldsetRow>
+
+
+            <mobi:fieldsetRow>
+              <h:panelGroup rendered="#{uploadModel.selectedPhoto.showPhoto}" >
+                <label>Image:</label>
+                <mobi:graphicImage
+                        value="#{uploadModel.selectedPhoto.largePhoto.data}"
+                        styleClass="imageViewer"
+                        style="margin-bottom:10px;"/>
+              </h:panelGroup>
+              <h:panelGroup rendered="#{uploadModel.selectedPhoto.showVideo}" >
+                <label>Video:</label>
+                <mobi:videoPlayer
+                        value="#{uploadModel.selectedPhoto.video.data}"
+                        styleClass="imageViewer"
+                        linkLabel="Play"
+                        style="margin-bottom:10px;"/>
+              </h:panelGroup>
+              <h:panelGroup rendered="#{uploadModel.selectedPhoto.showAudio}" >
+                <label>Audio:</label>
+                <mobi:audioPlayer
+                        value="#{uploadModel.selectedPhoto.audio.data}"
+                        styleClass="imageViewer"
+                        linkLabel="Play"
+                        style="margin-bottom:10px;"/>
+              </h:panelGroup>
+            </mobi:fieldsetRow>
+            <mobi:fieldsetRow>
+                <h:form>
+                    <mobi:commandButton value="Delete" buttonType="attention"
+                            style="float:right"
+                            actionListener="#{mediaController.deleteCurrentMedia}"
+                            />
+                </h:form>
+            </mobi:fieldsetRow>
+        </mobi:fieldsetGroup>
+    </ui:define>
+
+</ui:decorate>

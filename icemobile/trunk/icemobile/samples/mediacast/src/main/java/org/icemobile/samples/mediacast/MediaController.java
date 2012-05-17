@@ -229,7 +229,7 @@ public class MediaController implements Serializable {
             // navigate to details page.
             NavigationModel navigationModel = (NavigationModel)
                     FacesUtils.getManagedBean(NavigationModel.BEAN_NAME);
-            navigationModel.goForward(NavigationModel.DESTINATION_VIEWER.getKey());
+            navigationModel.goForward("media");
         }
         return null;
     }
