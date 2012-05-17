@@ -39,14 +39,8 @@
         <h:form id="form">
             <h:panelGroup style="padding: 0.5em;" layout="block">
                 <style type="text/css">
-                    /* To layout lists side by side if space is available */
-                    *+html .inlineList {
-                        /* IE7 inline block hack */
-                        display:inline;
-                    }
-
                     .inlineList {
-                        display: inline-block;
+                        float:left;
                         font-size: 80% !important;
                         width:33%;
                         vertical-align: top;
@@ -78,6 +72,8 @@
                           selection="true"
                           controlsEnabled="true"
                           dragging="false" />
+
+                <div style="clear:left;"></div>
             </h:panelGroup>
         </h:form>
     </ui:define>
