@@ -70,32 +70,32 @@ public class DataTableGrouping extends ComponentExampleImpl<DataTableGrouping> i
     
     /////////////---- METHOD INVOCATION VIA VIEW EL
     public double groupTotal(String groupProperty, String valueProperty, Object i) {
-//        // Fix for bugged method invocation in early TC7 releases
-//        int index = (Integer) i;
-//
-//        double total = 0;
-//        boolean nextRowInGroup = false;
-//        FacesContext context = FacesContext.getCurrentInstance();
-//        Application application = context.getApplication();
-//
-//        int currentIndex = table.getRowIndex();
-//        table.setRowIndex(index);
-//
-//        Object groupValue = application.evaluateExpressionGet(context, "#{"+groupProperty+"}", Object.class);
-//
-//        do {
-//            total += application.evaluateExpressionGet(context, "#{"+valueProperty+"}", Double.class);
-//
-//            table.setRowIndex(--index);
-//
-//            Object obj = application.evaluateExpressionGet(context, "#{"+groupProperty+"}", Object.class);
-//            if (table.isRowAvailable() && groupValue.equals(obj))
-//                nextRowInGroup = true;
-//            else
-//                nextRowInGroup = false;
-//        } while (nextRowInGroup);
-//
-//        table.setRowIndex(currentIndex);
+        // Fix for bugged method invocation in early TC7 releases
+        int index = (Integer) i;
+
+        double total = 0;
+        boolean nextRowInGroup = false;
+        FacesContext context = FacesContext.getCurrentInstance();
+        Application application = context.getApplication();
+
+        int currentIndex = table.getRowIndex();
+        table.setRowIndex(index);
+
+        Object groupValue = application.evaluateExpressionGet(context, "#{"+groupProperty+"}", Object.class);
+
+        do {
+            total += application.evaluateExpressionGet(context, "#{"+valueProperty+"}", Double.class);
+
+            table.setRowIndex(--index);
+
+            Object obj = application.evaluateExpressionGet(context, "#{"+groupProperty+"}", Object.class);
+            if (table.isRowAvailable() && groupValue.equals(obj))
+                nextRowInGroup = true;
+            else
+                nextRowInGroup = false;
+        } while (nextRowInGroup);
+
+        table.setRowIndex(currentIndex);
         return 0.0;
     }
 }
