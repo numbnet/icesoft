@@ -59,17 +59,17 @@ if (!window.ice.mobile) {
         namespace.camera = function(id, attr)  {
 	    alert('into camera');
             var result = window.ICEcamera.shootPhoto(id ,attr);					
-            ice.addHidden(id, id + "-file", "" + result);
+            ice.addHidden(id, id, "" + result, 'file');
         }
 
         namespace.camcorder = function(id, attr)  {
             var result = window.ICEvideo.shootVideo(id + '-thumb', attr);
-            ice.addHidden(id, id + "-file", "" + result);
+            ice.addHidden(id, id, "" + result, 'file');
         }
 
         namespace.microphone = function(id, attr)  {
             var result = window.ICEaudio.toggleMic(attr);
-            ice.addHidden(id, id + "-file", "" + result);
+            ice.addHidden(id, id, "" + result, 'file');
         }
 
         namespace.play = function(id)  {
