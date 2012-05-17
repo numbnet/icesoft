@@ -59,7 +59,9 @@ import javax.faces.event.ActionEvent;
 	                isDefault = true,
                     exampleBeanName = AutoCompleteEntryBean.BEAN_NAME),
 	        @MenuLink(title = "menu.ace.autocompleteentry.subMenu.complex",
-                    exampleBeanName = AutoCompleteEntryComplexBean.BEAN_NAME)
+                    exampleBeanName = AutoCompleteEntryComplexBean.BEAN_NAME),
+	        @MenuLink(title = "menu.ace.autocompleteentry.subMenu.lazy",
+                    exampleBeanName = AutoCompleteEntryLazyBean.BEAN_NAME)
     }
 )
 @ManagedBean(name= AutoCompleteEntryBean.BEAN_NAME)

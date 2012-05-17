@@ -34,37 +34,37 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 
+import javax.faces.event.ValueChangeEvent;
+
 @ComponentExample(
         parent = AutoCompleteEntryBean.BEAN_NAME,
-        title = "example.ace.autocompleteentry.complex.title",
-        description = "example.ace.autocompleteentry.complex.description",
-        example = "/resources/examples/ace/autocompleteentry/autoCompleteEntryComplex.xhtml"
+        title = "example.ace.autocompleteentry.lazy.title",
+        description = "example.ace.autocompleteentry.lazy.description",
+        example = "/resources/examples/ace/autocompleteentry/autoCompleteEntryLazy.xhtml"
 )
 @ExampleResources(
         resources ={
             // xhtml
             @ExampleResource(type = ResourceType.xhtml,
-                    title="autoCompleteEntryComplex.xhtml",
+                    title="autoCompleteEntryLazy.xhtml",
                     resource = "/resources/examples/ace/autocompleteentry/autoCompleteEntryComplex.xhtml"),
             // Java Source
             @ExampleResource(type = ResourceType.java,
-                    title="AutoCompleteEntryComplexBean.java",
+                    title="AutoCompleteEntryLazyBean.java",
                     resource = "/WEB-INF/classes/org/icefaces/samples/showcase"+
-                    "/example/ace/autocompleteentry/AutoCompleteEntryComplexBean.java")
+                    "/example/ace/autocompleteentry/AutoCompleteEntryLazyBean.java")
         }
 )
-@ManagedBean(name= AutoCompleteEntryComplexBean.BEAN_NAME)
+@ManagedBean(name= AutoCompleteEntryLazyBean.BEAN_NAME)
 @CustomScoped(value = "#{window}")
-public class AutoCompleteEntryComplexBean extends ComponentExampleImpl<AutoCompleteEntryComplexBean> implements Serializable
+public class AutoCompleteEntryLazyBean extends ComponentExampleImpl<AutoCompleteEntryLazyBean> implements Serializable
 {
-    public static final String BEAN_NAME = "autoCompleteEntryComplexBean";
+    public static final String BEAN_NAME = "autoCompleteEntryLazyBean";
 
-    public AutoCompleteEntryComplexBean() 
+    public AutoCompleteEntryLazyBean() 
     {
-        super(AutoCompleteEntryComplexBean.class);
+        super(AutoCompleteEntryLazyBean.class);
     }
-    
-	public List<City> cities;
 	
 	private String selectedText = null; // Text the user is typing in
 	public String getSelectedText() { return selectedText; }
@@ -73,11 +73,23 @@ public class AutoCompleteEntryComplexBean extends ComponentExampleImpl<AutoCompl
 	public void submitText(ActionEvent event) {
 
 	}
-
-    public List<City> getCities(){
-		if (cities == null) {
-			cities = AutoCompleteEntryData.getCities();
+	
+	private List<City> cities = new ArrayList<City>();
+	
+	public List<City> getCities() {
+		return cities;
+	}
+	
+	public void valueChangeEventHandler(ValueChangeEvent event) {
+		cities.clear();
+		String filter = event.getNewValue() != null ? (String) event.getNewValue() : "";
+		for (City city : AutoCompleteEntryData.getCities()) {
+			String country = city.getCountry();
+			if (country != null) {
+				if (country.toLowerCase().startsWith(filter)) {
+					cities.add(city);
+				}
+			}
 		}
-        return cities;
-    }
+	}
 }
