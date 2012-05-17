@@ -50,7 +50,7 @@
     border-top: 1px solid #444;
 }
 
-.mobi-pagePanel-body > div, .mobi-pagePanel-body-nofooter > div {
+.mobi-pagePanel-body, .mobi-pagePanel-body-nofooter {
     background: #c8c8c8 url('pinstripes.png');
     min-height: 640px;
     padding-bottom: 50px;
