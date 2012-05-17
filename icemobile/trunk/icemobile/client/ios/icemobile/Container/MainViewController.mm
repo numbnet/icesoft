@@ -356,6 +356,7 @@ NSLog(@"Warning: handleResponse not implemented for ICEmobile Container");
     }
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:
             [NSURL URLWithString:url] ]; 
+    [self setCustomCookie:request];
     [request setCachePolicy:NSURLRequestReloadIgnoringLocalCacheData];
     [request setValue:self.userAgent forHTTPHeaderField:@"User-Agent"];
     self.currentRequest = request;
