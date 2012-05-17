@@ -74,7 +74,7 @@ public class GMapMarker extends UIPanel{
                 JavascriptContext.addJavascriptCall(context, "Ice.GoogleMap." +
                         "addMarker('"+ this.getParent().getClientId(context)+
                         "', '"+ getClientId(context)+"', " +
-                      "'new google.maps.Marker({map:map, position:new google.maps.LatLng("+ currentLat+","+ currentLon +")})');");                
+                      "'new google.maps.Marker({map:map, position:new google.maps.LatLng("+ currentLat+","+ currentLon +"), draggable:"+ isDraggable() +"})');");                
                 
     	    }
     	    oldLatitude = currentLat;
