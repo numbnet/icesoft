@@ -142,8 +142,7 @@ public class MicrophoneRenderer extends Renderer {
         }
         String script;
         if (isAuxUpload)  {
-            script = Utils.getICEmobileSXScript("microphone",
-                    clientId + "_mic");
+            script = Utils.getICEmobileSXScript("microphone", clientId);
         } else {
             script = writeJSCall(clientId, maxtime).toString();
         }
