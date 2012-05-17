@@ -47,7 +47,7 @@ public class Menu<T> implements ContextBase {
             MenuLink menuLink;
             for (org.icemobile.samples.mobileshowcase.view.metadata.annotation.MenuLink link : menuExample) {
                 menuLink = new MenuLink(link.title(), link.isDefault(),
-                        link.isNew(), link.isDisabled(), link.exampleBeanName());
+                        link.isNew(), link.isDisabled(), link.exampleBeanName(), link.examplePanelId());
                 menuLinks.add(menuLink);
                 if (menuLink.isDefault()) {
                     defaultExample = menuLink;

@@ -78,8 +78,7 @@ public class ExampleImpl<T> implements Example, ExampleResources, ContextBase {
             destination = new org.icemobile.samples.mobileshowcase.view.navigation.Destination(
                     destinationAnnotation.title(),
                     destinationAnnotation.titleExt(),
-                    destinationAnnotation.titleBack(),
-                    destinationAnnotation.contentPath());
+                    destinationAnnotation.titleBack());
         }
         // build up the separate lists of ExampleResources assigned to this class.
         if (parentClass.isAnnotationPresent(

@@ -40,8 +40,7 @@ import java.util.UUID;
 @Destination(
         title = "example.media.audio.destination.title.short",
         titleExt = "example.media.audio.destination.title.long",
-        titleBack = "example.media.audio.destination.title.back",
-        contentPath = "/WEB-INF/includes/examples/media/audio.xhtml"
+        titleBack = "example.media.audio.destination.title.back"
 )
 @Example(
         descriptionPath = "/WEB-INF/includes/examples/media/audio-desc.xhtml",

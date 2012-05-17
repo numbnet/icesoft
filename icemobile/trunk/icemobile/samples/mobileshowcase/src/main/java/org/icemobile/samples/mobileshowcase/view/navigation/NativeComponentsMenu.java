@@ -35,15 +35,20 @@ import java.io.Serializable;
         title = "menu.native.title",
         menuLinks = {
                 @MenuLink(title = "menu.native.camcorder.title",
-                        exampleBeanName = CamcorderBean.BEAN_NAME),
+                        exampleBeanName = CamcorderBean.BEAN_NAME,
+                        examplePanelId = "camcorder"),
                 @MenuLink(title = "menu.native.camera.title",
-                        exampleBeanName = CameraBean.BEAN_NAME),
+                        exampleBeanName = CameraBean.BEAN_NAME,
+                        examplePanelId = "camera"),
                 @MenuLink(title = "menu.native.microphone.title",
-                        exampleBeanName = MicrophoneBean.BEAN_NAME),
+                        exampleBeanName = MicrophoneBean.BEAN_NAME,
+                        examplePanelId = "microphone"),
                 @MenuLink(title = "menu.native.notification.title",
-                        exampleBeanName = NotificationBean.BEAN_NAME),
+                        exampleBeanName = NotificationBean.BEAN_NAME,
+                        examplePanelId = "notification"),
                 @MenuLink(title = "menu.native.qrcode.title",
-                        exampleBeanName = QrCodeBean.BEAN_NAME)
+                        exampleBeanName = QrCodeBean.BEAN_NAME,
+                        examplePanelId = "qrcode")
         })
 @ManagedBean(name = NativeComponentsMenu.BEAN_NAME)
 @ApplicationScoped

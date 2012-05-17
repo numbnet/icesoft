@@ -1,158 +1,124 @@
-/*
- * Copyright 2004-2012 ICEsoft Technologies Canada Corp.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the
- * License. You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an "AS
- * IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
- * express or implied. See the License for the specific language
- * governing permissions and limitations under the License.
- */
-
 package org.icemobile.samples.mobileshowcase.view.navigation;
 
+import org.icefaces.util.JavaScriptRunner;
+import org.icemobile.samples.mobileshowcase.util.FacesUtils;
 import org.icemobile.samples.mobileshowcase.view.metadata.context.ExampleImpl;
 
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
 import java.io.Serializable;
-import java.util.HashMap;
 import java.util.Stack;
 
 /**
- *
+ * Navigation stack test for using a content Stack component.  Normally only the
+ * selectedPanel instance variable would be needed to manipulate the selected
+ * panel in the panelStack.  But in this example we want to also keep have
+ * the notion of a back button on a small display which requires us to also
+ * keep a stack of recently visited panel id's.
  */
-@org.icemobile.samples.mobileshowcase.view.metadata.annotation.Destination(
-        title = "content.home.title",
-        titleBack = "content.home.back.title",
-        contentPath = "/WEB-INF/includes/navigation/menu.xhtml"
-)
-
-@ManagedBean(name="mobiNavigationModel")
+@ManagedBean(name = NavigationModel.BEAN_NAME)
 @SessionScoped
 public class NavigationModel implements Serializable {
 
-    // stack of currently visited panels.
-    private Stack<Destination> navigationStack;
+    public static final String BEAN_NAME = "navigationModel";
 
-    // the previously visited page if any.
-    private Destination backDestination;
+    // currently selected panel and stack to keep track of history
+    private String selectedPanel;
+    private Stack<String> history = new Stack<String>();
 
-    // example resource path to load
-    private String currentExampleResource;
-
-    // reference to current example bean
-    private ExampleImpl currentExampleBean;
-
-    // Static list of destinations not defined by annotations.
+    // Destination stores title information for display purposes.
+    private Destination selectedDestination;
+    // Selected example represents the currently selected example bean.
+    private ExampleImpl selectedExample;
+    // home destination, if stack is empty
     public static final Destination DESTINATION_HOME =
             new Destination(
-                "content.home.title", "content.home.title", "content.home.title",
-                "/WEB-INF/includes/navigation/splash.xhtml");
-
-    public static final Destination DESTINATION_MENU =
-            new Destination(
-                "content.home.back.title", "content.home.back.title", "content.home.back.title",
-                "/WEB-INF/includes/navigation/menu.xhtml");
-
-    private static HashMap<String, Destination> destinationMap =
-            new HashMap<String, Destination>(2);
-
-    static {
-        destinationMap.put(DESTINATION_HOME.toString(), DESTINATION_HOME);
-    }
-
-    public NavigationModel() {
-        navigationStack = new Stack<Destination>();
-        if (getClass().isAnnotationPresent(
-                org.icemobile.samples.mobileshowcase.view.metadata.annotation.Destination.class)) {
-            org.icemobile.samples.mobileshowcase.view.metadata.annotation.Destination destinationAnnotation =
-                    getClass().getAnnotation(org.icemobile.samples.mobileshowcase.view.metadata.annotation.Destination.class);
-            navigationStack.add(new Destination(
-                    destinationAnnotation.title(),
-                    destinationAnnotation.titleExt(),
-                    destinationAnnotation.titleBack(),
-                    destinationAnnotation.contentPath()));
-        }
-    }
+                    "content.home.title", "content.home.title", "content.home.title");
 
     /**
-     * Navigated to a known navigation location in the panel stack.  If the
-     * previous destination does not equal the next destination it is added
-     * to the navigation stack.
+     * Navigate to the selectedPanelId as well as save a reference to the current
+     * Example bean defined by beanName.
      *
-     * @param newDestination new destination to navigate to.
+     * @param selectedPanelId panelId to to make visible
+     * @param beanName        bean name of the currently selected example
+     * @return always null, no jsf navigation.
      */
-    public void goForward(Destination newDestination) {
-        backDestination = navigationStack.peek();
-        if (!newDestination.equals(backDestination)) {
-            navigationStack.push(newDestination);
+    public String navigateTo(String selectedPanelId, String beanName) {
+        // add previous location to history.
+        history.push(this.selectedPanel);
+        this.selectedPanel = selectedPanelId;
+        // assign the selected example
+        selectedExample = (ExampleImpl) FacesUtils.getManagedBean(beanName);
+        if (selectedExample != null) {
+            selectedDestination = selectedExample.getDestination();
+        } else {
+            selectedDestination = DESTINATION_HOME;
         }
-    }
-
-    public void goForward(String key) {
-        backDestination = navigationStack.peek();
-        navigationStack.push(destinationMap.get(key));
+        scrollToTopOfPage();
+        return null;
     }
 
     /**
-     * Navigates to the previously viewed
+     * Checks to see if back navigation is possible.
+     *
+     * @return true if back navigation is possible, otherwise false.
      */
-    public void goBack() {
-        navigationStack.pop();
-        if (navigationStack.size() > 1) {
-            backDestination = navigationStack.get(navigationStack.size() - 2);
-        } else {
-            backDestination = navigationStack.firstElement();
+    public boolean isCanGoBack() {
+        return !history.isEmpty();
+    }
+
+    /**
+     * Checks to see if the history stack has a state that can be restored.  If
+     * true the selected panel is set accordingly.
+     *
+     * @return null, no JSF navigation.
+     */
+    public String goBack() {
+        if (!history.isEmpty()) {
+            selectedPanel = history.pop();
         }
+        if (history.isEmpty()) {
+            selectedDestination = DESTINATION_HOME;
+        }
+        scrollToTopOfPage();
+        return null;
     }
 
-    public boolean canGoBack() {
-        return navigationStack != null && navigationStack.size() > 1;
+    /**
+     * Gets the currently selected panel.
+     *
+     * @return selected panel.
+     */
+    public String getSelectedPanel() {
+        return selectedPanel;
     }
 
-    public Destination getCurrentSmallViewDestination() {
-        return navigationStack.peek();
+    public void setSelectedPanel(String selectedPanel) {
+        this.selectedPanel = selectedPanel;
     }
 
-    public Destination getCurrentLargeViewDestination() {
-
-        Destination currentDestination = navigationStack.peek();
-        // check for handheld content load
-        if (currentDestination.getContentPath().equals(
-                DESTINATION_MENU.getContentPath())){
+    /**
+     * Gets the currently selected destination, if none then the home destination
+     * is returned by default.
+     *
+     * @return gets the selected destination, if null, the DESTINATION_HOME
+     *         constant is resturned.
+     */
+    public Destination getSelectedDestination() {
+        if (selectedDestination != null) {
+            return selectedDestination;
+        } else {
             return DESTINATION_HOME;
         }
-        return navigationStack.peek();
     }
 
-    public Destination getBackDestination() {
-        return backDestination;
+    public ExampleImpl getSelectedExample() {
+        return selectedExample;
     }
 
-    public String getCurrentExampleResource() {
-        return currentExampleResource;
-    }
-
-    public void setCurrentExampleResource(String currentExampleResource) {
-        this.currentExampleResource = currentExampleResource;
-    }
-
-    public ExampleImpl getCurrentExampleBean() {
-        return currentExampleBean;
-    }
-
-    public void setCurrentExampleBean(ExampleImpl currentExampleBean) {
-        this.currentExampleBean = currentExampleBean;
-    }
-
-    public Destination getDestinationHome() {
-        return DESTINATION_HOME;
+    // make sure we scroll to the top of the page.
+    private void scrollToTopOfPage() {
+        JavaScriptRunner.runScript(FacesContext.getCurrentInstance(), "javascript:scroll(0,0);");
     }
 }

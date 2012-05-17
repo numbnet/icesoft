@@ -43,8 +43,7 @@ import java.util.logging.Logger;
 @Destination(
         title = "example.media.image.destination.title.short",
         titleExt = "example.media.image.destination.title.long",
-        titleBack = "example.media.image.destination.title.back",
-        contentPath = "/WEB-INF/includes/examples/media/image.xhtml"
+        titleBack = "example.media.image.destination.title.back"
 )
 @Example(
         descriptionPath = "/WEB-INF/includes/examples/media/image-desc.xhtml",

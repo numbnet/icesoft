@@ -37,8 +37,7 @@ import java.util.UUID;
 @Destination(
         title = "example.media.video.destination.title.short",
         titleExt = "example.media.video.destination.title.long",
-        titleBack = "example.media.video.destination.title.back",
-        contentPath = "/WEB-INF/includes/examples/media/video.xhtml"
+        titleBack = "example.media.video.destination.title.back"
 )
 @Example(
         descriptionPath = "/WEB-INF/includes/examples/media/video-desc.xhtml",

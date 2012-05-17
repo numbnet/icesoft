@@ -29,12 +29,9 @@ public class Destination implements Serializable {
 
     private String titleBack;
 
-    private String contentPath;
-
-    public Destination(String title, String titleExt, String titleBack, String contentPath) {
+    public Destination(String title, String titleExt, String titleBack) {
         this.title = title;
         this.titleBack = titleBack;
-        this.contentPath = contentPath;
         this.titleExt = titleExt;
     }
 
@@ -44,10 +41,6 @@ public class Destination implements Serializable {
 
     public String getTitleBack() {
         return titleBack;
-    }
-
-    public String getContentPath() {
-        return contentPath;
     }
 
     public String getTitleExt() {

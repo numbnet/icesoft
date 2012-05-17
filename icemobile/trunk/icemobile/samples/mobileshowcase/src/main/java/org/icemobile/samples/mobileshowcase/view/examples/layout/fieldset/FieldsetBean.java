@@ -29,8 +29,7 @@ import java.io.Serializable;
 @Destination(
         title = "example.layout.fieldset.destination.title.short",
         titleExt = "example.layout.fieldset.destination.title.long",
-        titleBack = "example.layout.fieldset.destination.title.back",
-        contentPath = "/WEB-INF/includes/examples/layout/fieldset.xhtml"
+        titleBack = "example.layout.fieldset.destination.title.back"
 )
 @Example(
         descriptionPath = "/WEB-INF/includes/examples/layout/fieldset-desc.xhtml",

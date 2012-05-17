@@ -50,8 +50,7 @@ import java.util.logging.Logger;
 @Destination(
         title = "example.device.notification.destination.title.short",
         titleExt = "example.device.notification.destination.title.long",
-        titleBack = "example.device.notification.destination.title.back",
-        contentPath = "/WEB-INF/includes/examples/device/notification.xhtml"
+        titleBack = "example.device.notification.destination.title.back"
 )
 @Example(
         descriptionPath = "/WEB-INF/includes/examples/device/notification-desc.xhtml",

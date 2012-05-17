@@ -36,4 +36,6 @@ public @interface MenuLink {
     boolean isNew() default false;
 
     String exampleBeanName();
+
+    String examplePanelId() default "";
 }

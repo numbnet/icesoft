@@ -28,8 +28,7 @@ import java.util.Date;
 @Destination(
         title = "example.input.input.destination.title.short",
         titleExt = "example.input.input.destination.title.long",
-        titleBack = "example.input.input.destination.title.back",
-        contentPath = "/WEB-INF/includes/examples/input/input.xhtml"
+        titleBack = "example.input.input.destination.title.back"
 )
 @Example(
         descriptionPath = "/WEB-INF/includes/examples/input/input-desc.xhtml",

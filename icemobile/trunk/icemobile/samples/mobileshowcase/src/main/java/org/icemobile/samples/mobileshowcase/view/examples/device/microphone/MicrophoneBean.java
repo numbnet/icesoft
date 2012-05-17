@@ -47,8 +47,7 @@ import java.util.logging.Logger;
 @Destination(
         title = "example.device.microphone.destination.title.short",
         titleExt = "example.device.microphone.destination.title.long",
-        titleBack = "example.device.microphone.destination.title.back",
-        contentPath = "/WEB-INF/includes/examples/device/microphone.xhtml"
+        titleBack = "example.device.microphone.destination.title.back"
 )
 @Example(
         descriptionPath = "/WEB-INF/includes/examples/device/microphone-desc.xhtml",

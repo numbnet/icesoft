@@ -30,8 +30,7 @@ import java.util.ArrayList;
 @Destination(
         title = "example.layout.carousel.destination.title.short",
         titleExt = "example.layout.carousel.destination.title.long",
-        titleBack = "example.layout.carousel.destination.title.back",
-        contentPath = "/WEB-INF/includes/examples/layout/carousel.xhtml"
+        titleBack = "example.layout.carousel.destination.title.back"
 )
 @Example(
         descriptionPath = "/WEB-INF/includes/examples/layout/carousel-desc.xhtml",

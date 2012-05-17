@@ -39,8 +39,7 @@ import java.util.logging.Logger;
 @Destination(
         title = "example.device.camera.destination.title.short",
         titleExt = "example.device.camera.destination.title.long",
-        titleBack = "example.device.camera.destination.title.back",
-        contentPath = "/WEB-INF/includes/examples/device/camera.xhtml"
+        titleBack = "example.device.camera.destination.title.back"
 )
 @Example(
         descriptionPath = "/WEB-INF/includes/examples/device/camera-desc.xhtml",

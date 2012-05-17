@@ -33,11 +33,14 @@ import java.io.Serializable;
         title = "menu.media.title",
         menuLinks = {
                 @MenuLink(title = "menu.media.audio.title",
-                        exampleBeanName = AudioBean.BEAN_NAME),
+                        exampleBeanName = AudioBean.BEAN_NAME,
+                        examplePanelId = "audio"),
                 @MenuLink(title = "menu.media.image.title",
-                        exampleBeanName = ImageBean.BEAN_NAME),
+                        exampleBeanName = ImageBean.BEAN_NAME,
+                        examplePanelId = "image"),
                 @MenuLink(title = "menu.media.video.title",
-                        exampleBeanName = VideoBean.BEAN_NAME)
+                        exampleBeanName = VideoBean.BEAN_NAME,
+                        examplePanelId = "video")
         })
 @ManagedBean(name = MediaPlaybackMenu.BEAN_NAME)
 @ApplicationScoped

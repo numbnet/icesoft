@@ -36,17 +36,23 @@ import java.io.Serializable;
         title = "menu.layout.title",
         menuLinks = {
                 @MenuLink(title = "menu.layout.carousel.title",
-                        exampleBeanName = CarouselBean.BEAN_NAME),
+                        exampleBeanName = CarouselBean.BEAN_NAME,
+                        examplePanelId = "carousel"),
                 @MenuLink(title = "menu.layout.theming.title",
-                        exampleBeanName = SkinBean.BEAN_NAME),
+                        exampleBeanName = SkinBean.BEAN_NAME,
+                        examplePanelId = "theme"),
                 @MenuLink(title = "menu.layout.fieldset.title",
-                        exampleBeanName = FieldsetBean.BEAN_NAME),
+                        exampleBeanName = FieldsetBean.BEAN_NAME,
+                        examplePanelId = "fieldset"),
                 @MenuLink(title = "menu.layout.list.title",
-                        exampleBeanName = ListBean.BEAN_NAME),
+                        exampleBeanName = ListBean.BEAN_NAME,
+                        examplePanelId = "list"),
                 @MenuLink(title = "menu.layout.panelConfirmation.title",
-                        exampleBeanName = PanelConfirmation.BEAN_NAME),
+                        exampleBeanName = PanelConfirmation.BEAN_NAME,
+                        examplePanelId = "panelconfirmation"),
                 @MenuLink(title = "menu.layout.panelpopup.title",
-                        exampleBeanName = PanelPopupBean.BEAN_NAME)
+                        exampleBeanName = PanelPopupBean.BEAN_NAME,
+                        examplePanelId = "panelpopup")
         })
 @ManagedBean(name = LayoutAndNavigationMenu.BEAN_NAME)
 @ApplicationScoped

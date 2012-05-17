@@ -27,8 +27,7 @@ import java.io.Serializable;
 @Destination(
         title = "example.layout.panelpopup.destination.title.short",
         titleExt = "example.layout.panelpopup.destination.title.long",
-        titleBack = "example.layout.panelpopup.destination.title.back",
-        contentPath = "/WEB-INF/includes/examples/layout/panelpopup.xhtml"
+        titleBack = "example.layout.panelpopup.destination.title.back"
 )
 @Example(
         descriptionPath = "/WEB-INF/includes/examples/layout/panelpopup-desc.xhtml",
