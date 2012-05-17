@@ -141,7 +141,9 @@ public class AutoCompleteEntryRenderer extends InputRenderer {
     }
 
     public void encodeChildren(FacesContext facesContext, UIComponent uiComponent) throws IOException {
+		ResponseWriter writer = facesContext.getResponseWriter();
         AutoCompleteEntry autoCompleteEntry = (AutoCompleteEntry) uiComponent;
+		String clientId = autoCompleteEntry.getClientId(facesContext);
 		
 		if (autoCompleteEntry.getValue() != null) {
             if (autoCompleteEntry.hasChanged()) {
@@ -149,7 +151,10 @@ public class AutoCompleteEntryRenderer extends InputRenderer {
                 autoCompleteEntry.setChangedComponentId(null);
             }
         } else {
+            writer.startElement("div", null);
+			writer.writeAttribute("id", clientId + "update", null);
 			encodeDynamicScript(facesContext, autoCompleteEntry, "");
+			writer.endElement("div");
 		}
     }
 
