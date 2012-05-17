@@ -151,16 +151,16 @@ ice.ace.List.prototype.dragToHandler = function(event, ui) {
 ice.ace.List.prototype.setupControls = function() {
     var self = this;
 
-    this.element
-            .off('mouseenter').on('mouseenter', '.if-list-ctrls:first .if-list-ctrl', function(e) {
+    this.element.find('.if-list-ctrls:first .if-list-ctrl')
+            .off('mouseenter').on('mouseenter', function(e) {
                 var ctrl = e.currentTarget;
                 ice.ace.jq(ctrl).addClass('ui-state-hover');
             })
-            .off('mouseleave').on('mouseleave', '.if-list-ctrls:first .if-list-ctrl', function(e) {
+            .off('mouseleave').on('mouseleave', function(e) {
                 var ctrl = e.currentTarget;
                 ice.ace.jq(ctrl).removeClass('ui-state-hover');
             })
-            .off('click').on('click', '.if-list-ctrls:first .if-list-ctrl', function(e) { self.controlClickHandler.call(self, e); });
+            .off('click').on('click', function(e) { self.controlClickHandler.call(self, e); });
 };
 
 ice.ace.List.prototype.controlClickHandler = function(e) {

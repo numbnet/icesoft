@@ -39,7 +39,12 @@
         <h:form id="form">
             <h:panelGroup style="padding: 0.5em;" layout="block">
                 <style type="text/css">
-                        /* To layout lists side by side if space is available */
+                    /* To layout lists side by side if space is available */
+                    *+html .inlineList {
+                        /* IE7 inline block hack */
+                        display:inline;
+                    }
+
                     .inlineList {
                         display: inline-block;
                         font-size: 80% !important;
