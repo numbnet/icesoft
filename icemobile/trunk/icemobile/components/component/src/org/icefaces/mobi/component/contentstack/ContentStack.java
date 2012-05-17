@@ -18,7 +18,6 @@ package org.icefaces.mobi.component.contentstack;
 
 import org.icefaces.mobi.api.ContentPaneController;
 
-import javax.annotation.PostConstruct;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
@@ -27,45 +26,19 @@ public class ContentStack extends ContentStackBase implements ContentPaneControl
 
      private String selectedId;
 
+
      public ContentStack() {
          super();
      }
      /**
-     * method is required by ContentPaneController interface
-     * returns null if their are no children of type contentPane or no children at all.
-     * If activeIndex is outside of the range of 0 -> number of children -1, then the default
-     * valid value is the first child.
-     * @return
+     * method is required by ContentPaneController interface no error checking as
+     * component is not in the tree
      */
      public String getSelectedId(){
-         return this.selectedId;
-     }
-
-     @PostConstruct
-     public void init(){
-        this.findMySelectedId();
-     }
-
-     public void findMySelectedId(){
-        int childCount = getChildCount();
-        if (childCount > 0 ){
-            String id = getCurrentId();
-            if (null!=id){
-                UIComponent uiC = findComponent(id);
-                if (null!= uiC ){
-                    if (null!= uiC.getClientId()) {
-                        this.selectedId = uiC.getClientId();
-                    }
-                    else {
-                        this.selectedId = uiC.getChildren().get(0).getClientId();
-                    }
-                }
-            }
-        }
-        else {
-          this.selectedId= null;
-        }
+         return getCurrentId();
      }
 
 
 }
+
+

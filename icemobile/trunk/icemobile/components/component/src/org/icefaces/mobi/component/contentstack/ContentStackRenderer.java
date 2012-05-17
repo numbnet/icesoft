@@ -39,8 +39,6 @@ public class ContentStackRenderer extends BaseLayoutRenderer {
          writer.writeAttribute(HTML.ID_ATTR, clientId, HTML.ID_ATTR);
                // apply default style class for content-stack
          StringBuilder styleClass = new StringBuilder(ContentStack.CONTENT_WRAPPER_CLASS);
-
-         container.findMySelectedId();
                // user specified style class
      /*    String userDefinedClass = container.getStyleClass();
          if (userDefinedClass != null && userDefinedClass.length() > 0){

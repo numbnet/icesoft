@@ -43,8 +43,10 @@ public class TabSet extends TabSetBase implements ContentPaneController {
      private boolean updatePropScriptTag = false;
      private String selectedId;
 
-     public void setSelectedId(String selectedIn){
-         this.selectedId=selectedIn;
+     @Override
+     public void setTabIndex(int index){
+          super.setTabIndex(index);
+          this.findMySelectedId();
      }
      public String getSelectedId(){
         return this.selectedId;
@@ -55,23 +57,23 @@ public class TabSet extends TabSetBase implements ContentPaneController {
      }
 
      public void findMySelectedId(){
+        this.selectedId = null;
         int childCount = getChildCount();
         if (childCount > 0 ){
             int index = getTabIndex();
             if (index< 0 || index > childCount){
                 index = 0;
             }
-            String id = getChildren().get(index).getId();
-            UIComponent selectedComp = this.findComponent(id);
+            this.selectedId = getChildren().get(index).getId();
+      /*      UIComponent selectedComp = this.findComponent(id);
             FacesContext facesContext = FacesContext.getCurrentInstance();
             String panelClientId = selectedComp.getClientId(facesContext);
             //for tagHandler do I need to ensure all children are of type ContentPane here??
             if (null!=panelClientId){
                 this.selectedId =  panelClientId;
                 return;
-            }
+            } */
         }
-        this.selectedId = null;
      }
       public void broadcast(FacesEvent event)
             throws AbortProcessingException {

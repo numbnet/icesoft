@@ -50,8 +50,10 @@ public class Accordion extends AccordionBase implements ContentPaneController {
          super();
      }
 
-     public void setSelectedId(String selectIn){
-         this.selectedId = selectIn;
+     @Override
+     public void setActiveIndex(int index){
+          super.setActiveIndex(index);
+          this.findMySelectedId();
      }
 
      public String getSelectedId(){
@@ -63,25 +65,26 @@ public class Accordion extends AccordionBase implements ContentPaneController {
      }
 
      public void findMySelectedId(){
+        this.selectedId = null;
         int childCount = getChildCount();
         if (childCount > 0 ){
             int index = getActiveIndex();
             if (index< 0 || index > childCount){
                 index = 0;
             }
-            String id = getChildren().get(index).getId();
-            UIComponent selectedComp = this.findComponent(id);
+            this.selectedId = getChildren().get(index).getId();
+   /*         UIComponent selectedComp = this.findComponent(id);
             FacesContext facesContext = FacesContext.getCurrentInstance();
             String panelClientId = selectedComp.getClientId(facesContext);
             //for tagHandler do I need to ensure all children are of type ContentPane here??
             if (null!=panelClientId){
                 this.selectedId =  panelClientId;
                 return;
-            }
+            } */
         }
-        this.selectedId = null;
      }
-       public void queueEvent(FacesEvent event) {
+
+     public void queueEvent(FacesEvent event) {
         if (event.getComponent() instanceof Accordion) {
             if (logger.isLoggable(Level.FINEST)){
                 logger.finest("invoked event for Accordion with selectedId= " + this.getSelectedId());
@@ -89,7 +92,8 @@ public class Accordion extends AccordionBase implements ContentPaneController {
             event.setPhaseId(PhaseId.INVOKE_APPLICATION);
         }
         super.queueEvent(event);
-    }
+     }
+
      public void broadcast(javax.faces.event.FacesEvent event) throws AbortProcessingException {
         super.broadcast(event);
         FacesContext facesContext = FacesContext.getCurrentInstance();

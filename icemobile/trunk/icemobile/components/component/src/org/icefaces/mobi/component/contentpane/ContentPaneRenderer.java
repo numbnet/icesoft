@@ -107,8 +107,8 @@ public class ContentPaneRenderer extends BaseLayoutRenderer {
             logger.info("Parent must implement ContentPaneController-> has instead="+parent.getClass().getName());
             return false;
         }
-        String clientId = uiComponent.getClientId(facesContext);
-        return (selectedId.equals(clientId));
+        String clientId = findMySelectedClientId((UIComponent)parent, selectedId);
+        return (clientId.equals(uiComponent.getClientId(facesContext)));
     }
 
     private String checkCacheType(String type){
