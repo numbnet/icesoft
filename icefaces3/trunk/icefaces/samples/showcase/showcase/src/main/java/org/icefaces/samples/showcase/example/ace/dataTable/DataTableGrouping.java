@@ -17,21 +17,19 @@
 package org.icefaces.samples.showcase.example.ace.dataTable;
 
 import org.icefaces.ace.component.datatable.DataTable;
+import org.icefaces.samples.showcase.dataGenerators.utilityClasses.DataTableData;
+import org.icefaces.samples.showcase.example.compat.dataTable.Car;
 import org.icefaces.samples.showcase.metadata.annotation.ComponentExample;
 import org.icefaces.samples.showcase.metadata.annotation.ExampleResource;
 import org.icefaces.samples.showcase.metadata.annotation.ExampleResources;
 import org.icefaces.samples.showcase.metadata.annotation.ResourceType;
 import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
 
-import javax.faces.application.Application;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
-import javax.faces.context.FacesContext;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import org.icefaces.samples.showcase.dataGenerators.utilityClasses.DataTableData;
-import org.icefaces.samples.showcase.example.compat.dataTable.Car;
 
 @ComponentExample(
         parent = DataTableBean.BEAN_NAME,
@@ -72,32 +70,32 @@ public class DataTableGrouping extends ComponentExampleImpl<DataTableGrouping> i
     
     /////////////---- METHOD INVOCATION VIA VIEW EL
     public double groupTotal(String groupProperty, String valueProperty, Object i) {
-        // Fix for bugged method invocation in early TC7 releases
-        int index = (Integer) i;
-
-        double total = 0;
-        boolean nextRowInGroup = false;
-        FacesContext context = FacesContext.getCurrentInstance();
-        Application application = context.getApplication();
-        
-        int currentIndex = table.getRowIndex();
-        table.setRowIndex(index);
-                
-        Object groupValue = application.evaluateExpressionGet(context, "#{"+groupProperty+"}", Object.class);
-        
-        do {
-            total += application.evaluateExpressionGet(context, "#{"+valueProperty+"}", Double.class);
-
-            table.setRowIndex(--index);
-
-            Object obj = application.evaluateExpressionGet(context, "#{"+groupProperty+"}", Object.class);
-            if (table.isRowAvailable() && groupValue.equals(obj))
-                nextRowInGroup = true;
-            else
-                nextRowInGroup = false;
-        } while (nextRowInGroup);
-
-        table.setRowIndex(currentIndex);
-        return total;
+//        // Fix for bugged method invocation in early TC7 releases
+//        int index = (Integer) i;
+//
+//        double total = 0;
+//        boolean nextRowInGroup = false;
+//        FacesContext context = FacesContext.getCurrentInstance();
+//        Application application = context.getApplication();
+//
+//        int currentIndex = table.getRowIndex();
+//        table.setRowIndex(index);
+//
+//        Object groupValue = application.evaluateExpressionGet(context, "#{"+groupProperty+"}", Object.class);
+//
+//        do {
+//            total += application.evaluateExpressionGet(context, "#{"+valueProperty+"}", Double.class);
+//
+//            table.setRowIndex(--index);
+//
+//            Object obj = application.evaluateExpressionGet(context, "#{"+groupProperty+"}", Object.class);
+//            if (table.isRowAvailable() && groupValue.equals(obj))
+//                nextRowInGroup = true;
+//            else
+//                nextRowInGroup = false;
+//        } while (nextRowInGroup);
+//
+//        table.setRowIndex(currentIndex);
+        return 0.0;
     }
 }

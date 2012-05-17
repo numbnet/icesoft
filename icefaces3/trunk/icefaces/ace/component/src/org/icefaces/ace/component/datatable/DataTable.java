@@ -31,11 +31,12 @@ import org.icefaces.ace.component.panelexpansion.PanelExpansion;
 import org.icefaces.ace.component.row.Row;
 import org.icefaces.ace.component.rowexpansion.RowExpansion;
 import org.icefaces.ace.component.tableconfigpanel.TableConfigPanel;
-import org.icefaces.ace.event.*;
+import org.icefaces.ace.event.SelectEvent;
+import org.icefaces.ace.event.TableFilterEvent;
+import org.icefaces.ace.event.UnselectEvent;
 import org.icefaces.ace.model.MultipleExpressionComparator;
 import org.icefaces.ace.model.filter.ContainsFilterConstraint;
 import org.icefaces.ace.model.table.*;
-import org.icefaces.ace.model.table.SortCriteria;
 import org.icefaces.ace.util.ComponentUtils;
 import org.icefaces.ace.util.collections.AllPredicate;
 import org.icefaces.ace.util.collections.AnyPredicate;
@@ -62,19 +63,14 @@ import javax.faces.event.PhaseId;
 import javax.faces.event.PostValidateEvent;
 import javax.faces.event.PreValidateEvent;
 import javax.faces.model.*;
-import java.util.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import java.sql.ResultSet;
-import javax.faces.model.ListDataModel;
-import javax.faces.model.ResultDataModel;
-import javax.faces.model.ResultSetDataModel;
-import javax.faces.model.ScalarDataModel;
 import javax.faces.render.Renderer;
 import javax.faces.view.Location;
+import java.io.Serializable;
+import java.sql.ResultSet;
+import java.util.*;
+import java.util.logging.Logger;
 
-public class DataTable extends DataTableBase {
+public class DataTable extends DataTableBase implements Serializable {
     private static Logger log = Logger.getLogger(DataTable.class.getName());
     private static Class SQL_RESULT = null;
 
@@ -82,7 +78,11 @@ public class DataTable extends DataTableBase {
     private Map<String, Column> filterMap;
     private TableConfigPanel panel;
     private RowStateMap stateMap;
+    // Cache model instance as long as setRowIndex(-1) is not called, this is a Mojarra derived behaviour
     private DataModel model = null;
+    // Cache filteredData longer than model as model regen may be attempted during iterative case
+    // and getFilteredData will fail.
+    private List filteredData;
 
     static {
         try {
@@ -158,7 +158,7 @@ public class DataTable extends DataTableBase {
         if (getValueHashCode() == null || superValueHash != getValueHashCode()) {
             setValueHashCode(superValueHash);
             applySorting();
-            if (getFilteredData() != null) {
+            if (getFilteredData() != null || filteredData != null) {
                 applyFilters();
             }
             if (superValue != null && superValue instanceof List) {
@@ -167,7 +167,9 @@ public class DataTable extends DataTableBase {
         }
 
         List filteredValue = getFilteredData();
-        return (filteredValue != null) ? filteredValue : superValue;
+        if (filteredValue != null)
+                return filteredValue;
+                else return superValue;
     }
 
     @Override
@@ -507,6 +509,19 @@ public class DataTable extends DataTableBase {
         }
         setFilterValue("");
         setFilteredData(null);
+    }
+
+    @Override
+    public List getFilteredData() {
+        List d = super.getFilteredData();
+        if (d != null) return d;
+        return filteredData;
+    }
+
+    @Override
+    public void setFilteredData(List filteredData) {
+        super.setFilteredData(filteredData);
+        this.filteredData = filteredData;
     }
 
     /**
