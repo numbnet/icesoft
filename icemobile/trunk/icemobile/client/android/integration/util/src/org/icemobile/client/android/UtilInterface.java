@@ -89,6 +89,7 @@ public class UtilInterface implements JavascriptInterface,
     }
 
     public void submitForm(String actionUrl, String serializedForm) {
+Log.e("ICEutil", "submitForm " + actionUrl);
 	boolean gotValue = true;
 	String[] result;
 	long contentSize = 0;
@@ -98,27 +99,31 @@ public class UtilInterface implements JavascriptInterface,
         url = relativeAction.toString();
 	    BasicNameValuePair[] params = getNameValuePairs(serializedForm, "&", "=");
 	    for (int i=0; i<params.length; i++) {
-		if (params[i].getName().contains("file")) {
-            String fname = "undefined";
-            try {
-                fname = params[i].getValue().replaceAll("%2F","/");
+            String packedName = params[i].getName();
+            int nameSplit = packedName.indexOf("-");
+            String paramType = packedName.substring(0, nameSplit);
+            String paramName = packedName.substring(nameSplit + 1);
+            if ("file".equals(paramType)) {
+                String fname = "undefined";
+                try {
+                    fname = params[i].getValue().replaceAll("%2F","/");
 
-                InputStream is = new BufferedInputStream(new FileInputStream(fname));
-                byte[] data = IOUtils.toByteArray(is);
-                InputStreamBody isb = new InputStreamBody(
-                        new ByteArrayInputStream(data), 
-                        getMimeType(fname), params[i].getValue());
-                contentSize += data.length;
-                content.addPart(URLDecoder.decode(params[i].getName(),"UTF_8"), isb);
-                is.close();
-            } catch (Exception e)  {
-                Log.e("ICEutil", "Error Opening file " + fname, e);
+                    InputStream is = new BufferedInputStream(new FileInputStream(fname));
+                    byte[] data = IOUtils.toByteArray(is);
+                    InputStreamBody isb = new InputStreamBody(
+                            new ByteArrayInputStream(data), 
+                            getMimeType(fname), params[i].getValue());
+                    contentSize += data.length;
+                    content.addPart(URLDecoder.decode(paramName,"UTF_8"), isb);
+                    is.close();
+                } catch (Exception e)  {
+                    Log.e("ICEutil", "Error Opening file " + fname, e);
+                }
+            } else {
+                StringBody sb = new StringBody(URLDecoder.decode(params[i].getValue(),"UTF-8"));
+                contentSize += sb.getContentLength();
+                content.addPart(URLDecoder.decode(paramName,"UTF-8"), sb);
             }
-		} else {
-		    StringBody sb = new StringBody(URLDecoder.decode(params[i].getValue(),"UTF-8"));
-		    contentSize += sb.getContentLength();
-		    content.addPart(URLDecoder.decode(params[i].getName(),"UTF-8"), sb);
-		}
 	    }
             httpClient = new DefaultHttpClient();
             postRequest = new HttpPost(url);
