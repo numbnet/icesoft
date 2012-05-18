@@ -168,7 +168,7 @@ ice.ace.List.prototype.controlClickHandler = function(e) {
         jqCtrl = ice.ace.jq(ctrl),
         dir;
 
-    if (!ice.ace.jq.browser.msie || ice.ace.jq.browser.version != 8) {
+    if (!ice.ace.jq.browser.msie || ice.ace.jq.browser.version == 9) {
         jqCtrl.toggleClass('ui-state-active', 50)
             .toggleClass('ui-state-active', 50);
     }
