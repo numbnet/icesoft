@@ -712,7 +712,7 @@ ice.ace.DataTable.prototype.resizeScrolling = function() {
         if (realFootSingleCols.size() == 0)
             realFootSingleCols = ice.ace.jq(this.jqId + ' .ui-datatable-scrollable-footer:first td[colspan="1"] .ui-footer-column:first-child').get().reverse();
 
-        var bodySingleCols = ice.ace.jq(this.jqId + ' .ui-datatable-scrollable-body:first tbody tr:first td div:first-child').get().reverse();
+        var bodySingleCols = ice.ace.jq(this.jqId + ' .ui-datatable-scrollable-body:first tbody tr:visible:first td div:first-child').get().reverse();
 
 
         // Reset fixed sizing if set by previous sizing.

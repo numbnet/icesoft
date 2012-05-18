@@ -33,9 +33,6 @@ import org.icefaces.ace.component.panelexpansion.PanelExpansion;
 import org.icefaces.ace.component.row.Row;
 import org.icefaces.ace.component.rowexpansion.RowExpansion;
 import org.icefaces.ace.component.tableconfigpanel.TableConfigPanel;
-import org.icefaces.ace.context.RequestContext;
-import org.icefaces.ace.event.SelectEvent;
-import org.icefaces.ace.event.UnselectEvent;
 import org.icefaces.ace.model.table.*;
 import org.icefaces.ace.renderkit.CoreRenderer;
 import org.icefaces.ace.util.ComponentUtils;
@@ -46,10 +43,8 @@ import org.icefaces.render.MandatoryResourceComponent;
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
-import javax.faces.component.UINamingContainer;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import javax.faces.event.PhaseId;
 import javax.faces.model.DataModel;
 import javax.faces.model.SelectItem;
 import java.io.IOException;
@@ -704,6 +699,7 @@ public class DataTableRenderer extends CoreRenderer {
         int page = table.getPage();
         int rowCount = table.getRowCount();
         int rowCountToRender = rows == 0 ? rowCount : rows;
+        boolean renderedTopVisible = false;
         boolean hasData = rowCount > 0;
 
         String tbodyClass = hasData ? DataTableConstants.DATA_CLASS : DataTableConstants.EMPTY_DATA_CLASS;
@@ -712,11 +708,11 @@ public class DataTableRenderer extends CoreRenderer {
         writer.writeAttribute(HTML.CLASS_ATTR, tbodyClass, null);
 
         Map<Object, List<String>> rowToSelectedFieldsMap = table.getRowToSelectedFieldsMap();
-        
+
         if (hasData)
             for (int i = first; i < (first + rowCountToRender); i++) {
-                encodeRow(context, table, columns, rowToSelectedFieldsMap, clientId, i,
-                        null, rowIndexVar, i == first);
+                if (encodeRow(context, table, columns, rowToSelectedFieldsMap, clientId, i, null, rowIndexVar, renderedTopVisible))
+                    renderedTopVisible = true;
             }
         else encodeEmptyMessage(table, writer, columns);
 
@@ -740,9 +736,23 @@ public class DataTableRenderer extends CoreRenderer {
         }
     }
 
-    protected void encodeRow(FacesContext context, DataTable table, List<Column> columns, Map<Object, List<String>> rowToSelectedFieldsMap, String clientId, int rowIndex, String parentIndex, String rowIndexVar, boolean topRow) throws IOException {
+    /**
+     * Encodes a regular table row.
+     * @param context
+     * @param table
+     * @param columns
+     * @param rowToSelectedFieldsMap
+     * @param clientId
+     * @param rowIndex
+     * @param parentIndex
+     * @param rowIndexVar
+     * @param topVisibleRowRendered
+     * @return A boolean value indicating if this row was the first visible row rendered
+     * @throws IOException
+     */
+    protected boolean encodeRow(FacesContext context, DataTable table, List<Column> columns, Map<Object, List<String>> rowToSelectedFieldsMap, String clientId, int rowIndex, String parentIndex, String rowIndexVar, boolean topVisibleRowRendered) throws IOException {
         table.setRowIndex(rowIndex);
-        if (!table.isRowAvailable()) return;
+        if (!table.isRowAvailable()) return false;
         if (rowIndexVar != null) context.getExternalContext().getRequestMap().put(rowIndexVar, rowIndex);
 
         RowState rowState = table.getStateMap().get(table.getRowData());
@@ -757,7 +767,7 @@ public class DataTableRenderer extends CoreRenderer {
             : null;
 
         context.getExternalContext().getRequestMap().put(table.getRowStateVar(), rowState);
-        
+
         if (visible) {
             ResponseWriter writer = context.getResponseWriter();
 
@@ -779,7 +789,7 @@ public class DataTableRenderer extends CoreRenderer {
             writer.writeAttribute(HTML.CLASS_ATTR, rowStyleClass + " " + expandedClass + " " + unselectableClass, null);
             writer.writeAttribute(HTML.TABINDEX_ATTR, "0", null);
 
-            boolean innerTdDivRequired = (table.isScrollable() || table.isResizableColumns()) & topRow;
+            boolean innerTdDivRequired = ((table.isScrollable() || table.isResizableColumns()) & !topVisibleRowRendered);
 
             for (Column kid : columns) {
                 if (kid.isRendered()) {
@@ -825,7 +835,11 @@ public class DataTableRenderer extends CoreRenderer {
             // Add tailing conditional row for this row object if required
             List<Row> tailingRows = table.getConditionalRows(rowIndex, false);
             for (Row r : tailingRows) encodeConditionalRow(context, r);
+
+            return innerTdDivRequired;
         }
+
+        return false;
     }
 
     protected void encodeConditionalRow(FacesContext context, Row r) throws IOException {
@@ -1182,9 +1196,11 @@ public class DataTableRenderer extends CoreRenderer {
         String rowIndexVar = table.getRowIndexVar();
 
         Map<Object, List<String>> rowToSelectedFieldsMap = table.getRowToSelectedFieldsMap();
-        
-        for (int i = scrollOffset; i < (scrollOffset + table.getRows()); i++)
-            encodeRow(context, table, table.getColumns(), rowToSelectedFieldsMap, clientId, i, null, rowIndexVar, i == 0);
+        Boolean topVisibleRowRendered = false;
+        for (int i = scrollOffset; i < (scrollOffset + table.getRows()); i++) {
+            if (encodeRow(context, table, table.getColumns(), rowToSelectedFieldsMap, clientId, i, null, rowIndexVar, topVisibleRowRendered))
+                topVisibleRowRendered = true;
+        }
     }
 
     private boolean isCurrColumnStacked(List comps, Column currCol) {
