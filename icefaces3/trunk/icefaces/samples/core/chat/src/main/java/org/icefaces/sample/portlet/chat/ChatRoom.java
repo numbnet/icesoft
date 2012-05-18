@@ -39,7 +39,7 @@ public class ChatRoom{
     public static final String ROOM_RENDERER_NAME = "all";
 
     private Map participants = Collections.synchronizedMap(new HashMap());
-    private LinkedList messages = new LinkedList();
+    private List messages = Collections.synchronizedList(new ArrayList());
 
 
     public ChatRoom() {
@@ -82,7 +82,7 @@ public class ChatRoom{
     }
 
     protected void addMessage(Message message) {
-        messages.addFirst(message.getFormattedMessage());
+        messages.add(0, message.getFormattedMessage());
     }
 
     public void addMessage(Participant participant, String message) {
@@ -98,14 +98,23 @@ public class ChatRoom{
 
     public List getMessages(int start, int number) {
 
-        if (start > messages.size()) {
+        int totalMessages = messages.size();
+
+        if (start > totalMessages) {
             start = 0;
         }
 
-        if ((start + number) > messages.size()) {
-            number = messages.size() - start;
+        if ((start + number) > totalMessages) {
+            number = totalMessages - start;
         }
 
-        return messages.subList(start, start + number);
+        // The use of subList can lead to ConcurrentModificationExceptions
+//        return messages.subList(start, start + number);
+        List subList = new ArrayList();
+        for(int index = start; index < (start+number); index++){
+            subList.add(messages.get(index));
+        }
+        return subList;
+
     }
 }
