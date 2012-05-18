@@ -47,6 +47,7 @@
 
 + (PlaceLabel *)placeLabelWithText:(NSString *)text 
         initWithLatitude:(double) lat longitude: (double) lon  {
+NSLog(@"placeLabelWithText %@ %f,%f", text, lat, lon);
     UILabel *label = [[[UILabel alloc] init] autorelease];
     label.adjustsFontSizeToFitWidth = NO;
     label.opaque = NO;

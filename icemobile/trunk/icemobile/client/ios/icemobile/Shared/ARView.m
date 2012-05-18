@@ -125,6 +125,7 @@ void ecefToEnu(double lat, double lon, double x, double y, double z, double xr, 
 
 @implementation ARView
 
+@synthesize moreLabels;
 @dynamic placeLabels;
 
 - (void)dealloc
@@ -167,6 +168,33 @@ void ecefToEnu(double lat, double lon, double x, double y, double z, double xr, 
 	if (location != nil) {
 		[self updatePlaceLabelCoordinates];
 	}
+}
+
+- (NSArray *)addCompassPoints:(NSArray *)labels {
+NSLog(@"addCompassPoints anchored %f,%f", location.coordinate.latitude, location.coordinate.longitude);
+
+    PlaceLabel *northLabel = [PlaceLabel placeLabelWithText:@"NORTH" 
+            initWithLatitude:(location.coordinate.latitude + 0.01f)
+            longitude:(location.coordinate.longitude)];
+    PlaceLabel *southLabel = [PlaceLabel placeLabelWithText:@"SOUTH" 
+            initWithLatitude:(location.coordinate.latitude - 0.01f)
+            longitude:(location.coordinate.longitude)];
+    PlaceLabel *eastLabel = [PlaceLabel placeLabelWithText:@"EAST" 
+            initWithLatitude:(location.coordinate.latitude)
+            longitude:(location.coordinate.longitude + 0.01f)];
+    PlaceLabel *westLabel = [PlaceLabel placeLabelWithText:@"WEST" 
+            initWithLatitude:(location.coordinate.latitude)
+            longitude:(location.coordinate.longitude - 0.01f)];
+
+    NSMutableArray *modLabels = 
+            [NSMutableArray arrayWithCapacity:([labels count] + 4)];
+    [modLabels addObjectsFromArray: labels];
+    [modLabels addObject:northLabel];
+    [modLabels addObject:southLabel];
+    [modLabels addObject:eastLabel];
+    [modLabels addObject:westLabel];
+    
+    return modLabels;
 }
 
 - (NSArray *)placeLabels
@@ -274,11 +302,12 @@ void ecefToEnu(double lat, double lon, double x, double y, double z, double xr, 
 }
 
 - (void)updatePlaceLabelCoordinates  {
-	
+	self.moreLabels = [self addCompassPoints:placeLabels];
+
 	if (placeLabelCoordinates != NULL) {
 		free(placeLabelCoordinates);
 	}
-	placeLabelCoordinates = (vec4f_t *)malloc(sizeof(vec4f_t)*placeLabels.count);
+	placeLabelCoordinates = (vec4f_t *)malloc(sizeof(vec4f_t)*moreLabels.count);
 			
 	int i = 0;
 	
@@ -292,10 +321,10 @@ void ecefToEnu(double lat, double lon, double x, double y, double z, double xr, 
 		float distance;
 		int index;
 	} DistanceAndIndex;
-	NSMutableArray *orderedDistances = [NSMutableArray arrayWithCapacity:placeLabels.count];
+	NSMutableArray *orderedDistances = [NSMutableArray arrayWithCapacity:moreLabels.count];
 
 	// Compute the world coordinates of each place-of-interest
-	for (PlaceLabel *place in [[self placeLabels] objectEnumerator]) {
+	for (PlaceLabel *place in [moreLabels objectEnumerator]) {
 		double pX, pY, pZ, e, n, u;
 NSLog(@"updating location %f,%f", place.location.coordinate.latitude, place.location.coordinate.longitude);
 		
@@ -330,7 +359,7 @@ NSLog(@"updating location %f,%f", place.location.coordinate.latitude, place.loca
 	// Add subviews in descending Z-order so they overlap properly
 	for (NSData *d in [orderedDistances reverseObjectEnumerator]) {
 		const DistanceAndIndex *distanceAndIndex = (const DistanceAndIndex *)d.bytes;
-		PlaceLabel *place = (PlaceLabel *)[placeLabels objectAtIndex:distanceAndIndex->index];		
+		PlaceLabel *place = (PlaceLabel *)[moreLabels objectAtIndex:distanceAndIndex->index];		
 		[self addSubview:place.view];
 	}	
 }
@@ -355,7 +384,7 @@ NSLog(@"updating location %f,%f", place.location.coordinate.latitude, place.loca
 	multiplyMatrixAndMatrix(projectionCameraTransform, projectionTransform, cameraTransform);
 	
 	int i = 0;
-	for (PlaceLabel *place in [placeLabels objectEnumerator]) {
+	for (PlaceLabel *place in [self.moreLabels objectEnumerator]) {
 		vec4f_t v;
 		multiplyMatrixAndVector(v, projectionCameraTransform, placeLabelCoordinates[i]);
 		
