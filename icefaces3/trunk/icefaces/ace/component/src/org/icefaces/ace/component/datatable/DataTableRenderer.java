@@ -709,7 +709,6 @@ public class DataTableRenderer extends CoreRenderer {
         String tbodyClass = hasData ? DataTableConstants.DATA_CLASS : DataTableConstants.EMPTY_DATA_CLASS;
 
         writer.startElement(HTML.TBODY_ELEM, null);
-        writer.writeAttribute(HTML.ID_ATTR, clientId + "_data", null);
         writer.writeAttribute(HTML.CLASS_ATTR, tbodyClass, null);
 
         Map<Object, List<String>> rowToSelectedFieldsMap = table.getRowToSelectedFieldsMap();

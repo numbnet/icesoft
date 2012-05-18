@@ -150,7 +150,6 @@ ice.ace.DataTable = function(id, cfg) {
     this.cfg = cfg;
     this.jqId = ice.ace.escapeClientId(id);
     this.sortOrder = [];
-    this.tbody = this.jqId + '_data';
     this.parentResizeDelaySet = false;
     this.delayedFilterCall = null;
     this.filterSource = null;
