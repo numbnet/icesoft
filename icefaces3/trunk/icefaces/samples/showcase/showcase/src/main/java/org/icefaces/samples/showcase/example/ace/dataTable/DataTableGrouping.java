@@ -98,6 +98,6 @@ public class DataTableGrouping extends ComponentExampleImpl<DataTableGrouping> i
         } while (nextRowInGroup);
 
         table.setRowIndex(currentIndex);
-        return 0.0;
+        return total;
     }
 }
