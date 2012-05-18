@@ -53,7 +53,7 @@ ice.ace.ListControl.prototype.controlClickHandler = function(e) {
 
     this.refreshLists();
 
-    if (!ice.ace.jq.browser.msie || ice.ace.jq.browser.version != 8) {
+    if (!ice.ace.jq.browser.msie || ice.ace.jq.browser.version == 9) {
         jqCtrl.toggleClass('ui-state-active', 50)
         .toggleClass('ui-state-active', 50);
     }
