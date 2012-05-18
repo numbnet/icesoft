@@ -23,6 +23,7 @@
 }
 
 @property (nonatomic, retain) NSArray *placeLabels;
+@property (nonatomic, retain) NSArray *moreLabels;
 
 - (void)start;
 - (void)stop;
