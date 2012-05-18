@@ -70,8 +70,20 @@ public class AutoCompleteEntryComplexBean extends ComponentExampleImpl<AutoCompl
 	public String getSelectedText() { return selectedText; }
 	public void setSelectedText(String selectedText) { this.selectedText = selectedText; }
 	
+	public City getSelectedCity() { 
+		if (selectedText != null) {
+			return AutoCompleteEntryData.getCitiesMap().get(selectedText);
+		}
+		
+		return null; 
+	}
+	
 	public void submitText(ActionEvent event) {
-
+		for (City city : cities) {
+			if (city.getName().equalsIgnoreCase(selectedText)) {
+				break;
+			}
+		}
 	}
 
     public List<City> getCities(){

@@ -19,9 +19,9 @@ public class City implements java.io.Serializable {
 
 	private String name;
 	private String country;
-	private int latitude;
-	private int longitude;
-	private int altitude;
+	private double latitude;
+	private double longitude;
+	private double altitude;
 	
 	public String getName() {
 		return this.name;
@@ -39,27 +39,27 @@ public class City implements java.io.Serializable {
 		this.country = country;
 	}
 	
-	public int getLatitude() {
+	public double getLatitude() {
 		return this.latitude;
 	}
 	
-	public void setLatitude(int latitude) {
+	public void setLatitude(double latitude) {
 		this.latitude = latitude;
 	}
 	
-	public int getLongitude() {
+	public double getLongitude() {
 		return this.longitude;
 	}
 	
-	public void setLongitude(int longitude) {
+	public void setLongitude(double longitude) {
 		this.longitude = longitude;
 	}
 	
-	public int getAltitude() {
+	public double getAltitude() {
 		return this.altitude;
 	}
 	
-	public void setAltitude(int altitude) {
+	public void setAltitude(double altitude) {
 		this.altitude = altitude;
 	}
 	

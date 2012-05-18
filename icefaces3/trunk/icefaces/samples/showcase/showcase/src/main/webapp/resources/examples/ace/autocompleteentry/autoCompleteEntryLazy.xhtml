@@ -35,6 +35,12 @@
     <ui:define name="example">
         
             <h:form id="inputForm">
+			<h:outputText value="Latitude: " /><h:outputText value="#{autoCompleteEntryLazyBean.selectedCity.latitude}" rendered="#{autoCompleteEntryLazyBean.selectedCity != null}"/>
+			<br />
+			<h:outputText value="Longitude: " /><h:outputText value="#{autoCompleteEntryLazyBean.selectedCity.longitude}" rendered="#{autoCompleteEntryLazyBean.selectedCity != null}"/>
+			<br />
+			<h:outputText value="Altitude: " /><h:outputText value="#{autoCompleteEntryLazyBean.selectedCity.altitude}" rendered="#{autoCompleteEntryLazyBean.selectedCity != null}"/>
+			<br /><br />
                 <ace:autoCompleteEntry id="autoCompleteEntryLazy"
                                      value="#{autoCompleteEntryLazyBean.selectedText}"
                                      actionListener="#{autoCompleteEntryLazyBean.submitText}"

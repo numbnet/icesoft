@@ -70,8 +70,20 @@ public class AutoCompleteEntryLazyBean extends ComponentExampleImpl<AutoComplete
 	public String getSelectedText() { return selectedText; }
 	public void setSelectedText(String selectedText) { this.selectedText = selectedText; }
 	
+	public City getSelectedCity() { 
+		if (selectedText != null) {
+			return AutoCompleteEntryData.getCitiesMap().get(selectedText);
+		}
+		
+		return null; 
+	}
+	
 	public void submitText(ActionEvent event) {
-
+		for (City city : cities) {
+			if (city.getName().equalsIgnoreCase(selectedText)) {
+				break;
+			}
+		}
 	}
 	
 	private List<City> cities = new ArrayList<City>();
@@ -84,11 +96,8 @@ public class AutoCompleteEntryLazyBean extends ComponentExampleImpl<AutoComplete
 		cities.clear();
 		String filter = event.getNewValue() != null ? (String) event.getNewValue() : "";
 		for (City city : AutoCompleteEntryData.getCities()) {
-			String country = city.getCountry();
-			if (country != null) {
-				if (country.toLowerCase().startsWith(filter)) {
-					cities.add(city);
-				}
+			if (city.getName().toLowerCase().startsWith(filter) && city.getLatitude() < 23 && city.getLatitude() > -23) {
+				cities.add(city);
 			}
 		}
 	}
