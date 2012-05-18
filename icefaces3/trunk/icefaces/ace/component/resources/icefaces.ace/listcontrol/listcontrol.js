@@ -72,9 +72,11 @@ ice.ace.ListControl.prototype.controlClickHandler = function(e) {
     }
 
     var from = this.getSourceList(dir, all);
-    var to = this.getDestinationList(from, dir);
+    if (!from) return;
 
+    var to = this.getDestinationList(from, dir);
     if (!to) return;
+
 
     var im = [];
     im.push(from.id);
@@ -97,10 +99,11 @@ ice.ace.ListControl.prototype.getSourceList = function(dir, all) {
     }
 
     // Return first list in selector that has a selected row
-    return ice.ace.Lists[
-        this.lists.find('.if-list-item.ui-state-active:first')
-            .closest('.if-list').attr('id')
-        ];
+    var activeList = this.lists.find('.if-list-item.ui-state-active:first');
+    if (activeList.length > 0)
+        return ice.ace.Lists[ activeList.closest('.if-list').attr('id') ];
+    else
+        return undefined;
 };
 
 ice.ace.ListControl.prototype.getDestinationList = function(source, dir) {
