@@ -582,7 +582,7 @@ ice.ace.DataTable.prototype.setupRowExpansionEvents = function() {
 
 ice.ace.DataTable.prototype.setupPanelExpansionEvents = function() {
     var table = this;
-    var selector = 'tbody.ui-datatable-data:first > tr:not(.ui-expanded-row-content) td a.ui-row-panel-toggler';
+    var selector = 'tbody.ui-datatable-data:first tr:not(.ui-expanded-row-content) td a.ui-row-panel-toggler';
     ice.ace.jq(this.jqId)
             .off('keyup click', selector)
             .on('keyup', selector, function(event) { if (event.which == 32 || event.which == 13) { table.toggleExpansion(this); }})
