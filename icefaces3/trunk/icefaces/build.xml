@@ -225,6 +225,8 @@
             <fileset dir="${bundle.dir.bin}/samples/core/chat-portlet" includes="build.xml"/>
         </subant>
 
+        <!-- Not yet ready to distribute the Liferay Faces Bridge yet. -->
+        <delete dir="${bundle.dir.bin}/lib/portlets/liferayfaces"/>
     </target>
 
     <target name="bundle.src">
@@ -256,6 +258,8 @@
         <delete dir="${bundle.dir.src}/samples/compat/component-showcase/"/>
         <delete dir="${bundle.dir.src}/samples/compat/component-showcase-portlets/"/>
         
+        <!-- Not yet ready to distribute the Liferay Faces Bridge yet. -->
+        <delete dir="${bundle.dir.src}/lib/portlets/liferayfaces"/>
     </target>
 
 </project>
