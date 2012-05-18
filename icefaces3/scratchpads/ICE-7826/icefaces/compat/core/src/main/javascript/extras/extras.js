@@ -2714,6 +2714,7 @@ GMapWrapper.prototype = {
         this.realGMap = realGMap;
         this.controls = new Object();
         this.overlays = new Object();
+		this.services = new Object();
         this.geoMarker = new Object();
         this.geoMarkerAddress;
         this.geoMarkerSet = false;
@@ -2917,12 +2918,33 @@ Ice.GoogleMap = {
         GMapRepository = newRepository;
     },
 	
-	addMarker:function(ele, Lat, Lon, options) {
-		var map = Ice.GoogleMap.getGMapWrapper(ele).getRealGMap();
-		var markerOps = "({position: new google.maps.LatLng(" + Lat + "," + Lon + "), " + options + "});";
-		var marker = new google.maps.Marker(eval(markerOps));
-		marker.setMap(map);
+	addMarker:function(ele, markerID, Lat, Lon, options) {
+		var wrapper = Ice.GoogleMap.getGMapWrapper(ele);
+		var overlay = wrapper.overlays[markerID];
+        if (overlay == null || overlay.getMap() == null) {
+            var markerOps = "({map:wrapper.getRealGMap(), position: new google.maps.LatLng(" + Lat + "," + Lon + "), " + options + "});";
+			var marker = new google.maps.Marker(eval(markerOps)); 
+			wrapper.overlays[markerID] = marker;
+        }
 	},
+	
+	removeMarker:function(ele, overlayId) {
+        var gmapWrapper = Ice.GoogleMap.getGMapWrapper(ele);
+        var overlay = gmapWrapper.overlays[overlayId];
+        if (overlay != null) {
+            overlay.setMap(null);
+        } else {
+            //nothing found just return
+            return;
+        }
+        var newOvrLyArray = new Object();
+        for (overlayObj in gmapWrapper.overlays) {
+            if (overlay != overlayObj) {
+                newOvrLyArray[overlayObj] = gmapWrapper.overlays[overlayObj];
+            }
+        }
+        gmapWrapper.overlays = newOvrLyArray;
+    },
 	
 	addOptions:function(ele, options){
 		var map = Ice.GoogleMap.getGMapWrapper(ele).getRealGMap();
@@ -2932,11 +2954,13 @@ Ice.GoogleMap = {
 	
 	gService:function(ele, name, locationList, options)
 	{
+		var wrapper = Ice.GoogleMap.getGMapWrapper(ele);
 		var map = Ice.GoogleMap.getGMapWrapper(ele).getRealGMap();
 		var service;
 		var points = locationList.split(":");
 		switch (name) {
-                case "Directions"||"DirectionsService":
+                case "Directions":
+				case "DirectionsService":
 				//Required options: travelMode, 2 points/addresses (First=origin, second=dest, 3+=waypoints
                     service=new google.maps.DirectionsService();
 					var origin = (points[0].charAt(0) == "(") ? "origin: new google.maps.LatLng" + points[0] + ", " : "origin: \"" + points[0] + "\", ";
@@ -2956,14 +2980,16 @@ Ice.GoogleMap = {
 					if (status != google.maps.DirectionsStatus.OK) {
 						alert('Error was: ' + status);
 						} else {
-						var renderer = new google.maps.DirectionsRenderer();
+						var renderer = (wrapper.services[ele] != null)? wrapper.services[ele]:new google.maps.DirectionsRenderer();
 						renderer.setMap(map);
 						renderer.setDirections(response);
+						wrapper.services[ele]=renderer;
 						}
 					}
 					service.route(eval(request), directionsCallback);
                     break;
-                case "Elevation"||"ElevationService":
+                case "Elevation":
+				case "ElevationService":
                     //Required options: travelMode, 2 points/addresses
 					service=new google.maps.ElevationService();
 					var waypoints = [];
@@ -2985,7 +3011,8 @@ Ice.GoogleMap = {
 					}
 					service.getElevationForLocations(eval(request), elevationCallback);
                     break;
-                case "MaxZoom"||"MaxZoomService":
+                case "MaxZoom":
+				case "MaxZoomService":
                     service=new google.maps.MaxZoomService();
 					var point = eval("new google.maps.LatLng" + points[0]);
 					function maxZoomCallback(response){
@@ -2997,7 +3024,9 @@ Ice.GoogleMap = {
 						}
 					service.getMaxZoomAtLatLng(point, maxZoomCallback);
                     break;
-				case "Distance"||"DistanceMatrix"||"DistanceMatrixService":
+				case "Distance":
+				case "DistanceMatrix":
+				case "DistanceMatrixService":
                     //Required options: travelMode, 2 points/addresses
 					service=new google.maps.DistanceMatrixService();
 					var origin = (points[0].charAt(0) == "(") ? "origins: [new google.maps.LatLng" + points[0] + "], " : "origins: [\"" + points[0] + "\"], ";
@@ -3018,41 +3047,52 @@ Ice.GoogleMap = {
                 }//switch	
 	},
 	
-	gOverlay:function(ele, shape, locationList, options) {
-        var map = Ice.GoogleMap.getGMapWrapper(ele).getRealGMap();
+	removeGOverlay:function(ele, overlayID){
+	var wrapper = Ice.GoogleMap.getGMapWrapper(ele);
+	if (wrapper.overlays[overlayID] != null)
+		{
+		wrapper.overlays[overlayID].setMap(null);
+		}
+	},
+	
+	gOverlay:function(ele, overlayID, shape, locationList, options) {
+		var wrapper = Ice.GoogleMap.getGMapWrapper(ele);
+		var map = Ice.GoogleMap.getGMapWrapper(ele).getRealGMap();
 		var overlay;
 		var points = locationList.split(":");
 		for (var i=0; i<points.length ; i++){
 			points[i] = "new google.maps.LatLng" + points[i] + "";
 		}
 		switch (shape) {
-                case "Line"||"line"||"Polyline":
+                case "Line":
+				case "line":
+				case "Polyline":
 					var overlayOptions = (options != null && options.length>0) ? "({map:map, path:[" + points + "], " + options + "})" : "({map:map, path:[" + points + "]})";
 					overlay = new google.maps.Polyline(eval(overlayOptions));
                     break;
-                case "Polygon"||"polygon":
+                case "Polygon":
+				case "polygon":
 					var overlayOptions = (options != null && options.length>0) ? "({map:map, paths:[" + points + "], " + options + "})" : "({map:map, paths:[" + points + "]})";
 					overlay = new google.maps.Polygon(eval(overlayOptions));
                     break;
-				case "Rectangle"||"rectangle":
+				case "Rectangle":
+				case "rectangle":
 					//needs SW corner in first point, NE in second
 					var overlayOptions = (options != null && options.length>0) ? "({map:map, bounds:new google.maps.LatLngBounds(" + points[0] + 
 						","  + points[1] + "), " + options + "})" : "({map:map, bounds:new google.maps.LatLngBounds(" + points[0] + ","  + points[1] + ")})";
 					overlay = new google.maps.Rectangle(eval(overlayOptions));
                     break;
-				case "Circle"||"circle":
+				case "Circle":
+				case "circle":
 					//Requires radius option
 					var overlayOptions = (options != null && options.length>0) ? "({map:map, center: " + points[0] + ", " + options + "})" : "({map:map, center: " + points[0] + "})";
 					overlay = new google.maps.Circle(eval(overlayOptions));
-                    break;
-				case "GroundOverlay"||"Overlay":
-                    break;
-				case "Marker"||"marker":
                     break;
 				default:
 					console.log("Not a valid shape");
 					return;
                 }//switch
+		wrapper.overlays[overlayID]=overlay;
     },
 	
 	

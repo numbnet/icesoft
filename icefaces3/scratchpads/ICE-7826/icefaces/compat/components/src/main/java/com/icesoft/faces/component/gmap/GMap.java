@@ -35,8 +35,8 @@ import java.util.Map;
 public class GMap extends UIPanel {
     public static final String COMPONENT_TYPE = "com.icesoft.faces.GMap";
     public static final String DEFAULT_RENDERER_TYPE = "com.icesoft.faces.GMapRenderer";
-    private static final String DEFAULT_LONGITUDE = "-101.162109375";
-    private static final String DEFAULT_LATITUDE = "56.46249048388979";
+    private static final String DEFAULT_LONGITUDE = "-114.08538937568665";
+    private static final String DEFAULT_LATITUDE = "51.06757388616548";
     private String longitude;
     private String latitude;
     private Integer zoomLevel;
