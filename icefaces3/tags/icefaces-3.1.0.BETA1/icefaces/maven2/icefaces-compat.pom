@@ -21,7 +21,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.icefaces</groupId>
   <artifactId>icefaces-compat</artifactId>
-  <version>3.0.1</version>
+  <version>3.1.0.BETA1</version>
   <packaging>jar</packaging>
   <name>ICEfaces 1.x Compatibility Library</name>
   <url>http://www.icesoft.org</url> 
@@ -38,7 +38,7 @@
     <dependency>
       <groupId>org.icefaces</groupId>
       <artifactId>icefaces</artifactId>
-      <version>3.0.1</version>
+      <version>3.1.0.BETA1</version>
     </dependency>       
 
     <dependency>
