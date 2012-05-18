@@ -2715,6 +2715,7 @@ GMapWrapper.prototype = {
         this.controls = new Object();
         this.overlays = new Object();
         this.geoMarker = new Object();
+		this.directions = new Object();
         this.geoMarkerAddress;
         this.geoMarkerSet = false;
     },
@@ -2773,8 +2774,8 @@ Ice.GoogleMap = {
         return gmapWrapper;
     },
 
-    loadDirection:function(id, text_div, from, to) {
-        var direction = GMapRepository[id + 'dir'];
+    loadDirection:function(id,from, to) {
+        var wrapper = Ice.GoogleMap.getGMapWrapper(id);
         var map = Ice.GoogleMap.getGMapWrapper(id).getRealGMap();
         service=new google.maps.DirectionsService();
 		var origin = (from == "(") ? "origin: new google.maps.LatLng" + from + ", " : "origin: \"" + from + "\", ";
@@ -2784,9 +2785,10 @@ Ice.GoogleMap = {
 			if (status != google.maps.DirectionsStatus.OK) {
 				alert('Error was: ' + status);
 				} else {
-					var renderer = new google.maps.DirectionsRenderer();
+					var renderer = (wrapper.directions[id] != null)? wrapper.directions[id]:new google.maps.DirectionsRenderer();
 					renderer.setMap(map);
 					renderer.setDirections(response);
+					wrapper.directions[id]=renderer;
 					}
 				}
 					service.route(eval(request), directionsCallback);
@@ -2824,7 +2826,7 @@ Ice.GoogleMap = {
         var gmapWrapper = Ice.GoogleMap.getGMapWrapper(ele);
 		var map = Ice.GoogleMap.getGMapWrapper(ele).getRealGMap();
 		var overlay = gmapWrapper.overlays[overlayId];
-        if (overlay == null) {
+        if (overlay == null || overlay.getMap() == null) {
             var ctaLayer = new google.maps.KmlLayer(URL);
 			ctaLayer.setMap(map); 
 			gmapWrapper.overlays[overlayId] = ctaLayer;
@@ -2853,7 +2855,7 @@ Ice.GoogleMap = {
         var gmapWrapper = Ice.GoogleMap.getGMapWrapper(ele);
 		var map = Ice.GoogleMap.getGMapWrapper(ele).getRealGMap();
 		var overlay = gmapWrapper.overlays[overlayId];
-        if (overlay == null) {
+        if (overlay == null || overlay.getMap() == null) {
             var mapMarker = eval(marker); 
 			gmapWrapper.overlays[overlayId] = mapMarker;
         }
@@ -2953,7 +2955,7 @@ Ice.GoogleMap = {
         if (control == null) {
             var mapOption = "({"+ controlName +":true})";
             gmapWrapper.getRealGMap().setOptions(eval(mapOption));
-            gmapWrapper.controls[controlName] = control;
+            gmapWrapper.controls[controlName] = controlName;
         }
     },
 
