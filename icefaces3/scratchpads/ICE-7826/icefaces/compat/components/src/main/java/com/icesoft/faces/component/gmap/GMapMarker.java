@@ -35,7 +35,6 @@ public class GMapMarker extends UIPanel{
 	public static final String COMPONENT_TYPE = "com.icesoft.faces.GMapMarker";
     public static final String COMPONENT_FAMILY = "com.icesoft.faces.GMapMarker";
     
-	private Boolean draggable;
     private String longitude;
     private String latitude;
 	private String options;
@@ -69,7 +68,10 @@ public class GMapMarker extends UIPanel{
     	    if (!currentLat.equals(oldLatitude) || 
     	            !currentLon.equals(oldLongitude)) {
     	        //to dynamic support first to remove if any
-                JavascriptContext.addJavascriptCall(context, "Ice.GoogleMap.addMarker('" + this.getParent().getClientId(context) +
+                JavascriptContext.addJavascriptCall(context, 
+                        "Ice.GoogleMap.removeMarker('"+ this.getParent()
+                        .getClientId(context)+"', '"+ getClientId(context)+"');");
+				JavascriptContext.addJavascriptCall(context, "Ice.GoogleMap.addMarker('" + this.getParent().getClientId(context) + "', '" + getClientId(context) +
                         "', '"+ currentLat + "', '" + currentLon + "', \"" + getOptions() + "\");");                
     	    }
     	    oldLatitude = currentLat;
@@ -77,20 +79,6 @@ public class GMapMarker extends UIPanel{
     	}
     }
     
-    
-	public boolean isDraggable() {
-        if (draggable != null) {
-            return draggable.booleanValue();
-        }
-        ValueBinding vb = getValueBinding("draggable");
-        return vb != null ?
-               ((Boolean) vb.getValue(getFacesContext())).booleanValue() :
-               false;
-	}
-
-	public void setDraggable(boolean draggable) {
-		this.draggable = new Boolean(draggable);
-	}
 	
 	public String getLongitude() {
        if (longitude != null) {
@@ -133,22 +121,20 @@ public class GMapMarker extends UIPanel{
         values = (Object[])state;
         super.restoreState(context, values[0]);
         latitude = (String)values[1];
-        longitude = (String)values[2];
-        draggable = (Boolean)values[3];        
-        point = (List) values[4]; 
-		options = (String) values[5];
+        longitude = (String)values[2];        
+        point = (List) values[3]; 
+		options = (String) values[4];
     }
 
     public Object saveState(FacesContext context) {
         if(values == null){
-            values = new Object[6];
+            values = new Object[5];
         }
         values[0] = super.saveState(context);
         values[1] = latitude;
-        values[2] = longitude;
-        values[3] = draggable;        
-        values[4] = point;
-		values[5] = options;
+        values[2] = longitude;        
+        values[3] = point;
+		values[4] = options;
         return values;
     }
     

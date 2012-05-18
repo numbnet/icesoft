@@ -50,7 +50,8 @@ public class GMapControl extends UIPanel{
     public void encodeBegin(FacesContext context) throws IOException {
         super.encodeBegin(context);
 		if (getPoints() != null){
-			JavascriptContext.addJavascriptCall(context, "Ice.GoogleMap.gOverlay('" + this.getParent().getClientId(context) +
+			JavascriptContext.addJavascriptCall(context, "Ice.GoogleMap.removeGOverlay('" + this.getParent().getClientId(context) + "', '" + getClientId(context) +"');");
+			JavascriptContext.addJavascriptCall(context, "Ice.GoogleMap.gOverlay('" + this.getParent().getClientId(context) + "', '" + getClientId(context) +
                 "', '"+ getShape() + "', '" + getPoints() + "', \"" + getOptions() + "\");");
 			}
     }
@@ -72,7 +73,7 @@ public class GMapControl extends UIPanel{
             return options;
         }
         ValueBinding vb = getValueBinding("options");
-        return vb != null ? (String) vb.getValue(getFacesContext()) : null;
+        return vb != null ? (String) vb.getValue(getFacesContext()) : "";
 	}
 	
 	public void setOptions(String options) {
