@@ -310,80 +310,82 @@ ice.ace.List.prototype.deselectAll = function() {
 ice.ace.List.prototype.moveItems = function(dir) {
     var selectedItems = this.element.find('.ui-state-active');
 
-    // do element swaps
-    var swapRecords = this.read('reorderings');
+    if (selectedItems.length > 0) {
+        // do element swaps
+        var swapRecords = this.read('reorderings');
 
-    if (dir == "top") {
-        for (var i = selectedItems.length-1; i >= 0; i--) {
-            var item = ice.ace.jq(selectedItems[i]),
-                target = item.prev();
+        if (dir == "top") {
+            for (var i = selectedItems.length-1; i >= 0; i--) {
+                var item = ice.ace.jq(selectedItems[i]),
+                        target = item.prev();
 
-            if (target.length > 0) do {
-                var record = [];
+                if (target.length > 0) do {
+                    var record = [];
+                    record.push(item.index());
+                    target.before(item);
+                    record.push(item.index());
+
+                    swapRecords.push(record);
+                    this.swapIdPrefix(item, target);
+
+                    target = item.prev();
+                } while (target.length > 0);
+            }
+        }
+        else if (dir == "up") {
+            for (var i = 0; i < selectedItems.length; i++) {
+                var item = ice.ace.jq(selectedItems[i]),
+                        record = [];
                 record.push(item.index());
+
+                var target = item.prev(':first');
                 target.before(item);
-                record.push(item.index());
 
+                record.push(item.index());
                 swapRecords.push(record);
                 this.swapIdPrefix(item, target);
-
-                target = item.prev();
-            } while (target.length > 0);
+            }
         }
-    }
-    else if (dir == "up") {
-        for (var i = 0; i < selectedItems.length; i++) {
-            var item = ice.ace.jq(selectedItems[i]),
-                record = [];
-            record.push(item.index());
-
-            var target = item.prev(':first');
-            target.before(item);
-
-            record.push(item.index());
-            swapRecords.push(record);
-            this.swapIdPrefix(item, target);
-        }
-    }
-    else if (dir == "dwn" || dir == "down") {
-        for (var i = selectedItems.length-1; i >= 0; i--) {
-            var item = ice.ace.jq(selectedItems[i]),
-                record = [];
-            record.push(item.index());
-
-            var target = item.next(':first');
-            target.after(item);
-
-            record.push(item.index());
-            swapRecords.push(record);
-            this.swapIdPrefix(item, target);
-        }
-    }
-    else if (dir == "btm" || dir == "bottom") {
-        for (var i = 0; i < selectedItems.length; i++) {
-            var item = ice.ace.jq(selectedItems[i]),
-                target = item.next();
-
-            if (target.length > 0) do {
-                var record = [];
+        else if (dir == "dwn" || dir == "down") {
+            for (var i = selectedItems.length-1; i >= 0; i--) {
+                var item = ice.ace.jq(selectedItems[i]),
+                        record = [];
                 record.push(item.index());
+
+                var target = item.next(':first');
                 target.after(item);
-                record.push(item.index());
 
+                record.push(item.index());
                 swapRecords.push(record);
                 this.swapIdPrefix(item, target);
-
-                target = item.next();
-            } while (target.length > 0);
+            }
         }
+        else if (dir == "btm" || dir == "bottom") {
+            for (var i = 0; i < selectedItems.length; i++) {
+                var item = ice.ace.jq(selectedItems[i]),
+                        target = item.next();
+
+                if (target.length > 0) do {
+                    var record = [];
+                    record.push(item.index());
+                    target.after(item);
+                    record.push(item.index());
+
+                    swapRecords.push(record);
+                    this.swapIdPrefix(item, target);
+
+                    target = item.next();
+                } while (target.length > 0);
+            }
+        }
+
+        // write swaps or ajax submit
+        this.write('reorderings', swapRecords);
+
+        if (this.behaviors)
+            if (this.behaviors.move)
+                ice.ace.ab(this.behaviors.move);
     }
-
-    // write swaps or ajax submit
-    this.write('reorderings', swapRecords);
-
-    if (this.behaviors)
-        if (this.behaviors.move)
-            ice.ace.ab(this.behaviors.move);
 };
 
 // Used to keep id for each child in place, so per-item updates
