@@ -34,10 +34,16 @@
 
     <ui:define name="example">
         
+		<h:outputText value="Latitude: " /><h:outputText value="#{autoCompleteEntryComplexBean.selectedCity.latitude}" rendered="#{autoCompleteEntryComplexBean.selectedCity != null}"/>
+		<br />
+		<h:outputText value="Longitude: " /><h:outputText value="#{autoCompleteEntryComplexBean.selectedCity.longitude}" rendered="#{autoCompleteEntryComplexBean.selectedCity != null}"/>
+		<br />
+		<h:outputText value="Altitude: " /><h:outputText value="#{autoCompleteEntryComplexBean.selectedCity.altitude}" rendered="#{autoCompleteEntryComplexBean.selectedCity != null}"/>
+		<br /><br />
             <h:form id="inputForm">
                 <ace:autoCompleteEntry id="autoCompleteComplex"
                                      value="#{autoCompleteEntryComplexBean.selectedText}"
-                                     
+
                                      actionListener="#{autoCompleteEntryComplexBean.submitText}"
                                      rows="10" width="300"
 							  filterMatchMode="startsWith"

@@ -28,6 +28,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Map;
+import java.util.HashMap;
 import java.util.StringTokenizer;
 
 import javax.faces.context.ExternalContext;
@@ -48,6 +50,7 @@ public class AutoCompleteEntryData implements Serializable
     
 	private static List<City> cities;
 	private static List<SelectItem> simpleCities;
+	private static Map<String, City> citiesMap;
 
     public static List<City> getCities() {
 		if (cities == null) {
@@ -64,6 +67,16 @@ public class AutoCompleteEntryData implements Serializable
 			}
 		}
         return simpleCities;
+    }
+	
+    public static Map<String, City> getCitiesMap() {
+		if (citiesMap == null) {
+			citiesMap = new HashMap<String, City>();
+			for (City city : getCities()) {
+				citiesMap.put(city.getName(), city);
+			}
+		}
+        return citiesMap;
     }
 	
 	private static List<City> readLocationsFile() {
@@ -121,21 +134,21 @@ public class AutoCompleteEntryData implements Serializable
 			
 			String latitude = st.nextToken().replace("\"", "");
 			try {
-				city.setLatitude(Integer.valueOf(latitude).intValue());
+				city.setLatitude(Double.valueOf(latitude).doubleValue());
 			} catch (Exception e) {
 				city.setLatitude(0);
 			}
 			
 			String longitude = st.nextToken().replace("\"", "");
 			try {
-				city.setLongitude(Integer.valueOf(longitude).intValue());
+				city.setLongitude(Double.valueOf(longitude).doubleValue());
 			} catch (Exception e) {
 				city.setLongitude(0);
 			}
 			
 			String altitude = st.nextToken().replace("\"", "");
 			try {
-				city.setAltitude(Integer.valueOf(altitude).intValue());
+				city.setAltitude(Double.valueOf(altitude).doubleValue());
 			} catch (Exception e) {
 				city.setAltitude(0);
 			}
