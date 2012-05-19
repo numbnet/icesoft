@@ -62,9 +62,23 @@ public class MaskedEntryRenderer extends InputRenderer {
 	
 	@Override
 	public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-		MaskedEntry maskedEntry = (MaskedEntry) component;
-		
+        MaskedEntry maskedEntry = (MaskedEntry) component;
+        ResponseWriter writer = context.getResponseWriter();
+        boolean required = maskedEntry.isRequired();
+
+        String label = maskedEntry.getLabel();
+        boolean hasLabel = label != null && label.trim().length() > 0;
+        String labelPosition = maskedEntry.getLabelPosition();
+        if (!labelPositionSet.contains(labelPosition)) labelPosition = DEFAULT_LABEL_POSITION;
+
+        String indicator = required ? maskedEntry.getRequiredIndicator() : maskedEntry.getOptionalIndicator();
+        boolean hasIndicator = indicator != null && indicator.trim().length() > 0;
+        String indicatorPosition = maskedEntry.getIndicatorPosition();
+        if (!indicatorPositionSet.contains(indicatorPosition)) indicatorPosition = DEFAULT_INDICATOR_POSITION;
+
+        writeLabelAndIndicatorBefore(writer, label, hasLabel, labelPosition, indicator, hasIndicator, indicatorPosition, required);
 		encodeMarkup(context, maskedEntry);
+        writeLabelAndIndicatorAfter(writer, label, hasLabel, labelPosition, indicator, hasIndicator, indicatorPosition, required);
 		encodeScript(context, maskedEntry);
 	}
 	

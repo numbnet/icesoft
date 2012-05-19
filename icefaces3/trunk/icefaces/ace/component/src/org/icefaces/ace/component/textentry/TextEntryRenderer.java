@@ -26,7 +26,6 @@
  */
 package org.icefaces.ace.component.textentry;
 
-import org.icefaces.ace.component.datetimeentry.DateTimeEntryRenderer;
 import org.icefaces.ace.renderkit.InputRenderer;
 import org.icefaces.ace.util.ComponentUtils;
 import org.icefaces.ace.util.HTML;
@@ -45,10 +44,6 @@ import java.util.Set;
 
 @MandatoryResourceComponent(tagName="textEntry", value="org.icefaces.ace.component.textentry.TextEntry")
 public class TextEntryRenderer extends InputRenderer {
-    static Set<String> labelPositionSet = new HashSet<String>(Arrays.asList("left", "right", "top", "bottom", "inField"));
-    static Set<String> indicatorPositionSet = new HashSet<String>(Arrays.asList("left", "right", "top", "bottom", "labelLeft", "labelRight"));
-    public static final String LABEL_STYLE_CLASS = "ui-input-label";
-
     @Override
 	public void decode(FacesContext context, UIComponent component) {
 		TextEntry textEntry = (TextEntry) component;
@@ -96,50 +91,17 @@ public class TextEntryRenderer extends InputRenderer {
         String label = textEntry.getLabel();
         boolean hasLabel = label != null && label.trim().length() > 0;
         String labelPosition = textEntry.getLabelPosition();
-        if (!labelPositionSet.contains(labelPosition)) labelPosition = "inField";
+        if (!labelPositionSet.contains(labelPosition)) labelPosition = DEFAULT_LABEL_POSITION;
 
         String indicator = required ? textEntry.getRequiredIndicator() : textEntry.getOptionalIndicator();
         boolean hasIndicator = indicator != null && indicator.trim().length() > 0;
         String indicatorPosition = textEntry.getIndicatorPosition();
-        if (!indicatorPositionSet.contains(indicatorPosition)) indicatorPosition = "right";
+        if (!indicatorPositionSet.contains(indicatorPosition)) indicatorPosition = DEFAULT_INDICATOR_POSITION;
 
         writer.startElement("span", textEntry);
         writer.writeAttribute("id", clientId + "_markup", null);
 
-        if (hasLabel && labelPosition.equals("top")) {
-            writeLabel(writer, label, labelPosition, indicator, indicatorPosition, required, hasIndicator);
-            writer.startElement("br", null);
-            writer.endElement("br");
-        }
-        if (hasIndicator && indicatorPosition.equals("top")) {
-            if (hasLabel && labelPosition.equals("left")) {
-                writeHiddenLabel(writer, label);
-            }
-            writeIndicator(writer, required, indicator, indicatorPosition);
-            writer.startElement("br", null);
-            writer.endElement("br");
-        }
-        if (hasLabel) {
-            if (labelPosition.equals("left")/* || labelPosition.equals("top")*/) {
-                writeLabel(writer, label, labelPosition, indicator, indicatorPosition, required, hasIndicator);
-            }
-            if (labelPosition.equals("top")) {
-//                writer.startElement("br", null);
-//                writer.endElement("br");
-            }
-        }
-        if (hasIndicator) {
-            if (indicatorPosition.equals("top") || indicatorPosition.equals("bottom")) {
-//                writer.startElement("span", null);
-            }
-            if (indicatorPosition.equals("left")/* || indicatorPosition.equals("top")*/) {
-                writeIndicator(writer, required, indicator, indicatorPosition);
-            }
-            if (indicatorPosition.equals("top")) {
-//                writer.startElement("br", null);
-//                writer.endElement("br");
-            }
-        }
+        writeLabelAndIndicatorBefore(writer, label, hasLabel, labelPosition, indicator, hasIndicator, indicatorPosition, required);
 
         writer.startElement("input", null);
         writer.writeAttribute("id", clientId + "_input", null);
@@ -174,36 +136,8 @@ public class TextEntryRenderer extends InputRenderer {
 
         writer.endElement("input");
 
-        if (hasIndicator && indicatorPosition.equals("right")) {
-            writeIndicator(writer, required, indicator, indicatorPosition);
-        }
-        if (hasLabel && labelPosition.equals("right")) {
-            writeLabel(writer, label, labelPosition, indicator, indicatorPosition, required, hasIndicator);
-        }
-        if (hasIndicator) {
-            if (indicatorPosition.equals("bottom")) {
-                writer.startElement("br", null);
-                writer.endElement("br");
-            }
-            if (/*indicatorPosition.equals("right") || */indicatorPosition.equals("bottom")) {
-                if (hasLabel && labelPosition.equals("left")) {
-                    writeHiddenLabel(writer, label);
-                }
-                writeIndicator(writer, required, indicator, indicatorPosition);
-            }
-            if (indicatorPosition.equals("top") || indicatorPosition.equals("bottom")) {
-//                writer.endElement("span");
-            }
-        }
-        if (hasLabel) {
-            if (labelPosition.equals("bottom")) {
-                writer.startElement("br", null);
-                writer.endElement("br");
-            }
-            if (/*labelPosition.equals("right") || */labelPosition.equals("bottom")) {
-                writeLabel(writer, label, labelPosition, indicator, indicatorPosition, required, hasIndicator);
-            }
-        }
+        writeLabelAndIndicatorAfter(writer, label, hasLabel, labelPosition, indicator, hasIndicator, indicatorPosition, required);
+
         writer.endElement("span");
 
         writer.startElement("span", textEntry);
