@@ -27,18 +27,15 @@
  */
 package org.icefaces.ace.renderkit;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import javax.el.ValueExpression;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
 import javax.faces.component.UISelectItem;
 import javax.faces.component.UISelectItems;
 import javax.faces.context.FacesContext;
+import java.io.IOException;
+import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
 import javax.faces.model.SelectItem;
 
@@ -47,6 +44,12 @@ import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
 
 public class InputRenderer extends CoreRenderer {
+
+    public static final Set<String> labelPositionSet = new HashSet<String>(Arrays.asList("left", "right", "top", "bottom", "inField"));
+    public static final Set<String> indicatorPositionSet = new HashSet<String>(Arrays.asList("left", "right", "top", "bottom", "labelLeft", "labelRight"));
+    public static final String LABEL_STYLE_CLASS = "ui-input-label";
+    public static final String DEFAULT_LABEL_POSITION = "inField";
+    public static final String DEFAULT_INDICATOR_POSITION = "right";
 
     protected List<SelectItem> getSelectItems(FacesContext context, UIInput component) {
         List<SelectItem> selectItems = new ArrayList<SelectItem>();
@@ -151,4 +154,167 @@ public class InputRenderer extends CoreRenderer {
 		
 		return value;
 	}
+
+    protected void encodeLabelAndInput(ResponseWriter writer, UIComponent component) throws IOException {
+        boolean required = (Boolean) component.getAttributes().get("required");
+
+        String label = (String) component.getAttributes().get("label");
+        boolean hasLabel = label != null && label.trim().length() > 0;
+        String labelPosition = (String) component.getAttributes().get("labelPosition");
+        if (!labelPositionSet.contains(labelPosition)) labelPosition = DEFAULT_LABEL_POSITION;
+
+        String indicator = (String) (required ? component.getAttributes().get("requiredIndicator") : component.getAttributes().get("optionalIndicator"));
+        boolean hasIndicator = indicator != null && indicator.trim().length() > 0;
+        String indicatorPosition = (String) component.getAttributes().get("indicatorPosition");
+        if (!indicatorPositionSet.contains(indicatorPosition)) indicatorPosition = DEFAULT_INDICATOR_POSITION;
+
+        writeLabelAndIndicatorBefore(writer, label, hasLabel, labelPosition, indicator, hasIndicator, indicatorPosition, required);
+        writeInputField(writer, component, label, hasLabel, labelPosition, indicator, hasIndicator, indicatorPosition, required);
+        writeLabelAndIndicatorAfter(writer, label, hasLabel, labelPosition, indicator, hasIndicator, indicatorPosition, required);
+    }
+
+    protected void writeInputField(ResponseWriter writer, UIComponent component, String label, boolean hasLabel, String labelPosition, String indicator, boolean hasIndicator, String indicatorPosition, boolean required) throws IOException {
+    }
+
+    protected void writeLabelAndIndicatorBefore(ResponseWriter writer, String label, boolean hasLabel, String labelPosition, String indicator, boolean hasIndicator, String indicatorPosition, boolean required) throws IOException {
+        if (hasLabel && labelPosition.equals("top")) {
+            writeLabel(writer, label, labelPosition, indicator, indicatorPosition, required, hasIndicator);
+            writer.startElement("br", null);
+            writer.endElement("br");
+        }
+        if (hasIndicator && indicatorPosition.equals("top")) {
+            if (hasLabel && labelPosition.equals("left")) {
+                writeHiddenLabel(writer, label);
+            }
+            writeIndicator(writer, required, indicator, indicatorPosition);
+            writer.startElement("br", null);
+            writer.endElement("br");
+        }
+        if (hasLabel) {
+            if (labelPosition.equals("left")/* || labelPosition.equals("top")*/) {
+                writeLabel(writer, label, labelPosition, indicator, indicatorPosition, required, hasIndicator);
+            }
+            if (labelPosition.equals("top")) {
+//                writer.startElement("br", null);
+//                writer.endElement("br");
+            }
+        }
+        if (hasIndicator) {
+            if (indicatorPosition.equals("top") || indicatorPosition.equals("bottom")) {
+//                writer.startElement("span", null);
+            }
+            if (indicatorPosition.equals("left")/* || indicatorPosition.equals("top")*/) {
+                writeIndicator(writer, required, indicator, indicatorPosition);
+            }
+            if (indicatorPosition.equals("top")) {
+//                writer.startElement("br", null);
+//                writer.endElement("br");
+            }
+        }
+    }
+
+    protected void writeLabelAndIndicatorAfter(ResponseWriter writer, String label, boolean hasLabel, String labelPosition, String indicator, boolean hasIndicator, String indicatorPosition, boolean required) throws IOException {
+        if (hasIndicator && indicatorPosition.equals("right")) {
+            writeIndicator(writer, required, indicator, indicatorPosition);
+        }
+        if (hasLabel && labelPosition.equals("right")) {
+            writeLabel(writer, label, labelPosition, indicator, indicatorPosition, required, hasIndicator);
+        }
+        if (hasIndicator) {
+            if (indicatorPosition.equals("bottom")) {
+                writer.startElement("br", null);
+                writer.endElement("br");
+            }
+            if (/*indicatorPosition.equals("right") || */indicatorPosition.equals("bottom")) {
+                if (hasLabel && labelPosition.equals("left")) {
+                    writeHiddenLabel(writer, label);
+                }
+                writeIndicator(writer, required, indicator, indicatorPosition);
+            }
+            if (indicatorPosition.equals("top") || indicatorPosition.equals("bottom")) {
+//                writer.endElement("span");
+            }
+        }
+        if (hasLabel) {
+            if (labelPosition.equals("bottom")) {
+                writer.startElement("br", null);
+                writer.endElement("br");
+            }
+            if (/*labelPosition.equals("right") || */labelPosition.equals("bottom")) {
+                writeLabel(writer, label, labelPosition, indicator, indicatorPosition, required, hasIndicator);
+            }
+        }
+    }
+
+    private void writeHiddenLabel(ResponseWriter writer, String label) throws IOException {
+        writer.startElement("span", null);
+        writer.writeAttribute("class", LABEL_STYLE_CLASS + " hidden", null);
+        writer.write(label);
+        writer.endElement("span");
+    }
+
+    private void writeLabel(ResponseWriter writer, String label, String labelPosition, String indicator, String indicatorPosition, boolean required, boolean hasIndicator) throws IOException {
+        if (hasIndicator) {
+            if (indicatorPosition.equals("labelLeft") || indicatorPosition.equals("labelRight")) {
+                writer.startElement("span", null);
+                writer.writeAttribute("class", LABEL_STYLE_CLASS + " " + LABEL_STYLE_CLASS + "-" + labelPosition, null);
+            }
+/*
+            if (indicatorPosition.equals("labelTop") || indicatorPosition.equals("labelBottom")) {
+                writer.startElement("span", null);
+                writer.writeAttribute("style", "float:left;", null);
+            }
+*/
+            if (indicatorPosition.equals("labelLeft")/* || indicatorPosition.equals("labelTop")*/) {
+                writeIndicator(writer, required, indicator, indicatorPosition);
+            }
+/*
+            if (indicatorPosition.equals("labelTop")) {
+                writer.startElement("br", null);
+                writer.endElement("br");
+            }
+*/
+        }
+        writer.startElement("span", null);
+        if (!hasIndicator || (!indicatorPosition.equals("labelLeft") && !indicatorPosition.equals("labelRight"))) {
+            writer.writeAttribute("class", LABEL_STYLE_CLASS + " " + LABEL_STYLE_CLASS + "-" + labelPosition, null);
+        }
+        writer.write(label);
+        writer.endElement("span");
+        if (hasIndicator) {
+/*
+            if (indicatorPosition.equals("labelBottom")) {
+                writer.startElement("br", null);
+                writer.endElement("br");
+            }
+*/
+            if (indicatorPosition.equals("labelRight")/* || indicatorPosition.equals("labelBottom")*/) {
+                writeIndicator(writer, required, indicator, indicatorPosition);
+            }
+/*
+            if (indicatorPosition.equals("labelTop") || indicatorPosition.equals("labelBottom")) {
+                writer.endElement("span");
+            }
+*/
+            if (indicatorPosition.equals("labelLeft") || indicatorPosition.equals("labelRight")) {
+                writer.endElement("span");
+            }
+        }
+    }
+
+    private void writeIndicator(ResponseWriter writer, boolean required, String indicator, String indicatorPosition) throws IOException {
+        String class1 = "ui-" + (required ? "required" : "optional") + "-indicator";
+        String class2;
+        if (indicatorPosition.equals("labelLeft")) {
+            class2 = class1 + "-label-left";
+        } else if (indicatorPosition.equals("labelRight")) {
+            class2 = class1 + "-label-right";
+        } else {
+            class2 = class1 + "-" + indicatorPosition;
+        }
+        writer.startElement("span", null);
+        writer.writeAttribute("class", class1 + " " + class2, null);
+        writer.write(indicator);
+        writer.endElement("span");
+    }
 }
