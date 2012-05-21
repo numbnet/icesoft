@@ -45,7 +45,7 @@
                         font-size: 80% !important;
                     }
                 </style>
-                <ace:listControl style="width:35%; margin:0 auto 0 auto;">
+                <ace:listControl id="dualListControl" style="width:35%; margin:0 auto 0 auto;">
                     <f:facet name="header">
                         Dual List Header
                     </f:facet>
@@ -53,13 +53,13 @@
                         Dual List Footer
                     </f:facet>
 
-                    <ace:list value="#{backing.stringList}"
+                    <ace:list id="firstList" value="#{backing.stringList}"
                               styleClass="subList"
                               dropGroup="textGroup"
                               selection="true"
                                />
 
-                    <ace:list value="#{backing.destStringList}"
+                    <ace:list id="secondList" value="#{backing.destStringList}"
                               styleClass="subList"
                               dropGroup="textGroup"
                               selection="true"
@@ -102,9 +102,9 @@
                 </style>
 
 
-                <ace:listControl selector=".floatList" />
+                <ace:listControl id="multiListControl" selector=".floatList" />
 
-                <ace:list value="#{backing.carList}"
+                <ace:list id="carList" value="#{backing.carList}"
                           var="car"
                           styleClass="floatList"
                           bodyClass="blockList"
@@ -118,7 +118,7 @@
                         First Foot
                     </f:facet>
 
-                    <h:panelGrid columns="2" >
+                    <h:panelGrid id="panelGrid" columns="2" >
                         <f:facet name="header">
                             <h:outputText value="#{car.name}" /><hr/>
                         </f:facet>
@@ -128,7 +128,7 @@
                     </h:panelGrid>
                 </ace:list>
 
-                <ace:list value="#{backing.fstDestCarList}"
+                <ace:list id="carListTwo" value="#{backing.fstDestCarList}"
                           var="car"
                           styleClass="floatList"
                           bodyClass="blockList"
@@ -142,7 +142,7 @@
                         Second Foot
                     </f:facet>
 
-                    <h:panelGrid columns="2">
+                    <h:panelGrid id="panelGridTwo" columns="2">
                         <f:facet name="header">
                             <h:outputText value="#{car.name}" /><hr/>
                         </f:facet>
@@ -152,7 +152,7 @@
                     </h:panelGrid>
                 </ace:list>
 
-                <ace:list value="#{backing.sndDestCarList}"
+                <ace:list id="carListThree" value="#{backing.sndDestCarList}"
                           var="car"
                           styleClass="floatList"
                           bodyClass="blockList"
@@ -166,7 +166,7 @@
                         Third Foot
                     </f:facet>
 
-                    <h:panelGrid columns="2">
+                    <h:panelGrid id="panelGridThree" columns="2">
                         <f:facet name="header">
                             <h:outputText value="#{car.name}" /><hr/>
                         </f:facet>
