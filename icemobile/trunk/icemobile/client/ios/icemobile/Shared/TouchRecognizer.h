@@ -1,5 +1,5 @@
 /*
-* Copyright 2004-2012 ICEsoft Technologies Canada Corp. (c)
+* Copyright 2004-2011 ICEsoft Technologies Canada Corp. (c)
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -15,23 +15,13 @@
 */
 
 #import <UIKit/UIKit.h>
-#import <CoreLocation/CoreLocation.h>
-#import <CoreMotion/CoreMotion.h>
-@class PlaceLabel;
 
-@interface ARView : UIView  <CLLocationManagerDelegate> {
-    CLLocation *location;
-    BOOL useCompass;
+@interface TouchRecognizer : UIGestureRecognizer  {
+    UIViewController *touchTarget;
+    BOOL singleTouch;
 }
 
-@property (nonatomic) BOOL useCompass;
-@property (nonatomic, retain) CLLocation *location;
-@property (nonatomic, retain) NSArray *placeLabels;
-@property (nonatomic, retain) NSArray *moreLabels;
-
-- (void)addPlace:(PlaceLabel *) place;
-- (void)setCompass:(BOOL) value;
-- (void)start;
-- (void)stop;
+@property (nonatomic, retain) UIViewController *touchTarget;
+@property (nonatomic) BOOL singleTouch;
 
 @end
