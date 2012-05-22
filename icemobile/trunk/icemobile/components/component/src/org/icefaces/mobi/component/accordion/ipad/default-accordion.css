@@ -66,6 +66,7 @@
      margin:10px 6px 0 6px;
      line-height: 18px;
      display: inline-block;
+     cursor: pointer;
  }
 
  .mobi-accordion .open .pointer {
@@ -74,6 +75,7 @@
 	-o-transform:rotate(90deg);
 	-ms-transform:rotate(90deg);
 	transform:rotate(90deg);
+    cursor: pointer;
  }
 
 .mobi-accordion section.menu {
