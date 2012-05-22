@@ -119,7 +119,8 @@ public class MaskedEntryRenderer extends InputRenderer {
 		String clientId = maskedEntry.getClientId(context);
         String defaultClass = themeForms() ? MaskedEntry.THEME_INPUT_CLASS : MaskedEntry.PLAIN_INPUT_CLASS;
         String styleClass = maskedEntry.getStyleClass();
-		
+        defaultClass += getStateStyleClasses(maskedEntry);
+
 		writer.startElement("input", null);
 		writer.writeAttribute("id", clientId, null);
 		writer.writeAttribute("name", clientId, null);

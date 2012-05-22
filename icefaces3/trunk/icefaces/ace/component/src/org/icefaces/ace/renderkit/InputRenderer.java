@@ -317,4 +317,17 @@ public class InputRenderer extends CoreRenderer {
         writer.write(indicator);
         writer.endElement("span");
     }
+
+    protected String getStateStyleClasses(UIInput component) {
+        String styleClases = "";
+        if (!component.isValid()) {
+            styleClases += " ui-state-error";
+        }
+        if (component.isRequired()) {
+            styleClases += " ui-state-required";
+        } else {
+            styleClases += " ui-state-optional";
+        }
+        return styleClases;
+    }
 }
