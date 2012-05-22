@@ -77,6 +77,7 @@
     NSLog(@"map touch: lat  %f",coord.latitude);
     NSLog(@"map touch: long %f",coord.longitude);
     [self.arView addPlace:[PlaceLabel placeLabelWithText:@"Spot" 
+            andImage:[UIImage imageNamed:@"ar.png"]
             initWithLatitude:coord.latitude longitude:coord.longitude]];
 }
 
