@@ -3602,7 +3602,7 @@ function wijmoASPNetParseOptions(o) {
 			if (triggerEle.is("iframe")) {
 				triggerEle = $(triggerEle.get(0).contentWindow.document);
 			}
-			if (typeof this.options.trigger == 'string' && event != "rtclick") {
+			if (typeof this.options.trigger == 'string') {
 				switch (event) {
 					case "click":
 						$(document).off(event + namespace, o.trigger).on(event + namespace, o.trigger, function (e) {
@@ -3622,7 +3622,7 @@ function wijmoASPNetParseOptions(o) {
 						});
 						break;
 					case "rtclick":
-						$(document).off(event + namespace, o.trigger).on(event + namespace, o.trigger, function (e) {
+						$(document).off("contextmenu" + namespace, o.trigger).on("contextmenu" + namespace, o.trigger, function (e) {
 							menuContainer.hide();
 							self._displaySubmenu(e, triggerEle, menuContainer);
 							e.preventDefault();
