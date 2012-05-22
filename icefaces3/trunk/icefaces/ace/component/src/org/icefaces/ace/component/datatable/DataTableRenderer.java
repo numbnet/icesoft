@@ -424,6 +424,9 @@ public class DataTableRenderer extends CoreRenderer {
 
         if (header != null) header.encodeAll(context);
         else if (headerText != null) writer.write(headerText);
+        else if (subRows)
+            for (UIComponent c : column.getChildren())
+                c.encodeAll(context);
 
 
         writer.endElement(HTML.SPAN_ELEM);
@@ -616,7 +619,9 @@ public class DataTableRenderer extends CoreRenderer {
             facet.encodeAll(context);
         } else if (text != null) {
             writer.write(text);
-        }
+        } else if (subRows)
+            for (UIComponent c : column.getChildren())
+                c.encodeAll(context);
 
         writer.endElement(HTML.DIV_ELEM);
         
