@@ -100,6 +100,21 @@ public class DateTimeEntryRenderer extends InputRenderer {
         //input
         String type = popup ? "text" : "hidden";
 
+        boolean required = dateTimeEntry.isRequired();
+
+        String label = dateTimeEntry.getLabel();
+        boolean hasLabel = label != null && label.trim().length() > 0;
+        String labelPosition = dateTimeEntry.getLabelPosition();
+        if (!labelPositionSet.contains(labelPosition)) labelPosition = DEFAULT_LABEL_POSITION;
+
+        String indicator = required ? dateTimeEntry.getRequiredIndicator() : dateTimeEntry.getOptionalIndicator();
+        boolean hasIndicator = indicator != null && indicator.trim().length() > 0;
+        String indicatorPosition = dateTimeEntry.getIndicatorPosition();
+        if (!indicatorPositionSet.contains(indicatorPosition)) indicatorPosition = DEFAULT_INDICATOR_POSITION;
+
+        if (popup) {
+            writeLabelAndIndicatorBefore(writer, label, hasLabel, labelPosition, indicator, hasIndicator, indicatorPosition, required);
+        }
         writer.startElement("input", null);
         writer.writeAttribute("id", inputId, null);
         writer.writeAttribute("name", inputId, null);
@@ -119,6 +134,9 @@ public class DateTimeEntryRenderer extends InputRenderer {
         }
 
         writer.endElement("input");
+        if (popup) {
+            writeLabelAndIndicatorAfter(writer, label, hasLabel, labelPosition, indicator, hasIndicator, indicatorPosition, required);
+        }
 
         writer.endElement("span");
     }

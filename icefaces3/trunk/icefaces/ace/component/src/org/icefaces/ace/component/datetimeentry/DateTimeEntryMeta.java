@@ -163,4 +163,20 @@ public class DateTimeEntryMeta extends UIInputMeta {
 	
     @Property(tlddoc = "Position of the text field in the tabbing order for the current page. This value must be an integer between 0 and 32767.")
     private String tabindex;
+
+    @Property(tlddoc = "Indicator indicating that the user is required to provide a submitted value for this input component.")
+    private String requiredIndicator;
+
+    @Property(tlddoc = "Indicator indicating that the user is NOT required to provide a submitted value for this input component.")
+    private String optionalIndicator;
+
+    @Property(tlddoc = "Position of label relative to input field. Supported values are \"left/right/top/bottom/inField\".")
+    private String labelPosition;
+
+    @Property(tlddoc = "Position of input-required or input-optional indicator relative to input field or label. " +
+            "Supported values are \"left/right/top/bottom/labelLeft/labelRight\". ")
+    private String indicatorPosition;
+
+    @Property(tlddoc = "A localized user presentable name for this component.")
+    private String label;
 }
