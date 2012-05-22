@@ -91,7 +91,6 @@ void ecefToEnu(double lat, double lon, double x, double y, double z, double xr, 
 	CADisplayLink *displayLink;
 	CMMotionManager *motionManager;
 	CLLocationManager *locationManager;
-	CLLocation *location;
 	NSArray *placeLabels;
 	mat4f_t projectionTransform;
 	mat4f_t cameraTransform;	
@@ -125,7 +124,9 @@ void ecefToEnu(double lat, double lon, double x, double y, double z, double xr, 
 
 @implementation ARView
 
+@synthesize useCompass;
 @synthesize moreLabels;
+@synthesize location;
 @dynamic placeLabels;
 
 - (void)dealloc
@@ -157,6 +158,15 @@ void ecefToEnu(double lat, double lon, double x, double y, double z, double xr, 
 	[self stopDisplayLink];
 }
 
+- (void)setCompass:(BOOL) value  {
+    NSLog(@"ARView compassChanged %d", value);
+    self.useCompass = value;
+	for (PlaceLabel *place in [moreLabels objectEnumerator]) {
+		[place.view removeFromSuperview];
+	}	
+    [self updatePlaceLabelCoordinates];
+}
+
 - (void)setPlaceLabels:(NSArray *)labels
 {
 	for (PlaceLabel *place in [placeLabels objectEnumerator]) {
@@ -170,7 +180,20 @@ void ecefToEnu(double lat, double lon, double x, double y, double z, double xr, 
 	}
 }
 
+- (void)addPlace:(PlaceLabel *) place  {
+    NSMutableArray *modLabels = 
+            [NSMutableArray arrayWithCapacity:([placeLabels count] + 4)];
+    [modLabels addObjectsFromArray: placeLabels];
+    [modLabels addObject:place];
+    [placeLabels release];
+
+    placeLabels = [modLabels retain];	
+}
+
 - (NSArray *)addCompassPoints:(NSArray *)labels {
+    if (!self.useCompass)  {
+        return labels;
+    }
 NSLog(@"addCompassPoints anchored %f,%f", location.coordinate.latitude, location.coordinate.longitude);
 
     PlaceLabel *northLabel = [PlaceLabel placeLabelWithText:@"NORTH" 

@@ -18,8 +18,13 @@
 @class PlaceLabel;
 
 @interface ARViewController : UIViewController {
+    UISwitch *compassSwitch;
 }
 
-- (void)setPlaceLabels:(NSArray *)places;
+@property (nonatomic, retain) IBOutlet UISwitch *compassSwitch;
+
+- (void) setPlaceLabels:(NSArray *)places;
+- (IBAction) doLocations;
+- (IBAction) compassChanged:(UISwitch *)theSwitch;
 
 @end
