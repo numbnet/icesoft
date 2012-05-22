@@ -187,4 +187,20 @@ public class Column extends ColumnBase {
 
         return true;
     }
+
+    @Override
+    public java.lang.Object getSortBy() {
+        Object retVal = super.getSortBy();
+        if (retVal == null) return super.getGroupBy();
+        else return retVal;
+    }
+
+    @Override
+    public ValueExpression getValueExpression(String name) {
+        ValueExpression retVal = super.getValueExpression(name);
+        if (retVal == null && name.equals("sortBy"))
+            return super.getValueExpression("groupBy");
+        else
+            return retVal;
+    }
 }
