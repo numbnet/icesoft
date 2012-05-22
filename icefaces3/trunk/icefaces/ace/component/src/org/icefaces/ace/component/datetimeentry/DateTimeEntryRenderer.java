@@ -126,7 +126,7 @@ public class DateTimeEntryRenderer extends InputRenderer {
         }
 
         if(popup) {
-            if(themeForms()) writer.writeAttribute("class", DateTimeEntry.INPUT_STYLE_CLASS, null);
+            if(themeForms()) writer.writeAttribute("class", DateTimeEntry.INPUT_STYLE_CLASS + getStateStyleClasses(dateTimeEntry), null);
             if(dateTimeEntry.isReadOnlyInputText()) writer.writeAttribute("readonly", "readonly", null);
             if(dateTimeEntry.isDisabled()) writer.writeAttribute("disabled", "disabled", null);
 

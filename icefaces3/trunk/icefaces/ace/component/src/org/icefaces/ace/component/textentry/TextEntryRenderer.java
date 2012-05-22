@@ -78,15 +78,8 @@ public class TextEntryRenderer extends InputRenderer {
         String defaultClass = themeForms() ? TextEntry.THEME_INPUT_CLASS : TextEntry.PLAIN_INPUT_CLASS;
         String styleClass = textEntry.getStyleClass();
 
-        if (!textEntry.isValid()) {
-            defaultClass += " ui-state-error";
-        }
+        defaultClass += getStateStyleClasses(textEntry);
         boolean required = textEntry.isRequired();
-        if (required) {
-            defaultClass += " ui-state-required";
-        } else {
-            defaultClass += " ui-state-optional";
-        }
 
         String label = textEntry.getLabel();
         boolean hasLabel = label != null && label.trim().length() > 0;
