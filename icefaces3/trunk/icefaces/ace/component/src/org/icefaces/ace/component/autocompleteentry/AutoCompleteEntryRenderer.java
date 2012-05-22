@@ -64,6 +64,19 @@ public class AutoCompleteEntryRenderer extends InputRenderer {
         writer.startElement("div", null);
 		writer.writeAttribute("class", autoCompleteEntry.getStyleClass(), null);
 		
+        boolean required = autoCompleteEntry.isRequired();
+
+        String label = autoCompleteEntry.getLabel();
+        boolean hasLabel = label != null && label.trim().length() > 0;
+        String labelPosition = autoCompleteEntry.getLabelPosition();
+        if (!labelPositionSet.contains(labelPosition)) labelPosition = DEFAULT_LABEL_POSITION;
+
+        String indicator = required ? autoCompleteEntry.getRequiredIndicator() : autoCompleteEntry.getOptionalIndicator();
+        boolean hasIndicator = indicator != null && indicator.trim().length() > 0;
+        String indicatorPosition = autoCompleteEntry.getIndicatorPosition();
+        if (!indicatorPositionSet.contains(indicatorPosition)) indicatorPosition = DEFAULT_INDICATOR_POSITION;
+
+        writeLabelAndIndicatorBefore(writer, label, hasLabel, labelPosition, indicator, hasIndicator, indicatorPosition, required);
 		// text field
 		writer.startElement("input", null);
         writer.writeAttribute("type", "text", null);
@@ -100,7 +113,8 @@ public class AutoCompleteEntryRenderer extends InputRenderer {
 			writer.writeAttribute("value", autoCompleteEntry.getValue(), null);
 		}
 		writer.endElement("input");
-		
+        writeLabelAndIndicatorAfter(writer, label, hasLabel, labelPosition, indicator, hasIndicator, indicatorPosition, required);
+
 		// index
 		writer.startElement("input", null);
 		writer.writeAttribute("type", "hidden", null);

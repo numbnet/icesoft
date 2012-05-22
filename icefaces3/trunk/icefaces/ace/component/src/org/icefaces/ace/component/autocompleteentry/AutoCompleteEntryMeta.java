@@ -90,4 +90,17 @@ public class AutoCompleteEntryMeta extends HtmlInputTextMeta {
             tlddoc="ValueExpression that specifies the property of the data object to use for filtering values. " +
 			"This only applies when listvar is used and the rendering is done by means of a facet.")
 	private Object filterBy;
+
+    @Property(tlddoc = "Indicator indicating that the user is required to provide a submitted value for this input component.")
+    private String requiredIndicator;
+
+    @Property(tlddoc = "Indicator indicating that the user is NOT required to provide a submitted value for this input component.")
+    private String optionalIndicator;
+
+    @Property(tlddoc = "Position of label relative to input field. Supported values are \"left/right/top/bottom/inField\".")
+    private String labelPosition;
+
+    @Property(tlddoc = "Position of input-required or input-optional indicator relative to input field or label. " +
+            "Supported values are \"left/right/top/bottom/labelLeft/labelRight\". ")
+    private String indicatorPosition;
 }
