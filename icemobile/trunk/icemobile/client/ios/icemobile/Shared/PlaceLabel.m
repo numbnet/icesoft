@@ -45,9 +45,14 @@
 	return place;
 }
 
-+ (PlaceLabel *)placeLabelWithText:(NSString *)text 
-        initWithLatitude:(double) lat longitude: (double) lon  {
-NSLog(@"placeLabelWithText %@ %f,%f", text, lat, lon);
++ (PlaceLabel *)placeLabelWithText:(NSString *)text andImage:(UIImage *)image initWithLatitude:(double)lat longitude:(double)lon  {
+    NSLog(@"placeLabelWithText:andImage: %@ %@ %f,%f", text, image, lat, lon);
+    UIView *outerView = [[[UIView alloc] init] autorelease];
+    if (nil != image)  {
+        UIView *imageView = [[UIImageView alloc] initWithImage: image];
+        imageView.center = CGPointMake(200.0f, 200.0f);
+        [outerView addSubview:imageView];
+    }
     UILabel *label = [[[UILabel alloc] init] autorelease];
     label.adjustsFontSizeToFitWidth = NO;
     label.opaque = NO;
@@ -58,12 +63,19 @@ NSLog(@"placeLabelWithText %@ %f,%f", text, lat, lon);
     label.text = text;		
     CGSize size = [label.text sizeWithFont:label.font];
     label.bounds = CGRectMake(0.0f, 0.0f, size.width, size.height);
+    [outerView addSubview:label];
             
-    PlaceLabel *place = [PlaceLabel placeLabelWithView:label 
+    PlaceLabel *place = [PlaceLabel placeLabelWithView:outerView 
             at:[[[CLLocation alloc] initWithLatitude:lat longitude:lon] 
             autorelease]];
     
     return place;
+}
+
++ (PlaceLabel *)placeLabelWithText:(NSString *)text 
+        initWithLatitude:(double) lat longitude: (double) lon  {
+    return [self placeLabelWithText:text andImage:nil 
+            initWithLatitude:lat longitude:lon];
 }
 
 @end

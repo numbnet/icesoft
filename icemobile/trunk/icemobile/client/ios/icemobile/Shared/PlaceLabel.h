@@ -27,5 +27,7 @@
 + (PlaceLabel *)placeLabelWithView:(UIView *)view at:(CLLocation *)location;
 + (PlaceLabel *)placeLabelWithText:(NSString *)text 
         initWithLatitude:(double) lat longitude: (double) lon;
++ (PlaceLabel *)placeLabelWithText:(NSString *)text andImage:(UIImage *)image
+        initWithLatitude:(double) lat longitude: (double) lon;
 
 @end
