@@ -207,14 +207,14 @@ ice.ace.DataTable = function(id, cfg) {
  ######################################################################### */
 ice.ace.DataTable.prototype.setupFilterEvents = function() {
     var _self = this;
-    if (this.cfg.filterEvent == "enter") ice.ace.jq(this.jqId + ' th .ui-column-filter').unbind('keypress').bind('keypress', function(event) {
+    if (this.cfg.filterEvent == "enter") ice.ace.jq(this.jqId + ' thead:first > tr > th > div > input.ui-column-filter').unbind('keypress').bind('keypress', function(event) {
         event.stopPropagation();
         if (event.which == 13) {
             _self.filter(event);
             return false; // Don't run form level enter key handling
         }
     });
-    else if (this.cfg.filterEvent == "change") ice.ace.jq(this.jqId).off('keyup', 'th .ui-column-filter').on('keyup', 'th .ui-column-filter', function(event) {
+    else if (this.cfg.filterEvent == "change") ice.ace.jq(this.jqId + ' thead:first > tr > th > div > input.ui-column-filter').off('keyup').on('keyup', function(event) {
         var _event = event;
         if (event.which != 9) {
             if (_self.delayedFilterCall) clearTimeout(_self.delayedFilterCall);
@@ -258,12 +258,12 @@ ice.ace.DataTable.prototype.setupSortRequest = function(_self, $this, event, hea
     // If we are looking a freshly rendered DT initalize our JS sort state
     // from the state of the rendered controls
     if (_self.sortOrder.length == 0) {
-        ice.ace.jq(_self.jqId + ' th > div.ui-sortable-column .ui-sortable-control').each(function() {
+        ice.ace.jq(_self.jqId + ' thead:first > tr > th > div.ui-sortable-column > span > span.ui-sortable-control').each(function() {
             var $this = ice.ace.jq(this);
-            if (ice.ace.getOpacity($this.find('.ui-icon-triangle-1-n')[0]) == 1 ||
-                    ice.ace.getOpacity($this.find('.ui-icon-triangle-1-s')[0]) == 1 )
+            if (ice.ace.getOpacity($this.find('span.ui-sortable-control:first > a.ui-icon-triangle-1-n')[0]) == 1 ||
+                    ice.ace.getOpacity($this.find('span.ui-sortable-control:first > a.ui-icon-triangle-1-s')[0]) == 1 )
                 _self.sortOrder.splice(
-                        parseInt($this.find('.ui-sortable-column-order').html())-1,
+                        parseInt($this.find('span.ui-sortable-control:first > span.ui-sortable-column-order').html())-1,
                         0,
                         $this.closest('.ui-header-column')
                 );
@@ -274,8 +274,8 @@ ice.ace.DataTable.prototype.setupSortRequest = function(_self, $this, event, hea
         // Remake sort criteria
         // Reset all other arrows
         _self.sortOrder = [];
-        $this.closest('.ui-header-column').siblings().find('.ui-icon-triangle-1-n, .ui-icon-triangle-1-s').css('opacity', .2).removeClass('ui-toggled');
-        headerCell.parent().siblings().find('.ui-icon-triangle-1-n, .ui-icon-triangle-1-s').css('opacity', .2).removeClass('ui-toggled');
+        $this.closest('div.ui-header-column').siblings().find('> span > span > span.ui-sortable-column-icon > a').css('opacity', .2).removeClass('ui-toggled');
+        headerCell.parent().siblings().find('> th > div.ui-header-column > span > span > span.ui-sortable-column-icon > a').css('opacity', .2).removeClass('ui-toggled');
     }
 
     var cellFound = false, index = 0;
@@ -336,7 +336,7 @@ ice.ace.DataTable.prototype.setupSortEvents = function() {
 
     // Bind clickable header events
     if (_self.cfg.clickableHeaderSorting) {
-        ice.ace.jq(this.jqId + ' thead:first th > div.ui-sortable-column')
+        ice.ace.jq(this.jqId + ' thead:first > tr > th > div.ui-sortable-column')
             .unbind('click').bind("click",function(event) {
                 var target = ice.ace.jq(event.target);
 
@@ -697,8 +697,8 @@ ice.ace.DataTable.prototype.resizeScrolling = function() {
     // Sizing will not be accurate if the table is not being displayed, like at tabset load.
     // Hidden is true if any ancestors are hidden.
     if (scrollableTable.is(':hidden')) {
-        var _self = this;
-        setTimeout(function () { _self.resizeScrolling() }, 100);
+        //var _self = this;
+        //setTimeout(function () { _self.resizeScrolling() }, 100);
     } else {
         var dupeHeadSingleCols = dupeHead.find('th:not([colspan]) .ui-header-column:first-child').get().reverse();
         if (dupeHeadSingleCols.size() == 0)
