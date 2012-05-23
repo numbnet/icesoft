@@ -8332,8 +8332,32 @@ jQuery.fn.extend({
 	},
 
 	fadeTo: function( speed, to, easing, callback ) {
+		if (jQuery.support.leadingWhitespace) { // detect browser
 		return this.filter(":hidden").css("opacity", 0).show().end()
 					.animate({opacity: to}, speed, easing, callback);
+		} else { // IE case
+			if (typeof to == 'number') {
+				if (to > 0) {
+					this.show();
+				} else {
+					this.hide();
+				}
+			} else {
+				if (to == 'show') {
+					this.show();
+				} else if (to == 'hide') {
+					this.hide();
+				} else {
+					this.show();
+				}
+			}
+			
+			if (callback && typeof callback == 'function') {
+				this.each( function() { callback.call(this); } );
+			}
+			
+			return this;
+		}
 	},
 
 	animate: function( prop, speed, easing, callback ) {
@@ -8564,6 +8588,34 @@ jQuery.each({
 		return this.animate( props, speed, easing, callback );
 	};
 });
+
+jQuery.fn[ "fadeIn" ] = function( speed, easing, callback ) {
+	if (jQuery.support.leadingWhitespace) { // detect browser
+		return this.animate( { opacity: "show" }, speed, easing, callback );
+	} else { // IE
+		this.show();
+		
+		if (callback && typeof callback == 'function') {
+			this.each( function() { callback.call(this); } );
+		}
+		
+		return this;
+	}
+};
+
+jQuery.fn[ "fadeOut" ] = function( speed, easing, callback ) {
+	if (jQuery.support.leadingWhitespace) { // detect browser
+		return this.animate( { opacity: "hide" }, speed, easing, callback );
+	} else { // IE
+		this.hide();
+		
+		if (callback && typeof callback == 'function') {
+			this.each( function() { callback.call(this); } );
+		}
+		
+		return this;
+	}
+};
 
 jQuery.extend({
 	speed: function( speed, easing, fn ) {
