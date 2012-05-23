@@ -364,11 +364,11 @@ ice.ace.DataTable.prototype.setupSortEvents = function() {
                 }
 
                 // if the target is a child of a sortable-control do not process the event
-                if (target.closest('.ui-sortable-control').length > 0) return;
+                if (target.closest('span.ui-sortable-control').length > 0) return;
 
                 var $this = ice.ace.jq(this),
-                    topCarat = ice.ace.jq($this.find(".ui-icon-triangle-1-n")[0]),
-                    bottomCarat = ice.ace.jq($this.find(".ui-icon-triangle-1-s")[0]);
+                    topCarat = ice.ace.jq($this.find("a.ui-icon-triangle-1-n")[0]),
+                    bottomCarat = ice.ace.jq($this.find("a.ui-icon-triangle-1-s")[0]);
                     selectionMade = bottomCarat.hasClass('ui-toggled') || topCarat.hasClass('ui-toggled');
 
                 if (_self.cfg.clickableHeaderSorting && !selectionMade) {
@@ -381,12 +381,12 @@ ice.ace.DataTable.prototype.setupSortEvents = function() {
                 if ($this.closest('th').find('> hr').size() == 0)
                     $this.closest('th').addClass('ui-state-hover');
                 else
-                    $this.closest('.ui-sortable-column').addClass('ui-state-hover');
+                    $this.closest('div.ui-sortable-column').addClass('ui-state-hover');
             })
             .unbind('mouseleave').bind('mouseleave', function(event) {
                 var $this = ice.ace.jq(this),
-                    topCarat = ice.ace.jq($this.find(".ui-icon-triangle-1-n")[0]),
-                    bottomCarat = ice.ace.jq($this.find(".ui-icon-triangle-1-s")[0]);
+                    topCarat = ice.ace.jq($this.find("a.ui-icon-triangle-1-n")[0]),
+                    bottomCarat = ice.ace.jq($this.find("a.ui-icon-triangle-1-s")[0]);
 
                 if (!bottomCarat.hasClass('ui-toggled'))
                     if (topCarat.hasClass('ui-toggled') & _self.cfg.clickableHeaderSorting)
@@ -401,16 +401,16 @@ ice.ace.DataTable.prototype.setupSortEvents = function() {
                 if ($this.closest('th').find('> hr').size() == 0)
                     $this.closest('th').removeClass('ui-state-hover');
                 else
-                    $this.closest('.ui-sortable-column').removeClass('ui-state-hover');
+                    $this.closest('div.ui-sortable-column').removeClass('ui-state-hover');
             });
     }
 
     // Bind clickable control events
-    ice.ace.jq(this.jqId + ' thead:first th > div.ui-sortable-column .ui-sortable-control')
+    ice.ace.jq(this.jqId + ' thead:first th > div.ui-sortable-column span.ui-sortable-control')
             .unbind('click').bind("click",function(event, altY, altMeta) {
                 var $this = ice.ace.jq(this),
-                    topCarat = ice.ace.jq($this.find(".ui-icon-triangle-1-n")[0]),
-                    bottomCarat = ice.ace.jq($this.find(".ui-icon-triangle-1-s")[0]),
+                    topCarat = ice.ace.jq($this.find("a.ui-icon-triangle-1-n")[0]),
+                    bottomCarat = ice.ace.jq($this.find("a.ui-icon-triangle-1-s")[0]),
                     selectionMade = bottomCarat.hasClass('ui-toggled') || topCarat.hasClass('ui-toggled');
 
                 if ((_self.cfg.clickableHeaderSorting && !selectionMade) || (!_self.cfg.clickableHeaderSorting)) {
@@ -422,8 +422,8 @@ ice.ace.DataTable.prototype.setupSortEvents = function() {
                 var target = ice.ace.jq(event.target);
 
                 var $this = ice.ace.jq(this),
-                    topCarat = ice.ace.jq($this.find(".ui-icon-triangle-1-n")[0]),
-                    bottomCarat = ice.ace.jq($this.find(".ui-icon-triangle-1-s")[0]),
+                    topCarat = ice.ace.jq($this.find("a.ui-icon-triangle-1-n")[0]),
+                    bottomCarat = ice.ace.jq($this.find("a.ui-icon-triangle-1-s")[0]),
                     controlOffset = $this.offset(),
                     controlHeight = !_self.cfg.singleSort ? $this.outerHeight() : 22,
                     ieOffset = ice.ace.jq.browser.msie ? 4 : 0;
@@ -446,12 +446,12 @@ ice.ace.DataTable.prototype.setupSortEvents = function() {
                     if ($this.closest('th').find('> hr').size() == 0)
                         $this.closest('th').addClass('ui-state-hover');
                     else
-                        $this.closest('.ui-sortable-column').addClass('ui-state-hover');
+                        $this.closest('div.ui-sortable-column').addClass('ui-state-hover');
             })
             .unbind('mouseleave').bind('mouseleave', function(event) {
                 var $this = ice.ace.jq(this),
-                    topCarat = ice.ace.jq($this.find(".ui-icon-triangle-1-n")[0]),
-                    bottomCarat = ice.ace.jq($this.find(".ui-icon-triangle-1-s")[0]);
+                    topCarat = ice.ace.jq($this.find("a.ui-icon-triangle-1-n")[0]),
+                    bottomCarat = ice.ace.jq($this.find("a.ui-icon-triangle-1-s")[0]);
 
                 if (!bottomCarat.hasClass('ui-toggled'))
                     if (topCarat.hasClass('ui-toggled') & _self.cfg.clickableHeaderSorting)
@@ -466,12 +466,12 @@ ice.ace.DataTable.prototype.setupSortEvents = function() {
                 if ($this.closest('th').find('> hr').size() == 0)
                     $this.closest('th').removeClass('ui-state-hover');
                 else
-                    $this.closest('.ui-sortable-column').removeClass('ui-state-hover');
+                    $this.closest('div.ui-sortable-column').removeClass('ui-state-hover');
             }).each(function () {
                 // Prefade sort controls
                 var $this = ice.ace.jq(this),
-                    topCarat = ice.ace.jq($this.find(".ui-icon-triangle-1-n")[0]),
-                    bottomCarat = ice.ace.jq($this.find(".ui-icon-triangle-1-s")[0]);
+                    topCarat = ice.ace.jq($this.find("a.ui-icon-triangle-1-n")[0]),
+                    bottomCarat = ice.ace.jq($this.find("a.ui-icon-triangle-1-s")[0]);
                     selectionMade = bottomCarat.hasClass('ui-toggled') || topCarat.hasClass('ui-toggled');
 
                 if (_self.cfg.clickableHeaderSorting && selectionMade) {
@@ -484,11 +484,10 @@ ice.ace.DataTable.prototype.setupSortEvents = function() {
             });
 
     // Bind keypress kb-navigable sort icons
-    var sortableControls = ice.ace.jq(this.jqId + ' th > div.ui-sortable-column .ui-sortable-control');
-    var sortableControlsSelector = 'th > div.ui-sortable-column .ui-sortable-control';
+    var sortableControlsSelector = 'thead:first > tr > th > div.ui-sortable-column span.ui-sortable-control';
     ice.ace.jq(this.jqId)
-            .off('keypress', sortableControlsSelector + ' .ui-icon-triangle-1-n')
-            .on('keypress', sortableControlsSelector + ' .ui-icon-triangle-1-n', function(event) {
+            .off('keypress', sortableControlsSelector + ' a.ui-icon-triangle-1-n')
+            .on('keypress', sortableControlsSelector + ' a.ui-icon-triangle-1-n', function(event) {
                 if (event.which == 32 || event.which == 13) {
                     var $currentTarget = ice.ace.jq(event.currentTarget);
                     $currentTarget.closest('.ui-sortable-control')
@@ -497,8 +496,8 @@ ice.ace.DataTable.prototype.setupSortEvents = function() {
                 }});
 
     ice.ace.jq(this.jqId)
-            .off('keypress', sortableControlsSelector + ' .ui-icon-triangle-1-s')
-            .on('keypress', sortableControlsSelector + ' .ui-icon-triangle-1-s', function(event) {
+            .off('keypress', sortableControlsSelector + ' a.ui-icon-triangle-1-s')
+            .on('keypress', sortableControlsSelector + ' a.ui-icon-triangle-1-s', function(event) {
                 if (event.which == 32 || event.which == 13) {
                     var $currentTarget = ice.ace.jq(event.currentTarget);
                     $currentTarget.closest('.ui-sortable-control')
@@ -519,7 +518,7 @@ ice.ace.DataTable.prototype.setupSelectionEvents = function() {
     var _self = this;
     var selectEvent = this.cfg.dblclickSelect ? 'dblclick' : 'click',
         selector = this.isCellSelectionEnabled()
-                ? this.jqId + ' tbody.ui-datatable-data > tr > td'
+                ? this.jqId + ' tbody.ui-datatable-data:first > tr > td'
                 : this.jqId + ' tbody.ui-datatable-data:first > tr:not(.ui-unselectable)';
 
     ice.ace.jq(selector)
@@ -556,7 +555,7 @@ ice.ace.DataTable.prototype.setupSelectionEvents = function() {
 
 ice.ace.DataTable.prototype.setupReorderableColumns = function() {
     var _self = this;
-    ice.ace.jq(this.jqId + ' thead').sortable({
+    ice.ace.jq(this.jqId + ' thead:first').sortable({
                 items:'th.ui-reorderable-col', helper:'clone',
                 axis:'x', appendTo:this.jqId + ' thead',
                 cursor:'move', placeholder:'ui-state-hover',
@@ -573,7 +572,7 @@ ice.ace.DataTable.prototype.setupReorderableColumns = function() {
 
 ice.ace.DataTable.prototype.setupRowExpansionEvents = function() {
     var table = this;
-    var selector = 'tbody.ui-datatable-data:first tr td a.ui-row-toggler';
+    var selector = 'tbody.ui-datatable-data:first > tr > td *:not(tbody) a.ui-row-toggler';
     ice.ace.jq(this.jqId)
             .off('keyup click', selector)
             .on('keyup', selector, function(event) { if (event.which == 32 || event.which == 13) { table.toggleExpansion(this); }})
@@ -582,7 +581,7 @@ ice.ace.DataTable.prototype.setupRowExpansionEvents = function() {
 
 ice.ace.DataTable.prototype.setupPanelExpansionEvents = function() {
     var table = this;
-    var selector = 'tbody.ui-datatable-data:first tr:not(.ui-expanded-row-content) td a.ui-row-panel-toggler';
+    var selector = 'tbody.ui-datatable-data:first > tr:not(.ui-expanded-row-content) > td a.ui-row-panel-toggler';
     ice.ace.jq(this.jqId)
             .off('keyup click', selector)
             .on('keyup', selector, function(event) { if (event.which == 32 || event.which == 13) { table.toggleExpansion(this); }})
@@ -598,10 +597,10 @@ ice.ace.DataTable.prototype.setupScrolling = function() {
 
     this.resizeScrolling();
 
-    ice.ace.jq(_self.jqId + ' .ui-datatable-scrollable-body').bind('scroll', function() {
+    ice.ace.jq(_self.jqId + ' .ui-datatable-scrollable-body:first').bind('scroll', function() {
         var $this = ice.ace.jq(this),
-            $header = ice.ace.jq(_self.jqId + ' .ui-datatable-scrollable-header'),
-            $footer = ice.ace.jq(_self.jqId + ' .ui-datatable-scrollable-footer'),
+            $header = ice.ace.jq(_self.jqId + ' .ui-datatable-scrollable-header:first'),
+            $footer = ice.ace.jq(_self.jqId + ' .ui-datatable-scrollable-footer:first'),
             scrollLeftVal = $this.scrollLeft();
 
        $header.scrollLeft(scrollLeftVal);
@@ -618,7 +617,7 @@ ice.ace.DataTable.prototype.setupScrolling = function() {
 
     //live scroll
     if (this.cfg.liveScroll) {
-        var bodyContainer = ice.ace.jq(this.jqId + ' .ui-datatable-scrollable-body');
+        var bodyContainer = ice.ace.jq(this.jqId + ' .ui-datatable-scrollable-body:first');
         this.scrollOffset = this.cfg.scrollStep;
         this.shouldLiveScroll = true;
 
@@ -638,14 +637,14 @@ ice.ace.DataTable.prototype.setupResizableColumns = function() {
 
     //Setup resizing
     this.columnWidthsCookie = this.id + '_columnWidths',
-            resizers = ice.ace.jq(this.jqId + ' thead th div.ui-column-resizer'),
-            columns = ice.ace.jq(this.jqId + ' thead th'),
+            resizers = ice.ace.jq(this.jqId + ' thead:first > tr > th > div.ui-column-resizer'),
+            columns = ice.ace.jq(this.jqId + ' thead:first > tr > th'),
             _self = this;
 
     resizers.draggable({
                 axis:'x',
                 drag: function(event, ui) {
-                    var column = ui.helper.parents('th:first'),
+                    var column = ui.helper.closest('th'),
                             newWidth = ui.position.left + ui.helper.outerWidth();
 
                     column.css('width', newWidth);
@@ -862,9 +861,9 @@ ice.ace.DataTable.prototype.resizeScrolling = function() {
 ice.ace.DataTable.prototype.setupDisabledStyling = function() {
     // Fade out controls
     ice.ace.jq(this.jqId + ' > table > tbody.ui-datatable-data > tr > td a.ui-row-toggler, ' +
-               this.jqId + ' > table > thead th .ui-column-filter, ' +
-               this.jqId + ' > table > thead > th > div.ui-sortable-column .ui-sortable-control, ' +
-               this.jqId + ' > table > tbody.ui-datatable-data tr td div.ui-row-editor .ui-icon'
+               this.jqId + ' > table > thead > tr > th > div > input.ui-column-filter, ' +
+               this.jqId + ' > table > thead > tr > th > div.ui-sortable-column span.ui-sortable-control:first, ' +
+               this.jqId + ' > table > tbody.ui-datatable-data > tr > td > div.ui-row-editor span.ui-icon'
                ).css({opacity:0.4});
 
     // Add pagination disabled style
@@ -875,7 +874,7 @@ ice.ace.DataTable.prototype.setupDisabledStyling = function() {
     });
 
     // Disable filter text entry
-    ice.ace.jq(this.jqId + ' > table > thead th .ui-column-filter').keypress(function () {
+    ice.ace.jq(this.jqId + ' > table > thead > tr > th > div > input.ui-column-filter').keypress(function () {
         return false;
     });
 
@@ -934,7 +933,7 @@ ice.ace.DataTable.prototype.loadLiveRows = function() {
     options.onsuccess = function(responseXML) {
         ice.ace.selectCustomUpdates(responseXML, function(id, content) {
             if (id == _self.id){
-                ice.ace.jq(_self.jqId + ' .ui-datatable-scrollable-body table tr:last').after(content);
+                ice.ace.jq(_self.jqId + ' div.ui-datatable-scrollable-body:first > table > tbody > tr:last').after(content);
                 _self.scrollOffset += _self.cfg.scrollStep;
                 if (_self.scrollOffset == _self.cfg.scrollLimit) _self.shouldLiveScroll = false;
             }
@@ -1021,7 +1020,7 @@ ice.ace.DataTable.prototype.sort = function(headerCells) {
         // elements referenced by headerCells return undefined for
         // .hasClass('ui-toggled')
         sortDirs.push(ice.ace.jq(ice.ace.escapeClientId(ice.ace.jq(this).attr('id')))
-                .find('.ui-icon-triangle-1-n').hasClass('ui-toggled'));
+                .find('a.ui-icon-triangle-1-n').hasClass('ui-toggled'));
     });
     params[this.id + "_sortDirs"] = sortDirs;
 
@@ -1125,7 +1124,7 @@ ice.ace.DataTable.prototype.doSelectionEvent = function(type, deselection, eleme
             if (type == 'row')
                 element.siblings('.ui-selected').removeClass('ui-selected ui-state-active');
             else if (type == 'cell')
-                ice.ace.jq(this.jqId + ' tbody.ui-datatable-data td').removeClass('ui-selected ui-state-active');
+                ice.ace.jq(this.jqId + ' tbody.ui-datatable-data:first > tr > td').removeClass('ui-selected ui-state-active');
 
             // Add current selection to deselection delta
             this.deselection = [];
@@ -1485,7 +1484,7 @@ ice.ace.DataTable.prototype.cancelRowEdit = function(element) {
 
 ice.ace.DataTable.prototype.doRowEditShowRequest = function(element) {
     var row = ice.ace.jq(element).closest('tr'),
-        rowEditorId = row.find('div.ui-row-editor').attr('id'),
+        rowEditorId = row.find('> td > div.ui-row-editor').attr('id'),
         options = {
             source: rowEditorId,
             execute: '@this',
@@ -1494,7 +1493,7 @@ ice.ace.DataTable.prototype.doRowEditShowRequest = function(element) {
         _self = this,
         cellsToRender = new Array();
 
-    row.find('div.ui-cell-editor').each(function() { cellsToRender.push(ice.ace.jq(this).attr('id')); });
+    row.find('> td > div.ui-cell-editor').each(function() { cellsToRender.push(ice.ace.jq(this).attr('id')); });
     options.render = cellsToRender.join(' ');
     options.render = options.render + " @this";
 
@@ -1531,7 +1530,7 @@ ice.ace.DataTable.prototype.doRowEditShowRequest = function(element) {
 }
 
 ice.ace.DataTable.prototype.doRowEditCancelRequest = function(element) {
-    var row = ice.ace.jq(element).parents('tr:first'),
+    var row = ice.ace.jq(element).closest('tr'),
         rowEditorId = row.find('div.ui-row-editor').attr('id'),
         options = {
             source: rowEditorId,
@@ -1578,7 +1577,7 @@ ice.ace.DataTable.prototype.doRowEditCancelRequest = function(element) {
 }
 
 ice.ace.DataTable.prototype.doRowEditSaveRequest = function(element) {
-    var row = ice.ace.jq(element).parents('tr:first'),
+    var row = ice.ace.jq(element).closest('tr'),
         rowEditorId = row.find('div.ui-row-editor').attr('id'),
         options = {
             source: rowEditorId,
@@ -1646,7 +1645,7 @@ ice.ace.DataTable.prototype.doRowEditSaveRequest = function(element) {
 }
 
 ice.ace.DataTable.prototype.getRowEditors = function() {
-    return ice.ace.jq(this.jqId + ' tbody.ui-datatable-data tr td div.ui-row-editor');
+    return ice.ace.jq(this.jqId + ' tbody.ui-datatable-data:first > tr > td > div.ui-row-editor');
 }
 
 ice.ace.DataTable.prototype.setupCellEditorEvents = function(rowEditors) {
@@ -1657,11 +1656,11 @@ ice.ace.DataTable.prototype.setupCellEditorEvents = function(rowEditors) {
             saveRowEditors = function(event) { event.stopPropagation(); _self.saveRowEdit(event.target); },
             cancelRowEditors = function(event) { event.stopPropagation(); _self.cancelRowEdit(event.target); },
             inputCellKeypress = function(event) { if (event.which == 13) return false; };
-    var selector = 'tbody.ui-datatable-data tr td div.ui-row-editor';
+    var selector = 'tbody.ui-datatable-data:first > tr > td > div.ui-row-editor';
     ice.ace.jq(this.jqId).off('click keyup', selector + ' a.ui-icon-pencil').on('click', selector + ' a.ui-icon-pencil', showEditors).on('keyup', selector + ' a.ui-icon-pencil', function(event) { if (event.which == 32 || event.which == 13) { showEditors(event); }} );
     ice.ace.jq(this.jqId).off('click keyup', selector + ' a.ui-icon-check').on('click', selector + ' a.ui-icon-check', saveRowEditors).on('keyup', selector + ' a.ui-icon-check', function(event) { if (event.which == 32 || event.which == 13) { saveRowEditors(event); }} );
     ice.ace.jq(this.jqId).off('click keyup', selector + ' a.ui-icon-close').on('click', selector + ' a.ui-icon-close', cancelRowEditors).on('keyup', selector + ' a.ui-icon-close', function(event) { if (event.which == 32 || event.which == 13) { cancelRowEditors(event); }} );
-    rowEditors.closest('tr').children().find('span input').bind('keypress', inputCellKeypress);
+    rowEditors.closest('tr').find('> div.ui-cell-editor > span > input').bind('keypress', inputCellKeypress);
 }
 
 
