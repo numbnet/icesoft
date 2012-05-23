@@ -1,6 +1,7 @@
 package org.icefaces.ace.component.chart;
 
 import org.icefaces.ace.meta.annotation.Component;
+import org.icefaces.ace.meta.baseMeta.UIComponentBaseMeta;
 import org.icefaces.ace.model.chart.ChartSeries;
 import org.icefaces.ace.meta.annotation.*;
 import org.icefaces.render.MandatoryResourceComponent;
@@ -26,14 +27,14 @@ import java.util.List;
 @ResourceDependencies({
         @ResourceDependency(library = "icefaces.ace", name = "util/ace-jquery.js"),
         @ResourceDependency(library = "icefaces.ace", name = "chart/ace-chart.js"),
-        @ResourceDependency(library = "icefaces.ace", name = "chart/jquery.jqplot.css")
+        @ResourceDependency(library = "icefaces.ace", name = "util/combined.css")
 })
-public class ChartMeta {
+public class ChartMeta extends UIComponentBaseMeta {
     @Property(tlddoc =
                 "Define a title of the entire chart.")
     private String title;
 
-    @Property(tlddoc = 
+    @Property(tlddoc =
                 "Define a collection of ChartSeries object to draw on this plot.")
     private List<ChartSeries> value;
 
