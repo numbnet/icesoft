@@ -385,18 +385,52 @@ NSLog(@"called camera");
                     initWithNibName:@"ARViewController_iPhone" bundle:nil];
         }
     }
+    NSString *urlBase = [places objectForKey:@"ub"];
 	NSMutableArray *placeLabels = [NSMutableArray array];
     for (NSString *name in places)  {
-        if (![name isEqualToString:@"id"])  {
-            NSArray *pairs = [[places objectForKey:name] 
-                    componentsSeparatedByString:@","];
-            double lat = [[pairs objectAtIndex:0] doubleValue];
-            double lon = [[pairs objectAtIndex:1] doubleValue];
-            PlaceLabel *label = [PlaceLabel 
-                    placeLabelWithText:name initWithLatitude:lat longitude:lon];
-            [placeLabels addObject:label];
-            NSLog(@"found place %@ coords %f,%f", name, lat,lon );
-        } 
+        if ([name isEqualToString:@"id"])  {
+            continue;
+        }
+        if ([name isEqualToString:@"ub"])  {
+            continue;
+        }
+        NSArray *pairs = [[places objectForKey:name] 
+                componentsSeparatedByString:@","];
+        double lat = 0;
+        double lon = 0;
+        double alt = 0;
+        NSString *iconName = nil;
+        if ([pairs count] > 1)  {
+            lat = [[pairs objectAtIndex:0] doubleValue];
+            lon = [[pairs objectAtIndex:1] doubleValue];
+        }
+        if ([pairs count] > 2)  {
+            alt = [[pairs objectAtIndex:2] doubleValue];
+        }
+        if ([pairs count] > 3)  {
+            iconName = [pairs objectAtIndex:3];
+            if (nil == urlBase)  {
+                iconName = nil;
+            }
+        }
+
+        PlaceLabel *label = nil;
+        if (nil == iconName)  { 
+            label = [PlaceLabel 
+                placeLabelWithText:name initWithLatitude:lat longitude:lon];
+        } else {
+            NSURL *url = [NSURL URLWithString:
+                    [urlBase stringByAppendingString:iconName]];
+            //this needs to run asynchronously
+            NSData *data = [NSData dataWithContentsOfURL:url];
+            UIImage *iconImage = [UIImage imageWithData:data];
+            label = [PlaceLabel 
+                placeLabelWithText:name andImage:iconImage
+                initWithLatitude:lat longitude:lon];
+        }
+        [placeLabels addObject:label];
+        NSLog(@"found place %@ coords %f,%f %@", name, lat,lon, iconName);
+
     }
     [self.augController setPlaceLabels:placeLabels];
 
