@@ -68,7 +68,7 @@ if (!window.ice.mobile) {
         }
 
         namespace.microphone = function(id, attr)  {
-            var result = window.ICEaudio.toggleMic(attr);
+            var result = window.ICEaudio.recordAudio(attr);
             ice.addHidden(id, id, "" + result, 'file');
         }
 
