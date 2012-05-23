@@ -78,74 +78,77 @@ public abstract class BaseMenuRenderer extends CoreRenderer {
 		}
         else {
             writer.startElement("a", null);
-
-			if(menuItem.getUrl() != null) {
-				writer.writeAttribute("href", getResourceURL(context, menuItem.getUrl()), null);
-				if(menuItem.getOnclick() != null) writer.writeAttribute("onclick", menuItem.getOnclick(), null);
-				if(menuItem.getTarget() != null) writer.writeAttribute("target", menuItem.getTarget(), null);
+			if (menuItem.isDisabled()) {
+				writer.writeAttribute("class", "ui-state-disabled", null);
 			} else {
-				writer.writeAttribute("href", "#", null);
+				if(menuItem.getUrl() != null) {
+					writer.writeAttribute("href", getResourceURL(context, menuItem.getUrl()), null);
+					if(menuItem.getOnclick() != null) writer.writeAttribute("onclick", menuItem.getOnclick(), null);
+					if(menuItem.getTarget() != null) writer.writeAttribute("target", menuItem.getTarget(), null);
+				} else {
+					writer.writeAttribute("href", "#", null);
 
-				UIComponent form = ComponentUtils.findParentForm(context, menuItem);
-				if(form == null) {
-					throw new FacesException("Menubar must be inside a form element");
-				}
+					UIComponent form = ComponentUtils.findParentForm(context, menuItem);
+					if(form == null) {
+						throw new FacesException("Menubar must be inside a form element");
+					}
 
-				String formClientId = form.getClientId(context);
-				
-				boolean hasAjaxBehavior = false;
-				
-				StringBuilder command = new StringBuilder();
-				command.append("var self = this; setTimeout(function() { var f = function(opt){"); // dynamically set the id to the node so that it can be handled by the submit functions
-				// ClientBehaviors
-				Map<String,List<ClientBehavior>> behaviorEvents = menuItem.getClientBehaviors();
-				if(!behaviorEvents.isEmpty()) {
-					List<ClientBehaviorContext.Parameter> params = Collections.emptyList();
-					for(Iterator<ClientBehavior> behaviorIter = behaviorEvents.get("activate").iterator(); behaviorIter.hasNext();) {
-						ClientBehavior behavior = behaviorIter.next();
-						if (behavior instanceof AjaxBehavior)
-							hasAjaxBehavior = true;
-						ClientBehaviorContext cbc = ClientBehaviorContext.createClientBehaviorContext(context, menuItem, "activate", clientId, params);
-						String script = behavior.getScript(cbc);    //could be null if disabled
+					String formClientId = form.getClientId(context);
+					
+					boolean hasAjaxBehavior = false;
+					
+					StringBuilder command = new StringBuilder();
+					command.append("var self = this; setTimeout(function() { var f = function(opt){"); // dynamically set the id to the node so that it can be handled by the submit functions
+					// ClientBehaviors
+					Map<String,List<ClientBehavior>> behaviorEvents = menuItem.getClientBehaviors();
+					if(!behaviorEvents.isEmpty()) {
+						List<ClientBehaviorContext.Parameter> params = Collections.emptyList();
+						for(Iterator<ClientBehavior> behaviorIter = behaviorEvents.get("activate").iterator(); behaviorIter.hasNext();) {
+							ClientBehavior behavior = behaviorIter.next();
+							if (behavior instanceof AjaxBehavior)
+								hasAjaxBehavior = true;
+							ClientBehaviorContext cbc = ClientBehaviorContext.createClientBehaviorContext(context, menuItem, "activate", clientId, params);
+							String script = behavior.getScript(cbc);    //could be null if disabled
 
-						if(script != null) {
-                            command.append("ice.ace.ab(ice.ace.extendAjaxArguments(");
-							command.append(script);
-							command.append(", opt));");
+							if(script != null) {
+								command.append("ice.ace.ab(ice.ace.extendAjaxArguments(");
+								command.append(script);
+								command.append(", opt));");
+							}
 						}
 					}
-				}
-				command.append("}; ");
-				
-                if (!hasAjaxBehavior && (menuItem.getActionExpression() != null || menuItem.getActionListeners().length > 0)) {
-					command.append("self.id = '" + clientId + "'; ice.s(event, self");
+					command.append("}; ");
 					
-					StringBuilder parameters = new StringBuilder();
-					parameters.append(",function(p){");
-					for(UIComponent child : menuItem.getChildren()) {
-						if(child instanceof UIParameter) {
-							UIParameter param = (UIParameter) child;
-							
-							parameters.append("p('");
-							parameters.append(param.getName());
-							parameters.append("','");
-							parameters.append(String.valueOf(param.getValue()));
-							parameters.append("');");
+					if (!hasAjaxBehavior && (menuItem.getActionExpression() != null || menuItem.getActionListeners().length > 0)) {
+						command.append("self.id = '" + clientId + "'; ice.s(event, self");
+						
+						StringBuilder parameters = new StringBuilder();
+						parameters.append(",function(p){");
+						for(UIComponent child : menuItem.getChildren()) {
+							if(child instanceof UIParameter) {
+								UIParameter param = (UIParameter) child;
+								
+								parameters.append("p('");
+								parameters.append(param.getName());
+								parameters.append("','");
+								parameters.append(String.valueOf(param.getValue()));
+								parameters.append("');");
+							}
 						}
+						parameters.append("});");
+						
+						command.append(parameters.toString());
+					} else {
+						command.append("f({node:self});"); // call behaviors function
 					}
-					parameters.append("});");
 					
-					command.append(parameters.toString());
-                } else {
-					command.append("f({node:self});"); // call behaviors function
+					command.append("}, 10);"); // close timeout
+
+					String customOnclick = menuItem.getOnclick();
+					String onclick = customOnclick == null ? command.toString() : customOnclick + ";" + command.toString();
+
+					writer.writeAttribute("onclick", onclick, null);
 				}
-				
-				command.append("}, 10);"); // close timeout
-
-				String customOnclick = menuItem.getOnclick();
-				String onclick = customOnclick == null ? command.toString() : customOnclick + ";" + command.toString();
-
-				writer.writeAttribute("onclick", onclick, null);
 			}
 
             if(icon != null) {

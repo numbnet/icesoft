@@ -64,4 +64,8 @@ public class MenuItemMeta extends UICommandMeta {
 
     @Property(tlddoc = "Path of the menuitem image.")
     private String icon;
+
+    @Property(tlddoc = "Boolean value to disable/enable the menu item. The menu item will still be shown but with different styling, and clicking on it will not trigger any action.")
+    private boolean disabled;	
+	
 }
