@@ -8617,6 +8617,34 @@ jQuery.fn[ "fadeOut" ] = function( speed, easing, callback ) {
 	}
 };
 
+jQuery.fn[ "slideDown" ] = function( speed, easing, callback ) {
+	if (jQuery.support.leadingWhitespace) { // detect browser
+		return this.animate( genFx( "show", 1 ), speed, easing, callback );
+	} else { // IE
+		this.show();
+		
+		if (callback && typeof callback == 'function') {
+			this.each( function() { callback.call(this); } );
+		}
+		
+		return this;
+	}
+};
+
+jQuery.fn[ "slideUp" ] = function( speed, easing, callback ) {
+	if (jQuery.support.leadingWhitespace) { // detect browser
+		return this.animate( genFx( "hide", 1 ), speed, easing, callback );
+	} else { // IE
+		this.hide();
+		
+		if (callback && typeof callback == 'function') {
+			this.each( function() { callback.call(this); } );
+		}
+		
+		return this;
+	}
+};
+
 jQuery.extend({
 	speed: function( speed, easing, fn ) {
 		var opt = speed && typeof speed === "object" ? jQuery.extend( {}, speed ) : {
