@@ -322,9 +322,6 @@ public class ICEmobileContainer extends Activity
 	    }
 	    finish();
 	    return true;
-	case R.id.record:
-	    String audioFile = mAudioRecorder.recordAudio(RECORD_CODE);
-	    return true;
 	default:
 	    return super.onOptionsItemSelected(item);
 	}

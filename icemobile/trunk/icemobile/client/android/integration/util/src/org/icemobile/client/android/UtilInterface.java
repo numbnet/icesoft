@@ -235,6 +235,8 @@ Log.e("ICEutil", "submitForm " + actionUrl);
 	    return "image/jpeg";
 	} else if (fileType.equals(".mpga")) {
 	    return "audio/mp4";
+	} else if (fileType.equals(".3gpp")) {
+	    return "audio/mp4";
 	} else if (fileType.equals(".mp4")) {
 	    return "video/mp4";
 	}
