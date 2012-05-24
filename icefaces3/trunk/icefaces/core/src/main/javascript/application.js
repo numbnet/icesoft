@@ -376,7 +376,7 @@ if (!window.ice.icefaces) {
         namespace.fullSubmit = fullSubmit;
 
         namespace.ajaxRefresh = function(viewID) {
-            viewID = viewID || document.body.configuration.viewID;
+            viewID = viewID || (document.body.configuration ? document.body.configuration.viewID : null);
             if (!viewID) {
                 throw 'viewID parameter required';
             }
