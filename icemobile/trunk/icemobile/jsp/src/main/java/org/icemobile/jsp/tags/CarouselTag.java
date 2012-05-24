@@ -1,7 +1,5 @@
 package org.icemobile.jsp.tags;
 
-import org.icefaces.mobi.utils.HTML;
-
 import javax.faces.application.ProjectStage;
 import javax.faces.application.Resource;
 import javax.faces.component.UIComponent;
@@ -244,6 +242,11 @@ public class CarouselTag extends TagSupport {
         this.selectedIndex = selectedIdx;
     }
 
+    /**
+     * Allow iterating item tag to fetch current rendering index
+     *
+     * @return
+     */
     int getIterationCount() {
         return iterationCount;
     }
