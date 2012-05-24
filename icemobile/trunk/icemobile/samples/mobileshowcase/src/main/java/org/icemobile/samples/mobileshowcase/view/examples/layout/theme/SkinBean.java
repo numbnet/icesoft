@@ -40,8 +40,8 @@ import java.io.Serializable;
         resources = {
                 // xhtml
                 @ExampleResource(type = ResourceType.xhtml,
-                        title = "fotter.xhtml",
-                        resource = "/WEB-INF/includes/navigation/footer.xhtml"),
+                        title = "footer.xhtml",
+                        resource = "/WEB-INF/includes/view/small.xhtml"),
                 // Java Source
                 @ExampleResource(type = ResourceType.java,
                         title = "SkinBean.java",
