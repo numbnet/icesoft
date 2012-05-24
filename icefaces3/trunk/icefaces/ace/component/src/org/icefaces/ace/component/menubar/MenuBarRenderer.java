@@ -141,13 +141,18 @@ public class MenuBarRenderer extends BaseMenuRenderer {
 		ResponseWriter writer = context.getResponseWriter();
 		UIComponent labelFacet = submenu.getFacet("label");
         String icon = submenu.getIcon();
+		boolean disabled = submenu.isDisabled();
 
         //title
 		if(labelFacet == null) {
             String label = submenu.getLabel();
 
 			writer.startElement("a", null);
-			writer.writeAttribute("href", "#", null);
+			if (disabled) {
+				writer.writeAttribute("class", "ui-state-disabled", null);
+			} else {
+				writer.writeAttribute("href", "#", null);
+			}
 
             if(icon != null) {
                 writer.startElement("span", null);
@@ -175,7 +180,7 @@ public class MenuBarRenderer extends BaseMenuRenderer {
 		}
 
         //submenus and menuitems
-		if(submenu.getChildCount() > 0) {
+		if(submenu.getChildCount() > 0 && !disabled) {
 			writer.startElement("ul", null);
 
 			encodeMenuContent(context, submenu);

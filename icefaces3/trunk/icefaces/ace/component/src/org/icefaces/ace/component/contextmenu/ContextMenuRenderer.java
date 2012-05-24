@@ -132,9 +132,14 @@ public class ContextMenuRenderer extends BaseMenuRenderer {
         String icon = submenu.getIcon();
 
 		String label = submenu.getLabel();
+		boolean disabled = submenu.isDisabled();
 
 		writer.startElement("a", null);
-		writer.writeAttribute("href", "#", null);
+		if (disabled) {
+			writer.writeAttribute("class", "ui-state-disabled", null);
+		} else {
+			writer.writeAttribute("href", "#", null);
+		}
 
 		if(icon != null) {
 			writer.startElement("span", null);
@@ -156,7 +161,7 @@ public class ContextMenuRenderer extends BaseMenuRenderer {
 		writer.endElement("a");
 
         //submenus and menuitems
-		if(submenu.getChildCount() > 0) {
+		if(submenu.getChildCount() > 0 && !disabled) {
 			writer.startElement("ul", null);
 
 			encodeMenuContent(context, submenu);
