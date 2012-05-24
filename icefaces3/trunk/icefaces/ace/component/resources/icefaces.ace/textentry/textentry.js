@@ -1,3 +1,18 @@
+/*
+ * Copyright 2004-2012 ICEsoft Technologies Canada Corp.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the
+ * License. You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an "AS
+ * IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ * express or implied. See the License for the specific language
+ * governing permissions and limitations under the License.
+ */
 ice.ace.TextEntry = function(id, cfg) {
     var jQ = ice.ace.jq;
     var inputId = id + "_input";
@@ -7,26 +22,39 @@ ice.ace.TextEntry = function(id, cfg) {
     this.jqId = ice.ace.escapeClientId(inputId);
     this.jq = jQ(this.jqId);
 
-    this.jq.keyup(
-        function(e) {
-            var maxLength = this.maxLength, nextTabElement;
-//            console.log("value: ", this.value);
-//            console.log("maxLength:", maxLength);
-//            console.log("e.which: ", e.which);
-//            console.dir(e);
-            if (jQ.isNumeric(maxLength) && maxLength > 0 && this.value.length >= maxLength) {
-                nextTabElement = ice.ace.util.findNextTabElement.call(this);
-                if (nextTabElement) nextTabElement.focus();
-/*
-                var fields = jQ(this).parents('form:eq(0),body').find(':input').not('[type=hidden]');
-                var index = fields.index(this);
-                if (index > -1 && ( index + 1 ) < fields.length) {
-                    fields.eq(index + 1).focus();
+    if (cfg.autoTab) {
+        this.jq.keypress(
+            function(e) {
+                var curLength = this.value.length + 1, maxLength = this.maxLength;
+                var nextTabElement = ice.ace.util.findNextTabElement(this);
+                /*
+                 console.log("id: ", this.id);
+                 console.log("value: ", this.value);
+                 console.log("value.length: ", this.value.length);
+                 console.log("maxLength: ", maxLength);
+                 console.log("charCode: ", e.charCode);
+                 console.log("keyCode: ", e.keyCode);
+                 console.log("which: ", e.which);
+                 //            console.dir(e);
+                 */
+                if (curLength < maxLength || !nextTabElement) {
+                    return;
                 }
-*/
+                if (e.which < 32 || e.charCode == 0 || e.ctrlKey || e.altKey) {
+                    return;
+                }
+                e.preventDefault();
+                if (curLength == maxLength) {
+                    this.value += String.fromCharCode(e.which);
+                }
+                /*
+                 console.log("value: ", this.value);
+                 console.log("value.length: ", this.value.length);
+                 */
+                nextTabElement.focus();
             }
-        }
-    );
+        );
+    }
     if (cfg.embeddedLabel) {
         this.jq.focus(
             function() {
@@ -42,18 +70,12 @@ ice.ace.TextEntry = function(id, cfg) {
                     input.attr({name: labelName, value: cfg.embeddedLabel});
                     input.addClass("ui-input-label-infield");
                 }
-//                setFocus();
             });
     }
-
-    this.jq.blur(function() { setFocus(); });
-    //Client behaviors
-    if(this.cfg.behaviors) {
+    this.jq.blur(function() {
+        setFocus();
+    });
+    if (this.cfg.behaviors) {
         ice.ace.attachBehaviors(this.jq, this.cfg.behaviors);
     }
-
-    //Visuals
-//    if (this.cfg.theme != false) {
-//        ice.ace.skinInput(this.jq);
-//    }
 };
