@@ -43,4 +43,7 @@ public class SubmenuMeta extends UIComponentBaseMeta {
 
     @Property(tlddoc = "StyleClass of the submenu label.")
     private String styleClass;
+	
+    @Property(tlddoc = "Boolean value to disable/enable the submenu. The submenu label will still be shown but with different styling, and clicking or hovering on it will not display its children submenus and menu items.")
+    private boolean disabled;
 }

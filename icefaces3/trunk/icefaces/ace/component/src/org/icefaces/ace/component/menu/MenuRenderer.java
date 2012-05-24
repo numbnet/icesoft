@@ -116,7 +116,7 @@ public class MenuRenderer extends BaseMenuRenderer {
             encodeTieredMenuContent(context, menu);
         }
         else {
-            encodePlainMenuContent(context, menu);
+            encodePlainMenuContent(context, menu, false);
         }
 
 		writer.endElement("ul");
@@ -151,10 +151,15 @@ public class MenuRenderer extends BaseMenuRenderer {
 		ResponseWriter writer = context.getResponseWriter();
         String icon = submenu.getIcon();
         String label = submenu.getLabel();
+		boolean disabled = submenu.isDisabled();
 
         //title
         writer.startElement("a", null);
-        writer.writeAttribute("href", "#", null);
+		if (disabled) {
+			writer.writeAttribute("class", "ui-state-disabled", null);
+		} else {
+			writer.writeAttribute("href", "#", null);
+		}
 
         if(icon != null) {
             writer.startElement("span", null);
@@ -176,7 +181,7 @@ public class MenuRenderer extends BaseMenuRenderer {
         writer.endElement("a");
 
         //submenus and menuitems
-		if(submenu.getChildCount() > 0) {
+		if(submenu.getChildCount() > 0 && !disabled) {
 			writer.startElement("ul", null);
 
 			encodeTieredMenuContent(context, submenu);
@@ -185,7 +190,7 @@ public class MenuRenderer extends BaseMenuRenderer {
 		}
 	}
 
-    protected void encodePlainMenuContent(FacesContext context, UIComponent component) throws IOException{
+    protected void encodePlainMenuContent(FacesContext context, UIComponent component, boolean disableChildren) throws IOException{
 		ResponseWriter writer = context.getResponseWriter();
 
         for(Iterator<UIComponent> iterator = component.getChildren().iterator(); iterator.hasNext();) {
@@ -195,36 +200,41 @@ public class MenuRenderer extends BaseMenuRenderer {
 
                 if(child instanceof MenuItem) {
                     writer.startElement("li", null);
-                    encodeMenuItem(context, (MenuItem) child);
+                    encodeMenuItem(context, (MenuItem) child, disableChildren);
                     writer.endElement("li");
                 } else if(child instanceof MenuSeparator) {
                     encodeMenuSeparator(context);
                 } else if(child instanceof Submenu) {
-                    encodePlainSubmenu(context, (Submenu) child);
+                    encodePlainSubmenu(context, (Submenu) child, disableChildren);
                 }
                 
             }
         }
     }
 
-    protected void encodePlainSubmenu(FacesContext context, Submenu submenu) throws IOException {
+    protected void encodePlainSubmenu(FacesContext context, Submenu submenu, boolean disableChildren) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String label = submenu.getLabel();
+		boolean disabled = submenu.isDisabled();
 
         //title
         writer.startElement("li", null);
         writer.startElement("h3", null);
         if(label != null) {
-            String style = submenu.getStyle();
-            if (style != null && style.trim().length() > 0) {
-                writer.writeAttribute("style", style, "style");
-            }
-            Utils.writeConcatenatedStyleClasses(writer, "", submenu.getStyleClass());
+			if (disabled || disableChildren) {
+				writer.writeAttribute("class", "ui-state-disabled", null);
+			} else {
+				String style = submenu.getStyle();
+				if (style != null && style.trim().length() > 0) {
+					writer.writeAttribute("style", style, "style");
+				}
+				Utils.writeConcatenatedStyleClasses(writer, "", submenu.getStyleClass());
+			}
             writer.write(label);
         }
         writer.endElement("h3");
         writer.endElement("li");
 
-        encodePlainMenuContent(context, submenu);
+        encodePlainMenuContent(context, submenu, disabled || disableChildren);
 	}
 }

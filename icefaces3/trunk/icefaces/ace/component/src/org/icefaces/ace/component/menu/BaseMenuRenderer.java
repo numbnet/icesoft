@@ -67,8 +67,12 @@ public abstract class BaseMenuRenderer extends CoreRenderer {
     protected abstract void encodeMarkup(FacesContext context, AbstractMenu abstractMenu) throws IOException;
 
     protected abstract void encodeScript(FacesContext context, AbstractMenu abstractMenu) throws IOException;
+	
+	protected void encodeMenuItem(FacesContext context, MenuItem menuItem) throws IOException {
+		encodeMenuItem(context, menuItem, false);
+	}
 
-    protected void encodeMenuItem(FacesContext context, MenuItem menuItem) throws IOException {
+    protected void encodeMenuItem(FacesContext context, MenuItem menuItem, boolean disabledParent) throws IOException {
 		String clientId = menuItem.getClientId(context);
         ResponseWriter writer = context.getResponseWriter();
         String icon = menuItem.getIcon();
@@ -78,7 +82,7 @@ public abstract class BaseMenuRenderer extends CoreRenderer {
 		}
         else {
             writer.startElement("a", null);
-			if (menuItem.isDisabled()) {
+			if (menuItem.isDisabled() || disabledParent) {
 				writer.writeAttribute("class", "ui-state-disabled", null);
 			} else {
 				if(menuItem.getUrl() != null) {
