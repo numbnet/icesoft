@@ -374,7 +374,19 @@ if (!window.ice.icefaces) {
         namespace.submit = submit;
         namespace.s = submit;
         namespace.fullSubmit = fullSubmit;
-        namespace.retrieveUpdate = retrieveUpdate;
+
+        namespace.ajaxRefresh = function(viewID) {
+            viewID = viewID || document.body.configuration.viewID;
+            if (!viewID) {
+                throw 'viewID parameter required';
+            }
+            var c = configurationOf(lookupElementById(retrieveUpdateFormID(viewID)));
+            //cache retrieve update callback
+            if (!c.ajaxRefresh) {
+                c.ajaxRefresh = retrieveUpdate(viewID);
+            }
+            c.ajaxRefresh();
+        };
 
         namespace.setupBridge = function(setupID, viewID, windowID, configuration) {
             var container = document.getElementById(setupID).parentNode;
