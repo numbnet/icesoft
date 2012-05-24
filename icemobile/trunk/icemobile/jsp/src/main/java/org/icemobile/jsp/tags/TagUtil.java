@@ -31,6 +31,26 @@ public class TagUtil {
     private static String USER_AGENT_COOKIE = "com.icesoft.user-agent";
     private static String HYPERBROWSER = "HyperBrowser";
 
+
+    public static String SPAN_TAG = "<span";
+    public static String SPAN_TAG_END = "</span>";
+
+    public static String DIV_TAG = "<div";
+    public static String DIV_TAG_END = "</div>";
+
+    public static String UL_TAG = "<ul";
+    public static String UL_TAG_END = "</ul>";
+
+    public static String LI_TAG = "<li";
+    public static String LI_TAG_END = "</li>";
+
+    public static String HEAD_TAG = "<head";
+    public static String HEAD_TAG_END = "</head>";
+
+    public static String SCRIPT_TAG = "<script";
+    public static String SCRIPT_TAG_END = "</script>";
+
+
     public enum DeviceType {
         android,
         honeycomb,
