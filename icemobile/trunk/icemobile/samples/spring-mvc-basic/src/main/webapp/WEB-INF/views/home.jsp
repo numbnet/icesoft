@@ -8,6 +8,7 @@
 	<link href="<c:url value="/resources/form.css" />" rel="stylesheet"  type="text/css" />		
 	<link href="<c:url value="/resources/jqueryui/1.8/themes/base/jquery.ui.all.css" />" rel="stylesheet" type="text/css"/>
 	<script type="text/javascript" src="code.icepush"></script>
+
 </head>
 <body>
 <h1><a href="<c:url value="/" />">spring-mvc-showcase</a></h1>
@@ -16,6 +17,7 @@
 	<ul>
 		<li><a href="#simple">Simple</a></li>
 		<li><a href="#mapping">Mapping Requests</a></li>
+		<li><a href="<c:url value="/carousel" />" title="carousel">Carousel</a></li>
 		<li><a href="#data">Obtaining Request Data</a></li>
 		<li><a href="#responses">Writing Responses</a></li>
 		<li><a href="#messageconverters">Message Converters</a></li>
@@ -26,9 +28,9 @@
 		<li><a href="<c:url value="/fileupload" />" title="fileupload">File Upload</a></li>
 		<li><a href="<c:url value="/icemobile" />" title="icemobile">Camera</a></li>
 		<li><a href="<c:url value="/campush" />" title="campush">Camera Push</a></li>
-		<li><a href="<c:url value="/campushr" />" title="campushr">Push Region</a></li>
 		<li><a href="<c:url value="/microphone" />" title="microphone">Microphone</a></li>
 		<li><a href="<c:url value="/camcorder" />" title="camcorder">Camcorder</a></li>
+		<li><a href="<c:url value="/flipswitch" />" title="flipswitch">Flipswitch</a></li>
 		<li><a href="#icehtml">ICEmobile HTML</a></li>
 		<li><a href="#exceptions">Exception Handling</a></li>
 		<li><a href="#redirect">Redirecting</a></li>
