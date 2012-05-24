@@ -190,6 +190,58 @@
     </tag>
 
     <tag>
+        <name>carousel</name>
+        <body-content>JSP</body-content>
+        <description>ICEmobile Carousel container</description>
+        <display-name>carousel</display-name>
+        <tag-class>org.icemobile.jsp.tags.CarouselTag</tag-class>
+
+        <attribute>
+            <name>id</name>
+            <required>true</required>
+            <rtexprvalue>false</rtexprvalue>
+        </attribute>
+        <attribute>
+            <name>styleClass</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+        </attribute>
+        <attribute>
+            <name>style</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+        </attribute>
+
+        <attribute>
+            <name>collection</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <name>selectedIndex</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+    </tag>
+
+    <tag>
+        <name>carouselItem</name>
+        <tag-class>org.icemobile.jsp.tags.CarouselItemTag</tag-class>
+        <tei-class>org.icemobile.jsp.tags.CarouselItemTei</tei-class>
+        <body-content>JSP</body-content>
+        <attribute>
+            <name>ref</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <name>type</name>
+            <rtexprvalue>true</rtexprvalue>
+            <required>true</required>
+        </attribute>
+    </tag>
+
+    <tag>
         <name>fieldSetGroup</name>
         <description>Parent Field Group Tag</description>
         <display-name>fieldGroup</display-name>
