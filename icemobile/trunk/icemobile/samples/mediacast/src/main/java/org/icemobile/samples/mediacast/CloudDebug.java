@@ -45,7 +45,7 @@ public class CloudDebug implements Serializable, MainServlet.TraceListener {
     }
 
     public void handleTrace(String message)  {
-        messages.add(message);
+        messages.add(messages.size() + ". " + message);
         portableRenderer.render(DEBUG_GROUP);
     }
     
