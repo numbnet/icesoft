@@ -185,7 +185,7 @@
 
 .ui-datatable-scrollable-body {
     overflow:auto;
-    position: relative; /* IE7 nested table positioning fix */
+    *position: relative; /* IE7 nested table positioning fix */
 }
 
 .ui-datatable-scrollable-footer {
