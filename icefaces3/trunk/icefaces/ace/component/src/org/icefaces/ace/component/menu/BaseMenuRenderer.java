@@ -196,6 +196,7 @@ public abstract class BaseMenuRenderer extends CoreRenderer {
 		ResponseWriter writer = context.getResponseWriter();
 		String label = submenu.getLabel();
 		String icon = submenu.getIcon();
+		boolean disabled = submenu.isDisabled();
 		
 		List<MenuColumn> menuColumns = new ArrayList<MenuColumn>();
 		for (UIComponent child : submenu.getChildren()) {
@@ -203,7 +204,11 @@ public abstract class BaseMenuRenderer extends CoreRenderer {
 		}
 
 		writer.startElement("a", null);
-		writer.writeAttribute("href", "#", null);
+		if (disabled) {
+			writer.writeAttribute("class", "ui-state-disabled", null);
+		} else {
+			writer.writeAttribute("href", "#", null);
+		}
 		
 		if(icon != null) {
 			writer.startElement("span", null);
@@ -224,6 +229,7 @@ public abstract class BaseMenuRenderer extends CoreRenderer {
 
 		writer.endElement("a");
 		
+		if (disabled) return;
 		
 		int totalChildren = 0;
 		Map<MenuColumn, ArrayList<ArrayList<UIComponent>>> columnMap = new HashMap<MenuColumn, ArrayList<ArrayList<UIComponent>>>();
@@ -260,17 +266,20 @@ public abstract class BaseMenuRenderer extends CoreRenderer {
 					if(sublist.size() > 0) {
 						writer.startElement("ul", null);
 
+						boolean disabledSubmenu = false;
 						for (UIComponent item : sublist) {
 							if(item.isRendered()) {
 
 								if(item instanceof MenuItem) {
 									writer.startElement("li", null);
-									encodeMenuItem(context, (MenuItem) item);
+									encodeMenuItem(context, (MenuItem) item, disabledSubmenu);
 									writer.endElement("li");
 								} else if(item instanceof MenuSeparator) {
 									encodeMenuSeparator(context);
 								} else if(item instanceof Submenu) {
-									encodeFlatSubmenu(context, (Submenu) item);
+									Submenu sm = (Submenu) item;
+									disabledSubmenu = sm.isDisabled();
+									encodeFlatSubmenu(context, sm, disabledSubmenu);
 								}
 								
 							}
@@ -287,18 +296,22 @@ public abstract class BaseMenuRenderer extends CoreRenderer {
 		writer.endElement("div");
 	}
 
-    protected void encodeFlatSubmenu(FacesContext context, Submenu submenu) throws IOException {
+    protected void encodeFlatSubmenu(FacesContext context, Submenu submenu, boolean disabled) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String label = submenu.getLabel();
 
         writer.startElement("li", null);
         writer.startElement("h3", null);
         if(label != null) {
-            String style = submenu.getStyle();
-            if (style != null && style.trim().length() > 0) {
-                writer.writeAttribute("style", style, "style");
-            }
-            Utils.writeConcatenatedStyleClasses(writer, "", submenu.getStyleClass());
+			if (disabled) {
+				writer.writeAttribute("class", "ui-state-disabled", null);
+			} else {
+				String style = submenu.getStyle();
+				if (style != null && style.trim().length() > 0) {
+					writer.writeAttribute("style", style, "style");
+				}
+				Utils.writeConcatenatedStyleClasses(writer, "", submenu.getStyleClass());
+			}
             writer.write(label);
         }
         writer.endElement("h3");
