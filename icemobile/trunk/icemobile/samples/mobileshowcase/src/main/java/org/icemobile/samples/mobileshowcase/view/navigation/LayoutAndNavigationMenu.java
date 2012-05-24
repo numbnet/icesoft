@@ -16,7 +16,9 @@
 
 package org.icemobile.samples.mobileshowcase.view.navigation;
 
+import org.icefaces.mobi.component.contentstack.ContentStack;
 import org.icemobile.samples.mobileshowcase.view.examples.layout.carousel.CarouselBean;
+import org.icemobile.samples.mobileshowcase.view.examples.layout.contentstack.ContentStackBean;
 import org.icemobile.samples.mobileshowcase.view.examples.layout.fieldset.FieldsetBean;
 import org.icemobile.samples.mobileshowcase.view.examples.layout.list.ListBean;
 import org.icemobile.samples.mobileshowcase.view.examples.layout.panelPopup.PanelPopupBean;
@@ -38,6 +40,9 @@ import java.io.Serializable;
                 @MenuLink(title = "menu.layout.carousel.title",
                         exampleBeanName = CarouselBean.BEAN_NAME,
                         examplePanelId = "carousel"),
+                @MenuLink(title = "menu.layout.contentstack.title",
+                        exampleBeanName = ContentStackBean.BEAN_NAME,
+                        examplePanelId = "contentstack"),
                 @MenuLink(title = "menu.layout.theming.title",
                         exampleBeanName = SkinBean.BEAN_NAME,
                         examplePanelId = "theme"),

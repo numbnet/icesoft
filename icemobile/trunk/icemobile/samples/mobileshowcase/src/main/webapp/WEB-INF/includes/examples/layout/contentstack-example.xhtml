@@ -1,0 +1,118 @@
+<!--
+  ~ Copyright 2004-2012 ICEsoft Technologies Canada Corp.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the
+  ~ License. You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an "AS
+  ~ IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+  ~ express or implied. See the License for the specific language
+  ~ governing permissions and limitations under the License.
+  -->
+
+<ui:fragment xmlns="http://www.w3.org/1999/xhtml"
+             xmlns:h="http://java.sun.com/jsf/html"
+             xmlns:f="http://java.sun.com/jsf/core"
+             xmlns:ui="http://java.sun.com/jsf/facelets"
+             xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
+
+    <h:form>
+        <mobi:fieldsetGroup>
+            <mobi:fieldsetRow style="padding-bottom:10px;">
+                The contentStack component can be used to show content
+                dynamically.  The following contentStack can be controlled
+                by the selectOne menu or the next and previous controls. .
+            </mobi:fieldsetRow>
+        </mobi:fieldsetGroup>
+        <mobi:fieldsetGroup>
+
+            <mobi:fieldsetRow>
+                <h:outputLabel for="selectedPanel" value="Select Pane:"/>
+                <h:selectOneMenu id="selectedPanel" style="float:right"
+                                 onchange="ice.s(event, this);"
+                                value="#{contentStackBean.selectedPaneId}">
+                    <f:selectItem itemLabel="Ice Sailer" itemValue="panel1"/>
+                    <f:selectItem itemLabel="Ice Breaker" itemValue="panel2"/>
+                    <f:selectItem itemLabel="Ice Skate" itemValue="panel3"/>
+                    <f:selectItem itemLabel="Ice Car" itemValue="panel4"/>
+                </h:selectOneMenu>
+            </mobi:fieldsetRow>
+
+        </mobi:fieldsetGroup>
+
+        <mobi:contentStack currentId="#{contentStackBean.selectedPaneId}">
+            <mobi:contentPane id="panel1">
+                <mobi:fieldsetGroup>
+                    <mobi:fieldsetRow>
+                        <h:graphicImage style="float:left;padding-right:10px;"
+                                library="images/auction" name="icesailor.png"/>
+                        <p><b>ICEsoft Ice Sailer</b><br />
+                        Put him on the ice and watch him go!</p>
+                    </mobi:fieldsetRow>
+                    <mobi:commandButton
+                                value="Next"
+                                buttonType="important"
+                                style="float:right;"
+                                action="#{contentStackBean.nextPane('panel2')}" />
+                </mobi:fieldsetGroup>
+            </mobi:contentPane>
+            <mobi:contentPane id="panel2">
+                <mobi:fieldsetGroup>
+                    <mobi:fieldsetRow>
+                        <h:graphicImage style="float:left;padding-right:10px;"
+                                        library="images/auction" name="icebreaker.png"/>
+                        <p><b>ICEsoft Icebreaker</b><br />
+                            Used icebreaker with very few dents.</p>
+                    </mobi:fieldsetRow>
+                    <mobi:commandButton value="Previous"
+                                        buttonType="important"
+                                        style="float:left;"
+                                        action="#{contentStackBean.nextPane('panel1')}" />
+                    <mobi:commandButton value="Next"
+                                        buttonType="important"
+                                        style="float:right;"
+                                        action="#{contentStackBean.nextPane('panel3')}" />
+                </mobi:fieldsetGroup>
+            </mobi:contentPane>
+            <mobi:contentPane id="panel3">
+                <mobi:fieldsetGroup>
+                    <mobi:fieldsetRow>
+                        <h:graphicImage style="float:left;padding-right:10px;"
+                                        library="images/auction" name="icebreaker.png"/>
+                        <p><b>ICEsoft Ice Skate</b><br />
+                            A single sharpened ice skate, size 7.</p>
+                    </mobi:fieldsetRow>
+                    <mobi:commandButton value="Previous"
+                                        buttonType="important"
+                                        style="float:left;"
+                                        action="#{contentStackBean.nextPane('panel2')}" />
+                    <mobi:commandButton value="Next"
+                                        buttonType="important"
+                                        style="float:right;"
+                                        action="#{contentStackBean.nextPane('panel4')}" />
+                </mobi:fieldsetGroup>
+            </mobi:contentPane>
+            <mobi:contentPane id="panel4">
+                <mobi:fieldsetGroup>
+                    <mobi:fieldsetRow>
+                        <h:graphicImage style="float:left;padding-right:10px;"
+                                        library="images/auction" name="icecar.png"/>
+                        <p><b>ICEsoft Ice Car</b><br />
+                            Beautiful ice car with metal car filling.</p>
+                    </mobi:fieldsetRow>
+                    <mobi:commandButton value="Previous"
+                            buttonType="important"
+                            style="float:left;"
+                            action="#{contentStackBean.nextPane('panel3')}" />
+                </mobi:fieldsetGroup>
+            </mobi:contentPane>
+
+        </mobi:contentStack>
+    </h:form>
+
+
+</ui:fragment>
