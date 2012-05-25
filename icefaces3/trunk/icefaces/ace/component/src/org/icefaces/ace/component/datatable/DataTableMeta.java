@@ -124,12 +124,22 @@ public class DataTableMeta extends UIDataMeta {
             "to paginate, make a selection, reorder columns, or any other feature. " +
             "Decoding children during feature requests can result in unwanted input " +
             "submission (during pagination for example), so by default this component " +
-            "suppresses child decoding whenever submitting itself. To decode the " +
+            "suppresses child decoding whenever submitting itself. To cause decoding in the " +
             "children of the table, use the row editing feature for row-scoped input " +
-            "decoding, submit the form (or other table parent) for broad submission " +
+            "decoding, ajax submit the form (or other table parent) for broad decoding" +
             "or enable this option to submit during all table operations.",
             defaultValue = "false", defaultValueType = DefaultValueType.EXPRESSION)
     private Boolean alwaysExecuteContents;
+
+    @Property(tlddoc = "Disable the default handling of the scrollable table when " +
+            "rendered into a hidden page region. The table attempts to poll its hidden " +
+            "status, looking for when it is shown and then call the scrollable table sizing " +
+            "JavaScript. This can be expensive in environments of reduced JavaScript performance with " +
+            "many tables and a complex DOM. When this is disabled, upon revealing a hidden " +
+            "scrollable table, to ensure it is sized correctly the JS " +
+            "'tableWidgetVar.resizeScrolling()' function must be called.",
+            defaultValue = "true", defaultValueType = DefaultValueType.EXPRESSION)
+    private Boolean hiddenScrollableSizing;
 
     // Map from row data to field names (cells) that are selected
     @Field(defaultValue = "null", defaultValueIsStringLiteral = false)

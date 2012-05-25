@@ -696,8 +696,10 @@ ice.ace.DataTable.prototype.resizeScrolling = function() {
     // Sizing will not be accurate if the table is not being displayed, like at tabset load.
     // Hidden is true if any ancestors are hidden.
     if (scrollableTable.is(':hidden')) {
-        //var _self = this;
-        //setTimeout(function () { _self.resizeScrolling() }, 100);
+        if (!this.cfg.disableHiddenSizing) {
+            var _self = this;
+            setTimeout(function () { _self.resizeScrolling() }, 100);
+        }
     } else {
         var dupeHeadSingleCols = dupeHead.find('th:not([colspan]) .ui-header-column:first-child').get().reverse();
         if (dupeHeadSingleCols.size() == 0)
