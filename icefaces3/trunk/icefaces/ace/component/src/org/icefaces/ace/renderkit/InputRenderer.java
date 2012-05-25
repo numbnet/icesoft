@@ -320,13 +320,13 @@ public class InputRenderer extends CoreRenderer {
 
     protected String getStateStyleClasses(UIInput component) {
         String styleClases = "";
-        if (!component.isValid()) {
-            styleClases += " ui-state-error";
-        }
         if (component.isRequired()) {
             styleClases += " ui-state-required";
         } else {
             styleClases += " ui-state-optional";
+        }
+        if (!component.isValid()) {
+            styleClases += " ui-state-error";
         }
         return styleClases;
     }
