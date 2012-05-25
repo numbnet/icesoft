@@ -727,6 +727,10 @@
                         name="org.icefaces.component.submitnotification/submitnotification.js"/>
                 <include
                         name="org.icefaces.component.timespinner/timespinner.js"/>
+                <include
+                        name="org.icefaces.component.tabset/tabset.js"/>
+                <include
+                        name="org.icefaces.component.accordion/accordion.js"/>
             </fileset>
         </concat>
     </target>
@@ -778,7 +782,10 @@
                     path="${resources}/org.icefaces.component.panelpopup"/>
         <compressjs comp="timespinner"
                     path="${resources}/org.icefaces.component.timespinner"/>
-
+        <compressjs comp="tabset"
+                    path="${resources}/org.icefaces.component.tabset"/>
+        <compressjs comp="accordion"
+                    path="${resources}/org.icefaces.component.accordion"/>
     </target>
 
     <target name="res-js-no-compress" depends="res-js-combine" if="no-compress">
