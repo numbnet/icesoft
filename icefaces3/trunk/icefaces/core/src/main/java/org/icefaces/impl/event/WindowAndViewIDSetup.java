@@ -22,7 +22,6 @@ import org.icefaces.util.EnvUtils;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIForm;
 import javax.faces.component.UIOutput;
-import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.event.AbortProcessingException;
@@ -71,6 +70,12 @@ public class WindowAndViewIDSetup implements SystemEventListener {
                 writer.writeAttribute("name", "ice.view", null);
                 writer.writeAttribute("value", viewId, null);
                 writer.endElement("input");
+
+                writer.startElement("input", this);
+                writer.writeAttribute("type", "hidden", null);
+                writer.writeAttribute("name", "javax.faces.ViewState", null);
+                writer.writeAttribute("value", context.getApplication().getStateManager().getViewState(context), null);
+                writer.endElement("input");
             }
         };
 
@@ -90,12 +95,12 @@ public class WindowAndViewIDSetup implements SystemEventListener {
         UIForm htmlForm = (UIForm) source;
         String componentId = htmlForm.getId() + ID_SUFFIX;
         if (!partialStateSaving) {
-        for (UIComponent child : htmlForm.getChildren()) {
-            String id = child.getId();
-            if ((null != id) && id.endsWith(ID_SUFFIX)) {
-                return false;
+            for (UIComponent child : htmlForm.getChildren()) {
+                String id = child.getId();
+                if ((null != id) && id.endsWith(ID_SUFFIX)) {
+                    return false;
+                }
             }
-        }
         }
         // Guard against duplicates within the same JSF lifecycle
         for (UIComponent comp : htmlForm.getChildren()) {
