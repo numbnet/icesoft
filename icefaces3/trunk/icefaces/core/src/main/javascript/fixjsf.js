@@ -88,13 +88,13 @@
                 var code;
                 if (src) {
                     src = stripPathParameters(unescapeHtml(src));
-                    if (contains(document.scriptRefs, src)) {
+                    if (contains(scriptRefs, src)) {
                         code = '';
                     } else {
                         getSynchronously(client, src, noop, noop, function(response) {
                             code = contentAsText(response);
                         });
-                        append(document.scriptRefs, src);
+                        append(scriptRefs, src);
                     }
                 } else {
                     code = unescapeHtml(extractTagContent('script', script));
@@ -115,7 +115,7 @@
             each(linkTags, function(link) {
                 if (extractAttributeValue(link, 'type') == 'text/css') {
                     var src = extractAttributeValue(link, 'href');
-                    if (src && not(contains(document.linkRefs, unescapeHtml(src)))) {
+                    if (src && not(contains(linkRefs, unescapeHtml(src)))) {
                         var headElement = document.getElementsByTagName("head")[0];
                         var linkElement = document.createElement('link');
                         linkElement.type = 'text/css';
@@ -124,7 +124,7 @@
                         linkElement.media = extractAttributeValue('media', 'screen');
                         headElement.appendChild(linkElement);
                         //add link to the list of CSS resources that have been loaded
-                        append(document.linkRefs, src);
+                        append(linkRefs, src);
                     }
                 }
             });
@@ -132,8 +132,9 @@
     }
 
     //remember loaded script references
-    document.scriptRefs = document.scriptRefs ? document.scriptRefs : [];
-    document.linkRefs = document.linkRefs ? document.linkRefs : [];
+    var scriptRefs = [];
+    var linkRefs = [];
+
     function createResourceMatching(attribute) {
         return function(result, s) {
             var src = s.getAttribute(attribute);
@@ -146,12 +147,12 @@
 
     onLoad(window, function() {
         var scriptElements = document.documentElement.getElementsByTagName('script');
-        inject(scriptElements, document.scriptRefs, createResourceMatching('src'));
+        inject(scriptElements, scriptRefs, createResourceMatching('src'));
     });
 
     onLoad(window, function() {
         var linkElements = document.documentElement.getElementsByTagName('link');
-        inject(linkElements, document.linkRefs, createResourceMatching('href'));
+        inject(linkElements, linkRefs, createResourceMatching('href'));
     });
 
     function findViewRootUpdate(content) {
@@ -179,6 +180,7 @@
             var innerContent = headUpdate.firstChild.data;
             extractAndEvaluateScripts(innerContent);
             extractAndAppendStyles(innerContent);
+            document.title = extractTagContent('title', innerContent);
         }
         //restore original function
         document.write = originalDocumentWrite;
@@ -191,6 +193,7 @@
         if (rootUpdate && !document.documentElement.isHeadUpdateSuccessful) {
             var headContent = extractTagContent('head', rootUpdate.firstChild.data);
             extractAndEvaluateScripts(headContent);
+            extractAndAppendStyles(headContent);
         } else {
             //clear the flag for the next update
             document.documentElement.isHeadUpdateSuccessful = null;

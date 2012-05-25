@@ -1,73 +1,327 @@
-<!--
-  ~ Copyright 2004-2012 ICEsoft Technologies Canada Corp.
-  ~
-  ~ Licensed under the Apache License, Version 2.0 (the "License");
-  ~ you may not use this file except in compliance with the
-  ~ License. You may obtain a copy of the License at
-  ~
-  ~ http://www.apache.org/licenses/LICENSE-2.0
-  ~
-  ~ Unless required by applicable law or agreed to in writing,
-  ~ software distributed under the License is distributed on an "AS
-  ~ IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
-  ~ express or implied. See the License for the specific language
-  ~ governing permissions and limitations under the License.
-  -->
-
-<project name="icefaces-test" default="test.unit">
-
-    <import file="build.xml"/>
-
-    <property file="build.properties"/>
-    <property name="test.dir" location="./src/test/java"/>
-    <property name="test.build.dir" location="./test"/>
-    <property name="test.classes.dir" location="${test.build.dir}/classes"/>
-
-    <patternset id="test.lib.compile">
-        <include name="${icefaces.lib.name}.jar"/>
-        <include name="junit-4.5.jar"/>
-    </patternset>
-
-    <target name="test.clean">
-        <delete dir="${test.build.dir}"/>
-    </target>
-
-    <target name="test.pre.compile" depends="jar, test.clean" description="test pre-compilation tasks">
-        <mkdir dir="${test.build.dir}"/>
-        <mkdir dir="${test.classes.dir}"/>
-    </target>
-
-    <target name="test.compile" depends="test.pre.compile" description="compile ICEfaces 2.0 test classes">
-        <javac srcdir="${test.dir}" destdir="${test.classes.dir}" includeantruntime="false">
-            <classpath>
-                <fileset dir="${lib.dir}">
-                    <patternset refid="lib.compile"/>
-                    <patternset refid="test.lib.compile"/>
-                </fileset>
-            </classpath>
-        </javac>
-    </target>
-
-    <target name="test.unit" depends="test.compile" description="run unit tests against the core framework">
-        <junit printsummary="yes" haltonfailure="yes">
-            <classpath>
-                <pathelement path="${test.classes.dir}"/>
-                <fileset dir="${lib.dir}">
-                    <patternset refid="lib.compile"/>
-                    <patternset refid="test.lib.compile"/>
-                </fileset>
-            </classpath>
-
-            <formatter type="plain"/>
-
-            <batchtest fork="yes" todir="${test.build.dir}">
-                <fileset dir="${test.dir}">
-                    <include name="**/*Test*.java"/>
-                </fileset>
-            </batchtest>
-        </junit>
-    </target>
-
-
-</project>
-
+<?xml version='1.0' encoding='UTF-8'?>
+<partial-response>
+    <changes>
+        <extension type="javax.faces.ViewHead"><![CDATA[<head>
+<link href="/showcase/javax.faces.resource/themes/sam/theme.css.jsf?ln=icefaces.ace" rel="stylesheet" type="text/css" /><link href="/showcase/javax.faces.resource/util/combined.css.jsf?ln=icefaces.ace" rel="stylesheet" type="text/css" /><script src="/showcase/javax.faces.resource/util/ace-jquery.js.jsf?ln=icefaces.ace" type="text/javascript"></script><script src="/showcase/javax.faces.resource/util/ace-components.js.jsf?ln=icefaces.ace" type="text/javascript"></script><script src="/showcase/javax.faces.resource/gmap/gmap.js.jsf" type="text/javascript"></script><script src="/showcase/javax.faces.resource/gmap/main.js.jsf" type="text/javascript"></script><script src="/showcase/javax.faces.resource/util/ace-menu.js.jsf?ln=icefaces.ace" type="text/javascript"></script><script src="/showcase/javax.faces.resource/util/ace-yui.js.jsf?ln=icefaces.ace" type="text/javascript"></script><link href="/showcase/javax.faces.resource/core.css.jsf" rel="stylesheet" type="text/css" /><link href="/showcase/javax.faces.resource/demo_template.css.jsf?ln=css" rel="stylesheet" type="text/css" /><link href="/showcase/javax.faces.resource/override_styles.css.jsf?ln=css" rel="stylesheet" type="text/css" /><link href="/showcase/javax.faces.resource/showcase_styles.css.jsf?ln=css" rel="stylesheet" type="text/css" /><script src="/showcase/javax.faces.resource/jsf.js.jsf?ln=javax.faces&amp;v=2008383448" type="text/javascript"></script><script src="/showcase/javax.faces.resource/icepush.js.jsf?v=1895251465" type="text/javascript"></script><script src="/showcase/javax.faces.resource/bridge.js.jsf?v=1895251465" type="text/javascript"></script><script type="text/javascript">document.documentElement.isHeadUpdateSuccessful=true;</script><script src="/showcase/javax.faces.resource/compat.js.jsf" type="text/javascript"></script><script src="/showcase/javax.faces.resource/icefaces-compat.js.jsf" type="text/javascript"></script>
+    <title id="title">ICEfaces Showcase</title>
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type" /><link href="./xmlhttp/css/rime/rime.css" rel="stylesheet" type="text/css" /></head>]]></extension>
+        <update id="frm"><![CDATA[<form action="/showcase/showcase.jsf" enctype="application/x-www-form-urlencoded" id="frm" method="post" name="frm">
+<input name="frm" type="hidden" value="frm" />
+<input name="ice.window" type="hidden" value="grh2m8u9te" /><input name="ice.view" type="hidden" value="vvcdte1k" /><input name="javax.faces.ViewState" type="hidden" value="355284585382486143:2580686173529224962" /><script id="frm:frm_captureSubmit" type="text/javascript">ice.captureSubmit('frm',false);ice.captureEnterKey('frm');</script>
+            <ul>
+                <li><a href="/showcase/showcase.jsf?grp=compatMenu&amp;exp=iceSuiteOverview" id="frm:menuLinks:0:link" name="frm:menuLinks:0:link" title="ICE Overview">
+                        ICE Overview
+                    </a>
+                </li>
+                <li><a href="/showcase/showcase.jsf?grp=compatMenu&amp;exp=columns" id="frm:menuLinks:1:link" name="frm:menuLinks:1:link" title="ice:columns">
+                        ice:columns
+                    </a>
+                </li>
+                <li><a href="/showcase/showcase.jsf?grp=compatMenu&amp;exp=exporter" id="frm:menuLinks:2:link" name="frm:menuLinks:2:link" title="ice:dataExporter">
+                        ice:dataExporter
+                    </a>
+                </li>
+                <li><a href="/showcase/showcase.jsf?grp=compatMenu&amp;exp=paginator" id="frm:menuLinks:3:link" name="frm:menuLinks:3:link" title="ice:dataPaginator">
+                        ice:dataPaginator
+                    </a>
+                </li>
+                <li><a href="/showcase/showcase.jsf?grp=compatMenu&amp;exp=dataTable" id="frm:menuLinks:4:link" name="frm:menuLinks:4:link" title="ice:dataTable">
+                        ice:dataTable
+                    </a>
+                </li>
+                <li><a class="selected" href="/showcase/showcase.jsf?grp=compatMenu&amp;exp=map" id="frm:menuLinks:5:link" name="frm:menuLinks:5:link" title="ice:gMap">
+                        ice:gMap
+                    </a><div class="icePnlGrp" id="frm:menuLinks:5:j_idt29">
+                        <ul>
+                                <li style="padding-left: 15px;"><a class="selected" href="#" id="frm:menuLinks:5:subMenuLinks:0:subLink" onclick="mojarra.jsfcljs(document.getElementById('frm'),{'frm:menuLinks:5:subMenuLinks:0:subLink':'frm:menuLinks:5:subMenuLinks:0:subLink'},'');return false" title="Overview"><span id="frm:menuLinks:5:subMenuLinks:0:_t32">> Overview</span></a>
+                                    
+                                    
+                                </li>
+                                <li style="padding-left: 15px;"><a class="" href="#" id="frm:menuLinks:5:subMenuLinks:1:subLink" onclick="mojarra.jsfcljs(document.getElementById('frm'),{'frm:menuLinks:5:subMenuLinks:1:subLink':'frm:menuLinks:5:subMenuLinks:1:subLink'},'');return false" title="Address"><span id="frm:menuLinks:5:subMenuLinks:1:_t32">> Address</span></a>
+                                    
+                                    
+                                </li>
+                                <li style="padding-left: 15px;"><a class="" href="#" id="frm:menuLinks:5:subMenuLinks:2:subLink" onclick="mojarra.jsfcljs(document.getElementById('frm'),{'frm:menuLinks:5:subMenuLinks:2:subLink':'frm:menuLinks:5:subMenuLinks:2:subLink'},'');return false" title="Latitude/Longitude"><span id="frm:menuLinks:5:subMenuLinks:2:_t32">> Latitude/Longitude</span></a>
+                                    
+                                    
+                                </li>
+                                <li style="padding-left: 15px;"><a class="" href="#" id="frm:menuLinks:5:subMenuLinks:3:subLink" onclick="mojarra.jsfcljs(document.getElementById('frm'),{'frm:menuLinks:5:subMenuLinks:3:subLink':'frm:menuLinks:5:subMenuLinks:3:subLink'},'');return false" title="Controls"><span id="frm:menuLinks:5:subMenuLinks:3:_t32">> Controls</span></a>
+                                    
+                                    
+                                </li>
+                                <li style="padding-left: 15px;"><a class="" href="#" id="frm:menuLinks:5:subMenuLinks:4:subLink" onclick="mojarra.jsfcljs(document.getElementById('frm'),{'frm:menuLinks:5:subMenuLinks:4:subLink':'frm:menuLinks:5:subMenuLinks:4:subLink'},'');return false" title="Zoom Level"><span id="frm:menuLinks:5:subMenuLinks:4:_t32">> Zoom Level</span></a>
+                                    
+                                    
+                                </li>
+                                <li style="padding-left: 15px;"><a class="" href="#" id="frm:menuLinks:5:subMenuLinks:5:subLink" onclick="mojarra.jsfcljs(document.getElementById('frm'),{'frm:menuLinks:5:subMenuLinks:5:subLink':'frm:menuLinks:5:subMenuLinks:5:subLink'},'');return false" title="Render Type"><span id="frm:menuLinks:5:subMenuLinks:5:_t32">> Render Type</span></a>
+                                    
+                                    
+                                </li>
+                                <li style="padding-left: 15px;"><a class="" href="#" id="frm:menuLinks:5:subMenuLinks:6:subLink" onclick="mojarra.jsfcljs(document.getElementById('frm'),{'frm:menuLinks:5:subMenuLinks:6:subLink':'frm:menuLinks:5:subMenuLinks:6:subLink'},'');return false" title="Load XML"><span id="frm:menuLinks:5:subMenuLinks:6:_t32">> Load XML</span></a>
+                                    
+                                    
+                                </li>
+                        </ul></div>
+                </li>
+                <li><a href="/showcase/showcase.jsf?grp=compatMenu&amp;exp=richtext" id="frm:menuLinks:6:link" name="frm:menuLinks:6:link" title="ice:inputRichText">
+                        ice:inputRichText
+                    </a>
+                </li>
+                <li><a href="/showcase/showcase.jsf?grp=compatMenu&amp;exp=menuBar" id="frm:menuLinks:7:link" name="frm:menuLinks:7:link" title="ice:menuBar">
+                        ice:menuBar
+                    </a>
+                </li>
+                <li><a href="/showcase/showcase.jsf?grp=compatMenu&amp;exp=menuPopup" id="frm:menuLinks:8:link" name="frm:menuLinks:8:link" title="ice:menuPopup">
+                        ice:menuPopup
+                    </a>
+                </li>
+                <li><a href="/showcase/showcase.jsf?grp=compatMenu&amp;exp=chart" id="frm:menuLinks:9:link" name="frm:menuLinks:9:link" title="ice:outputChart">
+                        ice:outputChart
+                    </a>
+                </li>
+                <li><a href="/showcase/showcase.jsf?grp=compatMenu&amp;exp=connectionStatus" id="frm:menuLinks:10:link" name="frm:menuLinks:10:link" title="ice:outputConnectionStatus">
+                        ice:outputConnectionStatus
+                    </a>
+                </li>
+                <li><a href="/showcase/showcase.jsf?grp=compatMenu&amp;exp=media" id="frm:menuLinks:11:link" name="frm:menuLinks:11:link" title="ice:outputMedia">
+                        ice:outputMedia
+                    </a>
+                </li>
+                <li><a href="/showcase/showcase.jsf?grp=compatMenu&amp;exp=progress" id="frm:menuLinks:12:link" name="frm:menuLinks:12:link" title="ice:outputProgress">
+                        ice:outputProgress
+                    </a>
+                </li>
+                <li><a href="/showcase/showcase.jsf?grp=compatMenu&amp;exp=outputResource" id="frm:menuLinks:13:link" name="frm:menuLinks:13:link" title="ice:outputResource">
+                        ice:outputResource
+                    </a>
+                </li>
+                <li><a href="/showcase/showcase.jsf?grp=compatMenu&amp;exp=border" id="frm:menuLinks:14:link" name="frm:menuLinks:14:link" title="ice:panelBorder">
+                        ice:panelBorder
+                    </a>
+                </li>
+                <li><a href="/showcase/showcase.jsf?grp=compatMenu&amp;exp=collapsible" id="frm:menuLinks:15:link" name="frm:menuLinks:15:link" title="ice:panelCollapsible">
+                        ice:panelCollapsible
+                    </a>
+                </li>
+                <li><a href="/showcase/showcase.jsf?grp=compatMenu&amp;exp=confirmation" id="frm:menuLinks:16:link" name="frm:menuLinks:16:link" title="ice:panelConfirmation">
+                        ice:panelConfirmation
+                    </a>
+                </li>
+                <li><a href="/showcase/showcase.jsf?grp=compatMenu&amp;exp=divider" id="frm:menuLinks:17:link" name="frm:menuLinks:17:link" title="ice:panelDivider">
+                        ice:panelDivider
+                    </a>
+                </li>
+                <li><a href="/showcase/showcase.jsf?grp=compatMenu&amp;exp=dragdrop" id="frm:menuLinks:18:link" name="frm:menuLinks:18:link" title="ice:panelGroup (drag&amp;drop)">
+                        ice:panelGroup (drag&amp;drop)
+                    </a>
+                </li>
+                <li><a href="/showcase/showcase.jsf?grp=compatMenu&amp;exp=effectBean" id="frm:menuLinks:19:link" name="frm:menuLinks:19:link" title="ice:panelGroup (Effects)">
+                        ice:panelGroup (Effects)
+                    </a>
+                </li>
+                <li><a href="/showcase/showcase.jsf?grp=compatMenu&amp;exp=popup" id="frm:menuLinks:20:link" name="frm:menuLinks:20:link" title="ice:panelPopup">
+                        ice:panelPopup
+                    </a>
+                </li>
+                <li><a href="/showcase/showcase.jsf?grp=compatMenu&amp;exp=positioned" id="frm:menuLinks:21:link" name="frm:menuLinks:21:link" title="ice:panelPositioned">
+                        ice:panelPositioned
+                    </a>
+                </li>
+                <li><a href="/showcase/showcase.jsf?grp=compatMenu&amp;exp=series" id="frm:menuLinks:22:link" name="frm:menuLinks:22:link" title="ice:panelSeries">
+                        ice:panelSeries
+                    </a>
+                </li>
+                <li><a href="/showcase/showcase.jsf?grp=compatMenu&amp;exp=stacking" id="frm:menuLinks:23:link" name="frm:menuLinks:23:link" title="ice:panelStack">
+                        ice:panelStack
+                    </a>
+                </li>
+                <li><a href="/showcase/showcase.jsf?grp=compatMenu&amp;exp=tab" id="frm:menuLinks:24:link" name="frm:menuLinks:24:link" title="ice:panelTabSet">
+                        ice:panelTabSet
+                    </a>
+                </li>
+                <li><a href="/showcase/showcase.jsf?grp=compatMenu&amp;exp=tooltip" id="frm:menuLinks:25:link" name="frm:menuLinks:25:link" title="ice:panelTooltip">
+                        ice:panelTooltip
+                    </a>
+                </li>
+                <li><a href="/showcase/showcase.jsf?grp=compatMenu&amp;exp=selector" id="frm:menuLinks:26:link" name="frm:menuLinks:26:link" title="ice:rowSelector">
+                        ice:rowSelector
+                    </a>
+                </li>
+                <li><a href="/showcase/showcase.jsf?grp=compatMenu&amp;exp=calendar" id="frm:menuLinks:27:link" name="frm:menuLinks:27:link" title="ice:selectInputDate">
+                        ice:selectInputDate
+                    </a>
+                </li>
+                <li><a href="/showcase/showcase.jsf?grp=compatMenu&amp;exp=autocomplete" id="frm:menuLinks:28:link" name="frm:menuLinks:28:link" title="ice:selectInputText">
+                        ice:selectInputText
+                    </a>
+                </li>
+                <li><a href="/showcase/showcase.jsf?grp=compatMenu&amp;exp=eventphase" id="frm:menuLinks:29:link" name="frm:menuLinks:29:link" title="ice:setEventPhase">
+                        ice:setEventPhase
+                    </a>
+                </li>
+                <li><a href="/showcase/showcase.jsf?grp=compatMenu&amp;exp=tree" id="frm:menuLinks:30:link" name="frm:menuLinks:30:link" title="ice:tree">
+                        ice:tree
+                    </a>
+                </li>
+            </ul><span id="frmhdnFldsDiv"><input name="icefacesCssUpdates" type="hidden" value="" /></span>
+</form>]]></update>
+        <update id="j_idt45:j_idt50hdn">
+            <![CDATA[<input id="j_idt45:j_idt50hdn" name="j_idt45:j_idt50hdn" type="hidden" />]]></update>
+        <update id="j_idt45:j_idt50lat">
+            <![CDATA[<input id="j_idt45:j_idt50lat" name="j_idt45:j_idt50lat" type="hidden" />]]></update>
+        <update id="j_idt45:j_idt50lng">
+            <![CDATA[<input id="j_idt45:j_idt50lng" name="j_idt45:j_idt50lng" type="hidden" />]]></update>
+        <update id="j_idt45:j_idt50zoom">
+            <![CDATA[<input id="j_idt45:j_idt50zoom" name="j_idt45:j_idt50zoom" type="hidden" />]]></update>
+        <update id="j_idt45:j_idt50event">
+            <![CDATA[<input id="j_idt45:j_idt50event" name="j_idt45:j_idt50event" type="hidden" />]]></update>
+        <update id="sourceCodeForm"><![CDATA[<form action="/showcase/showcase.jsf" enctype="application/x-www-form-urlencoded" id="sourceCodeForm" method="post" name="sourceCodeForm">
+<input name="sourceCodeForm" type="hidden" value="sourceCodeForm" />
+<input name="ice.window" type="hidden" value="grh2m8u9te" /><input name="ice.view" type="hidden" value="vvcdte1k" /><input name="javax.faces.ViewState" type="hidden" value="355284585382486143:2580686173529224962" /><script id="sourceCodeForm:sourceCodeForm_captureSubmit" type="text/javascript">ice.captureSubmit('sourceCodeForm',false);ice.captureEnterKey('sourceCodeForm');</script><div class="ui-panel ui-widget ui-widget-content ui-corner-all containerPanelStyle" id="sourceCodeForm:sourceCodePanel"><div class="ui-panel-titlebar ui-widget-header ui-corner-all" id="sourceCodeForm:sourceCodePanel_header"><span class="ui-panel-title">Source Code</span><a class="ui-panel-titlebar-icon ui-corner-all ui-state-default"><span class="ui-icon ui-icon-plusthick" id="sourceCodeForm:sourceCodePanel_toggler"></span></a></div><div class="ui-panel-content ui-widget-content" id="sourceCodeForm:sourceCodePanel_content" style="display:none">
+                <div class="resources"><div class="yui-navset yui-navset-top ui-tabset ui-widget ui-widget-content ui-corner-all " id="sourceCodeForm:j_idt62"><ul class="yui-nav ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all" id="sourceCodeForm:j_idt62_nav" role="tablist"><li class="ui-state-default ui-corner-top" id="sourceCodeForm:j_idt63li0" role="presentation"><div class="yui-navdiv" id="sourceCodeForm:j_idt63tab0" role="tab" tabindex="0"><em id="sourceCodeForm:j_idt63Lbl" onclick="if(ice.ace.util.isEventSourceInputElement(event)) event.cancelBubble = true;">map.xhtml</em></div><a style="display:none;"></a></li><li class="ui-state-default ui-corner-top" id="sourceCodeForm:j_idt65li1" role="presentation"><div class="yui-navdiv" id="sourceCodeForm:j_idt65tab1" role="tab" tabindex="0"><em id="sourceCodeForm:j_idt65Lbl" onclick="if(ice.ace.util.isEventSourceInputElement(event)) event.cancelBubble = true;">MapBean.java</em></div><a style="display:none;"></a></li></ul><div class="yui-content ui-tabs-panel ui-widget-content ui-corner-bottom" id="sourceCodeForm:j_idt62cnt"></div><div id="sourceCodeForm:j_idt62_safe" style="display:none;"><div id="sourceCodeForm:j_idt62_safe_0"><div class="ui-tabs-panel ui-widget-content ui-corner-bottom" id="sourceCodeForm:j_idt63" role="tabpanel" tabindex="0"><span id="sourceCodeForm:_t64">
+<h1>map.xhtml</h1><code><span class="xml_processing_instruction">&lt;?xml&#160;version=&quot;1.0&quot;?&gt;</span><span class="xml_plain"></span><br />
+<span class="xml_plain">//&#160;MPL&#160;License&#160;text&#160;(see&#160;http://www.mozilla.org/MPL/)</span><br />
+<span class="xml_plain"></span><br />
+<span class="xml_tag_symbols">&lt;</span><span class="xml_tag_name">ui:composition</span><span class="xml_plain">&#160;</span><span class="xml_attribute_name">xmlns</span><span class="xml_tag_symbols">=</span><span class="xml_attribute_value">&quot;http://www.w3.org/1999/xhtml&quot;</span><span class="xml_plain"></span><br />
+<span class="xml_plain">&#160;&#160;&#160;&#160;</span><span class="xml_attribute_name">xmlns:h</span><span class="xml_tag_symbols">=</span><span class="xml_attribute_value">&quot;http://java.sun.com/jsf/html&quot;</span><span class="xml_plain">&#160;</span><br />
+<span class="xml_plain">&#160;&#160;&#160;&#160;</span><span class="xml_attribute_name">xmlns:f</span><span class="xml_tag_symbols">=</span><span class="xml_attribute_value">&quot;http://java.sun.com/jsf/core&quot;</span><span class="xml_plain">&#160;</span><br />
+<span class="xml_plain">&#160;&#160;&#160;&#160;</span><span class="xml_attribute_name">xmlns:c</span><span class="xml_tag_symbols">=</span><span class="xml_attribute_value">&quot;http://java.sun.com/jsp/jstl/core&quot;</span><span class="xml_plain">&#160;</span><br />
+<span class="xml_plain">&#160;&#160;&#160;&#160;</span><span class="xml_attribute_name">xmlns:ace</span><span class="xml_tag_symbols">=</span><span class="xml_attribute_value">&quot;http://www.icefaces.org/icefaces/components&quot;</span><span class="xml_plain">&#160;</span><br />
+<span class="xml_plain">&#160;&#160;&#160;&#160;</span><span class="xml_attribute_name">xmlns:ice</span><span class="xml_tag_symbols">=</span><span class="xml_attribute_value">&quot;http://www.icesoft.com/icefaces/component&quot;</span><span class="xml_plain">&#160;</span><br />
+<span class="xml_plain">&#160;&#160;&#160;&#160;</span><span class="xml_attribute_name">xmlns:ui</span><span class="xml_tag_symbols">=</span><span class="xml_attribute_value">&quot;http://java.sun.com/jsf/facelets&quot;</span><span class="xml_plain">&#160;</span><br />
+<span class="xml_plain">&#160;&#160;&#160;&#160;</span><span class="xml_attribute_name">template</span><span class="xml_tag_symbols">=</span><span class="xml_attribute_value">&quot;/resources/templates/content-template.xhtml&quot;</span><span class="xml_tag_symbols">&gt;</span><span class="xml_plain"></span><br />
+<span class="xml_plain">&#160;&#160;&#160;&#160;</span><br />
+<span class="xml_plain">&#160;&#160;&#160;&#160;</span><span class="xml_tag_symbols">&lt;</span><span class="xml_tag_name">ui:param</span><span class="xml_plain">&#160;</span><span class="xml_attribute_name">name</span><span class="xml_tag_symbols">=</span><span class="xml_attribute_value">&quot;title&quot;</span><span class="xml_plain">&#160;</span><span class="xml_attribute_name">value</span><span class="xml_tag_symbols">=</span><span class="xml_attribute_value">&quot;#{msgs[map.title]}&quot;</span><span class="xml_tag_symbols">/&gt;</span><span class="xml_plain"></span><br />
+<span class="xml_plain">&#160;&#160;&#160;&#160;</span><span class="xml_tag_symbols">&lt;</span><span class="xml_tag_name">ui:param</span><span class="xml_plain">&#160;</span><span class="xml_attribute_name">name</span><span class="xml_tag_symbols">=</span><span class="xml_attribute_value">&quot;description&quot;</span><span class="xml_plain">&#160;</span><span class="xml_attribute_name">value</span><span class="xml_tag_symbols">=</span><span class="xml_attribute_value">&quot;#{msgs[map.description]}&quot;</span><span class="xml_tag_symbols">/&gt;</span><span class="xml_plain"></span><br />
+<span class="xml_plain">&#160;&#160;&#160;&#160;</span><span class="xml_tag_symbols">&lt;</span><span class="xml_tag_name">ui:param</span><span class="xml_plain">&#160;</span><span class="xml_attribute_name">name</span><span class="xml_tag_symbols">=</span><span class="xml_attribute_value">&quot;resourceValue&quot;</span><span class="xml_plain">&#160;</span><span class="xml_attribute_name">value</span><span class="xml_tag_symbols">=</span><span class="xml_attribute_value">&quot;#{map.exampleResource}&quot;</span><span class="xml_tag_symbols">/&gt;</span><span class="xml_plain"></span><br />
+<span class="xml_plain">&#160;&#160;&#160;&#160;</span><br />
+<span class="xml_plain">&#160;&#160;&#160;&#160;</span><span class="xml_tag_symbols">&lt;</span><span class="xml_tag_name">ui:param</span><span class="xml_plain">&#160;</span><span class="xml_attribute_name">name</span><span class="xml_tag_symbols">=</span><span class="xml_attribute_value">&quot;wikiResources&quot;</span><span class="xml_plain">&#160;</span><span class="xml_attribute_name">value</span><span class="xml_tag_symbols">=</span><span class="xml_attribute_value">&quot;#{compatComponentsResources.wikiResources}&quot;</span><span class="xml_tag_symbols">/&gt;</span><span class="xml_plain"></span><br />
+<span class="xml_plain">&#160;&#160;&#160;&#160;</span><span class="xml_tag_symbols">&lt;</span><span class="xml_tag_name">ui:param</span><span class="xml_plain">&#160;</span><span class="xml_attribute_name">name</span><span class="xml_tag_symbols">=</span><span class="xml_attribute_value">&quot;tldResources&quot;</span><span class="xml_plain">&#160;</span><span class="xml_attribute_name">value</span><span class="xml_tag_symbols">=</span><span class="xml_attribute_value">&quot;#{compatComponentsResources.tldResources}&quot;</span><span class="xml_tag_symbols">/&gt;</span><span class="xml_plain"></span><br />
+<span class="xml_plain">&#160;&#160;&#160;&#160;</span><br />
+<span class="xml_plain">&#160;&#160;&#160;&#160;</span><span class="xml_tag_symbols">&lt;</span><span class="xml_tag_name">ui:define</span><span class="xml_plain">&#160;</span><span class="xml_attribute_name">name</span><span class="xml_tag_symbols">=</span><span class="xml_attribute_value">&quot;example&quot;</span><span class="xml_tag_symbols">&gt;</span><span class="xml_plain"></span><br />
+<span class="xml_plain">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</span><span class="xml_tag_symbols">&lt;</span><span class="xml_tag_name">h:form</span><span class="xml_tag_symbols">&gt;</span><span class="xml_plain"></span><br />
+<span class="xml_plain">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</span><span class="xml_tag_symbols">&lt;</span><span class="xml_tag_name">h:panelGrid</span><span class="xml_plain">&#160;</span><span class="xml_attribute_name">columns</span><span class="xml_tag_symbols">=</span><span class="xml_attribute_value">&quot;3&quot;</span><span class="xml_tag_symbols">&gt;</span><span class="xml_plain"></span><br />
+<span class="xml_plain">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</span><span class="xml_tag_symbols">&lt;</span><span class="xml_tag_name">h:outputLabel</span><span class="xml_plain">&#160;</span><span class="xml_attribute_name">for</span><span class="xml_tag_symbols">=</span><span class="xml_attribute_value">&quot;address&quot;</span><span class="xml_plain">&#160;</span><span class="xml_attribute_name">value</span><span class="xml_tag_symbols">=</span><span class="xml_attribute_value">&quot;Address:&quot;</span><span class="xml_tag_symbols">/&gt;</span><span class="xml_plain"></span><br />
+<span class="xml_plain">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</span><span class="xml_tag_symbols">&lt;</span><span class="xml_tag_name">h:inputText</span><span class="xml_plain">&#160;</span><span class="xml_attribute_name">id</span><span class="xml_tag_symbols">=</span><span class="xml_attribute_value">&quot;address&quot;</span><span class="xml_plain"></span><br />
+<span class="xml_plain">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</span><span class="xml_attribute_name">value</span><span class="xml_tag_symbols">=</span><span class="xml_attribute_value">&quot;#{map.address}&quot;</span><span class="xml_plain"></span><br />
+<span class="xml_plain">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</span><span class="xml_attribute_name">maxlength</span><span class="xml_tag_symbols">=</span><span class="xml_attribute_value">&quot;1024&quot;</span><span class="xml_plain">&#160;</span><span class="xml_attribute_name">size</span><span class="xml_tag_symbols">=</span><span class="xml_attribute_value">&quot;50&quot;</span><span class="xml_tag_symbols">&gt;</span><span class="xml_plain"></span><br />
+<span class="xml_plain">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</span><span class="xml_tag_symbols">&lt;</span><span class="xml_tag_name">f:validateLength</span><span class="xml_plain">&#160;</span><span class="xml_attribute_name">minimum</span><span class="xml_tag_symbols">=</span><span class="xml_attribute_value">&quot;0&quot;</span><span class="xml_plain">&#160;</span><span class="xml_attribute_name">maximum</span><span class="xml_tag_symbols">=</span><span class="xml_attribute_value">&quot;1024&quot;</span><span class="xml_tag_symbols">/&gt;</span><span class="xml_plain"></span><br />
+<span class="xml_plain">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</span><span class="xml_tag_symbols">&lt;/</span><span class="xml_tag_name">h:inputText</span><span class="xml_tag_symbols">&gt;</span><span class="xml_plain"></span><br />
+<span class="xml_plain">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</span><span class="xml_tag_symbols">&lt;</span><span class="xml_tag_name">h:message</span><span class="xml_plain">&#160;</span><span class="xml_attribute_name">for</span><span class="xml_tag_symbols">=</span><span class="xml_attribute_value">&quot;address&quot;</span><span class="xml_tag_symbols">/&gt;</span><span class="xml_plain"></span><br />
+<span class="xml_plain">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</span><span class="xml_tag_symbols">&lt;/</span><span class="xml_tag_name">h:panelGrid</span><span class="xml_tag_symbols">&gt;</span><span class="xml_plain"></span><br />
+<span class="xml_plain">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</span><br />
+<span class="xml_plain">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</span><span class="xml_tag_symbols">&lt;</span><span class="xml_tag_name">h:commandButton</span><span class="xml_plain">&#160;</span><span class="xml_attribute_name">value</span><span class="xml_tag_symbols">=</span><span class="xml_attribute_value">&quot;Perform&#160;Lookup&quot;</span><span class="xml_plain"></span><br />
+<span class="xml_plain">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</span><span class="xml_attribute_name">actionListener</span><span class="xml_tag_symbols">=</span><span class="xml_attribute_value">&quot;#{map.lookup}&quot;</span><span class="xml_tag_symbols">/&gt;</span><span class="xml_plain"></span><br />
+<span class="xml_plain">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</span><br />
+<span class="xml_plain">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</span><span class="xml_tag_symbols">&lt;</span><span class="xml_tag_name">ice:gMap</span><span class="xml_plain">&#160;</span><span class="xml_attribute_name">address</span><span class="xml_tag_symbols">=</span><span class="xml_attribute_value">&quot;#{map.address}&quot;</span><span class="xml_plain"></span><br />
+<span class="xml_plain">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</span><span class="xml_attribute_name">locateAddress</span><span class="xml_tag_symbols">=</span><span class="xml_attribute_value">&quot;#{map.locateAddress}&quot;</span><span class="xml_tag_symbols">&gt;</span><span class="xml_plain"></span><br />
+<span class="xml_plain">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</span><span class="xml_tag_symbols">&lt;</span><span class="xml_tag_name">ice:gMapControl</span><span class="xml_plain">&#160;</span><span class="xml_attribute_name">name</span><span class="xml_tag_symbols">=</span><span class="xml_attribute_value">&quot;GLargeMapControl&quot;</span><span class="xml_tag_symbols">/&gt;</span><span class="xml_plain"></span><br />
+<span class="xml_plain">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</span><span class="xml_tag_symbols">&lt;</span><span class="xml_tag_name">ice:gMapControl</span><span class="xml_plain">&#160;</span><span class="xml_attribute_name">name</span><span class="xml_tag_symbols">=</span><span class="xml_attribute_value">&quot;GScaleControl&quot;</span><span class="xml_tag_symbols">/&gt;</span><span class="xml_plain"></span><br />
+<span class="xml_plain">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</span><span class="xml_tag_symbols">&lt;</span><span class="xml_tag_name">ice:gMapControl</span><span class="xml_plain">&#160;</span><span class="xml_attribute_name">name</span><span class="xml_tag_symbols">=</span><span class="xml_attribute_value">&quot;GMapTypeControl&quot;</span><span class="xml_tag_symbols">/&gt;</span><span class="xml_plain"></span><br />
+<span class="xml_plain">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</span><span class="xml_tag_symbols">&lt;</span><span class="xml_tag_name">ice:gMapControl</span><span class="xml_plain">&#160;</span><span class="xml_attribute_name">name</span><span class="xml_tag_symbols">=</span><span class="xml_attribute_value">&quot;GOverviewMapControl&quot;</span><span class="xml_tag_symbols">/&gt;</span><span class="xml_plain"></span><br />
+<span class="xml_plain">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</span><span class="xml_tag_symbols">&lt;/</span><span class="xml_tag_name">ice:gMap</span><span class="xml_tag_symbols">&gt;</span><span class="xml_plain"></span><br />
+<span class="xml_plain">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</span><span class="xml_tag_symbols">&lt;/</span><span class="xml_tag_name">h:form</span><span class="xml_tag_symbols">&gt;</span><span class="xml_plain"></span><br />
+<span class="xml_plain">&#160;&#160;&#160;&#160;</span><span class="xml_tag_symbols">&lt;/</span><span class="xml_tag_name">ui:define</span><span class="xml_tag_symbols">&gt;</span><span class="xml_plain"></span><br />
+<span class="xml_tag_symbols">&lt;/</span><span class="xml_tag_name">ui:composition</span><span class="xml_tag_symbols">&gt;</span><span class="xml_plain"></span><br />
+</code>
+</span></div></div><div id="sourceCodeForm:j_idt62_safe_0_nxt"><div id="sourceCodeForm:j_idt62_safe_1"><div class="ui-tabs-panel ui-widget-content ui-corner-bottom" id="sourceCodeForm:j_idt65" role="tabpanel" tabindex="0"><span id="sourceCodeForm:_t66">
+<h1>MapBean.java</h1><code><span class="java_comment">/*&#160;MPL&#160;License&#160;text&#160;(see&#160;http://www.mozilla.org/MPL/)&#160;*/</span><span class="java_plain"></span><br />
+<span class="java_plain"></span><br />
+<span class="java_plain"></span><br />
+<span class="java_keyword">package</span><span class="java_plain">&#160;org</span><span class="java_separator">.</span><span class="java_plain">icefaces</span><span class="java_separator">.</span><span class="java_plain">samples</span><span class="java_separator">.</span><span class="java_plain">showcase</span><span class="java_separator">.</span><span class="java_plain">example</span><span class="java_separator">.</span><span class="java_plain">compat</span><span class="java_separator">.</span><span class="java_plain">map</span><span class="java_separator">;</span><span class="java_plain"></span><br />
+<span class="java_plain"></span><br />
+<span class="java_keyword">import</span><span class="java_plain">&#160;java</span><span class="java_separator">.</span><span class="java_plain">io</span><span class="java_separator">.</span><span class="java_type">Serializable</span><span class="java_separator">;</span><span class="java_plain"></span><br />
+<span class="java_plain"></span><br />
+<span class="java_keyword">import</span><span class="java_plain">&#160;javax</span><span class="java_separator">.</span><span class="java_plain">faces</span><span class="java_separator">.</span><span class="java_plain">bean</span><span class="java_separator">.</span><span class="java_type">CustomScoped</span><span class="java_separator">;</span><span class="java_plain"></span><br />
+<span class="java_keyword">import</span><span class="java_plain">&#160;javax</span><span class="java_separator">.</span><span class="java_plain">faces</span><span class="java_separator">.</span><span class="java_plain">bean</span><span class="java_separator">.</span><span class="java_type">ManagedBean</span><span class="java_separator">;</span><span class="java_plain"></span><br />
+<span class="java_keyword">import</span><span class="java_plain">&#160;javax</span><span class="java_separator">.</span><span class="java_plain">faces</span><span class="java_separator">.</span><span class="java_plain">event</span><span class="java_separator">.</span><span class="java_type">ActionEvent</span><span class="java_separator">;</span><span class="java_plain"></span><br />
+<span class="java_plain"></span><br />
+<span class="java_keyword">import</span><span class="java_plain">&#160;org</span><span class="java_separator">.</span><span class="java_plain">icefaces</span><span class="java_separator">.</span><span class="java_plain">samples</span><span class="java_separator">.</span><span class="java_plain">showcase</span><span class="java_separator">.</span><span class="java_plain">metadata</span><span class="java_separator">.</span><span class="java_plain">annotation</span><span class="java_separator">.</span><span class="java_type">ComponentExample</span><span class="java_separator">;</span><span class="java_plain"></span><br />
+<span class="java_keyword">import</span><span class="java_plain">&#160;org</span><span class="java_separator">.</span><span class="java_plain">icefaces</span><span class="java_separator">.</span><span class="java_plain">samples</span><span class="java_separator">.</span><span class="java_plain">showcase</span><span class="java_separator">.</span><span class="java_plain">metadata</span><span class="java_separator">.</span><span class="java_plain">annotation</span><span class="java_separator">.</span><span class="java_type">ExampleResource</span><span class="java_separator">;</span><span class="java_plain"></span><br />
+<span class="java_keyword">import</span><span class="java_plain">&#160;org</span><span class="java_separator">.</span><span class="java_plain">icefaces</span><span class="java_separator">.</span><span class="java_plain">samples</span><span class="java_separator">.</span><span class="java_plain">showcase</span><span class="java_separator">.</span><span class="java_plain">metadata</span><span class="java_separator">.</span><span class="java_plain">annotation</span><span class="java_separator">.</span><span class="java_type">ExampleResources</span><span class="java_separator">;</span><span class="java_plain"></span><br />
+<span class="java_keyword">import</span><span class="java_plain">&#160;org</span><span class="java_separator">.</span><span class="java_plain">icefaces</span><span class="java_separator">.</span><span class="java_plain">samples</span><span class="java_separator">.</span><span class="java_plain">showcase</span><span class="java_separator">.</span><span class="java_plain">metadata</span><span class="java_separator">.</span><span class="java_plain">annotation</span><span class="java_separator">.</span><span class="java_type">Menu</span><span class="java_separator">;</span><span class="java_plain"></span><br />
+<span class="java_keyword">import</span><span class="java_plain">&#160;org</span><span class="java_separator">.</span><span class="java_plain">icefaces</span><span class="java_separator">.</span><span class="java_plain">samples</span><span class="java_separator">.</span><span class="java_plain">showcase</span><span class="java_separator">.</span><span class="java_plain">metadata</span><span class="java_separator">.</span><span class="java_plain">annotation</span><span class="java_separator">.</span><span class="java_type">MenuLink</span><span class="java_separator">;</span><span class="java_plain"></span><br />
+<span class="java_keyword">import</span><span class="java_plain">&#160;org</span><span class="java_separator">.</span><span class="java_plain">icefaces</span><span class="java_separator">.</span><span class="java_plain">samples</span><span class="java_separator">.</span><span class="java_plain">showcase</span><span class="java_separator">.</span><span class="java_plain">metadata</span><span class="java_separator">.</span><span class="java_plain">annotation</span><span class="java_separator">.</span><span class="java_type">ResourceType</span><span class="java_separator">;</span><span class="java_plain"></span><br />
+<span class="java_keyword">import</span><span class="java_plain">&#160;org</span><span class="java_separator">.</span><span class="java_plain">icefaces</span><span class="java_separator">.</span><span class="java_plain">samples</span><span class="java_separator">.</span><span class="java_plain">showcase</span><span class="java_separator">.</span><span class="java_plain">metadata</span><span class="java_separator">.</span><span class="java_plain">context</span><span class="java_separator">.</span><span class="java_type">ComponentExampleImpl</span><span class="java_separator">;</span><span class="java_plain"></span><br />
+<span class="java_plain"></span><br />
+<span class="java_plain">@</span><span class="java_type">ComponentExample</span><span class="java_separator">(</span><span class="java_plain"></span><br />
+<span class="java_plain">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;title&#160;</span><span class="java_operator">=</span><span class="java_plain">&#160;</span><span class="java_literal">&quot;example.compat.map.title&quot;</span><span class="java_separator">,</span><span class="java_plain"></span><br />
+<span class="java_plain">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;description&#160;</span><span class="java_operator">=</span><span class="java_plain">&#160;</span><span class="java_literal">&quot;example.compat.map.description&quot;</span><span class="java_separator">,</span><span class="java_plain"></span><br />
+<span class="java_plain">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;example&#160;</span><span class="java_operator">=</span><span class="java_plain">&#160;</span><span class="java_literal">&quot;/resources/examples/compat/map/map.xhtml&quot;</span><span class="java_plain"></span><br />
+<span class="java_separator">)</span><span class="java_plain"></span><br />
+<span class="java_plain">@</span><span class="java_type">ExampleResources</span><span class="java_separator">(</span><span class="java_plain"></span><br />
+<span class="java_plain">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;resources&#160;</span><span class="java_operator">=</span><span class="java_separator">{</span><span class="java_plain"></span><br />
+<span class="java_plain">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</span><span class="java_comment">//&#160;xhtml</span><br />
+<span class="java_plain">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;@</span><span class="java_type">ExampleResource</span><span class="java_separator">(</span><span class="java_plain">type&#160;</span><span class="java_operator">=</span><span class="java_plain">&#160;</span><span class="java_type">ResourceType</span><span class="java_separator">.</span><span class="java_plain">xhtml</span><span class="java_separator">,</span><span class="java_plain"></span><br />
+<span class="java_plain">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;title</span><span class="java_operator">=</span><span class="java_literal">&quot;map.xhtml&quot;</span><span class="java_separator">,</span><span class="java_plain"></span><br />
+<span class="java_plain">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;resource&#160;</span><span class="java_operator">=</span><span class="java_plain">&#160;</span><span class="java_literal">&quot;/resources/examples/compat/&quot;</span><span class="java_operator">+</span><span class="java_plain"></span><br />
+<span class="java_plain">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</span><span class="java_literal">&quot;map/map.xhtml&quot;</span><span class="java_separator">),</span><span class="java_plain"></span><br />
+<span class="java_plain">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</span><span class="java_comment">//&#160;Java&#160;Source</span><br />
+<span class="java_plain">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;@</span><span class="java_type">ExampleResource</span><span class="java_separator">(</span><span class="java_plain">type&#160;</span><span class="java_operator">=</span><span class="java_plain">&#160;</span><span class="java_type">ResourceType</span><span class="java_separator">.</span><span class="java_plain">java</span><span class="java_separator">,</span><span class="java_plain"></span><br />
+<span class="java_plain">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;title</span><span class="java_operator">=</span><span class="java_literal">&quot;MapBean.java&quot;</span><span class="java_separator">,</span><span class="java_plain"></span><br />
+<span class="java_plain">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;resource&#160;</span><span class="java_operator">=</span><span class="java_plain">&#160;</span><span class="java_literal">&quot;/WEB-INF/classes/org/icefaces/samples/&quot;</span><span class="java_operator">+</span><span class="java_plain"></span><br />
+<span class="java_plain">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</span><span class="java_literal">&quot;showcase/example/compat/map/MapBean.java&quot;</span><span class="java_separator">)</span><span class="java_plain"></span><br />
+<span class="java_plain">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</span><span class="java_separator">}</span><span class="java_plain"></span><br />
+<span class="java_separator">)</span><span class="java_plain"></span><br />
+<span class="java_plain">@</span><span class="java_type">Menu</span><span class="java_separator">(</span><span class="java_plain"></span><br />
+<span class="java_plain">&#160;&#160;&#160;&#160;title&#160;</span><span class="java_operator">=</span><span class="java_plain">&#160;</span><span class="java_literal">&quot;menu.compat.map.subMenu.title&quot;</span><span class="java_separator">,</span><span class="java_plain"></span><br />
+<span class="java_plain">&#160;&#160;&#160;&#160;menuLinks&#160;</span><span class="java_operator">=</span><span class="java_plain">&#160;</span><span class="java_separator">{</span><span class="java_plain"></span><br />
+<span class="java_plain">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;@</span><span class="java_type">MenuLink</span><span class="java_separator">(</span><span class="java_plain">title&#160;</span><span class="java_operator">=</span><span class="java_plain">&#160;</span><span class="java_literal">&quot;menu.compat.map.subMenu.main&quot;</span><span class="java_separator">,</span><span class="java_plain">&#160;isDefault&#160;</span><span class="java_operator">=</span><span class="java_plain">&#160;</span><span class="java_literal">true</span><span class="java_separator">,</span><span class="java_plain">&#160;exampleBeanName&#160;</span><span class="java_operator">=</span><span class="java_plain">&#160;</span><span class="java_type">MapBean</span><span class="java_separator">.</span><span class="java_plain">BEAN_NAME</span><span class="java_separator">),</span><span class="java_plain"></span><br />
+<span class="java_plain">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;@</span><span class="java_type">MenuLink</span><span class="java_separator">(</span><span class="java_plain">title&#160;</span><span class="java_operator">=</span><span class="java_plain">&#160;</span><span class="java_literal">&quot;menu.compat.map.subMenu.address&quot;</span><span class="java_separator">,</span><span class="java_plain">&#160;exampleBeanName&#160;</span><span class="java_operator">=</span><span class="java_plain">&#160;</span><span class="java_type">MapAddress</span><span class="java_separator">.</span><span class="java_plain">BEAN_NAME</span><span class="java_separator">),</span><span class="java_plain"></span><br />
+<span class="java_plain">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;@</span><span class="java_type">MenuLink</span><span class="java_separator">(</span><span class="java_plain">title&#160;</span><span class="java_operator">=</span><span class="java_plain">&#160;</span><span class="java_literal">&quot;menu.compat.map.subMenu.latlong&quot;</span><span class="java_separator">,</span><span class="java_plain">&#160;exampleBeanName&#160;</span><span class="java_operator">=</span><span class="java_plain">&#160;</span><span class="java_type">MapLatLong</span><span class="java_separator">.</span><span class="java_plain">BEAN_NAME</span><span class="java_separator">),</span><span class="java_plain"></span><br />
+<span class="java_plain">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;@</span><span class="java_type">MenuLink</span><span class="java_separator">(</span><span class="java_plain">title&#160;</span><span class="java_operator">=</span><span class="java_plain">&#160;</span><span class="java_literal">&quot;menu.compat.map.subMenu.controls&quot;</span><span class="java_separator">,</span><span class="java_plain">&#160;exampleBeanName&#160;</span><span class="java_operator">=</span><span class="java_plain">&#160;</span><span class="java_type">MapControls</span><span class="java_separator">.</span><span class="java_plain">BEAN_NAME</span><span class="java_separator">),</span><span class="java_plain"></span><br />
+<span class="java_plain">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;@</span><span class="java_type">MenuLink</span><span class="java_separator">(</span><span class="java_plain">title&#160;</span><span class="java_operator">=</span><span class="java_plain">&#160;</span><span class="java_literal">&quot;menu.compat.map.subMenu.zoom&quot;</span><span class="java_separator">,</span><span class="java_plain">&#160;exampleBeanName&#160;</span><span class="java_operator">=</span><span class="java_plain">&#160;</span><span class="java_type">MapZoom</span><span class="java_separator">.</span><span class="java_plain">BEAN_NAME</span><span class="java_separator">),</span><span class="java_plain"></span><br />
+<span class="java_plain">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;@</span><span class="java_type">MenuLink</span><span class="java_separator">(</span><span class="java_plain">title&#160;</span><span class="java_operator">=</span><span class="java_plain">&#160;</span><span class="java_literal">&quot;menu.compat.map.subMenu.type&quot;</span><span class="java_separator">,</span><span class="java_plain">&#160;exampleBeanName&#160;</span><span class="java_operator">=</span><span class="java_plain">&#160;</span><span class="java_type">MapType</span><span class="java_separator">.</span><span class="java_plain">BEAN_NAME</span><span class="java_separator">),</span><span class="java_plain"></span><br />
+<span class="java_plain">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;@</span><span class="java_type">MenuLink</span><span class="java_separator">(</span><span class="java_plain">title&#160;</span><span class="java_operator">=</span><span class="java_plain">&#160;</span><span class="java_literal">&quot;menu.compat.map.subMenu.load&quot;</span><span class="java_separator">,</span><span class="java_plain">&#160;exampleBeanName&#160;</span><span class="java_operator">=</span><span class="java_plain">&#160;</span><span class="java_type">MapLoad</span><span class="java_separator">.</span><span class="java_plain">BEAN_NAME</span><span class="java_separator">)</span><span class="java_plain"></span><br />
+<span class="java_separator">})</span><span class="java_plain"></span><br />
+<span class="java_plain">@</span><span class="java_type">ManagedBean</span><span class="java_separator">(</span><span class="java_plain">name</span><span class="java_operator">=</span><span class="java_plain">&#160;</span><span class="java_type">MapBean</span><span class="java_separator">.</span><span class="java_plain">BEAN_NAME</span><span class="java_separator">)</span><span class="java_plain"></span><br />
+<span class="java_plain">@</span><span class="java_type">CustomScoped</span><span class="java_separator">(</span><span class="java_plain">value&#160;</span><span class="java_operator">=</span><span class="java_plain">&#160;</span><span class="java_literal">&quot;#{window}&quot;</span><span class="java_separator">)</span><span class="java_plain"></span><br />
+<span class="java_keyword">public</span><span class="java_plain">&#160;</span><span class="java_keyword">class</span><span class="java_plain">&#160;</span><span class="java_type">MapBean</span><span class="java_plain">&#160;</span><span class="java_keyword">extends</span><span class="java_plain">&#160;</span><span class="java_type">ComponentExampleImpl</span><span class="java_operator">&lt;</span><span class="java_type">MapBean</span><span class="java_operator">&gt;</span><span class="java_plain">&#160;</span><span class="java_keyword">implements</span><span class="java_plain">&#160;</span><span class="java_type">Serializable</span><span class="java_plain">&#160;</span><span class="java_separator">{</span><span class="java_plain"></span><br />
+<span class="java_plain">&#160;&#160;&#160;&#160;</span><br />
+<span class="java_plain">&#160;&#160;&#160;&#160;</span><span class="java_keyword">public</span><span class="java_plain">&#160;</span><span class="java_keyword">static</span><span class="java_plain">&#160;</span><span class="java_keyword">final</span><span class="java_plain">&#160;</span><span class="java_type">String</span><span class="java_plain">&#160;BEAN_NAME&#160;</span><span class="java_operator">=</span><span class="java_plain">&#160;</span><span class="java_literal">&quot;map&quot;</span><span class="java_separator">;</span><span class="java_plain"></span><br />
+<span class="java_plain">&#160;&#160;&#160;&#160;</span><span class="java_keyword">public</span><span class="java_plain">&#160;</span><span class="java_keyword">static</span><span class="java_plain">&#160;</span><span class="java_keyword">final</span><span class="java_plain">&#160;</span><span class="java_type">String</span><span class="java_plain">&#160;DEFAULT_ADDRESS&#160;</span><span class="java_operator">=</span><span class="java_plain">&#160;</span><span class="java_literal">&quot;Calgary,&#160;Alberta,&#160;Canada&quot;</span><span class="java_separator">;</span><span class="java_plain"></span><br />
+<span class="java_plain">&#160;&#160;&#160;&#160;</span><br />
+<span class="java_plain">&#160;&#160;&#160;&#160;</span><span class="java_keyword">private</span><span class="java_plain">&#160;</span><span class="java_type">String</span><span class="java_plain">&#160;address&#160;</span><span class="java_operator">=</span><span class="java_plain">&#160;DEFAULT_ADDRESS</span><span class="java_separator">;</span><span class="java_plain"></span><br />
+<span class="java_plain">&#160;&#160;&#160;&#160;</span><span class="java_keyword">private</span><span class="java_plain">&#160;</span><span class="java_type">boolean</span><span class="java_plain">&#160;locateAddress&#160;</span><span class="java_operator">=</span><span class="java_plain">&#160;</span><span class="java_literal">true</span><span class="java_separator">;</span><span class="java_plain"></span><br />
+<span class="java_plain"></span><br />
+<span class="java_plain">&#160;&#160;&#160;&#160;</span><span class="java_keyword">public</span><span class="java_plain">&#160;</span><span class="java_type">MapBean</span><span class="java_separator">()</span><span class="java_plain">&#160;</span><span class="java_separator">{</span><span class="java_plain"></span><br />
+<span class="java_plain">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</span><span class="java_keyword">super</span><span class="java_separator">(</span><span class="java_type">MapBean</span><span class="java_separator">.</span><span class="java_keyword">class</span><span class="java_separator">);</span><span class="java_plain"></span><br />
+<span class="java_plain">&#160;&#160;&#160;&#160;</span><span class="java_separator">}</span><span class="java_plain"></span><br />
+<span class="java_plain">&#160;&#160;&#160;&#160;</span><br />
+<span class="java_plain">&#160;&#160;&#160;&#160;</span><span class="java_keyword">public</span><span class="java_plain">&#160;</span><span class="java_type">String</span><span class="java_plain">&#160;getAddress</span><span class="java_separator">()</span><span class="java_plain">&#160;</span><span class="java_separator">{</span><span class="java_plain">&#160;</span><span class="java_keyword">return</span><span class="java_plain">&#160;address</span><span class="java_separator">;</span><span class="java_plain">&#160;</span><span class="java_separator">}</span><span class="java_plain"></span><br />
+<span class="java_plain">&#160;&#160;&#160;&#160;</span><span class="java_keyword">public</span><span class="java_plain">&#160;</span><span class="java_type">boolean</span><span class="java_plain">&#160;getLocateAddress</span><span class="java_separator">()</span><span class="java_plain">&#160;</span><span class="java_separator">{</span><span class="java_plain"></span><br />
+<span class="java_plain">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</span><span class="java_keyword">if</span><span class="java_plain">&#160;</span><span class="java_separator">(</span><span class="java_plain">locateAddress</span><span class="java_separator">)</span><span class="java_plain">&#160;</span><span class="java_separator">{</span><span class="java_plain"></span><br />
+<span class="java_plain">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;locateAddress&#160;</span><span class="java_operator">=</span><span class="java_plain">&#160;</span><span class="java_literal">false</span><span class="java_separator">;</span><span class="java_plain"></span><br />
+<span class="java_plain">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</span><br />
+<span class="java_plain">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</span><span class="java_keyword">return</span><span class="java_plain">&#160;</span><span class="java_literal">true</span><span class="java_separator">;</span><span class="java_plain"></span><br />
+<span class="java_plain">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</span><span class="java_separator">}</span><span class="java_plain"></span><br />
+<span class="java_plain">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</span><br />
+<span class="java_plain">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</span><span class="java_keyword">return</span><span class="java_plain">&#160;locateAddress</span><span class="java_separator">;</span><span class="java_plain"></span><br />
+<span class="java_plain">&#160;&#160;&#160;&#160;</span><span class="java_separator">}</span><span class="java_plain"></span><br />
+<span class="java_plain">&#160;&#160;&#160;&#160;</span><br />
+<span class="java_plain">&#160;&#160;&#160;&#160;</span><span class="java_keyword">public</span><span class="java_plain">&#160;</span><span class="java_type">void</span><span class="java_plain">&#160;setAddress</span><span class="java_separator">(</span><span class="java_type">String</span><span class="java_plain">&#160;address</span><span class="java_separator">)</span><span class="java_plain">&#160;</span><span class="java_separator">{</span><span class="java_plain">&#160;</span><span class="java_keyword">this</span><span class="java_separator">.</span><span class="java_plain">address&#160;</span><span class="java_operator">=</span><span class="java_plain">&#160;address</span><span class="java_separator">;</span><span class="java_plain">&#160;</span><span class="java_separator">}</span><span class="java_plain"></span><br />
+<span class="java_plain">&#160;&#160;&#160;&#160;</span><span class="java_keyword">public</span><span class="java_plain">&#160;</span><span class="java_type">void</span><span class="java_plain">&#160;setLocateAddress</span><span class="java_separator">(</span><span class="java_type">boolean</span><span class="java_plain">&#160;locateAddress</span><span class="java_separator">)</span><span class="java_plain">&#160;</span><span class="java_separator">{</span><span class="java_plain">&#160;</span><span class="java_keyword">this</span><span class="java_separator">.</span><span class="java_plain">locateAddress&#160;</span><span class="java_operator">=</span><span class="java_plain">&#160;locateAddress</span><span class="java_separator">;</span><span class="java_plain">&#160;</span><span class="java_separator">}</span><span class="java_plain"></span><br />
+<span class="java_plain">&#160;&#160;&#160;&#160;</span><br />
+<span class="java_plain">&#160;&#160;&#160;&#160;</span><span class="java_keyword">public</span><span class="java_plain">&#160;</span><span class="java_type">void</span><span class="java_plain">&#160;lookup</span><span class="java_separator">(</span><span class="java_type">ActionEvent</span><span class="java_plain">&#160;event</span><span class="java_separator">)</span><span class="java_plain">&#160;</span><span class="java_separator">{</span><span class="java_plain"></span><br />
+<span class="java_plain">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;locateAddress&#160;</span><span class="java_operator">=</span><span class="java_plain">&#160;</span><span class="java_literal">true</span><span class="java_separator">;</span><span class="java_plain"></span><br />
+<span class="java_plain">&#160;&#160;&#160;&#160;</span><span class="java_separator">}</span><span class="java_plain"></span><br />
+<span class="java_separator">}</span><span class="java_plain"></span><br />
+</code>
+</span></div></div><div id="sourceCodeForm:j_idt62_safe_1_nxt"></div></div></div><span id="sourceCodeForm:j_idt62_script"><script>ice.ace.tabset.updateProperties("sourceCodeForm:j_idt62",{"orientation":"top","showEffect":"","showEffectLength":0},{"isClientSide":true,"aria":true,"selectedIndex":0,"safeIds":["sourceCodeForm:j_idt62_safe_0","sourceCodeForm:j_idt62_safe_1"],"disabledTabs":[],"overrideSelectedIndex":0});</script></span></div>
+                </div></div><input id="sourceCodeForm:sourceCodePanel_collapsed" name="sourceCodeForm:sourceCodePanel_collapsed" type="hidden" value="true" /></div><script type="text/javascript">widget_sourceCodeForm_sourceCodePanel = new ice.ace.Panel("sourceCodeForm:sourceCodePanel",{"visible":true,"toggleable":true,"toggleSpeed":1000,"collapsed":true,"behaviors":{"toggle":{"source":"sourceCodeForm:sourceCodePanel","execute":'sourceCodeForm:sourceCodePanel',"render":'@all',"event":"toggle"}}});</script><span id="sourceCodeFormhdnFldsDiv"><input name="icefacesCssUpdates" type="hidden" value="" /></span>
+</form>]]></update>
+        <update id="dynamic-code-compat"><![CDATA[<span id="dynamic-code-compat"></span>]]></update>
+        <update id="vvcdte1k-retrieve-update"><![CDATA[<form action="/showcase/showcase.jsf" id="vvcdte1k-retrieve-update" method="post" name="vvcdte1k-retrieve-update">
+<input name="vvcdte1k-retrieve-update" type="hidden" value="vvcdte1k-retrieve-update" />
+<input name="ice.window" type="hidden" value="grh2m8u9te" /><input name="ice.view" type="hidden" value="vvcdte1k" /><input name="javax.faces.ViewState" type="hidden" value="355284585382486143:2580686173529224962" /><script id="vvcdte1k-retrieve-update:vvcdte1k-retrieve-update_captureSubmit" type="text/javascript">ice.captureSubmit('vvcdte1k-retrieve-update',false);ice.captureEnterKey('vvcdte1k-retrieve-update');</script>
+</form>]]></update>
+        <update id="vvcdte1k-single-submit"><![CDATA[<form action="/showcase/showcase.jsf" id="vvcdte1k-single-submit" method="post" name="vvcdte1k-single-submit">
+<input name="vvcdte1k-single-submit" type="hidden" value="vvcdte1k-single-submit" />
+<input name="ice.window" type="hidden" value="grh2m8u9te" /><input name="ice.view" type="hidden" value="vvcdte1k" /><input name="javax.faces.ViewState" type="hidden" value="355284585382486143:2580686173529224962" /><script id="vvcdte1k-single-submit:vvcdte1k-single-submit_captureSubmit" type="text/javascript">ice.captureSubmit('vvcdte1k-single-submit',false);ice.captureEnterKey('vvcdte1k-single-submit');</script>
+</form>]]></update>
+        <update id="javax.faces.ViewState"><![CDATA[355284585382486143:2580686173529224962]]></update>
+        <eval>
+            <![CDATA[Ice.GoogleMap.getGMapWrapper('j_idt45:j_idt50').getRealGMap().setZoom(13);Ice.GoogleMap.setMapType('j_idt45:j_idt50', 'Map');Ice.GoogleMap.addControl('j_idt45:j_idt50', 'GLargeMapControl');Ice.GoogleMap.addControl('j_idt45:j_idt50', 'GScaleControl');Ice.GoogleMap.addControl('j_idt45:j_idt50', 'GMapTypeControl');Ice.GoogleMap.addControl('j_idt45:j_idt50', 'GOverviewMapControl');//1390372981]]></eval>
+        <extension aceCallbackParam="validationFailed">{"validationFailed":false}</extension>
+    </changes>
+</partial-response>

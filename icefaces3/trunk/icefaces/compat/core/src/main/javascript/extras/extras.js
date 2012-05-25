@@ -2866,14 +2866,14 @@ Ice.GoogleMap = {
 
     submitEvent: function(ele, map, eventName, zoomLevel) {
         try {
-            var center = map.getCenter();
+            var c = map.getCenter();
             var lat = $(ele + 'lat');
             var lng = $(ele + 'lng');
             var event = $(ele + 'event');
             var zoom = $(ele + 'zoom');
             var type = $(ele + 'type');
-            lat.value = center.lat();
-            lng.value = center.lng();
+            lng.value = c.lng();
+            lat.value = c.lat();
             event.value = eventName;
             if (zoomLevel == null) {
                 zoom.value = map.getZoom();
