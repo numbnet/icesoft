@@ -4468,6 +4468,14 @@ function wijmoASPNetParseOptions(o) {
 		},
 		*/
 		_displaySubmenu: function (e, item, sublist) {
+			// ICE-8145 register open submenu {
+			var menuId = ice.ace.submenuRegistryGetMenuId(this.rootMenu.get(0));
+			if (menuId) {
+				if (!ice.ace.submenuRegistry[menuId]) ice.ace.submenuRegistry[menuId] = [];
+				ice.ace.submenuRegistryCheck(menuId, sublist.get(0)); // remove entry if it already exists
+				ice.ace.submenuRegistry[menuId].push(sublist.get(0));
+			}
+			// ICE-8145 }
 			var self = this,
 				o = self.options,
 				animationOptions, direction, showAnimation,
@@ -4563,6 +4571,10 @@ function wijmoASPNetParseOptions(o) {
 			});
 		},
 		_hideSubmenu: function (sublist) {
+			// ICE-8145 only hide if we know it's open {
+			var menuId = ice.ace.submenuRegistryGetMenuId(this.rootMenu.get(0));
+			if (!ice.ace.submenuRegistryCheck(menuId, sublist.get(0))) return; // exit if submenu is not open
+			// ICE-8145 }
 			if (sublist.parents(".ui-menu-multicolumn").size() > 0) return; // ICE-7827 
 			var self = this,
 				o = self.options,
@@ -4692,3 +4704,36 @@ function wijmoASPNetParseOptions(o) {
 		}
 	});
 } (ice.ace.jq));
+
+ice.ace.submenuRegistry = {};
+
+// checks if submenu has been registered and removes it from registry
+ice.ace.submenuRegistryCheck = function(containerId, submenuRoot) {
+	var arr = ice.ace.submenuRegistry[containerId];
+	if (!arr) return false;
+	for (var i = 0; i < arr.length; i++) {
+		if (arr[i] === submenuRoot)  {
+			arr.splice(i,1);
+			return true;
+		}
+	}
+	return false;
+}
+ice.ace.submenuRegistryGetMenuId = function(menu) {
+	var p1 = menu.parentNode;
+	if (p1) {
+		var p2 = p1.parentNode;
+		if (p2) {
+			var p3 = p2.parentNode;
+			if (p3) {
+				return p3.id || '';
+			} else {
+				return p2.id || '';
+			}
+		} else {
+			return p1.id || '';
+		}
+	} else {
+		return menu.id || '';
+	}
+}
