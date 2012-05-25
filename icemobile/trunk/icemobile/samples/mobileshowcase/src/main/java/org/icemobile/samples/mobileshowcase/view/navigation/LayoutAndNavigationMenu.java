@@ -23,6 +23,7 @@ import org.icemobile.samples.mobileshowcase.view.examples.layout.fieldset.Fields
 import org.icemobile.samples.mobileshowcase.view.examples.layout.list.ListBean;
 import org.icemobile.samples.mobileshowcase.view.examples.layout.panelPopup.PanelPopupBean;
 import org.icemobile.samples.mobileshowcase.view.examples.layout.panelconfirmation.PanelConfirmation;
+import org.icemobile.samples.mobileshowcase.view.examples.layout.tabset.TabsetBean;
 import org.icemobile.samples.mobileshowcase.view.examples.layout.theme.SkinBean;
 import org.icemobile.samples.mobileshowcase.view.metadata.annotation.MenuLink;
 
@@ -43,6 +44,9 @@ import java.io.Serializable;
                 @MenuLink(title = "menu.layout.contentstack.title",
                         exampleBeanName = ContentStackBean.BEAN_NAME,
                         examplePanelId = "contentstack"),
+                @MenuLink(title = "menu.layout.tabset.title",
+                        exampleBeanName = TabsetBean.BEAN_NAME,
+                        examplePanelId = "tabset"),
                 @MenuLink(title = "menu.layout.theming.title",
                         exampleBeanName = SkinBean.BEAN_NAME,
                         examplePanelId = "theme"),

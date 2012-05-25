@@ -1,0 +1,59 @@
+<!--
+  ~ Copyright 2004-2012 ICEsoft Technologies Canada Corp.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the
+  ~ License. You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an "AS
+  ~ IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+  ~ express or implied. See the License for the specific language
+  ~ governing permissions and limitations under the License.
+  -->
+
+<ui:fragment xmlns="http://www.w3.org/1999/xhtml"
+             xmlns:h="http://java.sun.com/jsf/html"
+             xmlns:f="http://java.sun.com/jsf/core"
+             xmlns:ui="http://java.sun.com/jsf/facelets"
+             xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
+
+    <h:form>
+        <mobi:fieldsetGroup>
+            <mobi:fieldsetRow style="padding-bottom:10px;">
+                The tabset component provided selectable buttons to control
+                which content pane is visible.
+            </mobi:fieldsetRow>
+        </mobi:fieldsetGroup>
+
+        <mobi:tabSet>
+
+            <mobi:contentPane title="Ice Sailer" id="tab1" >
+                <h:graphicImage style="float:left;padding-right:10px;"
+                                library="images/auction" name="icesailor.png"/>
+                <p><b>ICEsoft Ice Sailer</b><br />
+                    Put him on the ice and watch him go!</p>
+            </mobi:contentPane>
+
+            <mobi:contentPane title="Ice Breaker" id="tab2">
+                <h:graphicImage style="float:left;padding-right:10px;"
+                                library="images/auction" name="icebreaker.png"/>
+                <p><b>ICEsoft Icebreaker</b><br />
+                    Used icebreaker with very few dents.</p>
+            </mobi:contentPane>
+
+            <mobi:contentPane title="Ice Skater" id="tab3">
+                <h:graphicImage style="float:left;padding-right:10px;"
+                                library="images/auction" name="iceskater.png"/>
+                <p><b>ICEsoft Ice Skate</b><br />
+                    A single sharpened ice skate, size 7.</p>
+            </mobi:contentPane>
+
+        </mobi:tabSet>
+
+    </h:form>
+
+
+</ui:fragment>
