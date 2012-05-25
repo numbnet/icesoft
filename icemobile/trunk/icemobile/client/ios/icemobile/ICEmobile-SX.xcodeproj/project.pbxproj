@@ -34,7 +34,6 @@
 		9C77C796147310F90079FDF5 /* icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C77C793147310F90079FDF5 /* icon@2x.png */; };
 		9C7A1064156BF9AD0013D23D /* MapController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C7A1062156BF9AD0013D23D /* MapController.m */; };
 		9C7A1065156BF9AD0013D23D /* MapController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9C7A1063156BF9AD0013D23D /* MapController.xib */; };
-		9C7A1068156C108D0013D23D /* TouchRecognizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C7A1067156C108D0013D23D /* TouchRecognizer.m */; };
 		9C7A1E89156C24E70013D23D /* ar.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C7A1E87156C24E70013D23D /* ar.png */; };
 		9C7A1E8A156C24E70013D23D /* ar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C7A1E88156C24E70013D23D /* ar@2x.png */; };
 		9C9314771485500C00B21FA1 /* libZXingWidget.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C403FC914845A2300FBA6BC /* libZXingWidget.a */; };
@@ -101,8 +100,6 @@
 		9C7A1061156BF9AD0013D23D /* MapController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MapController.h; path = Shared/MapController.h; sourceTree = "<group>"; };
 		9C7A1062156BF9AD0013D23D /* MapController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MapController.m; path = Shared/MapController.m; sourceTree = "<group>"; };
 		9C7A1063156BF9AD0013D23D /* MapController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = MapController.xib; path = Shared/MapController.xib; sourceTree = "<group>"; };
-		9C7A1066156C108D0013D23D /* TouchRecognizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TouchRecognizer.h; path = Shared/TouchRecognizer.h; sourceTree = "<group>"; };
-		9C7A1067156C108D0013D23D /* TouchRecognizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TouchRecognizer.m; path = Shared/TouchRecognizer.m; sourceTree = "<group>"; };
 		9C7A1E87156C24E70013D23D /* ar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ar.png; sourceTree = "<group>"; };
 		9C7A1E88156C24E70013D23D /* ar@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ar@2x.png"; sourceTree = "<group>"; };
 		9C9314781485505200B21FA1 /* libiconv.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libiconv.dylib; path = usr/lib/libiconv.dylib; sourceTree = SDKROOT; };
@@ -173,8 +170,6 @@
 				9C7A1061156BF9AD0013D23D /* MapController.h */,
 				9C7A1062156BF9AD0013D23D /* MapController.m */,
 				9C7A1063156BF9AD0013D23D /* MapController.xib */,
-				9C7A1066156C108D0013D23D /* TouchRecognizer.h */,
-				9C7A1067156C108D0013D23D /* TouchRecognizer.m */,
 			);
 			name = Shared;
 			sourceTree = "<group>";
@@ -379,7 +374,6 @@
 				9C517337155DA99C00090828 /* PlaceLabel.m in Sources */,
 				9C51733A155DACE300090828 /* ARView.m in Sources */,
 				9C7A1064156BF9AD0013D23D /* MapController.m in Sources */,
-				9C7A1068156C108D0013D23D /* TouchRecognizer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

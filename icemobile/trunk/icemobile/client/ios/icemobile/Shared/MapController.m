@@ -15,7 +15,6 @@
 */
 
 #import "MapController.h"
-#import "TouchRecognizer.h"
 #import "PlaceLabel.h"
 #import "ARView.h"
 
@@ -57,9 +56,13 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    TouchRecognizer *touchRecognizer = [[TouchRecognizer alloc] init];
-    touchRecognizer.touchTarget = self;
-    [self.mapView addGestureRecognizer:touchRecognizer];
+
+    UILongPressGestureRecognizer *gestureRec = 
+            [[UILongPressGestureRecognizer alloc] 
+    initWithTarget:self action:@selector(handleGesture:)];
+    [self.mapView addGestureRecognizer:gestureRec];
+    [gestureRec release];
+
     [self.mapView setUserTrackingMode:MKUserTrackingModeFollow];
 
 	for (PlaceLabel *place in self.arView.placeLabels) {
@@ -80,11 +83,15 @@
 //    }
 }
 
-- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event  {
-    CLLocationCoordinate2D coord= [self.mapView convertPoint:[[touches anyObject] locationInView:self.mapView]
-            toCoordinateFromView:self.mapView];
-    NSLog(@"map touch: lat  %f",coord.latitude);
-    NSLog(@"map touch: long %f",coord.longitude);
+- (void)handleGesture:(UIGestureRecognizer *)gestureRecognizer {
+    if (gestureRecognizer.state != UIGestureRecognizerStateBegan)
+        return;
+
+    CGPoint touchPoint = [gestureRecognizer locationInView:self.mapView];   
+    CLLocationCoordinate2D coord = 
+        [self.mapView convertPoint:touchPoint toCoordinateFromView:self.mapView];
+    NSLog(@"GEST map touch: lat  %f",coord.latitude);
+    NSLog(@"GEST map touch: long %f",coord.longitude);
     [self.arView addPlace:[PlaceLabel placeLabelWithText:@"Spot" 
             andImage:[UIImage imageNamed:@"ar.png"]
             initWithLatitude:coord.latitude longitude:coord.longitude]];
