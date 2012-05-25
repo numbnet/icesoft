@@ -1842,14 +1842,15 @@ public class DataTable extends DataTableBase implements Serializable {
         }
 
         // Process each facet of our child UIColumn components exactly once
+        // Also process the table config panel and our multicolumn header facets
         setRowIndex(-1);
         if (getChildCount() > 0) {
-            for (UIComponent column : getChildren()) {
-                if (!(column instanceof UIColumn) || !column.isRendered()) {
+            for (UIComponent component : getChildren()) {
+                if (!(component instanceof UIColumn || component instanceof ColumnGroup || component instanceof TableConfigPanel) || !component.isRendered()) {
                     continue;
                 }
-                if (column.getFacetCount() > 0) {
-                    for (UIComponent columnFacet : column.getFacets().values()) {
+                if (component instanceof UIColumn && component.getFacetCount() > 0) {
+                    for (UIComponent columnFacet : component.getFacets().values()) {
                         if (phaseId == PhaseId.APPLY_REQUEST_VALUES) {
                             columnFacet.processDecodes(context);
                         } else if (phaseId == PhaseId.PROCESS_VALIDATIONS) {
@@ -1860,25 +1861,38 @@ public class DataTable extends DataTableBase implements Serializable {
                             throw new IllegalArgumentException();
                         }
                     }
+                } else if (component instanceof TableConfigPanel) {
+                    if (phaseId == PhaseId.APPLY_REQUEST_VALUES) {
+                        component.processDecodes(context);
+                    } else if (phaseId == PhaseId.PROCESS_VALIDATIONS) {
+                        component.processValidators(context);
+                    } else if (phaseId == PhaseId.UPDATE_MODEL_VALUES) {
+                        component.processUpdates(context);
+                    } else {
+                        throw new IllegalArgumentException();
+                    }
+                } else if (component instanceof ColumnGroup) {
+                    for (UIComponent row : component.getChildren()) {
+                        if (row.isRendered())
+                        for (UIComponent column : row.getChildren()) {
+                            if (column.isRendered()) {
+                                Iterator<UIComponent> children = column.getFacetsAndChildren();
+                                while (children.hasNext()) {
+                                    UIComponent facet = children.next();
+                                    if (phaseId == PhaseId.APPLY_REQUEST_VALUES) {
+                                        facet.processDecodes(context);
+                                    } else if (phaseId == PhaseId.PROCESS_VALIDATIONS) {
+                                        facet.processValidators(context);
+                                    } else if (phaseId == PhaseId.UPDATE_MODEL_VALUES) {
+                                        facet.processUpdates(context);
+                                    } else {
+                                        throw new IllegalArgumentException();
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
-            }
-        }
-
-        // Visit tableConfigPanel if one is our child
-        setRowIndex(-1);
-        for (UIComponent kid : getChildren()) {
-            if (!(kid instanceof TableConfigPanel) || !kid.isRendered()) {
-                continue;
-            }
-
-            if (phaseId == PhaseId.APPLY_REQUEST_VALUES) {
-                kid.processDecodes(context);
-            } else if (phaseId == PhaseId.PROCESS_VALIDATIONS) {
-                kid.processValidators(context);
-            } else if (phaseId == PhaseId.UPDATE_MODEL_VALUES) {
-                kid.processUpdates(context);
-            } else {
-                throw new IllegalArgumentException();
             }
         }
 
