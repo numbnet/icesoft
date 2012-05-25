@@ -59,9 +59,11 @@ public class ARViewActivity extends Activity implements SensorEventListener,
     Camera mCamera;
     private SensorManager mSensorManager;
     private Sensor mRotationVectorSensor;
+    private LocationManager mLocationManager;
     int numberOfCameras;
     int cameraCurrentlyLocked;
     ARView arView;
+    Location currentLocation = null;
     private final float[] mRotationMatrix = new float[16];
     HashMap<String,String> places = new HashMap();
 
@@ -84,9 +86,13 @@ public class ARViewActivity extends Activity implements SensorEventListener,
         Map<String,String> attributes = 
                 new AttributeExtractor(attr).getAttributes();
         for (String name : attributes.keySet())  {
-            if ("id" != name)  {
-                places.put(name, attributes.get(name));
+            if ("id".equals(name))  {
+                continue;
             }
+            if ("ub".equals(name))  {
+                continue;
+            }
+            places.put(name, attributes.get(name));
         }
     
         for (String label : places.keySet())  {
@@ -100,7 +106,9 @@ public class ARViewActivity extends Activity implements SensorEventListener,
         mRotationMatrix[ 4] = 1;
         mRotationMatrix[ 8] = 1;
         mRotationMatrix[12] = 1;
-    
+
+        mLocationManager = (LocationManager)getSystemService(LOCATION_SERVICE);
+
         // Hide the window title.
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -141,6 +149,8 @@ public class ARViewActivity extends Activity implements SensorEventListener,
         cameraCurrentlyLocked = defaultCameraId;
         mPreview.setCamera(mCamera);
         mSensorManager.registerListener(this, mRotationVectorSensor, 10000);
+        mLocationManager.requestSingleUpdate(
+                mLocationManager.NETWORK_PROVIDER, this, null);
     }
 
     @Override
@@ -185,6 +195,9 @@ public class ARViewActivity extends Activity implements SensorEventListener,
     }
 
     public void onLocationChanged(Location location) {
+        Log.d("ARViewActivity", "location changed " + location);
+        this.currentLocation = location;
+        arView.setLocation(location);
     }
 
 	public boolean onTouch(View view, MotionEvent me) {		
