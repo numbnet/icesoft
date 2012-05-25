@@ -190,15 +190,17 @@ ice.ace.List.prototype.setupSelection = function() {
 
     ice.ace.jq(document)
             .off('mouseenter mouseleave click', this.jqId + ' ul:first > li')
-            .on('mouseenter', this.jqId + ' ul:first > li', this.itemHover)
-            .on('mouseleave', this.jqId + ' ul:first > li', this.itemHover)
+            .on('mouseenter', this.jqId + ' ul:first > li', this.itemEnter)
+            .on('mouseleave', this.jqId + ' ul:first > li', this.itemLeave)
             .on('click', this.jqId + ' ul:first > li', function(e) { self.itemClickHandler.call(self, e); });
 };
 
-ice.ace.List.prototype.itemHover = function(e) {
-    // hover cb event
-    var li = e.currentTarget;
-    ice.ace.jq(li).toggleClass('ui-state-hover');
+ice.ace.List.prototype.itemEnter = function(e) {
+    ice.ace.jq(e.currentTarget).addClass('ui-state-hover');
+};
+
+ice.ace.List.prototype.itemLeave = function(e) {
+    ice.ace.jq(e.currentTarget).removeClass('ui-state-hover');
 };
 
 ice.ace.List.prototype.itemClickHandler = function(e) {
