@@ -17,7 +17,7 @@
 #import "PlaceLabel.h"
 
 @implementation PlaceLabel
-
+@synthesize placeName;
 @synthesize view;
 @synthesize location;
 
@@ -68,7 +68,7 @@
     PlaceLabel *place = [PlaceLabel placeLabelWithView:outerView 
             at:[[[CLLocation alloc] initWithLatitude:lat longitude:lon] 
             autorelease]];
-    
+    place.placeName = text;
     return place;
 }
 

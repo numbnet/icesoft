@@ -233,7 +233,7 @@
 							<object class="IBUILabel" id="197255074">
 								<reference key="NSNextResponder" ref="652592736"/>
 								<int key="NSvFlags">293</int>
-								<string key="NSFrame">{{0, 125}, {378, 32}}</string>
+								<string key="NSFrame">{{38, 104}, {302, 72}}</string>
 								<reference key="NSSuperview" ref="652592736"/>
 								<reference key="NSNextKeyView" ref="62182814"/>
 								<string key="NSReuseIdentifierKey">_NS:345</string>
@@ -242,7 +242,7 @@
 								<int key="IBUIContentMode">7</int>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
-								<string key="IBUIText">Select photo, video, audio, or QR code to upload:</string>
+								<string key="IBUIText">Select photo, video, audio, QR code, or augmented reality to upload:</string>
 								<reference key="IBUITextColor" ref="869549495"/>
 								<nil key="IBUIHighlightedColor"/>
 								<int key="IBUIBaselineAdjustment">1</int>
@@ -397,9 +397,9 @@
 						<reference key="object" ref="652592736"/>
 						<array class="NSMutableArray" key="children">
 							<reference ref="6523839"/>
-							<reference ref="197255074"/>
 							<reference ref="863220419"/>
 							<reference ref="62182814"/>
+							<reference ref="197255074"/>
 						</array>
 						<reference key="parent" ref="766721923"/>
 					</object>

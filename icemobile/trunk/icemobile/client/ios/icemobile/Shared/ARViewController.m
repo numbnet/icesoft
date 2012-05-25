@@ -24,6 +24,8 @@
 @end
 
 @implementation ARViewController
+@synthesize nativeInterface;
+@synthesize selectedPlace;
 @synthesize compassSwitch;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -105,14 +107,35 @@
     [mapController release];
 }
 
+- (IBAction) doCancel  {
+    [self.nativeInterface augDismiss];
+}
 - (IBAction) compassChanged:(UISwitch *)theSwitch {
 	ARView *arView = (ARView *)self.view;
-    [arView setCompass:theSwitch.on]; 
+    [arView setCompass:theSwitch.on];
 }
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event  {
-NSLog(@"TODO: implement return to browser from label selection");
-    [self dismissModalViewControllerAnimated:YES];
+	ARView *arView = (ARView *)self.view;
+    UITouch *touch = [touches anyObject];
+    CGPoint touchPoint = [touch locationInView:self.view];
+	for (PlaceLabel *place in arView.placeLabels) {
+        if (place.view.hidden)  {
+            continue;
+        }
+        CGPoint placeCenter = place.view.center;
+        CGPoint offTouch = CGPointMake(touchPoint.x - 200, touchPoint.y - 200);
+        //the following does not work due to 200,200 offset in PlaceLabel
+//        BOOL inPlace = [place.view 
+//                pointInside:offTouch withEvent:event];
+        BOOL inPlace = ( (fabs(offTouch.x - placeCenter.x) < 25) && 
+                         (fabs(offTouch.y - placeCenter.y) < 25) );
+        if (inPlace)  {
+            self.selectedPlace = place.placeName;
+            [self.nativeInterface augDone];
+            return;
+        }
+    }
 }
 
 @end
