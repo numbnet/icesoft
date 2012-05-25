@@ -119,7 +119,17 @@ ice.ace.List.prototype.dragFromHandler = function(event, ui) {
 
 ice.ace.List.prototype.dragToHandler = function(event, ui) {
     // If moving in list
-    if (ui.item.parents(this.jqId).length > 0) {
+
+    // Align FF and IE with Webkit, produce a mouseout event
+    // on the dropped item if 100ms post drop it has been aligned
+    // out from under our cursor.
+    var item = ui.item;
+    self = this;
+    setTimeout(function () {
+        if (!ui.item.is(':hover')) self.itemLeave({currentTarget : item});
+    }, 100);
+
+    if (ui.item.closest(this.jqId).length > 0) {
         var swapRecords = this.read('reorderings'),
             recordStart = swapRecords.length,
             index = ui.item.index(),
