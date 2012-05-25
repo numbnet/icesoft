@@ -17,6 +17,7 @@
 package org.icemobile.samples.mobileshowcase.view.navigation;
 
 import org.icefaces.mobi.component.contentstack.ContentStack;
+import org.icemobile.samples.mobileshowcase.view.examples.layout.accordion.AccordionBean;
 import org.icemobile.samples.mobileshowcase.view.examples.layout.carousel.CarouselBean;
 import org.icemobile.samples.mobileshowcase.view.examples.layout.contentstack.ContentStackBean;
 import org.icemobile.samples.mobileshowcase.view.examples.layout.fieldset.FieldsetBean;
@@ -47,6 +48,9 @@ import java.io.Serializable;
                 @MenuLink(title = "menu.layout.tabset.title",
                         exampleBeanName = TabsetBean.BEAN_NAME,
                         examplePanelId = "tabset"),
+                @MenuLink(title = "menu.layout.accordion.title",
+                        exampleBeanName = AccordionBean.BEAN_NAME,
+                        examplePanelId = "accordion"),
                 @MenuLink(title = "menu.layout.theming.title",
                         exampleBeanName = SkinBean.BEAN_NAME,
                         examplePanelId = "theme"),
