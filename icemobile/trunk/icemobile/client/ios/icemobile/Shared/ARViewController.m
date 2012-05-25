@@ -72,7 +72,7 @@
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
-	return NO;
+    return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
 - (void)setPlaceLabels:(NSArray *)places {

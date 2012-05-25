@@ -60,6 +60,15 @@
     TouchRecognizer *touchRecognizer = [[TouchRecognizer alloc] init];
     touchRecognizer.touchTarget = self;
     [self.mapView addGestureRecognizer:touchRecognizer];
+    [self.mapView setUserTrackingMode:MKUserTrackingModeFollow];
+
+	for (PlaceLabel *place in self.arView.placeLabels) {
+        MKPointAnnotation *annot = [[MKPointAnnotation alloc] init];
+        annot.coordinate = place.location.coordinate;
+        annot.title = place.placeName;
+        [self.mapView addAnnotation:annot];
+        [annot release];
+    }
 }
 
 - (IBAction) doDone  {
@@ -79,6 +88,11 @@
     [self.arView addPlace:[PlaceLabel placeLabelWithText:@"Spot" 
             andImage:[UIImage imageNamed:@"ar.png"]
             initWithLatitude:coord.latitude longitude:coord.longitude]];
+            
+    MKPointAnnotation *annot = [[MKPointAnnotation alloc] init];
+    annot.coordinate = coord;
+    [self.mapView addAnnotation:annot];
+    [annot release];
 }
 
 @end
