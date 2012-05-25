@@ -68,6 +68,9 @@ public class ListMeta extends UIDataMeta {
     private String placeholderClass;
 
 
+    @Property(tlddoc = "Defines a CSS height value to set in the UL element style.")
+    private String height;
+
 
     @Property(tlddoc = "Style rules to apply to the container DIV element")
     private String style;
