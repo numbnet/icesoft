@@ -129,6 +129,7 @@ public class DataTableRenderer extends CoreRenderer {
         boolean snglSrt = table.isSingleSort(); 
         boolean disable = table.isDisabled();
         boolean scroll = table.isScrollable();
+        boolean hiddenScrollableSizing = table.isHiddenScrollableSizing();
         boolean height = scroll && table.getScrollHeight() != Integer.MIN_VALUE;
 
         json.beginMap();
@@ -147,6 +148,7 @@ public class DataTableRenderer extends CoreRenderer {
         if (reorder) json.entry("reorderableColumns", true);
         if (snglSrt) json.entry("singleSort", true);
         if (disable) json.entry("disable", true);
+        if (!hiddenScrollableSizing) json.entry("disableHiddenSizing",true);
         if (scroll) {
             json.entry("scrollable", true);
             json.entry("liveScroll", table.isLiveScroll());
