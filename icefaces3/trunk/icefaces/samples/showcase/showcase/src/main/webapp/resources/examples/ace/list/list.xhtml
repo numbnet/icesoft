@@ -111,20 +111,20 @@
                           dropGroup="blockGroup"
                           selection="true"
                           controlsEnabled="true">
-                    <f:facet name="header">
+                    <f:facet id="facetOneHeader" name="header">
                         First Head
                     </f:facet>
-                    <f:facet name="footer">
+                    <f:facet id="facetOneFooter" name="footer">
                         First Foot
                     </f:facet>
 
                     <h:panelGrid id="panelGrid" columns="2" >
-                        <f:facet name="header">
+                        <f:facet id="itemFacetListOne" name="header">
                             <h:outputText value="#{car.name}" /><hr/>
                         </f:facet>
-                        Chassis: <h:outputText value="#{car.chassis}" />
-                        Weight: <h:outputText value="#{car.weight}" />
-                        Accel: <h:outputText value="#{car.acceleration}" />
+                        Chassis: <h:outputText id="outputTextChassisL1" value="#{car.chassis}" />
+                        Weight: <h:outputText id="outputTextWeightL1" value="#{car.weight}" />
+                        Accel: <h:outputText id="outputTextAccelL1" value="#{car.acceleration}" />
                     </h:panelGrid>
                 </ace:list>
 
@@ -135,20 +135,20 @@
                           dropGroup="blockGroup"
                           selection="true"
                           controlsEnabled="true">
-                    <f:facet name="header">
+                    <f:facet id="facetTwoHeader" name="header">
                         Second Head
                     </f:facet>
-                    <f:facet name="footer">
+                    <f:facet id="facetTwoFooter"name="footer">
                         Second Foot
                     </f:facet>
 
                     <h:panelGrid id="panelGridTwo" columns="2">
-                        <f:facet name="header">
+                        <f:facet id="itemFacetListTwo" name="header">
                             <h:outputText value="#{car.name}" /><hr/>
                         </f:facet>
-                        Chassis: <h:outputText value="#{car.chassis}" />
-                        Weight: <h:outputText value="#{car.weight}" />
-                        Accel: <h:outputText value="#{car.acceleration}" />
+                        Chassis: <h:outputText id="outputTextChassisL2" value="#{car.chassis}" />
+                        Weight: <h:outputText id="outputTextWeightL2" value="#{car.weight}" />
+                        Accel: <h:outputText id="outputTextAccelL2" value="#{car.acceleration}" />
                     </h:panelGrid>
                 </ace:list>
 
@@ -159,20 +159,20 @@
                           dropGroup="blockGroup"
                           selection="true"
                           controlsEnabled="true">
-                    <f:facet name="header">
+                    <f:facet id="facetThreeHeader" name="header">
                         Third Head
                     </f:facet>
-                    <f:facet name="footer">
+                    <f:facet id="facetThreeFooter" name="footer">
                         Third Foot
                     </f:facet>
 
                     <h:panelGrid id="panelGridThree" columns="2">
-                        <f:facet name="header">
+                        <f:facet id="itemFacetListThree" name="header">
                             <h:outputText value="#{car.name}" /><hr/>
                         </f:facet>
-                        Chassis: <h:outputText value="#{car.chassis}" />
-                        Weight: <h:outputText value="#{car.weight}" />
-                        Accel: <h:outputText value="#{car.acceleration}" />
+                        Chassis: <h:outputText id="outputTextChassisL3" value="#{car.chassis}" />
+                        Weight: <h:outputText id="outputTextWeightL3" value="#{car.weight}" />
+                        Accel: <h:outputText id="outputTextAccelL3" value="#{car.acceleration}" />
                     </h:panelGrid>
                 </ace:list>
 
