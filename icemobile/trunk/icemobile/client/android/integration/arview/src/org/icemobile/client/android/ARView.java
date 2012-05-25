@@ -21,6 +21,8 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.view.View;
 import android.util.Log;
+import android.location.Location;
+import android.opengl.Matrix;
 import java.util.Map;
 import java.util.HashMap;
 
@@ -28,6 +30,7 @@ public class ARView extends View {
     private Paint mTextPaint;
     HashMap<String,String> places = new HashMap();
     float[] deviceTransform = new float[16];
+    Location currentLocation;
 
     public ARView(Context context) {
         super(context);
@@ -47,33 +50,58 @@ public class ARView extends View {
         this.deviceTransform = transform;
     }
 
+    void setLocation(Location location)  {
+        this.currentLocation = location;
+    }
+
     float x,y;
     void setTouchPosition(float x, float y)  {
         this.x = x;
         this.y = y;
     }
 
+    //increase by factor 5, shift by 100,100
+    float[] adjust = new float[] {
+         5,  0, 100, 0,
+         0,  5, 100, 0,
+         0,  0,   1, 0,
+         0,  0,   0, 1
+    };
+
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         for (String label : places.keySet())  {
             String coordstr = places.get(label);
             String [] coordparts = coordstr.split(",");
-            float[] pos = new float[] 
-                    {Float.parseFloat(coordparts[0]),
-                     Float.parseFloat(coordparts[1])};
-            canvas.save();
-            canvas.rotate(270, Math.abs(pos[0]), Math.abs(pos[1]));
-            canvas.drawText(label, Math.abs(pos[0]), Math.abs(pos[1]), mTextPaint);
-            canvas.restore();
+            if (null != currentLocation)  {
+                float[] labelLoc = new float[2];
+                labelLoc[0] = Float.parseFloat(coordparts[0]);
+                labelLoc[1] = Float.parseFloat(coordparts[1]);
+
+                float[] coord = new float[4];
+                coord[0] = 1000 * (labelLoc[0] 
+                        - (float)currentLocation.getLatitude()); 
+                coord[1] = 1000 * (labelLoc[1] 
+                        - (float)currentLocation.getLongitude());
+                coord[2] = 0f;
+                coord[3] = 1f;
+
+                float[] mat = new float[16];
+                Matrix.invertM(mat, 0, deviceTransform, 0);
+                float[] v1 = new float[]{0, 0, 0, 1};
+                Matrix.multiplyMV(v1, 0, mat, 0, coord, 0);
+                float[] v = new float[]{0, 0, 0, 1};
+                Matrix.multiplyMV(v, 0, adjust, 0, v1, 0);
+                canvas.save();
+                canvas.rotate(270, Math.abs(v[0]), Math.abs(v[1]));
+                canvas.drawText(label, Math.abs(v[0]), Math.abs(v[1]), mTextPaint);
+Log.d("ARView ", "rotated " + label + v[0] + "," + v[1]);
+                canvas.restore();
+            }
         }
         canvas.save();
         canvas.rotate(270, x, y);
         canvas.drawText("Touch", x, y, mTextPaint);
-        canvas.restore();
-        canvas.drawText("Padded", getPaddingLeft(), getPaddingTop(), mTextPaint);
-        canvas.save();
-        canvas.rotate(270, 100, 300);
-        canvas.drawText(ARViewActivity.rotationToString(deviceTransform), 100, 300, mTextPaint);
         canvas.restore();
     }
 
