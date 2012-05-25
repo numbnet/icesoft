@@ -18,9 +18,15 @@
 
 #import <UIKit/UIKit.h>
 #import <CoreLocation/CoreLocation.h>
+@class ARViewController;
 
-@interface PlaceLabel : NSObject
+@interface PlaceLabel : NSObject  {
+    NSString *placeName;
+    UIView *view;
+    CLLocation *location;
+}
 
+@property (nonatomic, retain) NSString *placeName;
 @property (nonatomic, retain) UIView *view;
 @property (nonatomic, retain) CLLocation *location;
 

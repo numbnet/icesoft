@@ -384,6 +384,7 @@ NSLog(@"called camera");
             augController = [[ARViewController alloc] 
                     initWithNibName:@"ARViewController_iPhone" bundle:nil];
         }
+        augController.nativeInterface = self;
     }
     NSString *urlBase = [places objectForKey:@"ub"];
 	NSMutableArray *placeLabels = [NSMutableArray array];
@@ -450,6 +451,23 @@ NSLog(@"called camera");
     }
 
     return YES;
+}
+
+- (void)augDismiss  {
+    if (nil != self.augPopover)  {
+        [self.augPopover dismissPopoverAnimated:YES];
+    } else {
+        [controller dismissModalViewControllerAnimated:YES];
+    }
+}
+
+- (void)augDone  {
+    [self augDismiss];
+    NSString *augName = self.activeDOMElementId;
+    NSString *augResult = self.augController.selectedPlace;
+NSLog(@"NativeInterface aug selected %@", augResult);
+    [controller completePost:augResult forComponent:augName
+            withName:augName];
 }
 
 - (BOOL)upload: (NSString*)formId  {

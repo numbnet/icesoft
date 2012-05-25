@@ -15,16 +15,21 @@
 */
 
 #import <UIKit/UIKit.h>
-@class PlaceLabel;
+#import "NativeInterface.h"
 
 @interface ARViewController : UIViewController {
+    NativeInterface *nativeInterface;
+    NSString *selectedPlace;
     UISwitch *compassSwitch;
 }
 
+@property (retain) NativeInterface *nativeInterface;
+@property (nonatomic, retain) NSString *selectedPlace;
 @property (nonatomic, retain) IBOutlet UISwitch *compassSwitch;
 
 - (void) setPlaceLabels:(NSArray *)places;
 - (IBAction) doLocations;
+- (IBAction) doCancel;
 - (IBAction) compassChanged:(UISwitch *)theSwitch;
 
 @end

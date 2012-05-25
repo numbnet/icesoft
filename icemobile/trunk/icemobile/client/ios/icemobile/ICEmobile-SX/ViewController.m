@@ -66,6 +66,11 @@
 }
 
 - (void)completePost:(NSString *)value forComponent:(NSString *)componentID withName:(NSString *)componentName   {
+    [self completePostRaw:value forComponent:componentID 
+            withName:[@"text-" stringByAppendingString:componentName]];
+}
+
+- (void)completePostRaw:(NSString *)value forComponent:(NSString *)componentID withName:(NSString *)componentName   {
     NSMutableDictionary *params = [nativeInterface parseQuery:currentParameters];
     [self decorateParams: params];
     if (nil != componentName)  {
@@ -88,7 +93,7 @@
 }
 
 - (void)completeFile:(NSString *)path forComponent:(NSString *)componentID withName:(NSString *)componentName   {
-    [self completePost:path forComponent:componentID 
+    [self completePostRaw:path forComponent:componentID 
             withName:[@"file-" stringByAppendingString: componentName]];
 }
 

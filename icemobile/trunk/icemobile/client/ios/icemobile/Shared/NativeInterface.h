@@ -67,7 +67,9 @@
 - (BOOL)upload: (NSString*)formId;
 - (BOOL)camcorder: (NSString*)cameraId;
 - (BOOL)microphone: (NSString*)micId;
-- (BOOL)aug: (NSString*)augId locations: (NSDictionary*)places;
+- (BOOL)aug:(NSString*)augId locations:(NSDictionary*)places;
+- (void)augDone;
+- (void)augDismiss;
 - (void)recordStart;
 - (void)recordStop;
 - (void)recordDismiss;
