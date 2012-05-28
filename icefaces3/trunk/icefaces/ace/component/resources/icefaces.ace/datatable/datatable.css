@@ -192,7 +192,7 @@
     margin-top:-1px; /* Easy fix for double border in scrollable mode */
 }
 
-.ui-datatable-scrollable .ui-datatable-scrollable-body table {
+.ui-datatable-scrollable .ui-datatable-scrollable-body > table {
     table-layout: fixed;
 }
 
