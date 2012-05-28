@@ -508,3 +508,57 @@ ice.ace.jq.cookie = function (key, value, options) {
     var result, decode = options.raw ? function (s) {return s;} : decodeURIComponent;
     return (result = new RegExp('(?:^|; )' + encodeURIComponent(key) + '=([^;]*)').exec(document.cookie)) ? decode(result[1]) : null;
 };
+
+// Original code copied from http://stackoverflow.com/a/7329696
+// See comments at http://jira.icesoft.org/browse/ICE-7824?focusedCommentId=39755&page=com.atlassian.jira.plugin.system.issuetabpanels%3Acomment-tabpanel#action_39755
+ice.ace.findNextTabElement = function(currElement) {
+            // if we haven't stored the tabbing order
+            if (!currElement.form.tabOrder) {
+
+                var els = currElement.form.elements,
+                    ti = [],
+                    rest = [];
+
+                // store all focusable form elements with tabIndex > 0
+                for (var i = 0, il = els.length; i < il; i++) {
+                    if (els[i].tabIndex > 0 &&
+                        !els[i].disabled &&
+                        !els[i].hidden &&
+                        !els[i].readOnly &&
+                        els[i].type !== 'hidden') {
+                        ti.push(els[i]);
+                    }
+                }
+
+                // sort them by tabIndex order
+                ti.sort(function(a,b){ return a.tabIndex - b.tabIndex; });
+
+                // store the rest of the elements in order
+                for (i = 0, il = els.length; i < il; i++) {
+                    if (els[i].tabIndex == 0 &&
+                        !els[i].disabled &&
+                        !els[i].hidden &&
+                        !els[i].readOnly &&
+                        els[i].type !== 'hidden') {
+                        rest.push(els[i]);
+                    }
+                }
+
+                // store the full tabbing order
+                currElement.form.tabOrder = ti.concat(rest);
+            }
+
+            // find the next element in the tabbing order and focus it
+            // if the last element of the form then blur
+            // (this can be changed to focus the next <form> if any)
+            for (var j = 0, jl = currElement.form.tabOrder.length; j < jl; j++) {
+                if (currElement === currElement.form.tabOrder[j]) {
+                    if (j+1 < jl) {
+//                        $(this.form.tabOrder[j+1]).focus();
+                        return currElement.form.tabOrder[j+1];
+                    } else {
+//                        $(this).blur();
+                    }
+                }
+            }
+};

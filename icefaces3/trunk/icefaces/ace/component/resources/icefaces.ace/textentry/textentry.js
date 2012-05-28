@@ -26,7 +26,7 @@ ice.ace.TextEntry = function(id, cfg) {
         this.jq.keypress(
             function(e) {
                 var curLength = this.value.length + 1, maxLength = this.maxLength;
-                var nextTabElement = ice.ace.util.findNextTabElement(this);
+                var nextTabElement = ice.ace.findNextTabElement(this);
                 /*
                  console.log("id: ", this.id);
                  console.log("value: ", this.value);
