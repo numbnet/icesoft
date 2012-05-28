@@ -7959,6 +7959,10 @@ $.extend(Datepicker.prototype, {
 		if (!inst.inline) {
 			var showAnim = $.datepicker._get(inst, 'showAnim');
 			var duration = $.datepicker._get(inst, 'duration');
+			if (!$.support.leadingWhitespace) { // ICE-8116
+				showAnim = '';
+				duration = 0;
+			}
 			var postProcess = function() {
 				var cover = inst.dpDiv.find('iframe.ui-datepicker-cover'); // IE6- only
 				if( !! cover.length ){
@@ -8074,6 +8078,10 @@ $.extend(Datepicker.prototype, {
 		if (this._datepickerShowing) {
 			var showAnim = this._get(inst, 'showAnim');
 			var duration = this._get(inst, 'duration');
+			if (!$.support.leadingWhitespace) { // ICE-8116
+				showAnim = '';
+				duration = 0;
+			}
 			var self = this;
 			var postProcess = function() {
 				$.datepicker._tidyDialog(inst);
