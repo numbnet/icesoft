@@ -8,13 +8,14 @@ ice.ace.Chart = function (id, data, cfg) {
     this.jqId = ice.ace.escapeClientId(this.id);
     this.cfg  = cfg;
     this.behaviors = cfg.behaviors;
+    this.chart_region = ice.ace.jq(this.jqId+'_chart');
 
     // Clear existing ace plot instance.
     if (ice.ace.Charts[id]) {
         if (ice.ace.Charts[id].plot)
             ice.ace.Charts[id].plot.destroy();
         else // clean up error message that is probably present if plot is not present
-            ice.ace.jq(this.jqId+'_chart').html('');
+            this.chart_region.html('');
     }
 
     ice.ace.jq.jqplot.config.catchErrors = true;
@@ -24,11 +25,18 @@ ice.ace.Chart = function (id, data, cfg) {
 
     if (cfg.handlePointClick)
         ice.ace.jq(this.jqId).off("jqplotDataClick").on(
-            "jqplotDataClick",
-            function(e, seriesIndex, pointIndex, data) {
-                self.handlePointClick.call(self, e, seriesIndex, pointIndex, data);
-            }
-        );
+                "jqplotDataClick",
+                function(e, seriesIndex, pointIndex, data) {
+                    self.handlePointClick.call(self, e, seriesIndex, pointIndex, data);
+                }
+    );
+
+    if (this.chart_region.is(':hidden')) {
+        if (!this.cfg.disableHiddenInit) {
+            var _self = this;
+            setTimeout(function () { _self.plot.replot(); }, 100);
+        }
+    }
 }
 
 ice.ace.Chart.prototype.handlePointClick = function(e, seriesIndex, pointIndex, data) {

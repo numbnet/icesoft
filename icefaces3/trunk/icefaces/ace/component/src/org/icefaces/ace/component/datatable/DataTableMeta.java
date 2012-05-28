@@ -131,7 +131,7 @@ public class DataTableMeta extends UIDataMeta {
             defaultValue = "false", defaultValueType = DefaultValueType.EXPRESSION)
     private Boolean alwaysExecuteContents;
 
-    @Property(tlddoc = "Disable the default handling of the scrollable table when " +
+    @Property(tlddoc = "Enable the default handling of the scrollable table when " +
             "rendered into a hidden page region. The table attempts to poll its hidden " +
             "status, looking for when it is shown and then call the scrollable table sizing " +
             "JavaScript. This can be expensive in environments of reduced JavaScript performance with " +
