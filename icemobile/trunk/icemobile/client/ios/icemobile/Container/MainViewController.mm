@@ -220,7 +220,10 @@
 }
 
 - (void)completePost:(NSString *)value forComponent:(NSString *)componentID withName:(NSString *)componentName   {
-NSLog(@"Warning: completePost should not be invoked with ICEmobile Container");
+NSLog(@"Warning: consider renaming to completeParameter given ICEmobile Container use");
+    NSString *scriptTemplate = @"ice.addHidden(\"%@\", \"%@\", \"%@\");";
+    NSString *script = [NSString stringWithFormat:scriptTemplate, componentID, componentName, value];
+    [self.webView stringByEvaluatingJavaScriptFromString: script];
 }
 
 - (void)completeFile:(NSString *)path forComponent:(NSString *)componentID withName:(NSString *)componentName   {
