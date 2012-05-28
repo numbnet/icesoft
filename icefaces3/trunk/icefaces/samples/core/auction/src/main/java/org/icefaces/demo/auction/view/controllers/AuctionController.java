@@ -152,7 +152,7 @@ public class AuctionController {
                 }
             }
         }
-        currentAuctionItems.clear();
+//        currentAuctionItems.clear();
         return currentAuctionItemBeans;
     }
 
