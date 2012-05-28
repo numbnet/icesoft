@@ -71,14 +71,14 @@ public class TextEntryRenderer extends InputRenderer {
         boolean required = textEntry.isRequired();
 
         String label = textEntry.getLabel();
-        boolean hasLabel = label != null && label.trim().length() > 0;
         String labelPosition = textEntry.getLabelPosition();
         if (!labelPositionSet.contains(labelPosition)) labelPosition = DEFAULT_LABEL_POSITION;
+        boolean hasLabel = !(labelPosition.equals(NONE_LABEL_POSITION) || isValueBlank(label));
 
         String indicator = required ? textEntry.getRequiredIndicator() : textEntry.getOptionalIndicator();
-        boolean hasIndicator = indicator != null && indicator.trim().length() > 0;
         String indicatorPosition = textEntry.getIndicatorPosition();
         if (!indicatorPositionSet.contains(indicatorPosition)) indicatorPosition = DEFAULT_INDICATOR_POSITION;
+        boolean hasIndicator = !(indicatorPosition.equals(NONE_INDICATOR_POSITION) || isValueBlank(indicator));
 
         writer.startElement("span", textEntry);
         writer.writeAttribute("id", clientId + "_markup", null);

@@ -67,14 +67,14 @@ public class AutoCompleteEntryRenderer extends InputRenderer {
         boolean required = autoCompleteEntry.isRequired();
 
         String label = autoCompleteEntry.getLabel();
-        boolean hasLabel = label != null && label.trim().length() > 0;
         String labelPosition = autoCompleteEntry.getLabelPosition();
         if (!labelPositionSet.contains(labelPosition)) labelPosition = DEFAULT_LABEL_POSITION;
+        boolean hasLabel = !(labelPosition.equals(NONE_LABEL_POSITION) || isValueBlank(label));
 
         String indicator = required ? autoCompleteEntry.getRequiredIndicator() : autoCompleteEntry.getOptionalIndicator();
-        boolean hasIndicator = indicator != null && indicator.trim().length() > 0;
         String indicatorPosition = autoCompleteEntry.getIndicatorPosition();
         if (!indicatorPositionSet.contains(indicatorPosition)) indicatorPosition = DEFAULT_INDICATOR_POSITION;
+        boolean hasIndicator = !(indicatorPosition.equals(NONE_INDICATOR_POSITION) || isValueBlank(indicator));
 
         writeLabelAndIndicatorBefore(writer, label, hasLabel, labelPosition, indicator, hasIndicator, indicatorPosition, required);
 		// text field

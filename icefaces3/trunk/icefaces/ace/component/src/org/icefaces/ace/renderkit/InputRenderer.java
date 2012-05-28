@@ -45,11 +45,13 @@ import javax.faces.convert.ConverterException;
 
 public class InputRenderer extends CoreRenderer {
 
-    public static final Set<String> labelPositionSet = new HashSet<String>(Arrays.asList("left", "right", "top", "bottom", "inField"));
-    public static final Set<String> indicatorPositionSet = new HashSet<String>(Arrays.asList("left", "right", "top", "bottom", "labelLeft", "labelRight"));
+    public static final Set<String> labelPositionSet = new HashSet<String>(Arrays.asList("left", "right", "top", "bottom", "inField", "none"));
+    public static final Set<String> indicatorPositionSet = new HashSet<String>(Arrays.asList("left", "right", "top", "bottom", "labelLeft", "labelRight", "none"));
     public static final String LABEL_STYLE_CLASS = "ui-input-label";
     public static final String DEFAULT_LABEL_POSITION = "inField";
     public static final String DEFAULT_INDICATOR_POSITION = "right";
+    public static final String NONE_LABEL_POSITION = "none";
+    public static final String NONE_INDICATOR_POSITION = "none";
 
     protected List<SelectItem> getSelectItems(FacesContext context, UIInput component) {
         List<SelectItem> selectItems = new ArrayList<SelectItem>();
