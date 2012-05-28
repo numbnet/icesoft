@@ -198,11 +198,11 @@ ice.ace.List.prototype.controlClickHandler = function(e) {
 ice.ace.List.prototype.setupSelection = function() {
     var self = this;
 
-    ice.ace.jq(document)
-            .off('mouseenter mouseleave click', this.jqId + ' ul:first > li')
-            .on('mouseenter', this.jqId + ' ul:first > li', this.itemEnter)
-            .on('mouseleave', this.jqId + ' ul:first > li', this.itemLeave)
-            .on('click', this.jqId + ' ul:first > li', function(e) { self.itemClickHandler.call(self, e); });
+    ice.ace.jq(this.element)
+            .off('mouseenter mouseleave click', '.if-list-body:first > li')
+            .on('mouseenter', '.if-list-body:first > li', this.itemEnter)
+            .on('mouseleave', '.if-list-body:first > li', this.itemLeave)
+            .on('click', '.if-list-body:first > li', function(e) { self.itemClickHandler.call(self, e); });
 };
 
 ice.ace.List.prototype.itemEnter = function(e) {
