@@ -120,11 +120,11 @@
 
                     <h:panelGrid id="panelGrid" columns="2" >
                         <f:facet name="header">
-                            <h:outputText value="#{car.name}" /><hr/>
+                            <h:outputText id="carNameFirstList" value="#{car.name}" /><hr/>
                         </f:facet>
-                        Chassis: <h:outputText value="#{car.chassis}" />
-                        Weight: <h:outputText value="#{car.weight}" />
-                        Accel: <h:outputText value="#{car.acceleration}" />
+                        Chassis: <h:outputText id="carChassisFirstList" value="#{car.chassis}" />
+                        Weight: <h:outputText id="carWeightFirstList" value="#{car.weight}" />
+                        Accel: <h:outputText id="carAccelFirstList" value="#{car.acceleration}" />
                     </h:panelGrid>
                 </ace:list>
 
@@ -144,11 +144,11 @@
 
                     <h:panelGrid id="panelGridTwo" columns="2">
                         <f:facet name="header">
-                            <h:outputText value="#{car.name}" /><hr/>
+                            <h:outputText id="carNameSecondList" value="#{car.name}" /><hr/>
                         </f:facet>
-                        Chassis: <h:outputText value="#{car.chassis}" />
-                        Weight: <h:outputText value="#{car.weight}" />
-                        Accel: <h:outputText value="#{car.acceleration}" />
+                        Chassis: <h:outputText id="carChassisSecondList" value="#{car.chassis}" />
+                        Weight: <h:outputText id="carWeightSecondList" value="#{car.weight}" />
+                        Accel: <h:outputText id="carAccelSecondList" value="#{car.acceleration}" />
                     </h:panelGrid>
                 </ace:list>
 
@@ -168,11 +168,11 @@
 
                     <h:panelGrid id="panelGridThree" columns="2">
                         <f:facet name="header">
-                            <h:outputText value="#{car.name}" /><hr/>
+                            <h:outputText id="carNameThirdList" value="#{car.name}" /><hr/>
                         </f:facet>
-                        Chassis: <h:outputText value="#{car.chassis}" />
-                        Weight: <h:outputText value="#{car.weight}" />
-                        Accel: <h:outputText value="#{car.acceleration}" />
+                        Chassis: <h:outputText id="carChassisThirdList" value="#{car.chassis}" />
+                        Weight: <h:outputText id="carWeightThirdList" value="#{car.weight}" />
+                        Accel: <h:outputText id="carAccelThirdList" value="#{car.acceleration}" />
                     </h:panelGrid>
                 </ace:list>
 
