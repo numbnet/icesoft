@@ -90,7 +90,6 @@ public class BaseLayoutRenderer extends CoreRenderer {
      */
 
      public String findMySelectedClientId(UIComponent parent, String id){
-       System.out.println("trying to find id="+id);
         int childCount = parent.getChildCount();
         if (childCount > 0 ){
             if (null!=id){
@@ -99,9 +98,9 @@ public class BaseLayoutRenderer extends CoreRenderer {
                     if (null!= me.getClientId()) {
                         return me.getClientId();
                     }
-                    else {
-                        return parent.getChildren().get(0).getClientId();
-                    }
+                }
+                else {
+                    return parent.getChildren().get(0).getClientId();
                 }
             }
         }
