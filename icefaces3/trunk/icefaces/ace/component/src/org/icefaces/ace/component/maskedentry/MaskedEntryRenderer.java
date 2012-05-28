@@ -67,14 +67,14 @@ public class MaskedEntryRenderer extends InputRenderer {
         boolean required = maskedEntry.isRequired();
 
         String label = maskedEntry.getLabel();
-        boolean hasLabel = label != null && label.trim().length() > 0;
         String labelPosition = maskedEntry.getLabelPosition();
         if (!labelPositionSet.contains(labelPosition)) labelPosition = DEFAULT_LABEL_POSITION;
+        boolean hasLabel = !(labelPosition.equals(NONE_LABEL_POSITION) || isValueBlank(label));
 
         String indicator = required ? maskedEntry.getRequiredIndicator() : maskedEntry.getOptionalIndicator();
-        boolean hasIndicator = indicator != null && indicator.trim().length() > 0;
         String indicatorPosition = maskedEntry.getIndicatorPosition();
         if (!indicatorPositionSet.contains(indicatorPosition)) indicatorPosition = DEFAULT_INDICATOR_POSITION;
+        boolean hasIndicator = !(indicatorPosition.equals(NONE_INDICATOR_POSITION) || isValueBlank(indicator));
 
         writeLabelAndIndicatorBefore(writer, label, hasLabel, labelPosition, indicator, hasIndicator, indicatorPosition, required);
 		encodeMarkup(context, maskedEntry);

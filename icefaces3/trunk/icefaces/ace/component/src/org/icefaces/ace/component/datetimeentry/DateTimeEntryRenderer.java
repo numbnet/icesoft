@@ -103,14 +103,14 @@ public class DateTimeEntryRenderer extends InputRenderer {
         boolean required = dateTimeEntry.isRequired();
 
         String label = dateTimeEntry.getLabel();
-        boolean hasLabel = label != null && label.trim().length() > 0;
         String labelPosition = dateTimeEntry.getLabelPosition();
         if (!labelPositionSet.contains(labelPosition)) labelPosition = DEFAULT_LABEL_POSITION;
+        boolean hasLabel = !(labelPosition.equals(NONE_LABEL_POSITION) || isValueBlank(label));
 
         String indicator = required ? dateTimeEntry.getRequiredIndicator() : dateTimeEntry.getOptionalIndicator();
-        boolean hasIndicator = indicator != null && indicator.trim().length() > 0;
         String indicatorPosition = dateTimeEntry.getIndicatorPosition();
         if (!indicatorPositionSet.contains(indicatorPosition)) indicatorPosition = DEFAULT_INDICATOR_POSITION;
+        boolean hasIndicator = !(indicatorPosition.equals(NONE_INDICATOR_POSITION) || isValueBlank(indicator));
 
         if (popup) {
             writeLabelAndIndicatorBefore(writer, label, hasLabel, labelPosition, indicator, hasIndicator, indicatorPosition, required);
