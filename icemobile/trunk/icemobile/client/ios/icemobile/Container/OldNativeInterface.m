@@ -14,7 +14,7 @@
 * limitations under the License.
 */
 
-#import "NativeInterface.h"
+#import "OldNativeInterface.h"
 #import "MainViewController.h"
 #import "AudioController.h"
 #import "ARViewController.h"
@@ -23,7 +23,7 @@
 #import "MediaPlayer/MediaPlayer.h"
 
 
-@implementation NativeInterface
+@implementation OldNativeInterface
 
 @synthesize controller;
 @synthesize activeDOMElementId;

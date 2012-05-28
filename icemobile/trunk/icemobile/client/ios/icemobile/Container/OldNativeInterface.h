@@ -19,7 +19,7 @@
 @class MainViewController;
 @class ARViewController;
 
-@interface NativeInterface : NSObject<UIImagePickerControllerDelegate, UINavigationControllerDelegate, AVAudioRecorderDelegate> {
+@interface OldNativeInterface : NSObject<UIImagePickerControllerDelegate, UINavigationControllerDelegate, AVAudioRecorderDelegate> {
 
 	MainViewController *controller;
     NSString *activeDOMElementId;
