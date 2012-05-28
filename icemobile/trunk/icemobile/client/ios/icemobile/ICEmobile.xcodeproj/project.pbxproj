@@ -27,7 +27,7 @@
 		9C285F45155DD37400BAC772 /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C285F42155DD37400BAC772 /* CoreMotion.framework */; };
 		9C285F46155DD37400BAC772 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C285F43155DD37400BAC772 /* QuartzCore.framework */; };
 		9C2A9F6513B8E78F0068D894 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C2A9F6413B8E78F0068D894 /* MobileCoreServices.framework */; };
-		9C31404E13200264005F0E8F /* NativeInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C31404D13200264005F0E8F /* NativeInterface.m */; };
+		9C31404E13200264005F0E8F /* OldNativeInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C31404D13200264005F0E8F /* OldNativeInterface.m */; };
 		9C31408713201B67005F0E8F /* main.html in Resources */ = {isa = PBXBuildFile; fileRef = 9C31408613201B67005F0E8F /* main.html */; };
 		9C31408913201C37005F0E8F /* icefaces-logo.gif in Resources */ = {isa = PBXBuildFile; fileRef = 9C31408813201C37005F0E8F /* icefaces-logo.gif */; };
 		9C3140D613203841005F0E8F /* native-interface.js in Sources */ = {isa = PBXBuildFile; fileRef = 9C3140D513203841005F0E8F /* native-interface.js */; };
@@ -42,6 +42,9 @@
 		9C65FC2F137C9E5500530472 /* Preferences.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9C65FC2D137C9E5500530472 /* Preferences.xib */; };
 		9C77A01E139E9E9B00A2B1EC /* icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C77A01D139E9E9B00A2B1EC /* icon@2x.png */; };
 		9CACFD5E141AD389009D0C3C /* icon-72.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CACFD5D141AD389009D0C3C /* icon-72.png */; };
+		9CCD001B15742A710012893A /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CCD001A15742A710012893A /* MapKit.framework */; };
+		9CCD001F15742B270012893A /* MapController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CCD001D15742B270012893A /* MapController.m */; };
+		9CCD002015742B270012893A /* MapController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9CCD001E15742B270012893A /* MapController.xib */; };
 		9CE11565133BDDE80051D367 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CE11564133BDDE80051D367 /* AVFoundation.framework */; };
 		9CE7A43613B92240008C4D9C /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CE7A43513B92240008C4D9C /* MediaPlayer.framework */; };
 /* End PBXBuildFile section */
@@ -87,8 +90,8 @@
 		9C285F42155DD37400BAC772 /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
 		9C285F43155DD37400BAC772 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		9C2A9F6413B8E78F0068D894 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
-		9C31404C13200264005F0E8F /* NativeInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NativeInterface.h; path = Container/NativeInterface.h; sourceTree = "<group>"; };
-		9C31404D13200264005F0E8F /* NativeInterface.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NativeInterface.m; path = Container/NativeInterface.m; sourceTree = "<group>"; };
+		9C31404C13200264005F0E8F /* OldNativeInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = OldNativeInterface.h; path = Container/OldNativeInterface.h; sourceTree = "<group>"; };
+		9C31404D13200264005F0E8F /* OldNativeInterface.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = OldNativeInterface.m; path = Container/OldNativeInterface.m; sourceTree = "<group>"; };
 		9C31408613201B67005F0E8F /* main.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = main.html; path = Container/main.html; sourceTree = "<group>"; };
 		9C31408813201C37005F0E8F /* icefaces-logo.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; name = "icefaces-logo.gif"; path = "Container/icefaces-logo.gif"; sourceTree = "<group>"; };
 		9C3140D513203841005F0E8F /* native-interface.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = "native-interface.js"; path = "Container/native-interface.js"; sourceTree = "<group>"; };
@@ -104,6 +107,10 @@
 		9C65FC2D137C9E5500530472 /* Preferences.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = Preferences.xib; path = Container/Preferences.xib; sourceTree = "<group>"; };
 		9C77A01D139E9E9B00A2B1EC /* icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon@2x.png"; path = "Container/icon@2x.png"; sourceTree = "<group>"; };
 		9CACFD5D141AD389009D0C3C /* icon-72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon-72.png"; path = "Container/icon-72.png"; sourceTree = "<group>"; };
+		9CCD001A15742A710012893A /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		9CCD001C15742B270012893A /* MapController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MapController.h; path = Shared/MapController.h; sourceTree = "<group>"; };
+		9CCD001D15742B270012893A /* MapController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MapController.m; path = Shared/MapController.m; sourceTree = "<group>"; };
+		9CCD001E15742B270012893A /* MapController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = MapController.xib; path = Shared/MapController.xib; sourceTree = "<group>"; };
 		9CE11564133BDDE80051D367 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		9CE7A43513B92240008C4D9C /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
@@ -113,6 +120,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9CCD001B15742A710012893A /* MapKit.framework in Frameworks */,
 				9C285F44155DD37400BAC772 /* CoreLocation.framework in Frameworks */,
 				9C285F45155DD37400BAC772 /* CoreMotion.framework in Frameworks */,
 				9C285F46155DD37400BAC772 /* QuartzCore.framework in Frameworks */,
@@ -174,8 +182,8 @@
 				8D1107310486CEB800E47090 /* ICEmobile-Info.plist */,
 				9C34261D131865700084532D /* MainViewController.h */,
 				9C34261E131865700084532D /* MainViewController.mm */,
-				9C31404C13200264005F0E8F /* NativeInterface.h */,
-				9C31404D13200264005F0E8F /* NativeInterface.m */,
+				9C31404C13200264005F0E8F /* OldNativeInterface.h */,
+				9C31404D13200264005F0E8F /* OldNativeInterface.m */,
 				9C31408613201B67005F0E8F /* main.html */,
 				9C3140D513203841005F0E8F /* native-interface.js */,
 			);
@@ -210,6 +218,7 @@
 			isa = PBXGroup;
 			children = (
 				9C3B27921427AEA000409376 /* libiconv.dylib */,
+				9CCD001A15742A710012893A /* MapKit.framework */,
 				9C285F41155DD37400BAC772 /* CoreLocation.framework */,
 				9C285F42155DD37400BAC772 /* CoreMotion.framework */,
 				9C285F43155DD37400BAC772 /* QuartzCore.framework */,
@@ -229,6 +238,9 @@
 		9C1923F415547F9500A6BE22 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				9CCD001C15742B270012893A /* MapController.h */,
+				9CCD001D15742B270012893A /* MapController.m */,
+				9CCD001E15742B270012893A /* MapController.xib */,
 				9C285F34155DD31300BAC772 /* ARView.h */,
 				9C285F35155DD31300BAC772 /* ARView.m */,
 				9C285F36155DD31300BAC772 /* ARViewController_iPad.xib */,
@@ -341,6 +353,7 @@
 				9C1923F915547FBA00A6BE22 /* AudioController.xib in Resources */,
 				9C285F3D155DD31400BAC772 /* ARViewController_iPad.xib in Resources */,
 				9C285F3E155DD31400BAC772 /* ARViewController_iPhone.xib in Resources */,
+				9CCD002015742B270012893A /* MapController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -355,13 +368,14 @@
 				2860E328111B887F00E27156 /* AppDelegate_iPhone.m in Sources */,
 				2860E32E111B888700E27156 /* AppDelegate_iPad.m in Sources */,
 				9C34261F131865700084532D /* MainViewController.mm in Sources */,
-				9C31404E13200264005F0E8F /* NativeInterface.m in Sources */,
+				9C31404E13200264005F0E8F /* OldNativeInterface.m in Sources */,
 				9C3140D613203841005F0E8F /* native-interface.js in Sources */,
 				9C65FC2E137C9E5500530472 /* Preferences.m in Sources */,
 				9C1923F815547FBA00A6BE22 /* AudioController.m in Sources */,
 				9C285F3C155DD31400BAC772 /* ARView.m in Sources */,
 				9C285F3F155DD31400BAC772 /* ARViewController.m in Sources */,
 				9C285F40155DD31400BAC772 /* PlaceLabel.m in Sources */,
+				9CCD001F15742B270012893A /* MapController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
