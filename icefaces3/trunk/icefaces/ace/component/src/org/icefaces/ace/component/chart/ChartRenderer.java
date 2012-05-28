@@ -23,7 +23,7 @@ public class ChartRenderer extends CoreRenderer {
 
         String selectInput = params.get(select);
 
-        processSelections(chart, selectInput.split(","));
+        if (selectInput != null) processSelections(chart, selectInput.split(","));
     }
 
     private void processSelections(Chart chart, String[] select) {
