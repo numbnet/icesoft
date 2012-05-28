@@ -51,6 +51,7 @@ public class ChartRenderer extends CoreRenderer {
         ChartSeries seriesDefaults = component.getDefaultSeriesConfig();
         Boolean stacking = component.isStackSeries();
         Boolean animated = component.isAnimated();
+        Boolean hiddenInit = component.isHiddenInitPolling();
         String title = component.getTitle();
 
         JSONBuilder dataBuilder = new JSONBuilder();
@@ -81,6 +82,7 @@ public class ChartRenderer extends CoreRenderer {
         else if (animated) cfgBuilder.entry("animate", true);
         if (component.getSelectListener() != null)
             cfgBuilder.entry("handlePointClick", true);
+        if (!hiddenInit) cfgBuilder.entry("disableHiddenInit", true);
         cfgBuilder.endMap();
 
 

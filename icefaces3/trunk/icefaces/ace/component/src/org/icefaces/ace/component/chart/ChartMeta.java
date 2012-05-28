@@ -128,6 +128,15 @@ public class ChartMeta extends UIComponentBaseMeta {
                 "Enables the highlighted series being temporarily reordered to be entirely visible.")
     private Boolean highlighterBringSeriesToFront;
 
+    @Property(tlddoc =
+                "Enable the default handling of the chart when rendered into a hidden page region. The" +
+                "chart polls its hidden status, looking for when it is shown, and then completes its initialization." +
+                "This can be expensive in environments of reduced JavaScript performance with many charts and a complex DOM." +
+                "When this is disabled, upon revealing a chart, to ensure it is correctly displayed, 'chartWidgetvar.replot()' " +
+                "must be called.",
+            defaultValue = "true", defaultValueType = DefaultValueType.EXPRESSION)
+    private Boolean hiddenInitPolling;
+
     @Property(expression = Expression.METHOD_EXPRESSION,
             methodExpressionArgument = "org.icefaces.ace.event.SeriesSelectionEvent",
             tlddoc = "MethodExpression reference called whenever a series " +
