@@ -26,6 +26,7 @@ import org.icefaces.mobi.api.ContentPaneController;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIPanel;
+import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import java.io.IOException;
@@ -107,8 +108,9 @@ public class ContentPaneRenderer extends BaseLayoutRenderer {
             logger.info("Parent must implement ContentPaneController-> has instead="+parent.getClass().getName());
             return false;
         }
-        String clientId = findMySelectedClientId((UIComponent)parent, selectedId);
-        return (clientId.equals(uiComponent.getClientId(facesContext)));
+        String id = uiComponent.getId();
+        boolean test = id.equals(selectedId);
+        return (id.equals(selectedId));
     }
 
     private String checkCacheType(String type){
