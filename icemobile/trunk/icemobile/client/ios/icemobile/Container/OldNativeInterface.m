@@ -22,7 +22,6 @@
 #import "MobileCoreServices/MobileCoreServices.h"
 #import "MediaPlayer/MediaPlayer.h"
 
-
 @implementation OldNativeInterface
 
 @synthesize controller;
@@ -32,12 +31,12 @@
 @synthesize soundFilePath;
 @synthesize recording;
 @synthesize uploading;
-@synthesize soundRecorder;
 @synthesize receivedData;
 @synthesize camPopover;
 @synthesize audioPopover;
 @synthesize augPopover;
 @synthesize augController;
+@synthesize soundRecorder;
 @synthesize popoverSource;
 
 static char base64EncodingTable[64] = {
@@ -549,19 +548,22 @@ static char base64EncodingTable[64] = {
     if ([path hasSuffix:@".MOV"])  {
         return @"Content-Type: video/mp4\r\n\r\n";
     }
-    return "text/plain";
+    return @"text/plain";
 }
 
 /*Return NSDictionary of query parameters
 */
-- (NSDictionary*)parseQuery: (NSString*)queryString  {
+- (NSMutableDictionary*)parseQuery: (NSString*)queryString  {
     if ((nil == queryString) || (0 == [queryString length]))  {
-        return [NSDictionary dictionary];
+        return [NSMutableDictionary dictionary];
     }
     NSArray *pairs = [queryString componentsSeparatedByString:@"&"];
     NSMutableDictionary *pairDict = [NSMutableDictionary dictionary];
     for (NSString *pair in pairs) {
         NSArray *pairPair = [pair componentsSeparatedByString:@"="];
+        if ([pairPair count] < 2)  {
+            continue;
+        }
         NSString *name = [[pairPair objectAtIndex:0] 
                 stringByReplacingPercentEscapesUsingEncoding:NSASCIIStringEncoding];
         NSString *value = [[pairPair objectAtIndex:1] 
