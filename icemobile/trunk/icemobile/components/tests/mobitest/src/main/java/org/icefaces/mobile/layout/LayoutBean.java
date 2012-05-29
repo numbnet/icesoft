@@ -35,7 +35,9 @@ public class LayoutBean implements Serializable {
     private static final String THIRDPANE="panel3";
 
     private List menuList = new ArrayList<MenuValue>();
-    private String selectedPane ;
+    private List dataList = new ArrayList<DataValue>();
+    private List eachContentPane = new ArrayList<EachContentPane>();
+    private String selectedPane = FIRSTPANE;
     private int accordionIndex = 0;
     private int tabIndex = 1;
 
@@ -45,6 +47,18 @@ public class LayoutBean implements Serializable {
        this.menuList.add(new MenuValue("splash", FIRSTPANE, false));
        this.menuList.add(new MenuValue("date/time", SECONDPANE, false));
        this.menuList.add(new MenuValue("tabSet", THIRDPANE, false));
+       this.dataList.add(new DataValue(FIRSTPANE));
+       //this.dataList.add(new DataValue(SECONDPANE));
+       //this.dataList.add(new DataValue(THIRDPANE));
+       this.eachContentPane.add(new EachContentPane("panel1", "client", "panel1",
+           "Panel1", "header for panel 1", "content for panel 1 - king of clubs",
+           "../images/kingOfClubs.jpg", "king of clubs", "King of Clubs"));
+        this.eachContentPane.add(new EachContentPane("panel2", null, "panel2",
+            "Panel2", "header for panel 2", "content for panel 2 - queen of clubs",
+            "../images/queen.jpg", "queen of clubs", "Queen of Clubs"));
+        this.eachContentPane.add(new EachContentPane("panel3", "tobeconstructed", "panel3",
+            "Panel3", "header for panel 3", "content for panel 3 - some other card",
+            "../images/Joker.jpg", "joker", "Joker"));
 	}
 
     public void tabChangeListener(ValueChangeEvent vce){
@@ -90,7 +104,12 @@ public class LayoutBean implements Serializable {
         this.menuList = menuList;
     }
 
-    public class MenuValue implements Serializable{
+    public List getDataList() { return dataList; }
+
+    public List getEachContentPane() { return eachContentPane; }
+    
+
+    public static class MenuValue implements Serializable{
         private String label;
         private String value;
         private String url;
@@ -142,5 +161,61 @@ public class LayoutBean implements Serializable {
         public void setMenuHeader(boolean menuHeader) {
             this.menuHeader = menuHeader;
         }
+    }
+
+
+    public static class DataValue implements Serializable {
+        private String selectedPane;
+
+        public DataValue(String selectedPane) {
+            this.selectedPane = selectedPane;
+        }
+
+        public String getSelectedPane() { return selectedPane; }
+        public void setSelectedPane(String selectedPane) { this.selectedPane = selectedPane; }
+    }
+
+
+    public static class EachContentPane implements Serializable {
+        private String id;
+        private String cacheType;
+        private String title;
+        private String legend;
+        private String header;
+        private String content;
+        private String imgSrc;
+        private String alt;
+        private String figcaption;
+
+        public EachContentPane(
+            String id,
+            String cacheType,
+            String title,
+            String legend,
+            String header,
+            String content,
+            String imgSrc,
+            String alt,
+            String figcaption) {
+            this.id = id;
+            this.cacheType = cacheType;
+            this.title = title;
+            this.legend = legend;
+            this.header = header;
+            this.content = content;
+            this.imgSrc = imgSrc;
+            this.alt = alt;
+            this.figcaption = figcaption;
+        }
+
+        public String getId() { return id; }
+        public String getCacheType() { return cacheType; }
+        public String getTitle() { return title; }
+        public String getLegend() { return legend; }
+        public String getHeader () { return header; }
+        public String getContent() { return content; }
+        public String getImgSrc() { return imgSrc; }
+        public String getAlt() { return alt; }
+        public String getFigcaption() { return figcaption; }
     }
 }

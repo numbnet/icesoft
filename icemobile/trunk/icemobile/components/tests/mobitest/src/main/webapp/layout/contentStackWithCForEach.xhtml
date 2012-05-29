@@ -19,6 +19,7 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
       xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
 <h:head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
@@ -49,53 +50,22 @@
       <br />
      <h:form id="contentForm">
        <mobi:contentStack id="test1" currentId="#{layoutBean.selectedPane}">
-              <mobi:contentPane id="panel1" cacheType="client">
-                 <fieldset title="panel1">
-                      <legend>Panel1</legend>
-                    <h3> header for panel 1</h3>
-                     <p> content for panel 1 - king of clubs </p>
+           <c:forEach items="#{layoutBean.eachContentPane}" var="currContentPane">
+              <mobi:contentPane id="#{currContentPane.id}" cacheType="#{currContentPane.cacheType}">
+                 <fieldset title="#{currContentPane.title}">
+                      <legend>#{currContentPane.legend}</legend>
+                    <h3> #{currContentPane.header}</h3>
+                     <p> #{currContentPane.content} </p>
                        <figure>
                          <img width="85" height="150"
-                          src="../images/kingOfClubs.jpg"
-                            alt="king of clubs" />
-                         <figcaption>King of Clubs</figcaption>
+                            src="#{currContentPane.imgSrc}"
+                            alt="#{currContentPane.alt}" />
+                         <figcaption>#{currContentPane.figcaption}</figcaption>
                         </figure>
-
+                     <ui:include src="included.xhtml"/>                     
                   </fieldset>
               </mobi:contentPane>
-               <mobi:contentPane id="panel2">
-                 <fieldset title="panel2">
-                   <legend>Panel2</legend>
-                  <h3> header for panel 2</h3>
-                  <p> content for panel 2 - ace of diamonds   </p>
-                     <figure>
-                         <img width="85" height="150"
-                          src="../images/queen.jpg"
-                            alt="queen of clubs" />
-                         <figcaption>Queen of Clubs</figcaption>
-                        </figure>
-                      <br />
-                     Change panes with this button
-                   <br />
-                     <mobi:commandButton id="but2"  singleSubmit="true"
-                                  value="SelectPane3" actionListener="#{layoutBean.changeToPane3}">
-                      </mobi:commandButton>
-                     <br />
-                  </fieldset>
-              </mobi:contentPane>
-             <mobi:contentPane id="panel3" cacheType="tobeconstructed">
-                 <fieldset title="panel3">
-                      <legend>Panel3</legend>
-                  <h3> header for panel 3</h3>
-                  <p> content for panel 3 - some other card..</p>
-                     <figure>
-                         <img width="85" height="150"
-                          src="../images/Joker.jpg"
-                            alt="joker" />
-                         <figcaption>joker</figcaption>
-                        </figure>
-                  </fieldset>
-              </mobi:contentPane>
+           </c:forEach>
        </mobi:contentStack>
        <div id="output" style="display:block;">
           selected pane ... <mark>#{layoutBean.selectedPane}</mark> ... is selected pane
