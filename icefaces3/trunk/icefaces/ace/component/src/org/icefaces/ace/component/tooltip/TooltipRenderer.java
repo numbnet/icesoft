@@ -30,6 +30,10 @@ import java.io.IOException;
 
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
+import javax.faces.component.visit.VisitContext;
+import javax.faces.component.visit.VisitCallback;
+import javax.faces.component.visit.VisitHint;
+import javax.faces.component.visit.VisitResult;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
@@ -39,6 +43,9 @@ import org.icefaces.ace.util.JSONBuilder;
 import org.icefaces.render.MandatoryResourceComponent;
 
 import java.util.Map;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.EnumSet;
 
 @MandatoryResourceComponent(tagName="tooltip", value="org.icefaces.ace.component.tooltip.Tooltip")
 public class TooltipRenderer extends CoreRenderer {
@@ -84,7 +91,7 @@ public class TooltipRenderer extends CoreRenderer {
 	protected void encodeScript(FacesContext facesContext, Tooltip tooltip) throws IOException {
 		ResponseWriter writer = facesContext.getResponseWriter();
 		boolean global = tooltip.isGlobal();
-		String owner = getTarget(facesContext, tooltip);
+		Object owner = getTarget(facesContext, tooltip);
 		String clientId = tooltip.getClientId(facesContext);
 
         writer.startElement("span",null);
@@ -106,7 +113,17 @@ public class TooltipRenderer extends CoreRenderer {
 		if (tooltip.isSpeechBubble()) jb.entry("speechBubble", true);
 
 		if(!global) {
-			jb.entry("forComponent", owner);
+			if (owner instanceof ArrayList) {
+				jb.beginArray("forComponents");
+				ArrayList<String> clientIds = (ArrayList<String>) owner;
+				int size = clientIds.size();
+				for (int i = 0; i < size; i++) {
+					jb.item(clientIds.get(i));
+				}
+				jb.endArray();
+			} else {
+				jb.entry("forComponent", (String) owner);
+			}
 			writer.write(jb.toString());
 			writer.write(",content:");
 			if(tooltip.getValue() == null)
@@ -150,7 +167,7 @@ public class TooltipRenderer extends CoreRenderer {
 
 		//Position
 		jb.beginMap("position");
-        String container = owner == null ? "document.body" : "ice.ace.jq(ice.ace.escapeClientId('" + owner +"')).parent()";
+        String container = owner == null || owner instanceof ArrayList ? "document.body" : "ice.ace.jq(ice.ace.escapeClientId('" + owner +"')).parent()";
         jb.entry("container", container, true)
 			.beginMap("corner")
 				.entry("target", tooltip.getTargetPosition())
@@ -168,7 +185,7 @@ public class TooltipRenderer extends CoreRenderer {
         writer.endElement("span");
 	}
 
-	protected String getTarget(FacesContext facesContext, Tooltip tooltip) {
+	protected Object getTarget(FacesContext facesContext, Tooltip tooltip) {
 		if(tooltip.isGlobal())
 			return null;
 		else {
@@ -177,10 +194,20 @@ public class TooltipRenderer extends CoreRenderer {
 			String forElement = tooltip.getForElement();
 			if(_for != null) {
 				UIComponent forComponent = tooltip.findComponent(_for);
-				if(forComponent == null)
-					throw new FacesException("Cannot find component \"" + _for + "\" in view.");
-				else
+				if(forComponent == null) {
+					String containerId = tooltip.getForContainer();
+					UIComponent container = null;
+					if (containerId != null) {
+						container = findComponentCustom(facesContext.getViewRoot(), containerId);
+					}
+					if (container != null) {
+						return collectClientIds(facesContext, container, _for);
+					} else {
+						throw new FacesException("Cannot find component \"" + _for + "\" in view.");
+					}
+				} else {
 					return forComponent.getClientId(facesContext);
+				}
 
 			} else if(forElement != null) {
 				return forElement;
@@ -196,5 +223,45 @@ public class TooltipRenderer extends CoreRenderer {
 
 	public boolean getRendersChildren() {
 		return true;
+	}
+	
+	private UIComponent findComponentCustom(UIComponent base, String id) {
+
+		if (base.getId().equals(id)) return base;
+		List<UIComponent> children = base.getChildren();
+		UIComponent result = null;
+		for (UIComponent child : children) {
+			result = findComponentCustom(child, id);
+			if (result != null) break;
+		}
+		return result;
+	}
+	
+	private ArrayList<String> collectClientIds(FacesContext context, UIComponent container, String id) {
+	
+		ArrayList<String> clientIds = new ArrayList<String>();
+		container.visitTree(VisitContext.createVisitContext(context, null, EnumSet.of(VisitHint.SKIP_TRANSIENT, VisitHint.SKIP_UNRENDERED)),
+			new IdCollectionVisitCallback(clientIds, id));
+		return clientIds;
+	}
+	
+	private class IdCollectionVisitCallback implements VisitCallback {
+	
+		private ArrayList<String> clientIds;
+		private String id;
+		
+		private IdCollectionVisitCallback(ArrayList<String> clientIds, String id) {
+			this.clientIds = clientIds;
+			this.id = id;
+		}
+	
+		public VisitResult visit(VisitContext context, UIComponent target) {
+		
+			if (this.id.equals(target.getId())) {
+				this.clientIds.add(target.getClientId());
+			}
+			
+			return VisitResult.ACCEPT;
+		}
 	}
 }

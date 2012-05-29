@@ -90,8 +90,11 @@ public class TooltipMeta extends UIOutputMeta {
 	@Property(name="for", tlddoc="Specifies the id of the component that will display the tooltip. Ignored if \"global\" is true.")
 	private String forValue;
 
-	@Property(tlddoc="Specifies the id (id won't be converted to a client-side id) of the element that will display the tooltip. Applicable only if \"for\" component is not specified. Ignored if \"global\" is true.")
+	@Property(tlddoc="Specifies the id of the HTML element that will display the tooltip. Applicable only if \"for\" component is not specified. Ignored if \"global\" is true.")
 	private String forElement;
+	
+	@Property(tlddoc="Specifies the id of the component that contains the component referenced by the \"for\" attribute. This is to be used in cases where the target component is inside an iterative container such as a data table and the tooltip component itself is outside.")
+	private String forContainer;
 
     @Property(expression = Expression.METHOD_EXPRESSION,
               tlddoc = "A server side listener to be invoked when the tooltip is about to be shown in the client.")
