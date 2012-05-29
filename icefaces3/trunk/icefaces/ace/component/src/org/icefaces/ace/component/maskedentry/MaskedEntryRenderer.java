@@ -41,8 +41,8 @@ import org.icefaces.render.MandatoryResourceComponent;
 
 @MandatoryResourceComponent(tagName="maskedEntry", value="org.icefaces.ace.component.maskedentry.MaskedEntry")
 public class MaskedEntryRenderer extends InputRenderer {
-	
-	@Override
+
+    @Override
 	public void decode(FacesContext context, UIComponent component) {
 		MaskedEntry maskedEntry = (MaskedEntry) component;
 
@@ -77,16 +77,28 @@ public class MaskedEntryRenderer extends InputRenderer {
         boolean hasIndicator = !(indicatorPosition.equals(NONE_INDICATOR_POSITION) || isValueBlank(indicator));
 
         writeLabelAndIndicatorBefore(writer, label, hasLabel, labelPosition, indicator, hasIndicator, indicatorPosition, required);
-		encodeMarkup(context, maskedEntry);
+		encodeMarkup(context, maskedEntry, label, hasLabel, labelPosition, indicator, hasIndicator, indicatorPosition);
         writeLabelAndIndicatorAfter(writer, label, hasLabel, labelPosition, indicator, hasIndicator, indicatorPosition, required);
-		encodeScript(context, maskedEntry);
+		encodeScript(context, maskedEntry, label, hasLabel, labelPosition, indicator, hasIndicator, indicatorPosition);
 	}
 	
-	protected void encodeScript(FacesContext context, MaskedEntry maskedEntry) throws IOException {
+	protected void encodeScript(FacesContext context, MaskedEntry maskedEntry, String label, boolean hasLabel, String labelPosition, String indicator, boolean hasIndicator, String indicatorPosition) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
 		String clientId = maskedEntry.getClientId(context);
-		
-		writer.startElement("script", null);
+
+        String inFieldLabel = "";
+        if (hasLabel && labelPosition.equals("inField")) {
+            inFieldLabel = label;
+            if (hasIndicator) {
+                if (indicatorPosition.equals("labelLeft")) {
+                    inFieldLabel = indicator + inFieldLabel;
+                } else if (indicatorPosition.equals("labelRight")) {
+                    inFieldLabel = inFieldLabel + indicator;
+                }
+            }
+        }
+
+        writer.startElement("script", null);
 		writer.writeAttribute("type", "text/javascript", null);
 
         writer.write(this.resolveWidgetVar(maskedEntry) + " = new ");
@@ -101,6 +113,13 @@ public class MaskedEntryRenderer extends InputRenderer {
 		if(placeHolder!=null) {
 			jb.entry("placeholder", placeHolder);
         }
+        jb.entry("inFieldLabel", inFieldLabel);
+        jb.entry("inFieldLabelStyleClass", IN_FIELD_LABEL_STYLE_CLASS);
+        if (isValueBlank(ComponentUtils.getStringValueToRender(context, maskedEntry))) {
+            jb.entry("labelIsInField", true);
+        } else {
+            jb.entry("labelIsInField", false);
+        }
 
         encodeClientBehaviors(context, maskedEntry, jb);
 
@@ -114,7 +133,7 @@ public class MaskedEntryRenderer extends InputRenderer {
 		writer.endElement("script");
 	}
 	
-	protected void encodeMarkup(FacesContext context, MaskedEntry maskedEntry) throws IOException {
+	protected void encodeMarkup(FacesContext context, MaskedEntry maskedEntry, String label, boolean hasLabel, String labelPosition, String indicator, boolean hasIndicator, String indicatorPosition) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
 		String clientId = maskedEntry.getClientId(context);
         String defaultClass = themeForms() ? MaskedEntry.THEME_INPUT_CLASS : MaskedEntry.PLAIN_INPUT_CLASS;
@@ -127,7 +146,18 @@ public class MaskedEntryRenderer extends InputRenderer {
 		writer.writeAttribute("type", "text", null);
 		
 		String valueToRender = ComponentUtils.getStringValueToRender(context, maskedEntry);
-		if(valueToRender != null) {
+        if (isValueBlank(valueToRender) && hasLabel && labelPosition.equals("inField")) {
+            valueToRender = label;
+            if (hasIndicator) {
+                if (indicatorPosition.equals("labelLeft")) {
+                    valueToRender = indicator + valueToRender;
+                } else if (indicatorPosition.equals("labelRight")) {
+                    valueToRender = valueToRender + indicator;
+                }
+            }
+            defaultClass += " " + IN_FIELD_LABEL_STYLE_CLASS;
+        }
+        if(valueToRender != null) {
 			writer.writeAttribute("value", valueToRender , null);
 		}
 		
