@@ -71,11 +71,13 @@ public class WindowAndViewIDSetup implements SystemEventListener {
                 writer.writeAttribute("value", viewId, null);
                 writer.endElement("input");
 
-                writer.startElement("input", this);
-                writer.writeAttribute("type", "hidden", null);
-                writer.writeAttribute("name", "javax.faces.ViewState", null);
-                writer.writeAttribute("value", context.getApplication().getStateManager().getViewState(context), null);
-                writer.endElement("input");
+                if (context.isPostback()) {
+                    writer.startElement("input", this);
+                    writer.writeAttribute("type", "hidden", null);
+                    writer.writeAttribute("name", "javax.faces.ViewState", null);
+                    writer.writeAttribute("value", context.getApplication().getStateManager().getViewState(context), null);
+                    writer.endElement("input");
+                }
             }
         };
 
