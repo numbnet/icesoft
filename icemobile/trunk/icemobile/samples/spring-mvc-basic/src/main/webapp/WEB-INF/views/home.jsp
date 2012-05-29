@@ -30,6 +30,7 @@
 		<li><a href="<c:url value="/campush" />" title="campush">Camera Push</a></li>
 		<li><a href="<c:url value="/microphone" />" title="microphone">Microphone</a></li>
 		<li><a href="<c:url value="/camcorder" />" title="camcorder">Camcorder</a></li>
+		<li><a href="<c:url value="/mediaspot" />" title="mediaspot">MediaSpot</a></li>
 		<li><a href="<c:url value="/flipswitch" />" title="flipswitch">Flipswitch</a></li>
 		<li><a href="#icehtml">ICEmobile HTML</a></li>
 		<li><a href="#exceptions">Exception Handling</a></li>
