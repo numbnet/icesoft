@@ -30,6 +30,7 @@ import javax.faces.component.UIComponent;
         componentClass = "org.icefaces.mobi.component.contentpane.ContentPane",
         rendererClass = "org.icefaces.mobi.component.contentpane.ContentPaneRenderer",
         generatedClass = "org.icefaces.mobi.component.contentpane.ContentPaneBase",
+        handlerClass = "org.icefaces.mobi.component.contentpane.ContentPaneHandler",
         componentType = "org.icefaces.ContentPane",
         rendererType = "org.icefaces.ContentPaneRenderer",
         extendsClass = "javax.faces.component.UIPanel",

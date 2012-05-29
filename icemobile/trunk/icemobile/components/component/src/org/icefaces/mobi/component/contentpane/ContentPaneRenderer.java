@@ -100,6 +100,7 @@ public class ContentPaneRenderer extends BaseLayoutRenderer {
            // logger.info(" instance of ContentPaneController");
             ContentPaneController paneController = (ContentPaneController)parent;
             selectedId = paneController.getSelectedId();
+            //System.out.println("iAmSelected()  id: " + uiComponent.getId() + "  selectedId: " + selectedId);
             if (null == selectedId){
                 return false;
             }
