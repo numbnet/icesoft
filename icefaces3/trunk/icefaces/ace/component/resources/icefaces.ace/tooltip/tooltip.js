@@ -32,7 +32,15 @@ ice.ace.Tooltip = function(cfg) {
 	if(this.cfg.global) {
 		this.target = "*[title]";
 	}else {
-		this.target = ice.ace.escapeClientId(this.cfg.forComponent);
+		if (this.cfg.forComponent) {
+			this.target = ice.ace.escapeClientId(this.cfg.forComponent);
+		} else if (this.cfg.forComponents) {
+			var arr = this.cfg.forComponents;
+			for (var i = 0; i < arr.length; i++) {
+				arr[i] = ice.ace.escapeClientId(arr[i]);
+			}
+			this.target = arr.join(', ');
+		}
 	}
 
     this.cfg.style = {};
