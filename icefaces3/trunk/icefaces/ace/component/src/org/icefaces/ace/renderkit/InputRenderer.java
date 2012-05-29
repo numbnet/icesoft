@@ -48,6 +48,7 @@ public class InputRenderer extends CoreRenderer {
     public static final Set<String> labelPositionSet = new HashSet<String>(Arrays.asList("left", "right", "top", "bottom", "inField", "none"));
     public static final Set<String> indicatorPositionSet = new HashSet<String>(Arrays.asList("left", "right", "top", "bottom", "labelLeft", "labelRight", "none"));
     public static final String LABEL_STYLE_CLASS = "ui-input-label";
+    public static final String IN_FIELD_LABEL_STYLE_CLASS = LABEL_STYLE_CLASS + "-infield";
     public static final String DEFAULT_LABEL_POSITION = "inField";
     public static final String DEFAULT_INDICATOR_POSITION = "right";
     public static final String NONE_LABEL_POSITION = "none";

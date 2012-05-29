@@ -87,6 +87,7 @@
 				var focusText = input.val();
 
 				input.data("buffer", buffer).data("tests", tests);
+                input.data("labelIsInField", settings.labelIsInField);
 
 				function seekNext(pos) {
 					while (++pos <= len && !tests[pos]);
@@ -204,7 +205,7 @@
 							lastMatch = i;
 						}
 					}
-					if (!allow && lastMatch + 1 < partialPosition) {
+					if (!allow && lastMatch + 1 < partialPosition && !input.data("labelIsInField")) {
 						input.val("");
 						clearBuffer(0, len);
 					} else if (allow || lastMatch + 1 >= partialPosition) {
@@ -223,6 +224,11 @@
 							.removeData("tests");
 					})
 					.bind("focus.mask", function() {
+                        if (input.data("labelIsInField")) {
+                            input.val("");
+                            input.removeClass(settings.inFieldLabelStyleClass);
+                            input.data("labelIsInField", false);
+                        }
 						focusText = input.val();
 						var pos = checkVal();
 						writeBuffer();
@@ -237,6 +243,11 @@
 						checkVal();
 						if (input.val() != focusText)
 							input.change();
+                        if ($.trim(input.val()) == "" && settings.inFieldLabel) {
+                            input.val(settings.inFieldLabel);
+                            input.addClass(settings.inFieldLabelStyleClass);
+                            input.data("labelIsInField", true);
+                        }
 					})
 					.bind("keydown.mask", keydownEvent)
 					.bind("keypress.mask", keypressEvent)
