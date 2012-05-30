@@ -488,11 +488,13 @@ public class DataTable extends DataTableBase implements Serializable {
     public void resetSorting() {
         for (Column c : getColumns()) {
             c.setSortPriority(null);
-            c.setSortAscending(false);
+            if (c.getValueExpression("groupBy") == null)
+                c.setSortAscending(false);
         }
         for (Column c : getColumns(true)) {
             c.setSortPriority(null);
-            c.setSortAscending(false);
+            if (c.getValueExpression("groupBy") == null)
+                c.setSortAscending(false);
         }
     }
 
