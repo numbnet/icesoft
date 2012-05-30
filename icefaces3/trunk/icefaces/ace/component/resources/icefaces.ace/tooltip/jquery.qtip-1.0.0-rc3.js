@@ -1920,6 +1920,16 @@
       // Hide unfocus toolipts on document mousedown
       $(document).bind('mousedown.qtip', function(event)
       {
+		// ICE-8145 {
+		var openTooltips = false;
+		for (p in ice.ace.Tooltips) {
+			if (ice.ace.Tooltips[p] == true) {
+				openTooltips = true;
+				break;
+			}
+		}
+		if (!openTooltips) return;
+		// ICE-8145 }
          if($(event.target).parents('div.qtip').length === 0)
          {
             $('.qtip[unfocus]').each(function()
