@@ -25,6 +25,12 @@
 				  		<div id="message" class="error">Form has errors</div>
 		  			</c:if>
 		  		</s:bind>
+		  	<fieldset>
+                <c:if test="${null != selection}">
+                    <div>You selected ${selection}</div>
+                    <img style="float:right;height:120px;width:120px;" src="${imgPath}" >
+                </c:if>
+		  	</fieldset>
 			</div>
 		  	<fieldset>
 		  		<legend>Personal Info</legend>
@@ -38,9 +44,8 @@
 		  	<fieldset >
                <mobi:camera />
                <img style="height:60px;width:65px;vertical-align:middle;" id="camera-thumb" >
-               <img style="float:right;height:120px;width:120px;" src="${imgPath}" >
 		  	</fieldset>
-            <input type="button" id="augra" style="float:right;" data-id="augra" data-command="aug" data-params="${reality}" value="Reality" onclick="mobilesx(this);" >
+            <input type="button" id="selection" style="float:right;" data-id="selection" data-command="aug" data-params="${reality}" value="Reality" onclick="mobilesx(this);" >
             <input type="hidden" id="location" name="location" >
 			<p><button type="submit">Submit</button></p>
 		</form:form>

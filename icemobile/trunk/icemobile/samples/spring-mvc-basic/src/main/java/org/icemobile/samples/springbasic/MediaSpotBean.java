@@ -6,6 +6,8 @@ public class MediaSpotBean {
 
     private String title;
     private String location;
+    private String selection;
+    private String fileName;
 
     public String getTitle() {
         return title;
@@ -15,12 +17,28 @@ public class MediaSpotBean {
         this.title = title;
     }
 
+    public String getSelection() {
+        return selection;
+    }
+
+    public void setSelection(String selection) {
+        this.selection = selection;
+    }
+
     public String getLocation() {
         return location;
     }
 
     public void setLocation(String location) {
         this.location = location;
+    }
+
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
     }
 
     public String getPacked()  {
