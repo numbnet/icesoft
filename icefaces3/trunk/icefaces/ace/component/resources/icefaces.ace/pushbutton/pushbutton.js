@@ -16,10 +16,6 @@
 
 ice.ace.pushbutton = {
     initialize:function(clientId, jsProps, jsfProps, bindYUI) {
-//      if (YAHOO.widget.Logger) {
-//            YAHOO.widget.Logger.enableBrowserConsole();
-//      }
-		YAHOO.util.Event.onDOMReady(function () {
         //want the span id
         var spanId = clientId + "_span";
         YAHOO.log("clientId=" + clientId + " spanId=" + spanId);
@@ -29,28 +25,28 @@ ice.ace.pushbutton = {
         var button = new YAHOO.widget.Button(spanId,
             {tabindex: null, type: jsProps.type});
 
-	button.addStateCSSClasses = function(state) {
-	
-		if (state == 'hover') {
-			ice.ace.jq(this._button).addClass('ui-state-hover');
-		} else if (state == 'active') {
-			ice.ace.jq(this._button).addClass('ui-state-active');
-		} else if (state == 'disabled') {
-			ice.ace.jq(this._button).addClass('ui-state-disabled ');
-		}
-	};
-	
-	button.removeStateCSSClasses = function(state) {
-	
-		if (state == 'hover') {
-			ice.ace.jq(this._button).removeClass('ui-state-hover');
-		} else if (state == 'active') {
-			ice.ace.jq(this._button).removeClass('ui-state-active');
-		} else if (state == 'disabled') {
-			ice.ace.jq(this._button).removeClass('ui-state-disabled ');
-		}
-	};
-	
+        button.addStateCSSClasses = function(state) {
+
+            if (state == 'hover') {
+                ice.ace.jq(this._button).addClass('ui-state-hover');
+            } else if (state == 'active') {
+                ice.ace.jq(this._button).addClass('ui-state-active');
+            } else if (state == 'disabled') {
+                ice.ace.jq(this._button).addClass('ui-state-disabled ');
+            }
+        };
+
+        button.removeStateCSSClasses = function(state) {
+
+            if (state == 'hover') {
+                ice.ace.jq(this._button).removeClass('ui-state-hover');
+            } else if (state == 'active') {
+                ice.ace.jq(this._button).removeClass('ui-state-active');
+            } else if (state == 'disabled') {
+                ice.ace.jq(this._button).removeClass('ui-state-disabled ');
+            }
+        };
+
         if (jsProps.label) {
             button.set('label', jsProps.label);
         }
@@ -71,10 +67,10 @@ ice.ace.pushbutton = {
             var sJSFProps = context.getJSFProps();
             var postParameters = sJSFProps.postParameters;
             if (postParameters != null) {
-                 var argCount = postParameters.length / 2;
-                 for (var idx =0; idx < argCount; idx ++ ) {
-                     parameter( postParameters[idx*2], postParameters[(idx*2)+1] );
-                 }
+                var argCount = postParameters.length / 2;
+                for (var idx = 0; idx < argCount; idx ++) {
+                    parameter(postParameters[idx * 2], postParameters[(idx * 2) + 1]);
+                }
             }
         };
 
@@ -90,7 +86,9 @@ ice.ace.pushbutton = {
             if (behaviors && behaviors.activate) {
                 // Convert core style params into ace style params
                 var p = {};
-                params(function(name, value) { p[name] = value; });
+                params(function(name, value) {
+                    p[name] = value;
+                });
                 ice.ace.ab(ice.ace.extendAjaxArguments(behaviors.activate, {params:p}));
             } else if (fullSubmit) {
                 ice.s(e, divRoot, params);
@@ -117,27 +115,26 @@ ice.ace.pushbutton = {
 
 
         bindYUI(button);
-	 }); // *** end of domready
     },
-	
-   //delegate call to ice.yui.updateProperties(..)  with the reference of this lib
-   updateProperties:function(clientId, jsProps, jsfProps, events) {
-       var context = ice.ace.getJSContext(clientId);
-       if (context && context.isAttached()) {
-           var prevJSFProps = context.getJSFProps();
-           if (prevJSFProps.hashCode != jsfProps.hashCode) {
-               context.getComponent().destroy();
-               document.getElementById(clientId)['JSContext'] = null;
-               JSContext[clientId] = null;
-           }
-       }
-	   ice.ace.updateProperties(clientId, jsProps, jsfProps, events, this);
-   },
- 
-   //delegate call to ice.yui.getInstance(..) with the reference of this lib 
-   getInstance:function(clientId, callback) {
-       ice.ace.getInstance(clientId, callback, this);
-   }
-   
-   
+
+    //delegate call to ice.yui.updateProperties(..)  with the reference of this lib
+    updateProperties:function(clientId, jsProps, jsfProps, events) {
+        var context = ice.ace.getJSContext(clientId);
+        if (context && context.isAttached()) {
+            var prevJSFProps = context.getJSFProps();
+            if (prevJSFProps.hashCode != jsfProps.hashCode) {
+                context.getComponent().destroy();
+                document.getElementById(clientId)['JSContext'] = null;
+                JSContext[clientId] = null;
+            }
+        }
+        ice.ace.updateProperties(clientId, jsProps, jsfProps, events, this);
+    },
+
+    //delegate call to ice.yui.getInstance(..) with the reference of this lib
+    getInstance:function(clientId, callback) {
+        ice.ace.getInstance(clientId, callback, this);
+    }
+
+
 };

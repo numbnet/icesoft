@@ -17,55 +17,49 @@
 ice.ace.linkButton = {
 
     initialize:function(clientId, jsProps, jsfProps, bindYUI) {
-//	   if (YAHOO.widget.Logger){
-//	 	  YAHOO.widget.Logger.enableBrowserConsole();
-//       }
-		YAHOO.util.Event.onDOMReady(function () {
-
         var spanId = clientId + "_span";
-	    var oLinkButton = new YAHOO.widget.Button(spanId,{ label: jsProps.label, tabindex: null }, {type: jsProps.type});
+        var oLinkButton = new YAHOO.widget.Button(spanId, { label: jsProps.label, tabindex: null }, {type: jsProps.type});
 
-	oLinkButton.addStateCSSClasses = function(state) {
-	
-		if (state == 'hover') {
-			ice.ace.jq(this._button).addClass('ui-state-hover');
-		} else if (state == 'active') {
-			ice.ace.jq(this._button).addClass('ui-state-active');
-		} else if (state == 'disabled') {
-			ice.ace.jq(this._button).addClass('ui-state-disabled ');
-		}
-	};
-	
-	oLinkButton.removeStateCSSClasses = function(state) {
-	
-		if (state == 'hover') {
-			ice.ace.jq(this._button).removeClass('ui-state-hover');
-		} else if (state == 'active') {
-			ice.ace.jq(this._button).removeClass('ui-state-active');
-		} else if (state == 'disabled') {
-			ice.ace.jq(this._button).removeClass('ui-state-disabled ');
-		}
-	};
-		
+        oLinkButton.addStateCSSClasses = function(state) {
+
+            if (state == 'hover') {
+                ice.ace.jq(this._button).addClass('ui-state-hover');
+            } else if (state == 'active') {
+                ice.ace.jq(this._button).addClass('ui-state-active');
+            } else if (state == 'disabled') {
+                ice.ace.jq(this._button).addClass('ui-state-disabled ');
+            }
+        };
+
+        oLinkButton.removeStateCSSClasses = function(state) {
+
+            if (state == 'hover') {
+                ice.ace.jq(this._button).removeClass('ui-state-hover');
+            } else if (state == 'active') {
+                ice.ace.jq(this._button).removeClass('ui-state-active');
+            } else if (state == 'disabled') {
+                ice.ace.jq(this._button).removeClass('ui-state-disabled ');
+            }
+        };
+
         root = document.getElementById(spanId);
 
-		root.firstChild.setAttribute("role", "link");
-	    root.firstChild.setAttribute("aria-labelledby",jsProps.label);
-	    if (jsfProps.disabled){
-	        root.firstChild.setAttribute("aria-disabled", jsfProps.disabled);
-	    }
-	    // If there's no action listener, this is standard anchor behaviour
-	    // otherwise it's got an actionListener/action attribute. Described by offers further description
-	    if (!jsfProps.doAction ) {
-	       root.firstChild.setAttribute("aria-describedby", "Standard HTML anchor");
-	    } else {
-           root.firstChild.setAttribute("aria-describedby", "JSF action event source");
-        } 
+        root.firstChild.setAttribute("role", "link");
+        root.firstChild.setAttribute("aria-labelledby", jsProps.label);
+        if (jsfProps.disabled) {
+            root.firstChild.setAttribute("aria-disabled", jsfProps.disabled);
+        }
+        // If there's no action listener, this is standard anchor behaviour
+        // otherwise it's got an actionListener/action attribute. Described by offers further description
+        if (!jsfProps.doAction) {
+            root.firstChild.setAttribute("aria-describedby", "Standard HTML anchor");
+        } else {
+            root.firstChild.setAttribute("aria-describedby", "JSF action event source");
+        }
 
-		bindYUI(oLinkButton);
-	 }); // *** end of domready
-	},
-	
+        bindYUI(oLinkButton);
+    },
+
     //delegate call to ice.yui.updateProperties(..)  with the reference of this lib
     updateProperties:function(clientId, jsProps, jsfProps, events) {
 
@@ -80,7 +74,7 @@ ice.ace.linkButton = {
         }
         ice.ace.updateProperties(clientId, jsProps, jsfProps, events, this);
     },
- 
+
     //delegate call to ice.yui.getInstance(..) with the reference of this lib
     getInstance:function(clientId, callback) {
         ice.ace.getInstance(clientId, callback, this);
@@ -98,8 +92,8 @@ ice.ace.linkButton = {
         var params = function(parameter) {
             if (postParameters != null) {
                 var argCount = postParameters.length / 2;
-                for (var idx =0; idx < argCount; idx ++ ) {
-                    parameter( postParameters[idx*2], postParameters[(idx*2)+1] );
+                for (var idx = 0; idx < argCount; idx ++) {
+                    parameter(postParameters[idx * 2], postParameters[(idx * 2) + 1]);
                 }
             }
         };
@@ -113,12 +107,14 @@ ice.ace.linkButton = {
         if (behaviors && behaviors.activate) {
             // Convert core style params into ace style params
             var p = {};
-            params(function(name, value) { p[name] = value; });
-            ice.ace.ab(ice.ace.extendAjaxArguments(behaviors.activate,{params:p}));
+            params(function(name, value) {
+                p[name] = value;
+            });
+            ice.ace.ab(ice.ace.extendAjaxArguments(behaviors.activate, {params:p}));
         } else if (doAction) {
-           ice.s(e, divRoot, params);
-        } else if(!hrefAttr) {
-            ice.se(e, divRoot, params );
+            ice.s(e, divRoot, params);
+        } else if (!hrefAttr) {
+            ice.se(e, divRoot, params);
         }
 
         // If there are actionListeners, don't do default behaviour
@@ -142,8 +138,8 @@ ice.ace.linkButton = {
         var params = function(parameter) {
             if (postParameters != null) {
                 var argCount = postParameters.length / 2;
-                for (var idx =0; idx < argCount; idx ++ ) {
-                    parameter( postParameters[idx*2], postParameters[(idx*2)+1] );
+                for (var idx = 0; idx < argCount; idx ++) {
+                    parameter(postParameters[idx * 2], postParameters[(idx * 2) + 1]);
                 }
             }
         };
@@ -151,14 +147,16 @@ ice.ace.linkButton = {
         if (behaviors && behaviors.activate) {
             // Convert core style params into ace style params
             var p = {};
-            params(function(name, value) { p[name] = value; });
-            ice.ace.ab(ice.ace.extendAjaxArguments(behaviors.activate,{params:p}));
+            params(function(name, value) {
+                p[name] = value;
+            });
+            ice.ace.ab(ice.ace.extendAjaxArguments(behaviors.activate, {params:p}));
         } else if (doAction) {
             ice.s(e, divRoot, params);
         } else {
-            ice.se(e, divRoot, params );
+            ice.se(e, divRoot, params);
         }
-		
+
         // If there are actionListeners, don't do default behaviour
         if (doAction) {
             return false;
