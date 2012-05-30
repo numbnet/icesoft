@@ -752,7 +752,7 @@ ice.ace.DataTable.prototype.resizeScrolling = function() {
         if (!ie7) bodyTable.css('table-layout','auto');
 
         // IE7 scrollbar fix
-        if (bodyTable.size() > 0 && ie7 && bodyTable.parent().is(':scrollable')) {
+        if (bodyTable.size() > 0 && ie7 && bodyTable.parent().is(':scrollable') && !this.cfg.scrollIE8Like7) {
             bodyTable.parent().css('overflow-x', 'hidden');
             bodyTable.parent().css('padding-right', '17px');
             headerTable.parent().css('padding-right', '17px');
@@ -783,7 +783,7 @@ ice.ace.DataTable.prototype.resizeScrolling = function() {
             bodyColumn = ice.ace.jq(bodySingleCols[i]);
 
             // Work around webkit bug described here: https://bugs.webkit.org/show_bug.cgi?id=13339
-            var realHeadColumnWidth = dupeHeadColumnWidths[i];
+            var realHeadColumnWidth = (this.cfg.scrollIE8Like7) ? dupeHeadColumnWidths[i] + 1 : dupeHeadColumnWidths[i];
 
             var bodyColumnWidth = (safari) ? dupeHeadColumnWidths[i] + parseInt(bodyColumn.parent().css('padding-right')) +
                     parseInt(bodyColumn.parent().css('padding-left')) + 1
@@ -792,6 +792,8 @@ ice.ace.DataTable.prototype.resizeScrolling = function() {
             var realFootColumnWidth = (safari) ? dupeHeadColumnWidths[i] + parseInt(realFootColumn.parent().css('padding-right')) +
                     parseInt(realFootColumn.parent().css('padding-left'))
                     : dupeHeadColumnWidths[i];
+
+            if (this.cfg.scrollIE8Like7) realFootColumnWidth += 1;
 
             // Set Duplicate Header Sizing to True Header Columns
             if (!ie7) realHeadColumn.width(realHeadColumnWidth);

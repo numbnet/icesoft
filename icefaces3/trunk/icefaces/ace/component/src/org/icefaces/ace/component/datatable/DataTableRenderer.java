@@ -111,26 +111,27 @@ public class DataTableRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
 		String clientId = table.getClientId(context);
         String filterEvent = table.getFilterEvent();
-        UIComponent form = ComponentUtils.findParentForm(context, table);        
+        UIComponent form = ComponentUtils.findParentForm(context, table);
         JSONBuilder json = new JSONBuilder();
 
         if (form == null) 
             throw new FacesException("DataTable : \"" + clientId + "\" must be inside a form element.");
 
-        boolean paging = table.isPaginator();
-        boolean select = table.isSelectionEnabled();
-        boolean dblSelect = select && table.isDoubleClickSelect(); 
-        boolean ajaxSelect = select && table.hasSelectionClientBehaviour() || (table.getRowSelectListener() != null) || (table.getRowUnselectListener() != null);
-        boolean rowExp = table.getRowExpansion() != null;
-        boolean pnlExp = table.getPanelExpansion() != null;
-        boolean clkHdrSrt = table.isClickableHeaderSorting();        
-        boolean resize = table.isResizableColumns();
-        boolean reorder = table.isReorderableColumns(); 
-        boolean snglSrt = table.isSingleSort(); 
-        boolean disable = table.isDisabled();
-        boolean scroll = table.isScrollable();
-        boolean hiddenScrollableSizing = table.isHiddenScrollableSizing();
-        boolean height = scroll && table.getScrollHeight() != Integer.MIN_VALUE;
+        final boolean paging = table.isPaginator();
+        final boolean select = table.isSelectionEnabled();
+        final boolean dblSelect = select && table.isDoubleClickSelect();
+        final boolean ajaxSelect = select && table.hasSelectionClientBehaviour() || (table.getRowSelectListener() != null) || (table.getRowUnselectListener() != null);
+        final boolean rowExp = table.getRowExpansion() != null;
+        final boolean pnlExp = table.getPanelExpansion() != null;
+        final boolean clkHdrSrt = table.isClickableHeaderSorting();
+        final boolean resize = table.isResizableColumns();
+        final boolean reorder = table.isReorderableColumns();
+        final boolean snglSrt = table.isSingleSort();
+        final boolean disable = table.isDisabled();
+        final boolean scroll = table.isScrollable();
+        final boolean hiddenScrollableSizing = table.isHiddenScrollableSizing();
+        final boolean height = scroll && table.getScrollHeight() != Integer.MIN_VALUE;
+        final boolean scrollIE8Like7 = Boolean.parseBoolean(context.getExternalContext().getInitParameter("org.icefaces.ace.datatable.scroll.ie8like7"));
 
         json.beginMap();
         json.entry("formId", form.getClientId(context));        
@@ -148,12 +149,13 @@ public class DataTableRenderer extends CoreRenderer {
         if (reorder) json.entry("reorderableColumns", true);
         if (snglSrt) json.entry("singleSort", true);
         if (disable) json.entry("disable", true);
-        if (!hiddenScrollableSizing) json.entry("disableHiddenSizing",true);
         if (scroll) {
             json.entry("scrollable", true);
             json.entry("liveScroll", table.isLiveScroll());
             json.entry("scrollStep", table.getRows());
             json.entry("scrollLimit", table.getRowCount());
+            json.entry("scrollIE8Like7", scrollIE8Like7);
+            if (!hiddenScrollableSizing) json.entry("disableHiddenSizing",true);
         }
 
         encodeClientBehaviors(context, table, json);
@@ -177,7 +179,7 @@ public class DataTableRenderer extends CoreRenderer {
 
         boolean disabled = table.isDisabled();
         String template = table.getPaginatorTemplate() ;
-        String rowTemplate = table.getRowsPerPageTemplate();
+        String rowCounts= table.getRowsPerPageTemplate();
         String currPgTemplate = table.getCurrentPageReportTemplate();
         boolean notAlwaysVis = !table.isPaginatorAlwaysVisible();
 
@@ -187,11 +189,21 @@ public class DataTableRenderer extends CoreRenderer {
         configJson.entry("initialPage", table.getPage());
         configJson.entry("containers", "[" + paginatorContainers + "]", true);
         configJson.entryNonNullValue("template", template);
-        configJson.entryNonNullValue("rowsPerPageOptions", rowTemplate);
         configJson.entryNonNullValue("pageReportTemplate", currPgTemplate);
         if (notAlwaysVis) configJson.entry("alwaysVisible",false);
         if (disabled) configJson.entry("pageLinks", 1);
         else configJson.entry("pageLinks", table.getPageCount());
+
+        if (rowCounts != null) {
+            String[] rowCountArray = rowCounts.split(",");
+            if (rowCountArray.length > 0) {
+                configJson.beginArray("rowsPerPageOptions");
+                for (String i : rowCountArray)
+                    configJson.item(Integer.parseInt(i.trim()));
+                configJson.endArray();
+            }
+        }
+
         configJson.endMap();
 
         scriptJson.entry("paginator", "new YAHOO.widget.Paginator(" + configJson + ")", true);
