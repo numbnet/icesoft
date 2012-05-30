@@ -637,7 +637,7 @@ ice.ace.DataTable.prototype.setupResizableColumns = function() {
 
     //Setup resizing
     this.columnWidthsCookie = this.id + '_columnWidths',
-            resizers = ice.ace.jq(this.jqId + ' thead:first > tr > th > div.ui-column-resizer'),
+            resizers = ice.ace.jq(this.jqId + ' thead:first > tr > th > div > div.ui-column-resizer'),
             columns = ice.ace.jq(this.jqId + ' thead:first > tr > th'),
             _self = this;
 
@@ -735,6 +735,11 @@ ice.ace.DataTable.prototype.resizeScrolling = function() {
                 ie8 = ice.ace.jq.browser.msie && ice.ace.jq.browser.version == 8,
                 ie9 = ice.ace.jq.browser.msie && ice.ace.jq.browser.version == 9,
                 firefox = ice.ace.jq.browser.mozilla;
+
+        if (this.cfg.scrollIE8Like7 && ie8) {
+            ie7 = true;
+            ie8 = false;
+        }
 
         // If duplicate header/footer row causes body table to barely
         // exceed min-table size (causing scrollbar)
