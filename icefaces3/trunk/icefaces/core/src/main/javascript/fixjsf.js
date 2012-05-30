@@ -116,13 +116,22 @@
                 if (extractAttributeValue(link, 'type') == 'text/css') {
                     var src = extractAttributeValue(link, 'href');
                     if (src && not(contains(linkRefs, unescapeHtml(src)))) {
+                        var code;
+                        getSynchronously(client, src, noop, noop, function(response) {
+                            code = contentAsText(response);
+                        });
+
                         var headElement = document.getElementsByTagName("head")[0];
-                        var linkElement = document.createElement('link');
-                        linkElement.type = 'text/css';
-                        linkElement.rel = 'stylesheet';
-                        linkElement.href = src;
-                        linkElement.media = extractAttributeValue('media', 'screen');
-                        headElement.appendChild(linkElement);
+                        var styleElement = document.createElement('style');
+                        styleElement.type = 'text/css';
+                        styleElement.media = extractAttributeValue(link, 'media', 'screen');
+                        headElement.appendChild(styleElement);
+                        if (styleElement.styleSheet) {   // IE
+                            styleElement.styleSheet.cssText = code;
+                        } else {                // the world
+                            var textNode = document.createTextNode(code);
+                            styleElement.appendChild(textNode);
+                        }
                         //add link to the list of CSS resources that have been loaded
                         append(linkRefs, src);
                     }
