@@ -224,6 +224,7 @@
 							.removeData("tests");
 					})
 					.bind("focus.mask", function() {
+                        // ICE-8154: in-field label handling
                         if (input.data("labelIsInField")) {
                             input.val("");
                             input.removeClass(settings.inFieldLabelStyleClass);
@@ -243,6 +244,7 @@
 						checkVal();
 						if (input.val() != focusText)
 							input.change();
+                        // ICE-8154: in-field label handling
                         if ($.trim(input.val()) == "" && settings.inFieldLabel) {
                             input.val(settings.inFieldLabel);
                             input.addClass(settings.inFieldLabelStyleClass);
