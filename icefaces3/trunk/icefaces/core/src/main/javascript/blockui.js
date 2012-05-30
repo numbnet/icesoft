@@ -68,9 +68,9 @@
     }
 
     var stopBlockingUI = noop;
-    namespace.onBeforeSubmit(function(source) {
-        //don't block UI for the retrieveUpdate requests
-        if (isBlockUIEnabled(source)) {
+    namespace.onBeforeSubmit(function(source,isClientRequest) {
+        //Only block the UI for client-initiated requests (not push requests)
+        if (isClientRequest && isBlockUIEnabled(source)) {
             debug(logger, 'blocking UI');
             var blockUIOverlay = Overlay();
             var rollbacks = inject(['input', 'select', 'textarea', 'button', 'a'], [], function(result, type) {
