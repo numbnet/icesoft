@@ -16,7 +16,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import java.util.UUID;
-import java.util.ArrayList;
+import java.util.HashMap;
 import javax.imageio.ImageIO;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
@@ -24,7 +24,7 @@ import java.awt.image.BufferedImage;
 
 @Controller
 public class MediaSpotController {
-    ArrayList<String> messages = new ArrayList();
+    HashMap<String,MediaSpotBean> messages = new HashMap();
     static int THUMBSIZE = 128;
 
 	@ModelAttribute
@@ -53,15 +53,17 @@ public class MediaSpotController {
         if (null != photoFile)  {
             newFileName = saveMedia(request, "img-%1$s.jpg", photoFile);
             fileName = photoFile.getOriginalFilename();
-            messages.add(spotBean.getPacked() + ",," + newFileName);
+            spotBean.setFileName(newFileName);
+            messages.put(spotBean.getTitle(), spotBean);
             scaleImage( new File(request.getRealPath("/" + newFileName)) );
         }
 		model.addAttribute("reality", getRealityParams());
 		model.addAttribute("message", "Hello your file '" + fileName + "' was uploaded successfully.");
-        if (null != newFileName) {
-            model.addAttribute("imgPath", newFileName);
-        } else {
-            model.addAttribute("imgPath", "resources/uploaded.jpg");
+        String selection = spotBean.getSelection();
+        if (null != spotBean.getSelection()) {
+            model.addAttribute("selection", selection);
+            model.addAttribute("imgPath", 
+                    messages.get(selection).getFileName());
         }
     }
 
@@ -100,7 +102,9 @@ public class MediaSpotController {
     
     private String getRealityParams()  {
         StringBuilder sb = new StringBuilder();
-        for (String location : messages)  {
+        for (MediaSpotBean message : messages.values())  {
+            String location = message.getPacked() + ",," + 
+                    message.getFileName();
             sb.append("&" + location);
         }
         return sb.toString();
