@@ -262,10 +262,12 @@ if (!window.ice.icefaces) {
                 var source = e.source;
                 switch (e.status) {
                     case 'begin':
-                        //trigger notification only when submit is user-initiated
+                        //Include parameter indicating if submission was triggered by client
+                        var isClientRequest = false;
                         if (!source || source.id != retrieveUpdateFormID(viewIDOf(source))) {
-                            broadcast(perRequestOnBeforeSubmitListeners, [ source ]);
+                            isClientRequest = true;
                         }
+                        broadcast(perRequestOnBeforeSubmitListeners, [ source, isClientRequest ]);
                         break;
                     case 'complete':
                         var xmlContent = e.responseXML;
