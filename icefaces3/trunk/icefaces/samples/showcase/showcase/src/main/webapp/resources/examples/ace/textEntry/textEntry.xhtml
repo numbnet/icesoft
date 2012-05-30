@@ -85,7 +85,8 @@
                     </ace:textEntry>
                     
                     <ace:textEntry id="provinceInput" value="#{textEntryBean.province}" label="Prov./State" labelPosition="#{textEntryBean.labelPosition}" required="false" optionalIndicator="(Opt.)" indicatorPosition="#{textEntryBean.indicatorPosition}">
-                        <ace:ajax render="@this provinceOutput"/>
+                        <ace:ajax render="@this provinceOutput provinceMsg"/>
+                        <f:validateLength minimum="2"/>
                     </ace:textEntry>
 
                     <ace:textEntry id="countryInput" value="#{textEntryBean.country}" label="Country" labelPosition="#{textEntryBean.labelPosition}" required="true" requiredIndicator="(*)" indicatorPosition="#{textEntryBean.indicatorPosition}">
@@ -97,6 +98,7 @@
                     <h:message id="lastNameMsg" for="lastNameInput" errorClass="ui-state-error-text"/>
                     <h:message id="address1Msg" for="address1Input" errorClass="ui-state-error-text"/>
                     <h:message id="cityMsg" for="cityInput" errorClass="ui-state-error-text"/>
+                    <h:message id="provinceMsg" for="provinceInput" errorClass="ui-state-error-text"/>
                     <h:message id="countryMsg" for="countryInput" errorClass="ui-state-error-text"/>
                 </h:panelGrid>
             </ace:panel>
