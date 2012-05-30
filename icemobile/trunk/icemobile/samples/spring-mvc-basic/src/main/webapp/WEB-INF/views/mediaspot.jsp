@@ -17,37 +17,33 @@
 		<p>
 			ICEmobile Augmented Reality	
 		</p>
-		<form:form id="mediaspotform" method="POST" enctype="multipart/form-data" modelAttribute="mediaspotBean" cssClass="cleanform">
+		<form:form id="mediaspotform" method="POST" enctype="multipart/form-data" modelAttribute="mediaspotBean" style="width: 290px" >
 			<div class="header">
-		  		<h2>Form</h2>
 		  		<s:bind path="*">
 		  			<c:if test="${status.error}">
 				  		<div id="message" class="error">Form has errors</div>
 		  			</c:if>
 		  		</s:bind>
-		  	<fieldset>
-                <c:if test="${null != selection}">
-                    <div>You selected ${selection}</div>
-                    <img style="float:right;height:120px;width:120px;" src="${imgPath}" >
-                </c:if>
-		  	</fieldset>
+            <c:if test="${null != selection}">
+                <fieldset style="text-align:center">
+                    <div>Selected location:</div>
+                    <img style="height:120px;width:120px;padding:5px;"
+                        src="${imgPath}" >
+                    <div style="font-style:italic">${selection}</div>
+                </fieldset>
+            </c:if>
 			</div>
 		  	<fieldset>
-		  		<legend>Personal Info</legend>
-		  		<form:label path="title">
-		  			Name <form:errors path="title" cssClass="error" />
-		 		</form:label>
-		  		<form:input path="title" />
-		
+		  		<form:input path="title" placeholder="Title" />
 		  	</fieldset>
 
 		  	<fieldset >
                <mobi:camera />
                <img style="height:60px;width:65px;vertical-align:middle;" id="camera-thumb" >
 		  	</fieldset>
-            <input type="button" id="selection" style="float:right;" data-id="selection" data-command="aug" data-params="${reality}" value="Reality" onclick="mobilesx(this);" >
+            <input type="button" id="selection"  data-id="selection" data-command="aug" data-params="${reality}" value="Reality" onclick="mobilesx(this);" >
             <input type="hidden" id="location" name="location" >
-			<p><button type="submit">Submit</button></p>
+			<button style="float:right;" type="submit">Submit</button>
 		</form:form>
 
 
