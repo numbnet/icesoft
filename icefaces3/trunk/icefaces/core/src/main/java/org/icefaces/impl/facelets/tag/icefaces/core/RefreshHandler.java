@@ -22,6 +22,7 @@ public class RefreshHandler extends TagHandler {
     private long interval;
     private long duration;
     private boolean disabled;
+    private boolean receivingPreRenderEvents;
 
     public RefreshHandler(TagConfig config) {
         super(config);
@@ -37,8 +38,9 @@ public class RefreshHandler extends TagHandler {
     }
 
     public void apply(FaceletContext ctx, UIComponent parent) throws IOException {
-        if (!disabled) {
+        if (!disabled && !receivingPreRenderEvents) {
             ctx.getFacesContext().getApplication().subscribeToEvent(PreRenderComponentEvent.class, new RefreshSetup());
+            receivingPreRenderEvents = true;
         }
     }
 
