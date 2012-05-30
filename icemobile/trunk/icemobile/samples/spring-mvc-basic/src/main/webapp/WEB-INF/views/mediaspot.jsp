@@ -38,7 +38,7 @@
 		  	</fieldset>
 
 		  	<fieldset >
-               <mobi:camera />
+               <mobi:camera id="camera" />
                <img style="height:60px;width:65px;vertical-align:middle;" id="camera-thumb" >
 		  	</fieldset>
             <input type="button" id="selection"  data-id="selection" data-command="aug" data-params="${reality}" value="Reality" onclick="mobilesx(this);" >
