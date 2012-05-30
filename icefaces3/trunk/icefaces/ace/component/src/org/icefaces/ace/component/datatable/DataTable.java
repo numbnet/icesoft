@@ -964,9 +964,10 @@ public class DataTable extends DataTableBase implements Serializable {
 
         ArrayList<Row> validRows = new ArrayList<Row>();
         for (Row c : conditionalRows)
-            if (((c.getPos().equals("before") && before) || (c.getPos().equals("after") && !before))
-                && c.evaluateCondition(rowIndex))
-                    validRows.add(c);
+            if (c.isRendered())
+                if (((c.getPos().equals("before") && before) || (c.getPos().equals("after") && !before))
+                    && c.evaluateCondition(rowIndex))
+                        validRows.add(c);
 
         return validRows;
     }
