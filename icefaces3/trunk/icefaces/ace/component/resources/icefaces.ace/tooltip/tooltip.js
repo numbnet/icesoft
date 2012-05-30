@@ -57,8 +57,8 @@ ice.ace.Tooltip = function(cfg) {
 	this.jq.qtip(this.cfg);
 	
 	var self = this;
-	this.jq.qtip("api").beforeShow = function() { if (!ice.ace.Tooltips[self.target] && (self.cfg.displayListener || self.cfg.behaviors.display)) { ice.ace.Tooltips[self.target] = true; self.triggerDisplayListener(); }};
-	this.jq.qtip("api").onHide = function() { ice.ace.Tooltips[self.target] = false; };
+	this.jq.qtip("api").beforeShow = function() { if (!ice.ace.Tooltips[self.cfg.id] && (self.cfg.displayListener || self.cfg.behaviors.display)) { ice.ace.Tooltips[self.cfg.id] = true; self.triggerDisplayListener(); }};
+	this.jq.qtip("api").onHide = function() { delete ice.ace.Tooltips[self.cfg.id] };
     callee[id] = this;
 };
 
