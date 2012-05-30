@@ -3807,7 +3807,7 @@ function wijmoASPNetParseOptions(o) {
 					menucontainer.hide();
 					self._initTrigger(triggerEle);
 				}
-			}/*
+			}
 			$(document).bind("click.wijmenudoc", function (e) {
 				///fixed when click the breadcrumb choose item link to show
 				/// the root menu in sliding menu.
@@ -3835,7 +3835,7 @@ function wijmoASPNetParseOptions(o) {
 						self._hideSubmenu(menucontainer);
 					}
 				}
-			});*/
+			});
 		},
 
 		_showFlyoutSubmenu: function (e, li, subList) {
