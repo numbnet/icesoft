@@ -25,6 +25,7 @@ import java.awt.image.BufferedImage;
 @Controller
 public class MediaSpotController {
     ArrayList<String> messages = new ArrayList();
+    static int THUMBSIZE = 128;
 
 	@ModelAttribute
 	public void ajaxAttribute(WebRequest request, Model model) {
@@ -119,10 +120,14 @@ public class MediaSpotController {
 
         // create the thumbnail
         AffineTransform tx = new AffineTransform();
-        double imageScale = calculateThumbNailSize(width, height);
+        //default image type creates nonstandard all black jpg file
+        BufferedImage thumbNailImage = 
+                new BufferedImage(THUMBSIZE, THUMBSIZE, 
+                        BufferedImage.TYPE_3BYTE_BGR);
+        double imageScale = calculateImageScale(THUMBSIZE, width, height);
         tx.scale(imageScale, imageScale);
         AffineTransformOp op = new AffineTransformOp(tx, AffineTransformOp.TYPE_BILINEAR);
-        BufferedImage thumbNailImage = op.filter(image, null);
+        op.filter(image, thumbNailImage);
 
         // clean up the original image.
         image.flush();
@@ -131,12 +136,7 @@ public class MediaSpotController {
 
     }
 
-    private double calculateThumbNailSize(int width, int height) {
-        double thumbSize = 48.0;
-        return calculateImageSize(thumbSize, width, height);
-    }
-
-    private double calculateImageSize(double intendedSize, int width, int height) {
+    private double calculateImageScale(double intendedSize, int width, int height) {
         double scaleHeight = height / intendedSize;
         // change the algorithm, so height is always the same
         return 1 / scaleHeight;
@@ -145,7 +145,7 @@ public class MediaSpotController {
     private void writeImage(BufferedImage image, File imageFile)
             throws IOException {
         FileOutputStream fs = new FileOutputStream(imageFile);
-        ImageIO.write(image, "png", fs);
+        ImageIO.write(image, "jpg", fs);
         fs.close();
     }
 
