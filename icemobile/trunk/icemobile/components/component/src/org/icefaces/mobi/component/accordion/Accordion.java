@@ -38,7 +38,7 @@ public class Accordion extends AccordionBase implements ContentPaneController {
      public static final String ACCORDION_RIGHT_POINTING_POINTER= "&#9658;";
      public static final String ACCORDION_LEFT_POINTING_TRIANGLE = "&#9664;";
      public static final String ACCORDION_LEFT_POINTING_POINTER= "&#9668;";
-     private String selectedId;
+     
      /**
      * method is required by ContentPaneController interface
      * returns null if their are no children of type contentPane or no children at all.
@@ -50,38 +50,12 @@ public class Accordion extends AccordionBase implements ContentPaneController {
          super();
      }
 
-     @Override
-     public void setActiveIndex(int index){
-          super.setActiveIndex(index);
-          this.findMySelectedId();
-     }
-
+     /**
+      * method is required by ContentPaneController interface no error checking as
+      * component is not in the tree
+      */
      public String getSelectedId(){
-          return this.selectedId;
-     }
-     @PostConstruct
-     public void init(){
-        this.findMySelectedId();
-     }
-
-     public void findMySelectedId(){
-        this.selectedId = null;
-        int childCount = getChildCount();
-        if (childCount > 0 ){
-            int index = getActiveIndex();
-            if (index< 0 || index > childCount){
-                index = 0;
-            }
-            this.selectedId = getChildren().get(index).getId();
-   /*         UIComponent selectedComp = this.findComponent(id);
-            FacesContext facesContext = FacesContext.getCurrentInstance();
-            String panelClientId = selectedComp.getClientId(facesContext);
-            //for tagHandler do I need to ensure all children are of type ContentPane here??
-            if (null!=panelClientId){
-                this.selectedId =  panelClientId;
-                return;
-            } */
-        }
+         return getCurrentId();
      }
 
      public void queueEvent(FacesEvent event) {

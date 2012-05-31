@@ -44,24 +44,21 @@ public class AccordionRenderer extends BaseLayoutRenderer {
          Map<String, String> params = context.getExternalContext().getRequestParameterMap();
        // no ajax behavior defined yet
          String indexStr = params.get(clientId + "_hidden");
-         int oldIndex = accordion.getActiveIndex();
+         System.out.println("AccordionRenderer.decode()  " + indexStr);
          if( null != indexStr) {
-             //find the activeIndex and set it
-             int index = findIndex(context, accordion, oldIndex, indexStr);
-             if (oldIndex!=index){
-                 accordion.setActiveIndex(index);
-                 /* old index will be old index that server knew about */
-                 component.queueEvent(new ValueChangeEvent(component, oldIndex, index)) ;
-                 ///will eventually queue the ValuechangeEvent here
+             String oldId = accordion.getCurrentId();
+             String newId = Utils.getIdOfChildByClientId(context, accordion, indexStr);
+             if (newId != null && !newId.equals(oldId)) {
+                 accordion.setCurrentId(newId);
+                 component.queueEvent(new ValueChangeEvent(component, oldId, newId));
              }
          }
-     }
+    }
 
     public void encodeBegin(FacesContext facesContext, UIComponent uiComponent)throws IOException {
         ResponseWriter writer = facesContext.getResponseWriter();
         String clientId = uiComponent.getClientId(facesContext);
         Accordion accordion = (Accordion) uiComponent;
-        accordion.findMySelectedId();
         writeJavascriptFile(facesContext, uiComponent, JS_NAME, JS_MIN_NAME, JS_LIBRARY);
         /* write out root tag.  For current incarnation html5 semantic markup is ignored */
         writer.startElement(HTML.DIV_ELEM, uiComponent);
@@ -90,17 +87,20 @@ public class AccordionRenderer extends BaseLayoutRenderer {
         Accordion paneController = (Accordion) uiComponent;
         ResponseWriter writer = facesContext.getResponseWriter();
         UIComponent openPane = null;  //all children must be panels
-        int activeIndex = paneController.getActiveIndex();
+        String currentId = paneController.getCurrentId();
+        System.out.println("AccordionRenderer.encodeDataOpenedAttribute()  currentId: " + currentId);
 
         if (paneController.getChildCount() <= 0){
                  // || logger.isLoggable(Level.FINER)) {
             logger.finer("this component must have panels defined as children. Please read DOCS.");
                 return;
         } //check whether we have exceeded maximum number of children for accordion???
-        openPane = (UIComponent)paneController.getChildren().get(activeIndex);
+        openPane = Utils.getChildById(paneController, currentId);
  //       logger.info("looking for index="+activeIndex+" selectedPane to open ="+openPane.getId());
         //selectedPanel is now set
-        writer.writeAttribute("data-opened", openPane.getClientId(facesContext), null);
+        if (openPane != null) {
+            writer.writeAttribute("data-opened", openPane.getClientId(facesContext), null);
+        }
     }
 
      public void encodeEnd(FacesContext facesContext, UIComponent uiComponent)

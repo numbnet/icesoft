@@ -43,8 +43,8 @@ import org.icefaces.ace.meta.annotation.Required;
         @ResourceDependency(library = "org.icefaces.component.util", name = "component.js")
 })
 public class TabSetMeta extends UIPanelMeta {
-    @Property(tlddoc="Int of the active pane.", defaultValue="0")
-    private int tabIndex;
+    @Property( tlddoc="id of the panel that is active.")
+    private String currentId;
 
     @Property(tlddoc="Inline style of the container element.")
     private String style;
