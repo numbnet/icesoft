@@ -24,6 +24,38 @@
     <short-name>icemobile</short-name>
     <uri>http://www.icemobile.org/tags</uri>
     <tag>
+        <description>Show augmented reality video overlay.</description>
+        <display-name>ICEmobile Augmented Reality</display-name>
+        <name>augmentedReality</name>
+        <tag-class>org.icemobile.jsp.tags.AugTag</tag-class>
+        <body-content>empty</body-content>
+        <attribute>
+            <name>id</name>
+            <required>true</required>
+            <rtexprvalue>false</rtexprvalue>
+        </attribute>
+        <attribute>
+            <name>style</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+        </attribute>
+        <attribute>
+            <name>styleClass</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+        </attribute>
+        <attribute>
+            <name>params</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <name>disabled</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+        </attribute>
+    </tag>
+    <tag>
         <description>Capture image with device camera.</description>
         <display-name>ICEmobile Camera</display-name>
         <name>camera</name>

@@ -34,10 +34,18 @@ ice.registerAuxUpload = function (sessionid, uploadURL) {
     }
 };
 
+
 ice.mobilesx = function (element) {
+    var ampchar = String.fromCharCode(38);
     var formAction = ice.formOf(element).getAttribute("action");
     var command = element.getAttribute("data-command");
     var id = element.getAttribute("data-id");
+    var params = element.getAttribute("data-params");
+    var windowLocation = window.location;
+    var barURL = windowLocation.toString();
+    var baseURL = barURL.substring(0, 
+        barURL.lastIndexOf("/")) + "/";
+
     var uploadURL;
     if (0 === formAction.indexOf("/")) {
         uploadURL = window.location.origin + formAction;
@@ -45,9 +53,7 @@ ice.mobilesx = function (element) {
             (0 === formAction.indexOf("https://"))) {
         uploadURL = formAction;
     } else {
-        var baseURL = window.location.toString();
-        uploadURL = baseURL.substring(0, baseURL.lastIndexOf("/")) +
-                "/" + formAction;
+        uploadURL = baseURL + formAction;
     }
 
     var returnURL = window.location;
@@ -55,7 +61,12 @@ ice.mobilesx = function (element) {
         returnURL += "#icemobilesx";
     }
 
-    var sxURL = "icemobile://c=" + escape(command + "?id=" + id) +
+    if ("" != params)  {
+        params = "ub=" + escape(baseURL) + ampchar + params;
+    }
+
+    var sxURL = "icemobile://c=" + escape(command + 
+            "?id=" + id + ampchar + params) +
             "&u=" + escape(uploadURL) + "&r=" + escape(returnURL);
 
     window.location = sxURL;

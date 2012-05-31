@@ -22,14 +22,17 @@ import javax.servlet.jsp.PageContext;
 
 import java.io.Writer;
 import java.io.IOException;
+import java.net.URLEncoder;
 
 public class DeviceTag extends SimpleTagSupport {
     String command = "undefined";
     String label = "unlabeled";
+    String params = null;
     String id;
     String style;
     String styleClass;
     boolean disabled;
+    String fallbackType = "file";
 
     public void doTag() throws IOException {
         PageContext pageContext = (PageContext) getJspContext();
@@ -38,11 +41,18 @@ public class DeviceTag extends SimpleTagSupport {
         if (isEnhanced)  {
             out.write("<input type='button' id='" + id + "'"); 
             writeStandardAttributes(out);
-            out.write(" onclick='ice." + command + "(\"" + id + "\");'");
+            String paramClause = "";
+            if (null != params)  {
+                paramClause = ", \"" + params + "\"";
+            } 
+            out.write(" onclick='ice." + command + "(\"" + id + "\"" +
+                    paramClause + ");'");
+
             out.write(" value='" + label + "'>");
         } else {
-            out.write("<input id='" + id + "' type='file' name='" + id + "' />");
-            //or for iOS until we can store the ICEmobile-SX registration
+            out.write("<input id='" + id + "' type='" + fallbackType + "'" + 
+                    " name='" + id + "' />");
+           //or for iOS until we can store the ICEmobile-SX registration
             //without a session (likely a cookie)
             out.write("<input type='button' data-id='" + id + "'");
             writeStandardAttributes(out);
@@ -85,6 +95,14 @@ public class DeviceTag extends SimpleTagSupport {
 
     public void setStyleClass(String styleClass) {
         this.styleClass = styleClass;
+    }
+    
+    public String getParams() {
+        return styleClass;
+    }
+
+    public void setParams(String params) {
+        this.params = params;
     }
 
     public boolean isDisabled() {

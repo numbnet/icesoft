@@ -39,11 +39,13 @@
 
 		  	<fieldset >
                <mobi:camera id="camera" />
-               <img style="height:60px;width:65px;vertical-align:middle;" id="camera-thumb" >
+               <img style="height:60px;width:65px;vertical-align:middle;" 
+                    id="camera-thumb" >
+               <mobi:augmentedReality id="selection" 
+                    style="float:right" params="${reality}"/>
 		  	</fieldset>
-            <input type="button" id="selection"  data-id="selection" data-command="aug" data-params="${reality}" value="Reality" onclick="mobilesx(this);" >
             <input type="hidden" id="location" name="location" >
-			<button style="float:right;" type="submit">Submit</button>
+			<button type="submit">Submit</button>
 		</form:form>
 
 
@@ -58,59 +60,6 @@
                         var lon = pos.coords.longitude;
                         $("#location").attr("value", lat + "," + lon);
                 });
-            }
-
-            function mobilesx(element) {
-                var formAction = formOf(element).getAttribute("action");
-                var command = element.getAttribute("data-command");
-                var params = element.getAttribute("data-params");
-                var id = element.getAttribute("data-id");
-
-                var barURL = window.location.toString();
-                var baseURL = barURL.substring(0, 
-                    barURL.lastIndexOf("/")) + "/";
-                params = "ub=" + escape(baseURL) + ampchar + params;
-
-
-                if (window.ice  && ice.aug)  {
-                    if ("aug" == command)  {
-                        ice.aug(id, params);
-                    }
-                    return;
-                }
-
-               var uploadURL;
-                if (0 === formAction.indexOf("/"))  {
-                    uploadURL = window.location.origin + formAction;
-                } else if ((0 === formAction.indexOf("http://")) || 
-                           (0 === formAction.indexOf("https://"))) {
-                    uploadURL = formAction;
-                } else {
-                    uploadURL = barURL.substring(0, barURL.lastIndexOf("/")) +
-                    "/" + formAction;
-                }
-                
-                var returnURL = window.location;
-                if ("" == returnURL.hash)  {
-                    returnURL += "#icemobilesx";
-                }
-                
-                var sxURL = "icemobile://c=" + escape(command + 
-                        "?id=" + id + ampchar + params) +
-                        ampchar + "u=" + escape(uploadURL) + 
-                        ampchar + "r=" + escape(returnURL);
-                
-                window.location = sxURL;
-            }
-            
-            function formOf(element)  {
-                var parent = element;
-                while (null != parent)  {
-                    if ("form" == parent.nodeName.toLowerCase())  {
-                        return parent;
-                    }
-                    parent = parent.parentNode;
-                }
             }
 
 			$(document).ready(function() {
