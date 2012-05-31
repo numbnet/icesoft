@@ -2,10 +2,11 @@ if (!window['ice']) window.ice = {};
 if (!window.ice['ace']) window.ice.ace = {};
 ice.ace.Autocompleters = {};
 
-ice.ace.Autocompleter = function(id, updateId, options, rowClass, selectedRowClass, partialSubmit, behaviors) {
+ice.ace.Autocompleter = function(id, updateId, options, rowClass, selectedRowClass, partialSubmit, behaviors, cfg) {
 	this.id = id;
 	ice.ace.Autocompleters[this.id] = this;
 	this.partialSubmit = partialSubmit;
+    this.cfg = cfg;
 	//var existing = Autocompleter.Finder.list[id];
 	//if (!Prototype.Browser.IE && existing && !existing.monitor.changeDetected()) { //@ custom detection
 	//	return;
@@ -170,6 +171,7 @@ ice.ace.Autocompleter.prototype = {
         ice.ace.jq(this.update).hide(); // @ jq hide #
         //Event.observe(this.element, "blur", this.onBlur.bindAsEventListener(this)); //@ jq event #
 		var self = this;
+        ice.ace.jq(this.element).data("labelIsInField", this.cfg.labelIsInField);
 		ice.ace.jq(this.element).on("blur", function(e) { self.onBlur.call(self, e); });
 		ice.ace.jq(this.element).on("focus", function(e) { self.onFocus.call(self, e); });
         var keyEvent = "keypress";
@@ -387,6 +389,12 @@ ice.ace.Autocompleter.prototype = {
     },
 
     onBlur: function(event) {
+        var input = ice.ace.jq(this.element);
+        if (ice.ace.jq.trim(input.val()) == "" && this.cfg.inFieldLabel) {
+            input.val(this.cfg.inFieldLabel);
+            input.addClass(this.cfg.inFieldLabelStyleClass);
+            input.data("labelIsInField", true);
+        }
         if (navigator.userAgent.indexOf("MSIE") >= 0) { // ICE-2225
             var strictMode = document.compatMode && document.compatMode == "CSS1Compat";
             var docBody = strictMode ? document.documentElement : document.body;
@@ -405,8 +413,14 @@ ice.ace.Autocompleter.prototype = {
         this.active = false;
     },
 
-    onFocus: function(event) {	
-      if (this.element.createTextRange) {  
+    onFocus: function(event) {
+        var input = ice.ace.jq(this.element);
+        if (input.data("labelIsInField")) {
+            input.val("");
+            input.removeClass(this.cfg.inFieldLabelStyleClass);
+            input.data("labelIsInField", false);
+        }
+      if (this.element.createTextRange) {
        //IE  
 	  this.element.focus();
        var fieldRange = this.element.createTextRange();  
