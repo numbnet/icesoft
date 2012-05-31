@@ -45,7 +45,7 @@ public class AutoCompleteEntryRenderer extends InputRenderer {
 
     private static final String AUTOCOMPLETE_DIV = "_div";
     static final String AUTOCOMPLETE_INDEX = "_idx";
-	
+
     public boolean getRendersChildren() {
         return true;
     }
@@ -76,6 +76,26 @@ public class AutoCompleteEntryRenderer extends InputRenderer {
         if (!indicatorPositionSet.contains(indicatorPosition)) indicatorPosition = DEFAULT_INDICATOR_POSITION;
         boolean hasIndicator = !(indicatorPosition.equals(NONE_INDICATOR_POSITION) || isValueBlank(indicator));
 
+        String inFieldLabel = "", inFieldLabelStyleClass = "";
+        String value = (String) autoCompleteEntry.getValue();
+        boolean labelIsInField = false;
+        if (hasLabel && labelPosition.equals("inField")) {
+            inFieldLabel = label;
+            if (hasIndicator) {
+                if (indicatorPosition.equals("labelLeft")) {
+                    inFieldLabel = indicator + inFieldLabel;
+                } else if (indicatorPosition.equals("labelRight")) {
+                    inFieldLabel = inFieldLabel + indicator;
+                }
+            }
+        }
+        if (isValueBlank(value)) value = null;
+        if (value == null && !inFieldLabel.equals("")) {
+            value = inFieldLabel;
+            inFieldLabelStyleClass = " " + IN_FIELD_LABEL_STYLE_CLASS;
+            labelIsInField = true;
+        }
+
         writeLabelAndIndicatorBefore(writer, label, hasLabel, labelPosition, indicator, hasIndicator, indicatorPosition, required);
 		// text field
 		writer.startElement("input", null);
@@ -90,7 +110,7 @@ public class AutoCompleteEntryRenderer extends InputRenderer {
 		writer.writeAttribute("onmousedown", mousedownScript + "this.focus();", null);
 		int width = autoCompleteEntry.getWidth();
 		writer.writeAttribute("style", "width: " + width + "px;", null);
-		writer.writeAttribute("class", "ui-inputfield ui-widget ui-state-default ui-corner-all" + getStateStyleClasses(autoCompleteEntry), null);
+        writer.writeAttribute("class", "ui-inputfield ui-widget ui-state-default ui-corner-all" + getStateStyleClasses(autoCompleteEntry) + inFieldLabelStyleClass, null);
 		writer.writeAttribute("autocomplete", "off", null);
         String onfocusCombinedValue = "setFocus(this.id);";
         Object onfocusAppValue = uiComponent.getAttributes().get("onfocus");
@@ -109,8 +129,8 @@ public class AutoCompleteEntryRenderer extends InputRenderer {
             writer.writeAttribute("onchange", onchangeAppValue.toString(), null);
 		}
 		// this would prevent, when first valueChangeListener fires with null value
-		if (autoCompleteEntry.getValue() != null) {
-			writer.writeAttribute("value", autoCompleteEntry.getValue(), null);
+        if (value != null) {
+			writer.writeAttribute("value", value, null);
 		}
 		writer.endElement("input");
         writeLabelAndIndicatorAfter(writer, label, hasLabel, labelPosition, indicator, hasIndicator, indicatorPosition, required);
@@ -147,7 +167,12 @@ public class AutoCompleteEntryRenderer extends InputRenderer {
 				.beginMap()
 				.entry("p", ""); // dummy property
 				encodeClientBehaviors(facesContext, autoCompleteEntry, jb);
-			jb.endMap().endFunction();
+			jb.endMap();
+            jb.beginMap()
+                .entry("inFieldLabel", inFieldLabel)
+                .entry("inFieldLabelStyleClass", IN_FIELD_LABEL_STYLE_CLASS)
+                .entry("labelIsInField", labelIsInField);
+            jb.endMap().endFunction();
 			writer.writeText("new " + jb.toString(), null);
 		}
 		
