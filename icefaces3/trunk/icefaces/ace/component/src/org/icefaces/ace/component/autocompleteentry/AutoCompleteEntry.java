@@ -311,12 +311,15 @@ public class AutoCompleteEntry extends AutoCompleteEntryBase implements NamingCo
                     new KeyEvent(this, requestParemeterMap);
 
             if (keyEvent.getKeyCode() == KeyEvent.CARRIAGE_RETURN) {
+                setChangedComponentId(null); // do not populate list
                 queueEvent(new ActionEvent(this));
             }
             if("true".equals(requestParemeterMap.get("ice.event.left"))){
+                setChangedComponentId(null); // do not populate list
                 queueEvent(new ActionEvent(this));                
             }
             if("onclick".equals(requestParemeterMap.get("ice.event.type"))){
+                setChangedComponentId(null); // do not populate list
                 queueEvent(new ActionEvent(this));
             }
 
