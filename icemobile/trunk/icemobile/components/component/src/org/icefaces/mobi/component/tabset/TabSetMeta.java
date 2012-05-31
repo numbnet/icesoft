@@ -16,6 +16,9 @@
 package org.icefaces.mobi.component.tabset;
 
 import javax.el.MethodExpression;
+import javax.faces.application.ResourceDependencies;
+import javax.faces.application.ResourceDependency;
+
 import org.icefaces.ace.meta.annotation.Component;
 import org.icefaces.ace.meta.annotation.Property;
 import org.icefaces.ace.meta.annotation.Expression;
@@ -36,7 +39,9 @@ import org.icefaces.ace.meta.annotation.Required;
         tlddoc = "This mobility component allows contentPane's to be placed within tabset controls in  " +
                 "a stacked manner.  Only a single contentPane may be active at a time."
 )
-
+@ResourceDependencies({
+        @ResourceDependency(library = "org.icefaces.component.util", name = "component.js")
+})
 public class TabSetMeta extends UIPanelMeta {
     @Property(tlddoc="Int of the active pane.", defaultValue="0")
     private int tabIndex;
@@ -65,7 +70,10 @@ public class TabSetMeta extends UIPanelMeta {
         methodExpressionArgument="javax.faces.event.ValueChangeEvent")
     private MethodExpression tabChangeListener;
 
-    @Property(defaultValue = "false", tlddoc = "The default value of this attribute is false. If true then value change event will happen in APPLY_REQUEST_VALUES phase and if the value of this attribute is false then event change will happen in INVOKE_APPLICATION phase")
+    @Property(defaultValue = "false", tlddoc = "The default value of this attribute is false. " +
+            "If true then value change event will happen in APPLY_REQUEST_VALUES phase " +
+            "and if the value of this attribute is false then event change will happen in " +
+            "INVOKE_APPLICATION phase")
     private boolean immediate;
 
     @Property(defaultValue = "true",

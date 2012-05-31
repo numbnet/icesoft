@@ -37,7 +37,6 @@ public class TabSet extends TabSetBase implements ContentPaneController {
      public static final StringBuilder TABSET_TABS_CLASS = new StringBuilder("mobi-tabset-tabs ");
      public static final StringBuilder TABSET_ACTIVETAB_CLASS = new StringBuilder("activeTab ");
      public static final StringBuilder TABSET_CONTENT_CLASS = new StringBuilder("mobi-tabset-content ");
-     public static final StringBuilder TABSET_VISIBLE_PAGECLASS = new StringBuilder("mobi-tabpage");
      public static final StringBuilder TABSET_HIDDEN_PAGECLASS = new StringBuilder("mobi-tabpage-hidden");
 
      private boolean updatePropScriptTag = false;
@@ -65,21 +64,13 @@ public class TabSet extends TabSetBase implements ContentPaneController {
                 index = 0;
             }
             this.selectedId = getChildren().get(index).getId();
-      /*      UIComponent selectedComp = this.findComponent(id);
-            FacesContext facesContext = FacesContext.getCurrentInstance();
-            String panelClientId = selectedComp.getClientId(facesContext);
-            //for tagHandler do I need to ensure all children are of type ContentPane here??
-            if (null!=panelClientId){
-                this.selectedId =  panelClientId;
-                return;
-            } */
         }
      }
       public void broadcast(FacesEvent event)
             throws AbortProcessingException {
         if (event instanceof ValueChangeEvent) {
             if (event != null) {
-                ValueExpression ve = getValueExpression("selectedIten");
+                ValueExpression ve = getValueExpression("tabIndex");
                 if (ve != null) {
                     try {
                         ve.setValue(getFacesContext().getELContext(), ((ValueChangeEvent) event).getNewValue());
@@ -103,7 +94,7 @@ public class TabSet extends TabSetBase implements ContentPaneController {
         }
     }
     public void queueEvent(FacesEvent event) {
-        if (event.getComponent() instanceof TabSet) {
+        if (event.getComponent() == this) {
             boolean isImmediate = isImmediate();
             if (logger.isLoggable(Level.FINEST)){
                 logger.finest("invoked event for immediate " + isImmediate);
