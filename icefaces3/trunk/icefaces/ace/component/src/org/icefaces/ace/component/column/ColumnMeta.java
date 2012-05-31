@@ -16,17 +16,13 @@
 
 package org.icefaces.ace.component.column;
 
-import org.icefaces.ace.meta.annotation.Property;
-import javax.faces.application.ResourceDependencies;
-import javax.faces.application.ResourceDependency;
-import javax.el.ValueExpression;
-import javax.el.MethodExpression;
 import org.icefaces.ace.meta.annotation.Component;
 import org.icefaces.ace.meta.annotation.DefaultValueType;
 import org.icefaces.ace.meta.annotation.Expression;
 import org.icefaces.ace.meta.annotation.Property;
 import org.icefaces.ace.meta.baseMeta.UIColumnMeta;
 
+import javax.faces.application.ResourceDependencies;
 import java.util.Comparator;
 
 @Component(
@@ -135,7 +131,7 @@ public class ColumnMeta extends UIColumnMeta {
             "done by the component whenever a client edits a sort control or the " +
             "application calls table.applySorting().",
             defaultValue = "false", defaultValueType = DefaultValueType.EXPRESSION)
-    private boolean sortAscending;
+    private Boolean sortAscending;
 
     @Property(tlddoc="Enables per-column control of column ordering when the " +
             "attribute (\"reorderableColumns\") is true at the table level.",
