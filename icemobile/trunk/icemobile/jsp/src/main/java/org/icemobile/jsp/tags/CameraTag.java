@@ -17,78 +17,11 @@
  
 package org.icemobile.jsp.tags;
 
-import javax.servlet.jsp.tagext.SimpleTagSupport;
-import javax.servlet.jsp.PageContext;
+public class CameraTag extends DeviceTag {
 
-import java.io.Writer;
-import java.io.IOException;
-
-public class CameraTag extends SimpleTagSupport {
-    private String id;
-    private String style;
-    private String styleClass;
-    private boolean disabled;
-
-    public void doTag() throws IOException {
-        PageContext pageContext = (PageContext) getJspContext();
-        boolean isEnhanced = TagUtil.isEnhancedBrowser(pageContext);
-        Writer out = pageContext.getOut();
-        if (isEnhanced)  {
-            out.write("<input type='button' id='" + id + "'"); 
-            if (null != styleClass)  {
-                out.write(" class='" + styleClass + "'");
-            }
-            if (null != style)  {
-                out.write(" style='" + style + "'");
-            }
-            out.write(" onclick='ice.camera(\"" + id + "\");'");
-            out.write(" value='camera'>");
-        } else {
-            out.write("<input id='" + id + "' type='file' name='" + id + "' />");
-            //or for iOS until we can store the ICEmobile-SX registration
-            //without a session (likely a cookie)
-            out.write("<input type='button' data-id='" + id + "'");
-            if (null != styleClass)  {
-                out.write(" class='" + styleClass + "'");
-            }
-            if (null != style)  {
-                out.write(" style='" + style + "'");
-            }
-            out.write("data-command='camera' onclick='ice.mobilesx(this)' ");
-            out.write(" value='camera (ICEmobile-SX)'>");
-        }
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getStyle() {
-        return style;
-    }
-
-    public void setStyle(String style) {
-        this.style = style;
-    }
-
-    public String getStyleClass() {
-        return styleClass;
-    }
-
-    public void setStyleClass(String styleClass) {
-        this.styleClass = styleClass;
-    }
-
-    public boolean isDisabled() {
-        return disabled;
-    }
-
-    public void setDisabled(boolean disabled) {
-        this.disabled = disabled;
+    public CameraTag()  {
+        this.command = "camera";
+        this.label = "Camera";
     }
 
 }

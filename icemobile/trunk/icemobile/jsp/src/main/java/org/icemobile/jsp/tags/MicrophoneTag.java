@@ -17,17 +17,11 @@
  
 package org.icemobile.jsp.tags;
 
-import javax.servlet.jsp.tagext.SimpleTagSupport;
+public class MicrophoneTag extends DeviceTag {
 
-import java.io.Writer;
-import java.io.IOException;
-
-public class MicrophoneTag extends SimpleTagSupport {
-
-    public void doTag() throws IOException {
-        Writer out = getJspContext().getOut();
-        //note the data-role button which is harmless, but should be generalized
-        out.write("<a data-role=\"button\" id=\"mic\" onclick=\"var subtext = this.firstChild; if(1===subtext.nodeType){subtext=subtext.firstChild.firstChild};if(subtext.data=='Stop'){subtext.data='Record';this.classList.remove('recordstyle')}else{subtext.data='Stop';this.classList.add('recordstyle')}ice.microphone('mic');\">Record</a>");
+    public MicrophoneTag()  {
+        this.command = "microphone";
+        this.label = "Microphone";
     }
 
 }
