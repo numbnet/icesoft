@@ -174,7 +174,7 @@ ice.ace.Autocompleter.prototype = {
 		ice.ace.jq(this.element).on("focus", function(e) { self.onFocus.call(self, e); });
         var keyEvent = "keypress";
         if (ice.ace.Autocompleter.Browser.IE || ice.ace.Autocompleter.Browser.WebKit) { //@ custom detection #
-            keyEvent = "keyup";
+            keyEvent = "keydown";
         }
         //Event.observe(this.element, keyEvent, this.onKeyPress.bindAsEventListener(this)); //@ jq event #
 		ice.ace.jq(this.element).on(keyEvent, function(e) { self.onKeyPress.call(self, e); });
