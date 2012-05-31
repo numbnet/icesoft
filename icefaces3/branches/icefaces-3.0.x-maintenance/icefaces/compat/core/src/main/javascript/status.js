@@ -437,8 +437,10 @@ var ComponentIndicators;
     };
 
     onLoad(window, function() {
-        ice.onBeforeSubmit(function() {
-            indctrs && on(indctrs.busy);
+        ice.onBeforeSubmit(function(source, isClientRequest) {
+            if(isClientRequest){
+                indctrs && on(indctrs.busy);
+            }
         });
         ice.onBeforeUpdate(function() {
             indctrs && off(indctrs.busy);
