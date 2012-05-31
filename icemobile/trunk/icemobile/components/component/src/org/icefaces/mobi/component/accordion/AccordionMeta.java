@@ -40,8 +40,8 @@ import javax.el.MethodExpression;
 )
 public class AccordionMeta extends UIPanelMeta {
 
-    @Property(tlddoc="Int of the active pane.", defaultValue="0")
-	private int activeIndex;
+    @Property( tlddoc="id of the panel that is active in the accordion.")
+    private String currentId;
 
 	@Property(tlddoc="Inline style of the container element.")
 	private String style;
@@ -66,6 +66,4 @@ public class AccordionMeta extends UIPanelMeta {
                   expression= Expression.METHOD_EXPRESSION,
                   methodExpressionArgument="javax.faces.event.ValueChangeEvent")
 	private MethodExpression paneChangeListener;
-
-
 }

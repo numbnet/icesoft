@@ -64,46 +64,4 @@ public class BaseLayoutRenderer extends CoreRenderer {
         writer.endElement("input");
         writer.endElement("span");
     }
-
-    /**
-     * used by classes which implement ContentPaneController
-     * @param context
-     * @param component
-     * @param oldIndex
-     * @param id
-     * @return
-     */
-     protected int findIndex(FacesContext context, UIComponent component, int oldIndex, String id){
-        for (int i=0; i < component.getChildCount();i++){
-            if (component.getChildren().get(i).getClientId(context).equals(id)){
-                  return i;
-            }
-        }
-        return oldIndex;
-    }
-
-       /**
-     *  returns null if their are no children of type contentPane or no children at all.
-     * If activeIndex is outside of the range of 0 -> number of children -1, then the default
-     * valid value is the first child.
-     * @return  String if get valid clientId from user input of currentId
-     */
-
-     public String findMySelectedClientId(UIComponent parent, String id){
-        int childCount = parent.getChildCount();
-        if (childCount > 0 ){
-            if (null!=id){
-                UIComponent me = parent.findComponent(id);
-                if (null!= me ){
-                    if (null!= me.getClientId()) {
-                        return me.getClientId();
-                    }
-                }
-                else {
-                    return parent.getChildren().get(0).getClientId();
-                }
-            }
-        }
-          return null;
-     }
 }

@@ -24,9 +24,6 @@ import javax.faces.context.FacesContext;
 public class ContentStack extends ContentStackBase implements ContentPaneController {
      public static final String CONTENT_WRAPPER_CLASS = "mobi-content-stack ";
 
-     private String selectedId;
-
-
      public ContentStack() {
          super();
      }
@@ -37,8 +34,6 @@ public class ContentStack extends ContentStackBase implements ContentPaneControl
      public String getSelectedId(){
          return getCurrentId();
      }
-
-
 }
 
 

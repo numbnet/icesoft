@@ -157,8 +157,7 @@ public class ContentPaneRenderer extends BaseLayoutRenderer {
     public void encodePaneAccordionHandle(FacesContext facesContext, UIComponent uiComponent, Accordion accordion)
         throws IOException{
         // only selected pane is open/active
-         int activeIndex = accordion.getActiveIndex();
-         String imOpened = accordion.getChildren().get(activeIndex).getId();
+         String imOpened = accordion.getCurrentId();
          String accordionId = accordion.getClientId(facesContext);
          ResponseWriter writer = facesContext.getResponseWriter();
          String clientId = uiComponent.getClientId(facesContext);
@@ -175,7 +174,7 @@ public class ContentPaneRenderer extends BaseLayoutRenderer {
          writer.writeAttribute(HTML.ID_ATTR, clientId, HTML.ID_ATTR);
             // apply default style class for panel-stack
          StringBuilder styleClass = new StringBuilder("closed");
-         if (imOpened.equals(myId)){
+         if (myId.equals(imOpened)){
              styleClass = new StringBuilder("open");
          }
                // user specified style class

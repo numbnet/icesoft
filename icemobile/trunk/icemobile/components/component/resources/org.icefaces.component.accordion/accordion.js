@@ -84,7 +84,7 @@
                     ice.se(null, myclient);
                 }
                 var alreadyOpen = theContainer.getAttribute('data-opened');
-                if (alreadyOpen !== theParent.id)  {
+                if (alreadyOpen && alreadyOpen !== theParent.id)  {
                     document.getElementById(alreadyOpen).className = 'closed';
                 }
                 if ('open' === theParent.className) {

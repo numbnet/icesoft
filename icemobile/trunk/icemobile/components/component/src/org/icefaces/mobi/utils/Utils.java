@@ -562,4 +562,26 @@ public class Utils {
             }
         }
     }
+
+    public static String getIdOfChildByClientId(FacesContext context, UIComponent parent, String clientId) {
+        if (parent.getChildCount() > 0) {
+            for (UIComponent child : parent.getChildren()) {
+                if (child.getClientId(context).equals(clientId)) {
+                    return child.getId();
+                }
+            }
+        }
+        return null;
+    }
+
+    public static UIComponent getChildById(UIComponent parent, String id) {
+        if (parent.getChildCount() > 0) {
+            for (UIComponent child : parent.getChildren()) {
+                if (child.getId().equals(id)) {
+                    return child;
+                }
+            }
+        }
+        return null;
+    }
 }

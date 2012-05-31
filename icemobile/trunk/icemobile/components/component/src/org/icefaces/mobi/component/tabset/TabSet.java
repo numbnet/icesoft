@@ -16,6 +16,7 @@
 package org.icefaces.mobi.component.tabset;
 
 import org.icefaces.mobi.api.ContentPaneController;
+import org.icefaces.mobi.utils.Utils;
 
 import javax.annotation.PostConstruct;
 import javax.faces.component.UIComponent;
@@ -40,54 +41,50 @@ public class TabSet extends TabSetBase implements ContentPaneController {
      public static final StringBuilder TABSET_HIDDEN_PAGECLASS = new StringBuilder("mobi-tabpage-hidden");
 
      private boolean updatePropScriptTag = false;
-     private String selectedId;
 
-     @Override
-     public void setTabIndex(int index){
-          super.setTabIndex(index);
-          this.findMySelectedId();
-     }
-     public String getSelectedId(){
-        return this.selectedId;
-     }
-     @PostConstruct
-     public void init(){
-        this.findMySelectedId();
-     }
+    /**
+     * method is required by ContentPaneController interface no error checking as
+     * component is not in the tree
+     */
+    public String getSelectedId(){
+        return getCurrentId();
+    }
 
-     public void findMySelectedId(){
-        this.selectedId = null;
-        int childCount = getChildCount();
-        if (childCount > 0 ){
-            int index = getTabIndex();
-            if (index< 0 || index > childCount){
-                index = 0;
+    /**
+     * The main difference between this and getSelectedId() is that this will
+     * automatically handle defaulting to tab 0 if nothing has been specified,
+     * or if what has been specified doesn't actually exist.
+     * 
+     * @return The id and index of the current tab
+     */
+    IdIndex resolveCurrentIdAndIndex() {
+        String currId = getCurrentId();
+        int tabIndex;
+        if (currId == null || currId.length() == 0) {
+            tabIndex = 0;
+            UIComponent comp = getChildren().get(tabIndex);
+            currId = comp.getId();
+        } else {
+            UIComponent comp = Utils.getChildById(this, currId);
+            if (comp == null) {
+                tabIndex = 0;
+                comp = getChildren().get(tabIndex);
+                currId = comp.getId();
+            } else {
+                tabIndex = getChildren().indexOf(comp);
             }
-            this.selectedId = getChildren().get(index).getId();
         }
-     }
+        return new IdIndex(currId, tabIndex);
+    }
+
       public void broadcast(FacesEvent event)
             throws AbortProcessingException {
         if (event instanceof ValueChangeEvent) {
-            if (event != null) {
-                ValueExpression ve = getValueExpression("tabIndex");
-                if (ve != null) {
-                    try {
-                        ve.setValue(getFacesContext().getELContext(), ((ValueChangeEvent) event).getNewValue());
-                    } catch (ELException e) {
-                        logger.log(Level.WARNING, "Error creating selected value change event",e);
-                    }
-                } else {
-                    int tempInt = (Integer) ((ValueChangeEvent) event).getNewValue();
-                    this.setTabIndex(tempInt);
-                    if (logger.isLoggable(Level.FINEST)){
-                        logger.finest("After setting the selectedItem to " + tempInt);
-                    }
-                }
-                MethodExpression method = getTabChangeListener();
-                if (method != null) {
-                    method.invoke(getFacesContext().getELContext(), new Object[]{event});
-                }
+            ValueChangeEvent vce = (ValueChangeEvent) event;
+            setCurrentId((String)vce.getNewValue());
+            MethodExpression method = getTabChangeListener();
+            if (method != null) {
+                method.invoke(getFacesContext().getELContext(), new Object[]{event});
             }
         } else {
             super.broadcast(event);
@@ -113,5 +110,24 @@ public class TabSet extends TabSetBase implements ContentPaneController {
     }
     public boolean isUpdatePropScriptTag(){
         return this.updatePropScriptTag;
+    }
+
+
+    public static class IdIndex {
+        private String id;
+        private int index;
+
+        public IdIndex(String id, int index) {
+            this.id = id;
+            this.index = index;
+        }
+
+        public String getId() {
+            return id;
+        }
+
+        public int getIndex() {
+            return index;
+        }
     }
 }
