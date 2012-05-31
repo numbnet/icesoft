@@ -19,6 +19,7 @@ package org.icemobile.jsp.tags;
 
 
 import javax.servlet.jsp.PageContext;
+import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.Cookie;
@@ -129,6 +130,17 @@ public class TagUtil {
         }
         return "http://" + serverName +
                        getUploadPath(request);
+    }
+
+    public static String getBaseURL(ServletRequest request) {
+        HttpServletRequest httpRequest = (HttpServletRequest) request;
+        String serverName = httpRequest.getHeader("x-forwarded-host");
+        if (null == serverName) {
+            serverName = httpRequest.getServerName() + ":" +
+                                 httpRequest.getServerPort();
+        }
+        return httpRequest.getScheme() + "://" + serverName + 
+                httpRequest.getContextPath() + "/";
     }
 
     public static String getUploadPath(HttpServletRequest request) {
