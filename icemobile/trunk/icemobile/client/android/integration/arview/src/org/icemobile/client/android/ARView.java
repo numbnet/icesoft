@@ -60,12 +60,14 @@ public class ARView extends View {
         this.y = y;
     }
 
-    //increase by factor 5, shift by 100,100
+    //increase by factor 2, shift by 200,200
+    //Matrix uses column major order to make the
+    //matrix unreadable in source code
     float[] adjust = new float[] {
-         5,  0, 100, 0,
-         0,  5, 100, 0,
-         0,  0,   1, 0,
-         0,  0,   0, 1
+          2,   0, 0, 0,
+          0,   2, 0, 0,
+          0,   0, 1, 0,
+        200, 200, 0, 1
     };
 
     protected void onDraw(Canvas canvas) {
@@ -87,14 +89,15 @@ public class ARView extends View {
                 coord[3] = 1f;
 
                 float[] mat = new float[16];
-                Matrix.invertM(mat, 0, deviceTransform, 0);
+//                Matrix.invertM(mat, 0, deviceTransform, 0);
+                mat = deviceTransform;
                 float[] v1 = new float[]{0, 0, 0, 1};
                 Matrix.multiplyMV(v1, 0, mat, 0, coord, 0);
                 float[] v = new float[]{0, 0, 0, 1};
                 Matrix.multiplyMV(v, 0, adjust, 0, v1, 0);
                 canvas.save();
-                canvas.rotate(270, Math.abs(v[0]), Math.abs(v[1]));
-                canvas.drawText(label, Math.abs(v[0]), Math.abs(v[1]), mTextPaint);
+                canvas.rotate(270, v[0], v[1]);
+                canvas.drawText(label, v[0], v[1], mTextPaint);
 Log.d("ARView ", "rotated " + label + v[0] + "," + v[1]);
                 canvas.restore();
             }
