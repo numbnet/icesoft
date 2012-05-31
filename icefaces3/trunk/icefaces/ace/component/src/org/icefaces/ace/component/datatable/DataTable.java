@@ -58,10 +58,7 @@ import javax.faces.component.visit.VisitContext;
 import javax.faces.component.visit.VisitHint;
 import javax.faces.component.visit.VisitResult;
 import javax.faces.context.FacesContext;
-import javax.faces.event.AbortProcessingException;
-import javax.faces.event.PhaseId;
-import javax.faces.event.PostValidateEvent;
-import javax.faces.event.PreValidateEvent;
+import javax.faces.event.*;
 import javax.faces.model.*;
 import javax.faces.render.Renderer;
 import javax.faces.view.Location;
@@ -210,7 +207,48 @@ public class DataTable extends DataTableBase implements Serializable {
     protected void setDataModel(DataModel dataModel) {
         this.model = dataModel;
     }
- 
+
+    // Private class to wrap an event with a row index
+    class WrapperEvent extends FacesEvent {
+        public WrapperEvent(UIComponent component, FacesEvent event, int rowIndex) {
+            super(component);
+            this.event = event;
+            this.rowIndex = rowIndex;
+        }
+
+        private FacesEvent event = null;
+        private int rowIndex = -1;
+
+        public FacesEvent getFacesEvent() {
+            return (this.event);
+        }
+
+        public int getRowIndex() {
+            return (this.rowIndex);
+        }
+
+        public PhaseId getPhaseId() {
+            return (this.event.getPhaseId());
+        }
+
+        public void setPhaseId(PhaseId phaseId) {
+            this.event.setPhaseId(phaseId);
+        }
+
+        public boolean isAppropriateListener(FacesListener listener) {
+            return (false);
+        }
+
+        public void processListener(FacesListener listener) {
+            throw new IllegalStateException();
+        }
+    }
+
+    @Override
+    public void queueEvent(FacesEvent event) {
+        super.queueEvent(new WrapperEvent(this, event, getRowIndex()));
+    }
+
     @Override
     public void broadcast(javax.faces.event.FacesEvent event) throws AbortProcessingException {
         // The data model that is used in myFaces may have been generated
@@ -219,9 +257,44 @@ public class DataTable extends DataTableBase implements Serializable {
         // iteration.
         setDataModel(null);
 
-        super.broadcast(event);
-
+        if (!(event instanceof WrapperEvent)) {
+            super.broadcast(event);
+            return;
+        }
         FacesContext context = FacesContext.getCurrentInstance();
+        // Set up the correct context and fire our wrapped event
+        int oldRowIndex = getRowIndex();
+        // Clear row index pre datamodel refresh to be sure we're getting accurate row data
+        WrapperEvent revent = (WrapperEvent) event;
+        if (isNestedWithinUIData()) {
+            setDataModel(null);
+        }
+
+        // Refresh data model before setRowIndex does for an incorrect clientId / filteredData state.
+        setRowIndex(-1);
+        getDataModel();
+
+        setRowIndex(revent.getRowIndex());
+        FacesEvent rowEvent = revent.getFacesEvent();
+        UIComponent source = rowEvent.getComponent();
+        UIComponent compositeParent = null;
+        try {
+            if (!UIComponent.isCompositeComponent(source)) {
+                compositeParent = UIComponent.getCompositeComponentParent(source);
+            }
+            if (compositeParent != null) {
+                compositeParent.pushComponentToEL(context, null);
+            }
+            source.pushComponentToEL(context, null);
+            source.broadcast(rowEvent);
+        } finally {
+            source.popComponentFromEL(context);
+            if (compositeParent != null) {
+                compositeParent.popComponentFromEL(context);
+            }
+        }
+        setRowIndex(oldRowIndex);
+
         String outcome = null;
         MethodExpression me = null;
 
