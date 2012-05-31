@@ -53,7 +53,7 @@
 		  	</fieldset>
 
 		  	<fieldset class="anchorbuttons">
-               <mobi:microphone />
+               <mobi:microphone id="mic"/>
                <audio style="float:right;height:120px;width:120px;" src="media/clip.mp4" controls="controls" >
 		  	</fieldset>
 

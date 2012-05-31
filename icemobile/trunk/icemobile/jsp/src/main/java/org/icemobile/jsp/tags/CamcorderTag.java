@@ -17,28 +17,11 @@
  
 package org.icemobile.jsp.tags;
 
-import javax.servlet.jsp.tagext.SimpleTagSupport;
-import javax.servlet.jsp.PageContext;
+public class CamcorderTag extends DeviceTag {
 
-import java.io.Writer;
-import java.io.IOException;
-
-public class CamcorderTag extends SimpleTagSupport {
-
-    public void doTag() throws IOException {
-        PageContext pageContext = (PageContext) getJspContext();
-        boolean isEnhanced = TagUtil.isEnhancedBrowser(pageContext);
-        Writer out = pageContext.getOut();
-        if (isEnhanced)  {
-            out.write("<input type='button' id='cam' class='camcorder' onclick='ice.camcorder(\"cam\");' value='camcorder'>");
-        } else {
-            out.write("<input id='camcorder' type='file' name='camcorder' />");
-            //or for iOS until we can store the ICEmobile-SX registration
-            //without a session (likely a cookie)            
-            out.write("<input type='button' data-id='cam' class='camcorder' ");
-            out.write("data-command='camcorder' onclick='ice.mobilesx(this)' ");
-            out.write(" value='camcorder (ICEmobile-SX)'>");
-        }
+    public CamcorderTag()  {
+        this.command = "camcorder";
+        this.label = "Camcorder";
     }
 
 }

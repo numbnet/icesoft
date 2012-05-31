@@ -49,7 +49,7 @@
 		  	</fieldset>
 
 		  	<fieldset>
-               <mobi:microphone />
+               <mobi:microphone id="mic"/>
                <audio style="float:right;" src="media/clip.mp4" controls="controls" >
 		  	</fieldset>
 
