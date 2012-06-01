@@ -60,11 +60,6 @@
     position: relative;
 }
 
-.ui-tableconf-sort-cont {
-    position: absolute;
-    top:0;
-}
-
 .ui-sortable-control {
     cursor:pointer;
 }
@@ -88,9 +83,6 @@
     text-align: right;
 }
 
-.ui-tableconf-sort-cont {
-    position: relative;
-}
 .ui-tableconf-body .ui-sortable-column-order {
     text-align: left;
     top:-4px;
@@ -117,6 +109,7 @@
 .ui-tableconf-body .ui-sortable-column-icon .ui-icon-triangle-1-s {
     position:relative;
     bottom:-1px;
+    *bottom:4px; /* IE7 specific offset  */
 }
 .ui-sortable-column-icon .ui-icon-triangle-1-n {
     position:absolute;

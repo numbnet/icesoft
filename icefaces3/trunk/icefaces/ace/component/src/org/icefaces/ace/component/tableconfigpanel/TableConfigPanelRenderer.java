@@ -162,9 +162,7 @@ public class TableConfigPanelRenderer extends CoreRenderer {
 
         writer.startElement(HTML.ANCHOR_ELEM, null);
 
-        String style = "display:inline-block; padding:2px 4px 4px 2px; margin:0px 2px; text-align:left;";
-        writer.writeAttribute(HTML.STYLE_ELEM, style, null);
-        writer.writeAttribute(HTML.CLASS_ATTR, "ui-state-default ui-corner-all", null);
+        writer.writeAttribute(HTML.CLASS_ATTR, "ui-state-default ui-corner-all ui-tableconf-head-button", null);
         writer.writeAttribute(HTML.HREF_ATTR, "#", null);
         writer.writeAttribute(HTML.ONCLICK_ATTR, "ice.ace.jq(ice.ace.escapeClientId('"+ clientId +"')).toggle()", null);
         writer.writeAttribute(HTML.ID_ATTR, clientId +"_tableconf_ok", null);
@@ -186,9 +184,7 @@ public class TableConfigPanelRenderer extends CoreRenderer {
 
         writer.startElement(HTML.ANCHOR_ELEM, null);
 
-        String style = "display:inline-block; padding:2px 4px 4px 2px; margin:0px 2px; text-align:left;";
-        writer.writeAttribute(HTML.STYLE_ELEM, style, null);
-        writer.writeAttribute(HTML.CLASS_ATTR, "ui-state-default ui-corner-all", null);
+        writer.writeAttribute(HTML.CLASS_ATTR, "ui-state-default ui-corner-all ui-tableconf-head-button", null);
         writer.writeAttribute(HTML.HREF_ATTR, "#", null);
         writer.writeAttribute(HTML.ONCLICK_ATTR, "ice.ace.jq(ice.ace.escapeClientId('"+ clientId +"')).toggle(); if (" + jsId + ".behavior) if (" + jsId + ".behavior.close) " + jsId + ".behavior.close();", null);
         writer.writeAttribute(HTML.ID_ATTR, clientId +"_tableconf_close", null);
