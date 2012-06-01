@@ -47,11 +47,11 @@ import org.icefaces.ace.util.JSONBuilder;
 
 public class CoreRenderer extends Renderer {
 
-    public String resolveWidgetVar(UIComponent component) {
+    public static String resolveWidgetVar(UIComponent component) {
 		FacesContext context = FacesContext.getCurrentInstance();
 		String userWidgetVar = (String)component.getAttributes().get("widgetVar");
 
-		if(userWidgetVar != null) return userWidgetVar;
+		if (userWidgetVar != null) return userWidgetVar;
 		 else return "widget_" + component.getClientId(context).replaceAll("-|" + UINamingContainer.getSeparatorChar(context), "_");
 	}
 
