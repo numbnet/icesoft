@@ -2,10 +2,14 @@ if (!window['ice']) window.ice = {};
 if (!window.ice['ace']) window.ice.ace = {};
 ice.ace.Autocompleters = {};
 
-ice.ace.Autocompleter = function(id, updateId, options, rowClass, selectedRowClass, partialSubmit, behaviors, cfg) {
+ice.ace.Autocompleter = function(id, updateId, options, rowClass, selectedRowClass, partialSubmit, delay, minChars, height, direction, behaviors, cfg) {
 	this.id = id;
 	ice.ace.Autocompleters[this.id] = this;
 	this.partialSubmit = partialSubmit;
+	this.delay = delay;
+	this.minChars = minChars;
+	this.height = height == 0 ? 'auto' : height;
+	this.direction = direction;
     this.cfg = cfg;
 	//var existing = Autocompleter.Finder.list[id];
 	//if (!Prototype.Browser.IE && existing && !existing.monitor.changeDetected()) { //@ custom detection
@@ -99,6 +103,7 @@ ice.ace.Autocompleter.cleanWhitespace = function(element) {
 ice.ace.Autocompleter.prototype = {
 
     baseInitialize: function(element, update, options, rowC, selectedRowC) {
+        var self = this;
         this.element = element; //@ ice.ace.jq #
         this.update = update; //@ ice.ace.jq #
         this.hasFocus = false;
@@ -138,20 +143,39 @@ ice.ace.Autocompleter.prototype = {
                         //update.clonePosition(element.parentNode, {setTop:false, setWidth:false, setHeight:false, //@ jq clone node #
                         //    offsetLeft: element.offsetLeft - element.parentNode.offsetLeft});
 						var jqElement = ice.ace.jq(element);
+						var jqUpdate = ice.ace.jq(update);
 						var pos = jqElement.offset();
-						ice.ace.jq(update).css({ position: "absolute", top: pos.top + element.offsetHeight, left: pos.left, marginTop: 0, marginLeft: 0, width: jqElement.width(), height: 'auto'});
-                        if (ieEngine >= 7) {
-                            var savedPos = element.style.position;
-                            element.style.position = "relative";
-                            update.style.left = element.offsetLeft + "px";
-                            if (ieEngine == 7) {
-                                update.style.top = (element.offsetTop + element.offsetHeight) + "px";
-                            } else {
-                                var scrollTop = pos.top - document.documentElement.scrollTop; //@ cumulativeScrollOffset #
-                                update.style.top = (element.offsetTop + element.offsetHeight) + "px";
-                            }
-                            element.style.position = savedPos;
-                        }
+						if (self.direction == 'up') {
+							var updateHeight = jqUpdate.height();
+							updateHeight = updateHeight > self.height ? self.height : updateHeight;
+							jqUpdate.css({ position: "absolute", top: pos.top - updateHeight, left: pos.left, marginTop: 0, marginLeft: 0, width: jqElement.width(), maxHeight: self.height, overflow: "auto" });
+							if (ieEngine >= 7) {
+								var savedPos = element.style.position;
+								element.style.position = "relative";
+								update.style.left = element.offsetLeft + "px";
+								if (ieEngine == 7) {
+									update.style.top = (element.offsetTop - updateHeight) + "px";
+								} else {
+									var scrollTop = pos.top - document.documentElement.scrollTop; //@ cumulativeScrollOffset #
+									update.style.top = (element.offsetTop - updateHeight) + "px";
+								}
+								element.style.position = savedPos;
+							}						
+						} else {
+							jqUpdate.css({ position: "absolute", top: pos.top + element.offsetHeight, left: pos.left, marginTop: 0, marginLeft: 0, width: jqElement.width(), maxHeight: self.height, overflow: "auto" });
+							if (ieEngine >= 7) {
+								var savedPos = element.style.position;
+								element.style.position = "relative";
+								update.style.left = element.offsetLeft + "px";
+								if (ieEngine == 7) {
+									update.style.top = (element.offsetTop + element.offsetHeight) + "px";
+								} else {
+									var scrollTop = pos.top - document.documentElement.scrollTop; //@ cumulativeScrollOffset #
+									update.style.top = (element.offsetTop + element.offsetHeight) + "px";
+								}
+								element.style.position = savedPos;
+							}
+						}
                     }
                     ice.ace.jq(update).fadeIn(150) //@ jq effects #
                 } catch(e) {
@@ -170,7 +194,6 @@ ice.ace.Autocompleter.prototype = {
         this.element.setAttribute('autocomplete', 'off');
         ice.ace.jq(this.update).hide(); // @ jq hide #
         //Event.observe(this.element, "blur", this.onBlur.bindAsEventListener(this)); //@ jq event #
-		var self = this;
         ice.ace.jq(this.element).data("labelIsInField", this.cfg.labelIsInField);
 		ice.ace.jq(this.element).on("blur", function(e) { self.onBlur.call(self, e); });
 		ice.ace.jq(this.element).on("focus", function(e) { self.onFocus.call(self, e); });
@@ -179,7 +202,7 @@ ice.ace.Autocompleter.prototype = {
             keyEvent = "keydown";
         }
         //Event.observe(this.element, keyEvent, this.onKeyPress.bindAsEventListener(this)); //@ jq event #
-		ice.ace.jq(this.element).on(keyEvent, function(e) { self.onKeyPress.call(self, e); });
+		ice.ace.jq(this.element).on(keyEvent, function(e) { setTimeout( function() { self.onKeyPress.call(self, e); }, self.delay) } );
         // ICE-3830
         if (ice.ace.Autocompleter.Browser.IE || ice.ace.Autocompleter.Browser.WebKit) //@ custom detection #
             //Event.observe(this.element, "paste", this.onPaste.bindAsEventListener(this)); //@ jq event #
@@ -639,6 +662,7 @@ ice.ace.Autocompleter.prototype = {
     },
 
     getUpdatedChoices: function(isEnterKey, event, idx) {
+		if (this.element.value.length < this.minChars) return; // this.hide()
         if (!event) {
             event = new Object();
         }

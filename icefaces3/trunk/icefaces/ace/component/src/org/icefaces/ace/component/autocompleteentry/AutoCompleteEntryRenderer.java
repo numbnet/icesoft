@@ -147,7 +147,8 @@ public class AutoCompleteEntryRenderer extends InputRenderer {
 		String divId = clientId + AUTOCOMPLETE_DIV;
 		writer.writeAttribute("id", clientId + AUTOCOMPLETE_DIV, null);
 		//String listClass = autoCompleteEntry.getListClass(); // TODO: check for list class and use it instead
-		writer.writeAttribute("style", "display:none;border:1px solid black;background-color:white;z-index:500;", null);
+		writer.writeAttribute("class", "ui-widget ui-widget-content ui-corner-all", null);
+		writer.writeAttribute("style", "display:none;z-index:500;", null);
 		writer.endElement("div");
 
 		// script
@@ -155,6 +156,8 @@ public class AutoCompleteEntryRenderer extends InputRenderer {
 		writer.writeAttribute("id", clientId + "script", null);
 		writer.writeAttribute("type", "text/javascript", null);
 		boolean partialSubmit = false; // TODO: remove
+		String direction = autoCompleteEntry.getDirection();
+		direction = direction != null ? ("up".equalsIgnoreCase(direction) || "down".equalsIgnoreCase(direction) ? direction : "auto" ) : "auto";
 		if (!autoCompleteEntry.isDisabled() && !autoCompleteEntry.isReadonly()) {
 			JSONBuilder jb = JSONBuilder.create();
 			jb.beginFunction("ice.ace.Autocompleter")
@@ -164,6 +167,10 @@ public class AutoCompleteEntryRenderer extends InputRenderer {
 				.item("ui-widget-content")
 				.item("ui-state-active")
 				.item(partialSubmit)
+				.item(autoCompleteEntry.getDelay())
+				.item(autoCompleteEntry.getMinChars())
+				.item(autoCompleteEntry.getHeight())
+				.item(direction)
 				.beginMap()
 				.entry("p", ""); // dummy property
 				encodeClientBehaviors(facesContext, autoCompleteEntry, jb);
@@ -204,7 +211,7 @@ public class AutoCompleteEntryRenderer extends InputRenderer {
 		String clientId = autoCompleteEntry.getClientId(facesContext);
         autoCompleteEntry.populateItemList();
         Iterator matches = autoCompleteEntry.getItemList();
-		String filter = ((String) autoCompleteEntry.getValue()).toLowerCase();
+		String filter = ((String) autoCompleteEntry.getValue());
 		FilterMatchMode filterMatchMode = getFilterMatchMode(autoCompleteEntry);
         int rows = autoCompleteEntry.getRows();
         if (rows == 0) rows = Integer.MAX_VALUE;
@@ -231,7 +238,7 @@ public class AutoCompleteEntryRenderer extends InputRenderer {
 				requestMap.put(listVar, matches.next());
 				String value = (String) filterBy.getValue(elContext);
 			
-				if (satisfiesFilter(value, filter, filterMatchMode)) {
+				if (satisfiesFilter(value, filter, filterMatchMode, autoCompleteEntry)) {
 					rowCounter++;
 					writer.startElement("div", null);
 					//SelectItem item = (SelectItem) matches.next();
@@ -282,7 +289,7 @@ public class AutoCompleteEntryRenderer extends InputRenderer {
                                 facesContext, autoCompleteEntry, item.getValue());*/ // TODO: add converter support
 						itemLabel = item.getValue().toString();
                     }
-					if (satisfiesFilter(itemLabel, filter, filterMatchMode)) {
+					if (satisfiesFilter(itemLabel, filter, filterMatchMode, autoCompleteEntry)) {
                     sb.append("<div>").append(itemLabel)
                             .append("</div>");
 							rowCounter++;
@@ -368,10 +375,13 @@ public class AutoCompleteEntryRenderer extends InputRenderer {
 		none
 	}
 	
-	private boolean satisfiesFilter(String string, String filter, FilterMatchMode filterMatchMode) {
+	private boolean satisfiesFilter(String string, String filter, FilterMatchMode filterMatchMode, AutoCompleteEntry autoCompleteEntry) {
 		
 		if (string != null) {
-			string = string.toLowerCase();
+			if (!autoCompleteEntry.isCaseSensitive()) {
+				string = string.toLowerCase();
+				filter = string.toLowerCase();
+			}
 			switch (filterMatchMode) {
 				case contains:
 					if (string.indexOf(filter) >= 0) return true;
