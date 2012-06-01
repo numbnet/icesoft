@@ -612,6 +612,11 @@ if (!window.ice.icefaces) {
             f.previousParameters = HashSet(jsf.getViewState(f).split('&'));
         };
 
+        namespace.fixViewState = function(id, viewState) {
+            var form = formOf(lookupElementById(id));
+            appendOrReplaceHiddenInputElement(form, 'javax.faces.ViewState', viewState, viewState);
+        }
+
         function isComponentRendered(form) {
             return form['javax.faces.encodedURL'] ||
                 form['javax.faces.ViewState'] ||
