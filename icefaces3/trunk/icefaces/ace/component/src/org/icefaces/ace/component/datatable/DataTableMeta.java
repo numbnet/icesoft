@@ -146,6 +146,11 @@ public class DataTableMeta extends UIDataMeta {
             defaultValue = "true", defaultValueType = DefaultValueType.EXPRESSION)
     private Boolean hiddenScrollableSizing;
 
+    @Property(tlddoc = "Enable the default scrollable table behaviour of using JavaScript to size a " +
+            "table header and footer that are in a fixed position regardless of table body scrolling.",
+            defaultValue = "true", defaultValueType = DefaultValueType.EXPRESSION)
+    private Boolean staticHeaders;
+
     // Map from row data to field names (cells) that are selected
     @Field(defaultValue = "null", defaultValueIsStringLiteral = false)
     protected Map<Object, List<String>> rowToSelectedFieldsMap;

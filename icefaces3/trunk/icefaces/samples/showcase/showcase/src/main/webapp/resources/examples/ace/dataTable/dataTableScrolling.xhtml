@@ -124,13 +124,9 @@
                         hideEffect="fade"
                         resizable="true"
                         position="center">
-                <style type="text/css">
-                    .scrollingTable > div:not(.ui-paginator) {
-                        overflow: auto;
-                        height:200px;
-                    }
-                </style>
                     <ace:dataTable id="carTable"
+                                   scrollable="true"
+                                   staticHeaders="false"
                                    styleClass="scrollingTable"
                                    value="#{dataTableScrolling.carsData}"
                                    var="car"
