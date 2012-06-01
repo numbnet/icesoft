@@ -131,6 +131,11 @@ public class DataTableMeta extends UIDataMeta {
             defaultValue = "false", defaultValueType = DefaultValueType.EXPRESSION)
     private Boolean alwaysExecuteContents;
 
+    @Property(tlddoc = "Enable the the client to revert the edited row with the default state following a failed edit." +
+            " By default when validation fails during a row editing request the row remains in editing mode.",
+            defaultValue = "false", defaultValueType = DefaultValueType.EXPRESSION)
+    private Boolean toggleOnInvalidEdit;
+
     @Property(tlddoc = "Enable the default handling of the scrollable table when " +
             "rendered into a hidden page region. The table attempts to poll its hidden " +
             "status, looking for when it is shown and then call the scrollable table sizing " +
