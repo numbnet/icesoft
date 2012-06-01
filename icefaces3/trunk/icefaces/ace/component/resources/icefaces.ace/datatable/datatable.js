@@ -1615,7 +1615,7 @@ ice.ace.DataTable.prototype.doRowEditSaveRequest = function(element) {
 
     options.onsuccess = function(responseXML) {
         var xmlDoc = responseXML.documentElement,
-                extensions = xmlDoc.getElementsByTagName("extension");
+            extensions = xmlDoc.getElementsByTagName("extension");
 
         _self.args = {};
         for (i=0; i < extensions.length; i++) {
@@ -1628,22 +1628,8 @@ ice.ace.DataTable.prototype.doRowEditSaveRequest = function(element) {
             }
         }
 
-        if (!_self.args.validationFailed) {
+        if (!_self.args.validationFailed)
             if (_self.cfg.scrollable) _self.resizeScrolling();
-
-            row.removeClass('ui-state-focus').find('.ui-editable-column').each(function() {
-                var column = ice.ace.jq(this);
-                column.find('span.ui-cell-editor-output').show();
-                column.find('span.ui-cell-editor-input').hide();
-            });
-
-            ice.ace.jq(element).hide();
-            ice.ace.jq(element).parent().children().hide().find('.ui-icon-pencil').show();
-        }
-
-        ice.ace.selectCustomUpdates(responseXML, function(id, content) {
-            ice.ace.AjaxUtils.updateElement(id, content);
-        });
 
         return false;
     };

@@ -64,8 +64,11 @@ public class RowEditorRenderer extends CoreRenderer {
 
             if (params.containsKey(tableId + "_editSubmit")) {
                 component.queueEvent(new RowEditEvent(component, table.getRowData()));
-                for (Column c : table.getColumns())
-                    state.removeActiveCellEditor(c.getCellEditor());
+
+                if (table.isToggleOnInvalidEdit()) {
+                    for (Column c : table.getColumns())
+                        state.removeActiveCellEditor(c.getCellEditor());
+                }
             }
             else if (params.containsKey(tableId + "_editCancel")) {
                 component.queueEvent(new RowEditCancelEvent(component, table.getRowData()));
@@ -79,6 +82,7 @@ public class RowEditorRenderer extends CoreRenderer {
             }               
         }
     }
+
 
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
@@ -117,7 +121,7 @@ public class RowEditorRenderer extends CoreRenderer {
         }
     }
 
-    protected DataTable findParentTable(FacesContext context, RowEditor editor) {
+    protected static DataTable findParentTable(FacesContext context, RowEditor editor) {
 		UIComponent parent = editor.getParent();
 
 		while(parent != null)

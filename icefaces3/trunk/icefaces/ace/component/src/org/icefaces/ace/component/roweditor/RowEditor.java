@@ -32,7 +32,10 @@
 
 package org.icefaces.ace.component.roweditor;
 
+import org.icefaces.ace.component.column.Column;
+import org.icefaces.ace.component.datatable.DataTable;
 import org.icefaces.ace.event.*;
+import org.icefaces.ace.model.table.RowState;
 
 import javax.el.MethodExpression;
 import javax.faces.application.NavigationHandler;
@@ -56,7 +59,17 @@ public class RowEditor extends RowEditorBase {
         String outcome = null;
         MethodExpression me = null;
 
-        if (event instanceof RowEditEvent)  me = getRowEditListener();
+        DataTable table = RowEditorRenderer.findParentTable(context, this);
+        RowState state = (RowState)(context.getExternalContext().getRequestMap().get(table.getRowStateVar()));
+
+        if (event instanceof RowEditEvent) {
+            if (!table.isToggleOnInvalidEdit()) {
+                for (Column c : table.getColumns())
+                    state.removeActiveCellEditor(c.getCellEditor());
+            }
+
+            me = getRowEditListener();
+        }
         else if (event instanceof RowEditCancelEvent)  me = getRowEditCancelListener();
 
         if (me != null) outcome = (String) me.invoke(context.getELContext(), new Object[] {event});
