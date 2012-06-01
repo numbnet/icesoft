@@ -25,6 +25,8 @@
 
 .ui-tableconf-header {
     padding: 4px;
+    line-height:1.9;
+    zoom:1;
 }
 
 .ui-tableconf-body {
@@ -35,7 +37,6 @@
     width:100%;
 }
 .ui-tableconf-body > table > thead > tr > th {
-    font-size:12pt;
     padding: 3px 10px;
 }
 .ui-tableconf-body > table > tbody > tr > td {
@@ -70,6 +71,19 @@
     position: absolute;
     top:50%;
     margin-top: -12px !important;
+}
+
+*+html .ui-tableconf-head-button {
+    /* IE7 inline block hack */
+    display:inline;
+}
+
+.ui-tableconf-head-button {
+    text-align: left;
+    padding: 2px 4px;
+    margin: 0px 2px;
+    display: inline-block;
+    width:16px; /* required for inline-block on IE7 */
 }
 
 .ui-header-right .ui-tableconf-button {
