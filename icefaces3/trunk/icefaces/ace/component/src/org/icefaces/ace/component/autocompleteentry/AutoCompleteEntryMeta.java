@@ -60,7 +60,7 @@ import java.util.List;
 public class AutoCompleteEntryMeta extends HtmlInputTextMeta {
 	
     @Property(tlddoc = "Style class name of the container element.", defaultValue="")
-    private int styleClass;
+    private String styleClass;
 	
     @Property(tlddoc = "Variable name to use for referencing each data object in the list when rendering via a facet.")
     private String listVar;
@@ -103,4 +103,20 @@ public class AutoCompleteEntryMeta extends HtmlInputTextMeta {
     @Property(tlddoc = "Position of input-required or input-optional indicator relative to input field or label. " +
             "Supported values are \"left/right/top/bottom/labelLeft/labelRight\". ")
     private String indicatorPosition;
+	
+    @Property(tlddoc = "", defaultValue="0") // renderer tells client, js code handles it
+    private int delay;
+
+    @Property(tlddoc = "", defaultValue="1") // renderer tells client, js code handles it
+    private int minChars;
+
+    @Property(tlddoc = "", defaultValue="false") // server side only, only affects automatic filtering
+    private boolean caseSensitive;
+
+    @Property(tlddoc = "") // renderer tells client, js code handles it
+    private int height;
+
+    @Property(tlddoc = "") // renderer tells client, js code handles it
+    private String direction;	
+	
 }
