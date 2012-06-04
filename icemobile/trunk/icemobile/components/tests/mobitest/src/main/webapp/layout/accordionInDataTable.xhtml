@@ -49,6 +49,8 @@
       <h1> test page for accordion </h1>
       <br />
      <h:form id="contentForm">
+         <h:dataTable value="#{layoutBean.dataList}" var="tblVar">
+             <h:column>
        <mobi:accordion id="test1" currentId="#{layoutBean.selectedPane}" autoheight="true">
               <mobi:contentPane id="panel1" title="panel1" cacheType="client">
                   <fieldset title="panel1">
@@ -100,6 +102,8 @@
                   </fieldset>
               </mobi:contentPane>
        </mobi:accordion>
+           </h:column>
+       </h:dataTable>
        <div id="output" style="display:block;">
           selected pane ... <mark>#{layoutBean.selectedPane}</mark> ... is selected pane
        </div>

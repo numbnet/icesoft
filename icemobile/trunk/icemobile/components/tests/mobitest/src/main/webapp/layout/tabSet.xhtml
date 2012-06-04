@@ -30,6 +30,7 @@
 
     <mobi:deviceStylesheet
             name="#{themeSwitcher.theme}" media="screen" />
+ <script src="navigation.js" type="text/javascript"></script>
 </h:head>
 
 <h:body>
@@ -37,21 +38,20 @@
      <h:form id="selectForm">
        <h:panelGroup id="selectorGroup">
          <h:outputText  value="select the pane to open:-"/>
-         <h:selectOneMenu id="selectPane"  value="#{layoutBean.tabIndex}">
-             <f:selectItem itemValue="0" itemLabel="Open First tab"/>
-             <f:selectItem itemValue="1" itemLabel="Open 2nd tab" />
-             <f:selectItem itemValue="2" itemLabel="Open 3rd tab" />
+         <h:selectOneMenu id="selectPane"  value="#{layoutBean.accordionIndex}">
+             <f:selectItem itemValue="0" itemLabel="Open First panel"/>
+             <f:selectItem itemValue="1" itemLabel="Open 2nd panel" />
+             <f:selectItem itemValue="2" itemLabel="Open 3rd panel" />
              <f:ajax execute="@this" render="@all"/>
          </h:selectOneMenu>
        </h:panelGroup>
       </h:form>
-      <h1> test page for tabSet </h1>
+      <h1> test page for accordion </h1>
       <br />
      <h:form id="contentForm">
-       <mobi:tabSet id="test1" tabIndex="#{layoutBean.tabIndex}"
-                    tabChangeListener="#{layoutBean.tabChangeListener}">
+
+       <mobi:tabSet id="test1" currentId="#{layoutBean.selectedPane}" tabChangeListener="#{layoutBean.tabChangeListener}">
               <mobi:contentPane id="panel1" title="panel1" cacheType="client">
-                 <div id="inner1">
                   <fieldset title="panel1">
                       <legend>Panel1</legend>
                     <h3> header for panel 1</h3>
@@ -62,11 +62,10 @@
                             alt="king of clubs" />
                          <figcaption>King of Clubs</figcaption>
                         </figure>
+                      <ui:include src="included.xhtml"/>
                   </fieldset>
-                 </div>
               </mobi:contentPane>
                <mobi:contentPane id="panel2" title="panel2" >
-                 <div id="inner2">
                  <fieldset title="panel2">
                    <legend>Panel2</legend>
                   <h3> header for panel 2</h3>
@@ -78,11 +77,16 @@
                          <figcaption>Queen of Clubs</figcaption>
                         </figure>
                       <br />
+                     Change panes with this button
+                   <br />
+                     <mobi:commandButton id="but2"  singleSubmit="true"
+                                  value="SelectPane3" actionListener="#{layoutBean.changeToPane3}">
+                      </mobi:commandButton>
+                     <br />
+                     <ui:include src="included.xhtml"/>
                   </fieldset>
-                </div>
               </mobi:contentPane>
              <mobi:contentPane id="panel3" title="panel3" cacheType="tobeconstructed">
-                <div id="inner3">
                  <fieldset title="panel3">
                       <legend>Panel3</legend>
                   <h3> header for panel 3</h3>
@@ -93,16 +97,54 @@
                             alt="joker" />
                          <figcaption>joker</figcaption>
                         </figure>
+                     <ui:include src="included.xhtml"/>
                   </fieldset>
-                </div>
               </mobi:contentPane>
        </mobi:tabSet>
-
-     </h:form>
-         <div id="output" style="display:block;">
-          selected Tab ... <mark>#{layoutBean.tabIndex}</mark> ... is selected tab
+       <div id="output" style="display:block;">
+          selected pane ... <mark>#{layoutBean.selectedPane}</mark> ... is selected pane
        </div>
+      <div>
+           <mobi:commandButton id="but1"
+                                  value="SelectPane3" actionListener="#{layoutBean.changeToPane3}">
+                  <mobi:ajax execute="@this" render="@form"/>
+           </mobi:commandButton>
+      </div>
+     </h:form>
     <footer>
+       <div>
+       <table>
+            <tr>
+                <th>how this page was arrived at</th>
+            </tr>
+            <tr>
+                <td id="arriveAtPageId"> </td>
+            </tr>
+        </table>
+        Performance utils:
+       <table>
+           <tr>
+               <th> Event</th>
+               <th> Time</th>
+           </tr>
+           <tr>
+               <td>domLoading</td>
+               <td id="domLoadingId"> </td>
+           </tr>
+           <tr>
+               <td>domComplete</td>
+               <td id="domCompleteId"> </td>
+           </tr>
+           <tr>
+               <td>time to load domComplete - domLoading </td>
+               <td id="timeToloadId"> </td>
+           </tr>
+           <tr>
+               <td>run time</td>
+               <td id="runTimeId"> </td>
+           </tr>
+       </table>
+       </div>
         <a href="../layoutComponents.html">index page</a>
     </footer>
 

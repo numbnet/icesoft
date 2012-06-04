@@ -81,7 +81,6 @@ public class TabSet extends TabSetBase implements ContentPaneController {
             throws AbortProcessingException {
         if (event instanceof ValueChangeEvent) {
             ValueChangeEvent vce = (ValueChangeEvent) event;
-            setCurrentId((String)vce.getNewValue());
             MethodExpression method = getTabChangeListener();
             if (method != null) {
                 method.invoke(getFacesContext().getELContext(), new Object[]{event});

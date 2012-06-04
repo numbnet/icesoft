@@ -44,12 +44,12 @@
          </h:selectOneMenu>
        </h:panelGroup>
       </h:form>
-      <h1> test page for contentStack</h1>
+      <h1> test page for accordion</h1>
       <br />
      <h:form id="contentForm">
-       <mobi:contentStack id="test1" currentId="#{layoutBean.selectedPane}">
+       <mobi:accordion id="test1" currentId="#{layoutBean.selectedPane}">
            <c:forEach items="#{layoutBean.eachContentPane}" var="currContentPane">
-              <mobi:contentPane id="#{currContentPane.id}" cacheType="#{currContentPane.cacheType}">
+              <mobi:contentPane id="#{currContentPane.id}" title="#{currContentPane.legend}" cacheType="#{currContentPane.cacheType}">
                  <fieldset title="#{currContentPane.title}">
                       <legend>#{currContentPane.legend}</legend>
                     <h3> #{currContentPane.header}</h3>
@@ -64,7 +64,7 @@
                   </fieldset>
               </mobi:contentPane>
            </c:forEach>
-       </mobi:contentStack>
+       </mobi:accordion>
        <div id="output" style="display:block;">
           selected pane ... <mark>#{layoutBean.selectedPane}</mark> ... is selected pane
        </div>
