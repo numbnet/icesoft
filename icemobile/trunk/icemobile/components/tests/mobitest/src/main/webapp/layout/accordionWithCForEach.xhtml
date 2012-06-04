@@ -27,7 +27,7 @@
           content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;"/>
     <meta name="apple-mobile-web-app-capable" content="yes"/>
     <meta name="apple-mobile-web-app-status-bar-style" content="black"/>
-    <title>ContentPane</title>
+    <title>Accordion c for each</title>
 
     <mobi:deviceStylesheet
             name="#{themeSwitcher.theme}" media="screen" />
@@ -39,12 +39,14 @@
        <h:panelGroup id="selectorGroup">
          <h:outputText  value="select the pane to open:-"/>
          <h:selectOneMenu id="selectPane"  value="#{layoutBean.selectedPane}">
-             <f:selectItems value="#{layoutBean.allContentPanes}"/>
+             <f:selectItem itemValue="panel1" itemLabel="Open First panel"/>
+             <f:selectItem itemValue="panel2" itemLabel="Open 2nd panel" />
+             <f:selectItem itemValue="panel3" itemLabel="Open 3rd panel" />
              <f:ajax execute="@this" render="@all"/>
          </h:selectOneMenu>
        </h:panelGroup>
       </h:form>
-      <h1> test page for accordion</h1>
+      <h1> test page for accordion with c for each</h1>
       <br />
      <h:form id="contentForm">
        <mobi:accordion id="test1" currentId="#{layoutBean.selectedPane}">

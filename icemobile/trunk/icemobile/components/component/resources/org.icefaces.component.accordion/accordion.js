@@ -85,7 +85,10 @@
                 }
                 var alreadyOpen = theContainer.getAttribute('data-opened');
                 if (alreadyOpen && alreadyOpen !== theParent.id)  {
-                    document.getElementById(alreadyOpen).className = 'closed';
+                    var openedEl = document.getElementById(alreadyOpen);
+                    if (openedEl){
+                        document.getElementById(alreadyOpen).className = 'closed';
+                    }
                 }
                 if ('open' === theParent.className) {
                     theParent.className='closed';

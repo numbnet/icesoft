@@ -38,7 +38,7 @@ public class Accordion extends AccordionBase implements ContentPaneController {
      public static final String ACCORDION_RIGHT_POINTING_POINTER= "&#9658;";
      public static final String ACCORDION_LEFT_POINTING_TRIANGLE = "&#9664;";
      public static final String ACCORDION_LEFT_POINTING_POINTER= "&#9668;";
-     
+     private String selectedId;
      /**
      * method is required by ContentPaneController interface
      * returns null if their are no children of type contentPane or no children at all.
@@ -59,7 +59,7 @@ public class Accordion extends AccordionBase implements ContentPaneController {
      }
 
      public void queueEvent(FacesEvent event) {
-        if (event.getComponent() instanceof Accordion) {
+        if (event.getComponent() == this) {
             if (logger.isLoggable(Level.FINEST)){
                 logger.finest("invoked event for Accordion with selectedId= " + this.getSelectedId());
             }   //no immediate for this component
