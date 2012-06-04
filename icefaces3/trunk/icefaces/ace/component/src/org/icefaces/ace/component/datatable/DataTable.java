@@ -374,11 +374,6 @@ public class DataTable extends DataTableBase implements Serializable {
     }
 
     @Override
-    public int getFirst() {
-        return isPaginator() ? super.getFirst() : 0;
-    }
-
-    @Override
     public void setRowIndex(int index) {
         Map<String, Object> requestMap = FacesContext.getCurrentInstance().getExternalContext().getRequestMap();
 
