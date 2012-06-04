@@ -35,21 +35,12 @@
 
 <h:body>
 
-     <h:form id="selectForm">
-       <h:panelGroup id="selectorGroup">
-         <h:outputText  value="select the pane to open:-"/>
-         <h:selectOneMenu id="selectPane"  value="#{layoutBean.accordionIndex}">
-             <f:selectItem itemValue="0" itemLabel="Open First panel"/>
-             <f:selectItem itemValue="1" itemLabel="Open 2nd panel" />
-             <f:selectItem itemValue="2" itemLabel="Open 3rd panel" />
-             <f:ajax execute="@this" render="@all"/>
-         </h:selectOneMenu>
-       </h:panelGroup>
-      </h:form>
       <h1> test page for accordion </h1>
       <br />
      <h:form id="contentForm">
-       <mobi:accordion id="test1" currentId="#{layoutBean.selectedPane}" autoheight="true">
+         <h:dataTable value="#{layoutBean.dataList}" var="tblVar">
+             <h:column>
+          <mobi:tabSet id="test1" currentId="#{layoutBean.selectedPane}" tabChangeListener="#{layoutBean.tabChangeListener}">
               <mobi:contentPane id="panel1" title="panel1" cacheType="client">
                   <fieldset title="panel1">
                       <legend>Panel1</legend>
@@ -99,7 +90,9 @@
                      <ui:include src="included.xhtml"/>
                   </fieldset>
               </mobi:contentPane>
-       </mobi:accordion>
+       </mobi:tabSet>
+           </h:column>
+       </h:dataTable>
        <div id="output" style="display:block;">
           selected pane ... <mark>#{layoutBean.selectedPane}</mark> ... is selected pane
        </div>

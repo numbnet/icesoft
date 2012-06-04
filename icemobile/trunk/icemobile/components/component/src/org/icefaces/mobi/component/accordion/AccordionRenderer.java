@@ -44,7 +44,6 @@ public class AccordionRenderer extends BaseLayoutRenderer {
          Map<String, String> params = context.getExternalContext().getRequestParameterMap();
        // no ajax behavior defined yet
          String indexStr = params.get(clientId + "_hidden");
-         System.out.println("AccordionRenderer.decode()  " + indexStr);
          if( null != indexStr) {
              String oldId = accordion.getCurrentId();
              String newId = Utils.getIdOfChildByClientId(context, accordion, indexStr);
@@ -88,7 +87,6 @@ public class AccordionRenderer extends BaseLayoutRenderer {
         ResponseWriter writer = facesContext.getResponseWriter();
         UIComponent openPane = null;  //all children must be panels
         String currentId = paneController.getCurrentId();
-        System.out.println("AccordionRenderer.encodeDataOpenedAttribute()  currentId: " + currentId);
 
         if (paneController.getChildCount() <= 0){
                  // || logger.isLoggable(Level.FINER)) {

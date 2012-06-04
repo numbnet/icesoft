@@ -16,11 +16,13 @@
 
 package org.icefaces.mobile.layout;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
 import javax.faces.event.ValueChangeEvent;
-import java.awt.event.ActionEvent;
+import javax.faces.event.ActionEvent;
+import javax.faces.model.SelectItem;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,36 +36,61 @@ public class LayoutBean implements Serializable {
     private static final String SECONDPANE="panel2";
     private static final String THIRDPANE="panel3";
 
-    private List menuList = new ArrayList<MenuValue>();
-    private List dataList = new ArrayList<DataValue>();
-    private List eachContentPane = new ArrayList<EachContentPane>();
+    private List<MenuValue> menuList = new ArrayList<MenuValue>();
+    private List<DataValue> dataList = new ArrayList<DataValue>();
+    private List<DataValue> dataListMultiRow = new ArrayList<DataValue>();
+    private List<EachContentPane> eachContentPane = new ArrayList<EachContentPane>();
     private String selectedPane = FIRSTPANE;
-    private int accordionIndex = 0;
-    private int tabIndex = 1;
+    private int counter;
 
 	public LayoutBean(){
-       this.selectedPane = FIRSTPANE;
-       this.menuList.add(new MenuValue("Menu Example", "none", true));
-       this.menuList.add(new MenuValue("splash", FIRSTPANE, false));
-       this.menuList.add(new MenuValue("date/time", SECONDPANE, false));
-       this.menuList.add(new MenuValue("tabSet", THIRDPANE, false));
-       this.dataList.add(new DataValue(FIRSTPANE));
-       //this.dataList.add(new DataValue(SECONDPANE));
-       //this.dataList.add(new DataValue(THIRDPANE));
-       this.eachContentPane.add(new EachContentPane("panel1", "client", "panel1",
-           "Panel1", "header for panel 1", "content for panel 1 - king of clubs",
-           "../images/kingOfClubs.jpg", "king of clubs", "King of Clubs"));
-        this.eachContentPane.add(new EachContentPane("panel2", null, "panel2",
+        this.selectedPane = FIRSTPANE;
+        this.menuList.add(new MenuValue("Menu Example", "none", true));
+        this.menuList.add(new MenuValue("splash", FIRSTPANE, false));
+        this.menuList.add(new MenuValue("date/time", SECONDPANE, false));
+        this.menuList.add(new MenuValue("tabSet", THIRDPANE, false));
+        this.dataList.add(new DataValue(FIRSTPANE));
+        dataListMultiRow.add(new DataValue(FIRSTPANE));
+        dataListMultiRow.add(new DataValue(SECONDPANE));
+        dataListMultiRow.add(new DataValue(THIRDPANE));
+        eachContentPane.add(new EachContentPane("panel1", "client", "panel1",
+            "Panel1", "header for panel 1", "content for panel 1 - king of clubs",
+            "../images/kingOfClubs.jpg", "king of clubs", "King of Clubs"));
+        eachContentPane.add(new EachContentPane("panel2", null, "panel2",
             "Panel2", "header for panel 2", "content for panel 2 - queen of clubs",
             "../images/queen.jpg", "queen of clubs", "Queen of Clubs"));
-        this.eachContentPane.add(new EachContentPane("panel3", "tobeconstructed", "panel3",
+        eachContentPane.add(new EachContentPane("panel3", "tobeconstructed", "panel3",
             "Panel3", "header for panel 3", "content for panel 3 - some other card",
             "../images/Joker.jpg", "joker", "Joker"));
-	}
+        counter = eachContentPane.size();
+    }
 
     public void tabChangeListener(ValueChangeEvent vce){
         logger.info("in tabChangeListener old val="+vce.getOldValue()+" new index="+vce.getNewValue());
     }
+
+    public void addContentPane(ActionEvent event) {
+        logger.info("LayoutBean.addContentPane()");
+        counter++;
+        eachContentPane.add(new EachContentPane("panel"+counter, "tobeconstructed", "panel"+counter,
+            "Panel"+counter, "header for panel "+counter, "content for panel "+counter+" - some other card",
+            "../images/Joker.jpg", "joker", "Joker"));
+    }
+
+    public void removeContentPane(ActionEvent event) {
+        logger.info("LayoutBean.removeContentPane()");
+        if (selectedPane == null || selectedPane.length() == 0) {
+            return;
+        }
+        for (int i = 0; i < eachContentPane.size(); i++) {
+            EachContentPane pane = eachContentPane.get(i);
+            if (selectedPane.equals(pane.getId())) {
+                eachContentPane.remove(i);
+                break;
+            }
+        }
+    }
+
     public void changeToPane3(){
         this.selectedPane = THIRDPANE;
     }
@@ -77,23 +104,8 @@ public class LayoutBean implements Serializable {
     }
 
     public void setSelectedPane(String selectedPane) {
+        logger.info("LayoutBean.setSelectedPane: " + selectedPane);
         this.selectedPane = selectedPane;
-    }
-
-    public int getAccordionIndex() {
-        return accordionIndex;
-    }
-
-    public void setAccordionIndex(int accordionIndex) {
-        this.accordionIndex = accordionIndex;
-    }
-
-    public int getTabIndex() {
-        return tabIndex;
-    }
-
-    public void setTabIndex(int tabIndex) {
-        this.tabIndex = tabIndex;
     }
 
     public List getMenuList() {
@@ -106,7 +118,18 @@ public class LayoutBean implements Serializable {
 
     public List getDataList() { return dataList; }
 
+    public List getDataListMultiRow() { return dataListMultiRow; }
+
     public List getEachContentPane() { return eachContentPane; }
+
+    public SelectItem[] getAllContentPanes() {
+        int sz = eachContentPane.size();
+        SelectItem[] items = new SelectItem[sz];
+        for (int i = 0; i < sz; i++) {
+            items[i] = new SelectItem(eachContentPane.get(i).getId());
+        }
+        return items;
+    }
     
 
     public static class MenuValue implements Serializable{
