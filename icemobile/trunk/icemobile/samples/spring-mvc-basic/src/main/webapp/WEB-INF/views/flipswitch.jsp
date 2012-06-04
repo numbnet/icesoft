@@ -14,15 +14,13 @@
 </head>
 <body>
 </c:if>
-	<div id="variousContent">
-<c:if test="${isGET}">
-    <push:register group="various" callback="function(){$('#variousform').submit();}"/>
-</c:if>
+	<div id="flipswitchContent">
+
 		<h2>Various Spring MVC tags</h2>
 		<p>
 			Flipswitches
 		</p>
-		<form:form id="variousform" method="POST"  modelAttribute="flipSwitchBean" cssClass="cleanform">
+		<form:form id="flipswitchform" method="POST"  modelAttribute="flipSwitchBean" cssClass="cleanform">
 			<div class="header">
 		  		<mobi:flipSwitch id="onOffFlipSwitch" labelOn="On" labelOff="Off" value="${flipSwitchBean.onOffFlipSwitch}"/>
 		  		<mobi:flipSwitch id="yesNoFlipSwitch" labelOn="Yes" labelOff="No" value="${flipSwitchBean.yesNoFlipSwitch}"/>
@@ -37,10 +35,10 @@
 		<script type="text/javascript">
 
 			$(document).ready(function() {
-				$("#variousform").submit(function() {
+				$("#flipswitchform").submit(function() {
                     if (window.ice && ice.upload)  {
                         window.ice.handleResponse = function(data)  {
-						    $("#variousContent").replaceWith(unescape(data));
+						    $("#flipswitchContent").replaceWith(unescape(data));
 						    $('html, body').animate({ scrollTop: $("#message").offset().top }, 500);
                         }
                         ice.upload($(this).attr("id"));
@@ -57,7 +55,7 @@
                         processData: false,
                         type: 'POST',
                         success: function(html) {
-						    $("#variousContent").replaceWith(html);
+						    $("#flipswitchContent").replaceWith(html);
 						    $('html, body').animate({ scrollTop: $("#message").offset().top }, 500);
 					    }
                     });
