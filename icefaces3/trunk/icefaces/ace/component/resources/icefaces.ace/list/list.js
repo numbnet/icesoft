@@ -72,6 +72,9 @@ ice.ace.List.prototype.itemReceiveHandler = function(event, ui) {
     this.immigrantMessage.push(srcId);
     this.immigrantMessage.push([[fromIndex , item.index()]]);
 
+    this.element.find('> ul > li').removeClass('if-list-last-clicked');
+    src.element.find('> ul > li').removeClass('if-list-last-clicked');
+
     this.sendMigrateRequest();
 };
 
@@ -203,6 +206,7 @@ ice.ace.List.prototype.setupSelection = function() {
             .off('mouseenter mouseleave click', selector)
             .on('mouseenter', selector, this.itemEnter)
             .on('mouseleave', selector, this.itemLeave)
+            .on('dblclick', selector, function(e) { self.itemDoubleClickHandler.call(self, e); })
             .on('click', selector, function(e) { self.itemClickHandler.call(self, e); });
 };
 
@@ -214,19 +218,98 @@ ice.ace.List.prototype.itemLeave = function(e) {
     ice.ace.jq(e.currentTarget).removeClass('ui-state-hover');
 };
 
+ice.ace.List.prototype.itemDoubleClickHandler = function(e) {
+    var item = ice.ace.jq(e.currentTarget),
+        id = item.attr('id'),
+        fromIndex = parseInt(id.substr(id.lastIndexOf(this.sep)+1));
+        to = this.getNextList(e.shiftKey);
+
+    fromIndex = this.getUnshiftedIndex(
+            this.element.find('> ul').children().length,
+            this.read('reorderings'),
+            fromIndex);
+
+    to.immigrantMessage = [];
+    to.immigrantMessage.push(this.id);
+    to.immigrantMessage.push([[fromIndex , to.element.find('> ul').children().length]]);
+
+    this.element.find('> ul > li').removeClass('if-list-last-clicked');
+    to.element.find('> ul > li').removeClass('if-list-last-clicked');
+
+    to.sendMigrateRequest();
+}
+
+/* Get the following (or if shift is held, previous) list in the first
+   listControl binding that associates this list with another */
+ice.ace.List.prototype.getNextList = function (shift) {
+    for(var controlId in ice.ace.ListControls) {
+        if(ice.ace.ListControls.hasOwnProperty(controlId)) {
+            var listSet = ice.ace.jq(ice.ace.ListControls[controlId].selector),
+                listIndex = (shift) ? listSet.index(this.element)-1 : listSet.index(this.element)+1;
+
+            if ((!shift && listIndex == listSet.length) || (shift && listIndex < 0))
+                return undefined;
+
+            if (listIndex >= 0)
+                return ice.ace.Lists[ice.ace.jq(listSet[listIndex]).attr('id')];
+        }
+    }
+}
+
+ice.ace.List.prototype.pendingClickHandling;
+
 ice.ace.List.prototype.itemClickHandler = function(e) {
-    var li = e.currentTarget,
-        jqLi = ice.ace.jq(li);
+    if (this.pendingClickHandling == undefined) {
+        var li = e.currentTarget,
+                jqLi = ice.ace.jq(li),
+                self = this;
 
-    if (jqLi.hasClass('ui-state-active'))
-        this.removeSelectedItem(jqLi);
-    else
-        this.addSelectedItem(jqLi);
-    // click cb event
+        this.pendingClickHandling =
+            setTimeout(function () {
+                // Clear double click monitor token
+                self.pendingClickHandling = undefined;
 
-    // add selected item
+                var index = jqLi.index();
+
+                // find connected lists and deselect all
+                self.deselectConnectedLists();
+
+                if (e.shiftKey) {
+                    var lower, higher, last_clicked = jqLi.siblings('.if-list-last-clicked').index();
+                    if (last_clicked < index) {
+                        lower = last_clicked + 1;
+                        higher = index + 1;
+                    } else {
+                        lower = index;
+                        higher = last_clicked;
+                    }
+
+                    jqLi.parent().children().slice(lower, higher).filter(":not(.ui-state-active)").each(function () {
+                        self.addSelectedItem(ice.ace.jq(this));
+                    });
+                }
+                else {
+                    if (!e.metaKey)
+                        jqLi.siblings('.ui-state-active').each(function () {
+                            self.removeSelectedItem(ice.ace.jq(this));
+                        });
+
+                    if (jqLi.hasClass('ui-state-active')) {
+                        jqLi.addClass('if-list-last-clicked').siblings().removeClass('if-list-last-clicked');
+                        self.removeSelectedItem(jqLi);
+                    } else {
+                        jqLi.addClass('if-list-last-clicked').siblings().removeClass('if-list-last-clicked');
+                        self.addSelectedItem(jqLi);
+                    }
+                }
+            }, 250);
+    } else {
+        clearTimeout(this.pendingClickHandling);
+        this.pendingClickHandling = undefined;
+    }
 };
 
+/* Determines the original index of an item at a particular index */
 ice.ace.List.prototype.getUnshiftedIndex = function(length, reorderings, index) {
     var indexes = [];
     for (var i = 0; length - i >= 0; i++) indexes.push(i);
@@ -249,9 +332,6 @@ ice.ace.List.prototype.addSelectedItem = function(item) {
         id = item.attr('id'),
         index = id.substr(id.lastIndexOf(this.sep)+1),
         origIndex = this.getUnshiftedIndex(item.siblings().length, reorderings, parseInt(index));
-
-    // find connected lists and deselect all
-    this.deselectConnectedLists();
 
     item.addClass('ui-state-active');
 

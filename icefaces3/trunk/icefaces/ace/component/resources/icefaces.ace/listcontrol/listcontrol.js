@@ -82,6 +82,9 @@ ice.ace.ListControl.prototype.controlClickHandler = function(e) {
     im.push(from.id);
     im.push(this.getRecords(from, to, all));
 
+    from.element.find('> ul > li').removeClass('if-list-last-clicked');
+    to.element.find('> ul > li').removeClass('if-list-last-clicked');
+
     to.immigrantMessage = im;
     to.sendMigrateRequest();
 };
