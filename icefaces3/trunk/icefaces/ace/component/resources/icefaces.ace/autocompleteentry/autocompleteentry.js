@@ -202,7 +202,7 @@ ice.ace.Autocompleter.prototype = {
             keyEvent = "keydown";
         }
         //Event.observe(this.element, keyEvent, this.onKeyPress.bindAsEventListener(this)); //@ jq event #
-		ice.ace.jq(this.element).on(keyEvent, function(e) { setTimeout( function() { self.onKeyPress.call(self, e); }, self.delay) } );
+		ice.ace.jq(this.element).on(keyEvent, function(e) { self.onKeyPress.call(self, e); } );
         // ICE-3830
         if (ice.ace.Autocompleter.Browser.IE || ice.ace.Autocompleter.Browser.WebKit) //@ custom detection #
             //Event.observe(this.element, "paste", this.onPaste.bindAsEventListener(this)); //@ jq event #
@@ -663,6 +663,7 @@ ice.ace.Autocompleter.prototype = {
 
     getUpdatedChoices: function(isEnterKey, event, idx) {
 		if (this.element.value.length < this.minChars) return; // this.hide()
+		var self = this;
         if (!event) {
             event = new Object();
         }
@@ -681,7 +682,9 @@ ice.ace.Autocompleter.prototype = {
             form[indexName].value = idx;
         }
 
-        //     form.focus_hidden_field.value=this.element.id;
+        var abCall = function() { ice.ace.ab(self.ajaxSubmit); };
+		var icesCall = function() { ice.s(event, self.element); };
+		//     form.focus_hidden_field.value=this.element.id;
         if (isEnterKey && !this.partialSubmit) {
             //iceSubmit(form, this.element, event);
 		if (this.ajaxSubmit) {	
@@ -693,9 +696,9 @@ ice.ace.Autocompleter.prototype = {
         else {
             //iceSubmitPartial(form, this.element, event);
 		if (this.ajaxSubmit) {	
-			ice.ace.ab(this.ajaxSubmit);
+			setTimeout(abCall, self.delay);
 		} else {
-			ice.s(event, this.element);
+			setTimeout(icesCall, self.delay);
 		}
         }
 
