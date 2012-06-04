@@ -17,12 +17,13 @@ public class FixViewState implements SystemEventListener {
 
     public void processEvent(final SystemEvent event) throws AbortProcessingException {
         final UIForm form = (UIForm) ((ComponentSystemEvent) event).getComponent();
-        final String id = form.getId() + ID_SUFFIX;
+        final String formClientID = form.getId();
+        final String id = formClientID + ID_SUFFIX;
 
-        UIOutput output = new ScriptWriter();
+        UIOutput output = new ScriptWriter(formClientID);
         output.setTransient(true);
         output.setId(id);
-        form.getChildren().add(0, output);
+        form.getParent().getChildren().add(output);
     }
 
     public boolean isListenerForSource(final Object source) {
@@ -30,6 +31,12 @@ public class FixViewState implements SystemEventListener {
     }
 
     private static class ScriptWriter extends UIOutputWriter {
+        private String formClientID;
+
+        public ScriptWriter(String formClientID) {
+            this.formClientID = formClientID;
+        }
+
         public void encode(ResponseWriter writer, FacesContext context) throws IOException {
             String clientID = getClientId(context);
             writer.startElement("span", this);
@@ -38,7 +45,7 @@ public class FixViewState implements SystemEventListener {
                 writer.startElement("script", this);
                 writer.writeAttribute("type", "text/javascript", null);
                 String viewState = context.getApplication().getStateManager().getViewState(context);
-                writer.writeText("ice.fixViewState('" + clientID + "', '" + viewState + "');", null);
+                writer.writeText("ice.fixViewState('" + formClientID + "', '" + viewState + "');", null);
                 writer.endElement("script");
             }
             writer.endElement("span");

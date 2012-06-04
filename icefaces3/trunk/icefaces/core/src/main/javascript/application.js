@@ -117,13 +117,17 @@ if (!window.ice.icefaces) {
         }
 
         //function used to safely retrieve ViewState key -- form['javax.faces.ViewState'] sometimes fails in IE
-        function lookupViewState(element) {
+        function lookupViewStateElement(element) {
             var viewStateElement = detect(element.getElementsByTagName('input'), function(input) {
                 return input.name && input.name == 'javax.faces.ViewState';
             }, function() {
                 throw 'cannot find javax.faces.ViewState element';
             });
-            return viewStateElement.value;
+            return viewStateElement;
+        }
+
+        function lookupViewState(element) {
+            return lookupViewStateElement(element).value;
         }
 
         function retrieveUpdateFormID(viewID) {
@@ -613,8 +617,12 @@ if (!window.ice.icefaces) {
         };
 
         namespace.fixViewState = function(id, viewState) {
-            var form = formOf(lookupElementById(id));
-            appendOrReplaceHiddenInputElement(form, 'javax.faces.ViewState', viewState, viewState);
+            var form = lookupElementById(id);
+            try {
+                lookupViewStateElement(form);
+            } catch (ex) {
+                appendHiddenInputElement(form, 'javax.faces.ViewState', viewState, viewState);
+            }
         }
 
         function isComponentRendered(form) {
