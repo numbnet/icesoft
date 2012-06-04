@@ -32,6 +32,7 @@ import javax.faces.event.PhaseEvent;
 import javax.faces.event.PhaseId;
 import javax.faces.event.PhaseListener;
 import javax.faces.event.PostAddToViewEvent;
+import javax.faces.lifecycle.Lifecycle;
 import javax.faces.lifecycle.LifecycleFactory;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -40,6 +41,7 @@ import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.logging.Level;
@@ -265,8 +267,13 @@ public class ICEpushResourceHandler extends ResourceHandlerWrapper implements Ph
             this.resourceHandler = resourceHandler;
             this.servletContext = servletContext;
             servletContext.setAttribute(ICEpushResourceHandler.class.getName(), icePushResourceHandler);
-            ((LifecycleFactory) FactoryFinder.getFactory(FactoryFinder.LIFECYCLE_FACTORY)).
-                    getLifecycle(LifecycleFactory.DEFAULT_LIFECYCLE).addPhaseListener(icePushResourceHandler);
+            LifecycleFactory lifecycleFactory = (LifecycleFactory) FactoryFinder.getFactory(FactoryFinder.LIFECYCLE_FACTORY);
+            Iterator<String> lifecycleIds = lifecycleFactory.getLifecycleIds();
+            while (lifecycleIds.hasNext()) {
+                String lifecycleId = lifecycleIds.next();
+                Lifecycle lifecycle = lifecycleFactory.getLifecycle(lifecycleId);
+                lifecycle.addPhaseListener(icePushResourceHandler);
+            }
         }
 
         void shutdownMainServlet() {
