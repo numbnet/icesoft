@@ -380,7 +380,7 @@ public class AutoCompleteEntryRenderer extends InputRenderer {
 		if (string != null) {
 			if (!autoCompleteEntry.isCaseSensitive()) {
 				string = string.toLowerCase();
-				filter = string.toLowerCase();
+				filter = filter.toLowerCase();
 			}
 			switch (filterMatchMode) {
 				case contains:
