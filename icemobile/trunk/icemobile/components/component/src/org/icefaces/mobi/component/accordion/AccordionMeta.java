@@ -24,6 +24,8 @@ import org.icefaces.ace.meta.annotation.ClientBehaviorHolder;
 import org.icefaces.ace.meta.annotation.ClientEvent;
 import org.icefaces.ace.meta.annotation.Required;
 import javax.el.MethodExpression;
+import javax.faces.application.ResourceDependencies;
+import javax.faces.application.ResourceDependency;
 
 
 @Component(
@@ -38,6 +40,9 @@ import javax.el.MethodExpression;
         tlddoc = "This mobility component allows panels to be placed within accordion controls in  " +
                 "a stacked manner.  Only a single pane may be active at a time."
 )
+@ResourceDependencies({
+        @ResourceDependency(library = "org.icefaces.component.util", name = "component.js")
+})
 public class AccordionMeta extends UIPanelMeta {
 
     @Property( tlddoc="id of the panel that is active in the accordion.")

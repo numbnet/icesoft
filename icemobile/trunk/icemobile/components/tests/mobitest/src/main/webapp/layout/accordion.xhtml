@@ -35,13 +35,13 @@
 
 <h:body>
 
-     <h:form id="selectForm">
+   <h:form id="selectForm">
        <h:panelGroup id="selectorGroup">
          <h:outputText  value="select the pane to open:-"/>
-         <h:selectOneMenu id="selectPane"  value="#{layoutBean.accordionIndex}">
-             <f:selectItem itemValue="0" itemLabel="Open First panel"/>
-             <f:selectItem itemValue="1" itemLabel="Open 2nd panel" />
-             <f:selectItem itemValue="2" itemLabel="Open 3rd panel" />
+         <h:selectOneMenu id="selectPane"  value="#{layoutBean.selectedPane}">
+             <f:selectItem itemValue="panel1" itemLabel="Open First panel"/>
+             <f:selectItem itemValue="panel2" itemLabel="Open 2nd panel" />
+             <f:selectItem itemValue="panel3" itemLabel="Open 3rd panel" />
              <f:ajax execute="@this" render="@all"/>
          </h:selectOneMenu>
        </h:panelGroup>
