@@ -18,16 +18,13 @@ import org.springframework.web.multipart.MultipartFile;
 @Controller
 public class FlipSwitchController {
 
-    @RequestMapping(value = "/various", method = RequestMethod.GET)
-    public String variousGet(HttpServletRequest request, FlipSwitchBean model) {
-        return "various";
+    @RequestMapping(value = "/flipswitch", method = RequestMethod.GET)
+    public void variousGet(HttpServletRequest request, FlipSwitchBean model) {
     }
 
-    @RequestMapping(value = "/various", method = RequestMethod.POST)
-    public String variousPost(HttpServletRequest request,
+    @RequestMapping(value = "/flipswitch", method = RequestMethod.POST)
+    public void variousPost(HttpServletRequest request,
                               FlipSwitchBean model) {
-//        model.
-        return "various";
     }
 
     @ModelAttribute("flipSwitchBean")
