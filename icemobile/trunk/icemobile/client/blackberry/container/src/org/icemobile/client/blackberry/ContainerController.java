@@ -144,6 +144,12 @@ public interface ContainerController {
     public void resetPushAgent();
 
     /**
+     * Reset any cached Authorization keys causing user to be
+     * prompted for new username/password
+     */
+    public void clearAuthorizationCache();
+
+    /**
      * fetch the contents of a file as a resource
      *
      * @param name name of resource
