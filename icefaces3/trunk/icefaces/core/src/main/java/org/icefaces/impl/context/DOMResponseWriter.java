@@ -98,6 +98,10 @@ public class DOMResponseWriter extends ResponseWriterWrapper {
     }
 
     public void write(char[] cbuf, int off, int len) throws IOException {
+        if (suppressNextNode) {
+            //a component is attempting to render outside its subtree
+            return;
+        }
         if (0 == len) {
             return;
         }
@@ -244,7 +248,6 @@ public class DOMResponseWriter extends ResponseWriterWrapper {
     }
 
     public void startElement(String name, UIComponent component) throws IOException {
-
         if (suppressNextNode) {
             //this node has already been created and is just a placeholder
             //in the tree
@@ -303,7 +306,10 @@ public class DOMResponseWriter extends ResponseWriterWrapper {
     }
 
     public void writeText(Object text, String property) throws IOException {
-
+        if (suppressNextNode) {
+            //a component is attempting to render outside its subtree
+            return;
+        }
         if (text == null) {
             throw new NullPointerException("WriteText method cannot write null text");
         }
@@ -319,6 +325,10 @@ public class DOMResponseWriter extends ResponseWriterWrapper {
     }
 
     public void writeText(char[] text, int off, int len) throws IOException {
+        if (suppressNextNode) {
+            //a component is attempting to render outside its subtree
+            return;
+        }
         // escaping done in writeText(object, String) method
         if (len == 0) {
             return;
