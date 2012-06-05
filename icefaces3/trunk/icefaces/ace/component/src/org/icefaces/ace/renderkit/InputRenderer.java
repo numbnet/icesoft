@@ -45,14 +45,14 @@ import javax.faces.convert.ConverterException;
 
 public class InputRenderer extends CoreRenderer {
 
-    public static final Set<String> labelPositionSet = new HashSet<String>(Arrays.asList("left", "right", "top", "bottom", "inField", "none"));
-    public static final Set<String> indicatorPositionSet = new HashSet<String>(Arrays.asList("left", "right", "top", "bottom", "labelLeft", "labelRight", "none"));
     public static final String LABEL_STYLE_CLASS = "ui-input-label";
     public static final String IN_FIELD_LABEL_STYLE_CLASS = LABEL_STYLE_CLASS + "-infield";
     public static final String DEFAULT_LABEL_POSITION = "inField";
     public static final String DEFAULT_INDICATOR_POSITION = "right";
     public static final String NONE_LABEL_POSITION = "none";
-    public static final String NONE_INDICATOR_POSITION = "none";
+    public static final String NONE_INDICATOR_POSITION = NONE_LABEL_POSITION;
+    public static final Set<String> labelPositionSet = new HashSet<String>(Arrays.asList("left", "right", "top", "bottom", DEFAULT_LABEL_POSITION, NONE_LABEL_POSITION));
+    public static final Set<String> indicatorPositionSet = new HashSet<String>(Arrays.asList("left", DEFAULT_INDICATOR_POSITION, "top", "bottom", "labelLeft", "labelRight", NONE_INDICATOR_POSITION));
 
     protected List<SelectItem> getSelectItems(FacesContext context, UIInput component) {
         List<SelectItem> selectItems = new ArrayList<SelectItem>();
@@ -332,5 +332,61 @@ public class InputRenderer extends CoreRenderer {
             styleClases += " ui-state-error";
         }
         return styleClases;
+    }
+
+    protected Map<String, Object> getLabelAttributes(final UIComponent component) {
+        return new HashMap<String, Object>() {{
+            boolean required = (Boolean) component.getAttributes().get("required");
+
+            String label = (String) component.getAttributes().get("label");
+            String labelPosition = (String) component.getAttributes().get("labelPosition");
+            if (!labelPositionSet.contains(labelPosition)) labelPosition = DEFAULT_LABEL_POSITION;
+            boolean hasLabel = !(labelPosition.equals(NONE_LABEL_POSITION) || isValueBlank(label));
+
+            String indicator = (String) (required ? component.getAttributes().get("requiredIndicator") : component.getAttributes().get("optionalIndicator"));
+            String indicatorPosition = (String) component.getAttributes().get("indicatorPosition");
+            if (!indicatorPositionSet.contains(indicatorPosition)) indicatorPosition = DEFAULT_INDICATOR_POSITION;
+            boolean hasIndicator = !(indicatorPosition.equals(NONE_INDICATOR_POSITION) || isValueBlank(indicator));
+
+            String inFieldLabel = null;
+            if (hasLabel && labelPosition.equals("inField")) {
+                inFieldLabel = label;
+                if (hasIndicator) {
+                    if (indicatorPosition.equals("labelLeft")) {
+                        inFieldLabel = indicator + inFieldLabel;
+                    } else if (indicatorPosition.equals("labelRight")) {
+                        inFieldLabel = inFieldLabel + indicator;
+                    }
+                }
+            }
+
+            put("required", required);
+            put("label", label);
+            put("labelPosition", labelPosition);
+            put("hasLabel", hasLabel);
+            put("indicator", indicator);
+            put("indicatorPosition", indicatorPosition);
+            put("hasIndicator", hasIndicator);
+            put("inFieldLabel", inFieldLabel);
+            put("labelIsInField", false);
+        }};
+    }
+
+    protected void writeLabelAndIndicatorBefore(Map<String, Object> attributes) throws IOException {
+        ResponseWriter writer = FacesContext.getCurrentInstance().getResponseWriter();
+        boolean required = (Boolean) attributes.get("required");
+        boolean hasLabel = (Boolean) attributes.get("hasLabel"), hasIndicator = (Boolean) attributes.get("hasIndicator");
+        String label = (String) attributes.get("label"), labelPosition = (String) attributes.get("labelPosition");
+        String indicator = (String) attributes.get("indicator"), indicatorPosition = (String) attributes.get("indicatorPosition");
+        writeLabelAndIndicatorBefore(writer, label, hasLabel, labelPosition, indicator, hasIndicator, indicatorPosition, required);
+    }
+
+    protected void writeLabelAndIndicatorAfter(Map<String, Object> attributes) throws IOException {
+        ResponseWriter writer = FacesContext.getCurrentInstance().getResponseWriter();
+        boolean required = (Boolean) attributes.get("required");
+        boolean hasLabel = (Boolean) attributes.get("hasLabel"), hasIndicator = (Boolean) attributes.get("hasIndicator");
+        String label = (String) attributes.get("label"), labelPosition = (String) attributes.get("labelPosition");
+        String indicator = (String) attributes.get("indicator"), indicatorPosition = (String) attributes.get("indicatorPosition");
+        writeLabelAndIndicatorAfter(writer, label, hasLabel, labelPosition, indicator, hasIndicator, indicatorPosition, required);
     }
 }

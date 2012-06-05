@@ -72,12 +72,13 @@ public class DateTimeEntryRenderer extends InputRenderer {
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         DateTimeEntry dateTimeEntry = (DateTimeEntry) component;
         String value = DateTimeEntryUtils.getValueAsString(context, dateTimeEntry);
+        Map<String, Object> labelAttributes = getLabelAttributes(dateTimeEntry);
 
-        encodeMarkup(context, dateTimeEntry, value);
-        encodeScript(context, dateTimeEntry, value);
+        encodeMarkup(context, dateTimeEntry, value, labelAttributes);
+        encodeScript(context, dateTimeEntry, value, labelAttributes);
     }
 
-    protected void encodeMarkup(FacesContext context, DateTimeEntry dateTimeEntry, String value) throws IOException {
+    protected void encodeMarkup(FacesContext context, DateTimeEntry dateTimeEntry, String value, Map<String, Object> labelAttributes) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = dateTimeEntry.getClientId(context);
         String inputId = clientId + "_input";
@@ -100,20 +101,8 @@ public class DateTimeEntryRenderer extends InputRenderer {
         //input
         String type = popup ? "text" : "hidden";
 
-        boolean required = dateTimeEntry.isRequired();
-
-        String label = dateTimeEntry.getLabel();
-        String labelPosition = dateTimeEntry.getLabelPosition();
-        if (!labelPositionSet.contains(labelPosition)) labelPosition = DEFAULT_LABEL_POSITION;
-        boolean hasLabel = !(labelPosition.equals(NONE_LABEL_POSITION) || isValueBlank(label));
-
-        String indicator = required ? dateTimeEntry.getRequiredIndicator() : dateTimeEntry.getOptionalIndicator();
-        String indicatorPosition = dateTimeEntry.getIndicatorPosition();
-        if (!indicatorPositionSet.contains(indicatorPosition)) indicatorPosition = DEFAULT_INDICATOR_POSITION;
-        boolean hasIndicator = !(indicatorPosition.equals(NONE_INDICATOR_POSITION) || isValueBlank(indicator));
-
         if (popup) {
-            writeLabelAndIndicatorBefore(writer, label, hasLabel, labelPosition, indicator, hasIndicator, indicatorPosition, required);
+            writeLabelAndIndicatorBefore(labelAttributes);
         }
         writer.startElement("input", null);
         writer.writeAttribute("id", inputId, null);
@@ -121,12 +110,20 @@ public class DateTimeEntryRenderer extends InputRenderer {
         writer.writeAttribute("type", type, null);
 		writer.writeAttribute("tabindex", dateTimeEntry.getTabindex(), null);
 
+        String styleClasses = (themeForms() ? DateTimeEntry.INPUT_STYLE_CLASS : "") + getStateStyleClasses(dateTimeEntry);
         if(!isValueBlank(value)) {
             writer.writeAttribute("value", value, null);
+        } else if (popup) {
+            String inFieldLabel = (String) labelAttributes.get("inFieldLabel");
+            if (!isValueBlank(inFieldLabel)) {
+                writer.writeAttribute("value", inFieldLabel, null);
+                styleClasses += " " + IN_FIELD_LABEL_STYLE_CLASS;
+                labelAttributes.put("labelIsInField", true);
+            }
         }
 
         if(popup) {
-            if(themeForms()) writer.writeAttribute("class", DateTimeEntry.INPUT_STYLE_CLASS + getStateStyleClasses(dateTimeEntry), null);
+            if(!isValueBlank(styleClasses)) writer.writeAttribute("class", styleClasses, null);
             if(dateTimeEntry.isReadOnlyInputText()) writer.writeAttribute("readonly", "readonly", null);
             if(dateTimeEntry.isDisabled()) writer.writeAttribute("disabled", "disabled", null);
 
@@ -135,13 +132,13 @@ public class DateTimeEntryRenderer extends InputRenderer {
 
         writer.endElement("input");
         if (popup) {
-            writeLabelAndIndicatorAfter(writer, label, hasLabel, labelPosition, indicator, hasIndicator, indicatorPosition, required);
+            writeLabelAndIndicatorAfter(labelAttributes);
         }
 
         writer.endElement("span");
     }
 
-    protected void encodeScript(FacesContext context, DateTimeEntry dateTimeEntry, String value) throws IOException {
+    protected void encodeScript(FacesContext context, DateTimeEntry dateTimeEntry, String value, Map<String, Object> labelAttributes) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = dateTimeEntry.getClientId(context);
        
@@ -215,6 +212,9 @@ public class DateTimeEntryRenderer extends InputRenderer {
                 }
                 json.entry("disableHoverStyling", dateTimeEntry.isDisableHoverStyling());
                 json.entry("showCurrentAtPos", 0 - dateTimeEntry.getLeftMonthOffset());
+                json.entryNonNullValue("inFieldLabel", (String) labelAttributes.get("inFieldLabel"));
+                json.entry("inFieldLabelStyleClass", IN_FIELD_LABEL_STYLE_CLASS);
+                json.entry("labelIsInField", (Boolean) labelAttributes.get("labelIsInField"));
             json.endMap();
         json.endFunction();
 
