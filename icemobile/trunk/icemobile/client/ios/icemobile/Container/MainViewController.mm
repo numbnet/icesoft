@@ -137,8 +137,12 @@
     return YES;
 }
 
+- (void)webViewDidStartLoad:(UIWebView *)wView  {
+    NSLog(@"webViewDidStartLoad %@", [webView.request mainDocumentURL]);
+}
+
 - (void)webViewDidFinishLoad:(UIWebView *)wView  {
-    NSLog(@"webViewDidFinishLoad ");
+    NSLog(@"webViewDidFinishLoad %@", [webView.request mainDocumentURL]);
     NSError *error = nil;
     //eval native-interface.js
     NSString *localPath = [[NSBundle mainBundle] 
@@ -174,6 +178,12 @@
         [self.webView loadRequest:request];
         self.canRetry = NO;
     }
+}
+
+- (NSURLRequest *)connection:(NSURLConnection *)connection willSendRequest:(NSURLRequest *)request redirectResponse:(NSURLResponse *)redirectResponse  {
+    NSLog(@"willSendRequest %@ ", [[request URL] absoluteString]);
+    self.currentRequest = request;
+    return request;
 }
 
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response  {
