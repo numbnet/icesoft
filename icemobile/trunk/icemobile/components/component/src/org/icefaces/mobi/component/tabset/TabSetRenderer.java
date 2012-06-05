@@ -26,8 +26,8 @@ import javax.faces.context.ResponseWriter;
 import javax.faces.event.ValueChangeEvent;
 import java.io.IOException;
 import java.util.Map;
-import java.util.logging.Logger;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class TabSetRenderer extends BaseLayoutRenderer {
     private static Logger logger = Logger.getLogger(TabSetRenderer.class.getName());
@@ -37,44 +37,43 @@ public class TabSetRenderer extends BaseLayoutRenderer {
 
     @Override
     public void decode(FacesContext context, UIComponent component) {
-         TabSet tabset = (TabSet) component;
-         String clientId = tabset.getClientId(context);
-         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
-       // no ajax behavior defined yet
-         String indexStr = params.get(clientId + "_hidden");
-         logger.info("indexStr = "+indexStr);
-         //with some panes having client cacheType, the oldIndex on server
-         // may not match that of the client, so decode the last
-         if( null != indexStr) {
-             try {
-                 String delims= "[,]";
-                 String[] indices = indexStr.split(delims);
-                 if (indices.length >1 ){
-                   //  logger.info(" first index submitted="+indices[0]+" second="+indices[1]);
-                     int oldClientInd = Integer.parseInt(indices[0]);
-                     int index = Integer.parseInt(indices[1]);
-                     if (oldClientInd!=index){
-                         String oldId = component.getChildren().get(oldClientInd).getId();
-                         String newId = component.getChildren().get(index).getId();
-                         tabset.setCurrentId(newId);
-                         component.queueEvent(new ValueChangeEvent(component, oldId, newId)) ;
-                         tabset.setUpdatePropScriptTag(true);
-                         //TO Do decode behaviors for mobi ajax support
-                     }
-                 }
-             } catch (NumberFormatException nfe){
-                  if (logger.isLoggable(Level.FINER)){
-                   logger.finer("problem decoding tabIndex from client");
-                  }
-             }
-         }
-         else {
-             tabset.setUpdatePropScriptTag(false);
-         }
+        TabSet tabset = (TabSet) component;
+        String clientId = tabset.getClientId(context);
+        Map<String, String> params = context.getExternalContext().getRequestParameterMap();
+        // no ajax behavior defined yet
+        String indexStr = params.get(clientId + "_hidden");
+        logger.info("indexStr = " + indexStr);
+        // with some panes having client cacheType, the oldIndex on server
+        // may not match that of the client, so decode the last
+        if (null != indexStr) {
+            try {
+                String delims = "[,]";
+                String[] indices = indexStr.split(delims);
+                if (indices.length > 1) {
+                    //  logger.info(" first index submitted="+indices[0]+" second="+indices[1]);
+                    int oldClientInd = Integer.parseInt(indices[0]);
+                    int index = Integer.parseInt(indices[1]);
+                    if (oldClientInd != index) {
+                        String oldId = component.getChildren().get(oldClientInd).getId();
+                        String newId = component.getChildren().get(index).getId();
+                        tabset.setCurrentId(newId);
+                        component.queueEvent(new ValueChangeEvent(component, oldId, newId));
+                        tabset.setUpdatePropScriptTag(true);
+                        //TO Do decode behaviors for mobi ajax support
+                    }
+                }
+            } catch (NumberFormatException nfe) {
+                if (logger.isLoggable(Level.FINER)) {
+                    logger.finer("problem decoding tabIndex from client");
+                }
+            }
+        } else {
+            tabset.setUpdatePropScriptTag(false);
+        }
 
-     }
+    }
 
-    public void encodeBegin(FacesContext facesContext, UIComponent uiComponent)throws IOException {
+    public void encodeBegin(FacesContext facesContext, UIComponent uiComponent) throws IOException {
         ResponseWriter writer = facesContext.getResponseWriter();
         String clientId = uiComponent.getClientId(facesContext);
         TabSet tabset = (TabSet) uiComponent;
@@ -84,70 +83,104 @@ public class TabSetRenderer extends BaseLayoutRenderer {
         writer.writeAttribute(HTML.ID_ATTR, clientId, HTML.ID_ATTR);
         // apply default style class
         StringBuilder styleClass = new StringBuilder(TabSet.TABSET_CONTAINER_CLASS);
+        // apply orientation style for bottom or to tab placement
+        String orientation = tabset.getOrientation();
+        if (orientation != null && orientation.length() > 0) {
+            if (orientation.equals(TabSet.OrientationType.bottom.name())) {
+                styleClass.append(TabSet.TABSET_CONTAINER_BOTTOM_CLASS);
+            } else if (orientation.equals(TabSet.OrientationType.top.name())) {
+                styleClass.append(TabSet.TABSET_CONTAINER_TOP_CLASS);
+            }
+        }
+        // default to bottom placement
+        else {
+            styleClass.append(TabSet.TABSET_CONTAINER_BOTTOM_CLASS);
+        }
+        // this attribute could probably be release with a component tree search
+        // for the footer facet which would be a lot cleaner.
+        boolean parentFooter = tabset.isParentFooter();
+        if (TabSet.OrientationType.bottom.name().equals(orientation) && parentFooter) {
+            styleClass.append(TabSet.TABSET_CONTAINER_BOTTOM_FOOTER_CLASS);
+        }
+        // this attribute could probably be release with a component tree search
+        // for the footer facet which would be a lot cleaner.
+        boolean parentHeader = tabset.isParentHeader();
+        if (TabSet.OrientationType.top.name().equals(orientation) && parentHeader) {
+            styleClass.append(TabSet.TABSET_CONTAINER_TOP_HEADER_CLASS);
+        }
         // user specified style class
         String userDefinedClass = tabset.getStyleClass();
-        if (userDefinedClass != null && userDefinedClass.length() > 0){
-                styleClass.append(" ").append(userDefinedClass);
+        if (userDefinedClass != null && userDefinedClass.length() > 0) {
+            styleClass.append(" ").append(userDefinedClass);
         }
         writer.writeAttribute("class", styleClass.toString(), "styleClass");
         // write out any users specified style attributes.
         writer.writeAttribute(HTML.STYLE_ATTR, tabset.getStyle(), "style");
         encodeTabs(facesContext, uiComponent);
         writer.startElement(HTML.DIV_ELEM, uiComponent);
-        writer.writeAttribute(HTML.ID_ATTR, clientId+"_tabContent", HTML.ID_ATTR);
+        writer.writeAttribute(HTML.ID_ATTR, clientId + "_tabContent", HTML.ID_ATTR);
         writer.writeAttribute("class", TabSet.TABSET_CONTENT_CLASS.toString(), null);
     }
 
     public boolean getRendersChildren() {
         return true;
     }
-    public void encodeChildren(FacesContext facesContext, UIComponent uiComponent) throws IOException{
+
+    public void encodeChildren(FacesContext facesContext, UIComponent uiComponent) throws IOException {
         Utils.renderChildren(facesContext, uiComponent);
     }
-    public void encodeTabs(FacesContext facesContext, UIComponent uiComponent ) throws IOException {
+
+    public void encodeTabs(FacesContext facesContext, UIComponent uiComponent) throws IOException {
         TabSet controller = (TabSet) uiComponent;
         ResponseWriter writer = facesContext.getResponseWriter();
-        String clientId= controller.getClientId(facesContext);
+        String clientId = controller.getClientId(facesContext);
         writer.startElement(HTML.DIV_ELEM, uiComponent);
-        writer.writeAttribute(HTML.ID_ATTR, clientId+"_tabs", HTML.ID_ATTR);
+        writer.writeAttribute(HTML.ID_ATTR, clientId + "_tabs", HTML.ID_ATTR);
         writer.writeAttribute("class", TabSet.TABSET_TABS_CLASS.toString(), "class");
 
         int tabsNum = uiComponent.getChildCount();
-        if (tabsNum <=0 ){
-                if (logger.isLoggable(Level.FINER)){
-                   logger.finer(" no contentPane children for this component. Please read DOCS");
-                }
+        if (tabsNum <= 0) {
+            if (logger.isLoggable(Level.FINER)) {
+                logger.finer(" no contentPane children for this component. Please read DOCS");
+            }
             writer.endElement(HTML.DIV_ELEM);
             return;
         }
 
         TabSet.IdIndex idIndex = controller.resolveCurrentIdAndIndex();
 
+        boolean autoWidth = controller.isAutoWidth();
+        // calculate the percent width for th tabs
+        String percentWidth = "width:" + (100/tabsNum) + "%" ;
+
         writer.startElement(HTML.UL_ELEM, uiComponent);
         writer.writeAttribute("data-current", idIndex.getIndex(), null);
-        for (int i=0; i< tabsNum; i++){
+        for (int i = 0; i < tabsNum; i++) {
             //check to see that children are of type contentPane
-            UIComponent child = (UIComponent)controller.getChildren().get(i);
+            UIComponent child = controller.getChildren().get(i);
             if (child instanceof ContentPane) {
-                ContentPane cp = (ContentPane)child;
+                ContentPane cp = (ContentPane) child;
                 boolean client = false;
                 if (cp.getCacheType().equals(ContentPane.CacheType.client.name())) {
                     client = true;
                 }
                 String height = controller.getFixedHeight();
                 writer.startElement(HTML.LI_ELEM, uiComponent);
-                writer.writeAttribute(HTML.ID_ATTR, clientId+"tab_"+i, HTML.ID_ATTR);
+                writer.writeAttribute(HTML.ID_ATTR, clientId + "tab_" + i, HTML.ID_ATTR);
                 StringBuilder sb = new StringBuilder("mobi.tabsetController.showContent('").append(clientId);
                 sb.append("', this, ").append("{");
                 sb.append("singleSubmit: true, tIndex: ").append(i);
-                if (null!=height){
+                if (null != height) {
                     sb.append(",height: ").append(height);
                 }
                 sb.append(",client: ").append(client);
                 sb.append("});");
                 writer.writeAttribute("onclick", sb.toString(), "onclick");
-                if (cp.getId().equals(idIndex.getId())){
+                if (cp.getId().equals(idIndex.getId())) {
                     writer.writeAttribute("class", TabSet.TABSET_ACTIVETAB_CLASS, "class");
+                }
+                if (autoWidth){
+                    writer.writeAttribute(HTML.STYLE_ATTR, percentWidth, HTML.STYLE_ATTR);
                 }
                 String title = cp.getTitle();
                 writer.write(title);
@@ -158,16 +191,16 @@ public class TabSetRenderer extends BaseLayoutRenderer {
         writer.endElement(HTML.DIV_ELEM);
     }
 
-     public void encodeEnd(FacesContext facesContext, UIComponent uiComponent)
-        throws IOException {
-         ResponseWriter writer = facesContext.getResponseWriter();
-         encodeHidden(facesContext, uiComponent);
-         writer.endElement(HTML.DIV_ELEM);  //end of content div
-         writer.endElement(HTML.DIV_ELEM);  //end of tabset container
-         encodeScript(facesContext, uiComponent);
-     }
+    public void encodeEnd(FacesContext facesContext, UIComponent uiComponent)
+            throws IOException {
+        ResponseWriter writer = facesContext.getResponseWriter();
+        encodeHidden(facesContext, uiComponent);
+        writer.endElement(HTML.DIV_ELEM);  //end of content div
+        writer.endElement(HTML.DIV_ELEM);  //end of tabset container
+        encodeScript(facesContext, uiComponent);
+    }
 
-     public void encodeScript(FacesContext context, UIComponent uiComponent) throws IOException {
+    public void encodeScript(FacesContext context, UIComponent uiComponent) throws IOException {
         //need to initialize the component on the page and can also
         ResponseWriter writer = context.getResponseWriter();
         TabSet tabset = (TabSet) uiComponent;
@@ -179,14 +212,14 @@ public class TabSetRenderer extends BaseLayoutRenderer {
         writer.writeAttribute("text", "text/javascript", null);
         StringBuilder cfg = new StringBuilder("{singleSubmit: ");
         cfg.append(tabset.isSingleSubmit());
-   /*     boolean autoheight = tabset.isAutoHeight();  */
+        /*     boolean autoheight = tabset.isAutoHeight();  */
         cfg.append(", tIndex: ").append(idIndex.getIndex());
-        if (tabset.isUpdatePropScriptTag()){
-             cfg.append(", stmp: ").append(System.currentTimeMillis());
+        if (tabset.isUpdatePropScriptTag()) {
+            cfg.append(", stmp: ").append(System.currentTimeMillis());
         }
         cfg.append("}");
-         //just have to add behaviors if we are going to use them.
-        writer.write("mobi.tabsetController.initClient('" + clientId + "'," +cfg.toString()+");");
+        //just have to add behaviors if we are going to use them.
+        writer.write("mobi.tabsetController.initClient('" + clientId + "'," + cfg.toString() + ");");
         writer.endElement("script");
         writer.endElement("span");
     }
