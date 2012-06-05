@@ -17,6 +17,7 @@
 package com.icesoft.faces.component.inputrichtext;
 
 import com.icesoft.faces.context.DOMContext;
+import com.icesoft.faces.context.effects.JavascriptContext;
 import com.icesoft.faces.renderkit.dom_html_basic.DomBasicInputRenderer;
 import com.icesoft.faces.renderkit.dom_html_basic.HTML;
 import com.icesoft.util.pooling.ClientIdPool;
@@ -69,6 +70,10 @@ public class InputRichTextRenderer extends DomBasicInputRenderer {
             		"'"+ customConfig + "'," +
             		inputRichText.isSaveOnSubmit()+ ")"));
             scrptWrpr.appendChild(scrpt);
+			
+			if (inputRichText.isValueChangedProgrammatically()) {
+				JavascriptContext.addJavascriptCall(facesContext, "updateEditor('"+ ClientIdPool.get(clientId) +"');");
+			}
 
             domContext.stepOver();
         }
