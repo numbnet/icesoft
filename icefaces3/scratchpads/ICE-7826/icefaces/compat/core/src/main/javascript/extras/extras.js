@@ -2715,6 +2715,7 @@ GMapWrapper.prototype = {
         this.controls = new Object();
         this.overlays = new Object();
 		this.services = new Object();
+		this.layers = new Object();
         this.geoMarker = new Object();
         this.geoMarkerAddress;
         this.geoMarkerSet = false;
@@ -2811,6 +2812,61 @@ Ice.GoogleMap = {
             }
         }
         gmapWrapper.overlays = newOvrLyArray;
+    },
+	
+	addMapLayer:function (ele, layerId, layerType, url, options) {
+        var gmapWrapper = Ice.GoogleMap.getGMapWrapper(ele);
+        var layer;
+		switch (layerType) {
+                case "Bicycling":
+				case "BicyclingLayer":
+                    layer=new google.maps.BicyclingLayer();
+					layer.setMap(gmapWrapper.getRealGMap());
+                    break;
+                case "Fusion":
+				case "FusionTable":
+				case "FusionTables":
+				//This is still in it's experimental stage, and I can't get access to the API to make my own fusion table yet. (Trusted Testers Only) 
+				//So I cannot verify if it works. Double check when Fusion Tables is properly released.
+					var markerOps = "({" + options + "})";
+                    layer=new google.maps.FusionTablesLayer(eval(options));
+					layer.setMap(gmapWrapper.getRealGMap());
+					break;
+                case "Kml":
+				case "KmlLayer":
+					var markerOps = "({" + options + "})";
+                    layer=new google.maps.KmlLayer(url, eval(options));
+					layer.setMap(gmapWrapper.getRealGMap());
+					break;
+				case "Traffic":
+				case "TrafficLayer":
+					layer=new google.maps.TrafficLayer();
+					layer.setMap(gmapWrapper.getRealGMap());
+                    break;
+				default:
+					console.log("ERROR: Not a valid layer type");
+					return;
+                }//switch
+			gmapWrapper.layers[layerId]=layer;
+        
+    },
+
+    removeMapLayer:function(ele, layerId) {
+        var gmapWrapper = Ice.GoogleMap.getGMapWrapper(ele);
+        var layer = gmapWrapper.layers[layerId];
+        if (layer != null) {
+            layer.setMap(null);
+        } else {
+            //nothing found just return
+            return;
+        }
+        var newLayerArray = new Object();
+        for (layerObj in gmapWrapper.layers) {
+            if (layerId != layerObj) {
+                newLayerArray[layerObj] = gmapWrapper.layers[layerObj];
+            }
+        }
+        gmapWrapper.layers = newLayerArray;
     },
 
      locateAddress:function (clientId, address) {
