@@ -247,7 +247,10 @@ NSLog(@"Warning: register should not be invoked with ICEmobile Container");
 }
 
 - (void) setProgress:(NSInteger) percent {
-NSLog(@"Warning: setProgress not implemented for ICEmobile Container");
+NSLog(@"ICEmobile Container setProgress %d", percent);
+    NSString *scriptTemplate = @"ice.progress(%d);";
+    NSString *script = [NSString stringWithFormat:scriptTemplate, percent];
+    [self.webView stringByEvaluatingJavaScriptFromString: script];
 }
 
 - (NSString *) getFormData:(NSString *)formID  {
@@ -277,7 +280,11 @@ NSLog(@"Warning: play not implemented for ICEmobile Container");
 }
 
 - (void) handleResponse:(NSString *)responseString  {
-NSLog(@"Warning: handleResponse not implemented for ICEmobile Container");
+NSLog(@"handleResponse for ICEmobile Container");
+    NSString *scriptTemplate = @"ice.handleResponse(\"%@\");";
+    NSString *script = [NSString stringWithFormat:scriptTemplate, [responseString 
+            stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+    [self.webView stringByEvaluatingJavaScriptFromString: script];
 }
 
 - (IBAction)doPreferences {
