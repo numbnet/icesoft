@@ -94,7 +94,7 @@ public class WindowScopeManager extends SessionAwareResourceHandlerWrapper {
         // access it using our own session proxy which, with portlets, defaults to APPLICATION_SCOPE.
         HttpSession safeSession = EnvUtils.getSafeSession(context);
         Object synchronizationMonitor = safeSession.getAttribute(SessionSynchronizationMonitor);
-        if( synchronizationMonitor == null ){
+        if (synchronizationMonitor == null) {
             log.log(Level.FINE, "synchronization monitor not set by session listener");
             synchronizationMonitor = new SynchronizationMonitorObject();
             safeSession.setAttribute(SessionSynchronizationMonitor, synchronizationMonitor);
@@ -190,7 +190,13 @@ public class WindowScopeManager extends SessionAwareResourceHandlerWrapper {
 
     private static void notifyPreDestroyForAll(Collection<ScopeMap> scopeMaps) {
         for (final ScopeMap scopeMap : scopeMaps) {
-            notifyPreDestroy(scopeMap.values());
+            if (!scopeMap.isPreDestroyInvoked()) {
+                try {
+                    notifyPreDestroy(scopeMap.values());
+                } finally {
+                    scopeMap.preDestroyInvoked();
+                }
+            }
         }
     }
 
@@ -284,6 +290,7 @@ public class WindowScopeManager extends SessionAwareResourceHandlerWrapper {
         private String id = generateID();
         private long activateTimestamp = System.currentTimeMillis();
         private long deactivateTimestamp = -1;
+        private boolean preDestroyInvoked;
 
         public String getId() {
             return id;
@@ -311,14 +318,17 @@ public class WindowScopeManager extends SessionAwareResourceHandlerWrapper {
         private void discardIfExpired(FacesContext facesContext) {
             State state = getState(facesContext);
             if (System.currentTimeMillis() > (deactivateTimestamp + state.expirationPeriod)) {
-                boolean processingEvents = facesContext.isProcessingEvents();
-                try {
-                    facesContext.setProcessingEvents(true);
-                    ScopeContext context = new ScopeContext(ScopeName, this);
-                    facesContext.getApplication().publishEvent(facesContext, PreDestroyCustomScopeEvent.class, context);
-                } finally {
-                    state.disposedWindowScopedMaps.remove(this);
-                    facesContext.setProcessingEvents(processingEvents);
+                if (!isPreDestroyInvoked()) {
+                    boolean processingEvents = facesContext.isProcessingEvents();
+                    try {
+                        facesContext.setProcessingEvents(true);
+                        ScopeContext context = new ScopeContext(ScopeName, this);
+                        facesContext.getApplication().publishEvent(facesContext, PreDestroyCustomScopeEvent.class, context);
+                    } finally {
+                        preDestroyInvoked();
+                        state.disposedWindowScopedMaps.remove(this);
+                        facesContext.setProcessingEvents(processingEvents);
+                    }
                 }
             }
         }
@@ -331,6 +341,14 @@ public class WindowScopeManager extends SessionAwareResourceHandlerWrapper {
         private void disactivate(State state) {
             deactivateTimestamp = System.currentTimeMillis();
             state.disposedWindowScopedMaps.addLast(state.windowScopedMaps.remove(id));
+        }
+
+        public void preDestroyInvoked() {
+            preDestroyInvoked = true;
+        }
+
+        public boolean isPreDestroyInvoked() {
+            return preDestroyInvoked;
         }
     }
 
