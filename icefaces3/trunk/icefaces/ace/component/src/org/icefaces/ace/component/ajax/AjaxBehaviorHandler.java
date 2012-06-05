@@ -42,7 +42,9 @@ public class AjaxBehaviorHandler extends AjaxBehaviorHandlerBase {
     protected MetaRuleset createMetaRuleset(Class type) {
         MetaRuleset metaRuleset = super.createMetaRuleset(type);
 
-		metaRuleset.addRule(new MethodRule("listener", null, new Class[0]));
+		metaRuleset.addRule(new MethodRule("listener", Void.TYPE,
+            new Class[]{javax.faces.event.AjaxBehaviorEvent.class},
+            "listenerNoArg"));
         
 		return metaRuleset;
     }

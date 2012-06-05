@@ -63,11 +63,19 @@ public class MethodRule extends MetaRule {
 
     private final Class[] params;
 
+    private final String noArgMethodName;
+
     public MethodRule(String methodName, Class returnTypeClass,
-                      Class[] params) {
+                      Class[] params, String noArgMethodName) {
         this.methodName = methodName;
         this.returnTypeClass = returnTypeClass;
         this.params = params;
+        this.noArgMethodName = noArgMethodName;
+    }
+
+    public MethodRule(String methodName, Class returnTypeClass,
+                      Class[] params) {
+        this(methodName, returnTypeClass, params, null);
     }
 
     public Metadata applyRule(String name, TagAttribute attribute,
@@ -78,16 +86,20 @@ public class MethodRule extends MetaRule {
         if (MethodBinding.class.equals(meta.getPropertyType(name))) {
             Method method = meta.getWriteMethod(name);
             if (method != null) {
+                Method noArgMethod = (noArgMethodName == null ? null :
+                    meta.getWriteMethod(noArgMethodName));
                 return new MethodBindingMetadata(method, attribute,
                                                  this.returnTypeClass,
-                                                 this.params);
+                                                 this.params, noArgMethod);
             }
         } else if (MethodExpression.class.equals(meta.getPropertyType(name))) {
             Method method = meta.getWriteMethod(name);
             if (method != null) {
+                Method noArgMethod = (noArgMethodName == null ? null :
+                    meta.getWriteMethod(noArgMethodName));
                 return new MethodExpressionMetadata(method, attribute,
                                                     this.returnTypeClass,
-                                                    this.params);
+                                                    this.params, noArgMethod);
             }
         }
 
@@ -103,25 +115,37 @@ public class MethodRule extends MetaRule {
 
         private Class _returnType;
 
+        private final Method _noArgMethod;
+
         public MethodBindingMetadata(Method method, TagAttribute attribute,
-                                     Class returnType, Class[] paramList) {
+                                     Class returnType, Class[] paramList,
+                                     Method noArgMethod) {
             _method = method;
             _attribute = attribute;
             _paramList = paramList;
             _returnType = returnType;
+            _noArgMethod = noArgMethod;
         }
 
-        public void applyMetadata(FaceletContext ctx, Object instance) {
+        protected void setMethodBindingIntoMethod(FaceletContext ctx, Object instance,
+                                                     Method method, Class[] paramList) {
             MethodExpression expr =
-                _attribute.getMethodExpression(ctx, _returnType, _paramList);
+                _attribute.getMethodExpression(ctx, _returnType, paramList);
 
             try {
-                _method.invoke(instance,
+                method.invoke(instance,
                                new Object[] { new LegacyMethodBinding(expr) });
             } catch (InvocationTargetException e) {
                 throw new TagAttributeException(_attribute, e.getCause());
             } catch (Exception e) {
                 throw new TagAttributeException(_attribute, e);
+            }
+        }
+
+        public void applyMetadata(FaceletContext ctx, Object instance) {
+            setMethodBindingIntoMethod(ctx, instance, _method, _paramList);
+            if (_noArgMethod != null) {
+                setMethodBindingIntoMethod(ctx, instance, _noArgMethod, new Class[0]);
             }
         }
     }
@@ -135,24 +159,36 @@ public class MethodRule extends MetaRule {
 
         private Class _returnType;
 
+        private final Method _noArgMethod;
+
         public MethodExpressionMetadata(Method method, TagAttribute attribute,
-                                        Class returnType, Class[] paramList) {
+                                        Class returnType, Class[] paramList,
+                                        Method noArgMethod) {
             _method = method;
             _attribute = attribute;
             _paramList = paramList;
             _returnType = returnType;
+            _noArgMethod = noArgMethod;
         }
 
-        public void applyMetadata(FaceletContext ctx, Object instance) {
+        protected void setMethodExpressionIntoMethod(FaceletContext ctx, Object instance,
+                                                     Method method, Class[] paramList) {
             MethodExpression expr =
-                _attribute.getMethodExpression(ctx, _returnType, _paramList);
+                _attribute.getMethodExpression(ctx, _returnType, paramList);
 
             try {
-                _method.invoke(instance, new Object[] { expr });
+                method.invoke(instance, new Object[] { expr });
             } catch (InvocationTargetException e) {
                 throw new TagAttributeException(_attribute, e.getCause());
             } catch (Exception e) {
                 throw new TagAttributeException(_attribute, e);
+            }
+        }
+
+        public void applyMetadata(FaceletContext ctx, Object instance) {
+            setMethodExpressionIntoMethod(ctx, instance, _method, _paramList);
+            if (_noArgMethod != null) {
+                setMethodExpressionIntoMethod(ctx, instance, _noArgMethod, new Class[0]);
             }
         }
     }
