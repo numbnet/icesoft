@@ -585,7 +585,7 @@ ice.ace.DataTable.prototype.setupReorderableColumns = function() {
 
 ice.ace.DataTable.prototype.setupRowExpansionEvents = function() {
     var table = this;
-    var selector = 'tbody.ui-datatable-data:first > tr > td *:not(tbody) a.ui-row-toggler';
+    var selector = 'div > table > tbody.ui-datatable-data > tr > td *:not(tbody) a.ui-row-toggler';
     ice.ace.jq(this.jqId)
             .off('keyup click', selector)
             .on('keyup', selector, function(event) { if (event.which == 32 || event.which == 13) { table.toggleExpansion(this); }})
@@ -594,7 +594,7 @@ ice.ace.DataTable.prototype.setupRowExpansionEvents = function() {
 
 ice.ace.DataTable.prototype.setupPanelExpansionEvents = function() {
     var table = this;
-    var selector = 'tbody.ui-datatable-data:first > tr:not(.ui-expanded-row-content) > td a.ui-row-panel-toggler';
+    var selector = 'div > table > tbody.ui-datatable-data > tr:not(.ui-expanded-row-content) > td *:not(tbody) a.ui-row-panel-toggler';
     ice.ace.jq(this.jqId)
             .off('keyup click', selector)
             .on('keyup', selector, function(event) { if (event.which == 32 || event.which == 13) { table.toggleExpansion(this); }})
