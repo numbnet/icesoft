@@ -70,14 +70,6 @@ public class MenuDynamic extends ComponentExampleImpl<MenuDynamic> implements Se
     
     public void setMenuModel(MenuModel menuModel) { this.menuModel = menuModel; }
     
-    /**
-     * Necessary method because a menu model that is dynamically modified at the bean
-     *  level will not display properly on the page without a refresh/reload
-     */
-    private void forceRedirectWorkaround() {
-        FacesUtils.redirectBrowser(".");
-    }
-    
     private Submenu generateItems(Submenu sub) {
         sub.getChildren().clear();
         
@@ -107,8 +99,6 @@ public class MenuDynamic extends ComponentExampleImpl<MenuDynamic> implements Se
         generateItems(newSubmenu);
         
         menuModel.addSubmenu(newSubmenu);
-        
-        forceRedirectWorkaround();
     }
     
     public void removeSubmenu(ActionEvent event) {
@@ -124,16 +114,12 @@ public class MenuDynamic extends ComponentExampleImpl<MenuDynamic> implements Se
 				}
 			}
         }
-        
-        forceRedirectWorkaround();
     }
     
     public void addItem(ActionEvent event) {
         itemCount++;
         
         refreshItems();
-        
-        forceRedirectWorkaround();
     }
     
     public void removeItem(ActionEvent event) {
@@ -142,7 +128,5 @@ public class MenuDynamic extends ComponentExampleImpl<MenuDynamic> implements Se
         }
         
         refreshItems();
-        
-        forceRedirectWorkaround();
     }
 }
