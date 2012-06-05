@@ -632,6 +632,7 @@ NSLog(@"NativeInterface aug selected %@", augResult);
 }
 
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error  {
+    self.uploading = NO;
     NSLog(@"didFailWithError %@", error);
     UIAlertView *alert = [[UIAlertView alloc] 
             initWithTitle:@"Connection Failure" 

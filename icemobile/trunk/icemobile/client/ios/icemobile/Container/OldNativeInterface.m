@@ -727,6 +727,19 @@ NSLog(@"NativeInterface aug selected %@", augResult);
     return;
 }
 
+- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error  {
+    self.uploading = NO;
+    NSLog(@"didFailWithError %@", error);
+    UIAlertView *alert = [[UIAlertView alloc] 
+            initWithTitle:@"Connection Failure" 
+            message:error.localizedDescription
+            delegate:nil cancelButtonTitle:@"OK" 
+            otherButtonTitles:nil];
+
+    [alert show];
+    [alert release];
+}
+
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response  {
     [receivedData setLength:0];
 }
@@ -738,10 +751,7 @@ NSLog(@"NativeInterface aug selected %@", augResult);
 - (void)connection:(NSURLConnection *)connection didSendBodyData:(NSInteger)bytesWritten totalBytesWritten:(NSInteger)totalBytesWritten totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite  {
     NSLog(@"didSendBodyData %d bytes of %d",totalBytesWritten, totalBytesExpectedToWrite);
     NSInteger percentProgress = (totalBytesWritten * 100) / totalBytesExpectedToWrite;
-    NSString *scriptTemplate = @"ice.progress(%d);";
-    NSString *script = [NSString stringWithFormat:scriptTemplate, percentProgress];
-    NSString *result = [controller.webView 
-            stringByEvaluatingJavaScriptFromString: script];
+    [controller setProgress:percentProgress];
 }
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection  {
@@ -750,14 +760,8 @@ NSLog(@"NativeInterface aug selected %@", augResult);
     NSString *responseString = [[NSString alloc] initWithData:receivedData
             encoding:NSUTF8StringEncoding];
 
-    [controller.webView 
-            stringByEvaluatingJavaScriptFromString: @"ice.progress(100);"];
-
-    NSString *scriptTemplate = @"ice.handleResponse(\"%@\");";
-    NSString *script = [NSString stringWithFormat:scriptTemplate, [responseString 
-            stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
-    NSString *result = [controller.webView 
-            stringByEvaluatingJavaScriptFromString: script];
+    [controller setProgress:100];
+    [controller handleResponse:responseString];
 
     // release the connection, and the data object
     [connection release];
