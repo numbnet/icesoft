@@ -108,6 +108,13 @@ public class ListMeta extends UIDataMeta {
             defaultValue = "false", defaultValueType = DefaultValueType.EXPRESSION)
     private Boolean selection;
 
+    @Property(tlddoc = "Enable single item migration to the next list in the first matching " +
+            "ListControl via item double clicks; with reverse migation via shift double clicks. " +
+            "If used in a dual list configuration the reverse migration is implied for the second " +
+            "list, and holding the shift key isn't required.",
+            defaultValue = "true", defaultValueType = DefaultValueType.EXPRESSION)
+    private Boolean doubleClickMigration;
+
     @Property(tlddoc = "Defines the set of Objects from the source List that are selected.")
     private Set<Object> selections;
 

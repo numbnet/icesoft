@@ -45,6 +45,9 @@ ice.ace.List = function(id, cfg) {
     if (cfg.selection)
         this.setupSelection();
 
+    if (cfg.dblclk_migrate)
+        this.setupClickMigration();
+
     if (cfg.controls)
         this.setupControls();
 
@@ -206,9 +209,17 @@ ice.ace.List.prototype.setupSelection = function() {
             .off('mouseenter mouseleave click', selector)
             .on('mouseenter', selector, this.itemEnter)
             .on('mouseleave', selector, this.itemLeave)
-            .on('dblclick', selector, function(e) { self.itemDoubleClickHandler.call(self, e); })
             .on('click', selector, function(e) { self.itemClickHandler.call(self, e); });
 };
+
+ice.ace.List.prototype.setupClickMigration = function() {
+    var self = this,
+        selector = this.jqId +  ' > ul > li';
+
+    ice.ace.jq(this.element)
+            .off('dblclick', selector)
+            .on('dblclick', selector, function(e) { self.itemDoubleClickHandler.call(self, e); });
+}
 
 ice.ace.List.prototype.itemEnter = function(e) {
     ice.ace.jq(e.currentTarget).addClass('ui-state-hover');
@@ -222,7 +233,7 @@ ice.ace.List.prototype.itemDoubleClickHandler = function(e) {
     var item = ice.ace.jq(e.currentTarget),
         id = item.attr('id'),
         fromIndex = parseInt(id.substr(id.lastIndexOf(this.sep)+1));
-        to = this.getNextList(e.shiftKey);
+        to = this.getSiblingList(e.shiftKey);
 
     fromIndex = this.getUnshiftedIndex(
             this.element.find('> ul').children().length,
@@ -241,13 +252,19 @@ ice.ace.List.prototype.itemDoubleClickHandler = function(e) {
 
 /* Get the following (or if shift is held, previous) list in the first
    listControl binding that associates this list with another */
-ice.ace.List.prototype.getNextList = function (shift) {
+ice.ace.List.prototype.getSiblingList = function (shift) {
     for(var controlId in ice.ace.ListControls) {
         if(ice.ace.ListControls.hasOwnProperty(controlId)) {
             var listSet = ice.ace.jq(ice.ace.ListControls[controlId].selector),
-                listIndex = (shift) ? listSet.index(this.element)-1 : listSet.index(this.element)+1;
+                listContainer = this.element.parent(),
+                lastSibling = (shift || listContainer.hasClass('if-list-dl-2')),
+                listIndex = listSet.index(this.element);
 
-            if ((!shift && listIndex == listSet.length) || (shift && listIndex < 0))
+            if (listIndex < 0) continue;
+
+            listIndex = lastSibling ? listSet.index(this.element)-1 : listSet.index(this.element)+1;
+
+            if ((!lastSibling && listIndex >= listSet.length) || (lastSibling && listIndex < 0))
                 return undefined;
 
             if (listIndex >= 0)

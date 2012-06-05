@@ -327,14 +327,10 @@ public class ListRenderer extends CoreRenderer {
         if (dropGroup != null)
             cfgBuilder.entry("connectWith", ".dg-"+dropGroup);
 
-        if (component.isSelection())
-            cfgBuilder.entry("selection", component.isSelection());
-
-        if (component.isDragging())
-            cfgBuilder.entry("dragging", component.isDragging());
-
-        if (component.isControlsEnabled())
-            cfgBuilder.entry("controls", component.isControlsEnabled());
+        if (component.isSelection()) cfgBuilder.entry("selection", true);
+        if (component.isDragging()) cfgBuilder.entry("dragging", true);
+        if (component.isControlsEnabled()) cfgBuilder.entry("controls", true);
+        if (component.isDoubleClickMigration()) cfgBuilder.entry("dblclk_migrate", true);
 
         encodeClientBehaviors(context, component, cfgBuilder);
 
