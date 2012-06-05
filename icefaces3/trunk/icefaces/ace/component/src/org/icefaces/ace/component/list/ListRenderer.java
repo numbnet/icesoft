@@ -288,18 +288,6 @@ public class ListRenderer extends CoreRenderer {
         writer.writeAttribute(HTML.NAME_ATTR, id + "_reorderings", null);
         writer.writeAttribute(HTML.TYPE_ATTR, "hidden", null);
         writer.endElement(HTML.INPUT_ELEM);
-
-        writer.startElement(HTML.INPUT_ELEM, null);
-        writer.writeAttribute(HTML.ID_ATTR, id + "_reorderings", null);
-        writer.writeAttribute(HTML.NAME_ATTR, id + "_reorderings", null);
-        writer.writeAttribute(HTML.TYPE_ATTR, "hidden", null);
-        writer.endElement(HTML.INPUT_ELEM);
-
-        writer.startElement(HTML.INPUT_ELEM, null);
-        writer.writeAttribute(HTML.ID_ATTR, id + "_reorderings", null);
-        writer.writeAttribute(HTML.NAME_ATTR, id + "_reorderings", null);
-        writer.writeAttribute(HTML.TYPE_ATTR, "hidden", null);
-        writer.endElement(HTML.INPUT_ELEM);
     }
 
     private void encodeScript(FacesContext context, ResponseWriter writer, ACEList component) throws IOException {

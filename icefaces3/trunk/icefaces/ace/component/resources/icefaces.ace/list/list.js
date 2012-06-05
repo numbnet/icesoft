@@ -52,7 +52,7 @@ ice.ace.List = function(id, cfg) {
         this.setupControls();
 
     if (cfg.dragging)
-        this.element.find("ul:first").sortable(cfg);
+        this.element.find("> ul").sortable(cfg);
 };
 
 // ************************************************************************* //
@@ -67,7 +67,7 @@ ice.ace.List.prototype.itemReceiveHandler = function(event, ui) {
         src = ice.ace.Lists[srcId];
 
     fromIndex = src.getUnshiftedIndex(
-            src.element.find('.if-list-body:first').children().length,
+            src.element.find('> ul').children().length,
             src.read('reorderings'),
             fromIndex);
 
@@ -102,10 +102,10 @@ ice.ace.List.prototype.sendMigrateRequest = function() {
         });
 
         destList.element = ice.ace.jq(ice.ace.escapeClientId(destList.element.attr('id')));
-        if (destList.cfg.dragging) destList.element.find("ul:first").sortable(destList.cfg);
+        if (destList.cfg.dragging) destList.element.find("> ul").sortable(destList.cfg);
 
         sourceList.element = ice.ace.jq(ice.ace.escapeClientId(sourceList.element.attr('id')));
-        if (sourceList.cfg.dragging) sourceList.element.find("ul:first").sortable(sourceList.cfg);
+        if (sourceList.cfg.dragging) sourceList.element.find("> ul").sortable(sourceList.cfg);
 
         return true;
     };
@@ -167,7 +167,7 @@ ice.ace.List.prototype.dragToHandler = function(event, ui) {
 ice.ace.List.prototype.setupControls = function() {
     var self = this;
 
-    this.element.find('.if-list-ctrls:first .if-list-ctrl')
+    this.element.find('> div.if-list-ctrls if-list-ctrl')
             .off('mouseenter').on('mouseenter', function(e) {
                 var ctrl = e.currentTarget;
                 ice.ace.jq(ctrl).addClass('ui-state-hover');
@@ -404,7 +404,7 @@ ice.ace.List.prototype.deselectAll = function() {
         selections = this.read('selections'),
         deselections = this.read('deselections');
 
-    this.element.find('.if-list-body:first > .if-list-item')
+    this.element.find('> ul.if-list-body > li.if-list-item')
             .removeClass('ui-state-active').each(function(i, elem) {{
                 var item = ice.ace.jq(elem),
                     id = item.attr('id'),
@@ -521,12 +521,12 @@ ice.ace.List.prototype.swapIdPrefix = function(from, to) {
 };
 
 ice.ace.List.prototype.read = function(field) {
-    var contents = this.element.find('input[name="'+this.jqId.substr(1)+'_'+field+'"]:first').attr('value');
+    var contents = this.element.find(' > input[name="'+this.jqId.substr(1)+'_'+field+'"]').attr('value');
     if (contents != "") return JSON.parse(contents);
     else return [];
 };
 
 ice.ace.List.prototype.write= function(field, data) {
-    var element = this.element.find('input[name="'+this.jqId.substr(1)+'_'+field+'"]:first');
+    var element = this.element.find(' > input[name="'+this.jqId.substr(1)+'_'+field+'"]');
     element.attr('value', JSON.stringify(data));
 };
