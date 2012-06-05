@@ -70,79 +70,80 @@ public class AjaxUpload extends ScriptableFunction {
 //            Logger.DEBUG("ajax.upload - Serialized form:\n" + serializedForm);
             NameValuePair[] params = UploadUtilities.getNameValuePairs(serializedForm, "=", "&");
             //Log.e("ICEutil", "NVP=" + params.length);
+            String value;
             for (int i = 0; i < params.length; i++) {
-                if (params[i].getName().indexOf("file") > -1) {
-                    String filename = HttpUtils.URLdecode(params[i].getValue());
-                    Logger.DEBUG("ajax.upload - File part encountered: " + filename);
 
-                    if (filename.indexOf(".jpg") > -1) {
-                        byte[] imageBytes;
-                        InputStream theImage;
-                        FileConnection fconn = (FileConnection) Connector.open(filename);
+                value = HttpUtils.URLdecode(params[i].getValue());
+                Logger.DEBUG("ajax.upload - name-value encountered: " + value);
 
-                        imageBytes = new byte[(int) fconn.fileSize()];
-                        theImage = fconn.openInputStream();
-                        theImage.read(imageBytes);
-                        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream(imageBytes.length);
-                        byteArrayOutputStream.write(imageBytes);
+                if (value.indexOf(".jpg") > -1) {
+                    Logger.DEBUG("ajax.upload - image part encountered: " + value);
+                    byte[] imageBytes;
+                    InputStream theImage;
+                    FileConnection fconn = (FileConnection) Connector.open(value);
 
-                        byteArrayOutputStream.flush();
-                        byteArrayOutputStream.close();
+                    imageBytes = new byte[(int) fconn.fileSize()];
+                    theImage = fconn.openInputStream();
+                    theImage.read(imageBytes);
+                    ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream(imageBytes.length);
+                    byteArrayOutputStream.write(imageBytes);
 
-                        String name = HttpUtils.URLdecode(params[i].getName());
-                        String imageVar = byteArrayOutputStream.toString();
-                        content.appendImagePart(name,
-                                                       filename,
-                                                       imageVar);
-                    } else if (filename.indexOf(".amr") > -1) {
+                    byteArrayOutputStream.flush();
+                    byteArrayOutputStream.close();
 
-                        byte[] clipBytes;
-                        InputStream theClip;
+                    String name = HttpUtils.URLdecode(params[i].getName());
+                    String imageVar = byteArrayOutputStream.toString();
+                    content.appendImagePart(name,
+                                            value,
+                                            imageVar);
+                } else if (value.indexOf(".amr") > -1) {
+                    Logger.DEBUG("ajax.upload - audio part encountered: " + value);
+                    byte[] clipBytes;
+                    InputStream theClip;
 
-                        // Audio encoder insists on having "file:// already in the storage location, while image 
-                        // control can't have it. 
-                        FileConnection fconn = (FileConnection) Connector.open(filename);
-                        clipBytes = new byte[(int) fconn.fileSize()];
-                        theClip = fconn.openInputStream();
-                        theClip.read(clipBytes);
-                        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream(clipBytes.length);
-                        byteArrayOutputStream.write(clipBytes);
+                    // Audio encoder insists on having "file:// already in the storage location, while image
+                    // control can't have it.
+                    FileConnection fconn = (FileConnection) Connector.open(value);
+                    clipBytes = new byte[(int) fconn.fileSize()];
+                    theClip = fconn.openInputStream();
+                    theClip.read(clipBytes);
+                    ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream(clipBytes.length);
+                    byteArrayOutputStream.write(clipBytes);
 
-                        byteArrayOutputStream.flush();
-                        byteArrayOutputStream.close();
+                    byteArrayOutputStream.flush();
+                    byteArrayOutputStream.close();
 
-                        String name = HttpUtils.URLdecode(params[i].getName());
-                        String audioVar = byteArrayOutputStream.toString();
-                        content.appendAudioPart(name,
-                                                       filename,
-                                                       audioVar);
-                    } else if (filename.indexOf(".3gp") > -1) {
-                        byte[] videoBytes;
-                        InputStream theVideo;
-                        FileConnection fconn = (FileConnection) Connector.open(filename);
+                    String name = HttpUtils.URLdecode(params[i].getName());
+                    String audioVar = byteArrayOutputStream.toString();
+                    content.appendAudioPart(name,
+                                            value,
+                                            audioVar);
+                } else if (value.indexOf(".3gp") > -1) {
+                    Logger.DEBUG("ajax.upload - video part encountered: " + value);
+                    byte[] videoBytes;
+                    InputStream theVideo;
+                    FileConnection fconn = (FileConnection) Connector.open(value);
 
-                        videoBytes = new byte[(int) fconn.fileSize()];
-                        theVideo = fconn.openInputStream();
-                        theVideo.read(videoBytes);
-                        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream(videoBytes.length);
-                        byteArrayOutputStream.write(videoBytes);
+                    videoBytes = new byte[(int) fconn.fileSize()];
+                    theVideo = fconn.openInputStream();
+                    theVideo.read(videoBytes);
+                    ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream(videoBytes.length);
+                    byteArrayOutputStream.write(videoBytes);
 
-                        byteArrayOutputStream.flush();
-                        byteArrayOutputStream.close();
+                    byteArrayOutputStream.flush();
+                    byteArrayOutputStream.close();
 
-                        String name = HttpUtils.URLdecode(params[i].getName());
-                        String videoVar = byteArrayOutputStream.toString();
-                        content.appendVideoPart(name,
-                                                       filename,
-                                                       videoVar);
-                    }
-
+                    String name = HttpUtils.URLdecode(params[i].getName());
+                    String videoVar = byteArrayOutputStream.toString();
+                    content.appendVideoPart(name,
+                                            value,
+                                            videoVar);
                 } else {
                     if (params[i].getName() == null || params[i].getName().equals("")) {
                         continue;
                     }
-                    content.append(HttpUtils.URLdecode(params[i].getName()), HttpUtils.URLdecode(params[i].getValue()));
                 }
+                content.append(HttpUtils.URLdecode(params[i].getName()), HttpUtils.URLdecode(params[i].getValue()));
             }
 
 
