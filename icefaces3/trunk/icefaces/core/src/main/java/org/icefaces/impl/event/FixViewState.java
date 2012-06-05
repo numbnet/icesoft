@@ -19,7 +19,7 @@ public class FixViewState implements SystemEventListener {
     public void processEvent(final SystemEvent event) throws AbortProcessingException {
         final UIForm form = (UIForm) ((ComponentSystemEvent) event).getComponent();
         final String formClientID = form.getClientId();
-        final String id = formClientID + ID_SUFFIX;
+        final String id = form.getId() + ID_SUFFIX;
 
         UIOutput output = new ScriptWriter(formClientID);
         output.setTransient(true);
