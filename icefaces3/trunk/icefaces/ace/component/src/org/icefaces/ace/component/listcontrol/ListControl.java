@@ -10,8 +10,8 @@ public class ListControl extends ListControlBase {
 
     public String getSelector(String clientId, boolean dualListMode) {
         if (dualListMode) {
-            return "#"+clientId + " ." + ListControlRenderer.firstStyleClass + ":first .if-list:first, " +
-                   "#"+clientId + " ." + ListControlRenderer.secondStyleClass + ":first .if-list:first";
+            return "#"+clientId + " > div.if-list-dl > span." + ListControlRenderer.firstStyleClass + " > div > div.if-list, " +
+                   "#"+clientId + " > div.if-list-dl > span." + ListControlRenderer.secondStyleClass + " > div > div.if-list";
         }
         return super.getSelector();
     }

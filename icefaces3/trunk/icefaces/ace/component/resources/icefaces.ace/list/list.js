@@ -167,7 +167,7 @@ ice.ace.List.prototype.dragToHandler = function(event, ui) {
 ice.ace.List.prototype.setupControls = function() {
     var self = this;
 
-    this.element.find('> div.if-list-ctrls if-list-ctrl')
+    this.element.find('> div.if-list-ctrls .if-list-ctrl')
             .off('mouseenter').on('mouseenter', function(e) {
                 var ctrl = e.currentTarget;
                 ice.ace.jq(ctrl).addClass('ui-state-hover');

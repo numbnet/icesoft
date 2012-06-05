@@ -94,9 +94,9 @@ ice.ace.ListControl.prototype.getSourceList = function(dir, all) {
     if (all && this.element.hasClass('if-list-dl-cnt')) {
         var list;
         if (dir.substr(dir.length-1) == 'r')
-            list = this.element.find('.if-list-dl-1:first .if-list:first');
+            list = this.element.find(' > div.if-list-dl > span.if-list-dl-1 > div > div.if-list');
         else
-            list = this.element.find('.if-list-dl-2:first .if-list:first');
+            list = this.element.find(' > div.if-list-dl > span.if-list-dl-2 > div > div.if-list');
 
         return ice.ace.Lists[list.attr('id')];
     }
@@ -125,12 +125,12 @@ ice.ace.ListControl.prototype.getDestinationList = function(source, dir) {
 
 ice.ace.ListControl.prototype.getRecords = function(source, dest, all) {
     var childSelector = all ? '*' : '.ui-state-active' ,
-        sourceChildren = ice.ace.jq(source.element).find('.if-list-body:first').children(),
+        sourceChildren = ice.ace.jq(source.element).find('> ul.if-list-body').children(),
         sourceIds = sourceChildren.filter(childSelector).map(function() { return ice.ace.jq(this).attr('id'); }),
         sourceLength = sourceChildren.length,
         sourceReorderings = source.read('reorderings'),
         records = [],
-        destIndex = ice.ace.jq(dest.element).find('.if-list-body:first').children().length;
+        destIndex = ice.ace.jq(dest.element).find('> ul.if-list-body').children().length;
 
     for (var i = 0; i < sourceIds.length; i++) {
         var record = [], id = sourceIds[i];
