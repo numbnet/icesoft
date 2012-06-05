@@ -90,7 +90,7 @@ ice.ace.Panel.prototype.close = function() {
 
     var _self = this;
 
-    ice.ace.jq(this.jqId).fadeOut(this.cfg.closeSpeed,
+    ice.ace.jq(this.jqId).fadeOut(this.cfg.closeSpeed, '',
         function(e) {
             if(_self.cfg.behaviors) {
                 var closeBehavior = _self.cfg.behaviors['close'];
