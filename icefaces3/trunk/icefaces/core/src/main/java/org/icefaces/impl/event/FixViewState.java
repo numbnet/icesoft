@@ -11,6 +11,7 @@ import javax.faces.event.ComponentSystemEvent;
 import javax.faces.event.SystemEvent;
 import javax.faces.event.SystemEventListener;
 import java.io.IOException;
+import java.text.StringCharacterIterator;
 
 public class FixViewState implements SystemEventListener {
     private static final String ID_SUFFIX = "_fixviewstate";
@@ -45,10 +46,42 @@ public class FixViewState implements SystemEventListener {
                 writer.startElement("script", this);
                 writer.writeAttribute("type", "text/javascript", null);
                 String viewState = context.getApplication().getStateManager().getViewState(context);
-                writer.writeText("ice.fixViewState('" + formClientID + "', '" + viewState + "');", null);
+                writer.writeText("ice.fixViewState('" + formClientID + "', '" + escapeJSString(viewState) + "');", null);
                 writer.endElement("script");
             }
             writer.endElement("span");
         }
     }
+
+    public static String escapeJSString(String text) {
+        final StringBuilder result = new StringBuilder();
+        StringCharacterIterator iterator = new StringCharacterIterator(text);
+        char character = iterator.current();
+        while (character != StringCharacterIterator.DONE) {
+            if (character == '\"') {
+                result.append("\\\"");
+            } else if (character == '\\') {
+                result.append("\\\\");
+            } else if (character == '/') {
+                result.append("\\/");
+            } else if (character == '\b') {
+                result.append("\\b");
+            } else if (character == '\f') {
+                result.append("\\f");
+            } else if (character == '\n') {
+                result.append("\\n");
+            } else if (character == '\r') {
+                result.append("\\r");
+            } else if (character == '\t') {
+                result.append("\\t");
+            } else {
+                //the char is not a special one
+                //add it to the result as is
+                result.append(character);
+            }
+            character = iterator.next();
+        }
+        return result.toString();
+    }
+
 }
