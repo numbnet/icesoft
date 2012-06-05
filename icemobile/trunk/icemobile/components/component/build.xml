@@ -591,6 +591,12 @@
                           name="tabset" skin="ipad"/>
         <includeresources dir="src/org/icefaces/mobi/component/tabset/iphone"
                           name="tabset" skin="iphone"/>
+        <includeresources dir="src/org/icefaces/mobi/component/tabset/android"
+                          name="tabset" skin="android"/>
+        <includeresources dir="src/org/icefaces/mobi/component/tabset/honeycomb"
+                          name="tabset" skin="honeycomb"/>
+        <includeresources dir="src/org/icefaces/mobi/component/tabset/bberry"
+                          name="tabset" skin="bberry"/>
         <!-- Process sprites, if use.sprites is set -->
         <antcall target="sprites"/>
 

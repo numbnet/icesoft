@@ -19,28 +19,25 @@
     background-color: white;
     margin: 0;
     padding: 0;
-    text-align: center;
+    text-align: left;
     width: 100%;
     float:left;
 }
 
 .mobi-tabset-tabs-top > .mobi-tabset-tabs{
-    border-bottom:1px solid #7A8091;
-    border-top:1px solid #7A8091;
+    border-bottom:1px solid #000;
     width:100%;
     float:left;
 }
 .mobi-tabset-tabs-top .mobi-tabset-tabs > ul{
-
+    border-bottom:1px solid #424242;
 }
 .mobi-tabset-tabs-bottom > .mobi-tabset-tabs{
-    border-top:2px solid #f4f4f6;
-    -webkit-box-shadow: 0px -3px 5px grey;
-    box-shadow: 0px -3px 5px grey;
+    border-top:1px solid #000;
     width:100%;
 }
 .mobi-tabset-tabs-bottom .mobi-tabset-tabs > ul{
-
+    border-top:1px solid #424242;
 }
 
 .mobi-tabset-tabs {
@@ -51,47 +48,41 @@
     width:100%;
     list-style: none outside none;
     margin: 0; padding: 0;
-    background-color: #e8e9ea;
-    color:#868688;
-    font-weight: bold;
+    color:#d3d3d3;
 }
 .mobi-tabset-tabs > ul li{
     display: inline-block;
-    background: -moz-linear-gradient(top, #f1f1f2, #d9dadb) repeat scroll 0 0 #d9dadb;
-    background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0, #f1f1f2), color-stop(1, #d9dadb));
     text-align: center;
-    padding: 3px 10px;
-    text-shadow: 0 1px 1px #ffffff;
-    border: 1px solid #999;
-    margin: 5px -5px 5px 0;
+    padding: 0;
+    line-height: 40px;
     cursor: pointer;
+    -webkit-border-radius:10px 10px 0 0;
+    -moz-border-radius:10px 10px 0 0;
+    border-radius:10px 10px 0 0;
+    border: 1px solid gray;
+    margin-right:-1px;
+    background: -moz-linear-gradient(top, #666666,  #333333) repeat scroll 0 0 #333333;
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0, #666666), color-stop(1, #333333));
 }
-.mobi-tabset-tabs > ul li:first-child{
-    -webkit-border-top-left-radius:5px;
-    -moz-border-top-left-radius:5px;
-    border-top-left-radius:5px;
-    -webkit-border-bottom-left-radius:5px;
-    -moz-border-bottom-left-radius:5px;
-    border-bottom-left-radius:5px;
+.mobi-tabset-tabs > ul li:active, mobi-tabset-tabs > ul li[selected] {
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0, #0099ff), color-stop(1, #0066cc));
+    background: -moz-linear-gradient(top, #0099ff, #0066cc);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorStr = '#0099ff', EndColorStr = '#0066cc');
+    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#0099ff', EndColorStr='#0066cc')";
+    -webkit-tap-highlight-color: #0099ff;
+    color: white !important;
 }
-.mobi-tabset-tabs > ul li:last-child{
-    -webkit-border-top-right-radius:5px;
-    -moz-border-top-right-radius:5px;
-    border-top-right-radius:5px;
-    -webkit-border-bottom-right-radius:5px;
-    -moz-border-bottom-right-radius:5px;
-    border-bottom-right-radius:5px;
-}
-
 .activeTab {
-    background: -moz-linear-gradient(top, #f1f1f2, #b5b6b7) repeat scroll 0 0 #c1c2c3 !important;
-    background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0, #f1f1f2), color-stop(1, #b5b6b7)) !important;
-    color:#525253;
+    background-origin: padding;
+    background: -moz-linear-gradient(top, #cccccc,  #999999) repeat scroll 0 0 #2b2b2b !important;
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0, #cccccc), color-stop(1, #999999)) !important;
+    background-color: #636363;
+    color: #ffffff ;
 }
 
 .mobi-tabset-tabs-top .mobi-tabset-content{
     height:100%;
-    padding-top:40px;
+    padding-top:48px;
 }
 
 .mobi-tabset-tabs-bottom .mobi-tabset-content{
@@ -105,20 +96,22 @@
 }
 
 .mobi-tabset-tabs-bottom > .mobi-tabset-tabs{
-    position: relative;
+    position: fixed;
     bottom: 0;
     left:0;
 }
 .mobi-tabset-tabs-top > .mobi-tabset-tabs{
-    position: relative;
+    position: fixed;
     top: 0;
     left:0;
 }
 .mobi-tabset-tabs-bottom-footer > .mobi-tabset-tabs{
-    /*margin-bottom:50px;*/
+    margin-bottom:50px;
 }
 .mobi-tabset-tabs-top-header > .mobi-tabset-tabs{
-    /*margin-top:45px;*/
+    background-color: #333333;
+    margin-top: 31px;
+    padding-top: 2px;
 }
 .mobi-tabpage-hidden {
     /*visibility: hidden;*/
