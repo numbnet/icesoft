@@ -20,40 +20,64 @@
              xmlns:ui="http://java.sun.com/jsf/facelets"
              xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
 
-    <h:form>
         <mobi:fieldsetGroup>
             <mobi:fieldsetRow style="padding-bottom:10px;">
                 The tabset component provided selectable buttons to control
                 which content pane is visible.
             </mobi:fieldsetRow>
         </mobi:fieldsetGroup>
-
-        <mobi:tabSet>
+        <!--
+          The large and small views use the tabset slightly differnetly.  Large
+          views assome only top orientation of the tabs. And becuase of the
+          two column layout of a large view the footer and header parent
+          properties are set to false to disable the padding offset.
+        -->
+        <mobi:tabSet currentId="#{tabsetBean.currentId}"
+                parentFooter="#{viewSize ne 'large'}"
+                parentHeader="#{viewSize ne 'large'}"
+                autoWidth="#{viewSize ne 'large'}"
+                orientation="#{viewSize eq 'large'?'top':'bottom'}"
+                fixedHeight="300">
 
             <mobi:contentPane title="Ice Sailer" id="tab1" >
-                <h:graphicImage style="float:left;padding-right:10px;"
-                                library="images/auction" name="icesailor.png"/>
-                <p><b>ICEsoft Ice Sailer</b><br />
-                    Put him on the ice and watch him go!</p>
+                <mobi:fieldsetGroup>
+                    <mobi:fieldsetRow>
+                        <h:graphicImage style="float:left;padding-right:10px;"
+                                        library="images/auction" name="icesailor.png"/>
+                        <p><b>ICEsoft Ice Sailer</b><br />
+                            Put him on the ice and watch him go!</p>
+                    </mobi:fieldsetRow>
+
+                </mobi:fieldsetGroup>
             </mobi:contentPane>
 
             <mobi:contentPane title="Ice Breaker" id="tab2">
-                <h:graphicImage style="float:left;padding-right:10px;"
-                                library="images/auction" name="icebreaker.png"/>
-                <p><b>ICEsoft Icebreaker</b><br />
-                    Used icebreaker with very few dents.</p>
+
+                <mobi:fieldsetGroup>
+                    <mobi:fieldsetRow>
+                        <h:graphicImage style="float:left;padding-right:10px;"
+                                        library="images/auction" name="icebreaker.png"/>
+                        <p><b>ICEsoft Icebreaker</b><br />
+                            Used icebreaker with very few dents.</p>
+                    </mobi:fieldsetRow>
+
+                </mobi:fieldsetGroup>
+
             </mobi:contentPane>
 
-            <mobi:contentPane title="Ice Skater" id="tab3">
-                <h:graphicImage style="float:left;padding-right:10px;"
-                                library="images/auction" name="iceskater.png"/>
-                <p><b>ICEsoft Ice Skate</b><br />
-                    A single sharpened ice skate, size 7.</p>
+            <mobi:contentPane title="Ice Skater" id="tab3" >
+                <mobi:fieldsetGroup>
+                    <mobi:fieldsetRow>
+                        <h:graphicImage style="float:left;padding-right:10px;"
+                                        library="images/auction" name="iceskate.png"/>
+                        <p><b>ICEsoft Ice Skate</b><br />
+                            A single sharpened ice skate, size 7.</p>
+                    </mobi:fieldsetRow>
+
+                </mobi:fieldsetGroup>
+
             </mobi:contentPane>
 
         </mobi:tabSet>
-
-    </h:form>
-
 
 </ui:fragment>

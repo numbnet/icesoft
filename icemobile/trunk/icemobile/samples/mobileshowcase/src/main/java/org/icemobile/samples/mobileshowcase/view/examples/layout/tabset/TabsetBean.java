@@ -41,9 +41,17 @@ public class TabsetBean extends ExampleImpl<TabsetBean> implements
 
     public static final String BEAN_NAME = "tabsetBean";
 
-    private int selectedTabId = 0;
+    private String currentId = "tab1";
 
     public TabsetBean() {
         super(TabsetBean.class);
+    }
+
+    public String getCurrentId() {
+        return currentId;
+    }
+
+    public void setCurrentId(String currentId) {
+        this.currentId = currentId;
     }
 }
