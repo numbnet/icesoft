@@ -74,7 +74,8 @@ if (!window.ice.mobile) {
         namespace.microphone = function(id, attr) {
 
             try {
-                var result = icefaces.toggleMic(id, attr);
+                /* var result = icefaces.toggleMic(id, attr); */ 
+         		var result = icefaces.recordAudio( id, attr );
             } catch (e) {
                 alert('Exception in microphone: ' + e);
             }
@@ -112,10 +113,34 @@ if (!window.ice.mobile) {
         }
 
         // ----------------- Various ----------------------
-
-        namespace.addHiddenField = function(id, id2, filename) {
-            ice.addHidden(id, id2, "" + filename);
+        // private don't use
+        namespace.addHiddenFormField = function(target, name, value) {
+        	var targetElm = document.getElementById(target); 
+        	var hidden  = document.createElement("input"); 
+        	hidden.setAttribute("type", "hidden"); 
+        	hidden.setAttribute("name", name); 
+        	hidden.setAttribute("value", value); 
+        	targetElm.appendChild(hidden); 
+            return hidden;
         }
+        
+        namespace.addHidden = function(target, name, value, vtype ) { 
+        	var hiddenID = name + "-hid"; 
+        	var existing = document.getElementById(hiddenID);
+        	if (existing) { 
+        	    existing.parentNode.removeChild(existing); 
+        	} 
+        	var targetElm = document.getElementById(target); 
+        	var hidden = document.createElement("input"); 
+        	hidden.setAttribute("type", "hidden"); 
+        	hidden.setAttribute("id", hiddenID); 
+        	hidden.setAttribute("name", name); 
+        	hidden.setAttribute("value", value); 
+        	if (vtype) { 
+        		hidden.setAttribute("data-type", vtype); 
+            } 
+            targetElm.parentNode.insertBefore(hidden, targetElm); 
+        } 
 
         //assume single threaded access with this context object spanning request/response
         var context = {
@@ -127,9 +152,9 @@ if (!window.ice.mobile) {
         var tempInputs = [];
 
         //override primitive submit function
-
+        
         namespace.submitFunction = function(element, event, options) {
-
+        
             var source = event ? event.target : element;
             var form = ice.formOf(element);
             var formId = form.id;
@@ -175,22 +200,22 @@ if (!window.ice.mobile) {
             context.sourceid = sourceId;
             context.formid = formId;
             //context.serialized = ice.serialize(form.id);
-
+            
             ice.upload(formId);
 
         }
-
+        
         namespace.upload = function(id) {
             try {
-                var form = document.getElementById(id);
-                context.serialized = ice.serialize(id, true);
-                var result = icefaces.ajaxUpload(form.action, context.serialized);
+            	var form = document.getElementById( id ); 
+                context.serialized = ice.serialize(id); 
+                var result = icefaces.ajaxUpload( form.action, context.serialized);
 
             } catch (e) {
                 alert('Exception in ajaxUpload: ' + e);
             }
-        }
-
+        }        
+       
 
         namespace.handleResponse = function(data, isSimulator) {
 
@@ -232,7 +257,7 @@ if (!window.ice.mobile) {
                 context.formid = "";
                 context.serialized = "";
             } catch (e) {
-
+            	
                 //icefaces.logInContainer("Exception in handleResponse: " + e);
             }
         }
@@ -248,38 +273,11 @@ if (!window.ice.mobile) {
             }
         }
 
+        
 
         namespace.deviceToken = "blackberrybeef";
 
-        namespace.addHidden = function(target, name, value, vtype)  {
-            var hiddenID = name + "-hid";
-            var existing = document.getElementById(hiddenID);
-            if (existing)  {
-                existing.parentNode.removeChild(existing);
-            }
-            var targetElm = document.getElementById(target);
-            var hidden = document.createElement("input");
-            hidden.setAttribute("type", "hidden");
-            hidden.setAttribute("id", hiddenID);
-            hidden.setAttribute("name", name);
-            hidden.setAttribute("value", value);
-            if (vtype)  {
-                hidden.setAttribute("data-type", vtype);
-            }
-            targetElm.parentNode.insertBefore(hidden, targetElm);
-        }
-
-        namespace.addHiddenFormField = function(target, name, value) {
-            var targetElm = document.getElementById(target);
-            var hidden = document.createElement("input");
-            hidden.setAttribute("type", "hidden");
-            hidden.setAttribute("name", name);
-            hidden.setAttribute("value", value);
-            targetElm.appendChild(hidden);
-            return hidden;
-        }
-
-        namespace.serialize = function(formId, typed)  {
+        namespace.serialize = function(formId) {
             var form = document.getElementById(formId);
             var els = form.elements;
             var len = els.length;
@@ -295,50 +293,41 @@ if (!window.ice.mobile) {
             for (var i = 0; i < len; i++) {
                 var el = els[i];
                 if (!el.disabled) {
-                    var prefix = "";
-                    if (typed)  {
-                        var vtype = el.getAttribute("data-type");
-                        if (vtype)  {
-                            prefix = vtype + "-";
-                        } else {
-                            prefix = el.type + "-";
-                        }
-                    }
                     switch (el.type) {
                         case 'submit':
-                        case 'button':
                             break;
                         case 'text':
                         case 'password':
                         case 'hidden':
                         case 'textarea':
-                            addField(prefix + el.name, el.value);
+                            addField(el.name, el.value);
                             break;
                         case 'select-one':
                             if (el.selectedIndex >= 0) {
-                                addField(prefix + el.name, el.options[el.selectedIndex].value);
+                                addField(el.name, el.options[el.selectedIndex].value);
                             }
                             break;
                         case 'select-multiple':
                             for (var j = 0; j < el.options.length; j++) {
                                 if (el.options[j].selected) {
-                                    addField(prefix + el.name, el.options[j].value);
+                                    addField(el.name, el.options[j].value);
                                 }
                             }
                             break;
                         case 'checkbox':
                         case 'radio':
                             if (el.checked) {
-                                addField(prefix + el.name, el.value);
+                                addField(el.name, el.value);
                             }
                             break;
                         default:
-                            addField(prefix + el.name, el.value);
+                            addField(el.name, el.value);
                     }
                 }
             }
             // concatenate the array
             return qString.join("");
+
         }
 
     })(window.ice)
