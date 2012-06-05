@@ -28,6 +28,7 @@ import java.util.HashMap;
 
 public class ARView extends View {
     private Paint mTextPaint;
+    private Paint mTextPaintRed;
     HashMap<String,String> places = new HashMap();
     float[] deviceTransform = new float[16];
     Location currentLocation;
@@ -39,6 +40,10 @@ public class ARView extends View {
         // Must manually scale the desired text size to match screen density
         mTextPaint.setTextSize(16 * getResources().getDisplayMetrics().density);
         mTextPaint.setColor(0xFFFFFFFF);
+        mTextPaintRed = new Paint();
+        mTextPaintRed.setAntiAlias(true);
+        mTextPaintRed.setTextSize(16 * getResources().getDisplayMetrics().density);
+        mTextPaintRed.setColor(0xFFFF0000);
         setPadding(3, 3, 3, 3);
     }
     
@@ -63,11 +68,17 @@ public class ARView extends View {
     //increase by factor 2, shift by 200,200
     //Matrix uses column major order to make the
     //matrix unreadable in source code
-    float[] adjust = new float[] {
+    float[] adjust1 = new float[] {
           2,   0, 0, 0,
           0,   2, 0, 0,
-          0,   0, 1, 0,
+          0,   0, 2, 0,
         200, 200, 0, 1
+    };
+    float[] adjust = new float[] {
+          2, 0,   0, 0,
+          0, 2,   0, 0,
+          0, 0,   2, 0,
+          0, 0,   0, 1
     };
 
     protected void onDraw(Canvas canvas) {
@@ -95,10 +106,16 @@ public class ARView extends View {
                 Matrix.multiplyMV(v1, 0, mat, 0, coord, 0);
                 float[] v = new float[]{0, 0, 0, 1};
                 Matrix.multiplyMV(v, 0, adjust, 0, v1, 0);
+
+                //project x-z and discard y=x as behind us
                 canvas.save();
-                canvas.rotate(270, v[0], v[1]);
-                canvas.drawText(label, v[0], v[1], mTextPaint);
-Log.d("ARView ", "rotated " + label + v[0] + "," + v[1]);
+                canvas.rotate(270, v[0], v[2]);
+                if ( (v[1] - v[0]) > 0)  {
+                    canvas.drawText(label, v[0] - 300, v[2] + 300, mTextPaint);
+                } else {
+//                    canvas.drawText(label, v[0] - 300, v[2] + 300, mTextPaintRed);
+                }
+Log.d("ARView ", "rotated " + label + v[0] + "," + v[2]);
                 canvas.restore();
             }
         }
