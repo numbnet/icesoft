@@ -38,6 +38,7 @@ import javax.el.MethodNotFoundException;
 import javax.el.ValueExpression;
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
+import javax.faces.component.UIComponent;
 import javax.faces.component.behavior.ClientBehaviorBase;
 import javax.faces.component.behavior.ClientBehaviorHint;
 import javax.faces.component.behavior.FacesBehavior;
@@ -58,6 +59,7 @@ public class AjaxBehavior extends ClientBehaviorBase {
     private String onSuccess;
     private String onStart;
     private MethodExpression listener;
+    private MethodExpression listenerNoArg;
     private boolean immediate = false;
     private boolean disabled = false;
     private boolean immediateSet = false;
@@ -133,6 +135,14 @@ public class AjaxBehavior extends ClientBehaviorBase {
         this.listener = listener;
         clearInitialState();
     }
+    
+    public MethodExpression getListenerNoArg() {
+        return listenerNoArg;
+    }
+
+    public void setListenerNoArg(MethodExpression listenerNoArg) {
+        this.listenerNoArg = listenerNoArg;
+    }
 
     public boolean isDisabled() {
         return disabled;
@@ -162,14 +172,14 @@ public class AjaxBehavior extends ClientBehaviorBase {
 
         if (listener != null) {
             try {
-                listener.invoke(eLContext, null);       //no-arg listener
+                listener.invoke(eLContext, new Object[] {event});
             } catch (MethodNotFoundException e1) {
-                MethodExpression argListener = context.getApplication().getExpressionFactory().
-                        createMethodExpression(eLContext, listener.getExpressionString(), null, new Class[]{event.getClass()});
-
-                argListener.invoke(eLContext, new Object[]{event});
+                if (listenerNoArg != null) {
+                    listenerNoArg.invoke(eLContext, new Object[0]);
+                }
             }
         }
+
     }
 
     public Object saveState(FacesContext context) {
@@ -187,7 +197,7 @@ public class AjaxBehavior extends ClientBehaviorBase {
                 values = new Object[] { superState };
             }
         } else {
-            values = new Object[11];
+            values = new Object[12];
 
             values[0] = superState;
             values[1] = listener;
@@ -200,6 +210,7 @@ public class AjaxBehavior extends ClientBehaviorBase {
 			values[8] = Boolean.valueOf(immediate);
 			values[9] = Boolean.valueOf(immediateSet);
 			values[10] = Boolean.valueOf(disabled);
+            values[11] = listenerNoArg;
         }
 
         return values;
@@ -225,6 +236,7 @@ public class AjaxBehavior extends ClientBehaviorBase {
                 immediate = ((Boolean)values[8]).booleanValue();
                 immediateSet = ((Boolean)values[9]).booleanValue();
                 disabled = ((Boolean)values[10]).booleanValue();
+                listenerNoArg = (MethodExpression)values[11];
 
                 // If we saved state last time, save state again next time.
                 clearInitialState();
