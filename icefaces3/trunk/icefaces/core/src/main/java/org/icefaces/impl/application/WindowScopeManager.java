@@ -318,17 +318,20 @@ public class WindowScopeManager extends SessionAwareResourceHandlerWrapper {
         private void discardIfExpired(FacesContext facesContext) {
             State state = getState(facesContext);
             if (System.currentTimeMillis() > (deactivateTimestamp + state.expirationPeriod)) {
-                if (!isPreDestroyInvoked()) {
-                    boolean processingEvents = facesContext.isProcessingEvents();
-                    try {
-                        facesContext.setProcessingEvents(true);
-                        ScopeContext context = new ScopeContext(ScopeName, this);
-                        facesContext.getApplication().publishEvent(facesContext, PreDestroyCustomScopeEvent.class, context);
-                    } finally {
-                        preDestroyInvoked();
-                        state.disposedWindowScopedMaps.remove(this);
-                        facesContext.setProcessingEvents(processingEvents);
+                try {
+                    if (!isPreDestroyInvoked()) {
+                        boolean processingEvents = facesContext.isProcessingEvents();
+                        try {
+                            facesContext.setProcessingEvents(true);
+                            ScopeContext context = new ScopeContext(ScopeName, this);
+                            facesContext.getApplication().publishEvent(facesContext, PreDestroyCustomScopeEvent.class, context);
+                        } finally {
+                            preDestroyInvoked();
+                            facesContext.setProcessingEvents(processingEvents);
+                        }
                     }
+                } finally {
+                    state.disposedWindowScopedMaps.remove(this);
                 }
             }
         }
