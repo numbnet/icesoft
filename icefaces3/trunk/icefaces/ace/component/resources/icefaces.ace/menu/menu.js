@@ -347,7 +347,7 @@ ice.ace.ContextMenu = function(id, cfg) {
         _self.jq.wijmenu('deactivate');
     };
 	
-	if (ice.ace.jq.browser.msie) { // ICE-7532 not supported in IE
+	if (!ice.ace.jq.support.leadingWhitespace) { // ICE-7532 not supported in IE 7/8
 		if (this.cfg.animation) { 
 			delete this.cfg.animation;
 		}
