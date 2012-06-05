@@ -19,6 +19,7 @@ import org.icemobile.client.blackberry.menu.BackMenuItem;
 import org.icemobile.client.blackberry.menu.HistorySubMenuItem;
 import org.icemobile.client.blackberry.menu.ReloadCurrentMenuItem;
 import org.icemobile.client.blackberry.menu.ReloadHomeMenuItem;
+import org.icemobile.client.blackberry.menu.ResetAuthorizationMenuItem;
 //import org.icemobile.client.blackberry.menu.ResetPushMenuItem;
 //import org.icemobile.client.blackberry.menu.TestJavascriptMenuItem;
 import org.icemobile.client.blackberry.menu.URLEntryMenu;
@@ -42,6 +43,7 @@ public final class ApplicationScreen extends MainScreen {
     private MenuItem mReloadCurrentMenu; // reload current page
     private MenuItem mURLMenu;           // allow user to manually define HOME_URL locally
     // without going into options system.
+    private MenuItem mResetAuthCacheMenu; // Reset the authorization cache
 
 
     //     private MenuItem mResetPushMenu;
@@ -55,14 +57,13 @@ public final class ApplicationScreen extends MainScreen {
      * Creates a new MyScreen object
      */
     public ApplicationScreen(ContainerController controller) {
-        // MOBI-229
         super(HORIZONTAL_SCROLL | VERTICAL_SCROLL);
         mController = controller;
+
         mHistorySubs = new HistorySubMenuItem[ICEmobileContainer.HISTORY_SIZE];
         loadMenus();
     }
 
-    //
 
     public boolean onClose() {
         UiApplication.getUiApplication().requestBackground();
@@ -85,6 +86,7 @@ public final class ApplicationScreen extends MainScreen {
         mBackMenu = new BackMenuItem(mController);
         mURLMenu = new URLEntryMenu(mController);
 //         mTestJavascriptMenu = new TestJavascriptMenuItem(mContainer);
+        mResetAuthCacheMenu = new ResetAuthorizationMenuItem(mController);
 
 
     }
@@ -97,6 +99,7 @@ public final class ApplicationScreen extends MainScreen {
 //         menu.add (mResetAudioMenu);
 //    	 menu.add (mRerunScriptMenu);
         menu.add(mURLMenu);
+        menu.add(mResetAuthCacheMenu);
 //    	 menu.add(mTestJavascriptMenu);
 //    	 menu.add(mResetPushMenu);  
 
@@ -117,7 +120,6 @@ public final class ApplicationScreen extends MainScreen {
             mHistorySubs[idx] = new HistorySubMenuItem(mController, "");
         }
     }
-
 
     /**
      * Notification to update the history menus
