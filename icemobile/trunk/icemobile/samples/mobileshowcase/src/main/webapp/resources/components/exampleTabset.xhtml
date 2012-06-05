@@ -15,8 +15,6 @@
   -->
 
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:composite="http://java.sun.com/jsf/composite"
       xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
@@ -29,59 +27,66 @@
 -->
 <composite:interface
         displayName="Example Tabset control"
-        shortDescription="Contruct to allow users ot view component documentation, source and a usage example." >
+        shortDescription="Contruct to allow users ot view component documentation, source and a usage example.">
 
     <composite:attribute name="exampleBean" required="true"
-            displayName="Example bean"
-            type="org.icemobile.samples.mobileshowcase.view.metadata.context.ExampleImpl"
-            shortDescription="Manged bean used for this component example"/>
+                         displayName="Example bean"
+                         type="org.icemobile.samples.mobileshowcase.view.metadata.context.ExampleImpl"
+                         shortDescription="Manged bean used for this component example"/>
 
     <composite:attribute name="renderDescription" default="true"
-            displayName="Render Description tab"/>
+                         displayName="Render Description tab"/>
     <composite:attribute name="renderExample" default="true"
-            displayName="Render Example tab"/>
+                         displayName="Render Example tab"/>
     <composite:attribute name="renderSource" default="true"
-            displayName="Render Source tab"/>
+                         displayName="Render Source tab"/>
+
+    <composite:attribute name="autoWidth" default="true"
+                         displayName="Passthough attirbue for tabset which when true
+                         enabled the component to set the width in percent of the child
+                         tabs. "/>
+    <composite:attribute name="parentFooter" default="true"
+                         displayName="Passthough attirbue for tabset which when true
+                         enables the component changes the style for fixed parent header. "/>
+
+    <composite:attribute name="defaultId" required="false"
+                         default="example"
+                         displayName="Default selected Tabset"
+                         shortDescription="Set the default selected tabset conent pane.  By
+                         default the 'example' pane is set by default. Valud values
+                         are desc|example|docs"/>
 
 </composite:interface>
 
-<composite:implementation >
-    <h:form prependId="false">
+<composite:implementation>
 
-        <h:panelGroup style="display: inline-block;padding-top: 10px;text-align: center;width: 100%;">
-            <mobi:commandButtonGroup style="margin:0.2em 0;">
-
-                <mobi:commandButton
-                        style="width:30%"
-                        rendered="#{cc.attrs.renderDescription}"
-                        selected="#{cc.attrs.exampleBean.selectedExamplePath eq cc.attrs.exampleBean.descriptionPath}"
-                        value="#{mmsgs['example.description.label']}">
-                   <f:setPropertyActionListener value="#{cc.attrs.exampleBean.descriptionPath}"
-                                                target="#{cc.attrs.exampleBean.selectedExamplePath}" />
-                </mobi:commandButton>
-
-                <mobi:commandButton
-                        style="width:30%"
-                        rendered="#{cc.attrs.renderExample}"
-                        selected="#{cc.attrs.exampleBean.selectedExamplePath eq cc.attrs.exampleBean.examplePath}"
-                        value="#{mmsgs['example.example.label']}">
-                    <f:setPropertyActionListener value="#{cc.attrs.exampleBean.examplePath}"
-                                                target="#{cc.attrs.exampleBean.selectedExamplePath}" />
-                </mobi:commandButton>
-
-                <mobi:commandButton style="width:30%"
-                       rendered="#{cc.attrs.renderSource}"
-                       selected="#{cc.attrs.exampleBean.selectedExamplePath eq cc.attrs.exampleBean.resourcesPath}"
-                       value="#{mmsgs['example.resources.label']}">
-                     <f:setPropertyActionListener value="#{cc.attrs.exampleBean.resourcesPath}"
-                                                target="#{cc.attrs.exampleBean.selectedExamplePath}" />
-                </mobi:commandButton>
-
-            </mobi:commandButtonGroup>
-        </h:panelGroup>
-    </h:form>
-
-    <ui:include src="#{cc.attrs.exampleBean.selectedExamplePath}"/>
+    <mobi:tabSet style="background-color:transparent;"
+                 defaultId="#{cc.attrs.defaultId}"
+                 parentFooter="#{cc.attrs.parentFooter}"
+                 autoWidth="#{cc.attrs.autoWidth}"
+                 orientation="top">
+        <!-- description tab -->
+        <mobi:contentPane
+               cacheType="client"
+                rendered="#{cc.attrs.renderDescription}"
+                id="desc" title="#{mmsgs['example.description.label']}">
+            <ui:include src="#{cc.attrs.exampleBean.descriptionPath}"/>
+        </mobi:contentPane>
+        <!-- example tab -->
+        <mobi:contentPane
+                cacheType="client"
+                rendered="#{cc.attrs.renderDescription}"
+                id="example" title="#{mmsgs['example.example.label']}">
+            <ui:include src="#{cc.attrs.exampleBean.examplePath}"/>
+        </mobi:contentPane>
+        <!-- docs tab -->
+        <mobi:contentPane
+                cacheType="client"
+                rendered="#{cc.attrs.renderDescription}"
+                id="docs" title="#{mmsgs['example.resources.label']}">
+            <ui:include src="#{cc.attrs.exampleBean.resourcesPath}"/>
+        </mobi:contentPane>
+    </mobi:tabSet>
 
 </composite:implementation>
 </body>

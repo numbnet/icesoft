@@ -46,9 +46,11 @@
     <!-- select small or large -->
     <mobi:viewSelector>
         <f:facet name="small">
+            <ui:param name="viewSize" value="small" />
             <ui:include src="WEB-INF/includes/view/small.xhtml" />
         </f:facet>
         <f:facet name="large">
+            <ui:param name="viewSize" value="large" />
             <ui:include src="WEB-INF/includes/view/large.xhtml" />
         </f:facet>
     </mobi:viewSelector>

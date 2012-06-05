@@ -14,15 +14,14 @@
   ~ governing permissions and limitations under the License.
   -->
 <ui:fragment xmlns="http://www.w3.org/1999/xhtml"
-             xmlns:h="http://java.sun.com/jsf/html"
-             xmlns:f="http://java.sun.com/jsf/core"
              xmlns:ui="http://java.sun.com/jsf/facelets"
              xmlns:util="http://java.sun.com/jsf/composite/components"
-             xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
+        >
 
     <util:exampleTabset exampleBean="#{listBean}"
-            renderDescription="true"
-            renderExample="true"
-            renderSource="true" />
+                        autoWidth="#{viewSize ne 'large'}"
+                        renderDescription="true"
+                        renderExample="true"
+                        renderSource="true"/>
 
 </ui:fragment>

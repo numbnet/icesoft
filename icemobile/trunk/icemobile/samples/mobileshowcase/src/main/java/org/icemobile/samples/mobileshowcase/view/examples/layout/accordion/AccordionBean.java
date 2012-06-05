@@ -42,7 +42,17 @@ public class AccordionBean extends ExampleImpl<AccordionBean> implements
     public static final String BEAN_NAME = "accordionBean";
 
 
+    private String currentId = "tab1";
+
     public AccordionBean() {
         super(AccordionBean.class);
+    }
+
+    public String getCurrentId() {
+        return currentId;
+    }
+
+    public void setCurrentId(String currentId) {
+        this.currentId = currentId;
     }
 }
