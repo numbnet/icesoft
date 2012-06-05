@@ -174,15 +174,14 @@ public class ListControlRenderer extends CoreRenderer {
 
         writer.startElement(HTML.SPAN_ELEM, null);
         writer.writeAttribute(HTML.CLASS_ATTR,  firstStyleClass, null);
+        writer.startElement(HTML.DIV_ELEM, null);
         if (middleMode) {
-            writer.startElement(HTML.DIV_ELEM, null);
             writer.writeAttribute(HTML.STYLE_ATTR, "margin-right:1.1em;", null);
         }
 
         one.encodeAll(context);
 
-        if (middleMode)
-            writer.endElement(HTML.DIV_ELEM);
+        writer.endElement(HTML.DIV_ELEM);
         writer.endElement(HTML.SPAN_ELEM);
 
         if (middleMode) {
@@ -194,14 +193,13 @@ public class ListControlRenderer extends CoreRenderer {
 
         writer.startElement(HTML.SPAN_ELEM, null);
         writer.writeAttribute(HTML.CLASS_ATTR, secondStyleClass, null);
+        writer.startElement(HTML.DIV_ELEM, null);
         if (middleMode) {
-            writer.startElement(HTML.DIV_ELEM, null);
             writer.writeAttribute(HTML.STYLE_ATTR, "margin-right:1.4em;", null);
         }
         two.encodeAll(context);
 
-        if (middleMode)
-            writer.endElement(HTML.DIV_ELEM);
+        writer.endElement(HTML.DIV_ELEM);
         writer.endElement(HTML.SPAN_ELEM);
 
         writer.endElement(HTML.DIV_ELEM);
