@@ -1,0 +1,97 @@
+<!--
+  ~ Copyright 2004-2012 ICEsoft Technologies Canada Corp.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the
+  ~ License. You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an "AS
+  ~ IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+  ~ express or implied. See the License for the specific language
+  ~ governing permissions and limitations under the License.
+  -->
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
+<h:head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport"
+          content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;"/>
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <meta name="apple-mobile-web-app-status-bar-style" content="black"/>
+    <title>ContentPane - panelStack and tabSet mashup</title>
+
+    <mobi:deviceStylesheet
+            name="iphone.css" view="small" media="screen"/>
+</h:head>
+
+<h:body>
+
+    <h:form id="contentForm">
+
+        <mobi:tabSet id="test1"
+                     currentId="#{layoutBean.selectedPane}"
+                     orientation="top"
+                     parentHeader="false"
+                     tabChangeListener="#{layoutBean.tabChangeListener}">
+            <mobi:contentPane id="panel1" title="panel1"
+                    cacheType="constructed">
+                <mobi:tabSet id="test2" currentId="#{layoutBean.selectedPane2}"
+                             orientation="bottom"
+                             parentFooter="false">
+                    <mobi:contentPane id="panel4" title="panel4">
+                        <img height="240"
+                             src="../images/DSC_1.jpg"
+                             alt="Ottawa 1"/>
+                    </mobi:contentPane>
+                    <mobi:contentPane id="panel5" title="panel6">
+                        <img height="240"
+                             src="../images/DSC_2.JPG"
+                             alt="Ottawa 2"/>
+                    </mobi:contentPane>
+                    <mobi:contentPane id="panel6" title="panel6">
+                        <img height="240"
+                             src="../images/DSC_3.JPG"
+                             alt="Ottawa 3"/>
+                    </mobi:contentPane>
+                </mobi:tabSet>
+                <a href="../layoutComponents.html">index page</a>
+            </mobi:contentPane>
+            <mobi:contentPane id="panel2" title="panel2"
+                              cacheType="constructed">
+                <fieldset title="panel2">
+                    <legend>Panel2</legend>
+                    <figure><img width="85px" height="150px"
+                             src="../images/queen.jpg"
+                             alt="queen of clubs"/>
+                        <figcaption>Queen of Clubs</figcaption></figure>
+                    <mobi:commandButton id="but2" singleSubmit="true"
+                                        value="SelectPane3"
+                                        actionListener="#{layoutBean.changeToPane3}"/>
+                </fieldset>
+                <a href="../layoutComponents.html">index page</a>
+            </mobi:contentPane>
+            <mobi:contentPane id="panel3" title="panel3"
+                              cacheType="constructed">
+                <fieldset title="panel3">
+                    <legend>Panel3</legend>
+                    <figure>
+                        <img width="85px" height="150px"
+                             src="../images/Joker.jpg"
+                             alt="joker"/>
+                        <figcaption>joker</figcaption>
+                    </figure>
+                </fieldset>
+                <a href="../layoutComponents.html">index page</a>
+            </mobi:contentPane>
+        </mobi:tabSet>
+    </h:form>
+
+</h:body>
+</html>
