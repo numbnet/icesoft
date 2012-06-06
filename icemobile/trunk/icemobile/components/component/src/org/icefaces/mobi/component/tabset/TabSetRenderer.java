@@ -42,7 +42,6 @@ public class TabSetRenderer extends BaseLayoutRenderer {
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
         // no ajax behavior defined yet
         String indexStr = params.get(clientId + "_hidden");
-        logger.info("indexStr = " + indexStr);
         // with some panes having client cacheType, the oldIndex on server
         // may not match that of the client, so decode the last
         if (null != indexStr) {
