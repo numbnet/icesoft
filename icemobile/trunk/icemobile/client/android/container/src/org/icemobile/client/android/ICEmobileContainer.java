@@ -234,7 +234,7 @@ public class ICEmobileContainer extends Activity
 	    case SCAN_CODE:
             String scanResult = data.getStringExtra(Intents.Scan.RESULT);
             utilInterface.loadURL(
-                    "javascript:ice.addHidden(ice.currentScanId, ice.currentScanId + '-text', '" +
+                    "javascript:ice.addHidden(ice.currentScanId, ice.currentScanId, '" +
                     scanResult + "');");
 	    reloadOnC2dm = false;
 		break;

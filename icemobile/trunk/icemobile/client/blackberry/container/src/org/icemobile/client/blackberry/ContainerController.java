@@ -129,7 +129,7 @@ public interface ContainerController {
 
     /**
      * Insert a scanned QR code message into the DOM. Executes the following javascript:
-     * <code>ice.addHiddenField( id + '-text', message); </code>
+     * <code>ice.addHiddenField( id, message); </code>
      *
      * @param fieldId The Id of the component.
      * @param message

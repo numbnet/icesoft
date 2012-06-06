@@ -47,6 +47,7 @@
 		9CCD002015742B270012893A /* MapController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9CCD001E15742B270012893A /* MapController.xib */; };
 		9CE11565133BDDE80051D367 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CE11564133BDDE80051D367 /* AVFoundation.framework */; };
 		9CE7A43613B92240008C4D9C /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CE7A43513B92240008C4D9C /* MediaPlayer.framework */; };
+		9CF130DD157FC6F500F8F0A4 /* QRScanner.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9CF130DC157FC6F500F8F0A4 /* QRScanner.mm */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -113,6 +114,8 @@
 		9CCD001E15742B270012893A /* MapController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = MapController.xib; path = Shared/MapController.xib; sourceTree = "<group>"; };
 		9CE11564133BDDE80051D367 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		9CE7A43513B92240008C4D9C /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
+		9CF130DB157FC6F500F8F0A4 /* QRScanner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = QRScanner.h; path = Shared/QRScanner.h; sourceTree = "<group>"; };
+		9CF130DC157FC6F500F8F0A4 /* QRScanner.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = QRScanner.mm; path = Shared/QRScanner.mm; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -238,6 +241,8 @@
 		9C1923F415547F9500A6BE22 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				9CF130DB157FC6F500F8F0A4 /* QRScanner.h */,
+				9CF130DC157FC6F500F8F0A4 /* QRScanner.mm */,
 				9CCD001C15742B270012893A /* MapController.h */,
 				9CCD001D15742B270012893A /* MapController.m */,
 				9CCD001E15742B270012893A /* MapController.xib */,
@@ -376,6 +381,7 @@
 				9C285F3F155DD31400BAC772 /* ARViewController.m in Sources */,
 				9C285F40155DD31400BAC772 /* PlaceLabel.m in Sources */,
 				9CCD001F15742B270012893A /* MapController.m in Sources */,
+				9CF130DD157FC6F500F8F0A4 /* QRScanner.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

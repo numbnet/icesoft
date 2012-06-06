@@ -17,6 +17,7 @@
 #import <Foundation/Foundation.h>
 #import <AVFoundation/AVFoundation.h>
 @class MainViewController;
+@class QRScanner;
 @class ARViewController;
 
 @interface OldNativeInterface : NSObject<UIImagePickerControllerDelegate, UINavigationControllerDelegate, AVAudioRecorderDelegate> {
@@ -28,9 +29,11 @@
     NSString *soundFilePath;
     BOOL recording;
     BOOL uploading;
+    QRScanner *qrScanner;
     AVAudioRecorder *soundRecorder;
     NSMutableData *receivedData;
     UIPopoverController *camPopover;
+    UIPopoverController *scanPopover;
     UIPopoverController *audioPopover;
     UIPopoverController *augPopover;
     ARViewController *augController;
@@ -44,9 +47,11 @@
 @property (retain) NSString *soundFilePath;
 @property (nonatomic, assign) BOOL recording;
 @property (assign) BOOL uploading;
+@property (retain) QRScanner *qrScanner;
 @property (retain) AVAudioRecorder *soundRecorder;
-@property (retain) NSMutableData *receivedData;
 @property (nonatomic, retain) UIPopoverController *camPopover;
+@property (nonatomic, retain) UIPopoverController *scanPopover;
+@property (retain) NSMutableData *receivedData;
 @property (nonatomic, retain) UIPopoverController *audioPopover;
 @property (nonatomic, retain) UIPopoverController *augPopover;
 @property (nonatomic, retain) ARViewController *augController;
