@@ -14,36 +14,29 @@
 </head>
 <body>
 </c:if>
-	<div id="flipswitchContent">
+	<div id="geolocationContent">
 
-		<h2>Various Spring MVC tags</h2>
-		<p>
-			Flipswitches
-		</p>
-		<form:form id="flipswitchform" method="POST"  modelAttribute="flipSwitchBean" cssClass="cleanform">
+		<h2>ICEmobile - Geolocation</h2>
+		<form:form id="geolocationform" method="POST"  modelAttribute="geolocationBean" cssClass="cleanform">
 			<div class="header">
-		  		<mobi:flipSwitch id="onOffFlipSwitch" labelOn="On" labelOff="Off" value="${flipSwitchBean.onOffFlipSwitch}"/>
-		  		<mobi:flipSwitch id="yesNoFlipSwitch" labelOn="Yes" labelOff="No" value="${flipSwitchBean.yesNoFlipSwitch}"/>
-		  		<mobi:flipSwitch id="trueFalseFlipSwitch" labelOn="True" labelOff="False" value="${flipSwitchBean.trueFalseFlipSwitch}"/>
+		  		<mobi:geolocation id="location" value="${geolocationBean.location}"/>
 			</div>
 
 		  		  		
-			<p><button type="submit">Submit</button></p>
+			<p><input id="submitBtn" name="submitBtn" type="submit" value="Locate" /></p>
 
 		</form:form>
 
-On/Off Bean = ${flipSwitchBean.onOffFlipSwitch} <br/>
-Yes/No Bean = ${flipSwitchBean.yesNoFlipSwitch} <br/>
-True/False Bean = ${flipSwitchBean.trueFalseFlipSwitch} 
-
+Latitude = ${geolocationBean.lat}<br/>
+Longitude = ${geolocationBean.lon}
 
 		<script type="text/javascript">
 
 			$(document).ready(function() {
-				$("#flipswitchform").submit(function() {
+				$("#geolocationform").submit(function() {
                     if (window.ice && ice.upload)  {
                         window.ice.handleResponse = function(data)  {
-						    $("#flipswitchContent").replaceWith(unescape(data));
+						    $("#geolocationContent").replaceWith(unescape(data));
 						    $('html, body').animate({ scrollTop: $("#message").offset().top }, 500);
                         }
                         ice.upload($(this).attr("id"));
@@ -60,7 +53,7 @@ True/False Bean = ${flipSwitchBean.trueFalseFlipSwitch}
                         processData: false,
                         type: 'POST',
                         success: function(html) {
-						    $("#flipswitchContent").replaceWith(html);
+						    $("#geolocationContent").replaceWith(html);
 						    $('html, body').animate({ scrollTop: $("#message").offset().top }, 500);
 					    }
                     });
