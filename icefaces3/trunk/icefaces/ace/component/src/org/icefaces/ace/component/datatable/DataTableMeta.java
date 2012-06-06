@@ -271,7 +271,9 @@ public class DataTableMeta extends UIDataMeta {
             "a scrollbar. Note, used in combination with multi-row headers defined by a ColumnGroup" +
             "component, it is assumed that every body column of the table will have a associated " +
             "single column spanning header column on the bottom row of the multi-row header. This is " +
-            "to allow for appropriate sizing of the scrollable column and the associated header td.")
+            "to allow for appropriate sizing of the scrollable column and the associated header td. Note," +
+            "in IE7, the CSS/DOM engine doesn't support the dynamic adjustments required for this feature and" +
+            "instead the feature uses a fixed, equal size for each column of the table.")
     private boolean scrollable;
 
     @Property(tlddoc = "Enables the table to insert additional rows as " +
