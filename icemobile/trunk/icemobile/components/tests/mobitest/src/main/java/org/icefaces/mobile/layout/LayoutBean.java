@@ -35,12 +35,16 @@ public class LayoutBean implements Serializable {
     private static final String FIRSTPANE="panel1";
     private static final String SECONDPANE="panel2";
     private static final String THIRDPANE="panel3";
+    private static final String FORTH_PANE="panel4";
+    private static final String FIFTH_PANE="panel5";
+    private static final String SIXTH_PANE="panel6";
 
     private List<MenuValue> menuList = new ArrayList<MenuValue>();
     private List<DataValue> dataList = new ArrayList<DataValue>();
     private List<DataValue> dataListMultiRow = new ArrayList<DataValue>();
     private List<EachContentPane> eachContentPane = new ArrayList<EachContentPane>();
     private String selectedPane = FIRSTPANE;
+    private String selectedPane2 = FORTH_PANE;
     private int counter;
 
 	public LayoutBean(){
@@ -95,7 +99,7 @@ public class LayoutBean implements Serializable {
         this.selectedPane = THIRDPANE;
     }
 
-    public void changeToPane3(ActionEvent ae){
+    public void changeToPane3Action(ActionEvent ae){
         this.selectedPane = THIRDPANE;
     }
 
@@ -106,6 +110,14 @@ public class LayoutBean implements Serializable {
     public void setSelectedPane(String selectedPane) {
         logger.info("LayoutBean.setSelectedPane: " + selectedPane);
         this.selectedPane = selectedPane;
+    }
+
+    public String getSelectedPane2() {
+        return selectedPane2;
+    }
+
+    public void setSelectedPane2(String selectedPane2) {
+        this.selectedPane2 = selectedPane2;
     }
 
     public List getMenuList() {
