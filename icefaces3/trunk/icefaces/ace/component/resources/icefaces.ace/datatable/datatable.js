@@ -207,14 +207,14 @@ ice.ace.DataTable = function(id, cfg) {
  ######################################################################### */
 ice.ace.DataTable.prototype.setupFilterEvents = function() {
     var _self = this;
-    if (this.cfg.filterEvent == "enter") ice.ace.jq(this.jqId + ' thead:first > tr > th > div > input.ui-column-filter').unbind('keypress').bind('keypress', function(event) {
+    if (this.cfg.filterEvent == "enter") ice.ace.jq(this.jqId + ' > div > table > thead > tr > th > div > input.ui-column-filter').unbind('keypress').bind('keypress', function(event) {
         event.stopPropagation();
         if (event.which == 13) {
             _self.filter(event);
             return false; // Don't run form level enter key handling
         }
     });
-    else if (this.cfg.filterEvent == "change") ice.ace.jq(this.jqId + ' thead:first > tr > th > div > input.ui-column-filter').off('keyup').on('keyup', function(event) {
+    else if (this.cfg.filterEvent == "change") ice.ace.jq(this.jqId + ' > div > table > thead > tr > th > div > input.ui-column-filter').off('keyup').on('keyup', function(event) {
         var _event = event;
         if (event.which != 9) {
             if (_self.delayedFilterCall) clearTimeout(_self.delayedFilterCall);
@@ -258,7 +258,7 @@ ice.ace.DataTable.prototype.setupSortRequest = function(_self, $this, event, hea
     // If we are looking a freshly rendered DT initalize our JS sort state
     // from the state of the rendered controls
     if (_self.sortOrder.length == 0) {
-        ice.ace.jq(_self.jqId + ' thead:first > tr > th > div.ui-sortable-column > span > span.ui-sortable-control').each(function() {
+        ice.ace.jq(_self.jqId + 'div > table > thead > tr > th > div.ui-sortable-column > span > span.ui-sortable-control').each(function() {
             var $this = ice.ace.jq(this);
             if (ice.ace.getOpacity($this.find('span.ui-sortable-control:first > a.ui-icon-triangle-1-n')[0]) == 1 ||
                     ice.ace.getOpacity($this.find('span.ui-sortable-control:first > a.ui-icon-triangle-1-s')[0]) == 1 )
@@ -484,7 +484,7 @@ ice.ace.DataTable.prototype.setupSortEvents = function() {
             });
 
     // Bind keypress kb-navigable sort icons
-    var sortableControlsSelector = 'thead:first > tr > th > div.ui-sortable-column span.ui-sortable-control';
+    var sortableControlsSelector = 'div > table > thead > tr > th > div.ui-sortable-column span.ui-sortable-control';
     ice.ace.jq(this.jqId)
             .off('keypress', sortableControlsSelector + ' a.ui-icon-triangle-1-n')
             .on('keypress', sortableControlsSelector + ' a.ui-icon-triangle-1-n', function(event) {
@@ -508,10 +508,10 @@ ice.ace.DataTable.prototype.setupSortEvents = function() {
 
 ice.ace.DataTable.prototype.tearDownSelectionEvents = function() {
     var selectEvent = this.cfg.dblclickSelect ? 'dblclick' : 'click';
-    ice.ace.jq(this.jqId).off(selectEvent, 'tbody.ui-datatable-data > tr > td, '
-             + 'tbody.ui-datatable-data:first > tr:not(.ui-unselectable)');
-    ice.ace.jq(this.jqId).off('mouseenter', 'tbody.ui-datatable-data > tr > td, '
-             + 'tbody.ui-datatable-data:first > tr:not(.ui-unselectable)');
+    ice.ace.jq(this.jqId).off(selectEvent, 'div > table > tbody > tr > td, '
+             + 'div > table > tbody > tr:not(.ui-unselectable)');
+    ice.ace.jq(this.jqId).off('mouseenter', 'div > table > tbody > tr > td, '
+             + 'div > table > tbody > tr:not(.ui-unselectable)');
 }
 
 ice.ace.DataTable.prototype.setupSelectionEvents = function() {
@@ -610,10 +610,10 @@ ice.ace.DataTable.prototype.setupScrolling = function() {
 
     this.resizeScrolling();
 
-    ice.ace.jq(_self.jqId + ' .ui-datatable-scrollable-body:first').bind('scroll', function() {
+    ice.ace.jq(_self.jqId + '> div > table > tbody[display!=none]').bind('scroll', function() {
         var $this = ice.ace.jq(this),
-            $header = ice.ace.jq(_self.jqId + ' .ui-datatable-scrollable-header:first'),
-            $footer = ice.ace.jq(_self.jqId + ' .ui-datatable-scrollable-footer:first'),
+            $header = ice.ace.jq(_self.jqId + ' > div > table > thead[display!=none]'),
+            $footer = ice.ace.jq(_self.jqId + ' > div > table > tfoot[display!=none]'),
             scrollLeftVal = $this.scrollLeft();
 
        $header.scrollLeft(scrollLeftVal);
@@ -630,7 +630,7 @@ ice.ace.DataTable.prototype.setupScrolling = function() {
 
     //live scroll
     if (this.cfg.liveScroll) {
-        var bodyContainer = ice.ace.jq(this.jqId + ' .ui-datatable-scrollable-body:first');
+        var bodyContainer = ice.ace.jq(this.jqId + ' > div > table > tbody[display!=none]');
         this.scrollOffset = this.cfg.scrollStep;
         this.shouldLiveScroll = true;
 
@@ -698,12 +698,12 @@ ice.ace.DataTable.prototype.resizeScrolling = function() {
             return;
         }
     }
-
-    var headerTable = scrollableTable.find('.ui-datatable-scrollable-header:first > table'),
-        footerTable = scrollableTable.find('.ui-datatable-scrollable-footer:first > table'),
-        bodyTable = scrollableTable.find('.ui-datatable-scrollable-body:first > table'),
-        dupeHead = bodyTable.find('thead:first'),
-        dupeFoot = bodyTable.find('tfoot:first');
+    ' > div > table > tbody[display!=none]'
+    var headerTable = scrollableTable.find(' > div.ui-datatable-scrollable-header > table'),
+        footerTable = scrollableTable.find(' > div.ui-datatable-scrollable-footer > table'),
+        bodyTable = scrollableTable.find(' > div.ui-datatable-scrollable-body > table'),
+        dupeHead = bodyTable.find(' > thead'),
+        dupeFoot = bodyTable.find(' > tfoot');
 
     // Reattempt resize in 100ms if I or a parent of mine is currently hidden.
     // Sizing will not be accurate if the table is not being displayed, like at tabset load.
