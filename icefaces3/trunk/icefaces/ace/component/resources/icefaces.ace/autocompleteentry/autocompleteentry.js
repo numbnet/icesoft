@@ -722,5 +722,6 @@ ice.ace.Autocompleter.prototype = {
         this.updateChoices(text);
         this.show();
         this.render();
+		this.element.focus();
     }
 }
