@@ -17,6 +17,7 @@ package org.icefaces.mobi.component.augmentedreality;
 
 import org.icefaces.mobi.renderkit.BaseLayoutRenderer;
 import org.icefaces.mobi.utils.HTML;
+import org.icefaces.mobi.utils.Utils;
 import org.icefaces.util.EnvUtils;
 
 import javax.faces.application.ProjectStage;
@@ -65,8 +66,14 @@ public class AugmentedRealityRenderer extends BaseLayoutRenderer{
          }
          writer.writeAttribute(HTML.CLASS_ATTR, defaultClass, HTML.CLASS_ATTR);
          String myparams = ag.getParams();
-         writer.writeAttribute(HTML.ONCLICK_ATTR, "ice.aug(this);", HTML.ONCLICK_ATTR);
-         writer.writeAttribute("data-params", myparams, null);
+        String script;
+        if (isAuxUpload)  {
+            script = Utils.getICEmobileSXScript("aug", clientId);
+        } else {
+            script = "ice.aug( '" + clientId + "', '" + myparams + "' );";
+        }
+        writer.writeAttribute(HTML.ONCLICK_ATTR, script, null);
+//         writer.writeAttribute("data-params", myparams, null);
          writer.endElement(HTML.INPUT_ELEM);
      }
 
