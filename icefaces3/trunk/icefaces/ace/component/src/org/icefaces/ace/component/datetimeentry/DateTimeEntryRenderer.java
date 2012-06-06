@@ -114,20 +114,34 @@ public class DateTimeEntryRenderer extends InputRenderer {
         if(!isValueBlank(value)) {
             writer.writeAttribute("value", value, null);
         } else if (popup) {
+/*
             String inFieldLabel = (String) labelAttributes.get("inFieldLabel");
             if (!isValueBlank(inFieldLabel)) {
                 writer.writeAttribute("value", inFieldLabel, null);
                 styleClasses += " " + IN_FIELD_LABEL_STYLE_CLASS;
                 labelAttributes.put("labelIsInField", true);
             }
+*/
         }
 
         if(popup) {
             if(!isValueBlank(styleClasses)) writer.writeAttribute("class", styleClasses, null);
             if(dateTimeEntry.isReadOnlyInputText()) writer.writeAttribute("readonly", "readonly", null);
             if(dateTimeEntry.isDisabled()) writer.writeAttribute("disabled", "disabled", null);
+            int size = dateTimeEntry.getSize();
+            if (size <= 0) {
+                String formattedDate;
+                SimpleDateFormat dateFormat = new SimpleDateFormat(dateTimeEntry.getPattern(), dateTimeEntry.calculateLocale(context));
+                try {
+                    formattedDate = dateFormat.format(new SimpleDateFormat("yyy-M-d H:m:s:S z").parse("2012-12-21 20:12:12:212 MST"));
+                } catch (ParseException e) {
+                    formattedDate = dateFormat.format(new Date());
+                }
+                size = formattedDate.length();
+            }
+            writer.writeAttribute("size", size, null);
 
-            renderPassThruAttributes(context, dateTimeEntry, HTML.INPUT_TEXT_ATTRS);
+//            renderPassThruAttributes(context, dateTimeEntry, HTML.INPUT_TEXT_ATTRS);
         }
 
         writer.endElement("input");

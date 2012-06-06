@@ -179,4 +179,8 @@ public class DateTimeEntryMeta extends UIInputMeta {
 
     @Property(tlddoc = "A localized user presentable name for this component.")
     private String label;
+
+    @Property(tlddoc = "The number of characters used to determine the width of the input field in a popup calendar. Default" +
+            " is the maximum possible size of a date formatted by the date pattern.")
+    private int size;
 }
