@@ -26,6 +26,7 @@ public class GeolocationTag extends SimpleTagSupport {
 
     private String id;
     private String name;
+    private String value;
     private boolean disabled;
 
     private static final String CONTENT_WRAPPER_CLASS = ".mobi-panel-stack";
@@ -47,7 +48,8 @@ public class GeolocationTag extends SimpleTagSupport {
 
         if (id != null && !"".equals(id)) {
             out.write(" id=\'" + getId() + "_locHidden\'");
-            out.write(" name=\'" + getId() + "_field\'");
+	    //            out.write(" name=\'" + getId() + "_field\'");
+            out.write(" name=\'" + getId() + "\'");
         }
 
         if (disabled) {
@@ -55,7 +57,6 @@ public class GeolocationTag extends SimpleTagSupport {
         }
 
         out.write("/>");  // end input
-        out.write("/span>");   // end span
 
         StringBuilder sb = new StringBuilder(255);
         String fnCall = "document.getElementById(\"" + getId() + "_locHidden\").value=pos.coords.latitude+\",\"+pos.coords.longitude;";
@@ -63,14 +64,15 @@ public class GeolocationTag extends SimpleTagSupport {
 
         // todo: behaviours (?) and singleSubmit
 
-        String finalScript = "navigator.geolocation.getCurrentPosition(function(pos) { " + sb.toString() + "} );";
+        String finalScript = "navigator.geolocation.getCurrentPosition(function(pos){"+ sb.toString() + "});";
         out.write("<script ");
         if (id != null && !"".equals(id)) {
-            out.write(" id = \'" + id + "_script\' ");
+            out.write("id =\'" + id + "_script\'>");
         }
 
         out.write(finalScript);
-        out.write("/>");
+        out.write("</script>");
+        out.write("</span>");   // end span
 
     }
 
@@ -97,4 +99,13 @@ public class GeolocationTag extends SimpleTagSupport {
     public void setDisabled(boolean disabled) {
         this.disabled = disabled;
     }
+
+    public String getValue() {
+        return value;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
+    }
+
 }
