@@ -256,7 +256,7 @@ ice.ace.List.prototype.getSiblingList = function (shift) {
     for(var controlId in ice.ace.ListControls) {
         if(ice.ace.ListControls.hasOwnProperty(controlId)) {
             var listSet = ice.ace.jq(ice.ace.ListControls[controlId].selector),
-                listContainer = this.element.parent(),
+                listContainer = this.element.parent().parent(),
                 lastSibling = (shift || listContainer.hasClass('if-list-dl-2')),
                 listIndex = listSet.index(this.element);
 
