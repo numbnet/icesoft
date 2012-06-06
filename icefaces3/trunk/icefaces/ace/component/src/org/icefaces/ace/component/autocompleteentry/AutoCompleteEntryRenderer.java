@@ -62,6 +62,7 @@ public class AutoCompleteEntryRenderer extends InputRenderer {
 		
 		// root
         writer.startElement("div", null);
+		writer.writeAttribute("id", clientId + "_container", null);
 		writer.writeAttribute("class", autoCompleteEntry.getStyleClass(), null);
 		
         boolean required = autoCompleteEntry.isRequired();
@@ -153,7 +154,7 @@ public class AutoCompleteEntryRenderer extends InputRenderer {
 
 		// script
 		writer.startElement("script", null);
-		writer.writeAttribute("id", clientId + "script", null);
+		//writer.writeAttribute("id", clientId + "script", null);
 		writer.writeAttribute("type", "text/javascript", null);
 		boolean partialSubmit = false; // TODO: remove
 		String direction = autoCompleteEntry.getDirection();
