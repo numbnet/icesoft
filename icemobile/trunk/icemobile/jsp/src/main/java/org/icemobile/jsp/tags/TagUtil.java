@@ -45,6 +45,9 @@ public class TagUtil {
     public static String LI_TAG = "<li";
     public static String LI_TAG_END = "</li>";
 
+    public static String INPUT_TAG = "<input";
+    public static String INPUT_TAG_END = "</input>";
+
     public static String HEAD_TAG = "<head";
     public static String HEAD_TAG_END = "</head>";
 
@@ -139,8 +142,8 @@ public class TagUtil {
             serverName = httpRequest.getServerName() + ":" +
                                  httpRequest.getServerPort();
         }
-        return httpRequest.getScheme() + "://" + serverName + 
-                httpRequest.getContextPath() + "/";
+        return httpRequest.getScheme() + "://" + serverName +
+                       httpRequest.getContextPath() + "/";
     }
 
     public static String getUploadPath(HttpServletRequest request) {
