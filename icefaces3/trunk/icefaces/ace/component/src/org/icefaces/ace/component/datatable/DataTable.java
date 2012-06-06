@@ -1905,10 +1905,10 @@ public class DataTable extends DataTableBase implements Serializable {
         // iteration.
         setDataModel(null);
 
-        // Regenerate data model (MyFaces has at times had a null model cached)
-        getDataModel();
         // Process each facet of this component exactly once
         setRowIndex(-1);
+        // Regenerate data model (MyFaces has at times had a null model cached)
+        getDataModel();
         if (getFacetCount() > 0) {
             for (UIComponent facet : getFacets().values()) {
                 if (phaseId == PhaseId.APPLY_REQUEST_VALUES) {
@@ -1926,6 +1926,9 @@ public class DataTable extends DataTableBase implements Serializable {
         // Process each facet of our child UIColumn components exactly once
         // Also process the table config panel and our multicolumn header facets
         setRowIndex(-1);
+        /* Cause model to regerate before row index is set */
+        getDataModel();
+
         if (getChildCount() > 0) {
             for (UIComponent component : getChildren()) {
                 if (!(component instanceof UIColumn || component instanceof ColumnGroup || component instanceof TableConfigPanel) || !component.isRendered()) {
