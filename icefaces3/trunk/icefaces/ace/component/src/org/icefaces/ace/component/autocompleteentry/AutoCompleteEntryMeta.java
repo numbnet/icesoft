@@ -104,19 +104,19 @@ public class AutoCompleteEntryMeta extends HtmlInputTextMeta {
             "Supported values are \"left/right/top/bottom/labelLeft/labelRight\". ")
     private String indicatorPosition;
 	
-    @Property(tlddoc = "", defaultValue="0") // renderer tells client, js code handles it
+    @Property(tlddoc = "Delay in milliseconds for showing the list of possible matches after typing a character.", defaultValue="0")
     private int delay;
 
-    @Property(tlddoc = "", defaultValue="1") // renderer tells client, js code handles it
+    @Property(tlddoc = "Minimum number of characters that must be in the text field in order to produce the list of possible matches.", defaultValue="1")
     private int minChars;
 
-    @Property(tlddoc = "", defaultValue="false") // server side only, only affects automatic filtering
+    @Property(tlddoc = "Boolean value that indicates whether the filtering should be case sensitive or not.", defaultValue="false")
     private boolean caseSensitive;
 
-    @Property(tlddoc = "") // renderer tells client, js code handles it
+    @Property(tlddoc = "Maximum height in pixels of the list of possible matches (if 0, then the size is automatically adjusted to show all possible matches).")
     private int height;
 
-    @Property(tlddoc = "") // renderer tells client, js code handles it
+    @Property(tlddoc = "Direction in which to show the list of possible matches. Possible values are \"up\", \"down\", and \"auto\".")
     private String direction;	
 	
 }
