@@ -107,7 +107,7 @@ public class AutoCompleteEntryMeta extends HtmlInputTextMeta {
     @Property(tlddoc = "Delay in milliseconds for showing the list of possible matches after typing a character.", defaultValue="0")
     private int delay;
 
-    @Property(tlddoc = "Minimum number of characters that must be in the text field in order to produce the list of possible matches.", defaultValue="1")
+    @Property(tlddoc = "Minimum number of characters that must be in the text field before submitting and before producing the list of possible matches.", defaultValue="0")
     private int minChars;
 
     @Property(tlddoc = "Boolean value that indicates whether the filtering should be case sensitive or not.", defaultValue="false")

@@ -260,6 +260,11 @@ ice.ace.Autocompleter.prototype = {
             switch (event.keyCode) {
                 case ice.ace.Autocompleter.keys.KEY_TAB: //@ replace key code #
                 case ice.ace.Autocompleter.keys.KEY_RETURN: //@ replace key code #
+					if (this.element.value.length < this.minChars) {
+						event.stopPropagation();
+						event.preventDefault();
+						return false;
+					}
                     this.getUpdatedChoices(true, event, -1);
                     return;
                 case ice.ace.Autocompleter.keys.KEY_DOWN: //@ replace key code #
@@ -274,6 +279,11 @@ ice.ace.Autocompleter.prototype = {
                 case ice.ace.Autocompleter.keys.KEY_RETURN: //@ replace key code #
                     //this.selectEntry();
                     //Event.stop(event);
+					if (this.element.value.length < this.minChars) {
+						event.stopPropagation();
+						event.preventDefault();
+						return false;
+					}
 
                     this.hidden = true; // Hack to fix before beta. Was popup up the list after a selection was made
                     var idx = this.selectEntry();
