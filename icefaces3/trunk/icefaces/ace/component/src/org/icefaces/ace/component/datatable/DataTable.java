@@ -244,9 +244,20 @@ public class DataTable extends DataTableBase implements Serializable {
         }
     }
 
+    /*
+        Merges implementations of Mojarra UIData & UIComponentBase
+     */
     @Override
     public void queueEvent(FacesEvent event) {
-        super.queueEvent(new WrapperEvent(this, event, getRowIndex()));
+        if (event == null) {
+            throw new NullPointerException();
+        }
+        UIComponent parent = getParent();
+        if (parent == null) {
+            throw new IllegalStateException();
+        } else {
+            parent.queueEvent(new WrapperEvent(this, event, getRowIndex()));
+        }
     }
 
     @Override
@@ -261,6 +272,7 @@ public class DataTable extends DataTableBase implements Serializable {
             super.broadcast(event);
             return;
         }
+
         FacesContext context = FacesContext.getCurrentInstance();
         // Set up the correct context and fire our wrapped event
         int oldRowIndex = getRowIndex();
@@ -298,11 +310,12 @@ public class DataTable extends DataTableBase implements Serializable {
         String outcome = null;
         MethodExpression me = null;
 
-        if      (event instanceof SelectEvent)   me = getRowSelectListener();
-        else if (event instanceof UnselectEvent) me = getRowUnselectListener();
-        else if (event instanceof TableFilterEvent) me = getFilterListener();
+        FacesEvent fevent = revent.getFacesEvent();
+        if      (fevent instanceof SelectEvent)   me = getRowSelectListener();
+        else if (fevent instanceof UnselectEvent) me = getRowUnselectListener();
+        else if (fevent instanceof TableFilterEvent) me = getFilterListener();
 
-        if (me != null) outcome = (String) me.invoke(context.getELContext(), new Object[] {event});
+        if (me != null) outcome = (String) me.invoke(context.getELContext(), new Object[] {fevent});
 
         if (outcome != null) {
             NavigationHandler navHandler = context.getApplication().getNavigationHandler();
