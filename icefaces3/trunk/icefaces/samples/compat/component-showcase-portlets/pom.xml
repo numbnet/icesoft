@@ -96,7 +96,7 @@
             </exclusions>
         </dependency>
         <dependency>
-            <groupId>org.icepush</groupId>
+            <groupId>org.icefaces</groupId>
             <artifactId>icepush</artifactId>
             <version>${ice.version}</version>
         </dependency>
