@@ -359,8 +359,7 @@ NSLog(@"called camera");
 }
 
 - (void)scanResult: (NSString*)text  {
-    NSString *scanName = 
-            [self.activeDOMElementId stringByAppendingString:@"-text"];
+    NSString *scanName = self.activeDOMElementId;
     [controller completePost:text forComponent:scanName
             withName:scanName];
 }

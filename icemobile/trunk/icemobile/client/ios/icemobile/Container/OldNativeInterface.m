@@ -16,6 +16,7 @@
 
 #import "OldNativeInterface.h"
 #import "MainViewController.h"
+#import "QRScanner.h"
 #import "AudioController.h"
 #import "ARViewController.h"
 #import "PlaceLabel.h"
@@ -32,7 +33,9 @@
 @synthesize recording;
 @synthesize uploading;
 @synthesize receivedData;
+@synthesize qrScanner;
 @synthesize camPopover;
+@synthesize scanPopover;
 @synthesize audioPopover;
 @synthesize augPopover;
 @synthesize augController;
@@ -49,12 +52,19 @@ static char base64EncodingTable[64] = {
 - (id)init  {
     self = [super init];
     if (self) {
+        self.qrScanner = [[QRScanner alloc] init];
+        self.qrScanner.nativeInterface = self;
         NSString *tempDir = NSTemporaryDirectory ();
         self.soundFilePath = [tempDir stringByAppendingString: @"sound.mp4"];
         self.popoverSource = CGRectMake(200.0, 200.0, 0.0, 0.0);
     }
     
     return self;
+}
+
+- (void) dealloc  {
+    [self.qrScanner dealloc];
+    [super dealloc];
 }
 
 /*Return YES to indicate that the command was successfully dispatched
@@ -296,12 +306,6 @@ NSLog(@"called camera");
     return YES;
 }
 
-- (BOOL)scan: (NSString*)scanId  {
-    self.activeDOMElementId = scanId;
-    [self.controller scanQR];
-    return YES;
-}
-
 - (void)imagePickerController:(UIImagePickerController *)picker
                     didFinishPickingImage:(UIImage *)image
                     editingInfo:(NSDictionary *)editingInfo  {
@@ -439,6 +443,43 @@ NSLog(@"called camera");
             stringByAppendingPathComponent:@"test.jpg"];
     [UIImageJPEGRepresentation(image, 0.7) writeToFile:imagePath atomically:NO];
     return imagePath;
+}
+
+
+- (BOOL)scan: (NSString*)scanId  {
+    self.activeDOMElementId = scanId;
+    NSLog(@"merged NativeInterface scan ");
+    UIViewController *scanController = [qrScanner scanController];
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)  {
+        if (nil == self.scanPopover)  {
+            scanPopover = [[UIPopoverController alloc] 
+                    initWithContentViewController:scanController];
+            self.scanPopover.popoverContentSize = CGSizeMake(320, 480);
+        }
+        [self.scanPopover presentPopoverFromRect:popoverSource
+                                 inView:self.controller.view
+               permittedArrowDirections:UIPopoverArrowDirectionAny 
+                               animated:YES];
+    } else {
+        [controller presentModalViewController:scanController animated:YES];
+    }
+    [scanController release];
+
+    return YES;
+}
+
+- (void)scanResult: (NSString*)text  {
+    NSString *scanName = self.activeDOMElementId;
+    [controller completePost:text forComponent:scanName
+            withName:scanName];
+}
+
+- (void)dismissScan {
+    if (nil != self.scanPopover)  {
+        [self.scanPopover dismissPopoverAnimated:YES];
+    } else {
+        [controller dismissModalViewControllerAnimated:YES];
+    }
 }
 
 - (BOOL)aug: (NSString*)augId locations:(NSDictionary *)places {

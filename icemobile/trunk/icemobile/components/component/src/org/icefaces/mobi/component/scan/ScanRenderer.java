@@ -43,7 +43,7 @@ public class ScanRenderer extends BaseInputRenderer {
         }
         Map requestParameterMap = facesContext.getExternalContext()
                 .getRequestParameterMap();
-        String valueId = clientId + "-text";
+        String valueId = clientId;
         Object submitted = requestParameterMap.get(valueId);
         if (null == submitted)  {
             Map auxMap = AuxUploadResourceHandler.getAuxRequestMap();
