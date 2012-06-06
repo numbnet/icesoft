@@ -84,6 +84,24 @@ static char base64EncodingTable[64] = {
     } else if ([@"aug" isEqualToString:commandName])  {
         [self aug:[params objectForKey:@"id"] locations:params];
     }
+
+    return YES;
+}
+
+- (BOOL)camera: (NSString*)cameraId maxwidth: (NSString*)maxw 
+        maxheight: (NSString*)maxh {
+NSLog(@"called camera");
+    self.activeDOMElementId = cameraId;
+    self.maxwidth = maxw;
+    self.maxheight = maxh;
+    UIImagePickerController* picker = [[UIImagePickerController alloc] init];
+    picker.delegate = self;
+    picker.allowsEditing = YES;
+    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera ])  {
+        picker.sourceType = UIImagePickerControllerSourceTypeCamera;
+    }
+    [self showImagePicker:picker];
+    
     return YES;
 }
 
@@ -261,23 +279,6 @@ static char base64EncodingTable[64] = {
     } else {
         [controller dismissModalViewControllerAnimated:YES];
     }
-}
-
-
-- (BOOL)camera: (NSString*)cameraId maxwidth: (NSString*)maxw 
-        maxheight: (NSString*)maxh {
-    self.activeDOMElementId = cameraId;
-    self.maxwidth = maxw;
-    self.maxheight = maxh;
-    UIImagePickerController* picker = [[UIImagePickerController alloc] init];
-    picker.delegate = self;
-    picker.allowsEditing = YES;
-    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera ])  {
-        picker.sourceType = UIImagePickerControllerSourceTypeCamera;
-    }
-    [self showImagePicker:picker];
-    
-    return YES;
 }
 
 - (BOOL)camcorder: (NSString*)cameraId  {
