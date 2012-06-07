@@ -136,7 +136,6 @@ public class ICEmobileContainer extends Activity
     private ConnectionChangeService connectionChangeService;
     private AlertDialog networkDialog;
     private boolean accelerated;
-    private boolean c2dmIntent=false;
     private String authUser;
     private String authPw;
 
@@ -256,7 +255,6 @@ public class ICEmobileContainer extends Activity
 	// Clear any existing C2DM notifications;
 	if (mC2dmHandler != null) {
 	    mC2dmHandler.clearPendingNotification();
-	    c2dmIntent = false;
 	}
     }
 
@@ -265,11 +263,6 @@ public class ICEmobileContainer extends Activity
 	super.onPause();
 	mAudioPlayer.release();
 	utilInterface.loadURL("javascript:ice.push.connection.pauseConnection();");
-    }
-
-    @Override
-    protected void onNewIntent(Intent intent) {
-	c2dmIntent = intent.getIntExtra("c2dm",0) == 1;
     }
 
     @Override
