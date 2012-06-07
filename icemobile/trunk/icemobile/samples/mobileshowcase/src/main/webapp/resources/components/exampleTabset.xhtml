@@ -67,21 +67,21 @@
                  orientation="top">
         <!-- description tab -->
         <mobi:contentPane
-               cacheType="client"
+                facelet="true"
                 rendered="#{cc.attrs.renderDescription}"
                 id="desc" title="#{mmsgs['example.description.label']}">
             <ui:include src="#{cc.attrs.exampleBean.descriptionPath}"/>
         </mobi:contentPane>
         <!-- example tab -->
         <mobi:contentPane
-                cacheType="client"
+                facelet="true"
                 rendered="#{cc.attrs.renderDescription}"
                 id="example" title="#{mmsgs['example.example.label']}">
             <ui:include src="#{cc.attrs.exampleBean.examplePath}"/>
         </mobi:contentPane>
         <!-- docs tab -->
         <mobi:contentPane
-                cacheType="client"
+                facelet="true"
                 rendered="#{cc.attrs.renderDescription}"
                 id="docs" title="#{mmsgs['example.resources.label']}">
             <ui:include src="#{cc.attrs.exampleBean.resourcesPath}"/>
