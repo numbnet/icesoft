@@ -28,6 +28,10 @@
     padding: 10px;
 }
 
+.vcentered span {
+    vertical-align:middle;
+}
+
 .right {
     display: block;
     text-align: right;

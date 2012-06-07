@@ -15,7 +15,8 @@
  */
 package org.icefaces.mobi.component.augmentedreality;
 
-import org.icefaces.mobi.renderkit.BaseLayoutRenderer;
+import org.icefaces.mobi.renderkit.BaseInputRenderer;
+import org.icefaces.impl.application.AuxUploadResourceHandler;
 import org.icefaces.mobi.utils.HTML;
 import org.icefaces.mobi.utils.Utils;
 import org.icefaces.util.EnvUtils;
@@ -25,10 +26,11 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import java.io.IOException;
+import java.util.Map;
 import java.util.logging.Level;
 
 
-public class AugmentedRealityRenderer extends BaseLayoutRenderer{
+public class AugmentedRealityRenderer extends BaseInputRenderer  {
 
      public void encodeEnd(FacesContext facesContext, UIComponent uiComponent)
              throws IOException {
@@ -47,11 +49,7 @@ public class AugmentedRealityRenderer extends BaseLayoutRenderer{
          writer.startElement(HTML.INPUT_ELEM, uiComponent);
          writer.writeAttribute(HTML.TYPE_ATTR, "button", HTML.TYPE_ATTR);
          writer.writeAttribute(HTML.ID_ATTR, clientId, null);
- //        writer.writeAttribute(HTML.NAME_ATTR, clientId, null);
          String buttonValue="Reality";
-         if (ag.getValue()!=null){
-             buttonValue=ag.getValue().toString();
-         }
          writer.writeAttribute(HTML.VALUE_ATTR, buttonValue, HTML.VALUE_ATTR);
          if (null!=ag.getStyle()){
              String style= ag.getStyle();
@@ -76,5 +74,26 @@ public class AugmentedRealityRenderer extends BaseLayoutRenderer{
 //         writer.writeAttribute("data-params", myparams, null);
          writer.endElement(HTML.INPUT_ELEM);
      }
+
+    @Override
+    public void decode(FacesContext facesContext, UIComponent component) {
+        Map parameterMap = facesContext.getExternalContext()
+                .getRequestParameterMap();
+        AugmentedReality aug = (AugmentedReality) component;
+        String clientId = component.getClientId();
+        Object submitted = parameterMap.get(clientId);
+        if (null == submitted)  {
+            Map auxMap = AuxUploadResourceHandler.getAuxRequestMap();
+            submitted = auxMap.get(clientId);
+        }
+        if (null != submitted) {
+            String submittedString = String.valueOf(submitted);
+            if (submittedString != null){
+                Object convertedValue = this.getConvertedValue(facesContext, component, submittedString);
+                this.setSubmittedValue(aug, convertedValue);
+            }
+
+        }
+    }
 
 }

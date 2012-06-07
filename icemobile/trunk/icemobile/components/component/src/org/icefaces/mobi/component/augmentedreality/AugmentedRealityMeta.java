@@ -18,7 +18,7 @@ package org.icefaces.mobi.component.augmentedreality;
 import org.icefaces.ace.meta.annotation.Component;
 import org.icefaces.ace.meta.annotation.Property;
 import org.icefaces.ace.meta.annotation.Required;
-import org.icefaces.ace.meta.baseMeta.UICommandMeta;
+import org.icefaces.ace.meta.baseMeta.UIComponentBaseMeta;
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
 
@@ -29,7 +29,7 @@ import javax.faces.application.ResourceDependency;
         generatedClass = "org.icefaces.mobi.component.augmentedreality.AugmentedRealityBase",
         componentType = "org.icefaces.AugmentedReality",
         rendererType = "org.icefaces.AugmentedRealityRenderer",
-        extendsClass = "javax.faces.component.UICommand",
+        extendsClass = "javax.faces.component.UIInput",
         componentFamily = "org.icefaces.AugmentedReality",
         tlddoc = "This mobility component implements an augmentedReality for a selected item" +
                 " within the locationItems list that is it's child."
@@ -38,7 +38,7 @@ import javax.faces.application.ResourceDependency;
 @ResourceDependencies({
         @ResourceDependency(library = "org.icefaces.component.util", name = "component.js")
 })
-public class AugmentedRealityMeta extends UICommandMeta  {
+public class AugmentedRealityMeta extends UIComponentBaseMeta  {
     @Property(required=Required.yes, tlddoc="required formatted params for augmentedReality component")
     private String params;
 

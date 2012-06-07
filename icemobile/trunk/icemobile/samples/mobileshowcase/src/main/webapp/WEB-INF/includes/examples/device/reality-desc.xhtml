@@ -22,33 +22,20 @@
 
     <mobi:fieldsetGroup styleClass="exampleDescription">
 
-        <p>The augmented reality component allows JSF applications to access a mobile devices’
-            camera. The component renders a simple button that, when pressed, launches
-            the native camera application on the device. Once a picture has been taken
-            and accepted, the user is returned to the web application. Image data
-            captured by the device is inserted in the calling form and data is
-            submitted to the server via a standard JSF form post.</p>
-
-        <p>
-            Value binding is achieved via a Map object so that other important
-            camera image data can be stored along with the image file data. A
-            typical camera component setup looks as follows:
+        <p>The augmented reality component displays a set of labelled icons
+        with latitude-longitude locations via an overlay on the camera view.
+        The selected icon label is set as the component value.
         </p>
+
 
 <pre>
-&lt;mobi:camera
-    value="#{'#'}{myBean.map}"/&gt;
+&lt;mobi:augmentedReality
+    value="#{'#'}{bean.selection}"/&gt;
 </pre>
 
-        <p>
-            When the containing form is submitted to the server the setter
-            setMap() is called on the bean, making the camera image 
-            available to the application.
-        </p>
-
-        <p>Device camera is only accessible if the application is running
-            in an ICEmobile device container, otherwise
-            the component will display a file upload input component. </p>
+        <p>augmentedReality is only accessible for
+             ICEmobile device container (currently iOS), otherwise
+            the component will display a text field input component. </p>
 
     </mobi:fieldsetGroup>
 
