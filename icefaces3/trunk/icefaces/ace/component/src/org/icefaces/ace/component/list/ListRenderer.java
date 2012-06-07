@@ -181,7 +181,7 @@ public class ListRenderer extends CoreRenderer {
         if (bodyHeight != null) bodyHeight = " height:"+bodyHeight+";";
 
         styleClass = styleClass == null ? bodyStyleClass : styleClass + " " + bodyStyleClass;
-        styleClass = bodyHeight == null? styleClass : styleClass + " height:" + bodyHeight;
+        styleClass = bodyHeight == null? styleClass : styleClass + " " + bodyHeight;
         if (dropGroup != null) styleClass += " dg-" + dropGroup;
 
         writer.startElement(HTML.UL_ELEM, null);
