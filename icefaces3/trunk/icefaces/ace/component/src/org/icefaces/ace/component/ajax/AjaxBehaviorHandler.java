@@ -27,12 +27,18 @@
  */
 package org.icefaces.ace.component.ajax;
 
+import javax.faces.component.UIComponent;
 import javax.faces.view.facelets.BehaviorConfig;
-import javax.faces.view.facelets.BehaviorHandler;
+import javax.faces.view.facelets.FaceletContext;
 import javax.faces.view.facelets.MetaRuleset;
+
+import org.icefaces.ace.api.IceClientBehaviorHolder;
 import org.icefaces.ace.facelets.MethodRule;
 
+import java.io.IOException;
+
 public class AjaxBehaviorHandler extends AjaxBehaviorHandlerBase {
+    private Class listenerEventClass;
 
     public AjaxBehaviorHandler(BehaviorConfig config) {
         super(config);
@@ -43,11 +49,36 @@ public class AjaxBehaviorHandler extends AjaxBehaviorHandlerBase {
         MetaRuleset metaRuleset = super.createMetaRuleset(type);
 
 		metaRuleset.addRule(new MethodRule("listener", Void.TYPE,
-            new Class[]{javax.faces.event.AjaxBehaviorEvent.class},
-            "listenerNoArg"));
+            new Class[]{listenerEventClass}, "listenerNoArg"));
         
 		return metaRuleset;
     }
 
+    public void apply(FaceletContext ctx, UIComponent parent) throws IOException {
+        listenerEventClass = javax.faces.event.AjaxBehaviorEvent.class;
+        if (parent instanceof IceClientBehaviorHolder) {
+            IceClientBehaviorHolder aceParent = (IceClientBehaviorHolder) parent;
+            String eventName = getEventName();
+            if (eventName == null) {
+                eventName = aceParent.getDefaultEventName();
+            }
+            if (eventName != null) {
+                // Derive the event class name from the event name
+                StringBuilder className = new StringBuilder("org.icefaces.ace.event.");
+                int toUpperIndex = className.length();
+                className.append(eventName).append("Event");
+                className.setCharAt(toUpperIndex, Character.toUpperCase(className.charAt(toUpperIndex)));
+                try {
+                    Class clazz = Class.forName(className.toString());
+                    if (javax.faces.event.AjaxBehaviorEvent.class.isAssignableFrom(clazz)) {
+                        listenerEventClass = clazz;
+                    }
+                } catch(Exception e) {
+                    // Silently eat this
+                }
+            }
+        }
+        super.apply(ctx, parent);
+    }
 
 }
