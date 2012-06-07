@@ -325,8 +325,7 @@ NSLog(@"called camera");
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)  {
         self.camPopover = [[UIPopoverController alloc] initWithContentViewController:picker];
         //[picker release];
-        [self.camPopover presentPopoverFromRect:
-                CGRectMake(200.0, 200.0, 0.0, 0.0) 
+        [self.camPopover presentPopoverFromRect:popoverSource
                 inView:self.controller.view
                 permittedArrowDirections:UIPopoverArrowDirectionAny 
                 animated:YES];
