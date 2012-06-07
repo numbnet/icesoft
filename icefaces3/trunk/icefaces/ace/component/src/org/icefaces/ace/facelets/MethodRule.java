@@ -56,13 +56,24 @@ import javax.faces.view.facelets.TagAttributeException;
  * Implementation copied from Facelets 1.1.14, as it got hidden by JSF 2.0
  */
 public class MethodRule extends MetaRule {
-
+    /**
+     * The name of the MethodExpression property in the UIComponent / ClientBehavior
+     */
     private final String methodName;
 
+    /**
+     * The bean method return type
+     */
     private final Class returnTypeClass;
 
+    /**
+     * The bean method parameters
+     */
     private final Class[] params;
 
+    /**
+     * The name of the MethodExpression property in the UIComponent / ClientBehavior
+     */
     private final String noArgMethodName;
 
     public MethodRule(String methodName, Class returnTypeClass,
