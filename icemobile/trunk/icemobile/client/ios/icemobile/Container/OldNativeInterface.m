@@ -124,37 +124,7 @@ NSLog(@"called camera");
 }
 
 - (BOOL)play: (NSString*)audioId  {
-    NSString *scriptTemplate = @"document.getElementById(\"%@\").src;";
-    NSString *script = [NSString stringWithFormat:scriptTemplate, audioId];
-    NSString *result = [controller.webView 
-            stringByEvaluatingJavaScriptFromString: script];
-
-    NSString *srcString = result;
-    
-    scriptTemplate = @"document.location.href;";
-    script = [NSString stringWithFormat:scriptTemplate, audioId];
-    result = [controller.webView 
-            stringByEvaluatingJavaScriptFromString: script];
-
-    NSString *baseString = result;
-    NSURL *baseURL = [NSURL URLWithString:baseString];
-    NSURL *fullURL = [NSURL URLWithString:srcString relativeToURL:baseURL];
-
-    NSString *soundPath = [NSTemporaryDirectory() 
-            stringByAppendingPathComponent:@"remotesound"];
-    NSData *soundData = [NSData dataWithContentsOfURL:fullURL];
-    [soundData writeToFile:soundPath atomically:YES];
-    NSLog(@"will play sound %@", [fullURL absoluteURL]);
-
-    NSError* err;
-    AVAudioPlayer *player = [[AVAudioPlayer alloc] initWithContentsOfURL:
-            [NSURL fileURLWithPath:soundPath] error:&err];
-    [player play];
-
-    if (nil != err)  {
-        NSLog(@"error playing sound %@", err);
-    }
-
+    [controller play: audioId];
     return YES;
 }
 
