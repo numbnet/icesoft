@@ -77,7 +77,10 @@ static char base64EncodingTable[64] = {
     if ([queryParts count] > 1) {
         params = [self parseQuery:[queryParts objectAtIndex:1]];
     }
-    if ([@"camera" isEqualToString:commandName])  {
+
+    if ([@"register" isEqualToString:commandName])  {
+        [self register];
+    } else if ([@"camera" isEqualToString:commandName])  {
         [self camera:[params objectForKey:@"id"] 
                   maxwidth:[params objectForKey:@"maxwidth"]
                   maxheight:[params objectForKey:@"maxheight"] ];
@@ -95,6 +98,11 @@ static char base64EncodingTable[64] = {
         [self aug:[params objectForKey:@"id"] locations:params];
     }
 
+    return YES;
+}
+
+- (BOOL)register  {
+    [controller register];
     return YES;
 }
 
