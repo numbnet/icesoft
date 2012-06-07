@@ -78,6 +78,13 @@ ice.ace.List.prototype.itemReceiveHandler = function(event, ui) {
     this.element.find('> ul > li').removeClass('if-list-last-clicked');
     src.element.find('> ul > li').removeClass('if-list-last-clicked');
 
+    // Deselect all in connected lists but the currently
+    // dragged item.
+    if (src.cfg.selection) {
+        this.deselectConnectedLists();
+        src.addSelectedItem(item, fromIndex);
+    }
+
     this.sendMigrateRequest();
 };
 
@@ -247,6 +254,11 @@ ice.ace.List.prototype.itemDoubleClickHandler = function(e) {
     this.element.find('> ul > li').removeClass('if-list-last-clicked');
     to.element.find('> ul > li').removeClass('if-list-last-clicked');
 
+    if (this.cfg.selection) {
+        to.deselectConnectedLists();
+        this.addSelectedItem(item, fromIndex);
+    }
+
     to.sendMigrateRequest();
 }
 
@@ -342,18 +354,23 @@ ice.ace.List.prototype.getUnshiftedIndex = function(length, reorderings, index) 
     return indexes[index];
 };
 
-ice.ace.List.prototype.addSelectedItem = function(item) {
+ice.ace.List.prototype.addSelectedItem = function(item, inputIndex) {
     var selections = this.read('selections'),
         deselections = this.read('deselections'),
         reorderings = this.read('reorderings'),
         id = item.attr('id'),
+        index;
+
+    if (inputIndex) index = inputIndex;
+    else {
         index = id.substr(id.lastIndexOf(this.sep)+1),
-        origIndex = this.getUnshiftedIndex(item.siblings().length, reorderings, parseInt(index));
+        index = this.getUnshiftedIndex(item.siblings().length, reorderings, parseInt(index));
+    }
 
     item.addClass('ui-state-active');
 
     deselections = ice.ace.jq.grep(deselections, function(r) { return r != index; });
-    selections.push(origIndex);
+    selections.push(index);
 
     this.write('selections', selections);
     this.write('deselections', deselections);
@@ -408,9 +425,9 @@ ice.ace.List.prototype.deselectAll = function() {
             .removeClass('ui-state-active').each(function(i, elem) {{
                 var item = ice.ace.jq(elem),
                     id = item.attr('id'),
-                    index = id.substr(id.lastIndexOf(self.sep)+1);
-                deselections.push(self
-                        .getUnshiftedIndex(item.siblings().length, reorderings, parseInt(index)));
+                    index = parseInt(id.substr(id.lastIndexOf(self.sep)+1));
+                if (index) index = self.getUnshiftedIndex(item.siblings().length, reorderings, index);
+                if (index) deselections.push(index);
             }});
 
     this.write('selections', []);
