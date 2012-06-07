@@ -18,17 +18,41 @@ package org.icefaces.mobi.component.contentstack;
 import org.icefaces.mobi.component.contentpane.ContentPane;
 import org.icefaces.mobi.renderkit.BaseLayoutRenderer;
 import org.icefaces.mobi.utils.HTML;
+import org.icefaces.mobi.utils.Utils;
 
+import javax.faces.application.ProjectStage;
 import javax.faces.component.UIComponent;
+import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+import javax.faces.event.ValueChangeEvent;
 import java.io.IOException;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class ContentStackRenderer extends BaseLayoutRenderer {
 
    private static Logger logger = Logger.getLogger(ContentStackRenderer.class.getName());
+
+    @Override
+      public void decode(FacesContext context, UIComponent component) {
+           ContentStack stack = (ContentStack) component;
+           String clientId = stack.getClientId(context);
+           Map<String, String> params = context.getExternalContext().getRequestParameterMap();
+         // ajax behavior comes from LayoutMenu which sends the currently selected value
+           String indexStr = params.get(clientId + "_hidden");
+           String oldIndex = stack.getCurrentId();
+           if( null != indexStr) {
+               //find the activeIndex and set it
+               if (!oldIndex.equals(indexStr)){
+                   stack.setCurrentId(indexStr);
+                   /* do we want to queue an event for panel change in stack? */
+                  // component.queueEvent(new ValueChangeEvent(component, oldIndex, indexStr)) ;
+               }
+           }
+       }
+
 
     public void encodeBegin(FacesContext facesContext, UIComponent uiComponent)throws IOException {
          ResponseWriter writer = facesContext.getResponseWriter();
@@ -37,16 +61,14 @@ public class ContentStackRenderer extends BaseLayoutRenderer {
             /* write out root tag.  For current incarnation html5 semantic markup is ignored */
          writer.startElement(HTML.DIV_ELEM, uiComponent);
          writer.writeAttribute(HTML.ID_ATTR, clientId, HTML.ID_ATTR);
-               // apply default style class for content-stack
-         StringBuilder styleClass = new StringBuilder(ContentStack.CONTENT_WRAPPER_CLASS);
-               // user specified style class
-     /*    String userDefinedClass = container.getStyleClass();
-         if (userDefinedClass != null && userDefinedClass.length() > 0){
-              styleClass.append(" ").append(userDefinedClass);
+         //if this is a single pane with a layoutMenu then need container for sliding panes
+         if (container.isSingleView() && container.getLayoutMenuId()!=null){
+             writer.writeAttribute("class", ContentStack.CONTAINER_SINGLEVIEW_CLASS, "styleClass");
+             writer.startElement(HTML.DIV_ELEM, uiComponent);
+             writer.writeAttribute(HTML.ID_ATTR, clientId+"_panes", HTML.ID_ATTR);
+             writer.writeAttribute("class", ContentStack.PANES_SINGLEVIEW_CLASS, "class" );
          }
-         writer.writeAttribute("class", styleClass.toString(), "styleClass");
-         // write out any users specified style attributes.
-         writer.writeAttribute(HTML.STYLE_ATTR, container.getStyle(), "style"); */
+
     }
 
     public boolean getRendersChildren() {
@@ -67,6 +89,42 @@ public class ContentStackRenderer extends BaseLayoutRenderer {
 
     public void encodeEnd(FacesContext facesContext, UIComponent uiComponent) throws IOException {
          ResponseWriter writer = facesContext.getResponseWriter();
+         ContentStack stack = (ContentStack) uiComponent;
+         this.encodeHidden(facesContext, uiComponent);
          writer.endElement(HTML.DIV_ELEM);
+         if (stack.getLayoutMenuId() !=null){
+             encodeScript(facesContext, uiComponent);
+             if (stack.isSingleView()){
+                 writer.endElement(HTML.DIV_ELEM);
+             }
+         }
     }
+
+       private void encodeScript(FacesContext context, UIComponent uiComponent) throws IOException{
+            //need to initialize the component on the page and can also
+         ResponseWriter writer = context.getResponseWriter();
+         ContentStack stack = (ContentStack) uiComponent;
+         String clientId = stack.getClientId(context);
+         writer.startElement("span", uiComponent);
+         writer.writeAttribute("id", clientId+"_initScr", "id");
+         writer.startElement("script", uiComponent);
+         writer.writeAttribute("text", "text/javascript", null);
+         StringBuilder sb = new StringBuilder("mobi.layoutMenu.initClient('").append(clientId).append("'");
+         sb.append(",{stackId: '").append(clientId).append("'");
+         sb.append(",selectedId: '").append(stack.getCurrentId()).append("'");
+         sb.append("});");
+         writer.write(sb.toString());
+           /*  if (!menu.getMenuItemCfg().isEmpty()){
+                 for (Map.Entry<String, StringBuilder> entry: menu.getMenuItemCfg().entrySet()){
+                  //    logger.info(" item cfg prints="+entry.getValue().toString());
+                     StringBuilder jsCall = new StringBuilder("mobi.layoutmenu.initCfg('").append(clientId).append("',");
+                     jsCall.append(entry.getValue());
+                      writer.write(jsCall.toString());
+         }   }*/
+         writer.endElement("script");
+         writer.endElement("span");
+
+     }
+
+
 }

@@ -22,7 +22,8 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
 public class ContentStack extends ContentStackBase implements ContentPaneController {
-     public static final String CONTENT_WRAPPER_CLASS = "mobi-content-stack ";
+    public static final String CONTAINER_SINGLEVIEW_CLASS = "mobi-contentStack-container";
+    public static final String PANES_SINGLEVIEW_CLASS ="mobi-contentStack-panes";
 
      public ContentStack() {
          super();

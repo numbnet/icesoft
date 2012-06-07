@@ -21,6 +21,10 @@ import org.icefaces.ace.meta.baseMeta.UIPanelMeta;
 import org.icefaces.ace.meta.annotation.ClientBehaviorHolder;
 import org.icefaces.ace.meta.annotation.ClientEvent;
 import org.icefaces.ace.meta.annotation.Required;
+import org.icefaces.ace.meta.annotation.Facet;
+import org.icefaces.ace.meta.annotation.Facets;
+
+import javax.faces.component.UIComponent;
 
 
 @Component(
@@ -48,4 +52,13 @@ public class ContentStackMeta extends UIPanelMeta {
      @Property(tlddoc = "style class will be rendered on the root element of " +
         "this component.")
      private String styleClass;
+
+     @Property(tlddoc=" id of layoutMenu used with this stack")
+     private String layoutMenuId;
+
+     @Property(tlddoc = "boolean value to determine if the menu controls a contentStack in a single view layout.  " +
+             "This configuration may or may not contain a layoutMenu, but for now, that is the only way to have " +
+             "client side behavior for this component.")
+     private boolean singleView;
+
 }
