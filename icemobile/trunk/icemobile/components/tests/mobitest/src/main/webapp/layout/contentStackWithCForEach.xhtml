@@ -49,7 +49,8 @@
      <h:form id="contentForm">
        <mobi:contentStack id="test1" currentId="#{layoutBean.selectedPane}">
            <c:forEach items="#{layoutBean.eachContentPane}" var="currContentPane">
-              <mobi:contentPane id="#{currContentPane.id}" cacheType="#{currContentPane.cacheType}">
+              <mobi:contentPane id="#{currContentPane.id}" client="#{currContentPane.client}"
+                      facelet="#{currContentPane.facelet}">
                  <fieldset title="#{currContentPane.title}">
                       <legend>#{currContentPane.legend}</legend>
                     <h3> #{currContentPane.header}</h3>

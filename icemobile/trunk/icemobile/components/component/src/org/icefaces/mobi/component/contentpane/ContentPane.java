@@ -16,22 +16,69 @@
 package org.icefaces.mobi.component.contentpane;
 
 
+import javax.el.ValueExpression;
+import javax.faces.component.StateHelper;
+import javax.faces.component.UIComponent;
+import javax.faces.component.UIViewRoot;
+import java.util.HashMap;
+import java.util.Map;
+
 public class ContentPane extends ContentPaneBase {
-       public static final String ClIENT_TYPE = "client";
-       public static final String SERVER_NORMAL_TYPE = "constructed";
-       public static final String SERVER_OPT_TYPE = "tobeconstructed";
        public static final String CONTENT_BASE_CLASS = "mobi-contentpane ";
        public static final String CONTENT_HIDDEN_CLASS = "mobi-contentpane-hidden ";
+       public static final String CONTENT_SINGLE_BASE_CLASS = "mobi-contentpane-single";
+       public static final String CONTENT_SINGLE_HIDDEN_CLASS = "mobi-contentpane-single-hidden";
+       public static final String CONTENT_SINGLE_MENUPANE_CLASS = "mobi-contentpane-single-menu-hidden";
 
-       public enum CacheType {
-           client,
-           constructed,
-           tobeconstructed;
-           public static final CacheType DEFAULT = CacheType.constructed;
+    @Override
+    public void setClient(boolean client) {
+        ValueExpression ve = getValueExpression(PropertyKeys.client.name() );
+        if (ve != null) {
+            // map of style values per clientId
+            ve.setValue(getFacesContext().getELContext(), client );
+        } else {
+            StateHelper sh = getStateHelper();
+            if (isDisconnected(this))  {
+                String defaultKey = PropertyKeys.client.name() + "_defaultValues";
+                Map clientDefaults = (Map) sh.get(defaultKey);
+                if (clientDefaults == null) {
+                    clientDefaults = new HashMap();
+                    clientDefaults.put("defValue",client);
+                    sh.put(defaultKey, clientDefaults);
+                }
+            }
+        }
+    }
 
-
-           public boolean equals(String type){
-               return this.name().equals(type);
-           }
-       }
+    @Override
+    public boolean isClient() {
+        java.lang.Boolean retVal = false;
+        ValueExpression ve = getValueExpression( PropertyKeys.client.name() );
+        if (ve != null) {
+            Object o = ve.getValue( getFacesContext().getELContext() );
+            if (o != null) {
+                retVal = (java.lang.Boolean) o;
+            }
+        } else {
+            StateHelper sh = getStateHelper();
+            String defaultKey = PropertyKeys.client.name() + "_defaultValues";
+            Map defaultValues = (Map) sh.get(defaultKey);
+            if (defaultValues != null) {
+                if (defaultValues.containsKey("defValue" )) {
+                    retVal = (java.lang.Boolean) defaultValues.get("defValue");
+                }
+            }
+        }
+        return retVal;
+    }
+	private static boolean isDisconnected(UIComponent component) {
+		UIComponent parent = component.getParent();
+		if (parent != null && parent instanceof UIViewRoot) {
+			return false;
+		} else if (parent != null) {
+			return isDisconnected(parent);
+		} else {
+			return true;
+		}
+	}
   }

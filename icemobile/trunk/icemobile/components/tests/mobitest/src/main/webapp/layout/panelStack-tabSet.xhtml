@@ -40,31 +40,36 @@
                      orientation="top"
                      parentHeader="false"
                      tabChangeListener="#{layoutBean.tabChangeListener}">
-            <mobi:contentPane id="panel1" title="panel1"
-                    cacheType="constructed">
+            <mobi:contentPane id="panel1" title="panel1">
                 <mobi:tabSet id="test2" currentId="#{layoutBean.selectedPane2}"
                              orientation="bottom"
                              parentFooter="false">
                     <mobi:contentPane id="panel4" title="panel4">
-                        <img height="240"
+                        <h:outputText value="interior of panel4"/>
+                        <div id='innerOnetest2'>
+                            <img height="240"
                              src="../images/DSC_1.jpg"
                              alt="Ottawa 1"/>
+                        </div>
                     </mobi:contentPane>
-                    <mobi:contentPane id="panel5" title="panel6">
+                    <mobi:contentPane id="panel5" title="panel5">
+                        <div id='inner2test2'>
                         <img height="240"
                              src="../images/DSC_2.JPG"
                              alt="Ottawa 2"/>
+                        </div>
                     </mobi:contentPane>
                     <mobi:contentPane id="panel6" title="panel6">
+                       <div id='inner3test2'>
                         <img height="240"
                              src="../images/DSC_3.JPG"
                              alt="Ottawa 3"/>
+                        </div>
                     </mobi:contentPane>
                 </mobi:tabSet>
                 <a href="../layoutComponents.html">index page</a>
             </mobi:contentPane>
-            <mobi:contentPane id="panel2" title="panel2"
-                              cacheType="constructed">
+            <mobi:contentPane id="panel2" title="panel2">
                 <fieldset title="panel2">
                     <legend>Panel2</legend>
                     <figure><img width="85px" height="150px"
@@ -77,8 +82,7 @@
                 </fieldset>
                 <a href="../layoutComponents.html">index page</a>
             </mobi:contentPane>
-            <mobi:contentPane id="panel3" title="panel3"
-                              cacheType="constructed">
+            <mobi:contentPane id="panel3" title="panel3">
                 <fieldset title="panel3">
                     <legend>Panel3</legend>
                     <figure>

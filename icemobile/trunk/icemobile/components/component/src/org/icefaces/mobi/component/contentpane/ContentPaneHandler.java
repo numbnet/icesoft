@@ -24,12 +24,16 @@ import javax.faces.view.facelets.*;
 public class ContentPaneHandler extends ComponentHandler {
     private static final String SKIP_CONSTRUCTION_KEY = "org.icefaces.mobi.contentPane.SKIP_CONSTRUCTION";
 
-    private final TagAttribute cacheType;
+//    private final TagAttribute cacheType;
+    private final TagAttribute facelet;
+    private final TagAttribute client;
 
     public ContentPaneHandler(ComponentConfig componentConfig) {
         super(componentConfig);
         Tag tag = componentConfig.getTag();
-        cacheType = tag.getAttributes().get("cacheType");
+        facelet = tag.getAttributes().get("facelet");
+        client = tag.getAttributes().get("client");
+       // cacheType = tag.getAttributes().get("cacheType");
     }
 
     @Override
@@ -78,12 +82,12 @@ public class ContentPaneHandler extends ComponentHandler {
 
     protected boolean shouldOptimiseSkipChildConstruction(
             FaceletContext ctx, UIComponent c, UIComponent parent) {
-        /*
-        System.out.println("shouldOptimiseSkipChildConstruction()");
+
+  /*      System.out.println("shouldOptimiseSkipChildConstruction()");
         System.out.println("    c: " + c);
         System.out.println("    c.id: " + c.getId());
-        System.out.println("    c.cacheType: " + ((ContentPane)c).getCacheType());
-        System.out.println("    cacheType: " + (cacheType == null ? "<unspecified>" : cacheType.getValue(ctx)));
+        System.out.println("    c.client: "+ ((ContentPane)c).isClient());
+        System.out.println("    facelet: " + (facelet == null ? "<unspecified>" : facelet.getValue(ctx)));
         System.out.println("    parent: " + parent);
         System.out.println("    parent instanceof ContentPaneController: " + (parent instanceof ContentPaneController));
         if (parent instanceof ContentPaneController) {
@@ -98,31 +102,33 @@ public class ContentPaneHandler extends ComponentHandler {
             //for (UIComponent kid : parent.getChildren()) {
             //    System.out.println("    kid: " + kid.getId() + "  attrib MARK_CREATED: " + kid.getAttributes().get("com.sun.faces.facelets.MARK_ID"));
             //}
+        }  */
+        boolean overridden = false;
+        if (client != null && client.getBoolean(ctx)==true){
+             overridden = true;
         }
-        */
-
-        //System.out.println("  remove key");
-        if (cacheType == null || !"tobeconstructed".equals(cacheType.getValue(ctx))) {
-            //System.out.println("  cacheType not tobeconstructed");
+//        System.out.println("  remove key");
+        if (facelet == null || facelet.getBoolean(ctx)!=true || overridden==true) {
+//            System.out.println("  cacheType not tobeconstructed");
             return false;
         }
-        //System.out.println("  cacheType is tobeconstructed");
+ //       System.out.println("  cacheType is tobeconstructed");
         if (!(parent instanceof ContentPaneController)) {
-            //System.out.println("  parent not ContentPaneController");
+//            System.out.println("  parent not ContentPaneController");
             return false;
         }
-        //System.out.println("  parent is ContentPaneController");
+//        System.out.println("  parent is ContentPaneController");
         String selectedId = ((ContentPaneController)parent).getSelectedId();
         if (selectedId == null || selectedId.length() == 0) {
-            //System.out.println("  selectedId not set");
+//            System.out.println("  selectedId not set");
             return false;
         }
-        //System.out.println("  selectedId is set");
+//        System.out.println("  selectedId is set");
         if (selectedId.equals(c.getId())) {
-            //System.out.println("  selectedId equal to id");
+//            System.out.println("  selectedId equal to id");
             return false;
         }
-        //System.out.println("  selectedId not equal to id => SKIP");
+//        System.out.println("  selectedId not equal to id => SKIP");
         return true;
     }
 }
