@@ -16,7 +16,6 @@
 
 <ui:fragment xmlns="http://www.w3.org/1999/xhtml"
              xmlns:h="http://java.sun.com/jsf/html"
-             xmlns:f="http://java.sun.com/jsf/core"
              xmlns:ui="http://java.sun.com/jsf/facelets"
              xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
 
@@ -28,27 +27,46 @@
             </mobi:fieldsetRow>
         </mobi:fieldsetGroup>
 
-        <mobi:accordion currentId="#{accordionBean.currentId}">
+        <mobi:accordion currentId="#{accordionBean.currentId}"
+                        autoHeight="false">
 
-            <mobi:contentPane title="Ice sailor" id="tab1" >
-                <h:graphicImage style="float:left;padding-right:10px;"
-                                library="images/auction" name="icesailor.png"/>
-                <p><b>ICEsoft Ice Sailer</b><br />
-                    Put him on the ice and watch him go!</p>
+            <mobi:contentPane title="Ice sailor" id="tab1">
+                <mobi:fieldsetGroup>
+                    <mobi:fieldsetRow style="padding-bottom:10px;">
+                        <h:graphicImage style="float:left;padding-right:10px;"
+                                        library="images/auction"
+                                        name="icesailor.png"/>
+
+                        <p><b>ICEsoft Ice Sailer</b><br/>
+                            Put him on the ice and watch him go!</p>
+                    </mobi:fieldsetRow>
+                </mobi:fieldsetGroup>
             </mobi:contentPane>
 
             <mobi:contentPane title="Ice Breaker" id="tab2">
-                <h:graphicImage style="float:left;padding-right:10px;"
-                                library="images/auction" name="icebreaker.png"/>
-                <p><b>ICEsoft Icebreaker</b><br />
-                    Used icebreaker with very few dents.</p>
+                <mobi:fieldsetGroup>
+                    <mobi:fieldsetRow style="padding-bottom:10px;">
+                        <h:graphicImage style="float:left;padding-right:10px;"
+                                        library="images/auction"
+                                        name="icebreaker.png"/>
+
+                        <p><b>ICEsoft Icebreaker</b><br/>
+                            Used icebreaker with very few dents.</p>
+                    </mobi:fieldsetRow>
+                </mobi:fieldsetGroup>
             </mobi:contentPane>
 
             <mobi:contentPane title="Ice Skater" id="tab3">
-                <h:graphicImage style="float:left;padding-right:10px;"
-                                library="images/auction" name="iceskate.png"/>
-                <p><b>ICEsoft Ice Skate</b><br />
-                    A single sharpened ice skate, size 7.</p>
+                <mobi:fieldsetGroup>
+                    <mobi:fieldsetRow style="padding-bottom:10px;">
+                        <h:graphicImage style="float:left;padding-right:10px;"
+                                        library="images/auction"
+                                        name="iceskate.png"/>
+
+                        <p><b>ICEsoft Ice Skate</b><br/>
+                            A single sharpened ice skate, size 7.</p>
+                    </mobi:fieldsetRow>
+                </mobi:fieldsetGroup>
             </mobi:contentPane>
 
         </mobi:accordion>
