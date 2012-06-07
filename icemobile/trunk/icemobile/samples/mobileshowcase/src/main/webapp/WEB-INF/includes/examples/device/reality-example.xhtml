@@ -22,7 +22,10 @@
 
     <mobi:fieldsetGroup>
         <mobi:fieldsetRow style="padding-bottom:10px;">
-            Use your mobile device's camera to take a pictures for the augmented reality overlay.
+            Use your camera to add location pictures to the augmented
+            reality overlay.
+            Depending on GPS accuracy, you may need to walk 10m between
+            locations.
         </mobi:fieldsetRow>
     </mobi:fieldsetGroup>
 
@@ -40,10 +43,10 @@
                 <mobi:inputText value="#{realityBean.label}" 
                         placeholder="Label" />
                 <br />
+                <h:panelGroup class="vcentered">
                 <mobi:camera id="cam" value="#{realityBean.cameraImage}">
                     <mobi:thumbnail for="cam"/>
                 </mobi:camera>
-                <br />
                 <h:commandButton id="upload1"
                                  style="float:none;"
                                  styleClass="mobi-button mobi-round-all mobi-button-important"
@@ -56,24 +59,36 @@
                         value="#{mmsgs['example.device.disclaimer']}" />
                     <br />
                 <mobi:icemobilesx/>
-            </mobi:fieldsetRow>
-        </mobi:fieldsetGroup>
-        
-        <mobi:fieldsetGroup>
-
-            <mobi:fieldsetRow>
-                <mobi:augmentedReality params="#{realityBean.params}" />
-                <ui:fragment rendered="#{realityBean.outputResource != null}">
-                    Uploaded Image:<br/>
-                    <mobi:graphicImage
-                            value="#{realityBean.outputResource}" width="180"/>
-                </ui:fragment>
-                <br />
+                </h:panelGroup>
                 <h:outputText value="#{realityBean.uploadMessage}"/>
             </mobi:fieldsetRow>
         </mobi:fieldsetGroup>
 
-
     </h:form>
+
+    <h:form >
+
+        <mobi:fieldsetGroup>
+
+            <mobi:fieldsetRow>
+                <mobi:augmentedReality 
+                    styleClass="mobi-button mobi-round-all"
+                    value="#{realityBean.selection}"
+                    params="#{realityBean.params}" />
+                <h:commandButton styleClass="mobi-button mobi-round-all mobi-button-important"
+                                 value="Submit"/>
+                <br />
+                <h:panelGroup style="text-align:center;"
+                    rendered="#{realityBean.image != null}">
+                    Selected Location:<br/>
+                    <h:graphicImage value="#{realityBean.image}"/>
+                    <br/>
+                    <h:outputText value="#{realityBean.selection}"/>
+                </h:panelGroup>
+            </mobi:fieldsetRow>
+        </mobi:fieldsetGroup>
+    </h:form>
+
+
 
 </ui:fragment>
