@@ -22,6 +22,7 @@ import org.icefaces.ace.meta.baseMeta.UIPanelMeta;
 import org.icefaces.ace.meta.annotation.ClientBehaviorHolder;
 import org.icefaces.ace.meta.annotation.ClientEvent;
 import org.icefaces.ace.meta.annotation.Required;
+import org.icefaces.ace.meta.annotation.Implementation;
 
 import javax.faces.component.UIComponent;
 
@@ -63,8 +64,29 @@ public class ContentPaneMeta extends UIPanelMeta{
         "this component.")
      private String styleClass;
 
-     @Property(defaultValue="constructed",
-             tlddoc = "cache type.  Options currently include client, constructed and tobeconstructed")
-     private String cacheType;
+     @Property(defaultValue="false", implementation = Implementation.EXISTS_IN_SUPERCLASS,
+               tlddoc = "if true, this attribute must have cacheType of server in order to be utilised and will" +
+                       " utilize the ContentPaneHandler in order to optimise server-side performance and reducing the size of the " +
+                       " server-side component tree, by ensuring that any non-selected contentPane which is not selected will not have" +
+                       " its children added to the component tree. If true, then normal jsf construction of the component tree is done. " +
+                       " Default value is false.")
+     private boolean facelet;
 
+     @Property(defaultValue="false",
+             tlddoc = " if true, the contentPane's children are always rendered to the client/browser.  This is ideal for " +
+                     " content which is static.  Default value is false, which means that the children of any non-selected" +
+                     " contentPane are not rendered to the client.  Used in conjunction with facelet attribute if the tagHandler" +
+                     " is required for optimization. If client is true, then facelet attribute is ignored.  Facelet attribute is " +
+                     " only relevant if this attribute is false.")
+     private boolean client;
+
+    /* @Property(defaultValue="constructed",
+             tlddoc = "cache type.  Options currently include client, constructed and tobeconstructed")
+     private String cacheType;   */
+
+     @Property(defaultValue="false",
+             tlddoc = " menuOrHome attribute means that this contentPane contains either a layoutMenu or Home page for a single " +
+                     "page application.  default is false, so be sure to set it if you have a menu page and " +
+                     " want the transitions to slide in proper direction.")
+     private boolean menuOrHome;
 }

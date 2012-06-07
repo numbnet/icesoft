@@ -45,9 +45,6 @@
                        <f:selectItem itemValue="panel3" itemLabel="Open 3rd panel" />
                        <f:ajax execute="@this" render="@all"/>
                    </h:selectOneMenu>
-                   <div id="output" style="display:block;">
-                      selected pane ... <mark>#{layoutBean.selectedPane}</mark> ... is selected pane
-                   </div>
                </h:column>
            </h:dataTable>
        </h:panelGroup>
@@ -58,7 +55,7 @@
        <h:dataTable value="#{layoutBean.dataListMultiRow}" var="tblVar">
            <h:column>
        <mobi:contentStack id="test1" currentId="#{tblVar.selectedPane}">
-              <mobi:contentPane id="panel1" cacheType="client">
+              <mobi:contentPane id="panel1" client="true">
                  <fieldset title="panel1">
                       <legend>Panel1</legend>
                     <h3> header for panel 1</h3>
@@ -86,7 +83,7 @@
                      <ui:include src="included.xhtml"/>
                   </fieldset>
               </mobi:contentPane>
-             <mobi:contentPane id="panel3" cacheType="tobeconstructed">
+             <mobi:contentPane id="panel3" facelet="true">
                  <fieldset title="panel3">
                       <legend>Panel3</legend>
                   <h3> header for panel 3</h3>

@@ -42,7 +42,7 @@ public class ContentPaneRenderer extends BaseLayoutRenderer {
     public void encodeBegin(FacesContext facesContext, UIComponent uiComponent)throws IOException {
         Object parent = uiComponent.getParent();
         ContentPane pane = (ContentPane) uiComponent;
-        String cacheType = checkCacheType(pane.getCacheType().toLowerCase().trim());
+      //  String cacheType = checkCacheType(pane.getCacheType().toLowerCase().trim());
         if (parent instanceof Accordion){
              Accordion accordion = (Accordion)parent;
               //eventually this will be replaced by facet to allow developer to design their own?
@@ -50,20 +50,32 @@ public class ContentPaneRenderer extends BaseLayoutRenderer {
         } else if (parent instanceof TabSet){
             encodeTabSetPage(facesContext, uiComponent);
         }  else {
+            ContentStack stack = (ContentStack)parent;
             ResponseWriter writer = facesContext.getResponseWriter();
             String clientId = uiComponent.getClientId(facesContext);
-            String contentClass = ContentPane.CONTENT_HIDDEN_CLASS.toString();
+            String contentClass = ContentPane.CONTENT_BASE_CLASS;
+            String contentDeadClass = ContentPane.CONTENT_HIDDEN_CLASS.toString();
+            if (stack.isSingleView()){
+                contentClass = ContentPane.CONTENT_SINGLE_BASE_CLASS.toString();
+                contentDeadClass = ContentPane.CONTENT_SINGLE_HIDDEN_CLASS.toString();
+            }
             /* write out root tag.  For current incarnation html5 semantic markup is ignored */
             writer.startElement(HTML.DIV_ELEM, uiComponent);
             writer.writeAttribute(HTML.ID_ATTR, clientId, HTML.ID_ATTR);
             // apply default style class for panel-stack  ??
             //if cacheType is client and not selected must use invisible rendering
-            if (iAmSelected(facesContext, uiComponent)){
-                 contentClass = ContentPane.CONTENT_BASE_CLASS.toString();
+            //  tricky for transitions as if using a layoutmenu, need to place all the
+            // classes as hidden and allow the js to change out the classes.
+            String classToWrite = contentDeadClass;
+            boolean amSelected = iAmSelected(facesContext, uiComponent);
+            if (amSelected){
+                classToWrite =  contentClass ;
             }
-            writer.writeAttribute("class", contentClass, "class");
-
+            if (!amSelected && pane.isMenuOrHome()) {
+                classToWrite = ContentPane.CONTENT_SINGLE_MENUPANE_CLASS;
+            }
                    // write out any users specified style attributes.
+            writer.writeAttribute("class", classToWrite, "class");
             writer.writeAttribute(HTML.STYLE_ATTR, pane.getStyle(), "style");
         }
     }
@@ -74,19 +86,16 @@ public class ContentPaneRenderer extends BaseLayoutRenderer {
 
     public void encodeChildren(FacesContext facesContext, UIComponent uiComponent) throws IOException{
         ContentPane pane = (ContentPane)uiComponent;
-        String cacheType = checkCacheType(pane.getCacheType().toLowerCase().trim());
-
         //if I am clientSide, I will always be present and always render
-        if (cacheType.equals("client")){
+        if (pane.isClient()){
       //      logger.info("rendering the children of client cachetype="+uiComponent.getClientId(facesContext));
             Utils.renderChildren(facesContext, uiComponent);
         }
         //am I the selected pane?  Can I count on the taghandler to already have
         //things constructed?? assume so for now.
-    //    logger.info("selectedId="+selectedId+" clientId="+clientId);
          else if (iAmSelected(facesContext, uiComponent)){
-         //   logger.info("rendering the children of "+uiComponent.getClientId(facesContext));
-            Utils.renderChildren(facesContext, uiComponent);
+        //     logger.info("rendering the children of "+uiComponent.getClientId(facesContext));
+             Utils.renderChildren(facesContext, uiComponent);
         }
 
     }
@@ -100,7 +109,7 @@ public class ContentPaneRenderer extends BaseLayoutRenderer {
            // logger.info(" instance of ContentPaneController");
             ContentPaneController paneController = (ContentPaneController)parent;
             selectedId = paneController.getSelectedId();
-            //System.out.println("iAmSelected()  id: " + uiComponent.getId() + "  selectedId: " + selectedId);
+        //    logger.info("iAmSelected()  id: " + uiComponent.getId() + "  selectedId: " + selectedId);
             if (null == selectedId){
                 return false;
             }
@@ -110,16 +119,15 @@ public class ContentPaneRenderer extends BaseLayoutRenderer {
             return false;
         }
         String id = uiComponent.getId();
-        boolean test = id.equals(selectedId);
         return (id.equals(selectedId));
     }
 
-    private String checkCacheType(String type){
+ /*   private String checkCacheType(String type){
         if (type.equals(ContentPane.CacheType.client.name())) return ContentPane.CacheType.client.name();
         if (type.equals(ContentPane.CacheType.constructed.name())) return ContentPane.CacheType.constructed.name();
         if (type.equals(ContentPane.CacheType.tobeconstructed.name())) return ContentPane.CacheType.tobeconstructed.name();
         return ContentPane.CacheType.DEFAULT.name();
-    }
+    }  */
 
 
     private void encodeTabSetPage(FacesContext facesContext, UIComponent uiComponent)
@@ -128,7 +136,6 @@ public class ContentPaneRenderer extends BaseLayoutRenderer {
         String clientId = uiComponent.getClientId(facesContext);
         writer.startElement(HTML.DIV_ELEM, uiComponent);
         writer.writeAttribute(HTML.ID_ATTR, clientId+"_wrapper", HTML.ID_ATTR);
-        TabSet tabSet = (TabSet)uiComponent.getParent();
         String pageClass = TabSet.TABSET_HIDDEN_PAGECLASS.toString();
         writer.writeAttribute("class", pageClass, "class");
          /* write out root tag.  For current incarnation html5 semantic markup is ignored */
@@ -162,11 +169,7 @@ public class ContentPaneRenderer extends BaseLayoutRenderer {
          ResponseWriter writer = facesContext.getResponseWriter();
          String clientId = uiComponent.getClientId(facesContext);
          ContentPane pane = (ContentPane) uiComponent;
-         String cacheType = checkCacheType(pane.getCacheType().toLowerCase().trim());
-         boolean client = false;
-         if (cacheType.equals("client")){
-              client=true;
-         }
+         boolean client = pane.isClient();
          String myId = pane.getId();
          String handleClass = "handle";
          String pointerClass = "pointer";

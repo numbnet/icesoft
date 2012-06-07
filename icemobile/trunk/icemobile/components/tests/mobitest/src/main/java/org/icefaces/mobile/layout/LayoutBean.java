@@ -57,13 +57,13 @@ public class LayoutBean implements Serializable {
         dataListMultiRow.add(new DataValue(FIRSTPANE));
         dataListMultiRow.add(new DataValue(SECONDPANE));
         dataListMultiRow.add(new DataValue(THIRDPANE));
-        eachContentPane.add(new EachContentPane("panel1", "client", "panel1",
+        eachContentPane.add(new EachContentPane("panel1", true, false, "panel1",
             "Panel1", "header for panel 1", "content for panel 1 - king of clubs",
             "../images/kingOfClubs.jpg", "king of clubs", "King of Clubs"));
-        eachContentPane.add(new EachContentPane("panel2", null, "panel2",
+        eachContentPane.add(new EachContentPane("panel2", false, false, "panel2",
             "Panel2", "header for panel 2", "content for panel 2 - queen of clubs",
             "../images/queen.jpg", "queen of clubs", "Queen of Clubs"));
-        eachContentPane.add(new EachContentPane("panel3", "tobeconstructed", "panel3",
+        eachContentPane.add(new EachContentPane("panel3", false, true, "panel3",
             "Panel3", "header for panel 3", "content for panel 3 - some other card",
             "../images/Joker.jpg", "joker", "Joker"));
         counter = eachContentPane.size();
@@ -76,7 +76,7 @@ public class LayoutBean implements Serializable {
     public void addContentPane(ActionEvent event) {
         logger.info("LayoutBean.addContentPane()");
         counter++;
-        eachContentPane.add(new EachContentPane("panel"+counter, "tobeconstructed", "panel"+counter,
+        eachContentPane.add(new EachContentPane("panel"+counter, false, true, "panel"+counter,
             "Panel"+counter, "header for panel "+counter, "content for panel "+counter+" - some other card",
             "../images/Joker.jpg", "joker", "Joker"));
     }
@@ -213,7 +213,8 @@ public class LayoutBean implements Serializable {
 
     public static class EachContentPane implements Serializable {
         private String id;
-        private String cacheType;
+        private boolean client;
+        private boolean facelet;
         private String title;
         private String legend;
         private String header;
@@ -224,7 +225,8 @@ public class LayoutBean implements Serializable {
 
         public EachContentPane(
             String id,
-            String cacheType,
+            boolean client,
+            boolean facelet,
             String title,
             String legend,
             String header,
@@ -233,7 +235,8 @@ public class LayoutBean implements Serializable {
             String alt,
             String figcaption) {
             this.id = id;
-            this.cacheType = cacheType;
+            this.client = client;
+            this.facelet = facelet;
             this.title = title;
             this.legend = legend;
             this.header = header;
@@ -244,7 +247,8 @@ public class LayoutBean implements Serializable {
         }
 
         public String getId() { return id; }
-        public String getCacheType() { return cacheType; }
+        public boolean getClient() { return client; }
+        public boolean getFacelet() {return facelet;}
         public String getTitle() { return title; }
         public String getLegend() { return legend; }
         public String getHeader () { return header; }

@@ -50,7 +50,7 @@
       <br />
      <h:form id="contentForm">
        <mobi:accordion id="test1" currentId="#{layoutBean.selectedPane}" autoheight="true">
-              <mobi:contentPane id="panel1" title="panel1" cacheType="client">
+              <mobi:contentPane id="panel1" title="panel1" client="true">
                   <fieldset title="panel1">
                       <legend>Panel1</legend>
                     <h3> header for panel 1</h3>
@@ -85,7 +85,7 @@
                      <ui:include src="included.xhtml"/>
                   </fieldset>
               </mobi:contentPane>
-             <mobi:contentPane id="panel3" title="panel3" cacheType="tobeconstructed">
+             <mobi:contentPane id="panel3" title="panel3" facelet="true">
                  <fieldset title="panel3">
                       <legend>Panel3</legend>
                   <h3> header for panel 3</h3>
