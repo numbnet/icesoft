@@ -336,7 +336,7 @@ ice.ace.DataTable.prototype.setupSortEvents = function() {
 
     // Bind clickable header events
     if (_self.cfg.clickableHeaderSorting) {
-        ice.ace.jq(this.jqId + ' thead:first > tr > th > div.ui-sortable-column')
+        ice.ace.jq(this.jqId + ' > div > table > thead > tr > th > div.ui-sortable-column')
             .unbind('click').bind("click",function(event) {
                 var target = ice.ace.jq(event.target);
 
@@ -406,7 +406,7 @@ ice.ace.DataTable.prototype.setupSortEvents = function() {
     }
 
     // Bind clickable control events
-    ice.ace.jq(this.jqId + ' thead:first th > div.ui-sortable-column span.ui-sortable-control')
+    ice.ace.jq(this.jqId + ' > div > table > thead > tr > th > div.ui-sortable-column span.ui-sortable-control')
             .unbind('click').bind("click",function(event, altY, altMeta) {
                 var $this = ice.ace.jq(this),
                     topCarat = ice.ace.jq($this.find("a.ui-icon-triangle-1-n")[0]),
@@ -568,7 +568,7 @@ ice.ace.DataTable.prototype.setupSelectionEvents = function() {
 
 ice.ace.DataTable.prototype.setupReorderableColumns = function() {
     var _self = this;
-    ice.ace.jq(this.jqId + ' thead:first').sortable({
+    ice.ace.jq(this.jqId + ' > div > table > thead').sortable({
                 items:'th.ui-reorderable-col', helper:'clone',
                 axis:'x', appendTo:this.jqId + ' thead',
                 cursor:'move', placeholder:'ui-state-hover',
@@ -650,8 +650,8 @@ ice.ace.DataTable.prototype.setupResizableColumns = function() {
 
     //Setup resizing
     this.columnWidthsCookie = this.id + '_columnWidths',
-            resizers = ice.ace.jq(this.jqId + ' thead:first > tr > th > div > div.ui-column-resizer'),
-            columns = ice.ace.jq(this.jqId + ' thead:first > tr > th'),
+            resizers = ice.ace.jq(this.jqId + ' > div > table > thead > tr > th > div > div.ui-column-resizer'),
+            columns = ice.ace.jq(this.jqId + ' > div > table > thead > tr > th'),
             _self = this;
 
     resizers.draggable({
