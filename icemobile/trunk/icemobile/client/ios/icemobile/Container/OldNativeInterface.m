@@ -150,60 +150,6 @@ NSLog(@"called camera");
     return YES;
 }
 
-- (BOOL)Xmicrophone: (NSString*)micId  {
-    self.activeDOMElementId = micId;
-    NSString *micName = micId;
-    NSLog(@"called microphone for %@", micId);
-
-    NSString *tempDir = NSTemporaryDirectory ();
-    NSString *soundFilePath =
-                [tempDir stringByAppendingString: @"sound.mp4"];
-    NSURL *soundFileURL = [[NSURL alloc] initFileURLWithPath: soundFilePath];
-
-    if (self.recording)  {
-        self.recording = NO;
-        NSLog(@"recording stopped");
-        [self.soundRecorder stop];
-        NSString *scriptTemplate = @"ice.addHidden(\"%@\", \"%@\", \"%@\");";
-        NSString *script = [NSString stringWithFormat:scriptTemplate, 
-                micId, micName, soundFilePath];
-        NSString *result = [controller.webView 
-                stringByEvaluatingJavaScriptFromString: script];
-        return YES;
-    }
- 
-    AVAudioSession *audioSession = [AVAudioSession sharedInstance];
-    audioSession.delegate = self;
-    [audioSession setActive: YES error: nil];
-
-    [[AVAudioSession sharedInstance]
-            setCategory: AVAudioSessionCategoryRecord error: nil];
- 
-    NSDictionary *recordSettings =
-        [[NSDictionary alloc] initWithObjectsAndKeys:
-            [NSNumber numberWithFloat: 44100.0], AVSampleRateKey,
-            [NSNumber numberWithInt: kAudioFormatMPEG4AAC], AVFormatIDKey,
-//             [NSNumber numberWithInt: kAudioFormatLinearPCM], AVFormatIDKey,
-//             [NSNumber numberWithInt: kAudioFormatAppleIMA4], AVFormatIDKey,
-//             [NSNumber numberWithInt: kAudioFormatAppleLossless], AVFormatIDKey,
-            [NSNumber numberWithInt: 1], AVNumberOfChannelsKey,
-            [NSNumber numberWithInt: AVAudioQualityMax], AVEncoderAudioQualityKey,
-            nil];
- 
-    AVAudioRecorder *soundRecorder =
-        [[AVAudioRecorder alloc] initWithURL: soundFileURL
-                                    settings: recordSettings
-                                       error: nil];
-    self.soundRecorder = soundRecorder;
-    soundRecorder.delegate = self;
-    [soundRecorder prepareToRecord];
-    NSLog(@"recording started");
-    [soundRecorder record];
-    self.recording = YES;
-
-    return YES;
-}
-
 - (BOOL)microphone: (NSString*)micId  {
     self.activeDOMElementId = micId;
     UIView *controllerView = self.controller.view;
@@ -275,12 +221,11 @@ NSLog(@"called camera");
     [self.soundRecorder stop];
 }
 
-//TODO reconcile naming difference
 - (void)recordDone  {
     [self recordDismiss];
     NSString *audioName = self.activeDOMElementId;
     [controller completeFile:self.soundFilePath 
-            forComponent:self.activeDOMElementId withName:audioName];
+            forComponent:audioName withName:audioName];
 }
 
 - (void)recordDismiss  {
@@ -448,7 +393,7 @@ NSLog(@"called camera");
 
 - (BOOL)scan: (NSString*)scanId  {
     self.activeDOMElementId = scanId;
-    NSLog(@"merged NativeInterface scan ");
+    NSLog(@"NativeInterface scan ");
     UIViewController *scanController = [qrScanner scanController];
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)  {
         if (nil == self.scanPopover)  {
