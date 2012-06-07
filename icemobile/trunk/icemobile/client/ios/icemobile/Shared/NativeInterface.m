@@ -86,6 +86,8 @@ static char base64EncodingTable[64] = {
         [self camcorder:[params objectForKey:@"id"]];
     } else if ([@"microphone" isEqualToString:commandName])  {
         [self microphone:[params objectForKey:@"id"]];
+    } else if ([@"play" isEqualToString:commandName])  {
+        [self play:[params objectForKey:@"id"]];
     } else if ([@"scan" isEqualToString:commandName])  {
         [self scan:[params objectForKey:@"id"]];
     } else if ([@"aug" isEqualToString:commandName])  {
@@ -114,6 +116,11 @@ NSLog(@"called camera");
     }
     [self showImagePicker:picker];
     
+    return YES;
+}
+
+- (BOOL)play: (NSString*)audioId  {
+    [controller play: audioId];
     return YES;
 }
 
