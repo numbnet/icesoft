@@ -283,13 +283,8 @@ NSLog(@"called camera");
     UIImage *scaledImage = [self scaleImage:image toSize:64];
     [self setThumbnail:scaledImage at:cameraId];
 
-    NSString *scriptTemplate;
-    NSString *script;
-    NSString *result;
-
-    scriptTemplate = @"ice.addHidden('%@', '%@', '%@', 'file');";
-    script = [NSString stringWithFormat:scriptTemplate, cameraId, cameraName, savedPath];
-    result = [controller.webView stringByEvaluatingJavaScriptFromString: script];
+    [controller completeFile:savedPath 
+            forComponent:cameraId withName:cameraName];
 }
 
 - (void) imagePickerController: (UIImagePickerController *)picker
@@ -306,10 +301,6 @@ NSLog(@"called camera");
     NSURL *movieURL = [info objectForKey: UIImagePickerControllerMediaURL];
     NSString *moviePath = [movieURL path];
 
-    NSString *scriptTemplate;
-    NSString *script;
-    NSString *result;
-
     MPMoviePlayerController *movieController = 
             [[MPMoviePlayerController alloc] initWithContentURL:movieURL];
     movieController.shouldAutoplay = NO;
@@ -321,9 +312,8 @@ NSLog(@"called camera");
     UIImage *scaledImage = [self scaleImage:image toSize:64];
     [self setThumbnail:scaledImage at:cameraId];
 
-    scriptTemplate = @"ice.addHidden('%@', '%@', '%@', 'file');";
-    script = [NSString stringWithFormat:scriptTemplate, cameraId, cameraName, moviePath];
-    result = [controller.webView stringByEvaluatingJavaScriptFromString: script];
+    [controller completeFile:moviePath
+            forComponent:cameraId withName:cameraName];
 
     [self dismissImagePicker];
     [picker release];
