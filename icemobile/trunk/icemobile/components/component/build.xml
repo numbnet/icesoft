@@ -586,6 +586,12 @@
                           name="accordion" skin="iphone"/>
         <includeresources dir="src/org/icefaces/mobi/component/accordion/ipad"
                           name="accordion" skin="ipad"/>
+        <includeresources dir="src/org/icefaces/mobi/component/accordion/android"
+                          name="accordion" skin="android"/>
+        <includeresources dir="src/org/icefaces/mobi/component/accordion/honeycomb"
+                          name="accordion" skin="honeycomb"/>
+        <includeresources dir="src/org/icefaces/mobi/component/accordion/bberry"
+                          name="accordion" skin="bberry"/>
        <!-- TabSet-->
         <includeresources dir="src/org/icefaces/mobi/component/tabset/ipad"
                           name="tabset" skin="ipad"/>

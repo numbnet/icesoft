@@ -14,22 +14,20 @@
  * governing permissions and limitations under the License.
  */
 .mobi-accordion{
-    border-top: 1px solid #b5b9c0;
-    border-bottom: 1px solid #b5b9c0;
+    border-top: 1px solid #7B7B7B;
+    border-bottom: 1px solid #7B7B7B;
 }
 
 .mobi-accordion .handle {
     cursor: pointer;
     height:33px;
-    font-weight: bold;
-    color: black;
-    text-shadow: 0 1px 0 white;
-    border-top: 1px solid #d3d6db;
-    border-bottom: 1px solid #b5b9c0;
-    background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0, #F2F2F2), color-stop(1, #7B7B7B));
-    background-image: -moz-linear-gradient(top, #F2F2F2, #7B7B7B);
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorStr = '#F2F2F2', EndColorStr = '#7B7B7B');
-    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#F2F2F2', EndColorStr='#7B7B7B')";
+    color: white;
+    background: -moz-linear-gradient(top, #cccccc, #999999) repeat scroll 0 0 #999999;
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0, #cccccc), color-stop(1, #999999));
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorStr = '#cccccc', EndColorStr = '#999999');
+    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#cccccc', EndColorStr='#999999')";
+    border-bottom: 1px solid #999999;
+    border-top: 1px solid #7D7D7D;
 }
 
 .mobi-accordion section {
