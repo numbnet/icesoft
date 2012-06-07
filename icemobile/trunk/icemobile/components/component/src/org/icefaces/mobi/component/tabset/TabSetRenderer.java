@@ -159,19 +159,12 @@ public class TabSetRenderer extends BaseLayoutRenderer {
             UIComponent child = controller.getChildren().get(i);
             if (child instanceof ContentPane) {
                 ContentPane cp = (ContentPane) child;
-                boolean client = false;
-                if (cp.getCacheType().equals(ContentPane.CacheType.client.name())) {
-                    client = true;
-                }
-                String height = controller.getFixedHeight();
+                boolean client = cp.isClient();
                 writer.startElement(HTML.LI_ELEM, uiComponent);
                 writer.writeAttribute(HTML.ID_ATTR, clientId + "tab_" + i, HTML.ID_ATTR);
                 StringBuilder sb = new StringBuilder("mobi.tabsetController.showContent('").append(clientId);
                 sb.append("', this, ").append("{");
                 sb.append("singleSubmit: true, tIndex: ").append(i);
-                if (null != height) {
-                    sb.append(",height: ").append(height);
-                }
                 sb.append(",client: ").append(client);
                 sb.append("});");
                 writer.writeAttribute("onclick", sb.toString(), "onclick");
@@ -205,6 +198,7 @@ public class TabSetRenderer extends BaseLayoutRenderer {
         TabSet tabset = (TabSet) uiComponent;
         TabSet.IdIndex idIndex = tabset.resolveCurrentIdAndIndex();
         String clientId = tabset.getClientId(context);
+        String height = tabset.getFixedHeight();
         writer.startElement("span", uiComponent);
         writer.writeAttribute("id", clientId + "_script", "id");
         writer.startElement("script", null);
@@ -213,8 +207,11 @@ public class TabSetRenderer extends BaseLayoutRenderer {
         cfg.append(tabset.isSingleSubmit());
         /*     boolean autoheight = tabset.isAutoHeight();  */
         cfg.append(", tIndex: ").append(idIndex.getIndex());
-        if (tabset.isUpdatePropScriptTag()) {
-            cfg.append(", stmp: ").append(System.currentTimeMillis());
+        if (null!=height){
+            cfg.append(",height: '").append(height).append("'");
+        }
+        if (tabset.isUpdatePropScriptTag()){
+             cfg.append(", stmp: ").append(System.currentTimeMillis());
         }
         cfg.append("}");
         //just have to add behaviors if we are going to use them.
