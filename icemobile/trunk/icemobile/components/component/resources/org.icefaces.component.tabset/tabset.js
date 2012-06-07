@@ -44,12 +44,13 @@
         var cfg = cfgIn;
         var tabIndex = cfgIn.tIndex;
         if (cfgIn.height){
-            tabContainer.style.height = height;
+            tabContent.style.height = cfgIn.height;
         } else {
              var ht =  calcMaxChildHeight(tabContent);
              tabContent.style.height =  ht+"px";
         }
-        var contents = tabContent.getElementsByClassName("mobi-tabpage-hidden");
+       // var contents = tabContent.getElementsByClassName("mobi-tabpage-hidden");
+        var contents = tabContent.children;
         var newPage = contents[tabIndex];
         newPage.className="mobi-tabpage";
 
@@ -63,7 +64,7 @@
                   parent = el.parentElement;
               }
               var current = parent.getAttribute("data-current");
-              var contents = tabContent.childNodes;
+              var contents = tabContent.children;
               var oldPage = contents[current];
               oldPage.className = "mobi-tabpage-hidden";
               var currCtrl = myTabId+"tab_"+current;
@@ -86,21 +87,26 @@
            },
            updateProperties: function (clientId, cfgUpd) {
                var oldIdx = tabIndex;
-               if (cfgUpd.tIndex != tabIndex){
+            //   if (cfgUpd.tIndex != tabIndex){
                    tabIndex = cfgUpd.tIndex;
                    var tabsId = clientId+"_tabs";
                    var tabElem = document.getElementById(tabsId);
                    if (tabElem){
                      var lis = tabElem.getElementsByTagName("li");
                      var contents = tabContent.childNodes;
-                     contents[oldIdx].className = "mobi-tabpage-hidden"; //need in case change is from server
+                     if (oldIdx != tabIndex){
+                         contents[oldIdx].className = "mobi-tabpage-hidden"; //need in case change is from server
+                     }
                      contents[tabIndex].className = "mobi-tabpage";
-                     if (cfgUpd.height && cfgUpd.height != tabContainer.style.height){
-                        tabContainer.style.height = height;
+                     if (cfgUpd.height){
+                        var height = cfgUpd.height;
+                        if (height != tabContents.style.height){
+                            tabContainer.style.height = height;
+                        }
                      }
                   }
                }
-           }
+          // }
        }
     }
     mobi.tabsetController = {

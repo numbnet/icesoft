@@ -137,6 +137,9 @@ public class ContentPaneRenderer extends BaseLayoutRenderer {
         writer.startElement(HTML.DIV_ELEM, uiComponent);
         writer.writeAttribute(HTML.ID_ATTR, clientId+"_wrapper", HTML.ID_ATTR);
         String pageClass = TabSet.TABSET_HIDDEN_PAGECLASS.toString();
+        if (iAmSelected(facesContext, uiComponent)){
+            pageClass = TabSet.TABSET_ACTIVE_CONTENT_CLASS;
+        }
         writer.writeAttribute("class", pageClass, "class");
          /* write out root tag.  For current incarnation html5 semantic markup is ignored */
         writer.startElement(HTML.DIV_ELEM, uiComponent);
