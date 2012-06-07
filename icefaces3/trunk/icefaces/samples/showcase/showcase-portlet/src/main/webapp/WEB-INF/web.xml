@@ -62,6 +62,11 @@
     </context-param>
     
     <context-param>
+        <param-name>org.apache.myfaces.CHECK_ID_PRODUCTION_MODE</param-name>
+        <param-value>false</param-value>
+    </context-param>
+
+    <context-param>
         <param-name>com.icesoft.faces.gmapKey</param-name>
         <param-value>ABQIAAAAnyVJpYb9Fn-DpQ355-7u3RRt_xk8THLBnsEGa1iENo1M77z_IxRSfO_8K2owIHx-GLAeupZ-GtB6gQ</param-value>
     </context-param>
