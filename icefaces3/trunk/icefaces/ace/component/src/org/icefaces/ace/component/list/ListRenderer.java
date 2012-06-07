@@ -184,8 +184,11 @@ public class ListRenderer extends CoreRenderer {
         writer.startElement(HTML.UL_ELEM, null);
         writer.writeAttribute(HTML.CLASS_ATTR, styleClass, "bodyClass");
 
-        if (bodyHeight != null) bodyHeight = " height:"+bodyHeight+";";
-        style = bodyHeight == null ? style : style + " " + bodyHeight;
+        if (bodyHeight != null) {
+            bodyHeight = " height:"+bodyHeight+";";
+            style = style == null ? bodyHeight : style + "; " + bodyHeight;
+        }
+
         if (style != null)
             writer.writeAttribute(HTML.STYLE_ATTR, style, "bodyStyle");
 
