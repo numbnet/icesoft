@@ -137,7 +137,6 @@ public class ICEmobileContainer extends Activity
     private AlertDialog networkDialog;
     private boolean accelerated;
     private boolean c2dmIntent=false;
-    private boolean reloadOnC2dm=true;
     private String authUser;
     private String authPw;
 
@@ -220,11 +219,9 @@ public class ICEmobileContainer extends Activity
 	    switch(requestCode){
 	    case TAKE_PHOTO_CODE:
 		mCameraHandler.gotPhoto();
-		reloadOnC2dm = false;
 		break;
 	    case TAKE_VIDEO_CODE:
 		mVideoHandler.gotVideo(data);
-		reloadOnC2dm = false;
 		break;
 	    case HISTORY_CODE:
 		newURL = data.getStringExtra("url");
@@ -236,15 +233,12 @@ public class ICEmobileContainer extends Activity
             utilInterface.loadURL(
                     "javascript:ice.addHidden(ice.currentScanId, ice.currentScanId, '" +
                     scanResult + "');");
-	    reloadOnC2dm = false;
 		break;
 	    case RECORD_CODE:
 		mAudioRecorder.gotAudio(data);
-		reloadOnC2dm = false;
 		break;
 	    case ARVIEW_CODE:
 //		mARViewHandler.arViewComplete(data);
-		reloadOnC2dm = false;
 		break;
 	    }
 	}
@@ -256,14 +250,13 @@ public class ICEmobileContainer extends Activity
 	utilInterface.loadURL("javascript:ice.push.connection.resumeConnection();");
 	if (!newURL.equals(currentURL)) {
 	    loadUrl();
-	} else if ((c2dmIntent) ||
-		   (mC2dmHandler != null && mC2dmHandler.clearPendingNotification())) {
+	} else {
+	    utilInterface.loadURL("javascript:ice.ajaxRefresh();");
+	}
+	// Clear any existing C2DM notifications;
+	if (mC2dmHandler != null) {
+	    mC2dmHandler.clearPendingNotification();
 	    c2dmIntent = false;
-	    if (reloadOnC2dm) {
-		mWebView.reload();
-	    } else {
-		reloadOnC2dm = true;
-	    }
 	}
     }
 
