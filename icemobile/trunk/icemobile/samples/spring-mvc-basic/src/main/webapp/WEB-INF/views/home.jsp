@@ -34,6 +34,7 @@
 		<li><a href="<c:url value="/flipswitch" />" title="flipswitch">Flipswitch</a></li>
 		<li><a href="<c:url value="/qrscan" />" title="qrscan">QR Scanner</a></li>
 		<li><a href="<c:url value="/geolocation" />" title="geolocation">Geolocation</a></li>
+		<li><a href="<c:url value="/inputtext" />" title="inputtext">Input Text Tag</a></li>
 		<li><a href="#icehtml">ICEmobile HTML</a></li>
 		<li><a href="#exceptions">Exception Handling</a></li>
 		<li><a href="#redirect">Redirecting</a></li>
