@@ -178,15 +178,14 @@ public class ListRenderer extends CoreRenderer {
         String bodyHeight = list.getHeight();
         String styleClass = list.getBodyClass();
 
-        if (bodyHeight != null) bodyHeight = " height:"+bodyHeight+";";
-
         styleClass = styleClass == null ? bodyStyleClass : styleClass + " " + bodyStyleClass;
-        styleClass = bodyHeight == null? styleClass : styleClass + " " + bodyHeight;
         if (dropGroup != null) styleClass += " dg-" + dropGroup;
 
         writer.startElement(HTML.UL_ELEM, null);
         writer.writeAttribute(HTML.CLASS_ATTR, styleClass, "bodyClass");
 
+        if (bodyHeight != null) bodyHeight = " height:"+bodyHeight+";";
+        style = bodyHeight == null ? style : style + " " + bodyHeight;
         if (style != null)
             writer.writeAttribute(HTML.STYLE_ATTR, style, "bodyStyle");
 
