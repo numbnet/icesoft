@@ -72,9 +72,7 @@ public class AjaxUpload extends ScriptableFunction {
             //Log.e("ICEutil", "NVP=" + params.length);
             String value;
             for (int i = 0; i < params.length; i++) {
-
                 value = HttpUtils.URLdecode(params[i].getValue());
-                Logger.DEBUG("ajax.upload - name-value encountered: " + value);
 
                 if (value.indexOf(".jpg") > -1) {
                     Logger.DEBUG("ajax.upload - image part encountered: " + value);
@@ -96,6 +94,7 @@ public class AjaxUpload extends ScriptableFunction {
                     content.appendImagePart(name,
                                             value,
                                             imageVar);
+                    fconn.close();
                 } else if (value.indexOf(".amr") > -1) {
                     Logger.DEBUG("ajax.upload - audio part encountered: " + value);
                     byte[] clipBytes;
@@ -118,6 +117,7 @@ public class AjaxUpload extends ScriptableFunction {
                     content.appendAudioPart(name,
                                             value,
                                             audioVar);
+                    fconn.close();
                 } else if (value.indexOf(".3gp") > -1) {
                     Logger.DEBUG("ajax.upload - video part encountered: " + value);
                     byte[] videoBytes;
@@ -138,6 +138,7 @@ public class AjaxUpload extends ScriptableFunction {
                     content.appendVideoPart(name,
                                             value,
                                             videoVar);
+                    fconn.close();
                 } else {
                     if (params[i].getName() == null || params[i].getName().equals("")) {
                         continue;
