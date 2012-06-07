@@ -63,7 +63,6 @@ public class TabProxyBean extends ComponentExampleImpl<TabProxyBean>
     
     public void validateSelection(FacesContext context, UIComponent component, Object value) throws ValidatorException{
         Integer submitedValue = (Integer)value;
-        System.out.println("Submited value: " +submitedValue);
         if(submitedValue<0){
              throw new ValidatorException(new FacesMessage("You must select one of the options"));
         }
