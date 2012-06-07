@@ -83,7 +83,7 @@ public class CommandSortHeaderRenderer extends CommandLinkRenderer {
                     table.appendChild(tr);
                     Element textTd = domContext.createElement(HTML.TD_ELEM);
                     if (value != null) {
-                        textTd.appendChild(domContext.createTextNode(value));
+                        textTd.appendChild(domContext.createTextNodeUnescaped(value));
                     }
                     Element arrowTd = domContext.createElement(HTML.TD_ELEM);
                     tr.appendChild(textTd);
