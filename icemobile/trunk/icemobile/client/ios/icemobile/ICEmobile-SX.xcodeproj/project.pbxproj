@@ -9,6 +9,14 @@
 /* Begin PBXBuildFile section */
 		9C1F8D1F15670CC6004E59EB /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C1F8D1E15670CC6004E59EB /* MapKit.framework */; };
 		9C403FCC14845E4200FBA6BC /* QRScanner.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9C403FCB14845E4200FBA6BC /* QRScanner.mm */; };
+		9C42F738158277E00011FECC /* E.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C42F730158277E00011FECC /* E.png */; };
+		9C42F739158277E00011FECC /* E@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C42F731158277E00011FECC /* E@2x.png */; };
+		9C42F73A158277E00011FECC /* N.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C42F732158277E00011FECC /* N.png */; };
+		9C42F73B158277E00011FECC /* N@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C42F733158277E00011FECC /* N@2x.png */; };
+		9C42F73C158277E00011FECC /* S.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C42F734158277E00011FECC /* S.png */; };
+		9C42F73D158277E00011FECC /* S@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C42F735158277E00011FECC /* S@2x.png */; };
+		9C42F73E158277E00011FECC /* W.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C42F736158277E00011FECC /* W.png */; };
+		9C42F73F158277E00011FECC /* W@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C42F737158277E00011FECC /* W@2x.png */; };
 		9C46E924158259FF00EFA276 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C46E923158259FF00EFA276 /* MediaPlayer.framework */; };
 		9C4F8C3914859D3600A2B288 /* AudioController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C4F8C3714859D3600A2B288 /* AudioController.m */; };
 		9C4F8C3A14859D3600A2B288 /* AudioController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9C4F8C3814859D3600A2B288 /* AudioController.xib */; };
@@ -69,6 +77,14 @@
 		9C403FC114845A2200FBA6BC /* ZXingWidget.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ZXingWidget.xcodeproj; path = ../zxing/ZXingWidget/ZXingWidget.xcodeproj; sourceTree = "<group>"; };
 		9C403FCA14845E4200FBA6BC /* QRScanner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = QRScanner.h; path = Shared/QRScanner.h; sourceTree = "<group>"; };
 		9C403FCB14845E4200FBA6BC /* QRScanner.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = QRScanner.mm; path = Shared/QRScanner.mm; sourceTree = "<group>"; };
+		9C42F730158277E00011FECC /* E.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = E.png; path = Shared/E.png; sourceTree = "<group>"; };
+		9C42F731158277E00011FECC /* E@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "E@2x.png"; path = "Shared/E@2x.png"; sourceTree = "<group>"; };
+		9C42F732158277E00011FECC /* N.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = N.png; path = Shared/N.png; sourceTree = "<group>"; };
+		9C42F733158277E00011FECC /* N@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "N@2x.png"; path = "Shared/N@2x.png"; sourceTree = "<group>"; };
+		9C42F734158277E00011FECC /* S.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = S.png; path = Shared/S.png; sourceTree = "<group>"; };
+		9C42F735158277E00011FECC /* S@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "S@2x.png"; path = "Shared/S@2x.png"; sourceTree = "<group>"; };
+		9C42F736158277E00011FECC /* W.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = W.png; path = Shared/W.png; sourceTree = "<group>"; };
+		9C42F737158277E00011FECC /* W@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "W@2x.png"; path = "Shared/W@2x.png"; sourceTree = "<group>"; };
 		9C46E923158259FF00EFA276 /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
 		9C4F8C3614859D3600A2B288 /* AudioController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AudioController.h; path = Shared/AudioController.h; sourceTree = "<group>"; };
 		9C4F8C3714859D3600A2B288 /* AudioController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AudioController.m; path = Shared/AudioController.m; sourceTree = "<group>"; };
@@ -154,6 +170,14 @@
 		9C1BEADD155473E400795020 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				9C42F730158277E00011FECC /* E.png */,
+				9C42F731158277E00011FECC /* E@2x.png */,
+				9C42F732158277E00011FECC /* N.png */,
+				9C42F733158277E00011FECC /* N@2x.png */,
+				9C42F734158277E00011FECC /* S.png */,
+				9C42F735158277E00011FECC /* S@2x.png */,
+				9C42F736158277E00011FECC /* W.png */,
+				9C42F737158277E00011FECC /* W@2x.png */,
 				9C517338155DACE200090828 /* ARView.h */,
 				9C517339155DACE300090828 /* ARView.m */,
 				9C517335155DA99C00090828 /* PlaceLabel.h */,
@@ -358,6 +382,14 @@
 				9C7A1065156BF9AD0013D23D /* MapController.xib in Resources */,
 				9C7A1E89156C24E70013D23D /* ar.png in Resources */,
 				9C7A1E8A156C24E70013D23D /* ar@2x.png in Resources */,
+				9C42F738158277E00011FECC /* E.png in Resources */,
+				9C42F739158277E00011FECC /* E@2x.png in Resources */,
+				9C42F73A158277E00011FECC /* N.png in Resources */,
+				9C42F73B158277E00011FECC /* N@2x.png in Resources */,
+				9C42F73C158277E00011FECC /* S.png in Resources */,
+				9C42F73D158277E00011FECC /* S@2x.png in Resources */,
+				9C42F73E158277E00011FECC /* W.png in Resources */,
+				9C42F73F158277E00011FECC /* W@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
