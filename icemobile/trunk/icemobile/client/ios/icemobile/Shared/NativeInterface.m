@@ -20,6 +20,7 @@
 #import "ARViewController.h"
 #import "PlaceLabel.h"
 #import "MobileCoreServices/MobileCoreServices.h"
+#import "MediaPlayer/MediaPlayer.h"
 
 @implementation NativeInterface
 
@@ -84,6 +85,8 @@ static char base64EncodingTable[64] = {
                   maxheight:[params objectForKey:@"maxheight"] ];
     } else if ([@"camcorder" isEqualToString:commandName])  {
         [self camcorder:[params objectForKey:@"id"]];
+    } else if ([@"upload" isEqualToString:commandName])  {
+        [self upload:[params objectForKey:@"id"]];
     } else if ([@"microphone" isEqualToString:commandName])  {
         [self microphone:[params objectForKey:@"id"]];
     } else if ([@"play" isEqualToString:commandName])  {
@@ -266,6 +269,17 @@ NSLog(@"called camera");
     NSString *cameraName = cameraId;
     NSURL *movieURL = [info objectForKey: UIImagePickerControllerMediaURL];
     NSString *moviePath = [movieURL path];
+
+    MPMoviePlayerController *movieController = 
+            [[MPMoviePlayerController alloc] initWithContentURL:movieURL];
+    movieController.shouldAutoplay = NO;
+    movieController.initialPlaybackTime = 0;
+    movieController.currentPlaybackTime = 0;
+    UIImage *image = [movieController thumbnailImageAtTime:0 
+                           timeOption:MPMovieTimeOptionNearestKeyFrame];
+
+    UIImage *scaledImage = [self scaleImage:image toSize:64];
+    [self setThumbnail:scaledImage at:cameraId];
 
     [controller completeFile:moviePath
             forComponent:cameraId withName:cameraName];
@@ -483,7 +497,8 @@ NSLog(@"NativeInterface aug selected %@", augResult);
     }
     self.uploading = YES;
     self.activeDOMElementId = formId;
-    
+
+    [controller setProgress:0];
     NSString* actionURL = [controller prepareUpload:formId];
     NSDictionary *parts = [self parseQuery:[controller getFormData:formId]];
     [self multipartPost:parts toURL:actionURL];

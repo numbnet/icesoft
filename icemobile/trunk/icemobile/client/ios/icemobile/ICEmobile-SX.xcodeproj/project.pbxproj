@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		9C1F8D1F15670CC6004E59EB /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C1F8D1E15670CC6004E59EB /* MapKit.framework */; };
 		9C403FCC14845E4200FBA6BC /* QRScanner.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9C403FCB14845E4200FBA6BC /* QRScanner.mm */; };
+		9C46E924158259FF00EFA276 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C46E923158259FF00EFA276 /* MediaPlayer.framework */; };
 		9C4F8C3914859D3600A2B288 /* AudioController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C4F8C3714859D3600A2B288 /* AudioController.m */; };
 		9C4F8C3A14859D3600A2B288 /* AudioController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9C4F8C3814859D3600A2B288 /* AudioController.xib */; };
 		9C51732F155DA6E600090828 /* ARViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C51732D155DA6E600090828 /* ARViewController.m */; };
@@ -68,6 +69,7 @@
 		9C403FC114845A2200FBA6BC /* ZXingWidget.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ZXingWidget.xcodeproj; path = ../zxing/ZXingWidget/ZXingWidget.xcodeproj; sourceTree = "<group>"; };
 		9C403FCA14845E4200FBA6BC /* QRScanner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = QRScanner.h; path = Shared/QRScanner.h; sourceTree = "<group>"; };
 		9C403FCB14845E4200FBA6BC /* QRScanner.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = QRScanner.mm; path = Shared/QRScanner.mm; sourceTree = "<group>"; };
+		9C46E923158259FF00EFA276 /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
 		9C4F8C3614859D3600A2B288 /* AudioController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AudioController.h; path = Shared/AudioController.h; sourceTree = "<group>"; };
 		9C4F8C3714859D3600A2B288 /* AudioController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AudioController.m; path = Shared/AudioController.m; sourceTree = "<group>"; };
 		9C4F8C3814859D3600A2B288 /* AudioController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = AudioController.xib; path = Shared/AudioController.xib; sourceTree = "<group>"; };
@@ -128,6 +130,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9C46E924158259FF00EFA276 /* MediaPlayer.framework in Frameworks */,
 				9C1F8D1F15670CC6004E59EB /* MapKit.framework in Frameworks */,
 				9C51734A155DB17900090828 /* CoreMotion.framework in Frameworks */,
 				9C517348155DB16700090828 /* QuartzCore.framework in Frameworks */,
@@ -213,6 +216,7 @@
 			isa = PBXGroup;
 			children = (
 				9C9314781485505200B21FA1 /* libiconv.dylib */,
+				9C46E923158259FF00EFA276 /* MediaPlayer.framework */,
 				9C1F8D1E15670CC6004E59EB /* MapKit.framework */,
 				9C517349155DB17900090828 /* CoreMotion.framework */,
 				9C517347155DB16700090828 /* QuartzCore.framework */,
