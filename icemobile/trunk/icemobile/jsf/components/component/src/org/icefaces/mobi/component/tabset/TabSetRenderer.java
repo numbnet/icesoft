@@ -153,6 +153,7 @@ public class TabSetRenderer extends BaseLayoutRenderer {
         String percentWidth = "width:" + (100/tabsNum) + "%" ;
 
         writer.startElement(HTML.UL_ELEM, uiComponent);
+        writer.writeAttribute(HTML.ID_ATTR, clientId+"_dc", HTML.ID_ATTR);
         writer.writeAttribute("data-current", idIndex.getIndex(), null);
         for (int i = 0; i < tabsNum; i++) {
             //check to see that children are of type contentPane

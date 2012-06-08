@@ -80,10 +80,6 @@ public class ContentPaneMeta extends UIPanelMeta{
                      " only relevant if this attribute is false.")
      private boolean client;
 
-    /* @Property(defaultValue="constructed",
-             tlddoc = "cache type.  Options currently include client, constructed and tobeconstructed")
-     private String cacheType;   */
-
      @Property(defaultValue="false",
              tlddoc = " menuOrHome attribute means that this contentPane contains either a layoutMenu or Home page for a single " +
                      "page application.  default is false, so be sure to set it if you have a menu page and " +
