@@ -24,7 +24,15 @@
     </target>
 
     <target name="build">
-        <subant>
+        <subant target="build">
+            <fileset dir="."
+                     includes="*/build.xml">
+            </fileset>
+        </subant>
+    </target>
+
+    <target name="docs">
+        <subant target="docs">
             <fileset dir="."
                      includes="*/build.xml">
             </fileset>
