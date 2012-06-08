@@ -29,9 +29,10 @@
     <property file="./build.properties"/>
     <property file="../build.properties"/>
     <property file="../../build.properties"/>
+    <property file="../../../build.properties"/>
 
 
-    <property name="lib.dir" location="../../lib"/>
+    <property name="lib.dir" location="../../../lib"/>
     <property name="src" location="src"/>
     <property name="resources" location="resources"/>
     <property name="build" location="build"/>

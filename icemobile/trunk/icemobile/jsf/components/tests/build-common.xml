@@ -18,8 +18,9 @@
     <property file="./build.properties"/>
     <property file="../build/build.properties"/>
     <property file="../../../build.properties"/>
+    <property file="../../../../build.properties"/>
 
-    <property name="lib.dir" location="../../../lib"/>
+    <property name="lib.dir" location="../../../../lib"/>
     <property name="java.dir" location="./src/main/java"/>
     <property name="res.dir" location="./src/main/resources"/>
     <property name="web.dir" location="./src/main/webapp"/> 
