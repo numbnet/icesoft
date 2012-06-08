@@ -17,7 +17,7 @@ import java.util.Set;
 
 public class ListRenderer extends CoreRenderer {
     public static final String containerStyleClass = "if-list ui-widget ui-widget-content ui-corner-all";
-    public static final String controlsContainerStyleClass = "if-list-ctrls ui-widget-content";
+    public static final String controlsContainerStyleClass = "if-list-ctrls";
     public static final String pointerStyleClass = "if-pntr";
     public static final String bodyStyleClass = "if-list-body";
     public static final String itemStyleClass = "if-list-item ui-state-default";

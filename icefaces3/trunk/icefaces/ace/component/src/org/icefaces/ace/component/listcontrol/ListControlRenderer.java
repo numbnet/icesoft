@@ -58,7 +58,7 @@ public class ListControlRenderer extends CoreRenderer {
         if (!dualListMode || position.equals(DualListPosition.TOP) || position.equals(DualListPosition.BOTH) || position.equals(DualListPosition.ALL)) {
             if (dualListMode) {
                 writer.startElement(HTML.DIV_ELEM, null);
-                writer.writeAttribute(HTML.CLASS_ATTR, containerStyleClass+"-content", null);
+                writer.writeAttribute(HTML.CLASS_ATTR, containerStyleClass.substring(0, containerStyleClass.indexOf(" ")), null);
             }
             encodeControls(context, writer, control);
             if (dualListMode) {
@@ -186,7 +186,7 @@ public class ListControlRenderer extends CoreRenderer {
 
         if (middleMode) {
             writer.startElement(HTML.SPAN_ELEM, null);
-            writer.writeAttribute(HTML.CLASS_ATTR, containerStyleClass+"-content ui-corner-all", null);
+            writer.writeAttribute(HTML.CLASS_ATTR, containerStyleClass.substring(0, containerStyleClass.indexOf(" "))+" ui-corner-all", null);
             encodeControls(context, writer, control);
             writer.endElement(HTML.SPAN_ELEM);
         }
@@ -215,7 +215,7 @@ public class ListControlRenderer extends CoreRenderer {
         if (dualListMode && position.equals(DualListPosition.BOTTOM) || position.equals(DualListPosition.BOTH) || position.equals(DualListPosition.ALL)) {
             if (dualListMode) {
                 writer.startElement(HTML.DIV_ELEM, null);
-                writer.writeAttribute(HTML.CLASS_ATTR, containerStyleClass+"-content", null);
+                writer.writeAttribute(HTML.CLASS_ATTR, containerStyleClass.substring(0, containerStyleClass.indexOf(" ")), null);
             }
             encodeControls(context, writer, control);
             if (dualListMode) {
