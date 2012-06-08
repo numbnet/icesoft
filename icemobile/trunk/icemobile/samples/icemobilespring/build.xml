@@ -14,7 +14,7 @@
   ~ governing permissions and limitations under the License.
   -->
 
-<project name="spring-mvc-basic" default="web-profile">
+<project name="icemobilespring" default="web-profile">
 
     <property name="no-icefaces" value="no-icefaces"/>
     <property file="./build.properties"/>
