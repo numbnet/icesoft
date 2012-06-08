@@ -72,7 +72,7 @@
             <fileset dir="./jsp" includes="build.xml" />
         </ice:subant>
         <ice:subant target="all">
-            <fileset dir="./components" includes="build.xml" />
+            <fileset dir="./jsf" includes="build.xml" />
         </ice:subant>
         <ice:subant target="all">
             <fileset dir="./samples" includes="build.xml" />
@@ -94,7 +94,7 @@
 
     <target name="build.common">
         <ice:subant>
-            <filelist dir="." files="components, samples"/>
+            <filelist dir="." files="jsf, samples"/>
         </ice:subant>
     </target>
 
@@ -112,13 +112,13 @@
         <delete dir="${dist.dir}"/>
         <delete dir="${docs.dir}"/>
         <ice:subant target="clean">
-            <filelist dir="." files="components, samples"/>
+            <filelist dir="." files="jsf, samples"/>
         </ice:subant>
     </target>
 
     <target name="clean.bin">
         <ice:subant target="clean">
-            <filelist dir="." files="components, samples"/>
+            <filelist dir="." files="jsf, samples"/>
         </ice:subant>
     </target>
 
@@ -139,7 +139,7 @@
                 <zipfileset dir="." prefix="${bin.bundle.prefix}"  >
                     <exclude name="dist/"/>
                     <exclude name="client/"/>
-                    <exclude name="components/"/>
+                    <exclude name="jsf/"/>
                     <exclude name="lib/generator/"/>
                     <!-- trim component build script for binary bundle -->
                     <exclude name="build.xml" />
@@ -174,7 +174,7 @@
         <sequential>
 
             <ice:subant target="build">
-                <fileset dir="./components" includes="build.xml" />
+                <fileset dir="./jsf" includes="build.xml" />
                 <propertyset refid="product.info"/>
             </ice:subant>
             <ice:subant target="all">
@@ -186,15 +186,15 @@
          
             <!-- Create the component JavaDocs and TLD documentation -->
             <subant target="docs" failonerror="true" verbose="true">
-                <fileset dir="./components" includes="build.xml"/>
+                <fileset dir="./jsf" includes="build.xml"/>
             </subant> 
    
             
             <mkdir dir="${docs.dir}/mobi/tld/"/>
             <mkdir dir="${docs.dir}/mobi/api/"/>
-            <move file="./components/component/build/doc/tld" 
+            <move file="./jsf/components/component/build/doc/tld" 
                 tofile="${docs.dir}/mobi/tld/"/>
-            <move file="./components/component/build/doc/javadoc" 
+            <move file="./jsf/components/component/build/doc/javadoc" 
                 tofile="${docs.dir}/mobi/api/"/>
                 
            

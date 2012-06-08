@@ -18,6 +18,7 @@
 
     <property file="./build.properties"/>
     <property file="../build.properties"/>
+    <property file="../../build.properties"/>
 
     <target name="all">
         <subant>
