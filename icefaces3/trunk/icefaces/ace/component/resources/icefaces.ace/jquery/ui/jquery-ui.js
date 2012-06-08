@@ -7488,16 +7488,20 @@ $.extend(Datepicker.prototype, {
             if ($.trim(input.val()) == "") {
                 input.val(inst.settings.inFieldLabel);
                 input.addClass(inst.settings.inFieldLabelStyleClass);
-                input.data("labelIsInField", true);
+//                input.data("labelIsInField", true);
             }
         };
         var delLabel = function() {
             var input = $(this);
             var inst = $.datepicker._getInst(this);
-            if (input.data("labelIsInField")) {
+//            var labelIsInField = input.data("labelIsInField");
+//            if (labelIsInField == undefined) labelIsInField = inst.settings.inFieldLabel;
+            var inFieldLabelStyleClass = inst.settings.inFieldLabelStyleClass;
+//            if (labelIsInField) {
+            if (input.hasClass(inFieldLabelStyleClass)) {
                 input.val("");
-                input.removeClass(inst.settings.inFieldLabelStyleClass);
-                input.data("labelIsInField", false);
+                input.removeClass(inFieldLabelStyleClass);
+//                input.data("labelIsInField", false);
             }
         };
         if (inst.append)
@@ -7513,9 +7517,6 @@ $.extend(Datepicker.prototype, {
 			inst.trigger.remove();
         // ICE-8154: in-field label handling
         if (inst.settings.inFieldLabel) {
-            if (input.data("labelIsInField") == undefined) {
-                input.data("labelIsInField", inst.settings.labelIsInField);
-            }
             input.focus(delLabel).blur(addLabel);
         }
         var showOn = this._get(inst, 'showOn');
@@ -8229,9 +8230,19 @@ $.extend(Datepicker.prototype, {
 		var target = $(id);
 		var inst = this._getInst(target[0]);
 		dateStr = (dateStr != null ? dateStr : this._formatDate(inst));
-		if (inst.input)
-			inst.input.val(dateStr);
-		this._updateAlternate(inst);
+        if (inst.input) {
+            inst.input.val(dateStr);
+            var input = inst.input;
+            var inFieldLabel = inst.settings.inFieldLabel;
+            var inFieldLabelStyleClass = inst.settings.inFieldLabelStyleClass;
+            if (!input.is(":focus") && $.trim(dateStr) == "" && inFieldLabel) {
+                input.val(inFieldLabel);
+                input.addClass(inFieldLabelStyleClass);
+            } else {
+                input.removeClass(inFieldLabelStyleClass);
+            }
+        }
+        this._updateAlternate(inst);
 		var onSelect = this._get(inst, 'onSelect');
 		if (onSelect)
 			onSelect.apply((inst.input ? inst.input[0] : null), [dateStr, inst]);  // trigger custom callback
