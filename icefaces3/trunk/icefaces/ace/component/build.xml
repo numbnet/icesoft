@@ -226,6 +226,7 @@
         <delete file="${ace-components.js.tmp}" verbose="true"/>
         <concat destfile="${ace-components.js.tmp}" force="true" fixlastline="true">
             <filelist dir="${resources}">
+                <file name="icefaces.ace/datetimeentry/jquery-ui-timepicker-addon.js"/>
                 <file name="icefaces.ace/datetimeentry/datetimeentry.js"/>
                 <file name="icefaces.ace/maskedentry/maskedentry.js"/>
                 <file name="icefaces.ace/textentry/textentry.js"/>

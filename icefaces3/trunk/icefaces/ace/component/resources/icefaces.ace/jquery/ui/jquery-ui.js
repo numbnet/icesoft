@@ -7482,16 +7482,43 @@ $.extend(Datepicker.prototype, {
 	_attachments: function(input, inst) {
 		var appendText = this._get(inst, 'appendText');
 		var isRTL = this._get(inst, 'isRTL');
-		if (inst.append)
+        var addLabel = function() {
+            var input = $(this);
+            var inst = $.datepicker._getInst(this);
+            if ($.trim(input.val()) == "") {
+                input.val(inst.settings.inFieldLabel);
+                input.addClass(inst.settings.inFieldLabelStyleClass);
+                input.data("labelIsInField", true);
+            }
+        };
+        var delLabel = function() {
+            var input = $(this);
+            var inst = $.datepicker._getInst(this);
+            if (input.data("labelIsInField")) {
+                input.val("");
+                input.removeClass(inst.settings.inFieldLabelStyleClass);
+                input.data("labelIsInField", false);
+            }
+        };
+        if (inst.append)
 			inst.append.remove();
 		if (appendText) {
 			inst.append = $('<span class="' + this._appendClass + '">' + appendText + '</span>');
 			input[isRTL ? 'before' : 'after'](inst.append);
 		}
 		input.unbind('focus', this._showDatepicker);
-		if (inst.trigger)
+        input.unbind('focus', delLabel);
+        input.unbind('blur', addLabel);
+        if (inst.trigger)
 			inst.trigger.remove();
-		var showOn = this._get(inst, 'showOn');
+        // ICE-8154: in-field label handling
+        if (inst.settings.inFieldLabel) {
+            if (input.data("labelIsInField") == undefined) {
+                input.data("labelIsInField", inst.settings.labelIsInField);
+            }
+            input.focus(delLabel).blur(addLabel);
+        }
+        var showOn = this._get(inst, 'showOn');
 		if (showOn == 'focus' || showOn == 'both') // pop-up date picker when in the marked field
 			input.focus(this._showDatepicker);
 		if (showOn == 'button' || showOn == 'both') { // pop-up date picker when button clicked

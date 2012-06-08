@@ -114,14 +114,12 @@ public class DateTimeEntryRenderer extends InputRenderer {
         if(!isValueBlank(value)) {
             writer.writeAttribute("value", value, null);
         } else if (popup) {
-/*
             String inFieldLabel = (String) labelAttributes.get("inFieldLabel");
             if (!isValueBlank(inFieldLabel)) {
                 writer.writeAttribute("value", inFieldLabel, null);
                 styleClasses += " " + IN_FIELD_LABEL_STYLE_CLASS;
                 labelAttributes.put("labelIsInField", true);
             }
-*/
         }
 
         if(popup) {
