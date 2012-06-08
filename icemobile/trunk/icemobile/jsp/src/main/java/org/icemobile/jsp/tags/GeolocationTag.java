@@ -64,7 +64,7 @@ public class GeolocationTag extends SimpleTagSupport {
 
         // todo: behaviours (?) and singleSubmit
 
-        String finalScript = "navigator.geolocation.getCurrentPosition(function(pos){"+ sb.toString() + "});";
+        String finalScript = "navigator.geolocation.watchPosition(function(pos){"+ sb.toString() + "});";
         out.write("<script ");
         if (id != null && !"".equals(id)) {
             out.write("id =\'" + id + "_script\'>");
