@@ -15,7 +15,7 @@
 */
 
 #import "MainViewController.h"
-#import "OldNativeInterface.h"
+#import "NativeInterface.h"
 #import "Preferences.h"
 #import <QRCodeReader.h>
 #import <ZXingWidgetController.h>
@@ -47,7 +47,7 @@
     self.webView.mediaPlaybackRequiresUserAction = NO;
     self.webView.allowsInlineMediaPlayback = YES;
 
-    self.nativeInterface = [[OldNativeInterface alloc] init];
+    self.nativeInterface = [[NativeInterface alloc] init];
     self.nativeInterface.controller = self;
     self.nativeInterface.uploading = NO;
     self.canRetry = YES;

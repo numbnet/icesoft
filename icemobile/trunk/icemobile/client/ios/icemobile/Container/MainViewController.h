@@ -17,7 +17,7 @@
 #import <UIKit/UIKit.h>
 #import "ZXingWidgetController.h"
 #import "NativeInterfaceViewController.h"
-@class OldNativeInterface;
+@class NativeInterface;
 @class Preferences;
 
 @interface MainViewController : UIViewController<NativeInterfaceViewController,UIWebViewDelegate,
@@ -28,7 +28,7 @@
     NSURLResponse *currentResponse;
     NSMutableData *receivedData;
     NSURLAuthenticationChallenge *currentChallenge;
-    OldNativeInterface *nativeInterface;
+    NativeInterface *nativeInterface;
     Preferences *preferences;
     NSString *userAgent;
     NSString *hexDeviceToken;
@@ -45,7 +45,7 @@
 @property (retain) NSURLResponse *currentResponse;
 @property (retain) NSMutableData *receivedData;
 @property (retain) NSURLAuthenticationChallenge *currentChallenge;
-@property (retain) OldNativeInterface *nativeInterface;
+@property (retain) NativeInterface *nativeInterface;
 @property (retain) Preferences *preferences;
 @property (nonatomic, retain) NSString *userAgent;
 @property (nonatomic, retain) NSString *hexDeviceToken;
