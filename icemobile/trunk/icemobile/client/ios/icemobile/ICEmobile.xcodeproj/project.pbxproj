@@ -37,6 +37,14 @@
 		9C3B27951427AEB500409376 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C3B27941427AEB500409376 /* AudioToolbox.framework */; };
 		9C3B27971427AFAF00409376 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C3B27961427AFAF00409376 /* CoreVideo.framework */; };
 		9C3B27991427B01100409376 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C3B27981427B01100409376 /* CoreMedia.framework */; };
+		9C42F71E15826FE80011FECC /* E.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C42F71615826FE80011FECC /* E.png */; };
+		9C42F71F15826FE80011FECC /* E@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C42F71715826FE80011FECC /* E@2x.png */; };
+		9C42F72015826FE80011FECC /* N.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C42F71815826FE80011FECC /* N.png */; };
+		9C42F72115826FE80011FECC /* N@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C42F71915826FE80011FECC /* N@2x.png */; };
+		9C42F72215826FE80011FECC /* S.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C42F71A15826FE80011FECC /* S.png */; };
+		9C42F72315826FE80011FECC /* S@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C42F71B15826FE80011FECC /* S@2x.png */; };
+		9C42F72415826FE80011FECC /* W.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C42F71C15826FE80011FECC /* W.png */; };
+		9C42F72515826FE80011FECC /* W@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C42F71D15826FE80011FECC /* W@2x.png */; };
 		9C46E93115825B3000EFA276 /* NativeInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C46E93015825B3000EFA276 /* NativeInterface.m */; };
 		9C65FC2E137C9E5500530472 /* Preferences.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C65FC2C137C9E5500530472 /* Preferences.m */; };
 		9C65FC2F137C9E5500530472 /* Preferences.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9C65FC2D137C9E5500530472 /* Preferences.xib */; };
@@ -101,6 +109,14 @@
 		9C3B27941427AEB500409376 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		9C3B27961427AFAF00409376 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
 		9C3B27981427B01100409376 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
+		9C42F71615826FE80011FECC /* E.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = E.png; path = Shared/E.png; sourceTree = "<group>"; };
+		9C42F71715826FE80011FECC /* E@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "E@2x.png"; path = "Shared/E@2x.png"; sourceTree = "<group>"; };
+		9C42F71815826FE80011FECC /* N.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = N.png; path = Shared/N.png; sourceTree = "<group>"; };
+		9C42F71915826FE80011FECC /* N@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "N@2x.png"; path = "Shared/N@2x.png"; sourceTree = "<group>"; };
+		9C42F71A15826FE80011FECC /* S.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = S.png; path = Shared/S.png; sourceTree = "<group>"; };
+		9C42F71B15826FE80011FECC /* S@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "S@2x.png"; path = "Shared/S@2x.png"; sourceTree = "<group>"; };
+		9C42F71C15826FE80011FECC /* W.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = W.png; path = Shared/W.png; sourceTree = "<group>"; };
+		9C42F71D15826FE80011FECC /* W@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "W@2x.png"; path = "Shared/W@2x.png"; sourceTree = "<group>"; };
 		9C46E92F15825B3000EFA276 /* NativeInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NativeInterface.h; path = Shared/NativeInterface.h; sourceTree = "<group>"; };
 		9C46E93015825B3000EFA276 /* NativeInterface.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NativeInterface.m; path = Shared/NativeInterface.m; sourceTree = "<group>"; };
 		9C65FC2B137C9E5500530472 /* Preferences.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Preferences.h; path = Container/Preferences.h; sourceTree = "<group>"; };
@@ -239,6 +255,14 @@
 		9C1923F415547F9500A6BE22 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				9C42F71615826FE80011FECC /* E.png */,
+				9C42F71715826FE80011FECC /* E@2x.png */,
+				9C42F71815826FE80011FECC /* N.png */,
+				9C42F71915826FE80011FECC /* N@2x.png */,
+				9C42F71A15826FE80011FECC /* S.png */,
+				9C42F71B15826FE80011FECC /* S@2x.png */,
+				9C42F71C15826FE80011FECC /* W.png */,
+				9C42F71D15826FE80011FECC /* W@2x.png */,
 				9C46E92F15825B3000EFA276 /* NativeInterface.h */,
 				9C46E93015825B3000EFA276 /* NativeInterface.m */,
 				9CF130DB157FC6F500F8F0A4 /* QRScanner.h */,
@@ -359,6 +383,14 @@
 				9C285F3D155DD31400BAC772 /* ARViewController_iPad.xib in Resources */,
 				9C285F3E155DD31400BAC772 /* ARViewController_iPhone.xib in Resources */,
 				9CCD002015742B270012893A /* MapController.xib in Resources */,
+				9C42F71E15826FE80011FECC /* E.png in Resources */,
+				9C42F71F15826FE80011FECC /* E@2x.png in Resources */,
+				9C42F72015826FE80011FECC /* N.png in Resources */,
+				9C42F72115826FE80011FECC /* N@2x.png in Resources */,
+				9C42F72215826FE80011FECC /* S.png in Resources */,
+				9C42F72315826FE80011FECC /* S@2x.png in Resources */,
+				9C42F72415826FE80011FECC /* W.png in Resources */,
+				9C42F72515826FE80011FECC /* W@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

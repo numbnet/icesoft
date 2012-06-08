@@ -196,16 +196,22 @@ void ecefToEnu(double lat, double lon, double x, double y, double z, double xr, 
     }
 NSLog(@"addCompassPoints anchored %f,%f", location.coordinate.latitude, location.coordinate.longitude);
 
-    PlaceLabel *northLabel = [PlaceLabel placeLabelWithText:@"NORTH" 
+    UIImage *icon;
+
+    icon = [UIImage imageNamed:@"N.png"];
+    PlaceLabel *northLabel = [PlaceLabel placeLabelWithText:@"" andImage:icon
             initWithLatitude:(location.coordinate.latitude + 0.01f)
             longitude:(location.coordinate.longitude)];
-    PlaceLabel *southLabel = [PlaceLabel placeLabelWithText:@"SOUTH" 
+    icon = [UIImage imageNamed:@"S.png"];
+    PlaceLabel *southLabel = [PlaceLabel placeLabelWithText:@"" andImage:icon
             initWithLatitude:(location.coordinate.latitude - 0.01f)
             longitude:(location.coordinate.longitude)];
-    PlaceLabel *eastLabel = [PlaceLabel placeLabelWithText:@"EAST" 
+    icon = [UIImage imageNamed:@"E.png"];
+    PlaceLabel *eastLabel = [PlaceLabel placeLabelWithText:@"" andImage:icon
             initWithLatitude:(location.coordinate.latitude)
             longitude:(location.coordinate.longitude + 0.01f)];
-    PlaceLabel *westLabel = [PlaceLabel placeLabelWithText:@"WEST" 
+    icon = [UIImage imageNamed:@"W.png"];
+    PlaceLabel *westLabel = [PlaceLabel placeLabelWithText:@"" andImage:icon
             initWithLatitude:(location.coordinate.latitude)
             longitude:(location.coordinate.longitude - 0.01f)];
 
