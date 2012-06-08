@@ -93,20 +93,10 @@ ice.ace.Calendar.prototype.configureLocale = function() {
 
 ice.ace.Calendar.prototype.bindDateSelectListener = function() {
     var _self = this;
-    var delLabel = function(inst) {
-        if (!inst.inline) {
-            inst.input.removeClass(inst.settings.inFieldLabelStyleClass);
-            inst.input.data("labelIsInField", false);
-        }
-    };
 
-    this.cfg.onSelect = function(dateText, inst) {
-        delLabel(inst);
-    };
     if(this.cfg.behaviors) {
-        this.cfg.onSelect = function(dateText, inst) {
+        this.cfg.onSelect = function(dateText, input) {
             var dateSelectBehavior = _self.cfg.behaviors['dateSelect'];
-            delLabel(inst);
 
             if (dateSelectBehavior)
                 ice.ace.ab.call(_self, dateSelectBehavior);
