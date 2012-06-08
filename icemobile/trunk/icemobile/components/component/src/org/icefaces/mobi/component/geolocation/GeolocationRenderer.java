@@ -119,7 +119,7 @@ public class GeolocationRenderer extends CoreRenderer {
                 String ssCall = "ice.se(null, '"+clientId+"');";
                 sb.append(ssCall);
             }
-            String finalScript = "navigator.geolocation.getCurrentPosition(function(pos) { " +  sb.toString() + "} );";
+            String finalScript = "navigator.geolocation.watchPosition(function(pos) { " +  sb.toString() + "} );";
             writer.startElement("script", uiComponent);
             writer.writeAttribute("id", clientId+"_script", "id");
             writer.write(finalScript);
