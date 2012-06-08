@@ -104,12 +104,13 @@ public class ListMeta extends UIDataMeta {
 
 
 
-    @Property(tlddoc = "Enables item selection via clicking. Note that each click begins a " +
-            "new selection, while CTRL (or Command) + Click adds to (or removes from) the selection. " +
-            "Shift + Click will add to the selection all unselected items between the previous selection " +
-            "(or deselection) and the clicked item, inclusive of the clicked item itself.",
-            defaultValue = "false", defaultValueType = DefaultValueType.EXPRESSION)
-    private Boolean selection;
+    @Property(tlddoc = "Enables item selection via clicking when defined as \"multiple\" or \"single\". " +
+            "The default value of the property is null; this and any value other than \"multiple\" or " +
+            "\"single\" disables selection for the list. Note that each click begins a " +
+            "new selection. If \"multiple\" is set, CTRL (or Command) + Click adds to (or removes from) " +
+            "the selection, and Shift + Click will add to the selection all unselected items between the previous selection " +
+            "(or deselection) and the clicked item (inclusive of the clicked item itself).")
+    private String selectionMode;
 
     @Property(tlddoc = "Enable single item migration to the next list in the first matching " +
             "ListControl via item double clicks; with reverse migation via shift double clicks. " +

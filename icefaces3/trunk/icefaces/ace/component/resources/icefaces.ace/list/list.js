@@ -82,6 +82,7 @@ ice.ace.List.prototype.itemReceiveHandler = function(event, ui) {
     // dragged item.
     if (src.cfg.selection) {
         this.deselectConnectedLists();
+        this.deselectAll();
         src.addSelectedItem(item, fromIndex);
     }
 
@@ -142,15 +143,31 @@ ice.ace.List.prototype.dragToHandler = function(event, ui) {
         if (!ui.item.is(':hover')) self.itemLeave({currentTarget : item});
     }, 100);
 
-    if (ui.item.closest(this.jqId).length > 0) {
+    /*
+        For an odd reason jq.closest() returns no results incorrectly here for some IDs.
+        I have the feeling it doesn't process the escaping in the selector for the ':' character correctly */
+    if (ui.item.parents(this.jqId).length > 0) {
         var swapRecords = this.read('reorderings'),
             recordStart = swapRecords.length,
             index = ui.item.index(),
             lower = (index > this.startIndex),
             to = ui.item,
-            from = lower ? to.prev() : to.next();
+            from = lower ? to.prev() : to.next(),
+            id = item.attr('id'),
+            idIndex = parseInt(id.substr(id.lastIndexOf(this.sep)+1));
+
+        idIndex = this.getUnshiftedIndex(
+                        this.element.find('> ul').children().length,
+                        this.read('reorderings'),
+                        idIndex);
 
         if (index != this.startIndex) do {
+            if (this.cfg.selection) {
+                this.deselectAll();
+                this.deselectConnectedLists();
+                this.addSelectedItem(item, idIndex);
+            }
+
             var record = [];
             record.push(from.index());
             record.push(to.index());
@@ -256,6 +273,7 @@ ice.ace.List.prototype.itemDoubleClickHandler = function(e) {
 
     if (this.cfg.selection) {
         to.deselectConnectedLists();
+        to.deselectAll();
         this.addSelectedItem(item, fromIndex);
     }
 
@@ -290,8 +308,9 @@ ice.ace.List.prototype.pendingClickHandling;
 ice.ace.List.prototype.itemClickHandler = function(e) {
     if (this.pendingClickHandling == undefined) {
         var li = e.currentTarget,
-                jqLi = ice.ace.jq(li),
-                self = this;
+            jqLi = ice.ace.jq(li),
+            self = this,
+            timeout = this.cfg.dblclk_migrate ? 250 : 0;
 
         this.pendingClickHandling =
             setTimeout(function () {
@@ -303,7 +322,10 @@ ice.ace.List.prototype.itemClickHandler = function(e) {
                 // find connected lists and deselect all
                 self.deselectConnectedLists();
 
-                if (e.shiftKey) {
+                if (e.shiftKey && self.cfg.selection != "single") {
+                    // Clear selection from shift key use
+                    self.clearSelection();
+
                     var lower, higher, last_clicked = jqLi.siblings('.if-list-last-clicked').index();
                     if (last_clicked < index) {
                         lower = last_clicked + 1;
@@ -318,10 +340,8 @@ ice.ace.List.prototype.itemClickHandler = function(e) {
                     });
                 }
                 else {
-                    if (!e.metaKey)
-                        jqLi.siblings('.ui-state-active').each(function () {
-                            self.removeSelectedItem(ice.ace.jq(this));
-                        });
+                    if (!(e.metaKey || e.ctrlKey) || self.cfg.selection == "single")
+                        self.deselectAll();
 
                     if (jqLi.hasClass('ui-state-active')) {
                         jqLi.addClass('if-list-last-clicked').siblings().removeClass('if-list-last-clicked');
@@ -331,7 +351,7 @@ ice.ace.List.prototype.itemClickHandler = function(e) {
                         self.addSelectedItem(jqLi);
                     }
                 }
-            }, 250);
+            }, timeout);
     } else {
         clearTimeout(this.pendingClickHandling);
         this.pendingClickHandling = undefined;
@@ -355,33 +375,35 @@ ice.ace.List.prototype.getUnshiftedIndex = function(length, reorderings, index) 
 };
 
 ice.ace.List.prototype.addSelectedItem = function(item, inputIndex) {
-    var selections = this.read('selections'),
-        deselections = this.read('deselections'),
-        reorderings = this.read('reorderings'),
-        id = item.attr('id'),
-        index;
+    if (!item.hasClass('ui-state-active')) {
+        var selections = this.read('selections'),
+            deselections = this.read('deselections'),
+            reorderings = this.read('reorderings'),
+            id = item.attr('id'),
+            index;
 
-    if (inputIndex) index = inputIndex;
-    else {
-        index = id.substr(id.lastIndexOf(this.sep)+1),
-        index = this.getUnshiftedIndex(item.siblings().length, reorderings, parseInt(index));
+        if (inputIndex) index = inputIndex;
+        else {
+            index = id.substr(id.lastIndexOf(this.sep)+1),
+            index = this.getUnshiftedIndex(item.siblings().length, reorderings, parseInt(index));
+        }
+
+        item.addClass('ui-state-active');
+
+        deselections = ice.ace.jq.grep(deselections, function(r) { return r != index; });
+        selections.push(index);
+
+        this.write('selections', selections);
+        this.write('deselections', deselections);
+
+        if (this.behaviors)
+            if (this.behaviors.select)
+                ice.ace.ab(this.behaviors.select);
     }
-
-    item.addClass('ui-state-active');
-
-    deselections = ice.ace.jq.grep(deselections, function(r) { return r != index; });
-    selections.push(index);
-
-    this.write('selections', selections);
-    this.write('deselections', deselections);
-
-    if (this.behaviors)
-        if (this.behaviors.select)
-            ice.ace.ab(this.behaviors.select);
 };
 
 
-ice.ace.List.prototype.deselectConnectedLists = function(list) {
+ice.ace.List.prototype.deselectConnectedLists = function() {
     for(var controlId in ice.ace.ListControls) {
         if(ice.ace.ListControls.hasOwnProperty(controlId)) {
             var listSet = ice.ace.jq(ice.ace.ListControls[controlId].selector);
@@ -395,24 +417,26 @@ ice.ace.List.prototype.deselectConnectedLists = function(list) {
 }
 
 ice.ace.List.prototype.removeSelectedItem = function(item) {
-    var selections = this.read('selections'),
-        deselections = this.read('deselections'),
-        reorderings = this.read('reorderings'),
-        id = item.attr('id'),
-        index = id.substr(id.lastIndexOf(this.sep)+1),
-        origIndex = this.getUnshiftedIndex(item.siblings().length, reorderings, parseInt(index));
+    if (item.hasClass('ui-state-active')) {
+        var selections = this.read('selections'),
+            deselections = this.read('deselections'),
+            reorderings = this.read('reorderings'),
+            id = item.attr('id'),
+            index = id.substr(id.lastIndexOf(this.sep)+1),
+            origIndex = this.getUnshiftedIndex(item.siblings().length, reorderings, parseInt(index));
 
-    item.removeClass('ui-state-active');
+        item.removeClass('ui-state-active');
 
-    selections = ice.ace.jq.grep(selections, function(r) { return r != index; });
-    deselections.push(origIndex);
+        selections = ice.ace.jq.grep(selections, function(r) { return r != index; });
+        deselections.push(origIndex);
 
-    this.write('selections', selections);
-    this.write('deselections', deselections);
+        this.write('selections', selections);
+        this.write('deselections', deselections);
 
-    if (this.behaviors)
-        if (this.behaviors.deselect)
-            ice.ace.ab(this.behaviors.deselect);
+        if (this.behaviors)
+            if (this.behaviors.deselect)
+                ice.ace.ab(this.behaviors.deselect);
+    }
 };
 
 ice.ace.List.prototype.deselectAll = function() {
@@ -421,17 +445,23 @@ ice.ace.List.prototype.deselectAll = function() {
         selections = this.read('selections'),
         deselections = this.read('deselections');
 
-    this.element.find('> ul.if-list-body > li.if-list-item')
+    this.element.find('> ul.if-list-body > li.if-list-item.ui-state-active')
             .removeClass('ui-state-active').each(function(i, elem) {{
                 var item = ice.ace.jq(elem),
                     id = item.attr('id'),
                     index = parseInt(id.substr(id.lastIndexOf(self.sep)+1));
-                if (index) index = self.getUnshiftedIndex(item.siblings().length, reorderings, index);
-                if (index) deselections.push(index);
+                if (index)
+                    index = self.getUnshiftedIndex(item.parent().children().length, reorderings, index);
+                if (index != undefined)
+                    deselections.push(index);
             }});
 
     this.write('selections', []);
     this.write('deselections', deselections);
+
+    if (this.behaviors && !isNaN(deselections.length) && deselections.length > 0)
+        if (this.behaviors.deselect)
+            ice.ace.ab(this.behaviors.deselect);
 }
 
 ice.ace.List.prototype.moveItems = function(dir) {
@@ -547,3 +577,15 @@ ice.ace.List.prototype.write= function(field, data) {
     var element = this.element.find(' > input[name="'+this.jqId.substr(1)+'_'+field+'"]');
     element.attr('value', JSON.stringify(data));
 };
+
+ice.ace.List.prototype.clearSelection = function() {
+    if (window.getSelection) {
+        if (window.getSelection().empty) {  // Chrome
+            window.getSelection().empty();
+        } else if (window.getSelection().removeAllRanges) {  // Firefox
+            window.getSelection().removeAllRanges();
+        }
+    } else if (document.selection) {  // IE?
+        document.selection.empty();
+    }
+}

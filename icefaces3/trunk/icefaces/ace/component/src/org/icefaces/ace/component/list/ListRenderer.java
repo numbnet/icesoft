@@ -201,8 +201,13 @@ public class ListRenderer extends CoreRenderer {
         final Set<Object> selections = list.getSelections();
         String style = list.getItemStyle();
         String styleClass = list.getItemClass();
+        String selectionMode = list.getSelectionMode();
+
         styleClass = styleClass == null ? itemStyleClass : styleClass + " " + itemStyleClass;
-        styleClass = list.isSelection() || list.isDragging() ? styleClass + " " + pointerStyleClass : styleClass;
+        styleClass = ("single".equals(selectionMode) || "multiple".equals(selectionMode))
+                        || list.isDragging()
+                            ? styleClass + " " + pointerStyleClass
+                            : styleClass;
 
         list.setRowIndex(0);
 
@@ -306,6 +311,7 @@ public class ListRenderer extends CoreRenderer {
 
         String dropGroup = component.getDropGroup();
         JSONBuilder cfgBuilder = new JSONBuilder();
+        String selectionMode = component.getSelectionMode();
 
         cfgBuilder.beginMap();
 
@@ -317,7 +323,9 @@ public class ListRenderer extends CoreRenderer {
         if (dropGroup != null)
             cfgBuilder.entry("connectWith", ".dg-"+dropGroup);
 
-        if (component.isSelection()) cfgBuilder.entry("selection", true);
+        if ("single".equals(selectionMode) || "multiple".equals(selectionMode))
+            cfgBuilder.entry("selection", selectionMode);
+
         if (component.isDragging()) cfgBuilder.entry("dragging", true);
         if (component.isControlsEnabled()) cfgBuilder.entry("controls", true);
         if (component.isDoubleClickMigration()) cfgBuilder.entry("dblclk_migrate", true);
