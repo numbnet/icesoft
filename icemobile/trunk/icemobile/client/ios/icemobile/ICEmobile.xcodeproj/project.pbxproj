@@ -27,7 +27,6 @@
 		9C285F45155DD37400BAC772 /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C285F42155DD37400BAC772 /* CoreMotion.framework */; };
 		9C285F46155DD37400BAC772 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C285F43155DD37400BAC772 /* QuartzCore.framework */; };
 		9C2A9F6513B8E78F0068D894 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C2A9F6413B8E78F0068D894 /* MobileCoreServices.framework */; };
-		9C31404E13200264005F0E8F /* OldNativeInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C31404D13200264005F0E8F /* OldNativeInterface.m */; };
 		9C31408713201B67005F0E8F /* main.html in Resources */ = {isa = PBXBuildFile; fileRef = 9C31408613201B67005F0E8F /* main.html */; };
 		9C31408913201C37005F0E8F /* icefaces-logo.gif in Resources */ = {isa = PBXBuildFile; fileRef = 9C31408813201C37005F0E8F /* icefaces-logo.gif */; };
 		9C3140D613203841005F0E8F /* native-interface.js in Sources */ = {isa = PBXBuildFile; fileRef = 9C3140D513203841005F0E8F /* native-interface.js */; };
@@ -38,6 +37,7 @@
 		9C3B27951427AEB500409376 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C3B27941427AEB500409376 /* AudioToolbox.framework */; };
 		9C3B27971427AFAF00409376 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C3B27961427AFAF00409376 /* CoreVideo.framework */; };
 		9C3B27991427B01100409376 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C3B27981427B01100409376 /* CoreMedia.framework */; };
+		9C46E93115825B3000EFA276 /* NativeInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C46E93015825B3000EFA276 /* NativeInterface.m */; };
 		9C65FC2E137C9E5500530472 /* Preferences.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C65FC2C137C9E5500530472 /* Preferences.m */; };
 		9C65FC2F137C9E5500530472 /* Preferences.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9C65FC2D137C9E5500530472 /* Preferences.xib */; };
 		9C77A01E139E9E9B00A2B1EC /* icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C77A01D139E9E9B00A2B1EC /* icon@2x.png */; };
@@ -91,8 +91,6 @@
 		9C285F42155DD37400BAC772 /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
 		9C285F43155DD37400BAC772 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		9C2A9F6413B8E78F0068D894 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
-		9C31404C13200264005F0E8F /* OldNativeInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = OldNativeInterface.h; path = Container/OldNativeInterface.h; sourceTree = "<group>"; };
-		9C31404D13200264005F0E8F /* OldNativeInterface.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = OldNativeInterface.m; path = Container/OldNativeInterface.m; sourceTree = "<group>"; };
 		9C31408613201B67005F0E8F /* main.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = main.html; path = Container/main.html; sourceTree = "<group>"; };
 		9C31408813201C37005F0E8F /* icefaces-logo.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; name = "icefaces-logo.gif"; path = "Container/icefaces-logo.gif"; sourceTree = "<group>"; };
 		9C3140D513203841005F0E8F /* native-interface.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = "native-interface.js"; path = "Container/native-interface.js"; sourceTree = "<group>"; };
@@ -103,6 +101,8 @@
 		9C3B27941427AEB500409376 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		9C3B27961427AFAF00409376 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
 		9C3B27981427B01100409376 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
+		9C46E92F15825B3000EFA276 /* NativeInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NativeInterface.h; path = Shared/NativeInterface.h; sourceTree = "<group>"; };
+		9C46E93015825B3000EFA276 /* NativeInterface.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NativeInterface.m; path = Shared/NativeInterface.m; sourceTree = "<group>"; };
 		9C65FC2B137C9E5500530472 /* Preferences.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Preferences.h; path = Container/Preferences.h; sourceTree = "<group>"; };
 		9C65FC2C137C9E5500530472 /* Preferences.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Preferences.m; path = Container/Preferences.m; sourceTree = "<group>"; };
 		9C65FC2D137C9E5500530472 /* Preferences.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = Preferences.xib; path = Container/Preferences.xib; sourceTree = "<group>"; };
@@ -185,8 +185,6 @@
 				8D1107310486CEB800E47090 /* ICEmobile-Info.plist */,
 				9C34261D131865700084532D /* MainViewController.h */,
 				9C34261E131865700084532D /* MainViewController.mm */,
-				9C31404C13200264005F0E8F /* OldNativeInterface.h */,
-				9C31404D13200264005F0E8F /* OldNativeInterface.m */,
 				9C31408613201B67005F0E8F /* main.html */,
 				9C3140D513203841005F0E8F /* native-interface.js */,
 			);
@@ -241,6 +239,8 @@
 		9C1923F415547F9500A6BE22 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				9C46E92F15825B3000EFA276 /* NativeInterface.h */,
+				9C46E93015825B3000EFA276 /* NativeInterface.m */,
 				9CF130DB157FC6F500F8F0A4 /* QRScanner.h */,
 				9CF130DC157FC6F500F8F0A4 /* QRScanner.mm */,
 				9CCD001C15742B270012893A /* MapController.h */,
@@ -373,7 +373,6 @@
 				2860E328111B887F00E27156 /* AppDelegate_iPhone.m in Sources */,
 				2860E32E111B888700E27156 /* AppDelegate_iPad.m in Sources */,
 				9C34261F131865700084532D /* MainViewController.mm in Sources */,
-				9C31404E13200264005F0E8F /* OldNativeInterface.m in Sources */,
 				9C3140D613203841005F0E8F /* native-interface.js in Sources */,
 				9C65FC2E137C9E5500530472 /* Preferences.m in Sources */,
 				9C1923F815547FBA00A6BE22 /* AudioController.m in Sources */,
@@ -382,6 +381,7 @@
 				9C285F40155DD31400BAC772 /* PlaceLabel.m in Sources */,
 				9CCD001F15742B270012893A /* MapController.m in Sources */,
 				9CF130DD157FC6F500F8F0A4 /* QRScanner.mm in Sources */,
+				9C46E93115825B3000EFA276 /* NativeInterface.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
