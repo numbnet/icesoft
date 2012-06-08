@@ -498,39 +498,11 @@ NSLog(@"NativeInterface aug selected %@", augResult);
     }
     self.uploading = YES;
     self.activeDOMElementId = formId;
-    
-    NSString *scriptTemplate;
-    NSString *script; 
-    NSString *result;
-    
-    scriptTemplate = @"document.getElementById(\"%@\").action;";
-    script = [NSString stringWithFormat:scriptTemplate, formId];
-    result = [controller.webView 
-            stringByEvaluatingJavaScriptFromString: script];
 
-    NSString *actionString = result;
-    
-    scriptTemplate = @"document.location.href;";
-    script = [NSString stringWithFormat:scriptTemplate, formId];
-    result = [controller.webView 
-            stringByEvaluatingJavaScriptFromString: script];
-
-    NSString *baseString = result;
-    NSURL *baseURL = [NSURL URLWithString:baseString];
-    NSURL *actionURL = [NSURL URLWithString:actionString relativeToURL:baseURL];
-    NSLog(@"upload will post to actionURL %@", [actionURL absoluteString] );
-
-    result = [controller.webView 
-            stringByEvaluatingJavaScriptFromString: @"ice.progress(0);"];
-
-    scriptTemplate = @"ice.getCurrentSerialized();";
-    script = [NSString stringWithFormat:scriptTemplate, formId];
-    result = [controller.webView 
-            stringByEvaluatingJavaScriptFromString: script];
-
-    NSLog(@"upload will post data %@", result );
-    NSDictionary *parts = [self parseQuery:result];
-    [self multipartPost:parts toURL:[actionURL absoluteString]];
+    [controller setProgress:0];
+    NSString* actionURL = [controller prepareUpload:formId];
+    NSDictionary *parts = [self parseQuery:[controller getFormData:formId]];
+    [self multipartPost:parts toURL:actionURL];
 
     return YES;
 }

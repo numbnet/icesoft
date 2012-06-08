@@ -248,8 +248,27 @@ NSLog(@"completeFile %@", script);
 }
 
 - (NSString *) prepareUpload:(NSString *)formID  {
-NSLog(@"Warning: prepareUpload should not be invoked with ICEmobile Container");
-    return @"void";
+    NSString *scriptTemplate;
+    NSString *script; 
+    NSString *result;
+    
+    scriptTemplate = @"document.getElementById(\"%@\").action;";
+    script = [NSString stringWithFormat:scriptTemplate, formID];
+    result = [self.webView 
+            stringByEvaluatingJavaScriptFromString: script];
+
+    NSString *actionString = result;
+    
+    scriptTemplate = @"document.location.href;";
+    script = [NSString stringWithFormat:scriptTemplate, formID];
+    result = [self.webView 
+            stringByEvaluatingJavaScriptFromString: script];
+
+    NSString *baseString = result;
+    NSURL *baseURL = [NSURL URLWithString:baseString];
+    NSURL *actionURL = [NSURL URLWithString:actionString relativeToURL:baseURL];
+    NSLog(@"MainViewController.mm upload will post to actionURL %@", [actionURL absoluteString] );
+    return [actionURL absoluteString];
 }
 
 - (void) register {
@@ -264,8 +283,15 @@ NSLog(@"ICEmobile Container setProgress %d", percent);
 }
 
 - (NSString *) getFormData:(NSString *)formID  {
-NSLog(@"Warning: getFormData not implemented for ICEmobile Container");
-    return @"";
+    NSString *scriptTemplate;
+    NSString *script; 
+    NSString *result;
+
+    scriptTemplate = @"ice.getCurrentSerialized();";
+    script = [NSString stringWithFormat:scriptTemplate, formID];
+    result = [self.webView 
+            stringByEvaluatingJavaScriptFromString: script];
+    return result;
 }
 
 - (void)play: (NSString*)audioId  {
