@@ -56,13 +56,13 @@
                     <ace:list id="firstList" value="#{backing.stringList}"
                               styleClass="subList"
                               dropGroup="textGroup"
-                              selection="true"
+                              selectionMode="multiple"
                                />
 
                     <ace:list id="secondList" value="#{backing.destStringList}"
                               styleClass="subList"
                               dropGroup="textGroup"
-                              selection="true"
+                              selectionMode="multiple"
                               />
                 </ace:listControl>
             </h:panelGroup>
@@ -109,7 +109,7 @@
                           styleClass="floatList"
                           bodyClass="blockList"
                           dropGroup="blockGroup"
-                          selection="true"
+                          selectionMode="multiple"
                           controlsEnabled="true">
                     <f:facet name="header">
                         First Head
@@ -133,7 +133,7 @@
                           styleClass="floatList"
                           bodyClass="blockList"
                           dropGroup="blockGroup"
-                          selection="true"
+                          selectionMode="multiple"
                           controlsEnabled="true">
                     <f:facet name="header">
                         Second Head
@@ -157,7 +157,7 @@
                           styleClass="floatList"
                           bodyClass="blockList"
                           dropGroup="blockGroup"
-                          selection="true"
+                          selectionMode="multiple"
                           controlsEnabled="true">
                     <f:facet name="header">
                         Third Head
