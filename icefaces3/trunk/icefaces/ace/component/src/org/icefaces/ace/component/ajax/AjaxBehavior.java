@@ -60,6 +60,7 @@ public class AjaxBehavior extends ClientBehaviorBase {
     private String onStart;
     private MethodExpression listener;
     private MethodExpression listenerNoArg;
+    private MethodExpression listenerSuperArg;
     private boolean immediate = false;
     private boolean disabled = false;
     private boolean immediateSet = false;
@@ -144,6 +145,14 @@ public class AjaxBehavior extends ClientBehaviorBase {
         this.listenerNoArg = listenerNoArg;
     }
 
+    public MethodExpression getListenerSuperArg() {
+        return listenerSuperArg;
+    }
+
+    public void setListenerSuperArg(MethodExpression listenerSuperArg) {
+        this.listenerSuperArg = listenerSuperArg;
+    }
+
     public boolean isDisabled() {
         return disabled;
     }
@@ -170,16 +179,34 @@ public class AjaxBehavior extends ClientBehaviorBase {
         FacesContext context = FacesContext.getCurrentInstance();
         ELContext eLContext = context.getELContext();
 
+        MethodNotFoundException last = null;
         if (listener != null) {
             try {
                 listener.invoke(eLContext, new Object[] {event});
-            } catch (MethodNotFoundException e1) {
-                if (listenerNoArg != null) {
-                    listenerNoArg.invoke(eLContext, new Object[0]);
-                }
+                return;
+            } catch (MethodNotFoundException e) {
+                last = e;
             }
         }
-
+        if (listenerNoArg != null) {
+            try {
+                listenerNoArg.invoke(eLContext, new Object[0]);
+                return;
+            } catch (MethodNotFoundException e) {
+                last = e;
+            }
+        }
+        if (listenerSuperArg != null) {
+            try {
+                listenerSuperArg.invoke(eLContext, new Object[] {event});
+                return;
+            } catch (MethodNotFoundException e) {
+                last = e;
+            }
+        }
+        if (last != null) {
+            throw last;
+        }
     }
 
     public Object saveState(FacesContext context) {
