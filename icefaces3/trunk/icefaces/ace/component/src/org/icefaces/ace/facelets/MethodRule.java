@@ -76,17 +76,30 @@ public class MethodRule extends MetaRule {
      */
     private final String noArgMethodName;
 
+    /**
+     * The name of the MethodExpression property in the UIComponent / ClientBehavior
+     */
+    private final String superArgMethodName;
+
+    /**
+     * The bean superArgMethodName method parameters
+     */
+    private final Class[] superParams;
+
     public MethodRule(String methodName, Class returnTypeClass,
-                      Class[] params, String noArgMethodName) {
+                      Class[] params, String noArgMethodName,
+                      String superArgMethodName, Class[] superParams) {
         this.methodName = methodName;
         this.returnTypeClass = returnTypeClass;
         this.params = params;
         this.noArgMethodName = noArgMethodName;
+        this.superArgMethodName = superArgMethodName;
+        this.superParams = superParams;
     }
 
     public MethodRule(String methodName, Class returnTypeClass,
                       Class[] params) {
-        this(methodName, returnTypeClass, params, null);
+        this(methodName, returnTypeClass, params, null, null, null);
     }
 
     public Metadata applyRule(String name, TagAttribute attribute,
@@ -99,18 +112,24 @@ public class MethodRule extends MetaRule {
             if (method != null) {
                 Method noArgMethod = (noArgMethodName == null ? null :
                     meta.getWriteMethod(noArgMethodName));
+                Method superArgMethod = ( (superArgMethodName == null ||
+                    superParams == null) ? null : meta.getWriteMethod(superArgMethodName));
                 return new MethodBindingMetadata(method, attribute,
                                                  this.returnTypeClass,
-                                                 this.params, noArgMethod);
+                                                 this.params, noArgMethod,
+                                                 superArgMethod, superParams);
             }
         } else if (MethodExpression.class.equals(meta.getPropertyType(name))) {
             Method method = meta.getWriteMethod(name);
             if (method != null) {
                 Method noArgMethod = (noArgMethodName == null ? null :
                     meta.getWriteMethod(noArgMethodName));
+                Method superArgMethod = ( (superArgMethodName == null ||
+                    superParams == null) ? null : meta.getWriteMethod(superArgMethodName));
                 return new MethodExpressionMetadata(method, attribute,
                                                     this.returnTypeClass,
-                                                    this.params, noArgMethod);
+                                                    this.params, noArgMethod,
+                                                    superArgMethod, superParams);
             }
         }
 
@@ -128,14 +147,21 @@ public class MethodRule extends MetaRule {
 
         private final Method _noArgMethod;
 
+        private final Method _superArgMethod;
+
+        private Class[] _superParamList;
+
         public MethodBindingMetadata(Method method, TagAttribute attribute,
                                      Class returnType, Class[] paramList,
-                                     Method noArgMethod) {
+                                     Method noArgMethod,
+                                     Method superArgMethod, Class[] superParamList) {
             _method = method;
             _attribute = attribute;
             _paramList = paramList;
             _returnType = returnType;
             _noArgMethod = noArgMethod;
+            _superArgMethod = superArgMethod;
+            _superParamList = superParamList;
         }
 
         protected void setMethodBindingIntoMethod(FaceletContext ctx, Object instance,
@@ -158,6 +184,9 @@ public class MethodRule extends MetaRule {
             if (_noArgMethod != null) {
                 setMethodBindingIntoMethod(ctx, instance, _noArgMethod, new Class[0]);
             }
+            if (_superArgMethod != null && _superParamList != null) {
+                setMethodBindingIntoMethod(ctx, instance, _superArgMethod, _superParamList);
+            }
         }
     }
 
@@ -172,14 +201,21 @@ public class MethodRule extends MetaRule {
 
         private final Method _noArgMethod;
 
+        private final Method _superArgMethod;
+
+        private Class[] _superParamList;
+
         public MethodExpressionMetadata(Method method, TagAttribute attribute,
                                         Class returnType, Class[] paramList,
-                                        Method noArgMethod) {
+                                        Method noArgMethod,
+                                        Method superArgMethod, Class[] superParamList) {
             _method = method;
             _attribute = attribute;
             _paramList = paramList;
             _returnType = returnType;
             _noArgMethod = noArgMethod;
+            _superArgMethod = superArgMethod;
+            _superParamList = superParamList;
         }
 
         protected void setMethodExpressionIntoMethod(FaceletContext ctx, Object instance,
@@ -200,6 +236,9 @@ public class MethodRule extends MetaRule {
             setMethodExpressionIntoMethod(ctx, instance, _method, _paramList);
             if (_noArgMethod != null) {
                 setMethodExpressionIntoMethod(ctx, instance, _noArgMethod, new Class[0]);
+            }
+            if (_superArgMethod != null && _superParamList != null) {
+                setMethodExpressionIntoMethod(ctx, instance, _superArgMethod, _superParamList);
             }
         }
     }
