@@ -344,7 +344,7 @@ public class DataTableRenderer extends CoreRenderer {
         if (disabled) configJson.entry("pageLinks", 1);
         else configJson.entry("pageLinks", table.getPageCount());
 
-        if (rowCounts != null) {
+        if (rowCounts != null && !"".equals(rowCounts)) {
             String[] rowCountArray = rowCounts.split(",");
             if (rowCountArray.length > 0) {
                 configJson.beginArray("rowsPerPageOptions");
