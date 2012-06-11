@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
  *
  */
 
-@SessionAttributes("scanOne")
+@SessionAttributes("QRScanBean")
 public class QRScanBean {
 
     // Name of the parameter in demo is scanOne
