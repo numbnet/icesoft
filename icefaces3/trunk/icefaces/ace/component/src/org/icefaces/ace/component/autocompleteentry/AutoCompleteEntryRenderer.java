@@ -55,7 +55,7 @@ public class AutoCompleteEntryRenderer extends InputRenderer {
 	}
 	
     public void encodeBegin(FacesContext facesContext, UIComponent uiComponent) throws IOException {
-        
+
 		ResponseWriter writer = facesContext.getResponseWriter();
         String clientId = uiComponent.getClientId(facesContext);
         AutoCompleteEntry autoCompleteEntry = (AutoCompleteEntry) uiComponent;
@@ -64,41 +64,23 @@ public class AutoCompleteEntryRenderer extends InputRenderer {
         writer.startElement("div", null);
 		writer.writeAttribute("id", clientId + "_container", null);
 		writer.writeAttribute("class", autoCompleteEntry.getStyleClass(), null);
-		
-        boolean required = autoCompleteEntry.isRequired();
 
-        String label = autoCompleteEntry.getLabel();
-        String labelPosition = autoCompleteEntry.getLabelPosition();
-        if (!labelPositionSet.contains(labelPosition)) labelPosition = DEFAULT_LABEL_POSITION;
-        boolean hasLabel = !(labelPosition.equals(NONE_LABEL_POSITION) || isValueBlank(label));
+        Map paramMap = facesContext.getExternalContext().getRequestParameterMap();
+        Map<String, Object> labelAttributes = getLabelAttributes(uiComponent);
 
-        String indicator = required ? autoCompleteEntry.getRequiredIndicator() : autoCompleteEntry.getOptionalIndicator();
-        String indicatorPosition = autoCompleteEntry.getIndicatorPosition();
-        if (!indicatorPositionSet.contains(indicatorPosition)) indicatorPosition = DEFAULT_INDICATOR_POSITION;
-        boolean hasIndicator = !(indicatorPosition.equals(NONE_INDICATOR_POSITION) || isValueBlank(indicator));
-
-        String inFieldLabel = "", inFieldLabelStyleClass = "";
+        String inFieldLabel = (String) labelAttributes.get("inFieldLabel"), inFieldLabelStyleClass = "";
+        String iceFocus = (String) paramMap.get("ice.focus");
         String value = (String) autoCompleteEntry.getValue();
         boolean labelIsInField = false;
-        if (hasLabel && labelPosition.equals("inField")) {
-            inFieldLabel = label;
-            if (hasIndicator) {
-                if (indicatorPosition.equals("labelLeft")) {
-                    inFieldLabel = indicator + inFieldLabel;
-                } else if (indicatorPosition.equals("labelRight")) {
-                    inFieldLabel = inFieldLabel + indicator;
-                }
-            }
-        }
         if (isValueBlank(value)) value = null;
-        if (value == null && !inFieldLabel.equals("")) {
+        if (value == null && !isValueBlank(inFieldLabel) && !clientId.equals(iceFocus)) {
             value = inFieldLabel;
             inFieldLabelStyleClass = " " + IN_FIELD_LABEL_STYLE_CLASS;
             labelIsInField = true;
         }
 
-        writeLabelAndIndicatorBefore(writer, label, hasLabel, labelPosition, indicator, hasIndicator, indicatorPosition, required);
-		// text field
+        writeLabelAndIndicatorBefore(labelAttributes);
+        // text field
 		writer.startElement("input", null);
         writer.writeAttribute("type", "text", null);
 		//setRootElementId(facesContext, input, uiComponent);
@@ -134,7 +116,7 @@ public class AutoCompleteEntryRenderer extends InputRenderer {
 			writer.writeAttribute("value", value, null);
 		}
 		writer.endElement("input");
-        writeLabelAndIndicatorAfter(writer, label, hasLabel, labelPosition, indicator, hasIndicator, indicatorPosition, required);
+        writeLabelAndIndicatorAfter(labelAttributes);
 
 		// index
 		writer.startElement("input", null);
@@ -177,7 +159,7 @@ public class AutoCompleteEntryRenderer extends InputRenderer {
 				encodeClientBehaviors(facesContext, autoCompleteEntry, jb);
 			jb.endMap();
             jb.beginMap()
-                .entry("inFieldLabel", inFieldLabel)
+                .entryNonNullValue("inFieldLabel", inFieldLabel)
                 .entry("inFieldLabelStyleClass", IN_FIELD_LABEL_STYLE_CLASS)
                 .entry("labelIsInField", labelIsInField);
             jb.endMap().endFunction();
