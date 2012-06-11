@@ -241,6 +241,15 @@ if (!window.ice.mobile) {
             return qString.join("");
         }
 
+        namespace.mobiRefresh = function()  {
+            if (window.ice.ajaxRefresh)  {
+                ice.ajaxRefresh();
+                return;
+            }
+            window.location.reload();
+            return;
+        }
+
 //iOS specific code follows
 
         namespace.camera = function(id, atts)  {
