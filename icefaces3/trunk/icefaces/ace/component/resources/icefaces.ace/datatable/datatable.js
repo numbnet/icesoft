@@ -610,10 +610,10 @@ ice.ace.DataTable.prototype.setupScrolling = function() {
 
     this.resizeScrolling();
 
-    ice.ace.jq(_self.jqId + '> div > table > tbody[display!=none]').bind('scroll', function() {
+    ice.ace.jq(_self.jqId + ' > div.ui-datatable-scrollable-body').bind('scroll', function() {
         var $this = ice.ace.jq(this),
-            $header = ice.ace.jq(_self.jqId + ' > div > table > thead[display!=none]'),
-            $footer = ice.ace.jq(_self.jqId + ' > div > table > tfoot[display!=none]'),
+            $header = ice.ace.jq(_self.jqId + ' > div.ui-datatable-scrollable-header'),
+            $footer = ice.ace.jq(_self.jqId + ' > div.ui-datatable-scrollable-footer'),
             scrollLeftVal = $this.scrollLeft();
 
        $header.scrollLeft(scrollLeftVal);
