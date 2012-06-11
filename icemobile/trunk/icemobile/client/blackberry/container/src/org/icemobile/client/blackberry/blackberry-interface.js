@@ -332,7 +332,10 @@ if (!window.ice.mobile) {
 
         namespace.mobiRefresh = function()  {
             if (window.ice.ajaxRefresh)  {
-                ice.ajaxRefresh();
+                window.setTimeout(function() {
+                    ice.push.resumeBlockingConnection();
+                    ice.ajaxRefresh();
+                }, 50);
                 return;
             }
             window.location.reload();

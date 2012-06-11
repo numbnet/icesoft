@@ -90,10 +90,7 @@
         self.userAgent = [self.webView stringByEvaluatingJavaScriptFromString:@"navigator.userAgent"];
         [self loadURL:@"http://www.icemobile.org/demos.html"];
     } else {
-        [self.webView stringByEvaluatingJavaScriptFromString: 
-                @"ice.mobiRefresh()"];
-        [self.webView stringByEvaluatingJavaScriptFromString: 
-                @"ice.push.resumeBlockingConnection()"];
+        [self.webView stringByEvaluatingJavaScriptFromString:@"ice.mobiRefresh()"];
     }
 }
 
