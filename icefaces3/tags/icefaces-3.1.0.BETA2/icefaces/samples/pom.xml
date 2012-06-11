@@ -43,7 +43,7 @@
         <compiler.plugins.version>2.0.2</compiler.plugins.version>
         <jsf.version>2.1.6</jsf.version>
         <jsf.portlet.version>2.1.6</jsf.portlet.version>
-        <portletfacesbridge.version>2.0.2</portletfacesbridge.version>
+        <portletfacesbridge.version>2.0.2-ice-7875</portletfacesbridge.version>
     </properties>
     
    <dependencies>
