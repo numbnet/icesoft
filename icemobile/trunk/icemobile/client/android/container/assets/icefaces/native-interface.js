@@ -281,6 +281,15 @@ if (!window.ice.mobile) {
             return qString.join("");
         }
 
+        namespace.mobiRefresh = function()  {
+            if (window.ice.ajaxRefresh)  {
+                ice.ajaxRefresh();
+                return;
+            }
+            window.location.reload();
+            return;
+        }
+
     })(window.ice)
 
     function addConnectionStatus()  {
