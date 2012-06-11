@@ -23,7 +23,7 @@ public class QRScanController {
                             QRScanBean model) {
     }
 
-    @ModelAttribute("scanBean")
+    @ModelAttribute("QRScanBean")
     public QRScanBean createBean() {
         return new QRScanBean();
     }
