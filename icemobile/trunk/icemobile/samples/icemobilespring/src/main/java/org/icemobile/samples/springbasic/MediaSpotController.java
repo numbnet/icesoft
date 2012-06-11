@@ -60,10 +60,11 @@ public class MediaSpotController {
 		model.addAttribute("reality", getRealityParams());
 		model.addAttribute("message", "Hello your file '" + fileName + "' was uploaded successfully.");
         String selection = spotBean.getSelection();
-        if (null != spotBean.getSelection()) {
+        MediaSpotBean selectedMessage = messages.get(selection);
+        if (null != selectedMessage) {
             model.addAttribute("selection", selection);
             model.addAttribute("imgPath", 
-                    messages.get(selection).getFileName());
+                    selectedMessage.getFileName());
         }
     }
 
