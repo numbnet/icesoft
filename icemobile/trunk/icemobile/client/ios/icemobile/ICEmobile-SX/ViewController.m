@@ -71,7 +71,7 @@
 }
 
 - (void)completePostRaw:(NSString *)value forComponent:(NSString *)componentID withName:(NSString *)componentName   {
-    NSMutableDictionary *params = [nativeInterface parseQuery:currentParameters];
+    NSMutableDictionary *params = [nativeInterface parseQuery:self.currentParameters];
     [self decorateParams: params];
     if (nil != componentName)  {
         [params setValue:value forKey:componentName];
@@ -112,11 +112,13 @@ NSLog(@"Hitch just upload what would have been scripted %@", script);
 }
 
 - (void) decorateParams:(NSMutableDictionary*) params {
-    for (NSString *key in params)  {
+    NSMutableDictionary *temp = [params copy];
+    for (NSString *key in temp)  {
         NSString *value = [params objectForKey:key];
         [params removeObjectForKey:key];
         [params setValue:value forKey:[@"hidden-" stringByAppendingString:key]];
     }
+    [temp release];
 }
 
 - (NSString *) getFormData:(NSString *)formID  {

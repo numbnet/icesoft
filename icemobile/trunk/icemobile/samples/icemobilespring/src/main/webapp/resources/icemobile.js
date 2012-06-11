@@ -34,10 +34,73 @@ ice.registerAuxUpload = function (sessionid, uploadURL) {
     }
 };
 
+ice.mobiserial = function(formId, typed)  {
+    var form = document.getElementById(formId);
+    var els = form.elements;
+    var len = els.length;
+    var qString = [];
+    var addField = function(name, value) {
+        var tmpStr = "";
+        if (qString.length > 0) {
+            tmpStr = "&";
+        }
+        tmpStr += encodeURIComponent(name) + "=" + encodeURIComponent(value);
+        qString.push(tmpStr);
+    };
+    for (var i = 0; i < len; i++) {
+        var el = els[i];
+        if (!el.disabled) {
+            var prefix = "";
+            if (typed)  {
+                var vtype = el.getAttribute("data-type");
+                if (vtype)  {
+                    prefix = vtype + "-";
+                } else {
+                    prefix = el.type + "-";
+                }
+            }
+            switch (el.type) {
+                case 'submit':
+                case 'button':
+                    break;
+                case 'text':
+                case 'password':
+                case 'hidden':
+                case 'textarea':
+                    addField(prefix + el.name, el.value);
+                    break;
+                case 'select-one':
+                    if (el.selectedIndex >= 0) {
+                        addField(prefix + el.name, el.options[el.selectedIndex].value);
+                    }
+                    break;
+                case 'select-multiple':
+                    for (var j = 0; j < el.options.length; j++) {
+                        if (el.options[j].selected) {
+                            addField(prefix + el.name, el.options[j].value);
+                        }
+                    }
+                    break;
+                case 'checkbox':
+                case 'radio':
+                    if (el.checked) {
+                        addField(prefix + el.name, el.value);
+                    }
+                    break;
+                default:
+                    addField(prefix + el.name, el.value);
+            }
+        }
+    }
+    // concatenate the array
+    return qString.join("");
+}
 
 ice.mobilesx = function (element) {
     var ampchar = String.fromCharCode(38);
-    var formAction = ice.formOf(element).getAttribute("action");
+    var form = ice.formOf(element);
+    var formID = form.getAttribute('id');
+    var formAction = form.getAttribute("action");
     var command = element.getAttribute("data-command");
     var id = element.getAttribute("data-id");
     var params = element.getAttribute("data-params");
@@ -67,7 +130,8 @@ ice.mobilesx = function (element) {
 
     var sxURL = "icemobile://c=" + escape(command + 
             "?id=" + id + ampchar + params) +
-            "&u=" + escape(uploadURL) + "&r=" + escape(returnURL);
+            "&u=" + escape(uploadURL) + "&r=" + escape(returnURL) +
+            "&p=" + escape(ice.mobiserial(formID, false));
 
     window.location = sxURL;
 }
