@@ -69,7 +69,6 @@ public class PanelRenderer extends CoreRenderer {
         Panel panel = (Panel) component;
 
         encodeMarkup(facesContext, panel);
-        encodeScript(facesContext, panel);
     }
 
     protected void encodeScript(FacesContext context, Panel panel) throws IOException {
@@ -147,6 +146,8 @@ public class PanelRenderer extends CoreRenderer {
 
             optionsMenu.encodeAll(context);
         }
+		
+		encodeScript(context, panel);
 
         writer.endElement("div");
     }

@@ -38,11 +38,12 @@ public class DataExporterRenderer extends CoreRenderer {
 		Map<String,String> requestParameterMap = facesContext.getExternalContext().getRequestParameterMap();
 		DataExporter exporter = (DataExporter) component;
 		String clientId = exporter.getClientId(facesContext);
+		String buttonClientId = clientId + "_button";
 
 		if (requestParameterMap.containsKey("ice.event.captured")) {
 			String source = String.valueOf(requestParameterMap.get("ice.event.captured"));
-			if (clientId.equals(source)) {
-				exporter.setSource(clientId);
+			if (buttonClientId.equals(source)) {
+				exporter.setSource(buttonClientId);
                 // Generate resources in invoke application. After all decoding is finished.
                 exporter.queueEvent(new ActionEvent(exporter) {{ setPhaseId(PhaseId.INVOKE_APPLICATION); }});
 			}
@@ -56,11 +57,14 @@ public class DataExporterRenderer extends CoreRenderer {
 		ResponseWriter writer = facesContext.getResponseWriter();
 		DataExporter exporter = (DataExporter) component;
 		String clientId = exporter.getClientId(facesContext);
+		String buttonClientId = clientId + "_button";
 		
-		writer.startElement("button", null);
+		writer.startElement("span", null);
 		writer.writeAttribute("id", clientId, null);
+		writer.startElement("button", null);
+		writer.writeAttribute("id", buttonClientId, null);
 		
-		StringBuilder onclick = new StringBuilder("new ice.ace.DataExporter('" + clientId + "',");
+		StringBuilder onclick = new StringBuilder("new ice.ace.DataExporter('" + buttonClientId + "',");
 		onclick.append(" function() { ");
         // ClientBehaviors
         Map<String,List<ClientBehavior>> behaviorEvents = exporter.getClientBehaviors();
@@ -68,7 +72,7 @@ public class DataExporterRenderer extends CoreRenderer {
             List<ClientBehaviorContext.Parameter> params = Collections.emptyList();
 			for(Iterator<ClientBehavior> behaviorIter = behaviorEvents.get("activate").iterator(); behaviorIter.hasNext();) {
 				ClientBehavior behavior = behaviorIter.next();
-				ClientBehaviorContext cbc = ClientBehaviorContext.createClientBehaviorContext(facesContext, exporter, "activate", clientId, params);
+				ClientBehaviorContext cbc = ClientBehaviorContext.createClientBehaviorContext(facesContext, exporter, "activate", buttonClientId, params);
 				String script = behavior.getScript(cbc);    //could be null if disabled
 
 				if(script != null) {
@@ -107,12 +111,10 @@ public class DataExporterRenderer extends CoreRenderer {
 	public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
 		ResponseWriter writer = facesContext.getResponseWriter();
 		DataExporter exporter = (DataExporter) component;
-		String clientId = exporter.getClientId(facesContext);
+		String clientId = exporter.getClientId(facesContext) + "_button";
 		
 		writer.endElement("button");
 		
-		writer.startElement("span", null);
-		writer.writeAttribute("id", clientId + "_script", null);
 		writer.startElement("script", null);
 		writer.writeAttribute("type", "text/javascript", null);
 		

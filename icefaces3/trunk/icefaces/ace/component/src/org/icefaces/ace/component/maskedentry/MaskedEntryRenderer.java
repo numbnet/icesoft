@@ -52,7 +52,7 @@ public class MaskedEntryRenderer extends InputRenderer {
 
         decodeBehaviors(context, maskedEntry);
 
-		String clientId = maskedEntry.getClientId(context);
+		String clientId = maskedEntry.getClientId(context) + "_field";
 		String submittedValue = (String) context.getExternalContext().getRequestParameterMap().get(clientId);
 
         if(submittedValue != null) {
@@ -79,12 +79,12 @@ public class MaskedEntryRenderer extends InputRenderer {
         writeLabelAndIndicatorBefore(writer, label, hasLabel, labelPosition, indicator, hasIndicator, indicatorPosition, required);
 		encodeMarkup(context, maskedEntry, label, hasLabel, labelPosition, indicator, hasIndicator, indicatorPosition);
         writeLabelAndIndicatorAfter(writer, label, hasLabel, labelPosition, indicator, hasIndicator, indicatorPosition, required);
-		encodeScript(context, maskedEntry, label, hasLabel, labelPosition, indicator, hasIndicator, indicatorPosition);
 	}
 	
 	protected void encodeScript(FacesContext context, MaskedEntry maskedEntry, String label, boolean hasLabel, String labelPosition, String indicator, boolean hasIndicator, String indicatorPosition) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
 		String clientId = maskedEntry.getClientId(context);
+		String fieldClientId = clientId + "_field";
 
         String inFieldLabel = "";
         if (hasLabel && labelPosition.equals("inField")) {
@@ -105,7 +105,7 @@ public class MaskedEntryRenderer extends InputRenderer {
 		
 		JSONBuilder jb = JSONBuilder.create();
 		jb.beginFunction("ice.ace.InputMask")
-			.item(clientId)
+			.item(fieldClientId)
 			.beginMap()
 				.entry("mask", maskedEntry.getMask());
 
@@ -136,12 +136,15 @@ public class MaskedEntryRenderer extends InputRenderer {
 	protected void encodeMarkup(FacesContext context, MaskedEntry maskedEntry, String label, boolean hasLabel, String labelPosition, String indicator, boolean hasIndicator, String indicatorPosition) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
 		String clientId = maskedEntry.getClientId(context);
+		String fieldClientId = clientId + "_field";
         String defaultClass = themeForms() ? MaskedEntry.THEME_INPUT_CLASS : MaskedEntry.PLAIN_INPUT_CLASS;
         String styleClass = maskedEntry.getStyleClass();
         defaultClass += getStateStyleClasses(maskedEntry);
 
-		writer.startElement("input", null);
+		writer.startElement("span", null);
 		writer.writeAttribute("id", clientId, null);
+		writer.startElement("input", null);
+		writer.writeAttribute("id", fieldClientId, null);
 		writer.writeAttribute("name", clientId, null);
 		writer.writeAttribute("type", "text", null);
 		
@@ -171,5 +174,9 @@ public class MaskedEntryRenderer extends InputRenderer {
 		Utils.writeConcatenatedStyleClasses(writer, defaultClass, styleClass);
 
         writer.endElement("input");
+		
+		encodeScript(context, maskedEntry, label, hasLabel, labelPosition, indicator, hasIndicator, indicatorPosition);
+		
+		writer.endElement("span");
 	}
 }

@@ -79,7 +79,6 @@ public class AccordionRenderer extends CoreRenderer {
             if (tabToLoad != null) tabToLoad.encodeAll(context);
         }else {
             encodeMarkup(context, acco);
-            encodeScript(context, acco);
         }
 		
 	}
@@ -103,6 +102,7 @@ public class AccordionRenderer extends CoreRenderer {
         writer.endElement("div");
 
         encodeStateHolder(context, accordionPanel);
+		encodeScript(context, accordionPanel);
 
 		writer.endElement("div");
 	}

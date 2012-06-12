@@ -45,7 +45,6 @@ public class ConfirmationDialogRenderer extends CoreRenderer {
 		ConfirmationDialog dialog = (ConfirmationDialog) component;
 		
 		encodeMarkup(context, dialog);
-		encodeScript(context, dialog);
 	}
 
 	protected void encodeMarkup(FacesContext context, ConfirmationDialog dialog) throws IOException {
@@ -83,6 +82,8 @@ public class ConfirmationDialogRenderer extends CoreRenderer {
 		writer.writeAttribute("id", clientId + "_buttons", null);
 		renderChildren(context, dialog);
 		writer.endElement("div");
+		
+		encodeScript(context, dialog);
 		
 		writer.endElement("div");
 	}

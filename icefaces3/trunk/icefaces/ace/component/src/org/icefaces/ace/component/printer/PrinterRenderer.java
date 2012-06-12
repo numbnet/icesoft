@@ -60,6 +60,8 @@ public class PrinterRenderer extends CoreRenderer {
 		if(forValue == null)
 			throw new FacesException("Cannot find component \"" + printer.getFor() + "\" in view.");
 		
+		writer.startElement("span", printer);
+		writer.writeAttribute("id", component.getClientId(), null);
 		writer.startElement("script", printer);
 		writer.writeAttribute("type", "text/javascript", null);
 			
@@ -87,5 +89,6 @@ public class PrinterRenderer extends CoreRenderer {
 		writer.write("});");
 
 		writer.endElement("script");
+		writer.endElement("span");
 	}
 }

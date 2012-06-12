@@ -50,7 +50,9 @@ public class DraggableRenderer extends CoreRenderer {
         String target = findTarget(facesContext, draggable);
 //        String dashboard = draggable.getDashboard();
 
-        writer.startElement("script", draggable);
+        writer.startElement("span", draggable);
+		writer.writeAttribute("id", clientId, null);
+		writer.startElement("script", draggable);
         writer.writeAttribute("type", "text/javascript", null);
         writer.write("ice.ace.jq(function() {");
         writer.write(this.resolveWidgetVar(draggable) + " = new ice.ace.Draggable('" + clientId + "',");
@@ -99,6 +101,7 @@ public class DraggableRenderer extends CoreRenderer {
 
         writer.write("});");
         writer.endElement("script");
+		writer.endElement("span");
     }
 
     protected String findTarget(FacesContext facesContext, Draggable draggable) {

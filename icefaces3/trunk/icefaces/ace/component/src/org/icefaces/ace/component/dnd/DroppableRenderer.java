@@ -88,7 +88,6 @@ public class DroppableRenderer extends CoreRenderer {
         // empty node with client id, needed for AJAX request
 		writer.startElement("span", droppable);
 		writer.writeAttribute("id", clientId, null);
-		writer.endElement("span");
 		
 		writer.startElement("script", droppable);
         writer.writeAttribute("type", "text/javascript", null);
@@ -113,6 +112,8 @@ public class DroppableRenderer extends CoreRenderer {
         writer.write("});});");
 
         writer.endElement("script");
+		
+		writer.endElement("span");
     }
 
     protected UIComponent findTarget(FacesContext facesContext, Droppable droppable) {

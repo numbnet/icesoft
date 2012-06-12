@@ -84,7 +84,6 @@ public class ProgressBarRenderer extends CoreRenderer {
         ProgressBar progressBar = (ProgressBar) component;
 
         encodeMarkup(facesContext, progressBar);
-        encodeScript(facesContext, progressBar);
     }
 
     protected void encodeMarkup(FacesContext facesContext, ProgressBar progressBar) throws IOException {
@@ -101,6 +100,8 @@ public class ProgressBarRenderer extends CoreRenderer {
         if (styleClass != null) {
             writer.writeAttribute("class", styleClass, "styleClass");
         }
+		
+		encodeScript(facesContext, progressBar);
 
         writer.endElement("div");
     }

@@ -45,7 +45,6 @@ public class NotificationPanelRenderer extends CoreRenderer {
 		NotificationPanel bar = (NotificationPanel) component;
 		
 		encodeMarkup(facesContext, bar);
-		encodeScript(facesContext, bar);
 	}
 	
 	protected void encodeMarkup(FacesContext facesContext, NotificationPanel bar) throws IOException {
@@ -69,6 +68,8 @@ public class NotificationPanelRenderer extends CoreRenderer {
 		}
 
 		renderChildren(facesContext, bar);
+		
+		encodeScript(facesContext, bar);
 		
 		writer.endElement("div");
 	}
