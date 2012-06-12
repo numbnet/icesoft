@@ -15,27 +15,28 @@
   ~ express or implied. See the License for the specific language
   ~ governing permissions and limitations under the License.
   -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" 
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
+
     <parent>
         <groupId>org.icefaces.samples</groupId>
-        <artifactId>showcase</artifactId>
+        <artifactId>showcase-parent</artifactId>
         <version>3.0.1</version>
+        <relativePath>..</relativePath>
     </parent>
 
-    <artifactId>icefaces-showcase</artifactId>
+    <artifactId>showcase</artifactId>
     <packaging>war</packaging>
-    <name>ICEfaces Showcase</name>
-    <url>http://www.icesoft.org/</url>
-    <version>3.0.1</version>
+    <name>${icefaces.product.name}: Showcase Sample</name>
+
     <properties>
         <private.demo>true</private.demo>
-        <jsf.version>2.1.6</jsf.version>
-        <netbeans.hint.deploy.server>Tomcat</netbeans.hint.deploy.server>
     </properties>
-	<build>
-        <finalName>showcase</finalName>
+
+    <build>
+        <finalName>${artifactId}</finalName>
     </build>
- </project>
+
+</project>

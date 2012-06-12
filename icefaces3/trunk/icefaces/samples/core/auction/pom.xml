@@ -19,41 +19,30 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
+
     <parent>
-       <groupId>org.icefaces.samples</groupId>
-       <artifactId>core</artifactId>
-       <version>3.0.1</version>
+        <groupId>org.icefaces.samples</groupId>
+        <artifactId>core</artifactId>
+        <version>3.0.1</version>
+        <relativePath>..</relativePath>
     </parent>
+
     <artifactId>auction</artifactId>
     <packaging>war</packaging>
-    <name>ICEfaces Auction sample</name>
- 
+    <name>${icefaces.product.name}: Core Samples Auction</name>
+
     <dependencies>
+
         <dependency>
-            <groupId>org.icefaces</groupId>
-            <artifactId>icepush</artifactId>
-            <version>${ice.version}</version>
+            <groupId>${icefaces.product.group}</groupId>
+            <artifactId>${icefaces.lib.name}</artifactId>
         </dependency>
-        <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>servlet-api</artifactId>
-            <version>2.5</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>javax.el</groupId>
-            <artifactId>el-api</artifactId>
-            <version>1.0</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>javax.annotation</groupId>
-            <artifactId>jsr250-api</artifactId>
-            <version>1.0</version>
-            <scope>provided</scope>
-        </dependency>              
+
     </dependencies>
+
+    <!-- Naming it this way prevents the version from being appended. -->
     <build>
         <finalName>${artifactId}</finalName>
     </build>
+
 </project>
