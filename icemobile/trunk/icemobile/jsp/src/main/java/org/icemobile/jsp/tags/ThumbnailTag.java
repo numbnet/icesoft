@@ -38,7 +38,7 @@ public class ThumbnailTag extends SimpleTagSupport {
         out.write("<span ");
 
         if (id != null && !"".equals(id)) {
-            out.write(" id=\'" + getId() + "\'");
+            out.write(" id='" + getId() + "'");
         }
         if (null != styleClass)  {
             out.write(" class='" + styleClass + "'");
@@ -46,7 +46,7 @@ public class ThumbnailTag extends SimpleTagSupport {
         if (null != style)  {
             out.write(" style='" + style + "'");
         }
-        out.write("><img height=\'64\' width=\'64\' id=\'" + mFor + "-thumb\'/></span>");
+        out.write("><img height='64' width='64' id='" + mFor + "-thumb'></span>");
     }
 
     public String getId() {
