@@ -82,7 +82,7 @@ ice.ace.List.prototype.itemReceiveHandler = function(event, ui) {
     // dragged item.
     if (src.cfg.selection) {
         this.deselectConnectedLists();
-        this.deselectAll();
+        this.deselectAll(item);
         src.addSelectedItem(item, fromIndex);
     }
 
@@ -441,7 +441,7 @@ ice.ace.List.prototype.removeSelectedItem = function(item) {
     }
 };
 
-ice.ace.List.prototype.deselectAll = function() {
+ice.ace.List.prototype.deselectAll = function(except) {
     var self = this,
         reorderings = this.read('reorderings'),
         selections = this.read('selections'),
@@ -449,9 +449,12 @@ ice.ace.List.prototype.deselectAll = function() {
 
     this.element.find('> ul.if-list-body > li.if-list-item.ui-state-active')
             .removeClass('ui-state-active').each(function(i, elem) {{
+                if (except != undefined && except.is(elem)) return;
+
                 var item = ice.ace.jq(elem),
                     id = item.attr('id'),
                     index = parseInt(id.substr(id.lastIndexOf(self.sep)+1));
+
                 if (index)
                     index = self.getUnshiftedIndex(item.parent().children().length, reorderings, index);
                 if (index != undefined)
