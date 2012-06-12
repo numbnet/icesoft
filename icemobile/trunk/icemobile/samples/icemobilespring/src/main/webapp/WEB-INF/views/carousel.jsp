@@ -45,7 +45,7 @@
 		<script type="text/javascript">
 
 			$(document).ready(function() {
-				$("#variousform").submit(function() {
+				$("#carouselform").submit(function() {
                     if (window.ice && ice.upload)  {
                         window.ice.handleResponse = function(data)  {
 						    $("#carouselContent").replaceWith(unescape(data));
