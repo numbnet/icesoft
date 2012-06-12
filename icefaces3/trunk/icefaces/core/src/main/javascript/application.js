@@ -344,7 +344,6 @@ if (!window.ice.icefaces) {
                 //avoiding thus to use global variables
                 var mojarraXMLHttpRequestParameter = arguments.callee.caller.arguments[0];
                 var source = mojarraXMLHttpRequestParameter.iceSubmitEvent;
-                var isICEfacesEvent = false;
 
                 try {
                     //if source element not set yet try to look it up
@@ -359,12 +358,16 @@ if (!window.ice.icefaces) {
                                 //lookup the source element from the fullSubmit or singleSubmit function call
                                 source = submitFunction.arguments[3];//lookup the 4th parameter -- the element
                             } catch (ex) {
-                                //cannot find *submit function in call stack
+                                //cannot find *submit function in call stack, not an ICEfaces triggered submit
+                                return;
                             }
                         }
                         //set source element to be used by the 'complete' and 'success' type events
                         mojarraXMLHttpRequestParameter.iceSubmitEvent = source;
                     }
+
+                    //try to determine if submit was triggered by ICEfaces
+                    var isICEfacesEvent = false;
                     var form = formOf(source);
                     var foundForm = form;
                     //test if form still exists -- could have been removed by the update, this element being detached from document
