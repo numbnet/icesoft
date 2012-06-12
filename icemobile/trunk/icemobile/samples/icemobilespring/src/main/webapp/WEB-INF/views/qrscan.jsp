@@ -14,7 +14,7 @@
 </head>
 <body>
 </c:if>
-	<div id="qrcodescancontent">
+	<div id="qrscancontent">
 
 		<h2>Various Spring MVC tags</h2>
 		<p>
@@ -27,7 +27,8 @@
 			</div>
 
 			<button type="submit">Submit</button>
-			  <p>The value of the scanned tag is:  ${QRScanBean.scanOne}
+			  <p>Scanned: 
+              <span style="font-style:italic">${QRScanBean.scanOne}</span>
 
 		</form:form>
 
@@ -36,10 +37,10 @@
 		<script type="text/javascript">
 
 			$(document).ready(function() {
-				$("#flipswitchform").submit(function() {
+				$("#qrcodeform").submit(function() {
                     if (window.ice && ice.upload)  {
                         window.ice.handleResponse = function(data)  {
-						    $("#flipswitchContent").replaceWith(unescape(data));
+						    $("#qrscancontent").replaceWith(unescape(data));
 						    $('html, body').animate({ scrollTop: $("#message").offset().top }, 500);
                         }
                         ice.upload($(this).attr("id"));
@@ -56,7 +57,7 @@
                         processData: false,
                         type: 'POST',
                         success: function(html) {
-						    $("#flipswitchContent").replaceWith(html);
+						    $("#qrscancontent").replaceWith(html);
 						    $('html, body').animate({ scrollTop: $("#message").offset().top }, 500);
 					    }
                     });
