@@ -50,26 +50,32 @@ public class DeviceTag extends SimpleTagSupport {
 
             out.write(" value='" + label + "'>");
         } else {
-            out.write("<input id='" + id + "' type='" + fallbackType + "'" + 
-                    " name='" + id + "' />");
-           //or for iOS until we can store the ICEmobile-SX registration
-            //without a session (likely a cookie)
-            out.write("<input type='button' data-id='" + id + "'");
-            writeStandardAttributes(out);
-            out.write(" data-command='" + command + "' onclick='ice.mobilesx(this)' ");
-            out.write(" value='" + label + " (ICEmobile-SX)'>");
+            if (!TagUtil.isIOS(pageContext))  {
+                out.write("<input id='" + id + "' type='" +
+                        fallbackType + "'" + " name='" + id + "' />");
+            } else {
+               //or for iOS until we can store the ICEmobile-SX registration
+                //without a session (likely a cookie)
+                out.write("<input type='button' data-id='" + id + "' ");
+                if (null != params)  {
+                    out.write("data-params='" + params + "' ");
+                } 
+                writeStandardAttributes(out);
+                out.write("data-command='" + command + "' onclick='ice.mobilesx(this)' ");
+                out.write(" value='" + label + " (ICEmobile-SX)'>");
+            }
         }
     }
 
     public void writeStandardAttributes(Writer out) throws IOException  {
         if (null != styleClass)  {
-            out.write(" class='" + styleClass + "'");
+            out.write("class='" + styleClass + "'");
         }
         if (null != style)  {
             out.write(" style='" + style + "'");
         }
         if (disabled)  {
-            out.write(" disabled='disabled'");
+            out.write(" disabled='disabled' ");
         }
     }
 
