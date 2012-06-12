@@ -18,6 +18,8 @@ var singleSubmitExecuteThis;
 var singleSubmitExecuteThisRenderThis;
 var submit;
 var fullSubmit;
+var singleSubmit;
+
 (function() {
     function idOrElement(e) {
         return isString(e) ? document.getElementById(e) : e;
@@ -63,8 +65,8 @@ var fullSubmit;
     //          element.name as it does when f:ajax is used. So here
     //          we add it if it's a valid value and not there already.
     //          The strategy is similar to what Mojarra already does.
-    function fixExecuteParameter(execute,element){
-        if( execute && element.name && element.id){
+    function fixExecuteParameter(execute, element) {
+        if (execute && element.name && element.id) {
             var execIds = execute.split(' ');
             for (var i = 0, size = execIds.length; i < size; i++) {
                 if (execIds[i] == element.name) {
@@ -76,7 +78,7 @@ var fullSubmit;
         return execute;
     }
 
-    function singleSubmit(execute, render, event, element, additionalParameters, callbacks) {
+    singleSubmit = function(execute, render, event, element, additionalParameters, callbacks) {
         var viewID = viewIDOf(element);
         var form = document.getElementById(singleSubmitFormID(viewID));
         var clonedElements = [];
@@ -89,7 +91,7 @@ var fullSubmit;
             if (tagName == 'input') {
                 if (element.type == 'radio') {
                     clonedElement.checked = element.checked;
-                    execute = fixExecuteParameter(execute,element);
+                    execute = fixExecuteParameter(execute, element);
                 }
                 if (element.type == 'checkbox') {
                     clonedElement.checked = element.checked;
@@ -102,7 +104,7 @@ var fullSubmit;
                             checkboxClone.checked = checkbox.checked;
                         }
                     });
-                    execute = fixExecuteParameter(execute,element);
+                    execute = fixExecuteParameter(execute, element);
                 }
             } else if (tagName == 'select') {
                 var clonedOptions = clonedElement.options;
@@ -131,8 +133,8 @@ var fullSubmit;
             var options = {
                 execute: execute,
                 render: render,
-                onevent: submitEventBroadcaster(onBeforeSubmitListeners, onBeforeUpdateListeners, onAfterUpdateListeners),
-                onerror: submitErrorBroadcaster(onNetworkErrorListeners, onServerErrorListeners),
+                onevent: filterICEfacesEvents(submitEventBroadcaster(onBeforeSubmitListeners, onBeforeUpdateListeners, onAfterUpdateListeners)),
+                onerror: filterICEfacesEvents(submitErrorBroadcaster(onNetworkErrorListeners, onServerErrorListeners)),
                 'ice.window': namespace.window,
                 'ice.view': viewID,
                 'ice.focus': currentFocus
@@ -156,16 +158,16 @@ var fullSubmit;
                 'event type: ' + type(decoratedEvent)
             ], '\n'));
             namespace.submitFunction(clonedElement, event, options);
-        } catch (e)  {
+        } catch (e) {
             debug(logger, "singleSubmit failed " + e);
         } finally {
-            if (window.myfaces)  {
+            if (window.myfaces) {
                 //myfaces queue does not serialize
                 //until the request is sent, so we must delay
                 append(onAfterUpdateListeners, function() {
                     each(clonedElements, function(c) {
                         form.removeChild(c);
-                       });
+                    });
                 });
             } else {
                 each(clonedElements, function(c) {
@@ -212,24 +214,24 @@ var fullSubmit;
     var addPrefix = 'patch+';
     var removePrefix = 'patch-';
 
-    function extractTarget(e)  {
-        if (!e)  {
+    function extractTarget(e) {
+        if (!e) {
             return null;
         }
-        return (e.currentTarget) ? e.currentTarget : 
-                ( (e.target) ? e.target : e.srcElement );
+        return (e.currentTarget) ? e.currentTarget :
+            ( (e.target) ? e.target : e.srcElement );
     }
 
     fullSubmit = function(execute, render, event, element, additionalParameters, callbacks) {
         var f = null;
         var extractedElement = extractTarget(event);
-        var eventElement = (extractedElement) ? extractedElement : 
-                triggeredBy($event(event, element));
-        if ( eventElement && (eventElement.tagName) && 
-                (toLowerCase(eventElement.tagName) == "form") ) {
+        var eventElement = (extractedElement) ? extractedElement :
+            triggeredBy($event(event, element));
+        if (eventElement && (eventElement.tagName) &&
+            (toLowerCase(eventElement.tagName) == "form")) {
             eventElement = element;
         }
-        if (toLowerCase(element.tagName) == "form")  {
+        if (toLowerCase(element.tagName) == "form") {
             f = element;
         } else {
             f = formOf(element);
@@ -239,12 +241,12 @@ var fullSubmit;
         //then ajax is disabled
         var ajaxIsDisabled = false;
         var ancestor = eventElement;
-        while (null != ancestor)  {
-            if ( (ancestor.tagName) && 
-                    (toLowerCase(ancestor.tagName) == "form") )  {
+        while (null != ancestor) {
+            if ((ancestor.tagName) &&
+                (toLowerCase(ancestor.tagName) == "form")) {
                 break;
             }
-            if (isAjaxDisabled(formID, ancestor))  {
+            if (isAjaxDisabled(formID, ancestor)) {
                 ajaxIsDisabled = true;
                 break;
             }
@@ -282,8 +284,8 @@ var fullSubmit;
             var options = {
                 execute: execute,
                 render: render,
-                onevent: submitEventBroadcaster(onBeforeSubmitListeners, onBeforeUpdateListeners, onAfterUpdateListeners),
-                onerror: submitErrorBroadcaster(onNetworkErrorListeners, onServerErrorListeners),
+                onevent: filterICEfacesEvents(submitEventBroadcaster(onBeforeSubmitListeners, onBeforeUpdateListeners, onAfterUpdateListeners)),
+                onerror: filterICEfacesEvents(submitErrorBroadcaster(onNetworkErrorListeners, onServerErrorListeners)),
                 'ice.window': namespace.window,
                 'ice.view': viewID,
                 'ice.focus': currentFocus};
@@ -297,7 +299,7 @@ var fullSubmit;
 
             try {
                 serializeEventToOptions(decoratedEvent, options);
-            } catch (e)  {
+            } catch (e) {
                 debug(logger, "Unable to serialize event " + e);
             }
             serializeAdditionalParameters(additionalParameters, options);
