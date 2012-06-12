@@ -257,33 +257,54 @@ if (!window.ice.icefaces) {
             return doc && doc.documentElement;
         }
 
+        function callStack() {
+            var caller = arguments.callee.caller;
+            return Stream(function(cellConstructor) {
+                function callerStream(c) {
+                    if (!c) return null;
+                    return function() {
+                        return cellConstructor(c, callerStream(c.arguments.callee.caller));
+                    };
+                }
+
+                return callerStream(caller);
+            });
+        }
+
+        function detectCaller(f) {
+            return detect(callStack(), function(caller) {
+                return caller == f;
+            }, function() {
+                throw 'cannot find function in call stack'
+            });
+        }
+
         //define function to be wired as submit callback into JSF bridge
         function submitEventBroadcaster(perRequestOnBeforeSubmitListeners, perRequestOnBeforeUpdateListeners, perRequestOnAfterUpdateListeners) {
             perRequestOnBeforeSubmitListeners = perRequestOnBeforeSubmitListeners || [];
             perRequestOnBeforeUpdateListeners = perRequestOnBeforeUpdateListeners || [];
             perRequestOnAfterUpdateListeners = perRequestOnAfterUpdateListeners || [];
-            return function(e) {
-                var source = e.source;
-                switch (e.status) {
+            return function(submitEvent, submitElement) {
+                switch (submitEvent.status) {
                     case 'begin':
                         //Include parameter indicating if submission was triggered by client
-                        var isClientRequest = false;
-                        if (!source || source.id != retrieveUpdateFormID(viewIDOf(source))) {
-                            isClientRequest = true;
+                        var isUserInitiatedRequest = false;
+                        if (submitElement.id != retrieveUpdateFormID(viewIDOf(submitElement))) {
+                            isUserInitiatedRequest = true;
                         }
-                        broadcast(perRequestOnBeforeSubmitListeners, [ source, isClientRequest ]);
+                        broadcast(perRequestOnBeforeSubmitListeners, [ submitElement, isUserInitiatedRequest ]);
                         break;
                     case 'complete':
-                        var xmlContent = e.responseXML;
+                        var xmlContent = submitEvent.responseXML;
                         if (containsXMLData(xmlContent)) {
-                            broadcast(perRequestOnBeforeUpdateListeners, [ xmlContent, source ]);
+                            broadcast(perRequestOnBeforeUpdateListeners, [ xmlContent, submitElement ]);
                         } else {
                             warn(logger, 'the response does not contain XML data');
                         }
                         break;
                     case 'success':
-                        var xmlContent = e.responseXML;
-                        broadcast(perRequestOnAfterUpdateListeners, [ xmlContent, source ]);
+                        var xmlContent = submitEvent.responseXML;
+                        broadcast(perRequestOnAfterUpdateListeners, [ xmlContent, submitElement ]);
                         break;
                 }
             };
@@ -318,10 +339,32 @@ if (!window.ice.icefaces) {
         }
 
         function filterICEfacesEvents(f) {
-            var isICEfacesEvent = false;
             return function(e) {
+                //lookup the XMLHttpRequest parameter of the calling function to use it as a thread context variable,
+                //avoiding thus to use global variables
+                var mojarraXMLHttpRequestParameter = arguments.callee.caller.arguments[0];
+                var source = mojarraXMLHttpRequestParameter.iceSubmitEvent;
+                var isICEfacesEvent = false;
+
                 try {
-                    var source = e.source;
+                    //if source element not set yet try to look it up
+                    if (!source) {
+                        //is the source element present on the submit event object
+                        if (e.source) {
+                            source = e.source;
+                        } else {
+                            //the source element is missing in Mojarra when the element does not have an ID assigned
+                            try {
+                                var submitFunction = detectCaller(fullSubmit) || detectCaller(singleSubmit);
+                                //lookup the source element from the fullSubmit or singleSubmit function call
+                                source = submitFunction.arguments[3];//lookup the 4th parameter -- the element
+                            } catch (ex) {
+                                //cannot find *submit function in call stack
+                            }
+                        }
+                        //set source element to be used by the 'complete' and 'success' type events
+                        mojarraXMLHttpRequestParameter.iceSubmitEvent = source;
+                    }
                     var form = formOf(source);
                     var foundForm = form;
                     //test if form still exists -- could have been removed by the update, this element being detached from document
@@ -340,7 +383,7 @@ if (!window.ice.icefaces) {
                 }
                 //invoke callback only when event is triggered from an ICEfaces enabled form
                 if (isICEfacesEvent) {
-                    f(e);
+                    f(e, source);
                 }
             };
         }
