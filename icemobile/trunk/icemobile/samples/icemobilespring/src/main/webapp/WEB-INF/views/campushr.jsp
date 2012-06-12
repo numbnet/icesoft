@@ -44,7 +44,7 @@
 
 		  	<fieldset>
                <mobi:camera id="camera" />
-               <img style="height:60px;width:65px;vertical-align:middle;" id="camera-thumb" >
+	       <mobi:thumb for="camera"/>
                <push:region group="camPush" page="/camregion" />
 		  	</fieldset>
 
