@@ -103,12 +103,18 @@ public class SliderEntryRenderer extends CoreRenderer{
 		SliderEntry slider = (SliderEntry) component;
 		
 		encodeMarkup(facesContext, slider);
-		encodeScript(facesContext, slider);
 	}
 	
 	protected void encodeMarkup(FacesContext context, SliderEntry slider) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
 		String clientId = slider.getClientId(context);
+		
+		writer.startElement("input", slider);
+		writer.writeAttribute("id", clientId + "_hidden" , "id");
+		writer.writeAttribute("name", clientId + "_hidden" , "name");
+		writer.writeAttribute("type", "hidden" , "type");
+		writer.writeAttribute("value", slider.getValue() , "value");
+		writer.endElement("input");
 		
 		writer.startElement("div", slider);
 		writer.writeAttribute("id", clientId , "id");
@@ -123,13 +129,9 @@ public class SliderEntryRenderer extends CoreRenderer{
 		writer.writeAttribute("style", style , null);
 		if(slider.getStyleClass() != null) writer.writeAttribute("class", slider.getStyleClass(), null);
 		
+		encodeScript(context, slider);
+		
 		writer.endElement("div");
-		writer.startElement("input", slider);
-		writer.writeAttribute("id", clientId + "_hidden" , "id");
-		writer.writeAttribute("name", clientId + "_hidden" , "name");
-		writer.writeAttribute("type", "hidden" , "type");
-		writer.writeAttribute("value", slider.getValue() , "value");
-		writer.endElement("input");
 	}
 
 	protected void encodeScript(FacesContext context, SliderEntry slider) throws IOException {

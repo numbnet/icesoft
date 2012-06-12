@@ -75,7 +75,6 @@ public class DateTimeEntryRenderer extends InputRenderer {
         Map<String, Object> labelAttributes = getLabelAttributes(dateTimeEntry);
 
         encodeMarkup(context, dateTimeEntry, value, labelAttributes);
-        encodeScript(context, dateTimeEntry, value, labelAttributes);
     }
 
     protected void encodeMarkup(FacesContext context, DateTimeEntry dateTimeEntry, String value, Map<String, Object> labelAttributes) throws IOException {
@@ -146,6 +145,8 @@ public class DateTimeEntryRenderer extends InputRenderer {
         if (popup) {
             writeLabelAndIndicatorAfter(labelAttributes);
         }
+		
+		encodeScript(context, dateTimeEntry, value, labelAttributes);
 
         writer.endElement("span");
     }
