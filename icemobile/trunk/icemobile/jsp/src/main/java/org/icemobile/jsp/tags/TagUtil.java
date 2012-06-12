@@ -30,6 +30,7 @@ import java.util.logging.Logger;
 
 public class TagUtil {
     private static String USER_AGENT = "User-Agent";
+    private static String ACCEPT = "Accept";
     private static String USER_AGENT_COOKIE = "com.icesoft.user-agent";
     private static String HYPERBROWSER = "HyperBrowser";
 
@@ -191,7 +192,8 @@ public class TagUtil {
         HttpServletRequest request = (HttpServletRequest)
                                              pageContext.getRequest();
         String userAgent = request.getHeader(USER_AGENT);
-        return sniffBlackberry(userAgent);
+        String accept = request.getHeader(ACCEPT);
+        return sniffBlackberry(userAgent, accept);
     }
 
     static boolean sniffIpod(String uaString) {
