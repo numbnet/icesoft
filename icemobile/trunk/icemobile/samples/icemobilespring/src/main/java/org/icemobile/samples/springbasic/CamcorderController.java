@@ -34,16 +34,12 @@ public class CamcorderController {
     }
 
 	@RequestMapping(value = "/camcorder", method=RequestMethod.POST)
-	public void processVideo(HttpServletRequest request, ModelBean modelBean, @RequestParam(value = "cam-file", required = false) MultipartFile file, @RequestParam(value = "camcorder", required = false) MultipartFile inputFile, Model model) throws IOException {
+	public void processVideo(HttpServletRequest request, ModelBean modelBean, @RequestParam(value = "camvid", required = false) MultipartFile file, Model model) throws IOException {
 
         String fileName = "empty";
         if (null != file)  {
             fileName = file.getOriginalFilename();
             file.transferTo(new File(request.getRealPath("/media/video.mp4")));
-        }
-        if (null != inputFile)  {
-            fileName = inputFile.getOriginalFilename();
-            inputFile.transferTo(new File(request.getRealPath("/media/video.mp4")));
         }
 		model.addAttribute("message", "Hello " + modelBean.getName() + ", your video file '" + fileName + "' was uploaded successfully.");
 

@@ -41,9 +41,11 @@
 		  	</fieldset>
 
 		  	<fieldset >
-               <mobi:camcorder id="camcorder" />
-	       <mobi:thumb for="camcorder"/>
-               <video style="float:right;height:120px;width:120px;" src="media/video.mp4" controls="controls" >
+               <mobi:camcorder id="camvid" />
+               <mobi:thumb for="camvid"/>
+               <div>
+                   <video style="float:right;height:120px;width:120px;" src="media/video.mp4" controls="controls" >
+               </div>
 		  	</fieldset>
 
 			<fieldset class="checkbox">
