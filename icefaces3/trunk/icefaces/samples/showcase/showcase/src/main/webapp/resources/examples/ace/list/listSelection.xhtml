@@ -37,20 +37,20 @@
     <ui:define name="example">
         <h:form id="form">
             <h3>Client-Side Selection</h3>
-            <h:panelGroup style="padding: 0.5em;" layout="block">
-                <h:panelGrid columns="3" style="margin-left:auto; margin-right:auto;" cellspacing="30">
-                    <ace:list value="#{backing.stringList}"
+            <h:panelGroup id="panelGroup" style="padding: 0.5em;" layout="block">
+                <h:panelGrid id="panelGrid" columns="3" style="margin-left:auto; margin-right:auto;" cellspacing="30">
+                    <ace:list id="list" value="#{backing.stringList}"
                               selections="#{backing.selections}"
-                              selection="true"
+                              selectionMode="multiple"
                               dragging="false" />
 
-                    <h:panelGroup>
-                        <h:commandButton value="Submit Selection" />
+                    <h:panelGroup id="panelGroup2" >
+                        <h:commandButton id="cmdBtn" value="Submit Selection" />
                     </h:panelGroup>
 
-                    <h:panelGroup>
-                        <ui:repeat value="#{backing.stringList}" var="selectItem">
-                            <h:outputText value="#{selectItem.value}" /> - #{backing.selections.contains(selectItem)}<br/>
+                    <h:panelGroup id="panelGroup3">
+                        <ui:repeat id="repeater" value="#{backing.stringList}" var="selectItem">
+                            <h:outputText id="outputText" value="#{selectItem.value}" /> - #{backing.selections.contains(selectItem)}<br/>
                         </ui:repeat>
                     </h:panelGroup>
                 </h:panelGrid>
@@ -59,19 +59,19 @@
             <hr style="margin:1em .6em;"/>
 
             <h3>Ajax Selection</h3>
-            <h:panelGroup style="padding: 0 0.5em;" layout="block">
-                <h:panelGrid columns="2" style="margin-left:auto; margin-right:auto;" cellspacing="30">
-                    <ace:list value="#{backing.ajaxStringList}"
+            <h:panelGroup id="panelGroup4" style="padding: 0 0.5em;" layout="block">
+                <h:panelGrid id="panelGrid2" columns="2" style="margin-left:auto; margin-right:auto;" cellspacing="30">
+                    <ace:list id="list2" value="#{backing.ajaxStringList}"
                               selections="#{backing.ajaxSelections}"
-                              selection="true"
+                              selectionMode="multiple"
                               dragging="false" >
                         <ace:ajax event="select" render="@form" />
                         <ace:ajax event="deselect" render="@form" />
                     </ace:list>
 
-                    <h:panelGroup>
-                        <ui:repeat value="#{backing.ajaxStringList}" var="selectItem">
-                            <h:outputText value="#{selectItem.value}" /> - #{backing.ajaxSelections.contains(selectItem)}<br/>
+                    <h:panelGroup id="panelGroup5">
+                        <ui:repeat id="repeater2" value="#{backing.ajaxStringList}" var="selectItem">
+                            <h:outputText id="outputText2" value="#{selectItem.value}" /> - #{backing.ajaxSelections.contains(selectItem)}<br/>
                         </ui:repeat>
                     </h:panelGroup>
                 </h:panelGrid>
