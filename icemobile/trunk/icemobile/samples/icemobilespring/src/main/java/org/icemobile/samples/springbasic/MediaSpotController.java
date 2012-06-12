@@ -25,6 +25,7 @@ import java.awt.image.BufferedImage;
 @Controller
 public class MediaSpotController {
     HashMap<String,MediaSpotBean> messages = new HashMap();
+    MediaSpotBean selectedMessage = null;
     static int THUMBSIZE = 128;
 
 	@ModelAttribute
@@ -40,6 +41,11 @@ public class MediaSpotController {
 	@RequestMapping(value = "/mediaspot", method=RequestMethod.GET)
     public void processGet(Model model)  {
 		model.addAttribute("reality", getRealityParams());
+        if (null != selectedMessage) {
+            model.addAttribute("selection", selectedMessage.getTitle());
+            model.addAttribute("imgPath", 
+                    selectedMessage.getFileName());
+        }
     }
 
 	@RequestMapping(value = "/mediaspot", method=RequestMethod.POST)
@@ -60,9 +66,12 @@ public class MediaSpotController {
 		model.addAttribute("reality", getRealityParams());
 		model.addAttribute("message", "Hello your file '" + fileName + "' was uploaded successfully.");
         String selection = spotBean.getSelection();
-        MediaSpotBean selectedMessage = messages.get(selection);
+        MediaSpotBean mySelectedMessage = messages.get(selection);
+        if (null != mySelectedMessage) {
+            selectedMessage = mySelectedMessage;
+        }
         if (null != selectedMessage) {
-            model.addAttribute("selection", selection);
+            model.addAttribute("selection", selectedMessage.getTitle());
             model.addAttribute("imgPath", 
                     selectedMessage.getFileName());
         }
