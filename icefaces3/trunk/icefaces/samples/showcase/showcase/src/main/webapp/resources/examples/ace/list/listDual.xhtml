@@ -37,25 +37,25 @@
     <ui:define name="example">
 
         <h:form id="form">
-            <h:panelGroup style="padding: 0.5em;" layout="block">
+            <h:panelGroup id="panelGroup" style="padding: 0.5em;" layout="block">
                 <style type="text/css">
                         /* To layout lists side by side if space is available */
                     .subList {
                         font-size: 80% !important;
                     }
                 </style>
-                <ace:listControl style="width:40%; margin: 0 auto 0 auto;"
+                <ace:listControl id="dualList" style="width:40%; margin: 0 auto 0 auto;"
                         position="ALL">
                     <f:facet name="header">
                         Dual Header
                     </f:facet>
 
-                    <ace:list value="#{backing.stringList}"
+                    <ace:list id="listOne" value="#{backing.stringList}"
                               styleClass="subList"
                               dropGroup="textGroup"
                               selection="true"/>
 
-                    <ace:list value="#{backing.destStringList}"
+                    <ace:list id="listTwo" value="#{backing.destStringList}"
                               styleClass="subList"
                               dropGroup="textGroup"
                               selection="true"/>
