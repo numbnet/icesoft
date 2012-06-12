@@ -25,10 +25,7 @@
 </head>
 <body>
 </c:if>
-	<div id="variousContent">
-<c:if test="${isGET}">
-    <push:register group="various" callback="function(){$('#variousform').submit();}"/>
-</c:if>
+	<div id="carouselContent">
 		<h2>Various Spring MVC tags</h2>
 		<p>
 			Carousel of images
@@ -51,7 +48,7 @@
 				$("#variousform").submit(function() {
                     if (window.ice && ice.upload)  {
                         window.ice.handleResponse = function(data)  {
-						    $("#variousContent").replaceWith(unescape(data));
+						    $("#carouselContent").replaceWith(unescape(data));
 						    $('html, body').animate({ scrollTop: $("#message").offset().top }, 500);
                         }
                         ice.upload($(this).attr("id"));
@@ -68,7 +65,7 @@
                         processData: false,
                         type: 'POST',
                         success: function(html) {
-						    $("#variousContent").replaceWith(html);
+						    $("#carouselContent").replaceWith(html);
 						    $('html, body').animate({ scrollTop: $("#message").offset().top }, 500);
 					    }
                     });
