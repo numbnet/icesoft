@@ -18,6 +18,8 @@ var singleSubmitExecuteThis;
 var singleSubmitExecuteThisRenderThis;
 var submit;
 var fullSubmit;
+var singleSubmit;
+
 (function() {
     function idOrElement(e) {
         return isString(e) ? document.getElementById(e) : e;
@@ -76,7 +78,7 @@ var fullSubmit;
         return execute;
     }
 
-    function singleSubmit(execute, render, event, element, additionalParameters, callbacks) {
+    singleSubmit = function(execute, render, event, element, additionalParameters, callbacks) {
         var viewID = viewIDOf(element);
         var form = document.getElementById(singleSubmitFormID(viewID));
         var clonedElements = [];
@@ -129,8 +131,8 @@ var fullSubmit;
             var options = {
                 execute: execute,
                 render: render,
-                onevent: submitEventBroadcaster(onBeforeSubmitListeners, onBeforeUpdateListeners, onAfterUpdateListeners),
-                onerror: submitErrorBroadcaster(onNetworkErrorListeners, onServerErrorListeners),
+                onevent: filterICEfacesEvents(submitEventBroadcaster(onBeforeSubmitListeners, onBeforeUpdateListeners, onAfterUpdateListeners)),
+                onerror: filterICEfacesEvents(submitErrorBroadcaster(onNetworkErrorListeners, onServerErrorListeners)),
                 'ice.window': namespace.window,
                 'ice.view': viewID,
                 'ice.focus': currentFocus
@@ -278,8 +280,8 @@ var fullSubmit;
             var options = {
                 execute: execute,
                 render: render,
-                onevent: submitEventBroadcaster(onBeforeSubmitListeners, onBeforeUpdateListeners, onAfterUpdateListeners),
-                onerror: submitErrorBroadcaster(onNetworkErrorListeners, onServerErrorListeners),
+                onevent: filterICEfacesEvents(submitEventBroadcaster(onBeforeSubmitListeners, onBeforeUpdateListeners, onAfterUpdateListeners)),
+                onerror: filterICEfacesEvents(submitErrorBroadcaster(onNetworkErrorListeners, onServerErrorListeners)),
                 'ice.window': namespace.window,
                 'ice.view': viewID,
                 'ice.focus': currentFocus};
