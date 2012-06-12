@@ -139,6 +139,34 @@
     </tag>
 
     <tag>
+        <description>Display Thumbnail for Camera or Camcorder.</description>
+        <display-name>ICEmobile Thumbnail</display-name>
+        <name>thumb</name>
+        <tag-class>org.icemobile.jsp.tags.ThumbnailTag</tag-class>
+        <body-content>empty</body-content>
+        <attribute>
+            <name>id</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+        </attribute>
+        <attribute>
+            <name>style</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+        </attribute>
+        <attribute>
+            <name>styleClass</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+        </attribute>
+        <attribute>
+            <name>for</name>
+            <required>true</required>
+            <rtexprvalue>false</rtexprvalue>
+        </attribute>
+    </tag>
+
+    <tag>
         <description>Device detection and script/css insertion</description>
         <display-name>ICEmobile Device Detection</display-name>
         <name>deviceResource</name>

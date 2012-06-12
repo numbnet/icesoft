@@ -42,7 +42,7 @@
 
 		  	<fieldset >
                <mobi:camcorder id="camcorder" />
-               <img style="height:60px;width:65px;vertical-align:middle;" id="cam-thumb" >
+	       <mobi:thumb for="camcorder"/>
                <video style="float:right;height:120px;width:120px;" src="media/video.mp4" controls="controls" >
 		  	</fieldset>
 
