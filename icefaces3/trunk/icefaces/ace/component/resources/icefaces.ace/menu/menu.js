@@ -172,7 +172,7 @@ ice.ace.Menu = function(id, cfg) {
     this.id = id;
     this.cfg = cfg;
     this.jqId = ice.ace.escapeClientId(this.id);
-    this.jq = ice.ace.jq(this.jqId + '_menu');
+    this.jq = ice.ace.jq(this.jqId + ' ul:first');
 
     this.cfg.orientation = 'vertical';
 
@@ -209,7 +209,7 @@ ice.ace.MenuButton = function(id, cfg) {
 	this.cfg = cfg;
 	this.jqId = ice.ace.escapeClientId(id);
     this.jqbutton = ice.ace.jq(this.jqId + '_button');
-    this.jqMenu = ice.ace.jq(this.jqId + '_menu');
+    this.jqMenu = ice.ace.jq(this.jqId + ' ul:first');
 
     //menu options
     this.cfg.trigger = this.jqId + '_button';
@@ -242,7 +242,7 @@ ice.ace.ContextMenu = function(id, cfg) {
 	this.id = id;
     this.cfg = cfg;
     this.jqId = ice.ace.escapeClientId(this.id);
-    this.jq = ice.ace.jq(this.jqId + '_menu');
+    this.jq = ice.ace.jq(this.jqId + ' ul:first');
 
     //mouse tracking
     if(!ice.ace.ContextMenu.mouseTracking) {

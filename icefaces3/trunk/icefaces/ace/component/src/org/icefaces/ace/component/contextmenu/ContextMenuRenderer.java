@@ -47,6 +47,17 @@ import java.util.Iterator;
 @MandatoryResourceComponent(tagName="contextMenu", value="org.icefaces.ace.component.contextmenu.ContextMenu")
 public class ContextMenuRenderer extends BaseMenuRenderer {
 
+    @Override
+	public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
+		AbstractMenu menu = (AbstractMenu) component;
+
+		if(menu.shouldBuildFromModel()) {
+			menu.buildMenuFromModel();
+		}
+
+		encodeMarkup(context, menu);
+	}
+	
     protected void encodeScript(FacesContext context, AbstractMenu abstractMenu) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
         ContextMenu menu = (ContextMenu) abstractMenu;
@@ -93,11 +104,12 @@ public class ContextMenuRenderer extends BaseMenuRenderer {
 		writer.writeAttribute("id", clientId, "id");
 
 		writer.startElement("ul", null);
-		writer.writeAttribute("id", clientId + "_menu", null);
 
 		encodeMenuContent(context, menu);
 
 		writer.endElement("ul");
+		
+		encodeScript(context, menu);
 
         writer.endElement("span");
 	}
