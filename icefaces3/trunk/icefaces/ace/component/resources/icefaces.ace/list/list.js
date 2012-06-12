@@ -340,10 +340,12 @@ ice.ace.List.prototype.itemClickHandler = function(e) {
                     });
                 }
                 else {
+                    var deselection = jqLi.hasClass('ui-state-active');
+
                     if (!(e.metaKey || e.ctrlKey) || self.cfg.selection == "single")
                         self.deselectAll();
 
-                    if (jqLi.hasClass('ui-state-active')) {
+                    if (deselection) {
                         jqLi.addClass('if-list-last-clicked').siblings().removeClass('if-list-last-clicked');
                         self.removeSelectedItem(jqLi);
                     } else {
