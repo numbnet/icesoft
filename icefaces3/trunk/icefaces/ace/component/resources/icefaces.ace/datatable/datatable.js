@@ -698,12 +698,6 @@ ice.ace.DataTable.prototype.resizeScrolling = function() {
             return;
         }
     }
-    ' > div > table > tbody[display!=none]'
-    var headerTable = scrollableTable.find(' > div.ui-datatable-scrollable-header > table'),
-        footerTable = scrollableTable.find(' > div.ui-datatable-scrollable-footer > table'),
-        bodyTable = scrollableTable.find(' > div.ui-datatable-scrollable-body > table'),
-        dupeHead = bodyTable.find(' > thead'),
-        dupeFoot = bodyTable.find(' > tfoot');
 
     // Reattempt resize in 100ms if I or a parent of mine is currently hidden.
     // Sizing will not be accurate if the table is not being displayed, like at tabset load.
@@ -714,6 +708,12 @@ ice.ace.DataTable.prototype.resizeScrolling = function() {
             setTimeout(function () { _self.resizeScrolling() }, 100);
         }
     } else {
+        var headerTable = scrollableTable.find(' > div.ui-datatable-scrollable-header > table'),
+            footerTable = scrollableTable.find(' > div.ui-datatable-scrollable-footer > table'),
+            bodyTable = scrollableTable.find(' > div.ui-datatable-scrollable-body > table'),
+            dupeHead = bodyTable.find(' > thead'),
+            dupeFoot = bodyTable.find(' > tfoot');
+
         var dupeHeadSingleCols = dupeHead.find('th:not([colspan]) .ui-header-column:first-child').get().reverse();
         if (dupeHeadSingleCols.size() == 0)
             dupeHeadSingleCols = dupeHead.find('th[colspan="1"] .ui-header-column:first-child').get().reverse();
@@ -732,6 +732,9 @@ ice.ace.DataTable.prototype.resizeScrolling = function() {
         // Reset fixed sizing if set by previous sizing.
         for (i = 0; i < bodySingleCols.length; i++)
             ice.ace.jq(bodySingleCols[i]).css('width', 'auto');
+
+        // Reset padding if added to offset scrollbar issues
+        bodyTable.parent().css('padding-right', '');
 
         var unsizedVScrollShown = bodyTable.parent().is(':scrollable');
 
@@ -844,13 +847,17 @@ ice.ace.DataTable.prototype.resizeScrolling = function() {
                 footerTable.parent().css('margin-right', '17px');
             }
             else if (firefox) {
-                headerTable.find('tr th:last').css('padding-right','27px');
-                footerTable.find('tr td:last').css('padding-right','27px');
+                headerTable.find('tbody > tr:first-child > td:last-child').css('padding-right','27px');
+                footerTable.find('tbody > tr:first-child > td:last-child').css('padding-right','27px');
+                if (dupeCausesScrollChange) {
+                    bodyTable.parent().css('padding-right','17px');
+                }
             } else if (dupeCausesScrollChange) {
                 /* Correct scrollbars added by Win Chrome when unnecessary. */
                 var table;
                 if ((safari || chrome) && !mac) {
                     table = bodyTable.parent().css('overflow', 'visible');
+                    table.css('padding-right','17px');
                     setTimeout(function() {
                         if (table.clientHeight < table.scrollHeight || table.clientWidth < table.scrollWidth)
                             o.css('overflow', '');
