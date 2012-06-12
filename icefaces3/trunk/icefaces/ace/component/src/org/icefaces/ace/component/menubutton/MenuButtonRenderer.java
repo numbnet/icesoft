@@ -45,12 +45,22 @@ import org.icefaces.render.MandatoryResourceComponent;
 @MandatoryResourceComponent(tagName="menuButton", value="org.icefaces.ace.component.menubutton.MenuButton")
 public class MenuButtonRenderer extends BaseMenuRenderer {
 
+    @Override
+	public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
+		AbstractMenu menu = (AbstractMenu) component;
+
+		if(menu.shouldBuildFromModel()) {
+			menu.buildMenuFromModel();
+		}
+
+		encodeMarkup(context, menu);
+	}
+	
    protected void encodeMarkup(FacesContext context, AbstractMenu abstractMenu) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
         MenuButton button = (MenuButton) abstractMenu;
 		String clientId = button.getClientId(context);
 		String buttonId = clientId + "_button";
-        String menuId = clientId + "_menu";
 		
 		writer.startElement("span", button);
 		writer.writeAttribute("id", clientId, "id");
@@ -72,7 +82,6 @@ public class MenuButtonRenderer extends BaseMenuRenderer {
 
         //menu
         writer.startElement("ul", null);
-		writer.writeAttribute("id", menuId, null);
 
 		for(UIComponent child : button.getChildren()) {
 
@@ -85,6 +94,8 @@ public class MenuButtonRenderer extends BaseMenuRenderer {
 		}
 
 		writer.endElement("ul");
+		
+		encodeScript(context, button);
 		
 		writer.endElement("span");
 	}

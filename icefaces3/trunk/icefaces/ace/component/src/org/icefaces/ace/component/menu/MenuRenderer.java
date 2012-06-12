@@ -44,6 +44,17 @@ import org.icefaces.render.MandatoryResourceComponent;
 @MandatoryResourceComponent(tagName="menu", value="org.icefaces.ace.component.menu.Menu")
 public class MenuRenderer extends BaseMenuRenderer {
 
+    @Override
+	public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
+		AbstractMenu menu = (AbstractMenu) component;
+
+		if(menu.shouldBuildFromModel()) {
+			menu.buildMenuFromModel();
+		}
+
+		encodeMarkup(context, menu);
+	}
+	
     protected void encodeScript(FacesContext context, AbstractMenu abstractMenu) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
         Menu menu = (Menu) abstractMenu;
@@ -110,7 +121,6 @@ public class MenuRenderer extends BaseMenuRenderer {
 		writer.writeAttribute("id", clientId, "id");
 
 		writer.startElement("ul", null);
-		writer.writeAttribute("id", clientId + "_menu", null);
 
         if(tiered) {
             encodeTieredMenuContent(context, menu);
@@ -120,6 +130,8 @@ public class MenuRenderer extends BaseMenuRenderer {
         }
 
 		writer.endElement("ul");
+		
+		encodeScript(context, menu);
 
         writer.endElement("span");
 	}
