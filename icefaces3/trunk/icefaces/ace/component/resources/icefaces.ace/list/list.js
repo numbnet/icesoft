@@ -83,7 +83,7 @@ ice.ace.List.prototype.itemReceiveHandler = function(event, ui) {
     if (src.cfg.selection) {
         this.deselectConnectedLists();
         this.deselectAll(item);
-        src.addSelectedItem(item, fromIndex);
+        src.addSelectedItem(item, item.index());
     }
 
     this.sendMigrateRequest();
