@@ -15,28 +15,31 @@
   ~ governing permissions and limitations under the License.
   -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <parent>
-     <groupId>org.icefaces.samples</groupId>
-     <artifactId>compat</artifactId>
-     <version>3.0.1</version>
-  </parent>
- 
-  <artifactId>auctionMonitor</artifactId>
-  <packaging>war</packaging>
-  <name>ICEfaces Compat AuctionMonitor sample</name>
-  <description />
- 
-  <build>
-    <finalName>${artifactId}</finalName>
-  </build>
-  <dependencies>
-     <dependency>
-         <groupId>org.icefaces</groupId>
-         <artifactId>icepush</artifactId>
-         <version>${ice.version}</version>
-     </dependency>
-  </dependencies>
-  
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.icefaces.samples</groupId>
+        <artifactId>compat</artifactId>
+        <version>3.0.1</version>
+        <relativePath>..</relativePath>
+    </parent>
+
+    <artifactId>auctionMonitor</artifactId>
+    <packaging>war</packaging>
+    <name>${icefaces.product.name}: Compat Samples Auction Monitor</name>
+    <description/>
+
+    <build>
+        <finalName>${artifactId}</finalName>
+    </build>
+
+    <dependencies>
+        <dependency>
+            <groupId>${icefaces.product.group}</groupId>
+            <artifactId>${icepush.lib.name}</artifactId>
+        </dependency>
+    </dependencies>
+
 </project>

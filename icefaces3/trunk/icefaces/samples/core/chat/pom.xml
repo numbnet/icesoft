@@ -15,27 +15,36 @@
   ~ governing permissions and limitations under the License.
   -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
- <modelVersion>4.0.0</modelVersion>
- <parent>
-      <groupId>org.icefaces.samples</groupId>
-      <artifactId>core</artifactId>
-      <version>3.0.1</version>
- </parent>
- <artifactId>chat</artifactId>
- <packaging>war</packaging>
- <name>ICEfaces Chat sample</name>
- <description />
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
 
- <build>
-   <finalName>${artifactId}</finalName>
- </build>
- <dependencies>
-    <dependency>
-        <groupId>org.icefaces</groupId>
-        <artifactId>icepush</artifactId>
-        <version>${ice.version}</version>
-    </dependency>
- </dependencies>
- 
+    <parent>
+        <groupId>org.icefaces.samples</groupId>
+        <artifactId>core</artifactId>
+        <version>3.0.1</version>
+        <relativePath>..</relativePath>
+    </parent>
+
+    <artifactId>chat</artifactId>
+    <packaging>war</packaging>
+    <name>${icefaces.product.name}: Core Samples Chat</name>
+
+    <dependencies>
+
+        <dependency>
+            <groupId>${icefaces.product.group}</groupId>
+            <artifactId>${icefaces.lib.name}</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>${icefaces.product.group}</groupId>
+            <artifactId>${icepush.lib.name}</artifactId>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+        <finalName>${artifactId}</finalName>
+    </build>
 </project>

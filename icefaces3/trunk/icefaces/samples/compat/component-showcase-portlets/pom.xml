@@ -18,20 +18,23 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
+
     <parent>
-      <groupId>org.icefaces.samples</groupId>
-      <artifactId>compat</artifactId>
-      <version>3.0.1</version>
-    </parent> 
+        <groupId>org.icefaces.samples</groupId>
+        <artifactId>compat</artifactId>
+        <version>3.0.1</version>
+        <relativePath>..</relativePath>
+    </parent>
+
     <artifactId>component-showcase-portlets</artifactId>
     <packaging>war</packaging>
-    <name>ICEfaces Compat Component Showcase Portlets</name>
+    <name>${icefaces.product.name}: Compat Samples Component Showcase Portlets</name>
     <description/>
+
     <properties>
         <parent.root>../component-showcase</parent.root>
-        <pluto.version>2.0.2</pluto.version>
     </properties>
- 
+
     <build>
         <finalName>${artifactId}</finalName>
         <plugins>
@@ -72,100 +75,53 @@
             </resource>
         </resources>
     </build>
-    <dependencies>
-        <dependency>
-            <groupId>net.sourceforge.jexcelapi</groupId>
-            <artifactId>jxl</artifactId>
-            <version>2.6.8</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>log4j</groupId>
-                    <artifactId>log4j</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>net.sf.jcharts</groupId>
-            <artifactId>krysalis-jCharts</artifactId>
-            <version>1.0.0-alpha-1</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>log4j</groupId>
-                    <artifactId>log4j</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>org.icefaces</groupId>
-            <artifactId>icepush</artifactId>
-            <version>${ice.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>javax.portlet</groupId>
-            <artifactId>portlet-api</artifactId>
-            <version>2.0</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-           <groupId>org.portletfaces</groupId>
-           <artifactId>portletfaces-bridge</artifactId>
-           <version>${portletfacesbridge.version}</version>
-        </dependency>
-        <dependency>
-           <groupId>org.slf4j</groupId>
-           <artifactId>slf4j-api</artifactId>
-           <version>1.6.1</version>
-        </dependency>
-        <dependency>
-           <groupId>org.slf4j</groupId>
-           <artifactId>slf4j-jdk14</artifactId>
-           <version>1.6.1</version>
-        </dependency>
-    </dependencies>
+
     <profiles>
         <profile>
-            <id>liferay6.servlet-profile</id>
+            <id>portletfaces</id>
             <activation>
                 <activeByDefault>true</activeByDefault>
             </activation>
             <dependencies>
                 <dependency>
-                    <groupId>com.sun.faces</groupId>
-                    <artifactId>jsf-impl</artifactId>
-                    <version>${jsf.version}</version>
+                    <groupId>javax.portlet</groupId>
+                    <artifactId>portlet-api</artifactId>
+                    <version>2.0</version>
+                    <scope>provided</scope>
                 </dependency>
                 <dependency>
-                    <groupId>com.sun.faces</groupId>
-                    <artifactId>jsf-api</artifactId>
-                    <version>${jsf.version}</version>
+                   <groupId>org.portletfaces</groupId>
+                   <artifactId>portletfaces-bridge</artifactId>
+                   <version>${portletfaces.version}</version>
                 </dependency>
             </dependencies>
         </profile>
+
         <profile>
-            <id>liferay6.web-profile</id>
-            <activation>
-                <activeByDefault>false</activeByDefault>
-            </activation>
+            <id>liferayfaces</id>
             <dependencies>
                 <dependency>
-                    <groupId>com.sun.faces</groupId>
-                    <artifactId>jsf-impl</artifactId>
-                    <version>${jsf.version}</version>
+                    <groupId>javax.portlet</groupId>
+                    <artifactId>portlet-api</artifactId>
+                    <version>${portlet.api.version}</version>
                     <scope>provided</scope>
                 </dependency>
                 <dependency>
-                    <groupId>com.sun.faces</groupId>
-                    <artifactId>jsf-api</artifactId>
-                    <version>${jsf.version}</version>
-                    <scope>provided</scope>
+                    <groupId>com.liferay.faces</groupId>
+                    <artifactId>liferay-faces-bridge-impl</artifactId>
+                    <version>${liferayfaces.version}</version>
                 </dependency>
             </dependencies>
+            <repositories>
+                <repository>
+                    <id>portletfaces.org</id>
+                    <url>http://repository.portletfaces.org/content/repositories/liferay-releases</url>
+                </repository>
+            </repositories>
         </profile>
+
         <profile>
-            <id>pluto.servlet-profile</id>
-            <activation>
-                <activeByDefault>false</activeByDefault>
-            </activation>
+            <id>pluto</id>
             <build>
                 <plugins>
                     <plugin>
@@ -199,23 +155,33 @@
             </build>
             <dependencies>
                 <dependency>
-                    <groupId>com.sun.faces</groupId>
-                    <artifactId>jsf-impl</artifactId>
-                    <version>${jsf.version}</version>
-                </dependency>
-                <dependency>
-                    <groupId>com.sun.faces</groupId>
-                    <artifactId>jsf-api</artifactId>
-                    <version>${jsf.version}</version>
-                </dependency>
-                <dependency>
-                  <groupId>org.apache.portals.pluto</groupId>
-                  <artifactId>pluto-util</artifactId>
-                  <version>${pluto.version}</version>
-                  <scope>provided</scope>
+                    <groupId>org.apache.portals.pluto</groupId>
+                    <artifactId>pluto-util</artifactId>
+                    <version>${pluto.version}</version>
+                    <scope>provided</scope>
                 </dependency>
             </dependencies>
         </profile>
+
     </profiles>
+
+    <dependencies>
+
+        <dependency>
+            <groupId>net.sourceforge.jexcelapi</groupId>
+            <artifactId>jxl</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>net.sf.jcharts</groupId>
+            <artifactId>krysalis-jCharts</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>${icefaces.product.group}</groupId>
+            <artifactId>${icepush.lib.name}</artifactId>
+        </dependency>
+
+    </dependencies>
 
 </project>
