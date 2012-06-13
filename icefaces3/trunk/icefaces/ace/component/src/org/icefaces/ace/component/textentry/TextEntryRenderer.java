@@ -68,22 +68,12 @@ public class TextEntryRenderer extends InputRenderer {
         String styleClass = textEntry.getStyleClass();
 
         defaultClass += getStateStyleClasses(textEntry);
-        boolean required = textEntry.isRequired();
-
-        String label = textEntry.getLabel();
-        String labelPosition = textEntry.getLabelPosition();
-        if (!labelPositionSet.contains(labelPosition)) labelPosition = DEFAULT_LABEL_POSITION;
-        boolean hasLabel = !(labelPosition.equals(NONE_LABEL_POSITION) || isValueBlank(label));
-
-        String indicator = required ? textEntry.getRequiredIndicator() : textEntry.getOptionalIndicator();
-        String indicatorPosition = textEntry.getIndicatorPosition();
-        if (!indicatorPositionSet.contains(indicatorPosition)) indicatorPosition = DEFAULT_INDICATOR_POSITION;
-        boolean hasIndicator = !(indicatorPosition.equals(NONE_INDICATOR_POSITION) || isValueBlank(indicator));
+        Map<String, Object> labelAttributes = getLabelAttributes(component);
 
         writer.startElement("span", textEntry);
         writer.writeAttribute("id", clientId + "_markup", null);
 
-        writeLabelAndIndicatorBefore(writer, label, hasLabel, labelPosition, indicator, hasIndicator, indicatorPosition, required);
+        writeLabelAndIndicatorBefore(labelAttributes);
 
         writer.startElement("input", null);
         writer.writeAttribute("id", clientId + "_input", null);
@@ -92,6 +82,12 @@ public class TextEntryRenderer extends InputRenderer {
         String embeddedLabel = null;
         String nameToRender = clientId + "_input";
         String valueToRender = ComponentUtils.getStringValueToRender(context, textEntry);
+        boolean hasLabel = (Boolean) labelAttributes.get("hasLabel");
+        String labelPosition = (String) labelAttributes.get("labelPosition");
+        String label = (String) labelAttributes.get("label");
+        boolean hasIndicator = (Boolean) labelAttributes.get("hasIndicator");
+        String indicatorPosition = (String) labelAttributes.get("indicatorPosition");
+        String indicator = (String) labelAttributes.get("indicator");
         if ((valueToRender == null || valueToRender.trim().length() <= 0) && hasLabel && labelPosition.equals("inField")) {
             nameToRender = clientId + "_label";
             valueToRender = embeddedLabel = label;
@@ -118,7 +114,7 @@ public class TextEntryRenderer extends InputRenderer {
 
         writer.endElement("input");
 
-        writeLabelAndIndicatorAfter(writer, label, hasLabel, labelPosition, indicator, hasIndicator, indicatorPosition, required);
+        writeLabelAndIndicatorAfter(labelAttributes);
 
         writer.endElement("span");
 
@@ -153,76 +149,4 @@ public class TextEntryRenderer extends InputRenderer {
 
         writer.endElement("span");
 	}
-
-    private void writeHiddenLabel(ResponseWriter writer, String label) throws IOException {
-        writer.startElement("span", null);
-        writer.writeAttribute("class", LABEL_STYLE_CLASS + " hidden", null);
-        writer.write(label);
-        writer.endElement("span");
-    }
-
-    private void writeLabel(ResponseWriter writer, String label, String labelPosition, String indicator, String indicatorPosition, boolean required, boolean hasIndicator) throws IOException {
-        if (hasIndicator) {
-            if (indicatorPosition.equals("labelLeft") || indicatorPosition.equals("labelRight")) {
-                writer.startElement("span", null);
-                writer.writeAttribute("class", LABEL_STYLE_CLASS + " " + LABEL_STYLE_CLASS + "-" + labelPosition, null);
-            }
-/*
-            if (indicatorPosition.equals("labelTop") || indicatorPosition.equals("labelBottom")) {
-                writer.startElement("span", null);
-                writer.writeAttribute("style", "float:left;", null);
-            }
-*/
-            if (indicatorPosition.equals("labelLeft")/* || indicatorPosition.equals("labelTop")*/) {
-                writeIndicator(writer, required, indicator, indicatorPosition);
-            }
-/*
-            if (indicatorPosition.equals("labelTop")) {
-                writer.startElement("br", null);
-                writer.endElement("br");
-            }
-*/
-        }
-        writer.startElement("span", null);
-        if (!hasIndicator || (!indicatorPosition.equals("labelLeft") && !indicatorPosition.equals("labelRight"))) {
-            writer.writeAttribute("class", LABEL_STYLE_CLASS + " " + LABEL_STYLE_CLASS + "-" + labelPosition, null);
-        }
-        writer.write(label);
-        writer.endElement("span");
-        if (hasIndicator) {
-/*
-            if (indicatorPosition.equals("labelBottom")) {
-                writer.startElement("br", null);
-                writer.endElement("br");
-            }
-*/
-            if (indicatorPosition.equals("labelRight")/* || indicatorPosition.equals("labelBottom")*/) {
-                writeIndicator(writer, required, indicator, indicatorPosition);
-            }
-/*
-            if (indicatorPosition.equals("labelTop") || indicatorPosition.equals("labelBottom")) {
-                writer.endElement("span");
-            }
-*/
-            if (indicatorPosition.equals("labelLeft") || indicatorPosition.equals("labelRight")) {
-                writer.endElement("span");
-            }
-        }
-    }
-
-    private void writeIndicator(ResponseWriter writer, boolean required, String indicator, String indicatorPosition) throws IOException {
-        String class1 = "ui-" + (required ? "required" : "optional") + "-indicator";
-        String class2;
-        if (indicatorPosition.equals("labelLeft")) {
-            class2 = class1 + "-label-left";
-        } else if (indicatorPosition.equals("labelRight")) {
-            class2 = class1 + "-label-right";
-        } else {
-            class2 = class1 + "-" + indicatorPosition;
-        }
-        writer.startElement("span", null);
-        writer.writeAttribute("class", class1 + " " + class2, null);
-        writer.write(indicator);
-        writer.endElement("span");
-    }
 }
