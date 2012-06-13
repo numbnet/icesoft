@@ -50,7 +50,7 @@ public class ColumnMeta extends UIColumnMeta {
 //    @Property(expression = Expression.VALUE_EXPRESSION,
 //            tlddoc = "Defines a value expression representing the value of the column per row, " +
 //            "optionally superseded by the more specific value definitions like sortBy, filterBy etc.")
-//    private Object value;
+//    private Object `value;
 
     @Property(expression = Expression.VALUE_EXPRESSION,
             tlddoc="Defines a value expression representing the value of this column per row when determining " +
@@ -138,18 +138,20 @@ public class ColumnMeta extends UIColumnMeta {
             defaultValue = "true", defaultValueType = DefaultValueType.EXPRESSION)
     private boolean reorderable;
 
-    @Property(tlddoc="Enables per-column control of column sorting when either the " +
-            "attribute (\"sortBy\") or (\"value\") are set.",
-            defaultValue = "true", defaultValueType = DefaultValueType.EXPRESSION)
-    private boolean sortable;
-
-    @Property(tlddoc="Enables per-column control of column filtering when either the " +
-            "attribute (\"filterBy\") or (\"value\") are set.",
-            defaultValue = "true", defaultValueType = DefaultValueType.EXPRESSION)
-    private boolean filterable;
-
-    @Property(tlddoc="Enables per-column control of Cell selection when either the " +
-            "attribute (\"selectBy\") or (\"value\") are set.",
-            defaultValue = "true", defaultValueType = DefaultValueType.EXPRESSION)
-    private boolean selectable;
+//    These per-feature configuration attributes will be used when the 'value' property is added to Column.
+//    Until then they are redundant.
+//    @Property(tlddoc="Enables per-column control of column sorting when either the " +
+//            "attribute (\"sortBy\") or (\"value\") are set.",
+//            defaultValue = "true", defaultValueType = DefaultValueType.EXPRESSION)
+//    private boolean sortable;
+//
+//    @Property(tlddoc="Enables per-column control of column filtering when either the " +
+//            "attribute (\"filterBy\") or (\"value\") are set.",
+//            defaultValue = "true", defaultValueType = DefaultValueType.EXPRESSION)
+//    private boolean filterable;
+//
+//    @Property(tlddoc="Enables per-column control of Cell selection when either the " +
+//            "attribute (\"selectBy\") or (\"value\") are set.",
+//            defaultValue = "true", defaultValueType = DefaultValueType.EXPRESSION)
+//    private boolean selectable;
 }
