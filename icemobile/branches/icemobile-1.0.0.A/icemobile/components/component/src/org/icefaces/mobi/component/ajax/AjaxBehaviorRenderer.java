@@ -64,8 +64,12 @@ public class AjaxBehaviorRenderer extends ClientBehaviorRenderer {
         JSONBuilder jb = JSONBuilder.create();
         jb.beginFunction("mobi.AjaxRequest");
         //source
-		jb.beginMap()
+        if (source !=null){
+		   jb.beginMap()
 			.entry("source", source);
+        }else {
+            jb.entry("source", clientId);
+        }
 		
         //execute
 		String execute = null;
