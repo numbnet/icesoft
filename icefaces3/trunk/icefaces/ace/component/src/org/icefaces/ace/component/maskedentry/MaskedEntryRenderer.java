@@ -27,6 +27,7 @@
 package org.icefaces.ace.component.maskedentry;
 
 import java.io.IOException;
+import java.util.Map;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -64,21 +65,11 @@ public class MaskedEntryRenderer extends InputRenderer {
 	public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         MaskedEntry maskedEntry = (MaskedEntry) component;
         ResponseWriter writer = context.getResponseWriter();
-        boolean required = maskedEntry.isRequired();
+        Map<String, Object> labelAttributes = getLabelAttributes(component);
 
-        String label = maskedEntry.getLabel();
-        String labelPosition = maskedEntry.getLabelPosition();
-        if (!labelPositionSet.contains(labelPosition)) labelPosition = DEFAULT_LABEL_POSITION;
-        boolean hasLabel = !(labelPosition.equals(NONE_LABEL_POSITION) || isValueBlank(label));
-
-        String indicator = required ? maskedEntry.getRequiredIndicator() : maskedEntry.getOptionalIndicator();
-        String indicatorPosition = maskedEntry.getIndicatorPosition();
-        if (!indicatorPositionSet.contains(indicatorPosition)) indicatorPosition = DEFAULT_INDICATOR_POSITION;
-        boolean hasIndicator = !(indicatorPosition.equals(NONE_INDICATOR_POSITION) || isValueBlank(indicator));
-
-        writeLabelAndIndicatorBefore(writer, label, hasLabel, labelPosition, indicator, hasIndicator, indicatorPosition, required);
-		encodeMarkup(context, maskedEntry, label, hasLabel, labelPosition, indicator, hasIndicator, indicatorPosition);
-        writeLabelAndIndicatorAfter(writer, label, hasLabel, labelPosition, indicator, hasIndicator, indicatorPosition, required);
+        writeLabelAndIndicatorBefore(labelAttributes);
+		encodeMarkup(context, maskedEntry, labelAttributes);
+        writeLabelAndIndicatorAfter(labelAttributes);
 	}
 	
 	protected void encodeScript(FacesContext context, MaskedEntry maskedEntry, String label, boolean hasLabel, String labelPosition, String indicator, boolean hasIndicator, String indicatorPosition) throws IOException {
@@ -133,7 +124,7 @@ public class MaskedEntryRenderer extends InputRenderer {
 		writer.endElement("script");
 	}
 	
-	protected void encodeMarkup(FacesContext context, MaskedEntry maskedEntry, String label, boolean hasLabel, String labelPosition, String indicator, boolean hasIndicator, String indicatorPosition) throws IOException {
+	protected void encodeMarkup(FacesContext context, MaskedEntry maskedEntry, Map labelAttributes) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
 		String clientId = maskedEntry.getClientId(context);
 		String fieldClientId = clientId + "_field";
@@ -149,6 +140,12 @@ public class MaskedEntryRenderer extends InputRenderer {
 		writer.writeAttribute("type", "text", null);
 		
 		String valueToRender = ComponentUtils.getStringValueToRender(context, maskedEntry);
+        boolean hasLabel = (Boolean) labelAttributes.get("hasLabel");
+        String labelPosition = (String) labelAttributes.get("labelPosition");
+        String label = (String) labelAttributes.get("label");
+        boolean hasIndicator = (Boolean) labelAttributes.get("hasIndicator");
+        String indicatorPosition = (String) labelAttributes.get("indicatorPosition");
+        String indicator = (String) labelAttributes.get("indicator");
         if (isValueBlank(valueToRender) && hasLabel && labelPosition.equals("inField")) {
             valueToRender = label;
             if (hasIndicator) {

@@ -62,7 +62,7 @@ public class TextEntryBean extends ComponentExampleImpl<TextEntryBean> implement
     private String city;
     private String province;
     private String country;
-    private String indicatorPosition = "right";
+    private String indicatorPosition = "labelRight";
     private String labelPosition = "inField";
 
     public TextEntryBean()

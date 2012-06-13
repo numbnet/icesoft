@@ -47,12 +47,8 @@ public class InputRenderer extends CoreRenderer {
 
     public static final String LABEL_STYLE_CLASS = "ui-input-label";
     public static final String IN_FIELD_LABEL_STYLE_CLASS = LABEL_STYLE_CLASS + "-infield";
-    public static final String DEFAULT_LABEL_POSITION = "inField";
-    public static final String DEFAULT_INDICATOR_POSITION = "right";
-    public static final String NONE_LABEL_POSITION = "none";
-    public static final String NONE_INDICATOR_POSITION = NONE_LABEL_POSITION;
-    public static final Set<String> labelPositionSet = new HashSet<String>(Arrays.asList("left", "right", "top", "bottom", DEFAULT_LABEL_POSITION, NONE_LABEL_POSITION));
-    public static final Set<String> indicatorPositionSet = new HashSet<String>(Arrays.asList("left", DEFAULT_INDICATOR_POSITION, "top", "bottom", "labelLeft", "labelRight", NONE_INDICATOR_POSITION));
+    public static final Set<String> labelPositionSet = new HashSet<String>(Arrays.asList("left", "right", "top", "bottom", "inField", "none"));
+    public static final Set<String> indicatorPositionSet = new HashSet<String>(Arrays.asList("left", "right", "top", "bottom", "labelLeft", "labelRight", "none"));
 
     protected List<SelectItem> getSelectItems(FacesContext context, UIInput component) {
         List<SelectItem> selectItems = new ArrayList<SelectItem>();
@@ -159,24 +155,13 @@ public class InputRenderer extends CoreRenderer {
 	}
 
     protected void encodeLabelAndInput(ResponseWriter writer, UIComponent component) throws IOException {
-        boolean required = (Boolean) component.getAttributes().get("required");
-
-        String label = (String) component.getAttributes().get("label");
-        boolean hasLabel = label != null && label.trim().length() > 0;
-        String labelPosition = (String) component.getAttributes().get("labelPosition");
-        if (!labelPositionSet.contains(labelPosition)) labelPosition = DEFAULT_LABEL_POSITION;
-
-        String indicator = (String) (required ? component.getAttributes().get("requiredIndicator") : component.getAttributes().get("optionalIndicator"));
-        boolean hasIndicator = indicator != null && indicator.trim().length() > 0;
-        String indicatorPosition = (String) component.getAttributes().get("indicatorPosition");
-        if (!indicatorPositionSet.contains(indicatorPosition)) indicatorPosition = DEFAULT_INDICATOR_POSITION;
-
-        writeLabelAndIndicatorBefore(writer, label, hasLabel, labelPosition, indicator, hasIndicator, indicatorPosition, required);
-        writeInputField(writer, component, label, hasLabel, labelPosition, indicator, hasIndicator, indicatorPosition, required);
-        writeLabelAndIndicatorAfter(writer, label, hasLabel, labelPosition, indicator, hasIndicator, indicatorPosition, required);
+        Map<String, Object> labelAttributes = getLabelAttributes(component);
+        writeLabelAndIndicatorBefore(labelAttributes);
+        writeInputField(labelAttributes);
+        writeLabelAndIndicatorAfter(labelAttributes);
     }
 
-    protected void writeInputField(ResponseWriter writer, UIComponent component, String label, boolean hasLabel, String labelPosition, String indicator, boolean hasIndicator, String indicatorPosition, boolean required) throws IOException {
+    protected void writeInputField(Map<String, Object> labelAttributes) {
     }
 
     protected void writeLabelAndIndicatorBefore(ResponseWriter writer, String label, boolean hasLabel, String labelPosition, String indicator, boolean hasIndicator, String indicatorPosition, boolean required) throws IOException {
@@ -340,13 +325,17 @@ public class InputRenderer extends CoreRenderer {
 
             String label = (String) component.getAttributes().get("label");
             String labelPosition = (String) component.getAttributes().get("labelPosition");
-            if (!labelPositionSet.contains(labelPosition)) labelPosition = DEFAULT_LABEL_POSITION;
-            boolean hasLabel = !(labelPosition.equals(NONE_LABEL_POSITION) || isValueBlank(label));
+            if (!labelPositionSet.contains(labelPosition)) {
+                labelPosition = "none";
+            }
+            boolean hasLabel = !isValueBlank(label) && !labelPosition.equals("none");
 
             String indicator = (String) (required ? component.getAttributes().get("requiredIndicator") : component.getAttributes().get("optionalIndicator"));
             String indicatorPosition = (String) component.getAttributes().get("indicatorPosition");
-            if (!indicatorPositionSet.contains(indicatorPosition)) indicatorPosition = DEFAULT_INDICATOR_POSITION;
-            boolean hasIndicator = !(indicatorPosition.equals(NONE_INDICATOR_POSITION) || isValueBlank(indicator));
+            if (!indicatorPositionSet.contains(indicatorPosition)) {
+                indicatorPosition = labelPosition.equals("inField") ? "labelRight" : "right";
+            }
+            boolean hasIndicator = !isValueBlank(indicator) && !indicatorPosition.equals("none");
 
             String inFieldLabel = null;
             if (hasLabel && labelPosition.equals("inField")) {
