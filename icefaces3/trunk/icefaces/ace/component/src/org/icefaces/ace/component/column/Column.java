@@ -176,6 +176,10 @@ public class Column extends ColumnBase {
         int currentRow = dataTable.getRowIndex();
         Object currentValue = getGroupBy();
 
+        // Generate DataModel preemptive with the correct filtered state
+        dataTable.setRowIndex(-1);
+        dataTable.getModel();
+
         if (currentValue != null) {
             dataTable.setRowIndex(currentRow - 1);
             Object lastValue = getGroupBy();
