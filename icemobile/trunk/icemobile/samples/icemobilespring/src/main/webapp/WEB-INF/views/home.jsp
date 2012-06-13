@@ -4,11 +4,17 @@
 <html>
 <head>
 	<title>spring-mvc-showcase</title>
+    <meta name="viewport"
+          content="width=device-width; initial-scale=1.0;"/>
 	 <mobi:deviceResource />
 	<link href="<c:url value="/resources/form.css" />" rel="stylesheet"  type="text/css" />		
 	<link href="<c:url value="/resources/jqueryui/1.8/themes/base/jquery.ui.all.css" />" rel="stylesheet" type="text/css"/>
 	<script type="text/javascript" src="code.icepush"></script>
-
+    <style>
+        div#tabs ul li, div#tabs ul li a {
+          width: 98px;
+        }
+    </style>
 </head>
 <body>
 <div id="tabs">
@@ -16,7 +22,7 @@
 		<li><a href="#welcome">Welcome</a></li>
 		<li><a href="<c:url value="/carousel" />" title="carousel">Carousel</a></li>
 		<li><a href="<c:url value="/icemobile" />" title="icemobile">Camera</a></li>
-		<li><a href="<c:url value="/campush" />" title="campush">Camera Push</a></li>
+		<li><a href="<c:url value="/campush" />" title="campush">Push</a></li>
 		<li><a href="<c:url value="/microphone" />" title="microphone">Microphone</a></li>
 		<li><a href="<c:url value="/camcorder" />" title="camcorder">Camcorder</a></li>
 		<li><a href="<c:url value="/mediaspot" />" title="mediaspot">MediaSpot</a></li>
@@ -24,7 +30,7 @@
 		<li><a href="<c:url value="/inputtext" />" title="inputtext">Input Text</a></li>
 		<li><a href="<c:url value="/qrscan" />" title="qrscan">QR Scanner</a></li>
 		<li><a href="<c:url value="/geolocation" />" title="geolocation">Geolocation</a></li>
-		<li><a href="#icehtml">ICEmobile HTML</a></li>
+		<li><a href="#icehtml">HTML</a></li>
     </ul>
 	<div id="welcome">
 		<h2>ICEmobile </h2>
