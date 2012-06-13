@@ -13,6 +13,7 @@
  * express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
+
 package org.icefaces.ace.facelets;
 
 import java.io.Serializable;
@@ -45,18 +46,50 @@ import javax.faces.view.facelets.TagAttributeException;
  * copied over from ace project as it used to be in the generator.
  */
 public class MethodRule extends MetaRule {
-
+    /**
+     * The name of the MethodExpression property in the UIComponent / ClientBehavior
+     */
     private final String methodName;
 
+    /**
+     * The bean method return type
+     */
     private final Class returnTypeClass;
 
+    /**
+     * The bean method parameters
+     */
     private final Class[] params;
 
+    /**
+     * The name of the MethodExpression property in the UIComponent / ClientBehavior
+     */
+    private final String noArgMethodName;
+
+    /**
+     * The name of the MethodExpression property in the UIComponent / ClientBehavior
+     */
+    private final String superArgMethodName;
+
+    /**
+     * The bean superArgMethodName method parameters
+     */
+    private final Class[] superParams;
+
     public MethodRule(String methodName, Class returnTypeClass,
-                      Class[] params) {
+                      Class[] params, String noArgMethodName,
+                      String superArgMethodName, Class[] superParams) {
         this.methodName = methodName;
         this.returnTypeClass = returnTypeClass;
         this.params = params;
+        this.noArgMethodName = noArgMethodName;
+        this.superArgMethodName = superArgMethodName;
+        this.superParams = superParams;
+    }
+
+    public MethodRule(String methodName, Class returnTypeClass,
+                      Class[] params) {
+        this(methodName, returnTypeClass, params, null, null, null);
     }
 
     public Metadata applyRule(String name, TagAttribute attribute,
@@ -67,16 +100,26 @@ public class MethodRule extends MetaRule {
         if (MethodBinding.class.equals(meta.getPropertyType(name))) {
             Method method = meta.getWriteMethod(name);
             if (method != null) {
+                Method noArgMethod = (noArgMethodName == null ? null :
+                    meta.getWriteMethod(noArgMethodName));
+                Method superArgMethod = ( (superArgMethodName == null ||
+                    superParams == null) ? null : meta.getWriteMethod(superArgMethodName));
                 return new MethodBindingMetadata(method, attribute,
                                                  this.returnTypeClass,
-                                                 this.params);
+                                                 this.params, noArgMethod,
+                                                 superArgMethod, superParams);
             }
         } else if (MethodExpression.class.equals(meta.getPropertyType(name))) {
             Method method = meta.getWriteMethod(name);
             if (method != null) {
+                Method noArgMethod = (noArgMethodName == null ? null :
+                    meta.getWriteMethod(noArgMethodName));
+                Method superArgMethod = ( (superArgMethodName == null ||
+                    superParams == null) ? null : meta.getWriteMethod(superArgMethodName));
                 return new MethodExpressionMetadata(method, attribute,
                                                     this.returnTypeClass,
-                                                    this.params);
+                                                    this.params, noArgMethod,
+                                                    superArgMethod, superParams);
             }
         }
 
@@ -92,25 +135,47 @@ public class MethodRule extends MetaRule {
 
         private Class _returnType;
 
+        private final Method _noArgMethod;
+
+        private final Method _superArgMethod;
+
+        private Class[] _superParamList;
+
         public MethodBindingMetadata(Method method, TagAttribute attribute,
-                                     Class returnType, Class[] paramList) {
+                                     Class returnType, Class[] paramList,
+                                     Method noArgMethod,
+                                     Method superArgMethod, Class[] superParamList) {
             _method = method;
             _attribute = attribute;
             _paramList = paramList;
             _returnType = returnType;
+            _noArgMethod = noArgMethod;
+            _superArgMethod = superArgMethod;
+            _superParamList = superParamList;
         }
 
-        public void applyMetadata(FaceletContext ctx, Object instance) {
+        protected void setMethodBindingIntoMethod(FaceletContext ctx, Object instance,
+                                                     Method method, Class[] paramList) {
             MethodExpression expr =
-                _attribute.getMethodExpression(ctx, _returnType, _paramList);
+                _attribute.getMethodExpression(ctx, _returnType, paramList);
 
             try {
-                _method.invoke(instance,
+                method.invoke(instance,
                                new Object[] { new LegacyMethodBinding(expr) });
             } catch (InvocationTargetException e) {
                 throw new TagAttributeException(_attribute, e.getCause());
             } catch (Exception e) {
                 throw new TagAttributeException(_attribute, e);
+            }
+        }
+
+        public void applyMetadata(FaceletContext ctx, Object instance) {
+            setMethodBindingIntoMethod(ctx, instance, _method, _paramList);
+            if (_noArgMethod != null) {
+                setMethodBindingIntoMethod(ctx, instance, _noArgMethod, new Class[0]);
+            }
+            if (_superArgMethod != null && _superParamList != null) {
+                setMethodBindingIntoMethod(ctx, instance, _superArgMethod, _superParamList);
             }
         }
     }
@@ -124,24 +189,46 @@ public class MethodRule extends MetaRule {
 
         private Class _returnType;
 
+        private final Method _noArgMethod;
+
+        private final Method _superArgMethod;
+
+        private Class[] _superParamList;
+
         public MethodExpressionMetadata(Method method, TagAttribute attribute,
-                                        Class returnType, Class[] paramList) {
+                                        Class returnType, Class[] paramList,
+                                        Method noArgMethod,
+                                        Method superArgMethod, Class[] superParamList) {
             _method = method;
             _attribute = attribute;
             _paramList = paramList;
             _returnType = returnType;
+            _noArgMethod = noArgMethod;
+            _superArgMethod = superArgMethod;
+            _superParamList = superParamList;
         }
 
-        public void applyMetadata(FaceletContext ctx, Object instance) {
+        protected void setMethodExpressionIntoMethod(FaceletContext ctx, Object instance,
+                                                     Method method, Class[] paramList) {
             MethodExpression expr =
-                _attribute.getMethodExpression(ctx, _returnType, _paramList);
+                _attribute.getMethodExpression(ctx, _returnType, paramList);
 
             try {
-                _method.invoke(instance, new Object[] { expr });
+                method.invoke(instance, new Object[] { expr });
             } catch (InvocationTargetException e) {
                 throw new TagAttributeException(_attribute, e.getCause());
             } catch (Exception e) {
                 throw new TagAttributeException(_attribute, e);
+            }
+        }
+
+        public void applyMetadata(FaceletContext ctx, Object instance) {
+            setMethodExpressionIntoMethod(ctx, instance, _method, _paramList);
+            if (_noArgMethod != null) {
+                setMethodExpressionIntoMethod(ctx, instance, _noArgMethod, new Class[0]);
+            }
+            if (_superArgMethod != null && _superParamList != null) {
+                setMethodExpressionIntoMethod(ctx, instance, _superArgMethod, _superParamList);
             }
         }
     }
