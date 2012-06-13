@@ -174,6 +174,13 @@ public class TagUtil {
     public static final String VIEW_TYPE_SMALL = "small";
     public static final String VIEW_TYPE_LARGE = "large";
 
+    public static boolean isIOS5orHigher(PageContext pageContext) {
+        HttpServletRequest request = (HttpServletRequest)
+                                             pageContext.getRequest();
+        String userAgent = request.getHeader(USER_AGENT);
+        return sniffIOS5(userAgent);
+    }
+
     public static boolean isIOS(PageContext pageContext) {
         HttpServletRequest request = (HttpServletRequest)
                                              pageContext.getRequest();
