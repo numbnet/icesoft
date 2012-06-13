@@ -83,7 +83,7 @@ ice.ace.List.prototype.itemReceiveHandler = function(event, ui) {
     if (src.cfg.selection) {
         this.deselectConnectedLists();
         this.deselectAll(item);
-        src.addSelectedItem(item, item.index());
+        src.addSelectedItem(item, fromIndex);
     }
 
     this.sendMigrateRequest();
@@ -447,21 +447,24 @@ ice.ace.List.prototype.deselectAll = function(except) {
         selections = this.read('selections'),
         deselections = this.read('deselections');
 
-    this.element.find('> ul.if-list-body > li.if-list-item.ui-state-active')
-            .removeClass('ui-state-active').each(function(i, elem) {{
+    this.element.find('> ul.if-list-body > li.if-list-item.ui-state-active').each(function(i, elem) {{
                 if (except != undefined && except.is(elem)) return;
 
                 var item = ice.ace.jq(elem),
                     id = item.attr('id'),
                     index = parseInt(id.substr(id.lastIndexOf(self.sep)+1));
 
+                item.removeClass('ui-state-active');
+
                 if (index)
                     index = self.getUnshiftedIndex(item.parent().children().length, reorderings, index);
-                if (index != undefined)
+                if (index != undefined) {
                     deselections.push(index);
+                    selections = ice.ace.jq.grep(selections, function(r) { return r != index; });
+                }
             }});
 
-    this.write('selections', []);
+    this.write('selections', selections);
     this.write('deselections', deselections);
 
     if (this.behaviors && !isNaN(deselections.length) && deselections.length > 0)
