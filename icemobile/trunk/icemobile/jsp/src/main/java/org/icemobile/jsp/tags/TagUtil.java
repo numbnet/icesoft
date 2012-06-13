@@ -174,6 +174,19 @@ public class TagUtil {
     public static final String VIEW_TYPE_SMALL = "small";
     public static final String VIEW_TYPE_LARGE = "large";
 
+    public static boolean isTouchEventEnabled(PageContext pageContext)  {
+        HttpServletRequest request = (HttpServletRequest)
+                pageContext.getRequest();
+        String userAgent = request.getHeader(USER_AGENT);
+        if (sniffAndroidTablet(userAgent))  {
+            return false;
+        }
+        if (isIOS(pageContext) || isAndroid(pageContext)) {
+            return true;
+        }
+        return false;
+    }
+
     public static boolean isIOS5orHigher(PageContext pageContext) {
         HttpServletRequest request = (HttpServletRequest)
                                              pageContext.getRequest();
