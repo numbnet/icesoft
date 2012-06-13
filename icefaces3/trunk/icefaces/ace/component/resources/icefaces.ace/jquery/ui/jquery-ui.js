@@ -7482,26 +7482,22 @@ $.extend(Datepicker.prototype, {
 	_attachments: function(input, inst) {
 		var appendText = this._get(inst, 'appendText');
 		var isRTL = this._get(inst, 'isRTL');
+        // ICE-8154: in-field label handling
         var addLabel = function() {
             var input = $(this);
             var inst = $.datepicker._getInst(this);
             if ($.trim(input.val()) == "") {
-                input.val(inst.settings.inFieldLabel);
+                input.attr({name: inst.settings.clientId + "_label", value: inst.settings.inFieldLabel});
                 input.addClass(inst.settings.inFieldLabelStyleClass);
-//                input.data("labelIsInField", true);
             }
         };
         var delLabel = function() {
             var input = $(this);
             var inst = $.datepicker._getInst(this);
-//            var labelIsInField = input.data("labelIsInField");
-//            if (labelIsInField == undefined) labelIsInField = inst.settings.inFieldLabel;
             var inFieldLabelStyleClass = inst.settings.inFieldLabelStyleClass;
-//            if (labelIsInField) {
             if (input.hasClass(inFieldLabelStyleClass)) {
-                input.val("");
+                input.attr({name: inst.settings.clientId + "_input", value: ""});
                 input.removeClass(inFieldLabelStyleClass);
-//                input.data("labelIsInField", false);
             }
         };
         if (inst.append)
@@ -7511,6 +7507,7 @@ $.extend(Datepicker.prototype, {
 			input[isRTL ? 'before' : 'after'](inst.append);
 		}
 		input.unbind('focus', this._showDatepicker);
+        // ICE-8154: in-field label handling
         input.unbind('focus', delLabel);
         input.unbind('blur', addLabel);
         if (inst.trigger)
@@ -8232,14 +8229,19 @@ $.extend(Datepicker.prototype, {
 		dateStr = (dateStr != null ? dateStr : this._formatDate(inst));
         if (inst.input) {
             inst.input.val(dateStr);
+            // ICE-8154: in-field label handling
             var input = inst.input;
             var inFieldLabel = inst.settings.inFieldLabel;
             var inFieldLabelStyleClass = inst.settings.inFieldLabelStyleClass;
-            if (!input.is(":focus") && $.trim(dateStr) == "" && inFieldLabel) {
-                input.val(inFieldLabel);
-                input.addClass(inFieldLabelStyleClass);
-            } else {
-                input.removeClass(inFieldLabelStyleClass);
+            var clientId = inst.settings.clientId;
+            if (inFieldLabel) {
+                if (!input.is(":focus") && $.trim(dateStr) == "") {
+                    input.attr({name: clientId + "_label", value: inFieldLabel});
+                    input.addClass(inFieldLabelStyleClass);
+                } else {
+                    input.attr("name", clientId + "_input");
+                    input.removeClass(inFieldLabelStyleClass);
+                }
             }
         }
         this._updateAlternate(inst);

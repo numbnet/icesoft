@@ -58,8 +58,12 @@ public class DateTimeEntryRenderer extends InputRenderer {
             return;
         }
 
-        String param = dateTimeEntry.getClientId(context) + "_input";
-        String submittedValue = context.getExternalContext().getRequestParameterMap().get(param);
+        String clientId = dateTimeEntry.getClientId(context);
+        Map<String, String> parameterMap = context.getExternalContext().getRequestParameterMap();
+        String submittedValue = parameterMap.get(clientId + "_input");
+        if (submittedValue == null && parameterMap.get(clientId + "_label") != null) {
+            submittedValue = "";
+        }
 
         if(submittedValue != null) {
             dateTimeEntry.setSubmittedValue(submittedValue);
@@ -72,7 +76,7 @@ public class DateTimeEntryRenderer extends InputRenderer {
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         DateTimeEntry dateTimeEntry = (DateTimeEntry) component;
         String value = DateTimeEntryUtils.getValueAsString(context, dateTimeEntry);
-        Map<String, Object> labelAttributes = getLabelAttributes(dateTimeEntry);
+        Map<String, Object> labelAttributes = getLabelAttributes(component);
 
         encodeMarkup(context, dateTimeEntry, value, labelAttributes);
     }
@@ -82,6 +86,8 @@ public class DateTimeEntryRenderer extends InputRenderer {
         String clientId = dateTimeEntry.getClientId(context);
         String inputId = clientId + "_input";
         boolean popup = dateTimeEntry.isPopup();
+        Map paramMap = context.getExternalContext().getRequestParameterMap();
+        String iceFocus = (String) paramMap.get("ice.focus");
 
         writer.startElement("span", dateTimeEntry);
         writer.writeAttribute("id", clientId, null);
@@ -112,9 +118,10 @@ public class DateTimeEntryRenderer extends InputRenderer {
         String styleClasses = (themeForms() ? DateTimeEntry.INPUT_STYLE_CLASS : "") + getStateStyleClasses(dateTimeEntry);
         if(!isValueBlank(value)) {
             writer.writeAttribute("value", value, null);
-        } else if (popup) {
+        } else if (popup && !clientId.equals(iceFocus)) {
             String inFieldLabel = (String) labelAttributes.get("inFieldLabel");
             if (!isValueBlank(inFieldLabel)) {
+                writer.writeAttribute("name", clientId + "_label", null);
                 writer.writeAttribute("value", inFieldLabel, null);
                 styleClasses += " " + IN_FIELD_LABEL_STYLE_CLASS;
                 labelAttributes.put("labelIsInField", true);
@@ -225,6 +232,7 @@ public class DateTimeEntryRenderer extends InputRenderer {
                 }
                 json.entry("disableHoverStyling", dateTimeEntry.isDisableHoverStyling());
                 json.entry("showCurrentAtPos", 0 - dateTimeEntry.getLeftMonthOffset());
+                json.entry("clientId", clientId);
                 json.entryNonNullValue("inFieldLabel", (String) labelAttributes.get("inFieldLabel"));
                 json.entry("inFieldLabelStyleClass", IN_FIELD_LABEL_STYLE_CLASS);
                 json.entry("labelIsInField", (Boolean) labelAttributes.get("labelIsInField"));
