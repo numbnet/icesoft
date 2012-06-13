@@ -1,14 +1,13 @@
 package org.icemobile.samples.springbasic;
 
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.context.request.WebRequest;
 
 import javax.servlet.http.HttpServletRequest;
-
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
 
 /**
  * This is an example Client space Controller implementation for the geolocation
@@ -17,6 +16,11 @@ import org.springframework.web.multipart.MultipartFile;
  */
 @Controller
 public class GeolocationController {
+
+	@ModelAttribute
+	public void ajaxAttribute(WebRequest request, Model model) {
+		model.addAttribute("ajaxRequest", AjaxUtils.isAjaxRequest(request));
+	}
 
     @RequestMapping(value = "/geolocation", method = RequestMethod.GET)
     public void variousGet(HttpServletRequest request, GeolocationBean model) {
