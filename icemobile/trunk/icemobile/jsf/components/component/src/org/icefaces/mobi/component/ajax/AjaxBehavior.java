@@ -41,6 +41,8 @@ public class AjaxBehavior extends ClientBehaviorBase {
     private String onSuccess;
     private String onStart;
     private MethodExpression listener;
+    private MethodExpression listenerNoArg;
+    private MethodExpression listenerSuperArg;
     private boolean immediate = false;
     private boolean disabled = false;
     private boolean immediateSet = false;
@@ -116,6 +118,22 @@ public class AjaxBehavior extends ClientBehaviorBase {
         this.listener = listener;
         clearInitialState();
     }
+    
+    public MethodExpression getListenerNoArg() {
+        return listenerNoArg;
+    }
+
+    public void setListenerNoArg(MethodExpression listenerNoArg) {
+        this.listenerNoArg = listenerNoArg;
+    }
+
+    public MethodExpression getListenerSuperArg() {
+        return listenerSuperArg;
+    }
+
+    public void setListenerSuperArg(MethodExpression listenerSuperArg) {
+        this.listenerSuperArg = listenerSuperArg;
+    }
 
     public boolean isDisabled() {
         return disabled;
@@ -143,15 +161,33 @@ public class AjaxBehavior extends ClientBehaviorBase {
         FacesContext context = FacesContext.getCurrentInstance();
         ELContext eLContext = context.getELContext();
 
-        if(listener != null) {
+        MethodNotFoundException last = null;
+        if (listener != null) {
             try {
-                listener.invoke(eLContext, null);       //no-arg listener
-            } catch(MethodNotFoundException e1) {
-                MethodExpression argListener = context.getApplication().getExpressionFactory().
-                        createMethodExpression(eLContext, listener.getExpressionString(), null, new Class[]{event.getClass()});
-
-                argListener.invoke(eLContext, new Object[]{event});
+                listener.invoke(eLContext, new Object[] {event});
+                return;
+            } catch (MethodNotFoundException e) {
+                last = e;
             }
+        }
+        if (listenerNoArg != null) {
+            try {
+                listenerNoArg.invoke(eLContext, new Object[0]);
+                return;
+            } catch (MethodNotFoundException e) {
+                last = e;
+            }
+        }
+        if (listenerSuperArg != null) {
+            try {
+                listenerSuperArg.invoke(eLContext, new Object[] {event});
+                return;
+            } catch (MethodNotFoundException e) {
+                last = e;
+            }
+        }
+        if (last != null) {
+            throw last;
         }
     }
 
@@ -170,7 +206,8 @@ public class AjaxBehavior extends ClientBehaviorBase {
                 values = new Object[] { superState };
             }
         } else {
-            values = new Object[11];
+            values = new Object[12];
+
             values[0] = superState;
             values[1] = listener;
             values[2] = render;
@@ -182,7 +219,9 @@ public class AjaxBehavior extends ClientBehaviorBase {
 			values[8] = Boolean.valueOf(immediate);
 			values[9] = Boolean.valueOf(immediateSet);
 			values[10] = Boolean.valueOf(disabled);
+            values[11] = listenerNoArg;
         }
+
         return values;
     }
 
@@ -196,20 +235,21 @@ public class AjaxBehavior extends ClientBehaviorBase {
             super.restoreState(context, values[0]);
 
             if (values.length != 1) {
-                  listener = (MethodExpression)values[1];
-                  render = (String)values[2];
-                  execute = (String)values[3];
-                  onComplete = (String)values[4];
-                  onError = (String)values[5];
-                  onSuccess = (String)values[6];
-                  onStart = (String)values[7];
-                  immediate = ((Boolean)values[8]).booleanValue();
-                  immediateSet = ((Boolean)values[9]).booleanValue();
-                  disabled = ((Boolean)values[10]).booleanValue();
+                listener = (MethodExpression)values[1];
+                render = (String)values[2];
+                execute = (String)values[3];
+                onComplete = (String)values[4];
+                onError = (String)values[5];
+                onSuccess = (String)values[6];
+                onStart = (String)values[7];
+                immediate = ((Boolean)values[8]).booleanValue();
+                immediateSet = ((Boolean)values[9]).booleanValue();
+                disabled = ((Boolean)values[10]).booleanValue();
+                listenerNoArg = (MethodExpression)values[11];
 
-                  // If we saved state last time, save state again next time.
-                  clearInitialState();
-              }
+                // If we saved state last time, save state again next time.
+                clearInitialState();
+            }
         }
     }
 

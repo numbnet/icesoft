@@ -16,7 +16,7 @@
 
 package org.icefaces.ace;
 
-
+import java.util.ArrayList;
 /**
  * Utility API that builds the parameter strings, performs param escaping.
  * Output is a JSON string as specified at <a href="http://www.json.org/">json.org</a>.
@@ -62,6 +62,16 @@ public class JSONBuilder {
      */
     public JSONBuilder endMap() {
         params.append("}");
+        return this;
+    }
+
+    /**
+     * Begins an anonymous array.
+     * @return a reference to this object.
+     */
+    public JSONBuilder beginArray() {
+        conditionallyAppendComma();
+        params.append("[");
         return this;
     }
 
@@ -351,11 +361,21 @@ public class JSONBuilder {
      * @return a reference to this object.
      */
     public JSONBuilder item(String value) {
+        return item(value, true);
+    }
+
+    /**
+     * Adds a String to an array or function call.
+     * @param value value of the item.
+     * @return a reference to this object.
+     */
+    public JSONBuilder item(String value, boolean escaped) {
         conditionallyAppendComma();
-        value = escapeString(value);
-        params.append('"').append(value).append('"');
+        if (escaped) params.append('"').append(escapeString(value)).append('"');
+        else params.append(value);
         return this;
     }
+
 
 
     public static String escapeString(String value) {
