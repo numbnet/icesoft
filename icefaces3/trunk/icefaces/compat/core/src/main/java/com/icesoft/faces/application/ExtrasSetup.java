@@ -25,6 +25,7 @@ import org.icefaces.impl.util.FormEndRenderer;
 import org.icefaces.impl.util.FormEndRendering;
 import org.icefaces.util.EnvUtils;
 
+import javax.faces.application.ProjectStage;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIOutput;
 import javax.faces.component.UIViewRoot;
@@ -50,9 +51,15 @@ public class ExtrasSetup implements SystemEventListener {
     };
     private static final FormEndRenderer FormHiddenInputFields = new FormHiddenInputFieldsRenderer();
     private boolean fastBusyIndicator;
+    private String compatResourceName;
+    private String extraCompatResourceName;
 
     public ExtrasSetup() {
         fastBusyIndicator = EnvUtils.isFastBusyIndicator(FacesContext.getCurrentInstance());
+
+        boolean developmentStage = FacesContext.getCurrentInstance().isProjectStage(ProjectStage.Development);
+        compatResourceName = developmentStage ? "compat.uncompressed.js" : "compat.js";
+        extraCompatResourceName = developmentStage ? "icefaces-compat.uncompressed.js" : "icefaces-compat.js";
     }
 
     public boolean isListenerForSource(Object source) {
@@ -65,8 +72,8 @@ public class ExtrasSetup implements SystemEventListener {
         if (EnvUtils.isICEfacesView(context)) {
             UIViewRoot root = context.getViewRoot();
 
-            root.addComponentResource(context, new JavascriptResourceOutput("compat.js"), "head");
-            root.addComponentResource(context, new JavascriptResourceOutput("icefaces-compat.js"), "head");
+            root.addComponentResource(context, new JavascriptResourceOutput(compatResourceName), "head");
+            root.addComponentResource(context, new JavascriptResourceOutput(extraCompatResourceName), "head");
 
             UIOutput output = new UIOutputWriter() {
                 public void encode(ResponseWriter writer, FacesContext context) throws IOException {

@@ -21,7 +21,6 @@
     <property name="src.dir" location="${basedir}/src/main/javascript"/>
     <property name="lib.dir" location="${basedir}/src/main/javascript/lib"/>
     <property name="build.dir" location="${basedir}/build/javascript/resources"/>
-    <property name="script" location="${build.dir}/bridge.js"/>
     <property name="tmp" value="${build.dir}/tmp.js"/>
 
     <target name="prepare" description="Collate bridge code">
@@ -68,18 +67,18 @@
         </copy>
     </target>
 
-    <target name="build.bridge.compressed" depends="prepare" unless="no-compress">
+    <target name="build.bridge.compressed" depends="prepare">
         <echo message="Compressing Javascript code..."/>
         <java jar="../lib/yui-compressor.jar" fork="yes">
             <arg line="--preserve-semi"/>
             <arg value="-o"/>
-            <arg value="${script}"/>
+            <arg value="${build.dir}/bridge.js"/>
             <arg value="${tmp}"/>
         </java>
     </target>
 
-    <target name="build.bridge.uncompressed" depends="prepare" if="no-compress">
-        <move file="${tmp}" tofile="${script}" overwrite="yes">
+    <target name="build.bridge.uncompressed" depends="prepare">
+        <move file="${tmp}" tofile="${build.dir}/bridge.uncompressed.js" overwrite="yes">
             <filterchain>
                 <stripjavacomments/>
                 <ignoreblank/>
