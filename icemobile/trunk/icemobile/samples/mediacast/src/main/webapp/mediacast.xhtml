@@ -25,13 +25,13 @@
 
         <!-- mediacast consists of three pages controled by this content stack-->
         <mobi:contentStack currentId="#{navigationModel.selectedPanelId}">
-            <mobi:contentPane id="home">
+            <mobi:contentPane id="home" facelet="true" client="false" >
                 <ui:include src="WEB-INF/includes/content/home.xhtml" />
             </mobi:contentPane>
-            <mobi:contentPane id="gallery">
+            <mobi:contentPane id="gallery" facelet="true" client="false" >
                 <ui:include src="WEB-INF/includes/content/gallery.xhtml" />
             </mobi:contentPane>
-            <mobi:contentPane id="media">
+            <mobi:contentPane id="media" facelet="true" client="false" >
                 <ui:include src="WEB-INF/includes/content/media-viewer.xhtml" />
             </mobi:contentPane>
 
