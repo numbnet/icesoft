@@ -33,19 +33,19 @@
             <mobi:fieldsetRow>
                 <h:outputLabel for="selectedPanel" value="Select Pane:"/>
                 <h:selectOneMenu id="selectedPanel" style="float:right"
-                                 onchange="ice.s(event, this);"
                                 value="#{contentStackBean.selectedPaneId}">
                     <f:selectItem itemLabel="Ice Sailer" itemValue="panel1"/>
                     <f:selectItem itemLabel="Ice Breaker" itemValue="panel2"/>
                     <f:selectItem itemLabel="Ice Skate" itemValue="panel3"/>
                     <f:selectItem itemLabel="Ice Car" itemValue="panel4"/>
+                    <f:ajax execute="@this" render="@all"/>
                 </h:selectOneMenu>
             </mobi:fieldsetRow>
 
         </mobi:fieldsetGroup>
 
         <mobi:contentStack currentId="#{contentStackBean.selectedPaneId}">
-            <mobi:contentPane id="panel1">
+            <mobi:contentPane id="panel1" facelet="false" client="true">
                 <mobi:fieldsetGroup>
                     <mobi:fieldsetRow>
                         <h:graphicImage style="float:left;padding-right:10px;"
@@ -60,7 +60,7 @@
                                 action="#{contentStackBean.nextPane('panel2')}" />
                 </mobi:fieldsetGroup>
             </mobi:contentPane>
-            <mobi:contentPane id="panel2">
+            <mobi:contentPane id="panel2" facelet="false" client="true">
                 <mobi:fieldsetGroup>
                     <mobi:fieldsetRow>
                         <h:graphicImage style="float:left;padding-right:10px;"
@@ -78,7 +78,7 @@
                                         action="#{contentStackBean.nextPane('panel3')}" />
                 </mobi:fieldsetGroup>
             </mobi:contentPane>
-            <mobi:contentPane id="panel3">
+            <mobi:contentPane id="panel3" facelet="false" client="true">
                 <mobi:fieldsetGroup>
                     <mobi:fieldsetRow>
                         <h:graphicImage style="float:left;padding-right:10px;"
@@ -96,7 +96,7 @@
                                         action="#{contentStackBean.nextPane('panel4')}" />
                 </mobi:fieldsetGroup>
             </mobi:contentPane>
-            <mobi:contentPane id="panel4">
+            <mobi:contentPane id="panel4" facelet="false" client="true">
                 <mobi:fieldsetGroup>
                     <mobi:fieldsetRow>
                         <h:graphicImage style="float:left;padding-right:10px;"

@@ -49,6 +49,9 @@ public class ExampleImpl<T> implements Example, ExampleResources, ContextBase {
     private ArrayList<ExampleResource> tldResources;
     private ArrayList<ExampleResource> externalResources;
 
+    // default selected tab
+    protected String defaultId = "example";
+
     public ExampleImpl(Class<T> parentClass) {
         this.parentClass = parentClass;
         exampleResource = new ArrayList<ExampleResource>();
@@ -186,5 +189,13 @@ public class ExampleImpl<T> implements Example, ExampleResources, ContextBase {
 
     public void setSelectedExamplePath(String selectedExamplePath) {
         this.selectedExamplePath = selectedExamplePath;
+    }
+
+    public String getDefaultId() {
+        return defaultId;
+    }
+
+    public void setDefaultId(String defaultId) {
+        this.defaultId = defaultId;
     }
 }
