@@ -59,7 +59,7 @@ public class BridgeSetup implements SystemEventListener {
         standardFormSerialization = EnvUtils.isStandardFormSerialization(fc);
         disableDefaultErrorPopups = EnvUtils.disableDefaultErrorPopups(fc);
         bridgeResourceName = fc.isProjectStage(ProjectStage.Development) ? "bridge.uncompressed.js" : "bridge.js";
-        icepushResourceName = fc.isProjectStage(ProjectStage.Development) ? "icepush.js" : "icepush.js";
+        icepushResourceName = fc.isProjectStage(ProjectStage.Development) ? "icepush.uncompressed.js" : "icepush.js";
         fc.getExternalContext().getApplicationMap().put(BRIDGE_SETUP, this);
     }
 
