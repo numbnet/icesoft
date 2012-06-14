@@ -1,0 +1,141 @@
+<!--
+  ~ Copyright 2004-2012 ICEsoft Technologies Canada Corp.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the
+  ~ License. You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an "AS
+  ~ IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+  ~ express or implied. See the License for the specific language
+  ~ governing permissions and limitations under the License.
+  -->
+<ui:fragment xmlns="http://www.w3.org/1999/xhtml"
+             xmlns:h="http://java.sun.com/jsf/html"
+             xmlns:f="http://java.sun.com/jsf/core"
+             xmlns:ui="http://java.sun.com/jsf/facelets"
+             xmlns:util="http://java.sun.com/jsf/composite/components"
+             xmlns:icecore="http://www.icefaces.org/icefaces/core"
+             xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
+    <div id="h" class="mobi-panel-stack-header">
+        <ui:insert name="toolbar">
+            <h:form id="toolbar" prependId="false">
+                <h:commandLink type="back"
+                               value="#{mmsgs[mobiNavigationModel.backDestination.titleBack]}"
+                               styleClass="mobi-button mobi-button-back"
+                               action="#{mobiNavigationController.navigateBack}"
+                               rendered="#{mobiNavigationController.canGoBack}"/>
+
+                #{mmsgs[mobiNavigationModel.currentSmallViewDestination.title]}
+
+                <ui:insert name="toolBarContent"/>
+            </h:form>
+        </ui:insert>
+    </div>
+
+    <div id="wrapper" class="mobi-panel-stack-body">
+        <div id="content" class="mobi-panel-scrollable">
+            <!-- main content include of page content -->
+            <ui:insert name="panelContent">
+                <ui:include src="#{mobiNavigationModel.currentSmallViewDestination.contentPath}"/>
+            </ui:insert>
+        </div>
+    </div>
+
+    <div id="f" class="mobi-panel-stack-footer">
+        <!--
+            footer by default has commands for creating new messages.
+            can be over-ridden if needed.
+        -->
+        <ui:insert name="footerContent">
+            <div style="float:left;display:inline-block;text-align:left;">
+                <h:form>
+                    <icecore:singleSubmit rendered="false"/>
+
+                    <span style="font-size:14px;color:white;font-weight:bold;">Theme: </span>
+                    <h:selectOneMenu value="#{themeBean.currentTheme}"
+                            onchange="ice.s(event, this);" >
+                        <f:selectItem itemLabel="Auto" itemValue=""/>
+                        <f:selectItem itemLabel="iPhone"
+                                      itemValue="iphone.css"/>
+                        <f:selectItem itemLabel="Android"
+                                      itemValue="android.css"/>
+                        <f:selectItem itemLabel="BlackBerry"
+                                      itemValue="bberry.css"/>
+                         <f:ajax disabled="true"/>
+                    </h:selectOneMenu>
+                </h:form>
+            </div>
+            <h:panelGroup
+                    style="float:right;display:inline-block;margin: 5px 15px 0 0;">
+                <h:form>
+                    <h:commandLink action="#{mobiNavigationController.navigateToPage}">
+                        <f:param name="navigateTo"
+                                 value="#{mobiNavigationModel.destinationHome}"/>
+                        <h:graphicImage library="images" name="icemobile_thumb.png"
+                                        style="width:30px;height:30px;border:none;"/>
+                    </h:commandLink>
+                </h:form>
+            </h:panelGroup>
+        </ui:insert>
+    </div>
+    <script type="text/javascript">
+        var myScroll;
+        var loader = function () {
+            setTimeout(function () {
+                // tweak safari css for iscroll.
+                document.getElementById("wrapper").style.position = "absolute";
+                document.getElementById("wrapper").style.overflow = "hidden";
+                // clean up the old scroller
+                if (myScroll != null) {
+                    myScroll.destroy();
+                }
+                myScroll = new iScroll('wrapper', { vScroll:true});
+                myScroll.refresh();
+            }, 100);
+        };
+
+        var onLoadCallback = function () {
+            loader();
+        };
+        var afterUpdateCallback = function(updates) {
+            loader();
+        };
+
+        var unloadHandler = function() {
+            ice.log.debug(ice.log, 'unload handler iScroll');
+            myScroll.destroy();
+            myScroll = null;
+        };
+
+        // only load iscroll for apple devices.
+        if (navigator.platform.indexOf('iPhone') != -1 ||
+                navigator.userAgent.indexOf('iPod') != -1 ||
+                navigator.userAgent.indexOf('iPad') != -1) {
+
+            if (navigator.userAgent.indexOf('iPhone OS 5_0') != -1) {
+                return;
+            }
+
+            // setup icefaces callbacks bridge.
+            ice.onLoad(onLoadCallback);
+            ice.onUnload(unloadHandler);
+            ice.onAfterUpdate(afterUpdateCallback);
+
+            var supportsOrientationChange = "onorientationchange" in window,
+                    orientationEvent = supportsOrientationChange ? "orientationchange" : "resize";
+            window.addEventListener(orientationEvent, afterUpdateCallback, false);
+
+            window.addEventListener('resize', function() {
+                setTimeout(function () {
+                    ice.log.debug(ice.log, 'resize iscroll refresh');
+                    myScroll.refresh();
+                }, 0);
+            });
+        }
+
+    </script>
+</ui:fragment>
