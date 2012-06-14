@@ -30,6 +30,7 @@
 		<li><a href="<c:url value="/inputtext" />" title="inputtext">Input Text</a></li>
 		<li><a href="<c:url value="/qrscan" />" title="qrscan">QR Scanner</a></li>
 		<li><a href="<c:url value="/geolocation" />" title="geolocation">Geolocation</a></li>
+		<li><a href="<c:url value="/buttons" />" title="buttons">Buttons</a></li>
 		<li><a href="#icehtml">HTML</a></li>
     </ul>
 	<div id="welcome">
