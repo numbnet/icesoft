@@ -30,8 +30,9 @@
 ice.ace.Draggable = function(id, cfg) {
     this.id = id;
     this.cfg = cfg;
-	
-    ice.ace.jq(ice.ace.escapeClientId(this.cfg.target)).draggable(this.cfg);
+	this.jq = ice.ace.jq(ice.ace.escapeClientId(this.cfg.target));
+	this.jq.draggable('destroy');
+    this.jq.draggable(this.cfg);
 }
 
 ice.ace.Droppable = function(id, cfg) {
