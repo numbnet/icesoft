@@ -20,6 +20,8 @@
 @synthesize placeName;
 @synthesize view;
 @synthesize location;
+@synthesize heading;
+@synthesize currentDistance;
 
 - (id)init
 {
@@ -27,6 +29,7 @@
     if (self) {
 			view = nil;
 			location = nil;
+            heading = -1.0f;
     }    
     return self;
 }

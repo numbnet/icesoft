@@ -420,6 +420,7 @@ NSLog(@"called camera");
         double lat = 0;
         double lon = 0;
         double alt = 0;
+        double hed = -1;
         NSString *iconName = nil;
         if ([pairs count] > 1)  {
             lat = [[pairs objectAtIndex:0] doubleValue];
@@ -429,7 +430,10 @@ NSLog(@"called camera");
             alt = [[pairs objectAtIndex:2] doubleValue];
         }
         if ([pairs count] > 3)  {
-            iconName = [pairs objectAtIndex:3];
+            hed = [[pairs objectAtIndex:3] doubleValue];
+        }
+        if ([pairs count] > 4)  {
+            iconName = [pairs objectAtIndex:4];
             if (nil == urlBase)  {
                 iconName = nil;
             }
@@ -449,8 +453,11 @@ NSLog(@"called camera");
                 placeLabelWithText:name andImage:iconImage
                 initWithLatitude:lat longitude:lon];
         }
+        if (hed >= 0)  {
+            label.heading = hed;
+        }
         [placeLabels addObject:label];
-        NSLog(@"found place %@ coords %f,%f %@", name, lat,lon, iconName);
+        NSLog(@"found place %@ coords %f,%f %f %@", name, lat,lon, hed, iconName);
 
     }
     [self.augController setPlaceLabels:placeLabels];
