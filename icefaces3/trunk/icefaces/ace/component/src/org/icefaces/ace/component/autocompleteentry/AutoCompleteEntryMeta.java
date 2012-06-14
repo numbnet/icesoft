@@ -97,11 +97,12 @@ public class AutoCompleteEntryMeta extends HtmlInputTextMeta {
     @Property(tlddoc = "Indicator indicating that the user is NOT required to provide a submitted value for this input component.")
     private String optionalIndicator;
 
-    @Property(tlddoc = "Position of label relative to input field. Supported values are \"left/right/top/bottom/inField\".")
+    @Property(tlddoc = "Position of label relative to input field. Supported values are \"left/right/top/bottom/inField/none\". Default is \"none\".")
     private String labelPosition;
 
     @Property(tlddoc = "Position of input-required or input-optional indicator relative to input field or label. " +
-            "Supported values are \"left/right/top/bottom/labelLeft/labelRight\". ")
+            "Supported values are \"left/right/top/bottom/labelLeft/labelRight/none\". " +
+            "Default is \"labelRight\" if labelPosition is \"inField\", \"right\" otherwise.")
     private String indicatorPosition;
 	
     @Property(tlddoc = "Delay in milliseconds for showing the list of possible matches after typing a character.", defaultValue="0")
