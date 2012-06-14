@@ -355,7 +355,7 @@ NSLog(@"addCompassPoints anchored %f,%f", location.coordinate.latitude, location
 	// Compute the world coordinates of each place-of-interest
 	for (PlaceLabel *place in [moreLabels objectEnumerator]) {
 		double pX, pY, pZ, e, n, u;
-NSLog(@"updating location %f,%f", place.location.coordinate.latitude, place.location.coordinate.longitude);
+NSLog(@"updatePlaceLabelCoordinates updating location %f,%f", place.location.coordinate.latitude, place.location.coordinate.longitude);
 		
 		latLonToEcef(place.location.coordinate.latitude, place.location.coordinate.longitude, 0.0, &pX, &pY, &pZ);
 		ecefToEnu(location.coordinate.latitude, location.coordinate.longitude, myX, myY, myZ, pX, pY, pZ, &e, &n, &u);
@@ -368,6 +368,7 @@ NSLog(@"updating location %f,%f", place.location.coordinate.latitude, place.loca
 		// Add struct containing distance and index to orderedDistances
 		DistanceAndIndex distanceAndIndex;
 		distanceAndIndex.distance = sqrtf(n*n + e*e);
+        place.currentDistance = distanceAndIndex.distance;
 		distanceAndIndex.index = i;
 		[orderedDistances insertObject:[NSData dataWithBytes:&distanceAndIndex length:sizeof(distanceAndIndex)] atIndex:i++];
 	}
@@ -415,7 +416,23 @@ NSLog(@"updating location %f,%f", place.location.coordinate.latitude, place.loca
 	int i = 0;
 	for (PlaceLabel *place in [self.moreLabels objectEnumerator]) {
 		vec4f_t v;
-		multiplyMatrixAndVector(v, projectionCameraTransform, placeLabelCoordinates[i]);
+		vec4f_t c;
+        c[0] = placeLabelCoordinates[i][0];
+        c[1] = placeLabelCoordinates[i][1];
+        c[2] = placeLabelCoordinates[i][2];
+        c[3] = placeLabelCoordinates[i][3];
+        place.view.alpha = 1.0f;
+        if (place.currentDistance < 50.0f)  {
+            place.view.alpha = 0.5f;
+            if (place.heading >= 0.0f)  {
+                c[0] = cos(place.heading * DEGREES_TO_RADIANS) * 25.0f;
+                c[1] = sin(place.heading * DEGREES_TO_RADIANS) * 25.0f;
+            } else {
+                c[0] = cos(7.0f * DEGREES_TO_RADIANS) * 25.0f;
+                c[1] = sin(7.0f * DEGREES_TO_RADIANS) * 25.0f;
+            }
+        }
+		multiplyMatrixAndVector(v, projectionCameraTransform, c);
 		
 		float x = (v[0] / v[3] + 1.0f) * 0.5f;
 		float y = (v[1] / v[3] + 1.0f) * 0.5f;

@@ -24,11 +24,15 @@
     NSString *placeName;
     UIView *view;
     CLLocation *location;
+    long heading;
+    long currentDistance;
 }
 
 @property (nonatomic, retain) NSString *placeName;
 @property (nonatomic, retain) UIView *view;
 @property (nonatomic, retain) CLLocation *location;
+@property (nonatomic) long heading;
+@property (nonatomic) long currentDistance;
 
 + (PlaceLabel *)placeLabelWithView:(UIView *)view at:(CLLocation *)location;
 + (PlaceLabel *)placeLabelWithText:(NSString *)text 
