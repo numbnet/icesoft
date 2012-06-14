@@ -80,7 +80,7 @@ public class CommandButtonTag extends SimpleTagSupport {
         }
         // button type for styling purposes
         if (type == null) {
-            out.write(" type='button'");
+            out.write(" type='submit'");
 	} else {
             out.write(" type='" + type + "'");
 	}
