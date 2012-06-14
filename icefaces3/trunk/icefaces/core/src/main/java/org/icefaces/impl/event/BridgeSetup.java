@@ -23,6 +23,7 @@ import org.icefaces.impl.push.SessionViewManager;
 import org.icefaces.impl.push.servlet.ICEpushResourceHandler;
 import org.icefaces.util.EnvUtils;
 
+import javax.faces.application.ProjectStage;
 import javax.faces.application.Resource;
 import javax.faces.application.ResourceHandler;
 import javax.faces.component.UIComponent;
@@ -49,12 +50,16 @@ public class BridgeSetup implements SystemEventListener {
     private final boolean deltaSubmit;
     private final boolean disableDefaultErrorPopups;
     private int seed = 0;
+    private String bridgeResourceName;
+    private String icepushResourceName;
 
     public BridgeSetup() {
         FacesContext fc = FacesContext.getCurrentInstance();
         deltaSubmit = EnvUtils.isDeltaSubmit(fc);
         standardFormSerialization = EnvUtils.isStandardFormSerialization(fc);
         disableDefaultErrorPopups = EnvUtils.disableDefaultErrorPopups(fc);
+        bridgeResourceName = fc.isProjectStage(ProjectStage.Development) ? "bridge.uncompressed.js" : "bridge.js";
+        icepushResourceName = fc.isProjectStage(ProjectStage.Development) ? "icepush.js" : "icepush.js";
         fc.getExternalContext().getApplicationMap().put(BRIDGE_SETUP, this);
     }
 
@@ -111,10 +116,10 @@ public class BridgeSetup implements SystemEventListener {
 
         //add ICEpush code only when needed
         if (EnvUtils.isICEpushPresent()) {
-            resources.add(new JavascriptResourceOutput(resourceHandler, "icepush.js", null, version));
+            resources.add(new JavascriptResourceOutput(resourceHandler, icepushResourceName, null, version));
         }
         //always add ICEfaces bridge code
-        resources.add(new JavascriptResourceOutput(resourceHandler, "bridge.js", null, version));
+        resources.add(new JavascriptResourceOutput(resourceHandler, bridgeResourceName, null, version));
         resources.add(new TestScript());
         resources.add(new ResourceOutput("javax.faces.resource.Stylesheet", "core.css", null));
 

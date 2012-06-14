@@ -19,6 +19,18 @@ if (!window.ice) {
 }
 
 if (!window.ice.icefaces) {
+    //the eval needs to be located outside the main closure to allow proper minification from YUI compressor
+    window.ice.globalEval = function(src) {
+        if (window.execScript) {
+            window.execScript(src);
+        } else {
+            (function() {
+                window.eval.call(window, src);
+            })();
+        }
+    };
+
+
     (function(namespace) {
         namespace.icefaces = true;
         namespace.configuration = new Object();

@@ -15,16 +15,6 @@
  */
 
 (function() {
-    function globalEval(src) {
-        if (window.execScript) {
-            window.execScript(src);
-        } else {
-            (function() {
-                window.eval.call(window, src);
-            })();
-        }
-    }
-
     function extractTagContent(tag, html) {
         var start = new RegExp('\<' + tag + '[^\<]*\>', 'g').exec(html);
         var end = new RegExp('\<\/' + tag + '\>', 'g').exec(html);
@@ -103,7 +93,7 @@
             });
 
             //select only non empty scripts
-            each(select(scripts, identity), globalEval);
+            each(select(scripts, identity), namespace.globalEval);
         }
     }
 
