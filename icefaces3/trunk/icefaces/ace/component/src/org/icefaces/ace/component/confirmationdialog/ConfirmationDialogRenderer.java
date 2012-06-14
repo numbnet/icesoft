@@ -55,6 +55,8 @@ public class ConfirmationDialogRenderer extends CoreRenderer {
 		
 		writer.startElement("div", null);
 		writer.writeAttribute("id", clientId , null);
+		
+		writer.startElement("div", null);
 		String header = dialog.getHeader();
 		if(header != null) {
 			writer.writeAttribute("title", header, null);
@@ -81,6 +83,8 @@ public class ConfirmationDialogRenderer extends CoreRenderer {
 		writer.startElement("div", null);
 		writer.writeAttribute("id", clientId + "_buttons", null);
 		renderChildren(context, dialog);
+		writer.endElement("div");
+		
 		writer.endElement("div");
 		
 		encodeScript(context, dialog);

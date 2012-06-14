@@ -34,7 +34,7 @@ ice.ace.ConfirmDialog = function(id, cfg) {
     this.id = id;
     this.cfg = cfg;
     this.jqId = ice.ace.escapeClientId(id);
-    this.jq = ice.ace.jq(this.jqId);
+    this.jq = ice.ace.jq(this.jqId + " div:first");
     this.cfg.resizable = false;
     this.cfg.autoOpen = false;
 
