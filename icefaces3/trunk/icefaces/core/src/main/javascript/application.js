@@ -501,7 +501,7 @@ if (!window.ice.icefaces) {
                 }
 
                 //clear the event handlers on the elements that will most likely create a memory leak
-                onUnload(function() {
+                onUnload(window, function() {
                     container.configuration = null;
 
                     each(['a', 'iframe'], function(type) {
