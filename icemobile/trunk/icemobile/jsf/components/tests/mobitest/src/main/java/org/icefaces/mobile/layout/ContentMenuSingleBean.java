@@ -42,6 +42,7 @@ public class ContentMenuSingleBean extends LayoutBean {
     private List dataList = new ArrayList<DataValue>();
     private List eachContentPane = new ArrayList<EachContentPane>();
     private String selectedPane = MENUPANE;
+    private String selectedPane2 = FIRSTPANE;
     private String selectedTabPane = FIRSTTABPANE;
 
     public ContentMenuSingleBean(){
@@ -84,5 +85,11 @@ public class ContentMenuSingleBean extends LayoutBean {
          this.menuCList = menuList;
      }
 
+    public String getSelectedPane2() {
+        return selectedPane2;
+    }
 
+    public void setSelectedPane2(String selectedPane2) {
+        this.selectedPane2 = selectedPane2;
+    }
 }

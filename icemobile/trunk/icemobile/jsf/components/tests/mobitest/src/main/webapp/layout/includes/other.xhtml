@@ -22,10 +22,16 @@
 
     <mobi:fieldsetGroup>
         <div style="padding:0 20px;"/>
-
+        Component Count: #{compTreeMonitor.treeSize}
        <h:form id="contentForm">
-       <mobi:tabSet id="tabother" defaultId="#{contentMenuBean.selectedTabPane}">
-              <mobi:contentPane id="panelt1" title="panelt1" client="true">
+       <mobi:tabSet id="tabother" defaultId="#{contentMenuBean.selectedTabPane}"
+                    parentHeader="false" autoWidth="false"
+                    currentId="#{contentMenuBean.selectedPane2}"
+              >
+              <mobi:contentPane id="panelt1" title="panelt1"
+                                facelet="true"
+                                client="false"
+                      >
                   <fieldset title="panelt1">
                       <legend>Panel1</legend>
                     <h3> header for panel 1</h3>
@@ -39,7 +45,10 @@
 
                   </fieldset>
               </mobi:contentPane>
-               <mobi:contentPane id="panelt2" title="panelt2" >
+               <mobi:contentPane id="panelt2" title="panelt2"
+                                 facelet="true"
+                                 client="false"
+                       >
                  <fieldset title="panelt2">
                    <legend>Panel2</legend>
                   <h3> header for panel 2</h3>
@@ -53,7 +62,10 @@
                       <br />
                   </fieldset>
               </mobi:contentPane>
-             <mobi:contentPane id="panelt3" title="panelt3" facelet="true">
+             <mobi:contentPane id="panelt3" title="panelt3"
+                               facelet="true"
+                               client="false"
+                     >
                  <fieldset title="panelt3">
                       <legend>Panel3</legend>
                   <h3> header for panel 3</h3>
