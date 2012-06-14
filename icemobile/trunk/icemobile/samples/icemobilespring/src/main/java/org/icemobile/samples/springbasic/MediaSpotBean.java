@@ -42,7 +42,7 @@ public class MediaSpotBean {
     }
 
     public String getPacked()  {
-        return title + "=" + location;
+        return title + "=" + location + "," + fileName;
     }
 
     public String toString() {

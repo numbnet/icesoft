@@ -38,13 +38,13 @@
 		  	</fieldset>
 
 		  	<fieldset >
+               <mobi:geolocation id="location" />
                <mobi:camera id="camera" />
                <img style="height:60px;width:65px;vertical-align:middle;" 
                     id="camera-thumb" >
                <mobi:augmentedReality id="selection" 
                     style="float:right" params="${reality}"/>
 		  	</fieldset>
-            <input type="hidden" id="location" name="location" >
 			<button type="submit">Submit</button>
 		</form:form>
 
@@ -53,17 +53,7 @@
 
             var ampchar = String.fromCharCode(38);
 
-            function getPosition()  {
-                navigator.geolocation.getCurrentPosition(
-                    function(pos) {
-                        var lat = pos.coords.latitude;
-                        var lon = pos.coords.longitude;
-                        $("#location").attr("value", lat + "," + lon);
-                });
-            }
-
 			$(document).ready(function() {
-                getPosition();
 				$("#mediaspotform").submit(function() {
                     if (window.ice && ice.upload)  {
                         window.ice.handleResponse = function(data)  {
@@ -84,7 +74,6 @@
                         processData: false,
                         type: 'POST',
                         success: function(html) {
-                            getPosition();
 						    $("#mediaspot").replaceWith(html);
 						    $('html, body').animate({ scrollTop: $("#message").offset().top }, 500);
 					    }
