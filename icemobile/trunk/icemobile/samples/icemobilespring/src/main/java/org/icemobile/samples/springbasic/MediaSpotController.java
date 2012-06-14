@@ -113,8 +113,7 @@ public class MediaSpotController {
     private String getRealityParams()  {
         StringBuilder sb = new StringBuilder();
         for (MediaSpotBean message : messages.values())  {
-            String location = message.getPacked() + ",," + 
-                    message.getFileName();
+            String location = message.getPacked();
             sb.append("&" + location);
         }
         return sb.toString();

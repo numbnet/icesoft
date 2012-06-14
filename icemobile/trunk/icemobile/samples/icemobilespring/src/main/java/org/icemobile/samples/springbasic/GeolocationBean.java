@@ -12,37 +12,47 @@ public class GeolocationBean {
 
     // Location
     private String location;
+    private String latitude;
+    private String longitude;
+    private String altitude;
+    private String direction;
 
     @ModelAttribute("geolocationBean")
     public GeolocationBean createBean() {
         return new GeolocationBean();
     }
 
-    public String getLocation() {
+    public String getGeolocation() {
         return location;
     }
 
-    public void setLocation(String location) {
+    public void setGeolocation(String location) {
         this.location = location;
+        try {
+            String[] parts = location.split(",");
+            latitude = parts[0];
+            longitude = parts[1];
+            altitude = parts[2];
+            direction = parts[3];
+        } catch (Exception e)  {
+            //always expect four comma-separtated parts
+        }
     }
 
     public String getLat() {
-        if (location == null) return null;
-	int delim = location.indexOf(',');
-	if (delim == -1) return null;
-	return location.substring(0,delim);
-    }
-
-    public void setLat(String lat) {
+        return latitude;
     }
 
     public String getLon() {
-        if (location == null) return null;
-	int delim = location.indexOf(',');
-	if (delim == -1) return null;
-	return location.substring(delim+1);
+        return longitude;
     }
 
-    public void setLon(String lon) {
+    public String getAlt() {
+        return altitude;
     }
+
+    public String getDir() {
+        return direction;
+    }
+
 }

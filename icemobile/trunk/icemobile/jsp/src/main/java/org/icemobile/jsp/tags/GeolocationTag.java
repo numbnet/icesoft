@@ -42,35 +42,59 @@ public class GeolocationTag extends SimpleTagSupport {
         out.write("<span ");
 
         if (id != null && !"".equals(id)) {
-            out.write(" id=\'" + getId() + "\'");
+            out.write(" id='" + getId() + "'");
         }
-        out.write("> <input type=\'hidden\' ");
+        out.write(">");
+        out.write("<input type='hidden' ");
 
         if (id != null && !"".equals(id)) {
-            out.write(" id=\'" + getId() + "_locHidden\'");
-	    //            out.write(" name=\'" + getId() + "_field\'");
-            out.write(" name=\'" + getId() + "\'");
+            out.write(" id='" + getId() + "_locHidden'");
+            out.write(" name='" + getId() + "' ");
+            out.write(" value='51.1,-114.1,,dir' ");
         }
 
         if (disabled) {
-            out.write(" disabled=\'true\'");
+            out.write("disabled='true' ");
         }
 
-        out.write("/>");  // end input
+        out.write(">");  // end input
 
-        StringBuilder sb = new StringBuilder(255);
-        String fnCall = "document.getElementById(\"" + getId() + "_locHidden\").value=pos.coords.latitude+\",\"+pos.coords.longitude;";
-        sb.append(fnCall);
-
-        // todo: behaviours (?) and singleSubmit
-
-        String finalScript = "navigator.geolocation.watchPosition(function(pos){"+ sb.toString() + "});";
         out.write("<script ");
         if (id != null && !"".equals(id)) {
-            out.write("id =\'" + id + "_script\'>");
+            out.write("id ='" + id + "_script' ");
         }
-
-        out.write(finalScript);
+        out.write(">\n");
+        out.write("iceStoreLocation = function(id, coords)  {");
+        out.write("if (!coords) { return; } ");
+        out.write("var el = document.getElementById(id + '_locHidden');");
+        out.write("var parts = el.value.split(',');");
+        out.write("if (4 != parts.length) {parts = new Array(4)};");
+        out.write("parts[0] = coords.latitude;");
+        out.write("parts[1] = coords.longitude;");
+        out.write("parts[2] = coords.altitude;");
+        out.write("el.value = parts.join();");
+        out.write("}\n");
+        out.write("iceStoreDirection = function(id, head)  {");
+        out.write("var el = document.getElementById(id + '_locHidden');");
+        out.write("var parts = el.value.split(',');");
+        out.write("if (4 != parts.length) {parts = new Array(4)}");
+        out.write("parts[3] = head;");
+        out.write("el.value = parts.join();");
+        out.write("}\n");
+        //need getCurrentPosition and watchPosition to ensure location is
+        //available after page loads
+        out.write("iceStoreLocation('" + getId() + "', window.icegeocoords);");
+        out.write("navigator.geolocation.getCurrentPosition(function(pos){");
+        out.write("window.icegeocoords =  pos.coords;");
+        out.write("iceStoreLocation('" + getId() + "', pos.coords);");
+        out.write("});\n");
+        out.write("navigator.geolocation.watchPosition(function(pos){");
+        out.write("window.icegeocoords =  pos.coords;");
+        out.write("iceStoreLocation('" + getId() + "', pos.coords);");
+        out.write("});\n");
+        out.write("window.addEventListener('deviceorientation', function(orient){");
+        out.write("iceStoreDirection('" + getId() + "', orient.webkitCompassHeading);");
+        out.write("});\n");
         out.write("</script>");
         out.write("</span>");   // end span
 

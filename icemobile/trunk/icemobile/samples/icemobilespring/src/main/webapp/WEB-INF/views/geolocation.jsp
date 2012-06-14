@@ -18,17 +18,16 @@
 
 		<h2>ICEmobile - Geolocation</h2>
 		<form:form id="geolocationform" method="POST"  modelAttribute="geolocationBean" cssClass="cleanform">
-			<div class="header">
-		  		<mobi:geolocation id="location" value="${geolocationBean.location}"/>
-			</div>
-
+            <mobi:geolocation id="geolocation"/>
 		  		  		
 			<p><input id="submitBtn" name="submitBtn" type="submit" value="Locate" /></p>
 
 		</form:form>
 
-Latitude = ${geolocationBean.lat}<br/>
-Longitude = ${geolocationBean.lon}
+Latitude = ${geolocationBean.lat}<br>
+Longitude = ${geolocationBean.lon}<br>
+Altitude = ${geolocationBean.alt}<br>
+Direction = ${geolocationBean.dir}<br>
 
 		<script type="text/javascript">
 
