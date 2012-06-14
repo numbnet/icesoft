@@ -15,23 +15,19 @@
  */
 
 function registerListener(eventType, obj, listener) {
-    var previousListener = obj[eventType];
-    if (previousListener) {
-        obj[eventType] = function() {
-            apply(previousListener, arguments);
-            apply(listener, arguments);
-        };
+    if (obj.addEventListener) {
+        obj.addEventListener(eventType, listener, false);
     } else {
-        obj[eventType] = listener;
+        obj.attachEvent('on' + eventType, listener);
     }
 }
 
-var onLoad = curry(registerListener, 'onload');
-var onUnload = curry(registerListener, 'onunload');
-var onBeforeUnload = curry(registerListener, 'onbeforeunload');
-var onResize = curry(registerListener, 'onresize');
-var onKeyPress = curry(registerListener, 'onkeypress');
-var onKeyUp = curry(registerListener, 'onkeyup');
+var onLoad = curry(registerListener, 'load');
+var onUnload = curry(registerListener, 'unload');
+var onBeforeUnload = curry(registerListener, 'beforeunload');
+var onResize = curry(registerListener, 'resize');
+var onKeyPress = curry(registerListener, 'keypress');
+var onKeyUp = curry(registerListener, 'keyup');
 
 window.width = function() {
     return window.innerWidth ? window.innerWidth : (document.documentElement && document.documentElement.clientWidth) ? document.documentElement.clientWidth : document.body.clientWidth;
