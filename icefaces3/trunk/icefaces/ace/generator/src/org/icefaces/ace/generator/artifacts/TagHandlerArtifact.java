@@ -73,6 +73,12 @@ public class TagHandlerArtifact extends Artifact{
         generatedTagHandlerClass.append(" extends ");
 		generatedTagHandlerClass.append(Utility.getTagHandlerExtendsClass(tagHandler));
         generatedTagHandlerClass.append(" {\n");
+
+        if (!tagHandler.behaviorId().equals(TagHandler.EMPTY)) {
+            generatedTagHandlerClass.append("\tpublic static final String BEHAVIOR_ID = \"");
+            generatedTagHandlerClass.append(tagHandler.behaviorId());
+            generatedTagHandlerClass.append("\";\n");
+        }
         
 		List<Field> fields = getTagHandlerContext().getPropertyFieldsForTagHandlerClassAsList();
         for (int i = 0; i < fields.size(); i++) {
