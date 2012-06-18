@@ -14,7 +14,7 @@
 </head>
 <body>
 </c:if>
-	<div id="buttonContent">
+	<div id="buttonsContent">
 
 		<h2>ICEmobile - Buttons</h2>
 		<form:form id="buttonsform" method="POST"  modelAttribute="buttonsBean" cssClass="cleanform">
@@ -23,6 +23,7 @@
 		  		<mobi:commandButton buttonType='important' value="important"/>
 		  		<mobi:commandButton buttonType='attention' value="attention"/>
 		  		<mobi:commandButton buttonType='back' value="back"/>
+                Current Time: ${currentTime}
 			</div>
 		</form:form>
 
