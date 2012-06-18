@@ -37,7 +37,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface TagHandler {
 
-  final String EMPTY = "";
+  public final String EMPTY = "";
   
   /**
    * Name of tag. Its a mandatory field.

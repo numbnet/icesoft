@@ -101,7 +101,10 @@ public class FacesConfigBuilder extends XMLBuilder{
     }
     
 	public void addTagHandlerEntry(TagHandler tagHandler) {
-		if (tagHandler.tagHandlerType() == TagHandlerType.BEHAVIOR_HANDLER) {
+		if (tagHandler.tagHandlerType() == TagHandlerType.BEHAVIOR_HANDLER ||
+            (tagHandler.tagHandlerType() == TagHandlerType.TAG_HANDLER &&
+             !tagHandler.behaviorId().equals(TagHandler.EMPTY) &&
+             !tagHandler.behaviorClass().equals(TagHandler.EMPTY))) {
 			Element behavior = getDocument().createElement("behavior");
 			Element behaviorId = getDocument().createElement("behavior-id"); 
 			behaviorId.appendChild(getDocument().createTextNode(tagHandler.behaviorId()));
