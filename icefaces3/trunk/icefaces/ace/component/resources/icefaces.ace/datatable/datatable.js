@@ -728,15 +728,20 @@ ice.ace.DataTable.prototype.resizeScrolling = function() {
 
         var bodySingleCols = ice.ace.jq(this.jqId + ' .ui-datatable-scrollable-body:first tbody tr:visible:first td div:first-child').get().reverse();
 
+        // Reset overflow if it was disabled as a hack from previous sizing
+        var bodyTableParent = bodyTable.parent().css('overflow', '');
+        headerTable.parent().css('overflow', 'visible');
+        footerTable.parent().css('overflow', 'visible');
 
         // Reset fixed sizing if set by previous sizing.
         for (i = 0; i < bodySingleCols.length; i++)
             ice.ace.jq(bodySingleCols[i]).css('width', 'auto');
 
         // Reset padding if added to offset scrollbar issues
-        bodyTable.parent().css('padding-right', '');
+        bodyTableParent.css('padding-right', '');
 
-        var unsizedVScrollShown = bodyTable.parent().is(':scrollable');
+        var unsizedVScrollShown = bodyTableParent.is(':scrollable'),
+            unsizedBodyVScrollShown = ice.ace.jq('html').is(':scrollable');
 
         // Show Duplicate Header / Footer
         dupeHead.css('display', 'table-header-group');
@@ -762,9 +767,15 @@ ice.ace.DataTable.prototype.resizeScrolling = function() {
         // If duplicate header/footer row causes body table to barely
         // exceed min-table size (causing scrollbar)
         var dupeCausesScrollChange = false,
-            vScrollShown = bodyTable.parent().is(':scrollable');
+            dupeCausesBodyScrollChange = true,
+            vScrollShown = bodyTable.parent().is(':scrollable'),
+            bodyVScrollShown = ice.ace.jq('html').is(':scrollable');
+
         if (!unsizedVScrollShown && vScrollShown)
             dupeCausesScrollChange = true;
+
+        if (!unsizedBodyVScrollShown && bodyVScrollShown)
+            dupeCausesBodyScrollChange = true;
 
         // Change table rendering algorithm to get more accurate sizing
         if (!ie7) bodyTable.css('table-layout','auto');
@@ -778,7 +789,12 @@ ice.ace.DataTable.prototype.resizeScrolling = function() {
         }
 
         // Return overflow to visible so sizing doesn't have scrollbar errors
-        if (dupeCausesScrollChange) bodyTable.parent().css('overflow', 'visible');
+        if (dupeCausesScrollChange) {
+            bodyTable.parent().css('overflow', 'visible');
+        }
+        if (dupeCausesBodyScrollChange) {
+            ice.ace.jq('html').css('overflow', 'hidden');
+        }
 
         for (i = 0; i < bodySingleCols.length; i++) {
             dupeHeadColumn = ice.ace.jq(dupeHeadSingleCols[i]);
@@ -787,10 +803,16 @@ ice.ace.DataTable.prototype.resizeScrolling = function() {
         }
 
         // Return overflow value
-        if (dupeCausesScrollChange) bodyTable.parent().css('overflow', '');
+        if (dupeCausesScrollChange) {
+            bodyTable.parent().css('overflow', '');
+        }
+        if (dupeCausesBodyScrollChange) {
+            ice.ace.jq('html').css('overflow', '');
+        }
 
         // Change table rendering algorithm so fixed sizes are strictly followed
         headerTable.css('table-layout','fixed');
+        // If fixed is set, on subsequent resizes firefox will only have equal sized columns
         if (!firefox) bodyTable.css('table-layout','fixed');
         footerTable.css('table-layout','fixed');
 
@@ -841,33 +863,19 @@ ice.ace.DataTable.prototype.resizeScrolling = function() {
         // Browser / Platform specific scrollbar fixes
         // Fix body scrollbar overlapping content
         // Instance check to prevent IE7 dynamic scrolling change errors
-        if (vScrollShown) {
-            if ((((safari || chrome) && !mac) || (ie9 || ie8)) && !dupeCausesScrollChange) {
-                headerTable.parent().css('margin-right', '17px');
-                footerTable.parent().css('margin-right', '17px');
+        // Recheck scrollable, it may have changed again post resize
+        if (vScrollShown && bodyTable.parent().is(':scrollable')) {
+            if (((firefox) || ((safari || chrome) && !mac) || (ie9 || ie8)) && !dupeCausesScrollChange) {
+                var offset = firefox ? 14 : 17;
+                headerTable.parent().css('margin-right', offset+'px');
+                footerTable.parent().css('margin-right', offset+'px');
             }
-            else if (firefox) {
-                headerTable.find('tbody > tr:first-child > td:last-child').css('padding-right','27px');
-                footerTable.find('tbody > tr:first-child > td:last-child').css('padding-right','27px');
-                if (dupeCausesScrollChange) {
-                    bodyTable.parent().css('padding-right','17px');
-                }
-            } else if (dupeCausesScrollChange) {
-                /* Correct scrollbars added by Win Chrome when unnecessary. */
-                var table;
-                if ((safari || chrome) && !mac) {
-                    table = bodyTable.parent().css('overflow', 'visible');
-                    table.css('padding-right','17px');
-                    setTimeout(function() {
-                        if (table.clientHeight < table.scrollHeight || table.clientWidth < table.scrollWidth)
-                            o.css('overflow', '');
-                    }, 10);
-                } else if (ie9) {
-                    // IE will sometimes add useless scrollbars, toggling overflow fixes this
-                    table = bodyTable.parent().css('overflow', 'visible');
-                    setTimeout(function() {
-                        table.css('overflow', '');
-                    }, 10);
+            else if (dupeCausesScrollChange) {
+                /* Correct scrollbars added by when unnecessary. */
+                if (safari || chrome || firefox || ie9) {
+                    bodyTable.parent().css('overflow', 'visible');
+                    headerTable.parent().css('overflow', 'visible');
+                    footerTable.parent().css('overflow', 'visible');
                 }
 
                 /* Clean up IE 8/9 sizing bug in dupe scroll change case */
