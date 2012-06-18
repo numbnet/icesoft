@@ -63,7 +63,9 @@ public class AjaxBehaviorRenderer extends ClientBehaviorRenderer {
 
     @Override
     public String getScript(ClientBehaviorContext behaviorContext, ClientBehavior behavior) {
+        //System.out.println("AjaxBehaviorRenderer.getScript()  component: " + behaviorContext.getComponent());
         AjaxBehavior ajaxBehavior = (AjaxBehavior) behavior;
+        //System.out.println("AjaxBehaviorRenderer.getScript()   disabled: " + ajaxBehavior.isDisabled());
         if(ajaxBehavior.isDisabled()) {
             return null;
         }
@@ -117,6 +119,7 @@ public class AjaxBehaviorRenderer extends ClientBehaviorRenderer {
 				render = "@all";
 			}
 		}
+        //System.out.println("AjaxBehaviorRenderer.getScript()  render: " + render);
         String clientIds = ComponentUtils.findClientIds(fc, component, render);
 		jb.entry("render", "'" + clientIds + "'", true);
 
