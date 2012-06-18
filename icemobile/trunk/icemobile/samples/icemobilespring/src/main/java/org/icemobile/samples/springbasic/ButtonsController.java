@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.context.request.WebRequest;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
+import java.text.SimpleDateFormat;
 
 /**
  * This is an example Client space Controller implementation for the buttons
@@ -23,17 +25,18 @@ public class ButtonsController {
 	}
 
     @RequestMapping(value = "/buttons", method = RequestMethod.GET)
-    public void variousGet(HttpServletRequest request, GeolocationBean model) {
+    public void variousGet(HttpServletRequest request, Model model) {
+		model.addAttribute("currentTime", 
+                new SimpleDateFormat("yyyy/MM/dd HH:mm:ss")
+                        .format(new Date()));
     }
 
     @RequestMapping(value = "/buttons", method = RequestMethod.POST)
     public void variousPost(HttpServletRequest request,
-                              GeolocationBean model) {
-    }
-
-    @ModelAttribute("buttonsBean")
-    public GeolocationBean createBean() {
-        return new GeolocationBean();
+                              Model model) {
+		model.addAttribute("currentTime", 
+                new SimpleDateFormat("yyyy/MM/dd HH:mm:ss")
+                        .format(new Date()));
     }
 
 }
