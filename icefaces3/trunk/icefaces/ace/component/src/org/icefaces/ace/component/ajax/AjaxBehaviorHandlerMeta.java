@@ -25,10 +25,10 @@ import javax.el.MethodExpression;
 
 @TagHandler(
     tagName = "ajax",
-    tagHandlerType = TagHandlerType.BEHAVIOR_HANDLER,
+    tagHandlerType = TagHandlerType.TAG_HANDLER,
     tagHandlerClass = "org.icefaces.ace.component.ajax.AjaxBehaviorHandler",
     generatedClass = "org.icefaces.ace.component.ajax.AjaxBehaviorHandlerBase",
-    extendsClass = "javax.faces.view.facelets.BehaviorHandler",
+    extendsClass = "javax.faces.view.facelets.TagHandler",
 	behaviorId = "org.icefaces.ace.component.AjaxBehavior",
 	behaviorClass = "org.icefaces.ace.component.ajax.AjaxBehavior",
     tlddoc = "Applied on components that support client behaviors similar to the standard f:ajax behavior." +

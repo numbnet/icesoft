@@ -21,54 +21,59 @@
  * Code Modification 1: Integrated with ICEfaces Advanced Component Environment.
  * Contributors: ICEsoft Technologies Canada Corp. (c)
  *
- * Code Modification 2: [ADD BRIEF DESCRIPTION HERE]
- * Contributors: ______________________
- * Contributors: ______________________
+ * Code Modification 2: (ICE-8258) Completely re-architected to bring more in line with f:ajax capability
+ * of working with composite components and ui:parameters.
+ * Contributors: ICEsoft Technologies Canada Corp. (c)
  */
 package org.icefaces.ace.component.ajax;
 
-import java.util.Collections;
-import java.util.EnumSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import javax.el.ELContext;
-import javax.el.MethodExpression;
-import javax.el.MethodNotFoundException;
 import javax.el.ValueExpression;
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
-import javax.faces.component.UIComponent;
+import javax.faces.component.UIComponentBase;
 import javax.faces.component.behavior.ClientBehaviorBase;
 import javax.faces.component.behavior.ClientBehaviorHint;
 import javax.faces.component.behavior.FacesBehavior;
 import javax.faces.context.FacesContext;
-import javax.faces.event.AbortProcessingException;
-import javax.faces.event.BehaviorEvent;
+import javax.faces.event.BehaviorListener;
 
 @ResourceDependencies({
 	@ResourceDependency(library="icefaces.ace", name="util/ace-jquery.js")
 })
 @FacesBehavior("org.icefaces.ace.component.AjaxBehavior")
 public class AjaxBehavior extends ClientBehaviorBase {
+    static enum Property {
+        onStart(String.class),
+        onComplete(String.class),
+        onSuccess(String.class),
+        onError(String.class),
+        disabled(Boolean.TYPE),
+        immediate(Boolean.TYPE),
+        execute(String.class),
+        render(String.class);
 
-    private String render;
-    private String execute;
-    private String onComplete;
-    private String onError;
-    private String onSuccess;
-    private String onStart;
-    private MethodExpression listener;
-    private MethodExpression listenerNoArg;
-    private MethodExpression listenerSuperArg;
-    private boolean immediate = false;
-    private boolean disabled = false;
-    private boolean immediateSet = false;
+        final Class expectedType;
+
+        Property(Class expectedType) {
+            this.expectedType = expectedType;
+        }
+    }
 
     private static final Set<ClientBehaviorHint> HINTS = Collections.unmodifiableSet(EnumSet.of(ClientBehaviorHint.SUBMITTING));
 
-    private Map<String, ValueExpression> bindings;
+    private Map<Property, Object> literals;
+    private Map<Property, ValueExpression> bindings;
 
+    public AjaxBehavior() {
+        super();
+        final int maxProperties = Property.values().length;
+        literals = new HashMap<Property, Object>(maxProperties);
+        bindings = new HashMap<Property, ValueExpression>(maxProperties);
+    }
+    
     @Override
     public String getRendererType() {
         return "org.icefaces.ace.component.AjaxBehaviorRenderer";
@@ -79,134 +84,107 @@ public class AjaxBehavior extends ClientBehaviorBase {
         return HINTS;
     }
 
+    @Override
+    public void addBehaviorListener(BehaviorListener listener) {
+        super.addBehaviorListener(listener);
+    }
+
     public String getOnComplete() {
-        return onComplete;
+        return (String) eval(Property.onComplete, null);
     }
 
     public void setOnComplete(String onComplete) {
-        this.onComplete = onComplete;
+        setLiteral(Property.onComplete, onComplete);
     }
 
     public String getOnStart() {
-        return onStart;
+        return (String) eval(Property.onStart, null);
     }
 
     public void setOnStart(String onStart) {
-        this.onStart = onStart;
+        setLiteral(Property.onStart, onStart);
     }
 
     public String getOnSuccess() {
-        return onSuccess;
+        return (String) eval(Property.onSuccess, null);
     }
 
     public void setOnSuccess(String onSuccess) {
-        this.onSuccess = onSuccess;
+        setLiteral(Property.onSuccess, onSuccess);
     }
 
     public String getOnError() {
-        return onError;
+        return (String) eval(Property.onError, null);
     }
 
     public void setOnError(String onError) {
-        this.onError = onError;
+        setLiteral(Property.onError, onError);
     }
 
     public String getExecute() {
-        return execute;
+        return (String) eval(Property.execute, null);
     }
 
     public void setExecute(String execute) {
-        this.execute = execute;
+        setLiteral(Property.execute, execute);
     }
 
     public String getRender() {
-        return render;
+        return (String) eval(Property.render, null);
     }
 
     public void setRender(String render) {
-        this.render = render;
+        setLiteral(Property.render, render);
         clearInitialState();
-    }
-
-    public MethodExpression getListener() {
-        return listener;
-    }
-
-    public void setListener(MethodExpression listener) {
-        this.listener = listener;
-        clearInitialState();
-    }
-    
-    public MethodExpression getListenerNoArg() {
-        return listenerNoArg;
-    }
-
-    public void setListenerNoArg(MethodExpression listenerNoArg) {
-        this.listenerNoArg = listenerNoArg;
-    }
-
-    public MethodExpression getListenerSuperArg() {
-        return listenerSuperArg;
-    }
-
-    public void setListenerSuperArg(MethodExpression listenerSuperArg) {
-        this.listenerSuperArg = listenerSuperArg;
     }
 
     public boolean isDisabled() {
-        return disabled;
+        Boolean ret = (Boolean) eval(Property.disabled, Boolean.FALSE);
+        return ret.booleanValue();
     }
 
     public void setDisabled(boolean disabled) {
-        this.disabled = disabled;
+        setLiteral(Property.disabled, disabled);
     }
 
     public boolean isImmediate() {
-        return immediate;
+        Boolean ret = (Boolean) eval(Property.immediate, Boolean.FALSE);
+        return ret.booleanValue();
     }
 
     public void setImmediate(boolean immediate) {
-        this.immediate = immediate;
-
-        this.immediateSet = true;
+        setLiteral(Property.immediate, immediate);
     }
 
     public boolean isImmediateSet() {
-        return immediateSet;
+        return literals.containsKey(Property.immediate) ||
+            bindings.containsKey(Property.immediate);
     }
 
-    public void broadcast(BehaviorEvent event) throws AbortProcessingException {
-        FacesContext context = FacesContext.getCurrentInstance();
-        ELContext eLContext = context.getELContext();
+    //public void broadcast(javax.faces.event.BehaviorEvent event) throws javax.faces.event.AbortProcessingException {
+    //    System.out.println("AjaxBehavior.broadcast()  event: " + event);
+    //    super.broadcast(event);
+    //}
 
-        MethodNotFoundException last = null;
-        if (listener != null) {
-            try {
-                listener.invoke(eLContext, new Object[] {event});
-                return;
-            } catch (MethodNotFoundException e) {
-                last = e;
-            }
+    void setLiteral(Property prop, Object val) {
+        literals.put(prop, val);
+    }
+
+    void setValueExpression(Property prop, ValueExpression ve) {
+        bindings.put(prop, ve);
+    }
+
+    protected Object eval(Property prop, Object unspecifiedValue) {
+        if (literals.containsKey(prop)) {
+            return literals.get(prop);
         }
-        if (listenerNoArg != null) {
-            try {
-                listenerNoArg.invoke(eLContext, new Object[0]);
-                return;
-            } catch (MethodNotFoundException e) {
-                last = e;
-            }
+        ValueExpression ve = bindings.get(prop);
+        if (ve != null) {
+            FacesContext facesContext = FacesContext.getCurrentInstance();
+            ELContext elContext = facesContext.getELContext();
+            return ve.getValue(elContext);
         }
-        if (listenerSuperArg != null) {
-            try {
-                listenerSuperArg.invoke(eLContext, new Object[] {event});
-                return;
-            } catch (MethodNotFoundException e) {
-                last = e;
-            }
-        }
-        if (last != null) {
-            throw last;
-        }
+        return unspecifiedValue;
     }
 
     public Object saveState(FacesContext context) {
@@ -224,20 +202,11 @@ public class AjaxBehavior extends ClientBehaviorBase {
                 values = new Object[] { superState };
             }
         } else {
-            values = new Object[12];
+            values = new Object[3];
 
             values[0] = superState;
-            values[1] = listener;
-            values[2] = render;
-			values[3] = execute;
-			values[4] = onComplete;
-			values[5] = onError;
-			values[6] = onSuccess;
-			values[7] = onStart;
-			values[8] = Boolean.valueOf(immediate);
-			values[9] = Boolean.valueOf(immediateSet);
-			values[10] = Boolean.valueOf(disabled);
-            values[11] = listenerNoArg;
+            values[1] = savePropertyMap(context, literals, false);
+			values[2] = savePropertyMap(context, bindings, true);
         }
 
         return values;
@@ -253,17 +222,8 @@ public class AjaxBehavior extends ClientBehaviorBase {
             super.restoreState(context, values[0]);
 
             if (values.length != 1) {
-                listener = (MethodExpression)values[1];
-                render = (String)values[2];
-                execute = (String)values[3];
-                onComplete = (String)values[4];
-                onError = (String)values[5];
-                onSuccess = (String)values[6];
-                onStart = (String)values[7];
-                immediate = ((Boolean)values[8]).booleanValue();
-                immediateSet = ((Boolean)values[9]).booleanValue();
-                disabled = ((Boolean)values[10]).booleanValue();
-                listenerNoArg = (MethodExpression)values[11];
+                literals = restorePropertyMap(context, (Object[]) values[1], false);
+                bindings = restorePropertyMap(context, (Object[]) values[2], true);
 
                 // If we saved state last time, save state again next time.
                 clearInitialState();
@@ -271,4 +231,36 @@ public class AjaxBehavior extends ClientBehaviorBase {
         }
     }
 
+    protected Object[] savePropertyMap(FacesContext context, Map map,
+            boolean saveValuesAsAttachedState) {
+        if (map == null) {
+            return null;
+        }
+        Property[] propKeys = Property.values();
+        Object[] values = new Object[propKeys.length];
+        for (int i = 0; i < propKeys.length; i++) {
+            values[i] = map.get(propKeys[i]);
+            if (saveValuesAsAttachedState) {
+                values[i] = UIComponentBase.saveAttachedState(context, values[i]);
+            }
+        }
+        return values;
+    }
+
+    protected Map restorePropertyMap(FacesContext context, Object[] values,
+            boolean restoreValuesFromAttachedState) {
+        if (values == null) {
+            return null;
+        }
+        Property[] propKeys = Property.values();
+        Map<Property, Object> map = new HashMap<Property, Object>(propKeys.length);
+        for (int i = 0; i < propKeys.length; i++) {
+            Object val = values[i];
+            if (restoreValuesFromAttachedState) {
+                val = UIComponentBase.restoreAttachedState(context, val);
+            }
+            map.put(propKeys[i], val);
+        }
+        return map;
+    }
 }
