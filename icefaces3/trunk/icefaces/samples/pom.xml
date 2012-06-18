@@ -15,14 +15,12 @@
   ~ governing permissions and limitations under the License.
   -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.icefaces.samples</groupId>
     <artifactId>samples-parent</artifactId>
-    <version>3.0.1</version>
+    <version>3.1.0-RC1-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>ICEfaces Samples Parent</name>
     <!--<name>ICEfaces EE Samples Parent</name>-->
@@ -35,6 +33,11 @@
             <distribution>repo</distribution>
         </license>
     </licenses>
+
+    <scm>
+        <connection>scm:svn:http://anonsvn.icesoft.org/repo/icefaces3/trunk/icefaces/samples</connection>
+        <tag>HEAD</tag>
+    </scm>
 
     <modules>
         <module>compat</module>
@@ -92,6 +95,11 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+                <version>2.2.2</version>
             </plugin>
         </plugins>
     </build>
