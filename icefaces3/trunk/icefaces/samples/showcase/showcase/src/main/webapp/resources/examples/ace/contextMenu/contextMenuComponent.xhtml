@@ -59,15 +59,15 @@
             </ace:contextMenu>
             
             <ace:contextMenu id="contextMenuBttn" for="button">
-                <ace:menuItem value="Click" icon="ui-icon ui-icon-disk" style="font-size: small;"
+                <ace:menuItem id="menuItemOne" value="Click" icon="ui-icon ui-icon-disk" style="font-size: small;"
                               action="#{contextMenuComponent.performAction}">
                     <f:param name="actionType" value="Click" />
                 </ace:menuItem>
-                <ace:menuItem value="Status" icon="ui-icon" style="font-size: small;"
+                <ace:menuItem id="menuItemTwo" value="Status" icon="ui-icon" style="font-size: small;"
                               action="#{contextMenuComponent.performAction}">
                     <f:param name="actionType" value="Status Check" />
                 </ace:menuItem>
-                <ace:menuItem value="Refresh" icon="ui-icon ui-icon-arrowrefresh-1-w" style="font-size: small;"
+                <ace:menuItem id="menuItemThree" value="Refresh" icon="ui-icon ui-icon-arrowrefresh-1-w" style="font-size: small;"
                               action="#{contextMenuComponent.performAction}">
                     <f:param name="actionType" value="Page Refresh" />
                 </ace:menuItem>
