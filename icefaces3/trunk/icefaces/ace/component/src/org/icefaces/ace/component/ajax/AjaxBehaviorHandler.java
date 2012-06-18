@@ -223,7 +223,7 @@ public class AjaxBehaviorHandler extends AjaxBehaviorHandlerBase implements Beha
             TagAttribute attr, AjaxBehavior.Property property) {
         if (null != attr) {
             if (attr.isLiteral()) {
-                behavior.setLiteral(property, attr.getValue(ctx));
+                behavior.setLiteral(property, attr.getObject(ctx, property.expectedType));
             } else {
                 behavior.setValueExpression(property,
                     attr.getValueExpression(ctx, property.expectedType));
