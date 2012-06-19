@@ -714,19 +714,11 @@ ice.ace.DataTable.prototype.resizeScrolling = function() {
             dupeHead = bodyTable.find(' > thead'),
             dupeFoot = bodyTable.find(' > tfoot');
 
-        var dupeHeadSingleCols = dupeHead.find('th:not([colspan]) .ui-header-column:first-child').get().reverse();
-        if (dupeHeadSingleCols.size() == 0)
-            dupeHeadSingleCols = dupeHead.find('th[colspan="1"] .ui-header-column:first-child').get().reverse();
+        var dupeHeadCols = dupeHead.find('th > div.ui-header-column').get().reverse();
 
-        var realHeadSingleCols = ice.ace.jq(this.jqId + ' .ui-datatable-scrollable-header:first th:not([colspan]) .ui-header-column:first-child').get().reverse();
-        if (realHeadSingleCols.size() == 0)
-            realHeadSingleCols = ice.ace.jq(this.jqId + ' .ui-datatable-scrollable-header:first th[colspan="1"] .ui-header-column:first-child').get().reverse();
-
-        var realFootSingleCols = ice.ace.jq(this.jqId + ' .ui-datatable-scrollable-footer:first td:not([colspan]) .ui-footer-column:first-child').get().reverse();
-        if (realFootSingleCols.size() == 0)
-            realFootSingleCols = ice.ace.jq(this.jqId + ' .ui-datatable-scrollable-footer:first td[colspan="1"] .ui-footer-column:first-child').get().reverse();
-
-        var bodySingleCols = ice.ace.jq(this.jqId + ' .ui-datatable-scrollable-body:first tbody tr:visible:first td div:first-child').get().reverse();
+        var realHeadCols = ice.ace.jq(this.jqId + ' .ui-datatable-scrollable-header:first > table > thead > tr > th > .ui-header-column').get().reverse();
+        var realFootCols = ice.ace.jq(this.jqId + ' .ui-datatable-scrollable-footer:first > table > tfoot > tr > td > .ui-footer-column').get().reverse();
+        var bodySingleCols = ice.ace.jq(this.jqId + ' .ui-datatable-scrollable-body:first > table > tbody > tr:visible:first-child > td > div').get().reverse();
 
         // Reset overflow if it was disabled as a hack from previous sizing
         var bodyTableParent = bodyTable.parent().css('overflow', '');
@@ -748,7 +740,7 @@ ice.ace.DataTable.prototype.resizeScrolling = function() {
         dupeFoot.css('display', 'table-footer-group');
 
         // Get Duplicate Header/Footer Sizing
-        var dupeHeadColumn, dupeHeadColumnWidths = [], realHeadColumn, realFootColumn, bodyColumn,
+        var dupeHeadColumn, dupeHeadColumnWidths = [], bodySingleColWidths = [], realHeadColumn, realFootColumn, bodyColumn,
                 safari = ice.ace.jq.browser.safari,
                 chrome = ice.ace.jq.browser.chrome,
                 mac = ice.ace.jq.browser.os == 'mac',
@@ -796,11 +788,19 @@ ice.ace.DataTable.prototype.resizeScrolling = function() {
             ice.ace.jq('html').css('overflow', 'hidden');
         }
 
-        for (i = 0; i < bodySingleCols.length; i++) {
-            dupeHeadColumn = ice.ace.jq(dupeHeadSingleCols[i]);
+        // Get Duplicate Sizing
+        for (i = 0; i < dupeHeadCols.length; i++) {
+            dupeHeadColumn = ice.ace.jq(dupeHeadCols[i]);
             if (!ie7) dupeHeadColumnWidths[i] = dupeHeadColumn.width();
             else dupeHeadColumnWidths[i] = dupeHeadColumn.parent().width();
         }
+
+        for (var i = 0; i < bodySingleCols.length; i++) {
+            bodyColumn = ice.ace.jq(bodySingleCols[i]);
+            if (!ie7) bodySingleColWidths[i] = bodyColumn.width();
+            else bodySingleColWidths[i] = bodyColumn.parent().width();
+        }
+
 
         // Return overflow value
         if (dupeCausesScrollChange) {
@@ -816,31 +816,14 @@ ice.ace.DataTable.prototype.resizeScrolling = function() {
         if (!firefox) bodyTable.css('table-layout','fixed');
         footerTable.css('table-layout','fixed');
 
-        // Set Duplicate Header Sizing
-        for (i = 0; i < bodySingleCols.length; i++) {
-            realHeadColumn = ice.ace.jq(realHeadSingleCols[i]);
-            realFootColumn = ice.ace.jq(realFootSingleCols[i]);
+        // Set Duplicate Sizing
+        for (var i = 0; i < bodySingleCols.length; i++) {
             bodyColumn = ice.ace.jq(bodySingleCols[i]);
 
             // Work around webkit bug described here: https://bugs.webkit.org/show_bug.cgi?id=13339
-            var realHeadColumnWidth = (ie8as7) ? dupeHeadColumnWidths[i] + 1 : dupeHeadColumnWidths[i];
-
-            var bodyColumnWidth = (safari) ? dupeHeadColumnWidths[i] + parseInt(bodyColumn.parent().css('padding-right')) +
-                    parseInt(bodyColumn.parent().css('padding-left')) + 1
-                    : dupeHeadColumnWidths[i];
-
-            var realFootColumnWidth = (safari) ? dupeHeadColumnWidths[i] + parseInt(realFootColumn.parent().css('padding-right')) +
-                    parseInt(realFootColumn.parent().css('padding-left'))
-                    : dupeHeadColumnWidths[i];
-
-            if (ie8as7) realFootColumnWidth += 1;
-
-            // Set Duplicate Header Sizing to True Header Columns
-            if (!ie7) realHeadColumn.width(realHeadColumnWidth);
-            // Apply same width to stacked sibling columns
-            if (!ie7) realHeadColumn.siblings('.ui-header-column').width(realHeadColumnWidth);
-            // Equiv of max width
-            realHeadColumn.parent().width(realHeadColumnWidth);
+            var bodyColumnWidth = (safari)
+                    ? bodySingleColWidths[i] + parseInt(bodyColumn.parent().css('padding-right')) + parseInt(bodyColumn.parent().css('padding-left')) + 1
+                    : bodySingleColWidths[i];
 
             // Set Duplicate Header Sizing to Body Columns
             // Equiv of max width
@@ -848,9 +831,34 @@ ice.ace.DataTable.prototype.resizeScrolling = function() {
             if (!ie7) bodyColumn.parent().width(bodyColumnWidth);
             // Equiv of min width
             if (!ie7) {
-                bodyColumnWidth = i == 0 ? dupeHeadColumnWidths[i] - 1 : dupeHeadColumnWidths[i];
+                bodyColumnWidth = i == 0 ? bodySingleColWidths[i]  - 1 : bodySingleColWidths[i];
                 bodyColumn.width(bodyColumnWidth);
             }
+        }
+
+        for (i = 0; i < realHeadCols.length; i++) {
+            realHeadColumn = ice.ace.jq(realHeadCols[i]);
+
+            // Work around webkit bug described here: https://bugs.webkit.org/show_bug.cgi?id=13339
+            var realHeadColumnWidth = (ie8as7) ? dupeHeadColumnWidths[i] + 1 : dupeHeadColumnWidths[i];
+
+            // Set Duplicate Header Sizing to True Header Columns
+            if (!ie7) realHeadColumn.width(realHeadColumnWidth);
+            // Apply same width to stacked sibling columns
+            if (!ie7) realHeadColumn.siblings('.ui-header-column').width(realHeadColumnWidth);
+            // Equiv of max width
+            realHeadColumn.parent().width(realHeadColumnWidth);
+        }
+
+        for (i = 0; i < realFootCols.length; i++) {
+            realFootColumn = ice.ace.jq(realFootCols[i]);
+
+            // Work around webkit bug described here: https://bugs.webkit.org/show_bug.cgi?id=13339
+            var realFootColumnWidth = (safari)
+                    ? dupeHeadColumnWidths[i] + parseInt(realFootColumn.parent().css('padding-right')) + parseInt(realFootColumn.parent().css('padding-left'))
+                    : dupeHeadColumnWidths[i];
+
+            if (ie8as7) realFootColumnWidth += 1;
 
             // Set Duplicate Header Sizing to True Header Columns
             realFootColumn.parent().width(realFootColumnWidth);
@@ -858,7 +866,6 @@ ice.ace.DataTable.prototype.resizeScrolling = function() {
             // Apply same width to stacked sibling columns
             if (!ie7) realFootColumn.siblings('.ui-footer-column').width(realFootColumnWidth);
         }
-
 
         // Browser / Platform specific scrollbar fixes
         // Fix body scrollbar overlapping content
@@ -942,9 +949,6 @@ ice.ace.DataTable.prototype.reorderColumns = function(oldIndex, newIndex) {
 
     options.params = params;
     options.onsuccess = function(responseXML) {
-        ice.ace.selectCustomUpdates(responseXML, function(id, content) {
-            ice.ace.AjaxUtils.updateElement(id, content);
-        });
         return false;
     };
 
@@ -1002,9 +1006,6 @@ ice.ace.DataTable.prototype.paginate = function(newState) {
 
     var _self = this;
     options.onsuccess = function(responseXML) {
-        ice.ace.selectCustomUpdates(responseXML, function(id, content) {
-            ice.ace.AjaxUtils.updateElement(id, content);
-        });
         if (_self.cfg.scrollable) _self.resizeScrolling();
 
         return false;
@@ -1039,11 +1040,7 @@ ice.ace.DataTable.prototype.sort = function(headerCells) {
 
     var _self = this;
     options.onsuccess = function(responseXML) {
-        ice.ace.selectCustomUpdates(responseXML, function(id, content) {
-            ice.ace.AjaxUtils.updateElement(id, content);
-        });
-
-        if (_self.isSelectionEnabled()) _self.clearSelection();
+        if (_self.cfg.scrollable) _self.resizeScrolling();
         _self.setupSortEvents();
         return false;
     };
@@ -1108,10 +1105,6 @@ ice.ace.DataTable.prototype.filter = function(evn) {
                 }
             }
         }
-
-        ice.ace.selectCustomUpdates(responseXML, function(id, content) {
-            ice.ace.AjaxUtils.updateElement(id, content);
-        });
 
         // Search by id rather than $(evn.target) to get updated copy now in DOM
         var newInput = ice.ace.jq(ice.ace.escapeClientId(ice.ace.jq(_self.filterSource).attr('id')));
@@ -1218,9 +1211,6 @@ ice.ace.DataTable.prototype.doSelectionEvent = function(type, deselection, eleme
         // resize the scrollable table.
         if (_self.cfg.scrollable && (ice.ace.jq.inArray("0", this.selection) > -1 || ice.ace.jq.inArray("0", this.deselection) > -1 || (firstRowSelected && this.isSingleSelection()))) {
             options.onsuccess = function(responseXML) {
-                ice.ace.selectCustomUpdates(responseXML, function(id, content) {
-                    ice.ace.AjaxUtils.updateElement(id, content);
-                });
                 _self.resizeScrolling();
                 return false;
             };
@@ -1313,10 +1303,7 @@ ice.ace.DataTable.prototype.doMultiRowSelectionEvent = function(lastIndex, curre
         // If first row is in this selection, deselection, or will be implicitly deselected by singleSelection
         // resize the scrollable table.
         if (self.cfg.scrollable && (ice.ace.jq.inArray("0", self.selection) > -1 || ice.ace.jq.inArray("0", self.deselection) > -1 || (firstRowSelected && self.isSingleSelection()))) {
-            options.onsuccess = function(responseXML) {
-                ice.ace.selectCustomUpdates(responseXML, function(id, content) {
-                    ice.ace.AjaxUtils.updateElement(id, content);
-                });
+            options.onsuccess = function(responseXML) {;
                 self.resizeScrolling();
                 return false;
             };
@@ -1382,9 +1369,6 @@ ice.ace.DataTable.prototype.sendPanelContractionRequest = function(row) {
     options.params = params;
 
     options.onsuccess = function(responseXML) {
-        ice.ace.selectCustomUpdates(responseXML, function(id, content) {
-            ice.ace.AjaxUtils.updateElement(id, content);
-        });
         if (_self.cfg.scrollable) _self.setupScrolling();
         return false;
     };
@@ -1415,10 +1399,7 @@ ice.ace.DataTable.prototype.sendRowContractionRequest = function(row) {
     params[this.id + ':' + rowId + '_rowExpansion'] = true;;
     options.params = params;
 
-    options.onsuccess = function(responseXML) {
-        ice.ace.selectCustomUpdates(responseXML, function(id, content) {
-            ice.ace.AjaxUtils.updateElement(id, content);
-        });
+    options.onsuccess = function(responseXML) {;
         if (_self.cfg.scrollable) _self.setupScrolling();
         return false;
     };
@@ -1446,9 +1427,6 @@ ice.ace.DataTable.prototype.loadExpandedRows = function(row) {
             _self = this;
 
     options.onsuccess = function(responseXML) {
-        ice.ace.selectCustomUpdates(responseXML, function(id, content) {
-            ice.ace.AjaxUtils.updateElement(id, content);
-        });
         if (_self.cfg.scrollable) _self.setupScrolling();
         return false;
     };
@@ -1480,9 +1458,6 @@ ice.ace.DataTable.prototype.loadExpandedPanelContent = function(row) {
             _self = this;
 
     options.onsuccess = function(responseXML) {
-        ice.ace.selectCustomUpdates(responseXML, function(id, content) {
-            ice.ace.AjaxUtils.updateElement(id, content);
-        });
         if (_self.cfg.scrollable) _self.setupScrolling();
         return false;
     };
@@ -1544,10 +1519,6 @@ ice.ace.DataTable.prototype.doRowEditShowRequest = function(element) {
         if (_self.cfg.scrollable)
             _self.resizeScrolling();
 
-        ice.ace.selectCustomUpdates(responseXML, function(id, content) {
-            ice.ace.AjaxUtils.updateElement(id, content);
-        });
-
         return false;
     };
 
@@ -1590,10 +1561,6 @@ ice.ace.DataTable.prototype.doRowEditCancelRequest = function(element) {
 
         if (_self.cfg.scrollable)
             _self.resizeScrolling();
-
-        ice.ace.selectCustomUpdates(responseXML, function(id, content) {
-            ice.ace.AjaxUtils.updateElement(id, content);
-        });
 
         return false;
     };
