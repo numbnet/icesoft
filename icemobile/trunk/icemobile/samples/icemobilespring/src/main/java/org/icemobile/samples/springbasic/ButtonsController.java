@@ -26,17 +26,20 @@ public class ButtonsController {
 
     @RequestMapping(value = "/buttons", method = RequestMethod.GET)
     public void variousGet(HttpServletRequest request, Model model) {
-		model.addAttribute("currentTime", 
-                new SimpleDateFormat("yyyy/MM/dd HH:mm:ss")
-                        .format(new Date()));
     }
 
     @RequestMapping(value = "/buttons", method = RequestMethod.POST)
     public void variousPost(HttpServletRequest request,
                               Model model) {
-		model.addAttribute("currentTime", 
-                new SimpleDateFormat("yyyy/MM/dd HH:mm:ss")
-                        .format(new Date()));
+        if (null != request.getParameter("dBtn"))  {
+            model.addAttribute("pressed", "Default");
+        }
+        if (null != request.getParameter("iBtn"))  {
+            model.addAttribute("pressed", "Important");
+        }
+        if (null != request.getParameter("aBtn"))  {
+            model.addAttribute("pressed", "Attention");
+        }
     }
 
 }
