@@ -31,6 +31,7 @@
         <tstamp/>
         <echoproperties/>
         <mkdir dir="${build.dir}"/>
+        <delete file="${tmp}" failonerror="not"/>
         <loadfile property="functional.js" srcFile="${lib.dir}/functional.js"/>
         <loadfile property="oo.js" srcFile="${lib.dir}/oo.js"/>
         <loadfile property="collection.js" srcFile="${lib.dir}/collection.js"/>
@@ -58,6 +59,7 @@
         <tstamp/>
         <echoproperties/>
         <mkdir dir="${build.dir}"/>
+        <delete file="${tmp.extra}" failonerror="not"/>
         <concat destfile="${tmp.extra}" append="yes" fixlastline="yes">
             <header file="src/main/javascript/compat.header.js"/>
             <footer file="src/main/javascript/compat.footer.js"/>
@@ -95,20 +97,20 @@
     </target>
 
     <target name="build.bridge.uncompressed" depends="prepare">
-        <move file="${tmp}" tofile="${build.dir}/compat.uncompressed.js" overwrite="yes">
+        <copy file="${tmp}" tofile="${build.dir}/compat.uncompressed.js" overwrite="yes">
             <filterchain>
                 <stripjavacomments/>
                 <ignoreblank/>
             </filterchain>
-        </move>
-        <move file="${tmp.extra}" tofile="${build.dir}/icefaces-compat.uncompressed.js" overwrite="yes">
+        </copy>
+        <copy file="${tmp.extra}" tofile="${build.dir}/icefaces-compat.uncompressed.js" overwrite="yes">
             <filterchain>
                 <!-- using built in 'stripjavacomments' for removing comments breaks Prototype code, one of
                 the regular expressions contains '/*' characters which are mistakenly interpreted as JS comments -->
                 <!--stripjavacomments/-->
                 <ignoreblank/>
             </filterchain>
-        </move>
+        </copy>
     </target>
 
     <target name="build.cleanup">
