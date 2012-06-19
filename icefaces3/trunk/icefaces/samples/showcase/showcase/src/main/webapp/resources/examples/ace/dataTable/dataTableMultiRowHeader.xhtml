@@ -38,25 +38,29 @@
             <ace:dataTable id="carTable"
                                      value="#{dataTableMultiRowHeader.cars}"
                                      var="car"
-                                     rows="15">
+                                     rows="15"
+                    scrollable="true"
+                    scrollHeight="200">
                 
                 <ace:columnGroup id="columnGroup" type="header">
                     <ace:row>
-                        <ace:column id="vehiclesData" colspan="6" headerText="Vehicles Data"/>
+                        <ace:column id="vehiclesData" colspan="5" headerText="Vehicles Data"/>
                     </ace:row>
 
                     <ace:row>
-                        <ace:column id="generalInfo" colspan="2" headerText="General Info"/>
-                        <ace:column id="vehicleParameters" colspan="3" headerText="Vehicle Parameters"/>
-                        <ace:column id="headerCost" rowspan="2" headerText="Cost"/>
+                        <ace:column id="headerName" headerText="Name"/>
+                        <ace:column id="headerChassis" headerText="Chassis" sortBy="#{car.chassis}" groupBy="#{car.chassis}"/>
+                        <ace:column id="vehicleParameters" colspan="2" headerText="Vehicle Parameters"/>
+                        <ace:column id="headerCost" headerText="Cost" rowspan="2"/>
                     </ace:row>
                     
                     <ace:row>
-                        <ace:column id="headerName" headerText="Name"/>
-                        <ace:column id="headerChassis" headerText="Chassis" sortBy="#{car.chassis}" groupBy="#{car.chassis}"/>
+                        <ace:column id="generalInfo" colspan="2" headerText="General Info"/>
                         <ace:column id="headerWeight" headerText="Weight"/>
-                        <ace:column id="headerAccel" headerText="Accel"/>
-                        <ace:column id="headerMpg" headerText="MPG" sortBy="#{car.mpg}" groupBy="#{car.mpg}" sortAscending="true"/>
+                        <ace:column id="headerAccel" headerText="Accel" />
+                        <ace:column id="headerMpg" headerText="MPG"
+                                    sortBy="#{car.mpg}" groupBy="#{car.mpg}"
+                                    sortAscending="true" stacked="true" />
                     </ace:row>
                 </ace:columnGroup>
                 
@@ -72,7 +76,7 @@
                <ace:column id="acceleration">
                    <h:outputText id="accelerationCell" value="#{car.acceleration}"/>
                 </ace:column>
-               <ace:column id="mpg">
+               <ace:column id="mpg" stacked="true">
                    <h:outputText id="mpgCell" value="#{car.mpg}"/>
                </ace:column>
                 <ace:column id="cost">
@@ -87,6 +91,7 @@
                 
               <f:facet name="footer">
                   <h:outputText value="car data provided for you by ICEsoft"/>
+                  <h:commandButton value="Print" actionListener="#{dataTableMultiRowHeader.print}" />
               </f:facet>
             </ace:dataTable>
         </h:form>
