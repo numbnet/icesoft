@@ -149,6 +149,38 @@
     </tag>
 
     <tag>
+        <tag-name>setEventPhase</tag-name>
+        <description>
+The Set Event Phase component allows one to specify the phase that 
+certain events will be broadcast in, for events originating from components 
+in its child hierarchy. 
+        </description>
+        <component>
+            <component-type>org.icefaces.impl.component.SetEventPhase</component-type>
+        </component>
+        <attribute>
+            <description>
+                Space delimited list of class names of events that should 
+      be changed to be broadcasted in the specified phase. Default is for no 
+      events to be affected.
+            </description>
+            <name>events</name>
+            <required>true</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                The phase for the spefified events to be broadcasted in. 
+      One of: ANY, APPLY_REQUEST_VALUES, PROCESS_VALIDATIONS, 
+      UPDATE_MODEL_VALUES, INVOKE_APPLICATION.
+            </description>
+            <name>phase</name>
+            <required>true</required>
+            <type>java.lang.String</type>
+        </attribute>
+    </tag>
+
+    <tag>
         <tag-name>redirect</tag-name>
         <description>
             This tag can be used to trigger a redirect by push.
