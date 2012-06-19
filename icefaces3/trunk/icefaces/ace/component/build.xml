@@ -230,6 +230,7 @@
                 <file name="icefaces.ace/datetimeentry/datetimeentry.js"/>
                 <file name="icefaces.ace/maskedentry/maskedentry.js"/>
                 <file name="icefaces.ace/textentry/textentry.js"/>
+                <file name="icefaces.ace/textareaentry/textareaentry.js"/>
                 <file name="icefaces.ace/dialog/dialog.js"/>
                 <file name="icefaces.ace/dnd/dragdrop.js"/>
                 <file name="icefaces.ace/progressbar/progressbar.js"/>

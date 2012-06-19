@@ -154,14 +154,13 @@ public class InputRenderer extends CoreRenderer {
 		return value;
 	}
 
-    protected void encodeLabelAndInput(ResponseWriter writer, UIComponent component) throws IOException {
-        Map<String, Object> labelAttributes = getLabelAttributes(component);
+    protected void encodeLabelAndInput(UIComponent component, Map<String, Object> labelAttributes) throws IOException {
         writeLabelAndIndicatorBefore(labelAttributes);
-        writeInputField(labelAttributes);
+        writeInputField(component, labelAttributes);
         writeLabelAndIndicatorAfter(labelAttributes);
     }
 
-    protected void writeInputField(Map<String, Object> labelAttributes) {
+    protected void writeInputField(UIComponent component, Map<String, Object> labelAttributes) throws IOException {
     }
 
     protected void writeLabelAndIndicatorBefore(ResponseWriter writer, String label, boolean hasLabel, String labelPosition, String indicator, boolean hasIndicator, String indicatorPosition, boolean required) throws IOException {
@@ -367,7 +366,40 @@ public class InputRenderer extends CoreRenderer {
         boolean hasLabel = (Boolean) attributes.get("hasLabel"), hasIndicator = (Boolean) attributes.get("hasIndicator");
         String label = (String) attributes.get("label"), labelPosition = (String) attributes.get("labelPosition");
         String indicator = (String) attributes.get("indicator"), indicatorPosition = (String) attributes.get("indicatorPosition");
-        writeLabelAndIndicatorBefore(writer, label, hasLabel, labelPosition, indicator, hasIndicator, indicatorPosition, required);
+        if (hasLabel && labelPosition.equals("top")) {
+            writeLabel(writer, label, labelPosition, indicator, indicatorPosition, required, hasIndicator);
+            writer.startElement("br", null);
+            writer.endElement("br");
+        }
+        if (hasIndicator && indicatorPosition.equals("top")) {
+            if (hasLabel && labelPosition.equals("left")) {
+                writeHiddenLabel(writer, label);
+            }
+            writeIndicator(writer, required, indicator, indicatorPosition);
+            writer.startElement("br", null);
+            writer.endElement("br");
+        }
+        if (hasLabel) {
+            if (labelPosition.equals("left")/* || labelPosition.equals("top")*/) {
+                writeLabel(writer, label, labelPosition, indicator, indicatorPosition, required, hasIndicator);
+            }
+            if (labelPosition.equals("top")) {
+//                writer.startElement("br", null);
+//                writer.endElement("br");
+            }
+        }
+        if (hasIndicator) {
+            if (indicatorPosition.equals("top") || indicatorPosition.equals("bottom")) {
+//                writer.startElement("span", null);
+            }
+            if (indicatorPosition.equals("left")/* || indicatorPosition.equals("top")*/) {
+                writeIndicator(writer, required, indicator, indicatorPosition);
+            }
+            if (indicatorPosition.equals("top")) {
+//                writer.startElement("br", null);
+//                writer.endElement("br");
+            }
+        }
     }
 
     protected void writeLabelAndIndicatorAfter(Map<String, Object> attributes) throws IOException {
@@ -376,6 +408,35 @@ public class InputRenderer extends CoreRenderer {
         boolean hasLabel = (Boolean) attributes.get("hasLabel"), hasIndicator = (Boolean) attributes.get("hasIndicator");
         String label = (String) attributes.get("label"), labelPosition = (String) attributes.get("labelPosition");
         String indicator = (String) attributes.get("indicator"), indicatorPosition = (String) attributes.get("indicatorPosition");
-        writeLabelAndIndicatorAfter(writer, label, hasLabel, labelPosition, indicator, hasIndicator, indicatorPosition, required);
+        if (hasIndicator && indicatorPosition.equals("right")) {
+            writeIndicator(writer, required, indicator, indicatorPosition);
+        }
+        if (hasLabel && labelPosition.equals("right")) {
+            writeLabel(writer, label, labelPosition, indicator, indicatorPosition, required, hasIndicator);
+        }
+        if (hasIndicator) {
+            if (indicatorPosition.equals("bottom")) {
+                writer.startElement("br", null);
+                writer.endElement("br");
+            }
+            if (/*indicatorPosition.equals("right") || */indicatorPosition.equals("bottom")) {
+                if (hasLabel && labelPosition.equals("left")) {
+                    writeHiddenLabel(writer, label);
+                }
+                writeIndicator(writer, required, indicator, indicatorPosition);
+            }
+            if (indicatorPosition.equals("top") || indicatorPosition.equals("bottom")) {
+//                writer.endElement("span");
+            }
+        }
+        if (hasLabel) {
+            if (labelPosition.equals("bottom")) {
+                writer.startElement("br", null);
+                writer.endElement("br");
+            }
+            if (/*labelPosition.equals("right") || */labelPosition.equals("bottom")) {
+                writeLabel(writer, label, labelPosition, indicator, indicatorPosition, required, hasIndicator);
+            }
+        }
     }
 }
