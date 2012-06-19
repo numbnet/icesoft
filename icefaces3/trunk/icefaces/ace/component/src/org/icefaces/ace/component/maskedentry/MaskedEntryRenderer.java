@@ -136,7 +136,7 @@ public class MaskedEntryRenderer extends InputRenderer {
 		writer.writeAttribute("id", clientId, null);
 		writer.startElement("input", null);
 		writer.writeAttribute("id", fieldClientId, null);
-		writer.writeAttribute("name", clientId, null);
+		writer.writeAttribute("name", fieldClientId, null);
 		writer.writeAttribute("type", "text", null);
 		
 		String valueToRender = ComponentUtils.getStringValueToRender(context, maskedEntry);
