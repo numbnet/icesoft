@@ -46,6 +46,7 @@ import java.io.FilterOutputStream;
 import java.io.OutputStream;
 import java.net.URLDecoder;
 import java.net.URL;
+import java.util.ArrayList;
 import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
 import org.apache.http.impl.cookie.BasicClientCookie;
@@ -193,32 +194,28 @@ Log.e("ICEutil", "submitForm " + actionUrl);
     }
 
     private BasicNameValuePair[] getNameValuePairs(String data, String delim1, String delim2) {
-	if (!data.contains(delim1)) {
-	    return new BasicNameValuePair[0];
-	} else {
-	    String splitRes[] = data.split(delim1);
-	    
-	    BasicNameValuePair[] res = new BasicNameValuePair[splitRes.length];
-	    for (int i=0; i<splitRes.length; i++) {
-		if (splitRes[i].contains(delim2)) {
-		    String nameValue[] = splitRes[i].split(delim2);
-		    if (nameValue.length == 2) {
-			res[i] = new BasicNameValuePair(nameValue[0],nameValue[1]);
-		    } else if (nameValue.length == 1)   {
-                        //likely corrupt pair
-                        Log.w("ICEutil", "singleton form value " + splitRes[i]);
-			BasicNameValuePair pair = 
-                                new BasicNameValuePair(nameValue[0],"");
-			res[i] = pair;
-		    }  else {
-                        Log.e("ICEutil", "empty form value " + splitRes[i]);
-                        res[i] = new BasicNameValuePair("empty" + i,"");
-                    } 
+        String splitRes[] = data.split(delim1);
 
-		}
-	    }
-	    return res;
-	}
+        ArrayList<BasicNameValuePair> res = new ArrayList(splitRes.length);
+        for (int i=0; i<splitRes.length; i++) {
+            if (splitRes[i].contains(delim2)) {
+                String nameValue[] = splitRes[i].split(delim2);
+                if (nameValue.length == 2) {
+                    res.add(new BasicNameValuePair(nameValue[0],nameValue[1]));
+                } else if (nameValue.length == 1)   {
+                            //likely corrupt pair
+                    Log.w("ICEutil", "singleton form value " + splitRes[i]);
+                    BasicNameValuePair pair = 
+                                    new BasicNameValuePair(nameValue[0],"");
+                    res.add(pair);
+                }  else {
+                    Log.e("ICEutil", "empty form value " + splitRes[i]);
+                    res.add(new BasicNameValuePair("empty" + i,""));
+                } 
+
+            }
+        }
+        return res.toArray(new BasicNameValuePair[0]);
     }
 
     protected void setUrl(String URL) {
