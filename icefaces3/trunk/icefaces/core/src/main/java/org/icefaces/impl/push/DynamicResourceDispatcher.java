@@ -262,7 +262,6 @@ public class DynamicResourceDispatcher extends ResourceHandlerWrapper implements
                         (options.attachement ? "; attachment: " + options.fileName : "") +
                         "] returned a null input stream.");
             } else {
-                InputStream in = resource.open();
                 OutputStream out = externalContext.getResponseOutputStream();
 
                 try {
@@ -270,9 +269,9 @@ public class DynamicResourceDispatcher extends ResourceHandlerWrapper implements
                             EnvUtils.isCompressResources(facesContext) &&
                             Util.shouldCompress(options.mimeType)) {
                         externalContext.setResponseHeader("Content-Encoding", "gzip");
-                        Util.compressStream(in, out);
+                        Util.compressStream(inputStream, out);
                     } else {
-                        Util.copyStream(in, out);
+                        Util.copyStream(inputStream, out);
                     }
                 } catch (IOException e) {
                     log.log(Level.WARNING, "Failed to serve resource "
