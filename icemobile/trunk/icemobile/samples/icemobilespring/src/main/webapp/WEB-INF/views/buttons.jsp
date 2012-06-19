@@ -19,28 +19,56 @@
 		<h2>ICEmobile - Buttons</h2>
 		<form:form id="buttonsform" method="POST"  modelAttribute="buttonsBean" cssClass="cleanform">
 			<div class="header">
-		  		<mobi:commandButton value="default"/>
-		  		<mobi:commandButton buttonType='important' value="important"/>
-		  		<mobi:commandButton buttonType='attention' value="attention"/>
-		  		<mobi:commandButton buttonType='back' value="back"/>
-                Current Time: ${currentTime}
+		  		<mobi:commandButton id="dBtn" value="default"/>
+		  		<mobi:commandButton id="iBtn" buttonType='important' value="important"/>
+		  		<mobi:commandButton id="aBtn" buttonType='attention' value="attention"/>
+		  		<mobi:commandButton id="bBtn" buttonType='back' value="back"/>
+                <c:if test="${pressed != null}">
+                You Pressed: ${pressed}
+                </c:if>
 			</div>
 		</form:form>
 
 		<script type="text/javascript">
 
 			$(document).ready(function() {
+				$("#buttonsform").click(function(e) {
+                    window.iceButtonTracker = e.target;
+                });
 				$("#buttonsform").submit(function() {
                     if (window.ice && ice.upload)  {
                         window.ice.handleResponse = function(data)  {
+                            var tracker = document
+                                    .getElementById("iceButtonTrackerHidden");
+                            if (tracker)  {
+                                tracker.parentNode.removeChild(tracker);
+                            }
 						    $("#buttonsContent").replaceWith(unescape(data));
 						    $('html, body').animate({ scrollTop: $("#message").offset().top }, 500);
+                        }
+                        //ice.upload should accept a submitting element
+                        //so the hidden field is not necessary here
+                        if (window.iceButtonTracker)  {
+                            $('<input>').attr({
+                                type: 'hidden',
+                                id: 'iceButtonTrackerHidden',
+                                name: window.iceButtonTracker.name,
+                                value: window.iceButtonTracker.value
+                            }).appendTo($(this));
+                            window.iceButtonTracker = null;
                         }
                         ice.upload($(this).attr("id"));
                         return false;  
                     }
 
                     var formData = new FormData(this);
+                    if (window.iceButtonTracker)  {
+                        if (-1 == navigator.userAgent.indexOf("WebKit"))  {
+                            formData.append(window.iceButtonTracker.name, 
+                                    window.iceButtonTracker.value);
+                            window.iceButtonTracker = null;
+                        }
+                    }
 
                     $.ajax({
                         url: $(this).attr("action"),

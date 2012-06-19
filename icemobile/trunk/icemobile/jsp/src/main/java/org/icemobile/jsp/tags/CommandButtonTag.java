@@ -47,6 +47,7 @@ public class CommandButtonTag extends SimpleTagSupport {
 
         if (id != null && !"".equals(id)) {
             out.write(" id='" + getId() + "'");
+            out.write(" name='" + getId() + "'");
         }
 
         StringBuilder builder = new StringBuilder(255);
