@@ -45,6 +45,7 @@ import android.hardware.SensorManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.opengl.Matrix;
 
 import java.io.IOException;
 import java.util.List;
@@ -59,12 +60,17 @@ public class ARViewActivity extends Activity implements SensorEventListener,
     Camera mCamera;
     private SensorManager mSensorManager;
     private Sensor mRotationVectorSensor;
+    private Sensor mGravitySensor;
+    private Sensor mCompassSensor;
     private LocationManager mLocationManager;
     int numberOfCameras;
     int cameraCurrentlyLocked;
     ARView arView;
     Location currentLocation = null;
+    private float[] gravity  = new float[3];
+    private float[] compass  = new float[3];    
     private final float[] mRotationMatrix = new float[16];
+    private float azimuth = 0.0f;
     HashMap<String,String> places = new HashMap();
 
     // The first rear facing camera
@@ -102,6 +108,10 @@ public class ARViewActivity extends Activity implements SensorEventListener,
         mSensorManager = (SensorManager)getSystemService(SENSOR_SERVICE);
         mRotationVectorSensor = mSensorManager.getDefaultSensor(
                 Sensor.TYPE_ROTATION_VECTOR);
+        mGravitySensor = mSensorManager.getDefaultSensor(
+                Sensor.TYPE_ACCELEROMETER);
+        mCompassSensor = mSensorManager.getDefaultSensor(
+                Sensor.TYPE_MAGNETIC_FIELD);
         mRotationMatrix[ 0] = 1;
         mRotationMatrix[ 4] = 1;
         mRotationMatrix[ 8] = 1;
@@ -149,6 +159,8 @@ public class ARViewActivity extends Activity implements SensorEventListener,
         cameraCurrentlyLocked = defaultCameraId;
         mPreview.setCamera(mCamera);
         mSensorManager.registerListener(this, mRotationVectorSensor, 10000);
+        mSensorManager.registerListener(this, mGravitySensor, 10000);
+        mSensorManager.registerListener(this, mCompassSensor, 10000);
         mLocationManager.requestSingleUpdate(
                 mLocationManager.NETWORK_PROVIDER, this, null);
     }
@@ -168,17 +180,52 @@ public class ARViewActivity extends Activity implements SensorEventListener,
     }
 
     public void onSensorChanged(SensorEvent event) {
+        boolean viewChanged = false;
+        if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
+            gravity = event.values.clone();
+            viewChanged = true;
+        }
+        if (event.sensor.getType() == Sensor.TYPE_MAGNETIC_FIELD) {
+            compass = event.values.clone();
+            viewChanged = true;
+        }
         if (event.sensor.getType() == Sensor.TYPE_ROTATION_VECTOR) {
             // convert the rotation-vector to a 4x4 matrix. the matrix
             // is interpreted by Open GL as the inverse of the
             // rotation-vector.
-            SensorManager.getRotationMatrixFromVector(
-                    mRotationMatrix , event.values);
-            arView.setRotation(mRotationMatrix);
-            arView.postInvalidate();
+//            SensorManager.getRotationMatrixFromVector(
+//                    mRotationMatrix , event.values);
+//            arView.setRotation(mRotationMatrix);
+//            arView.postInvalidate();
 
 //        Log.d("ARViewActivity", "sensor event " + 
 //                rotationToString(mRotationMatrix) );
+        }
+        if (viewChanged)  {
+            float[] rotation = new float[16];
+            float[] inclination = new float[16];
+            boolean gotRot = SensorManager.getRotationMatrix(
+                    rotation, inclination, gravity, compass);
+
+            float[] apr = new float[16]; //azimuth/pitch/roll
+            SensorManager.getOrientation(rotation, apr);
+            if (gotRot)  {
+                //average out some noise
+                azimuth = (azimuth * 9 + apr[0]) / 10;
+
+                float cx = (float) Math.cos(azimuth);
+                float cy = (float) Math.sin(azimuth);
+
+//Log.d("AR ", String.format("azimuth: %+10.4f cx: %+10.4f cy: %+10.4f",azimuth, cx, cy));
+                float[] look = new float[16];
+                Matrix.setLookAtM (look, 0,
+                    0.0f, 0.0f, 100.0f, //eye
+                    0.0f, 0.0f, 0.0f, //center
+                    cx, cy, 0.0f //up
+                );
+                arView.setRotation(look);
+                arView.postInvalidate();
+            }
         }
     }
 

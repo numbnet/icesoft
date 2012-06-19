@@ -75,10 +75,10 @@ public class ARView extends View {
         200, 200, 0, 1
     };
     float[] adjust = new float[] {
-          2, 0,   0, 0,
-          0, 2,   0, 0,
-          0, 0,   2, 0,
-          0, 0,   0, 1
+          2, 0, 0, 0,
+          0, 2, 0, 0,
+          0, 0, 2, 0,
+          0, 0, 0, 1
     };
 
     protected void onDraw(Canvas canvas) {
@@ -109,13 +109,13 @@ public class ARView extends View {
 
                 //project x-z and discard y=x as behind us
                 canvas.save();
-                canvas.rotate(270, v[0], v[2]);
+                canvas.rotate(270, v[0], v[1]);
                 if ( (v[1] - v[0]) > 0)  {
-                    canvas.drawText(label, v[0] - 300, v[2] + 300, mTextPaint);
+                    canvas.drawText(label, v[0] - 300, v[1] + 300, mTextPaint);
                 } else {
-//                    canvas.drawText(label, v[0] - 300, v[2] + 300, mTextPaintRed);
+                    canvas.drawText(label, v[0] - 300, v[1] + 300, mTextPaintRed);
                 }
-Log.d("ARView ", "rotated " + label + v[0] + "," + v[2]);
+Log.d("ARView ", "rotated " + label + v[0] + "," + v[1]);
                 canvas.restore();
             }
         }
