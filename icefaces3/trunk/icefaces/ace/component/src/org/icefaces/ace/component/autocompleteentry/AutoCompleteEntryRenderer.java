@@ -40,7 +40,7 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.Map;
 
-@MandatoryResourceComponent(tagName="autoCompleteEntry", value="org.icefaces.ace.component.autocompleteentry.autoCompleteEntry")
+@MandatoryResourceComponent(tagName="autoCompleteEntry", value="org.icefaces.ace.component.autocompleteentry.AutoCompleteEntry")
 public class AutoCompleteEntryRenderer extends InputRenderer {
 
     private static final String AUTOCOMPLETE_DIV = "_div";
