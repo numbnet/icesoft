@@ -23,4 +23,45 @@
     opacity: 1;
     visibility: visible;
  }
-
+ .mobi-contentpane-single-menu-hidden {
+   overflow: auto;
+   display: block;
+   -moz-transition: opacity .25s linear, visibility .1s linear .5s;
+   -webkit-transition: opacity .25s linear, visibility .1s linear .5s;
+   -moz-transition: left 1s ease-in;
+   -o-transition: opacity .25s linear, visibility .1s linear .5s;
+   transition: opacity .25s linear, visibility .1s linear .5s;
+   visibility: hidden;
+   opacity: 0;
+   height: 0;
+   position: absolute;
+   visibility: hidden;
+   left: -100%;
+}
+.mobi-contentpane-single-hidden {
+   overflow: auto;
+   display: block;
+   -moz-transition: opacity .25s linear, visibility .1s linear .5s;
+   -webkit-transition: opacity .25s linear, visibility .1s linear .5s;
+   -moz-transition: left 1s ease-in;
+   -o-transition: opacity .25s linear, visibility .1s linear .5s;
+   transition: opacity .25s linear, visibility .1s linear .5s;
+   visibility: hidden;
+   opacity: 0;
+   height: 0;
+   position: absolute;
+   visibility: hidden;
+   left: 200%;
+}
+.mobi-contentpane-single {
+    display:block;
+    opacity: 1;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    border:  solid;
+    -webkit-transition: opacity .50s, left 1s ease-out;
+    -moz-transition: left 1s ease-out;
+    overflow: auto;
+}

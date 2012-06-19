@@ -55,27 +55,32 @@ public class ContentPaneRenderer extends BaseLayoutRenderer {
             String clientId = uiComponent.getClientId(facesContext);
             String contentClass = ContentPane.CONTENT_BASE_CLASS;
             String contentDeadClass = ContentPane.CONTENT_HIDDEN_CLASS.toString();
-            if (stack.isSingleView()){
+        /*    if (stack.isSingleView()){
                 contentClass = ContentPane.CONTENT_SINGLE_BASE_CLASS.toString();
                 contentDeadClass = ContentPane.CONTENT_SINGLE_HIDDEN_CLASS.toString();
-            }
-            /* write out root tag.  For current incarnation html5 semantic markup is ignored */
-            writer.startElement(HTML.DIV_ELEM, uiComponent);
-            writer.writeAttribute(HTML.ID_ATTR, clientId, HTML.ID_ATTR);
-            // apply default style class for panel-stack  ??
-            //if cacheType is client and not selected must use invisible rendering
-            //  tricky for transitions as if using a layoutmenu, need to place all the
-            // classes as hidden and allow the js to change out the classes.
+            } */
             String classToWrite = contentDeadClass;
             boolean amSelected = iAmSelected(facesContext, uiComponent);
             if (amSelected){
                 classToWrite =  contentClass ;
             }
-            if (!amSelected && pane.isMenuOrHome()) {
+       /*     if (!amSelected && pane.isMenuOrHome()) {
                 classToWrite = ContentPane.CONTENT_SINGLE_MENUPANE_CLASS;
+            } */
+            // write out any users specified style attributes.
+            /* write out root tag.  For current incarnation html5 semantic markup is ignored */
+            writer.startElement(HTML.DIV_ELEM, uiComponent);
+            writer.writeAttribute(HTML.ID_ATTR, clientId, HTML.ID_ATTR);
+            if (pane.isMenuOrHome()){
+                writer.writeAttribute("isMenu", "true", null);
             }
-                   // write out any users specified style attributes.
-            writer.writeAttribute("class", classToWrite, "class");
+            else{
+                writer.writeAttribute("isMenu","false", null);
+            }
+            // apply default style class for panel-stack  ??
+            if (!stack.isSingleView()) {
+                writer.writeAttribute("class", classToWrite, "class");
+            }
             writer.writeAttribute(HTML.STYLE_ATTR, pane.getStyle(), "style");
         }
     }
@@ -121,13 +126,6 @@ public class ContentPaneRenderer extends BaseLayoutRenderer {
         String id = uiComponent.getId();
         return (id.equals(selectedId));
     }
-
- /*   private String checkCacheType(String type){
-        if (type.equals(ContentPane.CacheType.client.name())) return ContentPane.CacheType.client.name();
-        if (type.equals(ContentPane.CacheType.constructed.name())) return ContentPane.CacheType.constructed.name();
-        if (type.equals(ContentPane.CacheType.tobeconstructed.name())) return ContentPane.CacheType.tobeconstructed.name();
-        return ContentPane.CacheType.DEFAULT.name();
-    }  */
 
 
     private void encodeTabSetPage(FacesContext facesContext, UIComponent uiComponent)
