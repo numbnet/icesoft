@@ -789,16 +789,16 @@ ice.ace.DataTable.prototype.resizeScrolling = function() {
         }
 
         // Get Duplicate Sizing
-        for (i = 0; i < dupeHeadCols.length; i++) {
-            dupeHeadColumn = ice.ace.jq(dupeHeadCols[i]);
-            if (!ie7) dupeHeadColumnWidths[i] = dupeHeadColumn.width();
-            else dupeHeadColumnWidths[i] = dupeHeadColumn.parent().width();
-        }
+        if (!ie7) {
+            for (i = 0; i < dupeHeadCols.length; i++) {
+                dupeHeadColumn = ice.ace.jq(dupeHeadCols[i]);
+                dupeHeadColumnWidths[i] = dupeHeadColumn.width();
+            }
 
-        for (var i = 0; i < bodySingleCols.length; i++) {
-            bodyColumn = ice.ace.jq(bodySingleCols[i]);
-            if (!ie7) bodySingleColWidths[i] = bodyColumn.width();
-            else bodySingleColWidths[i] = bodyColumn.parent().width();
+            for (var i = 0; i < bodySingleCols.length; i++) {
+                bodyColumn = ice.ace.jq(bodySingleCols[i]);
+                bodySingleColWidths[i] = bodyColumn.width();
+            }
         }
 
 
@@ -817,7 +817,7 @@ ice.ace.DataTable.prototype.resizeScrolling = function() {
         footerTable.css('table-layout','fixed');
 
         // Set Duplicate Sizing
-        for (var i = 0; i < bodySingleCols.length; i++) {
+        if (!ie7) for (var i = 0; i < bodySingleCols.length; i++) {
             bodyColumn = ice.ace.jq(bodySingleCols[i]);
 
             // Work around webkit bug described here: https://bugs.webkit.org/show_bug.cgi?id=13339
@@ -828,29 +828,27 @@ ice.ace.DataTable.prototype.resizeScrolling = function() {
             // Set Duplicate Header Sizing to Body Columns
             // Equiv of max width
             if (!(safari || chrome)) bodyColumnWidth = i == 0 ? bodyColumnWidth - 1 : bodyColumnWidth;
-            if (!ie7) bodyColumn.parent().width(bodyColumnWidth);
+            bodyColumn.parent().width(bodyColumnWidth);
             // Equiv of min width
-            if (!ie7) {
-                bodyColumnWidth = i == 0 ? bodySingleColWidths[i]  - 1 : bodySingleColWidths[i];
-                bodyColumn.width(bodyColumnWidth);
-            }
+            bodyColumnWidth = i == 0 ? bodySingleColWidths[i]  - 1 : bodySingleColWidths[i];
+            bodyColumn.width(bodyColumnWidth);
         }
 
-        for (i = 0; i < realHeadCols.length; i++) {
+        if (!ie7) for (i = 0; i < realHeadCols.length; i++) {
             realHeadColumn = ice.ace.jq(realHeadCols[i]);
 
             // Work around webkit bug described here: https://bugs.webkit.org/show_bug.cgi?id=13339
-            var realHeadColumnWidth = (ie8as7) ? dupeHeadColumnWidths[i] + 1 : dupeHeadColumnWidths[i];
+            var realHeadColumnWidth = dupeHeadColumnWidths[i];
 
             // Set Duplicate Header Sizing to True Header Columns
-            if (!ie7) realHeadColumn.width(realHeadColumnWidth);
+            realHeadColumn.width(realHeadColumnWidth);
             // Apply same width to stacked sibling columns
-            if (!ie7) realHeadColumn.siblings('.ui-header-column').width(realHeadColumnWidth);
+            realHeadColumn.siblings('.ui-header-column').width(realHeadColumnWidth);
             // Equiv of max width
             realHeadColumn.parent().width(realHeadColumnWidth);
         }
 
-        for (i = 0; i < realFootCols.length; i++) {
+        if (!ie7) for (i = 0; i < realFootCols.length; i++) {
             realFootColumn = ice.ace.jq(realFootCols[i]);
 
             // Work around webkit bug described here: https://bugs.webkit.org/show_bug.cgi?id=13339
@@ -858,13 +856,11 @@ ice.ace.DataTable.prototype.resizeScrolling = function() {
                     ? dupeHeadColumnWidths[i] + parseInt(realFootColumn.parent().css('padding-right')) + parseInt(realFootColumn.parent().css('padding-left'))
                     : dupeHeadColumnWidths[i];
 
-            if (ie8as7) realFootColumnWidth += 1;
-
             // Set Duplicate Header Sizing to True Header Columns
             realFootColumn.parent().width(realFootColumnWidth);
-            if (!ie7) realFootColumn.width(realFootColumnWidth);
+            realFootColumn.width(realFootColumnWidth);
             // Apply same width to stacked sibling columns
-            if (!ie7) realFootColumn.siblings('.ui-footer-column').width(realFootColumnWidth);
+            realFootColumn.siblings('.ui-footer-column').width(realFootColumnWidth);
         }
 
         // Browser / Platform specific scrollbar fixes
