@@ -56,7 +56,7 @@ public class AjaxBehaviorHandler extends AjaxBehaviorHandlerBase implements Beha
     }
 
     public void apply(FaceletContext ctx, UIComponent parent) throws IOException {
-        //System.out.println("AjaxBehaviorHandler.apply()  parent: " + parent);
+        //System.out.println("AjaxBehaviorHandler.apply()  parent: " + parent + "  id: " + parent.getId());
         //System.out.println("AjaxBehaviorHandler.apply()  wrapping: " + wrapping);
         //System.out.println("AjaxBehaviorHandler.apply()  isCompositeComponent(parent): " + UIComponent.isCompositeComponent(parent));
 
@@ -195,13 +195,17 @@ public class AjaxBehaviorHandler extends AjaxBehaviorHandlerBase implements Beha
         boolean applicable = verifyAttachClientBehaviorHolder(eventName,
             parentClientBehaviorHolder, calledOurselves);
         if (applicable) {
-            ClientBehavior ajaxBehavior = createAjaxBehavior(ctx, parent);
+            if (null == eventName) {
+                eventName = parentClientBehaviorHolder.getDefaultEventName();
+            }
+            ClientBehavior ajaxBehavior = createAjaxBehavior(ctx, parent, eventName);
             parentClientBehaviorHolder.addClientBehavior(eventName, ajaxBehavior);
         }
     }
 
     // Construct our AjaxBehavior from tag parameters.
-    protected ClientBehavior createAjaxBehavior(FaceletContext ctx, UIComponent parent) {
+    protected ClientBehavior createAjaxBehavior(FaceletContext ctx,
+            UIComponent parent, String eventName) {
         Application application = ctx.getFacesContext().getApplication();
         AjaxBehavior behavior = (AjaxBehavior) application.createBehavior(
             BEHAVIOR_ID);
@@ -215,7 +219,7 @@ public class AjaxBehaviorHandler extends AjaxBehaviorHandlerBase implements Beha
         setBehaviorAttribute(ctx, behavior, this.execute, AjaxBehavior.Property.execute);
         setBehaviorAttribute(ctx, behavior, this.render, AjaxBehavior.Property.render);
 
-        addListenerToAjaxBehavior(ctx, parent, behavior);
+        addListenerToAjaxBehavior(ctx, parent, behavior, eventName);
         return behavior;
     }
 
@@ -231,8 +235,8 @@ public class AjaxBehaviorHandler extends AjaxBehaviorHandlerBase implements Beha
         }
     }
 
-    protected void addListenerToAjaxBehavior(
-            FaceletContext ctx, UIComponent parent, AjaxBehavior ajaxBehavior) {
+    protected void addListenerToAjaxBehavior(FaceletContext ctx,
+            UIComponent parent, AjaxBehavior ajaxBehavior, String eventName) {
         //System.out.println("AjaxBehaviorHandler.addListenerToAjaxBehavior()  parent: " + parent);
         //System.out.println("AjaxBehaviorHandler.addListenerToAjaxBehavior()  ajaxBehavior: " + ajaxBehavior);
         //System.out.println("AjaxBehaviorHandler.addListenerToAjaxBehavior()  listener: " + listener);
@@ -240,7 +244,7 @@ public class AjaxBehaviorHandler extends AjaxBehaviorHandlerBase implements Beha
             return;
         }
         Class superArgEventClass = javax.faces.event.AjaxBehaviorEvent.class;
-        Class oneArgEventClass = deriveEventClass(parent, superArgEventClass);
+        Class oneArgEventClass = deriveEventClass(parent, eventName, superArgEventClass);
         final Class returnType = null;
         MethodExpression noArg = listener.getMethodExpression(ctx, returnType,
             new Class[0]);
@@ -254,14 +258,10 @@ public class AjaxBehaviorHandler extends AjaxBehaviorHandlerBase implements Beha
         ajaxBehavior.addBehaviorListener(behaviorListener);
     }
 
-    protected Class deriveEventClass(UIComponent parent, Class superArgEventClass) {
+    protected Class deriveEventClass(UIComponent parent, String eventName, Class superArgEventClass) {
         Class oneArgEventClass = null;
         if (parent instanceof IceClientBehaviorHolder) {
             IceClientBehaviorHolder aceParent = (IceClientBehaviorHolder) parent;
-            String eventName = getEventName();
-            if (eventName == null) {
-                eventName = aceParent.getDefaultEventName();
-            }
             if (eventName != null) {
                 // Derive the event class name from the event name
                 StringBuilder className = new StringBuilder("org.icefaces.ace.event.");
