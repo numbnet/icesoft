@@ -194,7 +194,7 @@ Log.e("ICEutil", "submitForm " + actionUrl);
 
     private BasicNameValuePair[] getNameValuePairs(String data, String delim1, String delim2) {
 	if (!data.contains(delim1)) {
-	    return null;
+	    return new BasicNameValuePair[0];
 	} else {
 	    String splitRes[] = data.split(delim1);
 	    
