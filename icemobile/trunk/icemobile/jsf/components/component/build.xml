@@ -604,6 +604,15 @@
                           name="tabset" skin="honeycomb"/>
         <includeresources dir="src/org/icefaces/mobi/component/tabset/bberry"
                           name="tabset" skin="bberry"/>
+       <!-- layoutMenu -->
+        <includeresources dir="src/org/icefaces/mobi/component/layoutmenu/ipad"
+                          name="layoutmenu" skin="ipad"/>
+        <!-- contentStack -->
+        <includeresources dir="src/org/icefaces/mobi/component/contentstack/ipad"
+                          name="contentstack" skin="ipad"/>
+        <!--contentNavBar -->
+        <includeresources dir="src/org/icefaces/mobi/component/contentnavbar/ipad"
+                          name="contentnavbar" skin="ipad" />
         <!-- Process sprites, if use.sprites is set -->
         <antcall target="sprites"/>
 
@@ -744,6 +753,7 @@
                         name="org.icefaces.component.tabset/tabset.js"/>
                 <include
                         name="org.icefaces.component.accordion/accordion.js"/>
+                <include name="org.icefaces.component.layoutmenu/layoutmenut.js"/>
             </fileset>
         </concat>
     </target>
@@ -799,6 +809,8 @@
                     path="${resources}/org.icefaces.component.tabset"/>
         <compressjs comp="accordion"
                     path="${resources}/org.icefaces.component.accordion"/>
+        <compressjs comp="layoutmenu"
+                    path="${resources}/org.icefaces.component.layoutment"/>
     </target>
 
     <target name="res-js-no-compress" depends="res-js-combine" if="no-compress">
