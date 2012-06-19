@@ -556,6 +556,8 @@ ice.ace.List.prototype.moveItems = function(dir) {
 // Used to keep id for each child in place, so per-item updates
 // occur as expected
 ice.ace.List.prototype.swapIdPrefix = function(from, to) {
+    if (from.length == 0 || to.length == 0) return;
+
     var fromId = from.attr('id'),
         toId = to.attr('id'),
         fromElems = from.find('*[id^="'+fromId+'"]'),
