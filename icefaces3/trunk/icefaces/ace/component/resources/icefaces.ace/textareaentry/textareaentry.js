@@ -42,7 +42,7 @@ ice.ace.TextAreaEntry = function(id, cfg) {
             });
     }
     this.jq.blur(function() {
-//        setFocus('');
+        setFocus();
     });
     if (this.cfg.behaviors) {
         ice.ace.attachBehaviors(this.jq, this.cfg.behaviors);
