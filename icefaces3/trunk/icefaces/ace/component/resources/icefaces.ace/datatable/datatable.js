@@ -759,7 +759,7 @@ ice.ace.DataTable.prototype.resizeScrolling = function() {
         // If duplicate header/footer row causes body table to barely
         // exceed min-table size (causing scrollbar)
         var dupeCausesScrollChange = false,
-            dupeCausesBodyScrollChange = true,
+            dupeCausesBodyScrollChange = false,
             vScrollShown = bodyTable.parent().is(':scrollable'),
             bodyVScrollShown = ice.ace.jq('html').is(':scrollable');
 
