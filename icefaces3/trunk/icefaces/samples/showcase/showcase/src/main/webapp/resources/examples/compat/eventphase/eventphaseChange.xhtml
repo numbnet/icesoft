@@ -48,13 +48,13 @@
         <h:form>            
             <h:panelGrid columns="3">
                 <h:outputLabel for="randomIn" value="Choose Random Number?"/>
-                <ice:setEventPhase events="ValueChangeEvent"
+                <icecore:setEventPhase events="ValueChangeEvent"
                                    phase="INVOKE_APPLICATION"
                                    disabled="#{!eventphaseChange.enable}">
                     <h:selectBooleanCheckbox id="randomIn"
                                              value="#{eventphaseChange.useRandom}"
                                              valueChangeListener="#{eventphaseChange.checkboxChanged}"/>
-                </ice:setEventPhase>
+                </icecore:setEventPhase>
                 <h:message for="randomIn"/>
                 
                 <h:outputLabel for="numberIn" value="Favorite Number:"/>
