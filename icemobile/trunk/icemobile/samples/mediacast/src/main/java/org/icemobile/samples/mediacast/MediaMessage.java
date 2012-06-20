@@ -42,6 +42,8 @@ public class MediaMessage implements Serializable {
     private Media audioMedia = null;
     private File mediaFile;
     private String mediaType = MEDIA_TYPE_PHOTO;
+    private double latitude = 0.0;
+    private double longitude = 0.0;
 
     public Media getSmallPhoto() {
         return photos[0];
@@ -139,6 +141,15 @@ public class MediaMessage implements Serializable {
         String absolutePath = mediaFile.getAbsolutePath();
         String urlPath = absolutePath.substring(rootPath.length() - 1);
         return urlPath;
+    }
+
+    public void setLocation(double latitude, double longitude)  {
+        this.latitude = latitude;
+        this.longitude = longitude;
+    }
+
+    public String getPackedLocation()  {
+        return comment + "=" + latitude + "," + longitude;
     }
 
     /**
