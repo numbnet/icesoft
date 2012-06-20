@@ -456,8 +456,9 @@ ice.ace.List.prototype.deselectAll = function(except) {
 
                 item.removeClass('ui-state-active');
 
-                if (index)
+                if (index != undefined)
                     index = self.getUnshiftedIndex(item.parent().children().length, reorderings, index);
+
                 if (index != undefined) {
                     deselections.push(index);
                     selections = ice.ace.jq.grep(selections, function(r) { return r != index; });
