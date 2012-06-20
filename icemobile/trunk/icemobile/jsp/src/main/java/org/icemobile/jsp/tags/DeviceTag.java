@@ -68,9 +68,15 @@ public class DeviceTag extends SimpleTagSupport {
     }
 
     public void writeStandardAttributes(Writer out) throws IOException  {
-        if (null != styleClass)  {
-            out.write("class='" + styleClass + "'");
+
+        StringBuilder inputStyle = new StringBuilder(CommandButtonTag.BASE_STYLE_CLASS);
+        if (disabled){
+            inputStyle.append(CommandButtonTag.DISABLED_STYLE_CLASS);
         }
+        if (null != styleClass)  {
+            inputStyle.append(" ").append(styleClass);
+        }
+        out.write("class='" + inputStyle + "'");
         if (null != style)  {
             out.write(" style='" + style + "'");
         }
