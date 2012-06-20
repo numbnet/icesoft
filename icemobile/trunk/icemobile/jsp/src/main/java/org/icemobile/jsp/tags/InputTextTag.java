@@ -74,11 +74,19 @@ public class InputTextTag extends SimpleTagSupport {
         if (cols > 0) {
             out.write(" cols=\"" + this.type + "\"");
         }
+        String value = getValue();
         if (!isTextArea) {
             out.write(" type=\"" + this.type + "\"");
-            out.write(" value=\"" + getValue() + "\"/>");
+            if (value != null){
+                out.write(" value=\"" + value + "\"");
+            }
+            out.write("/>");
         } else {
-            out.write(">" + getValue() + "</textarea>");
+            out.write(">");
+            if (value != null){
+                out.write(value);
+            }
+            out.write("</textarea>");
         }
     }
 
