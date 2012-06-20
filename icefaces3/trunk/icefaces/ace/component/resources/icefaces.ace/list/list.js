@@ -137,10 +137,12 @@ ice.ace.List.prototype.dragToHandler = function(event, ui) {
     // Align FF and IE with Webkit, produce a mouseout event
     // on the dropped item if 100ms post drop it has been aligned
     // out from under our cursor.
-    var item = ui.item;
-    self = this;
+    var item = ui.item,
+        self = this;
+
     setTimeout(function () {
-        if (!ui.item.is(':hover')) self.itemLeave({currentTarget : item});
+        var ie = ice.ace.jq.browser.msie && (ice.ace.jq.browser.version == 8 || ice.ace.jq.browser.version == 7);
+        if (!ie && !ui.item.is(':hover')) self.itemLeave({currentTarget : item});
     }, 100);
 
     /*
