@@ -39,19 +39,19 @@ import javax.faces.component.UIComponent;
         tlddoc = "This mobility component is a child of several different layout containers.  No client behavior" +
                 " goes with this component.  In order to have any client-side behavior, it must be used with one" +
                 " of the other layout components.  Children of contentStack, accordion or tabSet, or any other mobility" +
-                " component which implements ContentPaneController.  The cacheType determines whether the children" +
-                " of this component/panel  are " +
-                " a) tobeconstructed = constructed in the server side component tree" +
-                " b) constructed = children are constructed and present in server side component tree" +
-                " c) client = children of this component are not only constructed but also are rendered" +
-                "    on the client --best for static dataa  "
+                " component which implements ContentPaneController.  The facelet attribute determines whether the children" +
+                " of this component/panel are constructed in the server side component tree" +
+                " facelet attribute defaults to false meaning that the children are constructed " +
+                " and present in server side component tree" +
+                " client = true, means children of this component are not only constructed but also are rendered" +
+                "    on the client --best for static data  "
 )
 
 public class ContentPaneMeta extends UIPanelMeta{
 
-     @Property(defaultValue="false", tlddoc=" makes sense to have the scrollable here as it will need certain style attributes for " +
+    /* @Property(defaultValue="false", tlddoc=" makes sense to have the scrollable here as it will need certain style attributes for " +
             " and child panel to scroll within it. If accordionTitle is not null, then this should default to false")
-     private boolean scrollable;
+     private boolean scrollable;*/
 
      @Property(defaultValue=" ", tlddoc="used when ContentPane is child of Accordion or tabSet")
      private String title;
