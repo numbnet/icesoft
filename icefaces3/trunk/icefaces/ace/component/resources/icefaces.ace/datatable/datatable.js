@@ -136,9 +136,9 @@ if (!window.ice['ace']) {
     };
 
     OSDetect.init();
-    $.browser.chrome = /chrome/.test(navigator.userAgent.toLowerCase());
+    $.browser.chrome = /chrome/.test(navigator.userAgent.toLowerCase()) && !/chromeframe/.test(navigator.userAgent.toLowerCase());
     // Chrome has 'safari' in its user string so we need to exclude it explicitly
-    $.browser.safari = /safari/.test(navigator.userAgent.toLowerCase()) && !/chrome/.test(navigator.userAgent.toLowerCase());
+    $.browser.safari = /safari/.test(navigator.userAgent.toLowerCase()) && !$.browser.chrome;
     $.browser['os'] = OSDetect.OS;
 })(ice.ace.jq);
 
@@ -1299,7 +1299,7 @@ ice.ace.DataTable.prototype.doMultiRowSelectionEvent = function(lastIndex, curre
         // If first row is in this selection, deselection, or will be implicitly deselected by singleSelection
         // resize the scrollable table.
         if (self.cfg.scrollable && (ice.ace.jq.inArray("0", self.selection) > -1 || ice.ace.jq.inArray("0", self.deselection) > -1 || (firstRowSelected && self.isSingleSelection()))) {
-            options.onsuccess = function(responseXML) {;
+            options.onsuccess = function(responseXML) {
                 self.resizeScrolling();
                 return false;
             };
@@ -1395,7 +1395,7 @@ ice.ace.DataTable.prototype.sendRowContractionRequest = function(row) {
     params[this.id + ':' + rowId + '_rowExpansion'] = true;;
     options.params = params;
 
-    options.onsuccess = function(responseXML) {;
+    options.onsuccess = function(responseXML) {
         if (_self.cfg.scrollable) _self.setupScrolling();
         return false;
     };
