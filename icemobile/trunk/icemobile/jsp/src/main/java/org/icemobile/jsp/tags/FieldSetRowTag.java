@@ -118,4 +118,8 @@ public class FieldSetRowTag extends TagSupport {
     public void setGroup(String group) {
         this.group = Boolean.getBoolean(group);
     }
+
+    public void setGroup(boolean group) {
+        this.group = group;
+    }
 }
