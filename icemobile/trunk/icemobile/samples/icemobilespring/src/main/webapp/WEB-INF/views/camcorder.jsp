@@ -13,48 +13,42 @@
 <body>
 </c:if>
 	<div id="vidContent">
-		<h2>Camcorder</h2>
-		<p>
-			ICEmobile Camcorder Sample	
-		</p>
+		<h4>Camcorder</h4>
+        <mobi:fieldSetGroup inset="true">
+            <mobi:fieldSetRow>
+			    ICEmobile Camcorder Sample
+            </mobi:fieldSetRow>
+        </mobi:fieldSetGroup>
 		<form:form id="camcorderform" method="POST" enctype="multipart/form-data" modelAttribute="camcorderBean" cssClass="cleanform">
-			<div class="header">
-		  		<h2>Form</h2>
-		  		<c:if test="${not empty message}">
-					<div id="message" class="success">${message}<br/>
-                    <video src="media/video.mp4" controls="controls" >
-                    </div>	
-		  		</c:if>
-		  		<s:bind path="*">
-		  			<c:if test="${status.error}">
-				  		<div id="message" class="error">Form has errors</div>
-		  			</c:if>
-		  		</s:bind>
-			</div>
-		  	<fieldset>
-		  		<legend>Personal Info</legend>
-		  		<form:label path="name">
-		  			Name <form:errors path="name" cssClass="error" />
-		 		</form:label>
-		  		<form:input path="name" />
-		
-		  	</fieldset>
+            <h4>Video Info</h4>
+            <mobi:fieldSetGroup inset="true">
+                <mobi:fieldSetRow>
+                    <form:label path="name">Author: <form:errors path="name" cssClass="error" /></form:label>
+                    <form:input path="name" />
+                </mobi:fieldSetRow>
+                <mobi:fieldSetRow>
+                    <mobi:camcorder id="camvid" />
+                    <mobi:thumb for="camvid"
+                                style="height:60px;width:65px;vertical-align:middle;float:right;margin:10px;"/>
+                </mobi:fieldSetRow>
+            </mobi:fieldSetGroup>
+            <%-- button types: default|important|attention| back--%>
+            <mobi:commandButton buttonType='important'
+                                style="float:right;margin-right: 25px;"
+                                value="Submit"
+                                type="submit"/>
+            <div style="clear:both;" />
 
-		  	<fieldset >
-               <mobi:camcorder id="camvid" />
-               <mobi:thumb for="camvid"/>
-               <div>
-                   <video style="float:right;height:120px;width:120px;" src="media/video.mp4" controls="controls" >
-               </div>
-		  	</fieldset>
-
-			<fieldset class="checkbox">
-				<legend>Request Additional Info</legend>
-				<label><form:checkbox path="additionalInfo[mvc]" value="true" />on Spring MVC</label>
-				<label><form:checkbox path="additionalInfo[java]" value="true" />on Java (4-ever)</label>				
-			</fieldset>
-		  		  		
-			<p><button type="submit">Submit</button></p>
+            <c:if test="${not empty message}">
+                <div id="message" class="success">${message}<br/>
+                    <video src="media/video.mp4" controls="controls" />
+                </div>
+            </c:if>
+            <s:bind path="*">
+                <c:if test="${status.error}">
+                    <div id="message" class="error">Form has errors</div>
+                </c:if>
+            </s:bind>
 		</form:form>
 
 

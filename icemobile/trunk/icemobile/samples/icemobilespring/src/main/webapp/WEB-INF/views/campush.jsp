@@ -18,62 +18,53 @@
 <c:if test="${isGET}">
     <push:register group="camPush" callback="function(){$('#campushform').submit();}"/>
 </c:if>
-		<h2>Camera Push</h2>
-		<p>
-			ICEmobile Camera Push Sample	
-		</p>
+		<h4>Camera Push</h4>
+        <mobi:fieldSetGroup inset="true">
+            <mobi:fieldSetRow>
+			    ICEmobile Camera Push Sample
+		    </mobi:fieldSetRow>
+        </mobi:fieldSetGroup>
+
 		<form:form id="campushform" method="POST" enctype="multipart/form-data" modelAttribute="icemobileBean" cssClass="cleanform">
-			<div class="header">
-		  		<h2>Form</h2>
-		  		<c:if test="${not empty message}">
-					<div id="message" class="success">${message}<br/>
-                        <img style="height:60px;width:60px;" src="${imgPath}" >
-                    </div>	
-		  		</c:if>
-		  		<s:bind path="*">
-		  			<c:if test="${status.error}">
-				  		<div id="message" class="error">Form has errors</div>
-		  			</c:if>
-		  		</s:bind>
-			</div>
-		  	<fieldset>
-		  		<legend>Personal Info</legend>
-		  		<form:label path="name">
-		  			Name <form:errors path="name" cssClass="error" />
-		 		</form:label>
-		  		<form:input path="name" />
-		
-		  	</fieldset>
 
-		  	<fieldset>
-               <mobi:camera id="camera" />
-	       <mobi:thumb for="camera"/>
-               <img style="float:right;height:120px;width:120px;" src="${imgPath}" >
-		  	</fieldset>
-
-			<fieldset class="checkbox">
-				<legend>Request Additional Info</legend>
-				<label><form:checkbox path="additionalInfo[mvc]" value="true" />on Spring MVC</label>
-				<label><form:checkbox path="additionalInfo[java]" value="true" />on Java (4-ever)</label>				
-			</fieldset>
-		  		  		
-			<p><button type="submit">Submit</button></p>
-
-
-
-
-            <br/><h3>New tags </h3><br/>
-
-            <mobi:fieldSetGroup id="parent" >
-	            <mobi:fieldSetRow id="first" >
-	                <h2> This element in first field set row</h2>
+            <h4>Snapshot Information</h4>
+            <mobi:fieldSetGroup inset="true">
+                <mobi:fieldSetRow>
+		  		    <form:label path="name">
+		  			    Author: <form:errors path="name" cssClass="error" />
+                    </form:label>
+		  		    <form:input path="name" />
                 </mobi:fieldSetRow>
-                <mobi:fieldSetRow id="second">
-                    <h3> This element is in the second row </h3>
+                <mobi:fieldSetRow>
+                    <mobi:camera id="camera" />
+	                <mobi:thumb for="camera"
+                            style="height:60px;width:65px;vertical-align:middle;float:right;margin:10px;"/>
+		  	    </mobi:fieldSetRow>
+            </mobi:fieldSetGroup>
+
+            <h4>Uploaded Snapshot</h4>
+            <mobi:fieldSetGroup inset="true">
+                <mobi:fieldSetRow>
+                    <img style="height:60px;width:60px;margin:5px;" src="${imgPath}" />
                 </mobi:fieldSetRow>
-	        </mobi:fieldSetGroup>
+            </mobi:fieldSetGroup>
 
-
+            <%-- button types: default|important|attention| back--%>
+            <mobi:commandButton buttonType='important'
+                                style="float:right;margin-right: 25px;"
+                                value="Submit"
+                                type="submit"/>
+            <div style="clear:both;" />
+            <c:if test="${not empty message}">
+                <div id="message" class="success">${message}<br/>
+                    <img style="height:60px;width:60px;" src="${imgPath}" >
+                </div>
+            </c:if>
+            <s:bind path="*">
+                <c:if test="${status.error}">
+                    <div id="message" class="error">Form has errors</div>
+                </c:if>
+            </s:bind>
 		</form:form>
 
 		<script type="text/javascript">

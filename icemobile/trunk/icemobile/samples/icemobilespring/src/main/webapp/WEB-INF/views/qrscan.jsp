@@ -16,19 +16,29 @@
 </c:if>
 	<div id="qrscancontent">
 
-		<h2>Various Spring MVC tags</h2>
-		<p>
-			QR Code Scanner
-		</p>
-
+		<h4>QR Code Scanner</h4>
 		<form:form id="qrcodeform" method="POST"  modelAttribute="QRScanBean" cssClass="cleanform">
-			<div class="header">
-			    Press here to launch scanner  <mobi:qrscan id="scanOne" />
-			</div>
 
-			<button type="submit">Submit</button>
-			  <p>Scanned: 
-              <span style="font-style:italic">${QRScanBean.scanOne}</span>
+            <mobi:fieldSetGroup inset="true">
+                <mobi:fieldSetRow>
+			        <label>Press to launch QR scanner:</label>
+                    <mobi:qrscan id="scanOne"  />
+                </mobi:fieldSetRow>
+                <mobi:fieldSetRow>
+                    <%-- button types: default|important|attention| back--%>
+                    <mobi:commandButton buttonType='important'
+                                        style="float:right;margin-right: 25px;"
+                                        value="Submit"
+                                        type="submit"/>
+                </mobi:fieldSetRow>
+            </mobi:fieldSetGroup>
+            <%-- QR scanner results --%>
+            <mobi:fieldSetGroup inset="true">
+                <mobi:fieldSetRow>
+                    <label>Scanned:</label>
+                    <span style="font-style:italic">${QRScanBean.scanOne}</span>
+                </mobi:fieldSetRow>
+            </mobi:fieldSetGroup>
 
 		</form:form>
 
