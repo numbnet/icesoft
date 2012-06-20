@@ -42,16 +42,6 @@ public class DateSelectEvent extends AjaxBehaviorEvent {
 		super(component, behavior);
 		this.date = date;
 	}
-
-	@Override
-	public boolean isAppropriateListener(FacesListener faceslistener) {
-		return false;
-	}
-
-	@Override
-	public void processListener(FacesListener faceslistener) {
-		throw new UnsupportedOperationException();
-	}
 	
 	public Date getDate() {
 		return date;

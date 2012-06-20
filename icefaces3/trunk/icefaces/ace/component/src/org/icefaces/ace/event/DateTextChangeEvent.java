@@ -44,16 +44,6 @@ public class DateTextChangeEvent extends AjaxBehaviorEvent {
 		this.date = date;
         this.dateText = dateText;
 	}
-
-	@Override
-	public boolean isAppropriateListener(FacesListener faceslistener) {
-		return false;
-	}
-
-	@Override
-	public void processListener(FacesListener faceslistener) {
-		throw new UnsupportedOperationException();
-	}
 	
 	public Date getDate() {
 		return date;

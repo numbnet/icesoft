@@ -42,16 +42,6 @@ public class ToggleEvent extends AjaxBehaviorEvent {
 		super(component, behavior);
 		this.visibility = visibility;
 	}
-
-	@Override
-	public boolean isAppropriateListener(FacesListener faceslistener) {
-		return false;
-	}
-
-	@Override
-	public void processListener(FacesListener faceslistener) {
-		throw new UnsupportedOperationException();
-	}
 	
 	public Visibility getVisibility() {
 		return visibility;
