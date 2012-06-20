@@ -276,9 +276,34 @@
             <rtexprvalue>false</rtexprvalue>
         </attribute>
         <attribute>
+            <name>style</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+        </attribute>
+        <attribute>
             <name>value</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <name>placeholder</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+        </attribute>
+        <attribute>
+            <name>autoCorrect</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+        </attribute>
+        <attribute>
+            <name>rows</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+        </attribute>
+        <attribute>
+            <name>cols</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
         </attribute>
     </tag>
     A
@@ -455,10 +480,10 @@
 
     <tag>
         <name>fieldSetGroup</name>
-        <description>Parent Field Group Tag</description>
-        <display-name>fieldGroup</display-name>
         <tag-class>org.icemobile.jsp.tags.FieldSetGroupTag</tag-class>
         <body-content>JSP</body-content>
+        <display-name>fieldGroup</display-name>
+        <description>Parent Field Group Tag</description>
         <attribute>
             <name>id</name>
             <required>false</required>
@@ -471,6 +496,11 @@
         </attribute>
         <attribute>
             <name>style</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+        </attribute>
+        <attribute>
+            <name>inset</name>
             <required>false</required>
             <rtexprvalue>false</rtexprvalue>
         </attribute>
