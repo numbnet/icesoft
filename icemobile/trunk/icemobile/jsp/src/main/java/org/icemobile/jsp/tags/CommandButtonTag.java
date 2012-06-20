@@ -19,7 +19,7 @@ public class CommandButtonTag extends SimpleTagSupport {
 
     // button styles.
     public static final String BASE_STYLE_CLASS = "mobi-button";
-    public static final String DISABLED_STYLE_CLASS = "mobi-button-dis";
+    public static final String DISABLED_STYLE_CLASS = " mobi-button-dis";
     public static final String DEFAULT_STYLE_CLASS = " mobi-button-default";
     public static final String IMPORTANT_STYLE_CLASS = " mobi-button-important";
     public static final String BACK_STYLE_CLASS = " mobi-button-back";
@@ -50,7 +50,7 @@ public class CommandButtonTag extends SimpleTagSupport {
             out.write(" name='" + getId() + "'");
         }
 
-        StringBuilder builder = new StringBuilder(255);
+        StringBuilder builder = new StringBuilder(BASE_STYLE_CLASS);
         if (BUTTON_TYPE_DEFAULT.equals(buttonType)) {
             builder.append(DEFAULT_STYLE_CLASS);
         } else if (BUTTON_TYPE_BACK.equals(buttonType)) {
@@ -59,7 +59,7 @@ public class CommandButtonTag extends SimpleTagSupport {
             builder.append(ATTENTION_STYLE_CLASS);
         } else if (BUTTON_TYPE_IMPORTANT.equals(buttonType)) {
             builder.append(IMPORTANT_STYLE_CLASS);
-	}
+        }
 
         // apply selected state if any
         if (isSelected()) {
@@ -71,31 +71,32 @@ public class CommandButtonTag extends SimpleTagSupport {
         }
         // append any user specific style attributes
         if (styleClass != null) {
-            builder.append(" " + styleClass);
+            builder.append(" ").append(styleClass);
         }
-	out.write(" class='" + builder.toString() + "'");
+        out.write(" class='" + builder.toString() + "'");
 
         // should be auto base though
-        if (null != style)  {
+        if (null != style) {
             out.write(" style='" + style + "'");
         }
         // button type for styling purposes
         if (type == null) {
             out.write(" type='submit'");
-	} else {
+        } else {
             out.write(" type='" + type + "'");
-	}
+        }
 
         if (isDisabled()) {
             out.write(" disabled=\"true\"");
         }
 
-        if (null != value)  {
+        if (null != value) {
             out.write(" value='" + value + "'");
         }
         out.write("/>");
 
-	}
+    }
+
     public String getId() {
         return id;
     }
