@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 public class FlipSwitchBean {
 
     // One property for each switch on the page
-    private String yesNoFlipSwitch;
-    private String onOffFlipSwitch;
-    private String trueFalseFlipSwitch;
+    private boolean yesNoFlipSwitch;
+    private boolean onOffFlipSwitch = true;
+    private boolean trueFalseFlipSwitch;
 
 
     @ModelAttribute("flipSwitchBean")
@@ -21,28 +21,28 @@ public class FlipSwitchBean {
         return new FlipSwitchBean();
     }
 
-    public String getYesNoFlipSwitch() {
+    public boolean getYesNoFlipSwitch() {
         return yesNoFlipSwitch;
     }
 
-    public void setYesNoFlipSwitch(String yesNoFlipSwitch) {
+    public void setYesNoFlipSwitch(boolean yesNoFlipSwitch) {
         this.yesNoFlipSwitch = yesNoFlipSwitch;
     }
 
 
-    public String getTrueFalseFlipSwitch() {
+    public boolean getTrueFalseFlipSwitch() {
         return trueFalseFlipSwitch;
     }
 
-    public void setTrueFalseFlipSwitch(String trueFalseFlipSwitch) {
+    public void setTrueFalseFlipSwitch(boolean trueFalseFlipSwitch) {
         this.trueFalseFlipSwitch = trueFalseFlipSwitch;
     }
 
-    public String getOnOffFlipSwitch() {
+    public boolean getOnOffFlipSwitch() {
         return onOffFlipSwitch;
     }
 
-    public void setOnOffFlipSwitch(String onOffFlipSwitch) {
+    public void setOnOffFlipSwitch(boolean onOffFlipSwitch) {
         this.onOffFlipSwitch = onOffFlipSwitch;
     }
 }

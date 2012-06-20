@@ -13,57 +13,44 @@
 <body>
 </c:if>
 	<div id="micContent">
-        <style>
-        .anchorbuttons a {
-            text-decoration: none; font: menu;
-            display: inline-block; padding: 2px 8px;
-            border-style: solid; border-width: 2px;
-            border-color: ButtonHighlight ButtonShadow ButtonShadow ButtonHighlight;
-            border-radius: 10px;
-        }
-        .recordstyle {
-            background: red;
-        }
-        </style>
-		<h2>Microphone</h2>
-		<p>
-			ICEmobile Microphone Sample	
-		</p>
+
+		<h4>Microphone</h4>
+		<mobi:fieldSetGroup inset="true">
+            <mobi:fieldSetRow>
+			    ICEmobile Microphone Sample
+            </mobi:fieldSetRow>
+        </mobi:fieldSetGroup>
+
 		<form:form id="micform" method="POST" enctype="multipart/form-data" modelAttribute="microphoneBean" cssClass="cleanform">
-			<div class="header">
-		  		<h2>Form</h2>
-		  		<c:if test="${not empty message}">
-					<div id="message" class="success">${message}<br/>
-                    <audio src="media/clip.mp4" controls="controls" >
-                    </div>	
-		  		</c:if>
-		  		<s:bind path="*">
-		  			<c:if test="${status.error}">
-				  		<div id="message" class="error">Form has errors</div>
-		  			</c:if>
-		  		</s:bind>
-			</div>
-		  	<fieldset>
-		  		<legend>Personal Info</legend>
-		  		<form:label path="name">
-		  			Name <form:errors path="name" cssClass="error" />
-		 		</form:label>
-		  		<form:input path="name" />
-		
-		  	</fieldset>
+            <h4>Recording Info</h4>
+            <mobi:fieldSetGroup inset="true">
+                <mobi:fieldSetRow>
+                    <form:label path="name">
+                        Author: <form:errors path="name" cssClass="error" />
+                    </form:label>
+		  		    <form:input path="name" />
+		        </mobi:fieldSetRow>
+                <mobi:fieldSetRow>
+                   <mobi:microphone id="mic"/>
+                </mobi:fieldSetRow>
+            </mobi:fieldSetGroup>
 
-		  	<fieldset class="anchorbuttons">
-               <mobi:microphone id="mic"/>
-               <audio style="float:right;height:120px;width:120px;" src="media/clip.mp4" controls="controls" >
-		  	</fieldset>
-
-			<fieldset class="checkbox">
-				<legend>Request Additional Info</legend>
-				<label><form:checkbox path="additionalInfo[mvc]" value="true" />on Spring MVC</label>
-				<label><form:checkbox path="additionalInfo[java]" value="true" />on Java (4-ever)</label>				
-			</fieldset>
-		  		  		
-			<p><button type="submit">Submit</button></p>
+            <%-- button types: default|important|attention| back--%>
+            <mobi:commandButton buttonType='important'
+                                style="float:right;margin-right: 25px;"
+                                value="Submit"
+                                type="submit"/>
+            <div style="clear:both" />
+            <c:if test="${not empty message}">
+                <div id="message" class="success">${message}<br/>
+                    <audio src="media/clip.mp4" controls="controls" />
+                </div>
+            </c:if>
+            <s:bind path="*">
+                <c:if test="${status.error}">
+                    <div id="message" class="error">Form has errors</div>
+                </c:if>
+            </s:bind>
 		</form:form>
 
 

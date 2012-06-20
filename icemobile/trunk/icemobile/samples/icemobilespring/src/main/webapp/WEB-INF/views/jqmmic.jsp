@@ -21,13 +21,13 @@
             background: red;
         }
         </style>
-		<h2>Microphone</h2>
+		<h4>Microphone</h4>
 		<p>
 			jQuery ICEobile Microphone	
 		</p>
 		<form:form id="micform" method="POST" enctype="multipart/form-data" modelAttribute="microphoneBean" >
 			<div class="header">
-		  		<h2>Form</h2>
+		  		<h4>Form</h4>
 		  		<c:if test="${not empty message}">
 					<div id="message" class="success">${message}<br/>
                     <audio src="media/clip.mp4" controls="controls" >

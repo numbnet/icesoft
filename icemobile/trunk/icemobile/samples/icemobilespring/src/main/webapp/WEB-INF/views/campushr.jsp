@@ -15,13 +15,13 @@
 <body>
 </c:if>
 	<div id="campushrContent">
-		<h2>Camera Push Region</h2>
+		<h4>Camera Push Region</h4>
 		<p>
 			ICEmobile Camera Push Region Sample	
 		</p>
 		<form:form id="campushrform" method="POST" enctype="multipart/form-data" modelAttribute="icemobileBean" cssClass="cleanform">
 			<div class="header">
-		  		<h2>Form</h2>
+		  		<h4>Form</h4>
 		  		<c:if test="${not empty message}">
 					<div id="message" class="success">${message}<br/>
                         <img style="height:60px;width:60px;" src="${imgPath}" >
@@ -63,7 +63,7 @@
 
             <mobi:fieldSetGroup id="parent" >
 	            <mobi:fieldSetRow id="first" >
-	                <h2> This element in first field set row</h2>
+	                <h4> This element in first field set row</h4>
                 </mobi:fieldSetRow>
                 <mobi:fieldSetRow id="second">
                     <h3> This element is in the second row </h3>

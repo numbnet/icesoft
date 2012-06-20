@@ -15,27 +15,47 @@
 <body>
 </c:if>
 	<div id="flipswitchContent">
-
-		<h2>Various Spring MVC tags</h2>
-		<p>
-			Flipswitches
-		</p>
 		<form:form id="flipswitchform" method="POST"  modelAttribute="flipSwitchBean" cssClass="cleanform">
-			<div class="header">
-		  		<mobi:flipSwitch id="onOffFlipSwitch" labelOn="On" labelOff="Off" value="${flipSwitchBean.onOffFlipSwitch}"/>
-		  		<mobi:flipSwitch id="yesNoFlipSwitch" labelOn="Yes" labelOff="No" value="${flipSwitchBean.yesNoFlipSwitch}"/>
-		  		<mobi:flipSwitch id="trueFalseFlipSwitch" labelOn="True" labelOff="False" value="${flipSwitchBean.trueFalseFlipSwitch}"/>
-			</div>
 
-		  		  		
-			<p><button type="submit">Submit</button></p>
-
+            <h4>Flip Switch</h4>
+            <mobi:fieldSetGroup inset="true">
+                <mobi:fieldSetRow>
+                    <label>Auto-Capitalization</label>
+                    <mobi:flipSwitch id="onOffFlipSwitch" labelOn="On" style="float:right"
+                             labelOff="Off" value="${flipSwitchBean.onOffFlipSwitch}"/>
+                </mobi:fieldSetRow>
+                <mobi:fieldSetRow>
+                    <label>Auto-Correction</label>
+                    <mobi:flipSwitch id="yesNoFlipSwitch" labelOn="Yes" style="float:right"
+                             labelOff="No" value="${flipSwitchBean.yesNoFlipSwitch}"/>
+                </mobi:fieldSetRow>
+                <mobi:fieldSetRow>
+                    <label>Check Spelling</label>
+                    <mobi:flipSwitch id="trueFalseFlipSwitch" labelOn="True" style="float:right"
+                             labelOff="False" value="${flipSwitchBean.trueFalseFlipSwitch}"/>
+                </mobi:fieldSetRow>
+			</mobi:fieldSetGroup>
+            <h4>Flip Switch Value Echo</h4>
+            <mobi:fieldSetGroup inset="true">
+                <mobi:fieldSetRow>
+                    <label>Auto-Capitalization</label>
+                    <label style="float:right">${flipSwitchBean.onOffFlipSwitch}</label>
+                </mobi:fieldSetRow>
+                <mobi:fieldSetRow>
+                    <label>Auto-Correction</label>
+                    <label style="float:right">${flipSwitchBean.yesNoFlipSwitch}</label>
+                </mobi:fieldSetRow>
+                <mobi:fieldSetRow>
+                    <label>Check Spelling</label>
+                    <label style="float:right">${flipSwitchBean.trueFalseFlipSwitch}</label>
+                </mobi:fieldSetRow>
+            </mobi:fieldSetGroup>
+            <%-- button types: default|important|attention| back--%>
+            <mobi:commandButton buttonType='important'
+                                style="float:right;margin-right: 25px;"
+                                value="Submit"
+                                type="submit"/>
 		</form:form>
-
-On/Off Bean = ${flipSwitchBean.onOffFlipSwitch} <br/>
-Yes/No Bean = ${flipSwitchBean.yesNoFlipSwitch} <br/>
-True/False Bean = ${flipSwitchBean.trueFalseFlipSwitch} 
-
 
 		<script type="text/javascript">
 

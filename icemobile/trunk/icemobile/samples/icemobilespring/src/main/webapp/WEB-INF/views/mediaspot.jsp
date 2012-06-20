@@ -13,39 +13,52 @@
 <body>
 </c:if>
 	<div id="mediaspot">
-		<h2>MediaSpot</h2>
-		<p>
-			ICEmobile Augmented Reality	
-		</p>
-		<form:form id="mediaspotform" method="POST" enctype="multipart/form-data" modelAttribute="mediaspotBean" style="width: 290px" >
-			<div class="header">
-		  		<s:bind path="*">
-		  			<c:if test="${status.error}">
-				  		<div id="message" class="error">Form has errors</div>
-		  			</c:if>
-		  		</s:bind>
-            <c:if test="${null != selection}">
-                <fieldset style="text-align:center">
-                    <div>Selected location:</div>
-                    <img style="height:120px;width:120px;padding:5px;"
-                        src="${imgPath}" >
-                    <div style="font-style:italic">${selection}</div>
-                </fieldset>
-            </c:if>
-			</div>
-		  	<fieldset>
-		  		<form:input path="title" placeholder="Title" />
-		  	</fieldset>
+		<h4>MediaSpot</h4>
+		<mobi:fieldSetGroup inset="true">
+            <mobi:fieldSetRow>
+                ICEmobile Augmented Reality
+            </mobi:fieldSetRow>
+		</mobi:fieldSetGroup>
 
-		  	<fieldset >
-               <mobi:geolocation id="location" />
-               <mobi:camera id="camera" />
-               <img style="height:60px;width:65px;vertical-align:middle;" 
-                    id="camera-thumb" >
-               <mobi:augmentedReality id="selection" 
-                    style="float:right" params="${reality}"/>
-		  	</fieldset>
-			<button type="submit">Submit</button>
+        <h4>Photo Information</h4>
+		<form:form id="mediaspotform" method="POST" enctype="multipart/form-data" modelAttribute="mediaspotBean" >
+            <mobi:fieldSetGroup inset="true">
+                <mobi:fieldSetRow>
+                    <label>Title: </label>
+		  		    <form:input path="title" placeholder="Title" />
+                </mobi:fieldSetRow>
+                <mobi:fieldSetRow style="height:90px;">
+                   <mobi:geolocation id="location" />
+                   <mobi:camera id="camera" />
+                   <mobi:thumb for="camvid"
+                                style="height:60px;width:65px;vertical-align:middle;float:right;margin:10px;"/>
+                </mobi:fieldSetRow>
+                <mobi:fieldSetRow>
+                    <mobi:augmentedReality id="selection" params="${reality}"/>
+                </mobi:fieldSetRow>
+		  	</mobi:fieldSetGroup>
+
+            <%-- button types: default|important|attention|back--%>
+            <mobi:commandButton buttonType='important'
+                                style="float:right;margin-right: 25px;"
+                                value="Submit"
+                                type="submit"/>
+            <div style="clear:both;" />
+            <s:bind path="*">
+                <c:if test="${status.error}">
+                    <div id="message" class="error">Form has errors</div>
+                </c:if>
+            </s:bind>
+            <c:if test="${null != selection}">
+                <mobi:fieldSetGroup inset="true">
+                    <mobi:fieldSetRow>
+                        Selected location:<br />
+                        <img style="height:120px;width:120px;padding:5px;"
+                             src="${imgPath}" />
+                        <div style="font-style:italic">${selection}</div>
+                    </mobi:fieldSetRow>
+                </mobi:fieldSetGroup>
+            </c:if>
 		</form:form>
 
 

@@ -16,18 +16,43 @@
 </c:if>
 	<div id="geolocationContent">
 
-		<h2>ICEmobile - Geolocation</h2>
-		<form:form id="geolocationform" method="POST"  modelAttribute="geolocationBean" cssClass="cleanform">
-            <mobi:geolocation id="geolocation"/>
-		  		  		
-			<p><input id="submitBtn" name="submitBtn" type="submit" value="Locate" /></p>
+        <form:form id="geolocationform" method="POST"  modelAttribute="geolocationBean" cssClass="cleanform">
+
+            <h4>Geolocation</h4>
+            <mobi:fieldSetGroup inset="true">
+                <mobi:fieldSetRow>
+                    <label>Press to launch activate geolocation:</label>
+                    <mobi:geolocation id="geolocation"/>
+                    <%-- button types: default|important|attention| back--%>
+                    <mobi:commandButton buttonType='important'
+                                        style="float:right;margin-right: 25px;"
+                                        value="Locate"
+                                        type="submit"/>
+                    <div style="clear:both"/>
+                </mobi:fieldSetRow>
+            </mobi:fieldSetGroup>
+
+            <h4>Position</h4>
+            <mobi:fieldSetGroup inset="true">
+                <mobi:fieldSetRow>
+                    <label>Latitude:</label>
+                    <label style="float:right">${geolocationBean.lat}</label>
+                </mobi:fieldSetRow>
+                <mobi:fieldSetRow>
+                    <label>Longitude:</label>
+                    <label style="float:right">${geolocationBean.lon}</label>
+                </mobi:fieldSetRow>
+                <mobi:fieldSetRow>
+                    <label>Altitude:</label>
+                    <label style="float:right">${geolocationBean.alt}</label>
+                </mobi:fieldSetRow>
+                <mobi:fieldSetRow>
+                    <label>Direction:</label>
+                    <label style="float:right">${geolocationBean.dir}</label>
+                </mobi:fieldSetRow>
+            </mobi:fieldSetGroup>
 
 		</form:form>
-
-Latitude = ${geolocationBean.lat}<br>
-Longitude = ${geolocationBean.lon}<br>
-Altitude = ${geolocationBean.alt}<br>
-Direction = ${geolocationBean.dir}<br>
 
 		<script type="text/javascript">
 

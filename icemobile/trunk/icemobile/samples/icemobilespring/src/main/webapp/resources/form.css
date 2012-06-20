@@ -20,19 +20,19 @@
 }
 
 .cleanform fieldset {
-	padding:0.7em;
-	border:1px solid #ddd;
-	margin:0 0 0.5em 0
+	/*padding:0.7em;*/
+	/*border:1px solid #ddd;*/
+	/*margin:0 0 0.5em 0*/
 }
 
 .cleanform label {
-	font-weight:bold
+	/*font-weight:bold*/
 }
 
 .cleanform fieldset input {
-	width:70%;
-	line-height:1.5em;
-	padding:0.15em
+	/*width:70%;*/
+	/*line-height:1.5em;*/
+	/*padding:0.15em*/
 }
 
 .cleanform .radio input,
@@ -43,12 +43,12 @@
 }
 
 .cleanform input, .cleanform textarea, .cleanform select {
-	display:block;
-	margin-bottom:1em;
-	font-size:1em;
-	border:1px solid #bbb;
-	padding:0.15em;
-	margin-right:1em
+	/*display:block;*/
+	/*margin-bottom:1em;*/
+	/*font-size:1em;*/
+	/*border:1px solid #bbb;*/
+	/*padding:0.15em;*/
+	/*margin-right:1em*/
 }
 
 .cleanform .radio label, .cleanform .radio input,

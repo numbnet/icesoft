@@ -30,7 +30,7 @@ div.error {
 	background-image: url('error.png');
 }
 
-span {
+span.success, span.error{
 	margin: 5px 5px 5px 5px;
 }
 
@@ -43,9 +43,9 @@ span.error {
 }
 
 body {
-	font-family: Lucida Grande, sans-serif;
-	font-size: .75em;
-	margin: 1em auto;
+	/*font-family: Lucida Grande, sans-serif;*/
+	/*font-size: .75em;*/
+	/*margin: 1em auto;*/
 }
 
 ul li {

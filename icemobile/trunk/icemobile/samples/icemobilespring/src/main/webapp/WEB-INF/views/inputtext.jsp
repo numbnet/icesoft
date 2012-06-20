@@ -16,18 +16,77 @@
 </c:if>
 	<div id="inputTextContent">
 
-		<h2>Various Spring MVC tags</h2>
-		<p>
-			InputText Contents
-		</p>
-
 		<form:form id="inputtextform" method="POST"  modelAttribute="inputTextBean" cssClass="cleanform">
-			<div class="header">
-		  		<mobi:inputtext id="textOne" value="${inputTextBean.textOne}"/>
-			</div>
 
-			<p><button type="submit">Submit</button></p>
-            Last value of submitted input text: ${inputTextBean.textOne}
+            <h4>Keybaord Input Test</h4>
+            <mobi:fieldSetGroup inset="true">
+                <mobi:fieldSetRow>
+                    <label>Text:</label>
+                    <mobi:inputtext id="text" type="text"
+                                    autoCorrect="off"
+                                    placeholder="Text input"
+                                    value="${inputTextBean.text}"/>
+                </mobi:fieldSetRow>
+                <mobi:fieldSetRow>
+                    <label>Number:</label>
+                    <mobi:inputtext id="number" type="number"
+                                    autoCorrect="off"
+                                    placeholder="Number"
+                                    value="${inputTextBean.number}"/>
+                </mobi:fieldSetRow>
+                <mobi:fieldSetRow>
+                    <label>Text area:</label>
+                    <mobi:inputtext id="textarea" type="textarea"
+                                    style="width:99%"
+                                    autoCorrect="off"
+                                    placeholder="Text area"
+                                    value="${inputTextBean.inputTextArea}"/>
+                </mobi:fieldSetRow>
+                <mobi:fieldSetRow>
+                    <label>Password:</label>
+                    <mobi:inputtext id="password" type="password"
+                                    autoCorrect="off"
+                                    placeholder="Password input"
+                                    value="${inputTextBean.password}"/>
+                </mobi:fieldSetRow>
+                <mobi:fieldSetRow>
+                    <label>Date</label>
+                    <mobi:inputtext id="date" type="date"
+                                    autoCorrect="off"
+                                    placeholder="yyyy-mm-dd"
+                                    value="${inputTextBean.date}"/>
+                </mobi:fieldSetRow>
+            </mobi:fieldSetGroup>
+            <%-- button types: default|important|attention| back--%>
+            <mobi:commandButton buttonType='important'
+                                style="float:right;margin-right: 25px;"
+                                value="Submit"
+                                type="submit"/>
+            <div style="clear:both"/>
+
+            <h4>Keybaord Input Test</h4>
+            <mobi:fieldSetGroup inset="true">
+                <mobi:fieldSetRow>
+                    <label>Text:</label>
+                   <label style="float:right;">${inputTextBean.text}</label>
+                </mobi:fieldSetRow>
+                <mobi:fieldSetRow>
+                    <label>Number:</label>
+                    <label style="float:right;">${inputTextBean.number}</label>
+                </mobi:fieldSetRow>
+                <mobi:fieldSetRow>
+                    <label>Text area:</label>
+                    <label style="float:right;">${inputTextBean.inputTextArea}</label>
+                </mobi:fieldSetRow>
+                <mobi:fieldSetRow>
+                    <label>Password:</label>
+                    <label style="float:right;">${inputTextBean.password}</label>
+                </mobi:fieldSetRow>
+                <mobi:fieldSetRow>
+                    <label>Date</label>
+                    <label style="float:right;">${inputTextBean.date}</label>
+                </mobi:fieldSetRow>
+            </mobi:fieldSetGroup>
 
 		</form:form>
 
