@@ -2,6 +2,8 @@ package org.icefaces.ace.model.chart;
 
 import org.icefaces.ace.model.SimpleEntry;
 import org.icefaces.ace.util.JSONBuilder;
+
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -127,11 +129,13 @@ public class CartesianSeries extends ChartSeries {
             if (key != null && keyType == null) {
                 if (key instanceof Number) keyType = Number.class;
                 else if (key instanceof String) keyType = String.class;
+                else if (key instanceof Date) keyType = Date.class;
             }
 
             if (valueType == null) {
                 if (value instanceof Number) valueType = Number.class;
                 else if (value instanceof String) valueType = String.class;
+                else if (value instanceof Date) valueType = Date.class;
             }
 
             if (key != null) {
@@ -140,12 +144,16 @@ public class CartesianSeries extends ChartSeries {
                     data.item(((Number)key).doubleValue());
                 else if (keyType == String.class)
                     data.item(key.toString());
+                else if (keyType == Date.class)
+                    data.item(((Date)key).getTime());
             }
 
             if (valueType == Number.class)
                 data.item(((Number)value).doubleValue());
             else if (valueType == String.class)
                 data.item(value.toString());
+            else if (keyType == Date.class)
+                data.item(((Date)key).getTime());
 
             if (key != null)
                 data.endArray();

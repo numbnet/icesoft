@@ -3,6 +3,7 @@ package org.icefaces.ace.component.chart;
 import org.icefaces.ace.util.JSONBuilder;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * Copyright 2010-2011 ICEsoft Technologies Canada Corp.
@@ -41,6 +42,8 @@ public class Axis implements Serializable {
     private Double pad;
     private Double padMin;
     private Double padMax;
+    private String formatString;
+    private String tickInterval;
 
     /**
      * Used by the ChartRenderer to produce a JSON representation of the configuration of this axis.
@@ -57,22 +60,26 @@ public class Axis implements Serializable {
         Boolean show = this.getShow();
         Integer tickAngle = this.getTickAngle();
         Boolean autoscale = this.getAutoscale();
+        String tickInterval = this.getTickInterval();
 
         json.beginMap();
 
         if (label != null)
             json.entry("label", label);
 
-        // Add date support
         if (max != null)
             if (max instanceof Number)
                 json.entry("max", ((Number)max).doubleValue());
+            else if (max instanceof Date)
+                json.entry("max", ((Date)max).getTime());
             else
                 json.entry("max", max.toString());
 
         if (min != null)
             if (min instanceof Number)
                 json.entry("min", ((Number)min).doubleValue());
+            else if (min instanceof Date)
+                json.entry("min", ((Date)min).getTime());
             else
                 json.entry("min", min.toString());
 
@@ -91,6 +98,7 @@ public class Axis implements Serializable {
 
         if (type != null)
             json.entry("renderer", type.toString(), true);
+
         if (hasRendererOptionsSet()) {
             json.beginMap("rendererOptions");
             if (type == AxisType.CATEGORY && isSortMergedLabels() != null)
@@ -102,11 +110,16 @@ public class Axis implements Serializable {
             json.endMap();
         }
 
+        if (tickInterval != null)
+            json.entry("tickInterval", tickInterval);
+
         if (ticks != null)
             encodeTicks(json);
 
         if (hasTickOptionsSet()) {
-            json.entry("tickRenderer", "ice.ace.jq.jqplot.CanvasAxisTickRenderer", true);
+            if (getType() != AxisType.DATE)
+                json.entry("tickRenderer", "ice.ace.jq.jqplot.CanvasAxisTickRenderer", true);
+
             encodeTickOptions(json);
         }
 
@@ -119,7 +132,9 @@ public class Axis implements Serializable {
         json.beginMap("tickOptions");
         String fontSize = getTickFontSize();
         Integer angle = getTickAngle();
+        String formatString = getFormatString();
 
+        if (formatString != null) json.entry("formatString", getFormatString());
         if (angle != null) json.entry("angle", angle);
         if (fontSize!= null) json.entry("fontSize", fontSize);
 
@@ -130,15 +145,8 @@ public class Axis implements Serializable {
         return (getTickAngle() != null || getTickFontSize() != null);
     }
 
-    // Add date support
-    private Object getDoubleIfPossible(Object max) {
-        if (max instanceof Number)
-            return ((Number)max).doubleValue();
-        else return max.toString();
-    }
-
     private boolean hasRendererOptionsSet() {
-        if ((type == AxisType.CATEGORY && sortMergedLabels != null) || forceTickAt0 != null || forceTickAt100 != null)
+        if ((type == AxisType.CATEGORY && sortMergedLabels != null) || forceTickAt0 != null || forceTickAt100 != null || formatString != null)
             return true;
         return false;
     }
@@ -150,12 +158,15 @@ public class Axis implements Serializable {
             if (tickType == null) {
                 if (tick instanceof Number) tickType = Number.class;
                 else if (tick instanceof String) tickType = String.class;
+                else if (tick instanceof Date) tickType = Date.class;
             }
 
             if (tickType == Number.class)
                 json.item(((Number)tick).doubleValue());
             else if (tickType == String.class) {
                 json.item(tick.toString());
+            } else if (tickType == Date.class) {
+                json.item(((Date)tick).getTime());
             }
         }
         json.endArray();
@@ -223,7 +234,7 @@ public class Axis implements Serializable {
      * If null, interpreted on the client from the x/y values of the series or from the explicit ticks given.
      * @param min either a Date or Number
      */
-    public void setMin(String min) {
+    public void setMin(Object min) {
         this.min = min;
     }
 
@@ -409,5 +420,37 @@ public class Axis implements Serializable {
      */
     public void setAutoscale(Boolean autoscale) {
         this.autoscale = autoscale;
+    }
+
+    /**
+     * Get the coded String that determines the output format of axis Date values.
+     * @return coded format String
+     */
+    public String getFormatString() {
+        return formatString;
+    }
+
+    /**
+     * Set the coded String that determines the output format of axis Date values.
+     * @param formatString coded string
+     */
+    public void setFormatString(String formatString) {
+        this.formatString = formatString;
+    }
+
+    /**
+     * Get the number of units between ticks.
+     * @return a numeral string or a representation of date units '1 (month / week / day)' or 'x (months / weeks / days)'
+     */
+    public String getTickInterval() {
+        return tickInterval;
+    }
+
+    /**
+     * Set the number of units between ticks.
+     * @param tickInterval a numeral string or a representation of date units '1 (month / week / day)' or 'x (months / weeks / days)'
+     */
+    public void setTickInterval(String tickInterval) {
+        this.tickInterval = tickInterval;
     }
 }
