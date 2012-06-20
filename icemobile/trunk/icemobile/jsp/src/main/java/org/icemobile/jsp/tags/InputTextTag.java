@@ -24,11 +24,21 @@ import java.io.Writer;
 
 public class InputTextTag extends SimpleTagSupport {
 
+    public static final String INPUT_TEXT_CLASS = "mobi-input-text";
+
     private String id;
     private String style;
     private String styleClass;
     private String type;
     private String value;
+
+    // textarea only
+    private int cols;
+    private int rows;
+
+    // passthrough attributes for html5
+    private String autoCorrect;
+    private String placeholder;
 
     public void doTag() throws IOException {
 
@@ -38,22 +48,38 @@ public class InputTextTag extends SimpleTagSupport {
 
         String element = "input";
         String type = getType();
+        boolean isTextArea = false;
         if (type != null && type.equalsIgnoreCase("textarea")) {
             element = "textarea";
+            isTextArea = true;
         }
         out.write("<" + element);
         out.write(" id=\"" + getId() + "\"");
         out.write(" name=\"" + getId() + "\"");
 
-        StringBuilder baseClass = new StringBuilder("mobi-input-text");
+        StringBuilder baseClass = new StringBuilder(INPUT_TEXT_CLASS);
         String styleClass = getStyleClass();
         if (styleClass != null && !"".equals(styleClass)) {
             baseClass.append(" ").append(styleClass);
         }
-
+        // apply pass through attributes.
         out.write(" class=\"" + baseClass.toString() + "\"");
-
-        out.write(" value=\"" + getValue() + "\"/>");
+        out.write(" style=\"" + style + "\"");
+        out.write(" autocorrect=\"" + autoCorrect + "\"");
+        out.write(" placeholder=\"" + placeholder + "\"");
+        // apply textarea passthough attributes.
+        if (rows > 0) {
+            out.write(" rows=\"" + this.type + "\"");
+        }
+        if (cols > 0) {
+            out.write(" cols=\"" + this.type + "\"");
+        }
+        if (!isTextArea) {
+            out.write(" type=\"" + this.type + "\"");
+            out.write(" value=\"" + getValue() + "\"/>");
+        } else {
+            out.write(">" + getValue() + "</textarea>");
+        }
     }
 
     public String getId() {
@@ -94,5 +120,37 @@ public class InputTextTag extends SimpleTagSupport {
 
     public void setValue(String value) {
         this.value = value;
+    }
+
+    public String getAutoCorrect() {
+        return autoCorrect;
+    }
+
+    public void setAutoCorrect(String autoCorrect) {
+        this.autoCorrect = autoCorrect;
+    }
+
+    public String getPlaceholder() {
+        return placeholder;
+    }
+
+    public void setPlaceholder(String placeholder) {
+        this.placeholder = placeholder;
+    }
+
+    public int getCols() {
+        return cols;
+    }
+
+    public void setCols(int cols) {
+        this.cols = cols;
+    }
+
+    public int getRows() {
+        return rows;
+    }
+
+    public void setRows(int rows) {
+        this.rows = rows;
     }
 }
