@@ -18,7 +18,7 @@
 </c:if>
 <div id="buttonsContent">
 
-    <h2>ICEmobile - Buttons</h2>
+    <h4>ICEmobile - Buttons</h4>
     <form:form id="buttonsform" method="POST" modelAttribute="buttonsBean"
                cssClass="cleanform">
         <mobi:fieldSetGroup inset="true">

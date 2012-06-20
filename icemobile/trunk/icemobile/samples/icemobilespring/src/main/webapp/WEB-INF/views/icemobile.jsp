@@ -13,16 +13,9 @@
 <body>
 </c:if>
 	<div id="camContent">
-		<h4>Camera</h4>
-        <mobi:fieldSetGroup inset="true">
-            <mobi:fieldSetRow>
-                ICEmobile Camera Sample
-            </mobi:fieldSetRow>
-        </mobi:fieldSetGroup>
-
 		<form:form id="camform" method="POST" enctype="multipart/form-data"
                    modelAttribute="icemobileBean" cssClass="cleanform">
-            <h4>Snapshot Information</h4>
+            <h4>Camera</h4>
             <mobi:fieldSetGroup inset="true">
                 <mobi:fieldSetRow>
 		  		    <form:label path="name">
