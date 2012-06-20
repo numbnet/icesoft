@@ -698,5 +698,5 @@
         ticks = null;
     };
    
-})(jQuery);
+})(ice.ace.jq);
 

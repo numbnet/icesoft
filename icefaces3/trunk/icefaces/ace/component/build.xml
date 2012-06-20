@@ -261,6 +261,7 @@
                 <file name="icefaces.ace/chart/plugins/jqplot.pointLabels.js"/>
                 <file name="icefaces.ace/chart/plugins/jqplot.canvasTextRenderer.js"/>
                 <file name="icefaces.ace/chart/plugins/jqplot.canvasAxisTickRenderer.js"/>
+                <file name="icefaces.ace/chart/plugins/jqplot.dateAxisRenderer.js"/>
                 <file name="icefaces.ace/chart/chart.js"/>
             </filelist>
         </concat>
