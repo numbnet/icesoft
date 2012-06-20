@@ -29,4 +29,17 @@ public @interface ClientBehaviorHolder {
     ClientEvent[] events();
 	
     String defaultEvent() default "";
+
+    /**
+     * ACE components only work with ace:ajax, not f:ajax. By default, code is
+     * generated to block f:ajax from being added to ACE components and
+     * interfering with them. This is necessary when f:ajax wraps components,
+     * ostensibly for addition to h: components, but if ace: components are
+     * also in that component sub-tree, then they would be affected as well.
+     *
+     * When ACEnvironment is used to generate third party components, they may
+     * wish their components to work with f:ajax, in which case this field can
+     * be set to true for those components.
+     */
+    boolean allowFAjax() default false;
 }
