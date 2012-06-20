@@ -69,11 +69,11 @@ public class DeviceResourceTag extends SimpleTagSupport {
         String accept = null;
 
         String resourceRoot = pageContext.getServletContext().
-                                                                     getInitParameter("org.icemobile.resource.root");
+                getInitParameter("org.icemobile.resource.root");
         resourceRoot = (resourceRoot != null) ? resourceRoot : DEFAULT_RESOURCE_ROOT;
 
         String applicationStage = pageContext.getServletContext().
-                                                                         getInitParameter("org.icemobile.project.stage");
+                getInitParameter("org.icemobile.project.stage");
 
         if (sr instanceof HttpServletRequest) {
             HttpServletRequest hsr = (HttpServletRequest) sr;
@@ -173,7 +173,7 @@ public class DeviceResourceTag extends SimpleTagSupport {
             String jqv = getJqversion();
             if (jqv != null && !"".equals(jqv)) {
                 out.write("<script type=\"text/javascript\" src=\"/" + resourceRoot + "/jquery/" +
-                                  jqv + "/jquery.js\" > </script>");
+                        jqv + "/jquery.js\" > </script>");
             }
 
 
