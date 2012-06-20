@@ -145,17 +145,6 @@ public class ComponentArtifact extends Artifact{
         writer.append("\n\tpublic String getFamily() {\n\t\treturn \"");
         writer.append(Utility.getFamily(component));
         writer.append("\";\n\t}\n\n");
-
-        writer.append("\n\tprivate static boolean isDisconnected(UIComponent component) {\n");
-        writer.append("\t\tUIComponent parent = component.getParent();\n");
-        writer.append("\t\tif (parent != null && parent instanceof UIViewRoot) {\n");
-        writer.append("\t\t\treturn false;\n");
-        writer.append("\t\t} else if (parent != null) {\n");
-        writer.append("\t\t\treturn isDisconnected(parent);\n");
-        writer.append("\t\t} else {\n");
-        writer.append("\t\t\treturn true;\n");
-        writer.append("\t\t}\n");
-        writer.append("\t}\n");
     }
 
 
@@ -795,8 +784,21 @@ public class ComponentArtifact extends Artifact{
 */
     }
 
+    private void isDisconnected() {
+        writer.append("\n\tprivate static boolean isDisconnected(UIComponent component) {\n");
+        writer.append("\t\tUIComponent parent = component.getParent();\n");
+        writer.append("\t\tif (parent != null && parent instanceof UIViewRoot) {\n");
+        writer.append("\t\t\treturn false;\n");
+        writer.append("\t\t} else if (parent != null) {\n");
+        writer.append("\t\t\treturn isDisconnected(parent);\n");
+        writer.append("\t\t} else {\n");
+        writer.append("\t\t\treturn true;\n");
+        writer.append("\t\t}\n");
+        writer.append("\t}\n");
+    }
+
     private void handleAttribute() {
-        writer.append("\tprivate void handleAttribute(String name, Object value) {\n");
+        writer.append("\n\tprivate void handleAttribute(String name, Object value) {\n");
         writer.append("\t\tList<String> setAttributes = (List<String>) this.getAttributes().get(\"javax.faces.component.UIComponentBase.attributesThatAreSet\");\n");
         writer.append("\t\tif (setAttributes == null) {\n");
         writer.append("\t\t\tString cname = this.getClass().getName();\n");
@@ -823,6 +825,7 @@ public class ComponentArtifact extends Artifact{
         addProperties(getComponentContext().getPropertyFieldsForComponentClassAsList());
         addFacet(getComponentContext().getActiveClass(), component);
         addInternalFields();
+        isDisconnected();
         handleAttribute();
         endComponentClass();
     }
