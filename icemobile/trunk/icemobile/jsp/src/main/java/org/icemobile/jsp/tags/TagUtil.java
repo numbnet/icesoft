@@ -217,14 +217,14 @@ public class TagUtil {
     }
 
     static boolean sniffIpod(String uaString) {
-        boolean result = uaString.indexOf(DEVICE_IPOD) != -1;
+        boolean result = uaString.toLowerCase().contains(DEVICE_IPOD.toLowerCase());
         logSniff(result, "iPod", uaString);
         return result;
     }
 
     //don't get iPhone confused with iPod touch
     static boolean sniffIphone(String uaString) {
-        boolean result = uaString.indexOf(DEVICE_IPHONE) != -1
+        boolean result = uaString.toLowerCase().contains(DEVICE_IPHONE.toLowerCase())
                                  && !sniffIpod(uaString)
                                  && !sniffIpad(uaString);
         logSniff(result, "iPod", uaString);
@@ -238,26 +238,26 @@ public class TagUtil {
     }
 
     static boolean sniffIOS5(String uaString) {
-        boolean result = uaString.indexOf(DEVICE_IOSS) != -1;
+        boolean result = uaString.toLowerCase().contains(DEVICE_IOSS.toLowerCase());
         logSniff(result, "iOS5", uaString);
         return result;
     }
 
     static boolean sniffIpad(String uaString) {
-        boolean result = uaString.indexOf(DEVICE_IPAD) != -1;
+        boolean result = uaString.toLowerCase().contains(DEVICE_IPAD.toLowerCase());
         logSniff(result, "iPad", uaString);
         return result;
     }
 
     static boolean sniffAndroid(String uaString) {
 
-        boolean foundAndroid = uaString.contains(DEVICE_ANDROID);
+        boolean foundAndroid = uaString.toLowerCase().contains(DEVICE_ANDROID);
         logSniff(foundAndroid, "Android Mobile", uaString);
         return foundAndroid;
     }
 
     static boolean sniffAndroidTablet(String uaString) {
-        boolean result = uaString.contains(DEVICE_HONEYCOMB) ||
+        boolean result = uaString.toLowerCase().contains(DEVICE_HONEYCOMB) ||
                                  (uaString.contains(DEVICE_ANDROID) && !uaString.contains("mobile safari"));
         // android tablet won't have the "mobile" on the agent at least for 3.x
         logSniff(result, "Android Tablet", uaString);
@@ -265,7 +265,7 @@ public class TagUtil {
     }
 
     static boolean sniffBlackberry(String uaString, String httpAccept) {
-        boolean result = uaString.contains(DEVICE_BLACKB)
+        boolean result = uaString.toLowerCase().contains(DEVICE_BLACKB)
                                  || httpAccept.contains(VND_RIM);
         logSniff(result, "BlackBerry", uaString);
         return result;
