@@ -222,7 +222,7 @@ public class CoreRenderer extends Renderer {
 	}
 
     protected void encodeClientBehaviors(FacesContext context, ClientBehaviorHolder component, JSONBuilder jb) throws IOException {
-        
+
         //ClientBehaviors
         Map<String,List<ClientBehavior>> behaviorEvents = component.getClientBehaviors();
 
@@ -241,18 +241,17 @@ public class CoreRenderer extends Renderer {
                 else if(event.equalsIgnoreCase("action"))       //commands
                     domEvent = "click";
 
-                String script = "";
+                String script = null;
                 ClientBehaviorContext cbc = ClientBehaviorContext.createClientBehaviorContext(context, (UIComponent) component, event, clientId, params);
 				for(Iterator<ClientBehavior> behaviorIter = behaviorEvents.get(event).iterator(); behaviorIter.hasNext();) {
                     ClientBehavior behavior = behaviorIter.next();
 					if (behavior instanceof javax.faces.component.behavior.AjaxBehavior) continue; // ignore f:ajax
                     script = behavior.getScript(cbc);    //could be null if disabled
-
-                    if(script == null) {
-                        script = "undefined";
-                    }
+                    break;
                 }
-                jb.entry(domEvent, script, true);
+                if (script != null && script.trim().length() > 0) {
+                    jb.entry(domEvent, script, true);
+                }
             }
 
             jb.endMap();
@@ -303,7 +302,7 @@ public class CoreRenderer extends Renderer {
                 //jb.endArray();
 
                 //if(wroteBehavior) {
-                if(script != null) {
+                if(script != null && script.trim().length() > 0) {
                     //writer.write(jb.toString());
                     writer.write(domEvent + " : ");
                     writer.write(script);
