@@ -120,10 +120,12 @@ public class IceOutputResource extends Resource implements Serializable {
     public URL getURL() {
         ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
         StringBuilder buff = new StringBuilder(context.getRequestScheme());
+        buff.append("://");
         buff.append(context.getRequestServerName());
         if (context.getRequestServerPort() != 80 && context.getRequestServerPort() != 443) {
             buff.append(":").append(context.getRequestServerPort());
         }
+        buff.append("/javax.faces.resource");
         buff.append(getRequestPath());
         URL url = null;
         try {

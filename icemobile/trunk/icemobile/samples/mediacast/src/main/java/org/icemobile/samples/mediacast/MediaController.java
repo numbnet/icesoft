@@ -159,6 +159,8 @@ public class MediaController implements Serializable {
                 uploadModel.setAudioFile(null);
             }
 
+            photoMessage.setLocation(uploadModel.getLatitude(), 
+                    uploadModel.getLatitude());
             // only add the message if the file successfully uploaded.
             if (mediaFile != null) {
                 mediaStore.addMedia(photoMessage);

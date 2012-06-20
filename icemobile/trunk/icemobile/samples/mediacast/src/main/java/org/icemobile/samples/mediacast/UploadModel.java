@@ -47,6 +47,8 @@ public class UploadModel implements Serializable {
     private File cameraFile;
     private File audioFile;
     private File videoFile;
+    private double latitude = 0.0;
+    private double longitude = 0.0;
 
     // select a photo to view in detail.
     private MediaMessage selectedPhoto;
@@ -172,5 +174,21 @@ public class UploadModel implements Serializable {
 
     public void setUploadErrorMessage(String uploadErrorMessage) {
         this.uploadErrorMessage = uploadErrorMessage;
+    }
+    
+    public double getLatitude()  {
+        return latitude;
+    }
+
+    public void setLatitude(double latitude)  {
+        this.latitude = latitude;
+    }
+
+    public double getLongitude()  {
+        return longitude;
+    }
+
+    public void setLongitude(double longitude)  {
+        this.longitude = longitude;
     }
 }

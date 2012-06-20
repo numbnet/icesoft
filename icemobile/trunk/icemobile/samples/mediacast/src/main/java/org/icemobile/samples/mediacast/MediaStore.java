@@ -17,10 +17,13 @@
 package org.icemobile.samples.mediacast;
 
 import javax.faces.bean.ApplicationScoped;
+import javax.faces.context.FacesContext;
+import javax.faces.context.ExternalContext;
 import javax.faces.bean.ManagedBean;
 import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
+import java.net.URLEncoder;
 
 /**
  * Simple in memory image cache which stores an uploaded image and a scaled
@@ -53,6 +56,26 @@ public class MediaStore implements Serializable {
 
     public int getCarouselStackCount() {
         return mediaCarouselStack.size();
+    }
+
+    public String getArParams() {
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        ExternalContext externalContext = facesContext.getExternalContext();
+        StringBuilder sb = new StringBuilder();
+        String url = externalContext.getRequestScheme() + "://" +
+            externalContext.getRequestServerName() + ":" + 
+            externalContext.getRequestServerPort();
+        //base URL must be extracted for jsf resources
+//        sb.append("ub=" + URLEncoder.encode(url));
+        for (MediaMessage message : mediaStack)  {
+            String imageURL = URLEncoder.encode(
+                    message.getMediumPhoto().getData().getURL().toString() );
+
+            String location = message.getPackedLocation() + ",,," + imageURL;
+            sb.append("&" + location);
+        }
+
+        return sb.toString();
     }
 
     /**

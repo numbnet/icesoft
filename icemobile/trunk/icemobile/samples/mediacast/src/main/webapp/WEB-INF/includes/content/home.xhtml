@@ -65,6 +65,9 @@
 
         <h:form prependId="false" id="cform">
             <mobi:uploadhelper/>
+            
+            <mobi:geolocation latitude="#{uploadModel.latitude}"
+                              longitude="#{uploadModel.longitude}"/>
 
             <mobi:fieldsetGroup>
                 <mobi:fieldsetRow rendered="#{uploadModel.showInputSelect}">
@@ -167,6 +170,16 @@
                     </h:commandLink>
                 </mobi:outputListItem>
             </mobi:outputList>
+
+            <mobi:outputList inset="true">
+                <mobi:outputListItem group="false">
+                Augmented <mobi:augmentedReality 
+                    styleClass="mobi-button mobi-round-all"
+                    value="#{uploadModel.selectedLocation}"
+                    params="#{mediaStore.arParams}" />
+                </mobi:outputListItem>
+            </mobi:outputList>
+
         </h:form>
         </div>
     </ui:define>
