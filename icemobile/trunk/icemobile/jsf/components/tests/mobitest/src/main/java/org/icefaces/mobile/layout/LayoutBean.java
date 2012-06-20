@@ -24,6 +24,7 @@ import javax.faces.event.ValueChangeEvent;
 import javax.faces.event.ActionEvent;
 import javax.faces.model.SelectItem;
 import java.io.Serializable;
+import java.lang.String;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -45,6 +46,7 @@ public class LayoutBean implements Serializable {
     private List<EachContentPane> eachContentPane = new ArrayList<EachContentPane>();
     private String selectedPane = FIRSTPANE;
     private String selectedPane2 = FORTH_PANE;
+ //   private String lmenuPane = MENUPANE;
     private int counter;
 
 	public LayoutBean(){
@@ -102,6 +104,14 @@ public class LayoutBean implements Serializable {
     public void changeToPane3Action(ActionEvent ae){
         this.selectedPane = THIRDPANE;
     }
+
+ /*   public String getLmenuPane() {
+        return lmenuPane;
+    }
+
+    public void setLmenuPane(String lmenuPane) {
+        this.lmenuPane = lmenuPane;
+    }  */
 
     public String getSelectedPane() {
         return selectedPane;

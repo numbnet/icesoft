@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
+<h:head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport"
+          content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;"/>
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <meta name="apple-mobile-web-app-status-bar-style" content="black"/>
+    <mobi:deviceStylesheet name="#{themeSwitcher.theme}" media="screen" />
+    <title>layoutMenu with contentStack single view</title>
+
+</h:head>
+<h:body>
+    <mobi:contentStack id="stack1" currentId="#{contentMenuBean.selectedPane}"  singleView="true"  layoutMenuId="mnu" >
+        <mobi:contentPane id="mnuPanel" client="true" menuOrHome="true">
+          <h:form id="menuForm">
+            <mobi:layoutMenu  id="mnu" value="#{contentMenuBean.menuCList}" var="item" contentStackId="stack1"
+                  selectedPane="#{contentMenuBean.selectedPane}">
+               <mobi:layoutMenuItem label="#{item.label}" value="#{item.value}"/>
+            </mobi:layoutMenu>
+          </h:form>
+      </mobi:contentPane>
+      <mobi:contentPane id="panel1" client="true">
+         <mobi:contentNavBar menuButtonLabel="Menu" menuButtonTargetId="mnuPanel">
+             <h3>Content Pane 1</h3>
+         </mobi:contentNavBar>
+              <h:panelGroup>
+                  panel 1 client
+              </h:panelGroup>
+      </mobi:contentPane>
+      <mobi:contentPane id="panel2" >
+        <mobi:contentNavBar menuButtonLabel="Menu" menuButtonTargetId="mnuPanel">
+             <h3>Content Pane 2</h3>
+         </mobi:contentNavBar>
+             <h:panelGroup>
+                 panel 2
+             </h:panelGroup>
+       </mobi:contentPane>
+       <mobi:contentPane id="panel3" facelet="true" >
+         <mobi:contentNavBar menuButtonLabel="Menu" menuButtonTargetId="mnuPanel">
+             <h3>Content Pane 3</h3>
+         </mobi:contentNavBar>
+             <h:panelGroup>
+                 panel 3
+             </h:panelGroup>
+         </mobi:contentPane>
+     </mobi:contentStack>
+
+</h:body>
+</html>
