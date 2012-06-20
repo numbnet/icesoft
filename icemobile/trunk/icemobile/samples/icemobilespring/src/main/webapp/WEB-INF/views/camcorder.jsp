@@ -13,14 +13,8 @@
 <body>
 </c:if>
 	<div id="vidContent">
-		<h4>Camcorder</h4>
-        <mobi:fieldSetGroup inset="true">
-            <mobi:fieldSetRow>
-			    ICEmobile Camcorder Sample
-            </mobi:fieldSetRow>
-        </mobi:fieldSetGroup>
 		<form:form id="camcorderform" method="POST" enctype="multipart/form-data" modelAttribute="camcorderBean" cssClass="cleanform">
-            <h4>Video Info</h4>
+            <h4>Camcorder</h4>
             <mobi:fieldSetGroup inset="true">
                 <mobi:fieldSetRow>
                     <form:label path="name">Author: <form:errors path="name" cssClass="error" /></form:label>

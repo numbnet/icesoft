@@ -62,7 +62,7 @@
                                 style="float:right;margin-right: 25px;"
                                 value="Submit"
                                 type="submit"/>
-            <div style="clear:both"/>
+            <div style="clear:right"/>
 
             <h4>Keybaord Input Test</h4>
             <mobi:fieldSetGroup inset="true">

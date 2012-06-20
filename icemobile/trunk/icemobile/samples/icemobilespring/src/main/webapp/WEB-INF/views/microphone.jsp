@@ -14,15 +14,8 @@
 </c:if>
 	<div id="micContent">
 
-		<h4>Microphone</h4>
-		<mobi:fieldSetGroup inset="true">
-            <mobi:fieldSetRow>
-			    ICEmobile Microphone Sample
-            </mobi:fieldSetRow>
-        </mobi:fieldSetGroup>
-
 		<form:form id="micform" method="POST" enctype="multipart/form-data" modelAttribute="microphoneBean" cssClass="cleanform">
-            <h4>Recording Info</h4>
+            <h4>Microphone</h4>
             <mobi:fieldSetGroup inset="true">
                 <mobi:fieldSetRow>
                     <form:label path="name">

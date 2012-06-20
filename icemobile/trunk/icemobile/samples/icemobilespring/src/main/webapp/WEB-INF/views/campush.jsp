@@ -18,16 +18,9 @@
 <c:if test="${isGET}">
     <push:register group="camPush" callback="function(){$('#campushform').submit();}"/>
 </c:if>
-		<h4>Camera Push</h4>
-        <mobi:fieldSetGroup inset="true">
-            <mobi:fieldSetRow>
-			    ICEmobile Camera Push Sample
-		    </mobi:fieldSetRow>
-        </mobi:fieldSetGroup>
-
 		<form:form id="campushform" method="POST" enctype="multipart/form-data" modelAttribute="icemobileBean" cssClass="cleanform">
 
-            <h4>Snapshot Information</h4>
+            <h4>Camera Push</h4>
             <mobi:fieldSetGroup inset="true">
                 <mobi:fieldSetRow>
 		  		    <form:label path="name">
