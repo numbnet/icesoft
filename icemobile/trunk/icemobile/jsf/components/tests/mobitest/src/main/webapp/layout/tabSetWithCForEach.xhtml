@@ -30,61 +30,78 @@
     <title>ContentPane</title>
 
     <mobi:deviceStylesheet
-            name="#{themeSwitcher.theme}" media="screen" />
+            name="#{themeSwitcher.theme}" media="screen"/>
 
 </h:head>
 
 <h:body>
-     <a href="../layoutComponents.html">index page</a>
+    <a href="../layoutComponents.html">index page</a>
     <h:form id="selectForm">
-       <h:panelGroup id="selectorGroup">
-         <h:outputText  value="select the pane to open:-"/>
-         <h:selectOneMenu id="selectPane"  value="#{layoutBean.selectedPane}">
-             <f:selectItems value="#{layoutBean.allContentPanes}"/>
-             <f:ajax execute="@this" render="@all"/>
-         </h:selectOneMenu>
-       </h:panelGroup>
-      </h:form>
-      <h1> test page for tabSet</h1>
-      <br />
-     <h:form id="contentForm">
-         <mobi:tabSet id="test1" currentId="#{layoutBean.selectedPane}" tabChangeListener="#{layoutBean.tabChangeListener}">
-           <c:forEach items="#{layoutBean.eachContentPane}" var="currContentPane">
-              <mobi:contentPane id="#{currContentPane.id}" title="#{currContentPane.legend}" client="#{currContentPane.client}"
-                      facelet="#{currContentPane.facelet}">
-                 <fieldset title="#{currContentPane.title}">
-                      <legend>#{currContentPane.legend}</legend>
-                    <h3> #{currContentPane.header}</h3>
-                     <p> #{currContentPane.content} </p>
-                       <figure>
-                         <img width="85" height="150"
-                            src="#{currContentPane.imgSrc}"
-                            alt="#{currContentPane.alt}" />
-                         <figcaption>#{currContentPane.figcaption}</figcaption>
+        <h:panelGroup id="selectorGroup">
+            <h:outputText value="select the pane to open:-"/>
+            <h:selectOneMenu id="selectPane" value="#{layoutBean.selectedPane}">
+                <f:selectItems value="#{layoutBean.allContentPanes}"/>
+                <f:ajax execute="@this" render="@all"/>
+            </h:selectOneMenu>
+        </h:panelGroup>
+    </h:form>
+
+    <h1> test page for tabSet</h1>
+    <h:form id="contentForm">
+        <mobi:tabSet id="test1" currentId="#{layoutBean.selectedPane}"
+                     tabChangeListener="#{layoutBean.tabChangeListener}"
+                     parentHeader="false"
+                     parentFooter="false" autoWidth="false"
+                     orientation="top">
+            <c:forEach items="#{layoutBean.eachContentPane}"
+                       var="currContentPane">
+                <mobi:contentPane id="#{currContentPane.id}"
+                                  title="#{currContentPane.legend}"
+                                  client="#{currContentPane.client}"
+                                  facelet="#{currContentPane.facelet}">
+                    <fieldset title="#{currContentPane.title}">
+                        <legend>#{currContentPane.legend}</legend>
+                        <h3> #{currContentPane.header}</h3>
+
+                        <p> #{currContentPane.content} </p>
+                        <figure>
+                            <img width="85" height="150"
+                                 src="#{currContentPane.imgSrc}"
+                                 alt="#{currContentPane.alt}"/>
+                            <figcaption>#{currContentPane.figcaption}</figcaption>
                         </figure>
-                     <ui:include src="included.xhtml"/>                     
-                  </fieldset>
-              </mobi:contentPane>
-           </c:forEach>
-       </mobi:tabSet>
-       <div id="output" style="display:block;">
-          selected pane ... <mark>#{layoutBean.selectedPane}</mark> ... is selected pane
-       </div>
-      <div>
-           <mobi:commandButton id="but1"
-                                  value="SelectPane3" actionListener="#{layoutBean.changeToPane3}">
-                  <mobi:ajax execute="@this" render="@all"/>
-           </mobi:commandButton>
-          <mobi:commandButton id="butadd"
-                                 value="Add ContentPane" actionListener="#{layoutBean.addContentPane}">
-                 <mobi:ajax execute="@this" render="@all"/>
-          </mobi:commandButton>
-          <mobi:commandButton id="butrem"
-                                 value="Remove Content Pane" actionListener="#{layoutBean.removeContentPane}">
-                 <mobi:ajax execute="@this" render="@all"/>
-          </mobi:commandButton>
-      </div>
-     </h:form>
+                        <ui:include src="included.xhtml"/>
+                    </fieldset>
+                </mobi:contentPane>
+            </c:forEach>
+        </mobi:tabSet>
+
+        <div style="clear:both" />
+
+        <div id="output" >
+            selected pane ...
+            <mark>#{layoutBean.selectedPane}</mark>
+            ... is selected pane
+        </div>
+        <div style="clear:both" />
+        <div>
+            <mobi:commandButton id="but1"
+                                value="SelectPane3"
+                                actionListener="#{layoutBean.changeToPane3}">
+                <mobi:ajax execute="@this" render="@all"/>
+            </mobi:commandButton>
+            <mobi:commandButton id="butadd"
+                                value="Add ContentPane"
+                                actionListener="#{layoutBean.addContentPane}">
+                <mobi:ajax execute="@this" render="@all"/>
+            </mobi:commandButton>
+            <mobi:commandButton id="butrem"
+                                value="Remove Content Pane"
+                                actionListener="#{layoutBean.removeContentPane}">
+                <mobi:ajax execute="@this" render="@all"/>
+            </mobi:commandButton>
+        </div>
+    </h:form>
 
 </h:body>
 </html>
