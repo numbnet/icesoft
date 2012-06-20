@@ -37,7 +37,7 @@
     <ui:define name="example">
 
         <h:form id="form">
-            <h:panelGroup style="padding: 0.5em;" layout="block">
+            <h:panelGroup id="panelGroup" style="padding: 0.5em;" layout="block">
                 <style type="text/css">
                     .inlineList {
                         float:left;
@@ -46,26 +46,26 @@
                         vertical-align: top;
                     }
                 </style>
-                <ace:listControl>
+                <ace:listControl id="listControl">
                     <f:facet name="header">
                         Multi List Header
                     </f:facet>
                 </ace:listControl>
-                <ace:list value="#{backing.stringList}"
+                <ace:list id="firstList" value="#{backing.stringList}"
                           styleClass="inlineList"
                           height="170px"
                           selectionMode="single"
                           controlsEnabled="true"
                           dragging="false" />
 
-                <ace:list value="#{backing.fstDestStringList}"
+                <ace:list id="secondList" value="#{backing.fstDestStringList}"
                           styleClass="inlineList"
                           height="170px"
                           selectionMode="single"
                           controlsEnabled="true"
                           dragging="false" />
 
-                <ace:list value="#{backing.sndDestStringList}"
+                <ace:list id="thirdList" value="#{backing.sndDestStringList}"
                           styleClass="inlineList"
                           height="170px"
                           selectionMode="single"
