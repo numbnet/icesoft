@@ -52,11 +52,13 @@
         if (panes!=null){
             var cpanes = panes.children;
             var length = cpanes.length;
-            for (i=0; i< length; i++){
+            for (i=0; i< length-1; i++){
                 var isMenu = cpanes[i].getAttribute("isMenu");
-                if (isMenu == true && singleView) {
-                    mobi.layoutMenu.menuId[clientId] = cpanes[i].id;
-                    cpanes[i].className=singleMnuHidClass;
+                if (isMenu=="true" && singleView) {
+                    if (!mobi.layoutMenu.menuId[clientId]){
+                       mobi.layoutMenu.menuId[clientId] = cpanes[i].id;
+                    }
+                    cpanes[i].className = singleMnuHidClass;
                 } else {
                     cpanes[i].className = hideClass;
                 }
@@ -72,7 +74,7 @@
         }
         var currPane =  document.getElementById(selClientId);
         var isMenu = currPane.getAttribute("isMenu") || false;
-        if (isMenu){
+        if (isMenu=="true"){
             this.mobi.layoutMenu.menuId[clientId] = currPane.id;
         }
         if (currPane){
@@ -97,8 +99,8 @@
                currPane = document.getElementById(selClId);
                var prevPane = document.getElementById(prevId);
                var wasMenu = prevPane.getAttribute("isMenu") || false;
-               if (wasMenu == true){
-                   prevPane.className= singleMnuHidClass
+               if (wasMenu=="true"){
+                   prevPane.className= singleMnuHidClass ;
                } else {
                    prevPane.className =  hideClass;
                }
