@@ -23,13 +23,13 @@
                cssClass="cleanform">
         <mobi:fieldSetGroup inset="true">
             <mobi:fieldSetRow>
-                <mobi:commandButton id="dBtn" buttonType="default"
+                <mobi:commandButton name="submitB" buttonType="default"
                                     value="default"/>
-                <mobi:commandButton id="iBtn" buttonType='important'
+                <mobi:commandButton name="submitB" buttonType='important'
                                     value="important"/>
-                <mobi:commandButton id="aBtn" buttonType='attention'
+                <mobi:commandButton name="submitB" buttonType='attention'
                                     value="attention"/>
-                <mobi:commandButton id="pBtn" value="plain"
+                <mobi:commandButton name="submitB" value="plain"
                         style="float:none;"/>
             </mobi:fieldSetRow>
             <mobi:fieldSetRow>

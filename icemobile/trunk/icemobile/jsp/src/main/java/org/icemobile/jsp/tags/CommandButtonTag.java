@@ -27,6 +27,7 @@ public class CommandButtonTag extends SimpleTagSupport {
     public static final String SELECTED_STYLE_CLASS = " mobi-button-selected";
 
     private String id;
+    private String name;
     private String style;
     private String styleClass;
     private String buttonType;
@@ -47,7 +48,10 @@ public class CommandButtonTag extends SimpleTagSupport {
 
         if (id != null && !"".equals(id)) {
             out.write(" id='" + getId() + "'");
-            out.write(" name='" + getId() + "'");
+        }
+
+        if (name != null && !"".equals(name)) {
+            out.write(" name='" + getName() + "'");
         }
 
         StringBuilder builder = new StringBuilder(BASE_STYLE_CLASS);
@@ -103,6 +107,14 @@ public class CommandButtonTag extends SimpleTagSupport {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getStyle() {

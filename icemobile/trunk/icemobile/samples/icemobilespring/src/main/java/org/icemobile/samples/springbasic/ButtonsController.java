@@ -5,6 +5,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.request.WebRequest;
 
 import javax.servlet.http.HttpServletRequest;
@@ -29,17 +30,9 @@ public class ButtonsController {
     }
 
     @RequestMapping(value = "/buttons", method = RequestMethod.POST)
-    public void variousPost(HttpServletRequest request,
+    public void variousPost(@RequestParam("submitB") String submitted,
                               Model model) {
-        if (null != request.getParameter("dBtn"))  {
-            model.addAttribute("pressed", "Default");
-        }
-        if (null != request.getParameter("iBtn"))  {
-            model.addAttribute("pressed", "Important");
-        }
-        if (null != request.getParameter("aBtn"))  {
-            model.addAttribute("pressed", "Attention");
-        }
+        model.addAttribute("pressed", "[" + submitted + "]");
     }
 
 }
