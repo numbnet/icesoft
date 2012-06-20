@@ -582,6 +582,12 @@
                            name="contentpane" skin="ipad"/>
         <includeresources dir="src/org/icefaces/mobi/component/contentpane/ipad"
                            name="contentpane" skin="iphone"/>
+        <includeresources dir="src/org/icefaces/mobi/component/contentpane/android"
+                          name="contentpane" skin="android"/>
+        <includeresources dir="src/org/icefaces/mobi/component/contentpane/honeycomb"
+                          name="contentpane" skin="honeycomb"/>
+        <includeresources dir="src/org/icefaces/mobi/component/contentpane/bberry"
+                          name="contentpane" skin="bberry"/>
        <!-- Accordion-->
         <includeresources dir="src/org/icefaces/mobi/component/accordion/iphone"
                           name="accordion" skin="iphone"/>
