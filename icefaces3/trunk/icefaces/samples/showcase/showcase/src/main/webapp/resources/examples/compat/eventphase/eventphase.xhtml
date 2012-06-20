@@ -52,7 +52,7 @@
                              columnClasses="col25,col75"
                              width="100%">
                     <h:outputLabel for="provinceIn" value="Province:"/>
-                    <ice:setEventPhase events="ValueChangeEvent"
+                    <icecore:setEventPhase events="ValueChangeEvent"
                                        phase="INVOKE_APPLICATION"
                                        disabled="#{!eventphase.enable}">
                         <h:selectOneListbox id="provinceIn"
@@ -62,7 +62,7 @@
                                             style="width: 100%;">
                             <f:selectItems value="#{eventphase.availableProvinces}"/>
                         </h:selectOneListbox>
-                    </ice:setEventPhase>
+                    </icecore:setEventPhase>
                     <h:message for="provinceIn"/>
                     
                     <h:outputLabel for="provinceOut" value="Selected:"/>
@@ -75,7 +75,7 @@
                              columnClasses="col25,col75"
                              width="100%">
                     <h:outputLabel for="cityIn" value="City:"/>
-                    <ice:setEventPhase events="ValueChangeEvent"
+                    <icecore:setEventPhase events="ValueChangeEvent"
                                        phase="INVOKE_APPLICATION"
                                        disabled="#{!eventphase.enable}">
                         <h:selectOneListbox id="cityIn"
@@ -85,7 +85,7 @@
                                             style="width: 100%;">
                             <f:selectItems value="#{eventphase.availableCities}"/>
                         </h:selectOneListbox>
-                    </ice:setEventPhase>
+                    </icecore:setEventPhase>
                     <h:message for="cityIn"/>
                     
                     <h:outputLabel for="cityOut" value="Selected:"/>

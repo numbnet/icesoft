@@ -53,12 +53,12 @@
                 <h:message for="textIn"/>
             </h:panelGrid>
 
-            <ice:setEventPhase events="ActionEvent"
+            <icecore:setEventPhase events="ActionEvent"
                                phase="APPLY_REQUEST_VALUES"
                                disabled="#{!eventphaseAction.enable}">            
                 <h:commandButton value="Set Event Phase Action"
                                  actionListener="#{eventphaseAction.fireListener}"/>
-            </ice:setEventPhase>
+            </icecore:setEventPhase>
             <h:commandButton value="Normal Action"
                              actionListener="#{eventphaseAction.fireListener}"/>
         </h:form>
