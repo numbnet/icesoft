@@ -37,14 +37,4 @@ public class CloseEvent extends AjaxBehaviorEvent {
 	public CloseEvent(UIComponent component, Behavior behavior) {
 		super(component, behavior);
 	}
-
-	@Override
-	public boolean isAppropriateListener(FacesListener faceslistener) {
-		return false;
-	}
-
-	@Override
-	public void processListener(FacesListener faceslistener) {
-		throw new UnsupportedOperationException();
-	}
 }
