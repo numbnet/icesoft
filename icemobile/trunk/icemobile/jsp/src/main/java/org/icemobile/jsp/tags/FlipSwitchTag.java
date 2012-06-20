@@ -13,7 +13,7 @@ public class FlipSwitchTag extends SimpleTagSupport {
 
     public static final String FLIPSWITCH_ON_CLASS = "mobi-flip-switch mobi-flip-switch-on ";
     public static final String FLIPSWITCH_OFF_CLASS = "mobi-flip-switch mobi-flip-switch-off ";
-    public static final String FLIPSWITCH_TEXT_CLASS = "mobi-flip-switch-text";
+    public static final String FLIPSWITCH_TEXT_CLASS = "mobi-flip-switch-txt";
 
     private String id;
     private String style;
@@ -44,8 +44,8 @@ public class FlipSwitchTag extends SimpleTagSupport {
         if (isChecked) {
             styleClass = FLIPSWITCH_ON_CLASS;
         }
-        out.write(" class=\"" + styleClass + "\"");
-
+        out.write(" class=\"" + styleClass + " " + this.styleClass +"\"");
+        out.write(" style=\"" + this.style +"\"");
         if (isDisabled()) {
             out.write(" disabled=\"true\"");
         }
