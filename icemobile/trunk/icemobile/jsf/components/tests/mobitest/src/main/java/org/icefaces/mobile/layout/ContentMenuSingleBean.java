@@ -21,6 +21,7 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.event.ValueChangeEvent;
 import java.awt.event.ActionEvent;
 import java.io.Serializable;
+import java.lang.String;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -44,6 +45,7 @@ public class ContentMenuSingleBean extends LayoutBean {
     private String selectedPane = MENUPANE;
     private String selectedPane2 = FIRSTPANE;
     private String selectedTabPane = FIRSTTABPANE;
+    private String twoColSelectedPane=FIRSTPANE;
 
     public ContentMenuSingleBean(){
        this.menuCList.add(new MenuValue("Menu Example", null, true));
@@ -85,11 +87,18 @@ public class ContentMenuSingleBean extends LayoutBean {
          this.menuCList = menuList;
      }
 
+    public String getTwoColSelectedPane() {
+        return twoColSelectedPane;
+    }
     public String getSelectedPane2() {
         return selectedPane2;
     }
 
+    public void setTwoColSelectedPane(String twoColSelectedPane) {
+        this.twoColSelectedPane = twoColSelectedPane;
+    }
     public void setSelectedPane2(String selectedPane2) {
         this.selectedPane2 = selectedPane2;
     }
+
 }
