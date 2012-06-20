@@ -13,17 +13,21 @@
           type="text/css"/>
     <link href="<c:url value="/resources/jqueryui/1.8/themes/base/jquery.ui.all.css" />"
           rel="stylesheet" type="text/css"/>
-    <mobi:deviceResource/>
+    <mobi:deviceResource />
     <script type="text/javascript" src="code.icepush"></script>
     <style>
-        div#tabs > ul li{
-            /*width: 98px;*/
+        #tabs > ul li{
+            width: 100px;
+            margin: 0;
+            padding: 0;
+            text-align: center;
         }
         .ui-widget {
             font-size: inherit;
         }
-
-
+        .ui-tabs{
+            padding:0;
+        }
         .ui-tabs .ui-tabs-nav li a {
             padding: .3em .5em;
         }
@@ -37,7 +41,37 @@
             background: transparent;
             color: inherit;
         }
-        .ui-tabs .ui-tabs-panel{padding:0;}
+        .ui-tabs .ui-tabs-panel{
+            font-family: inherit;
+            padding:0;
+        }
+        .ui-widget{
+            font-family: inherit;
+        }
+        .ui-widget input, .ui-widget select, .ui-widget textarea, .ui-widget button {
+            font-size: inherit;
+            font-family: inherit;
+        }
+
+        @media all and (min-width: 481px) {
+            #tabs > ul{
+                float:left;
+                width:200px;
+                border: none;
+                height: 100%;
+            }
+            #tabs > ul li{
+                width:100%;
+                border-radius: 0;
+            }
+            #tabs > div{ margin-left: 200px;}
+            .ui-tabs .ui-tabs-nav{
+                padding:0;
+            }
+
+
+        }
+
 
     </style>
 </head>
