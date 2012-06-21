@@ -69,19 +69,19 @@ public class GMapMarker extends UIPanel{
     	            !currentLon.equals(oldLongitude)) {
     	        //to dynamic support first to remove if any
                 JavascriptContext.addJavascriptCall(context, 
-                        "Ice.GoogleMap.removeOverlay('"+ this.getParent()
+                        "Ice.GoogleMap.removeMarker('"+ this.getParent()
                         .getClientId(context)+"', '"+ getClientId(context)+"');"); 
                 JavascriptContext.addJavascriptCall(context, "Ice.GoogleMap." +
-                        "addOverlay('"+ this.getParent().getClientId(context)+
+                        "addMarker('"+ this.getParent().getClientId(context)+
                         "', '"+ getClientId(context)+"', " +
-                      "'new GMarker(new GLatLng("+ currentLat+","+ currentLon +"))');");                
+                      "'new google.maps.Marker({map:map, position:new google.maps.LatLng("+ currentLat+","+ currentLon +"), draggable:"+ isDraggable() +"})');");                
                 
     	    }
     	    oldLatitude = currentLat;
     	    oldLongitude = currentLon;
     	}
     }
-    
+
     public void encodeChildren(FacesContext context) throws IOException {
          if (getChildCount() == 0 )return;
 	     Iterator kids = getChildren().iterator();
@@ -99,20 +99,20 @@ public class GMapMarker extends UIPanel{
 			    	if (call.endsWith("changed") || !kid.isRendered() || !isRendered()) {
 			    	    call = call.substring(0, call.length() - "changed".length());
 			    	    JavascriptContext.addJavascriptCall(context, 
-			    	            "Ice.GoogleMap.removeOverlay('"+ this.getParent()
+			    	            "Ice.GoogleMap.removeMarker('"+ this.getParent()
 			    	            .getClientId(context)+"', '"+ kid.getClientId(context)+"');");
 			    	} 
 			    	if (!kid.isRendered() || !isRendered()) continue;
 			    	JavascriptContext.addJavascriptCall(context, "Ice.GoogleMap." +
-			    			"addOverlay('"+ this.getParent().getClientId(context)+
-			    			"', '"+ kid.getClientId(context)+"', 'new GMarker("+ call +")');");
+			    			"addMarker('"+ this.getParent().getClientId(context)+
+			    			"', '"+ kid.getClientId(context)+"', 'new google.maps.Marker({map:map, position:"+ call +", draggable:true})');");
 			    } else if(kid instanceof GMapLatLngs) {
 			        //The list of GMapLatLngs can be dynamic so first remove previously 
 			        //added markers
 			        Iterator it = point.iterator();
 			        while (it.hasNext()) {
 			            JavascriptContext.addJavascriptCall(context, "Ice.GoogleMap." +
-			            		"removeOverlay('"+ this.getParent()
+			            		"removeMarker('"+ this.getParent()
 			            		.getClientId(context)+"', '"+ it.next() +"');");		            
 			        }
 			        point.clear();
@@ -121,13 +121,13 @@ public class GMapMarker extends UIPanel{
 			        StringTokenizer st = new StringTokenizer(kid.getAttributes()
 			                .get("latLngsScript").toString(), ";");
 			    	while(st.hasMoreTokens()) {
-			    		String[] scriptInfo =st.nextToken().split("kid-id");
+			    		String[] scriptInfo = st.nextToken().split("kid-id");
 			    		String call = scriptInfo[0];
 			    		String latLngId = scriptInfo[1];
 			    		point.add(latLngId);
 			    		JavascriptContext.addJavascriptCall(context, "Ice.GoogleMap." +
-			    				"addOverlay('"+ this.getParent().getClientId(context)+
-			    				"', '"+ latLngId +"', 'new GMarker("+ call +")');");
+			    				"addMarker('"+ this.getParent().getClientId(context)+
+			    				"', '"+ latLngId +"', 'new google.maps.Marker({map:map, position:"+ call +", draggable:true})');");
 			    	}
 			    }
 	     }

@@ -44,11 +44,11 @@ public class GMapGeoXml extends UIPanel{
     public void encodeBegin(FacesContext context) throws IOException {
         setRendererType(null);
         super.encodeBegin(context);        
-        if (!isRendered()) {
-            JavascriptContext.addJavascriptCall(context, "Ice.GoogleMap.removeOverlay('"+ this.getParent().getClientId(context)+"', '"+ this.getClientId(context) +"');");
-        } else {
-            JavascriptContext.addJavascriptCall(context, "Ice.GoogleMap.addOverlay('"+ this.getParent().getClientId(context)+"', '"+ this.getClientId(context) +"', 'new GGeoXml(\""+ getUrl() +"\")');");
+        if (isRendered()) {
+            JavascriptContext.addJavascriptCall(context, "Ice.GoogleMap.removeKML('"+ this.getParent().getClientId(context)+"', '"+ this.getClientId(context) +"');");
         }
+        JavascriptContext.addJavascriptCall(context, "Ice.GoogleMap.addKML('"+ this.getParent().getClientId(context)+"', '"+ this.getClientId(context) +"', '"+ getUrl() +"');");
+        
     }
 
 	public String getUrl() {

@@ -61,43 +61,18 @@ public class GMapDirection extends UIPanel{
     	String textualDivId = getTextualDivId(); 
 		GMap gmap = (GMap)this.getParent();
     	String mapId = gmap.getClientId(context);
-    	if (textualDivId == null) {
-    		//user didn't defined the textual div, so create one
-
-    		textualDivId = mapId + "textualDiv";
-    		DOMContext domContext = DOMContext.getDOMContext(context, gmap);
-
-    		Element texttualTd =  (Element) domContext.createElement(HTML.TD_ELEM);
-    		texttualTd.setAttribute(HTML.CLASS_ATTR, gmap.getTxtTdStyleClass());
-    		Element textualDiv = (Element) domContext.createElement(HTML.DIV_ELEM);
-    		textualDiv.setAttribute(HTML.STYLE_ATTR, "width:300px;");
-    		textualDiv.setAttribute(HTML.ID_ATTR, textualDivId );
-    		texttualTd.setAttribute("VALIGN", "top");
-    		texttualTd.appendChild(textualDiv);
-    		domContext.getRootNode().getFirstChild().appendChild(texttualTd);
-    	} else {
-    		if (textualDivClientId == null) {
-    			textualDivClientId = getClientIdOfTextualDiv(context);
-    		}
-    	}
-    	
     	String query = "";
     	String from = getFrom();
     	String to = getTo();
-    	if((isLocateAddress() || !initilized)) {
-    		 if (from != null && from.length() > 2) {
-    			 query = "from: "+ from + " ";
-    		 }
-    		 if (to != null && to.length() > 2) {
-    			 query += "to: "+ to;
-    		 }
-    		 if (query.length() > 2 ) {
-    			 JavascriptContext.addJavascriptCall(context, 
-    					 "Ice.GoogleMap.loadDirection('"+ mapId +"', '"+ 
-    					 textualDivClientId +"', '"+ query +"');");
-    		 }
-    		 initilized = true;    		
-    	}
+		if(!initilized)
+			initilized = true;
+    	else{
+			if((isLocateAddress())) {
+			JavascriptContext.addJavascriptCall(context, 
+    			"Ice.GoogleMap.loadDirection('"+ mapId +"', '"+ from +"', '" + to +"');");
+    	    		
+			}
+		}
     }
 
 	public boolean isLocateAddress() {
