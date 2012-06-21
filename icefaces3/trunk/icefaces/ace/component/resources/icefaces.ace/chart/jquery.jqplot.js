@@ -225,15 +225,16 @@
                 return plot;
             }
             catch(e) {
-                var msg = $.jqplot.config.errorMessage || e.message;
+                var msg = $.jqplot.config.errorMessage || e.message || e;
                 $('#'+target).append('<div class="jqplot-error-message">'+msg+'</div>');
-                $('#'+target).addClass('jqplot-error');
-                document.getElementById(target).style.background = $.jqplot.config.errorBackground;
-                document.getElementById(target).style.border = $.jqplot.config.errorBorder;
-                document.getElementById(target).style.fontFamily = $.jqplot.config.errorFontFamily;
-                document.getElementById(target).style.fontSize = $.jqplot.config.errorFontSize;
-                document.getElementById(target).style.fontStyle = $.jqplot.config.errorFontStyle;
-                document.getElementById(target).style.fontWeight = $.jqplot.config.errorFontWeight;
+                $('#'+target)
+                        .addClass('jqplot-error')
+                        .css('background', $.jqplot.config.errorBackground)
+                        .css('border', $.jqplot.config.errorBorder)
+                        .css('fontFamily', $.jqplot.config.errorFontFamily)
+                        .css('fontSize', $.jqplot.config.errorFontSize)
+                        .css('fontStyle', $.jqplot.config.errorFontStyle)
+                        .css('fontWeight', $.jqplot.config.errorFontWeight);
             }
         }
         else {        
