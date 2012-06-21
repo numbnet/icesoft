@@ -13,7 +13,7 @@
           type="text/css"/>
     <link href="<c:url value="/resources/jqueryui/1.8/themes/base/jquery.ui.all.css" />"
           rel="stylesheet" type="text/css"/>
-    <mobi:deviceResource/>
+    <mobi:deviceResource  view="small"/>
     <script type="text/javascript" src="code.icepush"></script>
     <style>
         #tabs > ul li {
@@ -33,6 +33,7 @@
 
         .ui-tabs .ui-tabs-nav li a {
             padding: .3em .5em;
+            width:90%;
         }
 
         .ui-corner-all {
@@ -59,32 +60,34 @@
             font-family: inherit;
         }
 
-        @media all and (min-width: 481px) {
+        @media all and (min-width: 600px) {
             #tabs > ul {
                 position: fixed;
                 top:0;
-                width: 200px;
+                width: 275px;
                 border: none;
                 overflow: scroll;
                 height:100%;
+                background:transparent;
             }
 
             #tabs > ul li {
                 width: 100%;
                 border-radius: 0;
+                text-align: left;
+            }
+            .ui-tabs .ui-tabs-nav li a {
+                padding: 10px;
             }
 
             #tabs > div {
-                margin-left: 200px;
+                margin-left: 275px;
             }
 
             .ui-tabs .ui-tabs-nav {
                 padding: 0;
             }
-
         }
-
-
     </style>
 </head>
 <body>
@@ -144,6 +147,7 @@
         </mobi:fieldSetRow>
         </mobi:fieldSetGroup>
     </div>
+</div>
 </div>
 <script type="text/javascript"
         src="<c:url value="/resources/jquery/1.6/jquery.js" />"></script>
