@@ -1,5 +1,7 @@
 package org.icefaces.ace.component.chart;
 
+import org.icefaces.ace.component.datatable.DataTable;
+import org.icefaces.ace.component.datatable.DataTableDecoder;
 import org.icefaces.ace.event.SeriesSelectionEvent;
 import org.icefaces.ace.model.chart.ChartSeries;
 import org.icefaces.ace.renderkit.CoreRenderer;
@@ -7,6 +9,7 @@ import org.icefaces.ace.util.HTML;
 import org.icefaces.ace.util.JSONBuilder;
 
 import javax.faces.component.UIComponent;
+import javax.faces.component.behavior.ClientBehaviorHolder;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import java.io.IOException;
@@ -24,6 +27,8 @@ public class ChartRenderer extends CoreRenderer {
         String selectInput = params.get(select);
 
         if (selectInput != null) processSelections(chart, selectInput.split(","));
+
+        decodeBehaviors(context, component);
     }
 
     private void processSelections(Chart chart, String[] select) {
@@ -83,8 +88,8 @@ public class ChartRenderer extends CoreRenderer {
         if (component.getSelectListener() != null)
             cfgBuilder.entry("handlePointClick", true);
         if (!hiddenInit) cfgBuilder.entry("disableHiddenInit", true);
+        encodeClientBehaviors(context, component, cfgBuilder);
         cfgBuilder.endMap();
-
 
         // Call plot init
         writer.write("var " + widgetVar + " = new ice.ace.Chart('" + clientId + "', " + dataBuilder + ", " + cfgBuilder +");");

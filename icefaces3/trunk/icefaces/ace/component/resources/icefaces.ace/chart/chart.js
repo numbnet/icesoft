@@ -65,3 +65,12 @@ ice.ace.Chart.prototype.handlePointClick = function(e, seriesIndex, pointIndex, 
 
     ice.ace.AjaxRequest(options);
 }
+
+ice.ace.Chart.prototype.downloadAsImage = function() {
+    this.chart_region.jqplotSaveImage();
+}
+
+ice.ace.Chart.prototype.exportToImage = function(img) {
+    ice.ace.jq(img).attr('src',
+        this.chart_region.jqplotToImageStr());
+}
