@@ -22,7 +22,7 @@
         </mobi:fieldSetRow>
     </mobi:fieldSetGroup>
 
-    <h4>Photo Information</h4>
+    <h4>Add Marker Photo</h4>
     <form:form id="mediaspotform" method="POST" enctype="multipart/form-data"
                modelAttribute="mediaspotBean">
         <mobi:fieldSetGroup inset="true">
@@ -37,15 +37,20 @@
                             style="height:60px;width:65px;vertical-align:middle;float:right;margin:10px;"/>
             </mobi:fieldSetRow>
             <mobi:fieldSetRow>
-                <mobi:augmentedReality id="selection" params="${reality}"/>
+                <mobi:commandButton buttonType='important'
+                                    value="Submit"
+                                    type="submit"/>
+            </mobi:fieldSetRow>
+        </mobi:fieldSetGroup>
+
+        <mobi:fieldSetGroup inset="true">
+            <mobi:fieldSetRow>
+                View augmented: <mobi:augmentedReality id="selection" 
+                        params="${reality}"/>
             </mobi:fieldSetRow>
         </mobi:fieldSetGroup>
 
         <%-- button types: default|important|attention|back--%>
-        <mobi:commandButton buttonType='important'
-                            style="float:right;margin-right: 25px;"
-                            value="Submit"
-                            type="submit"/>
         <div style="clear:both;"/>
         <s:bind path="*">
             <c:if test="${status.error}">
