@@ -434,9 +434,6 @@ NSLog(@"called camera");
         }
         if ([pairs count] > 4)  {
             iconName = [pairs objectAtIndex:4];
-            if (nil == urlBase)  {
-                iconName = nil;
-            }
         }
 
         PlaceLabel *label = nil;
@@ -444,8 +441,13 @@ NSLog(@"called camera");
             label = [PlaceLabel 
                 placeLabelWithText:name initWithLatitude:lat longitude:lon];
         } else {
-            NSURL *url = [NSURL URLWithString:
+            NSURL *url;
+            if (nil == urlBase)  {
+                url = [NSURL URLWithString:iconName];
+            } else {
+                url = [NSURL URLWithString:
                     [urlBase stringByAppendingString:iconName]];
+            }
             //this needs to run asynchronously
             NSData *data = [NSData dataWithContentsOfURL:url];
             UIImage *iconImage = [UIImage imageWithData:data];

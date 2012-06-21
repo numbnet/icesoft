@@ -90,8 +90,8 @@ public class IceOutputResource extends Resource implements Serializable {
                 FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath());
         ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
         //       logger.info(" for name="+super.getResourceName()+" gettingREQUEST PATH WITH CONTENT TYPE="+super.getContentType());
-
-        buf.append("/").append(super.getResourceName()).append(".faces?ln=").append(libraryName);
+        buf.append("/javax.faces.resource");
+        buf.append("/").append(super.getResourceName()).append(".jsf?ln=").append(libraryName);
         if (logger.isLoggable(Level.FINER)) {
             logger.finer("Request path for program resource " + this.toString() + " : '" + buf.toString() + "'");
         }
@@ -125,7 +125,6 @@ public class IceOutputResource extends Resource implements Serializable {
         if (context.getRequestServerPort() != 80 && context.getRequestServerPort() != 443) {
             buff.append(":").append(context.getRequestServerPort());
         }
-        buff.append("/javax.faces.resource");
         buff.append(getRequestPath());
         URL url = null;
         try {
