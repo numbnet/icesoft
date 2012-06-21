@@ -2,83 +2,84 @@
 <%@ taglib uri="http://www.springframework.org/tags" prefix="s" %>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <%@ taglib uri="http://www.icemobile.org/tags" prefix="mobi" %>
-<%@ taglib prefix="push" uri="http://www.icepush.org/icepush/jsp/icepush.tld"%>
+<%@ taglib prefix="push" uri="http://www.icepush.org/icepush/jsp/icepush.tld" %>
 <%@ page session="false" %>
 <c:if test="${!ajaxRequest}">
-<html>
-<head>
-	<title>ICEmobile | qrcode scanner page</title>
-	<link href="<c:url value="/resources/form.css" />" rel="stylesheet"  type="text/css" />		
-	<script type="text/javascript" src="<c:url value="/resources/jquery/1.6/jquery.js" />"></script>
-	<script type="text/javascript" src="code.icepush"></script>
-</head>
-<body>
+    <html>
+    <head>
+        <title>ICEmobile | qrcode scanner page</title>
+        <link href="<c:url value="/resources/form.css" />" rel="stylesheet"
+              type="text/css"/>
+        <script type="text/javascript"
+                src="<c:url value="/resources/jquery/1.6/jquery.js" />"></script>
+        <script type="text/javascript" src="code.icepush"></script>
+    </head>
+    <body>
 </c:if>
-	<div id="qrscancontent">
+<div id="qrscancontent">
 
-		<h4>QR Code Scanner</h4>
-		<form:form id="qrcodeform" method="POST"  modelAttribute="QRScanBean" cssClass="cleanform">
+    <h4>QR Code Scanner</h4>
+    <form:form id="qrcodeform" method="POST" modelAttribute="QRScanBean">
 
-            <mobi:fieldSetGroup inset="true">
-                <mobi:fieldSetRow>
-			        <label>Press to launch QR scanner:</label>
-                    <mobi:qrscan id="scanOne"  />
-                </mobi:fieldSetRow>
-                <mobi:fieldSetRow>
-                    <%-- button types: default|important|attention| back--%>
-                    <mobi:commandButton buttonType='important'
-                                        style="float:right;margin-right: 25px;"
-                                        value="Submit"
-                                        type="submit"/>
-                </mobi:fieldSetRow>
-            </mobi:fieldSetGroup>
-            <%-- QR scanner results --%>
-            <mobi:fieldSetGroup inset="true">
-                <mobi:fieldSetRow>
-                    <label>Scanned:</label>
-                    <span style="font-style:italic">${QRScanBean.scanOne}</span>
-                </mobi:fieldSetRow>
-            </mobi:fieldSetGroup>
+        <mobi:fieldSetGroup inset="true">
+            <mobi:fieldSetRow>
+                <label>Press to launch QR scanner:</label>
+                <mobi:qrscan id="scanOne"/>
+            </mobi:fieldSetRow>
+            <mobi:fieldSetRow>
+                <%-- button types: default|important|attention| back--%>
+                <mobi:commandButton buttonType='important'
+                                    style="float:right;margin-right: 25px;"
+                                    value="Submit"
+                                    type="submit"/>
+            </mobi:fieldSetRow>
+        </mobi:fieldSetGroup>
+        <%-- QR scanner results --%>
+        <mobi:fieldSetGroup inset="true">
+            <mobi:fieldSetRow>
+                <label>Scanned:</label>
+                <span style="font-style:italic">${QRScanBean.scanOne}</span>
+            </mobi:fieldSetRow>
+        </mobi:fieldSetGroup>
 
-		</form:form>
+    </form:form>
 
 
+    <script type="text/javascript">
 
-		<script type="text/javascript">
-
-			$(document).ready(function() {
-				$("#qrcodeform").submit(function() {
-                    if (window.ice && ice.upload)  {
-                        window.ice.handleResponse = function(data)  {
-						    $("#qrscancontent").replaceWith(unescape(data));
-						    $('html, body').animate({ scrollTop: $("#message").offset().top }, 500);
-                        }
-                        ice.upload($(this).attr("id"));
-                        return false;  
+        $(document).ready(function () {
+            $("#qrcodeform").submit(function () {
+                if (window.ice && ice.upload) {
+                    window.ice.handleResponse = function (data) {
+                        $("#qrscancontent").replaceWith(unescape(data));
+                        $('html, body').animate({ scrollTop:$("#message").offset().top }, 500);
                     }
+                    ice.upload($(this).attr("id"));
+                    return false;
+                }
 
-                    var formData = new FormData(this);
+                var formData = new FormData(this);
 
-                    $.ajax({
-                        url: $(this).attr("action"),
-                        data: formData,
-                        cache: false,
-                        contentType: false,
-                        processData: false,
-                        type: 'POST',
-                        success: function(html) {
-						    $("#qrscancontent").replaceWith(html);
-						    $('html, body').animate({ scrollTop: $("#message").offset().top }, 500);
-					    }
-                    });
+                $.ajax({
+                    url:$(this).attr("action"),
+                    data:formData,
+                    cache:false,
+                    contentType:false,
+                    processData:false,
+                    type:'POST',
+                    success:function (html) {
+                        $("#qrscancontent").replaceWith(html);
+                        $('html, body').animate({ scrollTop:$("#message").offset().top }, 500);
+                    }
+                });
 
-					return false;  
-				});			
-			});
+                return false;
+            });
+        });
 
-		</script>
-	</div>
+    </script>
+</div>
 <c:if test="${!ajaxRequest}">
-</body>
-</html>
+    </body>
+    </html>
 </c:if>

@@ -4,102 +4,111 @@
 <%@ taglib uri="http://www.icemobile.org/tags" prefix="mobi" %>
 <%@ page session="false" %>
 <c:if test="${!ajaxRequest}">
-<html>
-<head>
-	<title>ICEmobile | mvc-showcase</title>
-	<meta name="viewport" content="width=device-width, initial-scale=1"> 
-	<link href="<c:url value="/resources/form.css" />" rel="stylesheet"  type="text/css" />		
-	<link rel="stylesheet" href="http://code.jquery.com/mobile/1.1.0/jquery.mobile-1.1.0.min.css" />
-	<script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
-	<script src="http://code.jquery.com/mobile/1.1.0/jquery.mobile-1.1.0.min.js"></script>
-</head>
-<body>
+    <html>
+    <head>
+        <title>ICEmobile | mvc-showcase</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="<c:url value="/resources/form.css" />" rel="stylesheet"
+              type="text/css"/>
+        <link rel="stylesheet"
+              href="http://code.jquery.com/mobile/1.1.0/jquery.mobile-1.1.0.min.css"/>
+        <script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+        <script src="http://code.jquery.com/mobile/1.1.0/jquery.mobile-1.1.0.min.js"></script>
+    </head>
+    <body>
 </c:if>
-	<div id="micContent">
-        <style>
+<div id="micContent">
+    <style>
         .recordstyle {
             background: red;
         }
-        </style>
-		<h4>Microphone</h4>
-		<p>
-			jQuery ICEobile Microphone	
-		</p>
-		<form:form id="micform" method="POST" enctype="multipart/form-data" modelAttribute="microphoneBean" >
-			<div class="header">
-		  		<h4>Form</h4>
-		  		<c:if test="${not empty message}">
-					<div id="message" class="success">${message}<br/>
-                    <audio src="media/clip.mp4" controls="controls" >
-                    </div>	
-		  		</c:if>
-		  		<s:bind path="*">
-		  			<c:if test="${status.error}">
-				  		<div id="message" class="error">Form has errors</div>
-		  			</c:if>
-		  		</s:bind>
-			</div>
-		  	<fieldset>
-		  		<legend>Personal Info</legend>
-		  		<form:label path="name">
-		  			Name <form:errors path="name" cssClass="error" />
-		 		</form:label>
-		  		<form:input path="name" />
-		
-		  	</fieldset>
+    </style>
+    <h4>Microphone</h4>
 
-		  	<fieldset>
-               <mobi:microphone id="mic"/>
-               <audio style="float:right;" src="media/clip.mp4" controls="controls" >
-		  	</fieldset>
+    <p>
+        jQuery ICEobile Microphone
+    </p>
+    <form:form id="micform" method="POST" enctype="multipart/form-data"
+               modelAttribute="microphoneBean">
+        <div class="header">
+            <h4>Form</h4>
+            <c:if test="${not empty message}">
+                <div id="message" class="success">${message}<br/>
+                    <audio src="media/clip.mp4" controls="controls">
+                </div>
+            </c:if>
+            <s:bind path="*">
+                <c:if test="${status.error}">
+                    <div id="message" class="error">Form has errors</div>
+                </c:if>
+            </s:bind>
+        </div>
+        <fieldset>
+            <legend>Personal Info</legend>
+            <form:label path="name">
+                Name <form:errors path="name" cssClass="error"/>
+            </form:label>
+            <form:input path="name"/>
 
-			<fieldset class="checkbox">
-				<legend>Request Additional Info</legend>
-				<label><form:checkbox path="additionalInfo[mvc]" value="true" />on Spring MVC</label>
-				<label><form:checkbox path="additionalInfo[java]" value="true" />on Java (4-ever)</label>				
-			</fieldset>
-		  		  		
-			<p><button type="submit">Submit</button></p>
-		</form:form>
+        </fieldset>
+
+        <fieldset>
+            <mobi:microphone id="mic"/>
+            <audio style="float:right;" src="media/clip.mp4"
+                   controls="controls">
+        </fieldset>
+
+        <fieldset class="checkbox">
+            <legend>Request Additional Info</legend>
+            <label><form:checkbox path="additionalInfo[mvc]" value="true"/>on
+                Spring MVC</label>
+            <label><form:checkbox path="additionalInfo[java]" value="true"/>on
+                Java (4-ever)</label>
+        </fieldset>
+
+        <p>
+            <button type="submit">Submit</button>
+        </p>
+    </form:form>
 
 
-		<script type="text/javascript">
+    <script type="text/javascript">
 
-			$(document).ready(function() {
-				$("#micform").submit(function() {
-                    if (window.ice && ice.upload)  {
-                        window.ice.handleResponse = function(data)  {
-						    $("#micContent").replaceWith(unescape(data));
-                            $("#micContent").trigger("create");
-						    $('html, body').animate({ scrollTop: $("#message").offset().top }, 500);
-                        }
-                        ice.upload($(this).attr("id"));
-                        return false;  
+        $(document).ready(function () {
+            $("#micform").submit(function () {
+                if (window.ice && ice.upload) {
+                    window.ice.handleResponse = function (data) {
+                        $("#micContent").replaceWith(unescape(data));
+                        $("#micContent").trigger("create");
+                        $('html, body').animate({ scrollTop:$("#message").offset().top }, 500);
                     }
+                    ice.upload($(this).attr("id"));
+                    return false;
+                }
 
-                    var formData = new FormData(this);
+                var formData = new FormData(this);
 
-                    $.ajax({
-                        url: $(this).attr("action"),
-                        data: formData,
-                        cache: false,
-                        contentType: false,
-                        processData: false,
-                        type: 'POST',
-                        success: function(html) {
-						    $("#micContent").replaceWith(html);
-                            $("#micContent").trigger("create");
-						    $('html, body').animate({ scrollTop: $("#message").offset().top }, 500);
-					    }
-                    });
+                $.ajax({
+                    url:$(this).attr("action"),
+                    data:formData,
+                    cache:false,
+                    contentType:false,
+                    processData:false,
+                    type:'POST',
+                    success:function (html) {
+                        $("#micContent").replaceWith(html);
+                        $("#micContent").trigger("create");
+                        $('html, body').animate({ scrollTop:$("#message").offset().top }, 500);
+                    }
+                });
 
-					return false;  
-				});			
-			});
+                return false;
+            });
+        });
 
-		</script>
-	</div>
+    </script>
+</div>
 <c:if test="${!ajaxRequest}">
-</body>
-</html>
+    </body>
+    </html>
 </c:if>

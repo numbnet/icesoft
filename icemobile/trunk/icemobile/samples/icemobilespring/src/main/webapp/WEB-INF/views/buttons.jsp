@@ -19,8 +19,7 @@
 <div id="buttonsContent">
 
     <h4>ICEmobile - Buttons</h4>
-    <form:form id="buttonsform" method="POST" modelAttribute="buttonsBean"
-               cssClass="cleanform">
+    <form:form id="buttonsform" method="POST" modelAttribute="buttonsBean">
         <mobi:fieldSetGroup inset="true">
             <mobi:fieldSetRow>
                 <mobi:commandButton name="submitB" buttonType="default"
@@ -30,7 +29,7 @@
                 <mobi:commandButton name="submitB" buttonType='attention'
                                     value="attention"/>
                 <mobi:commandButton name="submitB" value="plain"
-                        style="float:none;"/>
+                                    style="float:none;"/>
             </mobi:fieldSetRow>
             <mobi:fieldSetRow>
                 You Pressed:
