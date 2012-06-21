@@ -39,6 +39,8 @@ import org.icefaces.ace.renderkit.CoreRenderer;
 import org.icefaces.ace.util.ComponentUtils;
 import org.icefaces.render.MandatoryResourceComponent;
 
+import org.icefaces.ace.util.JSONBuilder;
+
 @MandatoryResourceComponent(tagName="draggable", value="org.icefaces.ace.component.dnd.Draggable")
 public class DraggableRenderer extends CoreRenderer {
 
@@ -55,39 +57,41 @@ public class DraggableRenderer extends CoreRenderer {
 		writer.startElement("script", draggable);
         writer.writeAttribute("type", "text/javascript", null);
         writer.write("ice.ace.jq(function() {");
-        writer.write(this.resolveWidgetVar(draggable) + " = new ice.ace.Draggable('" + clientId + "',");
-
-        writer.write("{");
-        writer.write("target:'" + target + "'");
-        writer.write(",cursor:'" + draggable.getCursor() + "'");
+        writer.write(this.resolveWidgetVar(draggable) + " = new ");
+		JSONBuilder jb = JSONBuilder.create();
+		jb.beginFunction("ice.ace.Draggable");
+			jb.item(clientId);
+			jb.beginMap();
+			jb.entry("target", target);System.out.println("* " + draggable.getCursor());
+			jb.entryNonNullValue("cursor", draggable.getCursor());
         //Configuration
         if (draggable.isDisabled())
-            writer.write(",disabled:true");
+            jb.entry("disabled", true);
         if (draggable.getAxis() != null)
-            writer.write(",axis:'" + draggable.getAxis() + "'");
+            jb.entry("axis", draggable.getAxis());
         if (draggable.getContainment() != null)
-            writer.write(",containment:'" + draggable.getContainment() + "'");
+            jb.entry("containment", draggable.getContainment());
         if (draggable.getHelper() != null)
-            writer.write(",helper:'" + draggable.getHelper() + "'");
+            jb.entry("helper", draggable.getHelper());
         if (draggable.isRevert())
-            writer.write(",revert:'invalid'");
+            jb.entry("revert", "invalid");
         if (draggable.getZindex() != -1)
-            writer.write(",zIndex:" + draggable.getZindex());
+            jb.entry("zIndex", draggable.getZindex());
         if (draggable.getHandle() != null)
-            writer.write(",handle:'" + draggable.getHandle() + "'");
+            jb.entry("handle", draggable.getHandle());
         if (draggable.getOpacity() != 1.0)
-            writer.write(",opacity:" + draggable.getOpacity());
+            jb.entry("opacity", draggable.getOpacity());
         if (draggable.getStack() != null)
-            writer.write(",stack:'" + draggable.getStack() + "'");
+            jb.entry("stack", draggable.getStack());
         if (draggable.getGrid() != null)
-            writer.write(",grid:[" + draggable.getGrid() + "]");
+            jb.entry("grid", "[" + draggable.getGrid() + "]", true);
         if (draggable.getScope() != null)
-            writer.write(",scope:'" + draggable.getScope() + "'");
+            jb.entry("scope", draggable.getScope());
         if (draggable.isSnap()) {
-            writer.write(",snap:true");
-            writer.write(",snapTolerance:" + draggable.getSnapTolerance());
+            jb.entry("snap", true);
+            jb.entry("snapTolerance", draggable.getSnapTolerance());
             if (draggable.getSnapMode() != null)
-                writer.write(",snapMode:'" + draggable.getSnapMode() + "'");
+                jb.entry("snapMode", draggable.getSnapMode());
         }
         //Dashboard support
 /*
@@ -97,7 +101,8 @@ public class DraggableRenderer extends CoreRenderer {
             writer.write(",connectToSortable:'" + ComponentUtils.escapeJQueryId(db.getClientId(facesContext)) + " .ui-dashboard-column'");
         }
 */
-        writer.write("});");
+        jb.endMap().endFunction();
+		writer.write(jb.toString());
 
         writer.write("});");
         writer.endElement("script");
