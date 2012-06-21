@@ -50,7 +50,7 @@ public class MediaSpotController {
 
 	@RequestMapping(value = "/mediaspot", method=RequestMethod.POST)
 	public void processPost(HttpServletRequest request, 
-            @RequestParam(value = "camera", required = false) MultipartFile photoFile,
+            @RequestParam(value = "spotcam", required = false) MultipartFile photoFile,
             MediaSpotBean spotBean,
             Model model) throws IOException {
 

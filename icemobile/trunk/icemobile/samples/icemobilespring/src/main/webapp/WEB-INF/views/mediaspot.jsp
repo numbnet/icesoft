@@ -32,8 +32,8 @@
             </mobi:fieldSetRow>
             <mobi:fieldSetRow style="height:90px;">
                 <mobi:geolocation id="location"/>
-                <mobi:camera id="camera"/>
-                <mobi:thumb for="camvid"
+                <mobi:camera id="spotcam"/>
+                <mobi:thumb for="spotcam"
                             style="height:60px;width:65px;vertical-align:middle;float:right;margin:10px;"/>
             </mobi:fieldSetRow>
             <mobi:fieldSetRow>
