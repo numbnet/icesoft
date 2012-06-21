@@ -2,9 +2,11 @@ package org.icemobile.jsp.tags;
 
 
 import javax.servlet.jsp.JspTagException;
+import javax.servlet.jsp.tagext.Tag;
 import javax.servlet.jsp.tagext.TagSupport;
 import java.io.IOException;
 import java.io.Writer;
+import java.util.logging.Logger;
 
 /**
  *
@@ -17,19 +19,17 @@ public class FieldSetRowTag extends TagSupport {
     private String styleClass;
     private String style;
     private boolean group;
+    private static Logger logger = Logger.getLogger(FieldSetRowTag.class.getName());
+
+    public void setParent(Tag parent) {
+        if (!(parent instanceof FieldSetGroupTag)) {
+            throw new IllegalArgumentException("FieldSetRow must be child of FieldSetGroup");
+        }
+    }
 
     public int doStartTag() throws JspTagException {
 
-        FieldSetGroupTag parent =
-                (FieldSetGroupTag) findAncestorWithClass(this, FieldSetGroupTag.class);
-        if (parent == null) {
-            throw new JspTagException("FieldSetRow must be child of FieldSetGroup");
-        } else {
-            // Do something here?     parent.setSomeValue(...);
-        }
-
         Writer out = pageContext.getOut();
-
         try {
             out.write("<div");
             if (id != null && !"".equals(id)) {
@@ -65,9 +65,9 @@ public class FieldSetRowTag extends TagSupport {
             out.write(">");
 
         } catch (IOException ieo) {
+            logger.severe("Exception creating FieldSetRowTag: " + ieo);
         }
         return (EVAL_BODY_INCLUDE);
-//        return (SKIP_BODY);
 
     }
 
