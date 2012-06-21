@@ -34,7 +34,7 @@ ice.registerAuxUpload = function (sessionid, uploadURL) {
     }
 };
 
-ice.mobiserial = function(formId, typed)  {
+ice.mobiserial = function(formId, typed) {
     var form = document.getElementById(formId);
     var els = form.elements;
     var len = els.length;
@@ -51,9 +51,9 @@ ice.mobiserial = function(formId, typed)  {
         var el = els[i];
         if (!el.disabled) {
             var prefix = "";
-            if (typed)  {
+            if (typed) {
                 var vtype = el.getAttribute("data-type");
-                if (vtype)  {
+                if (vtype) {
                     prefix = vtype + "-";
                 } else {
                     prefix = el.type + "-";
@@ -106,8 +106,8 @@ ice.mobilesx = function (element) {
     var params = element.getAttribute("data-params");
     var windowLocation = window.location;
     var barURL = windowLocation.toString();
-    var baseURL = barURL.substring(0, 
-        barURL.lastIndexOf("/")) + "/";
+    var baseURL = barURL.substring(0,
+            barURL.lastIndexOf("/")) + "/";
 
     var uploadURL;
     if (0 === formAction.indexOf("/")) {
@@ -124,11 +124,11 @@ ice.mobilesx = function (element) {
         returnURL += "#icemobilesx";
     }
 
-    if ("" != params)  {
+    if ("" != params) {
         params = "ub=" + escape(baseURL) + ampchar + params;
     }
 
-    var sxURL = "icemobile://c=" + escape(command + 
+    var sxURL = "icemobile://c=" + escape(command +
             "?id=" + id + ampchar + params) +
             "&u=" + escape(uploadURL) + "&r=" + escape(returnURL) +
             "&p=" + escape(ice.mobiserial(formID, false));
@@ -259,3 +259,124 @@ ice.mobi.carousel = {
     }
 }
 
+ice.mobi.tabsetController = {
+    panels: {},
+    initClient: function(clientId, cfg) {
+        if (!this.panels[clientId]) {
+            this.panels[clientId] = ice.mobi.tabsetController.TabSet(clientId, cfg);
+        } else {
+            this.panels[clientId].updateProperties(clientId, cfg);
+        }
+    },
+    showContent: function(clientId, el, cfgIn) {
+//        alert('showContent ' + clientId + ', tabIndex: ' + cfgIn.tIndex );
+        if (this.panels[clientId]) {
+            this.panels[clientId].showContent(el, cfgIn);
+        }
+    },
+
+    updateHidden: function(clientId, value) {
+        var hidden = document.getElementById(clientId + "_hidden");
+        if (hidden) {
+            hidden.value = value;
+        }
+    },
+    /* taken from accordion with slight modifications */
+    calcMaxChildHeight: function (containerEl) {
+        var mxht = 0;
+        //find all sections of the clientId and calc height.  set maxheight and height to max height of the divs
+        var children = containerEl.getElementsByTagName('div');
+        for (var i = 0; i < children.length; i++) {
+            if (children[0].scrollHeight > mxht) {
+                mxht = children[0].scrollHeight;
+            }
+        }
+        return mxht;
+    },
+    hasClass: function (ele, cls) {
+        return ele.className.match(new RegExp('(\\s|^)' + cls + '(\\s|$)'));
+    },
+    addClass: function (ele, cls) {
+        if (ice.mobi.tabsetController.hasClass(ele, cls)) {
+            ele.className = cls;
+        }
+    },
+    removeClass: function (ele, cls) {
+        if (ice.mobi.tabsetController.hasClass(ele, cls)) {
+            // var reg = new RegExp('(\\s|^)'+cls+'(\\s|$)');  don't need if we don't allow to skin?
+            ele.className = " ";
+        }
+    },
+//declare functions who creates object with methods that have access to the local variables of the function
+//so in effect the returned object can operate on the local state declared in the function ...
+//think about them as object fields in Java, also gone is the chore of copying the constructor parameters into fields
+//-------------------------------------
+    TabSet: function (clientId, cfgIn) {
+        // setup tabContainer
+        var myTabId = clientId;
+        var tabContainer = document.getElementById(clientId);
+        var tabContent = document.getElementById(clientId + "_tabContent");
+        var cfg = cfgIn;
+        var tabIndex = cfgIn.tIndex;
+        if (cfgIn.height) {
+            tabContainer.style.height = height;
+        } else {
+            var ht = ice.mobi.tabsetController.calcMaxChildHeight(tabContent);
+            tabContent.style.height = ht + "px";
+        }
+        var contents = tabContent.getElementsByClassName("mobi-tabpage-hidden");
+        var newPage = contents[tabIndex];
+        newPage.className = "mobi-tabpage";
+
+        return {
+            showContent: function(el, cfgIn) {
+                if (cfgIn.tIndex == tabIndex) {
+                    return;
+                }
+                var parent = el.parentNode;
+                if (!parent) {
+                    parent = el.parentElement;
+                }
+                var current = parent.getAttribute("data-current");
+//                alert('current tab index: ' + current);
+                var contents = tabContent.childNodes;
+                var oldPage = contents[current];
+                oldPage.className = "mobi-tabpage-hidden";
+                var currCtrl = myTabId + "tab_" + current;
+                var oldCtrl = document.getElementById(currCtrl);
+                ice.mobi.tabsetController.removeClass(oldCtrl, "activeTab");
+//                var isClient = cfgIn.client || false;
+//                if (!isClient){
+//                    var hiddenVal = tabIndex+"," +cfgIn.tIndex;
+//                    updateHidden(myTabId, hiddenVal);
+//                    contents[cfgIn.tIndex].className="mobi-tabpage-hidden";
+//                    ice.se(null, myTabId);
+//                } else {
+                tabIndex = cfgIn.tIndex || 0;
+                var newPage = contents[tabIndex];
+                newPage.className = "mobi-tabpage";
+                parent.setAttribute("data-current", cfgIn.tIndex);
+//                }
+                //remove class of activetabheader and hide old contents
+                el.setAttribute("class", "activeTab");
+            },
+            updateProperties: function (clientId, cfgUpd) {
+                var oldIdx = tabIndex;
+                if (cfgUpd.tIndex != tabIndex) {
+                    tabIndex = cfgUpd.tIndex;
+                    var tabsId = clientId + "_tabs";
+                    var tabElem = document.getElementById(tabsId);
+                    if (tabElem) {
+                        var lis = tabElem.getElementsByTagName("li");
+                        var contents = tabContent.childNodes;
+                        contents[oldIdx].className = "mobi-tabpage-hidden"; //need in case change is from server
+                        contents[tabIndex].className = "mobi-tabpage";
+                        if (cfgUpd.height && cfgUpd.height != tabContainer.style.height) {
+                            tabContainer.style.height = height;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
