@@ -66,7 +66,8 @@
         var autoheight = cfgIn.autoheight || false;
         var maxheight = cfgIn.maxheight || "200px";
         if (autoheight == true){
-            maxheight = calcMaxDivHeight(clientId);
+            var calcht = calcMaxDivHeight(clientId)
+            if (calcht > 0) maxheight = calcht ;
         }
         var heightString = maxheight+"px";
         updateHeightInOpenClass(openClass, heightString);
