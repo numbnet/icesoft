@@ -13,21 +13,24 @@
           type="text/css"/>
     <link href="<c:url value="/resources/jqueryui/1.8/themes/base/jquery.ui.all.css" />"
           rel="stylesheet" type="text/css"/>
-    <mobi:deviceResource />
+    <mobi:deviceResource/>
     <script type="text/javascript" src="code.icepush"></script>
     <style>
-        #tabs > ul li{
+        #tabs > ul li {
             width: 100px;
             margin: 0;
             padding: 0;
             text-align: center;
         }
+
         .ui-widget {
             font-size: inherit;
         }
-        .ui-tabs{
-            padding:0;
+
+        .ui-tabs {
+            padding: 0;
         }
+
         .ui-tabs .ui-tabs-nav li a {
             padding: .3em .5em;
         }
@@ -41,34 +44,43 @@
             background: transparent;
             color: inherit;
         }
-        .ui-tabs .ui-tabs-panel{
+
+        .ui-tabs .ui-tabs-panel {
             font-family: inherit;
-            padding:0;
+            padding: 0;
         }
-        .ui-widget{
+
+        .ui-widget {
             font-family: inherit;
         }
+
         .ui-widget input, .ui-widget select, .ui-widget textarea, .ui-widget button {
             font-size: inherit;
             font-family: inherit;
         }
 
         @media all and (min-width: 481px) {
-            #tabs > ul{
-                float:left;
-                width:200px;
+            #tabs > ul {
+                position: fixed;
+                top:0;
+                width: 200px;
                 border: none;
-                height: 100%;
-            }
-            #tabs > ul li{
-                width:100%;
-                border-radius: 0;
-            }
-            #tabs > div{ margin-left: 200px;}
-            .ui-tabs .ui-tabs-nav{
-                padding:0;
+                overflow: scroll;
+                height:100%;
             }
 
+            #tabs > ul li {
+                width: 100%;
+                border-radius: 0;
+            }
+
+            #tabs > div {
+                margin-left: 200px;
+            }
+
+            .ui-tabs .ui-tabs-nav {
+                padding: 0;
+            }
 
         }
 
@@ -77,56 +89,59 @@
 </head>
 <body>
 <div id="tabs">
-    <ul>
-        <li><a href="#welcome">Welcome</a></li>
-        <li><a href="<c:url value="/carousel" />" title="carousel">Carousel</a>
-        </li>
-        <li><a href="<c:url value="/icemobile" />" title="icemobile">Camera</a>
-        </li>
-        <li><a href="<c:url value="/campush" />" title="campush">Push</a></li>
-        <li><a href="<c:url value="/microphone" />" title="microphone">Microphone</a>
-        </li>
-        <li><a href="<c:url value="/camcorder" />"
-               title="camcorder">Camcorder</a></li>
-        <li><a href="<c:url value="/mediaspot" />"
-               title="mediaspot">MediaSpot</a></li>
-        <li><a href="<c:url value="/flipswitch" />" title="flipswitch">Flipswitch</a>
-        </li>
-        <li><a href="<c:url value="/inputtext" />" title="inputtext">Input
-            Text</a></li>
-        <li><a href="<c:url value="/qrscan" />" title="qrscan">QR Scanner</a>
-        </li>
-        <li><a href="<c:url value="/geolocation" />" title="geolocation">Geolocation</a>
-        </li>
-        <li><a href="<c:url value="/buttons" />" title="buttons">Buttons</a>
-        </li>
-        <li><a href="#icehtml">HTML</a></li>
-    </ul>
-    <div id="welcome">
-        <h4>ICEmobile </h4>
-        <mobi:fieldSetGroup inset="true">
-            <mobi:fieldSetRow>
-                Welcome to the ICEmobile Spring MVC demo.
-            </mobi:fieldSetRow>
-        </mobi:fieldSetGroup>
-    </div>
-    <div id="icehtml">
-        <h4>ICEmobile HTML</h4>
-        <mobi:fieldSetGroup inset="true">
-            <mobi:fieldSetRow>
-                <div style="padding:20px;">
-                <p>
-                    ICEmobile applications can be developed with a pure HTML/JavaScript
-                    front-end and a Spring Controller back-end.
-                </p>
-                <ul>
-                    <li><a id="camlink" href="<c:url value="/resources/camera.html" />">Camera
-                            HTML Example</a></li>
-                    <li><a id="miclink"
-                           href="<c:url value="/resources/microphone.html" />">Microphone
-                           HTML Example</a></li>
-                </ul>
-            </mobi:fieldSetRow>
+<ul>
+    <li><a href="#welcome">Welcome</a></li>
+    <li><a href="<c:url value="/carousel" />" title="carousel">Carousel</a>
+    </li>
+    <li><a href="<c:url value="/icemobile" />" title="icemobile">Camera</a>
+    </li>
+    <li><a href="<c:url value="/campush" />" title="campush">Push</a></li>
+    <li><a href="<c:url value="/microphone" />"
+           title="microphone">Microphone</a>
+    </li>
+    <li><a href="<c:url value="/camcorder" />"
+           title="camcorder">Camcorder</a></li>
+    <li><a href="<c:url value="/mediaspot" />"
+           title="mediaspot">MediaSpot</a></li>
+    <li><a href="<c:url value="/flipswitch" />"
+           title="flipswitch">Flipswitch</a>
+    </li>
+    <li><a href="<c:url value="/inputtext" />" title="inputtext">Input
+        Text</a></li>
+    <li><a href="<c:url value="/qrscan" />" title="qrscan">QR Scanner</a>
+    </li>
+    <li><a href="<c:url value="/geolocation" />"
+           title="geolocation">Geolocation</a>
+    </li>
+    <li><a href="<c:url value="/buttons" />" title="buttons">Buttons</a>
+    </li>
+    <li><a href="#icehtml">HTML</a></li>
+</ul>
+<div id="welcome">
+    <h4>ICEmobile </h4>
+    <mobi:fieldSetGroup inset="true">
+        <mobi:fieldSetRow>
+            Welcome to the ICEmobile Spring MVC demo.
+        </mobi:fieldSetRow>
+    </mobi:fieldSetGroup>
+</div>
+<div id="icehtml">
+    <h4>ICEmobile HTML</h4>
+    <mobi:fieldSetGroup inset="true">
+    <mobi:fieldSetRow>
+    <div style="padding:20px;">
+        <p>
+            ICEmobile applications can be developed with a pure HTML/JavaScript
+            front-end and a Spring Controller back-end.
+        </p>
+        <ul>
+            <li><a id="camlink" href="<c:url value="/resources/camera.html" />">Camera
+                HTML Example</a></li>
+            <li><a id="miclink"
+                   href="<c:url value="/resources/microphone.html" />">Microphone
+                HTML Example</a></li>
+        </ul>
+        </mobi:fieldSetRow>
         </mobi:fieldSetGroup>
     </div>
 </div>

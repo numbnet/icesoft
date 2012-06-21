@@ -4,84 +4,87 @@
 <%@ taglib uri="http://www.icemobile.org/tags" prefix="mobi" %>
 <%@ page session="false" %>
 <c:if test="${!ajaxRequest}">
-<html>
-<head>
-	<title>ICEmobile | mvc-showcase</title>
-	<link href="<c:url value="/resources/form.css" />" rel="stylesheet"  type="text/css" />		
-	<script type="text/javascript" src="<c:url value="/resources/jquery/1.6/jquery.js" />"></script>
-</head>
-<body>
+    <html>
+    <head>
+        <title>ICEmobile | mvc-showcase</title>
+        <link href="<c:url value="/resources/form.css" />" rel="stylesheet"
+              type="text/css"/>
+        <script type="text/javascript"
+                src="<c:url value="/resources/jquery/1.6/jquery.js" />"></script>
+    </head>
+    <body>
 </c:if>
-	<div id="micContent">
+<div id="micContent">
 
-		<form:form id="micform" method="POST" enctype="multipart/form-data" modelAttribute="microphoneBean" cssClass="cleanform">
-            <h4>Microphone</h4>
-            <mobi:fieldSetGroup inset="true">
-                <mobi:fieldSetRow>
-                    <form:label path="name">
-                        Author: <form:errors path="name" cssClass="error" />
-                    </form:label>
-		  		    <form:input path="name" />
-		        </mobi:fieldSetRow>
-                <mobi:fieldSetRow>
-                   <mobi:microphone id="mic"/>
-                </mobi:fieldSetRow>
-            </mobi:fieldSetGroup>
+    <form:form id="micform" method="POST" enctype="multipart/form-data"
+               modelAttribute="microphoneBean" >
+        <h4>Microphone</h4>
+        <mobi:fieldSetGroup inset="true">
+            <mobi:fieldSetRow>
+                <form:label path="name">
+                    Author: <form:errors path="name" cssClass="error"/>
+                </form:label>
+                <form:input path="name"/>
+            </mobi:fieldSetRow>
+            <mobi:fieldSetRow>
+                <mobi:microphone id="mic"/>
+            </mobi:fieldSetRow>
+        </mobi:fieldSetGroup>
 
-            <%-- button types: default|important|attention| back--%>
-            <mobi:commandButton buttonType='important'
-                                style="float:right;margin-right: 25px;"
-                                value="Submit"
-                                type="submit"/>
-            <div style="clear:both" />
-            <c:if test="${not empty message}">
-                <div id="message" class="success">${message}<br/>
-                    <audio src="media/clip.mp4" controls="controls" />
-                </div>
+        <%-- button types: default|important|attention| back--%>
+        <mobi:commandButton buttonType='important'
+                            style="float:right;margin-right: 25px;"
+                            value="Submit"
+                            type="submit"/>
+        <div style="clear:both"/>
+        <c:if test="${not empty message}">
+            <div id="message" class="success">${message}<br/>
+                <audio src="media/clip.mp4" controls="controls"/>
+            </div>
+        </c:if>
+        <s:bind path="*">
+            <c:if test="${status.error}">
+                <div id="message" class="error">Form has errors</div>
             </c:if>
-            <s:bind path="*">
-                <c:if test="${status.error}">
-                    <div id="message" class="error">Form has errors</div>
-                </c:if>
-            </s:bind>
-		</form:form>
+        </s:bind>
+    </form:form>
 
 
-		<script type="text/javascript">
+    <script type="text/javascript">
 
-			$(document).ready(function() {
-				$("#micform").submit(function() {
-                    if (window.ice && ice.upload)  {
-                        window.ice.handleResponse = function(data)  {
-						    $("#micContent").replaceWith(unescape(data));
-						    $('html, body').animate({ scrollTop: $("#message").offset().top }, 500);
-                        }
-                        ice.upload($(this).attr("id"));
-                        return false;  
+        $(document).ready(function () {
+            $("#micform").submit(function () {
+                if (window.ice && ice.upload) {
+                    window.ice.handleResponse = function (data) {
+                        $("#micContent").replaceWith(unescape(data));
+                        $('html, body').animate({ scrollTop:$("#message").offset().top }, 500);
                     }
+                    ice.upload($(this).attr("id"));
+                    return false;
+                }
 
-                    var formData = new FormData(this);
+                var formData = new FormData(this);
 
-                    $.ajax({
-                        url: $(this).attr("action"),
-                        data: formData,
-                        cache: false,
-                        contentType: false,
-                        processData: false,
-                        type: 'POST',
-                        success: function(html) {
-						    $("#micContent").replaceWith(html);
-						    $('html, body').animate({ scrollTop: $("#message").offset().top }, 500);
-					    }
-                    });
+                $.ajax({
+                    url:$(this).attr("action"),
+                    data:formData,
+                    cache:false,
+                    contentType:false,
+                    processData:false,
+                    type:'POST',
+                    success:function (html) {
+                        $("#micContent").replaceWith(html);
+                        $('html, body').animate({ scrollTop:$("#message").offset().top }, 500);
+                    }
+                });
 
-					return false;  
-				});			
-			});
+                return false;
+            });
+        });
 
-		</script>
-	</div>
+    </script>
+</div>
 <c:if test="${!ajaxRequest}">
-</body>
-</html>
+    </body>
+    </html>
 </c:if>

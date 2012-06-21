@@ -30,15 +30,12 @@
 </c:if>
 <div id="carouselContent">
     <h4>Carousel of goodness</h4>
-    <form:form id="carouselForm" method="POST" modelAttribute="carouselBean"
-               cssClass="cleanForm">
-    <mobi:fieldSetGroup inset="true">
-        <mobi:fieldSetRow>
-            Carousel of images
-        </mobi:fieldSetRow>
-    </mobi:fieldSetGroup>
-
-
+    <form:form id="carouselForm" method="POST" modelAttribute="carouselBean">
+        <mobi:fieldSetGroup inset="true">
+            <mobi:fieldSetRow>
+                Carousel of images
+            </mobi:fieldSetRow>
+        </mobi:fieldSetGroup>
         <mobi:carousel id="carouselOne"
                        collection="${carouselBean.images}"
                        selectedIndex="${carouselBean.carouselOneIndex}">
