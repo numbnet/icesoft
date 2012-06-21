@@ -1,7 +1,5 @@
 package org.icefaces.ace.component.chart;
 
-import org.icefaces.ace.component.datatable.DataTable;
-import org.icefaces.ace.component.datatable.DataTableDecoder;
 import org.icefaces.ace.event.SeriesSelectionEvent;
 import org.icefaces.ace.model.chart.ChartSeries;
 import org.icefaces.ace.renderkit.CoreRenderer;
@@ -9,7 +7,7 @@ import org.icefaces.ace.util.HTML;
 import org.icefaces.ace.util.JSONBuilder;
 
 import javax.faces.component.UIComponent;
-import javax.faces.component.behavior.ClientBehaviorHolder;
+import javax.faces.component.behavior.ClientBehavior;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import java.io.IOException;
@@ -85,7 +83,7 @@ public class ChartRenderer extends CoreRenderer {
         if (stacking) cfgBuilder.entry("stackSeries", true);
         if (animated == null) cfgBuilder.entry("animate", "!ice.ace.jq.jqplot.use_excanvas", true);
         else if (animated) cfgBuilder.entry("animate", true);
-        if (component.getSelectListener() != null)
+        if (isAjaxClick(component))
             cfgBuilder.entry("handlePointClick", true);
         if (!hiddenInit) cfgBuilder.entry("disableHiddenInit", true);
         encodeClientBehaviors(context, component, cfgBuilder);
@@ -176,5 +174,10 @@ public class ChartRenderer extends CoreRenderer {
         writer.startElement(HTML.DIV_ELEM, null);
         writer.writeAttribute(HTML.ID_ATTR, clientId + "_chart", null);
         writer.endElement(HTML.DIV_ELEM);
+    }
+
+    public boolean isAjaxClick(Chart component) {
+        if (component.getClientBehaviors().get("click") != null) return true;
+        return component.getSelectListener() != null;
     }
 }
