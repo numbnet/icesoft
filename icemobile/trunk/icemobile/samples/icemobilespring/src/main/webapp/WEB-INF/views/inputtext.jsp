@@ -42,7 +42,7 @@
                                 style="width:99%"
                                 autoCorrect="off"
                                 placeholder="Text area"
-                                value="${inputTextBean.inputTextArea}"/>
+                                value="${inputTextBean.textarea}"/>
             </mobi:fieldSetRow>
             <mobi:fieldSetRow>
                 <label>Password:</label>
@@ -78,7 +78,7 @@
             </mobi:fieldSetRow>
             <mobi:fieldSetRow>
                 <label>Text area:</label>
-                <label style="float:right;">${inputTextBean.inputTextArea}</label>
+                <label style="float:right;">${inputTextBean.textarea}</label>
             </mobi:fieldSetRow>
             <mobi:fieldSetRow>
                 <label>Password:</label>
