@@ -176,7 +176,12 @@ public class AjaxBehavior extends ClientBehaviorBase {
 
     protected Object eval(Property prop, Object unspecifiedValue) {
         if (literals.containsKey(prop)) {
-            return literals.get(prop);
+            Object val = literals.get(prop);
+            if(val == null){
+                return unspecifiedValue;
+            } else {
+                return val;
+            }
         }
         ValueExpression ve = bindings.get(prop);
         if (ve != null) {
