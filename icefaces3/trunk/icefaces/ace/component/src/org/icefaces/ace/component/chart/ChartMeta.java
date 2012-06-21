@@ -34,6 +34,10 @@ public class ChartMeta extends UIComponentBaseMeta {
                 "Define a title of the entire chart.")
     private String title;
 
+    @Property(tlddoc = "The JavaScript global component instance name. " +
+            "Must be unique among components on a page. ")
+    private String widgetVar;
+
     @Property(tlddoc =
                 "Define a collection of ChartSeries object to draw on this plot.")
     private List<ChartSeries> value;

@@ -44,6 +44,7 @@ public class Axis implements Serializable {
     private Double padMax;
     private String formatString;
     private String tickInterval;
+    private String tickPrefix;
 
     /**
      * Used by the ChartRenderer to produce a JSON representation of the configuration of this axis.
@@ -133,7 +134,9 @@ public class Axis implements Serializable {
         String fontSize = getTickFontSize();
         Integer angle = getTickAngle();
         String formatString = getFormatString();
+        String prefix = getTickPrefix();
 
+        if (prefix != null) json.entry("prefix", prefix);
         if (formatString != null) json.entry("formatString", getFormatString());
         if (angle != null) json.entry("angle", angle);
         if (fontSize!= null) json.entry("fontSize", fontSize);
@@ -142,7 +145,7 @@ public class Axis implements Serializable {
     }
 
     private boolean hasTickOptionsSet() {
-        return (getTickAngle() != null || getTickFontSize() != null);
+        return (getTickAngle() != null || getTickFontSize() != null || getTickPrefix() != null);
     }
 
     private boolean hasRendererOptionsSet() {
@@ -452,5 +455,21 @@ public class Axis implements Serializable {
      */
     public void setTickInterval(String tickInterval) {
         this.tickInterval = tickInterval;
+    }
+
+    /**
+     * Get the prefix to the beginning of each tick.
+     * @return prefix text
+     */
+    public String getTickPrefix() {
+        return tickPrefix;
+    }
+
+    /**
+     * Set the prefix to the beginning of each tick.
+     * @param tickPrefix prefix text
+     */
+    public void setTickPrefix(String tickPrefix) {
+        this.tickPrefix = tickPrefix;
     }
 }
