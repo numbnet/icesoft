@@ -42,6 +42,8 @@ import org.icefaces.ace.renderkit.CoreRenderer;
 import org.icefaces.ace.util.ComponentUtils;
 import org.icefaces.render.MandatoryResourceComponent;
 
+import org.icefaces.ace.util.JSONBuilder;
+
 @MandatoryResourceComponent(tagName="droppable", value="org.icefaces.ace.component.dnd.Droppable")
 public class DroppableRenderer extends CoreRenderer {
 
@@ -94,22 +96,28 @@ public class DroppableRenderer extends CoreRenderer {
 
         writer.write("ice.ace.jq(function() {");
 
-        writer.write(this.resolveWidgetVar(droppable) + " = new ice.ace.Droppable('" + clientId + "', {");
-        writer.write("target:'" + target + "'");
+        writer.write(this.resolveWidgetVar(droppable) + " = new ");
+		JSONBuilder jb = JSONBuilder.create();
+		jb.beginFunction("ice.ace.Droppable")
+			.item(clientId)
+			.beginMap()
+			.entry("target", target);
 
-        if(droppable.isDisabled()) writer.write(",disabled:true");
-        if(droppable.getHoverStyleClass() != null) writer.write(",hoverClass:'" + droppable.getHoverStyleClass() + "'");
-        if(droppable.getActiveStyleClass() != null) writer.write(",activeClass:'" + droppable.getActiveStyleClass() + "'");
-        if(droppable.getAccept() != null) writer.write(",accept:'" + droppable.getAccept() + "'");
-        if(droppable.getScope() != null) writer.write(",scope:'" + droppable.getScope() + "'");
-        if(droppable.getTolerance() != null) writer.write(",tolerance:'" + droppable.getTolerance() + "'");
+        if(droppable.isDisabled()) jb.entry("disabled", true);
+        if(droppable.getHoverStyleClass() != null) jb.entry("hoverClass", droppable.getHoverStyleClass());
+        if(droppable.getActiveStyleClass() != null) jb.entry("activeClass", droppable.getActiveStyleClass());
+        if(droppable.getAccept() != null) jb.entry("accept", droppable.getAccept());
+        if(droppable.getScope() != null) jb.entry("scope", droppable.getScope());
+        if(droppable.getTolerance() != null) jb.entry("tolerance", droppable.getTolerance());
 
         if(droppable.getDropListener() != null) {
-            writer.write(",ajaxDrop:true");
+            jb.entry("ajaxDrop", true);
         }
 
-        encodeClientBehaviors(context, droppable);
-        writer.write("});});");
+        encodeClientBehaviors(context, droppable, jb);
+        jb.endMap().endFunction();
+		writer.write(jb.toString());
+        writer.write("});");
 
         writer.endElement("script");
 		
