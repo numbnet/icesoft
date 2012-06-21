@@ -49,7 +49,7 @@ public class GMapControl extends UIPanel{
             return name;
         }
         ValueBinding vb = getValueBinding("name");
-        return vb != null ? (String) vb.getValue(getFacesContext()) : "GLargeMapControl";
+        return vb != null ? (String) vb.getValue(getFacesContext()) : "panControl";
 	}
 
 	public void setName(String name) {
