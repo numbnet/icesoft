@@ -62,7 +62,9 @@
             tabContent.style.height = cfgIn.height;
         } else {
              var ht =  calcMaxChildHeight(tabContent);
-             tabContent.style.height =  ht+"px";
+             if (ht > 0) {
+                 tabContent.style.height =  ht+"px";
+             }
         }
         var origcontents = tabContent.children;
         var newPage = origcontents[tabIndex];
@@ -132,17 +134,17 @@
        }
     }
     mobi.tabsetController = {
-        panels: {},
+        tabsets: {},
         initClient: function(clientId, cfg) {
-            if (!this.panels[clientId]){
-                this.panels[clientId] = TabSet(clientId, cfg);
+            if (!this.tabsets[clientId]){
+                this.tabsets[clientId] = TabSet(clientId, cfg);
             } else {
-                this.panels[clientId].updateProperties(clientId, cfg);
+                this.tabsets[clientId].updateProperties(clientId, cfg);
             }
         },
         showContent: function(clientId, el, cfgIn){
-            if (this.panels[clientId]){
-                this.panels[clientId].showContent(el, cfgIn);
+            if (this.tabsets[clientId]){
+                this.tabsets[clientId].showContent(el, cfgIn);
             }
         }
     }
