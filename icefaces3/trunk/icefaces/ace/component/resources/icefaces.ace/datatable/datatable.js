@@ -722,8 +722,8 @@ ice.ace.DataTable.prototype.resizeScrolling = function() {
 
         // Reset overflow if it was disabled as a hack from previous sizing
         var bodyTableParent = bodyTable.parent().css('overflow', '');
-        headerTable.parent().css('overflow', 'visible');
-        footerTable.parent().css('overflow', 'visible');
+        headerTable.parent().css('overflow', '');
+        footerTable.parent().css('overflow', '');
 
         // Reset fixed sizing if set by previous sizing.
         for (i = 0; i < bodySingleCols.length; i++)
@@ -773,7 +773,7 @@ ice.ace.DataTable.prototype.resizeScrolling = function() {
         if (!ie7) bodyTable.css('table-layout','auto');
 
         // IE7 scrollbar fix
-        if (bodyTable.size() > 0 && ie7 && bodyTable.parent().is(':scrollable') && !ie8as7) {
+        if (bodyTable.size() > 0 && ie7 && bodyTable.parent().is(':scrollable')) {
             bodyTable.parent().css('overflow-x', 'hidden');
             bodyTable.parent().css('padding-right', '17px');
             headerTable.parent().css('padding-right', '17px');
