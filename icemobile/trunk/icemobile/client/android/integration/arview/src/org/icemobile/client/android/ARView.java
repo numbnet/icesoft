@@ -85,6 +85,9 @@ public class ARView extends View {
         super.onDraw(canvas);
         for (String label : places.keySet())  {
             String coordstr = places.get(label);
+            if (null == coordstr)  {
+                continue;
+            }
             String [] coordparts = coordstr.split(",");
             if (null != currentLocation)  {
                 float[] labelLoc = new float[2];
