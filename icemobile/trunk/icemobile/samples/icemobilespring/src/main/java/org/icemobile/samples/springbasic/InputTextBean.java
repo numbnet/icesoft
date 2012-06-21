@@ -15,7 +15,7 @@ public class InputTextBean {
     // One property for each switch on the page
     private String text;
     private double number;
-    private String inputTextArea;
+    private String textArea;
     private String password;
     @DateTimeFormat(pattern = "yyyy-mm-dd")
     private Date date;
@@ -36,12 +36,12 @@ public class InputTextBean {
         this.number = number;
     }
 
-    public String getInputTextArea() {
-        return inputTextArea;
+    public String getTextarea() {
+        return textArea;
     }
 
-    public void setInputTextArea(String inputTextArea) {
-        this.inputTextArea = inputTextArea;
+    public void setTextarea(String textArea) {
+        this.textArea = textArea;
     }
 
     public String getPassword() {
