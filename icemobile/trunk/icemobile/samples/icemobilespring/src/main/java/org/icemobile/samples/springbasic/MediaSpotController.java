@@ -27,6 +27,7 @@ public class MediaSpotController {
     HashMap<String,MediaSpotBean> messages = new HashMap();
     MediaSpotBean selectedMessage = null;
     static int THUMBSIZE = 128;
+    int count = 0;
 
 	@ModelAttribute
 	public void ajaxAttribute(WebRequest request, Model model) {
@@ -60,6 +61,10 @@ public class MediaSpotController {
             newFileName = saveMedia(request, "img-%1$s.jpg", photoFile);
             fileName = photoFile.getOriginalFilename();
             spotBean.setFileName(newFileName);
+            String title = spotBean.getTitle();
+            if ((null == title) || "".equals(title))  {
+                spotBean.setTitle("Marker" + count++);
+            }
             messages.put(spotBean.getTitle(), spotBean);
             scaleImage( new File(request.getRealPath("/" + newFileName)) );
         }
