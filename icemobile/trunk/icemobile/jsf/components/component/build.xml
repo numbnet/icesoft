@@ -816,7 +816,7 @@
         <compressjs comp="accordion"
                     path="${resources}/org.icefaces.component.accordion"/>
         <compressjs comp="layoutmenu"
-                    path="${resources}/org.icefaces.component.layoutment"/>
+                    path="${resources}/org.icefaces.component.layoutmenu"/>
     </target>
 
     <target name="res-js-no-compress" depends="res-js-combine" if="no-compress">
