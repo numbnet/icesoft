@@ -29,6 +29,9 @@ import java.util.List;
         @ResourceDependency(library = "icefaces.ace", name = "chart/ace-chart.js"),
         @ResourceDependency(library = "icefaces.ace", name = "util/combined.css")
 })
+@ClientBehaviorHolder(events = {
+    @ClientEvent(name="click", defaultRender = "@this", defaultExecute = "@this")
+})
 public class ChartMeta extends UIComponentBaseMeta {
     @Property(tlddoc =
                 "Define a title of the entire chart.")
