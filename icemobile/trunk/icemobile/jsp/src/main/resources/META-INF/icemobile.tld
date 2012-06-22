@@ -221,7 +221,7 @@
         <description>Pane Panel Tag</description>
         <name>panePanel</name>
         <display-name>ICEmobile PanePanel Tag</display-name>
-        <tag-class>org.icemobile.jsp.tags.PanePanelTag</tag-class>
+        <tag-class>org.icemobile.jsp.tags.PagePanelTag</tag-class>
         <body-content>JSP</body-content>
         <attribute>
             <name>id</name>
@@ -536,5 +536,96 @@
             <required>false</required>
             <rtexprvalue>false</rtexprvalue>
         </attribute>
+    </tag>
+
+    <tag>
+        <name>tabset</name>
+        <body-content>JSP</body-content>
+        <description>ICEmobile TabSet</description>
+        <display-name>tabset</display-name>
+        <tag-class>org.icemobile.jsp.tags.TabSetTag</tag-class>
+
+        <attribute>
+            <name>id</name>
+            <required>true</required>
+            <rtexprvalue>false</rtexprvalue>
+        </attribute>
+        <attribute>
+            <name>styleClass</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+        </attribute>
+        <attribute>
+            <name>style</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+        </attribute>
+        <attribute>
+            <name>selectedTab</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+    </tag>
+
+    <tag>
+        <name>accordian</name>
+        <body-content>JSP</body-content>
+        <description>ICEmobile Accordian</description>
+        <display-name>accordian</display-name>
+        <tag-class>org.icemobile.jsp.tags.AccordianTag</tag-class>
+
+        <attribute>
+            <name>id</name>
+            <required>true</required>
+            <rtexprvalue>false</rtexprvalue>
+        </attribute>
+        <attribute>
+            <name>styleClass</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+        </attribute>
+        <attribute>
+            <name>style</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+        </attribute>
+        <attribute>
+            <name>selectedTab</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+    </tag>
+
+    /* Support classes for Accordian and Tabset */
+
+    <tag>
+        <name>headers</name>
+        <bodyContent>JSP</bodyContent>
+        <description>Header tag area</description>
+        <display-name>Header section</display-name>
+        <tag-class>org.icemobile.jsp.tags.HeadersTag</tag-class>
+    </tag>
+
+    <tag>
+        <name>header</name>
+        <bodyContent>JSP</bodyContent>
+        <description>Header tag</description>
+        <display-name>Header</display-name>
+        <tag-class>org.icemobile.jsp.tags.HeaderTag</tag-class>
+    </tag>
+
+    <tag>
+        <name>content</name>
+        <bodyContent>JSP</bodyContent>
+        <description>Header tag</description>
+        <display-name>Content Section</display-name>
+        <tag-class>org.icemobile.jsp.tags.ContentTag</tag-class>
+    </tag>
+
+    <tag>
+        <name>contentPane</name>
+        <description>Content Container</description>
+        <tag-class>org.icemobile.jsp.tags.ContentPaneTag</tag-class>
+        <body-content>JSP</body-content>
     </tag>
 </taglib>
