@@ -29,7 +29,7 @@
     <body>
 </c:if>
 <div id="carouselContent">
-    <h4>Carousel of goodness</h4>
+    <h4>Carousel</h4>
     <form:form id="carouselForm" method="POST" modelAttribute="carouselBean">
         <mobi:fieldSetGroup inset="true">
             <mobi:fieldSetRow>
