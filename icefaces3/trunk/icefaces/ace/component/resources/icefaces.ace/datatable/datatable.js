@@ -712,7 +712,9 @@ ice.ace.DataTable.prototype.resizeScrolling = function() {
             footerTable = scrollableTable.find(' > div.ui-datatable-scrollable-footer > table'),
             bodyTable = scrollableTable.find(' > div.ui-datatable-scrollable-body > table'),
             dupeHead = bodyTable.find(' > thead'),
-            dupeFoot = bodyTable.find(' > tfoot');
+            dupeFoot = bodyTable.find(' > tfoot'),
+            scrollTop = bodyTable.scrollTop(),
+            scrollLeft = bodyTable.scrollLeft();
 
         var dupeHeadCols = dupeHead.find('th > div.ui-header-column').get().reverse();
 
@@ -897,6 +899,10 @@ ice.ace.DataTable.prototype.resizeScrolling = function() {
         // Hide Duplicate Segments
         dupeHead.css('display', 'none');
         dupeFoot.css('display', 'none');
+
+        // Return to position where we began
+        bodyTable.scrollTop(scrollTop);
+        bodyTable.scrollLeft(scrollLeft);
     }
 }
 
