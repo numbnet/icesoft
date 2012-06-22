@@ -17,8 +17,9 @@ public class InputTextBean {
     private double number;
     private String textArea;
     private String password;
-    @DateTimeFormat(pattern = "yyyy-mm-dd")
-    private Date date;
+//    @DateTimeFormat(pattern = "yyyy-mm-dd")
+//    private Date date;
+    private String date;
 
     public String getText() {
         return text;
@@ -53,11 +54,11 @@ public class InputTextBean {
     }
 
 
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(String date) {
         this.date = date;
     }
 }

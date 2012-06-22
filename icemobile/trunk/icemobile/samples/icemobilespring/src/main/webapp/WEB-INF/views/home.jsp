@@ -119,7 +119,7 @@
     </li>
     <li><a href="<c:url value="/buttons" />" title="buttons">Buttons</a>
     </li>
-    <li><a href="<c:url value="/tabset" />" title="tabset">Tabset demo</a>
+    <li><a href="<c:url value="/tabset" />" title="tabset">Tabset</a>
     </li>
     <li><a href="#icehtml">HTML</a></li>
 </ul>
