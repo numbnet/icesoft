@@ -26,42 +26,41 @@
  .mobi-contentpane-single-menu-hidden {
    overflow: auto;
    display: block;
-   -moz-transition: opacity .25s linear, visibility .1s linear .5s;
-   -webkit-transition: opacity .25s linear, visibility .1s linear .5s;
+   -webkit-transition: left 1s ease-in;
    -moz-transition: left 1s ease-in;
    -o-transition: opacity .25s linear, visibility .1s linear .5s;
    transition: opacity .25s linear, visibility .1s linear .5s;
-   visibility: hidden;
+ /*  visibility: hidden;
    opacity: 0;
-   height: 0;
+   height: 0; (\*/
    position: absolute;
-   visibility: hidden;
    left: -100%;
 }
 .mobi-contentpane-single-hidden {
    overflow: auto;
    display: block;
-   -moz-transition: opacity .25s linear, visibility .1s linear .5s;
-   -webkit-transition: opacity .25s linear, visibility .1s linear .5s;
+ /*  -moz-transition: opacity .25s linear, visibility .1s linear .5s;  */
+   -webkit-transition: left 1s ease-out;
    -moz-transition: left 1s ease-in;
    -o-transition: opacity .25s linear, visibility .1s linear .5s;
-   transition: opacity .25s linear, visibility .1s linear .5s;
+ /*  transition: opacity .25s linear, visibility .1s linear .5s;  */
    visibility: hidden;
    opacity: 0;
    height: 0;
    position: absolute;
    visibility: hidden;
-   left: 200%;
+   left: 100%;
 }
 .mobi-contentpane-single {
     display:block;
     opacity: 1;
+    visibility: visible;
     left: 0;
     height: 100%;
     width: 100%;
     position: absolute;
     border:  solid;
-    -webkit-transition: opacity .50s, left 1s ease-out;
+    -webkit-transition: left 1s ease-out;
     -moz-transition: left 1s ease-out;
     overflow: auto;
 }
