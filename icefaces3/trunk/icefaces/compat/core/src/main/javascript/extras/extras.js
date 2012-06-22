@@ -2953,9 +2953,31 @@ Ice.GoogleMap = {
         var gmapWrapper = Ice.GoogleMap.getGMapWrapper(ele);
         var control = gmapWrapper.controls[controlName];
         if (control == null) {
-            var mapOption = "({"+ controlName +":true})";
-            gmapWrapper.getRealGMap().setOptions(eval(mapOption));
-            gmapWrapper.controls[controlName] = controlName;
+			gmapWrapper.controls[controlName] = controlName;
+			var mapOption = {};
+			if (controlName == 'GScaleControl') controlName = 'scaleControl';
+			else if (controlName == 'GMapTypeControl') {
+				controlName = 'mapTypeControl';
+				mapOption.mapTypeControlOptions = { 
+					mapTypeIds: [ google.maps.MapTypeId.ROADMAP, google.maps.MapTypeId.SATELLITE, google.maps.MapTypeId.HYBRID ] 
+				}; 
+			} else if (controlName == 'GOverviewMapControl') {
+				controlName = 'overviewMapControl';
+				mapOption.overviewMapControlOptions = { opened: true };
+			} else if (controlName == 'GSmallZoomControl') {
+				controlName = 'zoomControl';
+				mapOption.zoomControlOptions = { style: google.maps.ZoomControlStyle.SMALL }; 
+			} else if (controlName == 'GSmallMapControl') {
+				controlName = 'panControl';
+				mapOption.zoomControl = true;
+				mapOption.zoomControlOptions = { style: google.maps.ZoomControlStyle.SMALL }; 
+			} else if (controlName == 'GLargeMapControl') {
+				controlName = 'panControl';
+				mapOption.zoomControl = true;
+				mapOption.zoomControlOptions = { style: google.maps.ZoomControlStyle.LARGE }; 
+			}
+			mapOption[controlName] = true;
+            gmapWrapper.getRealGMap().setOptions(mapOption);
         }
     },
 
@@ -2963,16 +2985,29 @@ Ice.GoogleMap = {
         var gmapWrapper = Ice.GoogleMap.getGMapWrapper(ele);
         var control = gmapWrapper.controls[controlName];
         if (control != null) {
-            var mapOption = "({"+ controlName +":false})";
-            gmapWrapper.getRealGMap().setOptions(eval(mapOption));
+			var newCtrlArray = new Object();
+			for (ctrl in gmapWrapper.controls) {
+				if (controlName != ctrl) {
+					newCtrlArray[ctrl] = gmapWrapper.controls[ctrl];
+				}
+			}
+			gmapWrapper.controls = newCtrlArray;
+			var mapOption = {};
+			if (controlName == 'GScaleControl') controlName = 'scaleControl';
+			else if (controlName == 'GMapTypeControl') controlName = 'mapTypeControl';
+			else if (controlName == 'GOverviewMapControl') controlName = 'overviewMapControl';
+			else if (controlName == 'GSmallZoomControl') {
+				controlName = 'zoomControl';
+			} else if (controlName == 'GSmallMapControl') {
+				controlName = 'panControl';
+				mapOption.zoomControl = false;
+			} else if (controlName == 'GLargeMapControl') {
+				controlName = 'panControl';
+				mapOption.zoomControl = false;
+			}
+			mapOption[controlName] = false;
+            gmapWrapper.getRealGMap().setOptions(mapOption);
         }
-        var newCtrlArray = new Object();
-        for (control in gmapWrapper.controls) {
-            if (controlName != control) {
-                newCtrlArray[control] = gmapWrapper.controls[control];
-            }
-        }
-        gmapWrapper.controls = newCtrlArray;
     },
 
     remove:function(ele) {
