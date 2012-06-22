@@ -36,17 +36,10 @@
     <header>
         <a href="../layoutComponents.html">index page</a>
 
-        <div>
-            <h:form>
-                <mobi:commandButton id="but1"
-                                    value="SelectPane3"
-                                    actionListener="#{layoutBean.changeToPane3}">
-                    <mobi:ajax execute="@this" render="@all"/>
-                </mobi:commandButton>
-            </h:form>
-        </div>
+
     </header>
-    <h1> test page for tabSet in multi row datatable </h1>
+    <h1> test page for tabSet in multi row datatable  Note that panel2 in each tabSet has
+           a button which will trigger a change to panel3</h1>
     <br/>
     <h:form id="contentForm">
         <h:dataTable value="#{layoutBean.dataListMultiRow}" var="tblVar"
@@ -54,7 +47,6 @@
             <h:column>
                 <mobi:tabSet id="test1" currentId="#{tblVar.selectedPane}"
                              parentHeader="false"
-                             fixedHeight="333px"
                              parentFooter="false" autoWidth="false"
                              orientation="top">
                     <mobi:contentPane id="panel1" title="panel1" client="true">
@@ -89,7 +81,7 @@
                             <br/>
                             <mobi:commandButton id="but2" singleSubmit="true"
                                                 value="SelectPane3"
-                                                actionListener="#{layoutBean.changeToPane3}">
+                                                actionListener="#{tblVar.changeToPane3}">
                             </mobi:commandButton>
                             <br/>
                             <ui:include src="included.xhtml"/>
