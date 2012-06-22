@@ -49,11 +49,12 @@
       <h1> test page for accordion with c for each</h1>
       <br />
      <h:form id="contentForm">
-       <mobi:accordion id="test1" currentId="#{layoutBean.selectedPane}">
+       <mobi:accordion id="test1" currentId="#{layoutBean.selectedPane}" fixedHeight="200px">
            <c:forEach items="#{layoutBean.eachContentPane}" var="currContentPane">
               <mobi:contentPane id="#{currContentPane.id}" title="#{currContentPane.legend}" cacheType="#{currContentPane.client}"
                       facelet="#{currContentPane.facelet}">
-                 <fieldset title="#{currContentPane.title}">
+                 <div id="inner3">
+                   <fieldset title="#{currContentPane.title}">
                       <legend>#{currContentPane.legend}</legend>
                     <h3> #{currContentPane.header}</h3>
                      <p> #{currContentPane.content} </p>
@@ -64,13 +65,11 @@
                          <figcaption>#{currContentPane.figcaption}</figcaption>
                         </figure>
                      <ui:include src="included.xhtml"/>                     
-                  </fieldset>
+                    </fieldset>
+                 </div>
               </mobi:contentPane>
            </c:forEach>
        </mobi:accordion>
-       <div id="output" style="display:block;">
-          selected pane ... <mark>#{layoutBean.selectedPane}</mark> ... is selected pane
-       </div>
       <div>
            <mobi:commandButton id="but1"
                                   value="SelectPane3" actionListener="#{layoutBean.changeToPane3}">
