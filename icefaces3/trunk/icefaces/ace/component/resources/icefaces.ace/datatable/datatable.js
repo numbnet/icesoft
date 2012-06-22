@@ -263,7 +263,7 @@ ice.ace.DataTable.prototype.setupSortRequest = function(_self, $this, event, hea
             if (ice.ace.getOpacity($this.find(' > span.ui-sortable-column-icon > a.ui-icon-triangle-1-n')[0]) == 1 ||
                     ice.ace.getOpacity($this.find(' > span.ui-sortable-column-icon > a.ui-icon-triangle-1-s')[0]) == 1 )
                 _self.sortOrder.splice(
-                        parseInt($this.find('span.ui-sortable-control:first > span.ui-sortable-column-order').html())-1,
+                        parseInt($this.find(' > span.ui-sortable-column-order').html())-1,
                         0,
                         $this.closest('.ui-header-column')
                 );
