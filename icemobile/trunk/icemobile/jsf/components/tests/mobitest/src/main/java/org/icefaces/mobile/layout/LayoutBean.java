@@ -101,9 +101,6 @@ public class LayoutBean implements Serializable {
         this.selectedPane = THIRDPANE;
     }
 
-    public void changeToPane3Action(ActionEvent ae){
-        this.selectedPane = THIRDPANE;
-    }
 
  /*   public String getLmenuPane() {
         return lmenuPane;
@@ -118,7 +115,7 @@ public class LayoutBean implements Serializable {
     }
 
     public void setSelectedPane(String selectedPane) {
-        logger.info("LayoutBean.setSelectedPane: " + selectedPane);
+       // logger.info("LayoutBean.setSelectedPane: " + selectedPane);
         this.selectedPane = selectedPane;
     }
 
@@ -218,6 +215,9 @@ public class LayoutBean implements Serializable {
 
         public String getSelectedPane() { return selectedPane; }
         public void setSelectedPane(String selectedPane) { this.selectedPane = selectedPane; }
+        public void changeToPane3(){
+            this.selectedPane = THIRDPANE;
+        }
     }
 
 

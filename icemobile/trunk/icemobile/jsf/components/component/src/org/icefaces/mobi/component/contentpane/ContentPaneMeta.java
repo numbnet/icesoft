@@ -49,19 +49,15 @@ import javax.faces.component.UIComponent;
 
 public class ContentPaneMeta extends UIPanelMeta{
 
-    /* @Property(defaultValue="false", tlddoc=" makes sense to have the scrollable here as it will need certain style attributes for " +
-            " and child panel to scroll within it. If accordionTitle is not null, then this should default to false")
-     private boolean scrollable;*/
-
      @Property(defaultValue=" ", tlddoc="used when ContentPane is child of Accordion or tabSet")
      private String title;
 
      @Property(tlddoc = "style will be rendered on the root element of this " +
-     "component.")
+     "component.  Just for purposes of accordion or tabset")
      private String style;
 
      @Property(tlddoc = "style class will be rendered on the root element of " +
-        "this component.")
+        "this component. Just for purposes of accordion or tabset")
      private String styleClass;
 
      @Property(defaultValue="false", implementation = Implementation.EXISTS_IN_SUPERCLASS,

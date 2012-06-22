@@ -45,7 +45,7 @@ public class LayoutMenuItemRenderer extends BaseLayoutRenderer {
             try {
                 if (!item.isDisabled()) {
                     uiComponent.queueEvent(new ActionEvent(uiComponent));
-                    decodeBehaviors(facesContext, uiComponent);
+                //    decodeBehaviors(facesContext, uiComponent);
                 }
             } catch (Exception e) {
                 logger.warning("Error queuing CommandButton event");
