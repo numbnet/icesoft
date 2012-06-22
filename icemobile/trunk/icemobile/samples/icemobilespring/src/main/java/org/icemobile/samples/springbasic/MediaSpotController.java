@@ -28,6 +28,7 @@ public class MediaSpotController {
     MediaSpotBean selectedMessage = null;
     static int THUMBSIZE = 128;
     int count = 0;
+    String currentFileName = null;
 
 	@ModelAttribute
 	public void ajaxAttribute(WebRequest request, Model model) {
@@ -93,8 +94,7 @@ public class MediaSpotController {
         if ((null != file) && !file.isEmpty()) {
             fileName = file.getOriginalFilename();
             file.transferTo(new File(request.getRealPath("/" + newFileName)));
-            request.getServletContext().setAttribute(
-                    this.getClass().getName(), newFileName );
+            currentFileName = newFileName;
         }
 
         if (null == fileName) {
@@ -107,12 +107,10 @@ public class MediaSpotController {
     }
 
     private String getCurrentFileName(HttpServletRequest request) {
-        String currentName = (String) request.getServletContext().getAttribute(
-                this.getClass().getName() );
-        if (null == currentName) {
+        if (null == currentFileName) {
             return "resources/uploaded.jpg";
         }
-        return currentName;
+        return currentFileName;
     }
     
     private String getRealityParams()  {

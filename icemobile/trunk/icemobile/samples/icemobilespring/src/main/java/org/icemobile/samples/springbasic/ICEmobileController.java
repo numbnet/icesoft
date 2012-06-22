@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.multipart.MultipartFile;
 
 import org.icepush.PushContext;
@@ -16,10 +17,17 @@ import org.icepush.PushContext;
 import java.io.File;
 import java.io.IOException;
 import java.util.UUID;
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
+import javax.inject.Inject;
 
 @Controller
 public class ICEmobileController {
+
+    @Inject
+    private WebApplicationContext context;
+
+    String currentFileName = null;
 
     @ModelAttribute
     public void ajaxAttribute(WebRequest request, Model model) {
@@ -54,10 +62,11 @@ public class ICEmobileController {
     }
 
     @RequestMapping(value = "/icemobile", method = RequestMethod.POST)
-    public void processUpload(HttpServletRequest request, ModelBean modelBean,
-                              @RequestParam(value = "camera-file", required = false) MultipartFile file,
-                              @RequestParam(value = "camera", required = false) MultipartFile inputFile,
-                              Model model) throws IOException {
+    public void processUpload(
+            HttpServletRequest request, ModelBean modelBean,
+            @RequestParam(value = "camera-file", required = false) MultipartFile file,
+            @RequestParam(value = "camera", required = false) MultipartFile inputFile,
+            Model model) throws IOException {
         String newFileName = saveImage(request, file, inputFile);
         if (((null != file) && !file.isEmpty()) || ((null != inputFile) && !inputFile.isEmpty())) {
             model.addAttribute("message", "Hello " + modelBean.getName() + ", your file '" + newFileName + "' was uploaded successfully.");
@@ -70,24 +79,24 @@ public class ICEmobileController {
     }
 
     @RequestMapping(value = "/campushr", method = RequestMethod.POST)
-    public void pushCamerar(HttpServletRequest request, ModelBean modelBean,
-                            @RequestParam(value = "camera-file", required = false) MultipartFile file,
-                            @RequestParam(value = "camera", required = false) MultipartFile inputFile,
-                            Model model) throws IOException {
+    public void pushCamerar(
+            HttpServletRequest request, ModelBean modelBean,
+            @RequestParam(value = "camera", required = false) MultipartFile file,
+            Model model) throws IOException {
 
-        this.pushCamera(request, modelBean, file, inputFile, model);
+        this.pushCamera(request, modelBean, file, model);
     }
 
     @RequestMapping(value = "/campush", method = RequestMethod.POST)
-    public void pushCamera(HttpServletRequest request, ModelBean modelBean,
-                           @RequestParam(value = "camera-file", required = false) MultipartFile file,
-                           @RequestParam(value = "camera", required = false) MultipartFile inputFile,
-                           Model model) throws IOException {
+    public void pushCamera(
+            HttpServletRequest request, ModelBean modelBean,
+            @RequestParam(value = "pushcam", required = false) MultipartFile file,
+            Model model) throws IOException {
 
-        String newFileName = saveImage(request, file, inputFile);
-        if (((null != file) && !file.isEmpty()) || ((null != inputFile) && !inputFile.isEmpty())) {
+        String newFileName = saveImage(request, file, null);
+        if ( ((null != file) && !file.isEmpty()) ) {
             model.addAttribute("message", "Hello " + modelBean.getName() + ", your file '" + newFileName + "' was uploaded successfully.");
-            PushContext.getInstance(request.getServletContext())
+            PushContext.getInstance(context.getServletContext())
                     .push("camPush");
         }
         if (null != newFileName) {
@@ -123,15 +132,13 @@ public class ICEmobileController {
         if ((null != file) && !file.isEmpty()) {
             fileName = file.getOriginalFilename();
             file.transferTo(new File(request.getRealPath("/" + newFileName)));
-            request.getServletContext().setAttribute(
-                                                            this.getClass().getName(), newFileName);
+            currentFileName = newFileName;
         }
         if ((null != inputFile) && !inputFile.isEmpty()) {
             fileName = inputFile.getOriginalFilename();
             inputFile.transferTo(
-                                        new File(request.getRealPath("/" + newFileName)));
-            request.getServletContext().setAttribute(
-                                                            this.getClass().getName(), newFileName);
+                    new File(request.getRealPath("/" + newFileName)));
+            currentFileName = newFileName;
         }
 
         if (null == fileName) {
@@ -144,12 +151,10 @@ public class ICEmobileController {
     }
 
     private String getCurrentFileName(HttpServletRequest request) {
-        String currentName = (String) request.getServletContext().getAttribute(
-                                                                                      this.getClass().getName());
-        if (null == currentName) {
+        if (null == currentFileName) {
             return "resources/uploaded.jpg";
         }
-        return currentName;
+        return currentFileName;
     }
 }
 
