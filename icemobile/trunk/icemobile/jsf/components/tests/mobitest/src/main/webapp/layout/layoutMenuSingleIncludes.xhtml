@@ -29,7 +29,7 @@
              <h3>Content Pane 1</h3>
          </mobi:contentNavBar>
               <h:panelGroup>
-                  panel 1 client
+                   <ui:include src="includes/splash.xhtml"/>
               </h:panelGroup>
       </mobi:contentPane>
       <mobi:contentPane id="panel2" client="true">
@@ -37,7 +37,7 @@
              <h3>Content Pane 2</h3>
          </mobi:contentNavBar>
              <h:panelGroup>
-                 panel 2
+                 <ui:include src="includes/date-example.xhtml"/>
              </h:panelGroup>
        </mobi:contentPane>
        <mobi:contentPane id="panel3" facelet="true" >
@@ -45,7 +45,9 @@
              <h3>Content Pane 3</h3>
          </mobi:contentNavBar>
              <h:panelGroup>
-                 panel 3
+               <h:form>
+                <ui:include src="includes/other.xhtml" />
+               </h:form>
              </h:panelGroup>
          </mobi:contentPane>
      </mobi:contentStack>

@@ -54,34 +54,29 @@ public class ContentPaneRenderer extends BaseLayoutRenderer {
             ResponseWriter writer = facesContext.getResponseWriter();
             String clientId = uiComponent.getClientId(facesContext);
             String contentClass = ContentPane.CONTENT_BASE_CLASS;
-            String contentDeadClass = ContentPane.CONTENT_HIDDEN_CLASS.toString();
-        /*    if (stack.isSingleView()){
-                contentClass = ContentPane.CONTENT_SINGLE_BASE_CLASS.toString();
-                contentDeadClass = ContentPane.CONTENT_SINGLE_HIDDEN_CLASS.toString();
-            } */
-            String classToWrite = contentDeadClass;
-            boolean amSelected = iAmSelected(facesContext, uiComponent);
-            if (amSelected){
-                classToWrite =  contentClass ;
-            }
-       /*     if (!amSelected && pane.isMenuOrHome()) {
-                classToWrite = ContentPane.CONTENT_SINGLE_MENUPANE_CLASS;
-            } */
-            // write out any users specified style attributes.
-            /* write out root tag.  For current incarnation html5 semantic markup is ignored */
             writer.startElement(HTML.DIV_ELEM, uiComponent);
-            writer.writeAttribute(HTML.ID_ATTR, clientId, HTML.ID_ATTR);
+            writer.writeAttribute(HTML.ID_ATTR, clientId+"_wrp", HTML.ID_ATTR);
+            String contentDeadClass = ContentPane.CONTENT_HIDDEN_CLASS.toString();
             if (pane.isMenuOrHome()){
                 writer.writeAttribute("isMenu", "true", null);
             }
             else{
                 writer.writeAttribute("isMenu","false", null);
             }
-            // apply default style class for panel-stack  ??
-            if (!stack.isSingleView()) {
+            String classToWrite = contentDeadClass;
+            boolean amSelected = iAmSelected(facesContext, uiComponent);
+            if (amSelected){
+                classToWrite =  contentClass ;
+            }
+            /* write out root tag.  For current incarnation html5 semantic markup is ignored */
+            writer.startElement(HTML.DIV_ELEM, uiComponent);
+            writer.writeAttribute(HTML.ID_ATTR, clientId, HTML.ID_ATTR);
+       //     String contentSingleClass = ContentPane.CONTENT_SINGLE_HIDDEN_CLASS;
+
+            // apply default style class for panel-stack for singleView & menu the js will do so.
+            if (stack.getLayoutMenuId()==null || stack.getLayoutMenuId().equals("")) {
                 writer.writeAttribute("class", classToWrite, "class");
             }
-            writer.writeAttribute(HTML.STYLE_ATTR, pane.getStyle(), "style");
         }
     }
 
@@ -152,12 +147,8 @@ public class ContentPaneRenderer extends BaseLayoutRenderer {
          if (uiComponent.getParent() instanceof Accordion){
              writer.endElement(HTML.SECTION_ELEM);
              return;
-         }
-         else if (uiComponent.getParent() instanceof TabSet){
-             writer.endElement(HTML.DIV_ELEM);
-             writer.endElement(HTML.DIV_ELEM);
-             return;
          } else {
+             writer.endElement(HTML.DIV_ELEM);
              writer.endElement(HTML.DIV_ELEM);
          }
     }

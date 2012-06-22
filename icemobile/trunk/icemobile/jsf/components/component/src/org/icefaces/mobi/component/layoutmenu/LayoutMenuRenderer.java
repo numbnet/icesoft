@@ -61,12 +61,13 @@ public class LayoutMenuRenderer extends BaseLayoutRenderer {
 
          // should be auto base though
          writer.startElement(HTML.UL_ELEM, uiComponent);
+         writer.writeAttribute(HTML.ID_ATTR,clientId+"_ul", HTML.ID_ATTR);
          String selectedPane = null;
          if (null!=menu.getSelectedPane()) {
              selectedPane = menu.getSelectedPane();
          }
          //if still null, then get the first item in the contentStack??
-         writer.writeAttribute("data-current",selectedPane , null);
+ //        writer.writeAttribute("data-current",selectedPane , null);
          writer.writeAttribute(HTML.CLASS_ATTR, listClass.toString(), HTML.CLASS_ATTR);
          if (menu.getVar() != null) {
             menu.setRowIndex(-1);
