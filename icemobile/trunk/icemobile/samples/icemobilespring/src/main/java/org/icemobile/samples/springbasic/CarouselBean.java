@@ -34,15 +34,10 @@ public class CarouselBean {
 
     public Collection getImages() {
         ArrayList images = new ArrayList();
-        images.add(new String("<img src=\"resources/a.png\" />"));
-        images.add(new String("<img src=\"resources/b.png\" />"));
-        images.add(new String("<img src=\"resources/c.png\" />"));
-        images.add(new String("<img src=\"resources/d.png\" />"));
-        images.add(new String("<img src=\"resources/e.png\" />"));
-        images.add(new String("<img src=\"resources/f.png\" />"));
-        images.add(new String("<img src=\"resources/g.png\" />"));
-        images.add(new String("<img src=\"resources/h.png\" />"));
-        images.add(new String("<img src=\"resources/i.png\" />"));
+        images.add(new String("<img src=\"resources/desktop.png\" />"));
+        images.add(new String("<img src=\"resources/monitor.png\" />"));
+        images.add(new String("<img src=\"resources/laptop.png\" />"));
+        images.add(new String("<img src=\"resources/pda.png\" />"));
         return images;
     }
 }
