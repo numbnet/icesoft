@@ -258,10 +258,10 @@ ice.ace.DataTable.prototype.setupSortRequest = function(_self, $this, event, hea
     // If we are looking a freshly rendered DT initalize our JS sort state
     // from the state of the rendered controls
     if (_self.sortOrder.length == 0) {
-        ice.ace.jq(_self.jqId + 'div > table > thead > tr > th > div.ui-sortable-column > span > span.ui-sortable-control').each(function() {
+        ice.ace.jq(_self.jqId + ' > div > table > thead > tr > th > div.ui-sortable-column > span > span.ui-sortable-control').each(function() {
             var $this = ice.ace.jq(this);
-            if (ice.ace.getOpacity($this.find('span.ui-sortable-control:first > a.ui-icon-triangle-1-n')[0]) == 1 ||
-                    ice.ace.getOpacity($this.find('span.ui-sortable-control:first > a.ui-icon-triangle-1-s')[0]) == 1 )
+            if (ice.ace.getOpacity($this.find(' > span.ui-sortable-column-icon > a.ui-icon-triangle-1-n')[0]) == 1 ||
+                    ice.ace.getOpacity($this.find(' > span.ui-sortable-column-icon > a.ui-icon-triangle-1-s')[0]) == 1 )
                 _self.sortOrder.splice(
                         parseInt($this.find('span.ui-sortable-control:first > span.ui-sortable-column-order').html())-1,
                         0,
