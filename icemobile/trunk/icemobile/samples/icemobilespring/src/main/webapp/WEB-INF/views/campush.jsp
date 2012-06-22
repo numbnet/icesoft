@@ -33,8 +33,8 @@
                 <form:input path="name"/>
             </mobi:fieldSetRow>
             <mobi:fieldSetRow>
-                <mobi:camera id="camera"/>
-                <mobi:thumb for="camera"
+                <mobi:camera id="pushcam"/>
+                <mobi:thumb for="pushcam"
                             style="height:60px;width:65px;vertical-align:middle;float:right;margin:10px;"/>
             </mobi:fieldSetRow>
         </mobi:fieldSetGroup>

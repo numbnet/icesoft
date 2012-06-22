@@ -1,9 +1,11 @@
 package org.icemobile.samples.springbasic;
 
+import org.springframework.ui.Model;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.context.request.WebRequest;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -14,6 +16,11 @@ import javax.servlet.http.HttpServletRequest;
  */
 @Controller
 public class TabsetController {
+
+    @ModelAttribute
+    public void ajaxAttribute(WebRequest request, Model model) {
+        model.addAttribute("ajaxRequest", AjaxUtils.isAjaxRequest(request));
+    }
 
     @RequestMapping(value = "/tabset", method = RequestMethod.GET)
     public void variousGet(HttpServletRequest request, TabsetBean model) {
