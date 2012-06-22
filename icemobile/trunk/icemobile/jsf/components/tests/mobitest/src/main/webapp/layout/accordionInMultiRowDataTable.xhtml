@@ -42,7 +42,7 @@
              <h:outputText value="#{tblVar.selectedPane}"/>
          </h:column>
          <h:column>
-           <mobi:accordion id="test1" currentId="#{tblVar.selectedPane}" autoheight="true">
+           <mobi:accordion id="test1" currentId="#{tblVar.selectedPane}" autoHeight="true">
               <mobi:contentPane id="panel1" title="panel1" client="true">
                   <fieldset title="panel1">
                       <legend>Panel1</legend>
@@ -98,12 +98,7 @@
        <div id="output" style="display:block;">
           selected pane ... <mark>#{layoutBean.selectedPane}</mark> ... is selected pane
        </div>
-      <div>
-           <mobi:commandButton id="but1"
-                                  value="SelectPane3" actionListener="#{layoutBean.changeToPane3}">
-                  <mobi:ajax execute="@this" render="@form"/>
-           </mobi:commandButton>
-      </div>
+
      </h:form>
     <footer>
         <a href="../layoutComponents.html">index page</a>
