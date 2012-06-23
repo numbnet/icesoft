@@ -63,8 +63,6 @@ public class Panel extends PanelBase {
 	public static final String PANEL_TITLE_ICON_CLASS = "ui-panel-titlebar-icon ui-corner-all ui-state-default";
 	public static final String PANEL_CONTENT_CLASS = "ui-panel-content ui-widget-content";
 	public static final String PANEL_FOOTER_CLASS = "ui-panel-footer ui-widget-content";
-
-    private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("toggle","close"));
 	
 	private Menu optionsMenu;
 	
@@ -107,11 +105,6 @@ public class Panel extends PanelBase {
         else {
             super.queueEvent(event);
         }
-    }
-
-    @Override
-    public Collection<String> getEventNames() {
-        return EVENT_NAMES;
     }
 
     @Override
