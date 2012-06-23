@@ -41,21 +41,35 @@ public class ClientBehaviorHolder extends Behavior {
 	
 	public void addImportsToComponent(StringBuilder stringBuilder) {
 		stringBuilder.append("import org.icefaces.ace.api.IceClientBehaviorHolder;\n");
-		stringBuilder.append("import java.util.Collection;\n");
+        stringBuilder.append("import java.util.Collection;\n");
+		stringBuilder.append("import java.util.Collections;\n");
 	}	
 	
 	public void addCodeToComponent(StringBuilder output) {
 		org.icefaces.ace.meta.annotation.ClientBehaviorHolder anno = (org.icefaces.ace.meta.annotation.ClientBehaviorHolder)
 			GeneratorContext.getInstance().getActiveMetaContext().getActiveClass().getAnnotation(org.icefaces.ace.meta.annotation.ClientBehaviorHolder.class);
 		ClientEvent[] events = anno.events();
-		output.append("\n\tCollection<String> eventNames = null;");
+
+        output.append("\n\tprivate static final Collection<String> eventNames =");
+        output.append("\n\t\tCollections.unmodifiableCollection(Arrays.asList(");
+        for (int i = 0; i < events.length; i++) {
+            output.append("\n\t\t\t\""+ events[i].name() +"\""+((i < events.length-1)?",":"));"));
+        }
+
+        output.append("\n\n\tprivate static final Map<String, String> defaultRenderMap;");
+        output.append("\n\tprivate static final Map<String, String> defaultExecuteMap;");
+           output.append("\n\tstatic {");
+        output.append("\n\t\tMap<String, String> drm = new HashMap<String, String>("+(events.length+1)+");");
+        output.append("\n\t\tMap<String, String> dem = new HashMap<String, String>("+(events.length+1)+");");
+        for (int i = 0; i < events.length; i++) {
+            output.append("\n\t\tdrm.put(\""+ events[i].name() +"\",\"" + events[i].defaultRender() + "\");");
+            output.append("\n\t\tdem.put(\""+ events[i].name() +"\",\"" + events[i].defaultExecute() + "\");");
+        }
+        output.append("\n\t\tdefaultRenderMap = Collections.unmodifiableMap(drm);");
+        output.append("\n\t\tdefaultExecuteMap = Collections.unmodifiableMap(dem);");
+        output.append("\n\t}\n");
+
 		output.append("\n\tpublic Collection<String> getEventNames() {");
-		output.append("\n\t\tif (eventNames == null) {");
-		output.append("\n\t\t\teventNames = new ArrayList<String>();");
-		for (int i = 0; i < events.length; i++) {
-			output.append("\n\t\t\teventNames.add(\""+ events[i].name() +"\");");
-		}			
-		output.append("\n\t\t}");
 		output.append("\n\t\treturn eventNames;");
 		output.append("\n\t}\n");
 		
@@ -63,25 +77,11 @@ public class ClientBehaviorHolder extends Behavior {
 		output.append("\n\t\treturn \"" + anno.defaultEvent() + "\";");
 		output.append("\n\t}\n");
 
-		output.append("\n\tMap<String, String> defaultRenderMap = null;");
 		output.append("\n\tpublic String getDefaultRender(String event) {");
-		output.append("\n\t\tif (defaultRenderMap == null) {");
-		output.append("\n\t\t\tdefaultRenderMap = new HashMap<String, String>();");
-		for (int i = 0; i < events.length; i++) {
-			output.append("\n\t\t\tdefaultRenderMap.put(\""+ events[i].name() +"\",\"" + events[i].defaultRender() + "\");");
-		}			
-		output.append("\n\t\t}");
 		output.append("\n\t\treturn defaultRenderMap.get(event);");
 		output.append("\n\t}\n");
 
-		output.append("\n\tMap<String, String> defaultExecuteMap = null;");
 		output.append("\n\tpublic String getDefaultExecute(String event) {");
-		output.append("\n\t\tif (defaultExecuteMap == null) {");
-		output.append("\n\t\t\tdefaultExecuteMap = new HashMap<String, String>();");
-		for (int i = 0; i < events.length; i++) {
-			output.append("\n\t\t\tdefaultExecuteMap.put(\""+ events[i].name() +"\",\"" + events[i].defaultExecute() + "\");");
-		}			
-		output.append("\n\t\t}");
 		output.append("\n\t\treturn defaultExecuteMap.get(event);");
 		output.append("\n\t}\n");
 
