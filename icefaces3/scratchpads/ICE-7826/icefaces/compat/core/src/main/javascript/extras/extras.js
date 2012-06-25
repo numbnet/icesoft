@@ -2714,9 +2714,10 @@ GMapWrapper.prototype = {
         this.realGMap = realGMap;
         this.controls = new Object();
         this.overlays = new Object();
+        this.geoMarker = new Object();
+		this.directions = new Object();
 		this.services = new Object();
 		this.layers = new Object();
-        this.geoMarker = new Object();
         this.geoMarkerAddress;
         this.geoMarkerSet = false;
     },
@@ -2775,15 +2776,24 @@ Ice.GoogleMap = {
         return gmapWrapper;
     },
 
-    loadDirection:function(id, text_div, query) {
-        var direction = GMapRepository[id + 'dir'];
+    loadDirection:function(id,from, to) {
+        var wrapper = Ice.GoogleMap.getGMapWrapper(id);
         var map = Ice.GoogleMap.getGMapWrapper(id).getRealGMap();
-        if (direction == null) {
-            var directionsPanel = document.getElementById(text_div);
-            direction = new GDirections(map, directionsPanel);
-            GMapRepository[id + 'dir'] = direction;
-        }
-        direction.load(query);
+        service=new google.maps.DirectionsService();
+		var origin = (from == "(") ? "origin: new google.maps.LatLng" + from + ", " : "origin: \"" + from + "\", ";
+		var destination = (to == "(") ? "destination: new google.maps.LatLng" + to + ", " : "destination: \"" + to + "\", ";
+		var request = "({" + origin + destination +"travelMode:google.maps.TravelMode.DRIVING})";
+		function directionsCallback(response, status) {
+			if (status != google.maps.DirectionsStatus.OK) {
+				alert('Error was: ' + status);
+				} else {
+					var renderer = (wrapper.directions[id] != null)? wrapper.directions[id]:new google.maps.DirectionsRenderer();
+					renderer.setMap(map);
+					renderer.setDirections(response);
+					wrapper.directions[id]=renderer;
+					}
+				}
+					service.route(eval(request), directionsCallback);
     },
 
     addOverlay:function (ele, overlayId, ovrLay) {
@@ -2943,9 +2953,9 @@ Ice.GoogleMap = {
         var gmapWrapper = Ice.GoogleMap.getGMapWrapper(ele);
         var control = gmapWrapper.controls[controlName];
         if (control == null) {
-            control = eval('new ' + controlName + '()');
-            gmapWrapper.getRealGMap().addControl(control);
-            gmapWrapper.controls[controlName] = control;
+            var mapOption = "({"+ controlName +":true})";
+            gmapWrapper.getRealGMap().setOptions(eval(mapOption));
+            gmapWrapper.controls[controlName] = controlName;
         }
     },
 
@@ -2953,7 +2963,8 @@ Ice.GoogleMap = {
         var gmapWrapper = Ice.GoogleMap.getGMapWrapper(ele);
         var control = gmapWrapper.controls[controlName];
         if (control != null) {
-            gmapWrapper.getRealGMap().removeControl(control);
+            var mapOption = "({"+ controlName +":false})";
+            gmapWrapper.getRealGMap().setOptions(eval(mapOption));
         }
         var newCtrlArray = new Object();
         for (control in gmapWrapper.controls) {
@@ -3015,17 +3026,19 @@ Ice.GoogleMap = {
 		var service;
 		var points = locationList.split(":");
 		switch (name) {
+				case "directions":
                 case "Directions":
 				case "DirectionsService":
-				//Required options: travelMode, 2 points/addresses (First=origin, second=dest, 3+=waypoints
+				//Required options: travelMode, 2 points/addresses (First=origin, last=dest, others=waypoints
                     service=new google.maps.DirectionsService();
 					var origin = (points[0].charAt(0) == "(") ? "origin: new google.maps.LatLng" + points[0] + ", " : "origin: \"" + points[0] + "\", ";
-					var destination = (points[1].charAt(0) == "(") ? "destination: new google.maps.LatLng" + points[1] + ", " : "destination: \"" + points[1] + "\", ";
+					var lastElement = points.length - 1;
+					var destination = (points[lastElement].charAt(0) == "(") ? "destination: new google.maps.LatLng" + points[lastElement] + ", " : "destination: \"" + points[lastElement] + "\", ";
 					if(points.length >= 3){
 						var waypoints = [];
-						for (var i = 2; i < points.length; i++){
+						for (var i = 1; i < points.length-1; i++){
 							var point = (points[i].charAt(0) == "(") ? "{location:new google.maps.LatLng" + points[i] + "}": "{location:\"" + points[i] + "\"}";
-							waypoints[i-2] = point;
+							waypoints[i-1] = point;
 						}
 						var waypointsString = "waypoints: [" + waypoints + "], ";
 						var request = "({" + origin + destination + waypointsString + options + "})";
@@ -3044,6 +3057,7 @@ Ice.GoogleMap = {
 					}
 					service.route(eval(request), directionsCallback);
                     break;
+				case "elevation":	
                 case "Elevation":
 				case "ElevationService":
                     //Required options: travelMode, 2 points/addresses
@@ -3067,7 +3081,8 @@ Ice.GoogleMap = {
 					}
 					service.getElevationForLocations(eval(request), elevationCallback);
                     break;
-                case "MaxZoom":
+                case "maxZoom":
+				case "MaxZoom":
 				case "MaxZoomService":
                     service=new google.maps.MaxZoomService();
 					var point = eval("new google.maps.LatLng" + points[0]);
@@ -3080,6 +3095,7 @@ Ice.GoogleMap = {
 						}
 					service.getMaxZoomAtLatLng(point, maxZoomCallback);
                     break;
+				case "distance":
 				case "Distance":
 				case "DistanceMatrix":
 				case "DistanceMatrixService":

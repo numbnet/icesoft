@@ -35,7 +35,7 @@ public class GMapDirection extends UIPanel{
 	public static final String COMPONENT_TYPE = "com.icesoft.faces.GMapDirection";
     public static final String COMPONENT_FAMILY = "com.icesoft.faces.GMapDirection";
 	private Boolean locateAddress;
-    private boolean initilized = false;
+    private Boolean initialized = false;
     private String from;
     private String to;
     private String textualDivId;
@@ -61,43 +61,14 @@ public class GMapDirection extends UIPanel{
     	String textualDivId = getTextualDivId(); 
 		GMap gmap = (GMap)this.getParent();
     	String mapId = gmap.getClientId(context);
-    	if (textualDivId == null) {
-    		//user didn't defined the textual div, so create one
-
-    		textualDivId = mapId + "textualDiv";
-    		DOMContext domContext = DOMContext.getDOMContext(context, gmap);
-
-    		Element texttualTd =  (Element) domContext.createElement(HTML.TD_ELEM);
-    		texttualTd.setAttribute(HTML.CLASS_ATTR, gmap.getTxtTdStyleClass());
-    		Element textualDiv = (Element) domContext.createElement(HTML.DIV_ELEM);
-    		textualDiv.setAttribute(HTML.STYLE_ATTR, "width:300px;");
-    		textualDiv.setAttribute(HTML.ID_ATTR, textualDivId );
-    		texttualTd.setAttribute("VALIGN", "top");
-    		texttualTd.appendChild(textualDiv);
-    		domContext.getRootNode().getFirstChild().appendChild(texttualTd);
-    	} else {
-    		if (textualDivClientId == null) {
-    			textualDivClientId = getClientIdOfTextualDiv(context);
-    		}
-    	}
-    	
     	String query = "";
     	String from = getFrom();
     	String to = getTo();
-    	if((isLocateAddress() || !initilized)) {
-    		 if (from != null && from.length() > 2) {
-    			 query = "from: "+ from + " ";
-    		 }
-    		 if (to != null && to.length() > 2) {
-    			 query += "to: "+ to;
-    		 }
-    		 if (query.length() > 2 ) {
-    			 JavascriptContext.addJavascriptCall(context, 
-    					 "Ice.GoogleMap.loadDirection('"+ mapId +"', '"+ 
-    					 textualDivClientId +"', '"+ query +"');");
-    		 }
-    		 initilized = true;    		
-    	}
+		if((isLocateAddress())||(!isInitialized())) {
+		JavascriptContext.addJavascriptCall(context, 
+    		"Ice.GoogleMap.loadDirection('"+ mapId +"', '"+ from +"', '" + to +"');");
+		initialized=true;
+		}
     }
 
 	public boolean isLocateAddress() {
@@ -112,6 +83,20 @@ public class GMapDirection extends UIPanel{
 
 	public void setLocateAddress(boolean locateAddress) {
 		this.locateAddress = new Boolean(locateAddress);
+	}
+	
+	public boolean isInitialized() {
+        if (initialized != null) {
+            return initialized.booleanValue();
+        }
+        ValueBinding vb = getValueBinding("initialized");
+        return vb != null ?
+               ((Boolean) vb.getValue(getFacesContext())).booleanValue() :
+               false;
+	}
+
+	public void setInitialized(boolean initialized) {
+		this.initialized = new Boolean(initialized);
 	}
 
 	public String getFrom() {
@@ -179,7 +164,7 @@ public class GMapDirection extends UIPanel{
         locale = (String)values[4];
         locateAddress = (Boolean)values[5];
         textualDivClientId = (String)values[6];
-        initilized = ((Boolean) values[7]).booleanValue();
+        initialized = (Boolean)values[7];
     }
 
     public Object saveState(FacesContext context) {
@@ -193,7 +178,7 @@ public class GMapDirection extends UIPanel{
         values[4] = locale;
         values[5] = locateAddress;  
         values[6] = textualDivClientId;
-        values[7] = Boolean.valueOf(initilized);
+        values[7] = initialized;
         return values;
     }
 

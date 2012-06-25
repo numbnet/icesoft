@@ -164,8 +164,8 @@ public class GMap extends UIPanel {
                         getType() + "');");
 		if (options != null){
 		JavascriptContext.addJavascriptCall(context,
-                "Ice.GoogleMap.addOptions('" + getClientId(context) + "','" +
-                        getOptions() + "');");
+                "Ice.GoogleMap.addOptions('" + getClientId(context) + "',\"" +
+                        getOptions() + "\");");
 		}
     }
 
