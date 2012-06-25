@@ -28,12 +28,10 @@
     font-weight:bold;
 }
 .ui-datatable th,.ui-datatable tfoot td {
-    position:relative;
     text-align:center;
     margin:0;
     padding:0;
 }
-
 .ui-datatable th .ui-header-column {
     position:relative;
 }
