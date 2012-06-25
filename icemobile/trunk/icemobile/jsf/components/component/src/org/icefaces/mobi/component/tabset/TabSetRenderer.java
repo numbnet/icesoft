@@ -154,7 +154,7 @@ public class TabSetRenderer extends BaseLayoutRenderer {
 
         writer.startElement(HTML.UL_ELEM, uiComponent);
         writer.writeAttribute(HTML.ID_ATTR, clientId+"_dc", HTML.ID_ATTR);
-        writer.writeAttribute("data-current", idIndex.getIndex(), null);
+     //   writer.writeAttribute("data-current", idIndex.getIndex(), null);
         for (int i = 0; i < tabsNum; i++) {
             //check to see that children are of type contentPane
             UIComponent child = controller.getChildren().get(i);
@@ -169,9 +169,9 @@ public class TabSetRenderer extends BaseLayoutRenderer {
                 sb.append(",client: ").append(client);
                 sb.append("});");
                 writer.writeAttribute("onclick", sb.toString(), "onclick");
-                if (cp.getId().equals(idIndex.getId())) {
+          /*      if (cp.getId().equals(idIndex.getId())) {
                     writer.writeAttribute("class", TabSet.TABSET_ACTIVETAB_CLASS, "class");
-                }
+                } */
                 if (autoWidth){
                     writer.writeAttribute(HTML.STYLE_ATTR, percentWidth, HTML.STYLE_ATTR);
                 }

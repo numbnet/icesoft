@@ -36,7 +36,8 @@ public class TabSet extends TabSetBase implements ContentPaneController {
     public static final StringBuilder TABSET_CONTAINER_TOP_CLASS = new StringBuilder("mobi-tabset-tabs-top ");
     public static final StringBuilder TABSET_CONTAINER_TOP_HEADER_CLASS = new StringBuilder("mobi-tabset-tabs-top-header ");
     public static final StringBuilder TABSET_TABS_CLASS = new StringBuilder("mobi-tabset-tabs ");
-    public static final StringBuilder TABSET_ACTIVETAB_CLASS = new StringBuilder("activeTab ");
+    /* activeTab is now done with javascript so tabs are not rendered every request if not changed */
+  //  public static final StringBuilder TABSET_ACTIVETAB_CLASS = new StringBuilder("activeTab ");
     public static final StringBuilder TABSET_CONTENT_CLASS = new StringBuilder("mobi-tabset-content ");
     public static final StringBuilder TABSET_HIDDEN_PAGECLASS = new StringBuilder("mobi-tabpage-hidden");
     public static final String TABSET_ACTIVE_CONTENT_CLASS= "mobi-tabpage";
