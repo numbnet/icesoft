@@ -40,6 +40,9 @@
 if (!window.ice['ace']) {
     window.ice.ace = {};
 }
+if (!window.ice.ace['DataTables']) {
+    window.ice.ace.DataTables = {};
+}
 
 
 (function($) {
@@ -156,7 +159,17 @@ ice.ace.DataTable = function(id, cfg) {
     this.behaviors = cfg.behaviors;
     this.parentSize = 0;
     this.lastClickedIndex = -1;
+    this.scrollLeft = 0;
+    this.scrollTop = 0;
+
+    var oldInstance = ice.ace.DataTables[this.id];
     var rowEditors = this.getRowEditors();
+
+    // Persist State
+    if (oldInstance) {
+        this.scrollLeft = oldInstance.scrollLeft;
+        this.scrollTop = oldInstance.scrollTop;
+    }
 
     if (this.cfg.paginator) this.setupPaginator();
 
@@ -197,6 +210,8 @@ ice.ace.DataTable = function(id, cfg) {
         }
     } else
         this.setupDisabledStyling();
+
+    ice.ace.DataTables[this.id] = this;
 }
 
 
@@ -610,14 +625,22 @@ ice.ace.DataTable.prototype.setupScrolling = function() {
 
     this.resizeScrolling();
 
+    // Persist scrolling position if one has been loaded from previous instance
+    ice.ace.jq(_self.jqId + ' > div.ui-datatable-scrollable-body')
+            .scrollTop(this.scrollTop)
+            .scrollLeft(this.scrollLeft);
+
     ice.ace.jq(_self.jqId + ' > div.ui-datatable-scrollable-body').bind('scroll', function() {
         var $this = ice.ace.jq(this),
             $header = ice.ace.jq(_self.jqId + ' > div.ui-datatable-scrollable-header'),
             $footer = ice.ace.jq(_self.jqId + ' > div.ui-datatable-scrollable-footer'),
-            scrollLeftVal = $this.scrollLeft();
+            scrollLeftVal = $this.scrollLeft(),
+            scrollTopVal = $this.scrollTop();
 
        $header.scrollLeft(scrollLeftVal);
        $footer.scrollLeft(scrollLeftVal);
+       _self.scrollLeft = scrollLeftVal;
+       _self.scrollTop = scrollTopVal;
     });
 
     ice.ace.jq(window).bind('resize', function() {
@@ -712,9 +735,7 @@ ice.ace.DataTable.prototype.resizeScrolling = function() {
             footerTable = scrollableTable.find(' > div.ui-datatable-scrollable-footer > table'),
             bodyTable = scrollableTable.find(' > div.ui-datatable-scrollable-body > table'),
             dupeHead = bodyTable.find(' > thead'),
-            dupeFoot = bodyTable.find(' > tfoot'),
-            scrollTop = bodyTable.scrollTop(),
-            scrollLeft = bodyTable.scrollLeft();
+            dupeFoot = bodyTable.find(' > tfoot');
 
         var dupeHeadCols = dupeHead.find('th > div.ui-header-column').get().reverse();
 
@@ -899,10 +920,6 @@ ice.ace.DataTable.prototype.resizeScrolling = function() {
         // Hide Duplicate Segments
         dupeHead.css('display', 'none');
         dupeFoot.css('display', 'none');
-
-        // Return to position where we began
-        bodyTable.scrollTop(scrollTop);
-        bodyTable.scrollLeft(scrollLeft);
     }
 }
 
