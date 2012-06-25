@@ -47,16 +47,24 @@
              ele.className=" ";
          }
     }
+    function setTabActive(id, cls){
+        var curTab = document.getElementById(id);
+        if (curTab){
+            curTab.setAttribute("class",cls);
+        }
+    }
     //declare functions who creates object with methods that have access to the local variables of the function
     //so in effect the returned object can operate on the local state declared in the function ...
     //think about them as object fields in Java, also gone is the chore of copying the constructor parameters into fields
     //-------------------------------------
     function TabSet(clientId, cfgIn) {
       // setup tabContainer
-        var myTabId = clientId;
         var tabContainer = document.getElementById(clientId);
         var tabContent = document.getElementById(clientId+"_tabContent");
-        var cfg = cfgIn;
+        var classHid = "mobi-tabpage-hidden";
+        var classVis = "mobi-tabpage";
+        var clsActiveTab = "activeTab";
+        var tabCtrl = clientId+"tab_";
         var tabIndex = cfgIn.tIndex;
         if (cfgIn.height){
             tabContent.style.height = cfgIn.height;
@@ -66,9 +74,17 @@
                  tabContent.style.height =  ht+"px";
              }
         }
+        setTabActive(tabCtrl+tabIndex,clsActiveTab);
+
         var origcontents = tabContent.children;
+        var length = origcontents.length;
         var newPage = origcontents[tabIndex];
-        newPage.className="mobi-tabpage";
+        newPage.className=classVis;
+        for (i=0; i< length; i++){
+            if (i!=tabIndex){
+                origcontents[i].className=classHid;
+            }
+        }
 
         return {
            showContent: function( el, cfgIn) {
@@ -79,31 +95,33 @@
               if (!parent){
                   parent = el.parentElement;
               }
-      //        var current = parent.getAttribute("data-current");
               tabContent = document.getElementById(clientId+"_tabContent");
               var current = tabIndex;
               var contents = tabContent.children;
               var oldPage = contents[current];
-              oldPage.className = "mobi-tabpage-hidden";
-              var currCtrl = myTabId+"tab_"+current;
+              oldPage.className = classHid;
+              var currCtrl = tabCtrl+current;
               var oldCtrl =  document.getElementById(currCtrl);
-              removeClass(oldCtrl, "activeTab ");
+              removeClass(oldCtrl, clsActiveTab);
               var isClient = cfgIn.client || false;
               if (!isClient){
-                    updateHidden(myTabId, tabIndex+"," +cfgIn.tIndex);
-                    contents[cfgIn.tIndex].className="mobi-tabpage-hidden";
-                    ice.se(null, myTabId);
+                    updateHidden(clientId, tabIndex+"," +cfgIn.tIndex);
+                    contents[cfgIn.tIndex].className=classHid;
+                    ice.se(null, clientId);
                } else {
                   tabIndex = cfgIn.tIndex || 0;
                   var newPage = contents[tabIndex];
-                  newPage.className="mobi-tabpage";
+                  newPage.className=classVis;
              }
-              parent.setAttribute("data-current",tabIndex);
               //remove class of activetabheader and hide old contents
-              el.setAttribute("class","activeTab ");
+              el.setAttribute("class",clsActiveTab);
            },
            updateProperties: function (clientId, cfgUpd) {
                var oldIdx = tabIndex;
+               var oldCtrl = document.getElementById(tabCtrl+oldIdx) ;
+               if (oldCtrl){
+                   removeClass(oldCtrl, clsActiveTab);
+               }
                //check to see if pages have been added or removed
                tabContent = document.getElementById(clientId+"_tabContent");
                var contents = tabContent.children;
@@ -113,13 +131,13 @@
                if (dataCurrent){
                        dataCurrent.value=tabIndex+'';
                }
+               setTabActive(tabCtrl+tabIndex,clsActiveTab);
                var tabElem = document.getElementById(tabsId);
                if (tabElem){
-                  var lis = tabElem.getElementsByTagName("li");
                   if (oldIdx != tabIndex){
-                     contents[oldIdx].className = "mobi-tabpage-hidden"; //need in case change is from server
+                     contents[oldIdx].className = classHid; //need in case change is from server
                   }
-                  contents[tabIndex].className = "mobi-tabpage";
+                  contents[tabIndex].className = classVis;
                   if (cfgUpd.height){
                      var height = cfgUpd.height;
                      if (height != tabContent.style.height){
