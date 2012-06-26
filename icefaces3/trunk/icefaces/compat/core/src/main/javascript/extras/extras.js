@@ -2718,6 +2718,8 @@ GMapWrapper.prototype = {
 		this.directions = new Object();
         this.geoMarkerAddress;
         this.geoMarkerSet = false;
+		this.currentMarker = null;
+		this.currentInfoWindow = null;
     },
 
     getElementId: function() {
@@ -2885,10 +2887,23 @@ Ice.GoogleMap = {
 		geocoder.geocode( {'address': address}, function(results, status) {
 			if (status == google.maps.GeocoderStatus.OK) {
 				map.setCenter(results[0].geometry.location);
+				Ice.GoogleMap.showMarkerAndInfoWindow(map, Ice.GoogleMap.getGMapWrapper(clientId), results[0]);
 			} else {
 				alert("Geocode was not successful for the following reason: " + status);
 			}
 		}); 
+	},
+	
+	showMarkerAndInfoWindow: function(map, wrapper, result) {
+		if (!wrapper.currentMarker || !wrapper.currentInfoWindow) {
+			wrapper.currentMarker = new google.maps.Marker({draggable:false});
+			wrapper.currentInfoWindow = new google.maps.InfoWindow({});
+		}
+		wrapper.currentMarker.setMap(map);
+		wrapper.currentMarker.setPosition(result.geometry.location);
+		wrapper.currentInfoWindow.setPosition(result.geometry.location);
+		wrapper.currentInfoWindow.setContent(result.formatted_address);
+		wrapper.currentInfoWindow.open(map);
 	},
 
     create:function (ele) {
