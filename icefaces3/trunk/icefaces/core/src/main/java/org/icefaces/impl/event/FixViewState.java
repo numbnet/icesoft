@@ -2,6 +2,7 @@ package org.icefaces.impl.event;
 
 import org.icefaces.util.EnvUtils;
 
+import javax.faces.component.UIComponent;
 import javax.faces.component.UIForm;
 import javax.faces.component.UIOutput;
 import javax.faces.context.FacesContext;
@@ -28,7 +29,20 @@ public class FixViewState implements SystemEventListener {
     }
 
     public boolean isListenerForSource(final Object source) {
-        return EnvUtils.isICEfacesView(FacesContext.getCurrentInstance()) && source instanceof UIForm;
+        if (EnvUtils.isICEfacesView(FacesContext.getCurrentInstance()) && (source instanceof UIForm)) {
+            UIForm form = (UIForm) source;
+            String componentId = form.getId() + ID_SUFFIX;
+            // Guard against duplicates within the same JSF lifecycle
+            for (UIComponent comp : form.getChildren()) {
+                if (componentId.equals(comp.getId())) {
+                    return false;
+                }
+            }
+
+            return true;
+        } else {
+            return false;
+        }
     }
 
     private static class ScriptWriter extends UIOutputWriter {
