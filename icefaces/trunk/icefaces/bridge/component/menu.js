@@ -180,6 +180,13 @@ Ice.Menu = {
             Ice.Menu.showMenuWithId(submenu);
             var styleLeft = showX + "px";
             submenu.style.left = styleLeft;
+            var vpOffsetLeft = submenu.viewportOffset().left;
+            var elWidth = submenu.getWidth();
+            var vpWidth = document.viewport.getWidth();
+            var extraWidth = vpOffsetLeft + elWidth - vpWidth;
+            if (extraWidth > 0) {
+                submenu.style.left = showX - extraWidth + "px";
+            }
 
             var styleTop = showY + "px";
             submenu.style.top = styleTop;
