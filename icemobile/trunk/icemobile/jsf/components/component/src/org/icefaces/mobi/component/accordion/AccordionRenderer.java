@@ -73,7 +73,7 @@ public class AccordionRenderer extends BaseLayoutRenderer {
         // write out any users specified style attributes.
         writer.writeAttribute(HTML.STYLE_ATTR, accordion.getStyle(), "style");
         // need to set opened panel
-        encodeDataOpenedAttribute(facesContext, uiComponent);
+    //    encodeDataOpenedAttribute(facesContext, uiComponent);
     }
 
     public boolean getRendersChildren() {
@@ -82,7 +82,7 @@ public class AccordionRenderer extends BaseLayoutRenderer {
     public void encodeChildren(FacesContext facesContext, UIComponent uiComponent) throws IOException{
          Utils.renderChildren(facesContext, uiComponent);
     }
-    public void encodeDataOpenedAttribute(FacesContext facesContext, UIComponent uiComponent) throws IOException{
+    public String getDataOpenedAttribute(FacesContext facesContext, UIComponent uiComponent) {
         Accordion paneController = (Accordion) uiComponent;
         ResponseWriter writer = facesContext.getResponseWriter();
         UIComponent openPane = null;  //all children must be panels
@@ -91,14 +91,16 @@ public class AccordionRenderer extends BaseLayoutRenderer {
         if (paneController.getChildCount() <= 0){
                  // || logger.isLoggable(Level.FINER)) {
             logger.finer("this component must have panels defined as children. Please read DOCS.");
-                return;
+                return null;
         } //check whether we have exceeded maximum number of children for accordion???
         openPane = Utils.getChildById(paneController, currentId);
  //       logger.info("looking for index="+activeIndex+" selectedPane to open ="+openPane.getId());
         //selectedPanel is now set
-        if (openPane != null) {
-            writer.writeAttribute("data-opened", openPane.getClientId(facesContext), null);
+        String clId = null;
+        if (openPane !=null){
+            clId = openPane.getClientId(facesContext);
         }
+        return clId;
     }
 
      public void encodeEnd(FacesContext facesContext, UIComponent uiComponent)
@@ -118,7 +120,11 @@ public class AccordionRenderer extends BaseLayoutRenderer {
         writer.writeAttribute("id", clientId + "_script", "id");
         writer.startElement("script", null);
         writer.writeAttribute("text", "text/javascript", null);
+        String paneOpened = getDataOpenedAttribute(context, uiComponent);
         StringBuilder cfg = new StringBuilder("{singleSubmit: false");
+        if (null!=paneOpened){
+            cfg.append(", opened: '").append(paneOpened).append("'");
+        }
         boolean autoheight = pane.isAutoHeight();
         cfg.append(", autoheight: ").append(autoheight);
         cfg.append(", maxheight: '").append(pane.getFixedHeight()).append("'");

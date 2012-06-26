@@ -48,6 +48,9 @@
                mxht= children[0].scrollHeight;
            }
         }
+        if (mxht <= 33){
+            mxht = accord.clientHeight-33;
+        }
         return mxht;
     }
 
@@ -60,19 +63,16 @@
         var theContainer = document.getElementById(clientId);
         var openClass = ".mobi-accordion .open";
         var myclient = clientId;
-        var alreadyOpenId = theContainer.getAttribute('data-opened'); //do I care about this?
-        var scrollEvent = 'ontouchstart' in window ? "touchmove" : "scroll";
-        var cgfObj = cfgIn;
+        var paneOpId = cfgIn.opened || null;
+      //  var scrollEvent = 'ontouchstart' in window ? "touchmove" : "scroll";
         var autoheight = cfgIn.autoheight || false;
-        var maxheight = cfgIn.maxheight || "200px";
+        var maxheight = cfgIn.maxheight || "150px";
         if (autoheight == true){
             var calcht = calcMaxDivHeight(clientId)
             if (calcht > 0) maxheight = calcht ;
         }
         var heightString = maxheight+"px";
         updateHeightInOpenClass(openClass, heightString);
-        //as you can see all the 'this' noise is gone
-        //object properly encapsulates state
         return {
             toggle: function(el, cached) {
                 var theParent = el.parentElement;
@@ -84,7 +84,7 @@
                 if (!cached){
                     ice.se(null, myclient);
                 }
-                var alreadyOpen = theContainer.getAttribute('data-opened');
+                var alreadyOpen = paneOpId;
                 if (alreadyOpen && alreadyOpen !== theParent.id)  {
                     var openedEl = document.getElementById(alreadyOpen);
                     if (openedEl){
@@ -95,11 +95,10 @@
                     theParent.className='closed';
                 } else {
                     theParent.className = 'open';
-                    theContainer.setAttribute('data-opened', theParent.id);
+                    paneOpId =  theParent.id;
                 }
 
             },
-
             updateProperties: function (clientId, cfgUpd) {
                 cfgObj = cfgIn; //not sure I need to keep this?
                 //server may want to push new dynamic values for maxheight and autoheight
@@ -115,6 +114,7 @@
                 if (change==true){
                     var newHeight = calcMaxDivHeight(clientId);
                 }
+                paneOpId = cfgIn.opened || null;
             }
          }
     }

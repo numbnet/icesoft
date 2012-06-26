@@ -127,10 +127,10 @@
                var contents = tabContent.children;
                tabIndex = cfgUpd.tIndex;
                var tabsId = clientId+"_tabs";
-               var dataCurrent = document.getElementById(clientId+"_dc");
+          /*     var dataCurrent = document.getElementById(clientId+"_dc");
                if (dataCurrent){
                        dataCurrent.value=tabIndex+'';
-               }
+               } */
                setTabActive(tabCtrl+tabIndex,clsActiveTab);
                var tabElem = document.getElementById(tabsId);
                if (tabElem){
