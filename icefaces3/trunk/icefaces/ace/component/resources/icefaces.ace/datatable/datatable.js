@@ -747,6 +747,8 @@ ice.ace.DataTable.prototype.resizeScrolling = function() {
         var bodyTableParent = bodyTable.parent().css('overflow', '');
         headerTable.parent().css('overflow', '');
         footerTable.parent().css('overflow', '');
+        headerTable.css('width','');
+        footerTable.css('width','');
 
         // Reset fixed sizing if set by previous sizing.
         for (var i = 0; i < bodySingleCols.length; i++)
@@ -897,11 +899,15 @@ ice.ace.DataTable.prototype.resizeScrolling = function() {
                 footerTable.parent().css('margin-right', offset+'px');
             }
             else if (dupeCausesScrollChange) {
-                /* Correct scrollbars added by when unnecessary. */
+                /* Correct scrollbars added when unnecessary. */
                 if (safari || chrome || firefox || ie9) {
                     bodyTable.parent().css('overflow', 'visible');
                     headerTable.parent().css('overflow', 'visible');
                     footerTable.parent().css('overflow', 'visible');
+                    headerTable.css('width', '100%');
+                    headerTable.css('table-layout', '');
+                    footerTable.css('width', '100%');
+                    footerTable.css('table-layout', '');
                 }
 
                 /* Clean up IE 8/9 sizing bug in dupe scroll change case */
