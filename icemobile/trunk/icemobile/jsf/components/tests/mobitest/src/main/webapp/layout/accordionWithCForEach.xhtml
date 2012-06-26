@@ -39,9 +39,7 @@
        <h:panelGroup id="selectorGroup">
          <h:outputText  value="select the pane to open:-"/>
          <h:selectOneMenu id="selectPane"  value="#{layoutBean.selectedPane}">
-             <f:selectItem itemValue="panel1" itemLabel="Open First panel"/>
-             <f:selectItem itemValue="panel2" itemLabel="Open 2nd panel" />
-             <f:selectItem itemValue="panel3" itemLabel="Open 3rd panel" />
+                <f:selectItems value="#{layoutBean.allContentPanes}"/>
              <f:ajax execute="@this" render="@all"/>
          </h:selectOneMenu>
        </h:panelGroup>
@@ -71,10 +69,7 @@
            </c:forEach>
        </mobi:accordion>
       <div>
-           <mobi:commandButton id="but1"
-                                  value="SelectPane3" actionListener="#{layoutBean.changeToPane3}">
-                  <mobi:ajax execute="@this" render="@all"/>
-           </mobi:commandButton>
+
           <mobi:commandButton id="butadd"
                                  value="Add ContentPane" actionListener="#{layoutBean.addContentPane}">
                  <mobi:ajax execute="@this" render="@all"/>
