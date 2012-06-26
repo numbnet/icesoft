@@ -33,7 +33,7 @@ public class FixViewState implements SystemEventListener {
             UIForm form = (UIForm) source;
             String componentId = form.getId() + ID_SUFFIX;
             // Guard against duplicates within the same JSF lifecycle
-            for (UIComponent comp : form.getChildren()) {
+            for (UIComponent comp : form.getParent().getChildren()) {
                 if (componentId.equals(comp.getId())) {
                     return false;
                 }
