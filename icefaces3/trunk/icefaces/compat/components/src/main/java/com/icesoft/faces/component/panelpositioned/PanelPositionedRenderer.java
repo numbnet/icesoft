@@ -144,13 +144,13 @@ public class PanelPositionedRenderer extends DomBasicRenderer {
         String updateCode =
                 "function(){var o = Ice.Scriptaculous.Sortable.options('" + id + "');" +
                         "var s = o.serializeValue;" +
-                        "f = Ice.Prototype.$('" + orderFieldId + "');" +
+                        "var f = Ice.Prototype.$('" + orderFieldId + "');" +
                         "f.value = s;" +
                         "}";
         ea.addFunction("onUpdate", updateCode);
 
         if (!panelPositioned.isDisabled()) {
-            String call = "Ice.Scriptaculous.Sortable.create('" + id + "'" + ea.toString();
+            String call = "Ice.Scriptaculous.Sortable.create('" + id + "'" + ea.toString() + " if (Ice.StateMon) {Ice.StateMon.checkAll();Ice.StateMon.rebuild();}";
             JavascriptContext.addJavascriptCall(facesContext, call);
         }
         DOMContext.getDOMContext(facesContext, uiComponent).stepOver();
