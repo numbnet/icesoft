@@ -18,6 +18,7 @@ package org.icefaces.samples.showcase.example.compat.paginator;
 
 import java.io.Serializable;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.event.ActionEvent;
@@ -62,6 +63,11 @@ public class PaginatorEvents extends ComponentExampleImpl<PaginatorEvents> imple
 		super(PaginatorEvents.class);
 	}
 	
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
+    }
+
 	public String getStatus() { return status; }
 	
 	public void setStatus(String status) { this.status = status; }

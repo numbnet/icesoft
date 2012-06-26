@@ -18,6 +18,7 @@ package org.icefaces.samples.showcase.example.compat.tooltip;
 
 import java.io.Serializable;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.model.SelectItem;
@@ -67,6 +68,11 @@ public class TooltipHide extends ComponentExampleImpl<TooltipHide> implements Se
 
     public TooltipHide() {
             super(TooltipHide.class);
+    }
+
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
     }
 
     public String getTypeMouseOut() { return TYPE_MOUSEOUT; }

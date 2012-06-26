@@ -18,6 +18,7 @@ package org.icefaces.samples.showcase.example.compat.divider;
 
 import java.io.Serializable;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 
@@ -62,6 +63,11 @@ public class DividerOrientation extends ComponentExampleImpl<DividerOrientation>
 		super(DividerOrientation.class);
 	}
 	
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
+    }
+
 	public String getOrientation() { return orientation; }
 	public String getOrientationHor() { return ORIENTATION_HOR; }
 	public String getOrientationVer() { return ORIENTATION_VER; }

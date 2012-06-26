@@ -18,6 +18,7 @@ package org.icefaces.samples.showcase.example.compat.exporter;
 
 import java.io.Serializable;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.model.SelectItem;
@@ -69,6 +70,11 @@ public class ExporterType extends ComponentExampleImpl<ExporterType> implements 
 		super(ExporterType.class);
 	}
 	
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
+    }
+
 	public SelectItem[] getAvailableTypes() { return availableTypes; }
 	public String getType() { return type; }
 	public void setType(String type) { this.type = type; }

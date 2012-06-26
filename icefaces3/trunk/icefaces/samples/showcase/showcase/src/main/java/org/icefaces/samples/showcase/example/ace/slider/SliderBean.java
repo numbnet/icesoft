@@ -24,6 +24,7 @@ import org.icefaces.samples.showcase.metadata.annotation.ExampleResources;
 import org.icefaces.samples.showcase.metadata.annotation.ResourceType;
 import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import java.io.Serializable;
@@ -73,6 +74,11 @@ public class SliderBean extends ComponentExampleImpl<SliderBean>
         this.sliderValue = 50;
     }
     
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
+    }
+
     private void initialaziInstanceVariables() {
            this.axis = "x";
            this.clickableRail =false;

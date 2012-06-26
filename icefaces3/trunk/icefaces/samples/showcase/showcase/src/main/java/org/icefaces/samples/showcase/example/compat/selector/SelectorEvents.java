@@ -20,6 +20,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 
@@ -68,6 +69,11 @@ public class SelectorEvents extends ComponentExampleImpl<SelectorEvents> impleme
             data = new ArrayList<SelectableCar>(DataTableData.getDefaultSelectableData());
     }
     
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
+    }
+
     private void addEvent(String toLog) {
         eventLog.add(0, toLog);
 

@@ -19,6 +19,7 @@ package org.icefaces.samples.showcase.example.compat.dataTable;
 import org.icefaces.samples.showcase.dataGenerators.utilityClasses.DataTableData;
 import java.io.Serializable;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 
@@ -87,6 +88,11 @@ public class DataTableBean extends ComponentExampleImpl<DataTableBean> implement
             super(DataTableBean.class);
             defaultRows = DataTableData.DEFAULT_ROWS;
         }
+
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
+    }
 
         public int getDefaultRows() {
             return defaultRows;

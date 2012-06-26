@@ -19,6 +19,7 @@ package org.icefaces.samples.showcase.example.ace.dataExporter;
 import org.icefaces.samples.showcase.metadata.annotation.*;
 import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import java.io.Serializable;
@@ -60,6 +61,11 @@ public class ExcludeFromExport extends ComponentExampleImpl<ExcludeFromExport> i
         initializeLocalVariables();
     }
     
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
+    }
+
     /////////////---- PRIVATE METHODS BEGIN
     private void initializeLocalVariables() {
         this.cars = new ArrayList<Car>(DataTableData.getDefaultData());

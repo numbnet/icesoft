@@ -18,6 +18,7 @@ package org.icefaces.samples.showcase.example.compat.chart;
 
 import java.io.Serializable;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 
@@ -61,6 +62,11 @@ public class ChartAreaStacked extends ComponentExampleImpl<ChartAreaStacked> imp
 		super(ChartAreaStacked.class);
 	}
 	
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
+    }
+
 	public String getType() { return OutputChart.AREA_STACKED_CHART_TYPE; }
 	public ChartModelAxial getModel() { return model; }
 	

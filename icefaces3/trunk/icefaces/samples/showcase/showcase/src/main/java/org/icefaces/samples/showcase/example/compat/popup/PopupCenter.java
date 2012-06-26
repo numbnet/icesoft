@@ -18,6 +18,7 @@ package org.icefaces.samples.showcase.example.compat.popup;
 
 import java.io.Serializable;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.event.ActionEvent;
@@ -60,6 +61,11 @@ public class PopupCenter extends ComponentExampleImpl<PopupCenter> implements Se
 	public PopupCenter() {
 		super(PopupCenter.class);
 	}
+
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
+    }
 
 	public boolean isOpened() { return opened; }
 	public boolean getAutoCentre() { return autoCentre; }

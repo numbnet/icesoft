@@ -21,6 +21,7 @@ import org.icefaces.ace.model.table.SortCriteria;
 import org.icefaces.samples.showcase.metadata.annotation.*;
 import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import java.io.Serializable;
@@ -72,6 +73,11 @@ public class DataTableLazyLoading extends ComponentExampleImpl<DataTableLazyLoad
         };
         
         carsData.setRowCount(3000000);
+    }
+
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
     }
 
     public LazyDataModel<Car> getCarsData() { return carsData; }

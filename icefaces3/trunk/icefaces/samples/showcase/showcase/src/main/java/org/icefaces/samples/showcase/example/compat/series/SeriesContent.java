@@ -18,6 +18,7 @@ package org.icefaces.samples.showcase.example.compat.series;
 
 import java.io.Serializable;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 
@@ -71,6 +72,11 @@ public class SeriesContent extends ComponentExampleImpl<SeriesContent> implement
 
     public SeriesContent() {
             super(SeriesContent.class);
+    }
+
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
     }
 
     public boolean getTypeCalendar() { return TYPE_CALENDAR.equals(type); }

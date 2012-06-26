@@ -24,6 +24,7 @@ import org.icefaces.samples.showcase.metadata.annotation.ResourceType;
 import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
 import org.icefaces.samples.showcase.util.SimpleEntry;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import java.io.Serializable;
@@ -60,6 +61,12 @@ public class DataTableRowExpansion extends ComponentExampleImpl<DataTableRowExpa
         super(DataTableRowExpansion.class);
         generateCarsData();
     }
+
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
+    }
+
     /////////////---- PRIVATE METHODS BEGIN
     private void generateCarsData() {
         carsData = new ArrayList<Map.Entry<Car, List>>();

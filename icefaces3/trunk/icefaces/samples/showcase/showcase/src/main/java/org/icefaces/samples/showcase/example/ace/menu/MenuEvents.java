@@ -19,6 +19,7 @@ package org.icefaces.samples.showcase.example.ace.menu;
 import org.icefaces.samples.showcase.metadata.annotation.*;
 import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.event.ActionEvent;
@@ -55,6 +56,11 @@ public class MenuEvents extends ComponentExampleImpl<MenuEvents> implements Seri
         super(MenuEvents.class);
     }
     
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
+    }
+
     public String getMessage() { return message; }
     public String getCurrentColor() { return currentColor; }
     

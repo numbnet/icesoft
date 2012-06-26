@@ -18,6 +18,7 @@ package org.icefaces.samples.showcase.example.compat.map;
 
 import java.io.Serializable;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.event.ActionEvent;
@@ -85,6 +86,11 @@ public class MapLatLong extends ComponentExampleImpl<MapLatLong> implements Seri
 		super(MapLatLong.class);
 	}
 	
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
+    }
+
 	public String getCustomSelect() { return CUSTOM_SELECT; }
 	public SelectItem[] getAvailableCoordinates() { return availableCoordinates; }
 	public double getLatitude() { return latitude; }

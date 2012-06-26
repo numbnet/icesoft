@@ -20,6 +20,8 @@ import org.icefaces.samples.showcase.metadata.annotation.*;
 import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
 
 import org.icefaces.samples.showcase.metadata.context.ResourceRootPath;
+
+import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import java.io.Serializable;
@@ -46,5 +48,10 @@ public class AnimationResources extends ComponentExampleImpl<AnimationResources>
 
     public AnimationResources() {
         super(AnimationResources.class);
+    }
+
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
     }
 }

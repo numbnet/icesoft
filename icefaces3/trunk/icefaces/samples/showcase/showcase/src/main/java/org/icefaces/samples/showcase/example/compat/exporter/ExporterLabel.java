@@ -18,6 +18,7 @@ package org.icefaces.samples.showcase.example.compat.exporter;
 
 import java.io.Serializable;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 
@@ -59,6 +60,11 @@ public class ExporterLabel extends ComponentExampleImpl<ExporterLabel> implement
 		super(ExporterLabel.class);
 	}
 	
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
+    }
+
 	public String getCustom() { return custom; }
 	
 	public void setCustom(String custom) { this.custom = custom; }

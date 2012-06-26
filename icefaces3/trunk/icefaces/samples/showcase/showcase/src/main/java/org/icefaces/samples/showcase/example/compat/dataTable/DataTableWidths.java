@@ -18,6 +18,7 @@ package org.icefaces.samples.showcase.example.compat.dataTable;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.event.ActionEvent;
@@ -85,6 +86,11 @@ public class DataTableWidths extends ComponentExampleImpl<DataTableWidths> imple
                     pointer = 0;
 	}
 	
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
+    }
+
 	private void rebuildWidthString() {
 	    widthString = buildWidthString(currentWidth);
 	    

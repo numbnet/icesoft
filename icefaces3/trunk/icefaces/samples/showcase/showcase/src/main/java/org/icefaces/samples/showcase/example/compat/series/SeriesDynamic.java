@@ -18,6 +18,7 @@ package org.icefaces.samples.showcase.example.compat.series;
 
 import java.io.Serializable;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.event.ActionEvent;
@@ -60,6 +61,11 @@ public class SeriesDynamic extends ComponentExampleImpl<SeriesDynamic> implement
 
     public SeriesDynamic() {
             super(SeriesDynamic.class);
+    }
+
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
     }
 
     public Employee getToAdd() { return toAdd; }

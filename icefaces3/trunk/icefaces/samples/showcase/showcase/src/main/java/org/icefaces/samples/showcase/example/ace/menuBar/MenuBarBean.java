@@ -19,6 +19,7 @@ package org.icefaces.samples.showcase.example.ace.menuBar;
 import org.icefaces.samples.showcase.metadata.annotation.*;
 import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.event.ActionEvent;
@@ -79,7 +80,12 @@ public class MenuBarBean extends ComponentExampleImpl<MenuBarBean> implements Se
         message = "please select any menu item";
     }
     
-    public void fireAction(ActionEvent event) 
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
+    }
+
+    public void fireAction(ActionEvent event)
     {
         
         boolean exitCondition = false;

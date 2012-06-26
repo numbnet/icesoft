@@ -20,6 +20,7 @@ import java.io.Serializable;
 
 import java.util.ArrayList;
 import java.util.List;
+import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import org.icefaces.samples.showcase.dataGenerators.utilityClasses.DataTableData;
@@ -62,6 +63,12 @@ public class SelectorToggle extends ComponentExampleImpl<SelectorToggle> impleme
             enable = false;
             data = new ArrayList<SelectableCar>(DataTableData.getDefaultSelectableData());
     }
+
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
+    }
+
     public boolean getEnable() { return enable; }
     public void setEnable(boolean enable) { this.enable = enable; }
     public List<SelectableCar> getData() { return data; }

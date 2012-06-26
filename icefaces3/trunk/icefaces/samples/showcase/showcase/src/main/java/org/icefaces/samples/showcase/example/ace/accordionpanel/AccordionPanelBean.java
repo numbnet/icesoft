@@ -19,6 +19,7 @@ package org.icefaces.samples.showcase.example.ace.accordionpanel;
 import org.icefaces.samples.showcase.metadata.annotation.*;
 import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import java.io.Serializable;
@@ -76,7 +77,12 @@ public class AccordionPanelBean extends ComponentExampleImpl<AccordionPanelBean>
         image = ImageSet.getImage(ImageSet.ImageSelect.PICTURE);
     }
     
-    private ArrayList<Item> populateListWithItems() 
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
+    }
+
+    private ArrayList<Item> populateListWithItems()
    {
         ArrayList<Item> list = new ArrayList<Item>();
         ArrayList<ImageInfo> foodImages = ImageSet.getImages(ImageSet.ImagesSelect.FOOD);

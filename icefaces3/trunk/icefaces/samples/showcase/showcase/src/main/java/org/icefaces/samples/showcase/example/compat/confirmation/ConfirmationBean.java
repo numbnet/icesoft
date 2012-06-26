@@ -19,6 +19,7 @@ package org.icefaces.samples.showcase.example.compat.confirmation;
 import java.io.Serializable;
 import java.util.Random;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.event.ActionEvent;
@@ -78,6 +79,11 @@ public class ConfirmationBean extends ComponentExampleImpl<ConfirmationBean> imp
 		super(ConfirmationBean.class);
 	}
 	
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
+    }
+
 	public int getNumber() { return number; }
 	
 	public void setNumber(int number) { this.number = number; }

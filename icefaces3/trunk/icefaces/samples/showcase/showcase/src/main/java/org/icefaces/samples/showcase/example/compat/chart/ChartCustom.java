@@ -18,6 +18,7 @@ package org.icefaces.samples.showcase.example.compat.chart;
 
 import java.io.Serializable;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 
@@ -61,6 +62,11 @@ public class ChartCustom extends ComponentExampleImpl<ChartCustom> implements Se
 		super(ChartCustom.class);
 	}
 	
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
+    }
+
 	public String getType() { return OutputChart.CUSTOM_CHART_TYPE; }
 	public ChartModelCustom getModel() { return model; }
 	

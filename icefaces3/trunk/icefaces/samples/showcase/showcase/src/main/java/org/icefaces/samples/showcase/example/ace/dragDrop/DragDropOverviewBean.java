@@ -20,6 +20,7 @@ package org.icefaces.samples.showcase.example.ace.dragDrop;
 import org.icefaces.samples.showcase.metadata.annotation.*;
 import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import java.io.Serializable;
@@ -71,7 +72,12 @@ public class DragDropOverviewBean extends ComponentExampleImpl<DragDropOverviewB
         populateListWithItems();
     }
 
-    private void populateListWithItems() 
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
+    }
+
+    private void populateListWithItems()
     {
         items = new ArrayList<DragDropItem>();
         items.add(new DragDropItem(1, "Laptop", "/resources/css/images/dragdrop/laptop.png", 999.99d, "electronicDevice"));

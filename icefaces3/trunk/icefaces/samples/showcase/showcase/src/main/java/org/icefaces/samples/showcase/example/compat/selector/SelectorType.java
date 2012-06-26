@@ -20,6 +20,7 @@ import java.io.Serializable;
 
 import java.util.ArrayList;
 import java.util.List;
+import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.event.ValueChangeEvent;
@@ -75,6 +76,11 @@ public class SelectorType extends ComponentExampleImpl<SelectorType> implements 
     public SelectorType() {
             super(SelectorType.class);
             initializeInstanceVariables();
+    }
+
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
     }
 
     public void typeChanged(ValueChangeEvent event) {

@@ -19,6 +19,7 @@ package org.icefaces.samples.showcase.example.compat.border;
 import java.io.Serializable;
 
 import java.util.LinkedHashMap;
+import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 
@@ -59,6 +60,11 @@ public class BorderLayout extends ComponentExampleImpl<BorderLayout> implements 
     public BorderLayout() {
                 super(BorderLayout.class);
                 initializeDefaultInstanceVariables();
+    }
+
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
     }
 
     private void initializeDefaultInstanceVariables() {

@@ -18,6 +18,7 @@ package org.icefaces.samples.showcase.example.compat.map;
 
 import java.io.Serializable;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.event.ActionEvent;
@@ -75,6 +76,11 @@ public class MapLoad extends ComponentExampleImpl<MapLoad> implements Serializab
 		super(MapLoad.class);
 	}
 	
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
+    }
+
 	public String getCustomSelect() { return CUSTOM_SELECT; }
 	public boolean getIsCustom() {
 	    return CUSTOM_SELECT.equals(selectedKML);

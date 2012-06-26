@@ -17,6 +17,8 @@ package org.icefaces.samples.showcase.example.ace.overview;
 
 import org.icefaces.samples.showcase.metadata.annotation.*;
 import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
+
+import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import java.io.Serializable;
@@ -63,5 +65,10 @@ public class AceSuiteOverviewBean extends ComponentExampleImpl<AceSuiteOverviewB
     public AceSuiteOverviewBean() 
     {
         super(AceSuiteOverviewBean.class);
+    }
+
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
     }
 }

@@ -20,6 +20,7 @@ import org.icefaces.samples.showcase.dataGenerators.utilityClasses.DataTableData
 import java.io.Serializable;
 
 import java.util.ArrayList;
+import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 
@@ -64,6 +65,11 @@ public class DataTableClient extends ComponentExampleImpl<DataTableClient> imple
         super(DataTableClient.class);
         defaultRows = DataTableData.DEFAULT_ROWS;
         cars = new ArrayList<Car>(DataTableData.getDefaultData());
+    }
+
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
     }
 
     public boolean getEnable() { return enable; }

@@ -20,6 +20,7 @@ package org.icefaces.samples.showcase.example.ace.dragDrop;
 import org.icefaces.samples.showcase.metadata.annotation.*;
 import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import java.io.Serializable;
@@ -66,7 +67,12 @@ public class DataTableIntegrationBean extends ComponentExampleImpl<DataTableInte
        initializeData();
    }
     
-   private void initializeData() 
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
+    }
+
+   private void initializeData()
    {
         availableItems = new ArrayList<DragDropItem>();
         double basePrice = 140;

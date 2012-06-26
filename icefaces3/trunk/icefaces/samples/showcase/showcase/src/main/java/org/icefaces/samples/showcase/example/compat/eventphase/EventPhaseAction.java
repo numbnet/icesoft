@@ -20,6 +20,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.event.ActionEvent;
@@ -67,6 +68,11 @@ public class EventPhaseAction extends ComponentExampleImpl<EventPhaseAction> imp
 		super(EventPhaseAction.class);
 	}
 	
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
+    }
+
 	public int getLogSize() { return LOG_SIZE; }
 	public List<String> getEventLog() { return eventLog; }
 	public boolean getEnable() { return enable; }

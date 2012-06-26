@@ -21,6 +21,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Random;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.event.ActionEvent;
@@ -64,6 +65,11 @@ public class CollapsibleEvent extends ComponentExampleImpl<CollapsibleEvent> imp
 	public CollapsibleEvent() {
 		super(CollapsibleEvent.class);
 	}
+
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
+    }
 
                 public String getLastFired() {
                     return lastFired;

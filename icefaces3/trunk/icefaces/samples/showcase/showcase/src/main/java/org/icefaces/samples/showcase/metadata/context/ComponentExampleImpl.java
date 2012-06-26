@@ -21,7 +21,6 @@ import org.icefaces.samples.showcase.util.FacesUtils;
 
 import com.icesoft.faces.context.effects.*;
 
-import javax.annotation.PostConstruct;
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -60,7 +59,6 @@ public class ComponentExampleImpl<T> implements ComponentExample, ExampleResourc
         subMenuLinks = new ArrayList<MenuLink>();
     }
 
-    @PostConstruct
     public void initMetaData() {
         //Start scan for Class<T> parentClass annotations and use data from them to initialize ComponentExampleImpl object variables
         if (parentClass.isAnnotationPresent(org.icefaces.samples.showcase.metadata.annotation.ComponentExample.class)) 

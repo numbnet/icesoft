@@ -20,6 +20,7 @@ import org.icefaces.samples.showcase.dataGenerators.ImageSet.ImageInfo;
 import org.icefaces.samples.showcase.metadata.annotation.*;
 import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import java.io.Serializable;
@@ -78,7 +79,12 @@ public class TabSetBean extends ComponentExampleImpl<TabSetBean> implements Seri
         initializeInstanceVariables();
     }
 
-    private void initializeInstanceVariables() 
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
+    }
+
+    private void initializeInstanceVariables()
     {
         items = populateListWithItems();
         toDoList = populateToDoList();

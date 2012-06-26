@@ -23,6 +23,7 @@ import org.icefaces.samples.showcase.metadata.annotation.ResourceType;
 import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
 import org.icefaces.samples.showcase.util.FacesUtils;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import java.io.Serializable;
@@ -74,5 +75,10 @@ public class TabServerSideBean extends ComponentExampleImpl<TabServerSideBean>
 
     public TabServerSideBean() {
         super(TabServerSideBean.class);
+    }
+
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
     }
 }

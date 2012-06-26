@@ -18,6 +18,7 @@ package org.icefaces.samples.showcase.example.compat.confirmation;
 
 import java.io.Serializable;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.event.ActionEvent;
@@ -62,6 +63,11 @@ public class ConfirmationDisplay extends ComponentExampleImpl<ConfirmationDispla
 		super(ConfirmationDisplay.class);
 	}
 	
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
+    }
+
 	public String getText() { return text; }
 	public boolean getAutoCentre() { return autoCentre; }
 	public boolean getDraggable() { return draggable; }

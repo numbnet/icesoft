@@ -18,6 +18,7 @@ package org.icefaces.samples.showcase.example.compat.popup;
 
 import java.io.Serializable;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.event.ActionEvent;
@@ -78,6 +79,11 @@ public class PopupBean extends ComponentExampleImpl<PopupBean> implements Serial
 		super(PopupBean.class);
 	}
 	
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
+    }
+
 	public boolean isOpened() { return opened; }
 	
 	public void setOpened(boolean opened) { this.opened = opened; }

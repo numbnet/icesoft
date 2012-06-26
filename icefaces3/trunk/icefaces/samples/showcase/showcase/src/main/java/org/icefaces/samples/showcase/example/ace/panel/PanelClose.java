@@ -19,6 +19,7 @@ package org.icefaces.samples.showcase.example.ace.panel;
 import org.icefaces.samples.showcase.metadata.annotation.*;
 import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import java.io.Serializable;
@@ -55,6 +56,11 @@ public class PanelClose extends ComponentExampleImpl<PanelClose> implements Seri
         super(PanelClose.class);
     }
     
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
+    }
+
     public boolean getClosable() { return closable; }
     public int getSpeed() { return speed; }
     

@@ -18,6 +18,7 @@ package org.icefaces.samples.showcase.example.compat.media;
 
 import java.io.Serializable;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 
@@ -75,5 +76,10 @@ public class MediaBean extends ComponentExampleImpl<MediaBean> implements Serial
 		super(MediaBean.class);
 	}
 	
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
+    }
+
 	public String getSourceDir() { return SOURCE_DIR; }
 }

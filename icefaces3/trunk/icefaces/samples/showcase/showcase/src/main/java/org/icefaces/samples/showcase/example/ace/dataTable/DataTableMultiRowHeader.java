@@ -25,6 +25,7 @@ import org.icefaces.samples.showcase.example.compat.dataTable.Car;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import org.icefaces.samples.showcase.dataGenerators.utilityClasses.DataTableData;
@@ -61,6 +62,11 @@ public class DataTableMultiRowHeader extends ComponentExampleImpl<DataTableMulti
         this.cars = new ArrayList<Car>(DataTableData.getDefaultData());
     }
     
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
+    }
+
     /////////////---- GETTERS & SETTERS BEGIN
     public List<Car> getCars() { return cars; }
     public void setCars(List<Car> cars) { this.cars = cars; }

@@ -19,6 +19,7 @@ package org.icefaces.samples.showcase.example.compat.columns;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import org.icefaces.samples.showcase.metadata.annotation.ComponentExample;
@@ -62,6 +63,11 @@ public class ColumnsChecker extends ComponentExampleImpl<ColumnsChecker> impleme
 		super(ColumnsChecker.class);
 	}
 	
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
+    }
+
 	public List<Integer> getRowData() { return rowData; }
 	public List<Integer> getColumnData() { return columnData; }
 	

@@ -26,6 +26,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import org.icefaces.samples.showcase.dataGenerators.utilityClasses.DataTableData;
@@ -61,6 +62,11 @@ public class DataTableColumnReordering extends ComponentExampleImpl<DataTableCol
     {
         super(DataTableColumnReordering.class);
         this.cars = new ArrayList<Car>(DataTableData.getDefaultData());
+    }
+
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
     }
 
     public List<Car> getCars() {

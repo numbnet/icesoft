@@ -9,6 +9,7 @@ import org.icefaces.ace.model.chart.CartesianSeries;
 import org.icefaces.samples.showcase.metadata.annotation.*;
 import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import java.io.Serializable;
@@ -119,6 +120,11 @@ public class ChartBean extends ComponentExampleImpl<ChartBean> implements Serial
 
     public ChartBean() {
         super(ChartBean.class);
+    }
+
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
     }
 
     public void redrawChartListener(SelectEvent e) {

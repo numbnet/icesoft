@@ -23,6 +23,7 @@ import org.icefaces.samples.showcase.metadata.annotation.ExampleResources;
 import org.icefaces.samples.showcase.metadata.annotation.ResourceType;
 import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
 
+import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
@@ -63,6 +64,11 @@ public class FileEntryListenerBean extends ComponentExampleImpl<FileEntryListene
         super(FileEntryListenerBean.class);
     }
     
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
+    }
+
     // Invalidate and delete any files not named test.txt
     public void customValidator(FileEntryEvent entryEvent) {
         FileEntryResults results = ((FileEntry)entryEvent.getComponent()).getResults();

@@ -19,6 +19,7 @@ package org.icefaces.samples.showcase.example.compat.calendar;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 
@@ -63,6 +64,11 @@ public class CalendarPopupBean extends ComponentExampleImpl<CalendarPopupBean> i
 		super(CalendarPopupBean.class);
 	}
 	
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
+    }
+
 	public Date getDate() { return date; }
 	public String getPattern() { return CalendarBean.DEFAULT_PATTERN; }
 	public boolean getRenderAsPopup() { return renderAsPopup; }

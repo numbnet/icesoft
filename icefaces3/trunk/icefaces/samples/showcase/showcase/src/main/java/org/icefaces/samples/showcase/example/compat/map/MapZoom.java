@@ -19,6 +19,7 @@ package org.icefaces.samples.showcase.example.compat.map;
 import java.io.Serializable;
 import java.util.Random;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.event.ActionEvent;
@@ -64,6 +65,11 @@ public class MapZoom extends ComponentExampleImpl<MapZoom> implements Serializab
 		super(MapZoom.class);
 	}
 	
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
+    }
+
 	public String getZoomLevel() { return zoomLevel; }
 	public String[] getAvailableLevels() { return availableLevels; }
 	

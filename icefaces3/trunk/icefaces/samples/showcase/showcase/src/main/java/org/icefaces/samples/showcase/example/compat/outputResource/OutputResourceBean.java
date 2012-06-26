@@ -26,6 +26,7 @@ import java.io.ByteArrayOutputStream;
 import java.util.Date;
 import java.net.URL;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.context.ExternalContext;
@@ -95,6 +96,11 @@ public class OutputResourceBean extends ComponentExampleImpl<OutputResourceBean>
 		super(OutputResourceBean.class);
 	}
 	
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
+    }
+
 	public String getPdfName() { return PDF_NAME; }
 	public String getImageName() { return IMAGE_NAME; }
 	public Resource getPdfResource() { return PDF_RESOURCE; }

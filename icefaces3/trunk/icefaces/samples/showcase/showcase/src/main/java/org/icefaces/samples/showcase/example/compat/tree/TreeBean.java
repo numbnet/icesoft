@@ -19,6 +19,7 @@ package org.icefaces.samples.showcase.example.compat.tree;
 import java.io.Serializable;
 import java.util.Random;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.event.ActionEvent;
@@ -87,6 +88,11 @@ public class TreeBean extends ComponentExampleImpl<TreeBean> implements Serializ
     {
         super(TreeBean.class);
         model = generateRandomTree();
+    }
+
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
     }
 
     public static DefaultTreeModel generateRandomTree() {

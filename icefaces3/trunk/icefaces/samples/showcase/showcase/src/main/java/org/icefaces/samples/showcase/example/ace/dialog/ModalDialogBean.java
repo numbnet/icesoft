@@ -19,6 +19,7 @@ package org.icefaces.samples.showcase.example.ace.dialog;
 import org.icefaces.samples.showcase.metadata.annotation.*;
 import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import java.io.Serializable;
@@ -58,6 +59,11 @@ public class ModalDialogBean extends ComponentExampleImpl<ModalDialogBean> imple
         modal = false;
     }
     
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
+    }
+
     public boolean isDraggable() {
         return draggable;
     }

@@ -25,6 +25,7 @@ import org.icefaces.samples.showcase.metadata.annotation.ExampleResources;
 import org.icefaces.samples.showcase.metadata.annotation.ResourceType;
 import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
 
+import javax.annotation.PostConstruct;
 import javax.faces.application.Application;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
@@ -64,6 +65,11 @@ public class DataTableGrouping extends ComponentExampleImpl<DataTableGrouping> i
         carsData = new ArrayList<Car>(DataTableData.getDefaultData());
     }
     
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
+    }
+
     /////////////---- GETTERS & SETTERS BEGIN
     public List<Car> getCarsData() { return carsData; }
     public void setCarsData(List<Car> carsData) { this.carsData = carsData; }

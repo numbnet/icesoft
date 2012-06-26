@@ -20,6 +20,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.TimeZone;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.event.ActionEvent;
@@ -69,6 +70,11 @@ public class CalendarTimezoneBean extends ComponentExampleImpl<CalendarTimezoneB
 		super(CalendarTimezoneBean.class);
 	}
 	
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
+    }
+
 	public Date getDate() { return date; }
 	public String getPattern() { return pattern; }
 	public TimeZone getTimezoneObject() {

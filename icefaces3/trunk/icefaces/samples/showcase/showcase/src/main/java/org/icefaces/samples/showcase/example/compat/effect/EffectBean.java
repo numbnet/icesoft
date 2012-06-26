@@ -18,6 +18,7 @@ package org.icefaces.samples.showcase.example.compat.effect;
 
 import java.io.Serializable;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.event.ActionEvent;
@@ -107,6 +108,11 @@ public class EffectBean extends ComponentExampleImpl<EffectBean> implements Seri
 		super(EffectBean.class);
 	}
 	
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
+    }
+
 	public Integer getSelectedEffect() { return selectedEffect; }
 	public Effect getCurrentEffect() { return currentEffect; }
 	public SelectItem[] getAvailableEffects() { return availableEffects; }

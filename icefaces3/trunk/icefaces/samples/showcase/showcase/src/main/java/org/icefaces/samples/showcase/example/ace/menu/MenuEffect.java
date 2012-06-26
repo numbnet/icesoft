@@ -19,6 +19,7 @@ package org.icefaces.samples.showcase.example.ace.menu;
 import org.icefaces.samples.showcase.metadata.annotation.*;
 import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 
@@ -62,7 +63,12 @@ public class MenuEffect extends ComponentExampleImpl<MenuEffect> implements Seri
         effectDuration = 400;
     }
     
-    private LinkedHashMap<String, String> populateAvailableEffects() 
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
+    }
+
+    private LinkedHashMap<String, String> populateAvailableEffects()
     {
         LinkedHashMap <String, String> list = new LinkedHashMap <String, String>();
         list.put("Slide","slide");

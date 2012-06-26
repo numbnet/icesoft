@@ -20,6 +20,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 
@@ -97,7 +98,12 @@ public class DragDropEvents extends ComponentExampleImpl<DragDropEvents> impleme
                         super(DragDropEvents.class);
 	}
 	
-	private void addEvent(DndEvent event, String from) 
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
+    }
+
+	private void addEvent(DndEvent event, String from)
                 {
 	    StringBuilder sb = new StringBuilder(40);
 	    sb.append("Fired event \"");

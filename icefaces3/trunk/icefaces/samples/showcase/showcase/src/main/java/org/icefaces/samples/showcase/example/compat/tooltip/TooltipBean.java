@@ -20,6 +20,7 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.ArrayList;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 
@@ -79,6 +80,11 @@ public class TooltipBean extends ComponentExampleImpl<TooltipBean> implements Se
 
     public TooltipBean() {
             super(TooltipBean.class);
+    }
+
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
     }
 
     public List<PeriodicElement> getElements() { return ELEMENTS; }

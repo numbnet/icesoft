@@ -18,6 +18,7 @@ package org.icefaces.samples.showcase.example.compat.dragdrop;
 
 import java.io.Serializable;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.model.SelectItem;
@@ -66,6 +67,11 @@ public class DragDropEffect extends ComponentExampleImpl<DragDropEffect> impleme
 		super(DragDropEffect.class);
 	}
 	
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
+    }
+
 	public SelectItem[] getAvailableOptions() { return availableOptions; }
 	public String[] getOptions() { return options; }
 	public String getOptionsString() { return FacesUtils.join(options); }

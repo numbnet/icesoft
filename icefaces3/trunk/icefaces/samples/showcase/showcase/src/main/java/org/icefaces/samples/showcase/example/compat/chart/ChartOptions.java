@@ -18,6 +18,7 @@ package org.icefaces.samples.showcase.example.compat.chart;
 
 import java.io.Serializable;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.model.SelectItem;
@@ -74,6 +75,11 @@ public class ChartOptions extends ComponentExampleImpl<ChartOptions> implements 
 		super(ChartOptions.class);
 	}
 	
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
+    }
+
 	public SelectItem[] getAvailablePlacements() { return availablePlacements; }
 	public String getChartTitle() { return chartTitle; }
 	public String getXaxisTitle() { return xaxisTitle; }

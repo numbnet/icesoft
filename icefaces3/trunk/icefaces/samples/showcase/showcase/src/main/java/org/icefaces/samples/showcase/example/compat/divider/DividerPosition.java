@@ -19,6 +19,7 @@ package org.icefaces.samples.showcase.example.compat.divider;
 import java.io.Serializable;
 import java.util.Random;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.event.ActionEvent;
@@ -62,6 +63,11 @@ public class DividerPosition extends ComponentExampleImpl<DividerPosition> imple
 		super(DividerPosition.class);
 	}
 	
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
+    }
+
 	public int getPosition() { return position; }
 	
 	public void setPosition(int position) { this.position = position; }

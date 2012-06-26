@@ -18,6 +18,7 @@ package org.icefaces.samples.showcase.example.compat.border;
 
 import java.io.Serializable;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.model.SelectItem;
@@ -67,6 +68,11 @@ public class BorderStyle extends ComponentExampleImpl<BorderStyle> implements Se
 		super(BorderStyle.class);
 	}
 	
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
+    }
+
 	public SelectItem[] getAvailableStyles() { return availableStyles; }
 	public String getStyle() { return style; }
 	

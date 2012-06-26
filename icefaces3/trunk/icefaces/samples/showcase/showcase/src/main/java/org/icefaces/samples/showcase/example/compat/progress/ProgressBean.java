@@ -18,6 +18,7 @@ package org.icefaces.samples.showcase.example.compat.progress;
 
 import java.io.Serializable;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.event.ActionEvent;
@@ -76,7 +77,12 @@ public class ProgressBean extends ComponentExampleImpl<ProgressBean> implements 
             super(ProgressBean.class);
     }
 
-    public void startTask(ActionEvent event) 
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
+    }
+
+    public void startTask(ActionEvent event)
     {
         LongTaskManager threadBean = (LongTaskManager)FacesUtils.getManagedBean(LongTaskManager.BEAN_NAME);
         threadBean.startThread(10, 10, 650);

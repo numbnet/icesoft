@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.event.ValueChangeEvent;
@@ -71,6 +72,11 @@ public class EventPhaseChange extends ComponentExampleImpl<EventPhaseChange> imp
 		super(EventPhaseChange.class);
 	}
 	
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
+    }
+
 	public int getLogSize() { return LOG_SIZE; }
 	public List<String> getEventLog() { return eventLog; }
 	public boolean getEnable() { return enable; }

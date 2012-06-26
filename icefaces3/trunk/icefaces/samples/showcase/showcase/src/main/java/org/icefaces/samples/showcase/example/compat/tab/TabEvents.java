@@ -18,6 +18,7 @@ package org.icefaces.samples.showcase.example.compat.tab;
 
 import java.io.Serializable;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 
@@ -59,6 +60,11 @@ public class TabEvents extends ComponentExampleImpl<TabEvents> implements Serial
 
     public TabEvents() {
             super(TabEvents.class);
+    }
+
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
     }
 
     public String getStatus() { return status; }

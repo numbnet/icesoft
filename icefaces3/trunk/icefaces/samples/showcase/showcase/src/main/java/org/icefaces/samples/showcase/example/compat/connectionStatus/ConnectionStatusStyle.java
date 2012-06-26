@@ -18,6 +18,7 @@ package org.icefaces.samples.showcase.example.compat.connectionStatus;
 
 import java.io.Serializable;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 
@@ -56,4 +57,9 @@ public class ConnectionStatusStyle extends ComponentExampleImpl<ConnectionStatus
 	public ConnectionStatusStyle() {
 		super(ConnectionStatusStyle.class);
 	}
+
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
+    }
 }

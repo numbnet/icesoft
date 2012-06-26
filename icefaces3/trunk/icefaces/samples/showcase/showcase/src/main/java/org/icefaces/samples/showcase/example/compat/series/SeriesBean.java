@@ -18,6 +18,7 @@ package org.icefaces.samples.showcase.example.compat.series;
 
 import java.io.Serializable;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 
@@ -73,5 +74,10 @@ public class SeriesBean extends ComponentExampleImpl<SeriesBean> implements Seri
 
     public SeriesBean() {
             super(SeriesBean.class);
+    }
+
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
     }
 }

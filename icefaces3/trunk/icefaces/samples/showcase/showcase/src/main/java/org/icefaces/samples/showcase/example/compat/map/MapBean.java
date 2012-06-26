@@ -18,6 +18,7 @@ package org.icefaces.samples.showcase.example.compat.map;
 
 import java.io.Serializable;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.event.ActionEvent;
@@ -74,6 +75,11 @@ public class MapBean extends ComponentExampleImpl<MapBean> implements Serializab
 		super(MapBean.class);
 	}
 	
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
+    }
+
 	public String getAddress() { return address; }
 	public boolean getLocateAddress() {
 	    if (locateAddress) {

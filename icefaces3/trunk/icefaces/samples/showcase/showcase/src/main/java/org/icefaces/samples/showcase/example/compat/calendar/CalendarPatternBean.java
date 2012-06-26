@@ -19,6 +19,7 @@ package org.icefaces.samples.showcase.example.compat.calendar;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.event.ActionEvent;
@@ -79,6 +80,11 @@ public class CalendarPatternBean extends ComponentExampleImpl<CalendarPatternBea
                     setDefaultValues();
                 }
         
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
+    }
+
                 /**
 	 * Method called when a reload is required
 	 * This happens if the converter is modified by the radio buttons in the page

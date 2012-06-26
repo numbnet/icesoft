@@ -19,6 +19,7 @@ package org.icefaces.samples.showcase.example.ace.confirmationdialog;
 import org.icefaces.samples.showcase.metadata.annotation.*;
 import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.event.ActionEvent;
@@ -62,7 +63,12 @@ public class ConfirmationDialogEffectBean extends ComponentExampleImpl<Confirmat
         hideEffect = effects.get("Fade");
     }
 
-        private LinkedHashMap<String, String> initializeDialogEffects() 
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
+    }
+
+        private LinkedHashMap<String, String> initializeDialogEffects()
         {
             LinkedHashMap<String, String> list = new LinkedHashMap<String, String>();
             list.put("Fade", "fade");

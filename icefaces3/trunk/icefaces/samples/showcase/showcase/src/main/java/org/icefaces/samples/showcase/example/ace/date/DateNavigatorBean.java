@@ -22,6 +22,8 @@ import org.icefaces.samples.showcase.metadata.annotation.ExampleResources;
 import org.icefaces.samples.showcase.metadata.annotation.ResourceType;
 import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
 import org.icefaces.ace.event.DateSelectEvent;
+
+import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import java.io.Serializable;
@@ -58,6 +60,11 @@ public class DateNavigatorBean extends ComponentExampleImpl<DateNavigatorBean> i
         super(DateNavigatorBean.class);
     }
     
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
+    }
+
     public void dateSelectListener(DateSelectEvent event) {
         this.selectedDate = event.getDate();
     }

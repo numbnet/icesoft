@@ -5,6 +5,7 @@ import org.icefaces.samples.showcase.example.compat.dataTable.Car;
 import org.icefaces.samples.showcase.metadata.annotation.*;
 import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.model.SelectItem;
@@ -65,6 +66,11 @@ public class ListBean extends ComponentExampleImpl<ListBean> implements Serializ
         fstDestCarList = new ArrayList<Car>(removals.subList(0, 2));
         sndDestCarList = new ArrayList<Car>(removals.subList(2, 4));
         carList = carList.subList(0,6);
+    }
+
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
     }
 
     List<SelectItem> stringList = new ArrayList<SelectItem>() {{

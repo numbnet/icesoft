@@ -21,6 +21,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.event.ActionEvent;
@@ -74,6 +75,11 @@ public class DataTableDynamic extends ComponentExampleImpl<DataTableDynamic> imp
         chasisOptions = generator.getChassisPool();
     }
     
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
+    }
+
     ///////////////////////// ACTION LISTENERS //////////////////////////////////////////////////////////////////////////////
     public void bulkAdd(ActionEvent event) {
         /*

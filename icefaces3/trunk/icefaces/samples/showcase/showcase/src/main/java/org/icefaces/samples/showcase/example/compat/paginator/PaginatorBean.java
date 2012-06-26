@@ -19,6 +19,7 @@ package org.icefaces.samples.showcase.example.compat.paginator;
 import java.io.Serializable;
 
 import java.util.ArrayList;
+import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 
@@ -85,6 +86,11 @@ public class PaginatorBean extends ComponentExampleImpl<PaginatorBean> implement
         cars = new ArrayList<Car>(DataTableData.getDefaultData());
     }
 	
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
+    }
+
     public int getRows() { return rows; }
     public ArrayList<Car> getCars() {return cars;}
     

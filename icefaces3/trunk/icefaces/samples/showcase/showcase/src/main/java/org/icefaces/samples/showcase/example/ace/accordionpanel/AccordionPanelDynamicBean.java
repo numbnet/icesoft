@@ -20,6 +20,7 @@ import org.icefaces.samples.showcase.dataGenerators.ImageSet;
 import org.icefaces.samples.showcase.metadata.annotation.*;
 import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import java.io.Serializable;
@@ -62,6 +63,11 @@ public class AccordionPanelDynamicBean extends ComponentExampleImpl<AccordionPan
         initializeInstanceVariables();
     }
     
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
+    }
+
     ////////////////////////////////////////////ON TAB CHANGE EVENT BEGIN/////////////////////////////////////////////////
     public void onPaneChange(AccordionPaneChangeEvent event)
     {  

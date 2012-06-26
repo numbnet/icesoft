@@ -18,6 +18,7 @@ package org.icefaces.samples.showcase.example.compat.outputResource;
 
 import java.io.Serializable;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.model.SelectItem;
@@ -69,6 +70,11 @@ public class OutputResourceType extends ComponentExampleImpl<OutputResourceType>
 		super(OutputResourceType.class);
 	}
 	
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
+    }
+
 	public boolean getTypeImage() { return TYPE_LINK.equals(type); }
 	public SelectItem[] getAvailableTypes() { return availableTypes; }
 	public String getType() { return type; }

@@ -18,6 +18,7 @@ package org.icefaces.samples.showcase.example.compat.positioned;
 
 import java.io.Serializable;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.event.ActionEvent;
@@ -69,7 +70,12 @@ public class PositionedConstraint extends ComponentExampleImpl<PositionedConstra
 	public PositionedConstraint() {
 		super(PositionedConstraint.class);
 	}
-	
+
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
+    }
+
 	public SelectItem[] getAvailableConstraints() { return availableConstraints; }
 	public String getConstraint() { return constraint; }
 	public boolean isHorizontal() { return HORIZONTAL_CONSTRAINT.equals(constraint); }

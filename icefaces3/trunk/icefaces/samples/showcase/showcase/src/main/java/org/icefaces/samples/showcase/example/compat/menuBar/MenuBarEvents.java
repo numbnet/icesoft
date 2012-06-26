@@ -18,6 +18,7 @@ package org.icefaces.samples.showcase.example.compat.menuBar;
 
 import java.io.Serializable;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.event.ActionEvent;
@@ -62,6 +63,11 @@ public class MenuBarEvents extends ComponentExampleImpl<MenuBarEvents> implement
 		super(MenuBarEvents.class);
 	}
 	
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
+    }
+
 	public String getStatus() { return status; }
 	
 	public void setStatus(String status) { this.status = status; }

@@ -18,6 +18,7 @@ package org.icefaces.samples.showcase.example.compat.progress;
 
 import java.io.Serializable;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.event.ActionEvent;
@@ -59,6 +60,11 @@ public class ProgressIndeterminate extends ComponentExampleImpl<ProgressIndeterm
 		super(ProgressIndeterminate.class);
 	}
 	
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
+    }
+
 	public void startTask(ActionEvent event) {
 	    LongTaskManager threadBean =
 	        (LongTaskManager)FacesUtils.getManagedBean(LongTaskManager.BEAN_NAME);

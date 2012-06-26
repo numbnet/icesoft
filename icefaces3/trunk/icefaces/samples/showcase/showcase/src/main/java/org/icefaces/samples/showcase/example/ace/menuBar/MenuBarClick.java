@@ -19,6 +19,7 @@ package org.icefaces.samples.showcase.example.ace.menuBar;
 import org.icefaces.samples.showcase.metadata.annotation.*;
 import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import java.io.Serializable;
@@ -55,6 +56,11 @@ public class MenuBarClick extends ComponentExampleImpl<MenuBarClick> implements 
         clickToDisplay = false;
     }
     
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
+    }
+
     public boolean getClickToDisplay() { return clickToDisplay; }
     
     public void setClickToDisplay(boolean clickToDisplay) { this.clickToDisplay = clickToDisplay; }

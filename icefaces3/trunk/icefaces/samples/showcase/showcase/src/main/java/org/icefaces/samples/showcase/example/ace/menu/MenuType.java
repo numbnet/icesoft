@@ -19,6 +19,7 @@ package org.icefaces.samples.showcase.example.ace.menu;
 import org.icefaces.samples.showcase.metadata.annotation.*;
 import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 
@@ -67,7 +68,12 @@ public class MenuType extends ComponentExampleImpl<MenuType> implements Serializ
         list.add(DEFAULT_MESSAGE);
     }
     
-    public void fireAction(ActionEvent event) 
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
+    }
+
+    public void fireAction(ActionEvent event)
     {
         String [] results = event.getComponent().getParent().getClientId().split(":");
         message= results[results.length-1].toUpperCase() + " > ";

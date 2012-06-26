@@ -18,6 +18,7 @@ package org.icefaces.samples.showcase.example.compat.collapsible;
 
 import java.io.Serializable;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 
@@ -56,4 +57,9 @@ public class CollapsibleMultiple extends ComponentExampleImpl<CollapsibleMultipl
 	public CollapsibleMultiple() {
 		super(CollapsibleMultiple.class);
 	}
+
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
+    }
 }

@@ -18,6 +18,7 @@ package org.icefaces.samples.showcase.example.compat.paginator;
 
 import java.io.Serializable;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 
@@ -60,6 +61,11 @@ public class PaginatorMax extends ComponentExampleImpl<PaginatorMax> implements 
 		super(PaginatorMax.class);
 	}
 	
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
+    }
+
 	public int getRows() { return rows; }
 	public int getPages() { return pages; }
 	

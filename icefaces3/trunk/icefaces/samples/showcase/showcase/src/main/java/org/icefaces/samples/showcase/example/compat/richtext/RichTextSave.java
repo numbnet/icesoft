@@ -18,6 +18,7 @@ package org.icefaces.samples.showcase.example.compat.richtext;
 
 import java.io.Serializable;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 
@@ -58,6 +59,11 @@ public class RichTextSave extends ComponentExampleImpl<RichTextSave> implements 
 
     public RichTextSave() {
             super(RichTextSave.class);
+    }
+
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
     }
 
     public String getText() { return text; }

@@ -18,6 +18,7 @@ package org.icefaces.samples.showcase.example.compat.collapsible;
 
 import java.io.Serializable;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 
@@ -72,4 +73,9 @@ public class CollapsibleBean extends ComponentExampleImpl<CollapsibleBean> imple
 	public CollapsibleBean() {
 		super(CollapsibleBean.class);
 	}
+
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
+    }
 }

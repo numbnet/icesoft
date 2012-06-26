@@ -18,6 +18,7 @@ package org.icefaces.samples.showcase.example.compat.tab;
 
 import java.io.Serializable;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.model.SelectItem;
@@ -63,6 +64,11 @@ public class TabControl extends ComponentExampleImpl<TabControl> implements Seri
 
     public TabControl() {
             super(TabControl.class);
+    }
+
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
     }
 
     public SelectItem[] getAvailableIndexes() { return availableIndexes; }

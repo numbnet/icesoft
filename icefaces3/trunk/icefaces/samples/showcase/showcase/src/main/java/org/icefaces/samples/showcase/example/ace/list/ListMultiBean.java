@@ -4,6 +4,7 @@ import org.icefaces.samples.showcase.dataGenerators.utilityClasses.DataTableData
 import org.icefaces.samples.showcase.metadata.annotation.*;
 import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.model.SelectItem;
@@ -38,6 +39,11 @@ public class ListMultiBean extends ComponentExampleImpl<ListMultiBean> implement
 
     public ListMultiBean() {
         super(ListMultiBean.class);
+    }
+
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
     }
 
     List<SelectItem> stringList = new ArrayList<SelectItem>() {{

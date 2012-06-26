@@ -70,6 +70,11 @@ public class ContextMenuEffect extends ComponentExampleImpl<ContextMenuEffect> i
         super(ContextMenuEffect.class);
     }
     
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
+    }
+
     public SelectItem[] getAvailableEffects() { return availableEffects; }
     public String getEffectName() { return effectName; }
     public int getEffectDuration() { return effectDuration; }

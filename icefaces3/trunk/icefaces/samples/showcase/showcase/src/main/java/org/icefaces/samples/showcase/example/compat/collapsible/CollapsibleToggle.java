@@ -18,6 +18,7 @@ package org.icefaces.samples.showcase.example.compat.collapsible;
 
 import java.io.Serializable;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 
@@ -59,6 +60,11 @@ public class CollapsibleToggle extends ComponentExampleImpl<CollapsibleToggle> i
 		super(CollapsibleToggle.class);
 	}
 	
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
+    }
+
 	public boolean getToggle() { return toggle; }
 	
 	public void setToggle(boolean toggle) { this.toggle = toggle; }
