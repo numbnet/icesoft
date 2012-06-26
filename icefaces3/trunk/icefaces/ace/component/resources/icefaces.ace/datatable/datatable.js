@@ -647,7 +647,7 @@ ice.ace.DataTable.prototype.setupScrolling = function() {
         if (_self.parentSize != ice.ace.jq(_self.jqId).parent().width()) {
             _self.parentSize = ice.ace.jq(_self.jqId).parent().width();
             clearTimeout(delayedCleanUpResizeToken);
-            setTimeout(delayedCleanUpResize, 100);
+            delayedCleanUpResizeToken = setTimeout(delayedCleanUpResize, 500);
         }
     });
 
@@ -741,7 +741,7 @@ ice.ace.DataTable.prototype.resizeScrolling = function() {
 
         var realHeadCols = ice.ace.jq(this.jqId + ' .ui-datatable-scrollable-header:first > table > thead > tr > th > .ui-header-column').get().reverse();
         var realFootCols = ice.ace.jq(this.jqId + ' .ui-datatable-scrollable-footer:first > table > tfoot > tr > td > .ui-footer-column').get().reverse();
-        var bodySingleCols = ice.ace.jq(this.jqId + ' .ui-datatable-scrollable-body:first > table > tbody > tr:visible:first-child > td > div').get().reverse();
+        var bodySingleCols = ice.ace.jq(this.jqId + ' .ui-datatable-scrollable-body:first > table > tbody > tr:visible:first > td > div').get().reverse();
 
         // Reset overflow if it was disabled as a hack from previous sizing
         var bodyTableParent = bodyTable.parent().css('overflow', '');
@@ -749,7 +749,7 @@ ice.ace.DataTable.prototype.resizeScrolling = function() {
         footerTable.parent().css('overflow', '');
 
         // Reset fixed sizing if set by previous sizing.
-        for (i = 0; i < bodySingleCols.length; i++)
+        for (var i = 0; i < bodySingleCols.length; i++)
             ice.ace.jq(bodySingleCols[i]).css('width', 'auto');
 
         // Reset padding if added to offset scrollbar issues
@@ -813,7 +813,7 @@ ice.ace.DataTable.prototype.resizeScrolling = function() {
 
         // Get Duplicate Sizing
         if (!ie7) {
-            for (i = 0; i < dupeHeadCols.length; i++) {
+            for (var i = 0; i < dupeHeadCols.length; i++) {
                 dupeHeadColumn = ice.ace.jq(dupeHeadCols[i]);
                 dupeHeadColumnWidths[i] = dupeHeadColumn.width();
             }
@@ -857,7 +857,7 @@ ice.ace.DataTable.prototype.resizeScrolling = function() {
             bodyColumn.width(bodyColumnWidth);
         }
 
-        if (!ie7) for (i = 0; i < realHeadCols.length; i++) {
+        if (!ie7) for (var i = 0; i < realHeadCols.length; i++) {
             realHeadColumn = ice.ace.jq(realHeadCols[i]);
 
             // Work around webkit bug described here: https://bugs.webkit.org/show_bug.cgi?id=13339
@@ -871,7 +871,7 @@ ice.ace.DataTable.prototype.resizeScrolling = function() {
             realHeadColumn.parent().width(realHeadColumnWidth);
         }
 
-        if (!ie7) for (i = 0; i < realFootCols.length; i++) {
+        if (!ie7) for (var i = 0; i < realFootCols.length; i++) {
             realFootColumn = ice.ace.jq(realFootCols[i]);
 
             // Work around webkit bug described here: https://bugs.webkit.org/show_bug.cgi?id=13339
