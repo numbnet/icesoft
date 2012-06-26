@@ -498,7 +498,7 @@
 					"../zxing/ZXingWidget/Classes/**",
 				);
 				INFOPLIST_FILE = "ICEmobile-SX/ICEmobile-SX-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -514,7 +514,7 @@
 					"../zxing/ZXingWidget/Classes/**",
 				);
 				INFOPLIST_FILE = "ICEmobile-SX/ICEmobile-SX-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};

@@ -399,7 +399,7 @@ NSLog(@"called camera");
     if (nil == self.augController)  {
         if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)  {
             self.augController = [[ARViewController alloc] 
-                    initWithNibName:@"ARViewController_iPad" bundle:nil];
+                    initWithNibName:@"ARViewController_iPhone" bundle:nil];
         } else {
             augController = [[ARViewController alloc] 
                     initWithNibName:@"ARViewController_iPhone" bundle:nil];
