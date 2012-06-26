@@ -226,6 +226,9 @@ NSLog(@"Alert dismissed via button %d", buttonIndex);
 
 - (IBAction) chooseAction  {
     NSLog(@"ViewController chooseAction %d", actionSelector.selectedSegmentIndex);
+    if (-1 == actionSelector.selectedSegmentIndex)  {
+        return;
+    }
     self.currentURL = urlField.text;
     [urlField resignFirstResponder];
     self.returnURL = self.currentURL;

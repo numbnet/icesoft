@@ -91,15 +91,10 @@
 //    mapController.nativeInterface = self;
     mapController.arView = arView;
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)  {
-//        if (nil == self.mapPopover)  {
-//            self.mapPopover = [[UIPopoverController alloc] 
-//                    initWithContentViewController:mapController];
-//            self.mapPopover.popoverContentSize = CGSizeMake(320, 480);
-//        }
-//        [self.mapPopover presentPopoverFromRect:popoverSource 
-//                                 inView:controllerView
-//               permittedArrowDirections:UIPopoverArrowDirectionAny 
-//                               animated:YES];
+        if (nil != self.nativeInterface.augPopover)  {
+            mapController.popover = self.nativeInterface.augPopover;
+            [self.nativeInterface.augPopover setContentViewController:mapController animated:YES];
+        }
     } else {
         [self presentModalViewController:mapController animated:YES];
     }

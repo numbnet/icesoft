@@ -294,7 +294,13 @@ NSLog(@"addCompassPoints anchored %f,%f", location.coordinate.latitude, location
 - (void)startDeviceMotion
 {	
 	motionManager = [[CMMotionManager alloc] init];
-	
+
+    if (![motionManager respondsToSelector:
+            @selector(setShowsDeviceMovementDisplay:)])  {
+        NSLog(@"ARView deviceMotion not supported");
+        return;
+    }
+
 	// Tell CoreMotion to show the compass calibration HUD when required to provide true north-referenced attitude
 	motionManager.showsDeviceMovementDisplay = YES;
 

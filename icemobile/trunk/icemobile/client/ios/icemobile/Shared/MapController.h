@@ -21,10 +21,12 @@
 @interface MapController : UIViewController {
     MKMapView *mapView;
     ARView *arView;
+    UIPopoverController *popover;
 }
 
 @property (nonatomic, retain) IBOutlet MKMapView *mapView;
 @property (nonatomic, retain) ARView *arView;
+@property (nonatomic, retain) UIPopoverController *popover;
 
 - (IBAction) doDone;
 

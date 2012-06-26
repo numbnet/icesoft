@@ -25,6 +25,7 @@
 @implementation MapController
 @synthesize mapView;
 @synthesize arView;
+@synthesize popover;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -76,11 +77,11 @@
 
 - (IBAction) doDone  {
     NSLog(@"MapController doDone");
-//    if (nil != self.mapPopover)  {
-//        [self.mapPopover dismissPopoverAnimated:YES];
-//    } else {
+    if (nil != self.popover)  {
+        [self.popover dismissPopoverAnimated:YES];
+    } else {
         [self dismissModalViewControllerAnimated:YES];
-//    }
+    }
 }
 
 - (void)handleGesture:(UIGestureRecognizer *)gestureRecognizer {
