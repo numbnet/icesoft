@@ -18,6 +18,7 @@ package org.icefaces.samples.showcase.example.compat.positioned;
 
 import java.io.Serializable;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.event.ActionEvent;
@@ -58,6 +59,11 @@ public class PositionedSort extends ComponentExampleImpl<PositionedSort> impleme
 		super(PositionedSort.class);
 	}
 	
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
+    }
+
 	public void sortAscending(ActionEvent event) {
 	    PositionedData.sortAscending();
 	}

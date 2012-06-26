@@ -18,6 +18,7 @@ package org.icefaces.samples.showcase.example.compat.menuBar;
 
 import java.io.Serializable;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 
@@ -59,6 +60,11 @@ public class MenuBarIcons extends ComponentExampleImpl<MenuBarIcons> implements 
 		super(MenuBarIcons.class);
 	}
 	
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
+    }
+
 	public boolean getHide() { return hide; }
 	
 	public void setHide(boolean hide) { this.hide = hide; }

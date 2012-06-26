@@ -18,6 +18,7 @@ package org.icefaces.samples.showcase.example.compat.tooltip;
 
 import java.io.Serializable;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 
@@ -57,6 +58,11 @@ public class TooltipDelay extends ComponentExampleImpl<TooltipDelay> implements 
 
     public TooltipDelay() {
             super(TooltipDelay.class);
+    }
+
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
     }
 
     public int getDelay() { return delay; }

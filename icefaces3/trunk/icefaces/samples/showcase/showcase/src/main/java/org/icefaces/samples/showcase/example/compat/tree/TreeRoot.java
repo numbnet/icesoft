@@ -18,6 +18,7 @@ package org.icefaces.samples.showcase.example.compat.tree;
 
 import java.io.Serializable;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.event.ActionEvent;
@@ -58,6 +59,11 @@ public class TreeRoot extends ComponentExampleImpl<TreeRoot> implements Serializ
 
     public TreeRoot() {
             super(TreeRoot.class);
+    }
+
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
     }
 
     public boolean getHideRoot() { return hideRoot; }

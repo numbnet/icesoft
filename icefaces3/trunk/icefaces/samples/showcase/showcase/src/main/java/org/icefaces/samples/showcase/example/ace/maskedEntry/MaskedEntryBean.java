@@ -19,6 +19,7 @@ package org.icefaces.samples.showcase.example.ace.maskedEntry;
 import org.icefaces.samples.showcase.metadata.annotation.*;
 import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import java.io.Serializable;
@@ -64,6 +65,10 @@ public class MaskedEntryBean extends ComponentExampleImpl<MaskedEntryBean> imple
         super(MaskedEntryBean.class);
     }
     
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
+    }
 
     public String getDob() {
         return dob;

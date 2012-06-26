@@ -18,6 +18,7 @@ package org.icefaces.samples.showcase.example.compat.tab;
 
 import java.io.Serializable;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 
@@ -55,5 +56,10 @@ public class TabLabel extends ComponentExampleImpl<TabLabel> implements Serializ
 
     public TabLabel() {
             super(TabLabel.class);
+    }
+
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
     }
 }

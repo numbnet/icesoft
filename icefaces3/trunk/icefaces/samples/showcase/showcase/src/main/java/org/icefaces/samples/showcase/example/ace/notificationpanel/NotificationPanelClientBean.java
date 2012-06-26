@@ -18,6 +18,7 @@ package org.icefaces.samples.showcase.example.ace.notificationpanel;
 import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
 import org.icefaces.samples.showcase.metadata.annotation.*;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import java.io.Serializable;
@@ -49,4 +50,9 @@ public class NotificationPanelClientBean extends ComponentExampleImpl<Notificati
     
     public NotificationPanelClientBean()
     { super(NotificationPanelClientBean.class); }
+
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
+    }
 }

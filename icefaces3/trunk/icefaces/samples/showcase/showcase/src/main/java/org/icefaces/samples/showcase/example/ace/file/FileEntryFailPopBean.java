@@ -24,6 +24,7 @@ import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
 
 import org.icefaces.ace.component.fileentry.*;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import java.io.Serializable;
@@ -96,5 +97,10 @@ public class FileEntryFailPopBean extends ComponentExampleImpl<FileEntryFailPopB
 
     public FileEntryFailPopBean() {
         super(FileEntryFailPopBean.class);
+    }
+
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
     }
 }

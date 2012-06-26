@@ -18,6 +18,7 @@ package org.icefaces.samples.showcase.example.compat.map;
 
 import java.io.Serializable;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 
@@ -64,6 +65,11 @@ public class MapControls extends ComponentExampleImpl<MapControls> implements Se
 		super(MapControls.class);
 	}
 	
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
+    }
+
 	public boolean getSmallMap() { return smallMap; }
 	public boolean getLargeMap() { return largeMap; }
 	public boolean getZoom() { return zoom; }

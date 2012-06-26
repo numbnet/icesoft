@@ -26,6 +26,8 @@ import java.util.ArrayList;
 import java.util.List;
 import org.icefaces.samples.showcase.dataGenerators.utilityClasses.DataTableData;
 import org.icefaces.samples.showcase.example.compat.dataTable.Car;
+
+import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 
@@ -61,6 +63,12 @@ public class DataTableRowEditing extends ComponentExampleImpl<DataTableRowEditin
         super(DataTableRowEditing.class);
         cars = new ArrayList<Car>(DataTableData.getDefaultData());
     }
+
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
+    }
+
     /////////////---- GETTERS & SETTERS BEGIN
     public List<Car> getCars() { return cars; }
     public void setCars(List<Car> cars) { this.cars = cars; }

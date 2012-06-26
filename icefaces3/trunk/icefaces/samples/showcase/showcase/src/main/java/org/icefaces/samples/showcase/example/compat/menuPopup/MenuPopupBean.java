@@ -20,6 +20,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.event.ActionEvent;
@@ -86,6 +87,11 @@ public class MenuPopupBean extends ComponentExampleImpl<MenuPopupBean> implement
 		super(MenuPopupBean.class);
 	}
 	
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
+    }
+
 	public String getParamText() { return PARAM_TEXT; }
 	public String getParamStyle() { return PARAM_STYLE; }
 	public List<FormattedWord> getWordList() { return wordList; }

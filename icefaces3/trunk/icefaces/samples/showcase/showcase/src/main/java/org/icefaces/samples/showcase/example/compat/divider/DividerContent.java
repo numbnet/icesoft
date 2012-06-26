@@ -18,6 +18,7 @@ package org.icefaces.samples.showcase.example.compat.divider;
 
 import java.io.Serializable;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 
@@ -62,7 +63,11 @@ public class DividerContent extends ComponentExampleImpl<DividerContent> impleme
                     initializeInstanceVariables();
 	}
 	
-        
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
+    }
+
 	public String[] getAvailableUrls() { return availableUrls; }
 	public String getLeftUrl() { return leftUrl; }
 	public String getRightUrl() { return rightUrl; }

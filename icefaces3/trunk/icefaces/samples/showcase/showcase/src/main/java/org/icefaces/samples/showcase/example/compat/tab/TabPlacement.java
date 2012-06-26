@@ -18,6 +18,7 @@ package org.icefaces.samples.showcase.example.compat.tab;
 
 import java.io.Serializable;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 
@@ -61,6 +62,11 @@ public class TabPlacement extends ComponentExampleImpl<TabPlacement> implements 
 
     public TabPlacement() {
             super(TabPlacement.class);
+    }
+
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
     }
 
     public String[] getAvailablePlacements() { return availablePlacements; }

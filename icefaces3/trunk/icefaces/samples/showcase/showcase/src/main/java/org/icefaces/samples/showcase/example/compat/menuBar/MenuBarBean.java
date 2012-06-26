@@ -18,6 +18,7 @@ package org.icefaces.samples.showcase.example.compat.menuBar;
 
 import java.io.Serializable;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 
@@ -78,4 +79,9 @@ public class MenuBarBean extends ComponentExampleImpl<MenuBarBean> implements Se
 	public MenuBarBean() {
 		super(MenuBarBean.class);
 	}
+
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
+    }
 }

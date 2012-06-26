@@ -19,6 +19,7 @@ package org.icefaces.samples.showcase.example.ace.progressbar;
 import org.icefaces.samples.showcase.metadata.annotation.*;
 import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import java.io.Serializable;
@@ -61,6 +62,11 @@ public class ProgressBarPolling extends ComponentExampleImpl<ProgressBarPolling>
         initializeBean();
     }
     
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
+    }
+
     public void processSelection(ValueChangeEvent e) {
         String newValue = (String)e.getNewValue();
         //find selected item

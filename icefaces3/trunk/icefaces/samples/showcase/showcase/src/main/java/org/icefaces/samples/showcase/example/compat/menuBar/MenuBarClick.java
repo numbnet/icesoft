@@ -18,6 +18,7 @@ package org.icefaces.samples.showcase.example.compat.menuBar;
 
 import java.io.Serializable;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 
@@ -59,6 +60,11 @@ public class MenuBarClick extends ComponentExampleImpl<MenuBarClick> implements 
 		super(MenuBarClick.class);
 	}
 	
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
+    }
+
 	public boolean getDisplayOnClick() { return displayOnClick; }
 	
 	public void setDisplayOnClick(boolean displayOnClick) { this.displayOnClick = displayOnClick; }

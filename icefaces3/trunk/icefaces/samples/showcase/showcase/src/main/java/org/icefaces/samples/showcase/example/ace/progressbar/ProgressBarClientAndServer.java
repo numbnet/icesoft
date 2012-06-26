@@ -19,6 +19,7 @@ package org.icefaces.samples.showcase.example.ace.progressbar;
 import org.icefaces.samples.showcase.metadata.annotation.*;
 import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import java.io.Serializable;
@@ -57,6 +58,12 @@ public class ProgressBarClientAndServer extends ComponentExampleImpl<ProgressBar
         progressValue = 0;
         message = "";
     }
+
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
+    }
+
     /////////////---- EVENT LISTENERS BEGIN
     public void changeListener(ProgressBarChangeEvent event) 
     {

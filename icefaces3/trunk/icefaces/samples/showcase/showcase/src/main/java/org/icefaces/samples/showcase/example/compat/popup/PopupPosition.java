@@ -18,6 +18,7 @@ package org.icefaces.samples.showcase.example.compat.popup;
 
 import java.io.Serializable;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.event.ActionEvent;
@@ -62,6 +63,11 @@ public class PopupPosition extends ComponentExampleImpl<PopupPosition> implement
 		super(PopupPosition.class);
 	}
 	
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
+    }
+
 	public boolean isOpened() { return opened; }
 	public int getCoordinateX() { return coordinateX; }
 	public int getCoordinateY() { return coordinateY; }

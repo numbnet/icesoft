@@ -18,6 +18,7 @@ package org.icefaces.samples.showcase.example.compat.exporter;
 
 import java.io.Serializable;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 
@@ -59,6 +60,11 @@ public class ExporterPagination extends ComponentExampleImpl<ExporterPagination>
 		super(ExporterPagination.class);
 	}
 	
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
+    }
+
 	public boolean getIgnore() { return ignore; }
 	
 	public void setIgnore(boolean ignore) { this.ignore = ignore; }

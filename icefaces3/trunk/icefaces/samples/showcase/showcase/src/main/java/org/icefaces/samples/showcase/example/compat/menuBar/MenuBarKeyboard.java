@@ -18,6 +18,7 @@ package org.icefaces.samples.showcase.example.compat.menuBar;
 
 import java.io.Serializable;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 
@@ -59,6 +60,11 @@ public class MenuBarKeyboard extends ComponentExampleImpl<MenuBarKeyboard> imple
 		super(MenuBarKeyboard.class);
 	}
 	
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
+    }
+
 	public boolean getEnable() { return enable; }
 	
 	public void setEnable(boolean enable) { this.enable = enable; }

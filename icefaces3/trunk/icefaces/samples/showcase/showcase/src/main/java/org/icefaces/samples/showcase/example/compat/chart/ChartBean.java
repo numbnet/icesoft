@@ -18,6 +18,7 @@ package org.icefaces.samples.showcase.example.compat.chart;
 
 import java.io.Serializable;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.event.ActionEvent;
@@ -94,6 +95,11 @@ public class ChartBean extends ComponentExampleImpl<ChartBean> implements Serial
 		super(ChartBean.class);
 	}
 	
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
+    }
+
 	public String getClickedStatus() { return clickedStatus; }
 	
 	public void setClickedStatus(String clickedStatus) { this.clickedStatus = clickedStatus; }

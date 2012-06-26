@@ -18,6 +18,7 @@ package org.icefaces.samples.showcase.example.compat.series;
 
 import java.io.Serializable;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 
@@ -55,5 +56,10 @@ public class SeriesStyle extends ComponentExampleImpl<SeriesStyle> implements Se
 
     public SeriesStyle() {
             super(SeriesStyle.class);
+    }
+
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
     }
 }

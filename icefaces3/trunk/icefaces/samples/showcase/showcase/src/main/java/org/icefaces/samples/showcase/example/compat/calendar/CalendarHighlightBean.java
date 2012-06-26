@@ -19,6 +19,7 @@ package org.icefaces.samples.showcase.example.compat.calendar;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.model.SelectItem;
@@ -74,6 +75,11 @@ public class CalendarHighlightBean extends ComponentExampleImpl<CalendarHighligh
 		super(CalendarHighlightBean.class);
 	}
 	
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
+    }
+
 	public Date getDate() { return date; }
 	public String getPattern() { return CalendarBean.DEFAULT_PATTERN; }
 	public String getHighlightClass() { return highlightClass; }

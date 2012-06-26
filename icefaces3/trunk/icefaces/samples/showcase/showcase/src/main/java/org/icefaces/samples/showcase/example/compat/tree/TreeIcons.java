@@ -18,6 +18,7 @@ package org.icefaces.samples.showcase.example.compat.tree;
 
 import java.io.Serializable;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 
@@ -55,5 +56,10 @@ public class TreeIcons extends ComponentExampleImpl<TreeIcons> implements Serial
 
     public TreeIcons() {
             super(TreeIcons.class);
+    }
+
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
     }
 }

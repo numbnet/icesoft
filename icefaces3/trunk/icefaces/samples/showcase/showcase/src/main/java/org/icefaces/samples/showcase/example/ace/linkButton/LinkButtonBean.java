@@ -25,6 +25,7 @@ import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
 import org.icefaces.samples.showcase.metadata.annotation.Menu;
 import org.icefaces.samples.showcase.metadata.annotation.MenuLink;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.event.ActionEvent;
@@ -73,6 +74,11 @@ public class LinkButtonBean extends ComponentExampleImpl<LinkButtonBean> impleme
         currentImage = ImageSet.getNextImage(currentImage);
     }
     
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
+    }
+
     public String executeAction() {
         //application logic can be added here
         return null;

@@ -18,6 +18,7 @@ package org.icefaces.samples.showcase.example.compat.positioned;
 
 import java.io.Serializable;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 
@@ -61,6 +62,11 @@ public class PositionedListener extends ComponentExampleImpl<PositionedListener>
 		super(PositionedListener.class);
 	}
 	
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
+    }
+
 	public String getEventText() { return eventText; }
 	
 	public void setEventText(String eventText) { this.eventText = eventText; }

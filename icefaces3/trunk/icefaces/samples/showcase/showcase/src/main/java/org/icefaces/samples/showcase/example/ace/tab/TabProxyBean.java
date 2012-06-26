@@ -22,6 +22,7 @@ import org.icefaces.samples.showcase.metadata.annotation.ExampleResources;
 import org.icefaces.samples.showcase.metadata.annotation.ResourceType;
 import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import java.io.Serializable;
@@ -101,6 +102,11 @@ public class TabProxyBean extends ComponentExampleImpl<TabProxyBean>
 
     public HashMap<String, Integer> getOptions() {
         return options;
+    }
+
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
     }
 
     public void setOptions(HashMap<String, Integer> options) {

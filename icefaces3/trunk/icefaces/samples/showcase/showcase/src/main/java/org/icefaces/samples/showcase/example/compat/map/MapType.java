@@ -18,6 +18,7 @@ package org.icefaces.samples.showcase.example.compat.map;
 
 import java.io.Serializable;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.event.ActionEvent;
@@ -66,6 +67,11 @@ public class MapType extends ComponentExampleImpl<MapType> implements Serializab
 		super(MapType.class);
 	}
 	
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
+    }
+
 	public String[] getAvailableTypes() { return availableTypes; }
 	public String getType() { return type; }
 	

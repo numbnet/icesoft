@@ -19,6 +19,7 @@ package org.icefaces.samples.showcase.example.ace.menu;
 import org.icefaces.samples.showcase.metadata.annotation.*;
 import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.event.ActionEvent;
@@ -66,6 +67,11 @@ public class MenuDynamic extends ComponentExampleImpl<MenuDynamic> implements Se
         menuModel = new DefaultMenuModel();
     }
     
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
+    }
+
     public MenuModel getMenuModel() { return menuModel; }
     
     public void setMenuModel(MenuModel menuModel) { this.menuModel = menuModel; }

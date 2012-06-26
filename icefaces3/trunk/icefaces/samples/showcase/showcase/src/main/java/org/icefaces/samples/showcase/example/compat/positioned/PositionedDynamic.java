@@ -18,6 +18,7 @@ package org.icefaces.samples.showcase.example.compat.positioned;
 
 import java.io.Serializable;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.event.ActionEvent;
@@ -62,6 +63,11 @@ public class PositionedDynamic extends ComponentExampleImpl<PositionedDynamic> i
 		super(PositionedDynamic.class);
 	}
 	
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
+    }
+
 	public String getToAdd() { return toAdd; }
 	public String getToRemove() { return toRemove; }
 	

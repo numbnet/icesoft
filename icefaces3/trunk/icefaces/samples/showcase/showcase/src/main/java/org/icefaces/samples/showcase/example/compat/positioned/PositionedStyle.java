@@ -18,6 +18,7 @@ package org.icefaces.samples.showcase.example.compat.positioned;
 
 import java.io.Serializable;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 
@@ -56,4 +57,9 @@ public class PositionedStyle extends ComponentExampleImpl<PositionedStyle> imple
 	public PositionedStyle() {
 		super(PositionedStyle.class);
 	}
+
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
+    }
 }

@@ -19,6 +19,7 @@ package org.icefaces.samples.showcase.example.compat.dataTable;
 import org.icefaces.samples.showcase.dataGenerators.utilityClasses.DataTableData;
 import java.io.Serializable;
 import java.util.ArrayList;
+import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 
@@ -60,6 +61,11 @@ public class DataTableRows extends ComponentExampleImpl<DataTableRows> implement
         super(DataTableRows.class);
         rows = DataTableData.DEFAULT_ROWS;
         cars = new ArrayList<Car>(DataTableData.getDefaultData());
+    }
+
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
     }
 
     public int getRows() { return rows; }

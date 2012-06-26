@@ -19,6 +19,7 @@ package org.icefaces.samples.showcase.example.compat.exporter;
 import java.io.Serializable;
 
 import java.util.ArrayList;
+import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 
@@ -83,6 +84,11 @@ public class ExporterBean extends ComponentExampleImpl<ExporterBean> implements 
         super(ExporterBean.class);
         cars = new ArrayList<Car>(DataTableData.getDefaultData());
         defaultRows = DataTableData.DEFAULT_ROWS;
+    }
+
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
     }
 
     public ArrayList<Car> getCars() { return cars; }

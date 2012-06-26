@@ -18,6 +18,7 @@ package org.icefaces.samples.showcase.example.compat.stacking;
 
 import java.io.Serializable;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.model.SelectItem;
@@ -74,6 +75,11 @@ public class StackingBean extends ComponentExampleImpl<StackingBean> implements 
 
     public StackingBean() {
             super(StackingBean.class);
+    }
+
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
     }
 
     public SelectItem[] getAvailableDemos() { return availableDemos; }

@@ -20,6 +20,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.event.ValueChangeEvent;
@@ -112,6 +113,11 @@ public class EventPhaseBean extends ComponentExampleImpl<EventPhaseBean> impleme
 		super(EventPhaseBean.class);
 	}
 	
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
+    }
+
 	public String[] getAvailableProvinces() { return availableProvinces; }
 	public String[] getAvailableCities() { return availableCities; }
 	

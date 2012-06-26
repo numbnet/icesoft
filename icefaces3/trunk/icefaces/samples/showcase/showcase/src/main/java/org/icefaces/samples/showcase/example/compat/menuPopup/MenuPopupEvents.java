@@ -20,6 +20,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.event.FacesEvent;
@@ -69,6 +70,11 @@ public class MenuPopupEvents extends ComponentExampleImpl<MenuPopupEvents> imple
 		super(MenuPopupEvents.class);
 	}
 	
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
+    }
+
 	public int getRowSize() { return ROW_SIZE; }
 	public String getParamName() { return PARAM_NAME; }
 	public List<String> getEventLog() { return eventLog; }

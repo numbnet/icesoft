@@ -18,6 +18,7 @@ package org.icefaces.samples.showcase.example.compat.border;
 
 import java.io.Serializable;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 
@@ -70,4 +71,9 @@ public class BorderBean extends ComponentExampleImpl<BorderBean> implements Seri
 	public BorderBean() {
 		super(BorderBean.class);
 	}
+
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
+    }
 }

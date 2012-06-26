@@ -19,6 +19,7 @@ package org.icefaces.samples.showcase.example.ace.contextMenu;
 import org.icefaces.samples.showcase.metadata.annotation.*;
 import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import java.io.Serializable;
@@ -64,5 +65,10 @@ public class ContextMenuBean extends ComponentExampleImpl<ContextMenuBean> imple
 
     public ContextMenuBean() {
         super(ContextMenuBean.class);
+    }
+
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
     }
 }

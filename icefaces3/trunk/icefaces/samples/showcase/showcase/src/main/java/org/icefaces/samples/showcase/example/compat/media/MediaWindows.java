@@ -18,6 +18,7 @@ package org.icefaces.samples.showcase.example.compat.media;
 
 import java.io.Serializable;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 
@@ -56,4 +57,9 @@ public class MediaWindows extends ComponentExampleImpl<MediaWindows> implements 
 	public MediaWindows() {
 		super(MediaWindows.class);
 	}
+
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
+    }
 }

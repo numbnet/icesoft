@@ -18,6 +18,7 @@ package org.icefaces.samples.showcase.example.compat.border;
 
 import java.io.Serializable;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 
@@ -63,6 +64,11 @@ public class BorderRender extends ComponentExampleImpl<BorderRender> implements 
 		super(BorderRender.class);
 	}
 	
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
+    }
+
 	public boolean getCenter() { return center; }
 	public boolean getNorth() { return north; }
 	public boolean getSouth() { return south; }

@@ -19,6 +19,7 @@ package org.icefaces.samples.showcase.example.ace.autocompleteentry;
 import org.icefaces.samples.showcase.metadata.annotation.*;
 import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import java.io.Serializable;
@@ -65,7 +66,12 @@ public class AutoCompleteEntryLazyBean extends ComponentExampleImpl<AutoComplete
     {
         super(AutoCompleteEntryLazyBean.class);
     }
-	
+
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
+    }
+
 	private String selectedText = null; // Text the user is typing in
 	public String getSelectedText() { return selectedText; }
 	public void setSelectedText(String selectedText) { this.selectedText = selectedText; }

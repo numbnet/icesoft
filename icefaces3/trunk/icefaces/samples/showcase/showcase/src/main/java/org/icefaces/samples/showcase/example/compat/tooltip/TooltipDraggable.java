@@ -18,6 +18,7 @@ package org.icefaces.samples.showcase.example.compat.tooltip;
 
 import java.io.Serializable;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 
@@ -57,6 +58,11 @@ public class TooltipDraggable extends ComponentExampleImpl<TooltipDraggable> imp
 
     public TooltipDraggable() {
             super(TooltipDraggable.class);
+    }
+
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
     }
 
     public boolean getDraggable() { return draggable; }

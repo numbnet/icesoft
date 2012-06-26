@@ -20,6 +20,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 
@@ -78,6 +79,11 @@ public class SelectorBean extends ComponentExampleImpl<SelectorBean> implements 
         super(SelectorBean.class);
         data = new ArrayList<SelectableCar>(DataTableData.getDefaultSelectableData());
         rows = DataTableData.DEFAULT_ROWS;
+    }
+
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
     }
 
     public List<SelectableCar> getData() { return data; }

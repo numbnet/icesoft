@@ -20,6 +20,7 @@ import org.icefaces.samples.showcase.dataGenerators.ImageSet;
 import org.icefaces.samples.showcase.metadata.annotation.*;
 import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import java.io.Serializable;
@@ -75,6 +76,11 @@ public class TooltipOverviewBean extends ComponentExampleImpl<TooltipOverviewBea
     {
         super(TooltipOverviewBean.class);
         carSet = ImageSet.getImages(ImageSet.ImagesSelect.CARS);
+    }
+
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
     }
     /////////////---- GETTERS & SETTERS BEGIN
     public String getTooltipEffect() { return tooltipEffect; }

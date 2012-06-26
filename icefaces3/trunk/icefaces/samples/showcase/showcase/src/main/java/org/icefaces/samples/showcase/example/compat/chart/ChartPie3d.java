@@ -18,6 +18,7 @@ package org.icefaces.samples.showcase.example.compat.chart;
 
 import java.io.Serializable;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 
@@ -61,6 +62,11 @@ public class ChartPie3d extends ComponentExampleImpl<ChartPie3d> implements Seri
 		super(ChartPie3d.class);
 	}
 	
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
+    }
+
 	public String getType() { return OutputChart.PIE3D_CHART_TYPE; }
 	public ChartModelRadial getModel() { return model; }
 	

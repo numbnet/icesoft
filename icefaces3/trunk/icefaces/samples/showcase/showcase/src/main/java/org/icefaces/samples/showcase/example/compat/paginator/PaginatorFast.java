@@ -18,6 +18,7 @@ package org.icefaces.samples.showcase.example.compat.paginator;
 
 import java.io.Serializable;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 
@@ -59,6 +60,11 @@ public class PaginatorFast extends ComponentExampleImpl<PaginatorFast> implement
 		super(PaginatorFast.class);
 	}
 	
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
+    }
+
 	public int getStepCount() { return stepCount; }
 	
 	public void setStepCount(int stepCount) { this.stepCount = stepCount; }

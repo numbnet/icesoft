@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Comparator;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.event.ActionEvent;
@@ -79,7 +80,12 @@ public class DataTableSort extends ComponentExampleImpl<DataTableSort> implement
         defaultRows = DataTableData.DEFAULT_ROWS;
     }
 	
-    public void columnSort(ActionEvent event) 
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
+    }
+
+    public void columnSort(ActionEvent event)
     {
         // Ensure we have valid items, a valid column to sort on, and a valid event to work with
         if ((carsData != null) && (carsData.size() > 0) &&

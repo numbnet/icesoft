@@ -20,6 +20,8 @@ import org.icefaces.samples.showcase.dataGenerators.ImageSet.ImageInfo;
 import org.icefaces.samples.showcase.metadata.annotation.*;
 import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
 import org.icefaces.ace.component.fileentry.*;
+
+import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
@@ -70,7 +72,12 @@ public class FileEntryBean extends ComponentExampleImpl<FileEntryBean> implement
         arrowImage = ImageSet.getImage(ImageSet.ImageSelect.FORWARD_ARROW);
     }                                       
 
-    public void sampleListener(FileEntryEvent e) 
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
+    }
+
+    public void sampleListener(FileEntryEvent e)
     {
         FileEntry fe = (FileEntry)e.getComponent();
         FileEntryResults results = fe.getResults();

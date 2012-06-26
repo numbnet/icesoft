@@ -18,6 +18,7 @@ package org.icefaces.samples.showcase.example.compat.richtext;
 
 import java.io.Serializable;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.model.SelectItem;
@@ -114,6 +115,11 @@ public class RichTextLanguage extends ComponentExampleImpl<RichTextLanguage> imp
 
     public RichTextLanguage() {
             super(RichTextLanguage.class);
+    }
+
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
     }
 
     public String getText() { return text; }

@@ -18,6 +18,7 @@ package org.icefaces.samples.showcase.example.compat.tree;
 
 import java.io.Serializable;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.event.ActionEvent;
@@ -58,6 +59,11 @@ public class TreeNavigation extends ComponentExampleImpl<TreeNavigation> impleme
 
     public TreeNavigation() {
             super(TreeNavigation.class);
+    }
+
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
     }
 
     public boolean getHideNavigation() { return hideNavigation; }

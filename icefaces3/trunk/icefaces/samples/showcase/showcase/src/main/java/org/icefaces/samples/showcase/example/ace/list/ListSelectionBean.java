@@ -8,6 +8,7 @@ import org.icefaces.samples.showcase.metadata.annotation.ExampleResources;
 import org.icefaces.samples.showcase.metadata.annotation.ResourceType;
 import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.model.SelectItem;
@@ -60,6 +61,11 @@ public class ListSelectionBean extends ComponentExampleImpl<ListSelectionBean> {
 
     public ListSelectionBean() {
         super(ListSelectionBean.class);
+    }
+
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
     }
 
     List<SelectItem> stringList = new ArrayList<SelectItem>() {{

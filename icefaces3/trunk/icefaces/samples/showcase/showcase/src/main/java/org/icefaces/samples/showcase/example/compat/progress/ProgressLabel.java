@@ -18,6 +18,7 @@ package org.icefaces.samples.showcase.example.compat.progress;
 
 import java.io.Serializable;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.model.SelectItem;
@@ -74,6 +75,11 @@ public class ProgressLabel extends ComponentExampleImpl<ProgressLabel> implement
 		super(ProgressLabel.class);
 	}
 	
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
+    }
+
 	public SelectItem[] getAvailablePositions() { return availablePositions; }
 	public String getLabel() { return label; }
 	public String getComplete() { return complete; }

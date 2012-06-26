@@ -18,6 +18,7 @@ package org.icefaces.samples.showcase.example.compat.menuBar;
 
 import java.io.Serializable;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.model.SelectItem;
@@ -64,6 +65,11 @@ public class MenuBarOrientation extends ComponentExampleImpl<MenuBarOrientation>
 		super(MenuBarOrientation.class);
 	}
 	
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
+    }
+
 	public SelectItem[] getAvailableOrientations() { return availableOrientations; }
 	public String getOrientation() { return orientation; }
 	

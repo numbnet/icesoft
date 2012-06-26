@@ -8,6 +8,7 @@ import org.icefaces.samples.showcase.metadata.annotation.ExampleResources;
 import org.icefaces.samples.showcase.metadata.annotation.ResourceType;
 import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
 
+import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
@@ -65,6 +66,11 @@ public class DataTableFind extends ComponentExampleImpl<DataTableFind> implement
     public DataTableFind() {
         super(DataTableFind.class);
         cars = new ArrayList<Car>(DataTableData.getDefaultData());
+    }
+
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
     }
 
     public String selectedEffectType = "default";

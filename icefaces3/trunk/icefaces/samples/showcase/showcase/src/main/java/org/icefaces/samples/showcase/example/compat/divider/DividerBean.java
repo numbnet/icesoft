@@ -18,6 +18,7 @@ package org.icefaces.samples.showcase.example.compat.divider;
 
 import java.io.Serializable;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 
@@ -65,4 +66,9 @@ public class DividerBean extends ComponentExampleImpl<DividerBean> implements Se
 	public DividerBean() {
 		super(DividerBean.class);
 	}
+
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
+    }
 }

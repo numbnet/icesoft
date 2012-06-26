@@ -19,6 +19,7 @@ package org.icefaces.samples.showcase.example.compat.tree;
 import java.io.Serializable;
 import java.util.Random;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.event.ActionEvent;
@@ -67,6 +68,11 @@ public class TreeDynamic extends ComponentExampleImpl<TreeDynamic> implements Se
         model = TreeBean.generateRandomTree(1, 1, 5, 1);
     }
 	
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
+    }
+
     public DefaultTreeModel getModel() { return model; }
     public DefaultMutableTreeNode getParentChange() { return parentChange; }
 

@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.event.ActionEvent;
@@ -81,6 +82,11 @@ public class MenuBarDynamic extends ComponentExampleImpl<MenuBarDynamic> impleme
 		super(MenuBarDynamic.class);
 	}
 	
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
+    }
+
 	public String[] getIcons() { return icons; }
 	public List<MenuItem> getItems() { return items; }
 	public String getCurrentText() { return currentText; }

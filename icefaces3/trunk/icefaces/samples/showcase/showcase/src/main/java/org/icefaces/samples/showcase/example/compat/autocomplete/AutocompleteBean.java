@@ -19,6 +19,7 @@ package org.icefaces.samples.showcase.example.compat.autocomplete;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.event.ActionEvent;
@@ -81,6 +82,11 @@ public class AutocompleteBean extends ComponentExampleImpl<AutocompleteBean> imp
 		super(AutocompleteBean.class);
 	}
 	
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
+    }
+
 	public List<SelectItem> getAvailableCities() { return availableCities; }
 	public String getSelectedText() { return selectedText; }
 	public String getSelectedCity() { return selectedCity; }

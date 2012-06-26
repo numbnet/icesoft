@@ -18,6 +18,8 @@ package org.icefaces.samples.showcase.example.ace.dataExporter;
 
 import org.icefaces.samples.showcase.metadata.annotation.*;
 import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
+
+import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import java.io.Serializable;
@@ -60,6 +62,11 @@ public class DataExporterBean extends ComponentExampleImpl<DataExporterBean> imp
         this.type = "csv";
     }
     
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
+    }
+
     public String getType() { return type; }
     public void setType(String type) { this.type = type; }
 }

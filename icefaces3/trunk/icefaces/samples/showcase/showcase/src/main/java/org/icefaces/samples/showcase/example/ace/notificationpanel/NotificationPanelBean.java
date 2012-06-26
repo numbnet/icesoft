@@ -19,6 +19,7 @@ package org.icefaces.samples.showcase.example.ace.notificationpanel;
 import org.icefaces.samples.showcase.metadata.annotation.*;
 import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.event.ActionEvent;
@@ -68,6 +69,11 @@ public class NotificationPanelBean extends ComponentExampleImpl<NotificationPane
         initializeBeanVariables();
     }
     
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
+    }
+
    public void showAppropriateButton(ActionEvent e)
    {
        visible = !visible;

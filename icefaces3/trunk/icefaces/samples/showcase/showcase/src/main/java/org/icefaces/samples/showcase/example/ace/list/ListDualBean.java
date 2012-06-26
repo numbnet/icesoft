@@ -5,6 +5,7 @@ import org.icefaces.samples.showcase.example.compat.dataTable.Car;
 import org.icefaces.samples.showcase.metadata.annotation.*;
 import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.model.SelectItem;
@@ -39,6 +40,11 @@ public class ListDualBean extends ComponentExampleImpl<ListDualBean> implements 
 
     public ListDualBean() {
         super(ListDualBean.class);
+    }
+
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
     }
 
     List<SelectItem> stringList = new ArrayList<SelectItem>() {{

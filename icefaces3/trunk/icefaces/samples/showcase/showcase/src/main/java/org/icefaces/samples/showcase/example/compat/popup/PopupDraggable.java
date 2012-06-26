@@ -18,6 +18,7 @@ package org.icefaces.samples.showcase.example.compat.popup;
 
 import java.io.Serializable;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.event.ActionEvent;
@@ -61,6 +62,11 @@ public class PopupDraggable extends ComponentExampleImpl<PopupDraggable> impleme
 		super(PopupDraggable.class);
 	}
 	
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
+    }
+
 	public boolean isOpened() { return opened; }
 	public boolean getDraggable() { return draggable; }
 	

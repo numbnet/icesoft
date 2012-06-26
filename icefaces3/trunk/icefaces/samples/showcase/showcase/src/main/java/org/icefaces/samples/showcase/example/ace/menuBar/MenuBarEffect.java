@@ -19,6 +19,7 @@ package org.icefaces.samples.showcase.example.ace.menuBar;
 import org.icefaces.samples.showcase.metadata.annotation.*;
 import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import java.io.Serializable;
@@ -61,7 +62,12 @@ public class MenuBarEffect extends ComponentExampleImpl<MenuBarEffect> implement
         effectDuration = 400;
     }
     
-    private LinkedHashMap<String, String> populateAvailableEffects() 
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
+    }
+
+    private LinkedHashMap<String, String> populateAvailableEffects()
     {
         LinkedHashMap <String, String> list = new LinkedHashMap <String, String>();
         list.put("Slide","slide");

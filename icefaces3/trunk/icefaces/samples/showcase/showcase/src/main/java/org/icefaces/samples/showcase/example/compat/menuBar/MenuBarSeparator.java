@@ -18,6 +18,7 @@ package org.icefaces.samples.showcase.example.compat.menuBar;
 
 import java.io.Serializable;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 
@@ -59,6 +60,11 @@ public class MenuBarSeparator extends ComponentExampleImpl<MenuBarSeparator> imp
 		super(MenuBarSeparator.class);
 	}
 	
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
+    }
+
 	public boolean getHideSeparators() { return hideSeparators; }
 	
 	public void setHideSeparators(boolean hideSeparators) { this.hideSeparators = hideSeparators; }

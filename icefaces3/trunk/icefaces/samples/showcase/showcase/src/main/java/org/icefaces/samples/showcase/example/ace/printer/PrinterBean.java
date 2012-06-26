@@ -17,6 +17,7 @@ package org.icefaces.samples.showcase.example.ace.printer;
 import org.icefaces.samples.showcase.metadata.annotation.*;
 import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import java.io.Serializable;
@@ -65,6 +66,11 @@ public class PrinterBean extends ComponentExampleImpl< PrinterBean > implements 
         printerIcon = ImageSet.getImage(ImageSet.ImageSelect.PRINTER);
         VehicleGenerator generator = new VehicleGenerator();
         cars = generator.getRandomCars(10);
+    }
+
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
     }
 
     public ImageSet.ImageInfo getImage() {

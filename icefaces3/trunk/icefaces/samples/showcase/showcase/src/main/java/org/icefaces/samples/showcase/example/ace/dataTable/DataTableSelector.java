@@ -22,6 +22,7 @@ import org.icefaces.samples.showcase.metadata.annotation.*;
 import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
 import org.icefaces.samples.showcase.example.compat.dataTable.Car;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.event.ValueChangeEvent;
@@ -79,6 +80,12 @@ public class DataTableSelector extends ComponentExampleImpl<DataTableSelector> i
         super(DataTableSelector.class);
         carsData = new ArrayList<Car>(DataTableData.getDefaultData());
     }
+
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
+    }
+
     /////////////---- VALUE CHANGE LISTENERS BEGIN
     public void changedMode(ValueChangeEvent event) {
         stateMap.setAllSelected(false);

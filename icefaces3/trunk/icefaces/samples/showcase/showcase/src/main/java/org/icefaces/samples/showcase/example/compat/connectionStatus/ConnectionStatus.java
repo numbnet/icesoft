@@ -18,6 +18,7 @@ package org.icefaces.samples.showcase.example.compat.connectionStatus;
 
 import java.io.Serializable;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.event.ActionEvent;
@@ -68,6 +69,11 @@ public class ConnectionStatus extends ComponentExampleImpl<ConnectionStatus> imp
 		super(ConnectionStatus.class);
 	}
 	
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
+    }
+
 	/**
 	 * Method to simulate a long running task
 	 * We'll just hold the thread for a certain length of time

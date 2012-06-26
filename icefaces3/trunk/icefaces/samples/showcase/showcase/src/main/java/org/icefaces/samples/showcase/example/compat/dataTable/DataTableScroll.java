@@ -19,6 +19,7 @@ package org.icefaces.samples.showcase.example.compat.dataTable;
 import org.icefaces.samples.showcase.dataGenerators.utilityClasses.DataTableData;
 import java.io.Serializable;
 import java.util.ArrayList;
+import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 
@@ -64,6 +65,11 @@ public class DataTableScroll extends ComponentExampleImpl<DataTableScroll> imple
                     cars = new ArrayList<Car>(DataTableData.getDefaultData());
 	}
 	
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
+    }
+
 	public int getHeight() { return height; }
 	public void setHeight(int height) { this.height = height; }
                 public ArrayList<Car> getCars() {return cars;}

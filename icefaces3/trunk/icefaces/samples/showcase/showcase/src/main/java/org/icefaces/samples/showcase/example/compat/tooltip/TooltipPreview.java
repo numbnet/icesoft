@@ -18,6 +18,7 @@ package org.icefaces.samples.showcase.example.compat.tooltip;
 
 import java.io.Serializable;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 
@@ -55,5 +56,10 @@ public class TooltipPreview extends ComponentExampleImpl<TooltipPreview> impleme
 
     public TooltipPreview() {
             super(TooltipPreview.class);
+    }
+
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
     }
 }

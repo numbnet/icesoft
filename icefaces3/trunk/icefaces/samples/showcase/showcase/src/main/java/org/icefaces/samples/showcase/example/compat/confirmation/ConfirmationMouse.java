@@ -18,6 +18,7 @@ package org.icefaces.samples.showcase.example.compat.confirmation;
 
 import java.io.Serializable;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.event.ActionEvent;
@@ -61,6 +62,11 @@ public class ConfirmationMouse extends ComponentExampleImpl<ConfirmationMouse> i
 		super(ConfirmationMouse.class);
 	}
 	
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
+    }
+
 	public String getText() { return text; }
 	public boolean getDisplayAtMouse() { return displayAtMouse; }
 	

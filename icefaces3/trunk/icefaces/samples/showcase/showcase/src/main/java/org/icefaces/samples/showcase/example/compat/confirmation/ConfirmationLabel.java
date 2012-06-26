@@ -18,6 +18,7 @@ package org.icefaces.samples.showcase.example.compat.confirmation;
 
 import java.io.Serializable;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.event.ActionEvent;
@@ -62,6 +63,11 @@ public class ConfirmationLabel extends ComponentExampleImpl<ConfirmationLabel> i
 		super(ConfirmationLabel.class);
 	}
 	
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
+    }
+
 	public String getText() { return text; }
 	public String getAcceptLabel() { return acceptLabel; }
 	public String getCancelLabel() { return cancelLabel; }

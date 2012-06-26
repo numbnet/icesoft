@@ -20,6 +20,7 @@ import org.icefaces.samples.showcase.dataGenerators.utilityClasses.DataTableData
 import java.io.Serializable;
 
 import java.util.ArrayList;
+import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 
@@ -64,6 +65,11 @@ public class DataTableResize extends ComponentExampleImpl<DataTableResize> imple
         cars = new ArrayList<Car>(DataTableData.getDefaultData());
     }
 	
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
+    }
+
     public boolean getResizable() { return resizable; }
     public void setResizable(boolean resizable) { this.resizable = resizable; }
     public ArrayList<Car> getCars() { return cars; }
