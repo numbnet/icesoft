@@ -378,6 +378,9 @@ ice.ace.tabset = {
                    }
                    ice.ace.jq(tabviewObj._contentParent).css({opacity:1});
                    rootElem.suppressTabChange = null;
+               } else {
+                   var rootElem = document.getElementById(clientId);
+                   rootElem.suppressServerSideTransition = null;
                }
                if (jsProps.showEffect) {
                    var node = tabviewObj.getTab(index).get('contentEl').childNodes[0];
