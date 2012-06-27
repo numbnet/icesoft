@@ -13,11 +13,11 @@ import java.util.logging.Logger;
 public class HeadersTag extends TagSupport {
 
     private static final String TABSET_HEADERS_CLASS = "mobi-tabset-tabs";
-    private static final String ACCORDIAN_HEADERS_CLASS = "mobi-accordian-tabs";
+    //    private static final String ACCORDIAN_HEADERS_CLASS = "mobi-accordion";
     private static Logger LOG = Logger.getLogger(HeadersTag.class.getName());
 
     private TabSetTag mTabParent;
-    private AccordianTag mAccParent;
+    private AccordionTag mAccParent;
 
     private String mHeadersClass;
     private String mSelectedIndex;
@@ -29,9 +29,11 @@ public class HeadersTag extends TagSupport {
             mTabParent = (TabSetTag) parent;
             mSelectedIndex = mTabParent.getSelectedTab();
 
-        } else if (parent instanceof AccordianTag) {
-            mHeadersClass = ACCORDIAN_HEADERS_CLASS;
-            mAccParent = (AccordianTag) parent;
+        } else if (parent instanceof AccordionTag) {
+//            mHeadersClass = ACCORDIAN_HEADERS_CLASS;
+            mAccParent = (AccordionTag) parent;
+            mSelectedIndex = mAccParent.getSelectedId();
+
         } else {
             throw new IllegalArgumentException("Parent of HeadersTag must be TabSet or Accordian");
         }
@@ -42,9 +44,17 @@ public class HeadersTag extends TagSupport {
         return mTabParent != null;
     }
 
-    public int doStartTag()  throws JspTagException {
+    public int doStartTag() throws JspTagException {
 
         Writer out = pageContext.getOut();
+        if (mTabParent != null) {
+            writeTabHeaders(out);
+        }
+        return EVAL_BODY_INCLUDE;
+    }
+
+    private void writeTabHeaders(Writer out) {
+
         try {
 
             StringBuilder tag = new StringBuilder(TagUtil.DIV_TAG);
@@ -69,16 +79,17 @@ public class HeadersTag extends TagSupport {
 
             out.write(tag.toString());
 
-        } catch (IOException ioe)  {
+        } catch (IOException ioe) {
             LOG.severe("IOException writing HeadersTag: " + ioe);
         }
-
-        return EVAL_BODY_INCLUDE;
-
     }
 
     public String getIndex() {
-        return mTabParent.getIndex();
+        if (mTabParent != null) {
+            return mTabParent.getIndex();
+        } else {
+            return mAccParent.getIndex();
+        }
     }
 
     public String getSelectedItem() {
@@ -91,30 +102,38 @@ public class HeadersTag extends TagSupport {
     }
 
 
-    public int doEndTag()  throws JspTagException {
+    public int doEndTag() throws JspTagException {
 
         Writer out = pageContext.getOut();
+        if (mTabParent != null) {
+            doEndTabHeader(out);
+        }
+        return EVAL_PAGE;
+
+    }
+
+    private void doEndTabHeader(Writer out) {
         try {
 
             // close the tabs
             out.write(TagUtil.UL_TAG_END);
             out.write(TagUtil.DIV_TAG_END);
 
-        if (mTabParent != null) {
-            mTabParent.resetIndex();
-        }
+            if (mTabParent != null) {
+                mTabParent.resetIndex();
+            } else {
+                mAccParent.resetIndex();
+            }
 
         } catch (IOException ioe) {
-            LOG.severe("IOException closing headers tag: " + ioe);
+            LOG.severe("IOException closing TabHeader tag: " + ioe);
         }
-
-        return EVAL_PAGE;
 
     }
 
-
     private String userStyle;
     private String style;
+
 
     public String getId() {
         if (mTabParent != null) {
