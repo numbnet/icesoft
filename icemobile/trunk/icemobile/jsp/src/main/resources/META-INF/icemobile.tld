@@ -18,11 +18,13 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-jsptaglibrary_2_1.xsd"
         version="2.1">
+
     <description>ICEmobile JSP Tag Library</description>
     <display-name>ICEmobile JSP Tag Library</display-name>
     <tlib-version>2.0.0</tlib-version>
     <short-name>icemobile</short-name>
     <uri>http://www.icemobile.org/tags</uri>
+
     <tag>
         <description>Show augmented reality video overlay.</description>
         <display-name>ICEmobile Augmented Reality</display-name>
@@ -219,8 +221,8 @@
 
     <tag>
         <description>Pane Panel Tag</description>
-        <name>panePanel</name>
         <display-name>ICEmobile PanePanel Tag</display-name>
+        <name>panePanel</name>
         <tag-class>org.icemobile.jsp.tags.PagePanelTag</tag-class>
         <body-content>JSP</body-content>
         <attribute>
@@ -255,9 +257,9 @@
     </tag>
 
     <tag>
-        <name>inputtext</name>
         <description>Input Text field</description>
         <display-name>Input Text Tag</display-name>
+        <name>inputtext</name>
         <tag-class>org.icemobile.jsp.tags.InputTextTag</tag-class>
         <body-content>empty</body-content>
         <attribute>
@@ -306,11 +308,11 @@
             <rtexprvalue>false</rtexprvalue>
         </attribute>
     </tag>
-    A
+
     <tag>
-        <name>qrscan</name>
         <description>QRCode Scan Tag</description>
         <display-name>QRScan Tag</display-name>
+        <name>qrscan</name>
         <tag-class>org.icemobile.jsp.tags.QRScanTag</tag-class>
         <body-content>empty</body-content>
         <attribute>
@@ -324,16 +326,16 @@
             <rtexprvalue>false</rtexprvalue>
         </attribute>
         <attribute>
-            <name>id</name>
-            <required>style</required>
+            <name>style</name>
+            <required>false</required>
             <rtexprvalue>false</rtexprvalue>
         </attribute>
     </tag>
 
     <tag>
-        <name>flipSwitch</name>
         <description>Android style binary input button</description>
         <display-name>flipSwitch</display-name>
+        <name>flipSwitch</name>
         <tag-class>org.icemobile.jsp.tags.FlipSwitchTag</tag-class>
         <body-content>empty</body-content>
         <attribute>
@@ -379,9 +381,9 @@
     </tag>
 
     <tag>
-        <name>commandButton</name>
         <description>Mobile Styled Button</description>
         <display-name>commandButton</display-name>
+        <name>commandButton</name>
         <tag-class>org.icemobile.jsp.tags.CommandButtonTag</tag-class>
         <body-content>empty</body-content>
         <attribute>
@@ -432,12 +434,11 @@
     </tag>
 
     <tag>
-        <name>carousel</name>
-        <body-content>JSP</body-content>
         <description>ICEmobile Carousel container</description>
         <display-name>carousel</display-name>
+        <name>carousel</name>
         <tag-class>org.icemobile.jsp.tags.CarouselTag</tag-class>
-
+        <body-content>JSP</body-content>
         <attribute>
             <name>id</name>
             <required>true</required>
@@ -478,17 +479,17 @@
         </attribute>
         <attribute>
             <name>type</name>
-            <rtexprvalue>true</rtexprvalue>
             <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
         </attribute>
     </tag>
 
     <tag>
+        <description>Parent Field Group Tag</description>
+        <display-name>fieldGroup</display-name>
         <name>fieldSetGroup</name>
         <tag-class>org.icemobile.jsp.tags.FieldSetGroupTag</tag-class>
         <body-content>JSP</body-content>
-        <display-name>fieldGroup</display-name>
-        <description>Parent Field Group Tag</description>
         <attribute>
             <name>id</name>
             <required>false</required>
@@ -511,9 +512,9 @@
         </attribute>
     </tag>
     <tag>
-        <name>fieldSetRow</name>
         <description>Field Row Tag</description>
         <display-name>FieldRow</display-name>
+        <name>fieldSetRow</name>
         <tag-class>org.icemobile.jsp.tags.FieldSetRowTag</tag-class>
         <body-content>JSP</body-content>
         <attribute>
@@ -539,12 +540,11 @@
     </tag>
 
     <tag>
-        <name>tabset</name>
-        <body-content>JSP</body-content>
         <description>ICEmobile TabSet</description>
         <display-name>tabset</display-name>
+        <name>tabset</name>
         <tag-class>org.icemobile.jsp.tags.TabSetTag</tag-class>
-
+        <body-content>JSP</body-content>
         <attribute>
             <name>id</name>
             <required>true</required>
@@ -568,12 +568,12 @@
     </tag>
 
     <tag>
-        <name>accordion</name>
-        <body-content>JSP</body-content>
+
         <description>ICEmobile Accordion</description>
         <display-name>accordion</display-name>
+        <name>accordion</name>
         <tag-class>org.icemobile.jsp.tags.AccordionTag</tag-class>
-
+        <body-content>JSP</body-content>
         <attribute>
             <name>id</name>
             <required>true</required>
@@ -596,42 +596,28 @@
         </attribute>
     </tag>
 
-    /* Support classes for Accordian and Tabset */
-
     <tag>
-        <name>contentPane</name>
-        <description>Content Container</description>
-        <tag-class>org.icemobile.jsp.tags.ContentPaneTag</tag-class>
-        <body-content>JSP</body-content>
-        <attribute>
-            <name>botitle</name>
-            <required>true</required>
-            <rtexprvalue>true</rtexprvalue>
-        </attribute>
-    </tag>
-
-    <tag>
-        <name>headers</name>
-        <bodyContent>JSP</bodyContent>
         <description>Header tag area</description>
         <display-name>Header section</display-name>
+        <name>headers</name>
         <tag-class>org.icemobile.jsp.tags.HeadersTag</tag-class>
+        <body-content>JSP</body-content>
     </tag>
 
     <tag>
-        <name>header</name>
-        <bodyContent>JSP</bodyContent>
         <description>Header tag</description>
         <display-name>Header</display-name>
+        <name>header</name>
         <tag-class>org.icemobile.jsp.tags.HeaderTag</tag-class>
+        <body-content>JSP</body-content>
     </tag>
 
     <tag>
-        <name>content</name>
-        <bodyContent>JSP</bodyContent>
         <description>Header tag</description>
         <display-name>Content Section</display-name>
+        <name>content</name>
         <tag-class>org.icemobile.jsp.tags.ContentTag</tag-class>
+        <body-content>JSP</body-content>
     </tag>
 
 
