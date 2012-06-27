@@ -31,11 +31,6 @@ public class FlipSwitchTag extends SimpleTagSupport {
 
         PageContext pageContext = (PageContext) getJspContext();
         Writer out = pageContext.getOut();
-        ServletRequest sr = pageContext.getRequest();
-
-
-//        writeJavascriptFile(pageContext, , , );
-
 
         out.write("<a id=\"" + getId() + "\" name=\"" + getId() + "\"");
 
@@ -44,8 +39,8 @@ public class FlipSwitchTag extends SimpleTagSupport {
         if (isChecked) {
             styleClass = FLIPSWITCH_ON_CLASS;
         }
-        out.write(" class=\"" + styleClass + " " + this.styleClass +"\"");
-        out.write(" style=\"" + this.style +"\"");
+        out.write(" class=\"" + styleClass + " " + this.styleClass + "\"");
+        out.write(" style=\"" + this.style + "\"");
         if (isDisabled()) {
             out.write(" disabled=\"true\"");
         }
@@ -84,9 +79,7 @@ public class FlipSwitchTag extends SimpleTagSupport {
         if (hiddenValue == null) {
             return false;
         }
-        return hiddenValue.equalsIgnoreCase("on") ||
-                       hiddenValue.equalsIgnoreCase("yes") ||
-                       hiddenValue.equalsIgnoreCase("true");
+        return hiddenValue.equalsIgnoreCase(labelOn);
     }
 
 
