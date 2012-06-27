@@ -78,6 +78,13 @@ public class MenuButtonRenderer extends BaseMenuRenderer {
 		if(button.getValue() != null) {
 			writer.write(button.getValue());
 		}
+		
+		// script to (re)initialize when only the button is dynamically updated
+		writer.startElement("script", button);
+		writer.writeAttribute("type", "text/javascript", null);
+		writer.write("ice.ace.jq(function(){var b = ice.ace.jq(ice.ace.escapeClientId('"+buttonId+"')); if (!b.hasClass('ui-button')) { "+getInitCall(writer, button, clientId)+" }});");
+		writer.endElement("script");
+		
 		writer.endElement("button");
 
         //menu
@@ -115,6 +122,12 @@ public class MenuButtonRenderer extends BaseMenuRenderer {
 		writer.startElement("script", button);
 		writer.writeAttribute("type", "text/javascript", null);
 
+ 		writer.write(getInitCall(writer, button, clientId));
+
+		writer.endElement("script");
+	}
+	
+	private String getInitCall(ResponseWriter writer, MenuButton button, String clientId)  throws IOException {
         JSONBuilder json = JSONBuilder.create();
 		writer.write(this.resolveWidgetVar(button) + " = new ");
         json.beginFunction("ice.ace.MenuButton").
@@ -132,9 +145,7 @@ public class MenuButtonRenderer extends BaseMenuRenderer {
                 }
             json.endMap().
         endFunction();
-
- 		writer.write(json.toString());
-
-		writer.endElement("script");
+		
+		return json.toString();
 	}
 }
