@@ -568,11 +568,11 @@
     </tag>
 
     <tag>
-        <name>accordian</name>
+        <name>accordion</name>
         <body-content>JSP</body-content>
-        <description>ICEmobile Accordian</description>
-        <display-name>accordian</display-name>
-        <tag-class>org.icemobile.jsp.tags.AccordianTag</tag-class>
+        <description>ICEmobile Accordion</description>
+        <display-name>accordion</display-name>
+        <tag-class>org.icemobile.jsp.tags.AccordionTag</tag-class>
 
         <attribute>
             <name>id</name>
@@ -590,13 +590,25 @@
             <rtexprvalue>false</rtexprvalue>
         </attribute>
         <attribute>
-            <name>selectedTab</name>
+            <name>selectedId</name>
             <required>true</required>
             <rtexprvalue>true</rtexprvalue>
         </attribute>
     </tag>
 
     /* Support classes for Accordian and Tabset */
+
+    <tag>
+        <name>contentPane</name>
+        <description>Content Container</description>
+        <tag-class>org.icemobile.jsp.tags.ContentPaneTag</tag-class>
+        <body-content>JSP</body-content>
+        <attribute>
+            <name>botitle</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+    </tag>
 
     <tag>
         <name>headers</name>
@@ -622,10 +634,5 @@
         <tag-class>org.icemobile.jsp.tags.ContentTag</tag-class>
     </tag>
 
-    <tag>
-        <name>contentPane</name>
-        <description>Content Container</description>
-        <tag-class>org.icemobile.jsp.tags.ContentPaneTag</tag-class>
-        <body-content>JSP</body-content>
-    </tag>
+
 </taglib>
