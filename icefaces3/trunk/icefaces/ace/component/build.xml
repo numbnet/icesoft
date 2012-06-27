@@ -256,12 +256,18 @@
                 <file name="icefaces.ace/chart/excanvas.js"/>
                 <file name="icefaces.ace/chart/jquery.jqplot.js"/>
                 <file name="icefaces.ace/chart/plugins/jqplot.barRenderer.js"/>
+                <file name="icefaces.ace/chart/plugins/jqplot.pieRenderer.js"/>
+                <file name="icefaces.ace/chart/plugins/jqplot.donutRenderer.js"/>
                 <file name="icefaces.ace/chart/plugins/jqplot.categoryAxisRenderer.js"/>
                 <file name="icefaces.ace/chart/plugins/jqplot.highlighter.js"/>
                 <file name="icefaces.ace/chart/plugins/jqplot.pointLabels.js"/>
                 <file name="icefaces.ace/chart/plugins/jqplot.canvasTextRenderer.js"/>
                 <file name="icefaces.ace/chart/plugins/jqplot.canvasAxisTickRenderer.js"/>
                 <file name="icefaces.ace/chart/plugins/jqplot.dateAxisRenderer.js"/>
+                <file name="icefaces.ace/chart/plugins/jqplot.dragable.js"/>
+                <file name="icefaces.ace/chart/plugins/jqplot.cursor.js"/>
+                <file name="icefaces.ace/chart/plugins/jqplot.bubbleRenderer.js"/>
+                <file name="icefaces.ace/chart/plugins/jqplot.ohlcRenderer.js"/>
                 <file name="icefaces.ace/chart/chart.js"/>
             </filelist>
         </concat>

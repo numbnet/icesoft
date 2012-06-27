@@ -137,7 +137,7 @@
         // True to center the data label at its position.
         // False to set the inside facing edge of the label at its position.
         this.dataLabelCenterOn = true;
-        // prop: startAngle
+        // prop: startAngleJ
         // Angle to start drawing pie in degrees.  
         // According to orientation of canvas coordinate system:
         // 0 = on the positive x axis
@@ -898,7 +898,7 @@
     
     $.jqplot.PieTickRenderer.prototype = new $.jqplot.AxisTickRenderer();
     $.jqplot.PieTickRenderer.prototype.constructor = $.jqplot.PieTickRenderer;
-    
+
 })(ice.ace.jq);
-    
+
     

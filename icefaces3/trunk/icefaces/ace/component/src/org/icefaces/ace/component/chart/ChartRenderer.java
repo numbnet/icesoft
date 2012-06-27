@@ -55,6 +55,10 @@ public class ChartRenderer extends CoreRenderer {
         Boolean stacking = component.isStackSeries();
         Boolean animated = component.isAnimated();
         Boolean hiddenInit = component.isHiddenInitPolling();
+        Boolean zoom = component.isZoom();
+        Boolean cursor = component.isCursor();
+        Boolean showTooltip = component.isShowTooltip();
+
         String title = component.getTitle();
 
         JSONBuilder dataBuilder = new JSONBuilder();
@@ -69,7 +73,7 @@ public class ChartRenderer extends CoreRenderer {
         dataBuilder.beginArray();
         if (data != null)
             for (ChartSeries series : data)
-                dataBuilder.item(series.getDataJSON(), false);
+                dataBuilder.item(series.getDataJSON().toString(), false);
         dataBuilder.endArray();
 
 
@@ -87,6 +91,22 @@ public class ChartRenderer extends CoreRenderer {
             cfgBuilder.entry("handlePointClick", true);
         if (!hiddenInit) cfgBuilder.entry("disableHiddenInit", true);
         encodeClientBehaviors(context, component, cfgBuilder);
+
+        if (cursor != null) {
+            cfgBuilder.beginMap("cursor");
+            cfgBuilder.entry("show", cursor);
+            if (zoom != null) cfgBuilder.entry("zoom", zoom);
+            if (showTooltip != null) cfgBuilder.entry("showTooltip", showTooltip);
+            cfgBuilder.endMap();
+        }
+
+        if (cursor != null) {
+            cfgBuilder.beginMap("cursor");
+            cfgBuilder.entry("show", cursor);
+            if (zoom != null) cfgBuilder.entry("zoom", zoom);
+            if (showTooltip != null) cfgBuilder.entry("showTooltip", showTooltip);
+            cfgBuilder.endMap();
+        }
         cfgBuilder.endMap();
 
         // Call plot init
@@ -122,13 +142,31 @@ public class ChartRenderer extends CoreRenderer {
     private void encodeSeriesConfig(JSONBuilder cfg, ChartSeries defaults, List<ChartSeries> series) {
         // If defined, add default series config
         if (defaults != null)
-            cfg.entry("seriesDefaults", defaults.getConfigJSON(), true);
+            cfg.entry("seriesDefaults", defaults.getConfigJSON().toString(), true);
+        else if (series != null && series.size() > 0) {
+            try {
+                ChartSeries firstSeries = series.get(0);
+
+                // Create series to encode default renderer configuration
+                Class seriesClass = series.get(0).getClass().getSuperclass();
+                ChartSeries dummySeries = ((ChartSeries)seriesClass.newInstance());
+
+                ChartSeries.ChartType firstSeriesType = firstSeries.getType();
+
+                dummySeries.setType(firstSeriesType != null ? firstSeriesType : dummySeries.getDefaultType());
+                cfg.entry("seriesDefaults", dummySeries.getConfigJSON().toString(), true);
+            } catch (InstantiationException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        }
 
         // If defined, add per-series config
         cfg.beginArray("series");
         if (series != null)
             for (ChartSeries s : series)
-                cfg.item(s.getConfigJSON(), false);
+                cfg.item(s.getConfigJSON().toString(), false);
         cfg.endArray();
     }
 

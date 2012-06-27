@@ -30,7 +30,9 @@ import java.util.List;
         @ResourceDependency(library = "icefaces.ace", name = "util/combined.css")
 })
 @ClientBehaviorHolder(events = {
-    @ClientEvent(name="click", defaultRender = "@this", defaultExecute = "@this")
+    @ClientEvent(name="click", defaultRender = "@this", defaultExecute = "@this"),
+    @ClientEvent(name="dragStart"),
+    @ClientEvent(name="dragStop")
 })
 public class ChartMeta extends UIComponentBaseMeta {
     @Property(tlddoc =
@@ -47,7 +49,11 @@ public class ChartMeta extends UIComponentBaseMeta {
 
     @Property(tlddoc = 
                 "Define a ChartSeries whose configuration is used where other ChartSeries " +
-                "have not made an explicit configuration. The data of this ChartSeries is irrelevant.")
+                "have not made an explicit configuration. The data of this ChartSeries is " +
+                "irrelevant. If defined, this ChartSeries should explicitly have the type" +
+                "field set, this will be used as the default type for all series which have " +
+                "not explicitly defined a type. If undefined the default type is determined by the" +
+                "ChartSeries.getDefaultType() of the first attached series.")
     private ChartSeries defaultSeriesConfig;
 
     @Property(tlddoc = 
@@ -69,10 +75,6 @@ public class ChartMeta extends UIComponentBaseMeta {
                 "may support this mode.",
         defaultValue = "false", defaultValueType = DefaultValueType.EXPRESSION)
     private Boolean stackSeries;
-
-    // Unimplemented
-//    @Property(tlddoc = "")
-//    private Boolean trapRightClick;
 
     @Property (tlddoc =
                 "Enables the draw animation behaviour of the chart. By default " +
@@ -143,6 +145,15 @@ public class ChartMeta extends UIComponentBaseMeta {
                 "must be called.",
             defaultValue = "true", defaultValueType = DefaultValueType.EXPRESSION)
     private Boolean hiddenInitPolling;
+
+    @Property(tlddoc = "Enable a crosshair cursor on the chart.")
+    private Boolean cursor;
+
+    @Property(tlddoc = "Enable click+drag selection of a range on the chart using the cursor. The 'cursor' property must be enabled to use this property.")
+    private Boolean zoom;
+
+    @Property(tlddoc = "Enable display of a legend regarding the coordinates of the cursor. The 'cursor' property must be enabled to use this property.")
+    private Boolean showTooltip;
 
     @Property(expression = Expression.METHOD_EXPRESSION,
             methodExpressionArgument = "org.icefaces.ace.event.SeriesSelectionEvent",
