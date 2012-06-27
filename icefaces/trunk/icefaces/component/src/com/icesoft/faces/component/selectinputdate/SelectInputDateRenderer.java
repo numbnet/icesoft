@@ -336,6 +336,7 @@ public class SelectInputDateRenderer
                                             clientId + CALENDAR_BUTTON);
                 calendarButton.setAttribute(HTML.TYPE_ATTR, "image");
                 calendarButton.setAttribute(HTML.ONFOCUS_ATTR, "setFocus('');");
+                calendarButton.setAttribute(HTML.ONBLUR_ATTR, "setFocus('');");
                 // render onclick to set value of hidden field to true
                 String onClick = "document.forms['" +
                                  parentForm.getClientId(facesContext) + "']['" +
