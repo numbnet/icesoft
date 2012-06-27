@@ -20,7 +20,7 @@ public class ContentTag extends TagSupport {
     private static Logger LOG = Logger.getLogger(ContentTag.class.getName());
 
     private TabSetTag mTabParent;
-    private AccordianTag mAccParent;
+    private AccordionTag mAccParent;
 
     private String mContentClass;
     private String mSelectedItem;
@@ -32,9 +32,10 @@ public class ContentTag extends TagSupport {
             mContentClass = MOBI_TABSET_CONTENT_CLASS;
             mTabParent = (TabSetTag) parent;
             mSelectedItem = mTabParent.getSelectedTab();
-        } else if (parent instanceof AccordianTag) {
-            mContentClass = CONTENT_WRAPPER_CLASS;
-            mAccParent = (AccordianTag) parent;
+        } else if (parent instanceof AccordionTag) {
+            mContentClass = "";
+            mAccParent = (AccordionTag) parent;
+            mSelectedItem = mAccParent.getSelectedId();
         } else {
             throw new IllegalArgumentException("ContentTag must have TabSet or Accordian parent");
         }
@@ -50,19 +51,19 @@ public class ContentTag extends TagSupport {
         StringBuilder tag = new StringBuilder(TagUtil.DIV_TAG);
         Writer out = pageContext.getOut();
 
-        if (isTabParent()) {
-            tag.append(" id=\"").append( mTabParent.getId() ).append("_tabContent").append("\"");
-        } else {
-            // write out accordian id modifier
+        if (!isTabParent()) {
+
+            // There is no Content area wrapper <div> in accordion
+
+            return EVAL_BODY_INCLUDE;
         }
+        tag.append(" id=\"").append(mTabParent.getId()).append("_tabContent").append("\"");
         tag.append(" class=\"").append(mContentClass).append("\"");
-
-
         tag.append(">");
 
         try {
 
-            out.write( tag.toString() );
+            out.write(tag.toString());
 
         } catch (IOException ioe) {
             LOG.severe("IOException starting ContentTag: " + ioe);
@@ -70,13 +71,25 @@ public class ContentTag extends TagSupport {
         return EVAL_BODY_INCLUDE;
     }
 
+    /**
+     * @return
+     */
     public int doEndTag() {
 
         Writer out = pageContext.getOut();
         try {
-            out.write(TagUtil.DIV_TAG_END);
+            if (mTabParent != null) {
+                out.write(TagUtil.DIV_TAG_END);
+            }
+
         } catch (IOException ioe) {
             LOG.severe("IOException closing content tag: " + ioe);
+        } finally {
+            if (mTabParent != null) {
+                mTabParent.resetIndex();
+            } else {
+                mAccParent.resetIndex();
+            }
         }
         return EVAL_PAGE;
     }
@@ -89,7 +102,7 @@ public class ContentTag extends TagSupport {
         if (mTabParent != null) {
             return mTabParent.getIndex();
         } else {
-            return mAccParent.getSelectedId();
+            return mAccParent.getIndex();
         }
     }
 
