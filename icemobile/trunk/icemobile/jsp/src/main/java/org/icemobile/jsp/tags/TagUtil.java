@@ -56,6 +56,9 @@ public class TagUtil {
     public static String SCRIPT_TAG = "<script";
     public static String SCRIPT_TAG_END = "</script>";
 
+    public static String SECTION_TAG = "<section";
+    public static String SECTION_TAG_END = "</section>";
+
 
     public enum DeviceType {
         android,
@@ -174,11 +177,11 @@ public class TagUtil {
     public static final String VIEW_TYPE_SMALL = "small";
     public static final String VIEW_TYPE_LARGE = "large";
 
-    public static boolean isTouchEventEnabled(PageContext pageContext)  {
+    public static boolean isTouchEventEnabled(PageContext pageContext) {
         HttpServletRequest request = (HttpServletRequest)
-                pageContext.getRequest();
+                                             pageContext.getRequest();
         String userAgent = request.getHeader(USER_AGENT);
-        if (sniffAndroidTablet(userAgent))  {
+        if (sniffAndroidTablet(userAgent)) {
             return false;
         }
         if (isIOS(pageContext) || isAndroid(pageContext)) {
