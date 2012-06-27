@@ -208,59 +208,118 @@ public class CartesianSeries extends ChartSeries {
         return (getFill() != null || isHorizontalBar() != null);
     }
 
+
+    /**
+     * Determine if this series is bar type, is it horizontal?
+     * @return true if horizontal
+     */
     public Boolean isHorizontalBar() {
         return horizontalBar;
     }
 
+    /**
+     * Set if this bar series is a horizontal type.
+     * @param horizontalBar bar series horizontal
+     */
     public void setHorizontalBar(Boolean horizontalBar) {
         this.horizontalBar = horizontalBar;
     }
 
+    /**
+     * Get if this series has labels rendered near each point
+     * @return true if labels are rendered
+     */
     public Boolean isPointLabels() {
         return pointLabels;
     }
 
+    /**
+     * Set if this series has labels rendered near each point.
+     * @param pointLabels series point labelling
+     */
     public void setPointLabels(Boolean pointLabels) {
         this.pointLabels = pointLabels;
     }
 
-
+    /**
+     * Set the distances that point labels must be from a boundary
+     * if they are to be rendered.
+     * @return distance in pixels
+     */
     public Integer getPointLabelTolerance() {
         return pointLabelTolerance;
     }
 
+    /**
+     * Get the distance that point labels must be from a boundary
+     * if they are to be rendered,
+     * @param pointLabelTolerance distance in pixels
+     */
     public void setPointLabelTolerance(Integer pointLabelTolerance) {
         this.pointLabelTolerance = pointLabelTolerance;
     }
 
+    /**
+     * Get if the point labels are to be rendered in a stacked plot.
+     * @return true if the point labels are intended for a stacked plot.
+     */
     public Boolean getPointLabelStacked() {
         return pointLabelStacked;
     }
 
+    /**
+     * Set if the point labels are to be rendered in a stacked plot.
+     * @param pointLabelStacked if the labels are intended for a stacked plot
+     */
     public void setPointLabelStacked(Boolean pointLabelStacked) {
         this.pointLabelStacked = pointLabelStacked;
     }
 
+    /**
+     * Get the list of labels for the points of this series.
+     * @return list of labels to be applied to points of associated index.
+     */
     public String[] getPointLabelList() {
         return pointLabelList;
     }
 
+    /**
+     * Set the list of labels for the points of this series.
+     * @param pointLabelList list of labels to be applied to points of associated index
+     */
     public void setPointLabelList(String[] pointLabelList) {
         this.pointLabelList = pointLabelList;
     }
 
+    /**
+     * Get if the points of this series are draggable.
+     * @return true, if the points of this series are draggable.
+     */
     public Boolean getDragable() {
         return dragable;
     }
 
+    /**
+     * Enable dragging for the points of this series. Enables dragStart / dragStop client
+     * behaviour events as well as raising PointValueChangeEvents on the on the server.
+     * @param dragable if the points of this series are drabbale.
+     */
     public void setDragable(Boolean dragable) {
         this.dragable = dragable;
     }
 
+    /**
+     * Get the configured axis that dragging of points is confined to.
+     * @return enum representation of the X, Y, or no axis.
+     */
     public DragConstraintAxis getDragConstraintAxis() {
         return dragConstraintAxis;
     }
 
+    /**
+     * Set the configured axis that dragging of points is confined to.
+     * @param dragConstraintAxis enum representation of the X, Y, or no axis.
+     */
     public void setDragConstraintAxis(DragConstraintAxis dragConstraintAxis) {
         this.dragConstraintAxis = dragConstraintAxis;
     }
