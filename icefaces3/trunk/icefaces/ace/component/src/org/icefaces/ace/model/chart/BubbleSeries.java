@@ -1,6 +1,7 @@
 package org.icefaces.ace.model.chart;
 
 import org.icefaces.ace.model.SimpleEntry;
+import org.icefaces.ace.util.JSONBuilder;
 
 /**
  * Copyright 2010-2011 ICEsoft Technologies Canada Corp.
@@ -27,21 +28,36 @@ public class BubbleSeries extends ChartSeries {
         BUBBLE
     }
 
-    public BubbleSeries() {
-        setType(BubbleType.BUBBLE);
-    }
+    public BubbleSeries() {}
 
     public void add(String x, String y, String magnitude) {
         getData().add(new SimpleEntry<String, String[]>(x, new String[]{y, magnitude}));
     }
 
     @Override
-    public String getDataJSON() {
+    public JSONBuilder getDataJSON() {
         return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
+    /**
+     * Used by the ChartRenderer to produce a JSON representation of the data of this series.
+     * @return the JSON object
+     */
     @Override
-    public String getConfigJSON() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    public JSONBuilder getConfigJSON() {
+        JSONBuilder cfg = super.getConfigJSON();
+
+        if (type != null) {
+            if (type.equals(BubbleType.BUBBLE))
+                cfg.entry("renderer", "ice.ace.jq.jqplot.BubbleRenderer", true);
+        }
+
+        cfg.endMap();
+        return cfg;
+    }
+
+    @Override
+    public ChartType getDefaultType() {
+        return BubbleType.BUBBLE;
     }
 }

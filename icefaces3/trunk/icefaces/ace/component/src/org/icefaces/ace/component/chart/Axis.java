@@ -145,7 +145,7 @@ public class Axis implements Serializable {
     }
 
     private boolean hasTickOptionsSet() {
-        return (getTickAngle() != null || getTickFontSize() != null || getTickPrefix() != null);
+        return (getTickAngle() != null || getTickFontSize() != null || getTickPrefix() != null || getFormatString() != null);
     }
 
     private boolean hasRendererOptionsSet() {

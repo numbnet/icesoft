@@ -28,47 +28,23 @@ import java.util.Map;
  * Time: 12:53 PM
  */
 public class CartesianSeries extends ChartSeries {
-
-
     public static enum CartesianType implements ChartType {
         BAR,
         LINE;
     }
 
-    boolean show;
-    boolean showLine;
-    Boolean showMarker;
-    boolean disableStack;
-    boolean breakOnNull;
-    boolean useNegativeColors;
+    public ChartType getDefaultType() {
+        return CartesianType.LINE;
+    }
+
     Boolean pointLabels;
     Integer pointLabelTolerance;
     Boolean pointLabelStacked;
     String[] pointLabelList;
-    Integer xAxis;
-    Integer yAxis;
-    int neighborThreshold; // How close a cursor must be to a point to trigger hover
-    String markerStyle; // Diamond, circle, square, x, plus, dash, filledDiamond, filledCircle, filledSquare
-    int markerLineWidth; // For unfilled
-    int markerSize;
-    String markerColor;
-    boolean markerShadow;
-    int markerShadowAngle; // degrees
-    int markerShadowOffset; // pixels
-    int markerShadowDepth; // number of shadow strokes,¬†each 1 shadow offset from the last
-    int markerShadowAlpha; // 0 - 100 alpha
-    boolean showLabel;
-    int lineWidth;
-    String lineJoin; // Round, bevel, miter
-    String lineCap; // Butt, line, square
-    boolean shadow;
-    int shadowAngle; // degrees
-    int shadowOffset; // pixels
-    int shadowDepth; // number of shadow strokes, each 1 shadow offset from the last
-    int shadowAlpha; // 0 - 100 alpha
-    boolean fill;
-    boolean fillAndStroke;
-    Boolean fillToZero;
+
+    Boolean dragable;
+    DragConstraintAxis dragConstraintAxis;
+
     long fillToValue;
     String fillAxis; // x or y
     String fillColor; // CSS
@@ -110,11 +86,10 @@ public class CartesianSeries extends ChartSeries {
      * @return the serialized JSON object
      */
     @Override
-    public String getDataJSON() {
-        JSONBuilder data = JSONBuilder.create();
+    public JSONBuilder getDataJSON() {
+        JSONBuilder data = super.getDataJSON();
         Class valueType = null;
         Class keyType = null;
-        data.beginArray();
 
         for (Object obj : (List<Object>)getData()) {
             Map.Entry<Object, Object> point = (Map.Entry<Object, Object>)obj;
@@ -159,7 +134,7 @@ public class CartesianSeries extends ChartSeries {
                 data.endArray();
         }
         data.endArray();
-        return data.toString();
+        return data;
     }
 
     /**
@@ -167,27 +142,8 @@ public class CartesianSeries extends ChartSeries {
      * @return the JSON object
      */
     @Override
-    public String getConfigJSON() {
-        JSONBuilder cfg = JSONBuilder.create();
-        Class valueType = null;
-        String label = getLabel();
-        Boolean showMarker = isShowMarker();
-        Integer xAxis = getXAxis();
-        Integer yAxis = getYAxis();
-
-        cfg.beginMap();
-
-        if (label != null)
-            cfg.entry("label", label);
-
-        if (xAxis != null)
-            cfg.entry("xaxis", "x"+xAxis+"axis");
-
-        if (yAxis != null)
-            cfg.entry("yaxis", "y"+yAxis+"axis");
-
-        if (showMarker != null)
-            cfg.entry("showMarker", showMarker);
+    public JSONBuilder getConfigJSON() {
+        JSONBuilder cfg = super.getConfigJSON();
 
         if (type != null) {
             if (type.equals(CartesianType.BAR))
@@ -200,16 +156,26 @@ public class CartesianSeries extends ChartSeries {
 
         if (hasRenderOptionsSet()) {
             cfg.beginMap("rendererOptions");
-            Boolean ftz = isFillToZero();
+            Boolean fill = getFill();
             Boolean horiz = isHorizontalBar();
 
-            if (ftz != null) cfg.entry("fillToZero", ftz);
+            if (fill != null) cfg.entry("fill", fill);
             if (horiz != null) cfg.entry("barDirection", horiz ? "horizontal" : "vertical");
             cfg.endMap();
         }
 
+        Boolean dragable = getDragable();
+        if (dragable != null) {
+            cfg.entry("isDragable", dragable);
+            if (getDragConstraintAxis() != null) {
+                cfg.beginMap("dragable");
+                cfg.entry("constrainTo", getDragConstraintAxis().toString());
+                cfg.endMap();
+            }
+        }
+
         cfg.endMap();
-        return cfg.toString();
+        return cfg;
     }
 
     private void encodePointLabelOptions(JSONBuilder cfg) {
@@ -239,7 +205,7 @@ public class CartesianSeries extends ChartSeries {
     }
 
     private boolean hasRenderOptionsSet() {
-        return (isFillToZero() != null || isHorizontalBar() != null);
+        return (getFill() != null || isHorizontalBar() != null);
     }
 
     public Boolean isHorizontalBar() {
@@ -283,416 +249,19 @@ public class CartesianSeries extends ChartSeries {
         this.pointLabelList = pointLabelList;
     }
 
-    //    /**
-//     * Return the truth value of this series visibility.
-//     * @return series visibility truth value
-//     */
-//    public boolean isShow() {
-//        return show;
-//    }
-//
-//    /**
-//     * Set the visibility of this series.
-//     * @param show series visibility truth value
-//     */
-//    public void setShow(boolean show) {
-//        this.show = show;
-//    }
-//
-//    /**
-//     * Return the truth value of the line visibility
-//     * @return line visibility truth value
-//     */
-//    public boolean isShowLine() {
-//        return showLine;
-//    }
-//
-//    /**
-//     * Set the visibility of the line of this series
-//     * @param showLine line visibility truth value
-//     */
-//    public void setShowLine(boolean showLine) {
-//        this.showLine = showLine;
-//    }
-//
-    /**
-     * Return the truth value of the point marker visibility
-     * @return point marker visibility truth value
-     */
-    public Boolean isShowMarker() {
-        return showMarker;
+    public Boolean getDragable() {
+        return dragable;
     }
 
-    /**
-     * Set the visibility of the point markers of this series
-     * @param showMarker point marker visibility truth value
-     */
-    public void setShowMarker(Boolean showMarker) {
-        this.showMarker = showMarker;
-    }
-//
-//    /**
-//     * Return the truth value of the stack disabling behaviour on this series.
-//     * @return stack disabling truth value
-//     */
-//    public boolean isDisableStack() {
-//        return disableStack;
-//    }
-//
-//    /**
-//     * Enable to not stack this series with other series in the plot.
-//     * To render properly, in the backing collection non-stacked series
-//     * must follow any stacked series in the plot’s data series array.
-//     * @param disableStack stack disabling truth value
-//     */
-//    public void setDisableStack(boolean disableStack) {
-//        this.disableStack = disableStack;
-//    }
-//
-//    public boolean isBreakOnNull() {
-//        return breakOnNull;
-//    }
-//
-//    public void setBreakOnNull(boolean breakOnNull) {
-//        this.breakOnNull = breakOnNull;
-//    }
-//
-//    public boolean isUseNegativeColors() {
-//        return useNegativeColors;
-//    }
-//
-//    public void setUseNegativeColors(boolean useNegativeColors) {
-//        this.useNegativeColors = useNegativeColors;
-//    }
-//
-
-    /**
-     * Get a integer defining which axis this Series is plotted against.
-     * @return the index of the x axis
-     */
-    public Integer getXAxis() {
-        return xAxis;
+    public void setDragable(Boolean dragable) {
+        this.dragable = dragable;
     }
 
-    /**
-     * Set a integer defining which axis this Series is plotted against.
-     * @param xAxis the index of the x axis
-     */
-    public void setXAxis(Integer xAxis) {
-        this.xAxis = xAxis;
+    public DragConstraintAxis getDragConstraintAxis() {
+        return dragConstraintAxis;
     }
 
-    /**
-     * Get a integer defining which axis this Series is plotted against.
-     * @return the index of the y axis
-     */
-    public Integer getYAxis() {
-        return yAxis;
+    public void setDragConstraintAxis(DragConstraintAxis dragConstraintAxis) {
+        this.dragConstraintAxis = dragConstraintAxis;
     }
-
-    /**
-     * Set a integer defining which axis this Series is plotted against.
-     * @param yAxis the index of the y axis
-     */
-    public void setYAxis(Integer  yAxis) {
-        this.yAxis = yAxis;
-    }
-//
-//    public int getNeighborThreshold() {
-//        return neighborThreshold;
-//    }
-//
-//    public void setNeighborThreshold(int neighborThreshold) {
-//        this.neighborThreshold = neighborThreshold;
-//    }
-//
-//    public String getMarkerStyle() {
-//        return markerStyle;
-//    }
-//
-//    public void setMarkerStyle(String markerStyle) {
-//        this.markerStyle = markerStyle;
-//    }
-//
-//    public int getMarkerLineWidth() {
-//        return markerLineWidth;
-//    }
-//
-//    public void setMarkerLineWidth(int markerLineWidth) {
-//        this.markerLineWidth = markerLineWidth;
-//    }
-//
-//    public int getMarkerSize() {
-//        return markerSize;
-//    }
-//
-//    public void setMarkerSize(int markerSize) {
-//        this.markerSize = markerSize;
-//    }
-//
-//    public String getMarkerColor() {
-//        return markerColor;
-//    }
-//
-//    public void setMarkerColor(String markerColor) {
-//        this.markerColor = markerColor;
-//    }
-//
-//    public boolean isMarkerShadow() {
-//        return markerShadow;
-//    }
-//
-//    public void setMarkerShadow(boolean markerShadow) {
-//        this.markerShadow = markerShadow;
-//    }
-//
-//    public int getMarkerShadowAngle() {
-//        return markerShadowAngle;
-//    }
-//
-//    public void setMarkerShadowAngle(int markerShadowAngle) {
-//        this.markerShadowAngle = markerShadowAngle;
-//    }
-//
-//    public int getMarkerShadowOffset() {
-//        return markerShadowOffset;
-//    }
-//
-//    public void setMarkerShadowOffset(int markerShadowOffset) {
-//        this.markerShadowOffset = markerShadowOffset;
-//    }
-//
-//    public int getMarkerShadowDepth() {
-//        return markerShadowDepth;
-//    }
-//
-//    public void setMarkerShadowDepth(int markerShadowDepth) {
-//        this.markerShadowDepth = markerShadowDepth;
-//    }
-//
-//    public int getMarkerShadowAlpha() {
-//        return markerShadowAlpha;
-//    }
-//
-//    public void setMarkerShadowAlpha(int markerShadowAlpha) {
-//        this.markerShadowAlpha = markerShadowAlpha;
-//    }
-//
-//    public boolean isShowLabel() {
-//        return showLabel;
-//    }
-//
-//    public void setShowLabel(boolean showLabel) {
-//        this.showLabel = showLabel;
-//    }
-//
-//    public int getLineWidth() {
-//        return lineWidth;
-//    }
-//
-//    public void setLineWidth(int lineWidth) {
-//        this.lineWidth = lineWidth;
-//    }
-//
-//    public String getLineJoin() {
-//        return lineJoin;
-//    }
-//
-//    public void setLineJoin(String lineJoin) {
-//        this.lineJoin = lineJoin;
-//    }
-//
-//    public String getLineCap() {
-//        return lineCap;
-//    }
-//
-//    public void setLineCap(String lineCap) {
-//        this.lineCap = lineCap;
-//    }
-//
-//    public boolean isShadow() {
-//        return shadow;
-//    }
-//
-//    public void setShadow(boolean shadow) {
-//        this.shadow = shadow;
-//    }
-//
-//    public int getShadowAngle() {
-//        return shadowAngle;
-//    }
-//
-//    public void setShadowAngle(int shadowAngle) {
-//        this.shadowAngle = shadowAngle;
-//    }
-//
-//    public int getShadowOffset() {
-//        return shadowOffset;
-//    }
-//
-//    public void setShadowOffset(int shadowOffset) {
-//        this.shadowOffset = shadowOffset;
-//    }
-//
-//    public int getShadowDepth() {
-//        return shadowDepth;
-//    }
-//
-//    public void setShadowDepth(int shadowDepth) {
-//        this.shadowDepth = shadowDepth;
-//    }
-//
-//    public int getShadowAlpha() {
-//        return shadowAlpha;
-//    }
-//
-//    public void setShadowAlpha(int shadowAlpha) {
-//        this.shadowAlpha = shadowAlpha;
-//    }
-//
-//    public boolean isFill() {
-//        return fill;
-//    }
-//
-//    public void setFill(boolean fill) {
-//        this.fill = fill;
-//    }
-//
-//    public boolean isFillAndStroke() {
-//        return fillAndStroke;
-//    }
-//
-//    public void setFillAndStroke(boolean fillAndStroke) {
-//        this.fillAndStroke = fillAndStroke;
-//    }
-//
-
-    /**
-     * Return fillToZero behaviour truth value
-     * @return fillToZero behaviour truth value
-     */
-    public Boolean isFillToZero() {
-        return fillToZero;
-    }
-
-    /**
-     * Enables bar charts to fill to zero but not beyond it. Used in cases
-     * where scale shows the bars extending beyond 0 undesirably.
-     * @param fillToZero
-     */
-    public void setFillToZero(Boolean fillToZero) {
-        this.fillToZero = fillToZero;
-    }
-//
-//    public long getFillToValue() {
-//        return fillToValue;
-//    }
-//
-//    public void setFillToValue(long fillToValue) {
-//        this.fillToValue = fillToValue;
-//    }
-//
-//    public String getFillAxis() {
-//        return fillAxis;
-//    }
-//
-//    public void setFillAxis(String fillAxis) {
-//        this.fillAxis = fillAxis;
-//    }
-//
-//    public String getFillColor() {
-//        return fillColor;
-//    }
-//
-//    public void setFillColor(String fillColor) {
-//        this.fillColor = fillColor;
-//    }
-//
-//    public int getFillAlpha() {
-//        return fillAlpha;
-//    }
-//
-//    public void setFillAlpha(int fillAlpha) {
-//        this.fillAlpha = fillAlpha;
-//    }
-//
-//    public boolean isHighlightMouseOver() {
-//        return highlightMouseOver;
-//    }
-//
-//    public void setHighlightMouseOver(boolean highlightMouseOver) {
-//        this.highlightMouseOver = highlightMouseOver;
-//    }
-//
-//    public boolean isHighlightMouseDown() {
-//        return highlightMouseDown;
-//    }
-//
-//    public void setHighlightMouseDown(boolean highlightMouseDown) {
-//        this.highlightMouseDown = highlightMouseDown;
-//    }
-//
-//    public String[] getHighlightColors() {
-//        return highlightColors;
-//    }
-//
-//    public void setHighlightColors(String[] highlightColors) {
-//        this.highlightColors = highlightColors;
-//    }
-//
-//    public int getBarMargin() {
-//        return barMargin;
-//    }
-//
-//    public void setBarMargin(int barMargin) {
-//        this.barMargin = barMargin;
-//    }
-//
-//    public int getBarPadding() {
-//        return barPadding;
-//    }
-//
-//    public void setBarPadding(int barPadding) {
-//        this.barPadding = barPadding;
-//    }
-//
-//    public int getBarWidth() {
-//        return barWidth;
-//    }
-//
-//    public void setBarWidth(int barWidth) {
-//        this.barWidth = barWidth;
-//    }
-//
-//    public String getBarDirection() {
-//        return barDirection;
-//    }
-//
-//    public void setBarDirection(String barDirection) {
-//        this.barDirection = barDirection;
-//    }
-//
-//    public boolean isVaryBarColor() {
-//        return varyBarColor;
-//    }
-//
-//    public void setVaryBarColor(boolean varyBarColor) {
-//        this.varyBarColor = varyBarColor;
-//    }
-//
-//    public boolean isWaterfall() {
-//        return waterfall;
-//    }
-//
-//    public void setWaterfall(boolean waterfall) {
-//        this.waterfall = waterfall;
-//    }
-//
-//    public int getGroups() {
-//        return groups;
-//    }
-//
-//    public void setGroups(int groups) {
-//        this.groups = groups;
-//    }
 }

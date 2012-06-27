@@ -44,7 +44,7 @@
                 
                 <ace:columnGroup id="columnGroup" type="header">
                     <ace:row>
-                        <ace:column id="vehiclesData" colspan="5" headerText="Vehicles Data"/>
+                        <ace:column id="vehiclesData" colspan="6" headerText="Vehicles Data"/>
                     </ace:row>
 
                     <ace:row>
@@ -52,12 +52,16 @@
                         <ace:column id="headerChassis" headerText="Chassis" sortBy="#{car.chassis}" groupBy="#{car.chassis}"/>
                         <ace:column id="vehicleParameters" colspan="2" headerText="Vehicle Parameters"/>
                         <ace:column id="headerCost" headerText="Cost" rowspan="2"/>
+                        <ace:column id="headerExp" headerText="Exp" rowspan="2"/>
                     </ace:row>
                     
                     <ace:row>
                         <ace:column id="generalInfo" colspan="2" headerText="General Info"/>
-                        <ace:column id="headerWeight" headerText="Weight"/>
-                        <ace:column id="headerAccel" headerText="Accel" />
+                        <ace:column id="headerWeight"
+                                    sortBy="#{car.weight}"
+                                    headerText="Weight"/>
+                        <ace:column id="headerAccel" headerText="Accel"
+                                    sortBy="#{car.acceleration}" />
                         <ace:column id="headerMpg" headerText="MPG"
                                     sortBy="#{car.mpg}" groupBy="#{car.mpg}"
                                     sortAscending="true" stacked="true" />
@@ -88,11 +92,26 @@
                                          maxFractionDigits="2"/>
                    </h:outputText>
                </ace:column>
+                <ace:column id="exp">
+                    <ace:expansionToggler />
+                </ace:column>
                 
               <f:facet name="footer">
                   <h:outputText value="car data provided for you by ICEsoft"/>
                   <h:commandButton value="Print" actionListener="#{dataTableMultiRowHeader.print}" />
               </f:facet>
+
+                <ace:panelExpansion>
+                    <h:outputText id="costPerLbTxt" value="Cost Per Pound: " />
+                    <h:outputText id="costPerLb" value="#{car.cost /  car.weight}">
+                        <f:convertNumber     type="currency"
+                                             currencySymbol="$"
+                                             groupingUsed="true"
+                                             minFractionDigits="2"
+                                             maxFractionDigits="2"/>
+                    </h:outputText>
+                </ace:panelExpansion>
+
             </ace:dataTable>
         </h:form>
     </ui:define>

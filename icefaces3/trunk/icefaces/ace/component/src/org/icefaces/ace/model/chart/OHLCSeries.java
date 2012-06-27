@@ -1,6 +1,10 @@
 package org.icefaces.ace.model.chart;
 
 import org.icefaces.ace.model.SimpleEntry;
+import org.icefaces.ace.util.JSONBuilder;
+
+import java.util.Date;
+import java.util.Map;
 
 /**
  * Copyright 2010-2011 ICEsoft Technologies Canada Corp.
@@ -39,21 +43,62 @@ public class OHLCSeries extends ChartSeries {
     boolean fillUpBody;
     boolean fillDownBody;
 
-    public OHLCSeries() {
-        setType(OHLCType.OHLC);
-    }
+    public OHLCSeries() {}
 
-    public void add(String x, String o, String h, String l, String c) {
-        getData().add(new SimpleEntry<String, String[]>(x, new String[]{o, h, l, c}));
-    }
-
-    @Override
-    public String getDataJSON() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    public void add(Date x, Number o, Number h, Number l, Number c) {
+        getData().add(new SimpleEntry<Date, Number[]>(x, new Number[]{o, h, l, c}));
     }
 
     @Override
-    public String getConfigJSON() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    public JSONBuilder getDataJSON() {
+        JSONBuilder json = super.getDataJSON();
+
+        for (Object o : getData()) {
+            Map.Entry entry = (Map.Entry)o;
+            Date key = (Date) entry.getKey();
+            Number[] value = (Number[]) entry.getValue();
+
+            json.beginArray();
+            json.item(key.getTime());
+            for (Number n : value)
+                if (n != null) json.item(n.doubleValue());
+                else json.item("undefined", false);
+            json.endArray();
+        }
+
+        json.endArray();
+
+        return json;
+    }
+
+    /**
+     * Used by the ChartRenderer to produce a JSON representation of the data of this series.
+     * @return the JSON object
+     */
+    @Override
+    public JSONBuilder getConfigJSON() {
+        JSONBuilder cfg = super.getConfigJSON();
+
+
+        cfg.entry("renderer", "ice.ace.jq.jqplot.OHLCRenderer", true);
+
+        if (rendererOptionsSet()) {
+            cfg.beginMap("rendererOptions");
+            if (OHLCType.CANDLESTICK.equals(type))
+                cfg.entry("candleStick", true);
+            cfg.endMap();
+        }
+
+        cfg.endMap();
+        return cfg;
+    }
+
+    private boolean rendererOptionsSet() {
+        return OHLCType.CANDLESTICK.equals(type);
+    }
+
+    @Override
+    public ChartType getDefaultType() {
+        return OHLCType.OHLC;
     }
 }
