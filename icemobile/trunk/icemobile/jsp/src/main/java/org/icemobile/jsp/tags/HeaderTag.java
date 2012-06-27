@@ -8,7 +8,7 @@ import java.io.Writer;
 import java.util.logging.Logger;
 
 /**
- *  The header tag writes the
+ * The header tag writes the
  */
 public class HeaderTag extends TagSupport {
 
@@ -20,7 +20,7 @@ public class HeaderTag extends TagSupport {
     private String mMyIndex;
 
     public void setParent(Tag parent) {
-        if (! (parent instanceof HeadersTag)) {
+        if (!(parent instanceof HeadersTag)) {
             throw new IllegalArgumentException("Header must be child of HeadersTag");
         }
         mParent = (HeadersTag) parent;
@@ -31,8 +31,36 @@ public class HeaderTag extends TagSupport {
     public int doStartTag() {
 
         Writer out = pageContext.getOut();
+        if (mParent.isTabParent()) {
+            writeTabHeader(out);
+        }
+        return EVAL_BODY_INCLUDE;
+    }
+
+
+    private void writeTabHeader(Writer out) {
         StringBuilder tag = new StringBuilder(TagUtil.LI_TAG);
-        tag.append(" id=\"").append(mParent.getId()).append("tab_").append( mMyIndex ).append("\"");
+        tag.append(" id=\"").append(mParent.getId()).append("tab_").append(mMyIndex).append("\"");
+
+        String selectedItem = mParent.getSelectedItem();
+        if (mMyIndex.equals(selectedItem)) {
+            tag.append(" class=\"").append(ACTIVE_TAB_CLASS).append("\"");
+        }
+
+        tag.append(" onclick=\"").append(getTabsetJavascriptForItem(mMyIndex)).append("\"");
+        tag.append(">");
+        try {
+            out.write(tag.toString());
+        } catch (IOException ioe) {
+            LOG.severe("IOException writing header");
+        }
+    }
+
+
+    private void writeAccHeader(Writer out) {
+
+        StringBuilder tag = new StringBuilder(TagUtil.LI_TAG);
+        tag.append(" id=\"").append(mParent.getId()).append("tab_").append(mMyIndex).append("\"");
 
         String selectedItem = mParent.getSelectedItem();
         if (mMyIndex.equals(selectedItem)) {
@@ -40,9 +68,9 @@ public class HeaderTag extends TagSupport {
         }
 
         if (mParent.isTabParent()) {
-            tag.append(" onclick=\"").append( getTabsetJavascriptForItem( mMyIndex )).append("\"");
+            tag.append(" onclick=\"").append(getTabsetJavascriptForItem(mMyIndex)).append("\"");
         } else {
-            tag.append(" onclick='").append( getAccordianJavascriptForItem( mMyIndex )).append("'");
+            tag.append(" onclick='").append(getAccordionJavascriptForItem(mMyIndex)).append("'");
         }
 
         tag.append(">");
@@ -51,7 +79,7 @@ public class HeaderTag extends TagSupport {
         } catch (IOException ioe) {
             LOG.severe("IOException writing header");
         }
-        return EVAL_BODY_INCLUDE;
+
     }
 
 
@@ -60,7 +88,9 @@ public class HeaderTag extends TagSupport {
         Writer out = pageContext.getOut();
 
         try {
-            out.write(TagUtil.LI_TAG_END);
+            if (mParent.isTabParent()) {
+                out.write(TagUtil.LI_TAG_END);
+            }
 
         } catch (IOException ioe) {
             LOG.severe("IOException writing header end");
@@ -72,19 +102,19 @@ public class HeaderTag extends TagSupport {
      * This is from the encode tabs method showing various tabs given a click on
      * a tab.
      */
-    public String getTabsetJavascriptForItem( String tabIndex ) {
+    public String getTabsetJavascriptForItem(String tabIndex) {
 
-        StringBuilder sb = new StringBuilder("ice.mobi.tabsetController.showContent('").append( mParent.getId() );
+        StringBuilder sb = new StringBuilder("ice.mobi.tabsetController.showContent('").append(mParent.getId());
         sb.append("', this, ").append("{");
         sb.append("tIndex: ").append(tabIndex);
-        if (null != height){
+        if (null != height) {
             sb.append(",height: ").append(height);
         }
         sb.append("} );");
         return sb.toString();
     }
 
-    public String getAccordianJavascriptForItem (String  accordianId) {
+    public String getAccordionJavascriptForItem(String accordianId) {
 
 //        logger.info("looking for index="+activeIndex+" selectedPane to open ="+openPane.getId());
 //        selectedPanel is now set
