@@ -35,11 +35,13 @@ public class ContentPaneTag extends TagSupport {
 
     private ContentTag mParent;
     private String mSelectedItem;
+
+    // Values for tabset inherited content
     private String mMyIndex;
 
     public void setParent(Tag parent) {
 
-        if (! (parent instanceof ContentTag)) {
+        if (!(parent instanceof ContentTag)) {
             throw new IllegalArgumentException("ContentPane must be child of ContentTag");
         }
 
@@ -47,47 +49,99 @@ public class ContentPaneTag extends TagSupport {
         if (mParent.isTabParent()) {
             mActiveContentClass = MOBI_TABPAGE;
             mPassiveContentClass = MOBI_TABPAGE_HIDDEN;
-            mSelectedItem = mParent.getSelectedItem();
 
-        } else if (parent instanceof AccordianTag) {
-//            mContentHeaderClass = ACCORDIAN_HEADERS_CLASS;
         } else {
-            throw new IllegalArgumentException("ContentPane must be child of ContentTag");
+//
+            mActiveContentClass = "open";
+            mPassiveContentClass = "closed";
+
         }
+        mSelectedItem = mParent.getSelectedItem();
         mMyIndex = mParent.getIndex();
     }
 
 
     public int doStartTag() throws JspTagException {
 
-        StringBuilder tag = new StringBuilder(TagUtil.DIV_TAG);
         Writer out = pageContext.getOut();
-
-        tag.append(" id=\"").append( mParent.getId() ).append("tab").append(mMyIndex).append("_wrapper\"");
-
-        tag.append(" class=\"");
-        if (mMyIndex.equals(mSelectedItem)) {
-            tag.append( mActiveContentClass );
+        if (mParent.isTabParent()) {
+            encodeTabContent(out);
         } else {
-            tag.append( mPassiveContentClass );
-        }
-        tag.append("\" >");
-        try {
-
-            out.write( tag.toString() );
-
-        } catch (IOException ioe) {
-            LOG.severe("IOException starting ContentTag: " + ioe);
+            encodeAccordionContent(out);
         }
         return EVAL_BODY_INCLUDE;
     }
 
+    private void encodeTabContent(Writer out) {
+
+        StringBuilder tag = new StringBuilder(TagUtil.DIV_TAG);
+        tag.append(" id=\"").append(mParent.getId()).append("tab").append(mMyIndex).append("_wrapper\"");
+
+        tag.append(" class=\"");
+        if (mMyIndex.equals(mSelectedItem)) {
+            tag.append(mActiveContentClass);
+        } else {
+            tag.append(mPassiveContentClass);
+        }
+        tag.append("\" >");
+
+        try {
+            out.write(tag.toString());
+        } catch (IOException ioe) {
+            LOG.severe("IOException starting ContentTag: " + ioe);
+        }
+    }
+
+    private void encodeAccordionContent(Writer out) {
+
+        StringBuilder tag = new StringBuilder(TagUtil.SECTION_TAG);
+
+        if (id != null) {
+            tag.append(" id=\"").append(id).append("\"");
+        }
+
+        if (mSelectedItem != null && mSelectedItem.equals(id)) {
+            tag.append(" class=\"").append(mActiveContentClass).append("\"");
+        } else {
+            tag.append(" class=\"").append(mPassiveContentClass).append("\"");
+        }
+
+        tag.append(">");
+
+        tag.append(TagUtil.DIV_TAG).append(" class=\"handle\"");
+        tag.append(" onclick=\"").append("ice.mobi.accordionController.toggleClient('")
+                .append(mParent.getId()).append("', this, false);\">");
+
+        tag.append(TagUtil.DIV_TAG).append(" class=\"pointer\">&#9658;</div>");
+        if (botitle != null && !"".equals(botitle)) {
+            tag.append(botitle);
+        }
+
+        try {
+
+            out.write(tag.toString());
+        } catch (IOException ioe) {
+            LOG.severe("IOException starting Accordion ContentTag: " + ioe);
+        }
+    }
+
+
+    /**
+     * Common end tag structure
+     *
+     * @return
+     * @throws JspTagException
+     */
     public int doEndTag() throws JspTagException {
 
         Writer out = pageContext.getOut();
 
         try {
             out.write(TagUtil.DIV_TAG_END);
+
+            if (!mParent.isTabParent()) {
+                out.write(TagUtil.SECTION_TAG_END);
+            }
         } catch (IOException ioe) {
             LOG.severe("IOException closing ContentTag: " + ioe);
         }
@@ -96,7 +150,25 @@ public class ContentPaneTag extends TagSupport {
 
     private String styleClass;
     private String style;
+    private String botitle;
 
+    private String id;
+
+    public String getBotitle() {
+        return botitle;
+    }
+
+    public void setBotitle(String title) {
+        this.botitle = title;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getStyleClass() {
         return styleClass;
