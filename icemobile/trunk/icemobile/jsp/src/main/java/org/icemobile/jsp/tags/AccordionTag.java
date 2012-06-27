@@ -18,14 +18,12 @@
 package org.icemobile.jsp.tags;
 
 import javax.servlet.jsp.JspTagException;
-import javax.servlet.jsp.PageContext;
-import javax.servlet.jsp.tagext.SimpleTagSupport;
 import javax.servlet.jsp.tagext.TagSupport;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.logging.Logger;
 
-public class AccordianTag extends TagSupport {
+public class AccordionTag extends TagSupport {
 
 
     private static final String ACCORDION_CLASS = "mobi-accordion";
@@ -36,7 +34,9 @@ public class AccordianTag extends TagSupport {
     private int maxHeight;
     private String selectedId;
 
-     private static Logger LOG = Logger.getLogger(AccordianTag.class.getName());
+    private int index;
+
+    private static Logger LOG = Logger.getLogger(AccordionTag.class.getName());
 
     public int doStartTag() throws JspTagException {
 
@@ -47,46 +47,79 @@ public class AccordianTag extends TagSupport {
 
         sb.append(" class=\"").append(ACCORDION_CLASS);
         if (styleClass != null && !"".equals(styleClass)) {
-            sb.append(" ").append( getStyleClass() );
+            sb.append(" ").append(getStyleClass());
         }
         sb.append("\"");
 
         if (style != null && !"".equals(style)) {
             sb.append(" style=\"").append(getStyle()).append("\"");
         }
+
+        if (selectedId != null && !"".equals(selectedId)) {
+            sb.append(" data-opened=\"").append(selectedId).append("\"");
+        }
+
         sb.append(">");
         try {
             out.write(sb.toString());
 
         } catch (IOException ioe) {
-
-
+            LOG.severe("Exception writing AccordionTag: " + ioe);
         }
 
-        return  EVAL_BODY_INCLUDE;
+        return EVAL_BODY_INCLUDE;
+    }
 
+    public int doEndTag() {
+
+
+        Writer out = pageContext.getOut();
+        try {
+
+            // close the tabs
+            out.write(TagUtil.DIV_TAG_END);
+
+            encodeScript(out);
+
+        } catch (IOException ieo) {
+        }
+
+        return EVAL_PAGE;
     }
 
 
-    public void encodeScript(Writer writer ) throws IOException {
+    public void encodeScript(Writer writer) throws IOException {
         //need to initialize the component on the page and can also
         String clientId = getId();
         StringBuilder sb = new StringBuilder(TagUtil.SPAN_TAG);
-        sb.append(" id=\"").append( getId() ).append("_script\">");
+        sb.append(" id=\"").append(getId()).append("_script\">");
 
         sb.append(TagUtil.SCRIPT_TAG);
         sb.append(" type=\"text/javascript\">");
 
         StringBuilder cfg = new StringBuilder("{ ");
         boolean autoheight = isAutoHeight();
-        cfg.append(", autoheight: ").append( autoheight );
-        cfg.append(", maxheight: '").append( getMaxHeight()).append("'");
+        cfg.append(" autoheight: ").append(autoheight);
+        cfg.append(", maxheight: '").append(getMaxHeight()).append("'");
         cfg.append("}");
 
-        writer.write( sb.toString () );
-        writer.write("mobi.accordionController.initClient('" + clientId + "'," + cfg.toString()+");");
+        writer.write(sb.toString());
+        writer.write("ice.mobi.accordionController.initClient('" + clientId + "'," + cfg.toString() + ");");
         writer.write(TagUtil.SCRIPT_TAG_END);
         writer.write(TagUtil.SPAN_TAG_END);
+    }
+
+    /**
+     * Index values are 1 based in Accordion land
+     *
+     * @return
+     */
+    public String getIndex() {
+        return Integer.toString(++index);
+    }
+
+    public void resetIndex() {
+        index = 0;
     }
 
     public String getSelectedId() {
@@ -129,7 +162,7 @@ public class AccordianTag extends TagSupport {
         this.style = style;
     }
 
-     public int getMaxHeight() {
+    public int getMaxHeight() {
         return maxHeight;
     }
 
