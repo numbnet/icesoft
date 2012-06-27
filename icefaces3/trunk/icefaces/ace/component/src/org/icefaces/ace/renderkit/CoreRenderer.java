@@ -222,9 +222,10 @@ public class CoreRenderer extends Renderer {
 	}
 
     protected void encodeClientBehaviors(FacesContext context, ClientBehaviorHolder component, JSONBuilder jb) throws IOException {
-
+        //System.out.println("CoreRenderer.encodeClientBehaviors()  component: " + component + "  clientId: " + ((UIComponent)component).getClientId(context));
         //ClientBehaviors
         Map<String,List<ClientBehavior>> behaviorEvents = component.getClientBehaviors();
+        //System.out.println("CoreRenderer.encodeClientBehaviors()  behaviorEvents: " + behaviorEvents);
 
         if(!behaviorEvents.isEmpty()) {
             String clientId = ((UIComponent) component).getClientId(context);
@@ -234,6 +235,7 @@ public class CoreRenderer extends Renderer {
 
             for(Iterator<String> eventIterator = behaviorEvents.keySet().iterator(); eventIterator.hasNext();) {
                 String event = eventIterator.next();
+                //System.out.println("CoreRenderer.encodeClientBehaviors()    eventName: " + event);
                 String domEvent = event;
 
                 if(event.equalsIgnoreCase("valueChange"))       //editable value holders
@@ -245,8 +247,10 @@ public class CoreRenderer extends Renderer {
                 ClientBehaviorContext cbc = ClientBehaviorContext.createClientBehaviorContext(context, (UIComponent) component, event, clientId, params);
 				for(Iterator<ClientBehavior> behaviorIter = behaviorEvents.get(event).iterator(); behaviorIter.hasNext();) {
                     ClientBehavior behavior = behaviorIter.next();
+                    //System.out.println("CoreRenderer.encodeClientBehaviors()      behavior: " + behavior);
 					if (behavior instanceof javax.faces.component.behavior.AjaxBehavior) continue; // ignore f:ajax
                     script = behavior.getScript(cbc);    //could be null if disabled
+                    //System.out.println("CoreRenderer.encodeClientBehaviors()      script: " + script);
                     break;
                 }
                 if (script != null && script.trim().length() > 0) {
@@ -351,12 +355,15 @@ public class CoreRenderer extends Renderer {
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
         String behaviorEvent = params.get("javax.faces.behavior.event");
 
+        //System.out.println("CoreRenderer.decodeBehaviors()  RPM  behaviorEvent: " + behaviorEvent);
         if(null != behaviorEvent) {
             List<ClientBehavior> behaviorsForEvent = behaviors.get(behaviorEvent);
 
-            if(behaviors.size() > 0) {
+            if(behaviorsForEvent != null && !behaviorsForEvent.isEmpty()) {
                String behaviorSource = params.get("javax.faces.source");
                String clientId = component.getClientId();
+               //System.out.println("CoreRenderer.decodeBehaviors()  behaviorSource: " + behaviorSource);
+               //System.out.println("CoreRenderer.decodeBehaviors()  clientId: " + clientId);
 
                if(behaviorSource != null && behaviorSource.startsWith(clientId)) {
                    for (ClientBehavior behavior: behaviorsForEvent) {
