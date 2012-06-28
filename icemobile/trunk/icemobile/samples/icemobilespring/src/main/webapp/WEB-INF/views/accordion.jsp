@@ -7,7 +7,7 @@
 <c:if test="${!ajaxRequest}">
 <html>
 <head>
-	<title>ICEmobile | flipswitch demo</title>
+	<title>ICEmobile | accordion demo</title>
 	<link href="<c:url value="/resources/form.css" />" rel="stylesheet"  type="text/css" />		
 	<script type="text/javascript" src="<c:url value="/resources/jquery/1.6/jquery.js" />"></script>
 	<script type="text/javascript" src="code.icepush"></script>
@@ -22,17 +22,18 @@
 		</p>
 		<form:form id="accordionform" method="POST"  modelAttribute="accordionBean" cssClass="cleanform">
 
-            <mobi:accordion id="ACCID" selectedId="tab1" >
+            <mobi:accordion id="accordionOne" selectedId="${accordionBean.accordionOne}" autoheight="true">
                 <mobi:content>
-                    <mobi:contentPane botitle="First drop down item" id="tab1" >
+                    <mobi:contentPane title="First drop down item" id="tab1" >
+
                        <mobi:commandButton name="submitB" buttonType="important"
                                     value="Button 1"/>
                     </mobi:contentPane>
-                    <mobi:contentPane botitle="Second drop down item" id="tab2">
+                    <mobi:contentPane title="Second drop down item" id="tab2">
                         <mobi:commandButton name="submitC" buttonType="important"
                                     value="Button 2"/>
                     </mobi:contentPane>
-                    <mobi:contentPane botitle="Third drop down item" id="tab3">
+                    <mobi:contentPane title="Third drop down item" id="tab3">
                        <mobi:commandButton name="submitA" buttonType="important"
                                     value="Button 3"/>
                     </mobi:contentPane>
