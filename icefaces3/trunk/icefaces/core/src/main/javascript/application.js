@@ -677,7 +677,10 @@ if (!window.ice.icefaces) {
         namespace.fixViewState = function(id, viewState) {
             var form = lookupElementById(id);
             try {
-                lookupViewStateElement(form);
+                var viewStateElement = lookupViewStateElement(form);
+                if (viewStateElement.value != viewState) {
+                    viewStateElement.value = viewState;
+                }
             } catch (ex) {
                 appendHiddenInputElement(form, 'javax.faces.ViewState', viewState, viewState);
             }

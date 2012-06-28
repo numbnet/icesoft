@@ -27,7 +27,6 @@ import javax.faces.application.ProjectStage;
 import javax.faces.application.Resource;
 import javax.faces.application.ResourceHandler;
 import javax.faces.component.UIComponent;
-import javax.faces.component.UIForm;
 import javax.faces.component.UIOutput;
 import javax.faces.component.UIViewRoot;
 import javax.faces.context.ExternalContext;
@@ -186,12 +185,6 @@ public class BridgeSetup implements SystemEventListener {
             icefacesSetup.setId(viewID + "_icefaces_config");
             bodyResources.add(icefacesSetup);
 
-            //add the form used by ice.retrieveUpdate function to retrieve the updates
-            //use viewID and '-retrieve-update' suffix as element ID
-            addNewTransientForm(viewID + "-retrieve-update", bodyResources);
-            //add the form used by ice.singleSubmit function for submitting event data
-            //use viewID and '-single-submit' suffix as element ID
-            addNewTransientForm(viewID + "-single-submit", bodyResources);
 
             if (EnvUtils.isICEpushPresent()) {
                 UIOutputWriter icepushSetup = new UIOutputWriter() {
@@ -271,20 +264,6 @@ public class BridgeSetup implements SystemEventListener {
     public static String getViewID(ExternalContext externalContext) {
         Map requestMap = externalContext.getRequestMap();
         return (String) requestMap.get(BridgeSetup.ViewState);
-    }
-
-    private static void addNewTransientForm(String id, List<UIComponent> parent) {
-        UIForm uiForm = new ShortIdForm();
-        uiForm.setTransient(true);
-        uiForm.setId(id);
-        parent.add(uiForm);
-    }
-
-    public static class ShortIdForm extends UIForm {
-        //ID is assigned uniquely by ICEpush so no need to prepend
-        public String getClientId(FacesContext context) {
-            return getId();
-        }
     }
 
     public static class AssignViewID implements PhaseListener {
