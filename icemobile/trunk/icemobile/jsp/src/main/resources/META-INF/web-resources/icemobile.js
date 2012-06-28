@@ -421,11 +421,7 @@ ice.mobi.accordionController = {
     // Panels wont ever have more than one panel in it, since it's a single accordian.
     panels: {},
     initClient: function(clientId, cfg) {
-        if (true) {
-            this.panels[clientId] = ice.mobi.accordionController.Accordion(clientId, cfg);
-        } else {
-            this.panels[clientId].updateProperties(clientId, cfg);
-        }
+        this.panels[clientId] = ice.mobi.accordionController.Accordion(clientId, cfg);
     },
     toggleClient: function(clientId, el, cachetyp) {
         if (this.panels[clientId]) {
@@ -448,6 +444,7 @@ ice.mobi.accordionController = {
     },
 
     updateHeightInOpenClass: function (ruleName, height) {
+
         if (document.styleSheets) {
             for (var i = 0; i < document.styleSheets.length; i++) {
                 var styleSh = document.styleSheets[i];
@@ -461,7 +458,9 @@ ice.mobi.accordionController = {
                     else {
                         cssRule = styleSh.rules[index];
                     }
-                    if (cssRule) {
+                    // Not every cssRule had a selectorText, which was
+                    // throwing an exception
+                    if (cssRule && cssRule.selectorText) {
                         if (cssRule.selectorText.toLowerCase() == ruleName) {
                             //update height and maxheight
                             cssRule.style.maxHeight = height;
