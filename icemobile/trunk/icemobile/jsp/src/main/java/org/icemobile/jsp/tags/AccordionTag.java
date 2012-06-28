@@ -25,17 +25,7 @@ import java.util.logging.Logger;
 
 public class AccordionTag extends TagSupport {
 
-
     private static final String ACCORDION_CLASS = "mobi-accordion";
-    private String id;
-    private String styleClass;
-    private String style;
-    private boolean autoHeight;
-    private int maxHeight;
-    private String selectedId;
-
-    private int index;
-
     private static Logger LOG = Logger.getLogger(AccordionTag.class.getName());
 
     public int doStartTag() throws JspTagException {
@@ -72,16 +62,12 @@ public class AccordionTag extends TagSupport {
 
     public int doEndTag() {
 
-
         Writer out = pageContext.getOut();
         try {
-
-            // close the tabs
             out.write(TagUtil.DIV_TAG_END);
-
             encodeScript(out);
-
-        } catch (IOException ieo) {
+        } catch (IOException ioe) {
+            LOG.severe("IOException closing AccordionTag: " + ioe);
         }
 
         return EVAL_PAGE;
@@ -98,9 +84,8 @@ public class AccordionTag extends TagSupport {
         sb.append(" type=\"text/javascript\">");
 
         StringBuilder cfg = new StringBuilder("{ ");
-        boolean autoheight = isAutoHeight();
-        cfg.append(" autoheight: ").append(autoheight);
-        cfg.append(", maxheight: '").append(getMaxHeight()).append("'");
+        cfg.append(" autoheight: ").append(isAutoheight());
+        cfg.append(", maxheight: '").append(getMaxheight()).append("'");
         cfg.append("}");
 
         writer.write(sb.toString());
@@ -109,18 +94,16 @@ public class AccordionTag extends TagSupport {
         writer.write(TagUtil.SPAN_TAG_END);
     }
 
-    /**
-     * Index values are 1 based in Accordion land
-     *
-     * @return
-     */
-    public String getIndex() {
-        return Integer.toString(++index);
-    }
 
-    public void resetIndex() {
-        index = 0;
-    }
+    // Tag properties
+
+    private String id;
+    private String styleClass;
+    private String style;
+    private boolean autoHeight;
+    private int maxheight;
+    private String selectedId;
+
 
     public String getSelectedId() {
         return selectedId;
@@ -130,11 +113,11 @@ public class AccordionTag extends TagSupport {
         this.selectedId = selectedId;
     }
 
-    public boolean isAutoHeight() {
+    public boolean isAutoheight() {
         return autoHeight;
     }
 
-    public void setAutoHeight(boolean autoHeight) {
+    public void setAutoheight(boolean autoHeight) {
         this.autoHeight = autoHeight;
     }
 
@@ -162,11 +145,11 @@ public class AccordionTag extends TagSupport {
         this.style = style;
     }
 
-    public int getMaxHeight() {
-        return maxHeight;
+    public int getMaxheight() {
+        return maxheight;
     }
 
-    public void setMaxHeight(int maxHeight) {
-        this.maxHeight = maxHeight;
+    public void setMaxheight(int maxHeight) {
+        this.maxheight = maxHeight;
     }
 }
