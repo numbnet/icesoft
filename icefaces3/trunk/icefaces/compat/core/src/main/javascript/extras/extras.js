@@ -2714,8 +2714,8 @@ GMapWrapper.prototype = {
         this.realGMap = realGMap;
         this.controls = new Object();
         this.overlays = new Object();
-        this.geoMarker = new Object();
 		this.directions = new Object();
+        this.geoMarker = new Object();
         this.geoMarkerAddress;
         this.geoMarkerSet = false;
 		this.currentMarker = null;
@@ -2776,24 +2776,32 @@ Ice.GoogleMap = {
         return gmapWrapper;
     },
 
-    loadDirection:function(id,from, to) {
+    loadDirection:function(id, textDivId, from, to) {
         var wrapper = Ice.GoogleMap.getGMapWrapper(id);
         var map = Ice.GoogleMap.getGMapWrapper(id).getRealGMap();
         service=new google.maps.DirectionsService();
 		var origin = (from == "(") ? "origin: new google.maps.LatLng" + from + ", " : "origin: \"" + from + "\", ";
 		var destination = (to == "(") ? "destination: new google.maps.LatLng" + to + ", " : "destination: \"" + to + "\", ";
 		var request = "({" + origin + destination +"travelMode:google.maps.TravelMode.DRIVING})";
-		function directionsCallback(response, status) {
+		var directionsCallback = function(response, status) {
 			if (status != google.maps.DirectionsStatus.OK) {
 				alert('Error was: ' + status);
 				} else {
-					var renderer = (wrapper.directions[id] != null)? wrapper.directions[id]:new google.maps.DirectionsRenderer();
+					var renderer = (wrapper.directions[id] != null) ? wrapper.directions[id] : new google.maps.DirectionsRenderer();
+					renderer.setMap(null);
 					renderer.setMap(map);
 					renderer.setDirections(response);
-					wrapper.directions[id]=renderer;
+					if (textDivId) {
+						var textDiv = ice.ace.jq(ice.ace.escapeClientId(textDivId)).get(0);
+						if (textDiv) {
+							textDiv.innerHTML = '';
+							renderer.setPanel(textDiv);
+						}
 					}
+					wrapper.directions[id] = renderer;
 				}
-					service.route(eval(request), directionsCallback);
+			};
+		service.route(eval(request), directionsCallback);
     },
 
     addOverlay:function (ele, overlayId, ovrLay) {

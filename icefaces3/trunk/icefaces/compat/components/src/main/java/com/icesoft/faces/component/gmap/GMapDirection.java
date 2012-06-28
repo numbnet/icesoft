@@ -35,11 +35,9 @@ public class GMapDirection extends UIPanel{
 	public static final String COMPONENT_TYPE = "com.icesoft.faces.GMapDirection";
     public static final String COMPONENT_FAMILY = "com.icesoft.faces.GMapDirection";
 	private Boolean locateAddress;
-    private boolean initilized = false;
     private String from;
     private String to;
     private String textualDivId;
-    private String textualDivClientId;
     private String locale;
     
 	
@@ -58,20 +56,14 @@ public class GMapDirection extends UIPanel{
     public void encodeBegin(FacesContext context) throws IOException {
     	setRendererType(null);
         super.encodeBegin(context);    	
-    	String textualDivId = getTextualDivId(); 
-		GMap gmap = (GMap)this.getParent();
-    	String mapId = gmap.getClientId(context);
-    	String query = "";
-    	String from = getFrom();
-    	String to = getTo();
-		if(!initilized)
-			initilized = true;
-    	else{
-			if((isLocateAddress())) {
+		if(isLocateAddress()) {
+			String textualDivId = getTextualDivId(); 
+			GMap gmap = (GMap)this.getParent();
+			String mapId = gmap.getClientId(context);
+			String from = getFrom();
+			String to = getTo();
 			JavascriptContext.addJavascriptCall(context, 
-    			"Ice.GoogleMap.loadDirection('"+ mapId +"', '"+ from +"', '" + to +"');");
-    	    		
-			}
+				"Ice.GoogleMap.loadDirection('"+ mapId +"', '"+ getClientIdOfTextualDiv(context) +"', '"+ from +"', '" + to +"');");
 		}
     }
 
@@ -153,8 +145,6 @@ public class GMapDirection extends UIPanel{
         textualDivId = (String)values[3];
         locale = (String)values[4];
         locateAddress = (Boolean)values[5];
-        textualDivClientId = (String)values[6];
-        initilized = ((Boolean) values[7]).booleanValue();
     }
 
     public Object saveState(FacesContext context) {
@@ -167,8 +157,6 @@ public class GMapDirection extends UIPanel{
         values[3] = textualDivId;
         values[4] = locale;
         values[5] = locateAddress;  
-        values[6] = textualDivClientId;
-        values[7] = Boolean.valueOf(initilized);
         return values;
     }
 
