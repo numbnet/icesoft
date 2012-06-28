@@ -102,7 +102,5 @@ public class MapLoad extends ComponentExampleImpl<MapLoad> implements Serializab
 	public void applyChanges(ActionEvent event) {
 	    // Zoom out so the user can see any loaded points wherever they are on the globe
 	    setZoomLevel(WORLD_ZOOM_LEVEL);
-	    
-	    NavigationController.refreshPage();
 	}
 }
