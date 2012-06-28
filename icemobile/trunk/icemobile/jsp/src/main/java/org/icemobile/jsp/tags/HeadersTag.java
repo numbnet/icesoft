@@ -8,12 +8,12 @@ import java.io.Writer;
 import java.util.logging.Logger;
 
 /**
- *
+ * HeadersTag opens/closes the orderedList for TabSet Headers. We can't do this
+ * with a single TabSetTag. Header structure is not used in Accordion structure
  */
 public class HeadersTag extends TagSupport {
 
     private static final String TABSET_HEADERS_CLASS = "mobi-tabset-tabs";
-    //    private static final String ACCORDIAN_HEADERS_CLASS = "mobi-accordion";
     private static Logger LOG = Logger.getLogger(HeadersTag.class.getName());
 
     private TabSetTag mTabParent;
@@ -30,19 +30,12 @@ public class HeadersTag extends TagSupport {
             mSelectedIndex = mTabParent.getSelectedTab();
 
         } else if (parent instanceof AccordionTag) {
-//            mHeadersClass = ACCORDIAN_HEADERS_CLASS;
-            mAccParent = (AccordionTag) parent;
-            mSelectedIndex = mAccParent.getSelectedId();
-
+            throw new UnsupportedOperationException("AccordionTag doesn't support(require) HeadersTag");
         } else {
             throw new IllegalArgumentException("Parent of HeadersTag must be TabSet or Accordian");
         }
     }
 
-
-    public boolean isTabParent() {
-        return mTabParent != null;
-    }
 
     public int doStartTag() throws JspTagException {
 
@@ -62,18 +55,7 @@ public class HeadersTag extends TagSupport {
                 tag.append(" id=\"").append(getId()).append("_tabs\"");
             }
 
-            tag.append(" class=\"").append(mHeadersClass);
-            if (userStyle != null && !"".equals(userStyle)) {
-                tag.append(" ").append(userStyle);
-            }
-            tag.append("\"");
-
-            if (style != null && !"".equals(style)) {
-                tag.append(" style=\"").append(style).append("\"");
-            }
-
-
-            tag.append(">");
+            tag.append(" class=\"").append(mHeadersClass).append("\">");
             tag.append(TagUtil.UL_TAG);
             tag.append(" data-current=\"").append(mSelectedIndex).append("\">");
 
@@ -84,12 +66,27 @@ public class HeadersTag extends TagSupport {
         }
     }
 
+    private void doEndTabHeader(Writer out) {
+
+        try {
+            out.write(TagUtil.UL_TAG_END);
+            out.write(TagUtil.DIV_TAG_END);
+
+            if (mTabParent != null) {
+                mTabParent.resetIndex();
+            }
+
+        } catch (IOException ioe) {
+            LOG.severe("IOException closing TabHeader tag: " + ioe);
+        }
+
+    }
+
     public String getIndex() {
         if (mTabParent != null) {
             return mTabParent.getIndex();
-        } else {
-            return mAccParent.getIndex();
         }
+        throw new UnsupportedOperationException("getIndex() should not be called from Accordion");
     }
 
     public String getSelectedItem() {
@@ -112,28 +109,9 @@ public class HeadersTag extends TagSupport {
 
     }
 
-    private void doEndTabHeader(Writer out) {
-        try {
-
-            // close the tabs
-            out.write(TagUtil.UL_TAG_END);
-            out.write(TagUtil.DIV_TAG_END);
-
-            if (mTabParent != null) {
-                mTabParent.resetIndex();
-            } else {
-                mAccParent.resetIndex();
-            }
-
-        } catch (IOException ioe) {
-            LOG.severe("IOException closing TabHeader tag: " + ioe);
-        }
-
+    public boolean isTabParent() {
+        return mTabParent != null;
     }
-
-    private String userStyle;
-    private String style;
-
 
     public String getId() {
         if (mTabParent != null) {
@@ -141,22 +119,5 @@ public class HeadersTag extends TagSupport {
         } else {
             return mAccParent.getId();
         }
-    }
-
-
-    public String getUserStyle() {
-        return userStyle;
-    }
-
-    public void setUserStyle(String userStyle) {
-        this.userStyle = userStyle;
-    }
-
-    public String getStyle() {
-        return style;
-    }
-
-    public void setStyle(String style) {
-        this.style = style;
     }
 }
