@@ -109,6 +109,7 @@ mobi.datespinner = {
     dUp:function (clientId) {
         var dId = clientId + '_dInt';
         var dEl = document.getElementById(dId);
+        var mEl = document.getElementById(clientId+'_mInt');
         var mInt = this.getIntValue(clientId + "_mInt");
         var yInt = this.getIntValue(clientId + "_yInt");
         var dInt = this.getIntValue(dId);
@@ -150,15 +151,12 @@ mobi.datespinner = {
         if (!upDate) {
             dInt = this.daysInMonth(mInt, yInt);
             dEl.innerHTML = dInt;
+            upDate = this.validate(yInt, mInt, dInt);
         }
-        this.writeTitle(clientId, dInt, mInt, yInt);
+        this.writeTitle(clientId, upDate);
     },
 
-    writeTitle:function (clientId, iD, iM, iY) {
-        var date = new Date();
-        date.setDate(iD);
-        date.setMonth(iM - 1);
-        date.setYear(iY);
+    writeTitle:function (clientId, date) {
         var titleEl = document.getElementById(clientId + '_title');
         titleEl.innerHTML = date.toDateString();
     },
