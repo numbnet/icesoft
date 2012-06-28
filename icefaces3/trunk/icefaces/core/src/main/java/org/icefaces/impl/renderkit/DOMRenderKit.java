@@ -18,6 +18,7 @@ package org.icefaces.impl.renderkit;
 
 import org.icefaces.application.ProductInfo;
 import org.icefaces.impl.context.DOMResponseWriter;
+import org.icefaces.impl.event.BridgeFormsSetup;
 import org.icefaces.impl.event.BridgeSetup;
 import org.icefaces.impl.event.MainEventListener;
 import org.icefaces.impl.util.FormEndRendering;
@@ -170,7 +171,7 @@ public class DOMRenderKit extends RenderKitWrapper {
 
         public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
 
-            if (component instanceof BridgeSetup.ShortIdForm) {
+            if (component instanceof BridgeFormsSetup.ShortIdForm) {
                 //do not augment BridgeSetup form
                 super.encodeEnd(context, component);
                 return;
