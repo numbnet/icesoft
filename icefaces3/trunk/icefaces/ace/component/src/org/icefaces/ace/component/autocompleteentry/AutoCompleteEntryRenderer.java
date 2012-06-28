@@ -224,6 +224,7 @@ public class AutoCompleteEntryRenderer extends InputRenderer {
 				if (satisfiesFilter(value, filter, filterMatchMode, autoCompleteEntry)) {
 					rowCounter++;
 					writer.startElement("div", null);
+					writer.writeAttribute("style", "border: 0;", null);
 					//SelectItem item = (SelectItem) matches.next();
 					//requestMap.put(autoCompleteEntry.getListVar(), item.getValue());
 					
@@ -273,7 +274,7 @@ public class AutoCompleteEntryRenderer extends InputRenderer {
 						itemLabel = item.getValue().toString();
                     }
 					if (satisfiesFilter(itemLabel, filter, filterMatchMode, autoCompleteEntry)) {
-                    sb.append("<div>").append(itemLabel)
+                    sb.append("<div style=\"border: 0;\">").append(itemLabel)
                             .append("</div>");
 							rowCounter++;
 					}
