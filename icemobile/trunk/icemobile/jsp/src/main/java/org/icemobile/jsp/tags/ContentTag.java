@@ -87,8 +87,6 @@ public class ContentTag extends TagSupport {
         } finally {
             if (mTabParent != null) {
                 mTabParent.resetIndex();
-            } else {
-                mAccParent.resetIndex();
             }
         }
         return EVAL_PAGE;
@@ -101,9 +99,8 @@ public class ContentTag extends TagSupport {
     public String getIndex() {
         if (mTabParent != null) {
             return mTabParent.getIndex();
-        } else {
-            return mAccParent.getIndex();
         }
+        throw new UnsupportedOperationException("getIndex() should not be called from Accordion");
     }
 
     public String getId() {
