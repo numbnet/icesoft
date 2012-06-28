@@ -60,7 +60,6 @@ public class MapLoad extends ComponentExampleImpl<MapLoad> implements Serializab
 	private static final String CUSTOM_SELECT = "CUSTOM_SELECT";
 	
 	private SelectItem[] availableKMLs = new SelectItem[] {
-	    new SelectItem("http://virtualglobetrotting.com/map-23.kml", "Golden Gate Bridge"),
 	    new SelectItem("http://coinatlantic.ca/kmlfiles/EnvironmentCanadaAtlantic/ECHydrometricNL.kml", "Atlantic Canada Hydrometric"),
 	    new SelectItem("http://www.rivercitynetworks.com/weather_radar_usa.kml", "USA Weather"),
 	    new SelectItem("http://www.austindarts.org/darts.kml", "Darts in Austin, Texas"),
