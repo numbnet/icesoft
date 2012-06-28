@@ -8,7 +8,6 @@
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
     <meta name="apple-mobile-web-app-capable" content="yes"/>
-    <link href="<c:url value="/resources/org.icefaces.component.skins/bberry/tabset/default-tabset.css" />" rel="stylesheet"  type="text/css" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black"/>
     <link href="<c:url value="/resources/form.css" />" rel="stylesheet"
           type="text/css"/>
@@ -121,6 +120,7 @@
     </li>
     <li><a href="<c:url value="/tabset" />" title="tabset">Tabset</a>
     </li>
+    <li><a href="<c:url value="/accordion" />" title="accordion">Accordion</a></li>
     <li><a href="#icehtml">HTML</a></li>
 </ul>
 <div id="welcome">
