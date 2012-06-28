@@ -43,19 +43,12 @@ public class GmapBean  implements Serializable {
 	private String standardAddress = "";
     // whether we should search for an address or not
 	private boolean locateAddress = false;
-	private List points = new ArrayList();
 	private boolean showControls = true;
-	private boolean showMarkers = true;
     // value bound to the gmap component
 	private String address = "";
 	
 	public GmapBean() {
         // Generate a set of default map marker locations
-		points.add(new GMapLatLng("37.379434", "-121.92293"));
-		points.add(new GMapLatLng("33.845449", "-84.368682"));
-		points.add(new GMapLatLng("34.05333", "-118.24499"));
-		points.add(new GMapLatLng("33.072694", "-97.06234"));
-        points.add(new GMapLatLng("37.391278", "-121.952451"));
 	}
 	
 	public String getStandardAddress() {
@@ -65,14 +58,6 @@ public class GmapBean  implements Serializable {
 	public void setStandardAddress(String standardAddress) {	
 		this.standardAddress = standardAddress;
 		this.address = standardAddress;
-	}
-	
-	public List getPoints() {
-		return points;
-	}
-
-	public void setPoints(List points) {
-		this.points = points;
 	}
 
     public String getGeoCoderAddress() {
@@ -89,14 +74,6 @@ public class GmapBean  implements Serializable {
     
     public void setShowControls(boolean showControls) {
         this.showControls = showControls;
-    }
-  
-    public boolean isShowMarkers() {
-        return showMarkers;
-    }
-    
-    public void setShowMarkers(boolean showMarkers) {
-        this.showMarkers = showMarkers;
     }
     
     public String getAddress() {
