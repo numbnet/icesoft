@@ -640,5 +640,77 @@
         </attribute>
     </tag>
 
+    <tag>
+      <description>DateSpinner is an input control to provide a date.</description>
+      <name>dateSpinner</name>
+      <tag-class>org.icemobile.jsp.tags.DateSpinnerTag</tag-class>
+      <body-content>empty</body-content>
+      <attribute>
+	<name>disabled</name>
+	<required>no</required>
+	<rtexprvalue>true</rtexprvalue>
+	<type>boolean</type>
+      </attribute>
+      <attribute>
+	<name>id</name>
+	<required>no</required>
+	<rtexprvalue>true</rtexprvalue>
+	<type>java.lang.String</type>
+      </attribute>
+      <attribute>
+	<name>name</name>
+	<required>no</required>
+	<rtexprvalue>true</rtexprvalue>
+	<type>java.lang.String</type>
+      </attribute>
+      <attribute>
+	<name>pattern</name>
+	<required>no</required>
+	<rtexprvalue>true</rtexprvalue>
+	<type>java.lang.String</type>
+      </attribute>
+      <attribute>
+	<name>readonly</name>
+	<required>no</required>
+	<rtexprvalue>true</rtexprvalue>
+	<type>boolean</type>
+      </attribute>
+      <attribute>
+	<name>style</name>
+	<required>no</required>
+	<rtexprvalue>false</rtexprvalue>
+	<type>java.lang.String</type>
+      </attribute>
+      <attribute>
+	<name>styleClass</name>
+	<required>no</required>
+	<rtexprvalue>false</rtexprvalue>
+	<type>java.lang.String</type>
+      </attribute>
+      <attribute>
+	<name>useNative</name>
+	<required>no</required>
+	<rtexprvalue>true</rtexprvalue>
+	<type>boolean</type>
+      </attribute>
+      <attribute>
+	<name>value</name>
+	<required>no</required>
+	<rtexprvalue>true</rtexprvalue>
+	<type>java.lang.Object</type>
+      </attribute>
+      <attribute>
+	<name>yearEnd</name>
+	<required>no</required>
+	<rtexprvalue>true</rtexprvalue>
+	<type>int</type>
+      </attribute>
+      <attribute>
+	<name>yearStart</name>
+	<required>no</required>
+	<rtexprvalue>true</rtexprvalue>
+	<type>int</type>
+      </attribute>
+    </tag>
 
 </taglib>
