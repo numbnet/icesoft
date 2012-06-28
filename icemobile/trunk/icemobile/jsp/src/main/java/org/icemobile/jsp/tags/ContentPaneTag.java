@@ -28,6 +28,9 @@ public class ContentPaneTag extends TagSupport {
 
     private static final String MOBI_TABPAGE = "mobi-tabpage";
     private static final String MOBI_TABPAGE_HIDDEN = "mobi-tabpage-hidden";
+    private static final String MOBI_ACCORDION_OPEN = "open";
+    private static final String MOBI_ACCORDION_CLOSED = "closed";
+
     private static Logger LOG = Logger.getLogger(ContentTag.class.getName());
 
     private String mActiveContentClass;
@@ -44,17 +47,13 @@ public class ContentPaneTag extends TagSupport {
         if (!(parent instanceof ContentTag)) {
             throw new IllegalArgumentException("ContentPane must be child of ContentTag");
         }
-
         mParent = (ContentTag) parent;
         if (mParent.isTabParent()) {
             mActiveContentClass = MOBI_TABPAGE;
             mPassiveContentClass = MOBI_TABPAGE_HIDDEN;
-
         } else {
-//
-            mActiveContentClass = "open";
-            mPassiveContentClass = "closed";
-
+            mActiveContentClass = MOBI_ACCORDION_OPEN;
+            mPassiveContentClass = MOBI_ACCORDION_CLOSED;
         }
         mSelectedItem = mParent.getSelectedItem();
         mMyIndex = mParent.getIndex();
@@ -83,7 +82,15 @@ public class ContentPaneTag extends TagSupport {
         } else {
             tag.append(mPassiveContentClass);
         }
-        tag.append("\" >");
+        if (styleClass != null && !"".equals(styleClass)) {
+            tag.append(" ").append(styleClass);
+        }
+        tag.append("\"");
+
+        if (style != null && !"".equals(style)) {
+            tag.append(" style=\"").append(style).append("\"");
+        }
+        tag.append(">");
 
         try {
             out.write(tag.toString());
@@ -101,9 +108,17 @@ public class ContentPaneTag extends TagSupport {
         }
 
         if (mSelectedItem != null && mSelectedItem.equals(id)) {
-            tag.append(" class=\"").append(mActiveContentClass).append("\"");
+            tag.append(" class=\"").append(mActiveContentClass);
         } else {
             tag.append(" class=\"").append(mPassiveContentClass).append("\"");
+        }
+        if (styleClass != null && !"".equals(styleClass)) {
+            tag.append(" ").append(styleClass);
+        }
+        tag.append("\"");
+
+        if (style != null && !"".equals(style)) {
+            tag.append(" style=\"").append(style).append("\"");
         }
 
         tag.append(">");
@@ -113,9 +128,11 @@ public class ContentPaneTag extends TagSupport {
                 .append(mParent.getId()).append("', this, false);\">");
 
         tag.append(TagUtil.DIV_TAG).append(" class=\"pointer\">&#9658;</div>");
-        if (botitle != null && !"".equals(botitle)) {
-            tag.append(botitle);
+        if (title != null && !"".equals(title)) {
+            tag.append(title);
         }
+
+        tag.append(TagUtil.DIV_TAG_END);
 
         try {
 
@@ -137,9 +154,10 @@ public class ContentPaneTag extends TagSupport {
         Writer out = pageContext.getOut();
 
         try {
-            out.write(TagUtil.DIV_TAG_END);
 
-            if (!mParent.isTabParent()) {
+            if (mParent.isTabParent()) {
+                out.write(TagUtil.DIV_TAG_END);
+            } else {
                 out.write(TagUtil.SECTION_TAG_END);
             }
         } catch (IOException ioe) {
@@ -150,16 +168,16 @@ public class ContentPaneTag extends TagSupport {
 
     private String styleClass;
     private String style;
-    private String botitle;
+    private String title;
 
     private String id;
 
-    public String getBotitle() {
-        return botitle;
+    public String getTitle() {
+        return title;
     }
 
-    public void setBotitle(String title) {
-        this.botitle = title;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public String getId() {
