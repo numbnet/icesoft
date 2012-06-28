@@ -28,11 +28,13 @@ public class HeaderTag extends TagSupport {
     }
 
 
-    public int doStartTag() {
+    public int doStartTag() throws JspTagException {
 
         Writer out = pageContext.getOut();
         if (mParent.isTabParent()) {
             writeTabHeader(out);
+        } else {
+            throw new JspTagException("AccordionTag doesn't use HeaderTag");
         }
         return EVAL_BODY_INCLUDE;
     }
@@ -55,33 +57,6 @@ public class HeaderTag extends TagSupport {
             LOG.severe("IOException writing header");
         }
     }
-
-
-    private void writeAccHeader(Writer out) {
-
-        StringBuilder tag = new StringBuilder(TagUtil.LI_TAG);
-        tag.append(" id=\"").append(mParent.getId()).append("tab_").append(mMyIndex).append("\"");
-
-        String selectedItem = mParent.getSelectedItem();
-        if (mMyIndex.equals(selectedItem)) {
-            tag.append(" class=\"").append(ACTIVE_TAB_CLASS).append("\"");
-        }
-
-        if (mParent.isTabParent()) {
-            tag.append(" onclick=\"").append(getTabsetJavascriptForItem(mMyIndex)).append("\"");
-        } else {
-            tag.append(" onclick='").append(getAccordionJavascriptForItem(mMyIndex)).append("'");
-        }
-
-        tag.append(">");
-        try {
-            out.write(tag.toString());
-        } catch (IOException ioe) {
-            LOG.severe("IOException writing header");
-        }
-
-    }
-
 
     public int doEndTag() throws JspTagException {
 
@@ -112,22 +87,6 @@ public class HeaderTag extends TagSupport {
         }
         sb.append("} );");
         return sb.toString();
-    }
-
-    public String getAccordionJavascriptForItem(String accordianId) {
-
-//        logger.info("looking for index="+activeIndex+" selectedPane to open ="+openPane.getId());
-//        selectedPanel is now set
-//        if (openPane != null) {
-//            writer.writeAttribute("data-opened", openPane.getClientId(facesContext), null);
-//        }
-
-        return "";
-    }
-
-
-    private String getIndex() {
-        return mParent.getIndex();
     }
 
     public String getHeight() {
