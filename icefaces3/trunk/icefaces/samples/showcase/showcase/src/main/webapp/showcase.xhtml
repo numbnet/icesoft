@@ -14,10 +14,6 @@
   ~ governing permissions and limitations under the License.
   -->
 
-
-
-
-
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:f="http://java.sun.com/jsf/core"
@@ -39,11 +35,11 @@
     </ui:define>
 
     <ui:define name="suite-select-menu">
-        <div id="headerCenter">
-            <div id="headerLogo">
+        <h:panelGroup layout="block" id="headerCenter">
+            <h:panelGroup layout="block"  id="headerLogo">
                 <h:graphicImage value="/resources/css/images/topBannerImages/title.png" alt="ICEfaces Logo"/>
-            </div>
-            <div id="headerTabs">
+            </h:panelGroup>
+            <h:panelGroup layout="block" id="headerTabs">
                 <h:panelGrid id="suiteLinks" styleClass="linkTableStyle">
                     <h:panelGroup styleClass="linksHolder">
                         <h:link id="iceSuiteLink"
@@ -64,8 +60,8 @@
                         </h:link>
                     </h:panelGroup>
                 </h:panelGrid>
-            </div>
-        </div>
+            </h:panelGroup>
+        </h:panelGroup>
         
         <!--
         ~ Temporary ui:remove tag hide link to the EE suite showcase. (to be removed once ee components will be available)

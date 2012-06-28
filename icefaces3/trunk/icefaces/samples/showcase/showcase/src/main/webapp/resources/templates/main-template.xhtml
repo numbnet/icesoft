@@ -34,30 +34,30 @@
     <h:outputStylesheet library="css" name="override_styles.css" target="head"/>
     <h:outputStylesheet library="css" name="showcase_styles.css" target="head"/>
     <f:view contentType="text/html">
-        <div id="header">
+        <h:panelGroup id="header" layout="block">
             <ui:insert name="suite-select-menu"/>
-        </div>
+        </h:panelGroup>
 
-        <div id="container">
-            <div id="mid" class="full-width">
-                    <span id="menu">
-                        <div class="menuContainer">
+        <h:panelGroup id="container" layout="block">
+            <h:panelGroup layout="block" id="mid" class="full-width">
+                    <h:panelGroup id="menu">
+                        <h:panelGroup layout="block" class="menuContainer">
                             <ui:insert name="suite-menu"/>
-                        </div>
-                    </span>
-                    <span id="primary">
+                        </h:panelGroup>
+                    </h:panelGroup>
+                    <h:panelGroup id="primary">
                         <!-- TODO: Implement bread crumbs-->
-                        <div class="breadCrumbs">
-                        </div>
+                        <h:panelGroup layout="block" class="breadCrumbs">
+                        </h:panelGroup>
                         <!-- todo implement theme selection, going to be tricky... -->
-                        <div class="themeSelect">
-                        </div>
+                        <h:panelGroup layout="block" class="themeSelect">
+                        </h:panelGroup>
 
                         <ui:insert name="component-example"/>
-                    </span>
-            </div>
+                    </h:panelGroup>
+            </h:panelGroup>
 
-            <div id="footer">
+            <h:panelGroup layout="block" id="footer">
                 <!--
                 <ul class="footer-nav">
                         <li><a>about</a></li>
@@ -66,8 +66,8 @@
                 </ul>
                 -->
                 <p>&#xA9; 2012 ICEsoft Technologies Inc.</p>
-            </div>
-        </div>
+            </h:panelGroup>
+        </h:panelGroup>
     </f:view>
 </h:body>
 </html>
