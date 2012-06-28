@@ -85,16 +85,11 @@ public class MapZoom extends ComponentExampleImpl<MapZoom> implements Serializab
 	    return toReturn;
 	}
 	
-    public void applyChanges(ActionEvent event) {
-        NavigationController.refreshPage();
-    }
-    
     public void randomZoom(ActionEvent event) {
         if (randomizer == null) {
             randomizer = new Random(System.nanoTime());
         }
         
         setZoomLevel(availableLevels[randomizer.nextInt(availableLevels.length)]);
-        applyChanges(event);
     }
 }

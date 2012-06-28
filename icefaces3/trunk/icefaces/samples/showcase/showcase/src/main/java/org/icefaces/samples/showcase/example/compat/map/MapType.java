@@ -76,8 +76,4 @@ public class MapType extends ComponentExampleImpl<MapType> implements Serializab
 	public String getType() { return type; }
 	
 	public void setType(String type) { this.type = type; }
-	
-    public void applyChanges(ActionEvent event) {
-        NavigationController.refreshPage();
-    }
 }
