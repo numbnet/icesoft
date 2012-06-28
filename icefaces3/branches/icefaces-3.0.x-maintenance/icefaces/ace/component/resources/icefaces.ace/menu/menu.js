@@ -224,7 +224,9 @@ ice.ace.MenuButton = function(id, cfg) {
         _self.jqMenu.wijmenu('deactivate');
     };
 
-    //crete button and menu
+    ice.ace.jq(this.jqId + ' script').remove(); // remove script to avoid executing it again
+	
+	//crete button and menu
     this.jqbutton.button({icons:{primary:'ui-icon-triangle-1-s'}});
     this.jqMenu.wijmenu(this.cfg);
 
