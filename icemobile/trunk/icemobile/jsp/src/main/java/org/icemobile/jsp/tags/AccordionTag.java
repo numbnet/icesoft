@@ -64,7 +64,16 @@ public class AccordionTag extends TagSupport {
 
         Writer out = pageContext.getOut();
         try {
-            out.write(TagUtil.DIV_TAG_END);
+            // Write hidden input field with id matching javascript and name = id
+            StringBuilder tag = new StringBuilder(TagUtil.SPAN_TAG);
+            tag.append(">").append(TagUtil.INPUT_TAG);
+            tag.append(" id=\"").append(getId()).append("_hidden\"");
+            tag.append(" name=\"").append(getId()).append("\"");
+            tag.append(" type=\"hidden\"/>");
+            tag.append(TagUtil.SPAN_TAG_END);
+            tag.append(TagUtil.DIV_TAG_END);
+
+            out.write(tag.toString());
             encodeScript(out);
         } catch (IOException ioe) {
             LOG.severe("IOException closing AccordionTag: " + ioe);
