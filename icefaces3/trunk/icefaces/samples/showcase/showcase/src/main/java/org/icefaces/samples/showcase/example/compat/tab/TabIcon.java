@@ -53,7 +53,7 @@ import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
 public class TabIcon extends ComponentExampleImpl<TabIcon> implements Serializable {
 	
     public static final String BEAN_NAME = "tabIcon";
-
+    
     public TabIcon() {
             super(TabIcon.class);
     }
