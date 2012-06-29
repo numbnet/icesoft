@@ -160,7 +160,7 @@ public class DateSpinnerTag extends SimpleTagSupport {
         } else {
             // touch event can be problematic sometime not actualy getting called
             // for ui widgets that don't require rapid response then stick with onClick
-            tu.writeAttribute(writer, CLICK_EVENT, "mobi.datespinner.toggle('" + id + "');");
+            tu.writeAttribute(writer, CLICK_EVENT, "ice.mobi.datespinner.toggle('" + id + "');");
         }
 	writer.write(">" + tu.INPUT_TAG_END);
 
@@ -241,7 +241,7 @@ public class DateSpinnerTag extends SimpleTagSupport {
         tu.writeAttribute(writer, "class", "mobi-button mobi-button-default");
         tu.writeAttribute(writer, "type", "button");
         tu.writeAttribute(writer, "value", "Cancel");
-        tu.writeAttribute(writer, CLICK_EVENT, "mobi.datespinner.close('" + id + "');");
+        tu.writeAttribute(writer, CLICK_EVENT, "ice.mobi.datespinner.close('" + id + "');");
         writer.write(">" + tu.INPUT_TAG_END);
         writer.write(tu.DIV_TAG_END);                                        //end of button container
         writer.write(tu.DIV_TAG_END);                                         //end of entire container
@@ -252,9 +252,9 @@ public class DateSpinnerTag extends SimpleTagSupport {
         //separate the value into yrInt, mthInt, dateInt for now just use contstants
         writer.write(tu.SPAN_TAG);
         tu.writeAttribute(writer, "id", id + "_script");
-        writer.write("> Into Script Span " + tu.SCRIPT_TAG);
+        writer.write(">" + tu.SCRIPT_TAG);
         tu.writeAttribute(writer, "text", "text/javascript");
-        writer.write(">alert('Spinner Init'); mobi.datespinner.init('" + id + "'," + yearInt + ","
+        writer.write(">ice.mobi.datespinner.init('" + id + "'," + yearInt + ","
                 + monthInt + "," + dayInt + ",'" + pattern + "');");
         writer.write(tu.SCRIPT_TAG_END);
         writer.write(tu.SPAN_TAG_END);
@@ -326,7 +326,7 @@ public class DateSpinnerTag extends SimpleTagSupport {
         tu.writeAttribute(writer, "class", BUTTON_INC_CLASS);
         tu.writeAttribute(writer, "id", clientId + "_dUpBtn");
         tu.writeAttribute(writer, "type", "button");
-        tu.writeAttribute(writer, eventStr, "mobi.datespinner.dUp('" + clientId + "');");
+        tu.writeAttribute(writer, eventStr, "ice.mobi.datespinner.dUp('" + clientId + "');");
 	writer.write(">" + tu.INPUT_TAG_END);
 	writer.write(tu.DIV_TAG_END);                          //end button incr
         writer.write(tu.DIV_TAG);                          //day value
@@ -340,7 +340,7 @@ public class DateSpinnerTag extends SimpleTagSupport {
         tu.writeAttribute(writer, "class", BUTTON_DEC_CLASS);
         tu.writeAttribute(writer, "id", clientId + "_dDnBtn");
         tu.writeAttribute(writer, "type", "button");
-        tu.writeAttribute(writer, eventStr, "mobi.datespinner.dDn('" + clientId + "');");
+        tu.writeAttribute(writer, eventStr, "ice.mobi.datespinner.dDn('" + clientId + "');");
 	writer.write(">" + tu.INPUT_TAG_END);
 	writer.write(tu.DIV_TAG_END);                             //end button decrement
 	writer.write(tu.DIV_TAG_END);                         //end of dateEntry select container
@@ -357,7 +357,7 @@ public class DateSpinnerTag extends SimpleTagSupport {
         tu.writeAttribute(writer, "class", BUTTON_INC_CLASS);
         tu.writeAttribute(writer, "id", clientId + "_mUpBtn");
         tu.writeAttribute(writer, "type", "button");
-        tu.writeAttribute(writer, eventStr, "mobi.datespinner.mUp('" + clientId + "');");
+        tu.writeAttribute(writer, eventStr, "ice.mobi.datespinner.mUp('" + clientId + "');");
         writer.write(">" + tu.INPUT_TAG_END);
         writer.write(tu.DIV_TAG_END);                                        //end button incr
         writer.write(tu.DIV_TAG);                             //month value
@@ -371,7 +371,7 @@ public class DateSpinnerTag extends SimpleTagSupport {
         tu.writeAttribute(writer, "class", BUTTON_DEC_CLASS);
         tu.writeAttribute(writer, "id", clientId + "_mDnBtn");
         tu.writeAttribute(writer, "type", "button");
-        tu.writeAttribute(writer, eventStr, "mobi.datespinner.mDn('" + clientId + "');");
+        tu.writeAttribute(writer, eventStr, "ice.mobi.datespinner.mDn('" + clientId + "');");
         writer.write(">" + tu.INPUT_TAG_END);
         writer.write(tu.DIV_TAG_END);                                        //end button decrement
         writer.write(tu.DIV_TAG_END);                                //end of month select container
@@ -392,7 +392,7 @@ public class DateSpinnerTag extends SimpleTagSupport {
         tu.writeAttribute(writer, "class", BUTTON_INC_CLASS);
         tu.writeAttribute(writer, "id", clientId + "_yUpBtn");
         tu.writeAttribute(writer, "type", "button");
-        tu.writeAttribute(writer, eventStr, "mobi.datespinner.yUp('" + clientId + "');");
+        tu.writeAttribute(writer, eventStr, "ice.mobi.datespinner.yUp('" + clientId + "');");
         writer.write(">" + tu.INPUT_TAG_END);
         writer.write(tu.DIV_TAG_END);                                         //end button incr
         writer.write(tu.DIV_TAG);                             //year value
@@ -406,7 +406,7 @@ public class DateSpinnerTag extends SimpleTagSupport {
         tu.writeAttribute(writer, "class", BUTTON_DEC_CLASS);
         tu.writeAttribute(writer, "id", clientId + "_yDnBtn");
         tu.writeAttribute(writer, "type", "button");
-        tu.writeAttribute(writer, eventStr, "mobi.datespinner.yDn('" + clientId + "');");
+        tu.writeAttribute(writer, eventStr, "ice.mobi.datespinner.yDn('" + clientId + "');");
         writer.write(">" + tu.INPUT_TAG_END);
         writer.write(tu.DIV_TAG_END);                                        //end button decrement
         writer.write(tu.DIV_TAG_END);                                //end of year select container
