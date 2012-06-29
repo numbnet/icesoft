@@ -36,9 +36,6 @@
         <h:form>
             <icecore:singleSubmit/>
             <h:panelGrid columns="2">
-                <h:outputLabel for="centerIn" value="Auto Center?"/>
-                <h:selectBooleanCheckbox id="centerIn" value="#{confirmationDisplay.autoCentre}"/>
-                
                 <h:outputLabel for="draggableIn" value="Draggable?"/>
                 <h:selectBooleanCheckbox id="draggableIn" value="#{confirmationDisplay.draggable}"/>
             </h:panelGrid>
@@ -64,7 +61,6 @@
                                    message="Click 'Accept' if you wish to submit the text you entered. Otherwise click 'Cancel' and the server will not be updated with the text."
                                    acceptLabel="Accept"
                                    cancelLabel="Cancel"
-                                   autoCentre="#{confirmationDisplay.autoCentre}"
                                    draggable="#{confirmationDisplay.draggable}"
                                    rendered="true"/>
                                    
@@ -72,7 +68,6 @@
                                    message="Click 'Accept' if you wish to remove the previously submitted text. Otherwise click 'Cancel' and the text will remain on the server."
                                    acceptLabel="Accept"
                                    cancelLabel="Cancel"
-                                   autoCentre="#{confirmationDisplay.autoCentre}"
                                    draggable="#{confirmationDisplay.draggable}"
                                    rendered="true"/>        
         </h:form>

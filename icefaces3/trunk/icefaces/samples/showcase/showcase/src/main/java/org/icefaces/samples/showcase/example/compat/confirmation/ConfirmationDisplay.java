@@ -56,7 +56,6 @@ public class ConfirmationDisplay extends ComponentExampleImpl<ConfirmationDispla
 	public static final String BEAN_NAME = "confirmationDisplay";
 	
 	private String text;
-	private boolean autoCentre = true;
 	private boolean draggable = true;
 	
 	public ConfirmationDisplay() {
@@ -69,11 +68,9 @@ public class ConfirmationDisplay extends ComponentExampleImpl<ConfirmationDispla
     }
 
 	public String getText() { return text; }
-	public boolean getAutoCentre() { return autoCentre; }
 	public boolean getDraggable() { return draggable; }
 	
 	public void setText(String text) { this.text = text; }
-	public void setAutoCentre(boolean autoCentre) { this.autoCentre = autoCentre; }
 	public void setDraggable(boolean draggable) { this.draggable = draggable; }
 	
 	public void clearText(ActionEvent event) {
