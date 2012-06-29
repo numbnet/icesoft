@@ -149,7 +149,7 @@
   <target name="javadoc">
         <delete dir="${javadocs.dir}"/>
         <javadoc destdir="${javadocs.dir}" windowtitle="${javadoc.title}" failonerror="true"
-        	bottom="Copyright ${year} ${copyright}">
+        	bottom="Copyright ${year} ${copyright}" useexternalfile="true">
         <classpath>
                 <fileset dir="${lib.dir}">
                     <patternset refid="lib.compile"/>
