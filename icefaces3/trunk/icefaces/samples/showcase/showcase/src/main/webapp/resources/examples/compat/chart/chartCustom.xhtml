@@ -41,6 +41,9 @@
             <ice:outputChart type="#{chartCustom.type}" 
                              renderOnSubmit="#{chartCustom.model.renderOnSubmit}"
                              actionListener="#{chart.chartClicked}"
+                             chartTitle="#{chart.model.chartTitle}"
+                             xaxisTitle="#{chart.model.XAxisTitle}"
+                             yaxisTitle="#{chart.model.YAxisTitle}"
                              width="450" height="300"/>
         </h:form>
     </ui:define>

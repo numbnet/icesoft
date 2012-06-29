@@ -24,6 +24,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.event.ActionEvent;
 
 import com.icesoft.faces.component.outputchart.OutputChart;
+import org.krysalis.jcharts.chartData.DataSeries;
 
 import org.icefaces.samples.showcase.metadata.annotation.ComponentExample;
 import org.icefaces.samples.showcase.metadata.annotation.ExampleResource;
@@ -90,6 +91,7 @@ public class ChartBean extends ComponentExampleImpl<ChartBean> implements Serial
 	public static final String BEAN_NAME = "chart";
 	
 	private String clickedStatus = "No chart has been clicked yet.";
+	private ChartModelCustom model = new ChartModelCustom(true, false, false, false);
 	
 	public ChartBean() {
 		super(ChartBean.class);
@@ -101,8 +103,11 @@ public class ChartBean extends ComponentExampleImpl<ChartBean> implements Serial
     }
 
 	public String getClickedStatus() { return clickedStatus; }
+	public String getType() { return OutputChart.CUSTOM_CHART_TYPE; }
+	public ChartModelCustom getModel() { return model; }	
 	
 	public void setClickedStatus(String clickedStatus) { this.clickedStatus = clickedStatus; }
+	public void setModel(ChartModelCustom model) { this.model = model; }
 	
 	public void chartClicked(ActionEvent event) {
         if (event.getSource() instanceof OutputChart) {
@@ -110,12 +115,14 @@ public class ChartBean extends ComponentExampleImpl<ChartBean> implements Serial
             if (chart.getClickedImageMapArea().getXAxisLabel() != null) {
                 StringBuffer sb = new StringBuffer(65);
                 sb.append(chart.getChartTitle());
-                sb.append(" clicked with a value of ");
+                sb.append(" with ");
+                sb.append(chart.getYaxisTitle());
+                sb.append(" = ");
                 sb.append(chart.getClickedImageMapArea().getValue());
-                sb.append(" along axis of ");
+                sb.append(" and ");
+                sb.append(chart.getXaxisTitle());
+                sb.append(" = ");
                 sb.append(chart.getClickedImageMapArea().getXAxisLabel());
-                sb.append(" and legend of ");
-                sb.append(chart.getClickedImageMapArea().getLengendLabel());
                 sb.append(".");
                 
                 clickedStatus = sb.toString();
