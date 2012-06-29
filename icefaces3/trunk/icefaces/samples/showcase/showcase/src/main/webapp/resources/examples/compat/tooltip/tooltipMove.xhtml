@@ -60,6 +60,7 @@
                     
                     <ice:panelTooltip id="toolNum"
                                       moveWithMouse="#{tooltipMove.move}"
+                                      displayOn="click"
                                       hideOn="mousedown">
                         <f:facet name="header">
                             Details for Element #{element.name} (#{element.symbol})
@@ -93,7 +94,8 @@
                                   
                     <ice:panelTooltip id="toolName"
                                       moveWithMouse="#{tooltipMove.move}"
-                                      hideOn="mousedown">
+                                      hideOn="mousedown"
+                                      displayOn="click">
                         <f:facet name="header">
                             Details for Element #{element.name} (#{element.symbol})
                         </f:facet>
