@@ -554,13 +554,13 @@ ice.mobi.accordionController = {
     }
 }
 
-mobi.datespinner = {
+ice.mobi.datespinner = {
     pattern:{}, //supported formats are dd/MM/yyyy, MM-dd-yyyy, dd-MM-yyyy, yyyy-MM-dd, yyyy-dd-MM
     opened:{},
     centerCalculation:{},
     scrollEvent:{},
     init:function (clientId, yrSel, mSel, dSel, format) {
-	alter('Spinner init called');
+	alert('Spinner init called');
         var idPanel = clientId + "_bg";
         if (!document.getElementById(idPanel).className) {
             document.getElementById(idPanel).className = 'mobi-date-bg-inv';
@@ -796,6 +796,7 @@ mobi.datespinner = {
         this.dateSubmit(cfg, clientId);
     },
     toggle:function (clientId) {
+	alert('into toggle');
         if (!this.opened[clientId]) {
             this.open(clientId);
         } else {
@@ -808,7 +809,7 @@ mobi.datespinner = {
 
         // add scroll listener
         this.centerCalculation[clientId] = function () {
-            mobi.panelAutoCenter(idPopPanel);
+            ice.mobi.panelAutoCenter(idPopPanel);
         };
 
         if (window.addEventListener) {
@@ -824,7 +825,7 @@ mobi.datespinner = {
         // set as visible.
         this.opened[clientId] = true;
         // calculate center for first view
-        mobi.panelAutoCenter(idPopPanel);
+        ice.mobi.panelAutoCenter(idPopPanel);
     },
     close:function (clientId) {
         var idPanel = clientId + "_bg";
