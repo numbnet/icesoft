@@ -185,7 +185,7 @@
                  defaultexcludes="yes"
                  version="true"
                  use="true"
-                 useexternalfile="true">
+                 useexternalfile="true" >
 
             <fileset dir="${src.dir}" casesensitive="yes">
 
