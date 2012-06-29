@@ -177,14 +177,15 @@
 
     <target name="javadoc">
         <delete dir="${build.api.doc.dir}"/>
-        <javadoc destdir="${build.api.doc.dir}" windowtitle="${javadoc.title}" failonerror="true"
-        	bottom="Copyright ${year} ${copyright}" packagenames="com.icesoft.faces.component.*"
-
+        <javadoc destdir="${build.api.doc.dir}"
+                 windowtitle="${javadoc.title}"
+                 failonerror="true"
+                 bottom="Copyright ${year} ${copyright}"
+                 packagenames="com.icesoft.faces.component.*"
                  defaultexcludes="yes"
-
                  version="true"
-
-                 use="true">
+                 use="true"
+                 useexternalfile="true">
 
             <fileset dir="${src.dir}" casesensitive="yes">
 

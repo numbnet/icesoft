@@ -475,12 +475,17 @@
     </target>
 
     <target name="javadoc" depends="compile" description="Generate the component JavaDoc Documentation in HTML format.">
+        <antcall target="javadoc-no-compile"/>
+    </target>
+
+    <target name="javadoc-no-compile">
         <delete dir="${javadocs.dir}"/>
-        <javadoc 
+        <javadoc
                  destdir="${java.doc}"
                  classpathref="javadoc.classpath"
                  windowtitle="${javadoc.title}" failonerror="true"
-                 bottom="Copyright ${year} ${copyright}">
+                 bottom="Copyright ${year} ${copyright}"
+                 useexternalfile="true">
             <fileset dir="." defaultexcludes="yes">
                 <include name="src/**/*.java"/>
                 <include name="build/generated/support/**/*.java"/>
