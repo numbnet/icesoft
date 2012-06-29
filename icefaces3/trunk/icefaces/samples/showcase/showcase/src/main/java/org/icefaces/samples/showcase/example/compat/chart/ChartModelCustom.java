@@ -70,18 +70,16 @@ public class ChartModelCustom extends AbstractChartData implements Serializable 
     private void init() {
 
         String[] xAxisLabels;
-        String xAxisTitle;
-        String yAxisTitle;
         String[] legendLabels;
 
         try {
             xAxisLabels = new String[]{"1998", "1999", "2000", "2001", "2002", "2003", "2004"};
             xAxisTitle = "Years";
             yAxisTitle = "Problems";
-            String title = "Company Software";
+            chartTitle = "Company Software";
 
             DataSeries dataSeries =
-                    new DataSeries(xAxisLabels, xAxisTitle, yAxisTitle, title);
+                    new DataSeries(xAxisLabels, xAxisTitle, yAxisTitle, chartTitle);
 
             double[][] data = TestDataGenerator.getRandomNumbers(3, 7, 0, 5000);
             legendLabels = new String[]{"Bugs", "Enhancements", "Fixes"};
