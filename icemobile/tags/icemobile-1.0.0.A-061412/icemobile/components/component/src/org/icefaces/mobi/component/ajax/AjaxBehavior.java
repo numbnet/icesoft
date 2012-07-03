@@ -209,7 +209,7 @@ public class AjaxBehavior extends ClientBehaviorBase {
                 values = new Object[] { superState };
             }
         } else {
-            values = new Object[3];
+            values = new Object[12];
 
             values[0] = superState;
             values[1] = listener;
