@@ -31,16 +31,15 @@
 
 
             <mobi:fieldsetRow>
-                <label>Comment: </label>
+                <label>Title: </label>
                 <h:outputText
-                        value="#{uploadModel.selectedPhoto.comment}"/>
+                        value="#{uploadModel.selectedPhoto.title}"/>
             </mobi:fieldsetRow>
 
 
             <mobi:fieldsetRow>
               <h:panelGroup rendered="#{uploadModel.selectedPhoto.showPhoto}" >
-                <label>Image:</label>
-                <mobi:graphicImage
+               <mobi:graphicImage
                         value="#{uploadModel.selectedPhoto.largePhoto.data}"
                         styleClass="imageViewer"
                         style="margin-bottom:10px;"/>
@@ -61,6 +60,11 @@
                         linkLabel="Play"
                         style="margin-bottom:10px;"/>
               </h:panelGroup>
+            </mobi:fieldsetRow>
+            <mobi:fieldsetRow>
+                <label>Description: </label>
+                <h:outputText
+                        value="#{uploadModel.selectedPhoto.description}"/>
             </mobi:fieldsetRow>
             <mobi:fieldsetRow>
                 <h:form>

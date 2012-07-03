@@ -40,7 +40,7 @@
                 <h:column>
                     <div style="overflow:hidden;width:175px;height:98px;">
                         <mobi:graphicImage style="border:none;"
-                                           title="#{mediaMessage.comment}"
+                                           title="#{mediaMessage.title}"
                                            width="#{mediaMessage.mediumPhoto.width}"
                                            height="#{mediaMessage.mediumPhoto.height}"
                                            value="#{mediaMessage.mediumPhoto.data}"/>
@@ -70,7 +70,7 @@
                               longitude="#{uploadModel.longitude}"/>
 
             <mobi:fieldsetGroup>
-                <mobi:fieldsetRow rendered="#{uploadModel.showInputSelect}">
+                <mobi:fieldsetRow rendered="#{empty uploadModel.selectedMediaInput}">
                     <!-- show new message creation buttons, image, movie and sound -->
                     <h:panelGroup
                             style="display:inline-block;padding-bottom: 3px;">
@@ -121,10 +121,18 @@
                     </mobi:fieldsetRow>
                 </ui:fragment>
                 <mobi:fieldsetRow>
-                    <h:outputLabel value="Comment:"/>
-                    <mobi:inputText id="comment"
-                                    placeholder="add comment"
-                                    value="#{uploadModel.comment}"/>
+                    <h:outputLabel value="Title:"/>
+                    <mobi:inputText id="title"
+                                    placeholder="add message title"
+                                    value="#{uploadModel.title}"/>
+                </mobi:fieldsetRow>
+                <mobi:fieldsetRow>
+                    <h:outputLabel value="Description:"/>
+                    <mobi:inputText id="description"
+                                    placeholder="add message description"
+                                    value="#{uploadModel.description}"
+                                    type="textarea"
+                                    style="width:99%;"/>
                 </mobi:fieldsetRow>
                 <mobi:fieldsetRow>
                     <!--<h:messages  id="fileUploadMsg" />-->
@@ -132,13 +140,13 @@
                                   value="#{uploadModel.uploadErrorMessage}"/>
                     <h:commandButton
                             style="float:right;"
-                            disabled="#{uploadModel.showInputSelect}"
+                            disabled="#{empty uploadModel.selectedMediaInput}"
                             styleClass="mobi-button mobi-button-default"
                             actionListener="#{mediaController.cancelUpload}"
                             value="Cancel"/>
                     <h:commandButton
                             style="float:right;"
-                            disabled="#{uploadModel.showInputSelect}"
+                            disabled="#{empty uploadModel.selectedMediaInput}"
                             styleClass="mobi-button mobi-button-important"
                             actionListener="#{mediaController.upload}"
                             value="Upload"/>

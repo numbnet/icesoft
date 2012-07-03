@@ -20,6 +20,8 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import java.io.File;
 import java.io.Serializable;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -34,17 +36,21 @@ public class MediaMessage implements Serializable {
     public static final String MEDIA_TYPE_PHOTO = "photo";
     public static final String MEDIA_TYPE_VIDEO = "video";
     public static final String MEDIA_TYPE_AUDIO = "audio";
+    
+    private String title;
+    private String description;
+    private String tags; //space delimited set of subject tags
+    private double latitude = 0.0;
+    private double longitude = 0.0;
+    private int direction; //0-359 degrees
 
-    private String comment;
-
+    
     private Media[] photos = new Media[3];
     private Media videoMedia = null;
     private Media audioMedia = null;
     private File mediaFile;
     private String mediaType = MEDIA_TYPE_PHOTO;
-    private double latitude = 0.0;
-    private double longitude = 0.0;
-
+    
     public Media getSmallPhoto() {
         return photos[0];
     }
@@ -71,14 +77,6 @@ public class MediaMessage implements Serializable {
 
     public void addLargePhoto(Media photo) {
         photos[2] = photo;
-    }
-
-    public String getComment() {
-        return comment;
-    }
-
-    public void setComment(String comment) {
-        this.comment = comment;
     }
 
     public Media[] getPhotos() {
@@ -148,11 +146,49 @@ public class MediaMessage implements Serializable {
         this.longitude = longitude;
     }
 
-    public String getPackedLocation()  {
-        return comment + "=" + latitude + "," + longitude;
+    public String getMessageAsUrlParam()  {
+    	String url = null;
+    	try {
+    		url = URLEncoder.encode(getTitle() + "=" + latitude + "," + longitude, "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			logger.warning("location could not be encoded: " + e.getMessage());
+		}
+    	return url;
     }
 
-    /**
+    public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public String getTags() {
+		return tags;
+	}
+
+	public void setTags(String tags) {
+		this.tags = tags;
+	}
+
+	public int getDirection() {
+		return direction;
+	}
+
+	public void setDirection(int direction) {
+		this.direction = direction;
+	}
+
+	/**
      * Clean up file resoruces.
      */
     public void dispose(){

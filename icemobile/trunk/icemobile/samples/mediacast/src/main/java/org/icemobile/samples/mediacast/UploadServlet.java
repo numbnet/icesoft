@@ -32,15 +32,19 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.util.Map;
 import java.util.HashMap;
+import java.util.logging.Logger;
 
 @WebServlet(urlPatterns = {"/upload/*"})
 @MultipartConfig
 public class UploadServlet extends HttpServlet {
     static String TEMP_DIR = "javax.servlet.context.tmpdir";
-    static String COMMENT = "comment";
+    
+    private static final Logger LOG = Logger.getLogger(UploadServlet.class.toString());
 
     public void service(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+    	
+    	LOG.info("incoming upload");
 
         ServletContext servletContext = request.getServletContext();
         try {
@@ -57,7 +61,8 @@ public class UploadServlet extends HttpServlet {
                     String fullPath = dirPath + fileName;
                     writePart(part, fullPath);
                     UploadModel uploadModel = new UploadModel();
-                    uploadModel.setComment(request.getParameter(COMMENT));
+                    uploadModel.setTitle(request.getParameter("title"));
+                    uploadModel.setDescription(request.getParameter("description"));
                     Map uploadAttributes = new HashMap();
                     uploadAttributes.put("file", new File(fullPath));
                     uploadAttributes.put("contentType", partType);
@@ -75,7 +80,11 @@ public class UploadServlet extends HttpServlet {
             }
         } catch (Exception e) {
             //ignoring part decoding Exceptions
+        	LOG.warning(e.getMessage());
+        	e.printStackTrace();
         }
+        
+        LOG.info("upload finished ... redirecting back to mediacast");
 
         response.sendRedirect(request.getContextPath() + "/mediacast.jsf");
     }

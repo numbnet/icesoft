@@ -25,8 +25,8 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 /**
- * UploadModes stores files uploaded via the new mobile components before
- * they are added to the ImageStore.  The bean also adds the currently
+ * UploadModel stores files uploaded via the new mobile components before
+ * they are added to the ImageStore.  The bean also adds the current
  * session to the "mobi" render group so that it can receive push updates when
  * a new file is uploaded by other users.
  */
@@ -49,17 +49,28 @@ public class UploadModel implements Serializable {
     private File videoFile;
     private double latitude = 0.0;
     private double longitude = 0.0;
+    private Integer direction;
 
     // select a photo to view in detail.
-    private MediaMessage selectedPhoto;
+    private transient MediaMessage selectedPhoto;
 
-    // placeholder for new message comment
-    private String photoComment;
+    private String title;
+    private String description;
 
     // upload error message
     private String uploadErrorMessage;
+    
+    private String selectedLocation;
 
-    public UploadModel() {
+    public String getSelectedLocation() {
+		return selectedLocation;
+	}
+
+	public void setSelectedLocation(String selectedLocation) {
+		this.selectedLocation = selectedLocation;
+	}
+
+	public UploadModel() {
         mediaMap = new HashMap<String, Object>();
     }
 
@@ -97,6 +108,9 @@ public class UploadModel implements Serializable {
             // try for a little clean up after
             imageFile.deleteOnExit();
         }
+        else{
+        	logger.warning("image file is null");
+        }
         cameraFile = imageFile;
     }
 
@@ -112,12 +126,12 @@ public class UploadModel implements Serializable {
         this.selectedPhoto = selectedPhoto;
     }
 
-    public String getComment() {
-        return photoComment;
+    public String getTitle() {
+        return title;
     }
 
-    public void setComment(String photoComment) {
-        this.photoComment = photoComment;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public File getCameraFile() {
@@ -150,10 +164,6 @@ public class UploadModel implements Serializable {
 
     public void setSelectedMediaInput(String selectedMediaInput) {
         this.selectedMediaInput = selectedMediaInput;
-    }
-
-    public boolean getShowInputSelect() {
-        return "".equals(selectedMediaInput);
     }
 
     public boolean getShowCamera() {
@@ -190,5 +200,27 @@ public class UploadModel implements Serializable {
 
     public void setLongitude(double longitude)  {
         this.longitude = longitude;
+    }
+    
+    public String getDescription(){
+    	return this.description;
+    }
+    
+    public void setDescription(String description){
+    	this.description = description;
+    }
+    
+    public Integer getDirection(){
+    	return direction;
+    }
+    
+    public void setDirection(Integer direction){
+    	this.direction = direction;
+    }
+    
+    public String toString(){
+    	return String.format("UploadModel: title=%s, description=%s, lat=%s, long=%s, direction=%s, video file=%s, audio=%s, camera=%s",
+    			this.getTitle(), this.getDescription(), this.getLatitude(), this.getLongitude(), this.direction, this.videoFile != null ? videoFile.getName() : "null", 
+    			audioFile != null ? audioFile.getName() : "null", cameraFile != null ? cameraFile.getName() : "null");
     }
 }
