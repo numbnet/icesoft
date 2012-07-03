@@ -554,13 +554,66 @@ ice.mobi.accordionController = {
     }
 }
 
+ice.mobi.panelAutoCenter = function (clientId) {
+    var windowWidth = ice.mobi._windowWidth();
+    var windowHeight = ice.mobi._windowHeight();
+    var scrollTop = document.body.scrollTop;
+    if (scrollTop == 0) {
+        scrollTop = document.documentElement.scrollTop;
+    }
+    if (windowHeight > 0) {
+        var contentElement = document.getElementById(clientId);
+        var contentHeight = contentElement.offsetHeight;
+        var contentWidth = contentElement.offsetWidth;
+        if (windowHeight - contentHeight > 0) {
+            contentElement.style.position = 'absolute';
+            contentElement.style.top = scrollTop + ((windowHeight / 2) - (contentHeight / 2)) + 'px';
+            contentElement.style.left = ((windowWidth / 2) - (contentWidth / 2)) + 'px';
+        } else {
+            contentElement.style.position = 'absolute';
+            contentElement.style.top = 0;
+            contentElement.style.left = ((windowWidth / 2) - (contentWidth / 2)) + 'px';
+        }
+    }
+};
+
+ice.mobi._windowHeight = function () {
+    var windowHeight = 0;
+    if (typeof(window.innerHeight) == 'number') {
+        windowHeight = window.innerHeight;
+    } else {
+        if (document.documentElement && document.documentElement.clientHeight) {
+            windowHeight = document.documentElement.clientHeight;
+        } else {
+            if (document.body && document.body.clientHeight) {
+                windowHeight = document.body.clientHeight;
+            }
+        }
+    }
+    return windowHeight;
+};
+ice.mobi._windowWidth = function () {
+    var windowWidth = 0;
+    if (typeof(window.innerWidth) == 'number') {
+        windowWidth = window.innerWidth;
+    } else {
+        if (document.documentElement && document.documentElement.clientWidth) {
+            windowWidth = document.documentElement.clientWidth;
+        } else {
+            if (document.body && document.body.clientWidth) {
+                windowWidth = document.body.clientWidth;
+            }
+        }
+    }
+    return windowWidth;
+};
+
 ice.mobi.datespinner = {
     pattern:{}, //supported formats are dd/MM/yyyy, MM-dd-yyyy, dd-MM-yyyy, yyyy-MM-dd, yyyy-dd-MM
     opened:{},
     centerCalculation:{},
     scrollEvent:{},
     init:function (clientId, yrSel, mSel, dSel, format) {
-	alert('Spinner init called');
         var idPanel = clientId + "_bg";
         if (!document.getElementById(idPanel).className) {
             document.getElementById(idPanel).className = 'mobi-date-bg-inv';
@@ -796,7 +849,6 @@ ice.mobi.datespinner = {
         this.dateSubmit(cfg, clientId);
     },
     toggle:function (clientId) {
-	alert('into toggle');
         if (!this.opened[clientId]) {
             this.open(clientId);
         } else {
