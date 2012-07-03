@@ -32,7 +32,7 @@
         <h4>Recently Uploaded Messages</h4>
 
         <div style="clear:both;"/>
-        <!-- diplay of uploaded images for all users, top 5 are shown. -->
+        <!-- display of uploaded images for all users, top 5 are shown. -->
         <h:form>
             <mobi:carousel var="mediaMessage"
                            value="#{mediaStore.carouselStack}"
@@ -71,7 +71,7 @@
 
             <mobi:fieldsetGroup>
                 <mobi:fieldsetRow rendered="#{uploadModel.showInputSelect}">
-                    <!-- show new message creation buttons, image, movie and soudn -->
+                    <!-- show new message creation buttons, image, movie and sound -->
                     <h:panelGroup
                             style="display:inline-block;padding-bottom: 3px;">
                         <mobi:commandButton value="Photo"
@@ -85,7 +85,7 @@
                                             action="#{mediaController.chooseMicrophone}"/>
                     </h:panelGroup>
                 </mobi:fieldsetRow>
-                <!-- upload/caputre for images. -->
+                <!-- upload/capture for images. -->
                 <ui:fragment rendered="#{uploadModel.showCamera}">
                     <mobi:fieldsetRow>
                         <h:outputLabel value="Image Message"/>
@@ -100,7 +100,7 @@
                     </mobi:fieldsetRow>
                 </ui:fragment>
 
-                <!-- upload/caputre for video. -->
+                <!-- upload/capture for video. -->
                 <ui:fragment rendered="#{uploadModel.showCamcorder}">
                     <mobi:fieldsetRow>
                         <h:outputLabel value="Video Message"/>
@@ -111,7 +111,7 @@
                         <mobi:thumbnail for="camcorder"/>
                     </mobi:fieldsetRow>
                 </ui:fragment>
-                <!-- upload/caputre for sound. -->
+                <!-- upload/capture for sound. -->
                 <ui:fragment rendered="#{uploadModel.showMicrophone}">
                     <mobi:fieldsetRow>
                         <h:outputLabel value="Audio Message"/>
@@ -153,7 +153,7 @@
                 <ui:fragment rendered="#{not mediaController.enhancedBrowser}">
                     <br/><span style="font-weight:bold;font-style:italic;">
                     ICEmobile container was not detected, native
-                    device intregation will not be available.</span>
+                    device integration will not be available.</span>
                     <br/>
                     <mobi:icemobilesx/>
                 </ui:fragment>
@@ -161,7 +161,7 @@
         </mobi:fieldsetGroup>
 
         <h:form>
-            <!-- linke to gallery of all uploaded media files. -->
+            <!-- link to gallery of all uploaded media files. -->
             <mobi:outputList inset="true">
                 <mobi:outputListItem group="false">
                     <h:commandLink
