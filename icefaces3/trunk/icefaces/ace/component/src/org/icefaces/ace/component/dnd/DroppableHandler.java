@@ -32,7 +32,7 @@ import javax.faces.view.facelets.ComponentHandler;
 import javax.faces.view.facelets.MetaRuleset;
 
 import org.icefaces.ace.event.DragDropEvent;
-import org.icefaces.ace.facelets.MethodRule;
+import org.icefaces.facelets.tag.icefaces.core.MethodRule;
 
 public class DroppableHandler extends ComponentHandler {
 

@@ -74,7 +74,7 @@ public class ComponentHandlerArtifact extends Artifact{
             }
         }
         */
-        generatedComponentHandlerClass.append("import org.icefaces.ace.facelets.MethodRule;\n\n");
+        generatedComponentHandlerClass.append("import org.icefaces.facelets.tag.icefaces.core.MethodRule;\n\n");
 
         generatedComponentHandlerClass.append("import java.util.EventObject;\n");
         generatedComponentHandlerClass.append("/*\n * ******* GENERATED CODE - DO NOT EDIT *******\n */\n");
