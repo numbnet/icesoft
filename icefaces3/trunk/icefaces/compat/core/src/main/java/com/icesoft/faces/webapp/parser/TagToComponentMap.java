@@ -405,7 +405,7 @@ public class TagToComponentMap implements Serializable {
 //                            sb.append("</renderer-type>\n");
 //                        }
 //                        //TODO: is this handler necessary?  Yes..required for method binding of custom comps
-//                        sb.append("\t\t\t<handler-class>com.icesoft.faces.component.facelets.IceComponentHandler</handler-class>\n");
+//                        sb.append("\t\t\t<handler-class>org.icefaces.facelets.tag.icefaces.core.IceComponentHandler</handler-class>\n");
 //                        sb.append("\t\t</component>\n\t</tag>\n");
 //                        faceletsTaglibXmlWriter.write(sb.toString());
 //                        System.out.print(sb.toString());
@@ -544,7 +544,7 @@ final class NameRule extends Rule {
                             sb.append("</renderer-type>\n");
                         }
                         //TODO: is this handler necessary?  Yes..required for method binding of custom comps
-                        sb.append("\t\t\t<handler-class>com.icesoft.faces.component.facelets.IceComponentHandler</handler-class>\n");
+                        sb.append("\t\t\t<handler-class>org.icefaces.facelets.tag.icefaces.core.IceComponentHandler</handler-class>\n");
                         sb.append("\t\t</component>\n"); 
                         ArrayList<AttributeElement> list = elem.getAttributes();
                        

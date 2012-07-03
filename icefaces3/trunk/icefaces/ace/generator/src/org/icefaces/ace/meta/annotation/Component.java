@@ -99,9 +99,9 @@ public @interface Component {
   String baseTagClass() default "javax.faces.webapp.UIComponentELTag";
   
   /**
-   * facelets handler class. default is "com.icesoft.faces.component.facelets.IceComponentHandler".
-   * Developer don't have to override it, generator takes care of it. It is just in case if 
-   * developer want to use its own handler class.
+   * Facelets handler class. Default is to automatically determine if one needs
+   * to be generated, and if so use it. Can be set if developer wants to use
+   * its own handler class.
    * @return facelets handler class.
    */
   String handlerClass() default EMPTY;

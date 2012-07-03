@@ -16,30 +16,11 @@
 
 package org.icefaces.facelets.tag.icefaces.core;
 
-import java.lang.reflect.Method;
-import java.lang.reflect.InvocationTargetException;
-import java.io.Serializable;
-
 import javax.faces.view.facelets.ComponentHandler;
 import javax.faces.view.facelets.MetaRuleset;
-import javax.faces.view.facelets.Metadata;
-import javax.faces.view.facelets.MetadataTarget;
-import javax.faces.view.facelets.TagAttribute;
 import javax.faces.view.facelets.ComponentConfig;
-import javax.faces.view.facelets.MetaRule;
-import javax.faces.view.facelets.FaceletContext;
-import javax.faces.view.facelets.TagAttributeException;
-import javax.faces.el.MethodBinding;
-import javax.faces.context.FacesContext;
-import javax.el.MethodExpression;
 
 /**
- * !! NOTE!!!
- * This copy is a duplicate of the same class in Compat. It's present here to allow
- * compat namespace to exist in sparkle.jar. Any changes to this file need to be duplicated
- * in the original!
- * 
- *
  * @author Mark Collette
  * @since 1.6
  */
@@ -76,6 +57,8 @@ public class IceComponentHandler extends ComponentHandler {
             }
             else if( tag.getLocalName().equals("panelPositioned") ) {
                 try {
+                m.addRule( new MethodRule("beforeChangedListener", null, new Class[] {
+                        Class.forName("com.icesoft.faces.component.panelpositioned.PanelPositionedEvent")}) );
                 m.addRule( new MethodRule("listener", null, new Class[] {
                         Class.forName("com.icesoft.faces.component.panelpositioned.PanelPositionedEvent")}) );
          } catch (ClassNotFoundException nfe) {}
@@ -116,118 +99,5 @@ public class IceComponentHandler extends ComponentHandler {
             }
         }
         return m;
-    }
-}
-
-class MethodRule extends MetaRule  {
-    private final String methodName;
-    private final Class returnTypeClass;
-    private final Class[] params;
-
-    public MethodRule(String methodName, Class returnTypeClass, Class[] params) {
-        this.methodName = methodName;
-        this.returnTypeClass = returnTypeClass;
-        this.params = params;
-    }
-
-    public Metadata applyRule(String name, TagAttribute attribute,
-            MetadataTarget meta) {
-        if (!name.equals(this.methodName))  {
-            return null;
-        }
-
-        if (MethodBinding.class.equals(meta.getPropertyType(name))) {
-            Method method = meta.getWriteMethod(name);
-            if (null != method) {
-                return new MethodBindingMetadata(method, attribute,
-                        this.returnTypeClass, this.params);
-            }
-        } else if (MethodExpression.class.equals(meta.getPropertyType(name))) {
-            Method method = meta.getWriteMethod(name);
-            if (null != method) {
-                return new MethodExpressionMetadata(method, attribute,
-                        this.returnTypeClass, this.params);
-            }
-        }
-
-        return null;
-    }
-
-}
-
-class MethodBindingMetadata extends Metadata  {
-    private final Method method;
-    private final TagAttribute attribute;
-    private Class[] params;
-    private Class returnTypeClass;
-
-    public MethodBindingMetadata(Method method, TagAttribute attribute,
-            Class returnTypeClass, Class[] params)  {
-        this.method = method;
-        this.attribute = attribute;
-        this.returnTypeClass = returnTypeClass;
-        this.params = params;
-    }
-
-    public void applyMetadata(FaceletContext faceletContext, Object instance) {
-        MethodExpression expr = attribute.getMethodExpression(faceletContext,
-                returnTypeClass, params);
-        try {
-            method.invoke(instance, new MethodExpressionMethodBinding(expr) );
-        } catch (InvocationTargetException e)  {
-            throw new TagAttributeException(attribute, e.getCause());
-        } catch (Exception e)  {
-            throw new TagAttributeException(attribute, e);
-        }
-    }
-
-}
-
-class MethodExpressionMetadata extends Metadata  {
-    private final Method method;
-    private final TagAttribute attribute;
-    private Class[] params;
-    private Class returnTypeClass;
-
-    public MethodExpressionMetadata(Method method, TagAttribute attribute,
-            Class returnTypeClass, Class[] params)  {
-        this.method = method;
-        this.attribute = attribute;
-        this.returnTypeClass = returnTypeClass;
-        this.params = params;
-    }
-
-    public void applyMetadata(FaceletContext faceletContext, Object instance) {
-        MethodExpression expr = attribute.getMethodExpression(faceletContext,
-                returnTypeClass, params);
-        try {
-            method.invoke(instance, expr );
-        } catch (InvocationTargetException e)  {
-            throw new TagAttributeException(attribute, e.getCause());
-        } catch (Exception e)  {
-            throw new TagAttributeException(attribute, e);
-        }
-    }
-
-}
-
-class MethodExpressionMethodBinding extends MethodBinding implements
-                                                          Serializable {
-    private final MethodExpression expression;
-
-    public MethodExpressionMethodBinding(MethodExpression expression) {
-        this.expression = expression;
-    }
-
-    public Class getType(FacesContext facesContext)  {
-        return expression.getMethodInfo(facesContext.getELContext()).getReturnType();
-    }
-
-    public Object invoke(FacesContext facesContext, Object[] params)  {
-        return expression.invoke(facesContext.getELContext(), params);
-    }
-
-    public String getExpressionString() {
-        return expression.getExpressionString();
     }
 }
