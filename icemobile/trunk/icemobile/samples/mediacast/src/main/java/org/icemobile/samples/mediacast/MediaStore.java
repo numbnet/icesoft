@@ -20,9 +20,12 @@ import javax.faces.bean.ApplicationScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ExternalContext;
 import javax.faces.bean.ManagedBean;
+
 import java.io.Serializable;
+import java.io.UnsupportedEncodingException;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.logging.Logger;
 import java.net.URLEncoder;
 
 /**
@@ -32,6 +35,9 @@ import java.net.URLEncoder;
 @ManagedBean(name = MediaStore.BEAN_NAME, eager = true)
 @ApplicationScoped
 public class MediaStore implements Serializable {
+	
+	private static final Logger logger =
+            Logger.getLogger(MediaStore.class.toString());
 
     public static final String BEAN_NAME = "mediaStore";
 
@@ -68,11 +74,15 @@ public class MediaStore implements Serializable {
         //base URL must be extracted for jsf resources
 //        sb.append("ub=" + URLEncoder.encode(url));
         for (MediaMessage message : mediaStack)  {
-            String imageURL = URLEncoder.encode(
-                    message.getMediumPhoto().getData().getURL().toString() );
-
-            String location = message.getPackedLocation() + ",,," + imageURL;
-            sb.append("&" + location);
+            String imageURL = null;
+			try {
+				imageURL = URLEncoder.encode(
+				        message.getMediumPhoto().getData().getURL().toString(),"UTF-8" );
+				String location = message.getMessageAsUrlParam() + ",,," + imageURL;
+	            sb.append("&" + location);
+			} catch (UnsupportedEncodingException e) {
+				logger.warning("image url could not be encoded: " + e.getMessage());
+			}
         }
 
         return sb.toString();

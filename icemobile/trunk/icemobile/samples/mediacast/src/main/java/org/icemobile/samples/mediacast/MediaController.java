@@ -80,6 +80,11 @@ public class MediaController implements Serializable {
         thumbConvertCommand = FacesContext.getCurrentInstance()
                 .getExternalContext().getInitParameter(
                         "org.icemobile.thumbnailCommand");
+        
+        logger.fine("video convert command: " + videoConvertCommand);
+        logger.fine("audio convert command: " + audioConvertCommand);
+        logger.fine("thumbnail convert command: " + thumbConvertCommand);
+        
         /**
          * Video and Audio files don't have default thumbnail icons for preview
          * so we load the following thumbnails.
@@ -122,6 +127,9 @@ public class MediaController implements Serializable {
     public String processUpload(UploadModel uploadModel, MediaStore mediaStore)  {
         String selectedMediaInput = uploadModel.getSelectedMediaInput();
         String contentType = (String) uploadModel.getMediaMap().get("contentType");
+        logger.fine(uploadModel.toString());
+        logger.fine("selectedMediaInput="+selectedMediaInput);
+        logger.fine("content type: " + contentType);
 
         // check that we have a valid file type before processing.
         if (contentType != null &&
@@ -131,43 +139,38 @@ public class MediaController implements Serializable {
 
             File mediaFile = null;
             MediaMessage photoMessage = new MediaMessage();
-            String subject = "";
-
+            photoMessage.setTitle(processTitle(uploadModel.getTitle(),
+                    selectedMediaInput));
+            photoMessage.setDescription(uploadModel.getDescription());
+                        
             if (MediaMessage.MEDIA_TYPE_PHOTO.equals(selectedMediaInput) &&
                     contentType.startsWith("image")) {
                 mediaFile = uploadModel.getCameraFile();
                 processUploadedImage(photoMessage, mediaFile);
-                subject = "New Photo";
-                photoMessage.setComment(processComment(uploadModel.getComment(),
-                        MediaMessage.MEDIA_TYPE_PHOTO));
-                uploadModel.setCameraFile(null);
             } else if (MediaMessage.MEDIA_TYPE_VIDEO.equals(selectedMediaInput) &&
                     contentType.startsWith("video")) {
                 mediaFile = uploadModel.getVideoFile();
                 processUploadedVideo(photoMessage, mediaFile);
-                subject = "New Video";
-                photoMessage.setComment(processComment(uploadModel.getComment(),
-                        MediaMessage.MEDIA_TYPE_VIDEO));
-                uploadModel.setVideoFile(null);
             } else if (MediaMessage.MEDIA_TYPE_AUDIO.equals(selectedMediaInput) &&
                     contentType.startsWith("audio")) {
                 mediaFile = uploadModel.getAudioFile();
                 processUploadedAudio(photoMessage, mediaFile);
-                photoMessage.setComment(processComment(uploadModel.getComment(),
-                        MediaMessage.MEDIA_TYPE_AUDIO));
-                subject = "New Audio";
-                uploadModel.setAudioFile(null);
             }
-
+            
             photoMessage.setLocation(uploadModel.getLatitude(), 
                     uploadModel.getLongitude());
+            if( uploadModel.getDirection() != null )
+            	photoMessage.setDirection(uploadModel.getDirection());
+            else
+            	photoMessage.setDirection(Integer.valueOf(180));//set direction south if not provided
+            
             // only add the message if the file successfully uploaded.
             if (mediaFile != null) {
                 mediaStore.addMedia(photoMessage);
                 try {
-                    String body = photoMessage.getComment();
+                    String body = photoMessage.getTitle();
                     portableRenderer.render(RENDER_GROUP,
-                            new PushMessage(subject, body));
+                            new PushMessage("New " + selectedMediaInput, body));
                 } catch (Exception e) {
                     logger.log(Level.WARNING, "Media message was not sent to recipients.");
                 }
@@ -177,15 +180,25 @@ public class MediaController implements Serializable {
                         " file, please try again.");
             }
         } else {
-            uploadModel.setUploadErrorMessage("An error occurred while upload the " + selectedMediaInput +
-                    " file, please try again.");
+        	String errorMsg = "An error occurred while upload the " + selectedMediaInput +
+                    " file, please try again.";
+            uploadModel.setUploadErrorMessage(errorMsg);
+            logger.warning(errorMsg);
         }
 
-        // reset the selected input string, so the input selection buttons show up again.
-        uploadModel.setSelectedMediaInput("");
-        uploadModel.setComment("");
+        clearUploadModel(uploadModel);
 
         return null;
+    }
+    
+    private void clearUploadModel(UploadModel uploadModel){
+    	uploadModel.setAudioFile(null);
+    	uploadModel.setCameraFile(null);
+    	uploadModel.setVideoFile(null);
+    	uploadModel.setTitle(null);
+    	uploadModel.setDescription(null);
+    	uploadModel.setSelectedMediaInput(null);
+    	
     }
 
     /**
@@ -195,6 +208,7 @@ public class MediaController implements Serializable {
      * @return null no jsf navigation takes place.
      */
     public String upload() {
+    	logger.fine("upload()");
         // session scope model bean
         UploadModel uploadModel = (UploadModel)
                 FacesUtils.getManagedBean(UploadModel.BEAN_NAME);
@@ -218,7 +232,7 @@ public class MediaController implements Serializable {
 
         // reset the selected input string, so the input selection buttons show up again.
         uploadModel.setSelectedMediaInput("");
-        uploadModel.setComment("");
+        uploadModel.setTitle("");
 
         return null;
     }
@@ -518,18 +532,18 @@ public class MediaController implements Serializable {
     }
 
     /**
-     * Utility to insure a comment is assigned to a new message.  If the specified
-     * comment is empty or null then the default comment value is used.
+     * Utility to insure a title is assigned to a new message.  If the specified
+     * title is empty or null then the default title value is used.
      *
-     * @param comment        comment value specified by user.
-     * @param defaultComment default comment
-     * @return comment value if not null or empty, otherwise default is returned.
+     * @param title value specified by user.
+     * @param defaultTitle default title
+     * @return title value if not null or empty, otherwise default is returned.
      */
-    private String processComment(String comment, String defaultComment) {
-        if ((null != comment) && (!"".equals(comment))) {
-            return comment;
+    private String processTitle(String title, String defaultTitle) {
+        if ((null != title) && (!"".equals(title))) {
+            return title;
         }
-        return defaultComment;
+        return defaultTitle;
     }
 
 }
