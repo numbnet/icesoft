@@ -241,7 +241,7 @@ public class DataPaginator extends HtmlPanelGroup implements ActionSource {
         }
         //apply the calculated first for current page
         if (oldRow != -1 && oldRow != rows) {
-            uiData.setFirst(first);
+            uiData.setFirst(first < 0 ? 0 : first);
         }
         oldRow = rows;
         if (rows == 0) {
