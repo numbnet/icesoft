@@ -159,11 +159,12 @@ public class MediaController implements Serializable {
             
             photoMessage.setLocation(uploadModel.getLatitude(), 
                     uploadModel.getLongitude());
-            if( uploadModel.getDirection() != null )
+            if( uploadModel.getDirection() != null ){
             	photoMessage.setDirection(uploadModel.getDirection());
-            else
+            }
+			else{
             	photoMessage.setDirection(Integer.valueOf(180));//set direction south if not provided
-            
+            }
             // only add the message if the file successfully uploaded.
             if (mediaFile != null) {
                 mediaStore.addMedia(photoMessage);
