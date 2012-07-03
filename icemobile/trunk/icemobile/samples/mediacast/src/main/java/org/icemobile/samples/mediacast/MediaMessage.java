@@ -147,13 +147,14 @@ public class MediaMessage implements Serializable {
     }
 
     public String getMessageAsUrlParam()  {
-    	String url = null;
-    	try {
-    		url = URLEncoder.encode(getTitle() + "=" + latitude + "," + longitude, "UTF-8");
-		} catch (UnsupportedEncodingException e) {
-			logger.warning("location could not be encoded: " + e.getMessage());
-		}
-    	return url;
+        String url = null;
+        try {
+            url = URLEncoder.encode(getTitle(), "UTF-8") + "=" + 
+                    latitude + "," + longitude;
+        } catch (UnsupportedEncodingException e) {
+            logger.warning("location could not be encoded: " + e.getMessage());
+        }
+        return url;
     }
 
     public String getTitle() {
