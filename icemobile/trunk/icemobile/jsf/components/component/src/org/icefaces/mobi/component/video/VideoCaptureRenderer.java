@@ -19,7 +19,6 @@ package org.icefaces.mobi.component.video;
 
 import org.icefaces.mobi.utils.HTML;
 import org.icefaces.mobi.utils.Utils;
-import org.icefaces.impl.application.AuxUploadResourceHandler;
 import org.icefaces.util.EnvUtils;
 import org.icefaces.mobi.renderkit.BaseInputResourceRenderer;
 
@@ -28,9 +27,6 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.event.ValueChangeEvent;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.Part;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -64,43 +60,7 @@ public class VideoCaptureRenderer extends BaseInputResourceRenderer {
     }
 
     public boolean extractVideo(FacesContext facesContext, Map map, String clientId) throws IOException {
-        HttpServletRequest request = (HttpServletRequest)
-                facesContext.getExternalContext().getRequest();
-        boolean isValid=false;
-
-        String partUploadName = clientId;
-        Part part = null;
-        try {
-            part = request.getPart(partUploadName);
-        } catch (ServletException e)  {
-            //ignore ServletException here since auxUpload is not multipart
-        }
-        if (null == part)  {
-            Map auxMap = AuxUploadResourceHandler.getAuxRequestMap();
-            part = (Part) auxMap.get(partUploadName);
-        }
-        if (part !=null){
-            String contentType = part.getContentType();
-            String fileName = java.util.UUID.randomUUID().toString();
-            if (part.getSize()<=0){
-               isValid=false;
-            }else {
-               isValid = true;
-            }
-            if ("video/mp4".equals(contentType)) {
-                fileName += ".mp4";
-            } else if ("video/mpeg".equals(contentType)) {
-                fileName = fileName + ".mp4";
-            } else if ("video/mov".equals(contentType)) {
-                fileName += ".mov";
-            } else if ("video/3gpp".equals(contentType)) {
-                fileName +=".3gp";
-            } else {
-                fileName+=".oth";
-            }
-            Utils.createMapOfFile(map, request, part, fileName, contentType, facesContext);
-        }
-        return isValid;
+        return Utils.decodeComponentFile(facesContext, clientId, map);
     }
 
     public void encodeBegin(FacesContext facesContext, UIComponent uiComponent)

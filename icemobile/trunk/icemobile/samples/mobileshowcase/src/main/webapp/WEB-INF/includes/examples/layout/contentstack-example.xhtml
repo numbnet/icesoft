@@ -57,7 +57,9 @@
                                 value="Next"
                                 buttonType="important"
                                 style="float:right;"
-                                action="#{contentStackBean.nextPane('panel2')}" />
+                                action="#{contentStackBean.nextPaneParam}" >
+                        <f:param name="paneName" value="panel2" />
+                    </mobi:commandButton>
                 </mobi:fieldsetGroup>
             </mobi:contentPane>
             <mobi:contentPane id="panel2" facelet="false" client="true">
@@ -71,11 +73,15 @@
                     <mobi:commandButton value="Previous"
                                         buttonType="important"
                                         style="float:left;"
-                                        action="#{contentStackBean.nextPane('panel1')}" />
+                                        action="#{contentStackBean.nextPaneParam}" >
+                        <f:param name="paneName" value="panel12" />
+                    </mobi:commandButton>
                     <mobi:commandButton value="Next"
                                         buttonType="important"
                                         style="float:right;"
-                                        action="#{contentStackBean.nextPane('panel3')}" />
+                                        action="#{contentStackBean.nextPaneParam}" >
+                        <f:param name="paneName" value="panel3" />
+                    </mobi:commandButton>
                 </mobi:fieldsetGroup>
             </mobi:contentPane>
             <mobi:contentPane id="panel3" facelet="false" client="true">
@@ -89,11 +95,15 @@
                     <mobi:commandButton value="Previous"
                                         buttonType="important"
                                         style="float:left;"
-                                        action="#{contentStackBean.nextPane('panel2')}" />
+                                        action="#{contentStackBean.nextPaneParam}" >
+                        <f:param name="paneName" value="panel2" />
+                    </mobi:commandButton>
                     <mobi:commandButton value="Next"
                                         buttonType="important"
                                         style="float:right;"
-                                        action="#{contentStackBean.nextPane('panel4')}" />
+                                        action="#{contentStackBean.nextPaneParam}" >
+                        <f:param name="paneName" value="panel4" />
+                    </mobi:commandButton>
                 </mobi:fieldsetGroup>
             </mobi:contentPane>
             <mobi:contentPane id="panel4" facelet="false" client="true">
@@ -107,7 +117,9 @@
                     <mobi:commandButton value="Previous"
                             buttonType="important"
                             style="float:left;"
-                            action="#{contentStackBean.nextPane('panel3')}" />
+                            action="#{contentStackBean.nextPaneParam}" >
+                        <f:param name="paneName" value="panel3" />
+                    </mobi:commandButton>
                 </mobi:fieldsetGroup>
             </mobi:contentPane>
 

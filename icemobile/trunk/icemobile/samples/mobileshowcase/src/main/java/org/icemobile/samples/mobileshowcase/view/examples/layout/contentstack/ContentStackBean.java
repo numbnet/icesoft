@@ -3,9 +3,11 @@ package org.icemobile.samples.mobileshowcase.view.examples.layout.contentstack;
 import org.icemobile.samples.mobileshowcase.view.metadata.annotation.*;
 import org.icemobile.samples.mobileshowcase.view.metadata.context.ExampleImpl;
 
+import javax.faces.context.FacesContext;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import java.io.Serializable;
+import java.util.Map;
 
 /**
  * Content stack bean stores the id of panels that can be selected.
@@ -45,6 +47,16 @@ public class ContentStackBean  extends ExampleImpl<ContentStackBean> implements
     public ContentStackBean() {
         super(ContentStackBean.class);
     }
+
+    public String nextPaneParam()  {
+        Map<String,String> params = 
+            FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+     
+        String paneName = params.get("paneName");
+        this.selectedPaneId = paneName;
+        return null;
+    }
+
 
     public String nextPane(String selectedPaneId){
         this.selectedPaneId = selectedPaneId;

@@ -26,7 +26,10 @@
             <icecore:singleSubmit rendered="false"/>
 
             <div style="float:left;padding-left:10px;">
-                <h:commandLink action="#{navigationModel.navigateTo('splash','null')}">
+                <h:commandLink 
+                            action="#{navigationModel.navigateToParam}">
+                        <f:param name="panelID" value="splash" />
+                        <f:param name="beanName" value="null" />
                     <h:graphicImage library="images" name="icemobile_thumb.png"
                                     styleClass="branding"/>
                 </h:commandLink>
@@ -67,7 +70,7 @@
                             style="">
             <!-- main content include of page content -->
             <ui:include src="/WEB-INF/includes/content/content-stack.xhtml">
-                <ui:param name="selectedPanel" value="#{navigationModel.selectedPanel == null?'splash':navigationModel.selectedPanel}" />
+                <ui:param name="selectedPanel" value="#{navigationModel.selectedPanelOrSplash}" />
             </ui:include>
         </util:panelScroller>
     </f:facet>

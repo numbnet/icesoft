@@ -19,7 +19,6 @@ package org.icefaces.mobi.component.microphone;
 
 import org.icefaces.mobi.utils.HTML;
 import org.icefaces.mobi.utils.Utils;
-import org.icefaces.impl.application.AuxUploadResourceHandler;
 import org.icefaces.util.EnvUtils;
 
 
@@ -28,9 +27,6 @@ import javax.faces.render.Renderer;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.event.ValueChangeEvent;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.Part;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -66,46 +62,7 @@ public class MicrophoneRenderer extends Renderer {
     }
 
     public boolean extractAudio(FacesContext facesContext, Map map, String clientId) throws IOException {
-        HttpServletRequest request = (HttpServletRequest)
-                facesContext.getExternalContext().getRequest();
-        boolean isValid=false;
-
-        String partUploadName = clientId;
-        Part part = null;
-        try {
-            part = request.getPart(partUploadName);
-        } catch (ServletException e)  {
-            //ignore ServletException here since auxUpload is not multipart
-        }
-        if (null == part)  {
-            Map auxMap = AuxUploadResourceHandler.getAuxRequestMap();
-            part = (Part) auxMap.get(partUploadName);
-        }
-        if (part !=null){
-            String contentType = part.getContentType();
-            String fileName = java.util.UUID.randomUUID().toString();
-            if (part.getSize()<=0){
-               isValid=false;
-            }else {
-               isValid = true;
-            }
-            if ("audio/wav".equals(contentType) || "audio/x-wav".equals(contentType)) {
-                fileName = fileName + ".wav";
-            } else if (contentType.endsWith("mp4")) {
-                fileName = fileName + ".mp4";
-            } else if ("audio/x-m4a".equals(contentType)) {
-                fileName = fileName + ".m4a";
-            } else if ("audio/mpeg".equals(contentType)) {
-                fileName = fileName + ".mp3";
-            } else if ("audio/amr".equals(contentType)) {
-                fileName = fileName + ".amr";
-            } else {
-                fileName+=".oth";
-            }
-            Utils.createMapOfFile(map, request, part, fileName, contentType, facesContext);
-
-        }
-        return isValid;
+        return Utils.decodeComponentFile(facesContext, clientId, map);
     }
 
     public void encodeEnd(FacesContext facesContext, UIComponent uiComponent)
