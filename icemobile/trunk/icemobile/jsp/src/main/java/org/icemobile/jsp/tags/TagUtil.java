@@ -320,7 +320,7 @@ public class TagUtil {
     }
 
     public void writeAttribute(Writer out, String name, String value) throws IOException {
-	out.write(" " + name + "='" + value + "'");
+        out.write(" " + name + "=\"" + value + "\"");
     }
 
     public boolean isValueBlank(String value) {
