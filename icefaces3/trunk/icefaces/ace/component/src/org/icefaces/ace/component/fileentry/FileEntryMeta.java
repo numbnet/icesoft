@@ -95,7 +95,9 @@ public class FileEntryMeta extends UIComponentBaseMeta {
 
     @Property(tlddoc="MethodExpression, which must evaluate to a public " +
         "method that takes an FileEntryEvent as a parameter, with a return " +
-        "type of void. Invoked after file(s) have been uploaded, during " +
+        "type of void or an Object whose toString method will be used to " +
+        "produce a navigation outcome, much like how an action method works " +
+        "with a UICommand. Invoked after file(s) have been uploaded, during " +
         "a lifecycle phase that is determined by the immediate property. " +
         "It can be used to retrieve the FileEntryResults object from the " +
         "results property of the FileEntry component, giving access to the " +
