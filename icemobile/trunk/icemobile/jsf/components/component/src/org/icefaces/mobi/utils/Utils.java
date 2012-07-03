@@ -21,6 +21,7 @@ import org.icefaces.impl.util.DOMUtils;
 import org.icefaces.util.EnvUtils;
 import org.icemobile.component.impl.SessionContext;
 import org.icefaces.impl.application.AuxUploadSetup;
+import org.icefaces.impl.application.AuxUploadResourceHandler;
 
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -29,8 +30,9 @@ import javax.faces.component.UIParameter;
 import javax.faces.component.UIForm;
 import javax.faces.component.NamingContainer;
 import javax.faces.FacesException;
-import javax.servlet.http.HttpServletRequest;
 import javax.faces.application.ProjectStage;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.Part;
 import java.io.File;
 import java.io.IOException;
@@ -41,8 +43,11 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.HashMap;
+import java.util.Collection;
 import java.util.StringTokenizer;
 import java.util.Formatter;
+import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -68,6 +73,23 @@ public class Utils {
     }
 
     private static Logger logger = Logger.getLogger(Utils.class.getName());
+
+    private static final Map<String , String> FILE_EXT = 
+            new HashMap<String , String>() {{
+            put("video/mp4",".mp4");
+            put("audio/mp4",".mp4");
+            put("video/mpeg",".mpg");
+            put("video/mov",".mov");
+            put("video/3gpp",".3gp");
+            put("audio/wav",".wav");
+            put("audio/x-wav",".wav");
+            put("audio/x-m4a",".m4a");
+            put("audio/mpeg",".mp3");
+            put("audio/amr", ".amr");
+            put("image/jpeg",".jpg");
+            put("image/jpg",".jpg");
+            put("image/png",".png");
+    }};
 
     public static void renderChildren(FacesContext facesContext,
                                       UIComponent component)
@@ -402,8 +424,62 @@ public class Utils {
         return DeviceType.DEFAULT;
     }
 
-    public static void createMapOfFile(Map map, HttpServletRequest request, Part part,
-                                       String fileName, String contentType, FacesContext facesContext) throws IOException {
+    public static boolean decodeComponentFile(FacesContext facesContext,
+            String clientId, Map fileMeta) throws IOException  {
+        HttpServletRequest request = (HttpServletRequest)
+                facesContext.getExternalContext().getRequest();
+        boolean isValid = false;
+
+        String partUploadName = clientId;
+        Part part = null;
+        InputStream fileStream = null;
+        String contentType = null;
+        try {
+            part = request.getPart(partUploadName);
+        } catch (IOException e)  {
+            throw e;
+        } catch (Throwable t)  {
+            //ignore Throwable here since auxUpload is not multipart
+            //and not-null part must be checked and we may not have
+            //getPart API on Servlet 2.5
+        }
+        if (null == part)  {
+            Map auxMap = AuxUploadResourceHandler.getAuxRequestMap();
+            part = (Part) auxMap.get(partUploadName);
+        }
+        if (null == part)  {
+            Map commonsMeta = (Map) request
+                    .getAttribute("org.icemobile.file." + clientId);
+            if (null != commonsMeta)  {
+                contentType = (String) commonsMeta.get("contentType");
+                fileStream = (InputStream) commonsMeta.get("stream");
+            }
+        }
+        if (null != part)  {
+            contentType = part.getContentType();
+            fileStream = part.getInputStream();
+        }
+
+        String fileName = Long.toString(
+            Math.abs(UUID.randomUUID().getMostSignificantBits()), 32);
+        String fileExtension = FILE_EXT.get(contentType);
+        if (null != fileExtension)  {
+            fileName += fileExtension;
+        } else  {
+            fileName += ".oth";
+        }
+
+        isValid = createMapOfFile(fileMeta, request, fileStream, fileName, 
+                contentType, facesContext);
+
+        return isValid;
+    }
+
+    public static boolean createMapOfFile(Map map, 
+            HttpServletRequest request,
+            InputStream fileStream,
+            String fileName, String contentType, 
+            FacesContext facesContext) throws IOException {
 
         final String UPLOADS_FOLDER = "uploads";
         String FILE_SEPARATOR = System.getProperty("file.separator");
@@ -428,8 +504,7 @@ public class Utils {
             success = dirFile.mkdirs();
         }
         try {
-            copyStream( part.getInputStream(), 
-                    new FileOutputStream(newFile) );
+            copyStream(fileStream, new FileOutputStream(newFile));
         } catch (IOException e) {
             logger.log(Level.WARNING, "Error writing uploaded file to disk ", e);
         }
@@ -439,6 +514,9 @@ public class Utils {
         if (logger.isLoggable(Level.FINER)) {
             logger.finer("wrote " + newFile.getAbsolutePath());
         }
+        
+        return (newFile.length() > 0);
+
     }
 
     public static void createMapOfByteArray(Map map, HttpServletRequest request, Part part,

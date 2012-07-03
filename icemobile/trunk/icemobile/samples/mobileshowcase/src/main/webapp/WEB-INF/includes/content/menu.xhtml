@@ -30,7 +30,11 @@
                 <mobi:outputListItem>
                     <h:commandLink
                             value="#{mmsgs[menuLinks.title]}"
-                            action="#{navigationModel.navigateTo(menuLinks.examplePanelId, menuLinks.exampleBeanName)}">
+                            action="#{navigationModel.navigateToParam}">
+                        <f:param name="panelID" 
+                            value="#{menuLinks.examplePanelId}" />
+                        <f:param name="beanName" 
+                            value="#{menuLinks.exampleBeanName}" />
                     </h:commandLink>
                 </mobi:outputListItem>
             </ui:repeat>
@@ -43,7 +47,11 @@
                 <mobi:outputListItem>
                     <h:commandLink
                             value="#{mmsgs[menuLinks.title]}"
-                            action="#{navigationModel.navigateTo(menuLinks.examplePanelId, menuLinks.exampleBeanName)}">
+                            action="#{navigationModel.navigateToParam}">
+                        <f:param name="panelID" 
+                            value="#{menuLinks.examplePanelId}" />
+                        <f:param name="beanName" 
+                            value="#{menuLinks.exampleBeanName}" />
                     </h:commandLink>
                 </mobi:outputListItem>
             </ui:repeat>
@@ -55,7 +63,11 @@
                 <mobi:outputListItem>
                     <h:commandLink
                             value="#{mmsgs[menuLinks.title]}"
-                            action="#{navigationModel.navigateTo(menuLinks.examplePanelId, menuLinks.exampleBeanName)}">
+                            action="#{navigationModel.navigateToParam}">
+                        <f:param name="panelID" 
+                            value="#{menuLinks.examplePanelId}" />
+                        <f:param name="beanName" 
+                            value="#{menuLinks.exampleBeanName}" />
                     </h:commandLink>
                 </mobi:outputListItem>
             </ui:repeat>
@@ -67,7 +79,11 @@
                 <mobi:outputListItem>
                     <h:commandLink
                             value="#{mmsgs[menuLinks.title]}"
-                            action="#{navigationModel.navigateTo(menuLinks.examplePanelId, menuLinks.exampleBeanName)}">
+                            action="#{navigationModel.navigateToParam}">
+                        <f:param name="panelID" 
+                            value="#{menuLinks.examplePanelId}" />
+                        <f:param name="beanName" 
+                            value="#{menuLinks.exampleBeanName}" />
                     </h:commandLink>
                 </mobi:outputListItem>
             </ui:repeat>

@@ -19,7 +19,6 @@ package org.icefaces.mobi.component.camera;
 
 import org.icefaces.mobi.utils.HTML;
 import org.icefaces.mobi.utils.Utils;
-import org.icefaces.impl.application.AuxUploadResourceHandler;
 import org.icefaces.util.EnvUtils;
 
 import javax.faces.component.UIComponent;
@@ -28,9 +27,6 @@ import javax.faces.context.ResponseWriter;
 import javax.faces.event.ValueChangeEvent;
 
 import javax.faces.render.Renderer;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.Part;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -77,41 +73,7 @@ public class CameraRenderer extends Renderer {
      * that uploaded this component.
      */
     public boolean extractImages(FacesContext facesContext, Map map, String clientId) throws IOException {
-        HttpServletRequest request = (HttpServletRequest)
-                facesContext.getExternalContext().getRequest();
-        boolean isValid=false;
-
-        String partUploadName = clientId;
-        Part part = null;
-        try {
-            part = request.getPart(partUploadName);
-        } catch (ServletException e)  {
-            //ignore ServletException here since auxUpload is not multipart
-        }
-        if (null == part)  {
-            Map auxMap = AuxUploadResourceHandler.getAuxRequestMap();
-            part = (Part) auxMap.get(partUploadName);
-        }
-        if (part !=null){
-            String contentType = part.getContentType();
-            String fileName = java.util.UUID.randomUUID().toString();
-            if (part.getSize()<=0){
-               isValid=false;
-            }else {
-               isValid = true;
-            }
-            if ("image/jpeg".equals(contentType)|| "image/jpg".equals(contentType)) {
-                fileName += ".jpg";
-            }
-            else if ("image/png".equals(contentType)) {
-                fileName += ".png";
-            }
-            else {  /*if not jpeg or png give it filename of oth for other */
-                fileName += ".oth";
-            }
-            Utils.createMapOfFile(map, request, part, fileName, contentType, facesContext);
-        }
-        return isValid;
+        return Utils.decodeComponentFile(facesContext, clientId, map);
     }
 
 

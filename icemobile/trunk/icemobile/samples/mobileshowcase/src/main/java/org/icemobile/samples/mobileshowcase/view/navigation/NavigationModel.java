@@ -9,6 +9,7 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import java.io.Serializable;
 import java.util.Stack;
+import java.util.Map;
 
 /**
  * Navigation stack test for using a content Stack component.  Normally only the
@@ -35,6 +36,15 @@ public class NavigationModel implements Serializable {
     public static final Destination DESTINATION_HOME =
             new Destination(
                     "content.home.title", "content.home.title", "content.home.title");
+
+    public String navigateToParam()  {
+        Map<String,String> params = 
+            FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+     
+        String panelID = params.get("panelID");
+        String beanName = params.get("beanName");
+        return navigateTo(panelID, beanName);
+    }
 
     /**
      * Navigate to the selectedPanelId as well as save a reference to the current
@@ -91,6 +101,13 @@ public class NavigationModel implements Serializable {
      * @return selected panel.
      */
     public String getSelectedPanel() {
+        return selectedPanel;
+    }
+
+    public String getSelectedPanelOrSplash() {
+        if (null == selectedPanel)  {
+            return "splash";
+        }
         return selectedPanel;
     }
 
