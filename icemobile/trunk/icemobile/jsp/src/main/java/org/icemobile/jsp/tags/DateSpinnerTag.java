@@ -402,7 +402,7 @@ public class DateSpinnerTag extends SimpleTagSupport {
         writer.write(tu.DIV_TAG_END);                                         //end of year value
         writer.write(tu.DIV_TAG);                             //button decrement
         tu.writeAttribute(writer, "class", BUTTON_DEC_CONT_CLASS);
-        writer.write(">" + tu.INPUT_TAG_END);
+        writer.write(">" + tu.INPUT_TAG);
         tu.writeAttribute(writer, "class", BUTTON_DEC_CLASS);
         tu.writeAttribute(writer, "id", clientId + "_yDnBtn");
         tu.writeAttribute(writer, "type", "button");
