@@ -69,6 +69,7 @@
         <icefaces.product.name>ICEfaces</icefaces.product.name>
         <icefaces.lib.name>icefaces</icefaces.lib.name>
 
+        <icepush.product.group>org.icepush</icepush.product.group>
         <icepush.product.name>ICEpush</icepush.product.name>
         <icepush.lib.name>icepush</icepush.lib.name>
 
@@ -234,7 +235,7 @@
             </dependency>
 
             <dependency>
-                <groupId>${icefaces.product.group}</groupId>
+                <groupId>${icepush.product.group}</groupId>
                 <artifactId>${icepush.lib.name}</artifactId>
                 <version>${project.version}</version>
             </dependency>

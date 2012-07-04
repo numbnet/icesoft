@@ -28,6 +28,7 @@
     </parent>
 
     <artifactId>${icepush.lib.name}</artifactId>
+    <groupId>${icepush.product.group}</groupId>
     <packaging>pom</packaging>
     <name>${icepush.product.name}</name>
     <url>http://www.icesoft.org</url>
