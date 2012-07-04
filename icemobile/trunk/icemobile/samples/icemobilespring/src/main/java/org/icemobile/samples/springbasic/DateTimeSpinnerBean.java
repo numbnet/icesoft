@@ -10,18 +10,18 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 @SessionAttributes("dateTimeSpinnerBean")
 public class DateTimeSpinnerBean {
 
-    private String myDate;
+    private String date1;
 
     @ModelAttribute("dateTimeSpinnerBean")
     public DateTimeSpinnerBean createBean() {
         return new DateTimeSpinnerBean();
     }
 
-    public String getDate() {
-        return myDate;
+    public String getDate1() {
+        return date1;
     }
 
-    public void setDate(String date) {
-        this.myDate = date;
+    public void setDate1(String date) {
+        this.date1 = date1;
     }
 }
