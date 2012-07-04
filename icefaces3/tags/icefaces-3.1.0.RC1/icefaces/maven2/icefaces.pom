@@ -21,7 +21,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.icefaces</groupId>
   <artifactId>icefaces</artifactId>
-  <version>3.0.1</version>
+  <version>3.1.0.RC1</version>
   <packaging>jar</packaging>
   <name>ICEfaces Core</name>
   <url>http://www.icesoft.org</url> 
