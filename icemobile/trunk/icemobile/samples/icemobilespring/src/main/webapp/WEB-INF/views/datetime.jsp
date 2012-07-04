@@ -44,10 +44,10 @@
     <script type="text/javascript">
 
         $(document).ready(function () {
-            $("#flipswitchform").submit(function () {
+            $("#dateTimeSpinnerform").submit(function () {
                 if (window.ice && ice.upload) {
                     window.ice.handleResponse = function (data) {
-                        $("#flipswitchContent").replaceWith(unescape(data));
+                        $("#dateTimeSpinnerContent").replaceWith(unescape(data));
                         $('html, body').animate({ scrollTop:$("#message").offset().top }, 500);
                     }
                     ice.upload($(this).attr("id"));
@@ -64,7 +64,7 @@
                     processData:false,
                     type:'POST',
                     success:function (html) {
-                        $("#flipswitchContent").replaceWith(html);
+                        $("#dateTimeSpinnerContent").replaceWith(html);
                         $('html, body').animate({ scrollTop:$("#message").offset().top }, 500);
                     }
                 });
