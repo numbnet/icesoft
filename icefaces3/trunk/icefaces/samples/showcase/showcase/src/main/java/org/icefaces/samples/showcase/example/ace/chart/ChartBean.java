@@ -2,18 +2,23 @@ package org.icefaces.samples.showcase.example.ace.chart;
 
 import org.icefaces.ace.component.chart.Axis;
 import org.icefaces.ace.component.chart.AxisType;
+import org.icefaces.ace.event.PointValueChangeEvent;
 import org.icefaces.ace.event.SelectEvent;
 import org.icefaces.ace.event.SeriesSelectionEvent;
 import org.icefaces.ace.event.UnselectEvent;
 import org.icefaces.ace.model.chart.CartesianSeries;
+import org.icefaces.ace.model.chart.DragConstraintAxis;
 import org.icefaces.ace.model.chart.OHLCSeries;
 import org.icefaces.ace.model.chart.SectorSeries;
+import org.icefaces.ace.model.table.RowStateMap;
 import org.icefaces.samples.showcase.metadata.annotation.*;
 import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
+import org.icefaces.util.JavaScriptRunner;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
+import javax.faces.context.FacesContext;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
@@ -50,6 +55,36 @@ import java.util.List;
 @CustomScoped(value = "#{window}")
 public class ChartBean extends ComponentExampleImpl<ChartBean> implements Serializable {
     public static final String BEAN_NAME = "chartBean";
+
+
+    private List<CartesianSeries> dateLineData = new ArrayList<CartesianSeries>() {{
+        add(new CartesianSeries(){{
+            setDragable(true);
+            add(new GregorianCalendar(2009,1,2).getTime(),  89.1);
+
+//            add(new GregorianCalendar(2009,5,8).getTime(),  143.82);
+//            add(new GregorianCalendar(2009,5,1).getTime(),  136.47);
+//            add(new GregorianCalendar(2009,4,26).getTime(), 124.76);
+//            add(new GregorianCalendar(2009,4,18).getTime(), 123.73);
+//            add(new GregorianCalendar(2009,4,18).getTime(), 123.73);
+//            add(new GregorianCalendar(2009,4,11).getTime(), 127.37);
+//            add(new GregorianCalendar(2009,4,4).getTime(),  128.24);
+//            add(new GregorianCalendar(2009,3,27).getTime(), 122.9);
+//            add(new GregorianCalendar(2009,3,20).getTime(), 121.73);
+            add(new GregorianCalendar(2009,3,13).getTime(), 120.01);
+//            add(new GregorianCalendar(2009,3,6).getTime(),  114.94);
+//            add(new GregorianCalendar(2009,2,30).getTime(), 104.51);
+//            add(new GregorianCalendar(2009,2,23).getTime(), 102.71);
+//            add(new GregorianCalendar(2009,2,16).getTime(), 96.53);
+//            add(new GregorianCalendar(2009,2,9).getTime(),  84.18);
+//            add(new GregorianCalendar(2009,2,2).getTime(),  88.12);
+//            add(new GregorianCalendar(2009,1,23).getTime(), 91.65);
+//            add(new GregorianCalendar(2009,1,17).getTime(), 96.87);
+//            add(new GregorianCalendar(2009,1,9).getTime(),  100);
+            add(new GregorianCalendar(2009,5,15).getTime(), 136.01);
+
+        }});
+    }};
 
     private List<OHLCSeries> ohlcData = new ArrayList<OHLCSeries>() {{
         add(new OHLCSeries(){{
@@ -125,10 +160,23 @@ public class ChartBean extends ComponentExampleImpl<ChartBean> implements Serial
     private List<CartesianSeries> lineData = new ArrayList<CartesianSeries>() {{
         add(new CartesianSeries() {{
             setType(CartesianType.LINE);
-            setShowMarker(false);
-            setLabel("Bar Data");
+            setLabel("Plot Data");
+            setDragable(true);
+            setDragConstraintAxis(DragConstraintAxis.Y);
         }});
     }};
+
+    private RowStateMap rowStateMap;
+
+    public void pointChange(PointValueChangeEvent event) {
+        JavaScriptRunner.runScript(FacesContext.getCurrentInstance(),
+                "ice.ace.jq('.ui-datatable-data tr.ui-selected td:eq("+event.getPointIndex()+")').effect('pulsate', {}, 500);");
+
+        for (Object o : rowStateMap.getSelected()) {
+            Integer[] values = (Integer[]) o;
+            values[event.getPointIndex()] = ((Double)((Object[])event.getNewValue())[1]).intValue();
+        }
+    }
 
     private List<CartesianSeries> barData = new ArrayList<CartesianSeries>() {{
         add(new CartesianSeries() {{
@@ -184,9 +232,6 @@ public class ChartBean extends ComponentExampleImpl<ChartBean> implements Serial
 
     private Axis dateAxis = new Axis() {{
         setType(AxisType.DATE);
-        setFormatString("%b %#d, %y");
-        setMin(new GregorianCalendar(2008,4,30).getTime());
-        setTickInterval("1 month");
     }};
 
     private List<SectorSeries> pieData = new ArrayList<SectorSeries>() {{
@@ -214,7 +259,7 @@ public class ChartBean extends ComponentExampleImpl<ChartBean> implements Serial
         setTickAngle(-30);
     }};
 
-    private Axis barDemoX1Axis = new Axis() {{
+    private Axis barDemoXOneAxis = new Axis() {{
         setType(AxisType.CATEGORY);
     }};
 
@@ -231,7 +276,8 @@ public class ChartBean extends ComponentExampleImpl<ChartBean> implements Serial
         }}
     };
 
-    private Axis barDemoX2Axis = new Axis() {{
+    private Axis barDemoXTwoAxis = new Axis() {{
+        setTicks(new String[] {"Nickle", "Aluminum", "Xenon", "Silver", "Sulfer", "Silicon", "Vanadium"});
         setType(AxisType.CATEGORY);
     }};
 
@@ -247,8 +293,11 @@ public class ChartBean extends ComponentExampleImpl<ChartBean> implements Serial
     public void redrawChartListener(SelectEvent e) {
         CartesianSeries s = lineData.get(0);
         s.clear();
-        for (Integer i : (Integer[]) e.getObject())
-            s.add(i);
+        Integer[] indicies = (Integer[]) e.getObject();
+        s.add("A", indicies[0]);
+        s.add("B", indicies[1]);
+        s.add("C", indicies[2]);
+        s.add("D", indicies[3]);
     }
 
     public void clearChartListener(UnselectEvent e) {
@@ -293,12 +342,12 @@ public class ChartBean extends ComponentExampleImpl<ChartBean> implements Serial
         this.tableData = data;
     }
 
-    public Axis getBarDemoX1Axis() {
-        return barDemoX1Axis;
+    public Axis getBarDemoXOneAxis() {
+        return barDemoXOneAxis;
     }
 
-    public void setBarDemoX1Axis(Axis barDemoX1Axis) {
-        this.barDemoX1Axis = barDemoX1Axis;
+    public void setBarDemoXOneAxis(Axis barDemoXOneAxis) {
+        this.barDemoXOneAxis = barDemoXOneAxis;
     }
 
     public Axis getBarDemoDefaultAxis() {
@@ -309,12 +358,12 @@ public class ChartBean extends ComponentExampleImpl<ChartBean> implements Serial
         this.barDemoDefaultAxis = barDemoDefaultAxis;
     }
 
-    public Axis getBarDemoX2Axis() {
-        return barDemoX2Axis;
+    public Axis getBarDemoXTwoAxis() {
+        return barDemoXTwoAxis;
     }
 
-    public void setBarDemoX2Axis(Axis barDemoX2Axis) {
-        this.barDemoX2Axis = barDemoX2Axis;
+    public void setBarDemoXTwoAxis(Axis barDemoXTwoAxis) {
+        this.barDemoXTwoAxis = barDemoXTwoAxis;
     }
 
     public Axis[] getBarDemoYAxes() {
@@ -387,5 +436,21 @@ public class ChartBean extends ComponentExampleImpl<ChartBean> implements Serial
 
     public void setFormatString(String formatString) {
         this.formatString = formatString;
+    }
+
+    public RowStateMap getRowStateMap() {
+        return rowStateMap;
+    }
+
+    public void setRowStateMap(RowStateMap rowStateMap) {
+        this.rowStateMap = rowStateMap;
+    }
+
+    public List<CartesianSeries> getDateLineData() {
+        return dateLineData;
+    }
+
+    public void setDateLineData(List<CartesianSeries> dateLineData) {
+        this.dateLineData = dateLineData;
     }
 }

@@ -39,6 +39,7 @@
         <h:form id="form">
             <ace:dataTable id="table"
                     value="#{backing.tableData}" var="row"
+                    stateMap="#{backing.rowStateMap}"
                     selectionMode="single"
                     rowSelectListener="#{backing.redrawChartListener}"
                     rowUnselectListener="#{backing.clearChartListener}">
@@ -63,12 +64,12 @@
                        xAxis="#{backing.tableDemoAxis}"
                        legend="true"
                        legendLocation="NW"
-                       selectListener="#{backing.selectionListener}"
                        highlighter="true"
                        highlighterAxes="Y"
                        highlighterShowMarker="false"
+                       pointChangeListener="#{backing.pointChange}"
                        widgetVar="tableChart">
-                <ace:ajax event="click" listener="#{backing.listener}"/>
+                <ace:ajax render="form:table" event="dragStop"/>
             </ace:chart>
             <h:commandButton value="Export"
                              onclick="tableChart.exportToImage(ice.ace.jq('.chartExport')); return false;" />
@@ -82,8 +83,8 @@
                        value="#{backing.barData}"
                        stackSeries="false"
                        defaultAxesConfig="#{backing.barDemoDefaultAxis}"
-                       xAxis="#{backing.barDemoX1Axis}"
-                       x2Axis="#{backing.barDemoX2Axis}"
+                       xAxis="#{backing.barDemoXOneAxis}"
+                       x2Axis="#{backing.barDemoXTwoAxis}"
                        yAxes="#{backing.barDemoYAxes}"
                        legend="true"
                        legendPlacement="OUTSIDE_GRID"

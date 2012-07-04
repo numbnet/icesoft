@@ -28,7 +28,7 @@ public class PointValueChangeEvent extends ValueChangeEvent {
     Integer seriesIndex;
     Integer pointIndex;
 
-    public PointValueChangeEvent(UIComponent component, Object oldValue, Object newValue, Integer seriesIndex, Integer pointIndex) {
+    public PointValueChangeEvent(UIComponent component, Object[] oldValue, Object[] newValue, Integer seriesIndex, Integer pointIndex) {
         super(component, oldValue, newValue);
         this.seriesIndex = seriesIndex;
         this.pointIndex = pointIndex;

@@ -3,6 +3,7 @@ package org.icefaces.ace.model.chart;
 import org.icefaces.ace.model.SimpleEntry;
 import org.icefaces.ace.util.JSONBuilder;
 
+import javax.faces.component.UIComponent;
 import java.util.Date;
 import java.util.Map;
 
@@ -50,8 +51,8 @@ public class OHLCSeries extends ChartSeries {
     }
 
     @Override
-    public JSONBuilder getDataJSON() {
-        JSONBuilder json = super.getDataJSON();
+    public JSONBuilder getDataJSON(UIComponent chart) {
+        JSONBuilder json = super.getDataJSON(chart);
 
         for (Object o : getData()) {
             Map.Entry entry = (Map.Entry)o;
@@ -74,10 +75,11 @@ public class OHLCSeries extends ChartSeries {
     /**
      * Used by the ChartRenderer to produce a JSON representation of the data of this series.
      * @return the JSON object
+     * @param component
      */
     @Override
-    public JSONBuilder getConfigJSON() {
-        JSONBuilder cfg = super.getConfigJSON();
+    public JSONBuilder getConfigJSON(UIComponent component) {
+        JSONBuilder cfg = super.getConfigJSON(component);
 
 
         cfg.entry("renderer", "ice.ace.jq.jqplot.OHLCRenderer", true);

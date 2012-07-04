@@ -62,6 +62,7 @@ public class Axis implements Serializable {
         Integer tickAngle = this.getTickAngle();
         Boolean autoscale = this.getAutoscale();
         String tickInterval = this.getTickInterval();
+        String[] ticks = this.getTicks();
 
         json.beginMap();
 
@@ -157,7 +158,7 @@ public class Axis implements Serializable {
     private void encodeTicks(JSONBuilder json) {
         json.beginArray("ticks");
         Class tickType = null;
-        for (Object tick : ticks) {
+        for (Object tick : getTicks()) {
             if (tickType == null) {
                 if (tick instanceof Number) tickType = Number.class;
                 else if (tick instanceof String) tickType = String.class;

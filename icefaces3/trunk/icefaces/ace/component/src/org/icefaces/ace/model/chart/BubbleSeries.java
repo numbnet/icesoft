@@ -3,6 +3,8 @@ package org.icefaces.ace.model.chart;
 import org.icefaces.ace.model.SimpleEntry;
 import org.icefaces.ace.util.JSONBuilder;
 
+import javax.faces.component.UIComponent;
+
 /**
  * Copyright 2010-2011 ICEsoft Technologies Canada Corp.
  * <p/>
@@ -35,17 +37,18 @@ public class BubbleSeries extends ChartSeries {
     }
 
     @Override
-    public JSONBuilder getDataJSON() {
+    public JSONBuilder getDataJSON(UIComponent chart) {
         return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
     /**
      * Used by the ChartRenderer to produce a JSON representation of the data of this series.
      * @return the JSON object
+     * @param component
      */
     @Override
-    public JSONBuilder getConfigJSON() {
-        JSONBuilder cfg = super.getConfigJSON();
+    public JSONBuilder getConfigJSON(UIComponent component) {
+        JSONBuilder cfg = super.getConfigJSON(component);
 
         if (type != null) {
             if (type.equals(BubbleType.BUBBLE))
