@@ -52,21 +52,7 @@ import javax.faces.event.PhaseId;
 public class Dialog extends DialogBase {
 
 	private static final String OPTIMIZED_PACKAGE = "org.icefaces.ace.component.";
-
-    private final static String DEFAULT_EVENT = "close";
-
-    private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList(DEFAULT_EVENT));
-
-    @Override
-    public Collection<String> getEventNames() {
-        return EVENT_NAMES;
-    }
-
-    @Override
-    public String getDefaultEventName() {
-        return DEFAULT_EVENT;
-    }
-
+    
     @Override
     public void queueEvent(FacesEvent event) {
         FacesContext context = FacesContext.getCurrentInstance();
