@@ -71,6 +71,11 @@ public class ContentMenuSingleBean extends LayoutBean {
         this.selectedPane = selectedPane;
     }
 
+    public String setSelectedPaneAction(String selectedPane) {
+        this.selectedPane = selectedPane;
+        return null;
+    }
+
     public String getSelectedTabPane() {
         return selectedTabPane;
     }

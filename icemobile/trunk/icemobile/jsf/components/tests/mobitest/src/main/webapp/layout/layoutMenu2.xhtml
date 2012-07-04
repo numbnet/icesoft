@@ -28,10 +28,24 @@
               <h:panelGroup>
                   panel 1 client
               </h:panelGroup>
+             <h:panelGroup>
+                 <h:form>
+                     <h:commandButton value="got page panel 3"
+                                      action="#{contentMenuBean.setSelectedPaneAction('panel3')}"
+                             />
+                 </h:form>
+             </h:panelGroup>
          </mobi:contentPane>
          <mobi:contentPane id="panel2" >
              <h:panelGroup>
                  panel 2
+             </h:panelGroup>
+             <h:panelGroup>
+                 <h:form>
+                     <h:commandButton value="got page panel 3"
+                                      action="#{contentMenuBean.setSelectedPaneAction('panel3')}"
+                             />
+                 </h:form>
              </h:panelGroup>
          </mobi:contentPane>
          <mobi:contentPane id="panel3" facelet="true" >
