@@ -817,7 +817,7 @@ ice.mobi.datespinner = {
         hiddenEl.value = dateStr;
         inputEl.value = dateStr;
 
-        this.dateSubmit(cfg, clientId);
+        //this.dateSubmit(cfg, clientId);
         this.close(clientId);
     },
     dateSubmit: function(cfg, clientId) {
