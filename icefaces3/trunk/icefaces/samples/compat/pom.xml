@@ -31,7 +31,6 @@
 
     <modules>
         <module>auctionMonitor</module>
-        <!--        <module>compat-basic</module> -->
         <module>component-showcase</module>
         <module>component-showcase-portlets</module>
     </modules>
@@ -75,6 +74,26 @@
         </dependency>
 
         <dependency>
+            <groupId>${icefaces.product.group}</groupId>
+            <artifactId>${icepush.lib.name}</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>javax.servlet.jsp</groupId>
+                    <artifactId>jsp-api</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>javax.mail</groupId>
+                    <artifactId>mail</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>javax.annotation</groupId>
             <artifactId>jsr250-api</artifactId>
             <version>1.0</version>
@@ -82,8 +101,9 @@
         </dependency>
 
         <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>servlet-api</artifactId>
+            <groupId>commons-collections</groupId>
+            <artifactId>commons-collections</artifactId>
+            <version>3.2</version>
         </dependency>
 
     </dependencies>

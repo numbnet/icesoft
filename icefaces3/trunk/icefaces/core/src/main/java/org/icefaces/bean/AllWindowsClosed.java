@@ -19,6 +19,11 @@ package org.icefaces.bean;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
+/**
+ * Method annotation designed to be used by session-scoped beans that need to be notified when all browser windows
+ * for that session are closed. Useful in cases where the application wants to actively cleanup a user-session when
+ * the final window associated with the session has been closed.
+ */
 @Retention(java.lang.annotation.RetentionPolicy.RUNTIME)
 @Target({java.lang.annotation.ElementType.METHOD})
 public @interface AllWindowsClosed {

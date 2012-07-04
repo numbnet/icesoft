@@ -29,21 +29,4 @@
     <packaging>war</packaging>
     <name>${icefaces.product.name}: Core Samples Chat</name>
 
-    <dependencies>
-
-        <dependency>
-            <groupId>${icefaces.product.group}</groupId>
-            <artifactId>${icefaces.lib.name}</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>${icefaces.product.group}</groupId>
-            <artifactId>${icepush.lib.name}</artifactId>
-        </dependency>
-
-    </dependencies>
-
-    <build>
-        <finalName>${artifactId}</finalName>
-    </build>
 </project>

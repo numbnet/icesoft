@@ -33,8 +33,4 @@
         <private.demo>true</private.demo>
     </properties>
 
-    <build>
-        <finalName>${artifactId}</finalName>
-    </build>
-
 </project>
