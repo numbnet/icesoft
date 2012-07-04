@@ -101,30 +101,32 @@ public class DateSpinnerTag extends SimpleTagSupport {
         String eventStr = tu.isTouchEventEnabled(context) ?
                 TOUCH_START_EVENT : CLICK_EVENT;
         //prep for ajax submit
-	/*        StringBuilder builder = new StringBuilder(255);
+	StringBuilder builder = new StringBuilder(255);
         StringBuilder builder2 = new StringBuilder(255);
-        String inputCallStart = "mobi.datespinner.inputSubmit('";
-        String jsCallStart = "mobi.datespinner.select('";
-        builder2.append(clientId).append("',{ event: event,");
-        builder2.append("singleSubmit: ").append(singleSubmit);
-        if (hasBehaviors) {
+        String inputCallStart = "ice.mobi.datespinner.inputSubmit('";
+        String jsCallStart = "ice.mobi.datespinner.select('";
+        builder2.append(id).append("',{ event: event, singlesubmit: false");
+        /*builder2.append("singleSubmit: ").append(singleSubmit);
+	if (hasBehaviors) {
             String behaviors = this.encodeClientBehaviors(context, cbh, "change").toString();
             behaviors = behaviors.replace("\"", "\'");
             builder2.append(behaviors);
-        }
+	    }*/
         builder2.append("});");
         builder.append(jsCallStart).append(builder2);
         StringBuilder inputCall = new StringBuilder(inputCallStart).append(builder2);
-        String jsCall = builder.toString(); */
+        String jsCall = builder.toString();
 
         //first do the input field and the button
         // build out first input field
         writer.write(tu.SPAN_TAG);
         tu.writeAttribute(writer, "id", id);
+        //tu.writeAttribute(writer, "name", name);
         tu.writeAttribute(writer, "class", "mobi-date-wrapper");
         writer.write("> " + tu.INPUT_TAG);
-	tu.writeAttribute(writer, "name", name);
-	//        tu.writeAttribute(writer, "onblur", inputCall.toString());
+        tu.writeAttribute(writer, "id", id + "_input");
+        tu.writeAttribute(writer, "name", name);
+	//tu.writeAttribute(writer, "onblur", inputCall.toString());
 
         // apply class attribute.
         StringBuilder classNames = new StringBuilder(INPUT_CLASS);
@@ -147,7 +149,7 @@ public class DateSpinnerTag extends SimpleTagSupport {
         writer.write(tu.INPUT_TAG);
         tu.writeAttribute(writer, "type", "hidden");
         tu.writeAttribute(writer, "id", id + "_hidden");
-        tu.writeAttribute(writer, "name", name);
+        tu.writeAttribute(writer, "name", name + "_hidden");
 	writer.write(">" + tu.INPUT_TAG_END);
 	writer.write(tu.SPAN_TAG_END);
         // build out command button for show/hide of date select popup.
@@ -232,9 +234,9 @@ public class DateSpinnerTag extends SimpleTagSupport {
         tu.writeAttribute(writer, "class", "mobi-button mobi-button-default");
         tu.writeAttribute(writer, "type", "button");
         tu.writeAttribute(writer, "value", "Set");
-	/*        if (isDisabled() && !isReadOnly()) {
+	if (!isDisabled() && !isReadOnly()) {
             tu.writeAttribute(writer, CLICK_EVENT, jsCall);
-	    }*/
+	}
         writer.write(">" + tu.INPUT_TAG_END);
 
         writer.write( tu.INPUT_TAG);
