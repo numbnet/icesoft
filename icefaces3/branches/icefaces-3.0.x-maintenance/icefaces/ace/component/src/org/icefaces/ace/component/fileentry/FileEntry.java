@@ -303,7 +303,17 @@ public class FileEntry extends FileEntryBase {
                     if (listener != null) {
                         ELContext elContext = context.getELContext();
                         try {
-                            listener.invoke(elContext, new Object[] {event});
+                            Object result = listener.invoke(elContext, new Object[] {event});
+//System.out.println("FileEntry.broadcast    result: " + result);
+                            if (result != null) {
+                                String outcome = result.toString();
+                                context.getApplication().getNavigationHandler().handleNavigation(
+                                    context,
+                                    (null != listener) ? listener.getExpressionString() : null,
+                                    outcome);
+                                context.renderResponse();
+                                return;
+                            }
                         } catch (ELException ee) {
                             throw new AbortProcessingException(ee.getMessage(),
                                     ee.getCause());
