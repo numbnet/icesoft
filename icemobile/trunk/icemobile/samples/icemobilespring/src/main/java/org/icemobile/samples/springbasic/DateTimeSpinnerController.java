@@ -23,7 +23,7 @@ public class DateTimeSpinnerController {
 	}
 
     @RequestMapping(value = "/datetime", method = RequestMethod.GET)
-    public void variousGet(HttpServletRequest request, FlipSwitchBean model) {
+    public void variousGet(HttpServletRequest request, DateTimeSpinnerBean model) {
     }
 
     @RequestMapping(value = "/datetime", method = RequestMethod.POST)
