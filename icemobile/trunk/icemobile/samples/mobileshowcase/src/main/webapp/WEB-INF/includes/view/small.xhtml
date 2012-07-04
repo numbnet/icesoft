@@ -37,7 +37,8 @@
 
     <f:facet name="body">
         <ui:include src="/WEB-INF/includes/content/content-stack.xhtml">
-            <ui:param name="selectedPanel" value="#{navigationModel.selectedPanelOrSplash}" />
+            <ui:param name="selectedPanel"
+                      value="#{navigationModel.selectedPanel == null?'menu':navigationModel.selectedPanel}" />
         </ui:include>
     </f:facet>
 

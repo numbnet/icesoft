@@ -104,13 +104,6 @@ public class NavigationModel implements Serializable {
         return selectedPanel;
     }
 
-    public String getSelectedPanelOrSplash() {
-        if (null == selectedPanel)  {
-            return "splash";
-        }
-        return selectedPanel;
-    }
-
     public void setSelectedPanel(String selectedPanel) {
         this.selectedPanel = selectedPanel;
     }
