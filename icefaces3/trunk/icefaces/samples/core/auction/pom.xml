@@ -29,18 +29,4 @@
     <packaging>war</packaging>
     <name>${icefaces.product.name}: Core Samples Auction</name>
 
-    <dependencies>
-
-        <dependency>
-            <groupId>${icefaces.product.group}</groupId>
-            <artifactId>${icefaces.lib.name}</artifactId>
-        </dependency>
-
-    </dependencies>
-
-    <!-- Naming it this way prevents the version from being appended. -->
-    <build>
-        <finalName>${artifactId}</finalName>
-    </build>
-
 </project>

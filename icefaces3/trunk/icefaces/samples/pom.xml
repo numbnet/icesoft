@@ -18,26 +18,19 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.icefaces</groupId>
+        <artifactId>bundle-parent</artifactId>
+        <version>3.1.0-RC1-SNAPSHOT</version>
+        <relativePath>..</relativePath>
+    </parent>
+
     <groupId>org.icefaces.samples</groupId>
     <artifactId>samples-parent</artifactId>
-    <version>3.1.0-RC1-SNAPSHOT</version>
     <packaging>pom</packaging>
-    <name>ICEfaces Samples Parent</name>
-    <!--<name>ICEfaces EE Samples Parent</name>-->
+    <name>${icefaces.product.name} Samples Parent</name>
     <url>http://www.icesoft.org</url>
-
-    <licenses>
-        <license>
-            <name>Apache License Version 2.0</name>
-            <url>http://www.apache.org/licenses/LICENSE-2.0</url>
-            <distribution>repo</distribution>
-        </license>
-    </licenses>
-
-    <scm>
-        <connection>scm:svn:http://anonsvn.icesoft.org/repo/icefaces3/trunk/icefaces/samples</connection>
-        <tag>HEAD</tag>
-    </scm>
 
     <modules>
         <module>compat</module>
@@ -45,166 +38,40 @@
         <module>showcase</module>
     </modules>
 
-    <properties>
-
-        <!-- Properties for specifying the product being used (open source) -->
-        <icefaces.product.group>org.icefaces</icefaces.product.group>
-        <icefaces.product.name>ICEfaces</icefaces.product.name>
-        <icefaces.lib.name>icefaces</icefaces.lib.name>
-        <icepush.lib.name>icepush</icepush.lib.name>
-
-        <!-- Properties for specifying the product being used (EE) -->
-        <!--<icefaces.product.group>com.icesoft.icefaces-ee</icefaces.product.group>-->
-        <!--<icefaces.product.name>ICEfaces EE</icefaces.product.name>-->
-        <!--<icefaces.lib.name>icefaces-ee</icefaces.lib.name>-->
-        <!--<icepush.lib.name>icepush-ee</icepush.lib.name>-->
-
-        <!-- Versions of JSF implementations -->
-        <mojarra.version>2.1.6</mojarra.version>
-        <myfaces.version>2.1.7-ice-7899</myfaces.version>
-
-        <!-- Various library versions settable from one place -->
-        <annotation.version>1.0</annotation.version>
-        <el.version>2.2.1-b04</el.version>
-        <portlet.api.version>2.0</portlet.api.version>
-        <servlet.api.version>2.5</servlet.api.version>
-
-        <!-- The portlet bridge implmentation to use.
-             Default is portletfaces but liferayfaces can also be specified. -->
-        <portletfaces.version>2.0.2-ice-7875</portletfaces.version>
-        <liferayfaces.version>3.1.0-RC1</liferayfaces.version>
-
-        <!-- When build for Pluto Portal -->
-        <pluto.version>2.0.3</pluto.version>
-
-        <!-- To avoid warnings about platform dependent actions when copying resources -->
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
-
+    <!-- Naming the war files this way prevents the version from being appended. -->
     <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>2.0.2</version>
-                <configuration>
-                    <source>1.5</source>
-                    <target>1.5</target>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-war-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-release-plugin</artifactId>
-                <version>2.2.2</version>
-            </plugin>
-        </plugins>
+        <finalName>${artifactId}</finalName>
     </build>
 
-    <repositories>
-        <repository>
-            <id>java.net</id>
-            <url>http://download.java.net/maven/2</url>
-        </repository>
-        <repository>
-            <id>maven.org</id>
-            <url>http://repo1.maven.org/maven2</url>
-        </repository>
-        <repository>
-            <id>jvnet-nexus-releases</id>
-            <name>jvnet-nexus-releases</name>
-            <url>https://maven.java.net/content/repositories/releases</url>
-        </repository>
-        <repository>
-            <id>releases</id>
-            <url>http://anonsvn.icefaces.org/repo/maven2/releases</url>
-        </repository>
-        <repository>
-            <id>snapshots</id>
-            <url>http://anonsvn.icefaces.org/repo/maven2/snapshots</url>
-        </repository>
-        <repository>
-            <id>apache.org</id>
-            <url>http://repository.apache.org</url>
-        </repository>
-    </repositories>
+    <dependencies>
 
-    <dependencyManagement>
-        <dependencies>
+        <dependency>
+            <groupId>${icefaces.product.group}</groupId>
+            <artifactId>${icefaces.lib.name}</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.sun.xml.fastinfoset</groupId>
+                    <artifactId>FastInfoset</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
 
-            <dependency>
-                <groupId>${icefaces.product.group}</groupId>
-                <artifactId>${icefaces.lib.name}</artifactId>
-                <version>${project.version}</version>
-                <exclusions>
-                    <exclusion>
-                        <groupId>org.glassfish</groupId>
-                        <artifactId>javax.faces</artifactId>
-                    </exclusion>
-                </exclusions>
-            </dependency>
+        <dependency>
+            <groupId>${icefaces.product.group}</groupId>
+            <artifactId>${icepush.lib.name}</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>javax.servlet.jsp</groupId>
+                    <artifactId>jsp-api</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>javax.mail</groupId>
+                    <artifactId>mail</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
 
-            <dependency>
-                <groupId>${icefaces.product.group}</groupId>
-                <artifactId>${icepush.lib.name}</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>${icefaces.product.group}</groupId>
-                <artifactId>${icefaces.lib.name}-ace</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>${icefaces.product.group}</groupId>
-                <artifactId>${icefaces.lib.name}-compat</artifactId>
-                <version>${project.version}</version>
-                <exclusions>
-                    <exclusion>
-                        <groupId>javax.servlet</groupId>
-                        <artifactId>servlet-api</artifactId>
-                    </exclusion>
-                    <exclusion>
-                        <groupId>javax.el</groupId>
-                        <artifactId>el-api</artifactId>
-                    </exclusion>
-                </exclusions>
-            </dependency>
-
-            <dependency>
-                <groupId>javax.annotation</groupId>
-                <artifactId>jsr250-api</artifactId>
-                <version>${annotation.version}</version>
-                <scope>provided</scope>
-            </dependency>
-
-            <dependency>
-                <groupId>org.glassfish.web</groupId>
-                <artifactId>el-impl</artifactId>
-                <version>${el.version}</version>
-                <scope>provided</scope>
-            </dependency>
-
-            <dependency>
-                <groupId>javax.servlet</groupId>
-                <artifactId>servlet-api</artifactId>
-                <version>${servlet.api.version}</version>
-                <scope>provided</scope>
-            </dependency>
-
-            <dependency>
-                <groupId>javax.portlet</groupId>
-                <artifactId>portlet-api</artifactId>
-                <version>${portlet.api.version}</version>
-                <scope>provided</scope>
-            </dependency>
-
-        </dependencies>
-    </dependencyManagement>
+    </dependencies>
 
     <profiles>
 

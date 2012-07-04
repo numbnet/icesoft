@@ -29,10 +29,6 @@
     <packaging>war</packaging>
     <name>${icefaces.product.name}: Compat Samples Component Showcase</name>
 
-    <build>
-        <finalName>${artifactId}</finalName>
-    </build>
-
     <dependencies>
 
         <dependency>
@@ -43,11 +39,6 @@
         <dependency>
             <groupId>net.sf.jcharts</groupId>
             <artifactId>krysalis-jCharts</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>${icefaces.product.group}</groupId>
-            <artifactId>${icepush.lib.name}</artifactId>
         </dependency>
 
     </dependencies>

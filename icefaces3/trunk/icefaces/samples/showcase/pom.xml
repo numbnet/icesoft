@@ -36,8 +36,6 @@
 
     <dependencies>
 
-        <!-- Dependencies specified in top parent pom don't require versions as they
-             are inherited from the parent entries. -->
         <dependency>
             <groupId>${icefaces.product.group}</groupId>
             <artifactId>${icefaces.lib.name}-ace</artifactId>
@@ -49,18 +47,13 @@
         </dependency>
 
         <dependency>
-            <groupId>${icefaces.product.group}</groupId>
-            <artifactId>${icepush.lib.name}</artifactId>
-        </dependency>
-
-        <dependency>
             <groupId>javax.servlet</groupId>
-            <artifactId>servlet-api</artifactId>
+            <artifactId>javax.servlet-api</artifactId>
         </dependency>
 
         <dependency>
-            <groupId>org.glassfish.web</groupId>
-            <artifactId>el-impl</artifactId>
+            <groupId>javax.el</groupId>
+            <artifactId>javax.el-api</artifactId>
         </dependency>
 
         <!-- Dependencies specific to these ACE samples. -->
@@ -68,6 +61,12 @@
             <groupId>com.uwyn</groupId>
             <artifactId>jhighlight</artifactId>
             <version>1.0</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>javax.servlet</groupId>
+                    <artifactId>servlet-api</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <dependency>
@@ -124,6 +123,10 @@
                 <exclusion>
                     <groupId>bouncycastle</groupId>
                     <artifactId>bcprov-jdk14</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>bouncycastle</groupId>
+                    <artifactId>bctsp-jdk14</artifactId>
                 </exclusion>
             </exclusions>
         </dependency>

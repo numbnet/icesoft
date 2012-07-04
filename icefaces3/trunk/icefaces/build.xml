@@ -68,6 +68,9 @@
     <target name="world" depends="core, compat, ace, samples"  description="Builds all ICEfaces libraries.">
     </target>
 
+    <target name="clean" depends="allclean">
+    </target>
+
 
     <target name="allclean"  description="Cleans all remnants of previous ICEfaces builds.">
         <subant target="clean">
