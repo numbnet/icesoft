@@ -1,16 +1,21 @@
 package org.icefaces.ace.component.chart;
 
+import org.icefaces.ace.event.PointValueChangeEvent;
 import org.icefaces.ace.event.SeriesSelectionEvent;
+import org.icefaces.ace.json.JSONArray;
+import org.icefaces.ace.json.JSONException;
+import org.icefaces.ace.model.SimpleEntry;
 import org.icefaces.ace.model.chart.ChartSeries;
 import org.icefaces.ace.renderkit.CoreRenderer;
 import org.icefaces.ace.util.HTML;
 import org.icefaces.ace.util.JSONBuilder;
 
+import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
-import javax.faces.component.behavior.ClientBehavior;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -20,13 +25,53 @@ public class ChartRenderer extends CoreRenderer {
         Chart chart = (Chart) component;
         String id = chart.getClientId(context);
         String select = id + "_selection";
+        String drag = id + "_drag";
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
 
         String selectInput = params.get(select);
+        String dragInput = params.get(drag);
 
         if (selectInput != null) processSelections(chart, selectInput.split(","));
+        if (dragInput != null) processDraggings(chart, dragInput);
 
         decodeBehaviors(context, component);
+    }
+
+    private void processDraggings(Chart chart, String draggingInput) {
+        try {
+            JSONArray array = new JSONArray(draggingInput);
+            for (int i = 0; i < array.length(); i++) {
+                JSONArray drag = array.getJSONArray(i);
+                JSONArray newVals = drag.getJSONArray(0);
+                Object newX = newVals.get(0);
+                Object newY = newVals.get(1);
+
+                Integer seriesIndex = drag.getInt(1);
+                Integer pointIndex = drag.getInt(2);
+
+                // Set to new val
+                List seriesList = (List)chart.getValue();
+                List seriesData = ((ChartSeries) seriesList.get(seriesIndex)).getData();
+                Map.Entry point = (Map.Entry) seriesData.get(pointIndex);
+
+                Object[] oldValArr = entryToArray(point);
+                if (oldValArr[0] instanceof Date) newX = new Date(((Number)newX).longValue());
+                if (oldValArr[1] instanceof Date) newY = new Date(((Number)newY).longValue());
+
+                Map.Entry newVal = new SimpleEntry(newX, newY);
+
+                seriesData.set(pointIndex, newVal);
+
+                // Queue value change event
+                chart.queueEvent(new PointValueChangeEvent(chart, oldValArr, entryToArray(newVal), seriesIndex, pointIndex));
+            }
+        } catch (JSONException e) {
+            throw new FacesException(e);
+        }
+    }
+
+    private Object[] entryToArray(Map.Entry point) {
+        return new Object[] {point.getKey(), point.getValue()};
     }
 
     private void processSelections(Chart chart, String[] select) {
@@ -73,14 +118,14 @@ public class ChartRenderer extends CoreRenderer {
         dataBuilder.beginArray();
         if (data != null)
             for (ChartSeries series : data)
-                dataBuilder.item(series.getDataJSON().toString(), false);
+                dataBuilder.item(series.getDataJSON(component).toString(), false);
         dataBuilder.endArray();
 
 
         // Build configuration object
         cfgBuilder.beginMap();
         encodeAxesConfig(cfgBuilder, component);
-        encodeSeriesConfig(cfgBuilder, seriesDefaults, data);
+        encodeSeriesConfig(cfgBuilder, component, seriesDefaults, data);
         encodeLegendConfig(cfgBuilder, component);
         encodeHighlighterConfig(cfgBuilder, component);
         if (title != null) cfgBuilder.entry("title", title);
@@ -139,10 +184,10 @@ public class ChartRenderer extends CoreRenderer {
         }
     }
     
-    private void encodeSeriesConfig(JSONBuilder cfg, ChartSeries defaults, List<ChartSeries> series) {
+    private void encodeSeriesConfig(JSONBuilder cfg, Chart chart, ChartSeries defaults, List<ChartSeries> series) {
         // If defined, add default series config
         if (defaults != null)
-            cfg.entry("seriesDefaults", defaults.getConfigJSON().toString(), true);
+            cfg.entry("seriesDefaults", defaults.getConfigJSON(chart).toString(), true);
         else if (series != null && series.size() > 0) {
             try {
                 ChartSeries firstSeries = series.get(0);
@@ -154,7 +199,7 @@ public class ChartRenderer extends CoreRenderer {
                 ChartSeries.ChartType firstSeriesType = firstSeries.getType();
 
                 dummySeries.setType(firstSeriesType != null ? firstSeriesType : dummySeries.getDefaultType());
-                cfg.entry("seriesDefaults", dummySeries.getConfigJSON().toString(), true);
+                cfg.entry("seriesDefaults", dummySeries.getConfigJSON(chart).toString(), true);
             } catch (InstantiationException e) {
                 e.printStackTrace();
             } catch (IllegalAccessException e) {
@@ -166,7 +211,7 @@ public class ChartRenderer extends CoreRenderer {
         cfg.beginArray("series");
         if (series != null)
             for (ChartSeries s : series)
-                cfg.item(s.getConfigJSON().toString(), false);
+                cfg.item(s.getConfigJSON(chart).toString(), false);
         cfg.endArray();
     }
 
@@ -184,7 +229,7 @@ public class ChartRenderer extends CoreRenderer {
             if (xAxis != null)
                 cfgBuilder.entry("xaxis", xAxis.toString(), true);
             if (x2Axis != null)
-                cfgBuilder.entry("x2axis", xAxis.toString(), true);
+                cfgBuilder.entry("x2axis", x2Axis.toString(), true);
             if (yAxes != null)
                 for (int i = 0; i < yAxes.length; i++)
                     cfgBuilder.entry(i == 0 ? "yaxis" : "y"+(i+1)+"axis", yAxes[i].toString(), true);

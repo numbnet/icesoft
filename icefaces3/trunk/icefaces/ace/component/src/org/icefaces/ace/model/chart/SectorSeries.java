@@ -3,6 +3,8 @@ package org.icefaces.ace.model.chart;
 import org.icefaces.ace.model.SimpleEntry;
 import org.icefaces.ace.util.JSONBuilder;
 
+import javax.faces.component.UIComponent;
+
 /**
  * Copyright 2010-2011 ICEsoft Technologies Canada Corp.
  * <p/>
@@ -67,8 +69,8 @@ public class SectorSeries extends ChartSeries {
     }
 
     @Override
-    public JSONBuilder getDataJSON() {
-        JSONBuilder builder = super.getDataJSON();
+    public JSONBuilder getDataJSON(UIComponent chart) {
+        JSONBuilder builder = super.getDataJSON(chart);
         Class valueType = null;
 
         for (Object x : getData()) {
@@ -92,8 +94,8 @@ public class SectorSeries extends ChartSeries {
     }
 
     @Override
-    public JSONBuilder getConfigJSON() {
-        JSONBuilder cfg = super.getConfigJSON();
+    public JSONBuilder getConfigJSON(UIComponent component) {
+        JSONBuilder cfg = super.getConfigJSON(component);
 
         if (type != null) {
             if (type.equals(SectorType.PIE))

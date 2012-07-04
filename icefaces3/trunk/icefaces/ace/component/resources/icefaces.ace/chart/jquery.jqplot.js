@@ -3128,8 +3128,8 @@
 
             return {offsets:go, gridPos:gridPos, dataPos:dataPos};
         }
-        
-        
+
+
         // function to check if event location is over a area area
         function checkIntersection(gridpos, plot) {
             var series = plot.series;
@@ -3429,8 +3429,8 @@
             
             return null;
         }
-        
-        
+
+
         
         this.onClick = function(ev) {
             // Event passed in is normalized and will have data attribute.

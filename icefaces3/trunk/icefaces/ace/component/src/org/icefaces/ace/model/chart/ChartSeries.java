@@ -2,6 +2,7 @@ package org.icefaces.ace.model.chart;
 
 import org.icefaces.ace.util.JSONBuilder;
 
+import javax.faces.component.UIComponent;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -200,8 +201,7 @@ public abstract class ChartSeries {
     }
 
     /**
-     * Get whether or not we are using colors inverse to
-     * those normally generated.
+     * Get whether or not this series fills using an alternate color when rendering in a negative quadrant.
      * @return negative colors enabled
      */
     public Boolean getUseNegativeColors() {
@@ -209,8 +209,7 @@ public abstract class ChartSeries {
     }
 
     /**
-     * Enable using colors inverse to those normally generated to
-     * color this series.
+     * Enable this series using an alternate color when rendering fills in a negative quadrant.
      * @param useNegativeColors negative colors enabled
      */
     public void setUseNegativeColors(Boolean useNegativeColors) {
@@ -235,11 +234,12 @@ public abstract class ChartSeries {
         this.fill = fill;
     }
 
-    public JSONBuilder getDataJSON() {
+    /* Can't be a reference to Chart object explicitly due to cyclical dependency issues. */
+    public JSONBuilder getDataJSON(UIComponent chart) {
         return JSONBuilder.create().beginArray();
     };
 
-    public JSONBuilder getConfigJSON() {
+    public JSONBuilder getConfigJSON(UIComponent component) {
         JSONBuilder cfg = JSONBuilder.create();
 
         String label = getLabel();

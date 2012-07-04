@@ -161,4 +161,11 @@ public class ChartMeta extends UIComponentBaseMeta {
                     "element is selected. The method receives a single " +
                     "argument, SeriesSelectionEvent.")
     private MethodExpression selectListener;
+
+    @Property(expression = Expression.METHOD_EXPRESSION,
+            methodExpressionArgument = "org.icefaces.ace.event.PointValueChangeEvent",
+            tlddoc = "MethodExpression reference called whenever a series " +
+                    "element is dragged to a new x or y value. The method receives a single " +
+                    "argument, PointValueChangeEvent.")
+    private MethodExpression pointChangeListener;
 }

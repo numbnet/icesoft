@@ -1,9 +1,15 @@
 package org.icefaces.ace.model.chart;
 
+import org.icefaces.ace.component.chart.Axis;
+import org.icefaces.ace.component.chart.AxisType;
+import org.icefaces.ace.component.chart.Chart;
 import org.icefaces.ace.model.SimpleEntry;
 import org.icefaces.ace.util.JSONBuilder;
 
+import javax.faces.FacesException;
+import javax.faces.component.UIComponent;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -84,10 +90,14 @@ public class CartesianSeries extends ChartSeries {
     /**
      * Used by the ChartRenderer to produce a JSON representation of the configuration of this series.
      * @return the serialized JSON object
+     * @param chart
      */
     @Override
-    public JSONBuilder getDataJSON() {
-        JSONBuilder data = super.getDataJSON();
+    public JSONBuilder getDataJSON(UIComponent component) {
+        JSONBuilder data = super.getDataJSON(component);
+        Chart chart = (Chart)component;
+        Map<String, Integer> xCategoryToIndexMap = null;
+        Map<String, Integer> yCategoryToIndexMap = null;
         Class valueType = null;
         Class keyType = null;
 
@@ -117,16 +127,40 @@ public class CartesianSeries extends ChartSeries {
                 data.beginArray();
                 if (keyType == Number.class)
                     data.item(((Number)key).doubleValue());
-                else if (keyType == String.class)
-                    data.item(key.toString());
+                else if (keyType == String.class) {
+                    String strKey = key.toString();
+
+                    // If string and plotted against CategoryAxis with defined ticks,
+                    // convert Strings to matching tick indicies if available.
+                    if (areAxisTicksPredefined(chart, 'x')) {
+                        if (xCategoryToIndexMap == null)
+                            xCategoryToIndexMap = createCategoryToIndexMap(chart, 'x');
+
+                        data.item(xCategoryToIndexMap.get(strKey));
+                    }
+                    else
+                        data.item(strKey);
+                }
                 else if (keyType == Date.class)
                     data.item(((Date)key).getTime());
             }
 
             if (valueType == Number.class)
                 data.item(((Number)value).doubleValue());
-            else if (valueType == String.class)
-                data.item(value.toString());
+            else if (valueType == String.class) {
+                String strVal = value.toString();
+
+                // If string and plotted against CategoryAxis with defined ticks,
+                // convert Strings to matching tick indicies if available.
+                if (areAxisTicksPredefined(chart, 'y')) {
+                    if (yCategoryToIndexMap == null)
+                        yCategoryToIndexMap = createCategoryToIndexMap(chart, 'y');
+
+                    data.item(yCategoryToIndexMap.get(strVal));
+                }
+                else
+                    data.item(strVal);
+            }
             else if (keyType == Date.class)
                 data.item(((Date)key).getTime());
 
@@ -137,13 +171,59 @@ public class CartesianSeries extends ChartSeries {
         return data;
     }
 
+    private Map<String, Integer> createCategoryToIndexMap(Chart chart, char axisDir) {
+        Map<String, Integer> map = new HashMap<String, Integer>();
+
+        Axis axis = null;
+
+        if (axisDir == 'x') {
+            if (Integer.valueOf(2).equals(getXAxis())) axis = chart.getX2Axis();
+            else axis = chart.getXAxis();
+        }
+        else if (axisDir == 'y') {
+            Axis[] yAxes = chart.getYAxes();
+            Integer yAxisIndex = getYAxis();
+
+            if (yAxisIndex < 2) axis = yAxes[0];
+            else axis = yAxes[yAxisIndex-1];
+        }
+
+        Integer index = 0;
+        String[] ticks = axis.getTicks();
+        for (String tick : ticks)
+            map.put(tick, ++index);
+
+        return map;
+    }
+
+    private boolean areAxisTicksPredefined(Chart chart, char axisDir) {
+        Axis axis = null;
+
+        if (axisDir == 'x') {
+            if (Integer.valueOf(2).equals(getXAxis())) axis = chart.getX2Axis();
+            else axis = chart.getXAxis();
+        }
+        else if (axisDir == 'y') {
+            Axis[] yAxes = chart.getYAxes();
+            Integer yAxisIndex = getYAxis();
+
+            if (yAxisIndex < 2) axis = yAxes[0];
+            else axis = yAxes[yAxisIndex-1];
+        }
+
+        String[] ticks;
+        return (axis != null && (ticks = axis.getTicks()) != null && ticks.length > 0);
+    }
+
     /**
      * Used by the ChartRenderer to produce a JSON representation of the data of this series.
      * @return the JSON object
+     * @param component
      */
     @Override
-    public JSONBuilder getConfigJSON() {
-        JSONBuilder cfg = super.getConfigJSON();
+    public JSONBuilder getConfigJSON(UIComponent component) {
+        JSONBuilder cfg = super.getConfigJSON(component);
+        Chart chart = (Chart) component;
 
         if (type != null) {
             if (type.equals(CartesianType.BAR))
@@ -165,7 +245,7 @@ public class CartesianSeries extends ChartSeries {
         }
 
         Boolean dragable = getDragable();
-        if (dragable != null) {
+        if (dragable != null && isConfiguredForDragging(chart)) {
             cfg.entry("isDragable", dragable);
             if (getDragConstraintAxis() != null) {
                 cfg.beginMap("dragable");
@@ -176,6 +256,83 @@ public class CartesianSeries extends ChartSeries {
 
         cfg.endMap();
         return cfg;
+    }
+
+    private boolean isConfiguredForDragging(Chart chart) {
+        if (!explicitXValuesDefined()) throw new FacesException(
+                "Points in a dragable series must be added with an explicit x and y value.");
+        if (!categoryAxesHaveExplicitTicks(chart)) throw new FacesException(
+                "Category axes of a dragable series must have explicit ticks to prevent loss of categories during reordering.");
+        if (!xValuesAreSortedAscending()) throw new FacesException(
+                "Dragable points must be added in an ascending order of X value. This is " +
+                "to prevent reindexing during plotting that breaks index association of points " +
+                "in the model on the server and the model internal to the plot on the client.");
+        return true;
+    }
+
+    private boolean xValuesAreSortedAscending() {
+        boolean ret = true;
+        Date lastDate = null;
+        Number lastNumber = null;
+        Class keyType = null;
+
+        for (Object o : getData()) {
+            SimpleEntry entry = (SimpleEntry) o;
+
+            if (keyType == null) {
+                Object key = entry.getKey();
+                if (key instanceof Number)
+                    keyType = Number.class;
+                else if (key instanceof Date)
+                    keyType = Date.class;
+                else return true;
+            }
+
+            if (keyType == Date.class) {
+                Date key = (Date) entry.getKey();
+                if (lastDate != null)
+                    ret = ret && 0 < (key.compareTo(lastDate));
+                lastDate = key;
+            } else if (keyType == Number.class) {
+                Number key = (Number) entry.getKey();
+                if (lastNumber != null)
+                    ret = ret && (key.doubleValue() > lastNumber.doubleValue());
+                lastNumber = key;
+            }
+        }
+
+        return ret;
+    }
+
+    private boolean categoryAxesHaveExplicitTicks(Chart chart) {
+        boolean ret = true;
+
+        String[] ticks;
+        Axis[] ys;
+        Axis y;
+        Integer yIndex = getYAxis();
+        yIndex = yIndex != null && yIndex > 1 ? yIndex-1 : 0;
+
+        if ((ys = chart.getYAxes()) != null)
+            if ((y = ys[yIndex]) != null && y.getType() == AxisType.CATEGORY)
+                    ret = ret && ((ticks = y.getTicks()) != null) && ticks.length > 0;
+
+        Axis x = (getXAxis() != null && getXAxis() == 2) ? chart.getX2Axis() : chart.getXAxis();
+        if (x != null && x.getType() == AxisType.CATEGORY)
+            ret = ret && ((ticks = x.getTicks()) != null) && ticks.length > 0;
+
+        return ret;
+    }
+
+    private boolean explicitXValuesDefined() {
+        boolean ret = true;
+
+        for (Object o : getData()) {
+            SimpleEntry entry = (SimpleEntry) o;
+            ret = ret && (entry.getKey() != null);
+        }
+
+        return ret;
     }
 
     private void encodePointLabelOptions(JSONBuilder cfg) {
@@ -301,8 +458,12 @@ public class CartesianSeries extends ChartSeries {
 
     /**
      * Enable dragging for the points of this series. Enables dragStart / dragStop client
-     * behaviour events as well as raising PointValueChangeEvents on the on the server.
-     * @param dragable if the points of this series are drabbale.
+     * behaviour events as well as raising PointValueChangeEvents on the on the server. Note that
+     * enabling this mode causes several restrictions to be checked (and possibly raised as FacesExceptions)
+     * due to the requirements of communicating edits to server model. In particular, the data points of this series must have explicit x values,
+     * if this series has a category type axis, the axis must define its own ticks rather than deriving them from the data and the data points of
+     * must be sorted ascending in the x axis to prevent reindexing during plotting.
+     * @param dragable if the points of this series are dragale.
      */
     public void setDragable(Boolean dragable) {
         this.dragable = dragable;

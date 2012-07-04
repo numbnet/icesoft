@@ -1,5 +1,6 @@
 package org.icefaces.ace.component.chart;
 
+import org.icefaces.ace.event.PointValueChangeEvent;
 import org.icefaces.ace.event.SeriesSelectionEvent;
 import org.icefaces.ace.event.TableFilterEvent;
 import org.icefaces.ace.event.UnselectEvent;
@@ -23,6 +24,7 @@ public class Chart extends ChartBase {
         MethodExpression me = null;
 
         if (event instanceof SeriesSelectionEvent) me = getSelectListener();
+        if (event instanceof PointValueChangeEvent) me = getPointChangeListener();
 
         if (me != null)
             me.invoke(context.getELContext(), new Object[] {event});

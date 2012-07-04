@@ -56,44 +56,83 @@ ice.ace.Chart = function (id, data, cfg) {
 
 
 ice.ace.Chart.prototype.handleDragStart = function(e, seriesIndex, pointIndex, data) {
+    var toCategoryValue = function(indexVal, axis) { return (axis.ticks[Math.round(indexVal) - 1]); };
+
     var options = {
         source: this.id,
         execute: '@this',
-        render: '@none'
+        render: (this.behaviors && this.behaviors.dragStart && this.behaviors.dragStart.render) ? '' : '@none'
     };
 
     var params = {};
+    // Persist point drag info for stop event.
+    this.dragXAxis = this.plot.series[seriesIndex]._xaxis;
+    this.dragYAxis = this.plot.series[seriesIndex]._yaxis;
+    this.dragSeriesIndex = seriesIndex;
+    this.dragPointIndex = pointIndex;
+
     options.params = params;
 
-    // Record old value
+    var pointData = this.plot.series[seriesIndex]._plotData[pointIndex].slice(),
+        xValueIsCategory = this.dragXAxis.renderer instanceof ice.ace.jq.jqplot.CategoryAxisRenderer,
+        yValueIsCategory = this.dragYAxis.renderer instanceof ice.ace.jq.jqplot.CategoryAxisRenderer;
+
+    if (xValueIsCategory)
+        pointData[0] = toCategoryValue(pointData[0], this.dragXAxis);
+
+    if (yValueIsCategory)
+        pointData[1] = toCategoryValue(pointData[1], this.dragYAxis);
+
+    // Record start value
+    this.dragStartValue = pointData;
 
     // Call behaviours
-    if (self.behaviors)
-        if (self.behaviors.dragStart) {
-            ice.ace.ab(ice.ace.extendAjaxArguments(self.behaviors.dragStart,options));
+    if (this.behaviors)
+        if (this.behaviors.dragStart) {
+            ice.ace.ab(ice.ace.extendAjaxArguments(this.behaviors.dragStart,options));
             return;
         }
 };
 
 ice.ace.Chart.prototype.handleDragStop = function(e, seriesIndex, pointIndex, data) {
+    var toCategoryValue = function(indexVal, axis) { return (axis.ticks[Math.round(indexVal) - 1]); };
+
     var options = {
         source: this.id,
         execute: '@this',
-        render: '@none'
-    };
+        render: (this.behaviors && this.behaviors.dragStop && this.behaviors.dragStop.render) ? '' : '@none' };
 
     var params = {};
+
+    var pointData = [pointIndex[this.dragXAxis.name],pointIndex[this.dragYAxis.name]],
+        xValueIsCategory = this.dragXAxis.renderer instanceof ice.ace.jq.jqplot.CategoryAxisRenderer,
+        yValueIsCategory = this.dragYAxis.renderer instanceof ice.ace.jq.jqplot.CategoryAxisRenderer;
+
+    if (xValueIsCategory)
+        pointData[0] = toCategoryValue(pointData[0], this.dragXAxis);
+
+    if (yValueIsCategory)
+        pointData[1] = toCategoryValue(pointData[1], this.dragYAxis);
+
+    var pointDataDiffers = pointData[0] != this.dragStartValue[0] ||
+            pointData[1] != this.dragStartValue[1];
+
+    if (pointDataDiffers) {
+       var dragRecord = [];
+       dragRecord.push([[pointData[0], pointData[1]], this.dragSeriesIndex, this.dragPointIndex]);
+       params[this.id+"_drag"] = JSON.stringify(dragRecord);
+    }
+
     options.params = params;
 
-    if (self.behaviors)
-        if (self.behaviors.dragStop) {
-            ice.ace.ab(ice.ace.extendAjaxArguments(self.behaviors.dragStop,options));
+    if (this.behaviors)
+        if (this.behaviors.dragStop) {
+            ice.ace.ab(ice.ace.extendAjaxArguments(this.behaviors.dragStop,options));
             return;
         }
 
-    // If value change has occurred communicate it to the server
-    ice.ace.AjaxRequest(options);
-
+    if (pointDataDiffers)
+        ice.ace.AjaxRequest(options);
 };
 
 ice.ace.Chart.prototype.handlePointClick = function(e, seriesIndex, pointIndex, data) {
