@@ -122,6 +122,7 @@
     </li>
     <li><a href="<c:url value="/accordion" />" title="accordion">Accordion</a></li>
     <li><a href="<c:url value="/datetime" />" title="datetime">Time/Date</a></li>
+    <li><a href="<c:url value="/list" />" title="list">List Demo</a></li>
     <li><a href="#icehtml">HTML</a></li>
 </ul>
 <div id="welcome">
