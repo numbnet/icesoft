@@ -39,7 +39,7 @@ public class QRScanTag extends SimpleTagSupport {
         StringBuffer buffer = new StringBuffer(TagUtil.SPAN_TAG);
         if (!isEnhanced) {
 
-            buffer.append(" ").append(TagUtil.INPUT_TAG).append(" type=\"text\"");
+            buffer.append(">").append(TagUtil.INPUT_TAG).append(" type=\"text\"");
             buffer.append(" id=\"").append(getId()).append("\"");
             buffer.append(" name=\"").append(getId()).append("\">");
             buffer.append(TagUtil.INPUT_TAG_END).append(TagUtil.SPAN_TAG_END);
@@ -49,7 +49,7 @@ public class QRScanTag extends SimpleTagSupport {
 
         buffer.append(" id=\"").append(getId()).append("\" >");
         buffer.append(" <input type=\"button\" id=\"");
-        buffer.append(getId()).append("-button\" value=\"Scan QR Code\"");
+        buffer.append(getId()).append("-button\" value=\"Scan\"");
         buffer.append(" style=\"mobi-button mobi-button-default");
 
         // User defined class
