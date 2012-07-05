@@ -517,7 +517,9 @@
 	 	<delete file="${ace-menu.js.tmp}" />
 	 	<delete file="${ace-menu.js}" />
 	 	<delete file="${ace-components.js.tmp}" />
-	 	<delete file="${ace-components.js}" />        
+	 	<delete file="${ace-components.js}" />
+        <delete file="${ace-chart.js.tmp}" />
+        <delete file="${ace-chart.js}" />
     </target>
 
     <target name="skins"
