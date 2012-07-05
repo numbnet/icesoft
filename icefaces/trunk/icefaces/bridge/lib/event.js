@@ -353,7 +353,13 @@
             } else if (Element.prototype.MouseListenerNames.detect(detector)) {
                 return This.Event.adaptToMouseEvent(e, currentElement);
             } else {
-                return This.Event.adaptToPlainEvent(e, currentElement);
+                var target = capturedEvent.srcElement || capturedEvent.target;
+                //is it a DOM event?
+                if (target.nodeName) {
+                    return This.Event.adaptToPlainEvent(e, currentElement);
+                } else {
+                    return new This.UnknownEvent(currentElement);
+                }
             }
         } else {
             return new This.UnknownEvent(currentElement);
