@@ -33,6 +33,7 @@ import java.util.ArrayList;
 import org.icefaces.ace.component.datatable.DataTable;
 import org.icefaces.ace.model.filter.*;
 import org.icefaces.ace.component.celleditor.CellEditor;
+import org.icefaces.ace.model.table.RowStateMap;
 
 public class Column extends ColumnBase {
 	private static final String OPTIMIZED_PACKAGE = "org.icefaces.ace.component.";
@@ -140,14 +141,17 @@ public class Column extends ColumnBase {
     public int findCurrGroupLength() {
         DataTable dataTable = findParentTable(getFacesContext(), this);
 
+        RowStateMap stateMap;
         int result = 0; // isNextColumnGrouped == true is known
         int currentRow = dataTable.getRowIndex();
+        Object rowData = dataTable.getRowData();
         boolean keepCounting = true;
         Object currentValue = getGroupBy();
 
         // If this row doesn't break its group by rendering a conditional row after itself or
         // by being expanded, span more than this row
-        boolean notExpanded  = !dataTable.getStateMap().get(dataTable.getRowData()).isExpanded();
+        stateMap = dataTable.getStateMap();
+        boolean notExpanded  = !stateMap.get(rowData).isExpanded();
         boolean noTailingRows = dataTable.getConditionalRows(currentRow, false).size() == 0;
         boolean lastExpanded = false;
         if (notExpanded && noTailingRows)
@@ -156,7 +160,7 @@ public class Column extends ColumnBase {
 
                 if (!dataTable.isRowAvailable()) break;
 
-                boolean expanded = dataTable.getStateMap().get(dataTable.getRowData()).isExpanded();
+                boolean expanded = stateMap.get(dataTable.getRowData()).isExpanded();
                 boolean hasConditionalRows = dataTable.getConditionalRows(currentRow + result + 1, true).size() > 0 || dataTable.getConditionalRows(currentRow + result, false).size() > 0;;
 
                 if (currentValue.equals(getGroupBy()) && !lastExpanded && !hasConditionalRows) {
@@ -176,9 +180,7 @@ public class Column extends ColumnBase {
         int currentRow = dataTable.getRowIndex();
         Object currentValue = getGroupBy();
 
-        // Generate DataModel preemptive with the correct filtered state
-        dataTable.setRowIndex(-1);
-        dataTable.getModel();
+        if (currentRow == 0) return true;
 
         if (currentValue != null) {
             dataTable.setRowIndex(currentRow - 1);
