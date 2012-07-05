@@ -23,7 +23,7 @@
 
         <mobi:fieldSetGroup inset="true">
             <mobi:fieldSetRow>
-                <label>Press to launch QR scanner:</label>
+                <label>Scan QR code:</label>
                 <mobi:qrscan id="scanOne"/>
             </mobi:fieldSetRow>
             <mobi:fieldSetRow>

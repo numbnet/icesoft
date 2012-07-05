@@ -23,15 +23,15 @@
         <mobi:fieldSetGroup inset="true">
             <mobi:fieldSetRow>
                 <label>Date Spinner</label>
-                <mobi:dateSpinner id="dateSpin" name="date1"
-                                 value="${dateTimeSpinnerBean.date1}"/>
+                <mobi:dateSpinner name="dateOne" 
+                        value="${dateTimeSpinnerBean.dateOne}"/>
             </mobi:fieldSetRow>
         </mobi:fieldSetGroup>
         <h4>Spinner Value Echo</h4>
         <mobi:fieldSetGroup inset="true">
             <mobi:fieldSetRow>
                 <label>Date</label>
-                <label style="float:right">${dateTimeSpinnerBean.date1}</label>
+                <label style="float:right">${dateTimeSpinnerBean.dateOne}</label>
             </mobi:fieldSetRow>
         </mobi:fieldSetGroup>
         <%-- button types: default|important|attention| back--%>
