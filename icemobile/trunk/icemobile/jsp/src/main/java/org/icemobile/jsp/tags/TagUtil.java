@@ -37,6 +37,9 @@ public class TagUtil {
     private static String HYPERBROWSER = "HyperBrowser";
 
 
+    public static String A_TAG = "<a";
+    public static String A_TAG_END = "</a>";
+
     public static String SPAN_TAG = "<span";
     public static String SPAN_TAG_END = "</span>";
 

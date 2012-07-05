@@ -25,6 +25,7 @@
 @interface NativeInterface : NSObject<UIImagePickerControllerDelegate, UINavigationControllerDelegate> {
 
 	UIViewController<NativeInterfaceViewController> *controller;
+    NSString *userAgent;
     NSString *activeDOMElementId;
     NSString *maxwidth;
     NSString *maxheight;
@@ -43,6 +44,7 @@
 }
 
 @property (retain) UIViewController<NativeInterfaceViewController> *controller;
+@property (retain) NSString *userAgent;
 @property (retain) NSString *activeDOMElementId;
 @property (retain) NSString *maxwidth;
 @property (retain) NSString *maxheight;

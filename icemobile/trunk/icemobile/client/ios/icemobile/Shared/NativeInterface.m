@@ -25,6 +25,7 @@
 @implementation NativeInterface
 
 @synthesize controller;
+@synthesize userAgent;
 @synthesize activeDOMElementId;
 @synthesize maxwidth;
 @synthesize maxheight;
@@ -616,6 +617,9 @@ NSLog(@"NativeInterface aug selected %@", augResult);
     NSMutableURLRequest *request = [[[NSMutableURLRequest alloc] init] autorelease];
     [request setURL:[NSURL URLWithString:url]];
     [request setHTTPMethod:@"POST"];
+    if (nil != self.userAgent)  {
+        [request addValue:self.userAgent forHTTPHeaderField: @"User-Agent"];
+    }
     CFUUIDRef uuid = CFUUIDCreate(NULL);
     CFStringRef uuidCFString = CFUUIDCreateString(NULL, uuid);
     NSString *uuidString = [(NSString *) uuidCFString autorelease];

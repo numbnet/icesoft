@@ -66,8 +66,10 @@ public class DateSpinnerTag extends SimpleTagSupport {
         if (tu.useNative(pageContext)) {
 	    out.write(tu.INPUT_TAG);
             tu.writeAttribute(out,"type", "date");
-            tu.writeAttribute(out,"id", id);
-            tu.writeAttribute(out,"name", id);
+            if (id != null)  {
+                tu.writeAttribute(out,"id", id);
+            }
+            tu.writeAttribute(out,"name", name);
 
             if (tu.isValueBlank(value)) {
                 SimpleDateFormat df2 = new SimpleDateFormat("yyyy-MM-dd");
@@ -89,8 +91,12 @@ public class DateSpinnerTag extends SimpleTagSupport {
 	    encodeMarkup(pageContext, out, encodeValue(value));
 	    encodeScript(out);
         }
-        out.write("<a id=\"" + getId() + "\" name=\"" + getId() + "\"");
-        out.write("</a>");
+	    out.write(tu.A_TAG);
+        if (id != null)  {
+            tu.writeAttribute(out,"id", id);
+        }
+        tu.writeAttribute(out,"name", name);
+	    out.write(tu.A_TAG_END);
 
     }
 

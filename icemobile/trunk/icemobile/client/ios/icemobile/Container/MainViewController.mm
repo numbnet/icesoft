@@ -88,6 +88,7 @@
     NSLog(@"MainViewController didBecomeActive.");
     if (nil == [self getCurrentURL])  {
         self.userAgent = [self.webView stringByEvaluatingJavaScriptFromString:@"navigator.userAgent"];
+        self.nativeInterface.userAgent = self.userAgent;
         [self loadURL:@"http://www.icemobile.org/demos.html"];
     } else {
         [self.webView stringByEvaluatingJavaScriptFromString:@"ice.mobiRefresh()"];
