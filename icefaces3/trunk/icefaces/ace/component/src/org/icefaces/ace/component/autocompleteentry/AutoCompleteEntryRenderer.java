@@ -84,7 +84,6 @@ public class AutoCompleteEntryRenderer extends InputRenderer {
 		writer.startElement("input", null);
         writer.writeAttribute("type", "text", null);
 		//setRootElementId(facesContext, input, uiComponent);
-		writer.writeAttribute("id", clientId, null);
 		writer.writeAttribute("name", clientId, null);
 		//writer.writeAttribute("class", autoCompleteEntry.getInputTextClass(), null);
 		String mousedownScript = (String) uiComponent.getAttributes().get("onmousedown");
@@ -257,7 +256,7 @@ public class AutoCompleteEntryRenderer extends InputRenderer {
 					// ice.ace.jq(ice.ace.escapeClientId(id)).get(0).innerHTML
 			writer.endElement("div");
             String call = "ice.ace.Autocompleters[\"" +
-                    autoCompleteEntry.getClientId(facesContext) +
+                    clientId +
                     "\"].updateNOW(ice.ace.jq(ice.ace.escapeClientId('" + clientId + "update')).get(0).firstChild.innerHTML);";
             encodeDynamicScript(facesContext, autoCompleteEntry, call);
 			writer.endElement("div");
@@ -280,7 +279,7 @@ public class AutoCompleteEntryRenderer extends InputRenderer {
 					}
                 }
                 sb.append("</div>");
-                String call = "ice.ace.Autocompleters[\"" + autoCompleteEntry.getClientId(facesContext) + "\"]" +
+                String call = "ice.ace.Autocompleters[\"" + clientId + "\"]" +
                         ".updateNOW('" + escapeSingleQuote(sb.toString()) + "');";
                 encodeDynamicScript(facesContext, autoCompleteEntry, call);
             }
