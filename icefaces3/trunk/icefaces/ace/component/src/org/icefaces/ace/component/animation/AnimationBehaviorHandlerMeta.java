@@ -30,7 +30,7 @@ import org.icefaces.ace.meta.annotation.Implementation;
     extendsClass = "javax.faces.view.facelets.BehaviorHandler",
 	behaviorId = "org.icefaces.ace.animation.Animation",
 	behaviorClass = "org.icefaces.ace.component.animation.AnimationBehavior",
-    tlddoc="Animation can be applied to components that implement the ClientBehaviorHolder interface. Animations are based on jQuery effects utilities." +
+    tlddoc="The ace:animation tag provides a way to animate standard JSF components. Animations are based on the jQuery effects utilities." +
                  "<p>For more information, see the " +
                  "<a href=\"http://wiki.icefaces.org/display/ICE/Animation\">Animation Wiki Documentation</a>."
 )
@@ -60,6 +60,6 @@ public class AnimationBehaviorHandlerMeta {
     @Property(required=Required.no, tlddoc="Length of effect in milliseconds. The default value is 500 for free-form animations and varies for pre-defined effects.")
     private Double duration;
 	
-    @Property(required=Required.no, tlddoc="Name of the event that will trigger the animation.", implementation=Implementation.EXISTS_IN_SUPERCLASS)
+    @Property(required=Required.no, tlddoc="Name of the event that will trigger the animation (e.g. 'click'). The event must be supported by the component. The TLD documentation of each standard JSF component lists which events are supported, which usually map to standard DOM events. The event name must be entered without the 'on' prefix (e.g. for 'onmousemove' the value of this attribute must be 'mousemove').", implementation=Implementation.EXISTS_IN_SUPERCLASS)
     private String event;
 }
