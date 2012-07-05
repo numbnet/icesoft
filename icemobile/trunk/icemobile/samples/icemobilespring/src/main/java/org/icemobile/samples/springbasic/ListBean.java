@@ -16,7 +16,7 @@ public class ListBean {
     @ModelAttribute("listBean")
     public ListBean createBean() {
         return new ListBean();
-
+    }
 
     public Collection getCarCollection() {
         ArrayList cars = new ArrayList();
