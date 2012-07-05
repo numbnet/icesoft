@@ -18,8 +18,8 @@ var setFocus;
 var applyFocus;
 var currentFocus = '';
 
-(function() {
-    setFocus = function(id) {
+(function () {
+    setFocus = function (id) {
         currentFocus = id ? id : '';
         debug(logger, 'persisted focus for element "' + id + '"');
     };
@@ -29,7 +29,7 @@ var currentFocus = '';
             var range = element.createTextRange();
             range.move("character", pos);
             range.select();
-        } else if (element.selectionStart) {
+        } else if (element.selectionStart || element.selectionStart == 0) {
             element.setSelectionRange(pos, pos);
         }
     }
@@ -47,8 +47,8 @@ var currentFocus = '';
 
     var isIE = /MSIE/.test(navigator.userAgent);
 
-    var focusOn = function(id) {
-        runOnce(Delay(function() {
+    var focusOn = function (id) {
+        runOnce(Delay(function () {
             if (id && isValidID(id) && id != currentFocus) {
                 var e = document.getElementById(id);
                 if (e) {
@@ -78,22 +78,22 @@ var currentFocus = '';
 
     var focusStrategy = focusOn;
     //indirect reference to the currently used focus strategy
-    applyFocus = function(id) {
+    applyFocus = function (id) {
         focusStrategy(id);
     };
 
     if (isIE) {
         var activeElement;
         //initialize activeElement if IE
-        onLoad(window, function() {
+        onLoad(window, function () {
             activeElement = document.activeElement;
         });
 
         //window.onblur in IE is triggered also when moving focus from window to an element inside the same window
         //to avoid bogus 'blur' events in IE the window.onblur behavior is simulated with the help of document.onfocusout
         //event handler
-        var onBlur = function(callback) {
-            registerElementListener(document, 'onfocusout', function() {
+        var onBlur = function (callback) {
+            registerElementListener(document, 'onfocusout', function () {
                 if (activeElement == document.activeElement) {
                     callback();
                 } else {
@@ -102,16 +102,16 @@ var currentFocus = '';
             });
         };
 
-        var onFocus = function(callback) {
+        var onFocus = function (callback) {
             registerElementListener(window, 'onfocus', callback);
         };
 
         //on window blur the ID of the focused element is just saved, not applied
-        onBlur(function() {
+        onBlur(function () {
             focusStrategy = setFocus;
         });
 
-        onFocus(function() {
+        onFocus(function () {
             focusStrategy = focusOn;
         });
     }
@@ -119,7 +119,7 @@ var currentFocus = '';
     function registerElementListener(element, eventType, listener) {
         var previousListener = element[eventType];
         if (previousListener) {
-            element[eventType] = function(e) {
+            element[eventType] = function (e) {
                 var args = [e];
                 //execute listeners so that 'this' variable points to the current element
                 previousListener.apply(element, args);
@@ -142,22 +142,22 @@ var currentFocus = '';
         if (contains(focusableElements, root.nodeName)) {
             registerElementListener(root, 'onfocus', setFocusListener);
         }
-        each(focusableElements, function(type) {
-            each(root.getElementsByTagName(type), function(element) {
+        each(focusableElements, function (type) {
+            each(root.getElementsByTagName(type), function (element) {
                 registerElementListener(element, 'onfocus', setFocusListener);
             });
         });
     }
 
-    namespace.onAfterUpdate(function(updates) {
-        each(updates.getElementsByTagName('update'), function(update) {
+    namespace.onAfterUpdate(function (updates) {
+        each(updates.getElementsByTagName('update'), function (update) {
             var id = update.getAttribute('id');
             var element = lookupElementById(id);
             if (id != 'javax.faces.ViewState' && element) captureFocusIn(element);
         });
     });
 
-    onLoad(window, function() {
+    onLoad(window, function () {
         captureFocusIn(document);
     });
 })();
