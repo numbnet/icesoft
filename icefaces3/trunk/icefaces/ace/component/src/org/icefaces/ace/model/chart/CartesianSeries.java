@@ -61,7 +61,9 @@ public class CartesianSeries extends ChartSeries {
     int barMargin;
     int barPadding;
     int barWidth;
+    LinePattern linePattern;
     Boolean horizontalBar;
+    Boolean smooth;
     boolean varyBarColor;
     boolean waterfall;
     int groups;
@@ -224,6 +226,7 @@ public class CartesianSeries extends ChartSeries {
     public JSONBuilder getConfigJSON(UIComponent component) {
         JSONBuilder cfg = super.getConfigJSON(component);
         Chart chart = (Chart) component;
+        LinePattern pattern = getLinePattern();
 
         if (type != null) {
             if (type.equals(CartesianType.BAR))
@@ -238,11 +241,16 @@ public class CartesianSeries extends ChartSeries {
             cfg.beginMap("rendererOptions");
             Boolean fill = getFill();
             Boolean horiz = isHorizontalBar();
+            Boolean smooth = getSmooth();
 
+            if (smooth != null) cfg.entry("smooth", smooth);
             if (fill != null) cfg.entry("fill", fill);
             if (horiz != null) cfg.entry("barDirection", horiz ? "horizontal" : "vertical");
             cfg.endMap();
         }
+
+        if (pattern != null)
+            cfg.entry("linePattern", pattern.toString());
 
         Boolean dragable = getDragable();
         if (dragable != null && isConfiguredForDragging(chart)) {
@@ -362,7 +370,7 @@ public class CartesianSeries extends ChartSeries {
     }
 
     private boolean hasRenderOptionsSet() {
-        return (getFill() != null || isHorizontalBar() != null);
+        return (getFill() != null || isHorizontalBar() != null || getSmooth() != null);
     }
 
 
@@ -483,5 +491,37 @@ public class CartesianSeries extends ChartSeries {
      */
     public void setDragConstraintAxis(DragConstraintAxis dragConstraintAxis) {
         this.dragConstraintAxis = dragConstraintAxis;
+    }
+
+    /**
+     * Get the pattern of stroke applied to the lines of this series.
+     * @return the LinePattern object representing the stoke type
+     */
+    public LinePattern getLinePattern() {
+        return linePattern;
+    }
+
+    /**
+     * Set the pattern of stroke applied to the lines of this series.
+     * @param linePattern enum representation of the stroke type
+     */
+    public void setLinePattern(LinePattern linePattern) {
+        this.linePattern = linePattern;
+    }
+
+    /**
+     * Get if the lines of this series have curves rendered between points rather than straight line segments.
+     * @return if the lines of this series are smoothed
+     */
+    public Boolean getSmooth() {
+        return smooth;
+    }
+
+    /**
+     * Set if the lines of this series have curves rendered between points rather than straight line segments.
+     * @param smooth if the lines of this series are smoothed
+     */
+    public void setSmooth(Boolean smooth) {
+        this.smooth = smooth;
     }
 }
