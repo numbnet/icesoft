@@ -59,7 +59,7 @@
     
     <context-param>
         <param-name>com.icesoft.faces.gmapKey</param-name>
-        <param-value>ABQIAAAAnyVJpYb9Fn-DpQ355-7u3RRt_xk8THLBnsEGa1iENo1M77z_IxRSfO_8K2owIHx-GLAeupZ-GtB6gQ</param-value>
+        <param-value>AIzaSyAcAbAa7AL1DLU0785OeWn2byf4XOsm7KM</param-value>
     </context-param>
     
     <!-- Servlet declarations and mappings -->
