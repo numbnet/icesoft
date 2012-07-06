@@ -5,6 +5,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.request.WebRequest;
 
 import javax.servlet.http.HttpServletRequest;
@@ -23,6 +24,15 @@ public class EchoController {
     @RequestMapping(value = "/accordion")
     public void doRequest(
             @ModelAttribute("accordionBean" )AccordionBean model) {
+    }
+
+    @RequestMapping(value = "/buttons")
+    public void doRequest(Model model,
+            @RequestParam(value = "submitB", required = false) 
+                    String submitted) {
+        if (submitted != null)  {
+            model.addAttribute("pressed", "[" + submitted + "]");
+        }
     }
 
     @RequestMapping(value = "/carousel")
