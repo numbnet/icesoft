@@ -81,7 +81,7 @@ public abstract class BaseMenuRenderer extends CoreRenderer {
 				if(menuItem.getOnclick() != null) writer.writeAttribute("onclick", menuItem.getOnclick(), null);
 				if(menuItem.getTarget() != null) writer.writeAttribute("target", menuItem.getTarget(), null);
 			} else {
-				writer.writeAttribute("href", "#", null);
+				writer.writeAttribute("href", "javascript:void 0;", null);
 
 				UIComponent form = ComponentUtils.findParentForm(context, menuItem);
 				if(form == null) {
