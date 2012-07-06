@@ -1138,6 +1138,7 @@ ice.ace.Calendar = function(id, cfg) {
         behavior = this.cfg && this.cfg.behaviors && this.cfg.behaviors.dateTextChange;
         if (behavior) {
             this.jq.change(function() {
+                setFocus();
                 behavior();
             });
         }
