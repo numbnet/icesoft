@@ -21,10 +21,12 @@ import javax.servlet.jsp.JspTagException;
 import javax.servlet.jsp.tagext.TagSupport;
 import java.io.IOException;
 import java.io.Writer;
+import java.util.logging.Logger;
 
 public class TabSetTag extends TagSupport {
 
     private final String TABSET_CONTAINER_CLASS = "mobi-tabset ";
+    private static Logger LOG = Logger.getLogger(TabSetTag.class.getName());
 
     public int doStartTag() throws JspTagException {
 
@@ -51,29 +53,32 @@ public class TabSetTag extends TagSupport {
 
 
         } catch (IOException ioe) {
+            LOG.severe("IOException opening Tabset: " + ioe);
         }
 
         mIndex = 0;
         return EVAL_BODY_INCLUDE;
     }
 
-
-    // Actually, this doesn't require iteration, since it's not that type of problem.
-    // The outer tag isn't interpreting the collection and writing child input tags.
-    // It's simple execution of the inner tags, whatever they may be.
-
-
     public int doEndTag() {
 
         Writer out = pageContext.getOut();
         try {
 
-            // close the tabs
+
+            StringBuilder tag = new StringBuilder(TagUtil.SPAN_TAG);
+            tag.append(">").append(TagUtil.INPUT_TAG);
+            tag.append(" id=\"").append(getId()).append("_hidden\"");
+            tag.append(" name=\"").append(getId()).append("\"");
+            tag.append(" type=\"hidden\"/>");
+            tag.append(TagUtil.SPAN_TAG_END);
+            out.write(tag.toString());
             out.write(TagUtil.DIV_TAG_END);
 
             encodeScript(out);
 
-        } catch (IOException ieo) {
+        } catch (IOException ioe) {
+            LOG.severe("IOException closing Tabset: " + ioe);
         }
 
         return EVAL_PAGE;
@@ -87,19 +92,12 @@ public class TabSetTag extends TagSupport {
         StringBuilder sb = new StringBuilder(TagUtil.SPAN_TAG);
         sb.append(" id=\"").append(clientId).append("_script\">");
         sb.append(TagUtil.SCRIPT_TAG);
-
         sb.append(" type=\"text/javascript\">");
 
         StringBuilder cfg = new StringBuilder("{ ");
-
-
         //     boolean autoheight = tabset.isAutoHeight();
         cfg.append(" tIndex: ").append(selectedTab);
-//        if (tabset.isUpdatePropScriptTag()){
-//            cfg.append(", stmp: ").append(System.currentTimeMillis());
-//        }
         cfg.append("}");
-        //just have to add behaviors if we are going to use them.
         sb.append("ice.mobi.tabsetController.initClient('").append(clientId).
                                                                                     append("',").append(cfg.toString()).append(");");
 
@@ -108,6 +106,7 @@ public class TabSetTag extends TagSupport {
         writer.write(sb.toString());
     }
 
+    // tag properties
     private String id;
     private String style;
     private String styleClass;
