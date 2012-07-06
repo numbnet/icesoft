@@ -176,6 +176,8 @@ public class Column extends ColumnBase {
         int currentRow = dataTable.getRowIndex();
         Object currentValue = getGroupBy();
 
+        if (currentRow == 0) return true;
+
         if (currentValue != null) {
             dataTable.setRowIndex(currentRow - 1);
             Object lastValue = getGroupBy();
