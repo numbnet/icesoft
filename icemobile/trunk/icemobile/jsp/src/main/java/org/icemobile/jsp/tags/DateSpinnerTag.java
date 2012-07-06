@@ -24,7 +24,7 @@ public class DateSpinnerTag extends SimpleTagSupport {
     private boolean disabled;
     private String value;
     private boolean readOnly;
-    private boolean useNative;
+    private boolean useNative=true;
     //    private Object Timezone;
     private int yearStart;
     private int yearEnd;
@@ -62,8 +62,7 @@ public class DateSpinnerTag extends SimpleTagSupport {
         Writer out = pageContext.getOut();
         ServletRequest sr = pageContext.getRequest();
 	if (tu == null) tu = new TagUtil();
-
-        if (tu.useNative(pageContext)) {
+        if (useNative && tu.useNative(pageContext)) {
 	    out.write(tu.INPUT_TAG);
             tu.writeAttribute(out,"type", "date");
             if (id != null)  {
@@ -400,7 +399,7 @@ public class DateSpinnerTag extends SimpleTagSupport {
         tu.writeAttribute(writer, "class", BUTTON_INC_CLASS);
         tu.writeAttribute(writer, "id", clientId + "_yUpBtn");
         tu.writeAttribute(writer, "type", "button");
-        tu.writeAttribute(writer, eventStr, "ice.mobi.datespinner.yUp('" + clientId + "');");
+        tu.writeAttribute(writer, eventStr, "ice.mobi.datespinner.yUp('" + clientId + "'," + yMin + "," + yMax + ");");
         writer.write(">" + tu.INPUT_TAG_END);
         writer.write(tu.DIV_TAG_END);                                         //end button incr
         writer.write(tu.DIV_TAG);                             //year value
@@ -414,7 +413,7 @@ public class DateSpinnerTag extends SimpleTagSupport {
         tu.writeAttribute(writer, "class", BUTTON_DEC_CLASS);
         tu.writeAttribute(writer, "id", clientId + "_yDnBtn");
         tu.writeAttribute(writer, "type", "button");
-        tu.writeAttribute(writer, eventStr, "ice.mobi.datespinner.yDn('" + clientId + "');");
+        tu.writeAttribute(writer, eventStr, "ice.mobi.datespinner.yDn('" + clientId + "'," + yMin + "," + yMax + ");");
         writer.write(">" + tu.INPUT_TAG_END);
         writer.write(tu.DIV_TAG_END);                                        //end button decrement
         writer.write(tu.DIV_TAG_END);                                //end of year select container
@@ -458,6 +457,14 @@ public class DateSpinnerTag extends SimpleTagSupport {
 
     public void setDisabled(boolean disabled) {
         this.disabled = disabled;
+    }
+
+    public boolean isUseNative() {
+        return useNative;
+    }
+
+    public void setUseNative(boolean useNative) {
+        this.useNative = useNative;
     }
 
     public String getValue() {
