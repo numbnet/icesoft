@@ -41,14 +41,13 @@ public abstract class ChartSeries {
     Boolean showLabel;
     String color; // CSS color representation
     Integer lineWidth;
-    String lineJoin; // Round, bevel, miter
-    String lineCap; // Butt, line, square
-    Integer shadow;
+    LineJoin lineJoin; // Round, bevel, miter
+    LineCap lineCap; // Butt, line, square
+    Boolean shadow;
     Integer shadowAngle; // degrees
     Integer shadowOffset; // pixels
     Integer shadowDepth; // number of shadow strokes, each 1 shadow offset from the last
     Integer shadowAlpha; // 0 - 100 alpha
-    Boolean showLine;
     Boolean showMarker;
     Boolean fill;
     String fillColor; // CSS
@@ -234,6 +233,136 @@ public abstract class ChartSeries {
         this.fill = fill;
     }
 
+    /**
+     * Get the width of the line in pixels.
+     * @return pixel width
+     */
+    public Integer getLineWidth() {
+        return lineWidth;
+    }
+
+    /**
+     * Set the width of the line in pixels.
+     * @param lineWidth pixel width
+     */
+    public void setLineWidth(Integer lineWidth) {
+        this.lineWidth = lineWidth;
+    }
+
+    /**
+     * Get the style of join used to connect line segments of this series.
+     * @return line join style enum
+     */
+    public LineJoin getLineJoin() {
+        return lineJoin;
+    }
+
+    /**
+     * Set the the style of join used connect line segments of this series.
+     * @param lineJoin line join style enum
+     */
+    public void setLineJoin(LineJoin lineJoin) {
+        this.lineJoin = lineJoin;
+    }
+
+    /**
+     * Get the style of termination used for lines of this series.
+     * @return line cap style enum
+     */
+    public LineCap getLineCap() {
+        return lineCap;
+    }
+
+    /**
+     * Set the style of how lines of this series will be terminated
+     * @param lineCap line cap style enum
+     */
+    public void setLineCap(LineCap lineCap) {
+        this.lineCap = lineCap;
+    }
+
+    /**
+     * Set if this line casts a shadow.
+     * @return whether this line casts a shadow
+     */
+    public Boolean getShadow() {
+        return shadow;
+    }
+
+    /**
+     * Set if this line casts a shadow.
+     * @param shadow whether this line casts a shadow
+     */
+    public void setShadow(Boolean shadow) {
+        this.shadow = shadow;
+    }
+
+    /**
+     * Get the angle at which this line casts a shadow.
+     * @return angle in degrees
+     */
+    public Integer getShadowAngle() {
+        return shadowAngle;
+    }
+
+    /**
+     * Set the angle at which this line casts a shadow
+     * @param shadowAngle angle in degrees
+     */
+    public void setShadowAngle(Integer shadowAngle) {
+        this.shadowAngle = shadowAngle;
+    }
+
+    /**
+     * Get the offset of the shadow from the line.
+     * @return offset from the line in pixels.
+     */
+    public Integer getShadowOffset() {
+        return shadowOffset;
+    }
+
+    /**
+     * Set the offset of the shadow from the line.
+     * @param shadowOffset offset from the line in pixels
+     */
+    public void setShadowOffset(Integer shadowOffset) {
+        this.shadowOffset = shadowOffset;
+    }
+
+    /**
+     * Get the number of stroke passes rendered by this shadow.
+     * Effects width in turn with offset.
+     * @return number of shadow line strokes
+     */
+    public Integer getShadowDepth() {
+        return shadowDepth;
+    }
+
+    /**
+     * Set the number of stroke passes rendered by this shadow.
+     * Effects width in turn with offset.
+     * @param shadowDepth number of shadow line stokes
+     */
+    public void setShadowDepth(Integer shadowDepth) {
+        this.shadowDepth = shadowDepth;
+    }
+
+    /**
+     * Get the transparency of the shadow rendered.
+     * @return alpha value 0 to 100
+     */
+    public Integer getShadowAlpha() {
+        return shadowAlpha;
+    }
+
+    /**
+     * Set the transparency of the shadow rendered.
+     * @param shadowAlpha alpha value 0 to 100
+     */
+    public void setShadowAlpha(Integer shadowAlpha) {
+        this.shadowAlpha = shadowAlpha;
+    }
+
     /* Can't be a reference to Chart object explicitly due to cyclical dependency issues. */
     public JSONBuilder getDataJSON(UIComponent chart) {
         return JSONBuilder.create().beginArray();
@@ -244,19 +373,37 @@ public abstract class ChartSeries {
 
         String label = getLabel();
 
+        LineCap cap = getLineCap();
+        LineJoin join = getLineJoin();
+
         Boolean show = getShow();
+        Boolean shadow = getShadow();
         Boolean showMarker = getShowMarker();
         Boolean useNegativeColors = getUseNegativeColors();
         Boolean ftz = getFillToZero();
         Boolean fill = getFill();
 
+        Integer width = getLineWidth();
         Integer xAxis = getXAxis();
         Integer yAxis = getYAxis();
+        Integer shadowDepth = getShadowDepth();
+        Integer shadowAlpha = getShadowAlpha();
+        Integer shadowOffset = getShadowOffset();
+        Integer shadowAngle = getShadowAngle();
 
         cfg.beginMap();
 
         if (show != null)
             cfg.entry("show", show);
+
+        if (width != null)
+            cfg.entry("lineWidth",lineWidth);
+
+        if (cap != null)
+            cfg.entry("lineCap", lineCap.toString());
+
+        if (join != null)
+            cfg.entry("lineJoin", lineJoin.toString());
 
         if (label != null)
             cfg.entry("label", label);
@@ -278,6 +425,23 @@ public abstract class ChartSeries {
 
         if (fill != null)
             cfg.entry("fill", fill);
+
+        if (shadow != null)
+            cfg.entry("shadow", shadow);
+
+        if (shadowAlpha != null) {
+            Double alphaPercentile = shadowAlpha.doubleValue() / 100d;
+            cfg.entry("shadowAlpha", alphaPercentile);
+        }
+
+        if (shadowDepth != null)
+            cfg.entry("shadowDepth", shadowDepth);
+
+        if (shadowAngle != null)
+            cfg.entry("shadowAngle", shadowAngle);
+
+        if (shadowOffset != null)
+            cfg.entry("shadowOffset", shadowOffset);
 
         return cfg;
     };

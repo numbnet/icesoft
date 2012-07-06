@@ -35,6 +35,7 @@ public class Axis implements Serializable {
     private Object max;
     private Boolean autoscale;
     private Boolean sortMergedLabels;
+    private Boolean drawMajorGridlines;
     private String[] ticks;
     private Integer tickAngle;
     private String tickFontSize;
@@ -63,11 +64,15 @@ public class Axis implements Serializable {
         Boolean autoscale = this.getAutoscale();
         String tickInterval = this.getTickInterval();
         String[] ticks = this.getTicks();
+        Boolean drawMajorGridlines = this.getDrawMajorGridlines();
 
         json.beginMap();
 
         if (label != null)
             json.entry("label", label);
+
+        if (drawMajorGridlines != null)
+            json.entry("drawMajorGridLines", drawMajorGridlines);
 
         if (max != null)
             if (max instanceof Number)
@@ -472,5 +477,21 @@ public class Axis implements Serializable {
      */
     public void setTickPrefix(String tickPrefix) {
         this.tickPrefix = tickPrefix;
+    }
+
+    /**
+     * Get whether or not this axis draws grid lines for each tick.
+     * @return major gridline visibility
+     */
+    public Boolean getDrawMajorGridlines() {
+        return drawMajorGridlines;
+    }
+
+    /**
+     * Set whether or not this axis draw grid lines for each tick.
+     * @param drawMajorGridlines major gridline visible
+     */
+    public void setDrawMajorGridlines(Boolean drawMajorGridlines) {
+        this.drawMajorGridlines = drawMajorGridlines;
     }
 }
