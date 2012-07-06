@@ -139,7 +139,7 @@ public class DateTimeEntryRenderer extends InputRenderer {
             beginMap().
                 entry("popup", dateTimeEntry.isPopup()).
                 entry("locale", dateTimeEntry.calculateLocale(context).toString());
-                if(!isValueBlank(value)) json.entry("defaultDate", value);
+                if(!isValueBlank(value) && dateTimeEntry.isValid()) json.entry("defaultDate", value);
                 json.entryNonNullValue("pattern", DateTimeEntryUtils.convertPattern(dateTimeEntry.getPattern()));
                 if(dateTimeEntry.getPages() != 1) json.entry("numberOfMonths", dateTimeEntry.getPages());
                 json.entryNonNullValue("minDate", DateTimeEntryUtils.getDateAsString(dateTimeEntry, dateTimeEntry.getMindate())).
