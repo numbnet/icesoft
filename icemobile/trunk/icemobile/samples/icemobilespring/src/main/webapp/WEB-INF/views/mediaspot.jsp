@@ -14,7 +14,7 @@
     </head>
     <body>
 </c:if>
-<div id="mediaspot">
+    <div class="ajaxzone">
     <h4>MediaSpot</h4>
     <mobi:fieldSetGroup inset="true">
         <mobi:fieldSetRow>
@@ -72,39 +72,7 @@
 
 
     <script type="text/javascript">
-
-        var ampchar = String.fromCharCode(38);
-
-        $(document).ready(function () {
-            $("#mediaspotform").submit(function () {
-                if (window.ice && ice.upload) {
-                    window.ice.handleResponse = function (data) {
-                        $("#mediaspot").replaceWith(unescape(data));
-                        $('html, body').animate({ scrollTop:$("#message").offset().top }, 500);
-                    }
-                    ice.upload($(this).attr("id"));
-                    return false;
-                }
-
-                var formData = new FormData(this);
-
-                $.ajax({
-                    url:$(this).attr("action"),
-                    data:formData,
-                    cache:false,
-                    contentType:false,
-                    processData:false,
-                    type:'POST',
-                    success:function (html) {
-                        $("#mediaspot").replaceWith(html);
-                        $('html, body').animate({ scrollTop:$("#message").offset().top }, 500);
-                    }
-                });
-
-                return false;
-            });
-        });
-
+        MvcUtil.enhanceForm("#mediaspotform");
     </script>
 </div>
 <c:if test="${!ajaxRequest}">

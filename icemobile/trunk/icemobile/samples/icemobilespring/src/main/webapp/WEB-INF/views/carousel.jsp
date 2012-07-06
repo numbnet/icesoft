@@ -28,7 +28,7 @@
     </head>
     <body>
 </c:if>
-<div id="carouselContent">
+    <div class="ajaxzone">
     <h4>Carousel</h4>
     <form:form id="carouselForm" method="POST" modelAttribute="carouselBean">
         <mobi:fieldSetGroup inset="true">
@@ -44,37 +44,7 @@
     </form:form>
 
     <script type="text/javascript">
-
-        $(document).ready(function () {
-            $("#carouselform").submit(function () {
-                if (window.ice && ice.upload) {
-                    window.ice.handleResponse = function (data) {
-                        $("#carouselContent").replaceWith(unescape(data));
-                        $('html, body').animate({ scrollTop:$("#message").offset().top }, 500);
-                    }
-                    ice.upload($(this).attr("id"));
-                    return false;
-                }
-
-                var formData = new FormData(this);
-
-                $.ajax({
-                    url:$(this).attr("action"),
-                    data:formData,
-                    cache:false,
-                    contentType:false,
-                    processData:false,
-                    type:'POST',
-                    success:function (html) {
-                        $("#carouselContent").replaceWith(html);
-                        $('html, body').animate({ scrollTop:$("#message").offset().top }, 500);
-                    }
-                });
-
-                return false;
-            });
-        });
-
+        MvcUtil.enhanceForm("#carouselform");
     </script>
 </div>
 <c:if test="${!ajaxRequest}">

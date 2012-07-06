@@ -14,7 +14,7 @@
 </head>
 <body>
 </c:if>
-	<div id="tabsetContent">
+    <div class="ajaxzone">
 
 		<h2>Various Spring MVC tags</h2>
 		<p>
