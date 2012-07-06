@@ -23,23 +23,60 @@ ice.ace.Chart = function (id, data, cfg) {
     ice.ace.jq.jqplot.config.errorBorder = '1px solid #aaaaaa';
     this.plot = ice.ace.jq.jqplot(this.jqId.substring(1)+'_chart', data, cfg);
     ice.ace.Charts[id] = self;
+    var $this = ice.ace.jq(this.jqId);
 
     if (cfg.handlePointClick)
-        ice.ace.jq(this.jqId).off("jqplotDataClick").on(
+        $this.off("jqplotDataClick").on(
                 "jqplotDataClick",
                 function(e, seriesIndex, pointIndex, data) {
                     self.handlePointClick.call(self, e, seriesIndex, pointIndex, data);
                 }
-    );
+        );
 
-    ice.ace.jq(this.jqId).off("jqplotDragStart").on(
+    if (cfg.behaviors && cfg.behaviors.mouseOutData) {
+        $this.off("jqplotDataHighlight").on(
+                "jqplotDataHighlight",
+                function() {
+                    ice.ace.ab(self.behaviors.mouseOutData);
+                }
+        );
+    }
+
+    if (cfg.behaviors && cfg.behaviors.mouseInData) {
+        $this.off("jqplotDataUnhighlight").on(
+                "jqplotDataUnhighlight",
+                function() {
+                    ice.ace.ab(self.behaviors.mouseInData);
+                }
+        );
+    }
+
+    if (cfg.behaviors && cfg.behaviors.showHighlighter) {
+        $this.off("jqplotHighlighterHighlight").on(
+                "jqplotHighlighterHighlight",
+                function() {
+                    ice.ace.ab(self.behaviors.showHighlighter);
+                }
+        )
+    }
+
+    if (cfg.behaviors && cfg.behaviors.hideHighlighter) {
+        $this.off("jqplotHighlighterUnhighlight").on(
+                "jqplotHighlighterUnhighlight",
+                function() {
+                    ice.ace.ab(self.behaviors.hideHighlighter);
+                }
+        )
+    }
+
+    $this.off("jqplotDragStart").on(
             "jqplotDragStart",
             function(e, seriesIndex, pointIndex, data) {
                 self.handleDragStart.call(self, e, seriesIndex, pointIndex, data);
             }
     );
 
-    ice.ace.jq(this.jqId).off("jqplotDragStop").on(
+    $this.off("jqplotDragStop").on(
             "jqplotDragStop",
             function(e, seriesIndex, pointIndex, data) {
                 self.handleDragStop.call(self, e, seriesIndex, pointIndex, data);

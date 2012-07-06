@@ -30,9 +30,20 @@ import java.util.List;
         @ResourceDependency(library = "icefaces.ace", name = "util/combined.css")
 })
 @ClientBehaviorHolder(events = {
-    @ClientEvent(name="click", defaultRender = "@this", defaultExecute = "@this"),
-    @ClientEvent(name="dragStart"),
-    @ClientEvent(name="dragStop")
+    @ClientEvent(name="click", defaultRender = "@this", defaultExecute = "@this",
+            tlddoc = "Fired when data point is clicked plot."),
+    @ClientEvent(name="dragStart",
+            tlddoc = "Fired when a drag has begun on a particular drag-enabled plot data point."),
+    @ClientEvent(name="dragStop",
+            tlddoc = "Fired when a drag has ceased on a particular drag-enabled plot data point."),
+    @ClientEvent(name="mouseInData",
+            tlddoc = "Fired when the mouse is inside a filled plot region."),
+    @ClientEvent(name="mouseOutData",
+            tlddoc = "Fired when the mouse is outside a filled plot region."),
+    @ClientEvent(name="showHighlighter",
+            tlddoc = "Fired when the highlighter is being displayed by the mouse being near an enabled data point."),
+    @ClientEvent(name="hideHighlighter",
+            tlddoc = "Fired when the highlighter is being hidden by the mouse moving away from an enabled data point.")
 })
 public class ChartMeta extends UIComponentBaseMeta {
     @Property(tlddoc =
