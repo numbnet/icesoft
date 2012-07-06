@@ -16,8 +16,8 @@
     </head>
     <body>
 </c:if>
-<div id="dateTimeSpinnerContent">
-    <form:form id="dateTimeSpinnerform" method="POST" modelAttribute="dateTimeSpinnerBean">
+    <div class="ajaxzone">
+    <form:form id="datetimeform" method="POST" modelAttribute="dateTimeSpinnerBean">
 
         <h4>Date and Time Spinners</h4>
         <mobi:fieldSetGroup inset="true">
@@ -42,37 +42,7 @@
     </form:form>
 
     <script type="text/javascript">
-
-        $(document).ready(function () {
-            $("#dateTimeSpinnerform").submit(function () {
-                if (window.ice && ice.upload) {
-                    window.ice.handleResponse = function (data) {
-                        $("#dateTimeSpinnerContent").replaceWith(unescape(data));
-                        $('html, body').animate({ scrollTop:$("#message").offset().top }, 500);
-                    }
-                    ice.upload($(this).attr("id"));
-                    return false;
-                }
-
-                var formData = new FormData(this);
-
-                $.ajax({
-                    url:$(this).attr("action"),
-                    data:formData,
-                    cache:false,
-                    contentType:false,
-                    processData:false,
-                    type:'POST',
-                    success:function (html) {
-                        $("#dateTimeSpinnerContent").replaceWith(html);
-                        $('html, body').animate({ scrollTop:$("#message").offset().top }, 500);
-                    }
-                });
-
-                return false;
-            });
-        });
-
+        MvcUtil.enhanceForm("#datetimeform");
     </script>
 </div>
 <c:if test="${!ajaxRequest}">

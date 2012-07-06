@@ -16,7 +16,7 @@
     </head>
     <body>
 </c:if>
-<div id="buttonsContent">
+    <div class="ajaxzone">
 
     <h4>ICEmobile - Buttons</h4>
     <form:form id="buttonsform" method="POST" modelAttribute="buttonsBean">
@@ -47,6 +47,7 @@
                 window.iceButtonTracker = e.target;
             });
             $("#buttonsform").submit(function () {
+                var updateRegion = $(this).closest("div.ajaxzone");
                 if (window.ice && ice.upload) {
                     window.ice.handleResponse = function (data) {
                         var tracker = document
@@ -54,7 +55,7 @@
                         if (tracker) {
                             tracker.parentNode.removeChild(tracker);
                         }
-                        $("#buttonsContent").replaceWith(unescape(data));
+                        updateRegion.replaceWith(unescape(data));
                         $('html, body').animate({ scrollTop:$("#message").offset().top }, 500);
                     }
                     //ice.upload should accept a submitting element
@@ -89,7 +90,7 @@
                     processData:false,
                     type:'POST',
                     success:function (html) {
-                        $("#buttonsContent").replaceWith(html);
+                        updateRegion.replaceWith(html);
                         $('html, body').animate({ scrollTop:$("#message").offset().top }, 500);
                     }
                 });

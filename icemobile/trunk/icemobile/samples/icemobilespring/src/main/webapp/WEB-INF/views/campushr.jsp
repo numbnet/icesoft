@@ -16,7 +16,7 @@
     </head>
     <body>
 </c:if>
-<div id="campushrContent">
+    <div class="ajaxzone">
     <h4>Camera Push Region</h4>
 
     <p>
@@ -82,37 +82,7 @@
     </form:form>
 
     <script type="text/javascript">
-
-        $(document).ready(function () {
-            $("#campushrform").submit(function () {
-                if (window.ice && ice.upload) {
-                    window.ice.handleResponse = function (data) {
-                        $("#campushrContent").replaceWith(unescape(data));
-                        $('html, body').animate({ scrollTop:$("#message").offset().top }, 500);
-                    }
-                    ice.upload($(this).attr("id"));
-                    return false;
-                }
-
-                var formData = new FormData(this);
-
-                $.ajax({
-                    url:$(this).attr("action"),
-                    data:formData,
-                    cache:false,
-                    contentType:false,
-                    processData:false,
-                    type:'POST',
-                    success:function (html) {
-                        $("#campushrContent").replaceWith(html);
-                        $('html, body').animate({ scrollTop:$("#message").offset().top }, 500);
-                    }
-                });
-
-                return false;
-            });
-        });
-
+        MvcUtil.enhanceForm("#campushrform");
     </script>
 </div>
 <c:if test="${!ajaxRequest}">

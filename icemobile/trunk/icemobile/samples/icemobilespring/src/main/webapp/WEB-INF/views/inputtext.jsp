@@ -16,7 +16,7 @@
     </head>
     <body>
 </c:if>
-<div id="inputTextContent">
+    <div class="ajaxzone">
 
     <form:form id="inputtextform" method="POST" modelAttribute="inputTextBean">
 
@@ -93,37 +93,7 @@
     </form:form>
 
     <script type="text/javascript">
-
-        $(document).ready(function () {
-            $("#inputtextform").submit(function () {
-                if (window.ice && ice.upload) {
-                    window.ice.handleResponse = function (data) {
-                        $("#inputTextContent").replaceWith(unescape(data));
-                        $('html, body').animate({ scrollTop:$("#message").offset().top }, 500);
-                    }
-                    ice.upload($(this).attr("id"));
-                    return false;
-                }
-
-                var formData = new FormData(this);
-
-                $.ajax({
-                    url:$(this).attr("action"),
-                    data:formData,
-                    cache:false,
-                    contentType:false,
-                    processData:false,
-                    type:'POST',
-                    success:function (html) {
-                        $("#inputTextContent").replaceWith(html);
-                        $('html, body').animate({ scrollTop:$("#message").offset().top }, 500);
-                    }
-                });
-
-                return false;
-            });
-        });
-
+        MvcUtil.enhanceForm("#inputtextform");
     </script>
 </div>
 <c:if test="${!ajaxRequest}">

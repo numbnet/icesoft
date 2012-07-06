@@ -198,6 +198,40 @@
         return text.replace(/\&/g, '&' + 'amp;').replace(/</g, '&' + 'lt;')
                 .replace(/>/g, '&' + 'gt;').replace(/\'/g, '&' + 'apos;').replace(/\"/g, '&' + 'quot;');
     };
+    MvcUtil.enhanceForm = function(theForm)  {
+        //submitting the form will update 
+        //the containing div with class ajaxzone
+        $(document).ready(function () {
+            $(theForm).submit(function () {
+                var updateRegion = $(this).closest("div.ajaxzone");
+                if (window.ice && ice.upload) {
+                    window.ice.handleResponse = function (data) {
+                        updateRegion.replaceWith(unescape(data));
+                        $('html, body').animate({ scrollTop:$("#message").offset().top }, 500);
+                    }
+                    ice.upload($(this).attr("id"));
+                    return false;
+                }
+
+                var formData = new FormData(this);
+
+                $.ajax({
+                    url:$(this).attr("action"),
+                    data:formData,
+                    cache:false,
+                    contentType:false,
+                    processData:false,
+                    type:'POST',
+                    success:function (html) {
+                        updateRegion.replaceWith(html);
+                        $('html, body').animate({ scrollTop:$("#message").offset().top }, 500);
+                    }
+                });
+
+                return false;
+            });
+        });
+    }
 </script>
 <script type="text/javascript">
     $(document).ready(function () {

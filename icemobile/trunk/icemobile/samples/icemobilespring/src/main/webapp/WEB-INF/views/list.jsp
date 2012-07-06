@@ -14,9 +14,9 @@
 </head>
 <body>
 </c:if>
-	<div id="listContent">
+    <div class="ajaxzone">
 
-      <form:form id="flipswitchform" method="POST" modelAttribute="listBean" style="margin-top:10px;" >
+      <form:form id="listform" method="POST" modelAttribute="listBean" style="margin-top:10px;" >
 
         <mobi:fieldSetGroup id="groupOne">
             <mobi:fieldSetRow style="padding-bottom:10px;">
@@ -104,38 +104,9 @@
          </form:form >
 
 
-		<script type="text/javascript">
-			$(document).ready(function() {
-				$("#accordionform").submit(function() {
-                    if (window.ice && ice.upload)  {
-                        window.ice.handleResponse = function(data)  {
-						    $("#accordionContent").replaceWith(unescape(data));
-						    $('html, body').animate({ scrollTop: $("#message").offset().top }, 500);
-                        }
-                        ice.upload($(this).attr("id"));
-                        return false;  
-                    }
-
-                    var formData = new FormData(this);
-
-                    $.ajax({
-                        url: $(this).attr("action"),
-                        data: formData,
-                        cache: false,
-                        contentType: false,
-                        processData: false,
-                        type: 'POST',
-                        success: function(html) {
-						    $("#accordionContent").replaceWith(html);
-						    $('html, body').animate({ scrollTop: $("#message").offset().top }, 500);
-					    }
-                    });
-
-					return false;  
-				});			
-			});
-
-		</script>
+    <script type="text/javascript">
+        MvcUtil.enhanceForm("#listform");
+    </script>
 	</div>
 <c:if test="${!ajaxRequest}">
 </body>

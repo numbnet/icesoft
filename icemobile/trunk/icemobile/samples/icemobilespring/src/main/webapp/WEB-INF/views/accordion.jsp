@@ -14,7 +14,7 @@
 </head>
 <body>
 </c:if>
-	<div id="accordionContent">
+    <div class="ajaxzone">
 
 		<h2>Various Spring MVC tags</h2>
 		<p>
@@ -44,38 +44,9 @@
 
 		</form:form>
 
-		<script type="text/javascript">
-			$(document).ready(function() {
-				$("#accordionform").submit(function() {
-                    if (window.ice && ice.upload)  {
-                        window.ice.handleResponse = function(data)  {
-						    $("#accordionContent").replaceWith(unescape(data));
-						    $('html, body').animate({ scrollTop: $("#message").offset().top }, 500);
-                        }
-                        ice.upload($(this).attr("id"));
-                        return false;  
-                    }
-
-                    var formData = new FormData(this);
-
-                    $.ajax({
-                        url: $(this).attr("action"),
-                        data: formData,
-                        cache: false,
-                        contentType: false,
-                        processData: false,
-                        type: 'POST',
-                        success: function(html) {
-						    $("#accordionContent").replaceWith(html);
-						    $('html, body').animate({ scrollTop: $("#message").offset().top }, 500);
-					    }
-                    });
-
-					return false;  
-				});			
-			});
-
-		</script>
+    <script type="text/javascript">
+        MvcUtil.enhanceForm("#accordionform");
+    </script>
 	</div>
 <c:if test="${!ajaxRequest}">
 </body>

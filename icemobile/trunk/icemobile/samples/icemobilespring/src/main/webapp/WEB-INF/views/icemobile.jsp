@@ -14,7 +14,7 @@
     </head>
     <body>
 </c:if>
-<div id="camContent">
+    <div class="ajaxzone">
     <form:form id="camform" method="POST" enctype="multipart/form-data"
                modelAttribute="icemobileBean">
         <h4>Camera</h4>
@@ -51,37 +51,7 @@
     </form:form>
 
     <script type="text/javascript">
-
-        $(document).ready(function () {
-            $("#camform").submit(function () {
-                if (window.ice && ice.upload) {
-                    window.ice.handleResponse = function (data) {
-                        $("#camContent").replaceWith(unescape(data));
-                        $('html, body').animate({ scrollTop:$("#message").offset().top }, 500);
-                    }
-                    ice.upload($(this).attr("id"));
-                    return false;
-                }
-
-                var formData = new FormData(this);
-
-                $.ajax({
-                    url:$(this).attr("action"),
-                    data:formData,
-                    cache:false,
-                    contentType:false,
-                    processData:false,
-                    type:'POST',
-                    success:function (html) {
-                        $("#camContent").replaceWith(html);
-                        $('html, body').animate({ scrollTop:$("#message").offset().top }, 500);
-                    }
-                });
-
-                return false;
-            });
-        });
-
+        MvcUtil.enhanceForm("#camform");
     </script>
 </div>
 <c:if test="${!ajaxRequest}">
