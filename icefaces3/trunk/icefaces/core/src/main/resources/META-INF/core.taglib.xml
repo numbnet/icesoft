@@ -153,7 +153,13 @@
         <description>
 The Set Event Phase component allows one to specify the phase that 
 certain events will be broadcast in, for events originating from components 
-in its child hierarchy. 
+in its child hierarchy. Note that some iterative containers, such as UIRepeat,
+UIData and its sub-classes, will wrap events inside another event type that
+records source row information, so if the iterative container is in-between
+setEventPhase and the intended source component, in the child/parent component
+hierarchy, that will interfere with setEventPhase's ability to alter events
+by their class name. Only selecting all events by specifying an events value
+of "FacesEvent" would work.
         </description>
         <component>
             <component-type>org.icefaces.impl.component.SetEventPhase</component-type>
@@ -170,7 +176,7 @@ in its child hierarchy.
         </attribute>
         <attribute>
             <description>
-                The phase for the spefified events to be broadcasted in. 
+                The phase for the specified events to be broadcasted in. 
       One of: ANY, APPLY_REQUEST_VALUES, PROCESS_VALIDATIONS, 
       UPDATE_MODEL_VALUES, INVOKE_APPLICATION.
             </description>

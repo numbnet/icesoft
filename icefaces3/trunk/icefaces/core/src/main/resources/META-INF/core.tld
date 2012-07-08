@@ -119,7 +119,15 @@
     </tag>
 
     <tag>
-        <description><![CDATA[This tag can be used to set the phase of a component event.]]></description>
+        <description><![CDATA[The Set Event Phase component allows one to specify the phase that
+certain events will be broadcast in, for events originating from components
+in its child hierarchy. Note that some iterative containers, such as UIRepeat,
+UIData and its sub-classes, will wrap events inside another event type that
+records source row information, so if the iterative container is in-between
+setEventPhase and the intended source component, in the child/parent component
+hierarchy, that will interfere with setEventPhase's ability to alter events
+by their class name. Only selecting all events by specifying an events value
+of "FacesEvent" would work.]]></description>
         <name>setEventPhase</name>
         <tag-class/>
         <body-content>JSP</body-content>
@@ -134,7 +142,7 @@
             <type>java.lang.String</type>
         </attribute>
         <attribute>
-            <description><![CDATA[The phase for the spefified events to be broadcasted in. 
+            <description><![CDATA[The phase for the specified events to be broadcasted in. 
       One of: ANY, APPLY_REQUEST_VALUES, PROCESS_VALIDATIONS, 
       UPDATE_MODEL_VALUES, INVOKE_APPLICATION.]]></description>
             <name>phase</name>
