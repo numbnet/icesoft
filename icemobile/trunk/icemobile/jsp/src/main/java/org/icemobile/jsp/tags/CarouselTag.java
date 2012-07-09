@@ -56,7 +56,7 @@ public class CarouselTag extends TagSupport {
             out.write("<span id=\"" + getId() + "_jscript\">");
             out.write("<span id=\"" + getId() + "_libJS\">");  // nested span
             out.write("<script type=\"text/javascript\" src=\"resources/" +
-                              LIB_ISCROLL + "/" + JS_ISCROLL + "\"></script>");
+                          LIB_ISCROLL + "/" + JS_ISCROLL + "\"></script>");
             out.write("</span>"); // end of iscroll script
 
             out.write("</span>"); // end of script span sections
@@ -162,7 +162,7 @@ public class CarouselTag extends TagSupport {
 
 
     private void encodeHiddenSelected(Writer out, String id) throws
-            IOException {
+        IOException {
         out.write("<input");
         out.write(" id = \"" + id + "_hidden\"");
         out.write(" name=\"" + id + "\"");
@@ -178,24 +178,16 @@ public class CarouselTag extends TagSupport {
 //
         builder.append(" id=\"").append(clientId).append("_script").append("\"");
         builder.append(" type=\"text/javascript\">");
-
         out.write(builder.toString());
-
-        // todo: Find an alternative that exists in this environment
-//        out.write("ice.onUnload(function() {" +
-//                                     "\n  ice.log.debug(ice.log, '.... ice.onUnload..... '); \n"  +
-//                          "          ice.mobi.carousel.unloaded('" + clientId + "');" +
-//                          "});\n");
-
         out.write("supportsOrientationChange = 'onorientationchange' in window," +
-                          "orientationEvent = supportsOrientationChange ? 'orientationchange' : 'resize';\n");
+                      "orientationEvent = supportsOrientationChange ? 'orientationchange' : 'resize';\n");
 
         out.write("window.addEventListener(orientationEvent, function() {" +
 
-                          "  setTimeout(function () { " +
-                          "       ice.mobi.carousel.refresh('" + clientId + "');" +
-                          "  \n}, 100); " +
-                          " }, false);\n");
+                      "  setTimeout(function () { " +
+                      "       ice.mobi.carousel.refresh('" + clientId + "');" +
+                      "  \n}, 100); " +
+                      " }, false);\n");
 
         out.write("ice.mobi.carousel.loaded('" + clientId + "');");
         out.write("</script>");
