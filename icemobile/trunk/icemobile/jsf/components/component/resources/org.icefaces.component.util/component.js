@@ -14,7 +14,13 @@
  * governing permissions and limitations under the License.
  */
 
-
+if (!window.ice) {
+    window.ice = {};
+}
+if (!window.ice.mobi) {
+    window.ice.mobi = {};
+}
+//should be in ice.mobi namespace
 if (!window['mobi']) {
     window.mobi = {};
 }
@@ -171,14 +177,11 @@ mobi._windowWidth = function () {
     return windowWidth;
 };
 
-function html5getViewState(form) {
-    if (!form) {
-        throw new Error("jsf.getViewState:  form must be set");
-    }
+ice.mobi.serialize = function(form, typed) {
     var els = form.elements;
     var len = els.length;
     var qString = [];
-    var addField = function (name, value) {
+    var addField = function(name, value) {
         var tmpStr = "";
         if (qString.length > 0) {
             tmpStr = "&";
@@ -189,6 +192,15 @@ function html5getViewState(form) {
     for (var i = 0; i < len; i++) {
         var el = els[i];
         if (!el.disabled) {
+            var prefix = "";
+            if (typed) {
+                var vtype = el.getAttribute("data-type");
+                if (vtype) {
+                    prefix = vtype + "-";
+                } else {
+                    prefix = el.type + "-";
+                }
+            }
             switch (el.type) {
                 case 'submit':
                 case 'button':
@@ -197,33 +209,40 @@ function html5getViewState(form) {
                 case 'password':
                 case 'hidden':
                 case 'textarea':
-                    addField(el.name, el.value);
+                    addField(prefix + el.name, el.value);
                     break;
                 case 'select-one':
                     if (el.selectedIndex >= 0) {
-                        addField(el.name, el.options[el.selectedIndex].value);
+                        addField(prefix + el.name, el.options[el.selectedIndex].value);
                     }
                     break;
                 case 'select-multiple':
                     for (var j = 0; j < el.options.length; j++) {
                         if (el.options[j].selected) {
-                            addField(el.name, el.options[j].value);
+                            addField(prefix + el.name, el.options[j].value);
                         }
                     }
                     break;
                 case 'checkbox':
                 case 'radio':
                     if (el.checked) {
-                        addField(el.name, el.value);
+                        addField(prefix + el.name, el.value);
                     }
                     break;
                 default:
-                    addField(el.name, el.value);
+                    addField(prefix + el.name, el.value);
             }
         }
     }
     // concatenate the array
     return qString.join("");
+}
+
+function html5getViewState(form) {
+    if (!form) {
+        throw new Error("jsf.getViewState:  form must be set");
+    }
+    return ice.mobi.serialize(form, false);
 }
 
 function html5handleResponse(context, data) {
@@ -365,3 +384,63 @@ mobi.button = {
         }
     }
 };
+
+ice.mobi.formOf = function(element) {
+    var parent = element;
+    while (null != parent) {
+        if ("form" == parent.nodeName.toLowerCase()) {
+            return parent;
+        }
+        parent = parent.parentNode;
+    }
+}
+
+ice.mobi.sx = function (element) {
+    var ampchar = String.fromCharCode(38);
+    var form = ice.mobi.formOf(element);
+    var formAction = form.getAttribute("action");
+    var command = element.getAttribute("data-command");
+    var id = element.getAttribute("data-id");
+    var ub = element.getAttribute("data-ub");
+    if ((null == id) || ("" == id))  {
+        id = element.getAttribute("id");
+    }
+    var params = element.getAttribute("data-params");
+    var windowLocation = window.location;
+    var barURL = windowLocation.toString();
+    var baseURL = barURL.substring(0,
+            barURL.lastIndexOf("/")) + "/";
+    var ubConfig = "";
+    if ((null != ub) && ("" != ub))  {
+        if ("." === ub)  {
+            ubConfig = "ub=" + escape(baseURL) + ampchar;
+        } else {
+            ubConfig = "ub=" + escape(ub) + ampchar;
+        }
+    }
+    var uploadURL;
+    if (0 === formAction.indexOf("/")) {
+        uploadURL = window.location.origin + formAction;
+    } else if ((0 === formAction.indexOf("http://")) ||
+            (0 === formAction.indexOf("https://"))) {
+        uploadURL = formAction;
+    } else {
+        uploadURL = baseURL + formAction;
+    }
+
+    var returnURL = window.location;
+    if ("" == returnURL.hash) {
+        returnURL += "#icemobilesx";
+    }
+
+    if ("" != params) {
+        params = ubConfig + params;
+    }
+
+    var sxURL = "icemobile://c=" + escape(command +
+            "?id=" + id + ampchar + params) +
+            "&u=" + escape(uploadURL) + "&r=" + escape(returnURL) +
+            "&p=" + escape(ice.mobi.serialize(form, false));
+
+    window.location = sxURL;
+}
