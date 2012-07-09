@@ -56,7 +56,7 @@ public class FileEntryPhaseListener implements PhaseListener {
 //        System.out.println("FileEntryPhaseListener.afterPhase()   " + phaseEvent.getPhaseId());
 //        System.out.println("FileEntryPhaseListener.afterPhase()     renderResponse  : " + phaseEvent.getFacesContext().getRenderResponse());
 //        System.out.println("FileEntryPhaseListener.afterPhase()     responseComplete: " + phaseEvent.getFacesContext().getResponseComplete());
-        if (phaseEvent.getPhaseId().equals(PhaseId.APPLY_REQUEST_VALUES)) {
+        if (phaseEvent.getPhaseId().equals(PhaseId.PROCESS_VALIDATIONS)) {
 //System.out.println("FileEntryPhaseListener.afterPhase()  FileEntry.removeResults()");
             FileEntry.removeResults(phaseEvent.getFacesContext());
         }

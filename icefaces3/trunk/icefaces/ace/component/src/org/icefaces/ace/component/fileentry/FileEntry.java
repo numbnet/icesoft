@@ -202,14 +202,16 @@ public class FileEntry extends FileEntryBase {
     }
 
     /**
-     * Invoked by FileEntryRenderer.decode(-)
-     *
-     * @param results The current lifecycle results. If no files were uploaded
-     * this lifecycle, then this is null. Different from getResults(), which
-     * may be from a previous lifecycle.
+     * Invoked by processDecodes(FacesContext) or processValidators(FacesContext)
      */
-    void validateResults(FacesContext facesContext, FileEntryResults results) {
+    protected void validateResults(FacesContext facesContext) {
 //System.out.println("FileEntry.validateResults()  clientId: " + getClientId(facesContext));
+        // The current lifecycle results. If no files were uploaded
+        // this lifecycle, then this is null. Different from getResults(),
+        // which may be from a previous lifecycle.
+        FileEntryResults results = retrieveResultsFromEarlierInLifecycle(
+            facesContext, getClientId(facesContext));
+
         boolean failed = false;
         if (results != null) {
             for(FileEntryResults.FileInfo fi : results.getFiles()) {
@@ -274,7 +276,37 @@ public class FileEntry extends FileEntryBase {
         }
         return getClientId();
     }
-    
+
+    @Override
+    /**
+     * Override to add the constraint that when immediate is true, then
+     * immediateValidation must be true as well, since validation must happen
+     * before the fileEntryListener is invoked.
+     * 
+     * @see FileEntryBase#isImmediateValidation
+     */
+    public boolean isImmediateValidation() {
+        return isImmediate() ? true : super.isImmediateValidation();
+    }
+
+    @Override
+    public void processDecodes(FacesContext facesContext) {
+        super.processDecodes(facesContext);
+
+        if (isImmediateValidation()) {
+            validateResults(facesContext);
+        }
+    }
+
+    @Override
+    public void processValidators(FacesContext facesContext) {
+        super.processValidators(facesContext);
+
+        if (!isImmediateValidation()) {
+            validateResults(facesContext);
+        }
+    }
+
     @Override
     public void queueEvent(FacesEvent event) {
 //System.out.println("FileEntry.queueEvent  clientId: " + getClientId());
