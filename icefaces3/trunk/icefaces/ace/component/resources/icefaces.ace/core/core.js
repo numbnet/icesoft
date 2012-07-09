@@ -242,31 +242,41 @@ ice.ace.AjaxUtils = {
 };
 
 ice.ace.AjaxRequest = function(cfg) {
-    if(cfg.onstart && !cfg.onstart.call(this)) {
-       return;//cancel request
+    // If start events return false, cancel request
+    if(cfg.onstart && !cfg.onstart.call(this))
+       return;
+
+    // Find the source DOM element
+    var sourceElement;
+    // If the source input is not a valid id ('@this', etc.), but an source node has been explicitly passed
+    if (!document.getElementById(cfg.source) && cfg.node) {
+        // Set the source element to the node
+        sourceElement = cfg.node;
+        // Set the source element id to the invalid source string as it will be used by the bridge as the source.
+        sourceElement.id = cfg.source;
+    } else
+        // If the source input is a string attempt to find it as an id, else assume it is an element and assign it
+        sourceElement = (typeof cfg.source == 'string') ? document.getElementById(cfg.source) : cfg.source;
+
+    // If the attempts to find a source element from the input string failed, or there was no source input
+    if (!sourceElement) {
+        // Find form element to submit as event source
+        var form = ice.ace.jq(ice.ace.escapeClientId(cfg.source)).parents('form:first');
+        if(form.length == 0)
+            form = ice.ace.jq(cfg.node).parents('form:first');
+        if(form.length == 0)
+            form = ice.ace.jq('form').eq(0);
+
+        sourceElement = form;
     }
 
-    var form = ice.ace.jq(ice.ace.escapeClientId(cfg.source)).parents('form:first');
-
-    if(form.length == 0) {
-        form = ice.ace.jq(cfg.node).parents('form:first');
-    }
-
-    if(form.length == 0) {
-        form = ice.ace.jq('form').eq(0);
-    }
-
-    var source = (typeof cfg.source == 'string') ? document.getElementById(cfg.source) : cfg.source;
-	if (!document.getElementById(cfg.source)) {
-		if (cfg.node) {
-			source = cfg.node;
-			source.id = cfg.source;
-		}
-	}
+    // Defaults for execute and render
     var jsfExecute = cfg.execute || '@all';
     var jsfRender = cfg.render || '@all';
 
-    ice.fullSubmit(jsfExecute, jsfRender, null, source || form[0], function(parameter) {
+    // Create IF bridge request
+    ice.fullSubmit(jsfExecute, jsfRender, null, sourceElement, function(parameter) {
+        // Convert PF-style parameters to IF-style
         if(cfg.event) {
             parameter(ice.ace.BEHAVIOR_EVENT_PARAM, cfg.event);
 
@@ -289,19 +299,26 @@ ice.ace.AjaxRequest = function(cfg) {
             }
         }
     }, function(onBeforeSubmit, onBeforeUpdate, onAfterUpdate, onNetworkError, onServerError) {
+        // Define IF callbacks which map to PF/ace:ajax style callbacjs
         var context = {};
         onAfterUpdate(function(responseXML) {
-            if (cfg.onsuccess && !cfg.onsuccess.call(context, responseXML, null /*status*/, null /*xhr*/)) {
+            // Do onsuccess
+            if (cfg.onsuccess && !cfg.onsuccess.call(context, responseXML, null /*status*/, null /*xhr*/))
                 return;
-            }
+
+            // Decode special customUpdate and callbackParam request portions
             ice.ace.AjaxResponse.call(context, responseXML);
         });
+
         if (cfg.oncomplete) {
+            // Do oncomplete
             onAfterUpdate(function(responseXML) {
                 cfg.oncomplete.call(context, null /*xhr*/, null /*status*/, context.args);
             });
         }
+
         if (cfg.onerror) {
+            // Do onerror
             onNetworkError(function(responseCode, errorDescription) {
                 cfg.onerror.call(context, null /*xhr*/, responseCode /*status*/, errorDescription /*error description*/)
             });
@@ -320,7 +337,7 @@ ice.ace.AjaxResponse = function(responseXML) {
     for(var i = 0, l = extensions.length; i < l; i++) {
         var extension = extensions[i];
         if (extension.getAttributeNode('aceCallbackParam')) {
-            var jsonObj = ice.ace.jq.parseJSON(extension.firstChild.data);
+            var jsonObj = JSON.parse(extension.firstChild.data);
             for(var paramName in jsonObj) {
                 if(paramName) {
                     this.args[paramName] = jsonObj[paramName];
