@@ -124,7 +124,8 @@ ice.ace.clone = function(obj) {
     // Handle Array
     if (obj instanceof Array) {
         var copy = [];
-        for (var i = 0, var len = obj.length; i < len; ++i) {
+        var len;
+        for (var i = 0, len = obj.length; i < len; ++i) {
             copy[i] = ice.ace.clone(obj[i]);
         }
         return copy;
