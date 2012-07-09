@@ -22,23 +22,22 @@
 		</p>
 		<form:form id="tabsetform" method="POST"  modelAttribute="tabsetBean" cssClass="cleanform">
 
-            <mobi:tabset id="testTab" selectedTab="1">
+            <mobi:tabset id="tabsetOne" selectedTab="${tabsetBean.tabsetOne}">
                 <mobi:headers>
               	    <mobi:header>Tab #1 </mobi:header>
               	    <mobi:header>Tab #2 </mobi:header>
               	    <mobi:header>Tab #3 </mobi:header>
                 </mobi:headers>
                 <mobi:content>
-                    <mobi:contentPane > This is the first content in the page  </mobi:contentPane>
-                    <mobi:contentPane > This is the second content in the page </mobi:contentPane>
-                    <mobi:contentPane > This is the third content in the page  </mobi:contentPane>
+                    <mobi:contentPane> This is the first content in the page  </mobi:contentPane>
+                    <mobi:contentPane> This is the second content in the page </mobi:contentPane>
+                    <mobi:contentPane> This is the third content in the page  </mobi:contentPane>
                 </mobi:content>
             </mobi:tabset>
 
 			<p><button type="submit">Submit</button></p>
 
 		</form:form>
-
 
 		<script type="text/javascript">
 
