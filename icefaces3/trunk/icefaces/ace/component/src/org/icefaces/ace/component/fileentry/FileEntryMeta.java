@@ -93,6 +93,22 @@ public class FileEntryMeta extends UIComponentBaseMeta {
         defaultValue="false")
     private boolean immediate;
 
+    @Property(tlddoc="Initially, validation of maxTotalSize, maxFileSize, " +
+        "maxFileCount, and required was fixed at APPLY_REQUEST_VALUES " +
+        "phase for technical reasons. Now that it can happen in " +
+        "PROCESS_VALIDATIONS, there are backwards compatibility constraints, "+
+        "so it's tied off of this new property instead of the typical " +
+        "immediate property. And this property's default value must give " +
+        "the pre-existing behaviour, not the newly available one. " +
+        "Validation must happen before the FileEntryEvent is broadcast and " +
+        "the fileEntryListener is invoked, so if immediate is true, then " +
+        "immediateValidation must be true as well. Baring that constraint, " +
+        "when immediateValidation is false, validation will occur in " +
+        "PROCESS_VALIDATIONS phase, otherwise when immediateValidation is " +
+        "true or unspecified, it will occur during APPLY_REQUEST_VALUES phase.",
+        defaultValue="true")
+    private boolean immediateValidation;
+
     @Property(tlddoc="MethodExpression, which must evaluate to a public " +
         "method that takes an FileEntryEvent as a parameter, with a return " +
         "type of void or an Object whose toString method will be used to " +
