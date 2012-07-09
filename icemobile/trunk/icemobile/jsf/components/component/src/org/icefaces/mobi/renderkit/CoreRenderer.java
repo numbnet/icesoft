@@ -31,10 +31,11 @@ import javax.faces.context.FacesContext;
 import javax.faces.render.Renderer;
 import java.io.IOException;
 import java.util.*;
+import java.util.logging.Logger;
 import javax.faces.context.ResponseWriter;
 
 public class CoreRenderer extends Renderer {
-
+    private static Logger logger = Logger.getLogger(CoreRenderer.class.getName());
     /**
      * this method created for mobi:inputText
      * @param context
@@ -158,14 +159,12 @@ public class CoreRenderer extends Renderer {
         }
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
         String behaviorEvent = params.get("javax.faces.behavior.event");
-
         if(null != behaviorEvent) {
             List<ClientBehavior> behaviorsForEvent = behaviors.get(behaviorEvent);
 
-            if(behaviors.size() > 0) {
+            if(behaviorsForEvent != null && !behaviorsForEvent.isEmpty()) {
                String behaviorSource = params.get("javax.faces.source");
                String clientId = component.getClientId();
-
                if(behaviorSource != null && behaviorSource.startsWith(clientId)) {
                    for (ClientBehavior behavior: behaviorsForEvent) {
                        behavior.decode(context, component);
