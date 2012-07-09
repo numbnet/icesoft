@@ -243,13 +243,6 @@ ice.ace.TableConf.prototype.submitTableConfig = function (target) {
             render: id + ' ' + selfId
         };
 
-    options.onsuccess = function(responseXML) {
-        ice.ace.selectCustomUpdates(responseXML, function(id, content) {
-            ice.ace.AjaxUtils.updateElement(id, content);
-        });
-        return false;
-    };
-
     var params = {}, panelConf = "";
     if (this.cfg.reorderable) panelConf += " colOrd";
     if (this.cfg.sortable) panelConf += " colSor";
