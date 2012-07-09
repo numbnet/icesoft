@@ -61,28 +61,8 @@ public class ChartBean extends ComponentExampleImpl<ChartBean> implements Serial
         add(new CartesianSeries(){{
             setDragable(true);
             add(new GregorianCalendar(2009,1,2).getTime(),  89.1);
-
-//            add(new GregorianCalendar(2009,5,8).getTime(),  143.82);
-//            add(new GregorianCalendar(2009,5,1).getTime(),  136.47);
-//            add(new GregorianCalendar(2009,4,26).getTime(), 124.76);
-//            add(new GregorianCalendar(2009,4,18).getTime(), 123.73);
-//            add(new GregorianCalendar(2009,4,18).getTime(), 123.73);
-//            add(new GregorianCalendar(2009,4,11).getTime(), 127.37);
-//            add(new GregorianCalendar(2009,4,4).getTime(),  128.24);
-//            add(new GregorianCalendar(2009,3,27).getTime(), 122.9);
-//            add(new GregorianCalendar(2009,3,20).getTime(), 121.73);
             add(new GregorianCalendar(2009,3,13).getTime(), 120.01);
-//            add(new GregorianCalendar(2009,3,6).getTime(),  114.94);
-//            add(new GregorianCalendar(2009,2,30).getTime(), 104.51);
-//            add(new GregorianCalendar(2009,2,23).getTime(), 102.71);
-//            add(new GregorianCalendar(2009,2,16).getTime(), 96.53);
-//            add(new GregorianCalendar(2009,2,9).getTime(),  84.18);
-//            add(new GregorianCalendar(2009,2,2).getTime(),  88.12);
-//            add(new GregorianCalendar(2009,1,23).getTime(), 91.65);
-//            add(new GregorianCalendar(2009,1,17).getTime(), 96.87);
-//            add(new GregorianCalendar(2009,1,9).getTime(),  100);
             add(new GregorianCalendar(2009,5,15).getTime(), 136.01);
-
         }});
     }};
 
@@ -184,10 +164,11 @@ public class ChartBean extends ComponentExampleImpl<ChartBean> implements Serial
             add("Aluminum", 13);
             add("Xenon", 54);
             add("Silver", 47);
-            add("Sulfer", 16);
+            add("Sulfur", 16);
             add("Silicon", 14);
             add("Vanadium", 23);
             setDragable(true);
+            setDragConstraintAxis(DragConstraintAxis.Y);
             setLabel("Resources / Demand");
             setYAxis(2);
             setXAxis(2);
@@ -200,7 +181,7 @@ public class ChartBean extends ComponentExampleImpl<ChartBean> implements Serial
             add("Generic Fog Lamp", 9);
             add("8 Track Control Module", 12);
             add("Sludge Pump Fourier Modulator", 3);
-            add("Transcender/Spice Rack", 6);
+            add("Transceiver Spice Rack", 6);
             add("Hair Spray Danger Indicator", 18);
             setLabel("Product / Sales");
         }});
@@ -277,7 +258,7 @@ public class ChartBean extends ComponentExampleImpl<ChartBean> implements Serial
     };
 
     private Axis barDemoXTwoAxis = new Axis() {{
-        setTicks(new String[] {"Nickle", "Aluminum", "Xenon", "Silver", "Sulfer", "Silicon", "Vanadium"});
+        setTicks(new String[] {"Nickle", "Aluminum", "Xenon", "Silver", "Sulfur", "Silicon", "Vanadium"});
         setType(AxisType.CATEGORY);
     }};
 
