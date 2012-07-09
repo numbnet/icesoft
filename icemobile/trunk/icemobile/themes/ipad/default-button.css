@@ -113,7 +113,7 @@
     /*filter:  progid:DXImageTransform.Microsoft.gradient(startColorStr='#FEFEFE', EndColorStr='#EEEEEE');*/
     /*-ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#FEFEFE', EndColorStr='#EEEEEE')";*/
     border: 1px solid #BEBEBE;
-    font-size: 12px;
+    font-size: 12px !important;
     color: #444444;
     font-weight: bold;
     cursor: pointer;
