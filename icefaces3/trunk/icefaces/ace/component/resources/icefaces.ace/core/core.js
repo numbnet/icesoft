@@ -110,10 +110,46 @@ ice.ace.removeExecuteRenderOptions = function(options) {
     return options;
 }
 
+ice.ace.clone = function(obj) {
+    // Handle the 3 simple types, and null or undefined
+    if (null == obj || "object" != typeof obj) return obj;
+
+    // Handle Date
+    if (obj instanceof Date) {
+        var copy = new Date();
+        copy.setTime(obj.getTime());
+        return copy;
+    }
+
+    // Handle Array
+    if (obj instanceof Array) {
+        var copy = [];
+        for (var i = 0, var len = obj.length; i < len; ++i) {
+            copy[i] = ice.ace.clone(obj[i]);
+        }
+        return copy;
+    }
+
+    // Handle Object
+    if (obj instanceof Object) {
+        var copy = {};
+        for (var attr in obj) {
+            if (obj.hasOwnProperty(attr)) copy[attr] = ice.ace.clone(obj[attr]);
+        }
+        return copy;
+    }
+
+    throw new Error("Unable to copy obj! Its type isn't supported.");
+}
+
+ice.ace.extend = function(targetObject, sourceObject) {
+    for (var attrname in sourceObject) { targetObject[attrname] = sourceObject[attrname]; }
+}
+
 ice.ace.extendAjaxArguments = function(callArguments, options) {
     // Return a modified copy of the original arguments instead of modifying the original.
     // The cb arguments, being a configured property of the component will live past this request.
-    callArguments = ice.ace.jq(callArguments).extend(true, {}, callArguments);
+    callArguments = ice.ace.clone(callArguments);
 
     var params     = options.params,
         execute    = options.execute,
@@ -126,7 +162,7 @@ ice.ace.extendAjaxArguments = function(callArguments, options) {
 
     if (params) {
         if (callArguments['params'])
-            ice.ace.jq.extend(callArguments['params'], params);
+            ice.ace.extend(callArguments['params'], params);
         else
             callArguments['params'] = params;
     }
