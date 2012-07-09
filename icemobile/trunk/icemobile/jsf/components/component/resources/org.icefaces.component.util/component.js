@@ -25,7 +25,7 @@ mobi.findForm = function (sourceId) {
     while (node.nodeName.toLowerCase() != "form" && node.parentNode) {
         node = node.parentNode;
     }
-  //  ice.log.debug(ice.log, 'parent form node =' + node.name);
+    ice.log.debug(ice.log, 'parent form node =' + node.name);
     return node;
 };
 mobi.AjaxRequest = function (cfg) {
@@ -35,10 +35,10 @@ mobi.AjaxRequest = function (cfg) {
     }
     ice.log.debug(ice.log, 'creating ajax request');
     var form = mobi.findForm(cfg.source);
- /*   if (form) {
+     if (form) {
         ice.log.debug(ice.log, 'found form with name=' + form.name);
         ice.log.debug(ice.log, ' length of forms =' + form.length);
-    }*/
+    }
     var source = (typeof cfg.source == 'string') ? document.getElementById(cfg.source) : cfg.source;
 	if (!document.getElementById(cfg.source)) {
 		if (cfg.node) {
@@ -48,11 +48,11 @@ mobi.AjaxRequest = function (cfg) {
 	}
     if (form.length == 0){
         form = source.form;
- //       ice.log.debug(ice.log, "had to find form via element form length = "+form.length);
+         ice.log.debug(ice.log, "had to find form via element form length = "+form.length);
     }
     if (form.length == 0){
        form = document.forms[0]; //just return first form in the page
- //      ice.log.debug(ice.log, 'had to find first form on page');
+       ice.log.debug(ice.log, 'had to find first form on page');
     }
     var jsfExecute = cfg.execute || '@all';
     var jsfRender = cfg.render || '@all';
@@ -85,7 +85,6 @@ mobi.AjaxRequest = function (cfg) {
             if (cfg.onsuccess && !cfg.onsuccess.call(context, responseXML, null /*status*/, null /*xhr*/)) {
                 return;
             }
-            mobi.AjaxResponse.call(context, responseXML);
         });
         if (cfg.oncomplete) {
             onAfterUpdate(function (responseXML) {
@@ -103,30 +102,6 @@ mobi.AjaxRequest = function (cfg) {
     });
 };
 
-mobi.AjaxResponse = function (responseXML) {
-    var xmlDoc = responseXML.documentElement;
-    var extensions = xmlDoc.getElementsByTagName("extension");
-    //can't do this unless the browser has JSON support ECMAScript 5
-    if (!(typeof(JSON) === 'object' &&
-            typeof(JSON.parse) === 'function')) {
-        // Native JSON parsing is not available.
-        ice.log.debug(ice.log, ' do not have JSON support for parsing the response update');
-    }
-    this.args = {};
-    for (var i = 0, l = extensions.length; i < l; i++) {
-        var extension = extensions[i];
-        if (extension.getAttributeNode('aceCallbackParam')) {
-            // var jsonObj = ice.ace.jq.parseJSON(extension.firstChild.data);
-            //no jquery available so assuming ECMAScript 5 JSON
-            var jsonObj = JSON.parse(extension.firstChild.data);
-            for (var paramName in jsonObj) {
-                if (paramName) {
-                    this.args[paramName] = jsonObj[paramName];
-                }
-            }
-        }
-    }
-};
 
 mobi.registerAuxUpload = function (sessionid, uploadURL) {
     var auxiframe = document.getElementById('auxiframe');

@@ -16,7 +16,7 @@
 
 package org.icefaces.mobi.renderkit;
 
-
+import javax.faces.application.ResourceHandler;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -63,5 +63,14 @@ public class BaseLayoutRenderer extends CoreRenderer {
         writer.writeAttribute("name", clientId+"_hidden", "name");
         writer.endElement("input");
         writer.endElement("span");
+    }
+    protected String getResourceURL(FacesContext facesContext, String value) {
+        if (value.contains(ResourceHandler.RESOURCE_IDENTIFIER)) {
+            return value;
+        } else {
+            String url = facesContext.getApplication().getViewHandler().getResourceURL(facesContext, value);
+
+            return facesContext.getExternalContext().encodeResourceURL(url);
+        }
     }
 }

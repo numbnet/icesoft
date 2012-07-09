@@ -30,7 +30,6 @@ import org.icefaces.mobi.utils.Utils;
 import org.icefaces.ace.JSONBuilder;
 import org.icefaces.ace.api.IceClientBehaviorHolder;
 
-//mandatory resource doesn't work with behaviors, so script for this is in component.js
 @FacesBehaviorRenderer(rendererType="org.icefaces.mobi.component.AjaxBehaviorRenderer")
 public class AjaxBehaviorRenderer extends ClientBehaviorRenderer {
 
@@ -51,7 +50,9 @@ public class AjaxBehaviorRenderer extends ClientBehaviorRenderer {
 
     @Override
     public String getScript(ClientBehaviorContext behaviorContext, ClientBehavior behavior) {
+        //System.out.println("AjaxBehaviorRenderer.getScript()  component: " + behaviorContext.getComponent());
         AjaxBehavior ajaxBehavior = (AjaxBehavior) behavior;
+        //System.out.println("AjaxBehaviorRenderer.getScript()   disabled: " + ajaxBehavior.isDisabled());
         if(ajaxBehavior.isDisabled()) {
             return null;
         }
@@ -60,6 +61,7 @@ public class AjaxBehaviorRenderer extends ClientBehaviorRenderer {
         UIComponent component = behaviorContext.getComponent();
         String clientId = component.getClientId(fc);
         String source = behaviorContext.getSourceId();
+        boolean nonACE = !(component instanceof IceClientBehaviorHolder);
 
         JSONBuilder jb = JSONBuilder.create();
         jb.beginFunction("mobi.AjaxRequest");
