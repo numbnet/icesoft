@@ -56,6 +56,8 @@
     <property name="combined.js"
               location="${resources}/org.icefaces.component.util/combined-min.js"/>
     <property name="combined.js.tmp" location="${resource.js.dir}/combined.js"/>
+    <!-- theme import location -->
+    <property name="theme.dir.path" location="../../../resources/themes" />
     <!-- Check if release.type is set, and if so append it after the tertiary
          value -->
     <condition property="version.string"
@@ -339,15 +341,15 @@
         <!-- 'skin' is the name of the skin these resources will be part of -->
 
         <includeresources
-                dir="../../../themes/android" skin="android"/>
+                dir="${theme.dir.path}/android" skin="android"/>
         <includeresources
-                dir="../../../themes/bberry" skin="bberry"/>
+                dir="${theme.dir.path}/bberry" skin="bberry"/>
         <includeresources
-                dir="../../../themes/honeycomb"  skin="honeycomb"/>
+                dir="${theme.dir.path}/honeycomb"  skin="honeycomb"/>
         <includeresources
-                dir="../../../themes/ipad" skin="ipad"/>
+                dir="${theme.dir.path}/ipad" skin="ipad"/>
         <includeresources
-                dir="../../../themes/iphone" skin="iphone"/>
+                dir="${theme.dir.path}/iphone" skin="iphone"/>
 
         <!-- Generate a single CSS file per skin -->
         <concatskin name="android" inputdir="${build}/skins/in"
