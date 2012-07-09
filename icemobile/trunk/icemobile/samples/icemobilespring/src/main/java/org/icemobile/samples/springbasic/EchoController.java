@@ -16,49 +16,54 @@ import javax.servlet.http.HttpServletRequest;
 @Controller
 public class EchoController {
 
-	@ModelAttribute
-	public void ajaxAttribute(WebRequest request, Model model) {
-		model.addAttribute("ajaxRequest", AjaxUtils.isAjaxRequest(request));
-	}
+    @ModelAttribute
+    public void ajaxAttribute(WebRequest request, Model model) {
+        model.addAttribute("ajaxRequest", AjaxUtils.isAjaxRequest(request));
+    }
 
     @RequestMapping(value = "/accordion")
     public void doRequest(
-            @ModelAttribute("accordionBean" )AccordionBean model) {
+                                 @ModelAttribute("accordionBean") AccordionBean model) {
     }
 
     @RequestMapping(value = "/buttons")
     public void doRequest(Model model,
-            @RequestParam(value = "submitB", required = false) 
-                    String submitted) {
-        if (submitted != null)  {
+                          @RequestParam(value = "submitB", required = false)
+                          String submitted) {
+        if (submitted != null) {
             model.addAttribute("pressed", "[" + submitted + "]");
         }
     }
 
     @RequestMapping(value = "/carousel")
     public void doRequest(
-            @ModelAttribute("carouselBean") CarouselBean model) {
+                                 @ModelAttribute("carouselBean") CarouselBean model) {
+    }
+
+    @RequestMapping(value = "/pagePanel")
+    public void doRequest(
+                                 @ModelAttribute("pagePanelBean") PagePanelBean model) {
     }
 
     @RequestMapping(value = "/datetime")
     public void doRequest(
-            @ModelAttribute("dateTimeSpinnerBean")
-                    DateTimeSpinnerBean model) {
+                                 @ModelAttribute("dateTimeSpinnerBean")
+                                 DateTimeSpinnerBean model) {
     }
 
     @RequestMapping(value = "/flipswitch")
     public void doRequest(
-            @ModelAttribute("flipSwitchBean") FlipSwitchBean model) {
+                                 @ModelAttribute("flipSwitchBean") FlipSwitchBean model) {
     }
 
     @RequestMapping(value = "/geolocation")
     public void doRequest(
-            @ModelAttribute("geolocationBean") GeolocationBean model) {
+                                 @ModelAttribute("geolocationBean") GeolocationBean model) {
     }
 
     @RequestMapping(value = "/inputtext")
     public void doRequest(
-            @ModelAttribute("inputTextBean") InputTextBean model) {
+                                 @ModelAttribute("inputTextBean") InputTextBean model) {
     }
 
     @RequestMapping(value = "/list")
@@ -66,7 +71,7 @@ public class EchoController {
     }
 
     @RequestMapping(value = "/qrscan")
-    public void doRequest(@ModelAttribute("QRScanBean")QRScanBean model) {
+    public void doRequest(@ModelAttribute("QRScanBean") QRScanBean model) {
     }
 
     @RequestMapping(value = "/tabset")
