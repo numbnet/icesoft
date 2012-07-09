@@ -116,7 +116,7 @@
 
 	<HR/>
   		<h:panelGroup style="padding:10px;">
-  			<h4>execute='valueB', render='@all' Test</h4>
+  			<h4>execute='@this valueB', render='@all' Test</h4>
 			<h:form id="form5e">
 
 				<h:commandButton id="reset" actionListener="${ajaxTestBean.clear}" value="Click 1st (Reset values)" /> <br/>
@@ -126,7 +126,7 @@
 				</h:commandButton>
 
 		       <mobi:commandButton id="mobiAjax" value="Click 3rd (mobi:ajax)" >
-					<mobi:ajax execute="valueB" render="@all" listener="${ajaxTestBean.mobiAjaxEventListener}"/>
+					<mobi:ajax execute="@this valueB" render="@all" listener="${ajaxTestBean.mobiAjaxEventListener}"/>
 				</mobi:commandButton>
 
 				<h4>Results:</h4>
@@ -141,7 +141,7 @@
 
 	<HR/>
   		<h:panelGroup style="padding:10px;">
-  			<h4>execute='valueB valueA', render='@all' Test</h4>
+  			<h4>execute='@this valueB valueA', render='@all' Test</h4>
 			<h:form id="form6e">
 
 				<h:commandButton id="reset" actionListener="${ajaxTestBean.clear}" value="Click 1st (Reset values)" /> <br/>
@@ -151,7 +151,7 @@
 				</h:commandButton>
 
 		       <mobi:commandButton id="mobiAjax" value="Click 3rd (mobi:ajax)" >
-					<mobi:ajax execute="valueB valueA" render="@all" listener="${ajaxTestBean.mobiAjaxEventListener}"/>
+					<mobi:ajax execute="@this valueB valueA" render="@all" listener="${ajaxTestBean.mobiAjaxEventListener}"/>
 				</mobi:commandButton>
 
 				<h4>Results:</h4>
@@ -397,6 +397,6 @@
 			</h:form>
 		</h:panelGroup>
 
-
+   <li><a href="../ajaxComponents.html">index page</a> </li>
 	</h:body>
 </html>
