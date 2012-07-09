@@ -94,7 +94,7 @@ public class FileEntryRenderer extends Renderer {
 //System.out.println("FileEntryRenderer.decode  clientId: " + clientId);
         FileEntryResults results = FileEntry.retrieveResultsFromEarlierInLifecycle(facesContext, clientId);
         // If no new files have been uploaded, leave the old upload results in-place.
-        if (results != null) {
+        if (results != null || fileEntry.isRequired()) {
 //System.out.println("FileEntryRenderer.decode    results: " + results);
             fileEntry.setResults(results);
 //System.out.println("FileEntryRenderer.decode      results ve: " + uiComponent.getValueExpression("results"));
@@ -104,7 +104,5 @@ public class FileEntryRenderer extends Renderer {
         FileEntryEvent event = new FileEntryEvent(
                 fileEntry, filesUploadedThisLifecycle);
         fileEntry.queueEvent(event);
-
-        fileEntry.validateResults(facesContext, results);
     }
 }
