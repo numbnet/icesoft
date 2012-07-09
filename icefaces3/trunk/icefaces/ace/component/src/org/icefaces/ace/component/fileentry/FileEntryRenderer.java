@@ -91,11 +91,11 @@ public class FileEntryRenderer extends Renderer {
     public void decode(FacesContext facesContext, UIComponent uiComponent) {
         FileEntry fileEntry = (FileEntry) uiComponent;
         String clientId = uiComponent.getClientId(facesContext);
-System.out.println("FileEntryRenderer.decode  clientId: " + clientId);
+//System.out.println("FileEntryRenderer.decode  clientId: " + clientId);
         FileEntryResults results = FileEntry.retrieveResultsFromEarlierInLifecycle(facesContext, clientId);
         // If no new files have been uploaded, leave the old upload results in-place.
         if (results != null || fileEntry.isRequired()) {
-System.out.println("FileEntryRenderer.decode    results: " + results);
+//System.out.println("FileEntryRenderer.decode    results: " + results);
             fileEntry.setResults(results);
 //System.out.println("FileEntryRenderer.decode      results ve: " + uiComponent.getValueExpression("results"));
         }
