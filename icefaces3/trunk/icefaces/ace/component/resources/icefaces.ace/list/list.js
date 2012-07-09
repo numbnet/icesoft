@@ -104,11 +104,7 @@ ice.ace.List.prototype.sendMigrateRequest = function() {
     params[destList.id+'_immigration'] = JSON.stringify(destList.immigrantMessage);
     options.params = params;
 
-    options.onsuccess = function(responseXML) {
-        ice.ace.selectCustomUpdates(responseXML, function(id, content) {
-            ice.ace.AjaxUtils.updateElement(id, content);
-        });
-
+    options.onsuccess = function(responseXML) {;
         destList.element = ice.ace.jq(ice.ace.escapeClientId(destList.element.attr('id')));
         if (destList.cfg.dragging) destList.element.find("> ul").sortable(destList.cfg);
 

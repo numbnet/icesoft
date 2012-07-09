@@ -183,13 +183,6 @@ ice.ace.Chart.prototype.handlePointClick = function(e, seriesIndex, pointIndex, 
     params[this.id+'_selection'] = data;
     options.params = params;
 
-    options.onsuccess = function(responseXML) {
-        ice.ace.selectCustomUpdates(responseXML, function(id, content) {
-            ice.ace.AjaxUtils.updateElement(id, content);
-        });
-        return true;
-    };
-
     if (this.behaviors)
         if (this.behaviors.click) {
             ice.ace.ab(ice.ace.extendAjaxArguments(this.behaviors.click, options));
