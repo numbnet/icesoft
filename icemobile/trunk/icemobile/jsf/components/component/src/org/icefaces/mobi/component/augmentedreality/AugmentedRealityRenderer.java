@@ -66,13 +66,14 @@ public class AugmentedRealityRenderer extends BaseInputRenderer  {
          String myparams = ag.getParams();
         String script;
         if (isAuxUpload)  {
-            script = Utils.getICEmobileSXScript("aug", clientId);
+            writer.writeAttribute("data-params", myparams, null);
+            writer.writeAttribute("data-command", "aug", null);
+            script = "ice.mobi.sx(this);";
         } else {
             script = "ice.aug( '" + clientId + "', '" + myparams + "' );";
         }
         writer.writeAttribute(HTML.ONCLICK_ATTR, script, null);
-//         writer.writeAttribute("data-params", myparams, null);
-         writer.endElement(HTML.INPUT_ELEM);
+        writer.endElement(HTML.INPUT_ELEM);
      }
 
     @Override
