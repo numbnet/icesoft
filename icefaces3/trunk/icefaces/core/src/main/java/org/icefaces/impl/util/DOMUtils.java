@@ -152,10 +152,12 @@ public class DOMUtils {
         public int maxDiffs = Integer.MAX_VALUE;
         public boolean isInsDel = false;
         public boolean isDebug = false;
+        public boolean isDebugAB = false;
         public boolean isAtt = false;
         private static String MAXDIFFS = "maxDiffs";
         private static String INSDEL = "insDel";
         private static String DEBUG = "debug";
+        private static String DEBUGAB = "debugAB";
         private static String ATT = "att";
         private static Pattern SPACE_PATTERN = Pattern.compile(" ");
 
@@ -190,7 +192,12 @@ public class DOMUtils {
                 if (null != debugParam)  {
                     isDebug = true;
                 }
-                
+
+                String debugABParam = (String) params.get(DEBUGAB);
+                if (null != debugABParam)  {
+                    isDebugAB = true;
+                }
+
                 String attParam = (String) params.get(ATT);
                 if (null != attParam)  {
                     isAtt = true;
@@ -205,6 +212,7 @@ public class DOMUtils {
             String values = 
                     MAXDIFFS + ": " + String.valueOf(maxDiffs) + " " +
                     DEBUG + ": " + String.valueOf(isDebug) + " " +
+                    DEBUGAB + ": " + String.valueOf(isDebugAB) + " " +
                     ATT + ": " + String.valueOf(isAtt) + " " +
                     INSDEL + ": " + String.valueOf(isInsDel);
             return values;
@@ -473,6 +481,21 @@ public class DOMUtils {
         try {
             if (isDebug(config))  {
                 log.log(Level.INFO, "nodeDiff debug " + config);
+            }
+            if (isDebugAB(config))  {
+                String oldDebug = "null document";
+                String newDebug = "null document";
+                if (null != oldNode)  {
+                    oldDebug = toDebugStringDeep(oldNode);
+                }  
+                if (null != newNode)  {
+                    newDebug = toDebugStringDeep(newNode);
+                }  
+                log.log(Level.INFO, "nodeDiff--------------debugA\n");
+                log.log(Level.INFO, "nodeDiff oldNode \n" + oldDebug);
+                log.log(Level.INFO, "nodeDiff--------------debugB\n");
+                log.log(Level.INFO, "nodeDiff newNode \n" + newDebug);
+                log.log(Level.INFO, "nodeDiff--------------------\n");
             }
             boolean success;
             success = compareNodes(config, nodeDiffs, oldNode, newNode);
@@ -1037,6 +1060,10 @@ public class DOMUtils {
 
     static boolean isDebug(DiffConfig config)  {
         return ((null != config) && config.isDebug);
+    }
+
+    static boolean isDebugAB(DiffConfig config)  {
+        return ((null != config) && config.isDebugAB);
     }
 
     public static String getNodeId(Node node)  {
