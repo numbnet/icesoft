@@ -40,7 +40,7 @@
 
     <!-- Naming the war files this way prevents the version from being appended. -->
     <build>
-        <finalName>${artifactId}</finalName>
+        <finalName>${project.artifactId}</finalName>
     </build>
 
     <dependencies>
