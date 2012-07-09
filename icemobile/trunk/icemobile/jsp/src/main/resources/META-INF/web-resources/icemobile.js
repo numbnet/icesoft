@@ -352,44 +352,22 @@ ice.mobi.tabsetController = {
                     parent = el.parentElement;
                 }
                 var current = parent.getAttribute("data-current");
-//                alert('current tab index: ' + current);
                 var contents = tabContent.childNodes;
 
                 searchToken = "tab" + current + "_wrapper";
                 ice.mobi.tabsetController.findAndSet(contents, searchToken, "mobi-tabpage-hidden");
 
-//                oldPage.className = "mobi-tabpage-hidden";
                 var currCtrl = myTabId + "tab_" + current;
                 var oldCtrl = document.getElementById(currCtrl);
                 ice.mobi.tabsetController.removeClass(oldCtrl, "activeTab");
-//                var isClient = cfgIn.client || false;
-//                if (!isClient){
-//                    var hiddenVal = tabIndex+"," +cfgIn.tIndex;
-//                    updateHidden(myTabId, hiddenVal);
-//                    contents[cfgIn.tIndex].className="mobi-tabpage-hidden";
-//                    ice.se(null, myTabId);
-//                } else {
+                var hiddenVal = cfgIn.tIndex;
+                ice.mobi.tabsetController.updateHidden(myTabId, hiddenVal);
 
                 tabIndex = cfgIn.tIndex || 0;
-                var newPage;
-                for (idx = 0; idx < contents.length; idx ++) {
-                    newPage = contents[idx];
-                    searchToken = "tab" + tabIndex + "_wrapper";
-                    if (newPage.id) {
-                        i = newPage.id.indexOf(searchToken);
-                        if (i > 0) {
-                            newPage.className = "mobi-tabpage";
-                        }
-                    }
-                }
-
-
-//                var newPage = contents[tabIndex];
-//                newPage.className="mobi-tabpage";
-//
-
+                searchToken = "tab" + tabIndex + "_wrapper";
+                ice.mobi.tabsetController.findAndSet(contents, searchToken, "mobi-tabpage");
                 parent.setAttribute("data-current", cfgIn.tIndex);
-//                }
+
                 //remove class of activetabheader and hide old contents
                 el.setAttribute("class", "activeTab");
             },
@@ -758,13 +736,17 @@ ice.mobi.datespinner = {
     },
 
     validate:function (iY, iM, iD) {
-        if (iY != parseInt(iY, 10) || iM != parseInt(iM, 10) || iD != parseInt(iD, 10)) return false;
+        if (iY != parseInt(iY, 10) || iM != parseInt(iM, 10) || iD != parseInt(iD, 10)) {
+            return false;
+        }
         iM--;
         var newDate = new Date(iY, iM, iD);
         if ((iY == newDate.getFullYear()) && (iM == newDate.getMonth()) && (iD == newDate.getDate())) {
             return newDate;
         }
-        else return false;
+        else {
+            return false;
+        }
     },
 
     getIntValue:function (id) {
@@ -772,7 +754,9 @@ ice.mobi.datespinner = {
         if (element) {
             var stringEl = element.innerHTML;
             return parseInt(stringEl);
-        } else return 1;
+        } else {
+            return 1;
+        }
     },
     select:function (clientId, cfg) {
         //
@@ -819,31 +803,31 @@ ice.mobi.datespinner = {
         this.close(clientId);
     },
     dateSubmit: function(cfg, clientId) {
-            this.cfg = cfg;
-            var singleSubmit = this.cfg.singleSubmit;
-            var event = this.cfg.event;
-            var hasBehaviors = false;
-            var behaviors = this.cfg.behaviors;
-            if (behaviors) {
-                hasBehaviors = true;
+        this.cfg = cfg;
+        var singleSubmit = this.cfg.singleSubmit;
+        var event = this.cfg.event;
+        var hasBehaviors = false;
+        var behaviors = this.cfg.behaviors;
+        if (behaviors) {
+            hasBehaviors = true;
+        }
+        if (hasBehaviors) {
+            if (behaviors.change) {
+                behaviors.change();
             }
-            if (hasBehaviors) {
-                if (behaviors.change) {
-                    behaviors.change();
-                }
-            }
-            if (!hasBehaviors && singleSubmit) {
-		alert('Bad shit. Calling ice.se');
-                ice.se(event, clientId);
-            }
+        }
+        if (!hasBehaviors && singleSubmit) {
+            alert('Bad shit. Calling ice.se');
+            ice.se(event, clientId);
+        }
     },
-    inputSubmit: function(clientId, cfg){
-        if (this.opened[clientId]==true){
+    inputSubmit: function(clientId, cfg) {
+        if (this.opened[clientId] == true) {
             return;
         }
         var hiddenEl = document.getElementById(clientId + '_hidden');
         var inputEl = document.getElementById(clientId + '_input');
-        hiddenEl.value= inputEl.value;
+        hiddenEl.value = inputEl.value;
         this.dateSubmit(cfg, clientId);
     },
     toggle:function (clientId) {
