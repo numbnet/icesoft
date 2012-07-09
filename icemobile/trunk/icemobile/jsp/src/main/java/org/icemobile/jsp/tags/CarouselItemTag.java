@@ -1,7 +1,5 @@
 package org.icemobile.jsp.tags;
 
-import org.icemobile.jsp.tags.CarouselTag;
-
 import javax.servlet.jsp.JspTagException;
 import javax.servlet.jsp.tagext.BodyTagSupport;
 import javax.servlet.jsp.tagext.Tag;
@@ -17,7 +15,7 @@ import java.util.logging.Logger;
  */
 public class CarouselItemTag extends BodyTagSupport {
 
-    private static Logger logger = Logger.getLogger(CarouselItemTag.class.getName());
+    private static Logger LOG = Logger.getLogger(CarouselItemTag.class.getName());
 
     private String ref;
     private String type;
@@ -46,25 +44,19 @@ public class CarouselItemTag extends BodyTagSupport {
                 if (collectionItr.hasNext()) {
                     collectionItr.next();
                 } else {
-                    logger.warning("IterationTag - index mismatch with collection size");
+                    LOG.warning("IterationTag - index mismatch with collection size");
                 }
             }
 
-
             if (collectionItr.hasNext()) {
-
                 out.write("<li>");
-                // Pop the first item out of the collection.
                 Object item = collectionItr.next();
                 out.write(item.toString());
                 pageContext.setAttribute("ref", item);
                 out.write("</li>");
-
             }
-
-
         } catch (IOException ioe) {
-
+            LOG.severe("IOException encoding carouselItem: " + ioe);
         }
         return BodyTagSupport.EVAL_BODY_INCLUDE;
     }
