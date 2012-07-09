@@ -55,6 +55,22 @@
                             <goal>run</goal>
                         </goals>
                     </execution>
+
+                    <execution>
+                        <id>${project.artifactId}-include-sources</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <tasks>
+                                <copy todir="${project.build.outputDirectory}">
+                                    <fileset dir="${project.build.SourceDirectory}" />
+                                </copy>
+                            </tasks>
+                        </configuration>
+                    </execution>
+
                 </executions>
             </plugin>
 
@@ -93,25 +109,7 @@
                     </webResources>
                 </configuration>
             </plugin>
-            <plugin>
-                <artifactId>maven-antrun-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>${artifactId}-include-sources</id>
-                        <phase>process-resources</phase>
-                        <goals>
-                            <goal>run</goal>
-                        </goals>
-                        <configuration>
-                            <tasks>
-                                <copy todir="${project.build.outputDirectory}">
-                                    <fileset dir="${project.build.SourceDirectory}" />
-                                </copy>
-                            </tasks>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -122,6 +120,7 @@
                 </configuration>
             </plugin>
         </plugins>
+
         <resources>
             <resource>
                 <directory>${parent.root}/src/main/resources</directory>
@@ -179,6 +178,7 @@
                 <plugins>
                     <plugin>
                         <artifactId>maven-war-plugin</artifactId>
+                        <version>2.2</version>
                         <configuration>
                             <webXml>${project.build.directory}/pluto-resources/web.xml</webXml>
                             <webResources>

@@ -31,8 +31,8 @@
 
     <modules>
         <module>auctionMonitor</module>
-        <module>component-showcase</module>
-        <module>component-showcase-portlets</module>
+        <!--<module>component-showcase</module>-->
+        <!--<module>component-showcase-portlets</module>-->
     </modules>
 
     <dependencyManagement>
