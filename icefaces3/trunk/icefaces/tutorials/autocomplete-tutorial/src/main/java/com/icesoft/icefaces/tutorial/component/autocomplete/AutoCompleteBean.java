@@ -147,7 +147,9 @@ public class AutoCompleteBean {
                     i >= maxMatches) {
                     break;
                 }
-                matchList.add(dictionary.get(insert + i));
+				SelectItem match = (SelectItem) dictionary.get(insert + i);
+				if (match.getLabel().toLowerCase().startsWith(searchWord.toString().toLowerCase()))
+					matchList.add(match);
             }
         } catch (Throwable e) {
             log.error("Erorr finding autocomplete matches", e);
