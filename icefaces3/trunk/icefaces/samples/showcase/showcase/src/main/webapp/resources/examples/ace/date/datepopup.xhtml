@@ -48,16 +48,20 @@
                 </h:panelGrid>
             </ace:panel>
                 
-            <h:panelGrid style="margin-left: auto; margin-right: auto; text-align: center;" width="100">
+            <h:panelGrid style="margin-left: auto; margin-right: auto; text-align: center;" width="40%">
                 <h:panelGroup>
                     <h:selectBooleanCheckbox id="popupIn" value="#{datePopup.popup}"/>
                     <h:outputLabel for="popupIn" value=" Display as Popup?"/>
                 </h:panelGroup>
+                <h:panelGroup>
+                </h:panelGroup>
                 <ace:dateTimeEntry id="cal"
-                                               value="#{datePopup.selectedDate}"
-                                               timeZone="Canada/Mountain"
-                                               pattern="MMM/dd/yyyy"
-                                               renderAsPopup="#{datePopup.popup}"/>
+                                   value="#{datePopup.selectedDate}"
+                                   timeZone="Canada/Mountain"
+                                   pattern="MMM/dd/yyyy"
+                                   renderAsPopup="#{datePopup.popup}"
+                                   popupIcon="/resources/css/images/calendarIcon.png"
+                                   popupIconOnly="true"/>
                 <h:commandButton id="submit" value="Submit Date"/>
             </h:panelGrid>
         </h:form>

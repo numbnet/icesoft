@@ -54,6 +54,8 @@ import java.util.Date;
 	                exampleBeanName = DateEntryBean.BEAN_NAME),
             @MenuLink(title = "menu.ace.dateentry.subMenu.popup",
                 exampleBeanName = DatePopupBean.BEAN_NAME),
+            @MenuLink(title = "menu.ace.dateentry.subMenu.timeentry",
+                exampleBeanName = DateTimeBean.BEAN_NAME),
             @MenuLink(title = "menu.ace.dateentry.subMenu.ajax",
                 exampleBeanName = DateAjaxBean.BEAN_NAME),
             @MenuLink(title = "menu.ace.dateentry.subMenu.pages",
