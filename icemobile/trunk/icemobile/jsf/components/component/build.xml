@@ -89,6 +89,7 @@
         <format property="build.time" pattern="yyyy-mm-dd hh:mm:ss"/>
     </tstamp>
 
+    <import file="../../../resources/build/build.xml" />
 
     <path id="compile.run.classpath">
         <fileset dir="${lib.dir}" includes="*.jar"/>
@@ -124,9 +125,7 @@
                    with the exclusion of the the .css files -->
             <mkdir dir="${output.dir.path}/@{skin}/"/>
             <copy todir="${output.dir.path}/@{skin}/">
-                <fileset dir="@{dir}" includes="**">
-                    <exclude name="*.css" />
-                </fileset>
+                <fileset dir="@{dir}" excludes="**/*.css" />
             </copy>
         </sequential>
     </macrodef>
@@ -149,40 +148,20 @@
         </sequential>
     </macrodef>
 
-    <macrodef name="concatskin">
-        <attribute name="name"/>
-        <attribute name="inputdir"/>
-        <attribute name="outputdir"/>
-        <sequential>
-            <delete file="@{outputdir}/@{name}/@{name}.css"/>
-            <concat destfile="@{outputdir}/@{name}/@{name}.css"
-                    append="true">
-                <fileset dir="@{inputdir}/@{name}"
-                         includes="*.css"/>
-                <!--<fileset dir="@{inputdir}/${skins.lib}/@{name}">-->
-                    <!--<exclude name="stylesheet/*.css"/>-->
-                    <!--<exclude name="input/*.css"/>-->
-                    <!--<include name="**/*.css"/>-->
-                <!--</fileset>-->
-            </concat>
-        </sequential>
-    </macrodef>
 
     <macrodef name="compresscssmacro">
         <attribute name="name"/>
         <sequential>
-            <java jar="${lib.dir}/generator/yui-compressor.jar" fork="yes">
-                <arg value="--type"/>
-                <arg value="css"/>
-                <arg value="${resources}/org.icefaces.component.skins/@{name}/@{name}.css"/>
-                <arg value="-o"/>
-                <arg value="${resources}/org.icefaces.component.skins/@{name}/@{name}-min.css"/>
-            </java>
+            <yui-compressor name="@{name}"
+                inputDir="${resources}/org.icefaces.component.skins/@{name}"
+                outputDir="${resources}/org.icefaces.component.skins/@{name}" />
+
             <!-- removes ';'from  the url('#{resource['resourcePath'];}' -->
             <replaceregexp match="];}" replace="]}"
                            flags="g"
                            file="${resources}/org.icefaces.component.skins/@{name}/@{name}-min.css">
             </replaceregexp>
+
             <move file="${resources}/org.icefaces.component.skins/@{name}/@{name}.css"
                   tofile="${resources}/org.icefaces.component.skins/@{name}.css"
                   overwrite="yes" />

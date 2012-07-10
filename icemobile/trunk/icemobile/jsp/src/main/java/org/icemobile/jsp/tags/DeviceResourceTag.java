@@ -164,7 +164,7 @@ public class DeviceResourceTag extends SimpleTagSupport {
         }
 
 //        String cssfile =  libVal + "/" + nameVal;
-        String cssfile = resourceRoot + "/" + libVal + "/" + nameVal;
+        String cssfile = resourceRoot + "/" + libVal + "/" + nameVal + "/" +nameVal;
 
         try {
             out.write("<link type=\"text/css\" rel=\"stylesheet\" href=\"" + cssfile + ".css\" />");
