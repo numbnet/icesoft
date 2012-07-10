@@ -480,46 +480,49 @@ public class DOMPartialViewContext extends PartialViewContextWrapper {
                 //just a text node
                 if (0 == optionElementsLength) {
                     Node optionBodyNode = selectElement.getFirstChild();
-                    String optionBody = optionBodyNode.getNodeValue();
 
-                    //Should be constant, but may vary with JSF implementation
-                    String SELECTED = "selected=\"true\"";
-                    Matcher tagMatcher = OPTION_TAG.matcher(optionBody);
-                    StringBuffer outBuffer = new StringBuffer();
-                    while (tagMatcher.find()) {
-                        String optionTag = tagMatcher.group(0);
-                        Matcher valueMatcher = OPTION_VALUE.matcher(optionTag);
-                        Matcher selectedMatcher =
-                                OPTION_SELECTED.matcher(optionTag);
-                        String valuePair = null;
-                        String value = null;
-                        String selected = null;
-                        if (valueMatcher.find()) {
-                            valuePair = valueMatcher.group(0);
-                            value = valueMatcher.group(1);
-                        }
-                        if (selectedMatcher.find()) {
-                            selected = selectedMatcher.group(1);
-                            SELECTED = selected;
-                        }
+                    if (optionBodyNode != null) {
+                        String optionBody = optionBodyNode.getNodeValue();
 
-                        if (values.contains(value)) {
-                            if (null == selected) {
-                                optionTag = optionTag.replace(valuePair,
-                                        valuePair + " " + SELECTED);
+                        //Should be constant, but may vary with JSF implementation
+                        String SELECTED = "selected=\"true\"";
+                        Matcher tagMatcher = OPTION_TAG.matcher(optionBody);
+                        StringBuffer outBuffer = new StringBuffer();
+                        while (tagMatcher.find()) {
+                            String optionTag = tagMatcher.group(0);
+                            Matcher valueMatcher = OPTION_VALUE.matcher(optionTag);
+                            Matcher selectedMatcher =
+                                    OPTION_SELECTED.matcher(optionTag);
+                            String valuePair = null;
+                            String value = null;
+                            String selected = null;
+                            if (valueMatcher.find()) {
+                                valuePair = valueMatcher.group(0);
+                                value = valueMatcher.group(1);
                             }
-                        } else {
-                            if (null != selected) {
-                                optionTag = optionTag.replace(
-                                        " " + selected, "");
+                            if (selectedMatcher.find()) {
+                                selected = selectedMatcher.group(1);
+                                SELECTED = selected;
                             }
+
+                            if (values.contains(value)) {
+                                if (null == selected) {
+                                    optionTag = optionTag.replace(valuePair,
+                                            valuePair + " " + SELECTED);
+                                }
+                            } else {
+                                if (null != selected) {
+                                    optionTag = optionTag.replace(
+                                            " " + selected, "");
+                                }
+                            }
+                            tagMatcher.appendReplacement(outBuffer, optionTag);
                         }
-                        tagMatcher.appendReplacement(outBuffer, optionTag);
+                        tagMatcher.appendTail(outBuffer);
+                        optionBodyNode.setNodeValue(outBuffer.toString());
                     }
-                    tagMatcher.appendTail(outBuffer);
-                    optionBodyNode.setNodeValue(outBuffer.toString());
-                }
 
+                }
             }
         }
     }
