@@ -2,44 +2,28 @@ if (!window['ice']) window.ice = {};
 if (!window.ice['ace']) window.ice.ace = {};
 ice.ace.Autocompleters = {};
 
-ice.ace.Autocompleter = function(id, updateId, options, rowClass, selectedRowClass, partialSubmit, delay, minChars, height, direction, behaviors, cfg) {
+ice.ace.Autocompleter = function(id, updateId, rowClass, selectedRowClass, delay, minChars, height, direction, behaviors, cfg) {
 	this.id = id;
 	ice.ace.Autocompleters[this.id] = this;
-	this.partialSubmit = partialSubmit;
 	this.delay = delay;
 	this.minChars = minChars;
 	this.height = height == 0 ? 'auto' : height;
 	this.direction = direction;
     this.cfg = cfg;
-	//var existing = Autocompleter.Finder.list[id];
-	//if (!Prototype.Browser.IE && existing && !existing.monitor.changeDetected()) { //@ custom detection
-	//	return;
-	//}
 
-	if (options)
-		options.minChars = 0;
-	else
-		options = {minChars:0};
-	this.root = ice.ace.jq(ice.ace.escapeClientId(id) + "_container");
-	var element = this.root.find('input[name="'+this.id+'"]').get(0); //@ ice.ace.jq #
-	element.id = this.id;
-	var ue = ice.ace.jq(ice.ace.escapeClientId(updateId)).get(0); //@ ice.ace.jq #
+	var options = {minChars:0};
+	var element = ice.ace.jq(ice.ace.escapeClientId(id)).get(0);
+	var ue = ice.ace.jq(ice.ace.escapeClientId(updateId)).get(0);
 	this.baseInitialize(element, ue, options, rowClass, selectedRowClass);
 
 	var self = this;
-	this.options.onComplete = function() { self.onComplete() }; //@ self technique #
+	this.options.onComplete = function() { self.onComplete() };
 	this.options.defaultParams = this.options.parameters || null;
 	
 	if (behaviors) {
 		if (behaviors.behaviors && behaviors.behaviors.submit)
 			this.ajaxSubmit = behaviors.behaviors.submit;
 	}
-	//this.monitor = new Ice.AutocompleterMonitor(element, ue, options, rowClass, selectedRowClass);
-	//this.monitor.object = this;
-	//if (!Prototype.Browser.IE) { //@ custom detection
-	//	Ice.StateMon.add(this.monitor);
-	//}
-	//Autocompleter.Finder.add(this.element, this);
 };
 
 ice.ace.Autocompleter.keys = {
@@ -106,8 +90,8 @@ ice.ace.Autocompleter.prototype = {
 
     baseInitialize: function(element, update, options, rowC, selectedRowC) {
         var self = this;
-        this.element = element; //@ ice.ace.jq #
-        this.update = update; //@ ice.ace.jq #
+        this.element = element;
+        this.update = update;
         this.hasFocus = false;
         this.changed = false;
         this.active = false;
@@ -141,13 +125,24 @@ ice.ace.Autocompleter.prototype = {
                 try {
                     if (update["style"] && (!update.style.position || update.style.position == 'absolute')) {
                         update.style.position = 'absolute';
-                        //Position.clone(element, update, {setHeight: false, offsetTop: element.offsetHeight}); //@ jq position #
-                        //update.clonePosition(element.parentNode, {setTop:false, setWidth:false, setHeight:false, //@ jq clone node #
-                        //    offsetLeft: element.offsetLeft - element.parentNode.offsetLeft});
 						var jqElement = ice.ace.jq(element);
 						var jqUpdate = ice.ace.jq(update);
 						var pos = jqElement.offset();
-						if (self.direction == 'up') {
+						var autoUp = false;
+						if (self.direction == 'auto') {
+							var updateHeight = jqUpdate.height();
+							updateHeight = updateHeight > self.height ? self.height : updateHeight;
+							var winHeight = ice.ace.jq(window).height();
+							var docHeight = ice.ace.jq(document).height();
+							var scrollTop = ice.ace.jq(document).scrollTop()
+							var lengthAbove = pos.top - scrollTop;
+							var lengthBelow = scrollTop + winHeight - pos.top - element.offsetHeight;
+							if (lengthBelow < updateHeight) {
+								if (lengthAbove > lengthBelow)
+									autoUp = true;
+							}
+						}
+						if (self.direction == 'up' || autoUp) {
 							var updateHeight = jqUpdate.height();
 							updateHeight = updateHeight > self.height ? self.height : updateHeight;
 							jqUpdate.css({ position: "absolute", top: pos.top - updateHeight, left: pos.left, marginTop: 0, marginLeft: 0, width: jqElement.width(), maxHeight: self.height, overflow: "auto" });
@@ -158,7 +153,7 @@ ice.ace.Autocompleter.prototype = {
 								if (ieEngine == 7) {
 									update.style.top = (element.offsetTop - updateHeight) + "px";
 								} else {
-									var scrollTop = pos.top - document.documentElement.scrollTop; //@ cumulativeScrollOffset #
+									var scrollTop = pos.top - document.documentElement.scrollTop;
 									update.style.top = (element.offsetTop - updateHeight) + "px";
 								}
 								element.style.position = savedPos;
@@ -172,21 +167,21 @@ ice.ace.Autocompleter.prototype = {
 								if (ieEngine == 7) {
 									update.style.top = (element.offsetTop + element.offsetHeight) + "px";
 								} else {
-									var scrollTop = pos.top - document.documentElement.scrollTop; //@ cumulativeScrollOffset #
+									var scrollTop = pos.top - document.documentElement.scrollTop;
 									update.style.top = (element.offsetTop + element.offsetHeight) + "px";
 								}
 								element.style.position = savedPos;
 							}
 						}
                     }
-                    ice.ace.jq(update).fadeIn(150) //@ jq effects #
+                    ice.ace.jq(update).fadeIn(150)
                 } catch(e) {
                     //logger.info(e);
                 }
             };
         this.options.onHide = this.options.onHide ||
             function(element, update) {
-			ice.ace.jq(update).fadeOut(150) //@ jq effects #
+			ice.ace.jq(update).fadeOut(150)
             };
 
         if (typeof(this.options.tokens) == 'string')
@@ -194,34 +189,31 @@ ice.ace.Autocompleter.prototype = {
 
         this.observer = null;
         this.element.setAttribute('autocomplete', 'off');
-        ice.ace.jq(this.update).hide(); // @ jq hide #
-        //Event.observe(this.element, "blur", this.onBlur.bindAsEventListener(this)); //@ jq event #
+        ice.ace.jq(this.update).hide();
         ice.ace.jq(this.element).data("labelIsInField", this.cfg.labelIsInField);
 		ice.ace.jq(this.element).on("blur", function(e) { self.onBlur.call(self, e); });
 		ice.ace.jq(this.element).on("focus", function(e) { self.onFocus.call(self, e); });
         var keyEvent = "keypress";
-        if (ice.ace.Autocompleter.Browser.IE || ice.ace.Autocompleter.Browser.WebKit) { //@ custom detection #
+        if (ice.ace.Autocompleter.Browser.IE || ice.ace.Autocompleter.Browser.WebKit) {
             keyEvent = "keydown";
         }
-        //Event.observe(this.element, keyEvent, this.onKeyPress.bindAsEventListener(this)); //@ jq event #
 		ice.ace.jq(this.element).on(keyEvent, function(e) { self.onKeyPress.call(self, e); } );
         // ICE-3830
-        if (ice.ace.Autocompleter.Browser.IE || ice.ace.Autocompleter.Browser.WebKit) //@ custom detection #
-            //Event.observe(this.element, "paste", this.onPaste.bindAsEventListener(this)); //@ jq event #
+        if (ice.ace.Autocompleter.Browser.IE || ice.ace.Autocompleter.Browser.WebKit)
 		ice.ace.jq(this.element).on("paste", function(e) { self.onPaste.call(self, e); });
     },
 
     show: function() {
         try {
-            if (ice.ace.jq(this.update).css('display') == 'none')this.options.onShow(this.element, this.update); //@ jq css #
+            if (ice.ace.jq(this.update).css('display') == 'none')this.options.onShow(this.element, this.update);
             if (!this.iefix &&
                 (navigator.appVersion.indexOf('MSIE') > 0) &&
                 (navigator.userAgent.indexOf('Opera') < 0) &&
-                (ice.ace.jq(this.update).css('position') == 'absolute')) { //@ jq css #
+                (ice.ace.jq(this.update).css('position') == 'absolute')) {
                 ice.ace.jq('<iframe id="' + this.update.id + '_iefix" title="IE6_Fix" ' +
                         'style="display:none;position:absolute;filter:progid:DXImageTransform.Microsoft.Alpha(opacity=0);" ' +
                         'src="javascript:\'<html></html>\'" frameborder="0" scrolling="no"></iframe>').insertAfter(this.update);
-                this.iefix = ice.ace.jq('#' + this.update.id + '_iefix').get(0); //@ ice.ace.jq #
+                this.iefix = ice.ace.jq('#' + this.update.id + '_iefix').get(0);
             }
 		  var self = this;
             if (this.iefix) setTimeout(function() { self.fixIEOverlapping.call(self) }, 50);
@@ -234,10 +226,10 @@ ice.ace.Autocompleter.prototype = {
     fixIEOverlapping: function() {
         try {
 		var pos = ice.ace.jq(this.update).offset();
-            ice.ace.jq(this.iefix).css(pos); //@ jq position #
+            ice.ace.jq(this.iefix).css(pos);
             this.iefix.style.zIndex = 1;
             this.update.style.zIndex = 2;
-            ice.ace.jq(this.iefix).show(); //@ jq show #
+            ice.ace.jq(this.iefix).show();
         } catch(e) {
             //logger.info(e);
         }
@@ -245,23 +237,23 @@ ice.ace.Autocompleter.prototype = {
 
     hide: function() {
         this.stopIndicator();
-        if (ice.ace.jq(this.update).css('display') != 'none') this.options.onHide(this.element, this.update); //@ jq css #
-        if (this.iefix) ice.ace.jq(this.iefix).hide(); //@ jq hide #
+        if (ice.ace.jq(this.update).css('display') != 'none') this.options.onHide(this.element, this.update);
+        if (this.iefix) ice.ace.jq(this.iefix).hide();
     },
 
     startIndicator: function() {
-        if (this.options.indicator) ice.ace.jq(this.options.indicator).show(); //@ jq show #
+        if (this.options.indicator) ice.ace.jq(this.options.indicator).show();
     },
 
     stopIndicator: function() {
-        if (this.options.indicator) ice.ace.jq(this.options.indicator).hide();; //@ jq hide #
+        if (this.options.indicator) ice.ace.jq(this.options.indicator).hide();
     },
 
     onKeyPress: function(event) {
         if (!this.active) {
             switch (event.keyCode) {
-                case ice.ace.Autocompleter.keys.KEY_TAB: //@ replace key code #
-                case ice.ace.Autocompleter.keys.KEY_RETURN: //@ replace key code #
+                case ice.ace.Autocompleter.keys.KEY_TAB:
+                case ice.ace.Autocompleter.keys.KEY_RETURN:
 					if (this.element.value.length < this.minChars) {
 						event.stopPropagation();
 						event.preventDefault();
@@ -269,7 +261,7 @@ ice.ace.Autocompleter.prototype = {
 					}
                     this.getUpdatedChoices(true, event, -1);
                     return;
-                case ice.ace.Autocompleter.keys.KEY_DOWN: //@ replace key code #
+                case ice.ace.Autocompleter.keys.KEY_DOWN:
                     this.getUpdatedChoices(false, event, -1);
                     return;
             }
@@ -277,10 +269,8 @@ ice.ace.Autocompleter.prototype = {
 
         if (this.active) {
             switch (event.keyCode) {
-                case ice.ace.Autocompleter.keys.KEY_TAB: //@ replace key code #
-                case ice.ace.Autocompleter.keys.KEY_RETURN: //@ replace key code #
-                    //this.selectEntry();
-                    //Event.stop(event);
+                case ice.ace.Autocompleter.keys.KEY_TAB:
+                case ice.ace.Autocompleter.keys.KEY_RETURN:
 					if (this.element.value.length < this.minChars) {
 						event.stopPropagation();
 						event.preventDefault();
@@ -291,40 +281,34 @@ ice.ace.Autocompleter.prototype = {
                     var idx = this.selectEntry();
                     this.getUpdatedChoices(true, event, idx);
                     this.hide();
-                    //Event.stop(event); //@ jq event #
 					event.stopPropagation();
 					event.preventDefault();
                     return;
-                case ice.ace.Autocompleter.keys.KEY_ESC: //@ replace key code #
+                case ice.ace.Autocompleter.keys.KEY_ESC:
                     this.hide();
                     this.active = false;
-                    //Event.stop(event);  //@ jq event #
 					event.stopPropagation();
 					event.preventDefault();
                     return;
-                case ice.ace.Autocompleter.keys.KEY_LEFT: //@ replace key code #
-                case ice.ace.Autocompleter.keys.KEY_RIGHT: //@ replace key code #
+                case ice.ace.Autocompleter.keys.KEY_LEFT:
+                case ice.ace.Autocompleter.keys.KEY_RIGHT:
                     return;
-                case ice.ace.Autocompleter.keys.KEY_UP: //@ replace key code #
+                case ice.ace.Autocompleter.keys.KEY_UP:
                     this.markPrevious();
                     this.render();
-                    //if(navigator.appVersion.indexOf('AppleWebKit')>0)
-                    //Event.stop(event); //@ jq event #
 					event.stopPropagation();
 					event.preventDefault();
                     return;
-                case ice.ace.Autocompleter.keys.KEY_DOWN: //@ replace key code #
+                case ice.ace.Autocompleter.keys.KEY_DOWN:
                     this.markNext();
                     this.render();
-                    //if(navigator.appVersion.indexOf('AppleWebKit')>0)
-                    //Event.stop(event); //@ jq event #
 					event.stopPropagation();
 					event.preventDefault();
                     return;
             }
         }
         else {
-            if (event.keyCode == ice.ace.Autocompleter.keys.KEY_TAB || event.keyCode == ice.ace.Autocompleter.keys.KEY_RETURN) return; //@ replace key code #
+            if (event.keyCode == ice.ace.Autocompleter.keys.KEY_TAB || event.keyCode == ice.ace.Autocompleter.keys.KEY_RETURN) return;
         }
 
         this.changed = true;
@@ -335,53 +319,50 @@ ice.ace.Autocompleter.prototype = {
         if (this.active) this.render();
         if (this.observer) clearTimeout(this.observer);
 		var self = this;
-        this.observer = setTimeout(function() { self.onObserverEvent() }, this.options.frequency * 1000); //@ self technique #
+        this.observer = setTimeout(function() { self.onObserverEvent() }, this.options.frequency * 1000);
     },
 
     onKeyDown: function(event) {
         if (!this.active) {
             switch (event.keyCode) {
-                case ice.ace.Autocompleter.keys.KEY_DOWN: //@ replace key code #
+                case ice.ace.Autocompleter.keys.KEY_DOWN:
                     this.getUpdatedChoices(false, event, -1);
                     return;
-                case ice.ace.Autocompleter.keys.KEY_BACKSPACE: //@ replace key code #
-                case ice.ace.Autocompleter.keys.KEY_DELETE: //@ replace key code #
+                case ice.ace.Autocompleter.keys.KEY_BACKSPACE:
+                case ice.ace.Autocompleter.keys.KEY_DELETE:
                     if (this.observer) clearTimeout(this.observer);
 				var self = this;
-                    this.observer = setTimeout( function() { self.onObserverEvent() }, this.options.frequency * 1000); //@ self technique #
+                    this.observer = setTimeout( function() { self.onObserverEvent() }, this.options.frequency * 1000);
                     return;
             }
         }
         else if (this.active) {
             switch (event.keyCode) {
-                case ice.ace.Autocompleter.keys.KEY_UP: //@ replace key code #
+                case ice.ace.Autocompleter.keys.KEY_UP:
                     this.markPrevious();
                     this.render();
-                    //Event.stop(event); //@ jq event #
 					event.stopPropagation();
 					event.preventDefault();
                     return;
-                case ice.ace.Autocompleter.keys.KEY_DOWN: //@ replace key code #
+                case ice.ace.Autocompleter.keys.KEY_DOWN:
                     this.markNext();
                     this.render();
-                    //Event.stop(event); //@ jq event #
 					event.stopPropagation();
 					event.preventDefault();
                     return;
-                case ice.ace.Autocompleter.keys.KEY_ESC: //@ replace key code #
-                    if (ice.ace.Autocompleter.Browser.WebKit) { //@ custom detection #
+                case ice.ace.Autocompleter.keys.KEY_ESC:
+                    if (ice.ace.Autocompleter.Browser.WebKit) {
                         this.hide();
                         this.active = false;
-                        //Event.stop(event); //@ jq event #
 					event.stopPropagation();
 					event.preventDefault();
                         return;
                     }
-                case ice.ace.Autocompleter.keys.KEY_BACKSPACE: //@ replace key code #
-                case ice.ace.Autocompleter.keys.KEY_DELETE: //@ replace key code #
+                case ice.ace.Autocompleter.keys.KEY_BACKSPACE:
+                case ice.ace.Autocompleter.keys.KEY_DELETE:
                     if (this.observer) clearTimeout(this.observer);
 					var self = this;
-                    this.observer = setTimeout(function() { self.onObserverEvent() }, this.options.frequency * 1000); //@ self technique #
+                    this.observer = setTimeout(function() { self.onObserverEvent() }, this.options.frequency * 1000);
                     return;
             }
         }
@@ -393,13 +374,11 @@ ice.ace.Autocompleter.prototype = {
     },
 
     onHover: function(event) {
-        //var element = Event.findElement(event, 'DIV'); //@ jq event #
 		var element = ice.ace.jq(event.currentTarget).closest('div').get(0);
         if (this.index != element.autocompleteIndex) {
             if (!this.skip_mouse_hover) this.index = element.autocompleteIndex;
             this.render();
         }
-        //Event.stop(event); //@ jq event #
 		event.stopPropagation();
 		event.preventDefault();
     },
@@ -414,7 +393,6 @@ ice.ace.Autocompleter.prototype = {
     onClick: function(event) {
         this.hidden = true;
         // Hack to fix before beta. Was popup up the list after a selection was made
-        //var element = Event.findElement(event, 'DIV'); //@ jq event #
 		var element = ice.ace.jq(event.currentTarget).closest('div').get(0);
         this.index = element.autocompleteIndex;
         var idx = element.autocompleteIndex;
@@ -435,15 +413,15 @@ ice.ace.Autocompleter.prototype = {
             var docBody = strictMode ? document.documentElement : document.body;
             // Right or bottom border, if any, will be treated as scrollbar.
             // No way to determine their width or scrollbar width accurately.
-            if (event.clientX > docBody.clientLeft + docBody.clientWidth || //@ jq event ?
-                event.clientY > docBody.clientTop + docBody.clientHeight) { //@ jq event ?
+            if (event.clientX > docBody.clientLeft + docBody.clientWidth ||
+                event.clientY > docBody.clientTop + docBody.clientHeight) { 
                 this.element.focus();
                 return;
             }
         }
         // needed to make click events working
 		var self = this;
-        setTimeout(function () { self.hide(); }, 250); //@ self technique #
+        setTimeout(function () { self.hide(); }, 250);
         this.hasFocus = false;
         this.active = false;
     },
@@ -479,7 +457,7 @@ ice.ace.Autocompleter.prototype = {
         if (this.active) this.render();
         if (this.observer) clearTimeout(this.observer);
 		var self = this;
-        this.observer = setTimeout(function() { self.onObserverEvent(); }, this.options.frequency * 1000); //@ self technique #
+        this.observer = setTimeout(function() { self.onObserverEvent(); }, this.options.frequency * 1000);
         return;
     },
 
@@ -489,18 +467,18 @@ ice.ace.Autocompleter.prototype = {
                 if (this.index == i) {
                     ar = this.rowClass.split(" ");
                     for (var ai = 0; ai < ar.length; ai++)
-                        ice.ace.jq(this.getEntry(i)).removeClass(ar[ai]); //@ jq removeClass #
+                        ice.ace.jq(this.getEntry(i)).removeClass(ar[ai]);
                     ar = this.selectedRowClass.split(" ");
                     for (var ai = 0; ai < ar.length; ai++)
-                        ice.ace.jq(this.getEntry(i)).addClass(ar[ai]); //@ jq addClass #
+                        ice.ace.jq(this.getEntry(i)).addClass(ar[ai]);
                 }
                 else {
                     ar = this.selectedRowClass.split(" ");
                     for (var ai = 0; ai < ar.length; ai++)
-                        ice.ace.jq(this.getEntry(i)).removeClass(ar[ai]); //@ jq removeClass #
+                        ice.ace.jq(this.getEntry(i)).removeClass(ar[ai]);
                     ar = this.rowClass.split(" ");
                     for (var ai = 0; ai < ar.length; ai++)
-                        ice.ace.jq(this.getEntry(i)).addClass(ar[ai]); //@ jq addClass #
+                        ice.ace.jq(this.getEntry(i)).addClass(ar[ai]);
                 }
             if (this.hasFocus) {
                 this.show();
@@ -557,9 +535,9 @@ ice.ace.Autocompleter.prototype = {
         var value = '';
         if (this.options.select) {
             var nodes = document.getElementsByClassName(this.options.select, selectedElement) || [];
-            if (nodes.length > 0) value = ice.ace.Autocompleter.collectTextNodes(nodes[0], this.options.select); //@ jq custom fn #
+            if (nodes.length > 0) value = ice.ace.Autocompleter.collectTextNodes(nodes[0], this.options.select);
         } else {
-            value = ice.ace.Autocompleter.collectTextNodesIgnoreClass(selectedElement, 'informal'); //@ jq custom fn # TODO: collectTextNodesIgnoreClass
+            value = ice.ace.Autocompleter.collectTextNodesIgnoreClass(selectedElement, 'informal');
 	}
 
         var lastTokenPos = this.findLastToken();
@@ -581,8 +559,8 @@ ice.ace.Autocompleter.prototype = {
     updateChoices: function(choices) {
         if (!this.changed && this.hasFocus) {
             this.update.innerHTML = choices;
-            ice.ace.Autocompleter.cleanWhitespace(this.update); //@ custom fn #
-            ice.ace.Autocompleter.cleanWhitespace(this.update.firstChild); //@ custom fn #
+            ice.ace.Autocompleter.cleanWhitespace(this.update);
+            ice.ace.Autocompleter.cleanWhitespace(this.update.firstChild);
 
             if (this.update.firstChild && this.update.firstChild.childNodes) {
                 this.entryCount =
@@ -605,11 +583,8 @@ ice.ace.Autocompleter.prototype = {
 
     addObservers: function(element) {
 		var self = this;
-        //Event.observe(element, "mouseover", this.onHover.bindAsEventListener(this)); //@ jq event #
 		ice.ace.jq(element).on("mouseover", function(e) { self.onHover.call(self, e); });
-        //Event.observe(element, "click", this.onClick.bindAsEventListener(this)); //@ jq event #
 		ice.ace.jq(element).on("click", function(e) { self.onClick.call(self, e); });
-        //Event.observe(element, "mousemove", this.onMove.bindAsEventListener(this)); //@ jq event #
 		ice.ace.jq(element).on("mousemove", function(e) { self.onMove.call(self, e); });
     },
 
@@ -617,27 +592,17 @@ ice.ace.Autocompleter.prototype = {
         for (var i = 0; i < this.entryCount; i++) {
             var entry = this.getEntry(i);
             entry.autocompleteIndex = i;
-            //Event.stopObserving(entry, "mouseover", this.onHover); //@ jq event #
 			ice.ace.jq(entry).off('mouseover');
-            //Event.stopObserving(entry, "click", this.onClick); //@ jq event #
 			ice.ace.jq(entry).off('click');
-            //Event.stopObserving(entry, "mousemove", this.onMove); //@ jq event #
 			ice.ace.jq(entry).off('mousemove');
         }
-        //Event.stopObserving(this.element, "mouseover", this.onHover); //@ jq event #
 		ice.ace.jq(this.element).off('mouseover');
-        //Event.stopObserving(this.element, "click", this.onClick); //@ jq event #
 		ice.ace.jq(this.element).off('click');
-        //Event.stopObserving(this.element, "mousemove", this.onMove); //@ jq event #
 		ice.ace.jq(this.element).off('mousemove');
-        //Event.stopObserving(this.element, "blur", this.onBlur); //@ jq event #
 		ice.ace.jq(this.element).off('blur');
-        //Event.stopObserving(this.element, "keypress", this.onKeyPress); //@ jq event #
 		ice.ace.jq(this.element).off('keypress');
-        if (ice.ace.Autocompleter.Browser.IE || ice.ace.Autocompleter.Browser.WebKit) //@ custom detection #
-            //Event.stopObserving(this.element, "keydown", this.onKeyDown); //@ jq event #
+        if (ice.ace.Autocompleter.Browser.IE || ice.ace.Autocompleter.Browser.WebKit)
 			ice.ace.jq(this.element).off('keydown');
-        //Autocompleter.Finder.list[this.element.id] = null;
     },
 
     onObserverEvent: function() {
@@ -690,14 +655,14 @@ ice.ace.Autocompleter.prototype = {
 
         var form = Ice.util.findForm(this.element);
         if (idx > -1) {
-            var indexName = this.id + "_idx";
+            var indexName = this.element.id + "_idx";
             form[indexName].value = idx;
         }
 
         var abCall = function() { ice.ace.ab(self.ajaxSubmit); };
 		var icesCall = function() { ice.s(event, self.element); };
 		//     form.focus_hidden_field.value=this.element.id;
-        if (isEnterKey && !this.partialSubmit) {
+        if (isEnterKey) {
             //iceSubmit(form, this.element, event);
 		if (this.ajaxSubmit) {	
 			ice.ace.ab(this.ajaxSubmit);
@@ -714,7 +679,7 @@ ice.ace.Autocompleter.prototype = {
 		}
         }
 
-        var indexName = this.id + "_idx";
+        var indexName = this.element.id + "_idx";
         form[indexName].value = "";
     },
 
@@ -730,7 +695,7 @@ ice.ace.Autocompleter.prototype = {
             return;
         }
         this.hasFocus = true;
-        ice.ace.Autocompleter.cleanWhitespace(this.update); //@ custom fn #
+        ice.ace.Autocompleter.cleanWhitespace(this.update);
         this.updateChoices(text);
         this.show();
         this.render();

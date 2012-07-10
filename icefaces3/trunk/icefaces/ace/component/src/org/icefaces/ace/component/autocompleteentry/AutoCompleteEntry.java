@@ -70,21 +70,11 @@ public class AutoCompleteEntry extends AutoCompleteEntryBase implements NamingCo
                 facesContext.getExternalContext().getRequestParameterMap();
         String clientId = getClientId(facesContext);
         String value = (String) requestMap.get(clientId);
+		String oldValue = (String) getValue();
+		if (value.equals("") && oldValue == null) return;
         if(value != null) {
-            //boolean changed = isPartialSubmitKeypress(requestMap, clientId);
-            if(!value.equalsIgnoreCase((String) getValue())) {
+            if(!value.equalsIgnoreCase(oldValue)) {
                 setChangedComponentId( clientId );
-                
-                /*if( getTextChangeListener() != null ) {
-                    Object oldValue = getValue();
-                    if(oldValue == null) {
-                        //oldValue = DomBasicRenderer.converterGetAsString(
-                        //    facesContext, this, getValue());
-                    }
-                    TextChangeEvent event = new TextChangeEvent(this, oldValue, value);
-                    event.setPhaseId(PhaseId.APPLY_REQUEST_VALUES);
-                    queueEvent(event);
-                }*/
             }
 			setSubmittedValue(value);
         }
@@ -124,20 +114,6 @@ public class AutoCompleteEntry extends AutoCompleteEntryBase implements NamingCo
             return true;
         }
         return false;
-    }
-	
-    private boolean hadFocus(FacesContext facesContext) {
-        /*Object focusId = facesContext.getExternalContext()
-                .getRequestParameterMap().get(FormRenderer.getFocusElementId());
-        boolean focus = false;
-        if (focusId != null) {
-            if (focusId.toString().equals(getClientId(facesContext))) {
-                focus = true;
-            }
-        }
-        setFocus(focus);
-        return focus;*/
-		return false;
     }
 	
     public Iterator getItemList() {
@@ -190,15 +166,6 @@ public class AutoCompleteEntry extends AutoCompleteEntryBase implements NamingCo
     public void broadcast(FacesEvent event) throws AbortProcessingException {
         //keyevent should be process by this component
         super.broadcast(event);
-        /*if (event instanceof TextChangeEvent) {
-            MethodExpression mb = getTextChangeListener();
-            if(mb != null) {
-                mb.invoke( FacesContext.getCurrentInstance().getELContext(),
-                           new Object[] {event} );
-            }
-        }*/
-//        else if (event instanceof ValueChangeEvent) {
-//        }
     }
 	
     public UIComponent getSelectFacet() {

@@ -83,12 +83,10 @@ public class AutoCompleteEntryRenderer extends InputRenderer {
         // text field
 		writer.startElement("input", null);
         writer.writeAttribute("type", "text", null);
-		//setRootElementId(facesContext, input, uiComponent);
+		writer.writeAttribute("id", clientId, null);
 		writer.writeAttribute("name", clientId, null);
-		//writer.writeAttribute("class", autoCompleteEntry.getInputTextClass(), null);
 		String mousedownScript = (String) uiComponent.getAttributes().get("onmousedown");
 		mousedownScript = mousedownScript == null ? "" : mousedownScript;
-		//input.setAttribute(HTML.ONMOUSEDOWN_ATTR, combinedPassThru(mousedownScript, "this.focus();"));
 		writer.writeAttribute("onmousedown", mousedownScript + "this.focus();", null);
 		int width = autoCompleteEntry.getWidth();
 		writer.writeAttribute("style", "width: " + width + "px;", null);
@@ -110,9 +108,10 @@ public class AutoCompleteEntryRenderer extends InputRenderer {
         if (onchangeAppValue != null) {
             writer.writeAttribute("onchange", onchangeAppValue.toString(), null);
 		}
-		// this would prevent, when first valueChangeListener fires with null value
         if (value != null) {
 			writer.writeAttribute("value", value, null);
+		} else {
+			writer.writeAttribute("value", "", null);
 		}
 		writer.endElement("input");
         writeLabelAndIndicatorAfter(labelAttributes);
@@ -128,16 +127,13 @@ public class AutoCompleteEntryRenderer extends InputRenderer {
 		writer.startElement("div", null);
 		String divId = clientId + AUTOCOMPLETE_DIV;
 		writer.writeAttribute("id", clientId + AUTOCOMPLETE_DIV, null);
-		//String listClass = autoCompleteEntry.getListClass(); // TODO: check for list class and use it instead
 		writer.writeAttribute("class", "ui-widget ui-widget-content ui-corner-all", null);
 		writer.writeAttribute("style", "display:none;z-index:500;", null);
 		writer.endElement("div");
 
 		// script
 		writer.startElement("script", null);
-		//writer.writeAttribute("id", clientId + "script", null);
 		writer.writeAttribute("type", "text/javascript", null);
-		boolean partialSubmit = false; // TODO: remove
 		String direction = autoCompleteEntry.getDirection();
 		direction = direction != null ? ("up".equalsIgnoreCase(direction) || "down".equalsIgnoreCase(direction) ? direction : "auto" ) : "auto";
 		if (!autoCompleteEntry.isDisabled() && !autoCompleteEntry.isReadonly()) {
@@ -145,10 +141,8 @@ public class AutoCompleteEntryRenderer extends InputRenderer {
 			jb.beginFunction("ice.ace.Autocompleter")
 				.item(clientId)
 				.item(divId)
-				.item(null, false) // TODO: re-add autoCompleteEntry.getOptions()
 				.item("ui-widget-content")
 				.item("ui-state-active")
-				.item(partialSubmit)
 				.item(autoCompleteEntry.getDelay())
 				.item(autoCompleteEntry.getMinChars())
 				.item(autoCompleteEntry.getHeight())
@@ -181,7 +175,7 @@ public class AutoCompleteEntryRenderer extends InputRenderer {
             }
         } else {
             writer.startElement("div", null);
-			writer.writeAttribute("id", clientId + "update", null);
+			writer.writeAttribute("id", clientId + "_update", null);
 			encodeDynamicScript(facesContext, autoCompleteEntry, "");
 			writer.endElement("div");
 		}
@@ -199,7 +193,7 @@ public class AutoCompleteEntryRenderer extends InputRenderer {
         if (rows == 0) rows = Integer.MAX_VALUE;
         int rowCounter = 0;
             writer.startElement("div", null);
-			writer.writeAttribute("id", clientId + "update", null);
+			writer.writeAttribute("id", clientId + "_update", null);
         if (autoCompleteEntry.getSelectFacet() != null) {
 
             UIComponent facet = autoCompleteEntry.getSelectFacet();
@@ -208,7 +202,6 @@ public class AutoCompleteEntryRenderer extends InputRenderer {
 			String listVar = autoCompleteEntry.getListVar();
 
             writer.startElement("div", null);
-			//writer.writeAttribute("id", clientId + "content", null);
 			writer.writeAttribute("style", "display: none;", null);
 			writer.startElement("div", null);
             Map requestMap =
@@ -224,8 +217,6 @@ public class AutoCompleteEntryRenderer extends InputRenderer {
 					rowCounter++;
 					writer.startElement("div", null);
 					writer.writeAttribute("style", "border: 0;", null);
-					//SelectItem item = (SelectItem) matches.next();
-					//requestMap.put(autoCompleteEntry.getListVar(), item.getValue());
 					
 					// When HTML is display we still need a selected value. Hidding the value in a hidden span
 					// accomplishes this.
@@ -251,13 +242,10 @@ public class AutoCompleteEntryRenderer extends InputRenderer {
             }
             autoCompleteEntry.setIndex(-1);
 
-            //String nodeValue =
-                    //DOMUtils.nodeToString(listDiv).replaceAll("\n", "");
-					// ice.ace.jq(ice.ace.escapeClientId(id)).get(0).innerHTML
 			writer.endElement("div");
             String call = "ice.ace.Autocompleters[\"" +
                     clientId +
-                    "\"].updateNOW(ice.ace.jq(ice.ace.escapeClientId('" + clientId + "update')).get(0).firstChild.innerHTML);";
+                    "\"].updateNOW(ice.ace.jq(ice.ace.escapeClientId('" + clientId + "_update')).get(0).firstChild.innerHTML);";
             encodeDynamicScript(facesContext, autoCompleteEntry, call);
 			writer.endElement("div");
         } else {
@@ -292,7 +280,6 @@ public class AutoCompleteEntryRenderer extends InputRenderer {
         String clientId = uiComponent.getClientId(facesContext);
 		
 		writer.startElement("span", null);
-		//writer.writeAttribute("id", clientId + "dynamic_script", null);
 		writer.startElement("script", null);
 		writer.writeAttribute("type", "text/javascript", null);
 		writer.writeText(call, null);
