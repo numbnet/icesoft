@@ -39,14 +39,9 @@ mobi.AjaxRequest = function (cfg) {
     if (cfg.onstart && !cfg.onstart.call(this)) {
         return;//cancel request
     }
-    ice.log.debug(ice.log, 'creating ajax request');
     var form = mobi.findForm(cfg.source);
-     if (form) {
-        ice.log.debug(ice.log, 'found form with name=' + form.name);
-        ice.log.debug(ice.log, ' length of forms =' + form.length);
-    }
     var source = (typeof cfg.source == 'string') ? document.getElementById(cfg.source) : cfg.source;
-	if (!document.getElementById(cfg.source)) {
+	if (!source) {
 		if (cfg.node) {
 			source = cfg.node;
 			source.id = cfg.source;
@@ -353,27 +348,21 @@ if (window.addEventListener) {
 }
 /* javascript for mobi:commandButton component put into component.js as per MOBI-200 */
 mobi.button = {
-    cfg: {},
     select: function(clientId, cfg){
-        //if panelConf, then we want this to display and set the submitNotifyId if present
-        this.cfg[clientId] = cfg;
         if (cfg.snId){
             mobi.submitnotify.open(cfg.snId);
             //if here, then no panelConfirmation as this action is responsible for submit
         }
         //otherwise, just check for behaviors, singleSubmit and go
-        var singleSubmit = false;
-        if (cfg.singleSubmit){
-            singleSubmit=true;
-        }
+        var singleSubmit = cfg.singleSubmit || false;
         var hasBehaviors = cfg.behaviors;
         if (hasBehaviors){
-            singleSubmit=false; //hasBehaviors takes precedence and singlessubmit is ignored
             //show the submitNotification panel
             if (cfg.behaviors.click){
+                cfg.node = cfg.elVal;
                 cfg.behaviors.click();
             }
-            return;
+            return;  //ensure no other submits
         }
         var event = cfg.elVal.event;
         var params = cfg.params;
