@@ -111,6 +111,8 @@ var singleSubmit;
                 each(element.options, function(option, i) {
                     clonedOptions[i].selected = option.selected;
                 });
+            } else if (tagName == 'textarea') {
+                clonedElement.value = element.value;
             }
 
             event = event || null;
@@ -156,6 +158,8 @@ var singleSubmit;
                 'event type: ' + type(decoratedEvent)
             ], '\n'));
             namespace.submitFunction(clonedElement, event, options);
+        } catch (e)  {
+            debug(logger, "singleSubmit failed " + e);
         } finally {
             if (window.myfaces)  {
                 //myfaces queue does not serialize
