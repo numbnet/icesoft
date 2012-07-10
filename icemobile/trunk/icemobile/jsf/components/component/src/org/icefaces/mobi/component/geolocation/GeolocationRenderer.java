@@ -76,6 +76,26 @@ public class GeolocationRenderer extends CoreRenderer {
                                 geolocation.setLongitude(0.0);
                             }
                         }
+                        String altString = params[2];
+                        if (null != altString) {
+                            try {
+                                Double altitude = Double.parseDouble(altString);
+                                geolocation.setAltitude(altitude);
+                            } catch (Exception e) {
+                                log.log(Level.WARNING, "ERROR  parsing longitude value, defaulting to zero",e);
+                                geolocation.setLongitude(0.0);
+                            }
+                        }
+                        String dirString = params[3];
+                        if (null != dirString) {
+                            try {
+                                Double direction = Double.parseDouble(dirString);
+                                geolocation.setDirection(direction);
+                            } catch (Exception e) {
+                                log.log(Level.WARNING, "ERROR  parsing longitude value, defaulting to zero",e);
+                                geolocation.setLongitude(0.0);
+                            }
+                        }
                         decodeBehaviors(facesContext, geolocation);
                     }
                 }
@@ -110,7 +130,7 @@ public class GeolocationRenderer extends CoreRenderer {
         writer.endElement("input");
         if (!disabled ) {
             StringBuilder sb = new StringBuilder(255);
-            String fnCall = "document.getElementById(\"" + clientId + "_locHidden\").value=pos.coords.latitude+\",\"+pos.coords.longitude;";
+            String fnCall = "ice.mobi.storeLocation('" + clientId + "_locHidden', pos.coords);";
             sb.append(fnCall);
             if ( hasBehaviors){
                   sb.append(this.buildAjaxRequest(facesContext, cbh, "activate"));
@@ -120,6 +140,9 @@ public class GeolocationRenderer extends CoreRenderer {
                 sb.append(ssCall);
             }
             String finalScript = "navigator.geolocation.watchPosition(function(pos) { " +  sb.toString() + "} );";
+            finalScript += "window.addEventListener('deviceorientation', function(orient){";
+            finalScript +=  "ice.mobi.storeDirection('" + clientId + "_locHidden', orient.webkitCompassHeading);";
+            finalScript += "});\n";
             writer.startElement("script", uiComponent);
             writer.writeAttribute("id", clientId+"_script", "id");
             writer.write(finalScript);

@@ -42,7 +42,7 @@ public class MediaMessage implements Serializable {
     private String tags; //space delimited set of subject tags
     private double latitude = 0.0;
     private double longitude = 0.0;
-    private int direction; //0-359 degrees
+    private double direction = -1.0; //0-359 degrees
 
     
     private Media[] photos = new Media[3];
@@ -151,6 +151,11 @@ public class MediaMessage implements Serializable {
         try {
             url = URLEncoder.encode(getTitle(), "UTF-8") + "=" + 
                     latitude + "," + longitude;
+            if (direction >= 0)  {
+                url += ",," + direction; //empty field for altitude
+            } else {
+                url += ",,"; //empty field for altitude and direction
+            }
         } catch (UnsupportedEncodingException e) {
             logger.warning("location could not be encoded: " + e.getMessage());
         }
@@ -181,11 +186,11 @@ public class MediaMessage implements Serializable {
 		this.tags = tags;
 	}
 
-	public int getDirection() {
+	public double getDirection() {
 		return direction;
 	}
 
-	public void setDirection(int direction) {
+	public void setDirection(double direction) {
 		this.direction = direction;
 	}
 

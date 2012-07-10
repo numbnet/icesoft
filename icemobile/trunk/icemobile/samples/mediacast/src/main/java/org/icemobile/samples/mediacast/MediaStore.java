@@ -78,7 +78,7 @@ public class MediaStore implements Serializable {
 			try {
 				imageURL = URLEncoder.encode(
 				        message.getMediumPhoto().getData().getURL().toString(),"UTF-8" );
-				String location = message.getMessageAsUrlParam() + ",,," + imageURL;
+				String location = message.getMessageAsUrlParam() + "," + imageURL;
 	            sb.append("&" + location);
 			} catch (UnsupportedEncodingException e) {
 				logger.warning("image url could not be encoded: " + e.getMessage());
