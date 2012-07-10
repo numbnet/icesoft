@@ -225,7 +225,7 @@ ice.ace.DataTable.prototype.setupFilterEvents = function () {
             return false; // Don't run form level enter key handling
         }
     });
-    else if (this.cfg.filterEvent == "change") ice.ace.jq(this.jqId + ' > div > table > thead > tr > th > div > input.ui-column-filter').off('keyup').on('keyup', function (event) {
+    else if (this.cfg.filterEvent == "change") ice.ace.jq(this.jqId + ' > div > table > thead > tr > th > div > input.ui-column-filter').unbind('keyup').bind('keyup', function (event) {
         var _event = event;
         if (event.which != 9) {
             if (_self.delayedFilterCall) clearTimeout(_self.delayedFilterCall);
@@ -499,10 +499,10 @@ ice.ace.DataTable.prototype.setupSortEvents = function () {
         });
 
     // Bind keypress kb-navigable sort icons
-    var sortableControlsSelector = 'div > table > thead > tr > th > div.ui-sortable-column span.ui-sortable-control';
-    ice.ace.jq(this.jqId)
-        .off('keypress', sortableControlsSelector + ' a.ui-icon-triangle-1-n')
-        .on('keypress', sortableControlsSelector + ' a.ui-icon-triangle-1-n', function (event) {
+    var sortableControlsSelector = ' div > table > thead > tr > th > div.ui-sortable-column span.ui-sortable-control';
+    ice.ace.jq(this.jqId + sortableControlsSelector + ' a.ui-icon-triangle-1-n')
+        .die('keypress')
+        .live('keypress', function (event) {
             if (event.which == 32 || event.which == 13) {
                 var $currentTarget = ice.ace.jq(event.currentTarget);
                 $currentTarget.closest('.ui-sortable-control')
@@ -511,9 +511,9 @@ ice.ace.DataTable.prototype.setupSortEvents = function () {
             }
         });
 
-    ice.ace.jq(this.jqId)
-        .off('keypress', sortableControlsSelector + ' a.ui-icon-triangle-1-s')
-        .on('keypress', sortableControlsSelector + ' a.ui-icon-triangle-1-s', function (event) {
+    ice.ace.jq(this.jqId + sortableControlsSelector + ' a.ui-icon-triangle-1-s')
+        .die('keypress')
+        .live('keypress', function (event) {
             if (event.which == 32 || event.which == 13) {
                 var $currentTarget = ice.ace.jq(event.currentTarget);
                 $currentTarget.closest('.ui-sortable-control')
@@ -525,10 +525,13 @@ ice.ace.DataTable.prototype.setupSortEvents = function () {
 
 ice.ace.DataTable.prototype.tearDownSelectionEvents = function () {
     var selectEvent = this.cfg.dblclickSelect ? 'dblclick' : 'click';
-    ice.ace.jq(this.jqId).off(selectEvent, 'div > table > tbody > tr > td, '
-        + 'div > table > tbody > tr:not(.ui-unselectable)');
-    ice.ace.jq(this.jqId).off('mouseenter', 'div > table > tbody > tr > td, '
-        + 'div > table > tbody > tr:not(.ui-unselectable)');
+    ice.ace.jq(this.jqId + ' div > table > tbody > tr > td, ' +
+            this.jqId + ' div > table > tbody > tr:not(.ui-unselectable)')
+                .die(selectEvent);
+
+    ice.ace.jq(this.jqId +  ' div > table > tbody > tr > td, ' +
+            this.jqId + ' div > table > tbody > tr:not(.ui-unselectable)')
+                .die('mouseenter');
 }
 
 ice.ace.DataTable.prototype.setupSelectionEvents = function () {
@@ -557,9 +560,9 @@ ice.ace.DataTable.prototype.setupSelectionEvents = function () {
                     .removeClass('ui-state-hover');
             }
         });
-    ice.ace.jq(this.jqId)
-        .off('mouseenter', selector)
-        .on('mouseenter', selector, function () {
+    ice.ace.jq(selector)
+        .die('mouseenter')
+        .live('mouseenter', function () {
             if (!(_self.cfg.noiehover
                 && ((ice.ace.jq.browser.msie && ice.ace.jq.browser.version == 7) ||
                 (ice.ace.jq.browser.msie && ice.ace.jq.browser.version == 8)))) {
@@ -576,7 +579,7 @@ ice.ace.DataTable.prototype.setupSelectionEvents = function () {
                 }
             }
         })
-        .on(selectEvent, selector, function (event) {
+        .live(selectEvent, function (event) {
             if (this.nodeName == 'TR') _self.onRowClick(event, this);
             else _self.onCellClick(event, this);
         });
@@ -601,15 +604,15 @@ ice.ace.DataTable.prototype.setupReorderableColumns = function () {
 
 ice.ace.DataTable.prototype.setupRowExpansionEvents = function () {
     var table = this;
-    var selector = 'div > table > tbody.ui-datatable-data > tr > td *:not(tbody) a.ui-row-toggler';
-    ice.ace.jq(this.jqId)
-        .off('keyup click', selector)
-        .on('keyup', selector, function (event) {
+    var selector = ' div > table > tbody.ui-datatable-data > tr > td *:not(tbody) a.ui-row-toggler';
+    ice.ace.jq(this.jqId + selector)
+        .die('keyup click')
+        .live('keyup', function (event) {
             if (event.which == 32 || event.which == 13) {
                 table.toggleExpansion(this);
             }
         })
-        .on('click', selector, function (event) {
+        .live('click', function (event) {
             event.stopPropagation();
             table.toggleExpansion(this);
         });
@@ -617,15 +620,15 @@ ice.ace.DataTable.prototype.setupRowExpansionEvents = function () {
 
 ice.ace.DataTable.prototype.setupPanelExpansionEvents = function () {
     var table = this;
-    var selector = 'div > table > tbody.ui-datatable-data > tr:not(.ui-expanded-row-content) > td *:not(tbody) a.ui-row-panel-toggler';
-    ice.ace.jq(this.jqId)
-        .off('keyup click', selector)
-        .on('keyup', selector, function (event) {
+    var selector = ' div > table > tbody.ui-datatable-data > tr:not(.ui-expanded-row-content) > td *:not(tbody) a.ui-row-panel-toggler';
+    ice.ace.jq(this.jqId + selector)
+        .die('keyup click')
+        .live('keyup', function (event) {
             if (event.which == 32 || event.which == 13) {
                 table.toggleExpansion(this);
             }
         })
-        .on('click', selector, function (event) {
+        .live('click', function (event) {
             event.stopPropagation();
             table.toggleExpansion(this);
         });
@@ -1714,23 +1717,40 @@ ice.ace.DataTable.prototype.setupCellEditorEvents = function (rowEditors) {
         inputCellKeypress = function (event) {
             if (event.which == 13) return false;
         };
-    var selector = 'div > table > tbody.ui-datatable-data > tr > td > div.ui-row-editor';
-    ice.ace.jq(this.jqId).off('click keyup', selector + ' a.ui-icon-pencil').on('click', selector + ' a.ui-icon-pencil', showEditors).on('keyup', selector + ' a.ui-icon-pencil', function (event) {
+
+    var selector = ' div > table > tbody.ui-datatable-data > tr > td > div.ui-row-editor';
+    ice.ace.jq(this.jqId + selector + ' a.ui-icon-pencil')
+            .die('click keyup')
+            .live('click', showEditors)
+            .live('keyup', function (event) {
         if (event.which == 32 || event.which == 13) {
             showEditors(event);
         }
     });
-    ice.ace.jq(this.jqId).off('click keyup', selector + ' a.ui-icon-check').on('click', selector + ' a.ui-icon-check', saveRowEditors).on('keyup', selector + ' a.ui-icon-check', function (event) {
+
+    ice.ace.jq(this.jqId + selector + ' a.ui-icon-check')
+            .die('click keyup')
+            .live('click', saveRowEditors)
+            .live('keyup',
+            function (event) {
         if (event.which == 32 || event.which == 13) {
             saveRowEditors(event);
         }
     });
-    ice.ace.jq(this.jqId).off('click keyup', selector + ' a.ui-icon-close').on('click', selector + ' a.ui-icon-close', cancelRowEditors).on('keyup', selector + ' a.ui-icon-close', function (event) {
+
+    ice.ace.jq(this.jqId + selector + ' a.ui-icon-close')
+            .die('click keyup')
+            .live('click', cancelRowEditors)
+            .live('keyup',
+            function (event) {
         if (event.which == 32 || event.which == 13) {
             cancelRowEditors(event);
         }
     });
-    rowEditors.closest('tr').find('> div.ui-cell-editor > span > input').bind('keypress', inputCellKeypress);
+
+    rowEditors.closest('tr')
+            .find('> div.ui-cell-editor > span > input')
+            .bind('keypress', inputCellKeypress);
 }
 
 
