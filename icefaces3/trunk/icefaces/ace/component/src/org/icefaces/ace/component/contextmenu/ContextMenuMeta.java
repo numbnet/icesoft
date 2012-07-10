@@ -59,7 +59,7 @@ public class ContextMenuMeta extends UIComponentBaseMeta {
     @Property(tlddoc = "zindex property to control overlapping with other elements.", defaultValue = "1")
     private int zindex;
 
-    @Property(tlddoc = "Sets the effect for the menu display. Standard jQuery effects are supported (This feature is not supported in IE7 and IE8, see wiki page for more information).", defaultValue = "fade")
+    @Property(tlddoc = "Sets the effect for the menu display. Possible values are 'blind', 'clip', 'drop', 'explode, 'fade', 'fold', 'puff', 'slide', 'scale', 'bounce', 'highlight', 'pulsate', and 'shake' (This feature is not supported in IE7 and IE8, see wiki page for more information).", defaultValue = "fade")
     private String effect;
 
     @Property(tlddoc = "Sets the effect duration in milliseconds.", defaultValue = "400")
