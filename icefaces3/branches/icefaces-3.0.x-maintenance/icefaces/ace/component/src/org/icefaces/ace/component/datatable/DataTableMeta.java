@@ -131,24 +131,13 @@ public class DataTableMeta extends UIDataMeta {
             defaultValue = "false", defaultValueType = DefaultValueType.EXPRESSION)
     private Boolean alwaysExecuteContents;
 
-    @Property(tlddoc = "Enable the the client to revert the edited row with the default state following a failed edit." +
-            " By default when validation fails during a row editing request the row remains in editing mode.",
-            defaultValue = "false", defaultValueType = DefaultValueType.EXPRESSION)
+    @Field(defaultValue = "true", defaultValueIsStringLiteral = false)
     private Boolean toggleOnInvalidEdit;
 
-    @Property(tlddoc = "Enable the default handling of the scrollable table when " +
-            "rendered into a hidden page region. The table attempts to poll its hidden " +
-            "status, looking for when it is shown and then call the scrollable table sizing " +
-            "JavaScript. This can be expensive in environments of reduced JavaScript performance with " +
-            "many tables and a complex DOM. When this is disabled, upon revealing a hidden " +
-            "scrollable table, to ensure it is sized correctly the JS " +
-            "'tableWidgetVar.resizeScrolling()' function must be called.",
-            defaultValue = "true", defaultValueType = DefaultValueType.EXPRESSION)
+    @Field(defaultValue = "true", defaultValueIsStringLiteral = false)
     private Boolean hiddenScrollableSizing;
 
-    @Property(tlddoc = "Enable the default scrollable table behaviour of using JavaScript to size a " +
-            "table header and footer that are in a fixed position regardless of table body scrolling.",
-            defaultValue = "true", defaultValueType = DefaultValueType.EXPRESSION)
+    @Field(defaultValue = "true", defaultValueIsStringLiteral = false)
     private Boolean staticHeaders;
 
     // Map from row data to field names (cells) that are selected
@@ -327,7 +316,7 @@ public class DataTableMeta extends UIDataMeta {
 
     /* ##################################################################### */
     /* ########################## Column Features ########################## */
-    /* ##################################################################### */
+    /* #################################################################### */
     @Property(tlddoc = "Enable resizing of the table columns via handles on " +
             "the column headers.")
     private boolean resizableColumns;
@@ -340,7 +329,6 @@ public class DataTableMeta extends UIDataMeta {
             "the Column children of the table.")
     private List<Integer> columnOrdering;
 
-    @Property(tlddoc = "Enabling makes the entire header container the clickable region for sort events.",
-            defaultValue =  "true", defaultValueType = DefaultValueType.EXPRESSION)
-    private boolean clickableHeaderSorting;
+    @Field(defaultValue =  "false", defaultValueIsStringLiteral = false)
+    private Boolean clickableHeaderSorting;
 }
