@@ -58,6 +58,8 @@ import java.util.Date;
                 exampleBeanName = DateAjaxBean.BEAN_NAME),
             @MenuLink(title = "menu.ace.dateentry.subMenu.pages",
                 exampleBeanName = DatePagesBean.BEAN_NAME),
+            @MenuLink(title = "menu.ace.dateentry.subMenu.minmax",
+                exampleBeanName = DateMinMaxBean.BEAN_NAME),
             @MenuLink(title = "menu.ace.dateentry.subMenu.navigator",
                 exampleBeanName = DateNavigatorBean.BEAN_NAME)
     }
