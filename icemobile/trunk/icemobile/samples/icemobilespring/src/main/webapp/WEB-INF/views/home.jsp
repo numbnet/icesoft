@@ -1,5 +1,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://www.icemobile.org/tags" prefix="mobi" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page session="false" %>
 <html>
 <head>
@@ -91,6 +92,13 @@
     </style>
 </head>
 <body>
+<mobi:pagePanel id="mainPage">
+<mobi:pagePanelHeader id="mainPageHeader">
+    ICEmobile Spring
+</mobi:pagePanelHeader>
+
+<mobi:pagePanelBody id="panelBody">
+
 <div id="tabs">
 <ul>
     <li><a href="#welcome">Welcome</a></li>
@@ -123,7 +131,6 @@
     <li><a href="<c:url value="/accordion" />" title="accordion">Accordion</a></li>
     <li><a href="<c:url value="/datetime" />" title="datetime">Time/Date</a></li>
     <li><a href="<c:url value="/list" />" title="list">List Demo</a></li>
-    <li><a href="<c:url value="/pagePanel" />" title="pagePanel">Page Panel</a></li>
 
     <li><a href="#icehtml">HTML</a></li>
 </ul>
@@ -156,6 +163,11 @@
     </div>
 </div>
 </div>
+
+</mobi:pagePanelBody>
+
+</mobi:pagePanel>
+
 <script type="text/javascript"
         src="<c:url value="/resources/jquery/1.6/jquery.js" />"></script>
 <script type="text/javascript"
