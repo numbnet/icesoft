@@ -586,8 +586,7 @@ public class SelectInputText extends HtmlInputText implements NamingContainer,
             }
             if("true".equals(requestParemeterMap.get("ice.event.left"))){
                 queueEvent(new ActionEvent(this));                
-            }
-            if("onclick".equals(requestParemeterMap.get("ice.event.type"))){
+            } else if("onclick".equals(requestParemeterMap.get("ice.event.type"))){
                 queueEvent(new ActionEvent(this));
             }
 
