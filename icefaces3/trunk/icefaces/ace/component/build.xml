@@ -201,6 +201,7 @@
                 <file name="icefaces.ace/jquery/jquery.js"/>
                 <file name="icefaces.ace/jquery/ui/jquery-ui.js"/>
                 <file name="icefaces.ace/core/core.js"/>
+                <file name="icefaces.ace/json/json2.js"/>
             </filelist>
         </concat>
         <!-- ace-datatable.js -->
@@ -246,7 +247,6 @@
                 <file name="icefaces.ace/printer/printer.js"/>
                 <file name="icefaces.ace/tooltip/jquery.qtip-1.0.0-rc3.js"/>
                 <file name="icefaces.ace/tooltip/tooltip.js"/>
-                <file name="icefaces.ace/json/json2.js"/>
             </filelist>
         </concat>
         <!-- ace-chart.js -->
@@ -273,7 +273,7 @@
         </concat>
     </target>
 
-    <target name="res-js-compress" depends="res-js-combine"
+    <target name="res-js-J" depends="res-js-combine"
             unless="no-compress">
         <echo message="Compressing combined javascript code"/>
         <java jar="${lib.dir}/yui-compressor.jar" fork="yes">
