@@ -141,7 +141,7 @@ public class GeolocationRenderer extends CoreRenderer {
             }
             String finalScript = "navigator.geolocation.watchPosition(function(pos) { " +  sb.toString() + "} );";
             finalScript += "window.addEventListener('deviceorientation', function(orient){";
-            finalScript +=  "ice.mobi.storeDirection('" + clientId + "_locHidden', orient.webkitCompassHeading);";
+            finalScript +=  "ice.mobi.storeDirection('" + clientId + "_locHidden', orient);";
             finalScript += "});\n";
             writer.startElement("script", uiComponent);
             writer.writeAttribute("id", clientId+"_script", "id");

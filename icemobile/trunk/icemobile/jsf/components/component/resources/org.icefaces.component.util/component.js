@@ -445,10 +445,13 @@ ice.mobi.storeLocation = function(id, coords)  {
     el.value = parts.join();
 }
 
-ice.mobi.storeDirection = function(id, dir)  {
+ice.mobi.storeDirection = function(id, orient)  {
+    if (orient.webkitCompassAccuracy <= 0)  {
+        return;
+    }
     var el = document.getElementById(id);
     var parts = el.value.split(',');
     if (4 != parts.length) {parts = new Array(4)}
-    parts[3] = dir;
+    parts[3] = orient.webkitCompassHeading;
     el.value = parts.join();
 }
