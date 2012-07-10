@@ -32,7 +32,6 @@
     margin:0;
     padding:0;
 }
-
 .ui-datatable th .ui-header-column {
     position:relative;
 }
@@ -63,11 +62,6 @@
     position: relative;
 }
 
-.ui-tableconf-sort-cont {
-    position: absolute;
-    top:0;
-}
-
 .ui-sortable-control {
     cursor:pointer;
 }
@@ -91,9 +85,6 @@
     text-align: right;
 }
 
-.ui-tableconf-sort-cont {
-    position: relative;
-}
 .ui-tableconf-body .ui-sortable-column-order {
     text-align: left;
     top:-4px;
@@ -120,6 +111,7 @@
 .ui-tableconf-body .ui-sortable-column-icon .ui-icon-triangle-1-s {
     position:relative;
     bottom:-1px;
+    *bottom:4px; /* IE7 specific offset  */
 }
 .ui-sortable-column-icon .ui-icon-triangle-1-n {
     position:absolute;
@@ -188,14 +180,14 @@
 
 .ui-datatable-scrollable-body {
     overflow:auto;
-    position: relative; /* IE7 nested table positioning fix */
+    *position: relative; /* IE7 nested table positioning fix */
 }
 
 .ui-datatable-scrollable-footer {
     margin-top:-1px; /* Easy fix for double border in scrollable mode */
 }
 
-.ui-datatable-scrollable .ui-datatable-scrollable-body table {
+.ui-datatable-scrollable .ui-datatable-scrollable-body > table {
     table-layout: fixed;
 }
 
@@ -249,7 +241,20 @@
 .ui-datatable tr.ui-state-active {
     cursor:pointer;
 }
-.ui-datatable .ui-row-toggler, .ui-datatable .ui-row-panel-toggler, .ui-datatable .ui-icon-pencil, .ui-datatable .ui-icon-check, .ui-datatable .ui-icon-close {
+.ui-datatable .ui-row-toggler-parent {
+    white-space: nowrap;
+    text-align: left;
+}
+.ui-datatable .ui-row-toggler-span {
+    display: inline-block;
+    height:7px;
+    border-top:1px dotted #a9a9a9;
+}
+.ui-datatable .ui-row-toggler-parent > a.ui-icon {
+    display:inline-block;
+    *display:block; /* IE7 hack */
+}
+.ui-datatable .ui-icon-pencil, .ui-datatable .ui-icon-check, .ui-datatable .ui-icon-close {
     margin-left:auto;
     margin-right:auto;
 }

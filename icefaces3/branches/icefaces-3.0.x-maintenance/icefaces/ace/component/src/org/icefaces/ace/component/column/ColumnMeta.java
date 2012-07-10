@@ -16,17 +16,13 @@
 
 package org.icefaces.ace.component.column;
 
-import org.icefaces.ace.meta.annotation.Property;
-import javax.faces.application.ResourceDependencies;
-import javax.faces.application.ResourceDependency;
-import javax.el.ValueExpression;
-import javax.el.MethodExpression;
 import org.icefaces.ace.meta.annotation.Component;
 import org.icefaces.ace.meta.annotation.DefaultValueType;
 import org.icefaces.ace.meta.annotation.Expression;
 import org.icefaces.ace.meta.annotation.Property;
 import org.icefaces.ace.meta.baseMeta.UIColumnMeta;
 
+import javax.faces.application.ResourceDependencies;
 import java.util.Comparator;
 
 @Component(
@@ -50,16 +46,11 @@ public class ColumnMeta extends UIColumnMeta {
 
     @Property(tlddoc = "Custom CSS style class(es) to use for this component. These style classes can be defined in your page or in a theme CSS file.")
 	private String styleClass;
-	
-	@Property(expression = Expression.VALUE_EXPRESSION,
-            tlddoc="Defines a value expression representing the value of this column per row when sorting. " +
-                   "Setting this variable for a column enables sorting.")
-	private Object sortBy;
-	
-	@Property(expression = Expression.VALUE_EXPRESSION,
-            tlddoc="Defines an alternate method of sorting. Sort this column using a " +
-            "Comparator<Object> object that takes the sortBy values of this column as input.")
-	private Comparator sortFunction;
+
+//    @Property(expression = Expression.VALUE_EXPRESSION,
+//            tlddoc = "Defines a value expression representing the value of the column per row, " +
+//            "optionally superseded by the more specific value definitions like sortBy, filterBy etc.")
+//    private Object `value;
 
     @Property(expression = Expression.VALUE_EXPRESSION,
             tlddoc="Defines a value expression representing the value of this column per row when determining " +
@@ -67,9 +58,25 @@ public class ColumnMeta extends UIColumnMeta {
                    "a single column cell.")
     private Object groupBy;
 
+    @Property(expression = Expression.VALUE_EXPRESSION,
+            tlddoc="Defines a value expression representing the value of this column per row when using " +
+                    "cell selection. Defining this attribute, or the \"value\" attribute, enables cell " +
+                    "selection for this column when also enabled at the table level.")
+    private Object selectBy;
+
+	@Property(expression = Expression.VALUE_EXPRESSION,
+            tlddoc="Defines a value expression representing the value of this column per row when sorting. " +
+                   "Setting this attribute, or the \"value\" attribute for a column enables sorting.")
+	private Object sortBy;
+	
+	@Property(expression = Expression.VALUE_EXPRESSION,
+            tlddoc="Defines an alternate method of sorting. Sort this column using a " +
+            "Comparator<Object> object that takes the sortBy values of this column as input.")
+	private Comparator sortFunction;
+
 	@Property(expression = Expression.VALUE_EXPRESSION,
             tlddoc="Defines a ValueExpression of the value of this row to use when filtering this column. " +
-                   "Setting this variable for a column enables filtering.")
+                   "Setting this attribute, or the \"value\" attribute for a column enables filtering.")
 	private Object filterBy;
 
     @Property(tlddoc="Defines the string input filtering this column, coming from the client, or from " +
@@ -124,10 +131,27 @@ public class ColumnMeta extends UIColumnMeta {
             "done by the component whenever a client edits a sort control or the " +
             "application calls table.applySorting().",
             defaultValue = "false", defaultValueType = DefaultValueType.EXPRESSION)
-    private boolean sortAscending;
+    private Boolean sortAscending;
 
     @Property(tlddoc="Enables per-column control of column ordering when the " +
             "attribute (\"reorderableColumns\") is true at the table level.",
             defaultValue = "true", defaultValueType = DefaultValueType.EXPRESSION)
     private boolean reorderable;
+
+//    These per-feature configuration attributes will be used when the 'value' property is added to Column.
+//    Until then they are redundant.
+//    @Property(tlddoc="Enables per-column control of column sorting when either the " +
+//            "attribute (\"sortBy\") or (\"value\") are set.",
+//            defaultValue = "true", defaultValueType = DefaultValueType.EXPRESSION)
+//    private boolean sortable;
+//
+//    @Property(tlddoc="Enables per-column control of column filtering when either the " +
+//            "attribute (\"filterBy\") or (\"value\") are set.",
+//            defaultValue = "true", defaultValueType = DefaultValueType.EXPRESSION)
+//    private boolean filterable;
+//
+//    @Property(tlddoc="Enables per-column control of Cell selection when either the " +
+//            "attribute (\"selectBy\") or (\"value\") are set.",
+//            defaultValue = "true", defaultValueType = DefaultValueType.EXPRESSION)
+//    private boolean selectable;
 }

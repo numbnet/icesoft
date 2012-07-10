@@ -269,13 +269,17 @@ public class ComponentArtifact extends Artifact{
         boolean isPrimitive = field.getType().isPrimitive() ||
                 GeneratorContext.SpecialReturnSignatures.containsKey( field.getName().toString().trim() );
 
-        String returnAndArgumentType = field.getType().getName();
+        boolean isArray = field.getType().isArray();
+
+        String returnAndArgumentType = isArray ? field.getType().getComponentType().getName() + "[]"
+                : field.getType().getName();
 
         // If primitive property, get the primitive return type
         // otherwise leave it as is.
         if (isPrimitive) {
             if (GeneratorContext.WrapperTypes.containsKey( field.getType().getName() )) {
-                returnAndArgumentType = GeneratorContext.WrapperTypes.get( field.getType().getName() );
+                returnAndArgumentType = isArray ? GeneratorContext.WrapperTypes.get( field.getType().getName()) + "[]"
+                        : GeneratorContext.WrapperTypes.get( field.getType().getName());
             }
         }
 

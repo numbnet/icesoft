@@ -24,7 +24,6 @@
 
 package org.icefaces.ace.component.datatable;
 
-import com.sun.java.swing.plaf.windows.WindowsGraphicsUtils;
 import org.icefaces.ace.component.ajax.AjaxBehavior;
 import org.icefaces.ace.component.column.Column;
 import org.icefaces.ace.component.columngroup.ColumnGroup;
@@ -32,14 +31,13 @@ import org.icefaces.ace.component.panelexpansion.PanelExpansion;
 import org.icefaces.ace.component.row.Row;
 import org.icefaces.ace.component.rowexpansion.RowExpansion;
 import org.icefaces.ace.component.tableconfigpanel.TableConfigPanel;
-import org.icefaces.ace.event.*;
+import org.icefaces.ace.event.SelectEvent;
+import org.icefaces.ace.event.TableFilterEvent;
+import org.icefaces.ace.event.UnselectEvent;
 import org.icefaces.ace.model.MultipleExpressionComparator;
 import org.icefaces.ace.model.filter.ContainsFilterConstraint;
-import org.icefaces.ace.model.table.LazyDataModel;
 import org.icefaces.ace.model.table.*;
-import org.icefaces.ace.model.table.SortCriteria;
 import org.icefaces.ace.util.ComponentUtils;
-import org.icefaces.ace.util.ScriptWriter;
 import org.icefaces.ace.util.collections.AllPredicate;
 import org.icefaces.ace.util.collections.AnyPredicate;
 import org.icefaces.ace.util.collections.Predicate;
@@ -49,6 +47,7 @@ import org.icefaces.util.JavaScriptRunner;
 import javax.el.ELContext;
 import javax.el.ELResolver;
 import javax.el.MethodExpression;
+import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.application.Application;
 import javax.faces.application.NavigationHandler;
@@ -59,25 +58,16 @@ import javax.faces.component.visit.VisitContext;
 import javax.faces.component.visit.VisitHint;
 import javax.faces.component.visit.VisitResult;
 import javax.faces.context.FacesContext;
-import javax.faces.el.ValueBinding;
-import javax.faces.event.AbortProcessingException;
-import javax.faces.event.PhaseId;
-import javax.faces.event.PostValidateEvent;
-import javax.faces.event.PreValidateEvent;
+import javax.faces.event.*;
 import javax.faces.model.*;
-import java.util.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import java.sql.ResultSet;
-import javax.faces.model.ListDataModel;
-import javax.faces.model.ResultDataModel;
-import javax.faces.model.ResultSetDataModel;
-import javax.faces.model.ScalarDataModel;
 import javax.faces.render.Renderer;
 import javax.faces.view.Location;
+import java.io.Serializable;
+import java.sql.ResultSet;
+import java.util.*;
+import java.util.logging.Logger;
 
-public class DataTable extends DataTableBase {
+public class DataTable extends DataTableBase implements Serializable {
     private static Logger log = Logger.getLogger(DataTable.class.getName());
     private static Class SQL_RESULT = null;
 
@@ -85,7 +75,11 @@ public class DataTable extends DataTableBase {
     private Map<String, Column> filterMap;
     private TableConfigPanel panel;
     private RowStateMap stateMap;
+    // Cache model instance as long as setRowIndex(-1) is not called, this is a Mojarra derived behaviour
     private DataModel model = null;
+    // Cache filteredData longer than model as model regen may be attempted during iterative case
+    // and getFilteredData will fail.
+    private List filteredData;
 
     static {
         try {
@@ -98,6 +92,39 @@ public class DataTable extends DataTableBase {
     /*#######################################################################*/
     /*###################### Overridden API #################################*/
     /*#######################################################################*/
+    protected void refreshSelectedCells() {
+        Map<Object, List<String>> map = ((Map<Object, List<String>>)getRowToSelectedFieldsMap());
+        Object[] keySet = map.keySet().toArray();
+        CellSelections[] array = new CellSelections[keySet.length];
+        for (int i = 0; i < keySet.length; i++) {
+            array[i] = new CellSelections(keySet[i], map.get(keySet[i]));
+        }
+        super.setSelectedCells(array);
+    }
+
+    @Override
+    public Integer getScrollHeight() {
+        Integer height = super.getHeight();
+        Map clientValues = (Map) getStateHelper().get("scrollHeight_rowValues");
+
+        // If height is not null and scrollHeight only has a default value to return.
+        if (height != null && (clientValues == null || !clientValues.containsKey(getClientId())))
+            return height;
+        // Else return the value of scrollHeight
+        return super.getScrollHeight();
+    }
+    
+    @Override
+    public void setSelectedCells(CellSelections[] cellSelection) {
+        Map<Object, List<String>> map = ((Map<Object, List<String>>)getRowToSelectedFieldsMap());
+        map.clear();
+        for (CellSelections s : cellSelection) {
+            map.remove(s.getRowObject());
+            map.put(s.getRowObject(), s.getSelectedFieldNames());
+        }
+        super.setSelectedCells(cellSelection);
+    }
+
     @Override
     public RowStateMap getStateMap() {
         if (stateMap != null) return stateMap;
@@ -128,7 +155,7 @@ public class DataTable extends DataTableBase {
         if (getValueHashCode() == null || superValueHash != getValueHashCode()) {
             setValueHashCode(superValueHash);
             applySorting();
-            if (getFilteredData() != null) {
+            if (getFilteredData() != null || filteredData != null) {
                 applyFilters();
             }
             if (superValue != null && superValue instanceof List) {
@@ -137,7 +164,9 @@ public class DataTable extends DataTableBase {
         }
 
         List filteredValue = getFilteredData();
-        return (filteredValue != null) ? filteredValue : superValue;
+        if (filteredValue != null)
+                return filteredValue;
+                else return superValue;
     }
 
     @Override
@@ -178,7 +207,59 @@ public class DataTable extends DataTableBase {
     protected void setDataModel(DataModel dataModel) {
         this.model = dataModel;
     }
- 
+
+    // Private class to wrap an event with a row index
+    class WrapperEvent extends FacesEvent {
+        public WrapperEvent(UIComponent component, FacesEvent event, int rowIndex) {
+            super(component);
+            this.event = event;
+            this.rowIndex = rowIndex;
+        }
+
+        private FacesEvent event = null;
+        private int rowIndex = -1;
+
+        public FacesEvent getFacesEvent() {
+            return (this.event);
+        }
+
+        public int getRowIndex() {
+            return (this.rowIndex);
+        }
+
+        public PhaseId getPhaseId() {
+            return (this.event.getPhaseId());
+        }
+
+        public void setPhaseId(PhaseId phaseId) {
+            this.event.setPhaseId(phaseId);
+        }
+
+        public boolean isAppropriateListener(FacesListener listener) {
+            return (false);
+        }
+
+        public void processListener(FacesListener listener) {
+            throw new IllegalStateException();
+        }
+    }
+
+    /*
+        Merges implementations of Mojarra UIData & UIComponentBase
+     */
+    @Override
+    public void queueEvent(FacesEvent event) {
+        if (event == null) {
+            throw new NullPointerException();
+        }
+        UIComponent parent = getParent();
+        if (parent == null) {
+            throw new IllegalStateException();
+        } else {
+            parent.queueEvent(new WrapperEvent(this, event, getRowIndex()));
+        }
+    }
+
     @Override
     public void broadcast(javax.faces.event.FacesEvent event) throws AbortProcessingException {
         // The data model that is used in myFaces may have been generated
@@ -187,17 +268,54 @@ public class DataTable extends DataTableBase {
         // iteration.
         setDataModel(null);
 
-        super.broadcast(event);
+        if (!(event instanceof WrapperEvent)) {
+            super.broadcast(event);
+            return;
+        }
 
         FacesContext context = FacesContext.getCurrentInstance();
+        // Set up the correct context and fire our wrapped event
+        int oldRowIndex = getRowIndex();
+        // Clear row index pre datamodel refresh to be sure we're getting accurate row data
+        WrapperEvent revent = (WrapperEvent) event;
+        if (isNestedWithinUIData()) {
+            setDataModel(null);
+        }
+
+        // Refresh data model before setRowIndex does for an incorrect clientId / filteredData state.
+        setRowIndex(-1);
+        getDataModel();
+
+        setRowIndex(revent.getRowIndex());
+        FacesEvent rowEvent = revent.getFacesEvent();
+        UIComponent source = rowEvent.getComponent();
+        UIComponent compositeParent = null;
+        try {
+            if (!UIComponent.isCompositeComponent(source)) {
+                compositeParent = UIComponent.getCompositeComponentParent(source);
+            }
+            if (compositeParent != null) {
+                compositeParent.pushComponentToEL(context, null);
+            }
+            source.pushComponentToEL(context, null);
+            source.broadcast(rowEvent);
+        } finally {
+            source.popComponentFromEL(context);
+            if (compositeParent != null) {
+                compositeParent.popComponentFromEL(context);
+            }
+        }
+        setRowIndex(oldRowIndex);
+
         String outcome = null;
         MethodExpression me = null;
 
-        if      (event instanceof SelectEvent)   me = getRowSelectListener();
-        else if (event instanceof UnselectEvent) me = getRowUnselectListener();
-        else if (event instanceof TableFilterEvent) me = getFilterListener();
+        FacesEvent fevent = revent.getFacesEvent();
+        if      (fevent instanceof SelectEvent)   me = getRowSelectListener();
+        else if (fevent instanceof UnselectEvent) me = getRowUnselectListener();
+        else if (fevent instanceof TableFilterEvent) me = getFilterListener();
 
-        if (me != null) outcome = (String) me.invoke(context.getELContext(), new Object[] {event});
+        if (me != null) outcome = (String) me.invoke(context.getELContext(), new Object[] {fevent});
 
         if (outcome != null) {
             NavigationHandler navHandler = context.getApplication().getNavigationHandler();
@@ -269,11 +387,6 @@ public class DataTable extends DataTableBase {
     }
 
     @Override
-    public int getFirst() {
-        return isPaginator() ? super.getFirst() : 0;
-    }
-
-    @Override
     public void setRowIndex(int index) {
         Map<String, Object> requestMap = FacesContext.getCurrentInstance().getExternalContext().getRequestMap();
 
@@ -291,7 +404,7 @@ public class DataTable extends DataTableBase {
     /*#######################################################################*/
     /*###################### Public API #####################################*/
     /*#######################################################################*/
-
+      
     /**
      * A public proxy to the getDataModel() method, intended for use in situations
      * where a sub-component needs access to a custom DataModel object.
@@ -320,7 +433,7 @@ public class DataTable extends DataTableBase {
     public Boolean hasTreeDataModel() {
         return (model instanceof TreeDataModel);
     }
-      
+
     /**
      * If a PanelExpansion component is a child of this table, return it.
      * This is intended for table sub-components to vary their behavior varied
@@ -456,11 +569,11 @@ public class DataTable extends DataTableBase {
     public void resetSorting() {
         for (Column c : getColumns()) {
             c.setSortPriority(null);
-            c.setSortAscending(false);
+            c.setSortAscending(null);
         }
         for (Column c : getColumns(true)) {
             c.setSortPriority(null);
-            c.setSortAscending(false);
+            c.setSortAscending(null);
         }
     }
 
@@ -477,6 +590,19 @@ public class DataTable extends DataTableBase {
         }
         setFilterValue("");
         setFilteredData(null);
+    }
+
+    @Override
+    public List getFilteredData() {
+        List d = super.getFilteredData();
+        if (d != null) return d;
+        return filteredData;
+    }
+
+    @Override
+    public void setFilteredData(List filteredData) {
+        super.setFilteredData(filteredData);
+        this.filteredData = filteredData;
     }
 
     /**
@@ -497,6 +623,113 @@ public class DataTable extends DataTableBase {
 
     public Boolean isFilterValueChanged() {
         return (isConstantRefilter()) ? true : super.isFilterValueChanged();
+    }
+    
+    public void removeSelectedCell(String deselection) {
+        removeSelectedCell(deselection, false);
+    }
+
+    public void removeSelectedCells(String[] deselections) {
+        for (String s : deselections) removeSelectedCell(s, true);
+        refreshSelectedCells();
+    }
+
+    private void removeSelectedCell(String deselection, boolean skipPropertyRefresh) {
+        Map<Object, List<String>> map = ((Map<Object, List<String>>)getRowToSelectedFieldsMap());
+        if (map == null) {
+            map = new HashMap<Object, List<String>>();
+            setRowToSelectedFieldsMap(map);
+        }
+
+        String[] cellCoords = deselection.split("#");
+        Column c = getColumns().get(Integer.parseInt(cellCoords[1]));
+
+        setRowIndex(Integer.parseInt(cellCoords[0]));
+        Object rowObject = getRowData();
+        setRowIndex(-1);
+
+        List<String> selectedFields = map.get(rowObject);
+        if (selectedFields == null) {
+            selectedFields = new ArrayList<String>();
+            map.put(rowObject, selectedFields);
+        }
+
+        String selectedFieldName = null;
+        ValueExpression selectByExpression = c.getValueExpression("selectBy");
+        if (selectByExpression != null) {
+            selectedFieldName = selectByExpression.getExpressionString();
+        } else {
+            ValueExpression valueExpression = c.getValueExpression("value");
+            if (valueExpression != null) {
+                selectedFieldName = valueExpression.getExpressionString();
+            }
+        }
+
+        if (selectedFieldName != null) {
+            // Remove cell selection from row
+            selectedFields.remove(selectedFieldName);
+
+            // Remove rows with empty cell selections from the map
+            if (selectedFields.size() == 0)
+                map.remove(rowObject);
+
+            if (!skipPropertyRefresh)
+                refreshSelectedCells();
+        }
+    }
+
+    public void addSelectedCells(String[] selections) {
+        for (String s : selections) addSelectedCell(s, true);
+        refreshSelectedCells();
+    }
+
+    public void addSelectedCell(String selection) {
+        addSelectedCell(selection, false);
+    }
+
+    private void addSelectedCell(String selection, boolean skipPropertyRefresh) {
+        Map<Object, List<String>> map = ((Map<Object, List<String>>)getRowToSelectedFieldsMap());
+        if (map == null) {
+            map = new HashMap<Object, List<String>>();
+            setRowToSelectedFieldsMap(map);
+        }
+
+        String[] cellCoords = selection.split("#");
+        Column c = getColumns().get(Integer.parseInt(cellCoords[1]));
+
+        setRowIndex(Integer.parseInt(cellCoords[0]));
+        Object rowObject = getRowData();
+        setRowIndex(-1);
+
+        List<String> selectedFields = map.get(rowObject);
+        if (selectedFields == null) {
+            selectedFields = new ArrayList<String>();
+            map.put(rowObject, selectedFields);
+        }
+
+        String selectedFieldName = null;
+        ValueExpression selectByExpression = c.getValueExpression("selectBy");
+        if (selectByExpression != null) {
+            selectedFieldName = selectByExpression.getExpressionString();
+        } else {
+            ValueExpression valueExpression = c.getValueExpression("value");
+            if (valueExpression != null) {
+                selectedFieldName = valueExpression.getExpressionString();
+            }
+        }
+
+        if (selectedFieldName != null) {
+            selectedFields.add(selectedFieldName);
+
+        } else throw new FacesException("Column " + c.getClientId() +
+                " requires the property 'value' or 'selectBy' to be set to use cell selection.'");
+            if (!skipPropertyRefresh)
+                refreshSelectedCells();
+    }
+
+    public void clearCellSelection() {
+        Map<Object, List<String>> map = ((Map<Object, List<String>>)getRowToSelectedFieldsMap());
+        if (map != null) map.clear();
     }
 
     public enum SearchType {
@@ -579,7 +812,7 @@ public class DataTable extends DataTableBase {
             setRowIndex(savedRowIndex);
         }
     }
-    
+
     /**
      * Find the index of a row object in the current DataModel.
      * @param query The string to be searched for in the row object fields.
@@ -677,8 +910,8 @@ public class DataTable extends DataTableBase {
     protected boolean isColumnReorderRequest(FacesContext x)      { return isIdPrefixedParamSet("_columnReorder", x); }
     protected boolean isSortRequest(FacesContext x)               { return isIdPrefixedParamSet("_sorting", x); }
     protected boolean isFilterRequest(FacesContext x)             { return isIdPrefixedParamSet("_filtering", x); }
-    protected boolean isInstantSelectionRequest(FacesContext x)   { return isIdPrefixedParamSet("_instantSelectedRowIndex", x); }
-    protected boolean isInstantUnselectionRequest(FacesContext x) { return isIdPrefixedParamSet("_instantUnselectedRowIndex", x); }
+    protected boolean isInstantSelectionRequest(FacesContext x)   { return isIdPrefixedParamSet("_instantSelectedRowIndexes", x); }
+    protected boolean isInstantUnselectionRequest(FacesContext x) { return isIdPrefixedParamSet("_instantUnselectedRowIndexes", x); }
     protected boolean isScrollingRequest(FacesContext x)          { return isIdPrefixedParamSet("_scrolling", x); }
     protected boolean isTableFeatureRequest(FacesContext x)       { return isColumnReorderRequest(x) || isScrollingRequest(x) || isInstantUnselectionRequest(x) || isInstantSelectionRequest(x) || isPaginationRequest(x) || isFilterRequest(x) || isSortRequest(x) || isTableConfigurationRequest(x); }
 
@@ -694,7 +927,8 @@ public class DataTable extends DataTableBase {
         while (!compsToIdReinit.empty()) {
             UIComponent c = compsToIdReinit.pop();
             c.setId(c.getId());
-            for (UIComponent cc : c.getChildren()) compsToIdReinit.push(cc);
+            Iterator<UIComponent> fnc = c.getFacetsAndChildren();
+            while (fnc.hasNext()) compsToIdReinit.push(fnc.next());
         }
 
         isInDuplicateSegment = inFakeHeader;
@@ -728,8 +962,6 @@ public class DataTable extends DataTableBase {
 
     protected SortCriteria[] getSortCriteria() {
         ArrayList<Column> sortableColumns = new ArrayList<Column>();
-
-        ColumnGroup group = getColumnGroup("header");
         ArrayList<Column> groupedColumns = new ArrayList<Column>();
         int highestGroupedPriority = 0;
         
@@ -811,9 +1043,10 @@ public class DataTable extends DataTableBase {
 
         ArrayList<Row> validRows = new ArrayList<Row>();
         for (Row c : conditionalRows)
-            if (((c.getPos().equals("before") && before) || (c.getPos().equals("after") && !before))
-                && c.evaluateCondition(rowIndex))
-                    validRows.add(c);
+            if (c.isRendered())
+                if (((c.getPos().equals("before") && before) || (c.getPos().equals("after") && !before))
+                    && c.evaluateCondition(rowIndex))
+                        validRows.add(c);
 
         return validRows;
     }
@@ -1127,8 +1360,6 @@ public class DataTable extends DataTableBase {
                 savedIndex = getRowIndex();
                 setRowIndex(-1);
             }
-
-            this.pushComponentToEL(FacesContext.getCurrentInstance(), this);
             
             if (PhaseId.RESTORE_VIEW.equals(fctx.getCurrentPhaseId()))
                 resetChildRenderVariables();
@@ -1148,6 +1379,18 @@ public class DataTable extends DataTableBase {
             }
         }
         return ret;
+    }
+    
+    private void resetChildRenderVariables() {
+        for (UIComponent c : getChildren()) {
+            if (c instanceof Column) {
+                Column col = (Column)c;
+                col.setOddGroup(false);
+            } else if (c instanceof Row) {
+                Row row = (Row)c;
+                row.resetRenderVariables();
+            }
+        }
     }
 
     private boolean requiresRowIteration(VisitContext ctx) {
@@ -1517,18 +1760,6 @@ public class DataTable extends DataTableBase {
         String ret = bld.append(clientId).append(UINamingContainer.getSeparatorChar(facesContext)).append(rowIndex).toString();
         return ret;
     }
-    
-    private void resetChildRenderVariables() {
-        for (UIComponent c : getChildren()) {
-            if (c instanceof Column) {
-                Column col = (Column)c;
-                col.setOddGroup(false);
-            } else if (c instanceof Row) {
-                Row row = (Row)c;
-                row.resetRenderVariables();
-            }
-        }
-    }
 
     /**
      * Logic for this method is borrowed from MyFaces
@@ -1667,17 +1898,17 @@ public class DataTable extends DataTableBase {
     /*#######################################################################*/
     /*#################### UIData iterate() impl. ###########################*/
     /*#######################################################################*/
-     private void iterate(FacesContext context, PhaseId phaseId) {
+    private void iterate(FacesContext context, PhaseId phaseId) {
         // The data model that is used in myFaces may have been generated
         // from incorrect getValue() results (I assume) causing it to
         // mistakenly contain 0 rows or the data of a previous ui:repeat
         // iteration.
         setDataModel(null);
 
-        // Regenerate data model (MyFaces has at times had a null model cached)
-        getDataModel();
         // Process each facet of this component exactly once
         setRowIndex(-1);
+        // Regenerate data model (MyFaces has at times had a null model cached)
+        getDataModel();
         if (getFacetCount() > 0) {
             for (UIComponent facet : getFacets().values()) {
                 if (phaseId == PhaseId.APPLY_REQUEST_VALUES) {
@@ -1693,14 +1924,18 @@ public class DataTable extends DataTableBase {
         }
 
         // Process each facet of our child UIColumn components exactly once
+        // Also process the table config panel and our multicolumn header facets
         setRowIndex(-1);
+        /* Cause model to regerate before row index is set */
+        getDataModel();
+
         if (getChildCount() > 0) {
-            for (UIComponent column : getChildren()) {
-                if (!(column instanceof UIColumn) || !column.isRendered()) {
+            for (UIComponent component : getChildren()) {
+                if (!(component instanceof UIColumn || component instanceof ColumnGroup || component instanceof TableConfigPanel) || !component.isRendered()) {
                     continue;
                 }
-                if (column.getFacetCount() > 0) {
-                    for (UIComponent columnFacet : column.getFacets().values()) {
+                if (component instanceof UIColumn && component.getFacetCount() > 0) {
+                    for (UIComponent columnFacet : component.getFacets().values()) {
                         if (phaseId == PhaseId.APPLY_REQUEST_VALUES) {
                             columnFacet.processDecodes(context);
                         } else if (phaseId == PhaseId.PROCESS_VALIDATIONS) {
@@ -1711,25 +1946,38 @@ public class DataTable extends DataTableBase {
                             throw new IllegalArgumentException();
                         }
                     }
+                } else if (component instanceof TableConfigPanel) {
+                    if (phaseId == PhaseId.APPLY_REQUEST_VALUES) {
+                        component.processDecodes(context);
+                    } else if (phaseId == PhaseId.PROCESS_VALIDATIONS) {
+                        component.processValidators(context);
+                    } else if (phaseId == PhaseId.UPDATE_MODEL_VALUES) {
+                        component.processUpdates(context);
+                    } else {
+                        throw new IllegalArgumentException();
+                    }
+                } else if (component instanceof ColumnGroup) {
+                    for (UIComponent row : component.getChildren()) {
+                        if (row.isRendered())
+                        for (UIComponent column : row.getChildren()) {
+                            if (column.isRendered()) {
+                                Iterator<UIComponent> children = column.getFacetsAndChildren();
+                                while (children.hasNext()) {
+                                    UIComponent facet = children.next();
+                                    if (phaseId == PhaseId.APPLY_REQUEST_VALUES) {
+                                        facet.processDecodes(context);
+                                    } else if (phaseId == PhaseId.PROCESS_VALIDATIONS) {
+                                        facet.processValidators(context);
+                                    } else if (phaseId == PhaseId.UPDATE_MODEL_VALUES) {
+                                        facet.processUpdates(context);
+                                    } else {
+                                        throw new IllegalArgumentException();
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
-            }
-        }
-
-        // Visit tableConfigPanel if one is our child
-        setRowIndex(-1);
-        for (UIComponent kid : getChildren()) {
-            if (!(kid instanceof TableConfigPanel) || !kid.isRendered()) {
-                continue;
-            }
-
-            if (phaseId == PhaseId.APPLY_REQUEST_VALUES) {
-                kid.processDecodes(context);
-            } else if (phaseId == PhaseId.PROCESS_VALIDATIONS) {
-                kid.processValidators(context);
-            } else if (phaseId == PhaseId.UPDATE_MODEL_VALUES) {
-                kid.processUpdates(context);
-            } else {
-                throw new IllegalArgumentException();
             }
         }
 
@@ -1745,51 +1993,49 @@ public class DataTable extends DataTableBase {
         Boolean expanded;
         TreeDataModel treeDataModel;
 
+        iteration: while (true) {
+            // Have we processed the requested number of rows?
+            if (!inSubrows) processed = processed + 1;
+            if ((rows > 0) && (processed > rows)) {
+                break;
+            }
 
+            // Expose the current row in the specified request attribute
+            setRowIndex(++rowIndex);
 
-         iteration: while (true) {
-             // Have we processed the requested number of rows?
-             if (!inSubrows) processed = processed + 1;
-             if ((rows > 0) && (processed > rows)) {
-                 break;
-             }
+            // Row unavailable, see if we can pop to a parent row in a tree case
+            if (!isRowAvailable()) {
+                if (model instanceof TreeDataModel) {
+                    treeDataModel = (TreeDataModel)model;
 
-             // Expose the current row in the specified request attribute
-             setRowIndex(++rowIndex);
-
-             // Row unavailable, see if we can pop to a parent row in a tree case
-             if (!isRowAvailable()) {
-                 if (model instanceof TreeDataModel) {
-                     treeDataModel = (TreeDataModel)model;
-
-                     // While we are at a map where the next row in unavailable...
-                     while (!isRowAvailable()) {
+                    // While we are at a level where the next row in unavailable...
+                    while (!isRowAvailable()) {
                         // If we can pop, continue to pop...
                         if (treeDataModel.isRootIndexSet()) {
-                             // Force state saving for this row prior to pop (ensures correct ID for saved state)
-                             setRowIndex(Integer.MAX_VALUE);
-                             rowIndex = treeDataModel.pop()+1;
-                             setRowIndex(rowIndex);
+                            // Force state saving for this row prior to pop (ensures correct ID for saved state)
+                            setRowIndex(Integer.MAX_VALUE);
+                            rowIndex = treeDataModel.pop()+1;
+                            setRowIndex(rowIndex);
 
-                             // If we are at the root after popping...
-                             if (!treeDataModel.isRootIndexSet()) {
-                                 // Indicate that we are at the root
-                                 inSubrows = false;
-                                 // If the root index we are at is invalid, break
-                                 if (!isRowAvailable()) break iteration;
-                             }
-                             // If we can continue to pop following, let loop continue until we are at root,
-                             // or row is available and this loop terminates.
-                         }
-                         // If we can't pop, break
-                         else break iteration;
-                     }
-                 }
-                 else break; // Scrolled past the last row
-             }
+                            // If we are at the root after popping...
+                            if (!treeDataModel.isRootIndexSet()) {
+                                // Indicate that we are at the root
+                                inSubrows = false;
+                                // If the root index we are at is invalid, break
+                                if (!isRowAvailable()) break iteration;
+                            }
+                            // If we can continue to pop following, let loop continue until we are at root,
+                            // or row is available and this loop terminates.
+                        }
+                        // If we can't pop, row isn't available, so break
+                        else break iteration;
+                    }
+                }
+                else break; // Scrolled past the last row
+            }
 
-             rowState = map.get(getRowData());
-             expanded = rowState.isExpanded();
+            rowState = map.get(getRowData());
+            expanded = rowState.isExpanded();
 
             // Perform phase-specific processing as required
             // on the *children* of the UIColumn (facets have
@@ -1830,7 +2076,7 @@ public class DataTable extends DataTableBase {
                     inSubrows = true;
                     String root = treeDataModel.getRootIndex().equals("") ? ""+getRowIndex() : treeDataModel.getRootIndex() + "." + getRowIndex();
                     setRowIndex(Integer.MAX_VALUE);
-                    treeDataModel.setRootIndex(root);                   
+                    treeDataModel.setRootIndex(root);
                     rowIndex = -1;
                 }
             }
