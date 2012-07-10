@@ -63,7 +63,13 @@ import java.util.Date;
             @MenuLink(title = "menu.ace.dateentry.subMenu.minmax",
                 exampleBeanName = DateMinMaxBean.BEAN_NAME),
             @MenuLink(title = "menu.ace.dateentry.subMenu.navigator",
-                exampleBeanName = DateNavigatorBean.BEAN_NAME)
+                exampleBeanName = DateNavigatorBean.BEAN_NAME),
+            @MenuLink(title = "menu.ace.dateentry.subMenu.label",
+                exampleBeanName = DateLabelBean.BEAN_NAME),
+            @MenuLink(title = "menu.ace.dateentry.subMenu.indicator",
+                exampleBeanName = DateIndicatorBean.BEAN_NAME),
+            @MenuLink(title = "menu.ace.dateentry.subMenu.reqStyle",
+                exampleBeanName = DateReqStyleBean.BEAN_NAME)
     }
 )
 @ManagedBean(name= DateEntryBean.BEAN_NAME)

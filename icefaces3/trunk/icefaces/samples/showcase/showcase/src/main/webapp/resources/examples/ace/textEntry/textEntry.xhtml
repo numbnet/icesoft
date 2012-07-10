@@ -41,25 +41,14 @@
                     <h:outputLabel for="labelPosition" value="Label Position: "/>
                     <h:selectOneMenu id="labelPosition" value="#{textEntryBean.labelPosition}">
                         <f:ajax execute="@this" render="inputGrid"/>
-                        <f:selectItem itemLabel="left" itemValue="left"/>
-                        <f:selectItem itemLabel="right" itemValue="right"/>
-                        <f:selectItem itemLabel="top" itemValue="top"/>
-                        <f:selectItem itemLabel="bottom" itemValue="bottom"/>
-                        <f:selectItem itemLabel="inField" itemValue="inField"/>
-                        <f:selectItem itemLabel="none" itemValue="none"/>
+                        <f:selectItems value="#{positionBean.labelPositions}"/>
                     </h:selectOneMenu>
                 </h:panelGroup>
                 <h:panelGroup layout="block" style="width:50%; float:left;">
                     <h:outputLabel for="indicatorPosition" value="Indicator Position: "/>
                     <h:selectOneMenu id="indicatorPosition" value="#{textEntryBean.indicatorPosition}">
                         <f:ajax execute="@this" render="inputGrid"/>
-                        <f:selectItem itemLabel="left" itemValue="left"/>
-                        <f:selectItem itemLabel="right" itemValue="right"/>
-                        <f:selectItem itemLabel="top" itemValue="top"/>
-                        <f:selectItem itemLabel="bottom" itemValue="bottom"/>
-                        <f:selectItem itemLabel="labelLeft" itemValue="labelLeft"/>
-                        <f:selectItem itemLabel="labelRight" itemValue="labelRight"/>
-                        <f:selectItem itemLabel="none" itemValue="none"/>
+                        <f:selectItems value="#{positionBean.indicatorPositions}"/>
                     </h:selectOneMenu>
                 </h:panelGroup>
 
