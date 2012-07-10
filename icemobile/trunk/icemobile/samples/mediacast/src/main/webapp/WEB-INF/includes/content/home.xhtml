@@ -67,7 +67,8 @@
             <mobi:uploadhelper/>
             
             <mobi:geolocation latitude="#{uploadModel.latitude}"
-                              longitude="#{uploadModel.longitude}"/>
+                              longitude="#{uploadModel.longitude}"
+                              direction="#{uploadModel.direction}"/>
 
             <mobi:fieldsetGroup>
                 <mobi:fieldsetRow rendered="#{empty uploadModel.selectedMediaInput}">

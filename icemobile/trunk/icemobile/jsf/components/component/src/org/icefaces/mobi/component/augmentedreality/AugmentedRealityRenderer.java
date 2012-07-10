@@ -46,11 +46,9 @@ public class AugmentedRealityRenderer extends BaseInputRenderer  {
              writer.endElement(HTML.INPUT_ELEM);
              return;
          }
-         writer.startElement(HTML.INPUT_ELEM, uiComponent);
-         writer.writeAttribute(HTML.TYPE_ATTR, "button", HTML.TYPE_ATTR);
+         writer.startElement(HTML.BUTTON_ELEM, uiComponent);
          writer.writeAttribute(HTML.ID_ATTR, clientId, null);
          String buttonValue="Reality";
-         writer.writeAttribute(HTML.VALUE_ATTR, buttonValue, HTML.VALUE_ATTR);
          if (null!=ag.getStyle()){
              String style= ag.getStyle();
              if ( style.trim().length() > 0) {
@@ -73,7 +71,8 @@ public class AugmentedRealityRenderer extends BaseInputRenderer  {
             script = "ice.aug( '" + clientId + "', '" + myparams + "' );";
         }
         writer.writeAttribute(HTML.ONCLICK_ATTR, script, null);
-        writer.endElement(HTML.INPUT_ELEM);
+         writer.writeText(buttonValue, null);
+        writer.endElement(HTML.BUTTON_ELEM);
      }
 
     @Override

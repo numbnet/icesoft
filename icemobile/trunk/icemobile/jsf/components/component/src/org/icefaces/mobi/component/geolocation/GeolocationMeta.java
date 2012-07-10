@@ -52,6 +52,12 @@ public class GeolocationMeta extends UIComponentBaseMeta {
 
     @Property(tlddoc = "longitude of mobile device in decimal degrees")
     private Double longitude;
+    
+    @Property(tlddoc = "altitude of mobile device in meters")
+    private Double altitude;
+
+    @Property(tlddoc = "direction of mobile device in degrees from North")
+    private Double direction;
 
     @Property(defaultValue = "false",
             tlddoc = "When disabled, geolocation is not activated")

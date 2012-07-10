@@ -444,3 +444,22 @@ ice.mobi.sx = function (element) {
 
     window.location = sxURL;
 }
+
+ice.mobi.storeLocation = function(id, coords)  {
+    if (!coords) { return; } 
+    var el = document.getElementById(id);
+    var parts = el.value.split(',');
+    if (4 != parts.length) {parts = new Array(4)};
+    parts[0] = coords.latitude;
+    parts[1] = coords.longitude;
+    parts[2] = coords.altitude;
+    el.value = parts.join();
+}
+
+ice.mobi.storeDirection = function(id, dir)  {
+    var el = document.getElementById(id);
+    var parts = el.value.split(',');
+    if (4 != parts.length) {parts = new Array(4)}
+    parts[3] = dir;
+    el.value = parts.join();
+}

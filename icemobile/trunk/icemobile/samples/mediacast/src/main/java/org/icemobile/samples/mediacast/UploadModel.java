@@ -49,7 +49,7 @@ public class UploadModel implements Serializable {
     private File videoFile;
     private double latitude = 0.0;
     private double longitude = 0.0;
-    private Integer direction;
+    private double direction = -1.0;
 
     // select a photo to view in detail.
     private transient MediaMessage selectedPhoto;
@@ -210,11 +210,11 @@ public class UploadModel implements Serializable {
     	this.description = description;
     }
     
-    public Integer getDirection(){
+    public double getDirection(){
     	return direction;
     }
     
-    public void setDirection(Integer direction){
+    public void setDirection(double direction){
     	this.direction = direction;
     }
     
