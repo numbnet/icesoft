@@ -35,14 +35,15 @@
     </ui:define>
 
     <ui:define name="suite-select-menu">
-        <h:panelGroup layout="block" id="headerCenter">
-            <h:panelGroup layout="block"  id="headerLogo">
+        <h:panelGroup layout="block" styleClass="headerCenter" id="headerCenter">
+            <h:panelGroup layout="block" styleClass="headerLogo" id="headerLogo">
                 <h:graphicImage value="/resources/css/images/topBannerImages/title.png" alt="ICEfaces Logo"/>
             </h:panelGroup>
-            <h:panelGroup layout="block" id="headerTabs">
+            <h:panelGroup layout="block" styleClass="headerTabs" id="headerTabs">
                 <h:panelGrid id="suiteLinks" styleClass="linkTableStyle">
                     <h:panelGroup styleClass="linksHolder">
                         <h:link id="iceSuiteLink"
+                                styleClass="iceSuiteLink"
                                 outcome="showcase">
                             <f:param name="grp" value="#{compatMenu.beanName}"/>
                             <h:graphicImage value="#{navigationModel.componentGroup == compatMenu.beanName ? '/resources/css/images/topBannerImages/ice-on.png' : '/resources/css/images/topBannerImages/ice-off.png' }"
@@ -51,6 +52,7 @@
                                             title="ICE Components Showcase"/>
                         </h:link>
                         <h:link id="aceSuiteLink"
+                                styleClass="aceSuiteLink"
                                 outcome="showcase">
                                 <f:param name="grp" value="#{aceMenu.beanName}"/>
                                 <h:graphicImage value="#{navigationModel.componentGroup == aceMenu.beanName ? '/resources/css/images/topBannerImages/ace-on.png' : '/resources/css/images/topBannerImages/ace-off.png' }"

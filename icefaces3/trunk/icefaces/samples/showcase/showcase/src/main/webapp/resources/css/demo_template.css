@@ -52,14 +52,14 @@ a:link, a:visited {
 }    
 
 
-#container { 
+.container { 
     width: 1020px;
     margin: 0 auto; 
 }
 
 
 /*HEADER STYLES BEGIN*/
-#header
+.header
 {
     background: url("#{resource['css/images/topBannerImages/showcaseHeaderBlank.png']}") no-repeat;
     background-color: transparent;
@@ -68,7 +68,7 @@ a:link, a:visited {
     height: 123px;
 }
 
-#headerCenter
+.headerCenter
 {
     background-color: transparent;
     width: 1020px;
@@ -77,14 +77,14 @@ a:link, a:visited {
     overflow: hidden;
 }
 
-#headerLogo
+.headerLogo
 {
     overflow: hidden;
     float: left;
     padding-top: 8px;
 }
 
-#headerTabs
+.headerTabs
 {
     text-align: right;
     overflow: hidden;
@@ -101,12 +101,12 @@ a:link, a:visited {
     background-color: transparent;
 }
 
-#aceSuiteLink
+.aceSuiteLink
 {
     margin-right: 0px;
 }
 
-#iceSuiteLink
+.iceSuiteLink
 {
     margin-right: 0px;
 }
@@ -119,8 +119,8 @@ a:link, a:visited {
 /*HEADER STYLES END*/
 
 
-#mid, #footer { text-align: left; }
-#mid ul { list-style: none outside none; }
+.mid, .footer { text-align: left; }
+.mid ul { list-style: none outside none; }
 
 #meta-nav {
     height: 19px;
@@ -170,14 +170,14 @@ a:link, a:visited {
 
 
 /* content */
-#mid  { padding-top: 18px; overflow:hidden; }
+.mid  { padding-top: 18px; overflow:hidden; }
 
-#primary {
+.primary {
 	display: inline-block;
     width: 775px;
 }                           
 
-#menu {
+.menu {
 	vertical-align: top;
 	display: inline-block;
     margin-right: 10px;
@@ -208,7 +208,7 @@ a:link, a:visited {
 }
 .menuContainer li a { line-height: 19px; }
 .menuContainer li span[disabled='true'] { line-height: 19px; text-decoration:line-through; margin:0; }
-#menu .selected { font-weight:bold; }
+.menu .selected { font-weight:bold; }
   
 .breadCrumbs, .themeSelect{
     color: #ccc;
@@ -338,16 +338,16 @@ div .resources { font-size: 10pt;}
 .example .instance form .uploading { float: right; clear:right; }
 */
 
-#footer {
+.footer {
     border-top: 1px solid #EAEAEA;
     margin: 40px 0 10px;
     padding: 8px 0 8px;
     font-size: 11px;
     color: #666666;
 }
-#footer p { float: left; }
-#footer ul.footer-nav { float: right; }
-#footer ul.footer-nav li { display: inline; padding: 0 6px; }         
+.footer p { float: left; }
+.footer ul.footer-nav { float: right; }
+.footer ul.footer-nav li { display: inline; padding: 0 6px; }         
 
 
 /* Component Styles */

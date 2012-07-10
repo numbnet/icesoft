@@ -35,30 +35,30 @@
     <h:outputStylesheet library="css" name="override_styles.css" target="head"/>
     <h:outputStylesheet library="css" name="showcase_styles.css" target="head"/>
     <f:view contentType="text/html">
-        <h:panelGroup id="header" layout="block">
+        <h:panelGroup id="header" styleClass="header" layout="block">
             <ui:insert name="suite-select-menu"/>
         </h:panelGroup>
 
-        <h:panelGroup id="container" layout="block">
-            <h:panelGroup layout="block" id="mid" class="full-width">
-                    <h:panelGroup id="menu">
-                        <h:panelGroup layout="block" class="menuContainer">
+        <h:panelGroup id="container" styleClass="container" layout="block">
+            <h:panelGroup layout="block" id="mid" styleClass="mid full-width">
+                    <h:panelGroup id="menu" styleClass="menu">
+                        <h:panelGroup layout="block" styleClass="menuContainer">
                             <ui:insert name="suite-menu"/>
                         </h:panelGroup>
                     </h:panelGroup>
-                    <h:panelGroup id="primary">
+                    <h:panelGroup id="primary" styleClass="primary">
                         <!-- TODO: Implement bread crumbs-->
-                        <h:panelGroup layout="block" class="breadCrumbs">
+                        <h:panelGroup layout="block" styleClass="breadCrumbs">
                         </h:panelGroup>
                         <!-- todo implement theme selection, going to be tricky... -->
-                        <h:panelGroup layout="block" class="themeSelect">
+                        <h:panelGroup layout="block" styleClass="themeSelect">
                         </h:panelGroup>
 
                         <ui:insert name="component-example"/>
                     </h:panelGroup>
             </h:panelGroup>
 
-            <h:panelGroup layout="block" id="footer">
+            <h:panelGroup layout="block" id="footer" styleClass="footer">
                 <!--
                 <ul class="footer-nav">
                         <li><a>about</a></li>
