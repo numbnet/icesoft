@@ -18,17 +18,14 @@ package org.icefaces.ace.component.datatable;
 
 import org.icefaces.ace.meta.annotation.*;
 import org.icefaces.ace.meta.baseMeta.UIDataMeta;
+import org.icefaces.ace.model.table.CellSelections;
 import org.icefaces.ace.model.table.RowStateMap;
-import org.icefaces.ace.model.table.TreeDataModel;
 
 import javax.el.MethodExpression;
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
-import javax.faces.component.UIComponent;
-import javax.faces.model.DataModel;
-import java.util.ArrayList;
 import java.util.List;
-import org.icefaces.ace.api.IceClientBehaviorHolder;
+import java.util.Map;
 
 
 @Component(
@@ -116,10 +113,6 @@ public class DataTableMeta extends UIDataMeta {
             "is enabled by the use of sortBy on ace:column components.",
             defaultValue = "false", defaultValueType = DefaultValueType.EXPRESSION)
     private boolean singleSort;
-    
-    @Property(tlddoc = "Enabling makes the entire header container the clickable region for sort events.",
-            defaultValue =  "true", defaultValueType = DefaultValueType.EXPRESSION)
-    private boolean clickableHeaderSorting;    
 
     @Property(tlddoc = "Defines a map of your row data objects to UI states. Row-level " +
             "features (selection, expansion, etc.) are manipulable through this repository.")
@@ -131,13 +124,36 @@ public class DataTableMeta extends UIDataMeta {
             "to paginate, make a selection, reorder columns, or any other feature. " +
             "Decoding children during feature requests can result in unwanted input " +
             "submission (during pagination for example), so by default this component " +
-            "suppresses child decoding whenever submitting itself. To decode the " +
+            "suppresses child decoding whenever submitting itself. To cause decoding in the " +
             "children of the table, use the row editing feature for row-scoped input " +
-            "decoding, submit the form (or other table parent) for broad submission " +
+            "decoding, ajax submit the form (or other table parent) for broad decoding" +
             "or enable this option to submit during all table operations.",
             defaultValue = "false", defaultValueType = DefaultValueType.EXPRESSION)
     private Boolean alwaysExecuteContents;
 
+    @Property(tlddoc = "Enable the the client to revert the edited row with the default state following a failed edit." +
+            " By default when validation fails during a row editing request the row remains in editing mode.",
+            defaultValue = "false", defaultValueType = DefaultValueType.EXPRESSION)
+    private Boolean toggleOnInvalidEdit;
+
+    @Property(tlddoc = "Enable the default handling of the scrollable table when " +
+            "rendered into a hidden page region. The table attempts to poll its hidden " +
+            "status, looking for when it is shown and then call the scrollable table sizing " +
+            "JavaScript. This can be expensive in environments of reduced JavaScript performance with " +
+            "many tables and a complex DOM. When this is disabled, upon revealing a hidden " +
+            "scrollable table, to ensure it is sized correctly the JS " +
+            "'tableWidgetVar.resizeScrolling()' function must be called.",
+            defaultValue = "true", defaultValueType = DefaultValueType.EXPRESSION)
+    private Boolean hiddenScrollableSizing;
+
+    @Property(tlddoc = "Enable the default scrollable table behaviour of using JavaScript to size a " +
+            "table header and footer that are in a fixed position regardless of table body scrolling.",
+            defaultValue = "true", defaultValueType = DefaultValueType.EXPRESSION)
+    private Boolean staticHeaders;
+
+    // Map from row data to field names (cells) that are selected
+    @Field(defaultValue = "null", defaultValueIsStringLiteral = false)
+    protected Map<Object, List<String>> rowToSelectedFieldsMap;
     // ID of the configPanel that has been associated with this table, used for
     // component lookups during decodes.
     @Field(defaultValue = "null", defaultValueIsStringLiteral = false)
@@ -153,6 +169,7 @@ public class DataTableMeta extends UIDataMeta {
     // Used to force update of entire table container when using forceTableUpdate
     @Field(defaultValue = "0", defaultValueIsStringLiteral = false)
     protected Integer forcedUpdateCounter;
+
 
 
 
@@ -243,15 +260,20 @@ public class DataTableMeta extends UIDataMeta {
     /* ##################################################################### */
     /* ########################## Scrolling Prop. ########################## */
     /* ##################################################################### */
-    @Property(tlddoc = "Defines a fixed height for the table in pixels. Must be set to " +
-            "use vertical scrolling.")
+    @Property(tlddoc = "Defines a fixed height for the scrollable table in pixels. Deprecated; superseded by scrollHeight.")
     private Integer height;
+
+    @Property(tlddoc = "Defines a fixed height for the scrollable table in pixels.",
+            defaultValue = "100", defaultValueType = DefaultValueType.EXPRESSION)
+    private Integer scrollHeight;
 
     @Property(tlddoc = "Enabling renders a table that overflows the fixed height and adds " +
             "a scrollbar. Note, used in combination with multi-row headers defined by a ColumnGroup" +
             "component, it is assumed that every body column of the table will have a associated " +
             "single column spanning header column on the bottom row of the multi-row header. This is " +
-            "to allow for appropriate sizing of the scrollable column and the associated header td.")
+            "to allow for appropriate sizing of the scrollable column and the associated header td. Note," +
+            "in IE7, the CSS/DOM engine doesn't support the dynamic adjustments required for this feature and" +
+            "instead the feature uses a fixed, equal size for each column of the table.")
     private boolean scrollable;
 
     @Property(tlddoc = "Enables the table to insert additional rows as " +
@@ -274,13 +296,9 @@ public class DataTableMeta extends UIDataMeta {
     @Property(tlddoc = "Enable to require a double-click to fire row/cell selection events.")
     private boolean doubleClickSelect;
 
-    @Property(tlddoc = "Defines an object to be populated with the backing object " +
-            "representing selected table cells. In the case of multiple " +
-            "element selection, it's expected that this object will be an implementer" +
-            " of the List interface.")
-    private Object cellSelection;
-
-
+    @Property(tlddoc = "Defines an array to be populated with objects " +
+            "referencing selected table cells and the rows they originate from." )
+    private CellSelections[] selectedCells;
 
 
 
@@ -321,4 +339,8 @@ public class DataTableMeta extends UIDataMeta {
     @Property(tlddoc = "Defines a list of integers representing a rendering order for " +
             "the Column children of the table.")
     private List<Integer> columnOrdering;
+
+    @Property(tlddoc = "Enabling makes the entire header container the clickable region for sort events.",
+            defaultValue =  "true", defaultValueType = DefaultValueType.EXPRESSION)
+    private boolean clickableHeaderSorting;
 }
