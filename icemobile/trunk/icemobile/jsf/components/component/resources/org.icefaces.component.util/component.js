@@ -266,21 +266,38 @@ function html5submitFunction(element, event, options) {
     var formId = form.id;
     var sourceId = element ? element.id : event.target.id;
 
-    if ("@this" === options.execute) {
-        options.execute = sourceId;
-    } else if ("@form" === options.execute) {
-        options.execute = formId;
-    }
-    if ("@this" === options.render) {
-        options.render = sourceId;
-    } else if ("@form" === options.render) {
-        options.render = formId;
-    }
-    if (!options.execute) {
+    if (options.execute) {
+        var executeArray = options.execute.split(' ');
+        if (executeArray.indexOf("@none") < 0) {
+            if (executeArray.indexOf("@all") < 0) {
+                options.execute = options.execute.replace("@this", element.id);
+                options.execute = options.execute.replace("@form", form.id);
+                if (executeArray.indexOf(element.name) < 0) {
+                    options.execute = element.name + " " + options.execute;
+                }
+            } else {
+                options.execute = "@all";
+            }
+        }
+    } else {
+//        options.execute = element.name + " " + element.id;
+        //ICEfaces default render @all
         options.execute = "@all";
     }
-    if (!options.render) {
-        options.render = "@all";
+
+    if (options.render) {
+        var renderArray = options.render.split(' ');
+        if (renderArray.indexOf("@none") < 0) {
+            if (renderArray.indexOf("@all") < 0) {
+                options.render = options.render.replace("@this", element.id);
+                options.render = options.render.replace("@form", form.id);
+            } else {
+                options.render = "@all";
+            }
+        }
+    } else {
+        //ICEfaces default execute @all
+        options.execute = "@all";
     }
 
     formData.append("javax.faces.source", sourceId);
