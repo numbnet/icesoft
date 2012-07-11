@@ -129,7 +129,7 @@ public class TLDBuilder extends XMLBuilder{
 			if (events.length > 0) {
 				StringBuilder builder = new StringBuilder();
 				builder.append("<hr><table border='1' cellpadding='3' cellspacing='0' width='100%'>");
-				builder.append("<tr bgcolor='#CCCCFF' class='TableHeadingColor'><td colspan='2'><font size='+2'><b>Client Events</b></font></td></tr>");
+				builder.append("<tr bgcolor='#CCCCFF' class='TableHeadingColor'><td colspan='3'><font size='+2'><b>Client Events</b></font></td></tr><tr><td><b>Name</b></td><td><b>Description</b></td><td><b>Supported classes for argument</b></td><tr>");
 
 				for (int i = 0; i < events.length; i++) {
 					builder.append("<tr><td>");
@@ -137,6 +137,14 @@ public class TLDBuilder extends XMLBuilder{
 					builder.append(event.name());
 					builder.append("</td><td>");
 					builder.append(event.tlddoc());
+					builder.append("</td><td>javax.faces.event.AjaxBehaviorEvent");
+
+					String[] classes = event.argumentClasses();
+					for (int j = 0; j < classes.length; j++) {
+						builder.append(", org.icefaces.ace.event.");
+						builder.append(classes[j]);
+					}
+					
 					builder.append("</td></tr>");
 				}
 				builder.append("</table><i>Client events can be used with Client Behaviors and the ace:ajax tag.</i><br>");
