@@ -118,3 +118,9 @@ ice.ace.richtextentry.renderEditor = function(editor, defaultToolbar, lang, _ski
         alert(e);
     }
 }
+
+function updateEditorACE(editor, count) {
+	if (CKEDITOR.instances[editor]) {
+		CKEDITOR.instances[editor].setData(document.getElementById(editor).value);
+	}
+}

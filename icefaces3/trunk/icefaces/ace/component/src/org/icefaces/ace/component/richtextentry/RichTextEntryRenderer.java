@@ -26,6 +26,7 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import java.io.IOException;
+import java.util.Map;
 
 @MandatoryResourceComponent(tagName="richTextEntry", value="org.icefaces.ace.component.richtextentry.RichTextEntry")
 public class RichTextEntryRenderer extends InputRenderer {
@@ -84,6 +85,22 @@ public class RichTextEntryRenderer extends InputRenderer {
 		
 		writer.endElement("script");
 		writer.endElement("span");
+		
+		// handle programmatic changes
+		writer.startElement("span", null);
+		writer.writeAttribute("id", clientId + "_programmatic", null);
+		writer.startElement("script", null);
+		writer.writeAttribute("type", "text/javascript", null);
+		
+		if (isValueChangedProgrammatically(facesContext, richTextEntry)) {
+			richTextEntry.setCounter(richTextEntry.getCounter() + 1);
+			writer.write("updateEditorACE('"+ clientId +"', " + richTextEntry.getCounter() + ");");
+		}
+		
+		writer.endElement("script");
+		writer.endElement("span");
+		
+		richTextEntry.setOldValue(value);
     }
 	
     // taken from com.icesoft.faces.util.CoreUtils
@@ -97,4 +114,25 @@ public class RichTextEntryRenderer extends InputRenderer {
 
         return facesContext.getApplication().getViewHandler().getResourceURL(facesContext, path);
     }
+	
+	private boolean isValueChangedProgrammatically(FacesContext facesContext, RichTextEntry richTextEntry) {
+	    Map map = facesContext.getExternalContext().getRequestParameterMap();
+		String clientId = richTextEntry.getClientId(facesContext);
+		
+        Object componenetId = map.get("ice.event.captured");
+        if (componenetId != null && componenetId.toString().equals(clientId)) {
+			return false; // component was the source of request
+        }
+		
+		Object value = richTextEntry.getValue();
+		Object oldValue = richTextEntry.getOldValue();
+		if (oldValue == null) {
+			if (value == null) return false;
+			else return true;
+		} else {
+			if (value == null) return true;
+			else if (!oldValue.toString().equals(value.toString())) return true;
+		}
+		return false;
+	}
 }
