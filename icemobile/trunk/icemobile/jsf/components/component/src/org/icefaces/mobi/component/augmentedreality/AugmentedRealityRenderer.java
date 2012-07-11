@@ -68,7 +68,8 @@ public class AugmentedRealityRenderer extends BaseInputRenderer  {
             writer.writeAttribute("data-command", "aug", null);
             script = "ice.mobi.sx(this);";
         } else {
-            script = "ice.aug( '" + clientId + "', '" + myparams + "' );";
+            script = "ice.aug( '" + clientId + "', '" + 
+                    myparams + "' );return false;";
         }
         writer.writeAttribute(HTML.ONCLICK_ATTR, script, null);
          writer.writeText(buttonValue, null);
