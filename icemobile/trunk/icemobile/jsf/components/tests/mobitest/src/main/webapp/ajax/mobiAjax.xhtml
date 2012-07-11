@@ -126,7 +126,7 @@
 				</h:commandButton>
 
 		       <mobi:commandButton id="mobiAjax" value="Click 3rd (mobi:ajax)" >
-					<mobi:ajax execute="@this valueB" render="@all" listener="${ajaxTestBean.mobiAjaxEventListener}"/>
+					<mobi:ajax execute="valueB" render="@all" listener="${ajaxTestBean.mobiAjaxEventListener}"/>
 				</mobi:commandButton>
 
 				<h4>Results:</h4>
@@ -151,7 +151,7 @@
 				</h:commandButton>
 
 		       <mobi:commandButton id="mobiAjax" value="Click 3rd (mobi:ajax)" >
-					<mobi:ajax execute="@this valueB valueA" render="@all" listener="${ajaxTestBean.mobiAjaxEventListener}"/>
+					<mobi:ajax execute="valueB valueA" render="@all" listener="${ajaxTestBean.mobiAjaxEventListener}"/>
 				</mobi:commandButton>
 
 				<h4>Results:</h4>
