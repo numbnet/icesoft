@@ -62,7 +62,13 @@ import javax.faces.event.ActionEvent;
 	        @MenuLink(title = "menu.ace.autocompleteentry.subMenu.complex",
                     exampleBeanName = AutoCompleteEntryComplexBean.BEAN_NAME),
 	        @MenuLink(title = "menu.ace.autocompleteentry.subMenu.lazy",
-                    exampleBeanName = AutoCompleteEntryLazyBean.BEAN_NAME)
+                    exampleBeanName = AutoCompleteEntryLazyBean.BEAN_NAME),
+	        @MenuLink(title = "menu.ace.autocompleteentry.subMenu.label",
+                    exampleBeanName = AutoCompleteEntryLabelBean.BEAN_NAME),
+	        @MenuLink(title = "menu.ace.autocompleteentry.subMenu.indicator",
+                    exampleBeanName = AutoCompleteEntryIndicatorBean.BEAN_NAME),
+	        @MenuLink(title = "menu.ace.autocompleteentry.subMenu.reqStyle",
+                    exampleBeanName = AutoCompleteEntryReqStyleBean.BEAN_NAME)
     }
 )
 @ManagedBean(name= AutoCompleteEntryBean.BEAN_NAME)
