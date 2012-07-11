@@ -69,7 +69,7 @@ ice.ace.Resizable.prototype.fireAjaxResizeEvent = function(event, ui) {
     options.params = params;
 
     if (behaviour) {
-        ice.ace.ab(ice.ace.extendAjaxArguments(
+        ice.ace.ab(ice.ace.extendAjaxArgs(
                 behaviour,
                 ice.ace.removeExecuteRenderOptions(options))
         );

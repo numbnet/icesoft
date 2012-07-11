@@ -135,7 +135,7 @@ ice.ace.tabset = {
                             //replace id with the id of tabset component, so the "execute" property can be set to tabset id
                             targetElement.id = clientId;
                             var otherParams = {};
-                            ice.ace.ab(ice.ace.extendAjaxArguments(
+                            ice.ace.ab(ice.ace.extendAjaxArgs(
                                     sJSFProps.behaviors.serverSideTabChange,
                                     {params: otherParams, execute: "@this", render: "@this", onsuccess: doOnSuccess}));
                             //restore id
