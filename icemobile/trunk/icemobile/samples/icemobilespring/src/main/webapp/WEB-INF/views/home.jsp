@@ -92,12 +92,6 @@
     </style>
 </head>
 <body>
-<mobi:pagePanel id="mainPage">
-<mobi:pagePanelHeader id="mainPageHeader">
-    ICEmobile Spring
-</mobi:pagePanelHeader>
-
-<mobi:pagePanelBody id="panelBody">
 
 <div id="tabs">
 <ul>
@@ -164,9 +158,6 @@
 </div>
 </div>
 
-</mobi:pagePanelBody>
-
-</mobi:pagePanel>
 
 <script type="text/javascript"
         src="<c:url value="/resources/jquery/1.6/jquery.js" />"></script>
