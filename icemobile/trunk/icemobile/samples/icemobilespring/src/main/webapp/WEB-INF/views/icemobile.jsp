@@ -43,6 +43,13 @@
                 <img style="height:60px;width:60px;" src="${imgPath}">
             </div>
         </c:if>
+        <c:if test="${imgUploaded}">
+            <mobi:fieldSetGroup inset="true">
+                <mobi:fieldSetRow>
+                    <img style="text-align:middle;width:100%;padding:5px" src="${imgPath}">
+                </mobi:fieldSetRow>
+            </mobi:fieldSetGroup>
+        </c:if>
         <s:bind path="*">
             <c:if test="${status.error}">
                 <div id="message" class="error">Form has errors</div>
