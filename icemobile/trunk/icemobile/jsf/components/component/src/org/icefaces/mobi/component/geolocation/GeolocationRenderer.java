@@ -40,48 +40,48 @@ public class GeolocationRenderer extends CoreRenderer {
 
     @Override
     public void decode(FacesContext facesContext, UIComponent uiComponent) {
-        Map requestParameterMap = facesContext.getExternalContext().getRequestParameterMap();
         Geolocation geolocation = (Geolocation) uiComponent;
-//        String source = String.valueOf(requestParameterMap.get("ice.event.captured"));
+        if (geolocation.isDisabled()) {
+            return;
+        }
         String clientId = geolocation.getClientId();
-        //assuming we only want the decoding done if the Geolocation is the source of the event?
-        //leave out for now so can test the decoding with form submission
-        //    if (clientId.equals(source)) {
         try {
-            if (!geolocation.isDisabled()) {
-                String nameHidden = clientId + "_field";
-                String locationString = String.valueOf(requestParameterMap.get(nameHidden));
-                if (null != locationString || !("null".equals(locationString))){
-                    String[] params = locationString.split(",");
-                    Double[] decoded = new Double[4];
-                    for (int i = 0; i < params.length; i++)  {
-                        try {
-                            decoded[i] = Double.parseDouble(params[i]);
-                        } catch (Exception e)  {
-                            log.log(Level.WARNING, 
-                                "Malformed geolocation " + i +
-                                " " + locationString, e);
-                        }
-                    }
-                    //malformed or unprovided values are not propagated
-                    if (null != decoded[0])  {
-                        geolocation.setLatitude(decoded[0]);
-                    }
-                    if (null != decoded[1])  {
-                        geolocation.setLongitude(decoded[1]);
-                    }
-                    if (null != decoded[2])  {
-                        geolocation.setAltitude(decoded[2]);
-                    }
-                    if (null != decoded[3])  {
-                        geolocation.setDirection(decoded[3]);
-                    }
-
-
-                    decodeBehaviors(facesContext, geolocation);
-                }
+            Map requestParameterMap = facesContext.getExternalContext()
+                    .getRequestParameterMap();
+            String nameHidden = clientId + "_field";
+            String locationString = String.valueOf(
+                    requestParameterMap.get(nameHidden));
+            if (null == locationString)  {
+                return;
             }
 
+            String[] params = locationString.split(",");
+            Double[] decoded = new Double[4];
+            for (int i = 0; i < params.length; i++)  {
+                try {
+                    decoded[i] = Double.parseDouble(params[i]);
+                } catch (Exception e)  {
+                    log.log(Level.WARNING, 
+                        "Malformed geolocation " + i +
+                        " " + locationString, e);
+                }
+            }
+            //malformed or unprovided values are not propagated
+            if (null != decoded[0])  {
+                geolocation.setLatitude(decoded[0]);
+            }
+            if (null != decoded[1])  {
+                geolocation.setLongitude(decoded[1]);
+            }
+            if (null != decoded[2])  {
+                geolocation.setAltitude(decoded[2]);
+            }
+            if (null != decoded[3])  {
+                geolocation.setDirection(decoded[3]);
+            }
+
+
+            decodeBehaviors(facesContext, geolocation);
         } catch (Exception e) {
             log.log(Level.WARNING, "Error decoding geo-location request paramaters.",e);
         }
