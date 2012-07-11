@@ -49,55 +49,36 @@ public class GeolocationRenderer extends CoreRenderer {
         //    if (clientId.equals(source)) {
         try {
             if (!geolocation.isDisabled()) {
-                //MOBI-11 requirement is to decode the  values
                 String nameHidden = clientId + "_field";
                 String locationString = String.valueOf(requestParameterMap.get(nameHidden));
                 if (null != locationString || !("null".equals(locationString))){
-                    String[] params = locationString.split(",\\s*");
-                    int numberOfParams = params.length;
-                    if (numberOfParams > 1) {
-                        String latString = params[0];
-                        if (null != latString) {
-                            try {
-                                Double latitude = Double.parseDouble(latString);
-                                geolocation.setLatitude(latitude);
-                            } catch (Exception e) {
-                                log.log(Level.WARNING, "ERROR  parsing latitude value, defaulting to zero",e);
-                                geolocation.setLatitude(0.0);
-                            }
+                    String[] params = locationString.split(",");
+                    Double[] decoded = new Double[4];
+                    for (int i = 0; i < params.length; i++)  {
+                        try {
+                            decoded[i] = Double.parseDouble(params[i]);
+                        } catch (Exception e)  {
+                            log.log(Level.WARNING, 
+                                "Malformed geolocation " + i +
+                                " " + locationString, e);
                         }
-                        String longString = params[1];
-                        if (null != longString) {
-                            try {
-                                Double longitude = Double.parseDouble(longString);
-                                geolocation.setLongitude(longitude);
-                            } catch (Exception e) {
-                                log.log(Level.WARNING, "ERROR  parsing longitude value, defaulting to zero",e);
-                                geolocation.setLongitude(0.0);
-                            }
-                        }
-                        String altString = params[2];
-                        if (null != altString) {
-                            try {
-                                Double altitude = Double.parseDouble(altString);
-                                geolocation.setAltitude(altitude);
-                            } catch (Exception e) {
-                                log.log(Level.WARNING, "ERROR  parsing longitude value, defaulting to zero",e);
-                                geolocation.setLongitude(0.0);
-                            }
-                        }
-                        String dirString = params[3];
-                        if (null != dirString) {
-                            try {
-                                Double direction = Double.parseDouble(dirString);
-                                geolocation.setDirection(direction);
-                            } catch (Exception e) {
-                                log.log(Level.WARNING, "ERROR  parsing longitude value, defaulting to zero",e);
-                                geolocation.setLongitude(0.0);
-                            }
-                        }
-                        decodeBehaviors(facesContext, geolocation);
                     }
+                    //malformed or unprovided values are not propagated
+                    if (null != decoded[0])  {
+                        geolocation.setLatitude(decoded[0]);
+                    }
+                    if (null != decoded[1])  {
+                        geolocation.setLongitude(decoded[1]);
+                    }
+                    if (null != decoded[2])  {
+                        geolocation.setAltitude(decoded[2]);
+                    }
+                    if (null != decoded[3])  {
+                        geolocation.setDirection(decoded[3]);
+                    }
+
+
+                    decodeBehaviors(facesContext, geolocation);
                 }
             }
 
