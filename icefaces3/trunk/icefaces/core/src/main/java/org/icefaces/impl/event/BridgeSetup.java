@@ -120,7 +120,7 @@ public class BridgeSetup implements SystemEventListener {
         //always add ICEfaces bridge code
         resources.add(new JavascriptResourceOutput(resourceHandler, bridgeResourceName, null, version));
         resources.add(new TestScript());
-        resources.add(new ResourceOutput("javax.faces.resource.Stylesheet", "core.css", null));
+        resources.add(new CoreCSSOutput());
 
         return resources;
     }
@@ -291,6 +291,32 @@ public class BridgeSetup implements SystemEventListener {
             writer.writeAttribute("type", "text/javascript", null);
             writer.write("document.documentElement.isHeadUpdateSuccessful=true;");
             writer.endElement("script");
+        }
+    }
+
+    private static class CoreCSSOutput extends UIOutputWriter {
+        private CoreCSSOutput() {
+            setTransient(true);
+        }
+
+        public void encode(ResponseWriter writer, FacesContext context) throws IOException {
+            writer.startElement("style", this);
+            writer.writeAttribute("type", "text/css", null);
+            writer.writeText(".ice-blockui-overlay {", null);
+            writer.writeText("position: absolute;", null);
+            writer.writeText("background-color: white;", null);
+            writer.writeText("z-index: 28000;", null);
+            writer.writeText("opacity: 0.22;", null);
+            writer.writeText("filter: alpha(opacity = 22);", null);
+            writer.writeText("}", null);
+            writer.writeText(".ice-status-indicator-overlay {", null);
+            writer.writeText("position: absolute;", null);
+            writer.writeText("background-color: white;", null);
+            writer.writeText("z-index: 28000;", null);
+            writer.writeText("opacity: 0.22;", null);
+            writer.writeText("filter: alpha(opacity = 22);", null);
+            writer.writeText("}", null);
+            writer.endElement("style");
         }
     }
 }
