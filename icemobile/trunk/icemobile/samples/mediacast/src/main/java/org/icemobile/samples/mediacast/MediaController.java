@@ -61,6 +61,7 @@ public class MediaController implements Serializable {
     private String audioConvertCommand;
     private String thumbConvertCommand;
     private PortableRenderer portableRenderer;
+    private int mediaCount = 0;
 
     public MediaController() {
         portableRenderer = PushRenderer.getPortableRenderer();
@@ -163,7 +164,8 @@ public class MediaController implements Serializable {
             	photoMessage.setDirection(uploadModel.getDirection());
             }
 			else{
-            	photoMessage.setDirection(180);//set direction south if not provided
+                //set random direction if not provided
+            	photoMessage.setDirection(360 * Math.random());
             }
             // only add the message if the file successfully uploaded.
             if (mediaFile != null) {
@@ -544,7 +546,7 @@ public class MediaController implements Serializable {
         if ((null != title) && (!"".equals(title))) {
             return title;
         }
-        return defaultTitle;
+        return defaultTitle + mediaCount++;
     }
 
 }
