@@ -196,9 +196,16 @@ $.extend(Timepicker.prototype, {
 	// add our sliders to the calendar
 	//########################################################################
 	_addTimePicker: function(dp_inst) {
-		var currDT = (this.$altInput && this._defaults.altFieldTimeOnly) ?
-				this.$input.val() + ' ' + this.$altInput.val() :
-				this.$input.val();
+        var currDT;
+        if (this.$altInput) {
+            if (this._defaults.altFieldTimeOnly) {
+                currDT = this.$input.val() + ' ' + this.$altInput.val();
+            } else {
+                currDT = this.$altInput.val();
+            }
+        } else {
+            currDT = this.$input.val();
+        }
 
 		this.timeDefined = this._parseTime(currDT);
 		this._limitMinMaxDateTime(dp_inst, false);
@@ -1081,7 +1088,7 @@ $.timepicker.version = "0.9.6";
  */
 (function($) {
 ice.ace.Calendar = function(id, cfg) {
-    var behavior;
+    var behavior, altFieldVal;
     this.id = id;
     this.cfg = cfg;
     this.jqId = ice.ace.escapeClientId(id);
@@ -1103,6 +1110,7 @@ ice.ace.Calendar = function(id, cfg) {
     //Form field to use in inline mode
     if(!this.cfg.popup) {
         this.cfg.altField = $(this.jqId + '_input');
+        altFieldVal = this.cfg.altField.val();
     }
 
     var hasTimePicker = this.hasTimePicker();
@@ -1117,8 +1125,13 @@ ice.ace.Calendar = function(id, cfg) {
         if(hasTimePicker) {
             if(this.cfg.timeOnly)
                 this.jq.timepicker(this.cfg);
-            else
+            else {
+                this.cfg.altFieldTimeOnly = false;
                 this.jq.datetimepicker(this.cfg);
+                if (!this.cfg.popup && $.type(altFieldVal) === "string") {
+                    this.cfg.altField.val(altFieldVal);
+                }
+            }
         }
         else {
             this.jq.datepicker(this.cfg);
