@@ -69,10 +69,11 @@ public class DateTimeEntryMeta extends UIInputMeta {
     @Property(tlddoc = "Locale to be used for labels and conversion. Locale string or java.util.Locale object. Default is locale of view root.")
     private Object locale;
 
-    @Property(tlddoc = "Icon of the popup button.")
+    @Property(tlddoc = "The URL for the popup button image. Default is the file \"META-INF/resources/icefaces.ace/datetimeentry/calendar_icon.png\" in the components jar. " +
+            "showOn attribute must be set to \"button\" or \"both\".")
     private String popupIcon;
 
-    @Property(tlddoc = "When enabled, popup icon is rendered without the button.")
+    @Property(tlddoc = "When enabled, popup icon is rendered without it appearing on a button. Default: \"false\".")
     private boolean popupIconOnly;
 
     @Property(tlddoc = "Enables month/year navigator.")
@@ -96,7 +97,8 @@ public class DateTimeEntryMeta extends UIInputMeta {
     @Property(defaultValue = "normal", tlddoc = "Control the speed at which the calendar appears, it may be a time in milliseconds or a string representing one of the three predefined speeds (\"slow\", \"normal\", \"fast\").")
     private String effectDuration;
 
-    @Property(defaultValue = "focus", tlddoc = "Client side event that displays the popup calendar.")
+    @Property(defaultValue = "focus", tlddoc = "Have the calendar appear automatically when the field receives focus (\"focus\"), " +
+            "appear only when a button (specified by popupIcon attribute) is clicked (\"button\"), or appear when either event takes place (\"both\").")
     private String showOn;
 
     @Property(tlddoc = "Displays the week number next to each week.")
