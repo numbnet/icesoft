@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 public class DateTimeSpinnerBean {
 
     private String dateOne;
+    private String timeOne;
 
     public String getDateOne() {
         return dateOne;
@@ -18,5 +19,13 @@ public class DateTimeSpinnerBean {
 
     public void setDateOne(String date) {
         this.dateOne = date;
+    }
+
+    public String getTimeOne() {
+        return timeOne;
+    }
+
+    public void setTimeOne(String time) {
+        this.timeOne = time;
     }
 }
