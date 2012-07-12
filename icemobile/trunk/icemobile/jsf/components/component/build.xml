@@ -57,7 +57,7 @@
               location="${resources}/org.icefaces.component.util/combined-min.js"/>
     <property name="combined.js.tmp" location="${resource.js.dir}/combined.js"/>
     <!-- theme import location -->
-    <property name="theme.dir.path" location="../../../resources/themes" />
+    <property name="theme.dir.path" location="../../../resources/themes"/>
     <!-- Check if release.type is set, and if so append it after the tertiary
          value -->
     <condition property="version.string"
@@ -89,7 +89,7 @@
         <format property="build.time" pattern="yyyy-mm-dd hh:mm:ss"/>
     </tstamp>
 
-    <import file="../../../resources/build/build.xml" />
+    <import file="../../../resources/build/build.xml"/>
 
     <path id="compile.run.classpath">
         <fileset dir="${lib.dir}" includes="*.jar"/>
@@ -125,7 +125,7 @@
                    with the exclusion of the the .css files -->
             <mkdir dir="${output.dir.path}/@{skin}/"/>
             <copy todir="${output.dir.path}/@{skin}/">
-                <fileset dir="@{dir}" excludes="**/*.css" />
+                <fileset dir="@{dir}" excludes="**/*.css"/>
             </copy>
         </sequential>
     </macrodef>
@@ -153,8 +153,8 @@
         <attribute name="name"/>
         <sequential>
             <yui-compressor name="@{name}"
-                inputDir="${resources}/org.icefaces.component.skins/@{name}"
-                outputDir="${resources}/org.icefaces.component.skins/@{name}" />
+                            inputDir="${resources}/org.icefaces.component.skins/@{name}"
+                            outputDir="${resources}/org.icefaces.component.skins/@{name}"/>
 
             <!-- removes ';'from  the url('#{resource['resourcePath'];}' -->
             <replaceregexp match="];}" replace="]}"
@@ -164,10 +164,10 @@
 
             <move file="${resources}/org.icefaces.component.skins/@{name}/@{name}.css"
                   tofile="${resources}/org.icefaces.component.skins/@{name}.css"
-                  overwrite="yes" />
+                  overwrite="yes"/>
             <move file="${resources}/org.icefaces.component.skins/@{name}/@{name}-min.css"
                   tofile="${resources}/org.icefaces.component.skins/@{name}-min.css"
-                  overwrite="yes" />
+                  overwrite="yes"/>
 
 
         </sequential>
@@ -175,7 +175,7 @@
 
     <target name="compile"
             depends="prepare, compile-meta, generate, compile-base, compile-manual, compile-support,
-                      res-js-compress, res-js-no-compress, skins, compress-css, min-js-compress"
+                    min-js-compress, skins, compress-skins"
             description="compile the source ">
         <copy todir="${exploded}/META-INF/resources">
             <fileset dir="${resources}"/>
@@ -307,7 +307,17 @@
         <!--   <subant buildpath="${cssurlmapper.rootdir}" target="clean"/>   -->
     </target>
 
-    <target name="skins"
+    <target name="init-skip-css-properties"
+            description="Test theme source dates against last successful run to avoid unessary work">
+        <!--<mkdir dir="${root.dir.path}" />-->
+        <uptodate targetfile="${build}/skins/in/skins.done"
+                  property="skins.skip">
+            <srcfiles dir="${theme.dir.path}" includes="**/*.css"/>
+        </uptodate>
+        <echo message="Skip CSS: ${skins.skip}"/>
+    </target>
+
+    <target name="skins" unless="skins.skip" depends="init-skip-css-properties"
             description="Generate skinning resources for deployment.">
         <echo message="path to cssurlMapper is ${lib.dir}/generator"/>
         <taskdef name="cssurlmapper" classname="${cssurlmapper.class}"
@@ -324,7 +334,7 @@
         <includeresources
                 dir="${theme.dir.path}/bberry" skin="bberry"/>
         <includeresources
-                dir="${theme.dir.path}/honeycomb"  skin="honeycomb"/>
+                dir="${theme.dir.path}/honeycomb" skin="honeycomb"/>
         <includeresources
                 dir="${theme.dir.path}/ipad" skin="ipad"/>
         <includeresources
@@ -356,6 +366,7 @@
                       inputdir="${output.dir.path}"
                       outputdir="${resources}/${skins.lib}"/>
 
+        <touch file="${build}/skins/in/skins.done"/>
     </target>
 
     <target name="clean-skins"
@@ -402,8 +413,8 @@
         <generatesprites skin="bberry"/>
     </target>
 
-    <target name="compress-css"
-            unless="no-compress">
+    <target name="compress-skins"
+            unless="skins.skip">
         <compresscssmacro name="iphone"/>
         <compresscssmacro name="ipad"/>
         <compresscssmacro name="android"/>
@@ -447,9 +458,18 @@
         <gen.tld.doc tld.file="${tld.file}"/>
     </target>
 
-    <!--  added these from latest ace build and modified macrodefs for them-->
 
-    <target name="res-js-combine">
+    <target name="init-skip-res-js-properties"
+            description="Test combined js source dates against last successful run to avoid unnecessary work">
+        <uptodate targetfile="${combined.js.tmp}"
+                  property="res.js.skip">
+            <srcfiles dir="${resources}/org.icefaces.component/" includes="**/*.js"/>
+        </uptodate>
+        <echo message="Skip Combined JavaScript: ${res.js.skip}"/>
+    </target>
+
+    <target name="res-js-combine" depends="init-skip-res-js-properties"
+            unless="res.js.skip">
         <delete file="${combined.js.tmp}" verbose="true"/>
         <concat destfile="${combined.js.tmp}" force="true" fixlastline="true">
             <filelist dir="${resource.js.dir}">
@@ -457,7 +477,7 @@
                 <file name="iscroll.js"/>
             </filelist>
             <fileset dir="${resources}">
-           <!--     <include name="org.icefaces.component.button/button.js"/>  MOBI-200-->
+                <!--     <include name="org.icefaces.component.button/button.js"/>  MOBI-200-->
                 <include name="org.icefaces.component.button/menubutton.js"/>
                 <include name="org.icefaces.component.carousel/carousel.js"/>
                 <include
@@ -476,13 +496,35 @@
                         name="org.icefaces.component.tabset/tabset.js"/>
                 <include
                         name="org.icefaces.component.accordion/accordion.js"/>
-                <include name="org.icefaces.component.layoutmenu/layoutmenut.js"/>
+                <include
+                        name="org.icefaces.component.layoutmenu/layoutmenut.js"/>
             </fileset>
         </concat>
     </target>
 
+
+    <!--
+        Builds the combined.js script.  Components currently include their
+        own JavaScript snippets so there is no need to run this target
+        under most circumstances.
+    -->
+    <target name="res-js" depends="res-js-compress"
+            unless="res.js.skip"
+            description="Conditional check if combined JavaScript files have changed and need to be processed.">
+    </target>
+
+
+    <target name="init-skip-comp-js-properties"
+            description="Test individual js source dates against last successful run to avoid unnecessary work">
+        <uptodate targetfile="${build}/comp-js.done"
+                  property="comp.js.skip">
+            <srcfiles dir="${resources}/" includes="**/*.js"/>
+        </uptodate>
+        <echo message="Skip component JavaScript: ${comp.js.skip}"/>
+    </target>
+
     <target name="res-js-compress" depends="res-js-combine"
-            unless="no-compress">
+            unless="">
         <echo message="Compressing combined javascript code"/>
         <java jar="${lib.dir}/generator/yui-compressor.jar" fork="yes">
             <arg line="--preserve-semi"/>
@@ -491,6 +533,7 @@
             <arg value="${combined.js}"/>
         </java>
     </target>
+
     <macrodef name="compressjs">
         <attribute name="comp"/>
         <attribute name="path"/>
@@ -505,8 +548,10 @@
             </java>
         </sequential>
     </macrodef>
-    <target name="min-js-compress"
-            unless="no-compress">
+
+    <target name="min-js-compress" depends="init-skip-comp-js-properties"
+            unless="comp.js.skip"
+            description="Compress individual javascript files for each component ">
         <echo message="Compressing individual javascript files"/>
         <compressjs comp="component"
                     path="${resources}/org.icefaces.component.util"/>
@@ -534,9 +579,10 @@
                     path="${resources}/org.icefaces.component.accordion"/>
         <compressjs comp="layoutmenu"
                     path="${resources}/org.icefaces.component.layoutmenu"/>
+        <touch file="${build}/comp-js.done" />
     </target>
 
-    <target name="res-js-no-compress" depends="res-js-combine" if="no-compress">
+    <target name="res-js-no-compress" depends="res-js-combine" >
         <echo message="Not compressing combined javascript code"/>
         <move file="${combined.js.tmp}" tofile="${combined.js}" overwrite="yes">
             <filterchain>
@@ -545,7 +591,6 @@
             </filterchain>
         </move>
     </target>
-
 
 
 </project>
