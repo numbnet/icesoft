@@ -126,7 +126,7 @@ ice.ace.Chart.prototype.handleDragStart = function(e, seriesIndex, pointIndex, d
     // Call behaviours
     if (this.behaviors)
         if (this.behaviors.dragStart) {
-            ice.ace.ab(ice.ace.extendAjaxArguments(this.behaviors.dragStart,options));
+            ice.ace.ab(ice.ace.extendAjaxArgs(this.behaviors.dragStart,options));
             return;
         }
 };
@@ -164,7 +164,7 @@ ice.ace.Chart.prototype.handleDragStop = function(e, seriesIndex, pointIndex, da
 
     if (this.behaviors)
         if (this.behaviors.dragStop) {
-            ice.ace.ab(ice.ace.extendAjaxArguments(this.behaviors.dragStop,options));
+            ice.ace.ab(ice.ace.extendAjaxArgs(this.behaviors.dragStop,options));
             return;
         }
 
@@ -185,7 +185,7 @@ ice.ace.Chart.prototype.handlePointClick = function(e, seriesIndex, pointIndex, 
 
     if (this.behaviors)
         if (this.behaviors.click) {
-            ice.ace.ab(ice.ace.extendAjaxArguments(this.behaviors.click, options));
+            ice.ace.ab(ice.ace.extendAjaxArgs(this.behaviors.click, options));
             return;
         }
 

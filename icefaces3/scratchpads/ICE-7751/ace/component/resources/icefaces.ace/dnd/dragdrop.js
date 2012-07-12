@@ -68,7 +68,7 @@ ice.ace.Droppable.prototype.setupDropHandler = function() {
         if (dropBehaviour) {
             options.params[_self.id] = _self.id; // also triggers drop listener, if any
             ice.ace.ab(
-                ice.ace.extendAjaxArguments(
+                ice.ace.extendAjaxArgs(
                     dropBehaviour,
                     ice.ace.removeExecuteRenderOptions(options)
                 )
