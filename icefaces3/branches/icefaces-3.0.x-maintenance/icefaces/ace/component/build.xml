@@ -437,11 +437,12 @@
 
     <target name="javadoc" depends="compile" description="Generate the component JavaDoc Documentation in HTML format.">
         <delete dir="${javadocs.dir}"/>
-        <javadoc 
-                 destdir="${java.doc}"
+        <javadoc destdir="${java.doc}"
                  classpathref="javadoc.classpath"
-                 windowtitle="${javadoc.title}" failonerror="true"
-                 bottom="Copyright ${year} ${copyright}">
+                 windowtitle="${javadoc.title}" 
+                 failonerror="true"
+                 bottom="Copyright ${year} ${copyright}"
+                 useexternalfile="true">
             <fileset dir="." defaultexcludes="yes">
                 <include name="src/**/*.java"/>
                 <include name="build/generated/support/**/*.java"/>
