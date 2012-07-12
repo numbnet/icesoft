@@ -47,7 +47,13 @@ import java.io.Serializable;
 	menuLinks = {
 	        @MenuLink(title = "menu.ace.maskedEntry.subMenu.main",
 	                isDefault = true,
-                    exampleBeanName = MaskedEntryBean.BEAN_NAME)
+                    exampleBeanName = MaskedEntryBean.BEAN_NAME),
+	        @MenuLink(title = "menu.ace.maskedEntry.subMenu.label",
+                    exampleBeanName = MaskedLabelBean.BEAN_NAME),
+	        @MenuLink(title = "menu.ace.maskedEntry.subMenu.indicator",
+                    exampleBeanName = MaskedIndicatorBean.BEAN_NAME),
+	        @MenuLink(title = "menu.ace.maskedEntry.subMenu.reqStyle",
+                    exampleBeanName = MaskedReqStyleBean.BEAN_NAME)
     }
 )
 @ManagedBean(name= MaskedEntryBean.BEAN_NAME)
@@ -60,6 +66,7 @@ public class MaskedEntryBean extends ComponentExampleImpl<MaskedEntryBean> imple
     private String workPhone;
     private String mobilePhone;
     private String sin;
+    
     public MaskedEntryBean()
     {
         super(MaskedEntryBean.class);
