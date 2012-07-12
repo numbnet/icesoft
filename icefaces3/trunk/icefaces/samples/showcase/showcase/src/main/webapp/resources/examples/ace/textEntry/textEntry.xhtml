@@ -37,48 +37,33 @@
     <ui:define name="example">
         <h:form id="textEntryForm">
             <ace:panel id="personalInfoInputPanel" header="Personal Info">
-                <h:panelGroup layout="block" style="width:50%; float:left;">
-                    <h:outputLabel for="labelPosition" value="Label Position: "/>
-                    <h:selectOneMenu id="labelPosition" value="#{textEntryBean.labelPosition}">
-                        <f:ajax execute="@this" render="inputGrid"/>
-                        <f:selectItems value="#{positionBean.labelPositions}"/>
-                    </h:selectOneMenu>
-                </h:panelGroup>
-                <h:panelGroup layout="block" style="width:50%; float:left;">
-                    <h:outputLabel for="indicatorPosition" value="Indicator Position: "/>
-                    <h:selectOneMenu id="indicatorPosition" value="#{textEntryBean.indicatorPosition}">
-                        <f:ajax execute="@this" render="inputGrid"/>
-                        <f:selectItems value="#{positionBean.indicatorPositions}"/>
-                    </h:selectOneMenu>
-                </h:panelGroup>
-
                 <h:panelGrid id="inputGrid" columns="1" width="100%" styleClass="textEntryInputTable">
-                    <ace:textEntry id="firstNameInput" value="#{textEntryBean.firstName}" label="First Name" labelPosition="#{textEntryBean.labelPosition}" required="true" requiredIndicator="(*)" indicatorPosition="#{textEntryBean.indicatorPosition}">
+                    <ace:textEntry id="firstNameInput" value="#{textEntryBean.firstName}" label="First Name" labelPosition="left" required="true" requiredIndicator="(*)" indicatorPosition="right">
                         <ace:ajax render="@this firstNameOutput firstNameMsg"/>
                     </ace:textEntry>
                     
-                    <ace:textEntry id="lastNameInput" value="#{textEntryBean.lastName}" label="Last Name" labelPosition="#{textEntryBean.labelPosition}" required="true" requiredIndicator="(*)" indicatorPosition="#{textEntryBean.indicatorPosition}">
+                    <ace:textEntry id="lastNameInput" value="#{textEntryBean.lastName}" label="Last Name" labelPosition="left" required="true" requiredIndicator="(*)" indicatorPosition="right">
                         <ace:ajax render="@this lastNameOutput lastNameMsg"/>
                     </ace:textEntry>
 
-                    <ace:textEntry id="address1Input" value="#{textEntryBean.address1}" label="Apt./Suite #" labelPosition="#{textEntryBean.labelPosition}" required="true" requiredIndicator="(*)" indicatorPosition="#{textEntryBean.indicatorPosition}">
+                    <ace:textEntry id="address1Input" value="#{textEntryBean.address1}" label="Apt./Suite #" labelPosition="left" required="true" requiredIndicator="(*)" indicatorPosition="right">
                         <ace:ajax render="@this address1Output address1Msg"/>
                     </ace:textEntry>
 
-                    <ace:textEntry id="address2Input" value="#{textEntryBean.address2}" label="Street Address" labelPosition="#{textEntryBean.labelPosition}" required="false" optionalIndicator="(Opt.)" indicatorPosition="#{textEntryBean.indicatorPosition}">
+                    <ace:textEntry id="address2Input" value="#{textEntryBean.address2}" label="Street Address" labelPosition="left" required="false" optionalIndicator="(Opt.)" indicatorPosition="right">
                         <ace:ajax render="@this address2Output"/>
                     </ace:textEntry>
 
-                    <ace:textEntry id="cityInput" value="#{textEntryBean.city}" label="City" labelPosition="#{textEntryBean.labelPosition}" required="true" requiredIndicator="(*)" indicatorPosition="#{textEntryBean.indicatorPosition}">
+                    <ace:textEntry id="cityInput" value="#{textEntryBean.city}" label="City" labelPosition="left" required="true" requiredIndicator="(*)" indicatorPosition="right">
                         <ace:ajax render="@this cityOutput cityMsg"/>
                     </ace:textEntry>
                     
-                    <ace:textEntry id="provinceInput" value="#{textEntryBean.province}" label="Prov./State" labelPosition="#{textEntryBean.labelPosition}" required="false" optionalIndicator="(Opt.)" indicatorPosition="#{textEntryBean.indicatorPosition}">
+                    <ace:textEntry id="provinceInput" value="#{textEntryBean.province}" label="Prov./State" labelPosition="left" required="false" optionalIndicator="(Opt.)" indicatorPosition="right">
                         <ace:ajax render="@this provinceOutput provinceMsg"/>
                         <f:validateLength minimum="2"/>
                     </ace:textEntry>
 
-                    <ace:textEntry id="countryInput" value="#{textEntryBean.country}" label="Country" labelPosition="#{textEntryBean.labelPosition}" required="true" requiredIndicator="(*)" indicatorPosition="#{textEntryBean.indicatorPosition}">
+                    <ace:textEntry id="countryInput" value="#{textEntryBean.country}" label="Country" labelPosition="left" required="true" requiredIndicator="(*)" indicatorPosition="right">
                         <ace:ajax render="@this countryOutput countryMsg"/>
                     </ace:textEntry>
                 </h:panelGrid>
@@ -93,7 +78,6 @@
             </ace:panel>
             
             <ace:panel id="personalInfoOutputPanel" header="Entered data">
-                
                 <h:panelGrid id="outputGrid" width="100%" style="text-align: left;">
                     <h:outputText id="firstNameOutput" value="first name: #{textEntryBean.firstName}"/>
                     <h:outputText id="lastNameOutput" value="last name: #{textEntryBean.lastName}"/>
@@ -103,9 +87,7 @@
                     <h:outputText id="provinceOutput" value="province: #{textEntryBean.province}"/>
                     <h:outputText id="countryOutput" value="country: #{textEntryBean.country}"/>
                 </h:panelGrid>
-                
             </ace:panel>
-            
         </h:form>
         
     </ui:define>

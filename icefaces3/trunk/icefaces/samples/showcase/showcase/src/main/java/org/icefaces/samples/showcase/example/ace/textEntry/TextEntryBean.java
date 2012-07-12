@@ -47,7 +47,13 @@ import java.io.Serializable;
 	menuLinks = {
 	        @MenuLink(title = "menu.ace.textEntry.subMenu.main",
 	                isDefault = true,
-                    exampleBeanName = TextEntryBean.BEAN_NAME)
+                    exampleBeanName = TextEntryBean.BEAN_NAME),
+	        @MenuLink(title = "menu.ace.textEntry.subMenu.label",
+                    exampleBeanName = TextEntryLabelBean.BEAN_NAME),
+	        @MenuLink(title = "menu.ace.textEntry.subMenu.indicator",
+                    exampleBeanName = TextEntryIndicatorBean.BEAN_NAME),
+	        @MenuLink(title = "menu.ace.textEntry.subMenu.reqStyle",
+                    exampleBeanName = TextEntryReqStyleBean.BEAN_NAME)
     }
 )
 @ManagedBean(name= TextEntryBean.BEAN_NAME)
@@ -63,8 +69,6 @@ public class TextEntryBean extends ComponentExampleImpl<TextEntryBean> implement
     private String city;
     private String province;
     private String country;
-    private String indicatorPosition = "labelRight";
-    private String labelPosition = "inField";
 
     public TextEntryBean()
     {
@@ -114,22 +118,6 @@ public class TextEntryBean extends ComponentExampleImpl<TextEntryBean> implement
 
     public void setCountry(String country) {
         this.country = country;
-    }
-
-    public String getIndicatorPosition() {
-        return indicatorPosition;
-    }
-
-    public void setIndicatorPosition(String indicatorPosition) {
-        this.indicatorPosition = indicatorPosition;
-    }
-
-    public String getLabelPosition() {
-        return labelPosition;
-    }
-
-    public void setLabelPosition(String labelPosition) {
-        this.labelPosition = labelPosition;
     }
 
     public String getAddress1() {
