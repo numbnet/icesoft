@@ -17,6 +17,10 @@
 package org.icefaces.mobile;
 
 import java.io.Serializable;
+import java.lang.Double;
+import java.lang.String;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -24,7 +28,7 @@ import javax.faces.event.ActionEvent;
 
 
 /**
- * <p>The CameraBean is used to test camera component.</p>
+ * <p>used for geolocation and for augmentedReality</p>
  */
 @ManagedBean(name="positionBean")
 @SessionScoped
@@ -35,7 +39,13 @@ public class PositionBean implements Serializable {
     private Double altitude = 0.00;
     private boolean singleSubmit=false;
     private int errorCode = -1;
+    private List<LocationItem> locations = new ArrayList<LocationItem>();
 
+    public PositionBean(){
+        locations.add(new LocationItem("Calgary", 51.040733, -114.079556, 1048.0000, null));
+        locations.add(new LocationItem("New York", 43.658813, -79.487382, 1.0000, null));
+        locations.add(new LocationItem("Edmonton", 53.538198, -113.502964, 668.0000, null ));
+    }
  
     public void submitForm(ActionEvent event){
     	//System.out.println("submitting form");
@@ -85,5 +95,68 @@ public class PositionBean implements Serializable {
         this.longitude=0.00;
         this.errorCode = -1;
         this.altitude = 0.00;
+    }
+
+    public List<LocationItem> getLocations() {
+        return locations;
+    }
+
+    public void setLocations(List<LocationItem> locations) {
+        this.locations = locations;
+    }
+
+    public class LocationItem implements Serializable {
+        private String label;
+        private Double lat;
+        private Double lon;
+        private Double alt;
+        private String icon;
+
+        public LocationItem(String label, Double lat, Double lon, Double alt, String icon){
+            this.label=label;
+            this.lat = lat;
+            this.lon = lon;
+            this.alt = alt;
+            this.icon = icon;
+        }
+
+        public String getLabel(){
+             return this.label;
+        }
+        public void setLabel(String inlab){
+            this.label=inlab;
+        }
+
+        public Double getLat() {
+            return lat;
+        }
+
+        public void setLat(Double lat) {
+            this.lat = lat;
+        }
+
+        public Double getLon() {
+            return lon;
+        }
+
+        public void setLon(Double lon) {
+            this.lon = lon;
+        }
+
+        public Double getAlt() {
+            return alt;
+        }
+
+        public void setAlt(Double alt) {
+            this.alt = alt;
+        }
+
+        public String getIcon() {
+            return icon;
+        }
+
+        public void setIcon(String icon) {
+            this.icon = icon;
+        }
     }
 }
