@@ -103,3 +103,7 @@ This also overrides the indeterminate progress imagery. But the themes don't sup
 .textEntryInputTable td {
     padding-top: 8px;
 }
+
+.ui-datepicker-trigger {
+    border: 0;
+}
