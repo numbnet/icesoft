@@ -43,6 +43,13 @@
     <li><a href="../containerComponents.html">index page</a>
     </li>
 
+    <h5> loation selector</h5>
+    <h:form id="locForm">
+        <mobi:augmentedRealityLocations id="inputLoc" value="#{positionBean.locations}" var="item">
+            <mobi:locationItem locationLabel="#{item.label}" locationLat ="#{item.lat}" locationLon ="#{item.lon}"
+                               locationAlt = "#{item.alt}" locationIcon = "#{item.icon}"/>
+        </mobi:augmentedRealityLocations>
+    </h:form>
     <br />
     <h:form id="testForm">
             <mobi:augmentedReality value="Reality" id="agOne" params="myParams" />
