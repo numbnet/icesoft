@@ -696,7 +696,7 @@
         </attribute>
         <attribute>
             <name>id</name>
-            <required>no</required>
+            <required>yes</required>
             <rtexprvalue>true</rtexprvalue>
             <type>java.lang.String</type>
         </attribute>
@@ -753,6 +753,68 @@
             <required>no</required>
             <rtexprvalue>true</rtexprvalue>
             <type>int</type>
+        </attribute>
+    </tag>
+
+    <tag>
+        <description>TimeSpinner is an input control to provide a time.
+        </description>
+        <name>timeSpinner</name>
+        <tag-class>org.icemobile.jsp.tags.TimeSpinnerTag</tag-class>
+        <body-content>empty</body-content>
+        <attribute>
+            <name>disabled</name>
+            <required>no</required>
+            <rtexprvalue>true</rtexprvalue>
+            <type>boolean</type>
+        </attribute>
+        <attribute>
+            <name>id</name>
+            <required>yes</required>
+            <rtexprvalue>true</rtexprvalue>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <name>name</name>
+            <required>no</required>
+            <rtexprvalue>true</rtexprvalue>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <name>pattern</name>
+            <required>no</required>
+            <rtexprvalue>true</rtexprvalue>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <name>readonly</name>
+            <required>no</required>
+            <rtexprvalue>true</rtexprvalue>
+            <type>boolean</type>
+        </attribute>
+        <attribute>
+            <name>style</name>
+            <required>no</required>
+            <rtexprvalue>false</rtexprvalue>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <name>styleClass</name>
+            <required>no</required>
+            <rtexprvalue>false</rtexprvalue>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <name>useNative</name>
+            <required>no</required>
+            <rtexprvalue>true</rtexprvalue>
+            <type>boolean</type>
+        </attribute>
+        <attribute>
+            <name>value</name>
+            <required>no</required>
+            <rtexprvalue>true</rtexprvalue>
+            <type>java.lang.Object</type>
         </attribute>
     </tag>
 

@@ -13,7 +13,7 @@ import java.text.ParsePosition;
 /**
  *
  */
-public class DateSpinnerTag extends SimpleTagSupport {
+public class TimeSpinnerTag extends SimpleTagSupport {
 
     private String id;
     private String name;
@@ -25,33 +25,30 @@ public class DateSpinnerTag extends SimpleTagSupport {
     private String value;
     private boolean readOnly;
     private boolean useNative=true;
-    //    private Object Timezone;
-    private int yearStart;
-    private int yearEnd;
 
-    private int yearInt;
-    private int monthInt;
-    private int dayInt;
+    private int hourInt;
+    private int minuteInt;
+    private int ampmInt;
     private TagUtil tu;
 
-    public static final String BLACKOUT_PNL_CLASS = "mobi-date-bg";
-    public static final String BLACKOUT_PNL_INVISIBLE_CLASS = "mobi-date-bg-inv";
-    public static final String CONTAINER_CLASS = "mobi-date-container";
-    public static final String CONTAINER_INVISIBLE_CLASS = "mobi-date-container-inv";
+    public static final String BLACKOUT_PNL_CLASS = "mobi-time-bg";
+    public static final String BLACKOUT_PNL_INVISIBLE_CLASS = "mobi-time-bg-inv";
+    public static final String CONTAINER_CLASS = "mobi-time-container";
+    public static final String CONTAINER_INVISIBLE_CLASS = "mobi-time-container-inv";
     public static final String INPUT_CLASS = "mobi-input-text";
-    public static final String POP_UP_CLASS = "mobi-date-popup-btn";
-    public static final String TITLE_CLASS = "mobi-date-title-container";
-    public static final String SELECT_CONT_CLASS = "mobi-date-select-container";
-    public static final String VALUE_CONT_CLASS = "mobi-date-select-value-cont";
-    public static final String BUTTON_INC_CONT_CLASS = "mobi-date-btn-cont-incr";
-    public static final String BUTTON_INC_CLASS = "mobi-date-btn mobi-date-btn-incr";
-    public static final String SEL_VALUE_CLASS = "mobi-date-select-value";
-    public static final String BUTTON_DEC_CONT_CLASS = "mobi-date-btn-cont-decr";
-    public static final String BUTTON_DEC_CLASS = "mobi-date-btn mobi-date-btn-decr";
+    public static final String POP_UP_CLASS = "mobi-time-popup-btn";
+    public static final String TITLE_CLASS = "mobi-time-title-container";
+    public static final String SELECT_CONT_CLASS = "mobi-time-select-container";
+    public static final String VALUE_CONT_CLASS = "mobi-time-select-value-cont";
+    public static final String BUTTON_INC_CONT_CLASS = "mobi-time-btn-cont-incr";
+    public static final String BUTTON_INC_CLASS = "mobi-time-btn mobi-time-btn-incr";
+    public static final String SEL_VALUE_CLASS = "mobi-time-select-value";
+    public static final String BUTTON_DEC_CONT_CLASS = "mobi-time-btn-cont-decr";
+    public static final String BUTTON_DEC_CLASS = "mobi-time-btn mobi-time-btn-decr";
 
-    private static final String JS_NAME = "datespinner.js";
-    private static final String JS_MIN_NAME = "datespinner-min.js";
-    private static final String JS_LIBRARY = "org.icefaces.component.datespinner";
+    private static final String JS_NAME = "timespinner.js";
+    private static final String JS_MIN_NAME = "timespinner-min.js";
+    private static final String JS_LIBRARY = "org.icefaces.component.timespinner";
 
     public static final String TOUCH_START_EVENT = "ontouchstart";
     public static final String CLICK_EVENT = "onclick";
@@ -64,18 +61,26 @@ public class DateSpinnerTag extends SimpleTagSupport {
 	if (tu == null) tu = new TagUtil();
         if (useNative && tu.useNative(pageContext)) {
 	    out.write(tu.INPUT_TAG);
-            tu.writeAttribute(out,"type", "date");
+            tu.writeAttribute(out,"type", "time");
 	    tu.writeAttribute(out,"id", id);
-            if (!tu.isValueBlank(name)) {
+	    if (!tu.isValueBlank(name)) {
 		tu.writeAttribute(out,"name", name);
 	    }
+
+            if (pattern == null) {
+		pattern = new String("HH:mm");
+	    }
+            SimpleDateFormat df2 = new SimpleDateFormat(pattern);
             if (tu.isValueBlank(value)) {
-                SimpleDateFormat df2 = new SimpleDateFormat("yyyy-MM-dd");
                 Date aDate = new Date();
                 tu.writeAttribute(out,"value", df2.format(aDate));
-
             } else {
-                tu.writeAttribute(out,"value", value);
+                String clockVal24 = value;
+                if (!isFormattedDate(value, "HH:mm")) {
+                    clockVal24 = convertStringInput("EEE MMM dd hh:mm:ss zzz yyyy", pattern, value);
+                }
+                //check that only 24 hour clock came in.... as html5 input type="date" uses 24 hr clock
+                tu.writeAttribute(out,"value", clockVal24);
             }
             if (disabled) {
                 tu.writeAttribute(out,"disabled", "true");
@@ -91,7 +96,6 @@ public class DateSpinnerTag extends SimpleTagSupport {
         }
 	out.write(tu.A_TAG);
 	tu.writeAttribute(out,"id", id);
-
 	if (!tu.isValueBlank(name)) {
 	    tu.writeAttribute(out,"name", name);
 	}
@@ -105,29 +109,14 @@ public class DateSpinnerTag extends SimpleTagSupport {
         // check for a touch enable device and setup events accordingly
         String eventStr = tu.isTouchEventEnabled(context) ?
                 TOUCH_START_EVENT : CLICK_EVENT;
-        //prep for ajax submit
-	StringBuilder builder = new StringBuilder(255);
-        StringBuilder builder2 = new StringBuilder(255);
-        String inputCallStart = "ice.mobi.datespinner.inputSubmit('";
-        String jsCallStart = "ice.mobi.datespinner.select('";
-        builder2.append(id).append("',{ event: event, singlesubmit: false");
-        /*builder2.append("singleSubmit: ").append(singleSubmit);
-	if (hasBehaviors) {
-            String behaviors = this.encodeClientBehaviors(context, cbh, "change").toString();
-            behaviors = behaviors.replace("\"", "\'");
-            builder2.append(behaviors);
-	    }*/
-        builder2.append("});");
-        builder.append(jsCallStart).append(builder2);
-        StringBuilder inputCall = new StringBuilder(inputCallStart).append(builder2);
-        String jsCall = builder.toString();
 
         //first do the input field and the button
         // build out first input field
         writer.write(tu.SPAN_TAG);
-        tu.writeAttribute(writer, "id", id);
+	tu.writeAttribute(writer, "id", id);
+
         //tu.writeAttribute(writer, "name", name);
-        tu.writeAttribute(writer, "class", "mobi-date-wrapper");
+        tu.writeAttribute(writer, "class", "mobi-time-wrapper");
         writer.write("> " + tu.INPUT_TAG);
         tu.writeAttribute(writer, "id", id + "_input");
 	if (!tu.isValueBlank(name)) {
@@ -158,7 +147,7 @@ public class DateSpinnerTag extends SimpleTagSupport {
         tu.writeAttribute(writer, "id", id + "_hidden");
 	writer.write(">" + tu.INPUT_TAG_END);
 	writer.write(tu.SPAN_TAG_END);
-        // build out command button for show/hide of date select popup.
+        // build out command button for show/hide of time select popup.
         writer.write(tu.INPUT_TAG);
         tu.writeAttribute(writer, "type", "button");
         tu.writeAttribute(writer, "value", "");
@@ -168,14 +157,14 @@ public class DateSpinnerTag extends SimpleTagSupport {
         } else {
             // touch event can be problematic sometime not actualy getting called
             // for ui widgets that don't require rapid response then stick with onClick
-            tu.writeAttribute(writer, CLICK_EVENT, "ice.mobi.datespinner.toggle('" + id + "');");
+            tu.writeAttribute(writer, CLICK_EVENT, "ice.mobi.timespinner.toggle('" + id + "');");
         }
 	writer.write(">" + tu.INPUT_TAG_END);
 
-        // dive that is use to hide/show the popup screen black out, invisible by default.
+        // div that is use to hide/show the popup screen black out, invisible by default.
         writer.write(tu.DIV_TAG);
         tu.writeAttribute(writer, "id", id + "_bg");
-        tu.writeAttribute(writer, "class", "mobi-date-bg-inv");
+        tu.writeAttribute(writer, "class", CONTAINER_INVISIBLE_CLASS);
 	writer.write(">" + tu.DIV_TAG_END);
 
         // actual popup code.
@@ -191,55 +180,25 @@ public class DateSpinnerTag extends SimpleTagSupport {
         tu.writeAttribute(writer, "class", SELECT_CONT_CLASS);
         writer.write(">");
 
-        // if we have patter to work off then find out the best way to proceed. 
-        if (pattern != null) {
-            // use the index to decide the ordering type. 
-            int yStart = pattern.toLowerCase().indexOf("y");
-            int mStart = pattern.toLowerCase().indexOf("m");
-            int dStart = pattern.toLowerCase().indexOf("d");
-
-            // yyy MM dd
-            if (yStart < mStart && mStart < dStart) {
-                renderYearInput(writer, id, eventStr);
-                renderMonthInput(writer, id, eventStr);
-                renderDayInput(writer, id, eventStr);
-            } // yyyy/dd/MM
-            else if (yStart < dStart && dStart < mStart) {
-                renderYearInput(writer, id, eventStr);
-                renderDayInput(writer, id, eventStr);
-                renderMonthInput(writer, id, eventStr);
-            } // dd/MM/yyyy
-            else if (dStart < mStart && mStart < yStart) {
-                renderDayInput(writer, id, eventStr);
-                renderMonthInput(writer, id, eventStr);
-                renderYearInput(writer, id, eventStr);
-            } // MM/dd/yyyy
-            else if (mStart < dStart && dStart < yStart) {
-                renderMonthInput(writer, id, eventStr);
-                renderDayInput(writer, id, eventStr);
-                renderYearInput(writer, id, eventStr);
-            }  // default yyyy MM dd
-            else {
-                renderYearInput(writer, id, eventStr);
-                renderMonthInput(writer, id, eventStr);
-                renderDayInput(writer, id, eventStr);
-            }
-        }
-        // default yyyy MM dd
-        else {
-            renderYearInput(writer, id, eventStr);
-            renderMonthInput(writer, id, eventStr);
-            renderDayInput(writer, id, eventStr);
-        }
-
+	renderHourInput(writer, id, eventStr);
+	renderMinuteInput(writer, id, eventStr);
+	renderAmpmInput(writer, id, eventStr);
 	writer.write(tu.DIV_TAG_END);    //end of selection container
 
         writer.write(tu.DIV_TAG);                          //button container for set or cancel
-        tu.writeAttribute(writer, "class", "mobi-date-submit-container");
+        tu.writeAttribute(writer, "class", "mobi-time-submit-container");
         writer.write(">" + tu.INPUT_TAG);
         tu.writeAttribute(writer, "class", "mobi-button mobi-button-default");
         tu.writeAttribute(writer, "type", "button");
         tu.writeAttribute(writer, "value", "Set");
+
+        //prep for ajax submit
+        StringBuilder builder = new StringBuilder(255);
+	builder.append("ice.mobi.timespinner.select('");
+        builder.append(id).append("',{ event: event, singlesubmit: false");
+        builder.append("});");
+        String jsCall = builder.toString(); 
+
 	if (!isDisabled() && !isReadOnly()) {
             tu.writeAttribute(writer, CLICK_EVENT, jsCall);
 	}
@@ -249,7 +208,7 @@ public class DateSpinnerTag extends SimpleTagSupport {
         tu.writeAttribute(writer, "class", "mobi-button mobi-button-default");
         tu.writeAttribute(writer, "type", "button");
         tu.writeAttribute(writer, "value", "Cancel");
-        tu.writeAttribute(writer, CLICK_EVENT, "ice.mobi.datespinner.close('" + id + "');");
+        tu.writeAttribute(writer, CLICK_EVENT, "ice.mobi.timespinner.close('" + id + "');");
         writer.write(">" + tu.INPUT_TAG_END);
         writer.write(tu.DIV_TAG_END);                                        //end of button container
         writer.write(tu.DIV_TAG_END);                                         //end of entire container
@@ -257,29 +216,28 @@ public class DateSpinnerTag extends SimpleTagSupport {
 
     public void encodeScript(Writer writer) throws IOException {
         //need to initialize the component on the page and can also
-        //separate the value into yrInt, mthInt, dateInt for now just use contstants
+        //separate the value into yrInt, mthInt, timeInt for now just use contstants
         writer.write(tu.SPAN_TAG);
         tu.writeAttribute(writer, "id", id + "_script");
         writer.write(">" + tu.SCRIPT_TAG);
         tu.writeAttribute(writer, "text", "text/javascript");
-        writer.write(">ice.mobi.datespinner.init('" + id + "'," + yearInt + ","
-                + monthInt + "," + dayInt + ",'" + pattern + "');");
+        writer.write(">ice.mobi.timespinner.init('" + id + "'," + hourInt + ","
+                + minuteInt + "," + ampmInt + ",'" + pattern + "');");
         writer.write(tu.SCRIPT_TAG_END);
         writer.write(tu.SPAN_TAG_END);
     }
 
-    private String encodeValue(String initialValue) throws IOException {
-	System.out.println("***** Datespinner initialValue = " + value);
+    private String encodeValue( String initialValue) throws IOException {
         String value = "";
         Date aDate = new Date();
 	if (pattern == null) {
-	    pattern = new String("yyyy-MM-dd");
+	    pattern = new String("HH:mm");
 	}
         SimpleDateFormat df2 = new SimpleDateFormat(pattern);
         if (tu.isValueBlank(initialValue)) {
             //nothing values already set as default
         } else {
-	    try {
+            try {
                 if (isFormattedDate(initialValue, pattern)) {
                     value = initialValue;
                     aDate = df2.parse(value);
@@ -287,13 +245,13 @@ public class DateSpinnerTag extends SimpleTagSupport {
                     value = convertStringInput("EEE MMM dd hh:mm:ss zzz yyyy", pattern, initialValue); //converts to the patter the spinner is set for
                     aDate = df2.parse(value);
                 }
-	    } catch (Exception e) {
-		throw new IOException("Initial date value is invalid or does not match pattern");
-	    }
+            } catch (Exception e) {
+		throw new IOException("Initial time value is invalid or does not match pattern");
+            }
 
-	}
+        }
         this.setIntValues(aDate);
-	System.out.println("***** Datespinner encodeValue = " + value);
+	System.out.println("***** Timespinner encodeValue = " + value);
         return value;
     }
 
@@ -302,17 +260,18 @@ public class DateSpinnerTag extends SimpleTagSupport {
         return sdf.parse(inStr, new ParsePosition(0)) != null;
     }
 
-
     private void setIntValues(Date aDate) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(aDate);
-        yearInt = cal.get(Calendar.YEAR);
-        monthInt = cal.get(Calendar.MONTH) + 1;  //month is 0-indexed 0 = jan, 1=feb, etc
-        dayInt = cal.get(Calendar.DAY_OF_MONTH);
+        hourInt = cal.get(Calendar.HOUR);
+        if (0 == hourInt) {
+            hourInt = 12;
+        }
+        minuteInt = cal.get(Calendar.MINUTE);
+        ampmInt = cal.get(Calendar.AM_PM);
     }
 
-    private String convertStringInput(String patternIn, String patternOut,
-                                      String inString) {
+    private String convertStringInput(String patternIn, String patternOut, String inString) {
         SimpleDateFormat df1 = new SimpleDateFormat(patternIn);   //default date pattern
         SimpleDateFormat df2 = new SimpleDateFormat(patternOut);
         String returnString = inString;
@@ -321,45 +280,46 @@ public class DateSpinnerTag extends SimpleTagSupport {
             returnString = df2.format(aDate);
         } catch (Exception e) {
             //means that it was already in the pattern format so just return the inString
+            e.printStackTrace();
         }
         return returnString;
     }
 
-    private void renderDayInput(Writer writer,
+    private void renderHourInput(Writer writer,
                                 String clientId,
                                 String eventStr) throws IOException {
-        writer.write(tu.DIV_TAG);                             //date select container
+        writer.write(tu.DIV_TAG);                             //hour select container
         tu.writeAttribute(writer, "class", VALUE_CONT_CLASS);
         writer.write(">" + tu.DIV_TAG);                            //button increment
         tu.writeAttribute(writer, "class", BUTTON_INC_CONT_CLASS);
         writer.write(">" + tu.INPUT_TAG);
         tu.writeAttribute(writer, "class", BUTTON_INC_CLASS);
-        tu.writeAttribute(writer, "id", clientId + "_dUpBtn");
+        tu.writeAttribute(writer, "id", clientId + "_hrUpBtn");
         tu.writeAttribute(writer, "type", "button");
-        tu.writeAttribute(writer, eventStr, "ice.mobi.datespinner.dUp('" + clientId + "');");
+        tu.writeAttribute(writer, eventStr, "ice.mobi.timespinner.hrUp('" + clientId + "');");
 	writer.write(">" + tu.INPUT_TAG_END);
 	writer.write(tu.DIV_TAG_END);                          //end button incr
-        writer.write(tu.DIV_TAG);                          //day value
+        writer.write(tu.DIV_TAG);                          //hour value
         tu.writeAttribute(writer, "class", SEL_VALUE_CLASS);
-        tu.writeAttribute(writer, "id", clientId + "_dInt");
-        writer.write(">" + String.valueOf(dayInt));
-	writer.write(tu.DIV_TAG_END);                //end of day value
+        tu.writeAttribute(writer, "id", clientId + "_hrInt");
+        writer.write(">" + String.valueOf(hourInt));
+	writer.write(tu.DIV_TAG_END);                //end of hour value
         writer.write(tu.DIV_TAG);                          //button decrement
         tu.writeAttribute(writer, "class", BUTTON_DEC_CONT_CLASS);
         writer.write(">" + tu.INPUT_TAG);
         tu.writeAttribute(writer, "class", BUTTON_DEC_CLASS);
-        tu.writeAttribute(writer, "id", clientId + "_dDnBtn");
+        tu.writeAttribute(writer, "id", clientId + "_hrDnBtn");
         tu.writeAttribute(writer, "type", "button");
-        tu.writeAttribute(writer, eventStr, "ice.mobi.datespinner.dDn('" + clientId + "');");
+        tu.writeAttribute(writer, eventStr, "ice.mobi.timespinner.hrDn('" + clientId + "');");
 	writer.write(">" + tu.INPUT_TAG_END);
 	writer.write(tu.DIV_TAG_END);                             //end button decrement
-	writer.write(tu.DIV_TAG_END);                         //end of dateEntry select container
+	writer.write(tu.DIV_TAG_END);                         //end of timeEntry select container
     }
 
-    private void renderMonthInput(Writer writer,
-                                  String clientId,
-                                  String eventStr) throws IOException {
-        writer.write(tu.DIV_TAG);                             //month select container
+    private void renderMinuteInput(Writer writer,
+				   String clientId,
+				   String eventStr) throws IOException {
+        writer.write(tu.DIV_TAG);                             //minute select container
         tu.writeAttribute(writer, "class", VALUE_CONT_CLASS);
         writer.write(">" + tu.DIV_TAG);                            //button increment
         tu.writeAttribute(writer, "class", BUTTON_INC_CONT_CLASS);
@@ -367,59 +327,59 @@ public class DateSpinnerTag extends SimpleTagSupport {
         tu.writeAttribute(writer, "class", BUTTON_INC_CLASS);
         tu.writeAttribute(writer, "id", clientId + "_mUpBtn");
         tu.writeAttribute(writer, "type", "button");
-        tu.writeAttribute(writer, eventStr, "ice.mobi.datespinner.mUp('" + clientId + "');");
-        writer.write(">" + tu.INPUT_TAG_END);
-        writer.write(tu.DIV_TAG_END);                                        //end button incr
-        writer.write(tu.DIV_TAG);                             //month value
+        tu.writeAttribute(writer, eventStr, "ice.mobi.timespinner.mUp('" + clientId + "');");
+	writer.write(">" + tu.INPUT_TAG_END);
+	writer.write(tu.DIV_TAG_END);                          //end button incr
+        writer.write(tu.DIV_TAG);                          //minute value
         tu.writeAttribute(writer, "class", SEL_VALUE_CLASS);
         tu.writeAttribute(writer, "id", clientId + "_mInt");
-        writer.write(">" + String.valueOf(monthInt));
-        writer.write(tu.DIV_TAG_END);                          //end of month value
-        writer.write(tu.DIV_TAG);                             //button dectrement
+        writer.write(">" + String.valueOf(minuteInt));
+	writer.write(tu.DIV_TAG_END);                //end of minute value
+        writer.write(tu.DIV_TAG);                          //button decrement
         tu.writeAttribute(writer, "class", BUTTON_DEC_CONT_CLASS);
         writer.write(">" + tu.INPUT_TAG);
         tu.writeAttribute(writer, "class", BUTTON_DEC_CLASS);
         tu.writeAttribute(writer, "id", clientId + "_mDnBtn");
         tu.writeAttribute(writer, "type", "button");
-        tu.writeAttribute(writer, eventStr, "ice.mobi.datespinner.mDn('" + clientId + "');");
-        writer.write(">" + tu.INPUT_TAG_END);
-        writer.write(tu.DIV_TAG_END);                                        //end button decrement
-        writer.write(tu.DIV_TAG_END);                                //end of month select container
+        tu.writeAttribute(writer, eventStr, "ice.mobi.timespinner.mDn('" + clientId + "');");
+	writer.write(">" + tu.INPUT_TAG_END);
+	writer.write(tu.DIV_TAG_END);                             //end button decrement
+	writer.write(tu.DIV_TAG_END);                         //end of minute select container
     }
 
-    private void renderYearInput(Writer writer,
-                                 String clientId,
-                                 String eventStr) throws IOException {
-
-        int yMin = yearStart;
-        int yMax = yearEnd;
-
-        writer.write(tu.DIV_TAG);                             //year select container
+    private void renderAmpmInput(Writer writer,
+				 String clientId,
+				 String eventStr) throws IOException {
+        writer.write(tu.DIV_TAG);                             //ampm select container
         tu.writeAttribute(writer, "class", VALUE_CONT_CLASS);
         writer.write(">" + tu.DIV_TAG);                            //button increment
         tu.writeAttribute(writer, "class", BUTTON_INC_CONT_CLASS);
         writer.write(">" + tu.INPUT_TAG);
         tu.writeAttribute(writer, "class", BUTTON_INC_CLASS);
-        tu.writeAttribute(writer, "id", clientId + "_yUpBtn");
+        tu.writeAttribute(writer, "id", clientId + "_ampmUpBtn");
         tu.writeAttribute(writer, "type", "button");
-        tu.writeAttribute(writer, eventStr, "ice.mobi.datespinner.yUp('" + clientId + "'," + yMin + "," + yMax + ");");
-        writer.write(">" + tu.INPUT_TAG_END);
-        writer.write(tu.DIV_TAG_END);                                         //end button incr
-        writer.write(tu.DIV_TAG);                             //year value
+        tu.writeAttribute(writer, eventStr, "ice.mobi.timespinner.ampmToggle('" + clientId + "');");
+	writer.write(">" + tu.INPUT_TAG_END);
+	writer.write(tu.DIV_TAG_END);                          //end button incr
+        writer.write(tu.DIV_TAG);                          //ampm value
         tu.writeAttribute(writer, "class", SEL_VALUE_CLASS);
-        tu.writeAttribute(writer, "id", clientId + "_yInt");
-        writer.write(">" + String.valueOf(yearInt));
-        writer.write(tu.DIV_TAG_END);                                         //end of year value
-        writer.write(tu.DIV_TAG);                             //button decrement
+        tu.writeAttribute(writer, "id", clientId + "_ampmInt");
+        String ampm = "AM";
+        if (ampmInt > 0) {
+            ampm = "PM";
+        }
+        writer.write(">" + ampm);
+	writer.write(tu.DIV_TAG_END);                //end of ampm value
+        writer.write(tu.DIV_TAG);                          //button decrement
         tu.writeAttribute(writer, "class", BUTTON_DEC_CONT_CLASS);
         writer.write(">" + tu.INPUT_TAG);
         tu.writeAttribute(writer, "class", BUTTON_DEC_CLASS);
-        tu.writeAttribute(writer, "id", clientId + "_yDnBtn");
+        tu.writeAttribute(writer, "id", clientId + "_ampmBtn");
         tu.writeAttribute(writer, "type", "button");
-        tu.writeAttribute(writer, eventStr, "ice.mobi.datespinner.yDn('" + clientId + "'," + yMin + "," + yMax + ");");
-        writer.write(">" + tu.INPUT_TAG_END);
-        writer.write(tu.DIV_TAG_END);                                        //end button decrement
-        writer.write(tu.DIV_TAG_END);                                //end of year select container
+        tu.writeAttribute(writer, eventStr, "ice.mobi.timespinner.ampmToggle('" + clientId + "');");
+	writer.write(">" + tu.INPUT_TAG_END);
+	writer.write(tu.DIV_TAG_END);                             //end button decrement
+	writer.write(tu.DIV_TAG_END);                         //end of ampm select container
     }
 
     public String getId() {
@@ -492,21 +452,5 @@ public class DateSpinnerTag extends SimpleTagSupport {
 
     public void setPattern(String pattern) {
         this.pattern = pattern;
-    }
-
-    public int getYearEnd() {
-        return yearEnd;
-    }
-
-    public void setYearEnd(int yearEnd) {
-        this.yearEnd = yearEnd;
-    }
-
-    public int getYearStart() {
-        return yearStart;
-    }
-
-    public void setYearStart(int yearStart) {
-        this.yearStart = yearStart;
     }
 }
