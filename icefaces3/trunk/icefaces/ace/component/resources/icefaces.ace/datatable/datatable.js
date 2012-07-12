@@ -776,8 +776,8 @@ ice.ace.DataTable.prototype.resizeScrolling = function () {
         // Reset padding if added to offset scrollbar issues
         bodyTableParent.css('padding-right', '');
 
-        var unsizedVScrollShown = bodyTableParent.is(':scrollable'),
-            unsizedBodyVScrollShown = ice.ace.jq('html').is(':scrollable');
+        var unsizedVScrollShown = bodyTableParent.is(':scrollable(vertical)'),
+            unsizedBodyVScrollShown = ice.ace.jq('html').is(':scrollable(vertical)');
 
         // Show Duplicate Header / Footer
         dupeHead.css('display', 'table-header-group');
@@ -804,8 +804,8 @@ ice.ace.DataTable.prototype.resizeScrolling = function () {
         // exceed min-table size (causing scrollbar)
         var dupeCausesScrollChange = false,
             dupeCausesBodyScrollChange = false,
-            vScrollShown = bodyTable.parent().is(':scrollable'),
-            bodyVScrollShown = ice.ace.jq('html').is(':scrollable');
+            vScrollShown = bodyTable.parent().is(':scrollable(vertical)'),
+            bodyVScrollShown = ice.ace.jq('html').is(':scrollable(vertical)');
 
         if (!unsizedVScrollShown && vScrollShown)
             dupeCausesScrollChange = true;
@@ -817,7 +817,7 @@ ice.ace.DataTable.prototype.resizeScrolling = function () {
         if (!ie7) bodyTable.css('table-layout', 'auto');
 
         // IE7 scrollbar fix
-        if (bodyTable.size() > 0 && ie7 && bodyTable.parent().is(':scrollable')) {
+        if (bodyTable.size() > 0 && ie7 && bodyTable.parent().is(':scrollable(vertical)')) {
             bodyTable.parent().css('overflow-x', 'hidden');
             bodyTable.parent().css('padding-right', '17px');
             headerTable.parent().css('padding-right', '17px');
@@ -911,7 +911,7 @@ ice.ace.DataTable.prototype.resizeScrolling = function () {
         // Fix body scrollbar overlapping content
         // Instance check to prevent IE7 dynamic scrolling change errors
         // Recheck scrollable, it may have changed again post resize
-        if (vScrollShown && bodyTable.parent().is(':scrollable')) {
+        if (vScrollShown && bodyTable.parent().is(':scrollable(vertical)')) {
             if (((firefox) || ((safari || chrome) && !mac) || (ie9 || ie8)) && !dupeCausesScrollChange) {
                 var offset = firefox ? 14 : 17;
                 headerTable.parent().css('margin-right', offset + 'px');
@@ -996,7 +996,7 @@ ice.ace.DataTable.prototype.reorderColumns = function (oldIndex, newIndex) {
 
     if (this.behaviors)
         if (this.behaviors.reorder) {
-            ice.ace.ab(ice.ace.extendAjaxArgs(
+            ice.ace.ab(ice.ace.extendAjaxArguments(
                 this.behaviors.reorder,
                 options
             ));
@@ -1062,7 +1062,7 @@ ice.ace.DataTable.prototype.paginate = function (newState) {
 
     if (this.behaviors)
         if (this.behaviors.page) {
-            ice.ace.ab(ice.ace.extendAjaxArgs(
+            ice.ace.ab(ice.ace.extendAjaxArguments(
                 this.behaviors.page,
                 ice.ace.removeExecuteRenderOptions(options)
             ));
@@ -1106,7 +1106,7 @@ ice.ace.DataTable.prototype.sort = function (headerCells) {
 
     if (this.behaviors)
         if (this.behaviors.sort) {
-            ice.ace.ab(ice.ace.extendAjaxArgs(
+            ice.ace.ab(ice.ace.extendAjaxArguments(
                 this.behaviors.sort,
                 options
             ));
@@ -1164,7 +1164,7 @@ ice.ace.DataTable.prototype.filter = function (evn) {
 
     if (this.behaviors)
         if (this.behaviors.filter) {
-            ice.ace.ab(ice.ace.extendAjaxArgs(
+            ice.ace.ab(ice.ace.extendAjaxArguments(
                 this.behaviors.filter,
                 options
             ));
@@ -1268,13 +1268,13 @@ ice.ace.DataTable.prototype.doSelectionEvent = function (type, deselection, elem
 
         if (this.behaviors)
             if (this.behaviors.select && !deselection) {
-                ice.ace.ab(ice.ace.extendAjaxArgs(
+                ice.ace.ab(ice.ace.extendAjaxArguments(
                     this.behaviors.select,
                     ice.ace.removeExecuteRenderOptions(options)
                 ));
                 return;
             } else if (this.behaviors.deselect && deselection) {
-                ice.ace.ab(ice.ace.extendAjaxArgs(
+                ice.ace.ab(ice.ace.extendAjaxArguments(
                     this.behaviors.deselect,
                     ice.ace.removeExecuteRenderOptions(options)
                 ));
@@ -1362,7 +1362,7 @@ ice.ace.DataTable.prototype.doMultiRowSelectionEvent = function (lastIndex, curr
 
         if (this.behaviors)
             if (this.behaviors.select) {
-                ice.ace.ab(ice.ace.extendAjaxArgs(
+                ice.ace.ab(ice.ace.extendAjaxArguments(
                     this.behaviors.select,
                     ice.ace.removeExecuteRenderOptions(options)
                 ));
@@ -1425,7 +1425,7 @@ ice.ace.DataTable.prototype.sendPanelContractionRequest = function (row) {
 
     if (this.behaviors)
         if (this.behaviors.contract) {
-            ice.ace.ab(ice.ace.extendAjaxArgs(
+            ice.ace.ab(ice.ace.extendAjaxArguments(
                 this.behaviors.contract,
                 ice.ace.removeExecuteRenderOptions(options)
             ));
@@ -1457,7 +1457,7 @@ ice.ace.DataTable.prototype.sendRowContractionRequest = function (row) {
 
     if (this.behaviors)
         if (this.behaviors.contract) {
-            ice.ace.ab(ice.ace.extendAjaxArgs(
+            ice.ace.ab(ice.ace.extendAjaxArguments(
                 this.behaviors.contract,
                 ice.ace.removeExecuteRenderOptions(options)
             ));
@@ -1488,7 +1488,7 @@ ice.ace.DataTable.prototype.loadExpandedRows = function (row) {
 
     if (this.behaviors)
         if (this.behaviors.expand) {
-            ice.ace.ab(ice.ace.extendAjaxArgs(
+            ice.ace.ab(ice.ace.extendAjaxArguments(
                 this.behaviors.expand,
                 ice.ace.removeExecuteRenderOptions(options)
             ));
@@ -1519,7 +1519,7 @@ ice.ace.DataTable.prototype.loadExpandedPanelContent = function (row) {
 
     if (this.behaviors)
         if (this.behaviors.expand) {
-            ice.ace.ab(ice.ace.extendAjaxArgs(
+            ice.ace.ab(ice.ace.extendAjaxArguments(
                 this.behaviors.expand,
                 ice.ace.removeExecuteRenderOptions(options)
             ));
@@ -1580,7 +1580,7 @@ ice.ace.DataTable.prototype.doRowEditShowRequest = function (element) {
 
     if (this.behaviors)
         if (this.behaviors.editStart) {
-            ice.ace.ab(ice.ace.extendAjaxArgs(
+            ice.ace.ab(ice.ace.extendAjaxArguments(
                 this.behaviors.editStart,
                 options
             ));
@@ -1625,7 +1625,7 @@ ice.ace.DataTable.prototype.doRowEditCancelRequest = function (element) {
 
     if (this.behaviors)
         if (this.behaviors.editCancel) {
-            ice.ace.ab(ice.ace.extendAjaxArgs(
+            ice.ace.ab(ice.ace.extendAjaxArguments(
                 this.behaviors.editCancel,
                 options
             ));
@@ -1681,7 +1681,7 @@ ice.ace.DataTable.prototype.doRowEditSaveRequest = function (element) {
 
     if (this.behaviors)
         if (this.behaviors.editSubmit) {
-            ice.ace.ab(ice.ace.extendAjaxArgs(
+            ice.ace.ab(ice.ace.extendAjaxArguments(
                 this.behaviors.editSubmit,
                 options
             ));
