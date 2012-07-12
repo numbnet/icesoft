@@ -757,6 +757,7 @@ ice.ace.DataTable.prototype.resizeScrolling = function () {
             dupeFoot = bodyTable.find(' > tfoot');
 
         var dupeHeadCols = dupeHead.find('th > div.ui-header-column').get().reverse();
+        var dupeFootCols = dupeFoot.find('td > div.ui-footer-column').get().reverse();
 
         var realHeadCols = ice.ace.jq(this.jqId + ' .ui-datatable-scrollable-header:first > table > thead > tr > th > .ui-header-column').get().reverse();
         var realFootCols = ice.ace.jq(this.jqId + ' .ui-datatable-scrollable-footer:first > table > tfoot > tr > td > .ui-footer-column').get().reverse();
@@ -784,7 +785,7 @@ ice.ace.DataTable.prototype.resizeScrolling = function () {
         dupeFoot.css('display', 'table-footer-group');
 
         // Get Duplicate Header/Footer Sizing
-        var dupeHeadColumn, dupeHeadColumnWidths = [], bodySingleColWidths = [], realHeadColumn, realFootColumn, bodyColumn,
+        var dupeHeadColumn, dupeFootColumn, dupeHeadColumnWidths = [], bodySingleColWidths = [], dupeFootColumnWidths = [], realHeadColumn, realFootColumn, bodyColumn,
             safari = ice.ace.jq.browser.safari,
             chrome = ice.ace.jq.browser.chrome,
             mac = ice.ace.jq.browser.os == 'mac',
@@ -843,6 +844,11 @@ ice.ace.DataTable.prototype.resizeScrolling = function () {
                 bodyColumn = ice.ace.jq(bodySingleCols[i]);
                 bodySingleColWidths[i] = bodyColumn.width();
             }
+
+            for (var i = 0; i < dupeFootCols.length; i++) {
+                dupeFootColumn = ice.ace.jq(dupeFootCols[i]);
+                dupeFootColumnWidths[i] = dupeFootColumn.width();
+            }
         }
 
 
@@ -897,8 +903,8 @@ ice.ace.DataTable.prototype.resizeScrolling = function () {
 
             // Work around webkit bug described here: https://bugs.webkit.org/show_bug.cgi?id=13339
             var realFootColumnWidth = (safari)
-                ? dupeHeadColumnWidths[i] + parseInt(realFootColumn.parent().css('padding-right')) + parseInt(realFootColumn.parent().css('padding-left'))
-                : dupeHeadColumnWidths[i];
+                ? dupeFootColumnWidths[i] + parseInt(realFootColumn.parent().css('padding-right')) + parseInt(realFootColumn.parent().css('padding-left'))
+                : dupeFootColumnWidths[i];
 
             // Set Duplicate Header Sizing to True Header Columns
             realFootColumn.parent().width(realFootColumnWidth);
