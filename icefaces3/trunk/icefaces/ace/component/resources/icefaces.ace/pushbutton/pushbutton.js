@@ -89,7 +89,7 @@ ice.ace.pushbutton = {
                 params(function(name, value) {
                     p[name] = value;
                 });
-                ice.ace.ab(ice.ace.extendAjaxArgs(behaviors.activate, {params:p}));
+                ice.ace.ab(ice.ace.extendAjaxArguments(behaviors.activate, {params:p}));
             } else if (fullSubmit) {
                 ice.s(e, divRoot, params);
             } else {

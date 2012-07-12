@@ -245,28 +245,14 @@ public class CoreRenderer extends Renderer {
 
                 String script = null;
                 ClientBehaviorContext cbc = ClientBehaviorContext.createClientBehaviorContext(context, (UIComponent) component, event, clientId, params);
-                List<ClientBehavior> behaviorList = behaviorEvents.get(event);
-                JSONBuilder behaviorJSArray = null;
-
-                if (behaviorList.size() > 1) {
-                    behaviorJSArray = new JSONBuilder();
-                    behaviorJSArray.beginArray();
-                }
-
-				for(ClientBehavior behavior : behaviorList) {
+				for(Iterator<ClientBehavior> behaviorIter = behaviorEvents.get(event).iterator(); behaviorIter.hasNext();) {
+                    ClientBehavior behavior = behaviorIter.next();
                     //System.out.println("CoreRenderer.encodeClientBehaviors()      behavior: " + behavior);
 					if (behavior instanceof javax.faces.component.behavior.AjaxBehavior) continue; // ignore f:ajax
                     script = behavior.getScript(cbc);    //could be null if disabled
-                    if (behaviorJSArray != null)
-                        behaviorJSArray.item(script, false);
                     //System.out.println("CoreRenderer.encodeClientBehaviors()      script: " + script);
+                    break;
                 }
-
-                if (behaviorJSArray != null) {
-                    behaviorJSArray.endArray();
-                    script = behaviorJSArray.toString();
-                }
-
                 if (script != null && script.trim().length() > 0) {
                     jb.entry(domEvent, script, true);
                 }

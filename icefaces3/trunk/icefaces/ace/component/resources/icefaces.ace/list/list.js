@@ -116,7 +116,7 @@ ice.ace.List.prototype.sendMigrateRequest = function() {
 
     if (this.behaviors)
         if (this.behaviors.migrate) {
-            ice.ace.ab(ice.ace.extendAjaxArgs(this.behaviors.migrate, options));
+            ice.ace.ab(ice.ace.extendAjaxArguments(this.behaviors.migrate, options));
             return;
         }
 
