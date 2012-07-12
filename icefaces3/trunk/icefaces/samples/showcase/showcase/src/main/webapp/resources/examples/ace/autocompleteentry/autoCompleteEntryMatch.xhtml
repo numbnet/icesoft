@@ -45,6 +45,11 @@
                     <f:selectItem itemValue="exact" itemLabel="Exactly Matches Text"/>
                 </h:selectOneMenu>
                 
+                <h:outputLabel for="caseIn" value="Case Sensitive?:"/>
+                <h:selectBooleanCheckbox id="caseIn" value="#{autoCompleteEntryMatchBean.caseSensitive}">
+                    <f:ajax event="valueChange" render="@this autoComplete"/>
+                </h:selectBooleanCheckbox>
+                
                 <h:outputLabel for="textOut" value="Selected City:"/>
                 <h:outputText id="textOut" value="#{autoCompleteEntryMatchBean.selectedText}"
                               style="font-weight: bold;"/>
@@ -53,7 +58,8 @@
                 <ace:autoCompleteEntry id="autoComplete"
                                        value="#{autoCompleteEntryMatchBean.typedText}"
                                        rows="10" width="300"
-                                       filterMatchMode="#{autoCompleteEntryMatchBean.filterMode}">
+                                       filterMatchMode="#{autoCompleteEntryMatchBean.filterMode}"
+                                       caseSensitive="#{autoCompleteEntryMatchBean.caseSensitive}">
                     <f:selectItems value="#{autoCompleteEntryBean.cities}"/>
                 </ace:autoCompleteEntry>
             </h:panelGrid>
