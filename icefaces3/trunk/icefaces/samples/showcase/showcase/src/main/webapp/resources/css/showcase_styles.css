@@ -294,6 +294,10 @@ div.ui-widget.ui-widget-content.wijmo-wijmenu.ui-corner-all.ui-helper-clearfix.w
     width: 33%;
 }
 
+.col10 {
+    width: 10%;
+}
+
 .col25 {
     width: 25%;
 }

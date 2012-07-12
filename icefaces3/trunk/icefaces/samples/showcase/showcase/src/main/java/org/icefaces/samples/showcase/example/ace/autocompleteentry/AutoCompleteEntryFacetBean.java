@@ -37,32 +37,32 @@ import javax.faces.event.ActionEvent;
 
 @ComponentExample(
         parent = AutoCompleteEntryBean.BEAN_NAME,
-        title = "example.ace.autocompleteentry.complex.title",
-        description = "example.ace.autocompleteentry.complex.description",
-        example = "/resources/examples/ace/autocompleteentry/autoCompleteEntryComplex.xhtml"
+        title = "example.ace.autocompleteentry.facet.title",
+        description = "example.ace.autocompleteentry.facet.description",
+        example = "/resources/examples/ace/autocompleteentry/autoCompleteEntryFacet.xhtml"
 )
 @ExampleResources(
         resources ={
             // xhtml
             @ExampleResource(type = ResourceType.xhtml,
-                    title="autoCompleteEntryComplex.xhtml",
-                    resource = "/resources/examples/ace/autocompleteentry/autoCompleteEntryComplex.xhtml"),
+                    title="autoCompleteEntryFacet.xhtml",
+                    resource = "/resources/examples/ace/autocompleteentry/autoCompleteEntryFacet.xhtml"),
             // Java Source
             @ExampleResource(type = ResourceType.java,
-                    title="AutoCompleteEntryComplexBean.java",
+                    title="AutoCompleteEntryFacetBean.java",
                     resource = "/WEB-INF/classes/org/icefaces/samples/showcase"+
-                    "/example/ace/autocompleteentry/AutoCompleteEntryComplexBean.java")
+                    "/example/ace/autocompleteentry/AutoCompleteEntryFacetBean.java")
         }
 )
-@ManagedBean(name= AutoCompleteEntryComplexBean.BEAN_NAME)
+@ManagedBean(name= AutoCompleteEntryFacetBean.BEAN_NAME)
 @CustomScoped(value = "#{window}")
-public class AutoCompleteEntryComplexBean extends ComponentExampleImpl<AutoCompleteEntryComplexBean> implements Serializable
+public class AutoCompleteEntryFacetBean extends ComponentExampleImpl<AutoCompleteEntryFacetBean> implements Serializable
 {
-    public static final String BEAN_NAME = "autoCompleteEntryComplexBean";
+    public static final String BEAN_NAME = "autoCompleteEntryFacetBean";
 
-    public AutoCompleteEntryComplexBean() 
+    public AutoCompleteEntryFacetBean() 
     {
-        super(AutoCompleteEntryComplexBean.class);
+        super(AutoCompleteEntryFacetBean.class);
     }
     
     @PostConstruct
@@ -71,10 +71,15 @@ public class AutoCompleteEntryComplexBean extends ComponentExampleImpl<AutoCompl
     }
 
 	public List<City> cities;
+	private String selectedText;
 	
-	private String selectedText = null; // Text the user is typing in
-	public String getSelectedText() { return selectedText; }
-	public void setSelectedText(String selectedText) { this.selectedText = selectedText; }
+	public String getSelectedText() {
+	    return selectedText;
+	}
+	
+	public void setSelectedText(String selectedText) {
+	    this.selectedText = selectedText;
+	}
 	
 	public City getSelectedCity() { 
 		if (selectedText != null) {
@@ -84,6 +89,13 @@ public class AutoCompleteEntryComplexBean extends ComponentExampleImpl<AutoCompl
 		return null; 
 	}
 	
+    public List<City> getCities(){
+		if (cities == null) {
+			cities = AutoCompleteEntryData.getCities();
+		}
+        return cities;
+    }
+    
 	public void submitText(ActionEvent event) {
 		for (City city : cities) {
 			if (city.getName().equalsIgnoreCase(selectedText)) {
@@ -91,11 +103,4 @@ public class AutoCompleteEntryComplexBean extends ComponentExampleImpl<AutoCompl
 			}
 		}
 	}
-
-    public List<City> getCities(){
-		if (cities == null) {
-			cities = AutoCompleteEntryData.getCities();
-		}
-        return cities;
-    }
 }
