@@ -53,6 +53,7 @@ public class DatePopupBean extends ComponentExampleImpl<DatePopupBean> implement
 
     private Date selectedDate = new Date(System.currentTimeMillis());
     private boolean popup = true;
+    private boolean icon = true;
     
     public DatePopupBean() {
         super(DatePopupBean.class);
@@ -74,8 +75,16 @@ public class DatePopupBean extends ComponentExampleImpl<DatePopupBean> implement
     public boolean getPopup() {
         return popup;
     }
-
+    
+    public boolean getIcon() {
+        return icon;
+    }
+    
     public void setPopup(boolean popup) {
         this.popup = popup;
+    }
+    
+    public void setIcon(boolean icon) {
+        this.icon = icon;
     }
 }
