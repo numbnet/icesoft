@@ -107,6 +107,7 @@ public class DeviceResourceTag extends SimpleTagSupport {
 
         // check for the existence of the name and library attributes.
         String nameVal = getName();
+        String fileName = nameVal;
         String libVal = getLibrary();
 
         String viewVal = getView();
@@ -143,11 +144,10 @@ public class DeviceResourceTag extends SimpleTagSupport {
                 nameVal = TagUtil.getDeviceType(userAgent).name();
             }
 
-            nameVal.concat(CSS_EXT);
-
             // load compressed css if this is production environment.
+            fileName = nameVal;
             if (applicationStage != null && "production".equalsIgnoreCase(applicationStage)) {
-                nameVal = nameVal.concat(CSS_COMPRESSION_POSTFIX);
+                fileName = fileName.concat(CSS_COMPRESSION_POSTFIX);
             }
             libVal = DEFAULT_LIBRARY;
 
@@ -164,7 +164,7 @@ public class DeviceResourceTag extends SimpleTagSupport {
         }
 
 //        String cssfile =  libVal + "/" + nameVal;
-        String cssfile = resourceRoot + "/" + libVal + "/" + nameVal + "/" +nameVal;
+        String cssfile = resourceRoot + "/" + libVal + "/" + nameVal + "/" +fileName;
 
         try {
             out.write("<link type=\"text/css\" rel=\"stylesheet\" href=\"" + cssfile + ".css\" />");
