@@ -14,6 +14,11 @@
         <param-value>resources</param-value>
     </context-param>
 
+    <context-param>
+        <param-name>org.icemobile.project.stage</param-name>
+        <param-value>production</param-value>
+    </context-param>
+
 
     <!-- Creates the Spring Container shared by all Servlets and Filters -->
     <listener>
