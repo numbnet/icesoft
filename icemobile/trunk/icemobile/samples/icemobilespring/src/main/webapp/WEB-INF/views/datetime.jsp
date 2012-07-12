@@ -16,6 +16,7 @@
     </head>
     <body>
 </c:if>
+
     <div class="ajaxzone">
     <form:form id="datetimeform" method="POST" modelAttribute="dateTimeSpinnerBean">
 
@@ -23,8 +24,13 @@
         <mobi:fieldSetGroup inset="true">
             <mobi:fieldSetRow>
                 <label>Date Spinner</label>
-                <mobi:dateSpinner name="dateOne" 
+                <mobi:dateSpinner name="dateOne" id="d1"
                         value="${dateTimeSpinnerBean.dateOne}"/>
+            </mobi:fieldSetRow>
+            <mobi:fieldSetRow>
+                <label>Time Spinner</label>
+                <mobi:timeSpinner name="timeOne" id="t1" 
+                        value="${dateTimeSpinnerBean.timeOne}"/>
             </mobi:fieldSetRow>
         </mobi:fieldSetGroup>
         <h4>Spinner Value Echo</h4>
@@ -32,6 +38,10 @@
             <mobi:fieldSetRow>
                 <label>Date</label>
                 <label style="float:right">${dateTimeSpinnerBean.dateOne}</label>
+            </mobi:fieldSetRow>
+            <mobi:fieldSetRow>
+                <label>Time</label>
+                <label style="float:right">${dateTimeSpinnerBean.timeOne}</label>
             </mobi:fieldSetRow>
         </mobi:fieldSetGroup>
         <%-- button types: default|important|attention| back--%>
