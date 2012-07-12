@@ -99,7 +99,7 @@ ice.ace.ProgressBar.prototype.fireCompleteEvent = function() {
 	    
     if (completeListener) {
         options.params[this.id] = this.id; // also triggers listener, if any
-        ice.ace.ab(ice.ace.extendAjaxArgs(
+        ice.ace.ab(ice.ace.extendAjaxArguments(
                 completeListener,
                 ice.ace.removeExecuteRenderOptions(options)
         ));
@@ -127,7 +127,7 @@ ice.ace.ProgressBar.prototype.changeListener = function(ev, ui) {
 
     if (changeListener) {
         options.params[this.id] = this.id; // also triggers listener, if any
-        ice.ace.ab(ice.ace.extendAjaxArgs(
+        ice.ace.ab(ice.ace.extendAjaxArguments(
                 changeListener,
                 ice.ace.removeExecuteRenderOptions(options)
         ));
@@ -157,7 +157,7 @@ ice.ace.ProgressBar.prototype.cancel = function() {
 
     if (cancelListener) {
         options.params[this.id] = this.id; // also triggers listener, if any
-        ice.ace.ab(ice.ace.extendAjaxArgs(
+        ice.ace.ab(ice.ace.extendAjaxArguments(
                 cancelListener,
                 ice.ace.removeExecuteRenderOptions(options)
         ));

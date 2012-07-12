@@ -110,7 +110,7 @@ ice.ace.linkButton = {
             params(function(name, value) {
                 p[name] = value;
             });
-            ice.ace.ab(ice.ace.extendAjaxArgs(behaviors.activate, {params:p}));
+            ice.ace.ab(ice.ace.extendAjaxArguments(behaviors.activate, {params:p}));
         } else if (doAction) {
             ice.s(e, divRoot, params);
         } else if (!hrefAttr) {
@@ -150,7 +150,7 @@ ice.ace.linkButton = {
             params(function(name, value) {
                 p[name] = value;
             });
-            ice.ace.ab(ice.ace.extendAjaxArgs(behaviors.activate, {params:p}));
+            ice.ace.ab(ice.ace.extendAjaxArguments(behaviors.activate, {params:p}));
         } else if (doAction) {
             ice.s(e, divRoot, params);
         } else {

@@ -262,7 +262,7 @@ ice.ace.TableConf.prototype.submitTableConfig = function (target) {
 
     if (this.behaviors)
         if (this.behaviors.submit) {
-            ice.ace.ab(ice.ace.extendAjaxArgs(this.behaviors.submit,{'params':params}));
+            ice.ace.ab(ice.ace.extendAjaxArguments(this.behaviors.submit,{'params':params}));
             return;
         }
 

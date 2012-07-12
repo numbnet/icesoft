@@ -139,7 +139,7 @@ ice.ace.AccordionPanel.prototype.fireAjaxTabChangeEvent = function(panel) {
     options.params = params;
 
     if (behaviourArgs) {
-        ice.ace.ab(ice.ace.extendAjaxArgs(
+        ice.ace.ab(ice.ace.extendAjaxArguments(
                 behaviourArgs,
                 ice.ace.removeExecuteRenderOptions(options)
         ));
