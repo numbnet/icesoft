@@ -180,14 +180,21 @@ $.extend(Timepicker.prototype, {
 	// add our sliders to the calendar
 	//########################################################################
 	_addTimePicker: function(dp_inst) {
-		var currDT = (this.$altInput && this._defaults.altFieldTimeOnly) ?
-				this.$input.val() + ' ' + this.$altInput.val() :
-				this.$input.val();
+        var currDT;
+        if (this.$altInput) {
+            if (this._defaults.altFieldTimeOnly) {
+                currDT = this.$input.val() + ' ' + this.$altInput.val();
+            } else {
+                currDT = this.$altInput.val();
+            }
+        } else {
+            currDT = this.$input.val();
+        }
 
-		this.timeDefined = this._parseTime(currDT);
-		this._limitMinMaxDateTime(dp_inst, false);
-		this._injectTimePicker();
-	},
+        this.timeDefined = this._parseTime(currDT);
+        this._limitMinMaxDateTime(dp_inst, false);
+        this._injectTimePicker();
+    },
 
 	//########################################################################
 	// parse the time string from input value or _setTime
