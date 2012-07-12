@@ -25,42 +25,44 @@
     xmlns:ui="http://java.sun.com/jsf/facelets"
     template="/resources/templates/content-template.xhtml">
 
-    <ui:param name="title" value="#{msgs[autoCompleteEntryLazyBean.title]}"/>
-    <ui:param name="description" value="#{msgs[autoCompleteEntryLazyBean.description]}"/>
-    <ui:param name="resourceValue" value="#{autoCompleteEntryLazyBean.exampleResource}"/>
+    <ui:param name="title" value="#{msgs[autoCompleteEntryFacetBean.title]}"/>
+    <ui:param name="description" value="#{msgs[autoCompleteEntryFacetBean.description]}"/>
+    <ui:param name="resourceValue" value="#{autoCompleteEntryFacetBean.exampleResource}"/>
     
     <ui:param name="wikiResources" value="#{autoCompleteEntryResources.wikiResources}"/>
     <ui:param name="tldResources" value="#{autoCompleteEntryResources.tldResources}"/>
 
     <ui:define name="example">
+        
+        <h:panelGrid columns="2">
+            <h:outputLabel for="cityOut" value="City:"/>
+            <h:outputText id="cityOut" value="#{autoCompleteEntryFacetBean.selectedCity.name} #{autoCompleteEntryFacetBean.selectedCity.country}"/>
+            
+            <h:outputLabel for="latOut" value="Latitude:"/>
+            <h:outputText id="latOut" value="#{autoCompleteEntryFacetBean.selectedCity.latitude}"/>
+                          
+            <h:outputLabel for="longOut" value="Longitude:"/>
+            <h:outputText id="longOut" value="#{autoCompleteEntryFacetBean.selectedCity.longitude}"/>
+                          
+            <h:outputLabel for="altOut" value="Altitude:"/>
+            <h:outputText id="altOut" value="#{autoCompleteEntryFacetBean.selectedCity.altitude}"/>
+		</h:panelGrid>
+		<br />
+		
         <h:form id="inputForm">
-            <h:panelGrid columns="2">
-                <h:outputLabel for="cityOut" value="City:"/>
-                <h:outputText id="cityOut" value="#{autoCompleteEntryLazyBean.selectedCity.name} #{autoCompleteEntryLazyBean.selectedCity.country}"/>
-                
-                <h:outputLabel for="latOut" value="Latitude:"/>
-                <h:outputText id="latOut" value="#{autoCompleteEntryLazyBean.selectedCity.latitude}"/>
-                              
-                <h:outputLabel for="longOut" value="Longitude:"/>
-                <h:outputText id="longOut" value="#{autoCompleteEntryLazyBean.selectedCity.longitude}"/>
-                              
-                <h:outputLabel for="altOut" value="Altitude:"/>
-                <h:outputText id="altOut" value="#{autoCompleteEntryLazyBean.selectedCity.altitude}"/>
-            </h:panelGrid>
-            <br />
-            <ace:autoCompleteEntry id="autoCompleteEntryLazy"
-                                   value="#{autoCompleteEntryLazyBean.selectedText}"
-                                   actionListener="#{autoCompleteEntryLazyBean.submitText}"
+            <ace:autoCompleteEntry id="autoCompleteFacet"
+                                   value="#{autoCompleteEntryFacetBean.selectedText}"
+                                   actionListener="#{autoCompleteEntryFacetBean.submitText}"
                                    rows="10" width="300"
-                                   filterMatchMode="none"
+                                   filterMatchMode="startsWith"
                                    listVar="city"
-                                   listValue="#{autoCompleteEntryLazyBean.cities}"
+                                   listValue="#{autoCompleteEntryFacetBean.cities}"
                                    filterBy="#{city.name}"
-                                   valueChangeListener="#{autoCompleteEntryLazyBean.valueChangeEventHandler}"
-                                   label="Lazily Filtered City List:"
+                                   label="Autocomplete City List:"
                                    labelPosition="left">
                  <f:facet name="row">
-                    <h:panelGrid columns="2" width="100%" columnClasses="col50,col25">
+                    <h:panelGrid columns="3" width="100%" columnClasses="col10,col50,col25">
+                        <h:graphicImage library="css/images" name="house.png"/>
                         <h:outputText value="#{city.name}" />
                         <h:outputText value="#{city.country}" />
                     </h:panelGrid>
