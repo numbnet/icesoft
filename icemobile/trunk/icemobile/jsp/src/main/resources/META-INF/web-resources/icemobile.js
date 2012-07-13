@@ -186,10 +186,8 @@ ice.mobi.carousel = {
     loaded: function(clientId) {
         var carouselId = clientId + '_carousel';
         //carousel iscroll loading
-        //    ice.log.debug(ice.log, 'in the carouselLoaded method clientId is '+clientId);
         setTimeout(function () {
             if (this.acarousel) {
-                //   ice.log.debug(ice.log, 'REFRESH existing carousel='+this.acarousel);
                 mobi.carousel.refresh(clientId);
             }
             else {
@@ -203,11 +201,9 @@ ice.mobi.carousel = {
                 });
             }
         }, 100);
-//	               ice.log.debug(ice.log,"after setTimeout function");
     },
     unloaded: function(clientId) {
         if (this.acarousel != null) {
-            //        ice.log.debug(ice.log, 'DESTROY carousel with id='+clientId);
             this.acarousel.destroy();
             this.acarousel = null;
         }
@@ -215,7 +211,6 @@ ice.mobi.carousel = {
 
     scrollUpdate: function(clientId, pageVal) {
         //only update if different than last one.
-        //         ice.log.debug(ice.log, 'scrollUpdate and current page is='+pageVal);
         var hidden = document.getElementById(clientId + '_hidden');
         var changedVal = false;
         if (hidden) {
@@ -238,7 +233,6 @@ ice.mobi.carousel = {
             var hidden = document.getElementById(clientId + "_hidden");
             if (hidden) {
                 currPageX = hidden.value;
-//				   ice.log.debug(ice.log, 'in refresh and currPageX ='+this.currPageX+' hiddenVal is ='+hidden.value);
             }
             //if this.current is different from hidden, then scroll to hidden value.
             this.acarousel.scrollToPage(currPageX);
@@ -884,7 +878,97 @@ ice.mobi.datespinner = {
         this.pattern[clientId] = null;
         this.opened[clientId] = null;
     }
-};
+}
+
+ice.mobi.panelpopup = {
+    visible:{},
+    centerCalculation:{},
+    cfg:{},
+    init:function (clientId, cfgIn) {
+        this.cfg[clientId] = cfgIn;
+        var cfg = this.cfg[clientId];
+        var visible = cfg.visible;
+        var autoCenter = cfg.autocenter;
+        var containerId = clientId + "_popup";
+
+        //if nothing already in client saved state, then we use the server passed value
+        if (!this.visible[clientId]) {
+            this.visible[clientId] = visible;
+        }
+
+        if (this.visible[clientId]) {
+            this.open(clientId);
+        } else {
+            this.close(clientId);
+        }
+    },
+    // only called when in client side mode
+    open:function (clientId) {
+        var idPanel = clientId + "_bg";
+        var containerId = clientId + "_popup";
+        var cfg = this.cfg[clientId];
+        var autocenter = cfg.autocenter;
+        var scrollEvent = 'ontouchstart' in window ? "touchmove" : "scroll";
+
+        document.getElementById(idPanel).className = "mobi-panelpopup-bg ";
+        document.getElementById(containerId).className = "mobi-panelpopup-container ";
+
+        if (autocenter) {
+            // add scroll listener
+            this.centerCalculation[clientId] = function () {
+                ice.mobi.panelAutoCenter(containerId);
+            };
+
+            if (window.addEventListener) {
+                window.addEventListener(scrollEvent, this.centerCalculation[clientId], false);
+                window.addEventListener('resize', this.centerCalculation[clientId], false);
+            } else { // older ie event listener
+                window.attachEvent(scrollEvent, this.centerCalculation[clientId]);
+                window.attachEvent("resize", this.centerCalculation[clientId]);
+            }
+            // calculate center for first view
+            ice.mobi.panelAutoCenter(containerId);
+        }
+
+        this.visible[clientId] = true;
+        this.updateHidden(clientId, true);
+    },
+    // only called when in client side mode
+    close:function (clientId) {
+        var idPanel = clientId + "_bg";
+        var cfg = this.cfg[clientId];
+        var autocenter = cfg.autocenter;
+        var scrollEvent = 'ontouchstart' in window ? "touchmove" : "scroll";
+
+        document.getElementById(idPanel).className = "mobi-panelpopup-bg-hide ";
+        document.getElementById(clientId + "_popup").className = "mobi-panelpopup-container-hide ";
+
+        if (autocenter) {
+            if (window.removeEventListener) {
+                window.removeEventListener(scrollEvent, this.centerCalculation[clientId], false);
+                window.removeEventListener('resize', this.centerCalculation[clientId], false);
+            } else { // older ie cleanup
+                window.detachEvent(scrollEvent, this.centerCalculation[clientId], false);
+                window.detachEvent('resize', this.centerCalculation[clientId], false);
+            }
+            this.centerCalculation[clientId] = undefined;
+        }
+
+        this.visible[clientId] = false;
+        this.updateHidden(clientId, false);
+    },
+    updateHidden:function (clientId, visible) {
+        var hidden = document.getElementById(clientId);
+        if (hidden) {
+            hidden.value = visible;
+        }
+    },
+    unload:function (clientId) {
+        this.cfg[clientId] = null;
+        this.visible[clientId] = null;
+    }
+
+}
 
 ice.mobi.timespinner = {
     pattern:{}, //only supports 'hh:mm a' at this time.
@@ -1016,7 +1100,9 @@ ice.mobi.timespinner = {
         if (element) {
             var stringEl = element.innerHTML;
             return parseInt(stringEl);
-        } else return 1;
+        } else {
+            return 1;
+        }
     },
     select:function (clientId, cfg) {
         this.cfg = cfg;
@@ -1036,7 +1122,7 @@ ice.mobi.timespinner = {
             }
         }
         if (!hasBehaviors && singleSubmit) {
-	    alert("should never get here");
+            alert("should never get here");
             ice.se(event, clientId);
         }
         this.close(clientId);
