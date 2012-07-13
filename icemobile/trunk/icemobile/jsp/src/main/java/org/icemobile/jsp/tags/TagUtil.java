@@ -64,6 +64,8 @@ public class TagUtil {
     public static String SECTION_TAG = "<section";
     public static String SECTION_TAG_END = "</section>";
 
+    public static String JS_BOILER = " type=\"text/javascript\"";
+
 
     public enum DeviceType {
         android,
@@ -86,14 +88,14 @@ public class TagUtil {
      */
     public static boolean isEnhancedBrowser(PageContext pageContext) {
         HttpServletRequest request = (HttpServletRequest)
-                                             pageContext.getRequest();
+            pageContext.getRequest();
         Cookie[] cookies = request.getCookies();
         if (null == cookies) {
             return false;
         }
         for (int i = 0; i < cookies.length; i++) {
             if (USER_AGENT_COOKIE.equals(cookies[i].getName()) &&
-                        cookies[i].getValue().startsWith(HYPERBROWSER)) {
+                cookies[i].getValue().startsWith(HYPERBROWSER)) {
                 return true;
             }
         }
@@ -103,7 +105,7 @@ public class TagUtil {
     public static String getICEmobileSXScript(PageContext pageContext,
                                               String command, String id) {
         HttpServletRequest request = (HttpServletRequest)
-                                             pageContext.getRequest();
+            pageContext.getRequest();
         String sessionID = null;
         HttpSession httpSession = pageContext.getSession();
         if (null != httpSession) {
@@ -112,8 +114,8 @@ public class TagUtil {
         String uploadURL = getUploadURL(request);
         String fullCommand = command + "?id=" + id;
         String script = "window.location=\"icemobile://c=" +
-                                URLEncoder.encode(fullCommand) +
-                                "&r=\"+escape(window.location)+\"";
+            URLEncoder.encode(fullCommand) +
+            "&r=\"+escape(window.location)+\"";
         if (null != sessionID) {
             script += "&JSESSIONID=" + getSessionIdCookie(sessionID);
         }
@@ -139,10 +141,10 @@ public class TagUtil {
         String serverName = request.getHeader("x-forwarded-host");
         if (null == serverName) {
             serverName = request.getServerName() + ":" +
-                                 request.getServerPort();
+                request.getServerPort();
         }
         return "http://" + serverName +
-                       getUploadPath(request);
+            getUploadPath(request);
     }
 
     public static String getBaseURL(ServletRequest request) {
@@ -150,10 +152,10 @@ public class TagUtil {
         String serverName = httpRequest.getHeader("x-forwarded-host");
         if (null == serverName) {
             serverName = httpRequest.getServerName() + ":" +
-                                 httpRequest.getServerPort();
+                httpRequest.getServerPort();
         }
         return httpRequest.getScheme() + "://" + serverName +
-                       httpRequest.getContextPath() + "/";
+            httpRequest.getContextPath() + "/";
     }
 
     public static String getUploadPath(HttpServletRequest request) {
@@ -164,7 +166,7 @@ public class TagUtil {
 
 
     static Logger log = Logger.getLogger(
-                                                TagUtil.class.getName());
+        TagUtil.class.getName());
 
     //each device has list of info about device and capabilities
     public static final String DEVICE_IPHONE = "iPhone";
@@ -184,7 +186,7 @@ public class TagUtil {
 
     public static boolean isTouchEventEnabled(PageContext pageContext) {
         HttpServletRequest request = (HttpServletRequest)
-                                             pageContext.getRequest();
+            pageContext.getRequest();
         String userAgent = request.getHeader(USER_AGENT);
         if (sniffAndroidTablet(userAgent)) {
             return false;
@@ -195,34 +197,34 @@ public class TagUtil {
         return false;
     }
 
-    public static boolean useNative(PageContext pageContext)  {
+    public static boolean useNative(PageContext pageContext) {
         return isIOS5orHigher(pageContext);
     }
 
     public static boolean isIOS5orHigher(PageContext pageContext) {
         HttpServletRequest request = (HttpServletRequest)
-                                             pageContext.getRequest();
+            pageContext.getRequest();
         String userAgent = request.getHeader(USER_AGENT);
         return sniffIOS5(userAgent);
     }
 
     public static boolean isIOS(PageContext pageContext) {
         HttpServletRequest request = (HttpServletRequest)
-                                             pageContext.getRequest();
+            pageContext.getRequest();
         String userAgent = request.getHeader(USER_AGENT);
         return sniffIOS(userAgent);
     }
 
     public static boolean isAndroid(PageContext pageContext) {
         HttpServletRequest request = (HttpServletRequest)
-                                             pageContext.getRequest();
+            pageContext.getRequest();
         String userAgent = request.getHeader(USER_AGENT);
         return sniffAndroid(userAgent);
     }
 
     public static boolean isBlackBerry(PageContext pageContext) {
         HttpServletRequest request = (HttpServletRequest)
-                                             pageContext.getRequest();
+            pageContext.getRequest();
         String userAgent = request.getHeader(USER_AGENT);
         String accept = request.getHeader(ACCEPT);
         return sniffBlackberry(userAgent, accept);
@@ -237,8 +239,8 @@ public class TagUtil {
     //don't get iPhone confused with iPod touch
     static boolean sniffIphone(String uaString) {
         boolean result = uaString.toLowerCase().contains(DEVICE_IPHONE.toLowerCase())
-                                 && !sniffIpod(uaString)
-                                 && !sniffIpad(uaString);
+            && !sniffIpod(uaString)
+            && !sniffIpad(uaString);
         logSniff(result, "iPod", uaString);
         return result;
     }
@@ -270,7 +272,7 @@ public class TagUtil {
 
     static boolean sniffAndroidTablet(String uaString) {
         boolean result = uaString.toLowerCase().contains(DEVICE_HONEYCOMB) ||
-                                 (uaString.contains(DEVICE_ANDROID) && !uaString.contains("mobile safari"));
+            (uaString.contains(DEVICE_ANDROID) && !uaString.contains("mobile safari"));
         // android tablet won't have the "mobile" on the agent at least for 3.x
         logSniff(result, "Android Tablet", uaString);
         return result;
@@ -278,7 +280,7 @@ public class TagUtil {
 
     static boolean sniffBlackberry(String uaString, String httpAccept) {
         boolean result = uaString.toLowerCase().contains(DEVICE_BLACKB)
-                                 || httpAccept.contains(VND_RIM);
+            || httpAccept.contains(VND_RIM);
         logSniff(result, "BlackBerry", uaString);
         return result;
     }
@@ -322,14 +324,16 @@ public class TagUtil {
         return DeviceType.DEFAULT;
     }
 
-    public void writeAttribute(Writer out, String name, String value) throws IOException {
+    public void writeAttribute(Writer out, String name, String value) throws
+        IOException {
         out.write(" " + name + "=\"" + value + "\"");
     }
 
     public boolean isValueBlank(String value) {
-	if (value == null)
-	    return true;
-	return value.trim().equals("");
+        if (value == null) {
+            return true;
+        }
+        return value.trim().equals("");
     }
 
     /*    protected void writeJavascriptFile(FacesContext facesContext, 
