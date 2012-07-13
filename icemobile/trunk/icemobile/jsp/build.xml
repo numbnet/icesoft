@@ -60,7 +60,7 @@
     </target>
 
     <target name="pre.compile" description="prepare for compilation"
-            depends="clean">
+            depends="">
         <mkdir dir="${build.dir}"/>
         <mkdir dir="${build.dir}/classes"/>
         <mkdir dir="${dist.dir}"/>
