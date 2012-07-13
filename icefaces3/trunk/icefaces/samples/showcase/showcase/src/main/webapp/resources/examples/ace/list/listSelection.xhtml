@@ -55,27 +55,6 @@
                     </h:panelGroup>
                 </h:panelGrid>
             </h:panelGroup>
-
-            <hr style="margin:1em .6em;"/>
-
-            <h3>Ajax Selection</h3>
-            <h:panelGroup id="panelGroup4" style="padding: 0 0.5em;" layout="block">
-                <h:panelGrid id="panelGrid2" columns="2" style="margin-left:auto; margin-right:auto;" cellspacing="30">
-                    <ace:list id="list2" value="#{backing.ajaxStringList}"
-                              selections="#{backing.ajaxSelections}"
-                              selectionMode="multiple"
-                              dragging="false" >
-                        <ace:ajax event="select" render="@form" />
-                        <ace:ajax event="deselect" render="@form" />
-                    </ace:list>
-
-                    <h:panelGroup id="panelGroup5">
-                        <ui:repeat id="repeater2" value="#{backing.ajaxStringList}" var="selectItem">
-                            <h:outputText id="outputText2" value="#{selectItem.value}" /> - #{backing.ajaxSelections.contains(selectItem)}<br/>
-                        </ui:repeat>
-                    </h:panelGroup>
-                </h:panelGrid>
-            </h:panelGroup>
         </h:form>
     </ui:define>
 </ui:composition>

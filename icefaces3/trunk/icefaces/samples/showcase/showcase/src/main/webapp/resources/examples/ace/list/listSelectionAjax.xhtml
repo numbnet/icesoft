@@ -24,32 +24,32 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 template="/resources/templates/content-template.xhtml">
 
-    <ui:param value="#{listReorderBean}" name="backing" />
+    <ui:param value="#{listSelectionAjaxBean}" name="backing" />
     <ui:param name="title" value="#{msgs[backing.title]}"/>
     <ui:param name="description" value="#{msgs[backing.description]}"/>
     <ui:param name="subMenuTitle" value="#{msgs[backing.subMenuTitle]}"/>
     <ui:param name="subMenuLinks" value="#{backing.subMenuLinks}"/>
     <ui:param name="resourceValue" value="#{backing.exampleResource}"/>
 
-    <ui:param name="wikiResources" value="#{listReorderBeanResources.wikiResources}"/>
-    <ui:param name="tldResources" value="#{listReorderBeanResources.tldResources}"/>
+    <ui:param name="wikiResources" value="#{listSelectionBeanResources.wikiResources}"/>
+    <ui:param name="tldResources" value="#{listSelectionBeanResources.tldResources}"/>
 
     <ui:define name="example">
-
         <h:form id="form">
-            <h3>Client-Side Reordering</h3>
-            <h:panelGroup id="panelGroupOne" style="padding: 0.5em;" layout="block">
-                <h:panelGrid id="panelGridOne" columns="3" style="margin-left:auto; margin-right:auto;" cellspacing="30">
-                    <ace:list id="firstList" value="#{backing.stringList}"
+            <h3>Ajax Selection</h3>
+            <h:panelGroup id="panelGroup4" style="padding: 0 0.5em;" layout="block">
+                <h:panelGrid id="panelGrid2" columns="2" style="margin-left:auto; margin-right:auto;" cellspacing="30">
+                    <ace:list id="list2" value="#{backing.ajaxStringList}"
+                              selections="#{backing.ajaxSelections}"
                               selectionMode="multiple"
-                              dragging="false"
-                              controlsEnabled="true"/>
+                              dragging="false" >
+                        <ace:ajax event="select" render="@form" />
+                        <ace:ajax event="deselect" render="@form" />
+                    </ace:list>
 
-                    <h:commandButton id="submitBtn" value="Submit Reorder" />
-
-                    <h:panelGroup>
-                        <ui:repeat id="repeatOne" value="#{backing.stringList}" var="selectItem">
-                            <h:outputText id="outputTextOne" value="#{selectItem.value}" /><br/>
+                    <h:panelGroup id="panelGroup5">
+                        <ui:repeat id="repeater2" value="#{backing.ajaxStringList}" var="selectItem">
+                            <h:outputText id="outputText2" value="#{selectItem.value}" /> - #{backing.ajaxSelections.contains(selectItem)}<br/>
                         </ui:repeat>
                     </h:panelGroup>
                 </h:panelGrid>

@@ -15,49 +15,36 @@ import java.util.List;
 
 @ComponentExample(
     parent = ListBean.BEAN_NAME,
-    title = "example.ace.list.reorder.title",
-    description = "example.ace.list.reorder.description",
-    example = "/resources/examples/ace/list/listReorder.xhtml"
+    title = "example.ace.list.blockComplex.title",
+    description = "example.ace.list.blockComplex.description",
+    example = "/resources/examples/ace/list/listBlockComplex.xhtml"
 )
 @ExampleResources(
     resources ={
         // xhtml
         @ExampleResource(type = ResourceType.xhtml,
-                title="ListReorder.xhtml",
+                title="ListBlockComplex.xhtml",
                 resource = "/resources/examples/ace/"+
-                        "list/listReorder.xhtml"),
+                        "list/listBlockComplex.xhtml"),
         // Java Source
         @ExampleResource(type = ResourceType.java,
-                title="ListReorderBean.java",
+                title="ListBlockComplexBean.java",
                 resource = "/WEB-INF/classes/org/icefaces/samples/"+
-                        "showcase/example/ace/list/ListReorderBean.java")
+                        "showcase/example/ace/list/ListBlockComplexBean.java")
     }
 )
-@ManagedBean(name= ListReorderBean.BEAN_NAME)
-@CustomScoped(value = "#{window}")
-public class ListReorderBean extends ComponentExampleImpl<ListReorderBean> implements Serializable {
-    public static final String BEAN_NAME = "listReorderBean";
 
-    public ListReorderBean() {
-        super(ListReorderBean.class);
+@ManagedBean(name= ListBlockComplexBean.BEAN_NAME)
+@CustomScoped(value = "#{window}")
+public class ListBlockComplexBean extends ComponentExampleImpl<ListBlockComplexBean> implements Serializable {
+    public static final String BEAN_NAME = "listBlockComplexBean";
+
+    public ListBlockComplexBean() {
+        super(ListBlockComplexBean.class);
     }
 
     @PostConstruct
     public void initMetaData() {
         super.initMetaData();
-    }
-
-    List<SelectItem> stringList = new ArrayList<SelectItem>() {{
-        for (String s : DataTableData.CHASSIS_ALL) {
-            add(new SelectItem(s));
-        }
-    }};
-
-    public List<SelectItem> getStringList() {
-        return stringList;
-    }
-
-    public void setStringList(List<SelectItem> stringList) {
-        this.stringList = stringList;
     }
 }

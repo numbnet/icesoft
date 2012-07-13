@@ -24,7 +24,7 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 template="/resources/templates/content-template.xhtml">
 
-    <ui:param value="#{listReorderBean}" name="backing" />
+    <ui:param value="#{listReorderAjaxBean}" name="backing" />
     <ui:param name="title" value="#{msgs[backing.title]}"/>
     <ui:param name="description" value="#{msgs[backing.description]}"/>
     <ui:param name="subMenuTitle" value="#{msgs[backing.subMenuTitle]}"/>
@@ -37,19 +37,19 @@
     <ui:define name="example">
 
         <h:form id="form">
-            <h3>Client-Side Reordering</h3>
-            <h:panelGroup id="panelGroupOne" style="padding: 0.5em;" layout="block">
-                <h:panelGrid id="panelGridOne" columns="3" style="margin-left:auto; margin-right:auto;" cellspacing="30">
-                    <ace:list id="firstList" value="#{backing.stringList}"
+            <h3>Ajax Reordering</h3>
+            <h:panelGroup id="panelGroupTwo" style="padding: 0 0.5em;" layout="block">
+                <h:panelGrid id="panelGridTwo" columns="2" style="margin-left:auto; margin-right:auto;" cellspacing="30">
+                    <ace:list id="secondList" value="#{backing.ajaxStringList}"
                               selectionMode="multiple"
                               dragging="false"
-                              controlsEnabled="true"/>
-
-                    <h:commandButton id="submitBtn" value="Submit Reorder" />
+                              controlsEnabled="true">
+                        <ace:ajax event="move" render="@form" />
+                    </ace:list>
 
                     <h:panelGroup>
-                        <ui:repeat id="repeatOne" value="#{backing.stringList}" var="selectItem">
-                            <h:outputText id="outputTextOne" value="#{selectItem.value}" /><br/>
+                        <ui:repeat id="repeatTwo" value="#{backing.ajaxStringList}" var="selectItem">
+                            <h:outputText id="outputTextTwo" value="#{selectItem.value}" /><br/>
                         </ui:repeat>
                     </h:panelGroup>
                 </h:panelGrid>
