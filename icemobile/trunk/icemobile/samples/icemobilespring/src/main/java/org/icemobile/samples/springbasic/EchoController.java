@@ -23,7 +23,7 @@ public class EchoController {
 
     @RequestMapping(value = "/accordion")
     public void doRequest(
-                                 @ModelAttribute("accordionBean") AccordionBean model) {
+        @ModelAttribute("accordionBean") AccordionBean model) {
     }
 
     @RequestMapping(value = "/buttons")
@@ -37,33 +37,33 @@ public class EchoController {
 
     @RequestMapping(value = "/carousel")
     public void doRequest(
-                                 @ModelAttribute("carouselBean") CarouselBean model) {
+        @ModelAttribute("carouselBean") CarouselBean model) {
     }
 
     @RequestMapping(value = "/pagePanel")
     public void doRequest(
-                                 @ModelAttribute("pagePanelBean") PagePanelBean model) {
+        @ModelAttribute("pagePanelBean") PagePanelBean model) {
     }
 
     @RequestMapping(value = "/datetime")
     public void doRequest(
-                                 @ModelAttribute("dateTimeSpinnerBean")
-                                 DateTimeSpinnerBean model) {
+        @ModelAttribute("dateTimeSpinnerBean")
+        DateTimeSpinnerBean model) {
     }
 
     @RequestMapping(value = "/flipswitch")
     public void doRequest(
-                                 @ModelAttribute("flipSwitchBean") FlipSwitchBean model) {
+        @ModelAttribute("flipSwitchBean") FlipSwitchBean model) {
     }
 
     @RequestMapping(value = "/geolocation")
     public void doRequest(
-                                 @ModelAttribute("geolocationBean") GeolocationBean model) {
+        @ModelAttribute("geolocationBean") GeolocationBean model) {
     }
 
     @RequestMapping(value = "/inputtext")
     public void doRequest(
-                                 @ModelAttribute("inputTextBean") InputTextBean model) {
+        @ModelAttribute("inputTextBean") InputTextBean model) {
     }
 
     @RequestMapping(value = "/list")
@@ -76,6 +76,11 @@ public class EchoController {
 
     @RequestMapping(value = "/tabset")
     public void doRequest(@ModelAttribute("tabsetBean") TabsetBean model) {
+    }
+
+    @RequestMapping(value = "/panelPopup")
+    public void doRequest(
+        @ModelAttribute("panelPopupBean") PanelPopupBean model) {
     }
 
 }
