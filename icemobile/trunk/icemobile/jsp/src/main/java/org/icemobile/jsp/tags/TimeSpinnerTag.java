@@ -5,11 +5,11 @@ import javax.servlet.jsp.PageContext;
 import javax.servlet.jsp.tagext.SimpleTagSupport;
 import java.io.IOException;
 import java.io.Writer;
+import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Locale;
-import java.text.ParsePosition;
+
 /**
  *
  */
@@ -24,7 +24,7 @@ public class TimeSpinnerTag extends SimpleTagSupport {
     private boolean disabled;
     private String value;
     private boolean readOnly;
-    private boolean useNative=true;
+    private boolean useNative = true;
 
     private int hourInt;
     private int minuteInt;
@@ -58,48 +58,49 @@ public class TimeSpinnerTag extends SimpleTagSupport {
         PageContext pageContext = (PageContext) getJspContext();
         Writer out = pageContext.getOut();
         ServletRequest sr = pageContext.getRequest();
-	if (tu == null) tu = new TagUtil();
+        if (tu == null) tu = new TagUtil();
         if (useNative && tu.useNative(pageContext)) {
-	    out.write(tu.INPUT_TAG);
-            tu.writeAttribute(out,"type", "time");
-	    tu.writeAttribute(out,"id", id);
-	    if (!tu.isValueBlank(name)) {
-		tu.writeAttribute(out,"name", name);
-	    }
+            out.write(tu.INPUT_TAG);
+            tu.writeAttribute(out, "type", "time");
+            tu.writeAttribute(out, "id", id);
+            if (!tu.isValueBlank(name)) {
+                tu.writeAttribute(out, "name", name);
+            }
 
             if (pattern == null) {
-		pattern = new String("HH:mm");
-	    }
+                pattern = new String("HH:mm");
+            }
             SimpleDateFormat df2 = new SimpleDateFormat(pattern);
             if (tu.isValueBlank(value)) {
                 Date aDate = new Date();
-                tu.writeAttribute(out,"value", df2.format(aDate));
+                tu.writeAttribute(out, "value", df2.format(aDate));
             } else {
                 String clockVal24 = value;
                 if (!isFormattedDate(value, "HH:mm")) {
                     clockVal24 = convertStringInput("EEE MMM dd hh:mm:ss zzz yyyy", pattern, value);
                 }
                 //check that only 24 hour clock came in.... as html5 input type="date" uses 24 hr clock
-                tu.writeAttribute(out,"value", clockVal24);
+                tu.writeAttribute(out, "value", clockVal24);
             }
             if (disabled) {
-                tu.writeAttribute(out,"disabled", "true");
+                tu.writeAttribute(out, "disabled", "true");
             }
             if (readOnly) {
-                tu.writeAttribute(out,"readonly", "true");
+                tu.writeAttribute(out, "readonly", "true");
             }
             out.write(">" + tu.INPUT_TAG_END);
         } else {
-	    //            writeJavascriptFile(pageContext, JS_NAME, JS_MIN_NAME, JS_LIBRARY);
-	    encodeMarkup(pageContext, out, encodeValue(value));
-	    encodeScript(out);
+            //            writeJavascriptFile(pageContext, JS_NAME, JS_MIN_NAME, JS_LIBRARY);
+            encodeMarkup(pageContext, out, encodeValue(value));
+            encodeScript(out);
         }
-	out.write(tu.A_TAG);
-	tu.writeAttribute(out,"id", id);
-	if (!tu.isValueBlank(name)) {
-	    tu.writeAttribute(out,"name", name);
-	}
-	out.write(tu.A_TAG_END);
+        out.write(tu.A_TAG);
+        tu.writeAttribute(out, "id", id);
+        if (!tu.isValueBlank(name)) {
+            tu.writeAttribute(out, "name", name);
+        }
+        out.write(" >");
+        out.write(tu.A_TAG_END);
 
     }
 
@@ -113,16 +114,16 @@ public class TimeSpinnerTag extends SimpleTagSupport {
         //first do the input field and the button
         // build out first input field
         writer.write(tu.SPAN_TAG);
-	tu.writeAttribute(writer, "id", id);
+        tu.writeAttribute(writer, "id", id);
 
         //tu.writeAttribute(writer, "name", name);
         tu.writeAttribute(writer, "class", "mobi-time-wrapper");
         writer.write("> " + tu.INPUT_TAG);
         tu.writeAttribute(writer, "id", id + "_input");
-	if (!tu.isValueBlank(name)) {
-	    tu.writeAttribute(writer,"name", name);
-	}
-	//tu.writeAttribute(writer, "onblur", inputCall.toString());
+        if (!tu.isValueBlank(name)) {
+            tu.writeAttribute(writer, "name", name);
+        }
+        //tu.writeAttribute(writer, "onblur", inputCall.toString());
 
         // apply class attribute.
         StringBuilder classNames = new StringBuilder(INPUT_CLASS);
@@ -131,7 +132,7 @@ public class TimeSpinnerTag extends SimpleTagSupport {
         }
         tu.writeAttribute(writer, "class", classNames.toString());
         if (!tu.isValueBlank(value)) {
-	    tu.writeAttribute(writer, "value", value);
+            tu.writeAttribute(writer, "value", value);
         }
         tu.writeAttribute(writer, "type", "text");
         if (readOnly) {
@@ -145,8 +146,8 @@ public class TimeSpinnerTag extends SimpleTagSupport {
         writer.write(tu.INPUT_TAG);
         tu.writeAttribute(writer, "type", "hidden");
         tu.writeAttribute(writer, "id", id + "_hidden");
-	writer.write(">" + tu.INPUT_TAG_END);
-	writer.write(tu.SPAN_TAG_END);
+        writer.write(">" + tu.INPUT_TAG_END);
+        writer.write(tu.SPAN_TAG_END);
         // build out command button for show/hide of time select popup.
         writer.write(tu.INPUT_TAG);
         tu.writeAttribute(writer, "type", "button");
@@ -159,13 +160,13 @@ public class TimeSpinnerTag extends SimpleTagSupport {
             // for ui widgets that don't require rapid response then stick with onClick
             tu.writeAttribute(writer, CLICK_EVENT, "ice.mobi.timespinner.toggle('" + id + "');");
         }
-	writer.write(">" + tu.INPUT_TAG_END);
+        writer.write(">" + tu.INPUT_TAG_END);
 
         // div that is use to hide/show the popup screen black out, invisible by default.
         writer.write(tu.DIV_TAG);
         tu.writeAttribute(writer, "id", id + "_bg");
         tu.writeAttribute(writer, "class", CONTAINER_INVISIBLE_CLASS);
-	writer.write(">" + tu.DIV_TAG_END);
+        writer.write(">" + tu.DIV_TAG_END);
 
         // actual popup code.
         writer.write(tu.DIV_TAG);
@@ -175,15 +176,15 @@ public class TimeSpinnerTag extends SimpleTagSupport {
         tu.writeAttribute(writer, "id", id + "_title");
         tu.writeAttribute(writer, "class", TITLE_CLASS);
         writer.write(">" + value);
-	writer.write(tu.DIV_TAG_END);
+        writer.write(tu.DIV_TAG_END);
         writer.write(tu.DIV_TAG);                            //entire selection container
         tu.writeAttribute(writer, "class", SELECT_CONT_CLASS);
         writer.write(">");
 
-	renderHourInput(writer, id, eventStr);
-	renderMinuteInput(writer, id, eventStr);
-	renderAmpmInput(writer, id, eventStr);
-	writer.write(tu.DIV_TAG_END);    //end of selection container
+        renderHourInput(writer, id, eventStr);
+        renderMinuteInput(writer, id, eventStr);
+        renderAmpmInput(writer, id, eventStr);
+        writer.write(tu.DIV_TAG_END);    //end of selection container
 
         writer.write(tu.DIV_TAG);                          //button container for set or cancel
         tu.writeAttribute(writer, "class", "mobi-time-submit-container");
@@ -194,17 +195,17 @@ public class TimeSpinnerTag extends SimpleTagSupport {
 
         //prep for ajax submit
         StringBuilder builder = new StringBuilder(255);
-	builder.append("ice.mobi.timespinner.select('");
+        builder.append("ice.mobi.timespinner.select('");
         builder.append(id).append("',{ event: event, singlesubmit: false");
         builder.append("});");
-        String jsCall = builder.toString(); 
+        String jsCall = builder.toString();
 
-	if (!isDisabled() && !isReadOnly()) {
+        if (!isDisabled() && !isReadOnly()) {
             tu.writeAttribute(writer, CLICK_EVENT, jsCall);
-	}
+        }
         writer.write(">" + tu.INPUT_TAG_END);
 
-        writer.write( tu.INPUT_TAG);
+        writer.write(tu.INPUT_TAG);
         tu.writeAttribute(writer, "class", "mobi-button mobi-button-default");
         tu.writeAttribute(writer, "type", "button");
         tu.writeAttribute(writer, "value", "Cancel");
@@ -227,12 +228,12 @@ public class TimeSpinnerTag extends SimpleTagSupport {
         writer.write(tu.SPAN_TAG_END);
     }
 
-    private String encodeValue( String initialValue) throws IOException {
+    private String encodeValue(String initialValue) throws IOException {
         String value = "";
         Date aDate = new Date();
-	if (pattern == null) {
-	    pattern = new String("HH:mm");
-	}
+        if (pattern == null) {
+            pattern = new String("HH:mm");
+        }
         SimpleDateFormat df2 = new SimpleDateFormat(pattern);
         if (tu.isValueBlank(initialValue)) {
             //nothing values already set as default
@@ -246,12 +247,12 @@ public class TimeSpinnerTag extends SimpleTagSupport {
                     aDate = df2.parse(value);
                 }
             } catch (Exception e) {
-		throw new IOException("Initial time value is invalid or does not match pattern");
+                throw new IOException("Initial time value is invalid or does not match pattern");
             }
 
         }
         this.setIntValues(aDate);
-	System.out.println("***** Timespinner encodeValue = " + value);
+        System.out.println("***** Timespinner encodeValue = " + value);
         return value;
     }
 
@@ -286,8 +287,8 @@ public class TimeSpinnerTag extends SimpleTagSupport {
     }
 
     private void renderHourInput(Writer writer,
-                                String clientId,
-                                String eventStr) throws IOException {
+                                 String clientId,
+                                 String eventStr) throws IOException {
         writer.write(tu.DIV_TAG);                             //hour select container
         tu.writeAttribute(writer, "class", VALUE_CONT_CLASS);
         writer.write(">" + tu.DIV_TAG);                            //button increment
@@ -297,13 +298,13 @@ public class TimeSpinnerTag extends SimpleTagSupport {
         tu.writeAttribute(writer, "id", clientId + "_hrUpBtn");
         tu.writeAttribute(writer, "type", "button");
         tu.writeAttribute(writer, eventStr, "ice.mobi.timespinner.hrUp('" + clientId + "');");
-	writer.write(">" + tu.INPUT_TAG_END);
-	writer.write(tu.DIV_TAG_END);                          //end button incr
+        writer.write(">" + tu.INPUT_TAG_END);
+        writer.write(tu.DIV_TAG_END);                          //end button incr
         writer.write(tu.DIV_TAG);                          //hour value
         tu.writeAttribute(writer, "class", SEL_VALUE_CLASS);
         tu.writeAttribute(writer, "id", clientId + "_hrInt");
         writer.write(">" + String.valueOf(hourInt));
-	writer.write(tu.DIV_TAG_END);                //end of hour value
+        writer.write(tu.DIV_TAG_END);                //end of hour value
         writer.write(tu.DIV_TAG);                          //button decrement
         tu.writeAttribute(writer, "class", BUTTON_DEC_CONT_CLASS);
         writer.write(">" + tu.INPUT_TAG);
@@ -311,14 +312,14 @@ public class TimeSpinnerTag extends SimpleTagSupport {
         tu.writeAttribute(writer, "id", clientId + "_hrDnBtn");
         tu.writeAttribute(writer, "type", "button");
         tu.writeAttribute(writer, eventStr, "ice.mobi.timespinner.hrDn('" + clientId + "');");
-	writer.write(">" + tu.INPUT_TAG_END);
-	writer.write(tu.DIV_TAG_END);                             //end button decrement
-	writer.write(tu.DIV_TAG_END);                         //end of timeEntry select container
+        writer.write(">" + tu.INPUT_TAG_END);
+        writer.write(tu.DIV_TAG_END);                             //end button decrement
+        writer.write(tu.DIV_TAG_END);                         //end of timeEntry select container
     }
 
     private void renderMinuteInput(Writer writer,
-				   String clientId,
-				   String eventStr) throws IOException {
+                                   String clientId,
+                                   String eventStr) throws IOException {
         writer.write(tu.DIV_TAG);                             //minute select container
         tu.writeAttribute(writer, "class", VALUE_CONT_CLASS);
         writer.write(">" + tu.DIV_TAG);                            //button increment
@@ -328,13 +329,13 @@ public class TimeSpinnerTag extends SimpleTagSupport {
         tu.writeAttribute(writer, "id", clientId + "_mUpBtn");
         tu.writeAttribute(writer, "type", "button");
         tu.writeAttribute(writer, eventStr, "ice.mobi.timespinner.mUp('" + clientId + "');");
-	writer.write(">" + tu.INPUT_TAG_END);
-	writer.write(tu.DIV_TAG_END);                          //end button incr
+        writer.write(">" + tu.INPUT_TAG_END);
+        writer.write(tu.DIV_TAG_END);                          //end button incr
         writer.write(tu.DIV_TAG);                          //minute value
         tu.writeAttribute(writer, "class", SEL_VALUE_CLASS);
         tu.writeAttribute(writer, "id", clientId + "_mInt");
         writer.write(">" + String.valueOf(minuteInt));
-	writer.write(tu.DIV_TAG_END);                //end of minute value
+        writer.write(tu.DIV_TAG_END);                //end of minute value
         writer.write(tu.DIV_TAG);                          //button decrement
         tu.writeAttribute(writer, "class", BUTTON_DEC_CONT_CLASS);
         writer.write(">" + tu.INPUT_TAG);
@@ -342,14 +343,14 @@ public class TimeSpinnerTag extends SimpleTagSupport {
         tu.writeAttribute(writer, "id", clientId + "_mDnBtn");
         tu.writeAttribute(writer, "type", "button");
         tu.writeAttribute(writer, eventStr, "ice.mobi.timespinner.mDn('" + clientId + "');");
-	writer.write(">" + tu.INPUT_TAG_END);
-	writer.write(tu.DIV_TAG_END);                             //end button decrement
-	writer.write(tu.DIV_TAG_END);                         //end of minute select container
+        writer.write(">" + tu.INPUT_TAG_END);
+        writer.write(tu.DIV_TAG_END);                             //end button decrement
+        writer.write(tu.DIV_TAG_END);                         //end of minute select container
     }
 
     private void renderAmpmInput(Writer writer,
-				 String clientId,
-				 String eventStr) throws IOException {
+                                 String clientId,
+                                 String eventStr) throws IOException {
         writer.write(tu.DIV_TAG);                             //ampm select container
         tu.writeAttribute(writer, "class", VALUE_CONT_CLASS);
         writer.write(">" + tu.DIV_TAG);                            //button increment
@@ -359,8 +360,8 @@ public class TimeSpinnerTag extends SimpleTagSupport {
         tu.writeAttribute(writer, "id", clientId + "_ampmUpBtn");
         tu.writeAttribute(writer, "type", "button");
         tu.writeAttribute(writer, eventStr, "ice.mobi.timespinner.ampmToggle('" + clientId + "');");
-	writer.write(">" + tu.INPUT_TAG_END);
-	writer.write(tu.DIV_TAG_END);                          //end button incr
+        writer.write(">" + tu.INPUT_TAG_END);
+        writer.write(tu.DIV_TAG_END);                          //end button incr
         writer.write(tu.DIV_TAG);                          //ampm value
         tu.writeAttribute(writer, "class", SEL_VALUE_CLASS);
         tu.writeAttribute(writer, "id", clientId + "_ampmInt");
@@ -369,7 +370,7 @@ public class TimeSpinnerTag extends SimpleTagSupport {
             ampm = "PM";
         }
         writer.write(">" + ampm);
-	writer.write(tu.DIV_TAG_END);                //end of ampm value
+        writer.write(tu.DIV_TAG_END);                //end of ampm value
         writer.write(tu.DIV_TAG);                          //button decrement
         tu.writeAttribute(writer, "class", BUTTON_DEC_CONT_CLASS);
         writer.write(">" + tu.INPUT_TAG);
@@ -377,9 +378,9 @@ public class TimeSpinnerTag extends SimpleTagSupport {
         tu.writeAttribute(writer, "id", clientId + "_ampmBtn");
         tu.writeAttribute(writer, "type", "button");
         tu.writeAttribute(writer, eventStr, "ice.mobi.timespinner.ampmToggle('" + clientId + "');");
-	writer.write(">" + tu.INPUT_TAG_END);
-	writer.write(tu.DIV_TAG_END);                             //end button decrement
-	writer.write(tu.DIV_TAG_END);                         //end of ampm select container
+        writer.write(">" + tu.INPUT_TAG_END);
+        writer.write(tu.DIV_TAG_END);                             //end button decrement
+        writer.write(tu.DIV_TAG_END);                         //end of ampm select container
     }
 
     public String getId() {
