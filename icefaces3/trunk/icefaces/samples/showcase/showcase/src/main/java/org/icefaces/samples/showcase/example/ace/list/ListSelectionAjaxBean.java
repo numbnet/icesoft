@@ -36,9 +36,9 @@ import java.util.Set;
 
 @ComponentExample(
     parent = ListBean.BEAN_NAME,
-    title = "example.ace.list.selection.title",
-    description = "example.ace.list.selection.description",
-    example = "/resources/examples/ace/list/listSelection.xhtml"
+    title = "example.ace.list.selectionAjax.title",
+    description = "example.ace.list.selectionAjax.description",
+    example = "/resources/examples/ace/list/listSelectionAjax.xhtml"
 )
 @ExampleResources(
     resources ={
@@ -46,21 +46,21 @@ import java.util.Set;
         @ExampleResource(type = ResourceType.xhtml,
                 title="ListReorder.xhtml",
                 resource = "/resources/examples/ace/"+
-                        "list/listSelection.xhtml"),
+                        "list/listSelectionAjax.xhtml"),
         // Java Source
         @ExampleResource(type = ResourceType.java,
                 title="ListReorderBean.java",
                 resource = "/WEB-INF/classes/org/icefaces/samples/"+
-                        "showcase/example/ace/list/ListSelectionBean.java")
+                        "showcase/example/ace/list/ListSelectionAjaxBean.java")
     }
 )
-@ManagedBean(name= ListSelectionBean.BEAN_NAME)
+@ManagedBean(name= ListSelectionAjaxBean.BEAN_NAME)
 @CustomScoped(value = "#{window}")
-public class ListSelectionBean extends ComponentExampleImpl<ListSelectionBean> {
-    public static final String BEAN_NAME = "listSelectionBean";
+public class ListSelectionAjaxBean extends ComponentExampleImpl<ListSelectionAjaxBean> {
+    public static final String BEAN_NAME = "listSelectionAjaxBean";
 
-    public ListSelectionBean() {
-        super(ListSelectionBean.class);
+    public ListSelectionAjaxBean() {
+        super(ListSelectionAjaxBean.class);
     }
 
     @PostConstruct
@@ -68,27 +68,27 @@ public class ListSelectionBean extends ComponentExampleImpl<ListSelectionBean> {
         super.initMetaData();
     }
 
-    List<SelectItem> stringList = new ArrayList<SelectItem>() {{
+    List<SelectItem> ajaxStringList = new ArrayList<SelectItem>() {{
         for (String s : DataTableData.CHASSIS_ALL) {
             add(new SelectItem(s));
         }
     }};
 
-    Set<Object> selections;
+    Set<Object> ajaxSelections;
 
-    public List<SelectItem> getStringList() {
-        return stringList;
+    public List<SelectItem> getAjaxStringList() {
+        return ajaxStringList;
     }
 
-    public void setStringList(List<SelectItem> stringList) {
-        this.stringList = stringList;
+    public void setAjaxStringList(List<SelectItem> ajaxStringList) {
+        this.ajaxStringList = ajaxStringList;
     }
 
-    public Set<Object> getSelections() {
-        return selections;
+    public Set<Object> getAjaxSelections() {
+        return ajaxSelections;
     }
 
-    public void setSelections(Set<Object> selections) {
-        this.selections = selections;
+    public void setAjaxSelections(Set<Object> ajaxSelections) {
+        this.ajaxSelections = ajaxSelections;
     }
 }

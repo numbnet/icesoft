@@ -15,31 +15,31 @@ import java.util.List;
 
 @ComponentExample(
     parent = ListBean.BEAN_NAME,
-    title = "example.ace.list.reorder.title",
-    description = "example.ace.list.reorder.description",
-    example = "/resources/examples/ace/list/listReorder.xhtml"
+    title = "example.ace.list.reorderAjax.title",
+    description = "example.ace.list.reorderAjax.description",
+    example = "/resources/examples/ace/list/listReorderAjax.xhtml"
 )
 @ExampleResources(
     resources ={
         // xhtml
         @ExampleResource(type = ResourceType.xhtml,
-                title="ListReorder.xhtml",
+                title="ListReorderAjax.xhtml",
                 resource = "/resources/examples/ace/"+
-                        "list/listReorder.xhtml"),
+                        "list/listReorderAjax.xhtml"),
         // Java Source
         @ExampleResource(type = ResourceType.java,
-                title="ListReorderBean.java",
+                title="ListReorderAjaxBean.java",
                 resource = "/WEB-INF/classes/org/icefaces/samples/"+
-                        "showcase/example/ace/list/ListReorderBean.java")
+                        "showcase/example/ace/list/ListReorderAjaxBean.java")
     }
 )
-@ManagedBean(name= ListReorderBean.BEAN_NAME)
+@ManagedBean(name= ListReorderAjaxBean.BEAN_NAME)
 @CustomScoped(value = "#{window}")
-public class ListReorderBean extends ComponentExampleImpl<ListReorderBean> implements Serializable {
-    public static final String BEAN_NAME = "listReorderBean";
+public class ListReorderAjaxBean extends ComponentExampleImpl<ListReorderAjaxBean> implements Serializable {
+    public static final String BEAN_NAME = "listReorderAjaxBean";
 
-    public ListReorderBean() {
-        super(ListReorderBean.class);
+    public ListReorderAjaxBean() {
+        super(ListReorderAjaxBean.class);
     }
 
     @PostConstruct
@@ -47,17 +47,17 @@ public class ListReorderBean extends ComponentExampleImpl<ListReorderBean> imple
         super.initMetaData();
     }
 
-    List<SelectItem> stringList = new ArrayList<SelectItem>() {{
+    List<SelectItem> ajaxStringList = new ArrayList<SelectItem>() {{
         for (String s : DataTableData.CHASSIS_ALL) {
             add(new SelectItem(s));
         }
     }};
 
-    public List<SelectItem> getStringList() {
-        return stringList;
+    public List<SelectItem> getAjaxStringList() {
+        return ajaxStringList;
     }
 
-    public void setStringList(List<SelectItem> stringList) {
-        this.stringList = stringList;
+    public void setAjaxStringList(List<SelectItem> ajaxStringList) {
+        this.ajaxStringList = ajaxStringList;
     }
 }
