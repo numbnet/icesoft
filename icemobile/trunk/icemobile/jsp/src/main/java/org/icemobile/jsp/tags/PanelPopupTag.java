@@ -26,7 +26,7 @@ public class PanelPopupTag extends TagSupport {
         StringBuilder tag = new StringBuilder(TagUtil.DIV_TAG);
 //        tag.append(TagUtil.DIV_TAG);
         tag.append(" id=\"").append(getId()).append("_bg\"");
-        tag.append(" class=\"").append(BLACKOUT_PNL_HIDDEN_CLASS).append("\"");
+        tag.append(" class=\"").append(BLACKOUT_PNL_HIDDEN_CLASS).append("\">");
         tag.append(TagUtil.DIV_TAG_END);
 
         // popup container section
@@ -72,12 +72,11 @@ public class PanelPopupTag extends TagSupport {
     public int doEndTag() throws JspTagException {
 
         Writer out = pageContext.getOut();
-
         StringBuilder tag = new StringBuilder(TagUtil.INPUT_TAG);
 
-        // Not sure of this.
+        // Not sure of this. Hidden value as receptacle for list selection?
         tag.append(" type=\"hidden\"");
-        tag.append(" id=\"").append(getId()).append("\"");
+        tag.append(" id=\"").append(getId()).append("_hidden\"");
         tag.append(" name=\"").append(getId()).append("\"");
         tag.append("/>");
 
@@ -113,6 +112,8 @@ public class PanelPopupTag extends TagSupport {
     }
 
 
+    private String id;
+    private String name;
     private String style;
     private String styleClass;
     private String title;
@@ -121,6 +122,22 @@ public class PanelPopupTag extends TagSupport {
 
     public String getStyle() {
         return style;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public void setStyle(String style) {
