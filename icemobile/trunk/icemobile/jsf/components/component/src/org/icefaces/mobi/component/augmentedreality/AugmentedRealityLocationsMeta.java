@@ -34,27 +34,17 @@ import java.util.List;
         generatedClass = "org.icefaces.mobi.component.augmentedreality.AugmentedRealityLocationsBase",
         componentType = "org.icefaces.AugmentedRealityLocations",
         rendererType = "org.icefaces.AugmentedRealityLocationsRenderer",
-        extendsClass = "org.icefaces.impl.component.UISeriesBase",
+        extendsClass = "javax.faces.component.UIComponentBase",
         componentFamily = "org.icefaces.AugmentedRealityLocations",
         tlddoc = "This mobility component ....."
 )
 
-public class AugmentedRealityLocationsMeta extends UISeriesBaseMeta{
+public class AugmentedRealityLocationsMeta extends UIComponentBaseMeta  {
 
-    @Property(tlddoc = "style will be rendered on the root element of this " +
-            "component.")
-    private String style;
+    @Property(tlddoc="list iterator variable name")
+    private String var;
 
-    @Property(tlddoc = "style class will be rendered on the root element of " +
-            "this component.")
-    private String styleClass;
-
-    @Property(defaultValue = "false",
-            tlddoc = "disabled property. If true no input may be submitted via this" +
-                    "component.  Is required by aria specs")
-    private boolean disabled;
-
-    @Property(tlddoc="selected location item")
-    private String selectedLocationItem;
+    @Property(tlddoc="value containing location items")
+    private Object value;
 
 }

@@ -27,16 +27,25 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import java.io.IOException;
 import java.util.Map;
+import java.net.URLEncoder;
+import java.util.Collection;
 import java.util.logging.Level;
 
 
 public class AugmentedRealityRenderer extends BaseInputRenderer  {
+    private static final String LOC_LABEL = "locationLabel";
+    private static final String LOC_LAT = "locationLat";
+    private static final String LOC_LON = "locationLon";
+    private static final String LOC_ALT = "locationAlt";
+    private static final String LOC_DIR = "locationDir";
+    private static final String LOC_ICON = "locationIcon";
 
      public void encodeEnd(FacesContext facesContext, UIComponent uiComponent)
              throws IOException {
          ResponseWriter writer = facesContext.getResponseWriter();
          String clientId = uiComponent.getClientId(facesContext);
          AugmentedReality ag = (AugmentedReality)uiComponent;
+
          boolean isEnhanced = EnvUtils.isEnhancedBrowser(facesContext);
          boolean isAuxUpload = EnvUtils.isAuxUploadBrowser(facesContext);
          if (!isEnhanced && !isAuxUpload) {  //no container or SX, use text field
@@ -61,15 +70,28 @@ public class AugmentedRealityRenderer extends BaseInputRenderer  {
              defaultClass.append(" ").append(styleClass);
          }
          writer.writeAttribute(HTML.CLASS_ATTR, defaultClass, HTML.CLASS_ATTR);
-         String myparams = ag.getParams();
+
+        String arParams = "";
+        for (UIComponent child : ag.getChildren())  {
+            if (child instanceof AugmentedRealityLocations) {
+                AugmentedRealityLocations locations = 
+                        (AugmentedRealityLocations) child;
+                arParams += iterateLocations(facesContext, locations);
+            }
+        }
+
+        //allow legacy params value for now
+        if ("".equals(arParams))  {
+            arParams = ag.getParams();
+        }
         String script;
         if (isAuxUpload)  {
-            writer.writeAttribute("data-params", myparams, null);
+            writer.writeAttribute("data-params", arParams, null);
             writer.writeAttribute("data-command", "aug", null);
             script = "ice.mobi.sx(this);";
         } else {
             script = "ice.aug( '" + clientId + "', '" + 
-                    myparams + "' );return false;";
+                    arParams + "' );return false;";
         }
         writer.writeAttribute(HTML.ONCLICK_ATTR, script, null);
          writer.writeText(buttonValue, null);
@@ -96,5 +118,48 @@ public class AugmentedRealityRenderer extends BaseInputRenderer  {
 
         }
     }
+
+
+    String iterateLocations(FacesContext facesContext, 
+            AugmentedRealityLocations locations)  {
+        String var = locations.getVar();
+        if (null == var) {
+            //cannot iterate without a var
+            return null;
+        }
+        StringBuilder result = new StringBuilder();
+        
+        Map<String, Object> requestMap =
+              facesContext.getExternalContext().getRequestMap();
+        Collection items = (Collection) locations.getValue();
+        //an optimization will be to find the longest common prefix of
+        //the itemIcon values and set urlBase to that
+        for (Object item : items)  {
+            Object oldVar = requestMap.put(var, item);
+            Map<String,Object> attrs = locations.getAttributes();
+            String itemLabel = (String) attrs.get(LOC_LABEL);
+            result.append(URLEncoder.encode(itemLabel)).append("=");
+            result.append(attrs.get(LOC_LAT)).append(",");
+            result.append(attrs.get(LOC_LON)).append(",");
+
+            Object itemAlt = attrs.get(LOC_ALT);
+            if (null != itemAlt)  {
+                result.append(itemAlt);
+            }
+            result.append(",");
+            Object itemDir = attrs.get(LOC_DIR);
+            if (null != itemDir)  {
+                result.append(itemDir);
+            }
+            result.append(",");
+            String itemIcon = (String) attrs.get(LOC_ICON);
+            if (null != itemIcon)  {
+                result.append(URLEncoder.encode(itemIcon));
+            }
+            result.append("&");
+            requestMap.put(var, oldVar);
+        }
+        return result.toString();
+   }
 
 }

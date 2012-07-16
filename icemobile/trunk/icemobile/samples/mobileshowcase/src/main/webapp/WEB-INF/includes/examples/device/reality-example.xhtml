@@ -73,8 +73,14 @@
             <mobi:fieldsetRow>
                 <mobi:augmentedReality 
                     styleClass="mobi-button mobi-round-all"
-                    value="#{realityBean.selection}"
-                    params="#{realityBean.params}" />
+                    value="#{realityBean.selection}">
+                    <mobi:augmentedRealityLocations 
+                        value="#{realityBean.messages}" var="place"
+                        locationLabel="#{place.title}"
+                        locationLat="#{place.latitude}"
+                        locationLon="#{place.longitude}"
+                        locationIcon="#{place.fileName}" />
+                </mobi:augmentedReality>
                 <h:commandButton styleClass="mobi-button mobi-round-all mobi-button-important"
                                  value="Submit"/>
                 <br />

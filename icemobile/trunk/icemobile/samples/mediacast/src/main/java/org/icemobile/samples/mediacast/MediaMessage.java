@@ -141,25 +141,21 @@ public class MediaMessage implements Serializable {
         return urlPath;
     }
 
+    public String getIconURL()  {
+        return getMediumPhoto().getData().getURL().toString();
+    }
+
     public void setLocation(double latitude, double longitude)  {
         this.latitude = latitude;
         this.longitude = longitude;
     }
 
-    public String getMessageAsUrlParam()  {
-        String url = null;
-        try {
-            url = URLEncoder.encode(getTitle(), "UTF-8") + "=" + 
-                    latitude + "," + longitude;
-            if (direction >= 0)  {
-                url += ",," + direction; //empty field for altitude
-            } else {
-                url += ",,"; //empty field for altitude and direction
-            }
-        } catch (UnsupportedEncodingException e) {
-            logger.warning("location could not be encoded: " + e.getMessage());
-        }
-        return url;
+    public double getLat()  {
+        return latitude;
+    }
+
+    public double getLon()  {
+        return longitude;
     }
 
     public String getTitle() {

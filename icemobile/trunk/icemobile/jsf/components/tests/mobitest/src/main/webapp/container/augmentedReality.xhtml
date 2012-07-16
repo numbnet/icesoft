@@ -45,10 +45,16 @@
 
     <h5> loation selector</h5>
     <h:form id="locForm">
-        <mobi:augmentedRealityLocations id="inputLoc" value="#{positionBean.locations}" var="item">
-            <mobi:locationItem locationLabel="#{item.label}" locationLat ="#{item.lat}" locationLon ="#{item.lon}"
-                               locationAlt = "#{item.alt}" locationIcon = "#{item.icon}"/>
-        </mobi:augmentedRealityLocations>
+        <mobi:augmentedReality>
+            <mobi:augmentedRealityLocations
+                value="#{positionBean.locations}" var="item"
+                locationLabel="#{item.label}"
+                locationLat ="#{item.lat}"
+                locationLon ="#{item.lon}"
+                locationAlt = "#{item.alt}"
+                locationIcon = "#{item.icon}" />
+            </mobi:augmentedRealityLocations>
+        </mobi:augmentedReality>
     </h:form>
     <br />
     <h:form id="testForm">
