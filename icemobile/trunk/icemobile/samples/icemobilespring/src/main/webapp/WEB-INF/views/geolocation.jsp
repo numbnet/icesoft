@@ -25,7 +25,7 @@
         <mobi:fieldSetGroup inset="true">
             <mobi:fieldSetRow>
                 <label>Press to launch activate geolocation:</label>
-                <mobi:geolocation id="geolocation"/>
+                <mobi:geolocation id="geo1" name="geolocation"/>
                 <%-- button types: default|important|attention| back--%>
                 <mobi:commandButton buttonType='important'
                                     style="float:right;margin-right: 25px;"
