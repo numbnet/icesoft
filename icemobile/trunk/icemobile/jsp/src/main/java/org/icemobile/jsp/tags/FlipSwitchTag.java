@@ -1,8 +1,5 @@
 package org.icemobile.jsp.tags;
 
-import org.icefaces.mobi.component.flipswitch.FlipSwitch;
-
-import javax.servlet.ServletRequest;
 import javax.servlet.jsp.PageContext;
 import javax.servlet.jsp.tagext.SimpleTagSupport;
 import java.io.IOException;
