@@ -19,7 +19,7 @@ import java.util.logging.Logger;
  */
 public class CarouselTag extends TagSupport {
 
-    private static Logger logger = Logger.getLogger(CarouselTag.class.getName());
+    private static Logger LOG = Logger.getLogger(CarouselTag.class.getName());
 
 
     private static final String JS_ISCROLL = "iscroll.js";
@@ -27,6 +27,7 @@ public class CarouselTag extends TagSupport {
     private static final String LIB_ISCROLL = "org.icefaces.component.util";
 
     private String id;
+    private String name;
     private String styleClass;
     private String style;
 
@@ -61,7 +62,7 @@ public class CarouselTag extends TagSupport {
 
             out.write("</span>"); // end of script span sections
 
-            out.write("<span id=\"" + getId() + "\" name=\"" + getId() + "\" >");
+            out.write("<span id=\"" + getId() + "\" >");
 
             out.write("<div id=\"" + getId() + "_carousel\"");
             String styleClass = CAROUSEL_CLASS;
@@ -76,7 +77,7 @@ public class CarouselTag extends TagSupport {
             out.write("<ul class=\"" + CAROUSEL_ITEM_CLASS + "\">");
 
         } catch (IOException ioe) {
-            logger.severe("Exception creating carousel tag: " + ioe);
+            LOG.severe("IOException creating carousel tag: " + ioe);
         }
 
         // If we're done, skip the content
@@ -111,8 +112,7 @@ public class CarouselTag extends TagSupport {
 
             //now do the paginator for the carousel
             StringBuilder builder = new StringBuilder(TagUtil.DIV_TAG);
-            builder.append(" id=\"").append(getId()).append("_list").append("\"");
-            builder.append(" name=\"").append(getId()).append("_list").append("\">");
+            builder.append(" id=\"").append(getId()).append("_list").append("\">");
             out.write(builder.toString());
 
             builder = new StringBuilder(TagUtil.DIV_TAG);
@@ -147,15 +147,15 @@ public class CarouselTag extends TagSupport {
             out.write(TagUtil.DIV_TAG_END);
             out.write(TagUtil.DIV_TAG_END);
 
-            this.encodeHiddenSelected(out, getId());
+            this.encodeHiddenSelected(out, getName());
 
             out.write(TagUtil.DIV_TAG_END);
             out.write(TagUtil.SPAN_TAG_END);
 
-            renderScript(out, getId());
+            renderScript(out, getName());
 
         } catch (IOException ioe) {
-            logger.severe("IOException closing Carousel Tag: " + ioe);
+            LOG.severe("IOException closing Carousel Tag: " + ioe);
         }
         return SKIP_BODY;
     }
@@ -165,7 +165,11 @@ public class CarouselTag extends TagSupport {
         IOException {
         out.write("<input");
         out.write(" id = \"" + id + "_hidden\"");
-        out.write(" name=\"" + id + "\"");
+        if (name != null && !"".equals(name)) {
+            out.write(" name=\"" + name + "\"");
+        } else {
+            LOG.warning("CarouselTag (id: " + id + ") has no name attribute for value submission");
+        }
         out.write(" type=\"hidden\"");
         out.write(" value=\"" + String.valueOf(selectedIndex) + "\">");
         out.write("</input>");
@@ -193,13 +197,20 @@ public class CarouselTag extends TagSupport {
         out.write("</script>");
     }
 
-
     public String getId() {
         return id;
     }
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getStyleClass() {
