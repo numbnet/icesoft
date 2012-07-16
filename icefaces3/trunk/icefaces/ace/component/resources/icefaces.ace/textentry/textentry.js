@@ -19,7 +19,7 @@ ice.ace.TextEntry = function(id, cfg) {
     var labelName = id + "_label";
     this.id = id;
     this.cfg = cfg;
-    this.jqId = ice.ace.escapeClientId(inputId);
+    this.jqId = ice.ace.escapeClientId(id) + " input.ui-textentry";
     this.jq = jQ(this.jqId);
 
     if (cfg.autoTab) {
