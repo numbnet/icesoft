@@ -168,11 +168,9 @@ public class AutoCompleteEntryRenderer extends InputRenderer {
         AutoCompleteEntry autoCompleteEntry = (AutoCompleteEntry) uiComponent;
 		String clientId = autoCompleteEntry.getClientId(facesContext);
 		
-		if (autoCompleteEntry.getValue() != null) {
-            if (autoCompleteEntry.hasChanged()) {
-                populateList(facesContext, autoCompleteEntry);
-                autoCompleteEntry.setChangedComponentId(null);
-            }
+		if (autoCompleteEntry.getValue() != null && autoCompleteEntry.hasChanged()) {
+			populateList(facesContext, autoCompleteEntry);
+			autoCompleteEntry.setChangedComponentId(null);
         } else {
             writer.startElement("div", null);
 			writer.writeAttribute("id", clientId + "_update", null);

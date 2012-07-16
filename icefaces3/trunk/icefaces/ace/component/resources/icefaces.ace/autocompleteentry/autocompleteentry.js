@@ -253,6 +253,7 @@ ice.ace.Autocompleter.prototype = {
         if (!this.active) {
             switch (event.keyCode) {
                 case ice.ace.Autocompleter.keys.KEY_TAB:
+					setFocus('');
                 case ice.ace.Autocompleter.keys.KEY_RETURN:
 					if (this.element.value.length < this.minChars) {
 						event.stopPropagation();
@@ -270,6 +271,7 @@ ice.ace.Autocompleter.prototype = {
         if (this.active) {
             switch (event.keyCode) {
                 case ice.ace.Autocompleter.keys.KEY_TAB:
+					setFocus('');
                 case ice.ace.Autocompleter.keys.KEY_RETURN:
 					if (this.element.value.length < this.minChars) {
 						event.stopPropagation();
