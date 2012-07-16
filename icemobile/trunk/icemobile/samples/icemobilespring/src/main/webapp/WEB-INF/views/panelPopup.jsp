@@ -18,19 +18,15 @@
 
 		<h2>Panel Popup Example</h2>
 
-
 		<form:form id="panelform" method="POST"  modelAttribute="panelPopupBean" cssClass="cleanform">
-
-		<input type="button" value="Open Popup" onclick="ice.mobi.panelpopup.open('panelConfirmation');" />
-
-
+	  	  <input type="button" value="Open Popup" onclick="ice.mobi.panelpopup.open('panelConfirmation');" />
 
             <mobi:panelPopup id="panelConfirmation"
                                  style="width:300px"
-                                 openLabel="Button Label"
                                  title="Group of popup items"
                                  autocenter="true"
                                  visible="${panelPopupBean.visible}">
+
                     <mobi:outputList inset="false" id="itemList" >
                         <mobi:outputListItem group="true">
                             Panel Popup Links (select one)
@@ -48,7 +44,6 @@
                             Device Information
                         </mobi:outputListItem>
                         <mobi:outputListItem>
-                        <!-- Maybe do some nice Ajax something or other.
                             <a onclick="ice.mobi.panelpopup.close('panelConfirmation');">
                                This will be a dismissive link </a>
                         </mobi:outputListItem>
