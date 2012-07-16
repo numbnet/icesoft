@@ -779,8 +779,8 @@ ice.ace.DataTable.prototype.resizeScrolling = function () {
         // Reset padding if added to offset scrollbar issues
         bodyTableParent.css('padding-right', '');
 
-        var unsizedVScrollShown = bodyTableParent.is(':scrollable'),
-            unsizedBodyVScrollShown = ice.ace.jq('html').is(':scrollable');
+        var unsizedVScrollShown = bodyTableParent.is(':scrollable(vertical)'),
+            unsizedBodyVScrollShown = ice.ace.jq('html').is(':scrollable(vertical)');
 
         // Show Duplicate Header / Footer
         dupeHead.css('display', 'table-header-group');
@@ -807,8 +807,8 @@ ice.ace.DataTable.prototype.resizeScrolling = function () {
         // exceed min-table size (causing scrollbar)
         var dupeCausesScrollChange = false,
             dupeCausesBodyScrollChange = false,
-            vScrollShown = bodyTable.parent().is(':scrollable'),
-            bodyVScrollShown = ice.ace.jq('html').is(':scrollable');
+            vScrollShown = bodyTable.parent().is(':scrollable(vertical)'),
+            bodyVScrollShown = ice.ace.jq('html').is(':scrollable(vertical)');
 
         if (!unsizedVScrollShown && vScrollShown)
             dupeCausesScrollChange = true;
@@ -820,7 +820,7 @@ ice.ace.DataTable.prototype.resizeScrolling = function () {
         if (!ie7) bodyTable.css('table-layout', 'auto');
 
         // IE7 scrollbar fix
-        if (bodyTable.size() > 0 && ie7 && bodyTable.parent().is(':scrollable')) {
+        if (bodyTable.size() > 0 && ie7 && bodyTable.parent().is(':scrollable(vertical)')) {
             bodyTable.parent().css('overflow-x', 'hidden');
             bodyTable.parent().css('padding-right', '17px');
             headerTable.parent().css('padding-right', '17px');
@@ -914,7 +914,7 @@ ice.ace.DataTable.prototype.resizeScrolling = function () {
         // Fix body scrollbar overlapping content
         // Instance check to prevent IE7 dynamic scrolling change errors
         // Recheck scrollable, it may have changed again post resize
-        if (vScrollShown && bodyTable.parent().is(':scrollable')) {
+        if (vScrollShown && bodyTable.parent().is(':scrollable(vertical)')) {
             if (((firefox) || ((safari || chrome) && !mac) || (ie9 || ie8)) && !dupeCausesScrollChange) {
                 var offset = firefox ? 14 : 17;
                 headerTable.parent().css('margin-right', offset + 'px');
