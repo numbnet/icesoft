@@ -65,16 +65,21 @@ public class TabSetTag extends TagSupport {
         Writer out = pageContext.getOut();
         try {
 
+            // Append hidden field for selected tab submission
+            // if name attribute is defined
+            if (name != null && !"".equals(name)) {
+                StringBuilder tag = new StringBuilder(TagUtil.SPAN_TAG);
+                tag.append(">").append(TagUtil.INPUT_TAG);
+                tag.append(" id=\"").append(getId()).append("_hidden\"");
+                tag.append(" name=\"").append(getId()).append("\"");
+                tag.append(" type=\"hidden\"/>");
+                tag.append(TagUtil.SPAN_TAG_END);
+                out.write(tag.toString());
+            } else {
+                LOG.warning("Tabset Tag id: " + getId() + " has no name for value submission");
+            }
 
-            StringBuilder tag = new StringBuilder(TagUtil.SPAN_TAG);
-            tag.append(">").append(TagUtil.INPUT_TAG);
-            tag.append(" id=\"").append(getId()).append("_hidden\"");
-            tag.append(" name=\"").append(getId()).append("\"");
-            tag.append(" type=\"hidden\"/>");
-            tag.append(TagUtil.SPAN_TAG_END);
-            out.write(tag.toString());
             out.write(TagUtil.DIV_TAG_END);
-
             encodeScript(out);
 
         } catch (IOException ioe) {
@@ -95,11 +100,11 @@ public class TabSetTag extends TagSupport {
         sb.append(" type=\"text/javascript\">");
 
         StringBuilder cfg = new StringBuilder("{ ");
-        //     boolean autoheight = tabset.isAutoHeight();
+        //     boolean autoheight = tabset.isAutoheight();
         cfg.append(" tIndex: ").append(selectedTab);
         cfg.append("}");
         sb.append("ice.mobi.tabsetController.initClient('").append(clientId).
-                                                                                    append("',").append(cfg.toString()).append(");");
+            append("',").append(cfg.toString()).append(");");
 
         sb.append(TagUtil.SCRIPT_TAG_END);
         sb.append(TagUtil.SPAN_TAG_END);
@@ -108,6 +113,7 @@ public class TabSetTag extends TagSupport {
 
     // tag properties
     private String id;
+    private String name;
     private String style;
     private String styleClass;
     private String selectedTab;
@@ -120,6 +126,14 @@ public class TabSetTag extends TagSupport {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getStyle() {
