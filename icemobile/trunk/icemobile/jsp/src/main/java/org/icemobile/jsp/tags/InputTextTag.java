@@ -21,12 +21,15 @@ import javax.servlet.jsp.PageContext;
 import javax.servlet.jsp.tagext.SimpleTagSupport;
 import java.io.IOException;
 import java.io.Writer;
+import java.util.logging.Logger;
 
 public class InputTextTag extends SimpleTagSupport {
 
     public static final String INPUT_TEXT_CLASS = "mobi-input-text";
+    private static Logger LOG = Logger.getLogger(InputTextTag.class.getName());
 
     private String id;
+    private String name;
     private String style;
     private String styleClass;
     private String type;
@@ -54,8 +57,14 @@ public class InputTextTag extends SimpleTagSupport {
             isTextArea = true;
         }
         out.write("<" + element);
-        out.write(" id=\"" + getId() + "\"");
-        out.write(" name=\"" + getId() + "\"");
+        if (id != null && !"".equals(id)) {
+            out.write(" id=\"" + getName() + "\"");
+        }
+        if (name != null && !"".equals(name)) {
+            out.write(" name=\"" + getName() + "\"");
+        } else {
+            LOG.warning("InputText tag (id: " + id + ") has no name for submission");
+        }
 
         StringBuilder baseClass = new StringBuilder(INPUT_TEXT_CLASS);
         String styleClass = getStyleClass();
@@ -77,13 +86,13 @@ public class InputTextTag extends SimpleTagSupport {
         String value = getValue();
         if (!isTextArea) {
             out.write(" type=\"" + this.type + "\"");
-            if (value != null){
+            if (value != null) {
                 out.write(" value=\"" + value + "\"");
             }
             out.write("/>");
         } else {
             out.write(">");
-            if (value != null){
+            if (value != null) {
                 out.write(value);
             }
             out.write("</textarea>");
@@ -96,6 +105,14 @@ public class InputTextTag extends SimpleTagSupport {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getStyle() {
