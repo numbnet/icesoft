@@ -37,7 +37,7 @@ public class SubmitNotificationRenderer extends BaseLayoutRenderer {
     public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
         writeJavascriptFile(facesContext, component, JS_NAME, JS_MIN_NAME, JS_LIBRARY);
         encodeMarkup(facesContext, component);
-        encodeScript(facesContext, component);
+       // encodeScript(facesContext, component);
     }
 
     protected void encodeMarkup(FacesContext facesContext, UIComponent uiComponent) throws IOException {
@@ -71,26 +71,6 @@ public class SubmitNotificationRenderer extends BaseLayoutRenderer {
     @Override
     public boolean getRendersChildren() {
         return true;
-    }
-
-    public void encodeScript(FacesContext facesContext, UIComponent component) throws IOException {
-        ResponseWriter writer = facesContext.getResponseWriter();
-        SubmitNotification panelNotify = (SubmitNotification) component;
-        String clientId = panelNotify.getClientId(facesContext);
-        //only put this tag in if the script is available to do so
-        if (isScriptLoaded(facesContext, JS_NAME)) {
-            writer.startElement(HTML.SPAN_ELEM, component);
-            writer.writeAttribute(HTML.ID_ATTR, clientId + "_scrSpan", HTML.ID_ATTR);
-            writer.startElement("script", null);
-            writer.writeAttribute("id", clientId + "_script", "id");
-            writer.writeAttribute("text", "text/javascript", null);
-            StringBuilder builder = new StringBuilder(255);
-            builder.append("ice.onAfterUpdate(function(){").append("mobi.submitnotify.close('").append(clientId).append("');");
-            builder.append("});");
-            writer.write(builder.toString());
-            writer.endElement("script");
-            writer.endElement(HTML.SPAN_ELEM);
-        }
     }
 
     public static String findSubmitNotificationId(UIComponent uiComponent, String subNotId) {

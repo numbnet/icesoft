@@ -76,7 +76,7 @@ public class MenuButtonItemRenderer extends BaseLayoutRenderer{
         StringBuilder builder = new StringBuilder(",{singleSubmit: ").append(singleSubmit);
         builder.append(",disabled: ").append(disabled);
         UIComponent uiForm = Utils.findParentForm(parent);
-         if (null != subNotId) {
+         if (null != subNotId && subNotId.length()>0) {
             submitNotificationId = SubmitNotificationRenderer.findSubmitNotificationId(uiComponent, subNotId);
             if (null == submitNotificationId){
                 //try another way as this above one is limited when finding a namingcontainer
@@ -93,7 +93,7 @@ public class MenuButtonItemRenderer extends BaseLayoutRenderer{
                 logger.warning("no submitNotification id found for commandButton id="+clientId);
             }
          }
-        if (null != panelConfId){
+        if (null != panelConfId && panelConfId.length()>1){
             ///would never use this with singleSubmit so always false when using with panelConfirmation
             //panelConf either has ajax request behaviors or regular ice.submit.
             if (hasBehaviors){

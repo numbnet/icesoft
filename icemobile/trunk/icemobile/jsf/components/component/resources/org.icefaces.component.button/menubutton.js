@@ -19,17 +19,21 @@ if (!window['mobi']) {
 
 mobi.menubutton = {
     cfg: {},
-    initmenu: function(clientId){
+    initmenu: function(clientId, cfgI){
          var myselect = document.getElementById(clientId+'_sel');
-         var anoption = document.createElement("option");
-         anoption.label="Select";
-         try{
-            myselect.add(new Option("Select", "0"), myselect.options[0]);
-         } catch(e) {
-             myselect.add(new Option("Select", "0"), 0);
+         var selTitle = cfgI.selectTitle;
+         var option = myselect.options[0];
+         if (option && option.label!=selTitle) {
+             try{
+                var anoption = document.createElement("option");
+                anoption.label=selTitle;
+                myselect.add(new Option(selTitle, "0"), myselect.options[0]);
+             } catch(e) {
+                myselect.add(new Option(selTitle, "0"), 0);
+             }
+            myselect.options[0].selected=true;
+            myselect.render;
          }
-        myselect.options[0].selected=true;
-        myselect.render;
     },
     select: function(clientId){
          var myselect = document.getElementById(clientId+'_sel');
@@ -40,7 +44,6 @@ mobi.menubutton = {
                 break
              }
          }
-    //     var textA = myselect.options[index].text;
          var optId = myselect.options[index].id;
          var singleSubmit = false;
          var disabled = false;
@@ -49,24 +52,23 @@ mobi.menubutton = {
              disabled = this.cfg[optId].disabled;
          }
          if (index ==0)return;
-         var snId;
-         if (this.cfg[optId].snId){
-             snId = this.cfg[optId].snId;
-         }
+         var snId =this.cfg[optId].snId || null
          if (this.cfg[optId].pcId){
             var pcId= this.cfg[optId].pcId;
-            mobi.panelConf.init(pcId, optId, this.cfg[optId] ) ;
+            mobi.panelConf.init(pcId, optId, this.cfg[optId], singleSubmit ) ;
          }
          else if (singleSubmit){
-             ice.se(null, optId);
              if (snId){
-                 mobi.submitnotify.init(snId);
+                 mobi.submitnotify.open(snId, optId, true);
+             }else {
+                 ice.se(null, optId);
              }
             // this.reset(myselect, index);
          } else {
-             ice.s(null, optId);
              if (snId){
-                 mobi.submitnotify.init(snId);
+                 mobi.submitnotify.open(snId, optId, false,null);
+             } else {
+                 ice.s(null, optId);
              }
          }
 

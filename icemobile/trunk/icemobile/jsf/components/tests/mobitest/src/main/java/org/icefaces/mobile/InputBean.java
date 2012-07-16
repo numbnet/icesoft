@@ -151,6 +151,10 @@ public class InputBean implements Serializable {
     public void setSliderVal3(int sliderVal3) {
         this.sliderVal3 = sliderVal3;
     }
+    public String actionMethod(){
+     //   return "unknown?faces-redirect=true";
+       return "/inputComponents/dateSpinner?faces-redirect=true";
+    }
     public void testSubmitNotification(ActionEvent ae){
         try{
             Thread.sleep(3000);

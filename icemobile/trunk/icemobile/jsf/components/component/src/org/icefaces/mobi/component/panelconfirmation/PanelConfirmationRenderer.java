@@ -32,7 +32,7 @@ import java.util.logging.Logger;
 /**
  * for now the css for this class is just reused from the dateSpinner popup container classes
  */
-public class PanelConfirmationRenderer extends BaseLayoutRenderer {
+public class  PanelConfirmationRenderer extends BaseLayoutRenderer {
     private static Logger logger = Logger.getLogger(PanelConfirmationRenderer.class.getName());
     private static final String JS_NAME = "panelconfirmation.js";
     private static final String JS_MIN_NAME = "panelconfirmation-min.js";

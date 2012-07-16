@@ -22,7 +22,7 @@ mobi.submitnotify = {
     containerClass:"mobi-submitnotific-container",
     centerCalculation:{},
     cfg:{},
-    open:function (clientId) {
+    open:function (clientId, callerId, singleSubmit, params) {
         var idPanel = clientId + "_bg";
         var containerId = clientId + "_popup";
         document.getElementById(idPanel).className = 'mobi-submitnotific-bg';
@@ -43,6 +43,21 @@ mobi.submitnotify = {
         }
         // calculate center for first view
         mobi.panelAutoCenter(containerId);
+        var cfg = {};
+        cfg.source = callerId;
+        cfg.execute = "@all";
+        cfg.render = "@all";
+        if (singleSubmit){
+            cfg.execute="@this";
+        }
+        if (params !=null){
+            cfg.params = params;
+        }
+      //  var closeCall = function(xhr, status, args) {alert('close');mobi.submitnotify.close(clientId);};
+        var closeCall = function(xhr, status, args) {mobi.submitnotify.close(clientId);};
+        cfg.oncomplete = closeCall;
+        cfg.onsuccess = closeCall;
+        mobi.AjaxRequest(cfg);
     },
     close:function (clientId) {
         var idPanel = clientId + "_bg";
@@ -59,10 +74,6 @@ mobi.submitnotify = {
             window.detachEvent('resize', this.centerCalculation[clientId], false);
         }
         this.centerCalculation[clientId] = undefined;
-    },
-    unload:function (clientId) {
-        this.cfg[clientId] = null;
-        this.visible[clientId] = null;
     }
 
 }

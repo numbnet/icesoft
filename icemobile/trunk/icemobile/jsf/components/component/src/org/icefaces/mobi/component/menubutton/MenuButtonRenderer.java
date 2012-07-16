@@ -57,10 +57,10 @@ public class MenuButtonRenderer extends BaseLayoutRenderer {
          ResponseWriter writer = facesContext.getResponseWriter();
          String clientId = uiComponent.getClientId(facesContext);
          MenuButton menu = (MenuButton) uiComponent;
-      	UIComponent form = Utils.findParentForm(uiComponent);
-   		if(form == null) {
+      	 UIComponent form = Utils.findParentForm(uiComponent);
+   		 if(form == null) {
 			throw new FacesException("MenuButton : \"" + clientId + "\" must be inside a form element");
-		}
+		 }
          // root element
          writeJavascriptFile(facesContext, uiComponent, JS_NAME, JS_MIN_NAME, JS_LIBRARY);
          writer.startElement(HTML.DIV_ELEM, uiComponent);
@@ -110,19 +110,12 @@ public class MenuButtonRenderer extends BaseLayoutRenderer {
          }
          if (menu.getVar() != null) {
             menu.setRowIndex(-1);
-      /*      MenuButtonItem mbi = new MenuButtonItem();
-            mbi.setValue("select");
-            mbi.setDisabled(true);
-            mbi.setLabel("Select one"); //should internationalize??
-            mbi.setParent(uiComponent);
-            menu.setRowIndex(0);
-            mbi.encodeAll(facesContext);  */
             for (int i = 0; i < menu.getRowCount(); i++) {
                 //assume that if it's a list of items then it's grouped
                 menu.setRowIndex(i);
                 // option can't have children tags but can be disabled ...not too sure what to do about that
                 /* check to see that only child can be MenuButtonItem?  */
-                   renderChildren(facesContext, menu);
+                renderChildren(facesContext, menu);
             }
             menu.setRowIndex(-1);
             writer.endElement(HTML.SELECT_ELEM);
@@ -146,14 +139,16 @@ public class MenuButtonRenderer extends BaseLayoutRenderer {
 
     public void encodeScript(FacesContext context, UIComponent uiComponent) throws IOException{
             //need to initialize the component on the page and can also
-         ResponseWriter writer = context.getResponseWriter();
-         MenuButton menu = (MenuButton) uiComponent;
-         String clientId = menu.getClientId(context);
-         writer.startElement("span", uiComponent);
-         writer.writeAttribute("id", clientId+"_initScr", "id");
-         writer.startElement("script", uiComponent);
-         writer.writeAttribute("text", "text/javascript", null);
-         writer.write("mobi.menubutton.initmenu('"+clientId+"');");
+        ResponseWriter writer = context.getResponseWriter();
+        MenuButton menu = (MenuButton) uiComponent;
+        String clientId = menu.getClientId(context);
+        writer.startElement("span", uiComponent);
+        writer.writeAttribute("id", clientId+"_initScr", "id");
+        writer.startElement("script", uiComponent);
+        writer.writeAttribute("text", "text/javascript", null);
+        StringBuilder sb = new StringBuilder("mobi.menubutton.initmenu('");
+        sb.append(clientId).append("',").append("{ selectTitle: '").append(menu.getSelectTitle()).append("'});");
+        writer.write(sb.toString());
          if (!menu.getMenuItemCfg().isEmpty()){
              for (Map.Entry<String, StringBuilder> entry: menu.getMenuItemCfg().entrySet()){
               //    logger.info(" item cfg prints="+entry.getValue().toString());

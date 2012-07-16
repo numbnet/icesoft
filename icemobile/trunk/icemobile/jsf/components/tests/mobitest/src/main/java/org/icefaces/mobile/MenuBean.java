@@ -19,6 +19,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import java.io.Serializable;
 import javax.faces.model.SelectItem;
+import java.lang.String;
 import java.util.ArrayList;
 import java.util.List;
 import javax.faces.event.ActionEvent;
@@ -32,6 +33,7 @@ public class MenuBean implements Serializable {
     Logger.getLogger(ListBean.class.toString());
     private List<String> simpleList = new ArrayList<String>() ;
     private String outputString = "none";
+    private String selTitle="Pick One";
 
  //   private List<MenuAction> itemList = new ArrayList<MenuAction>();
     private List<ModelData> data = new ArrayList<ModelData>();
@@ -47,16 +49,23 @@ public class MenuBean implements Serializable {
     }
 
     private void fillModelData(){
-  //      this.data.add(new ModelData("options", "select one","none", "none"));
-        this.data.add(new ModelData("File", "file item","pc1" , "none" ));
+        this.data.add(new ModelData("File", "file item","pc1" , null ));
         this.data.add(new ModelData("Add", "add item", "pcAdd", "sn1" ));
-        this.data.add(new ModelData("Delete", "delete item", "pcDel", "none" ));
-        this.data.add(new ModelData("Print", "print item", "pc1", "none"));
-        this.data.add(new ModelData("Cancel", "cancel item", "none", "none" ));
+        this.data.add(new ModelData("Delete", "delete item", "pcDel", null ));
+        this.data.add(new ModelData("Print", "print item", null, "sn1"));
+        this.data.add(new ModelData("Cancel", "cancel item", null, null ));
     }
 
     public List<ModelData> getData() {
         return data;
+    }
+
+    public String getSelTitle() {
+        return selTitle;
+    }
+
+    public void setSelTitle(String selTitle) {
+        this.selTitle = selTitle;
     }
 
     public void setData(List<ModelData> data) {
@@ -141,7 +150,7 @@ public class MenuBean implements Serializable {
 
          public void actionMethod(ActionEvent ae){
              MenuBean.EVENT_TRIGGERED="item "+this.value+" was selected";
-             if (this.value.equals("Add")){
+             if (this.value.equals("Add") || this.value.equals("Print")){
                 try{
                    Thread.sleep(5000);
                    this.label="Added";
