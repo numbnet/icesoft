@@ -184,8 +184,15 @@
                 <mobi:outputListItem group="false">
                 Augmented <mobi:augmentedReality 
                     styleClass="mobi-button mobi-round-all"
-                    value="#{uploadModel.selectedLocation}"
-                    params="#{mediaStore.arParams}" />
+                    value="#{uploadModel.selectedLocation}" >
+                    <mobi:augmentedRealityLocations 
+                        value="#{mediaStore.mediaStack}" var="place"
+                        locationLabel="#{place.title}"
+                        locationLat="#{place.lat}"
+                        locationLon="#{place.lon}"
+                        locationDir="#{place.direction}"
+                        locationIcon="#{place.iconURL}" />
+                    </mobi:augmentedReality>
                 </mobi:outputListItem>
             </mobi:outputList>
 

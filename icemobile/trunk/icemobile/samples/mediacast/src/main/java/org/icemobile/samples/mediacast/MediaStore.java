@@ -64,30 +64,6 @@ public class MediaStore implements Serializable {
         return mediaCarouselStack.size();
     }
 
-    public String getArParams() {
-        FacesContext facesContext = FacesContext.getCurrentInstance();
-        ExternalContext externalContext = facesContext.getExternalContext();
-        StringBuilder sb = new StringBuilder();
-        String url = externalContext.getRequestScheme() + "://" +
-            externalContext.getRequestServerName() + ":" + 
-            externalContext.getRequestServerPort();
-        //base URL must be extracted for jsf resources
-//        sb.append("ub=" + URLEncoder.encode(url));
-        for (MediaMessage message : mediaStack)  {
-            String imageURL = null;
-			try {
-				imageURL = URLEncoder.encode(
-				        message.getMediumPhoto().getData().getURL().toString(),"UTF-8" );
-				String location = message.getMessageAsUrlParam() + "," + imageURL;
-	            sb.append("&" + location);
-			} catch (UnsupportedEncodingException e) {
-				logger.warning("image url could not be encoded: " + e.getMessage());
-			}
-        }
-
-        return sb.toString();
-    }
-
     /**
      * Add a new image set to the the store.
      *

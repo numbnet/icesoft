@@ -37,6 +37,8 @@ import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.Collection;
+import java.util.List;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -126,7 +128,7 @@ public class RealityBean extends ExampleImpl<RealityBean> implements
                 }
                 RealityMessage message = new RealityMessage();
                 message.setTitle(label);
-                message.setLocation(latitude + "," + longitude);
+                message.setLocation(latitude, longitude);
                 message.setFileName(resourcePath);
                 messages.put(label, message);
                 uploadMessage = "Locations marked: " + messages.size();
@@ -196,22 +198,10 @@ public class RealityBean extends ExampleImpl<RealityBean> implements
         imagePath = messages.get(selection).getFileName();
     }
 
-    public String getParams() {
-        FacesContext facesContext = FacesContext.getCurrentInstance();
-        ExternalContext externalContext = facesContext.getExternalContext();
-        StringBuilder sb = new StringBuilder();
-        String url = externalContext.getRequestScheme() + "://" +
-            externalContext.getRequestServerName() + ":" + 
-            externalContext.getRequestServerPort();
-        sb.append("ub=" + URLEncoder.encode(url));
-        for (RealityMessage message : messages.values())  {
-            String location = message.getPacked() + ",," + 
-                    message.getFileName();
-            sb.append("&" + location);
-        }
-
-        return sb.toString();
+    public Collection getMessages()  {
+        return messages.values();
     }
+
     private void scaleImage(File photoFile) throws IOException  {
 
         if (null == photoFile) {
@@ -257,56 +247,3 @@ public class RealityBean extends ExampleImpl<RealityBean> implements
 
 }
 
-class RealityMessage {
-
-    private String title;
-    private String location;
-    private String selection;
-    private String fileName;
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getSelection() {
-        return selection;
-    }
-
-    public void setSelection(String selection) {
-        this.selection = selection;
-    }
-
-    public String getLocation() {
-        return location;
-    }
-
-    public void setLocation(String location) {
-        this.location = location;
-    }
-
-    public String getFileName() {
-        return fileName;
-    }
-
-    public void setFileName(String fileName) {
-        this.fileName = fileName;
-    }
-
-    public String getPacked()  {
-        return URLEncoder.encode(title) + "=" + location;
-    }
-
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("properties ");
-        sb.append("title=");
-        sb.append("'").append(title).append("', ");
-        sb.append("location=");
-        sb.append("'").append(location).append("', ");
-        return sb.toString();
-    }
-}
