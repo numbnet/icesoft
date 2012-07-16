@@ -71,12 +71,12 @@ public class TextEntryRenderer extends InputRenderer {
         Map<String, Object> labelAttributes = getLabelAttributes(component);
 
         writer.startElement("span", textEntry);
-        writer.writeAttribute("id", clientId + "_markup", null);
+//        writer.writeAttribute("id", clientId + "_markup", null);
 
         writeLabelAndIndicatorBefore(labelAttributes);
 
         writer.startElement("input", null);
-        writer.writeAttribute("id", clientId + "_input", null);
+//        writer.writeAttribute("id", clientId + "_input", null);
         writer.writeAttribute("type", "text", null);
 
         String embeddedLabel = null;
@@ -119,7 +119,7 @@ public class TextEntryRenderer extends InputRenderer {
         writer.endElement("span");
 
         writer.startElement("span", textEntry);
-        writer.writeAttribute("id", clientId + "_script", "clientId");
+//        writer.writeAttribute("id", clientId + "_script", "clientId");
         writer.startElement("script", null);
         writer.writeAttribute("type", "text/javascript", null);
 
