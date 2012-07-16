@@ -37,6 +37,7 @@
             </mobi:fieldSetRow>
         </mobi:fieldSetGroup>
         <mobi:carousel id="carouselOne"
+                       name="carouselOne"
                        collection="${carouselBean.images}"
                        selectedIndex="${carouselBean.carouselOneIndex}">
             <mobi:carouselItem ref="myitem" type="java.lang.String"/>
