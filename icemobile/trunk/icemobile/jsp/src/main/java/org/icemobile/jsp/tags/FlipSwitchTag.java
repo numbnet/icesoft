@@ -1,10 +1,13 @@
 package org.icemobile.jsp.tags;
 
+import org.icefaces.mobi.component.flipswitch.FlipSwitch;
+
 import javax.servlet.ServletRequest;
 import javax.servlet.jsp.PageContext;
 import javax.servlet.jsp.tagext.SimpleTagSupport;
 import java.io.IOException;
 import java.io.Writer;
+import java.util.logging.Logger;
 
 /**
  *
@@ -15,15 +18,7 @@ public class FlipSwitchTag extends SimpleTagSupport {
     public static final String FLIPSWITCH_OFF_CLASS = "mobi-flip-switch mobi-flip-switch-off ";
     public static final String FLIPSWITCH_TEXT_CLASS = "mobi-flip-switch-txt";
 
-    private String id;
-    private String style;
-    private String styleClass;
-
-    private boolean disabled;
-    private String value;
-    private boolean readOnly;
-    private String labelOn;
-    private String labelOff;
+    private static Logger LOG = Logger.getLogger(FlipSwitchTag.class.getName());
 
 
     public void doTag() throws IOException {
@@ -60,9 +55,13 @@ public class FlipSwitchTag extends SimpleTagSupport {
         out.write(getLabelOn());
         out.write("</span>");
 
-        // Concat _hidden to the id for uniqueness, but keep the name stock
-        // to make the MVC mapping easier
-        out.write("<input id=\"" + getId() + "_hidden\" name=\"" + getId() + "\"");
+        // Concat _hidden to the id for uniqueness
+        out.write("<input id=\"" + getId() + "_hidden\"");
+        if (name != null && !"".equals(name)) {
+            out.write(" name=\"" + getName() + "\"");
+        } else {
+            LOG.warning("Flipswitch tag (id: " + id + ") has no name for value submission");
+        }
         out.write(" value=\"" + getValue() + "\" type=\"hidden\">");
 
         out.write("<span class=\"" + FLIPSWITCH_TEXT_CLASS + "\">");
@@ -82,6 +81,17 @@ public class FlipSwitchTag extends SimpleTagSupport {
         return hiddenValue.equalsIgnoreCase(labelOn);
     }
 
+    private String id;
+    private String name;
+    private String style;
+    private String styleClass;
+
+    private boolean disabled;
+    private String value;
+    private boolean readOnly;
+    private String labelOn;
+    private String labelOff;
+
 
     public String getId() {
         return id;
@@ -89,6 +99,14 @@ public class FlipSwitchTag extends SimpleTagSupport {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getStyle() {
