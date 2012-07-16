@@ -188,7 +188,7 @@ ice.mobi.carousel = {
         //carousel iscroll loading
         setTimeout(function () {
             if (this.acarousel) {
-                mobi.carousel.refresh(clientId);
+                ice.mobi.carousel.refresh(clientId);
             }
             else {
                 this.acarousels = new iScroll(carouselId, {
