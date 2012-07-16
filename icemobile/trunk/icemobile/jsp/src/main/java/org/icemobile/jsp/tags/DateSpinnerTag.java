@@ -270,7 +270,6 @@ public class DateSpinnerTag extends SimpleTagSupport {
     }
 
     private String encodeValue(String initialValue) throws IOException {
-        System.out.println("***** Datespinner initialValue = " + value);
         String value = "";
         Date aDate = new Date();
         if (pattern == null) {
@@ -294,7 +293,6 @@ public class DateSpinnerTag extends SimpleTagSupport {
 
         }
         this.setIntValues(aDate);
-        System.out.println("***** Datespinner encodeValue = " + value);
         return value;
     }
 

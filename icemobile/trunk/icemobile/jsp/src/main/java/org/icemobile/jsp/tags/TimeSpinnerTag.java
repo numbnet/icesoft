@@ -252,7 +252,6 @@ public class TimeSpinnerTag extends SimpleTagSupport {
 
         }
         this.setIntValues(aDate);
-        System.out.println("***** Timespinner encodeValue = " + value);
         return value;
     }
 
