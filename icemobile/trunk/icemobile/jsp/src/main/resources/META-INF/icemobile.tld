@@ -268,7 +268,7 @@
         <tag-class>org.icemobile.jsp.tags.InputTextTag</tag-class>
         <body-content>empty</body-content>
         <attribute>
-            <name>id</name>
+            <name>name</name>
             <required>true</required>
             <rtexprvalue>true</rtexprvalue>
         </attribute>
@@ -887,6 +887,16 @@
         <name>panelPopup</name>
         <tag-class>org.icemobile.jsp.tags.PanelPopupTag</tag-class>
         <body-content>JSP</body-content>
+        <attribute>
+            <name>id</name>
+            <required>true</required>
+            <rtexprvalue>false</rtexprvalue>
+        </attribute>
+        <attribute>
+            <name>name</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+        </attribute>
         <attribute>
             <name>style</name>
             <required>false</required>
