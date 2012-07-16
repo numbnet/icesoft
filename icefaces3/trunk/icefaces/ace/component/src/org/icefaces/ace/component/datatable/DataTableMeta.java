@@ -272,13 +272,14 @@ public class DataTableMeta extends UIDataMeta {
             "component, it is assumed that every body column of the table will have a associated " +
             "single column spanning header column on the bottom row of the multi-row header. This is " +
             "to allow for appropriate sizing of the scrollable column and the associated header td. Note," +
-            "in IE7, the CSS/DOM engine doesn't support the dynamic adjustments required for this feature and" +
+            "in IE7, the CSS/DOM engine doesn't suport the dynamic adjustments required for this feature and" +
             "instead the feature uses a fixed, equal size for each column of the table.")
     private boolean scrollable;
 
-    @Property(tlddoc = "Enables the table to insert additional rows as " +
-            "scrolling reaches the bottom of the table. The 'rows' property" +
-            " configures the number of new rows to be loaded")
+    @Property(tlddoc = "Enables the table to insert additional rows as scrolling reaches the bottom of the table. " +
+            "The 'rows' property configures the number of new rows to be loaded. \n" +
+            "Note: This feature is deprecated as of version 3.1 and is not supported. \n" +
+            "This property will be removed in a future release.")
     private boolean liveScroll;
 
 
