@@ -21,12 +21,11 @@ import javax.servlet.jsp.PageContext;
 import javax.servlet.jsp.tagext.SimpleTagSupport;
 import java.io.IOException;
 import java.io.Writer;
+import java.util.logging.Logger;
 
 public class QRScanTag extends SimpleTagSupport {
 
-    private String id;
-    private String style;
-    private String styleClass;
+    private static Logger LOG = Logger.getLogger(QRScanTag.class.getName());
 
     public void doTag() throws IOException {
 
@@ -40,8 +39,14 @@ public class QRScanTag extends SimpleTagSupport {
         if (!isEnhanced) {
 
             buffer.append(">").append(TagUtil.INPUT_TAG).append(" type=\"text\"");
-            buffer.append(" id=\"").append(getId()).append("\"");
-            buffer.append(" name=\"").append(getId()).append("\">");
+            if (id != null & !"".equals(id)) {
+                buffer.append(" id=\"").append(getId()).append("\"");
+            }
+            if (name != null && !"".equals(name)) {
+                buffer.append(" name=\"").append(getName()).append("\">");
+            } else {
+                LOG.warning("QRScan tag (id: " + id + ") has no name for value submission");
+            }
             buffer.append(TagUtil.INPUT_TAG_END).append(TagUtil.SPAN_TAG_END);
             out.write(buffer.toString());
             return;
@@ -76,12 +81,26 @@ public class QRScanTag extends SimpleTagSupport {
         out.write(buffer.toString());
     }
 
+    private String id;
+    private String name;
+    private String style;
+    private String styleClass;
+
+
     public String getId() {
         return id;
     }
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getStyle() {
