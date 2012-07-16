@@ -284,8 +284,7 @@ public class AutoCompleteEntry extends AutoCompleteEntryBase implements NamingCo
             if("true".equals(requestParemeterMap.get("ice.event.left"))){
                 setChangedComponentId(null); // do not populate list
                 queueEvent(new ActionEvent(this));                
-            }
-            if("onclick".equals(requestParemeterMap.get("ice.event.type"))){
+            } else if("onclick".equals(requestParemeterMap.get("ice.event.type"))){
                 setChangedComponentId(null); // do not populate list
                 queueEvent(new ActionEvent(this));
             }
