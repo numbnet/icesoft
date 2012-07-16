@@ -158,7 +158,7 @@ public class  CommandButtonRenderer extends CoreRenderer {
         if (singleSubmit){
             builder.append(", singleSubmit:").append(singleSubmit);
         }
-        if (null != subNotId) {
+        if (null != subNotId  && subNotId.length()> 0) {
             submitNotificationId = SubmitNotificationRenderer.findSubmitNotificationId(uiComponent,subNotId);
             if (null != submitNotificationId ){
                 builder.append(",snId: '").append(submitNotificationId).append("'");
@@ -170,7 +170,7 @@ public class  CommandButtonRenderer extends CoreRenderer {
            //include params for button
             builder.append(",params: ").append(params);
         }
-        if (null != panelConfId){
+        if (null != panelConfId && panelConfId.length()>0){
             ///would never use this with singleSubmit so always false when using with panelConfirmation
             //panelConf either has ajax request behaviors or regular ice.submit.
             if (hasBehaviors){

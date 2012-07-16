@@ -36,26 +36,15 @@ mobi.panelConf = {
     },
     confirm:function (clientId) {
         var event = this.cfg.event;
-        var hasBehaviors = false;
-        var behaviors = this.cfg[clientId].behaviors;
-        if (behaviors) {
-            hasBehaviors = true;
+        var callerId = this.caller[clientId];
+        var snId = this.cfg[clientId].snId || null;
+        if (snId ==null && callerId) {
+            ice.s(event, callerId);
+            this.close(clientId);
         }
-        if (hasBehaviors) {
-            if (behaviors.click) {
-                behaviors.click();
-            }
-        }
-        if (!hasBehaviors) {
-            var callerId = this.caller[clientId];
-            if (callerId) {
-                ice.s(event, callerId);
-            }
-        }
-        this.close(clientId);
-        if (this.cfg[clientId].snId) {
-            var snId = this.cfg[clientId].snId;
-            mobi.submitnotify.open(snId);
+        else if (snId!=null) {
+            this.close(clientId);
+            mobi.submitnotify.open(snId, callerId, false, null);
         }
     },
     open:function (clientId) {

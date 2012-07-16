@@ -366,8 +366,10 @@ if (window.addEventListener) {
 /* javascript for mobi:commandButton component put into component.js as per MOBI-200 */
 mobi.button = {
     select: function(clientId, cfg){
+        var params = cfg.params || null;
         if (cfg.snId){
-            mobi.submitnotify.open(cfg.snId);
+            mobi.submitnotify.open(cfg.snId, clientId, cfg.singleSubmit, params);
+            return;
             //if here, then no panelConfirmation as this action is responsible for submit
         }
         //otherwise, just check for behaviors, singleSubmit and go
@@ -376,13 +378,11 @@ mobi.button = {
         if (hasBehaviors){
             //show the submitNotification panel
             if (cfg.behaviors.click){
-                cfg.node = cfg.elVal;
                 cfg.behaviors.click();
             }
             return;  //ensure no other submits
         }
         var event = cfg.elVal.event;
-        var params = cfg.params;
         if (singleSubmit){
             ice.se(event, clientId, params);
         } else {

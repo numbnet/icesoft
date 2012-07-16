@@ -70,6 +70,10 @@ public class MenuButtonMeta extends UISeriesBaseMeta{
     @Property(defaultValue="Menu", tlddoc="Label of the menu button")
     private String buttonLabel;
 
+    @Property(defaultValue="Select", tlddoc="first item in list which cannot be selected but helpful to users " +
+            " to understand how to use the component and they must select an option in the list.")
+    private String selectTitle;
+
     @Property(defaultValue = "false", tlddoc = "The default value of this attribute is false. If true then value change event will happen in APPLY_REQUEST_VALUES phase and if the value of this attribute is false then event change will happen in INVOKE_APPLICATION phase")
     private boolean immediate;
     /** other possible attributes include vertical, scroll increment, circular, numbershown, currentIndex */

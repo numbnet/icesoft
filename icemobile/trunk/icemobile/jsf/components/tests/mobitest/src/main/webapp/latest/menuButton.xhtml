@@ -35,7 +35,6 @@
 </h:head>
 
 <h:body>
-      <ui:debug/>
        <h3>Menu Button</h3>
       <h:form id="inputForm">
           <h5>Input Form</h5>
@@ -53,7 +52,7 @@
       </h:form>
 
       <h:form id="menuBasic">
-        <mobi:menuButton id="menu1" value="#{menu.data}" var="item">
+        <mobi:menuButton id="menu1" value="#{menu.data}" var="item" selectTitle="#{menu.selTitle}">
                 <mobi:menuButtonItem value="#{item.value}" label="#{item.label}"
                                      singleSubmit="#{item.singleSubmit}"
                                      disabled="#{item.disabled}" actionListener="#{item.actionMethod}"/>
@@ -77,6 +76,10 @@
             <h:outputText value="...working"/>
         </mobi:submitNotification>
       </fieldset>
+       <h5>outputon this form</h5>
+      <mobi:fieldsetRow>
+          <h:outputText value="#{menu.outputString}"/>
+      </mobi:fieldsetRow>
      </h:form>
     <h3>RESULTS</h3>
      <h:outputLabel for="out1" value="A. simple:-"/>
