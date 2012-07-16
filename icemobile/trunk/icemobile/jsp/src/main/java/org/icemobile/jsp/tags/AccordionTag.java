@@ -64,16 +64,20 @@ public class AccordionTag extends TagSupport {
 
         Writer out = pageContext.getOut();
         try {
-            // Write hidden input field with id matching javascript and name = id
-            StringBuilder tag = new StringBuilder(TagUtil.SPAN_TAG);
-            tag.append(">").append(TagUtil.INPUT_TAG);
-            tag.append(" id=\"").append(getId()).append("_hidden\"");
-            tag.append(" name=\"").append(getId()).append("\"");
-            tag.append(" type=\"hidden\"/>");
-            tag.append(TagUtil.SPAN_TAG_END);
-            tag.append(TagUtil.DIV_TAG_END);
+            // Write hidden input field with id matching javascript
+            if (name != null && !"".equals(name)) {
+                StringBuilder tag = new StringBuilder(TagUtil.SPAN_TAG);
+                tag.append(">").append(TagUtil.INPUT_TAG);
+                tag.append(" id=\"").append(getId()).append("_hidden\"");
+                tag.append(" name=\"").append(getName()).append("\"");
+                tag.append(" type=\"hidden\"/>");
+                out.write(tag.toString());
+            } else {
+                LOG.warning("AccordionTag id: " + getId() + " has no name attribute for value submission");
+            }
 
-            out.write(tag.toString());
+            out.write(TagUtil.SPAN_TAG_END);
+            out.write(TagUtil.DIV_TAG_END);
             encodeScript(out);
         } catch (IOException ioe) {
             LOG.severe("IOException closing AccordionTag: " + ioe);
@@ -107,12 +111,20 @@ public class AccordionTag extends TagSupport {
     // Tag properties
 
     private String id;
+    private String name;
     private String styleClass;
     private String style;
-    private boolean autoHeight;
+    private boolean autoheight;
     private int maxheight;
     private String selectedId;
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public String getSelectedId() {
         return selectedId;
@@ -123,11 +135,11 @@ public class AccordionTag extends TagSupport {
     }
 
     public boolean isAutoheight() {
-        return autoHeight;
+        return autoheight;
     }
 
-    public void setAutoheight(boolean autoHeight) {
-        this.autoHeight = autoHeight;
+    public void setAutoheight(boolean autoheight) {
+        this.autoheight = autoheight;
     }
 
     public String getId() {
