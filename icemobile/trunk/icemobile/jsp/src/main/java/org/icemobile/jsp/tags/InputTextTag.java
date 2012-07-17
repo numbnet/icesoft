@@ -58,7 +58,7 @@ public class InputTextTag extends SimpleTagSupport {
         }
         out.write("<" + element);
         if (id != null && !"".equals(id)) {
-            out.write(" id=\"" + getName() + "\"");
+            out.write(" id=\"" + getId() + "\"");
         }
         if (name != null && !"".equals(name)) {
             out.write(" name=\"" + getName() + "\"");
