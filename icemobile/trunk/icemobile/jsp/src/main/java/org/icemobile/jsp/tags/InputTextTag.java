@@ -46,7 +46,6 @@ public class InputTextTag extends SimpleTagSupport {
     public void doTag() throws IOException {
 
         PageContext pageContext = (PageContext) getJspContext();
-        boolean isEnhanced = TagUtil.isEnhancedBrowser(pageContext);
         Writer out = pageContext.getOut();
 
         String element = "input";
