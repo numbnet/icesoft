@@ -151,6 +151,9 @@ public class DataTableRenderer extends CoreRenderer {
 
         encodeScript(context, table);
 
+        // Avoid sharing cached stateMap with other iterative instances
+        table.clearCachedStateMap();
+
         if ("true".equals(context.getExternalContext().getInitParameter("ForceFullTableDOMUpdates"))) {
             writer.startElement(HTML.DIV_ELEM, null);
             writer.writeAttribute(HTML.STYLE_ATTR, "display:none;",null);

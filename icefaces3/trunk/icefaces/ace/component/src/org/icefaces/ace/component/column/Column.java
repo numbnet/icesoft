@@ -150,10 +150,7 @@ public class Column extends ColumnBase {
 
         // If this row doesn't break its group by rendering a conditional row after itself or
         // by being expanded, span more than this row
-        dataTable.setRowIndex(-1);
         stateMap = dataTable.getStateMap();
-        dataTable.setRowIndex(currentRow);
-
         boolean notExpanded  = !stateMap.get(rowData).isExpanded();
         boolean noTailingRows = dataTable.getConditionalRows(currentRow, false).size() == 0;
         boolean lastExpanded = false;
