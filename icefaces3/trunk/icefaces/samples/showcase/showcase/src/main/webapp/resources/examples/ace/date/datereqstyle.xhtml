@@ -34,8 +34,10 @@
 
     <ui:define name="example">
         <h:form id="form">
-            <ice:outputStyle href="./resources/css/indicator_override-#{dateReqStyle.reqColor}.css"
+            <ice:outputStyle href="./resources/css/indicator_override_req-#{dateReqStyle.reqColor}.css"
                              rendered="#{dateReqStyle.reqColor ne 'default'}"/>
+            <ice:outputStyle href="./resources/css/indicator_override_opt-#{dateReqStyle.optColor}.css"
+                             rendered="#{dateReqStyle.optColor ne 'default'}"/>
         
             <icecore:singleSubmit/>
             <ace:panel>
@@ -57,44 +59,59 @@
                 </h:panelGrid>
             </ace:panel>
             
-            <h:panelGrid id="calendarPanel" width="100%" columns="2">
-                <h:panelGroup>
-                    <h:outputLabel for="colorIn" value="Indicator Color Style:"/>
-                    <h:selectOneMenu id="colorIn" value="#{dateReqStyle.reqColor}"
-                                     style="width: 150px;">
-                        <f:selectItem itemValue="default" itemLabel="Default"/>
-                        <f:selectItem itemValue="blue" itemLabel="Blue"/>
-                        <f:selectItem itemValue="green" itemLabel="Green"/>
-                        <f:selectItem itemValue="red" itemLabel="Red"/>
-                    </h:selectOneMenu>
-                </h:panelGroup>
-                <h:message for="colorIn"/>
-                
-                <ace:dateTimeEntry id="calReq"
-                                   value="#{dateReqStyle.selectedDate1}"
-                                   timeZone="Canada/Mountain"
-                                   pattern="MMM/dd/yyyy"
-                                   renderAsPopup="true"
-                                   label="Selected Date 1:"
-                                   labelPosition="left"
-                                   required="true"
-                                   requiredIndicator="(Required)"
-                                   indicatorPosition="right"/>
-                <h:message for="calReq"/>
-                
-                <ace:dateTimeEntry id="calOpt"
-                                   value="#{dateReqStyle.selectedDate2}"
-                                   timeZone="Canada/Mountain"
-                                   pattern="MMM/dd/yyyy"
-                                   renderAsPopup="true"
-                                   label="Selected Date 2:"
-                                   labelPosition="left"
-                                   required="false"
-                                   optionalIndicator="(Optional)"
-                                   indicatorPosition="right"/>
-                <h:message for="calOpt"/>
-            </h:panelGrid>
-            <h:commandButton id="submit" value="Submit"/>
+            <ace:panel header="Color Customization">
+                <h:panelGrid width="100%" columns="3" columnClasses="col25,col25,col50"
+                             cellpadding="6" cellspacing="6">
+                        <h:outputLabel for="reqColor" value="Required Color Style:"/>
+                        <h:selectOneMenu id="reqColor" value="#{dateReqStyle.reqColor}"
+                                         style="width: 150px;">
+                            <f:selectItem itemValue="default" itemLabel="Default"/>
+                            <f:selectItem itemValue="blue" itemLabel="Blue"/>
+                            <f:selectItem itemValue="green" itemLabel="Green"/>
+                            <f:selectItem itemValue="red" itemLabel="Red"/>
+                        </h:selectOneMenu>
+                        <h:message for="reqColor"/>
+                    
+                        <h:outputLabel for="optColor" value="Optional Color Style:"/>
+                        <h:selectOneMenu id="optColor" value="#{dateReqStyle.optColor}"
+                                         style="width: 150px;">
+                            <f:selectItem itemValue="default" itemLabel="Default"/>
+                            <f:selectItem itemValue="blue" itemLabel="Blue"/>
+                            <f:selectItem itemValue="green" itemLabel="Green"/>
+                            <f:selectItem itemValue="red" itemLabel="Red"/>
+                        </h:selectOneMenu>
+                        <h:message for="optColor"/>
+                </h:panelGrid>
+            </ace:panel>
+                    
+            <ace:panel header="Date Entry">
+                <h:panelGrid id="calendarPanel" width="100%" columns="2">
+                    <ace:dateTimeEntry id="calReq"
+                                       value="#{dateReqStyle.selectedDate1}"
+                                       timeZone="Canada/Mountain"
+                                       pattern="MMM/dd/yyyy"
+                                       renderAsPopup="true"
+                                       label="Selected Date 1:"
+                                       labelPosition="left"
+                                       required="true"
+                                       requiredIndicator="(Required)"
+                                       indicatorPosition="right"/>
+                    <h:message for="calReq"/>
+                    
+                    <ace:dateTimeEntry id="calOpt"
+                                       value="#{dateReqStyle.selectedDate2}"
+                                       timeZone="Canada/Mountain"
+                                       pattern="MMM/dd/yyyy"
+                                       renderAsPopup="true"
+                                       label="Selected Date 2:"
+                                       labelPosition="left"
+                                       required="false"
+                                       optionalIndicator="(Optional)"
+                                       indicatorPosition="right"/>
+                    <h:message for="calOpt"/>
+                </h:panelGrid>
+                <h:commandButton id="submit" value="Submit"/>
+            </ace:panel>
         </h:form>
     </ui:define>
 </ui:composition>

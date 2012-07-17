@@ -1,0 +1,7 @@
+.ui-inputfield.ui-state-optional {
+    background-color: #7BDC7B;
+}
+
+.ui-state-optional.ui-state-error {
+    background-color: #1BDC1B;
+}

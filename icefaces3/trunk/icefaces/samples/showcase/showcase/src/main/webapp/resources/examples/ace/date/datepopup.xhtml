@@ -48,16 +48,17 @@
                 </h:panelGrid>
             </ace:panel>
                 
-            <h:panelGrid style="margin-left: auto; margin-right: auto; text-align: center;" width="40%">
+            <h:panelGrid style="margin-left: auto; margin-right: auto; text-align: left;" width="40%"
+                         cellpadding="6" cellspacing="6">
                 <h:panelGroup>
                     <h:selectBooleanCheckbox id="popupIn" value="#{datePopup.popup}"/>
-                    <h:outputLabel for="popupIn" value=" Display as Popup?"/>
+                    <h:outputLabel for="popupIn" value=" Display as Popup"/>
                 </h:panelGroup>
                 
                 <h:panelGroup>
                     <h:selectBooleanCheckbox id="iconIn" value="#{datePopup.icon}"
                                              disabled="#{!datePopup.popup}"/>
-                    <h:outputLabel for="iconIn" value=" Display Image Icon?"/>
+                    <h:outputLabel for="iconIn" value=" Display Image Icon"/>
                 </h:panelGroup>
                 
                 <ace:dateTimeEntry id="calNoIcon" showOn="button"

@@ -21,11 +21,13 @@ import org.icefaces.samples.showcase.metadata.annotation.ExampleResource;
 import org.icefaces.samples.showcase.metadata.annotation.ExampleResources;
 import org.icefaces.samples.showcase.metadata.annotation.ResourceType;
 import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
+import org.icefaces.samples.showcase.util.PositionBean;
 import org.icefaces.ace.event.DateSelectEvent;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
+import javax.faces.event.ValueChangeEvent;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -87,5 +89,12 @@ public class DateLabelBean extends ComponentExampleImpl<DateLabelBean> implement
     @PostConstruct
     public void initMetaData() {
         super.initMetaData();
+    }
+    
+    public void positionChanged(ValueChangeEvent event) {
+        // Reset our date if the user selected inField, so that we can see the label properly
+        if (PositionBean.POS_INFIELD.equals(event.getNewValue().toString())) {
+            setSelectedDate(null);
+        }
     }
 }

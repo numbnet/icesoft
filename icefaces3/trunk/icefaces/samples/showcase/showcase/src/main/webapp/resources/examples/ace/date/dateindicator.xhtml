@@ -49,41 +49,43 @@
                 </h:panelGrid>
             </ace:panel>
             
-            <h:panelGrid width="50%" columns="2">
-                 <h:outputLabel for="requiredIn" value="Required?"/>
-                 <h:selectBooleanCheckbox id="requiredIn" value="#{dateIndicator.required}"/>
-                 
-                 <h:outputLabel for="requiredText" value="Required Indicator Text:"/>
-                 <h:inputText id="requiredText" value="#{dateIndicator.requiredText}"
-                              disabled="#{!dateIndicator.required}"/>
-                 
-                 <h:outputLabel for="optionalText" value="Optional Indicator Text:"/>
-                 <h:inputText id="optionalText" value="#{dateIndicator.optionalText}"
-                              disabled="#{dateIndicator.required}"/>
-                              
-                 <h:outputLabel for="positionIn" value="Indicator Position:"/>
-                 <h:selectOneMenu id="positionIn" value="#{dateIndicator.position}">
-                    <f:selectItems value="#{positionBean.indicatorPositions}"/>
-                 </h:selectOneMenu>
-            </h:panelGrid>
+            <ace:panel header="Indicator Customization">
+                <h:panelGrid width="60%" columns="2" cellpadding="6" cellspacing="6">
+                     <h:outputLabel for="requiredIn" value="Required?"/>
+                     <h:selectBooleanCheckbox id="requiredIn" value="#{dateIndicator.required}"/>
+                     
+                     <h:outputLabel for="requiredText" value="Required Indicator Text:"/>
+                     <h:inputText id="requiredText" value="#{dateIndicator.requiredText}"
+                                  disabled="#{!dateIndicator.required}"/>
+                     
+                     <h:outputLabel for="optionalText" value="Optional Indicator Text:"/>
+                     <h:inputText id="optionalText" value="#{dateIndicator.optionalText}"
+                                  disabled="#{dateIndicator.required}"/>
+                                  
+                     <h:outputLabel for="positionIn" value="Indicator Position:"/>
+                     <h:selectOneMenu id="positionIn" value="#{dateIndicator.position}">
+                        <f:selectItems value="#{positionBean.indicatorPositions}"/>
+                     </h:selectOneMenu>
+                </h:panelGrid>
+            </ace:panel>
             
-            <hr width="100%"/>
-            
-            <h:panelGrid id="calendarPanel" width="100%" columns="3">
-                <ace:dateTimeEntry id="cal"
-                                   value="#{dateIndicator.selectedDate}"
-                                   timeZone="Canada/Mountain"
-                                   pattern="MMM/dd/yyyy"
-                                   requiredIndicator="#{dateIndicator.requiredText}"
-                                   optionalIndicator="#{dateIndicator.optionalText}"
-                                   indicatorPosition="#{dateIndicator.position}"
-                                   renderAsPopup="true"
-                                   required="#{dateIndicator.required}"
-                                   label="Selected Date:"
-                                   labelPosition="left"/>
-                <h:commandButton id="submit" value="Submit"/>
-                <h:message for="cal"/>
-            </h:panelGrid>
+            <ace:panel header="Date Entry">
+                <h:panelGrid id="calendarPanel" width="100%" columns="3">
+                    <ace:dateTimeEntry id="cal"
+                                       value="#{dateIndicator.selectedDate}"
+                                       timeZone="Canada/Mountain"
+                                       pattern="MMM/dd/yyyy"
+                                       requiredIndicator="#{dateIndicator.requiredText}"
+                                       optionalIndicator="#{dateIndicator.optionalText}"
+                                       indicatorPosition="#{dateIndicator.position}"
+                                       renderAsPopup="true"
+                                       required="#{dateIndicator.required}"
+                                       label="Selected Date:"
+                                       labelPosition="left"/>
+                    <h:commandButton id="submit" value="Submit"/>
+                    <h:message for="cal"/>
+                </h:panelGrid>
+            </ace:panel>
         </h:form>
     </ui:define>
 </ui:composition>
