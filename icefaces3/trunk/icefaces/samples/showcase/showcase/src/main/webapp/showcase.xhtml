@@ -35,13 +35,13 @@
     </ui:define>
 
     <ui:define name="suite-select-menu">
-        <h:panelGroup layout="block" styleClass="headerCenter">
-            <h:panelGroup layout="block" styleClass="headerLogo">
+        <div class="headerCenter">
+            <div class="headerLogo">
                 <h:graphicImage value="/resources/css/images/topBannerImages/title.png" alt="ICEfaces Logo"/>
-            </h:panelGroup>
-            <h:panelGroup layout="block" styleClass="headerTabs">
+            </div>
+            <div class="headerTabs">
                 <h:panelGrid styleClass="linkTableStyle">
-                    <h:panelGroup styleClass="linksHolder">
+                    <div class="linksHolder">
                         <h:link id="iceSuiteLink"
                                 styleClass="iceSuiteLink"
                                 outcome="showcase">
@@ -60,10 +60,10 @@
                                                 styleClass="suiteLinkImageStyle"
                                                 title="ACE Components Showcase"/>
                         </h:link>
-                    </h:panelGroup>
+                    </div>
                 </h:panelGrid>
-            </h:panelGroup>
-        </h:panelGroup>
+            </div>
+        </div>
         
         <!--
         ~ Temporary ui:remove tag hide link to the EE suite showcase. (to be removed once ee components will be available)
