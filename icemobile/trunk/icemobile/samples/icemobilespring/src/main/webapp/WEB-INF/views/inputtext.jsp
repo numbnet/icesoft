@@ -24,21 +24,21 @@
         <mobi:fieldSetGroup inset="true">
             <mobi:fieldSetRow>
                 <label>Text:</label>
-                <mobi:inputtext id="text" type="text"
+                <mobi:inputtext name="text" type="text"
                                 autoCorrect="off"
                                 placeholder="Text input"
                                 value="${inputTextBean.text}"/>
             </mobi:fieldSetRow>
             <mobi:fieldSetRow>
                 <label>Number:</label>
-                <mobi:inputtext id="number" type="number"
+                <mobi:inputtext name="number" type="number"
                                 autoCorrect="off"
                                 placeholder="Number"
                                 value="${inputTextBean.number}"/>
             </mobi:fieldSetRow>
             <mobi:fieldSetRow>
                 <label>Text area:</label>
-                <mobi:inputtext id="textarea" type="textarea"
+                <mobi:inputtext name="textarea" type="textarea"
                                 style="width:99%"
                                 autoCorrect="off"
                                 placeholder="Text area"
@@ -46,14 +46,14 @@
             </mobi:fieldSetRow>
             <mobi:fieldSetRow>
                 <label>Password:</label>
-                <mobi:inputtext id="password" type="password"
+                <mobi:inputtext name="password" type="password"
                                 autoCorrect="off"
                                 placeholder="Password input"
                                 value="${inputTextBean.password}"/>
             </mobi:fieldSetRow>
             <mobi:fieldSetRow>
                 <label>Date</label>
-                <mobi:inputtext id="date" type="date"
+                <mobi:inputtext name="date" type="date"
                                 autoCorrect="off"
                                 placeholder="yyyy-mm-dd"
                                 value="${inputTextBean.date}"/>
