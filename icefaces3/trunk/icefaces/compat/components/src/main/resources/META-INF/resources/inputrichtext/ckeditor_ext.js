@@ -68,7 +68,7 @@ function getToolbar(toolbar) {
 }
 
 
-function renderEditor(editor, defaultToolbar, lang, _skin, _height, _width, _customConfig, saveOnSubmit) {
+function renderEditor(editor, defaultToolbar, lang, _skin, _height, _width, _customConfig, saveOnSubmit, hashCode) {
     CKEDITOR.config.defaultLanguage = lang;
     if (_skin == 'default' || _skin == 'silver') {
         _skin = 'v2'
@@ -105,10 +105,4 @@ function renderEditor(editor, defaultToolbar, lang, _skin, _height, _width, _cus
     } catch(e) {
         alert(e);
     }
-}
-
-function updateEditor(editor) {
-	if (CKEDITOR.instances[editor]) {
-		CKEDITOR.instances[editor].setData(document.getElementById(editor).value);
-	}
 }

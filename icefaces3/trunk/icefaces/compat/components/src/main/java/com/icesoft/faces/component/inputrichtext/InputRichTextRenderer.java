@@ -17,7 +17,6 @@
 package com.icesoft.faces.component.inputrichtext;
 
 import com.icesoft.faces.context.DOMContext;
-import com.icesoft.faces.context.effects.JavascriptContext;
 import com.icesoft.faces.renderkit.dom_html_basic.DomBasicInputRenderer;
 import com.icesoft.faces.renderkit.dom_html_basic.HTML;
 import com.icesoft.util.pooling.ClientIdPool;
@@ -55,6 +54,11 @@ public class InputRichTextRenderer extends DomBasicInputRenderer {
             	textarea.appendChild(domContext.createTextNode(String.valueOf(value)));
             }
             root.appendChild(textarea);
+			
+            int hashCode = 0;
+            if (value != null) {
+            	hashCode = value.toString().hashCode();
+            }
 
             Element scrptWrpr = domContext.createElement(HTML.SPAN_ELEM);
             scrptWrpr.setAttribute(HTML.ID_ATTR, clientId+ "scrpt");
@@ -68,12 +72,9 @@ public class InputRichTextRenderer extends DomBasicInputRenderer {
             		"'"+ inputRichText.getHeight() + "'," +
             		"'"+ inputRichText.getWidth() +"'," +
             		"'"+ customConfig + "'," +
-            		inputRichText.isSaveOnSubmit()+ ")"));
+            		inputRichText.isSaveOnSubmit()+ "," +
+					hashCode + ")"));
             scrptWrpr.appendChild(scrpt);
-			
-			if (inputRichText.isValueChangedProgrammatically()) {
-				JavascriptContext.addJavascriptCall(facesContext, "updateEditor('"+ ClientIdPool.get(clientId) +"');");
-			}
 
             domContext.stepOver();
         }

@@ -56,9 +56,6 @@ public class InputRichText extends UIInput {
     private Boolean disabled = null;
     private String skin = null;
     private Boolean saveOnSubmit = null;
-	
-	private transient Object oldValue = null;
-	private transient boolean isSource = false;
 
 
     public String getRendererType() {
@@ -72,13 +69,6 @@ public class InputRichText extends UIInput {
     public void decode(FacesContext facesContext) {
         Map map = facesContext.getExternalContext().getRequestParameterMap();
         String clientId = getClientId(facesContext);
-		
-        Object componenetId = map.get("ice.event.captured");
-        if (componenetId != null && componenetId.toString().equals(clientId)) {
-			isSource = true;
-        }
-		oldValue = getValue();
-		
         if (map.containsKey(clientId)) {
             String newValue = map.get(clientId).toString().replace('\n', ' ');
             setSubmittedValue(newValue);
@@ -89,12 +79,6 @@ public class InputRichText extends UIInput {
     public void encodeBegin(FacesContext context) throws IOException {
         super.encodeBegin(context);
     }
-	
-	public boolean isValueChangedProgrammatically() {
-		if (isSource) return false;
-		if (oldValue != null && !oldValue.toString().equals(getValue().toString())) return true;
-		return false;
-	}
 
     /**
      * <p>Set the value of the <code>language</code> property.</p>
@@ -359,5 +343,4 @@ public class InputRichText extends UIInput {
         partialSubmit = (Boolean) values[12];
     }
 }
-
 
