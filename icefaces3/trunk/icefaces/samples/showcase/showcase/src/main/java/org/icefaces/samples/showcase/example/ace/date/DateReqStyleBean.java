@@ -54,7 +54,8 @@ public class DateReqStyleBean extends ComponentExampleImpl<DateReqStyleBean> imp
     
     private Date selectedDate1 = new Date(System.currentTimeMillis());
     private Date selectedDate2 = new Date(System.currentTimeMillis());
-    private String reqColor = "green";
+    private String reqColor = "red";
+    private String optColor = "green";
 
     public DateReqStyleBean() {
         super(DateReqStyleBean.class);
@@ -72,6 +73,10 @@ public class DateReqStyleBean extends ComponentExampleImpl<DateReqStyleBean> imp
         return reqColor;
     }
     
+    public String getOptColor() {
+        return optColor;
+    }
+    
     public void setSelectedDate1(Date selectedDate1) {
         this.selectedDate1 = selectedDate1;
     }
@@ -82,6 +87,10 @@ public class DateReqStyleBean extends ComponentExampleImpl<DateReqStyleBean> imp
     
     public void setReqColor(String reqColor) {
         this.reqColor = reqColor;
+    }
+    
+    public void setOptColor(String optColor) {
+        this.optColor = optColor;
     }
     
     @PostConstruct

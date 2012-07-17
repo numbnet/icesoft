@@ -23,12 +23,14 @@ import javax.faces.model.SelectItem;
 @ManagedBean
 @ApplicationScoped
 public class PositionBean {
+    public static final String POS_INFIELD = "inField";
+    
     public static final SelectItem[] LABEL_POSITIONS = new SelectItem[] {
         new SelectItem("left", "Left"),
         new SelectItem("right", "Right"),
         new SelectItem("top", "Top"),
         new SelectItem("bottom", "Bottom"),
-        new SelectItem("inField", "Inline"),
+        new SelectItem(POS_INFIELD, "In Field"),
         new SelectItem("none", "None")
     };
     public static final SelectItem[] INDICATOR_POSITIONS = new SelectItem[] {

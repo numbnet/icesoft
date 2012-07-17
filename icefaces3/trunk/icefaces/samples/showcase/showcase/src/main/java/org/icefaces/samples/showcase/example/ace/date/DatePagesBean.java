@@ -57,7 +57,7 @@ public class DatePagesBean extends ComponentExampleImpl<DatePagesBean> implement
     public DatePagesBean() {
         super(DatePagesBean.class);
         this.selectedDate = new Date(System.currentTimeMillis());
-        this.pages = 1;
+        this.pages = 3;
     }
     
     @PostConstruct

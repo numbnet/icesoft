@@ -49,29 +49,32 @@
                 </h:panelGrid>
             </ace:panel>
             
-           <h:panelGrid width="50%" columns="2">
-                 <h:outputLabel for="labelText" value="Label Text:"/>
-                 <h:inputText id="labelText" value="#{dateLabel.labelText}" maxlength="250"/>
-                 
-                 <h:outputLabel for="positionIn" value="Label Position:"/>
-                 <h:selectOneMenu id="positionIn" value="#{dateLabel.labelPosition}">
-                    <f:selectItems value="#{positionBean.labelPositions}"/>
-                 </h:selectOneMenu>
-            </h:panelGrid>
+            <ace:panel header="Label Customization">
+                <h:panelGrid width="50%" columns="2" cellpadding="6" cellspacing="6">
+                     <h:outputLabel for="labelText" value="Label Text:"/>
+                     <h:inputText id="labelText" value="#{dateLabel.labelText}" maxlength="250"/>
+                     
+                     <h:outputLabel for="positionIn" value="Label Position:"/>
+                     <h:selectOneMenu id="positionIn" value="#{dateLabel.labelPosition}"
+                                      valueChangeListener="#{dateLabel.positionChanged}">
+                        <f:selectItems value="#{positionBean.labelPositions}"/>
+                     </h:selectOneMenu>
+                </h:panelGrid>
+            </ace:panel>
             
-            <hr width="100%"/>
-            
-            <h:panelGrid id="calendarPanel" width="100%" columns="3">
-                <ace:dateTimeEntry id="cal"
-                                   value="#{dateLabel.selectedDate}"
-                                   timeZone="Canada/Mountain"
-                                   pattern="MMM/dd/yyyy"
-                                   renderAsPopup="true"
-                                   label="#{dateLabel.labelText}"
-                                   labelPosition="#{dateLabel.labelPosition}"/>
-                <h:commandButton id="submit" value="Submit"/>
-                <h:message for="cal"/>
-            </h:panelGrid>
+            <ace:panel header="Date Entry">
+                <h:panelGrid id="calendarPanel" width="100%" columns="3">
+                    <ace:dateTimeEntry id="cal"
+                                       value="#{dateLabel.selectedDate}"
+                                       timeZone="Canada/Mountain"
+                                       pattern="MMM/dd/yyyy"
+                                       renderAsPopup="true"
+                                       label="#{dateLabel.labelText}"
+                                       labelPosition="#{dateLabel.labelPosition}"/>
+                    <h:commandButton id="submit" value="Submit"/>
+                    <h:message for="cal"/>
+                </h:panelGrid>
+            </ace:panel>
         </h:form>
     </ui:define>
 </ui:composition>

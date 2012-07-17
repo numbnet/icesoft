@@ -52,8 +52,9 @@
                     <h:selectBooleanCheckbox id="popupIn" value="#{dateAjax.popup}">
                         <f:ajax execute="@this" render="calendarPanel" event="click"/>
                     </h:selectBooleanCheckbox>
-                    <h:outputLabel for="popupIn" value=" Display as Popup?"/>
+                    <h:outputLabel for="popupIn" value=" Display as Popup"/>
                 </h:panelGroup>
+                
                 <ace:dateTimeEntry id="cal"
                                                value="#{dateAjax.selectedDate}"
                                                timeZone="Canada/Mountain"
