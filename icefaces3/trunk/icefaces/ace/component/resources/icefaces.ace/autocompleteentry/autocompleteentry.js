@@ -694,7 +694,6 @@ ice.ace.Autocompleter.prototype = {
 
         if (this.hidden) {
             this.hidden = false;
-            return;
         }
         this.hasFocus = true;
         ice.ace.Autocompleter.cleanWhitespace(this.update);
