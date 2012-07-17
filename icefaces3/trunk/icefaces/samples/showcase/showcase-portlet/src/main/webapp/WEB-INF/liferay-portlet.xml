@@ -20,7 +20,7 @@
 
 <liferay-portlet-app>
 
-<portlet>
+    <portlet>
         <portlet-name>accordionPanel</portlet-name>
         <instanceable>false</instanceable>
         <ajaxable>false</ajaxable>
@@ -37,6 +37,64 @@
     </portlet>
     <portlet>
         <portlet-name>animation</portlet-name>
+        <instanceable>false</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+    <portlet>
+        <portlet-name>autoCompleteEntry</portlet-name>
+        <instanceable>false</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+    <portlet>
+        <portlet-name>autoCompleteEntryFacet</portlet-name>
+        <instanceable>false</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+
+    <portlet>
+        <portlet-name>autoCompleteEntryIndicator</portlet-name>
+        <instanceable>false</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+
+    <portlet>
+        <portlet-name>autoCompleteEntryLabel</portlet-name>
+        <instanceable>false</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+
+    <portlet>
+        <portlet-name>autoCompleteEntryLazy</portlet-name>
+        <instanceable>false</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+
+    <portlet>
+        <portlet-name>autoCompleteEntryMatch</portlet-name>
+        <instanceable>false</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+
+    <portlet>
+        <portlet-name>autoCompleteEntryReqStyle</portlet-name>
+        <instanceable>false</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+
+    <portlet>
+        <portlet-name>autoCompleteEntryRows</portlet-name>
+        <instanceable>false</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+
+    <portlet>
+        <portlet-name>autoCompleteEntrySelect</portlet-name>
+        <instanceable>false</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+
+    <portlet>
+        <portlet-name>chart</portlet-name>
         <instanceable>false</instanceable>
         <ajaxable>false</ajaxable>
     </portlet>
@@ -211,6 +269,22 @@
         <ajaxable>false</ajaxable>
     </portlet>
     <portlet>
+        <portlet-name>dateIndicator</portlet-name>
+        <instanceable>false</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+
+    <portlet>
+        <portlet-name>dateLabel</portlet-name>
+        <instanceable>false</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+    <portlet>
+        <portlet-name>dateMinMax</portlet-name>
+        <instanceable>false</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+    <portlet>
         <portlet-name>dateNavigator</portlet-name>
         <instanceable>false</instanceable>
         <ajaxable>false</ajaxable>
@@ -222,6 +296,17 @@
     </portlet>
     <portlet>
         <portlet-name>datePopup</portlet-name>
+        <instanceable>false</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+    <portlet>
+        <portlet-name>dateReqStyle</portlet-name>
+        <instanceable>false</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+
+    <portlet>
+        <portlet-name>dateTimeEntry</portlet-name>
         <instanceable>false</instanceable>
         <ajaxable>false</ajaxable>
     </portlet>
@@ -320,13 +405,30 @@
         <instanceable>false</instanceable>
         <ajaxable>false</ajaxable>
     </portlet>
+    <!--<portlet>-->
+        <!--<portlet-name>logger</portlet-name>-->
+        <!--<instanceable>false</instanceable>-->
+        <!--<ajaxable>false</ajaxable>-->
+    <!--</portlet>-->
     <portlet>
-        <portlet-name>logger</portlet-name>
+        <portlet-name>maskedEntry</portlet-name>
         <instanceable>false</instanceable>
         <ajaxable>false</ajaxable>
     </portlet>
     <portlet>
-        <portlet-name>maskedEntry</portlet-name>
+        <portlet-name>maskedIndicator</portlet-name>
+        <instanceable>false</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+
+    <portlet>
+        <portlet-name>maskedLabel</portlet-name>
+        <instanceable>false</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+
+    <portlet>
+        <portlet-name>maskedReqStyle</portlet-name>
         <instanceable>false</instanceable>
         <ajaxable>false</ajaxable>
     </portlet>
@@ -517,6 +619,34 @@
     </portlet>
     <portlet>
         <portlet-name>tabset</portlet-name>
+        <instanceable>false</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+    <portlet>
+        <portlet-name>textEntry</portlet-name>
+        <instanceable>false</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+    <portlet>
+        <portlet-name>textEntryAutotab</portlet-name>
+        <instanceable>false</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+
+    <portlet>
+        <portlet-name>textEntryIndicator</portlet-name>
+        <instanceable>false</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+
+    <portlet>
+        <portlet-name>textEntryLabel</portlet-name>
+        <instanceable>false</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+
+    <portlet>
+        <portlet-name>textEntryReqStyle</portlet-name>
         <instanceable>false</instanceable>
         <ajaxable>false</ajaxable>
     </portlet>

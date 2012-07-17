@@ -18,7 +18,7 @@
 <!DOCTYPE display PUBLIC "-//Liferay//DTD Display 5.1.0//EN" "http://www.liferay.com/dtd/liferay-display_5_1_0.dtd">
 
 <display>
-    <category name="ICEfaces2">
+    <category name="ICEfaces3">
         <category name="ICEpush">
             <portlet id="chat-ice2-portlet"/>
         </category>

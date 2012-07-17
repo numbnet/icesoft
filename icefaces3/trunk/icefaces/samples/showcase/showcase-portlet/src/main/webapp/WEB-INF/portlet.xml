@@ -106,6 +106,225 @@
         </portlet-info>
     </portlet>
     <portlet>
+        <portlet-name>autoCompleteEntry</portlet-name>
+        <display-name>ACE Auto Complete</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/portlet-view.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/autocompleteentry/autoCompleteEntry.xhtml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>ACE Auto Complete</title>
+            <keywords>ICEfaces Component Suite Showcase Auto Complete</keywords>
+        </portlet-info>
+    </portlet>
+
+    <portlet>
+        <portlet-name>autoCompleteEntryFacet</portlet-name>
+        <display-name>ACE Auto Complete Facet</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/portlet-view.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/autocompleteentry/autoCompleteEntryFacet.xhtml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>ACE Auto Complete Facet</title>
+            <keywords>ICEfaces ACE Component Showcase Auto Complete Facet</keywords>
+        </portlet-info>
+    </portlet>
+
+    <portlet>
+        <portlet-name>autoCompleteEntryIndicator</portlet-name>
+        <display-name>ACE Auto Complete Indicator</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/portlet-view.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/autocompleteentry/autoCompleteEntryIndicator.xhtml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>ACE Auto Complete Indicator</title>
+            <keywords>ICEfaces ACE Component Showcase Auto Complete Indicator</keywords>
+        </portlet-info>
+    </portlet>
+
+    <portlet>
+        <portlet-name>autoCompleteEntryLabel</portlet-name>
+        <display-name>ACE Auto Complete Label</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/portlet-view.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/autocompleteentry/autoCompleteEntryLabel.xhtml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>ACE Auto Complete Label</title>
+            <keywords>ICEfaces ACE Component Showcase Auto Complete Label</keywords>
+        </portlet-info>
+    </portlet>
+
+    <portlet>
+        <portlet-name>autoCompleteEntryLazy</portlet-name>
+        <display-name>ACE Auto Complete Lazy</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/portlet-view.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/autocompleteentry/autoCompleteEntryLazy.xhtml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>ACE Auto Complete Lazy</title>
+            <keywords>ICEfaces ACE Component Showcase Auto Complete Lazy</keywords>
+        </portlet-info>
+    </portlet>
+
+    <portlet>
+        <portlet-name>autoCompleteEntryMatch</portlet-name>
+        <display-name>ACE Auto Complete Match</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/portlet-view.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/autocompleteentry/autoCompleteEntryMatch.xhtml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>ACE Auto Complete Match</title>
+            <keywords>ICEfaces ACE Component Showcase Auto Complete Match</keywords>
+        </portlet-info>
+    </portlet>
+
+    <portlet>
+        <portlet-name>autoCompleteEntryReqStyle</portlet-name>
+        <display-name>ACE Auto Complete Style</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/portlet-view.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/autocompleteentry/autoCompleteEntryReqStyle.xhtml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>ACE Auto Complete Style</title>
+            <keywords>ICEfaces ACE Component Showcase Auto Complete Style</keywords>
+        </portlet-info>
+    </portlet>
+
+    <portlet>
+        <portlet-name>autoCompleteEntryRows</portlet-name>
+        <display-name>ACE Auto Complete Rows</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/portlet-view.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/autocompleteentry/autoCompleteEntryRows.xhtml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>ACE Auto Complete Rows</title>
+            <keywords>ICEfaces ACE Component Showcase Auto Complete Rows</keywords>
+        </portlet-info>
+    </portlet>
+
+    <portlet>
+        <portlet-name>autoCompleteEntrySelect</portlet-name>
+        <display-name>ACE Auto Complete Select</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/portlet-view.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/autocompleteentry/autoCompleteEntrySelect.xhtml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>ACE Auto Complete Select</title>
+            <keywords>ICEfaces ACE Component Showcase Auto Complete Select</keywords>
+        </portlet-info>
+    </portlet>
+
+    <portlet>
+        <portlet-name>chart</portlet-name>
+        <display-name>ACE Chart</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/portlet-view.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/chart/chart.xhtml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>ACE Chart</title>
+            <keywords>ICEfaces Component Suite Showcase ACE Chart</keywords>
+        </portlet-info>
+    </portlet>
+    <portlet>
         <portlet-name>checkboxButton</portlet-name>
         <display-name>ACE Checkbox Button</display-name>
         <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
@@ -820,6 +1039,69 @@
         </portlet-info>
     </portlet>
     <portlet>
+        <portlet-name>dateIndicator</portlet-name>
+        <display-name>ACE Date Indicator</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/portlet-view.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/date/dateindicator.xhtml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>ACE Date Indicator</title>
+            <keywords>ICEfaces ACE Component Showcase Date Indicator</keywords>
+        </portlet-info>
+    </portlet>
+    <portlet>
+        <portlet-name>dateLabel</portlet-name>
+        <display-name>ACE Date Label</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/portlet-view.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/date/datelabel.xhtml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>ACE Date Label</title>
+            <keywords>ICEfaces ACE Component Showcase Date Label</keywords>
+        </portlet-info>
+    </portlet>
+    <portlet>
+        <portlet-name>dateMinMax</portlet-name>
+        <display-name>ACE Date Min Max</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/portlet-view.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/date/dateminmax.xhtml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>ACE Date Min Max</title>
+            <keywords>ICEfaces ACE Component Showcase Date Min Max</keywords>
+        </portlet-info>
+    </portlet>
+    <portlet>
         <portlet-name>dateNavigator</portlet-name>
         <display-name>ACE Date Navigator</display-name>
         <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
@@ -880,6 +1162,49 @@
         <portlet-info>
             <title>ACE Date Popup</title>
             <keywords>ICEfaces Component Suite Showcase ACE Date Popup</keywords>
+        </portlet-info>
+    </portlet>
+    <portlet>
+        <portlet-name>dateReqStyle</portlet-name>
+        <display-name>ACE Date Style</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/portlet-view.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/date/datereqstyle.xhtml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>ACE Date Style</title>
+            <keywords>ICEfaces ACE Component Showcase Date Style</keywords>
+        </portlet-info>
+    </portlet>
+
+    <portlet>
+        <portlet-name>dateTimeEntry</portlet-name>
+        <display-name>ACE Date Time</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/portlet-view.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/date/datetimeentry.xhtml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>ACE Date Time</title>
+            <keywords>ICEfaces ACE Component Showcase Date Time</keywords>
         </portlet-info>
     </portlet>
     <portlet>
@@ -1281,27 +1606,27 @@
             <keywords>ICEfaces Component Suite Showcase ACE List Selection</keywords>
         </portlet-info>
     </portlet>
-    <portlet>
-        <portlet-name>logger</portlet-name>
-        <display-name>ACE Logger</display-name>
-        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
-        <init-param>
-            <name>javax.portlet.faces.defaultViewId.view</name>
-            <value>/portlet-view.xhtml</value>
-        </init-param>
-        <init-param>
-            <name>org.icefaces.demo.viewPath</name>
-            <value>/resources/examples/ace/logger/logger.xhtml</value>
-        </init-param>
-        <supports>
-            <mime-type>text/html</mime-type>
-            <portlet-mode>view</portlet-mode>
-        </supports>
-        <portlet-info>
-            <title>ACE Logger</title>
-            <keywords>ICEfaces Component Suite Showcase ACE Logger</keywords>
-        </portlet-info>
-    </portlet>
+    <!--<portlet>-->
+        <!--<portlet-name>logger</portlet-name>-->
+        <!--<display-name>ACE Logger</display-name>-->
+        <!--<portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>-->
+        <!--<init-param>-->
+            <!--<name>javax.portlet.faces.defaultViewId.view</name>-->
+            <!--<value>/portlet-view.xhtml</value>-->
+        <!--</init-param>-->
+        <!--<init-param>-->
+            <!--<name>org.icefaces.demo.viewPath</name>-->
+            <!--<value>/resources/examples/ace/logger/logger.xhtml</value>-->
+        <!--</init-param>-->
+        <!--<supports>-->
+            <!--<mime-type>text/html</mime-type>-->
+            <!--<portlet-mode>view</portlet-mode>-->
+        <!--</supports>-->
+        <!--<portlet-info>-->
+            <!--<title>ACE Logger</title>-->
+            <!--<keywords>ICEfaces Component Suite Showcase ACE Logger</keywords>-->
+        <!--</portlet-info>-->
+    <!--</portlet>-->
     <portlet>
         <portlet-name>maskedEntry</portlet-name>
         <display-name>ACE Masked Entry</display-name>
@@ -1321,6 +1646,71 @@
         <portlet-info>
             <title>ACE Masked Entry</title>
             <keywords>ICEfaces Component Suite Showcase ACE Masked Entry</keywords>
+        </portlet-info>
+    </portlet>
+    <portlet>
+        <portlet-name>maskedIndicator</portlet-name>
+        <display-name>ACE Masked Indicator</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/portlet-view.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/maskedEntry/maskedIndicator.xhtml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>ACE Masked Indicator</title>
+            <keywords>ICEfaces ACE Component Showcase Masked Indicator</keywords>
+        </portlet-info>
+    </portlet>
+
+    <portlet>
+        <portlet-name>maskedLabel</portlet-name>
+        <display-name>ACE Masked Label</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/portlet-view.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/maskedEntry/maskedLabel.xhtml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>ACE Masked Label</title>
+            <keywords>ICEfaces ACE Component Showcase Masked Label</keywords>
+        </portlet-info>
+    </portlet>
+
+    <portlet>
+        <portlet-name>maskedReqStyle</portlet-name>
+        <display-name>ACE Masked Style</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/portlet-view.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/maskedEntry/maskedReqStyle.xhtml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>ACE Masked Style</title>
+            <keywords>ICEfaces ACE Component Showcase Masked Style</keywords>
         </portlet-info>
     </portlet>
     <portlet>
@@ -2119,6 +2509,114 @@
         <portlet-info>
             <title>ACE Tabset</title>
             <keywords>ICEfaces Component Suite Showcase ACE Tabset</keywords>
+        </portlet-info>
+    </portlet>
+    <portlet>
+        <portlet-name>textEntry</portlet-name>
+        <display-name>ACE Text Entry</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/portlet-view.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/textEntry/textEntry.xhtml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>ACE Text Entry</title>
+            <keywords>ICEfaces Component Suite Showcase ACE Text Entry</keywords>
+        </portlet-info>
+    </portlet>
+    <portlet>
+        <portlet-name>textEntryAutotab</portlet-name>
+        <display-name>ACE Text Entry Autotab</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/portlet-view.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/textEntry/textEntryAutotab.xhtml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>ACE Text Entry Autotab</title>
+            <keywords>ICEfaces ACE Component Showcase Text Entry Autotab</keywords>
+        </portlet-info>
+    </portlet>
+
+    <portlet>
+        <portlet-name>textEntryIndicator</portlet-name>
+        <display-name>ACE Text Entry Indicator</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/portlet-view.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/textEntry/textEntryIndicator.xhtml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>ACE Text Entry Indicator</title>
+            <keywords>ICEfaces ACE Component Showcase Text Entry Indicator</keywords>
+        </portlet-info>
+    </portlet>
+
+    <portlet>
+        <portlet-name>textEntryLabel</portlet-name>
+        <display-name>ACE Text Entry Label</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/portlet-view.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/textEntry/textEntryLabel.xhtml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>ACE Text Entry Label</title>
+            <keywords>ICEfaces ACE Component Showcase Text Entry Label</keywords>
+        </portlet-info>
+    </portlet>
+
+    <portlet>
+        <portlet-name>textEntryReqStyle</portlet-name>
+        <display-name>ACE Text Entry Style</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/portlet-view.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/textEntry/textEntryReqStyle.xhtml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>ACE Text Entry Style</title>
+            <keywords>ICEfaces ACE Component Showcase Text Entry Style</keywords>
         </portlet-info>
     </portlet>
     <portlet>

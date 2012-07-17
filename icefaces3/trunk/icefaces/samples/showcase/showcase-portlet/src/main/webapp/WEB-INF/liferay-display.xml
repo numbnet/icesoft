@@ -26,6 +26,16 @@
                 <portlet id="accordionPanelDynamic"/>
                 <portlet id="accordionPanelEffect"/>
                 <portlet id="animation"/>
+                <portlet id="autoCompleteEntry"/>
+                <portlet id="autoCompleteEntryFacet"/>
+                <portlet id="autoCompleteEntryIndicator"/>
+                <portlet id="autoCompleteEntryLabel"/>
+                <portlet id="autoCompleteEntryLazy"/>
+                <portlet id="autoCompleteEntryMatch"/>
+                <portlet id="autoCompleteEntryReqStyle"/>
+                <portlet id="autoCompleteEntryRows"/>
+                <portlet id="autoCompleteEntrySelect"/>
+                <portlet id="chart"/>
                 <portlet id="checkboxButton"/>
                 <portlet id="confirmationDialog"/>
                 <portlet id="confirmationDialogEffect"/>
@@ -60,9 +70,14 @@
                 <portlet id="dataTableStackable"/>
                 <portlet id="dateAjax"/>
                 <portlet id="dateEntry"/>
+                <portlet id="dateIndicator"/>
+                <portlet id="dateLabel"/>
+                <portlet id="dateMinMax"/>
                 <portlet id="dateNavigator"/>
                 <portlet id="datePages"/>
                 <portlet id="datePopup"/>
+                <portlet id="dateReqStyle"/>
+                <portlet id="dateTimeEntry"/>
                 <portlet id="dialog"/>
                 <portlet id="dialogEffectsAndSize"/>
                 <portlet id="modalDialog"/>
@@ -82,8 +97,11 @@
                 <portlet id="listMulti"/>
                 <portlet id="listReorder"/>
                 <portlet id="listSelection"/>
-                <portlet id="logger"/>
+                <!--<portlet id="logger"/>-->
                 <portlet id="maskedEntry"/>
+                <portlet id="maskedIndicator"/>
+                <portlet id="maskedLabel"/>
+                <portlet id="maskedReqStyle"/>
                 <portlet id="menu"/>
                 <portlet id="menuDisplay"/>
                 <portlet id="menuDynamic"/>
@@ -122,6 +140,11 @@
                 <portlet id="tabsetProxy"/>
                 <portlet id="tabsetServerSide"/>
                 <portlet id="tabset"/>
+                <portlet id="textEntry"/>
+                <portlet id="textEntryAutotab"/>
+                <portlet id="textEntryIndicator"/>
+                <portlet id="textEntryLabel"/>
+                <portlet id="textEntryReqStyle"/>
                 <portlet id="globalTooltip"/>
                 <portlet id="toolTip"/>
             </category>
