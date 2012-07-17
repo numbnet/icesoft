@@ -206,7 +206,7 @@ public class AutoCompleteEntryRenderer extends InputRenderer {
                     facesContext.getExternalContext().getRequestMap();
             //set index to 0, so child components can get client id from autoComplete component
             autoCompleteEntry.setIndex(0);
-            while (matches.hasNext() && rowCounter <= rows) {
+            while (matches.hasNext() && rowCounter < rows) {
 
 				requestMap.put(listVar, matches.next());
 				String value = (String) filterBy.getValue(elContext);
@@ -250,7 +250,7 @@ public class AutoCompleteEntryRenderer extends InputRenderer {
             if (matches.hasNext()) {
                 StringBuffer sb = new StringBuffer("<div>");
                 SelectItem item = null;
-                while (matches.hasNext() && rowCounter <= rows) {
+                while (matches.hasNext() && rowCounter < rows) {
                     item = (SelectItem) matches.next();
                     String itemLabel = item.getLabel();
                     if (itemLabel == null) {
