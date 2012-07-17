@@ -46,6 +46,7 @@ import java.util.regex.Pattern;
 public class DOMPartialViewContext extends PartialViewContextWrapper {
     private static final String JAVAX_FACES_VIEW_HEAD = "javax.faces.ViewHead";
     private static final String JAVAX_FACES_VIEW_BODY = "javax.faces.ViewBody";
+    private static final String JAVAX_FACES_VIEW_ROOT = PartialResponseWriter.RENDER_ALL_MARKER;
     private static final Logger log = Logger.getLogger(DOMPartialViewContext.class.getName());
     private static final Pattern SPACE_SEPARATED = Pattern.compile("[ ]+");
     private static final Pattern OPTION_TAG =
@@ -181,7 +182,18 @@ public class DOMPartialViewContext extends PartialViewContextWrapper {
                     }
 
                     Node body = newDOM.getElementsByTagName("body").item(0);
-                    partialWriter.startUpdate(JAVAX_FACES_VIEW_BODY);
+                    String target = JAVAX_FACES_VIEW_BODY;
+
+                    // ICE-8379: If there is no body in the new DOM, then it's likely were running
+                    // in a portlet so get the document as it will be a "fragment" of the page. We
+                    // also need to just target the ViewRoot rather than the ViewBody for the update.
+                    if (body == null &&
+                            EnvUtils.instanceofPortletRequest(facesContext.getExternalContext().getRequest())) {
+                        body = newDOM.getDocumentElement();
+                        target = JAVAX_FACES_VIEW_ROOT;
+                    }
+
+                    partialWriter.startUpdate(target);
                     DOMUtils.printNodeCDATA(body, outputWriter);
                     partialWriter.endUpdate();
                 } else if (null != diffs) {
