@@ -37,7 +37,6 @@
     <ui:define name="example">
         <h:form id="form">
             <ace:panel id="personalInfoInputPanel" header="Personal Info">
-                
                 <h:panelGrid id="inputGrid" columns="2" width="100%">
                     <h:outputLabel id="dobLabel" for="dobInput" value="Date of Birth:"/>
                     <ace:maskedEntry id="dobInput" value="#{maskedEntryBean.dob}" mask="99/99/9999">
@@ -62,14 +61,12 @@
             </ace:panel>
             
             <ace:panel id="personalInfoOutputPanel" header="Entered Data">
-                
                 <h:panelGrid id="outputGrid" width="100%" style="text-align: left;">
-                    <h:outputText id="dobOutput" value="DOB: #{maskedEntryBean.dob}"/>
-                    <h:outputText id="workPhoneOutput" value="Work #: #{maskedEntryBean.workPhone}"/>
-                    <h:outputText id="mobilePhoneOutput" value="Cell #: #{maskedEntryBean.mobilePhone}"/>
+                    <h:outputText id="dobOutput" value="Date of Birth: #{maskedEntryBean.dob}"/>
+                    <h:outputText id="workPhoneOutput" value="Work Phone: #{maskedEntryBean.workPhone}"/>
+                    <h:outputText id="mobilePhoneOutput" value="Mobile Phone: #{maskedEntryBean.mobilePhone}"/>
                     <h:outputText id="sinOutput" value="SIN: #{maskedEntryBean.sin}"/>
                 </h:panelGrid>
-                
             </ace:panel>
             
         </h:form>

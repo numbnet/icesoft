@@ -49,7 +49,8 @@ public class TextEntryReqStyleBean extends ComponentExampleImpl<TextEntryReqStyl
 {
     public static final String BEAN_NAME = "textEntryReqStyleBean";
     
-    private String reqColor = "green";
+    private String reqColor = "red";
+    private String optColor = "green";
     
     public TextEntryReqStyleBean() {
         super(TextEntryReqStyleBean.class);
@@ -59,8 +60,16 @@ public class TextEntryReqStyleBean extends ComponentExampleImpl<TextEntryReqStyl
         return reqColor;
     }
     
+    public String getOptColor() {
+        return optColor;
+    }
+    
     public void setReqColor(String reqColor) {
         this.reqColor = reqColor;
+    }
+    
+    public void setOptColor(String optColor) {
+        this.optColor = optColor;
     }
 
     @PostConstruct

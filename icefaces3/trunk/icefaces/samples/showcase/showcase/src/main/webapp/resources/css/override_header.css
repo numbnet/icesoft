@@ -23,3 +23,7 @@
 .ui-input-label-left {
     width: auto;
 }
+
+.textEntryInputTable .ui-input-label-left {
+    width: 100px;
+}

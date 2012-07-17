@@ -36,7 +36,7 @@
         <h:form id="form">
             <icecore:singleSubmit/>
             <ace:panel id="labelCustomizing" header="Label Customization">
-                <h:panelGrid width="50%" columns="2">
+                <h:panelGrid width="50%" columns="2" cellpadding="6" cellspacing="6">
                      <h:outputLabel for="labelText" value="Label Text:"/>
                      <h:inputText id="labelText" value="#{maskedLabelBean.labelText}" maxlength="250"/>
                      
@@ -48,16 +48,18 @@
             </ace:panel>
             
             <ace:panel id="personalInfoInputPanel" header="Personal Info">
-                <ace:maskedEntry id="dobInput" value="#{maskedEntryBean.dob}" mask="99/99/9999"
-                                 label="#{maskedLabelBean.labelText}"
-                                 labelPosition="#{maskedLabelBean.labelPosition}">
-                    <ace:ajax execute="@this" render="dobOutput"/>
-                </ace:maskedEntry>
+                <h:panelGrid columns="1" cellspacing="6" cellpadding="6">
+                    <ace:maskedEntry id="dobInput" value="#{maskedEntryBean.dob}" mask="99/99/9999"
+                                     label="#{maskedLabelBean.labelText}"
+                                     labelPosition="#{maskedLabelBean.labelPosition}">
+                        <ace:ajax execute="@this" render="dobOutput"/>
+                    </ace:maskedEntry>
+                </h:panelGrid>
             </ace:panel>
             
             <ace:panel id="personalInfoOutputPanel" header="Entered Data">
                 <h:panelGrid id="outputGrid" width="100%" style="text-align: left;">
-                    <h:outputText id="dobOutput" value="#{maskedLabelBean.labelText}: #{maskedEntryBean.dob}"/>
+                    <h:outputText id="dobOutput" value="#{maskedLabelBean.labelText} #{maskedEntryBean.dob}"/>
                 </h:panelGrid>
             </ace:panel>
         </h:form>

@@ -37,7 +37,7 @@
             <icecore:singleSubmit/>
             
             <ace:panel id="indicatorCustomizing" header="Indicator Customization" style="width: 100%;">
-                <h:panelGrid width="50%" columns="2">
+                <h:panelGrid width="60%" columns="2" cellpadding="6" cellspacing="6">
                      <h:outputLabel for="requiredIn" value="Required?"/>
                      <h:selectBooleanCheckbox id="requiredIn" value="#{maskedIndicatorBean.required}"/>
                      
@@ -57,6 +57,7 @@
             </ace:panel>
             
             <ace:panel id="personalInfoInputPanel" header="Personal Info" style="width: 100%;">
+                <h:panelGrid columns="1" cellpadding="6" cellspacing="6">
                 <ace:maskedEntry id="dobInput" value="#{maskedEntryBean.dob}" mask="99/99/9999"
                                  requiredIndicator="#{maskedIndicatorBean.requiredText}"
                                  optionalIndicator="#{maskedIndicatorBean.optionalText}"
@@ -66,7 +67,7 @@
                                  labelPosition="left">
                     <ace:ajax execute="@this" render="dobOutput"/>
                 </ace:maskedEntry>
-                <br/>
+                
                 <ace:maskedEntry id="workPhoneInput" value="#{maskedEntryBean.workPhone}" mask="(999) 999-9999? x99999"
                                  requiredIndicator="#{maskedIndicatorBean.requiredText}"
                                  optionalIndicator="#{maskedIndicatorBean.optionalText}"
@@ -76,6 +77,7 @@
                                  labelPosition="left">
                     <ace:ajax execute="@this" render="workPhoneOutput"/>
                 </ace:maskedEntry>
+                </h:panelGrid>
             </ace:panel>
             
             <ace:panel id="personalInfoOutputPanel" header="Entered Data" style="width: 100%;">
