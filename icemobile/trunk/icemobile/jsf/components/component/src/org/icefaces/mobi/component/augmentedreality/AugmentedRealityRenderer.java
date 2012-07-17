@@ -72,6 +72,10 @@ public class AugmentedRealityRenderer extends BaseInputRenderer  {
          writer.writeAttribute(HTML.CLASS_ATTR, defaultClass, HTML.CLASS_ATTR);
 
         String arParams = "";
+        String urlBase = ag.getUrlBase();
+        if (null != urlBase)  {
+            arParams = "ub=" + URLEncoder.encode(urlBase) + "&";
+        }
         for (UIComponent child : ag.getChildren())  {
             if (child instanceof AugmentedRealityLocations) {
                 AugmentedRealityLocations locations = 
