@@ -36,7 +36,6 @@
 
     <ui:define name="example">
         <h:form id="form">
-            <h3>Drag Reordering</h3>
             <h:panelGroup id="panelGroupOne" style="padding: 0.5em;" layout="block">
                 <style type="text/css">
                         /* To layout lists side by side if space is available */
@@ -77,59 +76,22 @@
                     <ace:list id="secondList" value="#{backing.oneWaySourceList}"
                               dropGroup="textGroup"
                               selection="true"
-                              style="height:100%"
-                              bodyStyle="height:100%"
+                              style="height:100px;width:150px;"
+                              bodyStyle="height:100px;width:150px;"
                               styleClass="inlineList">
-                        <!-- causes render @all by default -->
                         <ace:ajax event="migrate" />
                     </ace:list>
 
                     <ace:list id="thirdList" value="#{backing.oneWayDestList}"
                               dropGroup="textGroup"
                               selection="true"
-                              style="height:100%"
-                              bodyStyle="height:100%"
+                              style="height:100px;width:150px;"
+                              bodyStyle="height:100px;width:150px;"
                               styleClass="inlineList">
-                        <!-- causes render @all by default -->
                         <ace:ajax event="migrate" />
                      </ace:list>
-
-                    <h:panelGroup>
-                        <ui:repeat id="secondRepeat" value="#{backing.oneWaySourceList}" var="selectItem">
-                            <h:outputText id="outputTextTwo" value="#{selectItem.value}" /><br/>
-                        </ui:repeat>
-                    </h:panelGroup>
-
-                    <h:panelGroup>
-                        <ui:repeat id="thirdRepeat" value="#{backing.oneWayDestList}" var="selectItem">
-                            <h:outputText id="outputTextThree" value="#{selectItem.value}" /><br/>
-                        </ui:repeat>
-                    </h:panelGroup>
                 </h:panelGrid>
             </h:panelGroup>
-
-            <!--<hr style="margin:1em .6em;"/>-->
-
-            <!--<h3>One-Way Drag Migrations</h3>-->
-            <!--<h:panelGroup style="padding: 0.5em;" layout="block">-->
-                <!--<style type="text/css">-->
-                        <!--/* To layout lists side by side if space is available */-->
-                    <!--.inlineList {-->
-                        <!--font-size: 80% !important;-->
-                        <!--display: inline-block;-->
-                        <!--vertical-align: top;-->
-                    <!--}-->
-                <!--</style>-->
-                <!--<ace:list value="#{backing.twoWaySourceList}"-->
-                          <!--dropGroup="textGroup"-->
-                          <!--selection="true"-->
-                          <!--styleClass="inlineList"/>-->
-
-                <!--<ace:list value="#{backing.twoWayDestList}"-->
-                          <!--dropGroup="textGroup"-->
-                          <!--selection="true"-->
-                          <!--styleClass="inlineList"/>-->
-            <!--</h:panelGroup>-->
         </h:form>
     </ui:define>
 </ui:composition>
