@@ -37,27 +37,31 @@
         <h:form id="inputForm">
             <icecore:singleSubmit/>
             
-           <h:panelGrid width="50%" columns="2">
-                 <h:outputLabel for="labelText" value="Label Text:"/>
-                 <h:inputText id="labelText" value="#{autoCompleteEntryLabelBean.labelText}" maxlength="250"/>
-                 
-                 <h:outputLabel for="positionIn" value="Label Position:"/>
-                 <h:selectOneMenu id="positionIn" value="#{autoCompleteEntryLabelBean.labelPosition}">
-                    <f:selectItems value="#{positionBean.labelPositions}"/>
-                 </h:selectOneMenu>
-            </h:panelGrid>
+            <ace:panel header="Label Customization">
+                <h:panelGrid width="50%" columns="2" cellpadding="6" cellspacing="6">
+                     <h:outputLabel for="labelText" value="Label Text:"/>
+                     <h:inputText id="labelText" value="#{autoCompleteEntryLabelBean.labelText}" maxlength="250"/>
+                     
+                     <h:outputLabel for="positionIn" value="Label Position:"/>
+                     <h:selectOneMenu id="positionIn" value="#{autoCompleteEntryLabelBean.labelPosition}">
+                        <f:selectItems value="#{positionBean.labelPositions}"/>
+                     </h:selectOneMenu>
+                </h:panelGrid>
+            </ace:panel>
             
-            <hr width="100%"/>
-            
-            <ace:autoCompleteEntry id="autoComplete"
-                                 value="#{autoCompleteEntryBean.selectedText}"
-                                 actionListener="#{autoCompleteEntryBean.submitText}"
-                                 rows="10" width="300"
-                                 filterMatchMode=""
-                                 label="#{autoCompleteEntryLabelBean.labelText}"
-                                 labelPosition="#{autoCompleteEntryLabelBean.labelPosition}">
-                <f:selectItems value="#{autoCompleteEntryBean.cities}"/>
-            </ace:autoCompleteEntry>
+            <ace:panel header="Autocomplete Entry">
+                <h:panelGrid width="100%" columns="1">
+                    <ace:autoCompleteEntry id="autoComplete"
+                                         value="#{autoCompleteEntryBean.selectedText}"
+                                         actionListener="#{autoCompleteEntryBean.submitText}"
+                                         rows="10" width="300"
+                                         filterMatchMode=""
+                                         label="#{autoCompleteEntryLabelBean.labelText}"
+                                         labelPosition="#{autoCompleteEntryLabelBean.labelPosition}">
+                        <f:selectItems value="#{autoCompleteEntryBean.cities}"/>
+                    </ace:autoCompleteEntry>
+                </h:panelGrid>
+            </ace:panel>
         </h:form>
         
     </ui:define>

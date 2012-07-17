@@ -35,50 +35,67 @@
     <ui:define name="example">
         
         <h:form id="inputForm">
-            <ice:outputStyle href="./resources/css/indicator_override-#{autoCompleteEntryReqStyleBean.reqColor}.css"
+            <ice:outputStyle href="./resources/css/indicator_override_req-#{autoCompleteEntryReqStyleBean.reqColor}.css"
                              rendered="#{autoCompleteEntryReqStyleBean.reqColor ne 'default'}"/>
+            <ice:outputStyle href="./resources/css/indicator_override_opt-#{autoCompleteEntryReqStyleBean.optColor}.css"
+                             rendered="#{autoCompleteEntryReqStyleBean.optColor ne 'default'}"/>
         
             <icecore:singleSubmit/>
             
-            <h:panelGrid columns="2">
-                <h:panelGroup>
-                    <h:outputLabel for="colorIn" value="Indicator Color Style:"/>
-                    <h:selectOneMenu id="colorIn" value="#{autoCompleteEntryReqStyleBean.reqColor}"
-                                     style="width: 150px;">
-                        <f:selectItem itemValue="default" itemLabel="Default"/>
-                        <f:selectItem itemValue="blue" itemLabel="Blue"/>
-                        <f:selectItem itemValue="green" itemLabel="Green"/>
-                        <f:selectItem itemValue="red" itemLabel="Red"/>
-                    </h:selectOneMenu>
-                </h:panelGroup>
-                <h:message for="colorIn"/>
-            </h:panelGrid>
+            <ace:panel header="Color Customization">
+                <h:panelGrid width="100%" columns="3" columnClasses="col25,col25,col50"
+                             cellpadding="6" cellspacing="6">
+                        <h:outputLabel for="reqColor" value="Required Color Style:"/>
+                        <h:selectOneMenu id="reqColor" value="#{autoCompleteEntryReqStyleBean.reqColor}"
+                                         style="width: 150px;">
+                            <f:selectItem itemValue="default" itemLabel="Default"/>
+                            <f:selectItem itemValue="blue" itemLabel="Blue"/>
+                            <f:selectItem itemValue="green" itemLabel="Green"/>
+                            <f:selectItem itemValue="red" itemLabel="Red"/>
+                        </h:selectOneMenu>
+                        <h:message for="reqColor"/>
+                    
+                        <h:outputLabel for="optColor" value="Optional Color Style:"/>
+                        <h:selectOneMenu id="optColor" value="#{autoCompleteEntryReqStyleBean.optColor}"
+                                         style="width: 150px;">
+                            <f:selectItem itemValue="default" itemLabel="Default"/>
+                            <f:selectItem itemValue="blue" itemLabel="Blue"/>
+                            <f:selectItem itemValue="green" itemLabel="Green"/>
+                            <f:selectItem itemValue="red" itemLabel="Red"/>
+                        </h:selectOneMenu>
+                        <h:message for="optColor"/>
+                </h:panelGrid>
+            </ace:panel>
         
-            <ace:autoCompleteEntry id="autoComplete1"
-                                 value="#{autoCompleteEntryReqStyleBean.selectedText1}"
-                                 actionListener="#{autoCompleteEntryBean.submitText}"
-                                 rows="10" width="300"
-                                 filterMatchMode=""
-                                 label="City List 1:"
-                                 labelPosition="left"
-                                 required="true"
-                                 requiredIndicator="(Required)"
-                                 indicatorPosition="right">
-                <f:selectItems value="#{autoCompleteEntryBean.cities}"/>
-            </ace:autoCompleteEntry>
-            
-            <ace:autoCompleteEntry id="autoComplete2"
-                                 value="#{autoCompleteEntryReqStyleBean.selectedText2}"
-                                 actionListener="#{autoCompleteEntryBean.submitText}"
-                                 rows="10" width="300"
-                                 filterMatchMode=""
-                                 label="City List 2:"
-                                 labelPosition="left"
-                                 required="false"
-                                 optionalIndicator="(Optional)"
-                                 indicatorPosition="right">
-                <f:selectItems value="#{autoCompleteEntryBean.cities}"/>
-            </ace:autoCompleteEntry>
+            <ace:panel header="Autocomplete Entry">
+                <h:panelGrid columns="1" cellspacing="6" cellpadding="6" width="100%">
+                    <ace:autoCompleteEntry id="autoComplete1"
+                                         value="#{autoCompleteEntryReqStyleBean.selectedText1}"
+                                         actionListener="#{autoCompleteEntryBean.submitText}"
+                                         rows="10" width="300"
+                                         filterMatchMode=""
+                                         label="City List 1:"
+                                         labelPosition="left"
+                                         required="true"
+                                         requiredIndicator="(Required)"
+                                         indicatorPosition="right">
+                        <f:selectItems value="#{autoCompleteEntryBean.cities}"/>
+                    </ace:autoCompleteEntry>
+                    
+                    <ace:autoCompleteEntry id="autoComplete2"
+                                         value="#{autoCompleteEntryReqStyleBean.selectedText2}"
+                                         actionListener="#{autoCompleteEntryBean.submitText}"
+                                         rows="10" width="300"
+                                         filterMatchMode=""
+                                         label="City List 2:"
+                                         labelPosition="left"
+                                         required="false"
+                                         optionalIndicator="(Optional)"
+                                         indicatorPosition="right">
+                        <f:selectItems value="#{autoCompleteEntryBean.cities}"/>
+                    </ace:autoCompleteEntry>
+                </h:panelGrid>
+            </ace:panel>
         </h:form>
         
     </ui:define>
