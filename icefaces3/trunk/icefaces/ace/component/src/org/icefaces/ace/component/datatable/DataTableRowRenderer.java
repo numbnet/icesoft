@@ -6,6 +6,7 @@ import org.icefaces.ace.component.panelexpansion.PanelExpansion;
 import org.icefaces.ace.component.row.Row;
 import org.icefaces.ace.component.rowexpansion.RowExpansion;
 import org.icefaces.ace.model.table.RowState;
+import org.icefaces.ace.model.table.RowStateMap;
 import org.icefaces.ace.model.table.TreeDataModel;
 import org.icefaces.ace.util.HTML;
 
@@ -41,11 +42,14 @@ import java.util.Map;
  */
 public class DataTableRowRenderer {
     protected static boolean encodeRow(FacesContext context, DataTable table, List<Column> columns, Map<Object, List<String>> rowToSelectedFieldsMap, String clientId, int rowIndex, String parentIndex, String rowIndexVar, boolean topVisibleRowRendered) throws IOException {
+        table.setRowIndex(-1);
+        RowStateMap stateMap = table.getStateMap();
+
         table.setRowIndex(rowIndex);
         if (!table.isRowAvailable()) return false;
         if (rowIndexVar != null) context.getExternalContext().getRequestMap().put(rowIndexVar, rowIndex);
 
-        RowState rowState = table.getStateMap().get(table.getRowData());
+        RowState rowState = stateMap.get(table.getRowData());
 
         boolean selected = rowState.isSelected();
         boolean unselectable = !rowState.isSelectable();
@@ -225,12 +229,14 @@ public class DataTableRowRenderer {
             expandedRowId = (String) context.getExternalContext().getRequestMap().get(clientId + "_expandedRowId");
         }
 
+        table.setRowIndex(-1);
         Object model = table.getDataModel();
+        RowStateMap stateMap = table.getStateMap();
 
         if (!(table.hasTreeDataModel())) throw new FacesException("DataTable : \"" + clientId + "\" must be bound to an instance of TreeDataModel when using sub-row expansion.");
         TreeDataModel rootModel = (TreeDataModel)model;
         rootModel.setRootIndex(expandedRowId);
-        table.getStateMap().get(rootModel.getRootData()).setExpanded(true);
+        stateMap.get(rootModel.getRootData()).setExpanded(true);
         table.setRowIndex(0);
 
         if (rootModel.getRowCount() > 0)
@@ -243,7 +249,7 @@ public class DataTableRowRenderer {
                 if (rowVar != null) context.getExternalContext().getRequestMap().put(rowVar, rootModel.getRowData());
                 if (rowIndexVar != null) context.getExternalContext().getRequestMap().put(rowIndexVar, rootModel.getRowIndex());
 
-                RowState rowState = table.getStateMap().get(rootModel.getRowData());
+                RowState rowState = stateMap.get(rootModel.getRowData());
                 boolean selected = rowState.isSelected();
                 boolean expanded = rowState.isExpanded();
                 boolean unselectable = !rowState.isSelectable();
@@ -338,10 +344,13 @@ public class DataTableRowRenderer {
             expandedRowId = expandedRowId.substring(sepIndex+1);
         }
 
+        table.setRowIndex(-1);
+        RowStateMap stateMap = table.getStateMap();
+
         if (rootIndex != null) ((TreeDataModel)model).setRootIndex(rootIndex);
         table.setRowIndex(Integer.parseInt(expandedRowId));
 
-        table.getStateMap().get(table.getRowData()).setExpanded(true);
+        stateMap.get(table.getRowData()).setExpanded(true);
 
         writer.startElement(HTML.TR_ELEM, null);
         writer.writeAttribute(HTML.CLASS_ATTR, DataTableConstants.EXPANDED_ROW_CONTENT_CLASS + " ui-widget-content " + DataTableConstants.UNSELECTABLE_ROW_CLASS , null);
