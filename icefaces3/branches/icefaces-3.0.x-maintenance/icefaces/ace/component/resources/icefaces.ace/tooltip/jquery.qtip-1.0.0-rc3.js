@@ -255,6 +255,7 @@
             else if(self.options.show.solo === true) solo = $('div.qtip').not(self.elements.tooltip);
             if(solo) solo.each(function(){ if($(this).qtip('api').status.rendered === true) $(this).qtip('api').hide(); });
 
+            self.elements.tooltip.css({ zIndex: 6000 }); // ICE-8287
             // Show tooltip
             if(typeof self.options.show.effect.type == 'function')
             {
