@@ -684,22 +684,22 @@
         <attribute>
             <name>id</name>
             <required>true</required>
-            <rtexprvalue>false</rtexprvalue>
+            <rtexprvalue>true</rtexprvalue>
         </attribute>
         <attribute>
             <name>styleClass</name>
             <required>false</required>
-            <rtexprvalue>false</rtexprvalue>
+            <rtexprvalue>true</rtexprvalue>
         </attribute>
         <attribute>
             <name>style</name>
             <required>false</required>
-            <rtexprvalue>false</rtexprvalue>
+            <rtexprvalue>true</rtexprvalue>
         </attribute>
         <attribute>
             <name>inset</name>
             <required>false</required>
-            <rtexprvalue>false</rtexprvalue>
+            <rtexprvalue>true</rtexprvalue>
         </attribute>
 
     </tag>
@@ -713,7 +713,7 @@
         <attribute>
             <name>group</name>
             <required>false</required>
-            <rtexprvalue>false</rtexprvalue>
+            <rtexprvalue>true</rtexprvalue>
         </attribute>
     </tag>
 
@@ -869,22 +869,12 @@
         <name>pagePanelHeader</name>
         <tag-class>org.icemobile.jsp.tags.PagePanelHeaderTag</tag-class>
         <body-content>JSP</body-content>
-        <attribute>
-            <name>id</name>
-            <required>true</required>
-            <rtexprvalue>false</rtexprvalue>
-        </attribute>
     </tag>
     <tag>
         <description>Page Panel Body</description>
         <name>pagePanelBody</name>
         <tag-class>org.icemobile.jsp.tags.PagePanelBodyTag</tag-class>
         <body-content>JSP</body-content>
-        <attribute>
-            <name>id</name>
-            <required>true</required>
-            <rtexprvalue>false</rtexprvalue>
-        </attribute>
         <attribute>
             <name>noHeader</name>
             <required>false</required>
@@ -898,12 +888,12 @@
         <attribute>
             <name>styleClass</name>
             <required>false</required>
-            <rtexprvalue>false</rtexprvalue>
+            <rtexprvalue>true</rtexprvalue>
         </attribute>
         <attribute>
             <name>style</name>
             <required>false</required>
-            <rtexprvalue>false</rtexprvalue>
+            <rtexprvalue>true</rtexprvalue>
         </attribute>
     </tag>
     <tag>
@@ -911,11 +901,6 @@
         <name>pagePanelFooter</name>
         <tag-class>org.icemobile.jsp.tags.PagePanelFooterTag</tag-class>
         <body-content>JSP</body-content>
-        <attribute>
-            <name>id</name>
-            <required>true</required>
-            <rtexprvalue>false</rtexprvalue>
-        </attribute>
     </tag>
     <tag>
         <description>Popup panel on device</description>
@@ -925,22 +910,33 @@
         <attribute>
             <name>id</name>
             <required>true</required>
-            <rtexprvalue>false</rtexprvalue>
+            <rtexprvalue>true</rtexprvalue>
         </attribute>
         <attribute>
             <name>name</name>
             <required>false</required>
-            <rtexprvalue>false</rtexprvalue>
+            <rtexprvalue>true</rtexprvalue>
         </attribute>
         <attribute>
             <name>style</name>
             <required>false</required>
-            <rtexprvalue>false</rtexprvalue>
+            <rtexprvalue>true</rtexprvalue>
         </attribute>
         <attribute>
             <name>styleClass</name>
             <required>false</required>
-            <rtexprvalue>false</rtexprvalue>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <!-- Tag provide a close button, and if so, what label? -->
+        <attribute>
+            <name>autoCloseButton</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <name>closeLabel</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
         </attribute>
         <attribute>
             <name>visible</name>
@@ -955,7 +951,7 @@
         <attribute>
             <name>autocenter</name>
             <required>false</required>
-            <rtexprvalue>false</rtexprvalue>
+            <rtexprvalue>true</rtexprvalue>
         </attribute>
     </tag>
 </taglib>
