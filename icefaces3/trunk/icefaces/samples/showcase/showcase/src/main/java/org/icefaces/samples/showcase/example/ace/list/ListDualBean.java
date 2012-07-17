@@ -37,7 +37,21 @@ import java.util.List;
 @CustomScoped(value = "#{window}")
 public class ListDualBean extends ComponentExampleImpl<ListDualBean> implements Serializable {
     public static final String BEAN_NAME = "listDualBean";
-
+    
+    private static final String[] AVAILABLE_POSITIONS = new String[] {
+        "ALL", "BOTH", "TOP", "BOTTOM", "MIDDLE"
+    };
+    private String controlPosition = AVAILABLE_POSITIONS[0];
+    private List<SelectItem> stringList = new ArrayList<SelectItem>() {{
+        for (String s : DataTableData.CHASSIS_ALL) {
+            add(new SelectItem(s));
+        }
+        remove(DataTableData.CHASSIS_ALL.length-1);
+    }};
+    private List<SelectItem> destStringList = new ArrayList<SelectItem>() {{
+        add(new SelectItem(DataTableData.CHASSIS_ALL[DataTableData.CHASSIS_ALL.length-1]));
+    }};
+    
     public ListDualBean() {
         super(ListDualBean.class);
     }
@@ -46,17 +60,18 @@ public class ListDualBean extends ComponentExampleImpl<ListDualBean> implements 
     public void initMetaData() {
         super.initMetaData();
     }
-
-    List<SelectItem> stringList = new ArrayList<SelectItem>() {{
-        for (String s : DataTableData.CHASSIS_ALL) {
-            add(new SelectItem(s));
-        }
-        remove(DataTableData.CHASSIS_ALL.length-1);
-    }};
-
-    List<SelectItem> destStringList = new ArrayList<SelectItem>() {{
-        add(new SelectItem(DataTableData.CHASSIS_ALL[DataTableData.CHASSIS_ALL.length-1]));
-    }};
+    
+    public String[] getAvailablePositions() {
+        return AVAILABLE_POSITIONS;
+    }
+    
+    public String getControlPosition() {
+        return controlPosition;
+    }
+    
+    public void setControlPosition(String controlPosition) {
+        this.controlPosition = controlPosition;
+    }
 
     public List<SelectItem> getStringList() {
         return stringList;

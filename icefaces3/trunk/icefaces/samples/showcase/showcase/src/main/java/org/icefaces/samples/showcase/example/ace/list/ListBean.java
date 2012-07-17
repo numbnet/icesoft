@@ -38,10 +38,6 @@ import java.util.List;
     menuLinks = {
             @MenuLink(title = "menu.ace.list.subMenu.main",
                     isDefault = true, exampleBeanName = ListBean.BEAN_NAME),
-            @MenuLink(title = "menu.ace.list.subMenu.block",
-                    exampleBeanName = ListBlockBean.BEAN_NAME),
-            @MenuLink(title = "menu.ace.list.subMenu.blockComplex",
-                    exampleBeanName = ListBlockComplexBean.BEAN_NAME),
             @MenuLink(title = "menu.ace.list.subMenu.selection",
                     exampleBeanName = ListSelectionBean.BEAN_NAME),
             @MenuLink(title = "menu.ace.list.subMenu.selectionAjax",
@@ -55,7 +51,11 @@ import java.util.List;
             @MenuLink(title = "menu.ace.list.subMenu.dual",
                     exampleBeanName = ListDualBean.BEAN_NAME),
             @MenuLink(title = "menu.ace.list.subMenu.multi",
-                    exampleBeanName = ListMultiBean.BEAN_NAME)
+                    exampleBeanName = ListMultiBean.BEAN_NAME),
+            @MenuLink(title = "menu.ace.list.subMenu.block",
+                    exampleBeanName = ListBlockBean.BEAN_NAME),
+            @MenuLink(title = "menu.ace.list.subMenu.blockComplex",
+                    exampleBeanName = ListBlockComplexBean.BEAN_NAME)
     })
 
 

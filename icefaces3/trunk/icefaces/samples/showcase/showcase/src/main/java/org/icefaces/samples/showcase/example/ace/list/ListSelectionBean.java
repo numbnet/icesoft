@@ -58,6 +58,14 @@ import java.util.Set;
 @CustomScoped(value = "#{window}")
 public class ListSelectionBean extends ComponentExampleImpl<ListSelectionBean> {
     public static final String BEAN_NAME = "listSelectionBean";
+    
+    private List<SelectItem> stringList = new ArrayList<SelectItem>() {{
+        for (String s : DataTableData.CHASSIS_ALL) {
+            add(new SelectItem(s));
+        }
+    }};
+    private Set<Object> selections;
+    private boolean multiSelect = true;
 
     public ListSelectionBean() {
         super(ListSelectionBean.class);
@@ -68,14 +76,6 @@ public class ListSelectionBean extends ComponentExampleImpl<ListSelectionBean> {
         super.initMetaData();
     }
 
-    List<SelectItem> stringList = new ArrayList<SelectItem>() {{
-        for (String s : DataTableData.CHASSIS_ALL) {
-            add(new SelectItem(s));
-        }
-    }};
-
-    Set<Object> selections;
-
     public List<SelectItem> getStringList() {
         return stringList;
     }
@@ -83,12 +83,27 @@ public class ListSelectionBean extends ComponentExampleImpl<ListSelectionBean> {
     public void setStringList(List<SelectItem> stringList) {
         this.stringList = stringList;
     }
-
+    
     public Set<Object> getSelections() {
         return selections;
     }
-
+    
+    public List<Object> getSelectionList() {
+        if (selections != null) {
+            return new ArrayList<Object>(selections);
+        }
+        return null;
+    }
+    
     public void setSelections(Set<Object> selections) {
         this.selections = selections;
+    }
+    
+    public boolean getMultiSelect() {
+        return multiSelect;
+    }
+    
+    public void setMultiSelect(boolean multiSelect) {
+        this.multiSelect = multiSelect;
     }
 }

@@ -58,7 +58,15 @@ import java.util.Set;
 @CustomScoped(value = "#{window}")
 public class ListSelectionAjaxBean extends ComponentExampleImpl<ListSelectionAjaxBean> {
     public static final String BEAN_NAME = "listSelectionAjaxBean";
-
+    
+    private List<SelectItem> ajaxStringList = new ArrayList<SelectItem>() {{
+        for (String s : DataTableData.CHASSIS_ALL) {
+            add(new SelectItem(s));
+        }
+    }};
+    private Set<Object> ajaxSelections;
+    private boolean multiSelect = true;
+    
     public ListSelectionAjaxBean() {
         super(ListSelectionAjaxBean.class);
     }
@@ -67,14 +75,6 @@ public class ListSelectionAjaxBean extends ComponentExampleImpl<ListSelectionAja
     public void initMetaData() {
         super.initMetaData();
     }
-
-    List<SelectItem> ajaxStringList = new ArrayList<SelectItem>() {{
-        for (String s : DataTableData.CHASSIS_ALL) {
-            add(new SelectItem(s));
-        }
-    }};
-
-    Set<Object> ajaxSelections;
 
     public List<SelectItem> getAjaxStringList() {
         return ajaxStringList;
@@ -87,8 +87,23 @@ public class ListSelectionAjaxBean extends ComponentExampleImpl<ListSelectionAja
     public Set<Object> getAjaxSelections() {
         return ajaxSelections;
     }
+    
+    public List<Object> getAjaxSelectionList() {
+        if (ajaxSelections != null) {
+            return new ArrayList<Object>(ajaxSelections);
+        }
+        return null;
+    }
 
     public void setAjaxSelections(Set<Object> ajaxSelections) {
         this.ajaxSelections = ajaxSelections;
+    }
+    
+    public boolean getMultiSelect() {
+        return multiSelect;
+    }
+    
+    public void setMultiSelect(boolean multiSelect) {
+        this.multiSelect = multiSelect;
     }
 }

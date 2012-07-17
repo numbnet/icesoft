@@ -37,15 +37,26 @@
     <ui:define name="example">
 
         <h:form id="form">
-            <h:panelGroup id="panelGroup" style="padding: 0.5em;" layout="block">
+            <ace:panel header="List Customization">
+                <h:panelGrid columns="2" cellspacing="6" cellpadding="6">
+                    <h:outputLabel for="posIn" value="List Control Position:"/>
+                    <h:selectOneRadio id="posIn" value="#{backing.controlPosition}">
+                        <f:ajax event="valueChange" render="dualList"/>
+                        <f:selectItems value="#{backing.availablePositions}"/>
+                    </h:selectOneRadio>
+                </h:panelGrid>
+            </ace:panel>
+        
+            <ace:panel header="Dual List">
                 <style type="text/css">
                         /* To layout lists side by side if space is available */
                     .subList {
                         font-size: 80% !important;
                     }
                 </style>
+                
                 <ace:listControl id="dualList" style="width:40%; margin: 0 auto 0 auto;"
-                        position="ALL">
+                        position="#{backing.controlPosition}">
                     <f:facet name="header">
                         Dual Header
                     </f:facet>
@@ -60,7 +71,7 @@
                               dropGroup="textGroup"
                               selectionMode="multiple"/>
                 </ace:listControl>
-            </h:panelGroup>
+            </ace:panel>
         </h:form>
     </ui:define>
 </ui:composition>
