@@ -286,8 +286,6 @@ if (!window.ice.icefaces) {
         function detectCaller(f) {
             return detect(callStack(), function(caller) {
                 return caller == f;
-            }, function() {
-                throw 'cannot find function in call stack'
             });
         }
 
