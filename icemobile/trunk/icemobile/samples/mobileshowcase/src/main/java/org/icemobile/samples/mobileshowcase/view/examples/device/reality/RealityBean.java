@@ -202,6 +202,15 @@ public class RealityBean extends ExampleImpl<RealityBean> implements
         return messages.values();
     }
 
+    public String getBaseURL()  {
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        ExternalContext externalContext = facesContext.getExternalContext();
+        String url = externalContext.getRequestScheme() + "://" +
+            externalContext.getRequestServerName() + ":" + 
+            externalContext.getRequestServerPort();
+        return url;
+    }
+
     private void scaleImage(File photoFile) throws IOException  {
 
         if (null == photoFile) {

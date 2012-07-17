@@ -42,8 +42,8 @@ public class AugmentedRealityMeta extends UIComponentBaseMeta  {
     @Property(required=Required.yes, tlddoc="required formatted params for augmentedReality component")
     private String params;
 
-   /* @Property(tlddoc=" baseURL for this component ??")
-    private String baseURL; */
+    @Property(tlddoc="URL base for loading resources in AR view")
+    private String urlBase;
 
     @Property(tlddoc = "style class of the component, rendered on the select root of the component")
     private String styleClass;
