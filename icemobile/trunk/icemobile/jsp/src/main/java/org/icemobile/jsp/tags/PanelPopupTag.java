@@ -50,12 +50,18 @@ public class PanelPopupTag extends TagSupport {
             tag.append(">");
             tag.append(getTitle());
 
-            //
-            tag.append(TagUtil.INPUT_TAG);
-            tag.append(" type=\"button\"");
-            tag.append(" value=\"Close\"");
-            tag.append(" onclick=\"ice.mobi.panelpopup.close('").append(getId()).append("');\"");
-            tag.append("/>");
+            // Only do a close button if configured.
+            if (isAutoCloseButton()) {
+                tag.append(TagUtil.INPUT_TAG);
+                tag.append(" type=\"button\"");
+                if (closeButtonLabel != null && !"".equals(closeButtonLabel)) {
+                    tag.append(" value=\"").append(closeButtonLabel).append("\"");
+                } else {
+                    tag.append(" value=\"Close\"");
+                }
+                tag.append(" onclick=\"ice.mobi.panelpopup.close('").append(getId()).append("');\"");
+                tag.append("/>");
+            }
 
             tag.append(TagUtil.DIV_TAG_END); // Close title section
         }
@@ -119,6 +125,8 @@ public class PanelPopupTag extends TagSupport {
     private String title;
     private boolean visible;
     private boolean autocenter;
+    private boolean autoCloseButton;
+    private String closeButtonLabel;
 
     public String getStyle() {
         return style;
@@ -174,5 +182,21 @@ public class PanelPopupTag extends TagSupport {
 
     public void setAutocenter(boolean autocenter) {
         this.autocenter = autocenter;
+    }
+
+    public boolean isAutoCloseButton() {
+        return autoCloseButton;
+    }
+
+    public void setAutoCloseButton(boolean autoCloseButton) {
+        this.autoCloseButton = autoCloseButton;
+    }
+
+    public String getCloseButtonLabel() {
+        return closeButtonLabel;
+    }
+
+    public void setCloseButtonLabel(String closeButtonLabel) {
+        this.closeButtonLabel = closeButtonLabel;
     }
 }
