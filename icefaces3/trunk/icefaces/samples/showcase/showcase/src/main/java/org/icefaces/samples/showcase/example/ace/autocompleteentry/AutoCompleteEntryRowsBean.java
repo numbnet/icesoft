@@ -50,16 +50,11 @@ public class AutoCompleteEntryRowsBean extends ComponentExampleImpl<AutoComplete
 {
     public static final String BEAN_NAME = "autoCompleteEntryRowsBean";
     
-    private String typedText;
     private String selectedText;
-    private int rows = 15;
+    private int rows = 6;
     
     public AutoCompleteEntryRowsBean() { 
         super(AutoCompleteEntryRowsBean.class);
-    }
-    
-    public String getTypedText() {
-        return typedText;
     }
     
     public String getSelectedText() {
@@ -68,10 +63,6 @@ public class AutoCompleteEntryRowsBean extends ComponentExampleImpl<AutoComplete
     
     public int getRows() {
         return rows;
-    }
-    
-    public void setTypedText(String typedText) {
-        this.typedText = typedText;
     }
     
     public void setSelectedText(String selectedText) {
@@ -85,9 +76,5 @@ public class AutoCompleteEntryRowsBean extends ComponentExampleImpl<AutoComplete
     @PostConstruct
     public void initMetaData() {
         super.initMetaData();
-    }
-    
-    public void submit(ActionEvent event) {
-        selectedText = new String(typedText);
     }
 }

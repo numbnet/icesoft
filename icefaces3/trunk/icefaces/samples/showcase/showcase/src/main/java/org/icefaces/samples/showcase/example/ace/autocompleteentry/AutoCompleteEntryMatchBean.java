@@ -50,17 +50,12 @@ public class AutoCompleteEntryMatchBean extends ComponentExampleImpl<AutoComplet
 {
     public static final String BEAN_NAME = "autoCompleteEntryMatchBean";
     
-    private String typedText;
     private String selectedText;
     private String filterMode = "startsWith";
     private boolean caseSensitive = false;
     
     public AutoCompleteEntryMatchBean() { 
         super(AutoCompleteEntryMatchBean.class);
-    }
-    
-    public String getTypedText() {
-        return typedText;
     }
     
     public String getSelectedText() {
@@ -73,10 +68,6 @@ public class AutoCompleteEntryMatchBean extends ComponentExampleImpl<AutoComplet
     
     public boolean getCaseSensitive() {
         return caseSensitive;
-    }
-    
-    public void setTypedText(String typedText) {
-        this.typedText = typedText;
     }
     
     public void setSelectedText(String selectedText) {
@@ -94,9 +85,5 @@ public class AutoCompleteEntryMatchBean extends ComponentExampleImpl<AutoComplet
     @PostConstruct
     public void initMetaData() {
         super.initMetaData();
-    }
-    
-    public void submit(ActionEvent event) {
-        selectedText = new String(typedText);
     }
 }

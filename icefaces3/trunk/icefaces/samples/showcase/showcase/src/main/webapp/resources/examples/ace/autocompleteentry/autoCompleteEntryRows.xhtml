@@ -35,7 +35,7 @@
     <ui:define name="example">
         
         <h:form id="inputForm">
-            <h:panelGrid columns="2">
+            <h:panelGrid columns="2" cellspacing="6" cellpadding="6">
                 <h:outputLabel for="rowsIn" value="Number of Rows (1-40):"/>
                 <h:panelGroup id="rowsWrap">
                     <h:inputText id="rowsIn" value="#{autoCompleteEntryRowsBean.rows}"
@@ -46,20 +46,19 @@
                     <h:message for="rowsIn"/>
                 </h:panelGroup>
                 
-                <h:outputLabel for="textOut" value="Selected City:"/>
-                <h:outputText id="textOut" value="#{autoCompleteEntryRowsBean.selectedText}"
-                              style="font-weight: bold;"/>
-            
-                <h:outputLabel for="autoComplete" value="Autocomplete City List:"/>
+                <h:outputLabel for="autoComplete" value="Cities of the World:"/>
                 <ace:autoCompleteEntry id="autoComplete"
-                                       value="#{autoCompleteEntryRowsBean.typedText}"
+                                       value="#{autoCompleteEntryRowsBean.selectedText}"
                                        rows="#{autoCompleteEntryRowsBean.rows}"
                                        width="300"
                                        filterMatchMode="startsWith">
                     <f:selectItems value="#{autoCompleteEntryBean.cities}"/>
                 </ace:autoCompleteEntry>
+                
+                <h:outputLabel for="textOut" value="Selected City:"/>
+                <h:outputText id="textOut" value="#{autoCompleteEntryRowsBean.selectedText}"
+                              style="font-weight: bold;"/>
             </h:panelGrid>
-            <h:commandButton value="Submit" actionListener="#{autoCompleteEntryRowsBean.submit}"/>
         </h:form>
     </ui:define>
 </ui:composition>

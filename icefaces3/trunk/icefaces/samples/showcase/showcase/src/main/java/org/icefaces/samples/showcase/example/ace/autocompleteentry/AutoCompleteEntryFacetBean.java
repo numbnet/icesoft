@@ -33,7 +33,6 @@ import java.util.StringTokenizer;
 
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import javax.faces.event.ActionEvent;
 
 @ComponentExample(
         parent = AutoCompleteEntryBean.BEAN_NAME,
@@ -95,12 +94,4 @@ public class AutoCompleteEntryFacetBean extends ComponentExampleImpl<AutoComplet
 		}
         return cities;
     }
-    
-	public void submitText(ActionEvent event) {
-		for (City city : cities) {
-			if (city.getName().equalsIgnoreCase(selectedText)) {
-				break;
-			}
-		}
-	}
 }
