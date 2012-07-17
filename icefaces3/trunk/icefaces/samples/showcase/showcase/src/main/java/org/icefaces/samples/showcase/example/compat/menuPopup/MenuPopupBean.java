@@ -63,8 +63,6 @@ import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
                     exampleBeanName = MenuPopupEvents.BEAN_NAME),
             @MenuLink(title = "menu.compat.menuPopup.subMenu.hide",
                     exampleBeanName = MenuPopupHide.BEAN_NAME),
-            @MenuLink(title = "menu.compat.menuPopup.subMenu.keyboard",
-                    exampleBeanName = MenuPopupKeyboard.BEAN_NAME),
             @MenuLink(title = "menu.compat.menuPopup.subMenu.icons",
                     exampleBeanName = MenuPopupIcons.BEAN_NAME),
             @MenuLink(title = "menu.compat.menuPopup.subMenu.separator",
