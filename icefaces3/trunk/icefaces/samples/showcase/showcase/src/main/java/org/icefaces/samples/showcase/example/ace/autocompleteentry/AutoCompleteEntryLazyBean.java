@@ -48,7 +48,7 @@ import javax.faces.event.ValueChangeEvent;
             // xhtml
             @ExampleResource(type = ResourceType.xhtml,
                     title="autoCompleteEntryLazy.xhtml",
-                    resource = "/resources/examples/ace/autocompleteentry/autoCompleteEntryComplex.xhtml"),
+                    resource = "/resources/examples/ace/autocompleteentry/autoCompleteEntryLazy.xhtml"),
             // Java Source
             @ExampleResource(type = ResourceType.java,
                     title="AutoCompleteEntryLazyBean.java",

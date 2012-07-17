@@ -35,7 +35,7 @@
     <ui:define name="example">
         
         <h:form id="inputForm">
-            <h:panelGrid columns="2">
+            <h:panelGrid columns="2" cellspacing="6" cellpadding="6">
                 <h:outputLabel for="filterIn" value="Filter Match Mode:"/>
                 <h:selectOneMenu id="filterIn" value="#{autoCompleteEntryMatchBean.filterMode}">
                     <f:ajax event="valueChange" render="@this autoComplete"/>
@@ -45,25 +45,24 @@
                     <f:selectItem itemValue="exact" itemLabel="Exactly Matches Text"/>
                 </h:selectOneMenu>
                 
-                <h:outputLabel for="caseIn" value="Case Sensitive?:"/>
+                <h:outputLabel for="caseIn" value="Case Sensitive:"/>
                 <h:selectBooleanCheckbox id="caseIn" value="#{autoCompleteEntryMatchBean.caseSensitive}">
                     <f:ajax event="valueChange" render="@this autoComplete"/>
                 </h:selectBooleanCheckbox>
                 
-                <h:outputLabel for="textOut" value="Selected City:"/>
-                <h:outputText id="textOut" value="#{autoCompleteEntryMatchBean.selectedText}"
-                              style="font-weight: bold;"/>
-            
-                <h:outputLabel for="autoComplete" value="Autocomplete City List:"/>
+                <h:outputLabel for="autoComplete" value="Cities of the World:"/>
                 <ace:autoCompleteEntry id="autoComplete"
-                                       value="#{autoCompleteEntryMatchBean.typedText}"
+                                       value="#{autoCompleteEntryMatchBean.selectedText}"
                                        rows="10" width="300"
                                        filterMatchMode="#{autoCompleteEntryMatchBean.filterMode}"
                                        caseSensitive="#{autoCompleteEntryMatchBean.caseSensitive}">
                     <f:selectItems value="#{autoCompleteEntryBean.cities}"/>
                 </ace:autoCompleteEntry>
+                
+                <h:outputLabel for="textOut" value="Selected City:"/>
+                <h:outputText id="textOut" value="#{autoCompleteEntryMatchBean.selectedText}"
+                              style="font-weight: bold;"/>
             </h:panelGrid>
-            <h:commandButton value="Submit" actionListener="#{autoCompleteEntryMatchBean.submit}"/>
         </h:form>
     </ui:define>
 </ui:composition>

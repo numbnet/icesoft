@@ -34,6 +34,27 @@
 
     <ui:define name="example">
         <h:form id="inputForm">
+            <h:panelGrid columns="1" width="100%">
+                <ace:autoCompleteEntry id="autoCompleteEntryLazy"
+                                       value="#{autoCompleteEntryLazyBean.selectedText}"
+                                       actionListener="#{autoCompleteEntryLazyBean.submitText}"
+                                       rows="10" width="300"
+                                       filterMatchMode="none"
+                                       listVar="city"
+                                       listValue="#{autoCompleteEntryLazyBean.cities}"
+                                       filterBy="#{city.name}"
+                                       valueChangeListener="#{autoCompleteEntryLazyBean.valueChangeEventHandler}"
+                                       label="Cities of the World:"
+                                       labelPosition="left">
+                     <f:facet name="row">
+                        <h:panelGrid columns="2" width="100%" columnClasses="col50,col25">
+                            <h:outputText value="#{city.name}" />
+                            <h:outputText value="#{city.country}" />
+                        </h:panelGrid>
+                     </f:facet>
+                </ace:autoCompleteEntry>
+            </h:panelGrid>
+            
             <h:panelGrid columns="2">
                 <h:outputLabel for="cityOut" value="City:"/>
                 <h:outputText id="cityOut" value="#{autoCompleteEntryLazyBean.selectedCity.name} #{autoCompleteEntryLazyBean.selectedCity.country}"/>
@@ -47,25 +68,6 @@
                 <h:outputLabel for="altOut" value="Altitude:"/>
                 <h:outputText id="altOut" value="#{autoCompleteEntryLazyBean.selectedCity.altitude}"/>
             </h:panelGrid>
-            <br />
-            <ace:autoCompleteEntry id="autoCompleteEntryLazy"
-                                   value="#{autoCompleteEntryLazyBean.selectedText}"
-                                   actionListener="#{autoCompleteEntryLazyBean.submitText}"
-                                   rows="10" width="300"
-                                   filterMatchMode="none"
-                                   listVar="city"
-                                   listValue="#{autoCompleteEntryLazyBean.cities}"
-                                   filterBy="#{city.name}"
-                                   valueChangeListener="#{autoCompleteEntryLazyBean.valueChangeEventHandler}"
-                                   label="Lazily Filtered City List:"
-                                   labelPosition="left">
-                 <f:facet name="row">
-                    <h:panelGrid columns="2" width="100%" columnClasses="col50,col25">
-                        <h:outputText value="#{city.name}" />
-                        <h:outputText value="#{city.country}" />
-                    </h:panelGrid>
-                 </f:facet>
-            </ace:autoCompleteEntry>
         </h:form>
     </ui:define>
 </ui:composition>

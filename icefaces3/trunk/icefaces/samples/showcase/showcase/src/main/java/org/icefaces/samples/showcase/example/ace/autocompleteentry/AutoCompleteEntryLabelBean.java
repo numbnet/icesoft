@@ -18,10 +18,12 @@ package org.icefaces.samples.showcase.example.ace.autocompleteentry;
 
 import org.icefaces.samples.showcase.metadata.annotation.*;
 import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
+import org.icefaces.samples.showcase.util.PositionBean;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
+import javax.faces.event.ValueChangeEvent;
 import java.io.Serializable;
 
 @ComponentExample(
@@ -48,13 +50,18 @@ import java.io.Serializable;
 public class AutoCompleteEntryLabelBean extends ComponentExampleImpl<AutoCompleteEntryLabelBean> implements Serializable
 {
     public static final String BEAN_NAME = "autoCompleteEntryLabelBean";
-    
-    private String labelText = "City List:";
+
+    private String selectedText;    
+    private String labelText = "Cities of the World:";
     private String labelPosition = "left";
 
     public AutoCompleteEntryLabelBean() 
     {
         super(AutoCompleteEntryLabelBean.class);
+    }
+    
+    public String getSelectedText() {
+        return selectedText;
     }
     
     public String getLabelText() {
@@ -63,6 +70,10 @@ public class AutoCompleteEntryLabelBean extends ComponentExampleImpl<AutoComplet
     
     public String getLabelPosition() {
         return labelPosition;
+    }
+    
+    public void setSelectedText(String selectedText) {
+        this.selectedText = selectedText;
     }
     
     public void setLabelText(String labelText) {
@@ -76,5 +87,12 @@ public class AutoCompleteEntryLabelBean extends ComponentExampleImpl<AutoComplet
     @PostConstruct
     public void initMetaData() {
         super.initMetaData();
+    }
+    
+    public void positionChanged(ValueChangeEvent event) {
+        // Reset our date if the user selected inField, so that we can see the label properly
+        if (PositionBean.POS_INFIELD.equals(event.getNewValue().toString())) {
+            setSelectedText(null);
+        }
     }
 }

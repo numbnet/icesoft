@@ -36,19 +36,18 @@
         
         <h:form id="inputForm">
             <h:panelGrid columns="2">
-                <h:outputLabel for="textOut" value="Selected City:"/>
-                <h:outputText id="textOut" value="#{autoCompleteEntrySelectBean.selectedText}"
-                              style="font-weight: bold;"/>
-            
-                <h:outputLabel for="autoComplete" value="Autocomplete City List:"/>
+                <h:outputLabel for="autoComplete" value="Cities of the World:"/>
                 <ace:autoCompleteEntry id="autoComplete"
-                                       value="#{autoCompleteEntrySelectBean.typedText}"
+                                       value="#{autoCompleteEntrySelectBean.selectedText}"
                                        rows="10" width="300"
                                        filterMatchMode="">
                     <f:selectItems value="#{autoCompleteEntryBean.cities}"/>
                 </ace:autoCompleteEntry>
+                
+                <h:outputLabel for="textOut" value="Selected City:"/>
+                <h:outputText id="textOut" value="#{autoCompleteEntrySelectBean.selectedText}"
+                              style="font-weight: bold;"/>
             </h:panelGrid>
-            <h:commandButton value="Submit" actionListener="#{autoCompleteEntrySelectBean.submit}"/>
         </h:form>
     </ui:define>
 </ui:composition>

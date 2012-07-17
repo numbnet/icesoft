@@ -50,23 +50,14 @@ public class AutoCompleteEntrySelectBean extends ComponentExampleImpl<AutoComple
 {
     public static final String BEAN_NAME = "autoCompleteEntrySelectBean";
     
-    private String typedText;
     private String selectedText;
     
     public AutoCompleteEntrySelectBean() { 
         super(AutoCompleteEntrySelectBean.class);
     }
     
-    public String getTypedText() {
-        return typedText;
-    }
-    
     public String getSelectedText() {
         return selectedText;
-    }
-    
-    public void setTypedText(String typedText) {
-        this.typedText = typedText;
     }
     
     public void setSelectedText(String selectedText) {
@@ -76,9 +67,5 @@ public class AutoCompleteEntrySelectBean extends ComponentExampleImpl<AutoComple
     @PostConstruct
     public void initMetaData() {
         super.initMetaData();
-    }
-    
-    public void submit(ActionEvent event) {
-        selectedText = new String(typedText);
     }
 }
