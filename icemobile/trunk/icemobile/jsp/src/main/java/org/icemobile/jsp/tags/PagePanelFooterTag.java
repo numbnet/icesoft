@@ -20,7 +20,6 @@ public class PagePanelFooterTag extends TagSupport {
         Writer out = pageContext.getOut();
 
         StringBuilder tag = new StringBuilder(TagUtil.DIV_TAG);
-        tag.append(" id=\"").append(getId()).append("_pgPnlFtr\"");
         tag.append(" class=\"").append(FOOTER_CLASS).append("\"");
         tag.append(">");
 
@@ -42,15 +41,5 @@ public class PagePanelFooterTag extends TagSupport {
             LOG.severe("IOException closing PagePanelFooter: " + ioe);
         }
         return EVAL_PAGE;
-    }
-
-    private String id;
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 }

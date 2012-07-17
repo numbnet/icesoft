@@ -24,22 +24,21 @@ public class PagePanelBodyTag extends TagSupport {
         Writer out = pageContext.getOut();
 
         StringBuilder tag = new StringBuilder(TagUtil.DIV_TAG);
-        tag.append(" id=\"").append(getId()).append("_pgPnlBdy\"");
-
-        StringBuilder styling = new StringBuilder(BODY_CLASS);
+        tag.append(" class=\"").append(BODY_CLASS);
         if (noHeader) {
-            styling.append(" ").append(BODY_NO_HEADER_CLASS);
+            tag.append(" ").append(BODY_NO_HEADER_CLASS);
         }
         if (noFooter) {
-            styling.append(" ").append(BODY_NO_FOOTER_CLASS);
+            tag.append(" ").append(BODY_NO_FOOTER_CLASS);
         }
-        tag.append(" class=\"").append(styling.toString()).append("\"");
+        tag.append("\"");
         tag.append(">");
+        tag.append(TagUtil.DIV_TAG).append(">");
 
         try {
             out.write(tag.toString());
         } catch (IOException ioe) {
-            LOG.severe("IOException writing PagePanelHeader: " + ioe);
+            LOG.severe("IOException writing PagePanelBody: " + ioe);
         }
         return EVAL_BODY_INCLUDE;
     }
@@ -50,24 +49,15 @@ public class PagePanelBodyTag extends TagSupport {
         Writer out = pageContext.getOut();
         try {
             out.write(TagUtil.DIV_TAG_END);
+            out.write(TagUtil.DIV_TAG_END);
         } catch (IOException ioe) {
-            LOG.severe("IOException closing PagePanelHeader: " + ioe);
+            LOG.severe("IOException closing PagePanelBody: " + ioe);
         }
         return EVAL_PAGE;
     }
 
-    private String id;
     private boolean noHeader;
     private boolean noFooter;
-
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
 
     public boolean isNoHeader() {
         return noHeader;
