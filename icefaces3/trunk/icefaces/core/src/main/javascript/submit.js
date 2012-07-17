@@ -130,11 +130,16 @@ var singleSubmit;
                     curry(append, onServerErrorListeners)
                 );
             }
+            function provideSourceElement(f) {
+                return function(ajaxEvent) {
+                    f(ajaxEvent, element);
+                }
+            }
             var options = {
                 execute: execute,
                 render: render,
-                onevent: filterICEfacesEvents(submitEventBroadcaster(onBeforeSubmitListeners, onBeforeUpdateListeners, onAfterUpdateListeners)),
-                onerror: filterICEfacesEvents(submitErrorBroadcaster(onNetworkErrorListeners, onServerErrorListeners)),
+                onevent: provideSourceElement(submitEventBroadcaster(onBeforeSubmitListeners, onBeforeUpdateListeners, onAfterUpdateListeners)),
+                onerror: provideSourceElement(submitErrorBroadcaster(onNetworkErrorListeners, onServerErrorListeners)),
                 'ice.window': namespace.window,
                 'ice.view': viewID,
                 'ice.focus': currentFocus
@@ -281,11 +286,16 @@ var singleSubmit;
                 );
             }
             var viewID = viewIDOf(element);
+            function provideSourceElement(f) {
+                return function(ajaxEvent) {
+                    f(ajaxEvent, element);
+                }
+            }
             var options = {
                 execute: execute,
                 render: render,
-                onevent: filterICEfacesEvents(submitEventBroadcaster(onBeforeSubmitListeners, onBeforeUpdateListeners, onAfterUpdateListeners)),
-                onerror: filterICEfacesEvents(submitErrorBroadcaster(onNetworkErrorListeners, onServerErrorListeners)),
+                onevent: provideSourceElement(submitEventBroadcaster(onBeforeSubmitListeners, onBeforeUpdateListeners, onAfterUpdateListeners)),
+                onerror: provideSourceElement(submitErrorBroadcaster(onNetworkErrorListeners, onServerErrorListeners)),
                 'ice.window': namespace.window,
                 'ice.view': viewID,
                 'ice.focus': currentFocus};
