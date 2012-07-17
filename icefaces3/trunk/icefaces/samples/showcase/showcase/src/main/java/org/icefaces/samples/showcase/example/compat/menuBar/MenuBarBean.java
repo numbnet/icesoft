@@ -61,8 +61,6 @@ import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
                     exampleBeanName = MenuBarOrientation.BEAN_NAME),
             @MenuLink(title = "menu.compat.menuBar.subMenu.click",
                     exampleBeanName = MenuBarClick.BEAN_NAME),
-            @MenuLink(title = "menu.compat.menuBar.subMenu.keyboard",
-                    exampleBeanName = MenuBarKeyboard.BEAN_NAME),
             @MenuLink(title = "menu.compat.menuBar.subMenu.icons",
                     exampleBeanName = MenuBarIcons.BEAN_NAME),
             @MenuLink(title = "menu.compat.menuBar.subMenu.separator",
