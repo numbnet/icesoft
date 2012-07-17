@@ -79,6 +79,10 @@ ice.ace.Dialog = function(id, cfg) {
     this.jq.bind('dialogclose', function(event, ui) {_self.onHide(event, ui);});
     this.jq.bind('dialogopen', function(event, ui) {_self.onShow(event, ui);});
 
+	this.jq.parent().find('.ui-dialog-titlebar-close').bind('click', function(event, ui) {
+		_self.ajaxHide();
+	});
+
     //Hide close icon if dialog is not closable
     if(closable == false) {
         this.jq.parent().find('.ui-dialog-titlebar-close').hide();
@@ -110,6 +114,7 @@ ice.ace.Dialog.prototype.show = function() {
 
 ice.ace.Dialog.prototype.hide = function() {
     this.jq.dialog('close');
+	this.ajaxHide();
 };
 
 /**
@@ -134,7 +139,9 @@ ice.ace.Dialog.prototype.onHide = function(event, ui) {
     if(this.cfg.onHide) {
         this.cfg.onHide.call(this, event, ui);
     }
+};
 
+ice.ace.Dialog.prototype.ajaxHide = function() {
     if(this.cfg.behaviors) {
         var closeBehavior = this.cfg.behaviors['close'];
 
