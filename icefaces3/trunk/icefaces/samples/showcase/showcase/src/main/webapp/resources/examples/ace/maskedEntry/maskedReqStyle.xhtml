@@ -34,24 +34,39 @@
 
     <ui:define name="example">
         <h:form id="form">
-            <ice:outputStyle href="./resources/css/indicator_override-#{maskedReqStyleBean.reqColor}.css"
+            <ice:outputStyle href="./resources/css/indicator_override_req-#{maskedReqStyleBean.reqColor}.css"
                              rendered="#{maskedReqStyleBean.reqColor ne 'default'}"/>
+            <ice:outputStyle href="./resources/css/indicator_override_opt-#{maskedReqStyleBean.optColor}.css"
+                             rendered="#{maskedReqStyleBean.optColor ne 'default'}"/>
         
             <icecore:singleSubmit/>
-            <ace:panel id="labelCustomizing" header="Color Customization">
-                <h:outputLabel for="colorIn" value="Indicator Color Style:"/>
-                <h:selectOneMenu id="colorIn" value="#{maskedReqStyleBean.reqColor}"
-                                 style="width: 150px;">
-                    <f:selectItem itemValue="default" itemLabel="Default"/>
-                    <f:selectItem itemValue="blue" itemLabel="Blue"/>
-                    <f:selectItem itemValue="green" itemLabel="Green"/>
-                    <f:selectItem itemValue="red" itemLabel="Red"/>
-                </h:selectOneMenu>
-                <h:message for="colorIn"/>
+            <ace:panel header="Color Customization">
+                <h:panelGrid width="100%" columns="3" columnClasses="col25,col25,col50"
+                             cellpadding="6" cellspacing="6">
+                        <h:outputLabel for="reqColor" value="Required Color Style:"/>
+                        <h:selectOneMenu id="reqColor" value="#{maskedReqStyleBean.reqColor}"
+                                         style="width: 150px;">
+                            <f:selectItem itemValue="default" itemLabel="Default"/>
+                            <f:selectItem itemValue="blue" itemLabel="Blue"/>
+                            <f:selectItem itemValue="green" itemLabel="Green"/>
+                            <f:selectItem itemValue="red" itemLabel="Red"/>
+                        </h:selectOneMenu>
+                        <h:message for="reqColor"/>
+                    
+                        <h:outputLabel for="optColor" value="Optional Color Style:"/>
+                        <h:selectOneMenu id="optColor" value="#{maskedReqStyleBean.optColor}"
+                                         style="width: 150px;">
+                            <f:selectItem itemValue="default" itemLabel="Default"/>
+                            <f:selectItem itemValue="blue" itemLabel="Blue"/>
+                            <f:selectItem itemValue="green" itemLabel="Green"/>
+                            <f:selectItem itemValue="red" itemLabel="Red"/>
+                        </h:selectOneMenu>
+                        <h:message for="optColor"/>
+                </h:panelGrid>
             </ace:panel>
         
             <ace:panel id="personalInfoInputPanel" header="Personal Info">
-                <h:panelGrid id="inputGrid" columns="2" width="100%">
+                <h:panelGrid id="inputGrid" columns="2" width="100%" cellpadding="6" cellspacing="6">
                     <h:outputLabel id="workPhoneLabel" for="workPhoneInput" value="Work Phone:"/>
                     <ace:maskedEntry id="workPhoneInput" value="#{maskedEntryBean.workPhone}" mask="(999) 999-9999? x99999"
                                      required="true" requiredIndicator="(Required)"
@@ -69,9 +84,10 @@
             </ace:panel>
             
             <ace:panel id="personalInfoOutputPanel" header="Entered Data">
-                <h:panelGrid id="outputGrid" width="100%" style="text-align: left;">
-                    <h:outputText id="workPhoneOutput" value="Work #: #{maskedEntryBean.workPhone}"/>
-                    <h:outputText id="mobilePhoneOutput" value="Mobile #: #{maskedEntryBean.mobilePhone}"/>
+                <h:panelGrid id="outputGrid" width="100%" style="text-align: left;"
+                             cellpadding="6" cellspacing="6">
+                    <h:outputText id="workPhoneOutput" value="Work Phone: #{maskedEntryBean.workPhone}"/>
+                    <h:outputText id="mobilePhoneOutput" value="Mobile Phone: #{maskedEntryBean.mobilePhone}"/>
                 </h:panelGrid>
             </ace:panel>
         </h:form>

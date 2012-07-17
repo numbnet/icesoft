@@ -34,20 +34,35 @@
 
     <ui:define name="example">
         <h:form id="textEntryForm">
-            <ice:outputStyle href="./resources/css/indicator_override-#{textEntryReqStyleBean.reqColor}.css"
-                             rendered="#{maskedReqStyleBean.reqColor ne 'default'}"/>
+            <ice:outputStyle href="./resources/css/indicator_override_req-#{textEntryReqStyleBean.reqColor}.css"
+                             rendered="#{textEntryReqStyleBean.reqColor ne 'default'}"/>
+            <ice:outputStyle href="./resources/css/indicator_override_opt-#{textEntryReqStyleBean.optColor}.css"
+                             rendered="#{textEntryReqStyleBean.optColor ne 'default'}"/>
         
             <icecore:singleSubmit/>
-            <ace:panel id="labelCustomizing" header="Color Customization">
-                <h:outputLabel for="colorIn" value="Indicator Color Style:"/>
-                <h:selectOneMenu id="colorIn" value="#{textEntryReqStyleBean.reqColor}"
-                                 style="width: 150px;">
-                    <f:selectItem itemValue="default" itemLabel="Default"/>
-                    <f:selectItem itemValue="blue" itemLabel="Blue"/>
-                    <f:selectItem itemValue="green" itemLabel="Green"/>
-                    <f:selectItem itemValue="red" itemLabel="Red"/>
-                </h:selectOneMenu>
-                <h:message for="colorIn"/>
+            <ace:panel header="Color Customization">
+                <h:panelGrid width="100%" columns="3" columnClasses="col25,col25,col50"
+                             cellpadding="6" cellspacing="6">
+                        <h:outputLabel for="reqColor" value="Required Color Style:"/>
+                        <h:selectOneMenu id="reqColor" value="#{textEntryReqStyleBean.reqColor}"
+                                         style="width: 150px;">
+                            <f:selectItem itemValue="default" itemLabel="Default"/>
+                            <f:selectItem itemValue="blue" itemLabel="Blue"/>
+                            <f:selectItem itemValue="green" itemLabel="Green"/>
+                            <f:selectItem itemValue="red" itemLabel="Red"/>
+                        </h:selectOneMenu>
+                        <h:message for="reqColor"/>
+                    
+                        <h:outputLabel for="optColor" value="Optional Color Style:"/>
+                        <h:selectOneMenu id="optColor" value="#{textEntryReqStyleBean.optColor}"
+                                         style="width: 150px;">
+                            <f:selectItem itemValue="default" itemLabel="Default"/>
+                            <f:selectItem itemValue="blue" itemLabel="Blue"/>
+                            <f:selectItem itemValue="green" itemLabel="Green"/>
+                            <f:selectItem itemValue="red" itemLabel="Red"/>
+                        </h:selectOneMenu>
+                        <h:message for="optColor"/>
+                </h:panelGrid>
             </ace:panel>
         
             <ace:panel id="personalInfoInputPanel" header="Personal Info">
