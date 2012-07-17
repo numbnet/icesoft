@@ -18,7 +18,9 @@ public class PagePanelTag extends TagSupport {
         Writer out = pageContext.getOut();
 
         StringBuilder tag = new StringBuilder(TagUtil.DIV_TAG);
-        tag.append(" id=\"").append(getId()).append("_pgPnl\"");
+        if (id != null && !"".equals(id)) {
+            tag.append(" id=\"").append(getId()).append("_pgPnl\"");
+        }
         tag.append(">");
 
         try {
