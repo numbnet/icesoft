@@ -220,13 +220,21 @@
                     return false;
                 }
 
-                var formData = new FormData(this);
+                var formData;
+                var mimeType = false;
+                if ((undefined !== window.FormData) &&
+                    ("BlackBerry" !== window.clientInformation.platform) )  {
+                    formData = new FormData(this);
+                } else {
+                    formData = $(theForm).serialize();
+                    mimeType = "application/x-www-form-urlencoded";
+                }
 
                 $.ajax({
                     url:$(this).attr("action"),
                     data:formData,
                     cache:false,
-                    contentType:false,
+                    contentType:mimeType,
                     processData:false,
                     type:'POST',
                     success:function (html) {
