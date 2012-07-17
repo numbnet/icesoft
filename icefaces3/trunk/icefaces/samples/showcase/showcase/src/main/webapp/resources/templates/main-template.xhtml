@@ -35,30 +35,30 @@
     <h:outputStylesheet library="css" name="override_styles.css" target="head"/>
     <h:outputStylesheet library="css" name="showcase_styles.css" target="head"/>
     <f:view contentType="text/html">
-        <div class="header">
+        <h:panelGroup styleClass="header" layout="block">
             <ui:insert name="suite-select-menu"/>
-        </div>
+        </h:panelGroup>
 
-        <div class="container">
-            <div class="mid full-width">
+        <h:panelGroup styleClass="container" layout="block">
+            <h:panelGroup layout="block" styleClass="mid full-width">
                     <h:panelGroup styleClass="menu">
-                        <div class="menuContainer">
+                        <h:panelGroup layout="block" styleClass="menuContainer">
                             <ui:insert name="suite-menu"/>
-                        </div>
+                        </h:panelGroup>
                     </h:panelGroup>
                     <h:panelGroup styleClass="primary">
                         <!-- TODO: Implement bread crumbs-->
-                        <div class="breadCrumbs">
-                        </div>
+                        <h:panelGroup layout="block" styleClass="breadCrumbs">
+                        </h:panelGroup>
                         <!-- todo implement theme selection, going to be tricky... -->
-                        <div class="themeSelect">
-                        </div>
+                        <h:panelGroup layout="block" styleClass="themeSelect">
+                        </h:panelGroup>
 
                         <ui:insert name="component-example"/>
                     </h:panelGroup>
-            </div>
+            </h:panelGroup>
 
-            <div class="footer">
+            <h:panelGroup layout="block" styleClass="footer">
                 <!--
                 <ul class="footer-nav">
                         <li><a>about</a></li>
@@ -67,8 +67,8 @@
                 </ul>
                 -->
                 <p>&#xA9; 2012 ICEsoft Technologies Inc.</p>
-            </div>
-        </div>
+            </h:panelGroup>
+        </h:panelGroup>
     </f:view>
 </h:body>
 </html>
