@@ -20,7 +20,6 @@ public class PagePanelHeaderTag extends TagSupport {
         Writer out = pageContext.getOut();
 
         StringBuilder tag = new StringBuilder(TagUtil.DIV_TAG);
-        tag.append(" id=\"").append(getId()).append("_pgPnlHdr\"");
         tag.append(" class=\"").append(HEADER_CLASS).append("\"");
         tag.append(">");
 
@@ -42,15 +41,5 @@ public class PagePanelHeaderTag extends TagSupport {
             LOG.severe("IOException closing PagePanelHeader: " + ioe);
         }
         return EVAL_PAGE;
-    }
-
-    private String id;
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 }
