@@ -44,7 +44,7 @@ public class DataExporter extends DataExporterBase {
 				
 				int[] excludedColumnIndexes = resolveExcludedColumnIndexes(getExcludeColumns());
 				DataTable table = (DataTable) targetComponent;
-				String path = exporter.export(facesContext, table, getFileName(), isPageOnly(), excludedColumnIndexes, getEncoding(), getPreProcessor(), getPostProcessor(), isIncludeHeaders(), isIncludeFooters(), isSelectedRowsOnly());
+				String path = exporter.export(facesContext, table, getFileName(), table.isLazy() || isPageOnly(), excludedColumnIndexes, getEncoding(), getPreProcessor(), getPostProcessor(), isIncludeHeaders(), isIncludeFooters(), isSelectedRowsOnly());
 				this.path = path;
 			} catch (IOException e) { 
 				throw new FacesException(e); 
