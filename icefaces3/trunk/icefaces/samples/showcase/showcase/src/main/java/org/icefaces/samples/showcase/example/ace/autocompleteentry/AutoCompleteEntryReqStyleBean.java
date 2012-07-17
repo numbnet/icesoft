@@ -50,7 +50,8 @@ public class AutoCompleteEntryReqStyleBean extends ComponentExampleImpl<AutoComp
     public static final String BEAN_NAME = "autoCompleteEntryReqStyleBean";
     
     private String selectedText1, selectedText2;
-    private String reqColor = "green";
+    private String reqColor = "red";
+    private String optColor = "green";
 
     public AutoCompleteEntryReqStyleBean() 
     {
@@ -59,11 +60,25 @@ public class AutoCompleteEntryReqStyleBean extends ComponentExampleImpl<AutoComp
     
     public String getSelectedText1() { return selectedText1; }
     public String getSelectedText2() { return selectedText2; }
-    public String getReqColor() { return reqColor; }
+    
+    public String getReqColor() {
+        return reqColor;
+    }
+    
+    public String getOptColor() {
+        return optColor;
+    }
     
     public void setSelectedText1(String selectedText1) { this.selectedText1 = selectedText1; }
     public void setSelectedText2(String selectedText2) { this.selectedText2 = selectedText2; }
-    public void setReqColor(String reqColor) { this.reqColor = reqColor; }
+    
+    public void setReqColor(String reqColor) {
+        this.reqColor = reqColor;
+    }
+    
+    public void setOptColor(String optColor) {
+        this.optColor = optColor;
+    }
     
     @PostConstruct
     public void initMetaData() {
