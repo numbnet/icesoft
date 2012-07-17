@@ -65,6 +65,7 @@ import javax.faces.view.Location;
 import java.io.Serializable;
 import java.sql.ResultSet;
 import java.util.*;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class DataTable extends DataTableBase implements Serializable {
@@ -74,7 +75,7 @@ public class DataTable extends DataTableBase implements Serializable {
     // Cached results
     private Map<String, Column> filterMap;
     private TableConfigPanel panel;
-    private RowStateMap stateMap;
+
     // Cache model instance as long as setRowIndex(-1) is not called, this is a Mojarra derived behaviour
     private DataModel model = null;
     // Cache filteredData longer than model as model regen may be attempted during iterative case
@@ -127,22 +128,14 @@ public class DataTable extends DataTableBase implements Serializable {
 
     @Override
     public RowStateMap getStateMap() {
-        if (stateMap != null) return stateMap;
-
-        stateMap = super.getStateMap();
+        RowStateMap stateMap = super.getStateMap();
         if (stateMap == null) {
+            log.log(Level.FINE, "ace:dataTable - " + getClientId(FacesContext.getCurrentInstance()) + " : Generating new state map.");
             stateMap = new RowStateMap();
             super.setStateMap(stateMap);
         }
 
         return stateMap;
-    }
-
-    // Allow renderer to void state map between iterations to avoid
-    // sharing stateMap due to caching
-    // (caching is necessary to avoid attempting to load a stateMap when the clientId contains a row index)
-    protected void clearCachedStateMap() {
-        stateMap = null;
     }
 
     @Override
@@ -386,14 +379,19 @@ public class DataTable extends DataTableBase implements Serializable {
         popComponentFromEL(context);
     }
 
+
     @Override
     public void setRowIndex(int index) {
         Map<String, Object> requestMap = FacesContext.getCurrentInstance().getExternalContext().getRequestMap();
 
+        // Do loading while index is unset to ensure correct state loaded
+        super.setRowIndex(-1);
+        RowStateMap stateMap = getStateMap();
+        String rowStateVar = getRowStateVar();
         super.setRowIndex(index);
 
         if (index > -1 && isRowAvailable()) {
-            requestMap.put(getRowStateVar(), getStateMap().get(getRowData()));
+            requestMap.put(rowStateVar, stateMap.get(getRowData()));
         }
     }
 
@@ -1182,12 +1180,14 @@ public class DataTable extends DataTableBase implements Serializable {
                 return null;
 
             List filteredData = new ArrayList();
+            setRowIndex(-1);
             setFilteredData(null);
             setModel(null);
 
             DataModel model = getDataModel();
             String rowVar = getVar();
             String rowStateVar = getRowStateVar();
+            RowStateMap stateMap = getStateMap();
 
             // If the global predicate is set, require one column must meet the criteria of the global predicate
             if (globalPredicates.size() > 0) columnPredicates.add(AnyPredicate.getInstance(globalPredicates));
@@ -1198,7 +1198,7 @@ public class DataTable extends DataTableBase implements Serializable {
             setRowIndex(index);
             while (model.isRowAvailable()) {
                 Object rowData = model.getRowData();
-                RowState rowState = getStateMap().get(rowData);
+                RowState rowState = stateMap.get(rowData);
 
                 if (rowVar != null) context.getExternalContext().getRequestMap().put(rowVar, rowData);
                 context.getExternalContext().getRequestMap().put(rowStateVar, rowState);
