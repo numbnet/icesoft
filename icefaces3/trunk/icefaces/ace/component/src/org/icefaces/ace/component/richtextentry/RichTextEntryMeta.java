@@ -18,7 +18,6 @@ package org.icefaces.ace.component.richtextentry;
 
 import org.icefaces.ace.meta.annotation.Component;
 import org.icefaces.ace.meta.annotation.Property;
-import org.icefaces.ace.meta.annotation.Field;
 import org.icefaces.ace.meta.baseMeta.UIInputMeta;
 
 import javax.faces.application.ResourceDependencies;
@@ -83,10 +82,4 @@ public class RichTextEntryMeta extends UIInputMeta {
 	
     @Property(tlddoc = "By default the data of the editor will only be saved when its 'Save' button is clicked. Any other submit request will not save its data. In order to save its data on any submit request like inputText does, this attribute can be set to true.", defaultValue="false")
     private boolean saveOnSubmit;
-	
-    @Field(javadoc="Keeps track of previous values to detect when value changes programmatically.")
-    private Object oldValue;
-	
-    @Field(javadoc="Keeps track of programmatic changes.", defaultValue="0")
-    private Integer counter;
 }

@@ -76,7 +76,7 @@ ice.ace.richtextentry.getToolbar = function(toolbar) {
 }
 
 
-ice.ace.richtextentry.renderEditor = function(editor, defaultToolbar, lang, _skin, _height, _width, _customConfig, saveOnSubmit, behaviors) {
+ice.ace.richtextentry.renderEditor = function(editor, defaultToolbar, lang, _skin, _height, _width, _customConfig, saveOnSubmit, hashCode, behaviors) {
     CKEDITOR.config.defaultLanguage = lang;
     if (_skin == 'default' || _skin == 'silver') {
         _skin = 'v2'
@@ -117,10 +117,4 @@ ice.ace.richtextentry.renderEditor = function(editor, defaultToolbar, lang, _ski
     } catch(e) {
         alert(e);
     }
-}
-
-function updateEditorACE(editor, count) {
-	if (CKEDITOR.instances[editor]) {
-		CKEDITOR.instances[editor].setData(document.getElementById(editor).value);
-	}
 }
