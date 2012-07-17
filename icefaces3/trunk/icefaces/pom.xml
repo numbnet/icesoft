@@ -107,7 +107,7 @@
         <!-- The portlet bridge implmentation to use.
              Default is portletfaces but liferayfaces can also be specified. -->
         <portletfaces.version>2.0.2-ice-7875</portletfaces.version>
-        <liferayfaces.version>3.1.0-RC1</liferayfaces.version>
+        <liferayfaces.version>3.1.0-rc2</liferayfaces.version>
 
         <!-- When building samples for Pluto Portal -->
         <pluto.version>2.0.3</pluto.version>
