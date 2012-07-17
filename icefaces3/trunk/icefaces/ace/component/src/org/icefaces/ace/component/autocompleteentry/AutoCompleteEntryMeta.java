@@ -71,14 +71,8 @@ public class AutoCompleteEntryMeta extends HtmlInputTextMeta {
     @Property(tlddoc = "The width of the text input field, in pixels.", defaultValue="150")
     private int width;
 	
-    @Property(tlddoc = "The SelectItem or arbitrary data object that is currently selected, if any.")
-    private Object selectedItem;
-	
     @Property(tlddoc = "When rendering via a facet, this attribute specifies the list of data objects that contains all possible options.")
     private List listValue;
-	
-    @Property(tlddoc = "", defaultValue="")
-    private String options;
 	
 	@Property(tlddoc="Defines the method of filter comparison used, default is \"startsWith\". " +
             "Types available include: \"contains\", \"exact\", \"startsWith\", \"endsWith\" and \"none\". " +
