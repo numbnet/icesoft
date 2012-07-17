@@ -1,6 +1,5 @@
 package org.icemobile.jsp.tags;
 
-import javax.servlet.ServletRequest;
 import javax.servlet.jsp.PageContext;
 import javax.servlet.jsp.tagext.SimpleTagSupport;
 import java.io.IOException;
@@ -60,8 +59,9 @@ public class DateSpinnerTag extends SimpleTagSupport {
 
         PageContext pageContext = (PageContext) getJspContext();
         Writer out = pageContext.getOut();
-        ServletRequest sr = pageContext.getRequest();
-        if (tu == null) tu = new TagUtil();
+        if (tu == null) {
+            tu = new TagUtil();
+        }
         if (useNative && tu.useNative(pageContext)) {
             out.write(tu.INPUT_TAG);
             tu.writeAttribute(out, "type", "date");
@@ -100,12 +100,13 @@ public class DateSpinnerTag extends SimpleTagSupport {
 
     }
 
-    protected void encodeMarkup(PageContext context, Writer writer, String value)
-            throws IOException {
+    protected void encodeMarkup(PageContext context, Writer writer,
+                                String value)
+        throws IOException {
 
         // check for a touch enable device and setup events accordingly
         String eventStr = tu.isTouchEventEnabled(context) ?
-                TOUCH_START_EVENT : CLICK_EVENT;
+            TOUCH_START_EVENT : CLICK_EVENT;
         //prep for ajax submit
         StringBuilder builder = new StringBuilder(255);
         StringBuilder builder2 = new StringBuilder(255);
@@ -264,7 +265,7 @@ public class DateSpinnerTag extends SimpleTagSupport {
         writer.write(">" + tu.SCRIPT_TAG);
         tu.writeAttribute(writer, "text", "text/javascript");
         writer.write(">ice.mobi.datespinner.init('" + id + "'," + yearInt + ","
-                + monthInt + "," + dayInt + ",'" + pattern + "');");
+                         + monthInt + "," + dayInt + ",'" + pattern + "');");
         writer.write(tu.SCRIPT_TAG_END);
         writer.write(tu.SPAN_TAG_END);
     }
