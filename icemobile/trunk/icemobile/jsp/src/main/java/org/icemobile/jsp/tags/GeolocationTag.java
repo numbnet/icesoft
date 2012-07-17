@@ -46,12 +46,12 @@ public class GeolocationTag extends SimpleTagSupport {
         }
         out.write(">");
         out.write("<input type='hidden' ");
-	out.write(" id='" + getId() + "_locHidden'");
 
-        if (name != null && !"".equals(name)) {
-            out.write(" name='" + getName() + "' ");
+        if (id != null && !"".equals(id)) {
+            out.write(" id='" + getId() + "_locHidden'");
+            out.write(" name='" + getId() + "' ");
+            out.write(" value='' ");
         }
-	//out.write(" value='51.1,-114.1,,dir' ");
 
         if (disabled) {
             out.write("disabled='true' ");
