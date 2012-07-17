@@ -24,7 +24,7 @@ public class FlipSwitchTag extends SimpleTagSupport {
         PageContext pageContext = (PageContext) getJspContext();
         Writer out = pageContext.getOut();
 
-        out.write("<a id=\"" + getId() + "\" name=\"" + getId() + "\"");
+        out.write("<a id=\"" + getId() + "\"");
 
         String styleClass = FLIPSWITCH_OFF_CLASS;
         boolean isChecked = isChecked(getValue());
@@ -44,7 +44,6 @@ public class FlipSwitchTag extends SimpleTagSupport {
         if (!isDisabled() | !isReadOnly()) {
             out.write(" onclick=\"" + builder.toString() + "\"");
         }
-
         out.write(">");
 
         // write the nested child objects containing both on/off labels.
@@ -64,7 +63,6 @@ public class FlipSwitchTag extends SimpleTagSupport {
         out.write("<span class=\"" + FLIPSWITCH_TEXT_CLASS + "\">");
         out.write(getLabelOff());
         out.write("</span>");
-
         out.write("</input>");
         out.write("</a>");
 
