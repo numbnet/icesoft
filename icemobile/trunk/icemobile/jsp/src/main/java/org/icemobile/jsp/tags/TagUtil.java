@@ -198,7 +198,7 @@ public class TagUtil {
     }
 
     public static boolean useNative(PageContext pageContext) {
-        return isIOS5orHigher(pageContext);
+        return isIOS5orHigher(pageContext) || isBlackBerry(pageContext);
     }
 
     public static boolean isIOS5orHigher(PageContext pageContext) {
