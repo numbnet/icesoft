@@ -40,11 +40,6 @@ public class EchoController {
         @ModelAttribute("carouselBean") CarouselBean model) {
     }
 
-    @RequestMapping(value = "/pagePanel")
-    public void doRequest(
-        @ModelAttribute("pagePanelBean") PagePanelBean model) {
-    }
-
     @RequestMapping(value = "/datetime")
     public void doRequest(
         @ModelAttribute("dateTimeSpinnerBean")

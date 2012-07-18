@@ -18,9 +18,16 @@
 
       <form:form id="listform" method="POST" modelAttribute="listBean" style="margin-top:10px;" >
 
+    <mobi:pagePanel>
+        <mobi:pagePanelHeader >
+            PagePanel Custom Header
+        </mobi:pagePanelHeader>
+
+        <mobi:pagePanelBody>
+
         <mobi:fieldSetGroup id="groupOne">
             <mobi:fieldSetRow style="padding-bottom:10px;">
-                The list component with and without insets.
+                The list component with and without insets inside a PagePanel.
             </mobi:fieldSetRow>
         </mobi:fieldSetGroup>
         <p/>
@@ -78,6 +85,14 @@
             </mobi:outputListItem>
            </c:forEach>
         </mobi:outputList>
+
+        </mobi:pagePanelBody>
+
+        <mobi:pagePanelFooter >
+           PagePanel Custom Footer
+        </mobi:pagePanelFooter>
+
+    </mobi:pagePanel>
 
     <h:form>
     </div>
