@@ -16,7 +16,7 @@
 </c:if>
     <div class="panelContent">
 
-		<h2>Panel Popup Example</h2>
+		<h4>Panel Popup Example</h4>
 
 		<form:form id="panelform" method="POST"  modelAttribute="panelPopupBean" cssClass="cleanform">
 	  	  <input type="button" value="Open Popup" onclick="ice.mobi.panelpopup.open('panelConfirmation');" />
@@ -52,8 +52,50 @@
                     onclick="ice.mobi.panelpopup.close('panelConfirmation');" />
                 </mobi:panelPopup>
 
-			<p><button type="submit">Submit</button></p>
+		</form:form>
 
+
+        <h4> PanelPopup example with auto generated close button </h4>
+
+        <form:form id="panelTwoform" method="POST"  modelAttribute="panelPopupBean" cssClass="cleanform">
+	  	  <input type="button" value="Open Popup (with client dismiss)" onclick="ice.mobi.panelpopup.open('panelClient');" />
+
+            <mobi:panelPopup id="panelClient"
+                                name="propertyTwo"
+                                 style="width:300px"
+                                 title="Group of popup items"
+                                 autocenter="true"
+                                 autoCloseButton="true"
+                                 closeButtonLabel="Close"
+                                 visible="false">
+
+                    <mobi:outputList inset="false" id="seconditemList" >
+                        <mobi:outputListItem group="true">
+                            Panel Popup Links (select one)
+                        </mobi:outputListItem>
+                        <mobi:outputListItem>
+                             <span onclick="ice.mobi.panelpopup.close('panelClient');">
+                               System Update </span>
+                        </mobi:outputListItem>
+                        <mobi:outputListItem>
+                             <span onclick="ice.mobi.panelpopup.close('panelClient');">
+                               Status </span>
+                        </mobi:outputListItem>
+                        <mobi:outputListItem>
+                             <span onclick="ice.mobi.panelpopup.close('panelClient');">
+                               Battery Use </span>
+                        </mobi:outputListItem>
+                        <mobi:outputListItem>
+                             <span onclick="ice.mobi.panelpopup.close('panelClient');">
+                               Device Information </span>
+                        </mobi:outputListItem>
+                        <mobi:outputListItem>
+                            <span onclick="ice.mobi.panelpopup.close('panelClient');">
+                                           Device Categories
+                                </span>
+                        </mobi:outputListItem>
+                    </mobi:outputList>
+             </mobi:panelPopup>
 		</form:form>
 
 		<script type="text/javascript">
