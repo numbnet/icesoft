@@ -23,7 +23,6 @@ import java.util.List;
         tlddoc =
         ""
 )
-@MandatoryResourceComponent(tagName="chart", value="org.icefaces.ace.component.chart.Chart")
 @ResourceDependencies({
         @ResourceDependency(library = "icefaces.ace", name = "util/ace-jquery.js"),
         @ResourceDependency(library = "icefaces.ace", name = "chart/ace-chart.js"),

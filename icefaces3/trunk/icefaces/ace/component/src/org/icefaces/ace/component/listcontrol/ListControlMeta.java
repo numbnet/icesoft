@@ -23,7 +23,6 @@ import javax.faces.application.ResourceDependency;
             "Optionally if this component has two nested ace:list children, they will be rendered " +
             "within a styled container, and connected via this control without configuration."
 )
-@MandatoryResourceComponent(tagName="listControl", value="org.icefaces.ace.component.listcontrol.ListControl")
 @ResourceDependencies({
     @ResourceDependency(library="icefaces.ace", name="util/combined.css"),
     @ResourceDependency(library = "icefaces.ace", name = "util/ace-jquery.js"),

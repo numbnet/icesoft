@@ -9,6 +9,7 @@ import org.icefaces.ace.model.chart.ChartSeries;
 import org.icefaces.ace.renderkit.CoreRenderer;
 import org.icefaces.ace.util.HTML;
 import org.icefaces.ace.util.JSONBuilder;
+import org.icefaces.render.MandatoryResourceComponent;
 
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
@@ -19,6 +20,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+@MandatoryResourceComponent(tagName="chart", value="org.icefaces.ace.component.chart.Chart")
 public class ChartRenderer extends CoreRenderer {
     @Override
     public void	decode(FacesContext context, UIComponent component) {

@@ -4,6 +4,7 @@ import org.icefaces.ace.component.list.ACEList;
 import org.icefaces.ace.renderkit.CoreRenderer;
 import org.icefaces.ace.util.HTML;
 import org.icefaces.ace.util.JSONBuilder;
+import org.icefaces.render.MandatoryResourceComponent;
 
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
@@ -14,6 +15,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+@MandatoryResourceComponent(tagName="listControl", value="org.icefaces.ace.component.listcontrol.ListControl")
 public class ListControlRenderer extends CoreRenderer {
     public static final String containerStyleClass = "if-list-nctrls ui-widget";
     public static final String dualListContainerStyleClass = "if-list-dl-cnt ui-widget";

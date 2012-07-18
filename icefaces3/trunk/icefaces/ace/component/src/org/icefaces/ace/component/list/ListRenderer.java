@@ -4,6 +4,7 @@ import org.icefaces.ace.json.JSONException;
 import org.icefaces.ace.renderkit.CoreRenderer;
 import org.icefaces.ace.util.HTML;
 import org.icefaces.ace.util.JSONBuilder;
+import org.icefaces.render.MandatoryResourceComponent;
 
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
@@ -15,6 +16,7 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.Set;
 
+@MandatoryResourceComponent(tagName="list", value="org.icefaces.ace.component.list.ACEList")
 public class ListRenderer extends CoreRenderer {
     public static final String containerStyleClass = "if-list ui-widget ui-widget-content ui-corner-all";
     public static final String controlsContainerStyleClass = "if-list-ctrls";
