@@ -33,13 +33,11 @@
             </mobi:outputListItem>
 
             <mobi:outputListItem>
-                    <h4>ICEsoft Ice Sailer</h4>
-                      <p>Put him on the ice and watch him go!</p>
+                    ICEsoft Ice Sailer
             </mobi:outputListItem>
 
             <mobi:outputListItem>
-                    <h4>ICEsoft Icebreaker</h4>
-                    <p>Used icebreaker with very few dents.</p>
+                    ICEsoft Icebreaker
             </mobi:outputListItem>
 
         </mobi:outputList>
@@ -51,12 +49,10 @@
                 Thumbnail display
             </mobi:outputListItem>
             <mobi:outputListItem>
-                    <h4>ICEsoft Ice Sailer</h4>
-                      <p>Put him on the ice and watch him go!</p>
+                    ICEsoft Ice Sailer
             </mobi:outputListItem>
             <mobi:outputListItem>
-                    <h4>ICEsoft Icebreaker</h4>
-                    <p>Used icebreaker with very few dents.</p>
+                    ICEsoft Icebreaker
             </mobi:outputListItem>
         </mobi:outputList>
 
@@ -64,13 +60,11 @@
 
         <mobi:outputList id="firstList">
             <mobi:outputListItem>
-                    <h4>ICEsoft Ice Sailer</h4>
-                      <p>Put him on the ice and watch him go!</p>
+                    ICEsoft Ice Sailer
             </mobi:outputListItem>
 
             <mobi:outputListItem>
-                    <h4>ICEsoft Icebreaker</h4>
-                    <p>Used icebreaker with very few dents.</p>
+                    ICEsoft Icebreaker
             </mobi:outputListItem>
         </mobi:outputList>
 

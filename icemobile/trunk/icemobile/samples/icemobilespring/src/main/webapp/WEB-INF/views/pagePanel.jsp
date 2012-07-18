@@ -25,24 +25,28 @@
 
         <mobi:pagePanelBody>
 
+        <mobi:fieldSetGroup id="groupOne">
+            <mobi:fieldSetRow style="padding-bottom:10px;">
+                PagePanel component with header and footer.
+            </mobi:fieldSetRow>
+        </mobi:fieldSetGroup>
+
+         <h4>List with inset and Grouping</h4>
+
         <mobi:outputList inset="true" id="firstList">
             <mobi:outputListItem>
-                    <h4>ICEsoft Ice Sailer</h4>
-                      <p>Put him on the ice and watch him go!</p>
+                    ICEsoft Ice Sailer
             </mobi:outputListItem>
 
             <mobi:outputListItem>
-                    <h4>ICEsoft Icebreaker</h4>
-                    <p>Used icebreaker with very few dents.</p>
+                    ICEsoft Icebreaker
             </mobi:outputListItem>
             <mobi:outputListItem>
-                    <h4>ICEsoft Ice Skate</h4>
-                    <p>A single sharpened ice skate, size 7.</p>
+                    ICEsoft Ice Skate
             </mobi:outputListItem>
 
             <mobi:outputListItem>
-                    <h4>ICEsoft Ice Car</h4>
-                    <p>Beautiful ice car with metal car filling.</p>
+                    ICEsoft Ice Car
             </mobi:outputListItem>
         </mobi:outputList>
 
