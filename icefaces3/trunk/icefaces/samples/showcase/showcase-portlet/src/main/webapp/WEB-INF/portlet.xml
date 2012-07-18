@@ -1362,7 +1362,7 @@
     </portlet>
     <portlet>
         <portlet-name>modalDialog</portlet-name>
-        <display-name>ACE Modal Dialog</display-name>
+        <display-name>ACE Dialog Modal</display-name>
         <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
         <init-param>
             <name>javax.portlet.faces.defaultViewId.view</name>
@@ -1377,8 +1377,8 @@
             <portlet-mode>view</portlet-mode>
         </supports>
         <portlet-info>
-            <title>ACE Modal Dialog</title>
-            <keywords>ICEfaces Component Suite Showcase ACE Modal Dialog</keywords>
+            <title>ACE Dialog Modal</title>
+            <keywords>ICEfaces Component Suite Showcase ACE Dialog Modal</keywords>
         </portlet-info>
     </portlet>
     <portlet>
@@ -2779,29 +2779,8 @@
         </portlet-info>
     </portlet>
     <portlet>
-        <portlet-name>globalTooltip</portlet-name>
-        <display-name>ACE Global Tooltip</display-name>
-        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
-        <init-param>
-            <name>javax.portlet.faces.defaultViewId.view</name>
-            <value>/portlet-view.xhtml</value>
-        </init-param>
-        <init-param>
-            <name>org.icefaces.demo.viewPath</name>
-            <value>/resources/examples/ace/tooltip/globalTooltip.xhtml</value>
-        </init-param>
-        <supports>
-            <mime-type>text/html</mime-type>
-            <portlet-mode>view</portlet-mode>
-        </supports>
-        <portlet-info>
-            <title>ACE Global Tooltip</title>
-            <keywords>ICEfaces Component Suite Showcase ACE Global Tooltip</keywords>
-        </portlet-info>
-    </portlet>
-    <portlet>
-        <portlet-name>toolTip</portlet-name>
-        <display-name>ACE Tool Tip</display-name>
+        <portlet-name>tooltip</portlet-name>
+        <display-name>ACE Tooltip</display-name>
         <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
         <init-param>
             <name>javax.portlet.faces.defaultViewId.view</name>
@@ -2816,8 +2795,29 @@
             <portlet-mode>view</portlet-mode>
         </supports>
         <portlet-info>
-            <title>ACE Tool Tip</title>
-            <keywords>ICEfaces Component Suite Showcase ACE Tool Tip</keywords>
+            <title>ACE Tooltip</title>
+            <keywords>ICEfaces Component Suite Showcase ACE Tooltip</keywords>
+        </portlet-info>
+    </portlet>
+    <portlet>
+        <portlet-name>tooltipGlobal</portlet-name>
+        <display-name>ACE Tooltip Global</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/portlet-view.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/tooltip/globalTooltip.xhtml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>ACE Tooltip Global</title>
+            <keywords>ICEfaces Component Suite Showcase ACE Tooltip Global</keywords>
         </portlet-info>
     </portlet>
 </portlet-app>
