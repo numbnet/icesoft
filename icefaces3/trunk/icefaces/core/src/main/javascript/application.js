@@ -284,9 +284,19 @@ if (!window.ice.icefaces) {
         }
 
         function detectCaller(f) {
-            return detect(callStack(), function(caller) {
-                return caller == f;
-            });
+            var visitedFunctions = [];
+            try {
+                return detect(callStack(), function(caller) {
+                    if (contains(visitedFunctions, caller)) {
+                        throw 'recursive call detected for : ' + caller;
+                    } else {
+                        append(visitedFunctions, caller);
+                    }
+                    return caller == f;
+                });
+            } catch (ex) {
+                return false;
+            }
         }
 
         //define function to be wired as submit callback into JSF bridge
