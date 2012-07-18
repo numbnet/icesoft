@@ -62,7 +62,7 @@ public class DeviceTag extends SimpleTagSupport {
                 } 
                 writeStandardAttributes(out);
                 out.write("data-command='" + command + "' onclick='ice.mobilesx(this)' ");
-                out.write(" value='" + label + " (ICEmobile-SX)'>");
+                out.write(" value='" + label + " ...'>");
             }
         }
     }
