@@ -137,14 +137,8 @@ public class TLDBuilder extends XMLBuilder{
 					builder.append(event.name());
 					builder.append("</td><td>");
 					builder.append(event.tlddoc());
-					builder.append("</td><td>javax.faces.event.AjaxBehaviorEvent");
-
-					String[] classes = event.argumentClasses();
-					for (int j = 0; j < classes.length; j++) {
-						builder.append(", org.icefaces.ace.event.");
-						builder.append(classes[j]);
-					}
-					
+					builder.append("</td><td>");
+					builder.append("".equals(event.argumentClass()) ? "javax.faces.event.AjaxBehaviorEvent" : event.argumentClass());
 					builder.append("</td></tr>");
 				}
 				builder.append("</table><i>Client events can be used with Client Behaviors and the ace:ajax tag.</i><br>");
