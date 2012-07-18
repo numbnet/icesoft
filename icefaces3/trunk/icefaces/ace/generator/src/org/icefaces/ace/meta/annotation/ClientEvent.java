@@ -60,8 +60,8 @@ public @interface ClientEvent {
 	String defaultExecute() default EMPTY; 
 	
 	/**
-	* Classes supported by the listener for its argument (relative to the org.icefaces.ace.event package)
+	* Fully qualified class name of the argument supported by the listener method
 	* @return component doc for tld.
 	*/
-	String[] argumentClasses() default {}; 
+	String argumentClass() default EMPTY; 
 }

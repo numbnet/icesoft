@@ -44,8 +44,8 @@ import javax.faces.application.ResourceDependency;
         @ResourceDependency(library = "icefaces.ace", name = "util/ace-components.js")
 })
 @ClientBehaviorHolder(events = {
-	@ClientEvent(name="dateSelect", javadoc="Fired when a date is selected from the calendar (default event).", tlddoc="Fired when a date is selected from the calendar (default event).", defaultRender="@all", defaultExecute="@all", argumentClasses={"DateSelectEvent"}),
-	@ClientEvent(name="dateTextChange", defaultExecute="@this", defaultRender="@none", tlddoc="Fired when date text is changed and input field loses focus.", javadoc="Fired when date text is changed and input field loses focus.", argumentClasses={"DateTextChangeEvent"})
+	@ClientEvent(name="dateSelect", javadoc="Fired when a date is selected from the calendar (default event).", tlddoc="Fired when a date is selected from the calendar (default event).", defaultRender="@all", defaultExecute="@all", argumentClass="org.icefaces.ace.event.DateSelectEvent"),
+	@ClientEvent(name="dateTextChange", defaultExecute="@this", defaultRender="@none", tlddoc="Fired when date text is changed and input field loses focus.", javadoc="Fired when date text is changed and input field loses focus.", argumentClass="org.icefaces.ace.event.DateTextChangeEvent")
 }, defaultEvent="dateSelect")
 public class DateTimeEntryMeta extends UIInputMeta {
     @Property(tlddoc = "Name of the client side widget.")
