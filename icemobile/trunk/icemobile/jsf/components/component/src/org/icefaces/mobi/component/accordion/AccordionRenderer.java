@@ -126,6 +126,8 @@ public class AccordionRenderer extends BaseLayoutRenderer {
             cfg.append(", opened: '").append(paneOpened).append("'");
         }
         boolean autoheight = pane.isAutoHeight();
+        int hashcode = Utils.generateHashCode(System.currentTimeMillis());
+        cfg.append(", hash: ").append(hashcode);
         cfg.append(", autoheight: ").append(autoheight);
         cfg.append(", maxheight: '").append(pane.getFixedHeight()).append("'");
         cfg.append("}");
