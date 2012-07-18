@@ -16,22 +16,19 @@
 </c:if>
     <div class="ajaxzone">
 
-		<h2>Various Spring MVC tags</h2>
-		<p>
-			Tabset Example
-		</p>
-		<form:form id="tabsetform" method="POST"  modelAttribute="tabsetBean" cssClass="cleanform">
+		<h2>Tabset</h2>
+		<form:form id="tabsetform" method="POST"  modelAttribute="tabsetBean" >
 
             <mobi:tabset id="tabsetOne" selectedTab="${tabsetBean.tabsetOne}">
                 <mobi:headers>
-              	    <mobi:header>Tab #1 </mobi:header>
-              	    <mobi:header>Tab #2 </mobi:header>
-              	    <mobi:header>Tab #3 </mobi:header>
+              	    <mobi:header><span class="mobitab">First</span></mobi:header>
+              	    <mobi:header><span class="mobitab">Second</span></mobi:header>
+              	    <mobi:header><span class="mobitab">Third</span></mobi:header>
                 </mobi:headers>
                 <mobi:content>
-                    <mobi:contentPane> This is the first content in the page  </mobi:contentPane>
-                    <mobi:contentPane> This is the second content in the page </mobi:contentPane>
-                    <mobi:contentPane> This is the third content in the page  </mobi:contentPane>
+                    <mobi:contentPane> This is the first content panel in the page.  </mobi:contentPane>
+                    <mobi:contentPane> The second panel contains this text. </mobi:contentPane>
+                    <mobi:contentPane> You are viewing the third contentPane.  </mobi:contentPane>
                 </mobi:content>
             </mobi:tabset>
 
@@ -39,39 +36,9 @@
 
 		</form:form>
 
-		<script type="text/javascript">
-
-			$(document).ready(function() {
-				$("#tabsetform").submit(function() {
-                    if (window.ice && ice.upload)  {
-                        window.ice.handleResponse = function(data)  {
-						    $("#tabsetContent").replaceWith(unescape(data));
-						    $('html, body').animate({ scrollTop: $("#message").offset().top }, 500);
-                        }
-                        ice.upload($(this).attr("id"));
-                        return false;  
-                    }
-
-                    var formData = new FormData(this);
-
-                    $.ajax({
-                        url: $(this).attr("action"),
-                        data: formData,
-                        cache: false,
-                        contentType: false,
-                        processData: false,
-                        type: 'POST',
-                        success: function(html) {
-						    $("#tabsetContent").replaceWith(html);
-						    $('html, body').animate({ scrollTop: $("#message").offset().top }, 500);
-					    }
-                    });
-
-					return false;  
-				});			
-			});
-
-		</script>
+    <script type="text/javascript">
+        MvcUtil.enhanceForm("#tabsetform");
+    </script>
 	</div>
 <c:if test="${!ajaxRequest}">
 </body>
