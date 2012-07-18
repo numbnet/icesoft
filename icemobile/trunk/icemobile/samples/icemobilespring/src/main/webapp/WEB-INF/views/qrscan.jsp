@@ -3,7 +3,7 @@
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <%@ taglib uri="http://www.icemobile.org/tags" prefix="mobi" %>
 <%@ taglib prefix="push" uri="http://www.icepush.org/icepush/jsp/icepush.tld" %>
-<%@ page session="false" %>
+<%@ page session="true" %>
 <c:if test="${!ajaxRequest}">
     <html>
     <head>
@@ -24,12 +24,13 @@
         <mobi:fieldSetGroup inset="true">
             <mobi:fieldSetRow>
                 <label>Scan QR code:</label>
-                <mobi:qrscan id="scanOne"/>
+                <mobi:qrscan id="scanOne" />
+                <br/>
             </mobi:fieldSetRow>
             <mobi:fieldSetRow>
                 <%-- button types: default|important|attention| back--%>
                 <mobi:commandButton buttonType='important'
-                                    style="float:right;margin-right: 25px;"
+                                    style="float:right;"
                                     value="Submit"
                                     type="submit"/>
             </mobi:fieldSetRow>
