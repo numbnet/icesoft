@@ -49,8 +49,8 @@ public class MaskedReqStyleBean extends ComponentExampleImpl<MaskedReqStyleBean>
 {
     public static final String BEAN_NAME = "maskedReqStyleBean";
     
-    private String reqColor = "red";
-    private String optColor = "green";
+    private String reqColor = "redRS";
+    private String optColor = "greenRS";
     
     public MaskedReqStyleBean() {
         super(MaskedReqStyleBean.class);

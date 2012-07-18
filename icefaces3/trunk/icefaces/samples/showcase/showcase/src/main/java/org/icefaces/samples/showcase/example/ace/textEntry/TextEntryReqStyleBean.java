@@ -49,8 +49,8 @@ public class TextEntryReqStyleBean extends ComponentExampleImpl<TextEntryReqStyl
 {
     public static final String BEAN_NAME = "textEntryReqStyleBean";
     
-    private String reqColor = "red";
-    private String optColor = "green";
+    private String reqColor = "redRS";
+    private String optColor = "greenRS";
     
     public TextEntryReqStyleBean() {
         super(TextEntryReqStyleBean.class);

@@ -35,11 +35,6 @@
     <ui:define name="example">
         
         <h:form id="inputForm">
-            <ice:outputStyle href="./resources/css/indicator_override_req-#{autoCompleteEntryReqStyleBean.reqColor}.css"
-                             rendered="#{autoCompleteEntryReqStyleBean.reqColor ne 'default'}"/>
-            <ice:outputStyle href="./resources/css/indicator_override_opt-#{autoCompleteEntryReqStyleBean.optColor}.css"
-                             rendered="#{autoCompleteEntryReqStyleBean.optColor ne 'default'}"/>
-        
             <icecore:singleSubmit/>
             
             <ace:panel header="Color Customization">
@@ -49,9 +44,9 @@
                         <h:selectOneMenu id="reqColor" value="#{autoCompleteEntryReqStyleBean.reqColor}"
                                          style="width: 150px;">
                             <f:selectItem itemValue="default" itemLabel="Default"/>
-                            <f:selectItem itemValue="blue" itemLabel="Blue"/>
-                            <f:selectItem itemValue="green" itemLabel="Green"/>
-                            <f:selectItem itemValue="red" itemLabel="Red"/>
+                            <f:selectItem itemValue="blueRS" itemLabel="Blue"/>
+                            <f:selectItem itemValue="greenRS" itemLabel="Green"/>
+                            <f:selectItem itemValue="redRS" itemLabel="Red"/>
                         </h:selectOneMenu>
                         <h:message for="reqColor"/>
                     
@@ -59,9 +54,9 @@
                         <h:selectOneMenu id="optColor" value="#{autoCompleteEntryReqStyleBean.optColor}"
                                          style="width: 150px;">
                             <f:selectItem itemValue="default" itemLabel="Default"/>
-                            <f:selectItem itemValue="blue" itemLabel="Blue"/>
-                            <f:selectItem itemValue="green" itemLabel="Green"/>
-                            <f:selectItem itemValue="red" itemLabel="Red"/>
+                            <f:selectItem itemValue="blueRS" itemLabel="Blue"/>
+                            <f:selectItem itemValue="greenRS" itemLabel="Green"/>
+                            <f:selectItem itemValue="redRS" itemLabel="Red"/>
                         </h:selectOneMenu>
                         <h:message for="optColor"/>
                 </h:panelGrid>
@@ -78,7 +73,8 @@
                                          labelPosition="left"
                                          required="true"
                                          requiredIndicator="(Required)"
-                                         indicatorPosition="right">
+                                         indicatorPosition="right"
+                                         styleClass="#{autoCompleteEntryReqStyleBean.reqColor}">
                         <f:selectItems value="#{autoCompleteEntryBean.cities}"/>
                     </ace:autoCompleteEntry>
                     
@@ -91,7 +87,8 @@
                                          labelPosition="left"
                                          required="false"
                                          optionalIndicator="(Optional)"
-                                         indicatorPosition="right">
+                                         indicatorPosition="right"
+                                         styleClass="#{autoCompleteEntryReqStyleBean.optColor}">
                         <f:selectItems value="#{autoCompleteEntryBean.cities}"/>
                     </ace:autoCompleteEntry>
                 </h:panelGrid>

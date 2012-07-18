@@ -34,11 +34,6 @@
 
     <ui:define name="example">
         <h:form id="form">
-            <ice:outputStyle href="./resources/css/indicator_override_req-#{dateReqStyle.reqColor}.css"
-                             rendered="#{dateReqStyle.reqColor ne 'default'}"/>
-            <ice:outputStyle href="./resources/css/indicator_override_opt-#{dateReqStyle.optColor}.css"
-                             rendered="#{dateReqStyle.optColor ne 'default'}"/>
-        
             <icecore:singleSubmit/>
             <ace:panel>
                 <h:panelGrid style="text-align: center;" width="100%">
@@ -66,9 +61,9 @@
                         <h:selectOneMenu id="reqColor" value="#{dateReqStyle.reqColor}"
                                          style="width: 150px;">
                             <f:selectItem itemValue="default" itemLabel="Default"/>
-                            <f:selectItem itemValue="blue" itemLabel="Blue"/>
-                            <f:selectItem itemValue="green" itemLabel="Green"/>
-                            <f:selectItem itemValue="red" itemLabel="Red"/>
+                            <f:selectItem itemValue="blueRS" itemLabel="Blue"/>
+                            <f:selectItem itemValue="greenRS" itemLabel="Green"/>
+                            <f:selectItem itemValue="redRS" itemLabel="Red"/>
                         </h:selectOneMenu>
                         <h:message for="reqColor"/>
                     
@@ -76,9 +71,9 @@
                         <h:selectOneMenu id="optColor" value="#{dateReqStyle.optColor}"
                                          style="width: 150px;">
                             <f:selectItem itemValue="default" itemLabel="Default"/>
-                            <f:selectItem itemValue="blue" itemLabel="Blue"/>
-                            <f:selectItem itemValue="green" itemLabel="Green"/>
-                            <f:selectItem itemValue="red" itemLabel="Red"/>
+                            <f:selectItem itemValue="blueRS" itemLabel="Blue"/>
+                            <f:selectItem itemValue="greenRS" itemLabel="Green"/>
+                            <f:selectItem itemValue="redRS" itemLabel="Red"/>
                         </h:selectOneMenu>
                         <h:message for="optColor"/>
                 </h:panelGrid>
@@ -95,7 +90,8 @@
                                        labelPosition="left"
                                        required="true"
                                        requiredIndicator="(Required)"
-                                       indicatorPosition="right"/>
+                                       indicatorPosition="right"
+                                       styleClass="#{dateReqStyle.reqColor}"/>
                     <h:message for="calReq"/>
                     
                     <ace:dateTimeEntry id="calOpt"
@@ -107,7 +103,8 @@
                                        labelPosition="left"
                                        required="false"
                                        optionalIndicator="(Optional)"
-                                       indicatorPosition="right"/>
+                                       indicatorPosition="right"
+                                       styleClass="#{dateReqStyle.optColor}"/>
                     <h:message for="calOpt"/>
                 </h:panelGrid>
                 <h:commandButton id="submit" value="Submit"/>

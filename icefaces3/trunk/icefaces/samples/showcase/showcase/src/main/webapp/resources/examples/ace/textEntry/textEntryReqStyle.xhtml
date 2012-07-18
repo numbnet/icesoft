@@ -34,11 +34,6 @@
 
     <ui:define name="example">
         <h:form id="textEntryForm">
-            <ice:outputStyle href="./resources/css/indicator_override_req-#{textEntryReqStyleBean.reqColor}.css"
-                             rendered="#{textEntryReqStyleBean.reqColor ne 'default'}"/>
-            <ice:outputStyle href="./resources/css/indicator_override_opt-#{textEntryReqStyleBean.optColor}.css"
-                             rendered="#{textEntryReqStyleBean.optColor ne 'default'}"/>
-        
             <icecore:singleSubmit/>
             <ace:panel header="Color Customization">
                 <h:panelGrid width="100%" columns="3" columnClasses="col25,col25,col50"
@@ -47,9 +42,9 @@
                         <h:selectOneMenu id="reqColor" value="#{textEntryReqStyleBean.reqColor}"
                                          style="width: 150px;">
                             <f:selectItem itemValue="default" itemLabel="Default"/>
-                            <f:selectItem itemValue="blue" itemLabel="Blue"/>
-                            <f:selectItem itemValue="green" itemLabel="Green"/>
-                            <f:selectItem itemValue="red" itemLabel="Red"/>
+                            <f:selectItem itemValue="blueRS" itemLabel="Blue"/>
+                            <f:selectItem itemValue="greenRS" itemLabel="Green"/>
+                            <f:selectItem itemValue="redRS" itemLabel="Red"/>
                         </h:selectOneMenu>
                         <h:message for="reqColor"/>
                     
@@ -57,9 +52,9 @@
                         <h:selectOneMenu id="optColor" value="#{textEntryReqStyleBean.optColor}"
                                          style="width: 150px;">
                             <f:selectItem itemValue="default" itemLabel="Default"/>
-                            <f:selectItem itemValue="blue" itemLabel="Blue"/>
-                            <f:selectItem itemValue="green" itemLabel="Green"/>
-                            <f:selectItem itemValue="red" itemLabel="Red"/>
+                            <f:selectItem itemValue="blueRS" itemLabel="Blue"/>
+                            <f:selectItem itemValue="greenRS" itemLabel="Green"/>
+                            <f:selectItem itemValue="redRS" itemLabel="Red"/>
                         </h:selectOneMenu>
                         <h:message for="optColor"/>
                 </h:panelGrid>
@@ -67,32 +62,60 @@
         
             <ace:panel id="personalInfoInputPanel" header="Personal Info">
                 <h:panelGrid id="inputGrid" columns="1" width="100%" styleClass="textEntryInputTable">
-                    <ace:textEntry id="firstNameInput" value="#{textEntryBean.firstName}" label="First Name" labelPosition="left" required="true" requiredIndicator="(Required)" indicatorPosition="right">
+                    <ace:textEntry id="firstNameInput" value="#{textEntryBean.firstName}"
+                                   label="First Name" labelPosition="left"
+                                   required="true" requiredIndicator="(Required)"
+                                   indicatorPosition="right"
+                                   styleClass="#{textEntryReqStyleBean.reqColor}">
                         <ace:ajax render="@this firstNameOutput firstNameMsg"/>
                     </ace:textEntry>
                     
-                    <ace:textEntry id="lastNameInput" value="#{textEntryBean.lastName}" label="Last Name" labelPosition="left" required="true" requiredIndicator="(Required)" indicatorPosition="right">
+                    <ace:textEntry id="lastNameInput" value="#{textEntryBean.lastName}"
+                                   label="Last Name" labelPosition="left"
+                                   required="true" requiredIndicator="(Required)"
+                                   indicatorPosition="right"
+                                   styleClass="#{textEntryReqStyleBean.reqColor}">
                         <ace:ajax render="@this lastNameOutput lastNameMsg"/>
                     </ace:textEntry>
 
-                    <ace:textEntry id="address1Input" value="#{textEntryBean.address1}" label="Apt./Suite #" labelPosition="left" required="true" requiredIndicator="(Required)" indicatorPosition="right">
+                    <ace:textEntry id="address1Input" value="#{textEntryBean.address1}"
+                                   label="Apt./Suite #" labelPosition="left"
+                                   required="true" requiredIndicator="(Required)"
+                                   indicatorPosition="right"
+                                   styleClass="#{textEntryReqStyleBean.reqColor}">
                         <ace:ajax render="@this address1Output address1Msg"/>
                     </ace:textEntry>
 
-                    <ace:textEntry id="address2Input" value="#{textEntryBean.address2}" label="Street Address" labelPosition="left" required="false" optionalIndicator="(Optional)" indicatorPosition="right">
+                    <ace:textEntry id="address2Input" value="#{textEntryBean.address2}"
+                                   label="Street Address" labelPosition="left"
+                                   required="false" optionalIndicator="(Optional)"
+                                   indicatorPosition="right"
+                                   styleClass="#{textEntryReqStyleBean.optColor}">
                         <ace:ajax render="@this address2Output"/>
                     </ace:textEntry>
 
-                    <ace:textEntry id="cityInput" value="#{textEntryBean.city}" label="City" labelPosition="left" required="true" requiredIndicator="(Required)" indicatorPosition="right">
+                    <ace:textEntry id="cityInput" value="#{textEntryBean.city}"
+                                   label="City" labelPosition="left"
+                                   required="true" requiredIndicator="(Required)"
+                                   indicatorPosition="right"
+                                   styleClass="#{textEntryReqStyleBean.reqColor}">
                         <ace:ajax render="@this cityOutput cityMsg"/>
                     </ace:textEntry>
                     
-                    <ace:textEntry id="provinceInput" value="#{textEntryBean.province}" label="Prov./State" labelPosition="left" required="false" optionalIndicator="(Optional)" indicatorPosition="right">
+                    <ace:textEntry id="provinceInput" value="#{textEntryBean.province}"
+                                   label="Prov./State" labelPosition="left"
+                                   required="false" optionalIndicator="(Optional)"
+                                   indicatorPosition="right"
+                                   styleClass="#{textEntryReqStyleBean.optColor}">
                         <ace:ajax render="@this provinceOutput provinceMsg"/>
                         <f:validateLength minimum="2"/>
                     </ace:textEntry>
 
-                    <ace:textEntry id="countryInput" value="#{textEntryBean.country}" label="Country" labelPosition="left" required="true" requiredIndicator="(Required)" indicatorPosition="right">
+                    <ace:textEntry id="countryInput" value="#{textEntryBean.country}"
+                                   label="Country" labelPosition="left"
+                                   required="true" requiredIndicator="(Required)"
+                                   indicatorPosition="right"
+                                   styleClass="#{textEntryReqStyleBean.reqColor}">
                         <ace:ajax render="@this countryOutput countryMsg"/>
                     </ace:textEntry>
                 </h:panelGrid>
