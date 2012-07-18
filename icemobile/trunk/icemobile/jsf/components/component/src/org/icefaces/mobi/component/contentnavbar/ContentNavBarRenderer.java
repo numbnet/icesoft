@@ -82,7 +82,7 @@ public class ContentNavBarRenderer extends BaseLayoutRenderer {
             return null;
         }
         ContentStack stack = (ContentStack)grandparent;
-        if (null == stack.getLayoutMenuId()) {
+        if (null == stack.getContentMenuId()) {
             return null;
         }
         String clientId = stack.getClientId(facesContext);
