@@ -696,12 +696,12 @@
         <ajaxable>false</ajaxable>
     </portlet>
     <portlet>
-        <portlet-name>globalTooltip</portlet-name>
+        <portlet-name>tooltip</portlet-name>
         <instanceable>false</instanceable>
         <ajaxable>false</ajaxable>
     </portlet>
     <portlet>
-        <portlet-name>toolTip</portlet-name>
+        <portlet-name>toolTipGlobal</portlet-name>
         <instanceable>false</instanceable>
         <ajaxable>false</ajaxable>
     </portlet>

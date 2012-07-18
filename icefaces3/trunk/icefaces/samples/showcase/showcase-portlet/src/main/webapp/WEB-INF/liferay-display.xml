@@ -152,8 +152,8 @@
                 <portlet id="textEntryIndicator"/>
                 <portlet id="textEntryLabel"/>
                 <portlet id="textEntryReqStyle"/>
-                <portlet id="globalTooltip"/>
-                <portlet id="toolTip"/>
+                <portlet id="tooltip"/>
+                <portlet id="tooltipGlobal"/>
             </category>
         </category>
     </category>
