@@ -10,20 +10,20 @@
     <meta name="apple-mobile-web-app-capable" content="yes"/>
     <meta name="apple-mobile-web-app-status-bar-style" content="black"/>
     <mobi:deviceStylesheet name="#{themeSwitcher.theme}" media="screen"/>
-    <title>layoutMenu with contentStack single view</title>
+    <title>contentStackMenu with contentStack single view</title>
 
 </h:head>
 <h:body>
     <mobi:contentStack id="stack1" currentId="#{contentMenuBean.selectedPane}"
-                       singleView="true" layoutMenuId="mnu">
+                       contentMenuId="mnu">
         <mobi:contentPane id="mnuPanel" client="true" menuOrHome="true">
             <h:form id="menuForm">
-                <mobi:layoutMenu id="mnu" value="#{contentMenuBean.menuCList}"
+                <mobi:contentStackMenu id="mnu" value="#{contentMenuBean.menuCList}"
                                  var="item" contentStackId="stack1"
                                  selectedPane="#{contentMenuBean.selectedPane}">
-                    <mobi:layoutMenuItem label="#{item.label}"
+                    <mobi:contentMenuItem label="#{item.label}"
                                          value="#{item.value}"/>
-                </mobi:layoutMenu>
+                </mobi:contentStackMenu>
             </h:form>
         </mobi:contentPane>
         <mobi:contentPane id="panel1" client="true">
@@ -67,7 +67,7 @@
             <h:panelGroup>
                 <h:form>
                     <h:commandButton value="goto page panel 4"
-                                     action="#{contentMenuBean.setSelectedPaneAction('panel4')}"
+                                     action="#{contentMenuBean.goToPane4}"
                             />
                 </h:form>
             </h:panelGroup>
@@ -81,6 +81,11 @@
                 <h3>Content Pane 4</h3>
             </mobi:contentNavBar>
             <h:panelGroup>
+                 <h:form>
+                    <mobi:commandButton value="goto contentPane 3"
+                                     action="#{contentMenuBean.goToPane3}"
+                            />
+                </h:form>
                 <ui:include src="includes/other.xhtml"/>
             </h:panelGroup>
         </mobi:contentPane>

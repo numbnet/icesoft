@@ -113,9 +113,9 @@
                prevId  = wrpId;
            },
            updateProperties: function (clientId, cfgUpd) {
-                if (cfgUpd.selectedId == selectedPaneId){
+             /*   if (cfgUpd.selectedId == selectedPaneId){
                     return;
-                }
+                }*/
                 if (cfgUpd.selClientId){
                     this.showContent(null, cfgUpd);
                 }

@@ -1,17 +1,13 @@
-package org.icefaces.mobi.component.layoutmenu;
+package org.icefaces.mobi.component.contentstackmenu;
 
 
 import javax.faces.component.StateHelper;
 import java.util.HashMap;
 import java.util.Map;
 
-public class LayoutMenu extends LayoutMenuBase {
+public class ContentStackMenu extends ContentStackMenuBase {
     public static final String LAYOUTMENU_CLASS = "mobi-layoutmenu ";
-    public static final String LAYOUTMENU_TITLE_CLASS = "mobi-layoutmenu-title ";
     public static final String LAYOUTMENU_LIST_CLASS = "mobi-list ";
-    public static final String LAYOUTMENU_INSET_CLASS="mobi-list mobi-list-inset ";
-    public static final String OUTPUTLISTITEMGROUP_CLASS="mobi-list-item mobi-list-item-group ";
-    public static final String OUTPUTLISTITEMDEFAULT_CLASS="mobi-list-item-default ";
 
     private String stackClientId;
 
@@ -33,7 +29,6 @@ public class LayoutMenu extends LayoutMenuBase {
 			//Always re-add the delta values to the map. JSF merges the values into the main map
 			//and values are not state saved unless they're in the delta map.
 		sh.put(valuesKey, clientValues);
-
     }
 
     public String getStackClientId(){

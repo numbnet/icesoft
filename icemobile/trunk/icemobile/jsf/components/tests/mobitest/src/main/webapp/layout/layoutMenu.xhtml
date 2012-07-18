@@ -11,7 +11,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes"/>
     <meta name="apple-mobile-web-app-status-bar-style" content="black"/>
      <mobi:deviceStylesheet name="#{themeSwitcher.theme}" media="screen" />
-    <title>layoutMenu with contentStack</title>
+    <title>Menu with contentStack</title>
 </h:head>
 <h:body>
   <header>
@@ -20,14 +20,14 @@
   <h:panelGrid columns="2">
     <h:panelGroup id="pgroupmnu" style="top: 20;">
       <h:form id="menuForm">
-        <mobi:layoutMenu id="mnu" value="#{contentMenuBean.menuCList}" var="item"  contentStackId="stack1"
+        <mobi:contentStackMenu id="mnu" value="#{contentMenuBean.menuCList}" var="item"  contentStackId="stack1"
                   selectedPane="#{contentMenuBean.twoColSelectedPane}">
-           <mobi:layoutMenuItem label="#{item.label}" value="#{item.value}"/>
-        </mobi:layoutMenu>
+           <mobi:contentMenuItem label="#{item.label}" value="#{item.value}"/>
+        </mobi:contentStackMenu>
       </h:form>
    </h:panelGroup>
     <mobi:contentStack id="stack1" currentId="#{contentMenuBean.twoColSelectedPane}"
-            layoutMenuId="mnu">
+            contentMenuId="mnu">
          <mobi:contentPane id="panel1" client="true">
               <ui:include src="includes/splash.xhtml"/>
          </mobi:contentPane>

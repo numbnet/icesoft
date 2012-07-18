@@ -44,7 +44,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
-import java.util.Collection;
+import java.util.Iterator;
 import java.util.StringTokenizer;
 import java.util.Formatter;
 import java.util.UUID;
@@ -661,5 +661,45 @@ public class Utils {
             }
         }
         return null;
+    }
+
+    /**
+     * used by ContentStack to determine if contentStackMenu is one of it's progeny
+     * @param parent
+     * @param id
+     * @return UIComponent that matches the id given to search for
+     */
+    public static UIComponent findChildComponent(UIComponent parent, String id){
+        if (id.equals(parent.getId())){
+            return parent;
+        }
+        UIComponent child = null;
+        UIComponent retComp = null;
+        Iterator children = parent.getFacetsAndChildren();
+        while (children.hasNext() && (retComp==null)){
+            child = (UIComponent)children.next();
+            if (id.equals(child.getId())){
+                retComp = child;
+                break;
+            }
+            retComp = findChildComponent(child, id);
+            if (retComp !=null){
+                break;
+            }
+        }
+        return retComp;
+    }
+
+    /**
+     * use this to ascertain that the domdiff does not wipe out the script tag for updating components
+     * @param value
+     * @return
+     */
+    public static int generateHashCode(Object value){
+        int hashCode = 0;
+        if (value !=null){
+            hashCode = value.toString().hashCode();
+        }
+        return hashCode;
     }
 }

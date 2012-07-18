@@ -55,6 +55,7 @@ public class LayoutBean implements Serializable {
         this.menuList.add(new MenuValue("splash", FIRSTPANE, false));
         this.menuList.add(new MenuValue("date/time", SECONDPANE, false));
         this.menuList.add(new MenuValue("tabSet", THIRDPANE, false));
+        this.menuList.add(new MenuValue("icefacesPage", null, false));
         this.dataList.add(new DataValue(FIRSTPANE));
         dataListMultiRow.add(new DataValue(FIRSTPANE));
         dataListMultiRow.add(new DataValue(SECONDPANE));
@@ -163,7 +164,12 @@ public class LayoutBean implements Serializable {
             this.value = value;
             this.menuHeader = menuHeader;
         }
-
+        public MenuValue (String label, String value, boolean menuHeader, String url){
+            this.label = label;
+            this.value = value;
+            this.menuHeader = menuHeader;
+            this.url = url;
+        }
         public String getLabel() {
             return label;
         }

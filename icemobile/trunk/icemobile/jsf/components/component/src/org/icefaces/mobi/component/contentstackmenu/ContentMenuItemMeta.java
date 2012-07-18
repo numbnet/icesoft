@@ -13,7 +13,7 @@
  * express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.icefaces.mobi.component.layoutmenu;
+package org.icefaces.mobi.component.contentstackmenu;
 
 import org.icefaces.ace.meta.annotation.*;
 import org.icefaces.ace.meta.baseMeta.UICommandMeta;
@@ -21,29 +21,23 @@ import org.icefaces.ace.meta.baseMeta.UICommandMeta;
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
 
-@ClientBehaviorHolder(events = {
-	@ClientEvent(name="click", javadoc="Fired when a layoutMenuItem is selected or clicked",
-            tlddoc="Fired when layoutMenuItem is clicked", defaultRender="@all",
-            defaultExecute="@all")}, defaultEvent="click")
+
 @Component(
-        tagName = "layoutMenuItem",
-        componentClass = "org.icefaces.mobi.component.layoutmenu.LayoutMenuItem",
-        rendererClass = "org.icefaces.mobi.component.layoutmenu.LayoutMenuItemRenderer",
-        generatedClass = "org.icefaces.mobi.component.layoutmenu.LayoutMenuItemBase",
+        tagName = "contentMenuItem",
+        componentClass = "org.icefaces.mobi.component.contentstackmenu.ContentMenuItem",
+        rendererClass = "org.icefaces.mobi.component.contentstackmenu.ContentMenuItemRenderer",
+        generatedClass = "org.icefaces.mobi.component.contentstackmenu.ContentMenuItemBase",
         extendsClass = "javax.faces.component.UICommand",
-        componentType = "org.icefaces.component.LayoutMenuItem",
-        rendererType = "org.icefaces.component.LayoutMenuItemRenderer",
-        componentFamily = "org.icefaces.LayoutMenuItem",
+        componentType = "org.icefaces.ContentMenuItem",
+        rendererType = "org.icefaces.ContentMenuItemRenderer",
+        componentFamily = "org.icefaces.ContentMenuItem",
         tlddoc = "This component fires an actionListener from a menu item.  the value can be a url, " +
-                " an id to a panel in the contentStack that is an attribute in the LayoutMenu tag, or can " +
+                " an id to a panel in the contentStack that is an attribute in the ContentStackMenu tag, or can " +
                 " be a heading in a group of menu items. " +
                 "It has the same functionality of a regular jsf command  "
 )
-@ResourceDependencies({
-        @ResourceDependency(library = "org.icefaces.component.util", name = "component.js")
-})
 
-public class LayoutMenuItemMeta extends UICommandMeta {
+public class ContentMenuItemMeta extends UICommandMeta {
      @Property(defaultValue = "true",
             tlddoc = "When singleSubmit is true, triggering an action on this component will submit" +
                     " and execute this component only. Equivalent to <f:ajax execute='@this' render='@all'>." +
@@ -52,11 +46,11 @@ public class LayoutMenuItemMeta extends UICommandMeta {
                     " The default value is false.")
      private boolean singleSubmit;
 
-     @Property(tlddoc = "Url to be navigated when menuitem is clicked. Outside of the LayoutMenu contentStack.")
+     @Property(tlddoc = "Url to be navigated when menuitem is clicked. Outside of the ContentStackMenu contentStack.")
      private String url;
 
      @Property(defaultValue = "false",
-                tlddoc = "disabled property. If true no input may be submitted via this" +
+                tlddoc = "disabled property. If true nothing will be submitted via this" +
                         "component.  ")
      private boolean disabled;
 
@@ -77,18 +71,7 @@ public class LayoutMenuItemMeta extends UICommandMeta {
      @Property(tlddoc = "style of the component, rendered on the div root of the component")
      private String style;
 
-     /*  Do we want to support this..perhaps future enhancement?
      @Property(tlddoc = "Path of the menuitem image.")
-     private String icon;        */
-
- /*    @Property(defaultValue = "false", tlddoc = "immediate as per jsf specs")
-     private boolean immediate;  */
-
-  /* TODO implement panelConf and submitNotif....
-    @Property(tlddoc="id of panelConfirmation to be used with this component")
-     private String panelConfirmation;
-
-     @Property(tlddoc="id of blocking submitNotification panel which blocks any further access to page until process is complete")
-     private String submitNotification;   */
+     private String icon;
 
 }

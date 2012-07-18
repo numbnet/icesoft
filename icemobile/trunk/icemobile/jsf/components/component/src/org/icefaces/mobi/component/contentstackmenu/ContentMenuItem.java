@@ -13,11 +13,11 @@
  * express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.icefaces.mobi.component.layoutmenu;
+package org.icefaces.mobi.component.contentstackmenu;
 
 
 
-public class LayoutMenuItem extends LayoutMenuItemBase {
+public class ContentMenuItem extends ContentMenuItemBase {
     public static final String OUTPUTLISTITEM_CLASS = "mobi-list-item";
     public static final String OUTPUTLISTITEMGROUP_CLASS="mobi-list-item mobi-list-item-group ";
     public static final String OUTPUTLISTITEMDEFAULT_CLASS="mobi-list-item-default ";

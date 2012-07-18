@@ -22,6 +22,7 @@ import javax.faces.event.ValueChangeEvent;
 import java.awt.event.ActionEvent;
 import java.io.Serializable;
 import java.lang.String;
+import java.lang.System;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -99,6 +100,12 @@ public class ContentMenuSingleBean extends LayoutBean {
         return selectedPane2;
     }
 
+    public String setTwoColSelectedPaneAction(String twoColSelPane){
+        this.twoColSelectedPane = twoColSelPane;
+        System.out.println(" action method change to "+twoColSelPane);
+        return "";
+    }
+
     public void setTwoColSelectedPane(String twoColSelectedPane) {
         this.twoColSelectedPane = twoColSelectedPane;
     }
@@ -106,4 +113,13 @@ public class ContentMenuSingleBean extends LayoutBean {
         this.selectedPane2 = selectedPane2;
     }
 
+    public void goToPane3(ActionEvent ae){
+        this.twoColSelectedPane = THIRDPANE;
+    }
+    public void goToPane3(){
+        this.twoColSelectedPane= THIRDPANE;
+    }
+    public void goToPane4(){
+        this.twoColSelectedPane= "panel4";
+    }
 }
