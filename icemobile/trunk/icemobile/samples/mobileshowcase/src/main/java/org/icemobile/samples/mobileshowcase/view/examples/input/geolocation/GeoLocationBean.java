@@ -57,6 +57,8 @@ public class GeoLocationBean extends ExampleImpl<GeoLocationBean> implements
 
     private double latitude = 0.0;
     private double longitude = 0.0;
+    private double altitude = 0.0;
+    private double direction = 0.0;
 
     public GeoLocationBean() {
         super(GeoLocationBean.class);
@@ -91,4 +93,20 @@ public class GeoLocationBean extends ExampleImpl<GeoLocationBean> implements
     }
     public void setLatitudeRead(double latitude) {
     }
+
+	public double getAltitude() {
+		return altitude;
+	}
+
+	public void setAltitude(double altitude) {
+		this.altitude = altitude;
+	}
+
+	public double getDirection() {
+		return direction;
+	}
+
+	public void setDirection(double direction) {
+		this.direction = direction;
+	}
 }

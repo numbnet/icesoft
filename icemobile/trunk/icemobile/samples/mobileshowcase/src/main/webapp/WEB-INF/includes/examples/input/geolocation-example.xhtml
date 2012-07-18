@@ -25,7 +25,9 @@
     <h:form prependId="false">
 
         <mobi:geolocation latitude="#{geoLocationBean.latitude}"
-                          longitude="#{geoLocationBean.longitude}"/>
+                          longitude="#{geoLocationBean.longitude}"
+                          altitude="#{geoLocationBean.altitude}"
+                          direction="#{geoLocationBean.direction}"/>
 
 
         <h:panelGroup style="display:block;padding-left:10px;">
@@ -40,6 +42,12 @@
             </mobi:fieldsetRow>
             <mobi:fieldsetRow>
                 Longitude: <h:outputText value="#{geoLocationBean.longitude}"/>
+            </mobi:fieldsetRow>
+            <mobi:fieldsetRow rendered="#{geoLocationBean.direction gt 0.0}">
+                Direction: <h:outputText value="#{geoLocationBean.direction}"/>
+            </mobi:fieldsetRow>
+            <mobi:fieldsetRow rendered="#{geoLocationBean.altitude gt 0.0}">
+                Altitude: <h:outputText value="#{geoLocationBean.altitude}"/>
             </mobi:fieldsetRow>
         </mobi:fieldsetGroup>
 
