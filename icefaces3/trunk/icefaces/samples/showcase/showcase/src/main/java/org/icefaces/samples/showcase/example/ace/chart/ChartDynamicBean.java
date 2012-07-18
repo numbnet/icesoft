@@ -16,13 +16,26 @@
 
 package org.icefaces.samples.showcase.example.ace.chart;
 
+import org.icefaces.ace.component.chart.Axis;
+import org.icefaces.ace.component.chart.AxisType;
+import org.icefaces.ace.event.PointValueChangeEvent;
+import org.icefaces.ace.event.SelectEvent;
+import org.icefaces.ace.event.SeriesSelectionEvent;
+import org.icefaces.ace.event.UnselectEvent;
+import org.icefaces.ace.model.chart.CartesianSeries;
+import org.icefaces.ace.model.chart.DragConstraintAxis;
+import org.icefaces.ace.model.table.RowStateMap;
+import org.icefaces.util.JavaScriptRunner;
 import org.icefaces.samples.showcase.metadata.annotation.*;
 import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
+import javax.faces.context.FacesContext;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 @ComponentExample(
         parent = ChartBean.BEAN_NAME,
@@ -48,12 +61,89 @@ public class ChartDynamicBean extends ComponentExampleImpl<ChartDynamicBean> imp
 {
     public static final String BEAN_NAME = "chartDynamicBean";
     
+    private RowStateMap rowStateMap;
+    private Integer[][] tableData = new Integer[][] {
+            {2,3,1,4},
+            {5,6,8,7},
+            {10,9,12,11},
+    };
+    private List<CartesianSeries> lineData = new ArrayList<CartesianSeries>() {{
+        add(new CartesianSeries() {{
+            setType(CartesianType.LINE);
+            setLabel("Plot Data");
+            setDragable(true);
+            setDragConstraintAxis(DragConstraintAxis.Y);
+        }});
+    }};
+    private Axis tableDemoAxis = new Axis() {{
+        setType(AxisType.CATEGORY);
+        setLabel("Letter Axis");
+        setTicks(new String[]{"A", "B", "C", "D"});
+    }};
+    
     public ChartDynamicBean() {
         super(ChartDynamicBean.class);
+    }
+    
+    public Integer[][] getTableData() {
+        return tableData;
+    }
+
+    public void setTableData(Integer[][] data) {
+        this.tableData = data;
+    }
+    
+    public RowStateMap getRowStateMap() {
+        return rowStateMap;
+    }
+
+    public void setRowStateMap(RowStateMap rowStateMap) {
+        this.rowStateMap = rowStateMap;
+    }
+    
+    public List<CartesianSeries> getLineData() {
+        return lineData;
+    }
+
+    public void setLineData(List<CartesianSeries> lineData) {
+        this.lineData = lineData;
+    }
+    
+    public Axis getTableDemoAxis() {
+        return tableDemoAxis;
+    }
+
+    public void setTableDemoAxis(Axis tableDemoAxis) {
+        this.tableDemoAxis = tableDemoAxis;
     }
     
     @PostConstruct
     public void initMetaData() {
         super.initMetaData();
+    }
+    
+    public void pointChange(PointValueChangeEvent event) {
+        JavaScriptRunner.runScript(FacesContext.getCurrentInstance(),
+                "ice.ace.jq('.ui-datatable-data tr.ui-selected td:eq("+event.getPointIndex()+")').effect('pulsate', {}, 500);");
+
+        for (Object o : rowStateMap.getSelected()) {
+            Integer[] values = (Integer[]) o;
+            values[event.getPointIndex()] = ((Double)((Object[])event.getNewValue())[1]).intValue();
+        }
+    }
+    
+    public void redrawChartListener(SelectEvent e) {
+        CartesianSeries s = lineData.get(0);
+        s.clear();
+        Integer[] indicies = (Integer[]) e.getObject();
+        s.add("A", indicies[0]);
+        s.add("B", indicies[1]);
+        s.add("C", indicies[2]);
+        s.add("D", indicies[3]);
+    }
+
+    public void clearChartListener(UnselectEvent e) {
+        CartesianSeries s = lineData.get(0);
+        s.clear();
     }
 }

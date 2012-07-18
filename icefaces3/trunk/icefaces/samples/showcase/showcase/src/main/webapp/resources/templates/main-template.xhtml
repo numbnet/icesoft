@@ -20,7 +20,8 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:ice="http://www.icesoft.com/icefaces/component">
+      xmlns:ice="http://www.icesoft.com/icefaces/component"
+      xmlns:icecore="http://www.icefaces.org/icefaces/core">
 <ui:insert name="metadata"/>
 
 <h:head>
@@ -28,6 +29,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <ice:outputStyle href="./xmlhttp/css/rime/rime.css"/>
     <ice:outputStyle href="./resources/css/override_header.css"/>
+    <icecore:config mandatoryResource="dataTable chart" />
 </h:head>
 
 <h:body styleClass="suite ice-skin-rime">

@@ -32,111 +32,15 @@
     <ui:param name="tldResources" value="#{chartBeanResources.tldResources}"/>
 
     <ui:define name="example">
-        <ui:param value="#{chartBean}" name="backing" />
-
-        <h:form id="form">
-            <ace:dataTable id="table"
-                    value="#{backing.tableData}" var="row"
-                    stateMap="#{backing.rowStateMap}"
-                    selectionMode="single"
-                    rowSelectListener="#{backing.redrawChartListener}"
-                    rowUnselectListener="#{backing.clearChartListener}">
-                <ace:ajax event="select" render="@this form:chart" />
-                <ace:column headerText="A">
-                    #{row[0]}
-                </ace:column>
-                <ace:column headerText="B">
-                    #{row[1]}
-                </ace:column>
-                <ace:column headerText="C">
-                    #{row[2]}
-                </ace:column>
-                <ace:column headerText="D">
-                    #{row[3]}
-                </ace:column>
-            </ace:dataTable>
-            <ace:chart id="chart"
-                       animated="false"
-                       value="#{backing.lineData}"
-                       stackSeries="false"
-                       xAxis="#{backing.tableDemoAxis}"
-                       legend="true"
-                       legendLocation="NW"
-                       highlighter="true"
-                       highlighterAxes="Y"
-                       highlighterShowMarker="false"
-                       pointChangeListener="#{backing.pointChange}"
-                       widgetVar="tableChart">
-                <ace:ajax render="form:table" event="dragStop"/>
-            </ace:chart>
-            <h:commandButton value="Export"
-                             onclick="tableChart.exportToImage(ice.ace.jq('.chartExport')); return false;" />
-        </h:form>
-
-        <hr style="margin:1em;" />
-
-        <h:form id="canvasForm">
-            <ace:chart id="chart"
-                       animated="false"
-                       value="#{backing.barData}"
-                       stackSeries="false"
-                       defaultAxesConfig="#{backing.barDemoDefaultAxis}"
-                       xAxis="#{backing.barDemoXOneAxis}"
-                       x2Axis="#{backing.barDemoXTwoAxis}"
-                       yAxes="#{backing.barDemoYAxes}"
-                       legend="true"
-                       legendPlacement="OUTSIDE_GRID"
-                       highlighter="true"
-                       highlighterLocation="N"
-                       highlighterShowMarker="false"
-                       highlighterBringSeriesToFront="true"
-                       widgetVar="barChart" />
-            <h:commandButton value="Export"
-                             onclick="barChart.exportToImage(ice.ace.jq('.chartExport')); return false;" />
-        </h:form>
-
-        <hr style="margin:1em;" />
-
-        <h:form id="pieForm">
-            <ace:chart id="chart"
-                       animated="false"
-                       value="#{backing.pieData}"
-                       widgetVar="pieChart"/>
-            <h:commandButton value="Export"
-                             onclick="pieChart.exportToImage(ice.ace.jq('.chartExport')); return false;" />
-        </h:form>
-
-        <hr style="margin:1em;" />
-
         <h:form id="donutForm">
             <ace:chart id="chart"
                        animated="false"
-                       value="#{backing.donutData}"
+                       value="#{chartDonutBean.donutData}"
                        widgetVar="donutChart" />
-            <h:commandButton value="Export"
+            <h:commandButton value="Export as Image"
                              onclick="donutChart.exportToImage(ice.ace.jq('.chartExport')); return false;" />
         </h:form>
-
-        <hr style="margin:1em;" />
-
-        <h:form id="ohlcForm">
-            <ace:chart id="chart"
-                       animated="false"
-                       value="#{backing.ohlcData}"
-                       widgetVar="ohlcChart"
-                       xAxis="#{backing.ohlcXAxis}"
-                       yAxes="#{backing.ohlcYAxes}"
-                       highlighter="true"
-                       highlighterShowMarker="false"
-                       highlighterAxes="XY"
-                       highlighterYValueCount="4"
-                       highlighterFormatString="#{backing.formatString}"/>
-            <h:commandButton value="Export"
-                             onclick="ohlcChart.exportToImage(ice.ace.jq('.chartExport')); return false;" />
-        </h:form>
-
-        <hr style="margin:1em;" />
-
+        
         <h:graphicImage styleClass="chartExport" />
     </ui:define>
 </ui:composition>
