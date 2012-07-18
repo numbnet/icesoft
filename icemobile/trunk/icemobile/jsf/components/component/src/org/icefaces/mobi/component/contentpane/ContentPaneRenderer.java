@@ -74,7 +74,7 @@ public class ContentPaneRenderer extends BaseLayoutRenderer {
        //     String contentSingleClass = ContentPane.CONTENT_SINGLE_HIDDEN_CLASS;
 
             // apply default style class for panel-stack for singleView & menu the js will do so.
-            if (stack.getLayoutMenuId()==null || stack.getLayoutMenuId().equals("")) {
+            if (stack.getContentMenuId()==null || stack.getContentMenuId().equals("")) {
                 writer.writeAttribute("class", classToWrite, "class");
             }
         }
@@ -175,7 +175,6 @@ public class ContentPaneRenderer extends BaseLayoutRenderer {
                // user specified style class
          String userDefinedClass = pane.getStyleClass();
          if (userDefinedClass != null && userDefinedClass.length() > 0){
-              styleClass.append(" ").append(userDefinedClass);
               handleClass+= " " + userDefinedClass;
               pointerClass+=" " + userDefinedClass;
          }
