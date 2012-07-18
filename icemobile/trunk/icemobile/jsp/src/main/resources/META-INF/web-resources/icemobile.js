@@ -931,7 +931,7 @@ ice.mobi.panelpopup = {
         }
 
         this.visible[clientId] = true;
-        this.updateHidden(clientId, true);
+//        this.updateHidden(clientId, true);
     },
     // only called when in client side mode
     close:function (clientId) {
@@ -955,12 +955,12 @@ ice.mobi.panelpopup = {
         }
 
         this.visible[clientId] = false;
-        this.updateHidden(clientId, false);
+//        this.updateHidden(clientId, false);
     },
-    updateHidden:function (clientId, visible) {
-        var hidden = document.getElementById(clientId);
+    updateHidden:function (clientId, value) {
+        var hidden = document.getElementById(clientId + "_hidden");
         if (hidden) {
-            hidden.value = visible;
+            hidden.value = value;
         }
     },
     unload:function (clientId) {
