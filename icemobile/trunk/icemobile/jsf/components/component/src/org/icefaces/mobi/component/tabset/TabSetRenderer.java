@@ -57,7 +57,7 @@ public class TabSetRenderer extends BaseLayoutRenderer {
                         String newId = component.getChildren().get(index).getId();
                         tabset.setCurrentId(newId);
                         component.queueEvent(new ValueChangeEvent(component, oldId, newId));
-                        tabset.setUpdatePropScriptTag(true);
+                       // tabset.setUpdatePropScriptTag(true);
                         //TO Do decode behaviors for mobi ajax support
                     }
                 }
@@ -204,15 +204,14 @@ public class TabSetRenderer extends BaseLayoutRenderer {
         writer.writeAttribute("id", clientId + "_script", "id");
         writer.startElement("script", null);
         writer.writeAttribute("text", "text/javascript", null);
+        int hashcode = Utils.generateHashCode(System.currentTimeMillis());
         StringBuilder cfg = new StringBuilder("{singleSubmit: ");
         cfg.append(tabset.isSingleSubmit());
         /*     boolean autoheight = tabset.isAutoHeight();  */
         cfg.append(", tIndex: ").append(idIndex.getIndex());
+        cfg.append(", hash: ").append(hashcode);
         if (null!=height){
             cfg.append(",height: '").append(height).append("'");
-        }
-        if (tabset.isUpdatePropScriptTag()){
-             cfg.append(", stmp: ").append(System.currentTimeMillis());
         }
         cfg.append("}");
         //just have to add behaviors if we are going to use them.
