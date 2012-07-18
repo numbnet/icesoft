@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright 2004-2012 ICEsoft Technologies Canada Corp.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the
+  ~ License. You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an "AS
+  ~ IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+  ~ express or implied. See the License for the specific language
+  ~ governing permissions and limitations under the License.
+  -->
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                xmlns:ace="http://www.icefaces.org/icefaces/components"
+                xmlns:ice="http://www.icesoft.com/icefaces/component"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="/resources/templates/content-template.xhtml">
+
+    <ui:param name="title" value="#{msgs[chartDynamicBean.title]}"/>
+    <ui:param name="description" value="#{msgs[chartDynamicBean.description]}"/>
+    <ui:param name="resourceValue" value="#{chartDynamicBean.exampleResource}"/>
+
+    <ui:param name="wikiResources" value="#{chartBeanResources.wikiResources}"/>
+    <ui:param name="tldResources" value="#{chartBeanResources.tldResources}"/>
+
+    <ui:define name="example">
+        <ui:param value="#{chartBean}" name="backing" />
+
+        <h:form id="form">
+            <ace:dataTable id="table"
+                    value="#{backing.tableData}" var="row"
+                    stateMap="#{backing.rowStateMap}"
+                    selectionMode="single"
+                    rowSelectListener="#{backing.redrawChartListener}"
+                    rowUnselectListener="#{backing.clearChartListener}">
+                <ace:ajax event="select" render="@this form:chart" />
+                <ace:column headerText="A">
+                    #{row[0]}
+                </ace:column>
+                <ace:column headerText="B">
+                    #{row[1]}
+                </ace:column>
+                <ace:column headerText="C">
+                    #{row[2]}
+                </ace:column>
+                <ace:column headerText="D">
+                    #{row[3]}
+                </ace:column>
+            </ace:dataTable>
+            <ace:chart id="chart"
+                       animated="false"
+                       value="#{backing.lineData}"
+                       stackSeries="false"
+                       xAxis="#{backing.tableDemoAxis}"
+                       legend="true"
+                       legendLocation="NW"
+                       highlighter="true"
+                       highlighterAxes="Y"
+                       highlighterShowMarker="false"
+                       pointChangeListener="#{backing.pointChange}"
+                       widgetVar="tableChart">
+                <ace:ajax render="form:table" event="dragStop"/>
+            </ace:chart>
+            <h:commandButton value="Export"
+                             onclick="tableChart.exportToImage(ice.ace.jq('.chartExport')); return false;" />
+        </h:form>
+
+        <hr style="margin:1em;" />
+
+        <h:form id="canvasForm">
+            <ace:chart id="chart"
+                       animated="false"
+                       value="#{backing.barData}"
+                       stackSeries="false"
+                       defaultAxesConfig="#{backing.barDemoDefaultAxis}"
+                       xAxis="#{backing.barDemoXOneAxis}"
+                       x2Axis="#{backing.barDemoXTwoAxis}"
+                       yAxes="#{backing.barDemoYAxes}"
+                       legend="true"
+                       legendPlacement="OUTSIDE_GRID"
+                       highlighter="true"
+                       highlighterLocation="N"
+                       highlighterShowMarker="false"
+                       highlighterBringSeriesToFront="true"
+                       widgetVar="barChart" />
+            <h:commandButton value="Export"
+                             onclick="barChart.exportToImage(ice.ace.jq('.chartExport')); return false;" />
+        </h:form>
+
+        <hr style="margin:1em;" />
+
+        <h:form id="pieForm">
+            <ace:chart id="chart"
+                       animated="false"
+                       value="#{backing.pieData}"
+                       widgetVar="pieChart"/>
+            <h:commandButton value="Export"
+                             onclick="pieChart.exportToImage(ice.ace.jq('.chartExport')); return false;" />
+        </h:form>
+
+        <hr style="margin:1em;" />
+
+        <h:form id="donutForm">
+            <ace:chart id="chart"
+                       animated="false"
+                       value="#{backing.donutData}"
+                       widgetVar="donutChart" />
+            <h:commandButton value="Export"
+                             onclick="donutChart.exportToImage(ice.ace.jq('.chartExport')); return false;" />
+        </h:form>
+
+        <hr style="margin:1em;" />
+
+        <h:form id="ohlcForm">
+            <ace:chart id="chart"
+                       animated="false"
+                       value="#{backing.ohlcData}"
+                       widgetVar="ohlcChart"
+                       xAxis="#{backing.ohlcXAxis}"
+                       yAxes="#{backing.ohlcYAxes}"
+                       highlighter="true"
+                       highlighterShowMarker="false"
+                       highlighterAxes="XY"
+                       highlighterYValueCount="4"
+                       highlighterFormatString="#{backing.formatString}"/>
+            <h:commandButton value="Export"
+                             onclick="ohlcChart.exportToImage(ice.ace.jq('.chartExport')); return false;" />
+        </h:form>
+
+        <hr style="margin:1em;" />
+
+        <h:graphicImage styleClass="chartExport" />
+    </ui:define>
+</ui:composition>
