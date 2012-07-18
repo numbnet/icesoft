@@ -20,8 +20,9 @@ import org.icefaces.samples.showcase.metadata.annotation.*;
 import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
 
 import javax.annotation.PostConstruct;
-import javax.faces.bean.CustomScoped;
+import javax.faces.bean.ViewScoped;
 import javax.faces.bean.ManagedBean;
+import javax.faces.event.ValueChangeEvent;
 import java.io.Serializable;
 
 @ComponentExample(
@@ -44,7 +45,7 @@ import java.io.Serializable;
         }
 )
 @ManagedBean(name= TextEntryAutotabBean.BEAN_NAME)
-@CustomScoped(value = "#{window}")
+@ViewScoped
 public class TextEntryAutotabBean extends ComponentExampleImpl<TextEntryAutotabBean> implements Serializable
 {
     public static final String BEAN_NAME = "textEntryAutotabBean";
@@ -53,6 +54,8 @@ public class TextEntryAutotabBean extends ComponentExampleImpl<TextEntryAutotabB
     private int lastNameLength = 15;
     private int cityLength = 10;
     private int provinceLength = 2;
+    
+    private String firstName, lastName, city, province;
     
     public TextEntryAutotabBean() {
         super(TextEntryAutotabBean.class);
@@ -90,8 +93,56 @@ public class TextEntryAutotabBean extends ComponentExampleImpl<TextEntryAutotabB
         this.provinceLength = provinceLength;
     }
     
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getProvince() {
+        return province;
+    }
+
+    public void setProvince(String province) {
+        this.province = province;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+    
     @PostConstruct
     public void initMetaData() {
         super.initMetaData();
+    }
+    
+    public void firstNameChanged(ValueChangeEvent event) {
+        firstName = null;
+    }
+    
+    public void lastNameChanged(ValueChangeEvent event) {
+        lastName = null;
+    }
+    
+    public void cityChanged(ValueChangeEvent event) {
+        city = null;
+    }
+    
+    public void provinceChanged(ValueChangeEvent event) {
+        province = null;
     }
 }

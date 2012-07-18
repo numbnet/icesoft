@@ -37,28 +37,32 @@
             <ace:panel id="customizing" header="Auto Tab Customization">
                 <h:panelGrid columns="3">
                     <h:outputLabel for="fMax" value="First Name Max Length:"/>
-                    <h:inputText id="fMax" value="#{textEntryAutotabBean.firstNameLength}" maxlength="2" size="3">
+                    <h:inputText id="fMax" value="#{textEntryAutotabBean.firstNameLength}" maxlength="2" size="3"
+                                 valueChangeListener="#{textEntryAutotabBean.firstNameChanged}">
                         <f:ajax event="valueChange" render="customizing firstNameInput"/>
                         <f:validateLongRange minimum="1" maximum="99"/>
                     </h:inputText>
                     <h:message for="fMax"/>
                     
                     <h:outputLabel for="lMax" value="Last Name Max Length:"/>
-                    <h:inputText id="lMax" value="#{textEntryAutotabBean.lastNameLength}" maxlength="2" size="3">
+                    <h:inputText id="lMax" value="#{textEntryAutotabBean.lastNameLength}" maxlength="2" size="3"
+                                 valueChangeListener="#{textEntryAutotabBean.lastNameChanged}">
                         <f:ajax event="valueChange" render="customizing lastNameInput"/>
                         <f:validateLongRange minimum="1" maximum="99"/>
                     </h:inputText>
                     <h:message for="lMax"/>
                     
                     <h:outputLabel for="cMax" value="City Max Length:"/>
-                    <h:inputText id="cMax" value="#{textEntryAutotabBean.cityLength}" maxlength="2" size="3">
+                    <h:inputText id="cMax" value="#{textEntryAutotabBean.cityLength}" maxlength="2" size="3"
+                                 valueChangeListener="#{textEntryAutotabBean.cityChanged}">
                         <f:ajax event="valueChange" render="customizing cityInput"/>
                         <f:validateLongRange minimum="1" maximum="99"/>
                     </h:inputText>
                     <h:message for="cMax"/>
                     
                     <h:outputLabel for="pMax" value="Province Max Length:"/>
-                    <h:inputText id="pMax" value="#{textEntryAutotabBean.provinceLength}" maxlength="2" size="3">
+                    <h:inputText id="pMax" value="#{textEntryAutotabBean.provinceLength}" maxlength="2" size="3"
+                                 valueChangeListener="#{textEntryAutotabBean.provinceChanged}">
                         <f:ajax event="valueChange" render="customizing provinceInput"/>
                         <f:validateLongRange minimum="1" maximum="99"/>
                     </h:inputText>
@@ -68,28 +72,28 @@
         
             <ace:panel id="personalInfoInputPanel" header="Personal Info">
                 <h:panelGrid id="inputGrid" columns="1" width="100%" styleClass="textEntryInputTable">
-                    <ace:textEntry id="firstNameInput" value="#{textEntryBean.firstName}"
+                    <ace:textEntry id="firstNameInput" value="#{textEntryAutotabBean.firstName}"
                                    label="First Name:" labelPosition="left"
                                    maxlength="#{textEntryAutotabBean.firstNameLength}"
                                    autoTab="true">
                         <ace:ajax render="@this firstNameOutput firstNameMsg"/>
                     </ace:textEntry>
                     
-                    <ace:textEntry id="lastNameInput" value="#{textEntryBean.lastName}"
+                    <ace:textEntry id="lastNameInput" value="#{textEntryAutotabBean.lastName}"
                                    label="Last Name:" labelPosition="left"
                                    maxlength="#{textEntryAutotabBean.lastNameLength}"
                                    autoTab="true">
                         <ace:ajax render="@this lastNameOutput lastNameMsg"/>
                     </ace:textEntry>
 
-                    <ace:textEntry id="cityInput" value="#{textEntryBean.city}"
+                    <ace:textEntry id="cityInput" value="#{textEntryAutotabBean.city}"
                                    label="City:" labelPosition="left"
                                    maxlength="#{textEntryAutotabBean.cityLength}"
                                    autoTab="true">
                         <ace:ajax render="@this cityOutput cityMsg"/>
                     </ace:textEntry>
                     
-                    <ace:textEntry id="provinceInput" value="#{textEntryBean.province}"
+                    <ace:textEntry id="provinceInput" value="#{textEntryAutotabBean.province}"
                                    label="Province:" labelPosition="left"
                                    maxlength="#{textEntryAutotabBean.provinceLength}"
                                    autoTab="true">
@@ -106,10 +110,10 @@
             
             <ace:panel id="personalInfoOutputPanel" header="Entered data">
                 <h:panelGrid id="outputGrid" width="100%" style="text-align: left;">
-                    <h:outputText id="firstNameOutput" value="first name: #{textEntryBean.firstName}"/>
-                    <h:outputText id="lastNameOutput" value="last name: #{textEntryBean.lastName}"/>
-                    <h:outputText id="cityOutput" value="city: #{textEntryBean.city}"/>
-                    <h:outputText id="provinceOutput" value="province: #{textEntryBean.province}"/>
+                    <h:outputText id="firstNameOutput" value="first name: #{textEntryAutotabBean.firstName}"/>
+                    <h:outputText id="lastNameOutput" value="last name: #{textEntryAutotabBean.lastName}"/>
+                    <h:outputText id="cityOutput" value="city: #{textEntryAutotabBean.city}"/>
+                    <h:outputText id="provinceOutput" value="province: #{textEntryAutotabBean.province}"/>
                 </h:panelGrid>
             </ace:panel>
         </h:form>
