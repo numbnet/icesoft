@@ -18,23 +18,35 @@
 
    <form:form id="pagepanelform" method="POST" modelAttribute="pagePanelBean" style="margin-top:10px;" >
 
-    <mobi:pagePanel id="mainPage">
-        <mobi:pagePanelHeader id="mainPageHeader" >
-            Header Placeholder
+    <mobi:pagePanel>
+        <mobi:pagePanelHeader >
+            PagePanel Custom Header
         </mobi:pagePanelHeader>
 
-        <mobi:pagePanelBody id="panelBody">
+        <mobi:pagePanelBody>
 
-          <mobi:outputList id="firstList">
-           <mobi:outputListItem>
-             Approval and Reward
-           </mobi:outputListItem>
-           <mobi:outputListItem >
-             Apathy and Scorn
-           </mobi:outputListItem>
-          </mobi:outputList>
+        <mobi:outputList inset="true" id="firstList">
+            <mobi:outputListItem>
+                    <h4>ICEsoft Ice Sailer</h4>
+                      <p>Put him on the ice and watch him go!</p>
+            </mobi:outputListItem>
 
-        And finally an iterative list of items
+            <mobi:outputListItem>
+                    <h4>ICEsoft Icebreaker</h4>
+                    <p>Used icebreaker with very few dents.</p>
+            </mobi:outputListItem>
+            <mobi:outputListItem>
+                    <h4>ICEsoft Ice Skate</h4>
+                    <p>A single sharpened ice skate, size 7.</p>
+            </mobi:outputListItem>
+
+            <mobi:outputListItem>
+                    <h4>ICEsoft Ice Car</h4>
+                    <p>Beautiful ice car with metal car filling.</p>
+            </mobi:outputListItem>
+        </mobi:outputList>
+
+        <h4>Iterative list</h4>
 
           <mobi:outputList  id="pageIterator">
             <mobi:outputListItem group="true"> List of cars </mobi:outputListItem>
@@ -47,46 +59,17 @@
 
         </mobi:pagePanelBody>
 
-        <mobi:pagePanelFooter id="mainFooter" >
-           Footer Placeholder
+        <mobi:pagePanelFooter >
+           PagePanel Custom Footer
         </mobi:pagePanelFooter>
 
     </mobi:pagePanel>
   </form:form>
 
 
-		<script type="text/javascript">
-			$(document).ready(function() {
-				$("#pagepanelform").submit(function() {
-                    if (window.ice && ice.upload)  {
-                        window.ice.handleResponse = function(data)  {
-						    $("#pageContent").replaceWith(unescape(data));
-						    $('html, body').animate({ scrollTop: $("#message").offset().top }, 500);
-                        }
-                        ice.upload($(this).attr("id"));
-                        return false;  
-                    }
-
-                    var formData = new FormData(this);
-
-                    $.ajax({
-                        url: $(this).attr("action"),
-                        data: formData,
-                        cache: false,
-                        contentType: false,
-                        processData: false,
-                        type: 'POST',
-                        success: function(html) {
-						    $("#pageContent").replaceWith(html);
-						    $('html, body').animate({ scrollTop: $("#message").offset().top }, 500);
-					    }
-                    });
-
-					return false;  
-				});			
-			});
-
-		</script>
+    <script type="text/javascript">
+        MvcUtil.enhanceForm("#pagepanelform");
+    </script>
 	</div>
 <c:if test="${!ajaxRequest}">
 </body>

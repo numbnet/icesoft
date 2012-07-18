@@ -67,7 +67,7 @@ public class EchoController {
     }
 
     @RequestMapping(value = "/list")
-    public void doRequest(@ModelAttribute("ListBean") ListBean model) {
+    public void doRequest(@ModelAttribute("listBean") ListBean model) {
     }
 
     @RequestMapping(value = "/qrscan")
