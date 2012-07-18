@@ -1,3 +1,19 @@
+/*
+ * Copyright 2004-2012 ICEsoft Technologies Canada Corp.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the
+ * License. You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an "AS
+ * IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ * express or implied. See the License for the specific language
+ * governing permissions and limitations under the License.
+ */
+ 
 package org.icefaces.samples.showcase.example.ace.chart;
 
 import org.icefaces.ace.component.chart.Axis;
@@ -34,20 +50,28 @@ import java.util.List;
         // xhtml
         @ExampleResource(type = ResourceType.xhtml,
                 title="Chart.xhtml",
-                resource = "/resources/examples/ace/"+
-                        "chart/chart.xhtml"),
+                resource = "/resources/examples/ace/chart/chart.xhtml"),
         // Java Source
         @ExampleResource(type = ResourceType.java,
                 title="ChartBean.java",
-                resource = "/WEB-INF/classes/org/icefaces/samples/"+
-                        "showcase/example/ace/chart/ChartBean.java")
+                resource = "/WEB-INF/classes/org/icefaces/samples/showcase/example/ace/chart/ChartBean.java")
     }
 )
 @Menu(
     title = "menu.ace.chart.subMenu.title",
     menuLinks = {
         @MenuLink(title = "menu.ace.chart.subMenu.main",
-                isDefault = true, exampleBeanName = ChartBean.BEAN_NAME)
+                isDefault = true, exampleBeanName = ChartBean.BEAN_NAME),
+        @MenuLink(title = "menu.ace.chart.subMenu.combined",
+                exampleBeanName = ChartCombinedBean.BEAN_NAME),
+        @MenuLink(title = "menu.ace.chart.subMenu.pie",
+                exampleBeanName = ChartPieBean.BEAN_NAME),
+        @MenuLink(title = "menu.ace.chart.subMenu.donut",
+                exampleBeanName = ChartDonutBean.BEAN_NAME),
+        @MenuLink(title = "menu.ace.chart.subMenu.candlestick",
+                exampleBeanName = ChartCandlestickBean.BEAN_NAME),
+        @MenuLink(title = "menu.ace.chart.subMenu.dynamic",
+                exampleBeanName = ChartDynamicBean.BEAN_NAME)
     }
 )
 
