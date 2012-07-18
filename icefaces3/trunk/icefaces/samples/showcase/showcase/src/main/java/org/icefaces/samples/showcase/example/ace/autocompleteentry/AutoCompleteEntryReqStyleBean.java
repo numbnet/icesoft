@@ -50,8 +50,8 @@ public class AutoCompleteEntryReqStyleBean extends ComponentExampleImpl<AutoComp
     public static final String BEAN_NAME = "autoCompleteEntryReqStyleBean";
     
     private String selectedText1, selectedText2;
-    private String reqColor = "red";
-    private String optColor = "green";
+    private String reqColor = "redRS";
+    private String optColor = "greenRS";
 
     public AutoCompleteEntryReqStyleBean() 
     {
