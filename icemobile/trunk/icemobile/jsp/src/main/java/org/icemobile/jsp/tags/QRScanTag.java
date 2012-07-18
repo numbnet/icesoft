@@ -17,105 +17,12 @@
 
 package org.icemobile.jsp.tags;
 
-import javax.servlet.jsp.PageContext;
-import javax.servlet.jsp.tagext.SimpleTagSupport;
-import java.io.IOException;
-import java.io.Writer;
-import java.util.logging.Logger;
+public class QRScanTag extends DeviceTag {
 
-public class QRScanTag extends SimpleTagSupport {
-
-    private static Logger LOG = Logger.getLogger(QRScanTag.class.getName());
-
-    public void doTag() throws IOException {
-
-        PageContext pageContext = (PageContext) getJspContext();
-        boolean isEnhanced = TagUtil.isEnhancedBrowser(pageContext);
-        Writer out = pageContext.getOut();
-
-        // todo; do the -sx method of buffer detection as well.
-
-        StringBuffer buffer = new StringBuffer(TagUtil.SPAN_TAG);
-        if (!isEnhanced) {
-
-            buffer.append(">").append(TagUtil.INPUT_TAG).append(" type=\"text\"");
-            if (id != null & !"".equals(id)) {
-                buffer.append(" id=\"").append(getId()).append("\"");
-            }
-            if (name != null && !"".equals(name)) {
-                buffer.append(" name=\"").append(getName()).append("\">");
-            } else {
-                LOG.warning("QRScan tag (id: " + id + ") has no name for value submission");
-            }
-            buffer.append(TagUtil.INPUT_TAG_END).append(TagUtil.SPAN_TAG_END);
-            out.write(buffer.toString());
-            return;
-        }
-
-        buffer.append(" id=\"").append(getId()).append("\" >");
-        buffer.append(" <input type=\"button\" id=\"");
-        buffer.append(getId()).append("-button\" value=\"Scan\"");
-        buffer.append(" style=\"mobi-button mobi-button-default");
-
-        // User defined class
-        String style = getStyleClass();
-        if (style != null && !style.equals("")) {
-            buffer.append(" ").append(style);
-        }
-        buffer.append("\"");
-
-        // User defined style
-        String userStyle = getStyle();
-        if (userStyle != null && !userStyle.equals("")) {
-            buffer.append(" style=\"").append(userStyle).append("\"");
-        }
-
-        String script;
-//        if (isAuxUpload)  {
-//            script = Utils.getICEmobileSXScript("scan", getId());
-//        } else {
-        script = "ice.scan('" + getId() + "');";
-//        }
-
-        buffer.append(" onclick=\"").append(script).append("\"").append(TagUtil.INPUT_TAG_END);
-        out.write(buffer.toString());
+    public QRScanTag()  {
+        this.command = "scan";
+        this.label = "Scan";
+        this.fallbackType = "text";
     }
 
-    private String id;
-    private String name;
-    private String style;
-    private String styleClass;
-
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getStyle() {
-        return style;
-    }
-
-    public void setStyle(String style) {
-        this.style = style;
-    }
-
-    public String getStyleClass() {
-        return styleClass;
-    }
-
-    public void setStyleClass(String styleClass) {
-        this.styleClass = styleClass;
-    }
 }

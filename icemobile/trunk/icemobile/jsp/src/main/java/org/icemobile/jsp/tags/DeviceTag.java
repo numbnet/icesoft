@@ -19,6 +19,7 @@ package org.icemobile.jsp.tags;
 
 import javax.servlet.jsp.tagext.SimpleTagSupport;
 import javax.servlet.jsp.PageContext;
+import javax.servlet.http.HttpSession;
 
 import java.io.Writer;
 import java.io.IOException;
@@ -59,9 +60,16 @@ public class DeviceTag extends SimpleTagSupport {
                 out.write("<input type='button' data-id='" + id + "' ");
                 if (null != params)  {
                     out.write("data-params='" + params + "' ");
-                } 
+                }
+
+                HttpSession session = pageContext.getSession();
+                if (null != session)  {
+                    String sessionID = session.getId();
+                    out.write("data-jsessionid='" + sessionID + "' ");
+                }
+
                 writeStandardAttributes(out);
-                out.write("data-command='" + command + "' onclick='ice.mobilesx(this)' ");
+                out.write(" data-command='" + command + "' onclick='ice.mobilesx(this)' ");
                 out.write(" value='" + label + " ...'>");
             }
         }

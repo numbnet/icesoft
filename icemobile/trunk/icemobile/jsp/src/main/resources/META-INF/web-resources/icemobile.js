@@ -104,6 +104,7 @@ ice.mobilesx = function (element) {
     var command = element.getAttribute("data-command");
     var id = element.getAttribute("data-id");
     var params = element.getAttribute("data-params");
+    var sessionid = element.getAttribute("data-jsessionid");
     var windowLocation = window.location;
     var barURL = windowLocation.toString();
     var baseURL = barURL.substring(0,
@@ -128,9 +129,14 @@ ice.mobilesx = function (element) {
         params = "ub=" + escape(baseURL) + ampchar + params;
     }
 
+    var sessionidClause = "";
+    if ("" != sessionid)  {
+        sessionidClause = "&JSESSIONID=" + escape(sessionid);
+    }
     var sxURL = "icemobile://c=" + escape(command +
             "?id=" + id + ampchar + params) +
             "&u=" + escape(uploadURL) + "&r=" + escape(returnURL) +
+            sessionidClause +
             "&p=" + escape(ice.mobiserial(formID, false));
 
     window.location = sxURL;
