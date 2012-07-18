@@ -32,7 +32,7 @@ import javax.faces.component.UIComponent;
         rendererType = "org.icefaces.ViewSelectorRenderer",
         componentFamily = "org.icefaces.ViewSelector",
         tlddoc = "View select allows a developer to specify content for a small" +
-                "view or a large view.  The component will render the respective" +
+                "view or a large view.  The component will render the respective " +
                 "content depending on which view was detected."
 )
 
