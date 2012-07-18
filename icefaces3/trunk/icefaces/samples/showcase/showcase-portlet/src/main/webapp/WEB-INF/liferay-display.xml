@@ -36,6 +36,11 @@
                 <portlet id="autoCompleteEntryRows"/>
                 <portlet id="autoCompleteEntrySelect"/>
                 <portlet id="chart"/>
+                <portlet id="chartCandlestick"/>
+                <portlet id="chartCombined"/>
+                <portlet id="chartDonut"/>
+                <portlet id="chartDynamic"/>
+                <portlet id="chartPie"/>
                 <portlet id="checkboxButton"/>
                 <portlet id="confirmationDialog"/>
                 <portlet id="confirmationDialogEffect"/>
@@ -92,12 +97,14 @@
                 <portlet id="linkButton"/>
                 <portlet id="list"/>
                 <portlet id="listBlock"/>
+                <portlet id="listBlockComplex"/>
                 <portlet id="listDrag"/>
                 <portlet id="listDual"/>
                 <portlet id="listMulti"/>
                 <portlet id="listReorder"/>
+                <portlet id="listReorderAjax"/>
                 <portlet id="listSelection"/>
-                <!--<portlet id="logger"/>-->
+                <portlet id="listSelectionAjax"/>
                 <portlet id="maskedEntry"/>
                 <portlet id="maskedIndicator"/>
                 <portlet id="maskedLabel"/>

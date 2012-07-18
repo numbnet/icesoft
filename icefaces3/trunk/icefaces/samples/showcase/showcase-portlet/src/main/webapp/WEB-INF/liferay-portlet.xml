@@ -99,6 +99,36 @@
         <ajaxable>false</ajaxable>
     </portlet>
     <portlet>
+        <portlet-name>chartCandlestick</portlet-name>
+        <instanceable>false</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+
+    <portlet>
+        <portlet-name>chartCombined</portlet-name>
+        <instanceable>false</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+
+    <portlet>
+        <portlet-name>chartDonut</portlet-name>
+        <instanceable>false</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+
+    <portlet>
+        <portlet-name>chartDynamic</portlet-name>
+        <instanceable>false</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+
+    <portlet>
+        <portlet-name>chartPie</portlet-name>
+        <instanceable>false</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+
+    <portlet>
         <portlet-name>checkboxButton</portlet-name>
         <instanceable>false</instanceable>
         <ajaxable>false</ajaxable>
@@ -381,6 +411,12 @@
         <ajaxable>false</ajaxable>
     </portlet>
     <portlet>
+        <portlet-name>listBlockComplex</portlet-name>
+        <instanceable>false</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+
+    <portlet>
         <portlet-name>listDrag</portlet-name>
         <instanceable>false</instanceable>
         <ajaxable>false</ajaxable>
@@ -400,16 +436,25 @@
         <instanceable>false</instanceable>
         <ajaxable>false</ajaxable>
     </portlet>
+
+    <portlet>
+        <portlet-name>listReorderAjax</portlet-name>
+        <instanceable>false</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+
     <portlet>
         <portlet-name>listSelection</portlet-name>
         <instanceable>false</instanceable>
         <ajaxable>false</ajaxable>
     </portlet>
-    <!--<portlet>-->
-        <!--<portlet-name>logger</portlet-name>-->
-        <!--<instanceable>false</instanceable>-->
-        <!--<ajaxable>false</ajaxable>-->
-    <!--</portlet>-->
+
+    <portlet>
+        <portlet-name>listSelectionAjax</portlet-name>
+        <instanceable>false</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+
     <portlet>
         <portlet-name>maskedEntry</portlet-name>
         <instanceable>false</instanceable>

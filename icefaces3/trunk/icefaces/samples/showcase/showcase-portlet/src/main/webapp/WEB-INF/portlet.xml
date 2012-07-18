@@ -324,6 +324,117 @@
             <keywords>ICEfaces Component Suite Showcase ACE Chart</keywords>
         </portlet-info>
     </portlet>
+
+    <portlet>
+        <portlet-name>chartCandlestick</portlet-name>
+        <display-name>ACE Chart Candlestick</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/portlet-view.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/chart/chartCandlestick.xhtml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>ACE Chart Candlestick</title>
+            <keywords>ICEfaces ACE Component Showcase Chart Candlestick</keywords>
+        </portlet-info>
+    </portlet>
+
+    <portlet>
+        <portlet-name>chartCombined</portlet-name>
+        <display-name>ACE Chart Combined</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/portlet-view.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/chart/chartCombined.xhtml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>ACE Chart Combined</title>
+            <keywords>ICEfaces ACE Component Showcase Chart Combined</keywords>
+        </portlet-info>
+    </portlet>
+
+    <portlet>
+        <portlet-name>chartDonut</portlet-name>
+        <display-name>ACE Chart Donut</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/portlet-view.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/chart/chartDonut.xhtml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>ACE Chart Donut</title>
+            <keywords>ICEfaces ACE Component Showcase Chart Donut</keywords>
+        </portlet-info>
+    </portlet>
+
+    <portlet>
+        <portlet-name>chartDynamic</portlet-name>
+        <display-name>ACE Chart Dynamic</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/portlet-view.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/chart/chartDynamic.xhtml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>ACE Chart Dynamic</title>
+            <keywords>ICEfaces ACE Component Showcase Chart Dynamic</keywords>
+        </portlet-info>
+    </portlet>
+
+    <portlet>
+        <portlet-name>chartPie</portlet-name>
+        <display-name>ACE Chart Pie</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/portlet-view.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/chart/chartPie.xhtml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>ACE Chart Pie</title>
+            <keywords>ICEfaces ACE Component Showcase Chart Pie</keywords>
+        </portlet-info>
+    </portlet>
+
     <portlet>
         <portlet-name>checkboxButton</portlet-name>
         <display-name>ACE Checkbox Button</display-name>
@@ -1501,6 +1612,29 @@
             <keywords>ICEfaces Component Suite Showcase ACE List Block</keywords>
         </portlet-info>
     </portlet>
+
+    <portlet>
+        <portlet-name>listBlockComplex</portlet-name>
+        <display-name>ACE List Block Complex</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/portlet-view.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/list/listBlockComplex.xhtml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>ACE List Block Complex</title>
+            <keywords>ICEfaces ACE Component Showcase List Block Complex</keywords>
+        </portlet-info>
+    </portlet>
+
     <portlet>
         <portlet-name>listDrag</portlet-name>
         <display-name>ACE List Drag</display-name>
@@ -1585,6 +1719,29 @@
             <keywords>ICEfaces Component Suite Showcase ACE List Reorder</keywords>
         </portlet-info>
     </portlet>
+
+    <portlet>
+        <portlet-name>listReorderAjax</portlet-name>
+        <display-name>ACE List Reorder Ajax</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/portlet-view.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/list/listReorderAjax.xhtml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>ACE List Reorder Ajax</title>
+            <keywords>ICEfaces ACE Component Showcase List Reorder Ajax</keywords>
+        </portlet-info>
+    </portlet>
+
     <portlet>
         <portlet-name>listSelection</portlet-name>
         <display-name>ACE List Selection</display-name>
@@ -1606,27 +1763,29 @@
             <keywords>ICEfaces Component Suite Showcase ACE List Selection</keywords>
         </portlet-info>
     </portlet>
-    <!--<portlet>-->
-        <!--<portlet-name>logger</portlet-name>-->
-        <!--<display-name>ACE Logger</display-name>-->
-        <!--<portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>-->
-        <!--<init-param>-->
-            <!--<name>javax.portlet.faces.defaultViewId.view</name>-->
-            <!--<value>/portlet-view.xhtml</value>-->
-        <!--</init-param>-->
-        <!--<init-param>-->
-            <!--<name>org.icefaces.demo.viewPath</name>-->
-            <!--<value>/resources/examples/ace/logger/logger.xhtml</value>-->
-        <!--</init-param>-->
-        <!--<supports>-->
-            <!--<mime-type>text/html</mime-type>-->
-            <!--<portlet-mode>view</portlet-mode>-->
-        <!--</supports>-->
-        <!--<portlet-info>-->
-            <!--<title>ACE Logger</title>-->
-            <!--<keywords>ICEfaces Component Suite Showcase ACE Logger</keywords>-->
-        <!--</portlet-info>-->
-    <!--</portlet>-->
+
+    <portlet>
+        <portlet-name>listSelectionAjax</portlet-name>
+        <display-name>ACE List Selection Ajax</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/portlet-view.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/list/listSelectionAjax.xhtml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>ACE List Selection Ajax</title>
+            <keywords>ICEfaces ACE Component Showcase List Selection Ajax</keywords>
+        </portlet-info>
+    </portlet>
+
     <portlet>
         <portlet-name>maskedEntry</portlet-name>
         <display-name>ACE Masked Entry</display-name>
