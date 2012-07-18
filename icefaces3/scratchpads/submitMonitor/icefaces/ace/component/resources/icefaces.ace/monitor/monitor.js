@@ -71,9 +71,10 @@
             var evenType = e.type;
             var triggeringElement = e.srcElement ? e.srcElement : e.target;
             var capturingElement = element;
-            alert('event [type: ' + evenType +
-                  ', triggered by: ' + identifier(triggeringElement) || triggeringElement +
-                  ', captured in: ' + identifier(capturingElement) || capturingElement + '] was discarded.');
+            console.log('event [type: ' + evenType +
+                    ', triggered by: ' + triggeringElement.id || triggeringElement +
+                    ', captured in: ' + capturingElement.id || capturingElement + '] was discarded.');
+            e.preventDefault();
         }
     }
 
