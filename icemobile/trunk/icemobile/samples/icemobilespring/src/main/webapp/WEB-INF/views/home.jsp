@@ -89,6 +89,9 @@
                 padding: 0;
             }
         }
+        span.mobitab {
+            padding: 10px;
+        }
     </style>
 </head>
 <body>

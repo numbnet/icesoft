@@ -16,10 +16,7 @@
 </c:if>
     <div class="ajaxzone">
 
-		<h2>Various Spring MVC tags</h2>
-		<p>
-			Accordion Example
-		</p>
+		<h2>Accordion</h2>
 		<form:form id="accordionform" method="POST"  modelAttribute="accordionBean" cssClass="cleanform">
 
             <mobi:accordion id="accordionOne" name="accordionOne" selectedId="${accordionBean.accordionOne}" autoheight="true">
@@ -27,15 +24,15 @@
                     <mobi:contentPane title="First drop down item" id="tab1" >
 
                        <mobi:commandButton name="submitB" buttonType="important"
-                                    value="Button 1"/>
+                                    value="Process"/>
                     </mobi:contentPane>
                     <mobi:contentPane title="Second drop down item" id="tab2">
                         <mobi:commandButton name="submitC" buttonType="important"
-                                    value="Button 2"/>
+                                    value="Submit"/>
                     </mobi:contentPane>
                     <mobi:contentPane title="Third drop down item" id="tab3">
                        <mobi:commandButton name="submitA" buttonType="important"
-                                    value="Button 3"/>
+                                    value="OK"/>
                     </mobi:contentPane>
                 </mobi:content>
             </mobi:accordion>
