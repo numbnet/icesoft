@@ -16,12 +16,15 @@
 
 package org.icefaces.samples.showcase.example.ace.chart;
 
+import org.icefaces.ace.model.chart.SectorSeries;
 import org.icefaces.samples.showcase.metadata.annotation.*;
 import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
+import java.util.ArrayList;
+import java.util.List;
 import java.io.Serializable;
 
 @ComponentExample(
@@ -48,8 +51,31 @@ public class ChartPieBean extends ComponentExampleImpl<ChartPieBean> implements 
 {
     public static final String BEAN_NAME = "chartPieBean";
     
+    private List<SectorSeries> pieData = new ArrayList<SectorSeries>() {{
+        add(new SectorSeries() {{
+            add("Heavy Industry", 12);
+            add("Retail", 9);
+            add("Light Industry", 14);
+            add("Out of Home", 16);
+            add("Commuting", 7);
+            add("Orientation", 9);
+            setShowDataLabels(true);
+            //setDataLabels("value");
+            setSliceMargin(4);
+            setFill(false);
+        }});
+    }};
+    
     public ChartPieBean() {
         super(ChartPieBean.class);
+    }
+    
+    public List<SectorSeries> getPieData() {
+        return pieData;
+    }
+
+    public void setPieData(List<SectorSeries> pieData) {
+        this.pieData = pieData;
     }
     
     @PostConstruct

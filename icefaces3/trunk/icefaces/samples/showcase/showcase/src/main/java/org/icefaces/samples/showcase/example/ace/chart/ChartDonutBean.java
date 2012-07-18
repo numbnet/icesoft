@@ -16,12 +16,15 @@
 
 package org.icefaces.samples.showcase.example.ace.chart;
 
+import org.icefaces.ace.model.chart.SectorSeries;
 import org.icefaces.samples.showcase.metadata.annotation.*;
 import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
+import java.util.ArrayList;
+import java.util.List;
 import java.io.Serializable;
 
 @ComponentExample(
@@ -48,6 +51,22 @@ public class ChartDonutBean extends ComponentExampleImpl<ChartDonutBean> impleme
 {
     public static final String BEAN_NAME = "chartDonutBean";
     
+    private List<SectorSeries> donutData = new ArrayList<SectorSeries>() {{
+        add(new SectorSeries() {{
+            add("a", 6);
+            add("b", 8);
+            add("c", 14);
+            add("d", 20);
+            setType(SectorType.DONUT);
+        }});
+        add(new SectorSeries() {{
+            add("a", 8);
+            add("b", 12);
+            add("c", 6);
+            add("d", 9);
+        }});
+    }};
+    
     public ChartDonutBean() {
         super(ChartDonutBean.class);
     }
@@ -55,5 +74,13 @@ public class ChartDonutBean extends ComponentExampleImpl<ChartDonutBean> impleme
     @PostConstruct
     public void initMetaData() {
         super.initMetaData();
+    }
+    
+    public List<SectorSeries> getDonutData() {
+        return donutData;
+    }
+
+    public void setDonutData(List<SectorSeries> donutData) {
+        this.donutData = donutData;
     }
 }
