@@ -20,21 +20,12 @@
 
         <mobi:fieldSetGroup id="groupOne">
             <mobi:fieldSetRow style="padding-bottom:10px;">
-                The list component shown without and with insets.
+                The list component with and without insets.
             </mobi:fieldSetRow>
         </mobi:fieldSetGroup>
         <p/>
 
-
-        <mobi:outputList id="firstList">
-            <mobi:outputListItem>
-                Approval and Reward
-            </mobi:outputListItem>
-            <mobi:outputListItem >
-                Apathy and Scorn
-            </mobi:outputListItem>
-        </mobi:outputList>
-
+         <h4>List with inset and Grouping</h4>
 
         <mobi:outputList inset="true" id="secondList">
             <mobi:outputListItem group="true" >
@@ -42,52 +33,48 @@
             </mobi:outputListItem>
 
             <mobi:outputListItem>
-
-                    <h3>ICEsoft Ice Sailer</h3>
+                    <h4>ICEsoft Ice Sailer</h4>
                       <p>Put him on the ice and watch him go!</p>
             </mobi:outputListItem>
 
             <mobi:outputListItem>
-                    <h3>ICEsoft Icebreaker</h3>
+                    <h4>ICEsoft Icebreaker</h4>
                     <p>Used icebreaker with very few dents.</p>
             </mobi:outputListItem>
 
-            <mobi:outputListItem>
-                    <h3>ICEsoft Ice Skate</h3>
-                    <p>A single sharpened ice skate, size 7.</p>
-            </mobi:outputListItem>
-
-            <mobi:outputListItem>
-                    <h3>ICEsoft Ice Car</h3>
-                    <p>Beautiful ice car with metal car filling.</p>
-            </mobi:outputListItem>
         </mobi:outputList>
 
-         <h4>Here is an list with no inset but yes Grouping</h4>
+         <h4>List with grouping and no inset</h4>
 
         <mobi:outputList inset="false" id="thirdList" >
             <mobi:outputListItem group="true">
                 Thumbnail display
             </mobi:outputListItem>
             <mobi:outputListItem>
-                    <h3>ICEsoft Ice Sailer</h3>
+                    <h4>ICEsoft Ice Sailer</h4>
                       <p>Put him on the ice and watch him go!</p>
             </mobi:outputListItem>
             <mobi:outputListItem>
-                    <h3>ICEsoft Icebreaker</h3>
+                    <h4>ICEsoft Icebreaker</h4>
                     <p>Used icebreaker with very few dents.</p>
-            </mobi:outputListItem>
-            <mobi:outputListItem>
-                    <h3>ICEsoft Ice Skate</h3>
-                    <p>A single sharpened ice skate, size 7.</p>
-            </mobi:outputListItem>
-            <mobi:outputListItem>
-                    <h3>ICEsoft Ice Car</h3>
-                    <p>Beautiful ice car with metal car filling.</p>
             </mobi:outputListItem>
         </mobi:outputList>
 
-        <h3> And finally an iterative list of items (Grouping on by default) </h3>
+         <h4>List with no inset or grouping</h4>
+
+        <mobi:outputList id="firstList">
+            <mobi:outputListItem>
+                    <h4>ICEsoft Ice Sailer</h4>
+                      <p>Put him on the ice and watch him go!</p>
+            </mobi:outputListItem>
+
+            <mobi:outputListItem>
+                    <h4>ICEsoft Icebreaker</h4>
+                    <p>Used icebreaker with very few dents.</p>
+            </mobi:outputListItem>
+        </mobi:outputList>
+
+        <h4>Iterative list (Grouping on by default) </h4>
 
         <mobi:outputList  id="listIterator">
           <mobi:outputListItem group="true"> List of cars </mobi:outputListItem>
