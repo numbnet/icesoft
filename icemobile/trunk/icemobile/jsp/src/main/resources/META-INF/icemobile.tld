@@ -235,7 +235,6 @@
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
         </attribute>
-        <!-- TODO: determine the xact nature of the children -->
     </tag>
 
     <tag>
@@ -927,14 +926,14 @@
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
         </attribute>
-        <!-- Tag provide a close button, and if so, what label? -->
+        <!-- Tag provide a close button, and if so, what label -->
         <attribute>
             <name>autoCloseButton</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
         </attribute>
         <attribute>
-            <name>closeLabel</name>
+            <name>closeButtonLabel</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
         </attribute>
