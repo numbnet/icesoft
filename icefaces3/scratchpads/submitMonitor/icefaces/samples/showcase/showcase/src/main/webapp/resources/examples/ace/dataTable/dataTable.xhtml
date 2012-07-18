@@ -40,12 +40,14 @@
                 /* Important required because row */
                 .ui-datatable-odd {background-color:lightgray !important;}
             </style>
+            <ace:submitMonitor />
            <ace:dataTable id="carTable"
                           value="#{dataTableBean.carsData}"
                           var="car"
                           paginator="true"
                           paginatorPosition="bottom"
                           rows="10">
+               <ace:ajax event="page" listener="#{dataTableBean.longRunningListener}" />
                 <ace:column id="id" headerText="ID" sortBy="#{car.id}"
                             filterBy="#{car.id}" filterMatchMode="contains">
                     <h:outputText id="idCell" value="#{car.id}"/>
