@@ -19,7 +19,7 @@
 		<h2>Tabset</h2>
 		<form:form id="tabsetform" method="POST"  modelAttribute="tabsetBean" >
 
-            <mobi:tabset id="tabsetOne" selectedTab="${tabsetBean.tabsetOne}">
+            <mobi:tabset id="tabsetOne" selectedTab="${tabsetBean.tabsetOne}" name="tabsetOne">
                 <mobi:headers>
               	    <mobi:header><span class="mobitab">First</span></mobi:header>
               	    <mobi:header><span class="mobitab">Second</span></mobi:header>
