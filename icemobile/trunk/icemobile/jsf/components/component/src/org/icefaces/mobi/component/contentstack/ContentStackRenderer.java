@@ -40,7 +40,7 @@ public class ContentStackRenderer extends BaseLayoutRenderer {
            ContentStack stack = (ContentStack) component;
            String clientId = stack.getClientId(facesContext);
            Map<String, String> params = facesContext.getExternalContext().getRequestParameterMap();
-         // ajax behavior comes from LayoutMenu which sends the currently selected value
+         // ajax behavior comes from ContentStackMenu which sends the currently selected value
            String indexStr = params.get(clientId + "_hidden");
            String oldIndex = stack.getCurrentId();
            if( null != indexStr) {
@@ -62,8 +62,16 @@ public class ContentStackRenderer extends BaseLayoutRenderer {
          writer.startElement(HTML.DIV_ELEM, uiComponent);
          writer.writeAttribute(HTML.ID_ATTR, clientId, HTML.ID_ATTR);
          //if layoutMenu is used then another div with panes Id is used
-         if (container.getLayoutMenuId()!=null){
-             boolean singleView = container.isSingleView();
+         if (container.getContentMenuId()!=null){
+             if (null == container.getSingleView()){
+                 UIComponent stackMenuComp =  Utils.findChildComponent(uiComponent, container.getContentMenuId());
+                 if (stackMenuComp !=null){
+                    container.setSingleView(true);
+                 }else {
+                     container.setSingleView(false);
+                 }
+             }
+             boolean singleView = container.getSingleView();
              if (singleView){
                  writer.writeAttribute("class", ContentStack.CONTAINER_SINGLEVIEW_CLASS, null);
              }
@@ -96,7 +104,7 @@ public class ContentStackRenderer extends BaseLayoutRenderer {
          ContentStack stack = (ContentStack) uiComponent;
          this.encodeHidden(facesContext, uiComponent);
          writer.endElement(HTML.DIV_ELEM);
-         if (stack.getLayoutMenuId() !=null){
+         if (stack.getContentMenuId() !=null){
              encodeScript(facesContext, uiComponent);
              writer.endElement(HTML.DIV_ELEM);
          }
@@ -115,17 +123,19 @@ public class ContentStackRenderer extends BaseLayoutRenderer {
           String selectedPaneClientId = null;
           String homeId = null;
           boolean client = false;
+          int hashcode = Utils.generateHashCode(System.currentTimeMillis());
           UIComponent selPane = stack.findComponent(selectedPaneId);
           StringBuilder sb = new StringBuilder("mobi.layoutMenu.initClient('").append(clientId).append("'");
           sb.append(",{stackId: '").append(clientId).append("'");
           sb.append(",selectedId: '").append(selectedPaneId).append("'");
-          sb.append(", single: ").append(stack.isSingleView());
+          sb.append(", single: ").append(stack.getSingleView());
+          sb.append(",hash: ").append(hashcode);
           if (null != selPane){
               selectedPaneClientId =  selPane.getClientId(facesContext);
               sb.append(",selClientId: '").append(selectedPaneClientId).append("'");
               client = ((ContentPane)selPane).isClient();
           }
-          UIComponent menu = stack.findComponent(stack.getLayoutMenuId());
+          UIComponent menu = stack.findComponent(stack.getContentMenuId());
           if (null!=menu){
               homeId = menu.getClientId(facesContext);
           }
@@ -133,13 +143,6 @@ public class ContentStackRenderer extends BaseLayoutRenderer {
           sb.append(",client: ").append(client);
           sb.append("});");
           writer.write(sb.toString());
-           /*  if (!menu.getMenuItemCfg().isEmpty()){
-                 for (Map.Entry<String, StringBuilder> entry: menu.getMenuItemCfg().entrySet()){
-                  //    logger.info(" item cfg prints="+entry.getValue().toString());
-                     StringBuilder jsCall = new StringBuilder("mobi.layoutmenu.initCfg('").append(clientId).append("',");
-                     jsCall.append(entry.getValue());
-                      writer.write(jsCall.toString());
-         }   }*/
          writer.endElement("script");
          writer.endElement("span");
     }

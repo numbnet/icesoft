@@ -15,13 +15,13 @@
 
 </h:head>
 <h:body>
-    <mobi:contentStack id="stack1" currentId="#{contentMenuBean.selectedPane}"  singleView="true"  layoutMenuId="mnu" >
+    <mobi:contentStack id="stack1" currentId="#{contentMenuBean.selectedPane}"  singleView="true"  contentMenuId="mnu" >
         <mobi:contentPane id="mnuPanel" client="true" menuOrHome="true">
           <h:form id="menuForm">
-            <mobi:layoutMenu  id="mnu" value="#{contentMenuBean.menuCList}" var="item" contentStackId="stack1"
+            <mobi:contentStackMenu  id="mnu" value="#{contentMenuBean.menuCList}" var="item" contentStackId="stack1"
                   selectedPane="#{contentMenuBean.selectedPane}">
-               <mobi:layoutMenuItem label="#{item.label}" value="#{item.value}"/>
-            </mobi:layoutMenu>
+               <mobi:contentMenuItem label="#{item.label}" value="#{item.value}"/>
+            </mobi:contentStackMenu>
           </h:form>
       </mobi:contentPane>
       <mobi:contentPane id="panel1" client="true">
