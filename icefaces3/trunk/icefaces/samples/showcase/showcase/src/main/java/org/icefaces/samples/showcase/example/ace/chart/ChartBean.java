@@ -92,17 +92,15 @@ public class ChartBean extends ComponentExampleImpl<ChartBean> implements Serial
         setTickAngle(-30);
     }};
 
-    private Axis barDemoXOneAxis = new Axis() {{
+    private Axis barDemoXAxis = new Axis() {{
         setType(AxisType.CATEGORY);
     }};
 
-    private Axis[] barDemoYAxes = new Axis[] {
-        new Axis() {{
+    private Axis barDemoYAxis = new Axis() {{
             setAutoscale(true);
             setTickInterval("5");
             setLabel("USD Millions");
-        }}
-    };
+}};
 
     private Axis barDemoXTwoAxis = new Axis() {{
         setTicks(new String[] {"Nickle", "Aluminum", "Xenon", "Silver", "Sulfur", "Silicon", "Vanadium"});
@@ -117,12 +115,12 @@ public class ChartBean extends ComponentExampleImpl<ChartBean> implements Serial
         this.barData = barData;
     }
     
-    public Axis getBarDemoXOneAxis() {
-        return barDemoXOneAxis;
+    public Axis getBarDemoXAxis() {
+        return barDemoXAxis;
     }
 
-    public void setBarDemoXOneAxis(Axis barDemoXOneAxis) {
-        this.barDemoXOneAxis = barDemoXOneAxis;
+    public void setBarDemoXAxis(Axis barDemoXAxis) {
+        this.barDemoXAxis = barDemoXAxis;
     }
 
     public Axis getBarDemoDefaultAxis() {
@@ -141,12 +139,12 @@ public class ChartBean extends ComponentExampleImpl<ChartBean> implements Serial
         this.barDemoXTwoAxis = barDemoXTwoAxis;
     }
 
-    public Axis[] getBarDemoYAxes() {
-        return barDemoYAxes;
+    public Axis getBarDemoYAxis() {
+        return barDemoYAxis;
     }
 
-    public void setBarDemoYAxes(Axis[] barDemoYAxes) {
-        this.barDemoYAxes = barDemoYAxes;
+    public void setBarDemoYAxis(Axis barDemoYAxis) {
+        this.barDemoYAxis = barDemoYAxis;
     }
     
     public ChartBean() {
