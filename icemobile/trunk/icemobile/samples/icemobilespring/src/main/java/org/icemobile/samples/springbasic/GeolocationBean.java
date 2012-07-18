@@ -22,11 +22,11 @@ public class GeolocationBean {
         return new GeolocationBean();
     }
 
-    public String getGeolocation() {
+    public String getGeo1() {
         return location;
     }
 
-    public void setGeolocation(String location) {
+    public void setGeo1(String location) {
         this.location = location;
         try {
             String[] parts = location.split(",");
