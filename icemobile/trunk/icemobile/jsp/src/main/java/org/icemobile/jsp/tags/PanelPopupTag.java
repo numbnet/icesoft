@@ -78,13 +78,16 @@ public class PanelPopupTag extends TagSupport {
     public int doEndTag() throws JspTagException {
 
         Writer out = pageContext.getOut();
-        StringBuilder tag = new StringBuilder(TagUtil.INPUT_TAG);
-
-        // Not sure of this. Hidden value as receptacle for list selection?
-        tag.append(" type=\"hidden\"");
-        tag.append(" id=\"").append(getId()).append("_hidden\"");
-        tag.append(" name=\"").append(getId()).append("\"");
-        tag.append("/>");
+        StringBuilder tag = new StringBuilder();
+        if (name == null || "".equals(name)) {
+            LOG.warning("No Name attribute for PanelPopup for value submission");
+        } else {
+            tag.append(TagUtil.INPUT_TAG);
+            tag.append(" type=\"hidden\"");
+            tag.append(" id=\"").append(getId()).append("_hidden\"");
+            tag.append(" name=\"").append(getName()).append("\"");
+            tag.append("/>");
+        }
 
         tag.append(TagUtil.DIV_TAG_END);
         tag.append(TagUtil.DIV_TAG_END);
