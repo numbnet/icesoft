@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.icefaces.samples.showcase.dataGenerators.utilityClasses.DataTableData;
 import org.icefaces.samples.showcase.example.compat.dataTable.Car;
+import org.icefaces.samples.showcase.util.FacesUtils;
 
 @ComponentExample(
         title = "example.ace.dataTable.title",
@@ -100,4 +101,11 @@ public class DataTableBean extends ComponentExampleImpl<DataTableBean> implement
     /////////////---- GETTERS & SETTERS BEGIN
     public List<Car> getCarsData() { return carsData; }
     public void setCarsData(List<Car> carsData) { this.carsData = carsData; }
+
+    public void longRunningListener() {
+        try { Thread.sleep(2000); }
+        catch (Exception e) {
+            FacesUtils.addErrorMessage("Server-side tab waiting could not finish.");
+        }
+    }
 }
