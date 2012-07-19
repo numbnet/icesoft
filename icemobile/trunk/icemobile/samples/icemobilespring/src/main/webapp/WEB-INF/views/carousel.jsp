@@ -44,7 +44,7 @@
     </form:form>
 
     <script type="text/javascript">
-        MvcUtil.enhanceForm("#carouselform");
+        MvcUtil.enhanceForm("#carouselForm");
     </script>
 </div>
 <c:if test="${!ajaxRequest}">
