@@ -3928,9 +3928,11 @@ Ice.PanelDivider.getParentHeight = function(element) {
 }
 
 Ice.KeyNavigator = Class.create({
-    initialize: function(componentId) {
+    initialize: function(componentId, keyboardNavigationEnabled) {
         this.component = $(componentId);
-        this.component.onkeydown = this.keydown.bindAsEventListener(this);
+        if (keyboardNavigationEnabled) {
+            this.component.onkeydown = this.keydown.bindAsEventListener(this);
+        }
     },
 
     keydown: function(event) {
@@ -3978,8 +3980,8 @@ Ice.KeyNavigator = Class.create({
 });
 
 Ice.MenuBarKeyNavigator = Class.create(Ice.KeyNavigator, {
-    initialize: function($super, componentId, displayOnClick, scrollableDivMode) {
-        $super(componentId);
+  initialize: function($super, componentId, displayOnClick, scrollableDivMode, keyboardNavigationEnabled) {
+        $super(componentId, keyboardNavigationEnabled);
         this.displayOnClick = displayOnClick;
         this.scrollableDivMode = scrollableDivMode;
         this.component.onclick = this.hideAll.bindAsEventListener(this);
