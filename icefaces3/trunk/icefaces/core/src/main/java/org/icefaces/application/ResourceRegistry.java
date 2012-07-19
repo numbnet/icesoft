@@ -229,17 +229,24 @@ public class ResourceRegistry extends ResourceHandlerWrapper  {
         // With Liferay (and likely portals in general), the reference to javax.faces.resource
         // gets set to a parameter rather than part of the URL so we need a slightly different algorithm.
         if (-1 == markerStart)  {
+            final String resId = "javax.faces.resource";
             Iterator names = externalContext.getRequestParameterNames();
             while (names.hasNext()) {
                 String name =  (String)names.next();
-                if( name.trim().equalsIgnoreCase("javax.faces.resource")){
+
+                // With the older bridge, the resource identifier was not be encoded in any way
+                // but with the newer bridge it is so we need to check both cases.
+                if( name.equalsIgnoreCase(resId) || name.endsWith(resId) ){
                     String res = externalContext.getRequestParameterMap().get(name);
                     //Need to strip the file extension (e.g. .jsf) if it's there because the original key
                     //did not use it.
                     String[] pathTemplate = EnvUtils.getPathTemplate();
-                    int suffixStart = res.indexOf(pathTemplate[1]);
-                    if(suffixStart >= 0){
-                        res = res.substring(0,suffixStart);
+                    String suffix = pathTemplate[1];
+                    if(suffix != null && suffix.trim().length() > 0 ){
+                        int suffixStart = res.indexOf(suffix);
+                        if(suffixStart > 0){
+                            res = res.substring(0,suffixStart);
+                        }
                     }
                     return res;
                 }
