@@ -26,6 +26,7 @@
                 <mobi:flipSwitch id="onOffFlipSwitch" labelOn="On"
                                  style="float:right"
                                  labelOff="Off"
+                                 name="onOffFlipSwitch"
                                  value="${flipSwitchBean.onOffFlipSwitch}"/>
             </mobi:fieldSetRow>
             <mobi:fieldSetRow>
@@ -33,6 +34,7 @@
                 <mobi:flipSwitch id="yesNoFlipSwitch" labelOn="Yes"
                                  style="float:right"
                                  labelOff="No"
+                                 name="yesNoFlipSwitch"
                                  value="${flipSwitchBean.yesNoFlipSwitch}"/>
             </mobi:fieldSetRow>
             <mobi:fieldSetRow>
@@ -40,6 +42,7 @@
                 <mobi:flipSwitch id="trueFalseFlipSwitch" labelOn="True"
                                  style="float:right"
                                  labelOff="False"
+                                 name="trueFalseFlipSwitch"
                                  value="${flipSwitchBean.trueFalseFlipSwitch}"/>
             </mobi:fieldSetRow>
         </mobi:fieldSetGroup>
