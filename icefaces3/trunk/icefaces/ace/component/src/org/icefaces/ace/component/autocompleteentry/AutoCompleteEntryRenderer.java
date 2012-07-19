@@ -109,6 +109,12 @@ public class AutoCompleteEntryRenderer extends InputRenderer {
             writer.writeAttribute("onchange", onchangeAppValue.toString(), null);
 		}
         if (value != null) {
+			// if field is required and is now empty, avoid displaying the previous valid value
+			Object submittedValue = autoCompleteEntry.getSubmittedValue();
+			if (submittedValue != null) {
+				if ("".equals((String) submittedValue) && !"".equals(value) && autoCompleteEntry.isRequired()) value = "";
+			}
+			
 			writer.writeAttribute("value", value, null);
 		} else {
 			writer.writeAttribute("value", "", null);
