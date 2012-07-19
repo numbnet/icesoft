@@ -32,11 +32,20 @@
         return tally;
     };
 
-    function Overlay(element) {
-        var container = element || document.body;
-        var overlay = container.ownerDocument.createElement('iframe');
-        overlay.setAttribute('src', 'about:blank');
-        overlay.setAttribute('frameborder', '0');
+    var getLabel = function(cfg,doc) {
+        if (cfg.label) {
+            var label = doc.createElement('span');
+            label.innerHTML = cfg.label;
+            return label;
+        }
+
+        return null;
+    }
+
+    function Overlay(cfg) {
+        var container = cfg.element == undefined ? document.body : cfg.element;
+        var overlay = container.ownerDocument.createElement('div');
+        var label = getLabel(cfg, container.ownerDocument);
         overlay.className = 'ice-blockui-overlay';
         var overlayStyle = overlay.style;
         overlayStyle.top = '0';
@@ -51,6 +60,14 @@
         }
 
         container.appendChild(overlay);
+
+        if (label) {
+            overlay.appendChild(label);
+            label.style.position = 'fixed';
+            label.style.top = '50%';
+            label.style.left = '50%';
+            label.style.marginLeft = label.clientWidth / 2;
+        }
 
         return function() {
             if (overlay) {
@@ -74,7 +91,7 @@
             console.log('event [type: ' + evenType +
                     ', triggered by: ' + triggeringElement.id || triggeringElement +
                     ', captured in: ' + capturingElement.id || capturingElement + '] was discarded.');
-            e.preventDefault();
+            return false;
         }
     }
 
@@ -83,11 +100,13 @@
     if (!ice.ace) ice.ace = {};
 
     ice.ace.Monitor = function (cfg) {
+        var cfg;
+
         window.ice.onBeforeSubmit(function(source,isClientRequest) {
             //Only block the UI for client-initiated requests (not push requests)
             if (isClientRequest && isBlockUIEnabled(source)) {
-                //debug(logger, 'blocking UI');
-                var blockUIOverlay = Overlay();
+                console.log('Blocking UI');
+                var blockUIOverlay = Overlay(cfg);
                 var rollbacks = fold(['input', 'select', 'textarea', 'button', 'a'], [], function(result, type) {
                     return result.concat(
                             ice.ace.jq.map(document.body.getElementsByTagName(type), function(e) {
@@ -118,7 +137,7 @@
                 stopBlockingUI = function() {
                     broadcast(rollbacks);
                     blockUIOverlay();
-                    //debug(logger, 'unblocked UI');
+                    console.log('Unblocked UI');
                 };
             } else {
                 stopBlockingUI = function () {};;

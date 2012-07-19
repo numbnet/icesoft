@@ -3,6 +3,7 @@ package org.icefaces.ace.component.monitor;
 import org.icefaces.ace.component.chart.Chart;
 import org.icefaces.ace.renderkit.CoreRenderer;
 import org.icefaces.ace.util.HTML;
+import org.icefaces.ace.util.JSONBuilder;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -30,19 +31,31 @@ import java.io.IOException;
  * Time: 3:15 PM
  */
 public class SubmitMonitorRenderer extends CoreRenderer {
+
     @Override
     public void	encodeBegin(FacesContext context, UIComponent component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = component.getClientId();
+        SubmitMonitor monitor = (SubmitMonitor)component;
 
         writer.startElement(HTML.DIV_ELEM, component);
         writer.writeAttribute(HTML.ID_ATTR, clientId, null);
 
         writer.startElement(HTML.SCRIPT_ELEM, null);
-        writer.write("var " + resolveWidgetVar(component) + " = ice.ace.Monitor();");
+        writer.write("var " + resolveWidgetVar(component) + " = ice.ace.Monitor(" + getConfig(monitor) + ");");
         writer.endElement(HTML.SCRIPT_ELEM);
 
         writer.endElement(HTML.DIV_ELEM);
     }
 
+    public JSONBuilder getConfig(SubmitMonitor monitor) {
+        JSONBuilder config = new JSONBuilder();
+        String label = monitor.getLabel();
+
+        config.beginMap();
+        if (label != null) config.entry("label", label);
+        config.endMap();
+
+        return config;
+    }
 }
