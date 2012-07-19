@@ -65,19 +65,14 @@ public class TabSetTag extends TagSupport {
         Writer out = pageContext.getOut();
         try {
 
-            // Append hidden field for selected tab submission
-            // if name attribute is defined
-            if (name != null && !"".equals(name)) {
-                StringBuilder tag = new StringBuilder(TagUtil.SPAN_TAG);
-                tag.append(">").append(TagUtil.INPUT_TAG);
-                tag.append(" id=\"").append(getId()).append("_hidden\"");
-                tag.append(" name=\"").append(getName()).append("\"");
-                tag.append(" type=\"hidden\"/>");
-                tag.append(TagUtil.SPAN_TAG_END);
-                out.write(tag.toString());
-            } else {
-                LOG.warning("Tabset Tag id: " + getId() + " has no name for value submission");
-            }
+            // Auto generate name value for proper functioning
+            StringBuilder tag = new StringBuilder(TagUtil.SPAN_TAG);
+            tag.append(">").append(TagUtil.INPUT_TAG);
+            tag.append(" id=\"").append(getId()).append("_hidden\"");
+            tag.append(" name=\"").append(getId()).append("\"");
+            tag.append(" type=\"hidden\"/>");
+            tag.append(TagUtil.SPAN_TAG_END);
+            out.write(tag.toString());
 
             out.write(TagUtil.DIV_TAG_END);
             encodeScript(out);
