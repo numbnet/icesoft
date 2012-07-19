@@ -47,4 +47,22 @@ public class AugmentedRealityLocationsMeta extends UIComponentBaseMeta  {
     @Property(tlddoc="value containing location items")
     private Object value;
 
+    @Property(tlddoc="Location String label")
+    private String locationLabel;
+
+    @Property(tlddoc="location latitude")
+    private String locationLat;
+
+    @Property(tlddoc="location longitude")
+    private String locationLon;
+
+    @Property(tlddoc="location altitude")
+    private String locationAlt;
+
+    @Property(tlddoc="location direction 0-359 from North")
+    private String locationDir;
+
+    @Property(tlddoc="location Icon URL")
+    private String locationIcon;
+
 }

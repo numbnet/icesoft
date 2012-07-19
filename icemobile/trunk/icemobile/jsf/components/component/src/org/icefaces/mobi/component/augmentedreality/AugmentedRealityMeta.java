@@ -39,7 +39,7 @@ import javax.faces.application.ResourceDependency;
         @ResourceDependency(library = "org.icefaces.component.util", name = "component.js")
 })
 public class AugmentedRealityMeta extends UIComponentBaseMeta  {
-    @Property(required=Required.yes, tlddoc="required formatted params for augmentedReality component")
+    @Property(required=Required.no, tlddoc="required formatted params for augmentedReality component")
     private String params;
 
     @Property(tlddoc="URL base for loading resources in AR view")
@@ -50,5 +50,8 @@ public class AugmentedRealityMeta extends UIComponentBaseMeta  {
 
     @Property(tlddoc = "style of the component, rendered on the div root of the component")
     private String style;
+
+    @Property(tlddoc = "input value, name of the location selected by the user")
+    private String value;
 
 }
