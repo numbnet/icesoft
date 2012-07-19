@@ -129,20 +129,4 @@ public class TextEntryAutotabBean extends ComponentExampleImpl<TextEntryAutotabB
     public void initMetaData() {
         super.initMetaData();
     }
-    
-    public void firstNameChanged(ValueChangeEvent event) {
-        firstName = null;
-    }
-    
-    public void lastNameChanged(ValueChangeEvent event) {
-        lastName = null;
-    }
-    
-    public void cityChanged(ValueChangeEvent event) {
-        city = null;
-    }
-    
-    public void provinceChanged(ValueChangeEvent event) {
-        province = null;
-    }
 }
