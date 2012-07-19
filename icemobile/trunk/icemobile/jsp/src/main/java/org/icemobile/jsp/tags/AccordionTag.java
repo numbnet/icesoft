@@ -65,16 +65,12 @@ public class AccordionTag extends TagSupport {
         Writer out = pageContext.getOut();
         try {
             // Write hidden input field with id matching javascript
-            if (name != null && !"".equals(name)) {
-                StringBuilder tag = new StringBuilder(TagUtil.SPAN_TAG);
-                tag.append(">").append(TagUtil.INPUT_TAG);
-                tag.append(" id=\"").append(getId()).append("_hidden\"");
-                tag.append(" name=\"").append(getName()).append("\"");
-                tag.append(" type=\"hidden\"/>");
-                out.write(tag.toString());
-            } else {
-                LOG.warning("AccordionTag id: " + getId() + " has no name attribute for value submission");
-            }
+            StringBuilder tag = new StringBuilder(TagUtil.SPAN_TAG);
+            tag.append(">").append(TagUtil.INPUT_TAG);
+            tag.append(" id=\"").append(getId()).append("_hidden\"");
+            tag.append(" name=\"").append(getId()).append("\"");
+            tag.append(" type=\"hidden\"/>");
+            out.write(tag.toString());
 
             out.write(TagUtil.SPAN_TAG_END);
             out.write(TagUtil.DIV_TAG_END);
