@@ -261,7 +261,7 @@ public class MenuItemRenderer extends MenuItemRendererBase {
         UIComponent parentNamingContainer = findForm(uiComponent);
         String parentClientId = parentNamingContainer.getClientId(facesContext);
         String hiddenFieldName = parentClientId
-                                 + NamingContainer.SEPARATOR_CHAR
+                                 + UINamingContainer.getSeparatorChar(facesContext)
                                  + UIViewRoot.UNIQUE_ID_PREFIX
                                  + HIDDEN_FIELD_NAME;
         return hiddenFieldName;

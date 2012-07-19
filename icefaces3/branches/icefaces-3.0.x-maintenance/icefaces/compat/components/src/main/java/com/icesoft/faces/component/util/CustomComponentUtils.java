@@ -21,7 +21,7 @@ import org.apache.commons.logging.LogFactory;
 
 import javax.faces.FacesException;
 import javax.faces.component.EditableValueHolder;
-import javax.faces.component.NamingContainer;
+import javax.faces.component.UINamingContainer;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIForm;
 import javax.faces.component.UIViewRoot;
@@ -191,19 +191,19 @@ public class CustomComponentUtils {
     }
 
     public static String getHiddenCommandLinkFieldName(String formName) {
-        return formName + NamingContainer.SEPARATOR_CHAR
+        return formName + UINamingContainer.getSeparatorChar(FacesContext.getCurrentInstance())
                + HIDDEN_COMMANDLINK_FIELD_NAME;
     }
 
     public static String getHiddenTreeExpandFieldName(String componentId,
                                                       String formName) {
-        return formName + NamingContainer.SEPARATOR_CHAR + componentId
+        return formName + UINamingContainer.getSeparatorChar(FacesContext.getCurrentInstance()) + componentId
                + HIDDEN_TREE_NAV_FIELD_NAME;
     }
 
     public static String getHiddenTreeActionFieldName(String componentId,
                                                       String formName) {
-        return formName + NamingContainer.SEPARATOR_CHAR + componentId
+        return formName + UINamingContainer.getSeparatorChar(FacesContext.getCurrentInstance()) + componentId
                + HIDDEN_TREE_ACTION_FIELD_NAME;
     }
 

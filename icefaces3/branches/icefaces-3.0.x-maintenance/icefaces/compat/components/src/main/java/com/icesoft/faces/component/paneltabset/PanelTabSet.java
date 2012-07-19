@@ -1140,7 +1140,7 @@ public class PanelTabSet
     public String getClientId(FacesContext context) {
         String clientId = super.getClientId(context);
         if (super.getValue() == null) {
-            clientId += NamingContainer.SEPARATOR_CHAR + "0";
+            clientId += UINamingContainer.getSeparatorChar(context) + "0";
         }
         return clientId; 
     }

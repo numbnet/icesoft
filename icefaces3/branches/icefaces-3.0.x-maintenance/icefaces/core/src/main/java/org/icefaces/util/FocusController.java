@@ -17,6 +17,7 @@
 package org.icefaces.util;
 
 import javax.faces.component.NamingContainer;
+import javax.faces.component.UINamingContainer;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import java.util.Map;
@@ -26,7 +27,7 @@ import java.util.regex.Pattern;
  * Utility API for managing the element focus in the browser.
  */
 public class FocusController {
-    private static final Pattern ClientIdPattern = Pattern.compile("^(([\\w\\_]*)\\" + NamingContainer.SEPARATOR_CHAR + "([\\w\\_]*))*$");
+    private static final Pattern ClientIdPattern = Pattern.compile("^(([\\w\\_]*)\\" + UINamingContainer.getSeparatorChar(FacesContext.getCurrentInstance()) + "([\\w\\_]*))*$");
 
     /**
      * Acquire the ID of the currently focused element in the browser.
