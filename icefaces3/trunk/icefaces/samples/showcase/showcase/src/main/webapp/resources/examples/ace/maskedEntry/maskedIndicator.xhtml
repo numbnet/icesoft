@@ -33,7 +33,7 @@
     <ui:param name="tldResources" value="#{maskedEntryResources.tldResources}"/>
 
     <ui:define name="example">
-        <h:form id="form">
+        <h:form id="configForm">
             <icecore:singleSubmit/>
             
             <ace:panel id="indicatorCustomizing" header="Indicator Customization" style="width: 100%;">
@@ -55,7 +55,9 @@
                      </h:selectOneMenu>
                 </h:panelGrid>
             </ace:panel>
-            
+        </h:form>
+        
+        <h:form id="entryForm">    
             <ace:panel id="personalInfoInputPanel" header="Personal Info" style="width: 100%;">
                 <h:panelGrid columns="1" cellpadding="6" cellspacing="6">
                 <ace:maskedEntry id="dobInput" value="#{maskedEntryBean.dob}" mask="99/99/9999"
@@ -65,7 +67,7 @@
                                  required="#{maskedIndicatorBean.required}"
                                  label="Date of Birth:"
                                  labelPosition="left">
-                    <ace:ajax execute="@this" render="dobOutput"/>
+                    <ace:ajax event="blur" execute="@this" render="@this dobOutput"/>
                 </ace:maskedEntry>
                 
                 <ace:maskedEntry id="workPhoneInput" value="#{maskedEntryBean.workPhone}" mask="(999) 999-9999? x99999"
@@ -75,7 +77,7 @@
                                  required="#{maskedIndicatorBean.required}"
                                  label="Work Phone:"
                                  labelPosition="left">
-                    <ace:ajax execute="@this" render="workPhoneOutput"/>
+                    <ace:ajax event="blur" execute="@this" render="@this workPhoneOutput"/>
                 </ace:maskedEntry>
                 </h:panelGrid>
             </ace:panel>
