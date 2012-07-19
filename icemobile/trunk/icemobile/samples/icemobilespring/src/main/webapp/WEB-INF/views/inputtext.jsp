@@ -20,7 +20,7 @@
 
     <form:form id="inputtextform" method="POST" modelAttribute="inputTextBean">
 
-        <h4>Keybaord Input Test</h4>
+        <h4>HTML5 Input</h4>
         <mobi:fieldSetGroup inset="true">
             <mobi:fieldSetRow>
                 <label>Text:</label>
@@ -66,7 +66,7 @@
                             type="submit"/>
         <div style="clear:right"/>
 
-        <h4>Keybaord Input Test</h4>
+        <h4>Input Values</h4>
         <mobi:fieldSetGroup inset="true">
             <mobi:fieldSetRow>
                 <label>Text:</label>

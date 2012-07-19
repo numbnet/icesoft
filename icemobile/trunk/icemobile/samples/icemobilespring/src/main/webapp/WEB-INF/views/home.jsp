@@ -114,8 +114,8 @@
     <li><a href="<c:url value="/flipswitch" />"
            title="flipswitch">Flipswitch</a>
     </li>
-    <li><a href="<c:url value="/inputtext" />" title="inputtext">Input
-        Text</a></li>
+    <li><a href="<c:url value="/inputtext" />" title="inputtext">HTML5
+        Input</a></li>
     <li><a href="<c:url value="/qrscan" />" title="qrscan">QR Scanner</a>
      <li><a href="<c:url value="/panelPopup" />" title="panelPopup">Panel Popup</a>
     </li>
