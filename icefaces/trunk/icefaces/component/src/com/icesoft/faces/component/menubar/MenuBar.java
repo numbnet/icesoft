@@ -415,12 +415,12 @@ public class MenuBar extends UICommand implements NamingContainer {
     }
 
     public void encodeBegin(FacesContext context) throws IOException {
-        if (isKeyboardNavigationEnabled()) {
+//        if (isKeyboardNavigationEnabled()) {
             String call = "new Ice.MenuBarKeyNavigator('" + 
             getClientId(context) +"', " +
-            isDisplayOnClick() + ", " + isScrollableDivMode() +");";
+            isDisplayOnClick() + ", " + isScrollableDivMode() + ", " + isKeyboardNavigationEnabled() +");";
             JavascriptContext.addJavascriptCall(context, call);
-        }
+//        }
         super.encodeBegin(context);
     }
 
