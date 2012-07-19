@@ -31,6 +31,7 @@ import javax.faces.application.Application;
 import javax.faces.application.FacesMessage;
 import javax.faces.application.FacesMessage.Severity;
 import javax.faces.component.NamingContainer;
+import javax.faces.component.UINamingContainer;
 import javax.faces.component.UICommand;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIForm;
@@ -600,7 +601,7 @@ public abstract class DomBasicRenderer extends Renderer {
                     parentNamingContainer.getClientId(facesContext);
         }
         return parentNamingContainerClientId
-                + NamingContainer.SEPARATOR_CHAR
+                + UINamingContainer.getSeparatorChar(facesContext)
                 + uiComponentId;
     }
 

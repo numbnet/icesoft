@@ -30,6 +30,7 @@ import org.w3c.dom.Node;
 
 import javax.faces.component.NamingContainer;
 import javax.faces.component.UIComponent;
+import javax.faces.component.UINamingContainer;
 import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
 import java.beans.Beans;
@@ -369,7 +370,7 @@ public class PanelPositionedRenderer extends DomBasicRenderer {
         String formId = form.getClientId(facesContext);
         String clientId = uiComponent.getClientId(facesContext);
         return formId
-                + NamingContainer.SEPARATOR_CHAR
+                + UINamingContainer.getSeparatorChar(facesContext)
                 + UIViewRoot.UNIQUE_ID_PREFIX
                 + clientId
                 + name;

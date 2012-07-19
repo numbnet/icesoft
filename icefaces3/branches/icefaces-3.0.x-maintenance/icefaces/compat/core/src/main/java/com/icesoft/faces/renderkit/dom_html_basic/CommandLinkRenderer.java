@@ -23,7 +23,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Text;
 
 import javax.faces.FacesException;
-import javax.faces.component.NamingContainer;
+import javax.faces.component.UINamingContainer;
 import javax.faces.component.UICommand;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIViewRoot;
@@ -66,7 +66,7 @@ public class CommandLinkRenderer extends DomBasicRenderer {
         UIComponent parentNamingContainer = findForm(uiComponent);
         String parentClientId = parentNamingContainer.getClientId(facesContext);
         String hiddenFieldName = parentClientId
-                + NamingContainer.SEPARATOR_CHAR
+                + UINamingContainer.getSeparatorChar(facesContext)
                 + UIViewRoot.UNIQUE_ID_PREFIX
                 + HIDDEN_FIELD_NAME;
         return hiddenFieldName;
