@@ -130,16 +130,20 @@ var singleSubmit;
                     curry(append, onServerErrorListeners)
                 );
             }
-            function provideSourceElement(f) {
-                return function(ajaxEvent) {
-                    f(ajaxEvent, element);
-                }
-            }
+
+            var requestScopedSubmitEventBroadcaster = submitEventBroadcaster(onBeforeSubmitListeners, onBeforeUpdateListeners, onAfterUpdateListeners);
+            var requestScopedSubmitErrorBroadcaster = submitErrorBroadcaster(onNetworkErrorListeners, onServerErrorListeners);
             var options = {
                 execute: execute,
                 render: render,
-                onevent: provideSourceElement(submitEventBroadcaster(onBeforeSubmitListeners, onBeforeUpdateListeners, onAfterUpdateListeners)),
-                onerror: provideSourceElement(submitErrorBroadcaster(onNetworkErrorListeners, onServerErrorListeners)),
+                onevent: function(submitEvent) {
+                    pageScopedSubmitEventBroadcaster(submitEvent, element);
+                    requestScopedSubmitEventBroadcaster(submitEvent, element);
+                },
+                onerror: function(submitEvent) {
+                    pageScopedSubmitErrorBroadcaster(submitEvent);
+                    requestScopedSubmitErrorBroadcaster(submitEvent);
+                },
                 'ice.window': namespace.window,
                 'ice.view': viewID,
                 'ice.focus': currentFocus
@@ -286,16 +290,19 @@ var singleSubmit;
                 );
             }
             var viewID = viewIDOf(element);
-            function provideSourceElement(f) {
-                return function(ajaxEvent) {
-                    f(ajaxEvent, element);
-                }
-            }
+            var requestScopedSubmitEventBroadcaster = submitEventBroadcaster(onBeforeSubmitListeners, onBeforeUpdateListeners, onAfterUpdateListeners);
+            var requestScopedSubmitErrorBroadcaster = submitErrorBroadcaster(onNetworkErrorListeners, onServerErrorListeners);
             var options = {
                 execute: execute,
                 render: render,
-                onevent: provideSourceElement(submitEventBroadcaster(onBeforeSubmitListeners, onBeforeUpdateListeners, onAfterUpdateListeners)),
-                onerror: provideSourceElement(submitErrorBroadcaster(onNetworkErrorListeners, onServerErrorListeners)),
+                onevent: function(submitEvent) {
+                    pageScopedSubmitEventBroadcaster(submitEvent, element);
+                    requestScopedSubmitEventBroadcaster(submitEvent, element);
+                },
+                onerror: function(submitEvent) {
+                    pageScopedSubmitErrorBroadcaster(submitEvent);
+                    requestScopedSubmitErrorBroadcaster(submitEvent);
+                },
                 'ice.window': namespace.window,
                 'ice.view': viewID,
                 'ice.focus': currentFocus};
