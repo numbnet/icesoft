@@ -21,7 +21,6 @@ public class CarouselTag extends TagSupport {
     private static final String LIB_ISCROLL = "org.icefaces.component.util";
 
     private String id;
-    private String name;
     private String styleClass;
     private String style;
 
@@ -141,17 +140,17 @@ public class CarouselTag extends TagSupport {
             out.write(TagUtil.DIV_TAG_END);
             out.write(TagUtil.DIV_TAG_END);
 
-            this.encodeHiddenSelected(out, getName());
+            this.encodeHiddenSelected(out, getId());
 
             out.write(TagUtil.DIV_TAG_END);
             out.write(TagUtil.SPAN_TAG_END);
 
-            renderScript(out, getName());
+            renderScript(out, getId());
 
         } catch (IOException ioe) {
             LOG.severe("IOException closing Carousel Tag: " + ioe);
         }
-        return SKIP_BODY;
+        return EVAL_PAGE;
     }
 
 
@@ -193,14 +192,6 @@ public class CarouselTag extends TagSupport {
 
     public void setId(String id) {
         this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public String getStyleClass() {
