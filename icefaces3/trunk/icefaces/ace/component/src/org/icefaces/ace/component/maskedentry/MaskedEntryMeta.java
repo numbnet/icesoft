@@ -48,7 +48,9 @@ import org.icefaces.ace.api.IceClientBehaviorHolder;
 })
 @ClientBehaviorHolder(events = {
 	@ClientEvent(name="valueChange", javadoc="Fired every time the value of the text input changes (default event).", 
-	tlddoc="Fired every time the value of the text input changes (default event).", defaultRender="@all", defaultExecute="@all")
+	tlddoc="Fired every time the value of the text input changes (default event).", defaultRender="@all", defaultExecute="@all"),
+	@ClientEvent(name="blur", javadoc="Fired any time the text input field loses focus.", 
+	tlddoc="Fired any time the text input field loses focus.", defaultRender="@all", defaultExecute="@all")
 }, defaultEvent="valueChange")
 public class MaskedEntryMeta extends HtmlInputTextMeta {
 
