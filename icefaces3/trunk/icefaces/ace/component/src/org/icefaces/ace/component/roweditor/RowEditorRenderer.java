@@ -40,6 +40,7 @@ import org.icefaces.render.MandatoryResourceComponent;
 
 import javax.faces.component.NamingContainer;
 import javax.faces.component.UIComponent;
+import javax.faces.component.UINamingContainer;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import java.io.IOException;
@@ -60,7 +61,7 @@ public class RowEditorRenderer extends CoreRenderer {
             DataTable table = findParentTable(context, editor);
             RowState state = (RowState)(context.getExternalContext().getRequestMap().get(table.getRowStateVar()));
             String tableId = table.getClientId(context);
-            tableId = tableId.substring(0, tableId.lastIndexOf(NamingContainer.SEPARATOR_CHAR));
+            tableId = tableId.substring(0, tableId.lastIndexOf(UINamingContainer.getSeparatorChar(context)));
 
             if (params.containsKey(tableId + "_editSubmit")) {
                 component.queueEvent(new RowEditEvent(component, table.getRowData()));

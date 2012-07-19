@@ -387,7 +387,7 @@ public class GroupRenderer
         String formId = form.getClientId(facesContext);
         String clientId = uiComponent.getClientId(facesContext);
         return formId
-                + NamingContainer.SEPARATOR_CHAR
+                + UINamingContainer.getSeparatorChar(facesContext)
                 + UIViewRoot.UNIQUE_ID_PREFIX
                 + clientId
                 + name;

@@ -178,7 +178,7 @@ public class SelectInputDateRenderer
         String formId = form.getClientId(facesContext);
         String clientId = uiComponent.getClientId(facesContext);
         String hiddenFieldName = formId
-                + NamingContainer.SEPARATOR_CHAR
+                + UINamingContainer.getSeparatorChar(facesContext)
                 + UIViewRoot.UNIQUE_ID_PREFIX
                 + clientId
                 + HIDDEN_FIELD_NAME;

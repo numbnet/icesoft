@@ -741,7 +741,7 @@ public class PanelTabSetRenderer
             String parentClientId =
                     parentNamingContainer.getClientId(facesContext);
             return parentClientId
-                    + NamingContainer.SEPARATOR_CHAR
+                    + UINamingContainer.getSeparatorChar(facesContext)
                     + UIViewRoot.UNIQUE_ID_PREFIX
                     + HIDDEN_FIELD_NAME;
         } catch (NullPointerException e) {
