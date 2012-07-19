@@ -34,6 +34,7 @@ import javax.faces.event.ActionEvent;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Collection;
 import org.icefaces.samples.showcase.dataGenerators.utilityClasses.DataTableData;
 
 @ComponentExample(
@@ -98,6 +99,11 @@ public class DataTableRowState extends ComponentExampleImpl<DataTableRowState> i
     }
     public void disableAllSelection(ActionEvent e) {
         stateMap.setAllSelectable(false);
+        
+        for (Object rowData : stateMap.getSelected()) {
+            RowState s = stateMap.get(rowData);
+            s.setSelected(false);
+        }
     }
 
     public void enableAllVisibility(ActionEvent e) {
@@ -137,16 +143,34 @@ public class DataTableRowState extends ComponentExampleImpl<DataTableRowState> i
     }
 
     public void startAllEditing(ActionEvent e) {
-        for (Column c : table.getColumns())
-            if (c.getCellEditor() != null)
+        Collection<RowState> allRows = stateMap.values();
+        List<Column> columns = table.getColumns();
+        
+        // Start by making everything editable
+        for (Column c : table.getColumns()) {
+            if (c.getCellEditor() != null) {
                 stateMap.setAllEditing(c.getCellEditor(), true);
+            }
+        }
+        
+        // Make any disabled editing rows uneditable
+        for (RowState s : allRows) {
+            if (!s.isEditable()) {
+                for (Column c : columns) {
+                    s.removeActiveCellEditor(c.getCellEditor());
+                }
+            }
+        }
     }
     public void startEditing(ActionEvent e) {
         List<Column> columns = table.getColumns();
         for (Object rowData : stateMap.getSelected()) {
             RowState s = stateMap.get(rowData);
-            for (Column c : columns)
-                s.addActiveCellEditor(c.getCellEditor());
+            if (s.isEditable()) {
+                for (Column c : columns) {
+                    s.addActiveCellEditor(c.getCellEditor());
+                }
+            }
         }
     }
     public void stopEditing(ActionEvent e) {
