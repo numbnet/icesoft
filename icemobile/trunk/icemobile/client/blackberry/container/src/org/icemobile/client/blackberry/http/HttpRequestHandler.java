@@ -42,7 +42,7 @@ public class HttpRequestHandler {
      * upload and to allow the BrowserField to properly utilize the
      * configured Network transport infrastructure on the device.
      *
-     * @param authToken   An optional authentication token
+     * @param authToken   An optional authentication token of the format 'username:password'
      * @param requestData A MultipartPostData object containing a series of
      *                    Parts for the upload
      * @return returns the result string read from the input stream
@@ -63,12 +63,12 @@ public class HttpRequestHandler {
 
                 byte[] ByteArray = authToken.getBytes("UTF-8");
                 String Encoded =
-                        Base64OutputStream.encodeAsString(
-                                                                 ByteArray,
-                                                                 0,
-                                                                 ByteArray.length,
-                                                                 false,
-                                                                 false);
+                    Base64OutputStream.encodeAsString(
+                        ByteArray,
+                        0,
+                        ByteArray.length,
+                        false,
+                        false);
                 headers.addProperty("Authorization", Encoded);
             }
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
@@ -79,7 +79,7 @@ public class HttpRequestHandler {
 
             // This doesn't lend itself very well to the progress meter. 
             InputConnection ic =
-                    mController.postRequest(actionMethod, bos.toString(), headers);
+                mController.postRequest(actionMethod, bos.toString(), headers);
             InputStream inputStream = ic.openInputStream();
             StringBuffer sb = new StringBuffer();
 
