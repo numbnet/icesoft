@@ -82,6 +82,7 @@ public class MicrophoneRenderer extends Renderer {
             writer.writeAttribute(HTML.ID_ATTR, clientId, null);
             writer.writeAttribute(HTML.NAME_ATTR, clientId, null);
             writer.endElement(HTML.INPUT_ELEM);
+            writer.endElement(HTML.SPAN_ELEM);
             return;
         }
         int maxtime = microphone.getMaxtime();
