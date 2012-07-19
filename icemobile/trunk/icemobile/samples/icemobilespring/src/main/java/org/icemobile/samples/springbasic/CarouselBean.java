@@ -15,7 +15,7 @@ public class CarouselBean {
      * Carousel
      */
 
-    private int carouselOneIndex;
+    private int carouselOne;
 
 
     public CarouselBean() {
@@ -24,12 +24,12 @@ public class CarouselBean {
     }
 
 
-    public int getCarouselOneIndex() {
-        return carouselOneIndex;
+    public int getCarouselOne() {
+        return carouselOne;
     }
 
-    public void setCarouselOneIndex(int carouselOneIndex) {
-        this.carouselOneIndex = carouselOneIndex;
+    public void setCarouselOne(int carouselOne) {
+        this.carouselOne = carouselOne;
     }
 
     public Collection getImages() {
