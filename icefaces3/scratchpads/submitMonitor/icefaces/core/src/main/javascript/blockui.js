@@ -64,6 +64,7 @@
             debug(logger, 'event [type: ' + evenType +
                 ', triggered by: ' + identifier(triggeringElement) || triggeringElement +
                 ', captured in: ' + identifier(capturingElement) || capturingElement + '] was discarded.');
+            return false;
         }
     }
 
