@@ -42,7 +42,7 @@
                 <h:panelGrid columns="2" styleClass="centeredPanelGridWithLeftJustifiedText">
                     <h:outputLabel id="onShowEffectLabel" for="onShowEffectSelector" value="Show effect:"/>
                     <h:selectOneMenu id="onShowEffectSelector" value="#{confirmationDialogEffectBean.showEffect}">
-                        <f:selectItems value="#{confirmationDialogEffectBean.effects}"
+                        <f:selectItems value="#{confirmationDialogEffectBean.showEffects}"
                                                 var="effect"
                                                 itemValue="#{effect.value}"
                                                 itemLabel="#{effect.key}"/>
@@ -55,7 +55,7 @@
                     </h:panelGroup>
                     <h:outputLabel id="onHideEffectLabel" for="onHideEffectSelector" value="Hide effect:"/>
                     <h:selectOneMenu id="onHideEffectSelector" value="#{confirmationDialogEffectBean.hideEffect}">
-                        <f:selectItems value="#{confirmationDialogEffectBean.effects}"
+                        <f:selectItems value="#{confirmationDialogEffectBean.hideEffects}"
                                                 var="effect"
                                                 itemValue="#{effect.value}"
                                                 itemLabel="#{effect.key}"/>
