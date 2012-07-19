@@ -26,13 +26,19 @@ public class FlipSwitchTag extends SimpleTagSupport {
 
         out.write("<a id=\"" + getId() + "\"");
 
-        String styleClass = FLIPSWITCH_OFF_CLASS;
-        boolean isChecked = isChecked(getValue());
+        String autoClass = FLIPSWITCH_OFF_CLASS;
+        boolean isChecked = isChecked(value);
         if (isChecked) {
-            styleClass = FLIPSWITCH_ON_CLASS;
+            autoClass = FLIPSWITCH_ON_CLASS;
         }
-        out.write(" class=\"" + styleClass + " " + this.styleClass + "\"");
-        out.write(" style=\"" + this.style + "\"");
+        out.write(" class=\"" + autoClass);
+        if (styleClass != null && !"".equals(styleClass)) {
+            out.write(" " + this.styleClass);
+        }
+        out.write("\"");
+        if (style != null && !"".equals(style)) {
+            out.write(" style=\"" + this.style + "\"");
+        }
         if (isDisabled()) {
             out.write(" disabled=\"true\"");
         }
@@ -52,20 +58,20 @@ public class FlipSwitchTag extends SimpleTagSupport {
         out.write("</span>");
 
         // Concat _hidden to the id for uniqueness
-        out.write("<input id=\"" + getId() + "_hidden\"");
         if (name != null && !"".equals(name)) {
+            out.write("<input id=\"" + getId() + "_hidden\"");
             out.write(" name=\"" + getName() + "\"");
+            out.write(" value=\"" + getValue() + "\" type=\"hidden\"/>");
+
         } else {
             LOG.warning("Flipswitch tag (id: " + id + ") has no name for value submission");
         }
-        out.write(" value=\"" + getValue() + "\" type=\"hidden\">");
 
         out.write("<span class=\"" + FLIPSWITCH_TEXT_CLASS + "\">");
         out.write(getLabelOff());
         out.write("</span>");
         out.write("</input>");
         out.write("</a>");
-
     }
 
 
@@ -73,7 +79,7 @@ public class FlipSwitchTag extends SimpleTagSupport {
         if (hiddenValue == null) {
             return false;
         }
-        return hiddenValue.equalsIgnoreCase(labelOn);
+        return Boolean.valueOf(hiddenValue);
     }
 
     private String id;
@@ -82,6 +88,7 @@ public class FlipSwitchTag extends SimpleTagSupport {
     private String styleClass;
 
     private boolean disabled;
+    // value will be set to true/false
     private String value;
     private boolean readOnly;
     private String labelOn;
