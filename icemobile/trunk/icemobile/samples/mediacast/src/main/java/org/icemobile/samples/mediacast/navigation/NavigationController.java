@@ -35,6 +35,12 @@ public class NavigationController implements Serializable {
 
     public static final String BEAN_NAME = "navigationController";
 
+    public String navigateToPage(){
+        String panelId = FacesUtils.getRequestParameter("panelId");
+        navigateToPage(panelId);
+        return null;
+    }
+
     public String navigateToPage(String panelId) {
         NavigationModel navigationModel = getNavigationModel();
         navigationModel.goForward(panelId);
