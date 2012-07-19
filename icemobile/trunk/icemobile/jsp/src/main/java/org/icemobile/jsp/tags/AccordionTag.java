@@ -94,7 +94,10 @@ public class AccordionTag extends TagSupport {
 
         StringBuilder cfg = new StringBuilder("{ ");
         cfg.append(" autoheight: ").append(isAutoheight());
-        cfg.append(", maxheight: '").append(getMaxheight()).append("'");
+        // only include maxHeight if specified, otherwise it will equate to zero
+        if (getMaxheight() > 0) {
+            cfg.append(", maxheight: '").append(getMaxheight()).append("'");
+        }
         cfg.append("}");
 
         writer.write(sb.toString());
