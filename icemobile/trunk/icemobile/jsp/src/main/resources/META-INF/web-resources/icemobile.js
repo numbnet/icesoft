@@ -130,7 +130,7 @@ ice.mobilesx = function (element) {
     }
 
     var sessionidClause = "";
-    if ("" != sessionid)  {
+    if ("" != sessionid) {
         sessionidClause = "&JSESSIONID=" + escape(sessionid);
     }
     var sxURL = "icemobile://c=" + escape(command +
@@ -477,7 +477,7 @@ ice.mobi.accordionController = {
         var scrollEvent = 'ontouchstart' in window ? "touchmove" : "scroll";
         var cgfObj = cfgIn;
         var autoheight = cfgIn.autoheight || false;
-        var maxheight = cfgIn.maxheight || "200px";
+        var maxheight = cfgIn.maxheight || "200";
         if (autoheight == true) {
             maxheight = ice.mobi.accordionController.calcMaxDivHeight(clientId);
         }
