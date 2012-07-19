@@ -159,11 +159,7 @@ public class CarouselTag extends TagSupport {
         IOException {
         out.write("<input");
         out.write(" id = \"" + id + "_hidden\"");
-        if (name != null && !"".equals(name)) {
-            out.write(" name=\"" + name + "\"");
-        } else {
-            LOG.warning("CarouselTag (id: " + id + ") has no name attribute for value submission");
-        }
+        out.write(" name=\"" + id + "\"");
         out.write(" type=\"hidden\"");
         out.write(" value=\"" + String.valueOf(selectedIndex) + "\">");
         out.write("</input>");
