@@ -14,7 +14,7 @@
   ~ governing permissions and limitations under the License.
   -->
 
-<ui:decorate xmlns="http://www.w3.org/1999/xhtml"
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
              xmlns:h="http://java.sun.com/jsf/html"
              xmlns:f="http://java.sun.com/jsf/core"
              xmlns:ui="http://java.sun.com/jsf/facelets"
@@ -175,7 +175,8 @@
                 <mobi:outputListItem group="false">
                     <h:commandLink
                             value="Media Messages Gallery"
-                            actionListener="#{navigationController.navigateToPage('gallery')}">
+                            actionListener="#{navigationController.navigateToPage}">
+                        <f:param name="panelId" value="gallery" />
                     </h:commandLink>
                 </mobi:outputListItem>
             </mobi:outputList>
@@ -200,4 +201,4 @@
         </div>
     </ui:define>
 
-</ui:decorate>
+</ui:composition>
