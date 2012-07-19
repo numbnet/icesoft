@@ -21,8 +21,12 @@ ice.ace.Autocompleter = function(id, updateId, rowClass, selectedRowClass, delay
 	this.options.defaultParams = this.options.parameters || null;
 	
 	if (behaviors) {
-		if (behaviors.behaviors && behaviors.behaviors.submit)
-			this.ajaxSubmit = behaviors.behaviors.submit;
+		if (behaviors.behaviors) {
+			if (behaviors.behaviors.submit)
+				this.ajaxSubmit = behaviors.behaviors.submit;
+			if (behaviors.behaviors.blur)
+				this.ajaxBlur = behaviors.behaviors.blur;
+		}
 	}
 };
 
@@ -426,6 +430,7 @@ ice.ace.Autocompleter.prototype = {
         setTimeout(function () { self.hide(); }, 250);
         this.hasFocus = false;
         this.active = false;
+		if (this.ajaxBlur) ice.ace.ab(this.ajaxBlur);
     },
 
     onFocus: function(event) {

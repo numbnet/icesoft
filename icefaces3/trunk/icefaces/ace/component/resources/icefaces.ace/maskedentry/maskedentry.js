@@ -277,8 +277,13 @@ ice.ace.InputMask = function(id, cfg) {
 
     this.jq.change(function() { setFocus(''); });
     //Client behaviors
-    if(this.cfg.behaviors) {
-        ice.ace.attachBehaviors(this.jq, this.cfg.behaviors);
+	var behaviors = this.cfg.behaviors;
+    if(behaviors) {
+		var element = this.jq;
+		if (behaviors.blur)
+			element.bind('blur', function() { ice.ace.ab.call(element, behaviors.blur); });
+		if (behaviors.change)
+			element.bind('change', function() { ice.ace.ab.call(element, behaviors.change); });
     }
 
     //Visuals
