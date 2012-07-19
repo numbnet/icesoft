@@ -30,7 +30,7 @@ import java.util.regex.Pattern;
  *
  */
 public class CoreComponentUtils {
-    private static final Pattern ClientIdPattern = Pattern.compile("^(([\\w\\_]*)\\" + NamingContainer.SEPARATOR_CHAR + "([\\w\\_]*))*$");
+    private static final Pattern ClientIdPattern = Pattern.compile("^(([\\w\\_]*)\\" + UINamingContainer.getSeparatorChar(FacesContext.getCurrentInstance()) + "([\\w\\_]*))*$");
 
     /**
      * Find a component with an id specified in the following ways <code>

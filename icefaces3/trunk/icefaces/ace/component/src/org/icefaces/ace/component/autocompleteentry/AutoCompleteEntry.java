@@ -19,6 +19,7 @@ package org.icefaces.ace.component.autocompleteentry;
 import org.icefaces.impl.component.SeriesStateHolder;
 import javax.faces.component.NamingContainer;
 import javax.faces.model.SelectItem;
+import javax.faces.component.UINamingContainer;
 import javax.faces.component.UISelectItem;
 import javax.faces.component.UISelectItems;
 import javax.faces.component.UIComponent;
@@ -134,7 +135,7 @@ public class AutoCompleteEntry extends AutoCompleteEntryBase implements NamingCo
         }
         String baseClientId = super.getClientId(context);
         if (index >= 0) {
-            return (baseClientId + NamingContainer.SEPARATOR_CHAR + index++);
+            return (baseClientId + UINamingContainer.getSeparatorChar(context) + index++);
         } else {
             return (baseClientId);
         }
