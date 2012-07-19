@@ -13,68 +13,69 @@
   ~ express or implied. See the License for the specific language
   ~ governing permissions and limitations under the License.
   -->
-<mobi:pagePanel xmlns="http://www.w3.org/1999/xhtml"
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:util="http://java.sun.com/jsf/composite/components"
                 xmlns:icecore="http://www.icefaces.org/icefaces/core"
                 xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
+    <mobi:pagePanel>
+        <f:facet name="header">
+            <h:form id="toolbar" prependId="false">
+                <icecore:singleSubmit rendered="false"/>
 
-    <f:facet name="header">
-        <h:form id="toolbar" prependId="false">
-            <icecore:singleSubmit rendered="false"/>
-
-            <div style="float:left;padding-left:10px;">
-                <h:commandLink 
+                <div style="float:left;padding-left:10px;">
+                    <h:commandLink
                             action="#{navigationModel.navigateToParam}">
-                        <f:param name="panelID" value="splash" />
-                        <f:param name="beanName" value="null" />
-                    <h:graphicImage library="images" name="icemobile_thumb.png"
-                                    styleClass="branding"/>
-                </h:commandLink>
-                <span>#{mmsgs[navigationModel.selectedDestination.title]}</span>
-            </div>
-            <!-- theme selector -->
-            <div style="float:right;padding-right: 35px;vertical-align: middle" >
-                <span style="font-size: 14px">Theme: </span>
-                <h:selectOneMenu
-                        style="font-size:14px;font-weight:normal;"
-                        onchange="ice.s(event, this);"
-                        value="#{themeBean.currentTheme}">
-                    <f:selectItem itemLabel="Auto" itemValue=""/>
-                    <f:selectItem itemLabel="iPad" itemValue="ipad.css"/>
-                    <f:selectItem itemLabel="Android"
-                                  itemValue="honeycomb.css"/>
-                    <f:ajax disabled="true"/>
-                </h:selectOneMenu>
+                        <f:param name="panelID" value="splash"/>
+                        <f:param name="beanName" value="null"/>
+                        <h:graphicImage library="images"
+                                        name="icemobile_thumb.png"
+                                        styleClass="branding"/>
+                    </h:commandLink>
+                    <span>#{mmsgs[navigationModel.selectedDestination.title]}</span>
+                </div>
+                <!-- theme selector -->
+                <div style="float:right;padding-right: 35px;vertical-align: middle">
+                    <span style="font-size: 14px">Theme: </span>
+                    <h:selectOneMenu
+                            style="font-size:14px;font-weight:normal;"
+                            onchange="ice.s(event, this);"
+                            value="#{themeBean.currentTheme}">
+                        <f:selectItem itemLabel="Auto" itemValue=""/>
+                        <f:selectItem itemLabel="iPad" itemValue="ipad.css"/>
+                        <f:selectItem itemLabel="Android"
+                                      itemValue="honeycomb.css"/>
+                        <f:ajax disabled="true"/>
+                    </h:selectOneMenu>
 
-            </div>
-        </h:form>
-    </f:facet>
-
-
-    <f:facet name="body">
-
-        <!-- always present menu on left side of device. -->
-        <util:panelScroller id="menu-wrapper"
-                            styleClass="mobi-pagePanel-body-menu"
-                            style="">
-            <!-- main content include of page content -->
-            <ui:include src="/WEB-INF/includes/content/menu.xhtml" />
-        </util:panelScroller>
-
-        <!--always present menu on left side of device.-->
-        <util:panelScroller id="body-wrapper"
-                            styleClass="mobi-pagePanel-body-content"
-                            style="">
-            <!-- main content include of page content -->
-            <ui:include src="/WEB-INF/includes/content/content-stack.xhtml">
-                <ui:param name="selectedPanel" value="#{navigationModel.selectedPanel == null?'splash':navigationModel.selectedPanel}" />
-            </ui:include>
-        </util:panelScroller>
-    </f:facet>
-
-</mobi:pagePanel>
+                </div>
+            </h:form>
+        </f:facet>
 
 
+        <f:facet name="body">
+
+            <!-- always present menu on left side of device. -->
+            <util:panelScroller id="menu-wrapper"
+                                styleClass="mobi-pagePanel-body-menu"
+                                style="">
+                <!-- main content include of page content -->
+                <ui:include src="/WEB-INF/includes/content/menu.xhtml"/>
+            </util:panelScroller>
+
+            <!--always present menu on left side of device.-->
+            <util:panelScroller id="body-wrapper"
+                                styleClass="mobi-pagePanel-body-content"
+                                style="">
+                <!-- main content include of page content -->
+                <ui:include src="/WEB-INF/includes/content/content-stack.xhtml">
+                    <ui:param name="selectedPanel"
+                              value="#{navigationModel.selectedPanel == null?'splash':navigationModel.selectedPanel}"/>
+                </ui:include>
+            </util:panelScroller>
+        </f:facet>
+
+    </mobi:pagePanel>
+</ui:composition>
