@@ -67,7 +67,7 @@
                                      required="true" requiredIndicator="(Required)"
                                      indicatorPosition="right"
                                      styleClass="#{maskedReqStyleBean.reqColor}">
-                        <ace:ajax execute="@this" render="workPhoneOutput"/>
+                        <ace:ajax execute="@this" render="@this workPhoneOutput"/>
                     </ace:maskedEntry>
                     
                     <h:outputLabel id="mobilePhoneLabel" for="mobilePhoneInput" value="Mobile Phone:"/>
@@ -75,7 +75,7 @@
                                      required="false" optionalIndicator="(Optional)"
                                      indicatorPosition="right"
                                      styleClass="#{maskedReqStyleBean.optColor}">
-                        <ace:ajax execute="@this" render="mobilePhoneOutput"/>
+                        <ace:ajax execute="@this" render="@this mobilePhoneOutput"/>
                     </ace:maskedEntry>
                 </h:panelGrid>
             </ace:panel>
