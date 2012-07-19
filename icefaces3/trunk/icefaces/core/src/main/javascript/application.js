@@ -218,7 +218,12 @@ if (!window.ice.icefaces) {
                 if (form) {
                     try {
                         debug(logger, 'picking updates for view ' + viewID);
-                        jsf.ajax.request(form, null, {'ice.submit.type': 'ice.push', render: '@all'});
+                        var options = {
+                            'ice.submit.type': 'ice.push',
+                            render: '@all',
+                            onerror: pageScopedSubmitErrorBroadcaster
+                        };
+                        jsf.ajax.request(form, null, options);
                     } catch (e) {
                         warn(logger, 'failed to pick updates', e);
                     }
@@ -267,36 +272,6 @@ if (!window.ice.icefaces) {
         function containsXMLData(doc) {
             //test if document contains XML data since IE will return a XML document for dropped connection
             return doc && doc.documentElement;
-        }
-
-        function callStack() {
-            var caller = arguments.callee.caller;
-            return Stream(function(cellConstructor) {
-                function callerStream(c) {
-                    if (!c) return null;
-                    return function() {
-                        return cellConstructor(c, callerStream(c.arguments.callee.caller));
-                    };
-                }
-
-                return callerStream(caller);
-            });
-        }
-
-        function detectCaller(f) {
-            var visitedFunctions = [];
-            try {
-                return detect(callStack(), function(caller) {
-                    if (contains(visitedFunctions, caller)) {
-                        throw 'recursive call detected for : ' + caller;
-                    } else {
-                        append(visitedFunctions, caller);
-                    }
-                    return caller == f;
-                });
-            } catch (ex) {
-                return false;
-            }
         }
 
         //define function to be wired as submit callback into JSF bridge
@@ -358,50 +333,11 @@ if (!window.ice.icefaces) {
             };
         }
 
-        function filterICEfacesEvents(f) {
-            return function(e) {
-                var isICEfacesEvent = false;
-                var xmlHttpRequestParameter
-                //lookup the XMLHttpRequest parameter of the calling function to use it as a thread context variable,
-                //avoiding thus to use global variables
-                if (window.myfaces) {
-                    //lookup the stack: filterICEfacesEvents < broadCastFunc < arrForEach < each < broadcastEvent < sendEvent [argument 0]
-                    var xmlHttpRequestParameter = arguments.callee.caller.arguments.callee.caller.arguments.callee.caller.arguments.callee.caller.arguments.callee.caller.arguments[0] ;
-                    //during 'begin' and 'complete' events the original XHR object is the '_xhrObject' property of the argument
-                    //during 'success' the argument is the actual XHR request object
-                    xmlHttpRequestParameter = xmlHttpRequestParameter._xhrObject || xmlHttpRequestParameter;
-                } else {
-                    xmlHttpRequestParameter = arguments.callee.caller.arguments[0];
-                }
+        //setup page scoped submit event broadcasters
+        var pageScopedSubmitEventBroadcaster = submitEventBroadcaster(beforeSubmitListeners, beforeUpdateListeners, afterUpdateListeners);
+        var pageScopedSubmitErrorBroadcaster = submitErrorBroadcaster(networkErrorListeners, serverErrorListeners);
 
-                var source = xmlHttpRequestParameter.iceSubmitEvent;
-                //if source element not set yet try to look it up
-                if (source) {
-                    isICEfacesEvent = true;
-                } else {
-                    //is the source element present on the submit event object
-                    //the source element is missing in Mojarra when the element does not have an ID assigned
-                    try {
-                        var submitFunction = detectCaller(fullSubmit) || detectCaller(singleSubmit);
-                        //lookup the source element from the fullSubmit or singleSubmit function call
-                        source = submitFunction.arguments[3];//lookup the 4th parameter -- the element
-                        //set source element to be used by the 'complete' and 'success' type events
-                        xmlHttpRequestParameter.iceSubmitEvent = source;
-                        isICEfacesEvent = true;
-                    } catch (ex) {
-                        //cannot find *submit function in call stack, not an ICEfaces triggered submit
-                        isICEfacesEvent = false;
-                    }
-                }
-
-                //invoke callback only when event is triggered from an ICEfaces enabled form
-                if (isICEfacesEvent) {
-                    f(e, source);
-                }
-            };
-        }
-
-
+        //setup submit error logging
         function logReceivedUpdates(e) {
             if ('success' == e.status) {
                 var xmlContent = e.responseXML;
@@ -425,9 +361,6 @@ if (!window.ice.icefaces) {
                 debug(logger, 'applied updates >>\n' + join(updateDescriptions, '\n'));
             }
         }
-
-        jsf.ajax.addOnEvent(filterICEfacesEvents(submitEventBroadcaster(beforeSubmitListeners, beforeUpdateListeners, afterUpdateListeners)));
-        jsf.ajax.addOnError(filterICEfacesEvents(submitErrorBroadcaster(networkErrorListeners, serverErrorListeners)));
         jsf.ajax.addOnEvent(logReceivedUpdates);
 
         //include submit.js
