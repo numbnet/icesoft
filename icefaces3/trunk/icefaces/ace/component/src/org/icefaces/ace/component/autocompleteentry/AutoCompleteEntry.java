@@ -71,7 +71,7 @@ public class AutoCompleteEntry extends AutoCompleteEntryBase implements NamingCo
         String clientId = getClientId(facesContext);
         String value = (String) requestMap.get(clientId);
 		String oldValue = (String) getValue();
-		if (value.equals("") && oldValue == null) return;
+		if ("".equals(value) && oldValue == null) return;
         if(value != null) {
             if(!value.equalsIgnoreCase(oldValue)) {
                 setChangedComponentId( clientId );
