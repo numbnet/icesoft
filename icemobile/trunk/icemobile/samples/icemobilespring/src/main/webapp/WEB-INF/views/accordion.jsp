@@ -19,7 +19,7 @@
 		<h2>Accordion</h2>
 		<form:form id="accordionform" method="POST"  modelAttribute="accordionBean" cssClass="cleanform">
 
-            <mobi:accordion id="accordionOne" selectedId="${accordionBean.accordionOne}" >
+            <mobi:accordion id="accordionOne" selectedId="${accordionBean.accordionOne}" autoheight="true"  >
                 <mobi:content>
                     <mobi:contentPane title="First drop down item" id="tab1" >
 
