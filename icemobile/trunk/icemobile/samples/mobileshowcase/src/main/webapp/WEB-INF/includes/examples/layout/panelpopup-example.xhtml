@@ -14,7 +14,7 @@
   ~ governing permissions and limitations under the License.
   -->
 
-<ui:fragment xmlns="http://www.w3.org/1999/xhtml"
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
              xmlns:h="http://java.sun.com/jsf/html"
              xmlns:f="http://java.sun.com/jsf/core"
              xmlns:ui="http://java.sun.com/jsf/facelets"
@@ -35,7 +35,7 @@
                 <mobi:commandButton style="margin-top:5px;float:left;"
                                     value="Show Popup"
                                     actionListener="#{panelPopupBean.toggleRendered}"/>
-                <mobi:panelPopup id="panelConfirmation"
+                <mobi:panelPopup id="panelConfirmation" clientSide="true"
                                  style="width:300px"
                                  visible="#{panelPopupBean.rendered}">
                     <mobi:outputList inset="false">
@@ -93,4 +93,4 @@
         </mobi:fieldsetGroup>
 
     </h:form>
-</ui:fragment>
+</ui:composition>

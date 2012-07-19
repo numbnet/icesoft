@@ -13,69 +13,72 @@
   ~ express or implied. See the License for the specific language
   ~ governing permissions and limitations under the License.
   -->
-<mobi:pagePanel xmlns="http://www.w3.org/1999/xhtml"
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
-                xmlns:util="http://java.sun.com/jsf/composite/components"
                 xmlns:icecore="http://www.icefaces.org/icefaces/core"
                 xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
+    <mobi:pagePanel>
 
-    <f:facet name="header">
-        <h:form id="toolbar2" prependId="false">
-            <h:commandLink type="back"
-                           value="Back"
-                           styleClass="mobi-button mobi-button-back"
-                           action="#{navigationModel.goBack}"
-                           rendered="#{navigationModel.canGoBack}"/>
+        <f:facet name="header">
+            <h:form id="toolbar2" prependId="false">
+                <h:commandLink type="back"
+                               value="Back"
+                               styleClass="mobi-button mobi-button-back"
+                               action="#{navigationModel.goBack}"
+                               rendered="#{navigationModel.canGoBack}"/>
 
-            #{mmsgs[navigationModel.selectedDestination.title]}
+                #{mmsgs[navigationModel.selectedDestination.title]}
 
-            <ui:insert name="toolBarContent"/>
-        </h:form>
-    </f:facet>
-
-    <f:facet name="body">
-        <ui:include src="/WEB-INF/includes/content/content-stack.xhtml">
-            <ui:param name="selectedPanel"
-                      value="#{navigationModel.selectedPanel == null?'menu':navigationModel.selectedPanel}" />
-        </ui:include>
-    </f:facet>
-
-    <f:facet name="footer">
-        <!--
-            footer by default has commands for creating new messages.
-            can be over-ridden if needed.
-        -->
-        <div style="float:left;display:inline-block;text-align:left;line-height: 45px;">
-            <h:form>
-                <icecore:singleSubmit rendered="false"/>
-
-                <span style="font-size:14px;color:white;font-weight:bold;">Theme: </span>
-                <h:selectOneMenu value="#{themeBean.currentTheme}"
-                                 onchange="ice.s(event, this);">
-                    <f:selectItem itemLabel="Auto" itemValue=""/>
-                    <f:selectItem itemLabel="iPhone"
-                                  itemValue="iphone.css"/>
-                    <f:selectItem itemLabel="Android"
-                                  itemValue="android.css"/>
-                    <f:selectItem itemLabel="BlackBerry"
-                                  itemValue="bberry.css"/>
-                    <f:ajax disabled="true"/>
-                </h:selectOneMenu>
+                <ui:insert name="toolBarContent"/>
             </h:form>
-        </div>
-        <h:panelGroup
-                style="float:right;display:inline-block;margin: 5px 15px 0 0;">
-            <h:form>
-                <h:commandLink action="#{mobiNavigationController.navigateToPage}">
-                    <f:param name="navigateTo"
-                             value="#{mobiNavigationModel.destinationHome}"/>
-                    <h:graphicImage library="images" name="icemobile_thumb.png"
-                                    style="width:30px;height:30px;border:none;"/>
-                </h:commandLink>
-            </h:form>
-        </h:panelGroup>
-    </f:facet>
+        </f:facet>
 
-</mobi:pagePanel>
+        <f:facet name="body">
+            <ui:include src="/WEB-INF/includes/content/content-stack.xhtml">
+                <ui:param name="selectedPanel"
+                          value="#{navigationModel.selectedPanel == null?'menu':navigationModel.selectedPanel}"/>
+            </ui:include>
+        </f:facet>
+
+        <f:facet name="footer">
+            <!--
+                footer by default has commands for creating new messages.
+                can be over-ridden if needed.
+            -->
+            <div style="float:left;display:inline-block;text-align:left;line-height: 45px;">
+                <h:form>
+                    <icecore:singleSubmit rendered="false"/>
+
+                    <span style="font-size:14px;color:white;font-weight:bold;">Theme: </span>
+                    <h:selectOneMenu value="#{themeBean.currentTheme}"
+                                     onchange="ice.s(event, this);">
+                        <f:selectItem itemLabel="Auto" itemValue=""/>
+                        <f:selectItem itemLabel="iPhone"
+                                      itemValue="iphone.css"/>
+                        <f:selectItem itemLabel="Android"
+                                      itemValue="android.css"/>
+                        <f:selectItem itemLabel="BlackBerry"
+                                      itemValue="bberry.css"/>
+                        <f:ajax disabled="true"/>
+                    </h:selectOneMenu>
+                </h:form>
+            </div>
+            <h:panelGroup
+                    style="float:right;display:inline-block;margin: 5px 15px 0 0;">
+                <h:form>
+                    <h:commandLink
+                            action="#{mobiNavigationController.navigateToPage}">
+                        <f:param name="navigateTo"
+                                 value="#{mobiNavigationModel.destinationHome}"/>
+                        <h:graphicImage library="images"
+                                        name="icemobile_thumb.png"
+                                        style="width:30px;height:30px;border:none;"/>
+                    </h:commandLink>
+                </h:form>
+            </h:panelGroup>
+        </f:facet>
+
+    </mobi:pagePanel>
+</ui:composition>
