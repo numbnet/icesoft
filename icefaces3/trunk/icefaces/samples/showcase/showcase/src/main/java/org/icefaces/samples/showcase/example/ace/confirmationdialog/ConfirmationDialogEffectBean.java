@@ -52,15 +52,17 @@ public class ConfirmationDialogEffectBean extends ComponentExampleImpl<Confirmat
     private String showEffect;
     private String hideEffect;
     private String outcome;
-    private LinkedHashMap<String, String> effects;
+    private LinkedHashMap<String, String> showEffects;
+	private LinkedHashMap<String, String> hideEffects;
 
     public ConfirmationDialogEffectBean() {
         super(ConfirmationDialogEffectBean.class);
         outcome = null;
         
-        effects = initializeDialogEffects();
-        showEffect = effects.get("Fade");
-        hideEffect = effects.get("Fade");
+        showEffects = initializeDialogShowEffects();
+		hideEffects = initializeDialogHideEffects();
+        showEffect = showEffects.get("Fade");
+        hideEffect = hideEffects.get("Fade");
     }
 
     @PostConstruct
@@ -68,7 +70,7 @@ public class ConfirmationDialogEffectBean extends ComponentExampleImpl<Confirmat
         super.initMetaData();
     }
 
-        private LinkedHashMap<String, String> initializeDialogEffects()
+        private LinkedHashMap<String, String> initializeDialogShowEffects()
         {
             LinkedHashMap<String, String> list = new LinkedHashMap<String, String>();
             list.put("Fade", "fade");
@@ -79,6 +81,21 @@ public class ConfirmationDialogEffectBean extends ComponentExampleImpl<Confirmat
             list.put("Explode", "explode");
             list.put("Puff", "puff");
             list.put("Pulsate", "pulsate");
+            list.put("Scale", "scale");
+            list.put("Slide", "slide");
+            return list;
+    }
+	
+        private LinkedHashMap<String, String> initializeDialogHideEffects()
+        {
+            LinkedHashMap<String, String> list = new LinkedHashMap<String, String>();
+            list.put("Fade", "fade");
+            list.put("Highlight", "highlight");
+            list.put("Blind", "blind");
+            list.put("Bounce", "bounce");
+            list.put("Clip", "clip");
+            list.put("Explode", "explode");
+            list.put("Puff", "puff");
             list.put("Scale", "scale");
             list.put("Slide", "slide");
             return list;
@@ -112,11 +129,19 @@ public class ConfirmationDialogEffectBean extends ComponentExampleImpl<Confirmat
         this.showEffect = showEffect;
     }
 
-    public LinkedHashMap<String, String> getEffects() {
-        return effects;
+    public LinkedHashMap<String, String> getShowEffects() {
+        return showEffects;
     }
 
-    public void setEffects(LinkedHashMap<String, String> effects) {
-        this.effects = effects;
+    public void setShowEffects(LinkedHashMap<String, String> effects) {
+        this.showEffects = effects;
+    }
+	
+    public LinkedHashMap<String, String> getHideEffects() {
+        return hideEffects;
+    }
+
+    public void setHideEffects(LinkedHashMap<String, String> effects) {
+        this.hideEffects = effects;
     }
 }
