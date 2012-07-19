@@ -19,20 +19,23 @@
 		<h2>Accordion</h2>
 		<form:form id="accordionform" method="POST"  modelAttribute="accordionBean" cssClass="cleanform">
 
-            <mobi:accordion id="accordionOne" name="accordionOne" selectedId="${accordionBean.accordionOne}" autoheight="true">
+            <mobi:accordion id="accordionOne" selectedId="${accordionBean.accordionOne}" >
                 <mobi:content>
                     <mobi:contentPane title="First drop down item" id="tab1" >
 
-                       <mobi:commandButton name="submitB" buttonType="important"
-                                    value="Process"/>
+                        <div style="height: 75px;">
+                          <img src="resources/desktop.png"></img>
+                        </div>
                     </mobi:contentPane>
                     <mobi:contentPane title="Second drop down item" id="tab2">
-                        <mobi:commandButton name="submitC" buttonType="important"
-                                    value="Submit"/>
+                         <div style="height: 75px;">
+                          <img src="resources/monitor.png"></img>
+                        </div>
                     </mobi:contentPane>
                     <mobi:contentPane title="Third drop down item" id="tab3">
-                       <mobi:commandButton name="submitA" buttonType="important"
-                                    value="OK"/>
+                        <div style="height: 75px;">
+                          <img src="resources/laptop.png"></img>
+                        </div>
                     </mobi:contentPane>
                 </mobi:content>
             </mobi:accordion>
