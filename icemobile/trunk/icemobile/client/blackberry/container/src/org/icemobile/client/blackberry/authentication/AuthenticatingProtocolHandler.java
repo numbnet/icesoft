@@ -15,8 +15,8 @@ import net.rim.device.api.browser.field2.BrowserFieldResourceRequestHandler;
 import net.rim.device.api.io.http.HttpHeaders;
 
 public class AuthenticatingProtocolHandler implements
-        BrowserFieldNavigationRequestHandler,
-                BrowserFieldResourceRequestHandler {
+    BrowserFieldNavigationRequestHandler,
+    BrowserFieldResourceRequestHandler {
 
     private AuthenticationManager mManager;
     private BrowserField mBrowserField;
@@ -35,13 +35,14 @@ public class AuthenticatingProtocolHandler implements
     }
 
     public void handleNavigation(BrowserFieldRequest request)
-            throws Exception {
+        throws Exception {
+        Logger.DEBUG("Protocol-Handler: URL: " + request.getURL());
         InputConnection connection = handleResource(request);
         mBrowserField.displayContent(connection, request.getURL());
     }
 
     public InputConnection handleResource(BrowserFieldRequest request)
-            throws Exception {
+        throws Exception {
         InputConnection inputConnection = null;
 
         try {
@@ -67,8 +68,7 @@ public class AuthenticatingProtocolHandler implements
      * Exception in request
      */
     private InputConnection retrieveAuthorizedConnection(
-                                                                HttpConnection httpConnection,
-                                                                BrowserFieldRequest request) {
+        HttpConnection httpConnection, BrowserFieldRequest request) {
 
         try {
 
@@ -106,7 +106,7 @@ public class AuthenticatingProtocolHandler implements
         try {
             int code = httpConnection.getResponseCode();
             return (code == HttpConnection.HTTP_UNAUTHORIZED ||
-                            code == HttpConnection.HTTP_PROXY_AUTH);
+                code == HttpConnection.HTTP_PROXY_AUTH);
         } catch (IOException ioe) {
             Logger.ERROR("IOException checking response status? " + ioe);
         }
@@ -121,14 +121,15 @@ public class AuthenticatingProtocolHandler implements
      * @param authentication The value for the "Authorization" header
      * @return The new open HttpConnection
      */
-    private HttpConnection requestContentWithCredentials(BrowserFieldRequest request,
-                                                         String authentication) {
+    private HttpConnection requestContentWithCredentials(
+        BrowserFieldRequest request,
+        String authentication) {
         HttpConnection returnVal = null;
         try {
             HttpHeaders headers = request.getHeaders();
             headers.addProperty("Authorization", authentication);
             BrowserFieldRequest newRequest =
-                    new BrowserFieldRequest(request.getURL(), request.getPostData(), headers);
+                new BrowserFieldRequest(request.getURL(), request.getPostData(), headers);
             returnVal = (HttpConnection) mBrowserField.getConnectionManager().makeRequest(newRequest);
 
             if (!requiresAuthorization(returnVal)) {
@@ -148,15 +149,15 @@ public class AuthenticatingProtocolHandler implements
      * @return String[] of authorization parameters val[0] = scheme, val[1] = realm
      * @throws IOException
      */
-    private String[] getDetailsFromAuthHeader(HttpConnection httpConnection) throws
-            IOException {
+    private String[] getDetailsFromAuthHeader(
+        HttpConnection httpConnection) throws IOException {
 
         String[] returnVal = new String[2];
 
         int code = httpConnection.getResponseCode();
         String authHeader = (code == HttpConnection.HTTP_UNAUTHORIZED) ?
-                                    httpConnection.getHeaderField("WWW-Authenticate") :
-                                    httpConnection.getHeaderField("Proxy-Authenticate");
+            httpConnection.getHeaderField("WWW-Authenticate") :
+            httpConnection.getHeaderField("Proxy-Authenticate");
 
         if (authHeader == null) {
             throw new IllegalArgumentException("Authentication header is null");
