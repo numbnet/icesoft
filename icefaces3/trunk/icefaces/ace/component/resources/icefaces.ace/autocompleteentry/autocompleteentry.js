@@ -12,7 +12,9 @@ ice.ace.Autocompleter = function(id, updateId, rowClass, selectedRowClass, delay
     this.cfg = cfg;
 
 	var options = {minChars:0};
-	var element = ice.ace.jq(ice.ace.escapeClientId(id)).get(0);
+	this.root = ice.ace.jq(ice.ace.escapeClientId(this.id));
+	var element = this.root.find('input[name="'+this.id+'_input"]').get(0);
+	element.id = this.id + "_input";
 	var ue = ice.ace.jq(ice.ace.escapeClientId(updateId)).get(0);
 	this.baseInitialize(element, ue, options, rowClass, selectedRowClass);
 
@@ -679,7 +681,7 @@ ice.ace.Autocompleter.prototype = {
 
         var form = Ice.util.findForm(this.element);
         if (idx > -1) {
-            var indexName = this.element.id + "_idx";
+            var indexName = this.id + "_idx";
             form[indexName].value = idx;
         }
 
@@ -703,7 +705,7 @@ ice.ace.Autocompleter.prototype = {
 		}
         }
 
-        var indexName = this.element.id + "_idx";
+        var indexName = this.id + "_idx";
         form[indexName].value = "";
     },
 

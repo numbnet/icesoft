@@ -57,7 +57,7 @@ public class AutoCompleteEntry extends AutoCompleteEntryBase implements NamingCo
 		Object componenetId = facesContext.getExternalContext()
                 .getRequestParameterMap().get("ice.event.captured");
         if (componenetId != null) {
-            if (componenetId.toString().equals(getClientId(facesContext))) {
+            if (componenetId.toString().equals(getClientId(facesContext) + "_input")) {
                 isEventSource = true;
             }
         }
@@ -72,11 +72,11 @@ public class AutoCompleteEntry extends AutoCompleteEntryBase implements NamingCo
         Map requestMap =
                 facesContext.getExternalContext().getRequestParameterMap();
         String clientId = getClientId(facesContext);
-        String value = (String) requestMap.get(clientId);
+        String value = (String) requestMap.get(clientId + "_input");
 		String oldValue = (String) getValue();
         if(value != null) {
             if(!value.equalsIgnoreCase(oldValue)) {
-                setChangedComponentId( clientId );
+                setChangedComponentId( clientId + "_input" );
             }
 			if ("".equals(value) && oldValue == null) setChangedComponentId(null); // do not populate list
 			setSubmittedValue(value);
@@ -86,7 +86,7 @@ public class AutoCompleteEntry extends AutoCompleteEntryBase implements NamingCo
         if (selIdxStr != null && selIdxStr.trim().length() > 0) {
             int selIdx = Integer.parseInt(selIdxStr);
             setSelectedIndex(selIdx);
-            setChangedComponentId( clientId );
+            setChangedComponentId( clientId + "_input");
         }
         else {
             setSelectedItem(value);
@@ -100,7 +100,7 @@ public class AutoCompleteEntry extends AutoCompleteEntryBase implements NamingCo
             target = "";
         if(captured == null)
             captured = "";
-        if( !target.equals(clientId) && !captured.equals(clientId) )
+        if( !target.equals(clientId + "_input") && !captured.equals(clientId + "_input") )
             return false;
         String type = (String) requestMap.get("ice.event.type");
         String partialSubmit = (String) requestMap.get("ice.submit.partial");
@@ -270,7 +270,7 @@ public class AutoCompleteEntry extends AutoCompleteEntryBase implements NamingCo
             return false;
         }
         return changedComponentIds
-                .contains(this.getClientId(FacesContext.getCurrentInstance()));
+                .contains(this.getClientId(FacesContext.getCurrentInstance()) + "_input");
     }
 	
     private void queueEventIfEnterKeyPressed(FacesContext facesContext) {
