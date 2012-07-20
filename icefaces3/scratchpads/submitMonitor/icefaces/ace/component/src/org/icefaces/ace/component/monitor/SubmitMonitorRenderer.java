@@ -38,22 +38,85 @@ public class SubmitMonitorRenderer extends CoreRenderer {
         String clientId = component.getClientId();
         SubmitMonitor monitor = (SubmitMonitor)component;
 
-        writer.startElement(HTML.DIV_ELEM, component);
-        writer.writeAttribute(HTML.ID_ATTR, clientId, null);
+        // Encode Component
+        writeComponent(monitor, writer, clientId);
+
+        //Encode Script
+        writeScript(monitor, writer, clientId);
+    }
+
+    private void writeScript(SubmitMonitor monitor, ResponseWriter writer, String clientId) throws IOException {
+        writer.startElement(HTML.DIV_ELEM, monitor);
+        writer.writeAttribute(HTML.ID_ATTR, clientId+"_script", null);
 
         writer.startElement(HTML.SCRIPT_ELEM, null);
-        writer.write("var " + resolveWidgetVar(component) + " = ice.ace.Monitor(" + getConfig(monitor) + ");");
+        writer.write("var " + resolveWidgetVar(monitor) + " = ice.ace.Monitor(" + getConfig(monitor) + ");");
         writer.endElement(HTML.SCRIPT_ELEM);
+
+        writer.endElement(HTML.DIV_ELEM);
+    }
+
+    private void writeComponent(SubmitMonitor monitor, ResponseWriter writer, String clientId) throws IOException {
+        String label = monitor.getActiveLabel();
+        String styleClass = "if-sub-mon";
+
+        if (monitor.isCentered()) styleClass += " center";
+
+        writer.startElement(HTML.DIV_ELEM, monitor);
+        writer.writeAttribute(HTML.ID_ATTR, clientId+"_display", null);
+        writer.writeAttribute(HTML.CLASS_ATTR, styleClass, null);
+        if (Boolean.valueOf(true).equals(monitor.isBlockUI()))
+            writer.writeAttribute(HTML.STYLE_ATTR, "display:none;", null);
+
+        writer.startElement(HTML.IMG_ELEM, null);
+        writer.writeAttribute(HTML.CLASS_ATTR, "if-sub-mon-img", null);
+        writer.endElement(HTML.IMG_ELEM);
+
+        if (label != null) {
+            writer.startElement(HTML.SPAN_ELEM, null);
+            writer.writeAttribute(HTML.CLASS_ATTR, "if-sub-mon-txt", null);
+            writer.write(label);
+            writer.endElement(HTML.SPAN_ELEM);
+        }
 
         writer.endElement(HTML.DIV_ELEM);
     }
 
     public JSONBuilder getConfig(SubmitMonitor monitor) {
         JSONBuilder config = new JSONBuilder();
-        String label = monitor.getLabel();
+        FacesContext context = FacesContext.getCurrentInstance();
+
+        Boolean blockUI = monitor.isBlockUI();
+
+        String activeLabel = monitor.getActiveLabel();
+        String idleLabel = monitor.getIdleLabel();
+        String serverErrorLabel = monitor.getServerErrorLabel();
+        String networkErrorLabel = monitor.getNetworkErrorLabel();
+        String sessionExpiredLabel = monitor.getSessionExpiredLabel();
+
+        String activeImgUrl = getResourceRequestPath(context, "monitor/connect_active.gif");
+        String cautionImgUrl = getResourceRequestPath(context, "monitor/connect_caution.gif");
+        String disconnectedImgUrl = getResourceRequestPath(context, "monitor/connect_disconnected.gif");
+        String idleImgUrl = getResourceRequestPath(context, "monitor/connect_idle.gif");
 
         config.beginMap();
-        if (label != null) config.entry("label", label);
+        config.entry("id", monitor.getClientId());
+
+        if (blockUI != null) config.entry("blockUI", blockUI);
+
+
+        if (idleLabel != null) config.entry("idleLabel", idleLabel);
+        if (activeLabel != null) config.entry("activeLabel", activeLabel);
+        if (networkErrorLabel != null) config.entry("networkErrorLabel", networkErrorLabel);
+        if (serverErrorLabel != null) config.entry("serverErrorLabel", serverErrorLabel);
+        if (sessionExpiredLabel != null) config.entry("sessionExpiredLabel", sessionExpiredLabel);
+
+        if (activeImgUrl != null) config.entry("activeImgUrl", activeImgUrl);
+        if (cautionImgUrl != null) config.entry("cautionImgUrl", cautionImgUrl);
+        if (disconnectedImgUrl != null) config.entry("disconnectedImgUrl", disconnectedImgUrl);
+        if (idleImgUrl != null) config.entry("idleImgUrl", idleImgUrl);
+
+
         config.endMap();
 
         return config;

@@ -103,7 +103,7 @@ public class DataTableBean extends ComponentExampleImpl<DataTableBean> implement
     public void setCarsData(List<Car> carsData) { this.carsData = carsData; }
 
     public void longRunningListener() {
-        try { Thread.sleep(2000); }
+        try { Thread.sleep(20000); }
         catch (Exception e) {
             FacesUtils.addErrorMessage("Server-side tab waiting could not finish.");
         }

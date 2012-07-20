@@ -32,20 +32,10 @@
         return tally;
     };
 
-    var getLabel = function(cfg,doc) {
-        if (cfg.label) {
-            var label = doc.createElement('span');
-            label.innerHTML = cfg.label;
-            return label;
-        }
-
-        return null;
-    }
-
     function Overlay(cfg) {
         var container = cfg.element == undefined ? document.body : cfg.element;
         var overlay = container.ownerDocument.createElement('div');
-        var label = getLabel(cfg, container.ownerDocument);
+        var activeLabel = cfg.activeLabel || cfg.activeImgUrl;
         overlay.className = 'ice-blockui-overlay';
         var overlayStyle = overlay.style;
         overlayStyle.top = '0';
@@ -61,12 +51,10 @@
 
         container.appendChild(overlay);
 
-        if (label) {
-            overlay.appendChild(label);
-            label.style.position = 'fixed';
-            label.style.top = '50%';
-            label.style.left = '50%';
-            label.style.marginLeft = label.clientWidth / 2;
+        if (activeLabel) {
+            ice.ace.jq(ice.ace.escapeClientId(cfg.id)+"_display").clone(false,true).appendTo(overlay);
+            var subMon = ice.ace.jq(overlay).find('> div:first-child');
+            subMon.css('display', '').css('marginLeft', '-'+subMon.clientWidth / 2);
         }
 
         return function() {
@@ -76,11 +64,6 @@
                 }
             }
         };
-    }
-
-    //in the future this function can be modified to read configuration set per component container element
-    function isBlockUIEnabled(source) {
-        return true;
     }
 
     function eventSink(element) {
@@ -100,9 +83,49 @@
     if (!ice.ace) ice.ace = {};
 
     ice.ace.Monitor = function (cfg) {
-        var cfg;
+        var jqId = ice.ace.escapeClientId(cfg.id);
+
+        //in the future this function can be modified to read configuration set per component container element
+        function isBlockUIEnabled(source) {
+            return (cfg.blockUI != undefined && cfg.blockUI != false);
+        }
+
+        var changeState = function(state) {
+            var text = '';
+            var img = '';
+
+            switch (state) {
+                case 'active':
+                    text = cfg.activeLabel;
+                    img = cfg.activeImgUrl;
+                    break;
+                case 'server':
+                    text = cfg.serverErrorLabel;
+                    img = cfg.disconnectedImgUrl;
+                    break;
+                case 'network':
+                    text = cfg.networkErrorLabel;
+                    img = cfg.disconnectedImgUrl;
+                    break;
+                case 'session':
+                    text = cfg.sessionExpiredLabel;
+                    img = cfg.cautionImgUrl;
+                    break;
+                case 'idle':
+                    text = cfg.idleLabel;
+                    img = cfg.idleImgUrl;
+                    break;
+                default:
+                    return;
+            }
+
+            ice.ace.jq(jqId+'_display > img.if-sub-mon-img').attr('src', img);
+            ice.ace.jq(jqId+'_display > span.if-sub-mon-txt').html (text);
+        }
 
         window.ice.onBeforeSubmit(function(source,isClientRequest) {
+            changeState('active');
+
             //Only block the UI for client-initiated requests (not push requests)
             if (isClientRequest && isBlockUIEnabled(source)) {
                 console.log('Blocking UI');
@@ -146,6 +169,9 @@
 
         window.ice.onAfterUpdate(function() {
             stopBlockingUI();
+            changeState('idle');
         });
+
+        changeState('idle');
     }
 })();
