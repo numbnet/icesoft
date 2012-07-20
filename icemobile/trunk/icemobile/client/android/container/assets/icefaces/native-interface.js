@@ -113,6 +113,8 @@ if (!window.ice.mobile) {
             context.sourceid = "";
             context.formid = "";
             context.serialized = "";
+            context.onevent = null;
+            context.onerror = null;
         }
 
         //override primitive submit function
@@ -168,6 +170,8 @@ if (!window.ice.mobile) {
 
             context.sourceid = sourceId;
             context.formid = formId;
+            context.onevent = options.onevent;
+            context.onerror = options.onerror;
             ice.upload(formId);
         };
 
