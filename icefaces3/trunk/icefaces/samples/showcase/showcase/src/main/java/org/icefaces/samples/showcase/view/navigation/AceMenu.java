@@ -37,6 +37,7 @@ import org.icefaces.samples.showcase.example.ace.dialog.DialogBean;
 import org.icefaces.samples.showcase.example.ace.chart.ChartBean;
 import org.icefaces.samples.showcase.example.ace.maskedEntry.MaskedEntryBean;
 import org.icefaces.samples.showcase.example.ace.textEntry.TextEntryBean;
+import org.icefaces.samples.showcase.example.ace.textAreaEntry.TextAreaEntryBean;
 import org.icefaces.samples.showcase.example.ace.resizable.ResizableBean;
 import org.icefaces.samples.showcase.example.ace.richtextentry.RichTextEntryBean;
 import org.icefaces.samples.showcase.example.ace.dragDrop.DragDropOverviewBean;
@@ -87,6 +88,7 @@ import org.icefaces.samples.showcase.example.ace.printer.PrinterBean;
                 @MenuLink(title = "menu.ace.slider.title", exampleBeanName = SliderBean.BEAN_NAME),
                 @MenuLink(title = "menu.ace.tabSet.title", exampleBeanName = TabSetBean.BEAN_NAME),
                 @MenuLink(title = "menu.ace.textEntry.title", exampleBeanName = TextEntryBean.BEAN_NAME),
+                @MenuLink(title = "menu.ace.textAreaEntry.title", exampleBeanName = TextAreaEntryBean.BEAN_NAME),
                 @MenuLink(title = "menu.ace.tooltip.title", exampleBeanName = TooltipOverviewBean.BEAN_NAME)
         })
 @ManagedBean(name = AceMenu.BEAN_NAME)
