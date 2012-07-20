@@ -6,11 +6,6 @@
 	<link rel="stylesheet" href="http://code.jquery.com/mobile/1.1.0/jquery.mobile-1.1.0.min.css" />
 	<script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
 	<script src="http://code.jquery.com/mobile/1.1.0/jquery.mobile-1.1.0.min.js"></script>
-    <style>
-    .recordstyle {
-        background: red;
-    }
-    </style>
 </head> 
 <body> 
 
@@ -28,7 +23,7 @@
 		  	</fieldset>
 
 		  	<fieldset>
-               <a data-role="button" id="mic" onclick="var subtext = this.firstChild; if(1===subtext.nodeType){subtext=subtext.firstChild.firstChild};if(subtext.data=='Stop'){subtext.data='Record';this.classList.remove('recordstyle')}else{subtext.data='Stop';this.classList.add('recordstyle')}ice.microphone('mic');">Record</a>
+               <a data-role="button" id="mic" onclick="ice.microphone('mic');">Record</a>
                <span id="thanks"></span>
                <audio id="clip" style="width:100%;padding-top:10px;" src="media/clip.mp4" controls="controls" ></audio>
 		  	</fieldset>
