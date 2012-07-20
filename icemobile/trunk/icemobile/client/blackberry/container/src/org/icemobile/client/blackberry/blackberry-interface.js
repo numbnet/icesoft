@@ -199,6 +199,8 @@ if (!window.ice.mobile) {
 
             context.sourceid = sourceId;
             context.formid = formId;
+            context.onevent = options.onevent;
+            context.onerror = options.onerror;
             //context.serialized = ice.serialize(form.id);
             
             ice.upload(formId);
@@ -256,6 +258,8 @@ if (!window.ice.mobile) {
                 context.sourceid = "";
                 context.formid = "";
                 context.serialized = "";
+                context.onevent = null;
+                context.onerror = null;
             } catch (e) {
             	
                 //icefaces.logInContainer("Exception in handleResponse: " + e);
