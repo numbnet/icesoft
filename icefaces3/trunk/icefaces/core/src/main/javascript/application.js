@@ -108,6 +108,15 @@ if (!window.ice.icefaces) {
         }
 
         function formOf(element) {
+            try {
+                return formOfNode(element);
+            } catch (e)  {
+                //page update may have occurred
+                return formOfNode(document.getElementById(element.id));
+            }
+        }
+
+        function formOfNode(element) {
             return toLowerCase(element.nodeName) == 'form' ? element : enclosingForm(element);
         }
 
