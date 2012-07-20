@@ -119,12 +119,15 @@ public class IceOutputResource extends Resource implements Serializable {
     @Override
     public URL getURL() {
         ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
+        String serverName = context.getRequestHeaderMap()
+                .get("x-forwarded-host");
+        if (null == serverName) {
+            serverName = context.getRequestServerName() + ":" + 
+            context.getRequestServerPort();
+        }
         StringBuilder buff = new StringBuilder(context.getRequestScheme());
         buff.append("://");
-        buff.append(context.getRequestServerName());
-        if (context.getRequestServerPort() != 80 && context.getRequestServerPort() != 443) {
-            buff.append(":").append(context.getRequestServerPort());
-        }
+        buff.append(serverName);
         buff.append(getRequestPath());
         URL url = null;
         try {

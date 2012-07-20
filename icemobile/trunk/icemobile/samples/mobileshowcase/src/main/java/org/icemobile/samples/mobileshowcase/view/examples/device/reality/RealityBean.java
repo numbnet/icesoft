@@ -205,9 +205,13 @@ public class RealityBean extends ExampleImpl<RealityBean> implements
     public String getBaseURL()  {
         FacesContext facesContext = FacesContext.getCurrentInstance();
         ExternalContext externalContext = facesContext.getExternalContext();
-        String url = externalContext.getRequestScheme() + "://" +
-            externalContext.getRequestServerName() + ":" + 
+        String serverName = externalContext.getRequestHeaderMap()
+                .get("x-forwarded-host");
+        if (null == serverName) {
+            serverName = externalContext.getRequestServerName() + ":" + 
             externalContext.getRequestServerPort();
+        }
+        String url = externalContext.getRequestScheme() + "://" + serverName;
         return url;
     }
 
