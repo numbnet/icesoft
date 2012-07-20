@@ -61,7 +61,7 @@ public class GeolocationRenderer extends CoreRenderer {
                 try {
                     decoded[i] = Double.parseDouble(params[i]);
                 } catch (Exception e)  {
-                    log.log(Level.WARNING, 
+                    log.log(Level.FINE, 
                         "Malformed geolocation " + i +
                         " " + locationString, e);
                 }
