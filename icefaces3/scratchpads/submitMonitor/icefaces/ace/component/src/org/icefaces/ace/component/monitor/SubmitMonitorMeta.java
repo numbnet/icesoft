@@ -1,6 +1,7 @@
 package org.icefaces.ace.component.monitor;
 
 import com.sun.xml.internal.ws.api.PropertySet;
+import org.icefaces.ace.meta.annotation.DefaultValueType;
 import org.icefaces.ace.meta.baseMeta.UIComponentBaseMeta;
 import org.icefaces.ace.meta.annotation.Component;
 import org.icefaces.ace.meta.annotation.Property;
@@ -17,20 +18,24 @@ import java.lang.String;
         componentFamily = "org.icefaces.ace.component.Montior",
         componentType = "org.icefaces.ace.component.SubmitMonitor",
         rendererType = "org.icefaces.ace.component.SubmitMonitorRenderer",
-        tlddoc = ""
+        tlddoc = "Renders and configures indications of ongoing ajax submits. " +
+                "Supports configurable text and image state indicators and UI blocking."
 )
 public class SubmitMonitorMeta extends UIComponentBaseMeta {
-    @Property(tlddoc = "A string to be displayed centered on the UI blocking layer.")
-    String label;
+    @Property(tlddoc = "A string to be displayed on the UI blocking layer or next to the image indicator during a submit.")
+    String activeLabel;
 
-//    @Property
-//    String serverErrorLabel;
-//
-//    @Property
-//    String networkErrorLabel;
-//
-//    @Property
-//    String sessionExpiredLabel;
+    @Property(tlddoc = "A string to be displayed on the UI blocking layer or next to the image indicator prior to a submit")
+    String idleLabel;
+
+    @Property
+    String serverErrorLabel;
+
+    @Property
+    String networkErrorLabel;
+
+    @Property
+    String sessionExpiredLabel;
 //
 //    @Property(name="for", tlddoc = "Define a comma separated list of component fully qualified component IDs who, " +
 //            "along with their contents, will be observed by this component when they act as the source for requests.")
@@ -43,17 +48,20 @@ public class SubmitMonitorMeta extends UIComponentBaseMeta {
 //            "the 'blockUI' feature.")
 //    Boolean showHourglass;
 //
-//    @Property(tlddoc = "Enabling displays a translucent plane over the application when requests are underway.")
-//    Boolean blockUI;
+    @Property(tlddoc = "Enabling displays a translucent plane over the application when requests are underway.",
+            defaultValue = "true", defaultValueType = DefaultValueType.EXPRESSION)
+    Boolean blockUI;
 //
 //    @Property(tlddoc = "Disabling displays the translucent plane of the 'blockUI' feature over the component region(s) " +
 //            "defined by the 'for' attribute to rather than obscuring the whole page.")
 //    Boolean blockWindow;
 //
-//    @Property(tlddoc = "Enable to prevent keyboard input when blockUI is enabled.")
-//    Boolean blockKeyboard;
-//
-//    @Property(tlddoc = "Enable to display the activity labels at the center of the UI blocking plane.")
-//    Boolean centered;
+    @Property(tlddoc = "Enable to prevent keyboard input when blockUI is enabled.",
+            defaultValue = "true", defaultValueType = DefaultValueType.EXPRESSION)
+    Boolean blockKeyboard;
+
+    @Property(tlddoc = "Enable to display the activity labels at the center of the UI blocking plane.",
+            defaultValue = "true", defaultValueType = DefaultValueType.EXPRESSION)
+    Boolean centered;
 }
 

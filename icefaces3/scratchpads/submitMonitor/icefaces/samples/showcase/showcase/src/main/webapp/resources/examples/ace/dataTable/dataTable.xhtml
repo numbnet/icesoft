@@ -40,7 +40,7 @@
                 /* Important required because row */
                 .ui-datatable-odd {background-color:lightgray !important;}
             </style>
-            <ace:submitMonitor />
+            <ace:submitMonitor idleLabel="durf" activeLabel="hurf"  blockUI="true" />
            <ace:dataTable id="carTable"
                           value="#{dataTableBean.carsData}"
                           var="car"
