@@ -31,8 +31,8 @@
     <ui:param name="subMenuLinks" value="#{backing.subMenuLinks}"/>
     <ui:param name="resourceValue" value="#{backing.exampleResource}"/>
 
-    <ui:param name="wikiResources" value="#{listBlockBeanResources.wikiResources}"/>
-    <ui:param name="tldResources" value="#{listBlockBeanResources.tldResources}"/>
+    <ui:param name="wikiResources" value="#{listResources.wikiResources}"/>
+    <ui:param name="tldResources" value="#{listResources.tldResources}"/>
 
     <ui:define name="example">
         <h:form id="form">
@@ -65,8 +65,7 @@
                 </style>
 
                 <ace:list id="list1" value="#{backing.stringList}"
-                          bodyClass="blockList"
-                          dragging="true"/>
+                          bodyClass="blockList" />
 
                 <hr style="margin:.7em .6em;"/>
 
