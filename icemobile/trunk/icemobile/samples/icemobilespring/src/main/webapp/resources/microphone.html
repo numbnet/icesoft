@@ -6,6 +6,15 @@
 	<link rel="stylesheet" href="http://code.jquery.com/mobile/1.1.0/jquery.mobile-1.1.0.min.css" />
 	<script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
 	<script src="http://code.jquery.com/mobile/1.1.0/jquery.mobile-1.1.0.min.js"></script>
+	<script src="icemobile.js"></script>
+    <style>
+    .mobi-container .mobi-stock {
+        display: none;
+    }
+    .mobi-stock .mobi-container {
+        display: none;
+    }
+    </style>
 </head> 
 <body> 
 
@@ -19,11 +28,11 @@
 		<form id="micform" action="../jsonmic" method="POST" enctype="multipart/form-data">
 		  	<fieldset>
 		  		<input id="name" name="name" type="text" placeholder="Name" value=""/>
-		
 		  	</fieldset>
 
 		  	<fieldset>
-               <a data-role="button" id="mic" onclick="ice.microphone('mic');">Record</a>
+               <a data-role="button" class="mobi-container" id="camera" onclick="ice.microphone(this.id);">Microphone</a>
+               <a data-role="button" data-command="microphone" data-id="mic" onclick="ice.mobilesx(this);" >Microphone ...</a>
                <span id="thanks"></span>
                <audio id="clip" style="width:100%;padding-top:10px;" src="media/clip.mp4" controls="controls" ></audio>
 		  	</fieldset>
@@ -42,6 +51,17 @@
 		<script type="text/javascript">
 
 			$(document).ready(function() {
+                if ($("#micform").attr("data-ajax")) {
+                    //avoid double onready registration
+                    return;
+                }
+                $("#micform").attr("data-ajax","enabled");
+                if (-1 === document.cookie.indexOf("HyperBrowser"))  {
+                    $("#micform").addClass("mobi-stock");
+                } else {
+                    $("#micform").addClass("mobi-container");
+                }
+
 				$("#micform").submit(function() {
                     if (window.ice && ice.upload)  {
                         window.ice.handleResponse = function(text)  {
