@@ -43,11 +43,11 @@
                      
                      <h:outputLabel for="requiredText" value="Required Indicator Text:"/>
                      <h:inputText id="requiredText" value="#{textEntryIndicatorBean.requiredText}"
-                                  disabled="#{!maskedIndicatorBean.required}"/>
+                                  disabled="#{!textEntryIndicatorBean.required}"/>
                      
                      <h:outputLabel for="optionalText" value="Optional Indicator Text:"/>
                      <h:inputText id="optionalText" value="#{textEntryIndicatorBean.optionalText}"
-                                  disabled="#{maskedIndicatorBean.required}"/>
+                                  disabled="#{textEntryIndicatorBean.required}"/>
                                   
                      <h:outputLabel for="positionIn" value="Indicator Position:"/>
                      <h:selectOneMenu id="positionIn" value="#{textEntryIndicatorBean.position}">
