@@ -62,7 +62,7 @@ public class AutoCompleteEntryRenderer extends InputRenderer {
 		
 		// root
         writer.startElement("div", null);
-		writer.writeAttribute("id", clientId + "_container", null);
+		writer.writeAttribute("id", clientId, null);
 		writer.writeAttribute("class", autoCompleteEntry.getStyleClass(), null);
 
         Map paramMap = facesContext.getExternalContext().getRequestParameterMap();
@@ -73,7 +73,8 @@ public class AutoCompleteEntryRenderer extends InputRenderer {
         String value = (String) autoCompleteEntry.getValue();
         boolean labelIsInField = false;
         if (isValueBlank(value)) value = null;
-        if (value == null && !isValueBlank(inFieldLabel) && !clientId.equals(iceFocus)) {
+		String inputClientId = clientId + "_input";
+        if (value == null && !isValueBlank(inFieldLabel) && !inputClientId.equals(iceFocus)) {
             value = inFieldLabel;
             inFieldLabelStyleClass = " " + IN_FIELD_LABEL_STYLE_CLASS;
             labelIsInField = true;
@@ -83,8 +84,7 @@ public class AutoCompleteEntryRenderer extends InputRenderer {
         // text field
 		writer.startElement("input", null);
         writer.writeAttribute("type", "text", null);
-		writer.writeAttribute("id", clientId, null);
-		writer.writeAttribute("name", clientId, null);
+		writer.writeAttribute("name", inputClientId, null);
 		String mousedownScript = (String) uiComponent.getAttributes().get("onmousedown");
 		mousedownScript = mousedownScript == null ? "" : mousedownScript;
 		writer.writeAttribute("onmousedown", mousedownScript + "this.focus();", null);
