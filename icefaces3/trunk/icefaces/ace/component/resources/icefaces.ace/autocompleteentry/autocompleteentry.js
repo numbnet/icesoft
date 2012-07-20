@@ -28,6 +28,8 @@ ice.ace.Autocompleter = function(id, updateId, rowClass, selectedRowClass, delay
 				this.ajaxBlur = behaviors.behaviors.blur;
 		}
 	}
+	
+	this.tabKeyPressed = false;
 };
 
 ice.ace.Autocompleter.keys = {
@@ -258,6 +260,10 @@ ice.ace.Autocompleter.prototype = {
             switch (event.keyCode) {
                 case ice.ace.Autocompleter.keys.KEY_TAB:
 					setFocus('');
+					if (this.ajaxBlur) {
+						this.tabKeyPressed = true;
+						ice.ace.ab(this.ajaxBlur);
+					}
                 case ice.ace.Autocompleter.keys.KEY_RETURN:
 					if (this.element.value.length < this.minChars) {
 						event.stopPropagation();
@@ -276,6 +282,10 @@ ice.ace.Autocompleter.prototype = {
             switch (event.keyCode) {
                 case ice.ace.Autocompleter.keys.KEY_TAB:
 					setFocus('');
+					if (this.ajaxBlur) {
+						this.tabKeyPressed = true;
+						ice.ace.ab(this.ajaxBlur);
+					}
                 case ice.ace.Autocompleter.keys.KEY_RETURN:
 					if (this.element.value.length < this.minChars) {
 						event.stopPropagation();
@@ -430,7 +440,14 @@ ice.ace.Autocompleter.prototype = {
         setTimeout(function () { self.hide(); }, 250);
         this.hasFocus = false;
         this.active = false;
-		if (this.ajaxBlur) ice.ace.ab(this.ajaxBlur);
+		if (this.ajaxBlur) {
+			if (this.tabKeyPressed) {
+				this.tabKeyPressed = false;
+			} else {
+				setFocus('');
+				ice.ace.ab(this.ajaxBlur);
+			}
+		}
     },
 
     onFocus: function(event) {

@@ -63,7 +63,9 @@ public class AutoCompleteEntry extends AutoCompleteEntryBase implements NamingCo
         }
         if (isEventSource) {
           queueEventIfEnterKeyPressed(facesContext);
-        }
+        } else {
+			setChangedComponentId(null); // do not populate list
+		}
     }
 	
     private void setSelectedItem(FacesContext facesContext) {
@@ -72,11 +74,11 @@ public class AutoCompleteEntry extends AutoCompleteEntryBase implements NamingCo
         String clientId = getClientId(facesContext);
         String value = (String) requestMap.get(clientId);
 		String oldValue = (String) getValue();
-		if ("".equals(value) && oldValue == null) return;
         if(value != null) {
             if(!value.equalsIgnoreCase(oldValue)) {
                 setChangedComponentId( clientId );
             }
+			if ("".equals(value) && oldValue == null) setChangedComponentId(null); // do not populate list
 			setSubmittedValue(value);
         }
         String selIdxStr = (String) requestMap.get(
