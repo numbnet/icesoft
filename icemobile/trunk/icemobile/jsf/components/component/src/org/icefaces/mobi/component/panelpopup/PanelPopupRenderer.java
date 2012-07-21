@@ -44,8 +44,11 @@ public class PanelPopupRenderer extends BaseLayoutRenderer {
         //update with hidden field
         String submittedString = String.valueOf(requestParameterMap.get(clientId));
         if (submittedString != null) {
-            boolean submittedValue = submittedString.equals("true");
-            panel.setVisible(true);
+            if (submittedString.trim().equals("true")){
+                panel.setVisible(true);
+            }else{
+                panel.setVisible(false);
+            }
         }
     }
 
@@ -54,7 +57,6 @@ public class PanelPopupRenderer extends BaseLayoutRenderer {
         PanelPopup popup = (PanelPopup) component;
         ResponseWriter writer = facesContext.getResponseWriter();
         String clientId = component.getClientId(facesContext);
-        //    boolean clientSide= panelPopup.isClientSide();
         writeJavascriptFile(facesContext, component, JS_NAME, JS_MIN_NAME, JS_LIBRARY);
         encodeMarkup(facesContext, component);
         encodeScript(facesContext, component);
@@ -69,6 +71,8 @@ public class PanelPopupRenderer extends BaseLayoutRenderer {
             return;
         }
         String clientId = panelPopup.getClientId(facesContext);
+        writer.startElement(HTML.DIV_ELEM, uiComponent);
+        writer.writeAttribute(HTML.ID_ATTR, clientId, HTML.ID_ATTR);
         StringBuilder popupBaseClass = new StringBuilder(PanelPopup.HIDDEN_CONTAINER_CLASS);
         StringBuilder popupBGClass = new StringBuilder(PanelPopup.BLACKOUT_PNL_HIDDEN_CLASS);
         UIComponent labelFacet = panelPopup.getFacet("label");
@@ -87,7 +91,7 @@ public class PanelPopupRenderer extends BaseLayoutRenderer {
                 writer.writeAttribute(HTML.ID_ATTR, clientId + "_open", HTML.ID_ATTR);
                 writer.writeAttribute(HTML.TYPE_ATTR, "button", HTML.TYPE_ATTR);
                 writer.writeAttribute(HTML.VALUE_ATTR, panelPopup.getOpenButtonLabel(), HTML.VALUE_ATTR);
-                StringBuilder openClick = new StringBuilder("mobi.panelpopup.open('" + clientId + "');");
+                StringBuilder openClick = new StringBuilder("mobi.panelPopup.openClient('" + clientId + "');");
                 writer.writeAttribute(HTML.ONCLICK_ATTR, openClick, HTML.ONCLICK_ATTR);
                 writer.endElement(HTML.INPUT_ELEM);
             }
@@ -118,7 +122,7 @@ public class PanelPopupRenderer extends BaseLayoutRenderer {
                     writer.startElement(HTML.INPUT_ELEM, uiComponent);
                     writer.writeAttribute(HTML.TYPE_ATTR, "button", HTML.TYPE_ATTR);
                     writer.writeAttribute("value", "Close", null);
-                    writer.writeAttribute(HTML.ONCLICK_ATTR, "mobi.panelpopup.close('" + clientId + "');", HTML.ONCLICK_ATTR);
+                    writer.writeAttribute(HTML.ONCLICK_ATTR, "mobi.panelPopup.closeClient('" + clientId + "');", HTML.ONCLICK_ATTR);
                     writer.endElement(HTML.INPUT_ELEM);
                 }
             }
@@ -131,13 +135,13 @@ public class PanelPopupRenderer extends BaseLayoutRenderer {
         if (clientSide) {
             writer.startElement(HTML.INPUT_ELEM, uiComponent);
             writer.writeAttribute(HTML.TYPE_ATTR, "hidden", HTML.TYPE_ATTR);
-            writer.writeAttribute(HTML.ID_ATTR, clientId, HTML.ID_ATTR);
-            writer.writeAttribute(HTML.VALUE_ATTR, String.valueOf(panelPopup.isVisible()), HTML.VALUE_ATTR);
-            writer.writeAttribute(HTML.NAME_ATTR, clientId, HTML.NAME_ATTR);
+            writer.writeAttribute(HTML.ID_ATTR, clientId+"_hidden", HTML.ID_ATTR);
+         //   writer.writeAttribute(HTML.VALUE_ATTR, String.valueOf(panelPopup.isVisible()), HTML.VALUE_ATTR);
+            writer.writeAttribute(HTML.NAME_ATTR, clientId+"_hidden", HTML.NAME_ATTR);
             writer.endElement(HTML.INPUT_ELEM);
         }
         writer.endElement(HTML.DIV_ELEM);
-
+        writer.endElement(HTML.DIV_ELEM);
     }
 
 
@@ -158,11 +162,12 @@ public class PanelPopupRenderer extends BaseLayoutRenderer {
         writer.startElement(HTML.SPAN_ELEM, component);
         writer.writeAttribute(HTML.ID_ATTR, clientId + "_scrSpan", HTML.ID_ATTR);
         writer.startElement("script", null);
-        writer.writeAttribute("id", clientId + "_script", "id");
         writer.writeAttribute("text", "text/javascript", null);
         StringBuilder builder = new StringBuilder(255);
-        builder.append("mobi.panelpopup.init('").append(clientId)
+        int hashcode = Utils.generateHashCode(System.currentTimeMillis());
+        builder.append("mobi.panelPopup.initClient('").append(clientId)
                 .append("', {visible: ").append(panelPopup.isVisible())
+                .append(", hash: ").append(hashcode)
                 .append(",autocenter: ").append(panelPopup.isAutoCenter())
                 .append("});\n");
         writer.write(builder.toString());

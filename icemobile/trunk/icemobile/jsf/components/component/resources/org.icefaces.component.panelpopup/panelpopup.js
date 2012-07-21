@@ -13,94 +13,111 @@
  * express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-if (!window['mobi']) {
-    window.mobi = {};
-}
-mobi.panelpopup = {
-    visible:{},
-    centerCalculation:{},
-    cfg:{},
-    init:function (clientId, cfgIn) {
-        this.cfg[clientId] = cfgIn;
-        var cfg = this.cfg[clientId];
-        var visible = cfg.visible;
-        var autoCenter = cfg.autocenter;
-        var containerId = clientId + "_popup";
-
-        //if nothing already in client saved state, then we use the server passed value
-        if (!this.visible[clientId]) {
-            this.visible[clientId] = visible;
-        }
-
-        if (this.visible[clientId]) {
-            this.open(clientId);
-        } else {
-            this.close(clientId);
-        }
-    },
-    // only called when in client side mode
-    open:function (clientId) {
-        var idPanel = clientId + "_bg";
-        var containerId = clientId + "_popup";
-        var cfg = this.cfg[clientId];
-        var autocenter = cfg.autocenter;
-        var scrollEvent = 'ontouchstart' in window ? "touchmove" : "scroll";
-
-        document.getElementById(idPanel).className = "mobi-panelpopup-bg ";
-        document.getElementById(containerId).className = "mobi-panelpopup-container ";
-
-        if (autocenter) {
-            // add scroll listener
-            this.centerCalculation[clientId] = function () {
-                mobi.panelAutoCenter(containerId);
-            };
-
-            if (window.addEventListener) {
-                window.addEventListener(scrollEvent, this.centerCalculation[clientId], false);
-                window.addEventListener('resize', this.centerCalculation[clientId], false);
-            } else { // older ie event listener
-                window.attachEvent(scrollEvent, this.centerCalculation[clientId]);
-                window.attachEvent("resize", this.centerCalculation[clientId]);
-            }
-            // calculate center for first view
-            mobi.panelAutoCenter(containerId);
-        }
-
-        this.visible[clientId] = true;
-        this.updateHidden(clientId, true);
-    },
-    // only called when in client side mode
-    close:function (clientId) {
-        var idPanel = clientId + "_bg";
-        var autocenter = this.cfg.autocenter;
-        var scrollEvent = 'ontouchstart' in window ? "touchmove" : "scroll";
-
-        document.getElementById(idPanel).className = "mobi-panelpopup-bg-hide ";
-        document.getElementById(clientId + "_popup").className = "mobi-panelpopup-container-hide ";
-
-        if (autocenter) {
-            if (window.removeEventListener) {
-                window.removeEventListener(scrollEvent, this.centerCalculation[clientId], false);
-                window.removeEventListener('resize', this.centerCalculation[clientId], false);
-            } else { // older ie cleanup
-                window.detachEvent(scrollEvent, this.centerCalculation[clientId], false);
-                window.detachEvent('resize', this.centerCalculation[clientId], false);
-            }
-            this.centerCalculation[clientId] = undefined;
-        }
-
-        this.visible[clientId] = false;
-        this.updateHidden(clientId, false);
-    },
-    updateHidden:function (clientId, visible) {
-        var hidden = document.getElementById(clientId);
+(function() {
+    //functions that do not encapsulate any state, they just work with the provided parameters
+    //and globally accessible variables
+    //---------------------------------------
+    function updateHidden(clientId, value) {
+        var hidden = document.getElementById(clientId+"_hidden");
         if (hidden) {
-            hidden.value = visible;
+            hidden.value = value;
         }
-    },
-    unload:function (clientId) {
-        this.cfg[clientId] = null;
-        this.visible[clientId] = null;
+    }
+    function hasClass(ele,cls) {
+        return ele.className.match(new RegExp('(\\s|^)'+cls+'(\\s|$)'));
+    }
+    function addClass(ele,cls) {
+         if (!this.hasClass(ele,cls)) ele.className =cls;
+    }
+    function removeClass(ele,cls) {
+       if (hasClass(ele,cls)) {
+              // var reg = new RegExp('(\\s|^)'+cls+'(\\s|$)');
+           ele.className=" ";
+       }
     }
 
-};
+
+    //-------------------------------------
+    function PanelPopup(clientId, cfgIn) {
+        var visible = cfgIn.visible || false;
+        var idPanel = clientId + "_bg";
+        var containerId = clientId + "_popup";
+        var autocenter = cfgIn.autocenter || true;
+        var centerCalculation = {};
+        this.mobi.panelPopup.visible[clientId]= visible;
+        return {
+           openPopup: function(clientId, cfg) {
+                var autocenter = cfg.autocenter || true;
+                var scrollEvent = 'ontouchstart' in window ? "touchmove" : "scroll";
+                document.getElementById(idPanel).className = "mobi-panelpopup-bg ";
+                document.getElementById(containerId).className = "mobi-panelpopup-container ";
+                if (autocenter) {
+                    // add scroll listener
+                    centerCalculation[clientId] = function () {
+                        mobi.panelAutoCenter(containerId);
+                    };
+                    if (window.addEventListener) {
+                        window.addEventListener(scrollEvent, centerCalculation[clientId], false);
+                        window.addEventListener('resize', centerCalculation[clientId], false);
+                    } else { // older ie event listener
+                        window.attachEvent(scrollEvent, centerCalculation[clientId]);
+                        window.attachEvent("resize", centerCalculation[clientId]);
+                    }
+                    // calculate center for first view
+                    mobi.panelAutoCenter(containerId);
+                }
+        //        this.visible[clientId] = true;
+                updateHidden(clientId, true);
+           },
+           closePopup: function(clientId, cfg){
+               var autocenter = cfg.autocenter || true;
+               var scrollEvent = 'ontouchstart' in window ? "touchmove" : "scroll";
+               document.getElementById(clientId + "_bg").className = "mobi-panelpopup-bg-hide ";
+               document.getElementById(clientId + "_popup").className = "mobi-panelpopup-container-hide ";
+               if (autocenter) {
+                     if (window.removeEventListener) {
+                         window.removeEventListener(scrollEvent, centerCalculation[clientId], false);
+                         window.removeEventListener('resize', centerCalculation[clientId], false);
+                     } else { // older ie cleanup
+                         window.detachEvent(scrollEvent, centerCalculation[clientId], false);
+                         window.detachEvent('resize', centerCalculation[clientId], false);
+                     }
+                     centerCalculation[clientId] = undefined;
+               }
+         //      this.visible[clientId] = false;
+               updateHidden(clientId, false);
+           }
+        }
+    }
+    mobi.panelPopup = {
+        panels: {},
+        visible: {},
+        centerCalculation:{},
+        cfg: {},
+        initClient: function(clientId, cfgIn) {
+            this.cfg = cfgIn;
+            if (!this.panels[clientId]){
+                this.panels[clientId] = PanelPopup(clientId, cfgIn);
+            } else {
+               // this.panels[clientId].updateProperties(clientId, cfg);
+                var vis = cfgIn.visible || false;
+               if (vis==true){
+                   this.panels[clientId].openPopup(clientId, cfgIn);
+               }else{
+                   this.panels[clientId].closePopup(clientId, cfgIn);
+               }
+            }
+        },
+        openClient: function(clientId){
+            if (this.panels[clientId]){
+                this.panels[clientId].openPopup(clientId, this.cfg);
+            }
+        },
+        closeClient: function(clientId){
+            if (this.panels[clientId]){
+                this.panels[clientId].closePopup(clientId, this.cfg);
+            }
+        }
+    }
+
+  })();
