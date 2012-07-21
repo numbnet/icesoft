@@ -75,7 +75,6 @@ public class MaskedEntryRenderer extends InputRenderer {
 	protected void encodeScript(FacesContext context, MaskedEntry maskedEntry, String label, boolean hasLabel, String labelPosition, String indicator, boolean hasIndicator, String indicatorPosition) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
 		String clientId = maskedEntry.getClientId(context);
-		String fieldClientId = clientId + "_field";
 
         String inFieldLabel = "";
         if (hasLabel && labelPosition.equals("inField")) {
@@ -96,7 +95,7 @@ public class MaskedEntryRenderer extends InputRenderer {
 		
 		JSONBuilder jb = JSONBuilder.create();
 		jb.beginFunction("ice.ace.InputMask")
-			.item(fieldClientId)
+			.item(clientId)
 			.beginMap()
 				.entry("mask", maskedEntry.getMask());
 
@@ -135,7 +134,6 @@ public class MaskedEntryRenderer extends InputRenderer {
 		writer.startElement("span", null);
 		writer.writeAttribute("id", clientId, null);
 		writer.startElement("input", null);
-		writer.writeAttribute("id", fieldClientId, null);
 		writer.writeAttribute("name", fieldClientId, null);
 		writer.writeAttribute("type", "text", null);
 		

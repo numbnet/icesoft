@@ -270,7 +270,8 @@ ice.ace.InputMask = function(id, cfg) {
     this.id = id;
     this.cfg = cfg;
     this.jqId = ice.ace.escapeClientId(id);
-    this.jq = ice.ace.jq(this.jqId);
+    this.jq = ice.ace.jq(this.jqId).find('input[name="'+this.id+'_field"]');
+	this.jq.attr('id', this.id + '_field');
 
     if (this.cfg.mask) // only add functionality if mask was provided, otherwise degrade to simple text input
 	this.jq.mask(this.cfg.mask, this.cfg);
