@@ -35,7 +35,7 @@
                 <mobi:commandButton style="margin-top:5px;float:left;"
                                     value="Show Popup"
                                     actionListener="#{panelPopupBean.toggleRendered}"/>
-                <mobi:panelPopup id="panelConfirmation" clientSide="true"
+                <mobi:panelPopup id="panelConfirmation" singleSubmit="true"
                                  style="width:300px"
                                  visible="#{panelPopupBean.rendered}">
                     <mobi:outputList inset="false">
@@ -84,7 +84,7 @@
                             </h:commandLink>
                         </mobi:outputListItem>
                     </mobi:outputList>
-                    <mobi:commandButton
+                    <mobi:commandButton  singleSubmit="true"
                             actionListener="#{panelPopupBean.toggleRendered}"
                             buttonType="important"
                             value="Hide Popup"/>
