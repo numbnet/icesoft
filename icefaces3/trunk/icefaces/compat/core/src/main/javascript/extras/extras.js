@@ -14,7 +14,7 @@
  * governing permissions and limitations under the License.
  */
 
-Position.includeScrollOffsets = true;
+Position.includeScrollOffsets = ice.includeScrollOffsets;
 
 Ice.DnD = Class.create();
 var IceLoaded = false;

@@ -53,11 +53,15 @@ public class ExtrasSetup implements SystemEventListener {
     private boolean fastBusyIndicator;
     private String compatResourceName;
     private String extraCompatResourceName;
+    private boolean includeScrollOffsets;
 
     public ExtrasSetup() {
-        fastBusyIndicator = EnvUtils.isFastBusyIndicator(FacesContext.getCurrentInstance());
+        FacesContext context = FacesContext.getCurrentInstance();
 
-        boolean developmentStage = FacesContext.getCurrentInstance().isProjectStage(ProjectStage.Development);
+        fastBusyIndicator = EnvUtils.isFastBusyIndicator(context);
+        includeScrollOffsets = EnvUtils.isIncludeScrollOffsets(context);
+
+        boolean developmentStage = context.isProjectStage(ProjectStage.Development);
         compatResourceName = developmentStage ? "compat.uncompressed.js" : "compat.js";
         extraCompatResourceName = developmentStage ? "icefaces-compat.uncompressed.js" : "icefaces-compat.js";
     }
@@ -107,6 +111,7 @@ public class ExtrasSetup implements SystemEventListener {
                     writer.writeAttribute("id", getClientId(context), null);
                     writer.startElement("script", this);
                     writer.writeAttribute("type", "text/javascript", null);
+                    writer.write("ice.includeScrollOffsets=" + includeScrollOffsets + ";");
                     writer.write("ice.DefaultIndicators({");
                     writer.write("fastBusyIndicator: ");
                     writer.write(Boolean.toString(fastBusyIndicator));

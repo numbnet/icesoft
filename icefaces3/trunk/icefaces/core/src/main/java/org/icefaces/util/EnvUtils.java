@@ -61,6 +61,8 @@ public class EnvUtils {
     public static String FAST_BUSY_INDICATOR = "org.icefaces.fastBusyIndicator";
     public static String REPLAY_NAVIGATION_ON_RELOAD = "org.icefaces.replayNavigationOnReload";
     public static String GENERATE_HEAD_UPDATE = "org.icefaces.generateHeadUpdate";
+    public static String INCLUDE_SCROLL_OFFSETS = "org.icefaces.includeScrollOffsets";
+
 
     //Parameters configurable using context parameters but only in compatibility mode
     public static String CONNECTION_LOST_REDIRECT_URI = "org.icefaces.connectionLostRedirectURI";
@@ -678,6 +680,10 @@ public class EnvUtils {
     public static boolean generateHeadUpdate(FacesContext context) {
         return EnvConfig.getEnvConfig(context).generateHeadUpdate;
     }
+
+    public static boolean isIncludeScrollOffsets(FacesContext context) {
+        return EnvConfig.getEnvConfig(context).includeScrollOffsets;
+    }
 }
 
 class EnvConfig {
@@ -707,6 +713,7 @@ class EnvConfig {
     public boolean fastBusyIndicator;
     boolean replayNavigationOnReload;
     boolean generateHeadUpdate;
+    public boolean includeScrollOffsets;
 
     public EnvConfig(Map initMap) {
         init(initMap);
@@ -726,6 +733,7 @@ class EnvConfig {
         deltaSubmit = decodeBoolean(initMap, EnvUtils.DELTA_SUBMT, false, info);
         lazyPush = decodeBoolean(initMap, EnvUtils.LAZY_PUSH, true, info);
         generateHeadUpdate = decodeBoolean(initMap, EnvUtils.GENERATE_HEAD_UPDATE, false, info);
+        includeScrollOffsets = decodeBoolean(initMap, EnvUtils.INCLUDE_SCROLL_OFFSETS, true, info);
         sessionExpiredRedirectURI = decodeString(initMap, EnvUtils.SESSION_EXPIRED_REDIRECT_URI, null, info);
         standardFormSerialization = decodeBoolean(initMap, EnvUtils.STANDARD_FORM_SERIALIZATION, false, info);
         strictSessionTimeout = decodeBoolean(initMap, EnvUtils.STRICT_SESSION_TIMEOUT, false, info);
