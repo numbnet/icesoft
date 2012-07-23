@@ -45,7 +45,7 @@ import java.util.ArrayList;
                         resource = "/WEB-INF/includes/examples/layout/carousel-example.xhtml"),
                 // Java Source
                 @ExampleResource(type = ResourceType.java,
-                        title = "carousel.java",
+                        title = "CarouselBean.java",
                         resource = "/WEB-INF/classes/org/icemobile/samples/mobileshowcase" +
                                 "/view/examples/layout/carousel/CarouselBean.java")
         }
