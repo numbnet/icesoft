@@ -23,18 +23,6 @@
             hidden.value = value;
         }
     }
-    function hasClass(ele,cls) {
-        return ele.className.match(new RegExp('(\\s|^)'+cls+'(\\s|$)'));
-    }
-    function addClass(ele,cls) {
-         if (!this.hasClass(ele,cls)) ele.className =cls;
-    }
-    function removeClass(ele,cls) {
-       if (hasClass(ele,cls)) {
-              // var reg = new RegExp('(\\s|^)'+cls+'(\\s|$)');
-           ele.className=" ";
-       }
-    }
 
 
     //-------------------------------------
@@ -72,8 +60,14 @@
            closePopup: function(clientId, cfg){
                var autocenter = cfg.autocenter || true;
                var scrollEvent = 'ontouchstart' in window ? "touchmove" : "scroll";
-               document.getElementById(clientId + "_bg").className = "mobi-panelpopup-bg-hide ";
-               document.getElementById(clientId + "_popup").className = "mobi-panelpopup-container-hide ";
+               var greyed = document.getElementById(clientId+"_bg");
+               var container = document.getElementById(clientId+"_popup");
+               if (greyed){
+                   greyed.className = "mobi-panelpopup-bg-hide ";
+               }
+               if (container){
+                   document.getElementById(clientId + "_popup").className = "mobi-panelpopup-container-hide ";
+               }
                if (autocenter) {
                      if (window.removeEventListener) {
                          window.removeEventListener(scrollEvent, centerCalculation[clientId], false);
