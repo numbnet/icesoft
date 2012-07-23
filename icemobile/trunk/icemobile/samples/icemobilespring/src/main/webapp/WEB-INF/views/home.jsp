@@ -101,7 +101,7 @@
     <li><a href="#welcome">Welcome</a></li>
     <li><a href="<c:url value="/carousel" />" title="carousel">Carousel</a>
     </li>
-    <li><a href="<c:url value="/icemobile" />" title="icemobile">Camera</a>
+    <li><a href="<c:url value="/camera" />" title="camera">Camera</a>
     </li>
     <li><a href="<c:url value="/campush" />" title="campush">Push</a></li>
     <li><a href="<c:url value="/microphone" />"

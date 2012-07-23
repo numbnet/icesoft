@@ -23,7 +23,7 @@
         ICEmobile Camera Push Region Sample
     </p>
     <form:form id="campushrform" method="POST" enctype="multipart/form-data"
-               modelAttribute="icemobileBean">
+               modelAttribute="cameraBean">
         <div class="header">
             <h4>Form</h4>
             <c:if test="${not empty message}">
@@ -47,8 +47,8 @@
         </fieldset>
 
         <fieldset>
-            <mobi:camera id="camera"/>
-            <mobi:thumb for="camera"/>
+            <mobi:camera id="cam"/>
+            <mobi:thumb for="cam"/>
             <push:region group="camPush" page="/camregion"/>
         </fieldset>
 

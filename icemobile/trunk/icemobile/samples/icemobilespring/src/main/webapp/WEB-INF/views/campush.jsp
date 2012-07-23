@@ -22,7 +22,7 @@
                        callback="function(){$('#campushform').submit();}"/>
     </c:if>
     <form:form id="campushform" method="POST" enctype="multipart/form-data"
-               modelAttribute="icemobileBean">
+               modelAttribute="cameraBean">
 
         <h4>Camera Push</h4>
         <mobi:fieldSetGroup inset="true">
