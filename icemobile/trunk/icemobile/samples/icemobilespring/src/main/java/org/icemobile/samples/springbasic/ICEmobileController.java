@@ -28,6 +28,7 @@ public class ICEmobileController {
     private WebApplicationContext context;
 
     String currentFileName = null;
+    String currentUserName = null;
 
     @ModelAttribute
     public void ajaxAttribute(WebRequest request, Model model) {
@@ -118,8 +119,12 @@ public class ICEmobileController {
                          Model model) throws IOException {
 
         String newFileName = saveImage(request, file, inputFile);
+        String submittedName = modelBean.getName();
+        if (null != submittedName)  {
+            currentUserName = submittedName;
+        }
 
-        return new CamUpdate("Thanks for the photo, " + modelBean.getName(),
+        return new CamUpdate("Thanks for the photo, " + currentUserName,
                              request.getContextPath() + "/" + newFileName);
     }
 

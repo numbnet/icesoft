@@ -1,7 +1,7 @@
 <!DOCTYPE html> 
 <html> 
 	<head> 
-	<title>ICEmobile | mvc-showcase</title>
+	<title>ICEmobile Spring</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1"> 
 	<link rel="stylesheet" href="http://code.jquery.com/mobile/1.1.0/jquery.mobile-1.1.0.min.css" />
 	<script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
@@ -31,8 +31,8 @@
 		  	</fieldset>
 
 		  	<fieldset>
-               <a data-role="button" class="mobi-container" id="camera" onclick="ice.microphone(this.id);">Microphone</a>
-               <a data-role="button" data-command="microphone" data-id="mic" onclick="ice.mobilesx(this);" >Microphone ...</a>
+               <a data-role="button" class="mobi-container" id="mic" onclick="ice.microphone(this.id);">Microphone</a>
+               <a data-role="button" class="mobi-stock" data-command="microphone" data-id="mic" onclick="ice.mobilesx(this);" >Microphone ...</a>
                <span id="thanks"></span>
                <audio id="clip" style="width:100%;padding-top:10px;" src="media/clip.mp4" controls="controls" ></audio>
 		  	</fieldset>
@@ -48,7 +48,41 @@
 
         <a href=".." data-ajax="false">Return</a>
 
+        <p style="height=20px;"></p>
+
 		<script type="text/javascript">
+
+            var enhancedSubmit = function(form)  {
+                if (this.id)  {
+                    form = this;
+                }
+                if (window.ice && ice.upload)  {
+                    window.ice.handleResponse = function(text)  {
+                        var data = $.parseJSON(unescape(text));
+                        $("#clip").attr("src", data.path);
+                        $("#thanks").text(data.message);
+                    }
+                    ice.upload($(this).attr("id"));
+                    return false;  
+                }
+
+                var formData = new FormData(form);
+
+                $.ajax({
+                    url: $(form).attr("action"),
+                    data: formData,
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    type: 'POST',
+                    success: function(data) {
+                        $("#clip").attr("src", data.path);
+                        $("#thanks").text(data.message);
+                    }
+                });
+
+                return false;  
+            }
 
 			$(document).ready(function() {
                 if ($("#micform").attr("data-ajax")) {
@@ -62,39 +96,16 @@
                     $("#micform").addClass("mobi-container");
                 }
 
-				$("#micform").submit(function() {
-                    if (window.ice && ice.upload)  {
-                        window.ice.handleResponse = function(text)  {
-                            var data = $.parseJSON(unescape(text));
-                            $("#clip").attr("src", data.clipLocation);
-                            $("#thanks").text(data.message);
-                            $("#micContent").trigger("create");
-						    $('html, body').animate({ scrollTop: $("#message").offset().top }, 500);
-                        }
-                        ice.upload($(this).attr("id"));
-                        return false;  
-                    }
+				$("#micform").submit(enhancedSubmit);			
 
-                    var formData = new FormData(this);
-
-                    $.ajax({
-                        url: $(this).attr("action"),
-                        data: formData,
-                        cache: false,
-                        contentType: false,
-                        processData: false,
-                        type: 'POST',
-                        success: function(data) {
-                            $("#clip").attr("src", data.clipLocation);
-                            $("#thanks").text(data.message);
-                            $("#micContent").trigger("create");
-						    $('html, body').animate({ scrollTop: $("#message").offset().top }, 500);
-					    }
-                    });
-
-					return false;  
-				});			
 			});
+
+            window.onhashchange = function()  {
+                if ("#icemobilesx" === window.location.hash)  {
+                    window.location.hash = "";
+                    enhancedSubmit($("#micform"));
+                }
+            }
 
 		</script>
 	</div>

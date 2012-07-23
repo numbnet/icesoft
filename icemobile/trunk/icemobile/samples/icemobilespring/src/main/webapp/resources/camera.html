@@ -1,6 +1,6 @@
 <html>
 <head>
-	<title>ICEmobile | mvc-showcase</title>
+	<title>ICEmobile Spring</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1"> 
 
 	<link rel="stylesheet" href="http://code.jquery.com/mobile/1.1.0/jquery.mobile-1.1.0.min.css" />
@@ -48,8 +48,42 @@
 		</form>
 
         <a href=".." data-ajax="false">Return</a>
+        
+        <p style="height=20px;"></p>
 
 		<script type="text/javascript">
+
+            var enhancedSubmit = function(form)  {
+                if (this.id)  {
+                    form = this;
+                }
+                if (window.ice && ice.upload)  {
+                    window.ice.handleResponse = function(text)  {
+                        var data = $.parseJSON(unescape(text));
+                        $("#result").attr("src", data.path);
+                        $("#thanks").text(data.message);
+                    }
+                    ice.upload($(this).attr("id"));
+                    return false;  
+                }
+
+                var formData = new FormData(form);
+
+                $.ajax({
+                    url: $(form).attr("action"),
+                    data: formData,
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    type: 'POST',
+                    success: function(data) {
+                        $("#result").attr("src", data.path);
+                        $("#thanks").text(data.message);
+                    }
+                });
+
+                return false;  
+            }
 
 			$(document).ready(function() {
                 if ($("#camform").attr("data-ajax")) {
@@ -63,41 +97,13 @@
                     $("#camform").addClass("mobi-container");
                 }
 
-				$("#camform").submit(function() {
-                    if (window.ice && ice.upload)  {
-                        window.ice.handleResponse = function(text)  {
-                            var data = $.parseJSON(unescape(text));
-                            $("#result").attr("src", data.path);
-                            $("#thanks").text(data.message);
-                        }
-                        ice.upload($(this).attr("id"));
-                        return false;  
-                    }
-
-                    var formData = new FormData(this);
-
-                    $.ajax({
-                        url: $(this).attr("action"),
-                        data: formData,
-                        cache: false,
-                        contentType: false,
-                        processData: false,
-                        type: 'POST',
-                        success: function(data) {
-                            $("#result").attr("src", data.path);
-                            $("#thanks").text(data.message);
-					    }
-                    });
-
-					return false;  
-				});			
+				$("#camform").submit(enhancedSubmit);			
 			});
 
             window.onhashchange = function()  {
-                $("#name").attr("value","ICEmobile-SX upload");
                 if ("#icemobilesx" === window.location.hash)  {
                     window.location.hash = "";
-                    $("#camform").submit();
+                    enhancedSubmit($("#camform"));
                 }
             }
 

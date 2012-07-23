@@ -17,8 +17,10 @@ import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
 
 @Controller
-@SessionAttributes("microphoneBean")
 public class MicrophoneController {
+
+    String currentFileName = null;
+    String currentUserName = null;
 
 	@ModelAttribute
 	public void ajaxAttribute(WebRequest request, Model model) {
@@ -60,38 +62,60 @@ public class MicrophoneController {
     }
 
 	@RequestMapping(value = "/jsonmic", method=RequestMethod.POST)
-	public @ResponseBody MicUpdate jsonMicrophone(HttpServletRequest request, ModelBean modelBean, @RequestParam(value = "mic-file", required = false) MultipartFile file, @RequestParam(value = "mic", required = false) MultipartFile inputFile, Model model) throws IOException {
+	public @ResponseBody MicUpdate jsonMicrophone(HttpServletRequest request, ModelBean modelBean, @RequestParam(value = "mic", required = false) MultipartFile file, Model model) throws IOException {
 
-        String fileName = "empty";
+        String newFileName = saveClip(request, file);
+        String submittedName = modelBean.getName();
+        if (null != submittedName)  {
+            currentUserName = submittedName;
+        }
+
+        return new MicUpdate("Thanks for the sound, " + currentUserName, 
+                request.getContextPath() + "/" + newFileName);
+    }
+
+    private String saveClip(HttpServletRequest request, MultipartFile file)
+            throws IOException {
+
+        String fileName = null;
         String uuid = Long.toString(
-                Math.abs(UUID.randomUUID().getMostSignificantBits()), 32 );
-        String newFileName = "/media/clip-" + uuid + ".mp4";
-        if (null != file)  {
+                Math.abs(UUID.randomUUID().getMostSignificantBits()), 32);
+        String newFileName = "media/clip-" + uuid + ".m4a";
+        if ((null != file) && !file.isEmpty()) {
             fileName = file.getOriginalFilename();
-            file.transferTo(new File(request.getRealPath(newFileName)));
-        }
-        if (null != inputFile)  {
-            fileName = inputFile.getOriginalFilename();
-            inputFile.transferTo(new File(request.getRealPath(newFileName)));
+            file.transferTo(new File(request.getRealPath("/" + newFileName)));
+            currentFileName = newFileName;
         }
 
-        return new MicUpdate("Thanks for the sound, " + modelBean.getName(), 
-                request.getContextPath() + newFileName);
+        if (null == fileName) {
+            //use previously uploaded file, such as from ICEmobile-SX
+            newFileName = getCurrentFileName(request);
+
+        }
+
+        return newFileName;
+    }
+
+    private String getCurrentFileName(HttpServletRequest request) {
+        if (null == currentFileName) {
+            return "media/clip-0.m4a";
+        }
+        return currentFileName;
     }
 
 }
 
 class MicUpdate  {
-    private String clipLocation;
+    private String path;
     private String message;
 
-    public MicUpdate( String message, String clipLocation)  {
-        this.clipLocation = clipLocation;
+    public MicUpdate( String message, String path)  {
+        this.path = path;
         this.message = message;
     }
 
-    public String getClipLocation()  {
-        return clipLocation;
+    public String getPath()  {
+        return path;
     }
 
     public String getMessage()  {
