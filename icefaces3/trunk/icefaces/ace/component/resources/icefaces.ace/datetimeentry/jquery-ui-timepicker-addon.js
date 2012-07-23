@@ -801,7 +801,7 @@ $.datepicker._selectDate = function (id, dateStr) {
 		inst.inline = inst.stay_open = false;
 		this._notifyChange(inst);
 		this._updateDatepicker(inst);
-	}
+    }
 	else this._base_selectDate(id, dateStr);
 };
 
@@ -823,9 +823,14 @@ $.datepicker._updateDatepicker = function(inst) {
 
 	if (typeof(inst.stay_open) !== 'boolean' || inst.stay_open === false) {
 
+        var nodeName = input.nodeName.toLowerCase();
+        var inline = (nodeName == 'div' || nodeName == 'span');
 		this._base_updateDatepicker(inst);
+        if (inline) {
+            inst.dpDiv.find("button.ui-datepicker-close").remove();
+        }
 
-		// Reload the time control when changing something in the input text field.
+        // Reload the time control when changing something in the input text field.
 		var tp_inst = this._get(inst, 'timepicker');
 		if(tp_inst) tp_inst._addTimePicker(inst);
 	}
@@ -892,7 +897,7 @@ $.datepicker._doKeyUp = function (event) {
 $.datepicker._base_gotoToday = $.datepicker._gotoToday;
 $.datepicker._gotoToday = function(id) {
 	this._base_gotoToday(id);
-	this._setTime(this._getInst($(id)[0]), new Date());
+    this._setTime(this._getInst($(id)[0]), new Date());
 };
 
 //#######################################################################################
