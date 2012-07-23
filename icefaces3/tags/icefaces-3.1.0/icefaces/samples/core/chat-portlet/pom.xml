@@ -21,7 +21,7 @@
     <parent>
         <groupId>org.icefaces.samples</groupId>
         <artifactId>core-parent</artifactId>
-        <version>3.1.0-RC1-SNAPSHOT</version>
+        <version>3.1.0</version>
         <relativePath>..</relativePath>
     </parent>
 
@@ -48,7 +48,7 @@
                         <phase>clean</phase>
                         <configuration>
                             <target>
-                                <ant antfile="./build.xml" target="clean"/>
+                                <ant antfile="./build.xml" target="clean" />
                             </target>
                         </configuration>
                         <goals>
