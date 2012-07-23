@@ -37,7 +37,7 @@ public class MicrophoneController {
     }
     
 	@RequestMapping(value = "/jqmmic", method=RequestMethod.POST)
-	public void processJqmmic(HttpServletRequest request, ModelBean modelBean, @RequestParam(value = "mic-file", required = false) MultipartFile file, @RequestParam(value = "camera", required = false) MultipartFile inputFile, Model model) throws IOException {
+	public void processJqmmic(HttpServletRequest request, ModelBean modelBean, @RequestParam(value = "mic-file", required = false) MultipartFile file, @RequestParam(value = "cam", required = false) MultipartFile inputFile, Model model) throws IOException {
         this.processMicrophone(request, modelBean, file, inputFile, model);
     }
 

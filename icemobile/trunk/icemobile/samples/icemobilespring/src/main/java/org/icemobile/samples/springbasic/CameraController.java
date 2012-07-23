@@ -22,7 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.inject.Inject;
 
 @Controller
-public class ICEmobileController {
+public class CameraController {
 
     @Inject
     private WebApplicationContext context;
@@ -35,7 +35,7 @@ public class ICEmobileController {
         model.addAttribute("ajaxRequest", AjaxUtils.isAjaxRequest(request));
     }
 
-    @RequestMapping(value = "/icemobile", method = RequestMethod.GET)
+    @RequestMapping(value = "/camera", method = RequestMethod.GET)
     public void fileUploadForm(HttpServletRequest request, Model model) {
         model.addAttribute("isGET", Boolean.TRUE);
         model.addAttribute("imgPath", getCurrentFileName(request));
@@ -60,15 +60,15 @@ public class ICEmobileController {
         model.addAttribute("imgPath", getCurrentFileName(request));
     }
 
-    @ModelAttribute("icemobileBean")
+    @ModelAttribute("cameraBean")
     public ModelBean createBean() {
         return new ModelBean();
     }
 
-    @RequestMapping(value = "/icemobile", method = RequestMethod.POST)
+    @RequestMapping(value = "/camera", method = RequestMethod.POST)
     public void processUpload(
             HttpServletRequest request, ModelBean modelBean,
-            @RequestParam(value = "camera", required = false) MultipartFile file,
+            @RequestParam(value = "cam", required = false) MultipartFile file,
             Model model) throws IOException {
         String newFileName = saveImage(request, file, null);
         if ((null != file) && !file.isEmpty()) {
@@ -84,7 +84,7 @@ public class ICEmobileController {
     @RequestMapping(value = "/campushr", method = RequestMethod.POST)
     public void pushCamerar(
             HttpServletRequest request, ModelBean modelBean,
-            @RequestParam(value = "camera", required = false) MultipartFile file,
+            @RequestParam(value = "cam", required = false) MultipartFile file,
             Model model) throws IOException {
 
         this.pushCamera(request, modelBean, file, model);
@@ -115,7 +115,7 @@ public class ICEmobileController {
     @ResponseBody
     CamUpdate jsonCamera(HttpServletRequest request, ModelBean modelBean,
                          @RequestParam(value = "camera-file", required = false) MultipartFile file,
-                         @RequestParam(value = "camera", required = false) MultipartFile inputFile,
+                         @RequestParam(value = "cam", required = false) MultipartFile inputFile,
                          Model model) throws IOException {
 
         String newFileName = saveImage(request, file, inputFile);
