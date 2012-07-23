@@ -98,7 +98,7 @@ public class AutoCompleteEntryRenderer extends InputRenderer {
             onfocusCombinedValue += onfocusAppValue.toString();
 		}
         writer.writeAttribute("onfocus", onfocusCombinedValue, null);
-        String onblurCombinedValue = "setFocus('');";
+        String onblurCombinedValue = "";
         Object onblurAppValue = uiComponent.getAttributes().get("onblur");
         if (onblurAppValue != null) {
             onblurCombinedValue += onblurAppValue.toString();
@@ -142,6 +142,13 @@ public class AutoCompleteEntryRenderer extends InputRenderer {
 		writer.writeAttribute("type", "text/javascript", null);
 		String direction = autoCompleteEntry.getDirection();
 		direction = direction != null ? ("up".equalsIgnoreCase(direction) || "down".equalsIgnoreCase(direction) ? direction : "auto" ) : "auto";
+        boolean isEventSource = false;
+		Object componenetId = paramMap.get("ice.event.captured");
+        if (componenetId != null) {
+            if (componenetId.toString().equals(inputClientId)) {
+                isEventSource = true;
+            }
+        }
 		if (!autoCompleteEntry.isDisabled() && !autoCompleteEntry.isReadonly()) {
 			JSONBuilder jb = JSONBuilder.create();
 			jb.beginFunction("ice.ace.Autocompleter")
@@ -153,6 +160,7 @@ public class AutoCompleteEntryRenderer extends InputRenderer {
 				.item(autoCompleteEntry.getMinChars())
 				.item(autoCompleteEntry.getHeight())
 				.item(direction)
+				.item(isEventSource)
 				.beginMap()
 				.entry("p", ""); // dummy property
 				encodeClientBehaviors(facesContext, autoCompleteEntry, jb);
