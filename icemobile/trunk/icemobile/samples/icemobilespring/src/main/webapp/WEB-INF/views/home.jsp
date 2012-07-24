@@ -147,10 +147,10 @@
                     ice.upload($(this).attr("id"));
                     return false;
                 }
-
+                
                 var formData;
                 var mimeType = false;
-                if ((undefined !== window.FormData) &&
+                if ((undefined !== window.FormData) && window.clientInformation && 
                     ("BlackBerry" !== window.clientInformation.platform) )  {
                     formData = new FormData(this);
                 } else {
