@@ -45,32 +45,6 @@ public class AugmentedRealityRenderer extends BaseInputRenderer  {
          ResponseWriter writer = facesContext.getResponseWriter();
          String clientId = uiComponent.getClientId(facesContext);
          AugmentedReality ag = (AugmentedReality)uiComponent;
-
-         boolean isEnhanced = EnvUtils.isEnhancedBrowser(facesContext);
-         boolean isAuxUpload = EnvUtils.isAuxUploadBrowser(facesContext);
-         if (!isEnhanced && !isAuxUpload) {  //no container or SX, use text field
-             writer.startElement(HTML.INPUT_ELEM, uiComponent);
-             writer.writeAttribute(HTML.ID_ATTR, clientId, null);
-             writer.writeAttribute(HTML.NAME_ATTR, clientId, null);
-             writer.endElement(HTML.INPUT_ELEM);
-             return;
-         }
-         writer.startElement(HTML.BUTTON_ELEM, uiComponent);
-         writer.writeAttribute(HTML.ID_ATTR, clientId, null);
-         String buttonValue="Reality";
-         if (null!=ag.getStyle()){
-             String style= ag.getStyle();
-             if ( style.trim().length() > 0) {
-                 writer.writeAttribute(HTML.STYLE_ATTR, style, HTML.STYLE_ATTR);
-             }
-         }
-         StringBuilder defaultClass = new StringBuilder(AugmentedReality.DEFAULT_STYLE_CLASS);
-         if (null!=ag.getStyleClass()) {
-             String styleClass = ag.getStyleClass();
-             defaultClass.append(" ").append(styleClass);
-         }
-         writer.writeAttribute(HTML.CLASS_ATTR, defaultClass, HTML.CLASS_ATTR);
-
         String arParams = "";
         String urlBase = ag.getUrlBase();
         if (null != urlBase)  {
@@ -88,6 +62,42 @@ public class AugmentedRealityRenderer extends BaseInputRenderer  {
         if ("".equals(arParams))  {
             arParams = ag.getParams();
         }
+
+         boolean isEnhanced = EnvUtils.isEnhancedBrowser(facesContext);
+         boolean isAuxUpload = EnvUtils.isAuxUploadBrowser(facesContext);
+         if (!isEnhanced && !isAuxUpload) {  //no container or SX, use text field
+            String myparams = arParams;
+            writer.startElement(HTML.INPUT_ELEM, uiComponent);
+            writer.writeAttribute("data-params", myparams, null);
+            writer.writeAttribute(HTML.ID_ATTR, clientId, null);
+            writer.writeAttribute(HTML.NAME_ATTR, clientId, null);
+            writer.endElement(HTML.INPUT_ELEM);
+    
+            writer.startElement(HTML.BUTTON_ELEM, uiComponent);
+            writer.writeAttribute("data-params", myparams, null);
+            writer.writeAttribute(HTML.ID_ATTR, clientId + "_button", null);
+            writer.writeAttribute(HTML.NAME_ATTR, clientId + "_button", null);
+            writer.writeText("ExtraButton", null);
+            writer.endElement(HTML.BUTTON_ELEM);
+            return;
+         }
+         writer.startElement(HTML.INPUT_ELEM, uiComponent);
+         writer.writeAttribute(HTML.TYPE_ATTR, "button", null);
+         writer.writeAttribute(HTML.ID_ATTR, clientId, null);
+         String buttonValue="Reality";
+         if (null!=ag.getStyle()){
+             String style= ag.getStyle();
+             if ( style.trim().length() > 0) {
+                 writer.writeAttribute(HTML.STYLE_ATTR, style, HTML.STYLE_ATTR);
+             }
+         }
+         StringBuilder defaultClass = new StringBuilder(AugmentedReality.DEFAULT_STYLE_CLASS);
+         if (null!=ag.getStyleClass()) {
+             String styleClass = ag.getStyleClass();
+             defaultClass.append(" ").append(styleClass);
+         }
+         writer.writeAttribute(HTML.CLASS_ATTR, defaultClass, HTML.CLASS_ATTR);
+
         String script;
         if (isAuxUpload)  {
             writer.writeAttribute("data-params", arParams, null);
@@ -98,8 +108,8 @@ public class AugmentedRealityRenderer extends BaseInputRenderer  {
                     arParams + "' );return false;";
         }
         writer.writeAttribute(HTML.ONCLICK_ATTR, script, null);
-         writer.writeText(buttonValue, null);
-        writer.endElement(HTML.BUTTON_ELEM);
+        writer.writeAttribute(HTML.VALUE_ATTR, buttonValue, null);
+        writer.endElement(HTML.INPUT_ELEM);
      }
 
     @Override
