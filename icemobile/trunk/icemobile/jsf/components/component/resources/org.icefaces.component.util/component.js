@@ -199,6 +199,7 @@ ice.mobi.serialize = function(form, typed) {
             switch (el.type) {
                 case 'submit':
                 case 'button':
+                case 'fieldset':
                     break;
                 case 'text':
                 case 'password':
