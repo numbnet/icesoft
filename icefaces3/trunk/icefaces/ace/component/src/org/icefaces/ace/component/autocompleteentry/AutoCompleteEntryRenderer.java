@@ -149,6 +149,14 @@ public class AutoCompleteEntryRenderer extends InputRenderer {
                 isEventSource = true;
             }
         }
+		boolean isBlurEvent = false;
+		Object eventParam = paramMap.get("javax.faces.partial.event");
+        if (eventParam != null) {
+            if (eventParam.toString().equalsIgnoreCase("blur")) {
+                isBlurEvent = true;
+            }
+        }
+		boolean focus = isEventSource && !isBlurEvent;
 		if (!autoCompleteEntry.isDisabled() && !autoCompleteEntry.isReadonly()) {
 			JSONBuilder jb = JSONBuilder.create();
 			jb.beginFunction("ice.ace.Autocompleter")
@@ -160,7 +168,7 @@ public class AutoCompleteEntryRenderer extends InputRenderer {
 				.item(autoCompleteEntry.getMinChars())
 				.item(autoCompleteEntry.getHeight())
 				.item(direction)
-				.item(isEventSource)
+				.item(focus)
 				.beginMap()
 				.entry("p", ""); // dummy property
 				encodeClientBehaviors(facesContext, autoCompleteEntry, jb);
@@ -201,6 +209,7 @@ public class AutoCompleteEntryRenderer extends InputRenderer {
         Iterator matches = autoCompleteEntry.getItemList();
 		String filter = ((String) autoCompleteEntry.getValue());
 		FilterMatchMode filterMatchMode = getFilterMatchMode(autoCompleteEntry);
+		String mainValue = (String) autoCompleteEntry.getValue();
         int rows = autoCompleteEntry.getRows();
         if (rows == 0) rows = Integer.MAX_VALUE;
         int rowCounter = 0;
@@ -258,7 +267,7 @@ public class AutoCompleteEntryRenderer extends InputRenderer {
             String call = "ice.ace.Autocompleters[\"" +
                     clientId +
                     "\"].updateNOW(ice.ace.jq(ice.ace.escapeClientId('" + clientId + "_update')).get(0).firstChild.innerHTML);";
-            encodeDynamicScript(facesContext, autoCompleteEntry, call);
+            encodeDynamicScript(facesContext, autoCompleteEntry, call + "// " + mainValue);
 			writer.endElement("div");
         } else {
             if (matches.hasNext()) {
@@ -281,7 +290,7 @@ public class AutoCompleteEntryRenderer extends InputRenderer {
                 sb.append("</div>");
                 String call = "ice.ace.Autocompleters[\"" + clientId + "\"]" +
                         ".updateNOW('" + escapeSingleQuote(sb.toString()) + "');";
-                encodeDynamicScript(facesContext, autoCompleteEntry, call);
+                encodeDynamicScript(facesContext, autoCompleteEntry, call + "// " + mainValue);
             }
         }
 		writer.endElement("div");
