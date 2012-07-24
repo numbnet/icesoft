@@ -219,11 +219,13 @@ if (!window.ice.mobile) {
                             addField(prefix + el.name, el.value);
                             break;
                         case 'select-one':
+                            prefix = "selectone-";
                             if (el.selectedIndex >= 0) {
                                 addField(prefix + el.name, el.options[el.selectedIndex].value);
                             }
                             break;
                         case 'select-multiple':
+                            prefix="selectmultiple-";
                             for (var j = 0; j < el.options.length; j++) {
                                 if (el.options[j].selected) {
                                     addField(prefix + el.name, el.options[j].value);
