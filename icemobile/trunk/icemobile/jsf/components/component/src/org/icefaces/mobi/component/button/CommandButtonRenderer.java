@@ -45,6 +45,7 @@ public class  CommandButtonRenderer extends CoreRenderer {
         CommandButton commandButton = (CommandButton) uiComponent;
         String source = String.valueOf(requestParameterMap.get("ice.event.captured"));
         String clientId = commandButton.getClientId();
+  //      logger.info("source = "+source);
         if (clientId.equals(source)) {
             try {
                 if (!commandButton.isDisabled()) {
@@ -154,7 +155,8 @@ public class  CommandButtonRenderer extends CoreRenderer {
         String subNotId = commandButton.getSubmitNotification();
         String submitNotificationId = null;
 
-        builder.append("{ elVal: this");
+     //   builder.append("{ elVal: this");
+        builder.append("{ event: event");
         if (singleSubmit){
             builder.append(", singleSubmit:").append(singleSubmit);
         }
