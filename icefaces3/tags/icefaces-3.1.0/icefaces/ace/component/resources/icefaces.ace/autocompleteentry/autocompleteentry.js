@@ -2,7 +2,7 @@ if (!window['ice']) window.ice = {};
 if (!window.ice['ace']) window.ice.ace = {};
 ice.ace.Autocompleters = {};
 
-ice.ace.Autocompleter = function(id, updateId, rowClass, selectedRowClass, delay, minChars, height, direction, behaviors, cfg) {
+ice.ace.Autocompleter = function(id, updateId, rowClass, selectedRowClass, delay, minChars, height, direction, focus, behaviors, cfg) {
 	this.id = id;
 	ice.ace.Autocompleters[this.id] = this;
 	this.delay = delay;
@@ -26,12 +26,17 @@ ice.ace.Autocompleter = function(id, updateId, rowClass, selectedRowClass, delay
 		if (behaviors.behaviors) {
 			if (behaviors.behaviors.submit)
 				this.ajaxSubmit = behaviors.behaviors.submit;
+				this.ajaxSubmit.source = this.ajaxSubmit.source + "_input";
 			if (behaviors.behaviors.blur)
 				this.ajaxBlur = behaviors.behaviors.blur;
 		}
 	}
 	
 	this.tabKeyPressed = false;
+	if (focus) this.element.focus();
+	if (!ice.ace.jq.support.leadingWhitespace) { // force IE7/8 to set focus on the text field
+		setTimeout(function() { if (focus) ice.ace.jq(ice.ace.escapeClientId(element.id)).focus(); }, 100);
+	}
 };
 
 ice.ace.Autocompleter.keys = {
@@ -442,11 +447,11 @@ ice.ace.Autocompleter.prototype = {
         setTimeout(function () { self.hide(); }, 250);
         this.hasFocus = false;
         this.active = false;
+		setFocus('');
 		if (this.ajaxBlur) {
 			if (this.tabKeyPressed) {
 				this.tabKeyPressed = false;
 			} else {
-				setFocus('');
 				ice.ace.ab(this.ajaxBlur);
 			}
 		}
@@ -462,10 +467,12 @@ ice.ace.Autocompleter.prototype = {
       if (this.element.createTextRange) {
        //IE  
 	  this.element.focus();
-       var fieldRange = this.element.createTextRange();  
-       fieldRange.moveStart('character', this.element.value.length);  
-       fieldRange.collapse(false);  
-       fieldRange.select();
+		if (this.element.value.length > 0) {
+			var fieldRange = this.element.createTextRange();  
+			fieldRange.moveStart('character', this.element.value.length);  
+			fieldRange.collapse(false);  
+			fieldRange.select();
+		}
        }  
       else {
        this.element.focus();
@@ -679,7 +686,7 @@ ice.ace.Autocompleter.prototype = {
         if (this.options.defaultParams)
             this.options.parameters += '&' + this.options.defaultParams;
 
-        var form = Ice.util.findForm(this.element);
+        var form = formOf(this.element);
         if (idx > -1) {
             var indexName = this.id + "_idx";
             form[indexName].value = idx;
