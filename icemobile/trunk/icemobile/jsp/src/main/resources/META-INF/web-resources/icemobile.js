@@ -62,6 +62,7 @@ ice.mobiserial = function(formId, typed) {
             switch (el.type) {
                 case 'submit':
                 case 'button':
+                case 'fieldset':
                     break;
                 case 'text':
                 case 'password':
@@ -138,7 +139,7 @@ ice.mobilesx = function (element) {
             "&u=" + escape(uploadURL) + "&r=" + escape(returnURL) +
             sessionidClause +
             "&p=" + escape(ice.mobiserial(formID, false));
-
+    
     window.location = sxURL;
 }
 
