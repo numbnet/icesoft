@@ -383,7 +383,10 @@ mobi.button = {
             }
             return;  //ensure no other submits
         }
-        var event = cfg.elVal.event;
+        var event = cfg.event;
+        if (!event){
+            event = window.event;
+        }
         if (singleSubmit){
             ice.se(event, clientId, params);
         } else {
