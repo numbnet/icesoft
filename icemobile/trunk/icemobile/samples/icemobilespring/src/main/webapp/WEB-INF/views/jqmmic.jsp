@@ -80,7 +80,10 @@
                     window.ice.handleResponse = function (data) {
                         $("#micContent").replaceWith(unescape(data));
                         $("#micContent").trigger("create");
-                        $('html, body').animate({ scrollTop:$("#message").offset().top }, 500);
+                        var msgElem = $("#message");
+                        if( msgElem.length > 0 ){
+                            $('html, body').animate({ scrollTop:msgElem.offset().top }, 500);
+                        }
                     }
                     ice.upload($(this).attr("id"));
                     return false;
@@ -98,7 +101,10 @@
                     success:function (html) {
                         $("#micContent").replaceWith(html);
                         $("#micContent").trigger("create");
-                        $('html, body').animate({ scrollTop:$("#message").offset().top }, 500);
+                        var msgElem = $("#message");
+                        if( msgElem.length > 0 ){
+                            $('html, body').animate({ scrollTop:msgElem.offset().top }, 500);
+                        }
                     }
                 });
 
