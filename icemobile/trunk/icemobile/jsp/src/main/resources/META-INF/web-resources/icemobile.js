@@ -338,8 +338,8 @@ ice.mobi.tabsetController = {
             tabContainer.style.height = height;
         } else {
             var ht = ice.mobi.tabsetController.calcMaxChildHeight(tabContent);
-            if( ht > 0 ){
-            	tabContent.style.height = ht + "px";
+            if (ht > 0) {
+                tabContent.style.height = ht + "px";
             }
         }
         var contents = tabContent.getElementsByClassName("mobi-tabpage-hidden");
@@ -459,8 +459,8 @@ ice.mobi.accordionController = {
         //find all sections of the clientId and calc height.  set maxheight and height to max height of the divs
         var children = document.getElementById(clientId).getElementsByTagName('section');
         for (var i = 0; i < children.length; i++) {
-            if (children[0].scrollHeight > mxht) {
-                mxht = children[0].scrollHeight;
+            if (children[i].scrollHeight > mxht) {
+                mxht = children[i].scrollHeight;
             }
         }
         return mxht;
