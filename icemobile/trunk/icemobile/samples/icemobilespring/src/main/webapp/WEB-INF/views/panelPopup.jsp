@@ -105,7 +105,10 @@
                     if (window.ice && ice.upload)  {
                         window.ice.handleResponse = function(data)  {
 						    $("#panelContent").replaceWith(unescape(data));
-						    $('html, body').animate({ scrollTop: $("#message").offset().top }, 500);
+						    var msgElem = $("#message");
+	                        if( msgElem.length > 0 ){
+	                            $('html, body').animate({ scrollTop:msgElem.offset().top }, 500);
+	                        }
                         }
                         ice.upload($(this).attr("id"));
                         return false;  
@@ -122,7 +125,10 @@
                         type: 'POST',
                         success: function(html) {
 						    $("#panelContent").replaceWith(html);
-						    $('html, body').animate({ scrollTop: $("#message").offset().top }, 500);
+						    var msgElem = $("#message");
+	                        if( msgElem.length > 0 ){
+	                            $('html, body').animate({ scrollTop:msgElem.offset().top }, 500);
+	                        }
 					    }
                     });
 
