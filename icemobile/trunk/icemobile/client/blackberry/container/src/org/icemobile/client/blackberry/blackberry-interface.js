@@ -299,6 +299,8 @@ if (!window.ice.mobile) {
                 if (!el.disabled) {
                     switch (el.type) {
                         case 'submit':
+                        case 'button':
+                        case 'fieldset':
                             break;
                         case 'text':
                         case 'password':
