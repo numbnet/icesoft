@@ -6,8 +6,8 @@
 <c:if test="${!ajaxRequest}">
     <html>
     <head>
-        <title>ICEmobile | MediaSpot</title>
-        <link href="<c:url value="/resources/form.css" />" rel="stylesheet"
+        <title>ICEmobile | MediaSpot demo</title>
+        <link href="<c:url value="/resources/style.css" />" rel="stylesheet"
               type="text/css"/>
         <script type="text/javascript"
                 src="<c:url value="/resources/jquery/1.6/jquery.js" />"></script>

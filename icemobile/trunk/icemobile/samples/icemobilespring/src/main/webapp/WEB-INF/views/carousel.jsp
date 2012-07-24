@@ -15,8 +15,8 @@
         <meta name="apple-mobile-web-app-status-bar-style" content="black"/>
 
 
-        <title>ICEmobile | mvc-showcase</title>
-        <link href="<c:url value="/resources/form.css" />" rel="stylesheet"
+        <title>ICEmobile | Carousel demo</title>
+        <link href="<c:url value="/resources/style.css" />" rel="stylesheet"
               type="text/css"/>
         <script type="text/javascript"
                 src="<c:url value="/resources/jquery/1.6/jquery.js" />"></script>
