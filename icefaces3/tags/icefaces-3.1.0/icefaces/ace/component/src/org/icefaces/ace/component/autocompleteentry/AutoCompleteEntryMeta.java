@@ -55,11 +55,7 @@ import java.util.List;
 	@ClientEvent( name="submit",
 		javadoc="Fired any time the value of the text input field is submitted to the server, either by typing a symbol, clicking on an option or pressing enter.",
 		tlddoc="Fired any time the value of the text input field is submitted to the server, either by typing a symbol, clicking on an option or pressing enter",
-		defaultRender="@all", defaultExecute="@all" ),
-	@ClientEvent( name="blur",
-		javadoc="Fired any time the text input field loses focus.",
-		tlddoc="Fired any time the text input field loses focus.",
-		defaultRender="@all", defaultExecute="@all" ) },
+		defaultRender="@all", defaultExecute="@all" )},
 	defaultEvent="submit" )
 public class AutoCompleteEntryMeta extends HtmlInputTextMeta {
 	
