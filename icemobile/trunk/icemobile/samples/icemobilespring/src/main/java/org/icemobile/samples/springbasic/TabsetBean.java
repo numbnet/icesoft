@@ -1,6 +1,5 @@
 package org.icemobile.samples.springbasic;
 
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 /**
@@ -10,13 +9,15 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 public class TabsetBean {
 
 
-    private int tabsetOneIndex;
+    private Integer tabsetOneIndex = Integer.valueOf(0);
 
-    public int getTabsetOne() {
+    public Integer getTabsetOne() {
         return tabsetOneIndex;
     }
 
-    public void setTabsetOne(int tabsetOneIndex) {
-        this.tabsetOneIndex = tabsetOneIndex;
+    public void setTabsetOne(Integer tabsetOneIndex) {
+    	if( tabsetOneIndex != null ){
+    		this.tabsetOneIndex = tabsetOneIndex;
+    	}
     }
 }
