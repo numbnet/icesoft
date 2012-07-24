@@ -150,8 +150,9 @@
                 
                 var formData;
                 var mimeType = false;
-                if ((undefined !== window.FormData) && window.clientInformation && 
-                    ("BlackBerry" !== window.clientInformation.platform) )  {
+                if ((undefined !== window.FormData) && 
+                        (!window.clientInformation || 
+                            ("BlackBerry" !== window.clientInformation.platform)) )  {
                     formData = new FormData(this);
                 } else {
                     formData = $(theForm).serialize();
