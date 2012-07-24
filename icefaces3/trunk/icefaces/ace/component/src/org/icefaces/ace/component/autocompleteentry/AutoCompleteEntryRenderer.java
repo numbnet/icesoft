@@ -150,11 +150,9 @@ public class AutoCompleteEntryRenderer extends InputRenderer {
             }
         }
 		boolean isBlurEvent = false;
-		Object eventParam = paramMap.get("javax.faces.partial.event");
-        if (eventParam != null) {
-            if (eventParam.toString().equalsIgnoreCase("blur")) {
-                isBlurEvent = true;
-            }
+		KeyEvent keyEvent = new KeyEvent(autoCompleteEntry, paramMap);
+		if (keyEvent.getKeyCode() == KeyEvent.TAB) {
+			isBlurEvent = true;
         }
 		boolean focus = isEventSource && !isBlurEvent;
 		if (!autoCompleteEntry.isDisabled() && !autoCompleteEntry.isReadonly()) {
