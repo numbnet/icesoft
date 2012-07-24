@@ -20,7 +20,7 @@
 </head>
 <body>
 
-<div id="tabs" style="display:none;">
+<div id="tabs">
 <ul>
     <li><a href="#welcome">Welcome</a></li>
     <li><a href="<c:url value="/carousel" />" title="carousel">Carousel</a>
@@ -98,7 +98,7 @@
         src="<c:url value="/resources/jqueryui/1.8/jquery.ui.tabs.js" />"></script>
 <script type="text/javascript"
         src="<c:url value="/resources/json2.js" />"></script>
-<script>
+<script type="text/javascript">
     MvcUtil = {};
     MvcUtil.showSuccessResponse = function (text, element) {
         MvcUtil.showResponse("success", text, element);
@@ -148,33 +148,42 @@
                     return false;
                 }
                 
-                var formData;
-                var mimeType = false;
-                if ((undefined !== window.FormData) && 
-                        (!window.clientInformation || 
-                            ("BlackBerry" !== window.clientInformation.platform)) )  {
-                    formData = new FormData(this);
-                } else {
-                    formData = $(theForm).serialize();
-                    mimeType = "application/x-www-form-urlencoded";
-                }
-
-                $.ajax({
-                    url:$(this).attr("action"),
-                    data:formData,
-                    cache:false,
-                    contentType:mimeType,
-                    processData:false,
-                    type:'POST',
-                    success:function (html) {
-                        updateRegion.replaceWith(html);
-                        var msgElem = $("#message");
-                        if( msgElem.length > 0 ){
-                            $('html, body').animate({ scrollTop:msgElem.offset().top }, 500);
-                        }
+                try{
+                    var formData;
+                    var mimeType = false;
+                    if ((undefined !== window.FormData) && 
+                       (!window.clientInformation || 
+                           ("BlackBerry" !== window.clientInformation.platform)) )  {
+                        formData = new FormData(this);
+                    } else {
+                        formData = $(theForm).serialize();
+                        mimeType = "application/x-www-form-urlencoded";
                     }
-                });
-
+    
+                    $.ajax({
+                        url:$(this).attr("action"),
+                        data:formData,
+                        cache:false,
+                        contentType:mimeType,
+                        processData:false,
+                        type:'POST',
+                        success:function (html) {
+                            updateRegion.replaceWith(html);
+                            var msgElem = $("#message");
+                            if( msgElem.length > 0 ){
+                                $('html, body').animate({ scrollTop:msgElem.offset().top }, 500);
+                            }
+                        }
+                    });
+                }
+                catch(err){
+                    if( window.console ){
+                        console.error(err);
+                    }
+                    else{
+                        alert(err);
+                    }
+                }
                 return false;
             });
         });
@@ -182,7 +191,7 @@
 </script>
 <script type="text/javascript">
     $(document).ready(function () {
-        $("#tabs").tabs().show();
+        $("#tabs").tabs();
 
         // Append '#' to the window location so "Back" returns to the selected tab
         // after a redirect or a full page refresh (e.g. Views tab).
