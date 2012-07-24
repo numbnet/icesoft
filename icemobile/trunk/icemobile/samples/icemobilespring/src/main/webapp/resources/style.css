@@ -1,0 +1,222 @@
+div.info,div.success,div.warning,div.error {
+	border: 1px solid;
+	margin: 10px 0px;
+	padding: 15px 10px 15px 50px;
+	background-repeat: no-repeat;
+	background-position: 10px center;
+}
+
+div.info {
+	color: #00529B;
+	background-color: #BDE5F8;
+	background-image: url('info.png');
+}
+
+div.success {
+	color: #4F8A10;
+	background-color: #DFF2BF;
+	background-image: url('success.png');
+}
+
+div.warning {
+	color: #9F6000;
+	background-color: #FEEFB3;
+	background-image: url('warning.png');
+}
+
+div.error {
+	color: #D8000C;
+	background-color: #FFBABA;
+	background-image: url('error.png');
+}
+
+span.success,span.error {
+	margin: 5px 5px 5px 5px;
+}
+
+span.success {
+	color: #4F8A10;
+}
+
+span.error {
+	color: #D8000C;
+}
+
+body { /*font-family: Lucida Grande, sans-serif;*/
+	/*font-size: .75em;*/
+	/*margin: 1em auto;*/
+	
+}
+
+ul li {
+	padding: 5px;
+}
+
+/* CLEAN FORM
+/////////////////////////////*/
+
+/* General */
+.cleanform {
+	font-size: 1em;
+	color: #1b1b1b;
+	text-align: left;
+	margin: 1em auto
+}
+
+/* Elements */
+.cleanform  label,.cleanform legend {
+	padding: 0;
+	margin: 0.3em 0
+}
+
+.cleanform fieldset { /*padding:0.7em;*/
+	/*border:1px solid #ddd;*/
+	/*margin:0 0 0.5em 0*/
+	
+}
+
+.cleanform label { /*font-weight:bold*/
+	
+}
+
+.cleanform fieldset input { /*width:70%;*/
+	/*line-height:1.5em;*/
+	/*padding:0.15em*/
+	
+}
+
+.cleanform .radio input,.cleanform .checkbox input {
+	width: auto;
+	border: none;
+	margin: 0 1.5em 0 0
+}
+
+.cleanform input,.cleanform textarea,.cleanform select {
+	/*display:block;*/
+	/*margin-bottom:1em;*/
+	/*font-size:1em;*/
+	/*border:1px solid #bbb;*/
+	/*padding:0.15em;*/
+	/*margin-right:1em*/
+	
+}
+
+.cleanform .radio label,.cleanform .radio input,.cleanform .checkbox label,.cleanform .checkbox input
+	{
+	display: inline;
+	margin: 0 1.5em 0 0
+}
+
+.cleanform .radio input,.cleanform .checkbox input {
+	margin: 0 0.3em 0 0
+}
+
+.cleanform .multiple label {
+	float: left;
+	width: 29%;
+	overflow: hidden;
+	padding-left: 1px
+}
+
+.cleanform .multiple input {
+	cursor: pointer
+}
+
+/* information */
+.cleanform .formInfo {
+	margin-bottom: 1em;
+	padding-bottom: 0.5em;
+	border-bottom: 0.1em solid #ddd
+}
+
+.cleanform .formInfo h2 {
+	color: #00889e;
+	font-weight: bold;
+	font-size: 1.2em;
+	margin-bottom: 1em
+}
+
+.cleanform .formInfo p {
+	text-align: justify
+}
+
+.cleanform .required {
+	color: #ff3838;
+	font-weight: bold;
+	font-size: 0.8em
+}
+
+#tabs>ul li {
+	width: 100px;
+	margin: 0;
+	padding: 0;
+	text-align: center;
+}
+
+.ui-widget {
+	font-size: inherit;
+}
+
+.ui-tabs {
+	padding: 0;
+}
+
+.ui-tabs .ui-tabs-nav li a {
+	padding: .3em .5em;
+	width: 90%;
+}
+
+.ui-corner-all {
+	border-radius: 0;
+}
+
+.ui-widget-content {
+	border: none;
+	background: transparent;
+	color: inherit;
+}
+
+.ui-tabs .ui-tabs-panel {
+	font-family: inherit;
+	padding: 0;
+}
+
+.ui-widget {
+	font-family: inherit;
+}
+
+.ui-widget input,.ui-widget select,.ui-widget textarea,.ui-widget button
+	{
+	font-size: inherit;
+	font-family: inherit;
+}
+
+@media all and (min-width: 600px) {
+	#tabs>ul {
+		position: fixed;
+		top: 0;
+		width: 275px;
+		border: none;
+		overflow: scroll;
+		height: 100%;
+		background: transparent;
+	}
+	#tabs>ul li {
+		width: 100%;
+		border-radius: 0;
+		text-align: left;
+	}
+	.ui-tabs .ui-tabs-nav li a {
+		padding: 10px;
+	}
+	#tabs>div {
+		margin-left: 275px;
+	}
+	.ui-tabs .ui-tabs-nav {
+		padding: 0;
+	}
+}
+
+span.mobitab {
+	padding: 10px;
+}

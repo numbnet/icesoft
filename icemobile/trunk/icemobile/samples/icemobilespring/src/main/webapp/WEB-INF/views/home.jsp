@@ -10,93 +10,17 @@
           content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
     <meta name="apple-mobile-web-app-capable" content="yes"/>
     <meta name="apple-mobile-web-app-status-bar-style" content="black"/>
-    <link href="<c:url value="/resources/form.css" />" rel="stylesheet"
-          type="text/css"/>
     <link href="<c:url value="/resources/jqueryui/1.8/themes/base/jquery.ui.all.css" />"
           rel="stylesheet" type="text/css"/>
+    <link href="<c:url value="/resources/style.css" />" rel="stylesheet"
+          type="text/css"/>
     <mobi:deviceResource  view="small"/>
     <script type="text/javascript" src="code.icepush"></script>
-    <style>
-        #tabs > ul li {
-            width: 100px;
-            margin: 0;
-            padding: 0;
-            text-align: center;
-        }
 
-        .ui-widget {
-            font-size: inherit;
-        }
-
-        .ui-tabs {
-            padding: 0;
-        }
-
-        .ui-tabs .ui-tabs-nav li a {
-            padding: .3em .5em;
-            width:90%;
-        }
-
-        .ui-corner-all {
-            border-radius: 0;
-        }
-
-        .ui-widget-content {
-            border: none;
-            background: transparent;
-            color: inherit;
-        }
-
-        .ui-tabs .ui-tabs-panel {
-            font-family: inherit;
-            padding: 0;
-        }
-
-        .ui-widget {
-            font-family: inherit;
-        }
-
-        .ui-widget input, .ui-widget select, .ui-widget textarea, .ui-widget button {
-            font-size: inherit;
-            font-family: inherit;
-        }
-
-        @media all and (min-width: 600px) {
-            #tabs > ul {
-                position: fixed;
-                top:0;
-                width: 275px;
-                border: none;
-                overflow: scroll;
-                height:100%;
-                background:transparent;
-            }
-
-            #tabs > ul li {
-                width: 100%;
-                border-radius: 0;
-                text-align: left;
-            }
-            .ui-tabs .ui-tabs-nav li a {
-                padding: 10px;
-            }
-
-            #tabs > div {
-                margin-left: 275px;
-            }
-
-            .ui-tabs .ui-tabs-nav {
-                padding: 0;
-            }
-        }
-        span.mobitab {
-            padding: 10px;
-        }
-    </style>
 </head>
 <body>
 
-<div id="tabs">
+<div id="tabs" style="display:none;">
 <ul>
     <li><a href="#welcome">Welcome</a></li>
     <li><a href="<c:url value="/carousel" />" title="carousel">Carousel</a>
@@ -257,7 +181,7 @@
 </script>
 <script type="text/javascript">
     $(document).ready(function () {
-        $("#tabs").tabs();
+        $("#tabs").tabs().show();
 
         // Append '#' to the window location so "Back" returns to the selected tab
         // after a redirect or a full page refresh (e.g. Views tab).
