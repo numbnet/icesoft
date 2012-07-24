@@ -56,7 +56,9 @@
                      </h:selectOneMenu>
                 </h:panelGrid>
             </ace:panel>
-            
+        </h:form>
+        
+        <h:form id="demoForm">
             <ace:panel header="Autocomplete Entry">
                 <h:panelGrid width="100%" columns="1">
                     <ace:autoCompleteEntry id="autoComplete"
@@ -71,7 +73,6 @@
                                          label="Cities of the World:"
                                          labelPosition="left">
                         <f:selectItems value="#{autoCompleteEntryBean.cities}"/>
-                        <ace:ajax execute='@this' />
                     </ace:autoCompleteEntry>
                 </h:panelGrid>
             </ace:panel>
