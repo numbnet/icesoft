@@ -117,22 +117,21 @@
                   </fieldset>
                  </div>
               </mobi:contentPane>
-              <mobi:contentPane id="panel4" title="popuppaneltest">
+             <mobi:contentPane id="panel4" title="popuppaneltest">
                   <h3>panelPopup server side round trip</h3>
                        <h:form id="inputForm">
 
                         <h5>panelPopup example  click on button to show panel</h5>
-                        <h5>the Popup Server-side button has singleSubmit</h5>
-                        <h5> other 2 buttons do not and show problem</h5>
                         <mobi:commandButton  singleSubmit="true"
                                 value="#{popup.visible?'Hide':'Show'} Popup Server-side"
                                 actionListener="#{popup.toggleVisible}"/>
-                         <h:commandButton value="#{popup.visible? 'Hide':'Show'} h standard submit"
-                                          actionListener = "#{poup.toggleVisible}"/>
-                         <mobi:commandButton
+                         <h:commandButton value="#{popup.visible? 'Hide':'Show'} h to open"
+                                          actionListener = "#{popup.toggleVisible}"/>
+                         <mobi:commandButton id="buttonsubmit"
                                 value="#{popup.visible?'Hide':'Show'} mobi ice.s"
                                 actionListener="#{popup.toggleVisible}"/>
                         </h:form>
+                        <h:form id="panelForm2">
                          <mobi:panelPopup id="panelPopServer" autocenter="true"
                                          visible="#{popup.visible}">
                                 <f:facet name="label">
@@ -141,12 +140,14 @@
                                         <mobi:graphicImage value="../images/album-af.jpg" />
                                    </h:panelGrid>
                                 </f:facet>
-                                        <h:form id="panelForm2">
                                              <h:commandButton value="Hide with h button"
                                                     actionListener="#{popup.close}"/>
 
                                               <mobi:commandButton  singleSubmit="true"
-                                                  value="Hide Popup Server-side"
+                                                  value="Hide Popup use ice.se"
+                                                  actionListener="#{popup.close}"/>
+                                               <mobi:commandButton
+                                                  value="Hide Popup use ice.s"
                                                   actionListener="#{popup.close}"/>
                                              <mobi:fieldsetGroup>
                                              <!-- Text input -->
@@ -162,7 +163,6 @@
                                              </mobi:fieldsetRow>
                                              </mobi:fieldsetGroup>
 
-                                        </h:form>
                                         <mobi:outputList id="imgList" type="thumb" inset="false">
                                              <mobi:outputListItem type="group">Image List</mobi:outputListItem>
                                              <mobi:outputListItems value="#{carousel.imageList}" var="item" type="thumb">
@@ -176,7 +176,7 @@
                                     </mobi:panelPopup>
 
                          <br />
-
+                          </h:form>
 
 
                      <h3>RESULTS</h3>
