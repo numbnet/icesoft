@@ -7,7 +7,7 @@
 <c:if test="${!ajaxRequest}">
     <html>
     <head>
-        <title>ICEmobile | mvc-showcase</title>
+        <title>ICEmobile | HTML5 Input demo</title>
         <link href="<c:url value="/resources/form.css" />" rel="stylesheet"
               type="text/css"/>
         <script type="text/javascript"
