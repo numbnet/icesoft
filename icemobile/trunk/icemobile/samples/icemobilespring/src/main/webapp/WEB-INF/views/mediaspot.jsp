@@ -68,6 +68,17 @@
                 </mobi:fieldSetRow>
             </mobi:fieldSetGroup>
         </c:if>
+        
+        <mobi:fieldSetGroup inset="true">
+            <mobi:fieldSetRow>
+                Use your camera to add location pictures to the
+                augmented reality overlay. Touch an icon in the augmented
+                reality view to select and view that image.
+            </mobi:fieldSetRow>
+        </mobi:fieldSetGroup>
+
+
+
     </form:form>
 
 
