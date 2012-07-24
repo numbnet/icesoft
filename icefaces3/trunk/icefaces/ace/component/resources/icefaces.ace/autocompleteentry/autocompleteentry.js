@@ -33,6 +33,9 @@ ice.ace.Autocompleter = function(id, updateId, rowClass, selectedRowClass, delay
 	
 	this.tabKeyPressed = false;
 	if (focus) this.element.focus();
+	if (!ice.ace.jq.support.leadingWhitespace) { // force IE7/8 to set focus on the text field
+		setTimeout(function() { if (focus) ice.ace.jq(ice.ace.escapeClientId(element.id)).focus(); }, 100);
+	}
 };
 
 ice.ace.Autocompleter.keys = {
@@ -443,6 +446,7 @@ ice.ace.Autocompleter.prototype = {
         setTimeout(function () { self.hide(); }, 250);
         this.hasFocus = false;
         this.active = false;
+		setFocus('');
 		if (this.ajaxBlur) {
 			if (this.tabKeyPressed) {
 				this.tabKeyPressed = false;
@@ -450,7 +454,6 @@ ice.ace.Autocompleter.prototype = {
 				ice.ace.ab(this.ajaxBlur);
 			}
 		}
-		setFocus('');
     },
 
     onFocus: function(event) {
@@ -463,10 +466,12 @@ ice.ace.Autocompleter.prototype = {
       if (this.element.createTextRange) {
        //IE  
 	  this.element.focus();
-       var fieldRange = this.element.createTextRange();  
-       fieldRange.moveStart('character', this.element.value.length);  
-       fieldRange.collapse(false);  
-       fieldRange.select();
+		if (this.element.value.length > 0) {
+			var fieldRange = this.element.createTextRange();  
+			fieldRange.moveStart('character', this.element.value.length);  
+			fieldRange.collapse(false);  
+			fieldRange.select();
+		}
        }  
       else {
        this.element.focus();
