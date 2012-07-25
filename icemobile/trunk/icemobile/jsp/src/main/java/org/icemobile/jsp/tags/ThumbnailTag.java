@@ -29,6 +29,8 @@ public class ThumbnailTag extends SimpleTagSupport {
     private String styleClass;
     private String mFor;
 
+    public static final String THUMBNAIL_CLASS = "mobi-thumb";
+
     public void doTag() throws IOException {
 
         PageContext pageContext = (PageContext) getJspContext();
@@ -40,10 +42,12 @@ public class ThumbnailTag extends SimpleTagSupport {
         if (id != null && !"".equals(id)) {
             out.write(" id='" + getId() + "'");
         }
-        if (null != styleClass)  {
-            out.write(" class='" + styleClass + "'");
+        out.write(" class='" + THUMBNAIL_CLASS);
+        if (null != styleClass) {
+            out.write(" " + styleClass);
         }
-        if (null != style)  {
+        out.write("'");
+        if (null != style) {
             out.write(" style='" + style + "'");
         }
         out.write("><img height='64' width='64' id='" + mFor + "-thumb'></span>");
@@ -72,7 +76,7 @@ public class ThumbnailTag extends SimpleTagSupport {
     public void setStyleClass(String styleClass) {
         this.styleClass = styleClass;
     }
-    
+
     public String getFor() {
         return mFor;
     }
