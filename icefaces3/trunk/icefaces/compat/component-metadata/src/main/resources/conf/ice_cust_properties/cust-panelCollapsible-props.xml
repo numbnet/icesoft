@@ -115,3 +115,15 @@
         <default-value>true</default-value>
      </property-extension>
 </property>
+
+<property>
+    <description>
+        When true clicking on a text input field in the header will expand or collapse the panel.
+    </description>
+    <property-name>toggleOnInput</property-name>
+    <property-class>boolean</property-class>
+    <property-extension>
+        <category>ADVANCED</category>
+        <default-value>true</default-value>
+     </property-extension>
+</property>
