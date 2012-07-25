@@ -22,29 +22,25 @@
 
             <mobi:accordion id="accordionOne" selectedId="${accordionBean.accordionOne}" autoheight="true"  >
                 <mobi:content>
-                    <mobi:contentPane title="First drop down item" id="tab1" >
+                    <mobi:contentPane title="Fixed (desktop) items" id="tab1" >
 
-                        <div style="height: 75px;">
+                        <div>
                           <img src="resources/desktop.png"></img>
                         </div>
                     </mobi:contentPane>
-                    <mobi:contentPane title="Second drop down item" id="tab2">
-                         <div style="height: 75px;">
-                          <img src="resources/monitor.png"></img>
+                    <mobi:contentPane title="Mobile items" id="tab2">
+                         <div>
+                          <img src="resources/laptop.png"></img>
                         </div>
                     </mobi:contentPane>
-                    <mobi:contentPane title="Third drop down item" id="tab3">
-                        <div style="height: 75px;">
-                          <img src="resources/laptop.png"></img>
+                    <mobi:contentPane title="Ultra mobile items" id="tab3">
+                        <div>
+                          <img src="resources/pda.png"></img>
                         </div>
                     </mobi:contentPane>
                 </mobi:content>
             </mobi:accordion>
-
-			<p><button type="submit">Submit</button></p>
-
 		</form:form>
-
     <script type="text/javascript">
         MvcUtil.enhanceForm("#accordionform");
     </script>
