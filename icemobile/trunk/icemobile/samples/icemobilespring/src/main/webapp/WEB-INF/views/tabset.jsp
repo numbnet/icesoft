@@ -22,19 +22,28 @@
 
             <mobi:tabset id="tabsetOne" selectedTab="${tabsetBean.tabsetOne}">
                 <mobi:headers>
-              	    <mobi:header><span class="mobitab">First</span></mobi:header>
-              	    <mobi:header><span class="mobitab">Second</span></mobi:header>
-              	    <mobi:header><span class="mobitab">Third</span></mobi:header>
+              	    <mobi:header><span class="mobitab">Desktop</span></mobi:header>
+              	    <mobi:header><span class="mobitab">Mobile</span></mobi:header>
+              	    <mobi:header><span class="mobitab">Ultra Mobile</span></mobi:header>
                 </mobi:headers>
                 <mobi:content>
-                    <mobi:contentPane> This is the first content panel in the page.  </mobi:contentPane>
-                    <mobi:contentPane> The second panel contains this text. </mobi:contentPane>
-                    <mobi:contentPane> You are viewing the third contentPane.  </mobi:contentPane>
+                    <mobi:contentPane>
+                       <div>
+                         <img src="resources/desktop.png"></img>
+                       </div>
+                    </mobi:contentPane>
+                    <mobi:contentPane>
+                       <div>
+                         <img src="resources/laptop.png"></img>
+                       </div>
+                    </mobi:contentPane>
+                    <mobi:contentPane>
+                        <div>
+                         <img src="resources/pda.png"></img>
+                       </div>
+                    </mobi:contentPane>
                 </mobi:content>
             </mobi:tabset>
-
-			<p><button type="submit">Submit</button></p>
-
 		</form:form>
 
     <script type="text/javascript">
