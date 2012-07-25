@@ -34,8 +34,10 @@
 
     function Overlay(cfg) {
         var container = cfg.element == undefined ? document.body : cfg.element;
-        var overlay = container.ownerDocument.createElement('div');
-        var activeLabel = cfg.activeLabel || cfg.activeImgUrl;
+
+        var overlay = container.ownerDocument.createElement('iframe');
+        overlay.setAttribute('src', 'about:blank');
+        overlay.setAttribute('frameborder', '0');
         overlay.className = 'ice-blockui-overlay';
         var overlayStyle = overlay.style;
         overlayStyle.top = '0';
@@ -51,16 +53,48 @@
 
         container.appendChild(overlay);
 
-        if (activeLabel) {
-            ice.ace.jq(ice.ace.escapeClientId(cfg.id)+"_display").clone(false,true).appendTo(overlay);
-            var subMon = ice.ace.jq(overlay).find('> div:first-child');
-            subMon.css('display', '').css('marginLeft', '-'+subMon.clientWidth / 2);
+        var cloneToRemove;
+        var revertElem;
+        var revertZIndex;
+        if (cfg.autoCenter) {
+            cloneToRemove = ice.ace.jq(ice.ace.escapeClientId(cfg.id)+"_display").clone(false,true);
+            cloneToRemove.attr('id', cfg.id + '_clone');
+            cloneToRemove.addClass('clone');
+            //TODO Creates a white band as wide as the display. Styling the img and text instead fixes this.
+            //cloneToRemove.css('background-color', 'white');
+            cloneToRemove.css('z-index', '28001');
+            cloneToRemove.css('display', '');
+            cloneToRemove.appendTo(container);
+            cloneToRemove.position({
+                my: "center center",
+                at: "center center",
+                of: container});
+        } else {
+            revertElem = ice.ace.jq(ice.ace.escapeClientId(cfg.id)+"_display");
+            if (revertElem) {
+                revertZIndex = revertElem.css('z-index');
+                revertElem.css('z-index', '28001');
+                revertElem.css('display', '');
+            }
         }
 
         return function() {
             if (overlay) {
                 try { container.removeChild(overlay); }
                 catch (e) { //ignore, the overlay does not match the document after a html/body level update
+                }
+            }
+            if (cloneToRemove) {
+                try { cloneToRemove.remove(); /*container.removeChild(cloneToRemove[0]);*/ }
+                catch (e) { //ignore, the cloneToRemove does not match the document after a html/body level update
+                }
+            }
+            if (revertElem) {
+                try {
+                    revertElem.css('z-index', revertZIndex);
+                    revertElem.css('display', 'none');
+                }
+                catch (e) { //ignore, the cloneToRemove does not match the document after a html/body level update
                 }
             }
         };
@@ -91,6 +125,7 @@
         }
 
         var changeState = function(state) {
+            console.log('changeState: ' + state);
             var text = '';
             var img = '';
 
@@ -101,15 +136,15 @@
                     break;
                 case 'server':
                     text = cfg.serverErrorLabel;
-                    img = cfg.disconnectedImgUrl;
+                    img = cfg.serverErrorImgUrl;
                     break;
                 case 'network':
                     text = cfg.networkErrorLabel;
-                    img = cfg.disconnectedImgUrl;
+                    img = cfg.networkErrorImgUrl;
                     break;
                 case 'session':
                     text = cfg.sessionExpiredLabel;
-                    img = cfg.cautionImgUrl;
+                    img = cfg.sessionExpiredImgUrl;
                     break;
                 case 'idle':
                     text = cfg.idleLabel;
@@ -119,13 +154,14 @@
                     return;
             }
 
-            ice.ace.jq(jqId+'_display > img.if-sub-mon-img').attr('src', img);
-            ice.ace.jq(jqId+'_display > span.if-sub-mon-txt').html (text);
-        }
+            ice.ace.jq(jqId+'_display > div > img.if-sub-mon-img').attr('src', img);
+            ice.ace.jq(jqId+'_display > div > span.if-sub-mon-txt').html (text);
+            
+            ice.ace.jq(jqId+'_clone > div > img.if-sub-mon-img').attr('src', img);
+            ice.ace.jq(jqId+'_clone > div > span.if-sub-mon-txt').html (text);
+        };
 
-        window.ice.onBeforeSubmit(function(source,isClientRequest) {
-            changeState('active');
-
+        var doOverlayIfBlockingUI = function(source,isClientRequest) {
             //Only block the UI for client-initiated requests (not push requests)
             if (isClientRequest && isBlockUIEnabled(source)) {
                 console.log('Blocking UI');
@@ -165,11 +201,28 @@
             } else {
                 stopBlockingUI = function () {};;
             }
+        };
+
+        window.ice.onBeforeSubmit(function(source,isClientRequest) {
+            changeState('active');
+            doOverlayIfBlockingUI(source,isClientRequest);
         });
 
         window.ice.onAfterUpdate(function() {
             stopBlockingUI();
             changeState('idle');
+        });
+
+        window.ice.onNetworkError(function() {
+            changeState('network');
+        });
+
+        window.ice.onServerError(function() {
+            changeState('server');
+        });
+
+        window.ice.onSessionExpiry(function() {
+            changeState('session');
         });
 
         changeState('idle');

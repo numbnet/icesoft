@@ -36,6 +36,13 @@ public class JSONBuilder {
         return new JSONBuilder();
     }
 
+    public JSONBuilder initialiseVar(String varName) {
+        params.append("var ");
+        params.append(varName);
+        params.append(" = ");
+        return this;
+    }
+
     /**
      * Begins an anonymous object.
      * @return a reference to this object.

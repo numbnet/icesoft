@@ -1,6 +1,5 @@
 package org.icefaces.ace.component.monitor;
 
-import org.icefaces.ace.component.chart.Chart;
 import org.icefaces.ace.renderkit.CoreRenderer;
 import org.icefaces.ace.util.HTML;
 import org.icefaces.ace.util.JSONBuilder;
@@ -50,75 +49,80 @@ public class SubmitMonitorRenderer extends CoreRenderer {
         writer.writeAttribute(HTML.ID_ATTR, clientId+"_script", null);
 
         writer.startElement(HTML.SCRIPT_ELEM, null);
-        writer.write("var " + resolveWidgetVar(monitor) + " = ice.ace.Monitor(" + getConfig(monitor) + ");");
+        JSONBuilder json = JSONBuilder.create();
+        json.initialiseVar(resolveWidgetVar(monitor));
+        json.beginFunction("ice.ace.Monitor");
+        getConfig(monitor, json);
+        json.endFunction();
+        writer.write(json.toString());
         writer.endElement(HTML.SCRIPT_ELEM);
 
         writer.endElement(HTML.DIV_ELEM);
     }
 
     private void writeComponent(SubmitMonitor monitor, ResponseWriter writer, String clientId) throws IOException {
-        String label = monitor.getActiveLabel();
-        String styleClass = "if-sub-mon";
-
-        if (monitor.isCentered()) styleClass += " center";
-
         writer.startElement(HTML.DIV_ELEM, monitor);
         writer.writeAttribute(HTML.ID_ATTR, clientId+"_display", null);
-        writer.writeAttribute(HTML.CLASS_ATTR, styleClass, null);
-        if (Boolean.valueOf(true).equals(monitor.isBlockUI()))
+        writer.writeAttribute(HTML.CLASS_ATTR, "if-sub-mon", null);
+        if (Boolean.TRUE.equals(monitor.isBlockUI())) {
             writer.writeAttribute(HTML.STYLE_ATTR, "display:none;", null);
+        }
+
+        writer.startElement(HTML.DIV_ELEM, monitor);
+        writer.writeAttribute(HTML.CLASS_ATTR, "if-sub-mon-mid", null);
 
         writer.startElement(HTML.IMG_ELEM, null);
         writer.writeAttribute(HTML.CLASS_ATTR, "if-sub-mon-img", null);
         writer.endElement(HTML.IMG_ELEM);
 
-        if (label != null) {
-            writer.startElement(HTML.SPAN_ELEM, null);
-            writer.writeAttribute(HTML.CLASS_ATTR, "if-sub-mon-txt", null);
-            writer.write(label);
-            writer.endElement(HTML.SPAN_ELEM);
+        writer.startElement(HTML.SPAN_ELEM, null);
+        writer.writeAttribute(HTML.CLASS_ATTR, "if-sub-mon-txt", null);
+        String idleLabel = monitor.getIdleLabel();
+        if (idleLabel != null && idleLabel.length() > 0) {
+            writer.write(idleLabel);
         }
+        writer.endElement(HTML.SPAN_ELEM);
+
+        writer.endElement(HTML.DIV_ELEM);
 
         writer.endElement(HTML.DIV_ELEM);
     }
 
-    public JSONBuilder getConfig(SubmitMonitor monitor) {
-        JSONBuilder config = new JSONBuilder();
+    public JSONBuilder getConfig(SubmitMonitor monitor, JSONBuilder config) {
         FacesContext context = FacesContext.getCurrentInstance();
-
-        Boolean blockUI = monitor.isBlockUI();
-
-        String activeLabel = monitor.getActiveLabel();
-        String idleLabel = monitor.getIdleLabel();
-        String serverErrorLabel = monitor.getServerErrorLabel();
-        String networkErrorLabel = monitor.getNetworkErrorLabel();
-        String sessionExpiredLabel = monitor.getSessionExpiredLabel();
-
-        String activeImgUrl = getResourceRequestPath(context, "monitor/connect_active.gif");
-        String cautionImgUrl = getResourceRequestPath(context, "monitor/connect_caution.gif");
-        String disconnectedImgUrl = getResourceRequestPath(context, "monitor/connect_disconnected.gif");
-        String idleImgUrl = getResourceRequestPath(context, "monitor/connect_idle.gif");
 
         config.beginMap();
         config.entry("id", monitor.getClientId());
 
-        if (blockUI != null) config.entry("blockUI", blockUI);
+        config.entryNonNullValue("blockUI", monitor.isBlockUI());
+        config.entryNonNullValue("autoCenter", monitor.isAutoCenter());
 
+        config.entryNonNullValue("idleLabel", monitor.getIdleLabel());
+        config.entryNonNullValue("activeLabel", monitor.getActiveLabel());
+        config.entryNonNullValue("networkErrorLabel", monitor.getNetworkErrorLabel());
+        config.entryNonNullValue("serverErrorLabel", monitor.getServerErrorLabel());
+        config.entryNonNullValue("sessionExpiredLabel", monitor.getSessionExpiredLabel());
 
-        if (idleLabel != null) config.entry("idleLabel", idleLabel);
-        if (activeLabel != null) config.entry("activeLabel", activeLabel);
-        if (networkErrorLabel != null) config.entry("networkErrorLabel", networkErrorLabel);
-        if (serverErrorLabel != null) config.entry("serverErrorLabel", serverErrorLabel);
-        if (sessionExpiredLabel != null) config.entry("sessionExpiredLabel", sessionExpiredLabel);
-
-        if (activeImgUrl != null) config.entry("activeImgUrl", activeImgUrl);
-        if (cautionImgUrl != null) config.entry("cautionImgUrl", cautionImgUrl);
-        if (disconnectedImgUrl != null) config.entry("disconnectedImgUrl", disconnectedImgUrl);
-        if (idleImgUrl != null) config.entry("idleImgUrl", idleImgUrl);
-
+        config.entryNonNullValue("idleImgUrl", resolveImage(context,
+            null/*TODO monitor.getIdleImage()*/, "monitor/connect_idle.gif"));
+        config.entryNonNullValue("activeImgUrl", resolveImage(context,
+            null/*TODO monitor.getActiveImage()*/, "monitor/connect_active.gif"));
+        config.entryNonNullValue("networkErrorImgUrl", resolveImage(context,
+            null/*TODO monitor.getNetworkErrorImage()*/, "monitor/connect_disconnected.gif"));
+        config.entryNonNullValue("serverErrorImgUrl", resolveImage(context,
+            null/*TODO monitor.getServerErrorImage()*/, "monitor/connect_disconnected.gif"));
+        config.entryNonNullValue("sessionExpiredImgUrl", resolveImage(context,
+            null/*TODO monitor.getSessionExpiredImage()*/, "monitor/connect_session.gif"));
 
         config.endMap();
-
         return config;
+    }
+
+    protected String resolveImage(FacesContext context, String propertyValue, String builtInImage) {
+        //TODO If the property was set, use it, since they could set it to empty to disable the image
+        if (propertyValue != null && propertyValue.length() > 0) {
+            return propertyValue;
+        }
+        return getResourceRequestPath(context, builtInImage);
     }
 }
