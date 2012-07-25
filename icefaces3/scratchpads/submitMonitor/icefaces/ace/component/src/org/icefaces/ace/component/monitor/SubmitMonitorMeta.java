@@ -1,6 +1,5 @@
 package org.icefaces.ace.component.monitor;
 
-import com.sun.xml.internal.ws.api.PropertySet;
 import org.icefaces.ace.meta.annotation.DefaultValueType;
 import org.icefaces.ace.meta.baseMeta.UIComponentBaseMeta;
 import org.icefaces.ace.meta.annotation.Component;
