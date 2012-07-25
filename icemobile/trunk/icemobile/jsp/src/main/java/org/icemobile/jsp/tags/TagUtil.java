@@ -278,7 +278,18 @@ public class TagUtil {
         return result;
     }
 
+    /**
+     * Check for blackberry. This method is called from all paths now and
+     * Android devices on POST appear to have no accept header.
+     *
+     * @param uaString
+     * @param httpAccept
+     * @return true if Blackberry device detected
+     */
     static boolean sniffBlackberry(String uaString, String httpAccept) {
+        if (httpAccept == null) {
+            httpAccept = "";
+        }
         boolean result = uaString.toLowerCase().contains(DEVICE_BLACKB)
             || httpAccept.contains(VND_RIM);
         logSniff(result, "BlackBerry", uaString);
