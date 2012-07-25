@@ -27,6 +27,14 @@ body, .mobi-body {
     color: white;
 }
 
+a:link {
+    color: white;
+}
+
+a:visited {
+    color: lightgrey;
+}
+
 h1, h2, h3, h4, h5, h6 {
     margin: 8px 10px;
     color: white;
