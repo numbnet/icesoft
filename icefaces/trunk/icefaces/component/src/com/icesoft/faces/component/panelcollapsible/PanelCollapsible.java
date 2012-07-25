@@ -58,6 +58,7 @@ public class PanelCollapsible extends UICommand {
     private String enabledOnUserRole = null;
     private String renderedOnUserRole = null;
     private Boolean toggleOnClick = null;
+    private Boolean toggleOnInput = null;
     private String tabindex;
 
     public PanelCollapsible(){
@@ -72,8 +73,10 @@ public class PanelCollapsible extends UICommand {
     public void decode(FacesContext context) {
     	super.decode(context);
     	Map map = context.getExternalContext().getRequestParameterMap();
+        String clickedNodeName = getClientId(context) + "ClickedNodeName";
+        boolean ignoreClick = "input".equalsIgnoreCase((String) map.get(clickedNodeName)) && !isToggleOnInput();
     	String clientId = getClientId(context)+"Expanded";
-    	if (map.containsKey(clientId) && !map.get(clientId).toString().equals("")) {
+    	if (map.containsKey(clientId) && !map.get(clientId).toString().equals("") && !ignoreClick) {
             getAttributes().put(getMatureClientId()+"changedByDecode", "true");
     		boolean exp = Boolean.valueOf(map.get(clientId).toString()).booleanValue();
     		exp = !exp;
@@ -114,6 +117,21 @@ public class PanelCollapsible extends UICommand {
             return toggleOnClick.booleanValue();
         }
         ValueBinding vb = getValueBinding("toggleOnClick");
+        if (vb != null) {
+            return ((Boolean) vb.getValue(getFacesContext())).booleanValue();
+        }
+        return true;
+    }
+
+    public void setToggleOnInput(boolean toggleOnInput) {
+    	this.toggleOnInput = Boolean.valueOf(toggleOnInput);
+    }
+    
+    public boolean isToggleOnInput() {
+        if (toggleOnInput != null) {
+            return toggleOnInput.booleanValue();
+        }
+        ValueBinding vb = getValueBinding("toggleOnInput");
         if (vb != null) {
             return ((Boolean) vb.getValue(getFacesContext())).booleanValue();
         }
@@ -329,7 +347,7 @@ public class PanelCollapsible extends UICommand {
     
 
     public Object saveState(FacesContext context) {
-        Object[] state = new Object[9];
+        Object[] state = new Object[10];
         state[0] = super.saveState(context);
         state[1] = style;
         state[2] = styleClass;
@@ -339,6 +357,7 @@ public class PanelCollapsible extends UICommand {
         state[6] = toggleOnClick;
         state[7] = Boolean.valueOf(disabledSet);
         state[8] = tabindex;
+        state[9] = toggleOnInput;
 
         return state;
     }
@@ -354,6 +373,7 @@ public class PanelCollapsible extends UICommand {
         toggleOnClick = (Boolean)state[6];        
         disabledSet = ((Boolean) state[7]).booleanValue();
         tabindex = (String) state[8];
+        toggleOnInput = (Boolean)state[9];
     }
     
     //At the time of the creation of the component both JSP and facelets

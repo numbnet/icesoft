@@ -94,6 +94,11 @@ public class PanelCollapsibleRenderer extends DomBasicRenderer {
             hiddenField.setAttribute(HTML.NAME_ATTR, uiComponent.getClientId(facesContext)+ "Expanded");
             hiddenField.setAttribute(HTML.TYPE_ATTR, "hidden");
             root.appendChild(hiddenField);
+            hiddenField = domContext.createElement(HTML.INPUT_ELEM);
+            String clickedNodeName = uiComponent.getClientId(facesContext) + "ClickedNodeName";
+            hiddenField.setAttribute(HTML.NAME_ATTR, clickedNodeName);
+            hiddenField.setAttribute(HTML.TYPE_ATTR, "hidden");
+            root.appendChild(hiddenField);
             UIComponent form = findForm(uiComponent);
             if(form == null) {
                 throw new FacesException("PanelCollapsible must be contained within a form");                
@@ -105,8 +110,10 @@ public class PanelCollapsibleRenderer extends DomBasicRenderer {
             }
             header.setAttribute(HTML.ONCLICK_ATTR, 
                 "document.forms['"+ form.getClientId(facesContext) +"']" +
-                      "['"+ uiComponent.getClientId(facesContext)+ "Expanded"+"'].value='"+ 
+                      "['"+ uiComponent.getClientId(facesContext)+ "Expanded"+"'].value='"+
                       panelCollapsible.isExpanded()+"'; " +
+                      "var target = (event.target) ? event.target : event.srcElement; " +
+                      "document.forms['" + form.getClientId(facesContext) + "']['" + clickedNodeName + "'].value=target.nodeName; " +
                               "iceSubmit(document.forms['"+ form.getClientId(facesContext) +"'],this,event); return false;");
             Element div = domContext.createElement(HTML.DIV_ELEM);
             div.setAttribute(HTML.STYLE_ATTR, "padding:0px;background-image:none;width:100%;");
