@@ -220,3 +220,6 @@ ul li {
 span.mobitab {
 	padding: 10px;
 }
+html.js div#tabs{
+	display: none;
+}
