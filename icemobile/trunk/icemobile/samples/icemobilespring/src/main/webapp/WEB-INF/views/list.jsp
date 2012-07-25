@@ -28,7 +28,9 @@
 
         <mobi:fieldSetGroup id="groupOne">
             <mobi:fieldSetRow style="padding-bottom:10px;">
-                The list component with and without insets inside a PagePanel.
+A demonstration of two layout tags: mobi:pagePanel, which allows a fixed header
+and footer to be defined, and mobi:list, which allows content to be organized
+into style lists.
             </mobi:fieldSetRow>
         </mobi:fieldSetGroup>
         <p/>
@@ -37,7 +39,7 @@
 
         <mobi:outputList inset="true" id="secondList">
             <mobi:outputListItem group="true" >
-                Thumbnail display
+               List 
             </mobi:outputListItem>
 
             <mobi:outputListItem>
@@ -54,7 +56,7 @@
 
         <mobi:outputList inset="false" id="thirdList" >
             <mobi:outputListItem group="true">
-                Thumbnail display
+               List 
             </mobi:outputListItem>
             <mobi:outputListItem>
                     ICEsoft Ice Sailer
