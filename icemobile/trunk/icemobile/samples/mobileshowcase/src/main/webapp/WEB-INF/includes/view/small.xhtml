@@ -68,14 +68,12 @@
             <h:panelGroup
                     style="float:right;display:inline-block;margin: 5px 15px 0 0;">
                 <h:form>
-                    <h:commandLink
-                            action="#{mobiNavigationController.navigateToPage}">
-                        <f:param name="navigateTo"
-                                 value="#{mobiNavigationModel.destinationHome}"/>
+                    <h:outputLink 
+                        value="http://www.icemobile.org/demos.html" >
                         <h:graphicImage library="images"
                                         name="icemobile_thumb.png"
                                         style="width:30px;height:30px;border:none;"/>
-                    </h:commandLink>
+                    </h:outputLink>
                 </h:form>
             </h:panelGroup>
         </f:facet>
