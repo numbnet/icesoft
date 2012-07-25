@@ -16,6 +16,7 @@ import org.icepush.PushContext;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Map;
 import java.util.UUID;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -124,8 +125,22 @@ public class CameraController {
             currentUserName = submittedName;
         }
 
-        return new CamUpdate("Thanks for the photo, " + currentUserName,
-                             request.getContextPath() + "/" + newFileName);
+        Map additionalParams = modelBean.getAdditionalInfo();
+        String imcheck = " ";
+        String jqcheck = " ";
+        if (null != additionalParams)  {
+            if (additionalParams.keySet().contains("icemobile"))  {
+                imcheck = "*";
+            }
+            if (additionalParams.keySet().contains("jquery"))  {
+                jqcheck = "*";
+            }
+        }
+
+        return new CamUpdate( "Thanks for the photo, " + currentUserName +
+                " and your interest in [" + imcheck +
+                "] ICEmobile and [" + jqcheck + "] jquery.", 
+                request.getContextPath() + "/" + newFileName );
     }
 
     private String saveImage(HttpServletRequest request,
