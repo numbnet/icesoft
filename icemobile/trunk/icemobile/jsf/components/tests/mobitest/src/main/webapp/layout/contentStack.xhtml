@@ -49,6 +49,17 @@
       <h1> test page for contentStack</h1>
       <br />
      <h:form id="contentForm">
+      <div id="output" style="display:block;">
+          selected pane ... <mark>#{layoutBean.selectedPane}</mark> ... is selected pane
+       </div>
+      <div>
+           <mobi:commandButton id="but1"
+                                  value="SelectPane3" actionListener="#{layoutBean.changeToPane3}">
+                  <mobi:ajax execute="@this" render="@form"/>
+           </mobi:commandButton>
+      </div>
+       <a href="../layoutComponents.html">index page</a>
+       <br/>
        <mobi:contentStack id="test1" currentId="#{layoutBean.selectedPane}">
               <mobi:contentPane id="panel1" client="true">
                  <fieldset title="panel1">
@@ -100,16 +111,7 @@
                   </fieldset>
               </mobi:contentPane>
        </mobi:contentStack>
-       <div id="output" style="display:block;">
-          selected pane ... <mark>#{layoutBean.selectedPane}</mark> ... is selected pane
-       </div>
-      <div>
-           <mobi:commandButton id="but1"
-                                  value="SelectPane3" actionListener="#{layoutBean.changeToPane3}">
-                  <mobi:ajax execute="@this" render="@form"/>
-           </mobi:commandButton>
-      </div>
+
      </h:form>
-       <a href="../layoutComponents.html">index page</a>
-</h:body>
+  </h:body>
 </html>
