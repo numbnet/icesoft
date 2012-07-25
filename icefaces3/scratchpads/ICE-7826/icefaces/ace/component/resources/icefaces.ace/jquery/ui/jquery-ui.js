@@ -5587,6 +5587,53 @@ $.effects.slide = function(o) {
  * Depends:
  *	jquery.effects.core.js
  */
+ 
+ /*
+ * jQuery UI Accordion 1.8.18
+ *
+ * Copyright 2011, AUTHORS.txt (http://jqueryui.com/about)
+ * Dual licensed under the MIT or GPL Version 2 licenses.
+ * http://jquery.org/license
+ *
+ * http://docs.jquery.com/UI/Accordion
+ *
+ * Depends:
+ *	jquery.ui.core.js
+ *	jquery.ui.widget.js
+ */
+ (function( $, undefined ) {
+
+$.widget( "ui.gMap", {
+	options: {
+		active: 0,
+		animated: "slide",
+		autoHeight: true,
+		clearStyle: false,
+		collapsible: false,
+		event: "click",
+		fillSpace: false,
+		header: "> li > :first-child,> :not(li):even",
+		icons: {
+			header: "ui-icon-triangle-1-e",
+			headerSelected: "ui-icon-triangle-1-s"
+		},
+		navigation: false,
+		navigationFilter: function() {
+			return this.href.toLowerCase() === location.href.toLowerCase();
+		}
+	}, 
+
+	_create: function() {
+		var self = this,
+			options = self.options;
+
+		self.running = 0;
+
+}});})( jQuery );
+ 
+ 
+ 
+ 
 (function( $, undefined ) {
 
 $.effects.transfer = function(o) {
