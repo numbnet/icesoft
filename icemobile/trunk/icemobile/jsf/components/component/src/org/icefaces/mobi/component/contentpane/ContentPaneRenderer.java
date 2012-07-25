@@ -67,6 +67,9 @@ public class ContentPaneRenderer extends BaseLayoutRenderer {
             boolean amSelected = iAmSelected(facesContext, uiComponent);
             if (amSelected){
                 classToWrite =  contentClass ;
+                if (pane.getStyle() !=null){
+                    writer.writeAttribute("style", pane.getStyle(), "style");
+                }
             }
             /* write out root tag.  For current incarnation html5 semantic markup is ignored */
             writer.startElement(HTML.DIV_ELEM, uiComponent);

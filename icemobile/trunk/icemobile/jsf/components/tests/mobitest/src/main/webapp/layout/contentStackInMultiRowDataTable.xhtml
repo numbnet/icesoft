@@ -51,55 +51,38 @@
       </h:form>
       <h1> test page for contentStack</h1>
       <br />
+           <a href="../layoutComponents.html">index page</a>
      <h:form id="contentForm">
        <h:dataTable value="#{layoutBean.dataListMultiRow}" var="tblVar">
-           <h:column>
+           <h:column style="height: 150px;" >
        <mobi:contentStack id="test1" currentId="#{tblVar.selectedPane}">
-              <mobi:contentPane id="panel1" client="true">
+              <mobi:contentPane style="height: 200px;" id="panel1" client="true">
                  <fieldset title="panel1">
                       <legend>Panel1</legend>
                     <h3> header for panel 1</h3>
-                     <p> content for panel 1 - king of clubs </p>
-                       <figure>
-                         <img width="85" height="150"
-                          src="../images/kingOfClubs.jpg"
-                            alt="king of clubs" />
-                         <figcaption>King of Clubs</figcaption>
-                        </figure>
+                     <p> content for panel 1  </p>
                     <ui:include src="included.xhtml"/>
                   </fieldset>
               </mobi:contentPane>
-               <mobi:contentPane id="panel2">
+               <mobi:contentPane  style="height: 200px;" id="panel2">
                  <fieldset title="panel2">
                    <legend>Panel2</legend>
                   <h3> header for panel 2</h3>
-                  <p> content for panel 2 - ace of diamonds   </p>
-                     <figure>
-                         <img width="85" height="150"
-                          src="../images/queen.jpg"
-                            alt="queen of clubs" />
-                         <figcaption>Queen of Clubs</figcaption>
-                        </figure>
+                  <p> content for panel 2    </p>
                      <ui:include src="included.xhtml"/>
                   </fieldset>
               </mobi:contentPane>
-             <mobi:contentPane id="panel3" facelet="true">
+             <mobi:contentPane id="panel3" style="height: 200px;" facelet="true">
                  <fieldset title="panel3">
                       <legend>Panel3</legend>
                   <h3> header for panel 3</h3>
-                  <p> content for panel 3 - some other card..</p>
-                     <figure>
-                         <img width="85" height="150"
-                          src="../images/Joker.jpg"
-                            alt="joker" />
-                         <figcaption>joker</figcaption>
-                        </figure>
+                  <p> content for panel 3 .</p>
                      <ui:include src="included.xhtml"/>
                   </fieldset>
               </mobi:contentPane>
        </mobi:contentStack>
          </h:column></h:dataTable>
      </h:form>
-       <a href="../layoutComponents.html">index page</a>
+
 </h:body>
 </html>
