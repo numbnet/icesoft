@@ -6,6 +6,8 @@ import org.icefaces.ace.meta.baseMeta.UIComponentBaseMeta;
 import org.icefaces.ace.meta.annotation.Component;
 import org.icefaces.ace.meta.annotation.Property;
 
+import javax.faces.application.ResourceDependencies;
+import javax.faces.application.ResourceDependency;
 import java.lang.Boolean;
 import java.lang.String;
 
@@ -21,6 +23,10 @@ import java.lang.String;
         tlddoc = "Renders and configures indications of ongoing ajax submits. " +
                 "Supports configurable text and image state indicators and UI blocking."
 )
+@ResourceDependencies({
+	@ResourceDependency(library = "icefaces.ace", name = "util/ace-jquery.js"),
+	@ResourceDependency(library = "icefaces.ace", name = "util/ace-components.js")
+})
 public class SubmitMonitorMeta extends UIComponentBaseMeta {
     @Property(tlddoc = "A string to be displayed on the UI blocking layer or next to the image indicator during a submit.")
     String activeLabel;
@@ -62,6 +68,6 @@ public class SubmitMonitorMeta extends UIComponentBaseMeta {
 
     @Property(tlddoc = "Enable to display the activity labels at the center of the UI blocking plane.",
             defaultValue = "true", defaultValueType = DefaultValueType.EXPRESSION)
-    Boolean centered;
+    Boolean autoCenter;
 }
 
