@@ -16,7 +16,7 @@
           type="text/css"/>
     <mobi:deviceResource  view="small"/>
     <script type="text/javascript" src="code.icepush"></script>
-
+    <script type="text/javascript">document.documentElement.className = 'js';</script>
 </head>
 <body>
 
@@ -191,7 +191,7 @@
 </script>
 <script type="text/javascript">
     $(document).ready(function () {
-        $("#tabs").tabs();
+        $("#tabs").tabs().show();
 
         // Append '#' to the window location so "Back" returns to the selected tab
         // after a redirect or a full page refresh (e.g. Views tab).
