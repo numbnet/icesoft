@@ -46,46 +46,8 @@
     <div id="#{cc.id}" class="#{cc.attrs.styleClass}" style="#{cc.attrs.style}">
         <composite:insertChildren />
     </div>
+     <script type="text/javascript">addResizeAfterUpdatesListener('#{cc.id}')</script>
 
-
-  <script type="text/javascript">
-
-        function resizeElementHeight(elementId) {
-          var element = document.getElementById(elementId);
-          var height = 0;
-          var body = window.document.body;
-          if (window.innerHeight) {
-              height = window.innerHeight;
-          } else if (body.parentElement.clientHeight) {
-              height = body.parentElement.clientHeight;
-          } else if (body){
-              if (body.clientHeight) {
-                height = body.clientHeight;
-              }
-          }
-//          element.style.height = ((height - element.offsetTop) + "px");
-//          ice.log.debug(ice.log, height + ' '+ element.offsetTop);
-          element.style.height = ((height - element.offsetTop) + "px");
-        }
-
-        var delayedResizeHandler = function(updates){
-            resizeElementHeight('#{cc.id}');
-//            ice.log.debug(ice.log, 'resize on update ' + window.innerHeight);
-        }
-
-        var supportsOrientationChange = "onorientationchange" in window,
-                    orientationEvent = supportsOrientationChange ? "orientationchange" : "resize";
-
-        ice.onAfterUpdate(delayedResizeHandler);
-
-        window.addEventListener(orientationEvent, resizeElementHeight('#{cc.id}'), false);
-
-      window.addEventListener('resize', function() {
-//            ice.log.debug(ice.log, 'resize panelScroller #{cc.id} ' + window.innerHeight);
-            resizeElementHeight('#{cc.id}');
-        });
-
-    </script>
 </composite:implementation>
 </body>
 </html>
