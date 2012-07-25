@@ -13,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Map;
 import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
 
@@ -70,8 +71,21 @@ public class MicrophoneController {
             currentUserName = submittedName;
         }
 
-        return new MicUpdate("Thanks for the sound, " + currentUserName, 
-                request.getContextPath() + "/" + newFileName);
+        Map additionalParams = modelBean.getAdditionalInfo();
+        String imcheck = " ";
+        String jqcheck = " ";
+        if (null != additionalParams)  {
+            if (additionalParams.keySet().contains("icemobile"))  {
+                imcheck = "*";
+            }
+            if (additionalParams.keySet().contains("jquery"))  {
+                jqcheck = "*";
+            }
+        }
+        return new MicUpdate( "Thanks for the sound, " + currentUserName +
+                " and your interest in [" + imcheck +
+                "] ICEmobile and [" + jqcheck + "] jquery.", 
+                request.getContextPath() + "/" + newFileName );
     }
 
     private String saveClip(HttpServletRequest request, MultipartFile file)
