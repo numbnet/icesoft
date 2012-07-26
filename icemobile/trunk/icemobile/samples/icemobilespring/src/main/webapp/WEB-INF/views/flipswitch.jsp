@@ -46,6 +46,11 @@
                                  value="${flipSwitchBean.trueFalseFlipSwitch}"/>
             </mobi:fieldSetRow>
         </mobi:fieldSetGroup>
+        <%-- button types: default|important|attention| back--%>
+        <mobi:commandButton buttonType='important'
+                            style="float:right;margin-right: 25px;"
+                            value="Submit"
+                            type="submit"/><br>
         <h4>Flip Switch Value Echo</h4>
         <mobi:fieldSetGroup inset="true">
             <mobi:fieldSetRow>
@@ -61,11 +66,6 @@
                 <label style="float:right">${flipSwitchBean.trueFalseFlipSwitch}</label>
             </mobi:fieldSetRow>
         </mobi:fieldSetGroup>
-        <%-- button types: default|important|attention| back--%>
-        <mobi:commandButton buttonType='important'
-                            style="float:right;margin-right: 25px;"
-                            value="Submit"
-                            type="submit"/>
     </form:form>
 
     <script type="text/javascript">
