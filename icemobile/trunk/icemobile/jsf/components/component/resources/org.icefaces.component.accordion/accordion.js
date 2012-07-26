@@ -119,7 +119,10 @@
                 if (change == true) {
                     var newHeight = calcMaxDivHeight(clientId);
                 }
-                paneOpId = cfgIn.opened || null;
+                if( !paneOpId ){
+                    paneOpId = cfgIn.opened || null;
+                }
+
             }
         }
     }
