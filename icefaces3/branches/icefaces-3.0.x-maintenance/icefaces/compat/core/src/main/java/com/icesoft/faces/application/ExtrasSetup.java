@@ -50,9 +50,13 @@ public class ExtrasSetup implements SystemEventListener {
     };
     private static final FormEndRenderer FormHiddenInputFields = new FormHiddenInputFieldsRenderer();
     private boolean fastBusyIndicator;
+    private boolean includeScrollOffsets;
 
     public ExtrasSetup() {
-        fastBusyIndicator = EnvUtils.isFastBusyIndicator(FacesContext.getCurrentInstance());
+        FacesContext context = FacesContext.getCurrentInstance();
+
+        fastBusyIndicator = EnvUtils.isFastBusyIndicator(context);
+        includeScrollOffsets = EnvUtils.isIncludeScrollOffsets(context);
     }
 
     public boolean isListenerForSource(Object source) {
@@ -100,6 +104,7 @@ public class ExtrasSetup implements SystemEventListener {
                     writer.writeAttribute("id", getClientId(context), null);
                     writer.startElement("script", this);
                     writer.writeAttribute("type", "text/javascript", null);
+                    writer.write("ice.includeScrollOffsets=" + includeScrollOffsets + ";");
                     writer.write("ice.DefaultIndicators({");
                     writer.write("fastBusyIndicator: ");
                     writer.write(Boolean.toString(fastBusyIndicator));
