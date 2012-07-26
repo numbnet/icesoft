@@ -44,6 +44,7 @@
             <mobi:fieldSetGroup inset="true">
                 <mobi:fieldSetRow>
                     <audio src="${clipName}" controls="controls"/>
+                    <br><a href="${clipName}">Play</a>
                 </mobi:fieldSetRow>
             </mobi:fieldSetGroup>
         </c:if>
