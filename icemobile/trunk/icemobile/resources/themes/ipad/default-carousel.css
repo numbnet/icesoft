@@ -16,31 +16,33 @@
 
 .mobi-carousel {
     /*background: none repeat scroll 0 0 #E3E3E3;*/
-    float: left;
+    /*float: left;*/
     height: 100px;
     overflow: hidden;
     width: 100%;
     z-index: 1;
+    position: relative;
 }
 
 .mobi-carousel-scroller {
-    float: left;
+    /*float: left;*/
     height: 100%;
     padding: 0;
     width: 2100px;
+    position: relative;
 }
 
 .mobi-carousel-list {
     display: block;
-    float: left;
+    /*float: left; */
     height: 100%;
     list-style: none outside none;
     margin: 0;
     padding: 0;
     text-align: left;
     width: 100%;
+    position: relative;
 }
-
 .mobi-carousel-list li {
     display: block;
     float: left;
