@@ -30,7 +30,7 @@
             <mobi:fieldSetRow style="padding-bottom:10px;">
 A demonstration of two layout tags: mobi:pagePanel, which allows a fixed header
 and footer to be defined, and mobi:list, which allows content to be organized
-into style lists.
+into styled lists.
             </mobi:fieldSetRow>
         </mobi:fieldSetGroup>
         <p/>
