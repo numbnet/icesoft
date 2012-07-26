@@ -175,6 +175,7 @@
 
             <ice:subant target="build">
                 <fileset dir="./jsf" includes="build.xml" />
+                <fileset dir="./jsp" includes="build.xml" />
                 <propertyset refid="product.info"/>
             </ice:subant>
             <ice:subant target="all">
