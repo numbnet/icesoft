@@ -64,7 +64,7 @@ public class SubmitMonitorRenderer extends CoreRenderer {
         writer.startElement(HTML.DIV_ELEM, monitor);
         writer.writeAttribute(HTML.ID_ATTR, clientId+"_display", null);
         writer.writeAttribute(HTML.CLASS_ATTR, "if-sub-mon", null);
-        if (Boolean.TRUE.equals(monitor.isBlockUI())) {
+        if (Boolean.TRUE.equals(monitor.isHidingIdleSubmitMonitor())) {
             writer.writeAttribute(HTML.STYLE_ATTR, "display:none;", null);
         }
 
@@ -94,7 +94,7 @@ public class SubmitMonitorRenderer extends CoreRenderer {
         config.beginMap();
         config.entry("id", monitor.getClientId());
 
-        config.entryNonNullValue("blockUI", monitor.isBlockUI());
+        config.entryNonNullValue("blockUI", monitor.resolveBlockUI());
         config.entryNonNullValue("autoCenter", monitor.isAutoCenter());
 
         config.entryNonNullValue("idleLabel", monitor.getIdleLabel());
