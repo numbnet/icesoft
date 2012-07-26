@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 @Controller
 @SessionAttributes("camcorderBean")
 public class CamcorderController {
+    boolean mediaReady = false;
 
 	@ModelAttribute
 	public void ajaxAttribute(WebRequest request, Model model) {
@@ -30,7 +31,8 @@ public class CamcorderController {
 	}
 
 	@RequestMapping(value = "/camcorder", method=RequestMethod.GET)
-    public void processVideo()  {
+    public void processVideo(Model model)  {
+        model.addAttribute("mediaReady", new Boolean(mediaReady));
     }
 
 	@RequestMapping(value = "/camcorder", method=RequestMethod.POST)
@@ -42,7 +44,9 @@ public class CamcorderController {
         if (null != file)  {
             fileName = file.getOriginalFilename();
             file.transferTo(new File(request.getRealPath("/media/video.mp4")));
+            mediaReady = true;
         }
+        model.addAttribute("mediaReady", new Boolean(mediaReady));
 		model.addAttribute("message", "Hello " + modelBean.getName() +
                 ", your video file '" + fileName + "' was uploaded successfully.");
 

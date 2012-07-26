@@ -39,8 +39,14 @@
 
         <c:if test="${not empty message}">
             <div id="message" class="success">${message}<br/>
-                <video src="media/video.mp4" controls="controls"/>
             </div>
+        </c:if>
+        <c:if test="${mediaReady}">
+            <mobi:fieldSetGroup inset="true">
+                <mobi:fieldSetRow>
+                    <video src="media/video.mp4" controls="controls"/>
+                </mobi:fieldSetRow>
+            </mobi:fieldSetGroup>
         </c:if>
         <s:bind path="*">
             <c:if test="${status.error}">

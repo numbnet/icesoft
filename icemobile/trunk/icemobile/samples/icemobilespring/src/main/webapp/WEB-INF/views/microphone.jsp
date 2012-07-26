@@ -38,9 +38,14 @@
                             type="submit"/>
         <div style="clear:both"/>
         <c:if test="${not empty message}">
-            <div id="message" class="success">${message}<br/>
-                <audio src="media/clip.mp4" controls="controls"/>
-            </div>
+            <div id="message" class="success">${message}</div>
+        </c:if>
+        <c:if test="${mediaReady}">
+            <mobi:fieldSetGroup inset="true">
+                <mobi:fieldSetRow>
+                    <audio src="${clipName}" controls="controls"/>
+                </mobi:fieldSetRow>
+            </mobi:fieldSetGroup>
         </c:if>
         <s:bind path="*">
             <c:if test="${status.error}">
