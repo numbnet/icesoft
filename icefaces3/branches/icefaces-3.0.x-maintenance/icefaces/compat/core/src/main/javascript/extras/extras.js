@@ -824,8 +824,8 @@ Ice.modal = {
     zIndexCount: 25000,
     start:function(target, iframeUrl, trigger, manualPosition, positionOnLoadOnly) {
         var modal = document.getElementById(target);
-        modal.style.visibility = 'hidden';
         modal.style.position = 'absolute';
+        modal.style.visibility = 'visible';
         var iframe = document.getElementById('iceModalFrame' + target);
         if (!iframe) {
             iframe = document.createElement('iframe');
@@ -902,7 +902,6 @@ Ice.modal = {
         Ice.modal.target = modal;
         //register modal popup
         Ice.modal.setRunning(target);
-        modal.style.visibility = 'visible';
         if (trigger) {
             Ice.modal.trigger = trigger;
             $(trigger).blur();
