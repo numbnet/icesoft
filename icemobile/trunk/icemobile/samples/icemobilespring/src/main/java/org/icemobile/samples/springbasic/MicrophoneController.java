@@ -38,26 +38,23 @@ public class MicrophoneController {
     }
     
 	@RequestMapping(value = "/jqmmic", method=RequestMethod.POST)
-	public void processJqmmic(HttpServletRequest request, ModelBean modelBean, @RequestParam(value = "mic-file", required = false) MultipartFile file, @RequestParam(value = "cam", required = false) MultipartFile inputFile, Model model) throws IOException {
-        this.processMicrophone(request, modelBean, file, inputFile, model);
+	public void processJqmmic(HttpServletRequest request, ModelBean modelBean, @RequestParam(value = "mic", required = false) MultipartFile file, Model model) throws IOException {
+        this.processMicrophone(request, modelBean, file, model);
     }
 
 	@RequestMapping(value = "/microphone", method=RequestMethod.GET)
-    public void processMicrophone()  {
+    public void processMicrophone(Model model)  {
+        model.addAttribute("mediaReady", new Boolean(null != currentFileName));
+        model.addAttribute("clipName", currentFileName);
     }
 
 	@RequestMapping(value = "/microphone", method=RequestMethod.POST)
-	public void processMicrophone(HttpServletRequest request, ModelBean modelBean, @RequestParam(value = "mic-file", required = false) MultipartFile file, @RequestParam(value = "mic", required = false) MultipartFile inputFile, Model model) throws IOException {
+	public void processMicrophone(HttpServletRequest request, ModelBean modelBean, 
+            @RequestParam(value = "mic", required = false) MultipartFile file, Model model) throws IOException {
 
-        String fileName = "empty";
-        if (null != file)  {
-            fileName = file.getOriginalFilename();
-            file.transferTo(new File(request.getRealPath("/media/clip.mp4")));
-        }
-        if (null != inputFile)  {
-            fileName = inputFile.getOriginalFilename();
-            inputFile.transferTo(new File(request.getRealPath("/media/clip.mp4")));
-        }
+        String fileName = saveClip(request, file);
+        model.addAttribute("mediaReady", new Boolean(null != currentFileName));
+        model.addAttribute("clipName", currentFileName);
 		model.addAttribute("message", "Hello " + modelBean.getName() + ", your audio file '" + fileName + "' was uploaded successfully.");
 
     }
@@ -92,9 +89,10 @@ public class MicrophoneController {
             throws IOException {
 
         String fileName = null;
-        String uuid = Long.toString(
-                Math.abs(UUID.randomUUID().getMostSignificantBits()), 32);
-        String newFileName = "media/clip-" + uuid + ".m4a";
+//        String uuid = Long.toString(
+//                Math.abs(UUID.randomUUID().getMostSignificantBits()), 32);
+//        String newFileName = "media/clip-" + uuid + ".m4a";
+        String newFileName = "media/clip-shared.m4a";
         if ((null != file) && !file.isEmpty()) {
             fileName = file.getOriginalFilename();
             file.transferTo(new File(request.getRealPath("/" + newFileName)));
