@@ -32,10 +32,8 @@
         return tally;
     };
 
-    function Overlay(cfg) {
-        var container = cfg.element == undefined ? document.body : cfg.element;
-
-        var overlay = container.ownerDocument.createElement('iframe');
+    function Overlay(cfg, container) {
+        var overlay = document.createElement('iframe');
         overlay.setAttribute('src', 'about:blank');
         overlay.setAttribute('frameborder', '0');
         overlay.className = 'ice-blockui-overlay';
@@ -60,15 +58,14 @@
             cloneToRemove = ice.ace.jq(ice.ace.escapeClientId(cfg.id)+"_display").clone(false,true);
             cloneToRemove.attr('id', cfg.id + '_clone');
             cloneToRemove.addClass('clone');
-            //TODO Creates a white band as wide as the display. Styling the img and text instead fixes this.
-            //cloneToRemove.css('background-color', 'white');
             cloneToRemove.css('z-index', '28001');
             cloneToRemove.css('display', '');
             cloneToRemove.appendTo(container);
             cloneToRemove.position({
-                my: "center center",
-                at: "center center",
-                of: container});
+                my: 'center center',
+                at: 'center center',
+                of: container,
+                collision: 'fit'});
         } else {
             revertElem = ice.ace.jq(ice.ace.escapeClientId(cfg.id)+"_display");
             if (revertElem) {
@@ -119,9 +116,25 @@
     ice.ace.Monitor = function (cfg) {
         var jqId = ice.ace.escapeClientId(cfg.id);
 
-        //in the future this function can be modified to read configuration set per component container element
-        function isBlockUIEnabled(source) {
-            return (cfg.blockUI != undefined && cfg.blockUI != false);
+        function isBlockUIEnabled() {
+            return (cfg.blockUI == undefined || cfg.blockUI != '@none');
+        }
+
+        function resolveBlockUIElement(source) {
+            var rawBlockUI = (cfg.blockUI == undefined) ? '@all' : cfg.blockUI;
+            if (rawBlockUI == '@all') {
+                return document.body;
+            } else if (rawBlockUI == '@source') {
+                return source;
+            } else if (rawBlockUI == '@none') {
+                return null;
+            } else {
+                var elem = ice.ace.jq(ice.ace.escapeClientId(rawBlockUI));
+                if (elem && elem.length > 0) {
+                    return elem[0];
+                }
+                return null;
+            }
         }
 
         var changeState = function(state) {
@@ -163,12 +176,13 @@
 
         var doOverlayIfBlockingUI = function(source,isClientRequest) {
             //Only block the UI for client-initiated requests (not push requests)
-            if (isClientRequest && isBlockUIEnabled(source)) {
+            if (isClientRequest && isBlockUIEnabled()) {
                 console.log('Blocking UI');
-                var blockUIOverlay = Overlay(cfg);
+                var overlayContainerElem = resolveBlockUIElement(source);
+                var blockUIOverlay = Overlay(cfg, overlayContainerElem);
                 var rollbacks = fold(['input', 'select', 'textarea', 'button', 'a'], [], function(result, type) {
                     return result.concat(
-                            ice.ace.jq.map(document.body.getElementsByTagName(type), function(e) {
+                            ice.ace.jq.map(overlayContainerElem.getElementsByTagName(type), function(e) {
                         var sink = eventSink(e);
                         var onkeypress = e.onkeypress;
                         var onkeyup = e.onkeyup;

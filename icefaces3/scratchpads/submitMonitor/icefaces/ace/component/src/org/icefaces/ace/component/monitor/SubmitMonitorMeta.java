@@ -27,21 +27,21 @@ import java.lang.String;
 	@ResourceDependency(library = "icefaces.ace", name = "util/ace-components.js")
 })
 public class SubmitMonitorMeta extends UIComponentBaseMeta {
-    @Property(tlddoc = "A string to be displayed on the UI blocking layer or next to the image indicator during a submit.")
-    String activeLabel;
-
-    @Property(tlddoc = "A string to be displayed on the UI blocking layer or next to the image indicator prior to a submit")
+    @Property(tlddoc = "Label to be displayed on the submitMonitor when no submit is in progress.")
     String idleLabel;
 
-    @Property
+    @Property(tlddoc = "Label to be displayed on the submitMonitor while a submit is in progress.")
+    String activeLabel;
+
+    @Property(tlddoc = "Label to be displayed on the submitMonitor when there is a server error.")
     String serverErrorLabel;
 
-    @Property
+    @Property(tlddoc = "Label to be displayed on the submitMonitor when there is a network error.")
     String networkErrorLabel;
 
-    @Property
+    @Property(tlddoc = "Label to be displayed on the submitMonitor when the session is expired.")
     String sessionExpiredLabel;
-//
+
 //    @Property(name="for", tlddoc = "Define a comma separated list of component fully qualified component IDs who, " +
 //            "along with their contents, will be observed by this component when they act as the source for requests.")
 //    String forValue;
@@ -52,21 +52,32 @@ public class SubmitMonitorMeta extends UIComponentBaseMeta {
 //    @Property(tlddoc = "Enable to display an hourglass when hovering over the translucent plane displayed by " +
 //            "the 'blockUI' feature.")
 //    Boolean showHourglass;
-//
-    @Property(tlddoc = "Enabling displays a translucent plane over the application when requests are underway.",
-            defaultValue = "true", defaultValueType = DefaultValueType.EXPRESSION)
-    Boolean blockUI;
-//
+
+    @Property(tlddoc = "When enabled, display a translucent overlay on a " +
+        "portion of the window, and only show the submitMonitor UI when the " +
+        "connection is not idle and a submit is underway. This property " +
+        "specifies on what portion of the window to show the overlay: " +
+        "\"@all\" means the whole document body, \"@source\" means only over " +
+        "the component that originated the request, or a for style " +
+        "component search string may be given to specify a component. " +
+        "Finally, \"@none\" means to disable the overlay and have the " +
+        "submitMonitor UI always present where it has been placed in the " +
+        "page.",
+        defaultValue = "@all",
+        defaultValueType = DefaultValueType.STRING_LITERAL)
+    String blockUI;
+
 //    @Property(tlddoc = "Disabling displays the translucent plane of the 'blockUI' feature over the component region(s) " +
 //            "defined by the 'for' attribute to rather than obscuring the whole page.")
 //    Boolean blockWindow;
 //
-    @Property(tlddoc = "Enable to prevent keyboard input when blockUI is enabled.",
-            defaultValue = "true", defaultValueType = DefaultValueType.EXPRESSION)
-    Boolean blockKeyboard;
+//    @Property(tlddoc = "Enable to prevent keyboard input when blockUI is enabled.",
+//            defaultValue = "true", defaultValueType = DefaultValueType.EXPRESSION)
+//    Boolean blockKeyboard;
 
-    @Property(tlddoc = "Enable to display the activity labels at the center of the UI blocking plane.",
-            defaultValue = "true", defaultValueType = DefaultValueType.EXPRESSION)
+    @Property(tlddoc = "When blockUI is enabled, and this property is true, " +
+        "the submitMonitor will display centered over the translucent overlay.",
+        defaultValue = "true", defaultValueType = DefaultValueType.EXPRESSION)
     Boolean autoCenter;
 }
 
