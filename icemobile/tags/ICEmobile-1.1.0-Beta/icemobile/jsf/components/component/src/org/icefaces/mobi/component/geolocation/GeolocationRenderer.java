@@ -1,0 +1,137 @@
+/*
+ * Copyright 2004-2012 ICEsoft Technologies Canada Corp.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the
+ * License. You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an "AS
+ * IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ * express or implied. See the License for the specific language
+ * governing permissions and limitations under the License.
+ */
+
+package org.icefaces.mobi.component.geolocation;
+
+import org.icefaces.mobi.utils.HTML;
+import org.icefaces.mobi.renderkit.CoreRenderer;
+
+import javax.faces.application.ProjectStage;
+import javax.faces.application.Resource;
+import javax.faces.component.UIComponent;
+import javax.faces.component.behavior.ClientBehaviorHolder;
+import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
+import javax.faces.render.Renderer;
+import java.io.IOException;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+
+public class GeolocationRenderer extends CoreRenderer {
+    private static Logger log = Logger.getLogger(GeolocationRenderer.class.getName());
+    private static final String JS_NAME = "geolocation.js";
+    private static final String JS_MIN_NAME = "geolocation-min.js";
+    private static final String JS_LIBRARY = "org.icefaces.component.geolocation";
+
+    @Override
+    public void decode(FacesContext facesContext, UIComponent uiComponent) {
+        Geolocation geolocation = (Geolocation) uiComponent;
+        if (geolocation.isDisabled()) {
+            return;
+        }
+        String clientId = geolocation.getClientId();
+        try {
+            Map requestParameterMap = facesContext.getExternalContext()
+                    .getRequestParameterMap();
+            String nameHidden = clientId + "_field";
+            String locationString = String.valueOf(
+                    requestParameterMap.get(nameHidden));
+            if (null == locationString)  {
+                return;
+            }
+
+            String[] params = locationString.split(",");
+            Double[] decoded = new Double[4];
+            for (int i = 0; i < params.length; i++)  {
+                try {
+                    decoded[i] = Double.parseDouble(params[i]);
+                } catch (Exception e)  {
+                    log.log(Level.FINE, 
+                        "Malformed geolocation " + i +
+                        " " + locationString, e);
+                }
+            }
+            //malformed or unprovided values are not propagated
+            if (null != decoded[0])  {
+                geolocation.setLatitude(decoded[0]);
+            }
+            if (null != decoded[1])  {
+                geolocation.setLongitude(decoded[1]);
+            }
+            if (null != decoded[2])  {
+                geolocation.setAltitude(decoded[2]);
+            }
+            if (null != decoded[3])  {
+                geolocation.setDirection(decoded[3]);
+            }
+
+
+            decodeBehaviors(facesContext, geolocation);
+        } catch (Exception e) {
+            log.log(Level.WARNING, "Error decoding geo-location request paramaters.",e);
+        }
+    }
+
+
+    public void encodeEnd(FacesContext facesContext, UIComponent uiComponent)
+            throws IOException {
+        ResponseWriter writer = facesContext.getResponseWriter();
+        String clientId = uiComponent.getClientId(facesContext);
+        Geolocation locator = (Geolocation) uiComponent;
+        ClientBehaviorHolder cbh = (ClientBehaviorHolder)uiComponent;
+        boolean hasBehaviors = !cbh.getClientBehaviors().isEmpty();
+        // root element
+        writer.startElement(HTML.SPAN_ELEM, uiComponent);
+        writer.writeAttribute(HTML.ID_ATTR, clientId, null);
+
+        writer.startElement("input", uiComponent);
+        writer.writeAttribute("type", "hidden", null);
+        writer.writeAttribute(HTML.ID_ATTR, clientId + "_locHidden", null);
+        writer.writeAttribute(HTML.NAME_ATTR, clientId + "_field", null);
+        boolean disabled = locator.isDisabled();
+        boolean singleSubmit = locator.isSingleSubmit();
+        if (disabled) {
+            writer.writeAttribute("disabled", "disabled", null);
+        }
+        writer.endElement("input");
+        if (!disabled ) {
+            StringBuilder sb = new StringBuilder(255);
+            String fnCall = "ice.mobi.storeLocation('" + clientId + "_locHidden', pos.coords);";
+            sb.append(fnCall);
+            if ( hasBehaviors){
+                  sb.append(this.buildAjaxRequest(facesContext, cbh, "activate"));
+            }
+            else if (singleSubmit){
+                String ssCall = "ice.se(null, '"+clientId+"');";
+                sb.append(ssCall);
+            }
+            String finalScript = "navigator.geolocation.watchPosition(function(pos) { " +  sb.toString() + "} );";
+            finalScript += "window.addEventListener('deviceorientation', function(orient){";
+            finalScript +=  "ice.mobi.storeDirection('" + clientId + "_locHidden', orient);";
+            finalScript += "});\n";
+            writer.startElement("script", uiComponent);
+            writer.writeAttribute("id", clientId+"_script", "id");
+            writer.write(finalScript);
+            writer.endElement("script");
+        }
+
+        writer.endElement(HTML.SPAN_ELEM);
+    }
+
+
+}
