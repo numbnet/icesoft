@@ -45,6 +45,7 @@
             <mobi:fieldSetGroup inset="true">
                 <mobi:fieldSetRow>
                     <video src="media/video.mp4" controls="controls"/>
+                    <br><a href="media/video.mp4">Play</a>
                 </mobi:fieldSetRow>
             </mobi:fieldSetGroup>
         </c:if>
