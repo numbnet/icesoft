@@ -32,7 +32,9 @@
     <target name="install" depends="get-maven">
         <artifact:localRepository id="local.repository"
                                   path="${local.repository}" layout="default"/>
-        <artifact:pom id="icepushPom" file="icepush.pom">
+        <!-- since icefaces-3.1.0 and icepush are already available on m2 public repos
+              no need to install locally -->
+   <!--     <artifact:pom id="icepushPom" file="icepush.pom">
             <localRepository refid="local.repository"/>
         </artifact:pom>
         <echo>installing icepush-${icepushPom.version} to local repository
@@ -50,12 +52,12 @@
         <artifact:install file="${lib.dir}/${icefaces.lib.name}.jar">
             <localRepository refid="local.repository"/>
             <pom refid="glimmerPom"/>
-        </artifact:install>
+        </artifact:install>  -->
 
         <artifact:pom id="mobiPom" file="icefaces-mobi.pom">
             <localRepository refid="local.repository"/>
         </artifact:pom>
-        <echo>installing icefaces-mobi-${compatPom.version} to local
+        <echo>installing icefaces-mobi-${mobiPom.version} to local
             repository
         </echo>
         <artifact:install file="${lib.dir}/${icefaces-mobi.lib.name}.jar">
