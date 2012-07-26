@@ -32,6 +32,12 @@
     <property name="theme.resources.dir"
               location="${resources.dir}/META-INF/web-resources/org.icefaces.component.skins"/>
 
+    <condition property="version.string"
+               value="${version.primary}.${version.secondary}.${version.tertiary}.${release.type}">
+        <isset property="release.type"/>
+    </condition>
+    <property name="version.string"
+              value="${version.primary}.${version.secondary}.${version.tertiary}"/>
     <import file="../resources/build/build.xml"/>
 
     <target name="product.info" description="update product information">
@@ -149,7 +155,7 @@
             </fileset>
             <fileset dir="${java.dir}" includes="**/*.java"/>
             <manifest>
-                <section name="${groupId}">
+                <section name="org.icemobile">
                     <attribute name="Implementation-Title"
                                value="${product}"/>
                     <attribute name="Implementation-Version"
