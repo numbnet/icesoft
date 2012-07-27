@@ -16,32 +16,38 @@
 
 package org.icemobile.samples.mediacast;
 
-import org.icefaces.application.PushMessage;
-import org.icefaces.application.PushRenderer;
-import org.icefaces.application.PortableRenderer;
-import org.icefaces.util.EnvUtils;
-import org.icemobile.samples.mediacast.navigation.NavigationModel;
-import org.icemobile.samples.util.FacesUtils;
-
-import javax.faces.bean.ApplicationScoped;
-import javax.faces.bean.ManagedBean;
-import javax.faces.context.ExternalContext;
-import javax.faces.context.FacesContext;
-import javax.imageio.ImageIO;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
-import java.io.*;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.Serializable;
 import java.util.Formatter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.ViewScoped;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
+import javax.imageio.ImageIO;
+
+import org.icefaces.application.PortableRenderer;
+import org.icefaces.application.PushMessage;
+import org.icefaces.application.PushRenderer;
+import org.icefaces.util.EnvUtils;
+import org.icemobile.samples.mediacast.navigation.NavigationModel;
+
 /**
- * Stateless controller which handles the camera file uploads
+ * Controller which handles the media file uploads
  * via the new ICEfaces mobi components.
  */
 @ManagedBean(name = MediaController.BEAN_NAME, eager = true)
-@ApplicationScoped
+@ViewScoped
 public class MediaController implements Serializable {
 
     public static final String BEAN_NAME = "mediaController";
@@ -50,7 +56,7 @@ public class MediaController implements Serializable {
 
     public static final String MEDIA_FILE_KEY = "file";
 
-    private static final Logger logger =
+    private static Logger logger =
             Logger.getLogger(MediaController.class.toString());
 
     private Media soundIcon;
@@ -62,6 +68,15 @@ public class MediaController implements Serializable {
     private String thumbConvertCommand;
     private PortableRenderer portableRenderer;
     private int mediaCount = 0;
+    
+    @ManagedProperty(value="#{uploadModel}")
+    private UploadModel uploadModel;
+    
+    @ManagedProperty(value="#{mediaStore}")
+    private MediaStore mediaStore;
+    
+    @ManagedProperty(value="#{navigationModel}")
+    private NavigationModel navigationModel;
 
     public MediaController() {
         portableRenderer = PushRenderer.getPortableRenderer();
@@ -212,13 +227,6 @@ public class MediaController implements Serializable {
      */
     public String upload() {
     	logger.fine("upload()");
-        // session scope model bean
-        UploadModel uploadModel = (UploadModel)
-                FacesUtils.getManagedBean(UploadModel.BEAN_NAME);
-        // application scoped image cache bean
-        MediaStore mediaStore = (MediaStore)
-                FacesUtils.getManagedBean(MediaStore.BEAN_NAME);
-
         return processUpload(uploadModel, mediaStore);
     }
 
@@ -229,10 +237,6 @@ public class MediaController implements Serializable {
      */
     public String cancelUpload() {
 
-        // session scope model bean
-        UploadModel uploadModel = (UploadModel)
-                FacesUtils.getManagedBean(UploadModel.BEAN_NAME);
-
         // reset the selected input string, so the input selection buttons show up again.
         uploadModel.setSelectedMediaInput("");
         uploadModel.setTitle("");
@@ -242,12 +246,8 @@ public class MediaController implements Serializable {
 
 
     public String viewMediaDetail() {
-        UploadModel uploadModel = (UploadModel)
-                FacesUtils.getManagedBean(UploadModel.BEAN_NAME);
         if (uploadModel.getSelectedPhoto() != null) {
             // navigate to details page.
-            NavigationModel navigationModel = (NavigationModel)
-                    FacesUtils.getManagedBean(NavigationModel.BEAN_NAME);
             navigationModel.goForward("media");
         }
         return null;
@@ -259,19 +259,12 @@ public class MediaController implements Serializable {
      * @return null no jsf navigation takes place.
      */
     public String deleteCurrentMedia() {
-        UploadModel uploadModel = (UploadModel)
-                FacesUtils.getManagedBean(UploadModel.BEAN_NAME);
-        MediaStore mediaStore = (MediaStore)
-                FacesUtils.getManagedBean(MediaStore.BEAN_NAME);
-
         if (uploadModel.getSelectedPhoto() != null) {
 
             // clear the resource
             mediaStore.removeMedia(uploadModel.getSelectedPhoto());
 
             // navigate to previous location.
-            NavigationModel navigationModel = (NavigationModel)
-                    FacesUtils.getManagedBean(NavigationModel.BEAN_NAME);
             navigationModel.goBack();
         }
         return null;
@@ -465,24 +458,19 @@ public class MediaController implements Serializable {
 
 
     public String chooseCamera() {
-        UploadModel uploadModel = (UploadModel)
-                FacesUtils.getManagedBean(UploadModel.BEAN_NAME);
         uploadModel.setSelectedMediaInput(MediaMessage.MEDIA_TYPE_PHOTO);
         uploadModel.setUploadErrorMessage("");
         return null;
     }
 
     public String chooseCamcorder() {
-        UploadModel uploadModel = (UploadModel)
-                FacesUtils.getManagedBean(UploadModel.BEAN_NAME);
         uploadModel.setSelectedMediaInput(MediaMessage.MEDIA_TYPE_VIDEO);
         uploadModel.setUploadErrorMessage("");
         return null;
     }
 
     public String chooseMicrophone() {
-        UploadModel uploadModel = (UploadModel)
-                FacesUtils.getManagedBean(UploadModel.BEAN_NAME);
+    	logger.finer("chooseMicrophone()");
         uploadModel.setSelectedMediaInput(MediaMessage.MEDIA_TYPE_AUDIO);
         uploadModel.setUploadErrorMessage("");
         return null;
@@ -547,6 +535,18 @@ public class MediaController implements Serializable {
             return title;
         }
         return defaultTitle + mediaCount++;
+    }
+    
+    public void setUploadModel(UploadModel uploadModel){
+    	this.uploadModel = uploadModel;
+    }
+    
+    public void setMediaStore(MediaStore mediaStore){
+    	this.mediaStore = mediaStore;
+    }
+    
+    public void setNavigationModel(NavigationModel navigationModel){
+    	this.navigationModel = navigationModel;
     }
 
 }

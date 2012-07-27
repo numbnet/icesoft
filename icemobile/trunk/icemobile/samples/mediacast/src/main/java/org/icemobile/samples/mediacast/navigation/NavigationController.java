@@ -22,7 +22,6 @@ import org.icemobile.samples.util.FacesUtils;
 import javax.faces.bean.ApplicationScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
-import javax.faces.event.ActionEvent;
 import java.io.Serializable;
 
 /**
