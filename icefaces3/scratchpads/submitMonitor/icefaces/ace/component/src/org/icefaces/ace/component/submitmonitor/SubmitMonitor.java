@@ -14,7 +14,7 @@
  * governing permissions and limitations under the License.
  */
 
-package org.icefaces.ace.component.monitor;
+package org.icefaces.ace.component.submitmonitor;
 
 import javax.faces.component.UIComponent;
 

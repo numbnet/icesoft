@@ -14,7 +14,7 @@
  * governing permissions and limitations under the License.
  */
 
-package org.icefaces.ace.component.monitor;
+package org.icefaces.ace.component.submitmonitor;
 
 import org.icefaces.ace.renderkit.CoreRenderer;
 import org.icefaces.ace.util.HTML;
@@ -34,11 +34,11 @@ public class SubmitMonitorRenderer extends CoreRenderer {
     private static Map<String, String> FACET_NAME_TO_IMG_SRC;
     static {
         FACET_NAME_TO_IMG_SRC = new HashMap<String, String>(5);
-        FACET_NAME_TO_IMG_SRC.put("idle", "monitor/connect_idle.gif");
-        FACET_NAME_TO_IMG_SRC.put("active", "monitor/connect_active.gif");
-        FACET_NAME_TO_IMG_SRC.put("serverError", "monitor/connect_disconnected.gif");
-        FACET_NAME_TO_IMG_SRC.put("networkError", "monitor/connect_disconnected.gif");
-        FACET_NAME_TO_IMG_SRC.put("sessionExpired", "monitor/connect_session.gif");
+        FACET_NAME_TO_IMG_SRC.put("idle", "submitmonitor/connect_idle.gif");
+        FACET_NAME_TO_IMG_SRC.put("active", "submitmonitor/connect_active.gif");
+        FACET_NAME_TO_IMG_SRC.put("serverError", "submitmonitor/connect_disconnected.gif");
+        FACET_NAME_TO_IMG_SRC.put("networkError", "submitmonitor/connect_disconnected.gif");
+        FACET_NAME_TO_IMG_SRC.put("sessionExpired", "submitmonitor/connect_session.gif");
     }
 
     @Override
@@ -62,7 +62,7 @@ public class SubmitMonitorRenderer extends CoreRenderer {
         writer.startElement(HTML.SCRIPT_ELEM, null);
         JSONBuilder json = JSONBuilder.create();
         json.initialiseVar(resolveWidgetVar(monitor));
-        json.beginFunction("ice.ace.Monitor");
+        json.beginFunction("ice.ace.SubmitMonitor");
         writeConfig(monitor, json);
         json.endFunction();
         writer.write(json.toString());

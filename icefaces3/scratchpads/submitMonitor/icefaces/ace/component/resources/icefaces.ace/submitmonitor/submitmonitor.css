@@ -19,10 +19,10 @@
     background-color: white;
 }
 
-.if-sub-mon > .if-sub-mon-img {
+.if-sub-mon > .if-sub-mon-mid > .if-sub-mon-img {
     vertical-align: middle;
 }
 
-.if-sub-mon > .if-sub-mon-txt {
+.if-sub-mon > .if-sub-mon-mid > .if-sub-mon-txt {
     margin: 0.5em;
 }
