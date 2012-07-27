@@ -1,26 +1,48 @@
+/*
+ * Copyright 2004-2012 ICEsoft Technologies Canada Corp.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the
+ * License. You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an "AS
+ * IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ * express or implied. See the License for the specific language
+ * governing permissions and limitations under the License.
+ */
+
 package org.icefaces.ace.component.monitor;
 
+import org.icefaces.ace.meta.annotation.Component;
+import org.icefaces.ace.meta.annotation.Facet;
+import org.icefaces.ace.meta.annotation.Facets;
+import org.icefaces.ace.meta.annotation.Property;
 import org.icefaces.ace.meta.annotation.DefaultValueType;
 import org.icefaces.ace.meta.baseMeta.UIComponentBaseMeta;
-import org.icefaces.ace.meta.annotation.Component;
-import org.icefaces.ace.meta.annotation.Property;
 
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
+import javax.faces.component.UIComponent;
 import java.lang.Boolean;
 import java.lang.String;
 
 @Component(
-        tagName = "submitMonitor",
-        componentClass = "org.icefaces.ace.component.monitor.SubmitMonitor",
-        generatedClass = "org.icefaces.ace.component.monitor.SubmitMonitorBase",
-        rendererClass = "org.icefaces.ace.component.monitor.SubmitMonitorRenderer",
-        extendsClass = "javax.faces.component.UIComponentBase",
-        componentFamily = "org.icefaces.ace.component.Montior",
-        componentType = "org.icefaces.ace.component.SubmitMonitor",
-        rendererType = "org.icefaces.ace.component.SubmitMonitorRenderer",
-        tlddoc = "Renders and configures indications of ongoing ajax submits. " +
-                "Supports configurable text and image state indicators and UI blocking."
+    tagName = "submitMonitor",
+    componentClass  = "org.icefaces.ace.component.monitor.SubmitMonitor",
+    rendererClass   = "org.icefaces.ace.component.monitor.SubmitMonitorRenderer",
+    generatedClass  = "org.icefaces.ace.component.monitor.SubmitMonitorBase",
+    extendsClass    = "javax.faces.component.UIComponentBase",
+    componentType   = "org.icefaces.ace.component.SubmitMonitor",
+    rendererType    = "org.icefaces.ace.component.SubmitMonitorRenderer",
+    componentFamily = "org.icefaces.ace.SubmitMonitor",
+    tlddoc = "Monitors submits to the server, and indicates the status of " +
+        "the submits, server and network connection, and session validity. " +
+        "Supports configurable text labels and image state indicators, or " +
+        "facets for a fully configurable UI. Optionally uses an overlay for " +
+        "UI blocking during submits."
 )
 @ResourceDependencies({
 	@ResourceDependency(library = "icefaces.ace", name = "util/ace-jquery.js"),
@@ -79,5 +101,23 @@ public class SubmitMonitorMeta extends UIComponentBaseMeta {
         "the submitMonitor will display centered over the translucent overlay.",
         defaultValue = "true", defaultValueType = DefaultValueType.EXPRESSION)
     Boolean autoCenter;
+
+    @Facets
+    class FacetsMeta {
+        @Facet(tlddoc="Show this UI when the connection is idle.")
+        UIComponent idle;
+
+        @Facet(tlddoc="Show this UI when the connection is active.")
+        UIComponent active;
+
+        @Facet(tlddoc="Show this UI when there is a server error.")
+        UIComponent serverError;
+
+        @Facet(tlddoc="Show this UI when there is a network error.")
+        UIComponent networkError;
+
+        @Facet(tlddoc="Show this UI when the session is expired.")
+        UIComponent sessionExpired;
+    }
 }
 

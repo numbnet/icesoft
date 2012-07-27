@@ -137,41 +137,13 @@
             }
         }
 
+        var allStates = ['idle', 'active', 'serverError', 'networkError', 'sessionExpired'];
+        var IDLE = 0, ACTIVE = 1, SERVER_ERROR = 2, NETWORK_ERROR = 3, SESSION_EXPIRED = 4;
+
         var changeState = function(state) {
-            console.log('changeState: ' + state);
-            var text = '';
-            var img = '';
-
-            switch (state) {
-                case 'active':
-                    text = cfg.activeLabel;
-                    img = cfg.activeImgUrl;
-                    break;
-                case 'server':
-                    text = cfg.serverErrorLabel;
-                    img = cfg.serverErrorImgUrl;
-                    break;
-                case 'network':
-                    text = cfg.networkErrorLabel;
-                    img = cfg.networkErrorImgUrl;
-                    break;
-                case 'session':
-                    text = cfg.sessionExpiredLabel;
-                    img = cfg.sessionExpiredImgUrl;
-                    break;
-                case 'idle':
-                    text = cfg.idleLabel;
-                    img = cfg.idleImgUrl;
-                    break;
-                default:
-                    return;
-            }
-
-            ice.ace.jq(jqId+'_display > div > img.if-sub-mon-img').attr('src', img);
-            ice.ace.jq(jqId+'_display > div > span.if-sub-mon-txt').html (text);
-            
-            ice.ace.jq(jqId+'_clone > div > img.if-sub-mon-img').attr('src', img);
-            ice.ace.jq(jqId+'_clone > div > span.if-sub-mon-txt').html (text);
+            console.log('changeState: ' + state + ' : ' + allStates[state]);
+            ice.ace.jq(jqId+'_display > div.if-sub-mon-mid').hide().filter('.'+allStates[state]).show();
+            ice.ace.jq(jqId+'_clone > div.if-sub-mon-mid').hide().filter('.'+allStates[state]).show();
         };
 
         var doOverlayIfBlockingUI = function(source,isClientRequest) {
@@ -213,32 +185,32 @@
                     console.log('Unblocked UI');
                 };
             } else {
-                stopBlockingUI = function () {};;
+                stopBlockingUI = function () {};
             }
         };
 
         window.ice.onBeforeSubmit(function(source,isClientRequest) {
-            changeState('active');
+            changeState(ACTIVE);
             doOverlayIfBlockingUI(source,isClientRequest);
         });
 
         window.ice.onAfterUpdate(function() {
             stopBlockingUI();
-            changeState('idle');
-        });
-
-        window.ice.onNetworkError(function() {
-            changeState('network');
+            changeState(IDLE);
         });
 
         window.ice.onServerError(function() {
-            changeState('server');
+            changeState(SERVER_ERROR);
+        });
+
+        window.ice.onNetworkError(function() {
+            changeState(NETWORK_ERROR);
         });
 
         window.ice.onSessionExpiry(function() {
-            changeState('session');
+            changeState(SESSION_EXPIRED);
         });
 
-        changeState('idle');
+        changeState(IDLE);
     }
 })();
