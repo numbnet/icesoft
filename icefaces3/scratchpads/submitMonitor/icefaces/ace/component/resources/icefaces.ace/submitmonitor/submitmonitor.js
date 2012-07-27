@@ -113,7 +113,7 @@
 
     if (!ice.ace) ice.ace = {};
 
-    ice.ace.Monitor = function (cfg) {
+    ice.ace.SubmitMonitor = function (cfg) {
         var jqId = ice.ace.escapeClientId(cfg.id);
 
         function isBlockUIEnabled() {

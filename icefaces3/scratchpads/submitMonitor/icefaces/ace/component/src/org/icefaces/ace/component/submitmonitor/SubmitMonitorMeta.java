@@ -14,7 +14,7 @@
  * governing permissions and limitations under the License.
  */
 
-package org.icefaces.ace.component.monitor;
+package org.icefaces.ace.component.submitmonitor;
 
 import org.icefaces.ace.meta.annotation.Component;
 import org.icefaces.ace.meta.annotation.Facet;
@@ -31,9 +31,9 @@ import java.lang.String;
 
 @Component(
     tagName = "submitMonitor",
-    componentClass  = "org.icefaces.ace.component.monitor.SubmitMonitor",
-    rendererClass   = "org.icefaces.ace.component.monitor.SubmitMonitorRenderer",
-    generatedClass  = "org.icefaces.ace.component.monitor.SubmitMonitorBase",
+    componentClass  = "org.icefaces.ace.component.submitmonitor.SubmitMonitor",
+    rendererClass   = "org.icefaces.ace.component.submitmonitor.SubmitMonitorRenderer",
+    generatedClass  = "org.icefaces.ace.component.submitmonitor.SubmitMonitorBase",
     extendsClass    = "javax.faces.component.UIComponentBase",
     componentType   = "org.icefaces.ace.component.SubmitMonitor",
     rendererType    = "org.icefaces.ace.component.SubmitMonitorRenderer",
@@ -45,6 +45,7 @@ import java.lang.String;
         "UI blocking during submits."
 )
 @ResourceDependencies({
+    @ResourceDependency(library = "icefaces.ace", name = "util/combined.css"),
 	@ResourceDependency(library = "icefaces.ace", name = "util/ace-jquery.js"),
 	@ResourceDependency(library = "icefaces.ace", name = "util/ace-components.js")
 })
