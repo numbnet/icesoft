@@ -36,7 +36,7 @@
         var overlay = document.createElement('iframe');
         overlay.setAttribute('src', 'about:blank');
         overlay.setAttribute('frameborder', '0');
-        overlay.className = 'ice-blockui-overlay';
+        overlay.setAttribute('style', 'background-color: white; position: absolute; z-index: 28000; opacity: 0.22; filter: alpha(opacity = 22);');
         var overlayStyle = overlay.style;
         overlayStyle.top = '0';
         overlayStyle.left = '0';
@@ -50,6 +50,11 @@
         }
 
         container.appendChild(overlay);
+        ice.ace.jq(overlay).position({
+            my: 'left top',
+            at: 'left top',
+            of: container,
+            collision: 'fit'});
 
         var cloneToRemove;
         var revertElem;
@@ -61,11 +66,21 @@
             cloneToRemove.css('z-index', '28001');
             cloneToRemove.css('display', '');
             cloneToRemove.appendTo(container);
-            cloneToRemove.position({
-                my: 'center center',
-                at: 'center center',
-                of: container,
-                collision: 'fit'});
+            if (container == document.body) {
+                cloneToRemove.css('position', 'fixed');
+                cloneToRemove.position({
+                    my: 'center center',
+                    at: 'center center',
+                    of: window,
+                    collision: 'fit'});
+            } else {
+                cloneToRemove.css('position', 'absolute');
+                cloneToRemove.position({
+                    my: 'center center',
+                    at: 'center center',
+                    of: container,
+                    collision: 'fit'});
+            }
         } else {
             revertElem = ice.ace.jq(ice.ace.escapeClientId(cfg.id)+"_display");
             if (revertElem) {
