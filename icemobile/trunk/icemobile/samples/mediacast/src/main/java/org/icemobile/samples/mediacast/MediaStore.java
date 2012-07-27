@@ -16,17 +16,13 @@
 
 package org.icemobile.samples.mediacast;
 
-import javax.faces.bean.ApplicationScoped;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ExternalContext;
-import javax.faces.bean.ManagedBean;
-
 import java.io.Serializable;
-import java.io.UnsupportedEncodingException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Logger;
-import java.net.URLEncoder;
+
+import javax.faces.bean.ApplicationScoped;
+import javax.faces.bean.ManagedBean;
 
 /**
  * Simple in memory image cache which stores an uploaded image and a scaled
