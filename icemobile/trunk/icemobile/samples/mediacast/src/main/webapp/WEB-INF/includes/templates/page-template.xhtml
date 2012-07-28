@@ -14,22 +14,21 @@
 ~ governing permissions and limitations under the License.
 -->
 
-<ui:fragment xmlns="http://www.w3.org/1999/xhtml"
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
              xmlns:h="http://java.sun.com/jsf/html"
              xmlns:f="http://java.sun.com/jsf/core"
              xmlns:ui="http://java.sun.com/jsf/facelets"
              xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
     <mobi:pagePanel>
         <f:facet name="header">
-            <h:form rependId="false">
-                <h:commandLink type="back"
+            <h:form id="backBtnFrm">
+                <h:commandLink id="backBtn"
+                               type="back"
                                value="back"
                                styleClass="mobi-button mobi-button-back"
                                action="#{navigationController.navigateBack}"
                                rendered="#{navigationModel.canGoBack}"/>
-
-                <ui:insert name="title" />
-
+                <span id="title"><ui:insert name="title" /></span>
             </h:form>
         </f:facet>
         <f:facet name="body">
@@ -37,4 +36,4 @@
             <ui:insert name="bodyContent"/>
         </f:facet>
     </mobi:pagePanel>
-</ui:fragment>
+</ui:composition>

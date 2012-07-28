@@ -22,31 +22,29 @@
              template="/WEB-INF/includes/templates/page-template.xhtml">
 
 
-    <ui:define name="title">
-        Viewer
-    </ui:define>
+    <ui:define name="title">Viewer</ui:define>
 
     <ui:define name="bodyContent">
         <mobi:fieldsetGroup styleClass="message-details">
 
 
-            <mobi:fieldsetRow>
+            <mobi:fieldsetRow id="titleRow">
                 <label>Title: </label>
-                <h:outputText
+                <h:outputText id="title"
                         value="#{uploadModel.selectedPhoto.title}"/>
             </mobi:fieldsetRow>
 
 
-            <mobi:fieldsetRow>
+            <mobi:fieldsetRow id="mediaRow">
               <h:panelGroup rendered="#{uploadModel.selectedPhoto.showPhoto}" >
-               <mobi:graphicImage
+               <mobi:graphicImage id="largePhoto"
                         value="#{uploadModel.selectedPhoto.largePhoto.data}"
                         styleClass="imageViewer"
                         style="margin-bottom:10px;"/>
               </h:panelGroup>
               <h:panelGroup rendered="#{uploadModel.selectedPhoto.showVideo}" >
                 <label>Video:</label>
-                <mobi:videoPlayer
+                <mobi:videoPlayer id="videoPlayer"
                         value="#{uploadModel.selectedPhoto.video.data}"
                         styleClass="imageViewer"
                         linkLabel="Play"
@@ -54,7 +52,7 @@
               </h:panelGroup>
               <h:panelGroup rendered="#{uploadModel.selectedPhoto.showAudio}" >
                 <label>Audio:</label>
-                <mobi:audioPlayer
+                <mobi:audioPlayer id="audioPlayer"
                         value="#{uploadModel.selectedPhoto.audio.data}"
                         styleClass="imageViewer"
                         linkLabel="Play"
@@ -63,12 +61,13 @@
             </mobi:fieldsetRow>
             <mobi:fieldsetRow>
                 <label>Description: </label>
-                <h:outputText
+                <h:outputText id="description"
                         value="#{uploadModel.selectedPhoto.description}"/>
             </mobi:fieldsetRow>
             <mobi:fieldsetRow>
                 <h:form>
-                    <mobi:commandButton value="Delete" buttonType="attention"
+                    <mobi:commandButton id="deleteBtn"
+                            value="Delete" buttonType="attention"
                             style="float:right"
                             actionListener="#{mediaController.deleteCurrentMedia}"
                             />

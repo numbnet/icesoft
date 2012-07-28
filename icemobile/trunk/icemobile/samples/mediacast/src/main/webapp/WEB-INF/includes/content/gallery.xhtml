@@ -22,28 +22,26 @@
              template="/WEB-INF/includes/templates/page-template.xhtml">
 
 
-    <ui:define name="title">
-        Gallery
-    </ui:define>
+    <ui:define name="title">Gallery</ui:define>
 
     <ui:define name="bodyContent">
-        <h:form>
-            <mobi:outputList inset="false">
+        <h:form id="galleryFrm">
+            <mobi:outputList inset="false" id="galleryList">
                 <ui:repeat var="media"
                            value="#{mediaStore.mediaStack}">
-                    <mobi:outputListItem>
-                        <h:commandLink action="#{mediaController.viewMediaDetail}">
+                    <mobi:outputListItem id="mediaItem">
+                        <h:commandLink id="mediaLink" action="#{mediaController.viewMediaDetail}">
                             <f:setPropertyActionListener
                                     target="#{uploadModel.selectedPhoto}"
                                     value="#{media}"/>
 
-                            <mobi:graphicImage
+                            <mobi:graphicImage id="mediaThumbnail"
                                     value="#{media.smallPhoto.data}"
                                     width="#{media.smallPhoto.width}"
                                     height="#{media.smallPhoto.height}"
                                     style="padding-right:5px;border:none;" />
 
-                            <h:outputText
+                            <h:outputText id="mediaTitle"
                                     value="#{media.title}"/>
 
                         </h:commandLink>

@@ -21,9 +21,7 @@
              xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component"
              template="/WEB-INF/includes/templates/page-template.xhtml">
 
-    <ui:define name="title">
-        Mediacast
-    </ui:define>
+    <ui:define name="title">Mediacast</ui:define>
 
     <ui:define name="bodyContent">
 
@@ -33,19 +31,21 @@
 
         <div style="clear:both;"/>
         <!-- display of uploaded images for all users, top 5 are shown. -->
-        <h:form>
-            <mobi:carousel var="mediaMessage"
+        <h:form id="recentMediaFrm">
+            <mobi:carousel id="recentMediaCarousel"
+                           var="mediaMessage"
                            value="#{mediaStore.carouselStack}"
                            style="border-top: 1px solid #999999;">
                 <h:column>
                     <div style="overflow:hidden;width:175px;height:98px;">
-                        <mobi:graphicImage style="border:none;"
+                        <mobi:graphicImage id="mediaImg"
+                                           style="border:none;"
                                            title="#{mediaMessage.title}"
                                            width="#{mediaMessage.mediumPhoto.width}"
                                            height="#{mediaMessage.mediumPhoto.height}"
                                            value="#{mediaMessage.mediumPhoto.data}"/>
                     </div>
-                    <h:commandLink
+                    <h:commandLink id="mediaLink"
                             action="#{mediaController.viewMediaDetail}"
                             styleClass="view-play-icon">
                         <f:setPropertyActionListener
@@ -70,18 +70,22 @@
                               longitude="#{uploadModel.longitude}"
                               direction="#{uploadModel.direction}"/>
 
-            <mobi:fieldsetGroup>
-                <mobi:fieldsetRow rendered="#{empty uploadModel.selectedMediaInput}">
+            <mobi:fieldsetGroup id="uploadGrp">
+                <mobi:fieldsetRow id="uploadBtns"
+                                  rendered="#{empty uploadModel.selectedMediaInput}">
                     <!-- show new message creation buttons, image, movie and sound -->
                     <h:panelGroup
                             style="display:inline-block;padding-bottom: 3px;">
-                        <mobi:commandButton value="Photo"
+                        <mobi:commandButton id="photoBtn"
+                                            value="Photo"
                                             buttonType="default"
                                             action="#{mediaController.chooseCamera}"/>
-                        <mobi:commandButton value="Video"
+                        <mobi:commandButton id="videoBtn"
+                                            value="Video"
                                             buttonType="default"
                                             action="#{mediaController.chooseCamcorder}"/>
-                        <mobi:commandButton value="Audio"
+                        <mobi:commandButton id="audioBtn"
+                                            value="Audio"
                                             buttonType="default"
                                             action="#{mediaController.chooseMicrophone}"/>
                     </h:panelGroup>
@@ -96,7 +100,7 @@
                                      value="#{uploadModel.mediaMap}"/>
                         <h:panelGroup
                                 style="display:inline-block;">
-                            <mobi:thumbnail for="camera"/>
+                            <mobi:thumbnail id="cameraThumbnail" for="camera"/>
                         </h:panelGroup>
                     </mobi:fieldsetRow>
                 </ui:fragment>
@@ -109,7 +113,7 @@
                     <mobi:fieldsetRow styleClass="vcentered">
                         <mobi:camcorder id="camcorder"
                                         value="#{uploadModel.video}"/>
-                        <mobi:thumbnail for="camcorder"/>
+                        <mobi:thumbnail id="camcorderThumbnail" for="camcorder"/>
                     </mobi:fieldsetRow>
                 </ui:fragment>
                 <!-- upload/capture for sound. -->
@@ -139,13 +143,13 @@
                     <!--<h:messages  id="fileUploadMsg" />-->
                     <h:outputText style="font-weight:bold"
                                   value="#{uploadModel.uploadErrorMessage}"/>
-                    <h:commandButton
+                    <h:commandButton id="cancelUploadBtn"
                             style="float:right;"
                             disabled="#{empty uploadModel.selectedMediaInput}"
                             styleClass="mobi-button mobi-button-default"
                             actionListener="#{mediaController.cancelUpload}"
                             value="Cancel"/>
-                    <h:commandButton
+                    <h:commandButton id="uploadBtn"
                             style="float:right;"
                             disabled="#{empty uploadModel.selectedMediaInput}"
                             styleClass="mobi-button mobi-button-important"
@@ -169,11 +173,11 @@
             </mobi:fieldsetRow>
         </mobi:fieldsetGroup>
 
-        <h:form>
+        <h:form id="galleryLinkAndARFrm">
             <!-- link to gallery of all uploaded media files. -->
             <mobi:outputList inset="true">
                 <mobi:outputListItem group="false">
-                    <h:commandLink
+                    <h:commandLink id="galleryLink"
                             value="Media Messages Gallery"
                             action="#{navigationController.navigateToPage}">
                         <f:param name="panelId" value="gallery" />
@@ -181,9 +185,9 @@
                 </mobi:outputListItem>
             </mobi:outputList>
 
-            <mobi:outputList inset="true">
-                <mobi:outputListItem group="false">
-                Augmented <mobi:augmentedReality 
+            <mobi:outputList inset="true" id="arList">
+                <mobi:outputListItem group="false" id="arRow">
+                Augmented <mobi:augmentedReality id="ar"
                     styleClass="mobi-button mobi-round-all"
                     value="#{uploadModel.selectedLocation}" >
                     <mobi:augmentedRealityLocations 
