@@ -761,7 +761,8 @@ ice.ace.DataTable.prototype.resizeScrolling = function () {
 
         var realHeadCols = ice.ace.jq(this.jqId + ' .ui-datatable-scrollable-header:first > table > thead > tr > th > .ui-header-column').get().reverse();
         var realFootCols = ice.ace.jq(this.jqId + ' .ui-datatable-scrollable-footer:first > table > tfoot > tr > td > .ui-footer-column').get().reverse();
-        var bodySingleCols = ice.ace.jq(this.jqId + ' .ui-datatable-scrollable-body:first > table > tbody > tr:visible:first > td > div').get().reverse();
+        var bodySingleCols = ice.ace.jq(this.jqId + ' .ui-datatable-scrollable-body:first > table > tbody > tr:visible:not(.dt-cond-row):first > td > div').get().reverse();
+        var bodyFirstConditional = ice.ace.jq(this.jqId + ' .ui-datatable-scrollable-body:first > table > tbody > tr:visible:first').is('.dt-cond-row');
 
         // Reset overflow if it was disabled as a hack from previous sizing
         var bodyTableParent = bodyTable.parent().css('overflow', '');
@@ -946,6 +947,18 @@ ice.ace.DataTable.prototype.resizeScrolling = function () {
             footerTable.parent().css('margin-right', '');
             headerTable.find('tr th:last').css('padding-right', '');
             footerTable.find('tr td:last').css('padding-right', '');
+        }
+
+        // If the body of the table starts with a conditonal row, duplicate the first non
+        // conditional row and insert it before the conditionals with styling to hide it,
+        // while still keeping it in flow to set the table sizing.
+        if (bodyFirstConditional) {
+            var firstNonCond = ice.ace.jq(this.jqId + ' .ui-datatable-scrollable-body:first > table > tbody > tr:not(.dt-cond-row):first');
+
+            firstNonCond.clone().attr('id', this.id + '_condAlgnr_'+Math.floor((Math.random()*100)+1))
+                    .css('visibility', 'hidden').prependTo(bodyTable.find('> tbody'));
+
+            bodyTable.css('margin-top',0 - firstNonCond.height());
         }
 
         // Hide Duplicate Segments

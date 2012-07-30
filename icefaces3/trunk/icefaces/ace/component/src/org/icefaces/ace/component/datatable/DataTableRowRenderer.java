@@ -135,8 +135,15 @@ public class DataTableRowRenderer {
     private static void encodeConditionalRow(FacesContext context, Row r) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         writer.startElement(HTML.TR_ELEM, null);
-        if (r.getStyle() != null) writer.writeAttribute(HTML.STYLE_ATTR, r.getStyle(), null);
-        if (r.getStyleClass() != null) writer.writeAttribute(HTML.CLASS_ATTR, "dt-cond-row " + r.getStyleClass(), null);
+
+        if (r.getStyle() != null)
+            writer.writeAttribute(HTML.STYLE_ATTR, r.getStyle(), null);
+
+        if (r.getStyleClass() != null)
+            writer.writeAttribute(HTML.CLASS_ATTR,
+                DataTableConstants.CONDITIONAL_ROW_CLASS + " " + r.getStyleClass(), null);
+        else
+            writer.writeAttribute(HTML.CLASS_ATTR, DataTableConstants.CONDITIONAL_ROW_CLASS, null);
 
         List<UIComponent> children = r.getChildren();
         List<Column> rowColumns = new ArrayList<Column>(children.size());
