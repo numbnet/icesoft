@@ -108,10 +108,9 @@ public class DataTableDecoder {
     static void decodeSingleSelection(DataTable table, String selection, String deselection) {
         RowStateMap stateMap = table.getStateMap();
 
-        // Set the selection to null handling.
         if (isValueBlank(selection)) {
-            // Deselect all previous
-            if (!deselection.equals("")) stateMap.setAllSelected(false);
+            if (deselection != null && !"".equals(deselection))
+                stateMap.setAllSelected(false);
         }
         else if (table.isCellSelection()) {
             table.clearCellSelection();
