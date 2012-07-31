@@ -683,7 +683,12 @@ if (!window.ice.icefaces) {
             ifViewStateUpdated(updates, function(viewState) {
                 collectUpdatedForms(updates, function(form) {
                     //add hidden input field to the updated forms that don't have it
-                    if (!form['javax.faces.ViewState']) {
+                    try {
+                        var viewStateElement = lookupViewStateElement(form);
+                        if (viewStateElement.value != viewState) {
+                            viewStateElement.value = viewState;
+                        }
+                    } catch (ex) {
                         appendHiddenInputElement(form, 'javax.faces.ViewState', viewState, viewState);
                         debug(logger, 'append missing "javax.faces.ViewState" input element to form["' + form.id + '"]');
                     }
