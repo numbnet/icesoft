@@ -872,7 +872,7 @@ ice.ace.DataTable.prototype.resizeScrolling = function () {
             bodyColumn = ice.ace.jq(bodySingleCols[i]);
 
             // Work around webkit bug described here: https://bugs.webkit.org/show_bug.cgi?id=13339
-            var bodyColumnWidth = (safari)
+            var bodyColumnWidth = (safari && ice.ace.jq.browser.version < 6)
                 ? bodySingleColWidths[i] + parseInt(bodyColumn.parent().css('padding-right')) + parseInt(bodyColumn.parent().css('padding-left')) + 1
                 : bodySingleColWidths[i];
 
@@ -888,7 +888,6 @@ ice.ace.DataTable.prototype.resizeScrolling = function () {
         if (!ie7) for (var i = 0; i < realHeadCols.length; i++) {
             realHeadColumn = ice.ace.jq(realHeadCols[i]);
 
-            // Work around webkit bug described here: https://bugs.webkit.org/show_bug.cgi?id=13339
             var realHeadColumnWidth = dupeHeadColumnWidths[i];
 
             // Set Duplicate Header Sizing to True Header Columns
@@ -903,7 +902,7 @@ ice.ace.DataTable.prototype.resizeScrolling = function () {
             realFootColumn = ice.ace.jq(realFootCols[i]);
 
             // Work around webkit bug described here: https://bugs.webkit.org/show_bug.cgi?id=13339
-            var realFootColumnWidth = (safari)
+            var realFootColumnWidth = (safari && ice.ace.jq.browser.version < 6)
                 ? dupeFootColumnWidths[i] + parseInt(realFootColumn.parent().css('padding-right')) + parseInt(realFootColumn.parent().css('padding-left'))
                 : dupeFootColumnWidths[i];
 
