@@ -18,6 +18,7 @@ package org.icefaces.mobi.component.contentmenuitem;
 
 import org.icefaces.mobi.component.contentpane.ContentPane;
 import org.icefaces.mobi.component.contentstack.ContentStack;
+import org.icefaces.mobi.component.contentnavbar.ContentNavBar;
 import org.icefaces.mobi.component.contentstackmenu.*;
 import org.icefaces.mobi.renderkit.BaseLayoutRenderer;
 import org.icefaces.mobi.utils.HTML;
@@ -56,20 +57,75 @@ public class ContentMenuItemRenderer extends BaseLayoutRenderer {
 
     public void encodeEnd(FacesContext facesContext, UIComponent uiComponent)
              throws IOException {
-         ResponseWriter writer = facesContext.getResponseWriter();
-         ContentMenuItem lmi = (ContentMenuItem)uiComponent;
-         String clientId = uiComponent.getClientId(facesContext);
-         boolean disabled = lmi.isDisabled();
-         boolean singleSubmit = lmi.isSingleSubmit();
-     //    ClientBehaviorHolder cbh = (ClientBehaviorHolder)uiComponent;
-     //    boolean hasBehaviors = !cbh.getClientBehaviors().isEmpty();
-         String parentId = uiComponent.getParent().getClientId();
          UIComponent parent = uiComponent.getParent();
-         if (!(parent instanceof ContentStackMenu)){
-             logger.warning("ContentMenuItem must have parent of ContentStackMenu");
+         if (!(parent instanceof ContentStackMenu) && !(parent instanceof ContentNavBar)){
+             logger.warning("ContentMenuItem must have parent of ContentStackMenu or ContentNavBa");
              return;
          }
+         if (parent instanceof ContentStackMenu){
+             renderItemAsList(parent, facesContext, uiComponent);
+         }
+         if (parent instanceof ContentNavBar){
+             renderItemAsButton(parent, facesContext, uiComponent);
+         }
+    }
+
+    private void renderItemAsButton(UIComponent parent, FacesContext facesContext, UIComponent uiComponent)
+        throws IOException {
+        ContentNavBar parentMenu = (ContentNavBar)parent;
+        ContentMenuItem item = (ContentMenuItem)uiComponent;
+        ResponseWriter writer = facesContext.getResponseWriter();
+        String clientId = item.getClientId(facesContext);
+        String stackClientId = null;
+        StringBuilder menubuttonClass = new StringBuilder(ContentNavBar.CONTENTNAVBAR_BUTTON_MENU_CLASS);
+        StringBuilder buttonClass = new StringBuilder (ContentNavBar.CONTENTNAVBAR_BUTTON_CLASS);
+        UIComponent stack = findParentStack(uiComponent);
+        // user specified style class
+        String userDefinedClass = item.getStyleClass();
+        if (userDefinedClass != null && userDefinedClass.length() > 0){
+            buttonClass.append(" ").append(userDefinedClass);
+            menubuttonClass.append(" ").append(userDefinedClass);
+        }
+        if (item.isDisabled()){
+            writer.writeAttribute("disabled", "disabled", null);
+        }
+        if (item.getUrl() != null){
+            writer.writeAttribute("href", getResourceURL(facesContext,item.getUrl()), null);
+        } else {
+            if (stack!=null){
+                if (item.getValue() !=null){
+                    stackClientId = stack.getClientId(facesContext);
+                    String valId = String.valueOf(item.getValue());
+                    UIComponent pane = stack.findComponent(valId);
+                    writer.startElement(HTML.ANCHOR_ELEM, uiComponent);
+                    writer.writeAttribute("class",menubuttonClass , "class");
+                    StringBuilder sb = new StringBuilder("mobi.layoutMenu.showContent('").append(stackClientId);
+                    sb.append("', this");
+                    sb.append(",{ selectedId: '").append(item.getValue()).append("'");
+                    sb.append(",singleSubmit: ").append(item.isSingleSubmit());
+                    if (pane!=null){
+                        String paneId = pane.getClientId(facesContext);
+                        sb.append(",selClientId: '").append(paneId).append("'");
+                        ContentPane cp = (ContentPane)pane;
+                        sb.append(",client: ").append(cp.isClient());
+                    }
+                    sb.append("});");
+                    if ( !item.isDisabled()){
+                          writer.writeAttribute("onclick", sb.toString(), null);
+                    }
+                    writer.write(item.getLabel());
+                writer.endElement(HTML.ANCHOR_ELEM);
+                }
+            }
+        }
+    }
+
+    private void renderItemAsList(UIComponent parent, FacesContext facesContext, UIComponent uiComponent)
+                    throws IOException{
          ContentStackMenu parentMenu = (ContentStackMenu)parent;
+         ContentMenuItem lmi = (ContentMenuItem)uiComponent;
+         ResponseWriter writer = facesContext.getResponseWriter();
+         String clientId = lmi.getClientId(facesContext);
          String contentStackId = parentMenu.getContentStackId();
          String stackClientId = null;
          boolean client = false;
@@ -146,5 +202,18 @@ public class ContentMenuItemRenderer extends BaseLayoutRenderer {
          }
          writer.endElement(HTML.LI_ELEM);
     }
+    /**
+      *   find the parent contentStack of the contentNavBar component
+      * @param component
+      * @return
+      */
+     public static UIComponent findParentStack(UIComponent component) {
+         UIComponent parent = component;
+         while (parent != null)
+             if (parent instanceof ContentStack) break;
+             else parent = parent.getParent();
+
+         return parent;
+     }
 
 }

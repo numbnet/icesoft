@@ -25,9 +25,13 @@
           </h:form>
       </mobi:contentPane>
       <mobi:contentPane id="panel1" client="true">
-         <mobi:contentNavBar menuButtonLabel="Menu" menuButtonTargetId="mnuPanel">
+         <h:form id="nav1">
+             <mobi:contentNavBar menuButtonLabel="Menu" menuButtonTargetId="mnuPanel">
+                 <mobi:contentMenuItem label="panel3" value="panel3"/>
+                 <mobi:contentMenuItem label="panel4" value="panel4"/>
              <h3>Content Pane 1</h3>
-         </mobi:contentNavBar>
+            </mobi:contentNavBar>
+          </h:form>
               <h:panelGroup>
                   panel 1 client
               </h:panelGroup>
@@ -35,6 +39,7 @@
       <mobi:contentPane id="panel2" >
         <div id="innerpane2">
           <mobi:contentNavBar menuButtonLabel="Menu" menuButtonTargetId="mnuPanel">
+
              <h3>Content Pane 2</h3>
            </mobi:contentNavBar>
              <h:panelGroup>
@@ -48,6 +53,14 @@
          </mobi:contentNavBar>
              <h:panelGroup>
                  panel 3
+             </h:panelGroup>
+         </mobi:contentPane>
+        <mobi:contentPane id="panel4"  >
+         <mobi:contentNavBar menuButtonLabel="Menu" menuButtonTargetId="mnuPanel">
+             <h3>Content Pane 4</h3>
+         </mobi:contentNavBar>
+             <h:panelGroup>
+                 panel 4
              </h:panelGroup>
          </mobi:contentPane>
      </mobi:contentStack>

@@ -14,7 +14,7 @@ import org.icefaces.ace.meta.annotation.Property;
         extendsClass = "javax.faces.component.UIPanel",
         componentFamily = "org.icefaces.ContentNavBar",
         tlddoc = "This mobility component renders a navigation tool bar for the contentPane" +
-                " component that will allow a Back button, and title.  A facet may be provided" +
+                " component that will allow children of contentMenuItem, and title.  A facet may be provided" +
                 " in future if required.  Must be a child of the contentPane. "
 )
 

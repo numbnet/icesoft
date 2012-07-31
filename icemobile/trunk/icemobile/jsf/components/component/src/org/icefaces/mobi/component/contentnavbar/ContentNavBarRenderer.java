@@ -26,38 +26,41 @@ public class ContentNavBarRenderer extends BaseLayoutRenderer {
                  logger.finer("all children must be of type ContentPane");
                  return;
         }
-        ContentPane cp = (ContentPane)parent;
-        boolean client = cp.isClient();
-        writer.startElement(HTML.DIV_ELEM, uiComponent);
-        writer.writeAttribute(HTML.ID_ATTR, clientId, HTML.ID_ATTR);
-        StringBuilder styleClass = new StringBuilder(ContentNavBar.CONTENTNAVBAR_BASE_CLASS);
-        StringBuilder menubuttonClass = new StringBuilder(ContentNavBar.CONTENTNAVBAR_BUTTON_MENU_CLASS);
-        StringBuilder buttonClass = new StringBuilder (ContentNavBar.CONTENTNAVBAR_BUTTON_CLASS);
-        // user specified style class
-        String userDefinedClass = navbar.getStyleClass();
-        if (userDefinedClass != null && userDefinedClass.length() > 0){
-            styleClass.append(" ").append(userDefinedClass);
-            buttonClass.append(" ").append(userDefinedClass);
-            menubuttonClass.append(" ").append(userDefinedClass);
-        }
-        writer.writeAttribute("class", styleClass.toString(), "styleClass");
-        // write out any users specified style attributes.
-        if (navbar.getStyle() != null) {
-            writer.writeAttribute(HTML.STYLE_ATTR, navbar.getStyle(), "style");
-        }
-        if (navbar.getMenuButtonLabel() !=null){
-            //need to get info for onclick ..returns null if no layoutMenu though
-            //also need to get menuTargetId
-            if (navbar.getMenuButtonTargetId() !=null){
-                String targetId = navbar.getMenuButtonTargetId();
-                StringBuilder sb = getOnClickString(parent, facesContext, targetId, client);
-                writer.startElement(HTML.ANCHOR_ELEM, uiComponent);
-                writer.writeAttribute("class",menubuttonClass , "class");
-                if (sb !=null){
-                   writer.writeAttribute("onclick", sb.toString(), null);
+        UIComponent parentCP = findParentContentPane(uiComponent);
+        if (parentCP !=null){
+            ContentPane cp = (ContentPane)parentCP;
+            boolean client = cp.isClient();
+            writer.startElement(HTML.DIV_ELEM, uiComponent);
+            writer.writeAttribute(HTML.ID_ATTR, clientId, HTML.ID_ATTR);
+            StringBuilder styleClass = new StringBuilder(ContentNavBar.CONTENTNAVBAR_BASE_CLASS);
+            StringBuilder menubuttonClass = new StringBuilder(ContentNavBar.CONTENTNAVBAR_BUTTON_MENU_CLASS);
+            StringBuilder buttonClass = new StringBuilder (ContentNavBar.CONTENTNAVBAR_BUTTON_CLASS);
+            // user specified style class
+            String userDefinedClass = navbar.getStyleClass();
+            if (userDefinedClass != null && userDefinedClass.length() > 0){
+                styleClass.append(" ").append(userDefinedClass);
+                buttonClass.append(" ").append(userDefinedClass);
+                menubuttonClass.append(" ").append(userDefinedClass);
+            }
+            writer.writeAttribute("class", styleClass.toString(), "styleClass");
+            // write out any users specified style attributes.
+            if (navbar.getStyle() != null) {
+                writer.writeAttribute(HTML.STYLE_ATTR, navbar.getStyle(), "style");
+            }
+            if (navbar.getMenuButtonLabel() !=null){
+                //need to get info for onclick ..returns null if no layoutMenu though
+                //also need to get menuTargetId
+                if (navbar.getMenuButtonTargetId() !=null){
+                    String targetId = navbar.getMenuButtonTargetId();
+                    StringBuilder sb = getOnClickString(parent, facesContext, targetId, client);
+                    writer.startElement(HTML.ANCHOR_ELEM, uiComponent);
+                    writer.writeAttribute("class",menubuttonClass , "class");
+                    if (sb !=null){
+                       writer.writeAttribute("onclick", sb.toString(), null);
+                    }
+                    writer.write(navbar.getMenuButtonLabel());
+                    writer.endElement(HTML.ANCHOR_ELEM);
                 }
-                writer.write(navbar.getMenuButtonLabel());
-                writer.endElement(HTML.ANCHOR_ELEM);
             }
         }
     }
@@ -95,5 +98,13 @@ public class ContentNavBarRenderer extends BaseLayoutRenderer {
         sb.append("});") ;
         return sb;
     }
+    public static UIComponent findParentContentPane(UIComponent component) {
+         UIComponent parent = component;
+         while (parent != null)
+             if (parent instanceof ContentPane) break;
+             else parent = parent.getParent();
+
+         return parent;
+     }
 
 }
