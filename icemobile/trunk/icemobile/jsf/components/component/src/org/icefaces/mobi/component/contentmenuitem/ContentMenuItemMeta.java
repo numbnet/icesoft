@@ -29,8 +29,13 @@ import org.icefaces.ace.meta.baseMeta.UICommandMeta;
         rendererType = "org.icefaces.ContentMenuItemRenderer",
         componentFamily = "org.icefaces.ContentMenuItem",
         tlddoc = "This component fires an actionListener from a menu item.  the value can be a url, " +
-                " an id to a panel in the contentStack that is an attribute in the ContentStackMenu or contentNavBar tag, or can " +
-                " be a heading in a group of menu items. "
+                " or, more typically, an id to a panel in the contentStack that is controlled by it's , " +
+                " parent which must be either a ContentStackMenu or avContentNavBar. If a child of" +
+                " the ContentStackMenu, then it's rendered as a list item.  If a child of the  " +
+                " ContentNavBar, it is rendered as a button on a tool bar.  If the menuHeader attribute "+
+                " is true, then it becomes a menu heading and no selection of the contentStack is done. " +
+                " a contentNavBar does not have menu headings, so the menuHeading attribute is only "+
+                " applicable for a ContentStackMenu."
 )
 
 public class ContentMenuItemMeta extends UICommandMeta {

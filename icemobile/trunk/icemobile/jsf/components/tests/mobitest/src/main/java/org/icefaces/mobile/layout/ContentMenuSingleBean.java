@@ -18,6 +18,7 @@ package org.icefaces.mobile.layout;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
 import javax.faces.event.ValueChangeEvent;
 import java.awt.event.ActionEvent;
 import java.io.Serializable;
@@ -26,6 +27,7 @@ import java.lang.System;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
+import java.util.Map;
 
 @ManagedBean(name="contentMenuBean")
 @SessionScoped
@@ -47,6 +49,7 @@ public class ContentMenuSingleBean extends LayoutBean {
     private String selectedPane2 = FIRSTPANE;
     private String selectedTabPane = FIRSTTABPANE;
     private String twoColSelectedPane=FIRSTPANE;
+    private String thirdPane = THIRDPANE;
 
     public ContentMenuSingleBean(){
        this.menuCList.add(new MenuValue("Menu Example", null, true));
@@ -106,6 +109,15 @@ public class ContentMenuSingleBean extends LayoutBean {
         return "";
     }
 
+    public void actionParamTest(){
+        FacesContext fc = FacesContext.getCurrentInstance();
+        this.twoColSelectedPane = setPaneFromParams(fc);
+        logger.info("set twoColSelPane="+twoColSelectedPane);
+    }
+    private String setPaneFromParams(FacesContext fc){
+        Map<String, String> params = fc.getExternalContext().getRequestParameterMap();
+        return params.get("paneSel");
+    }
     public void setTwoColSelectedPane(String twoColSelectedPane) {
         this.twoColSelectedPane = twoColSelectedPane;
     }
@@ -121,5 +133,19 @@ public class ContentMenuSingleBean extends LayoutBean {
     }
     public void goToPane4(){
         this.twoColSelectedPane= "panel4";
+    }
+
+    public String getThirdPane() {
+        return thirdPane;
+    }
+
+    public void setThirdPane(String thirdPane) {
+        this.thirdPane = thirdPane;
+    }
+    public void testP(Long test){
+        logger.info("test int = "+test.intValue());
+    }
+    public void testString(String abc){
+        logger.info("test abc = "+abc);
     }
 }
