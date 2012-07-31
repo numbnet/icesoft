@@ -13,28 +13,24 @@
  * express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.icefaces.mobi.component.contentstackmenu;
+package org.icefaces.mobi.component.contentmenuitem;
 
 import org.icefaces.ace.meta.annotation.*;
 import org.icefaces.ace.meta.baseMeta.UICommandMeta;
 
-import javax.faces.application.ResourceDependencies;
-import javax.faces.application.ResourceDependency;
-
 
 @Component(
         tagName = "contentMenuItem",
-        componentClass = "org.icefaces.mobi.component.contentstackmenu.ContentMenuItem",
-        rendererClass = "org.icefaces.mobi.component.contentstackmenu.ContentMenuItemRenderer",
-        generatedClass = "org.icefaces.mobi.component.contentstackmenu.ContentMenuItemBase",
+        componentClass = "org.icefaces.mobi.component.contentmenuitem.ContentMenuItem",
+        rendererClass = "org.icefaces.mobi.component.contentmenuitem.ContentMenuItemRenderer",
+        generatedClass = "org.icefaces.mobi.component.contentmenuitem.ContentMenuItemBase",
         extendsClass = "javax.faces.component.UICommand",
         componentType = "org.icefaces.ContentMenuItem",
         rendererType = "org.icefaces.ContentMenuItemRenderer",
         componentFamily = "org.icefaces.ContentMenuItem",
         tlddoc = "This component fires an actionListener from a menu item.  the value can be a url, " +
-                " an id to a panel in the contentStack that is an attribute in the ContentStackMenu tag, or can " +
-                " be a heading in a group of menu items. " +
-                "It has the same functionality of a regular jsf command  "
+                " an id to a panel in the contentStack that is an attribute in the ContentStackMenu or contentNavBar tag, or can " +
+                " be a heading in a group of menu items. "
 )
 
 public class ContentMenuItemMeta extends UICommandMeta {
