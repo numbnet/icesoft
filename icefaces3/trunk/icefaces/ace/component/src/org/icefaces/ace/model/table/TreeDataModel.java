@@ -73,8 +73,8 @@ public class TreeDataModel extends DataModel implements Serializable  {
     }
     @Override
     public boolean isRowAvailable() {
-        return (rowIndex >= 0 && rowIndex.compareTo(currentMap.size()) < 0);
-    }
+            return (rowIndex >= 0 && rowIndex.compareTo(currentMap.size()) < 0);
+        }
     @Override
     public void setWrappedData(Object wrappedData) {
         if (wrappedData instanceof List) {
@@ -121,6 +121,11 @@ public class TreeDataModel extends DataModel implements Serializable  {
             target = indexIterator.next();
             mapStack.push(currentMap);
             currentMap = currentMap.get(target).getValue();
+        }
+
+        // If a null subtree has been navigated to put an empty map in as a place holder.
+        if (currentMap == null) {
+            currentMap = new ArrayList<Map.Entry<Object, List>>();
         }
     }
     
