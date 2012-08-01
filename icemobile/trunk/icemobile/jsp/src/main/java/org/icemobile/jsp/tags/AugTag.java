@@ -20,6 +20,7 @@ package org.icemobile.jsp.tags;
 import javax.servlet.jsp.PageContext;
 
 public class AugTag extends DeviceTag {
+    static final String PARAMS = "org.icemobile.jsp.tags.AugTag.params";
 
     public AugTag()  {
         this.command = "aug";
@@ -27,8 +28,19 @@ public class AugTag extends DeviceTag {
         this.fallbackType = "text";
     }
 
+    public void doInitBody()  {
+        pageContext.setAttribute(PARAMS, "");
+    }
+
+    public int doAfterBody()  {
+        String innerParams = (String) pageContext.getAttribute(PARAMS);
+        String baseURL = TagUtil.getBaseURL(pageContext.getRequest());
+        this.params = "ub=" + baseURL + "&" + innerParams;
+        pageContext.setAttribute(PARAMS, null);
+        return SKIP_BODY;
+    }
+
     public void setParams(String params) {
-        PageContext pageContext = (PageContext) getJspContext();
         String baseURL = TagUtil.getBaseURL(pageContext.getRequest());
         this.params = "ub=" + baseURL + "&" + params;
     }
