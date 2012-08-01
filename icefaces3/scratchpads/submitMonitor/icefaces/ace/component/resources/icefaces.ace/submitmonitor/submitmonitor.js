@@ -36,25 +36,27 @@
         var overlay = document.createElement('iframe');
         overlay.setAttribute('src', 'about:blank');
         overlay.setAttribute('frameborder', '0');
-        overlay.setAttribute('style', 'background-color: white; position: absolute; z-index: 28000; opacity: 0.22; filter: alpha(opacity = 22);');
+        overlay.setAttribute('style', 'background-color: black; position: absolute; z-index: 28000; opacity: 0.3; filter: alpha(opacity = 30);');
         var overlayStyle = overlay.style;
         overlayStyle.top = '0';
         overlayStyle.left = '0';
 
-        if (container.tagName.toLowerCase() == 'body') {
-            overlayStyle.width = Math.max(document.documentElement.scrollWidth, document.body.scrollWidth) + 'px';
-            overlayStyle.height = Math.max(document.documentElement.scrollHeight, document.body.scrollHeight) + 'px';
+        if (container == document.body) {
+            overlayStyle.width = Math.max(document.documentElement.scrollWidth,
+                    Math.max(document.body.scrollWidth, document.body.parentNode.offsetWidth)) + 'px';
+            overlayStyle.height = Math.max(document.documentElement.scrollHeight,
+                    Math.max(document.body.scrollHeight, document.body.parentNode.offsetHeight)) + 'px';
+            container.appendChild(overlay);
         } else {
             overlayStyle.width = container.offsetWidth + 'px';
             overlayStyle.height = container.offsetHeight + 'px';
+            container.parentNode.appendChild(overlay);
+            ice.ace.jq(overlay).position({
+                my: 'left top',
+                at: 'left top',
+                of: container,
+                collision: 'none'});
         }
-
-        container.appendChild(overlay);
-        ice.ace.jq(overlay).position({
-            my: 'left top',
-            at: 'left top',
-            of: container,
-            collision: 'fit'});
 
         var cloneToRemove;
         var revertElem;
@@ -65,8 +67,8 @@
             cloneToRemove.addClass('clone');
             cloneToRemove.css('z-index', '28001');
             cloneToRemove.css('display', '');
-            cloneToRemove.appendTo(container);
             if (container == document.body) {
+                cloneToRemove.appendTo(container);
                 cloneToRemove.css('position', 'fixed');
                 cloneToRemove.position({
                     my: 'center center',
@@ -74,6 +76,7 @@
                     of: window,
                     collision: 'fit'});
             } else {
+                cloneToRemove.appendTo(container.parentNode);
                 cloneToRemove.css('position', 'absolute');
                 cloneToRemove.position({
                     my: 'center center',
@@ -92,12 +95,12 @@
 
         return function() {
             if (overlay) {
-                try { container.removeChild(overlay); }
+                try { overlay.parentNode.removeChild(overlay); }
                 catch (e) { //ignore, the overlay does not match the document after a html/body level update
                 }
             }
             if (cloneToRemove) {
-                try { cloneToRemove.remove(); /*container.removeChild(cloneToRemove[0]);*/ }
+                try { cloneToRemove.remove(); }
                 catch (e) { //ignore, the cloneToRemove does not match the document after a html/body level update
                 }
             }
@@ -118,8 +121,8 @@
             var triggeringElement = e.srcElement ? e.srcElement : e.target;
             var capturingElement = element;
             console.log('event [type: ' + evenType +
-                    ', triggered by: ' + triggeringElement.id || triggeringElement +
-                    ', captured in: ' + capturingElement.id || capturingElement + '] was discarded.');
+                    ', triggered by: ' + (triggeringElement.id || triggeringElement) +
+                    ', captured in: ' + (capturingElement.id || capturingElement) + '] was discarded.');
             return false;
         }
     }
@@ -132,7 +135,7 @@
         var jqId = ice.ace.escapeClientId(cfg.id);
 
         function isBlockUIEnabled() {
-            return (cfg.blockUI == undefined || cfg.blockUI != '@none');
+            return ((cfg.blockUI == undefined) || (cfg.blockUI != '@none'));
         }
 
         function resolveBlockUIElement(source) {
