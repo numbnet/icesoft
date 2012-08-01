@@ -139,11 +139,16 @@ if (!window.ice.icefaces) {
 
         //function used to safely retrieve ViewState key -- form['javax.faces.ViewState'] sometimes fails in IE
         function lookupViewStateElement(element) {
-            var viewStateElement = detect(element.getElementsByTagName('input'), function(input) {
-                return input.name && input.name == 'javax.faces.ViewState';
-            }, function() {
-                throw 'cannot find javax.faces.ViewState element';
-            });
+            var viewStateElement = element['javax.faces.ViewState'];
+
+            if (!viewStateElement) {
+                viewStateElement = detect(element.getElementsByTagName('input'), function(input) {
+                    return input.name && input.name == 'javax.faces.ViewState';
+                }, function() {
+                    throw 'cannot find javax.faces.ViewState element';
+                });
+            }
+
             return viewStateElement;
         }
 
