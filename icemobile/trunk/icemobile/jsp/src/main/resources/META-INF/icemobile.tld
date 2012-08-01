@@ -58,6 +58,7 @@
             <name>disabled</name>
             <required>false</required>
             <rtexprvalue>false</rtexprvalue>
+            <description>Determines if control is disabled</description>
         </attribute>
     </tag>
     <tag>
@@ -88,6 +89,7 @@
             <name>disabled</name>
             <required>false</required>
             <rtexprvalue>false</rtexprvalue>
+            <description>Determines if control is disabled</description>
         </attribute>
     </tag>
 
@@ -187,8 +189,7 @@
             <name>for</name>
             <required>true</required>
             <rtexprvalue>true</rtexprvalue>
-            <description>Id of the camera tag which is the source for the
-                camera image
+            <description>Id of the camera or camcorder tag which is the source for the camera image.
             </description>
         </attribute>
     </tag>
@@ -298,11 +299,13 @@
             <name>name</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
+            <description>Name of submitted value</description>
         </attribute>
         <attribute>
             <name>disabled</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
+            <description>Determines if control is disabled</description>
         </attribute>
         <attribute>
             <name>value</name>
@@ -327,6 +330,7 @@
             <name>name</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
+            <description>Name of submitted value</description>
         </attribute>
         <attribute>
             <name>type</name>
@@ -388,6 +392,7 @@
             <name>name</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
+            <description>Name of submitted value</description>
         </attribute>
         <attribute>
             <name>styleClass</name>
@@ -419,6 +424,7 @@
             <name>name</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
+            <description>Name of submitted value</description>
         </attribute>
         <attribute>
             <name>style</name>
@@ -436,26 +442,31 @@
             <name>disabled</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
+            <description>Determines if control is disabled</description>
         </attribute>
         <attribute>
             <name>value</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
+            <description>The value displayed in the button</description>
         </attribute>
         <attribute>
             <name>readOnly</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
+            <description>Determines if control is read only</description>
         </attribute>
         <attribute>
             <name>labelOn</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
+            <description>Value of label when flipswitch is in the ON state</description>
         </attribute>
         <attribute>
             <name>labelOff</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
+            <description>Value of label when flipswitch is in the OFF state</description>
         </attribute>
     </tag>
 
@@ -475,6 +486,7 @@
             <name>name</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
+            <description>Name of submitted value</description>
         </attribute>
         <attribute>
             <name>style</name>
@@ -492,26 +504,31 @@
             <name>buttonType</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
+            <description>Determines style of button.  Valid values include default, back, important and attention</description>
         </attribute>
         <attribute>
             <name>disabled</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
+            <description>Determines if control is disabled</description>
         </attribute>
         <attribute>
             <name>value</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
+            <description>Value displayed in button</description>
         </attribute>
         <attribute>
             <name>type</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
+            <description>Standard button type - button, submit, img, etc </description>
         </attribute>
         <attribute>
             <name>selected</name>
             <required>false</required>
             <rtexprvalue>false</rtexprvalue>
+            <description>Sets the button style to selected</description>
         </attribute>
     </tag>
 
@@ -827,6 +844,7 @@
             <required>no</required>
             <rtexprvalue>true</rtexprvalue>
             <type>boolean</type>
+            <description>Determines if control is disabled</description>
         </attribute>
         <attribute>
             <name>id</name>
@@ -847,6 +865,7 @@
             <required>no</required>
             <rtexprvalue>true</rtexprvalue>
             <type>java.lang.String</type>
+            <description>Date format pattern for localization.  Default is "yyyy-MM-dd'</description>
         </attribute>
         <attribute>
             <name>readonly</name>
@@ -882,18 +901,21 @@
             <required>no</required>
             <rtexprvalue>true</rtexprvalue>
             <type>java.lang.Object</type>
+            <description>Initial date value</description>
         </attribute>
         <attribute>
             <name>yearEnd</name>
             <required>no</required>
             <rtexprvalue>true</rtexprvalue>
             <type>int</type>
+            <description>The end year provided in the year spinner</description>
         </attribute>
         <attribute>
             <name>yearStart</name>
             <required>no</required>
             <rtexprvalue>true</rtexprvalue>
             <type>int</type>
+            <description>The starting year provided in the year spinner</description>
         </attribute>
     </tag>
 
@@ -908,6 +930,7 @@
             <required>no</required>
             <rtexprvalue>true</rtexprvalue>
             <type>boolean</type>
+            <description>Determines if control is disabled</description>
         </attribute>
         <attribute>
             <name>id</name>
@@ -921,24 +944,29 @@
             <required>no</required>
             <rtexprvalue>true</rtexprvalue>
             <type>java.lang.String</type>
+            <description>Name of submitted value</description>
         </attribute>
         <attribute>
             <name>pattern</name>
             <required>no</required>
             <rtexprvalue>true</rtexprvalue>
             <type>java.lang.String</type>
+            <description>Time format pattern for localization. Default is "hh:mm a"</description>
         </attribute>
         <attribute>
             <name>readonly</name>
             <required>no</required>
             <rtexprvalue>true</rtexprvalue>
             <type>boolean</type>
+            <description>if true, Time Spinner is used for output only
+            </description>
         </attribute>
         <attribute>
             <name>style</name>
             <required>no</required>
             <rtexprvalue>true</rtexprvalue>
             <type>java.lang.String</type>
+            <description>Inline style definition</description>
         </attribute>
         <attribute>
             <name>styleClass</name>
@@ -959,6 +987,7 @@
             <required>no</required>
             <rtexprvalue>true</rtexprvalue>
             <type>java.lang.Object</type>
+            <description>Initial time value</description>
         </attribute>
     </tag>
 
