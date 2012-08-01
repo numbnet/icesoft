@@ -40,11 +40,17 @@
                 /* Important required because row */
                 .ui-datatable-odd {background-color:lightgray !important;}
             </style>
-            <ace:submitMonitor idleLabel="Now idle" activeLabel="Now active" blockUI="@none">
+            <ace:submitMonitor idleLabel="Now idle" activeLabel="Now active" blockUI="@all">
                 <f:facet name="sessionExpired">
                     <h:outputText value="Now session expired"/>
                 </f:facet>
             </ace:submitMonitor>
+            <h:commandButton value="Test f:ajax">
+                <f:ajax listener="#{dataTableBean.longRunningListener}" />
+            </h:commandButton>
+            <h:commandLink value="Test f:ajax">
+                <f:ajax listener="#{dataTableBean.longRunningListener}" />
+            </h:commandLink>
            <ace:dataTable id="carTable"
                           value="#{dataTableBean.carsData}"
                           var="car"
