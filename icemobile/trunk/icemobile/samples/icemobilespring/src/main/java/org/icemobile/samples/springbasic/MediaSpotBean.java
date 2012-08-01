@@ -8,6 +8,11 @@ public class MediaSpotBean {
     private String location;
     private String selection;
     private String fileName;
+    private String latitude;
+    private String longitude;
+    private String altitude;
+    private String direction;
+    
 
     public String getTitle() {
         return title;
@@ -28,9 +33,31 @@ public class MediaSpotBean {
     public String getLocation() {
         return location;
     }
+    
+    public String getLatitude() {
+        return latitude;
+    }
+    
+    public String getLongitude() {
+        return longitude;
+    }
+    
+    public String getAltitude() {
+        return altitude;
+    }
+    
+    public String getDirection() {
+        return direction;
+    }
 
     public void setLocation(String location) {
         this.location = location;
+        String[] locationParts = location.split(",");
+        latitude = locationParts[0];
+        longitude = locationParts[1];
+        altitude = locationParts[2];
+        direction = locationParts[3];
+        
     }
 
     public String getFileName() {

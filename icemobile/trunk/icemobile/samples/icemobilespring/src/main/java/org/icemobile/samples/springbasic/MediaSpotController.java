@@ -70,6 +70,7 @@ public class MediaSpotController {
             scaleImage( new File(request.getRealPath("/" + newFileName)) );
         }
 		model.addAttribute("reality", getRealityParams());
+		model.addAttribute("locations", messages.values());
 		model.addAttribute("message", "Hello your file '" + fileName + "' was uploaded successfully.");
         String selection = spotBean.getSelection();
         MediaSpotBean mySelectedMessage = messages.get(selection);

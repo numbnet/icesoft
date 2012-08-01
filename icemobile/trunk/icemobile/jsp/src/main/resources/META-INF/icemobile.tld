@@ -30,7 +30,7 @@
         <display-name>ICEmobile Augmented Reality</display-name>
         <name>augmentedReality</name>
         <tag-class>org.icemobile.jsp.tags.AugTag</tag-class>
-        <body-content>empty</body-content>
+        <body-content>JSP</body-content>
         <attribute>
             <name>id</name>
             <required>true</required>
@@ -59,6 +59,49 @@
             <required>false</required>
             <rtexprvalue>false</rtexprvalue>
             <description>Determines if control is disabled</description>
+        </attribute>
+    </tag>
+    <tag>
+        <description>Declare an augmented reality location.</description>
+        <display-name>ICEmobile Augmented Reality Location</display-name>
+        <name>augmentedRealityLocation</name>
+        <tag-class>org.icemobile.jsp.tags.AugmentedRealityLocationTag</tag-class>
+        <body-content>empty</body-content>
+        <attribute>
+            <name>locationLabel</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+            <description>location text label</description>
+        </attribute>
+        <attribute>
+            <name>locationLat</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+            <description>location latitude</description>
+        </attribute>
+        <attribute>
+            <name>locationLon</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+            <description>location longitude</description>
+        </attribute>
+        <attribute>
+            <name>locationAlt</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+            <description>location altitude</description>
+        </attribute>
+        <attribute>
+            <name>locationDir</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+            <description>location compass direction 0-359</description>
+        </attribute>
+        <attribute>
+            <name>locationIcon</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+            <description>location icon URL</description>
         </attribute>
     </tag>
     <tag>

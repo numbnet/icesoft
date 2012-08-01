@@ -17,15 +17,17 @@
  
 package org.icemobile.jsp.tags;
 
-import javax.servlet.jsp.tagext.SimpleTagSupport;
+import javax.servlet.jsp.tagext.BodyTagSupport;
+import javax.servlet.jsp.tagext.BodyContent;
 import javax.servlet.jsp.PageContext;
+import javax.servlet.jsp.JspException;
 import javax.servlet.http.HttpSession;
 
 import java.io.Writer;
 import java.io.IOException;
 import java.net.URLEncoder;
 
-public class DeviceTag extends SimpleTagSupport {
+public class DeviceTag extends BodyTagSupport {
     String command = "undefined";
     String label = "unlabeled";
     String params = null;
@@ -35,44 +37,50 @@ public class DeviceTag extends SimpleTagSupport {
     boolean disabled;
     String fallbackType = "file";
 
-    public void doTag() throws IOException {
-        PageContext pageContext = (PageContext) getJspContext();
+    public int doEndTag() throws JspException {
         boolean isEnhanced = TagUtil.isEnhancedBrowser(pageContext);
-        Writer out = pageContext.getOut();
-        if (isEnhanced)  {
-            out.write("<input type='button' id='" + id + "'"); 
-            writeStandardAttributes(out);
-            String paramClause = "";
-            if (null != params)  {
-                paramClause = ", \"" + params + "\"";
-            } 
-            out.write(" onclick='ice." + command + "(\"" + id + "\"" +
-                    paramClause + ");'");
-
-            out.write(" value='" + label + "'>");
-        } else {
-            if (!TagUtil.isIOS(pageContext))  {
-                out.write("<input id='" + id + "' type='" +
-                        fallbackType + "'" + " name='" + id + "' />");
-            } else {
-               //or for iOS until we can store the ICEmobile-SX registration
-                //without a session (likely a cookie)
-                out.write("<input type='button' data-id='" + id + "' ");
-                if (null != params)  {
-                    out.write("data-params='" + params + "' ");
-                }
-
-                HttpSession session = pageContext.getSession();
-                if (null != session)  {
-                    String sessionID = session.getId();
-                    out.write("data-jsessionid='" + sessionID + "' ");
-                }
-
+        try {
+            Writer out = pageContext.getOut();
+            if (isEnhanced)  {
+                out.write("<input type='button' id='" + id + "'"); 
                 writeStandardAttributes(out);
-                out.write(" data-command='" + command + "' onclick='ice.mobilesx(this)' ");
-                out.write(" value='" + label + " ...'>");
+                String paramClause = "";
+                if (null != params)  {
+                    paramClause = ", \"" + params + "\"";
+                } 
+                out.write(" onclick='ice." + command + "(\"" + id + "\"" +
+                        paramClause + ");'");
+
+                out.write(" value='" + label + "'>");
+            } else {
+                if (!TagUtil.isIOS(pageContext))  {
+                    out.write("<input id='" + id + "' type='" +
+                            fallbackType + "'" + " name='" + id + "' />");
+                } else {
+                   //or for iOS until we can store the ICEmobile-SX registration
+                    //without a session (likely a cookie)
+                    out.write("<input type='button' data-id='" + id + "' ");
+                    if (null != params)  {
+                        out.write("data-params='" + params + "' ");
+                    }
+
+                    HttpSession session = pageContext.getSession();
+                    if (null != session)  {
+                        String sessionID = session.getId();
+                        out.write("data-jsessionid='" + sessionID + "' ");
+                    }
+
+                    writeStandardAttributes(out);
+                    out.write(" data-command='" + command + 
+                            "' onclick='ice.mobilesx(this)' ");
+                    out.write(" value='" + label + " ...'>");
+                }
             }
+        } catch (IOException e) {
+            throw new JspException(e);
         }
+        
+        return EVAL_PAGE;
     }
 
     public void writeStandardAttributes(Writer out) throws IOException  {
