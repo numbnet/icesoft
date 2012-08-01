@@ -117,10 +117,24 @@ ice.ace.List.prototype.sendMigrateRequest = function() {
     if (this.behaviors)
         if (this.behaviors.migrate) {
             ice.ace.ab(ice.ace.extendAjaxArguments(this.behaviors.migrate, options));
+
+            // Clear submitted states
+            this.clearState();
+            sourceList.clearState();
+            // Remove items undergoing migration from DOM to prevent rapid clicks from
+            // causing premature subsequent migrations to this selection
+            sourceList.element.find('> ul > li.ui-state-active').remove();
             return;
         }
 
     ice.ace.AjaxRequest(options);
+
+    // Clear submitted states
+    this.clearState();
+    sourceList.clearState();
+    // Remove items undergoing migration from DOM to prevent rapid clicks from
+    // causing premature subsequent migrations to this selection
+    sourceList.element.find('> ul > li.ui-state-active').remove();
 };
 
 ice.ace.List.prototype.dragFromHandler = function(event, ui) {
