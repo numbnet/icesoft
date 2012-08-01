@@ -241,7 +241,6 @@
                 <file name="icefaces.ace/animation/animation.js"/>
                 <file name="icefaces.ace/accordion/accordion.js"/>
 				<file name="icefaces.ace/gmap/gmap.js"/>
-				<file name="icefaces.ace/gmap/prototype.js"/>
                 <file name="icefaces.ace/notificationpanel/notificationpanel.js"/>
                 <file name="icefaces.ace/printer/printer.js"/>
                 <file name="icefaces.ace/tooltip/jquery.qtip-1.0.0-rc3.js"/>

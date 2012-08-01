@@ -36,10 +36,7 @@ import org.icefaces.ace.api.IceClientBehaviorHolder;
         extendsClass    = "javax.faces.component.UIPanel",
         componentType   = "org.icefaces.ace.component.GMapMarker",
         rendererType    = "org.icefaces.ace.component.GMapMarkerRenderer",
-		componentFamily = "org.icefaces.ace.component",
-		tlddoc = "The Accordion is a container component that displays contents in a stacked format." +
-                 "<p>For more information, see the " +
-                 "<a href=\"http://wiki.icefaces.org/display/ICE/Accordion\">Accordion Wiki Documentation</a>."
+		componentFamily = "org.icefaces.ace.component"
         )
 
 @ResourceDependencies({
@@ -49,4 +46,12 @@ import org.icefaces.ace.api.IceClientBehaviorHolder;
 })
 
 public class GMapMarkerMeta extends UIPanelMeta {
+    @Property(tlddoc="The longitude for the marker.")
+    private String longitude;
+
+    @Property(tlddoc="The latitude for the marker.")
+    private String latitude;
+
+    @Property(tlddoc="Additional options to be sent to the marker. Check google maps API for more specifics. Form is attribute:'value'", defaultValue=" ")
+    private String options;
 }

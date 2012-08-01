@@ -30,17 +30,19 @@ function GMapWrapper(eleId, realGMap){
     this.layers = new Object();
     this.geoMarkerAddress;
     this.geoMarkerSet = false;
-
+    this.getElementId = getElementId;
+    this.getRealGMap = getRealGMap;
+    this.getControlsArray = getControlsArray;
 }
-GMapWrapper.prototype.getElementId = function() {
+getElementId = function() {
     return this.eleId;
 }
 
-GMapWrapper.prototype.getRealGMap = function() {
-        return this.realGMap;
+getRealGMap = function() {
+    return this.realGMap;
 }
 
-GMapWrapper.prototype.getControlsArray = function(){
+getControlsArray = function(){
         return this.controls;
 }
 
@@ -75,7 +77,7 @@ ice.ace.gMap.getGMapWrapper = function (id) {
             //javascript object still exist, so recreate the googlemap
             //with its old state.
             if (!gmapComp.hasChildNodes()) {
-                gmapWrapper = ice.ace.gMap.recreate(id, gmapWrapper);
+                //gmapWrapper = ice.ace.gMap.recreate(id, gmapWrapper);
             }
         } else {
             //googleMap not found create a fresh new googleMap object
@@ -99,9 +101,11 @@ ice.ace.gMap.loadDirection = function(id,from, to) {
                 renderer.setMap(map);
                 renderer.setDirections(response);
                 wrapper.directions[id]=renderer;
+
             }
         }
         service.route(eval(request), directionsCallback);
+
     },
 
 ice.ace.gMap.addOverlay = function (ele, overlayId, ovrLay) {
@@ -132,33 +136,43 @@ ice.ace.gMap.removeOverlay = function(ele, overlayId) {
         gmapWrapper.overlays = newOvrLyArray;
     },
 
-ice.ace.gMap.addMapLayer = function (ele, layerId, layerType, url, options) {
+ice.ace.gMap.addMapLayer = function (ele, layerId, layerType,sentOptions,url) {
         var gmapWrapper = ice.ace.gMap.getGMapWrapper(ele);
         var layer;
-        switch (layerType) {
-            case "Bicycling":
-            case "BicyclingLayer":
+        if (sentOptions == "Skip")
+           var options = "";
+        else
+           var options = sentOptions;
+        switch (layerType.toLowerCase()) {
+            case "bicycling":
+            case "bicyclinglayer":
+            case "bicycle":
                 layer=new google.maps.BicyclingLayer();
                 layer.setMap(gmapWrapper.getRealGMap());
                 break;
-            case "Fusion":
-            case "FusionTable":
-            case "FusionTables":
-                //This is still in it's experimental stage, and I can't get access to the API to make my own fusion table yet. (Trusted Testers Only)
+            case "fusion":
+            case "fusiontable":
+            case "fusiontables":
+                //This is still in it's experimental stage, and I can't get access to the API to make my own fusion table yet. (Google Trusted Testers Only)
                 //So I cannot verify if it works. Double check when Fusion Tables is properly released.
                 var markerOps = "({" + options + "})";
                 layer=new google.maps.FusionTablesLayer(eval(options));
                 layer.setMap(gmapWrapper.getRealGMap());
                 break;
-            case "Kml":
-            case "KmlLayer":
+            case "kml":
+            case "kmllayer":
                 var markerOps = "({" + options + "})";
                 layer=new google.maps.KmlLayer(url, eval(options));
                 layer.setMap(gmapWrapper.getRealGMap());
                 break;
-            case "Traffic":
-            case "TrafficLayer":
+            case "traffic":
+            case "trafficlayer":
                 layer=new google.maps.TrafficLayer();
+                layer.setMap(gmapWrapper.getRealGMap());
+                break;
+            case "transit":
+            case "transitlayer":
+                layer=new google.maps.TransitLayer();
                 layer.setMap(gmapWrapper.getRealGMap());
                 break;
             default:
@@ -203,7 +217,6 @@ ice.ace.gMap.create = function (ele) {
         var gmapWrapper = new GMapWrapper(ele, new google.maps.Map(document.getElementById(ele),{mapTypeId: google.maps.MapTypeId.ROADMAP}));
         var hiddenField = document.getElementById(ele);
         var mapTypedRegistered = false;
-
         initializing = false;
         GMapRepository[ele] = gmapWrapper;
         return gmapWrapper;
@@ -297,7 +310,10 @@ ice.ace.gMap.addMarker = function(ele, markerID, Lat, Lon, options) {
         var wrapper = ice.ace.gMap.getGMapWrapper(ele);
         var overlay = wrapper.overlays[markerID];
         if (overlay == null || overlay.getMap() == null) {
-            var markerOps = "({map:wrapper.getRealGMap(), position: new google.maps.LatLng(" + Lat + "," + Lon + "), " + options + "});";
+            if(options!= null)
+                var markerOps = "({map:wrapper.getRealGMap(), position: new google.maps.LatLng(" + Lat + "," + Lon + "), " + options + "});";
+            else
+                var markerOps = "({map:wrapper.getRealGMap(), position: new google.maps.LatLng(" + Lat + "," + Lon + ")});";
             var marker = new google.maps.Marker(eval(markerOps));
             wrapper.overlays[markerID] = marker;
         }
@@ -333,10 +349,10 @@ ice.ace.gMap.gService = function(ele, name, locationList, options)
         var map = ice.ace.gMap.getGMapWrapper(ele).getRealGMap();
         var service;
         var points = locationList.split(":");
-        switch (name) {
+        switch (name.toLowerCase()) {
+            case "direction":
             case "directions":
-            case "Directions":
-            case "DirectionsService":
+            case "directionsservice":
                 //Required options: travelMode, 2 points/addresses (First=origin, last=dest, others=waypoints
                 service=new google.maps.DirectionsService();
                 var origin = (points[0].charAt(0) == "(") ? "origin: new google.maps.LatLng" + points[0] + ", " : "origin: \"" + points[0] + "\", ";
@@ -366,8 +382,7 @@ ice.ace.gMap.gService = function(ele, name, locationList, options)
                 service.route(eval(request), directionsCallback);
                 break;
             case "elevation":
-            case "Elevation":
-            case "ElevationService":
+            case "elevationservice":
                 //Required options: travelMode, 2 points/addresses
                 service=new google.maps.ElevationService();
                 var waypoints = [];
@@ -377,7 +392,6 @@ ice.ace.gMap.gService = function(ele, name, locationList, options)
                 }
                 var waypointsString = "locations: [" + waypoints + "]";
                 var request = "({"+ waypointsString +"})";
-                alert(request);
             function elevationCallback(response, status) {
                 if (status != google.maps.ElevationStatus.OK) {
                     alert('Error was: ' + status);
@@ -389,9 +403,8 @@ ice.ace.gMap.gService = function(ele, name, locationList, options)
             }
                 service.getElevationForLocations(eval(request), elevationCallback);
                 break;
-            case "maxZoom":
-            case "MaxZoom":
-            case "MaxZoomService":
+            case "maxzoom":
+            case "maxzoomservice":
                 service=new google.maps.MaxZoomService();
                 var point = eval("new google.maps.LatLng" + points[0]);
             function maxZoomCallback(response){
@@ -404,9 +417,8 @@ ice.ace.gMap.gService = function(ele, name, locationList, options)
                 service.getMaxZoomAtLatLng(point, maxZoomCallback);
                 break;
             case "distance":
-            case "Distance":
-            case "DistanceMatrix":
-            case "DistanceMatrixService":
+            case "distancematrix":
+            case "distancematrixservice":
                 //Required options: travelMode, 2 points/addresses
                 service=new google.maps.DistanceMatrixService();
                 var origin = (points[0].charAt(0) == "(") ? "origins: [new google.maps.LatLng" + points[0] + "], " : "origins: [\"" + points[0] + "\"], ";
@@ -443,26 +455,22 @@ ice.ace.gMap.gOverlay = function(ele, overlayID, shape, locationList, options) {
         for (var i=0; i<points.length ; i++){
             points[i] = "new google.maps.LatLng" + points[i] + "";
         }
-        switch (shape) {
-            case "Line":
+        switch (shape.toLowerCase()) {
             case "line":
-            case "Polyline":
+            case "polyline":
                 var overlayOptions = (options != null && options.length>0) ? "({map:map, path:[" + points + "], " + options + "})" : "({map:map, path:[" + points + "]})";
                 overlay = new google.maps.Polyline(eval(overlayOptions));
                 break;
-            case "Polygon":
             case "polygon":
                 var overlayOptions = (options != null && options.length>0) ? "({map:map, paths:[" + points + "], " + options + "})" : "({map:map, paths:[" + points + "]})";
                 overlay = new google.maps.Polygon(eval(overlayOptions));
                 break;
-            case "Rectangle":
             case "rectangle":
                 //needs SW corner in first point, NE in second
                 var overlayOptions = (options != null && options.length>0) ? "({map:map, bounds:new google.maps.LatLngBounds(" + points[0] +
                     ","  + points[1] + "), " + options + "})" : "({map:map, bounds:new google.maps.LatLngBounds(" + points[0] + ","  + points[1] + ")})";
                 overlay = new google.maps.Rectangle(eval(overlayOptions));
                 break;
-            case "Circle":
             case "circle":
                 //Requires radius option
                 var overlayOptions = (options != null && options.length>0) ? "({map:map, center: " + points[0] + ", " + options + "})" : "({map:map, center: " + points[0] + "})";
@@ -489,47 +497,22 @@ ice.ace.gMap.setMapType = function(ele, type) {
             gmapWrapper.geoMarker.openInfoWindowHtml(gmapWrapper.geoMarkerAddress);
             gmapWrapper.geoMarkerSet = false;
         }
-        if (gmapWrapper.getRealGMap().getMapTypeId() != null) {
+    if (type=="MAP")
+        type="ROADMAP";
+    if (gmapWrapper.getRealGMap().getMapTypeId() != null) {
             switch (type) {
-                case "Satellite":
+                case "SATELLITE":
                     gmapWrapper.getRealGMap().setMapTypeId(google.maps.MapTypeId.SATELLITE);
-                    break
-                case "Hybrid":
+                    break;
+                case "HYBRID":
                     gmapWrapper.getRealGMap().setMapTypeId(google.maps.MapTypeId.HYBRID);
-                    break
-                case "Map":
+                    break;
+                case "ROADMAP":
                     gmapWrapper.getRealGMap().setMapTypeId(google.maps.MapTypeId.ROADMAP);
-                    break
-                case "Terrain":
+                    break;
+                case "TERRAIN":
                     gmapWrapper.getRealGMap().setMapTypeId(google.maps.MapTypeId.TERRAIN);
-                    break
+                    break;
             }
         }
     }
-
-ice.ace.gMap.makeGMap = function(context,gmap){
-    if(gmap.getType().equalsIgnoreCase("Map"))
-        gmap.setType("ROADMAP");
-    if(gmap.getOptions() != null && gmap.getOptions().length() != 0)
-        var options = "," + gmap.getOptions();
-    else
-        var options = "";
-    var mapOptions = "{center: new google.maps.LatLng("+ gmap.getLatitude() + "," + gmap.getLongitude() + ")," +
-        "zoom:" + gmap.getZoomLevel()+ ", mapTypeId:google.maps.MapTypeId." + gmap.getType().toUpperCase() + options+ "}";
-
-    var map = new google.maps.Map(document.getElementById('"+ clientId +"'), eval(mapOptions));
-    if(gmap.getAddress() != null && gmap.getAddress().length() != 0){
-        if(gmap.isIntialized() == false || gmap.isLocateAddress() == true){
-            gmap.setIntialized(true);
-            var geocoder = new google.maps.Geocoder();
-            geocoder.geocode( {'address':'" + gmap.getAddress() + "'}, function(results, status) {
-                if (status == google.maps.GeocoderStatus.OK) {
-                    map.setCenter(results[0].geometry.location);
-                } else {
-                    alert('Geocode was not successful for the following reason:'  + status);
-                }
-            });
-        }
-
-    }
-}
