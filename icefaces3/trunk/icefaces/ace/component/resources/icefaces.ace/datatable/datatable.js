@@ -878,7 +878,6 @@ ice.ace.DataTable.prototype.resizeScrolling = function () {
 
             // Set Duplicate Header Sizing to Body Columns
             // Equiv of max width
-            if (!(safari || chrome)) bodyColumnWidth = i == 0 ? bodyColumnWidth - 1 : bodyColumnWidth;
             bodyColumn.parent().width(bodyColumnWidth);
             // Equiv of min width
             bodyColumnWidth = i == 0 ? bodySingleColWidths[i] - 1 : bodySingleColWidths[i];
