@@ -861,11 +861,11 @@ ice.ace.DataTable.prototype.resizeScrolling = function () {
             ice.ace.jq('html').css('overflow', '');
         }
 
-        // Change table rendering algorithm so fixed sizes are strictly followed
-        headerTable.css('table-layout', 'fixed');
-        // If fixed is set, on subsequent resizes firefox will only have equal sized columns
-        if (!firefox) bodyTable.css('table-layout', 'fixed');
-        footerTable.css('table-layout', 'fixed');
+        if (ie7) {
+            headerTable.css('table-layout', 'fixed');
+            bodyTable.css('table-layout', 'fixed');
+            footerTable.css('table-layout', 'fixed');
+        }
 
         // Set Duplicate Sizing
         if (!ie7) for (var i = 0; i < bodySingleCols.length; i++) {
