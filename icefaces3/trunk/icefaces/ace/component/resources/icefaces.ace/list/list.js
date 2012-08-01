@@ -180,8 +180,10 @@ ice.ace.List.prototype.dragToHandler = function(event, ui) {
         this.write('reorderings', swapRecords);
 
         if (this.behaviors)
-            if (this.behaviors.move)
+            if (this.behaviors.move) {
                 ice.ace.ab(this.behaviors.move);
+                this.clearState();
+            }
     }
     // Migrating between lists handled by new item insertion handler, not this drop handler
 };
@@ -397,8 +399,10 @@ ice.ace.List.prototype.addSelectedItem = function(item, inputIndex) {
         this.write('deselections', deselections);
 
         if (this.behaviors)
-            if (this.behaviors.select)
+            if (this.behaviors.select) {
                 ice.ace.ab(this.behaviors.select);
+                this.clearState();
+            }
     }
 };
 
@@ -434,8 +438,10 @@ ice.ace.List.prototype.removeSelectedItem = function(item) {
         this.write('deselections', deselections);
 
         if (this.behaviors)
-            if (this.behaviors.deselect)
+            if (this.behaviors.deselect) {
                 ice.ace.ab(this.behaviors.deselect);
+                this.clearState();
+            }
     }
 };
 
@@ -467,8 +473,17 @@ ice.ace.List.prototype.deselectAll = function(except) {
     this.write('deselections', deselections);
 
     if (this.behaviors && !isNaN(deselections.length) && deselections.length > 0)
-        if (this.behaviors.deselect)
+        if (this.behaviors.deselect) {
             ice.ace.ab(this.behaviors.deselect);
+            this.clearState();
+        }
+}
+
+ice.ace.List.prototype.clearState = function() {
+    // Clear state to avoid having stale state being added to enqueued requests.
+    this.write('reorderings', []);
+    this.write('selections', []);
+    this.write('deselections', []);
 }
 
 ice.ace.List.prototype.moveItems = function(dir) {
@@ -547,8 +562,10 @@ ice.ace.List.prototype.moveItems = function(dir) {
         this.write('reorderings', swapRecords);
 
         if (this.behaviors)
-            if (this.behaviors.move)
+            if (this.behaviors.move) {
                 ice.ace.ab(this.behaviors.move);
+                this.clearState();
+            }
     }
 };
 
