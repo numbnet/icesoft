@@ -53,10 +53,20 @@
                         </div>
                     </mobi:contentPane>
                     <mobi:contentPane id="panel5" title="panel5">
-                        <div id='inner2test2'>
-                        <img height="240"
-                             src="../images/DSC_2.JPG"
-                             alt="Ottawa 2"/>
+                       <div id="innerpan2">
+                         <h2>Carousel - non-composite component</h2>
+
+                        <p>using value of list for items</p>
+
+                        <mobi:carousel id="cartwo" value="#{carousel.imageList}" var="item">
+
+                            <h:panelGroup>
+                                <h:graphicImage value="#{item.imageUrl}"
+                                                height="#{item.height}"/>
+                                <span style="#{item.style}">#{item.title}</span>
+                            </h:panelGroup>
+
+                        </mobi:carousel>
                         </div>
                     </mobi:contentPane>
                     <mobi:contentPane id="panel6" title="panel6">
@@ -83,16 +93,22 @@
                 <a href="../layoutComponents.html">index page</a>
             </mobi:contentPane>
             <mobi:contentPane id="panel3" title="panel3">
-                <fieldset title="panel3">
-                    <legend>Panel3</legend>
-                    <figure>
-                        <img width="85px" height="150px"
-                             src="../images/Joker.jpg"
-                             alt="joker"/>
-                        <figcaption>joker</figcaption>
-                    </figure>
-                </fieldset>
+                <div id="innerpan3">
+                 <h2>Carousel - non-composite component</h2>
+
+                <p>using value of list for items</p>
+
+                <mobi:carousel id="carOne" value="#{carousel.imageList}" var="item">
+
+                    <h:panelGroup>
+                        <h:graphicImage value="#{item.imageUrl}"
+                                        height="#{item.height}"/>
+                        <span style="#{item.style}">#{item.title}</span>
+                    </h:panelGroup>
+
+                </mobi:carousel>
                 <a href="../layoutComponents.html">index page</a>
+                </div>
             </mobi:contentPane>
         </mobi:tabSet>
     </h:form>
