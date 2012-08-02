@@ -1,8 +1,24 @@
+/*
+ * Copyright 2004-2012 ICEsoft Technologies Canada Corp.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the
+ * License. You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an "AS
+ * IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ * express or implied. See the License for the specific language
+ * governing permissions and limitations under the License.
+ */
+
 if (!window['ice']) window.ice = {};
 if (!window.ice['ace']) window.ice.ace = {};
 ice.ace.Autocompleters = {};
 
-ice.ace.Autocompleter = function(id, updateId, rowClass, selectedRowClass, delay, minChars, height, direction, focus, behaviors, cfg) {
+ice.ace.Autocompleter = function(id, updateId, rowClass, selectedRowClass, delay, minChars, height, direction, behaviors, cfg) {
 	this.id = id;
 	ice.ace.Autocompleters[this.id] = this;
 	this.delay = delay;
@@ -24,18 +40,14 @@ ice.ace.Autocompleter = function(id, updateId, rowClass, selectedRowClass, delay
 	
 	if (behaviors) {
 		if (behaviors.behaviors) {
-			if (behaviors.behaviors.submit)
+			if (behaviors.behaviors.submit) {
 				this.ajaxSubmit = behaviors.behaviors.submit;
 				this.ajaxSubmit.source = this.ajaxSubmit.source + "_input";
-			if (behaviors.behaviors.blur)
+			}
+			if (behaviors.behaviors.blur) {
 				this.ajaxBlur = behaviors.behaviors.blur;
+			}
 		}
-	}
-	
-	this.tabKeyPressed = false;
-	if (focus) this.element.focus();
-	if (!ice.ace.jq.support.leadingWhitespace) { // force IE7/8 to set focus on the text field
-		setTimeout(function() { if (focus) ice.ace.jq(ice.ace.escapeClientId(element.id)).focus(); }, 100);
 	}
 };
 
@@ -267,10 +279,6 @@ ice.ace.Autocompleter.prototype = {
             switch (event.keyCode) {
                 case ice.ace.Autocompleter.keys.KEY_TAB:
 					setFocus('');
-					if (this.ajaxBlur) {
-						this.tabKeyPressed = true;
-						ice.ace.ab(this.ajaxBlur);
-					}
                 case ice.ace.Autocompleter.keys.KEY_RETURN:
 					if (this.element.value.length < this.minChars) {
 						event.stopPropagation();
@@ -289,10 +297,6 @@ ice.ace.Autocompleter.prototype = {
             switch (event.keyCode) {
                 case ice.ace.Autocompleter.keys.KEY_TAB:
 					setFocus('');
-					if (this.ajaxBlur) {
-						this.tabKeyPressed = true;
-						ice.ace.ab(this.ajaxBlur);
-					}
                 case ice.ace.Autocompleter.keys.KEY_RETURN:
 					if (this.element.value.length < this.minChars) {
 						event.stopPropagation();
@@ -342,7 +346,7 @@ ice.ace.Autocompleter.prototype = {
         if (this.active) this.render();
         if (this.observer) clearTimeout(this.observer);
 		var self = this;
-        this.observer = setTimeout(function() { self.onObserverEvent() }, this.options.frequency * 1000);
+        this.observer = setTimeout(function() { self.onObserverEvent() }, this.delay);
     },
 
     onKeyDown: function(event) {
@@ -355,7 +359,7 @@ ice.ace.Autocompleter.prototype = {
                 case ice.ace.Autocompleter.keys.KEY_DELETE:
                     if (this.observer) clearTimeout(this.observer);
 				var self = this;
-                    this.observer = setTimeout( function() { self.onObserverEvent() }, this.options.frequency * 1000);
+                    this.observer = setTimeout( function() { self.onObserverEvent() }, this.delay);
                     return;
             }
         }
@@ -385,7 +389,7 @@ ice.ace.Autocompleter.prototype = {
                 case ice.ace.Autocompleter.keys.KEY_DELETE:
                     if (this.observer) clearTimeout(this.observer);
 					var self = this;
-                    this.observer = setTimeout(function() { self.onObserverEvent() }, this.options.frequency * 1000);
+                    this.observer = setTimeout(function() { self.onObserverEvent() }, this.delay);
                     return;
             }
         }
@@ -449,11 +453,9 @@ ice.ace.Autocompleter.prototype = {
         this.active = false;
 		setFocus('');
 		if (this.ajaxBlur) {
-			if (this.tabKeyPressed) {
-				this.tabKeyPressed = false;
-			} else {
-				ice.ace.ab(this.ajaxBlur);
-			}
+			if (this.blurObserver) clearTimeout(this.blurObserver);
+			var self = this;
+			this.blurObserver = setTimeout(function() { ice.ace.ab(self.ajaxBlur); }, 200);
 		}
     },
 
@@ -490,7 +492,7 @@ ice.ace.Autocompleter.prototype = {
         if (this.active) this.render();
         if (this.observer) clearTimeout(this.observer);
 		var self = this;
-        this.observer = setTimeout(function() { self.onObserverEvent(); }, this.options.frequency * 1000);
+        this.observer = setTimeout(function() { self.onObserverEvent(); }, this.delay);
         return;
     },
 
@@ -671,9 +673,8 @@ ice.ace.Autocompleter.prototype = {
         return lastTokenPos;
     },
 
-    getUpdatedChoices: function(isEnterKey, event, idx) {
+    getUpdatedChoices: function(isHardSubmit, event, idx) {
 		if (this.element.value.length < this.minChars) return; // this.hide()
-		var self = this;
         if (!event) {
             event = new Object();
         }
@@ -686,34 +687,26 @@ ice.ace.Autocompleter.prototype = {
         if (this.options.defaultParams)
             this.options.parameters += '&' + this.options.defaultParams;
 
-        var form = formOf(this.element);
-        if (idx > -1) {
-            var indexName = this.id + "_idx";
-            form[indexName].value = idx;
-        }
-
-        var abCall = function() { ice.ace.ab(self.ajaxSubmit); };
-		var icesCall = function() { ice.s(event, self.element); };
-		//     form.focus_hidden_field.value=this.element.id;
-        if (isEnterKey) {
-            //iceSubmit(form, this.element, event);
-		if (this.ajaxSubmit) {	
-			ice.ace.ab(this.ajaxSubmit);
+		if (this.observer) clearTimeout(this.observer);
+		if (this.blurObserver) clearTimeout(this.blurObserver);
+		if (isHardSubmit) {
+			if (this.ajaxSubmit) {
+				var ajaxCfg = {};
+				var options = {params: {}};
+				options.params[this.id + '_hardSubmit'] = true;
+				options.params['ice.event.keycode'] = event.keyCode;
+				ice.ace.jq.extend(ajaxCfg, this.ajaxSubmit, options);
+				ice.ace.ab(ajaxCfg);
+			} else {
+				ice.s(event, this.element);
+			}
 		} else {
-			ice.s(event, this.element);
+			if (this.ajaxSubmit) {
+				ice.ace.ab(this.ajaxSubmit);
+			} else {
+				ice.s(event, this.element);
+			}
 		}
-        }
-        else {
-            //iceSubmitPartial(form, this.element, event);
-		if (this.ajaxSubmit) {	
-			setTimeout(abCall, self.delay);
-		} else {
-			setTimeout(icesCall, self.delay);
-		}
-        }
-
-        var indexName = this.id + "_idx";
-        form[indexName].value = "";
     },
 
     onComplete: function(request) {
@@ -732,5 +725,16 @@ ice.ace.Autocompleter.prototype = {
         this.show();
         this.render();
 		this.element.focus();
-    }
+    },
+	
+	updateField: function(value, focus) {
+		var currentValue = this.element.value;
+		if (currentValue.indexOf(value) != 0)
+			this.element.value = value;
+		if (focus) this.element.focus();
+		var element = this.element;
+		if (!ice.ace.jq.support.leadingWhitespace) { // force IE7/8 to set focus on the text field
+			setTimeout(function() { if (focus) ice.ace.jq(ice.ace.escapeClientId(element.id)).focus(); }, 100);
+		}
+	}
 }

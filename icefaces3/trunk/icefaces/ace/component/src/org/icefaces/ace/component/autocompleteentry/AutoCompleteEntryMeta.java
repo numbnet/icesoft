@@ -18,6 +18,7 @@ package org.icefaces.ace.component.autocompleteentry;
 
 import org.icefaces.ace.meta.annotation.Component;
 import org.icefaces.ace.meta.annotation.Property;
+import org.icefaces.ace.meta.annotation.Field;
 import org.icefaces.ace.meta.baseMeta.HtmlInputTextMeta;
 import org.icefaces.ace.meta.annotation.Expression;
 import org.icefaces.ace.meta.annotation.ClientBehaviorHolder;
@@ -55,6 +56,10 @@ import java.util.List;
 	@ClientEvent( name="submit",
 		javadoc="Fired any time the value of the text input field is submitted to the server, either by typing a symbol, clicking on an option or pressing enter.",
 		tlddoc="Fired any time the value of the text input field is submitted to the server, either by typing a symbol, clicking on an option or pressing enter",
+		defaultRender="@all", defaultExecute="@all" ),
+	@ClientEvent( name="blur",
+		javadoc="Fired any time the text input field loses focus.",
+		tlddoc="Fired any time the text input field loses focus.",
 		defaultRender="@all", defaultExecute="@all" )},
 	defaultEvent="submit" )
 public class AutoCompleteEntryMeta extends HtmlInputTextMeta {
@@ -99,7 +104,7 @@ public class AutoCompleteEntryMeta extends HtmlInputTextMeta {
             "Default is \"labelRight\" if labelPosition is \"inField\", \"right\" otherwise.")
     private String indicatorPosition;
 	
-    @Property(tlddoc = "Delay in milliseconds for showing the list of possible matches after typing a character.", defaultValue="0")
+    @Property(tlddoc = "Delay in milliseconds for showing the list of possible matches after typing a character.", defaultValue="400")
     private int delay;
 
     @Property(tlddoc = "Minimum number of characters that must be in the text field before submitting and before producing the list of possible matches.", defaultValue="0")
@@ -112,6 +117,11 @@ public class AutoCompleteEntryMeta extends HtmlInputTextMeta {
     private int height;
 
     @Property(tlddoc = "Direction in which to show the list of possible matches. Possible values are \"up\", \"down\", and \"auto\".")
-    private String direction;	
+    private String direction;
+
+    @Field(defaultValue="false")
+    private Boolean populateList;
 	
+    @Field()
+    private List itemList;
 }
