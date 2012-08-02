@@ -300,7 +300,7 @@ if (!window.ice.mobile) {
         var croot = document.createElement("canvas");
         croot.setAttribute("width", "30");
         croot.setAttribute("height", "30");
-        croot.setAttribute("style", "position:absolute; top:0; right:0;");
+        croot.setAttribute("style", "position:fixed; top:0; right:0; z-index:9999;");
         croot.setAttribute("id", "progMeterCanvas");
                
         document.body.appendChild(croot);
