@@ -26,6 +26,8 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.event.ActionEvent;
 import javax.faces.model.SelectItem;
+import javax.faces.convert.Converter;
+import javax.faces.convert.ConverterException;
 import javax.el.ELContext;
 import javax.el.ValueExpression;
 
@@ -66,18 +68,15 @@ public class AutoCompleteEntryRenderer extends InputRenderer {
         if (sourceId != null && sourceId.toString().equals(clientId + "_input")) {
 			isEventSource = true;
         }
-		KeyEvent keyEvent = new KeyEvent(autoCompleteEntry, requestMap);
         if (isEventSource) {
-			if (keyEvent.getKeyCode() == KeyEvent.CARRIAGE_RETURN ||
-				"true".equals(requestMap.get("ice.event.left")) ||
-				"onclick".equals(requestMap.get("ice.event.type")) ||
-				requestMap.containsKey(clientId + "_hardSubmit")) {
+			if (isHardSubmit(facesContext, autoCompleteEntry)) {
 					autoCompleteEntry.setPopulateList(false);
 					autoCompleteEntry.queueEvent(new ActionEvent(autoCompleteEntry));
 			}
         } else {
 			autoCompleteEntry.setPopulateList(false);
 		}
+		KeyEvent keyEvent = new KeyEvent(autoCompleteEntry, requestMap);
 		if (keyEvent.getKeyCode() == KeyEvent.TAB) {
 			autoCompleteEntry.setPopulateList(false);
 		}
@@ -277,10 +276,10 @@ public class AutoCompleteEntryRenderer extends InputRenderer {
 					writer.endElement("span");
 					writer.startElement("span", null); // span to select
 					writer.writeAttribute("style", "visibility:hidden;display:none;", null);
-					String itemLabel = value;
-					if (itemLabel == null) {
-						/*itemLabel = converterGetAsString(
-								facesContext, autoCompleteEntry, item.getValue());*/
+					String itemLabel;
+					try {
+						itemLabel = (String) getConvertedValue(facesContext, autoCompleteEntry, value, true);
+					} catch (Exception e) {
 						itemLabel = value;
 					}
 					writer.writeText(itemLabel, null);
@@ -306,9 +305,11 @@ public class AutoCompleteEntryRenderer extends InputRenderer {
                     item = (SelectItem) matches.next();
                     String itemLabel = item.getLabel();
                     if (itemLabel == null) {
-                        /*itemLabel = converterGetAsString(
-                                facesContext, autoCompleteEntry, item.getValue());*/ // TODO: add converter support
-						itemLabel = item.getValue().toString();
+						try {
+							itemLabel = (String) getConvertedValue(facesContext, autoCompleteEntry, item.getValue(), true);
+						} catch (Exception e) {
+							itemLabel = item.getValue().toString();
+						}
                     }
 					if (satisfiesFilter(itemLabel, filter, filterMatchMode, autoCompleteEntry)) {
                     sb.append("<div style=\"border: 0;\">").append(itemLabel).append("</div>");
@@ -338,6 +339,17 @@ public class AutoCompleteEntryRenderer extends InputRenderer {
 		
 	public void encodeEnd(FacesContext facesContext, UIComponent uiComponent) throws IOException {
 
+	}
+	
+	private boolean isHardSubmit(FacesContext facesContext, UIComponent component) {
+		Map requestMap = facesContext.getExternalContext().getRequestParameterMap();
+		String clientId = component.getClientId(facesContext);
+		KeyEvent keyEvent = new KeyEvent(component, requestMap);
+		
+		return (keyEvent.getKeyCode() == KeyEvent.CARRIAGE_RETURN ||
+			"true".equals(requestMap.get("ice.event.left")) ||
+			"onclick".equals(requestMap.get("ice.event.type")) ||
+			requestMap.containsKey(clientId + "_hardSubmit"));
 	}
 
     private static String escapeSingleQuote(String text) {
@@ -420,5 +432,36 @@ public class AutoCompleteEntryRenderer extends InputRenderer {
 		}
 		
 		return false;
+	}
+	
+	@Override
+	public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) throws ConverterException {
+		return getConvertedValue(context, component, submittedValue, false);
+	}
+	
+	private Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue, boolean force) throws ConverterException {
+		AutoCompleteEntry autoCompleteEntry = (AutoCompleteEntry) component;
+		String value = (String) submittedValue;
+		Converter converter = autoCompleteEntry.getConverter();
+		
+		if (isHardSubmit(context, autoCompleteEntry) || force) {
+			if(converter != null) {
+				return converter.getAsObject(context, autoCompleteEntry, value);
+			}
+			else {
+				ValueExpression ve = autoCompleteEntry.getValueExpression("value");
+
+				if(ve != null) {
+					Class<?> valueType = ve.getType(context.getELContext());
+					Converter converterForType = context.getApplication().createConverter(valueType);
+
+					if(converterForType != null) {
+						return converterForType.getAsObject(context, autoCompleteEntry, value);
+					}
+				}
+			}
+		}
+		
+		return value;	
 	}
 }
