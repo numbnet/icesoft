@@ -34,19 +34,19 @@
         <attribute>
             <name>id</name>
             <required>true</required>
-            <rtexprvalue>false</rtexprvalue>
+            <rtexprvalue>true</rtexprvalue>
             <description>Pagewide unique identifier</description>
         </attribute>
         <attribute>
             <name>style</name>
             <required>false</required>
-            <rtexprvalue>false</rtexprvalue>
+            <rtexprvalue>true</rtexprvalue>
             <description>Inline style definition</description>
         </attribute>
         <attribute>
             <name>styleClass</name>
             <required>false</required>
-            <rtexprvalue>false</rtexprvalue>
+            <rtexprvalue>true</rtexprvalue>
             <description>User defined CSS class</description>
         </attribute>
         <attribute>
@@ -58,7 +58,7 @@
         <attribute>
             <name>disabled</name>
             <required>false</required>
-            <rtexprvalue>false</rtexprvalue>
+            <rtexprvalue>true</rtexprvalue>
             <description>Determines if control is disabled</description>
         </attribute>
     </tag>
@@ -114,31 +114,31 @@
         <attribute>
             <name>id</name>
             <required>true</required>
-            <rtexprvalue>false</rtexprvalue>
+            <rtexprvalue>true</rtexprvalue>
             <description>Pagewide unique identifier</description>
         </attribute>
         <attribute>
             <name>style</name>
             <required>false</required>
-            <rtexprvalue>false</rtexprvalue>
+            <rtexprvalue>true</rtexprvalue>
             <description>Inline style definition</description>
         </attribute>
         <attribute>
             <name>styleClass</name>
             <required>false</required>
-            <rtexprvalue>false</rtexprvalue>
+            <rtexprvalue>true</rtexprvalue>
             <description>User defined CSS class</description>
         </attribute>
         <attribute>
             <name>disabled</name>
             <required>false</required>
-            <rtexprvalue>false</rtexprvalue>
+            <rtexprvalue>true</rtexprvalue>
             <description>Determines if control is disabled</description>
         </attribute>
     </tag>
 
     <tag>
-        <description>Capture video with device camera.</description>
+        <description>Capture video with device video camera.</description>
         <display-name>ICEmobile Camcorder</display-name>
         <name>camcorder</name>
         <tag-class>org.icemobile.jsp.tags.CamcorderTag</tag-class>
@@ -146,25 +146,25 @@
         <attribute>
             <name>id</name>
             <required>true</required>
-            <rtexprvalue>false</rtexprvalue>
+            <rtexprvalue>true</rtexprvalue>
             <description>Pagewide unique identifier</description>
         </attribute>
         <attribute>
             <name>style</name>
             <required>false</required>
-            <rtexprvalue>false</rtexprvalue>
+            <rtexprvalue>true</rtexprvalue>
             <description>Inline style definition</description>
         </attribute>
         <attribute>
             <name>styleClass</name>
             <required>false</required>
-            <rtexprvalue>false</rtexprvalue>
+            <rtexprvalue>true</rtexprvalue>
             <description>User defined CSS class</description>
         </attribute>
         <attribute>
             <name>disabled</name>
             <required>false</required>
-            <rtexprvalue>false</rtexprvalue>
+            <rtexprvalue>true</rtexprvalue>
             <description>If true, button to launch the camera is visible, but
                 disabled
             </description>
@@ -179,25 +179,25 @@
         <attribute>
             <name>id</name>
             <required>true</required>
-            <rtexprvalue>false</rtexprvalue>
+            <rtexprvalue>true</rtexprvalue>
             <description>Pagewide unique identifier</description>
         </attribute>
         <attribute>
             <name>style</name>
             <required>false</required>
-            <rtexprvalue>false</rtexprvalue>
+            <rtexprvalue>true</rtexprvalue>
             <description>Inline style definition</description>
         </attribute>
         <attribute>
             <name>styleClass</name>
             <required>false</required>
-            <rtexprvalue>false</rtexprvalue>
+            <rtexprvalue>true</rtexprvalue>
             <description>User defined CSS class</description>
         </attribute>
         <attribute>
             <name>disabled</name>
             <required>false</required>
-            <rtexprvalue>false</rtexprvalue>
+            <rtexprvalue>true</rtexprvalue>
             <description>If true, button to launch the microphone is visible,
                 but
                 disabled
@@ -457,7 +457,7 @@
         <attribute>
             <name>id</name>
             <required>true</required>
-            <rtexprvalue>false</rtexprvalue>
+            <rtexprvalue>true</rtexprvalue>
             <description>Pagewide unique identifier</description>
         </attribute>
         <attribute>
@@ -567,7 +567,7 @@
         <attribute>
             <name>selected</name>
             <required>false</required>
-            <rtexprvalue>false</rtexprvalue>
+            <rtexprvalue>true</rtexprvalue>
             <description>Sets the button style to selected</description>
         </attribute>
     </tag>
@@ -1042,7 +1042,7 @@
         <attribute>
             <name>id</name>
             <required>false</required>
-            <rtexprvalue>false</rtexprvalue>
+            <rtexprvalue>true</rtexprvalue>
             <description>Pagewide unique identifier</description>
         </attribute>
     </tag>
