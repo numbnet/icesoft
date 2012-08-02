@@ -132,7 +132,7 @@
     margin: 0 0 0 6px;
     line-height: 10px;
     display: inline-block;
-    color: #000;
+    color: #000 !important;
     position: absolute;
     top: 1px;
     left: 0;
