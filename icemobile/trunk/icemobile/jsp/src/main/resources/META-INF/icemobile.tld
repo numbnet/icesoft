@@ -53,6 +53,7 @@
             <name>params</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
+            <description>low-level URL-encoded label=lat,lon,alt,dir,url location list (deprecated)</description>
         </attribute>
         <attribute>
             <name>disabled</name>
@@ -342,7 +343,8 @@
             <name>name</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <description>Name of submitted value</description>
+            <description>Name of submitted value, 
+                will be a String of the form lat,lon,alt,dir</description>
         </attribute>
         <attribute>
             <name>disabled</name>

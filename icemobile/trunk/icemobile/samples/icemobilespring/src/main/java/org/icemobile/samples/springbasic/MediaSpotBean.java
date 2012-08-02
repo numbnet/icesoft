@@ -68,10 +68,6 @@ public class MediaSpotBean {
         this.fileName = fileName;
     }
 
-    public String getPacked()  {
-        return title + "=" + location + "," + fileName;
-    }
-
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("properties ");

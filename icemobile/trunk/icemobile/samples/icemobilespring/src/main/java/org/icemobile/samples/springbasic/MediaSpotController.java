@@ -42,7 +42,7 @@ public class MediaSpotController {
 
 	@RequestMapping(value = "/mediaspot", method=RequestMethod.GET)
     public void processGet(Model model)  {
-		model.addAttribute("reality", getRealityParams());
+		model.addAttribute("locations", messages.values());
         if (null != selectedMessage) {
             model.addAttribute("selection", selectedMessage.getTitle());
             model.addAttribute("imgPath", 
@@ -69,7 +69,6 @@ public class MediaSpotController {
             messages.put(spotBean.getTitle(), spotBean);
             scaleImage( new File(request.getRealPath("/" + newFileName)) );
         }
-		model.addAttribute("reality", getRealityParams());
 		model.addAttribute("locations", messages.values());
 		model.addAttribute("message", "Hello your file '" + fileName + "' was uploaded successfully.");
         String selection = spotBean.getSelection();
@@ -114,15 +113,6 @@ public class MediaSpotController {
         return currentFileName;
     }
     
-    private String getRealityParams()  {
-        StringBuilder sb = new StringBuilder();
-        for (MediaSpotBean message : messages.values())  {
-            String location = message.getPacked();
-            sb.append("&" + location);
-        }
-        return sb.toString();
-    }
-
     private void scaleImage(File photoFile) throws IOException  {
 
         if (null == photoFile) {
