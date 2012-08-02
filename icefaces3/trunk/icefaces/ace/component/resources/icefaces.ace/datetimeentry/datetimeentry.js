@@ -86,6 +86,12 @@ ice.ace.Calendar = function(id, cfg) {
             });
         }
     }
+    if (cfg.singleSubmit) {
+        $(this.jqId + '_input').change(function(event) {
+            setFocus();
+            ice.se(event, cfg.clientId);
+        });
+    }
 };
 
 ice.ace.Calendar.prototype.configureLocale = function() {
