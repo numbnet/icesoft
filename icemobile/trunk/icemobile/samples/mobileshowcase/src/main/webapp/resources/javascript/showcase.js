@@ -16,16 +16,23 @@ function resizeElementHeight(elementId) {
 
 
 function addResizeAfterUpdatesListener(elementId){
-	
+
+    // check caller to see if orientation changes are support and fall back
+    // to window resize events otherwise
 	var supportsOrientationChange = "onorientationchange" in window,
 		orientationEvent = supportsOrientationChange ? "orientationchange" : "resize";
 	
 	var resizeHandler = function(updates) {
 		resizeElementHeight(elementId);
 	}
-	
+
+    // resize height on first load
+    resizeElementHeight(elementId);
+
+    // add DTD on after update listener, to resize after dom event has been applied
 	ice.onAfterUpdate(resizeHandler);
 
+    // apply resize on either orientation or window size change.
 	window.addEventListener(orientationEvent, resizeHandler);
 	
 }
