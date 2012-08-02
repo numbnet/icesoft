@@ -186,4 +186,9 @@ public class DateTimeEntryMeta extends UIInputMeta {
     @Property(tlddoc = "The number of characters used to determine the width of the input field in a popup calendar. Default" +
             " is the maximum possible size of a date formatted by the date pattern.")
     private int size;
+
+    @Property(defaultValue = "false", tlddoc = "When singleSubmit is true, changing the value of this component will " +
+            "submit and execute this component only (equivalent to &lt;f:ajax execute=\"@this\" render=\"@all\"&gt;). " +
+            "When singleSubmit is false, no submit will occur.")
+    private boolean singleSubmit;
 }
