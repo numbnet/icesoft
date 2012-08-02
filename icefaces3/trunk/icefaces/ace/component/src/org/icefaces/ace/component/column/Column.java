@@ -34,6 +34,7 @@ import org.icefaces.ace.component.datatable.DataTable;
 import org.icefaces.ace.model.filter.*;
 import org.icefaces.ace.component.celleditor.CellEditor;
 import org.icefaces.ace.model.table.RowStateMap;
+import sun.misc.Sort;
 
 public class Column extends ColumnBase {
 	private static final String OPTIMIZED_PACKAGE = "org.icefaces.ace.component.";
@@ -208,5 +209,10 @@ public class Column extends ColumnBase {
             return super.getValueExpression("groupBy");
         else
             return retVal;
+    }
+
+    public boolean hasSortPriority() {
+        Integer pri = getSortPriority();
+        return (pri != null && pri > 0);
     }
 }

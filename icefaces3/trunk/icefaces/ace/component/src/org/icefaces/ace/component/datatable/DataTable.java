@@ -972,7 +972,7 @@ public class DataTable extends DataTableBase implements Serializable {
                     highestGroupedPriority = priority;
                 groupedColumns.add(c);
             }
-            else if (priority != null && c.getValueExpression("groupBy") == null) {
+            else if (priority != null && priority > 0 && c.getValueExpression("groupBy") == null) {
                 sortableColumns.add(c);
             }
         }
