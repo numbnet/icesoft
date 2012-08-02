@@ -45,19 +45,19 @@
 
         <mobi:fieldSetGroup inset="true">
             <mobi:fieldSetRow>
-                View augmented: <mobi:augmentedReality id="selection" 
-                        params="${reality}">
-                        <c:forEach items="${locations}" var="location" >
-                            <mobi:augmentedRealityLocation 
-                                locationLabel="${location.title}"
-                                locationLat="${location.latitude}"
-                                locationLon="${location.longitude}"
-                                locationAlt="${location.altitude}"
-                                locationDir="${location.direction}"
-                                locationIcon="${location.fileName}"
-                                 />
-                        </c:forEach>
-                        </mobi:augmentedReality>
+                View augmented: 
+                <mobi:augmentedReality id="selection">
+                    <c:forEach items="${locations}" var="location" >
+                        <mobi:augmentedRealityLocation 
+                            locationLabel="${location.title}"
+                            locationLat="${location.latitude}"
+                            locationLon="${location.longitude}"
+                            locationAlt="${location.altitude}"
+                            locationDir="${location.direction}"
+                            locationIcon="${location.fileName}"
+                             />
+                    </c:forEach>
+                </mobi:augmentedReality>
             </mobi:fieldSetRow>
         </mobi:fieldSetGroup>
 
