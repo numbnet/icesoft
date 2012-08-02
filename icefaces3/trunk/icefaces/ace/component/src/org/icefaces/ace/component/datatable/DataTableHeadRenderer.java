@@ -124,7 +124,7 @@ public class DataTableHeadRenderer {
             String columnClass = DataTableConstants.COLUMN_HEADER_CLASS;
             columnClass = (table.isReorderableColumns() && column.isReorderable()) ? columnClass + " " + DataTableConstants.REORDERABLE_COL_CLASS : columnClass;
             columnClass = styleClass != null ? columnClass + " " + styleClass : columnClass;
-            columnClass = (column.getSortPriority() != null && !isNextStacked) ? columnClass + " ui-state-active" : columnClass;
+            columnClass = (column.hasSortPriority() && !isNextStacked) ? columnClass + " ui-state-active" : columnClass;
 
             writer.startElement(HTML.TH_ELEM, null);
             writer.writeAttribute(HTML.CLASS_ATTR, columnClass, null);
@@ -147,7 +147,7 @@ public class DataTableHeadRenderer {
         columnClass = isSortable ? columnClass + " " + DataTableConstants.SORTABLE_COLUMN_CLASS : columnClass;
         columnClass = table.isClickableHeaderSorting() ? columnClass + " clickable" : columnClass;
         // Add style class to div in stacking case, else style th
-        columnClass = (column.getSortPriority() != null && (isCurrStacked || isNextStacked)) ? columnClass + " ui-state-active" : columnClass;
+        columnClass = (column.hasSortPriority() && (isCurrStacked || isNextStacked)) ? columnClass + " ui-state-active" : columnClass;
 
         writer.writeAttribute(HTML.CLASS_ATTR, columnClass, null);
         writer.startElement(HTML.SPAN_ELEM, null);
@@ -239,14 +239,14 @@ public class DataTableHeadRenderer {
 
         writer.startElement(HTML.ANCHOR_ELEM, null);
         writer.writeAttribute(HTML.TABINDEX_ATTR, 0, null);
-        if (column.getSortPriority() != null && column.isSortAscending())
+        if (column.hasSortPriority() && column.isSortAscending())
             writer.writeAttribute(HTML.CLASS_ATTR, DataTableConstants.SORTABLE_COLUMN_ICON_UP_CLASS + " ui-toggled", null);
         else writer.writeAttribute(HTML.CLASS_ATTR, DataTableConstants.SORTABLE_COLUMN_ICON_UP_CLASS, null);
         writer.endElement(HTML.ANCHOR_ELEM);
 
         writer.startElement(HTML.ANCHOR_ELEM, null);
         writer.writeAttribute(HTML.TABINDEX_ATTR, 0, null);
-        if (column.getSortPriority() != null && !column.isSortAscending())
+        if (column.hasSortPriority() && !column.isSortAscending())
             writer.writeAttribute(HTML.CLASS_ATTR, DataTableConstants.SORTABLE_COLUMN_ICON_DOWN_CLASS + " ui-toggled", null);
         else writer.writeAttribute(HTML.CLASS_ATTR, DataTableConstants.SORTABLE_COLUMN_ICON_DOWN_CLASS, null);
         writer.endElement(HTML.ANCHOR_ELEM);
@@ -258,7 +258,7 @@ public class DataTableHeadRenderer {
         writer.startElement(HTML.SPAN_ELEM, null);
         writer.writeAttribute(HTML.CLASS_ATTR, DataTableConstants.SORTABLE_COLUMN_ORDER_CLASS, null);
         if (table.isSingleSort()) writer.writeAttribute(HTML.STYLE_ATTR, "display:none;", null);
-        else if (column.getSortPriority() != null) writer.writeText(column.getSortPriority(), null);
+        else if (column.hasSortPriority()) writer.writeText(column.getSortPriority(), null);
         writer.endElement(HTML.SPAN_ELEM);
 
         writer.endElement(HTML.SPAN_ELEM);
