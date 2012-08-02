@@ -58,6 +58,7 @@
     display: inline-block;
     background: -moz-linear-gradient(top, #f1f1f2, #d9dadb) repeat scroll 0 0 #d9dadb;
     background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0, #f1f1f2), color-stop(1, #d9dadb));
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorStr = '#f1f1f2', EndColorStr = '#d9dadb');
     text-align: center;
     padding: 3px 10px;
     text-shadow: 0 1px 1px #ffffff;
