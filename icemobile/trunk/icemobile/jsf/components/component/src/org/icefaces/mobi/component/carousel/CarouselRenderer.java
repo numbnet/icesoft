@@ -18,6 +18,7 @@ package org.icefaces.mobi.component.carousel;
 
 
 import org.icefaces.mobi.utils.HTML;
+import org.icefaces.mobi.utils.Utils;
 import org.icefaces.mobi.renderkit.BaseLayoutRenderer;
 
 import javax.faces.application.ProjectStage;
@@ -40,6 +41,7 @@ public class CarouselRenderer extends BaseLayoutRenderer {
     private static final String JS_ISCROLL = "iscroll.js";
     private static final String JS_ISCROLL_MIN = "iscroll-min.js";
     private static final String LIB_ISCROLL = "org.icefaces.component.util";
+
 
     public void decode(FacesContext facesContext, UIComponent uiComponent) {
         Map<String, String> params = facesContext.getExternalContext().getRequestParameterMap();
@@ -66,11 +68,8 @@ public class CarouselRenderer extends BaseLayoutRenderer {
     public void encodeBegin(FacesContext facesContext, UIComponent uiComponent) throws IOException {
         ResponseWriter writer = facesContext.getResponseWriter();
         String clientId = uiComponent.getClientId(facesContext);
-        writer.startElement("span", uiComponent);
-        writer.writeAttribute("id", clientId+"_jscript","id");
-        writeJavascriptFile(facesContext, uiComponent, JS_NAME, JS_MIN_NAME, JS_LIBRARY);
-        writeJavascriptFile(facesContext, uiComponent, JS_ISCROLL, JS_ISCROLL_MIN, LIB_ISCROLL);
-        writer.endElement("span");
+        writeJavascriptFile(facesContext, uiComponent, JS_NAME, JS_MIN_NAME, JS_LIBRARY,
+                JS_ISCROLL, JS_ISCROLL_MIN, LIB_ISCROLL);
         Carousel carousel = (Carousel) uiComponent;
         writer.startElement(HTML.SPAN_ELEM, uiComponent);
         writer.writeAttribute("id", clientId, "ui");
@@ -135,8 +134,17 @@ public class CarouselRenderer extends BaseLayoutRenderer {
         writer.startElement(HTML.DIV_ELEM, uiComponent);
         writer.writeAttribute(HTML.ID_ATTR, clientId+"_list", HTML.ID_ATTR);
         writer.writeAttribute(HTML.NAME_ATTR, clientId+"_list", HTML.NAME_ATTR);
+        Object prevLabel = carousel.getPreviousLabel();
+        if (prevLabel !=null){
+            renderPagination(facesContext, uiComponent, writer, String.valueOf(prevLabel),clientId, "prev" );
+        }
+        Object nextLabel = carousel.getNextLabel();
+        if (nextLabel !=null ){
+            renderPagination(facesContext, uiComponent, writer, String.valueOf(nextLabel),clientId, "next" );
+        }
         writer.startElement(HTML.DIV_ELEM, uiComponent);
         writer.writeAttribute("class", Carousel.CAROUSEL_CURSOR_CLASS, null);
+        writer.writeAttribute("style", carousel.getStyle(), null);
         writer.startElement(HTML.DIV_ELEM, uiComponent);
         writer.writeAttribute("class", Carousel.CAROUSEL_CURSOR_CURSOR_CENTER_CLASS, null);
         writer.startElement(HTML.UL_ELEM, null);
@@ -155,6 +163,7 @@ public class CarouselRenderer extends BaseLayoutRenderer {
         }
         //do the list of dots for pagination
         writer.endElement(HTML.UL_ELEM);
+
         writer.endElement(HTML.DIV_ELEM);
         writer.endElement(HTML.DIV_ELEM);
         this.encodeHiddenSelected(facesContext, clientId, selected);
@@ -164,17 +173,33 @@ public class CarouselRenderer extends BaseLayoutRenderer {
         renderScript(uiComponent, facesContext, clientId);
     }
 
+    private void renderPagination(FacesContext facesContext, UIComponent uiComponent, ResponseWriter writer,
+                                  String value, String id,String ind) throws IOException{
+        String call = "mobi.carousel.scrollTo('";
+        String eventStr = Utils.isTouchEventEnabled(facesContext) ?
+                TOUCH_START_EVENT : CLICK_EVENT;
+        writer.startElement(HTML.DIV_ELEM, uiComponent);
+        writer.writeAttribute(HTML.ID_ATTR, id+"_"+ind, HTML.ID_ATTR);
+        StringBuilder prevBuilder = new StringBuilder(call).append(id).append("', '").append(ind).append("'); return false");
+        writer.writeAttribute(eventStr, prevBuilder.toString(), null);
+        writer.write(value);
+        writer.endElement(HTML.DIV_ELEM);
+    }
     private void renderScript(UIComponent uiComponent, FacesContext facesContext, String clientId) throws IOException {
         ResponseWriter writer = facesContext.getResponseWriter();
         Carousel carousel = (Carousel) uiComponent;
         ClientBehaviorHolder cbh = (ClientBehaviorHolder)uiComponent;
         boolean singleSubmit = carousel.isSingleSubmit();
+        writer.startElement("span", uiComponent);
+        writer.writeAttribute("id", clientId + "_script", "id");
         writer.startElement("script", null);
-        writer.writeAttribute("id", clientId+"_script", "id");
+   //     writer.writeAttribute("id", clientId+"_script", "id");
         writer.writeAttribute("text", "text/javascript", null);
         //define mobi namespace if necessary
         StringBuilder builder = new StringBuilder(255);
         builder.append(clientId).append("',{ singleSubmit: ").append(singleSubmit);
+        int hashcode = Utils.generateHashCode(carousel.getSelectedItem());
+        builder.append(", hash: ").append(hashcode);
         boolean hasBehaviors = !carousel.getClientBehaviors().isEmpty();
         if (hasBehaviors){
             String behaviors = encodeClientBehaviors(facesContext, cbh, "change").toString();
@@ -182,21 +207,12 @@ public class CarouselRenderer extends BaseLayoutRenderer {
             builder.append(behaviors);
         }
         builder.append("});");
-
-        writer.write("ice.onUnload(function(){" +
-     //           "\n  ice.log.debug(ice.log, '.... ice.onUnload..... '); \n"  +
-                "mobi.carousel.unloaded('" + clientId + "');" +
-                "});\n");
-        writer.write("supportsOrientationChange = 'onorientationchange' in window," +
-                "orientationEvent = supportsOrientationChange ? 'orientationchange' : 'resize';\n");
-        writer.write("window.addEventListener(orientationEvent, function() {" +
-          //      "\n  ice.log.debug(ice.log, '.... orientationEvent..... '); \n"  +
-                "  setTimeout(function () { " +
-                "       mobi.carousel.refresh('" + builder.toString() +
-                "  \n}, 100); " +
-                " }, false);\n");
-        writer.write( "mobi.carousel.loaded('" +  builder.toString());
+        writer.write("mobi.carousel.loaded('"+builder.toString());
+   /*     if (!Utils.isTouchEventEnabled(facesContext) && !Utils.isAndroid()) {
+                writer.write("document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);");
+        } */
         writer.endElement("script");
+        writer.endElement("span");
     }
 
     /**

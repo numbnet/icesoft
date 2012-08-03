@@ -45,12 +45,16 @@
                              orientation="bottom"
                              parentFooter="false">
                     <mobi:contentPane id="panel4" title="panel4">
-                        <h:outputText value="interior of panel4"/>
-                        <div id='innerOnetest2'>
-                            <img height="240"
-                             src="../images/DSC_1.jpg"
-                             alt="Ottawa 1"/>
-                        </div>
+                    <h2>Carousel - non-composite component</h2>
+                    <mobi:carousel id="caribe" value="#{carousel.imageList}" var="item">
+
+                    <h:panelGroup>
+                        <h:graphicImage value="#{item.imageUrl}"
+                                        height="#{item.height}"/>
+                        <span style="#{item.style}">#{item.title}</span>
+                    </h:panelGroup>
+
+                    </mobi:carousel>
                     </mobi:contentPane>
                     <mobi:contentPane id="panel5" title="panel5">
                        <div id="innerpan2">
@@ -92,12 +96,9 @@
                 </fieldset>
                 <a href="../layoutComponents.html">index page</a>
             </mobi:contentPane>
-            <mobi:contentPane id="panel3" title="panel3">
+            <mobi:contentPane id="panel3" facelet="true" title="panel3">
                 <div id="innerpan3">
                  <h2>Carousel - non-composite component</h2>
-
-                <p>using value of list for items</p>
-
                 <mobi:carousel id="carOne" value="#{carousel.imageList}" var="item">
 
                     <h:panelGroup>
