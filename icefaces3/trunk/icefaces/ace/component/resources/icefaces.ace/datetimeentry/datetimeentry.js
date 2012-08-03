@@ -35,11 +35,6 @@ ice.ace.Calendar = function(id, cfg) {
     }
 
     //Select listener
-    if (!this.cfg.popup && this.cfg.singleSubmit) {
-        this.cfg.onSelect = function(dateText, inst) {
-            ice.se(null, cfg.clientId);
-        };
-    }
     this.bindDateSelectListener();
 
     //Form field to use in inline mode
@@ -83,17 +78,16 @@ ice.ace.Calendar = function(id, cfg) {
         if(this.cfg.popup && this.cfg.theme != false) {
             ice.ace.skinInput(this.jq);
         }
-        if (this.cfg.singleSubmit) {
-            $(this.jqId + '_input').change(function(event) {
-                setFocus();
-                ice.se(event, cfg.clientId);
-            });
-        }
         behavior = this.cfg && this.cfg.behaviors && this.cfg.behaviors.dateTextChange;
         if (behavior) {
             this.jq.change(function() {
                 setFocus();
                 ice.ace.ab(behavior);
+            });
+        } else if (this.cfg.singleSubmit) {
+            this.jq.change(function(event) {
+                setFocus();
+                ice.se(event, cfg.clientId);
             });
         }
     }
@@ -118,6 +112,11 @@ ice.ace.Calendar.prototype.bindDateSelectListener = function() {
 
             if (dateSelectBehavior)
                 ice.ace.ab.call(_self, dateSelectBehavior);
+        };
+    }
+    if (!$.isFunction(this.cfg.onSelect) && this.cfg.singleSubmit) {
+        this.cfg.onSelect = function(dateText, inst) {
+            ice.se(null, _self.cfg.clientId);
         };
     }
 

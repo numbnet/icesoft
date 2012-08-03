@@ -189,6 +189,6 @@ public class DateTimeEntryMeta extends UIInputMeta {
 
     @Property(defaultValue = "false", tlddoc = "When singleSubmit is true, changing the value of this component will " +
             "submit and execute this component only (equivalent to &lt;f:ajax execute=\"@this\" render=\"@all\"&gt;). " +
-            "When singleSubmit is false, no submit will occur.")
+            "When singleSubmit is false, no submit will occur. &lt;ace:ajax&gt; submit events have precedence over singleSubmit.")
     private boolean singleSubmit;
 }
