@@ -36,15 +36,17 @@ import java.util.*;
  * Time: 1:44 PM
  */
 public class DataTableHeadRenderer {
-    protected static void encodeTableHead(FacesContext context, DataTable table, List<Column> columns, boolean staticHeaders) throws IOException {
+    protected static void encodeTableHead(FacesContext context, DataTableRenderingContext tableContext) throws IOException {
+        DataTable table = tableContext.getTable();
+
         if (!table.hasHeaders()) return;
 
-        List headContainer = columns;
+        List headContainer = tableContext.getColumns();
         ResponseWriter writer = context.getResponseWriter();
         ColumnGroup group = table.getColumnGroup("header");
         if (group != null) headContainer = group.getChildren();
 
-        if (staticHeaders) {
+        if (tableContext.getStaticHeaders()) {
             writer.startElement(HTML.DIV_ELEM, null);
             writer.writeAttribute(HTML.CLASS_ATTR, DataTableConstants.SCROLLABLE_HEADER_CLASS, null);
             writer.startElement(HTML.TABLE_ELEM, null);
@@ -52,18 +54,21 @@ public class DataTableHeadRenderer {
 
         writer.startElement(HTML.THEAD_ELEM, null);
 
-        if (table.isInDuplicateSegment()) writer.writeAttribute(HTML.STYLE_ATTR, "display:none;", null);
+        if (table.isInDuplicateSegment())
+            writer.writeAttribute(HTML.STYLE_ATTR, "display:none;", null);
 
         // For each row of a col group, or child of a datatable
         boolean firstHeadElement = true;
         boolean subRows = false;
         Iterator<UIComponent> headElementIterator = headContainer.iterator();
+
         do {
             UIComponent headerElem = headElementIterator.next();
             List<UIComponent> headerRowChildren = new ArrayList<UIComponent>();
             int i = 0;
 
-            // If its a row, get the row children, else add the column as a pseduo child, if not column, break.
+            // If its a row, get the row children, else add the column as a pseduo child,
+            // if not column, break.
             if (headerElem.isRendered()) {
                 if (headerElem instanceof Row) {
                     Row headerRow = (Row) headerElem;
@@ -71,7 +76,8 @@ public class DataTableHeadRenderer {
                     subRows = true;
                 } else headerRowChildren.add(headerElem);
 
-                // If the element was a row of a col-group render another row for a subrow of the header
+                // If the element was a row of a col-group render another row for a subrow
+                // of the header
                 if (subRows || firstHeadElement) writer.startElement(HTML.TR_ELEM, null);
 
                 // Either loop through row children or render the single column/columns
@@ -99,7 +105,7 @@ public class DataTableHeadRenderer {
 
         writer.endElement(HTML.THEAD_ELEM);
 
-        if (staticHeaders) {
+        if (tableContext.getStaticHeaders()) {
             writer.endElement(HTML.TABLE_ELEM);
             writer.endElement(HTML.DIV_ELEM);
         }
@@ -273,7 +279,9 @@ public class DataTableHeadRenderer {
         String filterFunction = widgetVar + ".filter(event)";
         String filterStyleClass = column.getFilterStyleClass();
         String filterEvent = table.getFilterEvent();
-        filterStyleClass = filterStyleClass == null ? DataTableConstants.COLUMN_FILTER_CLASS : DataTableConstants.COLUMN_FILTER_CLASS + " " + filterStyleClass;
+        filterStyleClass = filterStyleClass == null
+                ? DataTableConstants.COLUMN_FILTER_CLASS
+                : DataTableConstants.COLUMN_FILTER_CLASS + " " + filterStyleClass;
 
         if (column.getValueExpression("filterOptions") == null) {
             String filterValue = column.getFilterValue() != null ? column.getFilterValue() : "";
@@ -316,8 +324,12 @@ public class DataTableHeadRenderer {
 
     protected static void encodeConfigPanelLaunchButton(ResponseWriter writer, DataTable component, boolean first) throws IOException {
         String jsId = CoreRenderer.resolveWidgetVar(component);
-        String panelJsId = CoreRenderer.resolveWidgetVar(component.findTableConfigPanel(FacesContext.getCurrentInstance()));
-        String clientId = component.findTableConfigPanel(FacesContext.getCurrentInstance()).getClientId();
+
+        String panelJsId = CoreRenderer
+                .resolveWidgetVar(component.findTableConfigPanel(FacesContext.getCurrentInstance()));
+
+        String clientId = component
+                .findTableConfigPanel(FacesContext.getCurrentInstance()).getClientId();
 
         writer.startElement(HTML.SPAN_ELEM, null);
         writer.writeAttribute(HTML.CLASS_ATTR, "ui-tableconf-button", null);

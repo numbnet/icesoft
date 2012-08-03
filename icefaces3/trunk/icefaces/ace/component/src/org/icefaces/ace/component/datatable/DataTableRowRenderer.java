@@ -40,23 +40,27 @@ import java.util.Map;
  * Time: 2:41 PM
  */
 public class DataTableRowRenderer {
-    protected static boolean encodeRow(FacesContext context, DataTable table, List<Column> columns, Map<Object, List<String>> rowToSelectedFieldsMap, String clientId, int rowIndex, String parentIndex, String rowIndexVar, boolean topVisibleRowRendered) throws IOException {
+    protected static boolean encodeRow(FacesContext context, DataTableRenderingContext tableContext, String clientId, int rowIndex, String parentIndex, boolean topVisibleRowRendered) throws IOException {
+        DataTable table = tableContext.getTable();
+
         table.setRowIndex(rowIndex);
+
         if (!table.isRowAvailable()) return false;
-        if (rowIndexVar != null) context.getExternalContext().getRequestMap().put(rowIndexVar, rowIndex);
 
-        RowState rowState = table.getStateMap().get(table.getRowData());
+        if (tableContext.getRowIndexVar() != null)
+            context.getExternalContext().getRequestMap().put(tableContext.getRowIndexVar(), rowIndex);
 
+        RowState rowState = tableContext.getStateMap().get(table.getRowData());
         boolean selected = rowState.isSelected();
         boolean unselectable = !rowState.isSelectable();
         boolean expanded = rowState.isExpanded();
         boolean visible = rowState.isVisible();
 
-        List<String> selectedCellExpressions = (rowToSelectedFieldsMap != null)
-                ? (List<String>)(rowToSelectedFieldsMap.get(table.getRowData()))
+        List<String> selectedCellExpressions = (tableContext.getRowToSelectedFieldsMap() != null)
+                ? (List<String>)(tableContext.getRowToSelectedFieldsMap().get(table.getRowData()))
                 : null;
 
-        context.getExternalContext().getRequestMap().put(table.getRowStateVar(), rowState);
+        context.getExternalContext().getRequestMap().put(tableContext.getRowStateVar(), rowState);
 
         if (visible) {
             ResponseWriter writer = context.getResponseWriter();
@@ -65,13 +69,17 @@ public class DataTableRowRenderer {
             List<Row> leadingRows = table.getConditionalRows(rowIndex, true);
             for (Row r : leadingRows) encodeConditionalRow(context, r);
 
-            String userRowStyleClass = table.getRowStyleClass();
+            String userRowStyleClass = tableContext.getRowStyleClass();
             String expandedClass = expanded ? DataTableConstants.EXPANDED_ROW_CLASS : "";
             String unselectableClass = unselectable ? DataTableConstants.UNSELECTABLE_ROW_CLASS : "";
-            String rowStyleClass = rowIndex % 2 == 0 ? DataTableConstants.ROW_CLASS + " " + DataTableConstants.EVEN_ROW_CLASS : DataTableConstants.ROW_CLASS + " " + DataTableConstants.ODD_ROW_CLASS;
+            String rowStyleClass = rowIndex % 2 == 0
+                    ? DataTableConstants.ROW_CLASS + " " + DataTableConstants.EVEN_ROW_CLASS
+                    : DataTableConstants.ROW_CLASS + " " + DataTableConstants.ODD_ROW_CLASS;
 
-            if (selected && table.getSelectionMode() != null) rowStyleClass = rowStyleClass + " ui-selected ui-state-active";
-            if (userRowStyleClass != null) rowStyleClass = rowStyleClass + " " + userRowStyleClass;
+            if (selected && tableContext.getSelectionMode() != null)
+                rowStyleClass = rowStyleClass + " ui-selected ui-state-active";
+            if (userRowStyleClass != null)
+                rowStyleClass = rowStyleClass + " " + userRowStyleClass;
 
             writer.startElement(HTML.TR_ELEM, null);
             parentIndex = (parentIndex != null) ? parentIndex + "." : "";
@@ -79,35 +87,40 @@ public class DataTableRowRenderer {
             writer.writeAttribute(HTML.CLASS_ATTR, rowStyleClass + " " + expandedClass + " " + unselectableClass, null);
             writer.writeAttribute(HTML.TABINDEX_ATTR, "0", null);
 
-            boolean innerTdDivRequired = ((table.isScrollable() || table.isResizableColumns()) & !topVisibleRowRendered);
+            boolean innerTdDivRequired = ((tableContext.getScrollable() || tableContext.getResizableColumns()) & !topVisibleRowRendered);
 
-            for (Column kid : columns) {
+            for (Column kid : tableContext.getColumns()) {
                 if (kid.isRendered()) {
                     boolean cellSelected = false;
                     if (selectedCellExpressions != null) {
-                        ValueExpression ve = kid.getValueExpression("selectBy") != null ? kid.getValueExpression("selectBy") : kid.getValueExpression("value");
+                        ValueExpression ve = kid.getValueExpression("selectBy") != null
+                                ? kid.getValueExpression("selectBy")
+                                : kid.getValueExpression("value");
+
                         if (ve != null)
                             cellSelected = selectedCellExpressions.contains(ve.getExpressionString());
                     }
-
-                    encodeRegularCell(context, columns, kid, cellSelected, innerTdDivRequired);
+                    encodeRegularCell(context, tableContext.getColumns(), kid, cellSelected, innerTdDivRequired);
                 }
             }
 
-            if (rowIndexVar != null) context.getExternalContext().getRequestMap().put(rowIndexVar, rowIndex);
+            if (tableContext.getRowIndexVar() != null)
+                context.getExternalContext().getRequestMap().put(tableContext.getRowIndexVar(), rowIndex);
             writer.endElement(HTML.TR_ELEM);
 
             if (expanded) {
-                context.getExternalContext().getRequestMap().put(clientId + "_expandedRowId", ""+rowIndex);
                 boolean isPanel = table.getPanelExpansion() != null;
                 boolean isRow = table.getRowExpansion() != null;
+
+                context.getExternalContext().getRequestMap()
+                        .put(clientId + "_expandedRowId", "" + rowIndex);
 
                 // Ensure that table.getTableId returns correctly for request map look
                 table.setRowIndex(-1);
 
                 if (isPanel && isRow) {
                     if (rowState.getExpansionType() == RowState.ExpansionType.ROW) {
-                        encodeRowExpansion(context, table, columns, writer);
+                        encodeRowExpansion(context, tableContext, writer);
                     }
                     else if (rowState.getExpansionType() == RowState.ExpansionType.PANEL) {
                         encodeRowPanelExpansion(context, table);
@@ -115,7 +128,7 @@ public class DataTableRowRenderer {
                 } else if (isPanel) {
                     encodeRowPanelExpansion(context, table);
                 } else if (isRow) {
-                    encodeRowExpansion(context, table, columns, writer);
+                    encodeRowExpansion(context, tableContext, writer);
                 }
 
                 // Row index will have come back different from row expansion.
@@ -187,24 +200,37 @@ public class DataTableRowRenderer {
             if (!isCurrStacked) {
                 writer.startElement(HTML.TD_ELEM, null);
 
-                if (column.getStyle() != null) writer.writeAttribute(HTML.STYLE_ELEM, column.getStyle(), null);
+                if (column.getStyle() != null)
+                    writer.writeAttribute(HTML.STYLE_ELEM, column.getStyle(), null);
 
-                if (isNextGrouped) writer.writeAttribute(HTML.ROWSPAN_ATTR, column.findCurrGroupLength()+1, null);
+                if (isNextGrouped)
+                    writer.writeAttribute(HTML.ROWSPAN_ATTR, column.findCurrGroupLength()+1, null);
 
                 CellEditor editor = column.getCellEditor();
 
                 String columnStyleClass = column.getStyleClass();
                 if (editor != null) {
-                    columnStyleClass = columnStyleClass == null ? DataTableConstants.EDITABLE_COLUMN_CLASS : DataTableConstants.EDITABLE_COLUMN_CLASS + " " + columnStyleClass;
+                    columnStyleClass = columnStyleClass == null
+                            ? DataTableConstants.EDITABLE_COLUMN_CLASS
+                            : DataTableConstants.EDITABLE_COLUMN_CLASS + " " + columnStyleClass;
                 }
+
                 // Add alternating styling, except when last group is the same value, split by an expansion or conditional row
                 if (column.getValueExpression("groupBy") != null) {
                     if (column.isLastGroupDifferent()) column.setOddGroup(!column.isOddGroup());
                     if (columnStyleClass == null) columnStyleClass = "";
-                    columnStyleClass += column.isOddGroup() ? " ui-datatable-group-odd" : " ui-datatable-group-even";
+
+                    columnStyleClass += column.isOddGroup()
+                            ? " ui-datatable-group-odd"
+                            : " ui-datatable-group-even";
                 }
-                if (selected) columnStyleClass = columnStyleClass == null ? "ui-state-active ui-selected" : columnStyleClass + " ui-state-active ui-selected";
-                if (columnStyleClass != null) writer.writeAttribute(HTML.CLASS_ATTR, columnStyleClass, null);
+
+                if (selected) columnStyleClass = columnStyleClass == null
+                        ? "ui-state-active ui-selected"
+                        : columnStyleClass + " ui-state-active ui-selected";
+
+                if (columnStyleClass != null)
+                    writer.writeAttribute(HTML.CLASS_ATTR, columnStyleClass, null);
 
                 if (resizable) writer.startElement(HTML.DIV_ELEM, null);
             }
@@ -222,65 +248,83 @@ public class DataTableRowRenderer {
         }
     }
 
-    private static void encodeRowExpansion(FacesContext context, DataTable table, List<Column> columns, ResponseWriter writer) throws IOException {
-        String rowVar = table.getVar();
-        String rowIndexVar = table.getRowIndexVar();
+    private static void encodeRowExpansion(FacesContext context, DataTableRenderingContext tableContext, ResponseWriter writer) throws IOException {
+        DataTable table = tableContext.getTable();
+
+        String rowVar = tableContext.getVar();
+        String rowIndexVar = tableContext.getRowIndexVar();
         String clientId = table.getClientId(context);
 
-        String expandedRowId = context.getExternalContext().getRequestParameterMap().get(clientId + "_expandedRowId");
+        String expandedRowId = context.getExternalContext()
+                .getRequestParameterMap().get(clientId + "_expandedRowId");
+
         if (expandedRowId == null) {
-            expandedRowId = (String) context.getExternalContext().getRequestMap().get(clientId + "_expandedRowId");
+            expandedRowId = (String) context.getExternalContext()
+                    .getRequestMap().get(clientId + "_expandedRowId");
         }
 
         Object model = table.getDataModel();
 
-        if (!(table.hasTreeDataModel())) throw new FacesException("DataTable : \"" + clientId + "\" must be bound to an instance of TreeDataModel when using sub-row expansion.");
+        if (!(table.hasTreeDataModel()))
+            throw new FacesException("DataTable : \"" + clientId +
+                    "\" must be bound to an instance of TreeDataModel when using sub-row expansion.");
+
         TreeDataModel rootModel = (TreeDataModel)model;
         rootModel.setRootIndex(expandedRowId);
-        table.getStateMap().get(rootModel.getRootData()).setExpanded(true);
+        tableContext.getStateMap().get(rootModel.getRootData()).setExpanded(true);
         table.setRowIndex(0);
 
         if (rootModel.getRowCount() > 0)
             while (rootModel.getRowIndex() < rootModel.getRowCount()) {
-//            System.out.println("----------");
-//            System.out.println(rootModel.getRootIndex());
-//            System.out.println(rootModel.getRowIndex());
-//            System.out.println("----------");
+                if (rowVar != null) context.getExternalContext()
+                        .getRequestMap().put(rowVar, rootModel.getRowData());
+                if (rowIndexVar != null) context.getExternalContext()
+                        .getRequestMap().put(rowIndexVar, rootModel.getRowIndex());
 
-                if (rowVar != null) context.getExternalContext().getRequestMap().put(rowVar, rootModel.getRowData());
-                if (rowIndexVar != null) context.getExternalContext().getRequestMap().put(rowIndexVar, rootModel.getRowIndex());
-
-                RowState rowState = table.getStateMap().get(rootModel.getRowData());
+                RowState rowState = tableContext.getStateMap().get(rootModel.getRowData());
                 boolean selected = rowState.isSelected();
                 boolean expanded = rowState.isExpanded();
                 boolean unselectable = !rowState.isSelectable();
                 boolean visible = rowState.isVisible();
-                Map<Object, List<String>> rowToSelectedFieldsMap = table.getRowToSelectedFieldsMap();
+                Map<Object, List<String>> rowToSelectedFieldsMap = tableContext.getRowToSelectedFieldsMap();
                 List<String> selectedCellExpressions = null;
+
                 if (rowToSelectedFieldsMap != null)
                     selectedCellExpressions = (List<String>)(rowToSelectedFieldsMap.get(table.getRowData()));
-                context.getExternalContext().getRequestMap().put(table.getRowStateVar(), rowState);
+
+                context.getExternalContext().getRequestMap()
+                        .put(tableContext.getRowStateVar(), rowState);
 
                 String expandedClass = expanded ? DataTableConstants.EXPANDED_ROW_CLASS : "";
-                String alternatingClass = (rootModel.getRowIndex() % 2 == 0) ? DataTableConstants.EVEN_ROW_CLASS : DataTableConstants.ODD_ROW_CLASS;
-                String selectionClass = (selected && table.getSelectionMode() != null) ? "ui-selected ui-state-active" : "";
-                String unselectableClass = unselectable ? DataTableConstants.UNSELECTABLE_ROW_CLASS : "";
+                String alternatingClass = (rootModel.getRowIndex() % 2 == 0)
+                        ? DataTableConstants.EVEN_ROW_CLASS
+                        : DataTableConstants.ODD_ROW_CLASS;
+
+                String selectionClass = (selected && tableContext.getSelectionMode() != null)
+                        ? "ui-selected ui-state-active" : "";
+                String unselectableClass = unselectable
+                        ? DataTableConstants.UNSELECTABLE_ROW_CLASS : "";
 
                 if (visible) {
                     writer.startElement(HTML.TR_ELEM, null);
-                    writer.writeAttribute(HTML.ID_ATTR, clientId + "_row_" + expandedRowId + "." + rootModel.getRowIndex(), null);
-                    writer.writeAttribute(HTML.CLASS_ATTR, DataTableConstants.ROW_CLASS + " " + alternatingClass + " " + selectionClass + " " + expandedClass + " " + unselectableClass, null);
+                    writer.writeAttribute(HTML.ID_ATTR,
+                            clientId + "_row_" + expandedRowId + "." + rootModel.getRowIndex(), null);
+                    writer.writeAttribute(HTML.CLASS_ATTR,
+                            DataTableConstants.ROW_CLASS + " " + alternatingClass + " " + selectionClass + " " + expandedClass + " " + unselectableClass, null);
 
-                    for (Column kid : columns) {
+                    for (Column kid : tableContext.getColumns()) {
                         if (kid.isRendered()) {
                             boolean cellSelected = false;
                             if (selectedCellExpressions != null) {
-                                ValueExpression ve = kid.getValueExpression("selectBy") != null ? kid.getValueExpression("selectBy") : kid.getValueExpression("value");
+                                ValueExpression ve = kid.getValueExpression("selectBy") != null
+                                        ? kid.getValueExpression("selectBy")
+                                        : kid.getValueExpression("value");
                                 if (ve != null)
-                                    cellSelected = selectedCellExpressions.contains(ve.getExpressionString());
+                                    cellSelected = selectedCellExpressions
+                                            .contains(ve.getExpressionString());
                             }
 
-                            encodeRegularCell(context, columns, kid, cellSelected, false);
+                            encodeRegularCell(context, tableContext.getColumns(), kid, cellSelected, false);
                         }
                     }
                     writer.endElement(HTML.TR_ELEM);
@@ -299,7 +343,7 @@ public class DataTableRowRenderer {
 
                         if (isPanel && isRow) {
                             if (rowState.getExpansionType() == RowState.ExpansionType.ROW) {
-                                encodeRowExpansion(context, table, columns, writer);
+                                encodeRowExpansion(context, tableContext, writer);
                             }
                             else if (rowState.getExpansionType() == RowState.ExpansionType.PANEL) {
                                 encodeRowPanelExpansion(context, table);
@@ -307,7 +351,7 @@ public class DataTableRowRenderer {
                         } else if (isPanel) {
                             encodeRowPanelExpansion(context, table);
                         } else if (isRow) {
-                            encodeRowExpansion(context, table, columns, writer);
+                            encodeRowExpansion(context, tableContext, writer);
                         }
 
                         rootModel = (TreeDataModel) table.getDataModel();
