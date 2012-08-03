@@ -173,6 +173,43 @@ public class CoreRenderer extends Renderer {
             }
         }
     }
+    protected void writeJavascriptFile(FacesContext facesContext,
+            UIComponent component, String JS_NAME, String JS_MIN_NAME,
+            String JS_LIBRARY, String JS2_NAME, String JS2_MIN_NAME, String JS2_LIB) throws IOException {
+        ResponseWriter writer = facesContext.getResponseWriter();
+        String clientId = component.getClientId(facesContext);
+        writer.startElement(HTML.SPAN_ELEM, component);
+        writer.writeAttribute(HTML.ID_ATTR, clientId+"_libJS", HTML.ID_ATTR);
+        if (!isScriptLoaded(facesContext, JS_NAME)) {
+            String jsFname = JS_NAME;
+            if (facesContext.isProjectStage(ProjectStage.Production)){
+                jsFname = JS_MIN_NAME;
+            }
+            //set jsFname to min if development stage
+            Resource jsFile = facesContext.getApplication().getResourceHandler().createResource(jsFname, JS_LIBRARY);
+            String src = jsFile.getRequestPath();
+            writer.startElement("script", component);
+            writer.writeAttribute("text", "text/javascript", null);
+            writer.writeAttribute("src", src, null);
+            writer.endElement("script");
+            setScriptLoaded(facesContext, JS_NAME);
+        }
+        if (!isScriptLoaded(facesContext, JS2_NAME)) {
+            String jsFname = JS2_NAME;
+            if (facesContext.isProjectStage(ProjectStage.Production)){
+                jsFname = JS2_MIN_NAME;
+            }
+            //set jsFname to min if development stage
+            Resource jsFile = facesContext.getApplication().getResourceHandler().createResource(jsFname, JS2_LIB);
+            String src = jsFile.getRequestPath();
+            writer.startElement("script", component);
+            writer.writeAttribute("text", "text/javascript", null);
+            writer.writeAttribute("src", src, null);
+            writer.endElement("script");
+            setScriptLoaded(facesContext, JS2_NAME);
+        }
+        writer.endElement(HTML.SPAN_ELEM);
+    }
 
     protected void writeJavascriptFile(FacesContext facesContext, 
             UIComponent component, String JS_NAME, String JS_MIN_NAME, 

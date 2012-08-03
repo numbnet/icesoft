@@ -17,96 +17,89 @@
 if (!window['mobi']) {
     window.mobi = {};
 }
-mobi.carousel = {
-	  acarousel: null,
-	  loaded: function(clientId, cfg){
-	            var carouselId = clientId+'_carousel';
-	            //carousel iscroll loading
-	        //    ice.log.debug(ice.log, 'in the carouselLoaded method clientId is '+clientId);
-	            setTimeout(function () {
-	                if (this.acarousel) {
-	                 //   ice.log.debug(ice.log, 'REFRESH existing carousel='+this.acarousel);
-	                    mobi.carousel.refresh(clientId, singleSubmit);
-	                }
-	                else {
-	                    ice.log.debug(ice.log, 'CREATE onload carousel');
-	                    this.acarousels = new iScroll(carouselId, {
+(function() {
+    //functions that do not encapsulate any state, they just work with the provided parameters
+    //and globally accessible variables  none for this class
+
+    //-------------------------------------
+    function Carousel(clientId) {
+        var carouselId = clientId+'_carousel';
+        var myScroll = new iScroll(carouselId, {
 	                    snap: 'li',
 	                    momentum: false,
-	                    hScrollbar: false, 
+	                    hScrollbar: false,
+                        checkDOMChanges: false,
+                        zoom: true,
 	                    onScrollEnd: function () {
-                            mobi.carousel.scrollUpdate(clientId, this.currPageX, cfg);
+                            mobi.carousel.scrollUpd(clientId, this.currPageX);
     	                }
-	                 });
-	                }
-	              }, 100);
-	               ice.log.debug(ice.log,"after setTimeout function");
-	   },
-	   unloaded: function(clientId){
-	       if (this.acarousel!=null){
-      //        ice.log.debug(ice.log, 'DESTROY carousel with id='+clientId);
-	           this.acarousel.destroy();
-	           this.acarousel = null;
-	       }
-	   }, 
-	   scrollUpdate: function(clientId, pageVal, cfg){
-            //only update if different than last one.
-  //         ice.log.debug(ice.log, 'scrollUpdate and current page is='+pageVal);
-           var hidden = document.getElementById(clientId+'_hidden');
-           var changedVal = false;
-           if (hidden){
-               var temp = hidden.value;
-               if (temp!=pageVal){
-                    changedVal = true;
-                    hidden.value=pageVal;
-                    ice.log.debug(ice.log, 'old hidden='+temp+ ' updated to hidden.value = '+hidden.value);
-                    document.querySelector('.mobi-carousel-cursor-list > li.active').className = '';
-                    document.querySelector('.mobi-carousel-cursor-list > li:nth-child(' + (pageVal + 1) + ')').className = 'active';
+	    });
+    //    myScroll.refresh();
+        return {
+           scrollUpdate: function( clientId, pageVal, cfg) {
+               var hidden = document.getElementById(clientId+'_hidden');
+               var changedVal = false;
+               if (hidden){
+                   var temp = hidden.value;
+                   if (temp!=pageVal){
+                        changedVal = true;
+                        hidden.value=pageVal;
+                        ice.log.debug(ice.log, 'old hidden='+temp+ ' updated to hidden.value = '+hidden.value);
+                        document.querySelector('.mobi-carousel-cursor-list > li.active').className = '';
+                        document.querySelector('.mobi-carousel-cursor-list > li:nth-child(' + (pageVal + 1) + ')').className = 'active';
+                   }
                }
-           }
-           if (changedVal){
-               var behaviors = cfg.behaviors;
-               var hasBehaviors = false;
-                if (behaviors){
-                    hasBehaviors = true;
-                }
-               var singleSubmit = cfg.singleSubmit;
-               if (hasBehaviors){
-                   ice.log.debug(ice.log, ' HAS BEHAVIORS');
-                  if (behaviors.change){
-                        behaviors.change();
+               if (changedVal){
+                   var behaviors = cfg.behaviors;
+                   var hasBehaviors = false;
+                    if (behaviors){
+                        hasBehaviors = true;
                     }
-                }
-                if (!hasBehaviors && singleSubmit){
-                    ice.se(null, clientId);
-                }
+                   var singleSubmit = cfg.singleSubmit;
+                   if (hasBehaviors){
+                      if (behaviors.change){
+                            behaviors.change();
+                        }
+                    }
+                    if (!hasBehaviors && singleSubmit){
+                        ice.se(null, clientId);
+                    }
+               }
+        //       myScroll.refresh();
+           },
+           scrollToPage: function(key){
+               myScroll.scrollToPage(key,0);
+               myScroll.refresh();
+           } ,
+           updateProperties: function (clientId) {
+               var hidden = document.getElementById(clientId+'_hidden');
+               if (hidden){
+                   var temp = hidden.value;
+                   this.scrollUpdate(clientId, temp);
+               }
+                myScroll.refresh();
            }
-	   },
-	   refresh: function(clientId, cfg){
-		   if (this.acarousel){
-               ice.log.debug(ice.log, "  have a carousel to refresh from hidden value");
-			   var currPageX = 0;
-			   var hidden = document.getElementById(clientId+"_hidden");
-			   if (hidden){
-				   currPageX = hidden.value;
-				   ice.log.debug(ice.log, 'in refresh and currPageX ='+this.currPageX+' hiddenVal is ='+hidden.value);
-			   }
-		 	   //if this.current is different from hidden, then scroll to hidden value.
-			   this.acarousel.scrollToPage(currPageX);
-               document.querySelector('.mobi-carousel-cursor-list > li.active').className = '';
-               document.querySelector('.mobi-carousel-cursor-list > li:nth-child(' + (this.currPageX + 1) + ')').className = 'active';
-			   setTimeout(function(){
-			      this.acarousel.refresh();
+        }
+    }
+    mobi.carousel = {
+        acarousel: {},
+        cfg: {},
+        loaded: function(clientId, cfgIn) {
+        //    alert('onload');
+            if (!this.acarousel[clientId]){
+                this.cfg[clientId] = cfgIn;
+                this.acarousel[clientId] = Carousel(clientId);
+            } else {
+                this.cfg[clientId] = cfgIn;
+                this.acarousel[clientId].updateProperties(clientId);
+            }
+        },
+        scrollUpd: function(clientId, pageVal){
+            this.acarousel[clientId].scrollUpdate(clientId, pageVal, this.cfg[clientId]);
+        },
+        scrollTo: function(clientId, key){
+            this.acarousel[clientId].scrollToPage(key);
+        }
+    }
 
-			   },0);
-
-		   }
-           if (!this.acarousel){
-           //    ice.log.debug(ice.log, "REFRESH HAS NO OBJECT FOR CAROUSEL clientId="+clientId+' ss -'+singleSubmit);
-               this.acarousel=null;
-               this.loaded(clientId, cfg);
-           }
-
-	   }
-
-}
+  })();

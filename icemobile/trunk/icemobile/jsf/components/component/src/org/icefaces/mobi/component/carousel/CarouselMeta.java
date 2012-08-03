@@ -87,7 +87,16 @@ public class CarouselMeta extends UISeriesBaseMeta {
     @Property(defaultValue = "0", tlddoc = " selectedItem will show the item in the list at the center location")
     private int selectedItem;
 
-    @Property(defaultValue = "false", tlddoc = "The default value of this attribute is false. If true then value change event will happen in APPLY_REQUEST_VALUES phase and if the value of this attribute is false then event change will happen in INVOKE_APPLICATION phase")
+    @Property(defaultValue = "false", tlddoc = "The default value of this attribute is false. If true then value change " +
+            "event will happen in APPLY_REQUEST_VALUES phase and if the value of this " +
+            "attribute is false then event change will happen in INVOKE_APPLICATION phase")
     private boolean immediate;
+
+    @Property(tlddoc = "If set the label for the previous link will be shown.  otherwise, no pagination for previous used ")
+    private String previousLabel;
+
+    @Property(tlddoc = "If set the label for the next link will be shown.  otherwise, no pagination for next used ")
+    private String nextLabel;
+
     /** other possible attributes include vertical, scroll increment, circular, numbershown, currentIndex */
 }

@@ -25,6 +25,8 @@ import java.io.IOException;
 
 
 public class BaseLayoutRenderer extends CoreRenderer {
+    public static final String TOUCH_START_EVENT = "ontouchstart";
+    public static final String CLICK_EVENT = "onclick";
     /*
         in order to use these must have empty encodeChildren method in Renderer.
      */

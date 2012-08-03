@@ -36,12 +36,8 @@
 </h:head>
 
 <h:body>
-
-    <h2>Carousel - non-composite component</h2>
-
-    <p>using value of list for items</p>
-
-    <mobi:carousel id="carOne" value="#{carousel.imageList}" var="item">
+    <h3>Carousel - non-composite component</h3>
+    <mobi:carousel id="carOne" style="width: 300px;" value="#{carousel.imageList}" var="item">
 
         <h:panelGroup>
             <h:graphicImage value="#{item.imageUrl}"
