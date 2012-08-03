@@ -33,15 +33,16 @@ import java.util.List;
  * Time: 2:34 PM
  */
 public class DataTableFootRenderer {
-    protected static void encodeTableFoot(FacesContext context, DataTable table, List<Column> columns, boolean staticHeaders) throws IOException {
+    protected static void encodeTableFoot(FacesContext context, DataTableRenderingContext tableContext) throws IOException {
+        DataTable table = tableContext.getTable();
+        List<Column> columns = tableContext.getColumns();
         ResponseWriter writer = context.getResponseWriter();
         ColumnGroup group = table.getColumnGroup("footer");
         boolean shouldRender = table.hasFooterColumn(columns) || group != null;
 
         if (!shouldRender) return;
 
-
-        if (staticHeaders) {
+        if (tableContext.getStaticHeaders()) {
             writer.startElement(HTML.DIV_ELEM, null);
             writer.writeAttribute(HTML.CLASS_ATTR, DataTableConstants.SCROLLABLE_FOOTER_CLASS, null);
             writer.startElement(HTML.TABLE_ELEM, null);
@@ -49,7 +50,8 @@ public class DataTableFootRenderer {
 
         writer.startElement(HTML.TFOOT_ELEM, null);
 
-        if (table.isInDuplicateSegment()) writer.writeAttribute(HTML.STYLE_ATTR, "display:none;", null);
+        if (table.isInDuplicateSegment())
+            writer.writeAttribute(HTML.STYLE_ATTR, "display:none;", null);
 
         if (group != null) {
             for (UIComponent child : group.getChildren()) {
@@ -60,7 +62,8 @@ public class DataTableFootRenderer {
                     List<UIComponent> footerRowChildren = footerRow.getChildren();
                     for (UIComponent footerRowChild : footerRowChildren)
                         if (footerRowChild.isRendered() && footerRowChild instanceof Column)
-                            encodeColumnFooter(context, table, footerRowChildren, (Column) footerRowChild, true);
+                            encodeColumnFooter(context, table, footerRowChildren,
+                                    (Column) footerRowChild, true);
 
                     writer.endElement(HTML.TR_ELEM);
                 }
@@ -74,7 +77,7 @@ public class DataTableFootRenderer {
         }
         writer.endElement(HTML.TFOOT_ELEM);
 
-        if (staticHeaders) {
+        if (tableContext.getStaticHeaders()) {
             writer.endElement(HTML.TABLE_ELEM);
             writer.endElement(HTML.DIV_ELEM);
         }
@@ -91,13 +94,19 @@ public class DataTableFootRenderer {
         if (!isCurrStacked) {
             String style = column.getStyle();
             String styleClass = column.getStyleClass();
-            String footerClass = styleClass != null ? DataTableConstants.COLUMN_FOOTER_CLASS + " " + styleClass : DataTableConstants.COLUMN_FOOTER_CLASS;
+            String footerClass = styleClass != null
+                    ? DataTableConstants.COLUMN_FOOTER_CLASS + " " + styleClass
+                    : DataTableConstants.COLUMN_FOOTER_CLASS;
 
             writer.startElement(HTML.TD_ELEM, null);
             writer.writeAttribute(HTML.CLASS_ATTR, footerClass, null);
-            if (style != null) writer.writeAttribute(HTML.STYLE_ELEM, style, null);
-            if (column.getRowspan() != 1) writer.writeAttribute(HTML.ROWSPAN_ATTR, column.getRowspan(), null);
-            if (column.getColspan() != 1) writer.writeAttribute(HTML.COLSPAN_ATTR, column.getColspan(), null);
+
+            if (style != null)
+                writer.writeAttribute(HTML.STYLE_ELEM, style, null);
+            if (column.getRowspan() != 1)
+                writer.writeAttribute(HTML.ROWSPAN_ATTR, column.getRowspan(), null);
+            if (column.getColspan() != 1)
+                writer.writeAttribute(HTML.COLSPAN_ATTR, column.getColspan(), null);
         }
         else {
             writer.startElement("hr", null);

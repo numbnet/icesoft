@@ -26,27 +26,18 @@
  */
 package org.icefaces.ace.component.datatable;
 
-import org.icefaces.ace.component.celleditor.CellEditor;
 import org.icefaces.ace.component.column.Column;
-import org.icefaces.ace.component.columngroup.ColumnGroup;
-import org.icefaces.ace.component.panelexpansion.PanelExpansion;
-import org.icefaces.ace.component.row.Row;
-import org.icefaces.ace.component.rowexpansion.RowExpansion;
 import org.icefaces.ace.component.tableconfigpanel.TableConfigPanel;
-import org.icefaces.ace.model.table.*;
 import org.icefaces.ace.renderkit.CoreRenderer;
 import org.icefaces.ace.util.ComponentUtils;
 import org.icefaces.ace.util.HTML;
 import org.icefaces.ace.util.JSONBuilder;
 import org.icefaces.render.MandatoryResourceComponent;
 
-import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import javax.faces.model.DataModel;
-import javax.faces.model.SelectItem;
 import java.io.IOException;
 import java.util.*;
 
@@ -109,49 +100,58 @@ public class DataTableRenderer extends CoreRenderer {
 
     private void encodeEntirety(FacesContext context, DataTable table) throws IOException{
         ResponseWriter writer = context.getResponseWriter();
+        DataTableRenderingContext tableContext = new DataTableRenderingContext(table);
+
         String clientId = table.getClientId(context);
         String style = null;
         String styleClass;
-        String paginatorPosition = table.getPaginatorPosition();
+        String paginatorPosition = tableContext.getPaginatorPosition();
         String containerClass = DataTableConstants.CONTAINER_CLASS;
-        boolean hasPaginator = table.isPaginator();
-        boolean staticHeaders = table.isScrollable() && table.isStaticHeaders();
-        table.getStateMap(); // init statemap while row index == -1
+        boolean hasPaginator = tableContext.getPaginator();
 
-
-        if (staticHeaders)
+        // Get styles
+        if (tableContext.getStaticHeaders())
             containerClass += " " + DataTableConstants.SCROLLABLE_CONTAINER_CLASS;
 
         if ((styleClass = table.getStyleClass()) != null)
             containerClass += " " + styleClass;
 
-
+        // Container
         writer.startElement(HTML.DIV_ELEM, table);
         writer.writeAttribute(HTML.ID_ATTR, clientId, HTML.ID_ATTR);
         writer.writeAttribute(HTML.CLASS_ATTR, containerClass, "styleClass");
 
+        // Container Style
         if ((style = table.getStyle()) != null)
             writer.writeAttribute(HTML.STYLE_ELEM, style, HTML.STYLE_ELEM);
 
+        // Header Facet
         encodeFacet(context, table, table.getHeader(), DataTableConstants.HEADER_CLASS);
 
+        // Paginator
         if (hasPaginator && !paginatorPosition.equalsIgnoreCase("bottom"))
             encodePaginatorMarkup(context, table, "top");
 
+        // Config Panel
         encodeConfigPanel(context, table);
-        encodeTable(context, table, staticHeaders);
 
+        // Encode Table
+        encodeTable(context, tableContext);
+
+        // Paginator
         if (hasPaginator && !paginatorPosition.equalsIgnoreCase("top"))
             encodePaginatorMarkup(context, table, "bottom");
 
+        // Footer Facet
         encodeFacet(context, table, table.getFooter(), DataTableConstants.FOOTER_CLASS);
 
+        // Hidden Fields
         if (table.isSelectionEnabled())
             encodeSelectionAndDeselectionHolder(context, table);
 
+        // Scripts
         encodeScript(context, table);
 
-        // Avoid sharing cached stateMap with other iterative instances
         table.clearCachedStateMap();
 
         if ("true".equals(context.getExternalContext().getInitParameter("ForceFullTableDOMUpdates"))) {
@@ -164,79 +164,86 @@ public class DataTableRenderer extends CoreRenderer {
         writer.endElement(HTML.DIV_ELEM);
     }
 
-    private void encodeTable(FacesContext context, DataTable table, boolean staticHeaders) throws IOException {
+    private void encodeTable(FacesContext context, DataTableRenderingContext tableContext) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        List<Column> columns = table.getColumns();
+        DataTable table = tableContext.getTable();
 
-        if (!staticHeaders) {
+        if (!tableContext.getStaticHeaders()) {
             Integer height;
 
             writer.startElement(HTML.DIV_ELEM, null);
-            if (table.isScrollable() && (height = table.getScrollHeight()) != null)
+            if (tableContext.getScrollable() && (height = table.getScrollHeight()) != null)
                 writer.writeAttribute(HTML.STYLE_ELEM, "max-height:" + height + "px; overflow:auto;", null);
             writer.startElement(HTML.TABLE_ELEM, null);
         }
 
-        DataTableHeadRenderer.encodeTableHead(context, table, columns, staticHeaders);
-        encodeTableBody(context, table, columns, staticHeaders);
-        DataTableFootRenderer.encodeTableFoot(context, table, columns, staticHeaders);
+        DataTableHeadRenderer.encodeTableHead(context, tableContext);
+        encodeTableBody(context, tableContext);
+        DataTableFootRenderer.encodeTableFoot(context, tableContext);
 
-        if (!staticHeaders) {
+        if (!tableContext.getStaticHeaders()) {
             writer.endElement(HTML.TABLE_ELEM);
             writer.endElement(HTML.DIV_ELEM);
         }
     }
 
-    private void encodeTableBody(FacesContext context, DataTable table, List<Column> columns, boolean scrollable) throws IOException {
+    private void encodeTableBody(FacesContext context, DataTableRenderingContext tableContext) throws IOException {
+        DataTable table = tableContext.getTable();
         ResponseWriter writer = context.getResponseWriter();
-        String rowIndexVar = table.getRowIndexVar();
+        String rowIndexVar = tableContext.getRowIndexVar();
         String clientId = table.getClientId(context);
 
-        if (scrollable) {
+        if (tableContext.getScrollable()) {
+            String scrollClass =
+                    DataTableConstants.SCROLLABLE_X_CLASS + " " +
+                            DataTableConstants.SCROLLABLE_BODY_CLASS;
+
             writer.startElement(HTML.DIV_ELEM, null);
-            String scrollClass = DataTableConstants.SCROLLABLE_X_CLASS + " " + DataTableConstants.SCROLLABLE_BODY_CLASS;
             writer.writeAttribute(HTML.CLASS_ATTR, scrollClass, null);
-            writer.writeAttribute(HTML.STYLE_ELEM, "max-height:" + table.getScrollHeight() + "px", null);
+            writer.writeAttribute(HTML.STYLE_ELEM, "max-height:" + tableContext.getScrollHeight() + "px", null);
             writer.startElement(HTML.TABLE_ELEM, null);
 
             if (table.hasHeaders()) {
                 table.setInDuplicateSegment(true);
-                DataTableHeadRenderer.encodeTableHead(context, table, columns, false);
+                DataTableHeadRenderer.encodeTableHead(context, tableContext);
                 table.setInDuplicateSegment(false);
             }
         }
 
         if (table.isLazy()) table.loadLazyData();
 
-        int rows = table.getRows();
-        int first = table.getFirst();
+        int rows = tableContext.getRows();
+        int first = tableContext.getFirst();
         int page = table.getPage();
         int rowCount = table.getRowCount();
         int rowCountToRender = rows == 0 ? rowCount : rows;
         boolean renderedTopVisible = false;
         boolean hasData = rowCount > 0;
-
-        String tbodyClass = hasData ? DataTableConstants.DATA_CLASS : DataTableConstants.EMPTY_DATA_CLASS;
+        String tbodyClass = hasData
+                ? DataTableConstants.DATA_CLASS
+                : DataTableConstants.EMPTY_DATA_CLASS;
 
         writer.startElement(HTML.TBODY_ELEM, null);
         writer.writeAttribute(HTML.CLASS_ATTR, tbodyClass, null);
 
-        Map<Object, List<String>> rowToSelectedFieldsMap = table.getRowToSelectedFieldsMap();
-
-        if (hasData)
+        if (hasData) {
             for (int i = first; i < (first + rowCountToRender); i++) {
-                if (DataTableRowRenderer.encodeRow(context, table, columns, rowToSelectedFieldsMap, clientId, i, null, rowIndexVar, renderedTopVisible))
+                if (DataTableRowRenderer.encodeRow(context, tableContext, clientId, i, null, renderedTopVisible))
                     renderedTopVisible = true;
             }
-        else encodeEmptyMessage(table, writer, columns);
+        }
+        else
+            encodeEmptyMessage(table, writer, tableContext.getColumns());
 
         writer.endElement(HTML.TBODY_ELEM);
         table.setRowIndex(-1);
-        if (rowIndexVar != null) context.getExternalContext().getRequestMap().remove(rowIndexVar);
 
-        if (scrollable) {
+        if (rowIndexVar != null)
+            context.getExternalContext().getRequestMap().remove(rowIndexVar);
+
+        if (tableContext.getScrollable()) {
             table.setInDuplicateSegment(true);
-            DataTableFootRenderer.encodeTableFoot(context, table, columns, false);
+            DataTableFootRenderer.encodeTableFoot(context, tableContext);
             table.setInDuplicateSegment(false);
 
             writer.endElement(HTML.TABLE_ELEM);
@@ -421,6 +428,7 @@ public class DataTableRenderer extends CoreRenderer {
 	}
 
     private void encodeLiveRows(FacesContext context, DataTable table) throws IOException {
+        DataTableRenderingContext tableContext = new DataTableRenderingContext(table);
         Map<String,String> params = context.getExternalContext().getRequestParameterMap();
         int scrollOffset = Integer.parseInt(params.get(table.getClientId(context) + "_scrollOffset"));
         String clientId = table.getClientId(context);
@@ -429,7 +437,7 @@ public class DataTableRenderer extends CoreRenderer {
         Map<Object, List<String>> rowToSelectedFieldsMap = table.getRowToSelectedFieldsMap();
         Boolean topVisibleRowRendered = false;
         for (int i = scrollOffset; i < (scrollOffset + table.getRows()); i++) {
-            if (DataTableRowRenderer.encodeRow(context, table, table.getColumns(), rowToSelectedFieldsMap, clientId, i, null, rowIndexVar, topVisibleRowRendered))
+            if (DataTableRowRenderer.encodeRow(context, tableContext, clientId, i, null, topVisibleRowRendered))
                 topVisibleRowRendered = true;
         }
     }
