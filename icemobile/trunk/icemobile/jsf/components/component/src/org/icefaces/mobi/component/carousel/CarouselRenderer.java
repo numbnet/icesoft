@@ -167,10 +167,10 @@ public class CarouselRenderer extends BaseLayoutRenderer {
         writer.endElement(HTML.DIV_ELEM);
         writer.endElement(HTML.DIV_ELEM);
         this.encodeHiddenSelected(facesContext, clientId, selected);
+        renderScript(uiComponent, facesContext, clientId);
         writer.endElement(HTML.DIV_ELEM);
         writer.endElement(HTML.SPAN_ELEM);
         ((Carousel) uiComponent).setRowIndex(-1);
-        renderScript(uiComponent, facesContext, clientId);
     }
 
     private void renderPagination(FacesContext facesContext, UIComponent uiComponent, ResponseWriter writer,

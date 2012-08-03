@@ -19,12 +19,11 @@ if (!window['mobi']) {
 }
 (function() {
     //functions that do not encapsulate any state, they just work with the provided parameters
-    //and globally accessible variables  none for this class
+    //and globally accessible variables
 
-    //-------------------------------------
-    function Carousel(clientId) {
+    function enhance(clientId)  {
         var carouselId = clientId+'_carousel';
-        var myScroll = new iScroll(carouselId, {
+        var iscroller = new iScroll(carouselId, {
 	                    snap: 'li',
 	                    momentum: false,
 	                    hScrollbar: false,
@@ -34,6 +33,10 @@ if (!window['mobi']) {
                             mobi.carousel.scrollUpd(clientId, this.currPageX);
     	                }
 	    });
+        return iscroller;
+    }
+    function Carousel(clientId) {
+        var myScroll = enhance(clientId);
     //    myScroll.refresh();
         return {
            scrollUpdate: function( clientId, pageVal, cfg) {
@@ -72,6 +75,11 @@ if (!window['mobi']) {
                myScroll.refresh();
            } ,
            updateProperties: function (clientId) {
+                //detect if DOM was updated and new iScroll needed
+                //myScroll.scroller is undocumented in iScroll
+                if (myScroll.scroller.parent == undefined)  {
+                    enhance(clientId);
+                }
                var hidden = document.getElementById(clientId+'_hidden');
                if (hidden){
                    var temp = hidden.value;
@@ -85,7 +93,6 @@ if (!window['mobi']) {
         acarousel: {},
         cfg: {},
         loaded: function(clientId, cfgIn) {
-        //    alert('onload');
             if (!this.acarousel[clientId]){
                 this.cfg[clientId] = cfgIn;
                 this.acarousel[clientId] = Carousel(clientId);
