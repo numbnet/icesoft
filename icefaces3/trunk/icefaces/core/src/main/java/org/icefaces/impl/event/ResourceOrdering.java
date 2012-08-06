@@ -83,8 +83,6 @@ public class ResourceOrdering implements SystemEventListener {
                 }
                 masterDependencyList.add(entry);
             }
-
-            System.out.println(masterDependencyList);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
