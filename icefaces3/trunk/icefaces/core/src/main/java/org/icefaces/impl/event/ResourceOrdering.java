@@ -28,13 +28,14 @@ public class ResourceOrdering implements SystemEventListener {
     public ResourceOrdering() {
         try {
             //read all resource dependencies manifests
+            DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+            DocumentBuilder db = dbf.newDocumentBuilder();
+
             Enumeration<URL> urls = this.getClass().getClassLoader().getResources("META-INF/resource-dependency.xml");
             while (urls.hasMoreElements()) {
                 URL url = urls.nextElement();
                 try {
                     InputStream stream = (InputStream) url.getContent();
-                    DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-                    DocumentBuilder db = dbf.newDocumentBuilder();
                     Document doc = db.parse(stream);
                     doc.normalizeDocument();
 
@@ -84,7 +85,7 @@ public class ResourceOrdering implements SystemEventListener {
             }
 
             System.out.println(masterDependencyList);
-        } catch (IOException e) {
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
@@ -185,7 +186,7 @@ public class ResourceOrdering implements SystemEventListener {
         }
 
         public String toString() {
-            return "Resource {name=" + name + ", library=" + library + ", target" + target + "}";
+            return "Resource{name: " + name + ", library: " + library + ", target: " + target + "}";
         }
     }
 
