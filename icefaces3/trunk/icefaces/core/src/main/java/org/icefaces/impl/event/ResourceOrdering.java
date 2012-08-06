@@ -119,9 +119,9 @@ public class ResourceOrdering implements SystemEventListener {
             for (UIComponent next : new ArrayList<UIComponent>(children)) {
                 Map attributes = next.getAttributes();
                 String name = (String) attributes.get("name");
-                String library = (String) attributes.get("library");
+                String library = normalizeLibraryName((String) attributes.get("library"));
 
-                if (resourceEntry.name.equals(name) && (resourceEntry.library.equals(library) || ("".equals(resourceEntry.library) && library == null))) {
+                if (resourceEntry.name.equals(name) && resourceEntry.library.equals(library)) {
                     root.removeComponentResource(context, next, target);
                     orderedChildren.add(next);
                 }
