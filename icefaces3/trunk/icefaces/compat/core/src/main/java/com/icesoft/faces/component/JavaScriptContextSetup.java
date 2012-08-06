@@ -56,6 +56,7 @@ public class JavaScriptContextSetup implements SystemEventListener {
                 writer.endElement("span");
             }
         };
+        jsContextOutput.getAttributes().put("name", "JavaScriptContextSetup");
 
         UIViewRoot root = facesContext.getViewRoot();
         jsContextOutput.setTransient(true);

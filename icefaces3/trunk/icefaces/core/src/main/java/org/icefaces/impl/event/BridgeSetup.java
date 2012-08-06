@@ -283,6 +283,7 @@ public class BridgeSetup implements SystemEventListener {
     private static class TestScript extends UIOutput {
         private TestScript() {
             setTransient(true);
+            getAttributes().put("name", "TestScript");
         }
 
         public void encodeBegin(FacesContext context) throws IOException {
@@ -297,6 +298,7 @@ public class BridgeSetup implements SystemEventListener {
     private static class CoreCSSOutput extends UIOutputWriter {
         private CoreCSSOutput() {
             setTransient(true);
+            getAttributes().put("name", "CoreCSSOutput");
         }
 
         public void encode(ResponseWriter writer, FacesContext context) throws IOException {

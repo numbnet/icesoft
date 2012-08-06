@@ -53,6 +53,7 @@ public class JavaScriptRunnerSetup implements SystemEventListener {
                 writer.endElement("span");
             }
         };
+        jsOutput.getAttributes().put("name", "JavaScriptRunnerSetup");
 
         UIViewRoot root = facesContext.getViewRoot();
         jsOutput.setTransient(true);

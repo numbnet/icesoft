@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<dependencies>
+    <resource name="override_styles.css" library="css">
+        <depends-on>
+            <resource name="util/combined.css"  library="icefaces.ace"/>
+        </depends-on>
+    </resource>
+    <resource name="demo_template.css" library="css">
+        <depends-on>
+            <resource name="override_styles.css" library="css"/>
+        </depends-on>
+    </resource>
+    <resource name="showcase_styles.css" library="css">
+        <depends-on>
+            <resource name="override_styles.css" library="css"/>
+        </depends-on>
+    </resource>
+</dependencies>
