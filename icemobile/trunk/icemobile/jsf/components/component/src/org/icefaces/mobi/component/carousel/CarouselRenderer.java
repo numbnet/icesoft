@@ -39,7 +39,7 @@ public class CarouselRenderer extends BaseLayoutRenderer {
     private static final String JS_MIN_NAME = "carousel-min.js";
     private static final String JS_LIBRARY = "org.icefaces.component.carousel";
     private static final String JS_ISCROLL = "iscroll.js";
-    private static final String JS_ISCROLL_MIN = "iscroll-min.js";
+    private static final String JS_ISCROLL_MIN = "iscroll.js";
     private static final String LIB_ISCROLL = "org.icefaces.component.util";
 
 
