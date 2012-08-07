@@ -18,6 +18,7 @@ package com.icesoft.faces.component.outputresource;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.util.Date;
 import java.util.HashMap;
@@ -442,7 +443,7 @@ public class OutputResource extends UIComponentBase {
     }
 }
 
-class RegisteredResource implements Resource {
+class RegisteredResource implements Resource, Serializable {
     private Resource resource;
     private String fileName;
     private String label;
