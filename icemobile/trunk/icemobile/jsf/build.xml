@@ -17,9 +17,21 @@
 <project name="icemobile-jsf" default="all">
     <property file="./build.properties"/>
 
+    <propertyset id="product.info">
+        <propertyref name="company"/>
+        <propertyref name="product"/>
+        <propertyref name="version.primary"/>
+        <propertyref name="version.secondary"/>
+        <propertyref name="version.tertiary"/>
+        <propertyref name="release.type"/>
+        <propertyref name="build.number"/>
+        <propertyref name="revision"/>
+    </propertyset>
+
     <target name="all">
         <subant>
             <fileset dir="." includes="*/build.xml" excludes=""/>
+            <propertyset refid="product.info"/>
         </subant>
     </target>
 
@@ -28,6 +40,7 @@
             <fileset dir="."
                      includes="*/build.xml">
             </fileset>
+            <propertyset refid="product.info"/>
         </subant>
     </target>
 

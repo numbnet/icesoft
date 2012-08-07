@@ -20,11 +20,23 @@
     <property file="../build.properties"/>
     <property file="../../build.properties"/>
 
+    <propertyset id="product.info">
+        <propertyref name="company"/>
+        <propertyref name="product"/>
+        <propertyref name="version.primary"/>
+        <propertyref name="version.secondary"/>
+        <propertyref name="version.tertiary"/>
+        <propertyref name="release.type"/>
+        <propertyref name="build.number"/>
+        <propertyref name="revision"/>
+    </propertyset>
+
     <target name="all">
         <subant>
             <fileset dir="."
                      includes="component/build.xml tests/mobitest/build.xml">
             </fileset>
+            <propertyset refid="product.info"/>
         </subant>
     </target>
 
@@ -33,6 +45,7 @@
             <fileset dir="."
                      includes="component/build.xml">
             </fileset>
+            <propertyset refid="product.info"/>
         </subant>
     </target>
 
