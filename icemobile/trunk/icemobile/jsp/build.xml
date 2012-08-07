@@ -40,6 +40,10 @@
               value="${version.primary}.${version.secondary}.${version.tertiary}"/>
     <import file="../resources/build/build.xml"/>
 
+    <tstamp>
+        <format property="build.time" pattern="yyyy-mm-dd hh:mm:ss"/>
+    </tstamp>
+
     <target name="product.info" description="update product information">
         <!-- <buildnumber/>  -->
         <copy file="conf/${product.info}"
