@@ -35,43 +35,23 @@ import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.application.Resource;
 import javax.faces.component.UIComponent;
+import javax.faces.component.UIOutput;
 import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+import javax.faces.event.*;
 import javax.faces.render.Renderer;
 import java.io.IOException;
 import java.util.ListIterator;
 import java.util.Map;
 
-public class HeadRenderer extends Renderer {
+@ListenerFor(systemEventClass=PostAddToViewEvent.class)
+public class HeadRenderer extends Renderer implements ComponentSystemEventListener {
 
     @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         writer.startElement("head", component);
-
-        //Theme
-        String theme = null;
-        String themeParamValue = context.getExternalContext().getInitParameter(Constants.THEME_PARAM);
-
-        if (themeParamValue != null) {
-            ELContext elContext = context.getELContext();
-            ExpressionFactory expressionFactory = context.getApplication().getExpressionFactory();
-            ValueExpression ve = expressionFactory.createValueExpression(elContext, themeParamValue, String.class);
-
-            theme = (String) ve.getValue(elContext);
-        }
-
-        if (theme == null) theme = "";
-        else theme = theme.trim();
-
-        if ("".equals(theme) || theme.equalsIgnoreCase("sam")) {
-            encodeTheme(context, "icefaces.ace", "themes/sam/theme.css");
-        } else if (theme.equalsIgnoreCase("rime")) {
-            encodeTheme(context, "icefaces.ace", "themes/rime/theme.css");
-        } else if (!theme.equalsIgnoreCase("none")) {
-            encodeTheme(context, "ace-" + theme, "theme.css");
-        }
 
         //Resources
         UIViewRoot viewRoot = context.getViewRoot();
@@ -106,21 +86,39 @@ public class HeadRenderer extends Renderer {
         return resource;
     }
 
-    protected void encodeTheme(FacesContext context, String library, String resource) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
-        writer.write("\n");
-
+    protected void encodeTheme(FacesContext context, String library, String resource) {
         Resource themeResource = context.getApplication().getResourceHandler().createResource(resource, library);
         if (themeResource == null) {
             throw new FacesException("Error loading theme, cannot find \"" + resource + "\" resource of \"" + library + "\" library");
         } else {
-            writer.startElement("link", null);
-            writer.writeAttribute("type", "text/css", null);
-            writer.writeAttribute("rel", "stylesheet", null);
-            writer.writeAttribute("href", themeResource.getRequestPath(), null);
-            writer.endElement("link");
+            UIComponent resourceComponent = createThemeResource(context, library, resource);
+            context.getViewRoot().addComponentResource(context, resourceComponent);
+        }
+    }
+
+    public void processEvent(ComponentSystemEvent event) throws AbortProcessingException {
+        //Theme
+        FacesContext context = FacesContext.getCurrentInstance();
+        String theme = null;
+        String themeParamValue = context.getExternalContext().getInitParameter(Constants.THEME_PARAM);
+
+        if (themeParamValue != null) {
+            ELContext elContext = context.getELContext();
+            ExpressionFactory expressionFactory = context.getApplication().getExpressionFactory();
+            ValueExpression ve = expressionFactory.createValueExpression(elContext, themeParamValue, String.class);
+
+            theme = (String) ve.getValue(elContext);
         }
 
+        if (theme == null) theme = "";
+        else theme = theme.trim();
 
+        if ("".equals(theme) || theme.equalsIgnoreCase("sam")) {
+            encodeTheme(context, "icefaces.ace", "themes/sam/theme.css");
+        } else if (theme.equalsIgnoreCase("rime")) {
+            encodeTheme(context, "icefaces.ace", "themes/rime/theme.css");
+        } else if (!theme.equalsIgnoreCase("none")) {
+            encodeTheme(context, "ace-" + theme, "theme.css");
+        }
     }
 }
