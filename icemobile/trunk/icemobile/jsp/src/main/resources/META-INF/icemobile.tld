@@ -53,7 +53,9 @@
             <name>params</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <description>low-level URL-encoded label=lat,lon,alt,dir,url location list (deprecated)</description>
+            <description>low-level URL-encoded label=lat,lon,alt,dir,url
+                location list (deprecated)
+            </description>
         </attribute>
         <attribute>
             <name>disabled</name>
@@ -66,7 +68,8 @@
         <description>Declare an augmented reality location.</description>
         <display-name>ICEmobile Augmented Reality Location</display-name>
         <name>augmentedRealityLocation</name>
-        <tag-class>org.icemobile.jsp.tags.AugmentedRealityLocationTag</tag-class>
+        <tag-class>org.icemobile.jsp.tags.AugmentedRealityLocationTag
+        </tag-class>
         <body-content>empty</body-content>
         <attribute>
             <name>locationLabel</name>
@@ -233,7 +236,8 @@
             <name>for</name>
             <required>true</required>
             <rtexprvalue>true</rtexprvalue>
-            <description>Id of the camera or camcorder tag which is the source for the camera image.
+            <description>Id of the camera or camcorder tag which is the source
+                for the camera image.
             </description>
         </attribute>
     </tag>
@@ -298,6 +302,8 @@
             <name>title</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
+            <description>A textual title appearing above the content
+            </description>
         </attribute>
         <attribute>
             <name>style</name>
@@ -314,7 +320,9 @@
     </tag>
 
     <tag>
-        <description>Page Panel Tag</description>
+        <description>Page Panel Tag comprises a layout manager with
+            three predefined sections, header, body, and footer
+        </description>
         <display-name>ICEmobile PagePanel Tag</display-name>
         <name>pagePanel</name>
         <tag-class>org.icemobile.jsp.tags.PagePanelTag</tag-class>
@@ -343,8 +351,9 @@
             <name>name</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <description>Name of submitted value, 
-                will be a String of the form lat,lon,alt,dir</description>
+            <description>Name of submitted value,
+                will be a String of the form lat,lon,alt,dir
+            </description>
         </attribute>
         <attribute>
             <name>disabled</name>
@@ -393,26 +402,53 @@
             <name>value</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
+            <description>The (optional) initial value of the field</description>
         </attribute>
         <attribute>
             <name>placeholder</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
+            <desacription>A placeholder string appearing in the textfield
+            </desacription>
         </attribute>
         <attribute>
             <name>autoCorrect</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
+            <type>java.lang.String</type>
+            <description>Hint to container about spelling auto correction. Valid
+                values are on/off
+            </description>
+        </attribute>
+        <attribute>
+            <name>autoComplete</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+            <type>boolean</type>
+            <description>Hint to container about spelling auto completion. Valid
+                values are on/off
+            </description>
+        </attribute>
+        <attribute>
+            <name>autoCapitalize</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+            <type>boolean</type>
+            <description>Hint to container about spelling auto capitalization.
+                Valid values are on/off
+            </description>
         </attribute>
         <attribute>
             <name>rows</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
+            <description>Row count for input text area</description>
         </attribute>
         <attribute>
             <name>cols</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
+            <description>Column count for input text area</description>
         </attribute>
     </tag>
 
@@ -500,13 +536,15 @@
             <name>labelOn</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <description>Value of label when flipswitch is in the ON state</description>
+            <description>Value of label when flipswitch is in the ON state
+            </description>
         </attribute>
         <attribute>
             <name>labelOff</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <description>Value of label when flipswitch is in the OFF state</description>
+            <description>Value of label when flipswitch is in the OFF state
+            </description>
         </attribute>
     </tag>
 
@@ -544,7 +582,9 @@
             <name>buttonType</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <description>Determines style of button.  Valid values include default, back, important and attention</description>
+            <description>Determines style of button. Valid values include
+                default, back, important and attention
+            </description>
         </attribute>
         <attribute>
             <name>disabled</name>
@@ -562,7 +602,8 @@
             <name>type</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <description>Standard button type - button, submit, img, etc </description>
+            <description>Standard button type - button, submit, img, etc
+            </description>
         </attribute>
         <attribute>
             <name>selected</name>
@@ -735,7 +776,6 @@
     </tag>
 
     <tag>
-
         <description>ICEmobile Accordion tag allows management of multiple panes
             of content
             with one pane expanded and visible with the other panes minimized
@@ -813,12 +853,6 @@
         <name>content</name>
         <tag-class>org.icemobile.jsp.tags.ContentTag</tag-class>
         <body-content>JSP</body-content>
-        <attribute>
-            <name>height</name>
-            <required>false</required>
-            <rtexprvalue>true</rtexprvalue>
-            <description>Unused. Will be removed in 1.1 Final</description>
-        </attribute>
     </tag>
 
     <tag>
@@ -905,7 +939,9 @@
             <required>no</required>
             <rtexprvalue>true</rtexprvalue>
             <type>java.lang.String</type>
-            <description>Date format pattern for localization.  Default is "yyyy-MM-dd'</description>
+            <description>Date format pattern for localization. Default is
+                "yyyy-MM-dd'
+            </description>
         </attribute>
         <attribute>
             <name>readonly</name>
@@ -955,7 +991,8 @@
             <required>no</required>
             <rtexprvalue>true</rtexprvalue>
             <type>int</type>
-            <description>The starting year provided in the year spinner</description>
+            <description>The starting year provided in the year spinner
+            </description>
         </attribute>
     </tag>
 
@@ -991,7 +1028,9 @@
             <required>no</required>
             <rtexprvalue>true</rtexprvalue>
             <type>java.lang.String</type>
-            <description>Time format pattern for localization. Default is "hh:mm a"</description>
+            <description>Time format pattern for localization. Default is "hh:mm
+                a"
+            </description>
         </attribute>
         <attribute>
             <name>readonly</name>
