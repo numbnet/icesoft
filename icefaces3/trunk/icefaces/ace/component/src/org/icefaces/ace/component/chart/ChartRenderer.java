@@ -192,14 +192,19 @@ public class ChartRenderer extends CoreRenderer {
             cfg.entry("seriesDefaults", defaults.getConfigJSON(chart).toString(), true);
         else if (series != null && series.size() > 0) {
             try {
+                // Configure the default type of this plot as the type of the first series.
                 ChartSeries firstSeries = series.get(0);
 
-                // Create series to encode default renderer configuration
-                Class seriesClass = series.get(0).getClass().getSuperclass();
+                // Get reference to class of Series- if init shorthand is used, the superclass must be accessed.
+                Class seriesClass = firstSeries.getClass().getSuperclass() != ChartSeries.class
+                        ? firstSeries.getClass().getSuperclass()
+                        : firstSeries.getClass();
+
                 ChartSeries dummySeries = ((ChartSeries)seriesClass.newInstance());
 
                 ChartSeries.ChartType firstSeriesType = firstSeries.getType();
 
+                // If the first series doesn't have a configured type, render the default type
                 dummySeries.setType(firstSeriesType != null ? firstSeriesType : dummySeries.getDefaultType());
                 cfg.entry("seriesDefaults", dummySeries.getConfigJSON(chart).toString(), true);
             } catch (InstantiationException e) {
