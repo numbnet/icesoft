@@ -26,7 +26,7 @@ public class AuthenticatingProtocolHandler implements
 
     private final int MAX_RETRY_ATTEMPTS = 3;
 
-    public AuthenticatingProtocolHandler(AuthenticationManager manager,
+    public AuthenticatingProtocolHandler(Authenticat ionManager manager,
                                          BrowserField browserField) {
 
         mManager = manager;
@@ -36,7 +36,13 @@ public class AuthenticatingProtocolHandler implements
 
     public void handleNavigation(BrowserFieldRequest request)
         throws Exception {
-        Logger.DEBUG("Protocol-Handler: URL: " + request.getURL());
+        String URL = request.getURL();
+        Logger.DEBUG("Protocol-Handler: URL: " + URL);
+        int spos = URL.indexOf("#");
+        if (spos > 0) {
+            URL = URL.substring(0, spos);
+            request.setURL(URL);
+        }
         InputConnection connection = handleResource(request);
         mBrowserField.displayContent(connection, request.getURL());
     }
