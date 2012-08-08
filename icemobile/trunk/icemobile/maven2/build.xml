@@ -63,7 +63,17 @@
             <pom refid="mobiPom"/>
         </artifact:install>
 
-
+        <artifact:pom id="jspPom" file="icefaces-jsp.pom">
+            <localRepository refid="local.repository"/>
+        </artifact:pom>
+        <echo>installing icefaces-jsp-${compatPom.version} to local
+            repository
+        </echo>
+        <artifact:install file="${lib.dir}/${icefaces-jsp.lib.name}.jar">
+            <localRepository refid="local.repository"/>
+            <pom refid="jspPom"/>
+        </artifact:install>
+        
     </target>
 
     <target name="get-maven">
