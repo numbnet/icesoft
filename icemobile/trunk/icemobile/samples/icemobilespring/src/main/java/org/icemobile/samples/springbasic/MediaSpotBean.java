@@ -51,13 +51,16 @@ public class MediaSpotBean {
     }
 
     public void setLocation(String location) {
-        this.location = location;
-        String[] locationParts = location.split(",");
-        latitude = locationParts[0];
-        longitude = locationParts[1];
-        altitude = locationParts[2];
-        direction = locationParts[3];
-        
+        try {
+            this.location = location;
+            String[] locationParts = location.split(",");
+            latitude = locationParts[0];
+            longitude = locationParts[1];
+            altitude = locationParts[2];
+            direction = locationParts[3];
+        } catch (Exception e)  {
+            //allow empty split parts
+        }
     }
 
     public String getFileName() {
