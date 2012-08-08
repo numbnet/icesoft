@@ -207,7 +207,9 @@ public class CarouselRenderer extends BaseLayoutRenderer {
             builder.append(behaviors);
         }
         builder.append("});");
-        writer.write("mobi.carousel.loaded('"+builder.toString());
+        writer.write("setTimeout(function () {mobi.carousel.loaded('");
+		writer.write(builder.toString());
+		writer.write("}, 1);");
    /*     if (!Utils.isTouchEventEnabled(facesContext) && !Utils.isAndroid()) {
                 writer.write("document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);");
         } */
