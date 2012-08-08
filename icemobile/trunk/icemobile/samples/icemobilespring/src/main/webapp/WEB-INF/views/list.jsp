@@ -97,16 +97,11 @@ into styled lists.
 
     </mobi:pagePanel>
 
-    <h:form>
-    </div>
-
+ 
          </form:form >
 
 
-    <script type="text/javascript">
-        MvcUtil.enhanceForm("#listform");
-    </script>
-	</div>
+   </div>
 <c:if test="${!ajaxRequest}">
 </body>
 </html>
