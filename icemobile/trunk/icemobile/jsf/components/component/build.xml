@@ -435,23 +435,6 @@
                       spritepngie6="${sprite.png.ie6}"/>
     </target>
 
-    <macrodef name="gen.tld.doc">
-        <attribute name="tld.file"/>
-        <sequential>
-            <delete dir="${tld.doc}"/>
-            <mkdir dir="${tld.doc}"/>
-            <java jar="${tld.jar}/tlddoc.jar" fork="true" failonerror="true">
-                <arg value="-d"/>
-                <arg value="${tld.doc}"/>
-                <arg value="-doctitle"/>
-                <arg value="${tld.title}"/>
-                <arg value="-windowtitle"/>
-                <arg value="${tld.title}"/>
-                <arg value="@{tld.file}"/>
-            </java>
-        </sequential>
-    </macrodef>
-
 
     <target name="tlddoc"
             description="Generate the component TLD Documentation in HTML format.">
