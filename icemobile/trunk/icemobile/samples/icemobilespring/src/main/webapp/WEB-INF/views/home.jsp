@@ -201,6 +201,7 @@
 
         $("#tabs").bind("tabsselect", function (event, ui) {
             window.location.hash = ui.tab.hash;
+			$('body').removeClass('pagePanelPadding'); //hack to remove pagePanel padding
         });
 
 

@@ -223,3 +223,6 @@ span.mobitab {
 html.js div#tabs{
 	display: none;
 }
+.pagePanelPadding{
+	padding-top:45px;
+}
