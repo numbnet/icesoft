@@ -21,9 +21,9 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.icefaces</groupId>
     <artifactId>icefaces-mobi</artifactId>
-    <version>1.0.0</version>
+    <version>1.1.0</version>
     <packaging>jar</packaging>
-    <name>ICEmobile component library</name>
+    <name>ICEmobile JSF component library</name>
     <url>http://www.icefaces.org</url>
     <description>ICEmobile mobile component library.</description>
     <licenses>
@@ -37,7 +37,7 @@
         <dependency>
             <groupId>org.icefaces</groupId>
             <artifactId>icefaces</artifactId>
-            <version>3.0.1</version>
+            <version>3.1.0</version>
         </dependency>
 
     </dependencies>
