@@ -1564,7 +1564,7 @@ ice.ace.DataTable.prototype.cancelRowEdit = function (element) {
 
 ice.ace.DataTable.prototype.doRowEditShowRequest = function (element) {
     var row = ice.ace.jq(element).closest('tr'),
-        rowEditorId = row.find('> td > div.ui-row-editor').attr('id'),
+        rowEditorId = row.find('> td > div.ui-row-editor, > td > div > div.ui-row-editor').attr('id'),
         options = {
             source:rowEditorId,
             execute:'@this',
@@ -1573,7 +1573,7 @@ ice.ace.DataTable.prototype.doRowEditShowRequest = function (element) {
         _self = this,
         cellsToRender = new Array();
 
-    row.find('> td > div.ui-cell-editor').each(function () {
+    row.find('> td > div.ui-cell-editor, > td > div > div.ui-cell-editor').each(function () {
         cellsToRender.push(ice.ace.jq(this).attr('id'));
     });
     options.render = cellsToRender.join(' ');
@@ -1609,7 +1609,7 @@ ice.ace.DataTable.prototype.doRowEditShowRequest = function (element) {
 
 ice.ace.DataTable.prototype.doRowEditCancelRequest = function (element) {
     var row = ice.ace.jq(element).closest('tr'),
-        rowEditorId = row.find('div.ui-row-editor').attr('id'),
+        rowEditorId = row.find('> td > div.ui-row-editor, > td > div > div.ui-row-editor').attr('id'),
         options = {
             source:rowEditorId,
             execute:'@this',
@@ -1618,7 +1618,7 @@ ice.ace.DataTable.prototype.doRowEditCancelRequest = function (element) {
         _self = this,
         editorsToProcess = new Array();
 
-    row.find('div.ui-cell-editor').each(function () {
+    row.find('> td > div.ui-cell-editor, > td > div > div.ui-cell-editor').each(function () {
         editorsToProcess.push(ice.ace.jq(this).attr('id'));
     });
     options.render = editorsToProcess.join(' ');
@@ -1654,7 +1654,7 @@ ice.ace.DataTable.prototype.doRowEditCancelRequest = function (element) {
 
 ice.ace.DataTable.prototype.doRowEditSaveRequest = function (element) {
     var row = ice.ace.jq(element).closest('tr'),
-        rowEditorId = row.find('div.ui-row-editor').attr('id'),
+        rowEditorId = row.find('> td > div.ui-row-editor, > td > div > div.ui-row-editor').attr('id'),
         options = {
             source:rowEditorId,
             formId:this.cfg.formId
@@ -1662,7 +1662,7 @@ ice.ace.DataTable.prototype.doRowEditSaveRequest = function (element) {
         _self = this,
         editorsToProcess = new Array();
 
-    row.find('div.ui-cell-editor').each(function () {
+    row.find('> td > div.ui-cell-editor, > td > div > div.ui-cell-editor').each(function () {
         editorsToProcess.push(ice.ace.jq(this).attr('id'));
     });
     options.execute = editorsToProcess.join(' ');
@@ -1709,7 +1709,8 @@ ice.ace.DataTable.prototype.doRowEditSaveRequest = function (element) {
 }
 
 ice.ace.DataTable.prototype.getRowEditors = function () {
-    return ice.ace.jq(this.jqId + ' > div > table > tbody.ui-datatable-data > tr > td > div.ui-row-editor');
+    return ice.ace.jq(this.jqId + ' > div > table > tbody.ui-datatable-data > tr > td > div.ui-row-editor, ' +
+                      this.jqId + ' > div > table > tbody.ui-datatable-data > tr > td > div > div.ui-row-editor');
 }
 
 ice.ace.DataTable.prototype.setupCellEditorEvents = function (rowEditors) {
@@ -1731,23 +1732,38 @@ ice.ace.DataTable.prototype.setupCellEditorEvents = function (rowEditors) {
         inputCellKeypress = function (event) {
             if (event.which == 13) return false;
         };
-    var selector = 'div > table > tbody.ui-datatable-data > tr > td > div.ui-row-editor';
-    ice.ace.jq(this.jqId).off('click keyup', selector + ' a.ui-icon-pencil').on('click', selector + ' a.ui-icon-pencil', showEditors).on('keyup', selector + ' a.ui-icon-pencil', function (event) {
+    var selector = 'div > table > tbody.ui-datatable-data > tr > td > div.ui-row-editor link, ' +
+            'div > table > tbody.ui-datatable-data > tr > td > div > div.ui-row-editor link';
+
+    var icoSel = selector.replace(/link/g, 'a.ui-icon-pencil');
+    ice.ace.jq(this.jqId).off('click keyup', icoSel)
+            .on('click', icoSel, showEditors)
+            .on('keyup', icoSel, function (event) {
         if (event.which == 32 || event.which == 13) {
             showEditors(event);
         }
     });
-    ice.ace.jq(this.jqId).off('click keyup', selector + ' a.ui-icon-check').on('click', selector + ' a.ui-icon-check', saveRowEditors).on('keyup', selector + ' a.ui-icon-check', function (event) {
+
+    icoSel = selector.replace(/link/g, 'a.ui-icon-check');
+    ice.ace.jq(this.jqId).off('click keyup', icoSel)
+            .on('click', icoSel, saveRowEditors)
+            .on('keyup', icoSel, function (event) {
         if (event.which == 32 || event.which == 13) {
             saveRowEditors(event);
         }
     });
-    ice.ace.jq(this.jqId).off('click keyup', selector + ' a.ui-icon-close').on('click', selector + ' a.ui-icon-close', cancelRowEditors).on('keyup', selector + ' a.ui-icon-close', function (event) {
+
+    icoSel = selector.replace(/link/g, 'a.ui-icon-close');
+    ice.ace.jq(this.jqId).off('click keyup', selector + 'a.ui-icon-close')
+            .on('click', icoSel, cancelRowEditors)
+            .on('keyup', icoSel, function (event) {
         if (event.which == 32 || event.which == 13) {
             cancelRowEditors(event);
         }
     });
-    rowEditors.closest('tr').find('> div.ui-cell-editor > span > input').bind('keypress', inputCellKeypress);
+
+    rowEditors.closest('tr').find(' > div.ui-cell-editor > span > input')
+            .bind('keypress', inputCellKeypress);
 }
 
 
