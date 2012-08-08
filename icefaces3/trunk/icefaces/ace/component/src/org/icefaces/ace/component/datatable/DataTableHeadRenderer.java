@@ -46,7 +46,7 @@ public class DataTableHeadRenderer {
         ColumnGroup group = table.getColumnGroup("header");
         if (group != null) headContainer = group.getChildren();
 
-        if (tableContext.getStaticHeaders()) {
+        if (tableContext.getStaticHeaders() && !table.isInDuplicateSegment()) {
             writer.startElement(HTML.DIV_ELEM, null);
             writer.writeAttribute(HTML.CLASS_ATTR, DataTableConstants.SCROLLABLE_HEADER_CLASS, null);
             writer.startElement(HTML.TABLE_ELEM, null);
@@ -105,7 +105,7 @@ public class DataTableHeadRenderer {
 
         writer.endElement(HTML.THEAD_ELEM);
 
-        if (tableContext.getStaticHeaders()) {
+        if (tableContext.getStaticHeaders() && !table.isInDuplicateSegment()) {
             writer.endElement(HTML.TABLE_ELEM);
             writer.endElement(HTML.DIV_ELEM);
         }

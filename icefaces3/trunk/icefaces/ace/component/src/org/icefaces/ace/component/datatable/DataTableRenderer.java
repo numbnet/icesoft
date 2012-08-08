@@ -172,7 +172,7 @@ public class DataTableRenderer extends CoreRenderer {
             Integer height;
 
             writer.startElement(HTML.DIV_ELEM, null);
-            if (tableContext.getScrollable() && (height = table.getScrollHeight()) != null)
+            if (tableContext.getScrollable() && (height = tableContext.getScrollHeight()) != null)
                 writer.writeAttribute(HTML.STYLE_ELEM, "max-height:" + height + "px; overflow:auto;", null);
             writer.startElement(HTML.TABLE_ELEM, null);
         }

@@ -42,7 +42,7 @@ public class DataTableFootRenderer {
 
         if (!shouldRender) return;
 
-        if (tableContext.getStaticHeaders()) {
+        if (tableContext.getStaticHeaders() && !table.isInDuplicateSegment()) {
             writer.startElement(HTML.DIV_ELEM, null);
             writer.writeAttribute(HTML.CLASS_ATTR, DataTableConstants.SCROLLABLE_FOOTER_CLASS, null);
             writer.startElement(HTML.TABLE_ELEM, null);
@@ -77,7 +77,7 @@ public class DataTableFootRenderer {
         }
         writer.endElement(HTML.TFOOT_ELEM);
 
-        if (tableContext.getStaticHeaders()) {
+        if (tableContext.getStaticHeaders() && !table.isInDuplicateSegment()) {
             writer.endElement(HTML.TABLE_ELEM);
             writer.endElement(HTML.DIV_ELEM);
         }
