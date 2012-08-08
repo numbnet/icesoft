@@ -16,6 +16,24 @@
 
 <project name="icemobile-comp-common"  basedir=".">
 
+
+   <macrodef name="gen.tld.doc">
+        <attribute name="tld.file"/>
+        <sequential>
+            <delete dir="${tld.doc}"/>
+            <mkdir dir="${tld.doc}"/>
+            <java jar="${tld.jar}/tlddoc.jar" fork="true" failonerror="true">
+                <arg value="-d"/>
+                <arg value="${tld.doc}"/>
+                <arg value="-doctitle"/>
+                <arg value="${tld.title}"/>
+                <arg value="-windowtitle"/>
+                <arg value="${tld.title}"/>
+                <arg value="@{tld.file}"/>
+            </java>
+        </sequential>
+    </macrodef>
+
     <macrodef name="yui-compressor">
         <attribute name="name"/>
         <attribute name="inputDir"/>

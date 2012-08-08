@@ -20,13 +20,20 @@
     <property file="../build.properties"/>
     <property file="build.properties"/>
     <property name="root.offset" value=".."/>
+    <property name="lib.dir" location="../lib"/>
     <property name="java.dir" location="src/main/java"/>
     <property name="resources.dir" location="src/main/resources"/>
     <property file="${root.offset}/build.properties"/>
     <property name="product.info" value="org/icemobile/ProductInfo.java"/>
     <property name="jar.file.name" value="${ant.project.name}.jar"/>
+    <property name="doc" location="build/docs/"/>
+    <property name="tld.doc" location="${doc}/tld"/>
     <!-- common theme location  -->
     <property name="theme.dir" location="../resources/themes"/>
+    <!-- component TLD location --> 
+    <property name="tld.jar" location="${lib.dir}"/>
+    <property name="tld.file"
+              location="src/main/resources/META-INF/icemobile.tld"/>
 
     <!-- them location in jar  -->
     <property name="theme.resources.dir"
@@ -178,6 +185,11 @@
         <copy file="${dist.dir}/${jar.file.name}" todir="${lib.dir}"
               overwrite="true"/>
 
+    </target>
+    
+    <target name="tlddoc"
+            description="Generate the component TLD Documentation in HTML format.">
+        <gen.tld.doc tld.file="${tld.file}"/>
     </target>
 
     <macrodef name="compile">

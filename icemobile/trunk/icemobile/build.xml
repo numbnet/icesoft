@@ -20,7 +20,8 @@
 
     <property name="build.dir" location="build"/>
     <property name="dist.dir" location="dist"/>
-    <property name="docs.dir" location="docs"/>
+    <property name="docs.jsf.dir" location="docs/jsf"/>
+    <property name="docs.jsp.dir" location="docs/jsp"/>
 
     <condition property="release.type.suffix" value="-${release.type}" else="">
         <not>
@@ -110,7 +111,7 @@
     <target name="clean">
         <delete dir="${build.dir}"/>
         <delete dir="${dist.dir}"/>
-        <delete dir="${docs.dir}"/>
+        <delete dir="${docs.jsf.dir}"/>
         <ice:subant target="clean">
             <filelist dir="." files="jsf, samples"/>
         </ice:subant>
@@ -140,6 +141,7 @@
                     <exclude name="dist/"/>
                     <exclude name="client/"/>
                     <exclude name="jsf/"/>
+                    <exclude name="jsp/"/>
                     <exclude name="lib/generator/"/>
                     <!-- trim component build script for binary bundle -->
                     <exclude name="build.xml" />
@@ -188,20 +190,25 @@
 
             <add.ant.elements/>
          
-            <!-- Create the component JavaDocs and TLD documentation -->
+            <!-- Create the JSF component JavaDocs and TLD documentation -->
             <subant target="docs" failonerror="true" verbose="true">
                 <fileset dir="./jsf" includes="build.xml"/>
             </subant> 
-   
-            
-            <mkdir dir="${docs.dir}/mobi/tld/"/>
-            <mkdir dir="${docs.dir}/mobi/api/"/>
+            <!-- copy the jsf -->
+            <mkdir dir="${docs.jsf.dir}/tld/"/>
+            <mkdir dir="${docs.jsf.dir}/api/"/>
             <move file="./jsf/components/component/build/doc/tld" 
-                tofile="${docs.dir}/mobi/tld/"/>
+                tofile="${docs.jsf.dir}/tld/"/>
             <move file="./jsf/components/component/build/doc/javadoc" 
-                tofile="${docs.dir}/mobi/api/"/>
+                tofile="${docs.jsf.dir}/api/"/>
                 
-           
+            <!-- Create the JSP component JavaDocs and TLD documentation  -->    
+            <subant target="tlddoc" failonerror="true" verbose="true">
+                <fileset dir="./jsp" includes="build.xml"/>
+            </subant>
+            <mkdir dir="${docs.jsp.dir}/tld/"/>
+            <move file="./jsp/build/docs/tld" 
+                tofile="${docs.jsp.dir}/tld/"/>
 
         </sequential>
     </macrodef>
