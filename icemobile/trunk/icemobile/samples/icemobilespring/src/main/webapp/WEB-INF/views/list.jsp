@@ -17,7 +17,7 @@
 </c:if>
     <div class="ajaxzone">
 
-      <form:form id="listform" method="POST" modelAttribute="listBean" style="margin-top:10px;" >
+      <form:form id="listform" method="POST" modelAttribute="listBean">
 
     <mobi:pagePanel>
         <mobi:pagePanelHeader >
@@ -99,6 +99,13 @@ into styled lists.
 
  
          </form:form >
+		 
+		 <script type="text/javascript">
+			$('body').addClass('pagePanelPadding');
+			$('#listform').submit(function () {
+				$('body').removeClass('pagePanelPadding');
+			});
+		</script>
 
 
    </div>
