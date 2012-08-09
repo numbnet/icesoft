@@ -1005,10 +1005,7 @@ ice.ace.DataTable.prototype.reorderColumns = function (oldIndex, newIndex) {
 
     if (this.behaviors)
         if (this.behaviors.reorder) {
-            ice.ace.ab(ice.ace.extendAjaxArguments(
-                this.behaviors.reorder,
-                options
-            ));
+            this.behaviors.reorder(params);
             return;
         }
 
@@ -1071,10 +1068,7 @@ ice.ace.DataTable.prototype.paginate = function (newState) {
 
     if (this.behaviors)
         if (this.behaviors.page) {
-            ice.ace.ab(ice.ace.extendAjaxArguments(
-                this.behaviors.page,
-                ice.ace.removeExecuteRenderOptions(options)
-            ));
+            this.behaviors.page(params);
             return;
         }
 
@@ -1115,10 +1109,7 @@ ice.ace.DataTable.prototype.sort = function (headerCells) {
 
     if (this.behaviors)
         if (this.behaviors.sort) {
-            ice.ace.ab(ice.ace.extendAjaxArguments(
-                this.behaviors.sort,
-                options
-            ));
+            this.behaviors.sort(params);
             return;
         }
 
@@ -1173,10 +1164,7 @@ ice.ace.DataTable.prototype.filter = function (evn) {
 
     if (this.behaviors)
         if (this.behaviors.filter) {
-            ice.ace.ab(ice.ace.extendAjaxArguments(
-                this.behaviors.filter,
-                options
-            ));
+            this.behaviors.filter(params);
             return;
         }
 
@@ -1277,16 +1265,10 @@ ice.ace.DataTable.prototype.doSelectionEvent = function (type, deselection, elem
 
         if (this.behaviors)
             if (this.behaviors.select && !deselection) {
-                ice.ace.ab(ice.ace.extendAjaxArguments(
-                    this.behaviors.select,
-                    ice.ace.removeExecuteRenderOptions(options)
-                ));
+                this.behaviors.select(params);
                 return;
             } else if (this.behaviors.deselect && deselection) {
-                ice.ace.ab(ice.ace.extendAjaxArguments(
-                    this.behaviors.deselect,
-                    ice.ace.removeExecuteRenderOptions(options)
-                ));
+                this.behaviors.deselect(params);
                 return;
             }
 
@@ -1371,10 +1353,7 @@ ice.ace.DataTable.prototype.doMultiRowSelectionEvent = function (lastIndex, curr
 
         if (this.behaviors)
             if (this.behaviors.select) {
-                ice.ace.ab(ice.ace.extendAjaxArguments(
-                    this.behaviors.select,
-                    ice.ace.removeExecuteRenderOptions(options)
-                ));
+                this.behaviors.select(params);
                 return;
             }
 
@@ -1434,10 +1413,7 @@ ice.ace.DataTable.prototype.sendPanelContractionRequest = function (row) {
 
     if (this.behaviors)
         if (this.behaviors.contract) {
-            ice.ace.ab(ice.ace.extendAjaxArguments(
-                this.behaviors.contract,
-                ice.ace.removeExecuteRenderOptions(options)
-            ));
+            this.behaviors.contract(params);
             return;
         }
 
@@ -1456,7 +1432,6 @@ ice.ace.DataTable.prototype.sendRowContractionRequest = function (row) {
 
     var params = {};
     params[this.id + ':' + rowId + '_rowExpansion'] = true;
-    ;
     options.params = params;
 
     options.onsuccess = function (responseXML) {
@@ -1466,10 +1441,7 @@ ice.ace.DataTable.prototype.sendRowContractionRequest = function (row) {
 
     if (this.behaviors)
         if (this.behaviors.contract) {
-            ice.ace.ab(ice.ace.extendAjaxArguments(
-                this.behaviors.contract,
-                ice.ace.removeExecuteRenderOptions(options)
-            ));
+            this.behaviors.contract(params);
             return;
         }
 
@@ -1497,10 +1469,7 @@ ice.ace.DataTable.prototype.loadExpandedRows = function (row) {
 
     if (this.behaviors)
         if (this.behaviors.expand) {
-            ice.ace.ab(ice.ace.extendAjaxArguments(
-                this.behaviors.expand,
-                ice.ace.removeExecuteRenderOptions(options)
-            ));
+            this.behaviors.expand(params);
             return;
         }
 
@@ -1528,10 +1497,7 @@ ice.ace.DataTable.prototype.loadExpandedPanelContent = function (row) {
 
     if (this.behaviors)
         if (this.behaviors.expand) {
-            ice.ace.ab(ice.ace.extendAjaxArguments(
-                this.behaviors.expand,
-                ice.ace.removeExecuteRenderOptions(options)
-            ));
+            this.behaviors.expand(params);
             return;
         }
 
@@ -1589,10 +1555,7 @@ ice.ace.DataTable.prototype.doRowEditShowRequest = function (element) {
 
     if (this.behaviors)
         if (this.behaviors.editStart) {
-            ice.ace.ab(ice.ace.extendAjaxArguments(
-                this.behaviors.editStart,
-                options
-            ));
+            this.behaviors.editStart(params);
             return;
         }
 
@@ -1634,10 +1597,7 @@ ice.ace.DataTable.prototype.doRowEditCancelRequest = function (element) {
 
     if (this.behaviors)
         if (this.behaviors.editCancel) {
-            ice.ace.ab(ice.ace.extendAjaxArguments(
-                this.behaviors.editCancel,
-                options
-            ));
+            this.behaviors.editCancel(params);
             return;
         }
 
@@ -1690,10 +1650,7 @@ ice.ace.DataTable.prototype.doRowEditSaveRequest = function (element) {
 
     if (this.behaviors)
         if (this.behaviors.editSubmit) {
-            ice.ace.ab(ice.ace.extendAjaxArguments(
-                this.behaviors.editSubmit,
-                options
-            ));
+            this.behaviors.editSubmit(params);
             return;
         }
 
