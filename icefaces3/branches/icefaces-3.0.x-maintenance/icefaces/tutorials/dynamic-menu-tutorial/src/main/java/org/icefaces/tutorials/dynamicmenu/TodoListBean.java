@@ -34,6 +34,7 @@ import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.MethodExpressionActionListener;
 
 import java.io.Serializable;
+import java.lang.Object;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -183,7 +184,8 @@ public class TodoListBean implements Serializable {
     }
 	
 	public void rowSelectListener(SelectEvent event) {
-		selectedItem = (Item) event.getObject();
+        Object objects[] = (Object[]) event.getObject();
+        selectedItem = (Item) objects[0];
 	}
 	
 	public void rowDeselectListener(AjaxBehaviorEvent event) {
