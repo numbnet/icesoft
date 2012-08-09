@@ -13,6 +13,7 @@
  * express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
+
 package org.icefaces.mobi.component.contentstackmenu;
 
 import org.icefaces.ace.meta.annotation.Component;
