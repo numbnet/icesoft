@@ -69,7 +69,7 @@
         <echo>installing icefaces-jsp-${compatPom.version} to local
             repository
         </echo>
-        <artifact:install file="${lib.dir}/${icefaces-jsp.lib.name}.jar">
+        <artifact:install file="${lib.dir}/${icemobile-jsp.lib.name}.jar">
             <localRepository refid="local.repository"/>
             <pom refid="jspPom"/>
         </artifact:install>
