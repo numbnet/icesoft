@@ -194,8 +194,11 @@ public class RealityBean extends ExampleImpl<RealityBean> implements
     }
 
     public void setSelection(String selection)  {
-        this.selection = selection;
-        imagePath = messages.get(selection).getFileName();
+        RealityMessage msg = messages.get(selection);
+		if( msg != null ){
+			this.selection = selection;
+			imagePath = msg.getFileName();
+		}  
     }
 
     public Collection getMessages()  {
