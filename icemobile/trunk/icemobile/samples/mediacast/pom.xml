@@ -24,6 +24,10 @@
         <artifactId>samples-parent</artifactId>
         <version>1.0.0</version>
     </parent>
+    <properties>
+        <!-- ignore test for everyday builds as current selenium scripts are JDK 1.6 dependent -->
+        <maven.test.skip>true</maven.test.skip>
+    </properties>
     <artifactId>mediacast</artifactId>
     <packaging>war</packaging>
     <name>ICEmobile Media sharing sample</name>
@@ -37,21 +41,25 @@
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
-            <version>3.0</version>
-            <scope>provided</scope>
+            <version>3.0.1</version>
         </dependency>
         <dependency>
 		    <groupId>org.seleniumhq.selenium</groupId>
 		    <artifactId>selenium-server</artifactId>
 		    <version>2.24.1</version>
 		    <scope>test</scope>
-		  </dependency>
-		  <dependency>
+		</dependency>
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-firefox-driver</artifactId>
+            <version>2.24.1</version>
+        </dependency>
+		<dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>4.9</version>
-             <scope>test</scope>
-           </dependency>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
     <build>
         <finalName>${project.artifactId}</finalName>
