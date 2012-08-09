@@ -63,7 +63,7 @@
             <pom refid="mobiPom"/>
         </artifact:install>
 
-        <artifact:pom id="jspPom" file="icefaces-jsp.pom">
+        <artifact:pom id="jspPom" file="icemobile-jsp.pom">
             <localRepository refid="local.repository"/>
         </artifact:pom>
         <echo>installing icefaces-jsp-${compatPom.version} to local
