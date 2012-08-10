@@ -190,11 +190,32 @@ public class CommandLinkRenderer extends DomBasicRenderer {
             buffer.append("form['");
             buffer.append(nextParamName);
             buffer.append("'].value='");
-            buffer.append(nextParamValue);
+
+            //ICE-8415: need to escape any single quotes in the value
+            //of the parameter to ensure a valid JavaScript string.
+            buffer.append(escapeQuote(nextParamValue.toString()));
             buffer.append("';");
         }
         return buffer.toString();
     }
+
+    protected static String escapeQuote(String value) {
+        if (null == value) {
+            return "";
+        }
+        char[] chars = value.toCharArray();
+        StringBuffer buffer = new StringBuffer(chars.length);
+        for (int index = 0; index < chars.length; index++) {
+            char ch = chars[index];
+            if (ch == '\'') {
+                buffer.append("\\'");
+            } else {
+                buffer.append(ch);
+            }
+        }
+        return buffer.toString();
+    }
+
     protected static String getJavascriptHiddenFieldReSetters(
             FacesContext facesContext,
             UICommand uiCommand, Map parameters) {
