@@ -187,6 +187,12 @@
 
     </target>
     
+    <target name="src-jar" depends="" >
+        <jar destfile="${dist.dir}/${ant.project.name}-sources.jar">
+            <fileset dir="src/main" includes="**/*.java"/>
+        </jar>
+    </target>
+
     <target name="tlddoc"
             description="Generate the component TLD Documentation in HTML format.">
         <gen.tld.doc tld.file="${tld.file}"/>
