@@ -113,13 +113,13 @@
         <delete dir="${dist.dir}"/>
         <delete dir="${docs.jsf.dir}"/>
         <ice:subant target="clean">
-            <filelist dir="." files="jsf, samples"/>
+            <filelist dir="." files="jsf, jsp, samples"/>
         </ice:subant>
     </target>
 
     <target name="clean.bin">
         <ice:subant target="clean">
-            <filelist dir="." files="jsf, samples"/>
+            <filelist dir="." files="jsf, jsp, samples"/>
         </ice:subant>
     </target>
 
