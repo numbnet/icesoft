@@ -296,6 +296,18 @@
         </javadoc>
     </target>
 
+     <target name="javadoc-jar" depends="javadoc" >
+        <jar destfile="${dist}/${icefaces-mobi.lib.name}-javadoc.jar">
+            <fileset dir="${java.doc}" includes="**/*"/>
+        </jar>
+    </target>
+
+    <target name="src-jar" depends="" >
+        <jar destfile="${dist}/${icefaces-mobi.lib.name}-sources.jar">
+            <fileset dir="${src}" includes="**/*.java"/>
+        </jar>
+    </target>
+
     <target name="clean" description="clean up">
 
         <!-- Delete the ${build} and ${dist} directory trees -->
