@@ -50,7 +50,7 @@ public class ProductInfo {
     /**
      * The release type of the product (alpha, beta, production).
      */
-    public static String RELEASE_TYPE = "x";
+    public static String RELEASE_TYPE = "";
     /**
      * The build number.  Typically this would be tracked and maintained
      * by the build system (i.e. Ant).

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?xml version="1.0"?>
 
 <!--
   ~ Version: MPL 1.1/GPL 2.0/LGPL 2.1
@@ -32,6 +32,10 @@
   ~ this file under either the MPL or the LGPL License."
   -->
 
+<!DOCTYPE web-app PUBLIC
+        "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+        "http://java.sun.com/dtd/web-app_2_3.dtd">
+
 <web-app>
     <display-name>ICEfaces Portlet Chat</display-name>
 
@@ -47,7 +51,7 @@
     </context-param>
     <context-param>
         <param-name>com.icesoft.faces.compressResources</param-name>
-        <param-value>true</param-value>
+        <param-value>false</param-value>
     </context-param>
     <context-param>
         <param-name>com.icesoft.faces.synchronousUpdate</param-name>
