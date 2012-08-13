@@ -17,8 +17,11 @@
 package org.icemobile.samples.mediacast;
 
 import java.io.Serializable;
-import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Logger;
 
 import javax.faces.bean.ApplicationScoped;
@@ -38,55 +41,63 @@ public class MediaStore implements Serializable {
     public static final String BEAN_NAME = "mediaStore";
 
     private static final int MAX_CACHE_SIZE = 10;
-    private static final int MAX_CAROUSEL_SIZE = 5;
 
-    private LinkedList<MediaMessage> mediaStack;
-    private LinkedList<MediaMessage> mediaCarouselStack;
-
-    public MediaStore() {
-        mediaStack = new LinkedList<MediaMessage>();
-        mediaCarouselStack = new LinkedList<MediaMessage>();
+    private List<MediaMessage> media = new CopyOnWriteArrayList<MediaMessage>();
+    private Map<String, List<MediaMessage>> taggedMedia = new ConcurrentHashMap<String,List<MediaMessage>>();
+    
+    
+    public List<MediaMessage> getMedia() {
+        return media;
     }
-
-    public List<MediaMessage> getMediaStack() {
-        return mediaStack;
-    }
-
-    public List<MediaMessage> getCarouselStack() {
-        return mediaCarouselStack;
-    }
-
-    public int getCarouselStackCount() {
-        return mediaCarouselStack.size();
+    
+    public Map<String, List<MediaMessage>> getTaggedMedia(){
+    	return taggedMedia;
     }
 
     /**
-     * Add a new image set to the the store.
+     * Add a new MediaMessage set to the the store.
      *
-     * @param photoMessage photo image to add to store.
+     * @param mediaMessage MediaMessage to add to store.
      */
-    public void addMedia(MediaMessage photoMessage) {
-        mediaStack.addFirst(photoMessage);
+    public void addMedia(MediaMessage mediaMessage) {
+    	media.add(0,mediaMessage);
+    	if( mediaMessage.getTags().size() > 0 ){
+    		for( String tag : mediaMessage.getTags() ){
+    			List<MediaMessage> matchingTaggedMedia = taggedMedia.get(tag);
+    			if( matchingTaggedMedia == null ){
+    				matchingTaggedMedia = new CopyOnWriteArrayList<MediaMessage>();
+    				taggedMedia.put(tag, matchingTaggedMedia);
+    			}
+    			matchingTaggedMedia.add(mediaMessage);
+    		}
+    	}
         // keep the list of upload small. we don't want to break the bank!
-        if (mediaStack.size() > MAX_CACHE_SIZE) {
-            MediaMessage message = mediaStack.removeLast();
+        if (media.size() > MAX_CACHE_SIZE) {
+            MediaMessage message = media.remove(media.size()-1);
+            if( message.getTags().size() > 0 ){
+            	for( String tag : message.getTags()){
+            		List<MediaMessage> matchingTaggedMedia = taggedMedia.get(tag);
+            		matchingTaggedMedia.remove(message);
+            		if( matchingTaggedMedia.size() == 0 ){
+            			taggedMedia.remove(tag);
+            		}
+            	}
+            }
             message.dispose();
         }
-        mediaCarouselStack.addFirst(mediaStack.peek());
-        if (mediaCarouselStack.size() > MAX_CAROUSEL_SIZE) {
-            mediaCarouselStack.removeLast();
-            // shared object reference with media stack so no cleanup necessary.
-        }
     }
 
     /**
-     * Removes the specified message from the media and carousel stacks.
+     * Removes the specified message from the media stack.
      *
      * @param mediaMessage media message to remove.
      */
     public void removeMedia(MediaMessage mediaMessage){
-        mediaCarouselStack.remove(mediaMessage);
-        mediaStack.remove(mediaMessage);
+    	media.remove(mediaMessage);
+    }
+    
+    public Set<String> getCurrentTags(){
+    	return taggedMedia.keySet();
     }
 
 }

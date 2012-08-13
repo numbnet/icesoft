@@ -60,9 +60,13 @@ public class UploadServlet extends HttpServlet {
                     }
                     String fullPath = dirPath + fileName;
                     writePart(part, fullPath);
-                    UploadModel uploadModel = new UploadModel();
-                    uploadModel.setTitle(request.getParameter("title"));
-                    uploadModel.setDescription(request.getParameter("description"));
+                    UploadModel uploadModel = (UploadModel)request.getSession(true)
+                    			.getAttribute("uploadModel");
+                    if( uploadModel == null ){
+                    	uploadModel = new UploadModel();
+                    }
+                    uploadModel.getCurrentMediaMessage().setTitle(request.getParameter("title"));
+                    uploadModel.getCurrentMediaMessage().setDescription(request.getParameter("description"));
                     Map uploadAttributes = new HashMap();
                     uploadAttributes.put("file", new File(fullPath));
                     uploadAttributes.put("contentType", partType);

@@ -28,11 +28,11 @@
         <h:form id="galleryFrm">
             <mobi:outputList inset="false" id="galleryList">
                 <ui:repeat var="media"
-                           value="#{mediaStore.mediaStack}">
+                           value="#{mediaStore.media}">
                     <mobi:outputListItem id="mediaItem">
                         <h:commandLink id="mediaLink" action="#{mediaController.viewMediaDetail}">
                             <f:setPropertyActionListener
-                                    target="#{uploadModel.selectedPhoto}"
+                                    target="#{mediaView.media}"
                                     value="#{media}"/>
 
                             <mobi:graphicImage id="mediaThumbnail"

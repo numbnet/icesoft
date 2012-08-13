@@ -29,6 +29,13 @@
     vertical-align:middle;
 }
 
+label{
+	display: inline-block;
+    vertical-align: top;
+    margin-right: 5px;
+    font-weight: bold;
+}
+
 /* Portrait */
 @media screen and (max-width: 320px) {
     .imageViewer {

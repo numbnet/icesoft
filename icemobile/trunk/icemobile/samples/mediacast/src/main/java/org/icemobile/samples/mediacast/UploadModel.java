@@ -22,6 +22,7 @@ import java.io.File;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -40,7 +41,7 @@ public class UploadModel implements Serializable {
     public static final String BEAN_NAME = "uploadModel";
 
     // media input mode.
-    private String selectedMediaInput = "";
+    private String selectedMediaInput = null;
 
     private Map mediaMap;
     // uploaded file
@@ -50,12 +51,11 @@ public class UploadModel implements Serializable {
     private double latitude = 0.0;
     private double longitude = 0.0;
     private double direction = -1.0;
-
+    
     // select a photo to view in detail.
-    private transient MediaMessage selectedPhoto;
+    private transient MediaMessage currentMediaMessage = new MediaMessage();
 
-    private String title;
-    private String description;
+    private String tags;
 
     // upload error message
     private String uploadErrorMessage;
@@ -78,7 +78,7 @@ public class UploadModel implements Serializable {
         audioFile = (File) audio.get(MediaController.MEDIA_FILE_KEY);
         mediaMap = audio;
         if (audioFile != null) {
-            logger.fine("Retrieved Audio File");
+        	logger.fine("Retrieved Audio File");
             // try for a little clean up after
             audioFile.deleteOnExit();
         }
@@ -118,20 +118,8 @@ public class UploadModel implements Serializable {
         return mediaMap;
     }
 
-    public MediaMessage getSelectedPhoto() {
-        return selectedPhoto;
-    }
-
-    public void setSelectedPhoto(MediaMessage selectedPhoto) {
-        this.selectedPhoto = selectedPhoto;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
+    public MediaMessage getCurrentMediaMessage() {
+        return currentMediaMessage;
     }
 
     public File getCameraFile() {
@@ -166,15 +154,15 @@ public class UploadModel implements Serializable {
         this.selectedMediaInput = selectedMediaInput;
     }
 
-    public boolean getShowCamera() {
+    public boolean isShowCamera() {
         return MediaMessage.MEDIA_TYPE_PHOTO.equals(selectedMediaInput);
     }
 
-    public boolean getShowCamcorder() {
+    public boolean isShowCamcorder() {
         return MediaMessage.MEDIA_TYPE_VIDEO.equals(selectedMediaInput);
     }
 
-    public boolean getShowMicrophone() {
+    public boolean isShowMicrophone() {
         return MediaMessage.MEDIA_TYPE_AUDIO.equals(selectedMediaInput);
     }
 
@@ -202,14 +190,6 @@ public class UploadModel implements Serializable {
         this.longitude = longitude;
     }
     
-    public String getDescription(){
-    	return this.description;
-    }
-    
-    public void setDescription(String description){
-    	this.description = description;
-    }
-    
     public double getDirection(){
     	return direction;
     }
@@ -218,9 +198,32 @@ public class UploadModel implements Serializable {
     	this.direction = direction;
     }
     
+    public String getTags(){
+    	return this.tags;
+    }
+    
+    public void setTags(String tags){
+    	this.tags = tags;
+    }
+    
     public String toString(){
-    	return String.format("UploadModel: title=%s, description=%s, lat=%s, long=%s, direction=%s, video file=%s, audio=%s, camera=%s",
-    			this.getTitle(), this.getDescription(), this.getLatitude(), this.getLongitude(), this.direction, this.videoFile != null ? videoFile.getName() : "null", 
+    	return String.format("UploadModel: lat=%s, long=%s, direction=%s, video file=%s, audio=%s, camera=%s",
+    			this.getLatitude(), this.getLongitude(), this.direction, this.videoFile != null ? videoFile.getName() : "null", 
     			audioFile != null ? audioFile.getName() : "null", cameraFile != null ? cameraFile.getName() : "null");
+    }
+    
+    public void clearCurrentMediaMessage(){
+    	this.currentMediaMessage = new MediaMessage();
+    	this.audioFile = null;
+    	this.cameraFile = null;
+    	this.direction = -1.0;
+    	this.latitude = 0.0;
+    	this.longitude = 0.0;
+    	this.mediaMap = null;
+    	this.selectedLocation = null;
+    	this.tags = null;
+    	this.uploadErrorMessage = null;
+    	this.videoFile = null;
+    	this.selectedMediaInput = null;
     }
 }
