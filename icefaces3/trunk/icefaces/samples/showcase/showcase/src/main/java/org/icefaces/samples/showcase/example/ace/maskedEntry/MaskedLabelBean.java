@@ -51,6 +51,10 @@ public class MaskedLabelBean extends ComponentExampleImpl<MaskedLabelBean> imple
     
     private String labelText = "Masked DOB:";
     private String labelPosition = "left";
+    private String dob;
+    private String workPhone;
+    private String mobilePhone;
+    private String sin;
     
     public MaskedLabelBean() {
         super(MaskedLabelBean.class);
@@ -63,7 +67,23 @@ public class MaskedLabelBean extends ComponentExampleImpl<MaskedLabelBean> imple
     public String getLabelPosition() {
         return labelPosition;
     }
-    
+
+    public String getSin() {
+        return sin;
+    }
+
+    public String getMobilePhone() {
+        return mobilePhone;
+    }
+
+    public String getWorkPhone() {
+        return workPhone;
+    }
+
+    public String getDob() {
+        return dob;
+    }
+
     public void setLabelText(String labelText) {
         this.labelText = labelText;
     }
@@ -71,7 +91,23 @@ public class MaskedLabelBean extends ComponentExampleImpl<MaskedLabelBean> imple
     public void setLabelPosition(String labelPosition) {
         this.labelPosition = labelPosition;
     }
-    
+
+    public void setDob(String dob) {
+        this.dob = dob;
+    }
+
+    public void setWorkPhone(String workPhone) {
+        this.workPhone = workPhone;
+    }
+
+    public void setMobilePhone(String mobilePhone) {
+        this.mobilePhone = mobilePhone;
+    }
+
+    public void setSin(String sin) {
+        this.sin = sin;
+    }
+
     @PostConstruct
     public void initMetaData() {
         super.initMetaData();

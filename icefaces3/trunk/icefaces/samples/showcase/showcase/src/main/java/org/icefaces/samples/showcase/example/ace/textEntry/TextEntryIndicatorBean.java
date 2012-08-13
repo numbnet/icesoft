@@ -53,6 +53,13 @@ public class TextEntryIndicatorBean extends ComponentExampleImpl<TextEntryIndica
     private String requiredText = "This field is required.";
     private String optionalText = "Not mandatory.";
     private String position = "right";
+    private String firstName;
+    private String lastName;
+    private String address1;
+    private String address2;
+    private String city;
+    private String province;
+    private String country;
     
     public TextEntryIndicatorBean() {
         super(TextEntryIndicatorBean.class);
@@ -73,7 +80,35 @@ public class TextEntryIndicatorBean extends ComponentExampleImpl<TextEntryIndica
     public String getPosition() {
         return position;
     }
-    
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public String getAddress1() {
+        return address1;
+    }
+
+    public String getAddress2() {
+        return address2;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public String getProvince() {
+        return province;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
     public void setRequired(boolean required) {
         this.required = required;
     }
@@ -88,6 +123,34 @@ public class TextEntryIndicatorBean extends ComponentExampleImpl<TextEntryIndica
     
     public void setPosition(String position) {
         this.position = position;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public void setAddress1(String address1) {
+        this.address1 = address1;
+    }
+
+    public void setAddress2(String address2) {
+        this.address2 = address2;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public void setProvince(String province) {
+        this.province = province;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
     }
 
     @PostConstruct

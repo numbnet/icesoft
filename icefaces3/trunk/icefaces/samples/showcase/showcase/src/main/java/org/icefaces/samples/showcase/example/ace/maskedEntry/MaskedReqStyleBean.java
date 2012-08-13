@@ -51,7 +51,12 @@ public class MaskedReqStyleBean extends ComponentExampleImpl<MaskedReqStyleBean>
     
     private String reqColor = "redRS";
     private String optColor = "greenRS";
-    
+    private String dob;
+    private String workPhone;
+    private String mobilePhone;
+    private String sin;
+
+
     public MaskedReqStyleBean() {
         super(MaskedReqStyleBean.class);
     }
@@ -70,6 +75,38 @@ public class MaskedReqStyleBean extends ComponentExampleImpl<MaskedReqStyleBean>
     
     public void setOptColor(String optColor) {
         this.optColor = optColor;
+    }
+
+    public String getDob() {
+        return dob;
+    }
+
+    public void setDob(String dob) {
+        this.dob = dob;
+    }
+
+    public String getMobilePhone() {
+        return mobilePhone;
+    }
+
+    public void setMobilePhone(String mobilePhone) {
+        this.mobilePhone = mobilePhone;
+    }
+
+    public String getSin() {
+        return sin;
+    }
+
+    public void setSin(String sin) {
+        this.sin = sin;
+    }
+
+    public String getWorkPhone() {
+        return workPhone;
+    }
+
+    public void setWorkPhone(String workPhone) {
+        this.workPhone = workPhone;
     }
     
     @PostConstruct
