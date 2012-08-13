@@ -18,6 +18,7 @@
              xmlns:h="http://java.sun.com/jsf/html"
              xmlns:f="http://java.sun.com/jsf/core"
              xmlns:ui="http://java.sun.com/jsf/facelets"
+             xmlns:c="http://java.sun.com/jsp/jstl/core"
              xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component"
              template="/WEB-INF/includes/templates/page-template.xhtml">
 
@@ -29,43 +30,47 @@
 
 
             <mobi:fieldsetRow id="titleRow">
-                <label>Title: </label>
-                <h:outputText id="title"
-                        value="#{uploadModel.selectedPhoto.title}"/>
+                <h2>#{mediaView.media.title}</h2>
             </mobi:fieldsetRow>
 
 
-            <mobi:fieldsetRow id="mediaRow">
-              <h:panelGroup rendered="#{uploadModel.selectedPhoto.showPhoto}" >
+            <mobi:fieldsetRow id="mediaRow" rendered="#{mediaView.media.showPhoto}" >
+                <label>Photo:</label>
                <mobi:graphicImage id="largePhoto"
-                        value="#{uploadModel.selectedPhoto.largePhoto.data}"
+                        value="#{mediaView.media.largePhoto.data}"
                         styleClass="imageViewer"
                         style="margin-bottom:10px;"/>
-              </h:panelGroup>
-              <h:panelGroup rendered="#{uploadModel.selectedPhoto.showVideo}" >
+             </mobi:fieldsetRow>
+              <mobi:fieldsetRow rendered="#{mediaView.media.showVideo}" >
                 <label>Video:</label>
                 <mobi:videoPlayer id="videoPlayer"
-                        value="#{uploadModel.selectedPhoto.video.data}"
+                        value="#{mediaView.media.video.data}"
                         styleClass="imageViewer"
                         linkLabel="Play"
                         style="margin-bottom:10px;"/>
-              </h:panelGroup>
-              <h:panelGroup rendered="#{uploadModel.selectedPhoto.showAudio}" >
+              </mobi:fieldsetRow>
+              <mobi:fieldsetRow rendered="#{mediaView.media.showAudio}" >
                 <label>Audio:</label>
                 <mobi:audioPlayer id="audioPlayer"
-                        value="#{uploadModel.selectedPhoto.audio.data}"
+                        value="#{mediaView.media.audio.data}"
                         styleClass="imageViewer"
                         linkLabel="Play"
                         style="margin-bottom:10px;"/>
-              </h:panelGroup>
             </mobi:fieldsetRow>
-            <mobi:fieldsetRow>
+            <mobi:fieldsetRow rendered="#{not empty mediaView.media.description}">
                 <label>Description: </label>
                 <h:outputText id="description"
-                        value="#{uploadModel.selectedPhoto.description}"/>
+                        value="#{mediaView.media.description}"/>
+            </mobi:fieldsetRow>
+            <mobi:fieldsetRow rendered="#{not empty mediaView.media.tags}">
+                <label>Tags: </label>
+                <c:forEach items="#{mediaView.media.tags}" var="tag">
+                    <h:outputText
+                        value="#{tag}&#160;"/>
+                </c:forEach>
             </mobi:fieldsetRow>
             <mobi:fieldsetRow>
-                <h:form>
+                <h:form id="delMediaFrm">
                     <mobi:commandButton id="deleteBtn"
                             value="Delete" buttonType="attention"
                             style="float:right"

@@ -16,86 +16,75 @@
 
 package org.icemobile.samples.mediacast;
 
-import javax.faces.context.ExternalContext;
-import javax.faces.context.FacesContext;
 import java.io.File;
 import java.io.Serializable;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-/**
- * A new photo upload containing a small, medium and large photo data.
- */
 public class MediaMessage implements Serializable {
 
     private static final Logger logger =
             Logger.getLogger(MediaMessage.class.toString());
 
-    public static final String MEDIA_TYPE_PHOTO = "photo";
-    public static final String MEDIA_TYPE_VIDEO = "video";
-    public static final String MEDIA_TYPE_AUDIO = "audio";
-    
     private String title;
     private String description;
-    private String tags; //space delimited set of subject tags
+    private List<String> tags = new ArrayList<String>(); 
     private double latitude = 0.0;
     private double longitude = 0.0;
-    private double direction = -1.0; //0-359 degrees
+    private double direction = (360 * Math.random()); //0-359 degrees
 
     
-    private Media[] photos = new Media[3];
+    private Media smallPhoto = null;
+    private Media mediumPhoto = null;
+    private Media largePhoto = null;
     private Media videoMedia = null;
     private Media audioMedia = null;
-    private File mediaFile;
-    private String mediaType = MEDIA_TYPE_PHOTO;
+    private Media videoThumbnailSmall = null;
+    private Media videoThumbnailMed = null;
+    private File videoFile;
+    private File audioFile;
+    private File photoFile;
+    
+    public static final String MEDIA_TYPE_PHOTO = "Photo";
+    public static final String MEDIA_TYPE_VIDEO = "Video";
+    public static final String MEDIA_TYPE_AUDIO = "Audio";
     
     public Media getSmallPhoto() {
-        return photos[0];
+        return smallPhoto;
     }
 
     public void addSmallPhoto(Media photo) {
-        photos[0] = photo;
+        smallPhoto = photo;
     }
 
     public Media getMediumPhoto() {
-        return photos[1];
+        return mediumPhoto;
     }
 
     public void addMediumPhoto(Media photo) {
-        photos[1] = photo;
+        mediumPhoto = photo;
     }
 
     public void addPhoto(File cameraFile){
-        mediaFile = cameraFile;
+        photoFile = cameraFile;
     }
 
     public Media getLargePhoto() {
-        return photos[2];
+        return largePhoto;
     }
 
     public void addLargePhoto(Media photo) {
-        photos[2] = photo;
-    }
-
-    public Media[] getPhotos() {
-        return photos;
-    }
-
-    public void setPhotos(Media[] photos) {
-        this.photos = photos;
-        mediaType = MEDIA_TYPE_PHOTO;
+        largePhoto = photo;
     }
 
     public void addVideo(Media video)  {
         this.videoMedia = video;
-        this.mediaType = MEDIA_TYPE_VIDEO;
     }
     
     public void addAudio(Media audio)  {
         this.audioMedia = audio;
-        this.mediaType = MEDIA_TYPE_AUDIO;
     }
 
     public Media getVideo()  {
@@ -107,31 +96,26 @@ public class MediaMessage implements Serializable {
     }
 
     public void addVideo(File videoFile)  {
-        this.mediaFile = videoFile;
-        this.mediaType = MEDIA_TYPE_VIDEO;
+        this.videoFile = videoFile;
     }
     
     public void addAudio(File audioFile)  {
-        this.mediaFile = audioFile;
-        this.mediaType = MEDIA_TYPE_AUDIO;
+        this.audioFile = audioFile;
     }
     
-    public String getMediaType()  {
-        return mediaType;
-    }
-
     public boolean getShowAudio()  {
-        return MEDIA_TYPE_AUDIO.equals(mediaType);
+        return audioFile != null || audioMedia != null;
     }
 
     public boolean getShowVideo()  {
-        return MEDIA_TYPE_VIDEO.equals(mediaType);
+    	 return videoFile != null || videoMedia != null;
     }
 
     public boolean getShowPhoto()  {
-        return MEDIA_TYPE_PHOTO.equals(mediaType);
+    	 return photoFile != null || largePhoto != null;
     }
 
+    /* PB where was this used?
     public String getMediaURL()  {
         ExternalContext externalContext = FacesContext
                 .getCurrentInstance().getExternalContext();
@@ -139,23 +123,26 @@ public class MediaMessage implements Serializable {
         String absolutePath = mediaFile.getAbsolutePath();
         String urlPath = absolutePath.substring(rootPath.length() - 1);
         return urlPath;
-    }
+    }*/
 
     public String getIconURL()  {
         return getMediumPhoto().getData().getURL().toString();
     }
 
-    public void setLocation(double latitude, double longitude)  {
-        this.latitude = latitude;
-        this.longitude = longitude;
-    }
-
     public double getLat()  {
         return latitude;
+    }
+    
+    public void setLat(double lat){
+    	this.latitude = lat;
     }
 
     public double getLon()  {
         return longitude;
+    }
+    
+    public void setLon(double lon){
+    	this.longitude = lon;
     }
 
     public String getTitle() {
@@ -174,11 +161,11 @@ public class MediaMessage implements Serializable {
 		this.description = description;
 	}
 
-	public String getTags() {
+	public List<String> getTags() {
 		return tags;
 	}
-
-	public void setTags(String tags) {
+	
+	public void setTags(List<String> tags){
 		this.tags = tags;
 	}
 
@@ -191,22 +178,63 @@ public class MediaMessage implements Serializable {
 	}
 
 	/**
-     * Clean up file resoruces.
+     * Clean up file resources.
      */
     public void dispose(){
-        if (mediaFile != null){
-            boolean success = mediaFile.delete();
+        if (audioFile != null){
+            boolean success = audioFile.delete();
             if (!success && logger.isLoggable(Level.FINE)){
-                logger.fine("Could not dispose of media file" + mediaFile.getAbsolutePath());
+                logger.fine("Could not dispose of audio file" + audioFile.getAbsolutePath());
+            }
+        }
+        if (photoFile != null){
+            boolean success = photoFile.delete();
+            if (!success && logger.isLoggable(Level.FINE)){
+                logger.fine("Could not dispose of photo file" + photoFile.getAbsolutePath());
+            }
+        }
+        if (videoFile != null){
+            boolean success = videoFile.delete();
+            if (!success && logger.isLoggable(Level.FINE)){
+                logger.fine("Could not dispose of audio file" + videoFile.getAbsolutePath());
             }
         }
         // try and clean up the data[], but only for real photos, we don't
         // want to delete the video and audio icons.
         if (getShowPhoto()){
-            for (Media photo : photos){
-                photo.dispose();
-            }
+            smallPhoto.dispose();
+            mediumPhoto.dispose();
+            largePhoto.dispose();
         }
+    }
+    
+    public boolean isHasMedia(){
+    	return this.audioFile != null || this.photoFile != null || this.videoFile != null;
+    }
+    
+    public void setVideoThumbnailSmall(Media thumb){
+    	this.videoThumbnailSmall = thumb;
+    }
+    
+    public Media getVideoThumbnailSmall(){
+    	return this.videoThumbnailSmall;
+    }
+    
+    public void setVideoThumbnailMed(Media thumb){
+    	this.videoThumbnailMed = thumb;
+    }
+    
+    public Media getVideoThumbnail(){
+    	return this.videoThumbnailMed;
+    }
+    
+    public String toString(){
+    	return String.format("%s audioFile=%s, audioMedia=%s, description=%s, direction=%s, " +
+    			"largePhoto=%s, lat=%s, lon=%s, mediumPhoto=%s, photoFile=%s, smallPhoto%s, " +
+    			"tags=%s, title=%s, videoFile=%s, videoMedia=%s, videoThumbnailMed=%s, " +
+    			"videoThumbnailSmall=%s", this.getClass().getSimpleName(), audioFile, audioMedia,
+    			description, direction, largePhoto, latitude, longitude, mediumPhoto, photoFile,
+    			smallPhoto, tags, title, videoFile, videoMedia, videoThumbnailMed, videoThumbnailSmall);
     }
 
 }
