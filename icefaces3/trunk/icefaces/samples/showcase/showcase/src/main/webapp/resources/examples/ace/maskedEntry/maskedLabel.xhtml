@@ -49,7 +49,7 @@
             
             <ace:panel id="personalInfoInputPanel" header="Personal Info">
                 <h:panelGrid columns="1" cellspacing="6" cellpadding="6">
-                    <ace:maskedEntry id="dobInput" value="#{maskedEntryBean.dob}" mask="99/99/9999"
+                    <ace:maskedEntry id="dobInput" value="#{maskedLabelBean.dob}" mask="99/99/9999"
                                      label="#{maskedLabelBean.labelText}"
                                      labelPosition="#{maskedLabelBean.labelPosition}">
                         <ace:ajax execute="@this" render="dobOutput"/>
@@ -59,7 +59,7 @@
             
             <ace:panel id="personalInfoOutputPanel" header="Entered Data">
                 <h:panelGrid id="outputGrid" width="100%" style="text-align: left;">
-                    <h:outputText id="dobOutput" value="#{maskedLabelBean.labelText} #{maskedEntryBean.dob}"/>
+                    <h:outputText id="dobOutput" value="#{maskedLabelBean.labelText} #{maskedLabelBean.dob}"/>
                 </h:panelGrid>
             </ace:panel>
         </h:form>

@@ -53,7 +53,12 @@ public class MaskedIndicatorBean extends ComponentExampleImpl<MaskedIndicatorBea
     private String requiredText = "This field is required.";
     private String optionalText = "Not mandatory.";
     private String position = "right";
-    
+    private String dob;
+    private String workPhone;
+    private String mobilePhone;
+    private String sin;
+
+
     public MaskedIndicatorBean() {
         super(MaskedIndicatorBean.class);
     }
@@ -65,7 +70,7 @@ public class MaskedIndicatorBean extends ComponentExampleImpl<MaskedIndicatorBea
     public String getRequiredText() {
         return requiredText;
     }
-    
+
     public String getOptionalText() {
         return optionalText;
     }
@@ -73,7 +78,27 @@ public class MaskedIndicatorBean extends ComponentExampleImpl<MaskedIndicatorBea
     public String getPosition() {
         return position;
     }
-    
+
+    public String getSin() {
+        return sin;
+    }
+
+    public String getMobilePhone() {
+        return mobilePhone;
+    }
+
+    public String getWorkPhone() {
+        return workPhone;
+    }
+
+    public String getDob() {
+        return dob;
+    }
+
+    public boolean isRequired() {
+        return required;
+    }
+
     public void setRequired(boolean required) {
         this.required = required;
     }
@@ -89,7 +114,23 @@ public class MaskedIndicatorBean extends ComponentExampleImpl<MaskedIndicatorBea
     public void setPosition(String position) {
         this.position = position;
     }
-    
+
+    public void setDob(String dob) {
+        this.dob = dob;
+    }
+
+    public void setWorkPhone(String workPhone) {
+        this.workPhone = workPhone;
+    }
+
+    public void setMobilePhone(String mobilePhone) {
+        this.mobilePhone = mobilePhone;
+    }
+
+    public void setSin(String sin) {
+        this.sin = sin;
+    }
+
     @PostConstruct
     public void initMetaData() {
         super.initMetaData();

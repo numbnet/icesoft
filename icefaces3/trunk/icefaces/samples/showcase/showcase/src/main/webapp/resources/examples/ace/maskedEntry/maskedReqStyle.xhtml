@@ -63,7 +63,7 @@
             <ace:panel id="personalInfoInputPanel" header="Personal Info">
                 <h:panelGrid id="inputGrid" columns="2" width="100%" cellpadding="6" cellspacing="6">
                     <h:outputLabel id="workPhoneLabel" for="workPhoneInput" value="Work Phone:"/>
-                    <ace:maskedEntry id="workPhoneInput" value="#{maskedEntryBean.workPhone}" mask="(999) 999-9999? x99999"
+                    <ace:maskedEntry id="workPhoneInput" value="#{maskedReqStyleBean.workPhone}" mask="(999) 999-9999? x99999"
                                      required="true" requiredIndicator="(Required)"
                                      indicatorPosition="right"
                                      styleClass="#{maskedReqStyleBean.reqColor}">
@@ -71,7 +71,7 @@
                     </ace:maskedEntry>
                     
                     <h:outputLabel id="mobilePhoneLabel" for="mobilePhoneInput" value="Mobile Phone:"/>
-                    <ace:maskedEntry id="mobilePhoneInput" value="#{maskedEntryBean.mobilePhone}" mask="(999) 999-9999"
+                    <ace:maskedEntry id="mobilePhoneInput" value="#{maskedReqStyleBean.mobilePhone}" mask="(999) 999-9999"
                                      required="false" optionalIndicator="(Optional)"
                                      indicatorPosition="right"
                                      styleClass="#{maskedReqStyleBean.optColor}">
@@ -83,8 +83,8 @@
             <ace:panel id="personalInfoOutputPanel" header="Entered Data">
                 <h:panelGrid id="outputGrid" width="100%" style="text-align: left;"
                              cellpadding="6" cellspacing="6">
-                    <h:outputText id="workPhoneOutput" value="Work Phone: #{maskedEntryBean.workPhone}"/>
-                    <h:outputText id="mobilePhoneOutput" value="Mobile Phone: #{maskedEntryBean.mobilePhone}"/>
+                    <h:outputText id="workPhoneOutput" value="Work Phone: #{maskedReqStyleBean.workPhone}"/>
+                    <h:outputText id="mobilePhoneOutput" value="Mobile Phone: #{maskedReqStyleBean.mobilePhone}"/>
                 </h:panelGrid>
             </ace:panel>
         </h:form>
