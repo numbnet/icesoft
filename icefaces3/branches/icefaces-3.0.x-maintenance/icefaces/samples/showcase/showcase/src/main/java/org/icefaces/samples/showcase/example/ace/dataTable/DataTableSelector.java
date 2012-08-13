@@ -16,6 +16,7 @@
 
 package org.icefaces.samples.showcase.example.ace.dataTable;
 
+import org.icefaces.ace.model.table.CellSelections;
 import org.icefaces.ace.model.table.RowStateMap;
 import org.icefaces.samples.showcase.metadata.annotation.*;
 import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
@@ -69,8 +70,7 @@ public class DataTableSelector extends ComponentExampleImpl<DataTableSelector> i
 
     private RowStateMap stateMap = new RowStateMap();
     private ArrayList<Car> selectedRows;
-    private Cell singleCell;
-    private Cell[] multiCell;
+    private CellSelections[] selectedCells;
     private String selectionMode = AVAILABLE_MODES[0].getValue().toString();
     private boolean dblClick = false;
     private boolean instantUpdate = true;
@@ -84,40 +84,27 @@ public class DataTableSelector extends ComponentExampleImpl<DataTableSelector> i
     /////////////---- VALUE CHANGE LISTENERS BEGIN
     public void changedMode(ValueChangeEvent event) {
         stateMap.setAllSelected(false);
-        singleCell = null;
-        multiCell = null;
+        selectedCells = null;
     }
     /////////////---- GETTERS & SETTERS BEGIN
     public RowStateMap getStateMap() { return stateMap; }
     public ArrayList<Car> getMultiRow() { return (ArrayList<Car>) stateMap.getSelected(); }
-    public Cell getSingleCell() { return singleCell; }
-    public Cell[] getMultiCell() { return multiCell; }
     public String getSelectionMode() { return selectionMode; }
     public boolean getDblClick() { return dblClick; }
     public boolean getInstantUpdate() { return instantUpdate; }
     public SelectItem[] getAvailableModes() { return AVAILABLE_MODES; }
     public List<Car> getCarsData() { return carsData; }
-    public Object getSelectionObject() {
-        if (SELECT_SINGLE_ROW.equals(selectionMode) || SELECT_MULTI_ROW.equals(selectionMode)) {
-            return selectedRows;
-        }
-        else if (SELECT_SINGLE_CELL.equals(selectionMode)) {
-            return singleCell;
-        }
-        else if ((SELECT_RANGE_CELL.equals(selectionMode)) ||
-                 (SELECT_BLOCK_CELL.equals(selectionMode))) {
-            return multiCell;
-        }
-        
-        return null;
+    public CellSelections[] getSelectedCells() {
+        return selectedCells;
     }
 
     public void setStateMap(RowStateMap stateMap) { this.stateMap = stateMap; }
     public void setMultiRow(ArrayList<Car> multiRow) { }
-    public void setSingleCell(Cell singleCell) { this.singleCell = singleCell; }
-    public void setMultiCell(Cell[] multiCell) { this.multiCell = multiCell; }
     public void setSelectionMode(String selectionMode) { this.selectionMode = selectionMode; }
     public void setDblClick(boolean dblClick) { this.dblClick = dblClick; }
     public void setInstantUpdate(boolean instantUpdate) { this.instantUpdate = instantUpdate; }
     public void setCarsData(List<Car> carsData) { this.carsData = carsData; }
+    public void setSelectedCells(CellSelections[] selectedCells) {
+        this.selectedCells = selectedCells;
+    }
 }
