@@ -32,25 +32,29 @@ import javax.faces.event.FacesEvent;
 import javax.faces.event.FacesListener;
 
 public class SelectEvent extends FacesEvent {
+        private Object[] objects;
 
-	private Object object;
-	
-	public SelectEvent(UIComponent component, Object object) {
-		super(component);
-		this.object = object;
-	}
+        public SelectEvent(UIComponent table, Object[] objs) {
+            super(table);
+            objects = objs;
+        }
 
-	@Override
-	public boolean isAppropriateListener(FacesListener faceslistener) {
-		return false;
-	}
+        @Override
+        public boolean isAppropriateListener(FacesListener faceslistener) {
+            return false;
+        }
 
-	@Override
-	public void processListener(FacesListener faceslistener) {
-		throw new UnsupportedOperationException();
-	}
-	
-	public Object getObject() {
-		return object;
-	}
-}
+        @Override
+        public void processListener(FacesListener faceslistener) {
+            throw new UnsupportedOperationException();
+        }
+
+        public Object getObject() {
+            if (objects == null) return null;
+            return objects[0];
+        }
+
+        public Object[] getObjects() {
+            return objects;
+        }
+ }
