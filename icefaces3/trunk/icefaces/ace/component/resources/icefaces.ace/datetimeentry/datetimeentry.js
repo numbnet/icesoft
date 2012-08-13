@@ -48,7 +48,11 @@ ice.ace.Calendar = function(id, cfg) {
     //Setup timepicker
     if(hasTimePicker) {
         this.configureTimePicker();
-        }
+    }
+
+    if (this.cfg.withinSingleSubmit) {
+        ice.cancelSingleSubmit(this.cfg.clientId);
+    }
 
     //Initialize calendar
     if(!this.cfg.disabled) {
@@ -105,6 +109,7 @@ ice.ace.Calendar.prototype.configureLocale = function() {
 
 ice.ace.Calendar.prototype.bindDateSelectListener = function() {
     var _self = this;
+    var behavior = this.cfg && this.cfg.behaviors && this.cfg.behaviors.dateSelect;
 
     if(this.cfg.behaviors) {
         this.cfg.onSelect = function(dateText, input) {
@@ -114,7 +119,7 @@ ice.ace.Calendar.prototype.bindDateSelectListener = function() {
                 ice.ace.ab.call(_self, dateSelectBehavior);
         };
     }
-    if (!$.isFunction(this.cfg.onSelect) && this.cfg.singleSubmit) {
+    if (!behavior && this.cfg.singleSubmit) {
         this.cfg.onSelect = function(dateText, inst) {
             ice.se(null, _self.cfg.clientId);
         };

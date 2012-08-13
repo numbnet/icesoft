@@ -605,12 +605,32 @@ if (!window.ice.icefaces) {
 
             if (f.addEventListener) {
                 //events for most browsers
-                f.addEventListener('blur', submitForm, true);
-                f.addEventListener('change', submitForm, true);
+                f.addEventListener('blur', submitForm, false);
+                f.addEventListener('change', submitForm, false);
             } else {
                 //events for IE
                 f.attachEvent('onfocusout', submitForm);
                 f.attachEvent('onclick', submitForm);
+            }
+        };
+
+        namespace.cancelSingleSubmit = function(id) {
+            if (typeof id != "string") return;
+            var f = document.getElementById(id);
+            if (!f) return;
+
+            var cancelBubble = function (event) {
+                event = event || window.event;
+                if (event.stopPropagation) event.stopPropagation();
+                event.cancelBubble = true;
+            };
+
+            if (f.addEventListener) {
+                f.addEventListener('blur', cancelBubble, false);
+                f.addEventListener('change', cancelBubble, false);
+            } else {
+                f.attachEvent('onfocusout', cancelBubble);
+                f.attachEvent('onclick', cancelBubble);
             }
         };
 
