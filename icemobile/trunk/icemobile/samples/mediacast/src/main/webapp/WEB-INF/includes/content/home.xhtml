@@ -33,7 +33,7 @@
         <h:form id="recentMediaFrm">
             <mobi:carousel id="recentMediaCarousel"
                            var="mediaMessage"
-                           value="#{mediaStore.carouselStack}"
+                           value="#{mediaStore.media}"
                            style="border-top: 1px solid #999999;">
                 <h:column>
                     <div style="overflow:hidden;width:175px;height:98px;">
@@ -60,7 +60,7 @@
         <div style="clear:both;"/>
 
         <!-- upload components. -->
-        <h4>Send a Media Message ('#{uploadModel.selectedMediaInput}')</h4>
+        <h4>Send a Media Message</h4>
 
         <h:form prependId="false" id="cform">
         

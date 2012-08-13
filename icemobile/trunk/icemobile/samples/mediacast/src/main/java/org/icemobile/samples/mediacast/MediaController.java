@@ -275,5 +275,15 @@ public class MediaController implements Serializable {
     public void setNavigationModel(NavigationModel navigationModel){
     	this.navigationModel = navigationModel;
     }
+    
+    public void setMediaHelper(MediaHelper mediaHelper) {
+		this.mediaHelper = mediaHelper;
+	}
+
+	public void setMediaView(MediaView mediaView) {
+		this.mediaView = mediaView;
+	}
+
+	
 
 }
