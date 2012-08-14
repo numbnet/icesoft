@@ -525,13 +525,12 @@ ice.ace.DataTable.prototype.setupSortEvents = function () {
 
 ice.ace.DataTable.prototype.tearDownSelectionEvents = function () {
     var selectEvent = this.cfg.dblclickSelect ? 'dblclick' : 'click';
-    ice.ace.jq(this.jqId + ' div > table > tbody > tr > td, ' +
-            this.jqId + ' div > table > tbody > tr:not(.ui-unselectable)')
-                .die(selectEvent);
+    var selector = this.isCellSelectionEnabled()
+                ? this.jqId + ' > div > table > tbody.ui-datatable-data > tr > td'
+                : this.jqId + ' > div > table > tbody.ui-datatable-data > tr:not(.ui-unselectable)';
 
-    ice.ace.jq(this.jqId +  ' div > table > tbody > tr > td, ' +
-            this.jqId + ' div > table > tbody > tr:not(.ui-unselectable)')
-                .die('mouseenter');
+    ice.ace.jq(selector).die(selectEvent);
+    ice.ace.jq(selector).die('mouseenter');
 }
 
 ice.ace.DataTable.prototype.setupSelectionEvents = function () {
@@ -562,6 +561,7 @@ ice.ace.DataTable.prototype.setupSelectionEvents = function () {
         });
     ice.ace.jq(selector)
         .die('mouseenter')
+        .die(selectEvent)
         .live('mouseenter', function () {
             if (!(_self.cfg.noiehover
                 && ((ice.ace.jq.browser.msie && ice.ace.jq.browser.version == 7) ||
