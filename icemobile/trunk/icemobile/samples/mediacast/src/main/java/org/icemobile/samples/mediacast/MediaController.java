@@ -17,32 +17,20 @@
 package org.icemobile.samples.mediacast;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 
 import org.apache.commons.lang3.StringUtils;
-import org.icefaces.application.PortableRenderer;
-import org.icefaces.application.PushMessage;
-import org.icefaces.application.PushRenderer;
-import org.icefaces.util.EnvUtils;
-import org.icemobile.samples.mediacast.navigation.NavigationModel;
-import org.icemobile.samples.util.FacesUtils;
-
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.ViewScoped;
-import javax.faces.context.ExternalContext;
-import javax.faces.context.FacesContext;
-import javax.imageio.ImageIO;
-
 import org.icefaces.application.PortableRenderer;
 import org.icefaces.application.PushMessage;
 import org.icefaces.application.PushRenderer;
@@ -82,6 +70,10 @@ public class MediaController implements Serializable {
 	
 	@ManagedProperty(value="#{mediaView}")
 	private MediaView mediaView;
+	
+	private boolean showMessagePopup = false;
+	
+	private SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss");
 
 	@PostConstruct
 	public void init() {
@@ -106,35 +98,37 @@ public class MediaController implements Serializable {
 		}
 		
 		String selectedMediaInput = model.getSelectedMediaInput();
-		String contentType = (String) model.getMediaMap().get(
-				"contentType");
 		logger.finer(model.toString());
 		logger.finer("selectedMediaInput=" + selectedMediaInput);
-		logger.finer("content type: " + contentType);
-
+		
 		// check that we have a valid file type before processing.
-		if (contentType != null
-				&& ((contentType.startsWith("image")
-				|| contentType.startsWith("video") 
-				|| contentType.startsWith("audio")))) {
-
-			if (MediaMessage.MEDIA_TYPE_PHOTO.equals(selectedMediaInput)
-					&& contentType.startsWith("image")) {
+		String contentType = null;
+		if (MediaMessage.MEDIA_TYPE_PHOTO.equals(selectedMediaInput)){
+			contentType = (String)uploadModel.getPhotoUploadMap().get("contentType");
+			if( contentType != null && contentType.startsWith("image")){
 				mediaHelper.processUploadedImage(model, store);
-			} else if (MediaMessage.MEDIA_TYPE_VIDEO.equals(selectedMediaInput)
-					&& contentType.startsWith("video")) {
+			}
+		}
+		else if (MediaMessage.MEDIA_TYPE_VIDEO.equals(selectedMediaInput)){
+			contentType = (String)uploadModel.getVideoUploadMap().get("contentType");
+			if( contentType.startsWith("video")) {
 				mediaHelper.processUploadedVideo(model, store);
-			} else if (MediaMessage.MEDIA_TYPE_AUDIO.equals(selectedMediaInput)
-					&& contentType.startsWith("audio")) {
+			}
+		} 
+		else if (MediaMessage.MEDIA_TYPE_AUDIO.equals(selectedMediaInput)){
+			contentType = (String)uploadModel.getAudioUploadMap().get("contentType");
+			if( contentType.startsWith("audio")) {
 				mediaHelper.processUploadedAudio(model, store);
 			}
-			model.setSelectedMediaInput(null);
-			logger.finer(uploadModel.getCurrentMediaMessage().toString());
+		}
+		model.setSelectedMediaInput(null);
+		logger.finer(uploadModel.getCurrentMediaMessage().toString());
 
-		} else {
+		if( contentType == null ){
 			String errorMsg = "An error occurred while upload the "
 					+ selectedMediaInput + " file, please try again.";
-			uploadModel.setUploadErrorMessage(errorMsg);
+			uploadModel.setUploadFeedbackMessage(errorMsg);
+			showMessagePopup = true;
 			logger.warning(errorMsg);
 		}
 	}
@@ -150,7 +144,7 @@ public class MediaController implements Serializable {
 		MediaMessage msg = uploadModel.getCurrentMediaMessage();
 		if (msg.isHasMedia()) {
 			if( StringUtils.isNotEmpty(uploadModel.getTags())){
-				msg.setTags(Arrays.asList(StringUtils.split(uploadModel.getTags())));
+				msg.getTags().addAll(Arrays.asList(StringUtils.split(uploadModel.getTags())));
 			}
 			
 			//set stock icons for small and medium if no photo is included
@@ -167,6 +161,21 @@ public class MediaController implements Serializable {
 				}
 			}
 			
+			if( StringUtils.isEmpty(msg.getTitle())){
+				msg.setTitle(dateFormat.format(new Date()));
+			}
+			
+			//add tags
+			if( msg.getShowVideo() ){
+				msg.getTags().add("video");
+			}
+			if( msg.getShowAudio() ){
+				msg.getTags().add("audio");
+			}
+			if( msg.getShowPhoto() ){
+				msg.getTags().add("photo");
+			}
+			
 			mediaStore.addMedia(msg);
 			logger.finer("added new media message to store: " + msg);
 			try {
@@ -179,7 +188,8 @@ public class MediaController implements Serializable {
 						"Media message was not sent to recipients.");
 			}
 			uploadModel
-					.setUploadErrorMessage("The Media Message sent successfully.");
+					.setUploadFeedbackMessage("The Media Message was sent successfully.");
+			showMessagePopup = true;
 		}
 
 	}
@@ -239,7 +249,8 @@ public class MediaController implements Serializable {
 	public void chooseCamera(ActionEvent ae) {
 		logger.finer("chooseCamera()");
 		uploadModel.setSelectedMediaInput(MediaMessage.MEDIA_TYPE_PHOTO);
-		uploadModel.setUploadErrorMessage("");
+		uploadModel.setUploadFeedbackMessage("");
+		showMessagePopup = false;
 	}
 
 	/**
@@ -250,7 +261,8 @@ public class MediaController implements Serializable {
 	public void chooseCamcorder(ActionEvent ae) {
 		logger.finer("chooseCamcorder()");
 		uploadModel.setSelectedMediaInput(MediaMessage.MEDIA_TYPE_VIDEO);
-		uploadModel.setUploadErrorMessage("");
+		uploadModel.setUploadFeedbackMessage("");
+		showMessagePopup = false;
 	}
 
 	/**
@@ -261,7 +273,8 @@ public class MediaController implements Serializable {
 	public void chooseMicrophone(ActionEvent ae) {
 		logger.finer("chooseMicrophone()");
 		uploadModel.setSelectedMediaInput(MediaMessage.MEDIA_TYPE_AUDIO);
-		uploadModel.setUploadErrorMessage("");
+		uploadModel.setUploadFeedbackMessage("");
+		showMessagePopup = false;
 	}
 
     public void setUploadModel(UploadModel uploadModel){
@@ -282,6 +295,14 @@ public class MediaController implements Serializable {
 
 	public void setMediaView(MediaView mediaView) {
 		this.mediaView = mediaView;
+	}
+	
+	public boolean isShowMessagePopup(){
+		return showMessagePopup;
+	}
+	
+	public void closeMessagePopup(ActionEvent e){
+		showMessagePopup = false;
 	}
 
 	

@@ -17,10 +17,10 @@
 package org.icemobile.samples.mediacast;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Logger;
 
@@ -43,17 +43,14 @@ public class MediaStore implements Serializable {
     private static final int MAX_CACHE_SIZE = 10;
 
     private List<MediaMessage> media = new CopyOnWriteArrayList<MediaMessage>();
-    private Map<String, List<MediaMessage>> taggedMedia = new ConcurrentHashMap<String,List<MediaMessage>>();
+    
+    private Map<String,Integer> tags = new HashMap<String,Integer>();
     
     
     public List<MediaMessage> getMedia() {
         return media;
     }
     
-    public Map<String, List<MediaMessage>> getTaggedMedia(){
-    	return taggedMedia;
-    }
-
     /**
      * Add a new MediaMessage set to the the store.
      *
@@ -63,27 +60,19 @@ public class MediaStore implements Serializable {
     	media.add(0,mediaMessage);
     	if( mediaMessage.getTags().size() > 0 ){
     		for( String tag : mediaMessage.getTags() ){
-    			List<MediaMessage> matchingTaggedMedia = taggedMedia.get(tag);
-    			if( matchingTaggedMedia == null ){
-    				matchingTaggedMedia = new CopyOnWriteArrayList<MediaMessage>();
-    				taggedMedia.put(tag, matchingTaggedMedia);
+    			Integer count = tags.get(tag);
+    			if( count != null ){
+    				tags.put(tag, Integer.valueOf(count.intValue()+1));
     			}
-    			matchingTaggedMedia.add(mediaMessage);
+    			else{
+    				tags.put(tag, Integer.valueOf(1));
+    			}
     		}
     	}
         // keep the list of upload small. we don't want to break the bank!
         if (media.size() > MAX_CACHE_SIZE) {
-            MediaMessage message = media.remove(media.size()-1);
-            if( message.getTags().size() > 0 ){
-            	for( String tag : message.getTags()){
-            		List<MediaMessage> matchingTaggedMedia = taggedMedia.get(tag);
-            		matchingTaggedMedia.remove(message);
-            		if( matchingTaggedMedia.size() == 0 ){
-            			taggedMedia.remove(tag);
-            		}
-            	}
-            }
-            message.dispose();
+            MediaMessage message = media.get(media.size()-1);
+            removeMedia(message);
         }
     }
 
@@ -94,10 +83,23 @@ public class MediaStore implements Serializable {
      */
     public void removeMedia(MediaMessage mediaMessage){
     	media.remove(mediaMessage);
+    	for( String tag : mediaMessage.getTags() ){
+    		Integer count = tags.get(tag);
+    		if(Integer.valueOf(1).equals(count)){
+    			tags.remove(tag);
+    		}
+    		else{
+    			tags.put(tag, Integer.valueOf(count.intValue()-1));
+    		}
+    	}
     }
     
-    public Set<String> getCurrentTags(){
-    	return taggedMedia.keySet();
+    public Map<String, Integer> getTags(){
+    	return tags;
+    }
+    
+    public List<String> getTagSet(){
+    	return new ArrayList<String>(tags.keySet());
     }
 
 }

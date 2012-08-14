@@ -28,7 +28,7 @@
         <h:form id="galleryFrm">
             <mobi:outputList inset="false" id="galleryList">
                 <ui:repeat var="media"
-                           value="#{mediaStore.media}">
+                           value="#{galleryView.filteredMessages}">
                     <mobi:outputListItem id="mediaItem">
                         <h:commandLink id="mediaLink" action="#{mediaController.viewMediaDetail}">
                             <f:setPropertyActionListener
@@ -48,6 +48,37 @@
                     </mobi:outputListItem>
                 </ui:repeat>
             </mobi:outputList>
+            
+            <mobi:fieldsetGroup>
+                <mobi:fieldsetRow>
+                    <label>Enter some tag to filter the messages</label>
+                </mobi:fieldsetRow>
+                <mobi:fieldsetRow>
+                    <mobi:inputText value="#{galleryView.filterString}"/>
+                    <mobi:commandButton value="Filter Messages"/>
+                </mobi:fieldsetRow>
+            </mobi:fieldsetGroup>
+            
+            <mobi:fieldsetGroup>
+                <mobi:fieldsetRow>
+                    <label>Select a tag from the cloud to filter the messages</label>
+                </mobi:fieldsetRow>
+                <mobi:fieldsetRow>
+                    <ul class="weighted" style="font-size:50%">
+                        <ui:repeat var="tag" value="#{mediaStore.tagSet}">
+                            <li>
+                                <h:commandLink>
+                                    <f:setPropertyActionListener
+                                            target="#{galleryView.filterString}"
+                                            value="#{tag}"/>
+                                    <h:outputText value="#{tag}" style="font-size:#{mediaStore.tags[tag]}em"/>
+                                </h:commandLink>
+                            </li>
+                        </ui:repeat>
+                    </ul>
+                </mobi:fieldsetRow>
+            </mobi:fieldsetGroup>
+            
         </h:form>
     </ui:define>
 </ui:composition>
