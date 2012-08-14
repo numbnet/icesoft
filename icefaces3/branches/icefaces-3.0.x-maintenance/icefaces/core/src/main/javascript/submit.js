@@ -65,8 +65,8 @@ var singleSubmit;
     //          element.name as it does when f:ajax is used. So here
     //          we add it if it's a valid value and not there already.
     //          The strategy is similar to what Mojarra already does.
-    function fixExecuteParameter(execute,element){
-        if( execute && element.name && element.id){
+    function fixExecuteParameter(execute, element) {
+        if (execute && element.name && element.id) {
             var execIds = execute.split(' ');
             for (var i = 0, size = execIds.length; i < size; i++) {
                 if (execIds[i] == element.name) {
@@ -91,7 +91,7 @@ var singleSubmit;
             if (tagName == 'input') {
                 if (element.type == 'radio') {
                     clonedElement.checked = element.checked;
-                    execute = fixExecuteParameter(execute,element);
+                    execute = fixExecuteParameter(execute, element);
                 }
                 if (element.type == 'checkbox') {
                     clonedElement.checked = element.checked;
@@ -104,7 +104,7 @@ var singleSubmit;
                             checkboxClone.checked = checkbox.checked;
                         }
                     });
-                    execute = fixExecuteParameter(execute,element);
+                    execute = fixExecuteParameter(execute, element);
                 }
             } else if (tagName == 'select') {
                 var clonedOptions = clonedElement.options;
@@ -130,11 +130,20 @@ var singleSubmit;
                     curry(append, onServerErrorListeners)
                 );
             }
+
+            var requestScopedSubmitEventBroadcaster = submitEventBroadcaster(onBeforeSubmitListeners, onBeforeUpdateListeners, onAfterUpdateListeners);
+            var requestScopedSubmitErrorBroadcaster = submitErrorBroadcaster(onNetworkErrorListeners, onServerErrorListeners);
             var options = {
                 execute: execute,
                 render: render,
-                onevent: filterICEfacesEvents(submitEventBroadcaster(onBeforeSubmitListeners, onBeforeUpdateListeners, onAfterUpdateListeners)),
-                onerror: filterICEfacesEvents(submitErrorBroadcaster(onNetworkErrorListeners, onServerErrorListeners)),
+                onevent: function(submitEvent) {
+                    pageScopedSubmitEventBroadcaster(submitEvent, element);
+                    requestScopedSubmitEventBroadcaster(submitEvent, element);
+                },
+                onerror: function(submitEvent) {
+                    pageScopedSubmitErrorBroadcaster(submitEvent);
+                    requestScopedSubmitErrorBroadcaster(submitEvent);
+                },
                 'ice.window': namespace.window,
                 'ice.view': viewID,
                 'ice.focus': currentFocus
@@ -281,11 +290,19 @@ var singleSubmit;
                 );
             }
             var viewID = viewIDOf(element);
+            var requestScopedSubmitEventBroadcaster = submitEventBroadcaster(onBeforeSubmitListeners, onBeforeUpdateListeners, onAfterUpdateListeners);
+            var requestScopedSubmitErrorBroadcaster = submitErrorBroadcaster(onNetworkErrorListeners, onServerErrorListeners);
             var options = {
                 execute: execute,
                 render: render,
-                onevent: filterICEfacesEvents(submitEventBroadcaster(onBeforeSubmitListeners, onBeforeUpdateListeners, onAfterUpdateListeners)),
-                onerror: filterICEfacesEvents(submitErrorBroadcaster(onNetworkErrorListeners, onServerErrorListeners)),
+                onevent: function(submitEvent) {
+                    pageScopedSubmitEventBroadcaster(submitEvent, element);
+                    requestScopedSubmitEventBroadcaster(submitEvent, element);
+                },
+                onerror: function(submitEvent) {
+                    pageScopedSubmitErrorBroadcaster(submitEvent);
+                    requestScopedSubmitErrorBroadcaster(submitEvent);
+                },
                 'ice.window': namespace.window,
                 'ice.view': viewID,
                 'ice.focus': currentFocus};
