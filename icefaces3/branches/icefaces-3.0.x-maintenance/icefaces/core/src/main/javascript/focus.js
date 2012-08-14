@@ -29,7 +29,7 @@ var currentFocus = '';
             var range = element.createTextRange();
             range.move("character", pos);
             range.select();
-        } else if (element.selectionStart) {
+        } else if (element.selectionStart || element.selectionStart == 0) {
             element.setSelectionRange(pos, pos);
         }
     }
