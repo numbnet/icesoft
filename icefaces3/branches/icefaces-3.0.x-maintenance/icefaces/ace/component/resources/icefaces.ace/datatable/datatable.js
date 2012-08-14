@@ -529,8 +529,7 @@ ice.ace.DataTable.prototype.tearDownSelectionEvents = function () {
                 ? this.jqId + ' > div > table > tbody.ui-datatable-data > tr > td'
                 : this.jqId + ' > div > table > tbody.ui-datatable-data > tr:not(.ui-unselectable)';
 
-    ice.ace.jq(selector).die(selectEvent);
-    ice.ace.jq(selector).die('mouseenter');
+    ice.ace.jq(selector).die('dblclick').die('click').die('mouseenter');
 }
 
 ice.ace.DataTable.prototype.setupSelectionEvents = function () {
@@ -561,7 +560,8 @@ ice.ace.DataTable.prototype.setupSelectionEvents = function () {
         });
     ice.ace.jq(selector)
         .die('mouseenter')
-        .die(selectEvent)
+        .die('dblclick')
+        .die('click')
         .live('mouseenter', function () {
             if (!(_self.cfg.noiehover
                 && ((ice.ace.jq.browser.msie && ice.ace.jq.browser.version == 7) ||
