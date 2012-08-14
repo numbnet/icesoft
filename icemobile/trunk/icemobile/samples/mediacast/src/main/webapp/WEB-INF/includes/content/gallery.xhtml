@@ -22,11 +22,48 @@
              template="/WEB-INF/includes/templates/page-template.xhtml">
 
 
-    <ui:define name="title">Gallery</ui:define>
+    <ui:define name="title">Media Gallery</ui:define>
 
     <ui:define name="bodyContent">
         <h:form id="galleryFrm">
-            <mobi:outputList inset="false" id="galleryList">
+            
+            <mobi:fieldsetGroup>
+                <mobi:fieldsetRow>
+                    <label>Enter some tags to filter the messages</label>
+                </mobi:fieldsetRow>
+                <mobi:fieldsetRow>
+                    <mobi:inputText value="#{galleryView.filterString}" singleSubmit="true"/>
+                    <mobi:commandButton value="Filter Messages"/>
+                </mobi:fieldsetRow>
+            </mobi:fieldsetGroup>
+            
+            <mobi:fieldsetGroup>
+                <mobi:fieldsetRow>
+                    <label>Or select a tag from the cloud to filter</label>
+                </mobi:fieldsetRow>
+                <mobi:fieldsetRow>
+                    <ul class="weighted" style="font-size:50%">
+                        <ui:repeat var="tag" value="#{mediaStore.tagSet}">
+                            <li>
+                                <h:commandLink>
+                                    <f:setPropertyActionListener
+                                            target="#{galleryView.filterString}"
+                                            value="#{tag}"/>
+                                    <h:outputText value="#{tag}" style="font-size:#{mediaStore.tags[tag]}em"/>
+                                </h:commandLink>
+                            </li>
+                        </ui:repeat>
+                    </ul>
+                </mobi:fieldsetRow>
+            </mobi:fieldsetGroup>
+            
+            <mobi:fieldsetGroup>
+                <mobi:fieldsetRow>
+                    <h:outputText id="msgCount" value="Found #{galleryView.filteredMessagesSize} messages"/>
+                </mobi:fieldsetRow>
+            </mobi:fieldsetGroup>
+            
+             <mobi:outputList inset="false" id="galleryList">
                 <ui:repeat var="media"
                            value="#{galleryView.filteredMessages}">
                     <mobi:outputListItem id="mediaItem">
@@ -48,36 +85,6 @@
                     </mobi:outputListItem>
                 </ui:repeat>
             </mobi:outputList>
-            
-            <mobi:fieldsetGroup>
-                <mobi:fieldsetRow>
-                    <label>Enter some tag to filter the messages</label>
-                </mobi:fieldsetRow>
-                <mobi:fieldsetRow>
-                    <mobi:inputText value="#{galleryView.filterString}"/>
-                    <mobi:commandButton value="Filter Messages"/>
-                </mobi:fieldsetRow>
-            </mobi:fieldsetGroup>
-            
-            <mobi:fieldsetGroup>
-                <mobi:fieldsetRow>
-                    <label>Select a tag from the cloud to filter the messages</label>
-                </mobi:fieldsetRow>
-                <mobi:fieldsetRow>
-                    <ul class="weighted" style="font-size:50%">
-                        <ui:repeat var="tag" value="#{mediaStore.tagSet}">
-                            <li>
-                                <h:commandLink>
-                                    <f:setPropertyActionListener
-                                            target="#{galleryView.filterString}"
-                                            value="#{tag}"/>
-                                    <h:outputText value="#{tag}" style="font-size:#{mediaStore.tags[tag]}em"/>
-                                </h:commandLink>
-                            </li>
-                        </ui:repeat>
-                    </ul>
-                </mobi:fieldsetRow>
-            </mobi:fieldsetGroup>
             
         </h:form>
     </ui:define>

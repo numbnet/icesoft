@@ -23,10 +23,12 @@ public class GalleryView {
 	private String filterString;
 	
 	private List<MediaMessage> filteredMessages = new ArrayList<MediaMessage>();
+	private int filteredMessagesCount = 0;
 	
 	@PostConstruct
 	public void init(){
 		filteredMessages = new ArrayList<MediaMessage>(mediaStore.getMedia());
+		filteredMessagesCount = filteredMessages.size();
 	}
 	
 	public void setMediaStore(MediaStore store){
@@ -59,12 +61,16 @@ public class GalleryView {
 				}
 			}
 		}
-		
+		filteredMessagesCount = filteredMessages.size();
 	}
 	
 	public List<MediaMessage> getFilteredMessages(){
 		filterMessages();
 		return filteredMessages;
+	}
+	
+	public int getFilteredMessagesSize(){
+		return filteredMessagesCount;
 	}
 
 }
