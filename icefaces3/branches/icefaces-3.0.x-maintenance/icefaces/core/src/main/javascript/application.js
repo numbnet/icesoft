@@ -202,7 +202,12 @@ if (!window.ice.icefaces) {
                 if (form) {
                     try {
                         debug(logger, 'picking updates for view ' + viewID);
-                        jsf.ajax.request(form, null, {'ice.submit.type': 'ice.push', render: '@all'});
+                        var options = {
+                            'ice.submit.type': 'ice.push',
+                            render: '@all',
+                            onerror: pageScopedSubmitErrorBroadcaster
+                        };
+                        jsf.ajax.request(form, null, options);
                     } catch (e) {
                         warn(logger, 'failed to pick updates', e);
                     }
@@ -251,28 +256,6 @@ if (!window.ice.icefaces) {
         function containsXMLData(doc) {
             //test if document contains XML data since IE will return a XML document for dropped connection
             return doc && doc.documentElement;
-        }
-
-        function callStack() {
-            var caller = arguments.callee.caller;
-            return Stream(function(cellConstructor) {
-                function callerStream(c) {
-                    if (!c) return null;
-                    return function() {
-                        return cellConstructor(c, callerStream(c.arguments.callee.caller));
-                    };
-                }
-
-                return callerStream(caller);
-            });
-        }
-
-        function detectCaller(f) {
-            return detect(callStack(), function(caller) {
-                return caller == f;
-            }, function() {
-                throw 'cannot find function in call stack'
-            });
         }
 
         //define function to be wired as submit callback into JSF bridge
@@ -334,60 +317,11 @@ if (!window.ice.icefaces) {
             };
         }
 
-        function filterICEfacesEvents(f) {
-            return function(e) {
-                //lookup the XMLHttpRequest parameter of the calling function to use it as a thread context variable,
-                //avoiding thus to use global variables
-                var mojarraXMLHttpRequestParameter = arguments.callee.caller.arguments[0];
-                var source = mojarraXMLHttpRequestParameter.iceSubmitEvent;
+        //setup page scoped submit event broadcasters
+        var pageScopedSubmitEventBroadcaster = submitEventBroadcaster(beforeSubmitListeners, beforeUpdateListeners, afterUpdateListeners);
+        var pageScopedSubmitErrorBroadcaster = submitErrorBroadcaster(networkErrorListeners, serverErrorListeners);
 
-                try {
-                    //if source element not set yet try to look it up
-                    if (!source) {
-                        //is the source element present on the submit event object
-                        if (e.source) {
-                            source = e.source;
-                        } else {
-                            //the source element is missing in Mojarra when the element does not have an ID assigned
-                            try {
-                                var submitFunction = detectCaller(fullSubmit) || detectCaller(singleSubmit);
-                                //lookup the source element from the fullSubmit or singleSubmit function call
-                                source = submitFunction.arguments[3];//lookup the 4th parameter -- the element
-                            } catch (ex) {
-                                //cannot find *submit function in call stack, not an ICEfaces triggered submit
-                                return;
-                            }
-                        }
-                        //set source element to be used by the 'complete' and 'success' type events
-                        mojarraXMLHttpRequestParameter.iceSubmitEvent = source;
-                    }
-
-                    //try to determine if submit was triggered by ICEfaces
-                    var isICEfacesEvent = false;
-                    var form = formOf(source);
-                    var foundForm = form;
-                    //test if form still exists -- could have been removed by the update, this element being detached from document
-                    if (form && form.id) {
-                        foundForm = document.getElementById(form.id);
-                    }
-                    try {
-                        isICEfacesEvent = foundForm['ice.view'] || foundForm['ice.window'];
-                    } catch (x) {
-                    }
-                    if (!isICEfacesEvent) {
-                        isICEfacesEvent = form['ice.view'] || form['ice.window'];
-                    }
-                } catch (ex) {
-                    //ignore failure to find forms since that usually occurs after the update is applied
-                }
-                //invoke callback only when event is triggered from an ICEfaces enabled form
-                if (isICEfacesEvent) {
-                    f(e, source);
-                }
-            };
-        }
-
-
+        //setup submit error logging
         function logReceivedUpdates(e) {
             if ('success' == e.status) {
                 var xmlContent = e.responseXML;
@@ -411,9 +345,6 @@ if (!window.ice.icefaces) {
                 debug(logger, 'applied updates >>\n' + join(updateDescriptions, '\n'));
             }
         }
-
-        jsf.ajax.addOnEvent(filterICEfacesEvents(submitEventBroadcaster(beforeSubmitListeners, beforeUpdateListeners, afterUpdateListeners)));
-        jsf.ajax.addOnError(filterICEfacesEvents(submitErrorBroadcaster(networkErrorListeners, serverErrorListeners)));
         jsf.ajax.addOnEvent(logReceivedUpdates);
 
         //include submit.js
