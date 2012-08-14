@@ -20,6 +20,8 @@ public class GMapMarker extends GMapMarkerBase {
     public void encodeBegin(FacesContext context, GMapMarker marker) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = getClientId(context);
+		writer.startElement("span", null);
+		writer.writeAttribute("id", clientId + "_marker", null);
         writer.startElement("script", null);
         writer.writeAttribute("type", "text/javascript", null);
         writer.write("ice.ace.jq(function() {");
@@ -46,5 +48,6 @@ public class GMapMarker extends GMapMarkerBase {
         }
         writer.write("});");
         writer.endElement("script");
+		writer.endElement("span");
     }
 }

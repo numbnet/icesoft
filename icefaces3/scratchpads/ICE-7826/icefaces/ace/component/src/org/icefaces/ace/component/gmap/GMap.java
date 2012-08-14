@@ -20,6 +20,8 @@ public class GMap extends GMapBase {
     public void encodeBegin(FacesContext context, GMap gmap) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = getClientId(context);
+		writer.startElement("span", null);
+		writer.writeAttribute("id", clientId + "_script", null);
         writer.startElement("script", null);
         writer.writeAttribute("type", "text/javascript", null);
         writer.write("ice.ace.jq(function() {");
@@ -33,6 +35,7 @@ public class GMap extends GMapBase {
             writer.write("ice.ace.gMap.addOptions('" + clientId +"',\"" + getOptions() + "\");");
         writer.write("});");
         writer.endElement("script");
+		writer.endElement("span");
     }
 
 }

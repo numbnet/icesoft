@@ -28,9 +28,6 @@ public class GMapRenderer extends CoreRenderer {
             writer.writeAttribute("id", clientId, null);
             writer.writeAttribute("style", "width: 800px; height: 500px", null);
             writer.endElement("div");
-            writer.startElement("script",null);
-            writer.writeAttribute("src","http://maps.googleapis.com/maps/api/js?key=AIzaSyAATyWVqT2qNusNGmcVTyQ0QmymkpU-B5o&sensor=true", null);
-            writer.endElement("script");
             gmap.encodeBegin(context, gmap);
 	    }
 
