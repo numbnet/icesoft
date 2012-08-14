@@ -41,6 +41,7 @@ import org.icefaces.ace.api.IceClientBehaviorHolder;
         )
 
 @ResourceDependencies({
+	@ResourceDependency(name = "icefaces.ace/gmap/api.js"),
 	@ResourceDependency(library="icefaces.ace", name="jquery/ui/jquery-ui.css"),
 	@ResourceDependency(library="icefaces.ace", name="util/ace-jquery.js"),
 	@ResourceDependency(library="icefaces.ace", name="util/ace-components.js")

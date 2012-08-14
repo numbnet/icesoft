@@ -10,6 +10,8 @@ public class GMapServices extends GMapServicesBase {
     public void encodeBegin(FacesContext context, GMapServices gLayer) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = getClientId(context);
+		writer.startElement("span", null);
+		writer.writeAttribute("id", clientId + "_services", null);
         writer.startElement("script", null);
         writer.writeAttribute("type", "text/javascript", null);
         writer.write("ice.ace.jq(function() {");
@@ -18,6 +20,7 @@ public class GMapServices extends GMapServicesBase {
         }
         writer.write("});");
         writer.endElement("script");
+		writer.endElement("span");
     }
 
 }
