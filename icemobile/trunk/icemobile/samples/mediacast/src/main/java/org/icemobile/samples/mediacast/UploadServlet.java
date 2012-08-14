@@ -70,9 +70,9 @@ public class UploadServlet extends HttpServlet {
                     Map uploadAttributes = new HashMap();
                     uploadAttributes.put("file", new File(fullPath));
                     uploadAttributes.put("contentType", partType);
-                    uploadModel.setMediaMap(uploadAttributes);
-                    uploadModel.setVideo(uploadAttributes);
-                    uploadModel.setAudio(uploadAttributes);
+                    uploadModel.setPhotoUploadMap(uploadAttributes);
+                    uploadModel.setVideoUploadMap(uploadAttributes);
+                    uploadModel.setAudioUploadMap(uploadAttributes);
                     uploadModel.setSelectedMediaInput(
                             getAppropriateMediaType(partType));
                     MediaController mediaController = (MediaController)

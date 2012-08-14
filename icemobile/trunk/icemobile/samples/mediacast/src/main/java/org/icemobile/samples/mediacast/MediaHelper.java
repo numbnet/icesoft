@@ -113,7 +113,7 @@ public class MediaHelper implements Serializable{
 				converted.renameTo(newAudio);
 				model.setAudioFile(newAudio);
 			}
-			model.getCurrentMediaMessage().addAudio(
+			model.getCurrentMediaMessage().setAudioMedia(
 					createMedia("audio/mp4", model.getAudioFile()));
 		} catch (Exception e) {
 			// conversion fails, but we may proceed with original file
@@ -180,7 +180,7 @@ public class MediaHelper implements Serializable{
 				thumbImage.delete();
 			}
 
-			model.getCurrentMediaMessage().addVideo(
+			model.getCurrentMediaMessage().setVideoMedia(
 					createMedia("video/mp4", model.getVideoFile()));
 			model.getCurrentMediaMessage()
 					.setVideoThumbnailSmall(customMovieIcon);
@@ -237,7 +237,7 @@ public class MediaHelper implements Serializable{
 			model.getCurrentMediaMessage().addMediumPhoto(
 					createPhoto(thumbNailImage, thumbNailImage.getTileWidth(),
 							thumbNailImage.getHeight()));
-			model.getCurrentMediaMessage().addPhoto(
+			model.getCurrentMediaMessage().setPhotoFile(
 					model.getCameraFile());
 
 		} catch (Throwable e) {

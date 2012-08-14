@@ -36,6 +36,11 @@ label{
     font-weight: bold;
 }
 
+.mobi-fieldset-row {
+	min-height: 20px;
+	padding:10px;
+}
+
 /* Portrait */
 @media screen and (max-width: 320px) {
     .imageViewer {
@@ -50,3 +55,23 @@ label{
     }
 }
 
+ul.weighted {
+	float: left;
+	display: block;
+	overflow: auto;
+	padding: 20px;
+	margin: 0 10px 20px 0;
+}
+
+ul.weighted li {
+	display: inline;
+}
+
+ul.weighted li a {
+	margin: 2px;
+}
+
+ul.weighted a {
+	color: #4040F0;
+	text-decoration: none;
+}

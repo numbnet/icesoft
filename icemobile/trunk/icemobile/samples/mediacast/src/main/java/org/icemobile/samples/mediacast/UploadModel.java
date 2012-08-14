@@ -43,7 +43,10 @@ public class UploadModel implements Serializable {
     // media input mode.
     private String selectedMediaInput = null;
 
-    private Map mediaMap;
+    private Map<String, Object> videoUploadMap = new HashMap<String, Object>();
+    private Map<String, Object> audioUploadMap = new HashMap<String, Object>();
+    private Map<String, Object> photoUploadMap = new HashMap<String, Object>();
+    
     // uploaded file
     private File cameraFile;
     private File audioFile;
@@ -57,8 +60,7 @@ public class UploadModel implements Serializable {
 
     private String tags;
 
-    // upload error message
-    private String uploadErrorMessage;
+    private String uploadFeedbackMessage;
     
     private String selectedLocation;
 
@@ -70,38 +72,37 @@ public class UploadModel implements Serializable {
 		this.selectedLocation = selectedLocation;
 	}
 
-	public UploadModel() {
-        mediaMap = new HashMap<String, Object>();
-    }
-
-    public void setAudio(Map audio) {
-        audioFile = (File) audio.get(MediaController.MEDIA_FILE_KEY);
-        mediaMap = audio;
+	public void setAudioUploadMap(Map<String, Object> map) {
+    	audioUploadMap = map;
+        audioFile = (File) audioUploadMap.get(MediaController.MEDIA_FILE_KEY);
         if (audioFile != null) {
         	logger.fine("Retrieved Audio File");
             // try for a little clean up after
             audioFile.deleteOnExit();
         }
     }
+	
+	public Map<String, Object> getAudioUploadMap(){
+		return audioUploadMap;
+	}
 
-    public void setVideo(Map video) {
-        videoFile = (File) video.get(MediaController.MEDIA_FILE_KEY);
-        mediaMap = video;
+    public void setVideoUploadMap(Map<String, Object> map) {
+    	videoUploadMap = map;
+        videoFile = (File) videoUploadMap.get(MediaController.MEDIA_FILE_KEY);
         if (videoFile != null) {
             logger.fine(this + " Retrieved Video File");
             // try for a little clean up after
             videoFile.deleteOnExit();
         }
     }
+    
+    public Map<String, Object> getVideoUploadMap(){
+    	return videoUploadMap;
+    }
 
-    /**
-     * Accept the uploaded Image file and any metadata
-     *
-     * @param mediaMap mediaMap map
-     */
-    public void setMediaMap(Map mediaMap) {
-        this.mediaMap = mediaMap;
-        File imageFile = (File) mediaMap.get(MediaController.MEDIA_FILE_KEY);
+    public void setPhotoUploadMap(Map<String, Object> map) {
+        photoUploadMap = map;
+        File imageFile = (File) photoUploadMap.get(MediaController.MEDIA_FILE_KEY);
 
         if (imageFile != null) {
             logger.fine("Retrieved Camera Image adding to ImageStore");
@@ -113,9 +114,9 @@ public class UploadModel implements Serializable {
         }
         cameraFile = imageFile;
     }
-
-    public Map getMediaMap() {
-        return mediaMap;
+    
+    public Map<String, Object> getPhotoUploadMap(){
+    	return photoUploadMap;
     }
 
     public MediaMessage getCurrentMediaMessage() {
@@ -166,12 +167,12 @@ public class UploadModel implements Serializable {
         return MediaMessage.MEDIA_TYPE_AUDIO.equals(selectedMediaInput);
     }
 
-    public String getUploadErrorMessage() {
-        return uploadErrorMessage;
+    public String getUploadFeedbackMessage() {
+        return uploadFeedbackMessage;
     }
 
-    public void setUploadErrorMessage(String uploadErrorMessage) {
-        this.uploadErrorMessage = uploadErrorMessage;
+    public void setUploadFeedbackMessage(String message) {
+        this.uploadFeedbackMessage = message;
     }
     
     public double getLatitude()  {
@@ -219,10 +220,12 @@ public class UploadModel implements Serializable {
     	this.direction = -1.0;
     	this.latitude = 0.0;
     	this.longitude = 0.0;
-    	this.mediaMap = null;
+    	this.photoUploadMap = null;
+    	this.videoUploadMap = null;
+    	this.audioUploadMap = null;
     	this.selectedLocation = null;
     	this.tags = null;
-    	this.uploadErrorMessage = null;
+    	this.uploadFeedbackMessage = null;
     	this.videoFile = null;
     	this.selectedMediaInput = null;
     }
