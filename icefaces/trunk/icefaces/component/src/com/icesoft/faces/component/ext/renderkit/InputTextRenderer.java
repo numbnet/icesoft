@@ -67,7 +67,7 @@ public class InputTextRenderer extends com.icesoft.faces.renderkit.dom_html_basi
         rendererJavascript.put(HTML.ONKEYUP_ATTR,
                 DomBasicRenderer.ICESUBMIT);
         rendererJavascript.put(HTML.ONKEYPRESS_ATTR,
-                "$event(event).cancelDefaultAction();");
+                "var e = $event(event); if (e.isEnterKey()) e.cancelDefaultAction();");
         rendererJavascript.put(HTML.ONFOCUS_ATTR,
                 "setFocus(this.id);");
         rendererJavascript.put(HTML.ONBLUR_ATTR,
