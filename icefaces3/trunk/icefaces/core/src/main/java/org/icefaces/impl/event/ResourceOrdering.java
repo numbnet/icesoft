@@ -110,7 +110,8 @@ public class ResourceOrdering implements SystemEventListener {
     }
 
     private void orderResources(FacesContext context, UIViewRoot root, String target) {
-        UIComponent headResourceContainer = root.getFacets().get("javax_faces_location_" + target.toUpperCase());
+        String facetName = EnvUtils.isMojarra() ? "javax_faces_location_" + target.toUpperCase() : target;
+        UIComponent headResourceContainer = root.getFacets().get(facetName);
         ArrayList<UIComponent> orderedChildren = new ArrayList();
 
         for (ResourceEntry resourceEntry : masterDependencyList) {
