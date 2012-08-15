@@ -526,8 +526,8 @@ ice.ace.DataTable.prototype.setupSortEvents = function () {
 ice.ace.DataTable.prototype.tearDownSelectionEvents = function () {
     var selectEvent = this.cfg.dblclickSelect ? 'dblclick' : 'click';
     var selector = this.isCellSelectionEnabled()
-                ? this.jqId + ' > div > table > tbody.ui-datatable-data > tr > td'
-                : this.jqId + ' > div > table > tbody.ui-datatable-data > tr:not(.ui-unselectable)';
+                ? this.jqId + ' > div > table > tbody.ui-datatable-data > tr:not(.ui-unselectable, .ice-dt-cond-row) > td'
+                : this.jqId + ' > div > table > tbody.ui-datatable-data > tr:not(.ui-unselectable, .ice-dt-cond-row)';
 
     ice.ace.jq(selector).die('dblclick').die('click').die('mouseenter');
 }
@@ -536,8 +536,8 @@ ice.ace.DataTable.prototype.setupSelectionEvents = function () {
     var _self = this;
     var selectEvent = this.cfg.dblclickSelect ? 'dblclick' : 'click',
         selector = this.isCellSelectionEnabled()
-            ? this.jqId + ' > div > table > tbody.ui-datatable-data > tr > td'
-            : this.jqId + ' > div > table > tbody.ui-datatable-data > tr:not(.ui-unselectable)';
+            ? this.jqId + ' > div > table > tbody.ui-datatable-data > tr:not(.ui-unselectable, .ice-dt-cond-row) > td'
+            : this.jqId + ' > div > table > tbody.ui-datatable-data > tr:not(.ui-unselectable, .ice-dt-cond-row)';
 
     ice.ace.jq(selector)
         .css('cursor', 'pointer')
@@ -564,6 +564,7 @@ ice.ace.DataTable.prototype.setupSelectionEvents = function () {
         .die('click')
         .live('mouseenter', function () {
             if (!(_self.cfg.noiehover
+
                 && ((ice.ace.jq.browser.msie && ice.ace.jq.browser.version == 7) ||
                 (ice.ace.jq.browser.msie && ice.ace.jq.browser.version == 8)))) {
                 var element = ice.ace.jq(this);
