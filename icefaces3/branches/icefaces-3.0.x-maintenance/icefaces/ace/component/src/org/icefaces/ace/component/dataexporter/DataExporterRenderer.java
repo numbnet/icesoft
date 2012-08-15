@@ -78,7 +78,10 @@ public class DataExporterRenderer extends CoreRenderer {
 			}
 		}
 		onclick.append(" });");
-		onclick.append("ice.s(event,this);return false;");
+		if(behaviorEvents.isEmpty()) {
+			onclick.append("ice.s(event,this);");
+		}
+		onclick.append("return false;");
 		writer.writeAttribute("onclick", onclick.toString(), null);
 		
 		String styleClass = exporter.getStyleClass();
