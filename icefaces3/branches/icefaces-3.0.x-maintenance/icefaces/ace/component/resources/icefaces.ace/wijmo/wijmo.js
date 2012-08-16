@@ -4320,7 +4320,7 @@ __wijReadOptionEvents = function (eventsArr, widgetInstance) {
             if (value) {
                 ele.parent().css("z-index", 10);
                 ele.css("z-index", value);
-                if (menucontainer.css("z-index") === 0) {
+                if (menucontainer.css("z-index") < 9950) {
                     menucontainer.css("z-index", 9950);
                 }
             }
