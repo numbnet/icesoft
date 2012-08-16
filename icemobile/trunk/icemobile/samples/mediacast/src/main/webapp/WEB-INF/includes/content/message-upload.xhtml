@@ -1,0 +1,193 @@
+<!--
+  ~ Copyright 2004-2012 ICEsoft Technologies Canada Corp.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the
+  ~ License. You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an "AS
+  ~ IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+  ~ express or implied. See the License for the specific language
+  ~ governing permissions and limitations under the License.
+  -->
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+             xmlns:h="http://java.sun.com/jsf/html"
+             xmlns:c="http://java.sun.com/jsp/jstl/core"
+             xmlns:f="http://java.sun.com/jsf/core"
+             xmlns:ui="http://java.sun.com/jsf/facelets"
+             xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
+
+    <h:form id="cform">
+    
+        <mobi:uploadhelper/>
+        
+        <mobi:geolocation latitude="#{uploadModel.currentMediaMessage.lat}"
+                          longitude="#{uploadModel.currentMediaMessage.lon}"
+                          direction="#{uploadModel.currentMediaMessage.direction}"/>
+                          
+        <mobi:fieldsetGroup>
+            <mobi:fieldsetRow style="padding-bottom:10px;">
+                Create a new media message using your mobile device. When you press the
+                upload button, your selected media type will be uploaded. You can upload separate
+                video, audio and photo media for the message. Once you're finished uploading,
+                you can click the 'Done' button and your message will be sent to all Mediacast users.
+                <ui:fragment rendered="#{not mediaController.enhancedBrowser}">
+                    <br/><span style="font-weight:bold;font-style:italic;">
+                    ICEmobile container was not detected, native
+                    device integration will not be available.</span>
+                    <br/>
+                    <mobi:icemobilesx/>
+                </ui:fragment>
+            </mobi:fieldsetRow>
+        </mobi:fieldsetGroup>
+
+        <mobi:fieldsetGroup id="uploadGrp">
+            <mobi:fieldsetRow id="uploadBtns"
+                              rendered="#{empty uploadModel.selectedMediaInput}">
+                <!-- show new message creation buttons, image, movie and audio -->
+                <h:panelGroup
+                        style="display:inline-block;padding-bottom: 3px;">
+                    <mobi:commandButton value="Add Audio" id="addAudioBtn"
+                                        buttonType="default"
+                                        actionListener="#{mediaController.chooseMicrophone}"
+                                        rendered="#{empty uploadModel.currentMediaMessage.audio}"/>
+                    <mobi:commandButton value="Add Photo" id="addPhotoBtn"
+                                        buttonType="default"
+                                        actionListener="#{mediaController.chooseCamera}"
+                                        rendered="#{empty uploadModel.currentMediaMessage.largePhoto}"/>
+                    <mobi:commandButton value="Add Video" id="addVideoBtn"
+                                        buttonType="default"
+                                        actionListener="#{mediaController.chooseCamcorder}"
+                                        rendered="#{empty uploadModel.currentMediaMessage.video}"/>
+                    
+                </h:panelGroup>
+                
+            </mobi:fieldsetRow>
+            
+            <!-- upload/capture for images. -->
+            <c:if test="#{uploadModel.showCamera}">
+                <mobi:fieldsetRow><h:outputLabel value="Image Message"/></mobi:fieldsetRow>
+                <mobi:fieldsetRow style="min-height:20px;">
+                     <mobi:camera id="camera"
+                                   value="#{uploadModel.photoUploadMap}"/>
+                      <h:panelGroup
+                              style="display:inline-block;">
+                          <mobi:thumbnail for="camera"/>
+                      </h:panelGroup>
+                 </mobi:fieldsetRow>
+                 <mobi:fieldsetRow style="text-align:center;">
+                      <mobi:commandButton id="uploadPhoto"
+                            style="float:none;"
+                            buttonType="default"
+                            actionListener="#{mediaController.upload}"
+                            value="Add my photo to the message"/>
+                            
+                </mobi:fieldsetRow>
+            </c:if>
+
+            <!-- upload/capture for video. -->
+            <c:if test="#{uploadModel.showCamcorder}">
+                <mobi:fieldsetRow><h:outputLabel value="Video Message"/></mobi:fieldsetRow>
+                <mobi:fieldsetRow style="min-height:20px;">
+                      <mobi:camcorder id="camcorder" value="#{uploadModel.videoUploadMap}"/>
+                      <mobi:thumbnail id="camcorderThumbnail" for="camcorder"/>
+                </mobi:fieldsetRow>
+                <mobi:fieldsetRow style="text-align:center;">
+                      <mobi:commandButton id="uploadVideo"
+                            style="float:none;"
+                            buttonType="default"
+                            actionListener="#{mediaController.upload}"
+                            value="Add my video to the message"/>
+                            
+                </mobi:fieldsetRow>
+            </c:if>
+            
+            <!-- upload/capture for sound. -->
+            <c:if test="#{uploadModel.showMicrophone}">
+                <mobi:fieldsetRow><h:outputLabel value="Audio Message"/></mobi:fieldsetRow>
+                <mobi:fieldsetRow style="min-height:20px;">
+                   <mobi:microphone id="mic" value="#{uploadModel.audioUploadMap}"/>
+                </mobi:fieldsetRow>
+                <mobi:fieldsetRow style="text-align:center;"> 
+                   <mobi:commandButton id="uploadAudio"
+                        style="float:none;"
+                        buttonType="default"
+                        actionListener="#{mediaController.upload}"
+                        value="Add my audio to the message"/>
+                        
+                </mobi:fieldsetRow>
+            </c:if>
+            
+        </mobi:fieldsetGroup>
+        
+        <mobi:fieldsetGroup>    
+            
+            <mobi:fieldsetRow>
+                <h:outputLabel value="Title:"/>
+                <mobi:inputText id="title"
+                                placeholder="add message title"
+                                value="#{uploadModel.currentMediaMessage.title}"/>
+            </mobi:fieldsetRow>
+            <mobi:fieldsetRow>
+                <h:outputLabel value="Description:"/>
+                <mobi:inputText id="description"
+                                placeholder="add message description"
+                                value="#{uploadModel.currentMediaMessage.description}"
+                                type="textarea"
+                                style="width:99%;"/>
+            </mobi:fieldsetRow>
+             <mobi:fieldsetRow>
+                <h:outputLabel value="Tags:"/>
+                <mobi:inputText id="tags"
+                                placeholder="add some descriptor tags"
+                                value="#{uploadModel.tags}"/>
+            </mobi:fieldsetRow>
+            <mobi:fieldsetRow>
+                <h:outputLabel value="Uploaded Media:"/><br/>
+                <mobi:graphicImage style="border:none;"
+                                    width="#{uploadModel.currentMediaMessage.mediumPhoto.width}"
+                                    height="#{uploadModel.currentMediaMessage.mediumPhoto.height}"
+                                    value="#{uploadModel.currentMediaMessage.mediumPhoto.data}"
+                                    rendered="#{not empty uploadModel.currentMediaMessage.largePhoto}"/>
+                <mobi:graphicImage style="border:none;"
+                                    width="#{mediaHelper.movieIcon.width}"
+                                    height="#{mediaHelper.movieIcon.height}"
+                                    value="#{mediaHelper.movieIcon.data}"
+                                    rendered="#{not empty uploadModel.currentMediaMessage.video}"/>
+                <mobi:graphicImage style="border:none;"
+                                    width="#{mediaHelper.soundIcon.width}"
+                                    height="#{mediaHelper.soundIcon.height}"
+                                    value="#{mediaHelper.soundIcon.data}"
+                                    rendered="#{not empty uploadModel.currentMediaMessage.audio}"/>
+            </mobi:fieldsetRow>
+            <mobi:fieldsetRow>
+                
+                <mobi:commandButton id="doneBtn"
+                        style="float:right;"
+                        buttonType="important"
+                        actionListener="#{mediaController.uploadsCompleted}"
+                        value="Send my message"/> 
+                        
+                 <mobi:commandButton id="cancelUploadBtn"
+                        styleClass="mobi-button mobi-button-default"
+                        actionListener="#{mediaController.cancelUpload}"
+                        value="Cancel"/>
+            </mobi:fieldsetRow>
+        </mobi:fieldsetGroup>
+        
+        <mobi:panelPopup id="messagePopup" 
+            visible="#{mediaController.showMessagePopup}"
+            style="text-align:center;">
+            <h4>#{uploadModel.uploadFeedbackMessage}</h4>
+            <hr/>
+            <mobi:commandButton value="Close" 
+                actionListener="#{mediaController.closeMessagePopup}"/>
+        </mobi:panelPopup>
+        
+    </h:form>
+     
+</ui:composition>
