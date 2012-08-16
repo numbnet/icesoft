@@ -35,7 +35,6 @@ public class ResourceServlet extends HttpServlet{
 	
 	public void init(final ServletConfig servletConfig) throws ServletException {
         super.init(servletConfig);
-        System.out.println("Resource Servlet Starting up");
         this.loader = this.getClass().getClassLoader();
         this.servletContext = servletConfig.getServletContext();
         resourcePath = Util.getResourceRoot(servletContext);
@@ -43,8 +42,7 @@ public class ResourceServlet extends HttpServlet{
 
 	
 	public void service(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
-        System.out.println("service!!!!!!!!!!!!!!!!!!!!!!!!!");
-		String modifedHeader = httpServletRequest
+        String modifedHeader = httpServletRequest
                 .getHeader("If-Modified-Since");
         if (null != modifedHeader) {
             try {
