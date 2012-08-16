@@ -128,16 +128,18 @@ mobi.panelAutoCenter = function (clientId) {
     }
     if (windowHeight > 0) {
         var contentElement = document.getElementById(clientId);
-        var contentHeight = contentElement.offsetHeight;
-        var contentWidth = contentElement.offsetWidth;
-        if (windowHeight - contentHeight > 0) {
-            contentElement.style.position = 'absolute';
-            contentElement.style.top = scrollTop + ((windowHeight / 2) - (contentHeight / 2)) + 'px';
-            contentElement.style.left = ((windowWidth / 2) - (contentWidth / 2)) + 'px';
-        } else {
-            contentElement.style.position = 'absolute';
-            contentElement.style.top = 0;
-            contentElement.style.left = ((windowWidth / 2) - (contentWidth / 2)) + 'px';
+        if( contentElement ){
+        	var contentHeight = contentElement.offsetHeight;
+            var contentWidth = contentElement.offsetWidth;
+            if (windowHeight - contentHeight > 0) {
+                contentElement.style.position = 'absolute';
+                contentElement.style.top = scrollTop + ((windowHeight / 2) - (contentHeight / 2)) + 'px';
+                contentElement.style.left = ((windowWidth / 2) - (contentWidth / 2)) + 'px';
+            } else {
+                contentElement.style.position = 'absolute';
+                contentElement.style.top = 0;
+                contentElement.style.left = ((windowWidth / 2) - (contentWidth / 2)) + 'px';
+            }
         }
     }
 };
