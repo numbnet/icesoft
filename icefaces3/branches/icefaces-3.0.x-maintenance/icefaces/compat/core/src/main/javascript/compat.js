@@ -30,6 +30,8 @@ if (!window.ice.compat) {
         //include string.js
         //include window.js
         //include delay.js
+        //include http.js
+        //include event.js
 
         function findBridgeContainer(element) {
             while (element) {
@@ -61,6 +63,13 @@ if (!window.ice.compat) {
             error:  curry(namespace.log.error, compatLogger),
             child:  function() {
                 return window.logger;
+            }
+        };
+
+        namespace.cancelEnterKeyEvent = function(e, element) {
+            var ev = $event(e, element);
+            if (isEnterKey(ev)) {
+                cancel(ev);
             }
         };
     })(window.ice);
