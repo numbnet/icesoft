@@ -7,7 +7,8 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 
-import javax.servlet.ServletContext;
+import javax.servlet.ServletRequest;
+import javax.servlet.http.HttpServletRequest;
 
 public class Util {
 	
@@ -52,10 +53,9 @@ public class Util {
         return count;
     }
     
-    public static String getResourceRoot(ServletContext servletContext){
-    	String customResourceRoot = servletContext.
-                getInitParameter(Constants.RESOURCE_ROOT_KEY);
-        return (customResourceRoot != null) ? customResourceRoot : Constants.DEFAULT_JAR_RESOURCE_PATH;
+    public static String getContextRoot(ServletRequest request){
+    	return ((HttpServletRequest)request).getContextPath();
     }
+
 
 }

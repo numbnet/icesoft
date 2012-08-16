@@ -19,6 +19,10 @@ package org.icemobile.jsp.tags;
 import javax.servlet.jsp.JspTagException;
 import javax.servlet.jsp.tagext.BodyTagSupport;
 import javax.servlet.jsp.tagext.TagSupport;
+
+import org.icemobile.jsp.util.Constants;
+import org.icemobile.jsp.util.Util;
+
 import java.io.IOException;
 import java.io.Writer;
 import java.util.Collection;
@@ -33,8 +37,7 @@ public class CarouselTag extends TagSupport {
 
 
     private static final String JS_ISCROLL = "iscroll.js";
-    private static final String JS_ISCROLL_MIN = "iscroll-min.js";
-    private static final String LIB_ISCROLL = "org.icefaces.component.util";
+    private static final String LIB_ISCROLL = "javascript";
 
     private String id;
     private String styleClass;
@@ -65,8 +68,8 @@ public class CarouselTag extends TagSupport {
 
             out.write("<span id=\"" + getId() + "_jscript\">");
             out.write("<span id=\"" + getId() + "_libJS\">");  // nested span
-            out.write("<script type=\"text/javascript\" src=\"resources/" +
-                          LIB_ISCROLL + "/" + JS_ISCROLL + "\"></script>");
+            out.write("<script type='text/javascript' src='"+ Util.getContextRoot(pageContext.getRequest()) + Constants.RESOURCE_BASE_URL + "/" +
+                          LIB_ISCROLL + "/" + JS_ISCROLL + "'></script>");
             out.write("</span>"); // end of iscroll script
 
             out.write("</span>"); // end of script span sections

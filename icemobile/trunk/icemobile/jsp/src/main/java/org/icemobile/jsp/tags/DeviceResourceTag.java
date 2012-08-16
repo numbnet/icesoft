@@ -25,6 +25,7 @@ import javax.servlet.jsp.PageContext;
 import javax.servlet.jsp.tagext.SimpleTagSupport;
 
 import org.icemobile.jsp.util.Constants;
+import org.icemobile.jsp.util.Util;
 
 import java.io.IOException;
 import java.util.logging.Logger;
@@ -79,10 +80,6 @@ public class DeviceResourceTag extends SimpleTagSupport {
 
         String userAgent = null;
         
-        String resourceRoot = pageContext.getServletContext().
-                getInitParameter("org.icemobile.resource.root");
-        resourceRoot = (resourceRoot != null) ? resourceRoot : Constants.ICEMOBILE_RESOURCE_URL;
-
         String applicationStage = pageContext.getServletContext().
                 getInitParameter("org.icemobile.project.stage");
 
@@ -173,14 +170,16 @@ public class DeviceResourceTag extends SimpleTagSupport {
             // if the resource can't be found.
         }
         
-        String contextRoot = ((HttpServletRequest)pageContext.getRequest()).getContextPath();
+        String contextRoot = Util.getContextRoot(pageContext.getRequest());
 
-//        String cssfile =  libVal + "/" + nameVal;
-        String cssfile = contextRoot + resourceRoot + "/" + libVal + "/" + nameVal + "/" +fileName;
-
+        String cssLink = String.format("<link type='text/css' rel='stylesheet' href='%s%s/%s/%s/%s.css' />", 
+        		contextRoot, Constants.RESOURCE_BASE_URL, libVal, nameVal, fileName);
+        String jsLink = String.format("<script type=\"text/javascript\" src='%s%s/javascript/icemobile.js'></script>",
+        		contextRoot, Constants.RESOURCE_BASE_URL);
+        
         try {
-            out.write("<link type=\"text/css\" rel=\"stylesheet\" href=\"" + cssfile + ".css\" />");
-            out.write("<script type=\"text/javascript\" src=\"" + contextRoot  + resourceRoot + "/icemobile.js\" > </script>");
+            out.write(cssLink);
+            out.write(jsLink);
 
         } catch (IOException ioe) {
             log.severe("Exception writing to JSPWriter: " + ioe);

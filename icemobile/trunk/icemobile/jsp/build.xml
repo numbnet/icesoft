@@ -30,14 +30,20 @@
     <property name="tld.doc" location="${doc}/tld"/>
     <!-- common theme location  -->
     <property name="theme.dir" location="../resources/themes"/>
+	<!-- common javascript location -->
+	<property name="javascript.dir" location="../resources/javascript"/>
     <!-- component TLD location --> 
     <property name="tld.jar" location="${lib.dir}"/>
     <property name="tld.file"
               location="src/main/resources/META-INF/icemobile.tld"/>
 
-    <!-- them location in jar  -->
+    <!-- theme location in jar  -->
     <property name="theme.resources.dir"
               location="${resources.dir}/META-INF/web-resources/org.icefaces.component.skins"/>
+	
+	<!-- javascript location in jar -->
+	<property name="javascript.resources.dir"
+              location="${resources.dir}/META-INF/web-resources/javascript"/>
 
     <condition property="version.string"
                value="${version.primary}.${version.secondary}.${version.tertiary}.${release.type}">
@@ -157,6 +163,10 @@
     </target>
 
     <target name="jar" depends="compile, skins" description="fill the jar">
+    	<!-- copy over to resources folder for jar creation. -->
+        <copy todir="${javascript.resources.dir}">
+            <fileset dir="${javascript.dir}" includes="**"/>
+        </copy>
         <jar destfile="${dist.dir}/${jar.file.name}" duplicate="fail">
             <fileset dir="${build.dir}/classes">
                 <include name="**/*"></include>
