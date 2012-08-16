@@ -4626,7 +4626,7 @@ function wijmoASPNetParseOptions(o) {
 			if (value) {
 				ele.parent().css("z-index", 999);
 				ele.css("z-index", value);
-				if (menucontainer.css("z-index") === 0) {
+				if (menucontainer.css("z-index") < 9950) {
 					menucontainer.css("z-index", 9950);
 				}
 			}
