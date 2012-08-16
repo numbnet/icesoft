@@ -31,7 +31,6 @@ import javax.faces.application.Application;
 import javax.faces.application.FacesMessage;
 import javax.faces.application.FacesMessage.Severity;
 import javax.faces.component.NamingContainer;
-import javax.faces.component.UINamingContainer;
 import javax.faces.component.UICommand;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIForm;
@@ -197,24 +196,22 @@ public abstract class DomBasicRenderer extends Renderer {
         // look to see whether there is a converter registered with the component
         Converter converter = ((ValueHolder) uiComponent).getConverter();
 
-        // the default value to return if there is a null value and no converters
-        String ret = "";
+        // if there is a converter, use it
+        if( converter != null ){
+            return converter.getAsString(facesContext, uiComponent, currentValue);
+        }
 
         // if there was no converter registered with the component then
         // look for the converter associated with the class of the currentValue
-        if (converter == null) {
-
-            if (currentValue != null) {
-                converter = getConverterForClass(currentValue.getClass());
-
-                if (converter != null) {
-                    ret = converter.getAsString(facesContext, uiComponent, currentValue);
-                } else {
-                    ret = currentValue.toString();
-                }
+        String ret = "";
+        if (currentValue != null) {
+            converter = getConverterForClass(currentValue.getClass());
+            if (converter != null) {
+                ret = converter.getAsString(facesContext, uiComponent, currentValue);
+            } else {
+                ret = currentValue.toString();
             }
         }
-
         return ret;
     }
 
@@ -597,7 +594,7 @@ public abstract class DomBasicRenderer extends Renderer {
                     parentNamingContainer.getClientId(facesContext);
         }
         return parentNamingContainerClientId
-                + UINamingContainer.getSeparatorChar(facesContext)
+                + NamingContainer.SEPARATOR_CHAR
                 + uiComponentId;
     }
 
