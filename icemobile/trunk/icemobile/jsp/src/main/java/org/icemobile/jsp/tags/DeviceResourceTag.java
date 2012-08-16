@@ -23,6 +23,9 @@ import javax.servlet.jsp.JspTagException;
 import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.PageContext;
 import javax.servlet.jsp.tagext.SimpleTagSupport;
+
+import org.icemobile.jsp.util.Constants;
+
 import java.io.IOException;
 import java.util.logging.Logger;
 
@@ -52,8 +55,7 @@ public class DeviceResourceTag extends SimpleTagSupport {
     // Blackberry style sheet name found in jar.
     public static final String BBERRY_CSS = TagUtil.DeviceType.bberry.name() + CSS_EXT;
 
-    public static final String DEFAULT_RESOURCE_ROOT = "/resources";
-
+    
     // default resource library for a default themes,  if not specified in
     // component definition this library will be loaded.
     private static final String DEFAULT_LIBRARY = "org.icefaces.component.skins";
@@ -82,11 +84,10 @@ public class DeviceResourceTag extends SimpleTagSupport {
         ServletRequest sr = pageContext.getRequest();
 
         String userAgent = null;
-        String accept = null;
-
+        
         String resourceRoot = pageContext.getServletContext().
                 getInitParameter("org.icemobile.resource.root");
-        resourceRoot = (resourceRoot != null) ? resourceRoot : DEFAULT_RESOURCE_ROOT;
+        resourceRoot = (resourceRoot != null) ? resourceRoot : Constants.ICEMOBILE_RESOURCE_URL;
 
         String applicationStage = pageContext.getServletContext().
                 getInitParameter("org.icemobile.project.stage");
@@ -97,7 +98,6 @@ public class DeviceResourceTag extends SimpleTagSupport {
             if (userAgent != null) {
                 userAgent = userAgent.toLowerCase();
             }
-            accept = (String) hsr.getHeader("accept");
         }
 
         JspWriter out = pageContext.getOut();
@@ -178,18 +178,20 @@ public class DeviceResourceTag extends SimpleTagSupport {
             // nothing to do, any error will be displayed back to user at runtime
             // if the resource can't be found.
         }
+        
+        String contextRoot = ((HttpServletRequest)pageContext.getRequest()).getContextPath();
 
 //        String cssfile =  libVal + "/" + nameVal;
-        String cssfile = resourceRoot + "/" + libVal + "/" + nameVal + "/" +fileName;
+        String cssfile = contextRoot + resourceRoot + "/" + libVal + "/" + nameVal + "/" +fileName;
 
         try {
             out.write("<link type=\"text/css\" rel=\"stylesheet\" href=\"" + cssfile + ".css\" />");
-            out.write("<script type=\"text/javascript\" src=\"" + resourceRoot + "/icemobile.js\" > </script>");
+            out.write("<script type=\"text/javascript\" src=\"" + contextRoot  + resourceRoot + "/icemobile.js\" > </script>");
 
             String jqv = getJqversion();
             if (jqv != null && !"".equals(jqv)) {
-                out.write("<script type=\"text/javascript\" src=\"/" + resourceRoot + "/jquery/" +
-                        jqv + "/jquery.js\" > </script>");
+               out.write("<script type=\"text/javascript\" src=\"/" + resourceRoot + "/jquery/" +
+                   jqv + "/jquery.js\" > </script>");
             }
 
 
