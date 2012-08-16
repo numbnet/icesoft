@@ -499,7 +499,7 @@ ice.ace.DataTable.prototype.setupSortEvents = function () {
         });
 
     // Bind keypress kb-navigable sort icons
-    var sortableControlsSelector = ' div > table > thead > tr > th > div.ui-sortable-column span.ui-sortable-control';
+    var sortableControlsSelector = ' > div > table > thead > tr > th > div.ui-sortable-column span.ui-sortable-control';
     ice.ace.jq(this.jqId + sortableControlsSelector + ' a.ui-icon-triangle-1-n')
         .die('keypress')
         .live('keypress', function (event) {
@@ -605,7 +605,7 @@ ice.ace.DataTable.prototype.setupReorderableColumns = function () {
 
 ice.ace.DataTable.prototype.setupRowExpansionEvents = function () {
     var table = this;
-    var selector = ' div > table > tbody.ui-datatable-data > tr > td *:not(tbody) a.ui-row-toggler';
+    var selector = ' > div > table > tbody.ui-datatable-data > tr > td *:not(tbody) a.ui-row-toggler';
     ice.ace.jq(this.jqId + selector)
         .die('keyup click')
         .live('keyup', function (event) {
@@ -621,7 +621,7 @@ ice.ace.DataTable.prototype.setupRowExpansionEvents = function () {
 
 ice.ace.DataTable.prototype.setupPanelExpansionEvents = function () {
     var table = this;
-    var selector = ' div > table > tbody.ui-datatable-data > tr:not(.ui-expanded-row-content) > td *:not(tbody) a.ui-row-panel-toggler';
+    var selector = ' > div > table > tbody.ui-datatable-data > tr:not(.ui-expanded-row-content) > td *:not(tbody) a.ui-row-panel-toggler';
     ice.ace.jq(this.jqId + selector)
         .die('keyup click')
         .live('keyup', function (event) {
@@ -1682,7 +1682,7 @@ ice.ace.DataTable.prototype.setupCellEditorEvents = function (rowEditors) {
             if (event.which == 13) return false;
         };
 
-    var selector = ' div > table > tbody.ui-datatable-data > tr > td > div.ui-row-editor';
+    var selector = ' > div > table > tbody.ui-datatable-data > tr > td > div.ui-row-editor';
     ice.ace.jq(this.jqId + selector + ' a.ui-icon-pencil')
             .die('click keyup')
             .live('click', showEditors)
