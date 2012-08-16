@@ -633,7 +633,7 @@ public class PanelTabSetRenderer
                 domContext.setCursorParent(cursor);
 
                 label = "<img src='" + CoreUtils.resolveResourceURL(facesContext,
-                        "/xmlhttp/css/xp/css-images/spacer.gif") + "' />";
+                        "/xmlhttp/css/xp/css-images/spacer.gif") + "' alt=''/>";
                 Text spacer = domContext.createTextNodeUnescaped(label);
                 link.appendChild(spacer);
             }

@@ -1340,6 +1340,9 @@ public class SelectInputDateRenderer
                 // getImageDir() returns default
                 // without a dummy image Firefox would show the alt text
                 img.setUrl(component.getImageDir() + "spacer.gif");
+                if (altText == null) {
+                    altText = "";
+                }
                 if (content.equals("<") || content.equals("<<")) {
                     img.setStyleClass(component.getMovePrevClass());
                 } else if (content.equals(">") || content.equals(">>")) {
