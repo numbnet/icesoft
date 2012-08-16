@@ -53,6 +53,8 @@
     <property name="output.dir.path" location="${build}/skins/out"/>
     <property name="resource.js.dir"
               location="${resources}/org.icefaces.component.util"/>
+	<property name="shared.js.dir"
+              location="../../../resources/javascript"/>
     <property name="combined.js"
               location="${resources}/org.icefaces.component.util/combined-min.js"/>
     <property name="combined.js.tmp" location="${resource.js.dir}/combined.js"/>
@@ -179,6 +181,9 @@
             description="compile the source ">
         <copy todir="${exploded}/META-INF/resources">
             <fileset dir="${resources}"/>
+        </copy>
+    	<copy todir="${exploded}/META-INF/resources/org.icefaces.component.util">
+            <fileset dir="${shared.js.dir}"/>
         </copy>
     </target>
 
@@ -472,6 +477,8 @@
         <concat destfile="${combined.js.tmp}" force="true" fixlastline="true">
             <filelist dir="${resource.js.dir}">
                 <file name="component.js"/>
+            </filelist>
+        	<filelist dir="${shared.js.dir}">
                 <file name="iscroll.js"/>
             </filelist>
             <fileset dir="${resources}">
