@@ -38,6 +38,8 @@
         <loadfile property="string.js" srcFile="${lib.dir}/string.js"/>
         <loadfile property="window.js" srcFile="${lib.dir}/window.js"/>
         <loadfile property="delay.js" srcFile="${lib.dir}/delay.js"/>
+        <loadfile property="http.js" srcFile="${lib.dir}/http.js"/>
+        <loadfile property="event.js" srcFile="${lib.dir}/event.js"/>
         <loadfile property="status.js" srcFile="${src.dir}/status.js"/>
         <loadfile property="submit.js" srcFile="${src.dir}/submit.js"/>
         <copy file="${src.dir}/compat.js" tofile="${tmp}" overwrite="yes">
@@ -48,6 +50,8 @@
                 <filter token="string" value="${string.js}"/>
                 <filter token="window" value="${window.js}"/>
                 <filter token="delay" value="${delay.js}"/>
+                <filter token="http" value="${http.js}"/>
+                <filter token="event" value="${event.js}"/>
                 <filter token="status" value="${status.js}"/>
                 <filter token="submit" value="${submit.js}"/>
             </filterset>
