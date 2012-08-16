@@ -793,7 +793,7 @@ public class TableRenderer
                             anchor.setAttribute(HTML.CLASS_ATTR, CSS_DEFAULT.FOCUS_HIDDEN_LINK_STYLE_CLASS);             
                             anchor.setAttribute(HTML.HREF_ATTR, "#"); 
                             anchor.appendChild(domContext.createTextNodeUnescaped("<img src='"+ CoreUtils.resolveResourceURL(facesContext,
-                                        "/xmlhttp/css/xp/css-images/spacer.gif") + "'/>"));
+                                        "/xmlhttp/css/xp/css-images/spacer.gif") + "' alt=''/>"));
                             anchor.setAttribute(HTML.ONFOCUS_ATTR, "return Ice.tblRowFocus(this, "+ singleSelection +");");
                             anchor.setAttribute(HTML.ONBLUR_ATTR, "return Ice.tblRowBlur(this);");                                   
                             td.appendChild(anchor);
@@ -823,6 +823,7 @@ public class TableRenderer
                                         Element img = domContext.createElement(HTML.IMG_ELEM);
                                         img.setAttribute(HTML.SRC_ATTR, CoreUtils.resolveResourceURL(
                                                 FacesContext.getCurrentInstance(), "/xmlhttp/css/xp/css-images/spacer.gif") );
+                                        img.setAttribute(HTML.ALT_ATTR, "");
                                         eTd.appendChild(img);
                                         tr.appendChild(eTd);
                                     }
@@ -885,6 +886,7 @@ public class TableRenderer
                             Element img = domContext.createElement(HTML.IMG_ELEM);
                             img.setAttribute(HTML.SRC_ATTR, CoreUtils.resolveResourceURL(
                                     FacesContext.getCurrentInstance(), "/xmlhttp/css/xp/css-images/spacer.gif") );
+                            img.setAttribute(HTML.ALT_ATTR, "");
                             eTd.appendChild(img);
                             tr.appendChild(eTd);
                         }
@@ -998,6 +1000,7 @@ public class TableRenderer
                 Element img = domContext.createElement(HTML.IMG_ELEM);
                 img.setAttribute(HTML.SRC_ATTR, CoreUtils.resolveResourceURL(
                         FacesContext.getCurrentInstance(), "/xmlhttp/css/xp/css-images/spacer.gif") );
+                img.setAttribute(HTML.ALT_ATTR, "");
                 eTd.appendChild(img);
                 tr.appendChild(eTd);
             }            
