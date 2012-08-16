@@ -583,9 +583,10 @@ if (!window.ice.icefaces) {
                     (elementType == "password") ||
                     (elementType == "textarea") );
                 if (isText) {
-                    if ((eType == "click") || ((!useBlur) && (eType == "blur"))) {
+                    if ((eType == "click") || ((!useBlur) && ((eType == "blur") || eType == "focusout"))) {
                         //click events should not trigger text box submit
                         //blur events are mostly redundant with change events
+                        //focusout is required for older IE versions
                         return;
                     }
                 }
