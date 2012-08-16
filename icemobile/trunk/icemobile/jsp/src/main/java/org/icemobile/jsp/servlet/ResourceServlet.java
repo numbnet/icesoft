@@ -21,7 +21,7 @@ import org.icemobile.jsp.util.Util;
 
 
 @WebServlet( name="ICEmobileResourceServlet", 
-	urlPatterns = {Constants.ICEMOBILE_RESOURCE_URL+"/*"}, 
+	urlPatterns = {Constants.RESOURCE_BASE_URL+"/*"}, 
 	loadOnStartup=1)
 public class ResourceServlet extends HttpServlet{
 	
@@ -29,7 +29,6 @@ public class ResourceServlet extends HttpServlet{
 	private final String STARTUP_TIME = Util.HTTP_DATE.format(lastModified);
 	private ClassLoader loader;
 	private ServletContext servletContext;
-	private String resourcePath;
 	
 	private static final Logger log = Logger.getLogger(ResourceServlet.class.getName());
 	
@@ -37,7 +36,6 @@ public class ResourceServlet extends HttpServlet{
         super.init(servletConfig);
         this.loader = this.getClass().getClassLoader();
         this.servletContext = servletConfig.getServletContext();
-        resourcePath = Util.getResourceRoot(servletContext);
     }
 
 	
@@ -66,10 +64,10 @@ public class ResourceServlet extends HttpServlet{
         }
 
         String path = httpServletRequest.getPathInfo();
-        String resourceAbsPath = resourcePath + path;
+        String resourceAbsPath = Constants.JAR_RESOURCE_PATH + path;
         final InputStream in = loader.getResourceAsStream(resourceAbsPath);
         if (null == in) {
-            httpServletResponse.setStatus(404, "Resource not found, :( " + resourceAbsPath + ", path="+path+", resourcePath="+resourcePath);
+            httpServletResponse.setStatus(404, "Resource not found, :( " + resourceAbsPath + ", path="+path);
             return;
         }
         String mimeType = servletContext.getMimeType(path);
