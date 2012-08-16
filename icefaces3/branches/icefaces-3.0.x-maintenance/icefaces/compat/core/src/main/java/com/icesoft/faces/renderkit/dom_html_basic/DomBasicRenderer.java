@@ -197,28 +197,24 @@ public abstract class DomBasicRenderer extends Renderer {
         // look to see whether there is a converter registered with the component
         Converter converter = ((ValueHolder) uiComponent).getConverter();
 
-        // if there was no converter registered with the component then 
-        // look for the default converter for the Class of the currentValue
+        // the default value to return if there is a null value and no converters
+        String ret = "";
+
+        // if there was no converter registered with the component then
+        // look for the converter associated with the class of the currentValue
         if (converter == null) {
-            if (currentValue == null) {
-                return "";
-            } else if (currentValue instanceof String) {
-                return (String) currentValue;
-            }
 
-            converter = getConverterForClass(currentValue.getClass());
+            if (currentValue != null) {
+                converter = getConverterForClass(currentValue.getClass());
 
-            if (converter == null) {
-                return currentValue.toString();
+                if (converter != null) {
+                    ret = converter.getAsString(facesContext, uiComponent, currentValue);
+                } else {
+                    ret = currentValue.toString();
+                }
             }
         }
 
-        String ret = converter.getAsString(facesContext, uiComponent, currentValue);
-//System.out.println("DomBasicRenderer.converterGetAsString()  currentValue: " + currentValue);        
-//System.out.println("DomBasicRenderer.converterGetAsString()  ret         : " + ret);        
-//System.out.println("DomBasicRenderer.converterGetAsString()  converter   : " + converter);
-//        if(converter instanceof javax.faces.convert.DateTimeConverter)
-//            System.out.println("DomBasicRenderer.converterGetAsString()  timeZone: " + ((javax.faces.convert.DateTimeConverter)converter).getTimeZone());
         return ret;
     }
 
