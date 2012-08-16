@@ -274,16 +274,6 @@
                 CSS resource linking specialized for either phones or tablets
             </description>
         </attribute>
-        <attribute>
-            <name>jqversion</name>
-            <required>false</required>
-            <rtexprvalue>true</rtexprvalue>
-            <description>Can be specified to include a different version of
-                jquery.
-                Attribute is used in the following pattern
-                /'resource-root'/jquery/'jqversion'/jquery.js
-            </description>
-        </attribute>
     </tag>
 
     <tag>
