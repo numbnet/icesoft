@@ -44,6 +44,7 @@ import javax.faces.convert.ConverterException;
 import org.icefaces.ace.renderkit.InputRenderer;
 import org.icefaces.ace.util.HTML;
 import org.icefaces.ace.util.JSONBuilder;
+import org.icefaces.impl.util.Util;
 import org.icefaces.render.MandatoryResourceComponent;
 
 @MandatoryResourceComponent(tagName="dateTimeEntry", value="org.icefaces.ace.component.datetimeentry.DateTimeEntry")
@@ -195,6 +196,8 @@ public class DateTimeEntryRenderer extends InputRenderer {
                 }
                 json.entry("disableHoverStyling", dateTimeEntry.isDisableHoverStyling());
                 json.entry("showCurrentAtPos", 0 - dateTimeEntry.getLeftMonthOffset());
+                json.entry("singleSubmit", dateTimeEntry.isSingleSubmit());
+                json.entry("withinSingleSubmit", Util.withinSingleSubmit(dateTimeEntry));
             json.endMap();
         json.endFunction();
 

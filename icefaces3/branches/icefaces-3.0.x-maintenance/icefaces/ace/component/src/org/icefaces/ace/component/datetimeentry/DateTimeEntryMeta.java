@@ -164,6 +164,11 @@ public class DateTimeEntryMeta extends UIInputMeta {
     @Property(defaultValue = "0", tlddoc = "Zero-based offset indicating which month should be displayed in the leftmost position.")
     private int leftMonthOffset;
 
+    @Property(defaultValue = "false", tlddoc = "When singleSubmit is true, changing the value of this component will " +
+            "submit and execute this component only (equivalent to &lt;f:ajax execute=\"@this\" render=\"@all\"&gt;). " +
+            "When singleSubmit is false, no submit will occur. &lt;ace:ajax&gt; submit events have precedence over singleSubmit.")
+    private boolean singleSubmit;
+
     @Property(implementation = Implementation.GENERATE, tlddoc = "The current value of the simple component. The value to be rendered.")
     private Object value;
 }
