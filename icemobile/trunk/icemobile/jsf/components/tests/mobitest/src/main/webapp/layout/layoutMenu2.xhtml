@@ -25,9 +25,13 @@
    </h:panelGroup>
     <mobi:contentStack id="stack1" currentId="#{contentMenuBean.twoColSelectedPane}" contentMenuId="mnu">
          <mobi:contentPane id="panel1" client="true">
-              <h:panelGroup>
-                  panel 1 client
-              </h:panelGroup>
+            <h:form id="nav1">
+             <mobi:contentNavBar >
+                 <mobi:contentMenuItem label="panel2" value="panel2"/>
+                 <mobi:contentMenuItem label="panel3" value="panel3"/>
+             <h3>Content Pane 1 client is true</h3>
+            </mobi:contentNavBar>
+          </h:form>
              <h:panelGroup>
                  <h:form>
                      <mobi:commandButton value="got page panel 3"
@@ -42,9 +46,8 @@
              </h:panelGroup>
              <h:panelGroup>
                  <h:form>
-                     <mobi:commandButton value="got page panel 3"
-                                      action="#{contentMenuBean.setSelectedPaneAction('panel3')}">
-                              <f:param name="twoColSelPane" value="panel3"/>
+                     <mobi:commandButton id="pane2chk" value="got page panel 3"
+                                      action="#{contentMenuBean.setTwoColSelectedPaneAction('panel3')}">
                      </mobi:commandButton>
                  </h:form>
              </h:panelGroup>
@@ -53,6 +56,16 @@
              <h:panelGroup>
                  panel 3
              </h:panelGroup>
+             <h:form id="testparm">
+                 <h:commandButton value="testParam" action="#{contentMenuBean.testP(213)}"/>
+                 <mobi:commandButton value="testString" action="#{contentMenuBean.testString('abc')}"/>
+                  <h:commandButton value="go to page 1" action="#{contentMenuBean.actionParamTest}">
+                      <f:param name="paneSel" value="panel1"/>
+                  </h:commandButton>
+                 <mobi:commandButton value="gotoP1Mobi" action="#{contentMenuBean.actionParamTest}">
+                      <f:param name="paneSel" value="panel1"/>
+                 </mobi:commandButton>
+             </h:form>
          </mobi:contentPane>
     </mobi:contentStack>
   </h:panelGrid>

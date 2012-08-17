@@ -16,6 +16,9 @@
 
 package org.icefaces.mobi.renderkit;
 
+import org.icefaces.mobi.component.contentpane.ContentPane;
+import org.icefaces.mobi.component.contentstack.ContentStack;
+
 import javax.faces.application.ResourceHandler;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -75,4 +78,21 @@ public class BaseLayoutRenderer extends CoreRenderer {
             return facesContext.getExternalContext().encodeResourceURL(url);
         }
     }
+
+    protected static UIComponent findParentContentPane(UIComponent component) {
+         UIComponent parent = component;
+         while (parent != null)
+             if (parent instanceof ContentPane) break;
+             else parent = parent.getParent();
+
+         return parent;
+     }
+     protected static UIComponent findParentContentStack(UIComponent component) {
+         UIComponent parent = component;
+         while (parent != null)
+             if (parent instanceof ContentStack) break;
+             else parent = parent.getParent();
+
+         return parent;
+     }
 }

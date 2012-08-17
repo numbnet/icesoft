@@ -18,10 +18,10 @@
        <a href="../layoutComponents.html">index page</a>
   </header>
   <h:panelGrid columns="2">
-    <h:panelGroup id="pgroupmnu" style="top: 20;">
-      <h:form id="menuForm">
+    <h:panelGroup id="pgroupmnu" style="top: 10px;">
+      <h:form id="menuForm" >
         <mobi:contentStackMenu id="mnu" value="#{contentMenuBean.menuCList}" var="item"  contentStackId="stack1"
-                  selectedPane="#{contentMenuBean.twoColSelectedPane}">
+                 selectedPane="#{contentMenuBean.twoColSelectedPane}">
            <mobi:contentMenuItem label="#{item.label}" value="#{item.value}"/>
         </mobi:contentStackMenu>
       </h:form>
