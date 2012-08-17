@@ -38,6 +38,27 @@
               <h1> test page for tabSet in contentStack see panel 3</h1>
       <br />
                 <a href="../layoutComponents.html"> layout index page</a>
+          <br />
+       <h:form id="calcForm">
+              <mobi:commandButton value="calcTreeSize" actionListener="#{vmonitor.findCompsIntree}"
+                      singleSubmit="true"/>
+        </h:form>
+        <h:panelGroup rendered="#{vmonitor.treeSize gt 0}">
+          <h:outputText value="SelectedPane = #{layoutBean.selectedPane}"/>
+          <h:panelGroup>
+              <h:outputText value="TreeSize = #{vmonitor.treeSize}"/>
+          </h:panelGroup>
+        <h:dataTable id="compstbl" value="#{vmonitor.resultCompList}" var="comp">
+            <h:column>
+                <f:facet name="header">comp id</f:facet>
+                #{comp.clientId}
+            </h:column>
+            <h:column>
+                <f:facet name="header">comp type</f:facet>
+                #{comp.componentType}
+            </h:column>
+        </h:dataTable>
+        </h:panelGroup>
     </header>
     <h:form id="selectForm">
        <h:panelGroup id="selectorGroup">
