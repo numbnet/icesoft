@@ -1120,6 +1120,10 @@ ice.ace.Calendar = function(id, cfg) {
         this.configureTimePicker();
         }
 
+    if (this.cfg.withinSingleSubmit) {
+        ice.cancelSingleSubmit(this.cfg.clientId);
+    }
+
     //Initialize calendar
     if(!this.cfg.disabled) {
         if(hasTimePicker) {
@@ -1154,6 +1158,11 @@ ice.ace.Calendar = function(id, cfg) {
                 setFocus();
                 behavior();
             });
+        } else if (this.cfg.singleSubmit) {
+            this.jq.change(function(event) {
+                setFocus();
+                ice.se(event, cfg.clientId);
+            });
         }
     }
 };
@@ -1170,6 +1179,7 @@ ice.ace.Calendar.prototype.configureLocale = function() {
 
 ice.ace.Calendar.prototype.bindDateSelectListener = function() {
     var _self = this;
+    var behavior = this.cfg && this.cfg.behaviors && this.cfg.behaviors.dateSelect;
 
     if(this.cfg.behaviors) {
         this.cfg.onSelect = function(dateText, input) {
@@ -1180,7 +1190,12 @@ ice.ace.Calendar.prototype.bindDateSelectListener = function() {
             }
         };
     }
-    
+    if (!behavior && this.cfg.singleSubmit) {
+        this.cfg.onSelect = function(dateText, inst) {
+            ice.se(null, _self.cfg.clientId);
+        };
+    }
+
 };
 
 ice.ace.Calendar.prototype.configureTimePicker = function() {

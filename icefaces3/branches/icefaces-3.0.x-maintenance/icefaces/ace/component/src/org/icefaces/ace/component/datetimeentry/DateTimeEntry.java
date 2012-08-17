@@ -35,6 +35,8 @@ package org.icefaces.ace.component.datetimeentry;
 import org.icefaces.ace.event.DateSelectEvent;
 import org.icefaces.ace.event.DateTextChangeEvent;
 import org.icefaces.ace.util.Constants;
+import org.icefaces.ace.util.Utils;
+import org.icefaces.impl.util.Util;
 
 import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
@@ -141,5 +143,9 @@ public class DateTimeEntry extends DateTimeEntryBase {
 
     protected FacesContext getFacesContext() {
         return FacesContext.getCurrentInstance();
+    }
+
+    public boolean isSingleSubmit() {
+        return Utils.superValueIfSet(this, getStateHelper(), PropertyKeys.singleSubmit.name(), super.isSingleSubmit(), Util.withinSingleSubmit(this));
     }
 }
