@@ -20,6 +20,7 @@ import org.icefaces.ace.meta.annotation.ClientBehaviorHolder;
 import org.icefaces.ace.meta.annotation.ClientEvent;
 import org.icefaces.ace.meta.annotation.Component;
 import org.icefaces.ace.meta.annotation.Property;
+import org.icefaces.ace.meta.annotation.Implementation;
 import org.icefaces.ace.meta.baseMeta.UIInputMeta;
 import org.icefaces.ace.api.IceClientBehaviorHolder;
 
@@ -162,4 +163,7 @@ public class DateTimeEntryMeta extends UIInputMeta {
 
     @Property(defaultValue = "0", tlddoc = "Zero-based offset indicating which month should be displayed in the leftmost position.")
     private int leftMonthOffset;
+
+    @Property(implementation = Implementation.GENERATE, tlddoc = "The current value of the simple component. The value to be rendered.")
+    private Object value;
 }
