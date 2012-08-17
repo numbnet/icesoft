@@ -247,6 +247,7 @@
                 <file name="icefaces.ace/printer/printer.js"/>
                 <file name="icefaces.ace/tooltip/jquery.qtip-1.0.0-rc3.js"/>
                 <file name="icefaces.ace/tooltip/tooltip.js"/>
+				<file name="icefaces.ace/gmap/gmap.js"/>
             </filelist>
         </concat>
         <!-- ace-chart.js -->
