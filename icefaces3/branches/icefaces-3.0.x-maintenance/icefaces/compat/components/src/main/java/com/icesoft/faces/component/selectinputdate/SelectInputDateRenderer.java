@@ -55,6 +55,7 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
+import java.util.Iterator;
 
 /**
  * <p> The SelectInputDateRenderer class is an ICEfaces D2D renderer for the
@@ -269,9 +270,14 @@ public class SelectInputDateRenderer
                         selectInputDate.getCalendarInputClass());
                 dateText.setAttribute(HTML.ONFOCUS_ATTR, "setFocus('');");
                 dateText.setAttribute("onkeypress", this.ICESUBMIT);
+                boolean withinSingleSubmit = org.icefaces.impl.util.Util.withinSingleSubmit(selectInputDate);
+                if (withinSingleSubmit) {
+                    JavascriptContext.addJavascriptCall(facesContext, "ice.cancelSingleSubmit('" + clientId + ROOT_DIV + "');");
+                }
+                String singleSubmitCall = "ice.fullSubmit('@this', '@all', event, this, function(p) { p('ice.submit.type', 'ice.se'); p('ice.submit.serialization', 'form');});";
                 String onblur = combinedPassThru(
                         "setFocus('');",
-                        selectInputDate.getPartialSubmit() ? ICESUBMITPARTIAL : null);
+                        selectInputDate.getPartialSubmit() ? ICESUBMITPARTIAL : withinSingleSubmit ? singleSubmitCall : null);
                 dateText.setAttribute(HTML.ONBLUR_ATTR, onblur);
                 if (selectInputDate.getTabindex() != null) {
                     dateText.setAttribute(HTML.TABINDEX_ATTR, selectInputDate.getTabindex());
@@ -1557,6 +1563,7 @@ public class SelectInputDateRenderer
     * @see com.icesoft.faces.renderkit.dom_html_basic.DomBasicRenderer#decode(javax.faces.context.FacesContext, javax.faces.component.UIComponent)
     */
     public void decode(FacesContext facesContext, UIComponent component) {
+//        printParams();
         validateParameters(facesContext, component, SelectInputDate.class);
         SelectInputDate dateSelect = (SelectInputDate) component;
         Map requestParameterMap =
@@ -1954,4 +1961,23 @@ System.out.println("SIDR.decode()    link: " + checkStrings[check]);
         return o;
     }
 
+    public static void printParams() {
+        Map paramValuesMap = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterValuesMap();
+        Iterator it = paramValuesMap.entrySet().iterator();
+        Map.Entry entry;
+        String key;
+        String[] values;
+        while (it.hasNext()) {
+            entry = (Map.Entry) it.next();
+            key = (String) entry.getKey();
+            values = (String[]) entry.getValue();
+            System.out.print(key);
+            System.out.print(" = ");
+            for (int i = 0; i < values.length; i++) {
+                System.out.print(values[i]);
+                System.out.print(", ");
+            }
+            System.out.println();
+        }
+    }
 }
