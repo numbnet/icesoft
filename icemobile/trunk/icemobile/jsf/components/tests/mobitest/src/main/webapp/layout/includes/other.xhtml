@@ -28,9 +28,8 @@
                     parentHeader="false" autoWidth="false"
                     currentId="#{contentMenuBean.selectedTabPane}" >
               <mobi:contentPane id="panelt1" title="panelt1"
-                                facelet="true"
-                                client="false"
-                      >
+                                facelet="true">
+                  <h:panelGroup id="panCont1">
                   <fieldset title="panelt1">
                       <legend>Panel1</legend>
                     <h3> header for panel 1</h3>
@@ -43,11 +42,11 @@
                         </figure>
 
                   </fieldset>
+                  </h:panelGroup>
               </mobi:contentPane>
                <mobi:contentPane id="panelt2" title="panelt2"
-                                 facelet="true"
-                                 client="false"
-                       >
+                                 facelet="true">
+                <h:panelGroup id="pan2cont">
                  <fieldset title="panelt2">
                    <legend>Panel2</legend>
                   <h3> header for panel 2</h3>
@@ -60,11 +59,11 @@
                         </figure>
                       <br />
                   </fieldset>
+                 </h:panelGroup>
               </mobi:contentPane>
              <mobi:contentPane id="panelt3" title="panelt3"
-                               facelet="true"
-                               client="false"
-                     >
+                               facelet="true"              >
+                 <h:panelGroup id="pan3cont">
                  <fieldset title="panelt3">
                       <legend>Panel3</legend>
                   <h3> header for panel 3</h3>
@@ -76,6 +75,7 @@
                          <figcaption>joker</figcaption>
                         </figure>
                   </fieldset>
+                 </h:panelGroup>
               </mobi:contentPane>
        </mobi:tabSet>
 
