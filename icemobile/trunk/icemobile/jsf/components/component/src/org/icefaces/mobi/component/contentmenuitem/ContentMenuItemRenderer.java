@@ -79,7 +79,7 @@ public class ContentMenuItemRenderer extends BaseLayoutRenderer {
         String stackClientId = null;
         StringBuilder menubuttonClass = new StringBuilder(ContentNavBar.CONTENTNAVBAR_BUTTON_MENU_CLASS);
         StringBuilder buttonClass = new StringBuilder (ContentNavBar.CONTENTNAVBAR_BUTTON_CLASS);
-        UIComponent stack = findParentStack(uiComponent);
+        UIComponent stack = findParentContentStack(uiComponent);
         // user specified style class
         String userDefinedClass = item.getStyleClass();
         if (userDefinedClass != null && userDefinedClass.length() > 0){
@@ -202,18 +202,6 @@ public class ContentMenuItemRenderer extends BaseLayoutRenderer {
          }
          writer.endElement(HTML.LI_ELEM);
     }
-    /**
-      *   find the parent contentStack of the contentNavBar component
-      * @param component
-      * @return
-      */
-     public static UIComponent findParentStack(UIComponent component) {
-         UIComponent parent = component;
-         while (parent != null)
-             if (parent instanceof ContentStack) break;
-             else parent = parent.getParent();
 
-         return parent;
-     }
 
 }

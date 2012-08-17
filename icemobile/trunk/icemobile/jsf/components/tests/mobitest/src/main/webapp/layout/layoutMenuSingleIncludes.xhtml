@@ -17,6 +17,8 @@
     <mobi:contentStack id="stack1" currentId="#{contentMenuBean.selectedPane}"
                        contentMenuId="mnu">
         <mobi:contentPane id="mnuPanel" client="true" menuOrHome="true">
+            <br />
+                <a href="../layoutComponents.html"> layout index page</a>
             <h:form id="menuForm">
                 <mobi:contentStackMenu id="mnu" value="#{contentMenuBean.menuCList}"
                                  var="item" contentStackId="stack1"
@@ -41,7 +43,8 @@
             <h:panelGroup>
                 <ui:include src="includes/splash.xhtml"/>
             </h:panelGroup>
-
+                 <br />
+                <a href="../layoutComponents.html"> layout index page</a>
         </mobi:contentPane>
         <mobi:contentPane id="panel2" client="true">
             <mobi:contentNavBar menuButtonLabel="Menu"
@@ -55,9 +58,13 @@
                             />
                 </h:form>
             </h:panelGroup>
+           <h:form id="datefrm">
             <h:panelGroup>
                 <ui:include src="includes/date-example.xhtml"/>
             </h:panelGroup>
+           </h:form>
+                <br />
+                <a href="../layoutComponents.html"> layout index page</a>
         </mobi:contentPane>
         <mobi:contentPane id="panel3" facelet="true">
             <mobi:contentNavBar menuButtonLabel="Menu"
@@ -66,28 +73,32 @@
             </mobi:contentNavBar>
             <h:panelGroup>
                 <h:form>
-                    <h:commandButton value="goto page panel 4"
-                                     action="#{contentMenuBean.goToPane4}"
+                     <mobi:commandButton value="goto page panel 4"
+                                     action="#{contentMenuBean.setSelectedPaneAction('panel4')}"
                             />
                 </h:form>
             </h:panelGroup>
             <h:panelGroup>
                 <ui:include src="includes/other.xhtml"/>
             </h:panelGroup>
+                <br />
+                <a href="../layoutComponents.html"> layout index page</a>
         </mobi:contentPane>
         <mobi:contentPane id="panel4" facelet="true">
-            <mobi:contentNavBar menuButtonLabel="backToPanel3"
+            <mobi:contentNavBar menuButtonLabel="Menu"
                                 menuButtonTargetId="panel3">
                 <h3>Content Pane 4</h3>
             </mobi:contentNavBar>
             <h:panelGroup>
                  <h:form>
-                    <mobi:commandButton value="goto contentPane 3"
+                    <h:commandButton value="goto contentPane 3"
                                      action="#{contentMenuBean.goToPane3}"
                             />
                 </h:form>
                 <ui:include src="includes/other.xhtml"/>
             </h:panelGroup>
+               <br />
+                <a href="../layoutComponents.html"> layout index page</a>
         </mobi:contentPane>
     </mobi:contentStack>
 

@@ -127,9 +127,11 @@ public class ContentMenuSingleBean extends LayoutBean {
 
     public void goToPane3(ActionEvent ae){
         this.twoColSelectedPane = THIRDPANE;
+        logger.info("twoColSelected with ae ="+this.twoColSelectedPane);
     }
     public void goToPane3(){
-        this.twoColSelectedPane= THIRDPANE;
+        this.twoColSelectedPane= "panel3";
+        logger.info("twoColSelected withOUT ae ="+this.twoColSelectedPane);
     }
     public void goToPane4(){
         this.twoColSelectedPane= "panel4";
