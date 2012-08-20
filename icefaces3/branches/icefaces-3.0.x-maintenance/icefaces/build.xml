@@ -32,18 +32,6 @@
 
     <property file="./build.properties"/>
 
-    <!-- If build.number isn't already set then set it from the System Var (set by Jenkins) -->
-    <condition property="build.number"
-               value="${BUILD_NUMBER}">
-        <isset property="${BUILD_NUMBER}"/>
-    </condition>
-    <!-- If (svn) revision isn't already set then set it from the System Var (set by Jenkins) -->
-    <condition property="revision"
-               value="${SVN_REVISION}">
-        <isset property="${SVN_REVISON}"/>
-    </condition>
-
-
     <target name="core" description="Builds the ICEfaces core framework (icefaces.jar).">
         <subant>
             <fileset dir="." includes="core/build.xml test/build.xml">
