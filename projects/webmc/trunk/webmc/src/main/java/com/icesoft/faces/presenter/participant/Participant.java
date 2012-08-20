@@ -32,7 +32,22 @@
  */
 package com.icesoft.faces.presenter.participant;
 
-import org.icefaces.application.PushRenderer;
+import java.io.IOException;
+import java.io.Serializable;
+import java.lang.reflect.Method;
+import java.util.Map;
+
+import javax.annotation.PreDestroy;
+import javax.faces.component.UIData;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import com.icesoft.faces.component.ext.HtmlInputText;
 import com.icesoft.faces.context.effects.Effect;
 import com.icesoft.faces.context.effects.Highlight;
@@ -46,29 +61,17 @@ import com.icesoft.faces.presenter.slide.Slide;
 import com.icesoft.faces.presenter.util.MessageBundleLoader;
 import com.icesoft.faces.presenter.util.StringResource;
 
-import java.io.IOException;
-import java.lang.reflect.Method;
-import java.util.Map;
-
-import javax.annotation.PreDestroy;
-
-import javax.faces.component.UIData;
-import javax.faces.context.ExternalContext;
-import javax.faces.context.FacesContext;
-import javax.faces.event.ActionEvent;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 /**
  * Class that represents a single user of the application. They can be either a
  * viewer or moderator, and manage the UI level functionality such as status
  * messages, chatting, slide changing, etc.
  */
-public class Participant extends ParticipantInfo  {
-    private static Log log = LogFactory.getLog(Participant.class);
+public class Participant extends ParticipantInfo  implements Serializable{
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 8307282506846213841L;
+	private static Log log = LogFactory.getLog(Participant.class);
     private static final int HIGHLIGHT_TIME = 4000;
 
     private int role = ParticipantInfo.ROLE_VIEWER;

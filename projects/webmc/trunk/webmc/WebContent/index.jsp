@@ -1,3 +1,6 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+                      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
 <!--
   ~ Version: MPL 1.1/GPL 2.0/LGPL 2.1
   ~
@@ -31,38 +34,42 @@
   ~
 -->
 <html xmlns="http://www.w3.org/1999/xhtml"
-        xmlns:h="http://java.sun.com/jsf/html"
-        xmlns:f="http://java.sun.com/jsf/core"
-        xmlns:ice="http://www.icesoft.com/icefaces/component"
-        xmlns:ui="http://java.sun.com/jsf/facelets">
-
-<f:loadBundle basename="com.icesoft.faces.presenter.resource.messages"
-              var="msgs"/>
-
+	xmlns:h="http://java.sun.com/jsf/html">
 <h:head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"></meta>
-    <title>
-        WebMC
-    </title>
-    <ice:outputStyle href="resources/css/login.css"/>
-    <ice:outputStyle href="resources/css/styles.css"/>
-    <!-- Viewport settings for the Safari mobile devices -->
-    <meta name="viewport" content="width=480; initial-scale=1.0; maximum-scale=1.0;" />
-    <!-- Shows the Chat Log -->
-    <script>
-        function showMedium(sUrl) {
-            window.open(sUrl, '', 'width=800, height=600, scrollbars=yes, resizable=yes, status=no, location=no, menubar=no');
-        }
-    </script>
+	<title>WebMC - Welcome</title>
+	<script>
+		function showLarge(sUrl) {
+			window
+					.open(
+							sUrl,
+							'',
+							'width=1024, height=850, scrollbars=yes, resizable=yes, status=no, location=no, menubar=no');
+		}
+	</script>
 </h:head>
-
 <h:body>
-    <!-- The rootDiv is required for Safari -->
-    <div id="rootDiv">
-        <!-- Performs browser sniffing and sets mobile boolean in bean -->
-        <ice:outputText value="#{participant.mobile}" visible="false" />
-        <ui:include src="#{participant.loggedIn?'WEB-INF/inc/main.xhtml':'WEB-INF/inc/login.xhtml'}"/>
-
-    </div>
+	<!-- This page sniffs out whether or not someone is using a mobile browser so a 
+     new browser window without a menubar can be launched when someone is using 
+     webmc from a desktop browser -->
+	<%
+		String agent = request.getHeader("USER-AGENT").toLowerCase();
+			if ((agent.indexOf("safari") != -1 && agent.indexOf("mobile") != -1)
+					|| (agent.indexOf("opera") != -1 && agent
+							.indexOf("240x320") != -1)) {
+				String redirectURL = "./webmc.jsf";
+				response.sendRedirect(redirectURL);
+			} else {
+	%>
+	<br />
+	<br />
+	<br />
+	<div style="text-align: center;">
+		<a href="javascript: showLarge('webmc.jsf')"> <img border="0"
+			alt="Start WebMC" src="resources/images/webpresentation_temp.gif" />
+		</a>
+	</div>
+	<%
+		}
+	%>
 </h:body>
 </html>

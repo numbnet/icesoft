@@ -32,10 +32,10 @@
  */
 package com.icesoft.faces.presenter.participant.view;
 
+import javax.faces.event.ActionEvent;
+
 import com.icesoft.faces.presenter.participant.Participant;
 import com.icesoft.faces.presenter.presentation.Presentation;
-
-import javax.faces.event.ActionEvent;
 
 /**
  * Class used at a page level to represent the participant list This controls

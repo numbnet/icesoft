@@ -41,12 +41,17 @@
     <application>
         <locale-config>
             <default-locale>en</default-locale>
+            <supported-locale>en</supported-locale>
         </locale-config>
-    </application>
+   
+    <resource-bundle>
+	      <base-name>com.icesoft.faces.presenter.resource.messages</base-name>
+	      <var>msgs</var>
+      </resource-bundle>
+      <message-bundle>com.icesoft.faces.presenter.resource.JSF-override</message-bundle>
 
-    <application>
-        <message-bundle>com.icesoft.faces.presenter.resource.messages
-        </message-bundle>
+   
+        
     </application>
 
     <!-- Converter Declarations -->

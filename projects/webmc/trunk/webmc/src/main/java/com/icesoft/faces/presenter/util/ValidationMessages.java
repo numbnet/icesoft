@@ -32,14 +32,15 @@
  */
 package com.icesoft.faces.presenter.util;
 
-import javax.faces.application.Application;
-import javax.faces.application.FacesMessage;
-import javax.faces.component.UIViewRoot;
-import javax.faces.context.FacesContext;
 import java.text.MessageFormat;
 import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
+
+import javax.faces.application.Application;
+import javax.faces.application.FacesMessage;
+import javax.faces.component.UIViewRoot;
+import javax.faces.context.FacesContext;
 
 /**
  * Code required for custom validators. See Core JavaServer Faces page 231

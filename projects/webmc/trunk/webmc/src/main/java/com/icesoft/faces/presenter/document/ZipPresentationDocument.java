@@ -32,19 +32,11 @@
  */
 package com.icesoft.faces.presenter.document;
 
-import com.icesoft.faces.presenter.document.base.PresentationDocument;
-import com.icesoft.faces.presenter.presentation.Presentation;
-import com.icesoft.faces.presenter.slide.Slide;
-import com.icesoft.faces.presenter.util.ImageScaler;
-import com.icesoft.faces.presenter.util.MessageBundleLoader;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.FileInputStream;
 import java.io.DataInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -53,6 +45,15 @@ import java.util.Collections;
 import java.util.Enumeration;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import com.icesoft.faces.presenter.document.base.PresentationDocument;
+import com.icesoft.faces.presenter.presentation.Presentation;
+import com.icesoft.faces.presenter.slide.Slide;
+import com.icesoft.faces.presenter.util.ImageScaler;
+import com.icesoft.faces.presenter.util.MessageBundleLoader;
 
 /**
  * Class representing the source document used for the Presentation. The

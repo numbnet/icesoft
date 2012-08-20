@@ -32,12 +32,12 @@
  */
 package com.icesoft.faces.presenter.document;
 
+import java.io.File;
+
 import com.icesoft.faces.presenter.document.base.PresentationDocument;
 import com.icesoft.faces.presenter.presentation.Presentation;
 import com.icesoft.faces.presenter.slide.Slide;
 import com.icesoft.faces.presenter.util.MessageBundleLoader;
-
-import java.io.File;
 
 /**
  * Class used to handle a document that does not match a known format Normally

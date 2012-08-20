@@ -32,10 +32,10 @@
  */
 package com.icesoft.faces.presenter.participant.view;
 
+import javax.faces.event.ActionEvent;
+
 import com.icesoft.faces.presenter.chat.Message;
 import com.icesoft.faces.presenter.presentation.Presentation;
-
-import javax.faces.event.ActionEvent;
 
 /**
  * Class used at a page level to represent the chat log This controls which

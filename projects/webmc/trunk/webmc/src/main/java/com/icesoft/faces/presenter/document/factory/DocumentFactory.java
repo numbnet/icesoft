@@ -33,10 +33,10 @@
 package com.icesoft.faces.presenter.document.factory;
 
 import java.io.File;
+
+import com.icesoft.faces.presenter.document.OooPresentationDocument;
 import com.icesoft.faces.presenter.document.UnknownPresentationDocument;
 import com.icesoft.faces.presenter.document.ZipPresentationDocument;
-import com.icesoft.faces.presenter.document.PptPresentationDocument;
-import com.icesoft.faces.presenter.document.OooPresentationDocument;
 import com.icesoft.faces.presenter.document.base.PresentationDocument;
 import com.icesoft.faces.presenter.presentation.Presentation;
 

@@ -32,20 +32,19 @@
  */
 package com.icesoft.faces.presenter.participant;
 
-import org.icefaces.application.PushRenderer;
-import com.icesoft.faces.presenter.presentation.PresentationManager;
-import com.icesoft.faces.presenter.presentation.PresentationManagerBean;
-import com.icesoft.faces.component.ext.HtmlInputSecret;
-import com.icesoft.faces.component.ext.HtmlInputText;
-import com.icesoft.faces.component.ext.HtmlForm;
-
-import javax.faces.event.ValueChangeEvent;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
 import javax.faces.event.ActionEvent;
+import javax.faces.event.ValueChangeEvent;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
+import com.icesoft.faces.component.ext.HtmlForm;
+import com.icesoft.faces.component.ext.HtmlInputSecret;
+import com.icesoft.faces.component.ext.HtmlInputText;
+import com.icesoft.faces.presenter.presentation.PresentationManager;
+import com.icesoft.faces.presenter.presentation.PresentationManagerBean;
 
 /**
  * Class used to handle the login portion of a user's session.  This is done to

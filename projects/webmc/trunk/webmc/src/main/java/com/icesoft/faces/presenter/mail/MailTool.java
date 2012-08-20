@@ -32,10 +32,10 @@
  */
 package com.icesoft.faces.presenter.mail;
 
+import java.util.Properties;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import java.util.Properties;
 
 /**
  * Convenience class used to send automated generic messages from the presenter

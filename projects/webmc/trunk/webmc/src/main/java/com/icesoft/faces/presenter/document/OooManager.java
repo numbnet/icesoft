@@ -32,24 +32,19 @@
  */
 package com.icesoft.faces.presenter.document;
 
-import javax.faces.context.FacesContext;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ApplicationScoped;
-
-import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
-
-import org.artofsolving.jodconverter.OfficeDocumentConverter;
-import org.artofsolving.jodconverter.office.OfficeManager;
-import org.artofsolving.jodconverter.office.DefaultOfficeManagerConfiguration;
+import javax.faces.bean.ApplicationScoped;
+import javax.faces.bean.ManagedBean;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.artofsolving.jodconverter.office.DefaultOfficeManagerConfiguration;
+import org.artofsolving.jodconverter.office.OfficeManager;
 
 /**
  * Manage startup and shutdown of OpenOffice conversion.
  */
-@ManagedBean(eager = true )
+@ManagedBean
 @ApplicationScoped
 public class OooManager {
     private static Log log = LogFactory.getLog(OooManager.class);

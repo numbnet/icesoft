@@ -32,8 +32,9 @@
  */
 package com.icesoft.faces.presenter.mail;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import java.lang.reflect.Constructor;
+import java.util.Date;
+import java.util.Properties;
 
 import javax.mail.AuthenticationFailedException;
 import javax.mail.Message;
@@ -47,9 +48,9 @@ import javax.mail.Transport;
 import javax.mail.URLName;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
-import java.lang.reflect.Constructor;
-import java.util.Date;
-import java.util.Properties;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
  * Class used to handle the various aspects of emailing, such as connecting,
