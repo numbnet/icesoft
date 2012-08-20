@@ -1432,13 +1432,10 @@ public class DataTable extends DataTableBase implements Serializable {
                             if (c instanceof Column) {
                                 VisitResult result = context.invokeVisitCallback(c, callback); // visit the column directly
                                 if (result == VisitResult.COMPLETE) return true;
-                                if (c.getFacetCount() > 0) {
-                                    for (UIComponent columnFacet : c.getFacets().values()) {
-                                        if (columnFacet.visitTree(context, callback)) {
-                                            return true;
-                                        }
-                                    }
-                                }
+
+                                for (Iterator<UIComponent> subComps = c.getFacetsAndChildren(); subComps.hasNext();)
+                                    if (subComps.next().visitTree(context, callback))
+                                        return true;
                             }
                         }
                     }
