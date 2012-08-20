@@ -32,15 +32,15 @@
  */
 package com.icesoft.faces.presenter.validator;
 
-import com.icesoft.faces.presenter.presentation.PresentationManager;
-import com.icesoft.faces.presenter.presentation.PresentationManagerBean;
-import com.icesoft.faces.presenter.util.ValidationMessages;
-
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.validator.Validator;
 import javax.faces.validator.ValidatorException;
+
+import com.icesoft.faces.presenter.presentation.PresentationManager;
+import com.icesoft.faces.presenter.presentation.PresentationManagerBean;
+import com.icesoft.faces.presenter.util.ValidationMessages;
 
 public class NameValidator implements Validator {
     public void validate(FacesContext context, UIComponent component,

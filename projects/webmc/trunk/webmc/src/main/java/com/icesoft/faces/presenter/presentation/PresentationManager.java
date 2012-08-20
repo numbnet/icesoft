@@ -32,10 +32,6 @@
  */
 package com.icesoft.faces.presenter.presentation;
 
-import org.icefaces.application.PushRenderer;
-import com.icesoft.faces.presenter.participant.Participant;
-import com.icesoft.faces.presenter.util.MessageBundleLoader;
-
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -43,6 +39,9 @@ import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
+import com.icesoft.faces.presenter.participant.Participant;
+import com.icesoft.faces.presenter.util.MessageBundleLoader;
 
 /**
  * Singleton class used to handle the various presentations for webmc This means

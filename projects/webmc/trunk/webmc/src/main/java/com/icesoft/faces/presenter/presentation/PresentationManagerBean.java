@@ -32,14 +32,18 @@
  */
 package com.icesoft.faces.presenter.presentation;
 
-import org.icefaces.application.PushRenderer;
-import com.icesoft.faces.presenter.participant.Participant;
-import com.icesoft.faces.presenter.util.MessageBundleLoader;
-
-import javax.faces.model.SelectItem;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.Map;
+
+import javax.faces.model.SelectItem;
+
+import org.icefaces.application.PushRenderer;
+
+import com.icesoft.faces.presenter.participant.Participant;
+import com.icesoft.faces.presenter.util.MessageBundleLoader;
 
 /**
  * Class to handle the UI level representation of the presentation manager Looks
@@ -47,127 +51,148 @@ import java.util.Map;
  * new users to presentations, etc.
  */
 public class PresentationManagerBean {
-    public static final String DEFAULT_PRESENTATION = MessageBundleLoader.getMessage("bean.presentationManagerBean.defaultPresentation");
-    private static final String NO_PRESENTATION = MessageBundleLoader.getMessage("bean.presentationManagerBean.noPresentation");
+	public static final String DEFAULT_PRESENTATION = MessageBundleLoader
+			.getMessage("bean.presentationManagerBean.defaultPresentation");
+	private static final String NO_PRESENTATION = MessageBundleLoader
+			.getMessage("bean.presentationManagerBean.noPresentation");
 
-    private PresentationManager backendManager =
-            PresentationManager.getInstance();
-    private String currentPresentationsSelection = NO_PRESENTATION;
+	private PresentationManager backendManager = PresentationManager
+			.getInstance();
+	private String currentPresentationsSelection = NO_PRESENTATION;
 
-    public PresentationManagerBean() {
-    }
+	public PresentationManagerBean() {
+	}
 
-    public String getCurrentPresentationsSelection() {
-        return currentPresentationsSelection;
-    }
+	public String getCurrentPresentationsSelection() {
+		return currentPresentationsSelection;
+	}
 
-    /**
-     * Method to get a named presentation from the back end manager
-     *
-     * @param name of the presentation
-     * @return the presentation, or null if it doesn't exist
-     */
-    public Presentation getPresentation(String name) {
-        return backendManager.getPresentation(name);
-    }
+	/**
+	 * Method to get a named presentation from the back end manager
+	 * 
+	 * @param name
+	 *            of the presentation
+	 * @return the presentation, or null if it doesn't exist
+	 */
+	public Presentation getPresentation(String name) {
+		return backendManager.getPresentation(name);
+	}
 
-    /**
-     * Method to get the default presentation selection text This is used for
-     * the initial state in dropdowns on the login screen
-     *
-     * @return DEFAULT_PRESENTATION string
-     */
-    public String getDefaultPresentationSelection() {
-        return DEFAULT_PRESENTATION;
-    }
+	/**
+	 * Method to get the default presentation selection text This is used for
+	 * the initial state in dropdowns on the login screen
+	 * 
+	 * @return DEFAULT_PRESENTATION string
+	 */
+	public String getDefaultPresentationSelection() {
+		return DEFAULT_PRESENTATION;
+	}
 
-    /**
-     * Method to get the list of presentations as a SelectItem list. This
-     * basically wraps the back end list.
-     * In addition this will create default initial presentations as needed
-     * These initial presentations are loaded automatically and run in slide 
-     * show mode, and can be used to provide a generic set of presentations that 
-     * any user can join (so a deployment could include a "Howto" presentation, 
-     * etc.)  To setup a default presentation, just drop the proper zip file 
-     * (normally the type that would be uploaded to webmc by a moderator) into 
-     * the AutoPresentation.PRESENTATION_FOLDER_NAME folder, which is located 
-     * normally in .../web/basepres/  Any files found in this folder will be 
-     * loaded by AutoPresentation.createDefaultPresentation as a new 
-     * presentation (name based on the file), with a password of 'password' 
-     *
-     * @return the presentations as SelectItems
-     */
-    public SelectItem[] getPresentationItems() {
-        Map presentations = backendManager.getPresentationMap();
+	/**
+	 * Method to get the list of presentations as a SelectItem list. This
+	 * basically wraps the back end list. In addition this will create default
+	 * initial presentations as needed These initial presentations are loaded
+	 * automatically and run in slide show mode, and can be used to provide a
+	 * generic set of presentations that any user can join (so a deployment
+	 * could include a "Howto" presentation, etc.) To setup a default
+	 * presentation, just drop the proper zip file (normally the type that would
+	 * be uploaded to webmc by a moderator) into the
+	 * AutoPresentation.PRESENTATION_FOLDER_NAME folder, which is located
+	 * normally in .../web/basepres/ Any files found in this folder will be
+	 * loaded by AutoPresentation.createDefaultPresentation as a new
+	 * presentation (name based on the file), with a password of 'password'
+	 * 
+	 * @return the presentations as SelectItems
+	 */
+	public SelectItem[] getPresentationItems() {
+		Map presentations = backendManager.getPresentationMap();
 
-        if (presentations.isEmpty()) {
-            AutoPresentation.createDefaultPresentation(this);
+		if (presentations.isEmpty()) {
+			AutoPresentation.createDefaultPresentation(this);
 
-            if (presentations.isEmpty()) {
-                currentPresentationsSelection = NO_PRESENTATION;
-                return new SelectItem[]{new SelectItem(NO_PRESENTATION)};
-            }
-        }
+			if (presentations.isEmpty()) {
+				currentPresentationsSelection = NO_PRESENTATION;
+				return new SelectItem[] { new SelectItem(NO_PRESENTATION) };
+			}
+		}
 
-        Iterator presIter = presentations.keySet().iterator();
-        ArrayList presentationNames = new ArrayList(presentations.size());
-        presentationNames.add(new SelectItem(DEFAULT_PRESENTATION));
-        
-        Presentation current;
-        while (presIter.hasNext()) {
-            current = (Presentation)presentations.get((String)presIter.next());
-            presentationNames.add(1,new SelectItem(current.getName()));
-        }
+		Iterator presIter = presentations.keySet().iterator();
+		ArrayList presentationNames = new ArrayList(presentations.size());
+		//presentationNames.add(new SelectItem(DEFAULT_PRESENTATION));
 
-        currentPresentationsSelection = DEFAULT_PRESENTATION;
-        return (SelectItem[]) presentationNames
-                .toArray(new SelectItem[presentationNames.size()]);
-    }
+		Presentation current;
+		while (presIter.hasNext()) {
+			current = (Presentation) presentations
+					.get((String) presIter.next());
+			if (!current.getName().equals("extracted"))
+				presentationNames.add(new SelectItem(current.getName()));
+		}
 
-    /**
-     * Method to create a new presentation This relies on the back end manager to
-     * do the real work, besides handing off the local renderer
-     *
-     * @param participant who created the presentation
-     * @param name        of the presentation to create
-     * @return the created presentation, or null if something went wrong
-     */
-    public Presentation createPresentation(Participant participant,
-                                           String name) {
-        Presentation toReturn =
-                backendManager.createPresentation(participant, name);
+		// Sort the collection so we have some order in the presentation list
+		Collections.sort(presentationNames, new SelectItemComparator());
 
-        if (toReturn != null) {
-            toReturn.setManager(this);
-        }
-        // The presentation list should be updated.
-        PushRenderer.render("loginPage");
+		// Put the default at the top of the list
+		presentationNames.add(0,new SelectItem(DEFAULT_PRESENTATION));
+				
+		//currentPresentationsSelection = DEFAULT_PRESENTATION;
+		return (SelectItem[]) presentationNames
+				.toArray(new SelectItem[presentationNames.size()]);
+	}
 
-        return toReturn;
-    }
+	/**
+	 * Method to create a new presentation This relies on the back end manager
+	 * to do the real work, besides handing off the local renderer
+	 * 
+	 * @param participant
+	 *            who created the presentation
+	 * @param name
+	 *            of the presentation to create
+	 * @return the created presentation, or null if something went wrong
+	 */
+	public Presentation createPresentation(Participant participant, String name) {
+		Presentation toReturn = backendManager.createPresentation(participant,
+				name);
 
-    /**
-     * Method to add a participant to a presentation The presentation should
-     * exist first before attempting to add to it
-     *
-     * @param participant  to add to the presentation
-     * @param presentation to join
-     */
-    public void joinPresentation(Participant participant,
-                                 Presentation presentation) {
-        backendManager.joinPresentation(participant, presentation);
-    }
+		if (toReturn != null) {
+			toReturn.setManager(this);
+		}
+		// The presentation list should be updated.
+		PushRenderer.render("loginPage");
 
-    /**
-     * Method to end a presentation, such as when the moderator logs out
-     * Basically deletes the presentation from the list, and renders the login
-     * screen
-     *
-     * @param presentation to remove
-     */
-    public void endPresentation(Presentation presentation) {
-        backendManager.removePresentation(presentation);
-        // The presentation list should be updated.
-        PushRenderer.render("loginPage");
-    }
+		return toReturn;
+	}
+
+	/**
+	 * Method to add a participant to a presentation The presentation should
+	 * exist first before attempting to add to it
+	 * 
+	 * @param participant
+	 *            to add to the presentation
+	 * @param presentation
+	 *            to join
+	 */
+	public void joinPresentation(Participant participant,
+			Presentation presentation) {
+		backendManager.joinPresentation(participant, presentation);
+	}
+
+	/**
+	 * Method to end a presentation, such as when the moderator logs out
+	 * Basically deletes the presentation from the list, and renders the login
+	 * screen
+	 * 
+	 * @param presentation
+	 *            to remove
+	 */
+	public void endPresentation(Presentation presentation) {
+		backendManager.removePresentation(presentation);
+		// The presentation list should be updated.
+		PushRenderer.render("loginPage");
+	}
+	
+	public class SelectItemComparator implements Comparator<SelectItem> {  
+	    public int compare(SelectItem s1, SelectItem s2) {  
+	        return s1.getLabel().compareTo(s2.getLabel());  
+	    }  
+	}  
 }

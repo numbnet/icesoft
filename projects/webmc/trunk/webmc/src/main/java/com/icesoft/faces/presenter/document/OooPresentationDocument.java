@@ -32,27 +32,22 @@
  */
 package com.icesoft.faces.presenter.document;
 
-import javax.servlet.ServletContext;
-import javax.faces.context.FacesContext;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.Arrays;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.artofsolving.jodconverter.OfficeDocumentConverter;
+import org.artofsolving.jodconverter.office.OfficeManager;
 
 import com.icesoft.faces.presenter.document.base.PresentationDocument;
 import com.icesoft.faces.presenter.presentation.Presentation;
 import com.icesoft.faces.presenter.slide.Slide;
 import com.icesoft.faces.presenter.util.ImageScaler;
 import com.icesoft.faces.presenter.util.MessageBundleLoader;
-
-import org.artofsolving.jodconverter.OfficeDocumentConverter;
-import org.artofsolving.jodconverter.office.OfficeManager;
-import org.artofsolving.jodconverter.office.DefaultOfficeManagerConfiguration;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.Arrays;
 
 /**
  * Class representing the source document used for the Presentation. The

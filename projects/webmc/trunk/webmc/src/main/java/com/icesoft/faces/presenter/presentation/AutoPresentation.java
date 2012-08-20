@@ -32,16 +32,17 @@
  */
 package com.icesoft.faces.presenter.presentation;
 
-import com.icesoft.faces.presenter.participant.Participant;
-import com.icesoft.faces.presenter.participant.ParticipantInfo;
-
-import javax.faces.context.FacesContext;
-import javax.faces.context.ExternalContext;
-import javax.servlet.ServletContext;
 import java.io.File;
+
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
+import javax.servlet.ServletContext;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
+import com.icesoft.faces.presenter.participant.Participant;
+import com.icesoft.faces.presenter.participant.ParticipantInfo;
 
 /**
  * Class used to setup any initial default presentations

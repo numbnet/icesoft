@@ -32,12 +32,11 @@
  */
 package com.icesoft.faces.presenter.timer;
 
+import javax.faces.event.ValueChangeEvent;
+import javax.faces.model.SelectItem;
+
 import com.icesoft.faces.presenter.presentation.Presentation;
 import com.icesoft.faces.presenter.util.MessageBundleLoader;
-
-import javax.faces.event.ValueChangeEvent;
-
-import javax.faces.model.SelectItem;
 
 /**
  * Class used to handle the page level setup of slide show mode

@@ -1,3 +1,5 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+                      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <!--
   ~ Version: MPL 1.1/GPL 2.0/LGPL 2.1
   ~
@@ -30,35 +32,34 @@
   ~ this file under either the MPL or the LGPL License."
   ~
 -->
+<f:view xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:ice="http://www.icesoft.com/icefaces/component"
+        xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<f:loadBundle basename="com.icesoft.faces.presenter.resource.messages"
+              var="msgs"/>
+
 <html>
-<head>
-    <title>WebMC - Welcome</title>
-    <script>
-        function showLarge( sUrl ) {
-           window.open( sUrl,'', 'width=1024, height=850, scrollbars=yes, resizable=yes, status=no, location=no, menubar=no');
-        }
-    </script>
-</head>
-<body>
-<!-- This page sniffs out whether or not someone is using a mobile browser so a 
-     new browser window without a menubar can be launched when someone is using 
-     webmc from a desktop browser -->
-<%
-String agent = request.getHeader("USER-AGENT").toLowerCase();
-if((agent.indexOf("safari") != -1 && agent.indexOf("mobile") != -1) || 
-   (agent.indexOf("opera") != -1 && agent.indexOf("240x320") != -1)){
-    String redirectURL = "./webmc.jsf";
-    response.sendRedirect(redirectURL);
-}else{
-%>
-  <br/><br/><br/>
-  <div style="text-align:center;">
-    <a href="javascript: showLarge('webmc.jsf')">
-      <img border="0" alt="Start WebMC" src="resources/images/webpresentation_temp.gif" />
-    </a>
-  </div>
-<%
-} 
-%>
-</body>
+<h:head>
+    <title>
+        <ice:outputText value="WebMC"/>
+    </title>
+    <!-- Not using the ice:outputStyle component because we want to force the 
+         mobile styles -->
+    <link href="resources/css/login.css" rel="stylesheet" type="text/css"/>
+    <link href="resources/css/login_safarimobile.css" rel="stylesheet" type="text/css"/>
+    <link href="resources/css/styles.css" rel="stylesheet" type="text/css"/>
+    <link href="resources/css/styles_safarimobile.css" rel="stylesheet" type="text/css"/>
+</h:head>
+
+<h:body>
+    <!-- The rootDiv is required for Safari -->
+    <div id="rootDiv">
+        <!-- This page is used to view the mobile version on a desktop browser.
+             No browser sniffing, sets mobile to true -->
+        <ice:outputText value="#{participant.testMobile}" visible="false" />
+        <ui:include src="#{participant.loggedIn?'WEB-INF/inc/main.jspx':'WEB-INF/inc/login.jspx'}"/>
+    </div>
+</h:body>
 </html>

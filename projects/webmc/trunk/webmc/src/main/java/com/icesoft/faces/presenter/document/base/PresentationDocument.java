@@ -32,9 +32,9 @@
  */
 package com.icesoft.faces.presenter.document.base;
 
-import com.icesoft.faces.presenter.slide.Slide;
-
 import java.io.File;
+
+import com.icesoft.faces.presenter.slide.Slide;
 
 /**
  * Interface representing a document readable by the presenter Key elements are

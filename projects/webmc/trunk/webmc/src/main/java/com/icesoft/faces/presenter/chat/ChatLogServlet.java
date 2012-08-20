@@ -32,8 +32,8 @@
  */
 package com.icesoft.faces.presenter.chat;
 
-import com.icesoft.faces.presenter.participant.Participant;
-import com.icesoft.faces.presenter.presentation.Presentation;
+import java.io.PrintWriter;
+import java.util.Date;
 
 import javax.faces.FactoryFinder;
 import javax.faces.application.Application;
@@ -44,8 +44,9 @@ import javax.faces.lifecycle.LifecycleFactory;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.PrintWriter;
-import java.util.Date;
+
+import com.icesoft.faces.presenter.participant.Participant;
+import com.icesoft.faces.presenter.presentation.Presentation;
 
 /**
  * Class used to translate the participant chat log into a returnable text

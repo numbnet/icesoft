@@ -32,15 +32,15 @@
  */
 package com.icesoft.faces.presenter.presentation;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import com.icesoft.faces.presenter.chat.Message;
 import com.icesoft.faces.presenter.chat.MessageLog;
 import com.icesoft.faces.presenter.participant.Participant;
 import com.icesoft.faces.presenter.slide.Slide;
 import com.icesoft.faces.presenter.util.Encrypter;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 /**
  * Class used to store back end specific information about a Presentation.

@@ -32,9 +32,10 @@
  */
 package com.icesoft.faces.presenter.util;
 
-import javax.faces.context.FacesContext;
 import java.util.Locale;
 import java.util.ResourceBundle;
+
+import javax.faces.context.FacesContext;
 
 /**
  * <p>Utility class which loads the applications message resource bundle.  This

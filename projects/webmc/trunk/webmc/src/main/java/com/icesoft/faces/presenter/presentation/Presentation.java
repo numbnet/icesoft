@@ -32,11 +32,23 @@
  */
 package com.icesoft.faces.presenter.presentation;
 
-import org.icefaces.application.PushRenderer;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.EventObject;
+
+import javax.faces.event.ActionEvent;
+import javax.faces.event.ValueChangeEvent;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.icefaces.ace.component.fileentry.FileEntry;
+import org.icefaces.ace.component.fileentry.FileEntryEvent;
+import org.icefaces.ace.component.fileentry.FileEntryResults;
+import org.icefaces.ace.component.fileentry.FileEntryStatuses;
 import org.icefaces.application.PortableRenderer;
-//import com.icesoft.faces.component.inputfile.InputFile;
+import org.icefaces.application.PushRenderer;
+
 import com.icesoft.faces.presenter.document.UnknownPresentationDocument;
-import com.icesoft.faces.presenter.document.ZipPresentationDocument;
 import com.icesoft.faces.presenter.document.base.PresentationDocument;
 import com.icesoft.faces.presenter.document.factory.DocumentFactory;
 import com.icesoft.faces.presenter.participant.Participant;
@@ -45,17 +57,7 @@ import com.icesoft.faces.presenter.slide.Slide;
 import com.icesoft.faces.presenter.timer.SlideshowTimerBean;
 import com.icesoft.faces.presenter.util.MessageBundleLoader;
 import com.icesoft.faces.presenter.util.StringResource;
-
-import org.icefaces.ace.component.fileentry.*;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
-import javax.faces.event.ActionEvent;
-import javax.faces.event.ValueChangeEvent;
-import java.io.File;
-import java.util.ArrayList;
-import java.util.EventObject;
+//import com.icesoft.faces.component.inputfile.InputFile;
 
 /**
  * Class used to handle the UI interaction and control of a presentation The
