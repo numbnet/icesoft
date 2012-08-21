@@ -170,4 +170,20 @@ of "FacesEvent" would work.]]></description>
 
     </tag>
 
+    <tag>
+        <description><![CDATA[ This tag can be used to configure the page to be notified when the browser back button is pressed.]]></description>
+        <name>navigationNotifier</name>
+        <tag-class/>
+        <body-content>JSP</body-content>
+
+        <attribute>
+            <description><![CDATA[The reference to a bean method that will be invoked when 'back' or 'forward' browser button is used.]]></description>
+            <name>action</name>
+            <required>yes</required>
+            <rtexprvalue>true</rtexprvalue>
+            <type>java.lang.String</type>
+        </attribute>
+
+    </tag>
+
 </taglib>
