@@ -128,6 +128,14 @@
         <component>
             <component-type>org.icefaces.impl.component.NavigationNotifier</component-type>
         </component>
+        <attribute>
+            <description>
+                The reference to a bean method that will be invoked when 'back' or 'forward' browser button is used.
+            </description>
+            <name>action</name>
+            <required>true</required>
+            <type>java.lang.String</type>
+        </attribute>
     </tag>
 
     <tag>
