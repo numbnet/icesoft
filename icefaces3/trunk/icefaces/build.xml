@@ -107,12 +107,90 @@
         </copy>
         <antcall target="bundle.src"/>
 
-        <zip destfile="${bundle.dir}/${bundle.name.src}.zip">
-            <zipfileset dir="${bundle.dir}/${bundle.name.src}" prefix="${bundle.name.src}"/>
-        </zip>
+		<antcall target="zip.os.bundles" />
 
     </target>
 
+	<target name="zip.os.bundles" depends="checkIfEEBundle" if="isOSBundle">
+		<!-- Only create the O/S bundle zips if this is not the EE Bundle build.  -->
+        <zip destfile="${bundle.dir}/${bundle.name.bin}.zip" >
+        	<zipfileset dir="${bundle.dir}/${bundle.name.bin}" prefix="${bundle.name.bin}"/>
+        </zip>
+
+        <zip destfile="${bundle.dir}/${bundle.name.src}.zip">
+            <zipfileset dir="${bundle.dir}/${bundle.name.src}" prefix="${bundle.name.src}"/>
+        </zip>
+	</target>
+
+	<target name="checkIfEEBundle" >
+ 		<condition property="isOSBundle">
+ 			<not>
+				<isset property="ee.bundle.dir"/>
+			</not>	
+		</condition>	
+	<echo message="isOSBundle=${isOSBundle}"/>
+	</target>
+
+    <!-- Only delete these files here and now if this is not the EE build. -->
+	<target name="if.not.ee.delete.bundle.bin.files" depends="checkIfEEBundle" if="isOSBundle" >
+		<antcall target="delete.bundle.bin.files" />
+	</target>	
+
+	<target name="delete.bundle.bin.files" >
+	    <!-- Remove the following files and directories as they are not required for the binary bundle -->
+			<delete>
+				<fileset dir="${bundle.dir.bin}">
+					<include name="build.xml"/>
+				</fileset>
+				<fileset dir="${bundle.dir.bin}/lib">
+					<include name="junit*.jar"/>
+					<include name="junit*.jar"/>
+					<include name="commons-fileupload.jar"/>
+					<include name="tlddoc.jar"/>                
+					<include name="yui-compressor.jar"/>                
+				</fileset>
+				<fileset dir="${bundle.dir.bin}/lib/compat">
+					<include name="freemarker*.jar"/>
+					<include name="jsf-metadata*.jar"/>
+					<include name="jsp-api*.jar"/>
+					<include name="portlet*.jar"/>
+				</fileset>
+				<fileset dir="${bundle.dir.bin}/samples/dist">
+					<include name="basic.war"/>
+					<include name="compat-basic.war"/>
+					<include name="component-showcase.war"/>
+					<include name="component-showcase-portlets.war"/>
+				</fileset>
+	
+			</delete>
+	
+			<!-- Due to a quirk of Ant and Windows, we can't delete a .jar file that was
+				 used on the classpath to execute a task. With ACE, we use the smartsprites
+				 library and then try to remove it from the binary bundle. To try and avoid
+				 this we avoid failing on any error meaning it'll need to be manually removed
+				 when the bundle is built on a Windows machine. -->
+			<delete dir="${bundle.dir.bin}/ace" failonerror="false"/>
+			<delete dir="${bundle.dir.bin}/compat"/>
+			<delete dir="${bundle.dir.bin}/core"/>
+			<delete dir="${bundle.dir.bin}/test"/>
+			<delete dir="${bundle.dir.bin}/tutorials"/>
+	
+			<delete dir="${bundle.dir.bin}/samples/core/test"/>        
+			<delete dir="${bundle.dir.bin}/samples/core/basic"/>
+			<delete dir="${bundle.dir.bin}/samples/compat/compat-basic"/>
+			<delete dir="${bundle.dir.bin}/samples/compat/component-showcase/"/>
+			<delete dir="${bundle.dir.bin}/samples/compat/component-showcase-portlets/"/>
+	
+			<delete dir="${bundle.dir.bin}/samples/showcase/showcase/build"/>
+			<delete dir="${bundle.dir.bin}/samples/showcase/showcase-portlet/build"/> 
+			<delete dir="${bundle.dir.bin}/samples/core/auction/build"/>
+			<delete dir="${bundle.dir.bin}/samples/core/chat/build"/>
+			<delete dir="${bundle.dir.bin}/samples/compat/auctionMonitor/build"/>
+			<delete dir="${bundle.dir.bin}/samples/compat/auctionMonitor/src/main/webapp/WEB-INF/lib"/>
+			<delete dir="${bundle.dir.bin}/samples/compat/auctionMonitor/src/main/webapp/WEB-INF/classes"/>
+
+	</target>
+	
     <target name="bundle.bin">
 
         <!-- Clean and build everything for the binary bundle -->
@@ -169,59 +247,7 @@
         </subant>
         <move file="${bundle.dir.bin}/ace/component/build/doc/tld" tofile="${bundle.dir.bin}/docs/ace/tld"/>
 
-
-
-        <!-- Remove the following files and directories as they are not required for the binary bundle -->
-        <delete>
-            <fileset dir="${bundle.dir.bin}">
-                <include name="build.xml"/>
-            </fileset>
-            <fileset dir="${bundle.dir.bin}/lib">
-                <include name="junit*.jar"/>
-                <include name="junit*.jar"/>
-                <include name="commons-fileupload.jar"/>
-                <include name="tlddoc.jar"/>                
-                <include name="yui-compressor.jar"/>                
-            </fileset>
-            <fileset dir="${bundle.dir.bin}/lib/compat">
-                <include name="freemarker*.jar"/>
-                <include name="jsf-metadata*.jar"/>
-                <include name="jsp-api*.jar"/>
-                <include name="portlet*.jar"/>
-            </fileset>
-            <fileset dir="${bundle.dir.bin}/samples/dist">
-                <include name="basic.war"/>
-                <include name="compat-basic.war"/>
-                <include name="component-showcase.war"/>
-                <include name="component-showcase-portlets.war"/>
-            </fileset>
-
-        </delete>
-
-        <!-- Due to a quirk of Ant and Windows, we can't delete a .jar file that was
-             used on the classpath to execute a task. With ACE, we use the smartsprites
-             library and then try to remove it from the binary bundle. To try and avoid
-             this we avoid failing on any error meaning it'll need to be manually removed
-             when the bundle is built on a Windows machine. -->
-        <delete dir="${bundle.dir.bin}/ace" failonerror="false"/>
-        <delete dir="${bundle.dir.bin}/compat"/>
-        <delete dir="${bundle.dir.bin}/core"/>
-        <delete dir="${bundle.dir.bin}/test"/>
-        <delete dir="${bundle.dir.bin}/tutorials"/>
-
-        <delete dir="${bundle.dir.bin}/samples/core/test"/>        
-        <delete dir="${bundle.dir.bin}/samples/core/basic"/>
-        <delete dir="${bundle.dir.bin}/samples/compat/compat-basic"/>
-        <delete dir="${bundle.dir.bin}/samples/compat/component-showcase/"/>
-        <delete dir="${bundle.dir.bin}/samples/compat/component-showcase-portlets/"/>
-
-        <delete dir="${bundle.dir.bin}/samples/showcase/showcase/build"/>
-        <delete dir="${bundle.dir.bin}/samples/showcase/showcase-portlet/build"/> 
-        <delete dir="${bundle.dir.bin}/samples/core/auction/build"/>
-        <delete dir="${bundle.dir.bin}/samples/core/chat/build"/>
-        <delete dir="${bundle.dir.bin}/samples/compat/auctionMonitor/build"/>
-        <delete dir="${bundle.dir.bin}/samples/compat/auctionMonitor/src/main/webapp/WEB-INF/lib"/>
-        <delete dir="${bundle.dir.bin}/samples/compat/auctionMonitor/src/main/webapp/WEB-INF/classes"/>
+        <antcall target="if.not.ee.delete.bundle.bin.files" />
 
         <subant target="clean">
             <fileset dir="${bundle.dir.bin}/samples/showcase/showcase-portlet" includes="build.xml"/>
