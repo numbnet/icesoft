@@ -126,13 +126,22 @@ if (!window.ice.icefaces) {
         }
 
         //function used to safely retrieve ViewState key -- form['javax.faces.ViewState'] sometimes fails in IE
+        function lookupViewStateElement(element) {
+            var viewStateElement = element['javax.faces.ViewState'];
+
+            if (!viewStateElement) {
+                viewStateElement = detect(element.getElementsByTagName('input'), function(input) {
+                    return input.name && input.name == 'javax.faces.ViewState';
+                }, function() {
+                    throw 'cannot find javax.faces.ViewState element';
+                });
+            }
+
+            return viewStateElement;
+        }
+
         function lookupViewState(element) {
-            var viewStateElement = detect(element.getElementsByTagName('input'), function(input) {
-                return input.name && input.name == 'javax.faces.ViewState';
-            }, function() {
-                throw 'cannot find javax.faces.ViewState element';
-            });
-            return viewStateElement.value;
+            return lookupViewStateElement(element).value;
         }
 
         function retrieveUpdateFormID(viewID) {
@@ -594,6 +603,18 @@ if (!window.ice.icefaces) {
             var f = document.getElementById(id);
             f.previousParameters = HashSet(jsf.getViewState(f).split('&'));
         };
+
+        namespace.fixViewState = function(id, viewState) {
+            var form = lookupElementById(id);
+            try {
+                var viewStateElement = lookupViewStateElement(form);
+                if (viewStateElement.value != viewState) {
+                    viewStateElement.value = viewState;
+                }
+            } catch (ex) {
+                appendHiddenInputElement(form, 'javax.faces.ViewState', viewState, viewState);
+            }
+        }
 
         function isComponentRendered(form) {
             return form['javax.faces.encodedURL'] ||
