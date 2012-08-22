@@ -33,7 +33,6 @@
     padding:0;
 }
 .ui-datatable th .ui-header-column {
-    position:relative;
 }
 
 .ui-datatable .ui-header-column, .ui-datatable .ui-footer-column { padding:4px 10px; }
@@ -193,7 +192,6 @@
 
 .ui-datatable-scrollable .ui-datatable-scrollable-header, .ui-datatable-scrollable .ui-datatable-scrollable-footer {
     overflow:hidden;
-    position: relative;
 }
 
 .ui-datatable-scrollable .ui-datatable-scrollable-header table,.ui-datatable-scrollable .ui-datatable-scrollable-footer table {
