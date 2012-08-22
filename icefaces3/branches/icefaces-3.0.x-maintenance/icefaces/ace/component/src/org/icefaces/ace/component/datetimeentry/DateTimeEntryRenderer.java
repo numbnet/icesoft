@@ -52,6 +52,7 @@ public class DateTimeEntryRenderer extends InputRenderer {
 
     @Override
     public void decode(FacesContext context, UIComponent component) {
+//        System.out.println("\nDateTimeEntryRenderer.decode");
 //        printParams();
         DateTimeEntry dateTimeEntry = (DateTimeEntry) component;
 
@@ -71,6 +72,8 @@ public class DateTimeEntryRenderer extends InputRenderer {
 
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
+//        System.out.println("\nDateTimeEntryRenderer.encodeEnd");
+//        printParams();
         DateTimeEntry dateTimeEntry = (DateTimeEntry) component;
         String value = DateTimeEntryUtils.getValueAsString(context, dateTimeEntry);
 
@@ -196,6 +199,7 @@ public class DateTimeEntryRenderer extends InputRenderer {
                 }
                 json.entry("disableHoverStyling", dateTimeEntry.isDisableHoverStyling());
                 json.entry("showCurrentAtPos", 0 - dateTimeEntry.getLeftMonthOffset());
+                json.entry("clientId", clientId);
                 json.entry("singleSubmit", dateTimeEntry.isSingleSubmit());
                 json.entry("withinSingleSubmit", Util.withinSingleSubmit(dateTimeEntry));
             json.endMap();
