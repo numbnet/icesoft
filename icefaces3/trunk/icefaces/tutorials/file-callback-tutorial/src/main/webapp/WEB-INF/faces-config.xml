@@ -21,11 +21,16 @@
               metadata-complete="false">
 
     <application>
+    <resource-bundle>
+    <base-name>messages</base-name>
+    <var>msgs</var>
+    </resource-bundle>
         <locale-config>
             <default-locale>en</default-locale>
             <supported-locale>en</supported-locale>
         </locale-config>
-        <message-bundle>messages</message-bundle>
+        
+        
     </application>
   
 </faces-config>
