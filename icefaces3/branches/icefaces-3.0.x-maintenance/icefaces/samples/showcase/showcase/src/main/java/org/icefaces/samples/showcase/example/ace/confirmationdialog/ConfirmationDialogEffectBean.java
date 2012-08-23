@@ -72,7 +72,6 @@ public class ConfirmationDialogEffectBean extends ComponentExampleImpl<Confirmat
             list.put("Clip", "clip");
             list.put("Explode", "explode");
             list.put("Puff", "puff");
-            list.put("Pulsate", "pulsate");
             list.put("Scale", "scale");
             list.put("Slide", "slide");
             return list;
