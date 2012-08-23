@@ -16,6 +16,7 @@
 package org.icefaces.mobi.component.contentmenuitem;
 
 
+import org.icefaces.mobi.component.accordion.Accordion;
 import org.icefaces.mobi.component.contentpane.ContentPane;
 import org.icefaces.mobi.component.contentstack.ContentStack;
 import org.icefaces.mobi.component.contentnavbar.ContentNavBar;
@@ -30,6 +31,8 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.event.ActionEvent;
 import java.io.IOException;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
@@ -120,6 +123,13 @@ public class ContentMenuItemRenderer extends BaseLayoutRenderer {
         }
     }
 
+    /**
+     * option to render an item with value of null as either a heading or accordion handle
+     * @param parent
+     * @param facesContext
+     * @param uiComponent
+     * @throws IOException
+     */
     private void renderItemAsList(UIComponent parent, FacesContext facesContext, UIComponent uiComponent)
                     throws IOException{
          ContentStackMenu parentMenu = (ContentStackMenu)parent;
@@ -129,6 +139,7 @@ public class ContentMenuItemRenderer extends BaseLayoutRenderer {
          String contentStackId = parentMenu.getContentStackId();
          String stackClientId = null;
          boolean client = false;
+         boolean accordion = parentMenu.isAccordion();
          String selId = null;
          if (null!=lmi.getValue()){
              selId= (String)lmi.getValue();
@@ -147,7 +158,7 @@ public class ContentMenuItemRenderer extends BaseLayoutRenderer {
          }  else {
              stackClientId = ((ContentStackMenu) parent).getStackClientId();
          }
-                          //find the clientId of the selected Pane
+         //find the clientId of the selected Pane
          if (selId !=null){
              UIComponent comp = root.findComponent(contentStackId);
              UIComponent pane = comp.findComponent(selId);
@@ -157,17 +168,20 @@ public class ContentMenuItemRenderer extends BaseLayoutRenderer {
              }
          }
          String icon = lmi.getIcon();
-         writer.startElement(HTML.LI_ELEM, uiComponent);
-         writer.writeAttribute(HTML.ID_ATTR, clientId, HTML.ID_ATTR);
-         writer.writeAttribute(HTML.NAME_ATTR, clientId, HTML.NAME_ATTR);
          String label = lmi.getLabel();
          if (null==selId) {
-             writer.writeAttribute("class", ContentMenuItem.OUTPUTLISTITEMGROUP_CLASS, "class");
-             writer.startElement(HTML.DIV_ELEM, uiComponent);
-             writer.writeAttribute("class", ContentMenuItem.OUTPUTLISTITEMDEFAULT_CLASS, "class");
-             writer.write(label);
-             writer.endElement(HTML.LI_ELEM);
+             if (accordion){
+                 this.writeTitleAsAccordionHandle(facesContext, uiComponent, parentMenu, label);
+             }  else {
+                 writeItemListStart(uiComponent, writer, clientId);
+                 writer.writeAttribute("class", ContentMenuItem.OUTPUTLISTITEMGROUP_CLASS, "class");
+                 writer.startElement(HTML.DIV_ELEM, uiComponent);
+                 writer.writeAttribute("class", ContentMenuItem.OUTPUTLISTITEMDEFAULT_CLASS, "class");
+                 writer.write(label);
+                 writer.endElement(HTML.LI_ELEM);
+             }
          }else {
+             writeItemListStart(uiComponent, writer, clientId);
              writer.writeAttribute("class", ContentMenuItem.OUTPUTLISTITEM_CLASS, "class");
              writer.startElement(HTML.DIV_ELEM, uiComponent);
              writer.writeAttribute("class", ContentMenuItem.OUTPUTLISTITEMDEFAULT_CLASS, "class");
@@ -190,17 +204,66 @@ public class ContentMenuItemRenderer extends BaseLayoutRenderer {
                  sb.append(",client: ").append(client);
                  sb.append("});");
                  if (stackClientId != null && !lmi.isDisabled()){
-                  writer.writeAttribute("onclick", sb.toString(), null);
+                    writer.writeAttribute("onclick", sb.toString(), null);
                  }
              }
              if (icon !=null){
-
+                //TODO implementation of icon needs to be defined
              }
-             writer.write( lmi.getLabel());
+             writer.write(lmi.getLabel());
              writer.endElement(HTML.ANCHOR_ELEM);
              writer.endElement(HTML.DIV_ELEM);
+             writer.endElement(HTML.LI_ELEM);
          }
-         writer.endElement(HTML.LI_ELEM);
+    }
+
+    private void writeItemListStart(UIComponent uiComponent, ResponseWriter writer, String clientId) throws IOException {
+        writer.startElement(HTML.LI_ELEM, uiComponent);
+        writer.writeAttribute(HTML.ID_ATTR, clientId, HTML.ID_ATTR);
+        writer.writeAttribute(HTML.NAME_ATTR, clientId, HTML.NAME_ATTR);
+    }
+
+
+    private void writeTitleAsAccordionHandle(FacesContext context, UIComponent childComp,
+        ContentStackMenu menu, String title) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        if (menu.isOpenAccordionHandle()){
+            writer.endElement(HTML.UL_ELEM);
+            writer.endElement(HTML.DIV_ELEM);
+            writer.endElement(HTML.SECTION_ELEM);
+            menu.setOpenAccordionHandle(false);
+        }
+        StringBuilder handleClass = new StringBuilder("handle");
+        StringBuilder listClass = new StringBuilder(ContentStackMenu.LAYOUTMENU_LIST_CLASS);
+        StringBuilder baseClass = new StringBuilder(ContentStackMenu.LAYOUTMENU_CLASS);
+        StringBuilder pointerClass = new StringBuilder("pointer");
+        String closeClass= "closed";
+        StringBuilder cfg = new StringBuilder("{autoheight:true");
+        String menuId = menu.getClientId();
+        String userDefinedClass = menu.getStyleClass();
+        if (userDefinedClass != null && userDefinedClass.length() > 0){
+              handleClass.append(" ").append(userDefinedClass);
+              pointerClass.append(" ").append(userDefinedClass);
+              listClass.append(" ").append(userDefinedClass);
+              baseClass.append(" ").append(userDefinedClass);
+        }
+        writer.startElement(HTML.SECTION_ELEM, childComp);
+        writer.writeAttribute(HTML.ID_ATTR, childComp.getClientId(), HTML.ID_ATTR);
+        writer.writeAttribute("class", closeClass, "class");
+        writer.startElement(HTML.DIV_ELEM, childComp);
+        writer.writeAttribute("class", handleClass, "class");
+        writer.writeAttribute("onclick", "mobi.accordionController.toggleMenu('" + menuId + "',this);", "onclick");
+        writer.startElement(HTML.DIV_ELEM, childComp);
+        writer.writeAttribute("class", pointerClass, "class");
+        writer.write(Accordion.ACCORDION_RIGHT_POINTING_POINTER);
+        writer.endElement(HTML.DIV_ELEM);
+        writer.write(title);
+        writer.endElement(HTML.DIV_ELEM);
+        writer.startElement(HTML.DIV_ELEM, childComp);
+        writer.writeAttribute("class", baseClass, "class");
+        writer.startElement(HTML.UL_ELEM, childComp);
+        writer.writeAttribute("class", listClass, "class");
+        menu.setOpenAccordionHandle(true);
     }
 
 

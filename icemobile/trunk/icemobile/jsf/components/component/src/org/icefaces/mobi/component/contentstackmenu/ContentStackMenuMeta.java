@@ -58,4 +58,8 @@ public class ContentStackMenuMeta extends UISeriesBaseMeta {
     @Property(tlddoc = "id of either menuItem or contentPane that menuItem reflects..not sure which yet")
     private String selectedPane;
 
+    @Property(defaultValue="false", tlddoc=" if value is true, " +
+            "group headings of menu are handles of accordion pane for menu content")
+    private boolean accordion;
+
 }

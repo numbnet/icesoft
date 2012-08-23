@@ -48,8 +48,8 @@
     -ms-transition-delay: 0.2s, 0.2s;
     transition:  max-height 0.3s, height 0.3s ease-in-out;
     transition: 0.2s, 0.2s;
-    height: 150px;
-    max-height: 150px;
+ /*   height: 150px;
+    max-height: 150px;  */
 }
 
 .mobi-accordion .closed {

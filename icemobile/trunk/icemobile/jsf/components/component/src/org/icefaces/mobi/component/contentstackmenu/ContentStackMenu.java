@@ -26,6 +26,7 @@ public class ContentStackMenu extends ContentStackMenuBase {
     public static final String LAYOUTMENU_LIST_CLASS = "mobi-list ";
 
     private String stackClientId;
+    private boolean openAccordionHandle = false;
 
     public void setStackClientId(String sCID){
         //assume that this menu will only ever relate to one stack so only set if the current value is null
@@ -45,6 +46,14 @@ public class ContentStackMenu extends ContentStackMenuBase {
 			//Always re-add the delta values to the map. JSF merges the values into the main map
 			//and values are not state saved unless they're in the delta map.
 		sh.put(valuesKey, clientValues);
+    }
+
+    public boolean isOpenAccordionHandle() {
+        return openAccordionHandle;
+    }
+
+    public void setOpenAccordionHandle(boolean hasOpenAccordionHandle) {
+        this.openAccordionHandle = hasOpenAccordionHandle;
     }
 
     public String getStackClientId(){
@@ -72,4 +81,5 @@ public class ContentStackMenu extends ContentStackMenuBase {
 		}
 		return retVal;
     }
+
 }

@@ -43,7 +43,6 @@ public class BaseLayoutRenderer extends CoreRenderer {
         if (!child.isRendered()) {
             return;
         }
-        //do we have to worry about encodeAll method???
         child.encodeBegin(facesContext);
         if (child.getRendersChildren()) {
             child.encodeChildren(facesContext);
