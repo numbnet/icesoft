@@ -34,7 +34,6 @@
 
     <ui:define name="example">
         <h:form id="form">
-            <icecore:singleSubmit/>
             <ace:panel>
                 <h:panelGrid style="text-align: center;" width="100%">
                     <h:panelGroup>
@@ -47,9 +46,13 @@
                     </h:panelGroup>
                 </h:panelGrid>
             </ace:panel>
-                
-            <h:panelGrid style="margin-left: auto; margin-right: auto; text-align: left;" width="40%"
-                         cellpadding="6" cellspacing="6">
+       </h:form>
+
+      <h:panelGrid style="margin-left: auto; margin-right: auto; text-align: left;" width="40%"
+                    cellpadding="6" cellspacing="6">
+   
+      	<h:form id="form2">       
+            <icecore:singleSubmit/>
                 <h:panelGroup>
                     <h:selectBooleanCheckbox id="popupIn" value="#{datePopup.popup}"/>
                     <h:outputLabel for="popupIn" value=" Display as Popup"/>
@@ -60,15 +63,18 @@
                                              disabled="#{!datePopup.popup}"/>
                     <h:outputLabel for="iconIn" value=" Display Image Icon"/>
                 </h:panelGroup>
-                
-                <ace:dateTimeEntry id="calNoIcon" showOn="button"
+	  	</h:form>   
+
+      	<h:form id="form3">       
+   		             
+           <ace:dateTimeEntry id="calNoIcon" showOn="button"
                                    value="#{datePopup.selectedDate}"
                                    timeZone="Canada/Mountain"
                                    pattern="MMM/dd/yyyy"
                                    renderAsPopup="#{datePopup.popup}"
                                    popupIcon="null"
                                    rendered="#{!datePopup.icon}"/>
-                <ace:dateTimeEntry id="calIcon" showOn="button"
+           <ace:dateTimeEntry id="calIcon" showOn="button"
                                    value="#{datePopup.selectedDate}"
                                    timeZone="Canada/Mountain"
                                    pattern="MMM/dd/yyyy"
@@ -76,8 +82,8 @@
                                    popupIcon="/resources/css/images/calendarIcon.png"
                                    popupIconOnly="true"
                                    rendered="#{datePopup.icon}"/>
-                <h:commandButton id="submit" value="Submit Date"/>
-            </h:panelGrid>
+           <h:commandButton id="submit" value="Submit Date"/>
         </h:form>
+      </h:panelGrid>
     </ui:define>
 </ui:composition>
