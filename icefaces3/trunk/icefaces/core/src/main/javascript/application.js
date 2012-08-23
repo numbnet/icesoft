@@ -397,6 +397,19 @@ if (!window.ice.icefaces) {
             c.ajaxRefresh();
         };
 
+        function clearEventHandlers(element) {
+            element.onkeypress = null;
+            element.onmousedown = null;
+            element.onmousemove = null;
+            element.onmouseout = null;
+            element.onmouseover = null;
+            element.onclick = null;
+            element.oncontextmenu = null;
+            element.onchange = null;
+            element.onfocus = null;
+            element.onblur = null;
+        }
+
         namespace.setupBridge = function(setupID, viewID, windowID, configuration) {
             var container = document.getElementById(setupID).parentNode;
             container.setupCount = container.setupCount ? (container.setupCount + 1) : 1;
@@ -431,20 +444,6 @@ if (!window.ice.icefaces) {
                         }
                     });
                 });
-
-                function clearEventHandlers(element) {
-                    element.onkeypress = null;
-                    element.onmousedown = null;
-                    element.onmousemove = null;
-                    element.onmouseout = null;
-                    element.onmouseover = null;
-                    element.onclick = null;
-                    element.oncontextmenu = null;
-                    element.onchange = null;
-                    element.onfocus = null;
-                    element.onblur = null;
-                }
-
                 //clear the event handlers on the elements that will most likely create a memory leak
                 onUnload(window, function() {
                     container.configuration = null;

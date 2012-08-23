@@ -238,4 +238,15 @@
         document.execCommand("BackgroundImageCache", false, true);
     } catch(err) {
     }
+
+    //fix potential memory leaks by clearing up the event handlers that replaced elements have had
+    namespace.onBeforeUpdate(function(updates) {
+        each(updates.getElementsByTagName('update'), function(update) {
+            var id = update.getAttribute('id');
+            var e = lookupElementById(id);
+            if (e) {
+                each(e.getElementsByTagName('*'), clearEventHandlers);
+            }
+        });
+    });
 })();
