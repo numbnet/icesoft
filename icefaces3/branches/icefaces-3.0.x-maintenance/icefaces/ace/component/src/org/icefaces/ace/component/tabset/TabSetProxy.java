@@ -17,15 +17,21 @@
 package org.icefaces.ace.component.tabset;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
+import javax.el.ValueExpression;
+import javax.faces.component.StateHelper;
+import javax.faces.component.UIComponent;
+import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import org.icefaces.ace.util.HTML;
+import org.icefaces.util.CoreComponentUtils;
 
 public class TabSetProxy extends TabSetProxyBase{
 
-	
     public void encodeBegin(FacesContext context) throws IOException {
     	super.encodeBegin(context);
     	ResponseWriter writer = context.getResponseWriter();
@@ -36,4 +42,19 @@ public class TabSetProxy extends TabSetProxyBase{
     	writer.writeAttribute(HTML.TYPE_ATTR, "hidden", HTML.TYPE_ATTR);    	
     	writer.endElement(HTML.INPUT_ELEM);
     }
+
+    @Override
+    public String getFor() {
+        String forComponentId = super.getFor();
+        UIViewRoot root = getFacesContext().getViewRoot();
+        UIComponent forComponent = CoreComponentUtils.findComponentInView(root, forComponentId);
+        if( forComponent != null ){
+            forComponentId = forComponent.getClientId();
+        }
+        return forComponentId;
+    }
+
 }
+
+
+
