@@ -49,6 +49,7 @@
             <h:commandButton value="Restore Default Foods"
                              actionListener="#{positionedDynamic.restoreDefault}"
                              immediate="true"/>
+               
                              
             <ice:panelPositioned value="#{positionedData.availableFoods}"
                                  var="food"
@@ -57,14 +58,14 @@
                                  handle="positionedElement">
                 <ice:panelGroup styleClass="positionedElement">
                     <h:outputText value="#{food}" styleClass="moveLabel"/>
-                    <h:commandButton image="resources/css/images/popup-close.png"
+                     <h:commandButton image="resources/css/images/popup-close.png"
                                      alt="Remove" title="Remove"
-                                     style="height: 11px; width: 11px; border: 0; float: right; vertical-align: middle; padding-top: 6px; padding-right: 5px;"
+                                     style="height: 11px; width: 11px; border: 0; vertical-align: middle; padding-top: 6px; padding-right: 5px; position: absolute; right: 5px; text-align: right;"
                                      action="#{positionedDynamic.removeItem}"
                                      immediate="true">
                          <f:setPropertyActionListener target="#{positionedDynamic.toRemove}"
                                                       value="#{status.index}"/>
-                    </h:commandButton>
+                    </h:commandButton>  
                 </ice:panelGroup>
             </ice:panelPositioned>
         </h:form>
