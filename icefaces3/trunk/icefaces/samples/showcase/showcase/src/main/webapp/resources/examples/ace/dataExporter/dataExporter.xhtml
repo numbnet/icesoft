@@ -56,7 +56,8 @@
         <h:form id="form2">
            <ace:dataTable id="carTable"
                                     value="#{dataTableSort.carsData}"
-                                    var="car" 
+                                    var="car"
+                                    paginator="true"
                                     rows="15">
                
                <ace:column headerText="ID">

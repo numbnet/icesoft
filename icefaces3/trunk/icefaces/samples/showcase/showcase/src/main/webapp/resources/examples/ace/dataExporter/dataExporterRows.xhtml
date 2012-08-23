@@ -62,9 +62,10 @@
            <ace:dataTable id="carData"
                           value="#{dataExporterRows.cars}"
                           var="car"
-                          rows="15"
                           stateMap="#{dataExporterRows.stateMap}"
-                          selectionMode="multiple">
+                          selectionMode="multiple"
+                          paginator="true"
+                          rows="15" >
                 <ace:ajax event="select" render="@this form4:status" execute="@this" />
                 
                 <ace:column headerText="ID">
