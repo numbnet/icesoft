@@ -16,13 +16,11 @@
 
 package org.icefaces.tutorials.ace.faces.listeners;
 
-import org.icefaces.ace.component.fileentry.*;
-
 import java.io.Serializable;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import org.apache.commons.codec.binary.Hex;
-import org.icefaces.tutorials.util.TutorialMessageUtils;
+import java.util.Arrays;
+import java.util.List;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -30,90 +28,127 @@ import javax.faces.bean.RequestScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
+import org.apache.commons.codec.binary.Hex;
+import org.apache.commons.io.FilenameUtils;
+import org.icefaces.ace.component.fileentry.FileEntryCallback;
+import org.icefaces.ace.component.fileentry.FileEntryResults;
+import org.icefaces.ace.component.fileentry.FileEntryStatus;
+import org.icefaces.tutorials.util.TutorialMessageUtils;
+
+
 /**
- * Created by IntelliJ IDEA.
- * User: Nils
- * Date: 11-04-05
- * Time: 12:38 PM
+ * Created by IntelliJ IDEA. User: Nils Date: 11-04-05 Time: 12:38 PM
  */
 @RequestScoped
 @ManagedBean
 public class FileMD5EncodingCallback implements FileEntryCallback, Serializable {
-    private transient MessageDigest digest;
-    private boolean md5NotFound = false;
+	private transient MessageDigest digest;
+	private boolean md5NotFound = false;
+	private List<String> extensionList = Arrays.asList("pptx","ppt","zip","etc");
 
-    // Set up a instance of a MD5 block-encoder
-    public void begin(FileEntryResults.FileInfo fileInfo) {
-        try {
-            digest = MessageDigest.getInstance("MD5");
-        }
-        catch (NoSuchAlgorithmException e) {
-            md5NotFound = true;
-        }
-    }
-    // Hash a block of bytes
-    public void write(byte[] bytes, int offset, int length) {
-       if (!md5NotFound) {
-           digest.update(bytes, offset, length);
-       }
-    }
-    // Hash a single byte
-    public void write(int i) {
-        if (!md5NotFound) {
-            digest.update((byte) i);
-        }
-    }
-    // When FileEntryCallback ends for a file:
-    public void end(FileEntryResults.FileInfo fileEntryInfo) {
-        // If the file upload was completed properly
-        if (md5NotFound) {
-            // Work-around for ICEfaces 3.0.0 issue ICE-7712, where setting
-            // invalidate=true will mess up the lifecycle. Instead, manually
-            // invalidate the form ourselves
-            fileEntryInfo.updateStatus(new EncodingNotFoundUploadStatus(), false);
-            FacesContext context = FacesContext.getCurrentInstance();
-            context.validationFailed();
-        }
-        else if (fileEntryInfo.getStatus().isSuccess()) {
-            fileEntryInfo.updateStatus(new EncodingSuccessStatus(getHash()), false);
-        }
-        digest = null;
-    }
+	// Set up a instance of a MD5 block-encoder
+	public void begin(FileEntryResults.FileInfo fileInfo) {
+		try {
+			digest = MessageDigest.getInstance("MD5");
 
-    // Assistance method to convert digested bytes to hex string
-    protected String getHash() {
-        return String.valueOf(Hex.encodeHex(digest.digest()));
-    }
+		} catch (NoSuchAlgorithmException e) {
+			md5NotFound = true;
+		}
+	}
 
-    private static class EncodingNotFoundUploadStatus implements FileEntryStatus {
-        public boolean isSuccess() {
-            return false;
-        }
+	// Hash a block of bytes
+	public void write(byte[] bytes, int offset, int length) {
+		if (!md5NotFound) {
+			digest.update(bytes, offset, length);
+		}
+	}
 
-        public FacesMessage getFacesMessage(
-                FacesContext facesContext, UIComponent uiComponent, FileEntryResults.FileInfo fileInfo) {
-            return new FacesMessage(FacesMessage.SEVERITY_ERROR,
-                TutorialMessageUtils.getMessage("content.callback.encode.fail.message"),
-                TutorialMessageUtils.getMessage("content.callback.encode.fail.detail"));
-        }
-    }
+	// Hash a single byte
+	public void write(int i) {
+		if (!md5NotFound) {
+			digest.update((byte) i);
+		}
+	}
 
-    private static class EncodingSuccessStatus implements FileEntryStatus {
-        private String hash;
+	// When FileEntryCallback ends for a file:
+	public void end(FileEntryResults.FileInfo fileEntryInfo) {
+		// We can fail the file here for invalid file type, or some other reason
+		if (extensionList.contains(FilenameUtils.getExtension(fileEntryInfo.getFileName()))) {
+			fileEntryInfo.updateStatus(new InvalidFileStatus(), false);
+		}
+		// If the file upload was completed properly
+		else if (md5NotFound) {
+			// Work-around for ICEfaces 3.0.0 issue ICE-7712, where setting
+			// invalidate=true will mess up the lifecycle. Instead, manually
+			// invalidate the form ourselves
+			fileEntryInfo.updateStatus(new EncodingNotFoundUploadStatus(),
+					false);
+			FacesContext context = FacesContext.getCurrentInstance();
+			context.validationFailed();
+		} else if (fileEntryInfo.getStatus().isSuccess()) {
+			fileEntryInfo.updateStatus(new EncodingSuccessStatus(getHash()),
+					false);
+		}
+		digest = null;
+	}
 
-        EncodingSuccessStatus(String hash) {
-            this.hash = hash;
-        }
+	// Assistance method to convert digested bytes to hex string
+	protected String getHash() {
+		return String.valueOf(Hex.encodeHex(digest.digest()));
+	}
 
-        public boolean isSuccess() {
-            return true;
-        }
+	private static class EncodingNotFoundUploadStatus implements
+			FileEntryStatus {
+		public boolean isSuccess() {
+			return false;
+		}
 
-        public FacesMessage getFacesMessage(
-                FacesContext facesContext, UIComponent uiComponent, FileEntryResults.FileInfo fileInfo) {
-            return new FacesMessage(FacesMessage.SEVERITY_INFO,
-                TutorialMessageUtils.getMessage("content.callback.result.message"),
-                hash);
-        }
-    }
+		public FacesMessage getFacesMessage(FacesContext facesContext,
+				UIComponent uiComponent, FileEntryResults.FileInfo fileInfo) {
+			return new FacesMessage(
+					FacesMessage.SEVERITY_ERROR,
+					TutorialMessageUtils
+							.getMessage("content.callback.encode.fail.message"),
+					TutorialMessageUtils
+							.getMessage("content.callback.encode.fail.detail"));
+		}
+	}
+
+	private static class EncodingSuccessStatus implements FileEntryStatus {
+		private String hash;
+
+		EncodingSuccessStatus(String hash) {
+			this.hash = hash;
+		}
+
+		public boolean isSuccess() {
+			return true;
+		}
+
+		public FacesMessage getFacesMessage(FacesContext facesContext,
+				UIComponent uiComponent, FileEntryResults.FileInfo fileInfo) {
+			return new FacesMessage(FacesMessage.SEVERITY_INFO,
+					TutorialMessageUtils
+							.getMessage("content.callback.result.message"),
+					hash);
+		}
+	}
+
+	private static class InvalidFileStatus implements FileEntryStatus {
+
+		public boolean isSuccess() {
+			return false;
+		}
+
+		public FacesMessage getFacesMessage(FacesContext facesContext,
+				UIComponent uiComponent, FileEntryResults.FileInfo fileInfo) {
+			
+			return new FacesMessage(FacesMessage.SEVERITY_INFO,
+					TutorialMessageUtils
+							.getMessage("content.callback.result.message.failed"),
+					FilenameUtils.getExtension(fileInfo.getFileName()));
+					
+					
+		}
+	}
 }
