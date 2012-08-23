@@ -184,8 +184,8 @@ function QTip(target, options, id, attr)
 	function setWidget() {
 		var on = options.style.widget;
 
-		tooltip.toggleClass(widget, on).toggleClass(defaultClass, options.style.def && !on);
-		elements.content.toggleClass(widget+'-content', on);
+		tooltip.toggleClass(widget, on).toggleClass(widget+'-content', on).toggleClass(defaultClass, options.style.def && !on);
+		// ICE-8366 removed line
 
 		if(elements.titlebar){
 			elements.titlebar.toggleClass(widget+'-header', on);
