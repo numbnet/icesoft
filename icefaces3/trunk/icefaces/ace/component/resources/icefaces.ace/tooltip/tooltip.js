@@ -43,20 +43,22 @@ ice.ace.Tooltip = function(cfg) {
 		}
 	}
 
-    this.cfg.style = {widget:true, classes: 'ui-corner-all', tip:{corner:false}};
-	/*
-    ice.ace.jq.extend(this.cfg.style, this.ThemeRoller);
-    if (this.cfg.speechBubble) {
-        this.cfg.style.border = { width: 5, radius: 10 };
-        this.cfg.style.tip = true;
-    }*/
-
     this.jq = ice.ace.jq(this.target);
     if (this.jq.length <= 0) {
         return;
     }
+	
+	var styleClasses = 'ui-widget-content ice-ace-tooltip ui-corner-all';
+	var showTip = false;
+    if (this.cfg.speechBubble) {
+		styleClasses += ' ice-ace-speechbubble'
+		showTip = true;
+    }
+	this.cfg.style = {widget:true, tip:{corner:showTip, width:12, height:12}};
+	
 	var self = this;
 	var events = {};
+	events.render = function(event, api) {api.elements.tooltip.addClass(styleClasses)};
 	events.show = function() { if (!ice.ace.Tooltips[self.cfg.id] && (self.cfg.displayListener || self.cfg.behaviors.display)) { ice.ace.Tooltips[self.cfg.id] = true; self.triggerDisplayListener(); }};
 	events.hide = function() { delete ice.ace.Tooltips[self.cfg.id] };
 	this.cfg.events = events;
@@ -87,27 +89,3 @@ ice.ace.Tooltip.prototype.triggerDisplayListener = function() {
         ));
     } else ice.ace.AjaxRequest(options);
 };
-
-/*
- * ThemeRoller integration for qtip
- */
-/*
-ice.ace.jq.fn.qtip.styles['defaults'].background=undefined;
-ice.ace.jq.fn.qtip.styles['defaults'].color=undefined;
-ice.ace.jq.fn.qtip.styles['defaults'].tip.background=undefined;
-ice.ace.jq.fn.qtip.styles['defaults'].title.background=undefined;
-ice.ace.jq.fn.qtip.styles['defaults'].title.fontWeight = undefined;
-ice.ace.jq.fn.qtip.styles['defaults'].width.max = Number.MAX_VALUE;
-
-ice.ace.Tooltip.prototype.ThemeRoller = {
-    border: {
-        width: 0,
-        radius: 0
-    },
-    classes: {
-        tooltip: 'ui-tooltip ui-widget',
-        title: 'ui-widget-header',
-        content: 'ui-tooltip-content ui-widget-content ui-corner-all'
-    }
-};
-*/

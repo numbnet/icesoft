@@ -559,3 +559,12 @@
 		-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=70)";
 	}
 
+/* ICEsoft custom extensions */
+
+.ice-ace-tooltip .ui-tooltip-content {
+	padding: 10px;
+}
+
+.ice-ace-speechbubble {
+
+}
