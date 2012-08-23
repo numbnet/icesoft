@@ -31,18 +31,15 @@ import javax.faces.context.FacesContext;
 import javax.faces.el.EvaluationException;
 import javax.faces.el.MethodBinding;
 import javax.faces.el.ValueBinding;
-import javax.faces.event.AbortProcessingException;
-import javax.faces.event.ActionEvent;
-import javax.faces.event.ActionListener;
-import javax.faces.event.FacesEvent;
-import javax.faces.event.PhaseId;
+import javax.faces.event.*;
+import java.io.Serializable;
 import java.sql.ResultSet;
 
 
 /**
  * 
  */
-public class DataPaginator extends HtmlPanelGroup implements ActionSource {
+public class DataPaginator extends HtmlPanelGroup implements ActionSource, Serializable {
     private final Log log = LogFactory.getLog(DataPaginator.class);
 
     private static final String FIRST_FACET_NAME = "first";
