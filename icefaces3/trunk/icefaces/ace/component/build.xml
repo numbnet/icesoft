@@ -245,7 +245,7 @@
                 <file name="icefaces.ace/accordion/accordion.js"/>
                 <file name="icefaces.ace/notificationpanel/notificationpanel.js"/>
                 <file name="icefaces.ace/printer/printer.js"/>
-                <file name="icefaces.ace/tooltip/jquery.qtip-1.0.0-rc3.js"/>
+                <file name="icefaces.ace/tooltip/jquery.qtip-2.0.0.js"/>
                 <file name="icefaces.ace/tooltip/tooltip.js"/>
 				<file name="icefaces.ace/gmap/gmap.js"/>
             </filelist>
