@@ -18,6 +18,7 @@ package org.icefaces.samples.showcase.example.compat.map;
 
 import java.io.Serializable;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.event.ActionEvent;
@@ -59,7 +60,6 @@ public class MapLoad extends ComponentExampleImpl<MapLoad> implements Serializab
 	private static final String CUSTOM_SELECT = "CUSTOM_SELECT";
 	
 	private SelectItem[] availableKMLs = new SelectItem[] {
-	    new SelectItem("http://virtualglobetrotting.com/map-23.kml", "Golden Gate Bridge"),
 	    new SelectItem("http://coinatlantic.ca/kmlfiles/EnvironmentCanadaAtlantic/ECHydrometricNL.kml", "Atlantic Canada Hydrometric"),
 	    new SelectItem("http://www.rivercitynetworks.com/weather_radar_usa.kml", "USA Weather"),
 	    new SelectItem("http://www.austindarts.org/darts.kml", "Darts in Austin, Texas"),
@@ -75,6 +75,11 @@ public class MapLoad extends ComponentExampleImpl<MapLoad> implements Serializab
 		super(MapLoad.class);
 	}
 	
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
+    }
+
 	public String getCustomSelect() { return CUSTOM_SELECT; }
 	public boolean getIsCustom() {
 	    return CUSTOM_SELECT.equals(selectedKML);
