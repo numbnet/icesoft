@@ -43,12 +43,31 @@ import org.icefaces.ace.util.JSONBuilder;
 import org.icefaces.render.MandatoryResourceComponent;
 
 import java.util.Map;
+import java.util.HashMap;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.EnumSet;
 
 @MandatoryResourceComponent(tagName="tooltip", value="org.icefaces.ace.component.tooltip.Tooltip")
 public class TooltipRenderer extends CoreRenderer {
+
+	private static final Map<String, String> positionsMap = new HashMap<String, String>();
+	
+	static {
+		positionsMap.put("topleft", "top left");
+		positionsMap.put("topmiddle", "top center");
+		positionsMap.put("topright", "top right");
+		positionsMap.put("righttop", "right top");
+		positionsMap.put("rightmiddle", "right center");
+		positionsMap.put("rightbottom", "right bottom");
+		positionsMap.put("bottomright", "bottom right");
+		positionsMap.put("bottommiddle", "bottom center");
+		positionsMap.put("bottomleft", "bottom left");
+		positionsMap.put("leftbottom", "left bottom");
+		positionsMap.put("leftmiddle", "left center");
+		positionsMap.put("lefttop", "left top");
+		positionsMap.put("center", "center");
+	}
 
     @Override
     public void decode(FacesContext facesContext, UIComponent component) {
@@ -125,7 +144,7 @@ public class TooltipRenderer extends CoreRenderer {
 				jb.entry("forComponent", (String) owner);
 			}
 			writer.write(jb.toString());
-			writer.write(",content:");
+			writer.write(",content:{text:");
 			if(tooltip.getValue() == null)
 				writer.write("document.getElementById('" + clientId + "_content').innerHTML");
 			else {
@@ -134,7 +153,7 @@ public class TooltipRenderer extends CoreRenderer {
 				writer.write("'");
 			}
 
-			writer.write(",");
+			writer.write("},");
 		} else {
 			writer.write(jb.toString());
 			writer.write(",");
@@ -143,36 +162,24 @@ public class TooltipRenderer extends CoreRenderer {
 		jb = JSONBuilder.create();
 		//Events
 		jb.beginMap("show")
-			.beginMap("when")
-				.entry("event", tooltip.getShowEvent())
-			.endMap()
+			.entry("event", tooltip.getShowEvent())
 			.entry("delay", tooltip.getShowDelay())
-			.beginMap("effect")
-				.entry("length", tooltip.getShowEffectLength())
-				.entry("type", tooltip.getShowEffect())
-			.endMap()
+			.entry("effect", createShowEffectFunction(tooltip.getShowEffect(), tooltip.getShowEffectLength()), true)
 		.endMap();
 
 		jb.beginMap("hide")
-			.beginMap("when")
-				.entry("event", tooltip.getHideEvent())
-			.endMap()
+			.entry("event", tooltip.getHideEvent())
 			.entry("delay", tooltip.getHideDelay())
 			.entry("fixed", true)
-			.beginMap("effect")
-				.entry("length", tooltip.getHideEffectLength())
-				.entry("type", tooltip.getHideEffect())
-			.endMap()
+			.entry("effect", createHideEffectFunction(tooltip.getHideEffect(), tooltip.getHideEffectLength()), true)
 		.endMap();
 
 		//Position
 		jb.beginMap("position");
         String container = owner == null || owner instanceof ArrayList ? "document.body" : "ice.ace.jq(ice.ace.escapeClientId('" + owner +"')).parent()";
-        jb.entry("container", container, true)
-			.beginMap("corner")
-				.entry("target", tooltip.getTargetPosition())
-				.entry("tooltip", tooltip.getPosition())
-			.endMap()
+        //jb.entry("container", container, true)
+		jb.entry("at", mapPosition(tooltip.getTargetPosition()))
+		.entry("my", mapPosition(tooltip.getPosition()))
 		.endMap();
 
         encodeClientBehaviors(facesContext, tooltip, jb);
@@ -223,6 +230,39 @@ public class TooltipRenderer extends CoreRenderer {
 
 	public boolean getRendersChildren() {
 		return true;
+	}
+	
+	private String mapPosition(String position) {
+		if (position != null) {
+			position = position.toLowerCase();
+			String result = positionsMap.get(position);
+			if (result != null)
+				return result;
+			else
+				return "";
+		} else {
+			return "";
+		}
+	}
+	
+	private String createShowEffectFunction(String effect, int length) {
+		if ("fade".equalsIgnoreCase(effect)) 
+			return "function(){ice.ace.jq(this).fadeIn(" + length + ");}";
+		if ("slide".equalsIgnoreCase(effect))
+			return "function(){ice.ace.jq(this).slideDown(" + length + ");}";
+		if ("grow".equalsIgnoreCase(effect))
+			return "function(){ice.ace.jq(this).show(" + length + ");}";
+		return "function(){ice.ace.jq(this).show();}";
+	}
+	
+	private String createHideEffectFunction(String effect, int length) {
+		if ("fade".equalsIgnoreCase(effect)) 
+			return "function(){ice.ace.jq(this).fadeOut(" + length + ");}";
+		if ("slide".equalsIgnoreCase(effect))
+			return "function(){ice.ace.jq(this).slideUp(" + length + ");}";
+		if ("grow".equalsIgnoreCase(effect))
+			return "function(){ice.ace.jq(this).hide(" + length + ");}";
+		return "function(){ice.ace.jq(this).hide();}";
 	}
 	
 	private UIComponent findComponentCustom(UIComponent base, String id) {

@@ -43,22 +43,25 @@ ice.ace.Tooltip = function(cfg) {
 		}
 	}
 
-    this.cfg.style = {};
+    this.cfg.style = {widget:true, classes: 'ui-corner-all', tip:{corner:false}};
+	/*
     ice.ace.jq.extend(this.cfg.style, this.ThemeRoller);
     if (this.cfg.speechBubble) {
         this.cfg.style.border = { width: 5, radius: 10 };
         this.cfg.style.tip = true;
-    }
+    }*/
 
     this.jq = ice.ace.jq(this.target);
     if (this.jq.length <= 0) {
         return;
     }
-	this.jq.qtip(this.cfg);
-	
 	var self = this;
-	this.jq.qtip("api").beforeShow = function() { if (!ice.ace.Tooltips[self.cfg.id] && (self.cfg.displayListener || self.cfg.behaviors.display)) { ice.ace.Tooltips[self.cfg.id] = true; self.triggerDisplayListener(); }};
-	this.jq.qtip("api").onHide = function() { delete ice.ace.Tooltips[self.cfg.id] };
+	var events = {};
+	events.show = function() { if (!ice.ace.Tooltips[self.cfg.id] && (self.cfg.displayListener || self.cfg.behaviors.display)) { ice.ace.Tooltips[self.cfg.id] = true; self.triggerDisplayListener(); }};
+	events.hide = function() { delete ice.ace.Tooltips[self.cfg.id] };
+	this.cfg.events = events;
+	
+	this.jq.qtip(this.cfg);
     callee[id] = this;
 };
 
@@ -88,6 +91,7 @@ ice.ace.Tooltip.prototype.triggerDisplayListener = function() {
 /*
  * ThemeRoller integration for qtip
  */
+/*
 ice.ace.jq.fn.qtip.styles['defaults'].background=undefined;
 ice.ace.jq.fn.qtip.styles['defaults'].color=undefined;
 ice.ace.jq.fn.qtip.styles['defaults'].tip.background=undefined;
@@ -106,3 +110,4 @@ ice.ace.Tooltip.prototype.ThemeRoller = {
         content: 'ui-tooltip-content ui-widget-content ui-corner-all'
     }
 };
+*/
