@@ -9,10 +9,6 @@
         }
     }
 
-    function getDivHeight(clientId) {
-        return document.getElementById(clientId).innerHeight;
-    }
-
     function updateHeightInOpenClass(ruleName, height) {
         if (document.styleSheets) {
             for (var i = 0; i < document.styleSheets.length; i++) {
@@ -67,17 +63,22 @@
         var openClass = ".mobi-accordion .open";
         var myclient = clientId;
         var paneOpId = cfgIn.opened || null;
-        //  var scrollEvent = 'ontouchstart' in window ? "touchmove" : "scroll";
-        var autoheight = cfgIn.autoheight || false;
-        var maxheight = cfgIn.maxheight || "150px";
-        if (autoheight == true) {
-            var calcht = calcMaxDivHeight(clientId)
-            if (calcht > 0) {
-                maxheight = calcht;
+        var accordRoot = document.getElementById(clientId);
+        if (accordRoot.hasChildNodes()){
+            paneOpId = accordRoot.firstChild.id;
+        } else {
+            //  var scrollEvent = 'ontouchstart' in window ? "touchmove" : "scroll";
+            var autoheight = cfgIn.autoheight || false;
+            var maxheight = cfgIn.maxheight || "150px";
+            if (autoheight == true) {
+                var calcht = calcMaxDivHeight(clientId)
+                if (calcht > 0) {
+                    maxheight = calcht;
+                }
             }
+            var heightString = maxheight + "px";
+            updateHeightInOpenClass(openClass, heightString);
         }
-        var heightString = maxheight + "px";
-        updateHeightInOpenClass(openClass, heightString);
         return {
             toggle: function(el, cached) {
                 var theParent = el.parentElement;
@@ -139,6 +140,17 @@
         toggleClient: function(clientId, el, cachetyp) {
             if (this.panels[clientId]) {
                 this.panels[clientId].toggle(el, cachetyp);
+            } else {
+                this.initClient(clientId, {});
+                this.panels[clientId].toggle(el, cachetyp);
+            }
+        },
+        toggleMenu: function(clientId, el){
+            if (this.panels[clientId]) {
+                this.panels[clientId].toggle(el, true);
+            } else{
+                this.initClient(clientId, {});
+                this.panels[clientId].toggle(el, true);
             }
         }
     }

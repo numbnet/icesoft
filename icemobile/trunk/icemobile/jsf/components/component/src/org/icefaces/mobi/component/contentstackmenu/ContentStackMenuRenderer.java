@@ -16,6 +16,8 @@
 
 package org.icefaces.mobi.component.contentstackmenu;
 
+import org.icefaces.mobi.component.accordion.Accordion;
+import org.icefaces.mobi.component.contentmenuitem.ContentMenuItem;
 import org.icefaces.mobi.renderkit.BaseLayoutRenderer;
 import org.icefaces.mobi.utils.HTML;
 import org.icefaces.mobi.utils.Utils;
@@ -25,14 +27,19 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import java.io.IOException;
+import java.util.List;
 import java.util.logging.Logger;
 
-public class ContentStackMenuRenderer extends BaseLayoutRenderer {
+public class  ContentStackMenuRenderer extends BaseLayoutRenderer {
 
     private static Logger logger = Logger.getLogger(ContentStackMenuRenderer.class.getName());
     private static final String JS_NAME = "layoutmenu.js";
     private static final String JS_MIN_NAME = "layoutmenu-min.js";
     private static final String JS_LIBRARY = "org.icefaces.component.layoutmenu";
+    // may also need the js files for accordion if accordion attribute is true
+    private static final String JS_ACC_NAME= "accordion.js";
+    private static final String JS_ACC_MIN_NAME = "accordion-min.js";
+    private static final String JS_ACC_LIB = "org.icefaces.component.accordion";
 
 
   /*  public void decode(FacesContext facesContext, UIComponent uiComponent) {
@@ -48,40 +55,46 @@ public class ContentStackMenuRenderer extends BaseLayoutRenderer {
          }
     } */
 
-     public void encodeEnd(FacesContext facesContext, UIComponent uiComponent)
+     public void encodeBegin(FacesContext facesContext, UIComponent uiComponent)
              throws IOException {
         ResponseWriter writer = facesContext.getResponseWriter();
         String clientId = uiComponent.getClientId(facesContext);
         ContentStackMenu menu = (ContentStackMenu) uiComponent;
       	UIComponent form = Utils.findParentForm(uiComponent);
+        boolean accordion = menu.isAccordion();
    		if(form == null) {
 			throw new FacesException("ContentStackMenu : \"" + clientId + "\" must be inside a form element");
 		}
          // root element
-         writeJavascriptFile(facesContext, uiComponent, JS_NAME, JS_MIN_NAME, JS_LIBRARY);
+         String userDefinedClass = menu.getStyleClass();
+         if (accordion){
+             writeJavascriptFile(facesContext, uiComponent, JS_NAME, JS_MIN_NAME, JS_LIBRARY,
+                     JS_ACC_NAME, JS_ACC_MIN_NAME, JS_ACC_LIB);
+         } else {
+             writeJavascriptFile(facesContext, uiComponent, JS_NAME, JS_MIN_NAME, JS_LIBRARY);
+         }
          writer.startElement(HTML.DIV_ELEM, uiComponent);
          writer.writeAttribute(HTML.ID_ATTR, clientId, HTML.ID_ATTR);
          writer.writeAttribute(HTML.NAME_ATTR, clientId, HTML.NAME_ATTR);
          // apply button type style classes
          StringBuilder baseClass = new StringBuilder(ContentStackMenu.LAYOUTMENU_CLASS);
          StringBuilder listClass = new StringBuilder(ContentStackMenu.LAYOUTMENU_LIST_CLASS);
-         String userDefinedClass = menu.getStyleClass();
+         StringBuilder baseAccordionClass = new StringBuilder("mobi-accordion");
          if (null != userDefinedClass) {
              baseClass.append(userDefinedClass);
              listClass.append(userDefinedClass);
+             baseAccordionClass.append(" ").append(userDefinedClass);
          }
-         writer.writeAttribute(HTML.CLASS_ATTR, baseClass.toString(), null);
-
-         // should be auto base though
-         writer.startElement(HTML.UL_ELEM, uiComponent);
-         writer.writeAttribute(HTML.ID_ATTR,clientId+"_ul", HTML.ID_ATTR);
-         String selectedPane = null;
-         if (null!=menu.getSelectedPane()) {
-             selectedPane = menu.getSelectedPane();
+         if (menu.getStyle() !=null){
+             writer.writeAttribute("style", menu.getStyle(), "style");
          }
-         //if still null, then get the first item in the contentStack??
- //        writer.writeAttribute("data-current",selectedPane , null);
-         writer.writeAttribute(HTML.CLASS_ATTR, listClass.toString(), HTML.CLASS_ATTR);
+         if (accordion){
+             writer.writeAttribute("class",baseAccordionClass.toString(), null);
+         }   else {
+             writer.writeAttribute(HTML.CLASS_ATTR, baseClass.toString(), null);
+             writer.startElement(HTML.UL_ELEM, uiComponent);
+             writer.writeAttribute(HTML.CLASS_ATTR, listClass.toString(), HTML.CLASS_ATTR);
+         }
          if (menu.getVar() != null) {
             menu.setRowIndex(-1);
             for (int i = 0; i < menu.getRowCount(); i++) {
@@ -95,17 +108,21 @@ public class ContentStackMenuRenderer extends BaseLayoutRenderer {
         }  else {
              //doing it with indiv ContentMenuItem tag's
              renderChildren(facesContext, menu);
-         }
-        writer.endElement(HTML.UL_ELEM);
-        this.encodeHidden(facesContext, uiComponent);
-        writer.endElement(HTML.DIV_ELEM);
+        }
+
   //      encodeScript(facesContext,  uiComponent);
     }
-
+    public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException{
+        ResponseWriter writer = facesContext.getResponseWriter();
+        ContentStackMenu menu = (ContentStackMenu)component;
+        writer.endElement(HTML.UL_ELEM);
+        this.encodeHidden(facesContext, component);
+        writer.endElement(HTML.DIV_ELEM);
+    }
 
     @Override
     public void encodeChildren(FacesContext facesContext, UIComponent component) throws IOException {
-         //Rendering happens on encodeEnd
+         //Rendering happens on encodeBegin and End
     }
 
 
@@ -113,6 +130,5 @@ public class ContentStackMenuRenderer extends BaseLayoutRenderer {
     public boolean getRendersChildren() {
         return true;
     }
-
 
 }
