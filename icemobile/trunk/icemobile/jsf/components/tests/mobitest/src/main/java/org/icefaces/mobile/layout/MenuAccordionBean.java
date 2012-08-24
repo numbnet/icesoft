@@ -69,6 +69,7 @@ public class MenuAccordionBean implements Serializable {
     private String selAccPane =  ACC1;
     private String selPane = SPLASH;
     private List<MenuEntry> allPanes = new ArrayList<MenuEntry>();
+    private String singleSelPane="mnuPanel";
 
 	public MenuAccordionBean(){
      //   this.menuList.add(new MenuEntry("Menu Example", "none", true));
@@ -91,12 +92,20 @@ public class MenuAccordionBean implements Serializable {
         allPanes.addAll(mediaComponents);
     }
 
-    public List<org.icefaces.mobile.layout.MenuAccordionBean.MenuEntry> getAllPanes() {
+    public List<MenuEntry> getAllPanes() {
         return allPanes;
     }
 
-    public void setAllPanes(List<org.icefaces.mobile.layout.MenuAccordionBean.MenuEntry> allPanes) {
+    public void setAllPanes(List<MenuEntry> allPanes) {
         this.allPanes = allPanes;
+    }
+
+    public String getSingleSelPane() {
+        return singleSelPane;
+    }
+
+    public void setSingleSelPane(String singleSelPane) {
+        this.singleSelPane = singleSelPane;
     }
 
     public String getSelPane() {
