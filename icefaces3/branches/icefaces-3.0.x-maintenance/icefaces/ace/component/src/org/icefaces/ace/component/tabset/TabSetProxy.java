@@ -17,11 +17,6 @@
 package org.icefaces.ace.component.tabset;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.el.ValueExpression;
-import javax.faces.component.StateHelper;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
