@@ -14,16 +14,16 @@
     <title>Accordion menu single view</title>
 </h:head>
 <h:body>
-    <mobi:contentStack id="stack1" currentId="#{menuAcc.selPane}"
+    <mobi:contentStack id="stack1" currentId="#{menuAcc.singleSelPane}"
                        contentMenuId="mnu">
       <mobi:contentPane id="mnuPanel" client="true" menuOrHome="true">
-         <h:form id="menuForm">
+          <h:form id="mnuform">
             <mobi:contentStackMenu  id="mnu" value="#{menuAcc.allPanes}" var="item"
                       accordion="true"   contentStackId="stack1"
-                  selectedPane="#{menuAcc.selPane}">
+                  selectedPane="#{menuAcc.singleSelPane}">
                 <mobi:contentMenuItem label="#{item.label}" value="#{item.value}"/>
             </mobi:contentStackMenu>
-         </h:form>
+          </h:form>
       </mobi:contentPane>
       <mobi:contentPane id="splash" client="true" >
             <h3>Splash pane that has no menu counterpart</h3>

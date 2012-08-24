@@ -91,7 +91,6 @@ public class ContentPaneRenderer extends BaseLayoutRenderer {
         ContentPane pane = (ContentPane)uiComponent;
         //if I am clientSide, I will always be present and always render
         if (pane.isClient()){
-      //      logger.info("rendering the children of client cachetype="+uiComponent.getClientId(facesContext));
             Utils.renderChildren(facesContext, uiComponent);
         }
         //am I the selected pane?  Can I count on the taghandler to already have
@@ -146,7 +145,6 @@ public class ContentPaneRenderer extends BaseLayoutRenderer {
     public void encodeEnd(FacesContext facesContext, UIComponent uiComponent)
           throws IOException {
          ResponseWriter writer = facesContext.getResponseWriter();
-      //   logger.info(" PARENT FOR SECTION END IS ="+uiComponent.getParent().getClass().getName());
          if (uiComponent.getParent() instanceof Accordion){
              writer.endElement(HTML.SECTION_ELEM);
              return;

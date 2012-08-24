@@ -21,6 +21,7 @@ import org.icefaces.mobi.component.contentmenuitem.ContentMenuItem;
 import org.icefaces.mobi.renderkit.BaseLayoutRenderer;
 import org.icefaces.mobi.utils.HTML;
 import org.icefaces.mobi.utils.Utils;
+import org.w3c.dom.html.HTMLDivElement;
 
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
@@ -54,7 +55,7 @@ public class  ContentStackMenuRenderer extends BaseLayoutRenderer {
              //going to have to validate on client....
          }
     } */
-
+     @Override
      public void encodeBegin(FacesContext facesContext, UIComponent uiComponent)
              throws IOException {
         ResponseWriter writer = facesContext.getResponseWriter();
@@ -108,21 +109,33 @@ public class  ContentStackMenuRenderer extends BaseLayoutRenderer {
         }  else {
              //doing it with indiv ContentMenuItem tag's
              renderChildren(facesContext, menu);
-        }
-
-  //      encodeScript(facesContext,  uiComponent);
-    }
-    public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException{
-        ResponseWriter writer = facesContext.getResponseWriter();
-        ContentStackMenu menu = (ContentStackMenu)component;
+         }
         writer.endElement(HTML.UL_ELEM);
-        this.encodeHidden(facesContext, component);
+        this.encodeHidden(facesContext, uiComponent);
         writer.endElement(HTML.DIV_ELEM);
+   /*     writer.startElement(HTML.INPUT_ELEM, uiComponent);
+        writer.writeAttribute("type", "text", "type");
+        writer.writeAttribute(HTML.VALUE_ATTR, " end of menu comp", HTML.VALUE_ATTR);
+        writer.endElement(HTML.INPUT_ELEM);      */
+
+    }
+    @Override
+    public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
+        ResponseWriter writer = facesContext.getResponseWriter();
+        ContentStackMenu menu = (ContentStackMenu) component;
+        writer.endElement(HTML.DIV_ELEM);
+    /*    writer.startElement(HTML.INPUT_ELEM, component);
+        writer.writeAttribute("type", "text", "type");
+        writer.writeAttribute(HTML.VALUE_ATTR, " encode end of menu comp", HTML.VALUE_ATTR);
+        writer.endElement(HTML.INPUT_ELEM); */
+        if (menu.isAccordion()){
+            writer.endElement(HTML.DIV_ELEM);
+        }
     }
 
     @Override
     public void encodeChildren(FacesContext facesContext, UIComponent component) throws IOException {
-         //Rendering happens on encodeBegin and End
+         //Rendering happens on encodeEnd
     }
 
 
@@ -130,5 +143,6 @@ public class  ContentStackMenuRenderer extends BaseLayoutRenderer {
     public boolean getRendersChildren() {
         return true;
     }
+
 
 }
