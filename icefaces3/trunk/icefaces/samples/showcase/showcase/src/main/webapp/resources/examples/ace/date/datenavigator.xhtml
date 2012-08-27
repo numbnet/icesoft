@@ -34,27 +34,27 @@
 
     <ui:define name="example">
         
-        <h:form id="form">
+        <h:form id="form1">
+        	<icecore:singleSubmit/>
             <ace:panel>
                 <h:panelGrid style="text-align: center;" width="100%">
                     <h:panelGroup>
-                        <h:outputLabel for="selectedDate" value="Selected Date: "/>
+                        <h:outputLabel for="selected" value="Selected Date: "/>
                         <h:outputText id="selectedDate"
                                                 value="#{dateNavigator.selectedDate}"
                                                 style="font-weight: bold;">
                             <f:convertDateTime pattern="MMMM dd, yyyy"/>
                         </h:outputText>
-                    </h:panelGroup>
+                	</h:panelGroup>
+                	<h:panelGroup>
+                    	<h:selectBooleanCheckbox id="navigatorFlag" value="#{dateNavigator.enabled}" />
+                    	<h:outputLabel for="navigatorFlag" value="Enable Dropdown Navigator?"/>
+                	</h:panelGroup>
                 </h:panelGrid>
             </ace:panel>
-                
+ 		</h:form>
+ 		<h:form id="form2">               
             <h:panelGrid id="calendarPanel" style="margin-left: auto; margin-right: auto; text-align: center;" width="100">
-                <h:panelGroup>
-                    <h:selectBooleanCheckbox id="navigatorFlag" value="#{dateNavigator.enabled}">
-                        <f:ajax execute="@this" render="calendarPanel" event="click"/>
-                    </h:selectBooleanCheckbox>
-                    <h:outputLabel for="navigatorFlag" value="Enable Dropdown Navigator?"/>
-                </h:panelGroup>
                 <ace:dateTimeEntry id="cal"
                                                value="#{dateNavigator.selectedDate}"
                                                timeZone="Canada/Mountain"
@@ -62,7 +62,7 @@
                                                navigator="#{dateNavigator.enabled}">
                     <ace:ajax event="dateSelect"
                                      listener="#{dateNavigator.dateSelectListener}"
-                                     render="selectedDate"/>
+                                     render="@all"/>
                 </ace:dateTimeEntry>
             </h:panelGrid>
         </h:form>
