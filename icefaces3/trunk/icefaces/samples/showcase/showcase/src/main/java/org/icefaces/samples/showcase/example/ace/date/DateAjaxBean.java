@@ -29,6 +29,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 import org.icefaces.ace.event.DateSelectEvent;  
+import org.icefaces.ace.event.DateTextChangeEvent;
 
 @ComponentExample(
         parent = DateEntryBean.BEAN_NAME,
@@ -69,6 +70,10 @@ public class DateAjaxBean extends ComponentExampleImpl<DateAjaxBean> implements 
 
     public void dateSelectListener(DateSelectEvent event) {
         this.selectedDate = event.getDate();
+    }
+    
+    public void dateTextChangeListener(DateTextChangeEvent event){
+    	this.selectedDate = event.getDate();
     }
 
     public Date getSelectedDate() {
