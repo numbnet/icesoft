@@ -33,7 +33,8 @@
     <ui:param name="tldResources" value="#{dateTimeEntryResources.tldResources}"/>
 
     <ui:define name="example">
-        <h:form id="form">
+        <h:form id="form1">
+            <icecore:singleSubmit/>
             <ace:panel>
                 <h:panelGrid style="text-align: center;" width="100%">
                     <h:panelGroup>
@@ -44,46 +45,22 @@
                             <f:convertDateTime pattern="MMMM dd, yyyy"/>
                         </h:outputText>
                     </h:panelGroup>
+                	<h:panelGroup>
+                    	<h:selectBooleanCheckbox id="popupIn" value="#{datePopup.popup}"/>
+                    	<h:outputLabel for="popupIn" value=" Display as Popup?"/>
+                	</h:panelGroup>
                 </h:panelGrid>
             </ace:panel>
-       </h:form>
-
-      <h:panelGrid style="margin-left: auto; margin-right: auto; text-align: left;" width="40%"
-                    cellpadding="6" cellspacing="6">
-   
-      	<h:form id="form2">       
-            <icecore:singleSubmit/>
-                <h:panelGroup>
-                    <h:selectBooleanCheckbox id="popupIn" value="#{datePopup.popup}"/>
-                    <h:outputLabel for="popupIn" value=" Display as Popup"/>
-                </h:panelGroup>
-                
-                <h:panelGroup>
-                    <h:selectBooleanCheckbox id="iconIn" value="#{datePopup.icon}"
-                                             disabled="#{!datePopup.popup}"/>
-                    <h:outputLabel for="iconIn" value=" Display Image Icon"/>
-                </h:panelGroup>
-	  	</h:form>   
-
-      	<h:form id="form3">       
-   		             
-           <ace:dateTimeEntry id="calNoIcon" showOn="button"
-                                   value="#{datePopup.selectedDate}"
-                                   timeZone="Canada/Mountain"
-                                   pattern="MMM/dd/yyyy"
-                                   renderAsPopup="#{datePopup.popup}"
-                                   popupIcon="null"
-                                   rendered="#{!datePopup.icon}"/>
-           <ace:dateTimeEntry id="calIcon" showOn="button"
-                                   value="#{datePopup.selectedDate}"
-                                   timeZone="Canada/Mountain"
-                                   pattern="MMM/dd/yyyy"
-                                   renderAsPopup="#{datePopup.popup}"
-                                   popupIcon="/resources/css/images/calendarIcon.png"
-                                   popupIconOnly="true"
-                                   rendered="#{datePopup.icon}"/>
-           <h:commandButton id="submit" value="Submit Date"/>
         </h:form>
-      </h:panelGrid>
+        <h:form id="form2">
+	        <h:panelGrid style="margin-left: auto; margin-right: auto; text-align: center;" width="100">
+                <ace:dateTimeEntry id="cal"
+                                               value="#{datePopup.selectedDate}"
+                                               timeZone="Canada/Mountain"
+                                               pattern="MMM/dd/yyyy"
+                                               renderAsPopup="#{datePopup.popup}"/>
+                <h:commandButton id="submit" value="Submit Date"/>
+	        </h:panelGrid>
+        </h:form>
     </ui:define>
 </ui:composition>
