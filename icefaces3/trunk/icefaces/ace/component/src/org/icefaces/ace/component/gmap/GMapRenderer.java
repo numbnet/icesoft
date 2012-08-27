@@ -17,6 +17,7 @@
 package org.icefaces.ace.component.gmap;
 
 import java.io.IOException;
+import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -31,36 +32,62 @@ import org.icefaces.ace.util.ComponentUtils;
 import org.icefaces.ace.util.JSONBuilder;
 import org.icefaces.render.MandatoryResourceComponent;
 
-@MandatoryResourceComponent(tagName="gMap", value="org.icefaces.ace.component.gmap.GMap")
+@MandatoryResourceComponent(tagName = "gMap", value = "org.icefaces.ace.component.gmap.GMap")
 public class GMapRenderer extends CoreRenderer {
+    Hashtable<String, String> currentValues = new Hashtable<String, String>();
+    int initial = 0;
 
-
-	    public void encodeBegin(FacesContext context, UIComponent component)
-	            throws IOException {
-            ResponseWriter writer = context.getResponseWriter();
-            String clientId = component.getClientId(context);
-            GMap gmap = (GMap) component;
-            writer.startElement("div", null);
-            writer.writeAttribute("id", clientId, null);
-            writer.writeAttribute("style", "width: 800px; height: 500px", null);
-            writer.endElement("div");
-			writer.startElement("span", null);
-			writer.writeAttribute("id", clientId + "_script", null);
-			writer.startElement("script", null);
-			writer.writeAttribute("type", "text/javascript", null);
-			writer.write("ice.ace.jq(function() {");
-			if ((gmap.isLocateAddress() || !gmap.isIntialized()) && (gmap.getAddress() != null && gmap.getAddress().length() > 2))
-				writer.write("ice.ace.gMap.locateAddress('" + clientId + "', '" + gmap.getAddress() + "');");
-			else
-				writer.write("ice.ace.gMap.getGMapWrapper('" + clientId +"').getRealGMap().setCenter(new google.maps.LatLng("+ gmap.getLatitude() + "," + gmap.getLongitude() + "));");
-			writer.write("ice.ace.gMap.getGMapWrapper('" + clientId +"').getRealGMap().setZoom(" + gmap.getZoomLevel() + ");");
-			writer.write("ice.ace.gMap.setMapType('" + clientId + "','" + gmap.getType().toUpperCase() + "');");
-			if (gmap.getOptions() != null && gmap.getOptions().length() > 1)
-				writer.write("ice.ace.gMap.addOptions('" + clientId +"',\"" + gmap.getOptions() + "\");");
-			writer.write("});");
-			writer.endElement("script");
-			writer.endElement("span");
-	    }
+    public void encodeBegin(FacesContext context, UIComponent component)
+            throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        String clientId = component.getClientId(context);
+        if (initial < 2) {
+            currentValues.put("address", "blank" + initial);
+            currentValues.put("latitude", "blank" + initial);
+            currentValues.put("longitude", "blank" + initial);
+            currentValues.put("type", "blank" + initial);
+            currentValues.put("zoom", "blank" + initial);
+            currentValues.put("options", "blank" + initial);
+            initial +=1;
+        }
+        GMap gmap = (GMap) component;
+        writer.startElement("div", null);
+        writer.writeAttribute("id", clientId, null);
+        writer.writeAttribute("style", "width: 800px; height: 500px", null);
+        writer.endElement("div");
+        writer.startElement("span", null);
+        writer.writeAttribute("id", clientId + "_script", null);
+        writer.startElement("script", null);
+        writer.writeAttribute("type", "text/javascript", null);
+        writer.write("ice.ace.jq(function() {");
+        if ((gmap.isLocateAddress() || !gmap.isIntialized()) && (gmap.getAddress() != null && gmap.getAddress().length() > 2)) {
+            if (!gmap.getAddress().equalsIgnoreCase(currentValues.get("address"))) {
+                writer.write("ice.ace.gMap.locateAddress('" + clientId + "', '" + gmap.getAddress() + "');");
+                currentValues.put("address", gmap.getAddress());
+            }
+        } else {
+            if (!(gmap.getLatitude().equalsIgnoreCase(currentValues.get("latitude"))) || !(gmap.getLongitude().equalsIgnoreCase(currentValues.get("longitude")))) {
+                writer.write("ice.ace.gMap.getGMapWrapper('" + clientId + "').getRealGMap().setCenter(new google.maps.LatLng(" + gmap.getLatitude() + "," + gmap.getLongitude() + "));");
+                currentValues.put("longitude", gmap.getLongitude());
+                currentValues.put("latitude", gmap.getLatitude());
+            }
+        }
+        if(!(Double.toString(gmap.getZoomLevel()).equalsIgnoreCase(currentValues.get("zoom"))))
+        {
+            writer.write("ice.ace.gMap.getGMapWrapper('" + clientId + "').getRealGMap().setZoom(" + gmap.getZoomLevel() + ");");
+            currentValues.put("zoom", Double.toString(gmap.getZoomLevel()));
+        }
+        if(!(gmap.getType().equalsIgnoreCase(currentValues.get("type"))))
+        {
+            writer.write("ice.ace.gMap.setMapType('" + clientId + "','" + gmap.getType().toUpperCase() + "');");
+            currentValues.put("type", gmap.getType());
+        }
+        if (gmap.getOptions() != null && gmap.getOptions().length() > 1)
+            writer.write("ice.ace.gMap.addOptions('" + clientId + "',\"" + gmap.getOptions() + "\");");
+        writer.write("});");
+        writer.endElement("script");
+        writer.endElement("span");
+    }
 
     @Override
     public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
@@ -77,29 +104,6 @@ public class GMapRenderer extends CoreRenderer {
             }
             kid.encodeEnd(context);
         }
-
-    }
-
-    private void addHiddenField(FacesContext context,
-                                String clientId,
-                                String name) throws IOException {
-        addHiddenField(context, clientId, name, null);
-    }
-
-
-    private void addHiddenField(FacesContext context,
-                                String clientId,
-                                String name,
-                                String value) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
-        writer.startElement("div", null);
-        writer.writeAttribute("id", clientId + name, null);
-        writer.writeAttribute("name", clientId + name, null);
-        writer.writeAttribute("type", "hidden", null);
-        if (value != null) {
-            writer.writeAttribute("value", value, null);
-        }
-        writer.endElement("div");
     }
 
     @Override
