@@ -39,13 +39,13 @@
                 <h:panelGrid style="text-align: center;" width="100%">
                     <h:panelGroup>
                         <h:outputLabel value="Selected Dates: "/>
-                        <h:outputText value="#{dateReqStyle.selectedDate1}"
+                        <h:outputText id="reqDate" value="#{dateReqStyle.selectedDate1}"
                                       style="font-weight: bold;">
                             <f:convertDateTime pattern="MMMM dd, yyyy"
                                                timeZone="Canada/Mountain"/>
                         </h:outputText>
                         and
-                        <h:outputText value="#{dateReqStyle.selectedDate2}"
+                        <h:outputText id="optDate" value="#{dateReqStyle.selectedDate2}"
                                       style="font-weight: bold;">
                             <f:convertDateTime pattern="MMMM dd, yyyy"
                                                timeZone="Canada/Mountain"/>
@@ -92,7 +92,7 @@
                                        requiredIndicator="(Required)"
                                        indicatorPosition="right"
                                        styleClass="#{dateReqStyle.reqColor}"/>
-                    <h:message for="calReq"/>
+                    <h:message id="calReqMsg" for="calReq"/>
                     
                     <ace:dateTimeEntry id="calOpt"
                                        value="#{dateReqStyle.selectedDate2}"
@@ -105,7 +105,7 @@
                                        optionalIndicator="(Optional)"
                                        indicatorPosition="right"
                                        styleClass="#{dateReqStyle.optColor}"/>
-                    <h:message for="calOpt"/>
+                    <h:message id="calOptMsg" for="calOpt"/>
                 </h:panelGrid>
                 <h:commandButton id="submit" value="Submit"/>
             </ace:panel>
