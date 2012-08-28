@@ -50,12 +50,12 @@ public class ClientBehaviorHolder extends Behavior {
 		ClientEvent[] events = anno.events();
 		output.append("\n\tCollection<String> eventNames = null;");
 		output.append("\n\tpublic Collection<String> getEventNames() {");
-		output.append("\n\tif (eventNames == null) {");
-		output.append("\n\t\teventNames = new ArrayList<String>();");
+		output.append("\n\t\tif (eventNames == null) {");
+		output.append("\n\t\t\teventNames = new ArrayList<String>();");
 		for (int i = 0; i < events.length; i++) {
-			output.append("\n\t\teventNames.add(\""+ events[i].name() +"\");");
+			output.append("\n\t\t\teventNames.add(\""+ events[i].name() +"\");");
 		}			
-		output.append("\n\t}");
+		output.append("\n\t\t}");
 		output.append("\n\t\treturn eventNames;");
 		output.append("\n\t}\n");
 		
@@ -65,24 +65,33 @@ public class ClientBehaviorHolder extends Behavior {
 
 		output.append("\n\tMap<String, String> defaultRenderMap = null;");
 		output.append("\n\tpublic String getDefaultRender(String event) {");
-		output.append("\n\tif (defaultRenderMap == null) {");
-		output.append("\n\t\tdefaultRenderMap = new HashMap<String, String>();");
+		output.append("\n\t\tif (defaultRenderMap == null) {");
+		output.append("\n\t\t\tdefaultRenderMap = new HashMap<String, String>();");
 		for (int i = 0; i < events.length; i++) {
-			output.append("\n\t\tdefaultRenderMap.put(\""+ events[i].name() +"\",\"" + events[i].defaultRender() + "\");");
+			output.append("\n\t\t\tdefaultRenderMap.put(\""+ events[i].name() +"\",\"" + events[i].defaultRender() + "\");");
 		}			
-		output.append("\n\t}");
+		output.append("\n\t\t}");
 		output.append("\n\t\treturn defaultRenderMap.get(event);");
 		output.append("\n\t}\n");
 
 		output.append("\n\tMap<String, String> defaultExecuteMap = null;");
 		output.append("\n\tpublic String getDefaultExecute(String event) {");
-		output.append("\n\tif (defaultExecuteMap == null) {");
-		output.append("\n\t\tdefaultExecuteMap = new HashMap<String, String>();");
+		output.append("\n\t\tif (defaultExecuteMap == null) {");
+		output.append("\n\t\t\tdefaultExecuteMap = new HashMap<String, String>();");
 		for (int i = 0; i < events.length; i++) {
-			output.append("\n\t\tdefaultExecuteMap.put(\""+ events[i].name() +"\",\"" + events[i].defaultExecute() + "\");");
+			output.append("\n\t\t\tdefaultExecuteMap.put(\""+ events[i].name() +"\",\"" + events[i].defaultExecute() + "\");");
 		}			
-		output.append("\n\t}");
+		output.append("\n\t\t}");
 		output.append("\n\t\treturn defaultExecuteMap.get(event);");
 		output.append("\n\t}\n");
+
+        if (!anno.allowFAjax()) {
+            output.append("\n\tpublic void addClientBehavior(String eventName, javax.faces.component.behavior.ClientBehavior behavior) {");
+            output.append("\n\t\tif (behavior.getClass().equals(javax.faces.component.behavior.AjaxBehavior.class)) {");
+            output.append("\n\t\t\treturn;");
+            output.append("\n\t\t}");
+            output.append("\n\t\tsuper.addClientBehavior(eventName, behavior);");
+            output.append("\n\t}\n");
+        }
 	}
 }
