@@ -59,6 +59,7 @@ public class DataExporterRenderer extends CoreRenderer {
 		
 		writer.startElement("button", null);
 		writer.writeAttribute("id", clientId, null);
+		writer.writeAttribute("name", clientId, null);
 		
 		StringBuilder onclick = new StringBuilder("new ice.ace.DataExporter('" + clientId + "',");
 		onclick.append(" function() { ");
