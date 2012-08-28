@@ -288,10 +288,12 @@ public class DataTableRenderer extends CoreRenderer {
         final boolean height = scroll && table.getScrollHeight() != Integer.MIN_VALUE;
         final boolean scrollIE8Like7 = Boolean.parseBoolean(context.getExternalContext().getInitParameter("org.icefaces.ace.datatable.scroll.ie8like7"));
         final boolean noIEHover = Boolean.parseBoolean(context.getExternalContext().getInitParameter("org.icefaces.ace.datatable.selection.noiehover"));
+        final String widgetVar = resolveWidgetVar(table);
 
         json.beginMap();
         json.entry("formId", form.getClientId(context));        
         json.entry("filterEvent", filterEvent);
+        json.entry("widgetVar", widgetVar);
         json.entryNonNullValue("configPanel", table.getTableConfigPanel());
         if (paging) encodePaginatorConfig(context, json, table);
         if (pnlExp) json.entry("panelExpansion", true);
@@ -319,7 +321,6 @@ public class DataTableRenderer extends CoreRenderer {
 
         json.endMap();
 
-        String widgetVar = this.resolveWidgetVar(table);
 		writer.startElement(HTML.SCRIPT_ELEM, table);
 		writer.writeAttribute(HTML.TYPE_ATTR, "text/javascript", null);        
         writer.write("var " + widgetVar + " = new ice.ace.DataTable('" + clientId + "', " + json + ");");
