@@ -49,7 +49,7 @@ public class GMapRenderer extends CoreRenderer {
 			writer.startElement("script", null);
 			writer.writeAttribute("type", "text/javascript", null);
 			writer.write("ice.ace.jq(function() {");
-			if ((gmap.isLocateAddress() || !gmap.isIntialized()) && (gmap.getAddress() != null && gmap.getAddress().length() > 2))
+            if ((gmap.isLocateAddress() || !gmap.isIntialized()) && (gmap.getAddress() != null && gmap.getAddress().length() > 2))
 				writer.write("ice.ace.gMap.locateAddress('" + clientId + "', '" + gmap.getAddress() + "');");
 			else
 				writer.write("ice.ace.gMap.getGMapWrapper('" + clientId +"').getRealGMap().setCenter(new google.maps.LatLng("+ gmap.getLatitude() + "," + gmap.getLongitude() + "));");
@@ -60,6 +60,7 @@ public class GMapRenderer extends CoreRenderer {
 			writer.write("});");
 			writer.endElement("script");
 			writer.endElement("span");
+            gmap.setIntialized(true);
 	    }
 
     @Override
