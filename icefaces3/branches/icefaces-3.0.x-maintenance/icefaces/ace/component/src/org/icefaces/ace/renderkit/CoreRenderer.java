@@ -240,18 +240,17 @@ public class CoreRenderer extends Renderer {
                 else if(event.equalsIgnoreCase("action"))       //commands
                     domEvent = "click";
 
-                String script = "";
+                String script = null;
                 ClientBehaviorContext cbc = ClientBehaviorContext.createClientBehaviorContext(context, (UIComponent) component, event, clientId, params);
 				for(Iterator<ClientBehavior> behaviorIter = behaviorEvents.get(event).iterator(); behaviorIter.hasNext();) {
                     ClientBehavior behavior = behaviorIter.next();
 					if (behavior instanceof javax.faces.component.behavior.AjaxBehavior) continue; // ignore f:ajax
                     script = behavior.getScript(cbc);    //could be null if disabled
-
-                    if(script == null) {
-                        script = "";
-                    }
+                    break;
                 }
-                jb.entry(domEvent, "function() {" + script + "}", true);
+                if (script != null && script.trim().length() > 0) {
+                    jb.entry(domEvent, "function() {" + script + "}", true);
+                }
             }
 
             jb.endMap();
@@ -283,21 +282,20 @@ public class CoreRenderer extends Renderer {
                 else if(event.equalsIgnoreCase("action"))       //commands
                     domEvent = "click";
 
-                writer.write(domEvent + ":");
-
-                writer.write("function() {");
-
+                String script = null;
                 ClientBehaviorContext cbc = ClientBehaviorContext.createClientBehaviorContext(context, (UIComponent) component, event, clientId, params);
                 for(Iterator<ClientBehavior> behaviorIter = behaviorEvents.get(event).iterator(); behaviorIter.hasNext();) {
                     ClientBehavior behavior = behaviorIter.next();
 					if (behavior instanceof javax.faces.component.behavior.AjaxBehavior) continue; // ignore f:ajax
-                    String script = behavior.getScript(cbc);    //could be null if disabled
-
-                    if(script != null) {
-                        writer.write(script);
-                    }
+                    script = behavior.getScript(cbc);    //could be null if disabled
+                    break;
                 }
-                writer.write("}");
+                if(script != null && script.trim().length() > 0) {
+                    writer.write(domEvent + ":");
+                    writer.write("function() {");
+                    writer.write(script);
+                    writer.write("}");
+                }
 
                 if(eventIterator.hasNext()) {
                     writer.write(",");
