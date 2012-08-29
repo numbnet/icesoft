@@ -5625,8 +5625,8 @@ Form.EventObserver = Class.create(Abstract.EventObserver, {
         var registry = Element.retrieve(element, 'prototype_event_registry');
 
         if (Object.isUndefined(registry)) {
-            CACHE.push(element);
             registry = Element.retrieve(element, 'prototype_event_registry', $H());
+            CACHE[element._prototypeUID || 0] = element;
         }
 
         var respondersForEvent = registry.get(eventName);
@@ -5685,13 +5685,14 @@ Form.EventObserver = Class.create(Abstract.EventObserver, {
     }
 
     function _destroyCache() {
-        for (var i = 0, length = CACHE.length; i < length; i++) {
-            Event.stopObserving(CACHE[i]);
+        for (var key in CACHE) {
+            Event.stopObserving(CACHE[key]);
             CACHE[i] = null;
         }
+        CACHE = {};
     }
 
-    var CACHE = [];
+    var CACHE = {};
 
     if (Prototype.Browser.IE)
         window.attachEvent('onunload', _destroyCache);
@@ -5783,7 +5784,19 @@ Form.EventObserver = Class.create(Abstract.EventObserver, {
                 element.detachEvent('on' + actualEventName, responder);
         }
 
-        registry.set(eventName, responders.without(responder));
+        var remaining_responders = responders.without(responder);
+        if (remaining_responders.length > 0) {
+            registry.set(eventName, remaining_responders);
+        }
+        else {
+            registry.unset(eventName);
+            if (registry.size() == 0) {
+                  // to prevent memory leak!
+                  delete CACHE[element._prototypeUID || 0];
+                  // to ensure element will be re-added to CACHE in case of new Event.observe:
+                  Element.getStorage(element).unset('prototype_event_registry');
+            }
+        }
 
         return element;
     }
