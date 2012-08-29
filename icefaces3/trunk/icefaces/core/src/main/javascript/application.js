@@ -235,6 +235,9 @@ if (!window.ice.icefaces) {
                         var options = {
                             'ice.submit.type': 'ice.push',
                             render: '@all',
+                            onevent: function(submitEvent) {
+                                pageScopedSubmitEventBroadcaster(submitEvent, form);
+                            },
                             onerror: pageScopedSubmitErrorBroadcaster
                         };
                         jsf.ajax.request(form, null, options);
