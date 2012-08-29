@@ -7931,13 +7931,15 @@ $.extend(Datepicker.prototype, {
 	   @param  input  element - the input field attached to the date picker or
 	                  event - if triggered by focus */
 	_showDatepicker: function(input) {
-		input = input.target || input;
+        input = input.target || input;
 		if (input.nodeName.toLowerCase() != 'input') // find from button/image trigger
 			input = $('input', input.parentNode)[0];
 		if ($.datepicker._isDisabledDatepicker(input) || $.datepicker._lastInput == input) // already here
 			return;
-		var inst = $.datepicker._getInst(input);
-		if ($.datepicker._curInst && $.datepicker._curInst != inst) {
+        var inst = $.datepicker._getInst(input);
+//        console.log("inst.dontShowPopup = ", inst.dontShowPopup);
+        if (inst.dontShowPopup) return; // ICE-8453
+        if ($.datepicker._curInst && $.datepicker._curInst != inst) {
 			$.datepicker._curInst.dpDiv.stop(true, true);
 			if ( inst && $.datepicker._datepickerShowing ) {
 				$.datepicker._hideDatepicker( $.datepicker._curInst.input[0] );
@@ -8007,7 +8009,7 @@ $.extend(Datepicker.prototype, {
 			if (inst.input.is(':visible') && !inst.input.is(':disabled'))
 				inst.input.focus();
 			$.datepicker._curInst = inst;
-		}
+        }
 	},
 
 	/* Generate the date picker content. */
@@ -8037,7 +8039,7 @@ $.extend(Datepicker.prototype, {
 				// this breaks the change event in IE
 				inst.input.is(':visible') && !inst.input.is(':disabled') && inst.input[0] != document.activeElement)
 			inst.input.focus();
-		// deffered render of the years select (to avoid flashes on Firefox) 
+		// deffered render of the years select (to avoid flashes on Firefox)
 		if( inst.yearshtml ){
 			var origyearshtml = inst.yearshtml;
 			setTimeout(function(){
@@ -8258,7 +8260,20 @@ $.extend(Datepicker.prototype, {
 			if (typeof(inst.input[0]) != 'object')
 				inst.input.focus(); // restore focus
 			this._lastInput = null;
-		}
+            // ICE-8453
+//            setTimeout(function(){
+            inst.dontShowPopup = true;
+            inst.input.one("blur", function() {
+//                console.log("inst.dontShowPopup on blur = ", inst.dontShowPopup);
+                inst.dontShowPopup = false;
+            });
+//            console.log("before focus()");
+            inst.input[0].focus();
+//            inst.input.trigger({type:"focus", dontShowPopup:true});
+//            console.log("after focus()");
+//            inst.dontShowPopup = false;
+//            }, 5000);
+        }
 	},
 
 	/* Update any alternate field to synchronise with the main field. */
