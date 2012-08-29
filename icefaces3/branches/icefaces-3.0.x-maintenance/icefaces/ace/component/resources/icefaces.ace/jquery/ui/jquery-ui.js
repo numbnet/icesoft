@@ -8125,6 +8125,8 @@ $.extend(Datepicker.prototype, {
 		if ($.datepicker._isDisabledDatepicker(input) || $.datepicker._lastInput == input) // already here
 			return;
 		var inst = $.datepicker._getInst(input);
+//        console.log("inst.dontShowPopup = ", inst.dontShowPopup);
+        if (inst.dontShowPopup) return; // ICE-8453
 		if ($.datepicker._curInst && $.datepicker._curInst != inst) {
 			if ( $.datepicker._datepickerShowing ) {
 				$.datepicker._triggerOnClose($.datepicker._curInst);
@@ -8423,6 +8425,19 @@ $.extend(Datepicker.prototype, {
 			if (typeof(inst.input[0]) != 'object')
 				inst.input.focus(); // restore focus
 			this._lastInput = null;
+            // ICE-8453
+//            setTimeout(function(){
+            inst.dontShowPopup = true;
+            inst.input.one("blur", function() {
+//                console.log("inst.dontShowPopup on blur = ", inst.dontShowPopup);
+                inst.dontShowPopup = false;
+            });
+//            console.log("before focus()");
+            inst.input[0].focus();
+//            inst.input.trigger({type:"focus", dontShowPopup:true});
+//            console.log("after focus()");
+//            inst.dontShowPopup = false;
+//            }, 5000);
 		}
 	},
 
