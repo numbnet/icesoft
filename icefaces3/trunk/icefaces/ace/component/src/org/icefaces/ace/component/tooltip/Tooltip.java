@@ -35,10 +35,13 @@ package org.icefaces.ace.component.tooltip;
 import javax.faces.context.FacesContext;
 import javax.faces.component.UINamingContainer;
 import javax.el.ValueExpression;
+import javax.el.MethodExpression;
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
 import java.util.List;
 import java.util.ArrayList;
+import javax.faces.event.FacesEvent;
+import javax.faces.event.AbortProcessingException;
 
 public class Tooltip extends TooltipBase{
 
@@ -46,5 +49,13 @@ public class Tooltip extends TooltipBase{
 
 	protected FacesContext getFacesContext() {
 		return FacesContext.getCurrentInstance();
+	}
+	
+    public void broadcast(FacesEvent event) throws AbortProcessingException {
+        super.broadcast(event);
+		MethodExpression displayListener = getDisplayListener();
+		if (displayListener != null) {
+			displayListener.invoke(getFacesContext().getELContext(), null);
+		}
 	}
 }
