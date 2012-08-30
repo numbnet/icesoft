@@ -5075,6 +5075,10 @@ Ice.pnlTabOnFocus = function(ele, facet, kbs) {
     setFocus(ele.id);
     if (kbs) {
         Event.observe(ele, 'keydown', Ice.tabNavigator);
+        //remove listeners to make sure that they do not create memory leaks
+        ice.onElementRemove(ele.id, function() {
+            Event.stopObserving(ele, 'keydown', Ice.tabNavigator);
+        });
     }
     if (!facet) return;
     Ice.simulateFocus(ele.parentNode, ele);
