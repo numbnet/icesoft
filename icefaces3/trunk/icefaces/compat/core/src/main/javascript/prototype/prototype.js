@@ -5687,7 +5687,6 @@ Form.EventObserver = Class.create(Abstract.EventObserver, {
     function _destroyCache() {
         for (var key in CACHE) {
             Event.stopObserving(CACHE[key]);
-            CACHE[i] = null;
         }
         CACHE = {};
     }
