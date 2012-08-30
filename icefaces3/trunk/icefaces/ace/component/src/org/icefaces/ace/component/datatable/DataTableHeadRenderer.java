@@ -313,6 +313,11 @@ public class DataTableHeadRenderer {
             for (SelectItem item : itemsArray) {
                 writer.startElement("option", null);
                 writer.writeAttribute("value", item.getValue(), null);
+
+                if (item.getValue().toString().equals(column.getFilterValue())) {
+                    writer.writeAttribute("selected", "true", null);
+                }
+
                 writer.write(item.getLabel());
                 writer.endElement("option");
             }
