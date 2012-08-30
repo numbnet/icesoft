@@ -32,7 +32,9 @@ ice.ace.Tooltip = function(cfg) {
 	if(this.cfg.global) {
 		this.target = "*[title]";
 	}else {
-		if (this.cfg.forComponent) {
+		if (this.cfg.forDelegate) {
+			this.target = ice.ace.escapeClientId(this.cfg.forDelegate);
+		} else if (this.cfg.forComponent) {
 			this.target = ice.ace.escapeClientId(this.cfg.forComponent);
 		} else if (this.cfg.forComponents) {
 			var arr = this.cfg.forComponents;
@@ -63,11 +65,42 @@ ice.ace.Tooltip = function(cfg) {
 	events.hide = function() { delete ice.ace.Tooltips[self.cfg.id] };
 	this.cfg.events = events;
 	
-	this.jq.qtip(this.cfg);
+	if (!this.cfg.forDelegate) {
+		this.jq.qtip(this.cfg);
+	} else {
+		delete self.cfg.events.show; // will call it manually
+		var delegateNode = this.jq.children().get(0);
+		this.jq.delegate('*', this.cfg.show.event, function(event) {
+			// 'this' in this scope refers to the current DOM node in the event bubble
+			if (this === delegateNode) { // event bubbled to the highest point, we can now begin
+				var findTargetComponent = function(node) {
+					if (node) {
+						if (node.id && ice.ace.Tooltip.endsWith(node.id, self.cfg.forComponent)) {
+							return node.id;
+						} else {
+							return findTargetComponent(node.parentNode);
+						}
+					}
+					return '';
+				}
+				var targetComponent = findTargetComponent(event.target);
+				if (targetComponent) {
+					var jqTargetComponent = ice.ace.jq(ice.ace.escapeClientId(targetComponent));
+					jqTargetComponent.qtip(self.cfg);
+					self.activeComponent = targetComponent;
+					if (!ice.ace.Tooltips[self.cfg.id] && (self.cfg.displayListener || self.cfg.behaviors.display)) {
+						ice.ace.Tooltips[self.cfg.id] = true;
+						self.triggerDisplayListener( function() { jqTargetComponent.qtip('show'); }); 
+					}
+					self.activeComponent = '';
+				}
+			}
+		});
+	}
     callee[id] = this;
 };
 
-ice.ace.Tooltip.prototype.triggerDisplayListener = function() {
+ice.ace.Tooltip.prototype.triggerDisplayListener = function(callback) {
 	var formId = this.jq.parents('form:first').attr('id'),
 	    options = {
 		source: this.cfg.id,
@@ -76,8 +109,14 @@ ice.ace.Tooltip.prototype.triggerDisplayListener = function() {
 		async: true
 	};
 
+	if (callback) {
+		options.onsuccess = callback;
+	}
 	var params = {};
 	params[this.cfg.id + '_displayListener'] = true;
+	if (this.activeComponent) {
+		params[this.cfg.id + '_activeComponent'] = this.activeComponent;
+	}
 
 	options.params = params;
 
@@ -88,4 +127,8 @@ ice.ace.Tooltip.prototype.triggerDisplayListener = function() {
                 ice.ace.removeExecuteRenderOptions(options)
         ));
     } else ice.ace.AjaxRequest(options);
+};
+
+ice.ace.Tooltip.endsWith = function(str, suffix) {
+    return str.indexOf(suffix, str.length - suffix.length) !== -1;
 };

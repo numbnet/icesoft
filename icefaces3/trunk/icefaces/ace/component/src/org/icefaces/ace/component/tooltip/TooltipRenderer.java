@@ -36,6 +36,9 @@ import javax.faces.component.visit.VisitHint;
 import javax.faces.component.visit.VisitResult;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+import javax.faces.event.ActionEvent;
+import javax.faces.event.PhaseId;
+import javax.el.ValueExpression;
 
 import org.icefaces.ace.renderkit.CoreRenderer;
 import org.icefaces.ace.util.ComponentUtils;
@@ -75,16 +78,29 @@ public class TooltipRenderer extends CoreRenderer {
         String clientId = tooltip.getClientId(facesContext);
         Map<String, String> params = facesContext.getExternalContext().getRequestParameterMap();
 
-		//if(params.containsKey(clientId)) {
+		tooltip.setTo(null);
+		String delegateId = tooltip.getForDelegate();
+		if (delegateId != null) {
+			UIComponent delegateComponent = findComponentCustom(facesContext.getViewRoot(), delegateId);
+			if (delegateComponent != null) {
+				if (params.containsKey(clientId + "_activeComponent")) {
+					String activeComponentId = params.get(clientId + "_activeComponent");
+					if (activeComponentId != null && !"".equals(activeComponentId)) {
+						ValueExpression from = tooltip.getValueExpression("from");
+						if (from != null) {
+							String expression = from.getExpressionString();
+							Object data = retrieveData(facesContext, delegateComponent, activeComponentId, expression);
+							tooltip.setTo(data);
+						}
+					}
+				}
+			}
+		}
         if (params.containsKey(clientId + "_displayListener")) {
-            if (tooltip.getDisplayListener() != null) {
-                tooltip.getDisplayListener().invoke(facesContext.getELContext(), null);
-            }
-        } else {
-            //RequestContext.getCurrentInstance().addCallbackParam(tooltip.getClientId(facesContext) + "_value", tooltip.getValue());
+			ActionEvent event = new ActionEvent(tooltip);
+			event.setPhaseId(PhaseId.INVOKE_APPLICATION);
+			tooltip.queueEvent(event);
         }
-        //FacesContext.getCurrentInstance().renderResponse();
-        //}
         decodeBehaviors(facesContext, tooltip);
     }
 
@@ -131,7 +147,8 @@ public class TooltipRenderer extends CoreRenderer {
 				.entry("displayListener", (tooltip.getDisplayListener() != null));
 		if (tooltip.isSpeechBubble()) jb.entry("speechBubble", true);
 
-		if(!global) {
+		String delegateId = tooltip.getForDelegate();
+		if(!global && delegateId == null) {
 			if (owner instanceof ArrayList) {
 				jb.beginArray("forComponents");
 				ArrayList<String> clientIds = (ArrayList<String>) owner;
@@ -146,7 +163,26 @@ public class TooltipRenderer extends CoreRenderer {
 			writer.write(jb.toString());
 			writer.write(",content:{text:");
 			if(tooltip.getValue() == null)
-				writer.write("document.getElementById('" + clientId + "_content').innerHTML");
+				writer.write("function() {return document.getElementById('" + clientId + "_content').innerHTML}");
+			else {
+				writer.write("'");
+				writer.write(ComponentUtils.getStringValueToRender(facesContext, tooltip).replaceAll("'", "\\\\'"));
+				writer.write("'");
+			}
+
+			writer.write("},");
+		} else if (delegateId != null) {
+			UIComponent delegateComponent = findComponentCustom(facesContext.getViewRoot(), delegateId);
+			if (delegateComponent != null && delegateComponent instanceof TooltipDelegate) {
+				jb.entry("forDelegate", delegateComponent.getClientId(facesContext));
+				jb.entry("forComponent", tooltip.getFor());
+			} else {
+				throw new FacesException("Cannot find delegate component \"" + delegateId + "\" in view or it is not an instance of <ace:tooltipDelegate>.");
+			}
+			writer.write(jb.toString());
+			writer.write(",content:{text:");
+			if(tooltip.getValue() == null)
+				writer.write("function() {return document.getElementById('" + clientId + "_content').innerHTML}");
 			else {
 				writer.write("'");
 				writer.write(ComponentUtils.getStringValueToRender(facesContext, tooltip).replaceAll("'", "\\\\'"));
@@ -302,6 +338,34 @@ public class TooltipRenderer extends CoreRenderer {
 			}
 			
 			return VisitResult.ACCEPT;
+		}
+	}
+	
+	private Object retrieveData(FacesContext context, UIComponent delegate, String activeComponentId, String expression) {
+		DataRetrievalVisitCallback callback = new DataRetrievalVisitCallback(activeComponentId, expression);
+		delegate.visitTree(VisitContext.createVisitContext(context, null, EnumSet.of(VisitHint.SKIP_TRANSIENT, VisitHint.SKIP_UNRENDERED)), callback);		
+		return callback.data;
+	}
+	
+	private static class DataRetrievalVisitCallback implements VisitCallback {
+		private String clientId;
+		private String expression;
+		private Object data;
+		
+		private DataRetrievalVisitCallback(String clientId, String expression) {
+			this.clientId = clientId;
+			this.expression = expression;
+			this.data = null;
+		}
+	
+		public VisitResult visit(VisitContext context, UIComponent target) {
+		
+			if (this.clientId.equals(target.getClientId())) {
+				FacesContext facesContext = FacesContext.getCurrentInstance();
+				this.data = facesContext.getApplication().evaluateExpressionGet(facesContext, expression, Object.class);
+				return VisitResult.COMPLETE;
+			}
+			return VisitResult.ACCEPT;	
 		}
 	}
 }
