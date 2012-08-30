@@ -411,6 +411,12 @@ if (!window.ice.icefaces) {
             element.onchange = null;
             element.onfocus = null;
             element.onblur = null;
+            element.submit = null;
+            element.onsubmit = null;
+            element.onkeydown = null;
+            element.onkeyup = null;
+            element.ondblclick = null;
+            element.onfocusout = null;
         }
 
         namespace.setupBridge = function(setupID, viewID, windowID, configuration) {
