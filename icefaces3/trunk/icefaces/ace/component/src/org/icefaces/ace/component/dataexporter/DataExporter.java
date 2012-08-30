@@ -35,7 +35,17 @@ public class DataExporter extends DataExporterBase {
         if (event != null) {
 			try {
 				FacesContext facesContext = getFacesContext();
-				Exporter exporter = ExporterFactory.getExporterForType(getType());
+				Object customExporter = getCustomExporter();
+				Exporter exporter;
+				if (customExporter == null) {
+					exporter = ExporterFactory.getExporterForType(getType());
+				} else {
+					if (customExporter instanceof Exporter) {
+						exporter = (Exporter) customExporter;
+					} else {
+						throw new FacesException("Object specified as custom exporter does not extend  org.icefaces.ace.component.dataexporter.Exporter.");
+					}
+				}
 				UIComponent targetComponent = event.getComponent().findComponent(getTarget());
 				if (targetComponent == null) targetComponent = findComponentCustom(facesContext.getViewRoot(), getTarget());
 

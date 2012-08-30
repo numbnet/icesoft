@@ -63,6 +63,9 @@ public class DataExporterMeta extends UIComponentBaseMeta {
 	
 	@Property(required=Required.yes, tlddoc="Define the filename of the generated file, defaults to dataTable id.")
 	private String fileName;
+	
+	@Property(required=Required.no, tlddoc="Specifies an object that implements a custom format type to use instead of one of the built-in formats. When this attribute is specified, it will override the \"type\" attribute. The object must extend org.icefaces.ace.component.dataexporter.Exporter.")
+	private Object customExporter;
 
 	@Property(required=Required.no, tlddoc="Define the text that will appear on the button to trigger the export. Default value is 'Export'. Attribute applies only if the component has no children.")
 	private String label;
