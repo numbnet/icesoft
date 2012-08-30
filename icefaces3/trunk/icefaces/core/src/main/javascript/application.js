@@ -84,6 +84,11 @@ if (!window.ice.icefaces) {
             append(elementRemoveListeners, Cell(id, callback));
         };
 
+        var elementUpdateListeners = [];
+        namespace.onElementUpdate = function(id, callback) {
+            append(elementUpdateListeners, Cell(id, callback));
+        };
+
         function configurationOf(element) {
             configParent = detect(parents(element),
                 function(e) {
@@ -766,6 +771,39 @@ if (!window.ice.icefaces) {
 
                 return notFound;
             });
+        });
+
+        function isAncestorOf(ancestor, element) {
+            return ancestor == element || contains(parents(element), ancestor);
+        }
+
+        function findAndNotifyUpdatedElements(update) {
+            var updatedElementId = update.getAttribute('id');
+            var updatedElement = document.getElementById(updatedElementId);
+            if (updatedElement) {
+                elementUpdateListeners = reject(elementUpdateListeners, function(idCallbackTuple) {
+                    var id = key(idCallbackTuple);
+                    var element = document.getElementById(id);
+                    var updated = isAncestorOf(updatedElement, element);
+                    if (updated) {
+                        var callback = value(idCallbackTuple);
+                        try {
+                            callback(element);
+                        } catch (e) {
+                            //ignore exception thrown in callback
+                            //to make sure that the corresponding entry is removed from the list
+                        }
+                    }
+
+                    return updated;
+                });
+            }
+        }
+        // determine which elements are about to be removed by an update,
+        // and clean them up while they're still in place
+        namespace.onBeforeUpdate(function(updates) {
+            each(updates.getElementsByTagName('update'), findAndNotifyUpdatedElements);
+            each(updates.getElementsByTagName('delete'), findAndNotifyUpdatedElements);
         });
 
         //MyFaces uses a linked list of view state keys to track the changes in the view state -- the participating
