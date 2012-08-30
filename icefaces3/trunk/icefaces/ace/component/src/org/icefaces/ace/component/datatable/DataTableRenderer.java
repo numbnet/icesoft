@@ -387,7 +387,7 @@ public class DataTableRenderer extends CoreRenderer {
         writer.endElement(HTML.TR_ELEM);
     }
 
-    private void encodePaginatorMarkup(FacesContext context, DataTable table, String position) throws IOException {
+    protected void encodePaginatorMarkup(FacesContext context, DataTable table, String position) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = table.getClientId(context);
 
