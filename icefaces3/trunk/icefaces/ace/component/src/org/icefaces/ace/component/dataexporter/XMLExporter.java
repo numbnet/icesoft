@@ -128,13 +128,13 @@ public class XMLExporter extends Exporter {
 		return path;
 	}
 	
-	private void addColumnValues(StringBuilder builder, List<UIColumn> columns, List<String> headers) throws IOException {
+	protected void addColumnValues(StringBuilder builder, List<UIColumn> columns, List<String> headers) throws IOException {
 		for (int i = 0; i < columns.size(); i++) {
             addColumnValue(builder, columns.get(i).getChildren(), headers.get(i));
 		}
 	}
 	
-	private void addFooterValues(StringBuilder builder, List<String> footers, List<String> headers) throws IOException {
+	protected void addFooterValues(StringBuilder builder, List<String> footers, List<String> headers) throws IOException {
 		for (int i = 0; i < footers.size(); i++) {
 			String footer = footers.get(i);
 			
@@ -143,7 +143,7 @@ public class XMLExporter extends Exporter {
 		}
 	}	
 	
-	private List<String> getFacetTexts(List<UIColumn> columns, ColumnType columnType) {
+	protected List<String> getFacetTexts(List<UIColumn> columns, ColumnType columnType) {
 		List<String> facets = new ArrayList<String>();
 		 
 		for (Iterator<UIColumn> iterator = columns.iterator(); iterator.hasNext();) {
@@ -170,7 +170,7 @@ public class XMLExporter extends Exporter {
         return facets;
 	}
 	
-	private String extractValueToDisplay(UIColumn column, ColumnType columnType) {
+	protected String extractValueToDisplay(UIColumn column, ColumnType columnType) {
 		UIComponent facet = column.getFacet(columnType.facet());
 		
 		if (facet != null && facet.isRendered()) {
@@ -193,7 +193,7 @@ public class XMLExporter extends Exporter {
 		}
 	}
 	
-	private List<String> getHeadersFromColumnGroup(ColumnGroup columnGroup, List<UIColumn> columns, UIData data, int[] excludeColumns) {
+	protected List<String> getHeadersFromColumnGroup(ColumnGroup columnGroup, List<UIColumn> columns, UIData data, int[] excludeColumns) {
 	
 		ArrayList<Row> rows = (ArrayList<Row>) getRows(columnGroup);
 		int size = rows.size();
@@ -210,7 +210,7 @@ public class XMLExporter extends Exporter {
 		}
 	}
 
-	private void addColumnValue(StringBuilder builder, List<UIComponent> components, String header) throws IOException {
+	protected void addColumnValue(StringBuilder builder, List<UIComponent> components, String header) throws IOException {
 		StringBuilder builder1 = new StringBuilder();
 		String tag = header.toLowerCase();
 		builder.append("\t\t<" + tag + ">");
@@ -228,7 +228,7 @@ public class XMLExporter extends Exporter {
 		builder.append("</" + tag + ">\n");
 	}
 	
-	private void addColumnValue(StringBuilder builder, String footer, String header) throws IOException {
+	protected void addColumnValue(StringBuilder builder, String footer, String header) throws IOException {
 		String tag = header.toLowerCase();
 		builder.append("\t\t<" + tag + ">");
 
@@ -237,7 +237,7 @@ public class XMLExporter extends Exporter {
 		builder.append("</" + tag + ">\n");
 	}
 	
-	private String sanitizeXMLTagName(String tag) {
+	protected String sanitizeXMLTagName(String tag) {
 		StringBuilder sb = new StringBuilder();
 		
 		int length = tag.length();
