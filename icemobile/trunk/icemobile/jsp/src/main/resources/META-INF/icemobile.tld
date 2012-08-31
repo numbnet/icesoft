@@ -398,8 +398,8 @@
             <name>placeholder</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <desacription>A placeholder string appearing in the textfield
-            </desacription>
+            <description>A placeholder string appearing in the textfield
+            </description>
         </attribute>
         <attribute>
             <name>autoCorrect</name>
