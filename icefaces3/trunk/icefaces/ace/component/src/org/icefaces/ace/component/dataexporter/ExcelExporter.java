@@ -137,7 +137,7 @@ public class ExcelExporter extends Exporter {
 		return path;
 	}
 	
-	private void addFacetColumns(Sheet sheet, List<UIColumn> columns, ColumnType columnType, int rowIndex) {
+	protected void addFacetColumns(Sheet sheet, List<UIColumn> columns, ColumnType columnType, int rowIndex) {
         Row rowHeader = sheet.createRow(rowIndex);
 
         for (int i = 0; i < columns.size(); i++) {
@@ -164,14 +164,14 @@ public class ExcelExporter extends Exporter {
         }
     }
 	
-    private void addColumnValue(Row rowHeader, UIComponent component, int index) {
+    protected void addColumnValue(Row rowHeader, UIComponent component, int index) {
         Cell cell = rowHeader.createCell(index);
         String value = component == null ? "" : exportValue(FacesContext.getCurrentInstance(), component);
 
         cell.setCellValue(new HSSFRichTextString(value));
     }
     
-    private void addColumnValue(Row rowHeader, List<UIComponent> components, int index) {
+    protected void addColumnValue(Row rowHeader, List<UIComponent> components, int index) {
         Cell cell = rowHeader.createCell(index);
         StringBuilder builder = new StringBuilder();
         

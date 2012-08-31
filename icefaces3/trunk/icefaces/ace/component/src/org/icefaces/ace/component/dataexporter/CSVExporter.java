@@ -115,14 +115,14 @@ public class CSVExporter extends Exporter {
 		return path;
 	}
 	
-	private void addColumnValues(StringBuilder builder, List<UIColumn> columns) throws IOException {
+	protected void addColumnValues(StringBuilder builder, List<UIColumn> columns) throws IOException {
 		for (Iterator<UIColumn> iterator = columns.iterator(); iterator.hasNext();) {
             addColumnValue(builder, iterator.next().getChildren());
             if (iterator.hasNext()) { builder.append(","); }
 		}
 	}
 
-	private void addFacetColumns(StringBuilder builder, List<UIColumn> columns, ColumnType columnType) throws IOException {
+	protected void addFacetColumns(StringBuilder builder, List<UIColumn> columns, ColumnType columnType) throws IOException {
 		for (Iterator<UIColumn> iterator = columns.iterator(); iterator.hasNext();) {
 			UIColumn uiColumn = iterator.next();
 			UIComponent facet = uiColumn.getFacet(columnType.facet());
@@ -147,12 +147,12 @@ public class CSVExporter extends Exporter {
 		builder.append("\n");
     }
 	
-	private void addColumnValue(StringBuilder builder, UIComponent component) throws IOException {
+	protected void addColumnValue(StringBuilder builder, UIComponent component) throws IOException {
 		String value = component == null ? "" : exportValue(FacesContext.getCurrentInstance(), component);
 		builder.append("\"" + value + "\"");
 	}
 	
-	private void addColumnValue(StringBuilder builder, List<UIComponent> components) throws IOException {
+	protected void addColumnValue(StringBuilder builder, List<UIComponent> components) throws IOException {
 		StringBuilder builder1 = new StringBuilder();
 		for (UIComponent component : components)
 			if (component.isRendered()) {
