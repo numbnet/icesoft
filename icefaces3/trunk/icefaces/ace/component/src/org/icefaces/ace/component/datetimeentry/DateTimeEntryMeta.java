@@ -20,7 +20,6 @@ import org.icefaces.ace.meta.annotation.ClientBehaviorHolder;
 import org.icefaces.ace.meta.annotation.ClientEvent;
 import org.icefaces.ace.meta.annotation.Component;
 import org.icefaces.ace.meta.annotation.Property;
-import org.icefaces.ace.meta.annotation.Implementation;
 import org.icefaces.ace.meta.baseMeta.UIInputMeta;
 import org.icefaces.ace.api.IceClientBehaviorHolder;
 
@@ -192,7 +191,4 @@ public class DateTimeEntryMeta extends UIInputMeta {
             "submit and execute this component only (equivalent to &lt;f:ajax execute=\"@this\" render=\"@all\"&gt;). " +
             "When singleSubmit is false, no submit will occur. &lt;ace:ajax&gt; submit events have precedence over singleSubmit.")
     private boolean singleSubmit;
-
-    @Property(implementation = Implementation.GENERATE, tlddoc = "The current value of the simple component. The value to be rendered.")
-    private Object value;
 }
