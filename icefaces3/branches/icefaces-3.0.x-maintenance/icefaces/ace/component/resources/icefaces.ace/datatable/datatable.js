@@ -160,6 +160,21 @@ ice.ace.DataTable = function (id, cfg) {
     this.scrollLeft = 0;
     this.scrollTop = 0;
 
+    this.sortColumnSelector = this.jqId + ' > div > table > thead > tr > th > div.ui-sortable-column';
+    this.sortControlSelector = this.jqId + ' > div > table > thead > tr > th > div.ui-sortable-column span.ui-sortable-control';
+    this.sortControlUpSelector = this.sortControlSelector + ' a.ui-icon-triangle-1-n';
+    this.sortControlDownSelector = this.sortControlSelector + ' a.ui-icon-triangle-1-s';
+    this.cellSelector = this.jqId + ' > div > table > tbody.ui-datatable-data > tr:not(.ui-unselectable) > td';
+    this.rowSelector = this.jqId + ' > div > table > tbody.ui-datatable-data > tr:not(.ui-unselectable)';
+    this.filterSelector = this.jqId + ' > div > table > thead > tr > th > div > .ui-column-filter';
+    this.panelExpansionSelector = this.jqId + ' > div > table > tbody.ui-datatable-data > tr:not(.ui-expanded-row-content) > td *:not(tbody) a.ui-row-panel-toggler';
+    this.rowExpansionSelector = this.jqId + ' > div > table > tbody.ui-datatable-data > tr > td *:not(tbody) a.ui-row-toggler';
+    this.scrollBodySelector = this.jqId + ' > div.ui-datatable-scrollable-body';
+    this.cellEditorSelector = this.jqId + ' > div > table > tbody.ui-datatable-data > tr > td > div.ui-row-editor';
+    this.cellEditStartSelector = this.cellEditorSelector + ' a.ui-icon-pencil';
+    this.cellEditCancelSelector = this.cellEditorSelector + ' a.ui-icon-check';
+    this.cellEditSubmitSelector = this.cellEditorSelector + ' a.ui-icon-close';
+
     var oldInstance = ice.ace.DataTables[this.id];
     var rowEditors = this.getRowEditors();
 
@@ -209,6 +224,13 @@ ice.ace.DataTable = function (id, cfg) {
     } else
         this.setupDisabledStyling();
 
+    if (!(window[this.cfg.widgetVar])) {
+        var self = this;
+        ice.onElementUpdate(this.id, function() {
+            self.unload();
+        });
+    }
+
     ice.ace.DataTables[this.id] = this;
 }
 
@@ -216,16 +238,62 @@ ice.ace.DataTable = function (id, cfg) {
 /* #########################################################################
  ########################## Event Binding & Setup ########################
  ######################################################################### */
+ice.ace.DataTable.prototype.unload = function() {
+    // Cleanup sort events
+    ice.ace.jq(this.sortColumnSelector).unbind("click mousemove mouseleave");
+    ice.ace.jq(this.sortControlSelector).unbind("click mousemove mouseleave");
+    ice.ace.jq(this.sortControlUpSelector).die('keypress');
+    ice.ace.jq(this.sortControlDownSelector).die('keypress');
+
+    // Clear selection events
+    ice.ace.jq(this.cellSelector).die('mouseenter dblclick click')
+            .first().closest('table').unbind('mouseleave')
+            .find('thead').unbind('mouseenter');
+
+    ice.ace.jq(this.rowSelector).die('mouseenter dblclick click')
+            .first().closest('table').unbind('mouseleave')
+            .find('thead').unbind('mouseenter');
+
+    // Clear scrolling
+    ice.ace.jq(window).unbind('resize', this.scrollingResizeCallback);
+    ice.ace.jq(this.scrollBodySelector).unbind('scroll');
+
+    // Clear filter events
+    ice.ace.jq(this.filterSelector).unbind('keypress').unbind('keyup');
+
+    // Clear panel expansion events
+    ice.ace.jq(this.panelExpansionSelector).die('keyup click');
+
+    // Clear row expansion events
+    ice.ace.jq(this.rowExpansionSelector).die('keyup click');
+
+    // Clear cell editor events
+    var cellEditor = ice.ace.jq(this.cellEditorSelector);
+    ice.ace.jq(this.cellEditStartSelector).find('a.ui-icon-pencil').die('keyup click');
+    ice.ace.jq(this.cellEditCancelSelector).find('a.ui-icon-check').die('keyup click');
+    ice.ace.jq(this.cellEditSubmitSelector).find('a.ui-icon-close').die('keyup click');
+    ice.ace.jq(this.cellEditorSelector)
+            .closest('tr').children().find('span input').unbind('keypress');
+
+    // Clear YUI paginator
+    if (this.cfg.paginator)
+        this.cfg.paginator.destroy();
+
+    // Clear widget var
+    window[this.cfg.widgetVar] = undefined;
+    ice.ace.DataTables[this.id] = undefined;
+}
+
 ice.ace.DataTable.prototype.setupFilterEvents = function () {
     var _self = this;
-    if (this.cfg.filterEvent == "enter") ice.ace.jq(this.jqId + ' > div > table > thead > tr > th > div > input.ui-column-filter').unbind('keypress').bind('keypress', function (event) {
+    if (this.cfg.filterEvent == "enter") ice.ace.jq(this.filterSelector).unbind('keypress').bind('keypress', function (event) {
         event.stopPropagation();
         if (event.which == 13) {
             _self.filter(event);
             return false; // Don't run form level enter key handling
         }
     });
-    else if (this.cfg.filterEvent == "change") ice.ace.jq(this.jqId + ' > div > table > thead > tr > th > div > input.ui-column-filter').unbind('keyup').bind('keyup', function (event) {
+    else if (this.cfg.filterEvent == "change") ice.ace.jq(this.filterSelector).unbind('keyup').bind('keyup', function (event) {
         var _event = event;
         if (event.which != 9) {
             if (_self.delayedFilterCall) clearTimeout(_self.delayedFilterCall);
@@ -351,7 +419,7 @@ ice.ace.DataTable.prototype.setupSortEvents = function () {
 
     // Bind clickable header events
     if (_self.cfg.clickableHeaderSorting) {
-        ice.ace.jq(this.jqId + ' > div > table > thead > tr > th > div.ui-sortable-column')
+        ice.ace.jq(this.sortColumnSelector)
             .unbind('click').bind("click", function (event) {
                 var target = ice.ace.jq(event.target);
 
@@ -421,7 +489,7 @@ ice.ace.DataTable.prototype.setupSortEvents = function () {
     }
 
     // Bind clickable control events
-    ice.ace.jq(this.jqId + ' > div > table > thead > tr > th > div.ui-sortable-column span.ui-sortable-control')
+    ice.ace.jq(this.sortControlSelector)
         .unbind('click').bind("click", function (event, altY, altMeta) {
             var $this = ice.ace.jq(this),
                 topCarat = ice.ace.jq($this.find("a.ui-icon-triangle-1-n")[0]),
@@ -499,8 +567,7 @@ ice.ace.DataTable.prototype.setupSortEvents = function () {
         });
 
     // Bind keypress kb-navigable sort icons
-    var sortableControlsSelector = ' > div > table > thead > tr > th > div.ui-sortable-column span.ui-sortable-control';
-    ice.ace.jq(this.jqId + sortableControlsSelector + ' a.ui-icon-triangle-1-n')
+    ice.ace.jq(this.sortControlUpSelector)
         .die('keypress')
         .live('keypress', function (event) {
             if (event.which == 32 || event.which == 13) {
@@ -511,7 +578,7 @@ ice.ace.DataTable.prototype.setupSortEvents = function () {
             }
         });
 
-    ice.ace.jq(this.jqId + sortableControlsSelector + ' a.ui-icon-triangle-1-s')
+    ice.ace.jq(this.sortControlDownSelector)
         .die('keypress')
         .live('keypress', function (event) {
             if (event.which == 32 || event.which == 13) {
@@ -524,20 +591,19 @@ ice.ace.DataTable.prototype.setupSortEvents = function () {
 }
 
 ice.ace.DataTable.prototype.tearDownSelectionEvents = function () {
-    var selectEvent = this.cfg.dblclickSelect ? 'dblclick' : 'click';
     var selector = this.isCellSelectionEnabled()
-                ? this.jqId + ' > div > table > tbody.ui-datatable-data > tr:not(.ui-unselectable) > td'
-                : this.jqId + ' > div > table > tbody.ui-datatable-data > tr:not(.ui-unselectable)';
+                ? this.cellSelector
+                : this.rowSelector;
 
-    ice.ace.jq(selector).die('dblclick').die('click').die('mouseenter');
+    ice.ace.jq(selector).die('dblclick click mouseenter');
 }
 
 ice.ace.DataTable.prototype.setupSelectionEvents = function () {
     var _self = this;
     var selectEvent = this.cfg.dblclickSelect ? 'dblclick' : 'click',
         selector = this.isCellSelectionEnabled()
-            ? this.jqId + ' > div > table > tbody.ui-datatable-data > tr:not(.ui-unselectable) > td'
-            : this.jqId + ' > div > table > tbody.ui-datatable-data > tr:not(.ui-unselectable)';
+            ? this.cellSelector
+            : this.rowSelector
 
     ice.ace.jq(selector)
         .css('cursor', 'pointer')
@@ -605,8 +671,7 @@ ice.ace.DataTable.prototype.setupReorderableColumns = function () {
 
 ice.ace.DataTable.prototype.setupRowExpansionEvents = function () {
     var table = this;
-    var selector = ' > div > table > tbody.ui-datatable-data > tr > td *:not(tbody) a.ui-row-toggler';
-    ice.ace.jq(this.jqId + selector)
+    ice.ace.jq(this.rowExpansionSelector)
         .die('keyup click')
         .live('keyup', function (event) {
             if (event.which == 32 || event.which == 13) {
@@ -621,8 +686,8 @@ ice.ace.DataTable.prototype.setupRowExpansionEvents = function () {
 
 ice.ace.DataTable.prototype.setupPanelExpansionEvents = function () {
     var table = this;
-    var selector = ' > div > table > tbody.ui-datatable-data > tr:not(.ui-expanded-row-content) > td *:not(tbody) a.ui-row-panel-toggler';
-    ice.ace.jq(this.jqId + selector)
+    var selector = this.panelExpansionSelector;
+    ice.ace.jq(this.panelExpansionSelector)
         .die('keyup click')
         .live('keyup', function (event) {
             if (event.which == 32 || event.which == 13) {
@@ -645,11 +710,11 @@ ice.ace.DataTable.prototype.setupScrolling = function () {
     this.resizeScrolling();
 
     // Persist scrolling position if one has been loaded from previous instance
-    ice.ace.jq(_self.jqId + ' > div.ui-datatable-scrollable-body')
+    ice.ace.jq(this.scrollBodySelector)
         .scrollTop(this.scrollTop)
         .scrollLeft(this.scrollLeft);
 
-    ice.ace.jq(_self.jqId + ' > div.ui-datatable-scrollable-body').bind('scroll', function () {
+    ice.ace.jq(this.scrollBodySelector).bind('scroll', function () {
         var $this = ice.ace.jq(this),
             $header = ice.ace.jq(_self.jqId + ' > div.ui-datatable-scrollable-header'),
             $footer = ice.ace.jq(_self.jqId + ' > div.ui-datatable-scrollable-footer'),
@@ -662,13 +727,15 @@ ice.ace.DataTable.prototype.setupScrolling = function () {
         _self.scrollTop = scrollTopVal;
     });
 
-    ice.ace.jq(window).bind('resize', function () {
+    this.scrollingResizeCallback = function () {
         if (_self.parentSize != ice.ace.jq(_self.jqId).parent().width()) {
             _self.parentSize = ice.ace.jq(_self.jqId).parent().width();
             clearTimeout(delayedCleanUpResizeToken);
             delayedCleanUpResizeToken = setTimeout(delayedCleanUpResize, 100);
         }
-    });
+    };
+
+    ice.ace.jq(window).bind('resize', this.scrollingResizeCallback);
 
     //live scroll
     if (this.cfg.liveScroll) {
@@ -1659,7 +1726,7 @@ ice.ace.DataTable.prototype.doRowEditSaveRequest = function (element) {
 }
 
 ice.ace.DataTable.prototype.getRowEditors = function () {
-    return ice.ace.jq(this.jqId + ' > div > table > tbody.ui-datatable-data > tr > td > div.ui-row-editor');
+    return ice.ace.jq(this.cellEditorSelector);
 }
 
 ice.ace.DataTable.prototype.setupCellEditorEvents = function (rowEditors) {
@@ -1682,8 +1749,7 @@ ice.ace.DataTable.prototype.setupCellEditorEvents = function (rowEditors) {
             if (event.which == 13) return false;
         };
 
-    var selector = ' > div > table > tbody.ui-datatable-data > tr > td > div.ui-row-editor';
-    ice.ace.jq(this.jqId + selector + ' a.ui-icon-pencil')
+    ice.ace.jq(this.cellEditStartSelector)
             .die('click keyup')
             .live('click', showEditors)
             .live('keyup', function (event) {
@@ -1692,7 +1758,7 @@ ice.ace.DataTable.prototype.setupCellEditorEvents = function (rowEditors) {
         }
     });
 
-    ice.ace.jq(this.jqId + selector + ' a.ui-icon-check')
+    ice.ace.jq(this.cellEditSubmitSelector)
             .die('click keyup')
             .live('click', saveRowEditors)
             .live('keyup',
@@ -1702,7 +1768,7 @@ ice.ace.DataTable.prototype.setupCellEditorEvents = function (rowEditors) {
         }
     });
 
-    ice.ace.jq(this.jqId + selector + ' a.ui-icon-close')
+    ice.ace.jq(this.cellEditCancelSelector)
             .die('click keyup')
             .live('click', cancelRowEditors)
             .live('keyup',
