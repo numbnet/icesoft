@@ -172,8 +172,8 @@ ice.ace.DataTable = function (id, cfg) {
     this.scrollBodySelector = this.jqId + ' > div.ui-datatable-scrollable-body';
     this.cellEditorSelector = this.jqId + ' > div > table > tbody.ui-datatable-data > tr > td > div.ui-row-editor';
     this.cellEditStartSelector = this.cellEditorSelector + ' a.ui-icon-pencil';
-    this.cellEditCancelSelector = this.cellEditorSelector + ' a.ui-icon-check';
-    this.cellEditSubmitSelector = this.cellEditorSelector + ' a.ui-icon-close';
+    this.cellEditCancelSelector = this.cellEditorSelector + ' a.ui-icon-close';
+    this.cellEditSubmitSelector = this.cellEditorSelector + ' a.ui-icon-check';
 
     var oldInstance = ice.ace.DataTables[this.id];
     var rowEditors = this.getRowEditors();
@@ -269,9 +269,9 @@ ice.ace.DataTable.prototype.unload = function() {
 
     // Clear cell editor events
     var cellEditor = ice.ace.jq(this.cellEditorSelector);
-    ice.ace.jq(this.cellEditStartSelector).find('a.ui-icon-pencil').die('keyup click');
-    ice.ace.jq(this.cellEditCancelSelector).find('a.ui-icon-check').die('keyup click');
-    ice.ace.jq(this.cellEditSubmitSelector).find('a.ui-icon-close').die('keyup click');
+    ice.ace.jq(this.cellEditStartSelector).die('keyup click');
+    ice.ace.jq(this.cellEditCancelSelector).die('keyup click');
+    ice.ace.jq(this.cellEditSubmitSelector).die('keyup click');
     ice.ace.jq(this.cellEditorSelector)
             .closest('tr').children().find('span input').unbind('keypress');
 
