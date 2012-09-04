@@ -31,9 +31,9 @@ import java.io.InputStream;
 import java.util.Map;
 
 @ResourceDependencies({
-        @ResourceDependency(name = "inputrichtext/ckeditor/ckeditor.mapping.js"),
-        @ResourceDependency(name = "inputrichtext/ckeditor/ckeditor.js"),
-        @ResourceDependency(name = "inputrichtext/ckeditor_ext.js")
+        @ResourceDependency(name = "ckeditor/ckeditor.mapping.js", library = "inputrichtext"),
+        @ResourceDependency(name = "ckeditor/ckeditor.js", library = "inputrichtext"),
+        @ResourceDependency(name = "ckeditor_ext.js", library = "inputrichtext")
 })
 public class InputRichText extends UIInput {
     public static final String COMPONENT_TYPE = "com.icesoft.faces.InputRichText";

@@ -14,18 +14,18 @@
   ~ governing permissions and limitations under the License.
   -->
 <project name="icefaces-comps-compat-richtextentry" default="resource-list">
-    <property name="resources.dir" value="${basedir}/resources/"/>
+    <property name="resources.dir" value="${basedir}/resources/icefaces.ace/"/>
 
     <target name="clean-richtextentry-resources">
-		    <delete file="${resources.dir}/icefaces.ace/richtextentry/ckeditor.resources" />
+		    <delete file="${resources.dir}richtextentry/ckeditor.resources" />
     </target>
 
     <target name="resource-list">
         <pathconvert property="codebase" pathsep=" " dirsep="/">
             <map from="${resources.dir}" to=""/>
-            <fileset dir="${resources.dir}icefaces.ace/richtextentry/ckeditor/" includes="**/*"/>
+            <fileset dir="${resources.dir}richtextentry/ckeditor/" includes="**/*"/>
         </pathconvert>
-        <echo message="${codebase}" file="${resources.dir}/icefaces.ace/richtextentry/ckeditor.resources"/>
+        <echo message="${codebase}" file="${resources.dir}richtextentry/ckeditor.resources"/>
     </target>
 </project>
 
