@@ -13,7 +13,7 @@ import org.springframework.web.context.ServletContextAware;
 @Service
 public class MediaStore implements ServletContextAware {
 	
-	private List<MediaMessage> media;
+	private List<MediaMessage> media = new ArrayList<MediaMessage>();
 	private static final int CAROUSEL_IMG_HEIGHT = 96;
 	private static final int CAROUSEL_IMG_WIDTH = 92;
 	private static final String CAROUSEL_ITEM_MARKUP = 
@@ -37,8 +37,10 @@ public class MediaStore implements ServletContextAware {
 	
 	public List<String> getMediaImageMarkup(){
     	List<String> imageMarkup = new ArrayList<String>();
-    	for( MediaMessage mediaMsg : media ){
-    		imageMarkup.add(String.format(CAROUSEL_ITEM_MARKUP, contextPath, mediaMsg.getPhoto().getFileName(), mediaMsg.getTitle(), mediaMsg.getId()));
+    	if( media != null ){
+	    	for( MediaMessage mediaMsg : media ){
+	    		imageMarkup.add(String.format(CAROUSEL_ITEM_MARKUP, contextPath, mediaMsg.getPhoto().getFileName(), mediaMsg.getTitle(), mediaMsg.getId()));
+	    	}
     	}
     	return imageMarkup;
     }
