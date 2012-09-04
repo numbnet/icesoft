@@ -47,10 +47,6 @@ import org.icefaces.ace.component.column.Column;
 import org.icefaces.ace.component.columngroup.ColumnGroup;
 import org.icefaces.ace.component.row.Row;
 
-import org.icefaces.application.ResourceRegistry;
-import java.io.ByteArrayInputStream;
-import java.util.Map;
-
 import org.icefaces.ace.util.XMLChar;
 
 public class XMLExporter extends Exporter {
@@ -114,18 +110,8 @@ public class XMLExporter extends Exporter {
     	table.setRowIndex(-1);
     	
 		byte[] bytes = builder.toString().getBytes();
-		//ByteArrayInputStream bais = new ByteArrayInputStream(bytes);
-		//ExporterResource resource = new ExporterResource(bais);
-		ExporterResource resource = new ExporterResource(bytes);
-		resource.setContentType("text/xml");
-		Map<String, String> httpHeaders = resource.getResponseHeaders();
-		httpHeaders.put("Expires", "0");
-        httpHeaders.put("Cache-Control","must-revalidate, post-check=0, pre-check=0");
-        httpHeaders.put("Pragma", "public");
-        httpHeaders.put("Content-disposition", "attachment;filename=" + filename + ".xml");
-		String path = ResourceRegistry.addSessionResource(resource);
 		
-		return path;
+		return registerResource(bytes, filename + ".xml", "text/xml");
 	}
 	
 	protected void addColumnValues(StringBuilder builder, List<UIColumn> columns, List<String> headers) throws IOException {

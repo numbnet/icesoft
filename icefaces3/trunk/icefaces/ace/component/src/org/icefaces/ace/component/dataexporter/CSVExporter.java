@@ -42,10 +42,6 @@ import org.icefaces.ace.component.column.Column;
 import org.icefaces.ace.component.columngroup.ColumnGroup;
 import org.icefaces.ace.component.row.Row;
 
-import org.icefaces.application.ResourceRegistry;
-import java.io.ByteArrayInputStream;
-import java.util.Map;
-
 public class CSVExporter extends Exporter {
 	
     @Override
@@ -101,18 +97,8 @@ public class CSVExporter extends Exporter {
     	table.setRowIndex(-1);
         
 		byte[] bytes = builder.toString().getBytes();
-		//ByteArrayInputStream bais = new ByteArrayInputStream(bytes);
-		//ExporterResource resource = new ExporterResource(bais);
-		ExporterResource resource = new ExporterResource(bytes);
-		resource.setContentType("text/csv");
-		Map<String, String> headers = resource.getResponseHeaders();
-		headers.put("Expires", "0");
-        headers.put("Cache-Control","must-revalidate, post-check=0, pre-check=0");
-        headers.put("Pragma", "public");
-        headers.put("Content-disposition", "attachment; filename=\"" + filename + ".csv\"");
-		String path = ResourceRegistry.addSessionResource(resource);
 		
-		return path;
+		return registerResource(bytes, filename + ".csv", "text/csv");
 	}
 	
 	protected void addColumnValues(StringBuilder builder, List<UIColumn> columns) throws IOException {

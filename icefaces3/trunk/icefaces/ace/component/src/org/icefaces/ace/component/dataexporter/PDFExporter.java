@@ -56,10 +56,6 @@ import org.icefaces.ace.component.column.Column;
 import org.icefaces.ace.component.columngroup.ColumnGroup;
 import org.icefaces.ace.component.row.Row;
 
-import org.icefaces.application.ResourceRegistry;
-import java.io.ByteArrayInputStream;
-import java.util.Map;
-
 import java.util.logging.Logger;
 
 public class PDFExporter extends Exporter {
@@ -146,18 +142,8 @@ public class PDFExporter extends Exporter {
 			documentClass.getMethod("close").invoke(document);
 			
 			byte[] bytes = baos.toByteArray();
-			//ByteArrayInputStream bais = new ByteArrayInputStream(bytes);
-			//ExporterResource resource = new ExporterResource(bais);
-			ExporterResource resource = new ExporterResource(bytes);
-			resource.setContentType("application/pdf");
-			Map<String, String> headers = resource.getResponseHeaders();
-			headers.put("Expires", "0");
-			headers.put("Cache-Control","must-revalidate, post-check=0, pre-check=0");
-			headers.put("Pragma", "public");
-			headers.put("Content-disposition", "attachment;filename=" + filename + ".pdf");
-			String path = ResourceRegistry.addSessionResource(resource);
 			
-			return path;
+			return registerResource(bytes, filename + ".pdf", "application/pdf");
 	        
 		} catch (ClassNotFoundException e) {
 			logger.severe("Exporting data to PDF format was attempted by a user, but the iText library was not found.");
