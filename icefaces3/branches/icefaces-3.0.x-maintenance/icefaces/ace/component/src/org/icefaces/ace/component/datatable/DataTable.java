@@ -404,7 +404,24 @@ public class DataTable extends DataTableBase implements Serializable {
     /*#######################################################################*/
     /*###################### Public API #####################################*/
     /*#######################################################################*/
-      
+
+    public boolean isSortingEnabled() {
+        for (Column c : getColumns())
+            if (c.getValueExpression("sortBy") != null)
+                return true;
+
+        return false;
+    }
+
+    public boolean isFilteringEnabled() {
+        for (Column c : getColumns())
+            if (c.getValueExpression("filterBy") != null)
+                return true;
+
+        return false;
+    }
+
+
     /**
      * A public proxy to the getDataModel() method, intended for use in situations
      * where a sub-component needs access to a custom DataModel object.
