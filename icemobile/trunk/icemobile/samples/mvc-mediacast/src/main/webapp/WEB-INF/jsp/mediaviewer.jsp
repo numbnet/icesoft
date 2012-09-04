@@ -59,7 +59,7 @@
 				<mobi:fieldSetRow>
 					<label>Tags: </label>
 					<c:forEach items="${media.tags}" var="tag">
-						<img src='<c:url value="/resources/uploads/images/tag.gif"/>' />
+						<img src='<c:url value="/resources/images/tag.gif"/>' />
 						<span style="vertical-align:top;display:inline-block;margin-right:10px;">
 							<c:out value="${tag}"/>&#160;
 						</span>
