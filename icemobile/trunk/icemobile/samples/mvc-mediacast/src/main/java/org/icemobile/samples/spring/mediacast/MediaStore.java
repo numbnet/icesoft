@@ -7,9 +7,10 @@ import javax.servlet.ServletContext;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.util.StringUtils;
+import org.springframework.stereotype.Service;
 import org.springframework.web.context.ServletContextAware;
 
+@Service
 public class MediaStore implements ServletContextAware {
 	
 	private List<MediaMessage> media;
@@ -62,7 +63,6 @@ public class MediaStore implements ServletContextAware {
 		}
 	}
 
-	@Override
 	public void setServletContext(ServletContext context) {
 		this.contextPath = context.getContextPath();
 	}

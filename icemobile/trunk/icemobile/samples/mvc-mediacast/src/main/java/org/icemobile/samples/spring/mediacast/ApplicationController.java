@@ -159,7 +159,7 @@ public class ApplicationController {
 		String newPathName = "resources/uploads/" + newFileName;
 		if ((null != file) && !file.isEmpty()) {
 			fileName = file.getOriginalFilename();
-			file.transferTo(new File(request.getRealPath("/" + newPathName)));
+			file.transferTo(new File(request.getServletContext().getRealPath("/" + newPathName)));
 			currentFileName = newPathName;
 		}
 		if (null == fileName) {
@@ -182,7 +182,7 @@ public class ApplicationController {
 		String newPathName = "resources/uploads/" + newFileName;
 		if ((null != file) && !file.isEmpty()) {
 			fileName = file.getOriginalFilename();
-			file.transferTo(new File(request.getRealPath("/" + newPathName)));
+			file.transferTo(new File(request.getServletContext().getRealPath("/" + newPathName)));
 			currentFileName = newPathName;
 		}
 		if (null == fileName) {
@@ -205,7 +205,7 @@ public class ApplicationController {
 		String newPathName = "resources/uploads/" + newFileName;
 		if ((null != file) && !file.isEmpty()) {
 			fileName = file.getOriginalFilename();
-			file.transferTo(new File(request.getRealPath("/" + newPathName)));
+			file.transferTo(new File(request.getServletContext().getRealPath("/" + newPathName)));
 			currentFileName = newPathName;
 		}
 		if (null == fileName) {
