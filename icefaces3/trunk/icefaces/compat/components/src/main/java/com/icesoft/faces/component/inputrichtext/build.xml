@@ -14,18 +14,18 @@
   ~ governing permissions and limitations under the License.
   -->
 <project name="icefaces-comps-compat-inputrichtext" default="resource-list">
-    <property name="resources.dir" value="${basedir}/src/main/resources/META-INF/resources/"/>
+    <property name="resources.dir" value="${basedir}/src/main/resources/META-INF/resources/inputrichtext/"/>
 
     <target name="clean-inputrichtext-resources">
-		    <delete file="${resources.dir}/inputrichtext/ckeditor.resources" />
+		    <delete file="${resources.dir}/ckeditor.resources" />
     </target>
 
     <target name="resource-list">
         <pathconvert property="codebase" pathsep=" " dirsep="/">
             <map from="${resources.dir}" to=""/>
-            <fileset dir="${resources.dir}/inputrichtext/ckeditor/" includes="**/*"/>
+            <fileset dir="${resources.dir}/ckeditor/" includes="**/*"/>
         </pathconvert>
-        <echo message="${codebase}" file="${resources.dir}/inputrichtext/ckeditor.resources"/>
+        <echo message="${codebase}" file="${resources.dir}/ckeditor.resources"/>
     </target>
 </project>
 

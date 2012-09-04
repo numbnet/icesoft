@@ -35,7 +35,8 @@ import java.net.URL;
 import java.util.*;
 
 public class RichTextEntryResourceHandler extends ResourceHandlerWrapper {
-    private static final String INPUTRICHTEXT_CKEDITOR_DIR = "icefaces.ace/richtextentry/ckeditor/";
+    private static final String RICHTEXTENTRY_CKEDITOR_DIR = "richtextentry/ckeditor/";
+    private static final String ICEFACES_ACE_LIB = "icefaces.ace";
     private static final String META_INF_RESOURCES = "/META-INF/resources/";
     private static final String CKEDITOR_MAPPING_JS = "ckeditor.mapping.js";
     private static final String CKEDITOR_JS = "ckeditor.js";
@@ -54,12 +55,12 @@ public class RichTextEntryResourceHandler extends ResourceHandlerWrapper {
         try {
             //collecting resource relative paths
             Class thisClass = this.getClass();
-            InputStream in = thisClass.getResourceAsStream(META_INF_RESOURCES + "icefaces.ace/richtextentry/ckeditor.resources");
+            InputStream in = thisClass.getResourceAsStream(META_INF_RESOURCES + ICEFACES_ACE_LIB + "/richtextentry/ckeditor.resources");
             String resourceList = new String(readIntoByteArray(in), "UTF-8");
             String[] paths = resourceList.split(" ");
             for (int i = 0; i < paths.length; i++) {
                 String localPath = paths[i];
-                byte[] content = readIntoByteArray(thisClass.getResourceAsStream(META_INF_RESOURCES + localPath));
+                byte[] content = readIntoByteArray(thisClass.getResourceAsStream(META_INF_RESOURCES + ICEFACES_ACE_LIB + "/" + localPath));
                 if (localPath.endsWith(".css")) {
                     cssResources.put(localPath, new ResourceEntry(localPath, content));
                 } else if (localPath.endsWith(".jpg") || localPath.endsWith(".gif") || localPath.endsWith(".png")) {
@@ -93,7 +94,7 @@ public class RichTextEntryResourceHandler extends ResourceHandlerWrapper {
 
     private void calculateExtensionMapping() {
         if (extensionMapping == null || prefixMapping == null) {
-            Resource resource = super.createResource(INPUTRICHTEXT_CKEDITOR_DIR + CKEDITOR_JS);
+            Resource resource = super.createResource(RICHTEXTENTRY_CKEDITOR_DIR + CKEDITOR_JS, ICEFACES_ACE_LIB);
             String path = resource.getRequestPath();
 
             int extensionPosition = path.indexOf(".js");
@@ -105,7 +106,7 @@ public class RichTextEntryResourceHandler extends ResourceHandlerWrapper {
                 extensionMapping = extensionPosition < 0 ? "" : path.substring(extensionPosition + 3/*".js".length()*/);
             }
 
-            int prefixPosition = path.indexOf(ResourceHandler.RESOURCE_IDENTIFIER + "/" + INPUTRICHTEXT_CKEDITOR_DIR);
+            int prefixPosition = path.indexOf(ResourceHandler.RESOURCE_IDENTIFIER + "/" + RICHTEXTENTRY_CKEDITOR_DIR);
             prefixMapping = prefixPosition < 0 ? "" : path.substring(0, prefixPosition);
         }
     }
@@ -163,7 +164,7 @@ public class RichTextEntryResourceHandler extends ResourceHandlerWrapper {
         }
 
         if (codeResource == null || countInvokations == 1) {
-            codeResource = new ResourceEntry(INPUTRICHTEXT_CKEDITOR_DIR + CKEDITOR_MAPPING_JS, value.getBytes("UTF-8"));
+            codeResource = new ResourceEntry(RICHTEXTENTRY_CKEDITOR_DIR + CKEDITOR_MAPPING_JS, value.getBytes("UTF-8"));
         }
     }
 
@@ -206,7 +207,7 @@ public class RichTextEntryResourceHandler extends ResourceHandlerWrapper {
     }
 
     private static String toRelativeLocalPath(String localPath) {
-        return localPath.substring(INPUTRICHTEXT_CKEDITOR_DIR.length());
+        return localPath.substring(RICHTEXTENTRY_CKEDITOR_DIR.length());
     }
 
     public String toRequestPath(FacesContext context, String localPath) {
@@ -215,7 +216,7 @@ public class RichTextEntryResourceHandler extends ResourceHandlerWrapper {
 
     private String toRelativeLocalDir(String localPath) {
         int position = localPath.lastIndexOf("/");
-        return INPUTRICHTEXT_CKEDITOR_DIR.length() > position ? "/" : localPath.substring(INPUTRICHTEXT_CKEDITOR_DIR.length(), position);
+        return RICHTEXTENTRY_CKEDITOR_DIR.length() > position ? "/" : localPath.substring(RICHTEXTENTRY_CKEDITOR_DIR.length(), position);
     }
 
     private class ResourceEntry extends Resource {

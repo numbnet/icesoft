@@ -41,7 +41,7 @@ import org.icefaces.ace.api.IceClientBehaviorHolder;
                  "<a href=\"http://wiki.icefaces.org/display/ICE/RichTextEntry\">RichTextEntry Wiki Documentation</a>."
 )
 @ResourceDependencies({
-        @ResourceDependency(name = "icefaces.ace/richtextentry/ckeditor/ckeditor.mapping.js"),
+        @ResourceDependency(library="icefaces.ace", name = "richtextentry/ckeditor/ckeditor.mapping.js"),
         @ResourceDependency(library="icefaces.ace", name = "richtextentry/ckeditor/ckeditor.js"),
 		@ResourceDependency(library="icefaces.ace", name = "richtextentry/richtextentry.js")
 })

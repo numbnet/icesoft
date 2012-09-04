@@ -35,7 +35,8 @@ import java.net.URL;
 import java.util.*;
 
 public class InputRichTextResourceHandler extends ResourceHandlerWrapper {
-    private static final String INPUTRICHTEXT_CKEDITOR_DIR = "inputrichtext/ckeditor/";
+    private static final String CKEDITOR_DIR = "ckeditor/";
+    private static final String INPUTRICHTEXT_LIB = "inputrichtext";
     private static final String META_INF_RESOURCES = "/META-INF/resources/";
     private static final String CKEDITOR_MAPPING_JS = "ckeditor.mapping.js";
     private static final String CKEDITOR_JS = "ckeditor.js";
@@ -53,12 +54,12 @@ public class InputRichTextResourceHandler extends ResourceHandlerWrapper {
         try {
             //collecting resource relative paths
             Class thisClass = this.getClass();
-            InputStream in = thisClass.getResourceAsStream(META_INF_RESOURCES + "inputrichtext/ckeditor.resources");
+            InputStream in = thisClass.getResourceAsStream(META_INF_RESOURCES + INPUTRICHTEXT_LIB + "/ckeditor.resources");
             String resourceList = new String(readIntoByteArray(in), "UTF-8");
             String[] paths = resourceList.split(" ");
             for (int i = 0; i < paths.length; i++) {
                 String localPath = paths[i];
-                byte[] content = readIntoByteArray(thisClass.getResourceAsStream(META_INF_RESOURCES + localPath));
+                byte[] content = readIntoByteArray(thisClass.getResourceAsStream(META_INF_RESOURCES + INPUTRICHTEXT_LIB + "/" + localPath));
                 if (localPath.endsWith(".css")) {
                     cssResources.put(localPath, new ResourceEntry(localPath, content));
                 } else if (localPath.endsWith(".jpg") || localPath.endsWith(".gif") || localPath.endsWith(".png")) {
@@ -91,7 +92,7 @@ public class InputRichTextResourceHandler extends ResourceHandlerWrapper {
 
     private void calculateExtensionMapping() {
         if (extensionMapping == null || prefixMapping == null) {
-            Resource resource = super.createResource(INPUTRICHTEXT_CKEDITOR_DIR + CKEDITOR_JS);
+            Resource resource = super.createResource(CKEDITOR_DIR + CKEDITOR_JS, INPUTRICHTEXT_LIB);
             String path = resource.getRequestPath();
 
             int extensionPosition = path.indexOf(".js");
@@ -103,7 +104,7 @@ public class InputRichTextResourceHandler extends ResourceHandlerWrapper {
                 extensionMapping = extensionPosition < 0 ? "" : path.substring(extensionPosition + 3/*".js".length()*/);
             }
 
-            int prefixPosition = path.indexOf(ResourceHandler.RESOURCE_IDENTIFIER + "/" + INPUTRICHTEXT_CKEDITOR_DIR);
+            int prefixPosition = path.indexOf(ResourceHandler.RESOURCE_IDENTIFIER + "/" + CKEDITOR_DIR);
             prefixMapping = prefixPosition < 0 ? "" : path.substring(0, prefixPosition);
         }
     }
@@ -161,7 +162,7 @@ public class InputRichTextResourceHandler extends ResourceHandlerWrapper {
         }
 
         if (codeResource == null) {
-            codeResource = new ResourceEntry(INPUTRICHTEXT_CKEDITOR_DIR + CKEDITOR_MAPPING_JS, value.getBytes("UTF-8"));
+            codeResource = new ResourceEntry(CKEDITOR_DIR + CKEDITOR_MAPPING_JS, value.getBytes("UTF-8"));
         }
     }
 
@@ -204,7 +205,7 @@ public class InputRichTextResourceHandler extends ResourceHandlerWrapper {
     }
 
     private static String toRelativeLocalPath(String localPath) {
-        return localPath.substring(INPUTRICHTEXT_CKEDITOR_DIR.length());
+        return localPath.substring(CKEDITOR_DIR.length());
     }
 
     public String toRequestPath(FacesContext context, String localPath) {
@@ -213,7 +214,7 @@ public class InputRichTextResourceHandler extends ResourceHandlerWrapper {
 
     private String toRelativeLocalDir(String localPath) {
         int position = localPath.lastIndexOf("/");
-        return INPUTRICHTEXT_CKEDITOR_DIR.length() > position ? "/" : localPath.substring(INPUTRICHTEXT_CKEDITOR_DIR.length(), position);
+        return CKEDITOR_DIR.length() > position ? "/" : localPath.substring(CKEDITOR_DIR.length(), position);
     }
 
     private class ResourceEntry extends Resource {
