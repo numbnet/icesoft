@@ -272,6 +272,8 @@ public class DataTableRenderer extends CoreRenderer {
         if (form == null) 
             throw new FacesException("DataTable : \"" + clientId + "\" must be inside a form element.");
 
+        final boolean filtering = table.isFilteringEnabled();
+        final boolean sorting = table.isSortingEnabled();
         final boolean paging = table.isPaginator();
         final boolean select = table.isSelectionEnabled();
         final boolean dblSelect = select && table.isDoubleClickSelect();
@@ -291,10 +293,11 @@ public class DataTableRenderer extends CoreRenderer {
         final String widgetVar = resolveWidgetVar(table);
 
         json.beginMap();
-        json.entry("formId", form.getClientId(context));        
-        json.entry("filterEvent", filterEvent);
+        json.entry("formId", form.getClientId(context));
         json.entry("widgetVar", widgetVar);
         json.entryNonNullValue("configPanel", table.getTableConfigPanel());
+        if (filtering) json.entry("filterEvent", filterEvent);
+        if (sorting) json.entry("sorting", true);
         if (paging) encodePaginatorConfig(context, json, table);
         if (pnlExp) json.entry("panelExpansion", true);
         if (rowExp) json.entry("rowExpansion", true);
