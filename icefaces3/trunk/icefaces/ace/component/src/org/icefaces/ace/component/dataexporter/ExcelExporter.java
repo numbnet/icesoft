@@ -46,9 +46,6 @@ import org.icefaces.ace.component.datatable.DataTable;
 import org.icefaces.ace.component.column.Column;
 import org.icefaces.ace.component.columngroup.ColumnGroup;
 
-import org.icefaces.application.ResourceRegistry;
-import java.io.ByteArrayInputStream;
-import java.util.Map;
 import java.io.ByteArrayOutputStream;
 
 public class ExcelExporter extends Exporter {
@@ -123,18 +120,8 @@ public class ExcelExporter extends Exporter {
 		wb.write(baos);
 		
 		byte[] bytes = baos.toByteArray();
-		//ByteArrayInputStream bais = new ByteArrayInputStream(bytes);
-		//ExporterResource resource = new ExporterResource(bais);
-		ExporterResource resource = new ExporterResource(bytes);
-		resource.setContentType("application/vnd.ms-excel");
-		Map<String, String> headers = resource.getResponseHeaders();
-		headers.put("Expires", "0");
-		headers.put("Cache-Control","must-revalidate, post-check=0, pre-check=0");
-		headers.put("Pragma", "public");
-		headers.put("Content-disposition", "attachment;filename=" + filename + ".xls");
-		String path = ResourceRegistry.addSessionResource(resource);
 		
-		return path;
+		return registerResource(bytes, filename + ".xls", "application/vnd.ms-excel");
 	}
 	
 	protected void addFacetColumns(Sheet sheet, List<UIColumn> columns, ColumnType columnType, int rowIndex) {

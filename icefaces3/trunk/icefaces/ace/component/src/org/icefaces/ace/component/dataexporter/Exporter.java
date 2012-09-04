@@ -31,6 +31,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 import javax.el.MethodExpression;
@@ -51,6 +52,8 @@ import org.icefaces.ace.component.row.Row;
 import org.icefaces.ace.component.expansiontoggler.ExpansionToggler;
 import org.icefaces.ace.component.excludefromexport.ExcludeFromExport;
 import org.icefaces.ace.component.celleditor.CellEditor;
+
+import org.icefaces.application.ResourceRegistry;
 
 public abstract class Exporter {
 
@@ -290,6 +293,17 @@ public abstract class Exporter {
         return ret;
     }
 
+	protected String registerResource(byte[] bytes, String filename, String contentType) {
+		ExporterResource resource = new ExporterResource(bytes);
+		resource.setContentType(contentType);
+		Map<String, String> headers = resource.getResponseHeaders();
+		headers.put("Expires", "0");
+		headers.put("Cache-Control","must-revalidate, post-check=0, pre-check=0");
+		headers.put("Pragma", "public");
+		headers.put("Content-disposition", "attachment; filename=" + filename);
+		String path = ResourceRegistry.addSessionResource(resource);
+		return path;
+	}
 
     protected enum ColumnType {
         HEADER("header"),
