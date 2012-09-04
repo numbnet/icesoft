@@ -23,7 +23,7 @@ import org.openqa.selenium.safari.SafariDriver;
  * Tests for the Mediacast demo
  */
 
-public class MediacastTestSuiteWD {
+public class MediacastTestSuite {
 	private WebDriver driver;
 	private String baseUrl;
 	private StringBuffer verificationErrors = new StringBuffer();
