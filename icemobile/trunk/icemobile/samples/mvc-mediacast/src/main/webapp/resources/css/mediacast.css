@@ -27,3 +27,12 @@
 	margin-top: -7px;
 	margin-left: 5px;
 }
+.js .ajaxHide{
+	display:none;
+}
+.ajaxShow{
+	display:none; /* Show only for Ajax clients */
+}
+.js .ajaxShow{
+	display:block; /* Show only for Ajax clients */
+}
