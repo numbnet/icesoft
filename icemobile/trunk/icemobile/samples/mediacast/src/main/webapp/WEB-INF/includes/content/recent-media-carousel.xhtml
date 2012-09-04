@@ -25,10 +25,10 @@
     <div style="clear:both;"/>
     
     <h:form id="recentMediaFrm">
+        <div style="border-top: 1px solid #999999;">
         <mobi:carousel id="recentMediaCarousel"
                        var="mediaMessage"
-                       value="#{mediaStore.media}"
-                       style="border-top: 1px solid #999999;">
+                       value="#{mediaStore.media}">
             <h:column>
                 <div style="overflow:hidden;width:175px;height:98px;">
                     <mobi:graphicImage id="mediaImg"
@@ -49,6 +49,7 @@
                 </h:commandLink>
             </h:column>
         </mobi:carousel>
+        </div>
     </h:form>
     <div style="clear:both;"/>
 </ui:composition>
