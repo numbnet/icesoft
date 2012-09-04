@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
+<h:head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <meta name="apple-mobile-web-app-status-bar-style" content="black"/>
+     <mobi:deviceStylesheet name="#{themeSwitcher.theme}" media="screen" />
+    <title>LayoutPane double Scrollable</title>
+</h:head>
+<h:body>
+  <header>
+       <a href="../layoutComponents.html">index page</a>
+  </header>
+  <mobi:pagePanel>
+    <f:facet name="header">
+        <h3>layoutPane within pagePanel Test 2 column</h3>
+    </f:facet>
+   <f:facet name="body">
+     <mobi:layoutPane id="lp1" scrollable="true" width="30">
+          <f:facet name="left">
+             <h5> simple outputLIst with group of simple text items</h5>
+                <mobi:outputList id="simpleList" inset="false" >
+                    <mobi:outputListItem type="group">Simple List</mobi:outputListItem>
+                    <mobi:outputListItems value="#{list.simpleList}" var="simple" type="default">
+                        <h:outputText value="#{simple}"/>
+                    </mobi:outputListItems>
+                </mobi:outputList>
+                <h5> next list has 2 lists of items stacked into one group</h5>
+                <mobi:outputList id="stackedGroupslist" inset="true"  >
+                    <mobi:outputListItem type="group">Cars List</mobi:outputListItem>
+                    <mobi:outputListItems   value="#{list.carList}" var="car">
+                        #{car.make} #{car.model}, #{car.year} price: #{car.price}
+                    </mobi:outputListItems>
+                    <mobi:outputListItem type="group">List of Links</mobi:outputListItem>
+                    <mobi:outputListItems id="linksList"  value="#{list.linksList}" var="item">
+                        <h:outputLink  value="#{item.url}">#{item.title}</h:outputLink>
+                    </mobi:outputListItems>
+                </mobi:outputList>
+                <h5> next list has gropu of images in h link component</h5>
+                <mobi:outputList id="imgList" type="thumb" inset="false">
+                    <mobi:outputListItem type="group">Image List</mobi:outputListItem>
+                    <mobi:outputListItems value="#{carousel.imageList}" var="item" type="thumb">
+                        <h:link >
+                            <img alt="" src="#{item.imageUrl}" height="20px"/>
+                            <h3 >#{item.title}"</h3>
+                            <p >picture with img link</p>
+                         </h:link>
+                    </mobi:outputListItems>
+                </mobi:outputList>
+                <h:form id="layoutform">
+                <h5>this list has list of commandLinks</h5>
+                    <mobi:outputList id="commandLinkList" inset="true">
+                        <mobi:outputListItem type="group">commandLinks List</mobi:outputListItem>
+                        <mobi:outputListItems value="#{list.linksList}" var="cmdLnk">
+                            <h:commandLink  value="#{cmdLnk.title}" action="#{cmdLnk.getAction}"/>
+                        </mobi:outputListItems>
+                    </mobi:outputList>
+                </h:form>
+          </f:facet>
+          <f:facet name="right">
+              <fieldset title="panel1">
+                      <legend>Panel1</legend>
+                    <h3> header for panel 1</h3>
+                     <p> content for panel 1 - king of clubs </p>
+                       <figure>
+                         <img width="85" height="150"
+                          src="../images/kingOfClubs.jpg"
+                            alt="king of clubs" />
+                         <figcaption>King of Clubs</figcaption>
+                        </figure>
+                    <ui:include src="included.xhtml"/>
+                </fieldset>
+              <h:panelGroup id="extrstuff">
+                     <p> content for panel 1 - king of clubs </p>
+                       <figure>
+                         <img width="85" height="150"
+                          src="../images/kingOfClubs.jpg"
+                            alt="king of clubs" />
+                         <figcaption>King of Clubs</figcaption>
+                        </figure>
+                    <ui:include src="included.xhtml"/>
+              </h:panelGroup>
+             <h:panelGroup id="extrstuff2">
+                     <p> content for panel 1 - king of clubs </p>
+                       <figure>
+                         <img width="85" height="150"
+                          src="../images/kingOfClubs.jpg"
+                            alt="king of clubs" />
+                         <figcaption>King of Clubs</figcaption>
+                        </figure>
+                    <ui:include src="included.xhtml"/>
+              </h:panelGroup>
+          </f:facet>
+       </mobi:layoutPane>
+    </f:facet>
+   </mobi:pagePanel>
+</h:body>
+</html>

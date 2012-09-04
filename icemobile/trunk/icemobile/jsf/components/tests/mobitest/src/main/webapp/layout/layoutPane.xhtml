@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
+<h:head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <meta name="apple-mobile-web-app-status-bar-style" content="black"/>
+     <mobi:deviceStylesheet name="#{themeSwitcher.theme}" media="screen" />
+    <title>LayoutPane singleScrollable</title>
+</h:head>
+<h:body>
+  <header>
+       <a href="../layoutComponents.html">index page</a>
+  </header>
+  <mobi:pagePanel>
+    <f:facet name="header">
+        <h3>layoutPane within pagePanel Test</h3>
+    </f:facet>
+   <f:facet name="body">
+     <mobi:layoutPane scrollable="true">
+          <f:facet name="single">
+              <fieldset title="panel1">
+                      <legend>Panel1</legend>
+                    <h3> header for panel 1</h3>
+                     <p> content for panel 1 - king of clubs </p>
+                       <figure>
+                         <img width="85" height="150"
+                          src="../images/kingOfClubs.jpg"
+                            alt="king of clubs" />
+                         <figcaption>King of Clubs</figcaption>
+                        </figure>
+                    <ui:include src="included.xhtml"/>
+                  </fieldset>
+              <h:panelGroup id="extrstuff">
+                     <p> content for panel 1 - king of clubs </p>
+                       <figure>
+                         <img width="85" height="150"
+                          src="../images/kingOfClubs.jpg"
+                            alt="king of clubs" />
+                         <figcaption>King of Clubs</figcaption>
+                        </figure>
+                    <ui:include src="included.xhtml"/>
+              </h:panelGroup>
+          </f:facet>
+       </mobi:layoutPane>
+    </f:facet>
+   </mobi:pagePanel>
+</h:body>
+</html>
