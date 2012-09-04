@@ -30,28 +30,6 @@
     <bean id="multipartResolver"
                 class="org.springframework.web.multipart.commons.CommonsMultipartResolver"/>
 
-	
-
-	<bean name="mediaStore" class="org.icemobile.samples.spring.mediacast.MediaStore">
-		<property name="media">
-			<list>
-				<ref bean="sampleMsg1" />
-			</list>
-		</property>
-    </bean>
-    
-    <bean name="sampleMedia1" class="org.icemobile.samples.spring.mediacast.Media">
-    	<property name="type" value="image/jpg"/>
-    	<property name="fileName" value="Desert.jpg"/>
-    </bean>
-    
-    <bean name="sampleMsg1" class="org.icemobile.samples.spring.mediacast.MediaMessage">
-    	<property name="id" value="0"/>
-    	<property name="title" value="Media Sample 1"/>
-    	<property name="description" value="A simple photo sample"/>
-    	<property name="photo" ref="sampleMedia1"/>
-    </bean>
-
 	<bean id="viewResolver"
 		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<property name="viewClass"
