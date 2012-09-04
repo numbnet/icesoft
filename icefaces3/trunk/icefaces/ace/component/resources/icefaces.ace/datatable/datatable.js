@@ -183,10 +183,12 @@ ice.ace.DataTable = function (id, cfg) {
         this.scrollTop = oldInstance.scrollTop;
     }
 
-    if (this.cfg.paginator) this.setupPaginator();
+    if (this.cfg.paginator)
+        this.setupPaginator();
 
     if (!this.cfg.disabled) {
-        this.setupSortEvents();
+        if (this.cfg.sorting)
+            this.setupSortEvents();
 
         if (this.isSelectionEnabled()) {
             this.selectionHolder = this.jqId + '_selection';
@@ -201,18 +203,23 @@ ice.ace.DataTable = function (id, cfg) {
             if (this.cfg.configPanel.startsWith(":"))
                 this.cfg.configPanel = this.cfg.configPanel.substring(1);
 
-        if (this.cfg.panelExpansion) this.setupPanelExpansionEvents();
+        if (this.cfg.panelExpansion)
+            this.setupPanelExpansionEvents();
 
-        if (this.cfg.rowExpansion) this.setupRowExpansionEvents();
+        if (this.cfg.rowExpansion)
+            this.setupRowExpansionEvents();
 
-        if (this.cfg.scrollable) this.setupScrolling();
+        if (this.cfg.scrollable)
+            this.setupScrolling();
 
-        if (rowEditors.length > 0) this.setupCellEditorEvents(rowEditors);
+        if (rowEditors.length > 0)
+            this.setupCellEditorEvents(rowEditors);
 
-        if (this.cfg.resizableColumns) this.setupResizableColumns();
+        if (this.cfg.resizableColumns)
+            this.setupResizableColumns();
 
         // blur and keyup are handled by the xhtml on____ attributes, and written by the renderer
-        if (this.cfg.filterEvent != "blur" && this.cfg.filterEvent != "keyup")
+        if (this.cfg.filterEvent && this.cfg.filterEvent != "blur" && this.cfg.filterEvent != "keyup")
             this.setupFilterEvents();
 
         if (this.cfg.reorderableColumns) {
