@@ -5,11 +5,11 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.UUID;
 
+import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
@@ -28,7 +28,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @SessionAttributes({"uploadModel"})
 public class ApplicationController {
 
-	@Autowired
+	@Inject
 	private MediaStore mediaStore;
 	
 	String currentFileName = null;
