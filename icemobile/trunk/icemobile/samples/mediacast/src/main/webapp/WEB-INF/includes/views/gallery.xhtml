@@ -25,7 +25,7 @@
     <ui:param name="title" value="Media Gallery"/>
              
     <ui:define name="nav-small">
-        <h:form id="backBtnFrm">
+        <h:form id="headerFrm">
             <h:commandLink id="backBtn"
                            type="back"
                            value="back"
@@ -39,11 +39,12 @@
     </ui:define>
     
     <ui:define name="nav-large">
-        <h:form id="backBtnFrm">
+        <h:form id="headerFrm">
             
             <h:graphicImage library="images"
                                         name="icemobile_thumb.png"
-                                        styleClass="branding"/>#{title}
+                                        styleClass="branding"/>
+            <span id="title">#{title}</span>
             <div style="float:right;">
                 <mobi:commandButton id="backBtn"
                         value="back"
