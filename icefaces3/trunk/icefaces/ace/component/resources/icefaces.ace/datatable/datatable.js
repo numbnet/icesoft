@@ -162,15 +162,17 @@ ice.ace.DataTable = function (id, cfg) {
 
     this.sortColumnSelector = this.jqId + ' > div > table > thead > tr > th > div.ui-sortable-column';
     this.sortControlSelector = this.jqId + ' > div > table > thead > tr > th > div.ui-sortable-column > span > span.ui-sortable-control';
+    this.sortUpSelector = this.sortControlSelector + ' a.ui-icon-triangle-1-n';
+    this.sortDownSelector = this.sortControlSelector + ' a.ui-icon-triangle-1-s';
     this.rowSelector = this.jqId + ' > div > table > tbody.ui-datatable-data > tr:not(.ui-unselectable)';
     this.cellSelector = this.jqId + ' > div > table > tbody.ui-datatable-data > tr:not(.ui-unselectable) > td';
     this.scrollBodySelector = this.jqId + ' > div.ui-datatable-scrollable-body';
     this.filterSelector = this.jqId + ' > div > table > thead > tr > th > div > input.ui-column-filter';
-    this.panelExpansionSelector = 'div > table > tbody.ui-datatable-data > tr:not(.ui-expanded-row-content) > td *:not(tbody) a.ui-row-panel-toggler';
-    this.rowExpansionSelector = 'div > table > tbody.ui-datatable-data > tr > td *:not(tbody) a.ui-row-toggler';
+    this.panelExpansionSelector = this.jqId + ' > div > table > tbody.ui-datatable-data > tr:not(.ui-expanded-row-content) > td *:not(tbody) a.ui-row-panel-toggler';
+    this.rowExpansionSelector = this.jqId + ' > div > table > tbody.ui-datatable-data > tr > td *:not(tbody) a.ui-row-toggler';
     // 'link' will be replaced with the style class of the element in question
-    this.cellEditorSelector = 'div > table > tbody.ui-datatable-data > tr > td > div.ui-row-editor link, ' +
-            'div > table > tbody.ui-datatable-data > tr > td > div > div.ui-row-editor link';
+    this.cellEditorSelector = this.jqId + ' > div > table > tbody.ui-datatable-data > tr > td > div.ui-row-editor link, ' +
+            this.jqId + ' > div > table > tbody.ui-datatable-data > tr > td > div > div.ui-row-editor link';
 
     var oldInstance = ice.ace.DataTables[this.id];
     var rowEditors = this.getRowEditors();
@@ -227,9 +229,11 @@ ice.ace.DataTable = function (id, cfg) {
 
     ice.ace.DataTables[this.id] = this;
 
-    // Unbind event handlers
-    var self = this;
-    ice.onElementCleanup(this.id, function() { self.unload(); });
+    // Setup unload callback if not already done
+    if (!window[this.cfg.widgetVar]) {
+        var self = this;
+        ice.onElementUpdate(this.id, function() { self.unload(); });
+    }
 }
 
 
@@ -243,13 +247,15 @@ ice.ace.DataTable.prototype.unload = function() {
     ice.ace.jq(this.sortColumnSelector).unbind("click").unbind("mousemove").unbind("mouseleave");
 
     var sortControls = ice.ace.jq(this.sortControlSelector);
-    sortControls.unbind("click").unbind("mousemove").unbind("mouseleave");
-    sortControls.find('.ui-icon-triangle-1-n:first').die('keypress');
-    sortControls.find('.ui-icon-triangle-1-s:first').die('keypress');
+    sortControls.unbind("click mousemove mouseleave");
+    jqSelf.off('keypress', this.sortUpSelector);
+    jqSelf.off('keypress', this.sortDownSelector);
 
     // Clear selection events
     jqSelf.off('mouseenter click dblclick', this.cellSelector)
-            .off('mouseenter click dblclick', this.rowSelector)
+            .off('mouseenter click dblclick', this.rowSelector);
+
+    ice.ace.jq(this.cellSelector).first()
             .closest('table').unbind('mouseleave')
             .find('> thead').unbind('mouseenter');
 
@@ -258,11 +264,11 @@ ice.ace.DataTable.prototype.unload = function() {
     ice.ace.jq(this.scrollBodySelector).unbind('scroll')
 
     // Clear filter events
-    ice.ace.jq(this.filterSelector).unbind('keypress').die('keyup');
+    ice.ace.jq(this.filterSelector).unbind('keypress').off('keyup');
 
     // Clear panel expansion events
     jqSelf.off('keyup click', this.panelExpansionSelector);
-    `
+
     // Clear row expansion events
     jqSelf.off('keyup click', this.rowExpansionSelector);
 
@@ -291,14 +297,14 @@ ice.ace.DataTable.prototype.unload = function() {
 
 ice.ace.DataTable.prototype.setupFilterEvents = function () {
     var _self = this;
-    if (this.cfg.filterEvent == "enter") ice.ace.jq(this.jqId + ' > div > table > thead > tr > th > div > input.ui-column-filter').unbind('keypress').bind('keypress', function (event) {
+    if (this.cfg.filterEvent == "enter") ice.ace.jq(this.filterSelector).unbind('keypress').bind('keypress', function (event) {
         event.stopPropagation();
         if (event.which == 13) {
             _self.filter(event);
             return false; // Don't run form level enter key handling
         }
     });
-    else if (this.cfg.filterEvent == "change") ice.ace.jq(this.jqId + ' > div > table > thead > tr > th > div > input.ui-column-filter').off('keyup').on('keyup', function (event) {
+    else if (this.cfg.filterEvent == "change") ice.ace.jq(this.filterSelector).off('keyup').on('keyup', function (event) {
         var _event = event;
         if (event.which != 9) {
             if (_self.delayedFilterCall) clearTimeout(_self.delayedFilterCall);
@@ -494,7 +500,7 @@ ice.ace.DataTable.prototype.setupSortEvents = function () {
     }
 
     // Bind clickable control events
-    ice.ace.jq(this.jqId + ' > div > table > thead > tr > th > div.ui-sortable-column span.ui-sortable-control')
+    ice.ace.jq(this.sortControlSelector)
         .unbind('click').bind("click", function (event, altY, altMeta) {
             var $this = ice.ace.jq(this),
                 topCarat = ice.ace.jq($this.find("a.ui-icon-triangle-1-n")[0]),
@@ -572,10 +578,9 @@ ice.ace.DataTable.prototype.setupSortEvents = function () {
         });
 
     // Bind keypress kb-navigable sort icons
-    var sortableControlsSelector = 'div > table > thead > tr > th > div.ui-sortable-column span.ui-sortable-control';
     ice.ace.jq(this.jqId)
-        .off('keypress', sortableControlsSelector + ' a.ui-icon-triangle-1-n')
-        .on('keypress', sortableControlsSelector + ' a.ui-icon-triangle-1-n', function (event) {
+        .off('keypress', this.sortUpSelector)
+        .on('keypress', this.sortUpSelector, function (event) {
             if (event.which == 32 || event.which == 13) {
                 var $currentTarget = ice.ace.jq(event.currentTarget);
                 $currentTarget.closest('.ui-sortable-control')
@@ -585,8 +590,8 @@ ice.ace.DataTable.prototype.setupSortEvents = function () {
         });
 
     ice.ace.jq(this.jqId)
-        .off('keypress', sortableControlsSelector + ' a.ui-icon-triangle-1-s')
-        .on('keypress', sortableControlsSelector + ' a.ui-icon-triangle-1-s', function (event) {
+        .off('keypress', this.sortDownSelector)
+        .on('keypress', this.sortDownSelector, function (event) {
             if (event.which == 32 || event.which == 13) {
                 var $currentTarget = ice.ace.jq(event.currentTarget);
                 $currentTarget.closest('.ui-sortable-control')
@@ -599,8 +604,8 @@ ice.ace.DataTable.prototype.setupSortEvents = function () {
 ice.ace.DataTable.prototype.tearDownSelectionEvents = function () {
     var selectEvent = this.cfg.dblclickSelect ? 'dblclick' : 'click';
     var selector = this.isCellSelectionEnabled()
-        ? this.jqId + ' > div > table > tbody.ui-datatable-data > tr:not(.ui-unselectable) > td'
-        : this.jqId + ' > div > table > tbody.ui-datatable-data > tr:not(.ui-unselectable)';
+        ? this.cellSelector
+        : this.rowSelector;
 
     ice.ace.jq(selector).die('dblclick').die('click').die('mouseenter');
 }
@@ -609,8 +614,8 @@ ice.ace.DataTable.prototype.setupSelectionEvents = function () {
     var _self = this;
     var selectEvent = this.cfg.dblclickSelect ? 'dblclick' : 'click',
         selector = this.isCellSelectionEnabled()
-            ? this.jqId + ' > div > table > tbody.ui-datatable-data > tr:not(.ui-unselectable) > td'
-            : this.jqId + ' > div > table > tbody.ui-datatable-data > tr:not(.ui-unselectable)';
+            ? this.cellSelector
+            : this.rowSelector;
 
     ice.ace.jq(selector)
         .css('cursor', 'pointer')
@@ -675,7 +680,7 @@ ice.ace.DataTable.prototype.setupReorderableColumns = function () {
 
 ice.ace.DataTable.prototype.setupRowExpansionEvents = function () {
     var table = this;
-    var selector = 'div > table > tbody.ui-datatable-data > tr > td *:not(tbody) a.ui-row-toggler';
+    var selector = this.rowExpansionSelector;
     ice.ace.jq(this.jqId)
         .off('keyup click', selector)
         .on('keyup', selector, function (event) {
@@ -691,7 +696,7 @@ ice.ace.DataTable.prototype.setupRowExpansionEvents = function () {
 
 ice.ace.DataTable.prototype.setupPanelExpansionEvents = function () {
     var table = this;
-    var selector = 'div > table > tbody.ui-datatable-data > tr:not(.ui-expanded-row-content) > td *:not(tbody) a.ui-row-panel-toggler';
+    var selector = this.panelExpansionSelector;
     ice.ace.jq(this.jqId)
         .off('keyup click', selector)
         .on('keyup', selector, function (event) {
@@ -715,11 +720,11 @@ ice.ace.DataTable.prototype.setupScrolling = function () {
     this.resizeScrolling();
 
     // Persist scrolling position if one has been loaded from previous instance
-    ice.ace.jq(_self.jqId + ' > div.ui-datatable-scrollable-body')
+    ice.ace.jq(this.scrollBodySelector)
         .scrollTop(this.scrollTop)
         .scrollLeft(this.scrollLeft);
 
-    ice.ace.jq(_self.jqId + ' > div.ui-datatable-scrollable-body').bind('scroll', function () {
+    ice.ace.jq(this.scrollBodySelector).bind('scroll', function () {
         var $this = ice.ace.jq(this),
             $header = ice.ace.jq(_self.jqId + ' > div.ui-datatable-scrollable-header'),
             $footer = ice.ace.jq(_self.jqId + ' > div.ui-datatable-scrollable-footer'),
