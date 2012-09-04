@@ -503,6 +503,8 @@
                         name="org.icefaces.component.accordion/accordion.js"/>
                 <include
                         name="org.icefaces.component.layoutmenu/layoutmenut.js"/>
+                <include
+                        name="org.icefaces.component.util/scrollable.js"/>
             </fileset>
         </concat>
     </target>
