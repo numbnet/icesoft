@@ -38,6 +38,7 @@ public class GMapOverlayRenderer extends CoreRenderer {
         writer.writeAttribute("type", "text/javascript", null);
         writer.write("ice.ace.jq(function() {");
         if (overlay.getPoints() != null && overlay.getShape() != null){
+            writer.write("ice.ace.gMap.removeGOverlay('" + overlay.getParent().getClientId(context) + "', '" + clientId + "');");
             writer.write("ice.ace.gMap.gOverlay('" + overlay.getParent().getClientId(context) + "', '" + clientId + "' , '" + overlay.getShape() + "' , '" + overlay.getPoints() + "' , \"" + overlay.getOptions() + "\");");
         }
         writer.write("});");

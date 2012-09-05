@@ -52,4 +52,7 @@ public class GMapLayerMeta extends UIPanelMeta {
 	@Property(tlddoc="Additional options to be sent to the layer. Check google maps API for more specifics. Form is attribute:'value'", defaultValue = "Skip")
 	private String options;
 
+    @Property(tlddoc="Whether to make the chosen layer visible or not")
+    private boolean visible;
+
 }
