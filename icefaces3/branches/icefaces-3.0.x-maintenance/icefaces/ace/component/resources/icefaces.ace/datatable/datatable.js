@@ -286,9 +286,11 @@ ice.ace.DataTable.prototype.unload = function() {
     if (this.cfg.paginator)
         this.cfg.paginator.destroy();
 
-    // Clear widget var
-    window[this.cfg.widgetVar] = undefined;
-    ice.ace.DataTables[this.id] = undefined;
+    // Clear instance from widget var, leave behind state
+    // for persisting between instances.
+    var clientState = {scrollTop : this.scrollTop, scrollLeft: this.scrollLeft};
+    window[this.cfg.widgetVar] = clientState;
+    ice.ace.DataTables[this.id] = clientState;
 }
 
 ice.ace.DataTable.prototype.setupFilterEvents = function () {
