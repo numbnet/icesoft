@@ -297,9 +297,9 @@ ice.ace.DataTable.prototype.unload = function() {
     if (this.cfg.paginator)
         this.cfg.paginator.destroy();
 
-    // Clear DataTable instance references
-    ice.ace.DataTables[this.id] = undefined;
-    window[this.cfg.widgetVar] = undefined;
+    var clientState = {scrollTop : this.scrollTop, scrollLeft : this.scrollLeft};
+    ice.ace.DataTables[this.id] = clientState;
+    window[this.cfg.widgetVar] = clientState;
 }
 
 ice.ace.DataTable.prototype.setupFilterEvents = function () {
