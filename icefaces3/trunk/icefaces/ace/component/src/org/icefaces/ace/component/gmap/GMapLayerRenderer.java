@@ -40,12 +40,15 @@ public class GMapLayerRenderer extends CoreRenderer {
         writer.write("ice.ace.jq(function() {");
         if (gMapLayer.getLayerType() != null){
             writer.write("ice.ace.gMap.removeMapLayer('" + gMapLayer.getParent().getClientId(context) + "', '" + clientId +"');");
-            if(gMapLayer.getUrl() != null)
-                writer.write("ice.ace.gMap.addMapLayer('" + gMapLayer.getParent().getClientId(context) + "', '" + clientId +
-                    "', '"+ gMapLayer.getLayerType() + "', \"" + gMapLayer.getOptions() + "\", '" + gMapLayer.getUrl() + "');");
-            else
-                writer.write("ice.ace.gMap.addMapLayer('" + gMapLayer.getParent().getClientId(context) + "', '" + clientId +
-                   "', '"+ gMapLayer.getLayerType() + "', \"" + gMapLayer.getOptions() + "\");");
+            if(gMapLayer.isVisible())
+            {
+                if(gMapLayer.getUrl() != null)
+                    writer.write("ice.ace.gMap.addMapLayer('" + gMapLayer.getParent().getClientId(context) + "', '" + clientId +
+                        "', '"+ gMapLayer.getLayerType() + "', \"" + gMapLayer.getOptions() + "\", '" + gMapLayer.getUrl() + "');");
+                else
+                    writer.write("ice.ace.gMap.addMapLayer('" + gMapLayer.getParent().getClientId(context) + "', '" + clientId +
+                        "', '"+ gMapLayer.getLayerType() + "', \"" + gMapLayer.getOptions() + "\");");
+            }
         }
         writer.write("});");
         writer.endElement("script");
