@@ -61,7 +61,7 @@ public class CarouselTag extends TagSupport {
 
 
         Writer out = pageContext.getOut();
-        originalCollectionSize = collection.size();
+        originalCollectionSize = collection == null ? 0 : collection.size();
         iterationCount = 0;
 
         try {
