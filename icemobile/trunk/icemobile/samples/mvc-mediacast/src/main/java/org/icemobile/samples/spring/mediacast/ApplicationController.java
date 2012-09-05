@@ -83,37 +83,44 @@ public class ApplicationController {
 			final RedirectAttributes redirectAttrs)
 			throws IOException {
 		
-		String newFileName = null;
-		String type = request.getParameter("type");
-		if( "photo".equals(type)){
-			newFileName = saveImage(request, file, uploadModel);
-			Media media = new Media();
-			media.setFileName(newFileName);
-			media.setType(file.getContentType());
-			uploadModel.setPhoto(media);
+		if( file != null ){
+			String newFileName = null;
+			String type = request.getParameter("type");
+			if( "photo".equals(type)){
+				newFileName = saveImage(request, file, uploadModel);
+				Media media = new Media();
+				media.setFileName(newFileName);
+				media.setType(file.getContentType());
+				uploadModel.setPhoto(media);
+			}
+			else if( "video".equals(type)){
+				newFileName = saveVideo(request, file, uploadModel);
+				Media media = new Media();
+				media.setFileName(newFileName);
+				media.setType(file.getContentType());
+				uploadModel.setVideo(media);
+			}
+			else if( "audio".equals(type)){
+				newFileName = saveAudio(request, file, uploadModel);
+				Media media = new Media();
+				media.setFileName(newFileName);
+				media.setType(file.getContentType());
+				uploadModel.setAudio(media);
+			}
+			log.debug("processUpload() type=" + type + ", file="+file);
+			if ((null != file) && !file.isEmpty()) {
+				uploadModel.setUploadMsg(String.format("Thank you, your %s file was uploaded successfully.", type));
+				log.debug("successfully uploaded media, uploadModel=" + uploadModel);
+			}
+			redirectAttrs.addFlashAttribute("uploadModel", uploadModel);
+			
+			return "redirect:/";
 		}
-		else if( "video".equals(type)){
-			newFileName = saveVideo(request, file, uploadModel);
-			Media media = new Media();
-			media.setFileName(newFileName);
-			media.setType(file.getContentType());
-			uploadModel.setVideo(media);
+		else{
+			log.warn("upload file was null");
+			return "mediacast";
 		}
-		else if( "audio".equals(type)){
-			newFileName = saveAudio(request, file, uploadModel);
-			Media media = new Media();
-			media.setFileName(newFileName);
-			media.setType(file.getContentType());
-			uploadModel.setAudio(media);
-		}
-		log.debug("processUpload() type=" + type + ", file="+file);
-		if ((null != file) && !file.isEmpty()) {
-			uploadModel.setUploadMsg(String.format("Thank you, your %s file was uploaded successfully.", type));
-			log.debug("successfully uploaded media, uploadModel=" + uploadModel);
-		}
-		redirectAttrs.addFlashAttribute("uploadModel", uploadModel);
 		
-		return "redirect:/";
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
@@ -121,6 +128,7 @@ public class ApplicationController {
 			@RequestParam String tags,
 			@RequestParam String title, 
 			@RequestParam String description,
+			@RequestParam String geolocation,
 			@ModelAttribute("uploadModel") MediaMessage uploadModel, 
 			SessionStatus status) {
 
@@ -128,6 +136,7 @@ public class ApplicationController {
 			uploadModel.setId(newId());
 		}
 		if (tags != null && tags.indexOf(" ") > -1) {
+			uploadModel.setTagString(tags);
 			// workaround split returns null if no delimiter found
 			uploadModel.setTags(Arrays.asList(StringUtils
 					.split(tags + " ", " ")));
@@ -135,12 +144,55 @@ public class ApplicationController {
 
 		uploadModel.setDescription(description);
 		uploadModel.setTitle(title);
+		setGeolocation(geolocation, uploadModel);
+		
 		mediaStore.getMedia().add(uploadModel.clone());
 		log.debug("successfully added message to mediaStore, uploadModel="
 				+ uploadModel);
 		uploadModel.clear();
 		status.setComplete();
 		return "redirect:/";
+	}
+	
+	private void setGeolocation(String geolocation, MediaMessage uploadModel){
+		log.debug("geolocation="+geolocation);
+		if( geolocation != null ){
+			String[] parts = geolocation.split(",");
+			
+			if( parts.length > 0 ){
+				try{
+					uploadModel.setLatitude(Double.parseDouble(parts[0]));
+				}
+				catch(NumberFormatException e){
+					//do nothing
+				}
+			}
+			if( parts.length > 1 ){
+				try{
+					uploadModel.setLongitude( Double.parseDouble(parts[1]) );
+				}
+				catch(NumberFormatException e){
+					//do nothing
+				}
+			}
+			if( parts.length > 2 ){
+				try{
+					uploadModel.setAltitude(Double.parseDouble(parts[2]));
+				}
+				catch(NumberFormatException e){
+					//do nothing
+				}
+			}
+			if( parts.length > 3 ){
+				try{
+					uploadModel.setDirection(Double.parseDouble(parts[3]));
+				}
+				catch(NumberFormatException e){
+					//do nothing
+				} 
+			}
+			
+		}
 	}
 
 	private String newId() {

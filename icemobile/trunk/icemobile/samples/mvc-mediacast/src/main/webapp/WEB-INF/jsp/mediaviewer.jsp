@@ -18,7 +18,7 @@
 						<label>Photo:</label>
 					</mobi:fieldSetRow>
 					<mobi:fieldSetRow style="text-align:center;">
-						<img id="largePhoto"
+						<img id="largePhoto" width="100%" 
 							src='<c:url value="/resources/uploads/${media.photo.fileName}"/>'
 							class="imageViewer" />
 					</mobi:fieldSetRow>
@@ -55,6 +55,28 @@
 				<mobi:fieldSetRow>
 					<label>Description: </label>
 					<c:out value="${media.description}" />
+				</mobi:fieldSetRow>
+				<mobi:fieldSetRow>
+					<label>Geolocation: </label>
+					<span>${media.latitude}, ${media.longitude}, ${media.altitude}, ${media.direction}</span>
+					<script src="http://openlayers.org/api/OpenLayers.js"></script>
+					<div style="width:90%; height:200px; z-index:0;" id="map"></div>
+					<script type="text/javascript">
+					var map = new OpenLayers.Map('map');
+					var wms = new OpenLayers.Layer.WMS(
+					  "OpenLayers WMS",
+					  "http://vmap0.tiles.osgeo.org/wms/vmap0",
+					  {'layers':'basic'} );
+					map.addLayer(wms);
+					map.setCenter(new OpenLayers.LonLat(${media.longitude},${media.latitude}),3);
+					var vectorLayer = new OpenLayers.Layer.Vector("Overlay");
+					var feature = new OpenLayers.Feature.Vector(
+					 new OpenLayers.Geometry.Point(${media.longitude},${media.latitude}),
+					 {some:'data'},
+					 {externalGraphic: '<c:url value="/resources/images/icemobile_thumb.png"/>', graphicHeight: 21, graphicWidth: 16});
+					vectorLayer.addFeatures(feature);
+					map.addLayer(vectorLayer);
+					</script>
 				</mobi:fieldSetRow>
 				<mobi:fieldSetRow>
 					<label>Tags: </label>

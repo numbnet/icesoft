@@ -27,20 +27,28 @@
 			<div style="margin-top:10px;">
 				<h4>Send a Media Message</h4>
 				<div id="msg">${uploadModel.uploadMsg}</div>
-				<div style="text-align:center;" class="ajaxShow">
-					<a class="mobi-button mobi-button-default" style="float:none;"
-						onclick="$('.upload').hide();$('#cameraUpload').show();">Upload a Photo</a>
-					<a class="mobi-button mobi-button-default" style="float:none;"
-						onclick="$('.upload').hide();$('#camcorderUpload').show();">Upload Video</a>
-					<a class="mobi-button mobi-button-default" style="float:none;"
-						onclick="$('.upload').hide();$('#micUpload').show();">Upload Audio</a>
+				<div class="mobi-button-group mobi-button-group-hor ajaxShow">
+					<a class="mobi-button mobi-button-default" 
+						onclick="showUpload(this,'camera');">Upload a Photo</a>
+					<a class="mobi-button mobi-button-default"
+						onclick="showUpload(this,'camcorder');">Upload Video</a>
+					<a class="mobi-button mobi-button-default" 
+						onclick="showUpload(this,'mic');">Upload Audio</a>
 				</div>
+				<script type="text/javascript">
+				function showUpload(elem,type){
+					$('.upload').hide();
+					$('#'+type+'Upload').show();
+					$('.mobi-button').removeClass('mobi-button-selected');
+					$(elem).addClass('mobi-button-selected');
+				}
+				</script>
 				<div class="ajaxHide upload" id="cameraUpload">
 					<form:form id="cameraUploadForm" method="POST" enctype="multipart/form-data"
 						 modelAttribute="uploadModel">
 		                <input type="hidden" name="type" value="photo"/>
 		                <mobi:fieldSetGroup id="cameraUploadGrp" inset="true" style="margin-top:10px;">
-		                    <mobi:fieldSetRow style="min-height:20px;">
+		                    <mobi:fieldSetRow style="min-height:30px;">
 		                    	<div>
 		                         <mobi:camera id="upload"/>
 		                          <div style="display:inline-block;">
@@ -62,7 +70,7 @@
 		            <form:form id="camcorderUploadForm" method="POST" enctype="multipart/form-data">
 		                <input type="hidden" name="type" value="video"/>
 		                <mobi:fieldSetGroup id="camcorderUploadGrp" inset="true" style="margin-top:10px;">
-		                    <mobi:fieldSetRow style="min-height:20px;">
+		                    <mobi:fieldSetRow style="min-height:30px;">
 		                         <div>
 		                         <mobi:camcorder id="camcorder"/>
 		                          <div style="display:inline-block;">
@@ -84,7 +92,7 @@
 		            <form:form id="micUploadForm" method="POST" enctype="multipart/form-data">
 		                <input type="hidden" name="type" value="audio"/>
 		                <mobi:fieldSetGroup id="micUploadGrp" inset="true" style="margin-top:10px;">
-		                    <mobi:fieldSetRow style="min-height:20px;">
+		                    <mobi:fieldSetRow style="min-height:30px;">
 		                    	<div>
 		                    		<mobi:microphone id="mic"/>
 		                    	</div>
@@ -102,20 +110,31 @@
 	            
 	            <form:form id="uploadForm" method="POST" modelAttribute="uploadModel">
 	                <mobi:fieldSetGroup id="uploadGrp" inset="true" style="margin-top:10px;">
-	                    <mobi:fieldSetRow style="min-height:20px;">
-	                         <label for="title">Title</label>
-	                         <input type="text" id="title" name="title"
-	                         	placeholder="Add a title.."/>
+	                    <mobi:fieldSetRow style="min-height:30px;">
+	                    	 <label for="title">Title</label>
+	                         <mobi:inputtext name="title" 
+	                         	styleClass="input"
+	                         	type="text"
+                                autoCorrect="off"
+                                placeholder="Add a title.."
+                                value="${uploadModel.title}"/>
 	                     </mobi:fieldSetRow>
 	                     <mobi:fieldSetRow style="min-height:50px;">
 	                         <label for="description">Description</label>
-	                         <textarea id="description" name="description" rows="5"
-	                         	placeholder="Add some descriptive text..."></textarea>
+	                         <mobi:inputtext name="description" 
+	                         	styleClass="input"
+	                         	type="textarea"
+                                autoCorrect="off"
+                                placeholder="Add some descriptive text..."
+                                value="${uploadModel.description}"/>
 	                     </mobi:fieldSetRow>
 	                     <mobi:fieldSetRow style="min-height:50px;">
 	                         <label for="description">Tags</label>
-	                         <input id="tags" name="tags" type="text" 
-	                         	placeholder="Add a space-delimited series of descriptive tags"/>
+	                         <mobi:inputtext name="tags" type="text"
+	                         	styleClass="input"
+                                autoCorrect="off"
+                                placeholder="Add some tags.."
+                                value="${uploadModel.tagString}"/>
 	                     </mobi:fieldSetRow>
 	                     <mobi:fieldSetRow style="text-align:center;">
 	                          <mobi:commandButton name="submit"
@@ -125,6 +144,7 @@
 	                                
 	                    </mobi:fieldSetRow>
 	                </mobi:fieldSetGroup>
+	                <mobi:geolocation id="geolocation"/>
 	            </form:form>
             </div>
 		</mobi:pagePanelBody>
