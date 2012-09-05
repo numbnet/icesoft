@@ -406,7 +406,7 @@ public class DataTable extends DataTableBase implements Serializable {
     /*#######################################################################*/
 
     public boolean isSortingEnabled() {
-        for (Column c : getColumns())
+        for (Column c : getColumns(true))
             if (c.getValueExpression("sortBy") != null)
                 return true;
 
@@ -414,7 +414,7 @@ public class DataTable extends DataTableBase implements Serializable {
     }
 
     public boolean isFilteringEnabled() {
-        for (Column c : getColumns())
+        for (Column c : getColumns(true))
             if (c.getValueExpression("filterBy") != null)
                 return true;
 
