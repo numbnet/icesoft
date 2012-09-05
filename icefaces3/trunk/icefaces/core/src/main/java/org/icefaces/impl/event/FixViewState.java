@@ -13,9 +13,11 @@ import javax.faces.event.SystemEvent;
 import javax.faces.event.SystemEventListener;
 import java.io.IOException;
 import java.text.StringCharacterIterator;
+import java.util.Random;
 
 public class FixViewState implements SystemEventListener {
     private static final String ID_SUFFIX = "_fixviewstate";
+    private static final Random random = new Random();
 
     public void processEvent(final SystemEvent event) throws AbortProcessingException {
         final UIForm form = (UIForm) ((ComponentSystemEvent) event).getComponent();
@@ -61,6 +63,11 @@ public class FixViewState implements SystemEventListener {
                 writer.writeAttribute("type", "text/javascript", null);
                 String viewState = context.getApplication().getStateManager().getViewState(context);
                 writer.writeText("ice.fixViewState('" + formClientID + "', '" + escapeJSString(viewState) + "');", null);
+                //generate random text to force the DOM diffing to send view state fixing code for non-ICEfaces requests
+                //because the client side view state fixing is not executed
+                if (!context.getExternalContext().getRequestParameterMap().containsKey("ice.submit.type")) {
+                    writer.writeText("//" + random.nextLong(), null);
+                }
                 writer.endElement("script");
             }
             writer.endElement("span");
