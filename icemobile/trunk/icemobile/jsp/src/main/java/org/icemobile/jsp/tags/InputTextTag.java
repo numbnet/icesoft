@@ -71,7 +71,9 @@ public class InputTextTag extends SimpleTagSupport {
         }
         // apply pass through attributes.
         out.write(" class=\"" + baseClass.toString() + "\"");
-        out.write(" style=\"" + style + "\"");
+        if( style != null ){
+        	out.write(" style=\"" + style + "\"");
+        }
         out.write(" autocorrect=\"" + autoCorrect + "\"");
         out.write(" placeholder=\"" + placeholder + "\"");
         // apply textarea passthough attributes.
