@@ -784,18 +784,24 @@ if (!window.ice.icefaces) {
                 elementUpdateListeners = reject(elementUpdateListeners, function(idCallbackTuple) {
                     var id = key(idCallbackTuple);
                     var element = document.getElementById(id);
-                    var updated = isAncestorOf(updatedElement, element);
-                    if (updated) {
-                        var callback = value(idCallbackTuple);
-                        try {
-                            callback(element);
-                        } catch (e) {
-                            //ignore exception thrown in callback
-                            //to make sure that the corresponding entry is removed from the list
+                    //test if inner element still exists, sometimes client side code can remove DOM fragments
+                    if (element) {
+                        var updated = isAncestorOf(updatedElement, element);
+                        if (updated) {
+                            var callback = value(idCallbackTuple);
+                            try {
+                                callback(element);
+                            } catch (e) {
+                                //ignore exception thrown in callback
+                                //to make sure that the corresponding entry is removed from the list
+                            }
                         }
-                    }
 
-                    return updated;
+                        return updated;
+                    } else {
+                        //confirm callback removal since the corresponding element is gone
+                        return true;
+                    }
                 });
             }
         }
