@@ -233,38 +233,10 @@ ice.ace.gMap.create = function (ele) {
         var gmapWrapper = new GMapWrapper(ele, new google.maps.Map(document.getElementById(ele),{mapTypeId: google.maps.MapTypeId.ROADMAP}));
         var hiddenField = document.getElementById(ele);
         var mapTypedRegistered = false;
+        //google.maps.event.addListener(gmapWrapper.getRealGMap(),"center_changed",function(){});
         initializing = false;
         GMapRepository[ele] = gmapWrapper;
         return gmapWrapper;
-    },
-
-ice.ace.gMap.submitEvent = function(ele, map, eventName, zoomLevel) {
-        try {
-            var center = map.getCenter();
-            var lat = $(ele + 'lat');
-            var lng = $(ele + 'lng');
-            var event = $(ele + 'event');
-            var zoom = $(ele + 'zoom');
-            var type = $(ele + 'type');
-            lat.value = center.lat();
-            lng.value = center.lng();
-            event.value = eventName;
-            if (zoomLevel == null) {
-                zoom.value = map.getZoom();
-            } else {
-                zoom.value = zoomLevel;
-                if (zoom.value == map.getZoom()) {
-                    return;
-                }
-            }
-            var form = Ice.util.findForm(lat);
-            var nothingEvent = new Object();
-            iceSubmitPartial(form, lat, nothingEvent);
-            //reset event value, so the decode method of gmap can
-            //make deceison before decode
-            event.value = "";
-        } catch(e) {
-        }
     },
 
 ice.ace.gMap.recreate = function(ele, gmapWrapper) {
@@ -280,11 +252,15 @@ ice.ace.gMap.recreate = function(ele, gmapWrapper) {
         for (control in controls) {
             if (tempObject[control] == null) {
                 ice.ace.gMap.removeControl(ele, control);
-                ice.ace.gMap.addControl(ele, control)
+                ice.ace.gMap.addControl(ele, control);
             }
         }
         return gmapWrapper;
     },
+
+ice.ace.gMap.addEvent = function(ele, eventName){
+alert(eventName + " event seen");
+},
 
 ice.ace.gMap.addControl = function(ele, controlName) {
         var gmapWrapper = ice.ace.gMap.getGMapWrapper(ele);
@@ -399,7 +375,6 @@ ice.ace.gMap.gService = function(ele, name, locationList, options)
                 break;
             case "elevation":
             case "elevationservice":
-                //Required options: travelMode, 2 points/addresses
                 service=new google.maps.ElevationService();
                 var waypoints = [];
                 for (var i = 0; i < points.length; i++){

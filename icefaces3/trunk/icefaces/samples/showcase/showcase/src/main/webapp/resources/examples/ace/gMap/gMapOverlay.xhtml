@@ -1,0 +1,44 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                xmlns:ace="http://www.icefaces.org/icefaces/components"
+                xmlns:ice="http://www.icesoft.com/icefaces/component"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="/resources/templates/content-template.xhtml">
+
+    <ui:param name="title" value="#{msgs[overlayBean.title]}"/>
+    <ui:param name="description" value="#{msgs[overlayBean.description]}"/>
+    <ui:param name="resourceValue" value="#{overlayBean.exampleResource}"/>
+
+    <ui:param name="wikiResources" value="#{gMapResources.wikiResources}"/>
+    <ui:param name="tldResources" value="#{gMapResources.tldResources}"/>
+
+    <ui:define name="example">
+    <ace:gMap id="gMap" latitude="0" longitude="0" zoomLevel="3">
+        <ace:gMapOverlay shape="${overlayBean.shape}" points="${overlayBean.points}" options="${overlayBean.options}"/>
+    </ace:gMap>
+    <h:form id="inputForm">
+        <h:selectOneMenu id="locationSelector" value="#{overlayBean.shape}">
+        <f:ajax event="valueChange" render="@all"/>
+        <f:selectItem itemValue="polyline" itemLabel="Line"/>
+        <f:selectItem itemValue="polygon" itemLabel="Polygon"/>
+        <f:selectItem itemValue="rectangle" itemLabel="Rectangle"/>
+        <f:selectItem itemValue="circle" itemLabel="Circle"/>
+    </h:selectOneMenu>
+        <h:outputLabel for="optionsIn" value="Options:"/>
+        <h:inputText  id="optionsIn" value="${overlayBean.options}"/>
+        <br/>
+        <h:outputLabel for="pointsIn" value="Points:"/>
+        <h:inputText  size="100" id="pointsIn" value="${overlayBean.points}"/>
+        <p>Line and Polygon will use all points given to them to create a shape.
+            <br/>Rectangle will use the first two points as top left and bottom right corners.
+            <br/>Circle will use the first point as center, and requires the radius: option to display.
+            Note: Radius is determined in meters, so large numbers (100000+) are required to make one easily visible from intial zoom.
+        <br/><br/>All possible options can be found at<a href="https://developers.google.com/maps/documentation/javascript/reference">the google maps API documentation</a>.
+        </p>
+    </h:form>
+</ui:define>
+</ui:composition>

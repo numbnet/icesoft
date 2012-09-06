@@ -1,0 +1,52 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                xmlns:ace="http://www.icefaces.org/icefaces/components"
+                xmlns:ice="http://www.icesoft.com/icefaces/component"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="/resources/templates/content-template.xhtml">
+
+    <ui:param name="title" value="#{msgs[layerBean.title]}"/>
+    <ui:param name="description" value="#{msgs[layerBean.description]}"/>
+    <ui:param name="resourceValue" value="#{layerBean.exampleResource}"/>
+
+    <ui:param name="wikiResources" value="#{gMapResources.wikiResources}"/>
+    <ui:param name="tldResources" value="#{gMapResources.tldResources}"/>
+
+    <ui:define name="example">
+    <ace:gMap id="gMap" zoomLevel="16" latitude="${layerBean.lat}" longitude="${layerBean.lon}">
+        <ace:gMapLayer id="BikeLayer" layerType="Bicycling" visible="${layerBean.bikeLayer}"/>
+        <ace:gMapLayer id="TrafficLayer" layerType="Traffic" visible="${layerBean.trafficLayer}"/>
+        <ace:gMapLayer id="TransitLayer" layerType="Transit" visible="${layerBean.transitLayer}"/>
+        <ace:gMapLayer id="KMLLayer" layerType="KML" visible="${layerBean.kmlLayer}" url="${layerBean.kmlURL}"/>
+    </ace:gMap>
+    <h:form id="input">
+        <h:selectOneRadio id="layerButtons" value="#{layerBean.chosenLayer}" name="RadioGroup">
+            <f:ajax event="valueChange" render="@all"/>
+            <f:selectItem id="biking" itemLabel="Biking" itemValue="Biking"/>
+            <f:selectItem id="traffic" itemLabel="Traffic" itemValue="Traffic"/>
+            <f:selectItem id="transit" itemLabel="Transit" itemValue="Transit"/>
+            <f:selectItem id="kml" itemLabel="KML" itemValue="KML"/>
+        </h:selectOneRadio>
+        <ace:panel id="kmlinputs"
+                   header="KML layer inputs"
+                   closable="false"
+                   toggleable="false"
+                   collapsed="false"
+                   visible="${layerBean.kmlLayer}"
+                   >
+            <h:outputLabel for="kmlLayer" value="Options for KML"/>
+            <h:inputText id="kmlLayer" value="${layerBean.kmlURL}" size="60"><f:ajax render="@all"/></h:inputText>
+            <br/><br/>
+            <p>Use the above textbox to submit a URL to render a KML Map layer from. A few examples:<br/>
+                http://coinatlantic.ca/kmlfiles/EnvironmentCanadaAtlantic/ECHydrometricNL.kml - Envirnoment Canada Realtime Hydroelectric<br/>
+                http://www.austindarts.org/darts.kml - Darts locations in Austin Texas<br/>
+                http://www.ourairports.com/countries/CA/NT/airports.kml - Northwest Territories Airports<br/>
+                http://www.rivercitynetworks.com/weather_radar_usa.kml - US weather systems</p>
+            </ace:panel>
+    </h:form>
+</ui:define>
+</ui:composition>
