@@ -415,8 +415,8 @@ public class BridgeSetup implements SystemEventListener {
             UIComponent c = componentResources.get(i);
             Map<String, Object> attributes = c.getAttributes();
             String resourceName = (String) attributes.get("name");
-            String resourceLibrary = (String) attributes.get("library");
-            String normalizedLibrary = fixResourceParameter(library);
+            String resourceLibrary = normalizeResourceAttribute((String) attributes.get("library"));
+            String normalizedLibrary = normalizeResourceAttribute(library);
             if (name.equals(resourceName) && (normalizedLibrary == resourceLibrary/*both null*/ || normalizedLibrary.equals(resourceLibrary))) {
                 position = i;
                 break;
@@ -500,7 +500,7 @@ public class BridgeSetup implements SystemEventListener {
         }
     }
 
-    private static String fixResourceParameter(String value) {
+    private static String normalizeResourceAttribute(String value) {
         return value == null || "".equals(value) ? null : value;
     }
 
@@ -512,7 +512,7 @@ public class BridgeSetup implements SystemEventListener {
         public JavascriptResourceOutput(ResourceHandler resourceHandler,
                                         String name, String library,
                                         String version) {
-            Resource r = resourceHandler.createResource(name, fixResourceParameter(library));
+            Resource r = resourceHandler.createResource(name, normalizeResourceAttribute(library));
             String path = r.getRequestPath();
             if (version == null) {
                 script = path;
