@@ -74,9 +74,9 @@
     <java classname="org.icefaces.ace.generator.xmlbuilder.FacesConfigMerge"
           classpathref="compile.run.classpath" fork="true"
           classpath="${build}">
-        <arg value="${generator.faces-config.host}"/>
-        <arg line="${generator.faces-config.merge}"/>
-        <arg value="${generator.faces-config.output}"/>
+        <arg path="${generator.faces-config.host}"/>
+        <arg path="${generator.faces-config.merge}"/>
+        <arg path="${generator.faces-config.output}"/>
     </java>
   </target>
 
