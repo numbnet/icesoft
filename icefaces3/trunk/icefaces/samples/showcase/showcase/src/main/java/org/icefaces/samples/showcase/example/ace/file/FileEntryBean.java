@@ -56,7 +56,8 @@ import org.icefaces.samples.showcase.dataGenerators.ImageSet;
 	menuLinks = {
                     @MenuLink(title = "menu.ace.fileentry.subMenu.main", isDefault = true, exampleBeanName = FileEntryBean.BEAN_NAME), 
                     @MenuLink(title = "menu.ace.fileentry.subMenu.listener", exampleBeanName = FileEntryListenerBean.BEAN_NAME),     
-                    @MenuLink(title = "menu.ace.fileentry.subMenu.validation",exampleBeanName = FileEntryValidationOptionsBean.BEAN_NAME)
+                    @MenuLink(title = "menu.ace.fileentry.subMenu.validation",exampleBeanName = FileEntryValidationOptionsBean.BEAN_NAME),
+                    @MenuLink(title = "menu.ace.fileentry.subMenu.callback",exampleBeanName = FileEntryCallbackBean.BEAN_NAME)
 })
 @ManagedBean(name= FileEntryBean.BEAN_NAME)
 @CustomScoped(value = "#{window}")
