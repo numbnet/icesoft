@@ -824,7 +824,7 @@ Ice.modal = {
     },
     target:null,
     zIndexCount: 25000,
-    start:function(target, iframeUrl, trigger, manualPosition, positionOnLoadOnly) {
+    start:function(target, iframeUrl, trigger, manualPosition, positionOnLoadOnly, disableModalFrameIE8) {
         var modal = document.getElementById(target);
         modal.style.position = 'absolute';
         modal.style.visibility = 'visible';
@@ -887,7 +887,15 @@ Ice.modal = {
                         modal.style.top = (parseInt(viewportHeight) / 2) - modalHeight - modalParentOffset.top + scrollOffset.top + "px";
                         modal.style.left = (parseInt(viewportWidth) / 2 ) - modalWidth - modalParentOffset.left + scrollOffset.left + "px";
                     }
-                    frame.style.display = frameDisp;
+					var isIE8 = false;
+					try {
+						if (Prototype.Browser.IE) {
+							isIE8 = parseInt(navigator.userAgent.substring(navigator.userAgent.indexOf("MSIE")+5)) <= 8;
+						}
+					} catch (e) {}
+					if (!isIE8 || !disableModalFrameIE8) {
+						frame.style.display = frameDisp;
+					}
                     $(frame.nextSibling).clonePosition(frame);
                 }
             };
