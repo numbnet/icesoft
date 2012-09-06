@@ -321,7 +321,8 @@ public class PanelPopupRenderer extends GroupRenderer {
                 String autoPosition = (String) uiComponent.getAttributes().get("autoPosition");
                 boolean positionOnLoadOnly = ((Boolean) uiComponent.getAttributes().get("positionOnLoadOnly")).booleanValue();
                 call = "Ice.modal.start('" + clientId + "', '" + iframeUrl
-                        + "', '" + trigger + "'," + "manual".equalsIgnoreCase(autoPosition) + "," + positionOnLoadOnly + ");" +
+                        + "', '" + trigger + "'," + "manual".equalsIgnoreCase(autoPosition) + "," + positionOnLoadOnly + "," +
+						getIE8DisableModalFrame(facesContext) + ");" +
                         "ice.onElementRemove('" + clientId + "',function() {Ice.modal.stop('" +
                         clientId + "');});";
 
@@ -367,4 +368,13 @@ public class PanelPopupRenderer extends GroupRenderer {
             log.trace("Encode End Called");
         }
     }
+	
+	private String getIE8DisableModalFrame(FacesContext facesContext) {
+		String value = facesContext.getExternalContext().getInitParameter("com.icesoft.faces.IE8DisableModalFrame");
+		if ("true".equalsIgnoreCase(value)) {
+			return "true";
+		} else {
+			return "false";
+		}
+	}
 }
