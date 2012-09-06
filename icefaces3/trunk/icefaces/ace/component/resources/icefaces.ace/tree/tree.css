@@ -1,0 +1,41 @@
+.if-tree {
+}
+
+.if-node {
+    vertical-align: middle;
+    display:table-cell;
+}
+
+.if-node-cnt {
+    margin-left: 5px;
+    display: table;
+}
+
+.if-node-sub {
+}
+
+.if-node-sw {
+    vertical-align: middle;
+    display:table-cell;
+    cursor: pointer;
+}
+
+.if-node-sw.noexp {
+    cursor: default;
+}
+
+.if-node-sw-ico {
+
+}
+
+.if-node-exp {
+
+}
+
+.if-node-tr {
+    display: table-row;
+}
+
+.if-node-td {
+    display: table-cell;
+}

@@ -248,6 +248,7 @@
                 <file name="icefaces.ace/tooltip/jquery.qtip-2.0.0.js"/>
                 <file name="icefaces.ace/tooltip/tooltip.js"/>
 				<file name="icefaces.ace/gmap/gmap.js"/>
+                <file name="icefaces.ace/tree/tree.js"/>
             </filelist>
         </concat>
         <!-- ace-chart.js -->
