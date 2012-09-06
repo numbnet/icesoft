@@ -1,0 +1,51 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                xmlns:ace="http://www.icefaces.org/icefaces/components"
+                xmlns:ice="http://www.icesoft.com/icefaces/component"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="/resources/templates/content-template.xhtml">
+
+    <ui:param name="title" value="#{msgs[MapBean.title]}"/>
+    <ui:param name="description" value="#{msgs[MapBean.description]}"/>
+    <ui:param name="subMenuTitle" value="#{msgs[MapBean.subMenuTitle]}"/>
+    <ui:param name="subMenuLinks" value="#{MapBean.subMenuLinks}"/>
+    <ui:param name="resourceValue" value="#{MapBean.exampleResource}"/>
+
+    <ui:param name="wikiResources" value="#{gMapResources.wikiResources}"/>
+    <ui:param name="tldResources" value="#{gMapResources.tldResources}"/>
+
+    <ui:define name="example">
+        <ace:gMap id="gMap" latitude="${mapBean.lat}" longitude="${mapBean.lon}" type="${mapBean.type}"
+                  zoomLevel="${mapBean.zoom}" address="${mapBean.address}" locateAddress="${mapBean.locateAddress}"/>
+        <h:form id="input">
+            <h:outputLabel for="latitude" value="Latitude:"/>
+            <h:inputText label="Latitude" id="latitude" value="#{mapBean.lat}"/>
+            <h:outputLabel for="longitude" value="Longitude:"/>
+            <h:inputText label="Longitude" id="longitude" value="#{mapBean.lon}"/>
+            <h:outputLabel for="typeSelector" value="Map Type:"/>
+            <h:selectOneMenu id="typeSelector" value="#{mapBean.type}">
+                <f:ajax event="valueChange" render="@all"/>
+                <f:selectItem itemValue="Map" itemLabel="Map"/>
+                <f:selectItem itemValue="Terrain" itemLabel="Terrain"/>
+                <f:selectItem itemValue="Hybrid" itemLabel="Hybrid"/>
+                <f:selectItem itemValue="Satellite" itemLabel="Satellite"/>
+            </h:selectOneMenu>
+            <h:outputLabel for="zoom" value="Zoom:"/>
+            <h:inputText label="Zoom" id="zoom" value="#{mapBean.zoom}"/>
+            <br/>
+            <br/>
+            <h:outputLabel for="address" value="Address:"/>
+            <h:inputText label="Address" id="address" value="#{mapBean.address}"
+                         onkeypress="if (event.keyCode == 13) { onchange(); return false; }">
+                <f:ajax event="change" listener="#{mapBean.ajaxLookup}"/>
+            </h:inputText>
+            <h:commandButton value="Find Address"
+                             actionListener="#{mapBean.lookup}"/>
+        </h:form>
+    </ui:define>
+</ui:composition>

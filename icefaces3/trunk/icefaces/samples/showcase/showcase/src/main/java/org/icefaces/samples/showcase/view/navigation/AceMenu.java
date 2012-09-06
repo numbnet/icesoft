@@ -43,6 +43,7 @@ import org.icefaces.samples.showcase.example.ace.richtextentry.RichTextEntryBean
 import org.icefaces.samples.showcase.example.ace.dragDrop.DragDropOverviewBean;
 import org.icefaces.samples.showcase.example.ace.tooltip.TooltipOverviewBean;
 import org.icefaces.samples.showcase.example.ace.linkButton.LinkButtonBean;
+import org.icefaces.samples.showcase.example.ace.gMap.MapBean;
 import org.icefaces.samples.showcase.metadata.annotation.Menu;
 import org.icefaces.samples.showcase.metadata.annotation.MenuLink;
 import javax.annotation.PostConstruct;
@@ -71,6 +72,7 @@ import org.icefaces.samples.showcase.example.ace.printer.PrinterBean;
                 @MenuLink(title = "menu.ace.dialog.title", exampleBeanName = DialogBean.BEAN_NAME),
                 @MenuLink(title = "menu.ace.dragDrop.title", exampleBeanName = DragDropOverviewBean.BEAN_NAME),
                 @MenuLink(title = "menu.ace.fileentry.title", exampleBeanName = FileEntryBean.BEAN_NAME),
+				@MenuLink(title = "menu.ace.gMap.title", exampleBeanName = MapBean.BEAN_NAME),
 //@MenuLink(title = "menu.ace.logger.title", exampleBeanName = LoggerBean.BEAN_NAME),
                 @MenuLink(title = "menu.ace.linkButton.title", exampleBeanName = LinkButtonBean.BEAN_NAME),
                 @MenuLink(title = "menu.ace.list.title", exampleBeanName = ListBean.BEAN_NAME),

@@ -62,6 +62,13 @@
         <param-value>AIzaSyAcAbAa7AL1DLU0785OeWn2byf4XOsm7KM</param-value>
     </context-param>
     
+	<context-param>
+        <description>Google Maps API key is required if gMap component is used. Sign up for an API key from http://code.google.com/apis/maps/signup.html</description>
+        <param-name>org.icefaces.ace.gmapKey</param-name>
+        <param-value>AIzaSyAATyWVqT2qNusNGmcVTyQ0QmymkpU-B5o</param-value>
+    </context-param>
+
+	
     <!-- Servlet declarations and mappings -->
     <servlet>
         <servlet-name>Faces Servlet</servlet-name>

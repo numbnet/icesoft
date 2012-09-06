@@ -1,0 +1,42 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                xmlns:ace="http://www.icefaces.org/icefaces/components"
+                xmlns:ice="http://www.icesoft.com/icefaces/component"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="/resources/templates/content-template.xhtml">
+
+    <ui:param name="title" value="#{msgs[directionBean.title]}"/>
+    <ui:param name="description" value="#{msgs[directionBean.description]}"/>
+    <ui:param name="resourceValue" value="#{directionBean.exampleResource}"/>
+
+    <ui:param name="wikiResources" value="#{gMapResources.wikiResources}"/>
+    <ui:param name="tldResources" value="#{gMapResources.tldResources}"/>
+
+    <ui:define name="example">
+    <ace:gMap id="gMap" latitude="0" longitude="0" zoomLevel="3">
+        <ace:gMapServices name="Directions" points="${directionBean.points}" options="travelMode:'${directionBean.travelMode}',${directionBean.options}"/>
+    </ace:gMap>
+    <h:form id="inputForm">
+        <h:outputLabel for="optionsIn" value="Options:"/>
+        <h:inputText  id="optionsIn" value="${directionBean.options}"/>
+        <h:selectOneMenu id="travelModeSelector" value="${directionBean.travelMode}">
+            <f:ajax event="valueChange" render="@all"/>
+            <f:selectItem itemValue="DRIVING" itemLabel="Driving"/>
+            <f:selectItem itemValue="WALKING" itemLabel="Walking"/>
+            <f:selectItem itemValue="BICYCLING" itemLabel="Bicycling"/>
+            <f:selectItem itemValue="TRANSIT" itemLabel="Transit"/>
+        </h:selectOneMenu>
+        <br/>
+        <h:outputLabel for="pointsIn" value="Points:"/>
+        <h:inputText  size="100" id="pointsIn" value="${directionBean.points}"/>
+    </h:form>
+    <p>
+        Points are seperated by :, and can either be a plain text address, or (lat,long). Transit requests will only work for two point entries.
+        <br/>Options for directions can be found at <a href="https://developers.google.com/maps/documentation/javascript/reference#DirectionsRequest"> the google maps API.</a>
+    </p>
+</ui:define>
+</ui:composition>
