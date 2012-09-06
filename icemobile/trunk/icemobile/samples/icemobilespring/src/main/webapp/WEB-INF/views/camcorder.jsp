@@ -5,13 +5,7 @@
 <%@ page session="false" %>
 <c:if test="${!ajaxRequest}">
     <html>
-    <head>
-        <title>ICEmobile | Camcorder demo</title>
-        <link href="<c:url value="/resources/style.css" />" rel="stylesheet"
-              type="text/css"/>
-        <script type="text/javascript"
-                src="<c:url value="/resources/jquery/1.6/jquery.js" />"></script>
-    </head>
+    <jsp:include page="./inc/head.jsp"/>
     <body>
 </c:if>
     <div class="ajaxzone">

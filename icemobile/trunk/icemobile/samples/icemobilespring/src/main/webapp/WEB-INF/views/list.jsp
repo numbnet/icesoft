@@ -96,6 +96,13 @@ into styled lists.
         </mobi:pagePanelFooter>
 
     </mobi:pagePanel>
+    
+    <script type="text/javascript">
+    $('body').addClass('pagePanelPadding');
+    $('#listform').submit(function () {
+    	$('body').removeClass('pagePanelPadding');
+    });
+    </script>
 
  
          </form:form >

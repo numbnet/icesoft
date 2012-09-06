@@ -11,9 +11,10 @@
         <link href="<c:url value="/resources/style.css" />" rel="stylesheet"
               type="text/css"/>
         <link rel="stylesheet"
-              href="http://code.jquery.com/mobile/1.1.0/jquery.mobile-1.1.0.min.css"/>
-        <script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
-        <script src="http://code.jquery.com/mobile/1.1.0/jquery.mobile-1.1.0.min.js"></script>
+              href="./resources/jquery.mobile-1.1.1/jquery.mobile-1.1.1.min.css"/>
+        <script src="./resources/jquery/1.7.1/jquery-1.7.1.min.js"></script>
+        <script src="./resources/jquery.mobile-1.1.1/jquery.mobile-1.1.1.min.js"></script>
+        <mobi:deviceResource  view="small"/>
     </head>
     <body>
 </c:if>
