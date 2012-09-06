@@ -14,8 +14,7 @@
     <title>accordion is true contentStackMenu two columns</title>
 </h:head>
 <h:body>
-  <h:panelGrid columns="2" style="width: 200px;">
-    <h:panelGroup>
+    <div style="display:inline-block;width:200px;vertical-align:top;">
       <h:form id="menuForm">
           <mobi:contentStackMenu  id="mnu" value="#{menuAcc.allPanes}" var="item"
                       accordion="true"      contentStackId="stack1"  style="width: 200px; top: 0;"
@@ -23,7 +22,8 @@
                 <mobi:contentMenuItem label="#{item.label}" value="#{item.value}"/>
           </mobi:contentStackMenu>
       </h:form>
-   </h:panelGroup>
+   </div>
+   <div style="display:inline-block;width:400px;">
     <mobi:contentStack id="stack1" currentId="#{menuAcc.selPane}" style="width: 400px;"
                        contentMenuId="mnu">
         <mobi:contentPane id="splash" client="true" >
@@ -121,10 +121,7 @@
              </h:panelGroup>
          </mobi:contentPane>
     </mobi:contentStack>
-  </h:panelGrid>
-  <div id="outputStuff">
-
-  </div>
-  <a href="../layoutComponents.html">index page</a>
+    </div>
+   <a href="../layoutComponents.html">index page</a>
 </h:body>
 </html>

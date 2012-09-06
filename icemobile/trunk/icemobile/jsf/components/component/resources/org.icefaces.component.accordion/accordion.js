@@ -149,7 +149,7 @@
             if (this.panels[clientId]) {
                 this.panels[clientId].toggle(el, true);
             } else{
-                this.initClient(clientId, {});
+                this.initClient(clientId, {autoheight:false});
                 this.panels[clientId].toggle(el, true);
             }
         }
