@@ -63,7 +63,7 @@ public class ApplicationController {
 			return "mediaviewer";
 		} else {
 			log.warn("Could not find message with id=" + id);
-			return "redirect:media";
+			return "redirect:/";
 		}
 	}
 
