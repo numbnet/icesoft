@@ -3,21 +3,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page session="false" %>
 <html>
-<head>
-    <title>ICEmobile Spring</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
-    <meta name="apple-mobile-web-app-capable" content="yes"/>
-    <meta name="apple-mobile-web-app-status-bar-style" content="black"/>
-    <link href="<c:url value="/resources/jqueryui/1.8/themes/base/jquery.ui.all.css" />"
-          rel="stylesheet" type="text/css"/>
-    <link href="<c:url value="/resources/style.css" />" rel="stylesheet"
-          type="text/css"/>
-    <mobi:deviceResource  view="small"/>
-    <script type="text/javascript" src="code.icepush"></script>
-    <script type="text/javascript">document.documentElement.className = 'js';</script>
-</head>
+<jsp:include page="./inc/head.jsp"/>
 <body>
 
 <div id="tabs">
@@ -212,6 +198,7 @@
             }, error:function (xhr) {
                 MvcUtil.showErrorResponse(xhr.responseText, link);
             }});
+            $('body').removeClass('pagePanelPadding'); //hack to remove pagePanel padding
             return false;
         });
 

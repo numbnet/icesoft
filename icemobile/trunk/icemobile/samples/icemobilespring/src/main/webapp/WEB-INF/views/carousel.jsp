@@ -6,26 +6,7 @@
 <%@ page session="false" %>
 <c:if test="${!ajaxRequest}">
     <html>
-    <head>
-
-        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-        <meta name="viewport"
-              content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
-        <meta name="apple-mobile-web-app-capable" content="yes"/>
-        <meta name="apple-mobile-web-app-status-bar-style" content="black"/>
-
-
-        <title>ICEmobile | Carousel demo</title>
-        <link href="<c:url value="/resources/style.css" />" rel="stylesheet"
-              type="text/css"/>
-        <script type="text/javascript"
-                src="<c:url value="/resources/jquery/1.6/jquery.js" />"></script>
-        <link href="<c:url value="/resources/org.icefaces.component.skins/bberry/carousel/default-carousel.css" />"
-              rel="stylesheet" type="text/css"/>
-        <script type="text/javascript" src="code.icepush"></script>
-
-
-    </head>
+    <jsp:include page="./inc/head.jsp"/>
     <body>
 </c:if>
     <div class="ajaxzone">
