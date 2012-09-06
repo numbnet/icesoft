@@ -58,13 +58,17 @@
 				</mobi:fieldSetRow>
 				<mobi:fieldSetRow>
 					<label>Geolocation: </label>
-					<span>${media.latitude}, ${media.longitude}, ${media.altitude}, ${media.direction}</span>
-					<script src="http://openlayers.org/api/OpenLayers.js"></script>
-					<div style="width:90%; height:200px; z-index:0;" id="map"></div>
+					<div id="geoGrid">
+						<label>Longitude</label><span>${media.longitude}</span>
+						<label>Latitude</label><span>${media.latitude}</span>
+						<label>Altitude</label><span>${media.altitude}</span>
+						<label>Direction</label><span>${media.direction}</span>
+					</div>
+					<script src='<c:url value="/resources/javascript/openlayers/OpenLayers.mobile.js"/>'></script>
+					<div style="width:100%; height:200px; z-index:0;" id="map"></div>
 					<script type="text/javascript">
-					var map = new OpenLayers.Map('map');
-					var wms = new OpenLayers.Layer.WMS(
-					  "OpenLayers WMS",
+					window.map = new OpenLayers.Map('map');
+					var wms = new OpenLayers.Layer.WMS("OpenLayers WMS",
 					  "http://vmap0.tiles.osgeo.org/wms/vmap0",
 					  {'layers':'basic'} );
 					map.addLayer(wms);

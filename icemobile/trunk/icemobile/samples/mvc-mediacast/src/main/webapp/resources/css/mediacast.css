@@ -51,4 +51,24 @@
 .input{
 	width: 180px;	
 }
+#geoGrid{ height: 70px; }
+#geoGrid label{
+	float: left;
+	text-align: right;
+	width: 90px;
+	clear: both;
+	font-weight: bold;
+	font-size: smaller;
+}
+#geoGrid span{
+	float: left;
+	width: 100px;
+	margin-left: 10px;
+	font-size: smaller;
+}
+#largePhoto img{
+	border-radius: 0.6em;
+	-webkit-border-radius: 0.6em;
+	-moz-border-radius: 0.6em;
+	margin-bottom: 5px;
 }
