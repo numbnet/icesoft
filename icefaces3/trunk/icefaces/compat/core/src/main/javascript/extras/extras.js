@@ -5080,7 +5080,7 @@ Ice.pnlTabOnFocus = function(ele, facet, kbs) {
     if (kbs) {
         Event.observe(ele, 'keydown', Ice.tabNavigator);
         //remove listeners to make sure that they do not create memory leaks
-        ice.onElementRemove(ele.id, function() {
+        ice.onElementUpdate(ele.id, function() {
             Event.stopObserving(ele, 'keydown', Ice.tabNavigator);
         });
     }
