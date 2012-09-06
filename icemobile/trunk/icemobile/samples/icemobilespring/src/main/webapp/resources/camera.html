@@ -4,9 +4,9 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1"> 
 
 	<link rel="stylesheet" href="http://code.jquery.com/mobile/1.1.0/jquery.mobile-1.1.0.min.css" />
-	<script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
-	<script src="http://code.jquery.com/mobile/1.1.0/jquery.mobile-1.1.0.min.js"></script>
-	<script src="icemobile.js"></script>
+	<script type="text/javascript" src="./jquery/1.7.1/jquery-1.7.1.min.js"></script>
+	<script type="text/javascript" src="./jquery.mobile-1.1.1/jquery.mobile-1.1.1.min.js"></script>
+	<script type="text/javascript" src="../icemobile-resources/javascript/icemobile.js"></script>
     <style>
     .mobi-container .mobi-stock {
         display: none;
@@ -17,99 +17,102 @@
     </style>
 </head>
 <body>
-	<div id="cameraContent">
-		<h2>jQuery ICEmobile Camera</h2>
-		<form id="camform" action="../jsoncam" method="POST" enctype="multipart/form-data">
-		  	<fieldset>
-		  		<input id="name" name="name" type="text" placeholder="Name" value=""/>
-		  	</fieldset>
-
-		  	<fieldset>
-               <a data-role="button" class="mobi-container" id="cam" onclick="ice.camera(this.id);">Camera
-               <img style="height:60px;width:65px;vertical-align:middle;padding-left:20px;" id="cam-thumb" ></a>
-               
-               
-               <a data-role="button" data-command="camera" data-id="cam" class="mobi-stock camera" onclick="ice.mobilesx(this);" >Camera ...</a>
-
-
-               <div style="text-align:center">
-                   <img style="width:100px;height:100px;background:white;" id="result" src="resources/uploaded.jpg" >
-                </div>
-               <span style="align:center;" id="thanks"></span>
-		  	</fieldset>
-
-			<fieldset class="checkbox">
-				<legend>Request Additional Info</legend>
-				<label><input name="_additionalInfo[icemobile]" type="checkbox" value="true"/>ICEmobile</label>
-				<label><input name="_additionalInfo[jquery]" type="checkbox" value="true"/>jQuery</label>				
-			</fieldset>
-		  		  		
-			<p><button type="submit">Submit</button></p>
-		</form>
-
-        <a href="..#icehtml" data-ajax="false">Return</a>
-        
-        <p style="height=20px;"></p>
-
-		<script type="text/javascript">
-
-            var enhancedSubmit = function(form)  {
-                if (this.id)  {
-                    form = this;
-                }
-                if (window.ice && ice.upload)  {
-                    window.ice.handleResponse = function(text)  {
-                        var data = $.parseJSON(unescape(text));
-                        $("#result").attr("src", data.path);
-                        $("#thanks").text(data.message);
-                    }
-                    ice.upload($(this).attr("id"));
-                    return false;  
-                }
-
-                var formData = new FormData(form);
-
-                $.ajax({
-                    url: $(form).attr("action"),
-                    data: formData,
-                    cache: false,
-                    contentType: false,
-                    processData: false,
-                    type: 'POST',
-                    success: function(data) {
-                        $("#result").attr("src", data.path);
-                        $("#thanks").text(data.message);
-                    }
-                });
-
-                return false;  
-            }
-
-			$(document).ready(function() {
-                if ($("#camform").attr("data-ajax")) {
-                    //avoid double onready registration
-                    return;
-                }
-                $("#camform").attr("data-ajax","enabled");
-                if (-1 === document.cookie.indexOf("HyperBrowser"))  {
-                    $("#camform").addClass("mobi-stock");
-                } else {
-                    $("#camform").addClass("mobi-container");
-                }
-
-				$("#camform").submit(enhancedSubmit);			
-			});
-
-            window.onhashchange = function()  {
-                if ("#icemobilesx" === window.location.hash)  {
-                    window.location.hash = "";
-                    enhancedSubmit($("#camform"));
-                }
-            }
-
-		</script>
+	<div data-role="page">
+		<div data-role="header">
+			<h1>jQuery ICEmobile Camera</h1>
+		</div>
+		<div data-role="content">	
+			<form id="camform" action="../jsoncam" method="POST" enctype="multipart/form-data">
+			  	<fieldset>
+			  		<input id="name" name="name" type="text" placeholder="Name" value=""/>
+			  	</fieldset>
+	
+			  	<fieldset>
+	               <a data-role="button" class="mobi-container" id="cam" onclick="ice.camera(this.id);">Camera
+	               <img style="height:60px;width:65px;vertical-align:middle;padding-left:20px;" id="cam-thumb" ></a>
+	               
+	               
+	               <a data-role="button" data-command="camera" data-id="cam" class="mobi-stock camera" onclick="ice.mobilesx(this);" >Camera ...</a>
+	
+	
+	               <div style="text-align:center">
+	                   <img style="width:100px;height:100px;background:white;" id="result" src="uploaded.jpg" >
+	                </div>
+	               <span style="align:center;" id="thanks"></span>
+			  	</fieldset>
+	
+				<fieldset class="checkbox">
+					<legend>Request Additional Info</legend>
+					<label><input name="_additionalInfo[icemobile]" type="checkbox" value="true"/>ICEmobile</label>
+					<label><input name="_additionalInfo[jquery]" type="checkbox" value="true"/>jQuery</label>				
+				</fieldset>
+			  		  		
+				<p><button type="submit">Submit</button></p>
+			</form>
+	
+	        <a href="..#icehtml" data-ajax="false">Return</a>
+	        
+	        <p style="height=20px;"></p>
+	
+			<script type="text/javascript">
+	
+	            var enhancedSubmit = function(form)  {
+	                if (this.id)  {
+	                    form = this;
+	                }
+	                if (window.ice && ice.upload)  {
+	                    window.ice.handleResponse = function(text)  {
+	                        var data = $.parseJSON(unescape(text));
+	                        $("#result").attr("src", data.path);
+	                        $("#thanks").text(data.message);
+	                    }
+	                    ice.upload($(this).attr("id"));
+	                    return false;  
+	                }
+	
+	                var formData = new FormData(form);
+	
+	                $.ajax({
+	                    url: $(form).attr("action"),
+	                    data: formData,
+	                    cache: false,
+	                    contentType: false,
+	                    processData: false,
+	                    type: 'POST',
+	                    success: function(data) {
+	                        $("#result").attr("src", data.path);
+	                        $("#thanks").text(data.message);
+	                    }
+	                });
+	
+	                return false;  
+	            }
+	
+				$(document).ready(function() {
+	                if ($("#camform").attr("data-ajax")) {
+	                    //avoid double onready registration
+	                    return;
+	                }
+	                $("#camform").attr("data-ajax","enabled");
+	                if (-1 === document.cookie.indexOf("HyperBrowser"))  {
+	                    $("#camform").addClass("mobi-stock");
+	                } else {
+	                    $("#camform").addClass("mobi-container");
+	                }
+	
+					$("#camform").submit(enhancedSubmit);			
+				});
+	
+	            window.onhashchange = function()  {
+	                if ("#icemobilesx" === window.location.hash)  {
+	                    window.location.hash = "";
+	                    enhancedSubmit($("#camform"));
+	                }
+	            }
+	
+			</script>
+		</div>
 	</div>
-
 </body>
 </html>
 
