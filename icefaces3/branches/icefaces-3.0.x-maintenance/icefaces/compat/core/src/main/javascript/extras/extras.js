@@ -4947,8 +4947,10 @@ Ice.tabNavigator = function(event) {
             var preCell = ele.up('.icePnlTb').previousSibling;
             if (preCell) {
                 var lnk = preCell.down('.icePnlTbLblLnk');
+				preCell = null;
                 if (lnk) {
                     lnk.focus();
+					lnk = null;
                 }
             }
             if (ele.up('.icePnlTb')) {
@@ -4966,8 +4968,10 @@ Ice.tabNavigator = function(event) {
                 var lnk = nextCell.down('.icePnlTbLblLnk');
                 if (lnk) {
                     lnk.focus();
+					lnk = null;
                 }
             }
+			nextCell = null;
             if (ele.up('.icePnlTb')) {
                 if (event.preventDefault) {
                     event.preventDefault();
@@ -4976,8 +4980,8 @@ Ice.tabNavigator = function(event) {
                 }
             }
             break;
-
     }
+	ele = null;
 }
 
 Ice.pnlTabOnFocus = function(ele, facet, kbs) {
