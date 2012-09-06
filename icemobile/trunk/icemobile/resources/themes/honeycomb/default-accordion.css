@@ -98,3 +98,11 @@
     overflow-y: scroll;
     /*margin: 44px 0 0 0;*/
 }
+
+.mobi-accordion .mobi-layoutmenu .mobi-list:last-child {
+	margin-bottom: 0;
+}
+
+.mobi-accordion .mobi-layoutmenu .mobi-list{
+	border-right: none;
+}

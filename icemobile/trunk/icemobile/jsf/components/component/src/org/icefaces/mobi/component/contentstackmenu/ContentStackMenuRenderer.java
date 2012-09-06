@@ -80,7 +80,7 @@ public class  ContentStackMenuRenderer extends BaseLayoutRenderer {
          // apply button type style classes
          StringBuilder baseClass = new StringBuilder(ContentStackMenu.LAYOUTMENU_CLASS);
          StringBuilder listClass = new StringBuilder(ContentStackMenu.LAYOUTMENU_LIST_CLASS);
-         StringBuilder baseAccordionClass = new StringBuilder("mobi-accordion");
+         StringBuilder baseAccordionClass = new StringBuilder(ContentStackMenu.LAYOUTMENU_CLASS+"mobi-accordion");
          if (null != userDefinedClass) {
              baseClass.append(userDefinedClass);
              listClass.append(userDefinedClass);
