@@ -489,11 +489,20 @@ public class EnvUtils {
 
     public static String[] getPathTemplate() {
         FacesContext facesContext = FacesContext.getCurrentInstance();
-        Map applicationMap = facesContext.getExternalContext()
-                .getApplicationMap();
-        String[] pathTemplate = (String[]) applicationMap.get(PATH_TEMPLATE);
-        if (null != pathTemplate) {
-            return pathTemplate;
+        ExternalContext externalContext = facesContext.getExternalContext();
+        boolean isPortlet = EnvUtils.instanceofPortletRequest(externalContext.getRequest());
+
+        //ICE-8540
+        //The optimization of storing the path template doesn't work well in portlets because
+        //the path will include the host and port, which could change based on the URL used
+        //by the client.  So we skip the optimization when using portlets.
+        String[] pathTemplate = null;
+        if( !isPortlet ){
+            Map applicationMap = externalContext.getApplicationMap();
+            pathTemplate = (String[]) applicationMap.get(PATH_TEMPLATE);
+            if (null != pathTemplate) {
+                return pathTemplate;
+            }
         }
         Resource dummyResource = facesContext.getApplication()
                 .getResourceHandler().createResource(DUMMY_RESOURCE);
@@ -504,7 +513,11 @@ public class EnvUtils {
         if (null == pathTemplate) {
             return DEFAULT_TEMPLATE;
         }
-        applicationMap.put(PATH_TEMPLATE, pathTemplate);
+
+        if(!isPortlet){
+            Map applicationMap = externalContext.getApplicationMap();
+            applicationMap.put(PATH_TEMPLATE, pathTemplate);
+        }
         return pathTemplate;
     }
 
