@@ -411,39 +411,17 @@ if (!window.ice.icefaces) {
             element.onmousemove = null;
             element.onmouseout = null;
             element.onmouseover = null;
-            if (element.onclick) {
             element.onclick = null;
-            }
-            if (element.oncontextmenu) {
             element.oncontextmenu = null;
-            }
-            if (element.onchange) {
             element.onchange = null;
-            }
-            if (element.onfocus) {
             element.onfocus = null;
-            }
-            if (element.onblur) {
             element.onblur = null;
-            }
-            if (element.submit) {
             element.submit = null;
-            }
-            if (element.onsubmit) {
             element.onsubmit = null;
-            }
-            if (element.onkeydown) {
             element.onkeydown = null;
-            }
-            if (element.onkeyup) {
             element.onkeyup = null;
-            }
-            if (element.ondblclick) {
             element.ondblclick = null;
-            }
-            if (element.onfocusout) {
             element.onfocusout = null;
-            }
         }
 
         namespace.setupBridge = function(setupID, viewID, windowID, configuration) {
