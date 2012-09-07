@@ -88,7 +88,7 @@ ice.ace.Tooltip = function(cfg) {
 					var jqTargetComponent = ice.ace.jq(ice.ace.escapeClientId(targetComponent));
 					jqTargetComponent.qtip(self.cfg);
 					self.activeComponent = targetComponent;
-					if (!ice.ace.Tooltips[self.cfg.id] && (self.cfg.displayListener || self.cfg.behaviors.display)) {
+					if (!ice.ace.Tooltips[self.cfg.id]) {
 						ice.ace.Tooltips[self.cfg.id] = true;
 						self.triggerDisplayListener( function() { jqTargetComponent.qtip('show'); }); 
 					}
@@ -113,7 +113,9 @@ ice.ace.Tooltip.prototype.triggerDisplayListener = function(callback) {
 		options.onsuccess = callback;
 	}
 	var params = {};
-	params[this.cfg.id + '_displayListener'] = true;
+	if (this.cfg.displayListener) {
+		params[this.cfg.id + '_displayListener'] = true;
+	}
 	if (this.activeComponent) {
 		params[this.cfg.id + '_activeComponent'] = this.activeComponent;
 	}
