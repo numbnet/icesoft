@@ -17,15 +17,20 @@
 package org.icefaces.samples.showcase.example.ace.file;
 
 import java.io.Serializable;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
-import javax.faces.bean.ApplicationScoped;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
 
 import org.icefaces.ace.component.fileentry.FileEntryCallback;
 import org.icefaces.ace.component.fileentry.FileEntryResults;
+import org.icefaces.ace.component.fileentry.FileEntryStatus;
 import org.icefaces.ace.component.fileentry.FileEntryStatuses;
 import org.icefaces.samples.showcase.metadata.annotation.ComponentExample;
 import org.icefaces.samples.showcase.metadata.annotation.ExampleResource;
@@ -49,6 +54,8 @@ public class FileEntryCallbackBean extends
 	public static final String BEAN_NAME = "fileEntryCallback";
 	private static Logger logger = Logger.getLogger(FileEntryCallbackBean.class
 			.getName());
+	private transient MessageDigest digest;
+	private boolean noAlgorithm = false;
 
 	public FileEntryCallbackBean() {
 		super(FileEntryCallbackBean.class);
@@ -61,21 +68,48 @@ public class FileEntryCallbackBean extends
 
 	// Executed before the upload starts
 	public void begin(FileEntryResults.FileInfo fileInfo) {
-
+		// Initialize the message digest
+		try {
+			digest = MessageDigest.getInstance("SHA");
+		} catch (NoSuchAlgorithmException e) {
+			noAlgorithm = true;
+		}
 	}
 
 	public void write(int i) {
+		if (!noAlgorithm)
+			digest.update((byte) i);
 
 	}
 
 	public void write(byte[] bytes, int offset, int length) {
+		if (!noAlgorithm)
+			digest.update(bytes, offset, length);
+
 	}
 
 	// Executed at the end of a file upload
 	public void end(FileEntryResults.FileInfo fileEntryInfo) {
 		// We can fail the file here for invalid file type
-		if (!fileEntryInfo.getContentType().equals("application/pdf"))
-			fileEntryInfo.updateStatus(FileEntryStatuses.INVALID, false);
+		if (fileEntryInfo.getContentType().equals("application/pdf"))
+			fileEntryInfo.updateStatus(new InvalidFileStatus(), false);
+	}
+
+	private static class InvalidFileStatus implements FileEntryStatus {
+
+		public boolean isSuccess() {
+			return false;
+		}
+
+		public FacesMessage getFacesMessage(FacesContext facesContext,
+				UIComponent uiComponent, FileEntryResults.FileInfo fileInfo) {
+
+			return new FacesMessage(
+					FacesMessage.SEVERITY_ERROR,
+					"PDF files cannot be uploaded. Your upload has been cancelled.",
+					"PDF files cannot be uploaded. Your upload has been cancelled.");
+
+		}
 	}
 
 }
