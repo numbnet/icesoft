@@ -20,7 +20,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Logger;
 
@@ -44,7 +44,7 @@ public class MediaStore implements Serializable {
 
     private List<MediaMessage> media = new CopyOnWriteArrayList<MediaMessage>();
     
-    private Map<String,Integer> tags = new HashMap<String,Integer>();
+    private TagWeightMap tagWeightMap = new TagWeightMap();
     
     
     public List<MediaMessage> getMedia() {
@@ -60,13 +60,7 @@ public class MediaStore implements Serializable {
     	media.add(0,mediaMessage);
     	if( mediaMessage.getTags().size() > 0 ){
     		for( String tag : mediaMessage.getTags() ){
-    			Integer count = tags.get(tag);
-    			if( count != null ){
-    				tags.put(tag, Integer.valueOf(count.intValue()+1));
-    			}
-    			else{
-    				tags.put(tag, Integer.valueOf(1));
-    			}
+    			tagWeightMap.add(tag);
     		}
     	}
         // keep the list of upload small. we don't want to break the bank!
@@ -84,22 +78,83 @@ public class MediaStore implements Serializable {
     public void removeMedia(MediaMessage mediaMessage){
     	media.remove(mediaMessage);
     	for( String tag : mediaMessage.getTags() ){
-    		Integer count = tags.get(tag);
-    		if(Integer.valueOf(1).equals(count)){
-    			tags.remove(tag);
-    		}
-    		else{
-    			tags.put(tag, Integer.valueOf(count.intValue()-1));
-    		}
+    		tagWeightMap.remove(tag);
     	}
     }
     
-    public Map<String, Integer> getTags(){
-    	return tags;
+    public TagWeightMap getTagWeightMap(){
+    	return tagWeightMap;
     }
     
-    public List<String> getTagSet(){
-    	return new ArrayList<String>(tags.keySet());
+    public List<String> getTags(){
+    	return new ArrayList<String>(tagWeightMap.keySet());
     }
+    
+	@SuppressWarnings("serial")
+	public class TagWeightMap extends HashMap<String,Integer>{
+		
+		private static final int MAX_FONT_SIZE = 22;
+		private static final int MIN_FONT_SIZE = 9;
+		private int maxCount = 0;
+		private int minCount = 0;
+
+		@Override
+		public Integer get(Object key) {
+			return calculateWeight((String)key);
+		}
+		
+		public void add(String tag){
+			Integer count = super.get(tag);
+			if( count != null ){
+				super.put(tag, Integer.valueOf(count.intValue()+1));
+			}
+			else{
+				super.put(tag, Integer.valueOf(1));
+			}
+		}
+		
+		public void remove(String tag){
+			Integer count = super.get(tag);
+    		if(Integer.valueOf(1).equals(count)){
+    			super.remove(tag);
+    		}
+    		else{
+    			super.put(tag, Integer.valueOf(count.intValue()-1));
+    		}
+		}
+		
+		//see http://en.wikipedia.org/wiki/Tag_cloud
+		private int calculateWeight(String tag){
+			int weight = 0;
+			Integer tagCountI = super.get(tag);
+			int tagCount = tagCountI == null ? 0 : tagCountI.intValue();
+			if( this.size() > 0 ){
+				minCount = maxCount = tagCount;
+				for( String key : this.keySet() ){
+					int count = super.get(key).intValue();
+					if( count > maxCount ){
+						maxCount = count;
+					}
+					else if( count < minCount ){
+						minCount = count;
+					}
+				}
+				if( tagCount > minCount ){
+					weight = (MAX_FONT_SIZE * (tagCount - minCount))/(maxCount - minCount);
+				}
+				else{
+					weight = MIN_FONT_SIZE;
+				}
+				
+			}
+			else{
+				maxCount = 0;
+				minCount = 0;
+			}
+			
+			return weight;
+		}
+	}
+
 
 }

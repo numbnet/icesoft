@@ -38,13 +38,13 @@
             </mobi:fieldsetRow>
             <mobi:fieldsetRow>
                 <ul class="weighted" style="font-size:50%">
-                    <ui:repeat var="tag" value="#{mediaStore.tagSet}">
+                    <ui:repeat var="tag" value="#{mediaStore.tags}">
                         <li>
                             <h:commandLink>
                                 <f:setPropertyActionListener
                                         target="#{galleryView.filterString}"
                                         value="#{tag}"/>
-                                <h:outputText value="#{tag}" style="font-size:#{mediaStore.tags[tag]}em"/>
+                                <h:outputText value="#{tag}" style="font-size:#{mediaStore.tagWeightMap[tag]}pt"/>
                             </h:commandLink>
                         </li>
                     </ui:repeat>
