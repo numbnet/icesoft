@@ -14,18 +14,16 @@
  * governing permissions and limitations under the License.
  */
 
-package org.icefaces.mobi.component.layoutpane;
+package org.icefaces.mobi.component.splitpane;
 
 
 
-public class LayoutPane extends LayoutPaneBase {
-    public static final String LAYOUTPANE_CLASS = "mobi-layoutpane";
-    public static final String LAYOUTPANE_SCROLL = "mobi-layoutpane-scrollable";
-    public static final String LAYOUTPANE_LEFT = "mobi-layoutpane-left" ;
-    public static final String LAYOUTPANE_LEFT_SCROLLABLE = "mobi-layoutpane-left-scrollable";
+public class SplitPane extends SplitPaneBase {
+
+    public static final String SPLITPANE_LEFT = "mobi-splitpane-left" ;
+    public static final String SPLITPANE_LEFT_SCROLLABLE = "mobi-splitpane-left-scrollable";
 
    // facet names that define the optionally defined layouts
-    public static final String SINGLE_FACET = "single";
     public static final String LEFT_FACET = "left";
     public static final String RIGHT_FACET = "right";
 

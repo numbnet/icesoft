@@ -14,7 +14,7 @@
  * governing permissions and limitations under the License.
  */
 
-.mobi-layoutpane {
+.mobi-splitpane {
     padding: 0;
     background-color: #e2e5ea;
     margin: 0;
@@ -24,13 +24,13 @@
 /*    padding: 44px 0 50px 0;
     min-height: 640px; */
 }
-.mobi-layoutpane-scrollable {
+.mobi-splitpane-scrollable {
     overflow-y: scroll;
 }
-.mobi-layoutpane-left {
+.mobi-splitpane-left {
     float:left;
 }
-.mobi-layoutpane-left-scrollable {
+.mobi-splitpane-left-scrollable {
     float: left;
     overflow-y: scroll;
 }

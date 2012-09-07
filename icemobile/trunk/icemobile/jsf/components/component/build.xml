@@ -504,7 +504,7 @@
                 <include
                         name="org.icefaces.component.layoutmenu/layoutmenut.js"/>
                 <include
-                        name="org.icefaces.component.util/scrollable.js"/>
+                        name="org.icefaces.component.splitpane/splitpane.js"/>
             </fileset>
         </concat>
     </target>
@@ -576,8 +576,8 @@
                     path="${resources}/org.icefaces.component.panelpopup"/>
         <compressjs comp="submitnotification"
                     path="${resources}/org.icefaces.component.submitnotification"/>
-        <compressjs comp="panelpopup"
-                    path="${resources}/org.icefaces.component.panelpopup"/>
+        <compressjs comp="splitpane"
+                    path="${resources}/org.icefaces.component.splitpane"/>
         <compressjs comp="timespinner"
                     path="${resources}/org.icefaces.component.timespinner"/>
         <compressjs comp="tabset"
