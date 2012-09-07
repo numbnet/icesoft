@@ -14,7 +14,7 @@
   ~ governing permissions and limitations under the License.
   -->
 
-<project default="build.all" xmlns:ice="urn:ICEsoft">
+<project name="icemobile" default="build.all" xmlns:ice="urn:ICEsoft" >
 
     <property file="build.properties"/>
 
