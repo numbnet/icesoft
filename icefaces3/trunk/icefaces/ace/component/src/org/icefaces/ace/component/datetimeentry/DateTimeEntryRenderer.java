@@ -52,6 +52,7 @@ public class DateTimeEntryRenderer extends InputRenderer {
 
     @Override
     public void decode(FacesContext context, UIComponent component) {
+//        System.out.println("\nDateTimeEntryRenderer.decode");
 //        printParams();
         DateTimeEntry dateTimeEntry = (DateTimeEntry) component;
 
@@ -75,6 +76,8 @@ public class DateTimeEntryRenderer extends InputRenderer {
 
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
+//        System.out.println("\nDateTimeEntryRenderer.encodeEnd");
+//        printParams();
         DateTimeEntry dateTimeEntry = (DateTimeEntry) component;
         String value = DateTimeEntryUtils.getValueAsString(context, dateTimeEntry);
         Map<String, Object> labelAttributes = getLabelAttributes(component);
