@@ -1,19 +1,19 @@
 package org.icemobile.samples.spring.mediacast;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.icemobile.samples.spring.mediacast.MediaService.TagWeightMap;
 
 public class GalleryModel {
 	
 	private List<String> filters = new ArrayList<String>();
 	private String filterString;
 	private List<String> tags = new ArrayList<String>();
-	private Map<String,Integer> tagsMap = new HashMap<String,Integer>();
+	private TagWeightMap tagsMap;
 	private List<MediaMessage> filteredMessages = new ArrayList<MediaMessage>();
 	private int filteredMessagesCount = 0;
 	private static final Log log = LogFactory
@@ -54,8 +54,9 @@ public class GalleryModel {
 	public Map<String, Integer> getTagsMap() {
 		return tagsMap;
 	}
-	public void setTagsMap(Map<String, Integer> tagsMap) {
+	public void setTagsMap(TagWeightMap tagsMap) {
 		this.tagsMap = tagsMap;
 	}
+	
 
 }

@@ -35,10 +35,10 @@
 		                <label>Or select a tag from the cloud to filter</label>
 		            </mobi:fieldSetRow>
 		            <mobi:fieldSetRow>
-		                <ul class="tagCloud" style="font-size:50%">
+		                <ul class="tagCloud">
 		                    <c:forEach var="tag" items="${galleryModel.tags}">
 		                        <li>
-		                            <a href='<c:url value="/media/gallery?filters=${tag}"/>' style="font-size:${galleryModel.tagsMap[tag]}em">
+		                            <a href='<c:url value="/media/gallery?filters=${tag}"/>' style="font-size:${galleryModel.tagsMap[tag]}pt">
 		                            ${tag}</a>
 		                        </li>
 		                    </c:forEach>
