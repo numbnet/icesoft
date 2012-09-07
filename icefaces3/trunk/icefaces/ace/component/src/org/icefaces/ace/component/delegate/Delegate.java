@@ -14,8 +14,8 @@
  * governing permissions and limitations under the License.
  */
 
-package org.icefaces.ace.component.tooltip;
+package org.icefaces.ace.component.delegate;
 
-public class TooltipDelegate extends TooltipDelegateBase {
+public class Delegate extends DelegateBase {
 
 }
