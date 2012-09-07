@@ -16,79 +16,66 @@
 
 package org.icefaces.samples.showcase.example.ace.file;
 
-import org.icefaces.ace.component.fileentry.FileEntryStatus;
+import java.io.Serializable;
+import java.util.logging.Logger;
+
+import javax.annotation.PostConstruct;
+import javax.faces.bean.ApplicationScoped;
+import javax.faces.bean.CustomScoped;
+import javax.faces.bean.ManagedBean;
+
+import org.icefaces.ace.component.fileentry.FileEntryCallback;
+import org.icefaces.ace.component.fileentry.FileEntryResults;
+import org.icefaces.ace.component.fileentry.FileEntryStatuses;
 import org.icefaces.samples.showcase.metadata.annotation.ComponentExample;
 import org.icefaces.samples.showcase.metadata.annotation.ExampleResource;
 import org.icefaces.samples.showcase.metadata.annotation.ExampleResources;
 import org.icefaces.samples.showcase.metadata.annotation.ResourceType;
 import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
 
-import javax.annotation.PostConstruct;
-import javax.faces.application.FacesMessage;
-import javax.faces.bean.CustomScoped;
-import javax.faces.bean.ManagedBean;
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import java.io.Serializable;
-import org.icefaces.ace.component.fileentry.FileEntry;
-import org.icefaces.ace.component.fileentry.FileEntryEvent;
-import org.icefaces.ace.component.fileentry.FileEntryResults;
-
-@ComponentExample(
-        parent = FileEntryBean.BEAN_NAME,
-        title = "example.ace.fileentry.callback.title",
-        description = "example.ace.fileentry.callback.description",
-        example = "/resources/examples/ace/fileentry/fileEntryCallback.xhtml"
-)
-@ExampleResources(
-resources ={
-    // xhtml
-    @ExampleResource(type = ResourceType.xhtml,
-            title="fileEntryCallback.xhtml",
-            resource = "/resources/examples/ace/"+
-                       "fileentry/fileEntryCallback.xhtml"),
-    // Java Source
-    @ExampleResource(type = ResourceType.java,
-            title="FileEntryCallbackBean.java",
-            resource = "/WEB-INF/classes/org/icefaces/samples/"+
-                       "showcase/example/ace/file/FileEntryCallbackBean.java")
-}
-)
-@ManagedBean(name= FileEntryCallbackBean.BEAN_NAME)
+@ComponentExample(parent = FileEntryBean.BEAN_NAME, title = "example.ace.fileentry.callback.title", description = "example.ace.fileentry.callback.description", example = "/resources/examples/ace/fileentry/fileEntryCallback.xhtml")
+@ExampleResources(resources = {
+// xhtml
+		@ExampleResource(type = ResourceType.xhtml, title = "fileEntryCallback.xhtml", resource = "/resources/examples/ace/"
+				+ "fileentry/fileEntryCallback.xhtml"),
+		// Java Source
+		@ExampleResource(type = ResourceType.java, title = "FileEntryCallbackBean.java", resource = "/WEB-INF/classes/org/icefaces/samples/"
+				+ "showcase/example/ace/file/FileEntryCallbackBean.java") })
+@ManagedBean(name = FileEntryCallbackBean.BEAN_NAME)
 @CustomScoped(value = "#{window}")
-public class FileEntryCallbackBean extends ComponentExampleImpl<FileEntryCallbackBean> implements Serializable 
-{
-    public static final String BEAN_NAME = "fileEntryCallback";
+public class FileEntryCallbackBean extends
+		ComponentExampleImpl<FileEntryCallbackBean> implements
+		FileEntryCallback, Serializable {
+	public static final String BEAN_NAME = "fileEntryCallback";
+	private static Logger logger = Logger.getLogger(FileEntryCallbackBean.class
+			.getName());
 
-    public FileEntryCallbackBean() {
-        super(FileEntryCallbackBean.class);
-    }
-    
-    @PostConstruct
-    public void initMetaData() {
-        super.initMetaData();
-    }
+	public FileEntryCallbackBean() {
+		super(FileEntryCallbackBean.class);
+	}
 
-    // Invalidate and delete any files not named test.txt
-    public void customValidator(FileEntryEvent entryEvent) {
-        FileEntryResults results = ((FileEntry)entryEvent.getComponent()).getResults();
-        for (FileEntryResults.FileInfo file : results.getFiles()) {
-            if (file.isSaved()) {
-                if (!file.getContentType().equals("application/pdf")){
-                    file.updateStatus(new FileEntryStatus() {
-                            public boolean isSuccess() {
-                                return false;
-                            }
-                            public FacesMessage getFacesMessage(
-                                    FacesContext facesContext, UIComponent fileEntry, FileEntryResults.FileInfo fi) {
-                                return new FacesMessage(FacesMessage.SEVERITY_ERROR,
-                                    "Only PDF files can be uploaded. Your upload has been cancelled.",
-                                    "Only PDF files can be uploaded. Your upload has been cancelled.");
-                            }
-                        },
-                        true, true);
-                }
-            }
-        }
-    }
+	@PostConstruct
+	public void initMetaData() {
+		super.initMetaData();
+	}
+
+	// Executed before the upload starts
+	public void begin(FileEntryResults.FileInfo fileInfo) {
+
+	}
+
+	public void write(int i) {
+
+	}
+
+	public void write(byte[] bytes, int offset, int length) {
+	}
+
+	// Executed at the end of a file upload
+	public void end(FileEntryResults.FileInfo fileEntryInfo) {
+		// We can fail the file here for invalid file type
+		if (!fileEntryInfo.getContentType().equals("application/pdf"))
+			fileEntryInfo.updateStatus(FileEntryStatuses.INVALID, false);
+	}
+
 }
