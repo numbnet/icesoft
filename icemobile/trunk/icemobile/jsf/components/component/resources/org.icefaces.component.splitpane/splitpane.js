@@ -30,7 +30,7 @@ if (!window['mobi']) {
         var wrapPanel = clientId+"_wrp";
         var leftNode = document.getElementById(clientId+"_left") ;
         var rightNode = document.getElementById(clientId+"_right") ;
-        var resizeCall = function(){ mobi.layout.resizeHt(clientId);};
+        var resizeCall = function(){ mobi.splitpane.resizeHt(clientId);};
         //
         if (cfg.width){
             var width= cfg.width || -1;
