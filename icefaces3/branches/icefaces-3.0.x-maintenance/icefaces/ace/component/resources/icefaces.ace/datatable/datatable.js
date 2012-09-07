@@ -616,6 +616,7 @@ ice.ace.DataTable.prototype.setupSelectionEvents = function () {
 
     ice.ace.jq(selector)
         .css('cursor', 'pointer')
+        .first()
         .closest('table').bind('mouseleave',function () {
             if (!(_self.cfg.noiehover
                 && ((ice.ace.jq.browser.msie && ice.ace.jq.browser.version == 7) ||
