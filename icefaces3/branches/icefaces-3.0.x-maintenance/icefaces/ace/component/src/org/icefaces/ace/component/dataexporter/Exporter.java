@@ -51,6 +51,7 @@ import org.icefaces.ace.component.row.Row;
 import org.icefaces.ace.component.expansiontoggler.ExpansionToggler;
 import org.icefaces.ace.component.excludefromexport.ExcludeFromExport;
 import org.icefaces.ace.component.celleditor.CellEditor;
+import org.icefaces.ace.component.panelexpansion.PanelExpansion;
 
 public abstract class Exporter {
 
@@ -68,7 +69,7 @@ public abstract class Exporter {
         int columnIndex = -1;
 
         for (UIComponent child : table.getChildren()) {
-            if (child instanceof UIColumn) {
+            if (child instanceof UIColumn && !(child instanceof PanelExpansion)) {
 				if (shouldExcludeFromExport(child)) continue;
                 UIColumn column = (UIColumn) child;
                 columnIndex++;
