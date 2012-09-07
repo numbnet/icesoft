@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
-import java.util.List;
 import java.util.UUID;
 
 import javax.inject.Inject;
@@ -266,6 +265,7 @@ public class ApplicationController {
 		addNewMediaToUploadModel(request, file, "m4a", uploadModel);
 	}
 
+	//TODO look into this
 	private String getCurrentFileName(HttpServletRequest request) {
 		if (null == currentFileName) {
 			return "resources/images/uploaded.jpg";

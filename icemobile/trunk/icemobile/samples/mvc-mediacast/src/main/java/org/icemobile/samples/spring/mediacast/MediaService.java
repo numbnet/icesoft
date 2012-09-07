@@ -21,7 +21,7 @@ public class MediaService implements ServletContextAware {
 	private static final String CAROUSEL_ITEM_MARKUP = 
 			"<div style='overflow:hidden;width:175px;height:98px;'><img height='"+CAROUSEL_IMG_HEIGHT+"' src='%1$s/resources/uploads/%2$s' style='border:none;' title='%3$s' width='"+CAROUSEL_IMG_WIDTH+"'></div><a class='view-play-icon' href='%1$s/media/%4$s' ><img src='%1$s/resources/images/view-icon.png' style='border:none;'></a>";
 	private String contextPath;
-	private Map<String,Integer> tagsMap = new HashMap<String,Integer>();
+	private TagWeightMap tagsMap = new TagWeightMap();
 	
 	private static final Log log = LogFactory
 			.getLog(MediaService.class);
@@ -77,7 +77,7 @@ public class MediaService implements ServletContextAware {
 		this.contextPath = context.getContextPath();
 	}
 
-	public Map<String, Integer> getTagsMap() {
+	public TagWeightMap getTagsMap() {
 		return tagsMap;
 	}
 
@@ -91,18 +91,70 @@ public class MediaService implements ServletContextAware {
 			log.debug("addMedia: tags="+msg.getTags());
 	    	if( msg.getTags().size() > 0 ){
 	    		for( String tag : msg.getTags() ){
-	    			Integer count = tagsMap.get(tag);
-	    			if( count != null ){
-	    				tagsMap.put(tag, Integer.valueOf(count.intValue()+1));
-	    			}
-	    			else{
-	    				tagsMap.put(tag, Integer.valueOf(1));
-	    			}
+	    			tagsMap.put(tag);
 	    			log.debug("tag: " + tag + ", count=" + tagsMap.get(tag));
 	    		}
 	    	}
 		}		
 	}
+	
+	@SuppressWarnings("serial")
+	public class TagWeightMap extends HashMap<String,Integer>{
+		
+		private static final int MAX_FONT_SIZE = 22;
+		private static final int MIN_FONT_SIZE = 9;
+		private int maxCount = 0;
+		private int minCount = 0;
+
+		@Override
+		public Integer get(Object key) {
+			return calculateWeight((String)key);
+		}
+		
+		public void put(String tag){
+			Integer count = super.get(tag);
+			if( count != null ){
+				super.put(tag, Integer.valueOf(count.intValue()+1));
+			}
+			else{
+				super.put(tag, Integer.valueOf(1));
+			}
+		}
+		
+		//see http://en.wikipedia.org/wiki/Tag_cloud
+		private int calculateWeight(String tag){
+			int weight = 0;
+			Integer tagCountI = super.get(tag);
+			int tagCount = tagCountI == null ? 0 : tagCountI.intValue();
+			if( this.size() > 0 ){
+				minCount = maxCount = tagCount;
+				for( String key : this.keySet() ){
+					int count = super.get(key).intValue();
+					if( count > maxCount ){
+						maxCount = count;
+					}
+					else if( count < minCount ){
+						minCount = count;
+					}
+				}
+				if( tagCount > minCount ){
+					weight = (MAX_FONT_SIZE * (tagCount - minCount))/(maxCount - minCount);
+				}
+				else{
+					weight = MIN_FONT_SIZE;
+				}
+				
+			}
+			else{
+				maxCount = 0;
+				minCount = 0;
+			}
+			log.debug(String.format("calculate weight for %s min=%s, max=%s, count=%s, weight=%s", tag, minCount, maxCount, tagCount, weight));
+			
+			return weight;
+		}
+	}
+
 
 	
 
