@@ -2433,7 +2433,7 @@ Autocompleter.Base.prototype = {
         } else {
             this.active = false;
             this.hide();
-            this.getUpdatedChoices(false, undefined, -1);
+//            this.getUpdatedChoices(false, undefined, -1);
         }
     },
 
@@ -2510,10 +2510,12 @@ Object.extend(Object.extend(Ice.Autocompleter.prototype, Autocompleter.Base.prot
             return;
         }
 
+/*
         if (options)
             options.minChars = 0;
         else
             options = {minChars:0};
+*/
         var element = $(id);
         var ue = $(updateId);
         this.baseInitialize(element, ue, options, rowClass, selectedRowClass);
