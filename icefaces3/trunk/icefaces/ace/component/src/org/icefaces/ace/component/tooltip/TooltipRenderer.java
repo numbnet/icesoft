@@ -127,7 +127,7 @@ public class TooltipRenderer extends CoreRenderer {
 	protected void encodeScript(FacesContext facesContext, Tooltip tooltip) throws IOException {
 		ResponseWriter writer = facesContext.getResponseWriter();
 		boolean global = tooltip.isGlobal();
-		Object owner = getTarget(facesContext, tooltip);
+		Object owner = null;
 		String clientId = tooltip.getClientId(facesContext);
 
         writer.startElement("span",null);
@@ -150,6 +150,7 @@ public class TooltipRenderer extends CoreRenderer {
 
 		String delegateId = tooltip.getForDelegate();
 		if(!global && delegateId == null) {
+			owner = getTarget(facesContext, tooltip);
 			if (owner instanceof ArrayList) {
 				jb.beginArray("forComponents");
 				ArrayList<String> clientIds = (ArrayList<String>) owner;
@@ -304,7 +305,7 @@ public class TooltipRenderer extends CoreRenderer {
 	
 	private UIComponent findComponentCustom(UIComponent base, String id) {
 
-		if (base.getId().equals(id)) return base;
+		if (base.getId() != null && base.getId().equals(id)) return base;
 		List<UIComponent> children = base.getChildren();
 		UIComponent result = null;
 		for (UIComponent child : children) {
