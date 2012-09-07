@@ -13,11 +13,10 @@
  * express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.icefaces.mobi.component.layoutpane;
+package org.icefaces.mobi.component.splitpane;
 
 
 import java.io.IOException;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.icefaces.mobi.renderkit.BaseLayoutRenderer;
 import org.icefaces.mobi.utils.HTML;
@@ -27,42 +26,24 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
-public class LayoutPaneRenderer extends BaseLayoutRenderer {
-    private static Logger logger = Logger.getLogger(LayoutPaneRenderer.class.getName());
-    private static final String JS_NAME = "scrollable.js";
-    private static final String JS_MIN_NAME = "scrollable-min.js";
-    private static final String JS_LIBRARY = "org.icefaces.component.util";
+public class SplitPaneRenderer extends BaseLayoutRenderer {
+    private static Logger logger = Logger.getLogger(SplitPaneRenderer.class.getName());
+    private static final String JS_NAME = "splitpane.js";
+    private static final String JS_MIN_NAME = "splitpane-min.js";
+    private static final String JS_LIBRARY = "org.icefaces.component.splitpane";
 
     @Override
     public void encodeEnd(FacesContext facesContext, UIComponent uiComponent)throws IOException {
          ResponseWriter writer = facesContext.getResponseWriter();
          String clientId = uiComponent.getClientId(facesContext);
-         LayoutPane pane = (LayoutPane)uiComponent;
+         SplitPane pane = (SplitPane)uiComponent;
             /* write out root tag.  For current incarnation html5 semantic markup is ignored */
 
-        UIComponent singleFacet = pane.getFacet(LayoutPane.SINGLE_FACET);
-        UIComponent leftFacet = pane.getFacet(LayoutPane.LEFT_FACET);
-        UIComponent rightFacet = pane.getFacet(LayoutPane.RIGHT_FACET);
-        if (singleFacet == null && (leftFacet == null && rightFacet == null)) {
-            logger.warning("This component requires either single facet OR " +
-                    " left and right facets to be defined to render content.");
-            return;
-        }
-        if (singleFacet != null && leftFacet !=null && rightFacet !=null){
-            logger.warning("This component may ONLY have either one occurence of the singleFacet OR " +
+        UIComponent leftFacet = pane.getFacet(SplitPane.LEFT_FACET);
+        UIComponent rightFacet = pane.getFacet(SplitPane.RIGHT_FACET);
+        if ( leftFacet ==null && rightFacet ==null){
+            logger.warning("This component may ONLY have  " +
                     "both the left and right facets together");
-        }
-        if (singleFacet !=null ){
-            writer.startElement(HTML.DIV_ELEM, uiComponent);
-            writer.writeAttribute(HTML.ID_ATTR, clientId+"_wrp", HTML.ID_ATTR);
-            writer.startElement(HTML.DIV_ELEM, uiComponent);
-            writer.writeAttribute(HTML.ID_ATTR, clientId, HTML.ID_ATTR);
-            String baseClass = LayoutPane.LAYOUTPANE_CLASS;
-            if (pane.isScrollable()){
-                baseClass =  LayoutPane.LAYOUTPANE_SCROLL;
-            }
-            Utils.renderChild(facesContext, singleFacet);
-            writer.endElement(HTML.DIV_ELEM);
         }
         if ((leftFacet!=null) && (rightFacet !=null)){
             writeJavascriptFile(facesContext, uiComponent, JS_NAME, JS_MIN_NAME, JS_LIBRARY);
@@ -70,9 +51,9 @@ public class LayoutPaneRenderer extends BaseLayoutRenderer {
             writer.writeAttribute(HTML.ID_ATTR, clientId+"_wrp", HTML.ID_ATTR);
             writer.startElement(HTML.DIV_ELEM, uiComponent);
             writer.writeAttribute(HTML.ID_ATTR, clientId+"_left", HTML.ID_ATTR);
-            String baseClass = LayoutPane.LAYOUTPANE_LEFT;
+            String baseClass = SplitPane.SPLITPANE_LEFT;
             if (pane.isScrollable()){
-                baseClass =  LayoutPane.LAYOUTPANE_LEFT_SCROLLABLE;
+                baseClass =  SplitPane.SPLITPANE_LEFT_SCROLLABLE;
             }
             writer.writeAttribute("class", baseClass, null);
             Utils.renderChild(facesContext, leftFacet);
@@ -99,15 +80,15 @@ public class LayoutPaneRenderer extends BaseLayoutRenderer {
 
     private void encodeScript(FacesContext facesContext, UIComponent uiComponent) throws IOException{
         ResponseWriter writer = facesContext.getResponseWriter();
-        LayoutPane pane = (LayoutPane) uiComponent;
+        SplitPane pane = (SplitPane) uiComponent;
         String clientId = pane.getClientId(facesContext);
         writer.startElement("span", uiComponent);
         writer.startElement("script", uiComponent);
         writer.writeAttribute("text", "text/javascript", null);
-        StringBuilder sb = new StringBuilder("mobi.layout.initClient('").append(clientId).append("'");
+        StringBuilder sb = new StringBuilder("mobi.splitpane.initClient('").append(clientId).append("'");
         sb.append(",{ scrollable: '").append(pane.isScrollable()).append("'");
      //   sb.append(", resize: ").append(pane.isResizable());
-        int width = pane.getWidth();
+        int width = pane.getColumnDivider();
         sb.append(",width: '").append(width).append("'");
         sb.append("});");
         writer.write(sb.toString());

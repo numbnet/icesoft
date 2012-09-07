@@ -30,6 +30,7 @@ if (!window['mobi']) {
         var wrapPanel = clientId+"_wrp";
         var leftNode = document.getElementById(clientId+"_left") ;
         var rightNode = document.getElementById(clientId+"_right") ;
+        var resizeCall = function(){ mobi.layout.resizeHt(clientId);};
         //
         if (cfg.width){
             var width= cfg.width || -1;
@@ -42,11 +43,11 @@ if (!window['mobi']) {
                 orientationEvent = supportsOrientationChange ? "orientationchange" : "resize";
 
             if (window.addEventListener) {
-                    window.addEventListener(orientationEvent, resizeElementHeight(clientId), false);
-                    window.addEventListener('resize', resizeElementHeight(clientId), false);
+                    window.addEventListener(orientationEvent, resizeCall, false);
+                    window.addEventListener('resize', resizeCall, false);
                 } else { // older ie event listener
-                    window.attachEvent(orientationEvent, resizeElementHeight(clientId), false);
-                    window.attachEvent("resize", resizeElementHeight(clientId), false);
+                    window.attachEvent(orientationEvent, resizeCall, false);
+                    window.attachEvent("resize", resizeCall, false);
             }
         }
         return {
@@ -56,22 +57,31 @@ if (!window['mobi']) {
            unload: function(clientId){
                //remove listeners and set object back to empty
                if (window.addEventListener) {
-                   window.removeEventListener(orientationEvent, resizeElementHeight(clientId), false);
-                   window.removeEventListener("resize", resizeElementHeight(clientId), false);
+                   window.removeEventListener(orientationEvent, resizeCall, false);
+                   window.removeEventListener("resize", resizeCall, false);
                }else {
-                   window.detachEvent(orientationEvent, resizeElementHeight(clientId), false);
-                   window.detachEvent("resize", resizeElementHeight(clientId), false);
+                   window.detachEvent(orientationEvent, resizeCall, false);
+                   window.detachEvent("resize", resizeCall, false);
                }
            }
         }
     }
-    mobi.layout = {
+    mobi.splitpane = {
         panels: {},
         initClient: function(clientId, cfgIn) {
             if (!this.panels[clientId]){
                 this.panels[clientId] = Scrollable(clientId, cfgIn);
+                this.panels[clientId].resize(clientId);
             } else {
                 this.panels[clientId].resize(clientId);
+            }
+        },
+        resizeHt: function(clientId) {
+            // should put if the node is not found in the document, remove??
+            if (this.panels[clientId])
+                this.panels[clientId].resize(clientId);
+            else {
+                this.panels[clientId].unload(clientid);
             }
         }
     }

@@ -11,7 +11,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes"/>
     <meta name="apple-mobile-web-app-status-bar-style" content="black"/>
      <mobi:deviceStylesheet name="#{themeSwitcher.theme}" media="screen" />
-    <title>LayoutPane singleScrollable</title>
+    <title>splitPane singleScrollable</title>
 </h:head>
 <h:body>
   <header>
@@ -19,11 +19,9 @@
   </header>
   <mobi:pagePanel>
     <f:facet name="header">
-        <h3>layoutPane within pagePanel Test</h3>
+        <h3>single so no special tool pagePanel Test</h3>
     </f:facet>
    <f:facet name="body">
-     <mobi:layoutPane scrollable="true">
-          <f:facet name="single">
               <fieldset title="panel1">
                       <legend>Panel1</legend>
                     <h3> header for panel 1</h3>
@@ -46,8 +44,7 @@
                         </figure>
                     <ui:include src="included.xhtml"/>
               </h:panelGroup>
-          </f:facet>
-       </mobi:layoutPane>
+
     </f:facet>
    </mobi:pagePanel>
 </h:body>
