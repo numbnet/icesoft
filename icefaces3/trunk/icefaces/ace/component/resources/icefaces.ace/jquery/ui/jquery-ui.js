@@ -7506,7 +7506,7 @@ $.extend(Datepicker.prototype, {
 			inst.append = $('<span class="' + this._appendClass + '">' + appendText + '</span>');
 			input[isRTL ? 'before' : 'after'](inst.append);
 		}
-		input.unbind('focus', this._showDatepicker);
+		input.unbind('focus click', this._showDatepicker); // ICE-8552
         // ICE-8154: in-field label handling
         input.unbind('focus', delLabel);
         input.unbind('blur', addLabel);
@@ -7517,8 +7517,11 @@ $.extend(Datepicker.prototype, {
             input.focus(delLabel).blur(addLabel);
         }
         var showOn = this._get(inst, 'showOn');
-		if (showOn == 'focus' || showOn == 'both') // pop-up date picker when in the marked field
-			input.focus(this._showDatepicker);
+        if (showOn == 'focus' || showOn == 'both') // pop-up date picker when in the marked field
+        {
+            input.focus(this._showDatepicker);
+            input.click(this._showDatepicker); // ICE-8552
+        }
 		if (showOn == 'button' || showOn == 'both') { // pop-up date picker when button clicked
 			var buttonText = this._get(inst, 'buttonText');
 			var buttonImage = this._get(inst, 'buttonImage');
@@ -7654,7 +7657,7 @@ $.extend(Datepicker.prototype, {
 			inst.append.remove();
 			inst.trigger.remove();
 			$target.removeClass(this.markerClassName).
-				unbind('focus', this._showDatepicker).
+				unbind('focus click', this._showDatepicker). // ICE-8552
 				unbind('keydown', this._doKeyDown).
 				unbind('keypress', this._doKeyPress).
 				unbind('keyup', this._doKeyUp);
@@ -7931,6 +7934,7 @@ $.extend(Datepicker.prototype, {
 	   @param  input  element - the input field attached to the date picker or
 	                  event - if triggered by focus */
 	_showDatepicker: function(input) {
+        var eventType = input.type || "";
         input = input.target || input;
 		if (input.nodeName.toLowerCase() != 'input') // find from button/image trigger
 			input = $('input', input.parentNode)[0];
@@ -7938,7 +7942,7 @@ $.extend(Datepicker.prototype, {
 			return;
         var inst = $.datepicker._getInst(input);
 //        console.log("inst.dontShowPopup = ", inst.dontShowPopup);
-        if (inst.dontShowPopup) return; // ICE-8453
+        if (inst.dontShowPopup && eventType != "click") return; // ICE-8453, ICE-8552
         if ($.datepicker._curInst && $.datepicker._curInst != inst) {
 			$.datepicker._curInst.dpDiv.stop(true, true);
 			if ( inst && $.datepicker._datepickerShowing ) {
