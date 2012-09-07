@@ -44,6 +44,7 @@ import org.icefaces.ace.renderkit.CoreRenderer;
 import org.icefaces.ace.util.ComponentUtils;
 import org.icefaces.ace.util.JSONBuilder;
 import org.icefaces.render.MandatoryResourceComponent;
+import org.icefaces.ace.component.delegate.Delegate;
 
 import java.util.Map;
 import java.util.HashMap;
@@ -78,7 +79,7 @@ public class TooltipRenderer extends CoreRenderer {
         String clientId = tooltip.getClientId(facesContext);
         Map<String, String> params = facesContext.getExternalContext().getRequestParameterMap();
 
-		tooltip.setTo(null);
+		tooltip.setStore(null);
 		String delegateId = tooltip.getForDelegate();
 		if (delegateId != null) {
 			UIComponent delegateComponent = findComponentCustom(facesContext.getViewRoot(), delegateId);
@@ -86,11 +87,11 @@ public class TooltipRenderer extends CoreRenderer {
 				if (params.containsKey(clientId + "_activeComponent")) {
 					String activeComponentId = params.get(clientId + "_activeComponent");
 					if (activeComponentId != null && !"".equals(activeComponentId)) {
-						ValueExpression from = tooltip.getValueExpression("from");
-						if (from != null) {
-							String expression = from.getExpressionString();
+						ValueExpression fetch = tooltip.getValueExpression("fetch");
+						if (fetch != null) {
+							String expression = fetch.getExpressionString();
 							Object data = retrieveData(facesContext, delegateComponent, activeComponentId, expression);
-							tooltip.setTo(data);
+							tooltip.setStore(data);
 						}
 					}
 				}
@@ -173,7 +174,7 @@ public class TooltipRenderer extends CoreRenderer {
 			writer.write("},");
 		} else if (delegateId != null) {
 			UIComponent delegateComponent = findComponentCustom(facesContext.getViewRoot(), delegateId);
-			if (delegateComponent != null && delegateComponent instanceof TooltipDelegate) {
+			if (delegateComponent != null && delegateComponent instanceof Delegate) {
 				jb.entry("forDelegate", delegateComponent.getClientId(facesContext));
 				jb.entry("forComponent", tooltip.getFor());
 			} else {

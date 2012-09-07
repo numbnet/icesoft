@@ -14,7 +14,7 @@
  * governing permissions and limitations under the License.
  */
 
-package org.icefaces.ace.component.tooltip;
+package org.icefaces.ace.component.delegate;
 
 import org.icefaces.ace.renderkit.CoreRenderer;
 import javax.faces.component.UIComponent;
@@ -22,7 +22,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import java.io.IOException;
 
-public class TooltipDelegateRenderer extends CoreRenderer {
+public class DelegateRenderer extends CoreRenderer {
 
     @Override
 	public void encodeBegin(FacesContext facesContext, UIComponent component) throws IOException {

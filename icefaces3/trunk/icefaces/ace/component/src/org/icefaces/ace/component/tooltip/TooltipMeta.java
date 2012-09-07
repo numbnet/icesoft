@@ -98,14 +98,14 @@ public class TooltipMeta extends UIOutputMeta {
 	@Property(tlddoc="Specifies the id of the component that contains the component referenced by the \"for\" attribute. This is to be used in cases where the target component is inside an iterative container such as a data table and the tooltip component itself is outside. A more robust solution is to use \"forDelegate\" instead of this attribute.")
 	private String forContainer;
 	
-	@Property(tlddoc="Specifies the id of the <ace:tooltipDelegate> component that will receive the tooltip listeners on behalf of the component specified in the \"for\" attribute. This is useful when the tooltip component is outside a data table or iterative container and references a component inside such container. This improves performance by avoiding initializing tooltips in each individual component of each row. It also guards against dynamic updates that could replace the component and make it lose its tooltip listeners. Additionally, this method allows to retrieve row data by using the \"from\" and \"to\" attributes. This is a better alternative to \"forContainer\".")
+	@Property(tlddoc="Specifies the id of the <ace:tooltipDelegate> component that will receive the tooltip listeners on behalf of the component specified in the \"for\" attribute. This is useful when the tooltip component is outside a data table or iterative container and references a component inside such container. This improves performance by avoiding initializing tooltips in each individual component of each row. It also guards against dynamic updates that could replace the component and make it lose its tooltip listeners. Additionally, this method allows to retrieve row data by using the \"fetch\" and \"store\" attributes. This is a better alternative to \"forContainer\".")
 	private String forDelegate;
 	
-	@Property(tlddoc="The result of evaluating the expression specified in \"from\" is stored in the bean property specified in this attribute.")
-	private Object to;
+	@Property(tlddoc="The result of evaluating the expression specified in \"fetch\" is stored in the bean property specified in this attribute.")
+	private Object store;
 	
-	@Property(tlddoc="When using \"forDelegate\" and \"displayListener\", an EL expression can be specified as the value of this attribute. Such expression will be evaluated at the same point (e.g. row) where the component that triggered the tooltip is located, allowing to retrieve row data in a table or iterative container. The result is saved in the bean property specified by the \"to\" attribute.", expression = Expression.VALUE_EXPRESSION)
-	private ValueExpression from;
+	@Property(tlddoc="When using \"forDelegate\" and \"displayListener\", an EL expression can be specified as the value of this attribute. Such expression will be evaluated at the same point (e.g. row) where the component that triggered the tooltip is located, allowing to retrieve row data in a table or iterative container. The result is saved in the bean property specified by the \"store\" attribute.", expression = Expression.VALUE_EXPRESSION)
+	private ValueExpression fetch;
 
     @Property(expression = Expression.METHOD_EXPRESSION,
               tlddoc = "A server side listener to be invoked when the tooltip is about to be shown in the client.")
