@@ -54,6 +54,7 @@ import org.icefaces.samples.showcase.dataGenerators.ImageSet.ImageInfo;
 	menuLinks = {
 	         @MenuLink(title = "menu.ace.tooltip.subMenu.main", isDefault = true, exampleBeanName = TooltipOverviewBean.BEAN_NAME)
                         ,@MenuLink(title = "menu.ace.tooltip.subMenu.globalTooltip", exampleBeanName = GlobalTooltipBean.BEAN_NAME)
+						,@MenuLink(title = "menu.ace.tooltip.subMenu.delegateTooltip", exampleBeanName = DelegateTooltipBean.BEAN_NAME)
     }
 )
 @ManagedBean(name= TooltipOverviewBean.BEAN_NAME)
