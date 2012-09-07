@@ -30,11 +30,10 @@ public class MediaMessage implements Serializable {
     private String id;
     private String description;
     private List<String> tags = new ArrayList<String>(); 
-    private String tagString;
     private double latitude = 0.0;
     private double longitude = 0.0;
     private double altitude = 0.0;
-    private double direction = (360 * Math.random()); //0-359 degrees
+    private double direction = 0.0; //0-359 degrees
     private String uploadMsg;
     private Media photo = null;
     private Media video = null;
@@ -217,13 +216,5 @@ public class MediaMessage implements Serializable {
     			longitude,
     			direction);
     }
-
-	public String getTagString() {
-		return tagString;
-	}
-
-	public void setTagString(String tagString) {
-		this.tagString = tagString;
-	}
 
 }

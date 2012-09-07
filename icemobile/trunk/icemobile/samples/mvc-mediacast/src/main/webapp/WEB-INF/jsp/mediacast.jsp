@@ -13,7 +13,7 @@
 				<form:form id="carouselForm" method="POST" modelAttribute="mediaView">
 				<div style="border-top: 1px solid #999999;">
 					<mobi:carousel id="recentMessagesCarousel"
-						collection="${mediaStore.mediaImageMarkup}"
+						collection="${mediaService.mediaImageMarkup}"
 						selectedIndex="${mediaView.selectedIndex}"
 						style="border-top: 1px solid #999999;">
 						<mobi:carouselItem ref="myitem" type="java.lang.String" />
@@ -25,6 +25,10 @@
 			</div>
 			
 			<div style="margin-top:10px;">
+				<div class="mobi-button-group mobi-button-group-hor">
+					<a class="mobi-button mobi-button-default" href='<c:url value="/media"/>'>Media Upload</a>
+					<a class="mobi-button mobi-button-default" href='<c:url value="/media/gallery"/>'>Media Gallery</a>
+				</div>
 				<h4>Send a Media Message</h4>
 				<div id="msg">${uploadModel.uploadMsg}</div>
 				<div class="mobi-button-group mobi-button-group-hor ajaxShow">
@@ -134,7 +138,7 @@
 	                         	styleClass="input"
                                 autoCorrect="off"
                                 placeholder="Add some tags.."
-                                value="${uploadModel.tagString}"/>
+                                value="${tags}"/>
 	                     </mobi:fieldSetRow>
 	                     <mobi:fieldSetRow style="text-align:center;">
 	                          <mobi:commandButton name="submit"

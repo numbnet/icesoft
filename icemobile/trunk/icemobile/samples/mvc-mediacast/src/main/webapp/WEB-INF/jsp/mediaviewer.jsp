@@ -4,7 +4,11 @@
 <%@ include file="/WEB-INF/jsp/header.jsp"%>
 <body>
 	<mobi:pagePanel>
-		<mobi:pagePanelHeader>Media Viewer</mobi:pagePanelHeader>
+		<mobi:pagePanelHeader>
+			<a id="backBtn" type="back" class="mobi-button mobi-button-back"
+				href='<c:url value="/media"/>'>back</a>
+			<span>Media Viewer</span>
+		</mobi:pagePanelHeader>
 		<mobi:pagePanelBody>
 			<mobi:fieldSetGroup inset="true">
 				<mobi:fieldSetRow id="titleRow" style="padding:5px;">

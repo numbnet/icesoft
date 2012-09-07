@@ -35,7 +35,7 @@ import javax.faces.bean.ManagedBean;
 @ApplicationScoped
 public class MediaStore implements Serializable {
 	
-	private static final Logger logger =
+	private static final Logger log =
             Logger.getLogger(MediaStore.class.toString());
 
     public static final String BEAN_NAME = "mediaStore";

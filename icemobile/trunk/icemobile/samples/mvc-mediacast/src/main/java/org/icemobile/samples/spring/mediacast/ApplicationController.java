@@ -2,7 +2,10 @@ package org.icemobile.samples.spring.mediacast;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
 import java.util.UUID;
 
 import javax.inject.Inject;
@@ -12,7 +15,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,12 +31,14 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class ApplicationController {
 
 	@Inject
-	private MediaStore mediaStore;
+	private MediaService mediaService;
 	
 	String currentFileName = null;
 	
 	private static final Log log = LogFactory
 			.getLog(ApplicationController.class);
+	
+	private static final String DELIMETERS = "[, \t\n\r\f]";
 	
 	@ModelAttribute("uploadModel")
 	public MediaMessage getUploadModel(){
@@ -46,7 +50,7 @@ public class ApplicationController {
 	@RequestMapping(method = RequestMethod.GET)
 	public String getMediacastPage(Model model, 
 			@ModelAttribute("uploadModel") MediaMessage uploadModel) {
-		model.addAttribute("mediaStore", mediaStore);
+		model.addAttribute("mediaService", mediaService);
 		if( !model.containsAttribute("uploadModel")){
 			model.addAttribute("uploadModel", uploadModel);
 		}
@@ -56,7 +60,7 @@ public class ApplicationController {
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public String getMediaViewerPage(@PathVariable String id, Model model) {
-		MediaMessage msg = mediaStore.getMediaMessage(id);
+		MediaMessage msg = mediaService.getMediaMessage(id);
 		if (msg != null) {
 			log.debug("found media " + msg);
 			model.addAttribute("media", msg);
@@ -69,7 +73,7 @@ public class ApplicationController {
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	public String deleteMedia(@PathVariable String id) {
-		mediaStore.removeMessage(id);
+		mediaService.removeMessage(id);
 		log.debug("removed media message id=" + id);
 		return "redirect:/";
 	}
@@ -84,28 +88,15 @@ public class ApplicationController {
 			throws IOException {
 		
 		if( file != null ){
-			String newFileName = null;
 			String type = request.getParameter("type");
 			if( "photo".equals(type)){
-				newFileName = saveImage(request, file, uploadModel);
-				Media media = new Media();
-				media.setFileName(newFileName);
-				media.setType(file.getContentType());
-				uploadModel.setPhoto(media);
+				saveImage(request, file, uploadModel);
 			}
 			else if( "video".equals(type)){
-				newFileName = saveVideo(request, file, uploadModel);
-				Media media = new Media();
-				media.setFileName(newFileName);
-				media.setType(file.getContentType());
-				uploadModel.setVideo(media);
+				saveVideo(request, file, uploadModel);
 			}
 			else if( "audio".equals(type)){
-				newFileName = saveAudio(request, file, uploadModel);
-				Media media = new Media();
-				media.setFileName(newFileName);
-				media.setType(file.getContentType());
-				uploadModel.setAudio(media);
+				saveAudio(request, file, uploadModel);
 			}
 			log.debug("processUpload() type=" + type + ", file="+file);
 			if ((null != file) && !file.isEmpty()) {
@@ -136,22 +127,52 @@ public class ApplicationController {
 			uploadModel.setId(newId());
 		}
 		if (tags != null && tags.indexOf(" ") > -1) {
-			uploadModel.setTagString(tags);
-			// workaround split returns null if no delimiter found
-			uploadModel.setTags(Arrays.asList(StringUtils
-					.split(tags + " ", " ")));
+			model.addAttribute("tags", tags);
+			uploadModel.setTags(Arrays.asList(tags.split(DELIMETERS)));
 		}
 
 		uploadModel.setDescription(description);
 		uploadModel.setTitle(title);
 		setGeolocation(geolocation, uploadModel);
 		
-		mediaStore.getMedia().add(uploadModel.clone());
-		log.debug("successfully added message to mediaStore, uploadModel="
+		mediaService.addMedia(uploadModel);
+		log.debug("successfully added message to mediaService, uploadModel="
 				+ uploadModel);
 		uploadModel.clear();
 		status.setComplete();
 		return "redirect:/";
+	}
+	
+	@RequestMapping(value="/gallery", method=RequestMethod.GET)
+	public String showGallery(Model model, 
+			@RequestParam(value = "filters", required = false) String filters){
+		
+		GalleryModel galleryModel = new GalleryModel();
+		galleryModel.setTags(mediaService.getTags());
+		galleryModel.setTagsMap(mediaService.getTagsMap());
+				
+		if( filters != null ){
+			galleryModel.setFilters(Arrays.asList(filters.split(DELIMETERS)));
+			galleryModel.setFilterString(filters);
+			Iterator<MediaMessage> iter = mediaService.getMedia().iterator();
+			while( iter.hasNext() ){
+				MediaMessage msg = iter.next();
+				for( String tag : msg.getTags() ){
+					if( filters.contains(tag)){
+						galleryModel.getFilteredMessages().add(msg);
+						break;
+					}
+				}
+			}
+		}
+		else{
+			galleryModel.setFilteredMessages(new ArrayList<MediaMessage>(mediaService.getMedia()));
+		}
+		galleryModel.setFilteredMessagesCount(galleryModel.getFilteredMessages().size());
+		
+		model.addAttribute("galleryModel", galleryModel);
+		
+		return "gallery";
 	}
 	
 	private void setGeolocation(String geolocation, MediaMessage uploadModel){
@@ -199,74 +220,50 @@ public class ApplicationController {
 		return Long.toString(
 				Math.abs(UUID.randomUUID().getMostSignificantBits()), 32);
 	}
-
-	private String saveImage(HttpServletRequest request, MultipartFile file,
-			MediaMessage uploadModel) throws IOException {
-
+	
+	private void addNewMediaToUploadModel(HttpServletRequest request, MultipartFile file, 
+			String suffix, MediaMessage uploadModel) throws IOException {
 		if (uploadModel.getId() == null) {
 			uploadModel.setId(newId());
 		}
 		String fileName = null;
-		String newFileName = "img-" + uploadModel.getId() + ".jpg";
+		String newFileName = "img-" + uploadModel.getId() + "." + suffix;
 		String newPathName = "resources/uploads/" + newFileName;
+		File newFile = new File(request.getServletContext().getRealPath("/" + newPathName));
 		if ((null != file) && !file.isEmpty()) {
 			fileName = file.getOriginalFilename();
-			file.transferTo(new File(request.getServletContext().getRealPath("/" + newPathName)));
+			file.transferTo(newFile);
 			currentFileName = newPathName;
 		}
-		if (null == fileName) {
+		else if (null == fileName) {
 			// use previously uploaded file, such as from ICEmobile-SX
 			newFileName = getCurrentFileName(request);
-
+			newFile = new File(request.getServletContext().getRealPath("/" + newPathName));
 		}
-
-		return newFileName;
+		newFile.deleteOnExit();
+		Media media = new Media();
+		media.setFileName(newFileName);
+		media.setFile(newFile);
+		media.setType(file.getContentType());
+		uploadModel.setPhoto(media);
 	}
 
-	private String saveVideo(HttpServletRequest request, MultipartFile file,
+	private void saveImage(HttpServletRequest request, MultipartFile file,
 			MediaMessage uploadModel) throws IOException {
 
-		if (uploadModel.getId() == null) {
-			uploadModel.setId(newId());
-		}
-		String fileName = null;
-		String newFileName = "video-" + uploadModel.getId() + ".mp4";
-		String newPathName = "resources/uploads/" + newFileName;
-		if ((null != file) && !file.isEmpty()) {
-			fileName = file.getOriginalFilename();
-			file.transferTo(new File(request.getServletContext().getRealPath("/" + newPathName)));
-			currentFileName = newPathName;
-		}
-		if (null == fileName) {
-			// use previously uploaded file, such as from ICEmobile-SX
-			newFileName = getCurrentFileName(request);
-
-		}
-
-		return newFileName;
+		addNewMediaToUploadModel(request, file, "jpg", uploadModel);
 	}
 
-	private String saveAudio(HttpServletRequest request, MultipartFile file,
+	private void saveVideo(HttpServletRequest request, MultipartFile file,
 			MediaMessage uploadModel) throws IOException {
+		
+		addNewMediaToUploadModel(request, file, "mp4", uploadModel);
+	}
 
-		if (uploadModel.getId() == null) {
-			uploadModel.setId(newId());
-		}
-		String fileName = null;
-		String newFileName = "audio-" + uploadModel.getId() + ".m4a";
-		String newPathName = "resources/uploads/" + newFileName;
-		if ((null != file) && !file.isEmpty()) {
-			fileName = file.getOriginalFilename();
-			file.transferTo(new File(request.getServletContext().getRealPath("/" + newPathName)));
-			currentFileName = newPathName;
-		}
-		if (null == fileName) {
-			// use previously uploaded file, such as from ICEmobile-SX
-			newFileName = getCurrentFileName(request);
-
-		}
-
-		return newFileName;
+	private void saveAudio(HttpServletRequest request, MultipartFile file,
+			MediaMessage uploadModel) throws IOException {
+		
+		addNewMediaToUploadModel(request, file, "m4a", uploadModel);
 	}
 
 	private String getCurrentFileName(HttpServletRequest request) {
