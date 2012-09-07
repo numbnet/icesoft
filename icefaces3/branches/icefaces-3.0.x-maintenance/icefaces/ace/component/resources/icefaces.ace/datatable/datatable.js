@@ -289,7 +289,7 @@ ice.ace.DataTable.prototype.unload = function() {
     // Clear instance from widget var, leave behind state
     // for persisting between instances.
     var clientState = {scrollTop : this.scrollTop, scrollLeft: this.scrollLeft};
-    window[this.cfg.widgetVar] = clientState;
+    window[this.cfg.widgetVar] = undefined;
     ice.ace.DataTables[this.id] = clientState;
 }
 
