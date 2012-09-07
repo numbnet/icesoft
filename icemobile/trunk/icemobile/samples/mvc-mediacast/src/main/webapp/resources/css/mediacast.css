@@ -62,7 +62,7 @@
 }
 #geoGrid span{
 	float: left;
-	width: 100px;
+	width: 120px;
 	margin-left: 10px;
 	font-size: smaller;
 }
@@ -71,4 +71,24 @@
 	-webkit-border-radius: 0.6em;
 	-moz-border-radius: 0.6em;
 	margin-bottom: 5px;
+}
+ul.tagCloud {
+	float: left;
+	display: block;
+	overflow: auto;
+	padding: 20px;
+	margin: 0 10px 20px 0;
+}
+
+ul.tagCloud li {
+	display: inline;
+}
+
+ul.tagCloud li a {
+	margin: 2px;
+}
+
+ul.tagCloud a {
+	color: #4040F0;
+	text-decoration: none;
 }

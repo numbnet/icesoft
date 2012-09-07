@@ -18,6 +18,7 @@ package org.icemobile.samples.spring.mediacast;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.Serializable;
 import java.util.logging.Logger;
 
@@ -31,6 +32,7 @@ public class Media implements Serializable {
 			.toString());
 
 	private String fileName;
+	private File file;
 	private final Object dataLock = new Object();
 	private int width;
 	private int height;
@@ -99,5 +101,16 @@ public class Media implements Serializable {
 
 	public void setHeight(int height) {
 		this.height = height;
+	}
+	
+	public void setFile(File file){
+		this.file = file;
+	}
+	
+	public void dispose(){
+		file.delete();
+		file = null;
+		type = null;
+		fileName = null;
 	}
 }
