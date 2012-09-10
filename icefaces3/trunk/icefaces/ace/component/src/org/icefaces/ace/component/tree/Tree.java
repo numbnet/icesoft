@@ -67,7 +67,6 @@ public class Tree<N> extends TreeBase implements Serializable {
 
         if (stateMap == null) {
             stateMap = new NodeStateMap();
-            System.out.println(stateMap + " " + getClientId(FacesContext.getCurrentInstance()));
             super.setStateMap(stateMap);
         }
 
@@ -331,8 +330,6 @@ public class Tree<N> extends TreeBase implements Serializable {
             return false;
 
         NodeDataModel model = (NodeDataModel) getDataModel();
-        // Initialized cached state map before clientId begins to change
-        getStateMap();
         FacesContext facesContext = context.getFacesContext();
         boolean visitRows = !context.getHints().contains(VisitHint.SKIP_ITERATION);
 
@@ -351,6 +348,9 @@ public class Tree<N> extends TreeBase implements Serializable {
             // Visit ourselves.  Note that we delegate to the
             // VisitContext to actually perform the visit.
             VisitResult result = context.invokeVisitCallback(this, callback);
+
+            // Initialized cached state map before clientId begins to change
+            getStateMap();
 
             // If the visit is complete, short-circuit out and end the visit
             if (result == VisitResult.COMPLETE)

@@ -1,5 +1,7 @@
 package org.icefaces.ace.model.tree;
 
+import java.io.Serializable;
+
 /**
  * Copyright 2010-2011 ICEsoft Technologies Canada Corp.
  * <p/>
@@ -20,7 +22,7 @@ package org.icefaces.ace.model.tree;
  * Date: 2012-08-14
  * Time: 2:04 PM
  */
-public class NodeState {
+public class NodeState implements Serializable {
     public static final NodeState ROOT_STATE = new NodeState() {{
         setExpanded(true);
     }};
