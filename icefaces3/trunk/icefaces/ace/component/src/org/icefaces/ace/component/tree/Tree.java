@@ -498,7 +498,7 @@ public class Tree<N> extends TreeBase implements Serializable {
         // part of the visiting (as judged by context.getSubTreeIdsToVisit())
         // iterate over the children.
         NodeState state = getNodeState();
-        if (!context.getSubtreeIdsToVisit(this).isEmpty() && state.isExpanded()) {
+        if (!context.getSubtreeIdsToVisit(this).isEmpty() && (getExpansionMode().isClient() || state.isExpanded())) {
             for (Iterator<Map.Entry<NodeKey, N>> children = children();
                  children.hasNext();) {
                 Map.Entry<NodeKey, N> entry = children.next();
@@ -790,8 +790,8 @@ public class Tree<N> extends TreeBase implements Serializable {
         }
 
         NodeState state = getNodeState();
-        // If this node is expanded and has children iterate over the children.
-        if (state.isExpanded()) {
+        // If this node is expanded or we are in client mode, visit children
+        if ((getExpansionMode().isClient() || state.isExpanded())) {
             for (Iterator<Map.Entry<NodeKey, N>> children = children();
                  children.hasNext();) {
                 Map.Entry<NodeKey, N> entry = children.next();

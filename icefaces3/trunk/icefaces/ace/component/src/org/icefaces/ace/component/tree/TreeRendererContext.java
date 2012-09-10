@@ -26,6 +26,8 @@ public class TreeRendererContext {
     private String contractedStyleClass;
     private boolean selection;
     private boolean multipleSelection;
+    private TreeSelectionMode treeSelectionMode;
+    private TreeExpansionMode treeExpansionMode;
 
     public TreeRendererContext(Tree tree) {
         this.tree = tree;
@@ -33,6 +35,8 @@ public class TreeRendererContext {
         contractedStyleClass = tree.getContractedIconClass();
         selection = tree.isSelection();
         multipleSelection = tree.isMultipleSelection();
+        treeSelectionMode = tree.getSelectionMode();
+        treeExpansionMode = tree.getExpansionMode();
     }
 
     public Tree getTree() {
@@ -57,5 +61,13 @@ public class TreeRendererContext {
 
     public boolean isMultipleSelection() {
         return multipleSelection;
+    }
+
+    public TreeSelectionMode getSelectionMode() {
+        return treeSelectionMode;
+    }
+
+    public TreeExpansionMode getExpansionMode() {
+        return treeExpansionMode;
     }
 }

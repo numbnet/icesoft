@@ -1,5 +1,8 @@
 package org.icefaces.ace.component.tree;
 
+import org.icefaces.ace.json.JSONArray;
+import org.icefaces.ace.json.JSONException;
+
 import javax.faces.context.FacesContext;
 import java.util.Map;
 
@@ -54,36 +57,69 @@ public class TreeDecoder {
     }
 
     private void decodeDeselection() {
-        String deselectedKey = getRequestParam(tree.getClientId(context) + DESELECTION_SUFFIX);
-        tree.getStateMap()
-                .get(tree.getKeyConverter().parseSegments(deselectedKey.split(":")))
-                .setSelected(false);
+        String deselectedJSON = getRequestParam(tree.getClientId(context) + DESELECTION_SUFFIX);
+        try {
+            JSONArray array = new JSONArray(deselectedJSON);
+
+            for (int i = 0; i < array.length(); i++) {
+                tree.getStateMap()
+                        .get(tree.getKeyConverter().parseSegments(array.getString(i).split(":")))
+                        .setSelected(false);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     private void decodeContraction() {
-        String contractedKey = getRequestParam(tree.getClientId(context) + CONTRACTION_SUFFIX);
-        tree.getStateMap()
-                .get(tree.getKeyConverter().parseSegments(contractedKey.split(":")))
-                .setExpanded(false);
-    }
+        String contractedJSON= getRequestParam(tree.getClientId(context) + CONTRACTION_SUFFIX);
+        try {
+            JSONArray array = new JSONArray(contractedJSON);
+
+            for (int i = 0; i < array.length(); i++) {
+                tree.getStateMap()
+                        .get(tree.getKeyConverter().parseSegments(array.getString(i).split(":")))
+                        .setExpanded(false);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+}
 
     private void decodeExpansion() {
-        String expandedKey = getRequestParam(tree.getClientId(context) + EXPANSION_SUFFIX);
-        tree.getStateMap()
-                .get(tree.getKeyConverter().parseSegments(expandedKey.split(":")))
-                .setExpanded(true);
+        String expandedJSON = getRequestParam(tree.getClientId(context) + EXPANSION_SUFFIX);
+        try {
+            JSONArray array = new JSONArray(expandedJSON);
+
+            for (int i = 0; i < array.length(); i++) {
+                tree.getStateMap()
+                        .get(tree.getKeyConverter().parseSegments(array.getString(i).split(":")))
+                        .setExpanded(true);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     private void decodeSelection() {
-        String selectedKey = getRequestParam(tree.getClientId(context) + SELECTION_SUFFIX);
-        tree.getStateMap()
-                .get(tree.getKeyConverter().parseSegments(selectedKey.split(":")))
-                .setSelected(true);
+        String selectedJSON = getRequestParam(tree.getClientId(context) + SELECTION_SUFFIX);
+        try {
+            JSONArray array = new JSONArray(selectedJSON);
+
+            for (int i = 0; i < array.length(); i++) {
+                tree.getStateMap()
+                        .get(tree.getKeyConverter().parseSegments(array.getString(i).split(":")))
+                        .setSelected(true);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     private boolean requestHasParam(String s) {
         paramMapCheck();
-        return paramMap.containsKey(s);
+        String o = paramMap.get(s);
+        return o != null && o.length() > 0 && !o.equals("[]");
     }
 
     private String getRequestParam(String s) {

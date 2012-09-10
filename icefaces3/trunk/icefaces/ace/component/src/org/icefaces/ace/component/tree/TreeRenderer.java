@@ -71,8 +71,42 @@ public class TreeRenderer extends CoreRenderer {
 
         openContainerElement(writer, facesContext, renderContext);
         encodeRoots(writer, facesContext, renderContext);
+        encodeHiddenFields(writer, facesContext, renderContext);
         closeContainerElement(writer, renderContext);
         encodeScript(writer, facesContext, renderContext);
+    }
+
+    private void encodeHiddenFields(ResponseWriter writer, FacesContext facesContext, TreeRendererContext renderContext) throws IOException {
+        String id;
+        String clientId = renderContext.getTree().getClientId(facesContext);
+
+        id = clientId + "_select";
+        writer.startElement(HTML.INPUT_ELEM, null);
+        writer.writeAttribute(HTML.TYPE_ATTR, "hidden", null);
+        writer.writeAttribute(HTML.ID_ATTR, id, null);
+        writer.writeAttribute(HTML.NAME_ATTR, id, null);
+        writer.endElement(HTML.INPUT_ELEM);
+
+        id = clientId + "_deselect";
+        writer.startElement(HTML.INPUT_ELEM, null);
+        writer.writeAttribute(HTML.TYPE_ATTR, "hidden", null);
+        writer.writeAttribute(HTML.ID_ATTR, id, null);
+        writer.writeAttribute(HTML.NAME_ATTR, id, null);
+        writer.endElement(HTML.INPUT_ELEM);
+
+        id = clientId + "_expand";
+        writer.startElement(HTML.INPUT_ELEM, null);
+        writer.writeAttribute(HTML.TYPE_ATTR, "hidden", null);
+        writer.writeAttribute(HTML.ID_ATTR, id, null);
+        writer.writeAttribute(HTML.NAME_ATTR, id, null);
+        writer.endElement(HTML.INPUT_ELEM);
+
+        id = clientId + "_contract";
+        writer.startElement(HTML.INPUT_ELEM, null);
+        writer.writeAttribute(HTML.TYPE_ATTR, "hidden", null);
+        writer.writeAttribute(HTML.ID_ATTR, id, null);
+        writer.writeAttribute(HTML.NAME_ATTR, id, null);
+        writer.endElement(HTML.INPUT_ELEM);
     }
 
     private void encodeScript(ResponseWriter writer, FacesContext facesContext, TreeRendererContext renderContext) throws IOException {
@@ -86,6 +120,7 @@ public class TreeRenderer extends CoreRenderer {
         confJson.beginMap();
         confJson.entry("id", clientId);
         confJson.entry("widgetVar", widgetVar);
+        confJson.entry("expansionMode", tree.getExpansionMode().name());
         if (selection) {
             confJson.entry("select", true);
             if (multipleSelection) confJson.entry("multiSelect", true);
@@ -115,13 +150,14 @@ public class TreeRenderer extends CoreRenderer {
             tree.setNodeToParent();
         }
 
-        // TODO: Confirm necessity
         tree.setNodeToKey(NodeKey.ROOT_KEY);
     }
 
     private void encodeNode(ResponseWriter writer, FacesContext facesContext, TreeRendererContext renderContext) throws IOException {
         Tree tree = renderContext.getTree();
         NodeState state = tree.getNodeState();
+        boolean expanded = state.isExpanded();
+        boolean isClientExpansion = renderContext.getExpansionMode().isClient();
 
         // Encode 'table' container
         writer.startElement(HTML.DIV_ELEM, null);
@@ -156,18 +192,11 @@ public class TreeRenderer extends CoreRenderer {
         writer.startElement(HTML.DIV_ELEM, null);
         writer.writeAttribute(HTML.CLASS_ATTR, SUBNODE_CONTAINER_CLASS, null);
 
-        if (state.isExpanded()) {
-            // Write SubComponents
-            for (Iterator<Map.Entry<NodeKey,Object>> children = tree.children();
-                 children.hasNext();) {
-                Map.Entry<NodeKey, Object> node = children.next();
-                Object[] nextKeys = node.getKey().getKeys();
+        if (isClientExpansion && !expanded)
+            writer.writeAttribute(HTML.STYLE_ATTR, "display:none;", null);
 
-                tree.setNodeToChild(nextKeys[nextKeys.length - 1]);
-                if (tree.isNodeAvailable())
-                    encodeNode(writer, facesContext, renderContext);
-                tree.setNodeToParent();
-            }
+        if (expanded || isClientExpansion) {
+            encodeSubnodes(writer, facesContext, renderContext);
         }
 
         // Close SubComponent Container
@@ -176,6 +205,20 @@ public class TreeRenderer extends CoreRenderer {
         writer.endElement(HTML.DIV_ELEM);
         // End node
         writer.endElement(HTML.DIV_ELEM);
+    }
+
+    private void encodeSubnodes(ResponseWriter writer, FacesContext facesContext, TreeRendererContext renderContext) throws IOException {
+        Tree tree = renderContext.getTree();
+        for (Iterator<Map.Entry<NodeKey,Object>> children = tree.children();
+             children.hasNext();) {
+            Map.Entry<NodeKey, Object> node = children.next();
+            Object[] nextKeys = node.getKey().getKeys();
+
+            tree.setNodeToChild(nextKeys[nextKeys.length - 1]);
+            if (tree.isNodeAvailable())
+                encodeNode(writer, facesContext, renderContext);
+            tree.setNodeToParent();
+        }
     }
 
     private void encodeNodeSwitch(ResponseWriter writer, TreeRendererContext renderContext, NodeState state) throws IOException {
