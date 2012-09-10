@@ -48,26 +48,26 @@
             </ace:panel>
             
             <ace:contextMenu id="contextMenuTxt" for="intro">
-                <ace:menuItem value="Copy" icon="ui-icon ui-icon-disk" style="font-size: small;"
+                <ace:menuItem id="copy" value="Copy" icon="ui-icon ui-icon-disk" style="font-size: small;"
                               action="#{contextMenuComponent.performAction}">
                     <f:param name="actionType" value="Text Copy" />
                 </ace:menuItem>
-                <ace:menuItem value="Translate" icon="ui-icon ui-icon-arrowrefresh-1-w" style="font-style: small;"
+                <ace:menuItem id="translate" value="Translate" icon="ui-icon ui-icon-arrowrefresh-1-w" style="font-style: small;"
                               action="#{contextMenuComponent.performAction}">
                     <f:param name="actionType" value="Text Translation" />
                 </ace:menuItem>
             </ace:contextMenu>
             
             <ace:contextMenu id="contextMenuBttn" for="button">
-                <ace:menuItem value="Click" icon="ui-icon ui-icon-disk" style="font-size: small;"
+                <ace:menuItem id="click" value="Click" icon="ui-icon ui-icon-disk" style="font-size: small;"
                               action="#{contextMenuComponent.performAction}">
                     <f:param name="actionType" value="Click" />
                 </ace:menuItem>
-                <ace:menuItem value="Status" icon="ui-icon" style="font-size: small;"
+                <ace:menuItem id="status" value="Status" icon="ui-icon" style="font-size: small;"
                               action="#{contextMenuComponent.performAction}">
                     <f:param name="actionType" value="Status Check" />
                 </ace:menuItem>
-                <ace:menuItem value="Refresh" icon="ui-icon ui-icon-arrowrefresh-1-w" style="font-size: small;"
+                <ace:menuItem id="refresh" value="Refresh" icon="ui-icon ui-icon-arrowrefresh-1-w" style="font-size: small;"
                               action="#{contextMenuComponent.performAction}">
                     <f:param name="actionType" value="Page Refresh" />
                 </ace:menuItem>
