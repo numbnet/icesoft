@@ -1,4 +1,5 @@
 .if-tree {
+    display: inline-block;
 }
 
 .if-node {
@@ -7,7 +8,7 @@
 }
 
 .if-node-cnt {
-    margin-left: 5px;
+    margin: 0px 5px;
     display: table;
 }
 
