@@ -31,7 +31,7 @@ import javax.faces.context.FacesContext;
 import org.icefaces.ace.component.fileentry.FileEntryCallback;
 import org.icefaces.ace.component.fileentry.FileEntryResults;
 import org.icefaces.ace.component.fileentry.FileEntryStatus;
-import org.icefaces.ace.component.fileentry.FileEntryStatuses;
+import org.icefaces.samples.showcase.example.ace.file.utils.FileEntryMessageUtils;
 import org.icefaces.samples.showcase.metadata.annotation.ComponentExample;
 import org.icefaces.samples.showcase.metadata.annotation.ExampleResource;
 import org.icefaces.samples.showcase.metadata.annotation.ExampleResources;
@@ -56,6 +56,7 @@ public class FileEntryCallbackBean extends
 			.getName());
 	private transient MessageDigest digest;
 	private boolean noAlgorithm = false;
+	private boolean validFile = true;
 
 	public FileEntryCallbackBean() {
 		super(FileEntryCallbackBean.class);
@@ -68,6 +69,11 @@ public class FileEntryCallbackBean extends
 
 	// Executed before the upload starts
 	public void begin(FileEntryResults.FileInfo fileInfo) {
+		// Check the file type
+		if (fileInfo.getContentType().equals("application/pdf")) {
+			validFile = false;
+
+		}
 		// Initialize the message digest
 		try {
 			digest = MessageDigest.getInstance("SHA");
@@ -77,22 +83,24 @@ public class FileEntryCallbackBean extends
 	}
 
 	public void write(int i) {
-		if (!noAlgorithm)
+		if (!noAlgorithm && validFile)
 			digest.update((byte) i);
 
 	}
 
 	public void write(byte[] bytes, int offset, int length) {
-		if (!noAlgorithm)
+		if (!noAlgorithm && validFile)
 			digest.update(bytes, offset, length);
 
 	}
 
 	// Executed at the end of a file upload
 	public void end(FileEntryResults.FileInfo fileEntryInfo) {
-		// We can fail the file here for invalid file type
-		if (fileEntryInfo.getContentType().equals("application/pdf"))
+		if (validFile)
+			fileEntryInfo.updateStatus(new UploadSuccessStatus(), false);
+		else
 			fileEntryInfo.updateStatus(new InvalidFileStatus(), false);
+
 	}
 
 	private static class InvalidFileStatus implements FileEntryStatus {
@@ -103,12 +111,27 @@ public class FileEntryCallbackBean extends
 
 		public FacesMessage getFacesMessage(FacesContext facesContext,
 				UIComponent uiComponent, FileEntryResults.FileInfo fileInfo) {
-
 			return new FacesMessage(
 					FacesMessage.SEVERITY_ERROR,
-					"PDF files cannot be uploaded. Your upload has been cancelled.",
-					"PDF files cannot be uploaded. Your upload has been cancelled.");
+					FileEntryMessageUtils
+							.getMessage("example.ace.fileentry.callback.error"),
+					fileInfo.getFileName());
+		}
+	}
 
+	private static class UploadSuccessStatus implements FileEntryStatus {
+
+		public boolean isSuccess() {
+			return true;
+		}
+
+		public FacesMessage getFacesMessage(FacesContext facesContext,
+				UIComponent uiComponent, FileEntryResults.FileInfo fileInfo) {
+			return new FacesMessage(
+					FacesMessage.SEVERITY_INFO,
+					FileEntryMessageUtils
+							.getMessage("example.ace.fileentry.callback.success"),
+					fileInfo.getFileName());
 		}
 	}
 
