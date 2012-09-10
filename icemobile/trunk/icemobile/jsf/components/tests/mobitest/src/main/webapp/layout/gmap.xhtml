@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
+<h:head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <meta name="apple-mobile-web-app-status-bar-style" content="black"/>
+     <mobi:deviceStylesheet name="#{themeSwitcher.theme}" media="screen" />
+    <title>Menu with contentStack</title>
+</h:head>
+<h:body>
+  <header>
+       <a href="../layoutComponents.html">index page</a>
+  </header>
+    <h:form id="gmapFrm">
+    
+        <h4>GMap</h4>
+        <mobi:geolocation latitude="#{gMapBean.latitude}"
+                          longitude="#{gMapBean.longitude}"
+                          altitude="#{gMapBean.altitude}"
+                          direction="#{gMapBean.direction}"/>
+        <mobi:fieldsetGroup>
+        	<mobi:fieldsetRow style="text-align:center;">
+        		<mobi:commandButton buttonType="default" value="Locate Me" style="float:none;"/>
+        	</mobi:fieldsetRow>
+            <mobi:fieldsetRow>
+                Latitude: <h:outputText value="#{gMapBean.latitude}"/>
+            </mobi:fieldsetRow>
+            <mobi:fieldsetRow>
+                Longitude: <h:outputText value="#{gMapBean.longitude}"/>
+            </mobi:fieldsetRow>
+            <mobi:fieldsetRow rendered="#{gMapBean.direction gt 0.0}">
+                Direction: <h:outputText value="#{gMapBean.direction}"/>
+            </mobi:fieldsetRow>
+            <mobi:fieldsetRow rendered="#{gMapBean.altitude gt 0.0}">
+                Altitude: <h:outputText value="#{gMapBean.altitude}"/>
+            </mobi:fieldsetRow>
+        </mobi:fieldsetGroup>
+        
+        <mobi:fieldsetGroup>
+        	<mobi:fieldsetRow>
+        		<mobi:gMap id="gMap" latitude="#{gMapBean.latitude}" longitude="#{gMapBean.longitude}" type="#{gMapBean.type}"
+                  zoomLevel="#{gMapBean.zoom}">
+                  	<mobi:gMapMarker id="marker1" rendered="#{gMapBean.latitude gt 0.001 || gMapBean.latitude lt -0.001}"
+                  		latitude="#{gMapBean.latitude}" longitude="#{gMapBean.longitude}"/>
+                </mobi:gMap>
+        	</mobi:fieldsetRow>
+        </mobi:fieldsetGroup>
+
+
+    </h:form>
+</h:body>
+</html>
