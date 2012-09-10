@@ -22,8 +22,6 @@ package org.icefaces.ace.component.tree;
  */
 public class TreeRendererContext {
     private Tree tree;
-    private String expandedStyleClass;
-    private String contractedStyleClass;
     private boolean selection;
     private boolean multipleSelection;
     private TreeSelectionMode treeSelectionMode;
@@ -31,8 +29,6 @@ public class TreeRendererContext {
 
     public TreeRendererContext(Tree tree) {
         this.tree = tree;
-        expandedStyleClass = tree.getExpandedIconClass();
-        contractedStyleClass = tree.getContractedIconClass();
         selection = tree.isSelection();
         multipleSelection = tree.isMultipleSelection();
         treeSelectionMode = tree.getSelectionMode();
@@ -45,14 +41,6 @@ public class TreeRendererContext {
 
     public void setTree(Tree tree) {
         this.tree = tree;
-    }
-
-    public String getExpandedStyleClass() {
-        return expandedStyleClass;
-    }
-
-    public String getContractedStyleClass() {
-        return contractedStyleClass;
     }
 
     public boolean isSelection() {
