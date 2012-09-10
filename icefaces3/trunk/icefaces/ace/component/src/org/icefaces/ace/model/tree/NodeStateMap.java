@@ -65,15 +65,9 @@ public class NodeStateMap implements Map<Object, NodeState> {
     public NodeState get(Object o) {
         NodeState state;
 
-//        if (keyConverter == null)
-//            key = o.hashCode();
-//        else
-//            key = keyConverter.getSegment(o);
-
         state = map.get(o);
         if (state != null) return state;
 
-        System.out.println("MAKE NEW STATE FOR: " + o.toString());
         // If state is null, create a new state for the node.
         state = new NodeState();
         put(o, state);

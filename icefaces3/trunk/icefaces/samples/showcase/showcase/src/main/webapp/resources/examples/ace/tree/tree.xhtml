@@ -36,13 +36,14 @@
 
 <ui:define name="example">
     <h:form>
+        <h:inputText />
         <ace:tree value="#{treeBean.treeRoots}" var="node"
                 type="#{node.type}">
             <ace:node type="country">
-                <h:outputText value="#{node.name}" />
+                <h:inputText />
             </ace:node>
             <ace:node>
-                D: <h:outputText value="#{node.name}" />
+                <h:outputText value="#{node.name}" />
             </ace:node>
         </ace:tree>
         <h:commandButton value="Save">

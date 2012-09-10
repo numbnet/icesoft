@@ -102,6 +102,8 @@ public class TreeRenderer extends CoreRenderer {
 
     private void encodeRoots(ResponseWriter writer, FacesContext facesContext, TreeRendererContext renderContext) throws IOException {
         Tree tree = renderContext.getTree();
+        // Initalize cached NodeStateMap before clientId begins to change
+        tree.getStateMap();
 
         // Encode each 'child' of the null keyed node, the root nodes.
         for (Iterator<Map.Entry<NodeKey,Object>> roots = tree.children();
@@ -192,9 +194,11 @@ public class TreeRenderer extends CoreRenderer {
 
         writer.startElement(HTML.DIV_ELEM, null);
         writer.writeAttribute(HTML.CLASS_ATTR, switchClass, null);
-        writer.startElement(HTML.SPAN_ELEM, null);
-        writer.writeAttribute(HTML.CLASS_ATTR, iconClass, null);
-        writer.endElement(HTML.SPAN_ELEM);
+        if (!renderContext.getTree().isLeaf()) {
+            writer.startElement(HTML.SPAN_ELEM, null);
+            writer.writeAttribute(HTML.CLASS_ATTR, iconClass, null);
+            writer.endElement(HTML.SPAN_ELEM);
+        }
         writer.endElement(HTML.DIV_ELEM);
     }
 
