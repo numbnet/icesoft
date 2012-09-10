@@ -51,28 +51,20 @@ public class NodeKey implements Serializable {
     }
 
     @Override
-    public int hashCode() {
-        final int prime = 71;
-        int hash = 1;
-        hash = prime * hash + Arrays.hashCode(keys);
-        return hash;
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        NodeKey nodeKey = (NodeKey) o;
+
+        if (!Arrays.equals(keys, nodeKey.keys)) return false;
+
+        return true;
     }
 
-
     @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null) {
-            return false;
-        }
-        if (getClass() != o.getClass()) {
-            return false;
-        }
-
-        NodeKey other = (NodeKey) o;
-        return (keys == null && other.getKeys() == null);
+    public int hashCode() {
+        return keys != null ? Arrays.hashCode(keys) : 0;
     }
 
     @Override

@@ -53,6 +53,7 @@ public class Tree<N> extends TreeBase implements Serializable {
     private int baseClientIdLength;
     private StringBuilder clientIdBuilder = null;
     private Map<String, Node> typeToNodeMap = null;
+    private NodeStateMap stateMap;
 
     public NodeState getNodeState() {
         if (getKey() == NodeKey.ROOT_KEY)
@@ -61,10 +62,12 @@ public class Tree<N> extends TreeBase implements Serializable {
     }
 
     public NodeStateMap getStateMap() {
-        NodeStateMap stateMap = super.getStateMap();
+        if (stateMap == null)
+            stateMap = super.getStateMap();
 
         if (stateMap == null) {
             stateMap = new NodeStateMap();
+            System.out.println(stateMap + " " + getClientId(FacesContext.getCurrentInstance()));
             super.setStateMap(stateMap);
         }
 
@@ -73,6 +76,11 @@ public class Tree<N> extends TreeBase implements Serializable {
 
     enum PropertyKeys {
         saved
+    }
+
+    public boolean isLeaf() {
+        if (model == null) getDataModel();
+        return model.isLeaf();
     }
 
     public N getData() {
@@ -323,6 +331,8 @@ public class Tree<N> extends TreeBase implements Serializable {
             return false;
 
         NodeDataModel model = (NodeDataModel) getDataModel();
+        // Initialized cached state map before clientId begins to change
+        getStateMap();
         FacesContext facesContext = context.getFacesContext();
         boolean visitRows = !context.getHints().contains(VisitHint.SKIP_ITERATION);
 
@@ -516,6 +526,7 @@ public class Tree<N> extends TreeBase implements Serializable {
 
     private void restoreNodeContextStatePreserved(Map.Entry<NodeKey, N> node) {
         // TODO: Implement state preserved state saving.
+        throw new UnsupportedOperationException();
     }
 
     private void restoreNodeContextStateNotPreserved(Map.Entry<NodeKey, N> node) {
@@ -614,6 +625,7 @@ public class Tree<N> extends TreeBase implements Serializable {
     }
 
     private void saveNodeContextStatePreserved(Map.Entry<NodeKey, N> node) {
+        throw new UnsupportedOperationException();
     }
 
     private void saveNodeContextStateNotPreserved(Map.Entry<NodeKey, N> node) {

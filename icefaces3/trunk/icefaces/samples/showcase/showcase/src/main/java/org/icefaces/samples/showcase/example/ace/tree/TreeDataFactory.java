@@ -55,15 +55,15 @@ public class TreeDataFactory {
     };
 
     static final LocationNodeImpl[] provinces = {
-//        new LocationNodeImpl("British Columbia",    "province",    1, bcCities),
-//        new LocationNodeImpl("Alberta",             "province",    1, abCities),
-//        new LocationNodeImpl("Saskatchewan",        "province",    1, skCities),
-//        new LocationNodeImpl("Manitoba",            "province",    1, mbCities),
-//        new LocationNodeImpl("Ontario",             "province",    1, onCities),
-//        new LocationNodeImpl("Quebec",              "province",    1, qbCities),
-//        new LocationNodeImpl("New Brunswick",       "province",    1, nbCities),
-//        new LocationNodeImpl("Newfoundland",        "province",    1, nfCities),
-//        new LocationNodeImpl("Nova Scotia",         "province",    1, nsCities)
+        new LocationNodeImpl("British Columbia",    "province",    1, bcCities),
+        new LocationNodeImpl("Alberta",             "province",    1, abCities),
+        new LocationNodeImpl("Saskatchewan",        "province",    1, skCities),
+        new LocationNodeImpl("Manitoba",            "province",    1, mbCities),
+        new LocationNodeImpl("Ontario",             "province",    1, onCities),
+        new LocationNodeImpl("Quebec",              "province",    1, qbCities),
+        new LocationNodeImpl("New Brunswick",       "province",    1, nbCities),
+        new LocationNodeImpl("Newfoundland",        "province",    1, nfCities),
+        new LocationNodeImpl("Nova Scotia",         "province",    1, nsCities)
     };
 
     static final LocationNodeImpl[] countries = {

@@ -16,45 +16,47 @@
 
 package org.icefaces.samples.showcase.view.navigation;
 
-import org.icefaces.samples.showcase.example.ace.file.FileEntryBean;
-import org.icefaces.samples.showcase.example.ace.list.ListBean;
-import org.icefaces.samples.showcase.example.ace.slider.SliderBean;
-import org.icefaces.samples.showcase.example.ace.tab.TabSetBean;
-import org.icefaces.samples.showcase.example.ace.date.DateEntryBean;
-import org.icefaces.samples.showcase.example.ace.dataTable.DataTableBean;
+import org.icefaces.samples.showcase.example.ace.accordionpanel.AccordionPanelBean;
+import org.icefaces.samples.showcase.example.ace.animation.AnimationBean;
+import org.icefaces.samples.showcase.example.ace.autocompleteentry.AutoCompleteEntryBean;
+import org.icefaces.samples.showcase.example.ace.chart.ChartBean;
+import org.icefaces.samples.showcase.example.ace.checkboxButton.CheckboxButtonBean;
+import org.icefaces.samples.showcase.example.ace.confirmationdialog.ConfirmationDialogBean;
+import org.icefaces.samples.showcase.example.ace.contextMenu.ContextMenuBean;
 import org.icefaces.samples.showcase.example.ace.dataExporter.DataExporterBean;
+import org.icefaces.samples.showcase.example.ace.dataTable.DataTableBean;
+import org.icefaces.samples.showcase.example.ace.date.DateEntryBean;
+import org.icefaces.samples.showcase.example.ace.dialog.DialogBean;
+import org.icefaces.samples.showcase.example.ace.dragDrop.DragDropOverviewBean;
+import org.icefaces.samples.showcase.example.ace.file.FileEntryBean;
+import org.icefaces.samples.showcase.example.ace.gMap.MapBean;
+import org.icefaces.samples.showcase.example.ace.linkButton.LinkButtonBean;
+import org.icefaces.samples.showcase.example.ace.list.ListBean;
+import org.icefaces.samples.showcase.example.ace.maskedEntry.MaskedEntryBean;
 import org.icefaces.samples.showcase.example.ace.menu.MenuBean;
 import org.icefaces.samples.showcase.example.ace.menuBar.MenuBarBean;
-import org.icefaces.samples.showcase.example.ace.contextMenu.ContextMenuBean;
-import org.icefaces.samples.showcase.example.ace.panel.PanelBean;
-import org.icefaces.samples.showcase.example.ace.checkboxButton.CheckboxButtonBean;
-import org.icefaces.samples.showcase.example.ace.pushButton.PushButtonBean;
-import org.icefaces.samples.showcase.example.ace.accordionpanel.AccordionPanelBean;
-import org.icefaces.samples.showcase.example.ace.confirmationdialog.ConfirmationDialogBean;
+import org.icefaces.samples.showcase.example.ace.menuButton.MenuButtonBean;
 import org.icefaces.samples.showcase.example.ace.notificationpanel.NotificationPanelBean;
+import org.icefaces.samples.showcase.example.ace.overview.AceSuiteOverviewBean;
+import org.icefaces.samples.showcase.example.ace.panel.PanelBean;
+import org.icefaces.samples.showcase.example.ace.printer.PrinterBean;
 import org.icefaces.samples.showcase.example.ace.progressbar.ProgressBarBean;
-import org.icefaces.samples.showcase.example.ace.dialog.DialogBean;
-import org.icefaces.samples.showcase.example.ace.chart.ChartBean;
-import org.icefaces.samples.showcase.example.ace.maskedEntry.MaskedEntryBean;
-import org.icefaces.samples.showcase.example.ace.textEntry.TextEntryBean;
-import org.icefaces.samples.showcase.example.ace.textAreaEntry.TextAreaEntryBean;
+import org.icefaces.samples.showcase.example.ace.pushButton.PushButtonBean;
 import org.icefaces.samples.showcase.example.ace.resizable.ResizableBean;
 import org.icefaces.samples.showcase.example.ace.richtextentry.RichTextEntryBean;
-import org.icefaces.samples.showcase.example.ace.dragDrop.DragDropOverviewBean;
+import org.icefaces.samples.showcase.example.ace.slider.SliderBean;
+import org.icefaces.samples.showcase.example.ace.tab.TabSetBean;
+import org.icefaces.samples.showcase.example.ace.textAreaEntry.TextAreaEntryBean;
+import org.icefaces.samples.showcase.example.ace.textEntry.TextEntryBean;
 import org.icefaces.samples.showcase.example.ace.tooltip.TooltipOverviewBean;
-import org.icefaces.samples.showcase.example.ace.linkButton.LinkButtonBean;
-import org.icefaces.samples.showcase.example.ace.gMap.MapBean;
+import org.icefaces.samples.showcase.example.ace.tree.TreeBean;
 import org.icefaces.samples.showcase.metadata.annotation.Menu;
 import org.icefaces.samples.showcase.metadata.annotation.MenuLink;
+
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ApplicationScoped;
 import javax.faces.bean.ManagedBean;
 import java.io.Serializable;
-import org.icefaces.samples.showcase.example.ace.animation.AnimationBean;
-import org.icefaces.samples.showcase.example.ace.autocompleteentry.AutoCompleteEntryBean;
-import org.icefaces.samples.showcase.example.ace.menuButton.MenuButtonBean;
-import org.icefaces.samples.showcase.example.ace.overview.AceSuiteOverviewBean;
-import org.icefaces.samples.showcase.example.ace.printer.PrinterBean;
 
 @Menu(
         title = "menu.ace.title", menuLinks = {
@@ -91,7 +93,8 @@ import org.icefaces.samples.showcase.example.ace.printer.PrinterBean;
                 @MenuLink(title = "menu.ace.tabSet.title", exampleBeanName = TabSetBean.BEAN_NAME),
                 @MenuLink(title = "menu.ace.textEntry.title", exampleBeanName = TextEntryBean.BEAN_NAME),
                 @MenuLink(title = "menu.ace.textAreaEntry.title", exampleBeanName = TextAreaEntryBean.BEAN_NAME),
-                @MenuLink(title = "menu.ace.tooltip.title", exampleBeanName = TooltipOverviewBean.BEAN_NAME)
+                @MenuLink(title = "menu.ace.tooltip.title", exampleBeanName = TooltipOverviewBean.BEAN_NAME),
+                @MenuLink(title = "menu.ace.tree.title", exampleBeanName = TreeBean.BEAN_NAME)
         })
 @ManagedBean(name = AceMenu.BEAN_NAME)
 @ApplicationScoped
