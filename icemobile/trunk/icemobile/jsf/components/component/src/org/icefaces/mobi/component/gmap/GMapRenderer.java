@@ -18,7 +18,7 @@ public class GMapRenderer extends CoreRenderer {
 		GMap gmap = (GMap) component;
 		writer.startElement("div", null);
 		writer.writeAttribute("id", clientId, null);
-		writer.writeAttribute("style", "width: 800px; height: 500px", null);
+		writer.writeAttribute("style", "height: 97%;", null);
 		writer.endElement("div");
 		writer.startElement("span", null);
 		writer.writeAttribute("id", clientId + "_script", null);

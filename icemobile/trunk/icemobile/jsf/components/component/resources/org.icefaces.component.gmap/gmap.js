@@ -398,7 +398,7 @@ if (!window.mobi['gmap']) {
 		}
 	}
 	
-	mobi.gmap.repo = new Array();
+	mobi.gmap.repo = new Object();
 
 	mobi.gmap.getWrapper = function(id) {
 		var wrapper = mobi.gmap.repo[id];

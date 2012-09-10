@@ -4,10 +4,7 @@ import java.io.Serializable;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
-import javax.faces.event.ActionEvent;
-import javax.faces.event.AjaxBehaviorEvent;
 
-import org.icemobile.samples.mobileshowcase.view.examples.input.geolocation.GeoLocationBean;
 import org.icemobile.samples.mobileshowcase.view.metadata.annotation.Destination;
 import org.icemobile.samples.mobileshowcase.view.metadata.annotation.Example;
 import org.icemobile.samples.mobileshowcase.view.metadata.annotation.ExampleResource;
