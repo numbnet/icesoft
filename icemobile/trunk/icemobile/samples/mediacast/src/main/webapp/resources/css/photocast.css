@@ -113,12 +113,12 @@ ul.weighted a {
 	height:96px;
 	line-height:normal;
 }
-
+/*
 .mobi-list.recentMediaList .mobi-list-item:first-child {
 	height:20px;
 	padding: 2px 10px;
 }
-
+*/
 .mobi-list.recentMediaList a.view-play-icon{
 	padding:0;
 	margin:-10px;
@@ -159,4 +159,29 @@ img.branding{
 .mobi-pagePanel-body-content {
 	overflow-y: auto;
 }
+.left-arrow{
+	background: url("/mediacast/javax.faces.resource/images/arrow-left.png.jsf") no-repeat scroll 0 50% #FFFFFF;
+}
+.right-arrow{
+	background: url("/mediacast/javax.faces.resource/images/arrow-right.png.jsf") no-repeat scroll 100% 50% #FFFFFF
+}
+.mobi-pagePanel-body-menu .mobi-list {
+    border-right: none;
+}
+.mobi-list-item-group {
+    background-image: -moz-linear-gradient(center top , #909FAA, #B8C1C8);
+    border-bottom: 1px solid #999FA5;
+    border-top: 1px solid #717D85;
+    color: #FFFFFF;
+    font-size: 20px;
+    font-weight: bold;
+    line-height: 34px;
+    margin-bottom: -2px;
+    padding: 5px 10px;
+    text-shadow: 0 1px 0 #969FA6;
+}
+.mobi-list.recentMediaList .mobi-list-item-group{
+	height: auto;
+	line-height: 34px;
+	padding: 5px 10px;
 }

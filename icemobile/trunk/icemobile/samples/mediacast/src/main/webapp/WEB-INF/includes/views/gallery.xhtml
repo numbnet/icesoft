@@ -22,7 +22,7 @@
              xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component"
              template="/WEB-INF/includes/templates/mobile-template.xhtml">
              
-    <ui:param name="title" value="Media Gallery"/>
+    <ui:param name="title" value="Feed"/>
              
     <ui:define name="nav-small">
         <h:form id="headerFrm">
@@ -45,21 +45,26 @@
                                         name="icemobile_thumb.png"
                                         styleClass="branding"/>
             <span id="title">#{title}</span>
-            <div style="float:right;">
-                <mobi:commandButton id="backBtn"
-                        value="back"
-                        action="#{navigationController.navigateBack}"
-                        rendered="#{navigationModel.canGoBack}"
-                        style="margin: 5px 8px;padding: 8px 0;vertical-align: top;width:80px;">
-                </mobi:commandButton>
-            </div>
+            
         </h:form>
     </ui:define>
     
     <ui:define name="aside-large">
-        <div class="mobi-list-item-group">Message Tags</div>
+        <div class="mobi-list-item-group">Tags</div>
+        <h:form id="backFrm">
+	        <mobi:outputList inset="false" style="border-right:none;">
+	            <mobi:outputListItem styleClass="left-arrow">
+	 	                <h:commandLink id="backBtn"
+		                        value="Home" style="text-indent:10px;"
+		                        action="#{navigationController.navigateBack}"
+		                        rendered="#{navigationModel.canGoBack}">
+		                </h:commandLink>
+	            </mobi:outputListItem>
+	        </mobi:outputList>
+        </h:form>
         <ui:include src="/WEB-INF/includes/content/message-filters.xhtml"/>
         <ui:include src="/WEB-INF/includes/content/message-count.xhtml"/>
+       
     </ui:define>
 
     <ui:define name="content-small">

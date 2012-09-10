@@ -29,21 +29,15 @@
                           longitude="#{uploadModel.currentMediaMessage.lon}"
                           direction="#{uploadModel.currentMediaMessage.direction}"/>
                           
-        <mobi:fieldsetGroup>
-            <mobi:fieldsetRow style="padding-bottom:10px;">
-                Create a new media message using your mobile device. When you press the
-                upload button, your selected media type will be uploaded. You can upload separate
-                video, audio and photo media for the message. Once you're finished uploading,
-                you can click the 'Done' button and your message will be sent to all Mediacast users.
-                <ui:fragment rendered="#{not mediaController.enhancedBrowser}">
-                    <br/><span style="font-weight:bold;font-style:italic;">
-                    ICEmobile container was not detected, native
-                    device integration will not be available.</span>
-                    <br/>
-                    <mobi:icemobilesx/>
-                </ui:fragment>
-            </mobi:fieldsetRow>
-        </mobi:fieldsetGroup>
+        <mobi:outputList inset="false">
+            <mobi:outputListItem styleClass="right-arrow">
+                <h:commandLink id="galleryLink"
+	                    value="Feed"
+	                    action="#{navigationController.navigateToPage}">
+	                <f:param name="panelId" value="gallery" />
+	            </h:commandLink>
+            </mobi:outputListItem>
+        </mobi:outputList>
 
         <mobi:fieldsetGroup id="uploadGrp">
             <mobi:fieldsetRow id="uploadBtns"
@@ -84,7 +78,7 @@
                             style="float:none;"
                             buttonType="default"
                             actionListener="#{mediaController.upload}"
-                            value="Add my photo to the message"/>
+                            value="Upload"/>
                             
                 </mobi:fieldsetRow>
             </c:if>
@@ -101,7 +95,7 @@
                             style="float:none;"
                             buttonType="default"
                             actionListener="#{mediaController.upload}"
-                            value="Add my video to the message"/>
+                            value="Upload"/>
                             
                 </mobi:fieldsetRow>
             </c:if>
@@ -117,7 +111,7 @@
                         style="float:none;"
                         buttonType="default"
                         actionListener="#{mediaController.upload}"
-                        value="Add my audio to the message"/>
+                        value="Upload"/>
                         
                 </mobi:fieldsetRow>
             </c:if>
@@ -170,12 +164,28 @@
                         style="float:right;"
                         buttonType="important"
                         actionListener="#{mediaController.uploadsCompleted}"
-                        value="Send my message"/> 
+                        value="Submit"/> 
                         
                  <mobi:commandButton id="cancelUploadBtn"
                         styleClass="mobi-button mobi-button-default"
                         actionListener="#{mediaController.cancelUpload}"
                         value="Cancel"/>
+            </mobi:fieldsetRow>
+        </mobi:fieldsetGroup>
+        
+        <mobi:fieldsetGroup>
+            <mobi:fieldsetRow style="padding-bottom:10px;">
+                Create a new media message using your mobile device. When you press the
+                upload button, your selected media type will be uploaded. You can upload separate
+                video, audio and photo media for the message. Once you're finished uploading,
+                you can click the 'Done' button and your message will be sent to all Mediacast users.
+                <ui:fragment rendered="#{not mediaController.enhancedBrowser}">
+                    <br/><span style="font-weight:bold;font-style:italic;">
+                    ICEmobile container was not detected, native
+                    device integration will not be available.</span>
+                    <br/>
+                    <mobi:icemobilesx/>
+                </ui:fragment>
             </mobi:fieldsetRow>
         </mobi:fieldsetGroup>
         
