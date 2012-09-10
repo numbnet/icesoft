@@ -37,10 +37,13 @@
 <ui:define name="example">
     <h:form>
         <ace:tree value="#{treeBean.treeRoots}" var="node"
+                stateVar="nodeState"
                 type="#{node.type}"
                 expansionMode="client">
             <ace:node type="country">
                 Country: <h:outputText value="#{node.name}" />
+                <h:commandButton value="Toggle"
+                                 actionListener="#{nodeState.setExpanded(not nodeState.expanded)}"/>
             </ace:node>
             <ace:node type="province">
                 Province: <h:outputText value="#{node.name}" />

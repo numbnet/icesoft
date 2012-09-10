@@ -34,7 +34,7 @@ import java.util.Map;
 @MandatoryResourceComponent(tagName = "tree", value="org.icefaces.ace.component.tree.Tree")
 public class TreeRenderer extends CoreRenderer {
     // Wraps everything
-    public static final String TREE_CONTAINER_CLASS = "if-tree";
+    public static final String TREE_CONTAINER_CLASS = "if-tree ui-widget-content";
     // Wraps individual node template
     public static final String NODE_CLASS = "if-node";
     // Wraps node & subnode container class
