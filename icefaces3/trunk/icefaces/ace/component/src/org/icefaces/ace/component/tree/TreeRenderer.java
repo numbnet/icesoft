@@ -46,7 +46,9 @@ public class TreeRenderer extends CoreRenderer {
     public static final String NODE_SWITCH_DISABLED_CLASS = "noexp";
     public static final String NODE_SELECTION_DISABLED_CLASS = "noselect";
     // Applied to span with JQuery UI icon class applied
-    public static final String NODE_SWITCH_ICON_CLASS = "";
+    public static final String NODE_SWITCH_ICON_CLASS = "ui-icon";
+    public static final String NODE_EXPANDED_ICON_CLASS = "ui-icon-minus";
+    public static final String NODE_CONTRACTED_ICON_CLASS = "ui-icon-plus";
     public static final String NODE_CELL = "if-node-td";
     public static final String NODE_ROW = "if-node-tr";
 
@@ -224,8 +226,8 @@ public class TreeRenderer extends CoreRenderer {
     private void encodeNodeSwitch(ResponseWriter writer, TreeRendererContext renderContext, NodeState state) throws IOException {
         String switchClass = NODE_SWITCH_CLASS;
         String iconClass = NODE_SWITCH_ICON_CLASS;
-        String expandedClass = renderContext.getExpandedStyleClass();
-        String contractedClass = renderContext.getContractedStyleClass();
+        String expandedClass = NODE_EXPANDED_ICON_CLASS;
+        String contractedClass = NODE_CONTRACTED_ICON_CLASS;
 
         iconClass += " " + (state.isExpanded() ? expandedClass : contractedClass);
 

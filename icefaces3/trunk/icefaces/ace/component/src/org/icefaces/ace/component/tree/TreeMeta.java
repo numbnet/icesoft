@@ -113,14 +113,6 @@ public class TreeMeta extends UIDataMeta {
     @Property
     NodeStateMap stateMap;
 
-    @Property(defaultValueType = DefaultValueType.STRING_LITERAL,
-        defaultValue = "ui-icon ui-icon-minus")
-    String expandedIconClass;
-
-    @Property(defaultValueType = DefaultValueType.STRING_LITERAL,
-            defaultValue = "ui-icon ui-icon-plus")
-    String contractedIconClass;
-
     // Default DOM event that causes toggle
     @Property(defaultValue = "click",
             defaultValueType = DefaultValueType.STRING_LITERAL)
