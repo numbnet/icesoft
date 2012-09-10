@@ -93,7 +93,7 @@ ice.ace.gMap.getGMapWrapper = function (id) {
             //javascript object still exist, so recreate the googlemap
             //with its old state.
             if (!gmapComp.hasChildNodes()) {
-                //gmapWrapper = ice.ace.gMap.recreate(id, gmapWrapper);
+                gmapWrapper = ice.ace.gMap.recreate(id, gmapWrapper);
             }
         } else {
             //googleMap not found create a fresh new googleMap object
