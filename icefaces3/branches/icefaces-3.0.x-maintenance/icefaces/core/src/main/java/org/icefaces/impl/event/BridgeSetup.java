@@ -282,13 +282,6 @@ public class BridgeSetup implements SystemEventListener {
             icefacesSetup.setId(viewID + "_icefaces_config");
             bodyResources.add(icefacesSetup);
 
-            //add the form used by ice.retrieveUpdate function to retrieve the updates
-            //use viewID and '-retrieve-update' suffix as element ID
-            addNewTransientForm(viewID + "-retrieve-update", bodyResources);
-            //add the form used by ice.singleSubmit function for submitting event data
-            //use viewID and '-single-submit' suffix as element ID
-            addNewTransientForm(viewID + "-single-submit", bodyResources);
-
             if (EnvUtils.isICEpushPresent()) {
                 UIOutputWriter icepushSetup = new UIOutputWriter() {
                     public void encode(ResponseWriter writer,
