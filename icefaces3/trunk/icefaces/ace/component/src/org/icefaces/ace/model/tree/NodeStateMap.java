@@ -1,5 +1,6 @@
 package org.icefaces.ace.model.tree;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -25,7 +26,7 @@ import java.util.Set;
  * Date: 2012-08-14
  * Time: 2:03 PM
  */
-public class NodeStateMap implements Map<Object, NodeState> {
+public class NodeStateMap implements Map<Object, NodeState>, Serializable {
     Map<Object, NodeState> map = new HashMap<Object, NodeState>();
     KeySegmentConverter keyConverter;
 
