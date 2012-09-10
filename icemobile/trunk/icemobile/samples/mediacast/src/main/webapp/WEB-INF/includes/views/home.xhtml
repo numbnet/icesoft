@@ -34,13 +34,7 @@
                            rendered="#{navigationModel.canGoBack}"/>
 
             <span id="title">Mediacast</span>
-
-            <h:commandLink id="galleryLink"
-                    value="Gallery"
-                    action="#{navigationController.navigateToPage}"
-                    styleClass="mobi-button mobi-button-forward">
-                <f:param name="panelId" value="gallery" />
-            </h:commandLink>
+           
         </h:form>
     </ui:define>
     
@@ -51,14 +45,6 @@
                                         name="icemobile_thumb.png"
                                         styleClass="branding"/>
             <span id="title">Mediacast</span>
-            <div style="float:right;">
-                <mobi:commandButton id="galleryLink"
-                        value="Gallery"
-                        action="#{navigationController.navigateToPage}"
-                        style="margin: 5px 8px;padding: 8px 0;vertical-align: top;width:80px;">
-                    <f:param name="panelId" value="gallery" />
-                </mobi:commandButton>
-            </div>
         </h:form>
     </ui:define>
     
