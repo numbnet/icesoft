@@ -132,6 +132,11 @@ public class DataTableHeadRenderer {
             columnClass = styleClass != null ? columnClass + " " + styleClass : columnClass;
             columnClass = (column.hasSortPriority() && !isNextStacked) ? columnClass + " ui-state-active" : columnClass;
 
+            if (table.isResizableColumns())
+                style = (style != null)
+                        ? "position:relative; " + style
+                        : "position:relative;";
+
             writer.startElement(HTML.TH_ELEM, null);
             writer.writeAttribute(HTML.CLASS_ATTR, columnClass, null);
 
