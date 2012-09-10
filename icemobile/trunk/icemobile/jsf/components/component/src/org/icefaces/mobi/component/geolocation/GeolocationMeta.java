@@ -14,7 +14,7 @@
  * governing permissions and limitations under the License.
  */
 
-package org.icefaces.mobi.component.camera;
+package org.icefaces.mobi.component.geolocation;
 
 
 import org.icefaces.ace.meta.annotation.ClientBehaviorHolder;
