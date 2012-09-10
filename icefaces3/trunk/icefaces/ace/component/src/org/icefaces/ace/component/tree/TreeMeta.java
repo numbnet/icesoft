@@ -93,6 +93,10 @@ public class TreeMeta extends UIDataMeta {
     @Property(defaultValue = "nodeState", defaultValueType = DefaultValueType.STRING_LITERAL)
     String stateVar;
 
+    @Property(defaultValue = "org.icefaces.ace.component.tree.TreeExpansionMode.server",
+            defaultValueType = DefaultValueType.EXPRESSION)
+    TreeExpansionMode expansionMode;
+
     @Property(expression = Expression.VALUE_EXPRESSION)
     String type;
 
@@ -101,6 +105,10 @@ public class TreeMeta extends UIDataMeta {
 
     @Property(defaultValue = "false", defaultValueType = DefaultValueType.EXPRESSION)
     Boolean multipleSelection;
+
+    @Property(defaultValue = "org.icefaces.ace.component.tree.TreeSelectionMode.server",
+            defaultValueType = DefaultValueType.EXPRESSION)
+    TreeSelectionMode selectionMode;
 
     @Property
     NodeStateMap stateMap;

@@ -1,5 +1,7 @@
 package org.icefaces.ace.component.node;
 
+import java.io.Serializable;
+
 /**
  * Copyright 2010-2011 ICEsoft Technologies Canada Corp.
  * <p/>
@@ -20,6 +22,6 @@ package org.icefaces.ace.component.node;
  * Date: 2012-08-21
  * Time: 4:51 PM
  */
-public class Node extends NodeBase {
+public class Node extends NodeBase implements Serializable {
     public static final String DEFAULT_NODE_TYPE = "default";
 }

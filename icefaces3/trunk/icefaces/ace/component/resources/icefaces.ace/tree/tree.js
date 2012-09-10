@@ -1,6 +1,7 @@
 ice.ace.Tree = function (cfg) {
     this.cfg = cfg;
     this.jqId = ice.ace.escapeClientId(cfg.id);
+    this.element = ice.ace.jq(this.jqId);
     this.behaviors = cfg.behaviors;
 
     // Selectors
@@ -19,28 +20,28 @@ ice.ace.Tree = function (cfg) {
 }
 
 ice.ace.Tree.prototype.tearDownExpansion = function() {
-    ice.ace.jq(this.jqId).off('click', this.expansionButtonSelector);
+    this.element.off('click', this.expansionButtonSelector);
 }
 
 ice.ace.Tree.prototype.setupExpansion = function() {
     var self = this;
-    ice.ace.jq(this.jqId).on('click', this.expansionButtonSelector, function (event) {
+    this.element.on('click', this.expansionButtonSelector, function (event) {
         var container = ice.ace.jq(this),
             icon = container.find('> span'),
             expanded = icon.is('.ui-icon-minus'),
             node = container.closest('.if-node-cnt');
 
-        //if (self.cfg.activeMode) {
+        if (self.cfg.expansionMode == 'server') {
             if (expanded)
                 self.sendNodeContractionRequest(node);
             else
                 self.sendNodeExpansionRequest(node);
-        //} else {
-        //    if (expanded)
-        //        self.doClientContraction(node);
-        //    else
-        //        self.doClientExpansion(node);
-        //}
+        } else {
+            if (expanded)
+                self.doClientContraction(node);
+            else
+                self.doClientExpansion(node);
+        }
     });
 }
 
@@ -52,12 +53,34 @@ ice.ace.Tree.prototype.setupSelection = function() {
 
 }
 
-ice.ace.Tree.prototype.doClientContraction = function() {
+ice.ace.Tree.prototype.doClientContraction = function(node) {
+    var key = this.getNodeKey(node),
+        record = this.read('contract'),
+        icon = node.find(' > div > div > span.ui-icon'),
+        sub = node.find(' > div > div.if-node-sub');
 
+    icon.removeClass('ui-icon-minus');
+    icon.addClass('ui-icon-plus')
+    record.push(key);
+
+    sub.css('display', 'none');
+
+    this.write('contract', record);
 }
 
-ice.ace.Tree.prototype.doClientExpansion = function() {
+ice.ace.Tree.prototype.doClientExpansion = function(node) {
+    var key = this.getNodeKey(node),
+        record = this.read('expand'),
+        icon = node.find(' > div > div > span.ui-icon'),
+        sub = node.find(' > div > div.if-node-sub');
 
+    icon.removeClass('ui-icon-plus');
+    icon.addClass('ui-icon-minus')
+    record.push(key);
+
+    sub.css('display', 'block');
+
+    this.write('expand', record);
 }
 
 ice.ace.Tree.prototype.sendNodeContractionRequest = function(node) {
@@ -67,11 +90,7 @@ ice.ace.Tree.prototype.sendNodeContractionRequest = function(node) {
         render:this.cfg.id
     };
 
-    var params = {};
-
-    params[this.cfg.id + '_contract'] = [this.getNodeKey(node)];
-
-    options.params =  params;
+    this.write('contract', [this.getNodeKey(node)]);
 
     if (this.cfg.behaviors && this.cfg.behaviors['contract']) {
         ice.ace.ab(ice.ace.extendAjaxArguments(
@@ -90,11 +109,7 @@ ice.ace.Tree.prototype.sendNodeExpansionRequest = function(node) {
         render:this.cfg.id
     };
 
-    var params = {};
-
-    params[this.cfg.id + '_expand'] = [this.getNodeKey(node)];
-
-    options.params =  params;
+    this.write('expand', [this.getNodeKey(node)]);
 
     if (this.cfg.behaviors && this.cfg.behaviors['expand']) {
         ice.ace.ab(ice.ace.extendAjaxArguments(
@@ -115,4 +130,14 @@ ice.ace.Tree.prototype.getNodeKey = function(node) {
         endIndex = id.indexOf(endStr, startIndex);
 
     return id.substring(startIndex, endIndex);
+}
+
+ice.ace.Tree.prototype.write = function(key, val) {
+    this.element.find(this.jqId+"_"+key).val(JSON.stringify(val));
+}
+
+ice.ace.Tree.prototype.read = function(key) {
+    var val = this.element.find(this.jqId+"_"+key).val();
+    if (val != "") return JSON.parse(val);
+    else return [];
 }

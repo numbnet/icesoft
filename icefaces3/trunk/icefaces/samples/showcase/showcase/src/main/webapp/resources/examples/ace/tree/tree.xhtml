@@ -36,14 +36,18 @@
 
 <ui:define name="example">
     <h:form>
-        <h:inputText />
         <ace:tree value="#{treeBean.treeRoots}" var="node"
-                type="#{node.type}">
+                type="#{node.type}"
+                expansionMode="client">
             <ace:node type="country">
-                <h:inputText />
+                Country: <h:outputText value="#{node.name}" />
             </ace:node>
+            <ace:node type="province">
+                Province: <h:outputText value="#{node.name}" />
+            </ace:node>
+            // Default node
             <ace:node>
-                <h:outputText value="#{node.name}" />
+                City: <h:outputText value="#{node.name}" />
             </ace:node>
         </ace:tree>
         <h:commandButton value="Save">
