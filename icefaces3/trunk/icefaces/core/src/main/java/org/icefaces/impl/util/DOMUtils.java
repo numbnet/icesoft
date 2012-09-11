@@ -534,9 +534,11 @@ public class DOMUtils {
         int startCursor = nodeDiffs.cursor;
 
         if (!oldNode.getNodeName().equals(newNode.getNodeName())) {
+            debugNameDifference(config, newNode, oldNode, newNode);
             return false;
         }
         if (!compareIDs(oldNode, newNode)) {
+            debugIdDifference(config, newNode, oldNode, newNode, "A");
             return false;
         }
         if (isSuppressed(newNode))  {
@@ -548,24 +550,29 @@ public class DOMUtils {
             if (null != op)  {
                 if (null == id)  {
                     //attributes differ, but no id to apply change
+                    debugAttributesDifference(config, newNode, oldNode, newNode, "A");
                     return false;
                 }
                 if (op.attributes.containsKey("value"))  {
                     //value update will require a special case in jsf.js
                     nodeDiffs.add(new ReplaceOperation(newNode));
+                    debugAttributeValueDifference(config, newNode, oldNode, newNode, "A");
                     diffDebug(config, "replace: attributes value ", newNode);
                     return true;
                 }
                 nodeDiffs.add(op);
+                debugAttributesDifference(config, newNode, oldNode, newNode, "B");
                 diffDebug(config, "attribute: attributes differ ", newNode);
             }
         } else {
             if (!compareAttributes(oldNode, newNode)) {
                 String id = getNodeId(newNode);
                 if (null == id)  {
+                    debugAttributesDifference(config, newNode, oldNode, newNode, "C");
                     return false;
                 }
                 nodeDiffs.add(new ReplaceOperation(newNode));
+                debugAttributesDifference(config, newNode, oldNode, newNode, "D");
                 diffDebug(config, "replace: attributes differ ", newNode);
                 return true;
             }
@@ -574,9 +581,11 @@ public class DOMUtils {
                 newNode.getNodeValue())) {
             String id = getNodeId(newNode);
             if (null == id)  {
+                debugTextValueDifference(config, newNode, oldNode, newNode, "A");
                 return false;
             }
             nodeDiffs.add(new ReplaceOperation(newNode));
+            debugTextValueDifference(config, newNode, oldNode, newNode, "B");
             diffDebug(config, "replace: text differs ", newNode);
             return true;
         }
@@ -592,9 +601,11 @@ public class DOMUtils {
             if (oldChildLength != newChildLength) {
                 String id = getNodeId(newNode);
                 if (null == id)  {
+                    debugChildCountDifference(config, newNode, oldNode, newNode, oldChildLength, newChildLength, "A");
                     return false;
                 }
                 nodeDiffs.add(new ReplaceOperation(newNode));
+                debugChildCountDifference(config, newNode, oldNode, newNode, oldChildLength, newChildLength, "B");
                 diffDebug(config, "replace: differing child count ", newNode);
                 return true;
             }
@@ -679,9 +690,11 @@ public class DOMUtils {
             //the node is either newly populated or cleared
             //simple replace is the most efficient
             if (null == getNodeId(newNode))  {
+                debugChildCountDifference(config, newNode, oldNode, newNode, oldChildCount, newChildCount, "C");
                 return false;
             }
             nodeDiffs.add(new ReplaceOperation(newNode));
+            debugChildCountDifference(config, newNode, oldNode, newNode, oldChildCount, newChildCount, "D");
             diffDebug(config, "replace: cleared ", newNode);
             return true;
         }
@@ -713,15 +726,18 @@ public class DOMUtils {
                     keepRunning = false;
                     //cancel all operations and replace oldNode with newNode
                     if (null == getNodeId(newNode))  {
+                        debugNodeDifference(config, newNode, "Node swapped with other", "A");
                         return false;
                     }
                     nodeDiffs.add(new ReplaceOperation(newNode));
+                    debugNodeDifference(config, newNode, "Node swapped with other", "B");
                     diffDebug(config, "replace: swap  ", newNode);
                     ops = null;
                     break;
                 }
                 if (newInOld && !oldInNew)  {
                     operation = new DeleteOperation(currentOld);
+                    debugNodeDifference(config, oldNode, "Node deleted", "A");
                     diffDebug(config, "delete: ins/del " + currentOld, null);
                     oldIndex++;
                 }
@@ -732,9 +748,11 @@ public class DOMUtils {
                         //TODO Implement InsertBefore
                         //this case is properly handled by an insert "before"
                         if (null == getNodeId(newNode))  {
+                            debugNodeDifference(config, newNode, "Node inserted before other", "A");
                             return false;
                         }
                         nodeDiffs.add(new ReplaceOperation(newNode));
+                        debugNodeDifference(config, newNode, "Node inserted before other", "B");
                         diffDebug(config, "replace: insert before ", newNode);
                         ops = null;
                         break;
@@ -742,15 +760,18 @@ public class DOMUtils {
                     if (insertAnchor.startsWith("?"))  {
                         //anchor is not valid so we must replace parent
                         if (null == getNodeId(newNode))  {
+                            debugNodeDifference(config, newNode, "Invalid state", "A");
                             return false;
                         }
                         nodeDiffs.add(new ReplaceOperation(newNode));
+                        debugNodeDifference(config, newNode, "Invalid state", "B");
                         diffDebug(config, "replace1: no insert id ", newNode);
                         ops = null;
                         break;
                     } else {
                         operation = new InsertOperation(insertAnchor, 
                                 newChildNodes.item(newIndex) );
+                        debugNodeDifference(config, newNode, "Inserted node", "A");
                         diffDebug(config, "insert: !new old ", 
                                 newChildNodes.item(newIndex));
                     }
@@ -768,9 +789,11 @@ public class DOMUtils {
                             //can be handled by a parent replace
                             //this should be covered by the length test on entry
                             if (null == getNodeId(newNode))  {
+                                debugNodeDifference(config, newNode, "Child added to previously empty parent", "A");
                                 return false;
                             }
                             nodeDiffs.add(new ReplaceOperation(newNode));
+                            debugNodeDifference(config, newNode, "Child added to previously empty parent", "B");
                             diffDebug(config, "replace: new child ", newNode);
                             ops = null;
                             break;
@@ -778,15 +801,18 @@ public class DOMUtils {
                         if (insertAnchor.startsWith("?"))  {
                             //anchor is not valid so we must replace parent
                             if (null == getNodeId(newNode))  {
+                                debugNodeDifference(config, newNode, "Invalid state", "C");
                                 return false;
                             }
                             nodeDiffs.add(new ReplaceOperation(newNode));
+                            debugNodeDifference(config, newNode, "Invalid state", "D");
                             diffDebug(config, "replace2: no insert id ", newNode);
                             ops = null;
                             break;
                         } else {
                             operation = new InsertOperation(insertAnchor, 
                                     newChildNodes.item(newIndex) );
+                            debugNodeDifference(config, newNode, "Inserted node", "B");
                             diffDebug(config, "insert2 ", 
                                     newChildNodes.item(newIndex));
                         }
@@ -794,9 +820,11 @@ public class DOMUtils {
                         //two completely different IDs at this location
                         //cancel and let parent handle
                         if (null == getNodeId(newNode))  {
+                            debugIdDifference(config, newNode, oldNode, newNode, "B");
                             return false;
                         }
                         nodeDiffs.add(new ReplaceOperation(newNode));
+                        debugIdDifference(config, newNode, oldNode, newNode, "C");
                         diffDebug(config, "replace: different IDs ", newNode);
                         ops = null;
                         break;
@@ -1594,4 +1622,207 @@ public class DOMUtils {
     }
 
 
+    public static void debugIdDifference(DiffConfig config,
+            Node differenceOrigin, Node oldNode, Node newNode, String variant) {
+        if (!isDebug(config))  {
+            return;
+        }
+        String differenceReason = "Id changed from '" + getNodeId(oldNode) +
+            "' to '" + getNodeId(newNode) + "'. Examine attributes:\nOld: " +
+            describeAttributes(oldNode) + "New: " + describeAttributes(newNode);
+        log.info(getDifference(differenceOrigin, variant, differenceReason));
+    }
+
+    public static void debugNameDifference(DiffConfig config,
+            Node differenceOrigin, Node oldNode, Node newNode) {
+        if (!isDebug(config))  {
+            return;
+        }
+        String differenceReason = "Name changed from '" + oldNode.getNodeName() +
+            "' to '" + newNode.getNodeName() + "'. Examine attributes:\nOld: " +
+            describeAttributes(oldNode) + "New: " + describeAttributes(newNode);
+        log.info(getDifference(differenceOrigin, null, differenceReason));
+    }
+
+    public static void debugAttributesDifference(DiffConfig config,
+            Node differenceOrigin, Node oldNode, Node newNode, String variant) {
+        if (!isDebug(config))  {
+            return;
+        }
+        String differenceReason = "Attributes changed\nOld: " +
+            describeAttributes(oldNode) + "New: " + describeAttributes(newNode);
+        log.info(getDifference(differenceOrigin, variant, differenceReason));
+    }
+
+    public static void debugAttributeValueDifference(DiffConfig config,
+            Node differenceOrigin, Node oldNode, Node newNode, String variant) {
+        if (!isDebug(config))  {
+            return;
+        }
+        String differenceReason = "Attribute 'value' changed\nOld: " +
+            describeAttributes(oldNode) + "New: " + describeAttributes(newNode);
+        log.info(getDifference(differenceOrigin, variant, differenceReason));
+    }
+
+    public static void debugTextValueDifference(DiffConfig config,
+            Node differenceOrigin, Node oldNode, Node newNode, String variant) {
+        if (!isDebug(config))  {
+            return;
+        }
+        String differenceReason = "Text value changed from '" +
+            oldNode.getNodeValue() + "' to '" + newNode.getNodeValue() + "'";
+        log.info(getDifference(differenceOrigin, variant, differenceReason));
+    }
+
+    public static void debugChildCountDifference(DiffConfig config,
+            Node differenceOrigin, Node oldNode, Node newNode,
+            int oldChildLength, int newChildLength, String variant) {
+        if (!isDebug(config))  {
+            return;
+        }
+        String differenceReason = "Number of children changed from " +
+            oldChildLength + " to " + newChildLength + "\nOld: " +
+            describeChildren(oldNode) + "New: " + describeChildren(newNode);
+        log.info(getDifference(differenceOrigin, variant, differenceReason));
+    }
+
+
+    public static void debugNodeDifference(DiffConfig config, Node differenceOrigin, String variant, String differenceReason) {
+        if (!isDebug(config))  {
+            return;
+        }
+        log.info(getDifference(differenceOrigin, variant, differenceReason));
+    }
+
+    private static String getDifference(Node differenceOrigin, String variant, String differenceReason) {
+        if (differenceOrigin == null) {
+            return null;
+        }
+        int differenceReasonLength = (differenceReason == null) ? 0 : differenceReason.length();
+        StringBuilder sb = new StringBuilder(256 + differenceReasonLength);
+        Node n = differenceOrigin;
+        while (true) {
+            describeNodePrepended(n, sb);
+            Node p = n.getParentNode();
+            if (p == null) {
+                break;
+            }
+            describeNodeIndexInParentPrepended(p, n, sb);
+            n = p;
+        }
+        if (differenceReason != null) {
+            sb.append(" :: ");
+            if (variant != null) {
+                sb.append("(").append(variant).append(") ");
+            }
+            sb.append(differenceReason);
+        }
+        return sb.toString();
+    }
+
+    private static void describeNodePrepended(Node n, StringBuilder sb) {
+        sb.insert(0, ">");
+        String id = getNodeId(n);
+        if (id != null) {
+            sb.insert(0, "\"");
+            sb.insert(0, id);
+            sb.insert(0, " id=\"");
+        }
+        sb.insert(0, n.getNodeName());
+        sb.insert(0, "<");
+    }
+
+    private static void describeNodeIndexInParentPrepended(Node p, Node n, StringBuilder sb) {
+        NodeList nl = p.getChildNodes();
+        for (int i = nl.getLength()-1; i >= 0; i--) {
+            Node c = nl.item(i);
+            if (c == n) {
+                sb.insert(0, "]");
+                sb.insert(0, i);
+                sb.insert(0, "[");
+                return;
+            }
+        }
+    }
+
+    private static String describeChildren(Node n) {
+        StringBuilder sb = new StringBuilder(256);
+        NodeList nl = n.getChildNodes();
+        sb.append("Children: ").append(nl.getLength()).append('\n');
+
+        for (int i = 0; i < nl.getLength(); i++) {
+            sb.append("  [").append(i).append("] ");
+            Node c = nl.item(i);
+            short type = c.getNodeType();
+            switch (type) {
+                case Node.CDATA_SECTION_NODE: {
+                    CDATASection cdataSection = (CDATASection) c;
+                    sb.append("cdata[").append(cdataSection.getData()).append("]\n");
+                    break;
+                }
+                case Node.TEXT_NODE: {
+                    Text text = (Text) c;
+                    String str = text.getData();
+                    sb.append("text");
+                    if (str == null || str.length() == 0) {
+                        sb.append(":EMPTY\n");
+                    } else if (str.trim().length() == 0) {
+                        sb.append(":WHITESPACE\n");
+                    } else {
+                        sb.append("[").append(str).append("]\n");
+                    }
+                    break;
+                }
+                case Node.COMMENT_NODE: {
+                    Comment comment = (Comment) c;
+                    sb.append("comment[").append(comment.getData()).append("]\n");
+                    break;
+                }
+                case Node.ENTITY_NODE: {
+                    Entity entity = (Entity) c;
+                    sb.append("entity[public: ").append(entity.getPublicId()).append("; system: ").append(entity.getSystemId()).append("]\n");
+                    break;
+                }
+                default:
+                case Node.ELEMENT_NODE: {
+                    sb.append("<").append(c.getNodeName());
+                    String id = getNodeId(c);
+                    if (id != null) {
+                        sb.append(" id=\"").append(id).append("\"");
+                    }
+                    sb.append(">\n");
+                    if (id == null) {
+                        describeAttributes(c, sb, true);
+                    }
+                }
+            }
+        }
+
+        return sb.toString();
+    }
+
+    private static String describeAttributes(Node n) {
+        StringBuilder sb = new StringBuilder(256);
+        describeAttributes(n, sb, false);
+        return sb.toString();
+    }
+
+    private static void describeAttributes(Node n, StringBuilder sb, boolean doubleIndent) {
+        NamedNodeMap nnm = n.getAttributes();
+        int numAttribs = (nnm == null) ? 0 : nnm.getLength();
+        if (doubleIndent) {
+            sb.append("  ");
+        }
+        sb.append("Attributes: ").append(numAttribs).append('\n');
+
+        for (int i = 0; i < numAttribs; i++) {
+            Node c = nnm.item(i);
+            if (doubleIndent) {
+                sb.append("  ");
+            }
+            sb.append("  [").append(i).append("] ");
+            sb.append(c.getNodeName());
+            sb.append("=\"").append(c.getNodeValue()).append("\"\n");
+        }
+    }
 }
