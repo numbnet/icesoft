@@ -556,13 +556,11 @@ public class DOMUtils {
                 if (op.attributes.containsKey("value"))  {
                     //value update will require a special case in jsf.js
                     nodeDiffs.add(new ReplaceOperation(newNode));
-                    debugAttributeValueDifference(config, newNode, oldNode, newNode, "A");
-                    diffDebug(config, "replace: attributes value ", newNode);
+                    debugAttributeValueDifference(config, newNode, oldNode, newNode, "A replace");
                     return true;
                 }
                 nodeDiffs.add(op);
-                debugAttributesDifference(config, newNode, oldNode, newNode, "B");
-                diffDebug(config, "attribute: attributes differ ", newNode);
+                debugAttributesDifference(config, newNode, oldNode, newNode, "B attribute");
             }
         } else {
             if (!compareAttributes(oldNode, newNode)) {
@@ -572,8 +570,7 @@ public class DOMUtils {
                     return false;
                 }
                 nodeDiffs.add(new ReplaceOperation(newNode));
-                debugAttributesDifference(config, newNode, oldNode, newNode, "D");
-                diffDebug(config, "replace: attributes differ ", newNode);
+                debugAttributesDifference(config, newNode, oldNode, newNode, "D replace");
                 return true;
             }
         }
@@ -585,8 +582,7 @@ public class DOMUtils {
                 return false;
             }
             nodeDiffs.add(new ReplaceOperation(newNode));
-            debugTextValueDifference(config, newNode, oldNode, newNode, "B");
-            diffDebug(config, "replace: text differs ", newNode);
+            debugTextValueDifference(config, newNode, oldNode, newNode, "B replace");
             return true;
         }
 
@@ -605,8 +601,7 @@ public class DOMUtils {
                     return false;
                 }
                 nodeDiffs.add(new ReplaceOperation(newNode));
-                debugChildCountDifference(config, newNode, oldNode, newNode, oldChildLength, newChildLength, "B");
-                diffDebug(config, "replace: differing child count ", newNode);
+                debugChildCountDifference(config, newNode, oldNode, newNode, oldChildLength, newChildLength, "B replace");
                 return true;
             }
 
@@ -694,8 +689,7 @@ public class DOMUtils {
                 return false;
             }
             nodeDiffs.add(new ReplaceOperation(newNode));
-            debugChildCountDifference(config, newNode, oldNode, newNode, oldChildCount, newChildCount, "D");
-            diffDebug(config, "replace: cleared ", newNode);
+            debugChildCountDifference(config, newNode, oldNode, newNode, oldChildCount, newChildCount, "D replace: cleared");
             return true;
         }
 
@@ -730,15 +724,13 @@ public class DOMUtils {
                         return false;
                     }
                     nodeDiffs.add(new ReplaceOperation(newNode));
-                    debugNodeDifference(config, newNode, "Node swapped with other", "B");
-                    diffDebug(config, "replace: swap  ", newNode);
+                    debugNodeDifference(config, newNode, "Node swapped with other", "B replace");
                     ops = null;
                     break;
                 }
                 if (newInOld && !oldInNew)  {
                     operation = new DeleteOperation(currentOld);
-                    debugNodeDifference(config, oldNode, "Node deleted", "A");
-                    diffDebug(config, "delete: ins/del " + currentOld, null);
+                    debugNodeDifference(config, oldNode, "Node deleted " + currentOld, "A");
                     oldIndex++;
                 }
                 if (!newInOld && oldInNew)  {
@@ -752,8 +744,7 @@ public class DOMUtils {
                             return false;
                         }
                         nodeDiffs.add(new ReplaceOperation(newNode));
-                        debugNodeDifference(config, newNode, "Node inserted before other", "B");
-                        diffDebug(config, "replace: insert before ", newNode);
+                        debugNodeDifference(config, newNode, "Node inserted before other", "B replace");
                         ops = null;
                         break;
                     }
@@ -764,8 +755,7 @@ public class DOMUtils {
                             return false;
                         }
                         nodeDiffs.add(new ReplaceOperation(newNode));
-                        debugNodeDifference(config, newNode, "Invalid state", "B");
-                        diffDebug(config, "replace1: no insert id ", newNode);
+                        debugNodeDifference(config, newNode, "No insert ID", "B replace");
                         ops = null;
                         break;
                     } else {
@@ -793,8 +783,7 @@ public class DOMUtils {
                                 return false;
                             }
                             nodeDiffs.add(new ReplaceOperation(newNode));
-                            debugNodeDifference(config, newNode, "Child added to previously empty parent", "B");
-                            diffDebug(config, "replace: new child ", newNode);
+                            debugNodeDifference(config, newNode, "Child added to previously empty parent", "B replace");
                             ops = null;
                             break;
                         }
@@ -805,8 +794,7 @@ public class DOMUtils {
                                 return false;
                             }
                             nodeDiffs.add(new ReplaceOperation(newNode));
-                            debugNodeDifference(config, newNode, "Invalid state", "D");
-                            diffDebug(config, "replace2: no insert id ", newNode);
+                            debugNodeDifference(config, newNode, "No insert ID", "D replace");
                             ops = null;
                             break;
                         } else {
@@ -824,8 +812,7 @@ public class DOMUtils {
                             return false;
                         }
                         nodeDiffs.add(new ReplaceOperation(newNode));
-                        debugIdDifference(config, newNode, oldNode, newNode, "C");
-                        diffDebug(config, "replace: different IDs ", newNode);
+                        debugIdDifference(config, newNode, oldNode, newNode, "C replace");
                         ops = null;
                         break;
                     }
