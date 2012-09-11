@@ -72,4 +72,10 @@ public class GMapMeta extends UIPanelMeta {
 	
 	@Property(tlddoc="Map type to display by default. Possible values are HYBRID, ROADMAP, SATELLITE and TERRAIN, case insensitive", defaultValue="ROADMAP")
 	private String type;
+
+    @Property(tlddoc="Styling for the main gMap div", defaultValue="width: 100%; height: 100%")
+    private String style;
+
+    @Property(tlddoc="The classname for the main gMap div", defaultValue="ice-ace-gmap")
+    private String styleClass;
 }
