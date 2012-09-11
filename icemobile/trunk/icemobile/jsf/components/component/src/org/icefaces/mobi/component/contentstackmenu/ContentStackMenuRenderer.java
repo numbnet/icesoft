@@ -43,18 +43,6 @@ public class  ContentStackMenuRenderer extends BaseLayoutRenderer {
     private static final String JS_ACC_LIB = "org.icefaces.component.accordion";
 
 
-  /*  public void decode(FacesContext facesContext, UIComponent uiComponent) {
-         Map requestParameterMap = facesContext.getExternalContext().getRequestParameterMap();
-         ContentStackMenu menu = (ContentStackMenu) uiComponent;
-         String source = String.valueOf(requestParameterMap.get("ice.event.captured"));
-         Map<String, String> params = facesContext.getExternalContext().getRequestParameterMap();
-         String clientId = menu.getClientId();
-         String inputStr = params.get(clientId + "_hidden");
-         if( null != inputStr) {
-             //find the activeIndex and set it
-             //going to have to validate on client....
-         }
-    } */
      @Override
      public void encodeBegin(FacesContext facesContext, UIComponent uiComponent)
              throws IOException {
@@ -113,21 +101,12 @@ public class  ContentStackMenuRenderer extends BaseLayoutRenderer {
         writer.endElement(HTML.UL_ELEM);
         this.encodeHidden(facesContext, uiComponent);
         writer.endElement(HTML.DIV_ELEM);
-   /*     writer.startElement(HTML.INPUT_ELEM, uiComponent);
-        writer.writeAttribute("type", "text", "type");
-        writer.writeAttribute(HTML.VALUE_ATTR, " end of menu comp", HTML.VALUE_ATTR);
-        writer.endElement(HTML.INPUT_ELEM);      */
-
     }
     @Override
     public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
         ResponseWriter writer = facesContext.getResponseWriter();
         ContentStackMenu menu = (ContentStackMenu) component;
         writer.endElement(HTML.DIV_ELEM);
-    /*    writer.startElement(HTML.INPUT_ELEM, component);
-        writer.writeAttribute("type", "text", "type");
-        writer.writeAttribute(HTML.VALUE_ATTR, " encode end of menu comp", HTML.VALUE_ATTR);
-        writer.endElement(HTML.INPUT_ELEM); */
         if (menu.isAccordion()){
             writer.endElement(HTML.DIV_ELEM);
         }

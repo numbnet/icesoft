@@ -49,36 +49,36 @@ import javax.faces.component.UIComponent;
 
 public class ContentPaneMeta extends UIPanelMeta{
 
-     @Property(defaultValue=" ", tlddoc="used when ContentPane is child of Accordion or tabSet")
-     private String title;
+    @Property(defaultValue=" ", tlddoc="used when ContentPane is child of Accordion or tabSet")
+    private String title;
 
-     @Property(tlddoc = "style will be rendered on the root element of this " +
-     "component.  Just for purposes of accordion or tabset")
-     private String style;
+    @Property(tlddoc = "style will be rendered on the root element of this " +
+    "component.  Just for purposes of accordion or tabset")
+    private String style;
 
-     @Property(tlddoc = "style class will be rendered on the root element of " +
-        "this component. Just for purposes of accordion or tabset")
-     private String styleClass;
+    @Property(tlddoc = "style class will be rendered on the root element of " +
+       "this component. Just for purposes of accordion or tabset")
+    private String styleClass;
 
-     @Property(defaultValue="false", implementation = Implementation.EXISTS_IN_SUPERCLASS,
+    @Property(defaultValue="false", implementation = Implementation.EXISTS_IN_SUPERCLASS,
                tlddoc = "if true, this attribute must have cacheType of server in order to be utilised and will" +
                        " utilize the ContentPaneHandler in order to optimise server-side performance and reducing the size of the " +
                        " server-side component tree, by ensuring that any non-selected contentPane which is not selected will not have" +
                        " its children added to the component tree. If true, then normal jsf construction of the component tree is done. " +
                        " Default value is false.")
-     private boolean facelet;
+    private boolean facelet;
 
-     @Property(defaultValue="false",
+    @Property(defaultValue="false",
              tlddoc = " if true, the contentPane's children are always rendered to the client/browser.  This is ideal for " +
                      " content which is static.  Default value is false, which means that the children of any non-selected" +
                      " contentPane are not rendered to the client.  Used in conjunction with facelet attribute if the tagHandler" +
                      " is required for optimization. If client is true, then facelet attribute is ignored.  Facelet attribute is " +
                      " only relevant if this attribute is false.")
-     private boolean client;
+    private boolean client;
 
-     @Property(defaultValue="false",
+    @Property(defaultValue="false",
              tlddoc = " menuOrHome attribute means that this contentPane contains either a layoutMenu or Home page for a single " +
                      "page application.  default is false, so be sure to set it if you have a menu page and " +
                      " want the transitions to slide in proper direction.")
-     private boolean menuOrHome;
+    private boolean menuOrHome;
 }

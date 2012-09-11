@@ -56,9 +56,4 @@ public class ContentStackMeta extends UIPanelMeta {
      @Property(tlddoc=" id of contentStackMenu used with this stack")
      private String contentMenuId;
 
- /*    @Property(tlddoc = "boolean value to determine if the menu controls a contentStack in a single view layout.  " +
-             "This configuration may or may not contain a layoutMenu, but for now, that is the only way to have " +
-             "client side behavior for this component.")
-     private boolean singleView;*/
-
 }

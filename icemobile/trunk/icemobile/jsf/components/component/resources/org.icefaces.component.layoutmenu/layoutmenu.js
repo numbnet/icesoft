@@ -64,7 +64,6 @@
                 }
             }
         }
-   //     var viewportdim = viewport();
         var myStackId = clientId;
         var selectedPaneId = cfgIn.selectedId || null;
         var selClientId = cfgIn.selClientId || null;
@@ -142,6 +141,9 @@
         showContent: function(clientId, el, cfgIn){
             if (this.menus[clientId]){
                 this.menus[clientId].showContent(el, cfgIn);
+  /*          } else {
+                this.menus[clientId ]= LayoutMenu(clientId, cfgIn);
+                this.menus[clientId].showContent(el, cfgIn);    */
             }
         },
         showMenu: function(clientId, cfgIn){
