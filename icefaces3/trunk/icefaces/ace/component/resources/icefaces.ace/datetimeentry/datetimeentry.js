@@ -121,7 +121,39 @@ ice.ace.Calendar.prototype.bindDateSelectListener = function() {
     }
     if (!behavior && this.cfg.singleSubmit) {
         this.cfg.onSelect = function(dateText, inst) {
-            ice.se(null, _self.cfg.clientId);
+            ice.se(null, _self.cfg.clientId, function(){}, function(onBeforeSubmit, onBeforeUpdate, onAfterUpdate) {
+                //collect the IDs of the input elements found in the page to later look up the newly DOM elements
+                var inputs = [];
+                for (var i = 0, l = inst.input.length; i < l; i++) {
+                    inputs[i] = inst.input[i].id;
+                }
+                onBeforeUpdate(function() {
+                    //erase focus so that ice.applyFocus will actually focus the element
+                    //(ice.applyFocus won't invoke Element.focus() on an element that is already assumed to be focused)
+                    ice.setFocus('');
+                });
+                onAfterUpdate(function() {
+                    //re-wire the 'onfocus' callbacks with the new elements (after the update was applied)
+                    //todo: add 'onfocus' callbacks only if latest calendar configuration require it
+                    setTimeout(function() {
+                        var addFocusCallback = document.addEventListener ?
+                            function(element, callback) {
+                                element.addEventListener('focus', callback, false);
+                            } :
+                            function(element, callback) {
+                                element.attachEvent('onfocus', callback);
+                            };
+                        for (var i = 0, l = inputs.length; i < l; i++) {
+                            var input = document.getElementById(inputs[i]);
+                            if (input) {
+                                addFocusCallback(input, function() {
+                                    $.datepicker._showDatepicker(input);
+                                });
+                            }
+                        }
+                    }, 500);
+                });
+            });
         };
     }
 
