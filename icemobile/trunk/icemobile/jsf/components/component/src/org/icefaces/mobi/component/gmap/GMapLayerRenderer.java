@@ -22,9 +22,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import org.icefaces.mobi.renderkit.CoreRenderer;
-import org.icefaces.render.MandatoryResourceComponent;
 
-@MandatoryResourceComponent(tagName="gMap", value="org.icefaces.mobi.component.gmap.GMap")
 public class GMapLayerRenderer extends CoreRenderer {
 
 
@@ -34,7 +32,7 @@ public class GMapLayerRenderer extends CoreRenderer {
 		GMapLayer gMapLayer = (GMapLayer) component;
 		writer.startElement("span", null);
 		writer.writeAttribute("id", clientId + "_layer", null);
-        writer.startElement("script", null);
+		writer.startElement("script", null);
         writer.writeAttribute("type", "text/javascript", null);
         if (gMapLayer.getLayerType() != null){
             writer.write(String.format("var wrapper = mobi.gmap.getWrapper('%s');wrapper.removeMapLayer('%s');",
