@@ -20,6 +20,7 @@ public class GMapRenderer extends CoreRenderer {
 		writer.writeAttribute("id", clientId, null);
 		writer.writeAttribute("style", "height: 97%;", null);
 		writer.endElement("div");
+		writeJavascriptFile(context, component, "gmap.js", "gmap.js", "org.icefaces.component.gmap");
 		writer.startElement("span", null);
 		writer.writeAttribute("id", clientId + "_script", null);
 		writer.startElement("script", null);

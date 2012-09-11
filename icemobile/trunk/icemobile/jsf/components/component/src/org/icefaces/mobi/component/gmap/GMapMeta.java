@@ -20,8 +20,7 @@ import org.icefaces.ace.meta.baseMeta.UIPanelMeta;
 )
 @ResourceDependencies({
         @ResourceDependency(library = "org.icefaces.component.util", name = "component.js"),
-        @ResourceDependency(name = "org.icefaces.component.gmap/api.js"),
-        @ResourceDependency(library = "org.icefaces.component.gmap", name = "gmap.js")
+        @ResourceDependency(name = "org.icefaces.component.gmap/api.js")//TODO load resource differently
 })
 public class GMapMeta extends UIPanelMeta{
 
