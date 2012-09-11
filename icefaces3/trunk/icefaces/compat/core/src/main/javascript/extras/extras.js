@@ -3031,13 +3031,31 @@ Ice.GoogleMap = {
 			else if (controlName == 'GMapTypeControl') controlName = 'mapTypeControl';
 			else if (controlName == 'GOverviewMapControl') controlName = 'overviewMapControl';
 			else if (controlName == 'GSmallZoomControl') {
-				controlName = 'zoomControl';
+				if (!gmapWrapper.controls['GSmallMapControl'] && !gmapWrapper.controls['GLargeMapControl']) {
+					controlName = 'zoomControl';
+				}
+				if (gmapWrapper.controls['GLargeMapControl']) {
+					mapOption.zoomControlOptions = { style: google.maps.ZoomControlStyle.LARGE }; 
+				}
 			} else if (controlName == 'GSmallMapControl') {
-				controlName = 'panControl';
-				mapOption.zoomControl = false;
+				if (gmapWrapper.controls['GLargeMapControl']) {
+					mapOption.zoomControlOptions = { style: google.maps.ZoomControlStyle.LARGE }; 
+				} else if (gmapWrapper.controls['GSmallZoomControl']) {
+					controlName = 'panControl';
+				} else {
+					controlName = 'panControl';
+					mapOption.zoomControl = false;
+				}
 			} else if (controlName == 'GLargeMapControl') {
-				controlName = 'panControl';
-				mapOption.zoomControl = false;
+				if (gmapWrapper.controls['GSmallMapControl']) {
+					mapOption.zoomControlOptions = { style: google.maps.ZoomControlStyle.SMALL }; 
+				} else if (gmapWrapper.controls['GSmallZoomControl']) {
+					controlName = 'panControl';
+					mapOption.zoomControlOptions = { style: google.maps.ZoomControlStyle.SMALL }; 
+				} else {
+					controlName = 'panControl';
+					mapOption.zoomControl = false;
+				}
 			}
 			mapOption[controlName] = false;
             gmapWrapper.getRealGMap().setOptions(mapOption);
