@@ -54,8 +54,8 @@ public class FileEntryCallbackBean extends
 	public static final String BEAN_NAME = "fileEntryCallback";
 	private static Logger logger = Logger.getLogger(FileEntryCallbackBean.class
 			.getName());
-	private transient MessageDigest digest;
-	private boolean noAlgorithm = false;
+	private static transient MessageDigest digest;
+	private static boolean noAlgorithm = false;
 	private boolean validFile = true;
 
 	public FileEntryCallbackBean() {
@@ -72,7 +72,6 @@ public class FileEntryCallbackBean extends
 		// Check the file type
 		if (fileInfo.getContentType().equals("application/pdf")) {
 			validFile = false;
-
 		}
 		// Initialize the message digest
 		try {
