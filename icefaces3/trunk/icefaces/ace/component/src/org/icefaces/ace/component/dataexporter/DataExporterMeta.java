@@ -76,10 +76,10 @@ public class DataExporterMeta extends UIComponentBaseMeta {
 	@Property(required=Required.no, tlddoc="Define a comma separated list of column indexes (zero-relative) to be excluded from export.")
 	private String excludeColumns;
 	
-	@Property(required=Required.no, tlddoc="Defines a public void method to invoke before the PDF or XLS document starts to be populated. It must take an Object argument. The object will be of type com.lowagie.text.Document for PDF documents and of type org.apache.poi.ss.usermodel.Workbook for XLS documents.", expression = Expression.METHOD_EXPRESSION)
+	@Property(required=Required.no, tlddoc="Defines a public void method to invoke before the PDF or XLS document is generated, allowing developers to manipulate the document. It must take a single argument of type Object. The object will be of type com.lowagie.text.Document (iText library) for PDF documents and of type org.apache.poi.ss.usermodel.Workbook (Apache POI library) for XLS documents.", expression = Expression.METHOD_EXPRESSION, methodExpressionArgument="Object")
 	private MethodExpression preProcessor;
 	
-	@Property(required=Required.no, tlddoc="Defines a public void method to invoke after the PDF or XLS document has been be populated. It must take an Object argument. The object will be of type com.lowagie.text.Document for PDF documents and of type org.apache.poi.ss.usermodel.Workbook for XLS documents.", expression = Expression.METHOD_EXPRESSION)
+	@Property(required=Required.no, tlddoc="Defines a public void method to invoke after the PDF or XLS document has been generated, allowing developers to manipulate the document. It must take a single argument of type Object. The object will be of type com.lowagie.text.Document (iText library) for PDF documents and of type org.apache.poi.ss.usermodel.Workbook (Apache POI library) for XLS documents.", expression = Expression.METHOD_EXPRESSION, methodExpressionArgument="Object")
 	private MethodExpression postProcessor;
 	
 	@Property(required=Required.no, tlddoc="Define a character encoding to use.", defaultValue="UTF-8")
