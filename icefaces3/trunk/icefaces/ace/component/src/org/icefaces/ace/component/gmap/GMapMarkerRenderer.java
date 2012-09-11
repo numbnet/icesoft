@@ -63,6 +63,8 @@ public class GMapMarkerRenderer extends CoreRenderer {
 				oldLatitude = currentLat;
 				oldLongitude = currentLon;
 			}
+            if(marker.getAnimation() != null)
+                writer.write("ice.ace.gMap.animateMarker('"+ marker.getParent().getClientId(context)+"', '"+ clientId +"','"+ marker.getAnimation() +"');");
 			writer.write("});");
 			writer.endElement("script");
 			writer.endElement("span");

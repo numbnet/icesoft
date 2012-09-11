@@ -42,7 +42,8 @@ public class GMapRenderer extends CoreRenderer {
             GMap gmap = (GMap) component;
             writer.startElement("div", null);
             writer.writeAttribute("id", clientId, null);
-            writer.writeAttribute("style", "width: 800px; height: 500px", null);
+            writer.writeAttribute("style", gmap.getStyle(), null);
+            writer.writeAttribute("class", gmap.getStyleClass(), null);
             writer.endElement("div");
 			writer.startElement("span", null);
 			writer.writeAttribute("id", clientId + "_script", null);
@@ -57,7 +58,7 @@ public class GMapRenderer extends CoreRenderer {
 			writer.write("ice.ace.gMap.setMapType('" + clientId + "','" + gmap.getType().toUpperCase() + "');");
 			if (gmap.getOptions() != null && gmap.getOptions().length() > 1)
 				writer.write("ice.ace.gMap.addOptions('" + clientId +"',\"" + gmap.getOptions() + "\");");
-			writer.write("});");
+            writer.write("});");
 			writer.endElement("script");
 			writer.endElement("span");
             gmap.setIntialized(true);
