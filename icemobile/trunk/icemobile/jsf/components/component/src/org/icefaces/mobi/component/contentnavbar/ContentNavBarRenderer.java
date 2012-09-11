@@ -108,9 +108,10 @@ public class ContentNavBarRenderer extends BaseLayoutRenderer {
         sb.append("', {selectedId: '").append(targetId).append("'");
         sb.append(", singleSubmit: true");
         sb.append(", client: ").append(client);
-        sb.append(", single: ").append(true); //assume single for now
+        sb.append(", single: ").append(stack.getSingleView());
         sb.append("});") ;
         return sb;
     }
+
 
 }

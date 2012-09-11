@@ -144,14 +144,14 @@ public class ContentPaneRenderer extends BaseLayoutRenderer {
 
     public void encodeEnd(FacesContext facesContext, UIComponent uiComponent)
           throws IOException {
-         ResponseWriter writer = facesContext.getResponseWriter();
-         if (uiComponent.getParent() instanceof Accordion){
-             writer.endElement(HTML.SECTION_ELEM);
-             return;
-         } else {
-             writer.endElement(HTML.DIV_ELEM);
-             writer.endElement(HTML.DIV_ELEM);
-         }
+        ResponseWriter writer = facesContext.getResponseWriter();
+        if (uiComponent.getParent() instanceof Accordion){
+            writer.endElement(HTML.SECTION_ELEM);
+            return;
+        } else {
+            writer.endElement(HTML.DIV_ELEM);
+            writer.endElement(HTML.DIV_ELEM);
+        }
     }
 
     public void encodePaneAccordionHandle(FacesContext facesContext, UIComponent uiComponent, Accordion accordion)

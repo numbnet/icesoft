@@ -30,6 +30,7 @@ public class ContentStack extends ContentStackBase implements ContentPaneControl
     public static final String PANES_SINGLEVIEW_CLASS ="mobi-contentStack-panes";
 
     private Boolean singleView;
+    private Boolean navBar;
 
     public ContentStack() {
         super();
@@ -89,7 +90,47 @@ public class ContentStack extends ContentStackBase implements ContentPaneControl
         }
         return retVal;
     }
+    public void setNavBar(Boolean navBar){
+        StateHelper sh = getStateHelper();
+        String clientId = getClientId();
+        String valuesKey = "navBar" + "_rowValues";
+        Map clientValues = (Map) sh.get(valuesKey);
+        if (clientValues == null) {
+            clientValues = new HashMap();
+        }
+        if (navBar==null){
+            clientValues.remove(clientId);
+        } else {
+            clientValues.put(clientId, navBar);
+        }
+        sh.put(valuesKey, clientValues);
+    }
 
+    public Boolean hasNavBar(){
+       java.lang.Boolean retVal = null;
+        StateHelper sh = getStateHelper();
+        String valuesKey = "navBar" + "_rowValues";
+        Map clientValues = (Map) sh.get(valuesKey);
+        Boolean mapNoValue = false;
+        if (clientValues != null) {
+            String clientId = getClientId();
+            if (clientValues.containsKey( clientId ) ) {
+                retVal = (java.lang.Boolean) clientValues.get(clientId);
+            } else {
+                mapNoValue=true;
+            }
+        }
+        if (mapNoValue || clientValues == null ) {
+            String defaultKey = "navBar" + "_defaultValues";
+            Map defaultValues = (Map) sh.get(defaultKey);
+            if (defaultValues != null) {
+               if (defaultValues.containsKey("defValue" )) {
+                  retVal = (java.lang.Boolean) defaultValues.get("defValue");
+               }
+            }
+        }
+        return retVal;
+    }
 }
 
 
