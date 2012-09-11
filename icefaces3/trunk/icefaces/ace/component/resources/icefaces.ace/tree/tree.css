@@ -7,8 +7,15 @@
     display:table-cell;
 }
 
+.if-node-wrp {
+    /* prevent border wiggle when active state added */
+    border: 1px solid transparent;
+    display:inline-block;
+    padding:2px;
+}
+
 .if-node-cnt {
-    margin: 0px 5px;
+    margin: 1px 5px;
     display: table;
 }
 

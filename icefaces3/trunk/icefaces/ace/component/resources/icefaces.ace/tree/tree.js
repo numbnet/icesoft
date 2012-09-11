@@ -5,10 +5,10 @@ ice.ace.Tree = function (cfg) {
     this.behaviors = cfg.behaviors;
 
     // Selectors
-    this.expansionButtonDeselector = this.jqId + " * .if-tree * .if-node-sw";
-    this.selectionTargetDeselector = this.jqId + " * .if-tree *";
+    this.expansionButtonDeselector = this.jqId + " * .if-tree * .if-node-sw, noexp";
+    this.selectionTargetDeselector = this.jqId + " * .if-tree * .if-node, noselect";
     this.expansionButtonSelector = this.jqId + " .if-node-sw:not("+this.expansionButtonDeselector+")";
-    this.selectionTargetSelector = this.jqId + " :not("+this.selectionTargetDeselector+")";
+    this.selectionTargetSelector = this.jqId + " .if-node:not("+this.selectionTargetDeselector+")";
 
     // Setup events
     // Expansion
@@ -46,41 +46,131 @@ ice.ace.Tree.prototype.setupExpansion = function() {
 }
 
 ice.ace.Tree.prototype.tearDownSelection = function() {
-
+    this.element
+            .off('click', this.selectionTargetSelector)
+            .off('mouseenter', this.selectionTargetSelector)
+            .off('mouseleave', this.selectionTargetSelector);
 }
 
 ice.ace.Tree.prototype.setupSelection = function() {
+    var self = this;
+    this.element.on('mouseenter', this.selectionTargetSelector, function(event) {
+        var tar = ice.ace.jq(this),
+            wrap = tar.find('> div.if-node-wrp'),
+            selected = wrap.is('.ui-state-active');
 
+        if (!selected) wrap.addClass('ui-state-hover');
+    });
+
+    this.element.on('mouseleave', this.selectionTargetSelector, function(event) {
+        var tar = ice.ace.jq(this),
+            wrap = tar.find('> div.if-node-wrp');
+
+        wrap.removeClass('ui-state-hover');
+    });
+
+    this.element.on('click', this.selectionTargetSelector, function(event) {
+        var tar = ice.ace.jq(this),
+            wrap = tar.find('> div.if-node-wrp'),
+            selected = wrap.is('.ui-state-active'),
+            node = tar.closest('.if-node-cnt');
+
+        if (self.cfg.selectionMode == 'server') {
+            if (selected)
+                self.sendNodeDeselectionRequest(node);
+            else
+                self.sendNodeSelectionRequest(node);
+        } else {
+            if (selected)
+                self.doClientDeselection(node, wrap);
+            else
+                self.doClientSelection(node, wrap);
+        }
+    });
+}
+
+ice.ace.Tree.prototype.sendNodeDeselectionRequest = function(node) {
+    var options = {
+        source:this.cfg.id,
+        execute:this.cfg.id,
+        render:this.cfg.id
+    };
+
+    this.append('deselect', this.getNodeKey(node));
+
+    if (this.cfg.behaviors && this.cfg.behaviors['deselect']) {
+        ice.ace.ab(ice.ace.extendAjaxArguments(
+                this.cfg.behaviors['deselect'],
+                ice.ace.removeExecuteRenderOptions(options)
+        ));
+    } else {
+        ice.ace.AjaxRequest(options);
+    }
+}
+
+ice.ace.Tree.prototype.sendNodeSelectionRequest = function(node) {
+    var options = {
+        source:this.cfg.id,
+        execute:this.cfg.id,
+        render:this.cfg.id
+    };
+
+    this.append('select', this.getNodeKey(node));
+
+    if (this.cfg.behaviors && this.cfg.behaviors['select']) {
+        ice.ace.ab(ice.ace.extendAjaxArguments(
+                this.cfg.behaviors['select'],
+                ice.ace.removeExecuteRenderOptions(options)
+        ));
+    } else {
+        ice.ace.AjaxRequest(options);
+    }
+}
+
+ice.ace.Tree.prototype.doClientDeselection = function(node, wrap) {
+    var key = this.getNodeKey(node);
+
+    wrap.removeClass('ui-state-active');
+
+    this.append('deselect', key);
+    this.remove('select', key);
+}
+
+ice.ace.Tree.prototype.doClientSelection = function(node, wrap) {
+    var key = this.getNodeKey(node);
+
+    wrap.addClass('ui-state-active');
+
+    this.append('select', key);
+    this.remove('deselect', key);
 }
 
 ice.ace.Tree.prototype.doClientContraction = function(node) {
     var key = this.getNodeKey(node),
-        record = this.read('contract'),
         icon = node.find(' > div > div > span.ui-icon'),
         sub = node.find(' > div > div.if-node-sub');
 
     icon.removeClass('ui-icon-minus');
     icon.addClass('ui-icon-plus')
-    record.push(key);
 
     sub.css('display', 'none');
 
-    this.write('contract', record);
+    this.append('contract', key);
+    this.remove('expand', key);
 }
 
 ice.ace.Tree.prototype.doClientExpansion = function(node) {
     var key = this.getNodeKey(node),
-        record = this.read('expand'),
         icon = node.find(' > div > div > span.ui-icon'),
         sub = node.find(' > div > div.if-node-sub');
 
     icon.removeClass('ui-icon-plus');
     icon.addClass('ui-icon-minus')
-    record.push(key);
 
     sub.css('display', 'block');
 
-    this.write('expand', record);
+    this.append('expand', key);
+    this.remove('contract', key);
 }
 
 ice.ace.Tree.prototype.sendNodeContractionRequest = function(node) {
@@ -90,7 +180,7 @@ ice.ace.Tree.prototype.sendNodeContractionRequest = function(node) {
         render:this.cfg.id
     };
 
-    this.write('contract', [this.getNodeKey(node)]);
+    this.append('contract', this.getNodeKey(node));
 
     if (this.cfg.behaviors && this.cfg.behaviors['contract']) {
         ice.ace.ab(ice.ace.extendAjaxArguments(
@@ -109,7 +199,7 @@ ice.ace.Tree.prototype.sendNodeExpansionRequest = function(node) {
         render:this.cfg.id
     };
 
-    this.write('expand', [this.getNodeKey(node)]);
+    this.append('expand', this.getNodeKey(node));
 
     if (this.cfg.behaviors && this.cfg.behaviors['expand']) {
         ice.ace.ab(ice.ace.extendAjaxArguments(
@@ -140,4 +230,18 @@ ice.ace.Tree.prototype.read = function(key) {
     var val = this.element.find(this.jqId+"_"+key).val();
     if (val != "") return JSON.parse(val);
     else return [];
+}
+
+ice.ace.Tree.prototype.append = function(key, val) {
+    var arr = this.read(key);
+    arr.push(val);
+    this.write(key, arr);
+}
+
+ice.ace.Tree.prototype.remove = function(key, val) {
+    this.write(key, ice.ace.jq.grep(this.read(key),
+        function (o) {
+            return o != val;
+        }
+    ));
 }

@@ -34,9 +34,11 @@ import java.util.Map;
 @MandatoryResourceComponent(tagName = "tree", value="org.icefaces.ace.component.tree.Tree")
 public class TreeRenderer extends CoreRenderer {
     // Wraps everything
-    public static final String TREE_CONTAINER_CLASS = "if-tree ui-widget-content";
-    // Wraps individual node template
+    public static final String TREE_CONTAINER_CLASS = "if-tree ui-widget-content ui-corner-all";
+    // Cell for the node template
     public static final String NODE_CLASS = "if-node";
+    // Wraps individual node template
+    public static final String NODE_WRAPPER_CLASS = "if-node-wrp";
     // Wraps node & subnode container class
     public static final String NODE_CONTAINER_CLASS = "if-node-cnt";
     // Wraps child node container classes
@@ -45,6 +47,7 @@ public class TreeRenderer extends CoreRenderer {
     public static final String NODE_SWITCH_CLASS = "if-node-sw";
     public static final String NODE_SWITCH_DISABLED_CLASS = "noexp";
     public static final String NODE_SELECTION_DISABLED_CLASS = "noselect";
+    public static final String NODE_SELECTED_CLASS = "ui-state-active";
     // Applied to span with JQuery UI icon class applied
     public static final String NODE_SWITCH_ICON_CLASS = "ui-icon";
     public static final String NODE_EXPANDED_ICON_CLASS = "ui-icon-minus";
@@ -123,6 +126,7 @@ public class TreeRenderer extends CoreRenderer {
         confJson.entry("id", clientId);
         confJson.entry("widgetVar", widgetVar);
         confJson.entry("expansionMode", tree.getExpansionMode().name());
+        confJson.entry("selectionMode", tree.getSelectionMode().name());
         if (selection) {
             confJson.entry("select", true);
             if (multipleSelection) confJson.entry("multiSelect", true);
@@ -158,8 +162,16 @@ public class TreeRenderer extends CoreRenderer {
     private void encodeNode(ResponseWriter writer, FacesContext facesContext, TreeRendererContext renderContext) throws IOException {
         Tree tree = renderContext.getTree();
         NodeState state = tree.getNodeState();
+        String nodeClass = NODE_CLASS;
+        String nodeWrapperClass = NODE_WRAPPER_CLASS;
         boolean expanded = state.isExpanded();
         boolean isClientExpansion = renderContext.getExpansionMode().isClient();
+
+        if (!state.isSelectionEnabled())
+            nodeClass+= " " + NODE_SELECTION_DISABLED_CLASS;
+
+        if (state.isSelected())
+            nodeWrapperClass += " " + NODE_SELECTED_CLASS;
 
         // Encode 'table' container
         writer.startElement(HTML.DIV_ELEM, null);
@@ -174,8 +186,11 @@ public class TreeRenderer extends CoreRenderer {
 
         // Write Node Template
         writer.startElement(HTML.DIV_ELEM, null);
-        writer.writeAttribute(HTML.CLASS_ATTR, NODE_CLASS, null);
+        writer.writeAttribute(HTML.CLASS_ATTR, nodeClass, null);
+        writer.startElement(HTML.DIV_ELEM, null);
+        writer.writeAttribute(HTML.CLASS_ATTR, nodeWrapperClass, null);
         tree.getNodeForType().encodeAll(facesContext);
+        writer.endElement(HTML.DIV_ELEM);
         writer.endElement(HTML.DIV_ELEM);
 
         // End first line
@@ -233,9 +248,6 @@ public class TreeRenderer extends CoreRenderer {
 
         if (!state.isExpansionEnabled())
             switchClass += " " + NODE_SWITCH_DISABLED_CLASS;
-
-       if (!state.isSelectionEnabled())
-            switchClass += " " + NODE_SELECTION_DISABLED_CLASS;
 
         writer.startElement(HTML.DIV_ELEM, null);
         writer.writeAttribute(HTML.CLASS_ATTR, switchClass, null);
