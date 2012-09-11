@@ -132,11 +132,6 @@ public class DataTableHeadRenderer {
             columnClass = styleClass != null ? columnClass + " " + styleClass : columnClass;
             columnClass = (column.hasSortPriority() && !isNextStacked) ? columnClass + " ui-state-active" : columnClass;
 
-            if (table.isResizableColumns())
-                style = (style != null)
-                        ? "position:relative; " + style
-                        : "position:relative;";
-
             writer.startElement(HTML.TH_ELEM, null);
             writer.writeAttribute(HTML.CLASS_ATTR, columnClass, null);
 
@@ -153,6 +148,9 @@ public class DataTableHeadRenderer {
         //Container
         writer.startElement(HTML.DIV_ELEM, null);
         writer.writeAttribute(HTML.ID_ATTR, clientId, null);
+
+        if (table.isResizableColumns())
+            writer.writeAttribute(HTML.STYLE_ATTR, "position:relative;", null);
 
         String columnClass = DataTableConstants.COLUMN_HEADER_CONTAINER_CLASS;
         columnClass = isSortable ? columnClass + " " + DataTableConstants.SORTABLE_COLUMN_CLASS : columnClass;
