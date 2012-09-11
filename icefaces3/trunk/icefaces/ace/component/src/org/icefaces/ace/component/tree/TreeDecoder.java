@@ -2,6 +2,7 @@ package org.icefaces.ace.component.tree;
 
 import org.icefaces.ace.json.JSONArray;
 import org.icefaces.ace.json.JSONException;
+import org.icefaces.ace.model.tree.NodeKey;
 
 import javax.faces.context.FacesContext;
 import java.util.Map;
@@ -43,7 +44,7 @@ public class TreeDecoder {
     }
 
     public void decode() {
-        if (requestHasParam(tree.getClientId(context) + EXPANSION_SUFFIX))
+         if (requestHasParam(tree.getClientId(context) + EXPANSION_SUFFIX))
             decodeExpansion();
 
         if (requestHasParam(tree.getClientId(context) + CONTRACTION_SUFFIX))
@@ -62,10 +63,12 @@ public class TreeDecoder {
             JSONArray array = new JSONArray(deselectedJSON);
 
             for (int i = 0; i < array.length(); i++) {
+                tree.setKey(tree.getKeyConverter().parseSegments(array.getString(i).split(":")));
                 tree.getStateMap()
-                        .get(tree.getKeyConverter().parseSegments(array.getString(i).split(":")))
+                        .get(tree.getData())
                         .setSelected(false);
             }
+            tree.setKey(NodeKey.ROOT_KEY);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -77,10 +80,12 @@ public class TreeDecoder {
             JSONArray array = new JSONArray(contractedJSON);
 
             for (int i = 0; i < array.length(); i++) {
+                tree.setKey(tree.getKeyConverter().parseSegments(array.getString(i).split(":")));
                 tree.getStateMap()
-                        .get(tree.getKeyConverter().parseSegments(array.getString(i).split(":")))
+                        .get(tree.getData())
                         .setExpanded(false);
             }
+            tree.setKey(NodeKey.ROOT_KEY);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -92,10 +97,12 @@ public class TreeDecoder {
             JSONArray array = new JSONArray(expandedJSON);
 
             for (int i = 0; i < array.length(); i++) {
+                tree.setKey(tree.getKeyConverter().parseSegments(array.getString(i).split(":")));
                 tree.getStateMap()
-                        .get(tree.getKeyConverter().parseSegments(array.getString(i).split(":")))
+                        .get(tree.getData())
                         .setExpanded(true);
             }
+            tree.setKey(NodeKey.ROOT_KEY);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -107,10 +114,12 @@ public class TreeDecoder {
             JSONArray array = new JSONArray(selectedJSON);
 
             for (int i = 0; i < array.length(); i++) {
+                tree.setKey(tree.getKeyConverter().parseSegments(array.getString(i).split(":")));
                 tree.getStateMap()
-                        .get(tree.getKeyConverter().parseSegments(array.getString(i).split(":")))
+                        .get(tree.getData())
                         .setSelected(true);
             }
+            tree.setKey(NodeKey.ROOT_KEY);
         } catch (JSONException e) {
             e.printStackTrace();
         }

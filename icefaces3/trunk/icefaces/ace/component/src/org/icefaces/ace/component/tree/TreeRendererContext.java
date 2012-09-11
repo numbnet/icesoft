@@ -22,6 +22,7 @@ package org.icefaces.ace.component.tree;
  */
 public class TreeRendererContext {
     private Tree tree;
+    private boolean expansion;
     private boolean selection;
     private boolean multipleSelection;
     private TreeSelectionMode treeSelectionMode;
@@ -29,6 +30,7 @@ public class TreeRendererContext {
 
     public TreeRendererContext(Tree tree) {
         this.tree = tree;
+        expansion = tree.isExpansion();
         selection = tree.isSelection();
         multipleSelection = tree.isMultipleSelection();
         treeSelectionMode = tree.getSelectionMode();
@@ -57,5 +59,9 @@ public class TreeRendererContext {
 
     public TreeExpansionMode getExpansionMode() {
         return treeExpansionMode;
+    }
+
+    public boolean isExpansion() {
+        return expansion;
     }
 }

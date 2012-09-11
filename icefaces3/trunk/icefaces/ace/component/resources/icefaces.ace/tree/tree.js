@@ -12,11 +12,26 @@ ice.ace.Tree = function (cfg) {
 
     // Setup events
     // Expansion
-    this.tearDownExpansion();
-    this.setupExpansion();
+    if (this.cfg.expansion) {
+        this.tearDownExpansion();
+        this.setupExpansion();
+    }
+
     // Selection
-    this.tearDownSelection();
-    this.setupSelection();
+    if (this.cfg.selection) {
+        this.tearDownSelection();
+        this.setupSelection();
+    }
+
+    // Cleanup
+    if (!window[this.cfg.widgetVar]) {
+        var self = this;
+        ice.onElementUpdate(this.id, function() { self.unload(); });
+    }
+}
+
+ice.ace.Tree.prototype.unload = function() {
+
 }
 
 ice.ace.Tree.prototype.tearDownExpansion = function() {
