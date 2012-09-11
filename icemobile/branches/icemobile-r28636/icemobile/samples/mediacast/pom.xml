@@ -22,7 +22,7 @@
     <parent>
         <groupId>org.icefaces.mobi.samples</groupId>
         <artifactId>samples-parent</artifactId>
-        <version>1.0.0</version>
+        <version>1.0.0.GA_P01</version>
     </parent>
     <artifactId>mediacast</artifactId>
     <packaging>war</packaging>
