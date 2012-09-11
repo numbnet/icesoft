@@ -1,5 +1,6 @@
 package org.icefaces.samples.showcase.example.ace.tree;
 
+import org.icefaces.ace.model.tree.NodeStateMap;
 import org.icefaces.samples.showcase.metadata.annotation.*;
 import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
 import org.icefaces.util.JavaScriptRunner;
@@ -62,6 +63,7 @@ import java.util.List;
 public class TreeBean extends ComponentExampleImpl<TreeBean> implements Serializable {
     public static final String BEAN_NAME = "treeBean";
     private List<LocationNodeImpl> treeRoots = Arrays.asList(TreeDataFactory.getTreeRoots().clone());
+    private NodeStateMap stateMap;
 
     public TreeBean() {
         super(TreeBean.class);
@@ -79,5 +81,13 @@ public class TreeBean extends ComponentExampleImpl<TreeBean> implements Serializ
     public void print(String text) {
         JavaScriptRunner.runScript(FacesContext.getCurrentInstance(),
                 "alert('"+text+"');");
+    }
+
+    public NodeStateMap getStateMap() {
+        return stateMap;
+    }
+
+    public void setStateMap(NodeStateMap stateMap) {
+        this.stateMap = stateMap;
     }
 }

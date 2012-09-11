@@ -120,6 +120,7 @@ public class TreeRenderer extends CoreRenderer {
         String clientId  = tree.getClientId(facesContext);
         String widgetVar = resolveWidgetVar(tree);
         boolean selection = renderContext.isSelection();
+        boolean expansion = renderContext.isExpansion();
         boolean multipleSelection = renderContext.isMultipleSelection();
 
         confJson.beginMap();
@@ -127,10 +128,16 @@ public class TreeRenderer extends CoreRenderer {
         confJson.entry("widgetVar", widgetVar);
         confJson.entry("expansionMode", tree.getExpansionMode().name());
         confJson.entry("selectionMode", tree.getSelectionMode().name());
+
+        if (expansion) {
+            confJson.entry("expansion", true);
+        }
+
         if (selection) {
             confJson.entry("select", true);
             if (multipleSelection) confJson.entry("multiSelect", true);
         }
+
         encodeClientBehaviors(facesContext, tree, confJson);
         confJson.endMap();
 
@@ -170,7 +177,7 @@ public class TreeRenderer extends CoreRenderer {
         if (!state.isSelectionEnabled())
             nodeClass+= " " + NODE_SELECTION_DISABLED_CLASS;
 
-        if (state.isSelected())
+        if (state.isSelected() && renderContext.isSelection())
             nodeWrapperClass += " " + NODE_SELECTED_CLASS;
 
         // Encode 'table' container

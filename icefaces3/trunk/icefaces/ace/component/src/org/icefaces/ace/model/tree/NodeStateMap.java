@@ -1,10 +1,12 @@
 package org.icefaces.ace.model.tree;
 
+import org.icefaces.ace.model.table.RowState;
+import org.icefaces.ace.util.CollectionUtils;
+import org.icefaces.ace.util.collections.EntrySetToKeyListTransformer;
+import org.icefaces.ace.util.collections.Predicate;
+
 import java.io.Serializable;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Copyright 2010-2011 ICEsoft Technologies Canada Corp.
@@ -29,7 +31,7 @@ import java.util.Set;
 public class NodeStateMap implements Map<Object, NodeState>, Serializable {
     Map<Object, NodeState> map = new HashMap<Object, NodeState>();
     KeySegmentConverter keyConverter;
-
+    Predicate selectedPredicate = new SelectedPredicate();
 
 
     public NodeStateMap() {
@@ -104,5 +106,22 @@ public class NodeStateMap implements Map<Object, NodeState>, Serializable {
 
     public Set<Entry<Object, NodeState>> entrySet() {
         return map.entrySet();
+    }
+
+    // Getters
+    public List getSelected() {
+        return EntrySetToKeyListTransformer.transform(CollectionUtils.select(map.entrySet(), this.selectedPredicate));
+    }
+
+    // Setters
+    // setAllSelected()
+
+    // Predicates
+    static class SelectedPredicate implements Predicate {
+        public boolean evaluate(Object o) {
+            if (o instanceof Entry)
+                if (((NodeState)((Entry)o).getValue()).isSelected()) return true;
+            return false;
+        }
     }
 }

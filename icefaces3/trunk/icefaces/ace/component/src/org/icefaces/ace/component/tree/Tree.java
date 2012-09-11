@@ -58,7 +58,7 @@ public class Tree<N> extends TreeBase implements Serializable {
     public NodeState getNodeState() {
         if (getKey() == NodeKey.ROOT_KEY)
             return NodeState.ROOT_STATE;
-        return getStateMap().get(getKey());
+        return getStateMap().get(getData());
     }
 
     public NodeStateMap getStateMap() {
