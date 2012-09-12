@@ -19,6 +19,6 @@ package org.icefaces.mobi.component.mobisx;
 
 public class IceMobileSX extends IceMobileSXBase {
 
-    public static final String IMPORTANT_STYLE_CLASS = "mobi-button-important ";
+    public static final String IMPORTANT_STYLE_CLASS = "mobi-button mobi-button-important ";
 
 }
