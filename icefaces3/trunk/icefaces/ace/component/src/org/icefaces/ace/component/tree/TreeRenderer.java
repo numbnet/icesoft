@@ -55,6 +55,7 @@ public class TreeRenderer extends CoreRenderer {
     public static final String NODE_CELL = "if-node-td";
     public static final String NODE_ROW = "if-node-tr";
     public static final String NODE_LEAF_LINE_STYLE = "width: 17px; left:-17px;";
+    private static final String NODE_LINE_CONTAINER = "if-node-ln";
 
     @Override
     public void decode(final FacesContext context, final UIComponent component) {
@@ -212,9 +213,12 @@ public class TreeRenderer extends CoreRenderer {
         // Write filler cell
         writer.startElement(HTML.DIV_ELEM, null);
         writer.writeAttribute(HTML.CLASS_ATTR, NODE_CELL, null);
+        writer.startElement(HTML.DIV_ELEM, null);
+        writer.writeAttribute(HTML.CLASS_ATTR, NODE_LINE_CONTAINER, null);
         writer.startElement(HTML.IMG_ELEM, null);
         writer.writeAttribute(HTML.SRC_ATTR, dotSource, null);
         writer.endElement(HTML.IMG_ELEM);
+        writer.endElement(HTML.DIV_ELEM);
         writer.endElement(HTML.DIV_ELEM);
 
         // Open SubComponent Container
@@ -264,10 +268,13 @@ public class TreeRenderer extends CoreRenderer {
         iconClass += " " + (state.isExpanded() ? expandedClass : contractedClass);
 
         if (!state.isExpansionEnabled())
-            switchClass += " " + NODE_SWITCH_DISABLED_CLASS;
+            switchClass += " " + NODE_SWITCH_DISABLED_CLASS;       
 
         writer.startElement(HTML.DIV_ELEM, null);
         writer.writeAttribute(HTML.CLASS_ATTR, switchClass, null);
+
+        writer.startElement(HTML.DIV_ELEM, null);
+        writer.writeAttribute(HTML.CLASS_ATTR, NODE_LINE_CONTAINER, null);
 
         if (!rootNode) {
             writer.startElement(HTML.IMG_ELEM, null);
@@ -283,6 +290,7 @@ public class TreeRenderer extends CoreRenderer {
             writer.endElement(HTML.SPAN_ELEM);
         }
 
+        writer.endElement(HTML.DIV_ELEM);
         writer.endElement(HTML.DIV_ELEM);
     }
 
