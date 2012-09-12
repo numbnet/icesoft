@@ -3,7 +3,6 @@
 }
 
 .if-node {
-    vertical-align: middle;
     display:table-cell;
 }
 
@@ -12,6 +11,12 @@
     border: 1px solid transparent;
     display:inline-block;
     padding:2px;
+}
+
+.if-node-wrp > *:first-child {
+    /* IE fix, vert align doesn't appear to inherit */
+    /* or default behaviour differs. */
+    vertical-align: middle;
 }
 
 .if-node-cnt {
@@ -26,6 +31,7 @@
     vertical-align: middle;
     display:table-cell;
     cursor: pointer;
+    vertical-align: middle;
 }
 
 .if-node-sw.noexp {
