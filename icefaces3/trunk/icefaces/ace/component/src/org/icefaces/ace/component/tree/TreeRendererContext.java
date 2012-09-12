@@ -1,5 +1,8 @@
 package org.icefaces.ace.component.tree;
 
+import javax.faces.application.ResourceHandler;
+import javax.faces.context.FacesContext;
+
 /**
  * Copyright 2010-2011 ICEsoft Technologies Canada Corp.
  * <p/>
@@ -27,6 +30,7 @@ public class TreeRendererContext {
     private boolean multipleSelection;
     private TreeSelectionMode treeSelectionMode;
     private TreeExpansionMode treeExpansionMode;
+    private String dotURL;
 
     public TreeRendererContext(Tree tree) {
         this.tree = tree;
@@ -35,6 +39,11 @@ public class TreeRendererContext {
         multipleSelection = tree.isMultipleSelection();
         treeSelectionMode = tree.getSelectionMode();
         treeExpansionMode = tree.getExpansionMode();
+
+        ResourceHandler rh = FacesContext.getCurrentInstance()
+                .getApplication().getResourceHandler();
+
+        dotURL = rh.createResource("dot.png","icefaces.ace/tree").getRequestPath();
     }
 
     public Tree getTree() {
@@ -63,5 +72,9 @@ public class TreeRendererContext {
 
     public boolean isExpansion() {
         return expansion;
+    }
+
+    public String getDotURL() {
+        return dotURL;
     }
 }
