@@ -26,7 +26,6 @@
     vertical-align: middle;
     display:table-cell;
     cursor: pointer;
-    position:relative;
 }
 
 .if-node-sw.noexp {
@@ -47,20 +46,37 @@
 
 .if-node-td {
     display: table-cell;
-    position: relative;
+    overflow:hidden;
+    vertical-align: top;
 }
 
-.if-node-td > img {
-    width:1px;
+
+.if-node-td > div.if-node-ln {
+    position: relative;
+    width:100%;
     height:100%;
+}
+.if-node-sw > div.if-node-ln {
+    position: relative;
+    width:100%;
+    height:100%;
+}
+
+.if-node-td > div.if-node-ln  > img {
+    width:1px;
+    /* wrapper required for position within td to work on FF */
+    /* 100% height on wrapper doesn't meet height of table cell */
+    /* without 100% height on wrapper, 100% height doesn't work */
+    /* here either. 10000px with overflow is used instead. */
+    height:10000px;
     position: absolute;
     left: 50%;
     margin-left: -1px;
     margin-top:-6px;
 }
 
-.if-node-sw > img {
-    width:100%;
+.if-node-sw > div.if-node-ln > img {
+    width:80%;
     height:1px;
     position: absolute;
     top: 50%;
