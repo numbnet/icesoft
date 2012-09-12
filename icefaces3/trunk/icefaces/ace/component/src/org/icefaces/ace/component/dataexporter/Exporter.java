@@ -71,7 +71,18 @@ public abstract class Exporter {
         List<UIColumn> columns = new ArrayList<UIColumn>();
         int columnIndex = -1;
 
-        for (UIComponent child : table.getChildren()) {
+        
+		List<UIComponent> children;
+		if (table instanceof DataTable) {
+			List<Column> dataTablecolumns = ((DataTable) table).getColumns();
+			children = new ArrayList<UIComponent>();
+			for (Column column : dataTablecolumns) {
+				children.add(column);
+			}
+		} else {
+			children = table.getChildren();
+		}
+		for (UIComponent child : children) {
             if (child instanceof UIColumn && !(child instanceof PanelExpansion)) {
 				if (shouldExcludeFromExport(child)) continue;
                 UIColumn column = (UIColumn) child;
