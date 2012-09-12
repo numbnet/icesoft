@@ -31,7 +31,8 @@ ice.ace.Tree = function (cfg) {
 }
 
 ice.ace.Tree.prototype.unload = function() {
-
+    this.tearDownSelection();
+    this.tearDownExpansion();
 }
 
 ice.ace.Tree.prototype.tearDownExpansion = function() {
