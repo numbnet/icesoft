@@ -51,7 +51,9 @@ public class ContentStackMenuMeta extends UISeriesBaseMeta {
             "this component.")
     private String styleClass;
 
-    @Property(tlddoc = "id of contentStack this menu will be responsible for manipulating",
+    @Property(tlddoc = "id of contentStack this menu will be responsible for manipulating "+
+           " the contentStack either needs to be a sibling within the same form or you need "+
+            " to use the exact jsf clientId for it. for example:- myform:mystack",
              required=Required.yes)
     private String contentStackId;
 
@@ -61,5 +63,8 @@ public class ContentStackMenuMeta extends UISeriesBaseMeta {
     @Property(defaultValue="false", tlddoc=" if value is true, " +
             "group headings of menu are handles of accordion pane for menu content")
     private boolean accordion;
+
+    @Property(tlddoc="fake")
+    private boolean openHandle;
 
 }
