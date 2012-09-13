@@ -17,11 +17,13 @@
     <ui:param name="tldResources" value="#{gMapResources.tldResources}"/>
 
     <ui:define name="example">
+	<div id="gMapContainer" style="width: 675px; height: 500px" >
     <ace:gMap id="gMap" latitude="0" longitude="0" zoomLevel="3">
         <ace:gMapMarker id="marker1" latitude="#{markerBean.latList[0]}" longitude="#{markerBean.longList[0]}" options="#{markerBean.optionsList[0]}"/>
         <ace:gMapMarker id="marker2" latitude="#{markerBean.latList[1]}" longitude="#{markerBean.longList[1]}" options="#{markerBean.optionsList[1]}"/>
         <ace:gMapMarker id="marker3" latitude="#{markerBean.latList[2]}" longitude="#{markerBean.longList[2]}" options="#{markerBean.optionsList[2]}"/>
     </ace:gMap>
+	</div>
     <h:form id="markerList">
     <h:panelGrid columns="4" border="1" rules="rows" id="grid">
         <h:outputText/><h:outputText value="Latitude"/><h:outputText value="Longitude"/><h:outputText value="Options"/>
