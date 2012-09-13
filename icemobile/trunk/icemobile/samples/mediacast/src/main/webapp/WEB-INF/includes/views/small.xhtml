@@ -58,29 +58,7 @@
 					<script type="text/javascript">
 						window.scrollTo(0, 0);
 					</script>
-					<mobi:outputList inset="false" id="galleryList">
-						<ui:repeat var="media" value="#{galleryView.filteredMessages}">
-							<mobi:outputListItem id="mediaItem">
-								<h:commandLink id="mediaLink"
-									action="#{mediaController.viewMediaDetail}">
-									<f:setPropertyActionListener target="#{mediaView.media}"
-										value="#{media}" />
-									<f:setPropertyActionListener
-										target="#{navigationModel.currentTab}" value="viewer" />
-
-									<mobi:graphicImage id="mediaThumbnail"
-										value="#{media.smallPhoto.data}"
-										width="#{media.smallPhoto.width}"
-										height="#{media.smallPhoto.height}"
-										style="padding-right:5px;border:none;" />
-
-									<h:outputText id="mediaTitle" value="#{media.title}" />
-
-								</h:commandLink>
-							</mobi:outputListItem>
-						</ui:repeat>
-					</mobi:outputList>
-
+					<ui:include src="/WEB-INF/includes/content/feed.xhtml"/>
 					<ui:include src="/WEB-INF/includes/content/augmented-reality.xhtml" />
 				</mobi:contentPane>
 				<mobi:contentPane facelet="false" client="true" id="viewer"
@@ -88,6 +66,7 @@
 					<ui:include src="/WEB-INF/includes/content/media-viewer.xhtml" />
 				</mobi:contentPane>
 			</mobi:tabSet>
+			<ui:include src="/WEB-INF/includes/content/session-tags.xhtml"/>
 		</h:panelGroup>
 	</f:facet>
 </mobi:pagePanel>
