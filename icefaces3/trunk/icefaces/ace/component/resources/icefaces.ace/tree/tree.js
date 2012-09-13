@@ -9,6 +9,7 @@ ice.ace.Tree = function (cfg) {
     this.selectionTargetDeselector = this.jqId + " * .if-tree * .if-node, noselect";
     this.expansionButtonSelector = this.jqId + " .if-node-sw:not("+this.expansionButtonDeselector+")";
     this.selectionTargetSelector = this.jqId + " .if-node:not("+this.selectionTargetDeselector+")";
+    this.nodeWrapperSelector = this.selectionTargetSelector + " > div.if-node-wrp"
 
     // Setup events
     // Expansion
@@ -133,6 +134,9 @@ ice.ace.Tree.prototype.sendNodeSelectionRequest = function(node) {
 
     this.append('select', this.getNodeKey(node));
 
+    if (!this.cfg.multiSelect)
+        this.deselectAll();
+
     if (this.cfg.behaviors && this.cfg.behaviors['select']) {
         ice.ace.ab(ice.ace.extendAjaxArguments(
                 this.cfg.behaviors['select'],
@@ -154,6 +158,9 @@ ice.ace.Tree.prototype.doClientDeselection = function(node, wrap) {
 
 ice.ace.Tree.prototype.doClientSelection = function(node, wrap) {
     var key = this.getNodeKey(node);
+
+    if (!this.cfg.multiSelect)
+        this.deselectAll();
 
     wrap.addClass('ui-state-active');
 
@@ -225,6 +232,21 @@ ice.ace.Tree.prototype.sendNodeExpansionRequest = function(node) {
     } else {
         ice.ace.AjaxRequest(options);
     }
+}
+
+ice.ace.Tree.prototype.deselectAll = function() {
+    var self = this;
+    ice.ace.jq(this.nodeWrapperSelector+'.ui-state-active')
+            .each(function() {
+        var wrap = ice.ace.jq(this),
+            node = wrap.closest('.if-node-cnt'),
+            key = self.getNodeKey(node);
+
+        wrap.removeClass('ui-state-active');
+
+        self.append('deselect', key);
+        self.remove('select', key);
+    });
 }
 
 ice.ace.Tree.prototype.getNodeKey = function(node) {

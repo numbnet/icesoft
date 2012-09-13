@@ -107,7 +107,7 @@ public class TreeMeta extends UIDataMeta {
     @Property(defaultValue = "false", defaultValueType = DefaultValueType.EXPRESSION)
     Boolean expansion;
 
-    @Property(defaultValue = "false", defaultValueType = DefaultValueType.EXPRESSION)
+    @Property(defaultValue = "true", defaultValueType = DefaultValueType.EXPRESSION)
     Boolean multipleSelection;
 
     @Property(defaultValue = "org.icefaces.ace.component.tree.TreeSelectionMode.server",
