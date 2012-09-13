@@ -26,15 +26,7 @@
              
     <ui:define name="nav-small">
         <h:form id="headerFrm">
-            <h:commandLink id="backBtn"
-                           type="back"
-                           value="back"
-                           styleClass="mobi-button mobi-button-back"
-                           action="#{navigationController.navigateBack}"
-                           rendered="#{navigationModel.canGoBack}"/>
-
-            <span id="title">#{title}</span>
-
+            <span id="title">Mediacast</span>
         </h:form>
     </ui:define>
     
@@ -68,6 +60,15 @@
     </ui:define>
 
     <ui:define name="content-small">
+    	<h:form id="galleryLinkFrm">
+	    	<div class="mobi-button-group mobi-button-group-hor" style="text-align:center;">
+				<h:commandLink id="homeLink" styleClass="mobi-button mobi-button-default"
+	                    value="Media Upload" 
+	                    action="#{navigationController.navigateBack}">
+	            </h:commandLink>
+				<a class="mobi-button mobi-button-default mobi-button-selected" href="#">Media Feed</a>
+			</div>
+		</h:form>
         <div>
             <ui:include src="/WEB-INF/includes/content/message-filters.xhtml"/>
             <ui:include src="/WEB-INF/includes/content/message-count.xhtml"/>

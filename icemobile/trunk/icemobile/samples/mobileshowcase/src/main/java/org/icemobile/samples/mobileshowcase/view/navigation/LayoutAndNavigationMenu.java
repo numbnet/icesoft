@@ -16,22 +16,23 @@
 
 package org.icemobile.samples.mobileshowcase.view.navigation;
 
-import org.icefaces.mobi.component.contentstack.ContentStack;
+import java.io.Serializable;
+
+import javax.annotation.PostConstruct;
+import javax.faces.bean.ApplicationScoped;
+import javax.faces.bean.ManagedBean;
+
 import org.icemobile.samples.mobileshowcase.view.examples.layout.accordion.AccordionBean;
 import org.icemobile.samples.mobileshowcase.view.examples.layout.carousel.CarouselBean;
 import org.icemobile.samples.mobileshowcase.view.examples.layout.contentstack.ContentStackBean;
 import org.icemobile.samples.mobileshowcase.view.examples.layout.fieldset.FieldsetBean;
+import org.icemobile.samples.mobileshowcase.view.examples.layout.gmap.GMapBean;
 import org.icemobile.samples.mobileshowcase.view.examples.layout.list.ListBean;
 import org.icemobile.samples.mobileshowcase.view.examples.layout.panelPopup.PanelPopupBean;
 import org.icemobile.samples.mobileshowcase.view.examples.layout.panelconfirmation.PanelConfirmation;
 import org.icemobile.samples.mobileshowcase.view.examples.layout.tabset.TabsetBean;
 import org.icemobile.samples.mobileshowcase.view.examples.layout.theme.SkinBean;
 import org.icemobile.samples.mobileshowcase.view.metadata.annotation.MenuLink;
-
-import javax.annotation.PostConstruct;
-import javax.faces.bean.ApplicationScoped;
-import javax.faces.bean.ManagedBean;
-import java.io.Serializable;
 
 /**
  * Menu items for native integration
@@ -65,7 +66,10 @@ import java.io.Serializable;
                         examplePanelId = "panelconfirmation"),
                 @MenuLink(title = "menu.layout.panelpopup.title",
                         exampleBeanName = PanelPopupBean.BEAN_NAME,
-                        examplePanelId = "panelpopup")
+                        examplePanelId = "panelpopup"),
+                @MenuLink(title = "menu.layout.gmap.title",
+                        exampleBeanName = GMapBean.BEAN_NAME,
+                        examplePanelId = "gmap")
         })
 @ManagedBean(name = LayoutAndNavigationMenu.BEAN_NAME)
 @ApplicationScoped

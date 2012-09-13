@@ -34,6 +34,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.icefaces.application.PortableRenderer;
 import org.icefaces.application.PushMessage;
 import org.icefaces.application.PushRenderer;
+import org.icefaces.mobi.utils.Utils;
 import org.icefaces.util.EnvUtils;
 import org.icemobile.samples.mediacast.navigation.NavigationModel;
 
@@ -72,6 +73,7 @@ public class MediaController implements Serializable {
 	private MediaView mediaView;
 	
 	private boolean showMessagePopup = false;
+	private boolean showHelpPopup = false;
 	
 	private SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss");
 
@@ -216,10 +218,13 @@ public class MediaController implements Serializable {
 	 */
 	public String deleteCurrentMedia() {
 		if (mediaView.getMedia() != null) {
-
-			// clear the resource
 			mediaStore.removeMedia(mediaView.getMedia());
-
+			if( mediaStore.getMedia().size() > 0 ){
+				mediaView.setMedia(mediaStore.getMedia().get(0));
+			}
+			else{
+				mediaView.setMedia(null);
+			}
 			navigationModel.goBack();
 		}
 		return null;
@@ -235,10 +240,7 @@ public class MediaController implements Serializable {
 	 * @return true if an ICEmobile enhancements are detected, otherwise false.
 	 */
 	public boolean isEnhancedBrowser() {
-		FacesContext facesContext = FacesContext.getCurrentInstance();
-		boolean isEnhanced = EnvUtils.isEnhancedBrowser(facesContext);
-		boolean isAuxUpload = EnvUtils.isAuxUploadBrowser(facesContext);
-		return isEnhanced || isAuxUpload;
+		return Utils.showSX();
 	}
 
 	/**
@@ -301,10 +303,18 @@ public class MediaController implements Serializable {
 		return showMessagePopup;
 	}
 	
+	public boolean isShowHelpPopup(){
+		return showHelpPopup;
+	}
+	
+	public void setShowHelpPopup(boolean val){
+		showHelpPopup = val;
+	}
+	
 	public void closeMessagePopup(ActionEvent e){
 		showMessagePopup = false;
 	}
-
+	
 	
 
 }

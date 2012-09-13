@@ -63,6 +63,8 @@ public class UploadModel implements Serializable {
     private String uploadFeedbackMessage;
     
     private String selectedLocation;
+    
+    private String url;
 
     public String getSelectedLocation() {
 		return selectedLocation;
@@ -229,4 +231,12 @@ public class UploadModel implements Serializable {
     	this.videoFile = null;
     	this.selectedMediaInput = null;
     }
+
+	public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
+	}
 }

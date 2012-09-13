@@ -39,6 +39,7 @@ public class NavigationModel implements Serializable {
     // selected panel in stack, default id is 'home'.
     private String selectedPanelId = "home";
     private Stack<String> history = new Stack<String>();
+    private String currentTab = "upload";
 
     public NavigationModel() {
         // add the current view the session group
@@ -63,4 +64,12 @@ public class NavigationModel implements Serializable {
     public String getSelectedPanelId() {
         return selectedPanelId;
     }
+
+	public String getCurrentTab() {
+		return currentTab;
+	}
+
+	public void setCurrentTab(String currentTab) {
+		this.currentTab = currentTab;
+	}
 }
