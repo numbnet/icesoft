@@ -4,11 +4,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
+import javax.faces.event.ActionEvent;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -24,6 +26,9 @@ public class GalleryView {
 	
 	private List<MediaMessage> filteredMessages = new ArrayList<MediaMessage>();
 	private int filteredMessagesCount = 0;
+	
+	private static final Logger log =
+            Logger.getLogger(GalleryView.class.toString());
 	
 	@PostConstruct
 	public void init(){
@@ -75,6 +80,17 @@ public class GalleryView {
 	
 	public boolean tagInCurrentFilters(String tag){
 		return filters.contains(tag);
+	}
+	
+	public void toggleFilter(ActionEvent e){
+		String tag = (String)e.getComponent().getAttributes().get("tag");
+		filters = new ArrayList<String>(filters);
+		if( filters.contains(tag)){
+			filters.remove(tag);
+		}
+		else{
+			filters.add(tag);
+		}
 	}
 
 }
