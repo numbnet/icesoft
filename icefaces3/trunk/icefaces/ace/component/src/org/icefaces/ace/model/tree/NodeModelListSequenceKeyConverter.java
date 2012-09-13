@@ -10,15 +10,14 @@ import java.io.Serializable;
  * Time: 2:29 PM
  * To change this template use File | Settings | File Templates.
  */
-public class NodeModelListSequenceKeyConverter implements KeySegmentConverter, Serializable {
+public class NodeModelListSequenceKeyConverter implements KeySegmentConverter<TreeNode>, Serializable {
     ListNodeDataModel listNodeModel;
 
     public NodeModelListSequenceKeyConverter(ListNodeDataModel listNodeModel) {
         this.listNodeModel = listNodeModel;
     }
 
-    public Object getSegment(Object nodeObj) {
-        TreeNode node = (TreeNode) nodeObj;
+    public Object getSegment(TreeNode node) {
         TreeNode parent = node.getParent();
 
         if (parent == null) {

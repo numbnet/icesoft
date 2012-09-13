@@ -1,5 +1,7 @@
 package org.icefaces.ace.component.tree;
 
+import org.icefaces.ace.model.tree.LazyNodeDataModel;
+
 import javax.faces.application.ResourceHandler;
 import javax.faces.context.FacesContext;
 
@@ -28,6 +30,7 @@ public class TreeRendererContext {
     private boolean expansion;
     private boolean selection;
     private boolean multipleSelection;
+    private boolean lazy;
     private TreeSelectionMode treeSelectionMode;
     private TreeExpansionMode treeExpansionMode;
     private String dotURL;
@@ -39,6 +42,7 @@ public class TreeRendererContext {
         multipleSelection = tree.isMultipleSelection();
         treeSelectionMode = tree.getSelectionMode();
         treeExpansionMode = tree.getExpansionMode();
+        lazy = tree.getValue() instanceof LazyNodeDataModel;
 
         ResourceHandler rh = FacesContext.getCurrentInstance()
                 .getApplication().getResourceHandler();
@@ -76,5 +80,9 @@ public class TreeRendererContext {
 
     public String getDotURL() {
         return dotURL;
+    }
+
+    public boolean isLazy() {
+        return lazy;
     }
 }

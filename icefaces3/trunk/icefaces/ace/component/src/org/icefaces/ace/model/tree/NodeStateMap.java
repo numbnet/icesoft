@@ -32,9 +32,13 @@ public class NodeStateMap implements Map<Object, NodeState>, Serializable {
     Map<Object, NodeState> map = new HashMap<Object, NodeState>();
     KeySegmentConverter keyConverter;
     Predicate selectedPredicate = new SelectedPredicate();
-
+    StateCreationCallback initCallback;
 
     public NodeStateMap() {
+    }
+
+    public NodeStateMap(StateCreationCallback callback) {
+        setInitCallback(callback);
     }
 
     public NodeStateMap(KeySegmentConverter keyConverter) {
@@ -73,6 +77,10 @@ public class NodeStateMap implements Map<Object, NodeState>, Serializable {
 
         // If state is null, create a new state for the node.
         state = new NodeState();
+
+        if (getInitCallback() != null)
+            getInitCallback().initializeState(state, o);
+
         put(o, state);
         return state;
     }
@@ -113,8 +121,17 @@ public class NodeStateMap implements Map<Object, NodeState>, Serializable {
         return EntrySetToKeyListTransformer.transform(CollectionUtils.select(map.entrySet(), this.selectedPredicate));
     }
 
+    public StateCreationCallback getInitCallback() {
+        return initCallback;
+    }
+
     // Setters
     // setAllSelected()
+
+
+    public void setInitCallback(StateCreationCallback initCallback) {
+        this.initCallback = initCallback;
+    }
 
     // Predicates
     static class SelectedPredicate implements Predicate {

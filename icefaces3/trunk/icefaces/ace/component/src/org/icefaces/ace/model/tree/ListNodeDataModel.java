@@ -158,10 +158,8 @@ public class ListNodeDataModel extends NodeDataModel<TreeNode> implements Serial
 
     @Override
     public KeySegmentConverter getConverter() {
-        if (converter != null)
-            return converter;
-
-        return DEFAULT_CONVERTER;
+        if (converter == null) return DEFAULT_CONVERTER;
+        return converter;
     }
 
     @Override
