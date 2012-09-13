@@ -395,8 +395,8 @@ public class WindowScopeManager extends SessionAwareResourceHandlerWrapper {
         return state;
     }
 
-    private static class State implements Externalizable {
-        private HashMap windowScopedMaps = new HashMap();
+    public static class State implements Externalizable {
+        public HashMap windowScopedMaps = new HashMap();
         private LinkedList disposedWindowScopedMaps = new LinkedList();
         public long expirationPeriod;
 
