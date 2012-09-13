@@ -269,7 +269,7 @@ textarea {
 	position: relative;	
 }
 @media all and (min-width: 450px){
-	#sx{
+	#sx > span{
 		margin: 10px 25px 0;
 		background: none repeat scroll 0 0 white;
 		border: 1px solid #999;
@@ -331,4 +331,13 @@ textarea {
 	.mobi-tabset-tabs-bottom > .mobi-tabset-tabs {
 		bottom: 30px;
 	}
+}
+
+.mobi-list > .mobi-list-item > .mobi-list-item-default > a {
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	background-image: url("/mediacast/javax.faces.resource/images/arrow-right.png.jsf");
+	background-attachment: scroll;
+	background-position: 100% 50%;
+	background-repeat: no-repeat;
 }

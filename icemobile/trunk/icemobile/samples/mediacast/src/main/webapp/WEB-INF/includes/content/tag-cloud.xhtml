@@ -19,25 +19,23 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component"
 	xmlns:c="http://java.sun.com/jsp/jstl/core">
-	<mobi:fieldsetGroup>
+	<mobi:fieldsetGroup rendered="#{not empty mediaStore.tags}">
 		<mobi:fieldsetRow>
 			<label>Tag Cloud</label>
 		</mobi:fieldsetRow>
 		<mobi:fieldsetRow>
-			<c:if test="#{not empty mediaStore.tags}">
-				<ul class="weighted" style="font-size: 50%">
-					<ui:repeat var="tag" value="#{mediaStore.tags}">
-						<li>
-							<h:commandLink styleClass="#{galleryView.tagInCurrentFilters(tag) ? 'selected' : ''}">
-								<f:setPropertyActionListener
-									target="#{galleryView.filterString}" value="#{tag}" />
-								<h:outputText value="#{tag}"
-									style="font-size:#{mediaStore.tagWeightMap[tag]}pt" />
-							</h:commandLink>
-						</li>
-					</ui:repeat>
-				</ul>
-			</c:if>
+			<ul class="weighted" style="font-size: 50%">
+				<ui:repeat var="tag" value="#{mediaStore.tags}">
+					<li>
+						<h:commandLink styleClass="#{galleryView.tagInCurrentFilters(tag) ? 'selected' : ''}"
+							actionListener="#{galleryView.toggleFilter}"
+							style="font-size:#{mediaStore.tagWeightMap[tag]}pt">
+							<f:attribute name="tag" value="#{tag}"/>
+							#{tag}
+						</h:commandLink>
+					</li>
+				</ui:repeat>
+			</ul>
 		</mobi:fieldsetRow>
 	</mobi:fieldsetGroup>
 </ui:composition>
