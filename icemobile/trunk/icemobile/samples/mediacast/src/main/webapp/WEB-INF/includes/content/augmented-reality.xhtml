@@ -15,29 +15,24 @@
   -->
 
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-             xmlns:h="http://java.sun.com/jsf/html"
-             xmlns:f="http://java.sun.com/jsf/core"
-             xmlns:ui="http://java.sun.com/jsf/facelets"
-             xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
 
-    <h:form id="augRealityFrm">
-       
-        <mobi:outputList inset="true" id="arList" rendered="#{mediaController.enhancedBrowser}">
-            <mobi:outputListItem group="false" id="arRow">
+	<mobi:outputList inset="true" id="arList"
+		rendered="#{mediaController.enhancedBrowser}">
+		<mobi:outputListItem group="false" id="arRow">
             Augmented <mobi:augmentedReality id="ar"
-                styleClass="mobi-button mobi-round-all"
-                value="#{uploadModel.selectedLocation}" >
-                <mobi:augmentedRealityLocations 
-                    value="#{mediaStore.media}" var="place"
-                    locationLabel="#{place.title}"
-                    locationLat="#{place.lat}"
-                    locationLon="#{place.lon}"
-                    locationDir="#{place.direction}"
-                    locationIcon="#{place.iconURL}" />
-                </mobi:augmentedReality>
-            </mobi:outputListItem>
-        </mobi:outputList>
-        <h:messages/>
-    </h:form>
-    
+				styleClass="mobi-button mobi-round-all"
+				value="#{uploadModel.selectedLocation}">
+				<mobi:augmentedRealityLocations value="#{mediaStore.media}"
+					var="place" locationLabel="#{place.title}"
+					locationLat="#{place.lat}" locationLon="#{place.lon}"
+					locationDir="#{place.direction}" locationIcon="#{place.iconURL}" />
+			</mobi:augmentedReality>
+		</mobi:outputListItem>
+	</mobi:outputList>
+	<h:messages />
+
 </ui:composition>

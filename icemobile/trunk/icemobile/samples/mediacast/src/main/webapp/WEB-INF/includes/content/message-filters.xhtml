@@ -18,17 +18,16 @@
              xmlns:h="http://java.sun.com/jsf/html"
              xmlns:f="http://java.sun.com/jsf/core"
              xmlns:ui="http://java.sun.com/jsf/facelets"
+             xmlns:c="http://java.sun.com/jsp/jstl/core"
              xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
              
      <h:form id="filterFrm">
              
          <mobi:fieldsetGroup>
             <mobi:fieldsetRow>
-                <label>Enter some tags to filter the messages</label>
-            </mobi:fieldsetRow>
-            <mobi:fieldsetRow>
-                <mobi:inputText value="#{galleryView.filterString}" singleSubmit="true"/>
-                <mobi:commandButton value="Search" style="margin: 0;padding: 6px 8px;"/>
+                <mobi:inputText value="#{galleryView.filterString}" singleSubmit="true" style="width:75%;"
+                	placeholder="Enter some tags to filter the messages"/>
+                <mobi:commandButton value="Search" style="margin: 0;padding: 6px 8px;width:22%;float:right;"/>
             </mobi:fieldsetRow>
         </mobi:fieldsetGroup>
         
@@ -37,18 +36,20 @@
                 <label>Or select a tag from the cloud to filter</label>
             </mobi:fieldsetRow>
             <mobi:fieldsetRow>
-                <ul class="weighted" style="font-size:50%">
-                    <ui:repeat var="tag" value="#{mediaStore.tags}">
-                        <li>
-                            <h:commandLink>
-                                <f:setPropertyActionListener
-                                        target="#{galleryView.filterString}"
-                                        value="#{tag}"/>
-                                <h:outputText value="#{tag}" style="font-size:#{mediaStore.tagWeightMap[tag]}pt"/>
-                            </h:commandLink>
-                        </li>
-                    </ui:repeat>
-                </ul>
+            	<c:if test="#{not empty mediaStore.tags}">
+	                <ul class="weighted" style="font-size:50%">
+	                    <ui:repeat var="tag" value="#{mediaStore.tags}">
+	                        <li>
+	                            <h:commandLink>
+	                                <f:setPropertyActionListener
+	                                        target="#{galleryView.filterString}"
+	                                        value="#{tag}"/>
+	                                <h:outputText value="#{tag}" style="font-size:#{mediaStore.tagWeightMap[tag]}pt"/>
+	                            </h:commandLink>
+	                        </li>
+	                    </ui:repeat>
+	                </ul>
+	             </c:if>
             </mobi:fieldsetRow>
         </mobi:fieldsetGroup>
     </h:form>

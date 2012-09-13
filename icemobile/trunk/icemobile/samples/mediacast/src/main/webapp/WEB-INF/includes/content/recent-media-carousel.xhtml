@@ -20,15 +20,14 @@
              xmlns:ui="http://java.sun.com/jsf/facelets"
              xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
              
-    <h4>Recently Uploaded Messages</h4>
-
-    <div style="clear:both;"/>
-    
-    <h:form id="recentMediaFrm">
+   <h:form id="recentMediaFrm">
         <div style="border-top: 1px solid #999999;">
+        <h:outputText rendered="#{empty mediaStore.media}" value="No media uploads yet. Upload something!"
+        	style="font-size: 15px;font-weight: bold;padding: 5px;display: inline-block;color:#6C6666;"/>
         <mobi:carousel id="recentMediaCarousel"
                        var="mediaMessage"
-                       value="#{mediaStore.media}">
+                       value="#{mediaStore.media}"
+                       rendered="#{not empty mediaStore.media}">
             <h:column>
                 <div style="overflow:hidden;width:175px;height:98px;">
                     <mobi:graphicImage id="mediaImg"

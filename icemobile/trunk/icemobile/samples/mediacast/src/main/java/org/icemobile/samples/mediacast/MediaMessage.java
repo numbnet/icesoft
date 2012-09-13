@@ -31,6 +31,7 @@ public class MediaMessage implements Serializable {
     private String title;
     private String description;
     private List<String> tags = new ArrayList<String>(); 
+    private String url;
     private double latitude = 0.0;
     private double longitude = 0.0;
     private double direction = (360 * Math.random()); //0-359 degrees
@@ -209,10 +210,18 @@ public class MediaMessage implements Serializable {
     public String toString(){
     	return String.format("%s audioMedia=%s, description=%s, direction=%s, " +
     			"largePhoto=%s, lat=%s, lon=%s, mediumPhoto=%s, photoFile=%s, smallPhoto%s, " +
-    			"tags=%s, title=%s, videoMedia=%s, videoThumbnailMed=%s, " +
+    			"tags=%s, title=%s, url=%s, videoMedia=%s, videoThumbnailMed=%s, " +
     			"videoThumbnailSmall=%s", this.getClass().getSimpleName(), audioMedia,
     			description, direction, largePhoto, latitude, longitude, mediumPhoto, photoFile,
-    			smallPhoto, tags, title, videoMedia, videoThumbnailMed, videoThumbnailSmall);
+    			smallPhoto, tags, title, url, videoMedia, videoThumbnailMed, videoThumbnailSmall);
     }
+
+	public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
+	}
 
 }
