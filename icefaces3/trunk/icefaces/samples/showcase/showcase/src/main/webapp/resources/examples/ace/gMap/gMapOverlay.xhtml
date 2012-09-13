@@ -17,9 +17,11 @@
     <ui:param name="tldResources" value="#{gMapResources.tldResources}"/>
 
     <ui:define name="example">
+	<div id="gMapContainer" style="width: 675px; height: 500px" >
     <ace:gMap id="gMap" latitude="0" longitude="0" zoomLevel="3">
         <ace:gMapOverlay shape="${overlayBean.shape}" points="${overlayBean.points}" options="${overlayBean.options}"/>
     </ace:gMap>
+	</div>
     <h:form id="inputForm">
         <h:selectOneMenu id="locationSelector" value="#{overlayBean.shape}">
         <f:ajax event="valueChange" render="@all"/>
@@ -32,7 +34,7 @@
         <h:inputText  id="optionsIn" value="${overlayBean.options}"/>
         <br/>
         <h:outputLabel for="pointsIn" value="Points:"/>
-        <h:inputText  size="100" id="pointsIn" value="${overlayBean.points}"/>
+        <h:inputText  size="75" id="pointsIn" value="${overlayBean.points}"/>
         <p>Line and Polygon will use all points given to them to create a shape.
             <br/>Rectangle will use the first two points as top left and bottom right corners.
             <br/>Circle will use the first point as center, and requires the radius: option to display.

@@ -17,9 +17,11 @@
     <ui:param name="tldResources" value="#{gMapResources.tldResources}"/>
 
     <ui:define name="example">
+	<div id="gMapContainer" style="width: 675px; height: 500px" >
     <ace:gMap id="gMap" latitude="0" longitude="0" zoomLevel="3">
         <ace:gMapServices name="Directions" points="${directionBean.points}" options="travelMode:'${directionBean.travelMode}',${directionBean.options}"/>
     </ace:gMap>
+	</div>
     <h:form id="inputForm">
         <h:outputLabel for="optionsIn" value="Options:"/>
         <h:inputText  id="optionsIn" value="${directionBean.options}"/>
@@ -32,7 +34,7 @@
         </h:selectOneMenu>
         <br/>
         <h:outputLabel for="pointsIn" value="Points:"/>
-        <h:inputText  size="100" id="pointsIn" value="${directionBean.points}"/>
+        <h:inputText  size="75" id="pointsIn" value="${directionBean.points}"/>
     </h:form>
     <p>
         Points are seperated by :, and can either be a plain text address, or (lat,long). Transit requests will only work for two point entries.

@@ -20,14 +20,17 @@
     <ui:param name="tldResources" value="#{gMapResources.tldResources}"/>
 
     <ui:define name="example">
+	<div id="gMapContainer" style="width: 675px; height: 500px" >
         <ace:gMap id="gMap" latitude="${mapBean.lat}" longitude="${mapBean.lon}" type="${mapBean.type}"
                   zoomLevel="${mapBean.zoom}" address="${mapBean.address}" locateAddress="${mapBean.locateAddress}"/>
+				  </div>
         <h:form id="input">
             <h:outputLabel for="latitude" value="Latitude:"/>
             <h:inputText label="Latitude" id="latitude" value="#{mapBean.lat}"/>
             <h:outputLabel for="longitude" value="Longitude:"/>
             <h:inputText label="Longitude" id="longitude" value="#{mapBean.lon}"/>
-            <h:outputLabel for="typeSelector" value="Map Type:"/>
+            <br/>
+			<h:outputLabel for="typeSelector" value="Map Type:"/>
             <h:selectOneMenu id="typeSelector" value="#{mapBean.type}">
                 <f:ajax event="valueChange" render="@all"/>
                 <f:selectItem itemValue="Map" itemLabel="Map"/>
