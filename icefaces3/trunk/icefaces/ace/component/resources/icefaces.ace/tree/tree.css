@@ -1,5 +1,6 @@
 .if-tree {
     display: inline-block;
+    padding-bottom:5px;
 }
 
 .if-node {
@@ -16,7 +17,7 @@
 .if-node-wrp > *:first-child {
     /* IE fix, vert align doesn't appear to inherit */
     /* or default behaviour differs. */
-    vertical-align: middle;
+    vertical-align: middle\9; /* IE9 and lower */
 }
 
 .if-node-cnt {

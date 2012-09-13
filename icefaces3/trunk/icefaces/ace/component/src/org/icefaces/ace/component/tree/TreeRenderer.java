@@ -54,7 +54,7 @@ public class TreeRenderer extends CoreRenderer {
     public static final String NODE_CONTRACTED_ICON_CLASS = "ui-icon-plus";
     public static final String NODE_CELL = "if-node-td";
     public static final String NODE_ROW = "if-node-tr";
-    public static final String NODE_LEAF_LINE_STYLE = "width: 17px; left:-17px;";
+    public static final String NODE_LEAF_LINE_STYLE = "width: 13px; left:-17px;";
     private static final String NODE_LINE_CONTAINER = "if-node-ln";
 
     @Override
