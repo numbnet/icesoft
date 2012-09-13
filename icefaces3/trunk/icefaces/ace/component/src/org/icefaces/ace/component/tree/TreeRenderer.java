@@ -136,7 +136,7 @@ public class TreeRenderer extends CoreRenderer {
         }
 
         if (selection) {
-            confJson.entry("select", true);
+            confJson.entry("selection", true);
             if (multipleSelection) confJson.entry("multiSelect", true);
         }
 
