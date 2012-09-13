@@ -72,5 +72,9 @@ public class GalleryView {
 	public int getFilteredMessagesSize(){
 		return filteredMessagesCount;
 	}
+	
+	public boolean tagInCurrentFilters(String tag){
+		return filters.contains(tag);
+	}
 
 }
