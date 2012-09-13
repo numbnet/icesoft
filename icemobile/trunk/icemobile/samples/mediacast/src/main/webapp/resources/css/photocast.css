@@ -62,7 +62,7 @@ ul.weighted {
 	float: left;
 	display: block;
 	overflow: auto;
-	padding: 20px;
+	padding: 5px;
 	margin: 0 10px 20px 0;
 }
 
@@ -77,6 +77,9 @@ ul.weighted li a {
 ul.weighted a {
 	color: #4040F0;
 	text-decoration: none;
+}
+ul.weighted a.selected {
+	color: red;
 }
 
 .mobi-button-forward {

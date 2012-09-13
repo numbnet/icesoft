@@ -13,27 +13,31 @@
   ~ express or implied. See the License for the specific language
   ~ governing permissions and limitations under the License.
   -->
-<mobi:fieldsetGroup xmlns="http://www.w3.org/1999/xhtml"
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component"
 	xmlns:c="http://java.sun.com/jsp/jstl/core">
-	<mobi:fieldsetRow>
-		<label>Tag Cloud</label>
-	</mobi:fieldsetRow>
-	<mobi:fieldsetRow>
-		<c:if test="#{not empty mediaStore.tags}">
-			<ul class="weighted" style="font-size: 50%">
-				<ui:repeat var="tag" value="#{mediaStore.tags}">
-					<li><h:commandLink>
-							<f:setPropertyActionListener target="#{galleryView.filterString}"
-								value="#{tag}" />
-							<h:outputText value="#{tag}"
-								style="font-size:#{mediaStore.tagWeightMap[tag]}pt" />
-						</h:commandLink></li>
-				</ui:repeat>
-			</ul>
-		</c:if>
-	</mobi:fieldsetRow>
-</mobi:fieldsetGroup>
+	<mobi:fieldsetGroup>
+		<mobi:fieldsetRow>
+			<label>Tag Cloud</label>
+		</mobi:fieldsetRow>
+		<mobi:fieldsetRow>
+			<c:if test="#{not empty mediaStore.tags}">
+				<ul class="weighted" style="font-size: 50%">
+					<ui:repeat var="tag" value="#{mediaStore.tags}">
+						<li>
+							<h:commandLink styleClass="#{galleryView.tagInCurrentFilters(tag) ? 'selected' : ''}">
+								<f:setPropertyActionListener
+									target="#{galleryView.filterString}" value="#{tag}" />
+								<h:outputText value="#{tag}"
+									style="font-size:#{mediaStore.tagWeightMap[tag]}pt" />
+							</h:commandLink>
+						</li>
+					</ui:repeat>
+				</ul>
+			</c:if>
+		</mobi:fieldsetRow>
+	</mobi:fieldsetGroup>
+</ui:composition>
