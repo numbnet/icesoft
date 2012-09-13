@@ -16,6 +16,7 @@ package org.icefaces.ace.component.gmap;
  */
 
 import java.io.IOException;
+import java.util.Iterator;
 import java.util.Map;
 
 import javax.faces.component.UIComponent;
@@ -69,4 +70,26 @@ public class GMapMarkerRenderer extends CoreRenderer {
 			writer.endElement("script");
 			writer.endElement("span");
 	}
+
+    @Override
+    public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
+        if (context == null || component == null) {
+            throw new NullPointerException();
+        }
+        if (component.getChildCount() == 0) return;
+        Iterator kids = component.getChildren().iterator();
+        while (kids.hasNext()) {
+            UIComponent kid = (UIComponent) kids.next();
+            kid.encodeBegin(context);
+            if (kid.getRendersChildren()) {
+                kid.encodeChildren(context);
+            }
+            kid.encodeEnd(context);
+        }
+    }
+
+    @Override
+    public boolean getRendersChildren() {
+        return true;
+    }
 }

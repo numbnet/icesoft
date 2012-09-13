@@ -224,7 +224,6 @@ ice.ace.gMap.getGMapWrapper = function (id) {
             marker.setOptions({animation:google.maps.Animation.DROP});
         else
             alert("Invalid Animation Type");
-
     },
 
     ice.ace.gMap.addOptions = function (ele, options) {
@@ -497,6 +496,29 @@ ice.ace.gMap.getGMapWrapper = function (id) {
                 return;
         }//switch
         wrapper.overlays[overlayID] = overlay;
+    },
+
+    ice.ace.gMap.addGWindow = function (ele, windowId, content, position,options,markerId) {
+        var wrapper = ice.ace.gMap.getGMapWrapper(ele);
+        var map = ice.ace.gMap.getGMapWrapper(ele).getRealGMap();
+        var window = wrapper.overlays[windowId];
+        if (window != null)
+            window.close();
+        window = new google.maps.InfoWindow();
+        window.setPosition(position);
+        window.setContent(content);
+        if (options != "none")
+        {
+            window.setOptions(eval("({" + options + "})"));
+        }
+        if (markerId != "none")
+        {
+            var marker = wrapper.overlays[markerId];
+            window.open(map,marker);
+        }
+        else
+            window.open(map);
+        wrapper.overlays[windowId] = window;
     },
 
     ice.ace.gMap.setMapType = function (ele, type) {
