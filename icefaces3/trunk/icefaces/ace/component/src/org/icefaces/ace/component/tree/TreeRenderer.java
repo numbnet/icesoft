@@ -262,7 +262,8 @@ public class TreeRenderer extends CoreRenderer {
         String contractedClass = NODE_CONTRACTED_ICON_CLASS;
         String leafStyle = NODE_LEAF_LINE_STYLE;
         String dotSource = renderContext.getDotURL();
-        boolean leaf = renderContext.getTree().isLeaf();
+        boolean lazy = renderContext.isLazy();
+        boolean leaf = lazy ? false : renderContext.getTree().isLeaf();
         boolean rootNode = renderContext.getTree().getKey().getParent().equals(NodeKey.ROOT_KEY);
 
         iconClass += " " + (state.isExpanded() ? expandedClass : contractedClass);
@@ -284,7 +285,7 @@ public class TreeRenderer extends CoreRenderer {
             writer.endElement(HTML.IMG_ELEM);
         }
 
-        if (!leaf) {
+        if (!leaf || lazy) {
             writer.startElement(HTML.SPAN_ELEM, null);
             writer.writeAttribute(HTML.CLASS_ATTR, iconClass, null);
             writer.endElement(HTML.SPAN_ELEM);

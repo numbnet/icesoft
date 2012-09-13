@@ -43,28 +43,21 @@
         </style>
         <ace:tree id="tree"
                 expansion="true"
-                value="#{treeBean.treeRoots}"
+                selection="true"
+                value="#{treeBean.lazyModel}"
                 var="node"
                 stateMap="#{treeBean.stateMap}"
+                stateCreationCallback="#{treeBean.initState}"
                 stateVar="nState"
                 type="#{node.type}">
             <ace:node type="country">
-                <h:selectBooleanCheckbox value="#{nState.selected}">
-                    <f:ajax execute="@all" render="@all" />
-                </h:selectBooleanCheckbox>
                 Country: <h:outputText value="#{node.name}" />
             </ace:node>
             <ace:node type="province">
-                <h:selectBooleanCheckbox value="#{nState.selected}">
-                    <f:ajax execute="@all" render="@all" />
-                </h:selectBooleanCheckbox>
                 Province: <h:outputText value="#{node.name}" />
             </ace:node>
             // Default node type
             <ace:node>
-                <h:selectBooleanCheckbox value="#{nState.selected}">
-                    <f:ajax execute="@all" render="@all" />
-                </h:selectBooleanCheckbox>
                 City: <h:outputText value="#{node.name}" />
             </ace:node>
         </ace:tree>

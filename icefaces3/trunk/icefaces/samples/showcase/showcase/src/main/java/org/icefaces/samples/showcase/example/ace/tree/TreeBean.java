@@ -1,6 +1,9 @@
 package org.icefaces.samples.showcase.example.ace.tree;
 
+import org.icefaces.ace.model.tree.LazyNodeDataModel;
+import org.icefaces.ace.model.tree.NodeState;
 import org.icefaces.ace.model.tree.NodeStateMap;
+import org.icefaces.ace.model.tree.StateCreationCallback;
 import org.icefaces.samples.showcase.metadata.annotation.*;
 import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
 import org.icefaces.util.JavaScriptRunner;
@@ -64,6 +67,14 @@ public class TreeBean extends ComponentExampleImpl<TreeBean> implements Serializ
     public static final String BEAN_NAME = "treeBean";
     private List<LocationNodeImpl> treeRoots = Arrays.asList(TreeDataFactory.getTreeRoots().clone());
     private NodeStateMap stateMap;
+    private LazyNodeDataModel<LocationNodeImpl> lazyModel = new ExampleLazyModel();
+    private StateCreationCallback initState = new StateCreationCallback() {
+        public NodeState initializeState(NodeState newState, Object node) {
+            newState.setExpanded(false);
+            return newState;
+        }
+    };
+
 
     public TreeBean() {
         super(TreeBean.class);
@@ -89,5 +100,21 @@ public class TreeBean extends ComponentExampleImpl<TreeBean> implements Serializ
 
     public void setStateMap(NodeStateMap stateMap) {
         this.stateMap = stateMap;
+    }
+
+    public LazyNodeDataModel<LocationNodeImpl> getLazyModel() {
+        return lazyModel;
+    }
+
+    public void setLazyModel(LazyNodeDataModel<LocationNodeImpl> lazyModel) {
+        this.lazyModel = lazyModel;
+    }
+
+    public StateCreationCallback getInitState() {
+        return initState;
+    }
+
+    public void setInitState(StateCreationCallback initState) {
+        this.initState = initState;
     }
 }

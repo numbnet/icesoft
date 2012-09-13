@@ -5,6 +5,7 @@ import org.icefaces.ace.meta.baseMeta.UIDataMeta;
 import org.icefaces.ace.model.tree.KeySegmentConverter;
 import org.icefaces.ace.model.tree.NodeKey;
 import org.icefaces.ace.model.tree.NodeStateMap;
+import org.icefaces.ace.model.tree.StateCreationCallback;
 
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
@@ -115,6 +116,9 @@ public class TreeMeta extends UIDataMeta {
 
     @Property
     NodeStateMap stateMap;
+
+    @Property
+    StateCreationCallback stateCreationCallback;
 
     // Default DOM event that causes toggle
     @Property(defaultValue = "click",

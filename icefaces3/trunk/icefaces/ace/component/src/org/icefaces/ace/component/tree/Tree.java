@@ -66,7 +66,7 @@ public class Tree<N> extends TreeBase implements Serializable {
             stateMap = super.getStateMap();
 
         if (stateMap == null) {
-            stateMap = new NodeStateMap();
+            stateMap = new NodeStateMap(getStateCreationCallback());
             super.setStateMap(stateMap);
         }
 
