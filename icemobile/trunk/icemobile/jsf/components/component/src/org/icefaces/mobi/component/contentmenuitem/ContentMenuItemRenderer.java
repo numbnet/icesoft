@@ -23,14 +23,24 @@ import org.icefaces.mobi.component.contentnavbar.ContentNavBar;
 import org.icefaces.mobi.component.contentstackmenu.*;
 import org.icefaces.mobi.renderkit.BaseLayoutRenderer;
 import org.icefaces.mobi.utils.HTML;
+import org.icefaces.mobi.utils.Utils;
 
+import javax.faces.component.NamingContainer;
 import javax.faces.component.UIComponent;
+import javax.faces.component.UIForm;
 import javax.faces.component.UIViewRoot;
 //import javax.faces.component.behavior.ClientBehaviorHolder;
+import javax.faces.component.visit.VisitCallback;
+import javax.faces.component.visit.VisitContext;
+import javax.faces.component.visit.VisitResult;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.event.ActionEvent;
 import java.io.IOException;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Arrays;
 import java.util.Map;
 import java.util.logging.Logger;
 
@@ -145,24 +155,34 @@ public class ContentMenuItemRenderer extends BaseLayoutRenderer {
          UIViewRoot root = facesContext.getViewRoot();
          String selClientId = null;
          if (null == ((ContentStackMenu) parent).getStackClientId()){
-             UIComponent comp = root.findComponent(contentStackId);
-             if (null != comp && comp instanceof ContentStack){
-                 stackClientId=  comp.getClientId(facesContext);
+             //look from root first for id
+             UIComponent stack = root.findComponent(contentStackId);
+             if (stack !=null){
+                 stackClientId = stack.getClientId(facesContext);
+             }else {
+             //assume menu and stack in same form as siblings
+                 UIComponent form = Utils.findParentForm(uiComponent);
+                 stackClientId = this.findCompIntree(facesContext, form, contentStackId);
+             }
+             if (null != stackClientId){
                  ((ContentStackMenu) parent).setStackClientId(stackClientId);
              }
              else{
-                 logger.info("cant find stack id="+contentStackId);
+                 logger.warning("ERROR unable to find stack id="+contentStackId);
+                 // SOME KIND OF ERROR MESSAGE or FACESMESSAGE
              }
-         }  else {
-             stackClientId = ((ContentStackMenu) parent).getStackClientId();
          }
+         stackClientId = ((ContentStackMenu) parent).getStackClientId();
+         UIComponent stack = root.findComponent(stackClientId);
          //find the clientId of the selected Pane
          if (selId !=null){
-             UIComponent comp = root.findComponent(contentStackId);
-             UIComponent pane = comp.findComponent(selId);
-             if (pane!=null ){
-                 selClientId= pane.getClientId(facesContext);
+             selClientId = findCompIntree(facesContext, stack,  selId);
+             if (selClientId!=null ){
+                 UIComponent pane = root.findComponent(selClientId);
                  client = ((ContentPane)pane).isClient();
+             }
+             else {
+                 logger.warning("Unable to find contentPane with id="+selId);
              }
          }
          String icon = lmi.getIcon();
@@ -264,5 +284,36 @@ public class ContentMenuItemRenderer extends BaseLayoutRenderer {
         menu.setOpenAccordionHandle(true);
     }
 
+    public String findCompIntree(FacesContext context, UIComponent compRoot, String id){
+         UIComponent searchComp = compRoot.findComponent(id);
+         if (null!=searchComp){
+             return searchComp.getClientId();
+         }
+        final String searchId =null;
+        compRoot.visitTree(
+                 VisitContext.createVisitContext(context, Arrays.asList(new String[] {id}), null),
+                         new GetClientId(searchId));
+          return searchId;
 
+     }
+
+      private static class GetClientId implements VisitCallback {
+          private String _clientId=null;
+          String searchId;
+
+          private GetClientId(String searchId){
+              this.searchId = searchId;
+          }
+          public String getClientId(){
+              return _clientId;
+          }
+          public VisitResult visit( VisitContext visitContext, UIComponent uiComponent){
+              if (uiComponent instanceof ContentStack || uiComponent instanceof ContentPane){
+                  _clientId  = uiComponent.getId();
+                      return VisitResult.COMPLETE;
+
+              }
+              return VisitResult.ACCEPT;
+          }
+      }
 }
