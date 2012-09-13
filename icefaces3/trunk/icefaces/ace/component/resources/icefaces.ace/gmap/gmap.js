@@ -151,7 +151,7 @@ ice.ace.gMap.getGMapWrapper = function (id) {
     },
 
     ice.ace.gMap.create = function (ele) {
-        var gmapWrapper = new GMapWrapper(ele, new google.maps.Map(document.getElementById(ele), {mapTypeId:google.maps.MapTypeId.ROADMAP}));
+        var gmapWrapper = new GMapWrapper(ele, new google.maps.Map(document.getElementById(ele), {mapTypeId:google.maps.MapTypeId.ROADMAP, zoom:5, center: new google.maps.LatLng(0,0)}));
         var hiddenField = document.getElementById(ele);
         var mapTypedRegistered = false;
         //google.maps.event.addListener(gmapWrapper.getRealGMap(),"center_changed",function(){});
