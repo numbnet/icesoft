@@ -149,9 +149,6 @@ img.branding{
 	margin:3px;
 	vertical-align: text-bottom;
 }
-.mobi-pagePanel-body{
-	min-height:none;
-}
 .mobi-pagePanel-body-content {
 	overflow-y: auto;
 }
@@ -284,6 +281,10 @@ textarea {
 		display: block;
 		text-align:center;
 	}
+	.left-pane{
+		border-left: 1px solid darkGray;
+		height:100%;
+	}
 	.mobi-tabset-content{
 		border-top: 1px solid darkGray;
 	}
@@ -313,13 +314,18 @@ textarea {
 }
 @media all and (max-width: 449px){
 	#sx{
-		margin: 10px 0 -5px 10px;
+		margin: 0 0 -5px 10px;
 		display: inline-block;
 	}
 	.subtitle{
 		margin: 8px 10px -5px 10px;
 	}
 	.helpIcon{
-		float:right;margin:-12px 10px 0 0;
+		float:right;
+		margin:-26px 10px 0 0;
+		position: absolute;
+	}
+	.mobi-tabset-tabs-bottom > .mobi-tabset-tabs {
+		bottom: 30px;
 	}
 }

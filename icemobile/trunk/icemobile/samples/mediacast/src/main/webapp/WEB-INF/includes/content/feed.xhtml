@@ -1,0 +1,26 @@
+<mobi:outputList inset="false" id="galleryList" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+	<ui:repeat var="media" value="#{galleryView.filteredMessages}">
+		<mobi:outputListItem id="mediaItem">
+			<h:commandLink id="mediaLink"
+				action="#{mediaController.viewMediaDetail}">
+				<f:setPropertyActionListener target="#{mediaView.media}"
+					value="#{media}" />
+				<f:setPropertyActionListener target="#{navigationModel.currentTab}"
+					value="viewer" />
+
+				<mobi:graphicImage id="mediaThumbnail"
+					value="#{media.smallPhoto.data}" width="#{media.smallPhoto.width}"
+					height="#{media.smallPhoto.height}"
+					style="padding-right:5px;border:none;" />
+
+				<h:outputText id="mediaTitle" value="#{media.title}" />
+
+			</h:commandLink>
+		</mobi:outputListItem>
+	</ui:repeat>
+</mobi:outputList>

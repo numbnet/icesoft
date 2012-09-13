@@ -30,35 +30,40 @@
   -->
 <!DOCTYPE html >
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
-    <h:head>
-        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"></meta>
-        <meta name="viewport"
-              content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
-        <meta name="apple-mobile-web-app-capable" content="yes"/>
-        <meta name="apple-mobile-web-app-status-bar-style" content="black"/>
-        <link href="./resources/images/favicon.ico" rel="shortcut icon" type="image/x-icon"></link>
-        <link href="./resources/images/favicon.ico" rel="icon" type="image/x-icon"></link>
-        <title>ICEfaces Mobile Media Demo</title>
-        <mobi:deviceStylesheet media="screen"/>
-        <h:outputStylesheet library="css" name="photocast.css" media="screen"/>
-        <h:outputScript library="javascript" name="showcase.js" target="head"/>
-    </h:head>
-    
-    <h:body>
-        <mobi:contentStack currentId="#{navigationModel.selectedPanelId}">
-            <mobi:contentPane id="home" facelet="true" client="false" >
-                <ui:include src="/WEB-INF/includes/views/home.xhtml" />
-            </mobi:contentPane>
-            <mobi:contentPane id="gallery" facelet="true" client="false" >
-                <ui:include src="/WEB-INF/includes/views/gallery.xhtml" />
-            </mobi:contentPane>
-            <mobi:contentPane id="media" facelet="true" client="false" >
-                <ui:include src="/WEB-INF/includes/views/viewer.xhtml" />
-            </mobi:contentPane>
-         </mobi:contentStack>
-    </h:body>
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"></meta>
+	<meta name="viewport"
+		content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+	<link href="./resources/images/favicon.ico" rel="shortcut icon"
+		type="image/x-icon"></link>
+	<link href="./resources/images/favicon.ico" rel="icon"
+		type="image/x-icon"></link>
+	<title>ICEfaces Mobile Media Demo</title>
+	<mobi:deviceStylesheet media="screen" />
+	<h:outputStylesheet library="css" name="photocast.css" media="screen" />
+	<h:outputScript library="javascript" name="showcase.js" target="head" />
+</h:head>
+
+<h:body>
+	<h:form id="frm">
+		<mobi:viewSelector>
+			<f:facet name="small">
+				<f:subview id="small">
+					<ui:include src="/WEB-INF/includes/views/small.xhtml" />
+				</f:subview>
+			</f:facet>
+			<f:facet name="large">
+				<f:subview id="large">
+					<ui:include src="/WEB-INF/includes/views/large.xhtml" />
+				</f:subview>
+			</f:facet>
+		</mobi:viewSelector>
+	</h:form>
+</h:body>
 </html>

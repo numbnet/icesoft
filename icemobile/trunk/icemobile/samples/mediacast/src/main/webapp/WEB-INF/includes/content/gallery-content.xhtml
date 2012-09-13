@@ -21,7 +21,6 @@
              xmlns:ui="http://java.sun.com/jsf/facelets"
              xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
 
-    <h:form id="galleryFrm">
         <mobi:outputList inset="false" id="galleryList">
             <ui:repeat var="media"
                        value="#{galleryView.filteredMessages}">
@@ -44,6 +43,4 @@
                 </mobi:outputListItem>
             </ui:repeat>
         </mobi:outputList>
-            
-    </h:form>
 </ui:composition>

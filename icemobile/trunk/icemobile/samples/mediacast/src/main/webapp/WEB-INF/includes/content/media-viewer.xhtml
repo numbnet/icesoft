@@ -27,12 +27,10 @@
     	<div class="message-title">
     		<h3>#{mediaView.media.title}</h3>
     		<span class="delete">
-    			<h:form id="delFrm">
     			 <h:commandLink id="deleteBtn" actionListener="#{mediaController.deleteCurrentMedia}">
 	                  <img src="#{facesContext.externalContext.requestContextPath}/resources/images/trash.png"/>
 	             </h:commandLink>
-	             </h:form>
-	        </span>
+	         </span>
     	</div>
 	
 		<mobi:graphicImage id="largePhoto"
