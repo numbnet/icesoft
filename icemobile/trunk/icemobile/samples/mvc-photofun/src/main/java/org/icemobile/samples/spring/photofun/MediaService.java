@@ -3,7 +3,6 @@ package org.icemobile.samples.spring.photofun;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.ServletContext;
 
@@ -61,12 +60,6 @@ public class MediaService implements ServletContextAware {
 				media.remove(msg);
 				if( msg.getPhoto() != null ){
 					msg.getPhoto().dispose();
-				}
-				if( msg.getVideo() != null ){
-					msg.getVideo().dispose();
-				}
-				if( msg.getAudio() != null ){
-					msg.getAudio().dispose();
 				}
 				break;
 			}

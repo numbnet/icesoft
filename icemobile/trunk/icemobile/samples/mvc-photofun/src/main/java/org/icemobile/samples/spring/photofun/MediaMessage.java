@@ -37,19 +37,12 @@ public class MediaMessage implements Serializable {
     private double direction = 0.0; //0-359 degrees
     private String uploadMsg;
     private Media photo = null;
-    private Media video = null;
-    private Media audio = null;
-    
-    public static final String MEDIA_TYPE_PHOTO = "Photo";
-    public static final String MEDIA_TYPE_VIDEO = "Video";
-    public static final String MEDIA_TYPE_AUDIO = "Audio";
     
     public void addPhoto(Media photo) {
         this.photo = photo;
     }
     
     public void clear(){
-    	audio = null;
     	description = null;
     	direction = 0;
     	id = null;
@@ -58,13 +51,11 @@ public class MediaMessage implements Serializable {
     	photo = null;
     	tags = new ArrayList<String>();
     	title = null;
-    	video = null;
     	
     }
 
 	public MediaMessage clone(){
     	MediaMessage cloned = new MediaMessage();
-    	cloned.setAudio(audio);
     	cloned.setDescription(description);
     	cloned.setDirection(direction);
     	cloned.setId(id);
@@ -73,7 +64,6 @@ public class MediaMessage implements Serializable {
     	cloned.setPhoto(photo);
     	cloned.setTags(tags);
     	cloned.setTitle(title);
-    	cloned.setVideo(video);
     	return cloned;
     }
 
@@ -97,14 +87,6 @@ public class MediaMessage implements Serializable {
     public void setAltitude(double alt){
     	this.altitude = alt;
     }
-
-	public Media getAudio()  {
-        return audio;
-    }
-	
-	public void setAudio(Media media){
-		this.audio = media;
-	}
 
 	public String getDescription() {
 		return description;
@@ -130,19 +112,11 @@ public class MediaMessage implements Serializable {
         return photo;
     }
 
-    public boolean getShowAudio()  {
-        return audio != null;
-    }
-
     public boolean getShowPhoto()  {
     	 return photo != null;
     }
 
-    public boolean getShowVideo()  {
-    	 return video != null;
-    }
-
-	public List<String> getTags() {
+    public List<String> getTags() {
 		return tags;
 	}
 
@@ -150,16 +124,8 @@ public class MediaMessage implements Serializable {
 		return title;
 	}
 
-	public Media getVideo()  {
-        return video;
-    }
-	
-	public void setVideo(Media media){
-		this.video = media;
-	}
-
 	public boolean isHasMedia(){
-    	return this.audio != null || this.photo != null || this.video != null;
+    	return this.photo != null;
     }
 	
 	public void setDescription(String description) {
@@ -205,13 +171,11 @@ public class MediaMessage implements Serializable {
 	
     
     public String toString(){
-    	return String.format("%s title=%s, description=%s, photo=%s, video=%s, audio=%s, tags=%s, lattitude=%s, longitude=%s, direction=%s", 
+    	return String.format("%s title=%s, description=%s, photo=%s, tags=%s, lattitude=%s, longitude=%s, direction=%s", 
     			super.toString(), 
     			title,
     			description,
     			photo,
-    			video,
-    			audio,
     			tags,
     			latitude,
     			longitude,
