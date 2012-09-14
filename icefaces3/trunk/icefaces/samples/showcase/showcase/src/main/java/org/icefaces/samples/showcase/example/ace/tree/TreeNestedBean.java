@@ -3,9 +3,11 @@ package org.icefaces.samples.showcase.example.ace.tree;
 import org.icefaces.samples.showcase.metadata.annotation.*;
 import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -33,6 +35,10 @@ import java.util.List;
 public class TreeNestedBean extends ComponentExampleImpl<TreeNestedBean> implements Serializable {
     public static final String BEAN_NAME = "treeNestedBean";
     private List<LocationNodeImpl> treeRoots;
+    private List<LocationNodeImpl> outerTree = new ArrayList<LocationNodeImpl>() {{
+        add(new LocationNodeImpl("One","default",0));
+        add(new LocationNodeImpl("Two","default",0));
+    }};
 
     public TreeNestedBean() {
         super(TreeNestedBean.class);
@@ -41,5 +47,14 @@ public class TreeNestedBean extends ComponentExampleImpl<TreeNestedBean> impleme
 
     public List<LocationNodeImpl> getTreeRoots() {
         return treeRoots;
+    }
+
+    public List<LocationNodeImpl> getOuterTree() {
+        return outerTree;
+    }
+
+    @PostConstruct
+    public void initMetaData() {
+        super.initMetaData();
     }
 }

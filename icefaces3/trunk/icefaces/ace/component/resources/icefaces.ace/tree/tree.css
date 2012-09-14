@@ -1,6 +1,7 @@
 .if-tree {
     display: inline-block;
-    padding:5px 0;
+    vertical-align: middle;
+    padding: 5px 0;
 }
 
 .if-node {

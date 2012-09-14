@@ -25,54 +25,31 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 template="/resources/templates/content-template.xhtml">
 
-<ui:param name="title" value="#{msgs[treeBean.title]}"/>
-<ui:param name="description" value="#{msgs[treeBean.description]}"/>
-<ui:param name="subMenuTitle" value="#{msgs[treeBean.subMenuTitle]}"/>
-<ui:param name="subMenuLinks" value="#{treeBean.subMenuLinks}"/>
-<ui:param name="resourceValue" value="#{treeBean.exampleResource}"/>
+<ui:param name="title" value="#{msgs[treeClientBean.title]}"/>
+<ui:param name="description" value="#{msgs[treeClientBean.description]}"/>
+<ui:param name="resourceValue" value="#{treeClientBean.exampleResource}"/>
 
-<ui:param name="wikiResources" value="#{treeBean.wikiResources}"/>
-<ui:param name="tldResources" value="#{treeBean.tldResources}"/>
+<ui:param name="wikiResources" value="#{treeClientBean.wikiResources}"/>
+<ui:param name="tldResources" value="#{treeClientBean.tldResources}"/>
 
 <ui:define name="example">
-    <h:form id="form">
-        <style type="text/css">
-            #form\3Atree {
-                line-height: 1 !important;
-            }
-        </style>
+    <h:form>
         <ace:tree id="tree"
-                expansion="true"
-                selection="true"
-                multipleSelection="false"
-                value="#{treeBean.treeRoots}"
-                var="node"
-                stateMap="#{treeBean.stateMap}"
-                stateVar="nState"
-                type="#{node.type}">
-            <ace:ajax render="@all" execute="@all" />
+                  expansion="true"
+                  expansionMode="client"
+                  value="#{treeClientBean.treeRoots}"
+                  var="node"
+                  type="#{node.type}">
             <ace:node type="country">
                 Country: <h:outputText value="#{node.name}" />
             </ace:node>
             <ace:node type="province">
                 Province: <h:outputText value="#{node.name}" />
             </ace:node>
-            // Default node type
             <ace:node>
                 City: <h:outputText value="#{node.name}" />
             </ace:node>
         </ace:tree>
-
-        <h:panelGroup style="display:inline-block; vertical-align:top;">
-            <ui:repeat var="selection" value="#{treeBean.stateMap.getSelected()}">
-                <h:outputText value="#{selection.name}" /><br/>
-            </ui:repeat>
-        </h:panelGroup>
-
-        <br/>
-        <h:commandButton value="Save">
-            <f:ajax event="click" execute="@all" render="@all" />
-        </h:commandButton>
     </h:form>
 </ui:define>
 </ui:composition>

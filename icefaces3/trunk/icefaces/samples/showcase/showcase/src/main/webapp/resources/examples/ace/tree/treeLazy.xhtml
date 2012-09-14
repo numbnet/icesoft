@@ -25,14 +25,12 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 template="/resources/templates/content-template.xhtml">
 
-<ui:param name="title" value="#{msgs[treeBean.title]}"/>
-<ui:param name="description" value="#{msgs[treeBean.description]}"/>
-<ui:param name="subMenuTitle" value="#{msgs[treeBean.subMenuTitle]}"/>
-<ui:param name="subMenuLinks" value="#{treeBean.subMenuLinks}"/>
-<ui:param name="resourceValue" value="#{treeBean.exampleResource}"/>
+<ui:param name="title" value="#{msgs[treeLazyBean.title]}"/>
+<ui:param name="description" value="#{msgs[treeLazyBean.description]}"/>
+<ui:param name="resourceValue" value="#{treeLazyBean.exampleResource}"/>
 
-<ui:param name="wikiResources" value="#{treeBean.wikiResources}"/>
-<ui:param name="tldResources" value="#{treeBean.tldResources}"/>
+<ui:param name="wikiResources" value="#{treeLazyBean.wikiResources}"/>
+<ui:param name="tldResources" value="#{treeLazyBean.tldResources}"/>
 
 <ui:define name="example">
     <h:form id="form">
@@ -45,9 +43,10 @@
                 expansion="true"
                 selection="true"
                 multipleSelection="false"
-                value="#{treeBean.treeRoots}"
+                value="#{treeLazyBean.lazyModel}"
                 var="node"
-                stateMap="#{treeBean.stateMap}"
+                stateMap="#{treeLazyBean.stateMap}"
+                stateCreationCallback="#{treeLazyBean.initState}"
                 stateVar="nState"
                 type="#{node.type}">
             <ace:ajax render="@all" execute="@all" />
@@ -64,15 +63,10 @@
         </ace:tree>
 
         <h:panelGroup style="display:inline-block; vertical-align:top;">
-            <ui:repeat var="selection" value="#{treeBean.stateMap.getSelected()}">
+            <ui:repeat var="selection" value="#{treeLazyBean.stateMap.getSelected()}">
                 <h:outputText value="#{selection.name}" /><br/>
             </ui:repeat>
         </h:panelGroup>
-
-        <br/>
-        <h:commandButton value="Save">
-            <f:ajax event="click" execute="@all" render="@all" />
-        </h:commandButton>
     </h:form>
 </ui:define>
 </ui:composition>
