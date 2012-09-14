@@ -87,19 +87,10 @@ public class ApplicationController {
 			throws IOException {
 		
 		if( file != null ){
-			String type = request.getParameter("type");
-			if( "photo".equals(type)){
-				saveImage(request, file, uploadModel);
-			}
-			else if( "video".equals(type)){
-				saveVideo(request, file, uploadModel);
-			}
-			else if( "audio".equals(type)){
-				saveAudio(request, file, uploadModel);
-			}
-			log.debug("processUpload() type=" + type + ", file="+file);
+			saveImage(request, file, uploadModel);
+			log.debug("processUpload() file="+file);
 			if ((null != file) && !file.isEmpty()) {
-				uploadModel.setUploadMsg(String.format("Thank you, your %s file was uploaded successfully.", type));
+				uploadModel.setUploadMsg("Thank you, your photo was uploaded successfully.");
 				log.debug("successfully uploaded media, uploadModel=" + uploadModel);
 			}
 			redirectAttrs.addFlashAttribute("uploadModel", uploadModel);
@@ -210,8 +201,7 @@ public class ApplicationController {
 				catch(NumberFormatException e){
 					//do nothing
 				} 
-			}
-			
+			}			
 		}
 	}
 
@@ -251,18 +241,6 @@ public class ApplicationController {
 			MediaMessage uploadModel) throws IOException {
 
 		addNewMediaToUploadModel(request, file, "jpg", uploadModel);
-	}
-
-	private void saveVideo(HttpServletRequest request, MultipartFile file,
-			MediaMessage uploadModel) throws IOException {
-		
-		addNewMediaToUploadModel(request, file, "mp4", uploadModel);
-	}
-
-	private void saveAudio(HttpServletRequest request, MultipartFile file,
-			MediaMessage uploadModel) throws IOException {
-		
-		addNewMediaToUploadModel(request, file, "m4a", uploadModel);
 	}
 
 	//TODO look into this
