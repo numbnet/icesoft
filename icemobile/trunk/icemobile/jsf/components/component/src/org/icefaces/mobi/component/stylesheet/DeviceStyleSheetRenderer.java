@@ -127,6 +127,8 @@ public class DeviceStyleSheetRenderer extends Renderer implements javax.faces.ev
         // check for empty string on name attribute used for auto mode where
         // name value binding is used.
         name = name != null && name.equals(EMPTY_STRING) ? null : name;
+        
+        String css = null;
 
         // 1.) full automatic device detection.
         if (name == null && library == null) {
@@ -165,13 +167,9 @@ public class DeviceStyleSheetRenderer extends Renderer implements javax.faces.ev
                         log.warning("View type " + view + " is not a recognized view type");
                     }
                 }
-
             }
-            // load compressed css if this is production environment.
-            if (context.isProjectStage(ProjectStage.Production)){
-                name = name.concat(CSS_COMPRESSION_POSTFIX);
-            }
-            name = name.concat(CSS_EXT);
+            
+            
             library = DEFAULT_LIBRARY;
             // store in session map for use later.
             contextMap.put(MOBILE_DEVICE_TYPE_KEY, name);
@@ -186,10 +184,20 @@ public class DeviceStyleSheetRenderer extends Renderer implements javax.faces.ev
             // nothing to do, any error will be displayed back to user at runtime
             // if the resource can't be found.
         }
+        
+        if( name != null && name.endsWith(".css")){
+        	name = name.substring(0,name.lastIndexOf("."));
+        }
+        
+        // load compressed css if this is production environment.
+        if (context.isProjectStage(ProjectStage.Production)){
+        	css = name.concat(CSS_COMPRESSION_POSTFIX);
+        }
+        css = css.concat(CSS_EXT);
 
         // create URL that the resource can be loaded from.
         Resource resource = context.getApplication().getResourceHandler()
-                .createResource(name, library);
+                .createResource(css, library);
         String resourceUrl = RESOURCE_URL_ERROR;
         if (resource != null) {
             resourceUrl = context.getExternalContext().encodeResourceURL(resource.getRequestPath());
@@ -206,6 +214,14 @@ public class DeviceStyleSheetRenderer extends Renderer implements javax.faces.ev
                 writer, uiComponent, stylesheet.getPASS_THOUGH_ATTRIBUTES());
         writer.writeURIAttribute(HTML.HREF_ATTR, resourceUrl, HTML.HREF_ATTR);
         writer.endElement(HTML.LINK_ELEM);
+        encodeScript(writer,name);
+    }
+    
+    public void encodeScript(ResponseWriter writer, String name) throws IOException {
+    	writer.startElement("script", null);
+    	writer.writeAttribute("type", "text/javascript", null);
+    	writer.writeText(String.format("document.documentElement.className = '%s';", name),null);
+    	writer.endElement("script");
     }
 
     public void processEvent(ComponentSystemEvent event)
