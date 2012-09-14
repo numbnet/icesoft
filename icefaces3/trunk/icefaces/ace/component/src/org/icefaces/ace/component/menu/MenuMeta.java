@@ -56,10 +56,10 @@ public class MenuMeta extends UIComponentBaseMeta {
     @Property(tlddoc="Server side id of the component whose triggerEvent will show the menu, when position is dynamic.")
     private String trigger;
 
-    @Property(tlddoc="When position is dynamic, this attribute specifies the corner of the menu to align with trigger element (examples: \"top left\", \"bottom right\").")
+    @Property(tlddoc="When position is dynamic, this attribute specifies the corner of the menu to align with trigger element (examples: \"top left\", \"bottom right\").", defaultValue="top left")
     private String my;
 
-    @Property(tlddoc="When position is dynamic, this attribute specifies the corner of trigger element to align with menu (examples: \"top left\", \"bottom right\").")
+    @Property(tlddoc="When position is dynamic, this attribute specifies the corner of trigger element to align with menu (examples: \"top left\", \"bottom right\").", defaultValue="bottom left")
     private String at;
 
     @Property(tlddoc = "Sets the way menu is placed on the page, when \"static\" menu is displayed in the normal flow," +
