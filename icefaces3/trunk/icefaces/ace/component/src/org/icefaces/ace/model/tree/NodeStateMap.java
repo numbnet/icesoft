@@ -32,6 +32,7 @@ public class NodeStateMap implements Map<Object, NodeState>, Serializable {
     Map<Object, NodeState> map = new HashMap<Object, NodeState>();
     KeySegmentConverter keyConverter;
     Predicate selectedPredicate = new SelectedPredicate();
+    Predicate expandedPredicate = new ExpandedPredicate();
     StateCreationCallback initCallback;
 
     public NodeStateMap() {
@@ -121,12 +122,22 @@ public class NodeStateMap implements Map<Object, NodeState>, Serializable {
         return EntrySetToKeyListTransformer.transform(CollectionUtils.select(map.entrySet(), this.selectedPredicate));
     }
 
+    public List getExpanded() {
+        return EntrySetToKeyListTransformer.transform(CollectionUtils.select(map.entrySet(), this.expandedPredicate));
+    }
+
     public StateCreationCallback getInitCallback() {
         return initCallback;
     }
 
     // Setters
-    // setAllSelected()
+    public void setAllSelected(boolean val) {
+        for (NodeState s : map.values()) s.setSelected(val);
+    }
+
+    public void setAllExpanded(boolean val) {
+        for (NodeState s : map.values()) s.setExpanded(val);
+    }
 
 
     public void setInitCallback(StateCreationCallback initCallback) {
@@ -135,6 +146,14 @@ public class NodeStateMap implements Map<Object, NodeState>, Serializable {
 
     // Predicates
     static class SelectedPredicate implements Predicate {
+        public boolean evaluate(Object o) {
+            if (o instanceof Entry)
+                if (((NodeState)((Entry)o).getValue()).isSelected()) return true;
+            return false;
+        }
+    }
+
+    static class ExpandedPredicate implements Predicate {
         public boolean evaluate(Object o) {
             if (o instanceof Entry)
                 if (((NodeState)((Entry)o).getValue()).isSelected()) return true;

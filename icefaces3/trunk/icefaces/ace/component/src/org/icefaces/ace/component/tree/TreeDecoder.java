@@ -3,6 +3,7 @@ package org.icefaces.ace.component.tree;
 import org.icefaces.ace.json.JSONArray;
 import org.icefaces.ace.json.JSONException;
 import org.icefaces.ace.model.tree.NodeKey;
+import org.icefaces.ace.model.tree.NodeState;
 
 import javax.faces.context.FacesContext;
 import java.util.Map;
@@ -50,8 +51,12 @@ public class TreeDecoder {
         if (requestHasParam(tree.getClientId(context) + CONTRACTION_SUFFIX))
             decodeContraction();
 
-        if (requestHasParam(tree.getClientId(context) + SELECTION_SUFFIX))
+        if (requestHasParam(tree.getClientId(context) + SELECTION_SUFFIX)) {
+            if (!tree.isMultipleSelection())
+                tree.getStateMap().setAllSelected(false);
+
             decodeSelection();
+        }
 
         if (requestHasParam(tree.getClientId(context) + DESELECTION_SUFFIX))
             decodeDeselection();
