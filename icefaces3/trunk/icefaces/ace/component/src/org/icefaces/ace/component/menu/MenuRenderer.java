@@ -91,14 +91,17 @@ public class MenuRenderer extends BaseMenuRenderer {
                    json.entry("my", menu.getMy()).
                    entry("at", menu.getAt());
 
-                    UIComponent trigger = menu.findComponent(menu.getTrigger());
-                    if(trigger != null) {
-                        json.entry("trigger", trigger.getClientId(context)).
-                        entry("triggerEvent", menu.getTriggerEvent());
-                    }
-                    else {
-                        json.entry("trigger", menu.getTrigger());
-                    }
+                    String triggerId = menu.getTrigger();
+					if (triggerId != null) {
+						UIComponent trigger = menu.findComponent(triggerId);
+						if(trigger != null) {
+							json.entry("trigger", trigger.getClientId(context)).
+							entry("triggerEvent", menu.getTriggerEvent());
+						}
+						else {
+							json.entry("trigger", triggerId);
+						}
+					}
                 }
 
                 json.entryNonNullValue("styleClass", menu.getStyleClass()).
