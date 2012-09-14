@@ -48,12 +48,12 @@ public class ViewSelectorRenderer extends Renderer {
             name = (String) contextMap.get(ViewSelector.VIEW_TYPE_KEY);
         } else {
             Utils.DeviceType deviceType = Utils.getDeviceType(facesContext);
-            if (deviceType.equals(Utils.DeviceType.ipad) ||
-                    deviceType.equals(Utils.DeviceType.honeycomb)) {
+            if (deviceType.equals(Utils.DeviceType.IPAD) ||
+                    deviceType.equals(Utils.DeviceType.ANDROID_TABLET)) {
                 name = ViewSelector.LARGE_VIEW_TYPE;
-            } else if (deviceType.equals(Utils.DeviceType.android) ||
-                    deviceType.equals(Utils.DeviceType.iphone) ||
-                    deviceType.equals(Utils.DeviceType.bberry)) {
+            } else if (deviceType.equals(Utils.DeviceType.ANDROID_PHONE) ||
+                    deviceType.equals(Utils.DeviceType.IPHONE) ||
+                    deviceType.equals(Utils.DeviceType.BLACKBERRY)) {
                 name = ViewSelector.SMALL_VIEW_TYPE;
             } else {
                 name = viewSelector.getDefaultView();

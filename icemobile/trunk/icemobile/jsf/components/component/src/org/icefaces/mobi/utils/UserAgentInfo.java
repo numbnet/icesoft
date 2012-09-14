@@ -33,17 +33,20 @@ public class UserAgentInfo {
     private String httpAccepted;
 
     //each device has list of info about device and capabilities
-    public static final String deviceIphone = "iphone";
-    public static final String deviceIpad = "ipad";
-    public static final String deviceIpod = "ipod";
-    public static final String deviceMac = "macintosh"; //test laptop
-    public static final String deviceAndroid = "android";
-    public static final String deviceHoneyComb = "android 3.";
-    public static final String deviceBlackB = "blackberry";
-    public static final String deviceBBCurve = "blackberry89"; //curve2
-    public static final String deviceBBTorch = "blackberry 98"; //torch
-    public static final String vndRIM = "vnd.rim";  //found when emulating IE or FF on BB
-    public static final String deviceIOS5 = " os 5_";
+    public static final String IPHONE = "iphone";
+    public static final String IPAD = "ipad";
+    public static final String IPOD = "ipod";
+    public static final String MAC = "macintosh"; //test laptop
+    public static final String ANDROID = "android";
+    public static final String MOBILE = "mobile";
+    public static final String BLACKBERRY = "blackberry";
+    public static final String BLACKBERRY_CURVE = "blackberry89"; //curve2
+    public static final String BLACKBERRY_TORCH = "blackberry 98"; //torch
+    public static final String BLACKBERRY_EMUL = "vnd.rim";  //found when emulating IE or FF on BB
+    public static final String IOS5 = " os 5_";
+    public static final String IOS6 = " os 6_";
+    public static final String TABLET = "tablet";
+    public static final String GALAXY_TABLET = "gt-p1000";
 
     public UserAgentInfo(String userAgent, String httpAcc) {
         if (userAgent != null) {
@@ -62,14 +65,14 @@ public class UserAgentInfo {
     }
 
     public boolean sniffIpod() {
-        boolean result = userAgentString.indexOf(deviceIpod) != -1;
+        boolean result = userAgentString.indexOf(IPOD) != -1;
         logSniff(result, "iPod", userAgentString);
         return result;
     }
 
     //don't get iPhone confused with iPod touch
     public boolean sniffIphone() {
-        boolean result = userAgentString.indexOf(deviceIphone) != -1
+        boolean result = userAgentString.indexOf(IPHONE) != -1
                 && !sniffIpod()
                 && !sniffIpad();
         logSniff(result, "iPod", userAgentString);
@@ -83,35 +86,42 @@ public class UserAgentInfo {
     }
 
     public boolean sniffIOS5(){
-        boolean result = userAgentString.indexOf(deviceIOS5) != -1;
+        boolean result = userAgentString.indexOf(IOS5) != -1;
         logSniff(result, "iOS5", userAgentString);
+        return result;
+    }
+    
+    public boolean sniffIOS6(){
+        boolean result = userAgentString.indexOf(IOS6) != -1;
+        logSniff(result, "iOS6", userAgentString);
         return result;
     }
 
     public boolean sniffIpad() {
-        boolean result = userAgentString.indexOf(deviceIpad) != -1;
+        boolean result = userAgentString.indexOf(IPAD) != -1;
         logSniff(result, "iPad", userAgentString);
         return result;
     }
 
-    public boolean sniffAndroid() {
-        boolean foundAndroid = userAgentString.contains(deviceAndroid);
-
+    public boolean sniffAndroidPhone() {
+        boolean foundAndroid = userAgentString.contains(ANDROID) && 
+        		userAgentString.contains(MOBILE) && !userAgentString.contains(GALAXY_TABLET) 
+        		&& !userAgentString.contains(TABLET);
         logSniff(foundAndroid, "Android Mobile", userAgentString);
         return foundAndroid;
     }
 
     public boolean sniffAndroidTablet() {
-        boolean result = userAgentString.contains(deviceHoneyComb) ||
-                (userAgentString.contains(deviceAndroid) && !userAgentString.contains("mobile safari"));
-        // android tablet won't have the "mobile" on the agent at least for 3.x
+        boolean result = userAgentString.contains(ANDROID) && 
+        	(!userAgentString.contains(MOBILE) || userAgentString.contains(GALAXY_TABLET) 
+        	|| userAgentString.contains(TABLET));
         logSniff(result, "Android Tablet", userAgentString);
         return result;
     }
 
     public boolean sniffBlackberry() {
-        boolean result = userAgentString.contains(deviceBlackB) 
-            || httpAccepted.contains(vndRIM);
+        boolean result = userAgentString.contains(BLACKBERRY) 
+            || httpAccepted.contains(BLACKBERRY_EMUL);
         logSniff(result, "BlackBerry", userAgentString);
         return result;
     }
