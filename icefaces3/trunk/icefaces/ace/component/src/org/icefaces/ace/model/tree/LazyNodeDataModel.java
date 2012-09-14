@@ -1,5 +1,6 @@
 package org.icefaces.ace.model.tree;
 
+import javax.faces.FacesException;
 import javax.swing.tree.TreeNode;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -33,6 +34,25 @@ public abstract class LazyNodeDataModel<K> extends NodeDataModel<K> {
     Map<K, K> parentMap = new HashMap<K, K>();
 
     public abstract List<K> loadChildrenForNode(K node);
+
+    public void unloadSubtree(K node) {
+        List<K> kids = childMap.get(node);
+
+        // Kids may be null as we may be unloading
+        // a parent subtree and this node may not
+        // have checked for children yet.
+        if (kids != null)
+            for (K kid : kids)
+                unloadSubtree(kid);
+
+        parentMap.remove(node);
+        childMap.remove(node);
+    }
+
+    public void unload() {
+        childMap.clear();
+        parentMap.clear();
+    }
 
     @Override
     public K navToKey(NodeKey key) {
