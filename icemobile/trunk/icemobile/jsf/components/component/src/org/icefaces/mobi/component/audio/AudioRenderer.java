@@ -18,6 +18,7 @@ package org.icefaces.mobi.component.audio;
 import org.icefaces.mobi.component.video.VideoPlayer;
 import org.icefaces.mobi.utils.HTML;
 import org.icefaces.mobi.utils.PassThruAttributeWriter;
+import org.icefaces.mobi.utils.Utils.DeviceType;
 import org.icefaces.mobi.renderkit.BaseResourceRenderer;
 import org.icefaces.mobi.utils.Utils;
 
@@ -25,7 +26,6 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import java.io.IOException;
-import java.util.Map;
 import java.util.logging.Logger;
 
 
@@ -38,11 +38,6 @@ public class AudioRenderer extends BaseResourceRenderer {
         ResponseWriter writer = facesContext.getResponseWriter();
         String clientId = uiComponent.getClientId(facesContext);
         Audio audio = (Audio) uiComponent;
-        Map contextMap = facesContext.getAttributes();
-        String deviceType = "iphone";  //default
-        if (null != contextMap.get("device")) {
-            deviceType = contextMap.get("device").toString();
-        }
         boolean disabled = audio.isDisabled();  //haven't done check to see if it's disabled
 
         writer.startElement(HTML.SPAN_ELEM, uiComponent);
@@ -57,7 +52,7 @@ public class AudioRenderer extends BaseResourceRenderer {
         }
         writer.writeAttribute("class", styleClass.toString(), null);
         String srcAttribute;
-        if (!deviceType.equals("bberry")) {
+        if ( Utils.getDeviceType(facesContext) != DeviceType.BLACKBERRY) {
             writer.startElement("audio", uiComponent);
             if (disabled) {
                 writer.writeAttribute("disabled", "disabled", null);

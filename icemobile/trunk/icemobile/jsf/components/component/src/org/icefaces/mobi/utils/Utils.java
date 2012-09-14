@@ -31,7 +31,6 @@ import javax.faces.component.UIForm;
 import javax.faces.component.NamingContainer;
 import javax.faces.FacesException;
 import javax.faces.application.ProjectStage;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.Part;
 import java.io.File;
@@ -60,16 +59,12 @@ public class Utils {
     static String COOKIE_FORMAT = "org.icemobile.cookieformat";
 
     public enum DeviceType {
-        android,
-        honeycomb,
-        bberry,
-        iphone,
-        ipad;
-        public static final DeviceType DEFAULT = DeviceType.ipad;
-
-        public boolean equals(String deviceName) {
-            return this.name().equals(deviceName);
-        }
+        ANDROID_PHONE,
+        ANDROID_TABLET,
+        BLACKBERRY,
+        IPHONE,
+        IPAD;
+        public static final DeviceType DEFAULT = DeviceType.IPAD;
     }
 
     private static Logger logger = Logger.getLogger(Utils.class.getName());
@@ -334,7 +329,7 @@ public class Utils {
         DeviceType device = checkUserAgentInfo(new UserAgentInfo(userAgent));
         return device;
     }
-
+    
     /**
      * used by DateSpinner and timeSpinner to detect which type of events to use
      * mobile devices get touch events Note that Blackberry and android pad
@@ -348,7 +343,7 @@ public class Utils {
   //          commenting out Blackberry at this time as support of touch events is problematic
   //          if (uai.sniffIphone() || uai.sniffAndroid() || uai.sniffBlackberry()
         if (uai.sniffAndroidTablet())return false;
-        if (uai.sniffIphone() || uai.sniffAndroid() ||
+        if (uai.sniffIphone() || uai.sniffAndroidPhone() ||
                uai.sniffIpad() || uai.sniffIpod()) {
             return true;
         }
@@ -359,10 +354,9 @@ public class Utils {
      * Test for Android
      * @return true if client is Android
      */
-    public static boolean isAndroid() {
+    public static boolean isAndroidPhone() {
         String userAgent = SessionContext.getSessionContext().getUserAgent();
-        UserAgentInfo uai = new UserAgentInfo(userAgent);
-        return (new UserAgentInfo(userAgent)).sniffAndroid();
+        return (new UserAgentInfo(userAgent)).sniffAndroidPhone();
     }
 
     /**
@@ -371,7 +365,6 @@ public class Utils {
      */
     public static boolean isBlackBerry() {
         String userAgent = SessionContext.getSessionContext().getUserAgent();
-        UserAgentInfo uai = new UserAgentInfo(userAgent);
         return (new UserAgentInfo(userAgent)).sniffBlackberry();
     }
 
@@ -390,7 +383,6 @@ public class Utils {
      */
     public static boolean isIOS() {
         String userAgent = SessionContext.getSessionContext().getUserAgent();
-        UserAgentInfo uai = new UserAgentInfo(userAgent);
         return (new UserAgentInfo(userAgent)).sniffIOS();
     }
 
@@ -416,11 +408,21 @@ public class Utils {
     }
 
     private static DeviceType checkUserAgentInfo(UserAgentInfo uai) {
-        if (uai.sniffIphone() || uai.sniffIpod()) return DeviceType.iphone;
-        if (uai.sniffAndroidTablet()) return DeviceType.honeycomb;
-        if (uai.sniffAndroid()) return DeviceType.android;
-        if (uai.sniffBlackberry()) return DeviceType.bberry;
-        if (uai.sniffIpad()) return DeviceType.ipad;
+        if (uai.sniffIphone() || uai.sniffIpod()) {
+        	return DeviceType.IPHONE;
+        }
+        if (uai.sniffAndroidTablet()) {
+        	return DeviceType.ANDROID_TABLET;
+        }
+        if (uai.sniffAndroidPhone()){
+        	return DeviceType.ANDROID_PHONE;
+        }
+        if (uai.sniffBlackberry()) {
+        	return DeviceType.BLACKBERRY;
+        }
+        if (uai.sniffIpad()) {
+        	return DeviceType.IPAD;
+        }
         return DeviceType.DEFAULT;
     }
 
@@ -499,9 +501,8 @@ public class Utils {
         File dirFile = new File(folder);
         File newFile = new File(dirFile, fileName);
 
-        boolean success = false;
         if (!dirFile.exists()) {
-            success = dirFile.mkdirs();
+            dirFile.mkdirs();
         }
         try {
             copyStream(fileStream, new FileOutputStream(newFile));
@@ -600,7 +601,6 @@ public class Utils {
         FacesContext facesContext = FacesContext.getCurrentInstance();
         AuxUploadSetup auxUpload = AuxUploadSetup.getInstance();
         
-        String sessionID = EnvUtils.getSafeSession(facesContext).getId();
         String uploadURL = auxUpload.getUploadURL();
         String fullCommand = command + "?id=" + id;
         String script = "window.location='icemobile://c=" +
@@ -622,6 +622,7 @@ public class Utils {
         StringBuilder out = new StringBuilder();
         Formatter cookieFormatter = new Formatter(out);
         cookieFormatter.format(cookieFormat, sessionID);
+        cookieFormatter.close();
         return out.toString();
     }
 

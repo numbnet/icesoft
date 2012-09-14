@@ -75,7 +75,7 @@ public class UploadHelper extends UploadHelperBase {
     }
 
     boolean browserRequiresFullSubmit()  {
-        return (Utils.isIE() || Utils.isAndroid() || Utils.isBlackBerry());
+        return (Utils.isIE() || Utils.isAndroidPhone() || Utils.isBlackBerry());
     }
 
 }

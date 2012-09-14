@@ -60,15 +60,15 @@ public class DeviceStyleSheetRenderer extends Renderer implements javax.faces.ev
     public static final String CSS_COMPRESSION_POSTFIX = "-min";
 
     // iPhone style sheet name found in jar.
-    public static final String IPHONE_CSS = Utils.DeviceType.iphone.name() + CSS_EXT;
+    public static final String IPHONE_CSS = "iphone.css";
     // iPad style sheet name found in jar.
-    public static final String IPAD_CSS = Utils.DeviceType.ipad.name() + CSS_EXT;
+    public static final String IPAD_CSS = "ipad.css";
     // Android style sheet name found in jar.
-    public static final String ANDROID_CSS = Utils.DeviceType.android.name() + CSS_EXT;
+    public static final String ANDROID_CSS = "android.css";
     // Android honeycomb style sheet name found in jar.
-    public static final String HONEYCOMB_CSS = Utils.DeviceType.honeycomb.name() + CSS_EXT;
+    public static final String HONEYCOMB_CSS = "honeycomb.css";
     // Blackberry style sheet name found in jar.
-    public static final String BBERRY_CSS = Utils.DeviceType.bberry.name() + CSS_EXT;
+    public static final String BBERRY_CSS = "bberry.css";
 
     // View types, small or large
     public static final String VIEW_TYPE = "view";
@@ -138,26 +138,32 @@ public class DeviceStyleSheetRenderer extends Renderer implements javax.faces.ev
                 // the view attribute if specified will apply a small or large
                 // theme, large theme's are tablet based, so ipad and honeycomb.
                 // small themes are android, iphone, and bberry.
-                if (view != null){
-                    name = Utils.getDeviceType(context).name();
+            	switch(Utils.getDeviceType(context)){
+	            	case IPAD: name = "ipad"; break;
+	            	case IPHONE: name = "iphone"; break;
+	            	case ANDROID_PHONE: name = "android"; break;
+	            	case ANDROID_TABLET: name = "honeycomb"; break;
+	            	case BLACKBERRY: name = "bberry"; break;
+	            	default: name = "ipad"; 
+            	}
+            	if (view != null){
+                	
                     // forces a small view
                     if(view.equalsIgnoreCase(VIEW_TYPE_SMALL)){
-                        if(name.equals(Utils.DeviceType.ipad.name())){
-                            name = Utils.DeviceType.iphone.name();
-                        }else if (name.equals(Utils.DeviceType.honeycomb.name())){
-                            name= Utils.DeviceType.android.name();
+                        if(name.equals(Utils.DeviceType.IPAD.name())){
+                            name = "ipad";
+                        }else if (name.equals(Utils.DeviceType.ANDROID_TABLET.name())){
+                            name= "android";
                         }
                     }else if(view.equalsIgnoreCase(VIEW_TYPE_LARGE)){
-                        if(name.equals(Utils.DeviceType.iphone.name())){
-                            name = Utils.DeviceType.ipad.name();
-                        }else if (name.equals(Utils.DeviceType.android.name())){
-                            name= Utils.DeviceType.honeycomb.name();
+                        if(name.equals(Utils.DeviceType.IPHONE.name())){
+                            name = "ipad";
+                        }else if (name.equals(Utils.DeviceType.ANDROID_PHONE.name())){
+                            name= "honeycomb";
                         }
                     }else{
                         log.warning("View type " + view + " is not a recognized view type");
                     }
-                }else{
-                    name = Utils.getDeviceType(context).name();
                 }
 
             }
