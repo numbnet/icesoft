@@ -17,13 +17,13 @@
     <ui:param name="tldResources" value="#{gMapResources.tldResources}"/>
 
     <ui:define name="example">
-	<div id="gMapContainer" style="width: 675px; height: 500px" >
-    <ace:gMap id="gMap" options="mapTypeControl:${gMapOptionsBean.typeControl}, overviewMapControl:${gMapOptionsBean.overviewControl},
+	
+    <ace:gMap id="gMap"  style="width: 675px; height: 500px" options="mapTypeControl:${gMapOptionsBean.typeControl}, overviewMapControl:${gMapOptionsBean.overviewControl},
 panControl:${gMapOptionsBean.panControl}, rotateControl:${gMapOptionsBean.rotateControl}, scaleControl:${gMapOptionsBean.scaleControl},
 streetViewControl:${gMapOptionsBean.streetViewControl}, zoomControl:${gMapOptionsBean.zoomControl},
 mapTypeControlOptions:{position: google.maps.ControlPosition.${gMapOptionsBean.typeLocation}, style: google.maps.MapTypeControlStyle.${gMapOptionsBean.typeStyle}},
 draggable:${gMapOptionsBean.draggable}, scrollwheel:${gMapOptionsBean.scrollWheel}, minZoom:${gMapOptionsBean.minZoom}, maxZoom:${gMapOptionsBean.maxZoom}"/>
-    </div>
+    
 	<h:form id="input">
         <ace:panel id="controlsPanel"
                    header="Map Controls"

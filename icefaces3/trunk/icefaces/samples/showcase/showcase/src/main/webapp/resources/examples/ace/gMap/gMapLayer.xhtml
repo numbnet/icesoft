@@ -17,14 +17,12 @@
     <ui:param name="tldResources" value="#{gMapResources.tldResources}"/>
 
     <ui:define name="example">
-	<div id="gMapContainer" style="width: 675px; height: 500px" >
-    <ace:gMap id="gMap" zoomLevel="16" latitude="${layerBean.lat}" longitude="${layerBean.lon}">
+    <ace:gMap id="gMap"  style="width: 675px; height: 500px" zoomLevel="16" latitude="${layerBean.lat}" longitude="${layerBean.lon}">
         <ace:gMapLayer id="BikeLayer" layerType="Bicycling" visible="${layerBean.bikeLayer}"/>
         <ace:gMapLayer id="TrafficLayer" layerType="Traffic" visible="${layerBean.trafficLayer}"/>
         <ace:gMapLayer id="TransitLayer" layerType="Transit" visible="${layerBean.transitLayer}"/>
         <ace:gMapLayer id="KMLLayer" layerType="KML" visible="${layerBean.kmlLayer}" url="${layerBean.kmlURL}"/>
     </ace:gMap>
-	</div>
     <h:form id="input">
         <h:selectOneRadio id="layerButtons" value="#{layerBean.chosenLayer}" name="RadioGroup">
             <f:ajax event="valueChange" render="@all"/>

@@ -17,11 +17,9 @@
     <ui:param name="tldResources" value="#{gMapResources.tldResources}"/>
 
     <ui:define name="example">
-	<div id="gMapContainer" style="width: 675px; height: 500px" >
-    <ace:gMap id="gMap" latitude="0" longitude="0" zoomLevel="3">
+    <ace:gMap id="gMap"  style="width: 675px; height: 500px" latitude="0" longitude="0" zoomLevel="3">
         <ace:gMapServices name="Directions" points="${directionBean.points}" options="travelMode:'${directionBean.travelMode}',${directionBean.options}"/>
     </ace:gMap>
-	</div>
     <h:form id="inputForm">
         <h:outputLabel for="optionsIn" value="Options:"/>
         <h:inputText  id="optionsIn" value="${directionBean.options}"/>
