@@ -39,7 +39,7 @@ public class GMapServicesRenderer extends CoreRenderer {
         writer.writeAttribute("type", "text/javascript", null);
         writer.write("ice.ace.jq(function() {");
         if (service.getPoints() != null && service.getName() != null){
-            writer.write("ice.ace.gMap.gService('" + service.getParent().getClientId(context) + "' , '" + service.getName() + "' , \"" + service.getPoints() + "\" , \"" + service.getOptions() + "\");");
+            writer.write("ice.ace.gMap.gService('" + service.getParent().getClientId(context) + "' , '" + service.getName() + "' , \"" + service.getPoints() + "\" , \"" + service.getOptions() + "\",'" + service.getDiv() + "');");
         }
         writer.write("});");
         writer.endElement("script");

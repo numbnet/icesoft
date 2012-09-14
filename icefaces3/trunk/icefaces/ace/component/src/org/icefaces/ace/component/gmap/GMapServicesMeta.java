@@ -52,4 +52,7 @@ public class GMapServicesMeta extends UIPanelMeta {
 	@Property(tlddoc="Additional options to be sent to the service. Check google maps API for more specifics. Form is attribute:'value'", defaultValue = "travelMode:'DRIVING'")
 	private String options;
 
+    @Property(tlddoc="id of the div you with to set text directions in. null or none to clear.", defaultValue="none")
+    private String div;
+
 }
