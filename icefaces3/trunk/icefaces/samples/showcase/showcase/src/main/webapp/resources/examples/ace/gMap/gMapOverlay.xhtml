@@ -17,11 +17,9 @@
     <ui:param name="tldResources" value="#{gMapResources.tldResources}"/>
 
     <ui:define name="example">
-	<div id="gMapContainer" style="width: 675px; height: 500px" >
-    <ace:gMap id="gMap" latitude="0" longitude="0" zoomLevel="3">
+    <ace:gMap id="gMap"  style="width: 675px; height: 500px" latitude="0" longitude="0" zoomLevel="3">
         <ace:gMapOverlay shape="${overlayBean.shape}" points="${overlayBean.points}" options="${overlayBean.options}"/>
     </ace:gMap>
-	</div>
     <h:form id="inputForm">
         <h:selectOneMenu id="locationSelector" value="#{overlayBean.shape}">
         <f:ajax event="valueChange" render="@all"/>
@@ -31,7 +29,7 @@
         <f:selectItem itemValue="circle" itemLabel="Circle"/>
     </h:selectOneMenu>
         <h:outputLabel for="optionsIn" value="Options:"/>
-        <h:inputText  id="optionsIn" value="${overlayBean.options}"/>
+        <h:inputText  id="optionsIn" size="50" value="${overlayBean.options}"/>
         <br/>
         <h:outputLabel for="pointsIn" value="Points:"/>
         <h:inputText  size="75" id="pointsIn" value="${overlayBean.points}"/>
