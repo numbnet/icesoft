@@ -1,4 +1,4 @@
-/*
+/***
  * Copyright 2004-2012 ICEsoft Technologies Canada Corp.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,7 +15,7 @@
  */
 
 .mobi-thumb {
-    background-image: url('thumbnail_spacer.png'); /** sprite-ref: sprite; */
+    background-image: url('thumbnail_spacer.png'); /* sprite-ref: sprite; */
     background-repeat: no-repeat;
     width: 64px;
     height: 64px;

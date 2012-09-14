@@ -14,28 +14,10 @@
  * governing permissions and limitations under the License.
  */
 
-.mobi-splitpane {
-    padding: 0;
-    background-color: #e2e5ea;
+/* named styles that describe generic characteristics, like .shadow or .h2 */
+body, .mobi-body {
+    font-family: Helvetica, Arial, sans-serif;
     margin: 0;
-    z-index: 1;
-    clear: both;
-    overflow: auto;
-/*    padding: 44px 0 50px 0;
-    min-height: 640px; */
+    padding: 0;
+    background: #c8c8c8;
 }
-.mobi-splitpane-scrollable {
-    overflow-y: scroll;
-}
-.mobi-splitpane-left {
-    float:left;
-}
-.mobi-splitpane-left-scrollable {
-    float: left;
-    overflow-y: scroll;
-}
- /* do we want border-right for first-child?
-.mobi-pagePanel-body-menu .mobi-list {
-    border-right: 1px solid black;
-} */
-

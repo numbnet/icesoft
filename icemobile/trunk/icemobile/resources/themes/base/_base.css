@@ -1,4 +1,4 @@
-/***
+/*
  * Copyright 2004-2012 ICEsoft Technologies Canada Corp.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,8 +13,3 @@
  * express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-
-.mobi-video a,.mobi-video a:hover, .mobi-video a:visited  {
-    text-decoration: underline;
-    color: black;
-}
