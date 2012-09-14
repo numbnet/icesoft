@@ -244,7 +244,8 @@ Autocompleter.Base.prototype = {
         this.skip_mouse_hover = true;
         if (this.active) this.render();
         if (this.observer) clearTimeout(this.observer);
-        this.observer = setTimeout(this.onObserverEvent.bind(this), this.options.frequency * 1000);
+		var self = this;
+        this.observer = setTimeout(function(){self.onObserverEvent(event);}, this.options.frequency * 1000);
     },
 
     onKeyDown: function(event) {
@@ -258,7 +259,8 @@ Autocompleter.Base.prototype = {
                 case Event.KEY_BACKSPACE:
                 case Event.KEY_DELETE:
                     if (this.observer) clearTimeout(this.observer);
-                    this.observer = setTimeout(this.onObserverEvent.bind(this), this.options.frequency * 1000);
+					var self = this;
+                    this.observer = setTimeout(function(){self.onObserverEvent(event);}, this.options.frequency * 1000);
                     return;
             }
         }
@@ -286,7 +288,8 @@ Autocompleter.Base.prototype = {
                 case Event.KEY_BACKSPACE:
                 case Event.KEY_DELETE:
                     if (this.observer) clearTimeout(this.observer);
-                    this.observer = setTimeout(this.onObserverEvent.bind(this), this.options.frequency * 1000);
+					var self = this;
+                    this.observer = setTimeout(function(){self.onObserverEvent(event);}, this.options.frequency * 1000);
                     return;
             }
         }
@@ -352,7 +355,8 @@ Autocompleter.Base.prototype = {
         this.skip_mouse_hover = true;
         if (this.active) this.render();
         if (this.observer) clearTimeout(this.observer);
-        this.observer = setTimeout(this.onObserverEvent.bind(this), this.options.frequency * 1000);
+		var self = this;
+        this.observer = setTimeout(function(){self.onObserverEvent(event);}, this.options.frequency * 1000);
         return;
     },
 
@@ -502,11 +506,11 @@ Autocompleter.Base.prototype = {
         Ice.Autocompleter.logger.debug("Destroyed autocomplete [" + this.element.id + "]");
     },
 
-    onObserverEvent: function() {
+    onObserverEvent: function(event) {
         this.changed = false;
         if (this.getToken().length >= this.options.minChars) {
             this.startIndicator();
-            this.getUpdatedChoices(false, undefined, -1);
+            this.getUpdatedChoices(false, event, -1);
         } else {
             this.active = false;
             this.hide();
