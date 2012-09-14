@@ -12,11 +12,11 @@
  * IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
  * express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
- */
-
+ */    
+ 
 /* named styles that describe generic characteristics, like .shadow or .h2 */
 * {
-    -webkit-tap-highlight-color: #F79A21;
+    -webkit-tap-highlight-color: #F79A21;  
 }
 
 body, .mobi-body {
