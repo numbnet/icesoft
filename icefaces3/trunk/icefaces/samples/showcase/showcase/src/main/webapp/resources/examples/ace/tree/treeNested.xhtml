@@ -34,12 +34,15 @@
 
 <ui:define name="example">
     <h:form>
-        <ace:tree value="#{treeNestedBean.treeRoots}" var="node"
-                type="#{node.type}">
+        <ace:tree value="#{treeNestedBean.outerTree}" var="node"
+                  expansion="true">
             <ace:node>
                 <h:outputText value="#{node.name}" />
-                <ace:tree value="#{treeNestedBean.treeRoots}" var="node"
-                          type="#{node.type}">
+                &#160;
+                <ace:tree value="#{treeNestedBean.treeRoots}"
+                          var="node"
+                          type="#{node.type}"
+                          expansion="true">
                     <ace:node>
                         <h:outputText value="#{node.name}" />
                     </ace:node>

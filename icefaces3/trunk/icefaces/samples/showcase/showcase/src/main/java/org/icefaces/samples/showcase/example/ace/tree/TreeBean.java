@@ -58,6 +58,8 @@ import java.util.List;
         title = "menu.ace.tree.subMenu.title",
         menuLinks = {
             @MenuLink(title = "menu.ace.tree.subMenu.main", isDefault = true, exampleBeanName = TreeBean.BEAN_NAME),
+            @MenuLink(title = "menu.ace.tree.subMenu.lazy", exampleBeanName = TreeLazyBean.BEAN_NAME),
+            @MenuLink(title = "menu.ace.tree.subMenu.client", exampleBeanName = TreeClientBean.BEAN_NAME),
             @MenuLink(title = "menu.ace.tree.subMenu.nested", exampleBeanName = TreeNestedBean.BEAN_NAME)
         }
 )
@@ -67,13 +69,6 @@ public class TreeBean extends ComponentExampleImpl<TreeBean> implements Serializ
     public static final String BEAN_NAME = "treeBean";
     private List<LocationNodeImpl> treeRoots = Arrays.asList(TreeDataFactory.getTreeRoots().clone());
     private NodeStateMap stateMap;
-    private LazyNodeDataModel<LocationNodeImpl> lazyModel = new ExampleLazyModel();
-    private StateCreationCallback initState = new StateCreationCallback() {
-        public NodeState initializeState(NodeState newState, Object node) {
-            newState.setExpanded(false);
-            return newState;
-        }
-    };
 
 
     public TreeBean() {
@@ -100,21 +95,5 @@ public class TreeBean extends ComponentExampleImpl<TreeBean> implements Serializ
 
     public void setStateMap(NodeStateMap stateMap) {
         this.stateMap = stateMap;
-    }
-
-    public LazyNodeDataModel<LocationNodeImpl> getLazyModel() {
-        return lazyModel;
-    }
-
-    public void setLazyModel(LazyNodeDataModel<LocationNodeImpl> lazyModel) {
-        this.lazyModel = lazyModel;
-    }
-
-    public StateCreationCallback getInitState() {
-        return initState;
-    }
-
-    public void setInitState(StateCreationCallback initState) {
-        this.initState = initState;
     }
 }

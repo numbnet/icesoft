@@ -104,7 +104,7 @@ public class ListNodeDataModel extends NodeDataModel<TreeNode> implements Serial
             Integer index = (Integer) keySegment;
 
             // Index from root
-            if (getKey() == NodeKey.ROOT_KEY) {
+            if (getKey().equals(NodeKey.ROOT_KEY)) {
                 key = new NodeKey(index);
                 data = roots.get(index);
                 return data;
