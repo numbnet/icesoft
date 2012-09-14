@@ -51,9 +51,9 @@ public class SplitPaneRenderer extends BaseLayoutRenderer {
             writer.writeAttribute(HTML.ID_ATTR, clientId+"_wrp", HTML.ID_ATTR);
             writer.startElement(HTML.DIV_ELEM, uiComponent);
             writer.writeAttribute(HTML.ID_ATTR, clientId+"_left", HTML.ID_ATTR);
-            String baseClass = SplitPane.SPLITPANE_LEFT;
+            String baseClass = SplitPane.SPLITPANE;
             if (pane.isScrollable()){
-                baseClass =  SplitPane.SPLITPANE_LEFT_SCROLLABLE;
+                baseClass =  SplitPane.SPLITPANE_SCROLLABLE;
             }
             writer.writeAttribute("class", baseClass, null);
             Utils.renderChild(facesContext, leftFacet);
