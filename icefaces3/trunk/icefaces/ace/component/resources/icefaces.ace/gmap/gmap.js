@@ -35,6 +35,7 @@ ice.ace.gMap = function (id, cfg) {
 
 var GMapRepository = new Array();
 
+
 function GMapWrapper(eleId, realGMap) {
     this.eleId = eleId;
     this.realGMap = realGMap;
@@ -232,6 +233,23 @@ ice.ace.gMap.getGMapWrapper = function (id) {
         map.setOptions(eval(fullOps));
     },
 
+    ice.ace.gMap.addAutoComplete = function(mapId){
+        var input = document.getElementById('autocomplete_input');
+        var autocomplete = new google.maps.places.Autocomplete(input);
+        var map = ice.ace.gMap.getGMapWrapper(mapId).getRealGMap();
+        google.maps.event.addListener(autocomplete, 'place_changed', function() {
+                var place = autocomplete.getPlace();
+                if (place.geometry.viewport) {
+                    map.fitBounds(place.geometry.viewport);
+                } else {
+                    map.setCenter(place.geometry.location);
+                    map.setZoom(17);
+                }
+            document.getElementById("autocompleteValueUpdater").value = place.geometry.location.toString();
+            document.getElementById("autocompletePushButton").click();
+            } );
+    },
+
     ice.ace.gMap.addControl = function (ele, name, givenPosition, style) {
         var map = ice.ace.gMap.getGMapWrapper(ele).getRealGMap();
         if (name == "all")
@@ -354,7 +372,7 @@ ice.ace.gMap.getGMapWrapper = function (id) {
         }
     },
 
-    ice.ace.gMap.gService = function (ele, name, locationList, options) {
+    ice.ace.gMap.gService = function (ele, name, locationList, options, div) {
         var wrapper = ice.ace.gMap.getGMapWrapper(ele);
         var map = ice.ace.gMap.getGMapWrapper(ele).getRealGMap();
         var service;
@@ -386,6 +404,7 @@ ice.ace.gMap.getGMapWrapper = function (id) {
                     var renderer = (wrapper.services[ele] != null) ? wrapper.services[ele] : new google.maps.DirectionsRenderer();
                     renderer.setMap(map);
                     renderer.setDirections(response);
+                    renderer.setPanel(document.getElementById(div));
                     wrapper.services[ele] = renderer;
                 }
             }
