@@ -19,8 +19,8 @@ import org.icefaces.ace.meta.baseMeta.UIPanelMeta;
         tlddoc = "This mobility component renders a Google Maps v3 control"
 )
 @ResourceDependencies({
-        @ResourceDependency(library = "org.icefaces.component.util", name = "component.js"),
-        @ResourceDependency(name = "org.icefaces.component.gmap/api.js")//TODO load resource differently
+        @ResourceDependency(library = "org.icefaces.component.util", name = "component.js")
+        //,@ResourceDependency(name = "org.icefaces.component.gmap/api.js")//TODO load resource differently
 })
 public class GMapMeta extends UIPanelMeta{
 
@@ -47,5 +47,8 @@ public class GMapMeta extends UIPanelMeta{
 	
 	@Property(tlddoc="Map type to display by default. Possible values are HYBRID, ROADMAP, SATELLITE and TERRAIN, case insensitive", defaultValue="ROADMAP")
 	private String type;
+	
+	@Property(tlddoc="Use HTML5 geolocation to center and place a marker at the user's current location", defaultValue="false")
+	private boolean geolocate;
 
 }
