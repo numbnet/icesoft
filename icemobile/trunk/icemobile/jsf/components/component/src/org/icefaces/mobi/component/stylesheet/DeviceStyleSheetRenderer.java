@@ -220,7 +220,7 @@ public class DeviceStyleSheetRenderer extends Renderer implements javax.faces.ev
     public void encodeScript(ResponseWriter writer, String name) throws IOException {
     	writer.startElement("script", null);
     	writer.writeAttribute("type", "text/javascript", null);
-    	writer.writeText(String.format("document.documentElement.className = '%s';", name),null);
+    	writer.writeText(String.format("document.documentElement.className = document.documentElement.className+' %s';", name),null);
     	writer.endElement("script");
     }
 
