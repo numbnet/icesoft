@@ -78,7 +78,7 @@ public class DateSpinnerMeta extends UIInputMeta {
     @Property(tlddoc = "If true then this date time entry will submit itself.")
     private boolean singleSubmit;
 
-    @Property(defaultValue = "false", tlddoc = "if useNative is true then iOS5 devices will show the iOS5 builtin html5 date selection popup" +
+    @Property(defaultValue = "false", tlddoc = "if useNative is true then iOS5, iOS6, and BlackBerry devices will show the builtin date selection popup" +
             " if false then the mobi datespinner component is shown with native device styling.  This can be expanded if other device operating" +
             " systems provide support for html5 input type of date.")
     private boolean useNative;

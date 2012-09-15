@@ -168,9 +168,9 @@ public class TagUtil {
         TagUtil.class.getName());
 
     //each device has list of info about device and capabilities
-    public static final String DEVICE_IPHONE = "iPhone";
-    public static final String DEVICE_IPAD = "iPad";
-    public static final String DEVICE_IPOD = "iPod";
+    public static final String DEVICE_IPHONE = "iphone";
+    public static final String DEVICE_IPAD = "ipad";
+    public static final String DEVICE_IPOD = "ipod";
     public static final String DEVICE_MAC = "macintosh"; //test laptop
     public static final String DEVICE_ANDROID = "android";
     public static final String DEVICE_HONEYCOMB = "android 3.";
@@ -179,6 +179,10 @@ public class TagUtil {
     public static final String DEVICE_BB_TORCH = "blackberry 98"; //torch
     public static final String VND_RIM = "vnd.rim";  //found when emulating IE or FF on BB
     public static final String DEVICE_IOSS = " os 5_";
+    public static final String DEVICE_IOS6 = " os 6_";
+    public static final String DEVICE_MOBILE = "mobile";
+    public static final String DEVICE_TABLET = "tablet";
+    public static final String DEVICE_GALAXY_TABLET = "gt-p1000";
 
     public static final String VIEW_TYPE_SMALL = "small";
     public static final String VIEW_TYPE_LARGE = "large";
@@ -204,7 +208,7 @@ public class TagUtil {
         HttpServletRequest request = (HttpServletRequest)
             pageContext.getRequest();
         String userAgent = request.getHeader(USER_AGENT);
-        return sniffIOS5(userAgent);
+        return sniffIOS5(userAgent) || sniffIOS6(userAgent);
     }
 
     public static boolean isIOS(PageContext pageContext) {
@@ -230,14 +234,14 @@ public class TagUtil {
     }
 
     static boolean sniffIpod(String uaString) {
-        boolean result = uaString.toLowerCase().contains(DEVICE_IPOD.toLowerCase());
+        boolean result = uaString.contains(DEVICE_IPOD);
         logSniff(result, "iPod", uaString);
         return result;
     }
 
     //don't get iPhone confused with iPod touch
     static boolean sniffIphone(String uaString) {
-        boolean result = uaString.toLowerCase().contains(DEVICE_IPHONE.toLowerCase())
+        boolean result = uaString.contains(DEVICE_IPHONE)
             && !sniffIpod(uaString)
             && !sniffIpad(uaString);
         logSniff(result, "iPod", uaString);
@@ -251,28 +255,36 @@ public class TagUtil {
     }
 
     static boolean sniffIOS5(String uaString) {
-        boolean result = uaString.toLowerCase().contains(DEVICE_IOSS.toLowerCase());
+        boolean result = uaString.contains(DEVICE_IOSS);
         logSniff(result, "iOS5", uaString);
+        return result;
+    }
+    
+    static boolean sniffIOS6(String uaString) {
+        boolean result = uaString.contains(DEVICE_IOS6);
+        logSniff(result, "iOS6", uaString);
         return result;
     }
 
     static boolean sniffIpad(String uaString) {
-        boolean result = uaString.toLowerCase().contains(DEVICE_IPAD.toLowerCase());
+        boolean result = uaString.contains(DEVICE_IPAD);
         logSniff(result, "iPad", uaString);
         return result;
     }
 
     static boolean sniffAndroid(String uaString) {
 
-        boolean foundAndroid = uaString.toLowerCase().contains(DEVICE_ANDROID);
+        boolean foundAndroid = uaString.contains(DEVICE_ANDROID) && 
+        		uaString.contains(DEVICE_MOBILE) && !uaString.contains(DEVICE_GALAXY_TABLET) 
+        		&& !uaString.contains(DEVICE_TABLET);
         logSniff(foundAndroid, "Android Mobile", uaString);
         return foundAndroid;
     }
 
     static boolean sniffAndroidTablet(String uaString) {
-        boolean result = uaString.toLowerCase().contains(DEVICE_HONEYCOMB) ||
-            (uaString.contains(DEVICE_ANDROID) && !uaString.contains("mobile safari"));
-        // android tablet won't have the "mobile" on the agent at least for 3.x
+    	 boolean result = uaString.contains(DEVICE_ANDROID) && 
+    	        	(!uaString.contains(DEVICE_MOBILE) || uaString.contains(DEVICE_GALAXY_TABLET) 
+    	        	|| uaString.contains(DEVICE_TABLET));
         logSniff(result, "Android Tablet", uaString);
         return result;
     }
@@ -289,7 +301,7 @@ public class TagUtil {
         if (httpAccept == null) {
             httpAccept = "";
         }
-        boolean result = uaString.toLowerCase().contains(DEVICE_BLACKB)
+        boolean result = uaString.contains(DEVICE_BLACKB)
             || httpAccept.contains(VND_RIM);
         logSniff(result, "BlackBerry", uaString);
         return result;
@@ -316,6 +328,7 @@ public class TagUtil {
 
     private static DeviceType checkUserAgentInfo(String userAgent,
                                                  String accepts) {
+    	userAgent = userAgent.toLowerCase();
         if (sniffIphone(userAgent) || sniffIpod(userAgent)) {
             return DeviceType.iphone;
         }
