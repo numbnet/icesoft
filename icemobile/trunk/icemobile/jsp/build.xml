@@ -110,17 +110,12 @@
         <mkdir dir="${build.dir}/skins/in"/>
         <mkdir dir="${build.dir}/skins/out"/>
 
-        <!-- copy all the theme data over the resources folder -->
-        <!-- Copy all resources to the skins resource library -->
-        <copy todir="${build.dir}/skins/in">
-            <fileset dir="${theme.dir}/${theme.base.dir}" includes="**"/>
-        </copy>
-        <copy todir="${build.dir}/skins/in" overwrite="true">
-            <fileset dir="${theme.dir}" includes="**"/>
-        </copy>
-        <copy todir="${build.dir}/skins/out">
-            <fileset dir="${theme.dir}" excludes="**/*.css" />
-        </copy>
+        <buildSkin skin="android" />
+		<buildSkin skin="bberry" />
+		<buildSkin skin="honeycomb" />
+		<buildIOSSkin skin="ipad" />
+		<buildIOSSkin skin="iphone" />
+        
         <!-- concatenate -->
         <!-- Generate a single CSS file per skin -->
         <concatskin name="android" inputdir="${build.dir}/skins/in"
@@ -289,6 +284,48 @@
             <fileset dir="${theme.resources.dir}"/>
         </delete>
     </target>
+    
+    
+	<!-- include source images and css for sprite generation -->
+	<macrodef name="buildSkin">
+		<attribute name="skin" />
+		<sequential>
+			<mkdir dir="build/skins/in/@{skin}" />
+			<copy todir="build/skins/in/@{skin}/">
+				<fileset dir="${theme.dir}/base" includes="**" />
+			</copy>
+			<copy todir="build/skins/in/@{skin}/" overwrite="true">
+				<fileset dir="${theme.dir}/@{skin}" includes="**" />
+			</copy>
+			<mkdir dir="build/skins/out/@{skin}/" />
+			<copy todir="build/skins/out/@{skin}/">
+				<fileset dir="build/skins/in/@{skin}/" excludes="**/*.css" />
+			</copy>
+		</sequential>
+	</macrodef>
+
+	<!-- include source images and css for sprite generation -->
+	<macrodef name="buildIOSSkin">
+		<attribute name="skin" />
+		<sequential>
+			<mkdir dir="build/skins/in/@{skin}" />
+			<copy todir="build/skins/in/@{skin}/">
+				<fileset dir="${theme.dir}/base" includes="**" />
+			</copy>
+			<copy todir="build/skins/in/@{skin}/" overwrite="true">
+				<fileset dir="${theme.dir}/ios" includes="**" />
+			</copy>
+			<copy todir="build/skins/in/@{skin}/" overwrite="true">
+				<fileset dir="${theme.dir}/@{skin}" includes="**" />
+			</copy>
+			<mkdir dir="build/skins/out/@{skin}/" />
+			<copy todir="build/skins/out/@{skin}/">
+				<fileset dir="build/skins/in/@{skin}/" excludes="**/*.css" />
+			</copy>
+		</sequential>
+	</macrodef>
+
+    
 
 </project>
 
