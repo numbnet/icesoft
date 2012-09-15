@@ -176,11 +176,13 @@ public class DeviceResourceTag extends SimpleTagSupport {
         		contextRoot, Constants.RESOURCE_BASE_URL, libVal, nameVal, fileName);
         String jsLink = String.format("<script type=\"text/javascript\" src='%s%s/javascript/icemobile.js'></script>",
         		contextRoot, Constants.RESOURCE_BASE_URL);
+        String htmlClassnameJS = String.format("<script type='text/javascript'>document.documentElement.className = document.documentElement.className+' %s';</script>", nameVal);
+        
         
         try {
             out.write(cssLink);
             out.write(jsLink);
-
+            out.write(htmlClassnameJS);
         } catch (IOException ioe) {
             log.severe("Exception writing to JSPWriter: " + ioe);
         }
