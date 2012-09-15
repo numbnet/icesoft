@@ -960,7 +960,9 @@
             <required>no</required>
             <rtexprvalue>true</rtexprvalue>
             <type>boolean</type>
-            <description>If true, use native device date widget</description>
+            <description>if useNative is true then iOS5, iOS6, and BlackBerry devices will show the builtin date selection popup
+            if false then the mobi datespinner component is shown with native device styling.  This can be expanded if other device operating
+            systems provide support for html5 input type of date.</description>
         </attribute>
         <attribute>
             <name>value</name>
@@ -1049,7 +1051,9 @@
             <required>no</required>
             <rtexprvalue>true</rtexprvalue>
             <type>boolean</type>
-            <description>If true, use native device time widget</description>
+            <description>if useNative is true then iOS5, iOS6, and BlackBerry devices will show the builtin date selection popup
+            if false then the mobi datespinner component is shown with native device styling.  This can be expanded if other device operating
+            systems provide support for html5 input type of date.</description>
         </attribute>
         <attribute>
             <name>value</name>

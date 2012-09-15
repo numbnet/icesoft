@@ -502,7 +502,7 @@ public class DateSpinnerRenderer extends BaseInputRenderer {
      */
     private boolean shouldUseNative(DateSpinner component) {
         return (component.isUseNative() &&
-                (Utils.isIOS5() || Utils.isBlackBerry()));
+                (Utils.isIOS5() || Utils.isIOS6() || Utils.isBlackBerry()));
     }
 
     /**

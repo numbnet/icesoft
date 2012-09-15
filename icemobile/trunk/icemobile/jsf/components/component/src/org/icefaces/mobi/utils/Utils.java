@@ -394,6 +394,16 @@ public class Utils {
         String userAgent = SessionContext.getSessionContext().getUserAgent();
         return (new UserAgentInfo(userAgent)).sniffIOS5();
     }
+    
+    /**
+     * @return true if request header denotes os 6_0
+     */
+    public static boolean isIOS6() {
+        String userAgent = SessionContext.getSessionContext().getUserAgent();
+        return (new UserAgentInfo(userAgent)).sniffIOS6();
+    }
+    
+    
 
       /**
      * Test to see if we should show activation for ICEmobile-SX.
