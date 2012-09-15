@@ -119,19 +119,66 @@ public class DeviceStyleSheetRenderer extends Renderer implements javax.faces.ev
          *     value resource.
          */
 
-        // check for the existence of the name and library attributes.
+        String name = deriveThemeName(attributes, contextMap, context);
+          
+        if( name != null ){
+        	contextMap.put(MOBILE_DEVICE_TYPE_KEY, name);
+        	
+        	if( name.endsWith(".css")){ //strip off .css
+        		name = name.substring(0,name.lastIndexOf("."));
+        	}
+        	String css = name;
+        	
+        	// load compressed css if this is production environment.
+            if (context.isProjectStage(ProjectStage.Production)){
+            	css = name.concat(CSS_COMPRESSION_POSTFIX);
+            }
+            css = css.concat(CSS_EXT);
+            
+            String library = deriveLibrary(attributes);
+
+            // create URL that the resource can be loaded from.
+        	Resource resource = context.getApplication().getResourceHandler()
+                    .createResource(css, library);
+            String resourceUrl = RESOURCE_URL_ERROR;
+            if (resource != null) {
+                resourceUrl = context.getExternalContext().encodeResourceURL(resource.getRequestPath());
+            } else if (log.isLoggable(Level.WARNING)) {
+                log.warning("Warning could not load resource " + library + "/" + name);
+            }
+            // final write out the style element to the component tree.
+            writer.startElement(HTML.LINK_ELEM, uiComponent);
+            writer.writeAttribute(HTML.TYPE_ATTR, HTML.LINK_TYPE_TEXT_CSS, HTML.TYPE_ATTR);
+            writer.writeAttribute(HTML.REL_ATTR, HTML.STYLE_REL_STYLESHEET, HTML.REL_ATTR);
+            // pass though
+            PassThruAttributeWriter.renderNonBooleanAttributes(
+                    writer, uiComponent, stylesheet.getPASS_THOUGH_ATTRIBUTES());
+            writer.writeURIAttribute(HTML.HREF_ATTR, resourceUrl, HTML.HREF_ATTR);
+            writer.endElement(HTML.LINK_ELEM);
+            encodeScript(writer,name);
+        }
+    }
+    
+    private String deriveLibrary(Map attributes){
+    	String library = (String) attributes.get(HTML.LIBRARY_ATTR);
+        if( library == null ){
+        	library = DEFAULT_LIBRARY;
+        }
+    	return library;
+    }
+    
+    private String deriveThemeName(Map attributes, Map contextMap, FacesContext facesContext){
+    	// check for the existence of the name and library attributes.
         String name = (String) attributes.get(HTML.NAME_ATTR);
-        String library = (String) attributes.get(HTML.LIBRARY_ATTR);
+         
         String view = (String)attributes.get(VIEW_TYPE);
 
         // check for empty string on name attribute used for auto mode where
         // name value binding is used.
         name = name != null && name.equals(EMPTY_STRING) ? null : name;
-        
-        String css = null;
 
         // 1.) full automatic device detection.
-        if (name == null && library == null) {
+        if (name == null) {
             // check the session context map for the MOBILE_DEVICE_TYPE_KEY, if found
             // there is now point rechecking for for the device type.
             if (contextMap.containsKey(MOBILE_DEVICE_TYPE_KEY)) {
@@ -140,7 +187,7 @@ public class DeviceStyleSheetRenderer extends Renderer implements javax.faces.ev
                 // the view attribute if specified will apply a small or large
                 // theme, large theme's are tablet based, so ipad and honeycomb.
                 // small themes are android, iphone, and bberry.
-            	switch(Utils.getDeviceType(context)){
+            	switch(Utils.getDeviceType(facesContext)){
 	            	case IPAD: name = "ipad"; break;
 	            	case IPHONE: name = "iphone"; break;
 	            	case ANDROID_PHONE: name = "android"; break;
@@ -168,59 +215,15 @@ public class DeviceStyleSheetRenderer extends Renderer implements javax.faces.ev
                     }
                 }
             }
-            
-            
-            library = DEFAULT_LIBRARY;
-            // store in session map for use later.
-            contextMap.put(MOBILE_DEVICE_TYPE_KEY, name);
+             // store in session map for use later.
         }
-        // 2.) User has specified a named theme they want to load, no auto detect
-        else if (name != null && library == null) {
-            // keep the name but apply default library.
-            library = DEFAULT_LIBRARY;
-        }
-        // 3.) User has specified a name and theme of there own, anything goes.
-        else {
-            // nothing to do, any error will be displayed back to user at runtime
-            // if the resource can't be found.
-        }
-        
-        if( name != null && name.endsWith(".css")){
-        	name = name.substring(0,name.lastIndexOf("."));
-        }
-        
-        // load compressed css if this is production environment.
-        if (context.isProjectStage(ProjectStage.Production)){
-        	css = name.concat(CSS_COMPRESSION_POSTFIX);
-        }
-        css = css.concat(CSS_EXT);
-
-        // create URL that the resource can be loaded from.
-        Resource resource = context.getApplication().getResourceHandler()
-                .createResource(css, library);
-        String resourceUrl = RESOURCE_URL_ERROR;
-        if (resource != null) {
-            resourceUrl = context.getExternalContext().encodeResourceURL(resource.getRequestPath());
-        } else if (log.isLoggable(Level.WARNING)) {
-            log.warning("Warning could not load resource " + library + "/" + name);
-        }
-
-        // final write out the style element to the component tree.
-        writer.startElement(HTML.LINK_ELEM, uiComponent);
-        writer.writeAttribute(HTML.TYPE_ATTR, HTML.LINK_TYPE_TEXT_CSS, HTML.TYPE_ATTR);
-        writer.writeAttribute(HTML.REL_ATTR, HTML.STYLE_REL_STYLESHEET, HTML.REL_ATTR);
-        // pass though
-        PassThruAttributeWriter.renderNonBooleanAttributes(
-                writer, uiComponent, stylesheet.getPASS_THOUGH_ATTRIBUTES());
-        writer.writeURIAttribute(HTML.HREF_ATTR, resourceUrl, HTML.HREF_ATTR);
-        writer.endElement(HTML.LINK_ELEM);
-        encodeScript(writer,name);
+        return name;
     }
     
     public void encodeScript(ResponseWriter writer, String name) throws IOException {
     	writer.startElement("script", null);
     	writer.writeAttribute("type", "text/javascript", null);
-    	writer.writeText(String.format("document.documentElement.className = document.documentElement.className+' %s';", name),null);
+    	writer.writeText(String.format("document.documentElement.className == '' ? document.documentElement.className = '%1$s' : document.documentElement.className = document.documentElement.className+' %1$s';", name),null);
     	writer.endElement("script");
     }
 
