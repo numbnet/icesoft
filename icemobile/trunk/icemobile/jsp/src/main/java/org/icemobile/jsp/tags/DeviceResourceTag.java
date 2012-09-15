@@ -176,9 +176,8 @@ public class DeviceResourceTag extends SimpleTagSupport {
         		contextRoot, Constants.RESOURCE_BASE_URL, libVal, nameVal, fileName);
         String jsLink = String.format("<script type=\"text/javascript\" src='%s%s/javascript/icemobile.js'></script>",
         		contextRoot, Constants.RESOURCE_BASE_URL);
-        String htmlClassnameJS = String.format("<script type='text/javascript'>document.documentElement.className = document.documentElement.className+' %s';</script>", nameVal);
-        
-        
+        String htmlClassnameJS = String.format("<script type='text/javascript'>document.documentElement.className == '' ? document.documentElement.className = '%1$s' : document.documentElement.className = document.documentElement.className+' %1$s';</script>", nameVal);
+         
         try {
             out.write(cssLink);
             out.write(jsLink);
