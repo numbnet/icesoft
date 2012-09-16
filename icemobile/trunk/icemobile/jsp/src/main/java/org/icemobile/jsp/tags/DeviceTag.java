@@ -17,14 +17,11 @@
 package org.icemobile.jsp.tags;
 
 import javax.servlet.jsp.tagext.BodyTagSupport;
-import javax.servlet.jsp.tagext.BodyContent;
-import javax.servlet.jsp.PageContext;
 import javax.servlet.jsp.JspException;
 import javax.servlet.http.HttpSession;
 
 import java.io.Writer;
 import java.io.IOException;
-import java.net.URLEncoder;
 
 public class DeviceTag extends BodyTagSupport {
     String command = "undefined";
@@ -53,8 +50,10 @@ public class DeviceTag extends BodyTagSupport {
                 out.write(" value='" + label + "'>");
             } else {
                 if (!TagUtil.isIOS(pageContext))  {
-                    out.write("<input id='" + id + "' type='" +
-                            fallbackType + "'" + " name='" + id + "' />");
+                    out.write(String.format("<input id='%1$s' type='%2$s' name='%1$s'", 
+                    		id, fallbackType));
+                    writeStandardAttributesForNonEnhanced(out);
+                    out.write("/>");
                 } else {
                    //or for iOS until we can store the ICEmobile-SX registration
                     //without a session (likely a cookie)
@@ -83,21 +82,30 @@ public class DeviceTag extends BodyTagSupport {
     }
 
     public void writeStandardAttributes(Writer out) throws IOException  {
-
-        StringBuilder inputStyle = new StringBuilder(CommandButtonTag.BASE_STYLE_CLASS);
+    	writeStandardAttributes(out,true);      
+    }
+    
+    public void writeStandardAttributes(Writer out, boolean enhancedOrIOS) throws IOException  {
+    	StringBuilder inputStyle = new StringBuilder(enhancedOrIOS ? CommandButtonTag.BASE_STYLE_CLASS : "");
         if (disabled){
             inputStyle.append(CommandButtonTag.DISABLED_STYLE_CLASS);
         }
         if (null != styleClass)  {
             inputStyle.append(" ").append(styleClass);
         }
-        out.write("class='" + inputStyle + "'");
+        if( inputStyle.length() > 0 ){
+        	out.write("class='" + inputStyle + "'");
+        }
         if (null != style)  {
             out.write(" style='" + style + "'");
         }
         if (disabled)  {
             out.write(" disabled='disabled' ");
         }
+    }
+    
+    public void writeStandardAttributesForNonEnhanced(Writer out) throws IOException  {
+    	writeStandardAttributes(out,false);
     }
 
     public String getId() {
