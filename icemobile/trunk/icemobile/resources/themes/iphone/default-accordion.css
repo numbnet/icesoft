@@ -19,17 +19,18 @@
 }
 
 .mobi-accordion .handle {
-    cursor: pointer;
-    height:33px;
-    font-weight: bold;
-    color: black;
-    text-shadow: 0 1px 0 white;
-    border-top: 1px solid #d3d6db;
-    border-bottom: 1px solid #b5b9c0;
     background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0, #F2F2F2), color-stop(1, #7B7B7B));
     background-image: -moz-linear-gradient(top, #F2F2F2, #7B7B7B);
+    border-top: 1px solid #d3d6db;
+    border-bottom: 1px solid #b5b9c0;
+    color: black;
+    cursor: pointer;
     filter: progid:DXImageTransform.Microsoft.gradient(startColorStr = '#F2F2F2', EndColorStr = '#7B7B7B');
     -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#F2F2F2', EndColorStr='#7B7B7B')";
+    font-weight: bold;
+    height:33px;
+    text-shadow: 0 1px 0 white;
+    
 }
 
 .mobi-accordion section {
