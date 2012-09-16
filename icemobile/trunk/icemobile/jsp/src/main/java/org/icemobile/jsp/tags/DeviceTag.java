@@ -104,6 +104,9 @@ public class DeviceTag extends BodyTagSupport {
         }
     }
     
+    /* non-enhanced, non-ios clients only have a file upload rendered, so this does
+     * not include the mobi-button style class, which can't be used on input[type='file']
+     */
     public void writeStandardAttributesForNonEnhanced(Writer out) throws IOException  {
     	writeStandardAttributes(out,false);
     }
