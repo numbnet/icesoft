@@ -1,0 +1,73 @@
+.mobi-fieldset-row > input:last-child, 
+.mobi-fieldset-row > select:last-child,
+.mobi-fieldset-row > textarea:last-child {
+	float: none;
+	box-sizing: border-box;
+}
+.mobi-button-group{
+	text-align:center;
+}
+.view-play-icon {
+	display: inline-block;
+	position: relative;
+	top: -26px;
+	width: 100%;
+	opacity: 0.7;
+	text-align: right;
+}
+.mobi-pagePanel-header, .mobi-pagePanel-footer{
+	z-index: 9999;
+}
+
+.mobi-pagePanel-footer {
+	color: #FFF;
+	font-size:10pt;
+	font-weight: bold;
+	height:30px;
+	padding-top:10px;
+}
+
+#icemobileIcon{
+	float: right;
+	margin-top: -7px;
+	margin-right: 5px;
+}
+#springIcon{
+	float: left;
+	margin-top: -7px;
+	margin-left: 5px;
+}
+.js .ajaxHide{
+	display:none;
+}
+.ajaxShow{
+	display:none; /* Show only for Ajax clients */
+}
+.js .ajaxShow{
+	display:block; /* Show only for Ajax clients */
+}
+
+.input{
+	width: 100%;	
+}
+
+#largePhoto img{
+	border-radius: 0.6em;
+	-webkit-border-radius: 0.6em;
+	-moz-border-radius: 0.6em;
+	margin-bottom: 5px;
+}
+.mobi-fieldset-row {
+	padding: 10px;
+}
+.mobi-carousel {
+	height: 50px;
+}
+.mobi-carousel-list li {
+	width: auto;
+}
+.mobi-carousel-cursor {
+	height: 5px;
+	padding: 2px 0 3px 0;
+}
+

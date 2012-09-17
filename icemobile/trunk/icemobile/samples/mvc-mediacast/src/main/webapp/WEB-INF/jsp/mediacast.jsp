@@ -1,3 +1,4 @@
+<%@ page session="true"%>
 <%@ include file="/WEB-INF/jsp/include.jsp"%>
 <!DOCTYPE html >
 <html>
@@ -25,7 +26,7 @@
 			</div>
 			
 			<div style="margin-top:10px;">
-				<div class="mobi-button-group mobi-button-group-hor">
+				<div class="mobi-button-group mobi-button-group-hor" style="text-align:center;">
 					<a class="mobi-button mobi-button-default" href='<c:url value="/media"/>'>Media Upload</a>
 					<a class="mobi-button mobi-button-default" href='<c:url value="/media/gallery"/>'>Media Gallery</a>
 				</div>

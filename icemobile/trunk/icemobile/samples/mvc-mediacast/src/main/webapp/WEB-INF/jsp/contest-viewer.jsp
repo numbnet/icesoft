@@ -2,12 +2,12 @@
 <%@ include file="/WEB-INF/jsp/include.jsp"%>
 <!DOCTYPE html >
 <html>
-<%@ include file="/WEB-INF/jsp/header.jsp"%>
+	<%@ include file="/WEB-INF/jsp/contest-head.jsp"%>
 <body>
 	<mobi:pagePanel>
 		<mobi:pagePanelHeader>
-			<a id="backBtn" type="back" class="mobi-button mobi-button-back"
-				href='<c:url value="/media"/>'>back</a>
+			<a id="backBtn"class="mobi-button mobi-button-back"
+				href='<c:url value="/contest-gallery"/>'>Gallery</a>
 			<span>Media Viewer</span>
 		</mobi:pagePanelHeader>
 		<mobi:pagePanelBody>
