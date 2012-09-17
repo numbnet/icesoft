@@ -233,7 +233,7 @@ ice.ace.gMap.getGMapWrapper = function (id) {
         map.setOptions(eval(fullOps));
     },
 
-    ice.ace.gMap.addAutoComplete = function(mapId){
+    ice.ace.gMap.addAutoComplete = function(mapId, inputID, submit){
         var input = document.getElementById('autocomplete_input');
         var autocomplete = new google.maps.places.Autocomplete(input);
         var map = ice.ace.gMap.getGMapWrapper(mapId).getRealGMap();
@@ -245,8 +245,8 @@ ice.ace.gMap.getGMapWrapper = function (id) {
                     map.setCenter(place.geometry.location);
                     map.setZoom(17);
                 }
-            document.getElementById("autocompleteValueUpdater").value = place.geometry.location.toString();
-            document.getElementById("autocompletePushButton").click();
+            document.getElementById(inputID).value = place.geometry.location.toString();
+            document.getElementById(submit).click();
             } );
     },
 

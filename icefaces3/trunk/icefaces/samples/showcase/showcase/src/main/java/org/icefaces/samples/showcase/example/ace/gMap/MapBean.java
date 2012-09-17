@@ -33,8 +33,8 @@ import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
 
 
 @ComponentExample(
-    title = "example.ace.gMap.title",
-    description = "example.ace.gMap.description",
+    title = "example.ace.gMap.overview.title",
+    description = "example.ace.gMap.overview.description",
     example = "/resources/examples/ace/gMap/gMapBasic.xhtml"
 )
 @ExampleResources(
@@ -52,7 +52,7 @@ import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
 @Menu(
     title = "menu.ace.gMap.subMenu.title",
     menuLinks = {
-        @MenuLink(title = "menu.ace.gMap.subMenu.basic",
+        @MenuLink(title = "menu.ace.gMap.subMenu.overview",
                 isDefault = true, exampleBeanName = MapBean.BEAN_NAME),
         @MenuLink(title = "menu.ace.gMap.subMenu.direction",
                 exampleBeanName = MapDirectionBean.BEAN_NAME),
