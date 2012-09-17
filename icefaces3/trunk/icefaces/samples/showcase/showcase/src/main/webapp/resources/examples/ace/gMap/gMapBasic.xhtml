@@ -10,11 +10,11 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 template="/resources/templates/content-template.xhtml">
 
-    <ui:param name="title" value="#{msgs[MapBean.title]}"/>
-    <ui:param name="description" value="#{msgs[MapBean.description]}"/>
-    <ui:param name="subMenuTitle" value="#{msgs[MapBean.subMenuTitle]}"/>
-    <ui:param name="subMenuLinks" value="#{MapBean.subMenuLinks}"/>
-    <ui:param name="resourceValue" value="#{MapBean.exampleResource}"/>
+    <ui:param name="title" value="#{msgs[mapBean.title]}"/>
+    <ui:param name="description" value="#{msgs[mapBean.description]}"/>
+    <ui:param name="subMenuTitle" value="#{msgs[mapBean.subMenuTitle]}"/>
+    <ui:param name="subMenuLinks" value="#{mapBean.subMenuLinks}"/>
+    <ui:param name="resourceValue" value="#{mapBean.exampleResource}"/>
 
     <ui:param name="wikiResources" value="#{gMapResources.wikiResources}"/>
     <ui:param name="tldResources" value="#{gMapResources.tldResources}"/>
@@ -48,5 +48,6 @@
             <h:commandButton value="Find Address"
                              actionListener="#{mapBean.lookup}"/>
         </h:form>
+		<p>Relevant section of the Google Maps API: <a href="https://developers.google.com/maps/documentation/javascript/reference#Map">Map</a></p>
     </ui:define>
 </ui:composition>
