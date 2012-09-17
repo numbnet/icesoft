@@ -89,7 +89,10 @@ draggable:${gMapOptionsBean.draggable}, scrollwheel:${gMapOptionsBean.scrollWhee
                 <h:inputText id="maxZoom" value="#{gMapOptionsBean.maxZoom}"><f:ajax render="@all"/></h:inputText>
             </h:panelGrid>
         </ace:panel>
-    <p>Relevant section of the Google Maps API: <a href="https://developers.google.com/maps/documentation/javascript/reference#MapOptions">Map Options</a></p>
+    <p>
+	Note: The 'rotate' control will only appear at very high zooms in satellite or hybrid mode. At all other times, it will be invisible, even if enabled.
+	<br/><br/>
+	Relevant section of the Google Maps API: <a href="https://developers.google.com/maps/documentation/javascript/reference#MapOptions">Map Options</a></p>
 	</h:form>
 </ui:define>
 </ui:composition>
