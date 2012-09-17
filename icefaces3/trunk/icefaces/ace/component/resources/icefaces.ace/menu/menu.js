@@ -184,6 +184,8 @@ ice.ace.Menu = function(id, cfg) {
 
         this.cfg.trigger = ice.ace.escapeClientId(this.cfg.trigger);
     }
+	
+	this.cfg.menuComponent = 'true';
 
     var _self = this;
     this.cfg.select = function(event, ui) {
