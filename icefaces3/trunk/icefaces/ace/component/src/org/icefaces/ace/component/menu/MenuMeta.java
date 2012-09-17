@@ -56,10 +56,10 @@ public class MenuMeta extends UIComponentBaseMeta {
     @Property(tlddoc="Server side id of the component whose triggerEvent will show the menu, when position is dynamic.")
     private String trigger;
 
-    @Property(tlddoc="When position is dynamic, this attribute specifies the corner of the menu to align with trigger element (examples: \"top left\", \"bottom right\").", defaultValue="top left")
+    @Property(tlddoc="When position is dynamic, this attribute specifies the corner of the menu to align with the trigger element. The format is \"&lt;left|right&gt; &lt;top|bottom&gt;\" (examples: \"left top\", \"right bottom\").", defaultValue="left top")
     private String my;
 
-    @Property(tlddoc="When position is dynamic, this attribute specifies the corner of trigger element to align with menu (examples: \"top left\", \"bottom right\").", defaultValue="bottom left")
+    @Property(tlddoc="When position is dynamic, this attribute specifies the corner of trigger element to align with the menu. The format is \"&lt;left|right&gt; &lt;top|bottom&gt;\" (examples: \"left top\", \"right bottom\").", defaultValue="left bottom")
     private String at;
 
     @Property(tlddoc = "Sets the way menu is placed on the page, when \"static\" menu is displayed in the normal flow," +
@@ -95,7 +95,7 @@ public class MenuMeta extends UIComponentBaseMeta {
     @Property(tlddoc="Maximum height (in pixels) for the menu (only applies to sliding menus).", defaultValue = "200")
     private int maxHeight;
 
-    @Property(tlddoc="Event that will trigger the menu to show, when position is dynamic.", defaultValue = "click")
+    @Property(tlddoc="Event that will trigger the menu to show, when position is dynamic. The possible values are \"click\", \"mouseenter\", \"dblclick\", and \"rtclick\".", defaultValue = "click")
     private String triggerEvent;
 
     private AbstractMenu am; // need this for solving dependence on AbstractMenu when compiling MenuBase

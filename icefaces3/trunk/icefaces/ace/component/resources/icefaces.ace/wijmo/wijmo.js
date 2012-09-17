@@ -3608,6 +3608,13 @@ function wijmoASPNetParseOptions(o) {
 						$(document).off(event + namespace, o.trigger).on(event + namespace, o.trigger, function (e) {
 							if (o.mode !== "popup") {
 								self._displaySubmenu(e, triggerEle, menuContainer);
+								if (o.menuComponent) { // ICE-8568
+									var menuId = ice.ace.submenuRegistryGetMenuId(self.rootMenu.get(0));
+									if (menuId) {
+										ice.ace.submenuRegistryCheck(menuId, menuContainer.get(0));
+										setTimeout(function(){ice.ace.submenuRegistry[menuId].push(menuContainer.get(0));},100);
+									}
+								}
 							}
 						});
 						break;
