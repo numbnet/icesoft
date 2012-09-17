@@ -21,11 +21,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
+
 public class MediaMessage implements Serializable {
 
     private static final Logger logger =
             Logger.getLogger(MediaMessage.class.toString());
 
+    private String email;
     private String title;
     private String id;
     private String description;
@@ -51,6 +53,7 @@ public class MediaMessage implements Serializable {
     	audio = null;
     	description = null;
     	direction = 0;
+    	email = null;
     	id = null;
     	latitude = 0;
     	longitude = 0;
@@ -66,6 +69,7 @@ public class MediaMessage implements Serializable {
     	cloned.setAudio(audio);
     	cloned.setDescription(description);
     	cloned.setDirection(direction);
+    	cloned.setEmail(email);
     	cloned.setId(id);
     	cloned.setLatitude(latitude);
     	cloned.setLongitude(longitude);
@@ -204,8 +208,9 @@ public class MediaMessage implements Serializable {
 	
     
     public String toString(){
-    	return String.format("%s title=%s, description=%s, photo=%s, video=%s, audio=%s, tags=%s, lattitude=%s, longitude=%s, direction=%s", 
+    	return String.format("%s email=%s, title=%s, description=%s, photo=%s, video=%s, audio=%s, tags=%s, lattitude=%s, longitude=%s, direction=%s", 
     			super.toString(), 
+    			email,
     			title,
     			description,
     			photo,
@@ -216,5 +221,13 @@ public class MediaMessage implements Serializable {
     			longitude,
     			direction);
     }
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
 
 }

@@ -22,6 +22,7 @@ import java.io.File;
 import java.io.Serializable;
 import java.util.logging.Logger;
 
+
 /**
  * Photo represents one image upload. Each message will normally have three
  * version, small, medium and large.

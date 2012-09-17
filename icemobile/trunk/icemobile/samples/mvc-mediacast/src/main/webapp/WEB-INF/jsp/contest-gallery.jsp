@@ -2,13 +2,13 @@
 <%@ include file="/WEB-INF/jsp/include.jsp"%>
 <!DOCTYPE html >
 <html>
-<%@ include file="/WEB-INF/jsp/header.jsp"%>
+	<%@ include file="/WEB-INF/jsp/contest-head.jsp"%>
 <body>
 	<mobi:pagePanel>
 		<mobi:pagePanelHeader>
-			<a id="backBtn" class="mobi-button"
-				href='<c:url value="/contest"/>'>Upload</a>
-			<span>Photo Gallery</span>
+			<a id="backBtn" class="mobi-button mobi-button-back"
+				href='<c:url value="/contest-upload"/>'>Upload</a>
+			<span>Contest Gallery</span>
 		</mobi:pagePanelHeader>
 		<mobi:pagePanelBody>
 			 <form:form id="filterForm" method="POST" modelAttribute="galleryModel">
@@ -67,12 +67,7 @@
 		                </mobi:outputListItem>
 		            </c:forEach>
 		        </mobi:outputList>
-		            
 		    </form:form>
-
-		    
-		    
-			
 		</mobi:pagePanelBody>
 		<%@ include file="/WEB-INF/jsp/footer.jsp"%>
 	</mobi:pagePanel>
