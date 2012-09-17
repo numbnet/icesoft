@@ -125,12 +125,13 @@ public class DeviceResourceTag extends SimpleTagSupport {
 
         // 1.) full automatic device detection.
         if (nameVal == null && libVal == null) {
+        	
+        	nameVal = TagUtil.getDeviceType(pageContext).name();
 
             // the view attribute if specified will apply a small or large
             // theme, large theme's are tablet based, so ipad and honeycomb.
             // small themes are android, iphone, and bberry.
             if (viewVal != null) {
-                nameVal = TagUtil.getDeviceType(userAgent).name();
                 // forces a small view
                 if (viewVal.equalsIgnoreCase(TagUtil.VIEW_TYPE_SMALL)) {
                     if (nameVal.equals(TagUtil.DeviceType.ipad.name())) {
@@ -147,8 +148,6 @@ public class DeviceResourceTag extends SimpleTagSupport {
                 } else {
                     log.warning("View type " + viewVal + " is not a recognized view type");
                 }
-            } else {
-                nameVal = TagUtil.getDeviceType(userAgent).name();
             }
 
             // load compressed css if this is production environment.
