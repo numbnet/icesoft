@@ -159,7 +159,6 @@ public class TagUtil {
 
     public static String getUploadPath(HttpServletRequest request) {
         String upPath = request.getContextPath() + "/icemobile";
-        System.out.println("fix hardcoded " + upPath);
         return upPath;
     }
 
@@ -188,10 +187,7 @@ public class TagUtil {
     public static final String VIEW_TYPE_LARGE = "large";
 
     public static boolean isTouchEventEnabled(PageContext pageContext) {
-        HttpServletRequest request = (HttpServletRequest)
-            pageContext.getRequest();
-        String userAgent = request.getHeader(USER_AGENT);
-        if (sniffAndroidTablet(userAgent)) {
+        if (sniffAndroidTablet(pageContext)) {
             return false;
         }
         if (isIOS(pageContext) || isAndroid(pageContext)) {
@@ -205,87 +201,63 @@ public class TagUtil {
     }
 
     public static boolean isIOS5orHigher(PageContext pageContext) {
-        HttpServletRequest request = (HttpServletRequest)
-            pageContext.getRequest();
-        String userAgent = request.getHeader(USER_AGENT);
-        return sniffIOS5(userAgent) || sniffIOS6(userAgent);
+        return sniffIOS5(pageContext) || sniffIOS6(pageContext);
     }
 
     public static boolean isIOS(PageContext pageContext) {
-        HttpServletRequest request = (HttpServletRequest)
-            pageContext.getRequest();
-        String userAgent = request.getHeader(USER_AGENT);
-        return sniffIOS(userAgent);
+        return sniffIOS(pageContext);
     }
 
     public static boolean isAndroid(PageContext pageContext) {
-        HttpServletRequest request = (HttpServletRequest)
-            pageContext.getRequest();
-        String userAgent = request.getHeader(USER_AGENT);
-        return sniffAndroid(userAgent);
+        return sniffAndroid(pageContext);
     }
 
     public static boolean isBlackBerry(PageContext pageContext) {
-        HttpServletRequest request = (HttpServletRequest)
-            pageContext.getRequest();
-        String userAgent = request.getHeader(USER_AGENT);
-        String accept = request.getHeader(ACCEPT);
-        return sniffBlackberry(userAgent, accept);
+        return sniffBlackberry(pageContext);
     }
 
-    static boolean sniffIpod(String uaString) {
-        boolean result = uaString.contains(DEVICE_IPOD);
-        logSniff(result, "iPod", uaString);
-        return result;
+    static boolean sniffIpod(PageContext pageContext) {
+        return userAgentContains(pageContext, DEVICE_IPOD);
     }
 
     //don't get iPhone confused with iPod touch
-    static boolean sniffIphone(String uaString) {
-        boolean result = uaString.contains(DEVICE_IPHONE)
-            && !sniffIpod(uaString)
-            && !sniffIpad(uaString);
-        logSniff(result, "iPod", uaString);
+    static boolean sniffIphone(PageContext pageContext) {
+        boolean result = sniffIOS5(pageContext)
+            && !sniffIpod(pageContext)
+            && !sniffIpad(pageContext);
+        logSniff(result, "iPod", getUserAgent(pageContext));
         return result;
     }
 
-    static boolean sniffIOS(String uaString) {
-        boolean result = sniffIphone(uaString) || sniffIpod(uaString) || sniffIpad(uaString);
-        logSniff(result, "iOS", uaString);
-        return result;
+    static boolean sniffIOS(PageContext pageContext) {
+        return sniffIphone(pageContext) || sniffIpod(pageContext) || sniffIpad(pageContext);
     }
 
-    static boolean sniffIOS5(String uaString) {
-        boolean result = uaString.contains(DEVICE_IOSS);
-        logSniff(result, "iOS5", uaString);
-        return result;
+    static boolean sniffIOS5(PageContext pageContext) {
+        return userAgentContains(pageContext, DEVICE_IOSS);
     }
     
-    static boolean sniffIOS6(String uaString) {
-        boolean result = uaString.contains(DEVICE_IOS6);
-        logSniff(result, "iOS6", uaString);
-        return result;
+    static boolean sniffIOS6(PageContext pageContext) {
+    	return userAgentContains(pageContext, DEVICE_IOS6);
     }
 
-    static boolean sniffIpad(String uaString) {
-        boolean result = uaString.contains(DEVICE_IPAD);
-        logSniff(result, "iPad", uaString);
-        return result;
+    static boolean sniffIpad(PageContext pageContext) {
+    	return userAgentContains(pageContext, DEVICE_IPAD);
     }
 
-    static boolean sniffAndroid(String uaString) {
+    static boolean sniffAndroid(PageContext pageContext) {
 
-        boolean foundAndroid = uaString.contains(DEVICE_ANDROID) && 
-        		uaString.contains(DEVICE_MOBILE) && !uaString.contains(DEVICE_GALAXY_TABLET) 
-        		&& !uaString.contains(DEVICE_TABLET);
-        logSniff(foundAndroid, "Android Mobile", uaString);
+        boolean foundAndroid = userAgentContains(pageContext, DEVICE_ANDROID) && 
+        		userAgentContains(pageContext, DEVICE_MOBILE) && !userAgentContains(pageContext, DEVICE_GALAXY_TABLET) 
+        		&& !userAgentContains(pageContext, DEVICE_TABLET);
         return foundAndroid;
     }
 
-    static boolean sniffAndroidTablet(String uaString) {
-    	 boolean result = uaString.contains(DEVICE_ANDROID) && 
-    	        	(!uaString.contains(DEVICE_MOBILE) || uaString.contains(DEVICE_GALAXY_TABLET) 
-    	        	|| uaString.contains(DEVICE_TABLET));
-        logSniff(result, "Android Tablet", uaString);
+    static boolean sniffAndroidTablet(PageContext pageContext) {
+    	 boolean result = userAgentContains(pageContext, DEVICE_ANDROID) && 
+    	        	(!userAgentContains(pageContext, DEVICE_MOBILE) || 
+    	        			userAgentContains(pageContext, DEVICE_GALAXY_TABLET) 
+    	        	|| userAgentContains(pageContext, DEVICE_TABLET));
         return result;
     }
 
@@ -297,13 +269,13 @@ public class TagUtil {
      * @param httpAccept
      * @return true if Blackberry device detected
      */
-    static boolean sniffBlackberry(String uaString, String httpAccept) {
-        if (httpAccept == null) {
-            httpAccept = "";
-        }
-        boolean result = uaString.contains(DEVICE_BLACKB)
-            || httpAccept.contains(VND_RIM);
-        logSniff(result, "BlackBerry", uaString);
+    static boolean sniffBlackberry(PageContext pageContext) {
+    	boolean blackberry = userAgentContains(pageContext, DEVICE_BLACKB);
+    	boolean vnd = false;
+    	if( !blackberry ){
+    		vnd = acceptContains(pageContext, VND_RIM);
+    	}
+        boolean result = blackberry || vnd;
         return result;
     }
 
@@ -316,32 +288,25 @@ public class TagUtil {
         }
     }
 
-    static DeviceType getDeviceType(String userAgent) {
-        DeviceType device = checkUserAgentInfo(userAgent, "");
+    static DeviceType getDeviceType(PageContext pageContext) {
+        DeviceType device = checkUserAgentInfo(pageContext);
         return device;
     }
 
-    static DeviceType getDeviceType(String userAgent, String accepts) {
-        DeviceType device = checkUserAgentInfo(userAgent, accepts);
-        return device;
-    }
-
-    private static DeviceType checkUserAgentInfo(String userAgent,
-                                                 String accepts) {
-    	userAgent = userAgent.toLowerCase();
-        if (sniffIphone(userAgent) || sniffIpod(userAgent)) {
+    private static DeviceType checkUserAgentInfo(PageContext pageContext) {
+    	if (sniffIphone(pageContext) || sniffIpod(pageContext)) {
             return DeviceType.iphone;
         }
-        if (sniffAndroidTablet(userAgent)) {
+        if (sniffAndroidTablet(pageContext)) {
             return DeviceType.honeycomb;
         }
-        if (sniffAndroid(userAgent)) {
+        if (sniffAndroid(pageContext)) {
             return DeviceType.android;
         }
-        if (sniffBlackberry(userAgent, accepts)) {
+        if (sniffBlackberry(pageContext)) {
             return DeviceType.bberry;
         }
-        if (sniffIpad(userAgent)) {
+        if (sniffIpad(pageContext)) {
             return DeviceType.ipad;
         }
         return DeviceType.DEFAULT;
@@ -357,6 +322,39 @@ public class TagUtil {
             return true;
         }
         return value.trim().equals("");
+    }
+    
+    private static String getUserAgent(PageContext pageContext){
+    	HttpServletRequest request = (HttpServletRequest)
+                pageContext.getRequest();
+    	String ua = request.getHeader(USER_AGENT);
+    	return ua == null ? ua : ua.toLowerCase();
+    }
+    
+    private static String getAccept(PageContext pageContext){
+    	HttpServletRequest request = (HttpServletRequest)
+                pageContext.getRequest();
+    	String accept = request.getHeader(ACCEPT);
+    	return accept == null ? accept : accept.toLowerCase();
+    }
+    
+    private static boolean acceptContains(PageContext pageContext, String contains){
+    	boolean result = false;
+    	String accept = getAccept(pageContext);
+    	if( accept != null ){
+    		result = accept.contains(contains);
+    	}
+    	return result;
+    }
+    
+    private static boolean userAgentContains(PageContext pageContext, String contains){
+    	boolean result = false;
+    	String ua = getUserAgent(pageContext);
+    	if( ua != null ){
+    		result = ua.contains(contains);
+    	}
+    	logSniff(result, contains, ua);
+    	return result;   	
     }
 
     /*    protected void writeJavascriptFile(FacesContext facesContext, 
