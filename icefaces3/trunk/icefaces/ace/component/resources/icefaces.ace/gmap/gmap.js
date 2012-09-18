@@ -137,22 +137,25 @@ ice.ace.gMap.getGMapWrapper = function (id) {
     },
 
     ice.ace.gMap.locateAddress = function (clientId, address) {
-        var map = ice.ace.gMap.getGMapWrapper(clientId).getRealGMap();
+
         var geocoder = new google.maps.Geocoder();
         geocoder.geocode({'address':address}, function (results, status) {
             if (status == google.maps.GeocoderStatus.OK) {
-                map.setCenter(results[0].geometry.location);
+                var map = ice.ace.gMap.getGMapWrapper(clientId).getRealGMap();
+                map.setCenter(new google.maps.LatLng(results[0].geometry.location.lat(),results[0].geometry.location.lng()));
             } else {
                 alert("Geocode was not successful for the following reason: " + status);
             }
         });
+
     },
 
-    ice.ace.gMap.create = function (ele, lat, lng) {
+    ice.ace.gMap.create = function (ele, lat, lng, zoom, type) {
+
         if(lat == undefined && lng == undefined)
             var gmapWrapper = new GMapWrapper(ele, new google.maps.Map(document.getElementById(ele), {mapTypeId:google.maps.MapTypeId.ROADMAP, zoom:5, center: new google.maps.LatLng(0,0)}));
         else
-            var gmapWrapper = new GMapWrapper(ele, new google.maps.Map(document.getElementById(ele), {mapTypeId:google.maps.MapTypeId.ROADMAP, zoom:5, center: new google.maps.LatLng(lat,lng)}));
+            var gmapWrapper = new GMapWrapper(ele, new google.maps.Map(document.getElementById(ele), {mapTypeId:type, zoom:zoom, center: new google.maps.LatLng(lat,lng)}));
         var hiddenField = document.getElementById(ele);
         var mapTypedRegistered = false;
         //google.maps.event.addListener(gmapWrapper.getRealGMap(),"center_changed",function(){});
@@ -162,11 +165,13 @@ ice.ace.gMap.getGMapWrapper = function (id) {
     },
 
     ice.ace.gMap.recreate = function (ele, gmapWrapper) {
-        ice.ace.gMap.remove(ele);
         var map = gmapWrapper.getRealGMap();
         var lat = map.getCenter().lat();
         var lng = map.getCenter().lng();
-        gmapWrapper = ice.ace.gMap.create(ele, lat, lng);
+        var zoom = map.getZoom();
+        var type = map.getMapTypeId();
+        ice.ace.gMap.remove(ele);
+        gmapWrapper = ice.ace.gMap.create(ele, lat, lng, zoom,type);
         map = gmapWrapper.getRealGMap();
         return gmapWrapper;
     },
