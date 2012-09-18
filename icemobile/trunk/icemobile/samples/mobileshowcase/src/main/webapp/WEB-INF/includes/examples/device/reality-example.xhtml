@@ -96,6 +96,25 @@
         </mobi:fieldsetGroup>
     </h:form>
 
+    <h:form >
+
+        <mobi:fieldsetGroup>
+
+            <mobi:fieldsetRow>
+                <mobi:augmentedReality 
+                    styleClass="mobi-button mobi-round-all"
+                    urlBase="#{realityBean.baseURL}"
+                    value="#{realityBean.selection}">
+                    <mobi:augmentedRealityMarkers
+                        value="#{realityBean.markers}" var="marker"
+                        locationLabel="#{marker.label}"
+                        markerModel="#{marker.model}" />
+                </mobi:augmentedReality>
+                <h:commandButton styleClass="mobi-button mobi-round-all mobi-button-important"
+                                 value="Submit"/>
+            </mobi:fieldsetRow>
+        </mobi:fieldsetGroup>
+    </h:form>
 
 
 </ui:composition>
