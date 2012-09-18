@@ -20,7 +20,7 @@ public class WindowScopeBeanLocator {
      * @param name the name of the bean as it is declared in its annotation or faces-config.xml file
      * @return the bean when found or null if missing
      */
-    public Object lookupBean(ServletRequest request, HttpSession session, String name) {
+    public static Object lookupBean(ServletRequest request, HttpSession session, String name) {
         HashMap<String, Object> requestMap = new HashMap();
         Enumeration e = request.getAttributeNames();
         while (e.hasMoreElements()) {
