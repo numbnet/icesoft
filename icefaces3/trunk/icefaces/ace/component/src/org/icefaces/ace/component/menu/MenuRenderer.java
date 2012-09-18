@@ -72,7 +72,6 @@ public class MenuRenderer extends BaseMenuRenderer {
             item(clientId).
             beginMap().
 
-                entry("position", menu.getPosition()).
                 entry("zindex", menu.getZindex()).
 
                 //animation
@@ -88,21 +87,24 @@ public class MenuRenderer extends BaseMenuRenderer {
                 }
         
                 if(position.equalsIgnoreCase("dynamic")) {
-                   json.entry("my", menu.getMy()).
-                   entry("at", menu.getAt());
-
                     String triggerId = menu.getTrigger();
 					if (triggerId != null) {
+						json.entry("position", "dynamic").
+						entry("my", menu.getMy()).
+						entry("at", menu.getAt()).
+						entry("triggerEvent", menu.getTriggerEvent());
+						
 						UIComponent trigger = menu.findComponent(triggerId);
 						if(trigger != null) {
-							json.entry("trigger", trigger.getClientId(context)).
-							entry("triggerEvent", menu.getTriggerEvent());
+							json.entry("trigger", trigger.getClientId(context));
 						}
 						else {
 							json.entry("trigger", triggerId);
 						}
 					}
-                }
+                } else {
+					json.entry("position", "static");
+				}
 
                 json.entryNonNullValue("styleClass", menu.getStyleClass()).
                 entryNonNullValue("style", menu.getStyle()).

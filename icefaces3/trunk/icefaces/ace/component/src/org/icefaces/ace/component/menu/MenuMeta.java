@@ -47,13 +47,13 @@ public class MenuMeta extends UIComponentBaseMeta {
     @Property(tlddoc = "Javascript variable name of the wrapped widget.")
     private String widgetVar;
 
-    @Property(tlddoc = "MenuModel instance to create menus programmatically. " +
+    @Property(tlddoc = "org.icefaces.ace.model.MenuModel instance to create menus programmatically. " +
             "For the menuitem and submenu components, use explicit ids, and " +
             "avoid long processing in the getter method for this property, " +
             "as it will be called multiple times, in every lifecycle.")
     private MenuModel model;
 
-    @Property(tlddoc="Server side id of the component whose triggerEvent will show the menu, when position is dynamic.")
+    @Property(tlddoc="Server-side id of the component that will trigger the dynamic menu when the triggerEvent occurs. Used when position is dynamic. It is also possible to specify a client-side id of a plain HTML element on the page.")
     private String trigger;
 
     @Property(tlddoc="When position is dynamic, this attribute specifies the corner of the menu to align with the trigger element. The format is \"&lt;left|right&gt; &lt;top|bottom&gt;\" (examples: \"left top\", \"right bottom\").", defaultValue="left top")
@@ -62,15 +62,15 @@ public class MenuMeta extends UIComponentBaseMeta {
     @Property(tlddoc="When position is dynamic, this attribute specifies the corner of trigger element to align with the menu. The format is \"&lt;left|right&gt; &lt;top|bottom&gt;\" (examples: \"left top\", \"right bottom\").", defaultValue="left bottom")
     private String at;
 
-    @Property(tlddoc = "Sets the way menu is placed on the page, when \"static\" menu is displayed in the normal flow," +
-            " when set to \"dynamic\" menu is not on the normal flow allowing overlaying. Default value is \"static\".",
+    @Property(tlddoc = "Sets the way the menu is placed on the page. When \"static\", the menu is displayed in the normal flow." +
+            " When set to \"dynamic\", the menu is only displayed near the trigger component when the triggerEvent occurs. For the latter case, it is required to specify a trigger component.",
             defaultValue = "static")
     private String position;
 
     @Property(tlddoc = "Sets the tiered mode, when set to true menu will be rendered in different tiers.")
     private boolean tiered;
 
-    @Property(tlddoc = "Type of menu, valid values are \"plain\", tiered and \"sliding\".", defaultValue = "plain")
+    @Property(tlddoc = "Type of menu, valid values are \"plain\", \"tiered\" and \"sliding\".", defaultValue = "plain")
     private String type;
 
     @Property(tlddoc = "Sets the effect for the menu display, default value is FADE. Possible values are" +
