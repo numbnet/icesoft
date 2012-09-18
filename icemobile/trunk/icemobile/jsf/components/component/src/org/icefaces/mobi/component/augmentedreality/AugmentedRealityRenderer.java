@@ -39,6 +39,8 @@ public class AugmentedRealityRenderer extends BaseInputRenderer  {
     private static final String LOC_ALT = "locationAlt";
     private static final String LOC_DIR = "locationDir";
     private static final String LOC_ICON = "locationIcon";
+    private static final String MARK_MODEL = "markerModel";
+    private static final String MARK_LABEL = "markerLabel";
 
      public void encodeEnd(FacesContext facesContext, UIComponent uiComponent)
              throws IOException {
@@ -81,6 +83,12 @@ public class AugmentedRealityRenderer extends BaseInputRenderer  {
                 AugmentedRealityLocations locations = 
                         (AugmentedRealityLocations) child;
                 arParams += iterateLocations(facesContext, locations);
+            }
+            if (child instanceof AugmentedRealityMarkers) {
+                AugmentedRealityMarkers markers =
+                        (AugmentedRealityMarkers) child;
+                arParams += iterateMarkers(facesContext, markers);
+                arParams += "v=vuforia" + "&";
             }
         }
 
@@ -162,6 +170,37 @@ public class AugmentedRealityRenderer extends BaseInputRenderer  {
             }
             result.append("&");
             requestMap.put(var, oldVar);
+        }
+        return result.toString();
+    }
+
+    String iterateMarkers(FacesContext facesContext,
+            AugmentedRealityMarkers markers)  {
+        String var = markers.getVar();
+        if (null == var) {
+            //cannot iterate without a var
+            return null;
+        }
+        StringBuilder result = new StringBuilder();
+        
+        Map<String, Object> requestMap =
+              facesContext.getExternalContext().getRequestMap();
+        Collection items = (Collection) markers.getValue();
+        int index = 0;
+        for (Object item : items)  {
+            Object oldVar = requestMap.put(var, item);
+            Map<String,Object> attrs = markers.getAttributes();
+            String markerLabel = (String) attrs.get(MARK_LABEL);
+            String itemID = "_" + index;
+            result.append(markerLabel + itemID).append("=");
+
+            String markerModel = (String) attrs.get(MARK_MODEL);
+            if (null != markerModel)  {
+                result.append(URLEncoder.encode(markerModel));
+            }
+            result.append("&");
+            requestMap.put(var, oldVar);
+            index++;
         }
         return result.toString();
    }
