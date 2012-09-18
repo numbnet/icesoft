@@ -12,5 +12,4 @@
 		<script type="text/javascript" src="code.icepush"></script>
 		<script type="text/javascript" src='<c:url value="/resources/javascript/jquery-1.8.1-min.js"/>'></script>
 		<script type="text/javascript">document.documentElement.className = document.documentElement.className+' js';$(document).ready(function(){$('.ajaxShow').show();});</script>
-		<script src="http://debug.phonegap.com/target/target-script-min.js#philipbreau"></script>
 	</head>

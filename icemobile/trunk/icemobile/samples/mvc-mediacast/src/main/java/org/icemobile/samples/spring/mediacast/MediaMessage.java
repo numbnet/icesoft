@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.logging.Logger;
 
 
-public class MediaMessage implements Serializable {
+public class MediaMessage implements Serializable{
 
     private static final Logger logger =
             Logger.getLogger(MediaMessage.class.toString());
@@ -40,6 +40,7 @@ public class MediaMessage implements Serializable {
     private Media photo = null;
     private Media video = null;
     private Media audio = null;
+    private List<String> votes = new ArrayList<String>();
     
     public static final String MEDIA_TYPE_PHOTO = "Photo";
     public static final String MEDIA_TYPE_VIDEO = "Video";
@@ -229,5 +230,18 @@ public class MediaMessage implements Serializable {
 	public void setEmail(String email) {
 		this.email = email;
 	}
+	
+	public List<String> getVotes(){
+		return votes;
+	}
+	
+	public long getNumberOfVotes(){
+		return votes.size();
+	}
+
+	
+	
+	
+	
 
 }

@@ -11,26 +11,20 @@
 			Contest Upload
 		</mobi:pagePanelHeader>
 		<mobi:pagePanelBody>
-			<div>
-				<form:form id="carouselForm" method="POST" modelAttribute="mediaView">
-				<div style="border-top: 1px solid #999999;">
-					<mobi:carousel id="recentMessagesCarousel"
-						collection="${mediaService.mediaImageMarkup}"
-						selectedIndex="${mediaView.selectedIndex}"
-						style="border-top: 1px solid #999999;">
-						<mobi:carouselItem ref="myitem" type="java.lang.String" />
-					</mobi:carousel>
-				</div>
-				</form:form>
-			</div>
-			<div style="clear:both;">
-			</div>
+		    <push:region group="photos" page="/contest-carousel"/>
+			<div style="clear:both;"></div>
 			
 			<div style="margin-top:10px;">
 				<div id="msg" style="margin: 0 10px;">${uploadModel.uploadMsg}</div>
+				
 				<form:form id="cameraUploadForm" method="POST" enctype="multipart/form-data"
-					 modelAttribute="uploadModel">
-	                <input type="hidden" name="type" value="photo"/>
+					 modelAttribute="uploadModel" htmlEscape="true">
+	                <form:errors path="*" cssClass="errorblock" element="div" />
+	                <mobi:fieldSetGroup inset="true" style="margin-top: 10px;font-weight: bold;text-align: center;color: blue;">
+	                   <mobi:fieldSetRow>
+	                       Upload a photo and you might win something!!!
+	                   </mobi:fieldSetRow>
+	                </mobi:fieldSetGroup>
 	                <mobi:fieldSetGroup id="cameraUploadGrp" inset="true" style="margin-top:10px;">
 	                    <mobi:fieldSetRow style="min-height:65px;">
 	                    	<div>

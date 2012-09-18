@@ -4,16 +4,24 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Iterator;
+import java.util.List;
 import java.util.UUID;
 
 import javax.inject.Inject;
+import javax.servlet.ServletContext;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.icepush.PushContext;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,7 +31,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.multipart.MultipartFile;
 
 @Controller
-@SessionAttributes({"uploadModel"})
+@SessionAttributes({"uploadModel","msg"})
 public class ContestController {
 
 	@Inject
@@ -31,11 +39,16 @@ public class ContestController {
 	
 	String currentFileName = null;
 	
+	private transient PushContext pushContext;
+	
+	@Autowired
+	private ServletContext servletContext;
+	
 	private static final Log log = LogFactory
-			.getLog(ApplicationController.class);
+			.getLog(ContestController.class);
 	
-	private static final String DELIMETERS = "[, \t\n\r\f]";
 	
+		
 	@ModelAttribute("uploadModel")
 	public MediaMessage getUploadModel(){
 		MediaMessage uploadModel = new MediaMessage();
@@ -53,6 +66,13 @@ public class ContestController {
 		log.debug("uploadModel="+uploadModel);
 		return "contest-upload";
 	}
+	
+	@RequestMapping(value="/contest-carousel", method = RequestMethod.GET)
+	public String getCarouselContent(Model model) {
+		model.addAttribute("mediaService", mediaService);
+		return "contest-carousel";
+	}
+	
 
 	@RequestMapping(value = "/contest-uploads/{id}", method = RequestMethod.GET)
 	public String getMediaViewerPage(@PathVariable String id, Model model) {
@@ -72,23 +92,27 @@ public class ContestController {
 	public String uploadPhoto(
 			HttpServletRequest request,
 			@RequestParam(value = "upload", required = false) MultipartFile file,
-			@RequestParam String email, 
-			@RequestParam String description,
-			Model model, 
+			@Valid ContestForm form, BindingResult result, Model model, 
 			@ModelAttribute("uploadModel") MediaMessage uploadModel)
 			throws IOException {
 		
+		if (result.hasErrors() || (file != null && file.isEmpty())) {
+			uploadModel.setUploadMsg("Sorry, I think you missed something.");
+			return "contest-upload";
+		}
+		
 		if( file != null ){
+			log.debug("file: " + file);
 			uploadModel.setId(newId());
 			saveImage(request, file, uploadModel);
-			uploadModel.setDescription(description);
-			uploadModel.setEmail(email);
+			uploadModel.setDescription(form.getDescription());
+			uploadModel.setEmail(form.getEmail());
 			mediaService.addMedia(uploadModel);
 			log.debug("successfully added message to mediaService, uploadModel="
 					+ uploadModel);
 			uploadModel.setUploadMsg("Thank you, your file was uploaded successfully.");
 			uploadModel.clear();
-			log.debug("processUpload() file="+file);
+			PushContext.getInstance(servletContext).push("photos");
 			
 			return "redirect:/";
 		}
@@ -99,36 +123,51 @@ public class ContestController {
 	}
 	
 	@RequestMapping(value="/contest-gallery", method=RequestMethod.GET)
-	public String showGallery(Model model, 
-			@RequestParam(value = "filters", required = false) String filters){
+	public String showGallery(Model model){
 		
-		GalleryModel galleryModel = new GalleryModel();
-		galleryModel.setTags(mediaService.getTags());
-		galleryModel.setTagsMap(mediaService.getTagsMap());
-				
-		if( filters != null ){
-			galleryModel.setFilters(Arrays.asList(filters.split(DELIMETERS)));
-			galleryModel.setFilterString(filters);
-			Iterator<MediaMessage> iter = mediaService.getMedia().iterator();
-			while( iter.hasNext() ){
-				MediaMessage msg = iter.next();
-				for( String tag : msg.getTags() ){
-					if( filters.contains(tag)){
-						galleryModel.getFilteredMessages().add(msg);
-						break;
-					}
-				}
-			}
-		}
-		else{
-			galleryModel.setFilteredMessages(new ArrayList<MediaMessage>(mediaService.getMedia()));
-		}
-		galleryModel.setFilteredMessagesCount(galleryModel.getFilteredMessages().size());
-		
-		model.addAttribute("galleryModel", galleryModel);
-		
+		model.addAttribute("mediaService", mediaService);
 		return "contest-gallery";
 	}
+	
+	@RequestMapping(value="/contest-uploads/{id}", method = RequestMethod.POST)
+	public String voteOnPhoto(HttpServletResponse response, @PathVariable String id, 
+			@CookieValue(value="votes", required=false) String cookieVotes, Model model){
+		MediaMessage msg = mediaService.getMediaMessage(id);
+		if (msg != null ){
+			String voterId = null;
+			List<String> votesList = null;
+			if( cookieVotes != null ){
+				voterId = cookieVotes.substring(0,13);
+				String votes = cookieVotes.substring(14);
+				votesList = new ArrayList<String>(Arrays.asList(votes.split(",")));
+				if( votesList.contains(id)){
+					log.debug("attempted duplicate vote!!!");
+					model.addAttribute("msg","Looks like you already voted on this one...try another");
+					return "redirect:/contest-uploads/"+id;
+				}
+			}
+			else{
+				voterId = newId();
+				votesList = new ArrayList<String>();
+			}
+			votesList.add(id);
+			msg.getVotes().add(voterId);
+			model.addAttribute("msg","Awesome, thanks for the vote!");
+			String newVotes = voterId+":"+ votesList.toString().replaceAll(" ", "").replaceAll("^\\[|\\]$","");
+			Cookie cookie = new Cookie("votes", newVotes);
+			cookie.setHttpOnly(true);
+			cookie.setPath("/");
+			response.addCookie(cookie);
+			log.debug("recorded vote");
+			return "redirect:/contest-uploads/"+id;
+			
+		} else {
+			log.warn("Could not find message with id=" + id);
+			return "redirect:/contest-uploads/"+id;
+		}
+		
+	}
+	
 	private String newId() {
 		return Long.toString(
 				Math.abs(UUID.randomUUID().getMostSignificantBits()), 32);
@@ -159,6 +198,7 @@ public class ContestController {
 		media.setFile(newFile);
 		media.setType(file.getContentType());
 		uploadModel.setPhoto(media);
+		log.debug("added new media to uploadModel");
 	}
 
 	private void saveImage(HttpServletRequest request, MultipartFile file,

@@ -2,7 +2,10 @@
 .mobi-fieldset-row > select:last-child,
 .mobi-fieldset-row > textarea:last-child {
 	float: none;
-	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    box-sizing: border-box;
 }
 .mobi-button-group{
 	text-align:center;
@@ -71,3 +74,62 @@
 	padding: 2px 0 3px 0;
 }
 
+.message-desc {
+	opacity: 0.5;
+	background-color: #B4B4B4;
+	margin-top: -5px;
+	border-bottom: 1px solid black;
+	padding: 0 0 1px 0;
+	width: 100%;
+}
+.message-desc h3{
+    margin: 0 1em;
+    text-align: center;
+}
+
+.imageViewer {
+    width: 100%;
+}
+
+.mobi-list > .mobi-list-item > .mobi-list-item-default > a {
+	width: 100%;
+	height: 50px;
+	padding: 0;
+	margin: 0 8px 0 0;
+}
+
+.mobi-list-item {
+	padding: 0;
+}
+.mediaLink .desc{
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	width: 70%;
+	font-size: 12px;
+	font-weight: normal;
+	float: left;
+	padding: 10px;
+	height: 50px;
+	overflow: hidden;
+	-webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    box-sizing: border-box;
+	font-family: Lucida console;
+	display: inline-block;
+}
+.mediaLink .vote {
+  color: grey;
+  font-style: italic;
+  height: 23px;
+  margin-right: 21px;
+  margin-top: 27px;
+  padding: 0;
+  position: absolute;
+  right: 10px;
+  text-align: right;
+  width: 200px;
+}
+.mobi-list > .mobi-list-item > .mobi-list-item-default > a {
+	background-position: 100% 89%;
+}
