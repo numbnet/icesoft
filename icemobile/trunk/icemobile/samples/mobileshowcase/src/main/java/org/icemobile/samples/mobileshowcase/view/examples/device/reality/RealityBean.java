@@ -39,6 +39,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -96,12 +97,18 @@ public class RealityBean extends ExampleImpl<RealityBean> implements
     private double longitude = 0.0;
     HashMap<String,RealityMessage> messages = new HashMap();
     static int THUMBSIZE = 128;
+    List markerList;
 
     // upload error message
     private String uploadMessage;
 
     public RealityBean() {
         super(RealityBean.class);
+        markerList = new ArrayList();
+        HashMap marker = new HashMap();
+        marker.put("label", "logo");
+        marker.put("model", "resources/logo.obj");
+        markerList.add(marker);
     }
 
     public void processUploadedImage(ActionEvent event) {
@@ -203,6 +210,10 @@ public class RealityBean extends ExampleImpl<RealityBean> implements
 
     public Collection getMessages()  {
         return messages.values();
+    }
+
+    public List getMarkers()  {
+        return markerList;
     }
 
     public String getBaseURL()  {
