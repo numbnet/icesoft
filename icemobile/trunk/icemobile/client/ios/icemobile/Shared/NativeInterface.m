@@ -22,6 +22,10 @@
 #import "MobileCoreServices/MobileCoreServices.h"
 #import "MediaPlayer/MediaPlayer.h"
 
+#ifdef USE_ARMARKER
+#import "ARMarkerViewer.h"
+#endif
+
 @implementation NativeInterface
 
 @synthesize controller;
@@ -407,6 +411,14 @@ NSLog(@"called camera");
         }
         augController.nativeInterface = self;
     }
+    NSString *viewer = [places objectForKey:@"v"];
+    NSLog(@"NativeInterface aug VIEWER %@", viewer);
+    if ([viewer isEqualToString:@"vuforia"])  {
+        [self augMarkerView];
+        return YES;
+    }
+
+
     NSString *urlBase = [places objectForKey:@"ub"];
 	NSMutableArray *placeLabels = [NSMutableArray array];
     for (NSString *name in places)  {
@@ -414,6 +426,9 @@ NSLog(@"called camera");
             continue;
         }
         if ([name isEqualToString:@"ub"])  {
+            continue;
+        }
+        if ([name isEqualToString:@"v"])  {
             continue;
         }
         NSArray *pairs = [[places objectForKey:name] 
@@ -481,6 +496,30 @@ NSLog(@"called camera");
     }
 
     return YES;
+}
+
+- (void)augMarkerView  {
+#ifdef USE_ARMARKER
+    NSLog(@"NativeInterface augMarkerView");
+
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)  {
+//        if (nil == self.augPopover)  {
+//            augPopover = [[UIPopoverController alloc]
+//                    initWithContentViewController:augController];
+//            self.augPopover.popoverContentSize = CGSizeMake(320, 480);
+//        }
+//        [self.augPopover presentPopoverFromRect:popoverSource
+//                                 inView:self.controller.view
+//               permittedArrowDirections:UIPopoverArrowDirectionAny 
+//                               animated:YES];
+    } else {
+        ARMarkerViewer *arMarkerViewer = [[ARMarkerViewer alloc] init];
+        arMarkerViewer.nativeInterface = self;
+        arMarkerViewer.arViewRect = [[UIScreen mainScreen] bounds];
+        [controller presentModalViewController:[arMarkerViewer arMarkerController] animated:YES];
+    }
+
+#endif
 }
 
 - (void)augDismiss  {

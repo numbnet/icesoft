@@ -70,6 +70,7 @@
 - (BOOL)camcorder: (NSString*)cameraId;
 - (BOOL)microphone: (NSString*)micId;
 - (BOOL)aug:(NSString*)augId locations:(NSDictionary*)places;
+- (void)augMarkerView;
 - (void)augDone;
 - (void)augDismiss;
 - (void)recordStart;
