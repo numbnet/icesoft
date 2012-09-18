@@ -40,6 +40,7 @@ import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
 import java.util.List;
 import java.util.ArrayList;
+import javax.faces.event.ActionEvent;
 import javax.faces.event.FacesEvent;
 import javax.faces.event.AbortProcessingException;
 
@@ -53,9 +54,11 @@ public class Tooltip extends TooltipBase{
 	
     public void broadcast(FacesEvent event) throws AbortProcessingException {
         super.broadcast(event);
-		MethodExpression displayListener = getDisplayListener();
-		if (displayListener != null) {
-			displayListener.invoke(getFacesContext().getELContext(), null);
+		if (event instanceof ActionEvent) {
+			MethodExpression displayListener = getDisplayListener();
+			if (displayListener != null) {
+				displayListener.invoke(getFacesContext().getELContext(), null);
+			}
 		}
 	}
 }
