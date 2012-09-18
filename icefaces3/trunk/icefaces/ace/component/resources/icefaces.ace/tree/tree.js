@@ -29,16 +29,16 @@ ice.ace.Tree = function (cfg) {
         var self = this;
         ice.onElementUpdate(this.id, function() { self.unload(); });
     }
-}
+};
 
 ice.ace.Tree.prototype.unload = function() {
     this.tearDownSelection();
     this.tearDownExpansion();
-}
+};
 
 ice.ace.Tree.prototype.tearDownExpansion = function() {
     this.element.off('click', this.expansionButtonSelector);
-}
+};
 
 ice.ace.Tree.prototype.setupExpansion = function() {
     var self = this;
@@ -60,14 +60,14 @@ ice.ace.Tree.prototype.setupExpansion = function() {
                 self.doClientExpansion(node);
         }
     });
-}
+};
 
 ice.ace.Tree.prototype.tearDownSelection = function() {
     this.element
             .off('click', this.selectionTargetSelector)
             .off('mouseenter', this.selectionTargetSelector)
             .off('mouseleave', this.selectionTargetSelector);
-}
+};
 
 ice.ace.Tree.prototype.setupSelection = function() {
     var self = this;
@@ -104,7 +104,7 @@ ice.ace.Tree.prototype.setupSelection = function() {
                 self.doClientSelection(node, wrap);
         }
     });
-}
+};
 
 ice.ace.Tree.prototype.sendNodeDeselectionRequest = function(node) {
     var options = {
@@ -123,7 +123,7 @@ ice.ace.Tree.prototype.sendNodeDeselectionRequest = function(node) {
     } else {
         ice.ace.AjaxRequest(options);
     }
-}
+};
 
 ice.ace.Tree.prototype.sendNodeSelectionRequest = function(node) {
     var options = {
@@ -145,7 +145,7 @@ ice.ace.Tree.prototype.sendNodeSelectionRequest = function(node) {
     } else {
         ice.ace.AjaxRequest(options);
     }
-}
+};
 
 ice.ace.Tree.prototype.doClientDeselection = function(node, wrap) {
     var key = this.getNodeKey(node);
@@ -154,7 +154,7 @@ ice.ace.Tree.prototype.doClientDeselection = function(node, wrap) {
 
     this.append('deselect', key);
     this.remove('select', key);
-}
+};
 
 ice.ace.Tree.prototype.doClientSelection = function(node, wrap) {
     var key = this.getNodeKey(node);
@@ -166,7 +166,7 @@ ice.ace.Tree.prototype.doClientSelection = function(node, wrap) {
 
     this.append('select', key);
     this.remove('deselect', key);
-}
+};
 
 ice.ace.Tree.prototype.doClientContraction = function(node) {
     var key = this.getNodeKey(node),
@@ -180,7 +180,7 @@ ice.ace.Tree.prototype.doClientContraction = function(node) {
 
     this.append('contract', key);
     this.remove('expand', key);
-}
+};
 
 ice.ace.Tree.prototype.doClientExpansion = function(node) {
     var key = this.getNodeKey(node),
@@ -194,7 +194,7 @@ ice.ace.Tree.prototype.doClientExpansion = function(node) {
 
     this.append('expand', key);
     this.remove('contract', key);
-}
+};
 
 ice.ace.Tree.prototype.sendNodeContractionRequest = function(node) {
     var options = {
@@ -213,7 +213,7 @@ ice.ace.Tree.prototype.sendNodeContractionRequest = function(node) {
     } else {
         ice.ace.AjaxRequest(options);
     }
-}
+};
 
 ice.ace.Tree.prototype.sendNodeExpansionRequest = function(node) {
     var options = {
@@ -232,7 +232,7 @@ ice.ace.Tree.prototype.sendNodeExpansionRequest = function(node) {
     } else {
         ice.ace.AjaxRequest(options);
     }
-}
+};
 
 ice.ace.Tree.prototype.deselectAll = function() {
     var self = this;
@@ -247,7 +247,7 @@ ice.ace.Tree.prototype.deselectAll = function() {
         self.append('deselect', key);
         self.remove('select', key);
     });
-}
+};
 
 ice.ace.Tree.prototype.getNodeKey = function(node) {
     var startStr = this.cfg.id + ':-:',
@@ -258,23 +258,23 @@ ice.ace.Tree.prototype.getNodeKey = function(node) {
         endIndex = id.indexOf(endStr, startIndex);
 
     return id.substring(startIndex, endIndex);
-}
+};
 
 ice.ace.Tree.prototype.write = function(key, val) {
     this.element.find(this.jqId+"_"+key).val(JSON.stringify(val));
-}
+};
 
 ice.ace.Tree.prototype.read = function(key) {
     var val = this.element.find(this.jqId+"_"+key).val();
     if (val != "") return JSON.parse(val);
     else return [];
-}
+};
 
 ice.ace.Tree.prototype.append = function(key, val) {
     var arr = this.read(key);
     arr.push(val);
     this.write(key, arr);
-}
+};
 
 ice.ace.Tree.prototype.remove = function(key, val) {
     this.write(key, ice.ace.jq.grep(this.read(key),
@@ -282,4 +282,4 @@ ice.ace.Tree.prototype.remove = function(key, val) {
             return o != val;
         }
     ));
-}
+};
