@@ -40,12 +40,9 @@ function GMapWrapper(eleId, realGMap) {
     this.eleId = eleId;
     this.realGMap = realGMap;
     this.overlays = new Object();
-    this.geoMarker = new Object();
     this.directions = new Object();
     this.services = new Object();
     this.layers = new Object();
-    this.geoMarkerAddress;
-    this.geoMarkerSet = false;
     this.getElementId = ice.ace.gMap.getElementId;
     this.getRealGMap = ice.ace.gMap.getRealGMap;
 }
@@ -151,8 +148,11 @@ ice.ace.gMap.getGMapWrapper = function (id) {
         });
     },
 
-    ice.ace.gMap.create = function (ele) {
-        var gmapWrapper = new GMapWrapper(ele, new google.maps.Map(document.getElementById(ele), {mapTypeId:google.maps.MapTypeId.ROADMAP, zoom:5, center: new google.maps.LatLng(0,0)}));
+    ice.ace.gMap.create = function (ele, lat, lng) {
+        if(lat == undefined && lng == undefined)
+            var gmapWrapper = new GMapWrapper(ele, new google.maps.Map(document.getElementById(ele), {mapTypeId:google.maps.MapTypeId.ROADMAP, zoom:5, center: new google.maps.LatLng(0,0)}));
+        else
+            var gmapWrapper = new GMapWrapper(ele, new google.maps.Map(document.getElementById(ele), {mapTypeId:google.maps.MapTypeId.ROADMAP, zoom:5, center: new google.maps.LatLng(lat,lng)}));
         var hiddenField = document.getElementById(ele);
         var mapTypedRegistered = false;
         //google.maps.event.addListener(gmapWrapper.getRealGMap(),"center_changed",function(){});
@@ -163,13 +163,11 @@ ice.ace.gMap.getGMapWrapper = function (id) {
 
     ice.ace.gMap.recreate = function (ele, gmapWrapper) {
         ice.ace.gMap.remove(ele);
-        var geoMarker = gmapWrapper.geoMarker;
-        var geoMarkerAddress = gmapWrapper.geoMarkerAddress;
-        gmapWrapper = ice.ace.gMap.create(ele);
-        gmapWrapper.geoMarker = geoMarker;
-        gmapWrapper.geoMarkerAddress = geoMarkerAddress;
-        gmapWrapper.geoMarkerSet = 'true';
-        var tempObject = new Object();
+        var map = gmapWrapper.getRealGMap();
+        var lat = map.getCenter().lat();
+        var lng = map.getCenter().lng();
+        gmapWrapper = ice.ace.gMap.create(ele, lat, lng);
+        map = gmapWrapper.getRealGMap();
         return gmapWrapper;
     },
 
@@ -178,6 +176,18 @@ ice.ace.gMap.getGMapWrapper = function (id) {
         for (map in GMapRepository) {
             if (map != ele) {
                 newRepository[map] = GMapRepository[map];
+            }
+            else{
+
+                var divParent = document.getElementById(ele).parentNode;
+                var styleClass = document.getElementById(ele).getAttribute('class');
+                var style = document.getElementById(ele).getAttribute('style');
+                document.getElementById(ele).remove();
+                var div = document.createElement("div");
+                div.setAttribute("class",styleClass);
+                div.setAttribute("style",style);
+                div.setAttribute('id',ele);
+                divParent.appendChild(div);
             }
         }
         GMapRepository = newRepository;
@@ -245,8 +255,10 @@ ice.ace.gMap.getGMapWrapper = function (id) {
                     map.setCenter(place.geometry.location);
                     map.setZoom(17);
                 }
+            if(inputID != "none" && submit != "none"){
             document.getElementById(inputID).value = place.geometry.location.toString();
             document.getElementById(submit).click();
+            }
             } );
     },
 
@@ -542,15 +554,6 @@ ice.ace.gMap.getGMapWrapper = function (id) {
 
     ice.ace.gMap.setMapType = function (ele, type) {
         var gmapWrapper = ice.ace.gMap.getGMapWrapper(ele);
-        //if the chart is recreated, so add any geoCoderMarker that was exist before.
-        if (gmapWrapper.geoMarkerSet
-            && gmapWrapper.geoMarker != null
-            && gmapWrapper.geoMarkerAddress != null
-            ) {
-            gmapWrapper.getRealGMap().addOverlay(gmapWrapper.geoMarker);
-            gmapWrapper.geoMarker.openInfoWindowHtml(gmapWrapper.geoMarkerAddress);
-            gmapWrapper.geoMarkerSet = false;
-        }
         if (type == "MAP")
             type = "ROADMAP";
         if (gmapWrapper.getRealGMap().getMapTypeId() != null) {
