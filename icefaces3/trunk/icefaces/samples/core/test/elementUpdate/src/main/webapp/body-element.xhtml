@@ -14,15 +14,22 @@
   ~ governing permissions and limitations under the License.
   -->
 
-<html>
-<head>
-    <title>Scope tests</title>
-</head>
-<body>
-<ol>
-    <li><a href="input-element.jsf">input element update test</a></li>
-    <li><a href="table-elements.jsf">table elements update test</a></li>
-    <li><a href="body-element.jsf">body element update test</a></li>
-</ol>
-</body>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+<f:view  contentType="text/html"/>
+<h:head>
+    <title>Body update test</title>
+</h:head>
+<h:body>
+    <div style="border: 1px dotted black; padding: 5px;">
+            <h:form>
+                <h:commandButton value="Generate body element update" action="#{BodyBean.generateBodyUpdate}">
+                    <f:ajax render="@all" execute="@all"/>
+                </h:commandButton>
+            </h:form>
+    </div>
+</h:body>
 </html>
+
