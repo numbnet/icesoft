@@ -54,7 +54,7 @@ public class GMapRenderer extends CoreRenderer {
 				writer.write("ice.ace.gMap.locateAddress('" + clientId + "', '" + gmap.getAddress() + "');");
 			else
 				writer.write("ice.ace.gMap.getGMapWrapper('" + clientId +"').getRealGMap().setCenter(new google.maps.LatLng("+ gmap.getLatitude() + "," + gmap.getLongitude() + "));");
-			writer.write("ice.ace.gMap.getGMapWrapper('" + clientId +"').getRealGMap().setZoom(" + gmap.getZoomLevel() + ");");
+            writer.write("ice.ace.gMap.getGMapWrapper('" + clientId +"').getRealGMap().setZoom(" + gmap.getZoomLevel() + ");");
 			writer.write("ice.ace.gMap.setMapType('" + clientId + "','" + gmap.getType().toUpperCase() + "');");
 			if (gmap.getOptions() != null && gmap.getOptions().length() > 1)
 				writer.write("ice.ace.gMap.addOptions('" + clientId +"',\"" + gmap.getOptions() + "\");");
