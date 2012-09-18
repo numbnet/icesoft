@@ -56,6 +56,9 @@ public class OutputListItemsRenderer extends BaseLayoutRenderer {
                     styleClass += " " + userDefinedClass;
                 }
                 writer.writeAttribute("class", styleClass, "styleClass");
+                if (list.getStyle() !=null){
+                    writer.writeAttribute(HTML.STYLE_ATTR, list.getStyle(), HTML.STYLE_ATTR);
+                }
                 writer.startElement(HTML.DIV_ELEM, uiComponent);
                 writer.writeAttribute("class", OutputListItem.OUTPUTLISTITEMDEFAULT_CLASS, null);
                 renderChildren(facesContext, list);

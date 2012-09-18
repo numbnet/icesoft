@@ -52,7 +52,9 @@ public class OutputListRenderer extends Renderer {
              styleClasses.append(" ").append(userDefinedClass);
          }
          writer.writeAttribute("class", styleClasses.toString(), "styleClass");
-
+         if (list.getStyle() !=null){
+             writer.writeAttribute(HTML.STYLE_ATTR, list.getStyle(), HTML.STYLE_ATTR);
+         }
          // verify the children are OutputListItem only
          if (facesContext.isProjectStage(ProjectStage.Development) ||
                  logger.isLoggable(Level.FINER)) {

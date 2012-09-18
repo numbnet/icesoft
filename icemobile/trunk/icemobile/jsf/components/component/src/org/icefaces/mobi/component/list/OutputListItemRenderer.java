@@ -51,6 +51,9 @@ public class OutputListItemRenderer extends Renderer {
             }
         }
         writer.writeAttribute("class", styleClass, "styleClass");
+        if (item.getStyle() !=null){
+             writer.writeAttribute(HTML.STYLE_ATTR, item.getStyle(), HTML.STYLE_ATTR);
+        }
         writer.startElement(HTML.DIV_ELEM, uiComponent);
         writer.writeAttribute("class", OutputListItem.OUTPUTLISTITEMDEFAULT_CLASS, null);
     }
