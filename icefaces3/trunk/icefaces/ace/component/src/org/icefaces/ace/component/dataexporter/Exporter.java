@@ -58,7 +58,7 @@ import org.icefaces.application.ResourceRegistry;
 
 public abstract class Exporter {
 
-	protected static final Pattern htmlTagPattern = Pattern.compile("\\<.*?\\>");
+	protected static final Pattern HTML_TAG_PATTERN = Pattern.compile("\\<.*?\\>");
 	protected SpanningRows spanningRows = this.new SpanningRows();
 
     public abstract String export(FacesContext facesContext, DataTable table,
@@ -293,7 +293,8 @@ public abstract class Exporter {
 		}
 		
 		// strip HTML tags
-		ret = htmlTagPattern.matcher(ret).replaceAll("");
+		ret = HTML_TAG_PATTERN.matcher(ret).replaceAll("");
+		ret = (context.getApplication().evaluateExpressionGet(context, ret, Object.class)).toString();
 		
 		if (component.getChildren().size() > 0) {
 			StringBuilder builder = new StringBuilder();
