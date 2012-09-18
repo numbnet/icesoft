@@ -83,10 +83,8 @@ public class ContentMenuItemRenderer extends BaseLayoutRenderer {
 
     private void renderItemAsButton(UIComponent parent, FacesContext facesContext, UIComponent uiComponent)
         throws IOException {
-        ContentNavBar parentMenu = (ContentNavBar)parent;
         ContentMenuItem item = (ContentMenuItem)uiComponent;
         ResponseWriter writer = facesContext.getResponseWriter();
-        String clientId = item.getClientId(facesContext);
         String stackClientId = null;
         StringBuilder menubuttonClass = new StringBuilder(ContentNavBar.CONTENTNAVBAR_BUTTON_MENU_CLASS);
         StringBuilder buttonClass = new StringBuilder (ContentNavBar.CONTENTNAVBAR_BUTTON_CLASS);
@@ -110,6 +108,9 @@ public class ContentMenuItemRenderer extends BaseLayoutRenderer {
                     UIComponent pane = stack.findComponent(valId);
                     writer.startElement(HTML.ANCHOR_ELEM, uiComponent);
                     writer.writeAttribute("class",menubuttonClass , "class");
+                    if (item.getStyle() !=null){
+                     writer.writeAttribute(HTML.STYLE_ATTR, item.getStyle(), HTML.STYLE_ATTR);
+                    }
                     StringBuilder sb = new StringBuilder("mobi.layoutMenu.showContent('").append(stackClientId);
                     sb.append("', this");
                     sb.append(",{ selectedId: '").append(item.getValue()).append("'");
@@ -169,7 +170,7 @@ public class ContentMenuItemRenderer extends BaseLayoutRenderer {
              }
              else{
                  logger.warning("ERROR unable to find stack id="+contentStackId);
-                 // SOME KIND OF ERROR MESSAGE or FACESMESSAGE
+                 // SOME FACESMESSAGE  ??
              }
          }
          stackClientId = ((ContentStackMenu) parent).getStackClientId();
@@ -193,6 +194,9 @@ public class ContentMenuItemRenderer extends BaseLayoutRenderer {
              }  else {
                  writeItemListStart(uiComponent, writer, clientId);
                  writer.writeAttribute("class", ContentMenuItem.OUTPUTLISTITEMGROUP_CLASS, "class");
+                 if (lmi.getStyle() !=null){
+                     writer.writeAttribute(HTML.STYLE_ATTR, lmi.getStyle(), HTML.STYLE_ATTR);
+                 }
                  writer.startElement(HTML.DIV_ELEM, uiComponent);
                  writer.writeAttribute("class", ContentMenuItem.OUTPUTLISTITEMDEFAULT_CLASS, "class");
                  writer.write(label);
@@ -201,6 +205,9 @@ public class ContentMenuItemRenderer extends BaseLayoutRenderer {
          }else {
              writeItemListStart(uiComponent, writer, clientId);
              writer.writeAttribute("class", ContentMenuItem.OUTPUTLISTITEM_CLASS, "class");
+             if (lmi.getStyle() !=null){
+                     writer.writeAttribute(HTML.STYLE_ATTR, lmi.getStyle(), HTML.STYLE_ATTR);
+             }
              writer.startElement(HTML.DIV_ELEM, uiComponent);
              writer.writeAttribute("class", ContentMenuItem.OUTPUTLISTITEMDEFAULT_CLASS, "class");
              writer.startElement(HTML.ANCHOR_ELEM, uiComponent);
@@ -226,7 +233,7 @@ public class ContentMenuItemRenderer extends BaseLayoutRenderer {
                  }
              }
              if (icon !=null){
-                //TODO implementation of icon needs to be defined
+                //TODO implementation of icon needs to be defined  --base64?
              }
              writer.write(lmi.getLabel());
              writer.endElement(HTML.ANCHOR_ELEM);
@@ -281,6 +288,9 @@ public class ContentMenuItemRenderer extends BaseLayoutRenderer {
         writer.writeAttribute("class", baseClass, "class");
         writer.startElement(HTML.UL_ELEM, childComp);
         writer.writeAttribute("class", listClass, "class");
+        if (menu.getStyle() !=null) {
+           writer.writeAttribute(HTML.STYLE_ATTR, menu.getStyle(), HTML.STYLE_ATTR);
+        }
         menu.setOpenAccordionHandle(true);
     }
 
