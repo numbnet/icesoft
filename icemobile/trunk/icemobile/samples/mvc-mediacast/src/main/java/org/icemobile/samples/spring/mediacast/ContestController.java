@@ -29,6 +29,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.context.request.WebRequest;
 
 @Controller
 @SessionAttributes({"uploadModel","msg"})
@@ -55,7 +56,12 @@ public class ContestController {
 		log.debug("returning new uploadModel="+uploadModel);
 		return uploadModel;
 	}
-	
+
+	@ModelAttribute
+	public void ajaxAttribute(WebRequest request, Model model) {
+		model.addAttribute("ajaxRequest", isAjaxRequest(request));
+	}
+
 	@RequestMapping(value="/contest-upload", method = RequestMethod.GET)
 	public String getContestPage(Model model, 
 			@ModelAttribute("uploadModel") MediaMessage uploadModel) {
@@ -213,6 +219,20 @@ public class ContestController {
 			return "resources/images/uploaded.jpg";
 		}
 		return currentFileName;
+	}
+
+	public static boolean isAjaxRequest(WebRequest webRequest) {
+		String requestedWith = webRequest.getHeader("Faces-Request");
+		if ("partial/ajax".equals(requestedWith))  {
+            return true;
+        }
+
+		requestedWith = webRequest.getHeader("X-Requested-With");
+		return requestedWith != null ? "XMLHttpRequest".equals(requestedWith) : false;
+	}
+
+	public static boolean isAjaxUploadRequest(WebRequest webRequest) {
+		return webRequest.getParameter("ajaxUpload") != null;
 	}
 
 }

@@ -1,9 +1,12 @@
 <%@ page session="false"%>
 <%@ include file="/WEB-INF/jsp/include.jsp"%>
+<c:if test="${!ajaxRequest}">
 <!DOCTYPE html >
 <html>
 	<%@ include file="/WEB-INF/jsp/contest-head.jsp"%>
 <body>
+</c:if>
+    <div class="ajaxzone">
 	<mobi:pagePanel>
 		<mobi:pagePanelHeader>
 			<a id="backBtn"class="mobi-button mobi-button-back"
@@ -37,7 +40,7 @@
 	                     <mobi:fieldSetRow style="min-height:0;">
 	                    	 <mobi:inputtext name="email" 
 	                         	styleClass="input"
-	                         	type="text"
+	                         	type="email"
                                 autoCorrect="off"
                                 placeholder="Email"
                                 value="${uploadModel.email}"/>
@@ -66,9 +69,15 @@
 						</mobi:fieldSetRow>
 	                </mobi:fieldSetGroup>
 	            </form:form>
+                <script type="text/javascript">
+                    enhanceForm("#cameraUploadForm");
+                </script>
             </div>
 		</mobi:pagePanelBody>
 		<%@ include file="/WEB-INF/jsp/footer.jsp"%>
 	</mobi:pagePanel>
+    </div>
+<c:if test="${!ajaxRequest}">
 </body>
 </html>
+</c:if>
