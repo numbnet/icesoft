@@ -38,17 +38,17 @@ public class ContestController {
 	private MediaService mediaService;
 	
 	String currentFileName = null;
-	
-	private transient PushContext pushContext;
-	
-	@Autowired
+		
 	private ServletContext servletContext;
 	
 	private static final Log log = LogFactory
 			.getLog(ContestController.class);
 	
+	@Autowired
+	public ContestController(ServletContext servletContext){
+		this.servletContext = servletContext;		
+	}
 	
-		
 	@ModelAttribute("uploadModel")
 	public MediaMessage getUploadModel(){
 		MediaMessage uploadModel = new MediaMessage();
@@ -64,6 +64,7 @@ public class ContestController {
 			model.addAttribute("uploadModel", uploadModel);
 		}
 		log.debug("uploadModel="+uploadModel);
+		
 		return "contest-upload";
 	}
 	
