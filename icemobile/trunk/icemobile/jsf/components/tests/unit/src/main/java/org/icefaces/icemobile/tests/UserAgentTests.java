@@ -1,18 +1,17 @@
 package org.icefaces.icemobile.tests;
 
+import static org.junit.Assert.assertTrue;
+
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
-
-import javax.servlet.http.HttpServletRequest;
 
 import org.icefaces.icemobile.tests.UserAgentReader.Device;
 import org.icefaces.mobi.utils.Utils;
 import org.icefaces.mobi.utils.Utils.DeviceType;
 import org.junit.Before;
 import org.junit.Test;
-import static org.junit.Assert.assertTrue;
 
 public class UserAgentTests  {
 	
