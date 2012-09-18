@@ -76,7 +76,7 @@ public class TextEntryRenderer extends InputRenderer {
         writeLabelAndIndicatorBefore(labelAttributes);
 
         writer.startElement("input", null);
-//        writer.writeAttribute("id", clientId + "_input", null);
+        writer.writeAttribute("id", clientId + "_input", null);
         writer.writeAttribute("type", "text", null);
 
         String embeddedLabel = null;
