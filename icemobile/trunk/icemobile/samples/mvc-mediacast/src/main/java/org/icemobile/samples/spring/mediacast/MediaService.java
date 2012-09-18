@@ -1,8 +1,13 @@
 package org.icemobile.samples.spring.mediacast;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import javax.servlet.ServletContext;
 
@@ -15,11 +20,15 @@ import org.springframework.web.context.ServletContextAware;
 public class MediaService implements ServletContextAware {
 	
 	private List<MediaMessage> media = new ArrayList<MediaMessage>();
+	private Set<MediaMessage> mediaByVotes = Collections.synchronizedSet(new HashSet<MediaMessage>());
 	private static final int CAROUSEL_IMG_HEIGHT = 48;
 	private static final String CAROUSEL_ITEM_MARKUP = 
 			"<div style='overflow:hidden;height:48px;'><img height='"+CAROUSEL_IMG_HEIGHT+"' src='%1$s/resources/uploads/%2$s' style='border:none;' title='%3$s'></div><a class='view-play-icon' href='%1$s/media/%4$s' ><img src='%1$s/resources/images/view-icon.png' style='border:none;'></a>";
 	private String contextPath;
 	private TagWeightMap tagsMap = new TagWeightMap();
+	private static final String CONTEST_CAROUSEL_ITEM_MARKUP = 
+			"<div style='overflow:hidden;height:48px;'><img height='"+CAROUSEL_IMG_HEIGHT+"' src='%1$s/resources/uploads/%2$s' style='border:none;' title='%3$s'></div><a class='view-play-icon' href='%1$s/contest-uploads/%4$s' ><img src='%1$s/resources/images/view-icon.png' style='border:none;'></a>";
+	private Comparator<MediaMessage> mediaByVotesComparator = new MediaMessageByVotesComparator();
 	
 	private static final Log log = LogFactory
 			.getLog(MediaService.class);
@@ -27,6 +36,13 @@ public class MediaService implements ServletContextAware {
 	public List<MediaMessage> getMedia(){
 		return media;
 	}
+	
+	public List<MediaMessage> getMediaSortedByVotes(){
+		List<MediaMessage> list = new ArrayList<MediaMessage>(mediaByVotes);
+		Collections.sort(list, mediaByVotesComparator);
+		return list;
+	}
+	
 	
 	public void setContextPath(String contextPath){
 		this.contextPath = contextPath;
@@ -37,6 +53,16 @@ public class MediaService implements ServletContextAware {
     	if( media != null ){
 	    	for( MediaMessage mediaMsg : media ){
 	    		imageMarkup.add(String.format(CAROUSEL_ITEM_MARKUP, contextPath, mediaMsg.getPhoto().getFileName(), mediaMsg.getTitle(), mediaMsg.getId()));
+	    	}
+    	}
+    	return imageMarkup;
+    }
+	
+	public List<String> getContestMediaImageMarkup(){
+    	List<String> imageMarkup = new ArrayList<String>();
+    	if( mediaByVotes != null ){
+	    	for( MediaMessage mediaMsg : getMediaSortedByVotes() ){
+	    		imageMarkup.add(String.format(CONTEST_CAROUSEL_ITEM_MARKUP, contextPath, mediaMsg.getPhoto().getFileName(), mediaMsg.getTitle(), mediaMsg.getId()));
 	    	}
     	}
     	return imageMarkup;
@@ -69,6 +95,23 @@ public class MediaService implements ServletContextAware {
 				break;
 			}
 		}
+		Iterator<MediaMessage> iter = mediaByVotes.iterator();
+		while( iter.hasNext() ){
+			MediaMessage msg = iter.next();
+			if( msg.getId().equals(id)){
+				iter.remove();
+				if( msg.getPhoto() != null ){
+					msg.getPhoto().dispose();
+				}
+				if( msg.getVideo() != null ){
+					msg.getVideo().dispose();
+				}
+				if( msg.getAudio() != null ){
+					msg.getAudio().dispose();
+				}
+				break;
+			}
+		}
 	}
 
 	public void setServletContext(ServletContext context) {
@@ -85,7 +128,12 @@ public class MediaService implements ServletContextAware {
 	
 	public void addMedia(MediaMessage msg){
 		if( msg != null ){
-			media.add(0,msg.clone());
+			MediaMessage cloned = msg.clone();
+			media.add(0,cloned);
+			log.debug("added to media");
+			boolean mediaByVotesAdded = mediaByVotes.add(cloned);
+			log.debug("added to mediaByVotes");
+			log.debug("media by votes added="+mediaByVotesAdded);
 			log.debug("addMedia: tags="+msg.getTags());
 	    	if( msg.getTags().size() > 0 ){
 	    		for( String tag : msg.getTags() ){
@@ -152,5 +200,34 @@ public class MediaService implements ServletContextAware {
 			return weight;
 		}
 	}
+	
+	/* sorted descending */
+	class MediaMessageByVotesComparator implements Comparator<MediaMessage>{
+
+		public int compare(MediaMessage msg1, MediaMessage msg2) {
+			
+			try{
+			
+				if( msg1 == null && msg2 == null ){
+					return 0;
+				}
+				if( msg1 != null && msg2 == null ){
+					return -1;
+				}
+				if( msg1 == null && msg2 != null ){
+					return 1;
+				}
+				return Integer.valueOf(msg2.getVotes().size())
+						.compareTo(msg1.getVotes().size());
+			}
+			catch(Exception e){
+				e.printStackTrace();
+				log.fatal("problem in comparator");
+				return 0;
+			}
+		}
+		
+	}
+
 
 }
