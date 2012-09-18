@@ -177,6 +177,7 @@ public class TagUtil {
     public static final String DEVICE_BB_CURVE = "blackberry89"; //curve2
     public static final String DEVICE_BB_TORCH = "blackberry 98"; //torch
     public static final String VND_RIM = "vnd.rim";  //found when emulating IE or FF on BB
+    public static final String DEVICE_IOS4 = " os 4_";
     public static final String DEVICE_IOSS = " os 5_";
     public static final String DEVICE_IOS6 = " os 6_";
     public static final String DEVICE_MOBILE = "mobile";
@@ -220,17 +221,16 @@ public class TagUtil {
         return userAgentContains(pageContext, DEVICE_IPOD);
     }
 
-    //don't get iPhone confused with iPod touch
     static boolean sniffIphone(PageContext pageContext) {
-        boolean result = sniffIOS5(pageContext)
-            && !sniffIpod(pageContext)
-            && !sniffIpad(pageContext);
-        logSniff(result, "iPod", getUserAgent(pageContext));
-        return result;
+    	 return userAgentContains(pageContext, DEVICE_IPHONE);
     }
 
     static boolean sniffIOS(PageContext pageContext) {
         return sniffIphone(pageContext) || sniffIpod(pageContext) || sniffIpad(pageContext);
+    }
+    
+    static boolean sniffIOS4(PageContext pageContext) {
+        return userAgentContains(pageContext, DEVICE_IOSS);
     }
 
     static boolean sniffIOS5(PageContext pageContext) {
@@ -294,7 +294,7 @@ public class TagUtil {
     }
 
     private static DeviceType checkUserAgentInfo(PageContext pageContext) {
-    	if (sniffIphone(pageContext) || sniffIpod(pageContext)) {
+    	if (sniffIphone(pageContext)) {
             return DeviceType.iphone;
         }
         if (sniffAndroidTablet(pageContext)) {

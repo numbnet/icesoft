@@ -122,11 +122,14 @@ public class DeviceResourceTag extends SimpleTagSupport {
         // check for empty string on name attribute used for auto mode where
         // name value binding is used.
         nameVal = nameVal != null && nameVal.equals(EMPTY_STRING) ? null : name;
+        
+        log.info("name="+nameVal+", lib="+libVal+", view="+viewVal);
 
         // 1.) full automatic device detection.
         if (nameVal == null && libVal == null) {
         	
         	nameVal = TagUtil.getDeviceType(pageContext).name();
+        	log.info("detected " + nameVal);
 
             // the view attribute if specified will apply a small or large
             // theme, large theme's are tablet based, so ipad and honeycomb.
@@ -168,6 +171,7 @@ public class DeviceResourceTag extends SimpleTagSupport {
             // nothing to do, any error will be displayed back to user at runtime
             // if the resource can't be found.
         }
+        log.info("name="+nameVal+", lib="+libVal+", view="+viewVal);
         
         String contextRoot = Util.getContextRoot(pageContext.getRequest());
 
