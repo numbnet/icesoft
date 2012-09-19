@@ -39,13 +39,14 @@
         <style type="text/css">
             #form\3Atree {
                 line-height: 1 !important;
+                height:150px;
+                overflow: auto;
             }
         </style>
         <ace:tree id="tree"
                 expansion="true"
                 selection="true"
                 reordering="true"
-                multipleSelection="false"
                 value="#{treeBean.treeRoots}"
                 var="node"
                 stateMap="#{treeBean.stateMap}"
@@ -64,16 +65,11 @@
             </ace:node>
         </ace:tree>
 
-        <h:panelGroup style="display:inline-block; vertical-align:top;">
+        <h:panelGroup style="display:inline-block; vertical-align:top; padding-left: 1em;">
             <ui:repeat var="selection" value="#{treeBean.stateMap.getSelected()}">
                 <h:outputText value="#{selection.name}" /><br/>
             </ui:repeat>
         </h:panelGroup>
-
-        <br/>
-        <h:commandButton value="Save">
-            <f:ajax event="click" execute="@all" render="@all" />
-        </h:commandButton>
     </h:form>
 </ui:define>
 </ui:composition>
