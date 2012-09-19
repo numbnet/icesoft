@@ -1190,4 +1190,54 @@
             </description>
         </attribute>
     </tag>
+    <tag>
+        <description>The getEnhanced tag will dynamically render a download link for the
+        ICEmobile container. The renderd link will depend on the type of detecteed device.
+        </description>
+        <name>getEnhanced</name>
+        <tag-class>org.icemobile.jsp.tags.GetEnhancedTag</tag-class>
+        <body-content>empty</body-content>
+        <attribute>
+            <description>pass through attribute</description>
+            <name>disabled</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>      
+        </attribute>
+        <attribute>
+            <description>Sets the class attribute</description>
+            <name>styleClass</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+         <attribute>
+            <description>Sets the style attribute</description>
+            <name>style</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+         <attribute>
+            <description>If false (default true), the download link will not be rendered, and only the message will be shown.</description>
+            <name>includeLink</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+         <attribute>
+            <description>The message to show for an Android device.</description>
+            <name>androidMsg</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+         <attribute>
+            <description>The message to show for an iOS device.</description>
+            <name>iosMsg</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <description>The message to show for an BlackBerry device.</description>
+            <name>blackberryMsg</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+    </tag>
 </taglib>

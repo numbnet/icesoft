@@ -287,10 +287,14 @@ public class TagUtil {
             }
         }
     }
+    
+    static DeviceType getDeviceTypeNoDefault(PageContext pageContext) {
+        return checkUserAgentInfo(pageContext);
+    }
 
     static DeviceType getDeviceType(PageContext pageContext) {
         DeviceType device = checkUserAgentInfo(pageContext);
-        return device;
+        return device == null ? DeviceType.DEFAULT : device;
     }
 
     private static DeviceType checkUserAgentInfo(PageContext pageContext) {
@@ -309,13 +313,14 @@ public class TagUtil {
         if (sniffIpad(pageContext)) {
             return DeviceType.ipad;
         }
-        return DeviceType.DEFAULT;
+        return null;
     }
 
     public void writeAttribute(Writer out, String name, String value) throws
         IOException {
         out.write(" " + name + "=\"" + value + "\"");
     }
+    
 
     public boolean isValueBlank(String value) {
         if (value == null) {
