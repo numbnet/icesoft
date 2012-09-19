@@ -21,6 +21,7 @@ import java.io.Serializable;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
+import javax.faces.event.ActionEvent;
 import javax.faces.model.SelectItem;
 
 import org.icefaces.samples.showcase.metadata.annotation.ComponentExample;
@@ -28,6 +29,7 @@ import org.icefaces.samples.showcase.metadata.annotation.ExampleResource;
 import org.icefaces.samples.showcase.metadata.annotation.ExampleResources;
 import org.icefaces.samples.showcase.metadata.annotation.ResourceType;
 import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
+import org.icefaces.samples.showcase.util.FacesUtils;
 
 @ComponentExample(
         parent = ProgressBean.BEAN_NAME,
@@ -69,6 +71,12 @@ public class ProgressStyle extends ComponentExampleImpl<ProgressStyle> implement
     @PostConstruct
     public void initMetaData() {
         super.initMetaData();
+    }
+    
+    public void startTask(ActionEvent event)
+    {
+        LongTaskManager threadBean = (LongTaskManager)FacesUtils.getManagedBean(LongTaskManager.BEAN_NAME);
+        threadBean.startThread(10, 10, 650, 3);
     }
 
 	public SelectItem[] getAvailableClasses() { return availableClasses; }

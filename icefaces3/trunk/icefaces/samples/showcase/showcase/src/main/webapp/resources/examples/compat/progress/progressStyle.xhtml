@@ -47,12 +47,12 @@
             <h:panelGrid columns="3">
                 <h:outputLabel for="progressOut" value="Progress Bar:"/>
                 <ice:outputProgress id="progressOut"
-                                    value="#{task.progress}"
+                                    value="#{task.progresses[3]}"
                                     styleClass="#{progressStyle.styleClass}"/>
                 
                 <h:panelGrid columns="3">
                     <h:commandButton value="Start"
-                                     actionListener="#{progress.startTask}"
+                                     actionListener="#{progressStyle.startTask}"
                                      rendered="#{!task.taskRunning}"
                                      disabled="#{task.taskRunning}"/>
                     <h:commandButton value="Stop"

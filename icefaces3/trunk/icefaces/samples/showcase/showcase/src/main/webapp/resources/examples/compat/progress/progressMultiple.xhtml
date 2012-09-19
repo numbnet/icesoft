@@ -49,27 +49,27 @@
             <h:panelGrid columns="2">
                 <h:outputLabel for="saveOut" value="Save Progress:"/>
                 <ice:outputProgress id="saveOut"
-                                    value="#{task.progresses[0]}"/>
+                                    value="#{task.progresses[4]}"/>
                                     
                 <h:outputLabel for="moveOut" value="Move Progress:"/>
                 <ice:outputProgress id="moveOut"
-                                    value="#{task.progresses[1]}"/>
+                                    value="#{task.progresses[5]}"/>
 
                 <h:outputLabel for="copyOut" value="Copy Progress:"/>
                 <ice:outputProgress id="copyOut"
-                                    value="#{task.progresses[2]}"/>
+                                    value="#{task.progresses[6]}"/>
 
                 <h:outputLabel for="deleteOut" value="Delete Progress:"/>
                 <ice:outputProgress id="deleteOut"
-                                    value="#{task.progresses[3]}"/>
+                                    value="#{task.progresses[7]}"/>
                                     
                 <h:outputLabel for="completed" value="First Task Completed:"/>
                 <h:panelGroup id="completed"
                               style="font-weight: bold;">
-                    <h:outputText value="Save" rendered="#{task.firstComplete eq 0}"/>
-                    <h:outputText value="Move" rendered="#{task.firstComplete eq 1}"/>
-                    <h:outputText value="Copy" rendered="#{task.firstComplete eq 2}"/>
-                    <h:outputText value="Delete" rendered="#{task.firstComplete eq 3}"/>
+                    <h:outputText value="Save" rendered="#{task.firstComplete eq 4}"/>
+                    <h:outputText value="Move" rendered="#{task.firstComplete eq 5}"/>
+                    <h:outputText value="Copy" rendered="#{task.firstComplete eq 6}"/>
+                    <h:outputText value="Delete" rendered="#{task.firstComplete eq 7}"/>
                     <h:outputText value="None Yet" rendered="#{!task.hasFirstComplete}"/>
                 </h:panelGroup>
             </h:panelGrid>
