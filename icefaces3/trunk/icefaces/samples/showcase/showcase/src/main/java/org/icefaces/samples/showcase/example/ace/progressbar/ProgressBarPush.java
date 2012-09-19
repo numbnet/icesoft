@@ -78,7 +78,7 @@ public class ProgressBarPush extends ComponentExampleImpl<ProgressBarPush> imple
     public void startTask(ActionEvent event)
     {
         LongTaskManager threadBean = (LongTaskManager)FacesUtils.getManagedBean(LongTaskManager.BEAN_NAME);
-        threadBean.startThread(10, 10, 1000);
+        threadBean.startThread(10, 10, 1000, 0);
     }
 
     public ImageInfo getPauseImage() {
