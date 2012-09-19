@@ -49,14 +49,7 @@
                     <h:outputText id="idCell" value="#{car.id}"/>
                 </ace:column>
                 <ace:column id="name" headerText="Name" footerText="Name">
-                    <ace:cellEditor>
-                        <f:facet name="input">
-                            <h:inputText id="nameInput" value="#{car.name}"/>
-                        </f:facet>
-                        <f:facet name="output">
-                            <h:outputText id="nameCell" value="#{car.name}"/>
-                        </f:facet>
-                    </ace:cellEditor>
+                    <h:outputText id="nameCell" value="#{car.name}"/>
                 </ace:column>
                 <ace:column id="chassis" headerText="Chassis" footerText="Chassis">
                     <h:outputText id="chassisCell" value="#{car.chassis}"/>
@@ -71,7 +64,13 @@
                     <h:outputText id="mpgCell" value="#{car.mpg}"/>
                 </ace:column>
                 <ace:column id="cost" headerText="Cost" footerText="Cost">
-                    <ace:rowEditor />
+                    <h:outputText id="costCell" value="#{car.cost}">
+                        <f:convertNumber type="currency"
+                                         currencySymbol="$"
+                                         groupingUsed="true"
+                                         minFractionDigits="2"
+                                         maxFractionDigits="2"/>
+                    </h:outputText>
                 </ace:column>
             </ace:dataTable>
         </h:form>
