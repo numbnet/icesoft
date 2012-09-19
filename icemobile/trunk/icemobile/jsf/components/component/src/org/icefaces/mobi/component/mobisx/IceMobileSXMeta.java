@@ -37,7 +37,7 @@ import org.icefaces.ace.meta.annotation.ClientEvent;
 public class IceMobileSXMeta extends UICommandMeta {
 
     @Property(defaultValue = "true",
-              tlddoc=" to enable the SX Surf Exapnder")
+              tlddoc=" to enable the SX Surf Expander")
     private boolean enabled;
 
     @Property(defaultValue = "false",
