@@ -63,6 +63,11 @@ import javax.faces.application.ResourceDependency;
         @ClientEvent(name="deselect",
             javadoc="",
             tlddoc="",
+            defaultRender="@all", defaultExecute="@this"),
+
+        @ClientEvent(name="reorder",
+            javadoc="",
+            tlddoc="",
             defaultRender="@all", defaultExecute="@this")
         },
         defaultEvent = "select"
@@ -106,6 +111,9 @@ public class TreeMeta extends UIDataMeta {
 
     @Property(defaultValue = "false", defaultValueType = DefaultValueType.EXPRESSION)
     Boolean expansion;
+
+    @Property(defaultValue = "false", defaultValueType = DefaultValueType.EXPRESSION)
+    Boolean reordering;
 
     @Property(defaultValue = "true", defaultValueType = DefaultValueType.EXPRESSION)
     Boolean multipleSelection;

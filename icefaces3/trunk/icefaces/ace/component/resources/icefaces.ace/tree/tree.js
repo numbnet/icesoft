@@ -9,7 +9,8 @@ ice.ace.Tree = function (cfg) {
     this.selectionTargetDeselector = this.jqId + " * .if-tree * .if-node, noselect";
     this.expansionButtonSelector = this.jqId + " .if-node-sw:not("+this.expansionButtonDeselector+")";
     this.selectionTargetSelector = this.jqId + " .if-node:not("+this.selectionTargetDeselector+")";
-    this.nodeWrapperSelector = this.selectionTargetSelector + " > div.if-node-wrp"
+    this.nodeWrapperSelector = this.selectionTargetSelector + " > div.if-node-wrp";
+    this.sortableTarget = '.if-node-sub';
 
     // Setup events
     // Expansion
@@ -24,6 +25,12 @@ ice.ace.Tree = function (cfg) {
         this.setupSelection();
     }
 
+    // Reordering
+    if (this.cfg.reorder) {
+        this.tearDownReordering();
+        this.setupReordering();
+    }
+
     // Cleanup
     if (!window[this.cfg.widgetVar]) {
         var self = this;
@@ -32,6 +39,7 @@ ice.ace.Tree = function (cfg) {
 };
 
 ice.ace.Tree.prototype.unload = function() {
+    this.tearDownReordering();
     this.tearDownSelection();
     this.tearDownExpansion();
 };
@@ -68,6 +76,94 @@ ice.ace.Tree.prototype.tearDownSelection = function() {
             .off('mouseenter', this.selectionTargetSelector)
             .off('mouseleave', this.selectionTargetSelector);
 };
+
+ice.ace.Tree.prototype.setupReordering = function () {
+    var self = this,
+        sortConfig = {
+            connectWith:this.sortableTarget,
+
+            receive:function (event, ui) {
+                var newParent = ice.ace.jq(this).closest('.if-node-cnt, .if-tree'),
+                    source = ice.ace.jq(ui.item),
+                    index = source.index();
+                self.sendReorderingRequest(source, newParent, index);
+            },
+            update:function (event, ui) {
+                if (self.droppedItemSameParent(ui.item)) {
+                    var parent = ice.ace.jq(this).closest('.if-node-cnt, .if-tree'),
+                        source = ice.ace.jq(ui.item);
+                        index = source.index();
+                    self.sendReorderingRequest(source, parent, index, self.cfg.indexIds);
+                }
+            }
+        };
+
+    this.element.on("mouseenter", function (event) {
+        self.element.find(self.sortableTarget+':not(.ui-sortable)')
+            .sortable(sortConfig);
+    });
+
+    this.element.find(this.sortableTarget).andSelf().sortable(sortConfig);
+};
+
+ice.ace.Tree.prototype.reindexSiblings = function(source) {
+    source.siblings().andSelf().each(function(i, val) {
+        var tar = ice.ace.jq(val),
+            oldid = tar.attr('id');
+        oldid = oldid.substring(0, oldid.lastIndexOf(':'));
+        var newid = oldid.substring(0, oldid.lastIndexOf(':')+1) + i;
+        tar.attr('id', newid+':-');
+        tar.find('*[id]').each(function(i, v) {
+            var c = ice.ace.jq(v);
+            c.attr('id', c.attr('id').replace(oldid, newid));
+        });
+    });
+};
+
+
+ice.ace.Tree.prototype.droppedItemSameParent = function(item) {
+    var parent = item.parent().closest('.if-node-cnt'),
+        parentid = parent.attr('id');
+
+    parentid = parentid.substring(0, parentid.lastIndexOf(':-'));
+    var childSize = this.getNodeKey(item).split(':').length - 1;
+    var parentSize = this.getNodeKey(parent).split(':').length - 1;
+
+    return item.is('[id^='+parentid+']') && (childSize - 1) == parentSize;
+}
+
+ice.ace.Tree.prototype.sendReorderingRequest = function(source, parent, index) {
+    var options = {
+        source:this.cfg.id,
+        execute:this.cfg.id,
+        render:this.cfg.id
+    },
+    reorderKey = this.cfg.id+'_reorder',
+    params = {};
+
+    params[reorderKey] = this.getNodeKey(source)
+            + '>' + this.getNodeKey(parent)
+            + '@' + index;
+
+    if (arguments[3])
+        this.reindexSiblings(source);
+
+    options.params = params;
+
+    if (this.cfg.behaviors && this.cfg.behaviors['reorder']) {
+        ice.ace.ab(ice.ace.extendAjaxArguments(
+                this.cfg.behaviors['reorder'],
+                ice.ace.removeExecuteRenderOptions(options)
+        ));
+    } else {
+        ice.ace.AjaxRequest(options);
+    }
+}
+
+ice.ace.Tree.prototype.tearDownReordering = function() {
+    this.element.off("mouseover", this.sortableTarget);
+    this.element.find(this.sortableTarget).sortable("destroy");
+}
 
 ice.ace.Tree.prototype.setupSelection = function() {
     var self = this;
@@ -253,6 +349,11 @@ ice.ace.Tree.prototype.getNodeKey = function(node) {
     var startStr = this.cfg.id + ':-:',
         endStr = ':-',
         id = node.attr('id');
+
+    // If we are trying to find the key of the root
+    // return the component client id
+    if (this.cfg.id == id)
+        return id;
 
     var startIndex = id.indexOf(startStr) + startStr.length,
         endIndex = id.indexOf(endStr, startIndex);

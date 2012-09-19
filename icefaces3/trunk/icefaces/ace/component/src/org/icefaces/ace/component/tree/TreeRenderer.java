@@ -1,7 +1,6 @@
 package org.icefaces.ace.component.tree;
 
-import org.icefaces.ace.model.tree.NodeKey;
-import org.icefaces.ace.model.tree.NodeState;
+import org.icefaces.ace.model.tree.*;
 import org.icefaces.ace.renderkit.CoreRenderer;
 import org.icefaces.ace.util.HTML;
 import org.icefaces.ace.util.JSONBuilder;
@@ -34,7 +33,7 @@ import java.util.Map;
 @MandatoryResourceComponent(tagName = "tree", value="org.icefaces.ace.component.tree.Tree")
 public class TreeRenderer extends CoreRenderer {
     // Wraps everything
-    public static final String TREE_CONTAINER_CLASS = "if-tree ui-widget-content ui-corner-all";
+    public static final String TREE_CONTAINER_CLASS = "if-tree if-node-sub ui-widget-content ui-corner-all";
     // Cell for the node template
     public static final String NODE_CLASS = "if-node";
     // Wraps individual node template
@@ -79,8 +78,8 @@ public class TreeRenderer extends CoreRenderer {
         openContainerElement(writer, facesContext, renderContext);
         encodeRoots(writer, facesContext, renderContext);
         encodeHiddenFields(writer, facesContext, renderContext);
-        closeContainerElement(writer, renderContext);
         encodeScript(writer, facesContext, renderContext);
+        closeContainerElement(writer, renderContext);
     }
 
     private void encodeHiddenFields(ResponseWriter writer, FacesContext facesContext, TreeRendererContext renderContext) throws IOException {
@@ -119,17 +118,25 @@ public class TreeRenderer extends CoreRenderer {
     private void encodeScript(ResponseWriter writer, FacesContext facesContext, TreeRendererContext renderContext) throws IOException {
         JSONBuilder confJson = new JSONBuilder();
         Tree tree = renderContext.getTree();
+        KeySegmentConverter converter = tree.getKeyConverter();
         String clientId  = tree.getClientId(facesContext);
         String widgetVar = resolveWidgetVar(tree);
         boolean selection = renderContext.isSelection();
         boolean expansion = renderContext.isExpansion();
+        boolean reordering = renderContext.isReordering();
         boolean multipleSelection = renderContext.isMultipleSelection();
+        boolean indexIds = converter instanceof NodeModelLazyListKeyConverter ||
+                converter instanceof NodeModelListSequenceKeyConverter;
 
         confJson.beginMap();
         confJson.entry("id", clientId);
         confJson.entry("widgetVar", widgetVar);
         confJson.entry("expansionMode", tree.getExpansionMode().name());
         confJson.entry("selectionMode", tree.getSelectionMode().name());
+        confJson.entry("indexIds", indexIds);
+
+        if (reordering)
+            confJson.entry("reorder", true);
 
         if (expansion) {
             confJson.entry("expansion", true);
@@ -264,7 +271,6 @@ public class TreeRenderer extends CoreRenderer {
         String dotSource = renderContext.getDotURL();
         boolean lazy = renderContext.isLazy();
         boolean leaf = lazy ? false : renderContext.getTree().isLeaf();
-        boolean rootNode = renderContext.getTree().getKey().getParent().equals(NodeKey.ROOT_KEY);
 
         iconClass += " " + (state.isExpanded() ? expandedClass : contractedClass);
 
@@ -277,13 +283,11 @@ public class TreeRenderer extends CoreRenderer {
         writer.startElement(HTML.DIV_ELEM, null);
         writer.writeAttribute(HTML.CLASS_ATTR, NODE_LINE_CONTAINER, null);
 
-        if (!rootNode) {
-            writer.startElement(HTML.IMG_ELEM, null);
-            writer.writeAttribute(HTML.SRC_ATTR, dotSource, null);
-            if (leaf)
-                writer.writeAttribute(HTML.STYLE_ATTR, leafStyle, null);
-            writer.endElement(HTML.IMG_ELEM);
-        }
+        writer.startElement(HTML.IMG_ELEM, null);
+        writer.writeAttribute(HTML.SRC_ATTR, dotSource, null);
+        if (leaf)
+            writer.writeAttribute(HTML.STYLE_ATTR, leafStyle, null);
+        writer.endElement(HTML.IMG_ELEM);
 
         if (!leaf || lazy) {
             writer.startElement(HTML.SPAN_ELEM, null);

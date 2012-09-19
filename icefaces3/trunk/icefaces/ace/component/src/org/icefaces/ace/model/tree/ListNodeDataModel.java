@@ -3,10 +3,7 @@ package org.icefaces.ace.model.tree;
 import javax.swing.tree.MutableTreeNode;
 import javax.swing.tree.TreeNode;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class ListNodeDataModel extends NodeDataModel<TreeNode> implements Serializable {
     private final KeySegmentConverter DEFAULT_CONVERTER = new NodeModelListSequenceKeyConverter(this);
@@ -41,7 +38,8 @@ public class ListNodeDataModel extends NodeDataModel<TreeNode> implements Serial
 
     public boolean isMutable() {
         return roots != null && roots.size() > 0
-                && roots.get(0) instanceof MutableTreeNode;
+                && roots.get(0) instanceof MutableTreeNode
+                && (getData() == null || getData() instanceof MutableTreeNode);
     }
 
     @Override
@@ -165,5 +163,57 @@ public class ListNodeDataModel extends NodeDataModel<TreeNode> implements Serial
     @Override
     public void setConverter(KeySegmentConverter converter) {
         this.converter = converter;
+    }
+
+    @Override
+    public void insert(TreeNode imNode, int index) {
+        if (!isMutable()) throw new UnsupportedOperationException();
+
+        MutableTreeNode current = (MutableTreeNode) getData();
+        MutableTreeNode node = (MutableTreeNode) imNode;
+
+        if (current == null) {
+            node.removeFromParent();
+            node.setParent(null);
+            roots.add(index, node);
+        }
+        else {
+            node.removeFromParent();
+            current.insert(node, index);
+        }
+    }
+
+    @Override
+    public void remove(Object segOrNode, boolean isSegment) {
+        if (!isMutable()) throw new UnsupportedOperationException();
+        MutableTreeNode current = (MutableTreeNode) getData();
+
+        if (!isSegment) {
+            if (current == null)
+                roots.remove((MutableTreeNode)segOrNode);
+            else
+                current.remove((MutableTreeNode)segOrNode);
+        }
+        else if (segOrNode instanceof Integer) {
+            if (current == null)
+                roots.remove(((Integer)segOrNode).intValue());
+            else
+                current.remove((Integer) segOrNode);
+        }
+        else if (current != null)
+            for (Enumeration children = current.children(); children.hasMoreElements(); ) {
+                MutableTreeNode child = (MutableTreeNode) children.nextElement();
+                if (getConverter().getSegment(child).equals(segOrNode)) {
+                    current.remove(child);
+                    return;
+                }
+            }
+        else
+            for (TreeNode node : roots) {
+                if (getConverter().getSegment(node).equals(segOrNode)) {
+                    roots.remove(node);
+                    return;
+                }
+            }
     }
 }

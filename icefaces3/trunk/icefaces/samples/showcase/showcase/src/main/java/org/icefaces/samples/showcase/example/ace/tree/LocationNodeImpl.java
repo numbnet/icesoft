@@ -2,6 +2,7 @@ package org.icefaces.samples.showcase.example.ace.tree;
 
 import org.apache.commons.collections.IteratorUtils;
 
+import javax.swing.tree.MutableTreeNode;
 import javax.swing.tree.TreeNode;
 import java.io.Serializable;
 import java.util.*;
@@ -26,7 +27,7 @@ import java.util.*;
  * Date: 2012-08-17
  * Time: 10:16 AM
  */
-public class LocationNodeImpl implements TreeNode, Serializable {
+public class LocationNodeImpl implements MutableTreeNode, Serializable {
     LocationNodeImpl parent;
     List<LocationNodeImpl> children;
     String name;
@@ -38,7 +39,7 @@ public class LocationNodeImpl implements TreeNode, Serializable {
         this.type = type;
         this.population = population;
 
-        this.children = Arrays.asList(children);
+        this.children = new ArrayList<LocationNodeImpl>(Arrays.asList(children));
 
         for (LocationNodeImpl t : children) {
             t.setupParent(this);
@@ -129,5 +130,52 @@ public class LocationNodeImpl implements TreeNode, Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public void insert(MutableTreeNode mutableTreeNode, int i) {
+        mutableTreeNode.setParent(this);
+        children.add(i, (LocationNodeImpl)mutableTreeNode);
+    }
+
+    public void remove(int i) {
+        children.remove(i);
+    }
+
+    public void remove(MutableTreeNode mutableTreeNode) {
+        children.remove(mutableTreeNode);
+    }
+
+    public void setUserObject(Object o) {
+        // Not required for any ace:tree functionality
+        throw new UnsupportedOperationException();
+    }
+
+    public void removeFromParent() {
+        if (parent != null)
+            parent.remove(this);
+    }
+
+    public void setParent(MutableTreeNode mutableTreeNode) {
+        parent = (LocationNodeImpl) mutableTreeNode;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        LocationNodeImpl that = (LocationNodeImpl) o;
+
+        if (!name.equals(that.name)) return false;
+        if (!population.equals(that.population)) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = name.hashCode();
+        result = 31 * result + population.hashCode();
+        return result;
     }
 }

@@ -1,10 +1,6 @@
 package org.icefaces.ace.model.tree;
 
-import org.icefaces.ace.util.CollectionUtils;
-import org.icefaces.ace.util.collections.EntrySetToKeyListTransformer;
-
 import java.io.Serializable;
-import java.util.List;
 
 /**
  * Copyright 2010-2011 ICEsoft Technologies Canada Corp.
@@ -33,7 +29,7 @@ public class NodeState implements Serializable {
 
     boolean selectionEnabled = true;
     boolean expansionEnabled = true;
-    boolean expanded = true;
+    boolean expanded;
     boolean selected;
 
     public NodeState() {

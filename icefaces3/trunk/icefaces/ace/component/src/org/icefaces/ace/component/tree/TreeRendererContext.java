@@ -31,6 +31,7 @@ public class TreeRendererContext {
     private boolean selection;
     private boolean multipleSelection;
     private boolean lazy;
+    private boolean reordering;
     private TreeSelectionMode treeSelectionMode;
     private TreeExpansionMode treeExpansionMode;
     private String dotURL;
@@ -39,6 +40,7 @@ public class TreeRendererContext {
         this.tree = tree;
         expansion = tree.isExpansion();
         selection = tree.isSelection();
+        reordering = tree.isReordering();
         multipleSelection = tree.isMultipleSelection();
         treeSelectionMode = tree.getSelectionMode();
         treeExpansionMode = tree.getExpansionMode();
@@ -84,5 +86,9 @@ public class TreeRendererContext {
 
     public boolean isLazy() {
         return lazy;
+    }
+
+    public boolean isReordering() {
+        return reordering;
     }
 }

@@ -13,6 +13,7 @@ import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -67,7 +68,7 @@ import java.util.List;
 @CustomScoped(value = "#{window}")
 public class TreeBean extends ComponentExampleImpl<TreeBean> implements Serializable {
     public static final String BEAN_NAME = "treeBean";
-    private List<LocationNodeImpl> treeRoots = Arrays.asList(TreeDataFactory.getTreeRoots().clone());
+    private List<LocationNodeImpl> treeRoots = new ArrayList<LocationNodeImpl>(Arrays.asList(TreeDataFactory.getTreeRoots()));
     private NodeStateMap stateMap;
 
 
