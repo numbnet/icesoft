@@ -116,7 +116,7 @@ ice.ace.gMap.getGMapWrapper = function (id) {
         }//switch
         gmapWrapper.layers[layerId] = layer;
 
-    },
+    }
 
     ice.ace.gMap.removeMapLayer = function (ele, layerId) {
         var gmapWrapper = ice.ace.gMap.getGMapWrapper(ele);
@@ -134,7 +134,7 @@ ice.ace.gMap.getGMapWrapper = function (id) {
             }
         }
         gmapWrapper.layers = newLayerArray;
-    },
+    }
 
     ice.ace.gMap.locateAddress = function (clientId, address) {
 
@@ -148,7 +148,7 @@ ice.ace.gMap.getGMapWrapper = function (id) {
             }
         });
 
-    },
+    }
 
     ice.ace.gMap.create = function (ele, lat, lng, zoom, type) {
 
@@ -162,7 +162,7 @@ ice.ace.gMap.getGMapWrapper = function (id) {
         initializing = false;
         GMapRepository[ele] = gmapWrapper;
         return gmapWrapper;
-    },
+    }
 
     ice.ace.gMap.recreate = function (ele, gmapWrapper) {
         var map = gmapWrapper.getRealGMap();
@@ -174,7 +174,7 @@ ice.ace.gMap.getGMapWrapper = function (id) {
         gmapWrapper = ice.ace.gMap.create(ele, lat, lng, zoom,type);
         map = gmapWrapper.getRealGMap();
         return gmapWrapper;
-    },
+    }
 
     ice.ace.gMap.remove = function (ele) {
         var newRepository = new Array();
@@ -196,7 +196,7 @@ ice.ace.gMap.getGMapWrapper = function (id) {
             }
         }
         GMapRepository = newRepository;
-    },
+    }
 
     ice.ace.gMap.addMarker = function (ele, markerID, Lat, Lon, options) {
         var wrapper = ice.ace.gMap.getGMapWrapper(ele);
@@ -209,7 +209,7 @@ ice.ace.gMap.getGMapWrapper = function (id) {
             var marker = new google.maps.Marker(eval(markerOps));
             wrapper.overlays[markerID] = marker;
         }
-    },
+    }
 
     ice.ace.gMap.removeMarker = function (ele, overlayId) {
         var gmapWrapper = ice.ace.gMap.getGMapWrapper(ele);
@@ -227,7 +227,7 @@ ice.ace.gMap.getGMapWrapper = function (id) {
             }
         }
         gmapWrapper.overlays = newOvrLyArray;
-    },
+    }
 
     ice.ace.gMap.animateMarker = function (ele, overlayId, animation) {
         var gmapWrapper = ice.ace.gMap.getGMapWrapper(ele);
@@ -240,13 +240,13 @@ ice.ace.gMap.getGMapWrapper = function (id) {
             marker.setOptions({animation:google.maps.Animation.DROP});
         else
             alert("Invalid Animation Type");
-    },
+    }
 
     ice.ace.gMap.addOptions = function (ele, options) {
         var map = ice.ace.gMap.getGMapWrapper(ele).getRealGMap();
         var fullOps = "({" + options + "})";
         map.setOptions(eval(fullOps));
-    },
+    }
 
     ice.ace.gMap.addAutoComplete = function(mapId, inputID, submit){
         var input = document.getElementById('autocomplete_input');
@@ -265,7 +265,7 @@ ice.ace.gMap.getGMapWrapper = function (id) {
             document.getElementById(submit).click();
             }
             } );
-    },
+    }
 
     ice.ace.gMap.addControl = function (ele, name, givenPosition, style) {
         var map = ice.ace.gMap.getGMapWrapper(ele).getRealGMap();
@@ -291,7 +291,7 @@ ice.ace.gMap.getGMapWrapper = function (id) {
             else
                 map.setOptions(eval("({" + control + ":true})"));
         }
-    },
+    }
 
     ice.ace.gMap.removeControl = function (ele, name) {
         var map = ice.ace.gMap.getGMapWrapper(ele).getRealGMap();
@@ -301,7 +301,7 @@ ice.ace.gMap.getGMapWrapper = function (id) {
             control = ice.ace.gMap.nameToControl(name);
             map.setOptions(eval("({" + control + ":false})"));
         }
-    },
+    }
 
     ice.ace.gMap.nameToControl = function (name) {
         switch (name.toLowerCase()) {
@@ -327,7 +327,7 @@ ice.ace.gMap.getGMapWrapper = function (id) {
                 return "zoomControl";
                 break;
         }
-    },
+    }
 
     ice.ace.gMap.textToPosition = function (position) {
         switch (position.toLowerCase()) {
@@ -368,7 +368,7 @@ ice.ace.gMap.getGMapWrapper = function (id) {
                 return "google.maps.ControlPosition.RIGHT_BOTTOM";
                 break;
         }
-    },
+    }
 
     ice.ace.gMap.textToStyle = function (name, style) {
         if (name == "type") {
@@ -387,7 +387,7 @@ ice.ace.gMap.getGMapWrapper = function (id) {
             else if (style == "small")
                 return "google.maps.ZoomControlStyle.SMALL";
         }
-    },
+    }
 
     ice.ace.gMap.gService = function (ele, name, locationList, options, div) {
         var wrapper = ice.ace.gMap.getGMapWrapper(ele);
@@ -489,14 +489,14 @@ ice.ace.gMap.getGMapWrapper = function (id) {
                 console.log("Not a valid service name");
                 return;
         }//switch
-    },
+    }
 
     ice.ace.gMap.removeGOverlay = function (ele, overlayID) {
         var wrapper = ice.ace.gMap.getGMapWrapper(ele);
         if (wrapper.overlays[overlayID] != null) {
             wrapper.overlays[overlayID].setMap(null);
         }
-    },
+    }
 
     ice.ace.gMap.gOverlay = function (ele, overlayID, shape, locationList, options) {
         var wrapper = ice.ace.gMap.getGMapWrapper(ele);
@@ -532,7 +532,7 @@ ice.ace.gMap.getGMapWrapper = function (id) {
                 return;
         }//switch
         wrapper.overlays[overlayID] = overlay;
-    },
+    }
 
     ice.ace.gMap.addGWindow = function (ele, windowId, content, position,options,markerId) {
         var wrapper = ice.ace.gMap.getGMapWrapper(ele);
@@ -555,7 +555,7 @@ ice.ace.gMap.getGMapWrapper = function (id) {
         else
             window.open(map);
         wrapper.overlays[windowId] = window;
-    },
+    }
 
     ice.ace.gMap.setMapType = function (ele, type) {
         var gmapWrapper = ice.ace.gMap.getGMapWrapper(ele);
