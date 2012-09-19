@@ -20,12 +20,6 @@ div.if-tree > div.if-node-cnt > div.if-node-tr > div.if-node-sw > div.if-node-ln
     padding:2px;
 }
 
-.if-node-wrp > *:first-child {
-    /* IE fix, vert align doesn't appear to inherit */
-    /* or default behaviour differs. */
-    vertical-align: middle\9; /* IE9 and lower */
-}
-
 .if-node-cnt {
     margin: 1px 5px;
     display: table;

@@ -98,7 +98,7 @@ ice.ace.Tree.prototype.setupReordering = function () {
             }
         };
 
-    this.element.on("mouseenter", function (event) {
+    this.element.on("mousemove", function (event) {
         self.element.find(self.sortableTarget+':not(.ui-sortable)')
             .sortable(sortConfig);
     });
