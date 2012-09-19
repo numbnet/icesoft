@@ -77,6 +77,27 @@ public class Tree<N> extends TreeBase implements Serializable {
         saved
     }
 
+    /**
+     * Insert a node as a child of the current node.
+     * @param node the node to be inserted
+     * @param keySegment the key segment to uniquely identify the node among siblings
+     */
+    public void insertNode(N node, int index) {
+        if (model == null) getDataModel();
+        model.insert(node, index);
+    }
+
+    /**
+     * Remove a node from the children of the current node.
+     * @param segOrNode the node to be removed or identifying key segment
+     * @param isSegment identify if the first argument is a node or segment
+     */
+    public void removeNode(Object segOrNode, boolean isSegment) {
+        if (model == null) getDataModel();
+        model.remove(segOrNode, isSegment);
+    }
+
+
     public boolean isLeaf() {
         if (model == null) getDataModel();
         return model.isLeaf();

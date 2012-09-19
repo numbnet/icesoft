@@ -5,6 +5,7 @@ import org.icefaces.ace.json.JSONException;
 import org.icefaces.ace.model.tree.NodeKey;
 import org.icefaces.ace.model.tree.NodeState;
 
+import javax.faces.component.UINamingContainer;
 import javax.faces.context.FacesContext;
 import java.util.Map;
 
@@ -28,47 +29,76 @@ import java.util.Map;
  * Date: 2012-09-06
  * Time: 2:10 PM
  */
-public class TreeDecoder {
+public class TreeDecoder<N> {
     private FacesContext context;
-    private Tree tree;
+    private Tree<N> tree;
     private Map<String, String> paramMap;
+    private String seperator;
+    private String clientId;
 
     private static final String EXPANSION_SUFFIX = "_expand";
     private static final String CONTRACTION_SUFFIX = "_contract";
     private static final String SELECTION_SUFFIX = "_select";
     private static final String DESELECTION_SUFFIX = "_deselect";
+    private static final String REORDER_SUFFIX = "_reorder";
 
-
-    public TreeDecoder(FacesContext context, Tree tree) {
+    public TreeDecoder(FacesContext context, Tree<N> tree) {
         this.context = context;
         this.tree = tree;
+        this.seperator = Character.toString(UINamingContainer.getSeparatorChar(context));
+        this.clientId = tree.getClientId(context);
     }
 
     public void decode() {
-         if (requestHasParam(tree.getClientId(context) + EXPANSION_SUFFIX))
+         if (requestHasParam(clientId + EXPANSION_SUFFIX))
             decodeExpansion();
 
-        if (requestHasParam(tree.getClientId(context) + CONTRACTION_SUFFIX))
+        if (requestHasParam(clientId + CONTRACTION_SUFFIX))
             decodeContraction();
 
-        if (requestHasParam(tree.getClientId(context) + SELECTION_SUFFIX)) {
+        if (requestHasParam(clientId + SELECTION_SUFFIX)) {
             if (!tree.isMultipleSelection())
                 tree.getStateMap().setAllSelected(false);
 
             decodeSelection();
         }
 
-        if (requestHasParam(tree.getClientId(context) + DESELECTION_SUFFIX))
+        if (requestHasParam(clientId + DESELECTION_SUFFIX))
             decodeDeselection();
+
+        if (requestHasParam(clientId + REORDER_SUFFIX))
+            decodeReordering();
+    }
+
+    private void decodeReordering() {
+        String reorderString = getRequestParam(clientId + REORDER_SUFFIX);
+        String[] reorderParts = reorderString.split(">");
+        String[] destParts = reorderParts[1].split("@");
+        NodeKey sourceKey = tree.getKeyConverter().parseSegments(reorderParts[0].split(seperator));
+        NodeKey destKey = clientId.equals(destParts[0])
+                ? NodeKey.ROOT_KEY
+                : tree.getKeyConverter().parseSegments(destParts[0].split(seperator));
+        int index = Integer.parseInt(destParts[1]);
+
+        tree.setKey(sourceKey);
+
+        N source = tree.getData();
+
+        // Insert before remove to persist indexes
+        tree.setKey(destKey);
+        // Insert removes from old parent
+        tree.insertNode(source, index);
+
+        tree.setKey(NodeKey.ROOT_KEY);
     }
 
     private void decodeDeselection() {
-        String deselectedJSON = getRequestParam(tree.getClientId(context) + DESELECTION_SUFFIX);
+        String deselectedJSON = getRequestParam(clientId + DESELECTION_SUFFIX);
         try {
             JSONArray array = new JSONArray(deselectedJSON);
 
             for (int i = 0; i < array.length(); i++) {
-                tree.setKey(tree.getKeyConverter().parseSegments(array.getString(i).split(":")));
+                tree.setKey(tree.getKeyConverter().parseSegments(array.getString(i).split(seperator)));
                 tree.getStateMap()
                         .get(tree.getData())
                         .setSelected(false);
@@ -80,12 +110,12 @@ public class TreeDecoder {
     }
 
     private void decodeContraction() {
-        String contractedJSON= getRequestParam(tree.getClientId(context) + CONTRACTION_SUFFIX);
+        String contractedJSON= getRequestParam(clientId + CONTRACTION_SUFFIX);
         try {
             JSONArray array = new JSONArray(contractedJSON);
 
             for (int i = 0; i < array.length(); i++) {
-                tree.setKey(tree.getKeyConverter().parseSegments(array.getString(i).split(":")));
+                tree.setKey(tree.getKeyConverter().parseSegments(array.getString(i).split(seperator)));
                 tree.getStateMap()
                         .get(tree.getData())
                         .setExpanded(false);
@@ -97,12 +127,12 @@ public class TreeDecoder {
 }
 
     private void decodeExpansion() {
-        String expandedJSON = getRequestParam(tree.getClientId(context) + EXPANSION_SUFFIX);
+        String expandedJSON = getRequestParam(clientId + EXPANSION_SUFFIX);
         try {
             JSONArray array = new JSONArray(expandedJSON);
 
             for (int i = 0; i < array.length(); i++) {
-                tree.setKey(tree.getKeyConverter().parseSegments(array.getString(i).split(":")));
+                tree.setKey(tree.getKeyConverter().parseSegments(array.getString(i).split(seperator)));
                 tree.getStateMap()
                         .get(tree.getData())
                         .setExpanded(true);
@@ -114,12 +144,12 @@ public class TreeDecoder {
     }
 
     private void decodeSelection() {
-        String selectedJSON = getRequestParam(tree.getClientId(context) + SELECTION_SUFFIX);
+        String selectedJSON = getRequestParam(clientId + SELECTION_SUFFIX);
         try {
             JSONArray array = new JSONArray(selectedJSON);
 
             for (int i = 0; i < array.length(); i++) {
-                tree.setKey(tree.getKeyConverter().parseSegments(array.getString(i).split(":")));
+                tree.setKey(tree.getKeyConverter().parseSegments(array.getString(i).split(seperator)));
                 tree.getStateMap()
                         .get(tree.getData())
                         .setSelected(true);

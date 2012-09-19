@@ -1,6 +1,5 @@
 package org.icefaces.ace.model.tree;
 
-import org.icefaces.ace.model.table.RowState;
 import org.icefaces.ace.util.CollectionUtils;
 import org.icefaces.ace.util.collections.EntrySetToKeyListTransformer;
 import org.icefaces.ace.util.collections.Predicate;
@@ -40,10 +39,6 @@ public class NodeStateMap implements Map<Object, NodeState>, Serializable {
 
     public NodeStateMap(StateCreationCallback callback) {
         setInitCallback(callback);
-    }
-
-    public NodeStateMap(KeySegmentConverter keyConverter) {
-        this.keyConverter = keyConverter;
     }
 
     public KeySegmentConverter getKeyConverter() {
@@ -145,7 +140,7 @@ public class NodeStateMap implements Map<Object, NodeState>, Serializable {
     }
 
     // Predicates
-    static class SelectedPredicate implements Predicate {
+    static class SelectedPredicate implements Predicate, Serializable {
         public boolean evaluate(Object o) {
             if (o instanceof Entry)
                 if (((NodeState)((Entry)o).getValue()).isSelected()) return true;
@@ -153,7 +148,7 @@ public class NodeStateMap implements Map<Object, NodeState>, Serializable {
         }
     }
 
-    static class ExpandedPredicate implements Predicate {
+    static class ExpandedPredicate implements Predicate, Serializable {
         public boolean evaluate(Object o) {
             if (o instanceof Entry)
                 if (((NodeState)((Entry)o).getValue()).isSelected()) return true;

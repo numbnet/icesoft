@@ -50,7 +50,25 @@ public abstract class NodeDataModel<K> extends DataModel<K> {
     public abstract boolean isNodeAvailable();
     public abstract boolean isLeaf();
     public abstract boolean isMutable();
+    // If not mutable, no need to override
 
+    /**
+     * Insert a node as a child of the current node.
+     * @param node the node to be inserted
+     * @param index the position index of the node among siblings
+     */
+    public void insert(K node, int index) {
+        throw new UnsupportedOperationException();
+    }
+
+    /**
+     * Remove a node from the children of the current node.
+     * @param segOrNode the node to be removed or identifying key segment
+     * @param isSegment identify if the first argument is a node or segment
+     */
+    public void remove(Object segOrNode, boolean isSegment) {
+        throw new UnsupportedOperationException();
+    }
 
     // Data Model Impl.
     @Override
