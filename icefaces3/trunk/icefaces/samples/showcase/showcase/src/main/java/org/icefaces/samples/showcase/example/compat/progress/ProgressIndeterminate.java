@@ -69,6 +69,6 @@ public class ProgressIndeterminate extends ComponentExampleImpl<ProgressIndeterm
 	    LongTaskManager threadBean =
 	        (LongTaskManager)FacesUtils.getManagedBean(LongTaskManager.BEAN_NAME);
 	    
-	    threadBean.startThread(40, 1, 700);
+	    threadBean.startThread(40, 1, 700, 1);
 	}
 }

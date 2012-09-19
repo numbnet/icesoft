@@ -63,14 +63,14 @@
         
         <h:form>
             <h:panelGrid columns="2">
-                <ice:outputProgress value="#{task.progress}"
+                <ice:outputProgress value="#{task.progresses[2]}"
                                     label="#{progressLabel.label}"
                                     labelComplete="#{progressLabel.complete}"
                                     labelPosition="#{progressLabel.position}"/>
                 
                 <h:panelGrid columns="3">
                     <h:commandButton value="Start"
-                                     actionListener="#{progress.startTask}"
+                                     actionListener="#{progressLabel.startTask}"
                                      rendered="#{!task.taskRunning}"
                                      disabled="#{task.taskRunning}"/>
                     <h:commandButton value="Stop"

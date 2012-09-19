@@ -35,13 +35,13 @@ public class LongTaskManager implements Serializable {
 
     public static final String PUSH_GROUP = "ourUser" + System.currentTimeMillis();
     private static final int MAX_PERCENT = 100;
+    
+    private static final int ALL = -1;
 
     private Random randomizer;
     private boolean taskRunning = false;
-    // Used for the main, single progress bar demos
-    private int progress = 0;
     // Used for the multiple progress bar demo
-    private int[] progresses = new int[]{0, 0, 0, 0};
+    private int[] progresses = new int[]{0, 0, 0, 0, 0, 0, 0, 0};
     private int firstComplete = -1;
 
     @PostConstruct
@@ -64,7 +64,6 @@ public class LongTaskManager implements Serializable {
 
     public void resetTask(ActionEvent event) {
         firstComplete = -1;
-        progress = 0;
         for (int i = 0; i < progresses.length; i++) {
             progresses[i] = 0;
         }
@@ -75,25 +74,25 @@ public class LongTaskManager implements Serializable {
         resetTask(event);
     }
 
-    public void startThread(int minIncrease, int maxIncrease, int sleepAmount) {
-        internalThreadMethod(minIncrease, maxIncrease, sleepAmount, true);
+    public void startThread(int minIncrease, int maxIncrease, int sleepAmount, int outputBar) {
+        internalThreadMethod(minIncrease, maxIncrease, sleepAmount, outputBar);
     }
 
     public void startMultiThread(int minIncrease, int maxIncrease, int sleepAmount) {
-        internalThreadMethod(minIncrease, maxIncrease, sleepAmount, false);
+        internalThreadMethod(minIncrease, maxIncrease, sleepAmount, ALL);
     }
 
-    private void internalThreadMethod(final int minIncrease, final int maxIncrease, final int sleepAmount, final boolean single) {
+    private void internalThreadMethod(final int minIncrease, final int maxIncrease, final int sleepAmount, final int outputBar) {
         // Reset the progress / progresses if they are at the maximum
         // Otherwise leave them alone as the user may have stopped/started the progress bar
         //  and in that case we want it to continue from the previous percent
-        if (single) {
-            if (progress == MAX_PERCENT) {
-                progress = 0;
+        if (outputBar != ALL) {
+            if (progresses[outputBar] == MAX_PERCENT) {
+            	progresses[outputBar] = 0;
             }
         } else {
             firstComplete = -1;
-            for (int i = 0; i < progresses.length; i++) {
+            for (int i = 4; i < progresses.length; i++) {
                 progresses[i] = 0;
             }
         }
@@ -110,17 +109,17 @@ public class LongTaskManager implements Serializable {
                     setTaskRunning(true);
                     // Loop until a break condition inside
                     while (true) {
-                        if (single) {
-                            progress += minIncrease + randomizer.nextInt(maxIncrease);
+                        if (outputBar != ALL) {
+                        	progresses[outputBar] += minIncrease + randomizer.nextInt(maxIncrease);
                             // Ensure that we don't break the max
                             // Also we can stop if we reach the top, instead of having an extra Thread.sleep
-                            if (progress >= MAX_PERCENT) {
-                                progress = MAX_PERCENT;
+                            if (progresses[outputBar] >= MAX_PERCENT) {
+                            	progresses[outputBar] = MAX_PERCENT;
                                 break;
                             }
                         } else {
                             // Update each progress in our list
-                            for (int i = 0; i < progresses.length; i++) {
+                            for (int i = 4; i < progresses.length; i++) {
                                 if (progresses[i] < MAX_PERCENT) {
                                     progresses[i] += minIncrease + randomizer.nextInt(maxIncrease);
                                     // Ensure that we don't break the max for this progress
@@ -165,10 +164,6 @@ public class LongTaskManager implements Serializable {
         return taskRunning;
     }
 
-    public int getProgress() {
-        return progress;
-    }
-
     public int[] getProgresses() {
         return progresses;
     }
@@ -183,10 +178,6 @@ public class LongTaskManager implements Serializable {
 
     public void setTaskRunning(boolean taskRunning) {
         this.taskRunning = taskRunning;
-    }
-
-    public void setProgress(int progress) {
-        this.progress = progress;
     }
 
     public void setProgresses(int[] progresses) {

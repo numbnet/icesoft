@@ -85,6 +85,6 @@ public class ProgressBean extends ComponentExampleImpl<ProgressBean> implements 
     public void startTask(ActionEvent event)
     {
         LongTaskManager threadBean = (LongTaskManager)FacesUtils.getManagedBean(LongTaskManager.BEAN_NAME);
-        threadBean.startThread(10, 10, 650);
+        threadBean.startThread(10, 10, 650, 0);
     }
 }
