@@ -345,6 +345,12 @@ public class Utils {
 		DeviceType device = checkUserAgentInfoWithoutDefault(new UserAgentInfo(userAgent));
 		return device;
 	}
+	
+	public static DeviceType getDeviceTypeWithoutDefault(FacesContext facesContext){
+		String userAgent = SessionContext.getSessionContext().getUserAgent();
+		DeviceType device = checkUserAgentInfoWithoutDefault(new UserAgentInfo(userAgent));
+		return device;
+	}
 
 	/**
 	 * used by DateSpinner and timeSpinner to detect which type of events to use
@@ -437,6 +443,13 @@ public class Utils {
 		boolean isEnhanced = EnvUtils.isEnhancedBrowser(facesContext);
 		boolean isAuxUpload = EnvUtils.isAuxUploadBrowser(facesContext);
 		return (Utils.isIOS() && !isEnhanced & !isAuxUpload);
+	}
+	
+	public static boolean isICEmobileContainerOrHasSX() {
+		FacesContext facesContext = FacesContext.getCurrentInstance();
+		boolean isEnhanced = EnvUtils.isEnhancedBrowser(facesContext);
+		boolean isAuxUpload = EnvUtils.isAuxUploadBrowser(facesContext);
+		return isEnhanced  || isAuxUpload;
 	}
 
 	private static DeviceType checkUserAgentInfoWithoutDefault(UserAgentInfo uai) {
