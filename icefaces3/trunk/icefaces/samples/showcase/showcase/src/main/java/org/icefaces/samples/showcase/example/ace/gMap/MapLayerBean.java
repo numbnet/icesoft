@@ -43,7 +43,7 @@ public class MapLayerBean extends ComponentExampleImpl<MapLayerBean> implements 
     private boolean trafficLayer = false;
     private boolean transitLayer = false;
     private String chosenLayer;
-    private String kmlURL = "http://www.rivercitynetworks.com/weather_radar_usa.kml";
+    private String kmlURL = "http://coinatlantic.ca/kmlfiles/EnvironmentCanadaAtlantic/ECHydrometricNL.kml";
     private double lat = 40.7142;
     private double lon = -74.0064;
 
