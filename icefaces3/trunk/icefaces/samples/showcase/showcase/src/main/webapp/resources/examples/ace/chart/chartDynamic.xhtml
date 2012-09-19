@@ -67,7 +67,7 @@
                        widgetVar="tableChart">
                 <ace:ajax render="form:table" event="dragStop"/>
             </ace:chart>
-            <h:commandButton value="Export as Image"
+            <h:commandButton id="exportButton" value="Export as Image"
                              onclick="tableChart.exportToImage(ice.ace.jq('.chartExport')); return false;" />
         </h:form>
 

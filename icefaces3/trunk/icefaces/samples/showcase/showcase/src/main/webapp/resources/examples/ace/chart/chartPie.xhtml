@@ -37,7 +37,7 @@
                        animated="false"
                        value="#{chartPieBean.pieData}"
                        widgetVar="pieChart"/>
-            <h:commandButton value="Export as Image"
+            <h:commandButton id="exportButton" value="Export as Image"
                              onclick="pieChart.exportToImage(ice.ace.jq('.chartExport')); return false;" />
         </h:form>
 

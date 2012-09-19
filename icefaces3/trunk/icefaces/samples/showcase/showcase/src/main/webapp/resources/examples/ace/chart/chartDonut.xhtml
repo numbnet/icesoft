@@ -37,7 +37,7 @@
                        animated="false"
                        value="#{chartDonutBean.donutData}"
                        widgetVar="donutChart" />
-            <h:commandButton value="Export as Image"
+            <h:commandButton id="exportButton" value="Export as Image"
                              onclick="donutChart.exportToImage(ice.ace.jq('.chartExport')); return false;" />
         </h:form>
         
