@@ -41,9 +41,13 @@ public class GMapRenderer extends CoreRenderer {
             String clientId = component.getClientId(context);
             GMap gmap = (GMap) component;
             writer.startElement("div", null);
-            writer.writeAttribute("id", clientId, null);
+            writer.writeAttribute("id", clientId + "_wrapper", null);
             writer.writeAttribute("class", "ice-ace-gmap " + gmap.getStyleClass(), null);
             writer.writeAttribute("style", gmap.getStyle(), null);
+            writer.startElement("div", null);
+            writer.writeAttribute("id", clientId, null);
+            writer.writeAttribute("style", "height:100%; width:100%", null);
+            writer.endElement("div");
             writer.endElement("div");
 			writer.startElement("span", null);
 			writer.writeAttribute("id", clientId + "_script", null);
