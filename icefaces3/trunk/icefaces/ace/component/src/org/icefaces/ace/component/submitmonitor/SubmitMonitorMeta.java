@@ -71,7 +71,7 @@ public class SubmitMonitorMeta extends UIComponentBaseMeta {
         "monitored by this component when they act as the source for " +
         "submits. When this property is empty or unspecified, this " +
         "component will monitor all submits from all sources.")
-    String forValue;
+    String For;
 
 //    @Property(tlddoc = "")
 //    Boolean showIcon;
