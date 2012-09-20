@@ -41,6 +41,7 @@ function GMapWrapper(eleId, realGMap) {
     this.realGMap = realGMap;
     this.overlays = new Object();
     this.directions = new Object();
+    var options = "";
     this.services = new Object();
     this.layers = new Object();
     this.getElementId = ice.ace.gMap.getElementId;
@@ -166,6 +167,7 @@ ice.ace.gMap.getGMapWrapper = function (id) {
 
     ice.ace.gMap.recreate = function (ele, gmapWrapper) {
         var map = gmapWrapper.getRealGMap();
+        var options = gmapWrapper.options;
         var lat = map.getCenter().lat();
         var lng = map.getCenter().lng();
         var zoom = map.getZoom();
@@ -173,6 +175,9 @@ ice.ace.gMap.getGMapWrapper = function (id) {
         ice.ace.gMap.remove(ele);
         gmapWrapper = ice.ace.gMap.create(ele, lat, lng, zoom,type);
         map = gmapWrapper.getRealGMap();
+        if(options != undefined)
+            map.setOptions(eval("({"+options+"})"));
+        gmapWrapper.options = options;
         return gmapWrapper;
     }
 
@@ -244,6 +249,7 @@ ice.ace.gMap.getGMapWrapper = function (id) {
 
     ice.ace.gMap.addOptions = function (ele, options) {
         var map = ice.ace.gMap.getGMapWrapper(ele).getRealGMap();
+        ice.ace.gMap.getGMapWrapper(ele).options = options;
         var fullOps = "({" + options + "})";
         map.setOptions(eval(fullOps));
     }
@@ -268,39 +274,53 @@ ice.ace.gMap.getGMapWrapper = function (id) {
     }
 
     ice.ace.gMap.addControl = function (ele, name, givenPosition, style) {
-        var map = ice.ace.gMap.getGMapWrapper(ele).getRealGMap();
+        var wrapper = ice.ace.gMap.getGMapWrapper(ele);
+        var map = wrapper.getRealGMap();
+        var option;
         if (name == "all")
-            map.setOptions({disableDefaultUI:false});
+            option = "disableDefaultUI:false";
         else {
             control = ice.ace.gMap.nameToControl(name);
             if (givenPosition != "none" || style != "none") {
                 if (givenPosition != "none" && style == "none") {
                     var position = ice.ace.gMap.textToPosition(givenPosition);
-                    map.setOptions(eval("({" + control + ":true," + control + "Options:{position:" + position + "}})"));
+                    option = control + ":true," + control + "Options:{position:" + position + "}";
                 }
                 else if (givenPosition == "none" && style != "none") {
                     var fullStyle = ice.ace.gMap.textToStyle(name, style);
-                    map.setOptions(eval("({" + control + ":true," + control + "Options:{style:" + fullStyle + "}})"));
+                    option = control + ":true," + control + "Options:{style:" + fullStyle + "}";
                 }
                 else if (givenPosition != "none" && style != "none") {
                     var position = ice.ace.gMap.textToPosition(givenPosition);
                     var fullStyle = ice.ace.gMap.textToStyle(name, style);
-                    map.setOptions(eval("({" + control + ":true," + control + "Options:{position:" + position + ", style:" + fullStyle + "}})"));
+                    option = control + ":true," + control + "Options:{position:" + position + ", style:" + fullStyle + "}";
                 }
             }
             else
                 map.setOptions(eval("({" + control + ":true})"));
         }
+        if(wrapper.options == undefined)
+            wrapper.options=option;
+        else
+            wrapper.options+=", " + option;
+        map.setOptions(eval("({"+ option +"})"));
     }
 
     ice.ace.gMap.removeControl = function (ele, name) {
-        var map = ice.ace.gMap.getGMapWrapper(ele).getRealGMap();
+        var wrapper = ice.ace.gMap.getGMapWrapper(ele);
+        var map = wrapper.getRealGMap();
+        var option;
         if (name == "all")
-            map.setOptions({disableDefaultUI:true});
+            option = "disableDefaultUI:true";
         else {
             control = ice.ace.gMap.nameToControl(name);
-            map.setOptions(eval("({" + control + ":false})"));
+            option = control + ":false";
         }
+        if(wrapper.options == undefined)
+            wrapper.options=option;
+        else
+            wrapper.options+=", " + option;
+        map.setOptions(eval("({"+ option +"})"));
     }
 
     ice.ace.gMap.nameToControl = function (name) {
@@ -370,7 +390,9 @@ ice.ace.gMap.getGMapWrapper = function (id) {
         }
     }
 
-    ice.ace.gMap.textToStyle = function (name, style) {
+    ice.ace.gMap.textToStyle = function (rawname, rawstyle) {
+        var name = rawname.toLowerCase();
+        var style = rawstyle.toLowerCase();
         if (name == "type") {
             if (style == "default")
                 return "google.maps.MapTypeControlStyle.DEFAULT";
