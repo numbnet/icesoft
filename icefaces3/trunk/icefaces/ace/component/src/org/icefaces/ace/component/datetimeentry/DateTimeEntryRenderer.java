@@ -206,12 +206,6 @@ public class DateTimeEntryRenderer extends InputRenderer {
                     entry("buttonImageOnly", dateTimeEntry.isPopupIconOnly());
                 }
 
-                //do not send showOn=focus configuration during postbacks to avoid wiring the focus callbacks to early,
-                //before ice.applyFocus command has a chance to re-apply the focus to the input element
-                if (context.isPostback()) {
-                    json.entry("showOn", "click");
-                }
-
                 if(dateTimeEntry.isShowOtherMonths()) {
                     json.entry("showOtherMonths", true).
                     entry("selectOtherMonths", dateTimeEntry.isSelectOtherMonths());
