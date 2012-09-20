@@ -133,3 +133,7 @@
 .mobi-list > .mobi-list-item > .mobi-list-item-default > a {
 	background-position: 100% 89%;
 }
+
+.p{
+    padding-right:5px;border:none;float:left;height:50px;
+}
