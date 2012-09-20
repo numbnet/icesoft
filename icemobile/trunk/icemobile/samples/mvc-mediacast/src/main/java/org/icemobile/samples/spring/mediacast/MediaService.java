@@ -1,5 +1,8 @@
 package org.icemobile.samples.spring.mediacast;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -9,7 +12,16 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import javax.servlet.ServletContext;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlRootElement;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -17,6 +29,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.context.ServletContextAware;
 
 @Service
+@XmlRootElement
 public class MediaService implements ServletContextAware {
 	
 	private List<MediaMessage> media = new ArrayList<MediaMessage>();
@@ -33,6 +46,9 @@ public class MediaService implements ServletContextAware {
 	private static final Log log = LogFactory
 			.getLog(MediaService.class);
 	
+	
+	@XmlElementWrapper
+	@XmlElement(name="msg")
 	public List<MediaMessage> getMedia(){
 		return media;
 	}
@@ -228,6 +244,44 @@ public class MediaService implements ServletContextAware {
 		}
 		
 	}
+	
+	@PreDestroy
+	public void serializeMedia(){
+		String fileName = getMediaDbName();
+		log.info("writing out "+fileName);		
+		try {
+			JAXBContext context = JAXBContext.newInstance(MediaService.class);
+			Marshaller marshaller = context.createMarshaller();
+		    marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);	    
+		    marshaller.marshal(this, new FileOutputStream(fileName)); 
+		} catch (JAXBException e) {
+			e.printStackTrace();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}	    
+	}
+	
+	@PostConstruct
+	public void deserializeMedia(){
+		String fileName = getMediaDbName();
+		log.info("reading in "+fileName);		
+		try {
+			JAXBContext context = JAXBContext.newInstance(MediaService.class);
+			Unmarshaller unmarshaller = context.createUnmarshaller();
+			MediaService oldService = (MediaService)unmarshaller.unmarshal(new File(fileName)); 
+			log.info("found " + oldService.getMedia().size() + " media records");
+			for( MediaMessage msg : oldService.getMedia() ){
+				addMedia(msg);
+			}
+		} catch (JAXBException e) {
+			e.printStackTrace();
+		} 	   
+	}
+	
+	private String getMediaDbName(){
+		return System.getProperty("user.dir") + File.separator + "media.xml";
+	}
+
 
 
 }
