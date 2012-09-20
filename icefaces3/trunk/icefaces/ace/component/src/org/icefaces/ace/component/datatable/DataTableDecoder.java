@@ -11,6 +11,7 @@ import org.icefaces.ace.model.table.RowState;
 import org.icefaces.ace.model.table.RowStateMap;
 import org.icefaces.ace.model.table.TreeDataModel;
 
+import javax.el.ValueExpression;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UINamingContainer;
 import javax.faces.context.FacesContext;
@@ -410,8 +411,16 @@ public class DataTableDecoder {
 
     static private void decodeColumnVisibility(Map<String, String> params, Column column, int i, String clientId) {
         String code = params.get(clientId + "_colvis_" + i);
-        if (code == null) column.setRendered(false);
-        else column.setRendered(true);
+        ValueExpression valueExpression = column.getValueExpression("rendered");
+        if (valueExpression != null) {
+            if (code == null) valueExpression.setValue(FacesContext.getCurrentInstance().getELContext(),
+                    Boolean.FALSE);
+            else valueExpression.setValue(FacesContext.getCurrentInstance().getELContext(),
+                    Boolean.TRUE);
+        } else {
+            if (code == null) column.setRendered(false);
+            else column.setRendered(true);
+        }
     }
 
     // Util ---------------------------------------------------------------- //
