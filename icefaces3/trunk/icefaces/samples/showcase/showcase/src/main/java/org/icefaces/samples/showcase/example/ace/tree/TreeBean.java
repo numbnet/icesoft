@@ -1,9 +1,6 @@
 package org.icefaces.samples.showcase.example.ace.tree;
 
-import org.icefaces.ace.model.tree.LazyNodeDataModel;
-import org.icefaces.ace.model.tree.NodeState;
 import org.icefaces.ace.model.tree.NodeStateMap;
-import org.icefaces.ace.model.tree.StateCreationCallback;
 import org.icefaces.samples.showcase.metadata.annotation.*;
 import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
 import org.icefaces.util.JavaScriptRunner;
@@ -60,8 +57,8 @@ import java.util.List;
         menuLinks = {
             @MenuLink(title = "menu.ace.tree.subMenu.main", isDefault = true, exampleBeanName = TreeBean.BEAN_NAME),
             @MenuLink(title = "menu.ace.tree.subMenu.lazy", exampleBeanName = TreeLazyBean.BEAN_NAME),
-            @MenuLink(title = "menu.ace.tree.subMenu.client", exampleBeanName = TreeClientBean.BEAN_NAME),
-            @MenuLink(title = "menu.ace.tree.subMenu.nested", exampleBeanName = TreeNestedBean.BEAN_NAME)
+            @MenuLink(title = "menu.ace.tree.subMenu.client", exampleBeanName = TreeClientBean.BEAN_NAME)
+//            @MenuLink(title = "menu.ace.tree.subMenu.nested", exampleBeanName = TreeNestedBean.BEAN_NAME)
         }
 )
 @ManagedBean(name= TreeBean.BEAN_NAME)
