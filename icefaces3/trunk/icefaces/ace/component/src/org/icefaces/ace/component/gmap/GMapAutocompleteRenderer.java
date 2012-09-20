@@ -15,6 +15,7 @@ package org.icefaces.ace.component.gmap;
  * governing permissions and limitations under the License.
  */
 
+import com.icesoft.faces.component.InputHiddenTag;
 import org.icefaces.ace.renderkit.CoreRenderer;
 import org.icefaces.render.MandatoryResourceComponent;
 
@@ -22,26 +23,29 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import java.io.IOException;
+import java.util.Iterator;
 
 @MandatoryResourceComponent(tagName = "gMap", value = "org.icefaces.ace.component.gmap.GMap")
-public class GMapControlRenderer extends CoreRenderer {
+public class GMapAutocompleteRenderer extends CoreRenderer {
 
 
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        GMapControl control = (GMapControl) component;
-        String clientId = control.getClientId(context);
+        GMapAutocomplete autocomplete = (GMapAutocomplete) component;
+        String clientId = autocomplete.getClientId(context);
+        writer.startElement("input", null);
+        writer.writeAttribute("type", "text", null);
+        writer.writeAttribute("size", autocomplete.getSize(), null);
+        writer.writeAttribute("style", autocomplete.getStyle(), null);
+        writer.writeAttribute("id", "autocomplete_input", null);
+        writer.endElement("input");
+
         writer.startElement("span", null);
-        writer.writeAttribute("id", clientId + "_control", null);
+        writer.writeAttribute("id", clientId + "_autocomplete", null);
         writer.startElement("script", null);
         writer.writeAttribute("type", "text/javascript", null);
         writer.write("ice.ace.jq(function() {");
-        if(control.isDisabled())
-            writer.write("ice.ace.gMap.removeControl('" + control.getParent().getClientId(context) + "', '" + control.getName() + "');");
-        else{
-            writer.write("ice.ace.gMap.addControl('" + control.getParent().getClientId(context) + "', '" + control.getName() +
-                "', '" + control.getPosition() + "', '" + control.getControlStyle() + "');");
-        }
+        writer.write("ice.ace.gMap.addAutoComplete('" + autocomplete.getParent().getClientId(context) +"','" + autocomplete.getInput() + "','" + autocomplete.getSubmit() + "');");
         writer.write("});");
         writer.endElement("script");
         writer.endElement("span");
