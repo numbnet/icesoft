@@ -98,10 +98,13 @@ ice.ace.Tree.prototype.setupReordering = function () {
             }
         };
 
-    this.element.on("mousemove", function (event) {
-        self.element.find(self.sortableTarget+':not(.ui-sortable)')
-            .sortable(sortConfig);
-    });
+    var refreshSortability = function() {
+        ice.ace.jq(this).sortable(sortConfig);
+    }
+
+    this.element
+        .on("dragenter", this.sortableTarget+':not(.ui-sortable)', refreshSortability)
+        .on("mouseenter", this.sortableTarget+':not(.ui-sortable)', refreshSortability);
 
     this.element.find(this.sortableTarget).andSelf().sortable(sortConfig);
 };
@@ -122,12 +125,13 @@ ice.ace.Tree.prototype.reindexSiblings = function(source) {
 
 
 ice.ace.Tree.prototype.droppedItemSameParent = function(item) {
-    var parent = item.parent().closest('.if-node-cnt'),
+    var parent = item.parent().closest('.if-node-cnt, .if-tree'),
         parentid = parent.attr('id');
 
     parentid = parentid.substring(0, parentid.lastIndexOf(':-'));
     var childSize = this.getNodeKey(item).split(':').length - 1;
-    var parentSize = this.getNodeKey(parent).split(':').length - 1;
+    var parentSize = parent.is('.if-tree') ? 0
+            : this.getNodeKey(parent).split(':').length - 1;
 
     return item.is('[id^='+parentid+']') && (childSize - 1) == parentSize;
 }
