@@ -21,14 +21,16 @@ import org.icefaces.mobi.component.contentmenuitem.ContentMenuItem;
 import org.icefaces.mobi.renderkit.BaseLayoutRenderer;
 import org.icefaces.mobi.utils.HTML;
 import org.icefaces.mobi.utils.Utils;
-import org.w3c.dom.html.HTMLDivElement;
+import org.icefaces.mobi.component.contentstack.ContentStack;
 
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
+import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Logger;
 
 public class  ContentStackMenuRenderer extends BaseLayoutRenderer {
@@ -42,6 +44,34 @@ public class  ContentStackMenuRenderer extends BaseLayoutRenderer {
     private static final String JS_ACC_MIN_NAME = "accordion-min.js";
     private static final String JS_ACC_LIB = "org.icefaces.component.accordion";
 
+    @Override
+    public void decode(FacesContext facesContext, UIComponent uiComponent) {
+        ContentStackMenu menu = (ContentStackMenu) uiComponent;
+        String clientId = menu.getClientId(facesContext);
+        Map<String, String> params = facesContext.getExternalContext().getRequestParameterMap();
+        // ajax behavior comes from ContentStackMenu which sends the currently selected value
+        String cStackId = menu.getContentStackId();
+        UIViewRoot root = facesContext.getViewRoot();
+        UIComponent stackComp = Utils.findChildComponent(root, cStackId) ;
+        if (stackComp !=null && stackComp instanceof ContentStack){
+            String stackId = stackComp.getClientId(facesContext);
+            ContentStack stack = (ContentStack)stackComp;
+            String indexStr = params.get(clientId + "_hidden");
+            String newStr = params.get(stackId);
+            if (newStr !=null){
+                logger.info("submitted "+newStr+" from request");
+            }
+            String oldIndex = stack.getCurrentId();
+            if( null != indexStr) {
+                //find the activeIndex and set it
+                if (!oldIndex.equals(indexStr)){
+                    stack.setCurrentId(indexStr);
+                    /* do we want to queue an event for panel change in stack? */
+                   // component.queueEvent(new ValueChangeEvent(component, oldIndex, indexStr)) ;
+                }
+            }
+        }
+    }
 
      @Override
      public void encodeBegin(FacesContext facesContext, UIComponent uiComponent)
@@ -106,6 +136,7 @@ public class  ContentStackMenuRenderer extends BaseLayoutRenderer {
     public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
         ResponseWriter writer = facesContext.getResponseWriter();
         ContentStackMenu menu = (ContentStackMenu) component;
+        this.encodeHidden(facesContext, component);
         writer.endElement(HTML.DIV_ELEM);
         if (menu.isAccordion()){
             writer.endElement(HTML.DIV_ELEM);

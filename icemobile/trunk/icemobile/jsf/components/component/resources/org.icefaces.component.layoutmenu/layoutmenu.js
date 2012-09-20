@@ -8,27 +8,8 @@
             hidden.value = value;
         }
     }
-    function viewport(){
-       var e = window;
-       var a = 'inner';
-       if (!('innerWidth' in window)){
-           a = 'client';
-           e = document.documentElement || document.body;
-       }
-       return { width : e[ a+'Width' ] , height : e[ a+'Height' ]
-       }
-    }
     function hasClass(ele,cls) {
         return ele.className.match(new RegExp('(\\s|^)'+cls+'(\\s|$)'));
-    }
-    function addClass(ele,cls) {
-         if (!this.hasClass(ele,cls)) ele.className =cls;
-    }
-    function removeClass(ele,cls) {
-       if (hasClass(ele,cls)) {
-              // var reg = new RegExp('(\\s|^)'+cls+'(\\s|$)');
-           ele.className=" ";
-       }
     }
 
 
@@ -39,26 +20,25 @@
         var singleHidClass = "mobi-contentpane-single-hidden";
         var nonSingleVisClass = "mobi-contentpane";
         var nonSingleHidClass = "mobi-contentpane-hidden";
-        var singleMnuHidClass = "mobi-contentpane-single-menu-hidden";
+        var singleLeftHidClass = "mobi-contentpane-single-menu-hidden";
         var visClass = nonSingleVisClass;
         var hideClass = nonSingleHidClass;
         if (cfgIn.single){
              visClass = singleVisClass;
              hideClass = singleHidClass;
         }
-        var menuId = cfgIn.home || null;
         var singleView = cfgIn.single || false;
         var panes = document.getElementById(clientId+"_panes") || null;
         if (panes!=null){
             var cpanes = panes.children;
             var length = cpanes.length;
             for (i=0; i< length-1; i++){
-                var isMenu = cpanes[i].getAttribute("isMenu");
-                if (isMenu=="true" && singleView) {
-                    if (!mobi.layoutMenu.menuId[clientId]){
-                       mobi.layoutMenu.menuId[clientId] = cpanes[i].childNodes[0].id;
-                    }
-                    cpanes[i].className = singleMnuHidClass;
+           //     var dir = cpanes[i].getAttribute("dir");
+                var iStr = i+'';
+                cpanes[i].setAttribute('order', iStr);
+                //after remove the singleView and let it slide for a test
+                if ( i==0 && singleView) { //assume first panel is always menu or home
+                    cpanes[i].className = singleLeftHidClass;
                 } else {
                     cpanes[i].className = hideClass;
                 }
@@ -72,19 +52,16 @@
         }
         var wrpId = selClientId+ "_wrp";
         var currPane =  document.getElementById(wrpId);
-        var isMenu = currPane.getAttribute("isMenu") || false;
-        if (isMenu=="true"){
-            this.mobi.layoutMenu.menuId[clientId] = selClientId;
-        }
         if (currPane){
             currPane.className=visClass;
         }
         var prevId = wrpId;
         return {
-           showContent: function( el, cfgIn) {
+           showContent: function(event, cfgIn) {
                if (cfgIn.selectedId == selectedPaneId){
                     return;
                }
+               var item = cfgIn.item || myStackId;
                selectedPaneId = cfgIn.selectedId;
                var client = cfgIn.client || false;
                var singleSubmit = cfgIn.singleSubmit || false;
@@ -92,20 +69,25 @@
                var wrpId = selClId +"_wrp";
                currPane = document.getElementById(wrpId);
                var prevPane = document.getElementById(prevId);
-               var wasMenu = prevPane.getAttribute("isMenu") || false;
-               if (wasMenu=="true"){
-                   prevPane.className= singleMnuHidClass ;
+               var oldOrd = prevPane.getAttribute("order");
+               var newOrd = currPane.getAttribute("order");
+               if (singleView && oldOrd<newOrd){
+                   prevPane.className= singleLeftHidClass ;
                } else {
                    prevPane.className =  hideClass;
                }
                if (!client || selClId ==null){
-                   updateHidden(myStackId, selectedPaneId);
+  /*                 var hiddenId = myStackId + '_hidden';
+                   updateHidden(myStackId, selectedPaneId);*/
                    if (singleSubmit){
-                       //look for a form, for ice.s
-                       ice.se(null, myStackId);
+                      try{
+                       ice.se(event,item);
+                      }catch(err){
+                          ice.log.debug(ice.log, 'error message='+err.message);
+                      }
                    }
                    else {
-                       //look for form and do full submit. ???
+                       ice.log.debug(ice.log, ' no implementation for full submit at this time');
                    }
                }
                currPane.className=visClass;
@@ -119,11 +101,6 @@
                     this.showContent(null, cfgUpd);
                 }
 
-           },
-           showMenu: function(clientId, cfg){
-               if (cfg.selClientId !=null){
-                   this.showContent(null,cfg);
-               }
            }
         }
     }
@@ -141,15 +118,6 @@
         showContent: function(clientId, el, cfgIn){
             if (this.menus[clientId]){
                 this.menus[clientId].showContent(el, cfgIn);
-  /*          } else {
-                this.menus[clientId ]= LayoutMenu(clientId, cfgIn);
-                this.menus[clientId].showContent(el, cfgIn);    */
-            }
-        },
-        showMenu: function(clientId, cfgIn){
-            if (this.menus[clientId]){
-                cfgIn.selClientId = this.menuId[clientId];
-                this.menus[clientId].showMenu(clientId, cfgIn);
             }
         }
     }

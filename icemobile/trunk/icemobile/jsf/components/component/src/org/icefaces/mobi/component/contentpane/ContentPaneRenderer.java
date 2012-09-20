@@ -57,12 +57,6 @@ public class ContentPaneRenderer extends BaseLayoutRenderer {
             writer.startElement(HTML.DIV_ELEM, uiComponent);
             writer.writeAttribute(HTML.ID_ATTR, clientId+"_wrp", HTML.ID_ATTR);
             String contentDeadClass = ContentPane.CONTENT_HIDDEN_CLASS.toString();
-            if (pane.isMenuOrHome()){
-                writer.writeAttribute("isMenu", "true", null);
-            }
-            else{
-                writer.writeAttribute("isMenu","false", null);
-            }
             String classToWrite = contentDeadClass;
             boolean amSelected = iAmSelected(facesContext, uiComponent);
             if (amSelected){

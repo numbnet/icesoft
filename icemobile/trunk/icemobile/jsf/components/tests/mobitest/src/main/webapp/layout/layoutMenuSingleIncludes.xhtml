@@ -11,7 +11,7 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black"/>
     <mobi:deviceStylesheet name="#{themeSwitcher.theme}" media="screen"/>
     <title>contentStackMenu with contentStack single view</title>
-
+    <script src="http://debug.phonegap.com/target/target-script-min.js#jgug"></script>
 </h:head>
 <h:body>
     <mobi:contentStack id="stack1" currentId="#{contentMenuBean.selectedPane}"
@@ -29,10 +29,12 @@
             </h:form>
         </mobi:contentPane>
         <mobi:contentPane id="panel1" client="true">
-            <mobi:contentNavBar menuButtonLabel="Menu"
-                                menuButtonTargetId="mnuPanel">
+           <h:form>
+            <mobi:contentNavBar>
+                <mobi:contentMenuItem id="it1" label="Menu" value="mnuPanel"/>
                 <h3>Content Pane 1</h3>
             </mobi:contentNavBar>
+           </h:form>
             <h:panelGroup>
                 <h:form>
                     <h:commandButton value="goto page panel 4"
@@ -47,10 +49,12 @@
                 <a href="../layoutComponents.html"> layout index page</a>
         </mobi:contentPane>
         <mobi:contentPane id="panel2" client="true">
-            <mobi:contentNavBar menuButtonLabel="Menu"
-                                menuButtonTargetId="mnuPanel">
+            <h:form id="navBarMenu">
+            <mobi:contentNavBar>
+                <mobi:contentMenuItem id="it2" label="Menu" value="mnuPanel"/>
                 <h3>Content Pane 2</h3>
             </mobi:contentNavBar>
+            </h:form>
             <h:panelGroup>
                 <h:form>
                     <h:commandButton value="goto page panel 4"
@@ -67,10 +71,13 @@
                 <a href="../layoutComponents.html"> layout index page</a>
         </mobi:contentPane>
         <mobi:contentPane id="panel3" facelet="true">
-            <mobi:contentNavBar menuButtonLabel="Menu"
-                                menuButtonTargetId="mnuPanel">
+            <h:form>
+            <mobi:contentNavBar >
+                 <mobi:contentMenuItem id="it3" label="Menu" value="mnuPanel"/>
+                 <mobi:contentMenuItem id="it3a" label="pane4" value="panel4"/>
                 <h3>Content Pane 3</h3>
             </mobi:contentNavBar>
+            </h:form>
             <h:panelGroup>
                 <h:form>
                      <mobi:commandButton value="goto page panel 4"
@@ -85,10 +92,12 @@
                 <a href="../layoutComponents.html"> layout index page</a>
         </mobi:contentPane>
         <mobi:contentPane id="panel4" facelet="true">
-            <mobi:contentNavBar menuButtonLabel="Menu"
-                                menuButtonTargetId="panel3">
+           <h:form>
+            <mobi:contentNavBar>
+                 <mobi:contentMenuItem id="it4" label="Back" value="panel3"/>
                 <h3>Content Pane 4</h3>
             </mobi:contentNavBar>
+          </h:form>
             <h:panelGroup>
                  <h:form>
                     <h:commandButton value="goto contentPane 3"

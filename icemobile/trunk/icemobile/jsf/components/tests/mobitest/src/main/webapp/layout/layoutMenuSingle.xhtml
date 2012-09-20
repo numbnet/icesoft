@@ -16,7 +16,7 @@
 </h:head>
 <h:body>
     <mobi:contentStack id="stack1" currentId="#{contentMenuBean.selectedPane}"   contentMenuId="mnu" >
-        <mobi:contentPane id="mnuPanel" client="true" menuOrHome="true">
+        <mobi:contentPane id="mnuPanel" client="true" transitionFrom="left">
           <h:form id="menuForm">
             <mobi:contentStackMenu  id="mnu" value="#{contentMenuBean.menuCList}" var="item" contentStackId="stack1"
                   selectedPane="#{contentMenuBean.selectedPane}">
@@ -24,12 +24,13 @@
             </mobi:contentStackMenu>
           </h:form>
       </mobi:contentPane>
-      <mobi:contentPane id="panel1" client="true">
+      <mobi:contentPane id="panel1" client="true" >
          <h:form id="nav1">
-             <mobi:contentNavBar menuButtonLabel="Menu" menuButtonTargetId="mnuPanel">
+             <mobi:contentNavBar id="navBar1" >
+                 <mobi:contentMenuItem label="Menu" value="mnuPanel"/>
+                 <h3>Content Pane 1</h3>
                  <mobi:contentMenuItem label="panel3" value="panel3"/>
                  <mobi:contentMenuItem label="panel4" value="panel4"/>
-             <h3>Content Pane 1</h3>
             </mobi:contentNavBar>
           </h:form>
               <h:panelGroup>
@@ -38,27 +39,39 @@
       </mobi:contentPane>
       <mobi:contentPane id="panel2" >
         <div id="innerpane2">
-          <mobi:contentNavBar menuButtonLabel="Menu" menuButtonTargetId="mnuPanel">
-
-             <h3>Content Pane 2</h3>
+         <h:form>
+          <mobi:contentNavBar >
+                <mobi:contentMenuItem label="Menu" value="mnuPanel"/>
+                <h3>Content Pane 2</h3>
+                <mobi:contentMenuItem label="panel3" value="panel3"/>
+                <mobi:contentMenuItem label="panel4" value="panel4"/>
            </mobi:contentNavBar>
+           </h:form>
              <h:panelGroup>
                  panel 2
+                   <br />
+                <a href="../layoutComponents.html"> layout index page</a>
              </h:panelGroup>
           </div>
        </mobi:contentPane>
        <mobi:contentPane id="panel3" facelet="true" >
-         <mobi:contentNavBar menuButtonLabel="Menu" menuButtonTargetId="mnuPanel">
-             <h3>Content Pane 3</h3>
-         </mobi:contentNavBar>
+        <h:form id="frm3">
+         <mobi:contentNavBar id="nav3">
+             <mobi:contentMenuItem id="it3" label="Menu" value="mnuPanel"/>
+                <h3>Content Pane 3</h3>
+            </mobi:contentNavBar>
+         </h:form>
              <h:panelGroup>
                  panel 3
              </h:panelGroup>
          </mobi:contentPane>
         <mobi:contentPane id="panel4"  >
-         <mobi:contentNavBar menuButtonLabel="Menu" menuButtonTargetId="mnuPanel">
+        <h:form>
+         <mobi:contentNavBar >
+             <mobi:contentMenuItem label="Back" value="panel2"/>
              <h3>Content Pane 4</h3>
          </mobi:contentNavBar>
+         </h:form>
              <h:panelGroup>
                  panel 4
              </h:panelGroup>

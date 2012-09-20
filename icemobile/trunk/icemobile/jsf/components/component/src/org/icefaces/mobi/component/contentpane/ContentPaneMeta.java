@@ -81,4 +81,6 @@ public class ContentPaneMeta extends UIPanelMeta{
                      "page application.  default is false, so be sure to set it if you have a menu page and " +
                      " want the transitions to slide in proper direction.")
     private boolean menuOrHome;
+
+
 }
