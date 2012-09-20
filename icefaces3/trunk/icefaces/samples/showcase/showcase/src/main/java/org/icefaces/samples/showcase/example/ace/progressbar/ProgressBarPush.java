@@ -16,18 +16,20 @@
 
 package org.icefaces.samples.showcase.example.ace.progressbar; 
 
-import org.icefaces.samples.showcase.dataGenerators.ImageSet.ImageInfo;
-import org.icefaces.samples.showcase.metadata.annotation.*;
-import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
+import java.io.Serializable;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
-import java.io.Serializable;
 import javax.faces.event.ActionEvent;
 
 import org.icefaces.samples.showcase.dataGenerators.ImageSet;
-import org.icefaces.samples.showcase.example.compat.progress.LongTaskManager;
+import org.icefaces.samples.showcase.dataGenerators.ImageSet.ImageInfo;
+import org.icefaces.samples.showcase.metadata.annotation.ComponentExample;
+import org.icefaces.samples.showcase.metadata.annotation.ExampleResource;
+import org.icefaces.samples.showcase.metadata.annotation.ExampleResources;
+import org.icefaces.samples.showcase.metadata.annotation.ResourceType;
+import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
 import org.icefaces.samples.showcase.util.FacesUtils;
 
 
@@ -48,8 +50,8 @@ import org.icefaces.samples.showcase.util.FacesUtils;
                     title="ProgressBarPush.java",
                     resource = "/WEB-INF/classes/org/icefaces/samples/showcase/example/ace/progressbar/ProgressBarPush.java"),
             @ExampleResource(type = ResourceType.java,
-                    title="LongTaskManager.java",
-                    resource = "/WEB-INF/classes/org/icefaces/samples/showcase/example/compat/progress/LongTaskManager.java")
+                    title="ProgressBarTaskManager.java",
+                    resource = "/WEB-INF/classes/org/icefaces/samples/showcase/example/ace/progressbar/ProgressBarTaskManager.java")
         }
 )
 @ManagedBean(name= ProgressBarPush.BEAN_NAME)
@@ -77,8 +79,8 @@ public class ProgressBarPush extends ComponentExampleImpl<ProgressBarPush> imple
 
     public void startTask(ActionEvent event)
     {
-        LongTaskManager threadBean = (LongTaskManager)FacesUtils.getManagedBean(LongTaskManager.BEAN_NAME);
-        threadBean.startThread(10, 10, 1000, 0);
+        ProgressBarTaskManager threadBean = (ProgressBarTaskManager)FacesUtils.getManagedBean(ProgressBarTaskManager.BEAN_NAME);
+        threadBean.startThread(10, 10, 1000);
     }
 
     public ImageInfo getPauseImage() {
