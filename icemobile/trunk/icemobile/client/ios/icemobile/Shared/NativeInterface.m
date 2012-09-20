@@ -523,7 +523,7 @@ NSLog(@"called camera");
 #endif
 }
 
-- (void)augDismiss  {
+- (void)augHide  {
     if (nil != self.augPopover)  {
         [self.augPopover dismissPopoverAnimated:YES];
     } else {
@@ -531,8 +531,13 @@ NSLog(@"called camera");
     }
 }
 
+- (void)augDismiss  {
+    [self augHide];
+    [self.controller doCancel];
+}
+
 - (void)augDone  {
-    [self augDismiss];
+    [self augHide];
     NSString *augName = self.activeDOMElementId;
     NSString *augResult = self.augController.selectedPlace;
 NSLog(@"NativeInterface aug selected %@", augResult);

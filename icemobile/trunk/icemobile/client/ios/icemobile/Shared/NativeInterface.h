@@ -71,6 +71,7 @@
 - (BOOL)microphone: (NSString*)micId;
 - (BOOL)aug:(NSString*)augId locations:(NSDictionary*)places;
 - (void)augMarkerView;
+- (void)augHide;
 - (void)augDone;
 - (void)augDismiss;
 - (void)recordStart;
