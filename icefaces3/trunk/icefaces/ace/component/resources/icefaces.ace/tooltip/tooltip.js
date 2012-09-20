@@ -15,6 +15,7 @@
  */
 
 ice.ace.Tooltips = {};
+ice.ace.DelegateTooltips = {};
 /*
  *  Tooltip Widget
  */
@@ -68,7 +69,8 @@ ice.ace.Tooltip = function(cfg) {
 	if (!this.cfg.forDelegate) {
 		this.jq.qtip(this.cfg);
 	} else {
-		delete self.cfg.events.show; // will call it manually
+		delete self.cfg.events.show; delete self.cfg.events.hide; // will call them manually
+		ice.ace.DelegateTooltips[self.cfg.id] = {};
 		var delegateNode = this.jq.children().get(0);
 		this.jq.delegate('*', this.cfg.show.event, function(event) {
 			// 'this' in this scope refers to the current DOM node in the event bubble
@@ -85,13 +87,19 @@ ice.ace.Tooltip = function(cfg) {
 				}
 				var targetComponent = findTargetComponent(event.target);
 				if (targetComponent) {
-					var jqTargetComponent = ice.ace.jq(ice.ace.escapeClientId(targetComponent));
-					jqTargetComponent.qtip(self.cfg);
-					self.activeComponent = targetComponent;
-					if (!ice.ace.Tooltips[self.cfg.id]) {
-						ice.ace.Tooltips[self.cfg.id] = true;
-						self.triggerDisplayListener( function() { jqTargetComponent.qtip('show'); }); 
+					var instanceId = ice.ace.escapeClientId(targetComponent);
+					var jqTargetComponent = ice.ace.jq(instanceId);
+					var cfg = ice.ace.jq.extend({}, self.cfg);
+					cfg.events.hide = function() { delete ice.ace.DelegateTooltips[self.cfg.id][instanceId]; };
+					jqTargetComponent.qtip(cfg);
+					var openInstances = ice.ace.DelegateTooltips[self.cfg.id];
+					for (var id in openInstances) {
+						openInstances[id].qtip('hide');
 					}
+					ice.ace.DelegateTooltips[self.cfg.id][instanceId] = jqTargetComponent;
+					self.activeComponent = targetComponent;
+					self.currentTooltip = instanceId;
+					self.triggerDisplayListener( function() { var instance = ice.ace.DelegateTooltips[self.cfg.id][instanceId]; if (instance && self.currentTooltip == instanceId) instance.qtip('show'); }); 
 					self.activeComponent = '';
 				}
 			}
