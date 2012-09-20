@@ -302,11 +302,11 @@ public class TreeRenderer extends CoreRenderer {
     }
 
     private void closeContainerElement(ResponseWriter writer, TreeRendererContext renderContext) throws IOException {
-        writer.endElement(HTML.DIV_ELEM);
+        writer.endElement(HTML.SPAN_ELEM);
     }
 
     private void openContainerElement(ResponseWriter writer, FacesContext context, TreeRendererContext renderContext) throws IOException {
-        writer.startElement(HTML.DIV_ELEM, renderContext.getTree());
+        writer.startElement(HTML.SPAN_ELEM, renderContext.getTree());
         writer.writeAttribute(HTML.ID_ATTR, renderContext.getTree().getClientId(context), null);
         writer.writeAttribute(HTML.CLASS_ATTR, TREE_CONTAINER_CLASS, null);
     }

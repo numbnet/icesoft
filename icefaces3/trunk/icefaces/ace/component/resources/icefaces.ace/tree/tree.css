@@ -9,7 +9,7 @@
 }
 
 /* Hide root horizontal staff lines */
-div.if-tree > table.if-node-cnt > tbody > tr.if-node-tr > td.if-node-sw > div.if-node-ln > img {
+span.if-tree > table.if-node-cnt > tbody > tr.if-node-tr > td.if-node-sw > div.if-node-ln > img {
     display:none;
 }
 
@@ -52,12 +52,13 @@ div.if-tree > table.if-node-cnt > tbody > tr.if-node-tr > td.if-node-sw > div.if
     position:relative;
     overflow:hidden;
     vertical-align: top;
-    zoom:1;
 }
 
 .if-node-td > div.if-node-ln {
     position: relative;
-    overflow:hidden;
+    /* IE7 CSS hack */
+    *position: absolute;
+    *overflow:hidden;
     width:100%;
     height:100%;
 }
