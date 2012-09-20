@@ -38,14 +38,14 @@
                 <h:panelGrid width="100%" style="text-align: center;" columns="1">
                     <h:panelGrid columns="2" styleClass="centeredPanelGrid">
                         <h:outputText value="Progress "/>
-                        <h:outputText id="progress" value="@ #{task.progresses[0]} %" rendered="#{task.progresses[0] ne 100 and task.taskRunning}" style="font-weight: bold;"/>    
-                        <h:outputText id="completed" value="completed" rendered="#{task.progresses[0] eq 100}" style="font-weight: bold;"/>
-                        <h:outputText id="paused" value="paused" rendered="#{(task.progresses[0] gt 0 and task.progresses[0] lt 100) and !task.taskRunning}" style="font-weight: bold;"/>
-                        <h:outputText id="stopped" value="stopped" rendered="#{(task.progresses[0] eq 0) and !task.taskRunning}" style="font-weight: bold;"/>
+                        <h:outputText id="progress" value="@ #{task.progress} %" rendered="#{task.progress ne 100 and task.taskRunning}" style="font-weight: bold;"/>    
+                        <h:outputText id="completed" value="completed" rendered="#{task.progress eq 100}" style="font-weight: bold;"/>
+                        <h:outputText id="paused" value="paused" rendered="#{(task.progress gt 0 and task.progress lt 100) and !task.taskRunning}" style="font-weight: bold;"/>
+                        <h:outputText id="stopped" value="stopped" rendered="#{(task.progress eq 0) and !task.taskRunning}" style="font-weight: bold;"/>
                     </h:panelGrid>
                     
                     <ace:progressBar   id="myProgressBar"
-                                       value="#{task.progresses[0]}"/>
+                                       value="#{task.progress}"/>
                     
                     
                     <h:panelGrid columns="2" style="text-align: center; margin-left: auto; margin-right: auto; width: 150px; height: 50px;">                                
