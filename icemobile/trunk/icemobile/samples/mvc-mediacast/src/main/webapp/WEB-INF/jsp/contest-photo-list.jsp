@@ -5,9 +5,7 @@
         <c:forEach var="media" items="${mediaService.mediaSortedByVotes}">
             <mobi:outputListItem>
                 <a class="mediaLink" href='<c:url value="/contest-uploads/${media.id}"/>'>
-                    <img height="50px" 
-                        src='<c:url value="/resources/uploads/${media.photo.fileName}"/>'
-                        style="padding-right:5px;border:none;float:left;" />
+                    <img src='<c:url value="/resources/uploads/${media.photo.fileName}"/>' class="p"/>
                     <span class="desc"><c:out value="${media.description}"/></span>
                     <span class="vote" >${media.numberOfVotes} Votes</span>
                 </a>
