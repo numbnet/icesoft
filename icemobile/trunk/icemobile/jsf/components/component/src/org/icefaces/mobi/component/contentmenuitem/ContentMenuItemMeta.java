@@ -58,10 +58,6 @@ public class ContentMenuItemMeta extends UICommandMeta {
      @Property(tlddoc="label of layoutMenuItem", required=Required.yes)
      private String label;
 
-     @Property(defaultValue="false",
-             tlddoc="true if the item is not a link but a header for a group of menu items")
-     private boolean menuHeader;
-
      @Property(tlddoc="id of panel in contentStack that will be displayed when selecting this item." +
              "  default value will be first contentPane in the stack as long as url is blank as well")
      private String value;
@@ -72,7 +68,7 @@ public class ContentMenuItemMeta extends UICommandMeta {
      @Property(tlddoc = "style of the component, rendered on the div root of the component")
      private String style;
 
-     @Property(tlddoc = "Path of the menuitem image.")
+     @Property(tlddoc = "Path of the menuitem image. Not implemented yet.")
      private String icon;
 
 }

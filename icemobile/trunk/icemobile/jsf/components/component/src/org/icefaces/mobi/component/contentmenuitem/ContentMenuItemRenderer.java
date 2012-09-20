@@ -16,6 +16,7 @@
 package org.icefaces.mobi.component.contentmenuitem;
 
 
+import com.sun.tools.corba.se.idl.StringGen;
 import org.icefaces.mobi.component.accordion.Accordion;
 import org.icefaces.mobi.component.contentpane.ContentPane;
 import org.icefaces.mobi.component.contentstack.ContentStack;
@@ -53,12 +54,26 @@ public class ContentMenuItemRenderer extends BaseLayoutRenderer {
         ContentMenuItem item = (ContentMenuItem) uiComponent;
         String source = String.valueOf(requestParameterMap.get("ice.event.captured"));
         String clientId = item.getClientId();
-        String parentId = item.getParent().getClientId();
-        if (clientId.equals(source) || parentId.equals(source)) {
+        if (clientId.equals(source) ) {
             try {
                 if (!item.isDisabled()) {
                     uiComponent.queueEvent(new ActionEvent(uiComponent));
-                //    decodeBehaviors(facesContext, uiComponent);
+                    UIComponent parent = item.getParent();
+                    ContentStack stack = null;
+                    if (parent instanceof ContentStackMenu) {
+                        ContentStackMenu menu = (ContentStackMenu)parent;
+                        String stackClientId = menu.getStackClientId();
+                        UIComponent compStack= facesContext.getViewRoot().findComponent(stackClientId);
+                        stack = (ContentStack)compStack;
+                    } else if (parent instanceof ContentNavBar){
+                        ContentNavBar navBar = (ContentNavBar)parent;
+                        UIComponent compStack = findParentContentStack(uiComponent);
+                        stack = (ContentStack)compStack;
+                    }
+                    if (null != stack){
+                        String newVal = String.valueOf(item.getValue());
+                        stack.setCurrentId(newVal);
+                    }
                 }
             } catch (Exception e) {
                 logger.warning("Error queuing CommandButton event");
@@ -84,7 +99,9 @@ public class ContentMenuItemRenderer extends BaseLayoutRenderer {
     private void renderItemAsButton(UIComponent parent, FacesContext facesContext, UIComponent uiComponent)
         throws IOException {
         ContentMenuItem item = (ContentMenuItem)uiComponent;
+        ContentNavBar navBar = (ContentNavBar)uiComponent.getParent();
         ResponseWriter writer = facesContext.getResponseWriter();
+        String clientId=item.getClientId(facesContext);
         String stackClientId = null;
         StringBuilder menubuttonClass = new StringBuilder(ContentNavBar.CONTENTNAVBAR_BUTTON_MENU_CLASS);
         StringBuilder buttonClass = new StringBuilder (ContentNavBar.CONTENTNAVBAR_BUTTON_CLASS);
@@ -106,15 +123,19 @@ public class ContentMenuItemRenderer extends BaseLayoutRenderer {
                     stackClientId = stack.getClientId(facesContext);
                     String valId = String.valueOf(item.getValue());
                     UIComponent pane = stack.findComponent(valId);
+                    writer.startElement(HTML.DIV_ELEM, uiComponent);
+                    writer.writeAttribute(HTML.ID_ATTR, clientId, HTML.ID_ATTR);
                     writer.startElement(HTML.ANCHOR_ELEM, uiComponent);
                     writer.writeAttribute("class",menubuttonClass , "class");
                     if (item.getStyle() !=null){
                      writer.writeAttribute(HTML.STYLE_ATTR, item.getStyle(), HTML.STYLE_ATTR);
                     }
                     StringBuilder sb = new StringBuilder("mobi.layoutMenu.showContent('").append(stackClientId);
-                    sb.append("', this");
+                    sb.append("', event");
                     sb.append(",{ selectedId: '").append(item.getValue()).append("'");
                     sb.append(",singleSubmit: ").append(item.isSingleSubmit());
+                    sb.append(", parent: '").append(navBar.getClientId(facesContext)).append("'");
+                    sb.append(", item: '").append(item.getClientId(facesContext)).append("'");
                     if (pane!=null){
                         String paneId = pane.getClientId(facesContext);
                         sb.append(",selClientId: '").append(paneId).append("'");
@@ -126,7 +147,8 @@ public class ContentMenuItemRenderer extends BaseLayoutRenderer {
                           writer.writeAttribute("onclick", sb.toString(), null);
                     }
                     writer.write(item.getLabel());
-                writer.endElement(HTML.ANCHOR_ELEM);
+                    writer.endElement(HTML.ANCHOR_ELEM);
+                    writer.endElement(HTML.DIV_ELEM);
                 }
             }
         }
@@ -180,7 +202,8 @@ public class ContentMenuItemRenderer extends BaseLayoutRenderer {
              selClientId = findCompIntree(facesContext, stack,  selId);
              if (selClientId!=null ){
                  UIComponent pane = root.findComponent(selClientId);
-                 client = ((ContentPane)pane).isClient();
+                 ContentPane cp = (ContentPane)pane;
+                 client = cp.isClient();
              }
              else {
                  logger.warning("Unable to find contentPane with id="+selId);
@@ -220,13 +243,14 @@ public class ContentMenuItemRenderer extends BaseLayoutRenderer {
                  writer.writeAttribute("href", getResourceURL(facesContext,lmi.getUrl()), null);
              }
              else {
-                 StringBuilder sb = new StringBuilder("mobi.layoutMenu.showContent('").append(stackClientId).append("', this");
+                 StringBuilder sb = new StringBuilder("mobi.layoutMenu.showContent('").append(stackClientId).append("', event");
                  sb.append(",{ selectedId: '").append(lmi.getValue()).append("'");
                  sb.append(",singleSubmit: ").append(lmi.isSingleSubmit());
                  if (selClientId!=null){
                       sb.append(",selClientId: '").append(selClientId).append("'");
                  }
                  sb.append(",client: ").append(client);
+                 sb.append(", item: '").append(uiComponent.getClientId(facesContext)).append("'");
                  sb.append("});");
                  if (stackClientId != null && !lmi.isDisabled()){
                     writer.writeAttribute("onclick", sb.toString(), null);

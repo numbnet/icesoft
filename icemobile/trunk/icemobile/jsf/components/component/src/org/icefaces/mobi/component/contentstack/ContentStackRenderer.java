@@ -48,6 +48,10 @@ public class ContentStackRenderer extends BaseLayoutRenderer {
         Map<String, String> params = facesContext.getExternalContext().getRequestParameterMap();
         // ajax behavior comes from ContentStackMenu which sends the currently selected value
         String indexStr = params.get(clientId + "_hidden");
+        String newStr = params.get(clientId);
+        if (newStr !=null){
+            logger.info("submitted "+newStr+" from request");
+        }
         String oldIndex = stack.getCurrentId();
         if( null != indexStr) {
             //find the activeIndex and set it

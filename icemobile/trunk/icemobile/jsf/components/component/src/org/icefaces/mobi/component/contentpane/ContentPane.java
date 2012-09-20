@@ -24,11 +24,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ContentPane extends ContentPaneBase {
-       public static final String CONTENT_BASE_CLASS = "mobi-contentpane ";
-       public static final String CONTENT_HIDDEN_CLASS = "mobi-contentpane-hidden ";
-       public static final String CONTENT_SINGLE_BASE_CLASS = "mobi-contentpane-single";
-       public static final String CONTENT_SINGLE_HIDDEN_CLASS = "mobi-contentpane-single-hidden";
-       public static final String CONTENT_SINGLE_MENUPANE_CLASS = "mobi-contentpane-single-menu-hidden";
+    public static final String CONTENT_BASE_CLASS = "mobi-contentpane ";
+    public static final String CONTENT_HIDDEN_CLASS = "mobi-contentpane-hidden ";
+    public static final String CONTENT_SINGLE_BASE_CLASS = "mobi-contentpane-single";
+    public static final String CONTENT_SINGLE_HIDDEN_CLASS = "mobi-contentpane-single-hidden";
+    public static final String CONTENT_SINGLE_MENUPANE_CLASS = "mobi-contentpane-single-menu-hidden";
+
 
     @Override
     public void setClient(boolean client) {
