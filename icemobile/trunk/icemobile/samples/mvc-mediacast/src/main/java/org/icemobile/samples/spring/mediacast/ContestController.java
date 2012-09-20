@@ -207,6 +207,10 @@ public class ContestController implements ServletContextAware {
 			uploadModel.setId(newId());
 		}
 		String newFileName = "img-" + uploadModel.getId() + "." + suffix;
+                File uploadDir = new File(servletContext.getRealPath("/resources/uploads/"));
+                if( uploadDir.exists()){
+                    uploadDir.mkdir();
+                }
 		String newPathName = "resources/uploads/" + newFileName;
 		File newFile = new File(servletContext.getRealPath("/" + newPathName));
 		if ((null != file) && !file.isEmpty()) {

@@ -12,7 +12,6 @@
 		</mobi:pagePanelHeader>
 		<mobi:pagePanelBody>
 		    <push:region group="photos" page="/contest-photo-list"/>
-		    <%@ include file="/WEB-INF/jsp/contest-photo-list.jsp" %>
 		    
 		</mobi:pagePanelBody>
 		<%@ include file="/WEB-INF/jsp/footer.jsp"%>
