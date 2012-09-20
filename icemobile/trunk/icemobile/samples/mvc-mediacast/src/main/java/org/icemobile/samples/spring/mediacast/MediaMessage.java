@@ -21,7 +21,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 
+@XmlRootElement
 public class MediaMessage implements Serializable{
 
     private static final Logger logger =
@@ -118,7 +121,8 @@ public class MediaMessage implements Serializable{
 		return direction;
 	}
 
-    public String getId() {
+	@XmlElement
+	public String getId() {
 		return id;
 	}
 
@@ -223,7 +227,8 @@ public class MediaMessage implements Serializable{
     			direction);
     }
 
-	public String getEmail() {
+    @XmlElement
+    public String getEmail() {
 		return email;
 	}
 
@@ -231,6 +236,7 @@ public class MediaMessage implements Serializable{
 		this.email = email;
 	}
 	
+	@XmlElement
 	public List<String> getVotes(){
 		return votes;
 	}

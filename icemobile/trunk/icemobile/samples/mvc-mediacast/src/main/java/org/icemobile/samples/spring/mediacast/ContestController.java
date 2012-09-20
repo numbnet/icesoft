@@ -62,16 +62,28 @@ public class ContestController {
 		model.addAttribute("ajaxRequest", isAjaxRequest(request));
 	}
 
-	@RequestMapping(value="/contest-upload", method = RequestMethod.GET)
-	public String getContestPage(Model model, 
-			@ModelAttribute("uploadModel") MediaMessage uploadModel) {
+	private void setupInitialModel(Model model, MediaMessage uploadModel){
 		model.addAttribute("mediaService", mediaService);
 		if( !model.containsAttribute("uploadModel")){
 			model.addAttribute("uploadModel", uploadModel);
 		}
 		log.debug("uploadModel="+uploadModel);
+	}
+	
+	@RequestMapping(value="/contest-upload", method = RequestMethod.GET)
+	public String getContestPage(Model model, 
+			@ModelAttribute("uploadModel") MediaMessage uploadModel) {
 		
+		setupInitialModel(model,uploadModel);
 		return "contest-upload";
+	}
+	
+	@RequestMapping(value="/contest-tablet", method = RequestMethod.GET)
+	public String getContestTabletPage(Model model, 
+			@ModelAttribute("uploadModel") MediaMessage uploadModel) {
+		
+		setupInitialModel(model,uploadModel);
+		return "contest-tablet";
 	}
 	
 	@RequestMapping(value="/contest-carousel", method = RequestMethod.GET)
@@ -134,6 +146,13 @@ public class ContestController {
 		
 		model.addAttribute("mediaService", mediaService);
 		return "contest-gallery";
+	}
+	
+	@RequestMapping(value="/contest-photo-list", method=RequestMethod.GET)
+	public String showPhotoList(Model model){
+		
+		model.addAttribute("mediaService", mediaService);
+		return "contest-photo-list";
 	}
 	
 	@RequestMapping(value="/contest-uploads/{id}", method = RequestMethod.POST)
@@ -199,7 +218,6 @@ public class ContestController {
 			newFileName = getCurrentFileName(request);
 			newFile = new File(request.getServletContext().getRealPath("/" + newPathName));
 		}
-		newFile.deleteOnExit();
 		Media media = new Media();
 		media.setFileName(newFileName);
 		media.setFile(newFile);
@@ -220,7 +238,8 @@ public class ContestController {
 		}
 		return currentFileName;
 	}
-
+	
+	
 	public static boolean isAjaxRequest(WebRequest webRequest) {
 		String requestedWith = webRequest.getHeader("Faces-Request");
 		if ("partial/ajax".equals(requestedWith))  {
