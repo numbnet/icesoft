@@ -191,34 +191,35 @@ public class TreeRenderer extends CoreRenderer {
             nodeWrapperClass += " " + NODE_SELECTED_CLASS;
 
         // Encode 'table' container
-        writer.startElement(HTML.DIV_ELEM, null);
+        writer.startElement(HTML.TABLE_ELEM, null);
         writer.writeAttribute(HTML.ID_ATTR, tree.getClientId(facesContext), null);
         writer.writeAttribute(HTML.CLASS_ATTR, NODE_CONTAINER_CLASS, null);
+        writer.startElement(HTML.TBODY_ELEM, null);
 
         // First 'line' of node
-        writer.startElement(HTML.DIV_ELEM, null);
+        writer.startElement(HTML.TR_ELEM, null);
         writer.writeAttribute(HTML.CLASS_ATTR, NODE_ROW, null);
 
         encodeNodeSwitch(writer, renderContext, state);
 
         // Write Node Template
-        writer.startElement(HTML.DIV_ELEM, null);
+        writer.startElement(HTML.TD_ELEM, null);
         writer.writeAttribute(HTML.CLASS_ATTR, nodeClass, null);
         writer.startElement(HTML.DIV_ELEM, null);
         writer.writeAttribute(HTML.CLASS_ATTR, nodeWrapperClass, null);
         tree.getNodeForType().encodeAll(facesContext);
         writer.endElement(HTML.DIV_ELEM);
-        writer.endElement(HTML.DIV_ELEM);
+        writer.endElement(HTML.TD_ELEM);
 
         // End first line
-        writer.endElement(HTML.DIV_ELEM);
+        writer.endElement(HTML.TR_ELEM);
 
         // 2nd line of node
-        writer.startElement(HTML.DIV_ELEM, null);
+        writer.startElement(HTML.TR_ELEM, null);
         writer.writeAttribute(HTML.CLASS_ATTR, NODE_ROW, null);
 
         // Write filler cell
-        writer.startElement(HTML.DIV_ELEM, null);
+        writer.startElement(HTML.TD_ELEM, null);
         writer.writeAttribute(HTML.CLASS_ATTR, NODE_CELL, null);
         writer.startElement(HTML.DIV_ELEM, null);
         writer.writeAttribute(HTML.CLASS_ATTR, NODE_LINE_CONTAINER, null);
@@ -226,10 +227,10 @@ public class TreeRenderer extends CoreRenderer {
         writer.writeAttribute(HTML.SRC_ATTR, dotSource, null);
         writer.endElement(HTML.IMG_ELEM);
         writer.endElement(HTML.DIV_ELEM);
-        writer.endElement(HTML.DIV_ELEM);
+        writer.endElement(HTML.TD_ELEM);
 
         // Open SubComponent Container
-        writer.startElement(HTML.DIV_ELEM, null);
+        writer.startElement(HTML.TD_ELEM, null);
         writer.writeAttribute(HTML.CLASS_ATTR, SUBNODE_CONTAINER_CLASS, null);
 
         if (isClientExpansion && !expanded)
@@ -240,11 +241,12 @@ public class TreeRenderer extends CoreRenderer {
         }
 
         // Close SubComponent Container
-        writer.endElement(HTML.DIV_ELEM);
+        writer.endElement(HTML.TD_ELEM);
         // End 2nd line of node
-        writer.endElement(HTML.DIV_ELEM);
+        writer.endElement(HTML.TR_ELEM);
         // End node
-        writer.endElement(HTML.DIV_ELEM);
+        writer.endElement(HTML.TBODY_ELEM);
+        writer.endElement(HTML.TABLE_ELEM);
     }
 
     private void encodeSubnodes(ResponseWriter writer, FacesContext facesContext, TreeRendererContext renderContext) throws IOException {
@@ -277,7 +279,7 @@ public class TreeRenderer extends CoreRenderer {
         if (!state.isExpansionEnabled())
             switchClass += " " + NODE_SWITCH_DISABLED_CLASS;       
 
-        writer.startElement(HTML.DIV_ELEM, null);
+        writer.startElement(HTML.TD_ELEM, null);
         writer.writeAttribute(HTML.CLASS_ATTR, switchClass, null);
 
         writer.startElement(HTML.DIV_ELEM, null);
@@ -296,7 +298,7 @@ public class TreeRenderer extends CoreRenderer {
         }
 
         writer.endElement(HTML.DIV_ELEM);
-        writer.endElement(HTML.DIV_ELEM);
+        writer.endElement(HTML.TD_ELEM);
     }
 
     private void closeContainerElement(ResponseWriter writer, TreeRendererContext renderContext) throws IOException {

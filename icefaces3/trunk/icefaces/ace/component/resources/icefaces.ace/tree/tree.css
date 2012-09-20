@@ -4,13 +4,13 @@
     padding: 5px 0;
 }
 
-/* Hide root horizontal staff lines */
-div.if-tree > div.if-node-cnt > div.if-node-tr > div.if-node-sw > div.if-node-ln > img {
-    display:none;
+.if-tree table.if-node-cnt {
+    border-spacing: 0;
 }
 
-.if-node {
-    display:table-cell;
+/* Hide root horizontal staff lines */
+div.if-tree > table.if-node-cnt > tbody > tr.if-node-tr > td.if-node-sw > div.if-node-ln > img {
+    display:none;
 }
 
 .if-node-wrp {
@@ -22,7 +22,6 @@ div.if-tree > div.if-node-cnt > div.if-node-tr > div.if-node-sw > div.if-node-ln
 
 .if-node-cnt {
     margin: 1px 5px;
-    display: table;
 }
 
 .if-node-sub {
@@ -30,7 +29,6 @@ div.if-tree > div.if-node-cnt > div.if-node-tr > div.if-node-sw > div.if-node-ln
 
 .if-node-sw {
     vertical-align: middle;
-    display:table-cell;
     cursor: pointer;
     vertical-align: middle;
 }
@@ -48,18 +46,18 @@ div.if-tree > div.if-node-cnt > div.if-node-tr > div.if-node-sw > div.if-node-ln
 }
 
 .if-node-tr {
-    display: table-row;
 }
 
 .if-node-td {
-    display: table-cell;
+    position:relative;
     overflow:hidden;
     vertical-align: top;
+    zoom:1;
 }
-
 
 .if-node-td > div.if-node-ln {
     position: relative;
+    overflow:hidden;
     width:100%;
     height:100%;
 }
