@@ -38,13 +38,17 @@ ice.ace.AccordionPanel = function(id, cfg) {
     this.jq = ice.ace.jq(this.jqId + '_acco');
     this.stateHolder = ice.ace.jq(this.jqId + '_active');
     var _self = this;
+	
+	try {
+		this.cfg.active = parseInt(this.stateHolder.val());
+		if (this.cfg.active < 0)
+			this.cfg.active = false;
+	} catch (e) {
+		this.cfg.active = 0;
+	}
 
     //Create accordion
     this.jq.accordion(this.cfg);
-
-    if(this.cfg.dynamic && this.cfg.cache) {
-        this.markAsLoaded(this.jq.children('div').get(this.cfg.active));
-    }
     
     this.jq.bind('accordionchangestart', function(event, ui) {
         _self.onTabChange(event, ui);
@@ -57,67 +61,12 @@ ice.ace.AccordionPanel = function(id, cfg) {
  * TabChange handler
  */
 ice.ace.AccordionPanel.prototype.onTabChange = function(event, ui) {
-    var panel = ui.newContent.get(0),
-        shouldLoad = this.cfg.dynamic && !this.isLoaded(panel);
+    var panel = ui.newContent.get(0);
 
     //Write state
     this.stateHolder.val(ui.options.active);
 
-    if(shouldLoad) {
-        this.loadDynamicTab(panel);
-    }
-    else {
-        if (this.cfg.ajaxTabChange) {
-            this.fireAjaxTabChangeEvent(panel);
-        }
-    }
-}
-
-/**
- * Loads tab contents with ajax
- */
-ice.ace.AccordionPanel.prototype.loadDynamicTab = function(panel) {
-    var _self = this,
-    options = {
-        source: this.id,
-        execute: this.id,
-        render: this.id
-    };
-
-    options.onsuccess = function(responseXML) {
-        ice.ace.selectCustomUpdates(responseXML, function(id, content) {
-            if(id == _self.id){
-			if (panel) {
-				ice.ace.jq(panel).children('div').html(content);
-
-				if(_self.cfg.cache) {
-					_self.markAsLoaded(panel);
-				}
-			}
-
-            }
-            else {
-                ice.ace.AjaxUtils.updateElement(id, content);
-            }
-
-        });
-
-        return false;
-    };
-
-    var params = {};
-    params[this.id + '_contentLoad'] = true;
-    if (panel) params[this.id + '_newTab'] = panel.id;
-    params[this.id + '_active'] = this.stateHolder.val();
-    params['ice.customUpdate'] = this.id;
-
-    if(this.cfg.ajaxTabChange) {
-        params[this.id + '_tabChange'] = true;
-    }
-
-    options.params = params;
-
-    ice.ace.AjaxRequest(options);
+	this.fireAjaxTabChangeEvent(panel);
 }
 
 /**
@@ -127,9 +76,14 @@ ice.ace.AccordionPanel.prototype.fireAjaxTabChangeEvent = function(panel) {
     var formId = formOf(this.jq.get(0)).id;
     var options = {
         source: this.id,
-        execute: formId
+        execute: this.id,
+		render: this.id
     },
     behaviourArgs = this.cfg && this.cfg.behaviors && this.cfg.behaviors.panechange;
+	if (this.ajaxTabChange) {
+		options.execute = formId;
+		options.render = '@all';
+	}
 
     var params = {};
     params[this.id + '_tabChange'] = true;
@@ -144,14 +98,6 @@ ice.ace.AccordionPanel.prototype.fireAjaxTabChangeEvent = function(panel) {
                 ice.ace.removeExecuteRenderOptions(options)
         ));
     } else ice.ace.AjaxRequest(options);
-};
-
-ice.ace.AccordionPanel.prototype.markAsLoaded = function(panel) {
-    ice.ace.jq(panel).data('loaded', true);
-};
-
-ice.ace.AccordionPanel.prototype.isLoaded = function(panel) {
-    return ice.ace.jq(panel).data('loaded') == true;
 };
 
 ice.ace.AccordionPanel.prototype.select = function(index) {

@@ -60,12 +60,13 @@ public class AccordionRenderer extends CoreRenderer {
 		}
 
         if(acco.isTabChangeRequest(context) && acco.getActiveIndex() >= 0) {
-            AccordionPaneChangeEvent changeEvent = new AccordionPaneChangeEvent(acco, acco.findTabToLoad(context));
-            changeEvent.setPhaseId(PhaseId.INVOKE_APPLICATION);
-
-            acco.queueEvent(changeEvent);
+			if (acco.getPaneChangeListener() != null) {
+				AccordionPaneChangeEvent changeEvent = new AccordionPaneChangeEvent(acco, acco.findTabToLoad(context));
+				changeEvent.setPhaseId(PhaseId.INVOKE_APPLICATION);
+				acco.queueEvent(changeEvent);
+			}
+			decodeBehaviors(context, component);
         }
-        decodeBehaviors(context, component);
 	}
 
 	@Override
@@ -73,14 +74,7 @@ public class AccordionRenderer extends CoreRenderer {
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
 		Accordion acco = (Accordion) component;
 
-        if(acco.isContentLoadRequest(context)) {
-            AccordionPane tabToLoad = (AccordionPane) acco.findTabToLoad(context);
-
-            if (tabToLoad != null) tabToLoad.encodeAll(context);
-        }else {
-            encodeMarkup(context, acco);
-        }
-		
+		encodeMarkup(context, acco);
 	}
 	
 	protected void encodeMarkup(FacesContext context, Accordion accordionPanel) throws IOException {
@@ -111,7 +105,6 @@ public class AccordionRenderer extends CoreRenderer {
 		ResponseWriter writer = context.getResponseWriter();
 		String clientId = acco.getClientId(context);
         int activeIndex = acco.getActiveIndex();
-        boolean isDynamic = acco.isDynamic();
 
         boolean hasTabChangeListener = acco.getPaneChangeListener() != null;
         for (String eventId : acco.getClientBehaviors().keySet()) {
@@ -129,8 +122,6 @@ public class AccordionRenderer extends CoreRenderer {
 		jb.beginFunction("ice.ace.AccordionPanel")
 			.item(clientId)
 			.beginMap()
-				.entry("active", (activeIndex == -1 ? "false" : String.valueOf(activeIndex)), true)
-				.entry("dynamic", isDynamic)
 				.entry("animated", acco.getEffect());
 		
 		String event = acco.getEvent();
@@ -139,10 +130,6 @@ public class AccordionRenderer extends CoreRenderer {
 		if(acco.isCollapsible()) jb.entry("collapsible", true);
 		if(acco.isFillSpace()) jb.entry("fillSpace", true);
 		if(acco.isDisabled()) jb.entry("disabled", true);
-
-        if(isDynamic || hasTabChangeListener) {
-            jb.entry("cache", acco.isCache());
-        }
 
         if(hasTabChangeListener) {
             jb.entry("ajaxTabChange", true);
@@ -170,7 +157,6 @@ public class AccordionRenderer extends CoreRenderer {
 	
 	protected void encodeTabs(FacesContext context, Accordion acco) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
-        int activeIndex = acco.getActiveIndex();
 		
 		for(int i=0; i < acco.getChildCount(); i++) {
 			UIComponent kid = acco.getChildren().get(i);
@@ -197,13 +183,7 @@ public class AccordionRenderer extends CoreRenderer {
 				writer.startElement("div", null);
                 writer.writeAttribute("id", clientId + "_content", null);
 				
-                if(acco.isDynamic()) {
-                    if(i == activeIndex)
-                        tab.encodeAll(context);
-                }
-                else {
-                    tab.encodeAll(context);
-                }
+                tab.encodeAll(context);
                 
 				writer.endElement("div");
 				writer.endElement("div");
