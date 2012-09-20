@@ -80,7 +80,7 @@ ice.ace.AccordionPanel.prototype.fireAjaxTabChangeEvent = function(panel) {
 		render: this.id
     },
     behaviourArgs = this.cfg && this.cfg.behaviors && this.cfg.behaviors.panechange;
-	if (this.ajaxTabChange) {
+	if (this.cfg.ajaxTabChange) {
 		options.execute = formId;
 		options.render = '@all';
 	}
