@@ -16,12 +16,77 @@
 
 <project name="mvc-mediacast" default="web-profile">
 
-    <property name="no-icefaces" value="no-icefaces"/>
-	<property file="./build.properties"/>
-    <property file="../build/build.properties"/>
-    <import file="../build/common.xml"/>
-	
+	<property name="no-icefaces" value="no-icefaces" />
+	<property file="./build.properties" />
+	<property file="../build/build.properties" />
+	<property name="exploded.dir" value="build/dist/exploded" />
+	<property name="name" value="mvc-mediacast" />
+	<import file="../build/common.xml" />
+
 	<patternset id="lib.distribute.application.mobi" includes="icepush.jar,icemobile-jsp.jar">
+	</patternset>
+	
+	<patternset id="lib.distribute.application.ext" includes="jaxb-api.jar,jaxb-impl.jar,activation.jar,jaxb1-impl.jar,jaxb-xjc.jar,jaxp-api-1.4.jar">
+        <exclude name="jaxb-api.jar" if="isJDK16" />
+        <exclude name="jaxb-impl.jar" if="isJDK16" />
+		<exclude name="activation.jar" if="isJDK16" />
+		<exclude name="jaxb1-impl.jar" if="isJDK16" />
+		<exclude name="jaxb-xjc.jar" if="isJDK16" />
+		<exclude name="jaxp-api-1.4.jar" if="isJDK16" />
     </patternset>
+
+	<!--target name="deploy.reload" depends="deploy,reload" />
+
+	<target name="deploy" depends="web-profile" description="Deploy application">
+		<copy todir="${deploy.path}/${name}" preservelastmodified="true" verbose="true">
+			<fileset dir="${exploded.dir}">
+				<include name="**/*.*" />
+			</fileset>
+		</copy>
+	</target>
+
+	<target name="reload" description="Reload application in Tomcat">
+		<reload url="${tomcat.manager.text.url}" username="${tomcat.manager.username}" password="${tomcat.manager.password}" path="/${name}" />
+	</target>
+
+	<target name="list" description="List Tomcat applications">
+		<list url="${tomcat.manager.text.url}" username="${tomcat.manager.username}" password="${tomcat.manager.password}" />
+	</target>
+
+	<target name="start" description="Start Tomcat application">
+		<start url="${tomcat.manager.text.url}" username="${tomcat.manager.username}" password="${tomcat.manager.password}" path="/${name}" />
+	</target>
+
+	<target name="stop" description="Stop Tomcat application">
+		<stop url="${tomcat.manager.url}" username="${tomcat.manager.username}" password="${tomcat.manager.password}" path="/${name}" />
+	</target>
+
+
+	<path id="catalina-ant-classpath">
+		<fileset dir="${appserver.lib}">
+			<include name="catalina-ant.jar" />
+			<include name="tomcat-coyote.jar" />
+			<include name="tomcat-util.jar" />
+		</fileset>
+		<fileset dir="${appserver.home}/bin">
+			<include name="tomcat-juli.jar" />
+		</fileset>
+	</path>
+
+	<taskdef name="install" classname="org.apache.catalina.ant.DeployTask">
+		<classpath refid="catalina-ant-classpath" />
+	</taskdef>
+	<taskdef name="reload" classname="org.apache.catalina.ant.ReloadTask">
+		<classpath refid="catalina-ant-classpath" />
+	</taskdef>
+	<taskdef name="list" classname="org.apache.catalina.ant.ListTask">
+		<classpath refid="catalina-ant-classpath" />
+	</taskdef>
+	<taskdef name="start" classname="org.apache.catalina.ant.StartTask">
+		<classpath refid="catalina-ant-classpath" />
+	</taskdef>
+	<taskdef name="stop" classname="org.apache.catalina.ant.StopTask">
+		<classpath refid="catalina-ant-classpath" />
+	</taskdef-->
 
 </project>
