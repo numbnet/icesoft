@@ -7539,11 +7539,10 @@ $.extend(Datepicker.prototype, {
         var showOn = this._get(inst, 'showOn');
         if (showOn == 'focus' || showOn == 'both') // pop-up date picker when in the marked field
         {
-            input.bind('focus', this._showDatepicker);
+            input.focus(this._showDatepicker);
+            input.click(this._showDatepicker); // ICE-8552
         }
-        input.click(this._showDatepicker); // ICE-8552
-
-        if (showOn == 'button' || showOn == 'both') { // pop-up date picker when button clicked
+		if (showOn == 'button' || showOn == 'both') { // pop-up date picker when button clicked
 			var buttonText = this._get(inst, 'buttonText');
 			var buttonImage = this._get(inst, 'buttonImage');
 			inst.trigger = $(this._get(inst, 'buttonImageOnly') ?
