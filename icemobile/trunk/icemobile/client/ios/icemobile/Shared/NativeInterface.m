@@ -322,6 +322,7 @@ NSLog(@"called camera");
     NSLog(@"imagePickerControllerDidCancel");
     [self dismissImagePicker];
     [picker release];
+    [self.controller doCancel];
 }
 
 - (UIImage*)scaleImage: (UIImage*)image maxWidth: (int)maxw maxHeight: (int)maxh  {

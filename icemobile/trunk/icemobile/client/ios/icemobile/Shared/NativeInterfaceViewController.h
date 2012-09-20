@@ -20,6 +20,7 @@
 
 - (void) completeFile:(NSString *)path forComponent:(NSString *)componentID withName:(NSString *)componentName;
 - (void) completePost:(NSString *)value forComponent:(NSString *)componentID withName:(NSString *)componentName;
+- (void) doCancel;
 - (void) register;
 - (NSString *) prepareUpload:(NSString *)formID;
 - (NSString *) getFormData:(NSString *)formID;
