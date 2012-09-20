@@ -46,8 +46,7 @@ public class ContestController implements ServletContextAware {
 	private static final Log log = LogFactory
 			.getLog(ContestController.class);
         
-        private ServletContext servletContext;
-	
+        
 	@Autowired
 	public ContestController(ServletContext servletContext){
 		this.servletContext = servletContext;		
