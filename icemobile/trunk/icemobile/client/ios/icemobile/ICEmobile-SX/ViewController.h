@@ -31,8 +31,10 @@
     NSDictionary *confirmMessages;
     NSDictionary *confirmTitles;
     NSArray *commandNames;
+    BOOL launchedFromApp;
     UIProgressView *uploadProgress;
     UILabel *uploadLabel;
+    UILabel *appTitle;
     UIView *linkView;
     UITextField *urlField;
     UISegmentedControl *actionSelector;
@@ -48,8 +50,10 @@
 @property (retain) NSDictionary *confirmMessages;
 @property (retain) NSDictionary *confirmTitles;
 @property (retain) NSArray *commandNames;
+@property (nonatomic) BOOL launchedFromApp;
 @property (nonatomic, retain) IBOutlet UIProgressView *uploadProgress;
 @property (nonatomic, retain) IBOutlet UILabel *uploadLabel;
+@property (nonatomic, retain) IBOutlet UILabel *appTitle;
 @property (nonatomic, retain) IBOutlet UIView *linkView;
 @property (nonatomic, retain) IBOutlet UITextField *urlField;
 @property (nonatomic, retain) IBOutlet UISegmentedControl *actionSelector;
@@ -57,6 +61,8 @@
 - (void) applicationWillResignActive;
 - (void) dispatchCurrentCommand;
 - (void) reloadCurrentURL;
+- (void) hideControls;
+- (void) showControls;
 - (void) hideProgress;
 - (void) decorateParams:(NSMutableDictionary*) params;
 - (IBAction) doMediacast;

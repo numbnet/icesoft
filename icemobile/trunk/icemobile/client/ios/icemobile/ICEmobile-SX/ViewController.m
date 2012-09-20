@@ -33,6 +33,7 @@
 @synthesize confirmMessages;
 @synthesize confirmTitles;
 @synthesize commandNames;
+@synthesize launchedFromApp;
 
 
 - (void) dealloc  {
@@ -66,7 +67,7 @@
 }
 
 - (void)completePost:(NSString *)value forComponent:(NSString *)componentID withName:(NSString *)componentName   {
-    [self completePostRaw:value forComponent:componentID 
+    [self completePostRaw:value forComponent:componentID
             withName:[@"text-" stringByAppendingString:componentName]];
 }
 
@@ -93,7 +94,7 @@
 }
 
 - (void)completeFile:(NSString *)path forComponent:(NSString *)componentID withName:(NSString *)componentName   {
-    [self completePostRaw:path forComponent:componentID 
+    [self completePostRaw:path forComponent:componentID
             withName:[@"file-" stringByAppendingString: componentName]];
 }
 
@@ -129,7 +130,25 @@ NSLog(@"Hitch just upload what would have been scripted %@", script);
     return @"unkown";
 }
 
+- (void) doCancel  {
+    if (!self.launchedFromApp)  {
+        [self reloadCurrentURL];
+    }
+}
+
+- (void) hideControls  {
+NSLog(@"hideControls");
+    self.linkView.hidden = YES;
+    self.uploadProgress.hidden = YES;
+}
+
+- (void) showControls  {
+NSLog(@"showControls");
+    self.linkView.hidden = NO;
+}
+
 - (void) hideProgress  {
+NSLog(@"hideProgress");
     uploadLabel.hidden = YES;
     uploadProgress.hidden = YES;
     linkView.hidden = NO;
@@ -158,7 +177,7 @@ NSLog(@"Hitch would show a thumbnail");
 
 
 - (void) dispatchCurrentCommand  {
-    NSArray *queryParts = [self.currentCommand 
+    NSArray *queryParts = [self.currentCommand
             componentsSeparatedByString:@"?"];
     NSString *commandName = [queryParts objectAtIndex:0];
 
@@ -205,6 +224,8 @@ NSLog(@"setCookie contextPath %@ ", contextPath );
 NSLog(@"currentCookies %@ ", [NSHTTPCookieStorage sharedHTTPCookieStorage].cookies );
 
         [nativeInterface dispatch:self.currentCommand];
+    } else if (buttonIndex == 1)  {
+        [self doCancel];
     }
 NSLog(@"Alert dismissed via button %d", buttonIndex);
 
@@ -246,6 +267,7 @@ NSLog(@"Alert dismissed via button %d", buttonIndex);
             selectionFrame.origin.y, cellWidth, selectionFrame.size.height);
     self.currentCommand = [NSString stringWithFormat:@"%@?id=undefined", theCommand];
     [actionSelector setSelectedSegmentIndex:-1];
+    self.launchedFromApp = YES;
     [self dispatchCurrentCommand];
 }
 
@@ -259,6 +281,15 @@ NSLog(@"Alert dismissed via button %d", buttonIndex);
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
+    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone) {
+        [self.view setBackgroundColor:[UIColor colorWithPatternImage:
+                [UIImage imageNamed:@"stripes.png"]] ];
+        [self.appTitle setBackgroundColor:[UIColor colorWithPatternImage:
+                [UIImage imageNamed:@"bar.png"]] ];
+    }
+    [self hideProgress];
+    [self showControls];
+    self.launchedFromApp = NO;
     self.nativeInterface = [[NativeInterface alloc] init];
     self.nativeInterface.controller = self;
     self.nativeInterface.uploading = NO;
@@ -329,6 +360,7 @@ NSLog(@"Alert dismissed via button %d", buttonIndex);
 }
 
 - (void)applicationWillResignActive {
+    self.launchedFromApp = NO;
     [self.nativeInterface applicationWillResignActive];
 }
 

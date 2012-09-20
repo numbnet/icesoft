@@ -28,6 +28,8 @@
 		9C517346155DB13C00090828 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C517345155DB13C00090828 /* CoreLocation.framework */; };
 		9C517348155DB16700090828 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C517347155DB16700090828 /* QuartzCore.framework */; };
 		9C51734A155DB17900090828 /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C517349155DB17900090828 /* CoreMotion.framework */; };
+		9C5324B3160B8C8900F9580D /* stripes.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C5324B2160B8C8900F9580D /* stripes.png */; };
+		9C5324B5160B8F5700F9580D /* bar.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C5324B4160B8F5700F9580D /* bar.png */; };
 		9C5CD04314BCBCA70070662F /* camcorder.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C5CD03B14BCBCA70070662F /* camcorder.png */; };
 		9C5CD04414BCBCA70070662F /* camcorder@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C5CD03C14BCBCA70070662F /* camcorder@2x.png */; };
 		9C5CD04514BCBCA70070662F /* camera.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C5CD03D14BCBCA70070662F /* camera.png */; };
@@ -100,6 +102,8 @@
 		9C517345155DB13C00090828 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		9C517347155DB16700090828 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		9C517349155DB17900090828 /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
+		9C5324B2160B8C8900F9580D /* stripes.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = stripes.png; sourceTree = "<group>"; };
+		9C5324B4160B8F5700F9580D /* bar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bar.png; sourceTree = "<group>"; };
 		9C5CD03B14BCBCA70070662F /* camcorder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = camcorder.png; sourceTree = "<group>"; };
 		9C5CD03C14BCBCA70070662F /* camcorder@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "camcorder@2x.png"; sourceTree = "<group>"; };
 		9C5CD03D14BCBCA70070662F /* camera.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = camera.png; sourceTree = "<group>"; };
@@ -260,6 +264,8 @@
 		9CA51B6914730D110065F681 /* ICEmobile-SX */ = {
 			isa = PBXGroup;
 			children = (
+				9C5324B4160B8F5700F9580D /* bar.png */,
+				9C5324B2160B8C8900F9580D /* stripes.png */,
 				9C7A1E87156C24E70013D23D /* ar.png */,
 				9C7A1E88156C24E70013D23D /* ar@2x.png */,
 				9CA51B7214730D120065F681 /* AppDelegate.h */,
@@ -390,6 +396,8 @@
 				9C42F73D158277E00011FECC /* S@2x.png in Resources */,
 				9C42F73E158277E00011FECC /* W.png in Resources */,
 				9C42F73F158277E00011FECC /* W@2x.png in Resources */,
+				9C5324B3160B8C8900F9580D /* stripes.png in Resources */,
+				9C5324B5160B8F5700F9580D /* bar.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -491,6 +499,7 @@
 		9CA51B8114730D120065F681 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "ICEmobile-SX/ICEmobile-SX-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
@@ -500,6 +509,7 @@
 				INFOPLIST_FILE = "ICEmobile-SX/ICEmobile-SX-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
