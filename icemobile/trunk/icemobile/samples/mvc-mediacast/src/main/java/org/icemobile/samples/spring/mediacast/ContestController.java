@@ -28,12 +28,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.context.ServletContextAware;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.context.request.WebRequest;
 
 @Controller
 @SessionAttributes({"uploadModel","msg"})
-public class ContestController {
+public class ContestController implements ServletContextAware {
 
 	@Inject
 	private MediaService mediaService;
@@ -44,6 +45,8 @@ public class ContestController {
 	
 	private static final Log log = LogFactory
 			.getLog(ContestController.class);
+        
+        private ServletContext servletContext;
 	
 	@Autowired
 	public ContestController(ServletContext servletContext){
@@ -204,19 +207,17 @@ public class ContestController {
 		if (uploadModel.getId() == null) {
 			uploadModel.setId(newId());
 		}
-		String fileName = null;
 		String newFileName = "img-" + uploadModel.getId() + "." + suffix;
 		String newPathName = "resources/uploads/" + newFileName;
-		File newFile = new File(request.getServletContext().getRealPath("/" + newPathName));
+		File newFile = new File(servletContext.getRealPath("/" + newPathName));
 		if ((null != file) && !file.isEmpty()) {
-			fileName = file.getOriginalFilename();
 			file.transferTo(newFile);
 			currentFileName = newPathName;
 		}
-		else if (null == fileName) {
+		else {
 			// use previously uploaded file, such as from ICEmobile-SX
 			newFileName = getCurrentFileName(request);
-			newFile = new File(request.getServletContext().getRealPath("/" + newPathName));
+			newFile = new File(servletContext.getRealPath("/" + newPathName));
 		}
 		Media media = new Media();
 		media.setFileName(newFileName);
@@ -253,5 +254,10 @@ public class ContestController {
 	public static boolean isAjaxUploadRequest(WebRequest webRequest) {
 		return webRequest.getParameter("ajaxUpload") != null;
 	}
+        
+        public void setServletContext(ServletContext sc) {
+            servletContext = sc; 
+        }
+
 
 }

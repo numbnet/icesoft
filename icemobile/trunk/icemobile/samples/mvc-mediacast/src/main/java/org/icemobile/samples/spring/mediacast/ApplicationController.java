@@ -8,6 +8,7 @@ import java.util.Iterator;
 import java.util.UUID;
 
 import javax.inject.Inject;
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.logging.Log;
@@ -21,13 +22,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
+import org.springframework.web.context.ServletContextAware;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("/media")
 @SessionAttributes({"uploadModel"})
-public class ApplicationController {
+public class ApplicationController implements ServletContextAware {
 
 	@Inject
 	private MediaService mediaService;
@@ -38,6 +40,8 @@ public class ApplicationController {
 			.getLog(ApplicationController.class);
 	
 	private static final String DELIMETERS = "[, \t\n\r\f]";
+        
+        private ServletContext servletContext;
 	
 	@ModelAttribute("uploadModel")
 	public MediaMessage getUploadModel(){
@@ -225,19 +229,17 @@ public class ApplicationController {
 		if (uploadModel.getId() == null) {
 			uploadModel.setId(newId());
 		}
-		String fileName = null;
 		String newFileName = "img-" + uploadModel.getId() + "." + suffix;
 		String newPathName = "resources/uploads/" + newFileName;
-		File newFile = new File(request.getServletContext().getRealPath("/" + newPathName));
+		File newFile = new File(servletContext.getRealPath("/" + newPathName));
 		if ((null != file) && !file.isEmpty()) {
-			fileName = file.getOriginalFilename();
 			file.transferTo(newFile);
 			currentFileName = newPathName;
 		}
-		else if (null == fileName) {
+                else {
 			// use previously uploaded file, such as from ICEmobile-SX
 			newFileName = getCurrentFileName(request);
-			newFile = new File(request.getServletContext().getRealPath("/" + newPathName));
+			newFile = new File(servletContext.getRealPath("/" + newPathName));
 		}
 		newFile.deleteOnExit();
 		Media media = new Media();
@@ -272,5 +274,9 @@ public class ApplicationController {
 		}
 		return currentFileName;
 	}
+
+    public void setServletContext(ServletContext sc) {
+       servletContext = sc;
+    }
 
 }
