@@ -41,6 +41,7 @@ import javax.faces.application.ResourceDependency;
         componentFamily = "org.icefaces.ace.Tree",
         tlddoc = "")
 @ResourceDependencies({
+        @ResourceDependency(library="icefaces.ace", name="util/combined.css"),
         @ResourceDependency(library="icefaces.ace", name="util/ace-jquery.js"),
         @ResourceDependency(library="icefaces.ace", name="util/ace-components.js")
 })
