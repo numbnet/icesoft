@@ -25,7 +25,7 @@ public class GetEnhancedTag extends BaseSimpleTag{
 	private static Logger log = Logger.getLogger(GetEnhancedTag.class.getName());
 	
 	public void doTag() throws IOException {
-		PageContext pageContext = (PageContext) getJspContext();
+		PageContext pageContext = getContext();
 		
 		DeviceType device = TagUtil.getDeviceTypeNoDefault(pageContext);
 		
