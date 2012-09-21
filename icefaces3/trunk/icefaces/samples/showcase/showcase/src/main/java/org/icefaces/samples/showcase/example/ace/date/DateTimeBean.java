@@ -105,6 +105,7 @@ public class DateTimeBean extends ComponentExampleImpl<DateTimeBean> implements
 					newDate.get(Calendar.DAY_OF_MONTH));
 			currentDate.set(Calendar.MONTH, newDate.get(Calendar.MONTH));
 			currentDate.set(Calendar.YEAR, newDate.get(Calendar.YEAR));
+            this.selectedDate = currentDate.getTime();
 
 		} else {
 			// Overwrite the whole object
