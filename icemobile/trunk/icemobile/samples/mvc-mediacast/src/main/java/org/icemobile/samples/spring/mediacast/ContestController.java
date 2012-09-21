@@ -128,6 +128,7 @@ public class ContestController implements ServletContextAware {
 			saveImage(request, file, uploadModel);
 			uploadModel.setDescription(form.getDescription());
 			uploadModel.setEmail(form.getEmail());
+			uploadModel.setCreated(System.currentTimeMillis());
 			mediaService.addMedia(uploadModel);
 			log.debug("successfully added message to mediaService, uploadModel="
 					+ uploadModel);
