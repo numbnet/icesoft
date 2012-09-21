@@ -5,7 +5,7 @@ platforms.
 CSS inheritance is used extensively across the themes.  The Structure is
 as follows:
 
--- base - CSS 2 common compoennt classes
+-- base - CSS 2 common component classes
  |
  |
  |-- lightning - CSS2 light weight component theme
