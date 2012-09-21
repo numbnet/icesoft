@@ -15,3 +15,4 @@ ICE-7638 Add ace:submenu support to ace:contextMenu
 ICE-7668 ace:subMenu has no border styling
 ICE-7762 ace:menuBar loses its styling after being click in IE7
 ICE-8568 added hack to avoid closing a dynamic ace:submenu right away after it's displayed via a click event
+ICE-8515 fix for clearing out multi-column submenus on mouseleave
