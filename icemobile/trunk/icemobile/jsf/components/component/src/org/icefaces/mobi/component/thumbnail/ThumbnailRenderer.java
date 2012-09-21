@@ -41,6 +41,7 @@ public class ThumbnailRenderer extends Renderer {
 
         Thumbnail thumbnail = (Thumbnail) uiComponent;
         String cameraId = thumbnail.getFor();
+        String cameraClientId = null;
 
         if (cameraId == null &&
                 (facesContext.isProjectStage(ProjectStage.Development) ||
@@ -50,7 +51,8 @@ public class ThumbnailRenderer extends Renderer {
         UIComponent cameraComp = thumbnail.findComponent(cameraId);
         String thumbId = cameraId + "-thumb";
         if (null != cameraComp) {
-            thumbId = cameraComp.getClientId() + "-thumb";
+            cameraClientId = cameraComp.getClientId();
+            thumbId = cameraClientId + "-thumb";
         } else if (facesContext.isProjectStage(ProjectStage.Development) ||
                 logger.isLoggable(Level.FINER)){
             logger.finer(" Cannot find camera component with id=" + cameraId);
@@ -59,7 +61,11 @@ public class ThumbnailRenderer extends Renderer {
         // boolean disabled = thumbnail.isDisabled();
         writer.startElement("span", uiComponent);
         // write out style for input button, same as default device button.
-        Utils.writeConcatenatedStyleClasses(writer, "mobi-thumb",
+        String thumbClass = "mobi-thumb";
+        if (Utils.uploadInProgress(facesContext, cameraClientId))  {
+            thumbClass = "mobi-thumb-done";
+        } 
+        Utils.writeConcatenatedStyleClasses(writer, thumbClass,
                 thumbnail.getStyleClass());
         writer.writeAttribute(HTML.STYLE_ATTR, thumbnail.getStyle(), HTML.STYLE_ATTR);
         writer.writeAttribute(HTML.ID_ATTR, "span-thumb", null);

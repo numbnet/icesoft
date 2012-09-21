@@ -476,6 +476,19 @@ public class Utils {
 		return type == null ? DeviceType.DEFAULT : type;
 	}
 
+    public static boolean uploadInProgress(FacesContext facesContext,
+            String clientId)  {
+        if (null == clientId)  {
+            return false;
+        }
+        String partUploadName = clientId;
+        Map auxMap = AuxUploadResourceHandler.pollAuxRequestMap();
+        if (null == auxMap)  {
+            return false;
+        }
+        return auxMap.containsKey(partUploadName);
+    }
+
 	public static boolean decodeComponentFile(FacesContext facesContext,
 			String clientId, Map fileMeta) throws IOException {
 		HttpServletRequest request = (HttpServletRequest) facesContext
