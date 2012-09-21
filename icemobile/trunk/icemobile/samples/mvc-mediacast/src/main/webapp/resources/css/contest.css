@@ -64,7 +64,7 @@
 	padding: 10px;
 }
 .mobi-carousel {
-	height: 50px;
+	height: 76px;
 }
 .mobi-carousel-list li {
 	width: auto;
@@ -138,3 +138,10 @@
     padding-right:5px;border:none;float:left;height:50px;
 }
 .mobi-carousel-cursor-list { display:none;}
+.mobi-carousel-list li > img{
+	height:75px;
+}
+.mobi-carousel-list li div{
+	overflow:hidden;
+	height:75px;
+}

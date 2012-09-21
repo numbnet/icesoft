@@ -83,6 +83,7 @@ public class MediaMessage implements Serializable{
 		cloned.setTags(tags);
 		cloned.setTitle(title);
 		cloned.setVideo(video);
+		cloned.setCreated(created);
 		return cloned;
 	}
 

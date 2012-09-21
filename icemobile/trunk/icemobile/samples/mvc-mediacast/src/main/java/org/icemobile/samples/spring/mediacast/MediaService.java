@@ -32,14 +32,16 @@ import org.springframework.web.context.ServletContextAware;
 @XmlRootElement
 public class MediaService implements ServletContextAware {
 	
+	private static final int CAROUSEL_MAX_INDEX = 15;
+	
 	private List<MediaMessage> media = Collections.synchronizedList(new ArrayList<MediaMessage>());
-	private static final int CAROUSEL_IMG_HEIGHT = 48;
+	private static final int CAROUSEL_IMG_HEIGHT = 75;
 	private static final String CAROUSEL_ITEM_MARKUP = 
-			"<div style='overflow:hidden;height:48px;'><img height='"+CAROUSEL_IMG_HEIGHT+"' src='%1$s/resources/uploads/%2$s' style='border:none;' title='%3$s'></div><a class='view-play-icon' href='%1$s/media/%4$s' ><img src='%1$s/resources/images/view-icon.png' style='border:none;'></a>";
+			"<div><img height='"+CAROUSEL_IMG_HEIGHT+"' src='%1$s/resources/uploads/%2$s' style='border:none;' title='%3$s'></div><a class='view-play-icon' href='%1$s/media/%4$s' ><img src='%1$s/resources/images/view-icon.png' style='border:none;'></a>";
 	private String contextPath;
 	private TagWeightMap tagsMap = new TagWeightMap();
 	private static final String CONTEST_CAROUSEL_ITEM_MARKUP = 
-			"<div style='overflow:hidden;height:48px;'><img height='"+CAROUSEL_IMG_HEIGHT+"' src='%1$s/resources/uploads/%2$s' style='border:none;' title='%3$s'></div><a class='view-play-icon' href='%1$s/contest-uploads/%4$s' ><img src='%1$s/resources/images/view-icon.png' style='border:none;'></a>";
+			"<div><img height='"+CAROUSEL_IMG_HEIGHT+"' src='%1$s/resources/uploads/%2$s' style='border:none;' title='%3$s'></div><a class='view-play-icon' href='%1$s/contest-uploads/%4$s' ><img src='%1$s/resources/images/view-icon.png' style='border:none;'></a>";
 	private Comparator<MediaMessage> mediaByVotesComparator = new MediaMessageByVotesComparator();
 	private Comparator<MediaMessage> mediaByTimeComparator = new MediaMessageByTimeComparator();
 	
@@ -65,6 +67,19 @@ public class MediaService implements ServletContextAware {
 		return list;
 	}
 	
+	public List<MediaMessage> getMediaSortedByTime(int max){
+		List<MediaMessage> list = new ArrayList<MediaMessage>(media);
+		Collections.sort(list, mediaByTimeComparator);
+		if( list.isEmpty() && list.size() > max){
+			return list.subList(0,  max);
+		}
+		else{
+			return list;
+		}
+	}
+	
+	
+	
 	
 	public List<MediaMessage> getMediaCopy(){
 		return new ArrayList<MediaMessage>(media);
@@ -78,7 +93,7 @@ public class MediaService implements ServletContextAware {
 	public List<String> getMediaImageMarkup(){
     	List<String> imageMarkup = new ArrayList<String>();
     	if( media != null ){
-	    	for( MediaMessage mediaMsg : getMediaSortedByTime() ){
+	    	for( MediaMessage mediaMsg : getMediaSortedByVotes() ){
 	    		imageMarkup.add(String.format(CAROUSEL_ITEM_MARKUP, contextPath, mediaMsg.getPhoto().getFileName(), mediaMsg.getTitle(), mediaMsg.getId()));
 	    	}
     	}
@@ -88,7 +103,7 @@ public class MediaService implements ServletContextAware {
 	public List<String> getContestMediaImageMarkup(){
     	List<String> imageMarkup = new ArrayList<String>();
     	if( media != null ){
-	    	for( MediaMessage mediaMsg : getMediaSortedByVotes() ){
+	    	for( MediaMessage mediaMsg : getMediaSortedByTime(CAROUSEL_MAX_INDEX) ){
 	    		imageMarkup.add(String.format(CONTEST_CAROUSEL_ITEM_MARKUP, contextPath, mediaMsg.getPhoto().getFileName(), mediaMsg.getTitle(), mediaMsg.getId()));
 	    	}
     	}

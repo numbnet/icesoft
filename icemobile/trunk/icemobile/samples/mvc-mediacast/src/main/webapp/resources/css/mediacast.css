@@ -92,3 +92,11 @@ ul.tagCloud a {
 	color: #4040F0;
 	text-decoration: none;
 }
+.mobi-carousel-cursor-list { display:none;}
+.mobi-carousel-list li > img{
+    height:75px;
+}
+.mobi-carousel-list li div{
+    overflow:hidden;
+    height:75px;
+}
