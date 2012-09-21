@@ -84,6 +84,11 @@
         <filter-name>imageCacheFilter</filter-name>
         <url-pattern>*.jpg</url-pattern>
     </filter-mapping>
+    
+    <filter-mapping>
+        <filter-name>imageCacheFilter</filter-name>
+        <url-pattern>*.png</url-pattern>
+    </filter-mapping>
 
     <welcome-file-list>
         <welcome-file>index.jsp</welcome-file>

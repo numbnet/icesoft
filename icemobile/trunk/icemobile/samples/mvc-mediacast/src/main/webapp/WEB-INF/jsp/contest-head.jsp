@@ -64,4 +64,5 @@
         });
     }
         </script>
+    <mobi:googleAnalytics/>
 </head>
