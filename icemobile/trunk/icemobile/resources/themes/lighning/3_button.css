@@ -1,0 +1,79 @@
+/***
+ * Copyright 2004-2012 ICEsoft Technologies Canada Corp.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the
+ * License. You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an "AS
+ * IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ * express or implied. See the License for the specific language
+ * governing permissions and limitations under the License.
+ */
+.mobi-button-container {
+    padding: 10px;
+    background-color: transparent;
+}
+
+.mobi-button-group-vert .mobi-button {
+    margin: 0 0 -1px 0;
+}
+
+.mobi-button-group-hor .mobi-button {
+    margin: 0 -5px 0 0;
+}
+
+
+.mobi-button-group .mobi-button-selected {
+    background-color: #6792E8;
+    border: 1px solid #155678;
+    color: #FFFFFF;
+}
+
+.mobi-button {
+    background:  #EEEEEE;
+    background-color: #f5f5f5;
+    border: 1px solid #BEBEBE;
+    font-size: 12px !important;
+    color: #444444;
+    font-weight: bold;
+    padding:5px 10px;
+}
+.mobi-button-default, .mobi-button-important, .mobi-button-attention {
+    border: 1px solid #155678;
+    color: #FFFFFF;
+}
+
+.mobi-button-default {
+    background-color: #4A6C9B;
+}
+
+.mobi-button-back {
+    background-color: #4A6C9B;
+    display: inline-block;
+    color: #FFFFFF!important;
+    position: absolute;
+    padding: 8px 10px;
+}
+
+.mobi-button-important {
+    background-color: #6792E8;
+}
+
+.mobi-button-attention {
+    background-color: #BC3839;
+}
+
+.mobi-button-icon {
+    border-right: none;
+}
+
+.mobi-panel-stack-header .mobi-button-default,
+.mobi-panel-stack-header .mobi-button-important,
+.mobi-panel-stack-header .mobi-button-attention {
+    padding: 0;
+}
+

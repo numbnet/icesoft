@@ -1,0 +1,54 @@
+/***
+ * Copyright 2004-2012 ICEsoft Technologies Canada Corp.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the
+ * License. You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an "AS
+ * IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ * express or implied. See the License for the specific language
+ * governing permissions and limitations under the License.
+ */
+.mobi-tabset {
+    float:left;
+}
+
+.mobi-tabset-tabs-top > .mobi-tabset-tabs{ width:100%; }
+
+
+.mobi-tabset-tabs { margin:10px; }
+
+.mobi-tabset-tabs > ul{
+    font-weight: bold;
+    color:white
+}
+
+.mobi-tabset-tabs > ul li{
+    padding: 0 15px;
+    border-bottom: 1px solid #6595f9;
+    border-right: 1px solid #4D4C52;
+    margin-right:1px;
+    background-color: #222126;
+}
+.mobi-tabset-tabs > ul li:last-child{ border-right: none; }
+
+.activeTab { border-bottom: 3px solid #6595f9 !important; }
+
+.mobi-tabset-tabs-top .mobi-tabset-content{
+    padding-top:40px;
+}
+.mobi-tabset-tabs-bottom > .mobi-tabset-tabs{
+    position: relative;
+}
+.mobi-tabset-tabs-top > .mobi-tabset-tabs{
+    position: relative;
+}
+.mobi-tabset-tabs-bottom-footer > .mobi-tabset-tabs{margin-bottom: 0;}
+
+.mobi-tabset-tabs-top-header > .mobi-tabset-tabs{margin-top: 0;}
+
+.mobi-tabpage-hidden {display: none; }
