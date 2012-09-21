@@ -127,7 +127,11 @@ public class CameraRenderer extends Renderer {
             }
         }
         writer.writeAttribute(HTML.ONCLICK_ATTR, script, null);
-        writer.writeText("camera", null);
+        if (Utils.uploadInProgress(facesContext, clientId))  {
+            writer.writeText("photo captured", null);
+        } else {
+            writer.writeText("camera", null);
+        }
         writer.endElement(HTML.BUTTON_ELEM);
 
     }

@@ -35,31 +35,29 @@
         <mobi:fieldsetGroup>
 
             <mobi:fieldsetRow>
-
+                <h:outputText styleClass="ehancedBrowserDisclaimer"
+                        rendered="#{not camcorderBean.enhancedBrowser}"
+                        value="#{mmsgs['example.device.disclaimer']}" />
+                <br />
+                <mobi:icemobilesx/>
                 <mobi:geolocation 
                           latitude="#{realityBean.latitude}"
                           longitude="#{realityBean.longitude}"/>
 
-                <mobi:inputText value="#{realityBean.label}" 
-                        placeholder="Label" />
-                <br />
                 <h:panelGroup class="vcentered">
                 <mobi:camera id="cam" value="#{realityBean.cameraImage}">
                     <mobi:thumbnail for="cam"/>
                 </mobi:camera>
+                <mobi:inputText value="#{realityBean.label}" 
+                        placeholder="Label" />
                 <h:commandButton id="upload1"
                                  style="float:none;"
                                  styleClass="mobi-button mobi-round-all mobi-button-important"
                                  actionListener="#{realityBean.processUploadedImage}"
-                                 value="Upload"/>
+                                 value="Submit"/>
 
-                <br />
-                <h:outputText styleClass="ehancedBrowserDisclaimer"
-                        rendered="#{not camcorderBean.enhancedBrowser}"
-                        value="#{mmsgs['example.device.disclaimer']}" />
-                    <br />
-                <mobi:icemobilesx/>
                 </h:panelGroup>
+                <br />
                 <h:outputText value="#{realityBean.uploadMessage}"/>
             </mobi:fieldsetRow>
         </mobi:fieldsetGroup>
