@@ -82,6 +82,9 @@ public class TagWriter {
 	}
 	
 	public void endElement() throws IOException{
+		if( !lastElementEnded){
+			out.write(GT);
+		}
 		out.write(ET);
 		out.write(elementStack.pop());
 		out.write(GT);
