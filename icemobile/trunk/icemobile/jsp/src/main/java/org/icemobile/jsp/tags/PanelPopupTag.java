@@ -18,8 +18,11 @@ package org.icemobile.jsp.tags;
 
 import javax.servlet.jsp.JspTagException;
 import javax.servlet.jsp.tagext.TagSupport;
+
+import org.icemobile.jsp.util.HTML;
+
 import java.io.IOException;
-import java.io.Writer;
+import java.util.Stack;
 import java.util.logging.Logger;
 
 /**
@@ -35,105 +38,87 @@ public class PanelPopupTag extends TagSupport {
     public static final String TITLE_CLASS = "mobi-date-title-container ";
 
     public int doStartTag() throws JspTagException {
+    	
+    	try{
+    		         
+            TagWriter writer = new TagWriter(pageContext);
+            // popup background
+            writer.startDiv();
+            writer.writeAttribute("id", id+"_bg");
+            writer.writeStyleClass(BLACKOUT_PNL_HIDDEN_CLASS);
+            writer.endElement();
+            
+        	// popup container section
+        	writer.startDiv();
+        	writer.writeAttribute("id", id+"_popup");
+        	writer.writeStyleClassWithBase(styleClass, CONTAINER_CLASS);
+        	
+        	// popupPanel Title section
+            if (title != null && !"".equals(title)) {
+            	writer.startDiv();
+            	writer.writeAttribute("id", id+"_title");
+                writer.writeStyleClass(TITLE_CLASS);
+                writer.writeTextNode(title);
 
-        Writer out = pageContext.getOut();
-
-        // popup background
-        StringBuilder tag = new StringBuilder(TagUtil.DIV_TAG);
-//        tag.append(TagUtil.DIV_TAG);
-        tag.append(" id=\"").append(getId()).append("_bg\"");
-        tag.append(" class=\"").append(BLACKOUT_PNL_HIDDEN_CLASS).append("\">");
-        tag.append(TagUtil.DIV_TAG_END);
-
-        // popup container section
-        tag.append(TagUtil.DIV_TAG);
-        tag.append(" id=\"").append(getId()).append("_popup\"");
-        tag.append(" class=\"").append(CONTAINER_CLASS).append("\"");
-        if (styleClass != null && !"".equals(styleClass)) {
-            tag.append(" ").append(getStyleClass());
-        }
-
-        if (style != null) {
-            tag.append(" style=\"").append(getStyle()).append("\"");
-        }
-        tag.append(">");
-
-        // popupPanel Title section
-        if (title != null && !"".equals(title)) {
-            tag.append(TagUtil.DIV_TAG);
-            tag.append(" id=\"").append(getId()).append("_title\"");
-            tag.append(" class=\"").append(TITLE_CLASS).append("\"");
-            tag.append(">");
-            tag.append(getTitle());
-
-            // Only do a close button if configured.
-            if (isAutoCloseButton()) {
-                tag.append(TagUtil.INPUT_TAG);
-                tag.append(" type=\"button\"");
-                if (closeButtonLabel != null && !"".equals(closeButtonLabel)) {
-                    tag.append(" value=\"").append(closeButtonLabel).append("\"");
-                } else {
-                    tag.append(" value=\"Close\"");
+                // Only do a close button if configured.
+                if (isAutoCloseButton()) {
+                	writer.startElement(HTML.INPUT_ELEM);
+                	writer.writeAttribute(HTML.TYPE_ATTR, "button");
+                	if (closeButtonLabel != null && !"".equals(closeButtonLabel)) {
+                		writer.writeAttribute(HTML.VALUE_ATTR, closeButtonLabel);
+                    } else {
+                    	writer.writeAttribute(HTML.VALUE_ATTR, "Close");
+                    }
+                	writer.writeAttribute(HTML.ONCLICK_ATTR, "ice.mobi.panelpopup.close('"+id+"');");
+                	writer.endElement();
                 }
-                tag.append(" onclick=\"ice.mobi.panelpopup.close('").append(getId()).append("');\"");
-                tag.append("/>");
+                writer.endElement();// Close title section
             }
-
-            tag.append(TagUtil.DIV_TAG_END); // Close title section
-        }
-
-        try {
-            out.write(tag.toString());
-        } catch (IOException ioe) {
-            LOG.severe("IOException starting panelPopup tag: " + ioe);
-        }
+    	}
+    	catch(IOException ioe){
+    		LOG.severe("IOException starting panelPopup tag: " + ioe);
+    	}
         // Allow children to render. Container DIV is open
         return EVAL_BODY_INCLUDE;
     }
 
     public int doEndTag() throws JspTagException {
-
-        Writer out = pageContext.getOut();
-        StringBuilder tag = new StringBuilder();
-        if (name == null || "".equals(name)) {
-            LOG.warning("No Name attribute for PanelPopup for value submission");
-        } else {
-            tag.append(TagUtil.INPUT_TAG);
-            tag.append(" type=\"hidden\"");
-            tag.append(" id=\"").append(getId()).append("_hidden\"");
-            tag.append(" name=\"").append(getName()).append("\"");
-            tag.append("/>");
-        }
-
-        tag.append(TagUtil.DIV_TAG_END);
-        tag.append(TagUtil.DIV_TAG_END);
-        tag.append(encodeScript());
-
-        try {
-            out.write(tag.toString());
-        } catch (IOException ioe) {
-            LOG.severe("IOException starting panelPopup tag: " + ioe);
-        }
-
+    	try{
+	    	Stack<String> initialContext = new Stack<String>();
+	    	initialContext.push(HTML.DIV_ELEM);
+	    	TagWriter writer = new TagWriter(pageContext,initialContext);
+	    	if (name == null || "".equals(name)) {
+	            LOG.warning("No Name attribute for PanelPopup for value submission");
+	        } else {
+	        	writer.startElement(HTML.INPUT_ELEM);
+	        	writer.writeAttribute(HTML.TYPE_ATTR, "hidden");
+	        	writer.writeAttribute(HTML.ID_ATTR, id+"_hidden");
+	        	writer.writeAttribute(HTML.NAME_ATTR, name);
+	        	writer.endElement();
+	        }
+	    	writer.endElement();
+	    	
+	    	encodeScript(writer);
+	    }
+		catch(IOException ioe){
+			LOG.severe("IOException starting panelPopup tag: " + ioe);
+		}
         return EVAL_PAGE;
 
     }
 
-    public String encodeScript() {
-        StringBuilder retVal = new StringBuilder(TagUtil.SPAN_TAG);
-        retVal.append(" id=\"").append(getId()).append("_scrSpan\">");
-        retVal.append(TagUtil.SCRIPT_TAG);
-        retVal.append(" ").append(TagUtil.JS_BOILER);
-        retVal.append(" id=\"").append(getId()).append("_script\">");
-
-        retVal.append("ice.mobi.panelpopup.init('").append(getId())
-            .append("', {visible: ").append(isVisible())
-            .append(",autocenter: ").append(isAutocenter())
-            .append("});\n");
-        retVal.append(TagUtil.SCRIPT_TAG_END);
-        retVal.append(TagUtil.SPAN_TAG_END);
-
-        return retVal.toString();
+    public void encodeScript(TagWriter writer) throws IOException{
+    	writer.startElement(HTML.SPAN_ELEM);
+    	writer.writeAttribute(HTML.ID_ATTR, id+"_srcSpan");
+    	
+    	writer.startElement(HTML.SCRIPT_ELEM);
+    	writer.writeAttribute(HTML.TYPE_ATTR, "text/javascript");
+    	writer.writeAttribute(HTML.ID_ATTR, id+"_script");
+    	
+    	writer.writeTextNode("ice.mobi.panelpopup.init('"+id+"',{visible:"+visible
+    			+",autocenter:"+autocenter+"});");
+    	writer.endElement();
+    	writer.endElement();
     }
 
 
