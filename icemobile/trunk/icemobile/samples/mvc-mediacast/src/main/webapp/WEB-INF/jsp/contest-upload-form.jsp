@@ -15,13 +15,11 @@
            </mobi:fieldSetRow>
         </mobi:fieldSetGroup>
         <mobi:fieldSetGroup id="cameraUploadGrp" inset="true" style="margin-top:10px;">
-            <mobi:fieldSetRow style="min-height:65px;">
-                <div>
-                    <mobi:camera id="upload" style="width:70%;"/>
-                    <div style="display:inline-block;float:right;">
+            <mobi:fieldSetRow>
+                <mobi:camera id="upload" style="width:70%;vertical-align:top;"/>
+                    <c:if test="${!desktop}">
                         <mobi:thumb for="upload" style="margin: 0 2px"/>
-                    </div>
-                 </div>
+                    </c:if>
              </mobi:fieldSetRow>
              <mobi:fieldSetRow style="min-height:0;">
                  <mobi:inputtext name="email" 
