@@ -1191,3 +1191,6 @@ ice.mobi.timespinner = {
         this.opened[clientId] = null;
     }
 };
+ice.mobi.setCookie = function(name,val,path){
+	document.cookie = name + '=' + encodeURIComponent(val) + '; path=' + path;
+}
