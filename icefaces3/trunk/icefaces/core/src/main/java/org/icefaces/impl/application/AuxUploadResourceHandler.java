@@ -79,6 +79,32 @@ public class AuxUploadResourceHandler extends ResourceHandlerWrapper  {
         
     }
 
+    /**
+     * Return the Map containing any request parameters or parts
+     * that have been uploaded outside this particular JSF request.
+     * This map is obtained non-destructively so is intended only 
+     * for inspecting the contents of the auxiliary upload.
+     * 
+     * @return Map of request parameters from auxiliary upload.
+     */
+    public static Map pollAuxRequestMap()  {
+        ExternalContext externalContext = FacesContext.getCurrentInstance()
+                .getExternalContext();
+        //if moved into request scope, then the upload is already processed
+        //so only check in the session
+        Map sessionMap = externalContext.getSessionMap();
+        Map auxRequestMap = (Map) sessionMap.get(AUX_REQ_MAP_KEY);
+        return auxRequestMap;
+    }
+
+	/**
+     * Return the Map containing any request parameters or parts
+     * that have been uploaded outside this particular JSF request.
+     * After this map is obtained, it is moved from session scope
+     * to request scope to allow garbage collection.
+     * 
+     * @return Map of request parameters from auxiliary upload.
+     */
     public static Map getAuxRequestMap()  {
         ExternalContext externalContext = FacesContext.getCurrentInstance()
                 .getExternalContext();
