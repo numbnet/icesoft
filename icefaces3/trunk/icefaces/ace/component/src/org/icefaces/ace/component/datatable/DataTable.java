@@ -80,6 +80,7 @@ public class DataTable extends DataTableBase implements Serializable {
     // Cache filteredData longer than model as model regen may be attempted during iterative case
     // and getFilteredData will fail.
     private List filteredData;
+    private String lastContainerClientId;
 
     static {
         try {
@@ -326,26 +327,7 @@ public class DataTable extends DataTableBase implements Serializable {
 
     @Override
     public void processUpdates(FacesContext context) {
-        if (context == null) {
-            throw new NullPointerException();
-        }
-        if (!isRendered()) {
-            return;
-        }
-
-        pushComponentToEL(context, this);
-        //preUpdate(context);
-        iterate(context, PhaseId.UPDATE_MODEL_VALUES);
-        popComponentFromEL(context);
-        // This is not a EditableValueHolder, so no further processing is required
-    }
-
-    @Override
-    public void processDecodes(FacesContext context) {
-        // Required to prevent input component processing on filter and pagination initiated submits.
-        if (!isAlwaysExecuteContents() && isTableFeatureRequest(context)) {
-            this.decode(context);
-        } else {
+        if (isAlwaysExecuteContents() || !isTableFeatureRequest(context)) {
             if (context == null) {
                 throw new NullPointerException();
             }
@@ -354,19 +336,36 @@ public class DataTable extends DataTableBase implements Serializable {
             }
 
             pushComponentToEL(context, this);
-            //super.preDecode() - private and difficult to port
-            iterate(context, PhaseId.APPLY_REQUEST_VALUES);
-            decode(context);
+            //preUpdate(context);
+            iterate(context, PhaseId.UPDATE_MODEL_VALUES);
             popComponentFromEL(context);
+
+            if (isFilterValueChanged() == true) {
+                Map<String, String> params = context.getExternalContext().getRequestParameterMap();
+                queueEvent(
+                        new TableFilterEvent(this,
+                                getFilterMap().get(params.get(getClientId(context) + "_filteredColumn")))
+                );
+            }
+        }
+        // This is not a EditableValueHolder, so no further processing is required
+    }
+
+    @Override
+    public void processDecodes(FacesContext context) {
+        // Required to prevent input component processing on filter and pagination initiated submits.
+        if (context == null) {
+            throw new NullPointerException();
+        }
+        if (!isRendered()) {
+            return;
         }
 
-        if (isFilterValueChanged() == true) {
-            Map<String, String> params = context.getExternalContext().getRequestParameterMap();
-            queueEvent(
-                    new TableFilterEvent(this,
-                            getFilterMap().get(params.get(getClientId(context) + "_filteredColumn")))
-            );
-        }
+        pushComponentToEL(context, this);
+        //super.preDecode() - private and difficult to port
+        iterate(context, PhaseId.APPLY_REQUEST_VALUES);
+        decode(context);
+        popComponentFromEL(context);
     }
 
     @Override
@@ -580,7 +579,7 @@ public class DataTable extends DataTableBase implements Serializable {
     }
 
     /**
-     * Blanks the sortPriority and set to false the sortAscending property of each Column
+     * Blanks the priority and set to false the sortAscending property of each Column
      * component.
      */
     public void resetSorting() {
@@ -623,7 +622,7 @@ public class DataTable extends DataTableBase implements Serializable {
     }
 
     /**
-     * Processes any changes to sortPriority or sortAscending properties of Columns
+     * Processes any changes to priority or sortAscending properties of Columns
      * to the data model; resorting the table according to the new settings.
      */
     public void applySorting() {
@@ -1488,6 +1487,7 @@ public class DataTable extends DataTableBase implements Serializable {
         RowStateMap stateMap = null;
 
         if (visitRows) {
+            // Cache container client id
             stateMap = this.getStateMap();
             rows = getRows();
             // If a indeterminate number of rows are shown, visit all rows.
@@ -1749,6 +1749,11 @@ public class DataTable extends DataTableBase implements Serializable {
         if (namingContainer != null) {
             String containerClientId = namingContainer.getContainerClientId(context);
             if (containerClientId != null) {
+                if (!containerClientId.equals(lastContainerClientId)) {
+                    // If the container client id is changing clear the cached state map
+                    stateMap = null;
+                }
+                lastContainerClientId = containerClientId;
                 StringBuilder bld = new StringBuilder(containerClientId.length()+1+id.length());
                 clientId = bld.append(containerClientId).append(UINamingContainer.getSeparatorChar(context)).append(id).toString();
             }
