@@ -226,6 +226,8 @@ public class DataTableDecoder {
         String filteredId = params.get(clientId + "_filteredColumn");
         Column filteredColumn = null;
 
+        table.setSavedFilterState(new FilterState(table));
+
         // Ensure this refiltering occurs on the original data
         table.setFirst(0);
         table.setPage(1);
@@ -264,6 +266,7 @@ public class DataTableDecoder {
     // --------------------------------------------------------------------- //
     static void decodeSortRequest(FacesContext context, DataTable table, String clientId, String sortKeysInput) {
         List<Column> columns = new ArrayList<Column>();
+        table.setSavedSortState(new SortState(table));
         Map<String,String> params = context.getExternalContext().getRequestParameterMap();
         ColumnGroup group = table.getColumnGroup("header");
         Column sortColumn = null;
@@ -317,9 +320,7 @@ public class DataTableDecoder {
             i++;
         }
     }
-    
 
-    
     // --------------------------------------------------------------------- //
     // Pagination ---------------------------------------------------------- //
     // --------------------------------------------------------------------- //
