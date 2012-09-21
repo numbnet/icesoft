@@ -29,10 +29,6 @@
     background-color: #4A6C9B;
 }
 
-.mobi-button {
-    padding: 0.8em;
-}
-
 .mobi-button-dis:active, .mobi-button-dis[selected] {
     background-color: inherit;
     background: none;
