@@ -32,8 +32,7 @@ import org.springframework.web.context.ServletContextAware;
 @XmlRootElement
 public class MediaService implements ServletContextAware {
 	
-	private List<MediaMessage> media = new ArrayList<MediaMessage>();
-	private Set<MediaMessage> mediaByVotes = Collections.synchronizedSet(new HashSet<MediaMessage>());
+	private List<MediaMessage> media = Collections.synchronizedList(new ArrayList<MediaMessage>());
 	private static final int CAROUSEL_IMG_HEIGHT = 48;
 	private static final String CAROUSEL_ITEM_MARKUP = 
 			"<div style='overflow:hidden;height:48px;'><img height='"+CAROUSEL_IMG_HEIGHT+"' src='%1$s/resources/uploads/%2$s' style='border:none;' title='%3$s'></div><a class='view-play-icon' href='%1$s/media/%4$s' ><img src='%1$s/resources/images/view-icon.png' style='border:none;'></a>";
@@ -54,9 +53,13 @@ public class MediaService implements ServletContextAware {
 	}
 	
 	public List<MediaMessage> getMediaSortedByVotes(){
-		List<MediaMessage> list = new ArrayList<MediaMessage>(mediaByVotes);
+		List<MediaMessage> list = new ArrayList<MediaMessage>(media);
 		Collections.sort(list, mediaByVotesComparator);
 		return list;
+	}
+	
+	public List<MediaMessage> getMediaCopy(){
+		return new ArrayList<MediaMessage>(media);
 	}
 	
 	
@@ -67,7 +70,7 @@ public class MediaService implements ServletContextAware {
 	public List<String> getMediaImageMarkup(){
     	List<String> imageMarkup = new ArrayList<String>();
     	if( media != null ){
-	    	for( MediaMessage mediaMsg : media ){
+	    	for( MediaMessage mediaMsg : getMediaCopy() ){
 	    		imageMarkup.add(String.format(CAROUSEL_ITEM_MARKUP, contextPath, mediaMsg.getPhoto().getFileName(), mediaMsg.getTitle(), mediaMsg.getId()));
 	    	}
     	}
@@ -76,7 +79,7 @@ public class MediaService implements ServletContextAware {
 	
 	public List<String> getContestMediaImageMarkup(){
     	List<String> imageMarkup = new ArrayList<String>();
-    	if( mediaByVotes != null ){
+    	if( media != null ){
 	    	for( MediaMessage mediaMsg : getMediaSortedByVotes() ){
 	    		imageMarkup.add(String.format(CONTEST_CAROUSEL_ITEM_MARKUP, contextPath, mediaMsg.getPhoto().getFileName(), mediaMsg.getTitle(), mediaMsg.getId()));
 	    	}
@@ -86,7 +89,7 @@ public class MediaService implements ServletContextAware {
 
 	public MediaMessage getMediaMessage(String id){
 		MediaMessage result = null;
-		for( MediaMessage msg: media){
+		for( MediaMessage msg: getMediaCopy()){
 			if( msg.getId().equals(id)){
 				result = msg;
 				break;
@@ -96,36 +99,23 @@ public class MediaService implements ServletContextAware {
 	}
 	
 	public void removeMessage(String id){
-		for( MediaMessage msg: media){
-			if( msg.getId().equals(id)){
-				media.remove(msg);
-				if( msg.getPhoto() != null ){
-					msg.getPhoto().dispose();
+		synchronized(media) {
+			Iterator<MediaMessage> iter = media.iterator();
+			while( iter.hasNext() ){
+				MediaMessage msg = iter.next();
+				if( msg.getId().equals(id)){
+					iter.remove();
+					if( msg.getPhoto() != null ){
+						msg.getPhoto().dispose();
+					}
+					if( msg.getVideo() != null ){
+						msg.getVideo().dispose();
+					}
+					if( msg.getAudio() != null ){
+						msg.getAudio().dispose();
+					}
+					break;
 				}
-				if( msg.getVideo() != null ){
-					msg.getVideo().dispose();
-				}
-				if( msg.getAudio() != null ){
-					msg.getAudio().dispose();
-				}
-				break;
-			}
-		}
-		Iterator<MediaMessage> iter = mediaByVotes.iterator();
-		while( iter.hasNext() ){
-			MediaMessage msg = iter.next();
-			if( msg.getId().equals(id)){
-				iter.remove();
-				if( msg.getPhoto() != null ){
-					msg.getPhoto().dispose();
-				}
-				if( msg.getVideo() != null ){
-					msg.getVideo().dispose();
-				}
-				if( msg.getAudio() != null ){
-					msg.getAudio().dispose();
-				}
-				break;
 			}
 		}
 	}
@@ -145,9 +135,7 @@ public class MediaService implements ServletContextAware {
 	public void addMedia(MediaMessage msg){
 		if( msg != null ){
 			MediaMessage cloned = msg.clone();
-			media.add(0,cloned);
-			log.debug("added to media");
-			boolean mediaByVotesAdded = mediaByVotes.add(cloned);
+			boolean mediaByVotesAdded = media.add(cloned);
 			log.debug("added to mediaByVotes");
 			log.debug("media by votes added="+mediaByVotesAdded);
 			log.debug("addMedia: tags="+msg.getTags());
