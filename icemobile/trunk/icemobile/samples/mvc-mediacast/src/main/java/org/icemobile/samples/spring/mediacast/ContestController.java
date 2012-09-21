@@ -38,20 +38,20 @@ public class ContestController implements ServletContextAware {
 
 	@Inject
 	private MediaService mediaService;
-	
+
 	String currentFileName = null;
-		
+
 	private ServletContext servletContext;
-	
+
 	private static final Log log = LogFactory
 			.getLog(ContestController.class);
-        
-        
+
+
 	@Autowired
 	public ContestController(ServletContext servletContext){
 		this.servletContext = servletContext;		
 	}
-	
+
 	@ModelAttribute("uploadModel")
 	public MediaMessage getUploadModel(){
 		MediaMessage uploadModel = new MediaMessage();
@@ -71,29 +71,29 @@ public class ContestController implements ServletContextAware {
 		}
 		log.debug("uploadModel="+uploadModel);
 	}
-	
+
 	@RequestMapping(value="/contest-upload", method = RequestMethod.GET)
 	public String getContestPage(Model model, 
 			@ModelAttribute("uploadModel") MediaMessage uploadModel) {
-		
+
 		setupInitialModel(model,uploadModel);
 		return "contest-upload";
 	}
-	
+
 	@RequestMapping(value="/contest-tablet", method = RequestMethod.GET)
 	public String getContestTabletPage(Model model, 
 			@ModelAttribute("uploadModel") MediaMessage uploadModel) {
-		
+
 		setupInitialModel(model,uploadModel);
 		return "contest-tablet";
 	}
-	
+
 	@RequestMapping(value="/contest-carousel", method = RequestMethod.GET)
 	public String getCarouselContent(Model model) {
 		model.addAttribute("mediaService", mediaService);
 		return "contest-carousel";
 	}
-	
+
 
 	@RequestMapping(value = "/contest-uploads/{id}", method = RequestMethod.GET)
 	public String getMediaViewerPage(@PathVariable String id, Model model) {
@@ -115,13 +115,13 @@ public class ContestController implements ServletContextAware {
 			@RequestParam(value = "upload", required = false) MultipartFile file,
 			@Valid ContestForm form, BindingResult result, Model model, 
 			@ModelAttribute("uploadModel") MediaMessage uploadModel)
-			throws IOException {
-		
+					throws IOException {
+
 		if (result.hasErrors() || (file != null && file.isEmpty())) {
 			uploadModel.setUploadMsg("Sorry, I think you missed something.");
 			return "contest-upload";
 		}
-		
+
 		if( file != null ){
 			log.debug("file: " + file);
 			uploadModel.setId(newId());
@@ -134,7 +134,7 @@ public class ContestController implements ServletContextAware {
 			uploadModel.setUploadMsg("Thank you, your file was uploaded successfully.");
 			uploadModel.clear();
 			PushContext.getInstance(servletContext).push("photos");
-			
+
 			return "redirect:/";
 		}
 		else{
@@ -142,21 +142,21 @@ public class ContestController implements ServletContextAware {
 			return "contest-upload";
 		}
 	}
-	
+
 	@RequestMapping(value="/contest-gallery", method=RequestMethod.GET)
 	public String showGallery(Model model){
-		
+
 		model.addAttribute("mediaService", mediaService);
 		return "contest-gallery";
 	}
-	
+
 	@RequestMapping(value="/contest-photo-list", method=RequestMethod.GET)
 	public String showPhotoList(Model model){
-		
+
 		model.addAttribute("mediaService", mediaService);
 		return "contest-photo-list";
 	}
-	
+
 	@RequestMapping(value="/contest-uploads/{id}", method = RequestMethod.POST)
 	public String voteOnPhoto(HttpServletResponse response, @PathVariable String id, 
 			@CookieValue(value="votes", required=false) String cookieVotes, Model model){
@@ -188,29 +188,29 @@ public class ContestController implements ServletContextAware {
 			response.addCookie(cookie);
 			log.debug("recorded vote");
 			return "redirect:/contest-uploads/"+id;
-			
+
 		} else {
 			log.warn("Could not find message with id=" + id);
 			return "redirect:/contest-uploads/"+id;
 		}
-		
+
 	}
-	
+
 	private String newId() {
 		return Long.toString(
 				Math.abs(UUID.randomUUID().getMostSignificantBits()), 32);
 	}
-	
+
 	private void addNewMediaToUploadModel(HttpServletRequest request, MultipartFile file, 
 			String suffix, MediaMessage uploadModel) throws IOException {
 		if (uploadModel.getId() == null) {
 			uploadModel.setId(newId());
 		}
 		String newFileName = "img-" + uploadModel.getId() + "." + suffix;
-                File uploadDir = new File(servletContext.getRealPath("/resources/uploads/"));
-                if( uploadDir.exists()){
-                    uploadDir.mkdir();
-                }
+		File uploadDir = new File(servletContext.getRealPath("/resources/uploads/"));
+		if( uploadDir.exists()){
+			uploadDir.mkdir();
+		}
 		String newPathName = "resources/uploads/" + newFileName;
 		File newFile = new File(servletContext.getRealPath("/" + newPathName));
 		if ((null != file) && !file.isEmpty()) {
@@ -242,13 +242,13 @@ public class ContestController implements ServletContextAware {
 		}
 		return currentFileName;
 	}
-	
-	
+
+
 	public static boolean isAjaxRequest(WebRequest webRequest) {
 		String requestedWith = webRequest.getHeader("Faces-Request");
 		if ("partial/ajax".equals(requestedWith))  {
-            return true;
-        }
+			return true;
+		}
 
 		requestedWith = webRequest.getHeader("X-Requested-With");
 		return requestedWith != null ? "XMLHttpRequest".equals(requestedWith) : false;
@@ -257,10 +257,18 @@ public class ContestController implements ServletContextAware {
 	public static boolean isAjaxUploadRequest(WebRequest webRequest) {
 		return webRequest.getParameter("ajaxUpload") != null;
 	}
-        
-        public void setServletContext(ServletContext sc) {
-            servletContext = sc; 
-        }
 
+	public void setServletContext(ServletContext sc) {
+		servletContext = sc; 
+	}
+	
+	public static boolean isDesktopBrowser(WebRequest request){
+		return Utils.isDesktop(request.getHeader("User-Agent"));
+	}
+	
+	@ModelAttribute
+	public void desktopAttribute(WebRequest request, Model model) {
+		model.addAttribute("desktop", isDesktopBrowser(request));
+	}
 
 }
