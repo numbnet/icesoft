@@ -83,11 +83,20 @@ public class DataTableRenderer extends CoreRenderer {
         if (table.isPaginator())
             table.calculatePage();
 
-        if (table.isSortOrderChanged())
-            table.processSorting();
+        if (!context.isValidationFailed()) {
+            if (table.isSortOrderChanged())
+                table.processSorting();
 
-        if (table.isFilterValueChanged())
-            table.setFilteredData(table.processFilters(context));
+            if (table.isFilterValueChanged())
+                table.setFilteredData(table.processFilters(context));
+        } else {
+            SortState sortState = (SortState)table.getSavedSortState();
+            FilterState filterState = (FilterState)table.getSavedFilterState();
+            if (table.isSortOrderChanged())
+                sortState.restoreState(table);
+            if (table.isFilterValueChanged())
+                filterState.restoreState(table);
+        }
 
         // Force regeneration of data model pre-render
         table.setModel(null);
