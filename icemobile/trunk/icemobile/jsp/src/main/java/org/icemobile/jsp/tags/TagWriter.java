@@ -25,8 +25,26 @@ public class TagWriter {
 	private static final String DIV = "div";
 	private static final String SPAN = "span";
 	
+	/**
+	 * Create an instance of the TagWriter class. For use with tags that
+	 * do not require an initial element context, such as simple tags 
+	 * with no tag body content.
+	 * @param pageContext The JSP context
+	 */
 	public TagWriter(PageContext pageContext){
 		this.out = pageContext.getOut();
+	}
+	
+	/**
+	 * Create an instance of the TagWriter class. For use with tags that
+	 * use both doStartTag() and doEndTag() methods, and require an 
+	 * initial element context for the doEndTag() method.
+	 * @param pageContext The JSP context
+	 * @param elementContext The stack of starting elements.
+	 */
+	public TagWriter(PageContext pageContext, Stack<String> elementContext){
+		this(pageContext);
+		elementStack = elementContext;
 	}
 	
 	public void writeAttribute(String name, Object value) throws IOException{

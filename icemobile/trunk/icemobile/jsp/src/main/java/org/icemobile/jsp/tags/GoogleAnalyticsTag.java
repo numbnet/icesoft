@@ -3,7 +3,8 @@ package org.icemobile.jsp.tags;
 import java.io.IOException;
 import java.util.logging.Logger;
 
-import org.icefaces.mobi.utils.HTML;
+import org.icemobile.jsp.util.HTML;
+
 
 public class GoogleAnalyticsTag extends BaseSimpleTag{
 	
