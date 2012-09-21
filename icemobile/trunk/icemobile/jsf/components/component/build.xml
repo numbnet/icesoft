@@ -56,6 +56,7 @@
 	<!-- theme import location -->
 	<property name="theme.dir.path" location="../../../resources/themes" />
 	<property name="theme.base.dir" value="base" />
+	<property name="theme.base3.dir" value="base3" />
 	<!-- Check if release.type is set, and if so append it after the tertiary
          value -->
 	<condition property="version.string" value="${version.primary}.${version.secondary}.${version.tertiary}.${release.type}">
@@ -98,29 +99,63 @@
 	</path>
 
 	<!-- include source images and css for sprite generation -->
-	<macrodef name="includeresources">
-		<attribute name="dir" />
-		<attribute name="skin" />
-		<sequential>
-			<mkdir dir="${root.dir.path}/@{skin}" />
-			<!-- Copy all resources to the input directory for SmartSprites. -->
-			<mkdir dir="${root.dir.path}/@{skin}/" />
-			<copy todir="${root.dir.path}/@{skin}/">
-				<fileset dir="${theme.dir.path}/${theme.base.dir}" includes="**" />
-			</copy>
-			<copy todir="${root.dir.path}/@{skin}/" overwrite="true">
-				<fileset dir="@{dir}" includes="**" />
-			</copy>
-			<!-- At the same time, copy all resources to the SmartSprites output directory.
-                   with the exclusion of the the .css files -->
-			<mkdir dir="${output.dir.path}/@{skin}/" />
-			<copy todir="${output.dir.path}/@{skin}/">
-				<fileset dir="${root.dir.path}/@{skin}/" excludes="**/*.css" />
-			</copy>
-		</sequential>
-	</macrodef>
+    <!-- include source images and css for sprite generation -->
+    <macrodef name="includeBase3Resources">
+        <attribute name="dir" />
+        <attribute name="skin" />
+        <sequential>
+            <mkdir dir="${root.dir.path}/@{skin}" />
+            <!-- Copy all resources to the input directory for SmartSprites. -->
+            <mkdir dir="${root.dir.path}/@{skin}/" />
+            <!-- copy base styles -->
+            <copy todir="${root.dir.path}/@{skin}/">
+                <fileset dir="${theme.dir.path}/${theme.base.dir}" includes="**" />
+            </copy>
+            <!-- copy base css3 styles -->
+            <copy todir="${root.dir.path}/@{skin}/">
+                <fileset dir="${theme.dir.path}/${theme.base3.dir}" includes="**" />
+            </copy>
+            <!-- copy the actual skin -->
+            <copy todir="${root.dir.path}/@{skin}/" overwrite="true">
+                <fileset dir="@{dir}" includes="**" />
+            </copy>
+            <!-- At the same time, copy all resources to the SmartSprites output directory.
+                          with the exclusion of the the .css files -->
+            <mkdir dir="${output.dir.path}/@{skin}/" />
+            <copy todir="${output.dir.path}/@{skin}/">
+                <fileset dir="${root.dir.path}/@{skin}/" excludes="**/*.css" />
+            </copy>
+        </sequential>
+    </macrodef>
 
-	<!-- include source images and css for sprite generation -->
+
+    <!-- include source images and css for sprite generation -->
+    <macrodef name="includeBaseResources">
+        <attribute name="dir" />
+        <attribute name="skin" />
+        <sequential>
+            <mkdir dir="${root.dir.path}/@{skin}" />
+            <!-- Copy all resources to the input directory for SmartSprites. -->
+            <mkdir dir="${root.dir.path}/@{skin}/" />
+            <!-- copy base styles -->
+            <copy todir="${root.dir.path}/@{skin}/">
+                <fileset dir="${theme.dir.path}/${theme.base.dir}" includes="**" />
+            </copy>
+            <!-- copy the actual skin -->
+            <copy todir="${root.dir.path}/@{skin}/" overwrite="true">
+                <fileset dir="@{dir}" includes="**" />
+            </copy>
+            <!-- At the same time, copy all resources to the SmartSprites output directory.
+                          with the exclusion of the the .css files -->
+            <mkdir dir="${output.dir.path}/@{skin}/" />
+            <copy todir="${output.dir.path}/@{skin}/">
+                <fileset dir="${root.dir.path}/@{skin}/" excludes="**/*.css" />
+            </copy>
+        </sequential>
+    </macrodef>
+
+
+    <!-- include source images and css for sprite generation -->
 	<macrodef name="includeIOSresources">
 		<attribute name="dir" />
 		<attribute name="skin" />
@@ -128,12 +163,19 @@
 			<mkdir dir="${root.dir.path}/@{skin}" />
 			<!-- Copy all resources to the input directory for SmartSprites. -->
 			<mkdir dir="${root.dir.path}/@{skin}/" />
+            <!-- copy base styles -->
 			<copy todir="${root.dir.path}/@{skin}/">
 				<fileset dir="${theme.dir.path}/${theme.base.dir}" includes="**" />
 			</copy>
+            <!-- copy base css3 styles -->
+            <copy todir="${root.dir.path}/@{skin}/">
+                <fileset dir="${theme.dir.path}/${theme.base3.dir}" includes="**" />
+            </copy>
+            <!-- copy common ios bases -->
 			<copy todir="${root.dir.path}/@{skin}/" overwrite="true">
 				<fileset dir="${theme.dir.path}/ios" includes="**" />
 			</copy>
+            <!-- copy the actual skin -->
 			<copy todir="${root.dir.path}/@{skin}/" overwrite="true">
 				<fileset dir="@{dir}" includes="**" />
 			</copy>
@@ -325,9 +367,10 @@
               under a directory with this name -->
 	<!-- 'skin' is the name of the skin these resources will be part of -->
 
-	<includeresources dir="${theme.dir.path}/android" skin="android" />
-	<includeresources dir="${theme.dir.path}/bberry" skin="bberry" />
-	<includeresources dir="${theme.dir.path}/honeycomb" skin="honeycomb" />
+	<includeBaseResources dir="${theme.dir.path}/lighning" skin="lighning" />
+	<includeBase3Resources dir="${theme.dir.path}/android" skin="android" />
+	<includeBase3Resources dir="${theme.dir.path}/bberry" skin="bberry" />
+	<includeBase3Resources dir="${theme.dir.path}/honeycomb" skin="honeycomb" />
 	<includeIOSresources dir="${theme.dir.path}/ipad" skin="ipad" />
 	<includeIOSresources dir="${theme.dir.path}/iphone" skin="iphone" />
 
@@ -342,6 +385,8 @@
 	<replaceregexp file="${build}/skins/out/bberry/bberry.css" match="(\/\*\*\*([\s\S]*?)(Copyright)+([\s\S]*?)\*\/)" flags="mg" replace="" />
 	<concatskin name="ipad" inputdir="${build}/skins/in" outputdir="${build}/skins/out" />
 	<replaceregexp file="${build}/skins/out/ipad/ipad.css" match="(\/\*\*\*([\s\S]*?)(Copyright)+([\s\S]*?)\*\/)" flags="mg" replace="" />
+    <concatskin name="lighning" inputdir="${build}/skins/in" outputdir="${build}/skins/out" />
+    <replaceregexp file="${build}/skins/out/lighning/lighning.css" match="(\/\*\*\*([\s\S]*?)(Copyright)+([\s\S]*?)\*\/)" flags="mg" replace="" />
 
 	<!-- Copy all resources to the skins resource library -->
 	<copy todir="${resources}/${skins.lib}">
@@ -397,6 +442,7 @@
 	<generatesprites skin="android" />
 	<generatesprites skin="honeycomb" />
 	<generatesprites skin="bberry" />
+	<generatesprites skin="lightning" />
 </target>
 
 <target name="compress-skins" unless="skins.skip">
@@ -405,6 +451,7 @@
 	<compresscssmacro name="android" />
 	<compresscssmacro name="honeycomb" />
 	<compresscssmacro name="bberry" />
+	<compresscssmacro name="lighning" />
 </target>
 
 <target name="smartsprites" description="Performs CSS sprite processing." if="${skin}.modified">
