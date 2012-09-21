@@ -4571,7 +4571,7 @@ function wijmoASPNetParseOptions(o) {
 
 		_hideCurrentSubmenu: function (aItem) {
 			var self = this;
-			aItem.find("ul,div").each(function () {
+			aItem.find("ul,div").each(function () { // ICE-8515
 				if (!$(this).data("notClose")) {
 					self._hideSubmenu($(this));
 				}
