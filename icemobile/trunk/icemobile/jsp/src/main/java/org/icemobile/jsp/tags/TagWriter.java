@@ -10,14 +10,14 @@ public class TagWriter {
 	
 	private Writer out;
 	private Stack<String> elementStack = new Stack<String>();
-	private boolean lastElementEnded;
+	private boolean lastElementEnded = true;
 	
 	private static final String SPACE = " ";
 	private static final String LT = "<";
 	private static final String GT = ">";
-	private static final String SQ = "='";
+	private static final String SQ = "=\"";
 	private static final String EM = "";
-	private static final String EQ = "' ";
+	private static final String EQ = "\" ";
 	private static final String ET = "</";
 	private static final String DISABLED = "disabled";
 	private static final String STYLE = "style";
