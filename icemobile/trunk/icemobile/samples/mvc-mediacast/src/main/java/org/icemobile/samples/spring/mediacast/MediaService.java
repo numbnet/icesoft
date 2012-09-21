@@ -41,6 +41,7 @@ public class MediaService implements ServletContextAware {
 	private static final String CONTEST_CAROUSEL_ITEM_MARKUP = 
 			"<div style='overflow:hidden;height:48px;'><img height='"+CAROUSEL_IMG_HEIGHT+"' src='%1$s/resources/uploads/%2$s' style='border:none;' title='%3$s'></div><a class='view-play-icon' href='%1$s/contest-uploads/%4$s' ><img src='%1$s/resources/images/view-icon.png' style='border:none;'></a>";
 	private Comparator<MediaMessage> mediaByVotesComparator = new MediaMessageByVotesComparator();
+	private Comparator<MediaMessage> mediaByTimeComparator = new MediaMessageByTimeComparator();
 	
 	private static final Log log = LogFactory
 			.getLog(MediaService.class);
@@ -58,6 +59,13 @@ public class MediaService implements ServletContextAware {
 		return list;
 	}
 	
+	public List<MediaMessage> getMediaSortedByTime(){
+		List<MediaMessage> list = new ArrayList<MediaMessage>(media);
+		Collections.sort(list, mediaByTimeComparator);
+		return list;
+	}
+	
+	
 	public List<MediaMessage> getMediaCopy(){
 		return new ArrayList<MediaMessage>(media);
 	}
@@ -70,7 +78,7 @@ public class MediaService implements ServletContextAware {
 	public List<String> getMediaImageMarkup(){
     	List<String> imageMarkup = new ArrayList<String>();
     	if( media != null ){
-	    	for( MediaMessage mediaMsg : getMediaCopy() ){
+	    	for( MediaMessage mediaMsg : getMediaSortedByTime() ){
 	    		imageMarkup.add(String.format(CAROUSEL_ITEM_MARKUP, contextPath, mediaMsg.getPhoto().getFileName(), mediaMsg.getTitle(), mediaMsg.getId()));
 	    	}
     	}
@@ -223,6 +231,34 @@ public class MediaService implements ServletContextAware {
 				}
 				return Integer.valueOf(msg2.getVotes().size())
 						.compareTo(msg1.getVotes().size());
+			}
+			catch(Exception e){
+				e.printStackTrace();
+				log.fatal("problem in comparator");
+				return 0;
+			}
+		}
+		
+	}
+	
+	/* sorted descending */
+	class MediaMessageByTimeComparator implements Comparator<MediaMessage>{
+
+		public int compare(MediaMessage msg1, MediaMessage msg2) {
+			
+			try{
+			
+				if( msg1 == null && msg2 == null ){
+					return 0;
+				}
+				if( msg1 != null && msg2 == null ){
+					return -1;
+				}
+				if( msg1 == null && msg2 != null ){
+					return 1;
+				}
+				return Long.valueOf(msg2.getCreated())
+						.compareTo(Long.valueOf(msg1.getCreated()));
 			}
 			catch(Exception e){
 				e.printStackTrace();
