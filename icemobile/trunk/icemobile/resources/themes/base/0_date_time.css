@@ -1,0 +1,134 @@
+/***
+ * Copyright 2004-2012 ICEsoft Technologies Canada Corp.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the
+ * License. You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an "AS
+ * IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ * express or implied. See the License for the specific language
+ * governing permissions and limitations under the License.
+ */
+
+.mobi-date-wrapper, .mobi-time-wrapper {
+    display: inline-block;
+}
+
+.mobi-date-popup-btn, .mobi-time-popup-btn {
+    background-color: transparent;
+    background-repeat: no-repeat;
+    border: none;
+    margin: 0 0 0 5px;
+    cursor: pointer;
+}
+.mobi-date-popup-btn {
+    background-image: url('btn-calendar.png');
+}
+
+.mobi-time-popup-btn {
+    background-image: url('btn-time.png');
+}
+
+.mobi-date-bg, .mobi-time-bg {
+    width: 100%;
+    height: 100%;
+    background: #000;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+}
+
+.mobi-date-bg-inv, .mobi-time-bg-inv {
+    display: none;
+}
+
+.mobi-date-container-inv, .mobi-time-container-inv  {
+    display: none;
+}
+
+.mobi-date-container, .mobi-time-container {
+    padding: 0;
+    z-index: 1001;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.mobi-date-title-container, .mobi-time-title-container {
+    vertical-align: middle;
+    padding: 10px 0 10px 40px;
+    background-image: url('clock_header.png');
+    background-repeat: no-repeat;
+    background-size: 34px 34px;
+    background-position: left;
+}
+
+.mobi-date-select-container, .mobi-time-select-container  {
+    padding: 10px;
+    text-align: center;
+}
+
+.mobi-date-submit-container, .mobi-time-submit-container {
+    height: 34px;
+    padding: 3px;
+}
+
+.mobi-date-submit-container .mobi-button-default,
+.mobi-time-submit-container .mobi-button-default{
+    width: 49%;
+    margin: 0;
+}
+
+.mobi-date-submit-container .mobi-button-default:first-child,
+.mobi-time-submit-container .mobi-button-default:first-child {
+    float: left;
+}
+
+.mobi-date-submit-container .mobi-button-default:last-child,
+.mobi-time-submit-container .mobi-button-default:last-child{
+    float: right;
+}
+
+.mobi-date-select-value-cont, .mobi-time-select-value-cont {
+    width: 50px;
+    margin: 5px;
+    background-color: white;
+    display: inline-block;
+}
+
+.mobi-date-btn, .mobi-time-btn {
+    width: 100%;
+    height: 35px;
+    border: none;
+}
+
+.mobi-date-btn-incr, .mobi-time-btn-incr {
+    background-image: url('increment.png');
+    background-repeat: no-repeat;
+    background-color: transparent;
+    background-position: center;
+}
+
+.mobi-date-btn-decr, .mobi-time-btn-decr  {
+    background-image: url('decrement.png');
+    background-repeat: no-repeat;
+    background-color: transparent;
+    background-position: center;
+}
+
+.mobi-date-select-value, .mobi-time-select-value  {
+    color: black;
+    text-align: center;
+    vertical-align: middle;
+    height: 40px;
+    line-height: 40px;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+

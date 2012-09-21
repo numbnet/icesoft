@@ -1,0 +1,99 @@
+/***
+ * Copyright 2004-2012 ICEsoft Technologies Canada Corp.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the
+ * License. You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an "AS
+ * IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ * express or implied. See the License for the specific language
+ * governing permissions and limitations under the License.
+ */
+.mobi-tabset {
+    display: block;
+    background-color: white;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    float:left;
+}
+
+.mobi-tabset-tabs-top > .mobi-tabset-tabs{
+    border-bottom:1px solid #7A8091;
+    border-top:1px solid #7A8091;
+    width:100%;
+    float:left;
+}
+.mobi-tabset-tabs-top .mobi-tabset-tabs > ul{
+    border-bottom: none;
+}
+.mobi-tabset-tabs-bottom > .mobi-tabset-tabs{
+    border-top:2px solid #f4f4f6;
+    width:100%;
+}
+
+.mobi-tabset-tabs {
+    text-align: center;
+}
+
+.mobi-tabset-tabs > ul{
+    display: block;
+    width:100%;
+    list-style: none outside none;
+    margin: 0; padding: 0;
+    background-color: #e8e9ea;
+    color:#868688;
+    font-weight: bold;
+    background-image: none;
+}
+.mobi-tabset-tabs > ul li{
+    display: inline-block;
+    text-align: center;
+    padding: 3px 0;
+    border: 1px solid #999;
+    margin: 5px -1px 5px 0;
+    cursor: pointer;
+    line-height: inherit;
+}
+
+.activeTab {
+    color:#525253;
+    background-color: #c1c1c1;
+}
+
+.mobi-tabset-tabs-top .mobi-tabset-content{
+    height:100%;
+    padding-top:40px;
+}
+
+.mobi-tabset-tabs-bottom .mobi-tabset-content{
+}
+
+.mobi-tabset-content {
+    text-align: left;
+}
+
+.mobi-tabset-tabs-bottom > .mobi-tabset-tabs{
+    position: relative;
+    bottom: 0;
+    left:0;
+}
+.mobi-tabset-tabs-top > .mobi-tabset-tabs{
+    position: relative;
+    top: 0;
+    left:0;
+}
+.mobi-tabset-tabs-bottom-footer > .mobi-tabset-tabs{
+    margin-bottom:0;
+}
+.mobi-tabset-tabs-top-header > .mobi-tabset-tabs{
+    margin-top:0;
+}
+.mobi-tabpage-hidden {
+
+    display: none;
+}
