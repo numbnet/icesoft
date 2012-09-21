@@ -9,7 +9,7 @@
 <div class="ajaxzone">
     <mobi:pagePanel>
 		<mobi:pagePanelHeader>
-			<a id="backBtn"class="mobi-button mobi-button-back"
+			<a id="backBtn"class="mobi-button"
 				href='<c:url value="/contest-gallery"/>'>Gallery</a>
 			Contest Upload
 		</mobi:pagePanelHeader>
