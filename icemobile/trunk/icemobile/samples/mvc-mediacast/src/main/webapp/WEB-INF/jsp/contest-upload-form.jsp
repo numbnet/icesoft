@@ -1,20 +1,17 @@
 <%@ page session="false"%>
 <%@ include file="/WEB-INF/jsp/include.jsp"%>
 <div style="margin-top:10px;">
-    <div id="msg" style="margin: 0 10px;">${uploadModel.uploadMsg}</div>
-    
+     
     <form:form id="cameraUploadForm" method="POST" enctype="multipart/form-data"
          modelAttribute="uploadModel" htmlEscape="true">
         <form:errors path="*" cssClass="errorblock" element="div" />
         
         <mobi:getEnhanced/>
         
-        <mobi:fieldSetGroup inset="true" style="margin-top: 10px;font-weight: bold;text-align: center;color: blue;">
-           <mobi:fieldSetRow>
+        <mobi:fieldSetGroup inset="true" style="margin-top: 10px;">
+           <mobi:fieldSetRow style="font-weight: bold;text-align: center;color: blue;">
                Upload a photo and you might win something!!!
            </mobi:fieldSetRow>
-        </mobi:fieldSetGroup>
-        <mobi:fieldSetGroup id="cameraUploadGrp" inset="true" style="margin-top:10px;">
             <mobi:fieldSetRow>
                 <mobi:camera id="upload" style="width:70%;vertical-align:top;"/>
                     <c:if test="${!desktop}">
@@ -38,9 +35,10 @@
                     value="${uploadModel.description}"/>
              </mobi:fieldSetRow>
              <mobi:fieldSetRow style="text-align:center;">
+                <div id="msg" style="margin: 0 0 8px 0;font-size:12px;">${uploadModel.uploadMsg}</div>
                 <input type="reset" class="mobi-button mobi-button-default"
                        value="Cancel" style="width:100px;margin-top:0;margin-bottom:0;"/>
-                  <mobi:commandButton name="submit"
+                <mobi:commandButton name="submit"
                         style="float:none;width:100px;margin-top:0;margin-bottom:0;"
                         buttonType="important"
                         value="Share"/>
