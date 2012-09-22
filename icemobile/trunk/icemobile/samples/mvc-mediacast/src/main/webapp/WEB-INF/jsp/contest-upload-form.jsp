@@ -3,17 +3,17 @@
 <div style="margin-top:10px;">
      
     <form:form id="cameraUploadForm" method="POST" enctype="multipart/form-data"
-         modelAttribute="uploadModel" htmlEscape="true">
+         modelAttribute="uploadModel" htmlEscape="true" style="text-align:center;">
         <form:errors path="*" cssClass="errorblock" element="div" />
         
         <mobi:getEnhanced/>
         
         <mobi:fieldSetGroup inset="true" style="margin-top: 10px;">
-           <mobi:fieldSetRow style="font-weight: bold;text-align: center;color: blue;">
+           <mobi:fieldSetRow style="font-weight: bold;text-align: center;color: #326ADB;">
                Upload a photo and you might win something!!!
            </mobi:fieldSetRow>
-            <mobi:fieldSetRow>
-                <mobi:camera id="upload" style="width:70%;vertical-align:top;"/>
+            <mobi:fieldSetRow style="text-align:center;">
+                <mobi:camera id="upload" style="width:70%;vertical-align:top;max-width:200px;"/>
                     <c:if test="${!desktop}">
                         <mobi:thumb for="upload" style="margin: 0 2px"/>
                     </c:if>
