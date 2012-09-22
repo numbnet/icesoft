@@ -367,7 +367,7 @@
               under a directory with this name -->
 	<!-- 'skin' is the name of the skin these resources will be part of -->
 
-	<includeBaseResources dir="${theme.dir.path}/lighning" skin="lighning" />
+	<includeBaseResources dir="${theme.dir.path}/lightning" skin="lightning" />
 	<includeBase3Resources dir="${theme.dir.path}/android" skin="android" />
 	<includeBase3Resources dir="${theme.dir.path}/bberry" skin="bberry" />
 	<includeBase3Resources dir="${theme.dir.path}/honeycomb" skin="honeycomb" />
@@ -385,8 +385,8 @@
 	<replaceregexp file="${build}/skins/out/bberry/bberry.css" match="(\/\*\*\*([\s\S]*?)(Copyright)+([\s\S]*?)\*\/)" flags="mg" replace="" />
 	<concatskin name="ipad" inputdir="${build}/skins/in" outputdir="${build}/skins/out" />
 	<replaceregexp file="${build}/skins/out/ipad/ipad.css" match="(\/\*\*\*([\s\S]*?)(Copyright)+([\s\S]*?)\*\/)" flags="mg" replace="" />
-    <concatskin name="lighning" inputdir="${build}/skins/in" outputdir="${build}/skins/out" />
-    <replaceregexp file="${build}/skins/out/lighning/lighning.css" match="(\/\*\*\*([\s\S]*?)(Copyright)+([\s\S]*?)\*\/)" flags="mg" replace="" />
+    <concatskin name="lightning" inputdir="${build}/skins/in" outputdir="${build}/skins/out" />
+    <replaceregexp file="${build}/skins/out/lightning/lightning.css" match="(\/\*\*\*([\s\S]*?)(Copyright)+([\s\S]*?)\*\/)" flags="mg" replace="" />
 
 	<!-- Copy all resources to the skins resource library -->
 	<copy todir="${resources}/${skins.lib}">
@@ -451,7 +451,7 @@
 	<compresscssmacro name="android" />
 	<compresscssmacro name="honeycomb" />
 	<compresscssmacro name="bberry" />
-	<compresscssmacro name="lighning" />
+	<compresscssmacro name="lightning" />
 </target>
 
 <target name="smartsprites" description="Performs CSS sprite processing." if="${skin}.modified">
