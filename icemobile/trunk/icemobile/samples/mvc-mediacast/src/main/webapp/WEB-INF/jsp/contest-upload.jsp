@@ -9,9 +9,9 @@
 <div class="ajaxzone">
     <mobi:pagePanel>
 		<mobi:pagePanelHeader>
-			<a id="backBtn"class="mobi-button mobi-button-default" style="float:left;line-height:20px;"
+			<a id="backBtn"class="mobi-button mobi-button-default"
 				href='<c:url value="/contest-gallery"/>'>Gallery</a>
-			Contest Upload
+            <span>Contest Upload</span>
 		</mobi:pagePanelHeader>
 		<mobi:pagePanelBody>
 		    <push:region group="photos" page="/contest-carousel"/>
