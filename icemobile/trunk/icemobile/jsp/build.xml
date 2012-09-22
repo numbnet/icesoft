@@ -31,6 +31,7 @@
     <!-- common theme location  -->
     <property name="theme.dir" location="../resources/themes"/>
     <property name="theme.base.dir" value="base"/>
+	<property name="theme.base3.dir" value="base3" />
 	<!-- common javascript location -->
 	<property name="javascript.dir" location="../resources/javascript"/>
     <!-- component TLD location --> 
@@ -110,9 +111,10 @@
         <mkdir dir="${build.dir}/skins/in"/>
         <mkdir dir="${build.dir}/skins/out"/>
 
-        <buildSkin skin="android" />
-		<buildSkin skin="bberry" />
-		<buildSkin skin="honeycomb" />
+    	<buildSkin skin="lightning" />
+    	<buildCSS3Skin skin="android" />
+		<buildCSS3Skin skin="bberry" />
+		<buildCSS3Skin skin="honeycomb" />
 		<buildIOSSkin skin="ipad" />
 		<buildIOSSkin skin="iphone" />
         
@@ -143,7 +145,12 @@
 		<replaceregexp file="${build.dir}/skins/out/ipad/ipad.css"
 		               match="(\/\*\*\*([\s\S]*?)(Copyright)+([\s\S]*?)\*\/)" flags="mg"
 		               replace=""/>
-		
+    	<concatskin name="lightning" inputdir="${build.dir}/skins/in"
+                    outputdir="${build.dir}/skins/out"/>
+        <replaceregexp file="${build.dir}/skins/out/lightning/lightning.css"
+                       match="(\/\*\*\*([\s\S]*?)(Copyright)+([\s\S]*?)\*\/)" flags="mg"
+                       replace=""/>
+    	        
         <!-- compress -->
         <ant target="compress-css"/>
 
@@ -303,6 +310,27 @@
 			</copy>
 		</sequential>
 	</macrodef>
+	
+	<!-- include source images and css for sprite generation -->
+    <macrodef name="buildCSS3Skin">
+        <attribute name="skin" />
+        <sequential>
+            <mkdir dir="build/skins/in/@{skin}" />
+            <copy todir="build/skins/in/@{skin}/">
+                <fileset dir="${theme.dir}/base" includes="**" />
+            </copy>
+        	<copy todir="build/skins/in/@{skin}/">
+                <fileset dir="${theme.dir}/base3" includes="**" />
+            </copy>
+            <copy todir="build/skins/in/@{skin}/" overwrite="true">
+                <fileset dir="${theme.dir}/@{skin}" includes="**" />
+            </copy>
+            <mkdir dir="build/skins/out/@{skin}/" />
+            <copy todir="build/skins/out/@{skin}/">
+                <fileset dir="build/skins/in/@{skin}/" excludes="**/*.css" />
+            </copy>
+        </sequential>
+    </macrodef>
 
 	<!-- include source images and css for sprite generation -->
 	<macrodef name="buildIOSSkin">
@@ -312,7 +340,10 @@
 			<copy todir="build/skins/in/@{skin}/">
 				<fileset dir="${theme.dir}/base" includes="**" />
 			</copy>
-			<copy todir="build/skins/in/@{skin}/" overwrite="true">
+			<copy todir="build/skins/in/@{skin}/">
+                <fileset dir="${theme.dir}/base3" includes="**" />
+            </copy>
+            <copy todir="build/skins/in/@{skin}/" overwrite="true">
 				<fileset dir="${theme.dir}/ios" includes="**" />
 			</copy>
 			<copy todir="build/skins/in/@{skin}/" overwrite="true">
