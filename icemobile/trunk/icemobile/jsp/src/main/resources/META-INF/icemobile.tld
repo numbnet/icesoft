@@ -1240,7 +1240,51 @@
             <rtexprvalue>true</rtexprvalue>
         </attribute>
     </tag>
-
+    <tag>
+        <description>The viewSwitcher tag will redirect to a mobile, tablet,
+        or desktop depending on the type of browser detected. It will render
+        a series of links allowing the user to select a different view;
+        </description>
+        <name>viewSwitcher</name>
+        <tag-class>org.icemobile.jsp.tags.ViewSwitcherTag</tag-class>
+        <body-content>empty</body-content>
+        <attribute>
+            <description>pass through attribute</description>
+            <name>disabled</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>      
+        </attribute>
+        <attribute>
+            <description>Sets the class attribute</description>
+            <name>styleClass</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+         <attribute>
+            <description>Sets the style attribute</description>
+            <name>style</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+         <attribute>
+            <description>The custom mobile view to redirect to.</description>
+            <name>mobileView</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+         <attribute>
+            <description>The custom mobile tablet to redirect to.</description>
+            <name>tabletView</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+         <attribute>
+            <description>The custom desktop view to redirect to.</description>
+            <name>desktopView</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+    </tag>
     <tag>
         <description>The Google Analytics tag will write out the necessary script for the using
         the system property org.icemobile.googleAnalyticsAccount or the tag attribute 'account'. If the 'account'
