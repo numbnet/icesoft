@@ -7,10 +7,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -19,6 +17,7 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
+import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -31,6 +30,11 @@ import org.springframework.web.context.ServletContextAware;
 @Service
 @XmlRootElement
 public class MediaService implements ServletContextAware {
+	
+	private static final int CURRENT_DB_VERSION = 2;
+	
+	@XmlAttribute
+	private int dbVersion;
 	
 	private static final int CAROUSEL_MAX_INDEX = 15;
 	
@@ -47,7 +51,6 @@ public class MediaService implements ServletContextAware {
 	
 	private static final Log log = LogFactory
 			.getLog(MediaService.class);
-	
 	
 	@XmlElementWrapper
 	@XmlElement(name="msg")
@@ -287,6 +290,7 @@ public class MediaService implements ServletContextAware {
 	
 	@PreDestroy
 	public void serializeMedia(){
+		dbVersion = CURRENT_DB_VERSION;
 		String fileName = getMediaDbName();
 		log.info("writing out "+fileName);		
 		try {
@@ -309,6 +313,10 @@ public class MediaService implements ServletContextAware {
 			JAXBContext context = JAXBContext.newInstance(MediaService.class);
 			Unmarshaller unmarshaller = context.createUnmarshaller();
 			MediaService oldService = (MediaService)unmarshaller.unmarshal(new File(fileName)); 
+			//make sure db version is not less than current version
+			if( oldService.dbVersion < CURRENT_DB_VERSION ){
+				log.info("cancelling db read as current db version " + CURRENT_DB_VERSION + " higher than incoming repo "+ oldService.dbVersion);
+			}
 			log.info("found " + oldService.getMedia().size() + " media records");
 			for( MediaMessage msg : oldService.getMedia() ){
 				addMedia(msg);
