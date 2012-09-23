@@ -156,3 +156,6 @@ input, textarea{ font-family: droid, Helvetica, Arial, sans-serif;}
 	height:20px;
 	width:20px;
 }
+.mobi-tabset-content {
+    background-color: transparent;
+}
