@@ -89,3 +89,7 @@
 
 .mobi-pagePanel-body-menu .mobi-list { border-right: 1px solid #2d2c31; }
 
+.mobi-pagePanel-header .mobi-button {
+    line-height: 31px;
+}
+
