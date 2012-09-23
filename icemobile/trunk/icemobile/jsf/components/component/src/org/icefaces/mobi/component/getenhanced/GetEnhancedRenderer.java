@@ -93,9 +93,9 @@ public class GetEnhancedRenderer extends CoreRenderer {
 			if( getEnhanced.isIncludeLink() ){
 				writer.startElement(HTML.ANCHOR_ELEM,null);
 				writer.writeAttribute(HTML.HREF_ATTR, link, null);
+				writer.writeAttribute(HTML.CLASS_ATTR, "mobi-button mobi-button-important", null);
 				writer.writeText(GetEnhanced.DOWNLOAD, null);
 				writer.endElement(null);
-				writer.writeText(GetEnhanced.DOWNLOAD_MSG, null);
 			}
 			
 			writer.endElement(null);//span
