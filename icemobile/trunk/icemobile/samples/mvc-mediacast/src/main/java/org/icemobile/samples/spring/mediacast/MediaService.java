@@ -41,7 +41,7 @@ public class MediaService implements ServletContextAware {
 	private String contextPath;
 	private TagWeightMap tagsMap = new TagWeightMap();
 	private static final String CONTEST_CAROUSEL_ITEM_MARKUP = 
-			"<div><a href='%1$s/contest-uploads/%2$s' title='%3$s'><img height='"+CAROUSEL_IMG_HEIGHT+"' src='%1$s/resources/uploads/%4$s' style='border:none;'></a></div>";
+			"<div><a href='%1$s/contest%2$s&id=%3$s' title='%4$s'><img height='"+CAROUSEL_IMG_HEIGHT+"' src='%1$s/resources/uploads/%5$s' style='border:none;'></a></div>";
 	private Comparator<MediaMessage> mediaByVotesComparator = new MediaMessageByVotesComparator();
 	private Comparator<MediaMessage> mediaByTimeComparator = new MediaMessageByTimeComparator();
 	
@@ -54,6 +54,7 @@ public class MediaService implements ServletContextAware {
 	public List<MediaMessage> getMedia(){
 		return media;
 	}
+	
 	
 	public List<MediaMessage> getMediaSortedByVotes(){
 		List<MediaMessage> list = new ArrayList<MediaMessage>(media);
@@ -100,11 +101,11 @@ public class MediaService implements ServletContextAware {
     	return imageMarkup;
     }
 	
-	public List<String> getContestMediaImageMarkup(){
+	public List<String> getContestMediaImageMarkup(String params){
     	List<String> imageMarkup = new ArrayList<String>();
     	if( media != null ){
 	    	for( MediaMessage mediaMsg : getMediaSortedByTime(CAROUSEL_MAX_INDEX) ){
-	    		imageMarkup.add(String.format(CONTEST_CAROUSEL_ITEM_MARKUP, contextPath, mediaMsg.getId(), mediaMsg.getDescription(), mediaMsg.getPhoto().getFileName()));
+	    		imageMarkup.add(String.format(CONTEST_CAROUSEL_ITEM_MARKUP, contextPath, params, mediaMsg.getId(), mediaMsg.getDescription(), mediaMsg.getPhoto().getFileName()));
 	    	}
     	}
     	return imageMarkup;

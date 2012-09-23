@@ -6,13 +6,14 @@
 <body>
     <mobi:pagePanel>
         <mobi:pagePanelHeader>
-            <img src="./resources/images/icemobile_thumb.png"/>
+            <img src="./resources/images/icemobile_thumb.png"
+                style="vertical-align:text-bottom;"/>
             Mediacast Contest
         </mobi:pagePanelHeader>
         <mobi:pagePanelBody>
             
             <div id="left" style="width:30%;float:left;">
-                <push:region group="photos" page="/contest-photo-list"/>
+                <push:region group="photos" page="/contest-photo-list?l=t"/>
             </div>
             <div id="right" style="width:70%;float:left;border-left:1px solid darkgray;box-sizing:border-box;-moz-border-sizing:border-box;">
                 <mobi:tabset id="tabs" selectedTab="0">

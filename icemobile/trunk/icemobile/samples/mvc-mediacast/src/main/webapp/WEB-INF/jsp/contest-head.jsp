@@ -48,6 +48,7 @@
                         type:'POST',
                         success:function (html) {
                             updateRegion.replaceWith(html);
+                            $(theForm).find("input[type='reset']").click();
                         }
                     });
                 }
@@ -62,6 +63,19 @@
                 return false;
             });
         });
+    }
+    
+    function updateViewerPanel(id){
+    	 $.ajax({
+             url:'<c:url value="/contest-viewer"/>?id='+id+'&l=t',
+             cache:false,
+             processData:false,
+             type:'GET',
+             success:function (html) {
+                 $('#viewerPanel').replaceWith(html);
+                 ice.mobi.tabsetController.showContent('tabs', $('#tabstab_1')[0], {tIndex: 1} );
+             }
+         });
     }
         </script>
     <mobi:googleAnalytics/>

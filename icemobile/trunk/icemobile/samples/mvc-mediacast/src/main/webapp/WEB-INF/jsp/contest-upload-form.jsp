@@ -1,6 +1,6 @@
 <%@ page session="false"%>
 <%@ include file="/WEB-INF/jsp/include.jsp"%>
-<div style="margin-top:10px;">
+<div>
      
     <form:form id="cameraUploadForm" method="POST" enctype="multipart/form-data"
          modelAttribute="uploadModel" htmlEscape="true" style="text-align:center;">
@@ -14,7 +14,7 @@
            </mobi:fieldSetRow>
             <mobi:fieldSetRow style="text-align:center;">
                 <mobi:camera id="upload" style="width:70%;vertical-align:top;max-width:200px;"/>
-                    <c:if test="${!desktop}">
+                    <c:if test="${layout ne 'd'}">
                         <mobi:thumb for="upload" style="margin: 0 2px"/>
                     </c:if>
              </mobi:fieldSetRow>
