@@ -39,6 +39,9 @@ public class ContestController implements ServletContextAware {
 
 	@Inject
 	private MediaService mediaService;
+	
+	@Inject
+	private MediaHelper mediaHelper;
 
 	String currentFileName = null;
 
@@ -185,32 +188,55 @@ public class ContestController implements ServletContextAware {
 			@Valid ContestForm form, BindingResult result, Model model, 
 			@ModelAttribute("uploadModel") MediaMessage uploadModel)
 					throws IOException {
+		
+		boolean success = false;
 
 		if (result.hasErrors() || (file != null && file.isEmpty())) {
 			uploadModel.setUploadMsg("Sorry, I think you missed something.");
-			return "contest-upload";
-		}
-
-		if( file != null ){
-			log.debug("file: " + file);
-			uploadModel.setId(newId());
-			saveImage(request, file, uploadModel);
-			uploadModel.setDescription(form.getDescription());
-			uploadModel.setEmail(form.getEmail());
-			uploadModel.setCreated(System.currentTimeMillis());
-			mediaService.addMedia(uploadModel);
-			log.debug("successfully added message to mediaService, uploadModel="
-					+ uploadModel);
-			uploadModel.setUploadMsg("Thank you, your file was uploaded successfully.");
-			uploadModel.clear();
-			PushContext.getInstance(servletContext).push("photos");
-
-			return "redirect:/contest?p="+PAGE_UPLOAD;
 		}
 		else{
-			log.warn("upload file was null");
-			return "contest-upload";
+			if( file != null ){
+				log.debug("file: " + file);
+				uploadModel.setId(newId());
+				saveImage(request, file, uploadModel);
+				uploadModel.setDescription(form.getDescription());
+				uploadModel.setEmail(form.getEmail());
+				uploadModel.setCreated(System.currentTimeMillis());
+				mediaHelper.processImage(uploadModel);
+				mediaService.addMedia(uploadModel);
+				log.debug("successfully added message to mediaService, uploadModel="
+						+ uploadModel);
+				uploadModel.setUploadMsg("Thank you, your file was uploaded successfully.");
+				uploadModel.clear();
+				PushContext.getInstance(servletContext).push("photos");				
+				success = true;
+			}
+			else{
+				log.warn("upload file was null");
+			}			
 		}
+
+		return postUploadFormResponseView(isAjaxRequest(request),success,form.getLayout());
+	}
+	
+	private String postUploadFormResponseView(boolean ajax, boolean redirect, String layout){
+		String view = null;
+		if( ajax ){
+			redirect = false;
+		}
+		if( redirect ){
+			view = "redirect:/" + "contest" + urlParams(false,PAGE_UPLOAD,layout);
+		}
+		else if( MOBILE.equals(layout)){
+			view = "contest-upload";
+		}
+		else if( TABLET.equals(layout) && ajax){
+			view = "contest-upload-form";
+		}
+		else{
+			view = "contest-tablet";
+		}
+		return view;
 	}
 
 	private void addCommonModel(Model model, MediaMessage uploadModel, String layout){
@@ -291,7 +317,7 @@ public class ContestController implements ServletContextAware {
 		if (uploadModel.getId() == null) {
 			uploadModel.setId(newId());
 		}
-		String newFileName = "img-" + uploadModel.getId() + "." + suffix;
+		String newFileName = "img-" + uploadModel.getId() + "-orig." + suffix;
 		File uploadDir = new File(servletContext.getRealPath("/resources/uploads/"));
 		if( uploadDir.exists()){
 			uploadDir.mkdir();
@@ -312,7 +338,6 @@ public class ContestController implements ServletContextAware {
 		media.setFile(newFile);
 		media.setType(file.getContentType());
 		uploadModel.setPhoto(media);
-		log.debug("added new media to uploadModel");
 	}
 
 	private void saveImage(HttpServletRequest request, MultipartFile file,
@@ -330,6 +355,16 @@ public class ContestController implements ServletContextAware {
 
 
 	private static boolean isAjaxRequest(WebRequest webRequest) {
+		String requestedWith = webRequest.getHeader("Faces-Request");
+		if ("partial/ajax".equals(requestedWith))  {
+			return true;
+		}
+
+		requestedWith = webRequest.getHeader("X-Requested-With");
+		return requestedWith != null ? "XMLHttpRequest".equals(requestedWith) : false;
+	}
+	
+	private static boolean isAjaxRequest(HttpServletRequest webRequest) {
 		String requestedWith = webRequest.getHeader("Faces-Request");
 		if ("partial/ajax".equals(requestedWith))  {
 			return true;

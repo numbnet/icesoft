@@ -43,35 +43,6 @@ public class Media implements Serializable {
 
 	}
 
-	public Media(byte[] data, int width, int height) {
-		this(data, "image/png", width, height);
-	}
-
-	public Media(byte[] data, String type, int width, int height) {
-
-		this.width = width;
-		this.height = height;
-
-		ByteArrayInputStream fis = new ByteArrayInputStream(data);
-		ByteArrayOutputStream bos = new ByteArrayOutputStream();
-		try {
-			byte[] buf = new byte[4096];
-			for (int readNum; (readNum = fis.read(buf)) != -1;) {
-				bos.write(buf, 0, readNum);
-			}
-			synchronized (dataLock) {
-				/*
-				 * this.resource = new Resource( UUID.randomUUID().toString(),
-				 * bos.toByteArray(), type);
-				 */
-			}
-			bos.close();
-			fis.close();
-		} catch (Throwable e) {
-			logger.warning("Error creating image resource");
-		}
-	}
-
 	public String getFileName() {
 		return fileName;
 	}
@@ -104,6 +75,10 @@ public class Media implements Serializable {
 		this.height = height;
 	}
 	
+	public File getFile(){
+		return file;
+	}
+	
 	public void setFile(File file){
 		this.file = file;
 	}
@@ -115,5 +90,9 @@ public class Media implements Serializable {
 		}
 		type = null;
 		fileName = null;
+	}
+	
+	public String toString(){
+		return this.getClass().getSimpleName() + " file="+file+", height="+height+", width="+width+", type="+type;
 	}
 }

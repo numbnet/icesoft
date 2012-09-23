@@ -43,7 +43,10 @@ public class MediaMessage implements Serializable{
 	private Media photo = null;
 	private Media video = null;
 	private Media audio = null;
-	private long created;
+	private Media smallPhoto = null;
+    private Media mediumPhoto = null;
+    private Media largePhoto = null;
+    private long created;
 
 	private List<String> votes = new ArrayList<String>();
 
@@ -80,6 +83,9 @@ public class MediaMessage implements Serializable{
 		cloned.setLatitude(latitude);
 		cloned.setLongitude(longitude);
 		cloned.setPhoto(photo);
+		cloned.setSmallPhoto(smallPhoto);
+		cloned.setMediumPhoto(mediumPhoto);
+		cloned.setLargePhoto(largePhoto);
 		cloned.setTags(tags);
 		cloned.setTitle(title);
 		cloned.setVideo(video);
@@ -91,13 +97,19 @@ public class MediaMessage implements Serializable{
 	 * Clean up file resources.
 	 */
 	 public void dispose(){
-		// try and clean up the data[], but only for real photos, we don't
-		 // want to delete the video and audio icons.
-		 if (getShowPhoto()){
-			 //smallPhoto.dispose();
-			 //mediumPhoto.dispose();
-			 //largePhoto.dispose(); //TODO
-		 }
+		if( photo != null ){
+				photo.dispose();
+		}
+		if( smallPhoto != null ){
+			smallPhoto.dispose();
+		}
+		if( mediumPhoto != null ){
+			mediumPhoto.dispose();
+		}
+		if( largePhoto != null ){
+			largePhoto.dispose();
+		}
+			
 	 }
 
 	 public double getAltitude(){
@@ -255,6 +267,30 @@ public class MediaMessage implements Serializable{
 	 public void setCreated(long created) {
 		 this.created = created;
 	 }
+
+	public Media getSmallPhoto() {
+		return smallPhoto;
+	}
+
+	public void setSmallPhoto(Media smallPhoto) {
+		this.smallPhoto = smallPhoto;
+	}
+
+	public Media getMediumPhoto() {
+		return mediumPhoto;
+	}
+
+	public void setMediumPhoto(Media mediumPhoto) {
+		this.mediumPhoto = mediumPhoto;
+	}
+
+	public Media getLargePhoto() {
+		return largePhoto;
+	}
+
+	public void setLargePhoto(Media largePhoto) {
+		this.largePhoto = largePhoto;
+	}
 
 
 

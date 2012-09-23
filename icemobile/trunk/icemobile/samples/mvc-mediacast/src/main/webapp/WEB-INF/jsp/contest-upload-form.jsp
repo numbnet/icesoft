@@ -1,9 +1,10 @@
 <%@ page session="false"%>
 <%@ include file="/WEB-INF/jsp/include.jsp"%>
-<div>
+<div id="uploadFormContainer">
      
     <form:form id="cameraUploadForm" method="POST" enctype="multipart/form-data"
          modelAttribute="uploadModel" htmlEscape="true" style="text-align:center;">
+        <input type="hidden" name="layout" value="${layout}"/>
         <form:errors path="*" cssClass="errorblock" element="div" />
         
         <mobi:getEnhanced/>
@@ -52,6 +53,6 @@
         </mobi:fieldSetGroup>
     </form:form>
     <script type="text/javascript">
-        enhanceForm("#cameraUploadForm");
+        enhanceForm("#cameraUploadForm","#uploadFormContainer");
     </script>
 </div>
