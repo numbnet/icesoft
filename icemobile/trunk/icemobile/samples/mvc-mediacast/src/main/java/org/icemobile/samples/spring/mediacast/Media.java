@@ -109,8 +109,10 @@ public class Media implements Serializable {
 	}
 	
 	public void dispose(){
-		file.delete();
-		file = null;
+		if( file != null ){
+			file.delete();
+			file = null;
+		}
 		type = null;
 		fileName = null;
 	}
