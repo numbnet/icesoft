@@ -16,3 +16,13 @@
 .mobi-pagePanel-header {
     text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.4);
 }
+
+.mobi-pagePanel-header .mobi-button{
+    line-height:20px;position:absolute;
+}
+.mobi-pagePanel-header .mobi-button:first-child{
+    float:left;left:0;
+}
+.mobi-pagePanel-header .mobi-button:last-child{
+    float:right;right:0;
+}
