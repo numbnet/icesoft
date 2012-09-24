@@ -24,6 +24,7 @@
 	                </mobi:headers>
 	                <mobi:content>
 	                   <mobi:contentPane>
+                            <push:region group="carousel" page="/contest-carousel"/>
 	                       <%@ include file="/WEB-INF/jsp/contest-upload-form.jsp" %>
 	                   </mobi:contentPane>
 	                   <mobi:contentPane>

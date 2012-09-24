@@ -108,7 +108,11 @@ public class MediaService implements ServletContextAware {
     	List<String> imageMarkup = new ArrayList<String>();
     	if( media != null ){
 	    	for( MediaMessage mediaMsg : getMediaSortedByTime(CAROUSEL_MAX_INDEX) ){
-	    		imageMarkup.add(String.format(CONTEST_CAROUSEL_ITEM_MARKUP, contextPath, layout, mediaMsg.getId(), mediaMsg.getDescription(), mediaMsg.getSmallPhoto().getFile().getName()));
+	    		Media photo = mediaMsg.getSmallPhoto();
+	    		if( photo == null ){
+	    			photo = mediaMsg.getPhoto();
+	    		}
+	    		imageMarkup.add(String.format(CONTEST_CAROUSEL_ITEM_MARKUP, contextPath, layout, mediaMsg.getId(), mediaMsg.getDescription(), photo.getFile().getName()));
 	    	}
     	}
     	return imageMarkup;
