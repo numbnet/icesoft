@@ -18,6 +18,7 @@ package org.icemobile.jsp.tags;
 
 
 import javax.servlet.jsp.PageContext;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -34,6 +35,8 @@ public class TagUtil {
     private static String ACCEPT = "Accept";
     private static String USER_AGENT_COOKIE = "com.icesoft.user-agent";
     private static String HYPERBROWSER = "HyperBrowser";
+    private static String COOKIE_FORMAT = "org.icemobile.cookieformat";
+
 
 
     public static String A_TAG = "<a";
@@ -130,24 +133,22 @@ public class TagUtil {
             URLEncoder.encode(fullCommand) +
             "&r=\"+escape(window.location)+\"";
         if (null != sessionID) {
-            script += "&JSESSIONID=" + getSessionIdCookie(sessionID);
+            script += "&JSESSIONID=" + sessionID;
         }
         script += "&u=" + URLEncoder.encode(uploadURL) + "\"";
         return script;
     }
-
-    public static String getSessionIdCookie(String sessionID) {
-        return sessionID;
-//        String cookieFormat = (String) facesContext.getExternalContext()
-//            .getInitParameterMap().get(COOKIE_FORMAT);
-//        if (null == cookieFormat)  {
-//            //if we have more of these, implement EnvUtils for ICEmobile
-//            return sessionID;
-//        }
-//        StringBuilder out = new StringBuilder();
-//        Formatter cookieFormatter = new Formatter(out);
-//        cookieFormatter.format(cookieFormat, sessionID);
-//        return out.toString();
+    
+    public static String getICEmobileRegisterSXScript(PageContext pageContext){
+    	 HttpServletRequest request = (HttpServletRequest)
+    	            pageContext.getRequest();
+        String sessionID = null;
+        HttpSession httpSession = pageContext.getSession();
+        if (null != httpSession) {
+            sessionID = httpSession.getId();
+        }
+        String uploadURL = getUploadURL(request);
+        return "ice.registerAuxUpload('"+sessionID+"','"+uploadURL+"');";
     }
 
     public static String getUploadURL(HttpServletRequest request) {

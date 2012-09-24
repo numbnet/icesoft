@@ -5,7 +5,10 @@ import java.util.logging.Logger;
 
 import javax.servlet.jsp.PageContext;
 
+import org.icefaces.impl.application.AuxUploadSetup;
+import org.icefaces.mobi.utils.Utils;
 import org.icemobile.jsp.tags.TagUtil.DeviceType;
+import org.icemobile.jsp.util.HTML;
 
 public class GetEnhancedTag extends BaseSimpleTag{
 	
@@ -28,50 +31,62 @@ public class GetEnhancedTag extends BaseSimpleTag{
 		
 		DeviceType device = TagUtil.getDeviceTypeNoDefault(pageContext);
 		
-		if( device != null && !TagUtil.isEnhancedBrowser(pageContext)){
-			TagWriter writer = new TagWriter(pageContext);
-			
-			writer.startSpan();
-			writer.writeStyleClassWithBase(styleClass, CSS_CLASS);
-			writer.writeStyle(style);
-			writer.writeDisabled(disabled);
-			
-			String msg = INFO_MSG; //default msg
-			String link = null;
-			switch(device){
-				case android: 	
-				case honeycomb:	
-					link = ANDROID_LINK; 
-					if( androidMsg != null ){
-						msg = androidMsg;
-					}
-					break;
-				case iphone:
-				case ipad: 		
-					link = IOS_LINK; 
-					if( iosMsg != null ){
-						msg = iosMsg;
-					}
-					break;
-				case bberry: 	
-					link = BLACKBERRY_LINK; 
-					if( blackberryMsg != null ){
-						msg = blackberryMsg;
-					}
-					break;
-			}
-			writer.writeTextNode(msg);
-			
-			if( includeLink ){
-				writer.startElement("a");
-				writer.writeAttribute("href", link);
-				writer.writeStyleClass("mobi-button mobi-button-important");
-				writer.writeTextNode(DOWNLOAD);
-				writer.endElement();
-			}
-			
-			writer.endElement();//span
+		if( device == null || TagUtil.isEnhancedBrowser(pageContext)){
+			return;
 		}
+		
+		boolean ios = TagUtil.isIOS(pageContext);
+		
+		TagWriter writer = new TagWriter(pageContext);
+		
+		writer.startSpan();
+		writer.writeStyleClassWithBase(styleClass, CSS_CLASS);
+		writer.writeStyle(style);
+		writer.writeDisabled(disabled);
+		
+		String msg = INFO_MSG; //default msg
+		String link = null;
+		switch(device){
+			case android: 	
+			case honeycomb:	
+				link = ANDROID_LINK; 
+				if( androidMsg != null ){
+					msg = androidMsg;
+				}
+				break;
+			case iphone:
+			case ipad: 		
+				link = IOS_LINK; 
+				if( iosMsg != null ){
+					msg = iosMsg;
+				}
+				break;
+			case bberry: 	
+				link = BLACKBERRY_LINK; 
+				if( blackberryMsg != null ){
+					msg = blackberryMsg;
+				}
+				break;
+		}
+		writer.writeTextNode(msg);
+		
+		if( ios ){
+			writer.startElement(HTML.ANCHOR_ELEM);
+			writer.writeStyleClass("mobi-button mobi-button-important");
+			writer.writeAttribute(HTML.ONCLICK_ATTR, TagUtil.getICEmobileRegisterSXScript(pageContext));
+			writer.writeTextNode("Enable ICEmobile SX");
+			writer.endElement();
+		}
+		
+		if( includeLink ){
+			writer.startElement("a");
+			writer.writeAttribute("href", link);
+			writer.writeStyleClass("mobi-button mobi-button-important");
+			writer.writeTextNode(DOWNLOAD);
+			writer.endElement();
+		}
+		
+		writer.endElement();//span
 		
 	}
 
