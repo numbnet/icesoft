@@ -14,9 +14,6 @@
             <mobi:fieldSetRow style="text-align:center;">
                 <div>${media.numberOfVotes} Votes so far..</div>
             </mobi:fieldSetRow>
-            <mobi:fieldSetRow style="text-align:center;">
-                <div>${msg}</div>
-            </mobi:fieldSetRow>
         </mobi:fieldSetGroup>
     </c:if>
 </div>

@@ -13,7 +13,7 @@
 		<mobi:pagePanelBody>
 			<%@ include file="/WEB-INF/jsp/contest-viewer-panel.jsp" %>
 		</mobi:pagePanelBody>
-		<%@ include file="/WEB-INF/jsp/footer.jsp"%>
+		<%@ include file="/WEB-INF/jsp/contest-footer.jsp"%>
 	</mobi:pagePanel>
 </body>
 </html>
