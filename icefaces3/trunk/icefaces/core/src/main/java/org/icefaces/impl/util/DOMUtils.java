@@ -390,7 +390,12 @@ public class DOMUtils {
     private static boolean isWhitespaceText(Node node) {
         if (node.getNodeType() == Node.TEXT_NODE) {
             String val = node.getNodeValue();
-            // Treat an empty string like whitespace
+
+            // Treat an empty string or null value like whitespace
+            if (val == null){
+                return true;
+            }
+
             for (int i = val.length() - 1; i >= 0; i--) {
                 if (!Character.isWhitespace(val.charAt(i))) {
                     return false;
