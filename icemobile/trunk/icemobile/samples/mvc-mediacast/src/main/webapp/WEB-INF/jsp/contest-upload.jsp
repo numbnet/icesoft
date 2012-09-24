@@ -14,7 +14,9 @@
             <span>Contest Upload</span>
 		</mobi:pagePanelHeader>
 		<mobi:pagePanelBody>
-		    <push:region group="carousel" page="/contest-carousel"/>
+            <div id="carouselContainer">
+		      <push:region group="carousel" page="/contest-carousel"/>
+             </div>
 			<div style="clear:both;"></div>
 			
 			<%@ include file="/WEB-INF/jsp/contest-upload-form.jsp" %>
