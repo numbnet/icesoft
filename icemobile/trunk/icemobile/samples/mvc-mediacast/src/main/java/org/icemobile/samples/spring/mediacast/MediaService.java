@@ -112,7 +112,7 @@ public class MediaService implements ServletContextAware {
 	    		if( photo == null ){
 	    			photo = mediaMsg.getPhoto();
 	    		}
-	    		if( photo != null ){
+	    		if( photo != null && photo.getFile() != null ){
 	    			imageMarkup.add(String.format(CONTEST_CAROUSEL_ITEM_MARKUP, contextPath, layout, mediaMsg.getId(), mediaMsg.getDescription(), photo.getFile().getName()));
 	    		}
 	    	}
