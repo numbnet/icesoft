@@ -88,6 +88,7 @@ public class MediaMessage implements Serializable{
 		cloned.setTitle(title);
 		cloned.setVideo(video);
 		cloned.setCreated(created);
+		cloned.getVotes().addAll(votes);
 		return cloned;
 	}
 

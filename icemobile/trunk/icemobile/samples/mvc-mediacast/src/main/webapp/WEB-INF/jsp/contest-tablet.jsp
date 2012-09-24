@@ -6,6 +6,7 @@
 <body>
     <mobi:pagePanel>
         <mobi:pagePanelHeader>
+            
             <img src="./resources/images/icemobile_thumb.png"
                 style="vertical-align:text-bottom;"/>
             Mediacast Contest

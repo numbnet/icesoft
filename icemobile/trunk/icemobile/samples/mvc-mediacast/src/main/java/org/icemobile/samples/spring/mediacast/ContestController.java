@@ -19,6 +19,7 @@ import javax.validation.Valid;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.icepush.PushContext;
+import org.icepush.client.AddGroupMemberRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -94,7 +95,7 @@ public class ContestController implements ServletContextAware {
 	}
 	
 	@RequestMapping(value="/contest", method = RequestMethod.GET)
-	public String getMainPage(
+	public String get(
 			HttpServletResponse response,
 			@RequestParam(value="l", defaultValue=MOBILE) String layout, 
 			@RequestParam(value="p", defaultValue=PAGE_UPLOAD) String page,
@@ -104,10 +105,10 @@ public class ContestController implements ServletContextAware {
 			Model model, 
 			@ModelAttribute("uploadModel") MediaMessage uploadModel) {
 		
-		log.warn("main contest controller l="+layout+", p="+page+", a="+action );
+		log.warn("main contest controller l="+layout+", p="+page+", a="+action +", cookies="+cookieVotes);
 		
 		String view = null;
-		if ( action == ACTION_VOTE ){
+		if (ACTION_VOTE.equals(action) ){
 			doVote(response,id,cookieVotes, model);
 		}
 		if( layout.length() > 1 ){
@@ -198,14 +199,26 @@ public class ContestController implements ServletContextAware {
 	
 	
 	@RequestMapping(value="/contest", method = RequestMethod.POST, consumes="multipart/form-data")
-	public String postUploadPhoto(
+	public String post(
 			HttpServletRequest request,
+			HttpServletResponse response,
 			@RequestParam(value = "upload", required = false) MultipartFile file,
-			@Valid ContestForm form, BindingResult result, Model model, 
-			@ModelAttribute("uploadModel") MediaMessage uploadModel)
+			@Valid ContestForm form, BindingResult result,
+			@ModelAttribute("uploadModel") MediaMessage uploadModel,
+			@CookieValue(value="votes", required=false) String cookieVotes,
+			Model model)
 					throws IOException {
 		
+		log.info(form);
+		
 		boolean success = false;
+		
+		if( "gallery".equals(form.getForm())){
+			doVote(response, form.getPhotoId(), cookieVotes, model);
+			addCommonModel(model, uploadModel, form.getLayout());
+			return "contest-photo-list";
+		}
+		
 
 		if (result.hasErrors() || (file != null && file.isEmpty())) {
 			uploadModel.setUploadMsg("Sorry, I think you missed something.");
@@ -258,7 +271,7 @@ public class ContestController implements ServletContextAware {
 		if( !model.containsAttribute("uploadModel")){
 			model.addAttribute("uploadModel", uploadModel);
 		}
-		if( layout != null ){
+		if( layout != null && layout.length() > 0){
 			model.addAttribute("layout",layout.substring(0,1));
 		}
 	}
@@ -279,11 +292,6 @@ public class ContestController implements ServletContextAware {
 		}
 	}
 	
-	private void deleteMedia(String id) {
-		mediaService.removeMessage(id);
-		log.debug("removed media message id=" + id);
-	}
-	
 	private void doVote(HttpServletResponse response, String id, String cookieVotes, Model model){
 		MediaMessage msg = mediaService.getMediaMessage(id);
 		if (msg != null ){
@@ -296,6 +304,7 @@ public class ContestController implements ServletContextAware {
 				if( votesList.contains(id)){
 					log.debug("attempted duplicate vote!!!");
 					model.addAttribute("msg","Looks like you already voted on this one...try another");
+					return;
 				}
 			}
 			else{
