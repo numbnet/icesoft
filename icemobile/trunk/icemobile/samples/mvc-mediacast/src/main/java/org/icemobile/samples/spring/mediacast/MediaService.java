@@ -45,7 +45,7 @@ public class MediaService implements ServletContextAware {
 	private String contextPath;
 	private TagWeightMap tagsMap = new TagWeightMap();
 	private static final String CONTEST_CAROUSEL_ITEM_MARKUP = 
-			"<div><a href='%1$s/contest?l=%2$s&id=%3$s' title='%4$s'><img height='"+CAROUSEL_IMG_HEIGHT+"' src='%1$s/resources/uploads/%5$s' style='border:none;'></a></div>";
+			"<div><a href='%1$s/contest?p=viewer&l=%2$s&id=%3$s' title='%4$s'><img height='"+CAROUSEL_IMG_HEIGHT+"' src='%1$s/resources/uploads/%5$s' style='border:none;'></a></div>";
 	private Comparator<MediaMessage> mediaByVotesComparator = new MediaMessageByVotesComparator();
 	private Comparator<MediaMessage> mediaByTimeComparator = new MediaMessageByTimeComparator();
 	
