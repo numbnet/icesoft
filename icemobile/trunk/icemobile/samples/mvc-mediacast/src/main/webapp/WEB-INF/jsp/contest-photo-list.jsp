@@ -1,5 +1,6 @@
 <%@ page session="false"%>
 <%@ include file="/WEB-INF/jsp/include.jsp"%>
+<div>
 <form:form id="galleryFrm" method="POST" modelAttribute="galleryModel">
     <input type="hidden" name="layout" value="${layout}"/>
     <input type="hidden" name="form" value="gallery"/>
@@ -33,3 +34,4 @@
 <script type="text/javascript">
     enhanceForm("#galleryFrm","#galleryFrm");
 </script>
+</div>

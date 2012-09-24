@@ -115,7 +115,7 @@ public class MediaService implements ServletContextAware {
     	    			photo = mediaMsg.getPhoto();
     	    		}
     	    		if( photo != null && photo.getFile() != null ){
-    	    			String markup = "<div><a href="+contextPath+"/contest?p=viewer"
+    	    			String markup = "<div><a href='"+contextPath+"/contest?p=viewer"
     	    					+ (layout != null ? "&l=" + layout : "") + "&id="+mediaMsg.getId()
     	    					+"' title='"+mediaMsg.getDescription()+"'><img height='"
     	    					+CAROUSEL_IMG_HEIGHT+"' src='"+contextPath+"/resources/uploads/"
