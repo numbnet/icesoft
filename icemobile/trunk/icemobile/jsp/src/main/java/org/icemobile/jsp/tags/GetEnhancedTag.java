@@ -5,8 +5,6 @@ import java.util.logging.Logger;
 
 import javax.servlet.jsp.PageContext;
 
-import org.icefaces.impl.application.AuxUploadSetup;
-import org.icefaces.mobi.utils.Utils;
 import org.icemobile.jsp.tags.TagUtil.DeviceType;
 import org.icemobile.jsp.util.HTML;
 
