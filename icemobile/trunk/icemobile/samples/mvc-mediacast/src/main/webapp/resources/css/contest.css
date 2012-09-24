@@ -69,7 +69,6 @@
 .message-desc {
 	opacity: 0.5;
 	background-color: #B4B4B4;
-	margin-top: -5px;
 	border-bottom: 1px solid black;
 	padding: 0 0 1px 0;
 	width: 100%;
@@ -77,10 +76,6 @@
 .message-desc h3{
     margin: 0 1em;
     text-align: center;
-}
-
-.imageViewer {
-    width: 100%;
 }
 
 .mobi-list > .mobi-list-item > .mobi-list-item-default > a {
@@ -158,4 +153,24 @@ input, textarea{ font-family: droid, Helvetica, Arial, sans-serif;}
 }
 .mobi-tabset-content {
     background-color: transparent;
+}
+.mobi-tabset {
+    background-color: transparent;
+}
+#viewerPanel{
+	text-align: center;
+}
+.lightbox{
+	background-color:black;
+}
+@media screen and (max-width: 600px) {	
+	.imageViewer {
+	    width: 100%;
+	}
+}
+
+@media screen and (min-width: 601px) {  
+    .imageViewer {
+        width: 500px;
+    }
 }

@@ -24,7 +24,7 @@
 					</mobi:fieldSetRow>
 					<mobi:fieldSetRow style="text-align:center;">
 						<img id="largePhoto" width="100%" 
-							src='<c:url value="/resources/uploads/${media.photo.fileName}"/>'
+							src='<c:url value="/resources/uploads/${media.photo.file.name}"/>'
 							class="imageViewer" />
 					</mobi:fieldSetRow>
 				</mobi:fieldSetGroup>
@@ -37,7 +37,7 @@
 					</mobi:fieldSetRow>
 					<mobi:fieldSetRow style="text-align:center;">
 						<video id="videoPlayer"
-							src='<c:url value="/resources/uploads/${media.video.fileName}"/>' class="imageViewer"
+							src='<c:url value="/resources/uploads/${media.video.file.name}"/>' class="imageViewer"
 							controls="controls"></video>
 					</mobi:fieldSetRow>
 				</mobi:fieldSetGroup>
@@ -50,7 +50,7 @@
 					</mobi:fieldSetRow>
 					<mobi:fieldSetRow style="text-align:center;">
 						<audio id="audioPlayer"
-							src='<c:url value="/resources/uploads/${media.audio.fileName}"/>' class="imageViewer"
+							src='<c:url value="/resources/uploads/${media.audio.file.name}"/>' class="imageViewer"
 							controls="controls"></audio>
 					</mobi:fieldSetRow>
 				</mobi:fieldSetGroup>

@@ -44,7 +44,6 @@ public class MediaMessage implements Serializable{
 	private Media video = null;
 	private Media audio = null;
 	private Media smallPhoto = null;
-    private Media mediumPhoto = null;
     private Media largePhoto = null;
     private long created;
 
@@ -84,7 +83,6 @@ public class MediaMessage implements Serializable{
 		cloned.setLongitude(longitude);
 		cloned.setPhoto(photo);
 		cloned.setSmallPhoto(smallPhoto);
-		cloned.setMediumPhoto(mediumPhoto);
 		cloned.setLargePhoto(largePhoto);
 		cloned.setTags(tags);
 		cloned.setTitle(title);
@@ -102,9 +100,6 @@ public class MediaMessage implements Serializable{
 		}
 		if( smallPhoto != null ){
 			smallPhoto.dispose();
-		}
-		if( mediumPhoto != null ){
-			mediumPhoto.dispose();
 		}
 		if( largePhoto != null ){
 			largePhoto.dispose();
@@ -274,14 +269,6 @@ public class MediaMessage implements Serializable{
 
 	public void setSmallPhoto(Media smallPhoto) {
 		this.smallPhoto = smallPhoto;
-	}
-
-	public Media getMediumPhoto() {
-		return mediumPhoto;
-	}
-
-	public void setMediumPhoto(Media mediumPhoto) {
-		this.mediumPhoto = mediumPhoto;
 	}
 
 	public Media getLargePhoto() {

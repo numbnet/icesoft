@@ -2,19 +2,10 @@
 <%@ include file="/WEB-INF/jsp/include.jsp"%>
 <div id="viewerPanel">
     <c:if test="${not empty media}">
-        <img id="largePhoto" width="100%"
-            src='<c:url value="/resources/uploads/${media.photo.fileName}"/>'
-            class="imageViewer" />
-        <c:if test="${not empty media.smallPhoto}">
-            <img src='<c:url value="/resources/uploads/${media.smallPhoto.file.name}"/>'/>
-        </c:if>
-        <c:if test="${not empty media.mediumPhoto}">
-            <img src='<c:url value="/resources/uploads/${media.mediumPhoto.file.name}"/>'/>
-        </c:if>
-        <c:if test="${not empty media.largePhoto}">
-            <img src='<c:url value="/resources/uploads/${media.largePhoto.file.name}"/>'/>
-        </c:if>
-        
+        <div class="lightbox">
+            <img id="largePhoto" src='<c:url value="/resources/uploads/${media.largePhoto.file.name}"/>'
+                class="imageViewer" />
+        </div>
         <div class="message-desc">
             <h3><c:out value="${media.description}"/></h3>
         </div>
