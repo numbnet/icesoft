@@ -95,7 +95,7 @@
 
         <!-- Versions of JSF implementations -->
         <mojarra.version>2.1.6</mojarra.version>
-        <myfaces.version>2.1.8-ice-8229</myfaces.version>
+        <myfaces.version>2.1.9</myfaces.version>
 
         <!-- Various library versions settable from one place -->
         <annotation.version>1.0</annotation.version>
