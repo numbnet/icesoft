@@ -57,6 +57,7 @@
 }
 
 .ui-datatable .ui-header-right {
+    display:inline-block;
     white-space: nowrap;
     position: relative;
 }
