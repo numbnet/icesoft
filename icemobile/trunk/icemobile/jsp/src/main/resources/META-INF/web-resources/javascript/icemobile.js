@@ -1192,5 +1192,19 @@ ice.mobi.timespinner = {
     }
 };
 ice.mobi.setCookie = function(name,val,path){
-	document.cookie = name + '=' + encodeURIComponent(val) + '; path=' + path;
+	if( !val ){
+		var date = new Date();
+		date.setTime(date.getTime()+(-1*24*60*60*1000));
+		var expires = "; expires="+date.toGMTString();
+		document.cookie = name + "=''; path=" + path + expires;
+	}
+	else{
+		document.cookie = name + '=' + encodeURIComponent(val) + '; path=' + path;
+	}
+}
+ice.mobi.locationWithoutViewParam = function(){
+	var url = window.location.href;
+	url = url.replace(/l=[m|t|d]/,'');
+	url = url.replace(/\?&/,'\?');
+	return url;
 }

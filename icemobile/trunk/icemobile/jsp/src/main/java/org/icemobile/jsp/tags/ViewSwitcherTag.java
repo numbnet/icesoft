@@ -17,6 +17,7 @@ public class ViewSwitcherTag extends BaseSimpleTag{
 	private static final String SETCOOKIEM = "ice.mobi.setCookie('mobi-view-pref','m','/');";
 	private static final String SETCOOKIET = "ice.mobi.setCookie('mobi-view-pref','t','/');";
 	private static final String SETCOOKIED = "ice.mobi.setCookie('mobi-view-pref','d','/');";
+	private static final String UNSETCOOKIE = "ice.mobi.setCookie('mobi-view-pref',null,'/');";
 	
 	public enum VIEW_TYPE{ 
 		MOBILE("m"), TABLET("t"), DESKTOP("d");
@@ -39,7 +40,6 @@ public class ViewSwitcherTag extends BaseSimpleTag{
 	
 	public void doTag() throws IOException {
 		
-		HttpServletRequest request = getRequest();
 		Cookie cookie = getCookie(COOKIE_NAME);
 		
 		//if response has already been committed render the links
@@ -132,6 +132,15 @@ public class ViewSwitcherTag extends BaseSimpleTag{
 				writer.writeTextNode("Desktop");
 				writer.endElement();
 			}
+			if( tabletView != null || mobileView != null || desktopView != null ){
+				writer.writeTextNode(" | ");
+			}
+			writer.startElement(HTML.ANCHOR_ELEM);
+			writer.writeDisabled(disabled);
+			writer.writeAttribute(HTML.ONCLICK_ATTR, UNSETCOOKIE);
+			writer.writeAttribute(HTML.HREF_ATTR, desktopView);
+			writer.writeTextNode("Auto");
+			writer.endElement();
 		}
 	}
 	
