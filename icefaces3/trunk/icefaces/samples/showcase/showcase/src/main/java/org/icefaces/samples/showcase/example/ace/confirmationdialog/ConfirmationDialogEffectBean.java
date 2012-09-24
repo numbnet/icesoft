@@ -86,7 +86,6 @@ public class ConfirmationDialogEffectBean extends ComponentExampleImpl<Confirmat
             list.put("Drop", "drop");
             list.put("Fold", "fold");
             list.put("Shake", "shake");
-            list.put("Transfer", "transfer");
             return list;
     }
 	
@@ -104,8 +103,6 @@ public class ConfirmationDialogEffectBean extends ComponentExampleImpl<Confirmat
             list.put("Slide", "slide");
             list.put("Drop", "drop");
             list.put("Fold", "fold");
-            list.put("Shake", "shake");
-            list.put("Transfer", "transfer");
             return list;
     }
 
