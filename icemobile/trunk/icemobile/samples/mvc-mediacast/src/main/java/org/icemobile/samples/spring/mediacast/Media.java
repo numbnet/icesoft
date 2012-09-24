@@ -32,7 +32,6 @@ public class Media implements Serializable {
 	private static final Logger logger = Logger.getLogger(Media.class
 			.toString());
 
-	private String fileName;
 	private File file;
 	private final Object dataLock = new Object();
 	private int width;
@@ -41,14 +40,6 @@ public class Media implements Serializable {
 
 	public Media() {
 
-	}
-
-	public String getFileName() {
-		return fileName;
-	}
-
-	public void setFileName(String fileName) {
-		this.fileName = fileName;
 	}
 
 	public String getType() {
@@ -89,7 +80,6 @@ public class Media implements Serializable {
 			file = null;
 		}
 		type = null;
-		fileName = null;
 	}
 	
 	public String toString(){

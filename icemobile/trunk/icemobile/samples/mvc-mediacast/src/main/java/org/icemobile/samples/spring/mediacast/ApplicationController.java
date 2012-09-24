@@ -243,7 +243,6 @@ public class ApplicationController implements ServletContextAware {
 		}
 		newFile.deleteOnExit();
 		Media media = new Media();
-		media.setFileName(newFileName);
 		media.setFile(newFile);
 		media.setType(file.getContentType());
 		uploadModel.setPhoto(media);

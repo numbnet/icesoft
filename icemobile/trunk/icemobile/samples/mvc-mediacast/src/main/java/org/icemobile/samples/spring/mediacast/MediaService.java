@@ -45,7 +45,7 @@ public class MediaService implements ServletContextAware {
 	private String contextPath;
 	private TagWeightMap tagsMap = new TagWeightMap();
 	private static final String CONTEST_CAROUSEL_ITEM_MARKUP = 
-			"<div><a href='%1$s/contest%2$s&id=%3$s' title='%4$s'><img height='"+CAROUSEL_IMG_HEIGHT+"' src='%1$s/resources/uploads/%5$s' style='border:none;'></a></div>";
+			"<div><a href='%1$s/contest?l=%2$s&id=%3$s' title='%4$s'><img height='"+CAROUSEL_IMG_HEIGHT+"' src='%1$s/resources/uploads/%5$s' style='border:none;'></a></div>";
 	private Comparator<MediaMessage> mediaByVotesComparator = new MediaMessageByVotesComparator();
 	private Comparator<MediaMessage> mediaByTimeComparator = new MediaMessageByTimeComparator();
 	
@@ -98,17 +98,17 @@ public class MediaService implements ServletContextAware {
     	List<String> imageMarkup = new ArrayList<String>();
     	if( media != null ){
 	    	for( MediaMessage mediaMsg : getMediaSortedByVotes() ){
-	    		imageMarkup.add(String.format(CAROUSEL_ITEM_MARKUP, contextPath, mediaMsg.getPhoto().getFileName(), mediaMsg.getTitle(), mediaMsg.getId()));
+	    		imageMarkup.add(String.format(CAROUSEL_ITEM_MARKUP, contextPath, mediaMsg.getPhoto().getFile().getName(), mediaMsg.getTitle(), mediaMsg.getId()));
 	    	}
     	}
     	return imageMarkup;
     }
 	
-	public List<String> getContestMediaImageMarkup(String params){
+	public List<String> getContestMediaImageMarkup(String layout){
     	List<String> imageMarkup = new ArrayList<String>();
     	if( media != null ){
 	    	for( MediaMessage mediaMsg : getMediaSortedByTime(CAROUSEL_MAX_INDEX) ){
-	    		imageMarkup.add(String.format(CONTEST_CAROUSEL_ITEM_MARKUP, contextPath, params, mediaMsg.getId(), mediaMsg.getDescription(), mediaMsg.getPhoto().getFileName()));
+	    		imageMarkup.add(String.format(CONTEST_CAROUSEL_ITEM_MARKUP, contextPath, layout, mediaMsg.getId(), mediaMsg.getDescription(), mediaMsg.getSmallPhoto().getFile().getName()));
 	    	}
     	}
     	return imageMarkup;

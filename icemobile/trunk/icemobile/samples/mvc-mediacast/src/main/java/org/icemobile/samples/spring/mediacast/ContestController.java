@@ -34,7 +34,7 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.multipart.MultipartFile;
 
 @Controller
-@SessionAttributes({"uploadModel","msg"})
+@SessionAttributes({"uploadModel","msg","admin"})
 public class ContestController implements ServletContextAware {
 
 	@Inject
@@ -63,9 +63,7 @@ public class ContestController implements ServletContextAware {
 	private static final String TABLET = "t";
 	
 	private static final String ACTION_VOTE = "v";
-	private static final String ACTION_DELETE = "d";
-	
-		
+
 	@Autowired
 	public ContestController(ServletContext servletContext){
 		this.servletContext = servletContext;		
@@ -100,23 +98,20 @@ public class ContestController implements ServletContextAware {
 			HttpServletResponse response,
 			@RequestParam(value="l", defaultValue=MOBILE) String layout, 
 			@RequestParam(value="p", defaultValue=PAGE_UPLOAD) String page,
-			@RequestParam(value="e", required=false) String e,
 			@RequestParam(value="id", required=false) String id,
 			@RequestParam(value="a", required=false) String action,
 			@CookieValue(value="votes", required=false) String cookieVotes,
 			Model model, 
 			@ModelAttribute("uploadModel") MediaMessage uploadModel) {
 		
-		log.warn("main contest controller l="+layout+", p="+page+", e="+e+", a="+action);
-		
-		boolean canEdit = canEdit(e);
+		log.warn("main contest controller l="+layout+", p="+page+", a="+action );
 		
 		String view = null;
-		if( action == ACTION_DELETE && canEdit){
-			deleteMedia(id);
-		}
-		else if ( action == ACTION_VOTE ){
+		if ( action == ACTION_VOTE ){
 			doVote(response,id,cookieVotes, model);
+		}
+		if( layout.length() > 1 ){
+			layout = layout.substring(0,1);
 		}
 		if( layout.equals(TABLET) ){
 			page = PAGE_ALL;
@@ -125,11 +120,10 @@ public class ContestController implements ServletContextAware {
 		addCommonModel(model,uploadModel,layout);
 		
 		if( page.equals(PAGE_UPLOAD) ){
-			addUploadViewModel(canEdit, page, layout, model);
+			addUploadViewModel(page, layout, model);
 			view = "contest-upload";
 		}
 		else if( page.equals(PAGE_GALLERY) ){
-			addGalleryViewModel(canEdit,model);
 			view = "contest-gallery";
 		}
 		else if( page.equals(PAGE_VIEWER)){
@@ -137,8 +131,7 @@ public class ContestController implements ServletContextAware {
 			view = "contest-viewer";
 		}
 		else if( page.equals(PAGE_ALL)){
-			addUploadViewModel(canEdit, page, layout, model);
-			addGalleryViewModel(canEdit,model);
+			addUploadViewModel(page, layout, model);
 			addViewerViewModel(id, layout, model);
 			view = "contest-tablet";
 		}
@@ -156,11 +149,7 @@ public class ContestController implements ServletContextAware {
 	@RequestMapping(value="/contest-viewer", method = RequestMethod.GET)
 	public String getContestViewerContent(
 			@RequestParam(value="l", defaultValue=MOBILE) String layout, 
-			@RequestParam(value="p", defaultValue=PAGE_UPLOAD) String page,
-			@RequestParam(value="e", required=false) String e,
 			@RequestParam(value="id", required=false) String id,
-			@RequestParam(value="a", required=false) String action,
-			@CookieValue(value="votes", required=false) String cookieVotes,
 			Model model, 
 			@ModelAttribute("uploadModel") MediaMessage uploadModel) {
 		addCommonModel(model, uploadModel, layout);
@@ -171,16 +160,43 @@ public class ContestController implements ServletContextAware {
 	@RequestMapping(value="/contest-photo-list", method=RequestMethod.GET)
 	public String getPhotoListContent(
 			@RequestParam(value="l", defaultValue=MOBILE) String layout, 
-			@RequestParam(value="a", required=false) String action,
 			Model model, 
 			@ModelAttribute("uploadModel") MediaMessage uploadModel){
-
 		addCommonModel(model, uploadModel, layout);
 		return "contest-photo-list";
 	}
 
 	
 
+	@RequestMapping(value="/contest-admin", method = RequestMethod.POST)
+	public String postAdminPage(HttpServletRequest request, String password, String[] delete, Model model)
+					throws IOException {
+		log.info("password="+password+", delete="+delete);
+		if( password != null ){
+			boolean canEdit = canEdit(password);
+			log.info("canEdit="+canEdit);
+			if( canEdit ){
+				model.addAttribute("admin",Boolean.valueOf(canEdit));
+				model.addAttribute("mediaService", mediaService);
+			}
+		}
+		boolean isAdmin = (Boolean)model.asMap().get("canEdit");
+		if( delete != null && delete.length > 0 && isAdmin ){
+			for( String id : delete ){
+				mediaService.removeMessage(id);
+			}
+			model.addAttribute("mediaService", mediaService);
+		}
+		return "contest-admin";
+	}
+	
+	@RequestMapping(value="/contest-admin", method = RequestMethod.GET)
+	public String getAdminPage()
+					throws IOException {
+		return "contest-admin";
+	}
+	
+	
 	@RequestMapping(value="/contest", method = RequestMethod.POST, consumes="multipart/form-data")
 	public String postUploadPhoto(
 			HttpServletRequest request,
@@ -225,16 +241,14 @@ public class ContestController implements ServletContextAware {
 			redirect = false;
 		}
 		if( redirect ){
-			view = "redirect:/" + "contest" + urlParams(false,PAGE_UPLOAD,layout);
+			view = "redirect:/" + "contest?l=" + layout
+					+(MOBILE.equals(layout)?"p=upload":"");
 		}
 		else if( MOBILE.equals(layout)){
 			view = "contest-upload";
 		}
-		else if( TABLET.equals(layout) && ajax){
+		else {
 			view = "contest-upload-form";
-		}
-		else{
-			view = "contest-tablet";
 		}
 		return view;
 	}
@@ -245,21 +259,16 @@ public class ContestController implements ServletContextAware {
 			model.addAttribute("uploadModel", uploadModel);
 		}
 		if( layout != null ){
-			model.addAttribute("layout",layout);
+			model.addAttribute("layout",layout.substring(0,1));
 		}
-		log.debug("uploadModel="+uploadModel);
 	}
 	
-	private void addGalleryViewModel(boolean canEdit, Model model){
-		model.addAttribute("edit", canEdit);
-	}
-	
-	private void addUploadViewModel(boolean canEdit, String page, String layout, Model model){
+	private void addUploadViewModel(String page, String layout, Model model){
 		if( PAGE_UPLOAD.equals(page) ){
 			page = PAGE_VIEWER;
 		}
 		model.addAttribute("carouselItems", mediaService
-				.getContestMediaImageMarkup(urlParams(canEdit,page,layout)));
+				.getContestMediaImageMarkup(layout));
 	}
 	
 	private void addViewerViewModel(String id, String layout, Model model){
@@ -267,7 +276,6 @@ public class ContestController implements ServletContextAware {
 		model.addAttribute("media", msg);
 		if( TABLET.equals(layout)){
 			model.addAttribute("tab", PAGE_VIEWER);
-			
 		}
 	}
 	
@@ -334,7 +342,6 @@ public class ContestController implements ServletContextAware {
 			newFile = new File(servletContext.getRealPath("/" + newPathName));
 		}
 		Media media = new Media();
-		media.setFileName(newFileName);
 		media.setFile(newFile);
 		media.setType(file.getContentType());
 		uploadModel.setPhoto(media);
@@ -406,26 +413,6 @@ public class ContestController implements ServletContextAware {
 	
 	private int currentMinute(){
 		return new GregorianCalendar().get(Calendar.MINUTE);
-	}
-	
-	private String urlParams(boolean canEdit, String page, String layout){
-		String result = "?";
-		if( canEdit ){
-			result += "e="+EDIT_KEY_PREFIX+currentMinute();
-		}
-		if( page != null ){
-			if( canEdit ){
-				result += "&";
-			}
-			result += "p="+page;
-		}
-		if( layout != null ){
-			if( canEdit || page != null ){
-				result += "&";
-			}
-			result += "l="+layout;
-		}
-		return result;
 	}
 
 }

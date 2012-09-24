@@ -11,13 +11,10 @@
             <c:if test="${layout ne 'm'}">
                 href="#" onclick="updateViewerPanel('${m.id}');">
             </c:if>
-                    <img src='<c:url value="/resources/uploads/${m.photo.fileName}"/>' class="p"/>
+                    <img src='<c:url value="/resources/uploads/${m.smallPhoto.file.name}"/>' class="p"/>
                     <span class="desc"><c:out value="${m.description}"/></span>
                     <span class="vote" >${m.numberOfVotes} Votes</span>
                 </a>
-                <c:if test="${edit}">
-                    <a class="editLink" href='<c:url value="/contest?p=${view eq 'all' ? 'all' : 'gallery'}&l=${layout}&id=${m.id}&a=d"/>'>X</a>
-                </c:if>
             </mobi:outputListItem>
         </c:forEach>
     </mobi:outputList>
