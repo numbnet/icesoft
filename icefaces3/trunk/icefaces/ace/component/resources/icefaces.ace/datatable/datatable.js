@@ -389,8 +389,8 @@ ice.ace.DataTable.prototype.setupSortRequest = function (_self, $this, event, he
             (ice.ace.getOpacity(bottomCarat) == 1 && descending)) {
             // Remove from sort order
             _self.sortOrder.splice(headerCell.find('.ui-sortable-column-order').html() - 1, 1);
-            //ice.ace.jq(bottomCarat).css('opacity', .2).removeClass('ui-toggled');
-            //ice.ace.jq(topCarat).css('opacity', .2).removeClass('ui-toggled');
+            ice.ace.jq(bottomCarat).css('opacity', .2).removeClass('ui-toggled');
+            ice.ace.jq(topCarat).css('opacity', .2).removeClass('ui-toggled');
             if (!_self.cfg.singleSort) {
                 headerCell.find('.ui-sortable-column-order').html('&#160;');
                 var i = 0;
@@ -401,20 +401,20 @@ ice.ace.DataTable.prototype.setupSortRequest = function (_self, $this, event, he
         } else {
             // Not a deselect, just a meta-toggle
             if (descending) {
-                //ice.ace.jq(bottomCarat).css('opacity', 1).addClass('ui-toggled');
-                //ice.ace.jq(topCarat).css('opacity', .2).removeClass('ui-toggled');
+                ice.ace.jq(bottomCarat).addClass('ui-toggled');
+                ice.ace.jq(topCarat).removeClass('ui-toggled');
             } else {
-                //ice.ace.jq(topCarat).css('opacity', 1).addClass('ui-toggled');
-                //ice.ace.jq(bottomCarat).css('opacity', .2).removeClass('ui-toggled');
+                ice.ace.jq(topCarat).addClass('ui-toggled');
+                ice.ace.jq(bottomCarat).removeClass('ui-toggled');
             }
         }
     } else {
         if (descending) {
-            //ice.ace.jq(bottomCarat).css('opacity', 1).addClass('ui-toggled');
-            //ice.ace.jq(topCarat).css('opacity', .2).removeClass('ui-toggled');
+            ice.ace.jq(bottomCarat).addClass('ui-toggled');
+            ice.ace.jq(topCarat).removeClass('ui-toggled');
         } else {
-            //ice.ace.jq(topCarat).css('opacity', 1).addClass('ui-toggled');
-            //ice.ace.jq(bottomCarat).css('opacity', .2).removeClass('ui-toggled');
+            ice.ace.jq(topCarat).addClass('ui-toggled');
+            ice.ace.jq(bottomCarat).removeClass('ui-toggled');
         }
 
         // add to sort order
