@@ -366,6 +366,9 @@ public class DataExporter extends OutputResource {
     private String encodeParentAndChildrenAsString(FacesContext fc,
                                                    UIComponent uic) {
         StringBuffer str = new StringBuffer();
+		if (!uic.isRendered()) {
+			return str.toString();
+		}
         if (uic instanceof CommandSortHeader) {
             if (uic.getChildCount() > 0) {
                 Iterator iter = uic.getChildren().iterator();
@@ -382,21 +385,20 @@ public class DataExporter extends OutputResource {
                 value = vb.getValue(fc);
             }
         }
-        if (value == null) {
-            return str.toString();
-        }
-        Converter converter = null;
-        if (uic instanceof ValueHolder) {
-            converter = ((ValueHolder) uic).getConverter();
-        }
-        if (converter == null) {
-            converter = FacesContext.getCurrentInstance().getApplication().createConverter(value.getClass());
-        }
-        if (converter != null) {
-            str.append(converter.getAsString(FacesContext.getCurrentInstance(), uic, value));
-        } else {
-            str.append(value);
-        }
+        if (value != null) {
+			Converter converter = null;
+			if (uic instanceof ValueHolder) {
+				converter = ((ValueHolder) uic).getConverter();
+			}
+			if (converter == null) {
+				converter = FacesContext.getCurrentInstance().getApplication().createConverter(value.getClass());
+			}
+			if (converter != null) {
+				str.append(converter.getAsString(FacesContext.getCurrentInstance(), uic, value));
+			} else {
+				str.append(value);
+			}
+		}
         //don't process selectItems or f:param for uiCommand)
         if (uic instanceof UISelectBoolean ||
                 uic instanceof UISelectMany ||
