@@ -107,7 +107,8 @@ public class RealityBean extends ExampleImpl<RealityBean> implements
         markerList = new ArrayList();
         HashMap marker = new HashMap();
         marker.put("label", "logo");
-        marker.put("model", "resources/logo.obj");
+        marker.put("model", getBaseURL() + 
+                "/mobileshowcase/resources/3d/mobi.obj" );
         markerList.add(marker);
     }
 
