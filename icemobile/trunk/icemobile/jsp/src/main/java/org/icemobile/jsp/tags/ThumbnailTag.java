@@ -49,7 +49,7 @@ public class ThumbnailTag extends SimpleTagSupport {
         if (null != style) {
             out.write(" style='" + style + "'");
         }
-        out.write("><img height='64' width='64' id='" + mFor + "-thumb'></span>");
+        out.write("><img height='64' width='64' id='" + mFor + "-thumb'/></span>");
     }
 
     public String getId() {
