@@ -415,7 +415,7 @@ NSLog(@"called camera");
     NSString *viewer = [places objectForKey:@"v"];
     NSLog(@"NativeInterface aug VIEWER %@", viewer);
     if ([viewer isEqualToString:@"vuforia"])  {
-        [self augMarkerView];
+        [self augMarkerView:augId withMarkers:places];
         return YES;
     }
 
@@ -499,7 +499,7 @@ NSLog(@"called camera");
     return YES;
 }
 
-- (void)augMarkerView  {
+- (void)augMarkerView:(NSString*) augId withMarkers:(NSDictionary *)markers  {
 #ifdef USE_ARMARKER
     NSLog(@"NativeInterface augMarkerView");
 
@@ -517,6 +517,7 @@ NSLog(@"called camera");
         ARMarkerViewer *arMarkerViewer = [[ARMarkerViewer alloc] init];
         arMarkerViewer.nativeInterface = self;
         arMarkerViewer.arViewRect = [[UIScreen mainScreen] bounds];
+        arMarkerViewer.markers = markers;
         [controller presentModalViewController:[arMarkerViewer arMarkerController] animated:YES];
     }
 
