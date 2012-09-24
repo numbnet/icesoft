@@ -107,15 +107,24 @@ public class MediaService implements ServletContextAware {
 	public List<String> getContestMediaImageMarkup(String layout){
     	List<String> imageMarkup = new ArrayList<String>();
     	if( media != null ){
-	    	for( MediaMessage mediaMsg : getMediaSortedByTime(CAROUSEL_MAX_INDEX) ){
-	    		Media photo = mediaMsg.getSmallPhoto();
-	    		if( photo == null ){
-	    			photo = mediaMsg.getPhoto();
-	    		}
-	    		if( photo != null && photo.getFile() != null ){
-	    			imageMarkup.add(String.format(CONTEST_CAROUSEL_ITEM_MARKUP, contextPath, layout, mediaMsg.getId(), mediaMsg.getDescription(), photo.getFile().getName()));
-	    		}
-	    	}
+    		List<MediaMessage> list = getMediaSortedByTime(CAROUSEL_MAX_INDEX);
+    		if( list != null && list.size() > 0 ){
+    			for( MediaMessage mediaMsg : getMediaSortedByTime(CAROUSEL_MAX_INDEX) ){
+    	    		Media photo = mediaMsg.getSmallPhoto();
+    	    		if( photo == null ){
+    	    			photo = mediaMsg.getPhoto();
+    	    		}
+    	    		if( photo != null && photo.getFile() != null ){
+    	    			String markup = "<div><a href="+contextPath+"/contest?p=viewer"
+    	    					+ (layout != null ? "&l=" + layout : "") + "&id="+mediaMsg.getId()
+    	    					+"' title='"+mediaMsg.getDescription()+"'><img height='"
+    	    					+CAROUSEL_IMG_HEIGHT+"' src='"+contextPath+"/resources/uploads/"
+    	    					+ photo.getFile().getName()+"' style='border:none;'></a></div>";
+    	    			imageMarkup.add(markup);
+    	    		}
+    	    	}
+    		}
+	    	
     	}
     	return imageMarkup;
     }
