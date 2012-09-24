@@ -22,7 +22,7 @@
                     </c:if>
                     <input type="image" class="vote" title="Vote for it!" 
                         src="<c:url value="/resources/css/css-images/like.png"/>"
-                        name="photoId" value="${m.id}"></input>
+                        name="photoId" value="${m.id}"/>
                     
                     <span class="desc"><c:out value="${m.description}"/></span>
                     <span class="vote" >${m.numberOfVotes} Votes</span>
