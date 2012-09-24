@@ -319,6 +319,7 @@ public class ContestController implements ServletContextAware {
 			cookie.setHttpOnly(true);
 			cookie.setPath("/");
 			response.addCookie(cookie);
+			PushContext.getInstance(servletContext).push("photos");
 			log.debug("recorded vote");
 
 		} 
