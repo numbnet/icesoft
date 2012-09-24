@@ -14,7 +14,9 @@
         <mobi:pagePanelBody>
             
             <div id="left" style="width:30%;float:left;">
-                <push:region group="photos" page="/contest-photo-list?l=${layout}"/>
+                <div id="photoListContainer">
+                    <push:region group="photos" page="/contest-photo-list?l=${layout}"/>
+                </div>
             </div>
             <div id="right" style="width:70%;float:left;border-left:1px solid darkgray;box-sizing:border-box;-moz-border-sizing:border-box;">
                 <mobi:tabset id="tabs" selectedTab="0">
@@ -24,7 +26,9 @@
 	                </mobi:headers>
 	                <mobi:content>
 	                   <mobi:contentPane>
-                            <push:region group="carousel" page="/contest-carousel"/>
+                            <div id="carouselContainer">
+                                <push:region group="carousel" page="/contest-carousel"/>
+                             </div>
 	                       <%@ include file="/WEB-INF/jsp/contest-upload-form.jsp" %>
 	                   </mobi:contentPane>
 	                   <mobi:contentPane>
