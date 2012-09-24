@@ -51,7 +51,7 @@ function enhanceForm(theForm,updateTarget)  {
 
 function updateViewerPanel(id){
 	 $.ajax({
-        url:'<c:url value="/contest-viewer"/>?id='+id+'&l=t',
+        url:'/mvc-mediacast/contest-viewer?id='+id+'&l=t',
         cache:false,
         processData:false,
         type:'GET',
@@ -60,4 +60,40 @@ function updateViewerPanel(id){
             ice.mobi.tabsetController.showContent('tabs', $('#tabstab_1')[0], {tIndex: 1} );
         }
     });
+}
+
+function resizeElementHeight(elementId) {
+    var element = document.getElementById(elementId);
+    var height = 0;
+    var body = window.document.body;
+    if (window.innerHeight) {
+        height = window.innerHeight;
+    } else if (body.parentElement.clientHeight) {
+        height = body.parentElement.clientHeight;
+    } else if (body) {
+        if (body.clientHeight) {
+            height = body.clientHeight;
+        }
+    }
+    element.style.height = ((height - element.offsetTop) + "px");
+}
+
+
+function addResizeAfterUpdatesListener(elementId){
+
+    // check caller to see if orientation changes are support and fall back
+    // to window resize events otherwise
+    var supportsOrientationChange = "onorientationchange" in window,
+        orientationEvent = supportsOrientationChange ? "orientationchange" : "resize";
+    
+    var resizeHandler = function(updates) {
+        resizeElementHeight(elementId);
+    }
+
+    // resize height on first load
+    resizeElementHeight(elementId);
+
+    // apply resize on either orientation or window size change.
+    window.addEventListener(orientationEvent, resizeHandler);
+    
 }
