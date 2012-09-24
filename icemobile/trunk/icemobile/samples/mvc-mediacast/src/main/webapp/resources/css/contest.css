@@ -78,13 +78,12 @@
     text-align: center;
 }
 
-.mobi-list > .mobi-list-item > .mobi-list-item-default > a {
-	background-position: 100% 89%;
-	width: 100%;
+.mobi-list > .mobi-list-item > .mobi-list-item-default > a.mediaLink {
 	height: 50px;
 	padding: 0;
 	position: relative;
-	margin: 0 8px 0 0;
+	margin: 0;
+	display:inline-block;
 }
 
 .mobi-list-item {
@@ -166,6 +165,48 @@ input, textarea{ font-family: droid, Helvetica, Arial, sans-serif;}
 .mobi-list-item {
 	border-right:none;
 }
+.mobi-list > .mobi-list-item > .mobi-list-item-default > input.vote{
+	width: 30px;
+	height: 30px;
+	display: inline-block;
+	position: absolute;
+	top: 21px;
+	margin: 0;
+	padding: 0;
+	left: 51px;
+}
+.mobi-list-item-default > span.vote {
+	float: right;
+	position: absolute;
+	top: 26px;
+	right: -7px;
+	background: url('css-images/list-arrow.png') center right no-repeat;
+	padding: 0 25px 0 0;
+	color: #767676;
+	font-weight: normal;
+	font-style: italic;
+}
+.mobi-list-item-default > span.desc {
+	padding: 0;
+	vertical-align: top;
+	font-weight: 200;
+	font-size: 13px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	display: inline-block;
+	max-width: 200px;
+	line-height: 16px;
+}
+.mobi-list-item-default {
+    position: relative;	
+    margin: 0;
+	padding: 0;
+	height: 50px;
+}
+.mobi-pagePanel-footer a, .mobi-pagePanel-footer a:visited{
+	color: #D7BEE8;
+	text-decoration:none;
+}
 @media screen and (max-width: 600px) {	
 	.imageViewer {
 	    width: 100%;
@@ -181,4 +222,10 @@ input, textarea{ font-family: droid, Helvetica, Arial, sans-serif;}
 	   position: absolute;
 	   right: 75px;
     }
+}
+.title-msg{
+	position: absolute;
+	left: 5px;
+	font-size: 15px;
+}
 }

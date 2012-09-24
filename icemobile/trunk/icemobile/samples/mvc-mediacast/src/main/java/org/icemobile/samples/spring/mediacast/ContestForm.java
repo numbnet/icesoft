@@ -14,6 +14,26 @@ public class ContestForm {
 	private String description;
 	
 	private String layout;
+	
+	private String photoId;
+	
+	private String form;
+
+	public String getForm() {
+		return form;
+	}
+
+	public void setForm(String form) {
+		this.form = form;
+	}
+
+	public String getPhotoId() {
+		return photoId;
+	}
+
+	public void setPhotoId(String photoId) {
+		this.photoId = photoId;
+	}
 
 	public String getEmail() {
 		return email;
@@ -38,5 +58,14 @@ public class ContestForm {
 	public void setLayout(String layout) {
 		this.layout = layout;
 	}
+
+	@Override
+	public String toString() {
+		return "ContestForm [email=" + email + ", description=" + description
+				+ ", layout=" + layout + ", photoId=" + photoId + ", form="
+				+ form + "]";
+	}
+	
+	
 
 }

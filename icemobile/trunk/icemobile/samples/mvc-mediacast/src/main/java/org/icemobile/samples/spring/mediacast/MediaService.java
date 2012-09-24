@@ -146,6 +146,19 @@ public class MediaService implements ServletContextAware {
 			}
 		}
 	}
+	
+	public void addVote(String msgId, String voterId){
+		synchronized(media) {
+			Iterator<MediaMessage> iter = media.iterator();
+			while( iter.hasNext() ){
+				MediaMessage msg = iter.next();
+				if( msg.getId().equals(msgId)){
+					msg.getVotes().add(voterId);
+					break;
+				}
+			}
+		}
+	}
 
 	public void setServletContext(ServletContext context) {
 		this.contextPath = context.getContextPath();
