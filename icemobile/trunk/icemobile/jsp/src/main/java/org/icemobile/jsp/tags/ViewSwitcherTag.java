@@ -41,10 +41,6 @@ public class ViewSwitcherTag extends BaseSimpleTag{
 		
 		HttpServletRequest request = getRequest();
 		Cookie cookie = getCookie(COOKIE_NAME);
-		Cookie[] cookies = request.getCookies();
-		for( Cookie c : cookies ){
-			log.warning("cookie  "+c.getName()+"="+c.getValue());
-		}		
 		
 		//if response has already been committed render the links
 		if( getResponse().isCommitted()){	
@@ -86,7 +82,6 @@ public class ViewSwitcherTag extends BaseSimpleTag{
 		if( path == null ){
 			path = "/";
 		}
-		log.warning("path="+path);
 		return path;
 	}
 	
@@ -96,8 +91,6 @@ public class ViewSwitcherTag extends BaseSimpleTag{
 		cookie.setHttpOnly(false);
 		cookie.setPath("/");
 		getResponse().addCookie(cookie);
-		log.warning("setting cookie " + cookie.getName()+"="+cookie.getValue());
-		
 	}
 	
 	private void renderLinks() throws IOException{
@@ -155,7 +148,6 @@ public class ViewSwitcherTag extends BaseSimpleTag{
 		else{
 			view = VIEW_TYPE.DESKTOP;
 		}
-		log.warning("detected " + view + " from " + userAgent);
 		return view;
 	}
 	
