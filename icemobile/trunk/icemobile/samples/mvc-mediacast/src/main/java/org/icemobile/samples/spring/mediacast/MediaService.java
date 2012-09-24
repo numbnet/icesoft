@@ -119,7 +119,7 @@ public class MediaService implements ServletContextAware {
     	    					+ (layout != null ? "&l=" + layout : "") + "&id="+mediaMsg.getId()
     	    					+"' title='"+mediaMsg.getDescription()+"'><img height='"
     	    					+CAROUSEL_IMG_HEIGHT+"' src='"+contextPath+"/resources/uploads/"
-    	    					+ photo.getFile().getName()+"' style='border:none;'></a></div>";
+    	    					+ photo.getFile().getName()+"' style='border:none;'/></a></div>";
     	    			imageMarkup.add(markup);
     	    		}
     	    	}
