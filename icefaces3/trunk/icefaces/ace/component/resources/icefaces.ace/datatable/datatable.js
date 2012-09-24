@@ -327,6 +327,49 @@ ice.ace.DataTable.prototype.setupPaginator = function () {
     this.cfg.paginator.render();
 }
 
+ice.ace.DataTable.prototype.restoreSortState = function(savedState) {
+    ice.ace.jq(this.sortColumnSelector + ' a.ui-icon').removeClass('ui-toggled').fadeTo(0,0.33);
+
+    this.sortOrder = savedState[0];
+
+    ice.ace.jq(savedState[1]).each(function (i, val) {
+        var column = ice.ace.jq(ice.ace.escapeClientId(val[0]));
+
+        if (val[1]) {
+            column.find('.ui-icon-triangle-1-n:first').addClass('ui-toggled').fadeTo(0, 1);
+        } else {
+            column.find('.ui-icon-triangle-1-s:first').addClass('ui-toggled').fadeTo(0, 1);
+        }
+    });
+};
+
+ice.ace.DataTable.prototype.saveSortState = function() {
+    var self = this,
+        sortState = [];
+
+    if (this.sortOrder.length == 0) {
+        ice.ace.jq(this.sortControlSelector).each(function () {
+            var $this = ice.ace.jq(this);
+            if (ice.ace.getOpacity($this.find(' > span.ui-sortable-column-icon > a.ui-icon-triangle-1-n')[0]) == 1 ||
+                    ice.ace.getOpacity($this.find(' > span.ui-sortable-column-icon > a.ui-icon-triangle-1-s')[0]) == 1)
+                self.sortOrder.splice(
+                        parseInt($this.find(' > span.ui-sortable-column-order').html()) - 1,
+                        0,
+                        $this.closest('.ui-header-column')
+                );
+        });
+    }
+
+    ice.ace.jq(this.sortOrder).each(function (i, val) {
+        var columnState = [];
+        columnState.push(val.closest('.ui-header-column').attr('id'));
+        columnState.push(val.find(".ui-icon-triangle-1-n:first").hasClass('ui-toggled'));
+        sortState.push(columnState);
+    });
+
+    return [this.sortOrder, sortState];
+}
+
 ice.ace.DataTable.prototype.setupSortRequest = function (_self, $this, event, headerClick, altY, altMeta) {
     var topCarat = $this.find(".ui-icon-triangle-1-n")[0],
         bottomCarat = $this.find(".ui-icon-triangle-1-s")[0],
@@ -338,7 +381,8 @@ ice.ace.DataTable.prototype.setupSortRequest = function (_self, $this, event, he
         ieOffset = ice.ace.jq.browser.msie ? 7 : 0,
         // altY and altMeta allow these event parameters to be optionally passed in
         // from an event triggering this event artificially
-        eventY = (altY == undefined) ? event.pageY : altY;
+        eventY = (altY == undefined) ? event.pageY : altY,
+        savedState = this.saveSortState();
 
     if (eventY > (controlOffset.top + (controlHeight / 2) - ieOffset))
         descending = true;
@@ -351,20 +395,6 @@ ice.ace.DataTable.prototype.setupSortRequest = function (_self, $this, event, he
         }
     }
 
-    // If we are looking a freshly rendered DT initalize our JS sort state
-    // from the state of the rendered controls
-    if (_self.sortOrder.length == 0) {
-        ice.ace.jq(this.sortControlSelector).each(function () {
-            var $this = ice.ace.jq(this);
-            if (ice.ace.getOpacity($this.find(' > span.ui-sortable-column-icon > a.ui-icon-triangle-1-n')[0]) == 1 ||
-                ice.ace.getOpacity($this.find(' > span.ui-sortable-column-icon > a.ui-icon-triangle-1-s')[0]) == 1)
-                _self.sortOrder.splice(
-                    parseInt($this.find(' > span.ui-sortable-column-order').html()) - 1,
-                    0,
-                    $this.closest('.ui-header-column')
-                );
-        });
-    }
 
     if (!metaKey || _self.cfg.singleSort) {
         // Remake sort criteria
@@ -427,7 +457,7 @@ ice.ace.DataTable.prototype.setupSortRequest = function (_self, $this, event, he
         if (cellFound == false) _self.sortOrder.push(headerCell);
     }
     // submit sort info
-    _self.sort(_self.sortOrder);
+    _self.sort(_self.sortOrder, savedState);
 
     return false;
 }
@@ -1177,7 +1207,7 @@ ice.ace.DataTable.prototype.paginate = function (newState) {
     ice.ace.AjaxRequest(options);
 }
 
-ice.ace.DataTable.prototype.sort = function (headerCells) {
+ice.ace.DataTable.prototype.sort = function (headerCells, savedState) {
     var options = {
         source:this.id,
         render:(this.cfg.configPanel) ? this.id + " " + this.cfg.configPanel : this.id,
@@ -1187,6 +1217,23 @@ ice.ace.DataTable.prototype.sort = function (headerCells) {
 
     var _self = this;
     options.onsuccess = function (responseXML) {
+        var xmlDoc = responseXML.documentElement,
+                extensions = xmlDoc.getElementsByTagName("extension"),
+                args = {};
+
+        for (i = 0; i < extensions.length; i++) {
+            var extension = extensions[i];
+            if (extension.getAttributeNode('aceCallbackParam')) {
+                var jsonObj = ice.ace.jq.parseJSON(extension.firstChild.data);
+
+                for (var paramName in jsonObj)
+                    if (paramName) args[paramName] = jsonObj[paramName];
+            }
+        }
+
+        if (args.validationFailed)
+            _self.restoreSortState(savedState);
+
         if (_self.cfg.scrollable) _self.resizeScrolling();
         _self.setupSortEvents();
         return false;
