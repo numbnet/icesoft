@@ -33,7 +33,7 @@
     <ui:param name="tldResources" value="#{dateTimeEntryResources.tldResources}"/>
 
     <ui:define name="example">
-        <h:form id="form">
+        <h:form id="form1">
             <icecore:singleSubmit/>
             <ace:panel>
                 <h:panelGrid style="text-align: center;" width="100%">
@@ -78,7 +78,8 @@
                         <h:message for="optColor"/>
                 </h:panelGrid>
             </ace:panel>
-                    
+       </h:form>
+       <h:form id="form">             
             <ace:panel header="Date Entry">
                 <h:panelGrid id="calendarPanel" width="100%" columns="2">
                     <ace:dateTimeEntry id="calReq"
