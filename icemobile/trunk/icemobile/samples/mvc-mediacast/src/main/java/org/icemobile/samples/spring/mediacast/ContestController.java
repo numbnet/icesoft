@@ -237,7 +237,8 @@ public class ContestController implements ServletContextAware {
 						+ uploadModel);
 				uploadModel.setUploadMsg("Thank you, your file was uploaded successfully.");
 				uploadModel.clear();
-				PushContext.getInstance(servletContext).push("photos");				
+				PushContext.getInstance(servletContext).push("photos");		
+				PushContext.getInstance(servletContext).push("carousel");		
 				success = true;
 			}
 			else{
@@ -319,7 +320,7 @@ public class ContestController implements ServletContextAware {
 			cookie.setHttpOnly(true);
 			cookie.setPath("/");
 			response.addCookie(cookie);
-			PushContext.getInstance(servletContext).push("photos");
+			PushContext.getInstance(servletContext).push("carousel");
 			log.debug("recorded vote");
 
 		} 

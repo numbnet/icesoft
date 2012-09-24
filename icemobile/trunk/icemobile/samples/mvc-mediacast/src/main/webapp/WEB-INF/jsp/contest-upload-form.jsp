@@ -1,6 +1,6 @@
 <%@ page session="false"%>
 <%@ include file="/WEB-INF/jsp/include.jsp"%>
-<div id="uploadFormContainer">
+<div id="uploadFormContainer" style="margin-top: 20px;">
      
     <form:form id="cameraUploadForm" method="POST" enctype="multipart/form-data"
          modelAttribute="uploadModel" htmlEscape="true" style="text-align:center;">
