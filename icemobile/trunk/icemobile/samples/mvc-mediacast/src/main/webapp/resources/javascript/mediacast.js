@@ -129,23 +129,30 @@ function updateGalleryList(json){
 			+ "</a>"
 			+ "<input type='image' class='vote' title='Vote for it!' src='/mvc-mediacast/resources/css/css-images/like.png' name='photoId' value='"+msg.id+"'/>"
 			+ "<span class='desc'>"+msg.description+"</span>"
-			+ "<span class='vote'>"+msg.votes+" Votes</span>"
-		for( elem in list ){
-			updated = Math.max(updated,msg.lastVote);
-			var listItem = list[elem];
-			var dataElem = $(listItem).find('[data-votes]')[0];
-			if( dataElem ){
-				var votes = Number(dataElem.getAttribute('data-votes'));
-				if( votes > msg.votes ){
-					continue;
-				}
-				if( votes <= msg.votes ){
-					$(listItem).before(item);
-					$('#'+msg.id).parent().effect("highlight", {}, 3000);
-					break;
+			+ "<span class='vote'>"+msg.votes+" Votes</span>";
+		if( list.length > 0 ){
+			for( elem in list ){
+				updated = Math.max(updated,msg.lastVote);
+				var listItem = list[elem];
+				var votesAttrQ = $(listItem).find('[data-votes]');
+				if( votesAttrQ.length > 0 ){
+					var dataElem = votesAttrQ[0];
+					if( dataElem ){
+						var votes = Number(dataElem.getAttribute('data-votes'));
+						if( votes > msg.votes ){
+							continue;
+						}
+						if( votes <= msg.votes ){
+							$(listItem).before(item);
+							$('#'+msg.id).parent().effect("highlight", {}, 3000);
+							break;
+						}
+					}
 				}
 			}
-			
+		}
+		else{
+			document.getElementById('galleryList').innerHTML = item;
 		}
 		$('#updated').val(updated);
 	}

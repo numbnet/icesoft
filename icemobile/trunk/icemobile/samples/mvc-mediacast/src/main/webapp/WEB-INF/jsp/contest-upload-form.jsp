@@ -5,6 +5,7 @@
     <form:form id="cameraUploadForm" method="POST" enctype="multipart/form-data"
          modelAttribute="uploadModel" htmlEscape="true" style="text-align:center;">
         <input type="hidden" name="layout" value="${layout}"/>
+        <input type="hidden" name="uploadId" value="${uploadModel.id}"/>
         <form:errors path="*" cssClass="errorblock" element="div" />
         
         <mobi:getEnhanced/>
@@ -36,7 +37,7 @@
                     value="${uploadModel.description}"/>
              </mobi:fieldSetRow>
              <mobi:fieldSetRow style="text-align:center;">
-                <div id="msg" style="margin: 0 0 8px 0;font-size:12px;">${uploadModel.uploadMsg}</div>
+                <div id="msg" style="margin: 0 0 8px 0;font-size:12px;color:#326ADB;font-weight:bold;">${uploadModel.uploadMsg}</div>
                 <input type="reset" class="mobi-button mobi-button-default"
                        value="Cancel" style="width:100px;margin-top:0;margin-bottom:0;"/>
                 <mobi:commandButton name="submit"

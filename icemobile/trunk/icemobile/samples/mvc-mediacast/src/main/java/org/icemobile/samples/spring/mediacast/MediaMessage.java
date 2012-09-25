@@ -236,24 +236,19 @@ public class MediaMessage implements Serializable{
 		 this.uploadMsg = uploadMsg;
 	 }
 
+	 @Override
+	public String toString() {
+		return "MediaMessage [email=" + email + ", title=" + title + ", id="
+				+ id + ", description=" + description + ", tags=" + tags
+				+ ", latitude=" + latitude + ", longitude=" + longitude
+				+ ", altitude=" + altitude + ", direction=" + direction
+				+ ", uploadMsg=" + uploadMsg + ", photo=" + photo + ", video="
+				+ video + ", audio=" + audio + ", smallPhoto=" + smallPhoto
+				+ ", largePhoto=" + largePhoto + ", created=" + created
+				+ ", lastVote=" + lastVote + ", votes=" + votes + "]";
+	}
 
-
-	 public String toString(){
-		 return String.format("%s email=%s, title=%s, description=%s, photo=%s, video=%s, audio=%s, tags=%s, lattitude=%s, longitude=%s, direction=%s", 
-				 super.toString(), 
-				 email,
-				 title,
-				 description,
-				 photo,
-				 video,
-				 audio,
-				 tags,
-				 latitude,
-				 longitude,
-				 direction);
-	 }
-
-	 @XmlElement
+	@XmlElement
 	 public String getEmail() {
 		 return email;
 	 }

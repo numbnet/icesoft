@@ -18,7 +18,7 @@ public class ContestForm {
 	private String photoId;
 	
 	private String form;
-
+	
 	public String getForm() {
 		return form;
 	}
@@ -63,9 +63,12 @@ public class ContestForm {
 	public String toString() {
 		return "ContestForm [email=" + email + ", description=" + description
 				+ ", layout=" + layout + ", photoId=" + photoId + ", form="
-				+ form + "]";
+				+ form  + "]";
 	}
 	
+	public boolean isEmpty(){
+		return this.email == null || this.email.length() == 0;
+	}
 	
 
 }
