@@ -45,6 +45,7 @@ public class TreeRenderer extends CoreRenderer {
     // Wraps switch icon
     public static final String NODE_SWITCH_CLASS = "if-node-sw";
     public static final String NODE_SWITCH_DISABLED_CLASS = "noexp";
+    public static final String NODE_SWITCH_UNRENDERED_CLASS = "ui-icon ui-icon-radio-on";
     public static final String NODE_SELECTION_DISABLED_CLASS = "noselect";
     public static final String NODE_SELECTED_CLASS = "ui-state-active";
     // Applied to span with JQuery UI icon class applied
@@ -274,9 +275,12 @@ public class TreeRenderer extends CoreRenderer {
         boolean lazy = renderContext.isLazy();
         boolean leaf = lazy ? false : renderContext.getTree().isLeaf();
 
-        iconClass += " " + (state.isExpanded() ? expandedClass : contractedClass);
+        if (renderContext.isExpansion())
+            iconClass += " " + (state.isExpanded() ? expandedClass : contractedClass);
+        else
+            iconClass = NODE_SWITCH_UNRENDERED_CLASS;
 
-        if (!state.isExpansionEnabled())
+        if (!state.isExpansionEnabled() || !renderContext.isExpansion())
             switchClass += " " + NODE_SWITCH_DISABLED_CLASS;       
 
         writer.startElement(HTML.TD_ELEM, null);

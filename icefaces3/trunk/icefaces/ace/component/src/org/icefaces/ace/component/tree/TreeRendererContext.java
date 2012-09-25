@@ -41,7 +41,7 @@ public class TreeRendererContext {
         expansion = tree.isExpansion();
         selection = tree.isSelection();
         reordering = tree.isReordering();
-        multipleSelection = tree.isMultipleSelection();
+        multipleSelection = tree.isSelectMultiple();
         treeSelectionMode = tree.getSelectionMode();
         treeExpansionMode = tree.getExpansionMode();
         lazy = tree.getValue() instanceof LazyNodeDataModel;

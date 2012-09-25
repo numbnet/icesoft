@@ -1,6 +1,8 @@
 package org.icefaces.samples.showcase.example.ace.tree;
 
+import org.icefaces.ace.model.tree.NodeState;
 import org.icefaces.ace.model.tree.NodeStateMap;
+import org.icefaces.ace.model.tree.StateCreationCallback;
 import org.icefaces.samples.showcase.metadata.annotation.*;
 import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
 import org.icefaces.util.JavaScriptRunner;
@@ -57,7 +59,9 @@ import java.util.List;
         menuLinks = {
             @MenuLink(title = "menu.ace.tree.subMenu.main", isDefault = true, exampleBeanName = TreeBean.BEAN_NAME),
             @MenuLink(title = "menu.ace.tree.subMenu.lazy", exampleBeanName = TreeLazyBean.BEAN_NAME),
-            @MenuLink(title = "menu.ace.tree.subMenu.client", exampleBeanName = TreeClientBean.BEAN_NAME)
+            @MenuLink(title = "menu.ace.tree.subMenu.client", exampleBeanName = TreeClientBean.BEAN_NAME),
+            @MenuLink(title = "menu.ace.tree.subMenu.reorder", exampleBeanName = TreeReorderBean.BEAN_NAME),
+            @MenuLink(title = "menu.ace.tree.subMenu.selection", exampleBeanName = TreeSelectionBean.BEAN_NAME)
 //            @MenuLink(title = "menu.ace.tree.subMenu.nested", exampleBeanName = TreeNestedBean.BEAN_NAME)
         }
 )
@@ -67,6 +71,15 @@ public class TreeBean extends ComponentExampleImpl<TreeBean> implements Serializ
     public static final String BEAN_NAME = "treeBean";
     private List<LocationNodeImpl> treeRoots = new ArrayList<LocationNodeImpl>(Arrays.asList(TreeDataFactory.getTreeRoots()));
     private NodeStateMap stateMap;
+
+    private StateCreationCallback contractProvinceInit = new StateCreationCallback() {
+        public NodeState initializeState(NodeState newState, Object node) {
+            LocationNodeImpl loc = (LocationNodeImpl) node;
+            if (loc.getType().equals("country"))
+                newState.setExpanded(true);
+            return newState;
+        }
+    };
 
 
     public TreeBean() {
@@ -93,5 +106,13 @@ public class TreeBean extends ComponentExampleImpl<TreeBean> implements Serializ
 
     public void setStateMap(NodeStateMap stateMap) {
         this.stateMap = stateMap;
+    }
+
+    public StateCreationCallback getContractProvinceInit() {
+        return contractProvinceInit;
+    }
+
+    public void setContractProvinceInit(StateCreationCallback contractProvinceInit) {
+        this.contractProvinceInit = contractProvinceInit;
     }
 }

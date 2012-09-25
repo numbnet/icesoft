@@ -35,13 +35,14 @@
 <ui:param name="tldResources" value="#{treeBean.tldResources}"/>
 
 <ui:define name="example">
-    <h:form id="form">
+    <h:form id="form" style="text-align: center;">
         <style type="text/css">
             #form\3Atree {
                 line-height: 1 !important;
-                height:150px;
+                height:205px;
                 overflow: auto;
                 position:relative;
+                text-align: left;
             }
             #form\3Atree table {
                 font-size: 1em;
@@ -52,6 +53,7 @@
                 selection="true"
                 reordering="true"
                 value="#{treeBean.treeRoots}"
+                stateCreationCallback="#{treeBean.contractProvinceInit}"
                 var="node"
                 stateMap="#{treeBean.stateMap}"
                 stateVar="nState"

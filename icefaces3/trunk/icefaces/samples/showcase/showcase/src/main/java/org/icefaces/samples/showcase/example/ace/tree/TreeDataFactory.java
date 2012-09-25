@@ -49,7 +49,9 @@ public class TreeDataFactory {
         new LocationNodeImpl("Mount Pearl",     "city",     1)
     };
     static final LocationNodeImpl[] nsCities = {
-        new LocationNodeImpl("Halifax",     "city",     1)
+        new LocationNodeImpl("Halifax",     "city",     1),
+        new LocationNodeImpl("Cape Breton", "city",     1),
+        new LocationNodeImpl("Truro",       "city",     1)
     };
 
     static final LocationNodeImpl[] provinces = {
@@ -62,8 +64,6 @@ public class TreeDataFactory {
         new LocationNodeImpl("New Brunswick",       "province",    1, nbCities),
         new LocationNodeImpl("Newfoundland",        "province",    1, nfCities),
         new LocationNodeImpl("Nova Scotia",         "province",    1, nsCities),
-        new LocationNodeImpl("Cape Breton", "city",     1),
-        new LocationNodeImpl("Truro",       "city",     1)
     };
 
     static final LocationNodeImpl[] countries = {
