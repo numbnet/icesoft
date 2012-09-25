@@ -173,7 +173,7 @@ ice.ace.gMap.getGMapWrapper = function (id) {
         var zoom = map.getZoom();
         var type = map.getMapTypeId();
         ice.ace.gMap.remove(ele);
-        gmapWrapper = ice.ace.gMap.create(ele, lat, lng, zoom,type);
+        gmapWrapper = ice.ace.gMap.create(ele,lat,lng,zoom,type);
         map = gmapWrapper.getRealGMap();
         if(options != undefined)
             map.setOptions(eval("({"+options+"})"));
@@ -254,7 +254,8 @@ ice.ace.gMap.getGMapWrapper = function (id) {
         map.setOptions(eval(fullOps));
     }
 
-    ice.ace.gMap.addAutoComplete = function(mapId, inputID, submit){
+    ice.ace.gMap.addAutoComplete = function(mapId, autoId, cfg){
+
         var input = document.getElementById('autocomplete_input');
         var autocomplete = new google.maps.places.Autocomplete(input);
         var map = ice.ace.gMap.getGMapWrapper(mapId).getRealGMap();
@@ -266,11 +267,27 @@ ice.ace.gMap.getGMapWrapper = function (id) {
                     map.setCenter(place.geometry.location);
                     map.setZoom(17);
                 }
-            if(inputID != "none" && submit != "none"){
-            document.getElementById(inputID).value = place.geometry.location.toString();
-            document.getElementById(submit).click();
-            }
-            } );
+            alert(cfg);
+            document.getElementById(autoId+"_latLng").value = place.geometry.location.toString();
+            document.getElementById(autoId+"_address").value = place.formatted_address;
+            document.getElementById(autoId+"_types").value = place.types.toString();
+            document.getElementById(autoId+"_url").value = place.url;
+            var options = {
+                    source: autoId,
+                    execute: autoId,
+                    render: autoId
+                },
+                behaviourArgs = cfg && cfg.behaviors && cfg.behaviors.valueChange;
+            var params = {};
+            params[autoId + '_valueChange'] = true;
+            options.params = params;
+            if (behaviourArgs) {
+                ice.ace.ab(ice.ace.extendAjaxArguments(
+                    behaviourArgs,
+                    ice.ace.removeExecuteRenderOptions(options)
+                ));
+            } else ice.ace.AjaxRequest(options);
+        });
     }
 
     ice.ace.gMap.addControl = function (ele, name, givenPosition, style) {
