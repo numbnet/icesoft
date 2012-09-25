@@ -1,5 +1,7 @@
 package org.icemobile.samples.spring.mediacast;
 
+import org.icemobile.jsp.tags.TagUtil;
+
 public class Utils {
 	
 	/**
@@ -28,6 +30,5 @@ public class Utils {
 		return !isMobileBrowser(userAgent) && !isTabletBrowser(userAgent);
 	}
 	
-
 
 }
