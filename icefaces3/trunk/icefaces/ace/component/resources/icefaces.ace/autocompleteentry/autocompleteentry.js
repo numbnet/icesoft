@@ -171,30 +171,20 @@ ice.ace.Autocompleter.prototype = {
 							var updateHeight = jqUpdate.height();
 							updateHeight = updateHeight > self.height ? self.height : updateHeight;
 							jqUpdate.css({ position: "absolute", top: pos.top - updateHeight, left: pos.left, marginTop: 0, marginLeft: 0, width: jqElement.width(), maxHeight: self.height, overflow: "auto" });
-							if (ieEngine >= 7) {
+							if (ieEngine >= 7 || jqElement.parents('.yui-navset').length > 0) {
 								var savedPos = element.style.position;
 								element.style.position = "relative";
 								update.style.left = element.offsetLeft + "px";
-								if (ieEngine == 7) {
-									update.style.top = (element.offsetTop - updateHeight) + "px";
-								} else {
-									var scrollTop = pos.top - document.documentElement.scrollTop;
-									update.style.top = (element.offsetTop - updateHeight) + "px";
-								}
+								update.style.top = (element.offsetTop - updateHeight) + "px";
 								element.style.position = savedPos;
 							}						
 						} else {
 							jqUpdate.css({ position: "absolute", top: pos.top + element.offsetHeight, left: pos.left, marginTop: 0, marginLeft: 0, width: jqElement.width(), maxHeight: self.height, overflow: "auto" });
-							if (ieEngine >= 7) {
+							if (ieEngine >= 7 || jqElement.parents('.yui-navset').length > 0) {
 								var savedPos = element.style.position;
 								element.style.position = "relative";
 								update.style.left = element.offsetLeft + "px";
-								if (ieEngine == 7) {
-									update.style.top = (element.offsetTop + element.offsetHeight) + "px";
-								} else {
-									var scrollTop = pos.top - document.documentElement.scrollTop;
-									update.style.top = (element.offsetTop + element.offsetHeight) + "px";
-								}
+								update.style.top = (element.offsetTop + element.offsetHeight) + "px";
 								element.style.position = savedPos;
 							}
 						}
