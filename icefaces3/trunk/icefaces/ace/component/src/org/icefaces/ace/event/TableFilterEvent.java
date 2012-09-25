@@ -22,6 +22,7 @@ import org.icefaces.ace.component.datatable.DataTable;
 import javax.faces.component.UIComponent;
 import javax.faces.event.FacesEvent;
 import javax.faces.event.FacesListener;
+import javax.faces.event.PhaseId;
 import java.util.List;
 
 public class TableFilterEvent extends FacesEvent {
@@ -30,6 +31,7 @@ public class TableFilterEvent extends FacesEvent {
     public TableFilterEvent(UIComponent component, Column filteredColumn) {
         super(component);
         this.column = filteredColumn;
+        this.setPhaseId(PhaseId.INVOKE_APPLICATION);
     }
 
     @Override
