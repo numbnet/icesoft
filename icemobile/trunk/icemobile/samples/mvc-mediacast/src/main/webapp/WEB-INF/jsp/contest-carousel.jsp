@@ -10,15 +10,15 @@
             </mobi:carousel>
         </div>
     </form:form>
+    <c:if test="${layout eq 't' }">
+        <script type="text/javascript">
+        $('#recentMessagesCarousel').find("a").each(function(){
+        	$(this).click(function(){
+        		updateViewerPanel(this.getAttribute("data-id"));
+        	});
+        	$(this).attr("href","#");
+        });
+        
+        </script>
+    </c:if>
 </div>
-<c:if test="${layout eq 't' }">
-    <script type="text/javascript">
-    $('#recentMessagesCarousel').find("a").each(function(){
-    	$(this).click(function(){
-    		updateViewerPanel(this.getAttribute("data-id"));
-    	});
-    	$(this).attr("href","#");
-    });
-    
-    </script>
-</c:if>

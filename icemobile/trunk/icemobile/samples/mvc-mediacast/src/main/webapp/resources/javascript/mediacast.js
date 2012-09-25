@@ -1,6 +1,5 @@
 function enhanceForm(theForm,updateTarget)  {
     //submitting the form will update 
-    //the containing div with class ajaxzone
     $(document).ready(function () {
         $(theForm).submit(function () {
             var updateRegion = $(updateTarget);
