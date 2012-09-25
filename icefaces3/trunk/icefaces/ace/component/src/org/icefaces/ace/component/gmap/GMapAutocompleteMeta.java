@@ -41,7 +41,7 @@ import javax.faces.application.ResourceDependency;
 	@ResourceDependency(library="icefaces.ace", name="util/ace-components.js")
 })
 @ClientBehaviorHolder(events = {
-        @ClientEvent(name="valueChange", javadoc="Fired when the autocomplete entry value is changed(default event).\", tlddoc=\"Fired when the autocomplete entry value is changed(default event).")
+        @ClientEvent(name="valueChange", javadoc="Fired when the autocomplete entry value is changed(default event).\", tlddoc=\"Fired when the autocomplete entry value is changed(default event).", defaultRender="@form", defaultExecute="@form")
 }, defaultEvent="valueChange")
 public class GMapAutocompleteMeta extends UIPanelMeta {
     @Property(tlddoc="Desired size of the input box",defaultValue="30")
