@@ -84,6 +84,11 @@ public class ContestController implements ServletContextAware {
 	}
 	
 	@ModelAttribute
+	public void putAttributeDesktop(WebRequest request, Model model){
+		model.addAttribute("desktop", Utils.isDesktop(request.getHeader("User-Agent")));
+	}
+	
+	@ModelAttribute
 	public void putAttributeView(WebRequest request, Model model) {
 		String view = DESKTOP;
 		if( Utils.isMobileBrowser(request.getHeader("User-Agent"))){

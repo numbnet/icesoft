@@ -15,7 +15,7 @@
            </mobi:fieldSetRow>
             <mobi:fieldSetRow style="text-align:center;">
                 <mobi:camera id="upload" style="width:70%;vertical-align:top;max-width:200px;"/>
-                    <c:if test="${layout ne 'd'}">
+                    <c:if test="${!desktop}">
                         <mobi:thumb for="upload" style="margin: 0 2px"/>
                     </c:if>
              </mobi:fieldSetRow>
