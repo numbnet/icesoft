@@ -45,6 +45,8 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.icefaces.ace.component.datatable.DataTable;
 import org.icefaces.ace.component.column.Column;
 import org.icefaces.ace.component.columngroup.ColumnGroup;
+import org.icefaces.ace.model.table.RowState;
+import org.icefaces.ace.model.table.RowStateMap;
 
 import java.io.ByteArrayOutputStream;
 
@@ -79,31 +81,28 @@ public class ExcelExporter extends Exporter {
 				addFacetColumns(sheet, columns, ColumnType.HEADER, 0);
 			}
 		}
-		
-		Object originalData = null;
-		if (selectedRowsOnly) {
-			originalData = table.getModel().getWrappedData();
-			table.getModel().setWrappedData(table.getStateMap().getSelected());
-			first = 0;
-			rowsToExport = table.getRowCount();
-		}
-    	
+
+		RowStateMap rowStateMap = table.getStateMap();
+
 		String rowIndexVar = table.getRowIndexVar();
 		rowIndexVar = rowIndexVar == null ? "" : rowIndexVar;
     	for (int i = first; i < rowsToExport; i++) {
     		table.setRowIndex(i);
-			if (!"".equals(rowIndexVar)) {
-				facesContext.getExternalContext().getRequestMap().put(rowIndexVar, i);
+			boolean exportRow = true;
+			if (selectedRowsOnly) {
+				RowState rowState = rowStateMap.get(table.getRowData());
+				if (!rowState.isSelected()) exportRow = false;
 			}
-			Row row = sheet.createRow(sheetRowIndex++);
-			
-			for (int j = 0; j < numberOfColumns; j++) {
-                addColumnValue(row, columns.get(j).getChildren(), j);
+			if (exportRow) {
+				if (!"".equals(rowIndexVar)) {
+					facesContext.getExternalContext().getRequestMap().put(rowIndexVar, i);
+				}
+				Row row = sheet.createRow(sheetRowIndex++);
+				
+				for (int j = 0; j < numberOfColumns; j++) {
+					addColumnValue(row, columns.get(j).getChildren(), j);
+				}
 			}
-		}
-		
-		if (selectedRowsOnly) {
-			table.getModel().setWrappedData(originalData);
 		}
 
         if (hasColumnFooter(columns) && includeFooters) {
