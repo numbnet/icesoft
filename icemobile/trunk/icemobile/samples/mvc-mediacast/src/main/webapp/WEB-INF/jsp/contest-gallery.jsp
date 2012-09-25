@@ -11,9 +11,8 @@
 			<span>Contest Gallery</span>
 		</mobi:pagePanelHeader>
 		<mobi:pagePanelBody>
-		    <%@ include file="/WEB-INF/jsp/contest-photo-list.jsp" %>
-            <push:register group="photos" callback="function(){getGalleryUpdate();}"/>
-		</mobi:pagePanelBody>
+		    <%@ include file="/WEB-INF/jsp/inc/contest-photo-list.jsp" %>
+        </mobi:pagePanelBody>
 		<%@ include file="/WEB-INF/jsp/contest-footer.jsp"%>
 	</mobi:pagePanel>
 </body>
