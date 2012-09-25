@@ -27,7 +27,5 @@ public class ViewSelector extends ViewSelectorBase {
     public static final String LARGE_FACET = "large";
 
     public static final String VIEW_TYPE_KEY = "mobile_view_type";
-    public static final String LARGE_VIEW_TYPE = "large_view_type";
-    public static final String SMALL_VIEW_TYPE = "small_view_type";
 
 }
