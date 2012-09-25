@@ -1,4 +1,3 @@
-<%@ page session="false"%>
 <%@ include file="/WEB-INF/jsp/include.jsp"%>
 <div>
     <form:form id="carouselForm" method="POST">
