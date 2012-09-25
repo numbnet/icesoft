@@ -46,6 +46,15 @@ public class MediaMessage implements Serializable{
 	private Media smallPhoto = null;
     private Media largePhoto = null;
     private long created;
+    private long lastVote;
+
+	public long getLastVote() {
+		return lastVote;
+	}
+
+	public void setLastVote(long lastVote) {
+		this.lastVote = lastVote;
+	}
 
 	private List<String> votes = new ArrayList<String>();
 
@@ -69,7 +78,10 @@ public class MediaMessage implements Serializable{
 		tags = new ArrayList<String>();
 		title = null;
 		video = null;
-
+		lastVote = 0;
+		created = 0;
+		smallPhoto = null;
+		largePhoto = null;
 	}
 
 	public MediaMessage clone(){
@@ -89,6 +101,9 @@ public class MediaMessage implements Serializable{
 		cloned.setVideo(video);
 		cloned.setCreated(created);
 		cloned.getVotes().addAll(votes);
+		cloned.setLastVote(lastVote);
+		cloned.setLargePhoto(largePhoto);
+		cloned.setSmallPhoto(smallPhoto);
 		return cloned;
 	}
 

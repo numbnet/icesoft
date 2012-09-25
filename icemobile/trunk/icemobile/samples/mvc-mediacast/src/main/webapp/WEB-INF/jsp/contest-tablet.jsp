@@ -15,7 +15,8 @@
             
             <div id="left" style="width:30%;float:left;">
                 <div id="photoListContainer">
-                    <push:region group="photos" page="/contest-photo-list?l=${layout}"/>
+                    <%@ include file="/WEB-INF/jsp/contest-photo-list.jsp" %>
+                    <push:register group="photos" callback="function(){getGalleryUpdate();}"/>
                 </div>
             </div>
             <div id="right" style="width:70%;float:left;border-left:1px solid darkgray;box-sizing:border-box;-moz-border-sizing:border-box;">
@@ -27,7 +28,7 @@
 	                <mobi:content>
 	                   <mobi:contentPane>
                             <div id="carouselContainer">
-                                <push:region group="carousel" page="/contest-carousel"/>
+                                <push:region group="carousel" page="/contest-carousel?l=t"/>
                              </div>
 	                       <%@ include file="/WEB-INF/jsp/contest-upload-form.jsp" %>
 	                   </mobi:contentPane>

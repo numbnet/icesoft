@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
@@ -19,7 +20,6 @@ import javax.validation.Valid;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.icepush.PushContext;
-import org.icepush.client.AddGroupMemberRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -29,6 +29,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.context.ServletContextAware;
 import org.springframework.web.context.request.WebRequest;
@@ -142,8 +143,10 @@ public class ContestController implements ServletContextAware {
 	}
 	
 	@RequestMapping(value="/contest-carousel", method = RequestMethod.GET)
-	public String getCarouselContent(Model model) {
-		model.addAttribute("mediaService", mediaService);
+	public String getCarouselContent(@RequestParam(value="l", defaultValue=MOBILE) String layout, 
+			Model model) {
+		model.addAttribute("carouselItems", mediaService
+				.getContestMediaImageMarkup(layout));
 		return "contest-carousel";
 	}
 	
@@ -164,13 +167,32 @@ public class ContestController implements ServletContextAware {
 			Model model, 
 			@ModelAttribute("uploadModel") MediaMessage uploadModel){
 		addCommonModel(model, uploadModel, layout);
+		
 		return "contest-photo-list";
+	}
+	
+	@RequestMapping(value="/contest-photo-list-json", method=RequestMethod.GET, produces="application/json")
+	public @ResponseBody List<MediaMessageTransfer> getPhotoListJSON(
+			@RequestParam(value="since") long since){
+		List<MediaMessage> list = mediaService.getMediaCopy();
+		List<MediaMessageTransfer> results = new ArrayList<MediaMessageTransfer>();
+		if( list != null && list.size() > 0 ){
+			Iterator<MediaMessage> iter = list.iterator();
+			while( iter.hasNext() ){
+				MediaMessage msg = iter.next();
+				if( msg.getLastVote() > since || msg.getCreated() > since || since == 0){
+					results.add(new MediaMessageTransfer(msg));
+				}
+			}
+		}
+		return results;
 	}
 
 	
 
 	@RequestMapping(value="/contest-admin", method = RequestMethod.POST)
-	public String postAdminPage(HttpServletRequest request, String password, String[] delete, Model model)
+	public String postAdminPage(HttpServletRequest request, String password, 
+			String[] delete, Model model)
 					throws IOException {
 		log.info("password="+password+", delete="+delete);
 		if( password != null ){
@@ -181,13 +203,16 @@ public class ContestController implements ServletContextAware {
 				model.addAttribute("mediaService", mediaService);
 			}
 		}
-		boolean isAdmin = (Boolean)model.asMap().get("canEdit");
-		if( delete != null && delete.length > 0 && isAdmin ){
-			for( String id : delete ){
-				mediaService.removeMessage(id);
+		else{
+			boolean isAdmin = (Boolean)model.asMap().get("admin");
+			if( delete != null && delete.length > 0 && isAdmin ){
+				for( String id : delete ){
+					mediaService.removeMessage(id);
+				}
+				model.addAttribute("mediaService", mediaService);
 			}
-			model.addAttribute("mediaService", mediaService);
 		}
+		
 		return "contest-admin";
 	}
 	
@@ -275,6 +300,7 @@ public class ContestController implements ServletContextAware {
 		if( layout != null && layout.length() > 0){
 			model.addAttribute("layout",layout.substring(0,1));
 		}
+		model.addAttribute("updated",System.currentTimeMillis());
 	}
 	
 	private void addUploadViewModel(String page, String layout, Model model){
@@ -314,13 +340,14 @@ public class ContestController implements ServletContextAware {
 			}
 			votesList.add(id);
 			msg.getVotes().add(voterId);
+			msg.setLastVote(System.currentTimeMillis());
 			model.addAttribute("msg","Awesome, thanks for the vote!");
 			String newVotes = voterId+":"+ votesList.toString().replaceAll(" ", "").replaceAll("^\\[|\\]$","");
 			Cookie cookie = new Cookie("votes", newVotes);
 			cookie.setHttpOnly(true);
 			cookie.setPath("/");
 			response.addCookie(cookie);
-			PushContext.getInstance(servletContext).push("carousel");
+			PushContext.getInstance(servletContext).push("photos");
 			log.debug("recorded vote");
 
 		} 

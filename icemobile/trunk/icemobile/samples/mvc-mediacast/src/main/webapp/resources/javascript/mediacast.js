@@ -99,3 +99,54 @@ function addResizeAfterUpdatesListener(elementId){
     window.addEventListener(orientationEvent, resizeHandler);
     
 }
+
+function getGalleryUpdate(){
+	$.ajax({
+        url:'/mvc-mediacast/contest-photo-list-json?since='+$('#updated').val(),
+        cache:false,
+        processData:false,
+        type:'GET',
+        success:function (json) {
+            updateGalleryList(json);
+        }
+    });
+}
+
+function updateGalleryList(json){
+	var start = "<li class='mobi-list-item'><div class='mobi-list-item-default'>";
+	var end = "</div></li>";
+	
+	for( msg in json ){
+		$('#'+msg.id).remove(); 
+	}
+	var updated = Number($('#updated').val());
+	for( m in json ){
+		var msg = json[m]
+		var list = $('#galleryList')[0].children;
+		var item = start+"<div id='"+msg.id+"' data-lastvote="+msg.lastVote+" data-created="+msg.created+">"
+			+ "<a class='mediaLink' href='#' onclick=\"updateViewerPanel('"+msg.id+"');\">"
+			+ "<img src='/mvc-mediacast/resources/uploads/"+msg.fileName+"' class='p'>"
+			+ "</a>"
+			+ "<input type='image' class='vote' title='Vote for it!' src='/mvc-mediacast/resources/css/css-images/like.png' name='photoId' value='"+msg.id+"'/>"
+			+ "<span class='desc'>"+msg.description+"</span>"
+			+ "<span class='vote'>"+msg.votes+" Votes</span>"
+		for( elem in list ){
+			updated = Math.max(updated,msg.lastVote);
+			var listItem = list[elem];
+			var dataElem = $(listItem).find('[data-votes]')[0];
+			if( dataElem ){
+				var votes = Number(dataElem.getAttribute('data-votes'));
+				if( votes > msg.votes ){
+					continue;
+				}
+				if( votes <= msg.votes ){
+					$(listItem).before(item);
+					$('#'+msg.id).parent().effect("highlight", {}, 3000);
+					break;
+				}
+			}
+			
+		}
+		$('#updated').val(updated);
+	}
+}
