@@ -101,8 +101,12 @@ function addResizeAfterUpdatesListener(elementId){
 }
 
 function getGalleryUpdate(){
+	var updated = Number($('#updated').val());
+	if( isNaN(updated) ){
+		updated = 0;
+	}
 	$.ajax({
-        url:'/mvc-mediacast/contest-photo-list-json?since='+$('#updated').val(),
+        url:'/mvc-mediacast/contest-photo-list-json?since='+updated,
         cache:false,
         processData:false,
         type:'GET',
