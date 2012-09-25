@@ -270,8 +270,8 @@ ice.ace.Tree.prototype.doClientSelection = function(node, wrap) {
 
 ice.ace.Tree.prototype.doClientContraction = function(node) {
     var key = this.getNodeKey(node),
-        icon = node.find(' > tr > td.if-node-sw > div > span.ui-icon'),
-        sub = node.find(' > tr > td.if-node-sub');
+        icon = node.find(' > tbody > tr > td.if-node-sw > div > span.ui-icon'),
+        sub = node.find(' > tbody > tr > td.if-node-sub');
 
     icon.removeClass('ui-icon-minus');
     icon.addClass('ui-icon-plus')
@@ -284,8 +284,8 @@ ice.ace.Tree.prototype.doClientContraction = function(node) {
 
 ice.ace.Tree.prototype.doClientExpansion = function(node) {
     var key = this.getNodeKey(node),
-        icon = node.find(' > tr > td.if-node-sw > div  > span.ui-icon'),
-        sub = node.find(' > tr > td.if-node-sub');
+        icon = node.find('  > tbody > tr > td.if-node-sw > div  > span.ui-icon'),
+        sub = node.find('  > tbody > tr > td.if-node-sub');
 
     icon.removeClass('ui-icon-plus');
     icon.addClass('ui-icon-minus')
