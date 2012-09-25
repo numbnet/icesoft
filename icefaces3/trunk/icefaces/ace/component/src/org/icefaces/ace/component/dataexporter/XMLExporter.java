@@ -46,6 +46,8 @@ import org.icefaces.ace.component.datatable.DataTable;
 import org.icefaces.ace.component.column.Column;
 import org.icefaces.ace.component.columngroup.ColumnGroup;
 import org.icefaces.ace.component.row.Row;
+import org.icefaces.ace.model.table.RowState;
+import org.icefaces.ace.model.table.RowStateMap;
 
 import org.icefaces.ace.util.XMLChar;
 
@@ -74,29 +76,26 @@ public class XMLExporter extends Exporter {
     	int first = pageOnly ? table.getFirst() : 0;
     	int size = pageOnly ? (first + table.getRows()) : rowCount;
 		size = size > rowCount ? rowCount : size;
-    	
-		Object originalData = null;
-		if (selectedRowsOnly) {
-			originalData = table.getModel().getWrappedData();
-			table.getModel().setWrappedData(table.getStateMap().getSelected());
-			first = 0;
-			size = table.getRowCount();
-		}
-		
+
+		RowStateMap rowStateMap = table.getStateMap();
+
 		String rowIndexVar = table.getRowIndexVar();
 		rowIndexVar = rowIndexVar == null ? "" : rowIndexVar;
     	for (int i = first; i < size; i++) {
     		table.setRowIndex(i);
-			if (!"".equals(rowIndexVar)) {
-				facesContext.getExternalContext().getRequestMap().put(rowIndexVar, i);
+			boolean exportRow = true;
+			if (selectedRowsOnly) {
+				RowState rowState = rowStateMap.get(table.getRowData());
+				if (!rowState.isSelected()) exportRow = false;
 			}
-    		builder.append("\t<" + var + ">\n");
-    		addColumnValues(builder, columns, headers);
-    		builder.append("\t</" + var + ">\n");
-		}
-		
-		if (selectedRowsOnly) {
-			table.getModel().setWrappedData(originalData);
+			if (exportRow) {
+				if (!"".equals(rowIndexVar)) {
+					facesContext.getExternalContext().getRequestMap().put(rowIndexVar, i);
+				}
+				builder.append("\t<" + var + ">\n");
+				addColumnValues(builder, columns, headers);
+				builder.append("\t</" + var + ">\n");
+			}
 		}
 
         if (hasColumnFooter(columns) && includeFooters) {
