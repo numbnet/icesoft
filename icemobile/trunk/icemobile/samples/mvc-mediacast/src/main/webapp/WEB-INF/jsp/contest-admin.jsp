@@ -1,4 +1,3 @@
-<%@ page session="true"%>
 <%@ include file="/WEB-INF/jsp/include.jsp"%>
 <!DOCTYPE html >
 <html>

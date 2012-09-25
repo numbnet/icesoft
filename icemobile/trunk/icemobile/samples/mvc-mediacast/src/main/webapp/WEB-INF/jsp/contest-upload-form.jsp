@@ -1,4 +1,3 @@
-<%@ page session="false"%>
 <%@ include file="/WEB-INF/jsp/include.jsp"%>
 <div id="uploadFormContainer" style="margin-top: 20px;">
      
