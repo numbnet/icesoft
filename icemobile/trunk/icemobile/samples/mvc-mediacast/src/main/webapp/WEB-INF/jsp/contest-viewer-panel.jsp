@@ -12,7 +12,7 @@
         
         <mobi:fieldSetGroup style="margin-top:10px;">
             <mobi:fieldSetRow style="text-align:center;">
-                <div>${media.numberOfVotes} Votes so far..</div>
+                <push:region group="votes-${media.id}"  page="/contest-vote-tally?id=${media.id}"/>
             </mobi:fieldSetRow>
         </mobi:fieldSetGroup>
     </c:if>

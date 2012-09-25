@@ -38,4 +38,5 @@
 <script type="text/javascript">
     enhanceForm("#galleryFrm","#galleryFrm");
 </script>
+<push:register group="photos" callback="function(){getGalleryUpdate();}"/>
 </div>
