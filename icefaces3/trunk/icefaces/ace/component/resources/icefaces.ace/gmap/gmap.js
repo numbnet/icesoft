@@ -271,17 +271,7 @@ ice.ace.gMap.getGMapWrapper = function (id) {
             document.getElementById(autoId+"_address").value = place.formatted_address;
             document.getElementById(autoId+"_types").value = place.types.toString();
             document.getElementById(autoId+"_url").value = place.url;
-            var options = {
-
-                    source: autoId,
-                    execute: autoId,
-                    render: autoId
-                };
-
-            var params = {};
-            params[autoId + '_valueChange'] = true;
-            options.params = params;
-            ice.ace.AjaxRequest(options);
+            ice.se(null,autoId);
         });
     }
 

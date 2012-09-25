@@ -23,7 +23,6 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import java.io.IOException;
-import java.util.Iterator;
 import java.util.Map;
 
 @MandatoryResourceComponent(tagName = "gMap", value = "org.icefaces.ace.component.gmap.GMap")
@@ -38,10 +37,9 @@ public class GMapAutocompleteRenderer extends CoreRenderer {
         GMapAutocomplete autocomplete = (GMapAutocomplete) component;
         String clientId = autocomplete.getClientId(context);
         String address = String.valueOf(requestParameterMap.get(clientId + "_address"));
-        String url = String.valueOf(requestParameterMap.get(clientId+"_address"));
-        String latLng = String.valueOf(requestParameterMap.get(clientId+"_address"));
-        String types = String.valueOf(requestParameterMap.get(clientId+"_address"));
-        System.out.println("Map is:" + requestParameterMap.toString());
+        String url = String.valueOf(requestParameterMap.get(clientId+"_url"));
+        String latLng = String.valueOf(requestParameterMap.get(clientId+"_latLng"));
+        String types = String.valueOf(requestParameterMap.get(clientId+"_types"));
         if(address != null && !address.equals(null))
             autocomplete.setAddress(address);
         if(url != null && !url.equals(null))
@@ -56,7 +54,8 @@ public class GMapAutocompleteRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
         GMapAutocomplete autocomplete = (GMapAutocomplete) component;
         String clientId = autocomplete.getClientId(context);
-
+        writer.startElement("div", null);
+        writer.writeAttribute("id", clientId, null);
         writer.writeAttribute("name", clientId, null);
         writer.startElement("input", null);
         writer.writeAttribute("type", "text", null);
@@ -69,9 +68,7 @@ public class GMapAutocompleteRenderer extends CoreRenderer {
         makeFields(writer,clientId,"types");
         makeFields(writer,clientId,"url");
         writer.startElement("span", null);
-        writer.writeAttribute("id", clientId + "_autocomplete", null);
-        writer.startElement("form", null);
-        writer.writeAttribute("id", clientId, null);
+
         writer.startElement("script", null);
         writer.writeAttribute("type", "text/javascript", null);
         writer.write("ice.ace.jq(function() {");
@@ -82,12 +79,11 @@ public class GMapAutocompleteRenderer extends CoreRenderer {
                 .beginMap();
         encodeClientBehaviors(context, autocomplete, jb);
         jb.endMap().endFunction();
-        System.out.println(jb.toString());
         writer.write(jb.toString());
         writer.write("});");
         writer.endElement("script");
-        writer.endElement("form");
         writer.endElement("span");
+        writer.endElement("div");
 
     }
 
