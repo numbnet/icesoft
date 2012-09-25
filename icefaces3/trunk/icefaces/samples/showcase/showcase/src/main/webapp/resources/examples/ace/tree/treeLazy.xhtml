@@ -33,21 +33,24 @@
 <ui:param name="tldResources" value="#{treeLazyBean.tldResources}"/>
 
 <ui:define name="example">
-    <h:form id="form">
+    <h:form id="form" style="text-align: center;">
         <style type="text/css">
             #form\3Atree {
                 line-height: 1 !important;
+                height:205px;
+                overflow: auto;
+                position:relative;
+                text-align: left;
+            }
+            #form\3Atree table {
+                font-size: 1em;
             }
         </style>
         <ace:tree id="tree"
                 expansion="true"
-                selection="true"
-                multipleSelection="false"
                 value="#{treeLazyBean.lazyModel}"
                 var="node"
-                stateMap="#{treeLazyBean.stateMap}"
                 stateCreationCallback="#{treeLazyBean.initState}"
-                stateVar="nState"
                 type="#{node.type}">
             <ace:ajax render="@all" execute="@all" />
             <ace:node type="country">
@@ -61,12 +64,6 @@
                 City: <h:outputText value="#{node.name}" />
             </ace:node>
         </ace:tree>
-
-        <h:panelGroup style="display:inline-block; vertical-align:top;">
-            <ui:repeat var="selection" value="#{treeLazyBean.stateMap.getSelected()}">
-                <h:outputText value="#{selection.name}" /><br/>
-            </ui:repeat>
-        </h:panelGroup>
     </h:form>
 </ui:define>
 </ui:composition>

@@ -25,15 +25,22 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 template="/resources/templates/content-template.xhtml">
 
-<ui:param name="title" value="#{msgs[treeClientBean.title]}"/>
-<ui:param name="description" value="#{msgs[treeClientBean.description]}"/>
-<ui:param name="resourceValue" value="#{treeClientBean.exampleResource}"/>
+<ui:param name="title" value="#{msgs[treeSelectionBean.title]}"/>
+<ui:param name="description" value="#{msgs[treeSelectionBean.description]}"/>
+<ui:param name="resourceValue" value="#{treeSelectionBean.exampleResource}"/>
 
-<ui:param name="wikiResources" value="#{treeClientBean.wikiResources}"/>
-<ui:param name="tldResources" value="#{treeClientBean.tldResources}"/>
+<ui:param name="wikiResources" value="#{treeSelectionBean.wikiResources}"/>
+<ui:param name="tldResources" value="#{treeSelectionBean.tldResources}"/>
 
 <ui:define name="example">
-    <h:form id="form" style="text-align: center;">
+    <h:form id="form" style="text-align: center; position:relative;">
+        <h:panelGrid columns="2" cellspacing="2" style="left:0; position: absolute;">
+            <h:outputText value="Single Select" />
+            <h:selectBooleanCheckbox value="#{treeSelectionBean.singleSelect}">
+                <f:ajax execute="@this" render="@form" />
+            </h:selectBooleanCheckbox>
+        </h:panelGrid>
+
         <style type="text/css">
             #form\3Atree {
                 line-height: 1 !important;
@@ -47,24 +54,33 @@
             }
         </style>
         <ace:tree id="tree"
-                  expansion="true"
-                  selection="true"
-                  selectionMode="client"
-                  expansionMode="client"
-                  value="#{treeClientBean.treeRoots}"
-                  var="node"
-                  stateCreationCallback="#{treeClientBean.contractProvinceInit}"
-                  type="#{node.type}">
+                expansion="true"
+                selection="true"
+                selectMultiple="#{not treeSelectionBean.singleSelect}"
+                value="#{treeSelectionBean.treeRoots}"
+                var="node"
+                stateMap="#{treeSelectionBean.stateMap}"
+                stateVar="nState"
+                type="#{node.type}">
+            <ace:ajax event="select" render="@form" execute="@this" />
+            <ace:ajax event="deselect" render="@form" execute="@this" />
             <ace:node type="country">
                 Country: <h:outputText value="#{node.name}" />
             </ace:node>
             <ace:node type="province">
                 Province: <h:outputText value="#{node.name}" />
             </ace:node>
+            // Default node type
             <ace:node>
                 City: <h:outputText value="#{node.name}" />
             </ace:node>
         </ace:tree>
+
+        <h:panelGroup style="display:inline-block; vertical-align:top; padding-left: 1em;">
+            <ui:repeat var="selection" value="#{treeSelectionBean.stateMap.getSelected()}">
+                <h:outputText value="#{selection.name}" /><br/>
+            </ui:repeat>
+        </h:panelGroup>
     </h:form>
 </ui:define>
 </ui:composition>

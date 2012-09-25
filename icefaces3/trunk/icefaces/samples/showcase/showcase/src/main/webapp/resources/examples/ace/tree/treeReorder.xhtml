@@ -25,19 +25,19 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 template="/resources/templates/content-template.xhtml">
 
-<ui:param name="title" value="#{msgs[treeClientBean.title]}"/>
-<ui:param name="description" value="#{msgs[treeClientBean.description]}"/>
-<ui:param name="resourceValue" value="#{treeClientBean.exampleResource}"/>
+<ui:param name="title" value="#{msgs[treeReorderBean.title]}"/>
+<ui:param name="description" value="#{msgs[treeReorderBean.description]}"/>
+<ui:param name="resourceValue" value="#{treeReorderBean.exampleResource}"/>
 
-<ui:param name="wikiResources" value="#{treeClientBean.wikiResources}"/>
-<ui:param name="tldResources" value="#{treeClientBean.tldResources}"/>
+<ui:param name="wikiResources" value="#{treeReorderBean.wikiResources}"/>
+<ui:param name="tldResources" value="#{treeReorderBean.tldResources}"/>
 
 <ui:define name="example">
     <h:form id="form" style="text-align: center;">
         <style type="text/css">
             #form\3Atree {
                 line-height: 1 !important;
-                height:205px;
+                height:305px;
                 overflow: auto;
                 position:relative;
                 text-align: left;
@@ -47,20 +47,19 @@
             }
         </style>
         <ace:tree id="tree"
-                  expansion="true"
-                  selection="true"
-                  selectionMode="client"
-                  expansionMode="client"
-                  value="#{treeClientBean.treeRoots}"
-                  var="node"
-                  stateCreationCallback="#{treeClientBean.contractProvinceInit}"
-                  type="#{node.type}">
+                reordering="true"
+                value="#{treeReorderBean.treeRoots}"
+                stateCreationCallback="#{treeReorderBean.expandAllInit}"
+                var="node"
+                type="#{node.type}">
+            <ace:ajax render="@all" execute="@all" />
             <ace:node type="country">
                 Country: <h:outputText value="#{node.name}" />
             </ace:node>
             <ace:node type="province">
                 Province: <h:outputText value="#{node.name}" />
             </ace:node>
+            // Default node type
             <ace:node>
                 City: <h:outputText value="#{node.name}" />
             </ace:node>

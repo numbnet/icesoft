@@ -1,3 +1,7 @@
+span.if-tree span.ui-icon-empty {
+    background: none;
+}
+
 .if-tree {
     display: inline-block;
     vertical-align: middle;

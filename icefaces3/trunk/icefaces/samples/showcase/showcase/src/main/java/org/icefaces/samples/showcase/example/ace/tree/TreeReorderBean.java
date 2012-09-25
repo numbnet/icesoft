@@ -1,8 +1,6 @@
 package org.icefaces.samples.showcase.example.ace.tree;
 
-import org.icefaces.ace.model.tree.LazyNodeDataModel;
 import org.icefaces.ace.model.tree.NodeState;
-import org.icefaces.ace.model.tree.NodeStateMap;
 import org.icefaces.ace.model.tree.StateCreationCallback;
 import org.icefaces.samples.showcase.metadata.annotation.ComponentExample;
 import org.icefaces.samples.showcase.metadata.annotation.ExampleResource;
@@ -14,6 +12,9 @@ import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Copyright 2010-2011 ICEsoft Technologies Canada Corp.
@@ -32,63 +33,36 @@ import java.io.Serializable;
  * limitations under the License.
  * <p/>
  * User: Nils
- * Date: 2012-09-14
- * Time: 1:30 PM
+ * Date: 2012-09-25
+ * Time: 1:26 PM
  */
 
 @ComponentExample(
         parent = TreeBean.BEAN_NAME,
-        title = "example.ace.tree.lazy.title",
-        description = "example.ace.tree.lazy.description",
-        example = "/resources/examples/ace/tree/treeLazy.xhtml"
+        title = "example.ace.tree.reorder.title",
+        description = "example.ace.tree.reorder.description",
+        example = "/resources/examples/ace/tree/treeReorder.xhtml"
 )
 @ExampleResources(
         resources ={
                 // xhtml
                 @ExampleResource(type = ResourceType.xhtml,
-                        title="treeClient.xhtml",
-                        resource = "/resources/examples/ace/tree/treeLazy.xhtml"),
+                        title="treeReorder.xhtml",
+                        resource = "/resources/examples/ace/tree/treeReorder.xhtml"),
                 // Java Source
                 @ExampleResource(type = ResourceType.java,
-                        title="TreeClientBean.java",
+                        title="TreeReorderBean.java",
                         resource = "/WEB-INF/classes/org/icefaces/samples/showcase"+
-                                "/example/ace/tree/TreeLazyBean.java")
+                                "/example/ace/tree/TreeReorderBean.java")
         }
 )
-@ManagedBean(name= TreeLazyBean.BEAN_NAME)
+@ManagedBean(name= TreeReorderBean.BEAN_NAME)
 @CustomScoped(value = "#{window}")
-public class TreeLazyBean extends ComponentExampleImpl<TreeLazyBean> implements Serializable {
-    public static final String BEAN_NAME = "treeLazyBean";
+public class TreeReorderBean extends ComponentExampleImpl<TreeReorderBean> implements Serializable {
+    public static final String BEAN_NAME = "treeReorderBean";
 
-    private NodeStateMap stateMap;
-    private LazyNodeDataModel<LocationNodeImpl> lazyModel = new ExampleLazyModel();
-    private StateCreationCallback initState = new StateCreationCallback() {
-        public NodeState initializeState(NodeState newState, Object node) {
-            LocationNodeImpl loc = (LocationNodeImpl) node;
-            if (loc.getType().equals("country"))
-                newState.setExpanded(true);
-            return newState;
-        }
-    };
-
-    public TreeLazyBean() {
-        super(TreeLazyBean.class);
-    }
-
-    public LazyNodeDataModel<LocationNodeImpl> getLazyModel() {
-        return lazyModel;
-    }
-
-    public StateCreationCallback getInitState() {
-        return initState;
-    }
-
-    public NodeStateMap getStateMap() {
-        return stateMap;
-    }
-
-    public void setStateMap(NodeStateMap stateMap) {
-        this.stateMap = stateMap;
+    public TreeReorderBean() {
+        super(TreeReorderBean.class);
     }
 
     @PostConstruct
@@ -96,4 +70,20 @@ public class TreeLazyBean extends ComponentExampleImpl<TreeLazyBean> implements 
         super.initMetaData();
     }
 
+    private List<LocationNodeImpl> treeRoots = new ArrayList<LocationNodeImpl>(Arrays.asList(TreeDataFactory.getTreeRoots()));
+
+    private StateCreationCallback expandAllInit = new StateCreationCallback() {
+        public NodeState initializeState(NodeState newState, Object node) {
+            newState.setExpanded(true);
+            return newState;
+        }
+    };
+
+    public List<LocationNodeImpl> getTreeRoots() {
+        return treeRoots;
+    }
+
+    public StateCreationCallback getExpandAllInit() {
+        return expandAllInit;
+    }
 }

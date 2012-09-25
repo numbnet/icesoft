@@ -117,7 +117,7 @@ public class TreeMeta extends UIDataMeta {
     Boolean reordering;
 
     @Property(defaultValue = "true", defaultValueType = DefaultValueType.EXPRESSION)
-    Boolean multipleSelection;
+    Boolean selectMultiple;
 
     @Property(defaultValue = "org.icefaces.ace.component.tree.TreeSelectionMode.server",
             defaultValueType = DefaultValueType.EXPRESSION)

@@ -57,7 +57,7 @@ public class TreeDecoder<N> {
             decodeContraction();
 
         if (requestHasParam(clientId + SELECTION_SUFFIX)) {
-            if (!tree.isMultipleSelection())
+            if (!tree.isSelectMultiple())
                 tree.getStateMap().setAllSelected(false);
 
             decodeSelection();
