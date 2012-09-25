@@ -31,13 +31,12 @@ import java.util.logging.Logger;
 import java.io.Writer;
 
 public class TagUtil {
-    private static String USER_AGENT = "User-Agent";
     private static String ACCEPT = "Accept";
-    private static String USER_AGENT_COOKIE = "com.icesoft.user-agent";
     private static String HYPERBROWSER = "HyperBrowser";
     private static String COOKIE_FORMAT = "org.icemobile.cookieformat";
 
-
+    public static final String USER_AGENT = "User-Agent";
+    public static final String USER_AGENT_COOKIE = "com.icesoft.user-agent";
 
     public static String A_TAG = "<a";
     public static String A_TAG_END = "</a>";
@@ -83,6 +82,27 @@ public class TagUtil {
     }
 
     /**
+     * Check to see if the browser supports auxiliary upload
+     *
+     * @param pageContext
+     * @return true if auxiliary upload detected.
+     */
+    public static boolean isAuxUploadBrowser(PageContext pageContext) {
+        HttpServletRequest request = (HttpServletRequest)
+            pageContext.getRequest();
+        HttpSession httpSession = request.getSession(false);
+        if (null != httpSession) {
+            String iceUserAgent = (String) httpSession.getAttribute(
+                "com.icesoft.user-agent");
+            if ((null != iceUserAgent) && (
+                iceUserAgent.startsWith("HyperBrowser")))  {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
      * Check to see if the browser is a enhanced container browser
      *
      * @param pageContext
@@ -123,7 +143,7 @@ public class TagUtil {
         HttpServletRequest request = (HttpServletRequest)
             pageContext.getRequest();
         String sessionID = null;
-        HttpSession httpSession = pageContext.getSession();
+        HttpSession httpSession = request.getSession(false);
         if (null != httpSession) {
             sessionID = httpSession.getId();
         }
@@ -143,7 +163,7 @@ public class TagUtil {
     	 HttpServletRequest request = (HttpServletRequest)
     	            pageContext.getRequest();
         String sessionID = null;
-        HttpSession httpSession = pageContext.getSession();
+        HttpSession httpSession = request.getSession(false);
         if (null != httpSession) {
             sessionID = httpSession.getId();
         }
