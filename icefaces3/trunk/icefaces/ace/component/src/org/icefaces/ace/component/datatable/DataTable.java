@@ -316,7 +316,9 @@ public class DataTable extends DataTableBase implements Serializable {
         else if (fevent instanceof UnselectEvent) me = getRowUnselectListener();
         else if (fevent instanceof TableFilterEvent) me = getFilterListener();
 
-        if (me != null) outcome = (String) me.invoke(context.getELContext(), new Object[] {fevent});
+        if (!context.isValidationFailed() || !(fevent instanceof TableFilterEvent)) {
+            if (me != null) outcome = (String) me.invoke(context.getELContext(), new Object[] {fevent});
+        }
 
         if (outcome != null) {
             NavigationHandler navHandler = context.getApplication().getNavigationHandler();
@@ -327,7 +329,6 @@ public class DataTable extends DataTableBase implements Serializable {
 
     @Override
     public void processUpdates(FacesContext context) {
-        if (isAlwaysExecuteContents() || !isTableFeatureRequest(context)) {
             if (context == null) {
                 throw new NullPointerException();
             }
@@ -337,23 +338,16 @@ public class DataTable extends DataTableBase implements Serializable {
 
             pushComponentToEL(context, this);
             //preUpdate(context);
-            iterate(context, PhaseId.UPDATE_MODEL_VALUES);
-            popComponentFromEL(context);
 
-            if (isFilterValueChanged() == true) {
-                Map<String, String> params = context.getExternalContext().getRequestParameterMap();
-                queueEvent(
-                        new TableFilterEvent(this,
-                                getFilterMap().get(params.get(getClientId(context) + "_filteredColumn")))
-                );
-            }
-        }
-        // This is not a EditableValueHolder, so no further processing is required
+            // Required to prevent child input component processing on filter and pagination initiated submits.
+            if (isAlwaysExecuteContents() || !isTableFeatureRequest(context))
+                iterate(context, PhaseId.UPDATE_MODEL_VALUES);
+
+            popComponentFromEL(context);
     }
 
     @Override
     public void processDecodes(FacesContext context) {
-        // Required to prevent input component processing on filter and pagination initiated submits.
         if (context == null) {
             throw new NullPointerException();
         }
@@ -365,6 +359,15 @@ public class DataTable extends DataTableBase implements Serializable {
         //super.preDecode() - private and difficult to port
         iterate(context, PhaseId.APPLY_REQUEST_VALUES);
         decode(context);
+
+        if (isFilterValueChanged()) {
+            Map<String, String> params = context.getExternalContext().getRequestParameterMap();
+            queueEvent(
+                    new TableFilterEvent(this,
+                            getFilterMap().get(params.get(getClientId(context) + "_filteredColumn")))
+            );
+        }
+
         popComponentFromEL(context);
     }
 
@@ -579,7 +582,7 @@ public class DataTable extends DataTableBase implements Serializable {
     }
 
     /**
-     * Blanks the priority and set to false the sortAscending property of each Column
+     * Blanks the sortPriority and set to false the sortAscending property of each Column
      * component.
      */
     public void resetSorting() {
@@ -622,7 +625,7 @@ public class DataTable extends DataTableBase implements Serializable {
     }
 
     /**
-     * Processes any changes to priority or sortAscending properties of Columns
+     * Processes any changes to sortPriority or sortAscending properties of Columns
      * to the data model; resorting the table according to the new settings.
      */
     public void applySorting() {
@@ -1487,7 +1490,6 @@ public class DataTable extends DataTableBase implements Serializable {
         RowStateMap stateMap = null;
 
         if (visitRows) {
-            // Cache container client id
             stateMap = this.getStateMap();
             rows = getRows();
             // If a indeterminate number of rows are shown, visit all rows.
@@ -1922,7 +1924,15 @@ public class DataTable extends DataTableBase implements Serializable {
     /*#######################################################################*/
     /*#################### UIData iterate() impl. ###########################*/
     /*#######################################################################*/
+    // iterate over facets and self only- do not visit children iteratively.
+    // this is to allow the tree to trigger events in the update phase during feature renders.
+    // normally feature renders skip update to prevent incidental input processing during tree
+    // feature executions.
     private void iterate(FacesContext context, PhaseId phaseId) {
+        iterate(context, phaseId, false);
+    }
+
+    private void iterate(FacesContext context, PhaseId phaseId, boolean self) {
         // The data model that is used in myFaces may have been generated
         // from incorrect getValue() results (I assume) causing it to
         // mistakenly contain 0 rows or the data of a previous ui:repeat
@@ -2003,6 +2013,11 @@ public class DataTable extends DataTableBase implements Serializable {
                     }
                 }
             }
+        }
+
+        if (self) {
+            setRowIndex(-1);
+            return;
         }
 
         // Iterate over our UIColumn & PanelExpansion children, once per row
