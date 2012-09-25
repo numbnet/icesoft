@@ -15,7 +15,6 @@ package org.icefaces.ace.component.gmap;
  * governing permissions and limitations under the License.
  */
 
-import com.icesoft.faces.component.InputHiddenTag;
 import org.icefaces.ace.util.JSONBuilder;
 import org.icefaces.ace.renderkit.CoreRenderer;
 import org.icefaces.render.MandatoryResourceComponent;
@@ -57,8 +56,8 @@ public class GMapAutocompleteRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
         GMapAutocomplete autocomplete = (GMapAutocomplete) component;
         String clientId = autocomplete.getClientId(context);
-        writer.startElement("form", null);
-        writer.writeAttribute("id", clientId, null);
+
+        writer.writeAttribute("name", clientId, null);
         writer.startElement("input", null);
         writer.writeAttribute("type", "text", null);
         writer.writeAttribute("size", autocomplete.getSize(), null);
@@ -71,6 +70,8 @@ public class GMapAutocompleteRenderer extends CoreRenderer {
         makeFields(writer,clientId,"url");
         writer.startElement("span", null);
         writer.writeAttribute("id", clientId + "_autocomplete", null);
+        writer.startElement("form", null);
+        writer.writeAttribute("id", clientId, null);
         writer.startElement("script", null);
         writer.writeAttribute("type", "text/javascript", null);
         writer.write("ice.ace.jq(function() {");
@@ -81,11 +82,13 @@ public class GMapAutocompleteRenderer extends CoreRenderer {
                 .beginMap();
         encodeClientBehaviors(context, autocomplete, jb);
         jb.endMap().endFunction();
+        System.out.println(jb.toString());
         writer.write(jb.toString());
         writer.write("});");
         writer.endElement("script");
-        writer.endElement("span");
         writer.endElement("form");
+        writer.endElement("span");
+
     }
 
     public void makeFields(ResponseWriter writer, String clientId, String fieldName) throws IOException {

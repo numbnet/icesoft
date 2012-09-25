@@ -267,26 +267,21 @@ ice.ace.gMap.getGMapWrapper = function (id) {
                     map.setCenter(place.geometry.location);
                     map.setZoom(17);
                 }
-            alert(cfg);
             document.getElementById(autoId+"_latLng").value = place.geometry.location.toString();
             document.getElementById(autoId+"_address").value = place.formatted_address;
             document.getElementById(autoId+"_types").value = place.types.toString();
             document.getElementById(autoId+"_url").value = place.url;
             var options = {
+
                     source: autoId,
                     execute: autoId,
                     render: autoId
-                },
-                behaviourArgs = cfg && cfg.behaviors && cfg.behaviors.valueChange;
+                };
+
             var params = {};
             params[autoId + '_valueChange'] = true;
             options.params = params;
-            if (behaviourArgs) {
-                ice.ace.ab(ice.ace.extendAjaxArguments(
-                    behaviourArgs,
-                    ice.ace.removeExecuteRenderOptions(options)
-                ));
-            } else ice.ace.AjaxRequest(options);
+            ice.ace.AjaxRequest(options);
         });
     }
 
