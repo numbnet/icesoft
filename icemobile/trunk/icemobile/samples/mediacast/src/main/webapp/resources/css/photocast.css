@@ -284,7 +284,7 @@ textarea {
 		display: block;
 		text-align:center;
 	}
-	.left-pane{
+	.right-pane{
 		border-left: 1px solid darkGray;
 		height:100%;
 	}
@@ -325,8 +325,9 @@ textarea {
 	}
 	.helpIcon{
 		float:right;
-		margin:-26px 10px 0 0;
 		position: absolute;
+		top: 7px;
+		right: 5px;
 	}
 	.mobi-tabset-tabs-bottom > .mobi-tabset-tabs {
 		bottom: 30px;
