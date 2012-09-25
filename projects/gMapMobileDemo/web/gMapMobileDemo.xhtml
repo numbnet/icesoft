@@ -1,11 +1,11 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html
-      xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component"
-      xmlns:ace="http://www.icefaces.org/icefaces/components"
-      >
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component"
+        xmlns:ace="http://www.icefaces.org/icefaces/components" xmlns:f="http://www.icefaces.org/icefaces/components"
+        >
 <h:head>
     <title>ICEfaces 3</title>
     <link rel="stylesheet" type="text/css" href="test.css"/>
@@ -13,6 +13,7 @@
         function clickGeo(){
             document.getElementById('geolocation:geolocateSubmit').click();
         }
+
     </script>
 </h:head>
 <h:body onload="setTimeout(function() {clickGeo();},2500);">
@@ -21,34 +22,27 @@
         <ace:gMapControl name="all" disabled="true"/>
         <ace:gMapControl name="type" position="rightBottom" controlStyle="dropdown"/>
         <ace:gMapControl name="zoom" position="leftBottom" controlStyle="small"/>
-        <ace:gMapAutocomplete size="20" input="hiddenInput:input" submit="hiddenInput:submit" style="position:fixed; max-width:45%; left:1%; top:15px; width:auto;"/>
+        <ace:gMapAutocomplete size="40" style="position:fixed; max-width:45%; left:1%; top:15px; width:auto;" address="${demoBean.address}">
+        </ace:gMapAutocomplete>
     </ace:gMap>
-    <h:form id="hiddenInput" style="position:absolute; top:0px; z-index:-5;">
-        <h:inputHidden id="input" value="${demoBean.autocompleteReturn}"/>
-        <h:commandButton id="submit" type="submit" style="visibility: hidden;"></h:commandButton>
-    </h:form>
-    <h:form id="register" style="position:fixed; right:1%; top:15px; max-width:45%;" >
-
-    </h:form>
-    <h:form id="geolocation" style="position:fixed; right:1%; top:15px; max-width:45%;">
-        <mobi:fieldsetGroup>
-        <mobi:fieldsetRow>
-        <mobi:icemobilesx/>
-        <mobi:augmentedReality
-                styleClass="mobi-button mobi-round-all"
-                urlBase="#{demoBean.baseURL}"
-                >
-            <mobi:augmentedRealityLocations
-                    locationLabel="#{demoBean.distance}"
-                    locationDir="#{demoBean.bearing}"
-                    />
-        </mobi:augmentedReality>
-        </mobi:fieldsetRow>
-        </mobi:fieldsetGroup>
+    <h:form id="geolocation" style=" position:fixed; right:0.5%; top:15px; max-width:45%;">
         <mobi:geolocation latitude="#{demoBean.geoLat}"
                           longitude="#{demoBean.geoLong}"
                 ></mobi:geolocation>
-        <mobi:commandButton id="geolocateSubmit" buttonType="default" style="visibility: hidden;" value="Locate Me"/>
+        <mobi:commandButton id="geolocateSubmit" buttonType="default" style="visibility: hidden;position:absolute; top:0px; z-index:-5;" value="Locate Me"/>
+        <mobi:icemobilesx value="Activate Demo"><a href="mobileDemoHelp.xhtml">?</a> </mobi:icemobilesx>
+        <mobi:augmentedReality
+                styleClass="mobi-button mobi-round-all"
+                urlBase="#{demoBean.baseURL}"
+                rendered="#{demoBean.enhancedBrowser}"
+                >
+            <mobi:augmentedRealityLocations
+                    value="#{demoBean.list}" var="place"
+                    locationLabel="#{place.label}"
+                    locationLat="#{place.latitude}"
+                    locationLon="#{place.longitude}"
+                    locationIcon="#{place.marker}"/>
+        </mobi:augmentedReality>
     </h:form>
 </h:body>
 </html>
