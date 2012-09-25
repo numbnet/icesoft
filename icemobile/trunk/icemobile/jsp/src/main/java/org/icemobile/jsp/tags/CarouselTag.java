@@ -176,11 +176,10 @@ public class CarouselTag extends TagSupport {
     private void encodeHiddenSelected(Writer out, String id) throws
         IOException {
         out.write("<input");
-        out.write(" id = \"" + id + "_hidden\"");
+        out.write(" id=\"" + id + "_hidden\"");
         out.write(" name=\"" + id + "\"");
         out.write(" type=\"hidden\"");
-        out.write(" value=\"" + String.valueOf(selectedIndex) + "\">");
-        out.write("</input>");
+        out.write(" value=\"" + String.valueOf(selectedIndex) + "\"/>");
     }
 
     private void renderScript(Writer out, String clientId) throws IOException {
