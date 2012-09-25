@@ -29,7 +29,9 @@ public class GetEnhancedTag extends BaseSimpleTag{
 		
 		DeviceType device = TagUtil.getDeviceTypeNoDefault(pageContext);
 		
-		if( device == null || TagUtil.isEnhancedBrowser(pageContext)){
+		if( device == null 
+            || TagUtil.isEnhancedBrowser(pageContext)
+            || TagUtil.isAuxUploadBrowser(pageContext) ){
 			return;
 		}
 		

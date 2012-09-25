@@ -20,6 +20,7 @@ import javax.validation.Valid;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.icepush.PushContext;
+import org.icemobile.jsp.tags.TagUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -36,7 +37,7 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.multipart.MultipartFile;
 
 @Controller
-@SessionAttributes({"uploadModel","msg","admin"})
+@SessionAttributes({"uploadModel","msg","admin",TagUtil.USER_AGENT_COOKIE})
 public class ContestController implements ServletContextAware {
 
 	@Inject
@@ -102,7 +103,18 @@ public class ContestController implements ServletContextAware {
 		}
 		model.addAttribute("view", view);
 	}
-	
+
+	@RequestMapping(value="/icemobile", method = RequestMethod.POST)
+	public String postICEmobileSX(HttpServletRequest request,
+            Model model)  {
+            String userAgent = request.getHeader(TagUtil.USER_AGENT);
+            if (userAgent.contains("ICEmobile-SX"))  {
+                model.addAttribute(TagUtil.USER_AGENT_COOKIE,
+                        "HyperBrowser-ICEmobile-SX/1.0");
+            }
+            return "contest";
+        }
+
 	@RequestMapping(value="/contest", method = RequestMethod.GET)
 	public String get(
 			HttpServletResponse response,
