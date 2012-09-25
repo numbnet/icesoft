@@ -65,6 +65,8 @@ public class ContestController implements ServletContextAware {
 	private static final String TABLET = "t";
 	
 	private static final String ACTION_VOTE = "v";
+	
+	private static final String UPLOADDIR = "/resources/uploads/";
 
 	@Autowired
 	public ContestController(ServletContext servletContext){
@@ -74,10 +76,11 @@ public class ContestController implements ServletContextAware {
 	@ModelAttribute("uploadModel")
 	public MediaMessage putAttributeUploadModel(){
 		MediaMessage uploadModel = new MediaMessage();
+		uploadModel.setId(newId());
 		log.debug("returning new uploadModel="+uploadModel);
 		return uploadModel;
 	}
-
+	
 	@ModelAttribute
 	public void putAttributeAjax(WebRequest request, Model model) {
 		model.addAttribute("ajaxRequest", isAjaxRequest(request));
@@ -113,12 +116,12 @@ public class ContestController implements ServletContextAware {
 		
 		log.warn("main contest controller l="+layout+", p="+page+", a="+action +", cookies="+cookieVotes);
 		
+		//clean params
+		layout = cleanSingleRequestParam(layout);
+		
 		String view = null;
 		if (ACTION_VOTE.equals(action) ){
 			doVote(response,id,cookieVotes, model);
-		}
-		if( layout.length() > 1 ){
-			layout = layout.substring(0,1);
 		}
 		if( layout.equals(TABLET) ){
 			page = PAGE_ALL;
@@ -150,6 +153,7 @@ public class ContestController implements ServletContextAware {
 	@RequestMapping(value="/contest-carousel", method = RequestMethod.GET)
 	public String getCarouselContent(@RequestParam(value="l", defaultValue=MOBILE) String layout, 
 			Model model) {
+		layout = cleanSingleRequestParam(layout);
 		model.addAttribute("carouselItems", mediaService
 				.getContestMediaImageMarkup(layout));
 		return "contest-carousel";
@@ -174,6 +178,20 @@ public class ContestController implements ServletContextAware {
 		addCommonModel(model, uploadModel, layout);
 		
 		return "contest-photo-list";
+	}
+	
+	@RequestMapping(value="/contest-vote-tally", method=RequestMethod.GET)
+	public String getVoteTallyContent(
+			@RequestParam(value="id") String id, 
+			Model model){
+		id = cleanSingleRequestParam(id);
+		MediaMessage msg = mediaService.getMediaMessage(id);
+		if( msg == null ){
+			log.warn("could not find msg = "+ id);
+		}
+		
+		model.addAttribute("media", msg);
+		return "contest-vote-tally";
 	}
 	
 	@RequestMapping(value="/contest-photo-list-json", method=RequestMethod.GET, produces="application/json")
@@ -215,6 +233,8 @@ public class ContestController implements ServletContextAware {
 					mediaService.removeMessage(id);
 				}
 				model.addAttribute("mediaService", mediaService);
+				PushContext.getInstance(servletContext).push("photos");		
+				PushContext.getInstance(servletContext).push("carousel");
 			}
 		}
 		
@@ -232,14 +252,32 @@ public class ContestController implements ServletContextAware {
 	public String post(
 			HttpServletRequest request,
 			HttpServletResponse response,
+			@RequestParam(value = "uploadId") String uploadId,
 			@RequestParam(value = "upload", required = false) MultipartFile file,
+			@RequestParam(value="l", defaultValue=MOBILE) String layout,
 			@Valid ContestForm form, BindingResult result,
 			@ModelAttribute("uploadModel") MediaMessage uploadModel,
 			@CookieValue(value="votes", required=false) String cookieVotes,
 			Model model)
 					throws IOException {
 		
+		log.info("upload id=" + uploadId);
+		
+		layout = cleanSingleRequestParam(layout);
+		
+		
 		log.info(form);
+		
+		if( file != null ){
+			log.info("incoming upload " + file.getContentType() + ", " + file.getContentType() + ", " + file.getSize() );
+		}
+		
+		//SX Image upload before full form post
+		if( file != null && form.isEmpty()){
+			log.info("SX upload");
+			saveMultipartUploadToFile(file,uploadId);
+			return postUploadFormResponseView(false, false, layout);
+		}
 		
 		boolean success = false;
 		
@@ -248,32 +286,37 @@ public class ContestController implements ServletContextAware {
 			addCommonModel(model, uploadModel, form.getLayout());
 			return "contest-photo-list";
 		}
-		
 
-		if (result.hasErrors() || (file != null && file.isEmpty())) {
+		if (result.hasErrors() ) {
+			log.info("form has errors " + result);
 			uploadModel.setUploadMsg("Sorry, I think you missed something.");
 		}
 		else{
-			if( file != null ){
-				log.debug("file: " + file);
-				uploadModel.setId(newId());
-				saveImage(request, file, uploadModel);
-				uploadModel.setDescription(form.getDescription());
-				uploadModel.setEmail(form.getEmail());
-				uploadModel.setCreated(System.currentTimeMillis());
-				mediaHelper.processImage(uploadModel);
-				mediaService.addMedia(uploadModel);
-				log.debug("successfully added message to mediaService, uploadModel="
-						+ uploadModel);
-				uploadModel.setUploadMsg("Thank you, your file was uploaded successfully.");
-				uploadModel.clear();
-				PushContext.getInstance(servletContext).push("photos");		
-				PushContext.getInstance(servletContext).push("carousel");		
-				success = true;
+			File originalPhoto = getOriginalFile(uploadId);
+			if( !originalPhoto.exists() && (file == null || file.isEmpty()) ){
+				uploadModel.setUploadMsg("Sorry, I think you missed the photo.");
 			}
-			else{
-				log.warn("upload file was null");
-			}			
+			else if( !originalPhoto.exists() && file != null && !file.isEmpty() ){
+				saveMultipartUploadToFile(file, uploadId);
+			}
+			Media media = new Media();
+			media.setFile(originalPhoto);
+			uploadModel.setPhoto(media);
+			uploadModel.setDescription(form.getDescription());
+			uploadModel.setEmail(form.getEmail());
+			uploadModel.setCreated(System.currentTimeMillis());
+			mediaHelper.processImage(uploadModel,uploadId);
+			mediaService.addMedia(uploadModel);
+			log.debug("successfully added message to mediaService, uploadModel="
+					+ uploadModel);
+			uploadModel.setUploadMsg("Thank you, your file was uploaded successfully.");
+			uploadModel.clear();
+			uploadModel.setId(newId());
+			PushContext.getInstance(servletContext).push("photos");		
+			PushContext.getInstance(servletContext).push("carousel");		
+			
+			success = true;
+			
 		}
 
 		return postUploadFormResponseView(isAjaxRequest(request),success,form.getLayout());
@@ -353,6 +396,7 @@ public class ContestController implements ServletContextAware {
 			cookie.setPath("/");
 			response.addCookie(cookie);
 			PushContext.getInstance(servletContext).push("photos");
+			PushContext.getInstance(servletContext).push("votes-"+msg.getId());
 			log.debug("recorded vote");
 
 		} 
@@ -363,46 +407,32 @@ public class ContestController implements ServletContextAware {
 				Math.abs(UUID.randomUUID().getMostSignificantBits()), 32);
 	}
 
-	private void addNewMediaToUploadModel(HttpServletRequest request, MultipartFile file, 
-			String suffix, MediaMessage uploadModel) throws IOException {
-		if (uploadModel.getId() == null) {
-			uploadModel.setId(newId());
-		}
-		String newFileName = "img-" + uploadModel.getId() + "-orig." + suffix;
-		File uploadDir = new File(servletContext.getRealPath("/resources/uploads/"));
+	private File getOriginalFile(String id){
+		String fileName = "img-" + id + "-orig.jpg";
+		String path = UPLOADDIR + fileName;
+		return new File(servletContext.getRealPath(path));
+	}
+	
+	private void ensureUploadDirExists(){
+		File uploadDir = new File(servletContext.getRealPath(UPLOADDIR));
 		if( uploadDir.exists()){
 			uploadDir.mkdir();
 		}
-		String newPathName = "resources/uploads/" + newFileName;
-		File newFile = new File(servletContext.getRealPath("/" + newPathName));
-		if ((null != file) && !file.isEmpty()) {
-			file.transferTo(newFile);
-			currentFileName = newPathName;
-		}
-		else {
-			// use previously uploaded file, such as from ICEmobile-SX
-			newFileName = currentFileName(request);
-			newFile = new File(servletContext.getRealPath("/" + newPathName));
-		}
-		Media media = new Media();
-		media.setFile(newFile);
-		media.setType(file.getContentType());
-		uploadModel.setPhoto(media);
 	}
-
-	private void saveImage(HttpServletRequest request, MultipartFile file,
-			MediaMessage uploadModel) throws IOException {
-
-		addNewMediaToUploadModel(request, file, "jpg", uploadModel);
-	}
-	//TODO look into this
-	private String currentFileName(HttpServletRequest request) {
-		if (null == currentFileName) {
-			return "resources/images/uploaded.jpg";
+	
+	private void saveMultipartUploadToFile(MultipartFile upload, String id){
+		if( upload != null && !upload.isEmpty()){
+			File file = getOriginalFile(id);
+			ensureUploadDirExists();
+			log.info("writing new image file " + file.getAbsolutePath());
+			try {
+				upload.transferTo(file);
+			} catch( Exception e) {
+				log.warn("could not write file ", e);
+				e.printStackTrace();
+			} 
 		}
-		return currentFileName;
 	}
-
 
 	private static boolean isAjaxRequest(WebRequest webRequest) {
 		String requestedWith = webRequest.getHeader("Faces-Request");
@@ -456,6 +486,13 @@ public class ContestController implements ServletContextAware {
 	
 	private int currentMinute(){
 		return new GregorianCalendar().get(Calendar.MINUTE);
+	}
+	
+	private String cleanSingleRequestParam(String param){
+		if( param != null && param.indexOf(",") > 0 ){
+			param = param.substring(0,param.indexOf(","));
+		}
+		return param;
 	}
 
 }

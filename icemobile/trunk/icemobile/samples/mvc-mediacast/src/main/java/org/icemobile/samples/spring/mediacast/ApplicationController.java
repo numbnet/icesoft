@@ -91,6 +91,10 @@ public class ApplicationController implements ServletContextAware {
 			throws IOException {
 		
 		if( file != null ){
+			log.info("incoming upload " + file.getContentType() + ", " + file.getBytes() );
+		}
+		
+		if( file != null ){
 			String type = request.getParameter("type");
 			if( "photo".equals(type)){
 				saveImage(request, file, uploadModel);

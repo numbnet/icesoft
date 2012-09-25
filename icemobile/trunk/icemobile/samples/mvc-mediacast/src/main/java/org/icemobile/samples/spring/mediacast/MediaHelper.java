@@ -57,7 +57,7 @@ public class MediaHelper implements Serializable, ServletContextAware{
 		
 	}
 	
-	public void processImage(MediaMessage msg) {
+	public void processImage(MediaMessage msg, String uploadId) {
 
 		if (msg.getPhoto().getFile() == null) {
 			log.warn("file is null");
@@ -103,13 +103,14 @@ public class MediaHelper implements Serializable, ServletContextAware{
 			// clean up images
 			
 			image.flush();
-
+			
+			String dir = msg.getPhoto().getFile().getParent();
 			msg.setLargePhoto(
-					createPhoto(msg, croppedLargeImage, largeImage.getTileWidth(),
+					createMedia(uploadId, dir, croppedLargeImage, largeImage.getTileWidth(),
 							largeImage.getHeight(), "-large"));
 			log.info("large photo: " + msg.getLargePhoto());
 			msg.setSmallPhoto(
-					createPhoto(msg, croppedSmallImage,
+					createMedia(uploadId, dir, croppedSmallImage,
 							smallImage.getTileWidth(),
 							smallImage.getHeight(), "-small"));
 			log.info("small photo: " + msg.getSmallPhoto());
@@ -119,9 +120,9 @@ public class MediaHelper implements Serializable, ServletContextAware{
 		}
 	}
 
-	private Media createPhoto(MediaMessage msg, BufferedImage image, int width, int height, String suffix)
+	private Media createMedia(String id, String dir, BufferedImage image, int width, int height, String suffix)
 			throws IOException {
-		File newFile = new File(msg.getPhoto().getFile().getParent()+File.separator+"img-"+msg.getId()+suffix+".png");
+		File newFile = new File(dir+File.separator+"img-"+id+suffix+".png");
 		ImageIO.write(image, "png", newFile);
 		Media media = new Media();
 		media.setFile(newFile);

@@ -131,10 +131,12 @@ public class MediaService implements ServletContextAware {
 
 	public MediaMessage getMediaMessage(String id){
 		MediaMessage result = null;
-		for( MediaMessage msg: getMediaCopy()){
-			if( msg.getId().equals(id)){
-				result = msg;
-				break;
+		if( id != null ){
+			for( MediaMessage msg: getMediaCopy()){
+				if( msg.getId() != null &&  msg.getId().equals(id)){
+					result = msg;
+					break;
+				}
 			}
 		}
 		return result;
@@ -145,7 +147,7 @@ public class MediaService implements ServletContextAware {
 			Iterator<MediaMessage> iter = media.iterator();
 			while( iter.hasNext() ){
 				MediaMessage msg = iter.next();
-				if( msg.getId().equals(id)){
+				if( msg.getId() != null && msg.getId().equals(id)){
 					iter.remove();
 					if( msg.getPhoto() != null ){
 						msg.getPhoto().dispose();
