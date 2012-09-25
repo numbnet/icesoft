@@ -80,7 +80,6 @@ public class SubmitMonitorBean extends ComponentExampleImpl<SubmitMonitorBean>
     }
 
     public String getForSelection() {
-        System.out.println("SubmitMonitorBean.getForSelection()  " + forSelection);
         return forSelection;
     }
     public void setForSelection(String forSelection) {

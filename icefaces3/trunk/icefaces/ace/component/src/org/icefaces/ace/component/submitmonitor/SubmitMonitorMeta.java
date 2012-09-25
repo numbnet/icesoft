@@ -66,19 +66,12 @@ public class SubmitMonitorMeta extends UIComponentBaseMeta {
     String sessionExpiredLabel;
 
     @Property(name="for", tlddoc = "Specify space separated list of " +
-        "components, by their for style search strings, so that those " +
+        "components, by their for property format search strings, so that those " +
         "components and, recursively, all of their children, will be " +
         "monitored by this component when they act as the source for " +
         "submits. When this property is empty or unspecified, this " +
         "component will monitor all submits from all sources.")
     String For;
-
-//    @Property(tlddoc = "")
-//    Boolean showIcon;
-//
-//    @Property(tlddoc = "Enable to display an hourglass when hovering over the translucent plane displayed by " +
-//            "the 'blockUI' feature.")
-//    Boolean showHourglass;
 
     @Property(tlddoc = "When enabled, display a translucent overlay on a " +
         "portion of the window, and only show the submitMonitor UI when the " +
@@ -93,14 +86,6 @@ public class SubmitMonitorMeta extends UIComponentBaseMeta {
         defaultValue = "@all",
         defaultValueType = DefaultValueType.STRING_LITERAL)
     String blockUI;
-
-//    @Property(tlddoc = "Disabling displays the translucent plane of the 'blockUI' feature over the component region(s) " +
-//            "defined by the 'for' attribute to rather than obscuring the whole page.")
-//    Boolean blockWindow;
-//
-//    @Property(tlddoc = "Enable to prevent keyboard input when blockUI is enabled.",
-//            defaultValue = "true", defaultValueType = DefaultValueType.EXPRESSION)
-//    Boolean blockKeyboard;
 
     @Property(tlddoc = "When blockUI is enabled, and this property is true, " +
         "the submitMonitor will display centered over the translucent overlay.",
