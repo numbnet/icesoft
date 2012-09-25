@@ -1,3 +1,6 @@
+
+import org.icefaces.util.EnvUtils;
+
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.context.ExternalContext;
@@ -9,8 +12,10 @@ import javax.faces.model.SelectItem;
 import javax.faces.event.ActionEvent;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Dictionary;
 import java.util.Enumeration;
+import java.util.List;
 
 @ManagedBean (name="demoBean")
 @CustomScoped(value = "#{window}")
@@ -23,6 +28,8 @@ public class demoBean {
     private String distance;
     private String bearing;
     private String baseURL;
+    private String address;
+    private List<SearchedPosition> list = new ArrayList<SearchedPosition>();
 
     public String getAutocompleteReturn() {
         return autocompleteReturn;
@@ -87,9 +94,17 @@ public class demoBean {
                 Math.sin(dLon/2) * Math.sin(dLon/2) * Math.cos(lat1) * Math.cos(lat2);
         double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
         double d = R * c;
-        BigDecimal rounded = new BigDecimal(Double.toString(d));
-        distance = rounded.setScale(3,BigDecimal.ROUND_HALF_UP).toString() + " Km";
-        return distance;
+        if(d>=1)
+        {
+            BigDecimal rounded = new BigDecimal(Double.toString(d));
+            distance = rounded.setScale(2,BigDecimal.ROUND_HALF_UP).toString() + " Km";
+            return distance;
+        }
+        else{
+            BigDecimal rounded = new BigDecimal(Double.toString(d * 1000));
+            distance = rounded.setScale(2,BigDecimal.ROUND_HALF_UP).toString() + " m";
+            return distance;
+        }
     }
 
     public void setDistance(String distance) {
@@ -133,4 +148,68 @@ public class demoBean {
         String url = externalContext.getRequestScheme() + "://" + serverName;
         return url;
     }
+
+    public List<SearchedPosition> getList() {
+        list.clear();
+        SearchedPosition position = new SearchedPosition();
+        position.setLatitude(autoLat);
+        position.setLongitude(autoLong);
+        position.setLabel(getDistance());
+        position.setMarker(".\\\\Pin.png");
+        list.add(position);
+
+        return list;
+    }
+
+    public boolean isEnhancedBrowser() {
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        boolean isEnhanced = EnvUtils.isEnhancedBrowser(facesContext);
+        boolean isAuxUpload = EnvUtils.isAuxUploadBrowser(facesContext);
+        return isEnhanced || isAuxUpload;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public class SearchedPosition{
+        public String latitude,longitude,label,marker;
+
+        public String getLatitude() {
+            return latitude;
+        }
+
+        public void setLatitude(String latitude) {
+            this.latitude = latitude;
+        }
+
+        public String getLongitude() {
+            return longitude;
+        }
+
+        public void setLongitude(String longitude) {
+            this.longitude = longitude;
+        }
+
+        public String getMarker() {
+            return marker;
+        }
+
+        public void setMarker(String marker) {
+            this.marker = marker;
+        }
+
+        public String getLabel() {
+            return label;
+        }
+
+        public void setLabel(String label) {
+            this.label = label;
+        }
+    }
 }
+
