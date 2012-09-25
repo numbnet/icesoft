@@ -237,4 +237,13 @@ input, textarea{ font-family: droid, Helvetica, Arial, sans-serif;}
 	left: 5px;
 	font-size: 15px;
 }
+html.android .mobi-pagePanel-header a.mobi-button, 
+html.android .mobi-pagePanel-header a.mobi-button:visited {
+    color: black;
+}
+.mobi-pagePanel-header {
+    position:relative;
+}
+.mobi-pagePanel-body {
+    padding: 0 0 48px 0;
 }
