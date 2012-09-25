@@ -15,6 +15,7 @@
  */
 package org.icefaces.mobi.component.viewselector;
 
+
 import org.icefaces.mobi.utils.Utils;
 
 import javax.faces.component.UIComponent;
@@ -22,6 +23,8 @@ import javax.faces.context.FacesContext;
 import javax.faces.render.Renderer;
 import java.io.IOException;
 import java.util.Map;
+import java.util.List;
+import java.util.Iterator;
 import java.util.logging.Logger;
 
 /**
@@ -46,36 +49,28 @@ public class ViewSelectorRenderer extends Renderer {
         // there is now point rechecking for for the device type.
         if (contextMap.containsKey(ViewSelector.VIEW_TYPE_KEY)) {
             name = (String) contextMap.get(ViewSelector.VIEW_TYPE_KEY);
+          //  logger.info("handler returned view type="+name);
         } else {
-            Utils.DeviceType deviceType = Utils.getDeviceType(facesContext);
-            if (deviceType.equals(Utils.DeviceType.IPAD) ||
-                    deviceType.equals(Utils.DeviceType.ANDROID_TABLET)) {
-                name = ViewSelector.LARGE_VIEW_TYPE;
-            } else if (deviceType.equals(Utils.DeviceType.ANDROID_PHONE) ||
-                    deviceType.equals(Utils.DeviceType.IPHONE) ||
-                    deviceType.equals(Utils.DeviceType.BLACKBERRY)) {
-                name = ViewSelector.SMALL_VIEW_TYPE;
-            } else {
-                name = viewSelector.getDefaultView();
-            }
+            logger.info("Error:- handler has not been able to determine type of view");
+            return;
         }
-        // store in session map for use later.
-        contextMap.put(ViewSelector.VIEW_TYPE_KEY, name);
-
-        // write out the facet name that was detected
-        if (ViewSelector.SMALL_VIEW_TYPE.equals(name)) {
-            UIComponent viewFacet = viewSelector.getFacet(ViewSelector.SMALL_FACET);
-            if (viewFacet != null) {
-                Utils.renderChild(facesContext, viewFacet);
-            } else {
-                logger.warning("Small view detected but no small Facet defined in viewSelector element.");
-            }
-        } else if (ViewSelector.LARGE_VIEW_TYPE.equals(name)) {
-            UIComponent viewFacet = viewSelector.getFacet(ViewSelector.LARGE_FACET);
-            if (viewFacet != null) {
-                Utils.renderChild(facesContext, viewFacet);
-            } else {
-                logger.warning("Large view detected but no large Facet defined in viewSelector element.");
+        /* allow to use either facets or child component */
+        if (viewSelector.getFacet(ViewSelector.LARGE_FACET)!=null || viewSelector.getFacet(ViewSelector.SMALL_FACET)!=null){
+            // write out the facet name that was detected
+            if (ViewSelector.SMALL_FACET.equals(name)) {
+                UIComponent viewFacet = viewSelector.getFacet(ViewSelector.SMALL_FACET);
+                if (viewFacet != null) {
+                    Utils.renderChild(facesContext, viewFacet);
+                } else {
+                    logger.warning("Small view detected but no small Facet defined in viewSelector element.");
+                }
+            } else if (ViewSelector.LARGE_FACET.equals(name)) {
+                UIComponent viewFacet = viewSelector.getFacet(ViewSelector.LARGE_FACET);
+                if (viewFacet != null) {
+                    Utils.renderChild(facesContext, viewFacet);
+                } else {
+                    logger.warning("Large view detected but no large Facet defined in viewSelector element.");
+                }
             }
         }
     }

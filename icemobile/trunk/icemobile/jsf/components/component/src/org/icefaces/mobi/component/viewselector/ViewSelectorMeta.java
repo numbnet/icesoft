@@ -27,6 +27,7 @@ import javax.faces.component.UIComponent;
         componentClass = "org.icefaces.mobi.component.viewselector.ViewSelector",
         rendererClass = "org.icefaces.mobi.component.viewselector.ViewSelectorRenderer",
         generatedClass = "org.icefaces.mobi.component.viewselector.ViewSelectorBase",
+        handlerClass = "org.icefaces.mobi.component.viewselector.ViewSelectorHandler",
         extendsClass = "javax.faces.component.UIComponentBase",
         componentType = "org.icefaces.ViewSelector",
         rendererType = "org.icefaces.ViewSelectorRenderer",
