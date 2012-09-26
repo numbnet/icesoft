@@ -2,6 +2,7 @@ package org.icefaces.ace.component.datatable;
 
 import org.icefaces.ace.component.column.Column;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,7 +27,7 @@ import java.util.Map;
  * Date: 2012-09-20
  * Time: 12:16 PM
  */
-public class FilterState {
+public class FilterState implements Serializable {
     Map<Column, String> valueMap = new HashMap<Column, String>();
 
     public FilterState() {}
