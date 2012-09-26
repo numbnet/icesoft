@@ -30,7 +30,7 @@ import java.util.Map;
 public class SortState implements Serializable {
     Map<Column, ColumnState> stateMap = new HashMap<Column, ColumnState>();
 
-    class ColumnState {
+    class ColumnState implements Serializable {
         Integer priority;
         Boolean ascending;
 
