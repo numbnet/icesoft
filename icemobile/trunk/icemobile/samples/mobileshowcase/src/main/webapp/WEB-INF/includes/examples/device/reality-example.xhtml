@@ -99,13 +99,14 @@
         <mobi:fieldsetGroup>
 
             <mobi:fieldsetRow>
+            Markers: 
                 <mobi:augmentedReality 
                     styleClass="mobi-button mobi-round-all"
                     urlBase="#{realityBean.baseURL}"
                     value="#{realityBean.selection}">
                     <mobi:augmentedRealityMarkers
                         value="#{realityBean.markers}" var="marker"
-                        locationLabel="#{marker.label}"
+                        markerLabel="#{marker.label}"
                         markerModel="#{marker.model}" />
                 </mobi:augmentedReality>
                 <h:commandButton styleClass="mobi-button mobi-round-all mobi-button-important"
