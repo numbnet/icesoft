@@ -685,6 +685,13 @@ public class Utils {
 				+ URLEncoder.encode(uploadURL) + "'";
 		return script;
 	}
+	
+	public static String getICEmobileRegisterSXScript(){
+		FacesContext facesContext = FacesContext.getCurrentInstance();
+		String sessionIdParam = Utils.getSessionIdCookie(facesContext);
+        String uploadURL = AuxUploadSetup.getInstance().getUploadURL();
+        return "mobi.registerAuxUpload('"+sessionIdParam+"','"+uploadURL+"');";
+	}
 
 	public static String getSessionIdCookie(FacesContext facesContext) {
 		String sessionID = EnvUtils.getSafeSession(facesContext).getId();
