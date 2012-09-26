@@ -120,7 +120,7 @@ function updateGalleryList(json){
 	var end = "</div></li>";
 	
 	for( i in json ){
-		$('#'+json[i].id).remove(); 
+		$('#'+json[i].id).parent().parent().remove(); 
 	}
 	var updated = Number($('#updated').val());
 	for( m in json ){
@@ -129,10 +129,12 @@ function updateGalleryList(json){
 		var item = start+"<div id='"+msg.id+"' data-lastvote='"+msg.lastVote+"' data-created='"+msg.created+"' data-votes='"+msg.votes+"'>"
 			+ "<a class='mediaLink' href='#' onclick=\"updateViewerPanel('"+msg.id+"');\">"
 			+ "<img src='/mvc-mediacast/resources/uploads/"+msg.fileName+"' class='p'>"
-			+ "</a>"
-			+ "<input type='image' class='vote' title='Vote for it!' src='/mvc-mediacast/resources/css/css-images/like.png' name='photoId' value='"+msg.id+"'/>"
-			+ "<span class='desc'>"+msg.description+"</span>"
-			+ "<span class='vote'>"+msg.votes+" Votes</span>";
+			+ "</a>";
+		if( msg.canVote ){
+			item += "<input type='image' class='vote' title='Vote for it!' src='/mvc-mediacast/resources/css/css-images/like.png' name='photoId' value='"+msg.id+"'/>";
+		}
+		item += "<span class='desc'>"+msg.description+"</span><span class='vote'>"+msg.votes+" Votes</span>";	
+			
 		if( list.length > 0 ){
 			for( elem in list ){
 				updated = Math.max(updated,Math.max(msg.lastVote,msg.created));

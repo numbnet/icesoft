@@ -22,10 +22,11 @@
                             <img src='<c:url value="/resources/uploads/${m.smallPhoto.file.name}"/>' class="p"/>
                         </a>
                     </c:if>
-                    <input type="image" class="vote" title="Vote for it!" 
-                        src="<c:url value="/resources/css/css-images/like.png"/>"
-                        name="photoId" value="${m.id}"/>
-                    
+                    <c:if test="${!fn:contains(m.votesAsString, voterId)}">
+                        <input type="image" class="vote" title="Vote for it!" 
+                            src="<c:url value="/resources/css/css-images/like.png"/>"
+                            name="photoId" value="${m.id}"/>
+                    </c:if>
                     <span class="desc"><c:out value="${m.description}"/></span>
                     <span class="vote" >${m.numberOfVotes} Votes</span>
                  </div>

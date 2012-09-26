@@ -147,6 +147,7 @@ public class ContestController implements ServletContextAware {
 		}
 		
 		addCommonModel(model,uploadModel,layout);
+		model.addAttribute("voterId",getVoterIdFromCookie(cookieVotes));
 		
 		if( page.equals(PAGE_UPLOAD) ){
 			addUploadViewModel(page, layout, model);
@@ -193,9 +194,10 @@ public class ContestController implements ServletContextAware {
 	public String getPhotoListContent(
 			@RequestParam(value="l", defaultValue=MOBILE) String layout, 
 			Model model, 
-			@ModelAttribute("uploadModel") MediaMessage uploadModel){
+			@ModelAttribute("uploadModel") MediaMessage uploadModel,
+			@CookieValue(value="votes", required=false) String cookieVotes){
 		addCommonModel(model, uploadModel, layout);
-		
+		model.addAttribute("voterId",getVoterIdFromCookie(cookieVotes));
 		return "contest-photo-list";
 	}
 	
@@ -215,15 +217,21 @@ public class ContestController implements ServletContextAware {
 	
 	@RequestMapping(value="/contest-photo-list-json", method=RequestMethod.GET, produces="application/json")
 	public @ResponseBody List<MediaMessageTransfer> getPhotoListJSON(
-			@RequestParam(value="since") long since){
+			@RequestParam(value="since") long since,
+			@CookieValue(value="votes", required=false) String cookieVotes){
 		List<MediaMessage> list = mediaService.getMediaCopy();
 		List<MediaMessageTransfer> results = new ArrayList<MediaMessageTransfer>();
 		if( list != null && list.size() > 0 ){
 			Iterator<MediaMessage> iter = list.iterator();
 			while( iter.hasNext() ){
 				MediaMessage msg = iter.next();
+				String voterId = getVoterIdFromCookie(cookieVotes);
+				boolean canVote = false;
+				if( voterId != null ){
+					canVote = !msg.getVotes().contains(voterId);
+				}
 				if( msg.getLastVote() > since || msg.getCreated() > since || since == 0){
-					results.add(new MediaMessageTransfer(msg));
+					results.add(new MediaMessageTransfer(msg, canVote));
 				}
 			}
 		}
@@ -308,6 +316,7 @@ public class ContestController implements ServletContextAware {
 		if( "gallery".equals(form.getForm())){
 			doVote(response, form.getPhotoId(), cookieVotes, model);
 			addCommonModel(model, uploadModel, form.getLayout());
+			model.addAttribute("voterId",getVoterIdFromCookie(cookieVotes));
 			return "contest-photo-list";
 		}
 
@@ -358,6 +367,7 @@ public class ContestController implements ServletContextAware {
 			}
 		}
 		addCommonModel(model, uploadModel, form.getLayout());
+		model.addAttribute("voterId",getVoterIdFromCookie(cookieVotes));
 		return postUploadFormResponseView(isAjaxRequest(request),success,form.getLayout());
 	}
 	
@@ -406,13 +416,22 @@ public class ContestController implements ServletContextAware {
 		}
 	}
 	
+	private String getVoterIdFromCookie(String cookie){
+		String voterId = null;
+		if( cookie != null && cookie.length() > 13){
+			voterId = cookie.substring(0,13);
+		}
+		
+		return voterId;
+	}
+	
 	private void doVote(HttpServletResponse response, String id, String cookieVotes, Model model){
 		MediaMessage msg = mediaService.getMediaMessage(id);
 		if (msg != null ){
 			String voterId = null;
 			List<String> votesList = null;
 			if( cookieVotes != null ){
-				voterId = cookieVotes.substring(0,13);
+				voterId = getVoterIdFromCookie(cookieVotes);
 				String votes = cookieVotes.substring(14);
 				votesList = new ArrayList<String>(Arrays.asList(votes.split(",")));
 				if( votesList.contains(id)){

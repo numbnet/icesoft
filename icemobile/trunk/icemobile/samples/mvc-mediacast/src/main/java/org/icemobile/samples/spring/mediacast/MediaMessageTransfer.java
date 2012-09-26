@@ -8,8 +8,17 @@ public class MediaMessageTransfer {
 	private long lastVote;
 	private int votes;
 	private long created;
+	private boolean canVote;
 	
-	public MediaMessageTransfer(MediaMessage msg){
+	public boolean isCanVote() {
+		return canVote;
+	}
+
+	public void setCanVote(boolean canVote) {
+		this.canVote = canVote;
+	}
+
+	public MediaMessageTransfer(MediaMessage msg, boolean canVote){
 		id = msg.getId();
 		description = msg.getDescription();
 		Media photo = msg.getSmallPhoto();
