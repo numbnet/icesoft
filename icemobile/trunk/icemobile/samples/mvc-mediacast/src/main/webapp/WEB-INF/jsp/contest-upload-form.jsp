@@ -59,5 +59,11 @@
     </form:form>
     <script type="text/javascript">
         enhanceForm("#cameraUploadForm","#uploadFormContainer");
+        window.onhashchange = function()  {
+            if ("#icemobilesx" === window.location.hash)  {
+                window.location.hash = "";
+                window.location.reload();
+            }
+        }
     </script>
 </div>
