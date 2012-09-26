@@ -40,6 +40,8 @@ public class GetEnhancedRenderer extends CoreRenderer {
         GetEnhanced getEnhanced = (GetEnhanced) uiComponent;
         
         DeviceType device = Utils.getDeviceTypeWithoutDefault(facesContext);
+        
+        boolean ios = Utils.isIOS();
 		
 		if( device != null && !Utils.isICEmobileContainerOrHasSX()){
 			writer.startElement(HTML.SPAN_ELEM, uiComponent);
@@ -105,6 +107,15 @@ public class GetEnhancedRenderer extends CoreRenderer {
 				writer.writeText(GetEnhanced.ENABLE, null);
 				writer.endElement(null);
             }
+			if( ios ){
+				writer.startElement(HTML.ANCHOR_ELEM, null);
+				writer.writeAttribute(HTML.HREF_ATTR,"#",null);
+				writer.writeAttribute(HTML.CLASS_ATTR, "mobi-button mobi-button-important",null);
+				writer.writeAttribute(HTML.ONCLICK_ATTR, Utils.getICEmobileRegisterSXScript(),null );
+				writer.writeText("Enable ICEmobile SX",null);
+				writer.endElement(null);
+			}
+			
 			if( getEnhanced.isIncludeLink() ){
 				writer.startElement(HTML.ANCHOR_ELEM,null);
 				writer.writeAttribute(HTML.HREF_ATTR, link, null);
