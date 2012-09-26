@@ -1,7 +1,7 @@
 package org.icefaces.samples.showcase.example.ace.tree;
 
 import org.icefaces.ace.model.tree.NodeState;
-import org.icefaces.ace.model.tree.StateCreationCallback;
+import org.icefaces.ace.model.tree.NodeStateCreationCallback;
 import org.icefaces.samples.showcase.metadata.annotation.ComponentExample;
 import org.icefaces.samples.showcase.metadata.annotation.ExampleResource;
 import org.icefaces.samples.showcase.metadata.annotation.ExampleResources;
@@ -61,7 +61,7 @@ public class TreeClientBean extends ComponentExampleImpl<TreeClientBean> impleme
     public static final String BEAN_NAME = "treeClientBean";
     private List<LocationNodeImpl> treeRoots = Arrays.asList(TreeDataFactory.getTreeRoots().clone());
 
-    private StateCreationCallback contractProvinceInit = new StateCreationCallback() {
+    private NodeStateCreationCallback contractProvinceInit = new NodeStateCreationCallback() {
         public NodeState initializeState(NodeState newState, Object node) {
             LocationNodeImpl loc = (LocationNodeImpl) node;
             if (loc.getType().equals("country"))
@@ -83,11 +83,11 @@ public class TreeClientBean extends ComponentExampleImpl<TreeClientBean> impleme
         return treeRoots;
     }
 
-    public StateCreationCallback getContractProvinceInit() {
+    public NodeStateCreationCallback getContractProvinceInit() {
         return contractProvinceInit;
     }
 
-    public void setContractProvinceInit(StateCreationCallback contractProvinceInit) {
+    public void setContractProvinceInit(NodeStateCreationCallback contractProvinceInit) {
         this.contractProvinceInit = contractProvinceInit;
     }
 }
