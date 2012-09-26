@@ -1,9 +1,6 @@
 package org.icefaces.samples.showcase.example.ace.tree;
 
-import org.icefaces.ace.model.tree.LazyNodeDataModel;
-import org.icefaces.ace.model.tree.NodeState;
-import org.icefaces.ace.model.tree.NodeStateMap;
-import org.icefaces.ace.model.tree.StateCreationCallback;
+import org.icefaces.ace.model.tree.*;
 import org.icefaces.samples.showcase.metadata.annotation.ComponentExample;
 import org.icefaces.samples.showcase.metadata.annotation.ExampleResource;
 import org.icefaces.samples.showcase.metadata.annotation.ExampleResources;
@@ -62,7 +59,7 @@ public class TreeLazyBean extends ComponentExampleImpl<TreeLazyBean> implements 
 
     private NodeStateMap stateMap;
     private LazyNodeDataModel<LocationNodeImpl> lazyModel = new ExampleLazyModel();
-    private StateCreationCallback initState = new StateCreationCallback() {
+    private NodeStateCreationCallback initState = new NodeStateCreationCallback() {
         public NodeState initializeState(NodeState newState, Object node) {
             LocationNodeImpl loc = (LocationNodeImpl) node;
             if (loc.getType().equals("country"))
@@ -79,7 +76,7 @@ public class TreeLazyBean extends ComponentExampleImpl<TreeLazyBean> implements 
         return lazyModel;
     }
 
-    public StateCreationCallback getInitState() {
+    public NodeStateCreationCallback getInitState() {
         return initState;
     }
 

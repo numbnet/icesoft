@@ -32,12 +32,12 @@ public class NodeStateMap implements Map<Object, NodeState>, Serializable {
     KeySegmentConverter keyConverter;
     Predicate selectedPredicate = new SelectedPredicate();
     Predicate expandedPredicate = new ExpandedPredicate();
-    StateCreationCallback initCallback;
+    NodeStateCreationCallback initCallback;
 
     public NodeStateMap() {
     }
 
-    public NodeStateMap(StateCreationCallback callback) {
+    public NodeStateMap(NodeStateCreationCallback callback) {
         setInitCallback(callback);
     }
 
@@ -121,7 +121,7 @@ public class NodeStateMap implements Map<Object, NodeState>, Serializable {
         return EntrySetToKeyListTransformer.transform(CollectionUtils.select(map.entrySet(), this.expandedPredicate));
     }
 
-    public StateCreationCallback getInitCallback() {
+    public NodeStateCreationCallback getInitCallback() {
         return initCallback;
     }
 
@@ -135,7 +135,7 @@ public class NodeStateMap implements Map<Object, NodeState>, Serializable {
     }
 
 
-    public void setInitCallback(StateCreationCallback initCallback) {
+    public void setInitCallback(NodeStateCreationCallback initCallback) {
         this.initCallback = initCallback;
     }
 

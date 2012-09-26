@@ -20,6 +20,6 @@ package org.icefaces.ace.model.tree;
  * Date: 2012-09-13
  * Time: 3:15 PM
  */
-public interface StateCreationCallback {
+public interface NodeStateCreationCallback {
     public NodeState initializeState(NodeState newState, Object node);
 }
