@@ -290,7 +290,14 @@ public class MediaMessage implements Serializable{
 		this.largePhoto = largePhoto;
 	}
 
-
+	public String getVotesAsString(){
+		StringBuilder str = new StringBuilder();
+		for( String vote : votes ){
+			str.append(vote);
+			str.append(" ");
+		}
+		return str.toString();
+	}
 
 
 
