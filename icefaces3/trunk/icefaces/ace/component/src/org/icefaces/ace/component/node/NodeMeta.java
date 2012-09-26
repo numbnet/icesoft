@@ -37,20 +37,9 @@ import javax.faces.application.ResourceDependency;
 @ResourceDependencies({
         @ResourceDependency(library="icefaces.ace", name="util/ace-jquery.js")
 })
-@ClientBehaviorHolder(events = {
-        @ClientEvent(name="select",
-                javadoc="Fired when a row or cell is selected on the DataTable.",
-                tlddoc="Fired when a row or cell is selected on the DataTable.",
-                defaultRender="@all", defaultExecute="@this"),
-
-        @ClientEvent(name="deselect",
-                javadoc="Fired when a row or cell is deselected on the DataTable.",
-                tlddoc="Fired when a row or cell is deselected on the DataTable.",
-                defaultRender="@all", defaultExecute="@this")
-},
-        defaultEvent = "select"
-)
 public class NodeMeta extends UIComponentBaseMeta {
-    @Property
+    @Property(tlddoc = "The String value that if equal to the value of the 'type' attribute of the tree, " +
+            "indicates this ace:node and its contents will be the one rendered for the given node data object. " +
+            "If no match is found, the ace:node without a type is used as a default node template. ")
     String type;
 }
