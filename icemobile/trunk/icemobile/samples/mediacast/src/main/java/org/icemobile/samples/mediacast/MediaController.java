@@ -235,7 +235,9 @@ public class MediaController implements Serializable {
 	 * @return true if an ICEmobile enhancements are detected, otherwise false.
 	 */
 	public boolean isEnhancedBrowser() {
-		return Utils.showSX();
+        //if the prompt for ICEmobile-SX is shown, the browser
+        //is not enhanced
+        return !Utils.showSX();
 	}
 
 	/**
