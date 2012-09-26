@@ -71,7 +71,8 @@ import javax.faces.application.ResourceDependency;
         defaultEvent = "select"
 )
 public class TreeMeta extends UIDataMeta {
-    @Property
+    @Property(tlddoc = "Optionally define a custom KeySegmentConverter object to produce segmented identifier " +
+            "keys for nodes based on something other than indexes.")
     KeySegmentConverter keyConverter;
 
     @Property(tlddoc = "The Java objects representing the nodes of the tree. Supports either " +
