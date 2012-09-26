@@ -49,7 +49,7 @@ public class TreeRendererContext {
         ResourceHandler rh = FacesContext.getCurrentInstance()
                 .getApplication().getResourceHandler();
 
-        dotURL = rh.createResource("dot.png","icefaces.ace/tree").getRequestPath();
+        dotURL = rh.createResource("tree/dot.png","icefaces.ace", "image/png").getRequestPath();
     }
 
     public Tree getTree() {
