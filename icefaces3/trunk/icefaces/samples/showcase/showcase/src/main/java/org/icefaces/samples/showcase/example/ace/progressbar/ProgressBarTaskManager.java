@@ -33,7 +33,7 @@ import org.icefaces.samples.showcase.util.FacesUtils;
 @ManagedBean(name = ProgressBarTaskManager.BEAN_NAME)
 @CustomScoped(value = "#{window}")
 public class ProgressBarTaskManager implements Serializable {
-	public static final String BEAN_NAME = "task";
+	public static final String BEAN_NAME = "longtask";
 
 	public static final String PUSH_GROUP = "ourUser"
 			+ System.currentTimeMillis();

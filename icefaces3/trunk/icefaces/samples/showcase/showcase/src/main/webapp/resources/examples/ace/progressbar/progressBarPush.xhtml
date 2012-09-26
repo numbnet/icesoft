@@ -38,33 +38,33 @@
                 <h:panelGrid width="100%" style="text-align: center;" columns="1">
                     <h:panelGrid columns="2" styleClass="centeredPanelGrid">
                         <h:outputText value="Progress "/>
-                        <h:outputText id="progress" value="@ #{task.progress} %" rendered="#{task.progress ne 100 and task.taskRunning}" style="font-weight: bold;"/>    
-                        <h:outputText id="completed" value="completed" rendered="#{task.progress eq 100}" style="font-weight: bold;"/>
-                        <h:outputText id="paused" value="paused" rendered="#{(task.progress gt 0 and task.progress lt 100) and !task.taskRunning}" style="font-weight: bold;"/>
-                        <h:outputText id="stopped" value="stopped" rendered="#{(task.progress eq 0) and !task.taskRunning}" style="font-weight: bold;"/>
+                        <h:outputText id="progress" value="@ #{longtask.progress} %" rendered="#{longtask.progress ne 100 and longtask.taskRunning}" style="font-weight: bold;"/>    
+                        <h:outputText id="completed" value="completed" rendered="#{longtask.progress eq 100}" style="font-weight: bold;"/>
+                        <h:outputText id="paused" value="paused" rendered="#{(longtask.progress gt 0 and longtask.progress lt 100) and !longtask.taskRunning}" style="font-weight: bold;"/>
+                        <h:outputText id="stopped" value="stopped" rendered="#{(longtask.progress eq 0) and !longtask.taskRunning}" style="font-weight: bold;"/>
                     </h:panelGrid>
                     
                     <ace:progressBar   id="myProgressBar"
-                                       value="#{task.progress}"/>
+                                       value="#{longtask.progress}"/>
                     
                     
                     <h:panelGrid columns="2" style="text-align: center; margin-left: auto; margin-right: auto; width: 150px; height: 50px;">                                
                         <h:commandLink  id="start"
 										actionListener="#{progressBarPush.startTask}"
-										rendered="#{!task.taskRunning}"
-										disabled="#{task.taskRunning}">
+										rendered="#{!longtask.taskRunning}"
+										disabled="#{longtask.taskRunning}">
                             <h:graphicImage id="playImg" value="#{progressBarPush.playImage.path}" alt="#{progressBarPush.playImage.description}"/>
                         </h:commandLink>
                         <h:commandLink id="reset"
-									   actionListener="#{task.resetTask}"
-									   rendered="#{!task.taskRunning}"
-									   disabled="#{task.taskRunning}">
+									   actionListener="#{longtask.resetTask}"
+									   rendered="#{!longtask.taskRunning}"
+									   disabled="#{longtask.taskRunning}">
                             <h:graphicImage id="stopImg" value="#{progressBarPush.stopImage.path}" alt="#{progressBarPush.stopImage.description}"/>
                         </h:commandLink>
                         <h:commandLink id="stop"
-									   actionListener="#{task.stopTask}"
-                                       rendered="#{task.taskRunning}"
-                                       disabled="#{!task.taskRunning}">
+									   actionListener="#{longtask.stopTask}"
+                                       rendered="#{longtask.taskRunning}"
+                                       disabled="#{!longtask.taskRunning}">
                             <h:graphicImage id="pauseImg" value="#{progressBarPush.pauseImage.path}" alt="#{progressBarPush.pauseImage.description}"/>
                         </h:commandLink>
                     
