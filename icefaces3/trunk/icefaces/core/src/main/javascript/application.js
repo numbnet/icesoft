@@ -299,8 +299,8 @@ if (!window.ice.icefaces) {
             perRequestOnAfterUpdateListeners = perRequestOnAfterUpdateListeners || [];
             return function(submitEvent) {
                 var submitElement = submitEvent.source;
-                //if we have the submit element and the ICEfaces configuration set (ICEfaces render enabled) then the callbacks are invoked
-                if (submitElement && configurationOf(submitElement)) {
+                //if we have the submit element and the view ID set (ICEfaces render enabled) then the callbacks are invoked
+                if (submitElement && viewIDOf(submitElement)) {
                     switch (submitEvent.status) {
                         case 'begin':
                             //Include parameter indicating if submission was triggered by client
