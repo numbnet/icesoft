@@ -232,6 +232,17 @@ input, textarea{ font-family: droid, Helvetica, Arial, sans-serif;}
     #left,#right{
         overflow-y:scroll;
         overflow-x:hidden;
+        -webkit-box-sizing: border-box;
+	    -moz-box-sizing: border-box;
+	    -ms-box-sizing: border-box;
+	    box-sizing: border-box;
+	    float:left;
+    }
+    #right{
+        width:70%;border-left:1px solid darkgray;
+    }
+    #left{
+        width:30%;
     }
 }
 .title-msg{
