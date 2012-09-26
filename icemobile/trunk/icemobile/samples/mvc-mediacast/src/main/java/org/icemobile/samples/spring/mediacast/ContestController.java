@@ -69,6 +69,10 @@ public class ContestController implements ServletContextAware {
 	
 	private static final String ACTION_VOTE = "v";
 	
+	private String currentLeaderEmail;
+	private int currentLeaderVotes = 0;
+	
+	
 	@PostConstruct
 	public void init(){
 		ensureUploadDirExists();
@@ -246,6 +250,7 @@ public class ContestController implements ServletContextAware {
 	@RequestMapping(value="/contest-photo-list-json", method=RequestMethod.GET, produces="application/json")
 	public @ResponseBody List<MediaMessageTransfer> getPhotoListJSON(
 			@RequestParam(value="since") long since,
+			@RequestParam(value="_", required=false) String jqTimestamp,
 			@CookieValue(value="votes", required=false) String cookieVotes){
 		List<MediaMessage> list = mediaService.getMediaCopy();
 		List<MediaMessageTransfer> results = new ArrayList<MediaMessageTransfer>();
@@ -390,12 +395,15 @@ public class ContestController implements ServletContextAware {
 				mediaService.addMedia(uploadModel);
 				log.debug("successfully added message to mediaService, uploadModel="
 						+ uploadModel);
-				//uploadModel.setUploadMsg("Thank you, your file was uploaded successfully.");
 				model.addAttribute("msg","Thank you, your file was uploaded successfully.");
 				uploadModel.clearForNextUpload();
 				uploadModel.setId(newId());
-				PushContext.getInstance(servletContext).push("photos");		
-				PushContext.getInstance(servletContext).push("carousel");		
+			
+				PushContext pc = PushContext.getInstance(servletContext);
+				String pushId = pc.createPushId(request, response);
+				pc.addGroupMember(uploadModel.getEmail(), pushId);
+				pc.push("photos");		
+				pc.push("carousel");		
 				
 				success = true;
 			}
@@ -508,8 +516,25 @@ public class ContestController implements ServletContextAware {
 			addVotesCookie(response, voterId, votesList);
 			PushContext.getInstance(servletContext).push("photos");
 			PushContext.getInstance(servletContext).push("votes-"+msg.getId());
+			checkLeader(msg);
 			log.debug("recorded vote");
 		} 
+	}
+	
+	private void checkLeader(MediaMessage msg){
+		if( msg.getVotes().size() > currentLeaderVotes ){
+			currentLeaderVotes = msg.getVotes().size();
+			if( currentLeaderEmail != null && !currentLeaderEmail.equals(msg.getEmail())){
+				/*
+				PushMessage pm = new PushMessage("ICEmobile JavaOne Contest!",
+					"Hey congratulation! You're now in the lead with " + currentLeaderVotes
+					+ " votes!");
+				PushRenderer.render(msg.getEmail(), pm);
+				*/
+				currentLeaderEmail = msg.getEmail();
+			}
+		}
+		
 	}
 	
 	private void addVotesCookie(HttpServletResponse response, String voterId, List<String> votes){
