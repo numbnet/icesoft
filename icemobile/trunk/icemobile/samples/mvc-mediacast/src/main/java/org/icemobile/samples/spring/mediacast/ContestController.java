@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.GregorianCalendar;
 import java.util.Iterator;
 import java.util.List;
@@ -139,15 +140,22 @@ public class ContestController implements ServletContextAware {
 		layout = cleanSingleRequestParam(layout);
 		
 		String view = null;
-		if (ACTION_VOTE.equals(action) ){
-			doVote(response,id,cookieVotes, model);
-		}
 		if( layout.equals(TABLET) ){
 			page = PAGE_ALL;
 		}
+		String voterId = getVoterIdFromCookie(cookieVotes);
+		if( cookieVotes == null || cookieVotes.length() == 0){
+			voterId = newId();
+			List<String> votes = Collections.emptyList();
+			addVotesCookie(response, voterId, votes);
+		}
 		
 		addCommonModel(model,uploadModel,layout);
-		model.addAttribute("voterId",getVoterIdFromCookie(cookieVotes));
+		model.addAttribute("voterId",voterId);
+		
+		if (ACTION_VOTE.equals(action) ){
+			doVote(response,id,cookieVotes, model);
+		}
 		
 		if( page.equals(PAGE_UPLOAD) ){
 			addUploadViewModel(page, layout, model);
@@ -421,43 +429,58 @@ public class ContestController implements ServletContextAware {
 		if( cookie != null && cookie.length() > 13){
 			voterId = cookie.substring(0,13);
 		}
-		
+		else{
+			return newId();
+		}
 		return voterId;
+	}
+	
+	private List<String> getVotesFromCookie(String cookie){
+		List<String> votes = new ArrayList<String>();
+		if( cookie != null && cookie.length() > 14 ){
+			String votesString = cookie.substring(14);
+			votes.addAll(Arrays.asList(votesString.split(",")));
+		}
+		return votes;
 	}
 	
 	private void doVote(HttpServletResponse response, String id, String cookieVotes, Model model){
 		MediaMessage msg = mediaService.getMediaMessage(id);
 		if (msg != null ){
-			String voterId = null;
-			List<String> votesList = null;
-			if( cookieVotes != null ){
-				voterId = getVoterIdFromCookie(cookieVotes);
-				String votes = cookieVotes.substring(14);
-				votesList = new ArrayList<String>(Arrays.asList(votes.split(",")));
-				if( votesList.contains(id)){
-					log.debug("attempted duplicate vote!!!");
-					model.addAttribute("msg","Looks like you already voted on this one...try another");
-					return;
-				}
-			}
-			else{
-				voterId = newId();
-				votesList = new ArrayList<String>();
+			String voterId = getVoterIdFromCookie(cookieVotes);
+			List<String> votesList = getVotesFromCookie(cookieVotes);
+			if( votesList.contains(id)){
+				log.debug("attempted duplicate vote!!!");
+				model.addAttribute("msg","Looks like you already voted on this one...try another");
+				return;
 			}
 			votesList.add(id);
 			msg.getVotes().add(voterId);
 			msg.setLastVote(System.currentTimeMillis());
 			model.addAttribute("msg","Awesome, thanks for the vote!");
-			String newVotes = voterId+":"+ votesList.toString().replaceAll(" ", "").replaceAll("^\\[|\\]$","");
-			Cookie cookie = new Cookie("votes", newVotes);
-			cookie.setHttpOnly(true);
-			cookie.setPath("/");
-			response.addCookie(cookie);
+			addVotesCookie(response, voterId, votesList);
 			PushContext.getInstance(servletContext).push("photos");
 			PushContext.getInstance(servletContext).push("votes-"+msg.getId());
 			log.debug("recorded vote");
-
 		} 
+	}
+	
+	private void addVotesCookie(HttpServletResponse response, String voterId, List<String> votes){
+		String votesString = "";
+		if( !votes.isEmpty() ){
+			Iterator<String> iter = votes.iterator();
+			while( iter.hasNext() ){
+				votesString += iter.next();
+				if( iter.hasNext() ){
+					votesString += ",";
+				}
+			}
+		}
+		String cookieVal = voterId+":"+ votesString;
+		Cookie cookie = new Cookie("votes", cookieVal);
+		cookie.setHttpOnly(true);
+		cookie.setPath("/");
+		response.addCookie(cookie);
 	}
 
 	private String newId() {
