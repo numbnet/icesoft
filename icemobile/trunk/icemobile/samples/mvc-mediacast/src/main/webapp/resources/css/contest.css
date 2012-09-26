@@ -260,6 +260,8 @@ html.ipad .mobi-pagePanel-footer{
     top: 10px;
     position: absolute;
     left: 0;
+    padding: 10px;
+    opacity: 0.6;
 }
 .viewer-forward{
     width: 23px;
@@ -269,4 +271,6 @@ html.ipad .mobi-pagePanel-footer{
 	top: 10px;
 	position: absolute;
 	right: 0;
+	padding: 10px;
+    opacity: 0.6;
 }
