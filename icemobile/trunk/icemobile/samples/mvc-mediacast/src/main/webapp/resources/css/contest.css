@@ -44,7 +44,8 @@
 }
 
 .input{
-	width: 100%;	
+	width: 100%;
+	font-size:15px;	
 }
 
 #largePhoto img{
@@ -246,4 +247,8 @@ html.android .mobi-pagePanel-header a.mobi-button:visited {
 }
 .mobi-pagePanel-body {
     padding: 0 0 48px 0;
+}
+html.iphone .mobi-pagePanel-footer,
+html.ipad .mobi-pagePanel-footer{
+	position: relative;
 }
