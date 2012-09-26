@@ -29,7 +29,7 @@ public class GoogleAnalyticsTag extends BaseSimpleTag{
 	public void doTag() throws IOException {
 		TagWriter writer = new TagWriter(getContext());
 		if( account == null ){
-			account = System.getenv(ACCOUNT_ENVVAR);
+			account = System.getProperty(ACCOUNT_ENVVAR);
 			if( account == null ){
 				log.warning("The Google Analytics account has not been set for the <mobi:googleAnalytics> tag. " +
 						"Please use the 'account' tag attribute, or the '"+ACCOUNT_ENVVAR+"' " +
