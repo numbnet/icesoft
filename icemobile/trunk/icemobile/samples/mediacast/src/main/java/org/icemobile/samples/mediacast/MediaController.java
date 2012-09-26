@@ -27,7 +27,6 @@ import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
-import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 
 import org.apache.commons.lang3.StringUtils;
@@ -35,7 +34,6 @@ import org.icefaces.application.PortableRenderer;
 import org.icefaces.application.PushMessage;
 import org.icefaces.application.PushRenderer;
 import org.icefaces.mobi.utils.Utils;
-import org.icefaces.util.EnvUtils;
 import org.icemobile.samples.mediacast.navigation.NavigationModel;
 
 /**
@@ -72,7 +70,6 @@ public class MediaController implements Serializable {
 	@ManagedProperty(value="#{mediaView}")
 	private MediaView mediaView;
 	
-	private boolean showMessagePopup = false;
 	private boolean showHelpPopup = false;
 	
 	private SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss");
@@ -130,7 +127,6 @@ public class MediaController implements Serializable {
 			String errorMsg = "An error occurred while upload the "
 					+ selectedMediaInput + " file, please try again.";
 			uploadModel.setUploadFeedbackMessage(errorMsg);
-			showMessagePopup = true;
 			logger.warning(errorMsg);
 		}
 	}
@@ -191,7 +187,6 @@ public class MediaController implements Serializable {
 			}
 			uploadModel
 					.setUploadFeedbackMessage("The Media Message was sent successfully.");
-			showMessagePopup = true;
 		}
 
 	}
@@ -252,7 +247,6 @@ public class MediaController implements Serializable {
 		logger.finer("chooseCamera()");
 		uploadModel.setSelectedMediaInput(MediaMessage.MEDIA_TYPE_PHOTO);
 		uploadModel.setUploadFeedbackMessage("");
-		showMessagePopup = false;
 	}
 
 	/**
@@ -264,7 +258,6 @@ public class MediaController implements Serializable {
 		logger.finer("chooseCamcorder()");
 		uploadModel.setSelectedMediaInput(MediaMessage.MEDIA_TYPE_VIDEO);
 		uploadModel.setUploadFeedbackMessage("");
-		showMessagePopup = false;
 	}
 
 	/**
@@ -276,7 +269,6 @@ public class MediaController implements Serializable {
 		logger.finer("chooseMicrophone()");
 		uploadModel.setSelectedMediaInput(MediaMessage.MEDIA_TYPE_AUDIO);
 		uploadModel.setUploadFeedbackMessage("");
-		showMessagePopup = false;
 	}
 
     public void setUploadModel(UploadModel uploadModel){
@@ -298,11 +290,6 @@ public class MediaController implements Serializable {
 	public void setMediaView(MediaView mediaView) {
 		this.mediaView = mediaView;
 	}
-	
-	public boolean isShowMessagePopup(){
-		return showMessagePopup;
-	}
-	
 	public boolean isShowHelpPopup(){
 		return showHelpPopup;
 	}
@@ -310,11 +297,6 @@ public class MediaController implements Serializable {
 	public void setShowHelpPopup(boolean val){
 		showHelpPopup = val;
 	}
-	
-	public void closeMessagePopup(ActionEvent e){
-		showMessagePopup = false;
-	}
-	
 	
 
 }

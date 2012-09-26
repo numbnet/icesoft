@@ -17,7 +17,7 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
+	xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component" >
 	<f:facet name="header">
            Mediacast
        </f:facet>
@@ -28,29 +28,28 @@
 					value="#{mediaStore.media}"
 					rendered="#{not empty mediaStore.media}">
 					<h:column>
-						<div style="overflow: hidden; height: 50px;">
-							<mobi:graphicImage id="mediaImg" style="border:none;height:50px;"
-								title="#{mediaMessage.title}"
-								value="#{mediaMessage.mediumPhoto.data}" />
+						<div style="overflow: hidden; height: 75px;">
+							<h:commandLink id="mediaLink">
+                                <mobi:graphicImage id="mediaImg" style="border:none;height:75px;"
+                                    title="#{mediaMessage.title}"
+                                    value="#{mediaMessage.mediumPhoto.data}" />
+                                <f:setPropertyActionListener target="#{mediaView.media}"
+                                    value="#{mediaMessage}" />
+                                <f:setPropertyActionListener
+                                    target="#{navigationModel.currentTab}" value="viewer" />
+                            </h:commandLink>
 						</div>
-						<h:commandLink id="mediaLink" styleClass="view-play-icon">
-							<f:setPropertyActionListener target="#{mediaView.media}"
-								value="#{mediaMessage}" />
-							<f:setPropertyActionListener
-								target="#{navigationModel.currentTab}" value="viewer" />
-							<h:graphicImage library="images" style="border:none;"
-								name="view-icon.png" />
-						</h:commandLink>
+						
 					</h:column>
 				</mobi:carousel>
 			</div>
 			<div style="clear: both;" />
 			<mobi:tabSet style="background-color:transparent;" autoWidth="true"
-				orientation="bottom" currentId="#{navigationModel.currentTab}"
+				orientation="top" currentId="#{navigationModel.currentTab}"
 				singleSubmit="true">
 				<mobi:contentPane facelet="false" client="true" id="home"
 					title="Upload">
-					<h4>Share from your location:</h4>
+					<h4 style="text-align:center;">Share from your location:</h4>
 					<ui:include src="/WEB-INF/includes/content/message-upload.xhtml" />
 				</mobi:contentPane>
 				<mobi:contentPane facelet="false" client="true" id="feed"

@@ -19,6 +19,7 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component"
 	xmlns:c="http://java.sun.com/jsp/jstl/core">
+	
 	<mobi:pagePanel>
 		<f:facet name="header">
 			<h:graphicImage library="images" name="icemobile_thumb.png"
@@ -26,82 +27,86 @@
 			<span id="title">Mediacast</span>
 		</f:facet>
 		<f:facet name="body">
-			<mobi:splitPane scrollable="true" columnDivider="30">
-				<f:facet name="left">
-					<div>
-						<ui:include src="/WEB-INF/includes/content/feed.xhtml" />
-						<ui:include src="/WEB-INF/includes/content/tag-cloud.xhtml" />
-					</div>
-				</f:facet>
-				<f:facet name="right">
-					<div class="left-pane">
-						<mobi:tabSet style="background-color:transparent;"
-							autoWidth="false" orientation="bottom"
-							currentId="#{navigationModel.currentTab}" singleSubmit="true">
-							<mobi:contentPane facelet="false" client="true" id="home"
-								title="Upload">
-								<h4 class="subtitle">Share from your location:</h4>
-								<ui:include src="/WEB-INF/includes/content/message-upload.xhtml" />
-							</mobi:contentPane>
-							<mobi:contentPane facelet="false" client="true" id="viewer"
-								title="Viewer">
-								<h:panelGroup rendered="#{not empty mediaView.media}">
-									<script type="text/javascript">
-										window.scrollTo(0, 0);
-									</script>
+            <div>
+                <div id="left" style="width:30%;float:left;">
+                    <ui:include src="/WEB-INF/includes/content/session-tags.xhtml" />
+                    <ui:include src="/WEB-INF/includes/content/tag-cloud.xhtml" />
+                    <ui:include src="/WEB-INF/includes/content/feed.xhtml" />
+                </div>
+                <div id="right" style="width:70%;float:left;border-left:1px solid darkgray;box-sizing:border-box;-moz-border-sizing:border-box;">
+                    <div class="right-pane" id="rightPane">
+                        
+                        <mobi:tabSet style="background-color:transparent;"
+                            autoWidth="false" orientation="bottom"
+                            currentId="#{navigationModel.currentTab}" singleSubmit="true">
+                            <mobi:contentPane facelet="false" client="true" id="home"
+                                title="Upload">
+                                <h4 class="subtitle">Share from your location:</h4>
+                                <ui:include src="/WEB-INF/includes/content/message-upload.xhtml" />
+                            </mobi:contentPane>
+                            <mobi:contentPane facelet="false" client="true" id="viewer"
+                                title="Viewer">
+                                <h:panelGroup rendered="#{not empty mediaView.media}">
+                                    <script type="text/javascript">
+                                        window.scrollTo(0, 0);
+                                    </script>
 
-									<div class="message-title">
-										<h3>#{mediaView.media.title}</h3>
-										<span class="delete"> <h:commandLink id="deleteBtn"
-												actionListener="#{mediaController.deleteCurrentMedia}">
-												<img
-													src="#{facesContext.externalContext.requestContextPath}/resources/images/trash.png" />
-											</h:commandLink>
-										</span>
-									</div>
+                                    <div class="message-title">
+                                        <h3>#{mediaView.media.title}</h3>
+                                        <span class="delete"> <h:commandLink id="deleteBtn"
+                                                actionListener="#{mediaController.deleteCurrentMedia}">
+                                                <img
+                                                    src="#{facesContext.externalContext.requestContextPath}/resources/images/trash.png" />
+                                            </h:commandLink>
+                                        </span>
+                                    </div>
 
-									<mobi:graphicImage id="largePhoto"
-										rendered="#{mediaView.media.showPhoto}"
-										value="#{mediaView.media.largePhoto.data}"
-										styleClass="imageViewer" />
+                                    <mobi:graphicImage id="largePhoto"
+                                        rendered="#{mediaView.media.showPhoto}"
+                                        value="#{mediaView.media.largePhoto.data}"
+                                        styleClass="imageViewer" />
 
-									<mobi:videoPlayer id="videoPlayer"
-										rendered="#{mediaView.media.showVideo}"
-										value="#{mediaView.media.video.data}" styleClass="imageViewer"
-										linkLabel="Play" />
+                                    <mobi:videoPlayer id="videoPlayer"
+                                        rendered="#{mediaView.media.showVideo}"
+                                        value="#{mediaView.media.video.data}" styleClass="imageViewer"
+                                        linkLabel="Play" />
 
-									<mobi:audioPlayer id="audioPlayer"
-										rendered="#{mediaView.media.showAudio}"
-										value="#{mediaView.media.audio.data}" styleClass="imageViewer"
-										linkLabel="Play" />
+                                    <mobi:audioPlayer id="audioPlayer"
+                                        rendered="#{mediaView.media.showAudio}"
+                                        value="#{mediaView.media.audio.data}" styleClass="imageViewer"
+                                        linkLabel="Play" />
 
-									<mobi:fieldsetGroup>
-										<mobi:fieldsetRow
-											rendered="#{not empty mediaView.media.description}">
-											<label>Description: </label>
-											<h:outputText id="descriptionOut"
-												value="#{mediaView.media.description}" />
-										</mobi:fieldsetRow>
-										<mobi:fieldsetRow
-											rendered="#{not empty mediaView.media.description}">
-											<a href="#{mediaView.media.url}">Link</a>
-										</mobi:fieldsetRow>
-										<mobi:fieldsetRow rendered="#{not empty mediaView.media.tags}">
-											<label>Tags: </label>
-											<c:forEach items="#{mediaView.media.tags}" var="tag">
-												<mobi:graphicImage value="./resources/images/tag.gif" />
-												<h:outputText value="#{tag}&#160;"
-													style="vertical-align:top;display:inline-block;margin-right:10px;" />
-											</c:forEach>
-										</mobi:fieldsetRow>
-									</mobi:fieldsetGroup>
-								</h:panelGroup>
-							</mobi:contentPane>
-						</mobi:tabSet>
-					</div>
-				</f:facet>
-			</mobi:splitPane>
+                                    <mobi:fieldsetGroup>
+                                        <mobi:fieldsetRow
+                                            rendered="#{not empty mediaView.media.description}">
+                                            <label>Description: </label>
+                                            <h:outputText id="descriptionOut"
+                                                value="#{mediaView.media.description}" />
+                                        </mobi:fieldsetRow>
+                                        <mobi:fieldsetRow
+                                            rendered="#{not empty mediaView.media.description}">
+                                            <a href="#{mediaView.media.url}">Link</a>
+                                        </mobi:fieldsetRow>
+                                        <mobi:fieldsetRow rendered="#{not empty mediaView.media.tags}">
+                                            <label>Tags: </label>
+                                            <c:forEach items="#{mediaView.media.tags}" var="tag">
+                                                <mobi:graphicImage value="./resources/images/tag.gif" />
+                                                <h:outputText value="#{tag}&#160;"
+                                                    style="vertical-align:top;display:inline-block;margin-right:10px;" />
+                                            </c:forEach>
+                                        </mobi:fieldsetRow>
+                                    </mobi:fieldsetGroup>
+                                </h:panelGroup>
+                            </mobi:contentPane>
+                        </mobi:tabSet>
+                    </div>
+                </div>
+            </div>
 		</f:facet>
 	</mobi:pagePanel>
-	<ui:include src="/WEB-INF/includes/content/session-tags.xhtml" />
+    <script type="text/javascript">
+     addResizeAfterUpdatesListener('left');
+     addResizeAfterUpdatesListener('right');
+    </script>
+	
 </ui:composition>

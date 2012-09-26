@@ -20,18 +20,21 @@
              xmlns:f="http://java.sun.com/jsf/core"
              xmlns:ui="http://java.sun.com/jsf/facelets"
              xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
+             
+   <div style="text-align:center;">
 
-    	<span id="sx">
-    		<mobi:icemobilesx styleClass="mobi-button mobi-button-important"/>
-    	</span>
     	<h:commandLink id="showHelpPopup" class="helpIcon">
     		<f:setPropertyActionListener target="#{mediaController.showHelpPopup}"
             		value="true"/>
             <img src="#{facesContext.externalContext.requestContextPath}/resources/images/help.png"
             	style="width:22px;"/>
     	</h:commandLink>
-    
+        
+        <ui:include src="/WEB-INF/includes/content/help-pane.xhtml"/>
+        
         <mobi:uploadhelper/>
+        
+        <mobi:getEnhanced/>
         
         <mobi:geolocation latitude="#{uploadModel.currentMediaMessage.lat}"
                           longitude="#{uploadModel.currentMediaMessage.lon}"
@@ -151,6 +154,7 @@
             </mobi:fieldsetRow>
             
             <mobi:fieldsetRow style="text-align:center;">    
+                <div style="padding:5px;">#{uploadModel.uploadFeedbackMessage}</div>
                 <mobi:commandButton id="cancelUploadBtn"
                         styleClass="mobi-button mobi-button-default"
                         actionListener="#{mediaController.cancelUpload}"
@@ -163,34 +167,5 @@
                         value="Share"/> 
              </mobi:fieldsetRow>
         </mobi:fieldsetGroup>
-        
-        <mobi:panelPopup id="helpPopup" 
-            visible="#{mediaController.showHelpPopup}"
-            style="text-align:center;">
-           <div>Create a new media message using your mobile device. When you press the
-           upload button, your selected media type will be uploaded. You can upload separate
-           video, audio and photo media for the message. Once you're finished uploading,
-           you can click the 'Share' button and your message will be sent to all Mediacast users.
-           <ui:fragment rendered="#{not mediaController.enhancedBrowser}">
-                <br/><span style="font-weight:bold;font-style:italic;">
-                ICEmobile container was not detected, native
-                device integration will not be available.</span>
-            </ui:fragment>
-            </div>
-	        <hr/>
-            <mobi:commandButton value="Close" id="closeHelpPopup">
-            	<f:setPropertyActionListener target="#{mediaController.showHelpPopup}"
-            		value="false"/>
-            </mobi:commandButton>
-	    </mobi:panelPopup>
-        
-        <mobi:panelPopup id="messagePopup" 
-            visible="#{mediaController.showMessagePopup}"
-            style="text-align:center;">
-            <h4>#{uploadModel.uploadFeedbackMessage}</h4>
-            <hr/>
-            <mobi:commandButton value="Close" id="closePopup"
-                actionListener="#{mediaController.closeMessagePopup}"/>
-        </mobi:panelPopup>
-     
+     </div>
 </ui:composition>
