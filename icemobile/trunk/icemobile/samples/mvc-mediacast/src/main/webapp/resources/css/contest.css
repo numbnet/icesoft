@@ -160,6 +160,7 @@ input, textarea{ font-family: droid, Helvetica, Arial, sans-serif;}
 }
 #viewerPanel{
 	text-align: center;
+	position: relative;
 }
 .lightbox{
 	background-color:black;
@@ -251,4 +252,21 @@ html.android .mobi-pagePanel-header a.mobi-button:visited {
 html.iphone .mobi-pagePanel-footer,
 html.ipad .mobi-pagePanel-footer{
 	position: relative;
+}
+.viewer-back{
+	width: 23px; height: 34px;
+	background: url('css-images/back.png') center right no-repeat;
+	display: block;
+    top: 10px;
+    position: absolute;
+    left: 0;
+}
+.viewer-forward{
+    width: 23px;
+	height: 34px;
+	background: transparent url('css-images/forward.png') center right no-repeat;
+	display: block;
+	top: 10px;
+	position: absolute;
+	right: 0;
 }
