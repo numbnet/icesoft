@@ -37,6 +37,11 @@ span.if-tree > table.if-node-cnt > tbody > tr.if-node-tr > td.if-node-sw > div.i
     vertical-align: middle;
 }
 
+.if-node-sw span.ui-icon {
+    position: relative;
+    top:-1px;
+}
+
 .if-node-sw.noexp {
     cursor: default;
 }

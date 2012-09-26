@@ -47,7 +47,7 @@ import java.io.Serializable;
                         resource = ResourceRootPath.FOR_ACE_TLD + "node.html")
         }
 )
-@ManagedBean(name= DataTableResources.BEAN_NAME)
+@ManagedBean(name= TreeResources.BEAN_NAME)
 @CustomScoped(value = "#{window}")
 public class TreeResources extends ComponentExampleImpl< TreeResources > implements Serializable {
     public static final String BEAN_NAME = "treeResources";
