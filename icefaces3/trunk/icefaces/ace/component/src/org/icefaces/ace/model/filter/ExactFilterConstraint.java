@@ -27,7 +27,9 @@
  */
 package org.icefaces.ace.model.filter;
 
-public class ExactFilterConstraint implements FilterConstraint {
+import java.io.Serializable;
+
+public class ExactFilterConstraint implements FilterConstraint, Serializable {
 
     public boolean applies(String value, String filter) {
         return value.equalsIgnoreCase(filter.toLowerCase());

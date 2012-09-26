@@ -27,7 +27,9 @@
  */
 package org.icefaces.ace.model.filter;
 
-public class StartsWithFilterConstraint implements FilterConstraint {
+import java.io.Serializable;
+
+public class StartsWithFilterConstraint implements FilterConstraint, Serializable {
 
     public boolean applies(String value, String filter) {
         return value.toLowerCase().startsWith(filter.toLowerCase());
