@@ -273,7 +273,7 @@ public class TreeRenderer extends CoreRenderer {
         String leafStyle = NODE_LEAF_LINE_STYLE;
         String dotSource = renderContext.getDotURL();
         boolean lazy = renderContext.isLazy();
-        boolean leaf = lazy ? false : renderContext.getTree().isLeaf();
+        boolean leaf = lazy ? false : renderContext.getTree().isLeaf(); // prevent attempt at loading children in lazy mode
 
         if (renderContext.isExpansion())
             iconClass += " " + (state.isExpanded() ? expandedClass : contractedClass);

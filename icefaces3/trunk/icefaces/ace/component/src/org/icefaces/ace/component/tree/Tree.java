@@ -464,16 +464,17 @@ public class Tree<N> extends TreeBase implements Serializable {
                                            boolean visitRows) {
         // Iterate over our TreeNode template components, once per node
         setKey(NodeKey.ROOT_KEY);
-        Integer nodeCount = isPagination() ? getPageSize() : 0;
-        TreeWalkContext twc = new TreeWalkContext(visitRows, nodeCount, isPagination());
+        //Integer nodeCount = isPagination() ? getPageSize() : 0;
+        Integer nodeCount = 0;
+        TreeWalkContext twc = new TreeWalkContext(visitRows, nodeCount, false);
 
-        if (visitRows && twc.isPagination()) {
+        //if (visitRows && twc.isPagination()) {
             // go to position and max nodes according
             // to pagination
             // Will have to add style padding for when this results in beginning at
             // a tree root.
             // setKey(getFirstNode());
-        }
+        //}
 
         return visitTreeLevel(context, callback, twc);
     }
@@ -758,12 +759,13 @@ public class Tree<N> extends TreeBase implements Serializable {
                 }
             }
         }
-        Integer nodeCount = isPagination() ? getPageSize() : 0;
+        //Integer nodeCount = isPagination() ? getPageSize() : 0;
+        Integer nodeCount = 0;
 
         // Iterate over our UIColumn children, once per row
         setKey(NodeKey.ROOT_KEY);
         iterateTreeLevel(context, phaseId,
-                new TreeWalkContext(true, nodeCount, isPagination()));
+                new TreeWalkContext(true, nodeCount, false));
 
         // Clean up after ourselves
         setKey(NodeKey.ROOT_KEY);
