@@ -6,3 +6,16 @@ body {
     margin: 0;
     padding: 0;
 }
+
+a {
+    color: black;
+}
+a:hover {
+    color: black;
+}
+a:visited {
+    color: black;
+}
+a:active {
+    color: black;
+}
