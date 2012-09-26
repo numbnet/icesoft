@@ -53,7 +53,7 @@
         <mobi:fieldSetGroup inset="true" style="padding:10px;">
             <mobi:fieldSetRow style="text-align:center;padding:0;">
             Learn more about ICEmobile video, audio, QR code, augmented reality
-            and rich UI features at <a href="http://www.icesoft.org/projects/ICEmobile/overview.jsf">www.icesoft.org</a>.
+            and rich UI features at <a href="http://www.icesoft.org/projects/ICEmobile/overview.jsf">www.icesoft.org/projects/ICEmobile/</a>.
             </mobi:fieldSetRow>
         </mobi:fieldSetGroup>
     </form:form>

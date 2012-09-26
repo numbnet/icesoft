@@ -38,7 +38,7 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.multipart.MultipartFile;
 
 @Controller
-@SessionAttributes({"uploadModel","msg","admin","desktop", "sx", TagUtil.USER_AGENT_COOKIE})
+@SessionAttributes({"uploadModel","admin","desktop", "sx", TagUtil.USER_AGENT_COOKIE})
 public class ContestController implements ServletContextAware {
 
 	@Inject
@@ -381,7 +381,7 @@ public class ContestController implements ServletContextAware {
 						+ uploadModel);
 				//uploadModel.setUploadMsg("Thank you, your file was uploaded successfully.");
 				model.addAttribute("msg","Thank you, your file was uploaded successfully.");
-				uploadModel.clear();
+				uploadModel.clearForNextUpload();
 				uploadModel.setId(newId());
 				PushContext.getInstance(servletContext).push("photos");		
 				PushContext.getInstance(servletContext).push("carousel");		

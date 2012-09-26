@@ -83,6 +83,23 @@ public class MediaMessage implements Serializable{
 		smallPhoto = null;
 		largePhoto = null;
 	}
+	
+	public void clearForNextUpload(){
+		audio = null;
+		description = null;
+		direction = 0;
+		id = null;
+		latitude = 0;
+		longitude = 0;
+		photo = null;
+		tags = new ArrayList<String>();
+		title = null;
+		video = null;
+		lastVote = 0;
+		created = 0;
+		smallPhoto = null;
+		largePhoto = null;
+	}
 
 	public MediaMessage clone(){
 		MediaMessage cloned = new MediaMessage();
