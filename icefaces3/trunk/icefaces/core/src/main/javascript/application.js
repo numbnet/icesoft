@@ -240,10 +240,6 @@ if (!window.ice.icefaces) {
                         var options = {
                             'ice.submit.type': 'ice.push',
                             render: '@all',
-                            onevent: function(submitEvent) {
-                                pageScopedSubmitEventBroadcaster(submitEvent, form);
-                            },
-                            onerror: pageScopedSubmitErrorBroadcaster
                         };
                         jsf.ajax.request(form, null, options);
                     } catch (e) {
@@ -301,28 +297,34 @@ if (!window.ice.icefaces) {
             perRequestOnBeforeSubmitListeners = perRequestOnBeforeSubmitListeners || [];
             perRequestOnBeforeUpdateListeners = perRequestOnBeforeUpdateListeners || [];
             perRequestOnAfterUpdateListeners = perRequestOnAfterUpdateListeners || [];
-            return function(submitEvent, submitElement) {
-                switch (submitEvent.status) {
-                    case 'begin':
-                        //Include parameter indicating if submission was triggered by client
-                        var isUserInitiatedRequest = false;
-                        if (submitElement.id != retrieveUpdateFormID(viewIDOf(submitElement))) {
-                            isUserInitiatedRequest = true;
-                        }
-                        broadcast(perRequestOnBeforeSubmitListeners, [ submitElement, isUserInitiatedRequest ]);
-                        break;
-                    case 'complete':
-                        var xmlContent = submitEvent.responseXML;
-                        if (containsXMLData(xmlContent)) {
-                            broadcast(perRequestOnBeforeUpdateListeners, [ xmlContent, submitElement ]);
-                        } else {
-                            warn(logger, 'the response does not contain XML data');
-                        }
-                        break;
-                    case 'success':
-                        var xmlContent = submitEvent.responseXML;
-                        broadcast(perRequestOnAfterUpdateListeners, [ xmlContent, submitElement ]);
-                        break;
+            return function(submitEvent) {
+                var submitElement = submitEvent.source;
+                //if we have the submit element and the ICEfaces configuration set (ICEfaces render enabled) then the callbacks are invoked
+                if (submitElement && configurationOf(submitElement)) {
+                    switch (submitEvent.status) {
+                        case 'begin':
+                            //Include parameter indicating if submission was triggered by client
+                            var isUserInitiatedRequest = false;
+                            if (submitElement.id != retrieveUpdateFormID(viewIDOf(submitElement))) {
+                                isUserInitiatedRequest = true;
+                            }
+                            broadcast(perRequestOnBeforeSubmitListeners, [ submitElement, isUserInitiatedRequest ]);
+                            break;
+                        case 'complete':
+                            var xmlContent = submitEvent.responseXML;
+                            if (containsXMLData(xmlContent)) {
+                                broadcast(perRequestOnBeforeUpdateListeners, [ xmlContent, submitElement ]);
+                            } else {
+                                warn(logger, 'the response does not contain XML data');
+                            }
+                            break;
+                        case 'success':
+                            var xmlContent = submitEvent.responseXML;
+                            broadcast(perRequestOnAfterUpdateListeners, [ xmlContent, submitElement ]);
+                            break;
+                    }
+                } else {
+                    warn(logger, 'Source element is undefined, cannot determine if this view is ICEfaces enabled.')
                 }
             };
         }
@@ -356,8 +358,8 @@ if (!window.ice.icefaces) {
         }
 
         //setup page scoped submit event broadcasters
-        var pageScopedSubmitEventBroadcaster = submitEventBroadcaster(beforeSubmitListeners, beforeUpdateListeners, afterUpdateListeners);
-        var pageScopedSubmitErrorBroadcaster = submitErrorBroadcaster(networkErrorListeners, serverErrorListeners);
+        jsf.ajax.addOnEvent(submitEventBroadcaster(beforeSubmitListeners, beforeUpdateListeners, afterUpdateListeners));
+        jsf.ajax.addOnError(submitErrorBroadcaster(networkErrorListeners, serverErrorListeners));
 
         //setup submit error logging
         function logReceivedUpdates(e) {
