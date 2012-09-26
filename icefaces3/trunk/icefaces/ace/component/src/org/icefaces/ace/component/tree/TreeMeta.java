@@ -2,10 +2,7 @@ package org.icefaces.ace.component.tree;
 
 import org.icefaces.ace.meta.annotation.*;
 import org.icefaces.ace.meta.baseMeta.UIDataMeta;
-import org.icefaces.ace.model.tree.KeySegmentConverter;
-import org.icefaces.ace.model.tree.NodeKey;
-import org.icefaces.ace.model.tree.NodeStateMap;
-import org.icefaces.ace.model.tree.StateCreationCallback;
+import org.icefaces.ace.model.tree.*;
 
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
@@ -47,28 +44,28 @@ import javax.faces.application.ResourceDependency;
 })
 @ClientBehaviorHolder(events = {
         @ClientEvent(name="expand",
-            javadoc="",
-            tlddoc="",
+            javadoc="Fired when a node switch is clicked to show children of a node.",
+            tlddoc="Fired when a node switch is clicked to show children a node.",
             defaultRender="@all", defaultExecute="@this"),
 
         @ClientEvent(name="contract",
-            javadoc="",
-            tlddoc="",
+            javadoc="Fired when a node switch is clicked to hide children a node.",
+            tlddoc="Fired when a node switch is clicked to hide children a node.",
             defaultRender="@all", defaultExecute="@this"),
 
         @ClientEvent(name="select",
-            javadoc="",
-            tlddoc="",
+            javadoc="Fired when a node is clicked to select it.",
+            tlddoc="Fired when a node is clicked to select it.",
             defaultRender="@all", defaultExecute="@this"),
 
         @ClientEvent(name="deselect",
-            javadoc="",
-            tlddoc="",
+            javadoc="Fired when a selected node is clicked to deselect it.",
+            tlddoc="Fired when a selected node is clicked to deselect it.",
             defaultRender="@all", defaultExecute="@this"),
 
         @ClientEvent(name="reorder",
-            javadoc="",
-            tlddoc="",
+            javadoc="Fired when a node is dragged into a new position.",
+            tlddoc="Fired when a node is dragged into a new position.",
             defaultRender="@all", defaultExecute="@this")
         },
         defaultEvent = "select"
@@ -77,65 +74,75 @@ public class TreeMeta extends UIDataMeta {
     @Property
     KeySegmentConverter keyConverter;
 
-    // Either a list of or single TreeNode, MutableTreeNode.
-    // Or a NodeDataModel object.
-    @Property
+    @Property(tlddoc = "The Java objects representing the nodes of the tree. Supports either " +
+            "a List of javax.swing.tree.TreeNode implementations, MutableTreeNode implementations" +
+            " or an implementation of NodeDataModel.")
     Object value;
 
-    @Property(defaultValue = "false",
-        defaultValueType = DefaultValueType.EXPRESSION)
-    Boolean pagination;
+    //@Property(defaultValue = "false", defaultValueType = DefaultValueType.EXPRESSION)
+    //Boolean pagination;
 
-    @Property
-    Integer pageSize;
+    //@Property(tlddoc = "")
+    //Integer pageSize;
 
-    // First node of the current page;
-    @Property(defaultValue = "org.icefaces.ace.model.tree.NodeKey.ROOT_KEY",
-            defaultValueType = DefaultValueType.EXPRESSION)
-    NodeKey firstNode;
+    //@Property(defaultValue = "org.icefaces.ace.model.tree.NodeKey.ROOT_KEY",
+    //        defaultValueType = DefaultValueType.EXPRESSION)
+    //NodeKey firstNode;
 
-    @Property
-    String nodeKeyVar;
-
-    @Property(defaultValue = "nodeState", defaultValueType = DefaultValueType.STRING_LITERAL)
+    @Property(defaultValue = "nodeState", defaultValueType = DefaultValueType.STRING_LITERAL,
+        tlddoc = "The request-scope attribute exposing the state object for the current" +
+            "node when iterating.")
     String stateVar;
 
     @Property(defaultValue = "org.icefaces.ace.component.tree.TreeExpansionMode.server",
-            defaultValueType = DefaultValueType.EXPRESSION)
+            defaultValueType = DefaultValueType.EXPRESSION,
+            tlddoc = "Select the request behaviour of the expansion feature. When 'client', " +
+                    "the children of every node are pre-rendered in the DOM and exposed by JavaScript " +
+                    "when nodes are expanded. In the default 'server' mode, only visible nodes are in" +
+                    "the DOM and expansion and contraction are caused by ajax page updates.")
     TreeExpansionMode expansionMode;
 
-    @Property(expression = Expression.VALUE_EXPRESSION)
+    @Property(expression = Expression.VALUE_EXPRESSION,
+            tlddoc = "Define a ValueExpression that returns a String representation of the " +
+                    "'rendering type' of this node. The rendering type is matched against the " +
+                    "String 'type' attribute of ace:node tag instances to determine which node " +
+                    "template should be used to render a given node object.")
     String type;
 
-    @Property(defaultValue = "false", defaultValueType = DefaultValueType.EXPRESSION)
+    @Property(defaultValue = "false", defaultValueType = DefaultValueType.EXPRESSION,
+            tlddoc = "Enable selection feature of this tree component. This toggles this feature " +
+                    "for the entire tree, per-node configuration of this feature available via the NodeState.")
     Boolean selection;
 
-    @Property(defaultValue = "false", defaultValueType = DefaultValueType.EXPRESSION)
+    @Property(defaultValue = "false", defaultValueType = DefaultValueType.EXPRESSION,
+            tlddoc = "Enable expansion feature of this tree component. This toggles this feature " +
+                    "for the entire tree, per-node configuration of this feature available via the NodeState.")
     Boolean expansion;
 
-    @Property(defaultValue = "false", defaultValueType = DefaultValueType.EXPRESSION)
+    @Property(defaultValue = "false", defaultValueType = DefaultValueType.EXPRESSION,
+            tlddoc = "Enable reordering of the nodes of this tree.")
     Boolean reordering;
 
-    @Property(defaultValue = "true", defaultValueType = DefaultValueType.EXPRESSION)
+    @Property(defaultValue = "true", defaultValueType = DefaultValueType.EXPRESSION,
+            tlddoc = "Disable the selection of multiple nodes simultaneously.")
     Boolean selectMultiple;
 
     @Property(defaultValue = "org.icefaces.ace.component.tree.TreeSelectionMode.server",
-            defaultValueType = DefaultValueType.EXPRESSION)
+            defaultValueType = DefaultValueType.EXPRESSION,
+            tlddoc = "Select the request behaviour of the selection feature. When 'client', " +
+                    "the (de)selection of a node is recorded on the client, and communicated to " +
+                    "the server on the next request executing this component. In the default 'server' " +
+                    "mode, when a node is (de)selected, the component communicates the change the server " +
+                    "immediately with an ajax update.")
     TreeSelectionMode selectionMode;
 
-    @Property
+    @Property(tlddoc = "Define a NodeStateMap ValueExpression to access the store of Tree node object state " +
+            "information. The state map provides an API for looking up the state of a particular node object," +
+            " as well as reverse look-ups to get node objects with a particular state.")
     NodeStateMap stateMap;
 
-    @Property
-    StateCreationCallback stateCreationCallback;
-
-    // Default DOM event that causes toggle
-    @Property(defaultValue = "click",
-            defaultValueType = DefaultValueType.STRING_LITERAL)
-    String toggleEvent;
-
-    // Enable dragging for the table.
-    // Still has to be enabled for particular nodes.
-    @Property
-    Boolean dragging;
+    @Property(tlddoc = "Bind an implementer of the NodeStateCreationCallback interface to take as input" +
+            ", a node object and a default NodeState and return a NodeState configured with the state appropriate" +
+            "for the given node object.")
+    NodeStateCreationCallback stateCreationCallback;
 }
