@@ -44,7 +44,7 @@ import javax.faces.component.UIComponent;
         @ResourceDependency(library = "org.icefaces.component.util", name = "component.js")
 })
 public class SplitPaneMeta extends UIPanelMeta {
-    @Property(defaultValue="false",
+    @Property(defaultValue="true",
              tlddoc=" determines if the content of this panel is scrollable.")
     private boolean scrollable;
 
