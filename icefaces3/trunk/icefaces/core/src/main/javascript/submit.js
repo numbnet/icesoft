@@ -136,14 +136,8 @@ var singleSubmit;
             var options = {
                 execute: execute,
                 render: render,
-                onevent: function(submitEvent) {
-                    pageScopedSubmitEventBroadcaster(submitEvent, element);
-                    requestScopedSubmitEventBroadcaster(submitEvent, element);
-                },
-                onerror: function(submitEvent) {
-                    pageScopedSubmitErrorBroadcaster(submitEvent);
-                    requestScopedSubmitErrorBroadcaster(submitEvent);
-                },
+                onevent: requestScopedSubmitEventBroadcaster,
+                onerror: requestScopedSubmitErrorBroadcaster,
                 'ice.window': namespace.window,
                 'ice.view': viewID,
                 'ice.focus': currentFocus
@@ -295,14 +289,8 @@ var singleSubmit;
             var options = {
                 execute: execute,
                 render: render,
-                onevent: function(submitEvent) {
-                    pageScopedSubmitEventBroadcaster(submitEvent, element);
-                    requestScopedSubmitEventBroadcaster(submitEvent, element);
-                },
-                onerror: function(submitEvent) {
-                    pageScopedSubmitErrorBroadcaster(submitEvent);
-                    requestScopedSubmitErrorBroadcaster(submitEvent);
-                },
+                onevent: requestScopedSubmitEventBroadcaster,
+                onerror: requestScopedSubmitErrorBroadcaster,
                 'ice.window': namespace.window,
                 'ice.view': viewID,
                 'ice.focus': currentFocus};
