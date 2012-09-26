@@ -29,8 +29,8 @@
 <ui:param name="description" value="#{msgs[treeLazyBean.description]}"/>
 <ui:param name="resourceValue" value="#{treeLazyBean.exampleResource}"/>
 
-<ui:param name="wikiResources" value="#{treeLazyBean.wikiResources}"/>
-<ui:param name="tldResources" value="#{treeLazyBean.tldResources}"/>
+<ui:param name="wikiResources" value="#{treeResources.wikiResources}"/>
+<ui:param name="tldResources" value="#{treeResources.tldResources}"/>
 
 <ui:define name="example">
     <h:form id="form" style="text-align: center;">
