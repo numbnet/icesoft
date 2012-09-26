@@ -22,26 +22,26 @@
         <ace:gMapControl name="all" disabled="true"/>
         <ace:gMapControl name="type" position="rightBottom" controlStyle="dropdown"/>
         <ace:gMapControl name="zoom" position="leftBottom" controlStyle="small"/>
-        <ace:gMapAutocomplete size="40" style="position:fixed; max-width:45%; left:1%; top:15px; width:auto;" address="${demoBean.address}">
-        </ace:gMapAutocomplete>
+        <ace:gMapAutocomplete size="80" style="position:fixed; max-width:45%; left:1%; top:15px; width:auto;" address="${demoBean.address}" latLng="${demoBean.autocompleteReturn}" url="${demoBean.autoUrl}" types="${demoBean.types}" offset="0,-75"/>
     </ace:gMap>
     <h:form id="geolocation" style=" position:fixed; right:0.5%; top:15px; max-width:45%;">
         <mobi:geolocation latitude="#{demoBean.geoLat}"
                           longitude="#{demoBean.geoLong}"
                 ></mobi:geolocation>
         <mobi:commandButton id="geolocateSubmit" buttonType="default" style="visibility: hidden;position:absolute; top:0px; z-index:-5;" value="Locate Me"/>
-        <mobi:icemobilesx value="Activate Demo"><a href="mobileDemoHelp.xhtml">?</a> </mobi:icemobilesx>
+        <mobi:icemobilesx value="Activate Demo"><a href="mobileDemoHelp.xhtml" style="background-color:white;">?</a> </mobi:icemobilesx>
         <mobi:augmentedReality
                 styleClass="mobi-button mobi-round-all"
                 urlBase="#{demoBean.baseURL}"
                 rendered="#{demoBean.enhancedBrowser}"
                 >
+
             <mobi:augmentedRealityLocations
                     value="#{demoBean.list}" var="place"
                     locationLabel="#{place.label}"
                     locationLat="#{place.latitude}"
                     locationLon="#{place.longitude}"
-                    locationIcon="#{place.marker}"/>
+                    locationIcon="#{place.icon}"/>
         </mobi:augmentedReality>
     </h:form>
 </h:body>
