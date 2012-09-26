@@ -239,7 +239,7 @@ if (!window.ice.icefaces) {
                         debug(logger, 'picking updates for view ' + viewID);
                         var options = {
                             'ice.submit.type': 'ice.push',
-                            render: '@all',
+                            render: '@all'
                         };
                         jsf.ajax.request(form, null, options);
                     } catch (e) {
