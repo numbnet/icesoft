@@ -76,9 +76,9 @@ public class GMapAutocompleteRenderer extends CoreRenderer {
         jb.beginFunction("ice.ace.gMap.addAutoComplete")
                 .item(autocomplete.getParent().getClientId(context))
                 .item(clientId)
-                .beginMap();
-        encodeClientBehaviors(context, autocomplete, jb);
-        jb.endMap().endFunction();
+                .item(autocomplete.getWindowOptions())
+                .item(autocomplete.getOffset())
+                .endFunction();
         writer.write(jb.toString());
         writer.write("});");
         writer.endElement("script");

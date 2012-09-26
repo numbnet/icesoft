@@ -40,16 +40,14 @@ import javax.faces.application.ResourceDependency;
 	@ResourceDependency(library="icefaces.ace", name="util/ace-jquery.js"),
 	@ResourceDependency(library="icefaces.ace", name="util/ace-components.js")
 })
-@ClientBehaviorHolder(events = {
-        @ClientEvent(name="valueChange", javadoc="Fired when the autocomplete entry value is changed(default event).\", tlddoc=\"Fired when the autocomplete entry value is changed(default event).", defaultRender="@form", defaultExecute="@form")
-}, defaultEvent="valueChange")
+
 public class GMapAutocompleteMeta extends UIPanelMeta {
     @Property(tlddoc="Desired size of the input box",defaultValue="30")
     private String size;
     @Property(tlddoc="Styling options to be sent to the autocomplete box")
     private String style;
-    @Property(tlddoc="Additional options to be sent to the marker. Check google maps API for more specifics. Form is attribute:'value'", defaultValue="none")
-    private String options;
+    @Property(tlddoc="Additional options to be sent to the info window displayed. Leave blank for default, and set to 'off' to turn marker/window off. Check google maps API for more specifics. Form is attribute:'value'", defaultValue="none")
+    private String windowOptions;
     @Property(tlddoc="The location to send the text value of the address selected by gMapAutocomplete")
     private String address;
     @Property(tlddoc="The location to send the lat/lng coordinates of the address selected by gMapAutocomplete")
@@ -58,5 +56,7 @@ public class GMapAutocompleteMeta extends UIPanelMeta {
     private String types;
     @Property(tlddoc="The location to send the url attributed to the address selected by gMapAutocomplete")
     private String url;
+    @Property(tlddoc="Value to shift the map after finding new location, in pixels. (useful for mobile devices) Form is x,y.", defaultValue="0,0")
+    private String offset;
 
 }
