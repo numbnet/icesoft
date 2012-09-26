@@ -106,10 +106,16 @@ public class RealityBean extends ExampleImpl<RealityBean> implements
         super(RealityBean.class);
         markerList = new ArrayList();
         HashMap marker = new HashMap();
-        marker.put("label", "logo");
+        marker.put("label", "puz1");
         marker.put("model", getBaseURL() + 
-                "/mobileshowcase/resources/3d/mobi.obj" );
+                "/mobileshowcase/resources/3d/puz1.obj" );
         markerList.add(marker);
+        marker = new HashMap();
+        marker.put("label", "puz2");
+        marker.put("model", getBaseURL() +
+                "/mobileshowcase/resources/3d/puz2.obj" );
+        markerList.add(marker);
+
     }
 
     public void processUploadedImage(ActionEvent event) {
