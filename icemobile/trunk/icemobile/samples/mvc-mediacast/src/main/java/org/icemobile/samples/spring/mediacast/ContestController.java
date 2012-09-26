@@ -11,6 +11,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
+import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import javax.servlet.ServletContext;
 import javax.servlet.http.Cookie;
@@ -20,8 +21,8 @@ import javax.validation.Valid;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.icepush.PushContext;
 import org.icemobile.jsp.tags.TagUtil;
+import org.icepush.PushContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -68,7 +69,10 @@ public class ContestController implements ServletContextAware {
 	
 	private static final String ACTION_VOTE = "v";
 	
-	private static final String UPLOADDIR = "/resources/uploads/";
+	@PostConstruct
+	public void init(){
+		ensureUploadDirExists();
+	}
 
 	@Autowired
 	public ContestController(ServletContext servletContext){
@@ -174,12 +178,12 @@ public class ContestController implements ServletContextAware {
 			view = "contest-gallery";
 		}
 		else if( page.equals(PAGE_VIEWER)){
-			addViewerViewModel(id,layout,model);
+			addViewerViewModel(id,layout,model, false, false);
 			view = "contest-viewer";
 		}
 		else if( page.equals(PAGE_ALL)){
 			addUploadViewModel(page, layout, model);
-			addViewerViewModel(id, layout, model);
+			addViewerViewModel(id, layout, model, false, false);
 			view = "contest-tablet";
 		}
 		log.warn("forwarding to " + view);
@@ -200,10 +204,17 @@ public class ContestController implements ServletContextAware {
 	public String getContestViewerContent(
 			@RequestParam(value="l", defaultValue=MOBILE) String layout, 
 			@RequestParam(value="id", required=false) String id,
+			@RequestParam(value="a", required=false) String action,
 			Model model, 
 			@ModelAttribute("uploadModel") MediaMessage uploadModel) {
+		boolean back = false;
+		boolean forward = false;
+		if( action != null && action.length() > 0 ){
+			back = "back".equals(action);
+			forward = "forward".equals(action);
+		}
 		addCommonModel(model, uploadModel, layout);
-		addViewerViewModel(id, layout, model);
+		addViewerViewModel(id, layout, model, back, forward);
 		return "contest-viewer-panel";
 	}
 	
@@ -431,8 +442,29 @@ public class ContestController implements ServletContextAware {
 				.getContestMediaImageMarkup(layout));
 	}
 	
-	private void addViewerViewModel(String id, String layout, Model model){
-		MediaMessage msg = mediaService.getMediaMessage(id);
+	private void addViewerViewModel(String id, String layout, Model model, boolean back, boolean forward){
+		MediaMessage msg = null;
+		if( back || forward ){
+			List<MediaMessage> list = mediaService.getMediaCopy();
+			if( list != null ){
+				for(int i = 0 ; i < list.size() ; i++ ){
+					String pid = list.get(i).getId();
+					if( pid != null && pid.equals(id) ){
+						int target = (back ? i-1 : i+1);
+						if( target == -1 ){
+							target = list.size()-1;
+						}
+						else if( target == list.size() ){
+							target = 0;
+						}
+						msg = list.get(target);
+					}
+				}
+			}
+		}
+		else{
+			msg = mediaService.getMediaMessage(id);
+		}
 		model.addAttribute("media", msg);
 		if( TABLET.equals(layout)){
 			model.addAttribute("tab", PAGE_VIEWER);
@@ -505,15 +537,23 @@ public class ContestController implements ServletContextAware {
 
 	private File getOriginalFile(String id){
 		String fileName = "img-" + id + "-orig.jpg";
-		String path = UPLOADDIR + fileName;
-		return new File(servletContext.getRealPath(path));
+		String path = getUploadsDir() + File.separator + fileName;
+		return new File(path);
+	}
+	
+	private File getUploadsDir(){
+		String webappsdir = new File(servletContext.getRealPath("/")).getParent();
+		File uploadsDir = new File(webappsdir+"/uploads");
+		return uploadsDir;
 	}
 	
 	private void ensureUploadDirExists(){
-		File uploadDir = new File(servletContext.getRealPath(UPLOADDIR));
-		if( uploadDir.exists()){
-			uploadDir.mkdir();
+		File uploadsDir = getUploadsDir();
+		boolean result = false;
+		if( !uploadsDir.exists()){
+			result = uploadsDir.mkdir();
 		}
+		log.info("attempting checking upload dir " + result + ", "+uploadsDir.getAbsolutePath());
 	}
 	
 	private File saveMultipartUploadToFile(MultipartFile upload, String id){

@@ -48,9 +48,13 @@ function enhanceForm(theForm,updateTarget)  {
     });
 }
 
-function updateViewerPanel(id){
+function updateViewerPanel(id,action){
+	var url = 'contest-viewer?id='+id+'&l=t';
+	if( action ){
+		url += '&a='+action;
+	}
 	 $.ajax({
-        url:'/mvc-mediacast/contest-viewer?id='+id+'&l=t',
+        url:url,
         cache:false,
         processData:false,
         type:'GET',
@@ -105,7 +109,7 @@ function getGalleryUpdate(){
 		updated = 0;
 	}
 	$.ajax({
-        url:'/mvc-mediacast/contest-photo-list-json?since='+updated,
+        url:'contest-photo-list-json?since='+updated,
         cache:false,
         processData:false,
         type:'GET',
@@ -128,10 +132,10 @@ function updateGalleryList(json){
 		var list = $('#galleryList')[0].children;
 		var item = start+"<div id='"+msg.id+"' data-lastvote='"+msg.lastVote+"' data-created='"+msg.created+"' data-votes='"+msg.votes+"'>"
 			+ "<a class='mediaLink' href='#' onclick=\"updateViewerPanel('"+msg.id+"');\">"
-			+ "<img src='/mvc-mediacast/resources/uploads/"+msg.fileName+"' class='p'>"
+			+ "<img src='/uploads/"+msg.fileName+"' class='p'>"
 			+ "</a>";
 		if( msg.canVote ){
-			item += "<input type='image' class='vote' title='Vote for it!' src='/mvc-mediacast/resources/css/css-images/like.png' name='photoId' value='"+msg.id+"'/>";
+			item += "<input type='image' class='vote' title='Vote for it!' src='resources/css/css-images/like.png' name='photoId' value='"+msg.id+"'/>";
 		}
 		item += "<span class='desc'>"+msg.description+"</span><span class='vote'>"+msg.votes+" Votes</span>";	
 			

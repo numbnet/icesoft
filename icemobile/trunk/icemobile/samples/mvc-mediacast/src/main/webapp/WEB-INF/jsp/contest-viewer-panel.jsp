@@ -2,9 +2,11 @@
 <div id="viewerPanel">
     <c:if test="${not empty media}">
         <div class="lightbox">
-            <img id="largePhoto" src='<c:url value="/resources/uploads/${media.largePhoto.file.name}"/>'
+            <img id="largePhoto" src='/uploads/${media.largePhoto.file.name}'
                 class="imageViewer" />
         </div>
+        <a class="viewer-back" href="#" onclick="updateViewerPanel('${media.id}','back');"/>
+        <a class="viewer-forward" href="#" onclick="updateViewerPanel('${media.id}','forward');"/>
         <div class="message-desc">
             <h3><c:out value="${media.description}"/></h3>
         </div>

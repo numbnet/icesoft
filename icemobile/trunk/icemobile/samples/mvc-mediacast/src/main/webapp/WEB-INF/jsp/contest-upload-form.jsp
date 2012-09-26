@@ -22,7 +22,7 @@
                     <mobi:thumb for="upload" style="margin: 0 2px"/>
                 </c:if>
                 <c:if test="${sx and not empty uploadModel.smallPhoto}">
-                    <img src='<c:url value="/resources/uploads/${uploadModel.smallPhoto.file.name}"/>'/>
+                    <img src='/uploads/${uploadModel.smallPhoto.file.name}'/>
                 </c:if>
              </mobi:fieldSetRow>
              <mobi:fieldSetRow style="min-height:0;">
