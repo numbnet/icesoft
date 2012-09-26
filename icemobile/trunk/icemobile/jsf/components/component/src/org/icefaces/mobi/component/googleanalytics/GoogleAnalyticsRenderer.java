@@ -23,7 +23,7 @@ public class GoogleAnalyticsRenderer extends CoreRenderer {
         GoogleAnalytics ga = (GoogleAnalytics) uiComponent;
         String account = ga.getAccount();
         if( account == null ){
-			account = System.getenv(GoogleAnalytics.ACCOUNT_ENVVAR);
+			account = System.getProperty(GoogleAnalytics.ACCOUNT_ENVVAR);
 			if( account == null ){
                 Object warnOnce = facesContext.getExternalContext()
                     .getApplicationMap().get(GAR_NAME);
