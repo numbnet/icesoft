@@ -254,11 +254,17 @@ ice.ace.gMap.getGMapWrapper = function (id) {
         map.setOptions(eval(fullOps));
     }
 
-    ice.ace.gMap.addAutoComplete = function(mapId, autoId, cfg){
+    ice.ace.gMap.addAutoComplete = function(mapId, autoId, windowOptions, offset){
 
         var input = document.getElementById('autocomplete_input');
         var autocomplete = new google.maps.places.Autocomplete(input);
         var map = ice.ace.gMap.getGMapWrapper(mapId).getRealGMap();
+        if(windowOptions!="off"){
+        var infowindow = new google.maps.InfoWindow();
+        var marker = new google.maps.Marker({
+            map: map
+        });
+        }
         google.maps.event.addListener(autocomplete, 'place_changed', function() {
                 var place = autocomplete.getPlace();
                 if (place.geometry.viewport) {
@@ -267,6 +273,18 @@ ice.ace.gMap.getGMapWrapper = function (id) {
                     map.setCenter(place.geometry.location);
                     map.setZoom(17);
                 }
+            var splitOffset = offset.split(",");
+            var xOffset = splitOffset[0];
+            var yOffset = splitOffset[1];
+
+            map.panBy(eval(xOffset),eval(yOffset));
+            if(windowOptions!="off"){
+            marker.setPosition(place.geometry.location);
+            infowindow.setContent("<a href='"+place.url+"' target='_blank'>" + place.formatted_address + "</a>");
+            if(windowOptions!="none")
+                infowindow.setOptions(eval("({" + windowOptions + "})"));
+            infowindow.open(map,marker);
+            }
             document.getElementById(autoId+"_latLng").value = place.geometry.location.toString();
             document.getElementById(autoId+"_address").value = place.formatted_address;
             document.getElementById(autoId+"_types").value = place.types.toString();
