@@ -38,7 +38,7 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.multipart.MultipartFile;
 
 @Controller
-@SessionAttributes({"uploadModel","msg","admin",TagUtil.USER_AGENT_COOKIE})
+@SessionAttributes({"uploadModel","msg","admin","desktop", "sx", TagUtil.USER_AGENT_COOKIE})
 public class ContestController implements ServletContextAware {
 
 	@Inject
@@ -96,6 +96,15 @@ public class ContestController implements ServletContextAware {
 	@ModelAttribute
 	public void putAttributeDesktop(WebRequest request, Model model){
 		model.addAttribute("desktop", Utils.isDesktop(request.getHeader("User-Agent")));
+	}
+	
+	@ModelAttribute
+	public void putAttributeSX(WebRequest request, Model model){
+		boolean sx = Utils.isSX(request.getHeader("User-Agent"));
+		log.info("sx="+sx);
+		if( !model.containsAttribute("sx") || sx){
+			model.addAttribute("sx", sx);
+		}
 	}
 	
 	@ModelAttribute
@@ -299,6 +308,7 @@ public class ContestController implements ServletContextAware {
 					throws IOException {
 		
 		log.info("upload id=" + uploadId + ", fullPost="+fullPost);
+		log.info("user-agent="+request.getHeader("User-Agent"));
 		
 		layout = cleanSingleRequestParam(layout);
 		if( uploadId == null || uploadId.length() == 0){
@@ -315,7 +325,11 @@ public class ContestController implements ServletContextAware {
 		//SX Image upload before full form post
 		if( file != null && !"true".equals(fullPost)){
 			log.info("SX upload");
-			saveMultipartUploadToFile(file,uploadId);
+			File photo = saveMultipartUploadToFile(file,uploadId);
+			Media media = new Media();
+			media.setFile(photo);
+			uploadModel.setPhoto(media);
+			mediaHelper.processImage(uploadModel,uploadId);
 			return postUploadFormResponseView(false, false, layout);
 		}
 		
@@ -352,15 +366,16 @@ public class ContestController implements ServletContextAware {
 			else{
 				if( !originalPhoto.exists() && file != null && !file.isEmpty() ){
 					saveMultipartUploadToFile(file, uploadId);
+					Media media = new Media();
+					media.setFile(originalPhoto);
+					uploadModel.setPhoto(media);
+					mediaHelper.processImage(uploadModel,uploadId);
 				}
 				
-				Media media = new Media();
-				media.setFile(originalPhoto);
-				uploadModel.setPhoto(media);
+				
 				uploadModel.setDescription(form.getDescription());
 				uploadModel.setEmail(form.getEmail());
 				uploadModel.setCreated(System.currentTimeMillis());
-				mediaHelper.processImage(uploadModel,uploadId);
 				mediaService.addMedia(uploadModel);
 				log.debug("successfully added message to mediaService, uploadModel="
 						+ uploadModel);
@@ -501,9 +516,10 @@ public class ContestController implements ServletContextAware {
 		}
 	}
 	
-	private void saveMultipartUploadToFile(MultipartFile upload, String id){
+	private File saveMultipartUploadToFile(MultipartFile upload, String id){
+		File file = null;
 		if( upload != null && !upload.isEmpty()){
-			File file = getOriginalFile(id);
+			file = getOriginalFile(id);
 			ensureUploadDirExists();
 			log.info("writing new image file " + file.getAbsolutePath());
 			try {
@@ -513,6 +529,7 @@ public class ContestController implements ServletContextAware {
 				e.printStackTrace();
 			} 
 		}
+		return file;
 	}
 
 	private static boolean isAjaxRequest(WebRequest webRequest) {

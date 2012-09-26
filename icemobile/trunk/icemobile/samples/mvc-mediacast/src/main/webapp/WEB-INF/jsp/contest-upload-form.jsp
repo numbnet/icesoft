@@ -15,10 +15,15 @@
                Upload a photo and you might win something!!!
            </mobi:fieldSetRow>
             <mobi:fieldSetRow style="text-align:center;">
-                <mobi:camera id="upload" style="width:70%;vertical-align:top;max-width:200px;"/>
-                    <c:if test="${!desktop}">
-                        <mobi:thumb for="upload" style="margin: 0 2px"/>
-                    </c:if>
+                <c:if test="${empty uploadModel.smallPhoto or !sx}">
+                    <mobi:camera id="upload" style="width:70%;vertical-align:top;max-width:200px;"/>
+                </c:if>
+                <c:if test="${!desktop and !sx}">
+                    <mobi:thumb for="upload" style="margin: 0 2px"/>
+                </c:if>
+                <c:if test="${sx and not empty uploadModel.smallPhoto}">
+                    <img src='<c:url value="/resources/uploads/${uploadModel.smallPhoto.file.name}"/>'/>
+                </c:if>
              </mobi:fieldSetRow>
              <mobi:fieldSetRow style="min-height:0;">
                  <mobi:inputtext name="email" 
