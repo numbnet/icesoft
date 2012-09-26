@@ -27,6 +27,7 @@ import javax.el.MethodExpression;
 import javax.faces.component.UIComponent;
 import javax.faces.application.ResourceDependencies;
 import javax.faces.model.DataModel;
+import java.io.Serializable;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -36,7 +37,7 @@ import org.icefaces.ace.component.celleditor.CellEditor;
 import org.icefaces.ace.model.table.RowStateMap;
 import sun.misc.Sort;
 
-public class Column extends ColumnBase {
+public class Column extends ColumnBase implements Serializable {
 	private static final String OPTIMIZED_PACKAGE = "org.icefaces.ace.component.";
     private int currGroupLength;
     // Toggled to true appropriately before first group rendering
