@@ -119,14 +119,14 @@ function updateGalleryList(json){
 	var start = "<li class='mobi-list-item'><div class='mobi-list-item-default'>";
 	var end = "</div></li>";
 	
-	for( msg in json ){
-		$('#'+msg.id).remove(); 
+	for( i in json ){
+		$('#'+json[i].id).remove(); 
 	}
 	var updated = Number($('#updated').val());
 	for( m in json ){
 		var msg = json[m]
 		var list = $('#galleryList')[0].children;
-		var item = start+"<div id='"+msg.id+"' data-lastvote="+msg.lastVote+" data-created="+msg.created+">"
+		var item = start+"<div id='"+msg.id+"' data-lastvote='"+msg.lastVote+"' data-created='"+msg.created+"' data-votes='"+msg.votes+"'>"
 			+ "<a class='mediaLink' href='#' onclick=\"updateViewerPanel('"+msg.id+"');\">"
 			+ "<img src='/mvc-mediacast/resources/uploads/"+msg.fileName+"' class='p'>"
 			+ "</a>"
@@ -135,7 +135,7 @@ function updateGalleryList(json){
 			+ "<span class='vote'>"+msg.votes+" Votes</span>";
 		if( list.length > 0 ){
 			for( elem in list ){
-				updated = Math.max(updated,msg.lastVote);
+				updated = Math.max(updated,Math.max(msg.lastVote,msg.created));
 				var listItem = list[elem];
 				var votesAttrQ = $(listItem).find('[data-votes]');
 				if( votesAttrQ.length > 0 ){
