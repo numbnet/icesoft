@@ -37,6 +37,7 @@ public class TagUtil {
 
     public static final String USER_AGENT = "User-Agent";
     public static final String USER_AGENT_COOKIE = "com.icesoft.user-agent";
+    public static final String SX_USER_AGENT = "icemobile-sx";
 
     public static String A_TAG = "<a";
     public static String A_TAG_END = "</a>";
@@ -239,6 +240,11 @@ public class TagUtil {
     public static boolean isIOS5orHigher(PageContext pageContext) {
         return sniffIOS5(pageContext) || sniffIOS6(pageContext);
     }
+    
+    public static boolean isSX(HttpServletRequest request){
+    	return sniffSX(request);
+    }
+    
 
     public static boolean isIOS(PageContext pageContext) {
         return sniffIOS(pageContext);
@@ -279,6 +285,11 @@ public class TagUtil {
     static boolean sniffIpad(PageContext pageContext) {
     	return userAgentContains(pageContext, DEVICE_IPAD);
     }
+    
+    static boolean sniffSX(HttpServletRequest request) {
+    	return userAgentContains(getUserAgent(request), DEVICE_IPAD);
+    }
+
 
     static boolean sniffAndroid(PageContext pageContext) {
 
@@ -371,6 +382,11 @@ public class TagUtil {
     	return ua == null ? ua : ua.toLowerCase();
     }
     
+    public static String getUserAgent(HttpServletRequest request){
+    	String ua = request.getHeader(USER_AGENT);
+    	return ua == null ? ua : ua.toLowerCase();
+    }
+    
     private static String getAccept(PageContext pageContext){
     	HttpServletRequest request = (HttpServletRequest)
                 pageContext.getRequest();
@@ -394,6 +410,15 @@ public class TagUtil {
     		result = ua.contains(contains);
     	}
     	logSniff(result, contains, ua);
+    	return result;   	
+    }
+    
+    private static boolean userAgentContains(String userAgent, String contains){
+    	boolean result = false;
+    	if( userAgent != null ){
+    		result = userAgent.toLowerCase().contains(contains);
+    	}
+    	logSniff(result, contains, userAgent);
     	return result;   	
     }
     
