@@ -183,7 +183,6 @@ public class demoBean {
     }
 
     public void setTypes(String types) {
-        System.out.println(types);
         this.types = types;
     }
 
