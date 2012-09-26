@@ -66,21 +66,25 @@ function updateViewerPanel(id,action){
 }
 
 function resizeElementHeight(elementId) {
-    var element = document.getElementById(elementId);
-    if( element ){
-        var height = 0;
-        var body = window.document.body;
-        if (window.innerHeight) {
-            height = window.innerHeight;
-        } else if (body.parentElement.clientHeight) {
-            height = body.parentElement.clientHeight;
-        } else if (body) {
-            if (body.clientHeight) {
-                height = body.clientHeight;
-            }
-        }
-        element.style.height = ((height - element.offsetTop) + "px");    	
-    }
+	var is_firefox = navigator.userAgent.toLowerCase().indexOf('firefox') > -1;
+	if( !is_firefox ){
+	    var element = document.getElementById(elementId);
+	    if( element ){
+	        var height = 0;
+	        var body = window.document.body;
+	        if (window.innerHeight) {
+	            height = window.innerHeight;
+	        } else if (body.parentElement.clientHeight) {
+	            height = body.parentElement.clientHeight;
+	        } else if (body) {
+	            if (body.clientHeight) {
+	                height = body.clientHeight;
+	            }
+	        }
+	        element.style.height = ((height - element.offsetTop) + "px");    	
+	    }
+		
+	}
 }
 
 
