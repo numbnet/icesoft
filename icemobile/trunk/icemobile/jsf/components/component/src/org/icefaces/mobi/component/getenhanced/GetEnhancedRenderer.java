@@ -93,20 +93,6 @@ public class GetEnhancedRenderer extends CoreRenderer {
 			}
 			writer.writeText(msg, null);
 
-            if (Utils.showSX())  {
-                String sessionIdParam = Utils.getSessionIdCookie(facesContext);
-                String uploadURL = AuxUploadSetup.getInstance().getUploadURL();
-                StringBuilder sb = new StringBuilder("mobi.registerAuxUpload('");
-                sb.append(sessionIdParam).append("','")
-                        .append(uploadURL).append("');");
-
-				writer.startElement(HTML.ANCHOR_ELEM,null);
-				writer.writeAttribute(HTML.CLASS_ATTR, "mobi-button mobi-button-important", null);
-                writer.writeAttribute(HTML.ONCLICK_ATTR, sb.toString(),
-                        HTML.ONCLICK_ATTR);
-				writer.writeText(GetEnhanced.ENABLE, null);
-				writer.endElement(null);
-            }
 			if( ios ){
 				writer.startElement(HTML.ANCHOR_ELEM, null);
 				writer.writeAttribute(HTML.HREF_ATTR,"#",null);
