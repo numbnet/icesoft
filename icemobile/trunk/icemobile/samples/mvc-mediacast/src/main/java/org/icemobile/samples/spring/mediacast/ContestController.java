@@ -82,6 +82,11 @@ public class ContestController implements ServletContextAware {
 		return uploadModel;
 	}
 	
+	@ModelAttribute("msg")
+	public String putAttributeMsg(){
+		return "";
+	}
+	
 	@ModelAttribute
 	public void putAttributeAjax(WebRequest request, Model model) {
 		model.addAttribute("ajaxRequest", isAjaxRequest(request));
@@ -107,6 +112,7 @@ public class ContestController implements ServletContextAware {
 	@RequestMapping(value="/icemobile", method = RequestMethod.POST)
 	public String postICEmobileSX(HttpServletRequest request,
             Model model)  {
+		log.info("setting ICEmobile-SX");
             String userAgent = request.getHeader(TagUtil.USER_AGENT);
             if (userAgent.contains("ICEmobile-SX"))  {
                 model.addAttribute(TagUtil.USER_AGENT_COOKIE,
@@ -124,7 +130,8 @@ public class ContestController implements ServletContextAware {
 			@RequestParam(value="a", required=false) String action,
 			@CookieValue(value="votes", required=false) String cookieVotes,
 			Model model, 
-			@ModelAttribute("uploadModel") MediaMessage uploadModel) {
+			@ModelAttribute("uploadModel") MediaMessage uploadModel,
+			@ModelAttribute("msg") String msg) {
 		
 		log.warn("main contest controller l="+layout+", p="+page+", a="+action +", cookies="+cookieVotes);
 		
@@ -264,19 +271,24 @@ public class ContestController implements ServletContextAware {
 	public String post(
 			HttpServletRequest request,
 			HttpServletResponse response,
-			@RequestParam(value = "uploadId") String uploadId,
+			@RequestParam(value = "uploadId", required=false) String uploadId,
 			@RequestParam(value = "upload", required = false) MultipartFile file,
 			@RequestParam(value="l", defaultValue=MOBILE) String layout,
+			@RequestParam(value="fullPost", defaultValue="true") String fullPost,
 			@Valid ContestForm form, BindingResult result,
 			@ModelAttribute("uploadModel") MediaMessage uploadModel,
+			@ModelAttribute("msg") String msg,
 			@CookieValue(value="votes", required=false) String cookieVotes,
 			Model model)
 					throws IOException {
 		
-		log.info("upload id=" + uploadId);
+		log.info("upload id=" + uploadId + ", fullPost="+fullPost);
 		
 		layout = cleanSingleRequestParam(layout);
-		
+		if( uploadId == null || uploadId.length() == 0){
+			uploadId = newId();
+			uploadModel.setId(uploadId);
+		}
 		
 		log.info(form);
 		
@@ -285,7 +297,7 @@ public class ContestController implements ServletContextAware {
 		}
 		
 		//SX Image upload before full form post
-		if( file != null && form.isEmpty()){
+		if( file != null && !"true".equals(fullPost)){
 			log.info("SX upload");
 			saveMultipartUploadToFile(file,uploadId);
 			return postUploadFormResponseView(false, false, layout);
@@ -301,36 +313,51 @@ public class ContestController implements ServletContextAware {
 
 		if (result.hasErrors() ) {
 			log.info("form has errors " + result);
-			uploadModel.setUploadMsg("Sorry, I think you missed something.");
+			if( form.getEmail() != null && form.getEmail().length() > 0 ){
+				//uploadModel.setUploadMsg("Is that your correct email?");
+				model.addAttribute("msg","Is that your correct email?");
+				log.warn("invalid email");
+			}
+			else{
+				//uploadModel.setUploadMsg("Sorry, I think you missed something.");
+				model.addAttribute("msg","Sorry, I think you missed something.");
+				log.warn("missing required form values");
+			}
+			
 		}
 		else{
+			log.info("form has no errors");
 			File originalPhoto = getOriginalFile(uploadId);
 			if( !originalPhoto.exists() && (file == null || file.isEmpty()) ){
-				uploadModel.setUploadMsg("Sorry, I think you missed the photo.");
+				//uploadModel.setUploadMsg("Sorry, I think you missed the photo.");
+				model.addAttribute("msg","Sorry, I think you missed the photo.");
 			}
-			else if( !originalPhoto.exists() && file != null && !file.isEmpty() ){
-				saveMultipartUploadToFile(file, uploadId);
+			else{
+				if( !originalPhoto.exists() && file != null && !file.isEmpty() ){
+					saveMultipartUploadToFile(file, uploadId);
+				}
+				
+				Media media = new Media();
+				media.setFile(originalPhoto);
+				uploadModel.setPhoto(media);
+				uploadModel.setDescription(form.getDescription());
+				uploadModel.setEmail(form.getEmail());
+				uploadModel.setCreated(System.currentTimeMillis());
+				mediaHelper.processImage(uploadModel,uploadId);
+				mediaService.addMedia(uploadModel);
+				log.debug("successfully added message to mediaService, uploadModel="
+						+ uploadModel);
+				//uploadModel.setUploadMsg("Thank you, your file was uploaded successfully.");
+				model.addAttribute("msg","Thank you, your file was uploaded successfully.");
+				uploadModel.clear();
+				uploadModel.setId(newId());
+				PushContext.getInstance(servletContext).push("photos");		
+				PushContext.getInstance(servletContext).push("carousel");		
+				
+				success = true;
 			}
-			Media media = new Media();
-			media.setFile(originalPhoto);
-			uploadModel.setPhoto(media);
-			uploadModel.setDescription(form.getDescription());
-			uploadModel.setEmail(form.getEmail());
-			uploadModel.setCreated(System.currentTimeMillis());
-			mediaHelper.processImage(uploadModel,uploadId);
-			mediaService.addMedia(uploadModel);
-			log.debug("successfully added message to mediaService, uploadModel="
-					+ uploadModel);
-			uploadModel.setUploadMsg("Thank you, your file was uploaded successfully.");
-			uploadModel.clear();
-			uploadModel.setId(newId());
-			PushContext.getInstance(servletContext).push("photos");		
-			PushContext.getInstance(servletContext).push("carousel");		
-			
-			success = true;
-			
 		}
-
+		addCommonModel(model, uploadModel, form.getLayout());
 		return postUploadFormResponseView(isAjaxRequest(request),success,form.getLayout());
 	}
 	
@@ -354,9 +381,9 @@ public class ContestController implements ServletContextAware {
 
 	private void addCommonModel(Model model, MediaMessage uploadModel, String layout){
 		model.addAttribute("mediaService", mediaService);
-		if( !model.containsAttribute("uploadModel")){
+		//if( !model.containsAttribute("uploadModel")){
 			model.addAttribute("uploadModel", uploadModel);
-		}
+		//}
 		if( layout != null && layout.length() > 0){
 			model.addAttribute("layout",layout.substring(0,1));
 		}
