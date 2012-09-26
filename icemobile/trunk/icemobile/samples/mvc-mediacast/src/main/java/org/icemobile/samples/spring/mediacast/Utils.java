@@ -1,8 +1,8 @@
 package org.icemobile.samples.spring.mediacast;
 
-import org.icemobile.jsp.tags.TagUtil;
-
 public class Utils {
+	
+	public static final String SX = "icemobile-sx";
 	
 	/**
 	 * Test from http://detectmobilebrowsers.com
@@ -29,6 +29,12 @@ public class Utils {
 	public static boolean isDesktop(String userAgent){
 		return !isMobileBrowser(userAgent) && !isTabletBrowser(userAgent);
 	}
+	
+	public static boolean isSX(String userAgent){
+		String ua=userAgent.toLowerCase();
+		return ua.contains(SX);
+	}
+	
 	
 
 }
