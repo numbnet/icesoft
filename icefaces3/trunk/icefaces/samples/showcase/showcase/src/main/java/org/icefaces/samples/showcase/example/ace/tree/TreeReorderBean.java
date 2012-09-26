@@ -1,7 +1,7 @@
 package org.icefaces.samples.showcase.example.ace.tree;
 
 import org.icefaces.ace.model.tree.NodeState;
-import org.icefaces.ace.model.tree.StateCreationCallback;
+import org.icefaces.ace.model.tree.NodeStateCreationCallback;
 import org.icefaces.samples.showcase.metadata.annotation.ComponentExample;
 import org.icefaces.samples.showcase.metadata.annotation.ExampleResource;
 import org.icefaces.samples.showcase.metadata.annotation.ExampleResources;
@@ -72,7 +72,7 @@ public class TreeReorderBean extends ComponentExampleImpl<TreeReorderBean> imple
 
     private List<LocationNodeImpl> treeRoots = new ArrayList<LocationNodeImpl>(Arrays.asList(TreeDataFactory.getTreeRoots()));
 
-    private StateCreationCallback expandAllInit = new StateCreationCallback() {
+    private NodeStateCreationCallback expandAllInit = new NodeStateCreationCallback() {
         public NodeState initializeState(NodeState newState, Object node) {
             newState.setExpanded(true);
             return newState;
@@ -83,7 +83,7 @@ public class TreeReorderBean extends ComponentExampleImpl<TreeReorderBean> imple
         return treeRoots;
     }
 
-    public StateCreationCallback getExpandAllInit() {
+    public NodeStateCreationCallback getExpandAllInit() {
         return expandAllInit;
     }
 }
