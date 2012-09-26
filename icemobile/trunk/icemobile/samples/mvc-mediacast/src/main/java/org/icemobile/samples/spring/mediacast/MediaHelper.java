@@ -71,8 +71,11 @@ public class MediaHelper implements Serializable, ServletContextAware{
 			// into a 1 megapixelish sized image.
 			int width = image.getWidth();
 			int height = image.getHeight();
-			double xOffset = width > height ? (width - height) / 2 : 0; 			
-			double yOffset = height > width ? (height - width) / 2 : 0; 
+			int xOffset = width > height ? (width - height) / 2 : 0; 			
+			int yOffset = height > width ? (height - width) / 2 : 0; 
+			int length = Math.min(image.getWidth(), image.getHeight());
+			//crop
+			image = image.getSubimage(xOffset, yOffset, length, length);
 
 			// create the small photo
 			AffineTransform tx = new AffineTransform();
@@ -80,12 +83,6 @@ public class MediaHelper implements Serializable, ServletContextAware{
 			tx.scale(imageScale, imageScale);
 			AffineTransformOp op = new AffineTransformOp(tx, AffineTransformOp.TYPE_BILINEAR);
 			BufferedImage smallImage = op.filter(image, null);
-			int scaledXOffset = new Long(Math.round(imageScale*xOffset)).intValue();
-			int scaledYOffset = new Long(Math.round(imageScale*yOffset)).intValue();
-			log.info("scaling small photo xoffset="+scaledXOffset+", yoffset="+scaledYOffset);
-			BufferedImage croppedSmallImage = smallImage
-					.getSubimage(scaledXOffset, scaledYOffset, SMALL_PHOTO_HEIGHT, SMALL_PHOTO_HEIGHT);
-			log.info("medium buffered image: " + croppedSmallImage);
 
 			// create the smaller image.
 			imageScale = calculateImageScale(LARGE_PHOTO_HEIGHT, height);
@@ -93,24 +90,16 @@ public class MediaHelper implements Serializable, ServletContextAware{
 			tx.scale(imageScale, imageScale);
 			op = new AffineTransformOp(tx, AffineTransformOp.TYPE_BILINEAR);
 			BufferedImage largeImage = op.filter(image, null);
-			scaledXOffset = new Long(Math.round(imageScale*xOffset)).intValue();
-			scaledYOffset = new Long(Math.round(imageScale*yOffset)).intValue();
-			log.info("scaling large photo xoffset="+scaledXOffset+", yoffset="+scaledYOffset);
-			BufferedImage croppedLargeImage = largeImage
-					.getSubimage(scaledXOffset, scaledYOffset, LARGE_PHOTO_HEIGHT, LARGE_PHOTO_HEIGHT);
-			log.info("large buffered image: " + croppedLargeImage);
-			
-			// clean up images
 			
 			image.flush();
 			
 			String dir = msg.getPhoto().getFile().getParent();
 			msg.setLargePhoto(
-					createMedia(uploadId, dir, croppedLargeImage, largeImage.getTileWidth(),
+					createMedia(uploadId, dir, largeImage, largeImage.getTileWidth(),
 							largeImage.getHeight(), "-large"));
 			log.info("large photo: " + msg.getLargePhoto());
 			msg.setSmallPhoto(
-					createMedia(uploadId, dir, croppedSmallImage,
+					createMedia(uploadId, dir, smallImage,
 							smallImage.getTileWidth(),
 							smallImage.getHeight(), "-small"));
 			log.info("small photo: " + msg.getSmallPhoto());
