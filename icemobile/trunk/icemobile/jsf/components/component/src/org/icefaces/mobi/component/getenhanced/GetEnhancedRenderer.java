@@ -27,6 +27,7 @@ import org.icefaces.mobi.renderkit.CoreRenderer;
 import org.icefaces.mobi.utils.HTML;
 import org.icefaces.mobi.utils.Utils;
 import org.icefaces.mobi.utils.Utils.DeviceType;
+import org.icefaces.impl.application.AuxUploadSetup;
 
 
 public class GetEnhancedRenderer extends CoreRenderer {
@@ -89,7 +90,21 @@ public class GetEnhancedRenderer extends CoreRenderer {
 					break;
 			}
 			writer.writeText(msg, null);
-			
+
+            if (Utils.showSX())  {
+                String sessionIdParam = Utils.getSessionIdCookie(facesContext);
+                String uploadURL = AuxUploadSetup.getInstance().getUploadURL();
+                StringBuilder sb = new StringBuilder("mobi.registerAuxUpload('");
+                sb.append(sessionIdParam).append("','")
+                        .append(uploadURL).append("');");
+
+				writer.startElement(HTML.ANCHOR_ELEM,null);
+				writer.writeAttribute(HTML.CLASS_ATTR, "mobi-button mobi-button-important", null);
+                writer.writeAttribute(HTML.ONCLICK_ATTR, sb.toString(),
+                        HTML.ONCLICK_ATTR);
+				writer.writeText(GetEnhanced.ENABLE, null);
+				writer.endElement(null);
+            }
 			if( getEnhanced.isIncludeLink() ){
 				writer.startElement(HTML.ANCHOR_ELEM,null);
 				writer.writeAttribute(HTML.HREF_ATTR, link, null);
