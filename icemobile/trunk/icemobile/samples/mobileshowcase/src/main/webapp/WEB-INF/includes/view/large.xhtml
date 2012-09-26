@@ -17,7 +17,6 @@
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
-                xmlns:util="http://java.sun.com/jsf/composite/components"
                 xmlns:icecore="http://www.icefaces.org/icefaces/core"
                 xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
     <mobi:pagePanel>
@@ -47,6 +46,8 @@
                         <f:selectItem itemLabel="iPad" itemValue="ipad.css"/>
                         <f:selectItem itemLabel="Android"
                                       itemValue="honeycomb.css"/>
+                         <f:selectItem itemLabel="Lightning"
+                                      itemValue="lightning.css"/>
                         <f:ajax disabled="true"/>
                     </h:selectOneMenu>
 
@@ -56,25 +57,21 @@
 
 
         <f:facet name="body">
-
+  	       <mobi:splitPane scrollable="true" columnDivider="30">
+				<f:facet name="left">
             <!-- always present menu on left side of device. -->
-            <util:panelScroller id="menu-wrapper"
-                                styleClass="mobi-pagePanel-body-menu"
-                                style="">
                 <!-- main content include of page content -->
-                <ui:include src="/WEB-INF/includes/content/menu.xhtml"/>
-            </util:panelScroller>
+                   <ui:include src="/WEB-INF/includes/content/menu.xhtml"/>
+                </f:facet>
 
-            <!--always present menu on left side of device.-->
-            <util:panelScroller id="body-wrapper"
-                                styleClass="mobi-pagePanel-body-content"
-                                style="">
+				<f:facet name="right">
                 <!-- main content include of page content -->
-                <ui:include src="/WEB-INF/includes/content/content-stack.xhtml">
-                    <ui:param name="selectedPanel"
+                  <ui:include src="/WEB-INF/includes/content/content-stack.xhtml">
+                     <ui:param name="selectedPanel"
                               value="#{navigationModel.selectedPanel == null?'splash':navigationModel.selectedPanel}"/>
-                </ui:include>
-            </util:panelScroller>
+                  </ui:include>
+                </f:facet>
+            </mobi:splitPane>
         </f:facet>
 
     </mobi:pagePanel>
