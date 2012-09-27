@@ -64,7 +64,7 @@ public class SubmitMonitorRenderer extends CoreRenderer {
             SubmitMonitor monitor, String clientId) throws IOException {
         writer.startElement(HTML.DIV_ELEM, monitor);
         writer.writeAttribute(HTML.ID_ATTR, clientId+"_display", null);
-        writer.writeAttribute(HTML.CLASS_ATTR, "ice-sub-mon", null);
+        writer.writeAttribute(HTML.CLASS_ATTR, "ice-sub-mon ui-widget", null);
         if (Boolean.TRUE.equals(monitor.isHidingIdleSubmitMonitor())) {
             writer.writeAttribute(HTML.STYLE_ATTR, "display:none;", null);
         }
@@ -72,11 +72,7 @@ public class SubmitMonitorRenderer extends CoreRenderer {
         // Don't give anything under here an id, since this section is cloned,
         // and we don't want duplicate id(s) in the DOM. It may be problematic
         // with the facet components having id(s).
-
-        final List<String> allFacets = Arrays.asList(new String[] {
-            "idle", "active", "serverError", "networkError", "sessionExpired"
-        });
-        for (String facetName : allFacets) {
+        for (State state : State.values()) {
             writer.startElement(HTML.DIV_ELEM, monitor);
             // Start us off in the idle state. When first rendering, this
             // puts us in the right state, since we don't have any listeners
@@ -84,30 +80,23 @@ public class SubmitMonitorRenderer extends CoreRenderer {
             // renders, if the submitMonitor itself is updated, then things
             // could get dicey. But it's probably best to be back in idle
             // anyway.
-            if (!facetName.equals(allFacets.get(0))) {
+            if (!state.equals(State.idle)) {
                 writer.writeAttribute(HTML.STYLE_ATTR, "display:none;", null);
             }
-            writer.writeAttribute(HTML.CLASS_ATTR, "ice-sub-mon-mid " + facetName, null);
+            writer.writeAttribute(HTML.CLASS_ATTR, state.getMidClassName(), null);
 
-            UIComponent facet = monitor.getFacet(facetName);
+            UIComponent facet = monitor.getFacet(state.name());
             if (facet != null) {
                 facet.encodeAll(context);
             } else {
                 writer.startElement(HTML.SPAN_ELEM, null);
-                writer.writeAttribute(HTML.CLASS_ATTR, "ice-sub-mon-img", null);
+                writer.writeAttribute(HTML.CLASS_ATTR, state.getImageClassName(), null);
                 writer.endElement(HTML.SPAN_ELEM);
 
-                String label;
-                switch (allFacets.indexOf(facetName)) {
-                    case 1: label = monitor.getActiveLabel(); break;
-                    case 2: label = monitor.getServerErrorLabel(); break;
-                    case 3: label = monitor.getNetworkErrorLabel(); break;
-                    case 4: label = monitor.getSessionExpiredLabel(); break;
-                    case 0: default: label = monitor.getIdleLabel(); break;
-                }
+                String label = state.getLabel(monitor);
                 if (label != null && label.length() > 0) {
                     writer.startElement(HTML.SPAN_ELEM, null);
-                    writer.writeAttribute(HTML.CLASS_ATTR, "ice-sub-mon-txt", null);
+                    writer.writeAttribute(HTML.CLASS_ATTR, state.getTextClassName(), null);
                     writer.write(label);
                     writer.endElement(HTML.SPAN_ELEM);
                 }
@@ -126,5 +115,68 @@ public class SubmitMonitorRenderer extends CoreRenderer {
         config.entryNonNullValue("monitorFor", monitor.resolveFor());
         config.endMap();
         return config;
+    }
+
+
+    private static enum State {
+        idle {
+            String getLabel(SubmitMonitor monitor) {
+                return monitor.getIdleLabel();
+            }
+        },
+        active {
+            String getLabel(SubmitMonitor monitor) {
+                return monitor.getActiveLabel();
+            }
+        },
+        serverError {
+            String getLabel(SubmitMonitor monitor) {
+                return monitor.getServerErrorLabel();
+            }
+        },
+        networkError {
+            String getLabel(SubmitMonitor monitor) {
+                return monitor.getNetworkErrorLabel();
+            }
+        },
+        sessionExpired {
+            String getLabel(SubmitMonitor monitor) {
+                return monitor.getSessionExpiredLabel();
+            }
+        };
+
+        abstract String getLabel(SubmitMonitor monitor);
+        String getMidClassName() {
+            return MID_CLASS_NAMES[ordinal()];
+        }
+        String getImageClassName() {
+            return IMG_CLASS_NAMES[ordinal()];
+        }
+        String getTextClassName() {
+            return TXT_CLASS_NAMES[ordinal()];
+        }
+
+        // Implement as interned String constants instead of concatenated
+        private static final String[] MID_CLASS_NAMES = new String[] {
+            "ice-sub-mon-mid idle",
+            "ice-sub-mon-mid active",
+            "ice-sub-mon-mid serverError ui-state-error",
+            "ice-sub-mon-mid networkError ui-state-error",
+            "ice-sub-mon-mid sessionExpired ui-state-error"
+        };
+        private static final String[] IMG_CLASS_NAMES = new String[] {
+            "ice-sub-mon-img",
+            "ice-sub-mon-img",
+            "ice-sub-mon-img ui-icon ui-icon-alert",
+            "ice-sub-mon-img ui-icon ui-icon-alert",
+            "ice-sub-mon-img ui-icon ui-icon-clock"
+        };
+        private static final String[] TXT_CLASS_NAMES = new String[] {
+            "ice-sub-mon-txt",
+            "ice-sub-mon-txt",
+            "ice-sub-mon-txt ui-state-error-text",
+            "ice-sub-mon-txt ui-state-error-text",
+            "ice-sub-mon-txt ui-state-error-text"
+        };
     }
 }

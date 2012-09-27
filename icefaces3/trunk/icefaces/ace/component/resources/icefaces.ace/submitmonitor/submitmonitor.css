@@ -39,21 +39,3 @@
     background-repeat:no-repeat;
     padding: 13px 26px 13px 0px;
 }
-
-.ice-sub-mon > .ice-sub-mon-mid.serverError > .ice-sub-mon-img {
-    background-image: url("#{resource['icefaces.ace:submitmonitor/connect_disconnected.gif']}");
-    background-repeat:no-repeat;
-    padding: 13px 26px 13px 0px;
-}
-
-.ice-sub-mon > .ice-sub-mon-mid.networkError > .ice-sub-mon-img {
-    background-image: url("#{resource['icefaces.ace:submitmonitor/connect_disconnected.gif']}");
-    background-repeat:no-repeat;
-    padding: 13px 26px 13px 0px;
-}
-
-.ice-sub-mon > .ice-sub-mon-mid.sessionExpired > .ice-sub-mon-img {
-    background-image: url("#{resource['icefaces.ace:submitmonitor/connect_session.gif']}");
-    background-repeat:no-repeat;
-    padding: 13px 26px 13px 0px;
-}

@@ -52,7 +52,8 @@
             overlayHeight = container.offsetHeight;
         }
         var overlay = document.createElement('div');
-        overlay.style.cssText = 'top: 0px; left: 0px; width: '+overlayWidth+'px; height: '+overlayHeight+'px; background-color: black; position: absolute; z-index: 28000; opacity: 0.3; filter: alpha(opacity = 30); zoom: 1;';
+        overlay.className = 'ui-widget-overlay';
+        overlay.style.cssText = 'top: 0px; left: 0px; width: '+overlayWidth+'px; height: '+overlayHeight+'px; position: absolute; z-index: 28000; zoom: 1;';
 
         setTimeout(function() {
             if (!addElements) {
@@ -76,8 +77,9 @@
         if (cfg.autoCenter) {
             cloneToRemove = ice.ace.jq(ice.ace.escapeClientId(cfg.id)+"_display").clone(false,true);
             cloneToRemove.attr('id', cfg.id + '_clone');
-            cloneToRemove.addClass('clone');
+            cloneToRemove.addClass('clone ui-panel ui-widget-content ui-corner-all');
             cloneToRemove.css('z-index', '28001');
+            cloneToRemove.children().addClass('ui-panel-titlebar ui-widget-header ui-corner-all');
             if (container == document.body) {
                 setTimeout(function() {
                     if (!addElements) {
@@ -344,6 +346,8 @@
             return false;
         }
 
+        //console.log('Monitor '+uniqueId+'>'+jqId+'  Register onElementUpdate: '+cfg.id+'_script');
+
         window.ice.onElementUpdate(cfg.id+'_script', function() {
             cleanup = CLEANUP_PENDING;
             //console.log('Monitor '+uniqueId+'>'+jqId+'  onElementUpdate  -> CLEANUP_PENDING');
@@ -425,9 +429,11 @@
         });
 
         window.ice.onSessionExpiry(function() {
+            //console.log('Monitor '+uniqueId+'>'+jqId+'  onSessionExpiry');
             if (handleCleanup(false)) {
                 return;
             }
+            //console.log('Monitor '+uniqueId+'>'+jqId+'  onSessionExpiry  Handling');
             anticipatePossibleSecondSubmit = UNANTICIPATED;
             changeState(SESSION_EXPIRED);
         });
