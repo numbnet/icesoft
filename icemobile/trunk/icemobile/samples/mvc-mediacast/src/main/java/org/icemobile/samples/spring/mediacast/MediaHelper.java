@@ -94,18 +94,23 @@ public class MediaHelper implements Serializable, ServletContextAware{
 			BufferedImage largeImage = op.filter(image, null);
 			
 			image.flush();
+			image = null;
 			
 			String dir = msg.getPhoto().getFile().getParent();
 			
 			msg.setLargePhoto(
 					createMedia(uploadId, dir, largeImage, largeImage.getTileWidth(),
 							largeImage.getHeight(), "-large"));
+			largeImage.flush();
+			largeImage = null;
 			log.info("large photo: " + msg.getLargePhoto());
 			
 			msg.setSmallPhoto(
 					createMedia(uploadId, dir, smallImage,
 							smallImage.getTileWidth(),
 							smallImage.getHeight(), "-small"));
+			smallImage.flush();
+			smallImage = null;
 			log.info("small photo: " + msg.getSmallPhoto());
 			
 		} catch (Throwable e) {
