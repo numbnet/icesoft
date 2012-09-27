@@ -1,9 +1,7 @@
 package org.icefaces.ace.model.tree;
 
-import org.apache.commons.collections.IteratorUtils;
 import org.icefaces.ace.model.SimpleEntry;
 
-import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
