@@ -1,45 +1,3 @@
-function enhanceFormBypassUpdate(theForm){
-    //submitting the form will update 
-    $(document).ready(function () {
-        $(theForm).submit(function () {
-            try{
-                var formData;
-                var mimeType = false;
-                if ((undefined !== window.FormData) && 
-                   (!window.clientInformation || 
-                       ("BlackBerry" !== window.clientInformation.platform)) )  {
-                    formData = new FormData(this);
-                } else {
-                    formData = $(theForm).serialize();
-                    mimeType = "application/x-www-form-urlencoded";
-                }
-
-                $.ajax({
-                    url:$(this).attr("action"),
-                    data:formData,
-                    cache:false,
-                    contentType:mimeType,
-                    processData:false,
-                    type:'POST',
-                    success:function (html) {
-                        console.log(html);
-                    }
-                });
-            }
-            catch(err){
-                if( window.console ){
-                    console.error(err);
-                }
-                else{
-                    alert(err);
-                }
-            }
-            return false;
-        });
-    });
-	
-}
-
 function enhanceForm(theForm,updateTarget)  {
     //submitting the form will update 
     $(document).ready(function () {
@@ -174,6 +132,20 @@ function getGalleryUpdate(){
         }
     });
 }
+
+function getGalleryRefresh(){
+	console.log('getGalleryRefresh()');
+	$.ajax({
+        url:'contest-photo-list',
+        cache:false,
+        processData:false,
+        type:'GET',
+        success:function (html) {
+        	 $('#galleryFrm').replaceWith(html);
+        }
+    });
+}
+
 
 function updateGalleryList(json){
 	var start = "<li class='mobi-list-item'><div class='mobi-list-item-default'>";
