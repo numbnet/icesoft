@@ -1,3 +1,4 @@
+<%@ page import="org.icemobile.jsp.tags.TagUtil" %>
 <head>
 	<title><fmt:message key="title" /></title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -14,5 +15,13 @@
     <script type="text/javascript" src='<c:url value="/resources/javascript/jquery-ui-1.8.23.custom.min.js"/>'></script>
 	<script type="text/javascript">document.documentElement.className = document.documentElement.className+' js';</script>
 	<script type="text/javascript" src='<c:url value="/resources/javascript/mediacast.js"/>'></script>
+    <script type="text/javascript">
+        <%
+            String cloudPushId = TagUtil.getCloudPushId(pageContext);
+            if (null != cloudPushId) {
+                out.println("window.addEventListener('load', function() { ice.push.parkInactivePushIds('" + cloudPushId + "'); }, false);");
+            }
+        %>
+    </script>
     <mobi:googleAnalytics/>
 </head>
