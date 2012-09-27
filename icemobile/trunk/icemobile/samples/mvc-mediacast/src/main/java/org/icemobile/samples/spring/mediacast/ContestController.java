@@ -21,7 +21,6 @@ import javax.validation.Valid;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.icefaces.application.PushMessage;
 import org.icemobile.jsp.tags.TagUtil;
 import org.icepush.PushContext;
 import org.icepush.PushNotification;
@@ -41,7 +40,8 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.multipart.MultipartFile;
 
 @Controller
-@SessionAttributes({"uploadModel","admin","desktop", "sx", TagUtil.USER_AGENT_COOKIE})
+@SessionAttributes(value = {"uploadModel","admin","desktop", "voterId", "sx", TagUtil.USER_AGENT_COOKIE},
+		types=ContestForm.class)
 public class ContestController implements ServletContextAware {
 
 	@Inject
@@ -68,8 +68,6 @@ public class ContestController implements ServletContextAware {
 	private static final String DESKTOP = "d";
 	private static final String MOBILE = "m";
 	private static final String TABLET = "t";
-	
-	private static final String ACTION_VOTE = "v";
 	
 	private String currentLeaderEmail;
 	private int currentLeaderVotes = 0;
