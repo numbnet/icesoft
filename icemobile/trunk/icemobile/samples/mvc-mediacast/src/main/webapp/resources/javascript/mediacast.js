@@ -145,7 +145,7 @@ function updateGalleryList(json){
 		var list = $('#galleryList')[0].children;
 		var item = start+"<div id='"+msg.id+"' data-lastvote='"+msg.lastVote+"' data-created='"+msg.created+"' data-votes='"+msg.votes+"'>"
 			+ "<a class='mediaLink' href='#' onclick=\"updateViewerPanel('"+msg.id+"');\">"
-			+ "<img src='/uploads/"+msg.fileName+"' class='p'>"
+			+ "<img src='resources/uploads/"+msg.fileName+"' class='p'>"
 			+ "</a>";
 		if( msg.canVote ){
 			item += "<input type='image' class='vote' title='Vote for it!' src='resources/css/css-images/like.png' name='photoId' value='"+msg.id+"'/>";

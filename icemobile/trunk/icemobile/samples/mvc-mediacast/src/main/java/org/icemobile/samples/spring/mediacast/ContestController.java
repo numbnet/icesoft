@@ -567,9 +567,7 @@ public class ContestController implements ServletContextAware {
 	}
 	
 	private File getUploadsDir(){
-		String webappsdir = new File(servletContext.getRealPath("/")).getParent();
-		File uploadsDir = new File(webappsdir+"/uploads");
-		return uploadsDir;
+		return new File(servletContext.getRealPath("/resources/uploads"));
 	}
 	
 	private void ensureUploadDirExists(){

@@ -14,12 +14,12 @@
                     data-votes="${m.numberOfVotes}">
                     <c:if test="${layout eq 'm'}">
                         <a class="mediaLink" href='<c:url value="/contest?p=viewer&l=${layout}&id=${m.id}"/>'>
-                            <img src='/uploads/${m.smallPhoto.file.name}' class="p"/>
+                            <img src='resources/uploads/${m.smallPhoto.file.name}' class="p"/>
                         </a>
                     </c:if>
                     <c:if test="${layout ne 'm'}">
                         <a class="mediaLink" href="#" onclick="updateViewerPanel('${m.id}');">
-                            <img src='/uploads/${m.smallPhoto.file.name}' class="p"/>
+                            <img src='resources/uploads/${m.smallPhoto.file.name}' class="p"/>
                         </a>
                     </c:if>
                     <c:if test="${!fn:contains(m.votesAsString, voterId)}">
