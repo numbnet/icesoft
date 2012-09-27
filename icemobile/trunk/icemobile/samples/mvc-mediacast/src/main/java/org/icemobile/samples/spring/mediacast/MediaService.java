@@ -45,7 +45,7 @@ public class MediaService implements ServletContextAware {
 	private String contextPath;
 	private TagWeightMap tagsMap = new TagWeightMap();
 	private static final String CONTEST_CAROUSEL_ITEM_MARKUP = 
-			"<div><a href='%1$s/contest?p=viewer&l=%2$s&id=%3$s' title='%4$s'><img height='"+CAROUSEL_IMG_HEIGHT+"' src='%1$s/resources/uploads/%5$s' style='border:none;'></a></div>";
+			"<div><a href='%1$s/contest?p=viewer&l=%2$s&photoId=%3$s' title='%4$s'><img height='"+CAROUSEL_IMG_HEIGHT+"' src='%1$s/resources/uploads/%5$s' style='border:none;'></a></div>";
 	private Comparator<MediaMessage> mediaByVotesComparator = new MediaMessageByVotesComparator();
 	private Comparator<MediaMessage> mediaByTimeComparator = new MediaMessageByTimeComparator();
 	
@@ -116,7 +116,7 @@ public class MediaService implements ServletContextAware {
     	    		}
     	    		if( photo != null && photo.getFile() != null ){
     	    			String markup = "<div><a data-id='"+mediaMsg.getId()+"' href='"+contextPath+"/contest?p=viewer"
-    	    					+ (layout != null ? "&l=" + layout : "") + "&id="+mediaMsg.getId()
+    	    					+ (layout != null ? "&l=" + layout : "") + "&photoId="+mediaMsg.getId()
     	    					+"' title='"+mediaMsg.getDescription()+"'><img height='"
     	    					+CAROUSEL_IMG_HEIGHT+"' src='resources/uploads/"
     	    					+ photo.getFile().getName()+"' style='border:none;'/></a></div>";
