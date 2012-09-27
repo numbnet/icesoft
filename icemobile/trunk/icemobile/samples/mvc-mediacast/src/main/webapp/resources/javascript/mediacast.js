@@ -167,11 +167,12 @@ function updateGalleryList(json){
 		}
 		item += "<span class='desc'>"+msg.description+"</span><span class='vote'>"+msg.votes+" Votes</span>";	
 		var galleryList = $('#galleryList').children();
+		var found = false;
 		if( galleryList.length == 0 ){
 			document.getElementById('galleryList').innerHTML = item;
+			found = true;
 		}
 		else{
-			var found = false;
 			galleryList.each(function(i){
 				if( !found ){
 					var dataElemQ = $(this).find('div > div');
@@ -191,13 +192,13 @@ function updateGalleryList(json){
 							$(this).after(item);
 							found = true;
 						}
-						if( found ){
-							$('#'+msg.id).parent().effect("highlight", {}, 3000);
-						}
 					}
 					
 				}
 			});	
+		}
+		if( found ){
+			$('#'+msg.id).parent().effect("highlight", {}, 3000);
 		}
 		$('#updated').val(updated);
 	}

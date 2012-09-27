@@ -340,11 +340,13 @@ html.android a.mobi-button-default, html.android a.mobi-button-important, html.a
 html.bberry input, html.bberry textara{
 	padding:3px;
 }
-html.bberry .mobi-pagePanel-header{
+html.bberry .mobi-pagePanel-header,
+html.android .mobi-pagePanel-header{
 	height:40px;
 	line-height:40px;
 }
-html.bberry .mobi-pagePanel-header a{
+html.bberry .mobi-pagePanel-header a,
+html.android .mobi-pagePanel-header a{
 	margin:5px;
 }
 #tally{
