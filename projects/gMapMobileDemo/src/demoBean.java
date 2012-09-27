@@ -3,19 +3,23 @@ import org.icefaces.util.EnvUtils;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.context.ExternalContext;
-import javax.faces.event.AjaxBehaviorEvent;
-import javax.faces.validator.ValidatorException;
-import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
-import javax.faces.model.SelectItem;
-import javax.faces.event.ActionEvent;
+import javax.imageio.ImageIO;
+import javax.servlet.http.HttpServletRequest;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.*;
+import java.util.List;
+
+
 
 @ManagedBean(name = "demoBean")
 @CustomScoped(value = "#{window}")
-public class demoBean {
+public class demoBean implements Serializable{
     private String autocompleteReturn;
     private String geoLat = "0";
     private String geoLong = "0";
@@ -97,12 +101,10 @@ public class demoBean {
         if (d >= 1) {
             BigDecimal rounded = new BigDecimal(Double.toString(d));
             distance = rounded.setScale(2, BigDecimal.ROUND_HALF_UP).toString() + " Km";
-            System.out.println(distance);
             return distance;
         } else {
             BigDecimal rounded = new BigDecimal(Double.toString(d * 1000));
             distance = rounded.setScale(2, BigDecimal.ROUND_HALF_UP).toString() + " m";
-            System.out.println(distance);
             return distance;
         }
     }
@@ -155,9 +157,8 @@ public class demoBean {
         SearchedPosition position = new SearchedPosition();
         position.setLatitude(autoLat);
         position.setLongitude(autoLong);
-        position.setLabel(getDistance());
-
-        position.setIcon(chooseIcon());
+        position.setLabel((getAddress() + ":" + getDistance()).replace(" ", "_"));
+        position.setIcon(makeIcon());
         list.add(position);
 
         return list;
@@ -198,24 +199,62 @@ public class demoBean {
         if (types != null && !types.equals("null")) {
             String[] typeArray = types.split(",");
             List<String> typeList = Arrays.asList(typeArray);
-            if (typeList.contains("country"))
-                return "/country.png";
-            if (typeList.contains("locality"))
-                return "/city.png";
-            if (typeList.contains("bar"))
-                return "/bar.png";
-            if (typeList.contains("restaurant"))
-                return "/restaurant.png";
             if (typeList.contains("lodging"))
-                return "/lodging.png";
+                return "lodging.png";
+            if (typeList.contains("country"))
+                return "country.png";
+            if (typeList.contains("locality"))
+                return "city.png";
+            if (typeList.contains("bar"))
+                return "bar.png";
+            if (typeList.contains("restaurant"))
+                return "restaurant.png";
             if (typeList.contains("art_gallery") || typeList.contains("amusement_park") || typeList.contains("aquarium") || typeList.contains("museum") || typeList.contains("natural_feature") || typeList.contains("zoo") || typeList.contains("point_of_interest"))
-                return "/sight.png";
-            return "/pin.png";
+                return "sight.png";
+            return "pin.png";
         } else
-            return "/pin.png";
+            return "pin.png";
     }
 
-    public class SearchedPosition {
+    public String makeIcon() {
+
+        BufferedImage img = null;
+        HttpServletRequest myRequest = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
+        String fileLocation = myRequest.getServletContext().getRealPath("images/"+chooseIcon());
+        if (!new File(myRequest.getServletContext().getRealPath("tmp")).exists())
+            new File(myRequest.getServletContext().getRealPath("tmp")).mkdir();
+        try {
+            if (address != null && !address.equals("null")) {
+                String imgAddress = address.split(",")[0];
+                String imgDistance = getDistance();
+                img = ImageIO.read(new File(fileLocation));
+                Graphics2D g2 = img.createGraphics();
+                Font font = new Font("SansSerif", Font.PLAIN, 16);
+                g2.setFont(font);
+                FontMetrics fm = g2.getFontMetrics(font);
+                int addressWidth = fm.stringWidth(imgAddress);
+                int distanceWidth = fm.stringWidth(imgDistance);
+                int imgWidth = img.getWidth();
+                g2.setColor(new Color(255, 255, 255));
+                if (addressWidth >= distanceWidth)
+                    g2.fillRect(((imgWidth - addressWidth) / 2) - 10, 65, addressWidth + 20, 40);
+                else
+                    g2.fillRect(((imgWidth - distanceWidth) / 2) - 10, 65, distanceWidth + 20, 40);
+                g2.setColor(new Color(0, 0, 0));
+                g2.drawString(imgAddress, (imgWidth - addressWidth) / 2, 80);
+                g2.drawString(imgDistance, (imgWidth - distanceWidth) / 2, 100);
+                File outputfile = new File(myRequest.getServletContext().getRealPath("tmp/" + myRequest.getSession().getId() + "_icon.png"));
+                ImageIO.write(img, "png", outputfile);
+                //img.flush();
+            }
+        } catch (IOException e) {
+            System.out.println("Encountered problem:" + e);
+        }
+
+        return "/tmp/"+myRequest.getSession().getId()+"_icon.png";
+    }
+
+    public class SearchedPosition implements Serializable{
         public String latitude, longitude, label, icon;
 
         public String getLatitude() {
