@@ -63,12 +63,16 @@ ice.ace.Calendar = function(id, cfg) {
                 this.cfg.altFieldTimeOnly = false;
                 this.jq.datetimepicker(this.cfg);
                 if (!this.cfg.popup && $.type(altFieldVal) === "string") {
-                    this.cfg.altField.val(altFieldVal);
+//                    this.cfg.altField.val(altFieldVal);
+                    this.jq.datetimepicker("setDate", $.trim(altFieldVal));
                 }
             }
         }
         else {
             this.jq.datepicker(this.cfg);
+            if (!this.cfg.popup && $.type(altFieldVal) === "string") {
+                this.jq.datepicker("setDate", $.trim(altFieldVal));
+            }
         }
     }
 
