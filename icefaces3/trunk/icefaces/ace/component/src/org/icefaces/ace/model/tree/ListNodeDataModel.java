@@ -172,13 +172,16 @@ public class ListNodeDataModel extends NodeDataModel<TreeNode> implements Serial
         MutableTreeNode current = (MutableTreeNode) getData();
         MutableTreeNode node = (MutableTreeNode) imNode;
 
-        if (current == null) {
+        if (node.getParent() != null)
             node.removeFromParent();
+        else
+            roots.remove(node);
+
+        if (current == null) {
             node.setParent(null);
             roots.add(index, node);
         }
         else {
-            node.removeFromParent();
             current.insert(node, index);
         }
     }
