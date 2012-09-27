@@ -12,12 +12,12 @@
         </mobi:pagePanelHeader>
         <mobi:pagePanelBody>
             
-            <div id="left" style="width:30%;float:left;">
+            <div id="left">
                 <div id="photoListContainer">
                     <%@ include file="/WEB-INF/jsp/inc/contest-photo-list.jsp" %>
                 </div>
             </div>
-            <div id="right" style="width:70%;float:left;border-left:1px solid darkgray;box-sizing:border-box;-moz-border-sizing:border-box;">
+            <div id="right">
                 <mobi:tabset id="tabs" selectedTab="0">
 	                <mobi:headers>
 	                    <mobi:header><span class="mobitab">Upload</span></mobi:header>

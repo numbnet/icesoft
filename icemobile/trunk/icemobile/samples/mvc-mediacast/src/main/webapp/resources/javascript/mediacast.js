@@ -59,8 +59,17 @@ function updateViewerPanel(id,action){
         processData:false,
         type:'GET',
         success:function (html) {
-            $('#viewerPanel').replaceWith(html);
-            ice.mobi.tabsetController.showContent('tabs', $('#tabstab_1')[0], {tIndex: 1} );
+        	if( action ){
+        		var dir = (action == 'back' ? 'right' : 'left');
+        		$('#viewerPanel').hide("slide", { direction: dir }, 1000)
+        		.delay(1000).replaceWith(html);
+        		$('#viewerPanel').show("slide", { direction: dir }, 1000);
+        	}
+        	else{
+        		$('#viewerPanel').replaceWith(html);
+        		ice.mobi.tabsetController.showContent('tabs', $('#tabstab_1')[0], {tIndex: 1} );
+        	}
+            
         }
     });
 }
