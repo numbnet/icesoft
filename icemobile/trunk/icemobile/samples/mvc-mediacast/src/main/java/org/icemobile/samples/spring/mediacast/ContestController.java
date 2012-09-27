@@ -21,8 +21,10 @@ import javax.validation.Valid;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.icefaces.application.PushMessage;
 import org.icemobile.jsp.tags.TagUtil;
 import org.icepush.PushContext;
+import org.icepush.PushNotification;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -144,14 +146,13 @@ public class ContestController implements ServletContextAware {
 			HttpServletResponse response,
 			@RequestParam(value="l", defaultValue=MOBILE) String layout, 
 			@RequestParam(value="p", defaultValue=PAGE_UPLOAD) String page,
-			@RequestParam(value="id", required=false) String id,
-			@RequestParam(value="a", required=false) String action,
+			@RequestParam(value="photoId", required=false) String photoId,
 			@CookieValue(value="votes", required=false) String cookieVotes,
 			Model model, 
 			@ModelAttribute("uploadModel") MediaMessage uploadModel,
 			@ModelAttribute("msg") String msg) {
 		
-		log.warn("main contest controller l="+layout+", p="+page+", a="+action +", cookies="+cookieVotes);
+		log.warn("main contest controller l="+layout+", p="+page+",cookies="+cookieVotes);
 		
 		//clean params
 		layout = cleanSingleRequestParam(layout);
@@ -170,10 +171,6 @@ public class ContestController implements ServletContextAware {
 		addCommonModel(model,uploadModel,layout);
 		model.addAttribute("voterId",voterId);
 		
-		if (ACTION_VOTE.equals(action) ){
-			doVote(response,id,cookieVotes, model);
-		}
-		
 		if( page.equals(PAGE_UPLOAD) ){
 			addUploadViewModel(page, layout, model);
 			view = "contest-upload";
@@ -182,12 +179,12 @@ public class ContestController implements ServletContextAware {
 			view = "contest-gallery";
 		}
 		else if( page.equals(PAGE_VIEWER)){
-			addViewerViewModel(id,layout,model, false, false);
+			addViewerViewModel(photoId,layout,model, false, false);
 			view = "contest-viewer";
 		}
 		else if( page.equals(PAGE_ALL)){
 			addUploadViewModel(page, layout, model);
-			addViewerViewModel(id, layout, model, false, false);
+			addViewerViewModel(photoId, layout, model, false, false);
 			view = "contest-tablet";
 		}
 		log.warn("forwarding to " + view);
@@ -254,17 +251,25 @@ public class ContestController implements ServletContextAware {
 			@CookieValue(value="votes", required=false) String cookieVotes){
 		List<MediaMessage> list = mediaService.getMediaCopy();
 		List<MediaMessageTransfer> results = new ArrayList<MediaMessageTransfer>();
+		String voterId = getVoterIdFromCookie(cookieVotes);
+		log.debug("voterId="+voterId);
+		log.debug("cookie="+cookieVotes);
+		
 		if( list != null && list.size() > 0 ){
 			Iterator<MediaMessage> iter = list.iterator();
 			while( iter.hasNext() ){
 				MediaMessage msg = iter.next();
-				String voterId = getVoterIdFromCookie(cookieVotes);
-				boolean canVote = false;
-				if( voterId != null ){
-					canVote = !msg.getVotes().contains(voterId);
-				}
 				if( msg.getLastVote() > since || msg.getCreated() > since || since == 0){
-					results.add(new MediaMessageTransfer(msg, canVote));
+					log.debug(msg);
+					boolean canVote = true;
+					if( voterId != null ){
+						canVote = msg.getVotes().isEmpty() || !msg.getVotes().contains(voterId);
+					}
+					log.debug("votes="+msg.getVotesAsString());
+					MediaMessageTransfer transfer = new MediaMessageTransfer(msg, canVote);
+					log.debug(transfer);
+					results.add(transfer);
+					
 				}
 			}
 		}
@@ -335,7 +340,7 @@ public class ContestController implements ServletContextAware {
 		log.info(form);
 		
 		if( file != null ){
-			log.info("incoming upload " + file.getContentType() + ", " + file.getContentType() + ", " + file.getSize() );
+			log.info("incoming upload " + file.getContentType() + file.getSize() );
 		}
 		
 		//SX Image upload before full form post
@@ -355,7 +360,7 @@ public class ContestController implements ServletContextAware {
 			doVote(response, form.getPhotoId(), cookieVotes, model);
 			addCommonModel(model, uploadModel, form.getLayout());
 			model.addAttribute("voterId",getVoterIdFromCookie(cookieVotes));
-			return "contest-photo-list";
+			return "empty";
 		}
 
 		if (result.hasErrors() ) {
@@ -500,6 +505,7 @@ public class ContestController implements ServletContextAware {
 	}
 	
 	private void doVote(HttpServletResponse response, String id, String cookieVotes, Model model){
+		log.debug("id="+id+", cookie="+cookieVotes);
 		MediaMessage msg = mediaService.getMediaMessage(id);
 		if (msg != null ){
 			String voterId = getVoterIdFromCookie(cookieVotes);
@@ -514,8 +520,9 @@ public class ContestController implements ServletContextAware {
 			msg.setLastVote(System.currentTimeMillis());
 			model.addAttribute("msg","Awesome, thanks for the vote!");
 			addVotesCookie(response, voterId, votesList);
-			PushContext.getInstance(servletContext).push("photos");
-			PushContext.getInstance(servletContext).push("votes-"+msg.getId());
+			PushContext pc = PushContext.getInstance(servletContext);
+			pc.push("photos");
+			pc.push("votes-"+msg.getId());
 			checkLeader(msg);
 			log.debug("recorded vote");
 		} 
@@ -525,13 +532,12 @@ public class ContestController implements ServletContextAware {
 		if( msg.getVotes().size() > currentLeaderVotes ){
 			currentLeaderVotes = msg.getVotes().size();
 			if( currentLeaderEmail != null && !currentLeaderEmail.equals(msg.getEmail())){
-				/*
-				PushMessage pm = new PushMessage("ICEmobile JavaOne Contest!",
+				currentLeaderEmail = msg.getEmail();
+				PushContext pc = PushContext.getInstance(servletContext);
+				PushNotification pn = new PushNotification("ICEmobile JavaOne Contest!",
 					"Hey congratulation! You're now in the lead with " + currentLeaderVotes
 					+ " votes!");
-				PushRenderer.render(msg.getEmail(), pm);
-				*/
-				currentLeaderEmail = msg.getEmail();
+				pc.push(currentLeaderEmail, pn);
 			}
 		}
 		
@@ -572,11 +578,11 @@ public class ContestController implements ServletContextAware {
 	
 	private void ensureUploadDirExists(){
 		File uploadsDir = getUploadsDir();
-		boolean result = false;
-		if( !uploadsDir.exists()){
-			result = uploadsDir.mkdir();
+		boolean exists = uploadsDir.exists();
+		if( !exists){
+			exists = uploadsDir.mkdir();
 		}
-		log.info("attempting checking upload dir " + result + ", "+uploadsDir.getAbsolutePath());
+		log.info("attempting checking upload dir " + exists + ", "+uploadsDir.getAbsolutePath());
 	}
 	
 	private File saveMultipartUploadToFile(MultipartFile upload, String id){
