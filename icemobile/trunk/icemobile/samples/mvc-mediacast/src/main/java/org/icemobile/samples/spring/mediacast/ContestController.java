@@ -40,7 +40,8 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.multipart.MultipartFile;
 
 @Controller
-@SessionAttributes(value = {"uploadModel","admin","desktop", "voterId", "sx", TagUtil.USER_AGENT_COOKIE},
+@SessionAttributes(value = {"uploadModel","admin","desktop", "voterId", "sx", 
+        TagUtil.USER_AGENT_COOKIE, TagUtil.CLOUD_PUSH_KEY},
 		types=ContestForm.class)
 public class ContestController implements ServletContextAware {
 
@@ -128,12 +129,16 @@ public class ContestController implements ServletContextAware {
 
 	@RequestMapping(value="/icemobile", method = RequestMethod.POST)
 	public String postICEmobileSX(HttpServletRequest request,
+            @RequestParam(value=TagUtil.CLOUD_PUSH_KEY) String cloudKey,
             Model model)  {
 		log.info("setting ICEmobile-SX");
             String userAgent = request.getHeader(TagUtil.USER_AGENT);
             if (userAgent.contains("ICEmobile-SX"))  {
                 model.addAttribute(TagUtil.USER_AGENT_COOKIE,
                         "HyperBrowser-ICEmobile-SX/1.0");
+                if (null != cloudKey)  {
+                    model.addAttribute(TagUtil.CLOUD_PUSH_KEY, cloudKey);
+                }
             }
             return "contest";
         }
@@ -396,8 +401,10 @@ public class ContestController implements ServletContextAware {
 				String pushId = pc.createPushId(request, response);
 				pc.addGroupMember(uploadModel.getEmail(), pushId);
 				pc.push("photos");		
-				pc.push("carousel");		
-				
+//				pc.push("carousel");		
+pc.push("carousel", new PushNotification("carousel","carousel"));
+System.out.println("cloud push carousel test");
+
 				success = true;
 			}
 		}
@@ -541,15 +548,15 @@ public class ContestController implements ServletContextAware {
 	
 	private void checkLeader(MediaMessage msg){
 		if( msg.getVotes().size() > currentLeaderVotes ){
-			currentLeaderVotes = msg.getVotes().size();
 			if( currentLeaderEmail != null && !currentLeaderEmail.equals(msg.getEmail())){
-				currentLeaderEmail = msg.getEmail();
 				PushContext pc = PushContext.getInstance(servletContext);
 				PushNotification pn = new PushNotification("ICEmobile JavaOne Contest!",
 					"Hey congratulation! You're now in the lead with " + currentLeaderVotes
 					+ " votes!");
 				pc.push(currentLeaderEmail, pn);
 			}
+			currentLeaderVotes = msg.getVotes().size();
+            currentLeaderEmail = msg.getEmail();
 		}
 		
 	}
