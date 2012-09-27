@@ -89,7 +89,7 @@ public class ICEmobileContainer extends Activity
     protected static final boolean INCLUDE_VIDEO = true;
     protected static final int HISTORY_SIZE = 20;
     protected static final int NETWORK_DOWN_DELAY = 5000;
-    protected static final String C2DM_SENDER = "icec2dm@gmail.com";
+    protected static final String C2DM_SENDER = "1020381675267";
     /* Intent Return Codes */
     protected static final int TAKE_PHOTO_CODE = 1;
     protected static final int TAKE_VIDEO_CODE = 2;
