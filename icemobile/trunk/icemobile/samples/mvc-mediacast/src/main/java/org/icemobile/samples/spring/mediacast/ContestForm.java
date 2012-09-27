@@ -7,6 +7,8 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 public class ContestForm {
 	
+	public static final String DEFAULT_LAYOUT = "m";
+	
 	@NotEmpty @Email 
 	private String email;
 	
@@ -18,6 +20,8 @@ public class ContestForm {
 	private String photoId;
 	
 	private String form;
+	
+	private String voterId;
 	
 	public String getForm() {
 		return form;
@@ -32,7 +36,7 @@ public class ContestForm {
 	}
 
 	public void setPhotoId(String photoId) {
-		this.photoId = photoId;
+		this.photoId = cleanParam(photoId);
 	}
 
 	public String getEmail() {
@@ -40,7 +44,7 @@ public class ContestForm {
 	}
 
 	public void setEmail(String email) {
-		this.email = email;
+		this.email = cleanParam(email);
 	}
 
 	public String getDescription() {
@@ -52,11 +56,14 @@ public class ContestForm {
 	}
 
 	public String getLayout() {
+		if( layout == null || layout.length() == 0 ){
+			layout = DEFAULT_LAYOUT;
+		}
 		return layout;
 	}
 
 	public void setLayout(String layout) {
-		this.layout = layout;
+		this.layout = cleanParam(layout);
 	}
 
 	@Override
@@ -70,5 +77,19 @@ public class ContestForm {
 		return this.email == null || this.email.length() == 0;
 	}
 	
+	private String cleanParam(String param){
+		if( param != null && param.indexOf(",") > 0 ){
+			param = param.substring(0,param.indexOf(","));
+		}
+		return param;
+	}
+
+	public String getVoterId() {
+		return voterId;
+	}
+
+	public void setVoterId(String voterId) {
+		this.voterId = cleanParam(voterId);
+	}
 
 }

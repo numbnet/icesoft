@@ -203,10 +203,16 @@ function updateGalleryList(json){
 				var dataElem = $(list[elem]).find('div > div')[0];
 				if( dataElem ){
 					var votes = Number(dataElem.getAttribute('data-votes'));
-					if( votes > msg.votes ){
+					var created = Number(dataElem.getAttribute('data-created'));
+					if( votes > msg.votes || (votes == msg.votes && created < msg.created)){
 						continue;
 					}
-					if( votes <= msg.votes ){
+					if( votes == msg.votes && created > msg.created){
+						$(listItem).before(item);
+						$('#'+msg.id).parent().effect("highlight", {}, 3000);
+						break;
+					}
+					if( votes < msg.votes ){
 						$(listItem).before(item);
 						$('#'+msg.id).parent().effect("highlight", {}, 3000);
 						break;
