@@ -123,6 +123,11 @@ ice.mobilesx = function (element) {
 
     var returnURL = window.location;
     if ("" == returnURL.hash) {
+        var wloc = "" + returnURL;
+        var lastHash = wloc.lastIndexOf("#");
+        if (lastHash > 0)  {
+            returnURL = wloc.substring(0, lastHash);
+        }
         returnURL += "#icemobilesx";
     }
 
