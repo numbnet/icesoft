@@ -300,8 +300,9 @@ public class ContestController implements ServletContextAware {
 					mediaService.removeMessage(id);
 				}
 				model.addAttribute("mediaService", mediaService);
-				PushContext.getInstance(servletContext).push("photosFullUpdate");		
-				PushContext.getInstance(servletContext).push("carousel");
+//				PushContext.getInstance(servletContext).push("photosFullUpdate");		
+//				PushContext.getInstance(servletContext).push("carousel");
+				PushContext.getInstance(servletContext).push("photos");
 			}
 		}
 		
@@ -402,8 +403,8 @@ public class ContestController implements ServletContextAware {
 				pc.addGroupMember(uploadModel.getEmail(), pushId);
 				pc.push("photos");		
 //				pc.push("carousel");		
-pc.push("carousel", new PushNotification("carousel","carousel"));
-System.out.println("cloud push carousel test");
+//pc.push("carousel", new PushNotification("carousel","carousel"));
+//System.out.println("cloud push carousel test");
 
 				success = true;
 			}
@@ -540,7 +541,7 @@ System.out.println("cloud push carousel test");
 			addVotesCookie(response, voterId, votesList);
 			PushContext pc = PushContext.getInstance(servletContext);
 			pc.push("photos");
-			pc.push("votes-"+msg.getId());
+//			pc.push("votes-"+msg.getId());
 			checkLeader(msg);
 			log.debug("recorded vote");
 		} 
