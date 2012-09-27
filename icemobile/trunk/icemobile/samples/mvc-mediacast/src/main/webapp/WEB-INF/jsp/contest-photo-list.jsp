@@ -39,3 +39,4 @@
 enhanceForm("#galleryFrm","#galleryFrm");
 </script>
 <push:register group="photos" callback="function(){getGalleryUpdate();}"/>
+<push:register group="photosFullUpdate" callback="function(){getGalleryRefresh();}"/>

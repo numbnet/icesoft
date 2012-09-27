@@ -72,7 +72,6 @@ public class ContestController implements ServletContextAware {
 	private String currentLeaderEmail;
 	private int currentLeaderVotes = 0;
 	
-	
 	@PostConstruct
 	public void init(){
 		ensureUploadDirExists();
@@ -296,7 +295,7 @@ public class ContestController implements ServletContextAware {
 					mediaService.removeMessage(id);
 				}
 				model.addAttribute("mediaService", mediaService);
-				PushContext.getInstance(servletContext).push("photos");		
+				PushContext.getInstance(servletContext).push("photosFullUpdate");		
 				PushContext.getInstance(servletContext).push("carousel");
 			}
 		}
