@@ -10,7 +10,7 @@
 			<span>Contest Gallery</span>
 		</mobi:pagePanelHeader>
 		<mobi:pagePanelBody>
-		    <%@ include file="/WEB-INF/jsp/inc/contest-photo-list.jsp" %>
+		    <%@ include file="/WEB-INF/jsp/contest-photo-list.jsp" %>
         </mobi:pagePanelBody>
 		<%@ include file="/WEB-INF/jsp/contest-footer.jsp"%>
 	</mobi:pagePanel>

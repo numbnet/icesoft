@@ -14,7 +14,7 @@
             
             <div id="left">
                 <div id="photoListContainer">
-                    <%@ include file="/WEB-INF/jsp/inc/contest-photo-list.jsp" %>
+                    <%@ include file="/WEB-INF/jsp/contest-photo-list.jsp" %>
                 </div>
             </div>
             <div id="right">
