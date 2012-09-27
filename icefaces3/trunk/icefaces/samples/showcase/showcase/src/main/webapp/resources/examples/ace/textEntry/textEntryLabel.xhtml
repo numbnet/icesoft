@@ -33,7 +33,7 @@
     <ui:param name="tldResources" value="#{textEntryResources.tldResources}"/>
 
     <ui:define name="example">
-        <h:form id="textEntryForm">
+        <h:form id="textEntryConfigForm">
             <icecore:singleSubmit/>
             <ace:panel id="labelCustomizing" header="Label Customization">
                 <h:panelGrid width="50%" columns="2" cellpadding="6" cellspacing="6">
@@ -49,6 +49,9 @@
                      </h:selectOneMenu>
                 </h:panelGrid>
             </ace:panel>
+		    </h:form>
+
+        <h:form id="textEntryForm">
             
             <ace:panel id="personalInfoInputPanel" header="Personal Info">
                 <h:panelGrid id="inputGrid" columns="1" width="100%" styleClass="textEntryInputTable">
