@@ -59,7 +59,7 @@ public class AugmentedRealityRenderer extends BaseInputRenderer  {
          }
          writer.startElement(HTML.BUTTON_ELEM, uiComponent);
          writer.writeAttribute(HTML.ID_ATTR, clientId, null);
-         String buttonValue="Reality";
+         String buttonValue=ag.getLabel();
          if (null!=ag.getStyle()){
              String style= ag.getStyle();
              if ( style.trim().length() > 0) {
