@@ -38,6 +38,7 @@ public class TagUtil {
     public static final String USER_AGENT = "User-Agent";
     public static final String USER_AGENT_COOKIE = "com.icesoft.user-agent";
     public static final String SX_USER_AGENT = "icemobile-sx";
+    public static final String CLOUD_PUSH_KEY = "iceCloudPushId";
 
     public static String A_TAG = "<a";
     public static String A_TAG_END = "</a>";
@@ -196,6 +197,17 @@ public class TagUtil {
     public static String getUploadPath(HttpServletRequest request) {
         String upPath = request.getContextPath() + "/icemobile";
         return upPath;
+    }
+
+    public static String getCloudPushId(PageContext pageContext)  {
+        String cloudPushId = null;
+        HttpServletRequest request = (HttpServletRequest)
+            pageContext.getRequest();
+        HttpSession httpSession = request.getSession(false);
+        if (null != httpSession) {
+            cloudPushId = (String) httpSession.getAttribute(CLOUD_PUSH_KEY);
+        }
+        return cloudPushId;
     }
 
 
