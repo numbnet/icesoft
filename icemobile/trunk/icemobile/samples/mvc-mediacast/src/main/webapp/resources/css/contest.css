@@ -277,7 +277,7 @@ html.iphone .mobi-pagePanel-body {
 	width: 23px; height: 34px;
 	background: url('css-images/back.png') center right no-repeat;
 	display: block;
-    top: 10px;
+    top: 14px;
     position: absolute;
     left: 0;
     padding: 10px;
@@ -288,7 +288,7 @@ html.iphone .mobi-pagePanel-body {
 	height: 34px;
 	background: transparent url('css-images/forward.png') center left no-repeat;
 	display: block;
-	top: 10px;
+	top: 14px;
 	position: absolute;
 	right: 0;
 	padding: 10px;
@@ -350,10 +350,11 @@ html.bberry .mobi-pagePanel-header a{
 #tally{
 	position: absolute;
 	color: black;
-	opacity: 0.6;
+	opacity: 0.4;
 	font-weight: bold;
 	font-style: italic;
 	text-align: center;
+	background-color: white;
 	width: 100%;
 	font-size: 18px;
 }
