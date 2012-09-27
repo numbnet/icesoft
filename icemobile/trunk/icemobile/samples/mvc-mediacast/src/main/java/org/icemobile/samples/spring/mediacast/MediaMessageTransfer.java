@@ -31,6 +31,15 @@ public class MediaMessageTransfer {
 		votes = msg.getVotes().size();
 		lastVote = msg.getLastVote();
 		created = msg.getCreated();
+		this.canVote = canVote;
+	}
+
+	@Override
+	public String toString() {
+		return "MediaMessageTransfer [id=" + id + ", description="
+				+ description + ", fileName=" + fileName + ", lastVote="
+				+ lastVote + ", votes=" + votes + ", created=" + created
+				+ ", canVote=" + canVote + "]";
 	}
 
 	public long getCreated() {
