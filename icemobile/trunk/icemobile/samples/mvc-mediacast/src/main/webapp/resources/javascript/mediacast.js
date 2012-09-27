@@ -1,3 +1,45 @@
+function enhanceFormBypassUpdate(theForm){
+    //submitting the form will update 
+    $(document).ready(function () {
+        $(theForm).submit(function () {
+            try{
+                var formData;
+                var mimeType = false;
+                if ((undefined !== window.FormData) && 
+                   (!window.clientInformation || 
+                       ("BlackBerry" !== window.clientInformation.platform)) )  {
+                    formData = new FormData(this);
+                } else {
+                    formData = $(theForm).serialize();
+                    mimeType = "application/x-www-form-urlencoded";
+                }
+
+                $.ajax({
+                    url:$(this).attr("action"),
+                    data:formData,
+                    cache:false,
+                    contentType:mimeType,
+                    processData:false,
+                    type:'POST',
+                    success:function (html) {
+                        console.log(html);
+                    }
+                });
+            }
+            catch(err){
+                if( window.console ){
+                    console.error(err);
+                }
+                else{
+                    alert(err);
+                }
+            }
+            return false;
+        });
+    });
+	
+}
+
 function enhanceForm(theForm,updateTarget)  {
     //submitting the form will update 
     $(document).ready(function () {
@@ -69,7 +111,6 @@ function updateViewerPanel(id,action){
         		$('#viewerPanel').replaceWith(html);
         		ice.mobi.tabsetController.showContent('tabs', $('#tabstab_1')[0], {tIndex: 1} );
         	}
-            
         }
     });
 }
@@ -121,8 +162,10 @@ function getGalleryUpdate(){
 	if( isNaN(updated) ){
 		updated = 0;
 	}
+	var url = 'contest-photo-list-json?since='+updated;
+	console.log('getGalleryUpdate(): '+url);
 	$.ajax({
-        url:'contest-photo-list-json?since='+updated,
+        url:url,
         cache:false,
         processData:false,
         type:'GET',
@@ -141,14 +184,14 @@ function updateGalleryList(json){
 	}
 	var updated = Number($('#updated').val());
 	for( m in json ){
-		var msg = json[m]
-		var list = $('#galleryList')[0].children;
+		var msg = json[m];
+		var list = $('#galleryList').children();
 		var item = start+"<div id='"+msg.id+"' data-lastvote='"+msg.lastVote+"' data-created='"+msg.created+"' data-votes='"+msg.votes+"'>"
 			+ "<a class='mediaLink' href='#' onclick=\"updateViewerPanel('"+msg.id+"');\">"
 			+ "<img src='resources/uploads/"+msg.fileName+"' class='p'>"
 			+ "</a>";
 		if( msg.canVote ){
-			item += "<input type='image' class='vote' title='Vote for it!' src='resources/css/css-images/like.png' name='photoId' value='"+msg.id+"'/>";
+			item += "<input type='image' class='vote' title='Vote for it!' src='resources/css/css-images/like.png' name='photoId' value='"+msg.id+"' onclick=\"$('#galleryFrm #photoId').val('"+msg.id+"');\"/>";
 		}
 		item += "<span class='desc'>"+msg.description+"</span><span class='vote'>"+msg.votes+" Votes</span>";	
 			
@@ -156,19 +199,17 @@ function updateGalleryList(json){
 			for( elem in list ){
 				updated = Math.max(updated,Math.max(msg.lastVote,msg.created));
 				var listItem = list[elem];
-				var votesAttrQ = $(listItem).find('[data-votes]');
-				if( votesAttrQ.length > 0 ){
-					var dataElem = votesAttrQ[0];
-					if( dataElem ){
-						var votes = Number(dataElem.getAttribute('data-votes'));
-						if( votes > msg.votes ){
-							continue;
-						}
-						if( votes <= msg.votes ){
-							$(listItem).before(item);
-							$('#'+msg.id).parent().effect("highlight", {}, 3000);
-							break;
-						}
+				var childNodes = listItem.childNodes;
+				var dataElem = $(list[elem]).find('div > div')[0];
+				if( dataElem ){
+					var votes = Number(dataElem.getAttribute('data-votes'));
+					if( votes > msg.votes ){
+						continue;
+					}
+					if( votes <= msg.votes ){
+						$(listItem).before(item);
+						$('#'+msg.id).parent().effect("highlight", {}, 3000);
+						break;
 					}
 				}
 			}
@@ -178,4 +219,8 @@ function updateGalleryList(json){
 		}
 		$('#updated').val(updated);
 	}
+}
+
+function isTextNode(node){
+	return /^\s*$/.test(node.nodeValue);
 }
