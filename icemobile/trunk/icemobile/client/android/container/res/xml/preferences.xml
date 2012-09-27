@@ -39,8 +39,8 @@
         />
         <CheckBoxPreference 
             android:key="c2dm"
-            android:summary="Use C2DM Notification"
-            android:title="C2DM Notify" 
+            android:summary="Use Cloud Notification"
+            android:title="Cloud Notification" 
             android:defaultValue="true"
         />
         <EditTextPreference
