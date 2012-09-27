@@ -71,21 +71,23 @@ public class MediaHelper implements Serializable, ServletContextAware{
 			// into a 1 megapixelish sized image.
 			int width = image.getWidth();
 			int height = image.getHeight();
+			log.debug("image original dimensions " + width+"x"+height);
 			int xOffset = width > height ? (width - height) / 2 : 0; 			
 			int yOffset = height > width ? (height - width) / 2 : 0; 
 			int length = Math.min(image.getWidth(), image.getHeight());
 			//crop
 			image = image.getSubimage(xOffset, yOffset, length, length);
+			log.debug("cropped image dimensions " + width+"x"+height);
 
-			// create the small photo
 			AffineTransform tx = new AffineTransform();
 			double imageScale = calculateImageScale(SMALL_PHOTO_HEIGHT, height);
+			log.debug("scaling small image "+width+"x"+height+" by " + imageScale);
 			tx.scale(imageScale, imageScale);
 			AffineTransformOp op = new AffineTransformOp(tx, AffineTransformOp.TYPE_BILINEAR);
 			BufferedImage smallImage = op.filter(image, null);
 
-			// create the smaller image.
 			imageScale = calculateImageScale(LARGE_PHOTO_HEIGHT, height);
+			log.debug("scaling large image "+width+"x"+height+" by " + imageScale);
 			tx = new AffineTransform();
 			tx.scale(imageScale, imageScale);
 			op = new AffineTransformOp(tx, AffineTransformOp.TYPE_BILINEAR);
@@ -94,10 +96,12 @@ public class MediaHelper implements Serializable, ServletContextAware{
 			image.flush();
 			
 			String dir = msg.getPhoto().getFile().getParent();
+			
 			msg.setLargePhoto(
 					createMedia(uploadId, dir, largeImage, largeImage.getTileWidth(),
 							largeImage.getHeight(), "-large"));
 			log.info("large photo: " + msg.getLargePhoto());
+			
 			msg.setSmallPhoto(
 					createMedia(uploadId, dir, smallImage,
 							smallImage.getTileWidth(),
@@ -121,7 +125,7 @@ public class MediaHelper implements Serializable, ServletContextAware{
 		return media;
 	}
 
-	private double calculateImageScale(int intendedSize, int height) {
+	private double calculateImageScale(double intendedSize, double height) {
 		double scaleHeight = height / intendedSize;
 		return 1 / scaleHeight;
 	}
