@@ -1,9 +1,9 @@
 <%@ include file="/WEB-INF/jsp/include.jsp"%>
-<form:form id="galleryFrm" method="POST" modelAttribute="galleryModel">
-    <input type="hidden" name="layout" value="${layout}"/>
-    <input type="hidden" name="form" value="gallery"/>
-    <input id="updated" type="hidden" name="updated" value="${updated}"/>
-    <input type="hidden" id="photoId" name="photoId"/>
+<form:form id="galleryFrm" method="POST" modelAttribute="galleryModel" action="contest-vote">
+    <input type="hidden" id="layout"    name="layout"   value="${layout}"/>
+    <input type="hidden" id="updated"   name="updated"  value="${updated}"/>
+    <input type="hidden" id="photoId"   name="photoId"/>
+    <input type="hidden" id="voterId"   name="voterId"  value="${voterId}"/>
     <c:if test="${layout eq 'm' }">
         <input type="hidden" name="p" value="gallery"/>
     </c:if>
@@ -36,6 +36,6 @@
     
 </form:form>
 <script type="text/javascript">
-enhanceFormBypassUpdate("#galleryFrm");
+enhanceForm("#galleryFrm","#galleryFrm");
 </script>
 <push:register group="photos" callback="function(){getGalleryUpdate();}"/>

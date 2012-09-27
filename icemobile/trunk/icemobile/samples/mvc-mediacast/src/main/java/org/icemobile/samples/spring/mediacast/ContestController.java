@@ -314,12 +314,11 @@ public class ContestController implements ServletContextAware {
 	
 	
 	@RequestMapping(value="/contest", method = RequestMethod.POST, consumes="multipart/form-data")
-	public String post(
+	public String postUpload(
 			HttpServletRequest request,
 			HttpServletResponse response,
 			@RequestParam(value = "uploadId", required=false) String uploadId,
 			@RequestParam(value = "upload", required = false) MultipartFile file,
-			@RequestParam(value="l", defaultValue=MOBILE) String layout,
 			@RequestParam(value="fullPost", defaultValue="true") String fullPost,
 			@Valid ContestForm form, BindingResult result,
 			@ModelAttribute("uploadModel") MediaMessage uploadModel,
@@ -331,7 +330,6 @@ public class ContestController implements ServletContextAware {
 		log.info("upload id=" + uploadId + ", fullPost="+fullPost);
 		log.info("user-agent="+request.getHeader("User-Agent"));
 		
-		layout = cleanSingleRequestParam(layout);
 		if( uploadId == null || uploadId.length() == 0){
 			uploadId = newId();
 			uploadModel.setId(uploadId);
@@ -351,18 +349,11 @@ public class ContestController implements ServletContextAware {
 			media.setFile(photo);
 			uploadModel.setPhoto(media);
 			mediaHelper.processImage(uploadModel,uploadId);
-			return postUploadFormResponseView(false, false, layout);
+			return postUploadFormResponseView(false, false, form.getLayout());
 		}
 		
 		boolean success = false;
 		
-		if( "gallery".equals(form.getForm())){
-			doVote(response, form.getPhotoId(), cookieVotes, model);
-			addCommonModel(model, uploadModel, form.getLayout());
-			model.addAttribute("voterId",getVoterIdFromCookie(cookieVotes));
-			return "empty";
-		}
-
 		if (result.hasErrors() ) {
 			log.info("form has errors " + result);
 			if( form.getEmail() != null && form.getEmail().length() > 0 ){
@@ -417,6 +408,29 @@ public class ContestController implements ServletContextAware {
 		model.addAttribute("voterId",getVoterIdFromCookie(cookieVotes));
 		return postUploadFormResponseView(isAjaxRequest(request),success,form.getLayout());
 	}
+	
+	@RequestMapping(value="/contest-vote", method = RequestMethod.POST, consumes="multipart/form-data")
+	public String postVote(
+			HttpServletRequest request,
+			HttpServletResponse response,
+			@Valid ContestForm form, 
+			BindingResult result,
+			@ModelAttribute("msg") String msg,
+			@CookieValue(value="votes", required=false) String cookieVotes,
+			Model model)
+					throws IOException {
+		
+		log.info("user-agent="+request.getHeader("User-Agent"));
+		log.info(form);
+		
+		doVote(response, form.getPhotoId(), cookieVotes, model);
+		model.addAttribute("mediaService", mediaService);
+		model.addAttribute("voterId",getVoterIdFromCookie(cookieVotes));
+		model.addAttribute("layout",form.getLayout());
+		return "contest-photo-list";
+	}
+		
+
 	
 	private String postUploadFormResponseView(boolean ajax, boolean redirect, String layout){
 		String view = null;
