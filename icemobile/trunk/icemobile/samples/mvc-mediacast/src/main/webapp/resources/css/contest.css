@@ -237,12 +237,13 @@ input, textarea{ font-family: droid, Helvetica, Arial, sans-serif;}
 	    -ms-box-sizing: border-box;
 	    box-sizing: border-box;
 	    float:left;
+	    min-height:640px;
     }
     #right{
-        width:70%;border-left:1px solid darkgray;
+        width:70%;border-left:1px solid darkgray;overflow:hidden;
     }
     #left{
-        width:30%;
+        width:30%;overflow-y: auto;
     }
 }
 .title-msg{
@@ -257,12 +258,20 @@ html.android .mobi-pagePanel-header a.mobi-button:visited {
 .mobi-pagePanel-header {
     position:relative;
 }
-.mobi-pagePanel-body {
-    padding: 0 0 48px 0;
-}
-html.iphone .mobi-pagePanel-footer,
-html.ipad .mobi-pagePanel-footer{
+html.iphone .mobi-pagePanel-footer{
 	position: relative;
+}
+html.iphone .mobi-pagePanel-body {
+	padding-bottom:0;
+}
+.mobi-pagePanel-body, .mobi-pagePanel-footer, .mobi-pagePanel-header{
+	-webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    box-sizing: border-box;
+}
+.mobi-pagePanel-footer{
+    height: 40px;
 }
 .viewer-back{
 	width: 23px; height: 34px;
@@ -277,11 +286,74 @@ html.ipad .mobi-pagePanel-footer{
 .viewer-forward{
     width: 23px;
 	height: 34px;
-	background: transparent url('css-images/forward.png') center right no-repeat;
+	background: transparent url('css-images/forward.png') center left no-repeat;
 	display: block;
 	top: 10px;
 	position: absolute;
 	right: 0;
 	padding: 10px;
     opacity: 0.6;
+}
+.mobi-fieldset{
+	box-shadow: 0px 2px 7px gray;
+}
+html.ipad .mobi-tabset-tabs > ul {
+    background-color: #CCCFD7;
+}
+html.ipad .mobi-pagePanel-footer {
+    background: -moz-linear-gradient(center top , #A8ACB9, #B6B9C4, #D1D4DB) repeat scroll 0 0 #A8ACB9;
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0, #A8ACB9), color-stop(0.02, #B6B9C4), color-stop(1, #D1D4DB));
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorStr = '#A8ACB9', EndColorStr = '#D1D4DB');
+    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#A8ACB9', EndColorStr='#D1D4DB')";
+    border-top: 1px solid #777777;
+    position: fixed;
+    width: 100%;
+}
+html.iphone .mobi-pagePanel-footer {
+	background: url('css-images/header.png') repeat-x scroll 0 0 #6D84A2;
+}
+html.ipad .mobi-pagePanel-footer {
+    color: #222222;
+    text-align: left;
+    text-shadow: 0 0 1px white;
+}
+html.iphone .mobi-pagePanel-footer{
+    color: white;
+}
+.mobi-pagePanel-body {
+    padding: 0 0 40px;
+    margin-top: -1px;
+}
+.mobi-pagePanel-header{
+	margin-top:-1px;
+}
+html.android .mobi-pagePanel-body a, html.android .mobi-pagePanel-footer a{
+	color: #91C4E8;
+}
+html.iphone .mobi-pagePanel-footer a, html.ipad .mobi-pagePanel-footer a{
+    color: #461357;
+}
+
+html.android a.mobi-button-default, html.android a.mobi-button-important, html.android a.mobi-button-attention{
+	color: black;
+}
+html.bberry input, html.bberry textara{
+	padding:3px;
+}
+html.bberry .mobi-pagePanel-header{
+	height:40px;
+	line-height:40px;
+}
+html.bberry .mobi-pagePanel-header a{
+	margin:5px;
+}
+#tally{
+	position: absolute;
+	color: black;
+	opacity: 0.6;
+	font-weight: bold;
+	font-style: italic;
+	text-align: center;
+	width: 100%;
+	font-size: 18px;
 }

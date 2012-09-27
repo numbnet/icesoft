@@ -1,20 +1,15 @@
 <%@ include file="/WEB-INF/jsp/include.jsp"%>
 <div id="viewerPanel">
     <c:if test="${not empty media}">
+        <push:region group="votes-${media.id}"  page="/contest-vote-tally?id=${media.id}"/>
         <div class="lightbox">
             <img id="largePhoto" src='/uploads/${media.largePhoto.file.name}'
                 class="imageViewer" />
         </div>
-        <a class="viewer-back" href="#" onclick="updateViewerPanel('${media.id}','back');"/>
-        <a class="viewer-forward" href="#" onclick="updateViewerPanel('${media.id}','forward');"/>
+        <a class="viewer-back" href="#" onclick="updateViewerPanel('${media.id}','back');"></a>
+        <a class="viewer-forward" href="#" onclick="updateViewerPanel('${media.id}','forward');"></a>
         <div class="message-desc">
             <h3><c:out value="${media.description}"/></h3>
         </div>
-        
-        <mobi:fieldSetGroup style="margin-top:10px;">
-            <mobi:fieldSetRow style="text-align:center;">
-                <push:region group="votes-${media.id}"  page="/contest-vote-tally?id=${media.id}"/>
-            </mobi:fieldSetRow>
-        </mobi:fieldSetGroup>
     </c:if>
 </div>
