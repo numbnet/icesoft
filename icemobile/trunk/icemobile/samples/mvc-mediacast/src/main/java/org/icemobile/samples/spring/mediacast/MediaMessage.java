@@ -76,6 +76,7 @@ public class MediaMessage implements Serializable{
 		longitude = 0;
 		photo = null;
 		tags = new ArrayList<String>();
+		votes = new ArrayList<String>();
 		title = null;
 		video = null;
 		lastVote = 0;
@@ -93,6 +94,7 @@ public class MediaMessage implements Serializable{
 		longitude = 0;
 		photo = null;
 		tags = new ArrayList<String>();
+		votes = new ArrayList<String>();
 		title = null;
 		video = null;
 		lastVote = 0;
@@ -120,7 +122,6 @@ public class MediaMessage implements Serializable{
 		cloned.getVotes().addAll(votes);
 		cloned.setLastVote(lastVote);
 		cloned.setLargePhoto(largePhoto);
-		cloned.setSmallPhoto(smallPhoto);
 		return cloned;
 	}
 
