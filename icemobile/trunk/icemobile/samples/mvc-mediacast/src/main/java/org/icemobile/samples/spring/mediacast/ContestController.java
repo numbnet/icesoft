@@ -40,7 +40,7 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.multipart.MultipartFile;
 
 @Controller
-@SessionAttributes(value = {"admin","desktop", "voterId", "sx", "sxThumbnail", "email", 
+@SessionAttributes(value = {"admin","desktop", "voterId", "sx", "sxThumbnail", "email", "enhanced",
 		TagUtil.USER_AGENT_COOKIE, TagUtil.CLOUD_PUSH_KEY},
 		types=ContestForm.class)
 public class ContestController implements ServletContextAware {
@@ -107,6 +107,15 @@ public class ContestController implements ServletContextAware {
 			model.addAttribute("sx", sx);
 		}
 	}
+	
+	@ModelAttribute
+	public void putAttributeEnhanced(HttpServletRequest request, Model model){
+		boolean enhanced = Utils.isEnhanced(request);
+		if( !model.containsAttribute("enhanced") || enhanced){
+			model.addAttribute("enhanced", enhanced);
+		}
+	}
+	
 
 	@ModelAttribute
 	public void putAttributeView(WebRequest request, Model model) {
@@ -127,6 +136,7 @@ public class ContestController implements ServletContextAware {
 		log.info("setting ICEmobile-SX");
 		String userAgent = request.getHeader(TagUtil.USER_AGENT);
 		if (userAgent.contains("ICEmobile-SX"))  {
+			model.addAttribute("sx", true);
 			model.addAttribute(TagUtil.USER_AGENT_COOKIE,
 					"HyperBrowser-ICEmobile-SX/1.0");
 			if (null != cloudKey)  {
@@ -301,18 +311,21 @@ public class ContestController implements ServletContextAware {
 			@RequestParam(value="fullPost", defaultValue="true") String fullPost,
 			@Valid ContestForm form, BindingResult result,
 			@ModelAttribute("msg") String msg,
+			@ModelAttribute("desktop") boolean desktop,
+			@ModelAttribute("sx") boolean sx,
 			@CookieValue(value="votes", required=false) String cookieVotes,
 			Model model)
 					throws IOException {
 
 		log.info("user-agent="+request.getHeader("User-Agent"));
 		log.info(form);
+		
 		if( multiPart != null ){
 			log.info("incoming upload " + multiPart.getContentType() + multiPart.getSize() );
 		}
 
 		//SX Image upload before full form post
-		if( multiPart != null && !"true".equals(fullPost)){
+		if( multiPart != null && !"true".equals(fullPost) && sx){
 			log.info("SX upload");
 			String sessionId = request.getSession().getId();
 			File sxMasterFile = getOriginalFile(sessionId);
