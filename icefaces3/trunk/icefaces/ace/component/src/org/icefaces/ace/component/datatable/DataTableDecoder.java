@@ -175,8 +175,6 @@ public class DataTableDecoder {
                 // Cleanup after tree case indexes
                 if (model != null) model.setRootIndex(null);
             }
-            table.setRowIndex(-1);
-
         }
 
         // Process deselections
@@ -205,8 +203,9 @@ public class DataTableDecoder {
 
                 if (model != null) model.setRootIndex(null);
             }
-            table.setRowIndex(-1);
         }
+
+        table.setRowIndex(-1);
     }
 
     // Util ---------------------------------------------------------------- //
