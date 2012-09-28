@@ -13,6 +13,7 @@ import javax.faces.component.visit.VisitContext;
 import javax.faces.component.visit.VisitHint;
 import javax.faces.component.visit.VisitResult;
 import javax.faces.context.FacesContext;
+import javax.faces.el.PropertyNotFoundException;
 import javax.faces.event.*;
 import javax.faces.model.DataModel;
 import java.io.Serializable;
@@ -67,13 +68,20 @@ public class Tree<N> extends TreeBase implements Serializable {
     }
 
     public NodeStateMap getStateMap() {
-        if (stateMap == null)
-            stateMap = super.getStateMap();
+        //try {
+            if (stateMap == null)
+                stateMap = super.getStateMap();
 
-        if (stateMap == null) {
-            stateMap = new NodeStateMap(getStateCreationCallback());
-            super.setStateMap(stateMap);
-        }
+            if (stateMap == null) {
+                stateMap = new NodeStateMap(getStateCreationCallback());
+                super.setStateMap(stateMap);
+            }
+//        } catch (PropertyNotFoundException e) {
+//            // Create dummy state map for non-iterative nested visits where
+//            // state map is defined via a parent iterative variable, causing
+//            // the property to be unavailable.
+//            stateMap = new NodeStateMap(getStateCreationCallback());
+//        }
 
         return stateMap;
     }
@@ -121,7 +129,11 @@ public class Tree<N> extends TreeBase implements Serializable {
 
     // Pseudo getRowIndex()
     public NodeKey getKey() {
-        if (model == null) getDataModel();
+        // Cannot call getDataModel to generate data model here
+        // as this will fail in non-iterative visits when data
+        // is defined via EL on a parent iterative variable,
+        // as getKey is called as part of getClientId
+        if (model == null) return NodeKey.ROOT_KEY;
         return model.getKey();
     }
 
@@ -355,7 +367,6 @@ public class Tree<N> extends TreeBase implements Serializable {
         if (!isVisitable(context))
             return false;
 
-        NodeDataModel model = (NodeDataModel) getDataModel();
         FacesContext facesContext = context.getFacesContext();
         boolean visitRows = !context.getHints().contains(VisitHint.SKIP_ITERATION);
 
@@ -363,8 +374,11 @@ public class Tree<N> extends TreeBase implements Serializable {
         // and start at no node
         NodeKey oldNodeKey = NodeKey.ROOT_KEY;
         if (visitRows) {
+            NodeDataModel model = (NodeDataModel) getDataModel();
             oldNodeKey = getKey();
             setKey(NodeKey.ROOT_KEY);
+            // Initialized cached state map before clientId begins to change
+            getStateMap();
         }
 
         // Push ourselves to EL
@@ -374,9 +388,6 @@ public class Tree<N> extends TreeBase implements Serializable {
             // Visit ourselves.  Note that we delegate to the
             // VisitContext to actually perform the visit.
             VisitResult result = context.invokeVisitCallback(this, callback);
-
-            // Initialized cached state map before clientId begins to change
-            getStateMap();
 
             // If the visit is complete, short-circuit out and end the visit
             if (result == VisitResult.COMPLETE)
@@ -467,11 +478,10 @@ public class Tree<N> extends TreeBase implements Serializable {
                                            VisitCallback callback,
                                            boolean visitRows) {
         // Iterate over our TreeNode template components, once per node
-        setKey(NodeKey.ROOT_KEY);
+        if (visitRows) setKey(NodeKey.ROOT_KEY);
         //Integer nodeCount = isPagination() ? getPageSize() : 0;
         Integer nodeCount = 0;
         TreeWalkContext twc = new TreeWalkContext(visitRows, nodeCount, false);
-        getStateMap();
 
         //if (visitRows && twc.isPagination()) {
             // go to position and max nodes according
@@ -520,6 +530,8 @@ public class Tree<N> extends TreeBase implements Serializable {
         if (!twc.isVisitRows()) {
             return false;
         }
+
+        getStateMap();
 
         // If this node is expanded, has children and those children are
         // part of the visiting (as judged by context.getSubTreeIdsToVisit())
