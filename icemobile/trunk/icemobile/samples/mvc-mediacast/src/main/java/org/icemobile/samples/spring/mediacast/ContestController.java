@@ -335,7 +335,7 @@ public class ContestController implements ServletContextAware {
 		
 		if( operation != null && "cancel".equals(operation)){
 			request.getSession().removeAttribute(SX_UPLOAD_KEY);
-			return postUploadFormResponseView(isAjaxRequest(request),false,form.getL());
+			return "redirect:/" + "contest?l=" + form.getL()+(MOBILE.equals(form.getL())?"p=upload":"");
 		}
 
 		//SX Image upload before full form post
