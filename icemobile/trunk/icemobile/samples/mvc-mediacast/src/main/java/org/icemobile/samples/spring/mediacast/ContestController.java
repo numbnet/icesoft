@@ -191,14 +191,12 @@ public class ContestController implements ServletContextAware {
 	}
 
 	@RequestMapping(value="/contest-viewer", method = RequestMethod.GET)
-	public String getContestViewerContent(ContestForm form, Model model) {
+	public String getContestViewerContent(@RequestParam(value="action", required=false) String action, 
+			ContestForm form, Model model) {
 		log.info(form);
-		boolean back = false;
-		boolean forward = false;
-		if( form.getAction() != null ){
-			back = "back".equals(form.getAction());
-			forward = "forward".equals(form.getAction());
-		}
+		String actionParam = form.cleanParam(action);
+		boolean back = "back".equals(actionParam);
+		boolean forward = "forward".equals(actionParam);
 		addCommonModel(model, form.getL());
 		addViewerViewModel(form.getPhotoId(), form.getL(), model, back, forward);
 		return "contest-viewer-panel";
