@@ -142,12 +142,12 @@ public class SliderEntryMeta extends UIComponentBaseMeta {
     private String length;
 	
     @Property( 
-    	tlddoc="Defines whether or not a mouse-click at a location along the slider rail should reposition the slider contorl to that location (and adjust the value accordingly).",
+    	tlddoc="Defines whether or not a mouse-click at a location along the slider rail should reposition the slider control to that location (and adjust the value accordingly).",
     	defaultValue="true")
     private boolean clickableRail;
 	
     @Property( 
-    	tlddoc="Defines whether or not labels for the min, mid, and max values should be rendered along the slider rail.",
+    	tlddoc="Defines whether or not labels for the min and max values should be rendered at the ends of the rail.",
     	defaultValue = "false")
     private boolean showLabels;
 	

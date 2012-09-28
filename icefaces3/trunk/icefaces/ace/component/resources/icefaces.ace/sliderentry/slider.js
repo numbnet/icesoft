@@ -33,12 +33,14 @@
 ice.ace.Slider = function(id, cfg) {
 	this.id = id;
 	this.cfg = cfg;
-    this.jq = ice.ace.jq(ice.ace.escapeClientId(this.id));
+    this.jq = ice.ace.jq(ice.ace.escapeClientId(this.id)).children('div').eq(1);
 	this.input = ice.ace.jq(ice.ace.escapeClientId(this.cfg.input));
-	if(this.cfg.output) {
-		this.output = ice.ace.jq(ice.ace.escapeClientId(this.cfg.output));
-	}
     var _self = this;
+	
+	// disable animation for IE 7/8
+	if (!ice.ace.jq.support.leadingWhitespace) {
+		this.cfg.animate = false;
+	}
     
     //Create slider
 	if (this.cfg.clickableRail == false) {
@@ -83,12 +85,8 @@ ice.ace.Slider.prototype.onSlide = function(event, ui) {
         this.cfg.onSlide.call(this, event, ui);
     }
 
-    //Update input and output(if defined)
+    //Update input
 	this.input.val(ui.value);
-	
-	if(this.output) {
-		this.output.html(ui.value);
-	}
 	
 	if (this.cfg.behaviors) {
 		if (this.cfg.behaviors.slide) {
