@@ -11,7 +11,7 @@ import org.icemobile.jsp.util.HTML;
 public class GetEnhancedTag extends BaseSimpleTag{
 	
 	public static final String CSS_CLASS = "mobi-getenhanced";
-	public static final String INFO_MSG = "ICEmobile container was not detected. Download ICEmobile for native device integration.&nbsp;";
+	public static final String INFO_MSG = "ICEmobile container was not detected.&nbsp;";
 	public static final String DOWNLOAD = "Download ICEmobile";
 	public static final String IOS_LINK = "http://itunes.apple.com/us/app/icemobile-sx/id485908934?mt=8";
 	public static final String ANDROID_LINK = "https://play.google.com/store/apps/details?id=org.icemobile.client.android";
@@ -74,7 +74,7 @@ public class GetEnhancedTag extends BaseSimpleTag{
 			writer.startElement(HTML.ANCHOR_ELEM);
 			writer.writeStyleClass("mobi-button mobi-button-important");
 			writer.writeAttribute(HTML.ONCLICK_ATTR, TagUtil.getICEmobileRegisterSXScript(pageContext));
-			writer.writeTextNode("Enable ICEmobile SX");
+			writer.writeTextNode("Enable ICEmobile");
 			writer.endElement();
 		}
 		
