@@ -39,6 +39,7 @@ import java.util.*;
  * Time: 2:01 PM
  */
 public class Tree<N> extends TreeBase implements Serializable {
+    String lastContainerId;
     NodeDataModel<N> model;
 
     /**
@@ -56,9 +57,13 @@ public class Tree<N> extends TreeBase implements Serializable {
     private NodeStateMap stateMap;
 
     public NodeState getNodeState() {
+        NodeState result;
         if (getKey() == NodeKey.ROOT_KEY)
-            return NodeState.ROOT_STATE;
-        return getStateMap().get(getData());
+            result = NodeState.ROOT_STATE;
+        else
+            result = getStateMap().get(getData());
+
+        return result;
     }
 
     public NodeStateMap getStateMap() {
@@ -437,10 +442,9 @@ public class Tree<N> extends TreeBase implements Serializable {
             for (UIComponent nodeTemplate : getChildren()) {
                 if (nodeTemplate instanceof Node) {
                     // visit the node type def directly
-                    VisitResult result = context
-                            .invokeVisitCallback(nodeTemplate, callback);
+                    boolean result = nodeTemplate.visitTree(context, callback);
 
-                    if (result == VisitResult.COMPLETE) {
+                    if (result) {
                         return true;
                     }
 
@@ -467,6 +471,7 @@ public class Tree<N> extends TreeBase implements Serializable {
         //Integer nodeCount = isPagination() ? getPageSize() : 0;
         Integer nodeCount = 0;
         TreeWalkContext twc = new TreeWalkContext(visitRows, nodeCount, false);
+        getStateMap();
 
         //if (visitRows && twc.isPagination()) {
             // go to position and max nodes according
@@ -492,9 +497,9 @@ public class Tree<N> extends TreeBase implements Serializable {
             // Move to the sibling and key & node if possible
             //nextVisitNode(context);
 
-            if (!isNodeAvailable()) {
-                return false;
-            }
+//            if (!isNodeAvailable()) {
+//                return false;
+//            }
         }
 
         // Visit as required on the *children* of the node template
@@ -812,6 +817,8 @@ public class Tree<N> extends TreeBase implements Serializable {
             }
         }
 
+        getClientId();
+        getStateMap();
         NodeState state = getNodeState();
         // If this node is expanded or we are in client mode, visit children
         if ((getExpansionMode().isClient() || state.isExpanded())) {
@@ -1009,7 +1016,14 @@ public class Tree<N> extends TreeBase implements Serializable {
                 // each time.  Reuse the same clientIdBuilder instance
                 // for each call by resetting the length to 0 after
                 // the ID has been computed.
-                cid = clientIdBuilder.append(super.getClientId(context))
+                String baseId = super.getClientId(context);
+
+                if (lastContainerId != null && !baseId.equals(lastContainerId)) {
+                    stateMap = null;
+                }
+                lastContainerId = baseId;
+
+                cid = clientIdBuilder.append(baseId)
                         .append(UINamingContainer.getSeparatorChar(context))
                         .append('-')
                         .append(UINamingContainer.getSeparatorChar(context))
@@ -1025,10 +1039,17 @@ public class Tree<N> extends TreeBase implements Serializable {
                 // Not nested and no row available, so just return our baseClientId
                 return (baseClientId);
             } else {
+                String baseId = super.getClientId(context);
+
+                if (lastContainerId != null && !baseId.equals(lastContainerId)) {
+                    stateMap = null;
+                }
+                lastContainerId = baseId;
+
                 // nested and no row available, return the result of getClientId().
                 // this is necessary as the client ID will reflect the row that
                 // this table represents
-                return super.getClientId(context);
+                return baseId;
             }
         }
 
