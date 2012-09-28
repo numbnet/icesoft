@@ -7,8 +7,15 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 public class ContestForm {
 	
-	public static final String DEFAULT_LAYOUT = "m";
-	private static final String DEFAULT_PAGE = "upload";
+	public static final String PAGE_UPLOAD = "upload";
+	public static final String PAGE_GALLERY = "gallery";
+	public static final String PAGE_VIEWER = "viewer";
+	public static final String PAGE_ALL = "all";
+
+
+	public static final String DESKTOP = "d";
+	public static final String MOBILE = "m";
+	public static final String TABLET = "t";
 	
 	@NotEmpty @Email 
 	private String email;
@@ -18,7 +25,7 @@ public class ContestForm {
 	
 	private String l;//layout
 	
-	private String p = DEFAULT_PAGE;//page
+	private String p = PAGE_UPLOAD;//page
 	
 	private String photoId;
 	
@@ -65,6 +72,12 @@ public class ContestForm {
 	public void setL(String layout) {
 		if( notNullOrEmpty(layout)){
 			this.l = cleanParam(layout);
+			if( TABLET.equals(l) ){
+				p = PAGE_ALL;
+			}
+			else if( PAGE_ALL.equals(p)){
+				p = PAGE_UPLOAD;
+			}
 		}
 	}
 	
@@ -102,9 +115,7 @@ public class ContestForm {
 	}
 
 	public void setP(String p) {
-		if( notNullOrEmpty(p)){
-			this.p = cleanParam(p);
-		}
+		this.p = cleanParam(p);
 	}
 
 	@Override
