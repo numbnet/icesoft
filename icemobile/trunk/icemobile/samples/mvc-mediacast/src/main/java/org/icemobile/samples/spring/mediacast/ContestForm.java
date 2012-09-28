@@ -26,8 +26,6 @@ public class ContestForm {
 	
 	private String voterId;
 	
-	String action;
-	
 	public String getForm() {
 		return form;
 	}
@@ -69,19 +67,12 @@ public class ContestForm {
 			this.l = cleanParam(layout);
 		}
 	}
-
-	@Override
-	public String toString() {
-		return "ContestForm [email=" + email + ", description=" + description
-				+ ", layout=" + l + ", photoId=" + photoId + ", form="
-				+ form  + "]";
-	}
 	
 	public boolean isEmpty(){
 		return this.email == null || this.email.length() == 0;
 	}
 	
-	private String cleanParam(String param){
+	public String cleanParam(String param){
 		if( param != null && param.indexOf(",") > 0 ){
 			param = param.substring(0,param.indexOf(","));
 		}
@@ -116,14 +107,11 @@ public class ContestForm {
 		}
 	}
 
-	public String getAction() {
-		return action;
-	}
-
-	public void setAction(String action) {
-		if( notNullOrEmpty(action)){
-			this.action = cleanParam(action);
-		}
+	@Override
+	public String toString() {
+		return "ContestForm [email=" + email + ", description=" + description
+				+ ", l=" + l + ", p=" + p + ", photoId=" + photoId + ", form="
+				+ form + ", voterId=" + voterId  + "]";
 	}
 
 
