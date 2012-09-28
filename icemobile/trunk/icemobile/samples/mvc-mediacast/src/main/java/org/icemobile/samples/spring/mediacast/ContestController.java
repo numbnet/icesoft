@@ -309,7 +309,7 @@ public class ContestController implements ServletContextAware {
 			HttpServletResponse response,
 			@RequestParam(value = "upload", required = false) MultipartFile multiPart,
 			@RequestParam(value="fullPost", defaultValue="true") String fullPost,
-			@RequestParam(value="action", required=false) String action,
+			@RequestParam(value="operation", required=false) String operation,
 			@Valid ContestForm form, BindingResult result,
 			@ModelAttribute("msg") String msg,
 			@ModelAttribute("desktop") boolean desktop,
@@ -325,7 +325,7 @@ public class ContestController implements ServletContextAware {
 			log.info("incoming upload " + multiPart.getContentType() + multiPart.getSize() );
 		}
 		
-		if( action != null && "cancel".equals(action)){
+		if( operation != null && "cancel".equals(operation)){
 			request.getSession().removeAttribute(SX_UPLOAD_KEY);
 			return postUploadFormResponseView(isAjaxRequest(request),false,form.getL());
 		}

@@ -4,7 +4,7 @@
     <form:form id="cameraUploadForm" method="POST" enctype="multipart/form-data" htmlEscape="true" style="text-align:center;">
         <input type="hidden" name="layout" value="${layout}"/>
         <input type="hidden" name="fullPost" id="fullPost" value="false"/>
-        <input type="hidden" name="action" id="action"/>
+        <input type="hidden" name="operation" id="operation"/>
         <form:errors path="*" cssClass="errorblock" element="div" />
         
         <mobi:getEnhanced/>
@@ -53,7 +53,7 @@
                     <div id="msg" style="margin: 0 0 8px 0;font-size:12px;color:#326ADB;font-weight:bold;">${msg}</div>
                     <input type="submit" class="mobi-button mobi-button-default"
                            value="Cancel" style="width:100px;margin-top:0;margin-bottom:0;"
-                           onclick="$('#action').val('cancel')"/>
+                           onclick="$('#operation').val('cancel')"/>
                     <input type="submit" class="mobi-button mobi-button-important"
                            value="Share" style="float:none;width:100px;margin-top:0;margin-bottom:0;"
                            onclick="$('#fullPost').val(true)" ${desktop ? "disabled='disabled'" : ""}/>
