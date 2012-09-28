@@ -249,11 +249,12 @@ public class DemoBean implements Serializable{
                 ImageIO.write(img, "png", outputfile);
                 //img.flush();
             }
-        } catch (IOException e) {
+        } catch (Throwable e) {
             System.out.println("Encountered problem:" + e);
         }
 
-        return "/tmp/"+myRequest.getSession().getId()+"_icon.png";
+        return myRequest.getServletContext().getContextPath() +
+                "/tmp/"+myRequest.getSession().getId()+"_icon.png";
     }
 
     public class SearchedPosition implements Serializable{
