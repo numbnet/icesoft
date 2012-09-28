@@ -161,6 +161,7 @@ public class TreeRenderer extends CoreRenderer {
     private void encodeRoots(ResponseWriter writer, FacesContext facesContext, TreeRendererContext renderContext) throws IOException {
         Tree tree = renderContext.getTree();
         // Initalize cached NodeStateMap before clientId begins to change
+        tree.getClientId();
         tree.getStateMap();
 
         // Encode each 'child' of the null keyed node, the root nodes.
