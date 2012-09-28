@@ -10,13 +10,21 @@
         
         <mobi:fieldSetGroup inset="true" style="margin-top: 10px;">
            <mobi:fieldSetRow style="font-weight: bold;text-align: center;color: #326ADB;">
-               Upload a photo and you might win something!!!
+                <c:choose>
+                    <c:when test="${desktop}">
+                        Share a photo with your mobile device and you might win a new IPad!
+                    </c:when>
+                    <c:otherwise>
+                        Upload a photo and you could win a new IPad!
+                    </c:otherwise>
+                </c:choose>
+               
            </mobi:fieldSetRow>
             <mobi:fieldSetRow style="text-align:center;">
-                <c:if test="${empty sessionScope['sxUpload']}">
+                <c:if test="${!desktop and empty sessionScope['sxUpload']}">
                     <mobi:camera id="upload" style="width:70%;vertical-align:top;max-width:200px;"/>
                 </c:if>
-                <c:if test="${!desktop and !sx}">
+                <c:if test="${!sx}">
                     <mobi:thumb for="upload" style="margin: 0 2px"/>
                 </c:if>
                 <c:if test="${not empty sxThumbnail and not empty sessionScope['sxUpload']}">
@@ -44,7 +52,7 @@
                        value="Cancel" style="width:100px;margin-top:0;margin-bottom:0;"/>
                 <input type="submit" class="mobi-button mobi-button-important"
                        value="Share" style="float:none;width:100px;margin-top:0;margin-bottom:0;"
-                       onclick="$('#fullPost').val(true)"/>
+                       onclick="$('#fullPost').val(true)" ${desktop ? "disabled='disabled'" : ""}/>
             </mobi:fieldSetRow>
         </mobi:fieldSetGroup>
         <mobi:fieldSetGroup inset="true" style="padding:10px;">
