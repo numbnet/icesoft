@@ -133,7 +133,7 @@ ice.ace.Tree.prototype.droppedItemSameParent = function(item) {
     var parentSize = parent.is('.if-tree') ? 0
             : this.getNodeKey(parent).split(':').length - 1;
 
-    return item.is('[id^='+parentid+']') && (childSize - 1) == parentSize;
+    return item.is("[id^='"+parentid+"']") && (childSize - 1) == parentSize;
 }
 
 ice.ace.Tree.prototype.sendReorderingRequest = function(source, parent, index) {
