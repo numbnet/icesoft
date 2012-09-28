@@ -21,7 +21,7 @@ import java.util.List;
 
 @ManagedBean(name = "demoBean")
 @CustomScoped(value = "#{window}")
-public class demoBean implements Serializable{
+public class DemoBean implements Serializable{
     private String autocompleteReturn;
     private String geoLat = "0";
     private String geoLong = "0";
