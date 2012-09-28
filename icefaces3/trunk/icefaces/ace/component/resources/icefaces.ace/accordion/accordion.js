@@ -36,11 +36,11 @@ ice.ace.AccordionPanel = function(id, cfg) {
     this.cfg = cfg;
     this.jqId = ice.ace.escapeClientId(id);
     this.jq = ice.ace.jq(this.jqId + '_acco');
-    this.stateHolder = ice.ace.jq(this.jqId + '_active');
+	this.activeId = this.jqId + '_active';
     var _self = this;
 	
 	try {
-		this.cfg.active = parseInt(this.stateHolder.val());
+		this.cfg.active = parseInt(ice.ace.jq(this.activeId).val());
 		if (this.cfg.active < 0)
 			this.cfg.active = false;
 	} catch (e) {
@@ -64,7 +64,7 @@ ice.ace.AccordionPanel.prototype.onTabChange = function(event, ui) {
     var panel = ui.newContent.get(0);
 
     //Write state
-    this.stateHolder.val(ui.options.active);
+    ice.ace.jq(this.activeId).val(ui.options.active);
 
 	this.fireAjaxTabChangeEvent(panel);
 }
@@ -88,7 +88,6 @@ ice.ace.AccordionPanel.prototype.fireAjaxTabChangeEvent = function(panel) {
     var params = {};
     params[this.id + '_tabChange'] = true;
     if (panel) params[this.id + '_newTab'] = panel.id;
-    params[this.id + '_active'] = this.stateHolder.val();
 
     options.params = params;
 
