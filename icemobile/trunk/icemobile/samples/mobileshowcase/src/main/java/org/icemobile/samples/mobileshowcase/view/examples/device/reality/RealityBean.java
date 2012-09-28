@@ -105,15 +105,23 @@ public class RealityBean extends ExampleImpl<RealityBean> implements
     public RealityBean() {
         super(RealityBean.class);
         markerList = new ArrayList();
+
         HashMap marker = new HashMap();
         marker.put("label", "puz1");
         marker.put("model", getBaseURL() + 
                 "/mobileshowcase/resources/3d/puz1.obj" );
         markerList.add(marker);
+
         marker = new HashMap();
         marker.put("label", "puz2");
         marker.put("model", getBaseURL() +
                 "/mobileshowcase/resources/3d/puz2.obj" );
+        markerList.add(marker);
+
+        marker = new HashMap();
+        marker.put("label", "icemobile");
+        marker.put("model", getBaseURL() +
+                "/mobileshowcase/resources/3d/icemobile.obj" );
         markerList.add(marker);
 
     }
