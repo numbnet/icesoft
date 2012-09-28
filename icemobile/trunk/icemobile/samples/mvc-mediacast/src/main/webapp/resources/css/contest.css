@@ -363,3 +363,6 @@ html.android .mobi-pagePanel-header a{
 #tabstab1_wrapper{
 	background-color:black;
 }
+input.mobi-button:disabled{
+	opacity:0.5;
+}
