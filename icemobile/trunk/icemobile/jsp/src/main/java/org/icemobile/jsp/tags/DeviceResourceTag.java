@@ -123,13 +123,13 @@ public class DeviceResourceTag extends SimpleTagSupport {
         // name value binding is used.
         nameVal = nameVal != null && nameVal.equals(EMPTY_STRING) ? null : name;
         
-        log.info("name="+nameVal+", lib="+libVal+", view="+viewVal);
+        log.fine("name="+nameVal+", lib="+libVal+", view="+viewVal);
 
         // 1.) full automatic device detection.
         if (nameVal == null && libVal == null) {
         	
         	nameVal = TagUtil.getDeviceType(pageContext).name();
-        	log.info("detected " + nameVal);
+        	log.fine("detected " + nameVal);
 
             // the view attribute if specified will apply a small or large
             // theme, large theme's are tablet based, so ipad and honeycomb.
