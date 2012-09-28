@@ -1,0 +1,92 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:icecore="http://www.icefaces.org/icefaces/core"
+	xmlns:ace="http://www.icefaces.org/icefaces/components"
+	xmlns:ice="http://www.icesoft.com/icefaces/component">
+<h:head>
+	<title>Master/Details demo</title>
+	<link rel="stylesheet" type="text/css"
+		href="./xmlhttp/css/rime/rime.css" />
+</h:head>
+<h:body>
+	<h:form id="master">
+
+		<center>
+			<ace:panel header="Staff List" toggleable="true" style="width: 50%">
+
+				<ice:dataTable id="masterTable" value="#{dataTableBean.personData}"
+					var="person">
+					<ice:column id="id" headerText="ID">
+						<ice:rowSelector value="#{person.selected}"
+							selectionListener="#{dataTableBean.selectionListener}" />
+						<h:outputText id="idCell" value="#{person.id}" />
+					</ice:column>
+
+					<ice:column id="name" headerText="Full Name">
+						<h:outputText id="nameCell" value="#{person.name}" />
+					</ice:column>
+
+					<ice:column id="address" headerText="Address">
+						<h:outputText id="addressCell" value="#{person.address}" />
+					</ice:column>
+				</ice:dataTable>
+			</ace:panel>
+		</center>
+	</h:form>
+	<p />
+
+	<h:form id="details">
+
+		<center>
+			<ace:panel header="Staff Member Details" toggleable="true"
+				style="width: 50%" collapsed="#{dataTableBean.detailsHidden}">
+				<ice:panelGrid columns="2">
+					<ice:outputLabel for="firstName" value="First Name" />
+					<h:inputText id="firstName"
+						value="#{dataTableBean.personDetails.firstName}" size="55">
+						<f:ajax event="change" listener="#{dataTableBean.changeListener}"/>
+					</h:inputText>
+
+					<ice:outputLabel for="lastName" value="Last Name" />
+					<h:inputText id="lastName"
+						value="#{dataTableBean.personDetails.lastName}" size="55">
+						<f:ajax event="change" listener="#{dataTableBean.changeListener}"/>
+					</h:inputText>
+
+					<ice:outputLabel for="address" value="Address" />
+					<h:inputText id="address"
+						value="#{dataTableBean.personDetails.address}" size="55">
+						<f:ajax event="change" listener="#{dataTableBean.changeListener}" />
+					</h:inputText>
+					<ice:outputText />
+					<ice:commandButton value="Update Details"
+						action="#{dataTableBean.save}" />
+				</ice:panelGrid>
+			</ace:panel>
+		</center>
+		<!-- Confirm Dialog -->
+		<ice:panelPopup visible="#{dataTableBean.confirmDialog}" modal="true">
+			<f:facet name="header">
+				<ice:panelGroup styleClass="headerStyleClass">
+					<ice:outputText value="Warning" />
+				</ice:panelGroup>
+			</f:facet>
+			<f:facet name="body">
+				<ice:panelGroup styleClass="bodyStyleClass">
+					<ice:outputText
+						value="You have unsaved data. &lt;br/&gt; Are you sure you want to change to a new master record?"
+						escape="false" />
+					<ice:panelGroup>
+						<h:commandButton value="Yes" action="#{dataTableBean.confirmYes}" />
+						<h:commandButton value="No" action="#{dataTableBean.confirmNo}" />
+					</ice:panelGroup>
+				</ice:panelGroup>
+			</f:facet>
+		</ice:panelPopup>
+	</h:form>
+</h:body>
+</html>
