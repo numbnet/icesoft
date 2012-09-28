@@ -7,7 +7,8 @@
 		<mobi:pagePanelHeader>
 			<a id="backBtn" class="mobi-button mobi-button-default" style="float:left;line-height:20px;"
 				href='<c:url value="/contest?p=upload&l=${layout}"/>'>Upload</a>
-			<span>Contest Gallery</span>
+			<span>ICEmobile Contest</span><img src="./resources/images/icemobile.png"
+                style="position:absolute;right:40px;top:12px;"/>
 		</mobi:pagePanelHeader>
 		<mobi:pagePanelBody>
 		    <%@ include file="/WEB-INF/jsp/contest-photo-list.jsp" %>
