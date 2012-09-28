@@ -103,7 +103,6 @@ public class ContestController implements ServletContextAware {
 	@ModelAttribute
 	public void putAttributeSX(WebRequest request, Model model){
 		boolean sx = Utils.isSX(request.getHeader("User-Agent"));
-		log.info("sx="+sx);
 		if( !model.containsAttribute("sx") || sx){
 			model.addAttribute("sx", sx);
 		}
@@ -450,7 +449,7 @@ public class ContestController implements ServletContextAware {
 		MediaMessage msg = null;
 		if( photoId != null ){
 			if( back || forward ){
-				List<MediaMessage> list = mediaService.getMediaCopy();
+				List<MediaMessage> list = mediaService.getMediaSortedByVotes();
 				if( list != null ){
 					for(int i = 0 ; i < list.size() ; i++ ){
 						String pid = list.get(i).getId();
