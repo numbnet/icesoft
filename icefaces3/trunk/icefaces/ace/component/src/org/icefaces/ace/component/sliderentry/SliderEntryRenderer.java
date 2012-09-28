@@ -109,27 +109,74 @@ public class SliderEntryRenderer extends CoreRenderer{
 		ResponseWriter writer = context.getResponseWriter();
 		String clientId = slider.getClientId(context);
 		
+		String axis = slider.getAxis().toLowerCase();
+		boolean showLabels = slider.isShowLabels();
+		
+		writer.startElement("div", slider);
+		writer.writeAttribute("id", clientId , "id");
+		String style = slider.getStyle();
+		style = style == null ? "" : style;
+		writer.writeAttribute("style", style, null);
+		String styleClass = slider.getStyleClass();
+		if (styleClass != null) writer.writeAttribute("class", styleClass, null);
+		
 		writer.startElement("input", slider);
 		writer.writeAttribute("id", clientId + "_hidden" , "id");
 		writer.writeAttribute("name", clientId + "_hidden" , "name");
 		writer.writeAttribute("type", "hidden" , "type");
 		writer.writeAttribute("value", slider.getValue() , "value");
 		writer.endElement("input");
-		
+
+		// top/left label
 		writer.startElement("div", slider);
-		writer.writeAttribute("id", clientId , "id");
-		String style = slider.getStyle();
-		style = style == null ? "" : style;
+		if (showLabels) {
+			if ("y".equals(axis)) {
+				writer.writeAttribute("class", "ice-ace-slider-label-top", null);
+				writer.write("" + slider.getMax());
+			} else {
+				writer.writeAttribute("class", "ice-ace-slider-label-left", null);
+				writer.writeAttribute("style", "float:left;", null);
+				writer.write("" + slider.getMin());
+			}
+		}
+		writer.endElement("div");
+		
+		// main div
 		String length = slider.getLength();
 		if (length.toLowerCase().indexOf("px") == -1) {
 			length += "px";
 		}
-		String dimension = "y".equals(slider.getAxis()) ? "height" : "width";
-		style += ";" + dimension + ":" + length + ";";
-		writer.writeAttribute("style", style , null);
-		if(slider.getStyleClass() != null) writer.writeAttribute("class", slider.getStyleClass(), null);
+		String dimension = "y".equals(axis) ? "height" : "width";
+		writer.startElement("div", slider);
+		String sliderStyle = dimension + ":" + length + ";";
+		if (showLabels && !"y".equals(axis)) {
+			sliderStyle += "float:left;";
+		}
+		writer.writeAttribute("style", sliderStyle, null);
+		writer.endElement("div");
+		
+		// right/bottom label
+		writer.startElement("div", slider);
+		if (showLabels) {
+			if ("y".equals(axis)) {
+				writer.writeAttribute("class", "ice-ace-slider-label-bottom", null);
+				writer.write("" + slider.getMin());
+			} else {
+				writer.writeAttribute("class", "ice-ace-slider-label-right", null);
+				writer.writeAttribute("style", "float:left;", null);
+				writer.write("" + slider.getMax());
+			}
+		}
+		writer.endElement("div");
 		
 		encodeScript(context, slider);
+		
+		// clear float styling
+		if (showLabels && !"y".equals(axis)) {
+			writer.startElement("div", slider);
+			writer.writeAttribute("style", "clear:both;", null);
+			writer.endElement("div");
+		}
 		
 		writer.endElement("div");
 	}
@@ -146,7 +193,6 @@ public class SliderEntryRenderer extends CoreRenderer{
 		jb.beginFunction("ice.ace.Slider")
 			.item(clientId)
 			.beginMap()
-			.entry("value", slider.getValue())
 			.entry("input", clientId + "_hidden");
 		int min = slider.getMin();
 		jb.entry("min", min);
@@ -181,5 +227,14 @@ public class SliderEntryRenderer extends CoreRenderer{
 		writer.write(jb.toString());
 	
 		writer.endElement("script");
+		
+		// script to set value
+		writer.startElement("span", slider);
+		writer.writeAttribute("id", clientId + "_value", null);
+		writer.startElement("script", slider);
+		writer.writeAttribute("type", "text/javascript", null);
+		writer.write("ice.ace.jq(ice.ace.escapeClientId('"+clientId+"')).children('div').eq(1).slider('value', "+slider.getValue()+");");
+		writer.endElement("script");
+		writer.endElement("span");
 	}
 }
