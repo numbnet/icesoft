@@ -59,7 +59,7 @@
 		                <mobi:outputListItem>
 		                    <a id="mediaLink" href='<c:url value="/media/${media.id}"/>'>
 		                    	<img id="largePhoto" width="50px" 
-									src='<c:url value="/resources/uploads/${media.photo.file.name}"/>'
+									src='<c:url value="/resources/uploads/${media.largePhoto.name}"/>'
 									class="imageViewer" style="padding-right:5px;border:none;" />
 		                        <span>${media.title}</span>
 							</a>

@@ -40,39 +40,41 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.multipart.MultipartFile;
 
 @Controller
-@SessionAttributes(value = {"uploadModel","admin","desktop", "voterId", "sx", 
-        TagUtil.USER_AGENT_COOKIE, TagUtil.CLOUD_PUSH_KEY},
+@SessionAttributes(value = {"admin","desktop", "voterId", "sx", "sxThumbnail", "email", 
+		TagUtil.USER_AGENT_COOKIE, TagUtil.CLOUD_PUSH_KEY},
 		types=ContestForm.class)
 public class ContestController implements ServletContextAware {
 
 	@Inject
 	private MediaService mediaService;
-	
+
 	@Inject
 	private MediaHelper mediaHelper;
 
 	String currentFileName = null;
 
 	private ServletContext servletContext;
-	
+
 	private final static String EDIT_KEY_PREFIX = "ice";
 
 	private static final Log log = LogFactory
 			.getLog(ContestController.class);
-	
+
 	private static final String PAGE_UPLOAD = "upload";
 	private static final String PAGE_GALLERY = "gallery";
 	private static final String PAGE_VIEWER = "viewer";
 	private static final String PAGE_ALL = "all";
-	
-	
+
+
 	private static final String DESKTOP = "d";
 	private static final String MOBILE = "m";
 	private static final String TABLET = "t";
-	
+
 	private String currentLeaderEmail;
 	private int currentLeaderVotes = 0;
-	
+
+	private static final String SX_UPLOAD_KEY = "sxUpload";
+
 	@PostConstruct
 	public void init(){
 		ensureUploadDirExists();
@@ -83,29 +85,21 @@ public class ContestController implements ServletContextAware {
 		this.servletContext = servletContext;		
 	}
 
-	@ModelAttribute("uploadModel")
-	public MediaMessage putAttributeUploadModel(){
-		MediaMessage uploadModel = new MediaMessage();
-		uploadModel.setId(newId());
-		log.debug("returning new uploadModel="+uploadModel);
-		return uploadModel;
-	}
-	
 	@ModelAttribute("msg")
 	public String putAttributeMsg(){
 		return "";
 	}
-	
+
 	@ModelAttribute
 	public void putAttributeAjax(WebRequest request, Model model) {
 		model.addAttribute("ajaxRequest", isAjaxRequest(request));
 	}
-	
+
 	@ModelAttribute
 	public void putAttributeDesktop(WebRequest request, Model model){
 		model.addAttribute("desktop", Utils.isDesktop(request.getHeader("User-Agent")));
 	}
-	
+
 	@ModelAttribute
 	public void putAttributeSX(WebRequest request, Model model){
 		boolean sx = Utils.isSX(request.getHeader("User-Agent"));
@@ -114,7 +108,7 @@ public class ContestController implements ServletContextAware {
 			model.addAttribute("sx", sx);
 		}
 	}
-	
+
 	@ModelAttribute
 	public void putAttributeView(WebRequest request, Model model) {
 		String view = DESKTOP;
@@ -128,40 +122,34 @@ public class ContestController implements ServletContextAware {
 	}
 
 	@RequestMapping(value="/icemobile", method = RequestMethod.POST)
-	public String postICEmobileSX(HttpServletRequest request,
-            @RequestParam(value=TagUtil.CLOUD_PUSH_KEY) String cloudKey,
-            Model model)  {
+	public String postICEmobileSX(HttpServletRequest request,  
+			@RequestParam(value=TagUtil.CLOUD_PUSH_KEY) String cloudKey, 
+			Model model)  {
 		log.info("setting ICEmobile-SX");
-            String userAgent = request.getHeader(TagUtil.USER_AGENT);
-            if (userAgent.contains("ICEmobile-SX"))  {
-                model.addAttribute(TagUtil.USER_AGENT_COOKIE,
-                        "HyperBrowser-ICEmobile-SX/1.0");
-                if (null != cloudKey)  {
-                    model.addAttribute(TagUtil.CLOUD_PUSH_KEY, cloudKey);
-                }
-            }
-            return "contest";
-        }
+		String userAgent = request.getHeader(TagUtil.USER_AGENT);
+		if (userAgent.contains("ICEmobile-SX"))  {
+			model.addAttribute(TagUtil.USER_AGENT_COOKIE,
+					"HyperBrowser-ICEmobile-SX/1.0");
+			if (null != cloudKey)  {
+				model.addAttribute(TagUtil.CLOUD_PUSH_KEY, cloudKey);
+			}
+		}
+		return "contest";
+	}
 
 	@RequestMapping(value="/contest", method = RequestMethod.GET)
 	public String get(
 			HttpServletResponse response,
-			@RequestParam(value="l", defaultValue=MOBILE) String layout, 
-			@RequestParam(value="p", defaultValue=PAGE_UPLOAD) String page,
-			@RequestParam(value="photoId", required=false) String photoId,
+			ContestForm form,
 			@CookieValue(value="votes", required=false) String cookieVotes,
 			Model model, 
-			@ModelAttribute("uploadModel") MediaMessage uploadModel,
 			@ModelAttribute("msg") String msg) {
-		
-		log.warn("main contest controller l="+layout+", p="+page+",cookies="+cookieVotes);
-		
-		//clean params
-		layout = cleanSingleRequestParam(layout);
-		
+
+		log.debug("form="+form+" ,cookies="+cookieVotes);
+
 		String view = null;
-		if( layout.equals(TABLET) ){
-			page = PAGE_ALL;
+		if( TABLET.equals(form.getL()) ){
+			form.setP(PAGE_ALL);
 		}
 		String voterId = getVoterIdFromCookie(cookieVotes);
 		if( cookieVotes == null || cookieVotes.length() == 0){
@@ -169,94 +157,84 @@ public class ContestController implements ServletContextAware {
 			List<String> votes = Collections.emptyList();
 			addVotesCookie(response, voterId, votes);
 		}
-		
-		addCommonModel(model,uploadModel,layout);
+
+		addCommonModel(model,form.getL());
 		model.addAttribute("voterId",voterId);
-		
-		if( page.equals(PAGE_UPLOAD) ){
-			addUploadViewModel(page, layout, model);
+
+		if( PAGE_UPLOAD.equals(form.getP()) ){
+			addUploadViewModel(PAGE_UPLOAD, form.getL(), model);
 			view = "contest-upload";
 		}
-		else if( page.equals(PAGE_GALLERY) ){
+		else if( PAGE_GALLERY.equals(form.getP()) ){
 			view = "contest-gallery";
 		}
-		else if( page.equals(PAGE_VIEWER)){
-			addViewerViewModel(photoId,layout,model, false, false);
+		else if( PAGE_VIEWER.equals(form.getP())){
+			addViewerViewModel(form.getPhotoId(),form.getL(), model, false, false);
 			view = "contest-viewer";
 		}
-		else if( page.equals(PAGE_ALL)){
-			addUploadViewModel(page, layout, model);
-			addViewerViewModel(photoId, layout, model, false, false);
+		else if( PAGE_ALL.equals(form.getP())){
+			addUploadViewModel(PAGE_ALL, form.getL(), model);
+			addViewerViewModel(form.getPhotoId(), form.getL(), model, false, false);
 			view = "contest-tablet";
 		}
-		log.warn("forwarding to " + view);
-		
+		log.debug("forwarding to " + view);
+
 		return view;
 	}
-	
+
 	@RequestMapping(value="/contest-carousel", method = RequestMethod.GET)
-	public String getCarouselContent(@RequestParam(value="l", defaultValue=MOBILE) String layout, 
-			Model model) {
-		layout = cleanSingleRequestParam(layout);
+	public String getCarouselContent(ContestForm form, Model model) {
 		model.addAttribute("carouselItems", mediaService
-				.getContestMediaImageMarkup(layout));
+				.getContestMediaImageMarkup(form.getL()));
+		model.addAttribute("layout",form.getL());
 		return "contest-carousel";
 	}
-	
+
 	@RequestMapping(value="/contest-viewer", method = RequestMethod.GET)
-	public String getContestViewerContent(
-			@RequestParam(value="l", defaultValue=MOBILE) String layout, 
-			@RequestParam(value="id", required=false) String id,
-			@RequestParam(value="a", required=false) String action,
-			Model model, 
-			@ModelAttribute("uploadModel") MediaMessage uploadModel) {
+	public String getContestViewerContent(ContestForm form, Model model) {
+		log.info(form);
 		boolean back = false;
 		boolean forward = false;
-		if( action != null && action.length() > 0 ){
-			back = "back".equals(action);
-			forward = "forward".equals(action);
+		if( form.getAction() != null ){
+			back = "back".equals(form.getAction());
+			forward = "forward".equals(form.getAction());
 		}
-		addCommonModel(model, uploadModel, layout);
-		addViewerViewModel(id, layout, model, back, forward);
+		addCommonModel(model, form.getL());
+		addViewerViewModel(form.getPhotoId(), form.getL(), model, back, forward);
 		return "contest-viewer-panel";
 	}
-	
+
 	@RequestMapping(value="/contest-photo-list", method=RequestMethod.GET)
-	public String getPhotoListContent(
-			@RequestParam(value="l", defaultValue=MOBILE) String layout, 
-			Model model, 
-			@ModelAttribute("uploadModel") MediaMessage uploadModel,
+	public String getPhotoListContent(ContestForm form, Model model,
 			@CookieValue(value="votes", required=false) String cookieVotes){
-		addCommonModel(model, uploadModel, layout);
+		addCommonModel(model, form.getL());
 		model.addAttribute("voterId",getVoterIdFromCookie(cookieVotes));
 		return "contest-photo-list";
 	}
-	
+
 	@RequestMapping(value="/contest-vote-tally", method=RequestMethod.GET)
-	public String getVoteTallyContent(
-			@RequestParam(value="id") String id, 
-			Model model){
-		id = cleanSingleRequestParam(id);
-		MediaMessage msg = mediaService.getMediaMessage(id);
+	public String getVoteTallyContent( ContestForm form, Model model){
+		MediaMessage msg = mediaService.getMediaMessage(form.getPhotoId());
 		if( msg == null ){
-			log.warn("could not find msg = "+ id);
+			log.warn("could not find msg = "+ form.getPhotoId());
 		}
-		
+
 		model.addAttribute("media", msg);
 		return "contest-vote-tally";
 	}
-	
+
 	@RequestMapping(value="/contest-photo-list-json", method=RequestMethod.GET, produces="application/json")
 	public @ResponseBody List<MediaMessageTransfer> getPhotoListJSON(
 			@RequestParam(value="since") long since,
 			@RequestParam(value="_", required=false) String jqTimestamp,
 			@CookieValue(value="votes", required=false) String cookieVotes){
+
 		List<MediaMessage> list = mediaService.getMediaCopy();
 		List<MediaMessageTransfer> results = new ArrayList<MediaMessageTransfer>();
 		String voterId = getVoterIdFromCookie(cookieVotes);
 		log.debug("voterId="+voterId);
 		log.debug("cookie="+cookieVotes);
-		
+
 		if( list != null && list.size() > 0 ){
 			Iterator<MediaMessage> iter = list.iterator();
 			while( iter.hasNext() ){
@@ -271,14 +249,14 @@ public class ContestController implements ServletContextAware {
 					MediaMessageTransfer transfer = new MediaMessageTransfer(msg, canVote);
 					log.debug(transfer);
 					results.add(transfer);
-					
+
 				}
 			}
 		}
 		return results;
 	}
 
-	
+
 
 	@RequestMapping(value="/contest-admin", method = RequestMethod.POST)
 	public String postAdminPage(HttpServletRequest request, String password, 
@@ -300,143 +278,143 @@ public class ContestController implements ServletContextAware {
 					mediaService.removeMessage(id);
 				}
 				model.addAttribute("mediaService", mediaService);
-//				PushContext.getInstance(servletContext).push("photosFullUpdate");		
-//				PushContext.getInstance(servletContext).push("carousel");
 				PushContext.getInstance(servletContext).push("photos");
 			}
 		}
-		
+
 		return "contest-admin";
 	}
-	
+
 	@RequestMapping(value="/contest-admin", method = RequestMethod.GET)
-	public String getAdminPage()
-					throws IOException {
+	public String getAdminPage() throws IOException {
 		return "contest-admin";
 	}
-	
-	
+
+	private File getSXThumbnailFile(String sessionId){
+		return new File(servletContext.getRealPath("/resources/uploads")
+				+File.separator+"sx-"+sessionId+"-small.png");
+	}
+
+
 	@RequestMapping(value="/contest", method = RequestMethod.POST, consumes="multipart/form-data")
 	public String postUpload(
 			HttpServletRequest request,
 			HttpServletResponse response,
-			@RequestParam(value = "uploadId", required=false) String uploadId,
-			@RequestParam(value = "upload", required = false) MultipartFile file,
+			@RequestParam(value = "upload", required = false) MultipartFile multiPart,
 			@RequestParam(value="fullPost", defaultValue="true") String fullPost,
 			@Valid ContestForm form, BindingResult result,
-			@ModelAttribute("uploadModel") MediaMessage uploadModel,
 			@ModelAttribute("msg") String msg,
 			@CookieValue(value="votes", required=false) String cookieVotes,
 			Model model)
 					throws IOException {
-		
-		log.info("upload id=" + uploadId + ", fullPost="+fullPost);
+
 		log.info("user-agent="+request.getHeader("User-Agent"));
-		
-		if( uploadId == null || uploadId.length() == 0){
-			uploadId = newId();
-			uploadModel.setId(uploadId);
-		}
-		
 		log.info(form);
-		
-		if( file != null ){
-			log.info("incoming upload " + file.getContentType() + file.getSize() );
+		if( multiPart != null ){
+			log.info("incoming upload " + multiPart.getContentType() + multiPart.getSize() );
 		}
-		
+
 		//SX Image upload before full form post
-		if( file != null && !"true".equals(fullPost)){
+		if( multiPart != null && !"true".equals(fullPost)){
 			log.info("SX upload");
-			File photo = saveMultipartUploadToFile(file,uploadId);
-			Media media = new Media();
-			media.setFile(photo);
-			uploadModel.setPhoto(media);
-			mediaHelper.processImage(uploadModel,uploadId);
-			return postUploadFormResponseView(false, false, form.getLayout());
+			String sessionId = request.getSession().getId();
+			File sxMasterFile = getOriginalFile(sessionId);
+			multiPart.transferTo(sxMasterFile);
+			request.getSession().setAttribute(SX_UPLOAD_KEY, sxMasterFile);
+			File sxThumbnail = mediaHelper.processSmallImage(sxMasterFile, "sx-"+sessionId);
+			model.addAttribute("sxThumbnail",sxThumbnail);
+			model.addAttribute("email",form.getEmail());
+			return postUploadFormResponseView(false, false, form.getL());
 		}
-		
+
 		boolean success = false;
-		
+
 		if (result.hasErrors() ) {
 			log.info("form has errors " + result);
 			if( form.getEmail() != null && form.getEmail().length() > 0 ){
-				//uploadModel.setUploadMsg("Is that your correct email?");
 				model.addAttribute("msg","Is that your correct email?");
 				log.warn("invalid email");
 			}
 			else{
-				//uploadModel.setUploadMsg("Sorry, I think you missed something.");
 				model.addAttribute("msg","Sorry, I think you missed something.");
 				log.warn("missing required form values");
 			}
-			
+
 		}
 		else{
 			log.info("form has no errors");
-			File originalPhoto = getOriginalFile(uploadId);
-			if( !originalPhoto.exists() && (file == null || file.isEmpty()) ){
-				//uploadModel.setUploadMsg("Sorry, I think you missed the photo.");
+			File sxUpload = (File)request.getSession().getAttribute(SX_UPLOAD_KEY);
+			if( sxUpload == null && (multiPart == null || multiPart.isEmpty()) ){
 				model.addAttribute("msg","Sorry, I think you missed the photo.");
 			}
-			else{
-				if( !originalPhoto.exists() && file != null && !file.isEmpty() ){
-					saveMultipartUploadToFile(file, uploadId);
-					Media media = new Media();
-					media.setFile(originalPhoto);
-					uploadModel.setPhoto(media);
-					mediaHelper.processImage(uploadModel,uploadId);
+			if( multiPart != null || sxUpload != null ){
+				String id = newId();
+				File origFile = getOriginalFile(id);
+				if( sxUpload != null ){
+					sxUpload.renameTo(origFile);
+					File sxThumbnail = getSXThumbnailFile(request.getSession().getId());
+					if( sxThumbnail.exists() ){
+						sxThumbnail.delete();
+					}
+					request.getSession().removeAttribute(SX_UPLOAD_KEY);
 				}
-				
-				
-				uploadModel.setDescription(form.getDescription());
-				uploadModel.setEmail(form.getEmail());
-				uploadModel.setCreated(System.currentTimeMillis());
-				mediaService.addMedia(uploadModel);
-				log.debug("successfully added message to mediaService, uploadModel="
-						+ uploadModel);
-				model.addAttribute("msg","Thank you, your file was uploaded successfully.");
-				uploadModel.clearForNextUpload();
-				uploadModel.setId(newId());
-			
-				PushContext pc = PushContext.getInstance(servletContext);
-				String pushId = pc.createPushId(request, response);
-				pc.addGroupMember(uploadModel.getEmail(), pushId);
-				pc.push("photos");		
-//				pc.push("carousel");		
-//pc.push("carousel", new PushNotification("carousel","carousel"));
-//System.out.println("cloud push carousel test");
+				else{
+					saveMultipartUploadToFile(multiPart,id);
+				}
+				File[] processedFiles = mediaHelper.processSmallAndLargeImages(origFile, id);
+				if( processedFiles != null ){
+					MediaMessage media = new MediaMessage();
+					media.setId(id);
+					media.setDescription(form.getDescription());
+					media.setEmail(form.getEmail());
+					media.setCreated(System.currentTimeMillis());
+					media.setSmallPhoto(processedFiles[0]);
+					media.setLargePhoto(processedFiles[1]);
+					mediaService.addMedia(media);
+					log.info("created new media: "+media);
 
-				success = true;
+					model.addAttribute("msg","Thank you, your file was uploaded successfully.");
+					model.addAttribute("email", form.getEmail());
+
+					PushContext pc = PushContext.getInstance(servletContext);
+					String pushId = pc.createPushId(request, response);
+					pc.addGroupMember(form.getEmail(), pushId);
+					pc.push("photos");	
+
+					success = true;
+				}
+
 			}
 		}
-		addCommonModel(model, uploadModel, form.getLayout());
+		addCommonModel(model, form.getL());
 		model.addAttribute("voterId",getVoterIdFromCookie(cookieVotes));
-		return postUploadFormResponseView(isAjaxRequest(request),success,form.getLayout());
+		return postUploadFormResponseView(isAjaxRequest(request),success,form.getL());
 	}
-	
+
 	@RequestMapping(value="/contest-vote", method = RequestMethod.POST, consumes="multipart/form-data")
 	public String postVote(
 			HttpServletRequest request,
 			HttpServletResponse response,
-			@Valid ContestForm form, 
+			ContestForm form, 
 			BindingResult result,
 			@ModelAttribute("msg") String msg,
 			@CookieValue(value="votes", required=false) String cookieVotes,
 			Model model)
 					throws IOException {
-		
+
 		log.info("user-agent="+request.getHeader("User-Agent"));
 		log.info(form);
-		
-		doVote(response, form.getPhotoId(), cookieVotes, model);
+
+		doVote(request, response, form.getPhotoId(), cookieVotes, model);
 		model.addAttribute("mediaService", mediaService);
 		model.addAttribute("voterId",getVoterIdFromCookie(cookieVotes));
-		model.addAttribute("layout",form.getLayout());
+		model.addAttribute("layout",form.getL());
+		model.addAttribute("updated",System.currentTimeMillis());
 		return "contest-photo-list";
 	}
-		
 
-	
+
+
 	private String postUploadFormResponseView(boolean ajax, boolean redirect, String layout){
 		String view = null;
 		if( ajax ){
@@ -455,17 +433,12 @@ public class ContestController implements ServletContextAware {
 		return view;
 	}
 
-	private void addCommonModel(Model model, MediaMessage uploadModel, String layout){
+	private void addCommonModel(Model model, String layout){
 		model.addAttribute("mediaService", mediaService);
-		//if( !model.containsAttribute("uploadModel")){
-			model.addAttribute("uploadModel", uploadModel);
-		//}
-		if( layout != null && layout.length() > 0){
-			model.addAttribute("layout",layout.substring(0,1));
-		}
+		model.addAttribute("layout",layout);
 		model.addAttribute("updated",System.currentTimeMillis());
 	}
-	
+
 	private void addUploadViewModel(String page, String layout, Model model){
 		if( PAGE_UPLOAD.equals(page) ){
 			page = PAGE_VIEWER;
@@ -473,36 +446,43 @@ public class ContestController implements ServletContextAware {
 		model.addAttribute("carouselItems", mediaService
 				.getContestMediaImageMarkup(layout));
 	}
-	
-	private void addViewerViewModel(String id, String layout, Model model, boolean back, boolean forward){
+
+	private void addViewerViewModel(String photoId, String layout, Model model, boolean back, boolean forward){
+
 		MediaMessage msg = null;
-		if( back || forward ){
-			List<MediaMessage> list = mediaService.getMediaCopy();
-			if( list != null ){
-				for(int i = 0 ; i < list.size() ; i++ ){
-					String pid = list.get(i).getId();
-					if( pid != null && pid.equals(id) ){
-						int target = (back ? i-1 : i+1);
-						if( target == -1 ){
-							target = list.size()-1;
+		if( photoId != null ){
+			if( back || forward ){
+				List<MediaMessage> list = mediaService.getMediaCopy();
+				if( list != null ){
+					for(int i = 0 ; i < list.size() ; i++ ){
+						String pid = list.get(i).getId();
+						if( pid != null && pid.equals(photoId) ){
+							int target = (back ? i-1 : i+1);
+							if( target == -1 ){
+								target = list.size()-1;
+							}
+							else if( target == list.size() ){
+								target = 0;
+							}
+							msg = list.get(target);
 						}
-						else if( target == list.size() ){
-							target = 0;
-						}
-						msg = list.get(target);
 					}
 				}
 			}
+			else{
+				msg = mediaService.getMediaMessage(photoId);
+			}
+
 		}
 		else{
-			msg = mediaService.getMediaMessage(id);
+			List<MediaMessage> list = mediaService.getMediaCopy();
+			if( list.size() > 0 ){
+				msg = list.get(0);
+			}
 		}
 		model.addAttribute("media", msg);
-		if( TABLET.equals(layout)){
-			model.addAttribute("tab", PAGE_VIEWER);
-		}
 	}
-	
+
 	private String getVoterIdFromCookie(String cookie){
 		String voterId = null;
 		if( cookie != null && cookie.length() > 13){
@@ -513,7 +493,7 @@ public class ContestController implements ServletContextAware {
 		}
 		return voterId;
 	}
-	
+
 	private List<String> getVotesFromCookie(String cookie){
 		List<String> votes = new ArrayList<String>();
 		if( cookie != null && cookie.length() > 14 ){
@@ -522,8 +502,8 @@ public class ContestController implements ServletContextAware {
 		}
 		return votes;
 	}
-	
-	private void doVote(HttpServletResponse response, String id, String cookieVotes, Model model){
+
+	private void doVote(HttpServletRequest request, HttpServletResponse response, String id, String cookieVotes, Model model){
 		log.debug("id="+id+", cookie="+cookieVotes);
 		MediaMessage msg = mediaService.getMediaMessage(id);
 		if (msg != null ){
@@ -541,25 +521,27 @@ public class ContestController implements ServletContextAware {
 			addVotesCookie(response, voterId, votesList);
 			PushContext pc = PushContext.getInstance(servletContext);
 			pc.push("photos");
-//			pc.push("votes-"+msg.getId());
-			checkLeader(msg);
+			pc.push("votes-"+msg.getId());
+			checkLeader(msg, request);
 			log.debug("recorded vote");
 		} 
 	}
-	
-	private void checkLeader(MediaMessage msg){
+
+	private void checkLeader(MediaMessage msg, HttpServletRequest request){
+		String url = request.getRequestURL().toString();
+		String imageURL = url.substring(0, url.lastIndexOf('/'))+"/resources/uploads/"+msg.getLargePhoto().getName();
+		log.info("checkLeader url="+imageURL);
 		if( msg.getVotes().size() > currentLeaderVotes ){
 			if( currentLeaderEmail != null && !currentLeaderEmail.equals(msg.getEmail())){
 				PushContext pc = PushContext.getInstance(servletContext);
 				PushNotification pn = new PushNotification("ICEmobile JavaOne Contest!",
-					"Hey congratulation! You're now in the lead with " + currentLeaderVotes
-					+ " votes!");
+					"Our sincerest apologies, your photo has now been outvoted, previously you had " 
+					+ currentLeaderVotes+ " votes. The new leader has "+msg.getVotes().size()+" <a href='"+imageURL+"'>New Leading Photo</a>");
 				pc.push(currentLeaderEmail, pn);
 			}
 			currentLeaderVotes = msg.getVotes().size();
-            currentLeaderEmail = msg.getEmail();
+			currentLeaderEmail = msg.getEmail();
 		}
-		
 	}
 	
 	private void addVotesCookie(HttpServletResponse response, String voterId, List<String> votes){
@@ -586,15 +568,15 @@ public class ContestController implements ServletContextAware {
 	}
 
 	private File getOriginalFile(String id){
-		String fileName = "img-" + id + "-orig.jpg";
+		String fileName = id + "-orig.jpg";
 		String path = getUploadsDir() + File.separator + fileName;
 		return new File(path);
 	}
-	
+
 	private File getUploadsDir(){
 		return new File(servletContext.getRealPath("/resources/uploads"));
 	}
-	
+
 	private void ensureUploadDirExists(){
 		File uploadsDir = getUploadsDir();
 		boolean exists = uploadsDir.exists();
@@ -603,7 +585,7 @@ public class ContestController implements ServletContextAware {
 		}
 		log.info("attempting checking upload dir " + exists + ", "+uploadsDir.getAbsolutePath());
 	}
-	
+
 	private File saveMultipartUploadToFile(MultipartFile upload, String id){
 		File file = null;
 		if( upload != null && !upload.isEmpty()){
@@ -629,7 +611,7 @@ public class ContestController implements ServletContextAware {
 		requestedWith = webRequest.getHeader("X-Requested-With");
 		return requestedWith != null ? "XMLHttpRequest".equals(requestedWith) : false;
 	}
-	
+
 	private static boolean isAjaxRequest(HttpServletRequest webRequest) {
 		String requestedWith = webRequest.getHeader("Faces-Request");
 		if ("partial/ajax".equals(requestedWith))  {
@@ -647,17 +629,15 @@ public class ContestController implements ServletContextAware {
 	public void setServletContext(ServletContext sc) {
 		servletContext = sc; 
 	}
-	
+
 	private boolean canEdit(String key){
 		boolean result = false;
-		log.warn("key="+key);
 		if( key != null && key.length() > EDIT_KEY_PREFIX.length() 
 				&& key.startsWith(EDIT_KEY_PREFIX)){
 			String token = key.substring(EDIT_KEY_PREFIX.length());
 			try{
 				int val = Integer.parseInt(token);
 				int min = currentMinute();
-				log.warn("val="+val+", min="+min);
 				if( val == min ){
 					result = true;
 				}
@@ -666,19 +646,11 @@ public class ContestController implements ServletContextAware {
 				//do nothing
 			}
 		}
-		log.warn("edit="+result);
 		return result;
 	}
-	
+
 	private int currentMinute(){
 		return new GregorianCalendar().get(Calendar.MINUTE);
-	}
-	
-	private String cleanSingleRequestParam(String param){
-		if( param != null && param.indexOf(",") > 0 ){
-			param = param.substring(0,param.indexOf(","));
-		}
-		return param;
 	}
 
 }

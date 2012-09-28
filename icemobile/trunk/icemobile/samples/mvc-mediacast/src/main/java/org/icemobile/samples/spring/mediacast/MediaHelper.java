@@ -57,79 +57,73 @@ public class MediaHelper implements Serializable, ServletContextAware{
 		
 	}
 	
-	public void processImage(MediaMessage msg, String uploadId) {
+	public File[] processSmallAndLargeImages(File image, String id) throws IOException{
 
-		if (msg.getPhoto().getFile() == null) {
-			log.warn("file is null");
-			return;
-		}
-		try {
-			log.info("incoming photo file to be processed: " + msg.getPhoto().getFile());
-			BufferedImage image = ImageIO.read(msg.getPhoto().getFile());
-			log.info("buffered image="+image);
-			// scale the original file into a small thumbNail and the other
-			// into a 1 megapixelish sized image.
-			int width = image.getWidth();
-			int height = image.getHeight();
-			log.debug("image original dimensions " + width+"x"+height);
-			int xOffset = width > height ? (width - height) / 2 : 0; 			
-			int yOffset = height > width ? (height - width) / 2 : 0; 
-			int length = Math.min(image.getWidth(), image.getHeight());
-			//crop
-			image = image.getSubimage(xOffset, yOffset, length, length);
-			log.debug("cropped image dimensions " + width+"x"+height);
-
-			AffineTransform tx = new AffineTransform();
-			double imageScale = calculateImageScale(SMALL_PHOTO_HEIGHT, height);
-			log.debug("scaling small image "+width+"x"+height+" by " + imageScale);
-			tx.scale(imageScale, imageScale);
-			AffineTransformOp op = new AffineTransformOp(tx, AffineTransformOp.TYPE_BILINEAR);
-			BufferedImage smallImage = op.filter(image, null);
-
-			imageScale = calculateImageScale(LARGE_PHOTO_HEIGHT, height);
-			log.debug("scaling large image "+width+"x"+height+" by " + imageScale);
-			tx = new AffineTransform();
-			tx.scale(imageScale, imageScale);
-			op = new AffineTransformOp(tx, AffineTransformOp.TYPE_BILINEAR);
-			BufferedImage largeImage = op.filter(image, null);
+			log.info("incoming photo file to be processed: " + image.getName());
 			
-			image.flush();
-			image = null;
+			String dir = image.getParent();
 			
-			String dir = msg.getPhoto().getFile().getParent();
+			BufferedImage croppedBI = createCroppedBufferedImage(image);
 			
-			msg.setLargePhoto(
-					createMedia(uploadId, dir, largeImage, largeImage.getTileWidth(),
-							largeImage.getHeight(), "-large"));
-			largeImage.flush();
-			largeImage = null;
-			log.info("large photo: " + msg.getLargePhoto());
-			
-			msg.setSmallPhoto(
-					createMedia(uploadId, dir, smallImage,
-							smallImage.getTileWidth(),
-							smallImage.getHeight(), "-small"));
+			BufferedImage smallImage = processImage(croppedBI, SMALL_PHOTO_HEIGHT);
+			File smallImageFile = new File(dir+File.separator+id+"-small.png");
+			ImageIO.write(smallImage, "png", smallImageFile);
 			smallImage.flush();
 			smallImage = null;
-			log.info("small photo: " + msg.getSmallPhoto());
 			
-		} catch (Throwable e) {
-			log.warn("Error processing camera image upload.",e);
-		}
+			BufferedImage largeImage = processImage(croppedBI, LARGE_PHOTO_HEIGHT);
+			File largeImageFile = new File(dir+File.separator+id+"-large.png");
+			ImageIO.write(largeImage, "png", largeImageFile);
+			largeImage.flush();
+			largeImage = null;
+			
+			croppedBI.flush();
+			croppedBI = null;
+			
+			return new File[]{smallImageFile,largeImageFile};
 	}
-
-	private Media createMedia(String id, String dir, BufferedImage image, int width, int height, String suffix)
-			throws IOException {
-		File newFile = new File(dir+File.separator+"img-"+id+suffix+".png");
-		ImageIO.write(image, "png", newFile);
-		Media media = new Media();
-		media.setFile(newFile);
-		media.setHeight(height);
-		media.setWidth(width);
-		media.setType("image/png");
-		return media;
+	
+	public File processSmallImage(File image, String id) throws IOException{
+		BufferedImage bi = createCroppedBufferedImage(image);
+		BufferedImage smallImage = processImage(bi, SMALL_PHOTO_HEIGHT);
+		
+		String dir = image.getParent();
+		
+		File smallImageFile = new File(dir+File.separator+id+"-small.png");
+		ImageIO.write(smallImage, "png", smallImageFile);
+		smallImage.flush();
+		smallImage = null;
+		return smallImageFile;
 	}
-
+	
+	
+	private BufferedImage createCroppedBufferedImage(File image) throws IOException{
+		BufferedImage bi = ImageIO.read(image);
+		// scale the original file into a small thumbNail and the other
+		// into a 1 megapixelish sized image.
+		int width = bi.getWidth();
+		int height = bi.getHeight();
+		log.debug("image original dimensions " + width+"x"+height);
+		int xOffset = width > height ? (width - height) / 2 : 0; 			
+		int yOffset = height > width ? (height - width) / 2 : 0; 
+		int length = Math.min(width, height);
+		//crop
+		BufferedImage croppedBI = bi.getSubimage(xOffset, yOffset, length, length);
+		bi.flush();
+		bi = null;
+		return croppedBI;
+	}
+	
+	public BufferedImage processImage(BufferedImage bi, int height) throws IOException{
+		AffineTransform tx = new AffineTransform();
+		double imageScale = calculateImageScale(height, bi.getHeight());
+		log.debug("scaling image "+bi.getWidth()+"x"+bi.getHeight()+" by " + imageScale);
+		tx.scale(imageScale, imageScale);
+		AffineTransformOp op = new AffineTransformOp(tx, AffineTransformOp.TYPE_BILINEAR);
+		BufferedImage smallImage = op.filter(bi, null);
+		return smallImage;
+	}
+	
 	private double calculateImageScale(double intendedSize, double height) {
 		double scaleHeight = height / intendedSize;
 		return 1 / scaleHeight;

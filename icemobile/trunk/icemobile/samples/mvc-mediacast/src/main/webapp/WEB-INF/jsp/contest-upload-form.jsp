@@ -1,10 +1,8 @@
 <%@ include file="/WEB-INF/jsp/include.jsp"%>
 <div id="uploadFormContainer" style="margin-top: 20px;">
      
-    <form:form id="cameraUploadForm" method="POST" enctype="multipart/form-data"
-         modelAttribute="uploadModel" htmlEscape="true" style="text-align:center;">
+    <form:form id="cameraUploadForm" method="POST" enctype="multipart/form-data" htmlEscape="true" style="text-align:center;">
         <input type="hidden" name="layout" value="${layout}"/>
-        <input type="hidden" name="uploadId" value="${uploadModel.id}"/>
         <input type="hidden" name="fullPost" id="fullPost" value="false"/>
         <form:errors path="*" cssClass="errorblock" element="div" />
         
@@ -15,14 +13,14 @@
                Upload a photo and you might win something!!!
            </mobi:fieldSetRow>
             <mobi:fieldSetRow style="text-align:center;">
-                <c:if test="${empty uploadModel.smallPhoto or !sx}">
+                <c:if test="${empty sessionScope['sxUpload']}">
                     <mobi:camera id="upload" style="width:70%;vertical-align:top;max-width:200px;"/>
                 </c:if>
                 <c:if test="${!desktop and !sx}">
                     <mobi:thumb for="upload" style="margin: 0 2px"/>
                 </c:if>
-                <c:if test="${sx and not empty uploadModel.smallPhoto}">
-                    <img src='resources/uploads/${uploadModel.smallPhoto.file.name}'/>
+                <c:if test="${not empty sxThumbnail and not empty sessionScope['sxUpload']}">
+                    <img src='resources/uploads/${sxThumbnail.name}'/>
                 </c:if>
              </mobi:fieldSetRow>
              <mobi:fieldSetRow style="min-height:0;">
@@ -31,15 +29,14 @@
                     type="email"
                     autoCorrect="off"
                     placeholder="Email"
-                    value="${uploadModel.email}"/>
+                    value="${email}"/>
              </mobi:fieldSetRow>
              <mobi:fieldSetRow style="min-height:0;">
                  <mobi:inputtext name="description" 
                     styleClass="input"
                     type="textarea"
                     autoCorrect="off"
-                    placeholder="Description"
-                    value="${uploadModel.description}"/>
+                    placeholder="Description"/>
              </mobi:fieldSetRow>
              <mobi:fieldSetRow style="text-align:center;">
                 <div id="msg" style="margin: 0 0 8px 0;font-size:12px;color:#326ADB;font-weight:bold;">${msg}</div>

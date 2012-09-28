@@ -16,6 +16,7 @@
 
 package org.icemobile.samples.spring.mediacast;
 
+import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -40,11 +41,10 @@ public class MediaMessage implements Serializable{
 	private double altitude = 0.0;
 	private double direction = 0.0; //0-359 degrees
 	private String uploadMsg;
-	private Media photo = null;
-	private Media video = null;
-	private Media audio = null;
-	private Media smallPhoto = null;
-    private Media largePhoto = null;
+	private File video = null;
+	private File audio = null;
+	private File smallPhoto = null;
+    private File largePhoto = null;
     private long created;
     private long lastVote;
 
@@ -62,10 +62,6 @@ public class MediaMessage implements Serializable{
 	public static final String MEDIA_TYPE_VIDEO = "Video";
 	public static final String MEDIA_TYPE_AUDIO = "Audio";
 
-	public void addPhoto(Media photo) {
-		this.photo = photo;
-	}
-
 	public void clear(){
 		audio = null;
 		description = null;
@@ -74,25 +70,6 @@ public class MediaMessage implements Serializable{
 		id = null;
 		latitude = 0;
 		longitude = 0;
-		photo = null;
-		tags = new ArrayList<String>();
-		votes = new ArrayList<String>();
-		title = null;
-		video = null;
-		lastVote = 0;
-		created = 0;
-		smallPhoto = null;
-		largePhoto = null;
-	}
-	
-	public void clearForNextUpload(){
-		audio = null;
-		description = null;
-		direction = 0;
-		id = null;
-		latitude = 0;
-		longitude = 0;
-		photo = null;
 		tags = new ArrayList<String>();
 		votes = new ArrayList<String>();
 		title = null;
@@ -112,7 +89,6 @@ public class MediaMessage implements Serializable{
 		cloned.setId(id);
 		cloned.setLatitude(latitude);
 		cloned.setLongitude(longitude);
-		cloned.setPhoto(photo);
 		cloned.setSmallPhoto(smallPhoto);
 		cloned.setLargePhoto(largePhoto);
 		cloned.setTags(tags);
@@ -129,14 +105,11 @@ public class MediaMessage implements Serializable{
 	 * Clean up file resources.
 	 */
 	 public void dispose(){
-		if( photo != null ){
-				photo.dispose();
-		}
 		if( smallPhoto != null ){
-			smallPhoto.dispose();
+			smallPhoto.delete();
 		}
 		if( largePhoto != null ){
-			largePhoto.dispose();
+			largePhoto.delete();
 		}
 			
 	 }
@@ -149,11 +122,11 @@ public class MediaMessage implements Serializable{
 		 this.altitude = alt;
 	 }
 
-	 public Media getAudio()  {
+	 public File getAudio()  {
 		 return audio;
 	 }
 
-	 public void setAudio(Media media){
+	 public void setAudio(File media){
 		 this.audio = media;
 	 }
 
@@ -178,16 +151,8 @@ public class MediaMessage implements Serializable{
 		 return longitude;
 	 }
 
-	 public Media getPhoto() {
-		 return photo;
-	 }
-
 	 public boolean getShowAudio()  {
 		 return audio != null;
-	 }
-
-	 public boolean getShowPhoto()  {
-		 return photo != null;
 	 }
 
 	 public boolean getShowVideo()  {
@@ -202,16 +167,16 @@ public class MediaMessage implements Serializable{
 		 return title;
 	 }
 
-	 public Media getVideo()  {
+	 public File getVideo()  {
 		 return video;
 	 }
 
-	 public void setVideo(Media media){
+	 public void setVideo(File media){
 		 this.video = media;
 	 }
 
 	 public boolean isHasMedia(){
-		 return this.audio != null || this.photo != null || this.video != null;
+		 return this.audio != null || this.smallPhoto != null || this.largePhoto != null || this.video != null;
 	 }
 
 	 public void setDescription(String description) {
@@ -232,10 +197,6 @@ public class MediaMessage implements Serializable{
 
 	 public void setLongitude(double longitude) {
 		 this.longitude = longitude;
-	 }
-
-	 public void setPhoto(Media photo) {
-		 this.photo = photo;
 	 }
 
 	 public void setTags(List<String> tags){
@@ -260,7 +221,7 @@ public class MediaMessage implements Serializable{
 				+ id + ", description=" + description + ", tags=" + tags
 				+ ", latitude=" + latitude + ", longitude=" + longitude
 				+ ", altitude=" + altitude + ", direction=" + direction
-				+ ", uploadMsg=" + uploadMsg + ", photo=" + photo + ", video="
+				+ ", uploadMsg=" + uploadMsg + ", video="
 				+ video + ", audio=" + audio + ", smallPhoto=" + smallPhoto
 				+ ", largePhoto=" + largePhoto + ", created=" + created
 				+ ", lastVote=" + lastVote + ", votes=" + votes + "]";
@@ -292,19 +253,19 @@ public class MediaMessage implements Serializable{
 		 this.created = created;
 	 }
 
-	public Media getSmallPhoto() {
+	public File getSmallPhoto() {
 		return smallPhoto;
 	}
 
-	public void setSmallPhoto(Media smallPhoto) {
+	public void setSmallPhoto(File smallPhoto) {
 		this.smallPhoto = smallPhoto;
 	}
 
-	public Media getLargePhoto() {
+	public File getLargePhoto() {
 		return largePhoto;
 	}
 
-	public void setLargePhoto(Media largePhoto) {
+	public void setLargePhoto(File largePhoto) {
 		this.largePhoto = largePhoto;
 	}
 
