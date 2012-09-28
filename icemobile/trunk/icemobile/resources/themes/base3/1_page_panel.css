@@ -18,7 +18,7 @@
 }
 
 .mobi-pagePanel-header .mobi-button{
-    line-height:20px;position:absolute;
+    position:absolute;
 }
 .mobi-pagePanel-header .mobi-button:first-child{
     float:left;left:0;
