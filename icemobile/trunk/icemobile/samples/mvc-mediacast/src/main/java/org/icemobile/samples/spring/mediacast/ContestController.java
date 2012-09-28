@@ -628,10 +628,14 @@ public class ContestController implements ServletContextAware {
 	}
 
 	private boolean canEdit(String key){
+        String editKeyPrefix = System.getProperty("org.icemobile.j1.password");
+        if ((null == editKeyPrefix) || "".equals(editKeyPrefix))  {
+            editKeyPrefix = EDIT_KEY_PREFIX;
+        }
 		boolean result = false;
-		if( key != null && key.length() > EDIT_KEY_PREFIX.length() 
-				&& key.startsWith(EDIT_KEY_PREFIX)){
-			String token = key.substring(EDIT_KEY_PREFIX.length());
+		if( key != null && key.length() > editKeyPrefix.length() 
+				&& key.startsWith(editKeyPrefix)){
+			String token = key.substring(editKeyPrefix.length());
 			try{
 				int val = Integer.parseInt(token);
 				int min = currentMinute();
