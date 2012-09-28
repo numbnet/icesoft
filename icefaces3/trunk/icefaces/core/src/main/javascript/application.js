@@ -598,11 +598,23 @@ if (!window.ice.icefaces) {
                     (elementType == "password") ||
                     (elementType == "textarea") );
                 if (isText) {
-                    if ((eType == "click") || ((!useBlur) && ((eType == "blur") || eType == "focusout"))) {
-                        //click events should not trigger text box submit
-                        //blur events are mostly redundant with change events
-                        //focusout is required for older IE versions
+                    //click events should not trigger text box submit
+                    //blur events are mostly redundant with change events
+                    if ((eType == "click") || (!useBlur) && (eType == "blur")) {
                         return;
+                    }
+                    //focusout is required for older IE versions
+                    if( eType == "focusout"){
+
+                        if(typeof element.previousTextValue === "undefined"){
+                            element.previousTextValue = element.value;
+                        }
+
+                        if(element.value == element.previousTextValue){
+                            return;
+                        }
+
+                        element.previousTextValue = element.value;
                     }
                 }
 
