@@ -59,7 +59,7 @@
             <script type="text/javascript">window.scrollTo(0,0);</script>
         </h:panelGroup>
  
-        <mobi:fieldsetGroup id="uploadGrp" rendered="#{not empty uploadModel.selectedMediaInput}">
+        <mobi:fieldsetGroup id="uploadGrp" rendered="#{not empty uploadModel.selectedMediaInput}" styleClass="vcentered">
             <!-- upload/capture for images. -->
             <c:if test="#{uploadModel.showCamera}">
                 <mobi:fieldsetRow><h:outputLabel value="Image Message"/></mobi:fieldsetRow>
@@ -76,7 +76,7 @@
                             style="float:none;"
                             buttonType="default"
                             actionListener="#{mediaController.upload}"
-                            value="Upload"/>
+                            value="Attach"/>
                             
                 </mobi:fieldsetRow>
             </c:if>
@@ -93,7 +93,7 @@
                             style="float:none;"
                             buttonType="default"
                             actionListener="#{mediaController.upload}"
-                            value="Upload"/>
+                            value="Attach"/>
                             
                 </mobi:fieldsetRow>
             </c:if>
@@ -109,7 +109,7 @@
                         style="float:none;"
                         buttonType="default"
                         actionListener="#{mediaController.upload}"
-                        value="Upload"/>
+                        value="Attach"/>
                         
                 </mobi:fieldsetRow>
             </c:if>
