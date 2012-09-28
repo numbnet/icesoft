@@ -38,6 +38,9 @@ input.mobi-button:disabled{
 .mobi-button-group{
 	text-align:center;
 }
+.mobi-pagePanel-header .mobi-button{
+    line-height:20px;
+}
 html.android a.mobi-button-default, 
 html.android a.mobi-button-important, 
 html.android a.mobi-button-attention,
