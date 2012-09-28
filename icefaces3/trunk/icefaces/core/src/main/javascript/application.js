@@ -606,12 +606,58 @@ if (!window.ice.icefaces) {
                     }
                 }
 
-                if (0 == elementType.indexOf("select-")) {
-                    if (element.selectedIndex == element.previousSelectedIndex) {
-                        //ignore clicks that do not change state
-                        return;
-                    } else {
-                        element.previousSelectedIndex = element.selectedIndex;
+                //Single selects (handled differently than multiple selects)
+                if (elementType == ("select-one")) {
+
+                    // Most browsers provide a change event which should
+                    // be enough to trigger submission. If not...
+                    if (eType != 'change') {
+
+                        //Pre IE9 sends a couple of click events when pulling down the list.  We need to
+                        //ignore the first one.
+                        if (eType == 'click' && element.selectedIndex <= 0 && !element.previouslySelected) {
+
+                            //debug(logger, 'ignore first IE click');
+                            element.previouslySelected = element.selectedIndex;
+                            return;
+                        }
+
+                        //Determine if the actual selection has changed.
+                        if (element.selectedIndex == element.previouslySelected) {
+                            return;
+                        }
+
+                        element.previouslySelected = element.selectedIndex;
+                    }
+                }
+
+                //Multiple selects (handled differently than single selects)
+                if (elementType == ("select-multiple")) {
+
+                    // Most browsers provide a change event which should
+                    // be enough to trigger submission. If not...
+                    if (eType != 'change') {
+
+                        //Most browsers provide direct access to the element.selectedOptions but
+                        //for pre IE9 browsers, we need to iterate through and see how many are
+                        //selected.
+                        var numberOfSelected = 0;
+                        for (var i = 0; i < element.options.length; i++) {
+                            if (element.options[i].selected) {
+                                numberOfSelected++;
+                            }
+                        }
+
+                        //If the number of items selected is the same and the index of the selected item is the same
+                        //then there is no change and no submission required.
+                        if (numberOfSelected == element.previousNumberOfSelected &&
+                            element.selectedIndex == element.previouslySelected) {
+                            return;
+                        }
+
+                        //Record the index or number of options for future comparisons.
+                        element.previouslySelected = element.selectedIndex;
+                        element.previousNumberOfSelected = numberOfSelected;
                     }
                 }
 
