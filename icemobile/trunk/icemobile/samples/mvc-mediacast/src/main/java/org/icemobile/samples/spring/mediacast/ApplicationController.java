@@ -246,10 +246,7 @@ public class ApplicationController implements ServletContextAware {
 			newFile = new File(servletContext.getRealPath("/" + newPathName));
 		}
 		newFile.deleteOnExit();
-		Media media = new Media();
-		media.setFile(newFile);
-		media.setType(file.getContentType());
-		uploadModel.setPhoto(media);
+		uploadModel.setLargePhoto(newFile);//TODO need to process
 	}
 
 	private void saveImage(HttpServletRequest request, MultipartFile file,

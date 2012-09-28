@@ -1,8 +1,11 @@
 package org.icemobile.samples.spring.mediacast;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -52,6 +55,8 @@ public class MediaService implements ServletContextAware {
 	private static final Log log = LogFactory
 			.getLog(MediaService.class);
 	
+	private ServletContext servletContext;
+	
 	@XmlElementWrapper
 	@XmlElement(name="msg")
 	public List<MediaMessage> getMedia(){
@@ -98,7 +103,7 @@ public class MediaService implements ServletContextAware {
     	List<String> imageMarkup = new ArrayList<String>();
     	if( media != null ){
 	    	for( MediaMessage mediaMsg : getMediaSortedByVotes() ){
-	    		imageMarkup.add(String.format(CAROUSEL_ITEM_MARKUP, contextPath, mediaMsg.getPhoto().getFile().getName(), mediaMsg.getTitle(), mediaMsg.getId()));
+	    		imageMarkup.add(String.format(CAROUSEL_ITEM_MARKUP, contextPath, mediaMsg.getSmallPhoto().getName(), mediaMsg.getTitle(), mediaMsg.getId()));
 	    	}
     	}
     	return imageMarkup;
@@ -110,16 +115,13 @@ public class MediaService implements ServletContextAware {
     		List<MediaMessage> list = getMediaSortedByTime(CAROUSEL_MAX_INDEX);
     		if( list != null && list.size() > 0 ){
     			for( MediaMessage mediaMsg : getMediaSortedByTime(CAROUSEL_MAX_INDEX) ){
-    	    		Media photo = mediaMsg.getSmallPhoto();
-    	    		if( photo == null ){
-    	    			photo = mediaMsg.getPhoto();
-    	    		}
-    	    		if( photo != null && photo.getFile() != null ){
+    	    		File photo = mediaMsg.getSmallPhoto();
+    	    		if( photo != null ){
     	    			String markup = "<div><a data-id='"+mediaMsg.getId()+"' href='"+contextPath+"/contest?p=viewer"
     	    					+ (layout != null ? "&l=" + layout : "") + "&photoId="+mediaMsg.getId()
     	    					+"' title='"+mediaMsg.getDescription()+"'><img height='"
     	    					+CAROUSEL_IMG_HEIGHT+"' src='resources/uploads/"
-    	    					+ photo.getFile().getName()+"' style='border:none;'/></a></div>";
+    	    					+ photo.getName()+"' style='border:none;'/></a></div>";
     	    			imageMarkup.add(markup);
     	    		}
     	    	}
@@ -149,15 +151,7 @@ public class MediaService implements ServletContextAware {
 				MediaMessage msg = iter.next();
 				if( msg.getId() != null && msg.getId().equals(id)){
 					iter.remove();
-					if( msg.getPhoto() != null ){
-						msg.getPhoto().dispose();
-					}
-					if( msg.getVideo() != null ){
-						msg.getVideo().dispose();
-					}
-					if( msg.getAudio() != null ){
-						msg.getAudio().dispose();
-					}
+					msg.dispose();
 					break;
 				}
 			}
@@ -178,6 +172,7 @@ public class MediaService implements ServletContextAware {
 	}
 
 	public void setServletContext(ServletContext context) {
+		this.servletContext = context;
 		this.contextPath = context.getContextPath();
 	}
 
@@ -321,28 +316,49 @@ public class MediaService implements ServletContextAware {
 	@PreDestroy
 	public void serializeMedia(){
 		dbVersion = CURRENT_DB_VERSION;
-		String fileName = getMediaDbName();
-		log.info("writing out "+fileName);		
+		FileChannel dbFileOut = null;
+	    FileChannel dbCopyFileIn = null;
 		try {
 			JAXBContext context = JAXBContext.newInstance(MediaService.class);
 			Marshaller marshaller = context.createMarshaller();
-		    marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);	    
-		    marshaller.marshal(this, new FileOutputStream(fileName)); 
+		    marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);	 
+		    File db = getMediaDbFile();
+		    File dbCopy = getMediaDbCopyFile();
+		    marshaller.marshal(this, new FileOutputStream(db)); 
+		    dbFileOut = new FileInputStream(db).getChannel();
+		    dbCopyFileIn = new FileOutputStream(dbCopy).getChannel();
+		    dbCopyFileIn.transferFrom(dbFileOut, 0, dbFileOut.size());
+		    
 		} catch (JAXBException e) {
 			e.printStackTrace();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
-		}	    
+		} catch (IOException e) {
+			e.printStackTrace();
+		}	  
+		if( dbFileOut != null && dbFileOut.isOpen() ){
+			try {
+				dbFileOut.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		if( dbCopyFileIn != null && dbCopyFileIn.isOpen() ){
+			try {
+				dbCopyFileIn.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 	
 	@PostConstruct
 	public void deserializeMedia(){
-		String fileName = getMediaDbName();
-		log.info("reading in "+fileName);		
 		try {
 			JAXBContext context = JAXBContext.newInstance(MediaService.class);
 			Unmarshaller unmarshaller = context.createUnmarshaller();
-			MediaService oldService = (MediaService)unmarshaller.unmarshal(new File(fileName)); 
+			File db = getMediaDbFile();
+			MediaService oldService = (MediaService)unmarshaller.unmarshal(db); 
 			//make sure db version is not less than current version
 			if( oldService.dbVersion < CURRENT_DB_VERSION ){
 				log.info("cancelling db read as current db version " + CURRENT_DB_VERSION + " higher than incoming repo "+ oldService.dbVersion);
@@ -356,10 +372,13 @@ public class MediaService implements ServletContextAware {
 		} 	   
 	}
 	
-	private String getMediaDbName(){
-		return System.getProperty("user.dir") + File.separator + "media.xml";
+	private File getMediaDbFile(){
+		return new File(System.getProperty("user.dir") + File.separator + "media.xml");
 	}
 
+	private File getMediaDbCopyFile(){
+		return new File(servletContext.getRealPath("/resources/logs/media.xml"));
+	}
 
 
 }

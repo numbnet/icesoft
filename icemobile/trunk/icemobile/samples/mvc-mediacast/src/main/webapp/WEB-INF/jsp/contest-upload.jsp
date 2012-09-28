@@ -13,7 +13,7 @@
                 </mobi:pagePanelHeader>
                 <mobi:pagePanelBody>
                     <div id="carouselContainer">
-                      <push:region group="photos" page="/contest-carousel"/>
+                      <push:region group="photos" page="/contest-carousel?l=m"/>
                      </div>
                     <div style="clear:both;"></div>
                     

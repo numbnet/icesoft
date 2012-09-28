@@ -49,9 +49,9 @@ function enhanceForm(theForm,updateTarget)  {
 }
 
 function updateViewerPanel(id,action){
-	var url = 'contest-viewer?id='+id+'&l=t';
+	var url = 'contest-viewer?photoId='+id+'&l=t';
 	if( action ){
-		url += '&a='+action;
+		url += '&action='+action;
 	}
 	 $.ajax({
         url:url,
@@ -150,55 +150,56 @@ function getGalleryRefresh(){
 function updateGalleryList(json){
 	var start = "<li class='mobi-list-item'><div class='mobi-list-item-default'>";
 	var end = "</div></li>";
-	
-	for( i in json ){
-		$('#'+json[i].id).parent().parent().remove(); 
-	}
-	var updated = Number($('#updated').val());
-	for( m in json ){
-		var msg = json[m];
-		updated = Math.max(updated,Math.max(msg.lastVote,msg.created));
-		var item = start+"<div id='"+msg.id+"' data-lastvote='"+msg.lastVote+"' data-created='"+msg.created+"' data-votes='"+msg.votes+"'>"
-			+ "<a class='mediaLink' href='#' onclick=\"updateViewerPanel('"+msg.id+"');\">"
-			+ "<img src='resources/uploads/"+msg.fileName+"' class='p'>"
-			+ "</a>";
-		if( msg.canVote ){
-			item += "<input type='image' class='vote' title='Vote for it!' src='resources/css/css-images/like.png' name='photoId' value='"+msg.id+"' onclick=\"$('#galleryFrm #photoId').val('"+msg.id+"');\"/>";
+	if( json.length > 0 ){
+		for( i in json ){
+			$('#'+json[i].id).parent().parent().remove(); 
 		}
-		item += "<span class='desc'>"+msg.description+"</span><span class='vote'>"+msg.votes+" Votes</span>";	
-		var galleryList = $('#galleryList').children();
-		var found = false;
-		if( galleryList.length == 0 ){
-			document.getElementById('galleryList').innerHTML = item;
-			found = true;
-		}
-		else{
-			galleryList.each(function(i){
-				if( !found ){
-					var dataElemQ = $(this).find('div > div');
-					if( dataElemQ.length > 0 ){
-						var dataElem = dataElemQ[0];
-						var votes = Number(dataElem.getAttribute('data-votes'));
-						var created = Number(dataElem.getAttribute('data-created'));
-						if( votes == msg.votes && created > msg.created){
-							$(this).before(item);
-							found = true;
+		var updated = Number($('#updated').val());
+		for( m in json ){
+			var msg = json[m];
+			updated = Math.max(updated, Math.max(msg.lastVote,msg.created));
+			var item = start+"<div id='"+msg.id+"' data-lastvote='"+msg.lastVote+"' data-created='"+msg.created+"' data-votes='"+msg.votes+"'>"
+				+ "<a class='mediaLink' href='#' onclick=\"updateViewerPanel('"+msg.id+"');\">"
+				+ "<img src='resources/uploads/"+msg.fileName+"' class='p'>"
+				+ "</a>";
+			if( msg.canVote ){
+				item += "<input type='image' class='vote' title='Vote for it!' src='resources/css/css-images/like.png' name='photoId' value='"+msg.id+"' onclick=\"$('#galleryFrm #photoId').val('"+msg.id+"');\"/>";
+			}
+			item += "<span class='desc'>"+msg.description+"</span><span class='vote'>"+msg.votes+" Votes</span>";	
+			var galleryList = $('#galleryList').children();
+			var found = false;
+			if( galleryList.length == 0 ){
+				document.getElementById('galleryList').innerHTML = item;
+				found = true;
+			}
+			else{
+				galleryList.each(function(i){
+					if( !found ){
+						var dataElemQ = $(this).find('div > div');
+						if( dataElemQ.length > 0 ){
+							var dataElem = dataElemQ[0];
+							var votes = Number(dataElem.getAttribute('data-votes'));
+							var created = Number(dataElem.getAttribute('data-created'));
+							if( votes == msg.votes && created > msg.created){
+								$(this).before(item);
+								$('#'+msg.id).parent().effect("highlight", {}, 3000);
+								found = true;
+							}
+							else if( votes < msg.votes ){
+								$(this).before(item);
+								$('#'+msg.id).parent().effect("highlight", {}, 3000);
+								found = true;
+							}
+							else if ( i == (galleryList.length - 1) ){
+								$(this).after(item);
+								$('#'+msg.id).parent().effect("highlight", {}, 3000);
+								found = true;
+							}
 						}
-						else if( votes < msg.votes ){
-							$(this).before(item);
-							found = true;
-						}
-						else if ( i == (galleryList.length - 1) ){
-							$(this).after(item);
-							found = true;
-						}
+						
 					}
-					
-				}
-			});	
-		}
-		if( found ){
-			$('#'+msg.id).parent().effect("highlight", {}, 3000);
+				});
+			}
 		}
 		$('#updated').val(updated);
 	}

@@ -8,6 +8,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 public class ContestForm {
 	
 	public static final String DEFAULT_LAYOUT = "m";
+	private static final String DEFAULT_PAGE = "upload";
 	
 	@NotEmpty @Email 
 	private String email;
@@ -15,13 +16,17 @@ public class ContestForm {
 	@Size(max = 164)
 	private String description;
 	
-	private String layout;
+	private String l;//layout
+	
+	private String p = DEFAULT_PAGE;//page
 	
 	private String photoId;
 	
 	private String form;
 	
 	private String voterId;
+	
+	String action;
 	
 	public String getForm() {
 		return form;
@@ -55,21 +60,20 @@ public class ContestForm {
 		this.description = description;
 	}
 
-	public String getLayout() {
-		if( layout == null || layout.length() == 0 ){
-			layout = DEFAULT_LAYOUT;
-		}
-		return layout;
+	public String getL() {
+		return l;
 	}
 
-	public void setLayout(String layout) {
-		this.layout = cleanParam(layout);
+	public void setL(String layout) {
+		if( notNullOrEmpty(layout)){
+			this.l = cleanParam(layout);
+		}
 	}
 
 	@Override
 	public String toString() {
 		return "ContestForm [email=" + email + ", description=" + description
-				+ ", layout=" + layout + ", photoId=" + photoId + ", form="
+				+ ", layout=" + l + ", photoId=" + photoId + ", form="
 				+ form  + "]";
 	}
 	
@@ -83,13 +87,44 @@ public class ContestForm {
 		}
 		return param;
 	}
+	
+	private boolean notNullOrEmpty(String param){
+		if( param != null && param.length() > 0 ){
+			return true;
+		}
+		return false;
+	}
 
 	public String getVoterId() {
 		return voterId;
 	}
 
 	public void setVoterId(String voterId) {
-		this.voterId = cleanParam(voterId);
+		if( notNullOrEmpty(voterId)){
+			this.voterId = cleanParam(voterId);
+		}
 	}
+	
+
+	public String getP() {
+		return p;
+	}
+
+	public void setP(String p) {
+		if( notNullOrEmpty(p)){
+			this.p = cleanParam(p);
+		}
+	}
+
+	public String getAction() {
+		return action;
+	}
+
+	public void setAction(String action) {
+		if( notNullOrEmpty(action)){
+			this.action = cleanParam(action);
+		}
+	}
+
 
 }
