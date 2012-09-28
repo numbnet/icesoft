@@ -531,7 +531,7 @@ public class ContestController implements ServletContextAware {
 		if( msg.getVotes().size() > currentLeaderVotes ){
 			if( currentLeaderEmail != null && !currentLeaderEmail.equals(msg.getEmail())){
 				PushContext pc = PushContext.getInstance(servletContext);
-				PushNotification pn = new PushNotification("ICEmobile JavaOne Contest!",
+				PushNotification pn = new PushNotification("ICEmobile JavaOne Contest Outvoted!",
 					"Our sincerest apologies, your photo has now been outvoted, previously you had " 
 					+ currentLeaderVotes+ " votes. The new leader has "+msg.getVotes().size()+" <a href='"+imageURL+"'>New Leading Photo</a>");
 				pc.push(currentLeaderEmail, pn);
