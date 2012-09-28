@@ -182,17 +182,17 @@ function updateGalleryList(json){
 							var created = Number(dataElem.getAttribute('data-created'));
 							if( votes == msg.votes && created > msg.created){
 								$(this).before(item);
-								$('#'+msg.id).parent().effect("highlight", {}, 3000);
+								$('#'+msg.id).parent().effect("highlight", {}, 1000);
 								found = true;
 							}
 							else if( votes < msg.votes ){
 								$(this).before(item);
-								$('#'+msg.id).parent().effect("highlight", {}, 3000);
+								$('#'+msg.id).parent().effect("highlight", {}, 1000);
 								found = true;
 							}
 							else if ( i == (galleryList.length - 1) ){
 								$(this).after(item);
-								$('#'+msg.id).parent().effect("highlight", {}, 3000);
+								$('#'+msg.id).parent().effect("highlight", {}, 1000);
 								found = true;
 							}
 						}
