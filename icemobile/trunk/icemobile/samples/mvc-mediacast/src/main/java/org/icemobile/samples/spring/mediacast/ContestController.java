@@ -89,6 +89,11 @@ public class ContestController implements ServletContextAware {
 	public String putAttributeMsg(){
 		return "";
 	}
+	
+	@ModelAttribute("admin")
+	public boolean putAttributeAdmin(){
+		return false;
+	}
 
 	@ModelAttribute
 	public void putAttributeAjax(WebRequest request, Model model) {
@@ -293,7 +298,10 @@ public class ContestController implements ServletContextAware {
 	}
 
 	@RequestMapping(value="/contest-admin", method = RequestMethod.GET)
-	public String getAdminPage() throws IOException {
+	public String getAdminPage(@ModelAttribute("admin") boolean admin, Model model) throws IOException {
+		if( admin ){
+			model.addAttribute("mediaService", mediaService);
+		}
 		return "contest-admin";
 	}
 
