@@ -7,8 +7,8 @@
         <mobi:pagePanelHeader>
             
             <img src="./resources/images/icemobile_thumb.png"
-                style="vertical-align:text-bottom;"/>
-            Mediacast Contest
+                style="vertical-align:text-bottom;margin-right:5px;"/>
+            ICEmobile JavaOne Contest
         </mobi:pagePanelHeader>
         <mobi:pagePanelBody>
             

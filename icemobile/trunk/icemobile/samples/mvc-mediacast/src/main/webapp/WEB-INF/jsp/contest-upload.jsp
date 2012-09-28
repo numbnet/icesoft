@@ -9,7 +9,8 @@
                 <mobi:pagePanelHeader>
                     <a id="backBtn"class="mobi-button mobi-button-default"
                         href='<c:url value="/contest?p=gallery&l=${layout}"/>'>Gallery</a>
-                    <span>Contest Upload</span>
+                    <span>ICEmobile Contest</span><img src="./resources/images/icemobile.png"
+                        style="position:absolute;right:40px;top:12px;"/>
                 </mobi:pagePanelHeader>
                 <mobi:pagePanelBody>
                     <div id="carouselContainer">

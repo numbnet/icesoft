@@ -1,8 +1,13 @@
 package org.icemobile.samples.spring.mediacast;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+
 public class Utils {
 	
 	public static final String SX = "icemobile-sx";
+	private static String HYPERBROWSER = "HyperBrowser";
+	public static final String USER_AGENT_COOKIE = "com.icesoft.user-agent";
 	
 	/**
 	 * Test from http://detectmobilebrowsers.com
@@ -33,6 +38,20 @@ public class Utils {
 	public static boolean isSX(String userAgent){
 		String ua=userAgent.toLowerCase();
 		return ua.contains(SX);
+	}
+	
+	public static boolean isEnhanced(HttpServletRequest request){
+	        Cookie[] cookies = request.getCookies();
+	        if (null == cookies) {
+	            return false;
+	        }
+	        for (int i = 0; i < cookies.length; i++) {
+	            if (USER_AGENT_COOKIE.equals(cookies[i].getName()) &&
+	                cookies[i].getValue().startsWith(HYPERBROWSER)) {
+	                return true;
+	            }
+	        }
+	        return false;
 	}
 	
 	

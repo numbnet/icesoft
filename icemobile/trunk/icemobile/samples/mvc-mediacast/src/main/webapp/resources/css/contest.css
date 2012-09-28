@@ -1,3 +1,26 @@
+/* INPUTS */
+
+input, textarea{ font-family: droid, Helvetica, Arial, sans-serif;}
+html.bberry input, html.bberry textara{
+    padding:3px;
+}
+html.android input::-webkit-input-placeholder, html.honeycomb input::-webkit-input-placeholder,
+html.android textarea::-webkit-input-placeholder, html.honeycomb textarea::-webkit-input-placeholder  {
+    color:#333333;
+}
+.input{
+    width: 100%;
+    font-size:15px; 
+}
+
+/* FIELDSETS */
+
+.mobi-fieldset{
+    box-shadow: 0px 2px 7px gray;
+}
+.mobi-fieldset-row {
+    padding: 10px;
+}
 .mobi-fieldset-row > input:last-child, 
 .mobi-fieldset-row > select:last-child,
 .mobi-fieldset-row > textarea:last-child {
@@ -7,45 +30,197 @@
     -ms-box-sizing: border-box;
     box-sizing: border-box;
 }
+
+/* BUTTONS */
+input.mobi-button:disabled{
+    opacity:0.5;
+}
 .mobi-button-group{
 	text-align:center;
 }
-.mobi-pagePanel-header, .mobi-pagePanel-footer{
-	z-index: 9999;
+html.android a.mobi-button-default, 
+html.android a.mobi-button-important, 
+html.android a.mobi-button-attention,
+html.android .mobi-pagePanel-header a.mobi-button, 
+html.android .mobi-pagePanel-header a.mobi-button:visited {
+    color: black !important;
+}
+html.android .mobi-pagePanel-body a, html.android .mobi-pagePanel-footer a{
+    color: #91C4E8;
+}
+html.iphone .mobi-pagePanel-footer a, html.ipad .mobi-pagePanel-footer a{
+    color: #461357;
+}
+
+/* LISTS */
+
+.mobi-list-item {
+    border-right:none;
+    padding: 0;
+}
+.mobi-list > .mobi-list-item > .mobi-list-item-default input.vote{
+    width: 30px;
+    height: 30px;
+    display: inline-block;
+    position: absolute;
+    top: 21px;
+    margin: 0;
+    padding: 0;
+    left: 51px;
+    opacity:0.6;
+}
+.mobi-list-item-default span.vote {
+    float: right;
+    position: absolute;
+    top: 26px;
+    right: -7px;
+    background: url('css-images/list-arrow.png') center right no-repeat;
+    padding: 0 25px 0 0;
+    color: #767676;
+    font-weight: normal;
+    font-style: italic;
+}
+.mobi-list-item-default span.desc {
+    padding: 0;
+    vertical-align: top;
+    font-weight: 200;
+    font-size: 13px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: inline-block;
+    max-width: 250px;
+    line-height: 16px;
+}
+.mobi-list-item-default {
+    position: relative; 
+    margin: 0;
+    padding: 0;
+    height: 50px;
+}
+.mobi-list > .mobi-list-item > .mobi-list-item-default > a.mediaLink {
+    height: 50px;
+    padding: 0;
+    position: relative;
+    margin: 0;
+    display:inline-block;
+}
+.mobi-list .mobi-list-item a.editLink{
+    position: absolute; 
+    margin-top: -20px;
+    height:20px;
+    width:20px;
+}
+
+/* PAGE PANEL */
+
+.mobi-pagePanel-body, .mobi-pagePanel-footer, .mobi-pagePanel-header{
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.mobi-pagePanel-header{
+	text-align:center;
+	text-align:center;
+	margin-top:-1px;
+	font-size: 19px;
+	z-index: 2;
+}
+html.bberry .mobi-pagePanel-header,
+html.android .mobi-pagePanel-header{
+    height:40px;
+    line-height:40px;
+}
+html.iphone .mobi-pagePanel-header{
+	position: relative;
+	padding: 0 0 40px;
+}
+html.android .mobi-pagePanel-header a,
+html.honeycomb .mobi-pagePanel-header a,
+html.bberry .mobi-pagePanel-header a{
+    margin:5px;
+    padding: 4px 15px;
+}
+
+.mobi-pagePanel-body {
+    margin-top: -1px;
+}
+html.iphone .mobi-pagePanel-body {
+    padding:0;
 }
 
 .mobi-pagePanel-footer {
 	color: white;
 	font-size: 10pt;
 	font-weight: bold;
-	height: 30px;
+	height: 40px;
 	padding: 10px 5px 5px 5px;
 	line-height: 17px;
+	z-index: 1;
 }
+html.iphone .mobi-pagePanel-footer{
+	color: white;
+    position: relative;
+    background: url('css-images/header.png') repeat-x scroll 0 0 #6D84A2;
+}
+html.ipad .mobi-pagePanel-footer {
+	color: #222222;
+    text-align: left;
+    text-shadow: 0 0 1px white;
+    background: -moz-linear-gradient(center top , #A8ACB9, #B6B9C4, #D1D4DB) repeat scroll 0 0 #A8ACB9;
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0, #A8ACB9), color-stop(0.02, #B6B9C4), color-stop(1, #D1D4DB));
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorStr = '#A8ACB9', EndColorStr = '#D1D4DB');
+    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#A8ACB9', EndColorStr='#D1D4DB')";
+    border-top: 1px solid #777777;
+    position: fixed;
+    width: 100%;
+}
+
+.mobi-pagePanel-footer a, .mobi-pagePanel-footer a:visited{
+    color: #D7BEE8;
+    text-decoration:none;
+}
+
+/* CAROUSEL */
+
+.mobi-carousel {
+    height: 76px;
+}
+.mobi-carousel-list li {
+    width: auto;
+}
+.mobi-carousel-cursor {
+    height: 5px;
+    padding: 2px 0 3px 0;
+}
+.mobi-carousel-cursor-list { display:none;}
+.mobi-carousel-list li > img{
+    height:75px;
+}
+.mobi-carousel-list li div{
+    overflow:hidden;
+    height:75px;
+}
+
+/* TABS */
+
+.mobi-tabset-content {
+    background-color: transparent;
+}
+.mobi-tabset {
+    background-color: transparent;
+}
+html.ipad .mobi-tabset-tabs > ul {
+    background-color: #CCCFD7;
+}
+
+/* APP */
 
 #icemobileIcon{
 	float: right;
 	margin-top: -7px;
 	margin-right: 16px;
-}
-#springIcon{
-	float: left;
-	margin-top: -7px;
-	margin-left: 5px;
-}
-.js .ajaxHide{
-	display:none;
-}
-.ajaxShow{
-	display:none; /* Show only for Ajax clients */
-}
-.js .ajaxShow{
-	display:block; /* Show only for Ajax clients */
-}
-
-.input{
-	width: 100%;
-	font-size:15px;	
 }
 
 #largePhoto img{
@@ -54,19 +229,8 @@
 	-moz-border-radius: 0.6em;
 	margin-bottom: 5px;
 }
-.mobi-fieldset-row {
-	padding: 10px;
-}
-.mobi-carousel {
-	height: 76px;
-}
-.mobi-carousel-list li {
-	width: auto;
-}
-.mobi-carousel-cursor {
-	height: 5px;
-	padding: 2px 0 3px 0;
-}
+
+
 
 .message-desc {
 	opacity: 0.5;
@@ -80,17 +244,6 @@
     text-align: center;
 }
 
-.mobi-list > .mobi-list-item > .mobi-list-item-default > a.mediaLink {
-	height: 50px;
-	padding: 0;
-	position: relative;
-	margin: 0;
-	display:inline-block;
-}
-
-.mobi-list-item {
-	padding: 0;
-}
 .mediaLink .desc{
 	text-overflow: ellipsis;
 	white-space: nowrap;
@@ -123,41 +276,7 @@
 .p{
     padding-right:5px;border:none;float:left;height:50px;
 }
-.mobi-carousel-cursor-list { display:none;}
-.mobi-carousel-list li > img{
-	height:75px;
-}
-.mobi-carousel-list li div{
-	overflow:hidden;
-	height:75px;
-}
-html.android .mobi-pagePanel-header a,
-html.honeycomb .mobi-pagePanel-header a,
-html.bberry .mobi-pagePanel-header a{
-	margin-left:0;
-	padding: 4px 15px;
-}
-.mobi-pagePanel-header{ text-align:center;}
 
-html.android input::-webkit-input-placeholder, html.honeycomb input::-webkit-input-placeholder,
-html.android textarea::-webkit-input-placeholder, html.honeycomb textarea::-webkit-input-placeholder  {
-	color:#333333;
-}
-
-input, textarea{ font-family: droid, Helvetica, Arial, sans-serif;}
-
-.mobi-list .mobi-list-item a.editLink{
-	position: absolute; 
-	margin-top: -20px;
-	height:20px;
-	width:20px;
-}
-.mobi-tabset-content {
-    background-color: transparent;
-}
-.mobi-tabset {
-    background-color: transparent;
-}
 #viewerPanel{
 	text-align: center;
 	position: relative;
@@ -165,55 +284,7 @@ input, textarea{ font-family: droid, Helvetica, Arial, sans-serif;}
 .lightbox{
 	background-color:black;
 }
-.mobi-list-item {
-	border-right:none;
-}
-.mobi-list > .mobi-list-item > .mobi-list-item-default input.vote{
-	width: 30px;
-	height: 30px;
-	display: inline-block;
-	position: absolute;
-	top: 21px;
-	margin: 0;
-	padding: 0;
-	left: 51px;
-	opacity:0.6;
-}
-.mobi-list-item-default span.vote {
-	float: right;
-	position: absolute;
-	top: 26px;
-	right: -7px;
-	background: url('css-images/list-arrow.png') center right no-repeat;
-	padding: 0 25px 0 0;
-	color: #767676;
-	font-weight: normal;
-	font-style: italic;
-}
-.mobi-list-item-default span.vote {
-	
-}
-.mobi-list-item-default span.desc {
-	padding: 0;
-	vertical-align: top;
-	font-weight: 200;
-	font-size: 13px;
-	overflow: hidden;
-	text-overflow: ellipsis;
-	display: inline-block;
-	max-width: 250px;
-	line-height: 16px;
-}
-.mobi-list-item-default {
-    position: relative;	
-    margin: 0;
-	padding: 0;
-	height: 50px;
-}
-.mobi-pagePanel-footer a, .mobi-pagePanel-footer a:visited{
-	color: #D7BEE8;
-	text-decoration:none;
-}
+
 @media screen and (max-width: 600px) {	
 	.imageViewer {
 	    width: 100%;
@@ -229,7 +300,7 @@ input, textarea{ font-family: droid, Helvetica, Arial, sans-serif;}
 	   position: absolute;
 	   right: 75px;
     }
-    #left,#right{
+    #left, #right{
         overflow-y:scroll;
         overflow-x:hidden;
         -webkit-box-sizing: border-box;
@@ -251,28 +322,7 @@ input, textarea{ font-family: droid, Helvetica, Arial, sans-serif;}
 	left: 5px;
 	font-size: 15px;
 }
-html.android .mobi-pagePanel-header a.mobi-button, 
-html.android .mobi-pagePanel-header a.mobi-button:visited {
-    color: black;
-}
-.mobi-pagePanel-header {
-    position:relative;
-}
-html.iphone .mobi-pagePanel-footer{
-	position: relative;
-}
-html.iphone .mobi-pagePanel-body {
-	padding-bottom:0;
-}
-.mobi-pagePanel-body, .mobi-pagePanel-footer, .mobi-pagePanel-header{
-	-webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    -ms-box-sizing: border-box;
-    box-sizing: border-box;
-}
-.mobi-pagePanel-footer{
-    height: 40px;
-}
+
 .viewer-back{
 	width: 23px; height: 34px;
 	background: url('css-images/back.png') center right no-repeat;
@@ -294,61 +344,7 @@ html.iphone .mobi-pagePanel-body {
 	padding: 10px;
     opacity: 0.6;
 }
-.mobi-fieldset{
-	box-shadow: 0px 2px 7px gray;
-}
-html.ipad .mobi-tabset-tabs > ul {
-    background-color: #CCCFD7;
-}
-html.ipad .mobi-pagePanel-footer {
-    background: -moz-linear-gradient(center top , #A8ACB9, #B6B9C4, #D1D4DB) repeat scroll 0 0 #A8ACB9;
-    background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0, #A8ACB9), color-stop(0.02, #B6B9C4), color-stop(1, #D1D4DB));
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorStr = '#A8ACB9', EndColorStr = '#D1D4DB');
-    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#A8ACB9', EndColorStr='#D1D4DB')";
-    border-top: 1px solid #777777;
-    position: fixed;
-    width: 100%;
-}
-html.iphone .mobi-pagePanel-footer {
-	background: url('css-images/header.png') repeat-x scroll 0 0 #6D84A2;
-}
-html.ipad .mobi-pagePanel-footer {
-    color: #222222;
-    text-align: left;
-    text-shadow: 0 0 1px white;
-}
-html.iphone .mobi-pagePanel-footer{
-    color: white;
-}
-.mobi-pagePanel-body {
-    padding: 0 0 40px;
-    margin-top: -1px;
-}
-.mobi-pagePanel-header{
-	margin-top:-1px;
-}
-html.android .mobi-pagePanel-body a, html.android .mobi-pagePanel-footer a{
-	color: #91C4E8;
-}
-html.iphone .mobi-pagePanel-footer a, html.ipad .mobi-pagePanel-footer a{
-    color: #461357;
-}
 
-html.android a.mobi-button-default, html.android a.mobi-button-important, html.android a.mobi-button-attention{
-	color: black;
-}
-html.bberry input, html.bberry textara{
-	padding:3px;
-}
-html.bberry .mobi-pagePanel-header,
-html.android .mobi-pagePanel-header{
-	height:40px;
-	line-height:40px;
-}
-html.bberry .mobi-pagePanel-header a,
-html.android .mobi-pagePanel-header a{
-	margin:5px;
-}
 #tally{
 	position: absolute;
 	color: black;
@@ -363,6 +359,8 @@ html.android .mobi-pagePanel-header a{
 #tabstab1_wrapper{
 	background-color:black;
 }
-input.mobi-button:disabled{
-	opacity:0.5;
+
+#uploadFormContainer{
+	clear:both;
+	padding-top: 10px;
 }
