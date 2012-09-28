@@ -14,7 +14,7 @@
   ~ governing permissions and limitations under the License.
   -->
 
-<project name="mediacast" default="servlet-profile">
+<project name="pointme" default="servlet-profile">
 
     <property file="./build.properties"/>
     <property file="../build/build.properties"/>

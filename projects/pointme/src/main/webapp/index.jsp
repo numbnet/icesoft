@@ -15,8 +15,6 @@
   --%>
 
 <%
-
-    response.sendRedirect("./mediacast.jsf");
-
+    response.sendRedirect("pointme.jsf");
 %>
 
