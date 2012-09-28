@@ -192,7 +192,8 @@ ice.ace.gMap.getGMapWrapper = function (id) {
                 var divParent = document.getElementById(ele).parentNode;
                 var styleClass = document.getElementById(ele).getAttribute('class');
                 var style = document.getElementById(ele).getAttribute('style');
-                document.getElementById(ele).remove();
+                var mapDiv = document.getElementById(ele);
+                mapDiv.parentNode.removeChild(mapDiv);
                 var div = document.createElement("div");
                 div.setAttribute("class",styleClass);
                 div.setAttribute("style",style);
