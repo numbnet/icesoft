@@ -127,7 +127,7 @@ html.ipad .mobi-list-item-default div.vote-tally{
 	font-weight: 200;
 	font-size: 15px;
 	text-overflow: ellipsis;
-	max-width: 140px;
+	max-width: 125px;
 	height: 50px;
 	margin: 0;
 	display: inline-block;
@@ -395,7 +395,7 @@ html.bberry .mobi-tabset-tabs > ul li {
     #left .mobi-list-item-default div.vote-tally{
         width: 50px;
         vertical-align:top;
-        float:none;
+        float:left;
     }
     #left .mobi-list > .mobi-list-item > .mobi-list-item-default input.vote {
 	   width: 40px;
