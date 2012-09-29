@@ -22,9 +22,10 @@
                         <c:forEach var="m" items="${mediaService.mediaSortedByVotes}">
                             <mobi:outputListItem>
                                 <img src='resources/uploads/${m.smallPhoto.name}' class="p"/>
+                                <span class="desc"><c:out value="${m.email}"/></span><br/>
                                 <span class="desc"><c:out value="${m.description}"/></span>
                                 <span class="vote" >${m.numberOfVotes} Votes</span>
-                                X<input type="checkbox" name="delete" value="${m.id}"/>
+                                x<input type="checkbox" name="delete" value="${m.id}"/>
                             </mobi:outputListItem>
                         </c:forEach>
                     </mobi:outputList>
