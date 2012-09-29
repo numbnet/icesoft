@@ -6,8 +6,7 @@
     <mobi:pagePanel>
         <mobi:pagePanelHeader>
             
-            <img src="./resources/images/icemobile_thumb.png"
-                style="vertical-align:text-bottom;margin-right:5px;"/>
+            <img src="./resources/images/icemobile_thumb.png"/>
             ICEmobile JavaOne Contest
         </mobi:pagePanelHeader>
         <mobi:pagePanelBody>
