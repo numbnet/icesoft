@@ -120,7 +120,7 @@ public class MediaService implements ServletContextAware {
     	    			String markup = "<div><a data-id='"+mediaMsg.getId()+"' href='"+contextPath+"/contest?p=viewer"
     	    					+ (layout != null ? "&l=" + layout : "") + "&photoId="+mediaMsg.getId()
     	    					+"' title='"+mediaMsg.getDescription()+"'><img height='"
-    	    					+CAROUSEL_IMG_HEIGHT+"' src='resources/uploads/"
+    	    					+CAROUSEL_IMG_HEIGHT+"' width='"+CAROUSEL_IMG_HEIGHT +"' src='resources/uploads/"
     	    					+ photo.getName()+"' style='border:none;'/></a></div>";
     	    			imageMarkup.add(markup);
     	    		}
