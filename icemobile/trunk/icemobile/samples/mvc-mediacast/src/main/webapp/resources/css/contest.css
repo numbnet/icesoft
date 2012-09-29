@@ -40,6 +40,8 @@ input.mobi-button:disabled{
 }
 .mobi-pagePanel-header .mobi-button{
     line-height:20px;
+    margin: 0.5em 5px;
+    padding: 0.4em 0.8em;
 }
 html.android a.mobi-button-default, 
 html.android a.mobi-button-important, 
@@ -125,29 +127,22 @@ html.iphone .mobi-pagePanel-footer a, html.ipad .mobi-pagePanel-footer a{
 
 .mobi-pagePanel-header{
 	text-align:center;
-	text-align:center;
 	margin-top:-1px;
 	font-size: 19px;
+	height: 44px;
+	line-height: 44px;
 	z-index: 2;
-}
-html.bberry .mobi-pagePanel-header,
-html.android .mobi-pagePanel-header{
-    height:40px;
-    line-height:40px;
 }
 html.iphone .mobi-pagePanel-header{
 	position: relative;
 	padding: 0 0 40px;
 }
-html.android .mobi-pagePanel-header a,
-html.honeycomb .mobi-pagePanel-header a,
-html.bberry .mobi-pagePanel-header a{
-    margin:5px;
-    padding: 4px 15px;
-}
-
 .mobi-pagePanel-body {
     margin-top: -1px;
+    min-height:auto;
+}
+.mobi-pagePanel-body > div{
+	min-height:auto;
 }
 html.iphone .mobi-pagePanel-body {
     padding:0;
@@ -288,13 +283,24 @@ html.ipad .mobi-tabset-tabs > ul {
 	background-color:black;
 }
 
+/* SMALL SCREEN */
 @media screen and (max-width: 600px) {	
 	.imageViewer {
 	    width: 100%;
 	}
+	.mobi-pagePanel-header img{
+	   position: absolute;
+		right: 44px;
+		top: 12px;
+	}
 }
 
+/* LARGE SCREEN */
 @media screen and (min-width: 601px) {  
+	.mobi-pagePanel-header img{
+	   vertical-align:text-bottom;
+	   margin-right:5px;
+	}}
     .imageViewer {
         width: 500px;
     }
