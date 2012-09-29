@@ -232,6 +232,7 @@ public class DemoBean implements Serializable{
                 img = ImageIO.read(new File(fileLocation));
                 Graphics2D g2 = img.createGraphics();
                 Font font = Font.createFont(Font.TRUETYPE_FONT, new File(myRequest.getServletContext().getRealPath("images/libre.ttf")));
+				font = font.deriveFont(16f);
                 g2.setFont(font);
                 FontMetrics fm = g2.getFontMetrics(font);
                 int addressWidth = fm.stringWidth(imgAddress);
