@@ -32,6 +32,10 @@ public class Utils {
 	}
 	
 	public static boolean isDesktop(String userAgent){
+        if ((null != userAgent) && userAgent.contains("Apache-HttpClient"))  {
+            //hack for android container
+            return false;
+        } 
 		return !isMobileBrowser(userAgent) && !isTabletBrowser(userAgent);
 	}
 	
