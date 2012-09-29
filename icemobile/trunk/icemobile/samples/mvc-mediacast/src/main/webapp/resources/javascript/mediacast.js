@@ -166,7 +166,7 @@ function updateGalleryList(json){
   			if( msg.canVote ){
 				item += "<input type='submit' class='mobi-button mobi-button-important vote' title='Vote for it!' value='Vote' name='photoId' value='"+msg.id+"' onclick=\"$('#galleryFrm #photoId').val('"+msg.id+"');\"/>";
 			}
-			item += "</span><div class='vote-tally'>"+msg.votes+"<span class='votes'>Votes</span></div>";	
+			item += "</span><div class='vote-tally'><div>"+msg.votes+"</div><span class='votes'>Votes</span></div>";	
 			var galleryList = $('#galleryList').children();
 			var found = false;
 			if( galleryList.length == 0 ){
