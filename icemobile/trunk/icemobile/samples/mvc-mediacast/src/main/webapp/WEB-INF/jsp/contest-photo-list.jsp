@@ -22,13 +22,17 @@
                             <img src='resources/uploads/${m.smallPhoto.name}' class="p"/>
                         </a>
                     </c:if>
-                    <c:if test="${!fn:contains(m.votesAsString, voterId)}">
-                        <input type="image" class="vote" title="Vote for it!" 
-                            src="<c:url value="/resources/css/css-images/like.png"/>"
-                            name="photoId" value="${m.id}" onclick="$('#galleryFrm #photoId').val('${m.id}');"/>
-                    </c:if>
+                    
                     <span class="desc"><c:out value="${m.description}"/></span>
-                    <span class="vote" >${m.numberOfVotes} Votes</span>
+                    <span class="vote">
+                    <c:if test="${!fn:contains(m.votesAsString, voterId)}">
+                            <input type="submit" class="mobi-button mobi-button-important vote" title="Vote for it!" 
+                                value="Vote" name="photoId" 
+                                value="${m.id}" onclick="$('#galleryFrm #photoId').val('${m.id}');"/>
+                    </c:if>
+                    </span>
+                     <div class="vote-tally"><div>${m.numberOfVotes}</div><span class="votes">Votes</span></div>
+                     
                  </div>
             </mobi:outputListItem>
         </c:forEach>

@@ -18,6 +18,9 @@ html.android textarea::-webkit-input-placeholder, html.honeycomb textarea::-webk
 .mobi-fieldset{
     box-shadow: 0px 2px 7px gray;
 }
+html.android .mobi-fieldset, html.honeycomb .mobi-fieldset{
+	box-shadow: none;
+}
 .mobi-fieldset-row {
     padding: 10px;
 }
@@ -40,8 +43,16 @@ input.mobi-button:disabled{
 }
 .mobi-pagePanel-header .mobi-button{
     line-height:20px;
-    margin: 0.5em 5px;
-    padding: 0.4em 0.8em;
+    margin: 4px;
+    padding: 4px 8px;
+}
+html.android .mobi-button{
+	border-radius: 0.2em;
+	border: 1px solid white;
+}
+html.honeycomb .mobi-button{
+	color: white !important;
+    border-radius: 0.2em;
 }
 html.android a.mobi-button-default, 
 html.android a.mobi-button-important, 
@@ -53,6 +64,9 @@ html.android .mobi-pagePanel-header a.mobi-button:visited {
 html.android .mobi-pagePanel-body a, html.android .mobi-pagePanel-footer a{
     color: #91C4E8;
 }
+html.honeycomb .mobi-pagePanel-body a{
+    color: #91C4E8;
+}
 html.iphone .mobi-pagePanel-footer a, html.ipad .mobi-pagePanel-footer a{
     color: #461357;
 }
@@ -62,39 +76,68 @@ html.iphone .mobi-pagePanel-footer a, html.ipad .mobi-pagePanel-footer a{
 .mobi-list-item {
     border-right:none;
     padding: 0;
+    text-shadow:none;
+}
+#galleryFrm .mobi-list {
+    margin-bottom: 0;
+}
+#galleryFrm .mobi-list-item {
+    min-width: 150px;
 }
 .mobi-list > .mobi-list-item > .mobi-list-item-default input.vote{
-    width: 30px;
-    height: 30px;
-    display: inline-block;
-    position: absolute;
-    top: 21px;
-    margin: 0;
-    padding: 0;
-    left: 51px;
-    opacity:0.6;
+    width: 50px;
+	height: 34px;
+	display: inline-block;
+	top: 21px;
+	margin: 8px;
+	padding: 0;
 }
 .mobi-list-item-default span.vote {
     float: right;
-    position: absolute;
-    top: 26px;
-    right: -7px;
-    background: url('css-images/list-arrow.png') center right no-repeat;
-    padding: 0 25px 0 0;
-    color: #767676;
-    font-weight: normal;
-    font-style: italic;
+	display: inline-block;
+	padding: 0;
+	height: 50px;
+	width: 66px;
+	color: #767676;
+	font-weight: normal;
+}
+.mobi-list-item-default div.vote-tally {
+	float: right;
+	display: inline-block;
+	padding: 5px;
+	height: 49px;
+	width: 55px;
+	color: black;
+	font-size: 22px;
+	-webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    box-sizing: border-box;
+	text-align: center;
+	font-weight: bold;
+	vertical-align: middle;
+	background-color: #E7E9EC;
+}
+html.ipad .mobi-list-item-default div.vote-tally{
+	background-color:#CCCFD7;
 }
 .mobi-list-item-default span.desc {
-    padding: 0;
-    vertical-align: top;
-    font-weight: 200;
-    font-size: 13px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    display: inline-block;
-    max-width: 250px;
-    line-height: 16px;
+	padding: 5px;
+	vertical-align: top;
+	font-weight: 200;
+	font-size: 15px;
+	text-overflow: ellipsis;
+	max-width: 140px;
+	height: 50px;
+	margin: 0;
+	display: inline-block;
+	overflow: hidden;
+	-webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    box-sizing: border-box;
+	line-height: 40px;
+    white-space: nowrap;
 }
 .mobi-list-item-default {
     position: relative; 
@@ -127,25 +170,34 @@ html.iphone .mobi-pagePanel-footer a, html.ipad .mobi-pagePanel-footer a{
 
 .mobi-pagePanel-header{
 	text-align:center;
-	margin-top:-1px;
 	font-size: 19px;
-	height: 44px;
-	line-height: 44px;
+	height: 40px;
+	line-height: 40px;
 	z-index: 2;
 }
 html.iphone .mobi-pagePanel-header{
 	position: relative;
-	padding: 0 0 40px;
+	padding: 0 0 38px;
+	border-top:none;
 }
+
 .mobi-pagePanel-body {
-    margin-top: -1px;
     min-height:auto;
+    padding: 0;
+    position: absolute;
+    top:40px;
+    bottom:40px;
+    overflow-x: hidden;
+}
+html.bberry .mobi-pagePanel-body{
+	background-color: #3A3A3A;
 }
 .mobi-pagePanel-body > div{
 	min-height:auto;
 }
 html.iphone .mobi-pagePanel-body {
-    padding:0;
+    position:static;
+    min-height:400px;
 }
 
 .mobi-pagePanel-footer {
@@ -209,8 +261,14 @@ html.ipad .mobi-pagePanel-footer {
 .mobi-tabset {
     background-color: transparent;
 }
+html.bberry .mobi-tabset-tabs > ul {
+	margin-top: 2px;
+}
 html.ipad .mobi-tabset-tabs > ul {
     background-color: #CCCFD7;
+}
+html.bberry .mobi-tabset-tabs > ul li {
+    padding: 0 10px;
 }
 
 /* APP */
@@ -227,8 +285,6 @@ html.ipad .mobi-tabset-tabs > ul {
 	-moz-border-radius: 0.6em;
 	margin-bottom: 5px;
 }
-
-
 
 .message-desc {
 	opacity: 0.5;
@@ -272,7 +328,7 @@ html.ipad .mobi-tabset-tabs > ul {
 }
 
 .p{
-    padding-right:5px;border:none;float:left;height:50px;
+    border:none;float:left;height:50px;
 }
 
 #viewerPanel{
@@ -284,7 +340,7 @@ html.ipad .mobi-tabset-tabs > ul {
 }
 
 /* SMALL SCREEN */
-@media screen and (max-width: 600px) {	
+@media screen and (max-width: 579px) {	
 	.imageViewer {
 	    width: 100%;
 	}
@@ -296,11 +352,11 @@ html.ipad .mobi-tabset-tabs > ul {
 }
 
 /* LARGE SCREEN */
-@media screen and (min-width: 601px) {  
+@media screen and (min-width: 580px) {  
 	.mobi-pagePanel-header img{
 	   vertical-align:text-bottom;
 	   margin-right:5px;
-	}}
+	}
     .imageViewer {
         width: 500px;
     }
@@ -316,15 +372,49 @@ html.ipad .mobi-tabset-tabs > ul {
 	    -moz-box-sizing: border-box;
 	    -ms-box-sizing: border-box;
 	    box-sizing: border-box;
+	    margin-top:0;
+	    margin-bottom:0;
 	    float:left;
-	    min-height:640px;
     }
     #right{
-        width:70%;border-left:1px solid darkgray;overflow:hidden;
+        width:70%;overflow:hidden;
     }
     #left{
         width:30%;overflow-y: auto;
+        border-right:1px solid darkgray;
     }
+}
+/* LARGE SCREEN PORTAIT */
+@media screen and (max-width: 999px) {  
+	#left #galleryFrm .mobi-list-item {
+	    min-width: 150px;
+	}
+	#left span.desc{
+       display: none;
+    }
+    #left .mobi-list-item-default div.vote-tally{
+        width: 50px;
+        vertical-align:top;
+        float:none;
+    }
+    #left .mobi-list > .mobi-list-item > .mobi-list-item-default input.vote {
+	   width: 40px;
+	   margin: 8px 5px;
+	}
+	#left .mobi-list-item-default span.vote {
+	   width: 50px;
+	   float:none;
+	}
+}
+#left #galleryFrm .mobi-list-item,
+#left .mobi-list-item-default div.vote-tally,
+#left .mobi-list-item-default span.vote,
+#left .mobi-list > .mobi-list-item > .mobi-list-item-default input.vote{
+    -webkit-transition: all 3s;
+    -moz-transition: all 3s ease-in-out;
+    -o-transition: all 3s ease-in-out;
+    -ms-transition: all 3s ease-in-out;
+    transition:  all 3s ease-in-out;
 }
 .title-msg{
 	position: absolute;
@@ -372,4 +462,10 @@ html.ipad .mobi-tabset-tabs > ul {
 #uploadFormContainer{
 	clear:both;
 	padding-top: 10px;
+}
+span.votes{
+	font-size: 10px;
+	display: block;
+	line-height: 10px;
+    padding: 2px;
 }

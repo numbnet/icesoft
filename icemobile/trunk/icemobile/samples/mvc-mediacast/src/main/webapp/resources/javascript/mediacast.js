@@ -161,11 +161,12 @@ function updateGalleryList(json){
 			var item = start+"<div id='"+msg.id+"' data-lastvote='"+msg.lastVote+"' data-created='"+msg.created+"' data-votes='"+msg.votes+"'>"
 				+ "<a class='mediaLink' href='#' onclick=\"updateViewerPanel('"+msg.id+"');\">"
 				+ "<img src='resources/uploads/"+msg.fileName+"' class='p'>"
-				+ "</a>";
-			if( msg.canVote ){
-				item += "<input type='image' class='vote' title='Vote for it!' src='resources/css/css-images/like.png' name='photoId' value='"+msg.id+"' onclick=\"$('#galleryFrm #photoId').val('"+msg.id+"');\"/>";
+				+ "</a><span class='desc'>"+msg.description+"</span><span class='vote'>";
+			
+  			if( msg.canVote ){
+				item += "<input type='submit' class='mobi-button mobi-button-important vote' title='Vote for it!' value='Vote' name='photoId' value='"+msg.id+"' onclick=\"$('#galleryFrm #photoId').val('"+msg.id+"');\"/>";
 			}
-			item += "<span class='desc'>"+msg.description+"</span><span class='vote'>"+msg.votes+" Votes</span>";	
+			item += "</span><div class='vote-tally'>"+msg.votes+"<span class='votes'>Votes</span></div>";	
 			var galleryList = $('#galleryList').children();
 			var found = false;
 			if( galleryList.length == 0 ){
@@ -182,17 +183,17 @@ function updateGalleryList(json){
 							var created = Number(dataElem.getAttribute('data-created'));
 							if( votes == msg.votes && created > msg.created){
 								$(this).before(item);
-								$('#'+msg.id).parent().effect("highlight", {}, 1000);
+								$('#'+msg.id).parent().effect("highlight", {}, 200);
 								found = true;
 							}
 							else if( votes < msg.votes ){
 								$(this).before(item);
-								$('#'+msg.id).parent().effect("highlight", {}, 1000);
+								$('#'+msg.id).parent().effect("highlight", {}, 200);
 								found = true;
 							}
 							else if ( i == (galleryList.length - 1) ){
 								$(this).after(item);
-								$('#'+msg.id).parent().effect("highlight", {}, 1000);
+								$('#'+msg.id).parent().effect("highlight", {}, 200);
 								found = true;
 							}
 						}
