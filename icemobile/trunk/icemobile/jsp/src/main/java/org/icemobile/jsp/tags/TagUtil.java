@@ -24,6 +24,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.Cookie;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 
 import java.net.URLEncoder;
 import java.util.logging.Level;
@@ -171,6 +172,28 @@ public class TagUtil {
         }
         String uploadURL = getUploadURL(request);
         return "ice.registerAuxUpload('"+sessionID+"','"+uploadURL+"');";
+    }
+    
+    /**
+     * Get the SX Register URL. 
+     * 
+     * Format is icemobile://c=register&r=<current-url>&JSESSIONID=<session-id>&u=<upload-url>
+     * @param request The servlet request
+     * @return The escaped SX register URL.
+     */
+    public static String getRegisterSXURL(HttpServletRequest request){
+    	String requestURL = request.getRequestURL().toString();
+		String encodedParams = "";
+		if( request.getQueryString() != null ){
+			try {
+				encodedParams = URLEncoder.encode(request.getQueryString(), "UTF-8");
+			} catch (UnsupportedEncodingException e) {
+				log.warning("Could not encode query string for smart app banner");
+			}
+		}
+		return "icemobile://c=register&r="+requestURL+encodedParams
+			+"&JSESSIONID="+request.getSession().getId() +
+            "&u=" + TagUtil.getUploadURL(request);
     }
 
     public static String getUploadURL(HttpServletRequest request) {
@@ -457,7 +480,8 @@ public class TagUtil {
 		return ua.matches("(?i).*(android|avantgo|bada\\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(ad|hone|od)|iris|kindle|lge |maemo|meego.+mobile|midp|mmp|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\\/|plucker|playbook|silk|pocket|psp|series(4|6)0|symbian|treo|up\\.(browser|link)|vodafone|wap|windows (ce|phone)|xda|xiino).*")
 				|| userAgent.contains(DEVICE_GALAXY_TABLET);
 	}
-
+	
+	
 
     /*    protected void writeJavascriptFile(FacesContext facesContext, 
             UIComponent component, String JS_NAME, String JS_MIN_NAME, 
