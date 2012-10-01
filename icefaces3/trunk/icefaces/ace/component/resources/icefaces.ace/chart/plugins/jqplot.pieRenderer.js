@@ -2,10 +2,10 @@
  * jqPlot
  * Pure JavaScript plotting plugin using jQuery
  *
- * Version: 1.0.1
- * Revision: 1096
+ * Version: 1.0.4
+ * Revision: 1120
  *
- * Copyright (c) 2009-2011 Chris Leonello
+ * Copyright (c) 2009-2012 Chris Leonello
  * jqPlot is currently available for use in all personal or commercial projects 
  * under both the MIT (http://www.opensource.org/licenses/mit-license.php) and GPL 
  * version 2.0 (http://www.gnu.org/licenses/gpl-2.0.html) licenses. This means that you can 
@@ -137,7 +137,7 @@
         // True to center the data label at its position.
         // False to set the inside facing edge of the label at its position.
         this.dataLabelCenterOn = true;
-        // prop: startAngleJ
+        // prop: startAngle
         // Angle to start drawing pie in degrees.  
         // According to orientation of canvas coordinate system:
         // 0 = on the positive x axis
@@ -898,7 +898,7 @@
     
     $.jqplot.PieTickRenderer.prototype = new $.jqplot.AxisTickRenderer();
     $.jqplot.PieTickRenderer.prototype.constructor = $.jqplot.PieTickRenderer;
-
+    
 })(ice.ace.jq);
-
+    
     
