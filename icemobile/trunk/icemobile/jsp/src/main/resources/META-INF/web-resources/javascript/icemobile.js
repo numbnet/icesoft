@@ -1213,3 +1213,5 @@ ice.mobi.locationWithoutViewParam = function(){
 	url = url.replace(/\?&/,'\?');
 	return url;
 }
+/* add js marker for progressive enhancement */
+document.documentElement.className = document.documentElement.className+' js';
