@@ -55,11 +55,13 @@ import javax.faces.FacesException;
 import javax.faces.application.Application;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIParameter;
+import javax.faces.component.UIData;
 import javax.faces.context.FacesContext;
 
 import org.w3c.dom.Element;
 
 import com.icesoft.faces.component.ext.HtmlCommandLink;
+import com.icesoft.faces.component.ext.HtmlDataTable;
 import com.icesoft.faces.component.panelseries.UISeries;
 import com.icesoft.faces.component.util.CustomComponentUtils;
 import com.icesoft.faces.component.CSS_DEFAULT;
@@ -202,6 +204,8 @@ public class DataPaginatorRenderer extends DomBasicRenderer {
             throws IOException {
         validateParameters(facesContext, uiComponent, DataPaginator.class);
         DataPaginator scroller = (DataPaginator) uiComponent;
+		UIData table = scroller.getUIData();
+		if (table != null && table instanceof HtmlDataTable) ((HtmlDataTable) table).ensureFirstRowInRange(); // ICE-8610
         if (!scroller.isModelResultSet()) {
             super.encodeBegin(facesContext, uiComponent);
                 
