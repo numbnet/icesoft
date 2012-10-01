@@ -160,4 +160,9 @@ public class TreeDataModel extends DataModel implements Serializable  {
         if (value == null) return 0;
         return value.size();
     }
+
+    public Integer[] getRootIndexArray() {
+        if (rootIndex == null) return null;
+        return rootIndex.toArray(new Integer[rootIndex.size()]);
+    }
 }
