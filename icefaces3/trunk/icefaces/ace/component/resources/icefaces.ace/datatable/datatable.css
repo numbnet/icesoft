@@ -62,6 +62,12 @@
     position: relative;
 }
 
+.ui-datatable .ui-header-left {
+    display:inline-block;
+    white-space: nowrap;
+    position: relative;
+}
+
 .ui-sortable-control {
     cursor:pointer;
 }

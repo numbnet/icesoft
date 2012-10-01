@@ -116,8 +116,6 @@ public class DataTableHeadRenderer {
         String clientId = column.getClientId(context);
         boolean isSortable = column.getValueExpression("sortBy") != null;
         boolean hasFilter = column.getValueExpression("filterBy") != null;
-        int rightHeaderPadding = 0;
-        int leftHeaderPadding = 0;
 
         Column nextColumn = DataTableRendererUtil.getNextColumn(column, columnSiblings);
         boolean isCurrStacked = DataTableRendererUtil.isCurrColumnStacked(columnSiblings, column);
@@ -159,32 +157,19 @@ public class DataTableHeadRenderer {
         columnClass = (column.hasSortPriority() && (isCurrStacked || isNextStacked)) ? columnClass + " ui-state-active" : columnClass;
 
         writer.writeAttribute(HTML.CLASS_ATTR, columnClass, null);
-        writer.startElement(HTML.SPAN_ELEM, null);
 
         //Configurable first-col controls
-        boolean writeConfigPanelLaunchOnLeft = false;
         if (first) {
             TableConfigPanel panel = table.findTableConfigPanel(context);
-            if (panel != null && panel.getType().equals("first-col")) {
-                leftHeaderPadding += 35;
-                writeConfigPanelLaunchOnLeft = true;
-            }
+            if (panel != null && panel.getType().equals("first-col"))
+                encodeLeftSideControls(writer, table, first);
         }
+
+        writer.startElement(HTML.SPAN_ELEM, null);
 
         // Add styling for last-col control container
         if (last) {
             TableConfigPanel panel = table.findTableConfigPanel(context);
-            if (panel != null && panel.getType().equals("last-col"))
-                rightHeaderPadding += 35;
-        }
-
-        String paddingStyle = "";
-        //if (rightHeaderPadding > 0) paddingStyle += "margin-right:" + rightHeaderPadding + "px;";
-        if (leftHeaderPadding > 0) paddingStyle += "padding-left:" + leftHeaderPadding + "px;";
-        if (!paddingStyle.equals("")) writer.writeAttribute(HTML.STYLE_ATTR, paddingStyle, null);
-
-        if (writeConfigPanelLaunchOnLeft) {
-            encodeConfigPanelLaunchButton(writer, table, first);
         }
 
         writer.startElement(HTML.SPAN_ELEM, null);
@@ -222,6 +207,15 @@ public class DataTableHeadRenderer {
             if (!DataTableRendererUtil.isNextColumnRowSpanEqual(column, nextColumn))
                 throw new FacesException("DataTable : \"" + table.getClientId(context) + "\" must not have stacked header columns, with unequal rowspan values.");
         }
+    }
+
+    private static void encodeLeftSideControls(ResponseWriter writer, DataTable table, boolean first) throws IOException {
+        writer.startElement(HTML.SPAN_ELEM, null);
+        writer.writeAttribute(HTML.CLASS_ATTR, DataTableConstants.HEADER_LEFT_CLASS, null);
+
+        encodeConfigPanelLaunchButton(writer, table, first);
+
+        writer.endElement(HTML.SPAN_ELEM);
     }
 
     private static void encodeRightSideControls(ResponseWriter writer, FacesContext context, DataTable table, Column column, boolean sortable, boolean last) throws IOException {
@@ -346,7 +340,7 @@ public class DataTableHeadRenderer {
 
         writer.writeAttribute(HTML.CLASS_ATTR, "ui-state-default ui-corner-all", null);
         writer.writeAttribute(HTML.HREF_ATTR, "#", null);
-        writer.writeAttribute(HTML.ONCLICK_ATTR, "ice.ace.jq(ice.ace.escapeClientId('"+ clientId +"')).toggle()", null);
+        writer.writeAttribute(HTML.ONCLICK_ATTR, "ice.ace.jq(ice.ace.escapeClientId('"+ clientId +"')).toggle(); ice.ace.jq(this).closest('a.ui-corner-all').toggleClass('ui-state-active');", null);
         writer.writeAttribute( HTML.ID_ATTR, clientId +"_tableconf_launch", null);
         writer.startElement(HTML.SPAN_ELEM, null);
 
