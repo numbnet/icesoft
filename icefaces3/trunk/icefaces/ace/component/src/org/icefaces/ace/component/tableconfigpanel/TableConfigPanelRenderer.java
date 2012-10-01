@@ -212,14 +212,14 @@ public class TableConfigPanelRenderer extends CoreRenderer {
                 "ice.ace.jq(function () {\n" +
                         "\tice.ace.jq(ice.ace.escapeClientId(\"" + clientId + "_tableconf_ok\"))" +
                         ".hover(function (event) {ice.ace.jq(event.currentTarget)" + ".toggleClass('ui-state-hover');})" +
-                        ".click(function (event) {ice.ace.jq(ice.ace.escapeClientId(\"" + clientId + "_tableconf_launch\")).toggleClass('ui-state-active');\n" +
+                        ".click(function (event) {ice.ace.jq(ice.ace.escapeClientId(\"" + clientId + "_tableconf_launch\")).removeClass('ui-state-active');\n" +
                         "var panel = ice.ace.jq(ice.ace.escapeClientId('" + clientId + "'));\n" +
                         "if (panel.is(':not(:visible)')) " + jsId + ".submitTableConfig(event.currentTarget);\n" +
                         "}\n" +
                         ");\n" +
                         "\tice.ace.jq(ice.ace.escapeClientId(\"" + clientId + "_tableconf_close\"))" +
                         ".hover(function (event) {ice.ace.jq(event.currentTarget)" + ".toggleClass('ui-state-hover');})" +
-                        ".click(function (event) {ice.ace.jq(ice.ace.escapeClientId(\"" + clientId + "_tableconf_launch\")).toggleClass('ui-state-active');});\n" +
+                        ".click(function (event) {ice.ace.jq(ice.ace.escapeClientId(\"" + clientId + "_tableconf_launch\")).removeClass('ui-state-active');});\n" +
                         "\t var cfg = {reorderable :" + isReorderable + ", sortable :" + isSortable + ", singleSort:" + isSingleSort + ", tableId:'" + tableId + "'", null);
         encodeClientBehaviors(FacesContext.getCurrentInstance(), component);
         writer.writeText("};" +
