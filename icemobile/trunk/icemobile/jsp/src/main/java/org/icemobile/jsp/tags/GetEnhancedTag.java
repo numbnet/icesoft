@@ -6,6 +6,7 @@ import java.util.logging.Logger;
 import javax.servlet.jsp.PageContext;
 
 import org.icemobile.jsp.tags.TagUtil.DeviceType;
+import org.icemobile.jsp.util.Constants;
 import org.icemobile.jsp.util.HTML;
 
 public class GetEnhancedTag extends BaseSimpleTag{
@@ -26,6 +27,10 @@ public class GetEnhancedTag extends BaseSimpleTag{
 	
 	public void doTag() throws IOException {
 		PageContext pageContext = getContext();
+		
+		if( Boolean.TRUE.equals(pageContext.getAttribute(Constants.IOS_SMART_APP_BANNER_KEY)) ){
+			return;
+		}
 		
 		DeviceType device = TagUtil.getDeviceTypeNoDefault(pageContext);
 		

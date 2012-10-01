@@ -54,5 +54,9 @@ public abstract class BaseSimpleTag  extends SimpleTagSupport {
     protected PageContext getContext(){
     	return (PageContext)getJspContext();
     }
+    
+    protected String getContextRoot(){
+    	return getRequest().getContextPath();
+    }
 
 }

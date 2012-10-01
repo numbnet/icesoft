@@ -17,19 +17,17 @@
 package org.icemobile.jsp.tags;
 
 
-import javax.servlet.jsp.PageContext;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletRequest;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-import javax.servlet.http.Cookie;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-
+import java.io.Writer;
 import java.net.URLEncoder;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.io.Writer;
+
+import javax.servlet.ServletRequest;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import javax.servlet.jsp.PageContext;
 
 public class TagUtil {
     private static String ACCEPT = "Accept";
@@ -182,20 +180,22 @@ public class TagUtil {
      * @return The escaped SX register URL.
      */
     public static String getRegisterSXURL(HttpServletRequest request){
-    	String requestURL = request.getRequestURL().toString();
-		String encodedParams = "";
+    	String redirectUrl = getBaseURL(request);
+    	String forward = (String)request.getAttribute("javax.servlet.forward.servlet_path");
+    	if( forward != null && forward.startsWith("/")){
+    		forward = forward.substring(1);
+    	}
+    	String params = "";
 		if( request.getQueryString() != null ){
-			try {
-				encodedParams = URLEncoder.encode(request.getQueryString(), "UTF-8");
-			} catch (UnsupportedEncodingException e) {
-				log.warning("Could not encode query string for smart app banner");
-			}
+			params = "?"+request.getQueryString();
 		}
-		return "icemobile://c=register&r="+requestURL+encodedParams
-			+"&JSESSIONID="+request.getSession().getId() +
-            "&u=" + TagUtil.getUploadURL(request);
+		redirectUrl += forward + params;
+		String uploadUrl = TagUtil.getUploadURL(request);
+		String url = "icemobile://c=register&r="+redirectUrl+"&u="+uploadUrl;
+		return url;
     }
-
+    
+    
     public static String getUploadURL(HttpServletRequest request) {
         String serverName = request.getHeader("x-forwarded-host");
         if (null == serverName) {
@@ -216,6 +216,7 @@ public class TagUtil {
         return httpRequest.getScheme() + "://" + serverName +
             httpRequest.getContextPath() + "/";
     }
+
 
     public static String getUploadPath(HttpServletRequest request) {
         String upPath = request.getContextPath() + "/icemobile";
@@ -276,6 +277,10 @@ public class TagUtil {
         return sniffIOS5(pageContext) || sniffIOS6(pageContext);
     }
     
+    public static boolean isIOS6orHigher(PageContext pageContext) {
+        return sniffIOS6(pageContext);
+    }
+    
     public static boolean isSX(HttpServletRequest request){
     	return sniffSX(request);
     }
@@ -287,6 +292,18 @@ public class TagUtil {
 
     public static boolean isAndroid(PageContext pageContext) {
         return sniffAndroid(pageContext);
+    }
+    
+    public static boolean isAndroidOS(PageContext pageContext){
+    	String userAgent = getUserAgent(pageContext);
+    	if ((null != userAgent) && userAgent.contains("apache-httpclient"))  {
+            //hack for android container
+            return true;
+        } 
+    	else if ( userAgent.contains(DEVICE_ANDROID)){
+    		return true;
+    	}
+    	return false;
     }
 
     public static boolean isBlackBerry(PageContext pageContext) {
@@ -324,11 +341,9 @@ public class TagUtil {
     static boolean sniffSX(HttpServletRequest request) {
     	return userAgentContains(getUserAgent(request), DEVICE_IPAD);
     }
-
-
+    
     static boolean sniffAndroid(PageContext pageContext) {
-
-        boolean foundAndroid = userAgentContains(pageContext, DEVICE_ANDROID) && 
+    	boolean foundAndroid = userAgentContains(pageContext, DEVICE_ANDROID) && 
         		userAgentContains(pageContext, DEVICE_MOBILE) && !userAgentContains(pageContext, DEVICE_GALAXY_TABLET) 
         		&& !userAgentContains(pageContext, DEVICE_TABLET);
         return foundAndroid;
@@ -481,7 +496,14 @@ public class TagUtil {
 				|| userAgent.contains(DEVICE_GALAXY_TABLET);
 	}
 	
-	
+	public static boolean isDesktop(PageContext pageContext){
+		String userAgent = getUserAgent(pageContext);
+		if ((null != userAgent) && userAgent.contains("apache-httpclient"))  {
+            //hack for android container
+            return false;
+        } 
+		return !isMobileBrowser(userAgent) && !isTabletBrowser(userAgent);
+	}
 
     /*    protected void writeJavascriptFile(FacesContext facesContext, 
             UIComponent component, String JS_NAME, String JS_MIN_NAME, 

@@ -249,30 +249,48 @@
         <tag-class>org.icemobile.jsp.tags.DeviceResourceTag</tag-class>
         <body-content>empty</body-content>
         <attribute>
-            <name>name</name>
-            <required>false</required>
-            <rtexprvalue>true</rtexprvalue>
             <description>Name of the CSS file. If not specified, tag will
                 generate
                 markup based on device detection code
             </description>
-        </attribute>
-        <attribute>
-            <name>library</name>
+            <name>name</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
             <description>Directory containing CSS resources. Default value is
                 org.icefaces.component.skins
             </description>
-        </attribute>
-        <attribute>
-            <name>view</name>
+            <name>library</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
             <description>Optional value of either 'small' or 'large' which
                 tailors
                 CSS resource linking specialized for either phones or tablets
             </description>
+            <name>view</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <description>If true (default), the deviceResource tag will cause IOS 6 to
+            render a Smart App Banner for the application, allowing the user to install ICEmobile SX,
+            if it is not already installed, and open it, if the app is installed.
+            If the user chooses to open the installed app, the session will be auto-registered.
+            </description>
+            <name>includeIOSSmartAppBanner</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <description>If set to true (default false) the ICEpush script will be rendered, allowing
+            the application to receive Ajax Push notifications, and use the ICEpush client-side API.
+            </description>
+            <name>includePush</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
         </attribute>
     </tag>
 
