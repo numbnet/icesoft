@@ -117,8 +117,8 @@ ice.ace.linkButton = {
             ice.se(e, divRoot, params);
         }
 
-        // If there are actionListeners, don't do default behaviour
-        if (doAction) {
+        // If there are actionListeners or ace:ajax behaviours (even if disabled), prevent default behaviour
+        if (doAction || behaviors) {
             return false;
         }
     },
