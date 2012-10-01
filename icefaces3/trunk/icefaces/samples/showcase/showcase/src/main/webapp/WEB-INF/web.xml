@@ -24,7 +24,7 @@
 
     <description>
     </description>
-    
+
     <!-- Context Parameters used by the framework -->
     <context-param>
         <param-name>javax.faces.STATE_SAVING_METHOD</param-name>
@@ -57,6 +57,11 @@
         <param-value>true</param-value>
     </context-param>
     
+    <context-param>
+        <param-name>org.apache.myfaces.SERIALIZE_STATE_IN_SESSION</param-name>
+        <param-value>false</param-value>
+    </context-param>
+
     <context-param>
         <param-name>com.icesoft.faces.gmapKey</param-name>
         <param-value>AIzaSyAcAbAa7AL1DLU0785OeWn2byf4XOsm7KM</param-value>
