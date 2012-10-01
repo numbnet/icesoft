@@ -182,7 +182,10 @@ public class TagUtil {
     public static String getRegisterSXURL(HttpServletRequest request){
     	String redirectUrl = getBaseURL(request);
     	String forward = (String)request.getAttribute("javax.servlet.forward.servlet_path");
-    	if( forward != null && forward.startsWith("/")){
+    	if( forward == null ){
+    		forward = "";
+    	}
+    	else if( forward.startsWith("/")){
     		forward = forward.substring(1);
     	}
     	String params = "";
