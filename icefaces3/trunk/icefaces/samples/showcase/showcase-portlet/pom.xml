@@ -138,7 +138,7 @@
                 <dependency>
                     <groupId>javax.portlet</groupId>
                     <artifactId>portlet-api</artifactId>
-                    <version>2.0</version>
+                    <version>${portlet.api.version}</version>
                     <scope>provided</scope>
                 </dependency>
                 <dependency>
@@ -164,16 +164,6 @@
                     <version>${liferayfaces.version}</version>
                 </dependency>
             </dependencies>
-            <repositories>
-                <repository>
-                    <id>liferayfaces-releases</id>
-                    <url>http://repository.portletfaces.org/content/repositories/liferay-releases</url>
-                </repository>
-                <repository>
-                    <id>liferayfaces-snapshots</id>
-                    <url>http://repository.portletfaces.org/content/repositories/liferay-snapshots</url>
-                </repository>
-            </repositories>
         </profile>
 
         <profile>
