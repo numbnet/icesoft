@@ -27,5 +27,10 @@ public class GoogleAnalyticsMeta {
 
 	@Property(tlddoc="The Google Analytics account. If none is provided, the system property is used.")
 	private String account;
+	
+	@Property(tlddoc="If sub or multiple domains are being tracked, the domain should be " +
+			"specified. Please see the Google docs at " +
+			"https://developers.google.com/analytics/devguides/collection/gajs/gaTrackingSite .")
+	private String domain;
 
 }

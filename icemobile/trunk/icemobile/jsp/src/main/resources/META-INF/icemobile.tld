@@ -1299,5 +1299,12 @@
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
         </attribute>
+        <attribute>
+            <description>If sub or multiple domains are being tracked, the domain should be 
+            specified. Please see the Google docs at https://developers.google.com/analytics/devguides/collection/gajs/gaTrackingSite</description>
+            <name>domain</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
     </tag>
 </taglib>

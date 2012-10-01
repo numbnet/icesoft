@@ -38,11 +38,30 @@ public class GoogleAnalyticsRenderer extends CoreRenderer {
 				return;
 			}
 		}
+        String domain = ga.getDomain();
+        if( domain == null ){
+        	domain = System.getProperty(GoogleAnalytics.DOMAIN_ENVVAR);
+        }
 		writer.startElement(HTML.SCRIPT_ELEM,null);
 		writer.writeAttribute(HTML.TYPE_ATTR, "text/javascript",null);
-		writer.write(String.format(GoogleAnalytics.SCRIPT, account));
+		writer.write(getScript(account,domain));
 		writer.endElement(HTML.SCRIPT_ELEM);
     }
+
+	private String getScript(String account, String domain){
+		String script = "var _gaq = _gaq || [];";
+		script += "_gaq.push(['_setAccount', '"+account+"']);";
+		if( domain != null && domain.length() > 0 ){
+			script += "_gaq.push(['_setDomainName', '"+domain+"']);";
+		}
+		script += "_gaq.push(['_trackPageview']);"
+			+ "(function() {"
+		    + "var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;"
+			+ "ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';"
+		    + "var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);"
+			+"})();";
+		return script;
+	}
 
 
 }
