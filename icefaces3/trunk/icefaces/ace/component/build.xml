@@ -200,6 +200,7 @@
             <filelist dir="${resources}">
                 <file name="icefaces.ace/jquery/jquery.js"/>
                 <file name="icefaces.ace/jquery/ui/jquery-ui.js"/>
+                <file name="icefaces.ace/jquery/ui/jquery.ui.touch-punch.js"/>
                 <file name="icefaces.ace/core/core.js"/>
                 <file name="icefaces.ace/json/json2.js"/>
             </filelist>
