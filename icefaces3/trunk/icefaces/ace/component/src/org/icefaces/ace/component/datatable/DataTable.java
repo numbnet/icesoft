@@ -245,6 +245,22 @@ public class DataTable extends DataTableBase implements Serializable {
         }
     }
 
+    class TreeWrapperEvent extends WrapperEvent {
+        Integer[] rootIndexes;
+        public TreeWrapperEvent(UIComponent component, FacesEvent event, int rowIndex, Integer[] rootIndex) {
+            super(component, event, rowIndex);
+            rootIndexes = rootIndex;
+        }
+
+        public Integer[] getRootIndexes() {
+            return rootIndexes;
+        }
+
+        public void setRootIndexes(Integer[] rootIndexes) {
+            this.rootIndexes = rootIndexes;
+        }
+    }
+
     /*
         Merges implementations of Mojarra UIData & UIComponentBase
      */
@@ -257,7 +273,10 @@ public class DataTable extends DataTableBase implements Serializable {
         if (parent == null) {
             throw new IllegalStateException();
         } else {
-            parent.queueEvent(new WrapperEvent(this, event, getRowIndex()));
+            if (hasTreeDataModel())
+                parent.queueEvent(new TreeWrapperEvent(this, event, getRowIndex(), ((TreeDataModel)model).getRootIndexArray()));
+            else
+                parent.queueEvent(new WrapperEvent(this, event, getRowIndex()));
         }
     }
 
@@ -269,16 +288,31 @@ public class DataTable extends DataTableBase implements Serializable {
         // iteration.
         setDataModel(null);
 
-        if (!(event instanceof WrapperEvent)) {
+        boolean treeEvent = event instanceof TreeWrapperEvent;
+
+        if (!(event instanceof WrapperEvent || treeEvent)) {
             super.broadcast(event);
             return;
         }
 
         FacesContext context = FacesContext.getCurrentInstance();
+
         // Set up the correct context and fire our wrapped event
+        TreeDataModel treeModel = null;
+        TreeWrapperEvent tevent = null;
+        String oldRoot = null;
+
+
+        if (treeEvent) {
+            treeModel = (TreeDataModel) getDataModel();
+            oldRoot = treeModel.getRootIndex();
+        }
         int oldRowIndex = getRowIndex();
+
         // Clear row index pre datamodel refresh to be sure we're getting accurate row data
         WrapperEvent revent = (WrapperEvent) event;
+        if (treeEvent) tevent = (TreeWrapperEvent) event;
+
         if (isNestedWithinUIData()) {
             setDataModel(null);
         }
@@ -286,6 +320,11 @@ public class DataTable extends DataTableBase implements Serializable {
         // Refresh data model before setRowIndex does for an incorrect clientId / filteredData state.
         setRowIndex(-1);
         getDataModel();
+        if (treeEvent) {
+            treeModel = (TreeDataModel) getDataModel();
+            if (tevent.getRootIndexes() != null && tevent.getRootIndexes().length > 0)
+                treeModel.setRootIndex(join(Arrays.asList(tevent.getRootIndexes()), "."));
+        }
 
         setRowIndex(revent.getRowIndex());
         FacesEvent rowEvent = revent.getFacesEvent();
@@ -306,6 +345,11 @@ public class DataTable extends DataTableBase implements Serializable {
                 compositeParent.popComponentFromEL(context);
             }
         }
+
+        if (treeEvent) {
+            if (!oldRoot.equals(""))
+                treeModel.setRootIndex(oldRoot);
+        }
         setRowIndex(oldRowIndex);
 
         String outcome = null;
@@ -325,6 +369,17 @@ public class DataTable extends DataTableBase implements Serializable {
             navHandler.handleNavigation(context, null, outcome);
             context.renderResponse();
         }
+    }
+
+    private String join(Collection<Integer> strCollection, String delimiter) {
+        String joined = "";
+        int noOfItems = 0;
+        for (Integer item : strCollection) {
+            joined += item;
+            if (++noOfItems < strCollection.size())
+                joined += delimiter;
+        }
+        return joined;
     }
 
     @Override
