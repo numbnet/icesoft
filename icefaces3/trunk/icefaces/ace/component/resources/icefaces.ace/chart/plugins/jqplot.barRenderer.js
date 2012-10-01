@@ -2,10 +2,10 @@
  * jqPlot
  * Pure JavaScript plotting plugin using jQuery
  *
- * Version: 1.0.1
- * Revision: 1096
+ * Version: 1.0.4
+ * Revision: 1120
  *
- * Copyright (c) 2009-2011 Chris Leonello
+ * Copyright (c) 2009-2012 Chris Leonello
  * jqPlot is currently available for use in all personal or commercial projects 
  * under both the MIT (http://www.opensource.org/licenses/mit-license.php) and GPL 
  * version 2.0 (http://www.gnu.org/licenses/gpl-2.0.html) licenses. This means that you can 
@@ -285,8 +285,42 @@
         }
         return ret;
     }
+
+    function getStart(sidx, didx, comp, plot, axis) {
+        // check if sign change
+        var seriesIndex = sidx,
+            prevSeriesIndex = sidx - 1,
+            start,
+            prevVal,
+            aidx = (axis === 'x') ? 0 : 1;
+
+        // is this not the first series?
+        if (seriesIndex > 0) {
+            prevVal = plot.series[prevSeriesIndex]._plotData[didx][aidx];
+
+            // is there a sign change
+            if ((comp * prevVal) < 0) {
+                start = getStart(prevSeriesIndex, didx, comp, plot, axis);
+            }
+
+            // no sign change.
+            else {
+                start = plot.series[prevSeriesIndex].gridData[didx][aidx];
+            }
+
+        }
+
+        // if first series, return value at 0
+        else {
+
+            start = (aidx === 0) ? plot.series[seriesIndex]._xaxis.series_u2p(0) : plot.series[seriesIndex]._yaxis.series_u2p(0);
+        }
+
+        return start;
+    }
+
     
-    $.jqplot.BarRenderer.prototype.draw = function(ctx, gridData, options) {
+    $.jqplot.BarRenderer.prototype.draw = function(ctx, gridData, options, plot) {
         var i;
         // Ughhh, have to make a copy of options b/c it may be modified later.
         var opts = $.extend({}, options);
@@ -337,17 +371,13 @@
                     }
                     points = [];
                     base = gridData[i][0] + this._barNudge;
-                    ystart;
                     
                     // stacked
                     if (this._stack && this._prevGridData.length) {
-                        ystart = this._prevGridData[i][1];
-
-                        if (ystart === null) {
-                            ystart = this._yaxis.series_u2p(0);
-                        }
+                        ystart = getStart(this.index, i, this._plotData[i][1], plot, 'y');
                     }
-                    // not stacked and first series in stack
+
+                    // not stacked
                     else {
                         if (this.fillToZero) {
                             ystart = this._yaxis.series_u2p(0);
@@ -433,7 +463,7 @@
             
             else if (this.barDirection == 'horizontal'){
                 for (var i=0; i<gridData.length; i++) {
-                    if (this.data[i][0] == null) {
+                    if (!this._stack && this.data[i][0] == null) {
                         continue;
                     }
                     points = [];
@@ -441,15 +471,15 @@
                     xstart;
                     
                     if (this._stack && this._prevGridData.length) {
-                        xstart = this._prevGridData[i][0];
+                        xstart = getStart(this.index, i, this._plotData[i][0], plot, 'x');
                     }
-                    // not stacked and first series in stack
+                    // not stacked
                     else {
                         if (this.fillToZero) {
                             xstart = this._xaxis.series_u2p(0);
                         }
                         else if (this.waterfall && i > 0 && i < this.gridData.length-1) {
-                            xstart = this.gridData[i-1][1];
+                            xstart = this.gridData[i-1][0];
                         }
                         else if (this.waterfall && i == 0 && i < this.gridData.length-1) {
                             if (this._xaxis.min <= 0 && this._xaxis.max >= 0) {
@@ -459,7 +489,7 @@
                                 xstart = 0;
                             }
                             else {
-                                xstart = ctx.canvas.width;
+                                xstart = 0;
                             }
                         }
                         else if (this.waterfall && i == this.gridData.length - 1) {
@@ -520,8 +550,8 @@
                     }
                     var clr = opts.fillStyle || this.color;
                     this._dataColors.push(clr);
-                    this.renderer.shapeRenderer.draw(ctx, points, opts); 
-                }  
+                    this.renderer.shapeRenderer.draw(ctx, points, opts);
+                } 
             }
         }                
         
@@ -541,7 +571,7 @@
     
      
     // for stacked plots, shadows will be pre drawn by drawShadow.
-    $.jqplot.BarRenderer.prototype.drawShadow = function(ctx, gridData, options) {
+    $.jqplot.BarRenderer.prototype.drawShadow = function(ctx, gridData, options, plot) {
         var i;
         var opts = (options != undefined) ? options : {};
         var shadow = (opts.shadow != undefined) ? opts.shadow : this.shadow;
@@ -581,7 +611,7 @@
                         var ystart;
                     
                         if (this._stack && this._prevGridData.length) {
-                            ystart = this._prevGridData[i][1];
+                            ystart = getStart(this.index, i, this._plotData[i][1], plot, 'y');
                         }
                         else {
                             if (this.fillToZero) {
@@ -610,10 +640,15 @@
                         var xstart;
                     
                         if (this._stack && this._prevGridData.length) {
-                            xstart = this._prevGridData[i][0];
+                            xstart = getStart(this.index, i, this._plotData[i][0], plot, 'x');
                         }
                         else {
-                            xstart = 0;
+                            if (this.fillToZero) {
+                                xstart = this._xaxis.series_u2p(0);
+                            }
+                            else {
+                                xstart = 0;
+                            }
                         }
                     
                         points.push([xstart, base+this.barWidth/2]);

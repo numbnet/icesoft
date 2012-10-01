@@ -2,10 +2,10 @@
  * jqPlot
  * Pure JavaScript plotting plugin using jQuery
  *
- * Version: 1.0.1
- * Revision: 1096
+ * Version: 1.0.4
+ * Revision: 1120
  *
- * Copyright (c) 2009-2011 Chris Leonello
+ * Copyright (c) 2009-2012 Chris Leonello
  * jqPlot is currently available for use in all personal or commercial projects 
  * under both the MIT (http://www.opensource.org/licenses/mit-license.php) and GPL 
  * version 2.0 (http://www.gnu.org/licenses/gpl-2.0.html) licenses. This means that you can 
@@ -778,7 +778,7 @@
         this.plugins.donutRenderer = {highlightedSeriesIndex:null};
         this.plugins.donutRenderer.highlightCanvas = new $.jqplot.GenericCanvas();
         // do we have any data labels?  if so, put highlight canvas before those
-        // Fix for broken jquery :first selector with canvas (VML) elements.
+        // Fix for broken ice.ace.jq :first selector with canvas (VML) elements.
         var labels = $(this.targetId+' .jqplot-data-label');
         if (labels.length) {
             $(labels[0]).before(this.plugins.donutRenderer.highlightCanvas.createElement(this._gridPadding, 'jqplot-donutRenderer-highlight-canvas', this._plotDimensions, this));
