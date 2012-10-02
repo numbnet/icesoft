@@ -116,10 +116,10 @@ public class DataTableRenderer extends CoreRenderer {
         String styleClass;
         String paginatorPosition = tableContext.getPaginatorPosition();
         String containerClass = DataTableConstants.CONTAINER_CLASS;
-        boolean hasPaginator = tableContext.getPaginator();
+        boolean hasPaginator = tableContext.isPaginator();
 
         // Get styles
-        if (tableContext.getStaticHeaders())
+        if (tableContext.isStaticHeaders())
             containerClass += " " + DataTableConstants.SCROLLABLE_CONTAINER_CLASS;
 
         if ((styleClass = table.getStyleClass()) != null)
@@ -177,11 +177,11 @@ public class DataTableRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
         DataTable table = tableContext.getTable();
 
-        if (!tableContext.getStaticHeaders()) {
+        if (!tableContext.isStaticHeaders()) {
             Integer height;
 
             writer.startElement(HTML.DIV_ELEM, null);
-            if (tableContext.getScrollable() && (height = tableContext.getScrollHeight()) != null)
+            if (tableContext.isScrollable() && (height = tableContext.getScrollHeight()) != null)
                 writer.writeAttribute(HTML.STYLE_ELEM, "max-height:" + height + "px; overflow:auto;", null);
             writer.startElement(HTML.TABLE_ELEM, null);
         }
@@ -190,7 +190,7 @@ public class DataTableRenderer extends CoreRenderer {
         encodeTableBody(context, tableContext);
         DataTableFootRenderer.encodeTableFoot(context, tableContext);
 
-        if (!tableContext.getStaticHeaders()) {
+        if (!tableContext.isStaticHeaders()) {
             writer.endElement(HTML.TABLE_ELEM);
             writer.endElement(HTML.DIV_ELEM);
         }
@@ -202,7 +202,7 @@ public class DataTableRenderer extends CoreRenderer {
         String rowIndexVar = tableContext.getRowIndexVar();
         String clientId = table.getClientId(context);
 
-        if (tableContext.getScrollable()) {
+        if (tableContext.isScrollable()) {
             String scrollClass =
                     DataTableConstants.SCROLLABLE_X_CLASS + " " +
                             DataTableConstants.SCROLLABLE_BODY_CLASS;
@@ -222,7 +222,7 @@ public class DataTableRenderer extends CoreRenderer {
         if (table.isLazy()) table.loadLazyData();
 
         int rows = tableContext.getRows();
-        int first = tableContext.getFirst();
+        int first = tableContext.getFirstRowIndex();
         int page = table.getPage();
         int rowCount = table.getRowCount();
         int rowCountToRender = rows == 0 ? rowCount : rows;
@@ -250,7 +250,7 @@ public class DataTableRenderer extends CoreRenderer {
         if (rowIndexVar != null)
             context.getExternalContext().getRequestMap().remove(rowIndexVar);
 
-        if (tableContext.getScrollable()) {
+        if (tableContext.isScrollable()) {
             table.setInDuplicateSegment(true);
             DataTableFootRenderer.encodeTableFoot(context, tableContext);
             table.setInDuplicateSegment(false);

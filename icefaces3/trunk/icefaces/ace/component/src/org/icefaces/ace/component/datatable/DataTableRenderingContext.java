@@ -10,22 +10,29 @@ public class DataTableRenderingContext {
     private DataTable table;
 
     private String paginatorPosition;
-    private Boolean paginator;
-    private Boolean scrollable;
-    private Boolean staticHeaders;
+    private boolean paginator;
+    private boolean scrollable;
+    private boolean staticHeaders;
     private RowStateMap stateMap;
     private String rowIndexVar;
     private Integer rows;
-    private Integer first;
+    private Integer firstRowIndex;
     private Integer pagPose;
     private Map<Object, List<String>> rowToSelectedFieldsMap;
     private List<Column> columns;
     private String rowStateVar;
     private String rowStyleClass;
     private String selectionMode;
-    private Boolean resizableColumns;
+    private boolean resizableColumns;
     private Integer scrollHeight;
     private String var;
+    private boolean firstColumn;
+    private boolean lastColumn;
+    private boolean inHeaderSubrows;
+    private boolean reorderableColumns;
+    private boolean columnSortable;
+    private boolean columnFilterable;
+    private int tabIndex;
 
     public DataTableRenderingContext(DataTable table) {
         this.table = table;
@@ -37,7 +44,7 @@ public class DataTableRenderingContext {
         stateMap = table.getStateMap();
         rowIndexVar = table.getRowIndexVar();
         rows = table.getRows();
-        first = table.getFirst();
+        firstRowIndex = table.getFirst();
         pagPose = table.getPage();
         rowToSelectedFieldsMap = table.getRowToSelectedFieldsMap();
         columns = table.getColumns();
@@ -46,7 +53,9 @@ public class DataTableRenderingContext {
         selectionMode = table.getSelectionMode();
         resizableColumns = table.isResizableColumns();
         scrollHeight = table.getScrollHeight();
+        reorderableColumns = table.isReorderableColumns();
         var = table.getVar();
+        tabIndex = table.getTabIndex();
     }
 
     public DataTable getTable() {
@@ -57,16 +66,16 @@ public class DataTableRenderingContext {
         return paginatorPosition;
     }
 
-    public Boolean getPaginator() {
+    public boolean isPaginator() {
         return paginator;
     }
 
-    public Boolean getScrollable() {
+    public boolean isScrollable() {
         return scrollable;
     }
 
-    public Boolean getStaticHeaders() {
-        return staticHeaders &&  getScrollable();
+    public boolean isStaticHeaders() {
+        return staticHeaders &&  isScrollable();
     }
 
     public RowStateMap getStateMap() {
@@ -81,8 +90,8 @@ public class DataTableRenderingContext {
         return rows;
     }
 
-    public Integer getFirst() {
-        return first;
+    public Integer getFirstRowIndex() {
+        return firstRowIndex;
     }
 
     public Integer getPagPose() {
@@ -109,7 +118,7 @@ public class DataTableRenderingContext {
         return selectionMode;
     }
 
-    public Boolean getResizableColumns() {
+    public boolean isResizableColumns() {
         return resizableColumns;
     }
 
@@ -119,5 +128,58 @@ public class DataTableRenderingContext {
 
     public String getVar() {
         return var;
+    }
+
+    public void setFirstColumn(boolean firstColumn) {
+        this.firstColumn = firstColumn;
+    }
+
+    public boolean isFirstColumn() {
+        return firstColumn;
+    }
+
+    public void setLastColumn(boolean b) {
+        this.lastColumn = b;
+    }
+
+    public boolean isLastColumn() {
+        return lastColumn;
+    }
+
+    public void setInHeaderSubrows(boolean headerSubrows) {
+        this.inHeaderSubrows = headerSubrows;
+    }
+
+    public boolean isInHeaderSubrows() {
+        return inHeaderSubrows;
+    }
+
+    public boolean isReorderableColumns() {
+        return reorderableColumns;
+    }
+
+    public void setReorderableColumns(boolean reorderableColumns) {
+        this.reorderableColumns = reorderableColumns;
+    }
+
+    public void setColumnSortable(boolean columnSortable) {
+        this.columnSortable = columnSortable;
+    }
+
+    public boolean isColumnSortable() {
+        return columnSortable;
+    }
+
+    public void setColumnFilterable(boolean columnFilterable) {
+        this.columnFilterable = columnFilterable;
+    }
+
+    public boolean isColumnFilterable() {
+        return columnFilterable;
+    }
+
+    public int getTabIndex() {
+        if (tabIndex < 1) return 0;
+        return tabIndex++;
     }
 }
