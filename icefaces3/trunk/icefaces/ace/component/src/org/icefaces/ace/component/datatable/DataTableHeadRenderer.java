@@ -116,7 +116,6 @@ public class DataTableHeadRenderer {
         String clientId = column.getClientId(context);
         boolean isSortable = column.getValueExpression("sortBy") != null;
         boolean hasFilter = column.getValueExpression("filterBy") != null;
-
         Column nextColumn = DataTableRendererUtil.getNextColumn(column, columnSiblings);
         boolean isCurrStacked = DataTableRendererUtil.isCurrColumnStacked(columnSiblings, column);
         boolean isNextStacked = (nextColumn == null) ? false
@@ -158,19 +157,11 @@ public class DataTableHeadRenderer {
 
         writer.writeAttribute(HTML.CLASS_ATTR, columnClass, null);
 
-        //Configurable first-col controls
-        if (first) {
-            TableConfigPanel panel = table.findTableConfigPanel(context);
-            if (panel != null && panel.getType().equals("first-col"))
-                encodeLeftSideControls(writer, table, first);
-        }
+        TableConfigPanel panel = table.findTableConfigPanel(context);
+        if (panelTargetsColumn(panel, column, first, last, true))
+            encodeLeftSideControls(writer, table, first);
 
         writer.startElement(HTML.SPAN_ELEM, null);
-
-        // Add styling for last-col control container
-        if (last) {
-            TableConfigPanel panel = table.findTableConfigPanel(context);
-        }
 
         writer.startElement(HTML.SPAN_ELEM, null);
         writer.writeAttribute(HTML.CLASS_ATTR, DataTableConstants.HEAD_TEXT_CLASS, null);
@@ -189,8 +180,9 @@ public class DataTableHeadRenderer {
         writer.endElement(HTML.SPAN_ELEM);
         writer.endElement(HTML.SPAN_ELEM);
 
-        if (isSortable || isLastColConfPanel(context, table))
-            encodeRightSideControls(writer, context, table, column, isSortable, last);
+        boolean configButton = panelTargetsColumn(panel, column, first, last, false);
+        if (isSortable || configButton)
+            encodeRightSideControls(writer, context, table, column, isSortable, configButton);
 
         //Filter
         if (hasFilter)
@@ -209,6 +201,21 @@ public class DataTableHeadRenderer {
         }
     }
 
+    private static boolean panelTargetsColumn(TableConfigPanel panel, Column column, boolean firstColumn, boolean lastColumn, boolean left) {
+        if (panel == null) return false;
+        String type = panel.getType();
+        if (type.equals("first-col") && firstColumn) {
+            return true;
+        } else if (type.equals("last-col") && lastColumn)  {
+            return true;
+        } else if (type.equals("in-col-left") && left && panel.getInColumnId().equals(column.getId())) {
+            return true;
+        } else if (type.equals("in-col-right") && !left && panel.getInColumnId().equals(column.getId())) {
+            return true;
+        }
+        return false;
+    }
+
     private static void encodeLeftSideControls(ResponseWriter writer, DataTable table, boolean first) throws IOException {
         writer.startElement(HTML.SPAN_ELEM, null);
         writer.writeAttribute(HTML.CLASS_ATTR, DataTableConstants.HEADER_LEFT_CLASS, null);
@@ -218,15 +225,16 @@ public class DataTableHeadRenderer {
         writer.endElement(HTML.SPAN_ELEM);
     }
 
-    private static void encodeRightSideControls(ResponseWriter writer, FacesContext context, DataTable table, Column column, boolean sortable, boolean last) throws IOException {
+    private static void encodeRightSideControls(ResponseWriter writer, FacesContext context, DataTable table, Column column, boolean sortable, boolean configButton) throws IOException {
         writer.startElement(HTML.SPAN_ELEM, null);
         writer.writeAttribute(HTML.CLASS_ATTR, DataTableConstants.HEADER_RIGHT_CLASS, null);
 
         //Sort icon
-        if (sortable) encodeSortControl(writer, context, table, column);
+        if (sortable)
+            encodeSortControl(writer, context, table, column);
 
         //Configurable last-col controls
-        if (last && isLastColConfPanel(context, table))
+        if (configButton)
             encodeConfigPanelLaunchButton(writer, table, false);
 
         writer.endElement(HTML.SPAN_ELEM);
@@ -357,11 +365,6 @@ public class DataTableHeadRenderer {
     }
 
     /* Util Methods */
-
-    private static boolean isLastColConfPanel(FacesContext context, DataTable table) {
-        TableConfigPanel panel = table.findTableConfigPanel(context);
-        return (panel != null && panel.getType().equals("last-col"));
-    }
 
     private static SelectItem[] getFilterOptions(Column column) {
         Object options = column.getFilterOptions();
