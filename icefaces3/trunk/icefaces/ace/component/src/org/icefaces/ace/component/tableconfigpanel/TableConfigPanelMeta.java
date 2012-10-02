@@ -19,8 +19,6 @@ package org.icefaces.ace.component.tableconfigpanel;
 import org.icefaces.ace.meta.annotation.*;
 import org.icefaces.ace.meta.baseMeta.UIComponentBaseMeta;
 
-import javax.faces.component.UIComponent;
-
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
 
@@ -53,21 +51,31 @@ import javax.faces.application.ResourceDependency;
 public class TableConfigPanelMeta extends UIComponentBaseMeta {
     @Property(tlddoc = "Enable the configuration of column order." )
     boolean columnOrderingConfigurable;
+
 //    @Property(tlddoc = "Allow the configuration of column size.")
 //    boolean columnSizingConfigurable;
+
     @Property(tlddoc = "Enable the configuration of column visibility.")
     boolean columnVisibilityConfigurable;
+
     @Property(tlddoc = "Enable the configuration of column headerText properties.")
     boolean columnNameConfigurable;
+
     @Property(tlddoc = "Enable the configuration of column sorting priority and directions.")
     boolean columnSortingConfigurable;
+
     @Property(name = "for", tlddoc="Defines the component ID of the DataTable this ConfigPanel manipulates.")
     String forTarget;
+
     @Property(tlddoc = "Enable to hide columns with configurable property set to false, rather than render them with a disabled style.",
               defaultValue = "false",
               defaultValueType = DefaultValueType.EXPRESSION)
     boolean hideDisabledRows;
-    @Property(tlddoc = "Defines the display mode for the 'open' control panel button. Available modes: first-col, last-col",
+
+    @Property(tlddoc = "Defines the display mode for the 'open' control panel button. Available options: first-col, last-col, in-col-right, in-col-left",
               defaultValue = "first-col")
     String type;
+
+    @Property(tlddoc = "Defines the column to render the 'launch' panel button in when using the 'in-col-left' or 'in-col-right' type options.")
+    String inColumnId;
 }
