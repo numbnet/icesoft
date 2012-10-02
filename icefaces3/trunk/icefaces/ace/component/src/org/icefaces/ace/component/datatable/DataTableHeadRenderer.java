@@ -46,7 +46,7 @@ public class DataTableHeadRenderer {
         ColumnGroup group = table.getColumnGroup("header");
         if (group != null) headContainer = group.getChildren();
 
-        if (tableContext.getStaticHeaders() && !table.isInDuplicateSegment()) {
+        if (tableContext.isStaticHeaders() && !table.isInDuplicateSegment()) {
             writer.startElement(HTML.DIV_ELEM, null);
             writer.writeAttribute(HTML.CLASS_ATTR, DataTableConstants.SCROLLABLE_HEADER_CLASS, null);
             writer.startElement(HTML.TABLE_ELEM, null);
@@ -83,15 +83,17 @@ public class DataTableHeadRenderer {
                 // Either loop through row children or render the single column/columns
                 Iterator<UIComponent> componentIterator = headerRowChildren.iterator();
                 boolean firstComponent = true;
+                tableContext.setInHeaderSubrows(subRows);
+                List<UIComponent> siblings = (subRows) ? headerRowChildren : headContainer;
                 while (componentIterator.hasNext()) {
                     UIComponent headerRowChild = componentIterator.next();
+
+                    tableContext.setFirstColumn(firstComponent && firstHeadElement);
+                    tableContext.setLastColumn(!headElementIterator.hasNext() && !componentIterator.hasNext());
+
                     if (headerRowChild.isRendered() && headerRowChild instanceof Column)
-                        encodeColumn(context, table,
-                                (subRows) ? headerRowChildren : headContainer,
-                                (Column) headerRowChild,
-                                (firstComponent && firstHeadElement),
-                                (!headElementIterator.hasNext() && !componentIterator.hasNext()),
-                                subRows);
+                        encodeColumn(context, tableContext, (Column) headerRowChild, siblings);
+
                     firstComponent = false;
                 }
 
@@ -105,17 +107,20 @@ public class DataTableHeadRenderer {
 
         writer.endElement(HTML.THEAD_ELEM);
 
-        if (tableContext.getStaticHeaders() && !table.isInDuplicateSegment()) {
+        if (tableContext.isStaticHeaders() && !table.isInDuplicateSegment()) {
             writer.endElement(HTML.TABLE_ELEM);
             writer.endElement(HTML.DIV_ELEM);
         }
     }
 
-    private static void encodeColumn(FacesContext context, DataTable table, List columnSiblings, Column column, boolean first, boolean last, boolean subRows) throws IOException {
+    private static void encodeColumn(FacesContext context, DataTableRenderingContext tableContext, Column column, List columnSiblings) throws IOException {
+        DataTable table = tableContext.getTable();
         ResponseWriter writer = context.getResponseWriter();
         String clientId = column.getClientId(context);
-        boolean isSortable = column.getValueExpression("sortBy") != null;
-        boolean hasFilter = column.getValueExpression("filterBy") != null;
+
+        tableContext.setColumnSortable(column.getValueExpression("sortBy") != null);
+        tableContext.setColumnFilterable(column.getValueExpression("filterBy") != null);
+
         Column nextColumn = DataTableRendererUtil.getNextColumn(column, columnSiblings);
         boolean isCurrStacked = DataTableRendererUtil.isCurrColumnStacked(columnSiblings, column);
         boolean isNextStacked = (nextColumn == null) ? false
@@ -125,16 +130,26 @@ public class DataTableHeadRenderer {
             String style = column.getStyle();
             String styleClass = column.getStyleClass();
             String columnClass = DataTableConstants.COLUMN_HEADER_CLASS;
-            columnClass = (table.isReorderableColumns() && column.isReorderable()) ? columnClass + " " + DataTableConstants.REORDERABLE_COL_CLASS : columnClass;
-            columnClass = styleClass != null ? columnClass + " " + styleClass : columnClass;
-            columnClass = (column.hasSortPriority() && !isNextStacked) ? columnClass + " ui-state-active" : columnClass;
+
+            columnClass = (tableContext.isReorderableColumns() && column.isReorderable())
+                    ? columnClass + " " + DataTableConstants.REORDERABLE_COL_CLASS
+                    : columnClass;
+            columnClass = styleClass != null
+                    ? columnClass + " " + styleClass
+                    : columnClass;
+            columnClass = (column.hasSortPriority() && !isNextStacked)
+                    ? columnClass + " ui-state-active"
+                    : columnClass;
 
             writer.startElement(HTML.TH_ELEM, null);
             writer.writeAttribute(HTML.CLASS_ATTR, columnClass, null);
 
-            if (style != null) writer.writeAttribute(HTML.STYLE_ELEM, style, null);
-            if (column.getRowspan() != 1) writer.writeAttribute(HTML.ROWSPAN_ATTR, column.getRowspan(), null);
-            if (column.getColspan() != 1) writer.writeAttribute(HTML.COLSPAN_ATTR, column.getColspan(), null);
+            if (style != null)
+                writer.writeAttribute(HTML.STYLE_ELEM, style, null);
+            if (column.getRowspan() != 1)
+                writer.writeAttribute(HTML.ROWSPAN_ATTR, column.getRowspan(), null);
+            if (column.getColspan() != 1)
+                writer.writeAttribute(HTML.COLSPAN_ATTR, column.getColspan(), null);
         }
 
         else {
@@ -146,11 +161,11 @@ public class DataTableHeadRenderer {
         writer.startElement(HTML.DIV_ELEM, null);
         writer.writeAttribute(HTML.ID_ATTR, clientId, null);
 
-        if (table.isResizableColumns())
+        if (tableContext.isResizableColumns())
             writer.writeAttribute(HTML.STYLE_ATTR, "position:relative;", null);
 
         String columnClass = DataTableConstants.COLUMN_HEADER_CONTAINER_CLASS;
-        columnClass = isSortable ? columnClass + " " + DataTableConstants.SORTABLE_COLUMN_CLASS : columnClass;
+        columnClass = tableContext.isColumnSortable() ? columnClass + " " + DataTableConstants.SORTABLE_COLUMN_CLASS : columnClass;
         columnClass = table.isClickableHeaderSorting() ? columnClass + " clickable" : columnClass;
         // Add style class to div in stacking case, else style th
         columnClass = (column.hasSortPriority() && (isCurrStacked || isNextStacked)) ? columnClass + " ui-state-active" : columnClass;
@@ -158,8 +173,12 @@ public class DataTableHeadRenderer {
         writer.writeAttribute(HTML.CLASS_ATTR, columnClass, null);
 
         TableConfigPanel panel = table.findTableConfigPanel(context);
-        if (panelTargetsColumn(panel, column, first, last, true))
-            encodeLeftSideControls(writer, table, first);
+
+        if (panelTargetsColumn(panel, column,
+                tableContext.isFirstColumn(),
+                tableContext.isLastColumn(), true))
+            encodeLeftSideControls(writer, table,
+                    tableContext.isFirstColumn());
 
         writer.startElement(HTML.SPAN_ELEM, null);
 
@@ -172,7 +191,7 @@ public class DataTableHeadRenderer {
 
         if (header != null) header.encodeAll(context);
         else if (headerText != null) writer.write(headerText);
-        else if (subRows)
+        else if (tableContext.isInHeaderSubrows())
             for (UIComponent c : column.getChildren())
                 c.encodeAll(context);
 
@@ -180,19 +199,21 @@ public class DataTableHeadRenderer {
         writer.endElement(HTML.SPAN_ELEM);
         writer.endElement(HTML.SPAN_ELEM);
 
-        boolean configButton = panelTargetsColumn(panel, column, first, last, false);
-        if (isSortable || configButton)
-            encodeRightSideControls(writer, context, table, column, isSortable, configButton);
+        boolean configButton = panelTargetsColumn(panel, column, tableContext.isFirstColumn(),
+                tableContext.isLastColumn(), false);
+
+        if (tableContext.isColumnSortable() || configButton)
+            encodeRightSideControls(writer, context, tableContext, column, configButton);
 
         //Filter
-        if (hasFilter)
-            encodeFilter(context, table, column);
+        if (tableContext.isColumnFilterable())
+            encodeFilter(context, tableContext, column);
 
         writer.endElement(HTML.DIV_ELEM);
 
         if (!isNextStacked) {
             writer.endElement("th");
-        } else if (subRows) {
+        } else if (tableContext.isInHeaderSubrows()) {
             // If in a multirow header case, and using stacked, enforce these restrictions
             if (!DataTableRendererUtil.areBothSingleColumnSpan(column, nextColumn))
                 throw new FacesException("DataTable : \"" + table.getClientId(context) + "\" must not have stacked header columns, with colspan values greater than 1.");
@@ -225,22 +246,22 @@ public class DataTableHeadRenderer {
         writer.endElement(HTML.SPAN_ELEM);
     }
 
-    private static void encodeRightSideControls(ResponseWriter writer, FacesContext context, DataTable table, Column column, boolean sortable, boolean configButton) throws IOException {
+    private static void encodeRightSideControls(ResponseWriter writer, FacesContext context, DataTableRenderingContext tableContext, Column column, boolean renderConfButton) throws IOException {
         writer.startElement(HTML.SPAN_ELEM, null);
         writer.writeAttribute(HTML.CLASS_ATTR, DataTableConstants.HEADER_RIGHT_CLASS, null);
 
         //Sort icon
-        if (sortable)
-            encodeSortControl(writer, context, table, column);
+        if (tableContext.isColumnSortable())
+            encodeSortControl(writer, context, tableContext, column);
 
         //Configurable last-col controls
-        if (configButton)
-            encodeConfigPanelLaunchButton(writer, table, false);
+        if (renderConfButton)
+            encodeConfigPanelLaunchButton(writer, tableContext.getTable(), false);
 
         writer.endElement(HTML.SPAN_ELEM);
     }
 
-    private static void encodeSortControl(ResponseWriter writer, FacesContext context, DataTable table, Column column) throws IOException {
+    private static void encodeSortControl(ResponseWriter writer, FacesContext context, DataTableRenderingContext tableContext, Column column) throws IOException {
         writer.startElement(HTML.SPAN_ELEM, null);
         writer.writeAttribute(HTML.CLASS_ATTR, DataTableConstants.SORTABLE_COLUMN_CONTROL_CLASS, null);
 
@@ -249,14 +270,14 @@ public class DataTableHeadRenderer {
         writer.writeAttribute(HTML.CLASS_ATTR, DataTableConstants.SORTABLE_COLUMN_ICON_CONTAINER, null);
 
         writer.startElement(HTML.ANCHOR_ELEM, null);
-        writer.writeAttribute(HTML.TABINDEX_ATTR, 0, null);
+        writer.writeAttribute(HTML.TABINDEX_ATTR, tableContext.getTabIndex(), null);
         if (column.hasSortPriority() && column.isSortAscending())
             writer.writeAttribute(HTML.CLASS_ATTR, DataTableConstants.SORTABLE_COLUMN_ICON_UP_CLASS + " ui-toggled", null);
         else writer.writeAttribute(HTML.CLASS_ATTR, DataTableConstants.SORTABLE_COLUMN_ICON_UP_CLASS, null);
         writer.endElement(HTML.ANCHOR_ELEM);
 
         writer.startElement(HTML.ANCHOR_ELEM, null);
-        writer.writeAttribute(HTML.TABINDEX_ATTR, 0, null);
+        writer.writeAttribute(HTML.TABINDEX_ATTR, tableContext.getTabIndex(), null);
         if (column.hasSortPriority() && !column.isSortAscending())
             writer.writeAttribute(HTML.CLASS_ATTR, DataTableConstants.SORTABLE_COLUMN_ICON_DOWN_CLASS + " ui-toggled", null);
         else writer.writeAttribute(HTML.CLASS_ATTR, DataTableConstants.SORTABLE_COLUMN_ICON_DOWN_CLASS, null);
@@ -268,16 +289,20 @@ public class DataTableHeadRenderer {
         // Write Sort Order Integer
         writer.startElement(HTML.SPAN_ELEM, null);
         writer.writeAttribute(HTML.CLASS_ATTR, DataTableConstants.SORTABLE_COLUMN_ORDER_CLASS, null);
-        if (table.isSingleSort()) writer.writeAttribute(HTML.STYLE_ATTR, "display:none;", null);
+
+        if (tableContext.getTable().isSingleSort())
+            writer.writeAttribute(HTML.STYLE_ATTR, "display:none;", null);
         else if (column.hasSortPriority()) writer.writeText(column.getSortPriority(), null);
+
         writer.endElement(HTML.SPAN_ELEM);
 
         writer.endElement(HTML.SPAN_ELEM);
     }
 
-    private static void encodeFilter(FacesContext context, DataTable table, Column column) throws IOException {
+    private static void encodeFilter(FacesContext context, DataTableRenderingContext tableContext, Column column) throws IOException {
         Map<String,String> params = context.getExternalContext().getRequestParameterMap();
         ResponseWriter writer = context.getResponseWriter();
+        DataTable table = tableContext.getTable();
 
         String widgetVar = CoreRenderer.resolveWidgetVar(table);
         String filterId = column.getClientId(context) + "_filter";
@@ -294,6 +319,7 @@ public class DataTableHeadRenderer {
             writer.startElement(HTML.INPUT_ELEM, null);
             writer.writeAttribute(HTML.ID_ATTR, filterId, null);
             writer.writeAttribute(HTML.NAME_ATTR, filterId, null);
+            writer.writeAttribute(HTML.TABINDEX_ATTR, tableContext.getTabIndex(), null);
             writer.writeAttribute(HTML.CLASS_ATTR, filterStyleClass, null);
             writer.writeAttribute("size", "1", null); // Webkit requires none zero/null size value to use CSS width correctly.
             writer.writeAttribute("value", filterValue , null);
@@ -310,6 +336,7 @@ public class DataTableHeadRenderer {
             writer.startElement("select", null);
             writer.writeAttribute(HTML.ID_ATTR, filterId, null);
             writer.writeAttribute(HTML.NAME_ATTR, filterId, null);
+            writer.writeAttribute(HTML.TABINDEX_ATTR, tableContext.getTabIndex(), null);
             writer.writeAttribute(HTML.CLASS_ATTR, filterStyleClass, null);
             writer.writeAttribute("onchange", filterFunction, null);
 

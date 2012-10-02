@@ -99,6 +99,10 @@ public class DataTableMeta extends UIDataMeta {
             "table entities.")
     private boolean lazy;
 
+    @Property(tlddoc = "", defaultValue = "0",
+            defaultValueType = DefaultValueType.EXPRESSION)
+    private Integer tabIndex;
+
     @Property(defaultValue="0",
             defaultValueType= DefaultValueType.EXPRESSION,
             implementation=Implementation.GENERATE,
@@ -176,7 +180,6 @@ public class DataTableMeta extends UIDataMeta {
     protected Object savedSortState;
     @Field
     protected Object savedFilterState;
-
 
 
 
