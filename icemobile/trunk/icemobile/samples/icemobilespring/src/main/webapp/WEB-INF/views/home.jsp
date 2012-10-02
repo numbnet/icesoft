@@ -36,6 +36,8 @@
     </li>
     <li><a href="<c:url value="/tabset" />" title="tabset">Tabset</a>
     </li>
+
+    <li><a href="<c:url value="/contact" />" title="contact">Contact List</a></li>
     <li><a href="<c:url value="/accordion" />" title="accordion">Accordion</a></li>
     <li><a href="<c:url value="/datetime" />" title="datetime">Time/Date</a></li>
     <li><a href="<c:url value="/list" />" title="list">Layout</a></li>
