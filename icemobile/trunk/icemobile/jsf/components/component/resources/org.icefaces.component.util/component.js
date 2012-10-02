@@ -478,3 +478,5 @@ ice.mobi.storeDirection = function(id, orient)  {
     parts[3] = orient.webkitCompassHeading;
     el.value = parts.join();
 }
+/* add js marker for progressive enhancement */
+document.documentElement.className = document.documentElement.className+' js';
