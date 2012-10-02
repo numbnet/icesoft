@@ -30,10 +30,7 @@ package org.icefaces.ace.component.datetimeentry;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -49,6 +46,7 @@ import org.icefaces.render.MandatoryResourceComponent;
 
 @MandatoryResourceComponent(tagName="dateTimeEntry", value="org.icefaces.ace.component.datetimeentry.DateTimeEntry")
 public class DateTimeEntryRenderer extends InputRenderer {
+    private Map<String, Object> domUpdateMap = new HashMap<String, Object>();
 
     @Override
     public void decode(FacesContext context, UIComponent component) {
@@ -78,6 +76,7 @@ public class DateTimeEntryRenderer extends InputRenderer {
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
 //        System.out.println("\nDateTimeEntryRenderer.encodeEnd");
 //        printParams();
+        domUpdateMap.clear();
         DateTimeEntry dateTimeEntry = (DateTimeEntry) component;
         String value = DateTimeEntryUtils.getValueAsString(context, dateTimeEntry);
         Map<String, Object> labelAttributes = getLabelAttributes(component);
@@ -158,6 +157,12 @@ public class DateTimeEntryRenderer extends InputRenderer {
         }
 		
 		encodeScript(context, dateTimeEntry, value, labelAttributes);
+
+        domUpdateMap.put("styleClasses", styleClasses);
+        writer.startElement("span", dateTimeEntry);
+        writer.writeAttribute("data-hashcode", domUpdateMap.hashCode(), null);
+        writer.writeAttribute("style", "display: none;", null);
+        writer.endElement("span");
 
         writer.endElement("span");
     }
