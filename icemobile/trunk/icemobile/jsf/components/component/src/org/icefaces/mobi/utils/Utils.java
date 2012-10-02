@@ -16,39 +16,41 @@
 
 package org.icefaces.mobi.utils;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.Formatter;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.StringTokenizer;
+import java.util.UUID;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import javax.faces.FacesException;
+import javax.faces.application.ProjectStage;
+import javax.faces.component.NamingContainer;
+import javax.faces.component.UIComponent;
+import javax.faces.component.UIForm;
+import javax.faces.component.UIParameter;
+import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
+import javax.servlet.ServletRequest;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.Part;
+
+import org.icefaces.impl.application.AuxUploadResourceHandler;
+import org.icefaces.impl.application.AuxUploadSetup;
 import org.icefaces.impl.util.CoreUtils;
 import org.icefaces.impl.util.DOMUtils;
 import org.icefaces.util.EnvUtils;
 import org.icemobile.component.impl.SessionContext;
-import org.icefaces.impl.application.AuxUploadSetup;
-import org.icefaces.impl.application.AuxUploadResourceHandler;
-
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIParameter;
-import javax.faces.component.UIForm;
-import javax.faces.component.NamingContainer;
-import javax.faces.FacesException;
-import javax.faces.application.ProjectStage;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.Part;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.FileOutputStream;
-import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.StringTokenizer;
-import java.util.Formatter;
-import java.util.UUID;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /*
  * base was copied over from ace and then added to by mobility
@@ -794,4 +796,60 @@ public class Utils {
 		}
 		return hashCode;
 	}
+	
+
+    public static String getBaseURL(ServletRequest request) {
+        HttpServletRequest httpRequest = (HttpServletRequest) request;
+        String serverName = httpRequest.getHeader("x-forwarded-host");
+        if (null == serverName) {
+            serverName = httpRequest.getServerName() + ":" +
+                httpRequest.getServerPort();
+        }
+        return httpRequest.getScheme() + "://" + serverName +
+            httpRequest.getContextPath() + "/";
+    }
+
+    /**
+     * Get the SX Register URL. 
+     * 
+     * Format is icemobile://c=register&r=<current-url>&JSESSIONID=<session-id>&u=<upload-url>
+     * @param request The servlet request
+     * @return The escaped SX register URL.
+     */
+    public static String getRegisterSXURL(FacesContext facesContext){
+        HttpServletRequest request = (HttpServletRequest)facesContext.getExternalContext().getRequest();
+        String redirectUrl = getBaseURL(request);
+        String forward = (String)request.getAttribute("javax.servlet.forward.servlet_path");
+        if( forward == null ){
+            forward = "";
+        }
+        else if( forward.startsWith("/")){
+            forward = forward.substring(1);
+        }
+        String params = "";
+        if( request.getQueryString() != null ){
+            params = "?"+request.getQueryString();
+        }
+        redirectUrl += forward + params;
+        String uploadUrl = getUploadURL(request);
+        String url = "icemobile://c=register&r="+redirectUrl+"&u="+uploadUrl;
+        return url;
+    }
+
+
+    public static String getUploadURL(HttpServletRequest request) {
+        String serverName = request.getHeader("x-forwarded-host");
+        if (null == serverName) {
+            serverName = request.getServerName() + ":" +
+                request.getServerPort();
+        }
+        return "http://" + serverName +
+            getUploadPath(request);
+    }
+    
+    public static String getUploadPath(HttpServletRequest request) {
+        String upPath = request.getContextPath() + "/icemobile";
+        return upPath;
+    }
+
 }
