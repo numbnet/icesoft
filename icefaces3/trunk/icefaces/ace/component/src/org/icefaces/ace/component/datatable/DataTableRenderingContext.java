@@ -9,23 +9,24 @@ import java.util.Map;
 public class DataTableRenderingContext {
     private DataTable table;
 
-    private String paginatorPosition;
-    private boolean paginator;
-    private boolean scrollable;
-    private boolean staticHeaders;
     private RowStateMap stateMap;
-    private String rowIndexVar;
+
+    private Map<Object, List<String>> rowToSelectedFieldsMap;
+    private List<Column> columns;
     private Integer rows;
     private Integer firstRowIndex;
     private Integer pagPose;
-    private Map<Object, List<String>> rowToSelectedFieldsMap;
-    private List<Column> columns;
+    private Integer scrollHeight;
     private String rowStateVar;
     private String rowStyleClass;
     private String selectionMode;
-    private boolean resizableColumns;
-    private Integer scrollHeight;
     private String var;
+    private String paginatorPosition;
+    private String rowIndexVar;
+    private boolean paginator;
+    private boolean scrollable;
+    private boolean staticHeaders;
+    private boolean resizableColumns;
     private boolean firstColumn;
     private boolean lastColumn;
     private boolean inHeaderSubrows;
@@ -179,7 +180,6 @@ public class DataTableRenderingContext {
     }
 
     public int getTabIndex() {
-        if (tabIndex < 1) return 0;
-        return tabIndex++;
+        return tabIndex;
     }
 }
