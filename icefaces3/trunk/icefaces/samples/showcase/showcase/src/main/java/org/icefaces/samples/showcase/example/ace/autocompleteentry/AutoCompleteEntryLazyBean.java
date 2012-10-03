@@ -102,7 +102,7 @@ public class AutoCompleteEntryLazyBean extends ComponentExampleImpl<AutoComplete
 		cities.clear();
 		String filter = event.getNewValue() != null ? (String) event.getNewValue() : "";
 		for (City city : AutoCompleteEntryData.getCities()) {
-			if (city.getName() != null && city.getName().toLowerCase().startsWith(filter) && city.getLatitude() < 23 && city.getLatitude() > -23) {
+			if (city.getName() != null && city.getName().toLowerCase().startsWith(filter.toLowerCase()) && city.getLatitude() < 23 && city.getLatitude() > -23) {
 				cities.add(city);
 			}
 		}
