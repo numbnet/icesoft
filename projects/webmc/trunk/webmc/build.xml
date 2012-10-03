@@ -1,5 +1,5 @@
 <!--
-  ~ Version: MPL 1.1
+  ~ Version: MPL 1.1/GPL 2.0/LGPL 2.1
   ~
   ~ "The contents of this file are subject to the Mozilla Public License
   ~ Version 1.1 (the "License"); you may not use this file except in
@@ -14,137 +14,111 @@
   ~ The Original Code is ICEfaces 1.5 open source software code, released
   ~ November 5, 2006. The Initial Developer of the Original Code is ICEsoft
   ~ Technologies Canada, Corp. Portions created by ICEsoft are Copyright (C)
-  ~ 2004-2010 ICEsoft Technologies Canada, Corp. All Rights Reserved.
+  ~ 2004-2006 ICEsoft Technologies Canada, Corp. All Rights Reserved.
   ~
   ~ Contributor(s): _____________________.
   ~
+  ~ Alternatively, the contents of this file may be used under the terms of
+  ~ the GNU Lesser General Public License Version 2.1 or later (the "LGPL"
+  ~ License), in which case the provisions of the LGPL License are
+  ~ applicable instead of those above. If you wish to allow use of your
+  ~ version of this file only under the terms of the LGPL License and not to
+  ~ allow others to use your version of this file under the MPL, indicate
+  ~ your decision by deleting the provisions above and replace them with
+  ~ the notice and other provisions required by the LGPL License. If you do
+  ~ not delete the provisions above, a recipient may use your version of
+  ~ this file under either the MPL or the LGPL License."
+  ~
   -->
+<project name="webmc" default="build.war">
 
-<project name="webmc" default="servlet-profile">
+	<!-- The basic build.properties file for customization -->
+	<property file="build.properties" />
 
-	<property name="ace" value="true" />
-	<property name="compat" value="" />
-	<property name="lib" location="./lib"/>
+	<!-- compile settings overridden from -->
+	<property name="compile.source" value="1.5" />
+	<property name="compile.target" value="1.5" />
+	<property name="compile.debug" value="true" />
 
-    <property name="icefaces.base.dir" location="../../../icefaces2/trunk/icefaces"/>
-    <property name="lib.dir" location="${icefaces.base.dir}/lib"/>
-<!--
-    <property name="lib.myfaces.dir" location="${lib.dir}/myfaces"/>
--->
-    <property name="lib.compat.dir" location="${lib.dir}/compat"/>
-    <property name="lib.compat.dir.includes" value=""/>
+	<!-- path to applicaiton libraries -->
+	<property name="proj.lib.dir" location="lib/" />
+	<property name="ice.lib.dir" location="../../icefaces/trunk/icefaces/lib/" />
 
-    <property name="java.dir" location="./src/main/java"/>
-    <property name="res.dir" location="./src/main/resources"/>
-    <property name="web.dir" location="./src/main/webapp"/>
-    
-    <property name="build.dir" location="./build"/>
-    <property name="classes.dir" location="${build.dir}/classes"/>
-    <property name="dist.dir" location="${build.dir}/dist"/>
+	<property name="app.build.dir" location="build" />
+	<property name="app.dist.dir" location="dist" />
 
-    <patternset id="lib.compile">
-        <include name="*.jar"/>
-    </patternset>
+	<patternset id="additional.compile.lib.jars" includes="servlet-api.jar " />
 
-    <patternset id="lib.distribute">
-        <patternset id="lib.distribute.jsf" includes="jsf-api.jar jsf-impl.jar">
-            <exclude name="jsf-api.jar"         unless="jsf"/>
-            <exclude name="jsf-impl.jar"        unless="jsf"/>
-        </patternset>
+	<!-- jars needed for form validation -->
+	<patternset id="validation.jars" includes="
+        commons-validator-1.2.0.jar
+        oro-gump-28042006.jar
+        " />
+	<!-- jars needed for JavaMail -->
+	<patternset id="javaMail.jars" includes="
+        dsn.jar
+        imap.jar
+        mail.jar
+        mailapi.jar
+        pop3.jar
+        smtp.jar
+        activation.jar
+        " />
 
-        <patternset id="lib.distribute.ice" includes="icefaces.jar icefaces-ace.jar icefaces-compat.jar icepush.jar">
-            <exclude name="icefaces.jar"        if="no-icefaces"/>
+	<!-- jars needed for Facelets -->
+	<patternset id="facelets.jars" includes="
+        krysalis-jCharts-1.0.0-alpha-1.jar
+        el-ri.jar
+        " />
 
-            <exclude name="icefaces-ace.jar"    if="no-icefaces"/>
-            <exclude name="icefaces-ace.jar"    unless="ace"/>
+	<target name="clean">
+		<delete quiet="true">
+			<fileset dir="${app.build.dir}" includes="*.jar" />
+		</delete>
+		<delete dir="${app.build.dir}" />
+		<delete dir="${app.dist.dir}" />
+		<mkdir dir="${app.build.dir}" />
+		<mkdir dir="${app.dist.dir}" />
+	</target>
 
-            <exclude name="icefaces-compat.jar" if="no-icefaces"/>
-            <exclude name="icefaces-compat.jar" unless="compat"/>
+	<target name="compile" depends="clean">
+		<javac srcdir="src" destdir="${app.build.dir}" includeantruntime="false" debug="on">
+			<classpath>
+				<fileset dir="${ice.lib.dir}">
+					<include name="**/*.jar" />
+				</fileset>
 
-            <exclude name="icepush.jar"         if="no-icefaces"/>
-            <exclude name="icepush.jar"         if="no-icepush"/>
-        </patternset>
-    </patternset>
+				<fileset dir="${proj.lib.dir}">
+					<include name="**/*.jar" />
+				</fileset>
+			</classpath>
+		</javac>
+		<copy todir="${app.build.dir}">
+			<fileset dir="src" includes="**/*.properties" />
+		</copy>
 
-    <patternset id="lib.compile.compat" includes="commons-logging.jar ${lib.compile.compat.includes}">
-        <exclude name="*.jar"                   unless="compat"/>
-    </patternset>
+	</target>
 
-    <patternset id="lib.distribute.compat" includes="commons-logging.jar ${lib.distribute.compat.includes}">
-        <exclude name="*.jar"                   unless="compat"/>
-    </patternset>
-
-    <target name="clean">
-        <delete dir="${build.dir}"/>
-    </target>
-
-    <target name="pre.compile">
-        <mkdir dir="${build.dir}"/>
-        <mkdir dir="${build.dir}/classes"/>
-        <mkdir dir="${build.dir}/dist"/>
-    </target>
-
-    <target name="compile" depends="pre.compile">
-        <javac srcdir="${java.dir}"
-               destdir="${classes.dir}"
-               source="1.5"
-               target="1.5"
-               debug="true"
-               includeantruntime="false">
-
-            <classpath>
-                <fileset dir="${lib.compat.dir}">
-                    <patternset refid="lib.compile.compat"/>
-                </fileset>
-                <fileset dir="${lib.dir}" >
-                    <patternset refid="lib.compile"/>
-                </fileset>
-                <fileset dir="${lib}" >
-                    <patternset refid="lib.compile"/>
-                </fileset>
-            </classpath>
-        </javac>
-        
-        <copy todir="${classes.dir}">
-            <fileset dir="${res.dir}">
-                <include name="**/*"/>
-            </fileset>
-        </copy>
-    </target>
-
-    <target name="war.basic" depends="compile">
-        <war basedir="${web.dir}" 
-             destfile="${dist.dir}/${ant.project.name}.war" 
-             webxml="${web.dir}/WEB-INF/web.xml">
-            <lib dir="${lib.dir}">
-                <patternset refid="lib.distribute"/>
-            </lib>
-<!--
-            <lib dir="${lib.myfaces.dir}" erroronmissingdir="false">
-                <selector if="myfaces"/>
-            </lib>
--->
-            <lib dir="${lib.compat.dir}">
-                <patternset refid="lib.distribute.compat"/>
-            </lib>
-            <classes dir="${classes.dir}"/>
-        </war>
-        <unzip src="${dist.dir}/${ant.project.name}.war" dest="${dist.dir}/exploded"/>
-    </target>
-
-    <target name="servlet-profile"
-            description="Generate a .war file according to the servlet-profile which includes the JSF and EL libraries. (Jetty 7, Tomcat 6 and 7)">
-
-        <antcall target="war.basic">
-            <param name="jsf"  value="true" />
-        </antcall>
-    </target>
-
-    <target name="web-profile"
-            description="Generate a .war file according to the web-profile which excludes the JSF and EL libraries. (GlassFish v3, JBoss 6)">
-
-        <antcall target="war.basic" /> 
-    </target>
-
+	<target name="build.war" depends="compile">
+		<war destfile="${app.dist.dir}\webmc.war" webxml="web/WEB-INF/web.xml">
+			<fileset dir="web/" />
+			<lib dir="${ice.lib.dir}">
+				<include name="icefaces.jar" />
+				<include name="icefaces-compat.jar" />
+				<include name="icefaces-ace.jar" />
+				<include name="icepush.jar" />
+			</lib>
+			<lib dir="${ice.lib.dir}/compat">
+				<include name="commons-logging.jar" />
+				<include name="jxl.jar" />
+				<include name="krysalis-jCharts-1.0.0-alpha-1.jar" />
+			</lib>
+			<lib dir="${ice.lib.dir}/mojarra">
+				<include name="javax.faces.jar" />
+			</lib>
+			<classes dir="${app.build.dir}" />
+		</war>
+	</target>
 
 </project>
+
