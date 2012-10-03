@@ -6,8 +6,8 @@ import java.util.logging.Logger;
 import javax.servlet.jsp.PageContext;
 
 import org.icemobile.jsp.tags.TagUtil.DeviceType;
-import org.icemobile.jsp.util.Constants;
-import org.icemobile.jsp.util.HTML;
+import org.icemobile.util.Constants;
+import static org.icemobile.util.HTML.*;
 
 public class GetEnhancedTag extends BaseSimpleTag{
 	
@@ -76,9 +76,9 @@ public class GetEnhancedTag extends BaseSimpleTag{
 		writer.writeTextNode(msg);
 		
 		if( ios ){
-			writer.startElement(HTML.ANCHOR_ELEM);
+			writer.startElement(ANCHOR_ELEM);
 			writer.writeStyleClass("mobi-button mobi-button-important");
-			writer.writeAttribute(HTML.ONCLICK_ATTR, TagUtil.getICEmobileRegisterSXScript(pageContext));
+			writer.writeAttribute(ONCLICK_ATTR, TagUtil.getICEmobileRegisterSXScript(pageContext));
 			writer.writeTextNode("Enable ICEmobile");
 			writer.endElement();
 		}

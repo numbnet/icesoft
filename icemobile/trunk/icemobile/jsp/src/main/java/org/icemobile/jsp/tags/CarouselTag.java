@@ -20,7 +20,7 @@ import javax.servlet.jsp.JspTagException;
 import javax.servlet.jsp.tagext.BodyTagSupport;
 import javax.servlet.jsp.tagext.TagSupport;
 
-import org.icemobile.jsp.util.Constants;
+import org.icemobile.jsp.util.MobiJspConstants;
 import org.icemobile.jsp.util.Util;
 
 import java.io.IOException;
@@ -68,7 +68,7 @@ public class CarouselTag extends TagSupport {
 
             out.write("<span id=\"" + getId() + "_jscript\">");
             out.write("<span id=\"" + getId() + "_libJS\">");  // nested span
-            out.write("<script type='text/javascript' src='"+ Util.getContextRoot(pageContext.getRequest()) + Constants.RESOURCE_BASE_URL + "/" +
+            out.write("<script type='text/javascript' src='"+ Util.getContextRoot(pageContext.getRequest()) + MobiJspConstants.RESOURCE_BASE_URL + "/" +
                           LIB_ISCROLL + "/" + JS_ISCROLL + "'></script>");
             out.write("</span>"); // end of iscroll script
 

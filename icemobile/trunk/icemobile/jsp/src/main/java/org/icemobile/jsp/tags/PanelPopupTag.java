@@ -16,14 +16,14 @@
 
 package org.icemobile.jsp.tags;
 
-import javax.servlet.jsp.JspTagException;
-import javax.servlet.jsp.tagext.TagSupport;
-
-import org.icemobile.jsp.util.HTML;
+import static org.icemobile.util.HTML.*;
 
 import java.io.IOException;
 import java.util.Stack;
 import java.util.logging.Logger;
+
+import javax.servlet.jsp.JspTagException;
+import javax.servlet.jsp.tagext.TagSupport;
 
 /**
  *
@@ -62,14 +62,14 @@ public class PanelPopupTag extends TagSupport {
 
                 // Only do a close button if configured.
                 if (isAutoCloseButton()) {
-                	writer.startElement(HTML.INPUT_ELEM);
-                	writer.writeAttribute(HTML.TYPE_ATTR, "button");
+                	writer.startElement(INPUT_ELEM);
+                	writer.writeAttribute(TYPE_ATTR, "button");
                 	if (closeButtonLabel != null && !"".equals(closeButtonLabel)) {
-                		writer.writeAttribute(HTML.VALUE_ATTR, closeButtonLabel);
+                		writer.writeAttribute(VALUE_ATTR, closeButtonLabel);
                     } else {
-                    	writer.writeAttribute(HTML.VALUE_ATTR, "Close");
+                    	writer.writeAttribute(VALUE_ATTR, "Close");
                     }
-                	writer.writeAttribute(HTML.ONCLICK_ATTR, "ice.mobi.panelpopup.close('"+id+"');");
+                	writer.writeAttribute(ONCLICK_ATTR, "ice.mobi.panelpopup.close('"+id+"');");
                 	writer.endElement();
                 }
                 writer.endElement();// Close title section
@@ -85,15 +85,15 @@ public class PanelPopupTag extends TagSupport {
     public int doEndTag() throws JspTagException {
     	try{
 	    	Stack<String> initialContext = new Stack<String>();
-	    	initialContext.push(HTML.DIV_ELEM);
+	    	initialContext.push(DIV_ELEM);
 	    	TagWriter writer = new TagWriter(pageContext,initialContext);
 	    	if (name == null || "".equals(name)) {
 	            LOG.warning("No Name attribute for PanelPopup for value submission");
 	        } else {
-	        	writer.startElement(HTML.INPUT_ELEM);
-	        	writer.writeAttribute(HTML.TYPE_ATTR, "hidden");
-	        	writer.writeAttribute(HTML.ID_ATTR, id+"_hidden");
-	        	writer.writeAttribute(HTML.NAME_ATTR, name);
+	        	writer.startElement(INPUT_ELEM);
+	        	writer.writeAttribute(TYPE_ATTR, "hidden");
+	        	writer.writeAttribute(ID_ATTR, id+"_hidden");
+	        	writer.writeAttribute(NAME_ATTR, name);
 	        	writer.endElement();
 	        }
 	    	writer.endElement();
@@ -108,12 +108,12 @@ public class PanelPopupTag extends TagSupport {
     }
 
     public void encodeScript(TagWriter writer) throws IOException{
-    	writer.startElement(HTML.SPAN_ELEM);
-    	writer.writeAttribute(HTML.ID_ATTR, id+"_srcSpan");
+    	writer.startElement(SPAN_ELEM);
+    	writer.writeAttribute(ID_ATTR, id+"_srcSpan");
     	
-    	writer.startElement(HTML.SCRIPT_ELEM);
-    	writer.writeAttribute(HTML.TYPE_ATTR, "text/javascript");
-    	writer.writeAttribute(HTML.ID_ATTR, id+"_script");
+    	writer.startElement(SCRIPT_ELEM);
+    	writer.writeAttribute(TYPE_ATTR, "text/javascript");
+    	writer.writeAttribute(ID_ATTR, id+"_script");
     	
     	writer.writeTextNode("ice.mobi.panelpopup.init('"+id+"',{visible:"+visible
     			+",autocenter:"+autocenter+"});");
