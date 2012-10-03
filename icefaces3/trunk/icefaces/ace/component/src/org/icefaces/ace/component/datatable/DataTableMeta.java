@@ -99,7 +99,9 @@ public class DataTableMeta extends UIDataMeta {
             "table entities.")
     private boolean lazy;
 
-    @Property(tlddoc = "", defaultValue = "0",
+    @Property(tlddoc = "Defines a tabindex to be shared by all keyboard navigable elements of the table. " +
+            "This includes sort controls, filter fields and individual rows themselves.",
+            defaultValue = "0",
             defaultValueType = DefaultValueType.EXPRESSION)
     private Integer tabIndex;
 
