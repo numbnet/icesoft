@@ -16,17 +16,17 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.icemobile.jsp.util.Constants;
-import org.icemobile.jsp.util.Util;
+import org.icemobile.jsp.util.MobiJspConstants;
+import org.icemobile.util.Utils;
 
 
 @WebServlet( name="ICEmobileResourceServlet", 
-	urlPatterns = {Constants.RESOURCE_BASE_URL+"/*"}, 
+	urlPatterns = {MobiJspConstants.RESOURCE_BASE_URL+"/*"}, 
 	loadOnStartup=1)
 public class ResourceServlet extends HttpServlet{
 	
 	private final Date lastModified = new Date();
-	private final String STARTUP_TIME = Util.HTTP_DATE.format(lastModified);
+	private final String STARTUP_TIME = Utils.HTTP_DATE.format(lastModified);
 	private ClassLoader loader;
 	private ServletContext servletContext;
 	
@@ -44,7 +44,7 @@ public class ResourceServlet extends HttpServlet{
                 .getHeader("If-Modified-Since");
         if (null != modifedHeader) {
             try {
-                Date modifiedSince = Util.HTTP_DATE.parse(modifedHeader);
+                Date modifiedSince = Utils.HTTP_DATE.parse(modifedHeader);
                 if (modifiedSince.getTime() + 1000 > lastModified.getTime()) {
                     //respond with a not-modifed
                     httpServletResponse.setStatus(304);
@@ -64,7 +64,7 @@ public class ResourceServlet extends HttpServlet{
         }
 
         String path = httpServletRequest.getPathInfo();
-        String resourceAbsPath = Constants.JAR_RESOURCE_PATH + path;
+        String resourceAbsPath = MobiJspConstants.JAR_RESOURCE_PATH + path;
         final InputStream in = loader.getResourceAsStream(resourceAbsPath);
         if (null == in) {
             httpServletResponse.setStatus(404, "Resource not found, :( " + resourceAbsPath + ", path="+path);
@@ -76,7 +76,7 @@ public class ResourceServlet extends HttpServlet{
 
         OutputStream out = httpServletResponse.getOutputStream();
 
-        Util.copyStream(in, out);
+        Utils.copyStream(in, out);
     }
 
 }

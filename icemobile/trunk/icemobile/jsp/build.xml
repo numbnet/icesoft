@@ -21,6 +21,7 @@
     <property file="build.properties"/>
     <property name="root.offset" value=".."/>
     <property name="lib.dir" location="../lib"/>
+	<property name="core.dir" location="../core/src/main/java"/>
     <property name="java.dir" location="src/main/java"/>
     <property name="resources.dir" location="src/main/resources"/>
     <property file="${root.offset}/build.properties"/>
@@ -38,6 +39,9 @@
     <property name="tld.jar" location="${lib.dir}"/>
     <property name="tld.file"
               location="src/main/resources/META-INF/icemobile.tld"/>
+	<property name="compile.target" value="1.5"/>
+	<property name="compile.source" value="1.5"/>
+	<property name="compile.debug" value="true"/>
 
     <!-- theme location in jar  -->
     <property name="theme.resources.dir"
@@ -53,6 +57,11 @@
     </condition>
     <property name="version.string"
               value="${version.primary}.${version.secondary}.${version.tertiary}"/>
+	
+	<path id="core.classpath">
+        <fileset dir="${lib.dir}" includes="*.jar" excludes="**/javax.faces.jar,**/jsp-api.jar,**/javax.servlet.jsp.jar"/>
+    </path>
+	
     <import file="../resources/build/build.xml"/>
 
     <tstamp>
@@ -90,8 +99,14 @@
         <mkdir dir="${build.dir}/classes"/>
         <mkdir dir="${dist.dir}"/>
     </target>
+	
+	<target name="compile-core" description="compile the sharedsource ">
+        <javac srcdir="${core.dir}" destdir="${classes.dir}" source="${compile.source}" target="${compile.target}" debug="${compile.debug}" verbose="false" includeantruntime="false">
+            <classpath refid="core.classpath" />
+        </javac>
+    </target>
 
-    <target name="compile" depends="pre.compile, product.info"
+    <target name="compile" depends="pre.compile, product.info, compile-core"
             description="compile classes">
         <compile/>
     </target>

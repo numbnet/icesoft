@@ -8,7 +8,7 @@ import java.util.Stack;
 
 import javax.servlet.jsp.PageContext;
 
-import org.icemobile.jsp.util.HTML;
+import static org.icemobile.util.HTML.*;
 
 public class TagWriter {
 	
@@ -161,30 +161,30 @@ public class TagWriter {
 	}
 	
 	public void writeExternalScript(String src) throws IOException{
-		startElement(HTML.SCRIPT_ELEM);
-		writeAttribute(HTML.SRC_ATTR,src);
-		writeAttribute(HTML.TYPE_ATTR,TEXT_JAVASCRIPT);
+		startElement(SCRIPT_ELEM);
+		writeAttribute(SRC_ATTR,src);
+		writeAttribute(TYPE_ATTR,TEXT_JAVASCRIPT);
 		endElement();
 	}
 	
 	public void writeInlineScript(String script) throws IOException{
-		startElement(HTML.SCRIPT_ELEM);
-		writeAttribute(HTML.TYPE_ATTR,TEXT_JAVASCRIPT);
+		startElement(SCRIPT_ELEM);
+		writeAttribute(TYPE_ATTR,TEXT_JAVASCRIPT);
 		writeTextNode(script);
 		endElement();
 	}
 	
 	public void writeInputElement(String id, String type, String value) throws IOException{
-		startElement(HTML.INPUT_ELEM);
+		startElement(INPUT_ELEM);
 		if( id != null ){
-			writeAttribute(HTML.ID_ATTR, id);
+			writeAttribute(ID_ATTR, id);
 		}
 		if( type == null ){
 			type = "text";
 		}
-		writeAttribute(HTML.TYPE_ATTR,type);
+		writeAttribute(TYPE_ATTR,type);
 		if( value != null ){
-			writeAttribute(HTML.VALUE_ATTR, value);
+			writeAttribute(VALUE_ATTR, value);
 		}
 		endElement();
 	}
@@ -195,11 +195,11 @@ public class TagWriter {
 		if( alt == null ){
 			alt = "image";
 		}
-		startElement(HTML.IMG_ELEM);
+		startElement(IMG_ELEM);
 		if( id != null ){
-			writeAttribute(HTML.ID_ATTR,id);
+			writeAttribute(ID_ATTR,id);
 		}
-		writeAttribute(HTML.HREF_ATTR,src);
+		writeAttribute(HREF_ATTR,src);
 		if( style != null ){
 			writeStyle(style);
 		}

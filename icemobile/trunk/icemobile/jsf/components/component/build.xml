@@ -33,6 +33,7 @@
 
 
 	<property name="lib.dir" location="../../../lib" />
+	<property name="core.dir" location="../../../core/src/main/java"/>
 	<property name="src" location="src" />
 	<property name="resources" location="resources" />
 	<property name="build" location="build" />
@@ -87,6 +88,10 @@
 		<pathelement path="../component/build/meta" />
 
 	</path>
+	
+	<path id="core.classpath">
+        <fileset dir="${lib.dir}" includes="*.jar" excludes="**/javax.faces.jar,**/jsp-api.jar,**/javax.servlet.jsp.jar"/>
+    </path>
 
 	<path id="javadoc.classpath">
 		<fileset dir="${lib.dir}" includes="*.jar" />
@@ -220,9 +225,15 @@
 
 		</sequential>
 	</macrodef>
+	
+	<target name="compile-core" description="compile the sharedsource ">
+		<javac srcdir="${core.dir}" destdir="${exploded}" source="${compile.source}" target="${compile.target}" debug="${compile.debug}" verbose="false" includeantruntime="false">
+            <classpath refid="core.classpath" />
+        </javac>
+    </target>
 
 	<target name="compile" depends="prepare, compile-meta, generate, compile-base, compile-manual, compile-support,
-                    min-js-compress, skins, compress-skins" description="compile the source ">
+        min-js-compress, skins, compress-skins" description="compile the source ">
 		<copy todir="${exploded}/META-INF/resources">
 			<fileset dir="${resources}" />
 		</copy>
@@ -231,7 +242,7 @@
 		</copy>
 	</target>
 
-	<target name="compile-base">
+	<target name="compile-base" depends="compile-core">
 		<javac srcdir="${build}/generated/base" destdir="${exploded}" source="${compile.source}" target="${compile.target}" debug="${compile.debug}" verbose="false" includeantruntime="false">
 			<classpath refid="compile.run.classpath" />
 		</javac>

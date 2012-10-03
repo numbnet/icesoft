@@ -23,8 +23,9 @@ import java.util.logging.Logger;
 import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.PageContext;
 
-import org.icemobile.jsp.util.Constants;
+import org.icemobile.jsp.util.MobiJspConstants;
 import org.icemobile.jsp.util.Util;
+import org.icemobile.util.Constants;
 
 /**
  * This is the Device specific detection and script writing tag.
@@ -113,7 +114,7 @@ public class DeviceResourceTag extends BaseSimpleTag {
 			}
 		}
 		writeOutDeviceStyleSheets();
-		out.write(String.format(SCRIPT_ICEMOBILE, contextRoot, Constants.RESOURCE_BASE_URL));
+		out.write(String.format(SCRIPT_ICEMOBILE, contextRoot, MobiJspConstants.RESOURCE_BASE_URL));
 		if( includePush ){
 			out.write(SCRIPT_ICEPUSH);
 		}
@@ -210,7 +211,7 @@ public class DeviceResourceTag extends BaseSimpleTag {
 		String contextRoot = Util.getContextRoot(pageContext.getRequest());
 
 		String cssLink = String.format("<link type='text/css' rel='stylesheet' href='%s%s/%s/%s/%s.css' />", 
-				contextRoot, Constants.RESOURCE_BASE_URL, libVal, nameVal, fileName);
+				contextRoot, MobiJspConstants.RESOURCE_BASE_URL, libVal, nameVal, fileName);
 		out.write(cssLink);
 		
 	}
@@ -254,4 +255,6 @@ public class DeviceResourceTag extends BaseSimpleTag {
 	public void setIncludePush(boolean includePush) {
 		this.includePush = includePush;
 	}
+	
+
 }

@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.util.logging.Logger;
 
 import org.icefaces.mobi.component.googleanalytics.GoogleAnalytics;
-import org.icemobile.jsp.util.HTML;
+import static org.icemobile.util.HTML.*;
 
 
 public class GoogleAnalyticsTag extends BaseSimpleTag{
@@ -31,8 +31,8 @@ public class GoogleAnalyticsTag extends BaseSimpleTag{
 		if( domain == null ){
         	domain = System.getProperty(DOMAIN_ENVVAR);
         }
-		writer.startElement(HTML.SCRIPT_ELEM);
-		writer.writeAttribute(HTML.TYPE_ATTR, "text/javascript");
+		writer.startElement(SCRIPT_ELEM);
+		writer.writeAttribute(TYPE_ATTR, "text/javascript");
 		writer.writeTextNode(getScript(account,domain));
 		writer.endElement();
 	}

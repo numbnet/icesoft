@@ -7,7 +7,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.PageContext;
 
-import org.icemobile.jsp.util.HTML;
+import static org.icemobile.util.HTML.*;
 
 public class ViewSwitcherTag extends BaseSimpleTag{
 	
@@ -98,15 +98,15 @@ public class ViewSwitcherTag extends BaseSimpleTag{
 		if( mobileView != null || tabletView != null || desktopView != null ){
 			TagWriter writer = new TagWriter(getContext());
 			
-			writer.startElement(HTML.SPAN_ELEM);
+			writer.startElement(SPAN_ELEM);
 			writer.writeStyleClassWithBase(styleClass, CSS_CLASS);
 			writer.writeStyle(style);
 			
 			if( mobileView != null ){
-				writer.startElement(HTML.ANCHOR_ELEM);
-				writer.writeAttribute(HTML.ONCLICK_ATTR, SETCOOKIEM);
+				writer.startElement(ANCHOR_ELEM);
+				writer.writeAttribute(ONCLICK_ATTR, SETCOOKIEM);
 				writer.writeDisabled(disabled);
-				writer.writeAttribute(HTML.HREF_ATTR, mobileView);
+				writer.writeAttribute(HREF_ATTR, mobileView);
 				writer.writeTextNode("Mobile");
 				writer.endElement();
 			}
@@ -114,10 +114,10 @@ public class ViewSwitcherTag extends BaseSimpleTag{
 				if( mobileView != null ){
 					writer.writeTextNode(" | ");
 				}
-				writer.startElement(HTML.ANCHOR_ELEM);
-				writer.writeAttribute(HTML.ONCLICK_ATTR, SETCOOKIET);
+				writer.startElement(ANCHOR_ELEM);
+				writer.writeAttribute(ONCLICK_ATTR, SETCOOKIET);
 				writer.writeDisabled(disabled);
-				writer.writeAttribute(HTML.HREF_ATTR, tabletView);
+				writer.writeAttribute(HREF_ATTR, tabletView);
 				writer.writeTextNode("Tablet");
 				writer.endElement();	
 			}
@@ -125,20 +125,20 @@ public class ViewSwitcherTag extends BaseSimpleTag{
 				if( tabletView != null || mobileView != null ){
 					writer.writeTextNode(" | ");
 				}
-				writer.startElement(HTML.ANCHOR_ELEM);
+				writer.startElement(ANCHOR_ELEM);
 				writer.writeDisabled(disabled);
-				writer.writeAttribute(HTML.ONCLICK_ATTR, SETCOOKIED);
-				writer.writeAttribute(HTML.HREF_ATTR, desktopView);
+				writer.writeAttribute(ONCLICK_ATTR, SETCOOKIED);
+				writer.writeAttribute(HREF_ATTR, desktopView);
 				writer.writeTextNode("Desktop");
 				writer.endElement();
 			}
 			if( tabletView != null || mobileView != null || desktopView != null ){
 				writer.writeTextNode(" | ");
 			}
-			writer.startElement(HTML.ANCHOR_ELEM);
+			writer.startElement(ANCHOR_ELEM);
 			writer.writeDisabled(disabled);
-			writer.writeAttribute(HTML.ONCLICK_ATTR, UNSETCOOKIE);
-			writer.writeAttribute(HTML.HREF_ATTR, desktopView);
+			writer.writeAttribute(ONCLICK_ATTR, UNSETCOOKIE);
+			writer.writeAttribute(HREF_ATTR, desktopView);
 			writer.writeTextNode("Auto");
 			writer.endElement();
 		}
