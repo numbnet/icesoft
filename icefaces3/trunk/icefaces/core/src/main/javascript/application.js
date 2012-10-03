@@ -598,13 +598,16 @@ if (!window.ice.icefaces) {
                     (elementType == "password") ||
                     (elementType == "textarea") );
                 if (isText) {
+
                     //click events should not trigger text box submit
                     //blur events are mostly redundant with change events
-                    if ((eType == "click") || (!useBlur) && (eType == "blur")) {
+                    if ((eType == "click") || !useBlur && eType == "blur") {
                         return;
                     }
+
                     //focusout is required for older IE versions
-                    if( eType == "focusout"){
+                    //only check for the value changing if we are not relying on blur
+                    if( !useBlur && eType == "focusout"){
 
                         if(typeof element.previousTextValue === "undefined"){
                             element.previousTextValue = element.value;
@@ -679,7 +682,9 @@ if (!window.ice.icefaces) {
 
             if (f.addEventListener) {
                 //events for most browsers
-                f.addEventListener('blur', submitForm, false);
+                //use the event capture listener rather than the bubble listener if submitOnBlur=true
+                //or the blur events will never arrive (default is false)
+                f.addEventListener('blur', submitForm, useBlur);
                 f.addEventListener('change', submitForm, false);
             } else {
                 //events for IE
