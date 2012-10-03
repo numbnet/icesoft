@@ -103,7 +103,7 @@ public class PushRenderer {
             FacesContext context = FacesContext.getCurrentInstance();
             missingFacesContext(context);
             LazyPushManager.enablePushForSessionViews(context);
-            SessionViewManager.startAddingNewViewsToGroup(context, groupName);
+            SessionViewManager.addCurrentSessionToGroup(context, groupName);
         } else {
             log.warning(MissingICEpushMessage);
         }
@@ -120,7 +120,7 @@ public class PushRenderer {
             FacesContext context = FacesContext.getCurrentInstance();
             missingFacesContext(context);
             LazyPushManager.disablePushForSessionViews(context);
-            SessionViewManager.stopAddingNewViewsToGroup(context, groupName);
+            SessionViewManager.removeCurrentSessionFromGroup(context, groupName);
         } else {
             log.warning(MissingICEpushMessage);
         }

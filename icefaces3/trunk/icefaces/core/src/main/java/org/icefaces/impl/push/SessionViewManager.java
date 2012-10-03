@@ -34,6 +34,16 @@ import java.util.logging.Logger;
 public class SessionViewManager {
     private static final Logger LOGGER = Logger.getLogger(SessionViewManager.class.getName());
 
+    public static void addCurrentSessionToGroup(final FacesContext facesContext, final String groupName) {
+        startAddingNewViewsToGroup(facesContext, groupName);
+        PushContext pushContext = getPushContext(facesContext);
+        State state = getState(facesContext);
+        Iterator<String> viewIDs = state.viewIDList.iterator();
+        while (viewIDs.hasNext()) {
+            pushContext.addGroupMember(groupName, viewIDs.next());
+        }
+    }
+
     public static void addView(FacesContext context, String id) {
         PushContext pushContext = getPushContext(context);
         State state = getState(context);
@@ -42,6 +52,20 @@ public class SessionViewManager {
         Iterator i = state.groups.iterator();
         while (i.hasNext()) {
             pushContext.addGroupMember((String) i.next(), id);
+        }
+    }
+
+    public static List<String> getCurrentViewList(final FacesContext facesContext) {
+        return Collections.unmodifiableList(getState(facesContext).viewIDList);
+    }
+
+    public static void removeCurrentSessionFromGroup(final FacesContext facesContext, final String groupName) {
+        stopAddingNewViewsToGroup(facesContext, groupName);
+        PushContext pushContext = getPushContext(facesContext);
+        State state = getState(facesContext);
+        Iterator<String> viewIDs = state.viewIDList.iterator();
+        while (viewIDs.hasNext()) {
+            pushContext.removeGroupMember(groupName, viewIDs.next());
         }
     }
 
@@ -56,30 +80,14 @@ public class SessionViewManager {
         }
     }
 
-    public static List<String> getViewList(final FacesContext context) {
-        PushContext pushContext = getPushContext(context);
-        State state = getState(context);
-        return Collections.unmodifiableList(state.viewIDList);
-    }
-
     public static void startAddingNewViewsToGroup(FacesContext context, String groupName) {
-        PushContext pushContext = getPushContext(context);
         State state = getState(context);
         state.groups.add(groupName);
-        Iterator<String> viewIDs = state.viewIDList.iterator();
-        while (viewIDs.hasNext()) {
-            pushContext.addGroupMember(groupName, viewIDs.next());
-        }
     }
 
     public static void stopAddingNewViewsToGroup(FacesContext context, String groupName) {
-        PushContext pushContext = getPushContext(context);
         State state = getState(context);
         state.groups.remove(groupName);
-        Iterator<String> viewIDs = state.viewIDList.iterator();
-        while (viewIDs.hasNext()) {
-            pushContext.removeGroupMember(groupName, viewIDs.next());
-        }
     }
 
     private static PushContext getPushContext(FacesContext facesContext) {
