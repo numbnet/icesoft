@@ -33,7 +33,7 @@
     <ui:param name="tldResources" value="#{textAreaEntryResources.tldResources}"/>
 
     <ui:define name="example">
-        <h:form id="textAreaEntryForm">
+        <h:form id="textAreaEntryConfigForm">
             <icecore:singleSubmit/>
             <ace:panel header="Color Customization">
                 <h:panelGrid width="100%" columns="3" columnClasses="col25,col25,col50"
@@ -59,7 +59,9 @@
                         <h:message for="optColor"/>
                 </h:panelGrid>
             </ace:panel>
-        
+        </h:form>
+		
+		<h:form id="textAreaEntryForm">
             <ace:panel id="personalInfoInputPanel" header="Personal Info">
                 <h:panelGrid id="inputGrid" columns="1" width="100%" styleClass="textEntryInputTable">
                     <ace:textAreaEntry id="comment1Input" label="Comments" labelPosition="top" required="true" requiredIndicator="(*)" indicatorPosition="right" styleClass="#{textAreaEntryReqStyleBean.reqColor}">

@@ -33,7 +33,7 @@
     <ui:param name="tldResources" value="#{textAreaEntryResources.tldResources}"/>
 
     <ui:define name="example">
-        <h:form id="textAreaEntryForm">
+        <h:form id="textAreaEntryConfigForm">
             <icecore:singleSubmit/>
             <ace:panel id="labelCustomizing" header="Label Customization">
                 <h:panelGrid width="50%" columns="2" cellpadding="6" cellspacing="6">
@@ -49,7 +49,9 @@
                      </h:selectOneMenu>
                 </h:panelGrid>
             </ace:panel>
-            
+		</h:form>
+
+        <h:form id="textAreaEntryForm">		
             <ace:panel id="inputPanel" header="Comments">
                 <h:panelGrid id="inputGrid" columns="1" width="100%" styleClass="textEntryInputTable">
                     <ace:textAreaEntry id="comment1Input" label="#{textAreaEntryLabelBean.comment1LabelText}" labelPosition="#{textAreaEntryLabelBean.labelPosition}" >
@@ -65,8 +67,7 @@
                     <h:message id="comment1Msg" for="comment1Input" errorClass="ui-state-error-text"/>
                     <h:message id="comment2Msg" for="comment2Input" errorClass="ui-state-error-text"/>
                 </h:panelGrid>
-            </ace:panel>
-            
+            </ace:panel>            
         </h:form>
         
     </ui:define>
