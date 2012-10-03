@@ -2,26 +2,19 @@ package org.icemobile.jsp.tags;
 
 import java.io.IOException;
 import java.io.Writer;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Stack;
 
 import javax.servlet.jsp.PageContext;
-
-import static org.icemobile.util.HTML.*;
 
 public class TagWriter {
 	
 	private Writer out;
 	private Stack<String> elementStack = new Stack<String>();
-	private boolean lastElementClosed = true;
-	private boolean selfClose = false;
-	
+	private boolean lastElementEnded = true;
 	
 	private static final String SPACE = " ";
 	private static final String LT = "<";
 	private static final String GT = ">";
-	private static final String SC = "/>";
 	private static final String SQ = "=\"";
 	private static final String EM = "";
 	private static final String EQ = "\" ";
@@ -31,10 +24,6 @@ public class TagWriter {
 	private static final String CLASS = "class";
 	private static final String DIV = "div";
 	private static final String SPAN = "span";
-	private static final String TEXT_JAVASCRIPT = "text/javascript";
-	private static final List<String> SELFCLOSING_TAGS 
-		= Arrays.asList(new String[]{"area", "br", "embed", "img", "keygen", "wbr","input","meta", "base", 
-		"basefont", "bgsound", "command", "link","param", "source", "track","hr","isindex"});
 	
 	/**
 	 * Create an instance of the TagWriter class. For use with tags that
@@ -83,35 +72,23 @@ public class TagWriter {
 	}
 	
 	public void startElement(String name) throws IOException{
-		if( SELFCLOSING_TAGS.contains(name)){
-			selfClose = true;
-		}
-		else{
-			selfClose = false;
-		}
-		if( !elementStack.isEmpty() && !lastElementClosed){
+		if( !elementStack.isEmpty() && !lastElementEnded){
 			out.write(GT);
 		}
 		out.write(LT);
 		out.write(name);
-		lastElementClosed = false;
+		lastElementEnded = false;
 		elementStack.push(name);
 	}
 	
 	public void endElement() throws IOException{
-		String element = elementStack.pop();
-		if( selfClose ){
-			out.write(SC);
-		}
-		else{
-			if( !lastElementClosed){
-				out.write(GT);
-			}
-			out.write(ET);
-			out.write(element);
+		if( !lastElementEnded){
 			out.write(GT);
 		}
-		lastElementClosed = true;
+		out.write(ET);
+		out.write(elementStack.pop());
+		out.write(GT);
+		lastElementEnded = true;
 	}
 	
 	public void startSpan() throws IOException{
@@ -153,60 +130,11 @@ public class TagWriter {
 	}
 	
 	public void writeTextNode(String text) throws IOException{
-		if( !lastElementClosed ){
+		if( !lastElementEnded ){
 			out.write(GT);
 		}
 		out.write(text);
-		lastElementClosed = true;
-	}
-	
-	public void writeExternalScript(String src) throws IOException{
-		startElement(SCRIPT_ELEM);
-		writeAttribute(SRC_ATTR,src);
-		writeAttribute(TYPE_ATTR,TEXT_JAVASCRIPT);
-		endElement();
-	}
-	
-	public void writeInlineScript(String script) throws IOException{
-		startElement(SCRIPT_ELEM);
-		writeAttribute(TYPE_ATTR,TEXT_JAVASCRIPT);
-		writeTextNode(script);
-		endElement();
-	}
-	
-	public void writeInputElement(String id, String type, String value) throws IOException{
-		startElement(INPUT_ELEM);
-		if( id != null ){
-			writeAttribute(ID_ATTR, id);
-		}
-		if( type == null ){
-			type = "text";
-		}
-		writeAttribute(TYPE_ATTR,type);
-		if( value != null ){
-			writeAttribute(VALUE_ATTR, value);
-		}
-		endElement();
-	}
-	
-	public void writeImageElement(String id, String src, String alt, String style, String styleClass)
-			throws IOException{
-		//alt is required
-		if( alt == null ){
-			alt = "image";
-		}
-		startElement(IMG_ELEM);
-		if( id != null ){
-			writeAttribute(ID_ATTR,id);
-		}
-		writeAttribute(HREF_ATTR,src);
-		if( style != null ){
-			writeStyle(style);
-		}
-		if( styleClass != null ){
-			writeStyleClass(styleClass);
-		}
-		endElement();
+		lastElementEnded = true;
 	}
 	
 	
