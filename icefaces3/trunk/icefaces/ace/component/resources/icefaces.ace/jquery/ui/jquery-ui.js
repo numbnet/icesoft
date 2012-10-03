@@ -9566,7 +9566,7 @@
 
             if ( this.oldValue !== value ) {
                 this.oldValue = value;
-                this._trigger( "change" );
+                this._trigger( "change", undefined, {value: value, percentage: percentage} ); // ICE-8631
             }
 
             this.valueDiv

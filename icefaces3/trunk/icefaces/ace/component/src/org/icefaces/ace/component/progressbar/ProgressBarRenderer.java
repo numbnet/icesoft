@@ -53,7 +53,7 @@ public class ProgressBarRenderer extends CoreRenderer {
 
         if(params.containsKey(clientId)) {
             if (params.containsKey(clientId + "_cancel")) {
-                progressBar.getValueExpression("value").setValue(facesContext.getELContext(), 0);
+                progressBar.setValue(0);
 
                 if (progressBar.getCancelListener() != null) {
                     progressBar.getCancelListener().invoke(facesContext.getELContext(), null);
