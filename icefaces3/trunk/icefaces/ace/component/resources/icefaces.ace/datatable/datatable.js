@@ -1072,7 +1072,8 @@ ice.ace.DataTable.prototype.resizeScrolling = function () {
             var firstNonCond = ice.ace.jq(this.jqId + ' .ui-datatable-scrollable-body:first > table > tbody > tr:not(.dt-cond-row):first');
 
             firstNonCond.clone().attr('id', this.id + '_condAlgnr_'+Math.floor((Math.random()*100)+1))
-                    .css('visibility', 'hidden').prependTo(bodyTable.find('> tbody'));
+                    .css('visibility', 'hidden').prependTo(bodyTable.find('> tbody'))
+                    .find('td').attr('rowspan', 1);
 
             bodyTable.css('margin-top',0 - firstNonCond.height());
         }
