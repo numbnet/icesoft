@@ -183,6 +183,7 @@ public class DataTableHeadRenderer {
         writer.startElement(HTML.SPAN_ELEM, null);
 
         writer.startElement(HTML.SPAN_ELEM, null);
+        writer.writeAttribute(HTML.ID_ATTR, clientId+"_text", null);
         writer.writeAttribute(HTML.CLASS_ATTR, DataTableConstants.HEAD_TEXT_CLASS, null);
 
         //Header content
@@ -225,9 +226,9 @@ public class DataTableHeadRenderer {
     private static boolean panelTargetsColumn(TableConfigPanel panel, Column column, boolean firstColumn, boolean lastColumn, boolean left) {
         if (panel == null) return false;
         String type = panel.getType();
-        if (type.equals("first-col") && firstColumn) {
+        if (type.equals("first-col") && firstColumn && left) {
             return true;
-        } else if (type.equals("last-col") && lastColumn)  {
+        } else if (type.equals("last-col") && lastColumn && !left)  {
             return true;
         } else if (type.equals("in-col-left") && left && panel.getInColumnId().equals(column.getId())) {
             return true;
