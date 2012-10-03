@@ -3,7 +3,6 @@ package org.icemobile.jsp.tags;
 import java.io.IOException;
 import java.util.logging.Logger;
 
-import org.icefaces.mobi.component.googleanalytics.GoogleAnalytics;
 import static org.icemobile.util.HTML.*;
 
 
