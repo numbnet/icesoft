@@ -609,10 +609,6 @@ if (!window.ice.icefaces) {
                     //only check for the value changing if we are not relying on blur
                     if( !useBlur && eType == "focusout"){
 
-                        if(typeof element.previousTextValue === "undefined"){
-                            element.previousTextValue = element.value;
-                        }
-
                         if(element.value == element.previousTextValue){
                             return;
                         }
