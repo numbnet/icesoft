@@ -182,6 +182,8 @@ public class DataTableMeta extends UIDataMeta {
     protected Object savedSortState;
     @Field
     protected Object savedFilterState;
+    @Field
+    private Object cachedGlobalFilter;
 
 
 

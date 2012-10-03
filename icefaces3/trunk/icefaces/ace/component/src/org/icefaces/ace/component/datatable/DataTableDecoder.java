@@ -250,8 +250,8 @@ public class DataTableDecoder {
                 filteredColumn.setFilterValue(params.get(filteredId).toLowerCase());
 
             // Get the value of the global filter
-            String globalFilter = params.get(clientId + UINamingContainer.getSeparatorChar(context) + "globalFilter");
-            table.setFilterValue(globalFilter);
+            //String globalFilter = params.get(clientId + UINamingContainer.getSeparatorChar(context) + "globalFilter");
+            //table.setFilterValue(globalFilter);
 
             // Queue filters for later processing
             table.applyFilters();

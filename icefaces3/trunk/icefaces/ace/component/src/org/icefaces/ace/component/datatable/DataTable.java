@@ -696,7 +696,14 @@ public class DataTable extends DataTableBase implements Serializable {
     }
 
     public Boolean isFilterValueChanged() {
-        return (isConstantRefilter()) ? true : super.isFilterValueChanged();
+        if (isConstantRefilter()) return true;
+
+        Object cached = getCachedGlobalFilter();
+        boolean globalFilterChanged = cached != null && !cached.equals(getFilterValue());
+
+        setCachedGlobalFilter(getFilterValue());
+
+        return super.isFilterValueChanged() || globalFilterChanged;
     }
     
     public void removeSelectedCell(String deselection) {
