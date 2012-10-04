@@ -39,6 +39,7 @@ public class ContactListTag extends SimpleTagSupport {
 
         tag.startDiv();
         tag.writeAttribute("id", getId());
+
         tag.startElement("input");
         tag.writeAttribute("type", "button");
 
@@ -57,6 +58,13 @@ public class ContactListTag extends SimpleTagSupport {
             args.append("select=multiple");
         }
 
+        if (fields != null && !"".equals(fields)) {
+            if (args.length() > 0) {
+                args.append("&");
+            }
+            args.append("fields=").append(fields);
+        }
+
         if (args.length() > 0) {
             tag.writeAttribute("onclick", "ice.fetchContacts('" + getId() + "', '" + args.toString() + "' );");
         } else {
@@ -72,6 +80,7 @@ public class ContactListTag extends SimpleTagSupport {
     private String id;
     private String pattern;
     private boolean multipleSelect;
+    private String fields;
 
 
     public String getLabel() {
@@ -104,5 +113,13 @@ public class ContactListTag extends SimpleTagSupport {
 
     public void setMultipleSelect(boolean multipleSelect) {
         this.multipleSelect = multipleSelect;
+    }
+
+    public String getFields() {
+        return fields;
+    }
+
+    public void setFields(String fields) {
+        this.fields = fields;
     }
 }
