@@ -13,19 +13,20 @@
                modelAttribute="contactBean">
         <h4>Contact List</h4>
 
-<!-- Just an example of searching for
 
-        <!-- <mobi:fetchContact id="contactOne" label="fetch Contacts"  multipleSelect="true"   pattern="p" /> -->
-         <mobi:fetchContact id="contactOne" label="fetch Contacts"   pattern="p" />
+        <mobi:fetchContact id="contactOne" label="fetch Contacts"  multipleSelect="true"   pattern="a"
+        fields="contact, phone" />
+
 
         <mobi:commandButton buttonType='important'
                             style="float:right;margin-right: 25px;"
                             value="Submit"
                             type="submit"/><br>
-        <h4>Contact List Value Echo</h4>
+
+        <h4>Selected Contact List Echo Display</h4>
         <mobi:fieldSetGroup inset="true">
             <mobi:fieldSetRow>
-                <label>Selected Contact:</label>
+                <label>Selected Contact(s):</label>
                 <label style="float:right">${contactBean.contactOne}</label>
             </mobi:fieldSetRow>
         </mobi:fieldSetGroup>
