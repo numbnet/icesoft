@@ -7,6 +7,8 @@ import javax.servlet.jsp.PageContext;
 
 import org.icemobile.jsp.tags.TagUtil.DeviceType;
 import org.icemobile.util.Constants;
+import org.icemobile.util.SXUtils;
+
 import static org.icemobile.util.HTML.*;
 
 public class GetEnhancedTag extends BaseSimpleTag{
@@ -36,7 +38,7 @@ public class GetEnhancedTag extends BaseSimpleTag{
 		
 		if( device == null 
             || TagUtil.isEnhancedBrowser(pageContext)
-            || TagUtil.isAuxUploadBrowser(pageContext) ){
+            || SXUtils.isSXRegistered(getRequest()) ){
 			return;
 		}
 		
