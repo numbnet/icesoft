@@ -30,6 +30,11 @@ public class PushOptions {
         this.attributes = attributes;
     }
 
+    public PushOptions and(final PushOptions pushOptions) {
+        attributes.putAll(pushOptions.attributes);
+        return this;
+    }
+
     public Map<String, Object> getAttributes()  {
         return attributes;
     }
