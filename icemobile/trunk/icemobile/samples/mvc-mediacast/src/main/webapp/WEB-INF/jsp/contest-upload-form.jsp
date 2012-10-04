@@ -21,13 +21,13 @@
                 </c:choose>
            </mobi:fieldSetRow>
         </mobi:fieldSetGroup>
-        <c:if test="${sx or enhanced}">
+        <c:if test="${sessionScope['sxRegistered'] or enhanced}">
             <mobi:fieldSetGroup inset="true" style="margin-top: 10px;">
                  <mobi:fieldSetRow style="text-align:center;">
                     <c:if test="${!desktop and empty sessionScope['sxUpload']}">
                         <mobi:camera id="upload" style="width:70%;vertical-align:top;max-width:200px;"/>
                     </c:if>
-                    <c:if test="${!sx}">
+                    <c:if test="${!sessionScope['sxRegistered']}">
                         <mobi:thumb for="upload" style="margin: 0 2px"/>
                     </c:if>
                     <c:if test="${not empty sxThumbnail and not empty sessionScope['sxUpload']}">

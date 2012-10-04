@@ -3,6 +3,7 @@
 <html>
 <%@ include file="/WEB-INF/jsp/contest-head.jsp"%>
 <body>
+    <div id="root">
 	<mobi:pagePanel>
 		<mobi:pagePanelHeader>
 			<a id="backBtn" class="mobi-button mobi-button-default" style="float:left;line-height:20px;"
@@ -15,5 +16,5 @@
 		</mobi:pagePanelBody>
 		<%@ include file="/WEB-INF/jsp/contest-footer.jsp"%>
 	</mobi:pagePanel>
-</body>
+    </div></body>
 </html>

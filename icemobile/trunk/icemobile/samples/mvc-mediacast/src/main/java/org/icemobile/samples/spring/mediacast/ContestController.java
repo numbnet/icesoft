@@ -1,3 +1,18 @@
+/*
+ * Copyright 2004-2012 ICEsoft Technologies Canada Corp.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the
+ * License. You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an "AS
+ * IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ * express or implied. See the License for the specific language
+ * governing permissions and limitations under the License.
+ */
 package org.icemobile.samples.spring.mediacast;
 
 import java.io.File;
@@ -22,6 +37,7 @@ import javax.validation.Valid;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.icemobile.jsp.tags.TagUtil;
+import org.icemobile.util.SXUtils;
 import org.icepush.PushContext;
 import org.icepush.PushNotification;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +56,7 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.multipart.MultipartFile;
 
 @Controller
-@SessionAttributes(value = {"admin","desktop", "voterId", "sx", "sxThumbnail", "email", "enhanced",
+@SessionAttributes(value = {"admin","desktop", "voterId", "sxThumbnail", "email", "enhanced",
 		TagUtil.USER_AGENT_COOKIE, TagUtil.CLOUD_PUSH_KEY},
 		types=ContestForm.class)
 public class ContestController implements ServletContextAware {
@@ -106,14 +122,6 @@ public class ContestController implements ServletContextAware {
 	}
 
 	@ModelAttribute
-	public void putAttributeSX(WebRequest request, Model model){
-		boolean sx = Utils.isSX(request.getHeader("User-Agent"));
-		if( !model.containsAttribute("sx") || sx){
-			model.addAttribute("sx", sx);
-		}
-	}
-	
-	@ModelAttribute
 	public void putAttributeEnhanced(HttpServletRequest request, Model model){
 		boolean enhanced = Utils.isEnhanced(request);
 		if( !model.containsAttribute("enhanced") || enhanced){
@@ -134,31 +142,14 @@ public class ContestController implements ServletContextAware {
 		model.addAttribute("view", view);
 	}
 
-	@RequestMapping(value="/icemobile", method = RequestMethod.POST)
-	public String postICEmobileSX(HttpServletRequest request,  
-			@RequestParam(value=TagUtil.CLOUD_PUSH_KEY) String cloudKey, 
-			Model model)  {
-		log.info("setting ICEmobile-SX");
-		String userAgent = request.getHeader(TagUtil.USER_AGENT);
-		if (userAgent.contains("ICEmobile-SX"))  {
-			model.addAttribute("sx", true);
-			model.addAttribute(TagUtil.USER_AGENT_COOKIE,
-					"HyperBrowser-ICEmobile-SX/1.0");
-			if (null != cloudKey)  {
-				model.addAttribute(TagUtil.CLOUD_PUSH_KEY, cloudKey);
-			}
-		}
-		return "contest";
-	}
-
 	@RequestMapping(value="/contest", method = RequestMethod.GET)
-	public String get(
+	public String get( HttpServletRequest request,
 			HttpServletResponse response,
 			ContestForm form,
 			@CookieValue(value="votes", required=false) String cookieVotes,
 			Model model, 
 			@ModelAttribute("msg") String msg) {
-
+		
 		log.debug("form="+form+" ,cookies="+cookieVotes);
 
 		String view = null;
@@ -177,10 +168,10 @@ public class ContestController implements ServletContextAware {
 
 		if( PAGE_UPLOAD.equals(form.getP()) ){
 			addUploadViewModel(PAGE_UPLOAD, form.getL(), model);
-			view = "contest-upload";
+			view = "contest-upload-page";
 		}
 		else if( PAGE_GALLERY.equals(form.getP()) ){
-			view = "contest-gallery";
+			view = "contest-gallery-page";
 		}
 		else if( PAGE_VIEWER.equals(form.getP())){
 			addViewerViewModel(form.getPhotoId(),form.getL(), model, false, false);
@@ -321,7 +312,6 @@ public class ContestController implements ServletContextAware {
 			@Valid ContestForm form, BindingResult result,
 			@ModelAttribute("msg") String msg,
 			@ModelAttribute("desktop") boolean desktop,
-			@ModelAttribute("sx") boolean sx,
 			@CookieValue(value="votes", required=false) String cookieVotes,
 			Model model)
 					throws IOException {
@@ -339,7 +329,7 @@ public class ContestController implements ServletContextAware {
 		}
 
 		//SX Image upload before full form post
-		if( multiPart != null && !"true".equals(fullPost) && sx){
+		if( multiPart != null && !"true".equals(fullPost) && SXUtils.isSXRegistered(request)){
 			log.info("SX upload");
 			String sessionId = request.getSession().getId();
 			File sxMasterFile = getOriginalFile(sessionId);
@@ -449,7 +439,7 @@ public class ContestController implements ServletContextAware {
 					+(MOBILE.equals(layout)?"p=upload":"");
 		}
 		else if( MOBILE.equals(layout)){
-			view = "contest-upload";
+			view = "contest-upload-page";
 		}
 		else {
 			view = "contest-upload-form";
