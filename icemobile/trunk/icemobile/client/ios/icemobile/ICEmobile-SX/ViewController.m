@@ -13,9 +13,15 @@
 * See the License for the specific language governing permissions an
 * limitations under the License.
 */
+#define LOGGING_ENABLED     1
+#define LOGGING_LEVEL_TRACE 0
+#define LOGGING_LEVEL_DEBUG 1
+#define LOGGING_LEVEL_INFO  1
+#define LOGGING_LEVEL_ERROR 1
 
 #import "ViewController.h"
 #import "NativeInterface.h"
+#import "Logging.h"
 
 @implementation ViewController
 @synthesize nativeInterface;
@@ -88,7 +94,7 @@
         safariURL = self.returnURL;
     }
 
-    NSLog(@"ICEmobile-SX will open %@", safariURL);
+    LogInfo(@"ICEmobile-SX will open %@", safariURL);
     [[UIApplication sharedApplication] 
             openURL:[NSURL URLWithString:safariURL]];
 }
@@ -125,7 +131,7 @@ NSLog(@"Hitch just upload what would have been scripted %@", script);
 - (NSString *) getFormData:(NSString *)formID  {
     NSString *scriptTemplate = @"ice.getCurrentSerialized();";
     NSString *script = [NSString stringWithFormat:scriptTemplate, formID];
-NSLog(@"Hitch just upload what would have been scripted %@", script);
+    LogDebug(@"Hitch just upload what would have been scripted %@", script);
 
     return @"unkown";
 }
@@ -143,12 +149,12 @@ NSLog(@"hideControls");
 }
 
 - (void) showControls  {
-NSLog(@"showControls");
+    LogDebug(@"showControls");
     self.linkView.hidden = NO;
 }
 
 - (void) hideProgress  {
-NSLog(@"hideProgress");
+    LogDebug(@"hideProgress");
     uploadLabel.hidden = YES;
     uploadProgress.hidden = YES;
     linkView.hidden = NO;
@@ -159,20 +165,20 @@ NSLog(@"hideProgress");
     uploadLabel.hidden = NO;
     uploadProgress.hidden = NO;
     [uploadProgress setProgress:percent / 100.0f];
-NSLog(@"Native progress display %d", percent);
+    LogDebug(@"Native progress display %d", percent);
 }
 
 - (void) handleResponse:(NSString *)responseString  {
-    NSLog(@"handleResponse received %@", responseString);
+    LogDebug(@"handleResponse received %@", responseString);
     [self reloadCurrentURL];
 }
 
 - (void)play: (NSString*)audioId  {
-NSLog(@"Hitch cant play audio from an ID in the page");
+    LogDebug(@"Hitch cant play audio from an ID in the page");
 }
 
 - (void)setThumbnail: (UIImage*)image at: (NSString *)thumbID  {
-NSLog(@"Hitch would show a thumbnail");
+    LogDebug(@"Hitch would show a thumbnail");
 }
 
 
@@ -188,7 +194,7 @@ NSLog(@"Hitch would show a thumbnail");
             stringByAppendingString:@"?" ];
 
     if (nil == title)  {
-        NSLog(@"Command not valid %@", self.currentCommand);
+        LogError(@"Command not valid %@", self.currentCommand);
         return;
     }
 
@@ -209,7 +215,7 @@ NSLog(@"Hitch would show a thumbnail");
         NSString *contextPath = [[theURL pathComponents] objectAtIndex:1];
         NSString *cookiePath = [[@"/" stringByAppendingString:contextPath]
                 stringByAppendingString:@"/"];
-NSLog(@"setCookie contextPath %@ ", contextPath );
+        LogDebug(@"setCookie contextPath %@ ", contextPath );
 
         NSDictionary *properties = [[NSDictionary alloc] initWithObjectsAndKeys:
                 @"JSESSIONID", NSHTTPCookieName,
@@ -219,34 +225,34 @@ NSLog(@"setCookie contextPath %@ ", contextPath );
                 nil ];
 
         NSHTTPCookie *cookie = [NSHTTPCookie cookieWithProperties:properties];
-        NSLog(@"setCookie %@ ", cookie );
+        LogDebug(@"setCookie %@ ", cookie );
         [[NSHTTPCookieStorage sharedHTTPCookieStorage] setCookie: cookie];
-NSLog(@"currentCookies %@ ", [NSHTTPCookieStorage sharedHTTPCookieStorage].cookies );
+        LogDebug(@"currentCookies %@ ", [NSHTTPCookieStorage sharedHTTPCookieStorage].cookies );
 
         [nativeInterface dispatch:self.currentCommand];
     } else if (buttonIndex == 1)  {
         [self doCancel];
     }
-NSLog(@"Alert dismissed via button %d", buttonIndex);
+    LogDebug(@"Alert dismissed via button %d", buttonIndex);
 
 }
 
 - (IBAction) doMediacast  {
-    NSLog(@"ViewController doMediacast");
+    LogDebug(@"ViewController doMediacast");
     [[UIApplication sharedApplication] 
             openURL:[NSURL 
                     URLWithString:@"http://mediacast.icemobile.org"]];
 }
 
 - (IBAction) doMobileshowcase  {
-    NSLog(@"ViewController doMobileshowcase");
+    LogDebug(@"ViewController doMobileshowcase");
     [[UIApplication sharedApplication] 
             openURL:[NSURL 
                     URLWithString:@"http://mobileshowcase.icemobile.org"]];
 }
 
 - (IBAction) chooseAction  {
-    NSLog(@"ViewController chooseAction %d", actionSelector.selectedSegmentIndex);
+    LogDebug(@"ViewController chooseAction %d", actionSelector.selectedSegmentIndex);
     if (-1 == actionSelector.selectedSegmentIndex)  {
         return;
     }
@@ -272,7 +278,7 @@ NSLog(@"Alert dismissed via button %d", buttonIndex);
 }
 
 - (IBAction) returnPressed  {
-    NSLog(@"ViewController returnPressed");
+    LogDebug(@"ViewController returnPressed");
 }
 
 #pragma mark - View lifecycle
