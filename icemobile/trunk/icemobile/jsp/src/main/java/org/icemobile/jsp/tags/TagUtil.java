@@ -180,7 +180,7 @@ public class TagUtil {
      * @return The escaped SX register URL.
      */
     public static String getRegisterSXURL(HttpServletRequest request){
-    	String redirectUrl = getBaseURL(request);
+    	String redirectParm = "&r=" + getBaseURL(request);
     	String forward = (String)request.getAttribute("javax.servlet.forward.servlet_path");
     	if( forward == null ){
     		forward = "";
@@ -192,9 +192,10 @@ public class TagUtil {
 		if( request.getQueryString() != null ){
 			params = "?"+request.getQueryString();
 		}
-		redirectUrl += forward + params;
-		String uploadUrl = TagUtil.getUploadURL(request);
-		String url = "icemobile://c=register&r="+redirectUrl+"&u="+uploadUrl;
+		redirectParm += forward + params;
+		String jsessionParam = "&JSESSIONID="+request.getSession().getId();
+		String uploadParam = "&u="+TagUtil.getUploadURL(request);
+		String url = "icemobile://c=register"+redirectParm+jsessionParam+uploadParam;
 		return url;
     }
     
