@@ -20,7 +20,8 @@ public class Constants{
     public final static String IOS_SMART_APP_BANNER_KEY = "org.icemobile.iosSmartAppBanner";
     public final static String TEMP_DIR = "javax.servlet.context.tmpdir";
     public final static String ICEMOBILE_COOKIE_FORMAT = "org.icemobile.cookieformat";
-    public final static String SESSION_KEY_SX = "iceAuxRequestMap";
+    public final static String SESSION_KEY_AUX_UPLOAD = "iceAuxRequestMap";
+    public final static String SESSION_KEY_SX_REGISTERED = "sxRegistered";
     public final static String USER_AGENT_SX_PART = "ICEmobile-SX";
     public final static String USER_AGENT_SX_FULL = "HyperBrowser-ICEmobile-SX/1.0";
     public static final String USER_AGENT_COOKIE = "com.icesoft.user-agent";
