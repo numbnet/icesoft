@@ -56,6 +56,15 @@ if (!window.ice.mobile) {
             var result = window.ARView.arView(id ,attr);					
         }
 
+	namespace.currentContactId = ""; 
+        namespace.fetchContacts = function(id, attr) {
+	   
+	    ice.currentContactId = id;            
+	    window.jsLogger.logInContainer("Fetch Contact id: " + ice.currentContactId + ", original: " + id); 
+            var result = window.ICEContacts.fetchContacts(id, attr);
+            return result;
+        }
+
         namespace.camera = function(id, attr)  {
 	    alert('into camera');
             var result = window.ICEcamera.shootPhoto(id ,attr);					
@@ -206,6 +215,7 @@ if (!window.ice.mobile) {
             if (vtype)  {
                 hidden.setAttribute("data-type", vtype);
             }
+
             targetElm.parentNode.insertBefore(hidden, targetElm);
         }
 
