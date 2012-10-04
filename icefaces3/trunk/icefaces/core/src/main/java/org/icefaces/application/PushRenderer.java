@@ -154,8 +154,11 @@ public class PushRenderer {
         if (EnvUtils.isICEpushPresent()) {
             FacesContext context = FacesContext.getCurrentInstance();
             missingFacesContext(context);
-            Map<String, Object> applicationMap =
-                    context.getExternalContext().getApplicationMap();
+            Boolean pushOthers = (Boolean)options.getAttributes().get(PushOthers.PUSH_OTHERS);
+            if (pushOthers != null && pushOthers) {
+                options.getAttributes().put("pushIDList", SessionViewManager.getCurrentViewList(context));
+            }
+            Map<String, Object> applicationMap = context.getExternalContext().getApplicationMap();
             PushIsolator.render(applicationMap, group, options);
         } else {
             log.warning(MissingICEpushMessage);
