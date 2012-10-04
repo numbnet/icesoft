@@ -6,6 +6,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.jsp.PageContext;
 import javax.servlet.jsp.tagext.SimpleTagSupport;
 
+import org.icemobile.util.ClientDescriptor;
+
 public abstract class BaseSimpleTag  extends SimpleTagSupport {
 	
 	protected boolean disabled;
@@ -57,6 +59,10 @@ public abstract class BaseSimpleTag  extends SimpleTagSupport {
     
     protected String getContextRoot(){
     	return getRequest().getContextPath();
+    }
+    
+    protected ClientDescriptor getClientDescriptor(){
+        return ClientDescriptor.getInstance(getRequest());
     }
 
 }
