@@ -1223,7 +1223,9 @@
         </attribute>
     </tag>
     <tag>
-        <description>Contact List Tag</description>
+        <description>The Contact List Tag will invoke the containers native
+            interface to fetch various fields from the contacts database
+        </description>
         <name>fetchContact</name>
         <tag-class>org.icemobile.jsp.tags.ContactListTag</tag-class>
         <body-content>empty</body-content>
@@ -1255,6 +1257,16 @@
             <required>false</required>
             <type>boolean</type>
             <description>If true, list allows for multiple user selections
+            </description>
+        </attribute>
+        <attribute>
+            <name>fields</name>
+            <rtexprvalue>true</rtexprvalue>
+            <required>false</required>
+            <type>String</type>
+            <description>Can contain one or more of contact, email, and phone
+                fields for retrieval
+                in a csv list. Default is contact information
             </description>
         </attribute>
     </tag>
