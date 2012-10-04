@@ -42,6 +42,7 @@ public class UserAgentInfo {
     public static final String TABLET = "tablet";
     public static final String GALAXY_TABLET = "gt-p1000";
     public static final String MSIE = "msie";
+    public static final String ANDROID_CONTAINER = "apache-httpclient";
 
     protected UserAgentInfo(String userAgent) {
         if (userAgent != null) {
@@ -87,7 +88,7 @@ public class UserAgentInfo {
     }
 
     public boolean isAndroidOS() {
-        boolean foundAndroid = userAgentString.contains(ANDROID);
+        boolean foundAndroid = userAgentString.contains(ANDROID) || userAgentString.contains(ANDROID_CONTAINER);
         log(foundAndroid, "Android", userAgentString);
         return foundAndroid;
     }
@@ -120,7 +121,7 @@ public class UserAgentInfo {
     }
     
     public boolean isDesktopBrowser(){
-        if ((null != userAgentString) && userAgentString.contains("apache-httpclient"))  {
+        if ((null != userAgentString) && userAgentString.contains(ANDROID_CONTAINER))  {
             //hack for android container
             return false;
         } 
