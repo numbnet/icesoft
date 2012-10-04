@@ -25,6 +25,7 @@ import javax.servlet.jsp.PageContext;
 
 import org.icemobile.jsp.util.MobiJspConstants;
 import org.icemobile.jsp.util.Util;
+import org.icemobile.util.ClientDescriptor;
 import org.icemobile.util.Constants;
 
 /**
@@ -84,16 +85,16 @@ public class DeviceResourceTag extends BaseSimpleTag {
 
 	public void doTag() throws IOException {
 		
-		boolean ios6 = false;
+	    boolean ios6 = false;
 		boolean desktop = false;
 				
 		PageContext pageContext = getContext();
+		ClientDescriptor client = getClientDescriptor();
 		
-		ios6 = TagUtil.isIOS6orHigher(pageContext);
+		ios6 = client.isIOS6();
 		if( !ios6 ){
-			desktop = TagUtil.isDesktop(pageContext);
+			desktop = client.isDesktopBrowser();
 		}
-			
 		JspWriter out = pageContext.getOut();
 		String contextRoot = getContextRoot();
 		out.write(META_CONTENTTYPE);
@@ -104,10 +105,9 @@ public class DeviceResourceTag extends BaseSimpleTag {
 			if( ios6 ){
 				out.write(META_IOS_WEBAPPCAPABLE);
 				out.write(META_IOS_APPSTATUSBAR);
-				if( includeIOSSmartAppBanner ){
+				if( includeIOSSmartAppBanner && !client.isSXRegistered()){
 					String smartAppMeta = String.format(META_IOS_SMARTAPPBANNER, IOS_APP_ID, 
 							TagUtil.getRegisterSXURL(getRequest()));
-					System.out.println("smartAppMeta="+smartAppMeta);
 					out.write(smartAppMeta);
 					pageContext.setAttribute(Constants.IOS_SMART_APP_BANNER_KEY, Boolean.TRUE);
 				}
@@ -154,8 +154,6 @@ public class DeviceResourceTag extends BaseSimpleTag {
 		// check for empty string on name attribute used for auto mode where
 		// name value binding is used.
 		nameVal = nameVal != null && nameVal.equals(EMPTY_STRING) ? null : name;
-
-		log.fine("name="+nameVal+", lib="+libVal+", view="+viewVal);
 
 		// 1.) full automatic device detection.
 		if (nameVal == null && libVal == null) {
@@ -206,8 +204,7 @@ public class DeviceResourceTag extends BaseSimpleTag {
 			// nothing to do, any error will be displayed back to user at runtime
 			// if the resource can't be found.
 		}
-		log.info("name="+nameVal+", lib="+libVal+", view="+viewVal);
-
+		
 		String contextRoot = Util.getContextRoot(pageContext.getRequest());
 
 		String cssLink = String.format("<link type='text/css' rel='stylesheet' href='%s%s/%s/%s/%s.css' />", 

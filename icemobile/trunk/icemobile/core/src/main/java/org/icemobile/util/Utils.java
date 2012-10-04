@@ -1,3 +1,18 @@
+/*
+ * Copyright 2004-2012 ICEsoft Technologies Canada Corp.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the
+ * License. You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an "AS
+ * IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ * express or implied. See the License for the specific language
+ * governing permissions and limitations under the License.
+ */
 package org.icemobile.util;
 
 import java.io.IOException;
@@ -8,6 +23,7 @@ import java.text.SimpleDateFormat;
 import java.util.Locale;
 import java.util.logging.Logger;
 
+import javax.servlet.ServletRequest;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 
@@ -65,4 +81,33 @@ public class Utils {
         }
         return count;
     }
+    
+    public static String getUserAgent(HttpServletRequest request){
+        return request.getHeader("User-Agent");
+    }
+
+    /**
+     * Get the base URL for the request. 
+     * 
+     * The base URL will include the scheme, server name, port, and 
+     * application context, but not the page, or servlet path, 
+     * or query string. The returned URL will include a trailing slash.
+     * eg. http://server:8080/myapp/
+     * 
+     * @param request The ServletRequest
+     * @return The base URL.
+     */
+    public static String getBaseURL(ServletRequest request) {
+        HttpServletRequest httpRequest = (HttpServletRequest) request;
+        String serverName = httpRequest.getHeader("x-forwarded-host");
+        if (null == serverName) {
+            serverName = httpRequest.getServerName() + ":" +
+                httpRequest.getServerPort();
+        }
+        return httpRequest.getScheme() + "://" + serverName +
+            httpRequest.getContextPath() + "/";
+    }
+
+
+
 }
