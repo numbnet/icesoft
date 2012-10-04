@@ -87,6 +87,8 @@
     <target name="zip.src">
         <zip.src />
     </target>
+	
+	<target name="clean.build.all" depends="clean,build.all"/>
 
     <target name="build.bin.bundle" depends="build.bin, clean.bin"
             description="Creates ICEmobile binary bundle.">
