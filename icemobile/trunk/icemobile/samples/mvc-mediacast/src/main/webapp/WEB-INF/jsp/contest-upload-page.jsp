@@ -4,7 +4,8 @@
 <html>
 	<%@ include file="/WEB-INF/jsp/contest-head.jsp"%>
     <body>
-        <div id="contestUploadContent">
+</c:if>
+        <div id="root">
             <mobi:pagePanel>
                 <mobi:pagePanelHeader>
                     <a id="backBtn"class="mobi-button mobi-button-default"
@@ -24,9 +25,10 @@
                 <%@ include file="/WEB-INF/jsp/contest-footer.jsp"%>
             </mobi:pagePanel>
         </div>
+        <script type="text/javascript">
+            enhanceGet("#backBtn");
+        </script>
+<c:if test="${!ajaxRequest}">
     </body>
 </html>
-</c:if>
-<c:if test="${ajaxRequest}">
-    <%@ include file="/WEB-INF/jsp/contest-upload-form.jsp" %>
 </c:if>

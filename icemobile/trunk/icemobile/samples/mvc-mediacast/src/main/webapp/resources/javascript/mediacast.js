@@ -1,3 +1,28 @@
+function enhanceGet(link){
+	$(link).click(function(event){
+		var elem = $('#ajaxloader');
+		elem.css("position","absolute");
+		elem.css("top", (($(window).height() - elem.outerHeight()) / 2) + 
+	    		$(window).scrollTop() + "px");
+		elem.css("left", (($(window).width() - elem.outerWidth()) / 2) + 
+	    		$(window).scrollLeft() + "px");
+	   elem.fadeIn();
+		
+		$.ajax({
+	        url:$(this).attr("href"),
+	        cache:false,
+	        type:'GET',
+	        success:function (html) {
+	        	$(document.body).fadeOut
+	            $(document.body).html(html);
+	        },
+	        error:function(){
+	        	$('#ajaxloader').fadeOut();
+	        }
+	    });
+		return false;
+	});
+}
 function enhanceForm(theForm,updateTarget)  {
     //submitting the form will update 
     $(document).ready(function () {
