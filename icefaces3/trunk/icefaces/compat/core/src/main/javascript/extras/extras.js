@@ -2506,7 +2506,8 @@ Object.extend(Object.extend(Ice.Autocompleter.prototype, Autocompleter.Base.prot
         Ice.Autocompleter.logger.debug("Building Ice Autocompleter ID [" + id + "]");
         this.partialSubmit = partialSubmit;
         var existing = Autocompleter.Finder.list[id];
-        if (!Prototype.Browser.IE && existing && !existing.monitor.changeDetected()) {
+        var element = $(id);
+        if (existing && element && !existing.monitor.changeDetected(element)) {
             return;
         }
 
@@ -2516,7 +2517,6 @@ Object.extend(Object.extend(Ice.Autocompleter.prototype, Autocompleter.Base.prot
         else
             options = {minChars:0};
 */
-        var element = $(id);
         var ue = $(updateId);
         this.baseInitialize(element, ue, options, rowClass, selectedRowClass);
 
@@ -2529,9 +2529,9 @@ Object.extend(Object.extend(Ice.Autocompleter.prototype, Autocompleter.Base.prot
         }
         Autocompleter.Finder.add(this.element, this);
         Ice.Autocompleter.logger.debug("Done building Ice Autocompleter");
-        if (this.monitor.changeDetected()) {
+        /*if (this.monitor.changeDetected()) {
             Ice.Autocompleter.logger.debug("Change has been detected");
-        }
+        }*/
     },
 
     getUpdatedChoices: function(isEnterKey, event, idx) {
