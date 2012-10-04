@@ -39,7 +39,9 @@ public class InputTextTag extends SimpleTagSupport {
     private int rows;
 
     // passthrough attributes for html5
-    private String autoCorrect;
+    private String autoCorrect = "off";
+    private String autoCapitalize = "off";
+    private String autoComplete = "off";
     private String placeholder;
 
     public void doTag() throws IOException {
@@ -71,10 +73,12 @@ public class InputTextTag extends SimpleTagSupport {
         }
         // apply pass through attributes.
         out.write(" class=\"" + baseClass.toString() + "\"");
-        if( style != null ){
-        	out.write(" style=\"" + style + "\"");
+        if (style != null) {
+            out.write(" style=\"" + style + "\"");
         }
+        out.write(" autocomplete=\"" + autoComplete + "\"");
         out.write(" autocorrect=\"" + autoCorrect + "\"");
+        out.write(" autocapitalize=\"" + autoCapitalize + "\"");
         out.write(" placeholder=\"" + placeholder + "\"");
         // apply textarea passthough attributes.
         if (rows > 0) {
@@ -161,6 +165,22 @@ public class InputTextTag extends SimpleTagSupport {
 
     public void setPlaceholder(String placeholder) {
         this.placeholder = placeholder;
+    }
+
+    public String getAutoCapitalize() {
+        return autoCapitalize;
+    }
+
+    public void setAutoCapitalize(String autoCapitalize) {
+        this.autoCapitalize = autoCapitalize;
+    }
+
+    public String getAutoComplete() {
+        return autoComplete;
+    }
+
+    public void setAutoComplete(String auto) {
+        this.autoComplete = auto;
     }
 
     public int getCols() {
