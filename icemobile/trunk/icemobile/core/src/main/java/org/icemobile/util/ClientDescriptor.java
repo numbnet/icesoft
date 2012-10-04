@@ -164,7 +164,7 @@ public class ClientDescriptor {
 
     private void updateHttpAccepted(HttpServletRequest request){
         String accept = request.getHeader(HEADER_ACCEPT);
-        httpAccepted = (accept == null ? null : accept.toLowerCase());
+        httpAccepted = (accept == null ? "" : accept.toLowerCase());
     }
     
     private void updateICEmobileContainer(HttpServletRequest request){
