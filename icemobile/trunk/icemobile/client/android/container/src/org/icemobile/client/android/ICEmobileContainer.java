@@ -71,6 +71,7 @@ import android.content.ActivityNotFoundException;
 
 import org.icemobile.client.android.c2dm.C2dmHandler;
 import org.icemobile.client.android.c2dm.C2dmRegistrationHandler;
+import org.icemobile.client.android.contacts.ContactListInterface;
 import org.icemobile.client.android.qrcode.CaptureActivity;
 import org.icemobile.client.android.qrcode.CaptureJSInterface;
 import org.icemobile.client.android.qrcode.Intents;
@@ -87,9 +88,10 @@ public class ICEmobileContainer extends Activity
     protected static final boolean INCLUDE_CAMERA = true;
     protected static final boolean INCLUDE_AUDIO = true;
     protected static final boolean INCLUDE_VIDEO = true;
+    protected static final boolean INCLUDE_CONTACTS = true;
     protected static final int HISTORY_SIZE = 20;
     protected static final int NETWORK_DOWN_DELAY = 5000;
-    protected static final String C2DM_SENDER = "1020381675267";
+    protected static final String C2DM_SENDER = "icec2dm@gmail.com";
     /* Intent Return Codes */
     protected static final int TAKE_PHOTO_CODE = 1;
     protected static final int TAKE_VIDEO_CODE = 2;
@@ -97,7 +99,7 @@ public class ICEmobileContainer extends Activity
     public static final int SCAN_CODE = 4;
     protected static final int RECORD_CODE = 5;
     protected static final int ARVIEW_CODE = 6;
-    
+
     public static final String SCAN_ID = "org.icemobile.id";
 
     /* progress bar config */
@@ -111,6 +113,7 @@ public class ICEmobileContainer extends Activity
     private Handler mHandler = new Handler();
     private UtilInterface utilInterface;
     private CameraHandler mCameraHandler;
+    private ContactListInterface mContactListInterface;
     private CameraInterface mCameraInterface;
     private CaptureActivity mCaptureActivity;
     private CaptureJSInterface mCaptureInterface;
@@ -189,10 +192,12 @@ public class ICEmobileContainer extends Activity
 	setHwAccelerate(accelerated, false);
 	includeUtil();
 	includeQRCode();
-	includeARView();
+	includeARView(); 
 	if (INCLUDE_CAMERA) includeCamera();
 	if (INCLUDE_AUDIO) includeAudio();
 	if (INCLUDE_VIDEO) includeVideo();
+    if (INCLUDE_CONTACTS) includeContacts();
+     
 	if (prefs.getBoolean("c2dm",true)) {
 	    includeC2dm();
 	}
@@ -214,33 +219,33 @@ public class ICEmobileContainer extends Activity
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-	if (resultCode == RESULT_OK) {
-	    switch(requestCode){
-	    case TAKE_PHOTO_CODE:
-		mCameraHandler.gotPhoto();
-		break;
-	    case TAKE_VIDEO_CODE:
-		mVideoHandler.gotVideo(data);
-		break;
-	    case HISTORY_CODE:
-		newURL = data.getStringExtra("url");
-		historyManager.add(newURL);
-		loadUrl();
-		break;
-	    case SCAN_CODE:
-            String scanResult = data.getStringExtra(Intents.Scan.RESULT);
-            utilInterface.loadURL(
-                    "javascript:ice.addHidden(ice.currentScanId, ice.currentScanId, '" +
-                    scanResult + "');");
-		break;
-	    case RECORD_CODE:
-		mAudioRecorder.gotAudio(data);
-		break;
-	    case ARVIEW_CODE:
+        if (resultCode == RESULT_OK) {
+            switch(requestCode){
+                case TAKE_PHOTO_CODE:
+                    mCameraHandler.gotPhoto();
+                    break;
+                case TAKE_VIDEO_CODE:
+                    mVideoHandler.gotVideo(data);
+                    break;
+                case HISTORY_CODE:
+                    newURL = data.getStringExtra("url");
+                    historyManager.add(newURL);
+                    loadUrl();
+                    break;
+                case SCAN_CODE:
+                    String scanResult = data.getStringExtra(Intents.Scan.RESULT);
+                    utilInterface.loadURL(
+                        "javascript:ice.addHidden(ice.currentScanId, ice.currentScanId, '" +
+                            scanResult + "');");
+                    break;
+                case RECORD_CODE:
+                    mAudioRecorder.gotAudio(data);
+                    break;
+                case ARVIEW_CODE:
 //		mARViewHandler.arViewComplete(data);
-		break;
-	    }
-	}
+                    break;
+            }
+        }
     }
 
     @Override
@@ -450,12 +455,12 @@ public class ICEmobileContainer extends Activity
 	    callback.invoke(origin, true, false);
 	}
 
-        @Override
-        public boolean onJsAlert(WebView view, String url, String message, JsResult result) {
-            Log.e("ICEcontainer", "Alert: " +  message);
-            result.confirm();
-            return true;
-        }
+    @Override
+    public boolean onJsAlert(WebView view, String url, String message, JsResult result) {
+        Log.e("ICEcontainer", "Alert: " +  message);
+        result.confirm();
+        return true;
+    }
 
 	@Override
 	    public void onShowCustomView(View view, CustomViewCallback callback) {
@@ -533,12 +538,19 @@ public class ICEmobileContainer extends Activity
         mWebView.addJavascriptInterface(mCameraInterface, "ICEcamera");
     }
 
+    private void includeContacts() {
+
+//        mContactListHandler = new ContactListHandler( this, utilInterface);
+        mContactListInterface = new ContactListInterface( utilInterface, this,  getContentResolver());
+        mWebView.addJavascriptInterface( mContactListInterface, "ICEContacts");
+    }
+
     private void includeARView() {
         mARViewHandler = new ARViewHandler(this,mWebView, utilInterface, ARVIEW_CODE);
         mARViewInterface = new ARViewInterface(mARViewHandler);
         mWebView.addJavascriptInterface(mARViewInterface, "ARView");
     }
-
+    
     private void includeQRCode() {
         mCaptureInterface = new CaptureJSInterface(this, SCAN_CODE, SCAN_ID);
         mWebView.addJavascriptInterface(mCaptureInterface, "ICEqrcode");
