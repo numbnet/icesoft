@@ -186,7 +186,7 @@ public class ClientDescriptor {
     }
     
     private void updateSXRegistered(HttpServletRequest request){
-        sxRegistered = request.getSession().getAttribute(Constants.SESSION_KEY_SX) != null;
+        sxRegistered = request.getSession().getAttribute(Constants.SESSION_KEY_SX_REGISTERED) != null;
         System.out.println("*************** sx="+sxRegistered);
     }
     
