@@ -20,20 +20,18 @@ import java.util.logging.Logger;
 
 public class UserAgentInfo {
     
-    private static Logger log = Logger.getLogger(
-            UserAgentInfo.class.getName());
+    private static Logger log = Logger.getLogger(UserAgentInfo.class.getName());
 
     //info about browser and device
     private String userAgentString;
-
-    //what browser can display
-    private String httpAccepted;
 
     //each device has list of info about device and capabilities
     public static final String IPHONE = "iphone";
     public static final String IPAD = "ipad";
     public static final String IPOD = "ipod";
-    public static final String MAC = "macintosh"; //test laptop
+    
+    public static final String MAC = "macintosh"; 
+    public static final String WINDOWS = "windows";
     public static final String ANDROID = "android";
     public static final String MOBILE = "mobile";
     public static final String BLACKBERRY = "blackberry";
@@ -45,22 +43,10 @@ public class UserAgentInfo {
     public static final String GALAXY_TABLET = "gt-p1000";
     public static final String MSIE = "msie";
 
-    /** Protected Constructor as this class should only be used through DeviceDescriptor */
-    protected UserAgentInfo(String userAgent, String httpAcc) {
-        if (userAgent != null) {
-            this.userAgentString = userAgent.toLowerCase();
-        }
-        if (httpAcc != null) {
-            this.httpAccepted = httpAcc.toLowerCase();
-        }
-    }
-
-    /** Protected Constructor as this class should only be used through DeviceDescriptor */
     protected UserAgentInfo(String userAgent) {
         if (userAgent != null) {
             this.userAgentString = userAgent.toLowerCase();
         }
-        this.httpAccepted = "*/*";
     }
 
     public boolean isIpod() {
@@ -100,25 +86,27 @@ public class UserAgentInfo {
         return result;
     }
 
-    public boolean isAndroidPhone() {
-        boolean foundAndroid = userAgentString.contains(ANDROID) && 
-        		userAgentString.contains(MOBILE) && !userAgentString.contains(GALAXY_TABLET) 
-        		&& !userAgentString.contains(TABLET);
-        log(foundAndroid, "Android Mobile", userAgentString);
+    public boolean isAndroidOS() {
+        boolean foundAndroid = userAgentString.contains(ANDROID);
+        log(foundAndroid, "Android", userAgentString);
         return foundAndroid;
     }
 
-    public boolean isAndroidTablet() {
-        boolean result = userAgentString.contains(ANDROID) && 
-        	(!userAgentString.contains(MOBILE) || userAgentString.contains(GALAXY_TABLET) 
-        	|| userAgentString.contains(TABLET));
-        log(result, "Android Tablet", userAgentString);
-        return result;
-    }
-
-    public boolean isBlackberry() {
+    public boolean isBlackberryOS() {
         boolean result = userAgentString.contains(BLACKBERRY);
         log(result, "BlackBerry", userAgentString);
+        return result;
+    }
+    
+    public boolean isMacOS(){
+        boolean result = userAgentString.contains(MAC);
+        log(result, "Macintosh", userAgentString);
+        return result;
+    }
+    
+    public boolean isWindowsOS(){
+        boolean result = userAgentString.contains(WINDOWS);
+        log(result, "Windows", userAgentString);
         return result;
     }
 
@@ -131,7 +119,7 @@ public class UserAgentInfo {
         }
     }
     
-    public boolean isDesktop(){
+    public boolean isDesktopBrowser(){
         if ((null != userAgentString) && userAgentString.contains("apache-httpclient"))  {
             //hack for android container
             return false;
