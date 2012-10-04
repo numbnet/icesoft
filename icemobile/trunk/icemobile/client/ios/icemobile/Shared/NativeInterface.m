@@ -21,6 +21,7 @@
 #import "PlaceLabel.h"
 #import "MobileCoreServices/MobileCoreServices.h"
 #import "MediaPlayer/MediaPlayer.h"
+#import "Logging.h"
 
 #ifdef USE_ARMARKER
 #import "ARMarkerViewer.h"
@@ -74,7 +75,7 @@ static char base64EncodingTable[64] = {
 /*Return YES to indicate that the command was successfully dispatched
 */
 - (BOOL)dispatch: (NSString*)command  {
-    NSLog(@"NativeInterface dispatch %@ ", command);
+    LogInfo(@"NativeInterface dispatch %@ ", command);
     NSArray *queryParts = [command componentsSeparatedByString:@"?"];
     NSString *commandName = [queryParts objectAtIndex:0];
     NSDictionary *params;
@@ -112,7 +113,7 @@ static char base64EncodingTable[64] = {
 
 - (BOOL)camera: (NSString*)cameraId maxwidth: (NSString*)maxw 
         maxheight: (NSString*)maxh {
-NSLog(@"called camera");
+    LogDebug(@"called camera");
     self.activeDOMElementId = cameraId;
     self.maxwidth = maxw;
     self.maxheight = maxh;
@@ -161,7 +162,7 @@ NSLog(@"called camera");
 
 - (void)recordStart  {
     NSString *micName = self.activeDOMElementId;
-    NSLog(@"called microphone for %@", micName);
+    LogDebug(@"called microphone for %@", micName);
 
     NSURL *soundFileURL = [[NSURL alloc] 
             initFileURLWithPath: self.soundFilePath];
@@ -192,14 +193,14 @@ NSLog(@"called camera");
     self.soundRecorder = avRecorder;
 //    soundRecorder.delegate = self;
     [soundRecorder prepareToRecord];
-    NSLog(@"recording started");
+    LogDebug(@"recording started");
     [soundRecorder record];
     self.recording = YES;
 
 }
 
 - (void)recordStop  {
-    NSLog(@"recording stopped");
+    LogDebug(@"recording stopped");
     [self.soundRecorder stop];
 }
 
@@ -249,7 +250,7 @@ NSLog(@"called camera");
     }
 
     NSString *savedPath = [self saveImage:uploadImage];
-    NSLog(@"called camera and saved %@ for %@", savedPath, cameraId);
+    LogDebug(@"called camera and saved %@ for %@", savedPath, cameraId);
     // Remove the picker interface and release the picker object.
     [self dismissImagePicker];
     [picker release];
@@ -319,7 +320,7 @@ NSLog(@"called camera");
 }
 
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
-    NSLog(@"imagePickerControllerDidCancel");
+    LogTrace(@"imagePickerControllerDidCancel");
     [self dismissImagePicker];
     [picker release];
     [self.controller doCancel];
@@ -340,7 +341,7 @@ NSLog(@"called camera");
 
     CGFloat factor = MIN(factorX, factorY);
     
-    NSLog(@"scaling image with factor %f %f", factorX, factorY);
+    LogDebug(@"scaling image with factor %f %f", factorX, factorY);
     CGSize bufSize = CGSizeMake(maxwF, maxhF);
     UIGraphicsBeginImageContext(bufSize);
     [image drawInRect:CGRectMake(0, 0, imageSize.width * factor, 
@@ -365,7 +366,7 @@ NSLog(@"called camera");
 
 - (BOOL)scan: (NSString*)scanId  {
     self.activeDOMElementId = scanId;
-    NSLog(@"NativeInterface scan ");
+    LogTrace(@"NativeInterface scan ");
     UIViewController *scanController = [qrScanner scanController];
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)  {
         if (nil == self.scanPopover)  {
@@ -401,7 +402,7 @@ NSLog(@"called camera");
 
 - (BOOL)aug: (NSString*)augId locations:(NSDictionary *)places {
     self.activeDOMElementId = augId;
-    NSLog(@"NativeInterface aug ");
+    LogTrace(@"NativeInterface aug ");
     if (nil == self.augController)  {
         if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)  {
             self.augController = [[ARViewController alloc] 
@@ -413,7 +414,7 @@ NSLog(@"called camera");
         augController.nativeInterface = self;
     }
     NSString *viewer = [places objectForKey:@"v"];
-    NSLog(@"NativeInterface aug VIEWER %@", viewer);
+    LogDebug(@"NativeInterface aug VIEWER %@", viewer);
     if ([viewer isEqualToString:@"vuforia"])  {
         [self augMarkerView:augId withMarkers:places];
         return YES;
@@ -476,7 +477,7 @@ NSLog(@"called camera");
             label.heading = hed;
         }
         [placeLabels addObject:label];
-        NSLog(@"loaded marker %@ coords %f,%f %f %@", name, lat,lon, hed, url);
+        LogDebug(@"loaded marker %@ coords %f,%f %f %@", name, lat,lon, hed, url);
 
     }
     [self.augController setPlaceLabels:placeLabels];
@@ -501,7 +502,7 @@ NSLog(@"called camera");
 
 - (void)augMarkerView:(NSString*) augId withMarkers:(NSDictionary *)markers  {
 #ifdef USE_ARMARKER
-    NSLog(@"NativeInterface augMarkerView");
+    LogTrace(@"NativeInterface augMarkerView");
 
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)  {
 //        if (nil == self.augPopover)  {
@@ -541,14 +542,14 @@ NSLog(@"called camera");
     [self augHide];
     NSString *augName = self.activeDOMElementId;
     NSString *augResult = self.augController.selectedPlace;
-NSLog(@"NativeInterface aug selected %@", augResult);
+    LogDebug(@"NativeInterface aug selected %@", augResult);
     [controller completePost:augResult forComponent:augName
             withName:augName];
 }
 
 - (BOOL)upload: (NSString*)formId  {
     if (self.uploading)  {
-    NSLog(@" already uploading, ignoring request");
+    LogInfo(@" already uploading, ignoring request");
         return NO;
     }
     self.uploading = YES;
@@ -676,7 +677,7 @@ NSLog(@"NativeInterface aug selected %@", augResult);
     [request addValue:@"partial/ajax" forHTTPHeaderField:@"Faces-Request"];
     NSMutableData *postbody = [NSMutableData data];
     for (NSString *key in parts)  {
-        NSLog(@"multipartPost part %@ equals %@", key, [parts objectForKey:key] );
+        LogDebug(@"multipartPost part %@ equals %@", key, [parts objectForKey:key] );
         NSString *value = [parts objectForKey:key];
         NSString *mimeTypeHeader = [self guessMimeType:value];
         int nameSplit = [key rangeOfString:@"-"].location;
@@ -691,7 +692,7 @@ NSLog(@"NativeInterface aug selected %@", augResult);
         } else  {
             //normal form field
             //Content-Disposition: form-data; name="text1"
-            NSLog(@"    writing normal part for %@", partName );
+            LogDebug(@"    writing normal part for %@", partName );
             [postbody appendData:[[NSString stringWithFormat:@"\r\n--%@\r\n",boundary] dataUsingEncoding:NSUTF8StringEncoding]];
             [postbody appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"%@\"\r\n\r\n", partName] dataUsingEncoding:NSUTF8StringEncoding]];
             [postbody appendData:[value dataUsingEncoding:NSUTF8StringEncoding]];
@@ -733,13 +734,13 @@ NSLog(@"NativeInterface aug selected %@", augResult);
 }
 
 - (void)connection:(NSURLConnection *)connection didSendBodyData:(NSInteger)bytesWritten totalBytesWritten:(NSInteger)totalBytesWritten totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite  {
-    NSLog(@"didSendBodyData %d bytes of %d",totalBytesWritten, totalBytesExpectedToWrite);
+    LogDebug(@"didSendBodyData %d bytes of %d",totalBytesWritten, totalBytesExpectedToWrite);
     NSInteger percentProgress = (totalBytesWritten * 100) / totalBytesExpectedToWrite;
     [controller setProgress:percentProgress];
 }
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection  {
-    NSLog(@"connectionDidFinishLoading %d bytes of data",[receivedData length]);
+    LogDebug(@"connectionDidFinishLoading %d bytes of data",[receivedData length]);
 
     NSString *responseString = [[NSString alloc] initWithData:receivedData
             encoding:NSUTF8StringEncoding];
@@ -759,7 +760,7 @@ NSLog(@"NativeInterface aug selected %@", augResult);
         [self.augController dismissModalViewControllerAnimated:YES];
     }
 
-    NSLog(@"NativeInterface applicationWillResignActive, dismissing augController");
+    LogDebug(@"NativeInterface applicationWillResignActive, dismissing augController");
 }
 
 @end

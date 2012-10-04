@@ -18,6 +18,7 @@
 
 #import "ViewController.h"
 #import "NativeInterface.h"
+#import "Logging.h"
 
 @implementation AppDelegate
 
@@ -43,7 +44,7 @@
     self.window.rootViewController = self.viewController;
     [self.window makeKeyAndVisible];
     if (nil != [launchOptions objectForKey: UIApplicationLaunchOptionsRemoteNotificationKey])  {
-NSLog(@"ICEmobile-SX launched via notification %@", [launchOptions objectForKey: UIApplicationLaunchOptionsRemoteNotificationKey]);
+        LogInfo(@"ICEmobile-SX launched via notification %@", [launchOptions objectForKey: UIApplicationLaunchOptionsRemoteNotificationKey]);
     }
     return YES;
 }
@@ -93,14 +94,14 @@ NSLog(@"ICEmobile-SX launched via notification %@", [launchOptions objectForKey:
 
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation  {
     [self.viewController hideControls];
-    NSLog(@"handleOpenURL %@ %@", sourceApplication, url);
+    LogInfo(@"handleOpenURL %@ %@", sourceApplication, url);
     NSString *reqString = [url absoluteString];
     NSString *body = [reqString substringFromIndex:[@"icemobile://" length]];
     NSDictionary *params = 
             [self.viewController.nativeInterface parseQuery:body];
 
-NSLog(@"found command %@", [params objectForKey:@"c"]);
-NSLog(@"found url %@", [params objectForKey:@"u"]);
+    LogInfo(@"found command %@", [params objectForKey:@"c"]);
+    LogInfo(@"found url %@", [params objectForKey:@"u"]);
     //if the URL to POST to and the URL to reload in Safari are different,
     //specify u to POST and r to return
     self.viewController.currentURL = [params objectForKey:@"u"];
@@ -108,24 +109,24 @@ NSLog(@"found url %@", [params objectForKey:@"u"]);
     self.viewController.currentParameters = [params objectForKey:@"p"];
     self.viewController.currentCommand = [params objectForKey:@"c"];
     self.viewController.currentSessionId = [params objectForKey:@"JSESSIONID"];
-NSLog(@"found JSESSIONID %@", [params objectForKey:@"JSESSIONID"]);
+    LogDebug(@"found JSESSIONID %@", [params objectForKey:@"JSESSIONID"]);
     [self.viewController dispatchCurrentCommand];
 
     return YES;
 }
 
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
-    NSLog(@"didRegisterForRemoteNotificationsWithDeviceToken %@", deviceToken);
+    LogDebug(@"didRegisterForRemoteNotificationsWithDeviceToken %@", deviceToken);
     self.viewController.deviceToken = deviceToken;
 
 }
 
 - (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error  {
-    NSLog(@"didFailToRegisterForRemoteNotificationsWithError %@", error);
+    LogDebug(@"didFailToRegisterForRemoteNotificationsWithError %@", error);
 }
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo  {
-    NSLog(@"didReceiveRemoteNotification %@", userInfo);
+    LogInfo(@"didReceiveRemoteNotification %@", userInfo);
     [self.viewController reloadCurrentURL];
 }
 
