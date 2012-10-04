@@ -49,7 +49,6 @@ public class ClientDescriptor {
     private UserAgentInfo _userAgentInfo;
     
     private ClientDescriptor(HttpServletRequest request){
-        System.out.println(this.getClass().getName()+" ctor****");
         updateHttpAccepted(request);
         updateUserAgent(request);
         updateOS();
@@ -60,12 +59,6 @@ public class ClientDescriptor {
     }
     
     public static ClientDescriptor getInstance(HttpServletRequest request){
-        System.out.println("session id="+request.getSession().getId());
-        System.out.println("ua="+request.getHeader("User-Agent"));
-        for( Cookie cookie : request.getCookies()){
-            System.out.println("cookie: "+cookie.getName()+"="+cookie.getValue());
-        }
-        
         ClientDescriptor cd = (ClientDescriptor)request.getSession().getAttribute(SESSION_KEY);
         //always update if user agent changed
         if( cd == null || cd.isUserAgentUpdateRequired(request)){
@@ -119,7 +112,6 @@ public class ClientDescriptor {
             else{
                 os = OS.LINUX;
             }
-            System.out.println("os="+os);
         }
     }
 
@@ -187,7 +179,6 @@ public class ClientDescriptor {
     
     private void updateSXRegistered(HttpServletRequest request){
         sxRegistered = request.getSession().getAttribute(Constants.SESSION_KEY_SX_REGISTERED) != null;
-        System.out.println("*************** sx="+sxRegistered);
     }
     
     private void updateFormFactor(){

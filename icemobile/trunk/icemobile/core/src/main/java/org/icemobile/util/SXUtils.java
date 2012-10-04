@@ -60,6 +60,17 @@ public class SXUtils {
         return "http://" + serverName +
             getUploadPath(request);
     }
+    
+    /**
+     * Has the user registered ICEmobile-SX for the current application session?
+     * 
+     * @param request The ServletRequest
+     * @return true if SX has been registered, else false
+     */
+    public static boolean isSXRegistered(HttpServletRequest request){
+        return request.getSession()
+                .getAttribute(Constants.SESSION_KEY_SX_REGISTERED) == Boolean.TRUE;
+    }
 
 
 }
