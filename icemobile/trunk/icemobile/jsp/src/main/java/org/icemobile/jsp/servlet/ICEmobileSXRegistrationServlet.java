@@ -45,7 +45,9 @@ public class ICEmobileSXRegistrationServlet extends HttpServlet {
 	    }
 	    
 	    if( userAgent != null && userAgent.contains(Constants.USER_AGENT_SX_PART)){
-	        request.getSession().setAttribute(Constants.SESSION_KEY_SX,Boolean.TRUE);
+	        request.getSession().setAttribute(Constants.SESSION_KEY_SX_REGISTERED,Boolean.TRUE);
+	        request.getSession().setAttribute(Constants.SESSION_KEY_AUX_UPLOAD,Boolean.TRUE);
+	           
 	        request.getSession().setAttribute(Constants.USER_AGENT_COOKIE, Constants.USER_AGENT_COOKIE);
 	        System.out.println("*********** setting sx session key");
 	        String cloudPushId = request.getParameter(Constants.CLOUD_PUSH_KEY);
