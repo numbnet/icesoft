@@ -376,8 +376,8 @@ public class ICEmobileContainer extends Activity
 
     protected void setCloudNotificationId() {
 	//Log.e("ICEmobile", "Setting cloud push: " + getCloudNotificationId());
-	utilInterface.loadURL("javascript:ice.push.parkInactivePushIds('" + 
-			      getCloudNotificationId() + "');");
+	utilInterface.loadURL("javascript:if( ice.push ){ ice.push.parkInactivePushIds('" + 
+			      getCloudNotificationId() + "');}");
     }
 
     protected String getCloudNotificationId() {
