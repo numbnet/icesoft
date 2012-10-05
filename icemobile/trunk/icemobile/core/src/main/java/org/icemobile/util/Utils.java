@@ -20,7 +20,9 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 import java.util.logging.Logger;
 
 import javax.servlet.ServletRequest;
@@ -30,6 +32,45 @@ import javax.servlet.http.HttpServletRequest;
 public class Utils {
     
     private static Logger logger = Logger.getLogger(Utils.class.getName());
+    
+    public static final Map<String, String> FILE_EXT_BY_CONTENT_TYPE 
+        = new HashMap<String, String>() {
+        {
+            put("video/mp4", ".mp4");
+            put("audio/mp4", ".mp4");
+            put("video/mpeg", ".mpg");
+            put("video/mov", ".mov");
+            put("video/3gpp", ".3gp");
+            put("audio/wav", ".wav");
+            put("audio/x-wav", ".wav");
+            put("audio/x-m4a", ".m4a");
+            put("audio/mpeg", ".mp3");
+            put("audio/amr", ".amr");
+            put("image/jpeg", ".jpg");
+            put("image/jpg", ".jpg");
+            put("image/png", ".png");
+        }
+    };
+    
+    public static final Map<String, String> CONTENT_TYPE_BY_FILE_EXT 
+        = new HashMap<String, String>() {
+        {
+            put(".mp4","video/mp4");
+            put(".mp4","audio/mp4");
+            put(".mpg","video/mpeg");
+            put(".mov","video/mov");
+            put(".3gp","video/3gpp");
+            put(".wav","audio/wav");
+            put(".wav","audio/x-wav");
+            put(".m4a","audio/x-m4a");
+            put(".mp3","audio/mpeg");
+            put(".amr","audio/amr");
+            put(".jpg","image/jpeg");
+            put(".jpg","image/jpg");
+            put(".png","image/png");
+        }
+    };
+
     
     public static final DateFormat HTTP_DATE =
             new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz", Locale.ENGLISH);
@@ -106,6 +147,41 @@ public class Utils {
         }
         return httpRequest.getScheme() + "://" + serverName +
             httpRequest.getContextPath() + "/";
+    }
+    
+    public static String getCloudPushId(HttpServletRequest request)  {
+        String cloudPushId = null;
+        cloudPushId = (String) request.getSession().getAttribute(Constants.CLOUD_PUSH_KEY);
+        return cloudPushId;
+    }
+
+    
+    public static String getAcceptHeader(HttpServletRequest request){
+        String accept = request.getHeader(Constants.HEADER_ACCEPT);
+        return accept == null ? accept : accept.toLowerCase();
+    }
+
+    public static boolean acceptContains(HttpServletRequest request, String contains){
+        boolean result = false;
+        String accept = getAcceptHeader(request);
+        if( accept != null ){
+            result = accept.contains(contains);
+        }
+        return result;
+    }
+
+    public static boolean isEnhancedBrowser(HttpServletRequest request) {
+        Cookie[] cookies = request.getCookies();
+        if (null == cookies) {
+            return false;
+        }
+        for (int i = 0; i < cookies.length; i++) {
+            if (Constants.USER_AGENT_COOKIE.equals(cookies[i].getName()) &&
+                cookies[i].getValue().startsWith(Constants.HYPERBROWSER)) {
+                return true;
+            }
+        }
+        return false;
     }
 
 

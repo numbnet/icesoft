@@ -178,7 +178,7 @@ public class ClientDescriptor {
     }
     
     private void updateSXRegistered(HttpServletRequest request){
-        sxRegistered = request.getSession().getAttribute(Constants.SESSION_KEY_SX_REGISTERED) != null;
+        sxRegistered = SXUtils.isSXRegistered(request);
     }
     
     private void updateFormFactor(){
