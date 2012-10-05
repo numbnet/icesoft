@@ -680,7 +680,7 @@ public class ICEmobileContainer extends UiApplication implements SystemListener,
 
         // Use either an email notification (if desired) or the 
         // RIM push version
-        mParkScript = "ice.push.parkInactivePushIds" + argument;
+        mParkScript = "if( ice.push ){ ice.push.parkInactivePushIds" + argument + "}";
 
         mPauseScript = "try { ice.push.connection.pauseConnection(); " +
                                "icefaces.logInContainer('ice.push.connection.pauseConnection success'); " +
