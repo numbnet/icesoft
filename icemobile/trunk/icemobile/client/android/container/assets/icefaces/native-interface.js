@@ -21,15 +21,15 @@ if (!window.ice) {
 if (!window.ice.mobile) {
     (function(namespace) {
         namespace.mobile = true;
-        
-        namespace.progress = function(amount)  {
+
+        namespace.progress = function(amount) {
             var canvas = document.getElementById('progMeterCanvas');
-            if (null == canvas)  {
+            if (null == canvas) {
                 return;
             }
-            if (canvas.getContext){
+            if (canvas.getContext) {
                 var ctx = canvas.getContext('2d');
-                ctx.clearRect(0,0,200, 200);
+                ctx.clearRect(0, 0, 200, 200);
                 ctx.beginPath();
                 var theta = ((Math.PI * 2) * amount) / 100;
                 ctx.moveTo(15, 15);
@@ -44,49 +44,48 @@ if (!window.ice.mobile) {
             }
         }
 
-        namespace.setThumbnail = function(id, value)  {
+        namespace.setThumbnail = function(id, value) {
             var imageTag = document.getElementById(id);
-            if (!imageTag)  {
+            if (!imageTag) {
                 return;
             }
             imageTag.setAttribute("src", value);
         }
 
-        namespace.aug = function(id, attr)  {
-            var result = window.ARView.arView(id ,attr);					
+        namespace.aug = function(id, attr) {
+            var result = window.ARView.arView(id, attr);
         }
 
-	namespace.currentContactId = ""; 
+        namespace.currentContactId = "";
         namespace.fetchContacts = function(id, attr) {
-	   
-	    ice.currentContactId = id;            
-	    window.jsLogger.logInContainer("Fetch Contact id: " + ice.currentContactId + ", original: " + id); 
+
+            ice.currentContactId = id;
             var result = window.ICEContacts.fetchContacts(id, attr);
             return result;
         }
 
-        namespace.camera = function(id, attr)  {
-	    alert('into camera');
-            var result = window.ICEcamera.shootPhoto(id ,attr);					
+        namespace.camera = function(id, attr) {
+            alert('into camera');
+            var result = window.ICEcamera.shootPhoto(id, attr);
             ice.addHidden(id, id, "" + result, 'file');
         }
 
-        namespace.camcorder = function(id, attr)  {
+        namespace.camcorder = function(id, attr) {
             var result = window.ICEvideo.shootVideo(id + '-thumb', attr);
             ice.addHidden(id, id, "" + result, 'file');
         }
 
-        namespace.microphone = function(id, attr)  {
+        namespace.microphone = function(id, attr) {
             var result = window.ICEaudio.recordAudio(attr);
             ice.addHidden(id, id, "" + result, 'file');
         }
 
-        namespace.play = function(id)  {
-	    window.ICEaudio.playUrl(id, true);
+        namespace.play = function(id) {
+            window.ICEaudio.playUrl(id, true);
         }
 
         namespace.currentScanId = "";
-        namespace.scan = function(id, attr)  {
+        namespace.scan = function(id, attr) {
             var result = window.ICEqrcode.scan(id, attr);
             ice.currentScanId = id;
         }
@@ -94,14 +93,14 @@ if (!window.ice.mobile) {
         //assume single threaded access with this context object spanning request/response
         var context = {
             onevent: null,
-            onerror: function(param)  {
+            onerror: function(param) {
                 alert("JSF error " + param.source + " " + param.description);
             }
         }
         var tempInputs = [];
 
-        namespace.handleResponse = function(data)  {
-            if (null == context.sourceid)  {
+        namespace.handleResponse = function(data) {
+            if (null == context.sourceid) {
                 //was not a jsf upload
                 return;
             }
@@ -114,8 +113,8 @@ if (!window.ice.mobile) {
             jsf.ajax.response(jsfResponse, context);
 
             var form = document.getElementById(context.formid);
-            for (var i in tempInputs)  {
-                if (form == tempInputs[i].parentNode)  {
+            for (var i in tempInputs) {
+                if (form == tempInputs[i].parentNode) {
                     form.removeChild(tempInputs[i]);
                 }
             }
@@ -130,47 +129,47 @@ if (!window.ice.mobile) {
         namespace.submitFunction = function(element, event, options) {
             var source = event ? event.target : element;
             var form = ice.formOf(element);
-            if (form.elements['javax.faces.source'])  {
+            if (form.elements['javax.faces.source']) {
                 //submit is in progress, but callback not completed by container
                 return;
             }
             var formId = form.id;
             var sourceId = element ? element.id : event.target.id;
 
-            if ("@this" === options.execute)  {
+            if ("@this" === options.execute) {
                 options.execute = sourceId;
-            } else if ("@form" === options.execute)  {
+            } else if ("@form" === options.execute) {
                 options.execute = formId;
             }
-            if ("@this" === options.render)  {
+            if ("@this" === options.render) {
                 options.render = sourceId;
-            } else if ("@form" === options.render)  {
+            } else if ("@form" === options.render) {
                 options.render = formId;
             }
-            if (!options.execute)  {
+            if (!options.execute) {
                 options.execute = "@all";
             }
-            if (!options.render)  {
+            if (!options.render) {
                 options.render = "@all";
             }
 
             tempInputs = [];
-            tempInputs.push(ice.addHiddenFormField(formId, 
+            tempInputs.push(ice.addHiddenFormField(formId,
                     "javax.faces.source", sourceId));
-            tempInputs.push(ice.addHiddenFormField(formId, 
+            tempInputs.push(ice.addHiddenFormField(formId,
                     "javax.faces.partial.execute", options.execute));
-            tempInputs.push(ice.addHiddenFormField(formId, 
+            tempInputs.push(ice.addHiddenFormField(formId,
                     "javax.faces.partial.render", options.render));
-            tempInputs.push(ice.addHiddenFormField(formId, 
+            tempInputs.push(ice.addHiddenFormField(formId,
                     "javax.faces.partial.ajax", "true"));
             if (event) {
-                tempInputs.push(ice.addHiddenFormField(formId, 
-                    "javax.faces.partial.event", event.type));
+                tempInputs.push(ice.addHiddenFormField(formId,
+                        "javax.faces.partial.event", event.type));
             }
 
             if (options) {
                 for (var p in options) {
-                    if ("function" != typeof(options[p]))  {
+                    if ("function" != typeof(options[p])) {
                         tempInputs.push(
                                 ice.addHiddenFormField(formId, p, options[p]));
                     }
@@ -184,9 +183,9 @@ if (!window.ice.mobile) {
             ice.upload(formId);
         };
 
-        namespace.formOf = function(element)  {
+        namespace.formOf = function(element) {
             var parent = element;
-            while (null != parent)  {
+            while (null != parent) {
                 if ("form" == parent.nodeName.toLowerCase()) {
                     return parent;
                 }
@@ -194,16 +193,16 @@ if (!window.ice.mobile) {
             }
         }
 
-        namespace.upload = function(id)  {
+        namespace.upload = function(id) {
             var form = document.getElementById(id);
             context.serialized = ice.serialize(id, true);
             window.ICEutil.submitForm(form.action, context.serialized);
         }
 
-        namespace.addHidden = function(target, name, value, vtype)  {
+        namespace.addHidden = function(target, name, value, vtype) {
             var hiddenID = name + "-hid";
             var existing = document.getElementById(hiddenID);
-            if (existing)  {
+            if (existing) {
                 existing.parentNode.removeChild(existing);
             }
             var targetElm = document.getElementById(target);
@@ -212,14 +211,14 @@ if (!window.ice.mobile) {
             hidden.setAttribute("id", hiddenID);
             hidden.setAttribute("name", name);
             hidden.setAttribute("value", value);
-            if (vtype)  {
+            if (vtype) {
                 hidden.setAttribute("data-type", vtype);
             }
 
             targetElm.parentNode.insertBefore(hidden, targetElm);
         }
 
-        namespace.addHiddenFormField = function(target, name, value)  {
+        namespace.addHiddenFormField = function(target, name, value) {
             var targetElm = document.getElementById(target);
             var hidden = document.createElement("input");
             hidden.setAttribute("type", "hidden");
@@ -229,11 +228,11 @@ if (!window.ice.mobile) {
             return hidden;
         }
 
-        namespace.getCurrentSerialized = function()  {
+        namespace.getCurrentSerialized = function() {
             return context.serialized;
         }
 
-        namespace.serialize = function(formId, typed)  {
+        namespace.serialize = function(formId, typed) {
             var form = document.getElementById(formId);
             var els = form.elements;
             var len = els.length;
@@ -250,9 +249,9 @@ if (!window.ice.mobile) {
                 var el = els[i];
                 if (!el.disabled) {
                     var prefix = "";
-                    if (typed)  {
+                    if (typed) {
                         var vtype = el.getAttribute("data-type");
-                        if (vtype)  {
+                        if (vtype) {
                             prefix = vtype + "-";
                         } else {
                             prefix = el.type + "-";
@@ -276,7 +275,7 @@ if (!window.ice.mobile) {
                             }
                             break;
                         case 'select-multiple':
-                            prefix="selectmultiple-";
+                            prefix = "selectmultiple-";
                             for (var j = 0; j < el.options.length; j++) {
                                 if (el.options[j].selected) {
                                     addField(prefix + el.name, el.options[j].value);
@@ -298,8 +297,8 @@ if (!window.ice.mobile) {
             return qString.join("");
         }
 
-        namespace.mobiRefresh = function()  {
-            if (window.ice.ajaxRefresh)  {
+        namespace.mobiRefresh = function() {
+            if (window.ice.ajaxRefresh) {
                 window.setTimeout(function() {
                     ice.push.resumeBlockingConnection();
                     ice.ajaxRefresh();
@@ -312,7 +311,7 @@ if (!window.ice.mobile) {
 
     })(window.ice)
 
-    function addConnectionStatus()  {
+    function addConnectionStatus() {
         var croot = document.createElement("canvas");
         croot.setAttribute("width", "30");
         croot.setAttribute("height", "30");
@@ -324,7 +323,7 @@ if (!window.ice.mobile) {
         ice.progress(100);
     }
 
-    function init()  {
+    function init() {
 //        var iframe = document.createElement('iframe');
 //        iframe.setAttribute("id", "ipciframe");
 //        iframe.setAttribute("frameborder", "0");
@@ -332,6 +331,7 @@ if (!window.ice.mobile) {
 //        document.body.appendChild(iframe);
         addConnectionStatus();
     }
+
     //use below if loaded over network vs embedded use to eval this file
 //    document.addEventListener("DOMContentLoaded", init, false);
     init();
