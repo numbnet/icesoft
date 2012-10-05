@@ -297,10 +297,14 @@ if (!window.ice.icefaces) {
             perRequestOnBeforeSubmitListeners = perRequestOnBeforeSubmitListeners || [];
             perRequestOnBeforeUpdateListeners = perRequestOnBeforeUpdateListeners || [];
             perRequestOnAfterUpdateListeners = perRequestOnAfterUpdateListeners || [];
+            // Cache iceEnabled for 'success' event as submitElement may be detached from configParent
+            var iceEnabled = false;
             return function(submitEvent) {
                 var submitElement = submitEvent.source;
+                if (!iceEnabled) iceEnabled = viewIDOf(submitElement);
+
                 //if we have the submit element and the view ID set (ICEfaces render enabled) then the callbacks are invoked
-                if (submitElement && viewIDOf(submitElement)) {
+                if (submitElement && iceEnabled) {
                     switch (submitEvent.status) {
                         case 'begin':
                             //Include parameter indicating if submission was triggered by client
