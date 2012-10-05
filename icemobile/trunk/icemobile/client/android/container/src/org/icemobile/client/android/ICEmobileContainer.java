@@ -71,7 +71,7 @@ import android.content.ActivityNotFoundException;
 
 import org.icemobile.client.android.c2dm.C2dmHandler;
 import org.icemobile.client.android.c2dm.C2dmRegistrationHandler;
-import org.icemobile.client.android.contacts.ContactListInterface;
+import org.icemobile.client.android.ContactListInterface;
 import org.icemobile.client.android.qrcode.CaptureActivity;
 import org.icemobile.client.android.qrcode.CaptureJSInterface;
 import org.icemobile.client.android.qrcode.Intents;
