@@ -154,12 +154,12 @@
          ([self.notificationEmail length] > 0) )  {
         NSLog(@"using email notification: %@", self.notificationEmail );
         NSString *scriptTemplate = 
-                @"ice.deviceToken = \"mail:%@\";ice.push.parkInactivePushIds(ice.deviceToken);";
+                @"ice.deviceToken = \"mail:%@\";if( ice.push ){ ice.push.parkInactivePushIds(ice.deviceToken); }";
         script = [NSString stringWithFormat:scriptTemplate, self.notificationEmail];
     } else {
         NSLog(@"using apns notification: %@", self.hexDeviceToken );
         NSString *scriptTemplate = 
-                @"ice.deviceToken = \"apns:%@\";ice.push.parkInactivePushIds(ice.deviceToken);";
+                @"ice.deviceToken = \"apns:%@\";if( ice.push ){ ice.push.parkInactivePushIds(ice.deviceToken); }";
         script = [NSString stringWithFormat:scriptTemplate, self.hexDeviceToken];
     }
     NSLog(@"ICEpush parking: %@", script );
