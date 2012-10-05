@@ -16,76 +16,81 @@
  
 package org.icemobile.jsp.tags;
 
-import javax.servlet.jsp.tagext.BodyTagSupport;
-import javax.servlet.jsp.JspException;
-import javax.servlet.http.HttpSession;
+import static org.icemobile.util.HTML.*;
 
-import java.io.Writer;
 import java.io.IOException;
 
-public class DeviceTag extends BodyTagSupport {
+import javax.servlet.http.HttpSession;
+import javax.servlet.jsp.JspException;
+
+import org.icemobile.util.ClientDescriptor;
+
+public class DeviceTag extends BaseBodyTag {
+    
+    private static final String CONTAINER_ONCLICK = "ice.%s('%s');";
+    private static final String CONTAINER_ONCLICK_PARAMS = "ice.%s('%s','%s');";
+    
     String command = "undefined";
     String label = "unlabeled";
     String params = null;
-    String id;
-    String style;
-    String styleClass;
-    boolean disabled;
     String fallbackType = "file";
 
     public int doEndTag() throws JspException {
-        boolean isEnhanced = TagUtil.isEnhancedBrowser(pageContext);
+        ClientDescriptor client = getClient();
         try {
-            Writer out = pageContext.getOut();
-            if (isEnhanced)  {
-                out.write("<input type='button' id='" + id + "'"); 
-                writeStandardAttributes(out);
-                String paramClause = "";
+            TagWriter writer = new TagWriter(pageContext);
+            writer.startElement(INPUT_ELEM);
+            if (client.isICEmobileContainer()){
+                writer.writeAttribute(TYPE_ATTR, "button");
+                writer.writeAttribute(ID_ATTR, id);
+                writeStandardAttributes(writer);
+                String onclick = null;
                 if (null != params)  {
-                    paramClause = ", \"" + params + "\"";
+                    onclick = String.format(CONTAINER_ONCLICK_PARAMS, command, id, params);
                 } 
-                out.write(" onclick='ice." + command + "(\"" + id + "\"" +
-                        paramClause + ");'");
-
-                out.write(" value='" + label + "'>");
+                else{
+                    onclick = String.format(CONTAINER_ONCLICK, command, id);
+                }
+                writer.writeAttribute(ONCLICK_ATTR, onclick);
+                writer.writeAttribute(VALUE_ATTR, label);
             } else {
-                if (!TagUtil.isIOS(pageContext))  {
-                    out.write(String.format("<input id='%1$s' type='%2$s' name='%1$s'", 
-                    		id, fallbackType));
-                    writeStandardAttributesForNonEnhanced(out);
-                    out.write("/>");
+                if (!client.isIOS())  {
+                    writer.writeAttribute(ID_ATTR, id);
+                    writer.writeAttribute(TYPE_ATTR, fallbackType);
+                    writer.writeAttribute(NAME_ATTR, id);
+                    writeStandardAttributesForNonEnhanced(writer);
                 } else {
                    //or for iOS until we can store the ICEmobile-SX registration
                     //without a session (likely a cookie)
-                    out.write("<input type='button' data-id='" + id + "' ");
+                    writer.writeAttribute(TYPE_ATTR, "button");
+                    writer.writeAttribute("data-id", id);
                     if (null != params)  {
-                        out.write("data-params='" + params + "' ");
+                        writer.writeAttribute("data-params", params);
                     }
 
-                    HttpSession session = pageContext.getSession();
+                    HttpSession session = getRequest().getSession();
                     if (null != session)  {
                         String sessionID = session.getId();
-                        out.write("data-jsessionid='" + sessionID + "' ");
+                        writer.writeAttribute("data-jsessionid", sessionID);
                     }
-
-                    writeStandardAttributes(out);
-                    out.write(" data-command='" + command + 
-                            "' onclick='ice.mobilesx(this)' ");
-                    out.write(" value='" + label + " ...'>");
+                    writeStandardAttributes(writer);
+                    writer.writeAttribute("data-command", command);
+                    writer.writeAttribute(ONCLICK_ATTR, "ice.mobilesx(this)");
+                    writer.writeAttribute(VALUE_ATTR, label);
                 }
             }
+            writer.endElement();
         } catch (IOException e) {
             throw new JspException(e);
         }
-        
         return EVAL_PAGE;
     }
 
-    public void writeStandardAttributes(Writer out) throws IOException  {
-    	writeStandardAttributes(out,true);      
+    public void writeStandardAttributes(TagWriter writer) throws IOException  {
+    	writeStandardAttributes(writer,true);      
     }
     
-    public void writeStandardAttributes(Writer out, boolean enhancedOrIOS) throws IOException  {
+    public void writeStandardAttributes(TagWriter writer, boolean enhancedOrIOS) throws IOException  {
     	StringBuilder inputStyle = new StringBuilder(enhancedOrIOS ? CommandButtonTag.BASE_STYLE_CLASS : "");
         if (disabled){
             inputStyle.append(CommandButtonTag.DISABLED_STYLE_CLASS);
@@ -94,47 +99,22 @@ public class DeviceTag extends BodyTagSupport {
             inputStyle.append(" ").append(styleClass);
         }
         if( inputStyle.length() > 0 ){
-        	out.write("class='" + inputStyle + "'");
+            writer.writeAttribute(CLASS_ATTR, inputStyle);
         }
         if (null != style)  {
-            out.write(" style='" + style + "'");
+            writer.writeAttribute(STYLE_ATTR, style);
         }
         if (disabled)  {
-            out.write(" disabled='disabled' ");
+            writer.writeAttribute(DISABLED_ATTR, "disabled");
         }
     }
     
     /* non-enhanced, non-ios clients only have a file upload rendered, so this does
      * not include the mobi-button style class, which can't be used on input[type='file']
      */
-    public void writeStandardAttributesForNonEnhanced(Writer out) throws IOException  {
-    	writeStandardAttributes(out,false);
+    public void writeStandardAttributesForNonEnhanced(TagWriter writer) throws IOException  {
+    	writeStandardAttributes(writer,false);
     }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getStyle() {
-        return style;
-    }
-
-    public void setStyle(String style) {
-        this.style = style;
-    }
-
-    public String getStyleClass() {
-        return styleClass;
-    }
-
-    public void setStyleClass(String styleClass) {
-        this.styleClass = styleClass;
-    }
-    
     public String getParams() {
         return styleClass;
     }

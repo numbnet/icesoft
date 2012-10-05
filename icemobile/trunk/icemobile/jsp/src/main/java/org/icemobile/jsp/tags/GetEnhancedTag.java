@@ -5,7 +5,8 @@ import java.util.logging.Logger;
 
 import javax.servlet.jsp.PageContext;
 
-import org.icemobile.jsp.tags.TagUtil.DeviceType;
+import org.icemobile.jsp.util.MobiJspConstants;
+import org.icemobile.util.ClientDescriptor;
 import org.icemobile.util.Constants;
 import org.icemobile.util.SXUtils;
 
@@ -34,15 +35,11 @@ public class GetEnhancedTag extends BaseSimpleTag{
 			return;
 		}
 		
-		DeviceType device = TagUtil.getDeviceTypeNoDefault(pageContext);
-		
-		if( device == null 
-            || TagUtil.isEnhancedBrowser(pageContext)
+		ClientDescriptor client = getClient();		
+		if( client.isDesktopBrowser() || TagUtil.isEnhancedBrowser(pageContext)
             || SXUtils.isSXRegistered(getRequest()) ){
 			return;
 		}
-		
-		boolean ios = TagUtil.isIOS(pageContext);
 		
 		TagWriter writer = new TagWriter(pageContext);
 		
@@ -53,34 +50,31 @@ public class GetEnhancedTag extends BaseSimpleTag{
 		
 		String msg = INFO_MSG; //default msg
 		String link = null;
-		switch(device){
-			case android: 	
-			case honeycomb:	
-				link = ANDROID_LINK; 
-				if( androidMsg != null ){
-					msg = androidMsg;
-				}
-				break;
-			case iphone:
-			case ipad: 		
-				link = IOS_LINK; 
-				if( iosMsg != null ){
-					msg = iosMsg;
-				}
-				break;
-			case bberry: 	
-				link = BLACKBERRY_LINK; 
-				if( blackberryMsg != null ){
-					msg = blackberryMsg;
-				}
-				break;
+		if( client.isAndroidOS()){
+		    link = ANDROID_LINK; 
+            if( androidMsg != null ){
+                msg = androidMsg;
+            }
+		}
+		else if( client.isIOS()){
+		    link = IOS_LINK; 
+            if( iosMsg != null ){
+                msg = iosMsg;
+            }
+		}
+		else if( client.isBlackBerryOS()){
+		    link = BLACKBERRY_LINK; 
+            if( blackberryMsg != null ){
+                msg = blackberryMsg;
+            }
 		}
 		writer.writeTextNode(msg);
 		
-		if( ios ){
+		if( client.isIOS() ){
 			writer.startElement(ANCHOR_ELEM);
 			writer.writeStyleClass("mobi-button mobi-button-important");
-			writer.writeAttribute(ONCLICK_ATTR, TagUtil.getICEmobileRegisterSXScript(pageContext));
+			writer.writeAttribute(ONCLICK_ATTR, 
+			        SXUtils.getICEmobileRegisterSXScript(getRequest(),MobiJspConstants.SX_UPLOAD_PATH));
 			writer.writeTextNode("Enable ICEmobile");
 			writer.endElement();
 		}
