@@ -35,6 +35,8 @@ public class Utils {
     
     public static final Map<String, String> FILE_EXT_BY_CONTENT_TYPE 
         = new HashMap<String, String>() {
+            private static final long serialVersionUID = -8905491307471581114L;
+
         {
             put("video/mp4", ".mp4");
             put("audio/mp4", ".mp4");
@@ -78,9 +80,11 @@ public class Utils {
 
     public static Cookie getCookie(String name, HttpServletRequest request){
         Cookie[] cookies = request.getCookies();
-        for( int i=0 ; i < cookies.length ; i++ ){
-            if( cookies[i].getName().equalsIgnoreCase(name)){
-                return cookies[i];
+        if( cookies != null ){
+            for( int i=0 ; i < cookies.length ; i++ ){
+                if( cookies[i].getName().equalsIgnoreCase(name)){
+                    return cookies[i];
+                }
             }
         }
         return null;

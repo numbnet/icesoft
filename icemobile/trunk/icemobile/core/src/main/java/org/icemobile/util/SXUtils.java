@@ -15,6 +15,7 @@
  */
 package org.icemobile.util;
 
+import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.HashMap;
@@ -62,7 +63,6 @@ public class SXUtils {
             try {
                 params = URLEncoder.encode(params,"UTF-8");
             } catch (UnsupportedEncodingException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
         }
@@ -135,14 +135,15 @@ public class SXUtils {
      * @param request The Servlet Request
      * @return The session map of uploads.
      */
-    public static Map getAuxiliaryUploadMap(HttpServletRequest request) {
+    public static Map<String,File> getAuxiliaryUploadMap(HttpServletRequest request) {
         /* note: this aux upload map does not follow the session/request 
          * pattern of the ICefaces auxRequestMap, simply a session map
          * cleanup will be done through listeners
          */
-        Map map = (Map) request.getSession().getAttribute(SX_UPLOAD);
+        @SuppressWarnings("unchecked")
+        Map<String,File> map = (Map<String,File>) request.getSession().getAttribute(SX_UPLOAD);
         if (null == map) {
-            map = new HashMap();
+            map = new HashMap<String,File>();
             request.getSession().setAttribute(SX_UPLOAD, map);
         } 
         return map;
@@ -193,10 +194,11 @@ public class SXUtils {
         session.setAttribute(SX_UPLOAD_PROGRESS,Integer.valueOf(progress));
     }
     
-    public static Map getSXUploadThumbMap(HttpServletRequest request){
-        Map map = (Map)request.getSession().getAttribute(SX_THUMB_MAP);
+    public static Map<String,File> getSXUploadThumbMap(HttpServletRequest request){
+        @SuppressWarnings("unchecked")
+        Map<String,File> map = (Map<String,File>)request.getSession().getAttribute(SX_THUMB_MAP);
         if( map == null ){
-            map = new HashMap();
+            map = new HashMap<String,File>();
         }
         return map;
     }
