@@ -23,6 +23,11 @@
         <resource-handler>org.icefaces.ace.component.richtextentry.RichTextEntryResourceHandler</resource-handler>
 		<resource-handler>org.icefaces.ace.component.gmap.GMapResourceHandler</resource-handler>
     </application>
+   <factory>
+        <partial-view-context-factory>
+            org.icefaces.ace.context.AutoUpdateCallbackPartialViewContextFactory
+        </partial-view-context-factory>
+    </factory>
 	<render-kit>
 		<renderer>
 			<component-family>javax.faces.Output</component-family>
