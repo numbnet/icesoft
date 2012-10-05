@@ -4,7 +4,7 @@
 <%@ page session="false" %>
 <head>
     <title>ICEmobile Spring</title>
-    <mobi:deviceResource  view="small"/>
+    <mobi:deviceResource  view="small" includePush="true"/>
     <link href="<c:url value="/resources/jqueryui/1.8/themes/base/jquery.ui.all.css" />"
           rel="stylesheet" type="text/css"/>
     <link href="<c:url value="/resources/style.css" />" rel="stylesheet"
