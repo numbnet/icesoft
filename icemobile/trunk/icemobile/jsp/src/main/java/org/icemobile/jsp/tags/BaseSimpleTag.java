@@ -61,7 +61,7 @@ public abstract class BaseSimpleTag  extends SimpleTagSupport {
     	return getRequest().getContextPath();
     }
     
-    protected ClientDescriptor getClientDescriptor(){
+    protected ClientDescriptor getClient(){
         return ClientDescriptor.getInstance(getRequest());
     }
 

@@ -1,15 +1,18 @@
 package org.icemobile.jsp.tags;
 
+import static org.icemobile.util.HTML.*;
+
 import java.io.IOException;
 import java.util.logging.Logger;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.jsp.PageContext;
 
-import static org.icemobile.util.HTML.*;
+import org.icemobile.util.ClientDescriptor;
 
 public class ViewSwitcherTag extends BaseSimpleTag{
+    
+    private static Logger log = Logger.getLogger(ViewSwitcherTag.class.getName());
 	
 	public static final String CSS_CLASS = "mobi-view-switcher";
 	public static final String COOKIE_NAME = "mobi-view-pref";
@@ -34,9 +37,6 @@ public class ViewSwitcherTag extends BaseSimpleTag{
 	private String tabletView;
 	private String mobileView;
 	private String desktopView;
-	
-	
-	private static Logger log = Logger.getLogger(ViewSwitcherTag.class.getName());
 	
 	public void doTag() throws IOException {
 		
@@ -146,12 +146,11 @@ public class ViewSwitcherTag extends BaseSimpleTag{
 	
 	public VIEW_TYPE detectViewType(){
 		VIEW_TYPE view = null;
-		PageContext pageContext = (PageContext) getJspContext();
-		String userAgent = TagUtil.getUserAgent(pageContext);
-		if( TagUtil.isMobileBrowser(userAgent)){
+		ClientDescriptor client = getClient();
+		if( client.isHandheldBrowser()){
 			view = VIEW_TYPE.MOBILE;
 		}
-		else if( TagUtil.isTabletBrowser(userAgent)){
+		else if( client.isTabletBrowser()){
 			view = VIEW_TYPE.TABLET;
 		}
 		else{

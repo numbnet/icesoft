@@ -36,15 +36,11 @@ public class SXUtils {
     /**
      * Get the SX Register URL.
      * 
-     * Format is
-     * icemobile://c=register&r=<current-url>&JSESSIONID=<session-id>&u
-     * =<upload-url>
+     * Format is icemobile://c=register&r=<current-url>&JSESSIONID=<session-id>&u=<upload-url>
      * 
-     * @param request
-     *            The servlet request
-     * @param uploadPath
-     *            The path of the upload post from the context, eg 'icemobile'
-     *            for JSP or 'javax.faces.resource./auxupload.txt.jsf' for JSF.
+     * @param request The servlet request
+     * @param uploadPath The path of the upload post from the context, eg 'icemobile'
+     *   for JSP or 'javax.faces.resource./auxupload.txt.jsf' for JSF.
      * @return The escaped SX register URL.
      */
     public static String getRegisterSXURL(HttpServletRequest request,
@@ -71,6 +67,31 @@ public class SXUtils {
         String uploadParam = "&u=" + Utils.getBaseURL(request)+uploadPath;
         String url = "icemobile://c=register" + redirectParm + jsessionParam
                 + uploadParam;
+        return url;
+    }
+    
+    /**
+     * Get the default SX Register URL ending in /icemobile
+     * @param request The Servlet Request
+     * @return The full upload URL
+     */
+    public static String getRegisterSXURL(HttpServletRequest request){
+        String redirectParm = "&r=" + Utils.getBaseURL(request);
+        String forward = (String)request.getAttribute("javax.servlet.forward.servlet_path");
+        if( forward == null ){
+            forward = "";
+        }
+        else if( forward.startsWith("/")){
+            forward = forward.substring(1);
+        }
+        String params = "";
+        if( request.getQueryString() != null ){
+            params = "?"+request.getQueryString();
+        }
+        redirectParm += forward + params;
+        String jsessionParam = "&JSESSIONID="+request.getSession().getId();
+        String uploadParam = "&u="+Utils.getBaseURL(request) + "/icemobile";
+        String url = "icemobile://c=register"+redirectParm+jsessionParam+uploadParam;
         return url;
     }
 

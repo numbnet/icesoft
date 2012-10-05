@@ -174,19 +174,6 @@ public class Utils {
         return result;
     }
 
-    public static boolean isEnhancedBrowser(HttpServletRequest request) {
-        Cookie[] cookies = request.getCookies();
-        if (null == cookies) {
-            return false;
-        }
-        for (int i = 0; i < cookies.length; i++) {
-            if (Constants.USER_AGENT_COOKIE.equals(cookies[i].getName()) &&
-                cookies[i].getValue().startsWith(Constants.HYPERBROWSER)) {
-                return true;
-            }
-        }
-        return false;
-    }
 
 
 

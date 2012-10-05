@@ -16,7 +16,7 @@
  
 package org.icemobile.jsp.tags;
 
-import javax.servlet.jsp.PageContext;
+import org.icemobile.util.Utils;
 
 public class AugTag extends DeviceTag {
     static final String PARAMS = "org.icemobile.jsp.tags.AugTag.params";
@@ -33,14 +33,14 @@ public class AugTag extends DeviceTag {
 
     public int doAfterBody()  {
         String innerParams = (String) pageContext.getAttribute(PARAMS);
-        String baseURL = TagUtil.getBaseURL(pageContext.getRequest());
+        String baseURL = Utils.getBaseURL(pageContext.getRequest());
         this.params = "ub=" + baseURL + "&" + innerParams;
         pageContext.setAttribute(PARAMS, null);
         return SKIP_BODY;
     }
 
     public void setParams(String params) {
-        String baseURL = TagUtil.getBaseURL(pageContext.getRequest());
+        String baseURL = Utils.getBaseURL(pageContext.getRequest());
         this.params = "ub=" + baseURL + "&" + params;
     }
 

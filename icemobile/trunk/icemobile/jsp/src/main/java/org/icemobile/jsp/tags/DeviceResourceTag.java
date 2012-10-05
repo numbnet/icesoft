@@ -27,6 +27,7 @@ import org.icemobile.jsp.util.MobiJspConstants;
 import org.icemobile.jsp.util.Util;
 import org.icemobile.util.ClientDescriptor;
 import org.icemobile.util.Constants;
+import org.icemobile.util.SXUtils;
 
 /**
  * This is the Device specific detection and script writing tag.
@@ -89,7 +90,7 @@ public class DeviceResourceTag extends BaseSimpleTag {
 		boolean desktop = false;
 				
 		PageContext pageContext = getContext();
-		ClientDescriptor client = getClientDescriptor();
+		ClientDescriptor client = getClient();
 		
 		ios6 = client.isIOS6();
 		if( !ios6 ){
@@ -106,8 +107,9 @@ public class DeviceResourceTag extends BaseSimpleTag {
 				out.write(META_IOS_WEBAPPCAPABLE);
 				out.write(META_IOS_APPSTATUSBAR);
 				if( includeIOSSmartAppBanner && !client.isSXRegistered()){
-					String smartAppMeta = String.format(META_IOS_SMARTAPPBANNER, IOS_APP_ID, 
-							TagUtil.getRegisterSXURL(getRequest()));
+				    //String uploadURL = SXUtils.getRegisterSXURL(getRequest(),MobiJspConstants.SX_UPLOAD_PATH); //TODO MOBI-359
+					String uploadURL = SXUtils.getRegisterSXURL(getRequest());
+				    String smartAppMeta = String.format(META_IOS_SMARTAPPBANNER, IOS_APP_ID, uploadURL);
 					out.write(smartAppMeta);
 					pageContext.setAttribute(Constants.IOS_SMART_APP_BANNER_KEY, Boolean.TRUE);
 				}
@@ -157,8 +159,29 @@ public class DeviceResourceTag extends BaseSimpleTag {
 
 		// 1.) full automatic device detection.
 		if (nameVal == null && libVal == null) {
-
-			nameVal = TagUtil.getDeviceType(pageContext).name();
+		    ClientDescriptor client = getClient();
+		    if( client.isIOS()){
+		        if( client.isHandheldBrowser()){
+		            nameVal = "iphone";
+		        }
+		        else{
+		            nameVal = "ipad";
+		        }
+		    }
+		    else if( client.isAndroidOS()){
+		        if( client.isHandheldBrowser()){
+		            nameVal = "android";
+		        }
+		        else{
+		            nameVal = "honeycomb";
+		        }
+		    }
+		    else if( client.isBlackBerryOS()){
+		        nameVal = "bberry";
+		    }
+		    else{
+		        nameVal = "ipad";
+		    }
 			log.fine("detected " + nameVal);
 
 			// the view attribute if specified will apply a small or large
