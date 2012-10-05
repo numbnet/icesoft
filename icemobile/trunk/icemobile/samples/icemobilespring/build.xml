@@ -20,6 +20,7 @@
     <property file="./build.properties"/>
     <property file="../build/build.properties"/>
     <import file="../build/common.xml"/>
+    <property name="name" value="icemobilespring" />
 
     <patternset id="lib.distribute.application.mobi" includes="icepush.jar,icemobile-jsp.jar">
     </patternset>
