@@ -17,6 +17,11 @@
 
 package org.icemobile.samples.springbasic;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.icemobile.util.Constants;
+import org.icemobile.util.SXUtils;
+import org.icemobile.util.Utils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -24,8 +29,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.request.WebRequest;
-
-import javax.servlet.http.HttpServletRequest;
 
 /**
  * General Controller for echoing simple input pages
@@ -95,6 +98,12 @@ public class EchoController {
     public void doRequest(
         @ModelAttribute("panelPopupBean") PanelPopupBean model) {
     }
+    
+    @RequestMapping(value="/icemobile", method = RequestMethod.POST)
+    public void postICEmobileSX(HttpServletRequest request)  {
+        SXUtils.setSXSessionKeys(request);
+    }
+
 
 }
 
