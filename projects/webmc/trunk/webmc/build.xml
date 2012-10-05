@@ -78,14 +78,14 @@
 			</classpath>
 		</javac>
 		<copy todir="${app.build.dir}">
-			<fileset dir="src" includes="**/*.properties" />
+			<fileset dir="src/main/java" includes="**/*.properties" />
 		</copy>
 
 	</target>
 
 	<target name="build.war" depends="compile">
-		<war destfile="${app.dist.dir}\webmc.war" webxml="web/WEB-INF/web.xml">
-			<fileset dir="web/" />
+		<war destfile="${app.dist.dir}\webmc.war" webxml="WebContent/WEB-INF/web.xml">
+			<fileset dir="WebContent/" />
 			<lib dir="${ice.lib.dir}">
 				<include name="icefaces.jar" />
 				<include name="icefaces-compat.jar" />
@@ -100,6 +100,9 @@
 			<lib dir="${ice.lib.dir}/mojarra">
 				<include name="javax.faces.jar" />
 			</lib>
+			<lib dir="${proj.lib.dir}">
+							<include name="jodconverter-core-3.0-beta-4.jar" />
+						</lib>
 			<classes dir="${app.build.dir}" />
 		</war>
 	</target>
