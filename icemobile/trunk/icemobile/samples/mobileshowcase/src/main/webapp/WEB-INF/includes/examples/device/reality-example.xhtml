@@ -32,14 +32,11 @@
     <h:form prependId="false" id="form">
         <mobi:uploadhelper/>
 
-        <mobi:fieldsetGroup>
-
+        <mobi:fieldsetGroup style="text-align:center;">
             <mobi:fieldsetRow>
-                <h:outputText styleClass="ehancedBrowserDisclaimer"
-                        rendered="#{not camcorderBean.enhancedBrowser}"
-                        value="#{mmsgs['example.device.disclaimer']}" />
-                <br />
-                <mobi:icemobilesx/>
+                <mobi:getEnhanced/>
+            </mobi:fieldsetRow>
+            <mobi:fieldsetRow>
                 <mobi:geolocation 
                           latitude="#{realityBean.latitude}"
                           longitude="#{realityBean.longitude}"/>

@@ -112,3 +112,7 @@
 .mobi-tabset-tabs{
     z-index: 6;
 }
+
+@media screen and (max-width: 600px) {  
+    input[type='file']{ width: 200px; }
+ }

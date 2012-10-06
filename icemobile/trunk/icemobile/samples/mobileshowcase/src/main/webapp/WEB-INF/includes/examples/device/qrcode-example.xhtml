@@ -29,7 +29,10 @@
     <h:form prependId="false">
 
         <h4>QR Code Scanner</h4>
-        <mobi:fieldsetGroup>
+       <mobi:fieldsetGroup style="text-align:center;">
+            <mobi:fieldsetRow>
+                <mobi:getEnhanced/>
+            </mobi:fieldsetRow>
             <mobi:fieldsetRow>
                 <mobi:scan value="#{qrCodeBean.qrScanner}"
                            id="scanOne"
@@ -38,12 +41,6 @@
                                     actionListener="#{qrCodeBean.checkCodeForUrl}"
                                     style="float:right;"
                                     buttonType="important"/>
-                <div style="clear:both" />
-                <h:outputText styleClass="ehancedBrowserDisclaimer"
-                        rendered="#{not qrCodeBean.enhancedBrowser}"
-                        value="#{mmsgs['example.device.disclaimer']}" />
-                    <br />
-                    <mobi:icemobilesx/>
             </mobi:fieldsetRow>
             <mobi:fieldsetRow>
                 <h:outputLabel value="QR Code: "/>
