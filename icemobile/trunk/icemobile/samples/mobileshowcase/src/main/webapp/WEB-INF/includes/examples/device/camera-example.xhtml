@@ -30,10 +30,13 @@
     <h:form prependId="false" id="form">
         <mobi:uploadhelper/>
 
-        <mobi:fieldsetGroup>
-
+        <mobi:fieldsetGroup style="text-align:center;">
             <mobi:fieldsetRow>
-
+                <mobi:getEnhanced/>
+            </mobi:fieldsetRow>
+            
+            <mobi:fieldsetRow>
+                
                 <mobi:camera id="cam" value="#{cameraBean.cameraImage}">
                     <mobi:thumbnail for="cam"/>
                 </mobi:camera>
@@ -43,13 +46,6 @@
                                  styleClass="mobi-button mobi-round-all mobi-button-important"
                                  actionListener="#{cameraBean.processUploadedImage}"
                                  value="Upload"/>
-
-                <br />
-                <h:outputText styleClass="ehancedBrowserDisclaimer"
-                        rendered="#{not camcorderBean.enhancedBrowser}"
-                        value="#{mmsgs['example.device.disclaimer']}" />
-                    <br />
-                    <mobi:icemobilesx/>
             </mobi:fieldsetRow>
 
             <mobi:fieldsetRow>

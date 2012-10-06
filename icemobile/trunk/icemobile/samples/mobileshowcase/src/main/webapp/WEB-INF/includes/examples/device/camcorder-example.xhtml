@@ -30,11 +30,13 @@
             </mobi:fieldsetRow>
         </mobi:fieldsetGroup>
 
-        <mobi:fieldsetGroup>
+        <mobi:fieldsetGroup style="text-align:center;">
+            <mobi:fieldsetRow>
+                <mobi:getEnhanced/>
+            </mobi:fieldsetRow>
 
             <mobi:fieldsetRow>
-
-                <!-- device input and thumbnail preview -->
+               <!-- device input and thumbnail preview -->
                 <mobi:camcorder id="cc" value="#{camcorderBean.clip}"
                                 type="basic">
                 </mobi:camcorder>
@@ -46,12 +48,6 @@
                                  styleClass="mobi-button mobi-round-all mobi-button-important"
                                  actionListener="#{camcorderBean.processUploadedVideo}"
                                  value="Upload"/>
-                <br />
-                <h:outputText styleClass="ehancedBrowserDisclaimer"
-                        rendered="#{not camcorderBean.enhancedBrowser}"
-                        value="#{mmsgs['example.device.disclaimer']}" />
-                    <br />
-                    <mobi:icemobilesx/>
             </mobi:fieldsetRow>
 
             <mobi:fieldsetRow>
