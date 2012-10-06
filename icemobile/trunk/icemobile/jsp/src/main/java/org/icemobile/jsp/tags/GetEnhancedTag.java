@@ -36,8 +36,7 @@ public class GetEnhancedTag extends BaseSimpleTag{
 		}
 		
 		ClientDescriptor client = getClient();		
-		if( client.isDesktopBrowser() || TagUtil.isEnhancedBrowser(pageContext)
-            || SXUtils.isSXRegistered(getRequest()) ){
+		if( client.isDesktopBrowser() || client.isICEmobileContainer() || SXUtils.isSXRegistered(getRequest()) ){
 			return;
 		}
 		

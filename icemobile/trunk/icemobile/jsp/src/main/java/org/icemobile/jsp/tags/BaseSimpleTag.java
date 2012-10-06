@@ -10,7 +10,8 @@ import org.icemobile.util.ClientDescriptor;
 
 public abstract class BaseSimpleTag  extends SimpleTagSupport {
 	
-	protected boolean disabled;
+	protected String id;
+    protected boolean disabled;
 	protected String style;
 	protected String styleClass;
 	
@@ -63,6 +64,12 @@ public abstract class BaseSimpleTag  extends SimpleTagSupport {
     
     protected ClientDescriptor getClient(){
         return ClientDescriptor.getInstance(getRequest());
+    }
+    public String getId() {
+        return id;
+    }
+    public void setId(String id) {
+        this.id = id;
     }
 
 }
