@@ -42,15 +42,15 @@ public class DeviceResourceTag extends BaseSimpleTag {
 	public static final String CSS_COMPRESSION_POSTFIX = "-min";
 
 	// iPhone style sheet name found in jar.
-	public static final String IPHONE_CSS = TagUtil.DeviceType.iphone.name() + CSS_EXT;
+	public static final String IPHONE_CSS = "iphone.css";
 	// iPad style sheet name found in jar.
-	public static final String IPAD_CSS = TagUtil.DeviceType.ipad.name() + CSS_EXT;
+	public static final String IPAD_CSS = "ipad.css";
 	// Android style sheet name found in jar.
-	public static final String ANDROID_CSS = TagUtil.DeviceType.android.name() + CSS_EXT;
+	public static final String ANDROID_CSS = "android.css";
 	// Android honeycomb style sheet name found in jar.
-	public static final String HONEYCOMB_CSS = TagUtil.DeviceType.honeycomb.name() + CSS_EXT;
+	public static final String HONEYCOMB_CSS = "honeycomb.css";
 	// Blackberry style sheet name found in jar.
-	public static final String BBERRY_CSS = TagUtil.DeviceType.bberry.name() + CSS_EXT;
+	public static final String BBERRY_CSS = "bberry.css";
 
 
 	// default resource library for a default themes,  if not specified in
@@ -190,16 +190,16 @@ public class DeviceResourceTag extends BaseSimpleTag {
 			if (viewVal != null) {
 				// forces a small view
 				if (viewVal.equalsIgnoreCase(TagUtil.VIEW_TYPE_SMALL)) {
-					if (nameVal.equals(TagUtil.DeviceType.ipad.name())) {
-						nameVal = TagUtil.DeviceType.iphone.name();
-					} else if (nameVal.equals(TagUtil.DeviceType.honeycomb.name())) {
-						nameVal = TagUtil.DeviceType.android.name();
+					if (nameVal.equals("ipad")) {
+						nameVal = "iphone";
+					} else if (nameVal.equals("honeycomb")) {
+						nameVal = "android";
 					}
 				} else if (viewVal.equalsIgnoreCase(TagUtil.VIEW_TYPE_LARGE)) {
-					if (nameVal.equals(TagUtil.DeviceType.iphone.name())) {
-						nameVal = TagUtil.DeviceType.ipad.name();
-					} else if (name.equals(TagUtil.DeviceType.android.name())) {
-						nameVal = TagUtil.DeviceType.honeycomb.name();
+					if (nameVal.equals("iphone")) {
+						nameVal = "ipad";
+					} else if (name.equals("android")) {
+						nameVal = "honeycomb";
 					}
 				} else {
 					log.warning("View type " + viewVal + " is not a recognized view type");

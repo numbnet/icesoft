@@ -17,26 +17,18 @@
 package org.icemobile.jsp.tags;
 
 import javax.servlet.jsp.PageContext;
-import javax.servlet.jsp.tagext.SimpleTagSupport;
 import java.io.IOException;
 import java.io.Writer;
 
-public class GeolocationTag extends SimpleTagSupport {
+public class GeolocationTag extends BaseSimpleTag {
 
-    private String id;
     private String name;
-    private boolean disabled;
-
-    private static final String CONTENT_WRAPPER_CLASS = ".mobi-panel-stack";
-
-
+    
     public void doTag() throws IOException {
 
         PageContext pageContext = (PageContext) getJspContext();
 
-        boolean isEnhanced = TagUtil.isEnhancedBrowser(pageContext);
         Writer out = pageContext.getOut();
-
         out.write("<span ");
 
         if (id != null && !"".equals(id)) {
