@@ -17,18 +17,20 @@
 package org.icefaces.mobi.component.scan;
 
 
-import org.icefaces.mobi.utils.HTML;
-import org.icefaces.mobi.utils.Utils;
-import org.icefaces.impl.application.AuxUploadResourceHandler;
-import org.icefaces.util.EnvUtils;
-import org.icefaces.mobi.renderkit.BaseInputRenderer;
+import java.io.IOException;
+import java.util.Map;
+import java.util.logging.Logger;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import java.io.IOException;
-import java.util.Map;
-import java.util.logging.Logger;
+
+import org.icefaces.impl.application.AuxUploadResourceHandler;
+import org.icefaces.mobi.renderkit.BaseInputRenderer;
+import org.icefaces.mobi.utils.HTML;
+import org.icefaces.mobi.utils.JSFUtils;
+import org.icefaces.mobi.utils.MobiJSFUtils;
+import org.icefaces.util.EnvUtils;
 
 
 public class ScanRenderer extends BaseInputRenderer {
@@ -83,7 +85,7 @@ public class ScanRenderer extends BaseInputRenderer {
         writer.writeAttribute(HTML.TYPE_ATTR, "button", null);
         writer.writeAttribute(HTML.ID_ATTR, clientId + "-button", null);
         writer.writeAttribute(HTML.VALUE_ATTR, "Scan QR Code", null);
-        Utils.writeConcatenatedStyleClasses(writer,
+        JSFUtils.writeConcatenatedStyleClasses(writer,
                 "mobi-button mobi-button-default",
                 scan.getStyleClass());
         writer.writeAttribute(HTML.STYLE_ATTR, scan.getStyle(), HTML.STYLE_ATTR);
@@ -92,7 +94,7 @@ public class ScanRenderer extends BaseInputRenderer {
         }
         String script;
         if (isAuxUpload)  {
-            script = Utils.getICEmobileSXScript("scan", clientId);
+            script = MobiJSFUtils.getICEmobileSXScript("scan", uiComponent);
         } else {
             script = "ice.scan('" + clientId + "');";
         }

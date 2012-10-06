@@ -28,7 +28,8 @@ import java.util.TimeZone;
 import javax.faces.bean.ViewScoped;
 import javax.faces.event.ActionEvent;
 
-import org.icefaces.mobi.utils.Utils;
+import org.icefaces.mobi.utils.MobiJSFUtils;
+import org.icemobile.util.ClientDescriptor;
 
 @ManagedBean(name="date")
 @ViewScoped
@@ -130,11 +131,14 @@ public class DateBean implements Serializable{
         this.timeZone = timeZone;
     }
     public String getTimePattern() {
-        if (this.isUseNative() && (Utils.isIOS5() || Utils.isBlackBerry())){
-            return "HH:mm";
-        } else {
-              return timePattern;
+        String result = timePattern;
+        if (this.isUseNative()){
+            ClientDescriptor client = MobiJSFUtils.getClientDescriptor();
+            if( client.isIOS5() || client.isBlackBerryOS()){
+                result = "HH:mm";
+            }
         }
+        return result;
     }
 
     public void setTimePattern(String timePattern) {

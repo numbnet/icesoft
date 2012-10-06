@@ -15,8 +15,8 @@
  */
 package org.icefaces.mobi.component.tabset;
 
-import org.icefaces.mobi.api.ContentPaneController;
-import org.icefaces.mobi.utils.Utils;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.el.MethodExpression;
 import javax.faces.component.UIComponent;
@@ -24,8 +24,9 @@ import javax.faces.event.AbortProcessingException;
 import javax.faces.event.FacesEvent;
 import javax.faces.event.PhaseId;
 import javax.faces.event.ValueChangeEvent;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
+import org.icefaces.mobi.api.ContentPaneController;
+import org.icefaces.mobi.utils.JSFUtils;
 
 
 public class TabSet extends TabSetBase implements ContentPaneController {
@@ -83,7 +84,7 @@ public class TabSet extends TabSetBase implements ContentPaneController {
             }
         }
         // resolve the current id.
-        UIComponent comp = Utils.getChildById(this, currentId);
+        UIComponent comp = JSFUtils.getChildById(this, currentId);
         // found a component, now grap the id of it for later use.
         if (comp != null) {
             tabIndex = getChildren().indexOf(comp);

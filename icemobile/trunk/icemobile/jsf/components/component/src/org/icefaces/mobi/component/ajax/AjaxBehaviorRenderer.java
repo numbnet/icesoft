@@ -26,9 +26,9 @@ import javax.faces.event.PhaseId;
 import javax.faces.render.ClientBehaviorRenderer;
 import javax.faces.render.FacesBehaviorRenderer;
 
-import org.icefaces.mobi.utils.Utils;
 import org.icefaces.ace.JSONBuilder;
 import org.icefaces.ace.api.IceClientBehaviorHolder;
+import org.icefaces.mobi.utils.JSFUtils;
 
 @FacesBehaviorRenderer(rendererType="org.icefaces.mobi.component.AjaxBehaviorRenderer")
 public class AjaxBehaviorRenderer extends ClientBehaviorRenderer {
@@ -85,7 +85,7 @@ public class AjaxBehaviorRenderer extends ClientBehaviorRenderer {
 		if (execute == null || "".equals(execute)) {
 			jb.entry("execute", clientId);
 		} else {
-			jb.entry("execute", Utils.findClientIds(fc, component, execute));
+			jb.entry("execute", JSFUtils.findClientIds(fc, component, execute));
 		}
 
         //render
@@ -100,7 +100,7 @@ public class AjaxBehaviorRenderer extends ClientBehaviorRenderer {
 				render = "@all";
 			}
 		}
-		jb.entry("render", Utils.findClientIds(fc, component, render));
+		jb.entry("render", JSFUtils.findClientIds(fc, component, render));
 
         //behavior event
 		jb.entry("event", behaviorContext.getEventName());

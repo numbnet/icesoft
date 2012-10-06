@@ -17,20 +17,21 @@
 package org.icefaces.mobi.component.microphone;
 
 
-import org.icefaces.mobi.utils.HTML;
-import org.icefaces.mobi.utils.Utils;
-import org.icefaces.util.EnvUtils;
-
-
-import javax.faces.component.UIComponent;
-import javax.faces.render.Renderer;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-import javax.faces.event.ValueChangeEvent;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
+
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
+import javax.faces.event.ValueChangeEvent;
+import javax.faces.render.Renderer;
+
+import org.icefaces.mobi.utils.HTML;
+import org.icefaces.mobi.utils.JSFUtils;
+import org.icefaces.mobi.utils.MobiJSFUtils;
+import org.icefaces.util.EnvUtils;
 
 
 public class MicrophoneRenderer extends Renderer {
@@ -62,7 +63,7 @@ public class MicrophoneRenderer extends Renderer {
     }
 
     public boolean extractAudio(FacesContext facesContext, Map map, String clientId) throws IOException {
-        return Utils.decodeComponentFile(facesContext, clientId, map);
+        return MobiJSFUtils.decodeComponentFile(facesContext, clientId, map);
     }
 
     public void encodeEnd(FacesContext facesContext, UIComponent uiComponent)
@@ -91,7 +92,7 @@ public class MicrophoneRenderer extends Renderer {
         writer.writeAttribute(HTML.TYPE_ATTR, "button", null);
         writer.writeAttribute("id", clientId , null);
         // write out style for input button, same as default device button.
-        Utils.writeConcatenatedStyleClasses(writer,
+        JSFUtils.writeConcatenatedStyleClasses(writer,
                 "mobi-button mobi-button-default",
                 microphone.getStyleClass());
         writer.writeAttribute(HTML.STYLE_ATTR, microphone.getStyle(), HTML.STYLE_ATTR);
@@ -100,7 +101,7 @@ public class MicrophoneRenderer extends Renderer {
         }
         String script;
         if (isAuxUpload)  {
-            script = Utils.getICEmobileSXScript("microphone", clientId);
+            script = MobiJSFUtils.getICEmobileSXScript("microphone", uiComponent);
         } else {
             script = writeJSCall(clientId, maxtime).toString();
         }

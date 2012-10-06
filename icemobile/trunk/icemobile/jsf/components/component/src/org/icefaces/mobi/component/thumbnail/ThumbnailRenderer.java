@@ -17,17 +17,19 @@
 package org.icefaces.mobi.component.thumbnail;
 
 
-import org.icefaces.mobi.utils.HTML;
-import org.icefaces.mobi.utils.Utils;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.faces.application.ProjectStage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.render.Renderer;
-import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
+import org.icefaces.mobi.utils.HTML;
+import org.icefaces.mobi.utils.JSFUtils;
+import org.icefaces.mobi.utils.MobiJSFUtils;
 
 
 public class ThumbnailRenderer extends Renderer {
@@ -62,10 +64,10 @@ public class ThumbnailRenderer extends Renderer {
         writer.startElement("span", uiComponent);
         // write out style for input button, same as default device button.
         String thumbClass = "mobi-thumb";
-        if (Utils.uploadInProgress(facesContext, cameraClientId))  {
+        if (MobiJSFUtils.uploadInProgress(cameraClientId))  {
             thumbClass = "mobi-thumb-done";
         } 
-        Utils.writeConcatenatedStyleClasses(writer, thumbClass,
+        JSFUtils.writeConcatenatedStyleClasses(writer, thumbClass,
                 thumbnail.getStyleClass());
         writer.writeAttribute(HTML.STYLE_ATTR, thumbnail.getStyle(), HTML.STYLE_ATTR);
         writer.writeAttribute(HTML.ID_ATTR, "span-thumb", null);

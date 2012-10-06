@@ -15,17 +15,18 @@
  */
 package org.icefaces.mobi.component.menubutton;
 
-import org.icefaces.mobi.renderkit.BaseLayoutRenderer;
-import org.icefaces.mobi.utils.HTML;
-import org.icefaces.mobi.utils.Utils;
+import java.io.IOException;
+import java.util.Map;
+import java.util.logging.Logger;
 
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import java.io.IOException;
-import java.util.Map;
-import java.util.logging.Logger;
+
+import org.icefaces.mobi.renderkit.BaseLayoutRenderer;
+import org.icefaces.mobi.utils.HTML;
+import org.icefaces.mobi.utils.JSFUtils;
 
 
 public class MenuButtonRenderer extends BaseLayoutRenderer {
@@ -57,7 +58,7 @@ public class MenuButtonRenderer extends BaseLayoutRenderer {
          ResponseWriter writer = facesContext.getResponseWriter();
          String clientId = uiComponent.getClientId(facesContext);
          MenuButton menu = (MenuButton) uiComponent;
-      	 UIComponent form = Utils.findParentForm(uiComponent);
+      	 UIComponent form = JSFUtils.findParentForm(uiComponent);
    		 if(form == null) {
 			throw new FacesException("MenuButton : \"" + clientId + "\" must be inside a form element");
 		 }

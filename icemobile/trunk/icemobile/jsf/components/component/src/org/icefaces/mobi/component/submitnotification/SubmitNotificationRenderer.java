@@ -15,15 +15,16 @@
  */
 package org.icefaces.mobi.component.submitnotification;
 
-import org.icefaces.mobi.renderkit.BaseLayoutRenderer;
-import org.icefaces.mobi.utils.HTML;
-import org.icefaces.mobi.utils.Utils;
+import java.io.IOException;
+import java.util.logging.Logger;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import java.io.IOException;
-import java.util.logging.Logger;
+
+import org.icefaces.mobi.renderkit.BaseLayoutRenderer;
+import org.icefaces.mobi.utils.HTML;
+import org.icefaces.mobi.utils.JSFUtils;
 
 
 public class SubmitNotificationRenderer extends BaseLayoutRenderer {
@@ -77,7 +78,7 @@ public class SubmitNotificationRenderer extends BaseLayoutRenderer {
         SubmitNotification panelNotification = (SubmitNotification) uiComponent.findComponent(subNotId);
         if (panelNotification ==null){
             //try again incase it's within a datatable or some other naming container and start with form.
-            UIComponent uiForm = Utils.findParentForm(uiComponent);
+            UIComponent uiForm = JSFUtils.findParentForm(uiComponent);
             if (uiForm !=null){
                 panelNotification = (SubmitNotification)(uiForm.findComponent(subNotId));
             }

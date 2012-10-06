@@ -17,20 +17,21 @@
 package org.icefaces.mobi.component.video;
 
 
-import org.icefaces.mobi.utils.HTML;
-import org.icefaces.mobi.utils.Utils;
-import org.icefaces.util.EnvUtils;
-import org.icefaces.mobi.renderkit.BaseInputResourceRenderer;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.logging.Logger;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.event.ValueChangeEvent;
 
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.logging.Logger;
+import org.icefaces.mobi.renderkit.BaseInputResourceRenderer;
+import org.icefaces.mobi.utils.HTML;
+import org.icefaces.mobi.utils.JSFUtils;
+import org.icefaces.mobi.utils.MobiJSFUtils;
+import org.icefaces.util.EnvUtils;
 
 
 public class VideoCaptureRenderer extends BaseInputResourceRenderer {
@@ -60,7 +61,7 @@ public class VideoCaptureRenderer extends BaseInputResourceRenderer {
     }
 
     public boolean extractVideo(FacesContext facesContext, Map map, String clientId) throws IOException {
-        return Utils.decodeComponentFile(facesContext, clientId, map);
+        return MobiJSFUtils.decodeComponentFile(facesContext, clientId, map);
     }
 
     public void encodeBegin(FacesContext facesContext, UIComponent uiComponent)
@@ -90,7 +91,7 @@ public class VideoCaptureRenderer extends BaseInputResourceRenderer {
         writer.writeAttribute(HTML.NAME_ATTR, clientId + "_button", null);
         writer.writeAttribute("value", "camcorder", null);
         // write out style for input button, same as default device button.
-        Utils.writeConcatenatedStyleClasses(writer,
+        JSFUtils.writeConcatenatedStyleClasses(writer,
                 "mobi-button mobi-button-default",
                 video.getStyleClass());
         writer.writeAttribute(HTML.STYLE_ATTR, video.getStyle(), HTML.STYLE_ATTR);
@@ -101,7 +102,7 @@ public class VideoCaptureRenderer extends BaseInputResourceRenderer {
 
         String script;
         if (isAuxUpload)  {
-            script = Utils.getICEmobileSXScript("camcorder", clientId);
+            script = MobiJSFUtils.getICEmobileSXScript("camcorder", uiComponent);
         } else {
             //default value of unset in params is Integer.MIN_VALUE
             String params = "'" + clientId + "'";

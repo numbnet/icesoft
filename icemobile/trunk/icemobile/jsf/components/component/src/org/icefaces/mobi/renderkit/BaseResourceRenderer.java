@@ -17,16 +17,16 @@
 package org.icefaces.mobi.renderkit;
 
 
-import org.icefaces.application.ResourceRegistry;
-import org.icefaces.mobi.utils.IceOutputResource;
-import org.icefaces.mobi.utils.Utils;
-
-import javax.faces.context.FacesContext;
-import javax.faces.render.Renderer;
-import javax.servlet.http.HttpSession;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpSession;
+
+import org.icefaces.application.ResourceRegistry;
+import org.icefaces.mobi.utils.IceOutputResource;
+import org.icefaces.mobi.utils.MobiJSFUtils;
 
 /**
  * Created for mobility project for Audio and video playback
@@ -56,7 +56,7 @@ public class BaseResourceRenderer extends CoreRenderer {
                 .getExternalContext().getSession(false);
         if (null != session)  {
             registeredPath += ";jsessionid=" + 
-                    Utils.getSessionIdCookie(facesContext);
+                    MobiJSFUtils.getSessionIdCookie(facesContext);
         }
 
         return registeredPath;

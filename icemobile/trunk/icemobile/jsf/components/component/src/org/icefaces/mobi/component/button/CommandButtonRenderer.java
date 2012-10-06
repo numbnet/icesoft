@@ -15,25 +15,25 @@
  */
 package org.icefaces.mobi.component.button;
 
-import org.icefaces.mobi.component.panelconfirmation.PanelConfirmationRenderer;
-import org.icefaces.mobi.component.submitnotification.SubmitNotification;
-import org.icefaces.mobi.component.submitnotification.SubmitNotificationRenderer;
-import org.icefaces.mobi.utils.HTML;
-import org.icefaces.mobi.utils.Utils;
-import org.icefaces.mobi.renderkit.CoreRenderer;
+import java.io.IOException;
+import java.util.List;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.faces.component.UIComponent;
+import javax.faces.component.UIParameter;
 import javax.faces.component.behavior.ClientBehaviorHolder;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.event.ActionEvent;
-import javax.faces.render.Renderer;
-import javax.faces.component.UIParameter;
-import java.io.IOException;
-import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import java.util.List;
+
+import org.icefaces.mobi.component.panelconfirmation.PanelConfirmationRenderer;
+import org.icefaces.mobi.component.submitnotification.SubmitNotificationRenderer;
+import org.icefaces.mobi.renderkit.CoreRenderer;
+import org.icefaces.mobi.utils.HTML;
+import org.icefaces.mobi.utils.JSFUtils;
+import org.icefaces.mobi.utils.MobiJSFUtils;
 
 
 public class  CommandButtonRenderer extends CoreRenderer {
@@ -122,7 +122,7 @@ public class  CommandButtonRenderer extends CoreRenderer {
         ResponseWriter writer = facesContext.getResponseWriter();
         String clientId = uiComponent.getClientId(facesContext);
         CommandButton commandButton = (CommandButton) uiComponent;
-        uiParamChildren = Utils.captureParameters( commandButton );
+        uiParamChildren = JSFUtils.captureParameters( commandButton );
         if (commandButton.isDisabled()) {
             writer.writeAttribute("disabled", "disabled", null);
             writer.endElement(HTML.INPUT_ELEM);
@@ -132,7 +132,7 @@ public class  CommandButtonRenderer extends CoreRenderer {
         String idAndparams = "'"+clientId+"'";
         String params="";
         if (uiParamChildren != null) {
-            params =  Utils.asParameterString(uiParamChildren);
+            params =  MobiJSFUtils.asParameterString(uiParamChildren);
             idAndparams += ","+ params;
         }
         ClientBehaviorHolder cbh = (ClientBehaviorHolder)uiComponent;

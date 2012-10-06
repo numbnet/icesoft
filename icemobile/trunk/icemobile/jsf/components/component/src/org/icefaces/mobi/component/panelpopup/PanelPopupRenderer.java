@@ -15,16 +15,18 @@
  */
 package org.icefaces.mobi.component.panelpopup;
 
-import org.icefaces.mobi.renderkit.BaseLayoutRenderer;
-import org.icefaces.mobi.utils.HTML;
-import org.icefaces.mobi.utils.Utils;
+import java.io.IOException;
+import java.util.Map;
+import java.util.logging.Logger;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import java.io.IOException;
-import java.util.Map;
-import java.util.logging.Logger;
+
+import org.icefaces.mobi.renderkit.BaseLayoutRenderer;
+import org.icefaces.mobi.utils.HTML;
+import org.icefaces.mobi.utils.JSFUtils;
+import org.icefaces.mobi.utils.MobiJSFUtils;
 
 
 public class PanelPopupRenderer extends BaseLayoutRenderer {
@@ -115,7 +117,7 @@ public class PanelPopupRenderer extends BaseLayoutRenderer {
             writer.writeAttribute(HTML.ID_ATTR, clientId + "_title", HTML.ID_ATTR);
             writer.writeAttribute("class", PanelPopup.TITLE_CLASS, null);
             if (labelFacet != null) {
-                Utils.renderChild(facesContext, labelFacet);
+                JSFUtils.renderChild(facesContext, labelFacet);
             } else if (headerText != null) {
                 writer.write(headerText);
                 if (clientSide) {
@@ -164,7 +166,7 @@ public class PanelPopupRenderer extends BaseLayoutRenderer {
         writer.startElement("script", null);
         writer.writeAttribute("text", "text/javascript", null);
         StringBuilder builder = new StringBuilder(255);
-        int hashcode = Utils.generateHashCode(System.currentTimeMillis());
+        int hashcode = MobiJSFUtils.generateHashCode(System.currentTimeMillis());
         builder.append("mobi.panelPopup.initClient('").append(clientId)
                 .append("', {visible: ").append(panelPopup.isVisible())
                 .append(", hash: ").append(hashcode)

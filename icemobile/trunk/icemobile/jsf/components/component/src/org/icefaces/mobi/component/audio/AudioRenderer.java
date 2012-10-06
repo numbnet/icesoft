@@ -15,18 +15,19 @@
  */
 package org.icefaces.mobi.component.audio;
 
-import org.icefaces.mobi.component.video.VideoPlayer;
-import org.icefaces.mobi.utils.HTML;
-import org.icefaces.mobi.utils.PassThruAttributeWriter;
-import org.icefaces.mobi.utils.Utils.DeviceType;
-import org.icefaces.mobi.renderkit.BaseResourceRenderer;
-import org.icefaces.mobi.utils.Utils;
+import java.io.IOException;
+import java.util.logging.Logger;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import java.io.IOException;
-import java.util.logging.Logger;
+
+import org.icefaces.mobi.component.video.VideoPlayer;
+import org.icefaces.mobi.renderkit.BaseResourceRenderer;
+import org.icefaces.mobi.utils.HTML;
+import org.icefaces.mobi.utils.MobiJSFUtils;
+import org.icefaces.mobi.utils.PassThruAttributeWriter;
+import org.icemobile.util.ClientDescriptor;
 
 
 public class AudioRenderer extends BaseResourceRenderer {
@@ -35,6 +36,9 @@ public class AudioRenderer extends BaseResourceRenderer {
 
     public void encodeBegin(FacesContext facesContext, UIComponent uiComponent)
             throws IOException {
+        
+        ClientDescriptor client = MobiJSFUtils.getClientDescriptor();
+        
         ResponseWriter writer = facesContext.getResponseWriter();
         String clientId = uiComponent.getClientId(facesContext);
         Audio audio = (Audio) uiComponent;
@@ -52,7 +56,7 @@ public class AudioRenderer extends BaseResourceRenderer {
         }
         writer.writeAttribute("class", styleClass.toString(), null);
         String srcAttribute;
-        if ( Utils.getDeviceType(facesContext) != DeviceType.BLACKBERRY) {
+        if ( client.isBlackBerryOS()) {
             writer.startElement("audio", uiComponent);
             if (disabled) {
                 writer.writeAttribute("disabled", "disabled", null);
@@ -71,7 +75,7 @@ public class AudioRenderer extends BaseResourceRenderer {
             writer.endElement("video");
         }
         // write inline image link
-        if (!Utils.isIOS() && audio.getLinkLabel() != null)  {
+        if (!client.isIOS() && audio.getLinkLabel() != null)  {
             writer.startElement("br", uiComponent);
             writer.endElement("br");
             writer.startElement("a", uiComponent);
