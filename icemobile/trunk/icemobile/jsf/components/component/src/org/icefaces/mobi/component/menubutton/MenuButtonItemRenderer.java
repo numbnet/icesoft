@@ -15,21 +15,21 @@
  */
 package org.icefaces.mobi.component.menubutton;
 
-import org.icefaces.mobi.component.panelconfirmation.PanelConfirmation;
-import org.icefaces.mobi.component.submitnotification.SubmitNotificationRenderer;
-import org.icefaces.mobi.component.submitnotification.SubmitNotification;
-import org.icefaces.mobi.utils.HTML;
-import org.icefaces.mobi.utils.Utils;
+import java.io.IOException;
+import java.util.Map;
+import java.util.logging.Logger;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.behavior.ClientBehaviorHolder;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.event.ActionEvent;
+
+import org.icefaces.mobi.component.panelconfirmation.PanelConfirmation;
+import org.icefaces.mobi.component.submitnotification.SubmitNotificationRenderer;
 import org.icefaces.mobi.renderkit.BaseLayoutRenderer;
-import java.io.IOException;
-import java.util.Map;
-import java.util.logging.Logger;
+import org.icefaces.mobi.utils.HTML;
+import org.icefaces.mobi.utils.JSFUtils;
 
 
 public class MenuButtonItemRenderer extends BaseLayoutRenderer{
@@ -75,7 +75,7 @@ public class MenuButtonItemRenderer extends BaseLayoutRenderer{
   //       StringBuilder builder = new StringBuilder("mobi.menubutton.initCfg('").append(parentId).append("','").append(clientId).append("',{singleSubmit: ");
         StringBuilder builder = new StringBuilder(",{singleSubmit: ").append(singleSubmit);
         builder.append(",disabled: ").append(disabled);
-        UIComponent uiForm = Utils.findParentForm(parent);
+        UIComponent uiForm = JSFUtils.findParentForm(parent);
          if (null != subNotId && subNotId.length()>0) {
             submitNotificationId = SubmitNotificationRenderer.findSubmitNotificationId(uiComponent, subNotId);
             if (null == submitNotificationId){

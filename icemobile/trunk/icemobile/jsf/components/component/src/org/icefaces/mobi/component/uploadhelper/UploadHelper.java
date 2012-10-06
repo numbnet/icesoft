@@ -17,8 +17,10 @@
 package org.icefaces.mobi.component.uploadhelper;
 
 import org.icefaces.impl.event.FormSubmit;
+import org.icefaces.mobi.utils.MobiJSFUtils;
 import org.icefaces.mobi.utils.Utils;
 import org.icefaces.util.EnvUtils;
+import org.icemobile.util.ClientDescriptor;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIForm;
@@ -75,7 +77,10 @@ public class UploadHelper extends UploadHelperBase {
     }
 
     boolean browserRequiresFullSubmit()  {
-        return (Utils.isIE() || Utils.isAndroidPhone() || Utils.isBlackBerry());
+        ClientDescriptor client = MobiJSFUtils.getClientDescriptor();
+        return (client.isIEBrowser() 
+                || ( client.isAndroidOS() && client.isTabletBrowser()) 
+                || client.isBlackBerryOS());
     }
 
 }

@@ -16,22 +16,21 @@
 
 package org.icefaces.mobi.component.contentstackmenu;
 
-import org.icefaces.mobi.component.accordion.Accordion;
-import org.icefaces.mobi.component.contentmenuitem.ContentMenuItem;
-import org.icefaces.mobi.renderkit.BaseLayoutRenderer;
-import org.icefaces.mobi.utils.HTML;
-import org.icefaces.mobi.utils.Utils;
-import org.icefaces.mobi.component.contentstack.ContentStack;
+import java.io.IOException;
+import java.util.Map;
+import java.util.logging.Logger;
 
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import java.io.IOException;
-import java.util.List;
-import java.util.Map;
-import java.util.logging.Logger;
+
+import org.icefaces.mobi.component.contentstack.ContentStack;
+import org.icefaces.mobi.renderkit.BaseLayoutRenderer;
+import org.icefaces.mobi.utils.HTML;
+import org.icefaces.mobi.utils.JSFUtils;
+import org.icefaces.mobi.utils.Utils;
 
 public class  ContentStackMenuRenderer extends BaseLayoutRenderer {
 
@@ -52,7 +51,7 @@ public class  ContentStackMenuRenderer extends BaseLayoutRenderer {
         // ajax behavior comes from ContentStackMenu which sends the currently selected value
         String cStackId = menu.getContentStackId();
         UIViewRoot root = facesContext.getViewRoot();
-        UIComponent stackComp = Utils.findChildComponent(root, cStackId) ;
+        UIComponent stackComp = JSFUtils.findChildComponent(root, cStackId) ;
         if (stackComp !=null && stackComp instanceof ContentStack){
             String stackId = stackComp.getClientId(facesContext);
             ContentStack stack = (ContentStack)stackComp;
@@ -79,7 +78,7 @@ public class  ContentStackMenuRenderer extends BaseLayoutRenderer {
         ResponseWriter writer = facesContext.getResponseWriter();
         String clientId = uiComponent.getClientId(facesContext);
         ContentStackMenu menu = (ContentStackMenu) uiComponent;
-      	UIComponent form = Utils.findParentForm(uiComponent);
+      	UIComponent form = JSFUtils.findParentForm(uiComponent);
         boolean accordion = menu.isAccordion();
    		if(form == null) {
 			throw new FacesException("ContentStackMenu : \"" + clientId + "\" must be inside a form element");

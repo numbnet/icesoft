@@ -15,19 +15,21 @@
  */
 package org.icefaces.mobi.component.tabset;
 
-import org.icefaces.mobi.component.contentpane.ContentPane;
-import org.icefaces.mobi.renderkit.BaseLayoutRenderer;
-import org.icefaces.mobi.utils.HTML;
-import org.icefaces.mobi.utils.Utils;
+import java.io.IOException;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.event.ValueChangeEvent;
-import java.io.IOException;
-import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
+import org.icefaces.mobi.component.contentpane.ContentPane;
+import org.icefaces.mobi.renderkit.BaseLayoutRenderer;
+import org.icefaces.mobi.utils.HTML;
+import org.icefaces.mobi.utils.JSFUtils;
+import org.icefaces.mobi.utils.MobiJSFUtils;
 
 public class TabSetRenderer extends BaseLayoutRenderer {
     private static Logger logger = Logger.getLogger(TabSetRenderer.class.getName());
@@ -126,7 +128,7 @@ public class TabSetRenderer extends BaseLayoutRenderer {
     }
 
     public void encodeChildren(FacesContext facesContext, UIComponent uiComponent) throws IOException {
-        Utils.renderChildren(facesContext, uiComponent);
+        JSFUtils.renderChildren(facesContext, uiComponent);
     }
 
     public void encodeTabs(FacesContext facesContext, UIComponent uiComponent) throws IOException {
@@ -205,7 +207,7 @@ public class TabSetRenderer extends BaseLayoutRenderer {
         writer.startElement("script", null);
         writer.writeAttribute("text", "text/javascript", null);
        // int hashcode = Utils.generateHashCode(System.currentTimeMillis());
-        int hashcode = Utils.generateHashCode(tabset.getSelectedId());
+        int hashcode = MobiJSFUtils.generateHashCode(tabset.getSelectedId());
         StringBuilder cfg = new StringBuilder("{singleSubmit: ");
         cfg.append(tabset.isSingleSubmit());
         /*     boolean autoheight = tabset.isAutoHeight();  */

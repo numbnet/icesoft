@@ -17,9 +17,10 @@
 package org.icefaces.mobi.component.carousel;
 
 
-import org.icefaces.mobi.utils.HTML;
-import org.icefaces.mobi.utils.Utils;
-import org.icefaces.mobi.renderkit.BaseLayoutRenderer;
+import java.io.IOException;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.faces.application.ProjectStage;
 import javax.faces.component.UIComponent;
@@ -27,10 +28,11 @@ import javax.faces.component.behavior.ClientBehaviorHolder;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.event.ValueChangeEvent;
-import java.io.IOException;
-import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
+import org.icefaces.mobi.renderkit.BaseLayoutRenderer;
+import org.icefaces.mobi.utils.HTML;
+import org.icefaces.mobi.utils.MobiJSFUtils;
+import org.icefaces.mobi.utils.Utils;
 
 
 public class CarouselRenderer extends BaseLayoutRenderer {
@@ -198,7 +200,7 @@ public class CarouselRenderer extends BaseLayoutRenderer {
         //define mobi namespace if necessary
         StringBuilder builder = new StringBuilder(255);
         builder.append(clientId).append("',{ singleSubmit: ").append(singleSubmit);
-        int hashcode = Utils.generateHashCode(carousel.getSelectedItem());
+        int hashcode = MobiJSFUtils.generateHashCode(carousel.getSelectedItem());
         builder.append(", hash: ").append(hashcode);
         boolean hasBehaviors = !carousel.getClientBehaviors().isEmpty();
         if (hasBehaviors){

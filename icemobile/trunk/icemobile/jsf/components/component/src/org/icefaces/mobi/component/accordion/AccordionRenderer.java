@@ -16,19 +16,19 @@
 
 package org.icefaces.mobi.component.accordion;
 
-import org.icefaces.mobi.renderkit.BaseLayoutRenderer;
-import org.icefaces.mobi.utils.HTML;
-import org.icefaces.mobi.utils.Utils;
-
-import javax.faces.component.UIComponent;
-
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-import javax.faces.event.ValueChangeEvent;
 import java.io.IOException;
 import java.util.Map;
 import java.util.logging.Logger;
-import java.util.logging.Level;
+
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
+import javax.faces.event.ValueChangeEvent;
+
+import org.icefaces.mobi.renderkit.BaseLayoutRenderer;
+import org.icefaces.mobi.utils.HTML;
+import org.icefaces.mobi.utils.JSFUtils;
+import org.icefaces.mobi.utils.MobiJSFUtils;
 
 
 public class AccordionRenderer extends BaseLayoutRenderer {
@@ -46,7 +46,7 @@ public class AccordionRenderer extends BaseLayoutRenderer {
          String indexStr = params.get(clientId + "_hidden");
          if( null != indexStr) {
              String oldId = accordion.getCurrentId();
-             String newId = Utils.getIdOfChildByClientId(context, accordion, indexStr);
+             String newId = JSFUtils.getIdOfChildByClientId(context, accordion, indexStr);
              if (newId != null && !newId.equals(oldId)) {
                  accordion.setCurrentId(newId);
                  component.queueEvent(new ValueChangeEvent(component, oldId, newId));
@@ -80,11 +80,10 @@ public class AccordionRenderer extends BaseLayoutRenderer {
         return true;
     }
     public void encodeChildren(FacesContext facesContext, UIComponent uiComponent) throws IOException{
-         Utils.renderChildren(facesContext, uiComponent);
+         JSFUtils.renderChildren(facesContext, uiComponent);
     }
     public String getDataOpenedAttribute(FacesContext facesContext, UIComponent uiComponent) {
         Accordion paneController = (Accordion) uiComponent;
-        ResponseWriter writer = facesContext.getResponseWriter();
         UIComponent openPane = null;  //all children must be panels
         String currentId = paneController.getCurrentId();
 
@@ -93,7 +92,7 @@ public class AccordionRenderer extends BaseLayoutRenderer {
             logger.finer("this component must have panels defined as children. Please read DOCS.");
                 return null;
         } //check whether we have exceeded maximum number of children for accordion???
-        openPane = Utils.getChildById(paneController, currentId);
+        openPane = JSFUtils.getChildById(paneController, currentId);
  //       logger.info("looking for index="+activeIndex+" selectedPane to open ="+openPane.getId());
         //selectedPanel is now set
         String clId = null;
@@ -126,7 +125,7 @@ public class AccordionRenderer extends BaseLayoutRenderer {
             cfg.append(", opened: '").append(paneOpened).append("'");
         }
         boolean autoheight = pane.isAutoHeight();
-        int hashcode = Utils.generateHashCode(paneOpened);
+        int hashcode = MobiJSFUtils.generateHashCode(paneOpened);
         cfg.append(", hash: ").append(hashcode);
         cfg.append(", autoheight: ").append(autoheight);
         cfg.append(", maxheight: '").append(pane.getFixedHeight()).append("'");

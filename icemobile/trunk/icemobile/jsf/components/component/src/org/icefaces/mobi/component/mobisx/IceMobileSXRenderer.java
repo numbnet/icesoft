@@ -16,17 +16,19 @@
 
 package org.icefaces.mobi.component.mobisx;
 
-import org.icefaces.mobi.utils.HTML;
-import org.icefaces.mobi.utils.Utils;
-import org.icefaces.impl.application.AuxUploadSetup;
-import org.icefaces.util.EnvUtils;
+import java.io.IOException;
+import java.util.logging.Logger;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.render.Renderer;
-import java.io.IOException;
-import java.util.logging.Logger;
+
+import org.icefaces.impl.application.AuxUploadSetup;
+import org.icefaces.mobi.utils.HTML;
+import org.icefaces.mobi.utils.MobiJSFUtils;
+import org.icefaces.mobi.utils.Utils;
+import org.icemobile.util.ClientDescriptor;
 
 
 public class IceMobileSXRenderer extends Renderer {
@@ -38,8 +40,10 @@ public class IceMobileSXRenderer extends Renderer {
             throws IOException {
         ResponseWriter writer = facesContext.getResponseWriter();
         String clientId = uiComponent.getClientId(facesContext);
+        ClientDescriptor client = MobiJSFUtils.getClientDescriptor();
+        
         IceMobileSX sx = (IceMobileSX) uiComponent;
-        if (Utils.showSX()){
+        if (client.isIOS() && !client.isSXRegistered() && !client.isICEmobileContainer()){
             writer.startElement(HTML.SPAN_ELEM, uiComponent);
             writer.startElement(HTML.INPUT_ELEM, uiComponent);
             writer.writeAttribute(HTML.TYPE_ATTR, "button", HTML.TYPE_ATTR);
@@ -62,7 +66,7 @@ public class IceMobileSXRenderer extends Renderer {
             }
             writer.writeAttribute(HTML.VALUE_ATTR, value, HTML.VALUE_ATTR);
 
-            String sessionIdParam = Utils.getSessionIdCookie(facesContext);
+            String sessionIdParam = MobiJSFUtils.getSessionIdCookie(facesContext);
             String uploadURL = AuxUploadSetup.getInstance().getUploadURL();
             StringBuilder sb = new StringBuilder("mobi.registerAuxUpload('");
             sb.append(sessionIdParam).append("','").append(uploadURL).append("');");

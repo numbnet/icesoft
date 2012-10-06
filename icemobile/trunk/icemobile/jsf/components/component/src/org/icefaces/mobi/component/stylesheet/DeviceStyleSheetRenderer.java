@@ -16,9 +16,10 @@
 
 package org.icefaces.mobi.component.stylesheet;
 
-import org.icefaces.mobi.utils.HTML;
-import org.icefaces.mobi.utils.PassThruAttributeWriter;
-import org.icefaces.mobi.utils.Utils;
+import java.io.IOException;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.faces.application.ProjectStage;
 import javax.faces.application.Resource;
@@ -29,10 +30,11 @@ import javax.faces.event.AbortProcessingException;
 import javax.faces.event.ComponentSystemEvent;
 import javax.faces.event.ListenerFor;
 import javax.faces.render.Renderer;
-import java.io.IOException;
-import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
+import org.icefaces.mobi.utils.HTML;
+import org.icefaces.mobi.utils.JSFUtils;
+import org.icefaces.mobi.utils.PassThruAttributeWriter;
+import org.icemobile.util.CSSUtils;
 
 
 /**
@@ -118,17 +120,16 @@ public class DeviceStyleSheetRenderer extends Renderer implements javax.faces.ev
          *     mode. Error will result if name and library can not generate a
          *     value resource.
          */
-
-        String name = deriveThemeName(attributes, contextMap, context);
+        String name = (String)uiComponent.getAttributes().get("name");
+        String view = (String)uiComponent.getAttributes().get("view");
+        if( name == null ){
+            name = CSSUtils.deriveTheme(view, JSFUtils.getRequest()).fileName();
+        }
           
         if( name != null ){
         	contextMap.put(MOBILE_DEVICE_TYPE_KEY, name);
         	
-        	if( name.endsWith(".css")){ //strip off .css
-        		name = name.substring(0,name.lastIndexOf("."));
-        	}
         	String css = name;
-        	
         	// load compressed css if this is production environment.
             if (context.isProjectStage(ProjectStage.Production)){
             	css = name.concat(CSS_COMPRESSION_POSTFIX);
@@ -167,58 +168,6 @@ public class DeviceStyleSheetRenderer extends Renderer implements javax.faces.ev
     	return library;
     }
     
-    private String deriveThemeName(Map attributes, Map contextMap, FacesContext facesContext){
-    	// check for the existence of the name and library attributes.
-        String name = (String) attributes.get(HTML.NAME_ATTR);
-         
-        String view = (String)attributes.get(VIEW_TYPE);
-
-        // check for empty string on name attribute used for auto mode where
-        // name value binding is used.
-        name = name != null && name.equals(EMPTY_STRING) ? null : name;
-
-        // 1.) full automatic device detection.
-        if (name == null) {
-            // check the session context map for the MOBILE_DEVICE_TYPE_KEY, if found
-            // there is now point rechecking for for the device type.
-            if (contextMap.containsKey(MOBILE_DEVICE_TYPE_KEY)) {
-                name = (String) contextMap.get(MOBILE_DEVICE_TYPE_KEY);
-            } else {
-                // the view attribute if specified will apply a small or large
-                // theme, large theme's are tablet based, so ipad and honeycomb.
-                // small themes are android, iphone, and bberry.
-            	switch(Utils.getDeviceType(facesContext)){
-	            	case IPAD: name = "ipad"; break;
-	            	case IPHONE: name = "iphone"; break;
-	            	case ANDROID_PHONE: name = "android"; break;
-	            	case ANDROID_TABLET: name = "honeycomb"; break;
-	            	case BLACKBERRY: name = "bberry"; break;
-	            	default: name = "ipad"; 
-            	}
-            	if (view != null){
-                	
-                    // forces a small view
-                    if(view.equalsIgnoreCase(VIEW_TYPE_SMALL)){
-                        if(name.equals(Utils.DeviceType.IPAD.name())){
-                            name = "ipad";
-                        }else if (name.equals(Utils.DeviceType.ANDROID_TABLET.name())){
-                            name= "android";
-                        }
-                    }else if(view.equalsIgnoreCase(VIEW_TYPE_LARGE)){
-                        if(name.equals(Utils.DeviceType.IPHONE.name())){
-                            name = "ipad";
-                        }else if (name.equals(Utils.DeviceType.ANDROID_PHONE.name())){
-                            name= "honeycomb";
-                        }
-                    }else{
-                        log.warning("View type " + view + " is not a recognized view type");
-                    }
-                }
-            }
-             // store in session map for use later.
-        }
-        return name;
-    }
     
     public void encodeScript(ResponseWriter writer, String name) throws IOException {
     	writer.startElement("script", null);

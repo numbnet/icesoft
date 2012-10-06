@@ -17,20 +17,22 @@
 package org.icefaces.mobi.component.camera;
 
 
-import org.icefaces.mobi.utils.HTML;
-import org.icefaces.mobi.utils.Utils;
-import org.icefaces.util.EnvUtils;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.logging.Logger;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.event.ValueChangeEvent;
-
 import javax.faces.render.Renderer;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.logging.Logger;
+
+import org.icefaces.mobi.utils.HTML;
+import org.icefaces.mobi.utils.JSFUtils;
+import org.icefaces.mobi.utils.MobiJSFUtils;
+import org.icefaces.mobi.utils.Utils;
+import org.icefaces.util.EnvUtils;
 
 
 public class CameraRenderer extends Renderer {
@@ -73,7 +75,7 @@ public class CameraRenderer extends Renderer {
      * that uploaded this component.
      */
     public boolean extractImages(FacesContext facesContext, Map map, String clientId) throws IOException {
-        return Utils.decodeComponentFile(facesContext, clientId, map);
+        return MobiJSFUtils.decodeComponentFile(facesContext, clientId, map);
     }
 
 
@@ -105,7 +107,7 @@ public class CameraRenderer extends Renderer {
         writer.writeAttribute(HTML.TYPE_ATTR, "button", null);
         writer.writeAttribute(HTML.NAME_ATTR, clientId + "_button", null);
         // write out style for input button, same as default device button.
-        Utils.writeConcatenatedStyleClasses(writer,
+        JSFUtils.writeConcatenatedStyleClasses(writer,
                 "mobi-button mobi-button-default",
                 camera.getStyleClass());
         writer.writeAttribute(HTML.STYLE_ATTR, camera.getStyle(), HTML.STYLE_ATTR);
@@ -115,7 +117,7 @@ public class CameraRenderer extends Renderer {
         //default value of unset in params is Integer.MIN_VALUE
         String script;
         if (isAuxUpload)  {
-            script = Utils.getICEmobileSXScript("camera", clientId);
+            script = MobiJSFUtils.getICEmobileSXScript("camera", uiComponent);
         } else {
             if ( (width != Integer.MIN_VALUE) || 
                     (height != Integer.MIN_VALUE) ) {
@@ -127,7 +129,7 @@ public class CameraRenderer extends Renderer {
             }
         }
         writer.writeAttribute(HTML.ONCLICK_ATTR, script, null);
-        if (Utils.uploadInProgress(facesContext, clientId))  {
+        if (MobiJSFUtils.uploadInProgress(uiComponent))  {
             writer.writeText("photo captured", null);
         } else {
             writer.writeText("camera", null);

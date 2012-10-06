@@ -16,23 +16,21 @@
  */
 package org.icefaces.mobi.component.contentpane;
 
+import java.io.IOException;
+import java.util.logging.Logger;
+
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
+
+import org.icefaces.mobi.api.ContentPaneController;
 import org.icefaces.mobi.component.accordion.Accordion;
 import org.icefaces.mobi.component.contentstack.ContentStack;
 import org.icefaces.mobi.component.tabset.TabSet;
 import org.icefaces.mobi.renderkit.BaseLayoutRenderer;
 import org.icefaces.mobi.utils.HTML;
+import org.icefaces.mobi.utils.JSFUtils;
 import org.icefaces.mobi.utils.Utils;
-import org.icefaces.mobi.api.ContentPaneController;
-
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIPanel;
-import javax.faces.component.UIViewRoot;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import java.util.Map;
 
 
 public class ContentPaneRenderer extends BaseLayoutRenderer {
@@ -85,13 +83,13 @@ public class ContentPaneRenderer extends BaseLayoutRenderer {
         ContentPane pane = (ContentPane)uiComponent;
         //if I am clientSide, I will always be present and always render
         if (pane.isClient()){
-            Utils.renderChildren(facesContext, uiComponent);
+            JSFUtils.renderChildren(facesContext, uiComponent);
         }
         //am I the selected pane?  Can I count on the taghandler to already have
         //things constructed?? assume so for now.
          else if (iAmSelected(facesContext, uiComponent)){
         //     logger.info("rendering the children of "+uiComponent.getClientId(facesContext));
-             Utils.renderChildren(facesContext, uiComponent);
+             JSFUtils.renderChildren(facesContext, uiComponent);
         }
 
     }

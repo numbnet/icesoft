@@ -16,7 +16,9 @@
 
 package org.icefaces.mobi.component.viewselector;
 
+import org.icefaces.mobi.utils.MobiJSFUtils;
 import org.icefaces.mobi.utils.Utils;
+import org.icemobile.util.ClientDescriptor;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -103,14 +105,11 @@ public class ViewSelectorHandler extends ComponentHandler {
         } else {
             name= (String)contextMap.get(ViewSelector.VIEW_TYPE_KEY);
             if (name ==null){
-                Utils.DeviceType deviceType = Utils.getDeviceType(facesContext);
-                if (deviceType.equals(Utils.DeviceType.IPAD) ||
-                    deviceType.equals(Utils.DeviceType.ANDROID_TABLET)) {
-                        name = ViewSelector.LARGE_FACET;
-                } else if (deviceType.equals(Utils.DeviceType.ANDROID_PHONE) ||
-                    deviceType.equals(Utils.DeviceType.IPHONE) ||
-                    deviceType.equals(Utils.DeviceType.BLACKBERRY)) {
-                        name = ViewSelector.SMALL_FACET;
+                ClientDescriptor client = MobiJSFUtils.getClientDescriptor();
+                if (client.isTabletBrowser() || client.isDesktopBrowser()) {
+                    name = ViewSelector.LARGE_FACET;
+                } else if (client.isHandheldBrowser()) {
+                    name = ViewSelector.SMALL_FACET;
                 }
                 if (name!=null){
                     contextMap.put(ViewSelector.VIEW_TYPE_KEY, name);

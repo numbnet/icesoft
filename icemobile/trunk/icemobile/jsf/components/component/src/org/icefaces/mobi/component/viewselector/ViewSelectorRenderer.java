@@ -16,16 +16,15 @@
 package org.icefaces.mobi.component.viewselector;
 
 
-import org.icefaces.mobi.utils.Utils;
+import java.io.IOException;
+import java.util.Map;
+import java.util.logging.Logger;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.render.Renderer;
-import java.io.IOException;
-import java.util.Map;
-import java.util.List;
-import java.util.Iterator;
-import java.util.logging.Logger;
+
+import org.icefaces.mobi.utils.JSFUtils;
 
 /**
  * Renders the child view type that matches the detected view type.  If the
@@ -60,14 +59,14 @@ public class ViewSelectorRenderer extends Renderer {
             if (ViewSelector.SMALL_FACET.equals(name)) {
                 UIComponent viewFacet = viewSelector.getFacet(ViewSelector.SMALL_FACET);
                 if (viewFacet != null) {
-                    Utils.renderChild(facesContext, viewFacet);
+                    JSFUtils.renderChild(facesContext, viewFacet);
                 } else {
                     logger.warning("Small view detected but no small Facet defined in viewSelector element.");
                 }
             } else if (ViewSelector.LARGE_FACET.equals(name)) {
                 UIComponent viewFacet = viewSelector.getFacet(ViewSelector.LARGE_FACET);
                 if (viewFacet != null) {
-                    Utils.renderChild(facesContext, viewFacet);
+                    JSFUtils.renderChild(facesContext, viewFacet);
                 } else {
                     logger.warning("Large view detected but no large Facet defined in viewSelector element.");
                 }

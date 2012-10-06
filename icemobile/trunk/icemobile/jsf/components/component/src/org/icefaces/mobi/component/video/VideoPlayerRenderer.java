@@ -18,9 +18,11 @@
 package org.icefaces.mobi.component.video;
 
 import org.icefaces.mobi.utils.HTML;
+import org.icefaces.mobi.utils.MobiJSFUtils;
 import org.icefaces.mobi.utils.PassThruAttributeWriter;
 import org.icefaces.mobi.renderkit.BaseResourceRenderer;
 import org.icefaces.mobi.utils.Utils;
+import org.icemobile.util.ClientDescriptor;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -83,7 +85,8 @@ public class VideoPlayerRenderer extends BaseResourceRenderer {
         }
         writer.writeAttribute("src", srcAttribute, null);
         writer.endElement("video");
-        if (!Utils.isIOS() && video.getLinkLabel() != null)  {
+        ClientDescriptor client = MobiJSFUtils.getClientDescriptor();
+        if (!client.isIOS() && video.getLinkLabel() != null)  {
             writer.startElement("br", uiComponent);
             writer.endElement("br");
             writer.startElement("a", uiComponent);

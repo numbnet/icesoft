@@ -18,13 +18,14 @@ package org.icefaces.mobi.component.splitpane;
 
 import java.io.IOException;
 import java.util.logging.Logger;
-import org.icefaces.mobi.renderkit.BaseLayoutRenderer;
-import org.icefaces.mobi.utils.HTML;
-import org.icefaces.mobi.utils.Utils;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+
+import org.icefaces.mobi.renderkit.BaseLayoutRenderer;
+import org.icefaces.mobi.utils.HTML;
+import org.icefaces.mobi.utils.JSFUtils;
 
 public class SplitPaneRenderer extends BaseLayoutRenderer {
     private static Logger logger = Logger.getLogger(SplitPaneRenderer.class.getName());
@@ -56,12 +57,12 @@ public class SplitPaneRenderer extends BaseLayoutRenderer {
                 baseClass =  SplitPane.SPLITPANE_SCROLLABLE;
             }
             writer.writeAttribute("class", baseClass, null);
-            Utils.renderChild(facesContext, leftFacet);
+            JSFUtils.renderChild(facesContext, leftFacet);
             writer.endElement(HTML.DIV_ELEM);
             writer.startElement(HTML.DIV_ELEM, uiComponent);
             writer.writeAttribute(HTML.ID_ATTR, clientId+"_right", HTML.ID_ATTR);
             writer.writeAttribute("class", baseClass, null);
-            Utils.renderChild(facesContext, rightFacet);
+            JSFUtils.renderChild(facesContext, rightFacet);
             writer.endElement(HTML.DIV_ELEM);
             encodeScript(facesContext,  uiComponent);
             writer.endElement(HTML.DIV_ELEM);

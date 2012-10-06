@@ -15,19 +15,16 @@
  */
 package org.icefaces.mobi.component.panelconfirmation;
 
-import org.icefaces.mobi.renderkit.BaseLayoutRenderer;
-import org.icefaces.mobi.utils.HTML;
-import org.icefaces.mobi.utils.Utils;
+import java.io.IOException;
+import java.util.logging.Logger;
 
-import javax.faces.application.ProjectStage;
-import javax.faces.application.Resource;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import javax.faces.render.Renderer;
-import java.io.IOException;
-import java.util.Map;
-import java.util.logging.Logger;
+
+import org.icefaces.mobi.renderkit.BaseLayoutRenderer;
+import org.icefaces.mobi.utils.HTML;
+import org.icefaces.mobi.utils.JSFUtils;
 
 /**
  * for now the css for this class is just reused from the dateSpinner popup container classes
@@ -126,7 +123,7 @@ public class  PanelConfirmationRenderer extends BaseLayoutRenderer {
         PanelConfirmation panelConfirmation = (PanelConfirmation) uiComponent.findComponent(panelConfirmationId);
         if (panelConfirmation ==null){
             //try again incase it's within a datatable or some other naming container
-            UIComponent uiForm = Utils.findParentForm(uiComponent);
+            UIComponent uiForm = JSFUtils.findParentForm(uiComponent);
             if (uiForm !=null){
                 panelConfirmation = (PanelConfirmation)(uiForm.findComponent(panelConfirmationId));
             }

@@ -15,24 +15,22 @@
  */
 package org.icefaces.mobi.component.contentstack;
 
-import org.icefaces.mobi.component.contentnavbar.ContentNavBar;
-import org.icefaces.mobi.component.contentpane.ContentPane;
-import org.icefaces.mobi.component.contentstackmenu.ContentStackMenuRenderer;
-import org.icefaces.mobi.renderkit.BaseLayoutRenderer;
-import org.icefaces.mobi.utils.HTML;
-import org.icefaces.mobi.utils.Utils;
-
-import javax.faces.application.ProjectStage;
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIViewRoot;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-import javax.faces.event.ValueChangeEvent;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
+
+import org.icefaces.mobi.component.contentnavbar.ContentNavBar;
+import org.icefaces.mobi.component.contentpane.ContentPane;
+import org.icefaces.mobi.renderkit.BaseLayoutRenderer;
+import org.icefaces.mobi.utils.HTML;
+import org.icefaces.mobi.utils.JSFUtils;
+import org.icefaces.mobi.utils.MobiJSFUtils;
 
 public class ContentStackRenderer extends BaseLayoutRenderer {
 
@@ -84,7 +82,7 @@ public class ContentStackRenderer extends BaseLayoutRenderer {
          //if layoutMenu is used then another div with panes Id is used
          if (container.getContentMenuId()!=null){
              if (null == container.getSingleView()){
-                 UIComponent stackMenuComp =  Utils.findChildComponent(uiComponent, container.getContentMenuId());
+                 UIComponent stackMenuComp =  JSFUtils.findChildComponent(uiComponent, container.getContentMenuId());
                  if (stackMenuComp !=null){
                     container.setSingleView(true);
                  }else {
@@ -147,7 +145,7 @@ public class ContentStackRenderer extends BaseLayoutRenderer {
         String selectedPaneClientId = null;
         String homeId = null;
         boolean client = false;
-        int hashcode = Utils.generateHashCode(stack.getSelectedId());
+        int hashcode = MobiJSFUtils.generateHashCode(stack.getSelectedId());
         UIComponent selPane = stack.findComponent(selectedPaneId);
         StringBuilder sb = new StringBuilder("mobi.layoutMenu.initClient('").append(clientId).append("'");
         sb.append(",{stackId: '").append(clientId).append("'");

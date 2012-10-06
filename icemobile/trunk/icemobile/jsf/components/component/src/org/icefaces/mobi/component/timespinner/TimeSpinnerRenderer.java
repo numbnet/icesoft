@@ -17,8 +17,10 @@
 package org.icefaces.mobi.component.timespinner;
 
 import org.icefaces.mobi.renderkit.BaseInputRenderer;
+import org.icefaces.mobi.utils.MobiJSFUtils;
 import org.icefaces.mobi.utils.PassThruAttributeWriter;
 import org.icefaces.mobi.utils.Utils;
+import org.icemobile.util.ClientDescriptor;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.behavior.ClientBehaviorHolder;
@@ -445,8 +447,7 @@ public class TimeSpinnerRenderer extends BaseInputRenderer {
     }
 
     private boolean shouldUseNative(TimeSpinner component) {
-        return (component.isUseNative() &&
-                (Utils.isIOS5() || Utils.isBlackBerry()));
+       return component.isUseNative() && Utils.shouldUseNative();
     }
 
 }

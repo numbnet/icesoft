@@ -15,16 +15,17 @@
  */
 package org.icefaces.mobi.component.pagepanel;
 
-import org.icefaces.mobi.renderkit.BaseLayoutRenderer;
-import org.icefaces.mobi.utils.HTML;
-import org.icefaces.mobi.utils.PassThruAttributeWriter;
-import org.icefaces.mobi.utils.Utils;
+import java.io.IOException;
+import java.util.logging.Logger;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import java.io.IOException;
-import java.util.logging.Logger;
+
+import org.icefaces.mobi.renderkit.BaseLayoutRenderer;
+import org.icefaces.mobi.utils.HTML;
+import org.icefaces.mobi.utils.JSFUtils;
+import org.icefaces.mobi.utils.PassThruAttributeWriter;
 
 
 public class PagePanelRenderer extends BaseLayoutRenderer {
@@ -57,7 +58,7 @@ public class PagePanelRenderer extends BaseLayoutRenderer {
             writer.startElement(HTML.DIV_ELEM, pagePanel);
             writer.writeAttribute(HTML.CLASS_ATTR, PagePanel.HEADER_CLASS, HTML.CLASS_ATTR);
             writer.writeAttribute(HTML.ID_ATTR, clientId + "_pgPnlHdr", HTML.ID_ATTR);
-            Utils.renderChild(facesContext, headerFacet);
+            JSFUtils.renderChild(facesContext, headerFacet);
             writer.endElement(HTML.DIV_ELEM);
         }
 
@@ -74,7 +75,7 @@ public class PagePanelRenderer extends BaseLayoutRenderer {
             writer.startElement(HTML.DIV_ELEM, pagePanel);
             writer.writeAttribute(HTML.CLASS_ATTR, bodyStyleClass, HTML.CLASS_ATTR);
             writer.writeAttribute(HTML.ID_ATTR, clientId + "_pgPnlBdy", HTML.ID_ATTR);
-            Utils.renderChild(facesContext, bodyFacet);
+            JSFUtils.renderChild(facesContext, bodyFacet);
             writer.endElement(HTML.DIV_ELEM);
         }
 
@@ -83,7 +84,7 @@ public class PagePanelRenderer extends BaseLayoutRenderer {
             writer.startElement(HTML.DIV_ELEM, pagePanel);
             writer.writeAttribute(HTML.CLASS_ATTR, PagePanel.FOOTER_CLASS, HTML.CLASS_ATTR);
             writer.writeAttribute(HTML.ID_ATTR, clientId + "_pgPnlFtr", HTML.ID_ATTR);
-            Utils.renderChild(facesContext, footerFacet);
+            JSFUtils.renderChild(facesContext, footerFacet);
             writer.endElement(HTML.DIV_ELEM);
         }
 
