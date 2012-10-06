@@ -229,18 +229,6 @@ public class MediaController implements Serializable {
 	
 
 	/**
-	 * Test to see if the calling browser has the ICEmobile
-	 * enhancements/extensions.
-	 * 
-	 * @return true if an ICEmobile enhancements are detected, otherwise false.
-	 */
-	public boolean isEnhancedBrowser() {
-        //if the prompt for ICEmobile-SX is shown, the browser
-        //is not enhanced
-        return !Utils.showSX();
-	}
-
-	/**
 	 * ActionListener called from the 'Photo' button in home.xhtml
 	 * 
 	 * @param ae ActionEvent
