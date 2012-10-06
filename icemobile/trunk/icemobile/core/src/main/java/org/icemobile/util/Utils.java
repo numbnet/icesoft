@@ -29,13 +29,14 @@ import javax.servlet.ServletRequest;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 
+import org.icefaces.mobi.utils.HTML;
+
 public class Utils {
-    
+
     private static Logger logger = Logger.getLogger(Utils.class.getName());
-    
-    public static final Map<String, String> FILE_EXT_BY_CONTENT_TYPE 
-        = new HashMap<String, String>() {
-            private static final long serialVersionUID = -8905491307471581114L;
+
+    public static final Map<String, String> FILE_EXT_BY_CONTENT_TYPE = new HashMap<String, String>() {
+        private static final long serialVersionUID = -8905491307471581114L;
 
         {
             put("video/mp4", ".mp4");
@@ -53,44 +54,42 @@ public class Utils {
             put("image/png", ".png");
         }
     };
-    
-    public static final Map<String, String> CONTENT_TYPE_BY_FILE_EXT 
-        = new HashMap<String, String>() {
+
+    public static final Map<String, String> CONTENT_TYPE_BY_FILE_EXT = new HashMap<String, String>() {
         {
-            put(".mp4","video/mp4");
-            put(".mp4","audio/mp4");
-            put(".mpg","video/mpeg");
-            put(".mov","video/mov");
-            put(".3gp","video/3gpp");
-            put(".wav","audio/wav");
-            put(".wav","audio/x-wav");
-            put(".m4a","audio/x-m4a");
-            put(".mp3","audio/mpeg");
-            put(".amr","audio/amr");
-            put(".jpg","image/jpeg");
-            put(".jpg","image/jpg");
-            put(".png","image/png");
+            put(".mp4", "video/mp4");
+            put(".mp4", "audio/mp4");
+            put(".mpg", "video/mpeg");
+            put(".mov", "video/mov");
+            put(".3gp", "video/3gpp");
+            put(".wav", "audio/wav");
+            put(".wav", "audio/x-wav");
+            put(".m4a", "audio/x-m4a");
+            put(".mp3", "audio/mpeg");
+            put(".amr", "audio/amr");
+            put(".jpg", "image/jpeg");
+            put(".jpg", "image/jpg");
+            put(".png", "image/png");
         }
     };
 
-    
-    public static final DateFormat HTTP_DATE =
-            new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz", Locale.ENGLISH);
+    public static final DateFormat HTTP_DATE = new SimpleDateFormat(
+            "EEE, dd MMM yyyy HH:mm:ss zzz", Locale.ENGLISH);
 
-
-    public static Cookie getCookie(String name, HttpServletRequest request){
+    public static Cookie getCookie(String name, HttpServletRequest request) {
         Cookie[] cookies = request.getCookies();
-        if( cookies != null ){
-            for( int i=0 ; i < cookies.length ; i++ ){
-                if( cookies[i].getName().equalsIgnoreCase(name)){
+        if (cookies != null) {
+            for (int i = 0; i < cookies.length; i++) {
+                if (cookies[i].getName().equalsIgnoreCase(name)) {
                     return cookies[i];
                 }
             }
         }
         return null;
     }
-    
-    public static void copyStream(InputStream in, OutputStream out) throws IOException {
+
+    public static void copyStream(InputStream in, OutputStream out)
+            throws IOException {
         byte[] buf = new byte[1000];
         int l = 1;
         while (l > 0) {
@@ -100,10 +99,11 @@ public class Utils {
             }
         }
     }
-    public static int copyStream(InputStream in, OutputStream out,
-            int start, int end) throws IOException {
+
+    public static int copyStream(InputStream in, OutputStream out, int start,
+            int end) throws IOException {
         long skipped = in.skip((long) start);
-        if (start != skipped)  {
+        if (start != skipped) {
             throw new IOException("copyStream failed range start " + start);
         }
         byte[] buf = new byte[1000];
@@ -114,7 +114,7 @@ public class Utils {
             l = in.read(buf);
             if (l > 0) {
                 pos = pos + l;
-                if (pos > end)  {
+                if (pos > end) {
                     l = l - (pos - end);
                     out.write(buf, 0, l);
                     count += l;
@@ -126,55 +126,67 @@ public class Utils {
         }
         return count;
     }
-    
-    public static String getUserAgent(HttpServletRequest request){
+
+    public static String getUserAgent(HttpServletRequest request) {
         return request.getHeader("User-Agent");
     }
 
     /**
-     * Get the base URL for the request. 
+     * Get the base URL for the request.
      * 
-     * The base URL will include the scheme, server name, port, and 
-     * application context, but not the page, or servlet path, 
-     * or query string. The returned URL will include a trailing slash.
-     * eg. http://server:8080/myapp/
+     * The base URL will include the scheme, server name, port, and application
+     * context, but not the page, or servlet path, or query string. The returned
+     * URL will include a trailing slash. eg. http://server:8080/myapp/
      * 
-     * @param request The ServletRequest
+     * @param request
+     *            The ServletRequest
      * @return The base URL.
      */
     public static String getBaseURL(ServletRequest request) {
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         String serverName = httpRequest.getHeader("x-forwarded-host");
         if (null == serverName) {
-            serverName = httpRequest.getServerName() + ":" +
-                httpRequest.getServerPort();
+            serverName = httpRequest.getServerName() + ":"
+                    + httpRequest.getServerPort();
         }
-        return httpRequest.getScheme() + "://" + serverName +
-            httpRequest.getContextPath() + "/";
+        return httpRequest.getScheme() + "://" + serverName
+                + httpRequest.getContextPath() + "/";
     }
-    
-    public static String getCloudPushId(HttpServletRequest request)  {
+
+    public static String getCloudPushId(HttpServletRequest request) {
         String cloudPushId = null;
-        cloudPushId = (String) request.getSession().getAttribute(Constants.CLOUD_PUSH_KEY);
+        cloudPushId = (String) request.getSession().getAttribute(
+                Constants.CLOUD_PUSH_KEY);
         return cloudPushId;
     }
 
-    
-    public static String getAcceptHeader(HttpServletRequest request){
+    public static String getAcceptHeader(HttpServletRequest request) {
         String accept = request.getHeader(Constants.HEADER_ACCEPT);
         return accept == null ? accept : accept.toLowerCase();
     }
 
-    public static boolean acceptContains(HttpServletRequest request, String contains){
+    public static boolean acceptContains(HttpServletRequest request,
+            String contains) {
         boolean result = false;
         String accept = getAcceptHeader(request);
-        if( accept != null ){
+        if (accept != null) {
             result = accept.contains(contains);
         }
         return result;
     }
 
-
+    public static void concatenateStyleClass(StringBuilder sb,
+            String styleClass, boolean disabled, String disabledStr) {
+        if (sb.length() > 0) {
+            sb.append(' ');
+        }
+        sb.append(styleClass);
+        if (disabled) {
+            sb.append(' ');
+            sb.append(styleClass);
+            sb.append(disabledStr);
+        }
+    }
 
 
 }
