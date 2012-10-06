@@ -103,7 +103,9 @@ public class SXUtils {
      * @return true if SX has been registered, else false
      */
     public static boolean isSXRegistered(HttpServletRequest request) {
-        return request.getSession().getAttribute(SESSION_KEY_SX_REGISTERED) == Boolean.TRUE;
+        //JSP registration will 
+        return request.getSession().getAttribute(SESSION_KEY_SX_REGISTERED) == Boolean.TRUE
+                || request.getSession().getAttribute("iceAuxRequestMap") != null;
     }
 
     /**
@@ -179,10 +181,10 @@ public class SXUtils {
         }
         String uploadURL = Utils.getBaseURL(request)+uploadPath;
         String fullCommand = command + "?id=" + id;
-        String script = "window.location=\"icemobile://c=";
+        String script = "window.location='icemobile://c=";
         try{
             script += URLEncoder.encode(fullCommand, "UTF-8")
-                    + "&r=\"+escape(window.location)+\"";
+                    + "&r='+escape(window.location)+'";
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
@@ -190,7 +192,7 @@ public class SXUtils {
             script += "&JSESSIONID=" + sessionID;
         }
         try {
-            script += "&u=" + URLEncoder.encode(uploadURL,"UTF-8") + "\"";
+            script += "&u=" + URLEncoder.encode(uploadURL,"UTF-8") + "'";
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
