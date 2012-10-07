@@ -29,8 +29,6 @@ import javax.servlet.ServletRequest;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 
-import org.icefaces.mobi.utils.HTML;
-
 public class Utils {
 
     private static Logger logger = Logger.getLogger(Utils.class.getName());
