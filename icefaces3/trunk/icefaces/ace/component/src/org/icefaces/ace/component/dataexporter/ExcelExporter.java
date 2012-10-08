@@ -53,7 +53,8 @@ import java.io.ByteArrayOutputStream;
 public class ExcelExporter extends Exporter {
 
     @Override
-	public String export(FacesContext facesContext, DataTable table, String filename, boolean pageOnly, int[] excludeColumns, String encodingType, MethodExpression preProcessor, MethodExpression postProcessor, boolean includeHeaders, boolean includeFooters, boolean selectedRowsOnly) throws IOException {    	
+	public String export(FacesContext facesContext, DataExporter component, DataTable table) throws IOException {
+		setUp(component, table);
     	Workbook wb = new HSSFWorkbook();
     	Sheet sheet = wb.createSheet();
     	List<UIColumn> columns = getColumnsToExport(table, excludeColumns);

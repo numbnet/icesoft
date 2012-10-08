@@ -54,7 +54,8 @@ import org.icefaces.ace.util.XMLChar;
 public class XMLExporter extends Exporter {
 
     @Override
-	public String export(FacesContext facesContext, DataTable table, String filename, boolean pageOnly, int[] excludeColumns, String encodingType, MethodExpression preProcessor, MethodExpression postProcessor, boolean includeHeaders, boolean includeFooters, boolean selectedRowsOnly) throws IOException {
+	public String export(FacesContext facesContext, DataExporter component, DataTable table) throws IOException {
+		setUp(component, table);
 		StringBuilder builder = new StringBuilder();
 		
 		List<UIColumn> columns = getColumnsToExport(table, excludeColumns);

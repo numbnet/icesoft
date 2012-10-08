@@ -42,7 +42,8 @@ public class OuterTableCSVExporter extends CSVExporter {
 	}
 	
 	@Override
-	public String export(FacesContext facesContext, DataTable table, String filename, boolean pageOnly, int[] excludeColumns, String encodingType, MethodExpression preProcessor, MethodExpression postProcessor, boolean includeHeaders, boolean includeFooters, boolean selectedRowsOnly) throws IOException {
+	public String export(FacesContext facesContext, DataExporter component, DataTable table) throws IOException {
+		setUp(component, table);
 		StringBuilder builder = new StringBuilder();
 		List<UIColumn> columns = getColumnsToExport(table, excludeColumns);
     	
@@ -89,7 +90,7 @@ public class OuterTableCSVExporter extends CSVExporter {
 						String clientId = kid.getClientId();
 						if (this.innerTables.contains(clientId)) {
 							InnerTableCSVExporter innerExporter = new InnerTableCSVExporter(rowBuilder.toString() + ",");
-							String innerTable = innerExporter.export(facesContext, (DataTable) kid, filename, false, new int[] {}, encodingType, preProcessor, postProcessor, false, includeFooters, selectedRowsOnly);
+							String innerTable = innerExporter.export(facesContext, component, (DataTable) kid);
 							builder.append(innerTable);
 							break;
 						}

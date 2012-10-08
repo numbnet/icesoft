@@ -46,31 +46,18 @@ public class DataExporter extends DataExporterBase {
 						throw new FacesException("Object specified as custom exporter does not extend  org.icefaces.ace.component.dataexporter.Exporter.");
 					}
 				}
+				
 				UIComponent targetComponent = event.getComponent().findComponent(getTarget());
 				if (targetComponent == null) targetComponent = findComponentCustom(facesContext.getViewRoot(), getTarget());
-
 				if (targetComponent == null) throw new FacesException("Cannot find component \"" + getTarget() + "\" in view.");
 				if (!(targetComponent instanceof DataTable)) throw new FacesException("Unsupported datasource target:\"" + targetComponent.getClass().getName() + "\", exporter must target a ACE DataTable.");
 				
-				int[] excludedColumnIndexes = resolveExcludedColumnIndexes(getExcludeColumns());
 				DataTable table = (DataTable) targetComponent;
-				String path = exporter.export(facesContext, table, getFileName(), table.isLazy() || isPageOnly(), excludedColumnIndexes, getEncoding(), getPreProcessor(), getPostProcessor(), isIncludeHeaders(), isIncludeFooters(), isSelectedRowsOnly());
-				this.path = path;
+				this.path = exporter.export(facesContext, this, table);
 			} catch (IOException e) { 
 				throw new FacesException(e); 
 			}
         }
-	}
-	
-	private int[] resolveExcludedColumnIndexes(String columnsToExclude) {
-        if (columnsToExclude == null || columnsToExclude.equals("")) return null;
-
-        String[] columnIndexesAsString = columnsToExclude.split(",");
-        int[] indexes = new int[columnIndexesAsString.length];
-        for (int i=0; i < indexes.length; i++)
-            indexes[i] = Integer.parseInt(columnIndexesAsString[i].trim());
-
-        return indexes;
 	}
 
 	private UIComponent findComponentCustom(UIComponent base, String id) {
