@@ -60,12 +60,29 @@ public abstract class Exporter {
 
 	protected static final Pattern HTML_TAG_PATTERN = Pattern.compile("\\<.*?\\>");
 	protected SpanningRows spanningRows = this.new SpanningRows();
+	protected String filename;
+	protected boolean pageOnly;
+	protected int[] excludeColumns;
+	protected String encodingType;
+	protected MethodExpression preProcessor;
+	protected MethodExpression postProcessor;
+	protected boolean includeHeaders;
+	protected boolean includeFooters;
+	protected boolean selectedRowsOnly;
+	
+	public void setUp(DataExporter component, DataTable table) {
+		filename = component.getFileName();
+		pageOnly = component.isPageOnly() || table.isLazy();
+		excludeColumns = resolveExcludedColumnIndexes(component.getExcludeColumns());
+		encodingType = component.getEncoding();
+		preProcessor = component.getPreProcessor();
+		postProcessor = component.getPostProcessor();
+		includeHeaders = component.isIncludeHeaders();
+		includeFooters = component.isIncludeFooters();
+		selectedRowsOnly = component.isSelectedRowsOnly();
+	}
 
-    public abstract String export(FacesContext facesContext, DataTable table,
-		                    	String outputFileName, boolean pageOnly, int[] excludedColumnIndexes,
-			                    String encodingType, MethodExpression preProcessor,
-			                    MethodExpression postProcessor, boolean includeHeaders, boolean includeFooters, boolean selectedRowsOnly) throws IOException;
-
+    public abstract String export(FacesContext facesContext, DataExporter component, DataTable table) throws IOException;
 	
 	protected List<UIColumn> getColumnsToExport(UIData table, int[] excludedColumns) {
         List<UIColumn> columns = new ArrayList<UIColumn>();
@@ -218,6 +235,17 @@ public abstract class Exporter {
 			}
 		}
 		return false;
+	}
+	
+	protected int[] resolveExcludedColumnIndexes(String columnsToExclude) {
+        if (columnsToExclude == null || columnsToExclude.equals("")) return null;
+
+        String[] columnIndexesAsString = columnsToExclude.split(",");
+        int[] indexes = new int[columnIndexesAsString.length];
+        for (int i=0; i < indexes.length; i++)
+            indexes[i] = Integer.parseInt(columnIndexesAsString[i].trim());
+
+        return indexes;
 	}
 
     protected String exportValue(FacesContext context, UIComponent component) {
