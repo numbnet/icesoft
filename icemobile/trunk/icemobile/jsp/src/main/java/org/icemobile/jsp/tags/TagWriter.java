@@ -165,8 +165,7 @@ public class TagWriter implements IResponseWriter{
         }   
     }
     
-    //TODO refactor to writeText() to mesh with ResponseWriter
-    public void writeTextNode(String text) throws IOException{
+    public void writeText(String text) throws IOException{
         if( !lastElementClosed ){
             out.write(GT);
         }
@@ -184,7 +183,7 @@ public class TagWriter implements IResponseWriter{
     public void writeInlineScript(String script) throws IOException{
         startElement(SCRIPT_ELEM);
         writeAttribute(TYPE_ATTR,TEXT_JAVASCRIPT);
-        writeTextNode(script);
+        writeText(script);
         endElement();
     }
     
@@ -227,9 +226,6 @@ public class TagWriter implements IResponseWriter{
         startElement(name);        
     }
 
-    public void writeText(String text) throws IOException {
-        writeTextNode(text);        
-    }
     
     
 
