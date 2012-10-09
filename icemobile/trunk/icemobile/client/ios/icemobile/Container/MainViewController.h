@@ -60,6 +60,7 @@
 - (IBAction)doPreferences;
 - (void)scanQR;
 - (void)dismissScan;
+- (void)doCancel;
 - (void)reloadCurrentPage;
 - (NSURL*)getCurrentURL;
 - (void)loadURL:(NSString*) url;
