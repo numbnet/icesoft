@@ -18,6 +18,8 @@ package org.icefaces.ace.component.dataexporter;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.ArrayList;
+import java.util.Map;
 import javax.el.MethodExpression;
 import javax.faces.component.UIColumn;
 import javax.faces.component.UIComponent;
@@ -31,14 +33,17 @@ import org.icefaces.ace.model.table.RowStateMap;
 
 /**
  * This custom exporter is only available by using the 'customExporter' attribute.
- * You can see a demo in the ICEfaces showcase application on how to use it.
+ * It invokes InnerTableCSVExporter.
+ * The ICEfaces showcase application contains an example of how to use it.
  */
 public class OuterTableCSVExporter extends CSVExporter {
 
-	private List<String> innerTables;
+	private Map<Object, String> innerTables;
+	private DataTable innerTable;
 	
-	public OuterTableCSVExporter(List<String> innerTables) {
+	public OuterTableCSVExporter(Map<Object, String> innerTables, DataTable innerTable) {
 		this.innerTables = innerTables;
+		this.innerTable = innerTable;
 	}
 	
 	@Override
@@ -46,6 +51,10 @@ public class OuterTableCSVExporter extends CSVExporter {
 		setUp(component, table);
 		StringBuilder builder = new StringBuilder();
 		List<UIColumn> columns = getColumnsToExport(table, excludeColumns);
+		List<UIColumn> innerColumns = null;
+		if (this.innerTable != null) {
+			innerColumns = getColumnsToExport(this.innerTable, null);
+		}
     	
     	if (includeHeaders) {
 			ColumnGroup columnGroup = getColumnGroupHeader(table);
@@ -56,7 +65,12 @@ public class OuterTableCSVExporter extends CSVExporter {
 					addFacetColumns(builder, rowColumns, ColumnType.HEADER);
 				}
 			} else {
-				addFacetColumns(builder, columns, ColumnType.HEADER);
+				List<UIColumn> allColumns = new ArrayList<UIColumn>();
+				allColumns.addAll(columns);
+				if (innerColumns != null) {
+					allColumns.addAll(innerColumns);
+				}
+				addFacetColumns(builder, allColumns, ColumnType.HEADER);
 			}
 		}
     	
@@ -72,8 +86,9 @@ public class OuterTableCSVExporter extends CSVExporter {
     	for (int i = first; i < size; i++) {
     		table.setRowIndex(i);
 			boolean exportRow = true;
+			Object rowData = table.getRowData();
 			if (selectedRowsOnly) {
-				RowState rowState = rowStateMap.get(table.getRowData());
+				RowState rowState = rowStateMap.get(rowData);
 				if (!rowState.isSelected()) exportRow = false;
 			}
 			if (exportRow) {
@@ -82,19 +97,15 @@ public class OuterTableCSVExporter extends CSVExporter {
 				}
 				StringBuilder rowBuilder = new StringBuilder();
 				addColumnValues(rowBuilder, columns);
-				builder.append(rowBuilder.toString());
-				builder.append("\n");
+				boolean exportedInnerTables = false;
 				PanelExpansion pe = table.getPanelExpansion();
 				if (pe != null) {
-					for (UIComponent kid : pe.getChildren()) {
-						String clientId = kid.getClientId();
-						if (this.innerTables.contains(clientId)) {
-							InnerTableCSVExporter innerExporter = new InnerTableCSVExporter(rowBuilder.toString() + ",");
-							String innerTable = innerExporter.export(facesContext, component, (DataTable) kid);
-							builder.append(innerTable);
-							break;
-						}
-					}
+					String innerTableClientId = innerTables.get(rowData);
+					exportedInnerTables = exportInnerTables(pe, innerTableClientId, builder, rowBuilder, facesContext, component);
+				}
+				if (!exportedInnerTables) {
+					builder.append(rowBuilder.toString());
+					builder.append("\n");
 				}
 			}
 		}
@@ -108,5 +119,25 @@ public class OuterTableCSVExporter extends CSVExporter {
 		byte[] bytes = builder.toString().getBytes();
 		
 		return registerResource(bytes, filename + ".csv", "text/csv");
+	}
+	
+	private boolean exportInnerTables(UIComponent uiComponent, String innerTableClientId, StringBuilder builder, StringBuilder rowBuilder, FacesContext facesContext, DataExporter dataExporter) throws IOException {
+		boolean exportedInnerTables = false;
+		for (UIComponent kid : uiComponent.getChildren()) {
+			String clientId = kid.getClientId();
+			if (kid instanceof DataTable) {
+				if (innerTableClientId == null || innerTableClientId.equals(clientId)) {
+					exportedInnerTables = true;
+					InnerTableCSVExporter innerExporter = new InnerTableCSVExporter(rowBuilder.toString() + ",");
+					String innerTable = innerExporter.export(facesContext, dataExporter, (DataTable) kid);
+					builder.append(innerTable);
+					break;
+				}
+			}
+			if (kid.getChildren().size() > 0) {
+				exportedInnerTables = exportInnerTables(kid, innerTableClientId, builder, rowBuilder, facesContext, dataExporter);
+			}
+		}
+		return exportedInnerTables;
 	}
 }
