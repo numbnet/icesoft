@@ -107,39 +107,39 @@ public class ViewSwitcherTag extends BaseSimpleTag{
 				writer.writeAttribute(ONCLICK_ATTR, SETCOOKIEM);
 				writer.writeDisabled(disabled);
 				writer.writeAttribute(HREF_ATTR, mobileView);
-				writer.writeTextNode("Mobile");
+				writer.writeText("Mobile");
 				writer.endElement();
 			}
 			if( tabletView != null ){
 				if( mobileView != null ){
-					writer.writeTextNode(" | ");
+					writer.writeText(" | ");
 				}
 				writer.startElement(ANCHOR_ELEM);
 				writer.writeAttribute(ONCLICK_ATTR, SETCOOKIET);
 				writer.writeDisabled(disabled);
 				writer.writeAttribute(HREF_ATTR, tabletView);
-				writer.writeTextNode("Tablet");
+				writer.writeText("Tablet");
 				writer.endElement();	
 			}
 			if( desktopView != null ){
 				if( tabletView != null || mobileView != null ){
-					writer.writeTextNode(" | ");
+					writer.writeText(" | ");
 				}
 				writer.startElement(ANCHOR_ELEM);
 				writer.writeDisabled(disabled);
 				writer.writeAttribute(ONCLICK_ATTR, SETCOOKIED);
 				writer.writeAttribute(HREF_ATTR, desktopView);
-				writer.writeTextNode("Desktop");
+				writer.writeText("Desktop");
 				writer.endElement();
 			}
 			if( tabletView != null || mobileView != null || desktopView != null ){
-				writer.writeTextNode(" | ");
+				writer.writeText(" | ");
 			}
 			writer.startElement(ANCHOR_ELEM);
 			writer.writeDisabled(disabled);
 			writer.writeAttribute(ONCLICK_ATTR, UNSETCOOKIE);
 			writer.writeAttribute(HREF_ATTR, desktopView);
-			writer.writeTextNode("Auto");
+			writer.writeText("Auto");
 			writer.endElement();
 		}
 	}

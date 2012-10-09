@@ -34,7 +34,7 @@ public class GoogleAnalyticsTag extends BaseSimpleTag{
         }
 		writer.startElement(SCRIPT_ELEM);
 		writer.writeAttribute(TYPE_ATTR, "text/javascript");
-		writer.writeTextNode(getScript(account,domain));
+		writer.writeText(getScript(account,domain));
 		writer.endElement();
 	}
 

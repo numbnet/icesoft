@@ -58,7 +58,7 @@ public class PanelPopupTag extends TagSupport {
             	writer.startDiv();
             	writer.writeAttribute("id", id+"_title");
                 writer.writeStyleClass(TITLE_CLASS);
-                writer.writeTextNode(title);
+                writer.writeText(title);
 
                 // Only do a close button if configured.
                 if (isAutoCloseButton()) {
@@ -115,7 +115,7 @@ public class PanelPopupTag extends TagSupport {
     	writer.writeAttribute(TYPE_ATTR, "text/javascript");
     	writer.writeAttribute(ID_ATTR, id+"_script");
     	
-    	writer.writeTextNode("ice.mobi.panelpopup.init('"+id+"',{visible:"+visible
+    	writer.writeText("ice.mobi.panelpopup.init('"+id+"',{visible:"+visible
     			+",autocenter:"+autocenter+"});");
     	writer.endElement();
     	writer.endElement();
