@@ -59,10 +59,21 @@ public class OuterTableCSVExporter extends CSVExporter {
     	if (includeHeaders) {
 			ColumnGroup columnGroup = getColumnGroupHeader(table);
 			if (columnGroup != null) {
-				List<Row> rows = getRows(columnGroup);
-				for (Row row : rows) {
+				ArrayList<Row> rows = (ArrayList<Row>) getRows(columnGroup);
+				int size = rows.size();
+				for (int i = 0; i < size; i++) {
+					Row row = rows.get(i);
 					List<UIColumn> rowColumns = getRowColumnsToExport(row, table, excludeColumns);
-					addFacetColumns(builder, rowColumns, ColumnType.HEADER);
+					if (i < (size-1)) {
+						addFacetColumns(builder, rowColumns, ColumnType.HEADER);
+					} else {
+						List<UIColumn> allColumns = new ArrayList<UIColumn>();
+						allColumns.addAll(rowColumns);
+						if (innerColumns != null) {
+							allColumns.addAll(innerColumns);
+						}
+						addFacetColumns(builder, allColumns, ColumnType.HEADER);
+					}
 				}
 			} else {
 				List<UIColumn> allColumns = new ArrayList<UIColumn>();
