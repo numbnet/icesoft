@@ -419,6 +419,16 @@ NSLog(@"handleResponse for ICEmobile Container");
     }
 }
 
+- (void)doCancel {
+    if (nil != self.popover)  {
+        [self.popover dismissPopoverAnimated:YES];
+    } else if (nil != self.scanPopover)  {
+        [self.scanPopover dismissPopoverAnimated:YES];
+    } else {
+        [self dismissModalViewControllerAnimated:YES];
+    }
+}
+
 - (NSURL*)getCurrentURL {
     return [self.webView.request URL];
 }
