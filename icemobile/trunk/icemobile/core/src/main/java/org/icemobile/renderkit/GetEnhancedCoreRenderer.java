@@ -64,10 +64,13 @@ public class GetEnhancedCoreRenderer {
             }
             else if( client.isBlackBerryOS()){
                 link = IGetEnhanced.BLACKBERRY_LINK; 
-                String GetEnhancedModel = component.getBlackberryMsg();
-                if( component.getBlackberryMsg() != null ){
-                    msg = component.getBlackberryMsg();
+                String blackBerryMsg = component.getBlackberryMsg();
+                if( blackBerryMsg != null ){
+                    msg = blackBerryMsg;
                 }
+            }
+            else{
+                link = IGetEnhanced.ICEMOBILE_LINK;
             }
             writer.writeText(msg);
 
