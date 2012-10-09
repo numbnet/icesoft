@@ -1,5 +1,14 @@
 package org.icemobile.jsp.tags;
 
+import static org.icemobile.util.HTML.HREF_ATTR;
+import static org.icemobile.util.HTML.ID_ATTR;
+import static org.icemobile.util.HTML.IMG_ELEM;
+import static org.icemobile.util.HTML.INPUT_ELEM;
+import static org.icemobile.util.HTML.SCRIPT_ELEM;
+import static org.icemobile.util.HTML.SRC_ATTR;
+import static org.icemobile.util.HTML.TYPE_ATTR;
+import static org.icemobile.util.HTML.VALUE_ATTR;
+
 import java.io.IOException;
 import java.io.Writer;
 import java.util.Arrays;
@@ -8,9 +17,9 @@ import java.util.Stack;
 
 import javax.servlet.jsp.PageContext;
 
-import static org.icemobile.util.HTML.*;
+import org.icemobile.renderkit.IResponseWriter;
 
-public class TagWriter {
+public class TagWriter implements IResponseWriter{
     
     private Writer out;
     private Stack<String> elementStack = new Stack<String>();
@@ -114,6 +123,10 @@ public class TagWriter {
         lastElementClosed = true;
     }
     
+    public void endElement(String name) throws IOException{
+        endElement();
+    }
+    
     public void startSpan() throws IOException{
         startElement(SPAN);
     }
@@ -152,6 +165,7 @@ public class TagWriter {
         }   
     }
     
+    //TODO refactor to writeText() to mesh with ResponseWriter
     public void writeTextNode(String text) throws IOException{
         if( !lastElementClosed ){
             out.write(GT);
@@ -207,6 +221,16 @@ public class TagWriter {
             writeStyleClass(styleClass);
         }
         endElement();
+    }
+
+    @Override
+    public void startElement(String name, Object component) throws IOException {
+        startElement(name);        
+    }
+
+    @Override
+    public void writeText(String text) throws IOException {
+        writeTextNode(text);        
     }
     
     
