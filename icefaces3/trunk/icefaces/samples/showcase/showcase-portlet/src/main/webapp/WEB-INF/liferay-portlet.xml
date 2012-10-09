@@ -184,6 +184,11 @@
         <ajaxable>false</ajaxable>
     </portlet>
     <portlet>
+        <portlet-name>dataExporterCustom</portlet-name>
+        <instanceable>false</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+    <portlet>
         <portlet-name>dataExporterExcludeFromExport</portlet-name>
         <instanceable>false</instanceable>
         <ajaxable>false</ajaxable>
@@ -376,6 +381,11 @@
         <ajaxable>false</ajaxable>
     </portlet>
     <portlet>
+        <portlet-name>fileEntryCallback</portlet-name>
+        <instanceable>false</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+    <portlet>
         <portlet-name>fileEntryFailPop</portlet-name>
         <instanceable>false</instanceable>
         <ajaxable>false</ajaxable>
@@ -392,6 +402,41 @@
     </portlet>
     <portlet>
         <portlet-name>fileEntryValidation</portlet-name>
+        <instanceable>false</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+    <portlet>
+        <portlet-name>gMapBasic</portlet-name>
+        <instanceable>false</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+    
+    <portlet>
+        <portlet-name>gMapDirections</portlet-name>
+        <instanceable>false</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+    
+    <portlet>
+        <portlet-name>gMapLayer</portlet-name>
+        <instanceable>false</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+    
+    <portlet>
+        <portlet-name>gMapMarker</portlet-name>
+        <instanceable>false</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+    
+    <portlet>
+        <portlet-name>gMapOptions</portlet-name>
+        <instanceable>false</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+    
+    <portlet>
+        <portlet-name>gMapOverlay</portlet-name>
         <instanceable>false</instanceable>
         <ajaxable>false</ajaxable>
     </portlet>
@@ -648,6 +693,11 @@
         <ajaxable>false</ajaxable>
     </portlet>
     <portlet>
+        <portlet-name>submitMonitor</portlet-name>
+        <instanceable>false</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+    <portlet>
         <portlet-name>tabsetClientSide</portlet-name>
         <instanceable>false</instanceable>
         <ajaxable>false</ajaxable>
@@ -664,6 +714,29 @@
     </portlet>
     <portlet>
         <portlet-name>tabset</portlet-name>
+        <instanceable>false</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+    <portlet>
+        <portlet-name>textAreaEntry</portlet-name>
+        <instanceable>false</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+    
+    <portlet>
+        <portlet-name>textAreaEntryIndicator</portlet-name>
+        <instanceable>false</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+    
+    <portlet>
+        <portlet-name>textAreaEntryLabel</portlet-name>
+        <instanceable>false</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+    
+    <portlet>
+        <portlet-name>textAreaEntryReqStyle</portlet-name>
         <instanceable>false</instanceable>
         <ajaxable>false</ajaxable>
     </portlet>
@@ -701,7 +774,47 @@
         <ajaxable>false</ajaxable>
     </portlet>
     <portlet>
-        <portlet-name>toolTipGlobal</portlet-name>
+        <portlet-name>delegateTooltip</portlet-name>
+        <instanceable>false</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+    <portlet>
+        <portlet-name>tooltipGlobal</portlet-name>
+        <instanceable>false</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+    <portlet>
+        <portlet-name>tree</portlet-name>
+        <instanceable>false</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+    
+    <portlet>
+        <portlet-name>treeClient</portlet-name>
+        <instanceable>false</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+    
+    <portlet>
+        <portlet-name>treeLazy</portlet-name>
+        <instanceable>false</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+    
+    <portlet>
+        <portlet-name>treeNested</portlet-name>
+        <instanceable>false</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+    
+    <portlet>
+        <portlet-name>treeReorder</portlet-name>
+        <instanceable>false</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+    
+    <portlet>
+        <portlet-name>treeSelection</portlet-name>
         <instanceable>false</instanceable>
         <ajaxable>false</ajaxable>
     </portlet>
