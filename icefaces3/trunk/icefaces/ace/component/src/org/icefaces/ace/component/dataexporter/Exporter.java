@@ -69,6 +69,7 @@ public abstract class Exporter {
 	protected boolean includeHeaders;
 	protected boolean includeFooters;
 	protected boolean selectedRowsOnly;
+	protected boolean userColumnOrder;
 	
 	public void setUp(DataExporter component, DataTable table) {
 		filename = component.getFileName();
@@ -80,6 +81,7 @@ public abstract class Exporter {
 		includeHeaders = component.isIncludeHeaders();
 		includeFooters = component.isIncludeFooters();
 		selectedRowsOnly = component.isSelectedRowsOnly();
+		userColumnOrder = component.isUserColumnOrder();
 	}
 
     public abstract String export(FacesContext facesContext, DataExporter component, DataTable table) throws IOException;
@@ -90,7 +92,7 @@ public abstract class Exporter {
 
         
 		List<UIComponent> children;
-		if (table instanceof DataTable) {
+		if (table instanceof DataTable && userColumnOrder) {
 			List<Column> dataTablecolumns = ((DataTable) table).getColumns();
 			children = new ArrayList<UIComponent>();
 			for (Column column : dataTablecolumns) {
