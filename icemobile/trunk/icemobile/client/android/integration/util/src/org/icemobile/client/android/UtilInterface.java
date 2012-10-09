@@ -47,6 +47,7 @@ import java.io.OutputStream;
 import java.net.URLDecoder;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
 import org.apache.http.impl.cookie.BasicClientCookie;
@@ -58,14 +59,12 @@ import java.io.ByteArrayOutputStream;
 public class UtilInterface implements JavascriptInterface,
 				      UploadProgressListener, Runnable {
 
-    private String result;
     private Handler handler;
     private String url;
     private Activity container;
     private final WebView view;
-    private DefaultHttpClient httpClient;
-    private HttpPost postRequest;
-
+    private LinkedList<HttpPost> postQueue;
+    private LinkedList<String> responseQueue;
     private static final int PROGRESS_INTERVAL = 10;  //Percent
     private static final int PROGRESS_MSG = 0;
     private static final int RESPONSE_MSG = 1;
@@ -73,6 +72,8 @@ public class UtilInterface implements JavascriptInterface,
     public UtilInterface (Activity container, WebView webView) {
 	this.container = container;
 	this.view = webView;
+	postQueue = new LinkedList();
+	responseQueue = new LinkedList();
 	handler = new Handler() {
 		@Override
 		    public void handleMessage(Message msg) {
@@ -90,14 +91,14 @@ public class UtilInterface implements JavascriptInterface,
     }
 
     public void submitForm(String actionUrl, String serializedForm) {
-Log.e("ICEutil", "submitForm " + actionUrl);
+	//Log.e("ICEutil", "submitForm " + actionUrl);
 	boolean gotValue = true;
 	String[] result;
 	long contentSize = 0;
 	CountingMultiPartEntity content = new CountingMultiPartEntity(this);
 	try {
 	    URL relativeAction = new URL(new URL(url), actionUrl);
-        url = relativeAction.toString();
+	    url = relativeAction.toString();
 	    BasicNameValuePair[] params = getNameValuePairs(serializedForm, "&", "=");
 	    for (int i=0; i<params.length; i++) {
             String packedName = params[i].getName();
@@ -126,8 +127,7 @@ Log.e("ICEutil", "submitForm " + actionUrl);
                 content.addPart(URLDecoder.decode(paramName,"UTF-8"), sb);
             }
 	    }
-            httpClient = new DefaultHttpClient();
-            postRequest = new HttpPost(url);
+            HttpPost postRequest = new HttpPost(url);
 	    CookieSyncManager.createInstance(container);
 	    CookieSyncManager.getInstance().sync();
 	    CookieManager cookieManager = CookieManager.getInstance();
@@ -135,32 +135,46 @@ Log.e("ICEutil", "submitForm " + actionUrl);
 	    postRequest.setHeader("Faces-Request", "partial/ajax");
 	    content.measureProgress(contentSize/(PROGRESS_INTERVAL+1));
 	    postRequest.setEntity(content);
-	    loadURL("javascript:ice.progress(0);");
-	    Thread thread = new Thread(this);
-	    thread.start();
+	    queueRequest(postRequest);
 	} catch (Throwable e) {
 	    Log.e("ICEutil", "Failed to submit form ", e);
 	}
     }
 
+    private void queueRequest(HttpPost postRequest) {
+	postQueue.add(postRequest);
+	//Log.e("ICEutil", "Request q=" + postQueue.size());
+	if (postQueue.size() == 1) {
+	    Thread thread = new Thread(this);
+	    thread.start();
+	}
+    }
+
     public void run() {
+	HttpPost postRequest;
+	DefaultHttpClient httpClient = new DefaultHttpClient();
 	try {
-	    HttpResponse res = httpClient.execute(postRequest);
-	    StringWriter writer = new StringWriter();
-	    IOUtils.copy(res.getEntity().getContent(), writer);
-	    setResult(writer.toString());
-	    sendProgress(100);
-	    handler.sendEmptyMessage(RESPONSE_MSG);
+	    while (postQueue.size() > 0) {
+		sendProgress(0);
+		postRequest = postQueue.remove();
+		HttpResponse res = httpClient.execute(postRequest);
+		sendProgress(100);
+		StringWriter writer = new StringWriter();
+		IOUtils.copy(res.getEntity().getContent(), writer);
+		setResult(writer.toString());
+		handler.sendEmptyMessage(RESPONSE_MSG);
+	    }
 	} catch (Throwable e) {
 	    Log.e("ICEutil", "HTTP POST failed ", e);
 	}
     }
 
     public String getResult() {
-	return result;
+	//Log.e("ICEutil", "Response q=" + responseQueue.size());
+	return responseQueue.remove();
     }
     protected void setResult(String res) {
-	result=res;
+	responseQueue.add(res);
     }
 
     public void transferred(long count) {
