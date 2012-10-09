@@ -33,6 +33,6 @@ public class NodeModelListSequenceKeyConverter implements KeySegmentConverter<Tr
         for (int i = 0; i < segments.length; i++) {
             indexes[i] = Integer.parseInt(segments[i]);
         }
-        return new NodeKey(indexes);
+        return new NodeKey((Object[])indexes);
     }
 }
