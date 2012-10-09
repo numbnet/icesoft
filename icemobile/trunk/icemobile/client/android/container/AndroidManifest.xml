@@ -18,8 +18,8 @@
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
 	  package="org.icemobile.client.android"
-	  android:versionCode="10"
-	  android:versionName="1.1">
+	  android:versionCode="11"
+	  android:versionName="1.1 Patch 1">
   <permission android:name="org.icemobile.client.android.permission.C2D_MESSAGE"
 	      android:protectionLevel="signature" />
   <uses-permission android:name="org.icemobile.client.android.permission.C2D_MESSAGE" />
@@ -29,8 +29,10 @@
   <uses-permission android:name="android.permission.RECORD_AUDIO" />
   <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
   <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+  <uses-permission android:name="android.permission.READ_CONTACTS" />
   <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
   <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+  <uses-feature android:name="android.hardware.camera" android:required="false"/>
 
   <application android:label="@string/app_name" android:icon="@drawable/icon">
     <activity android:name="ICEmobileContainer"
