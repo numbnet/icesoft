@@ -194,10 +194,7 @@ public class MainServlet extends HttpServlet {
         if (LOG.isDebugEnabled()) {
             LOG.debug("Servicing Request-URI: ["+ request.getRequestURI() + "]");
         }
-        if (localAddress == null) {
-            localAddress = ServerUtility.getLocalAddr(request, context);
-            localPort = ServerUtility.getLocalPort(request, context);
-        }
+        setLocalAddressAndPortIfNotSet(request);
         try {
             currentContextPath.attach(request.getContextPath());
             storeOriginalRequestAndResponse(request, response);
@@ -249,6 +246,13 @@ public class MainServlet extends HttpServlet {
         } finally {
             removeOriginalRequestResponse(request, response);
             currentContextPath.detach();
+        }
+    }
+
+    private synchronized void setLocalAddressAndPortIfNotSet(final HttpServletRequest request) {
+        if (localAddress == null) {
+            localAddress = ServerUtility.getLocalAddr(request, context);
+            localPort = ServerUtility.getLocalPort(request, context);
         }
     }
 
@@ -321,7 +325,7 @@ public class MainServlet extends HttpServlet {
         }
     }
 
-    private void setUpCoreMessageService(final Configuration configuration) {
+    private synchronized void setUpCoreMessageService(final Configuration configuration) {
         String blockingRequestHandler = configuration.getAttribute("blockingRequestHandler", "auto-detect");
         if (blockingRequestHandler.equalsIgnoreCase("icefaces")) {
             // Adapt to Push environment.
