@@ -223,12 +223,10 @@ public class TagWriter implements IResponseWriter{
         endElement();
     }
 
-    @Override
     public void startElement(String name, Object component) throws IOException {
         startElement(name);        
     }
 
-    @Override
     public void writeText(String text) throws IOException {
         writeTextNode(text);        
     }
