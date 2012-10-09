@@ -43,6 +43,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 import com.icesoft.faces.webapp.http.core.SessionExpiredException;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
  * The BlockingServlet was the original entry point for push-related
@@ -54,6 +56,8 @@ import com.icesoft.faces.webapp.http.core.SessionExpiredException;
  * into the ICEfaces Core framework.
  */
 public class BlockingServlet extends HttpServlet {
+    private static final Log LOG = LogFactory.getLog(BlockingServlet.class);
+
     private ServletContext context;
 
     public void init(ServletConfig servletConfig) throws ServletException {
@@ -66,9 +70,12 @@ public class BlockingServlet extends HttpServlet {
         try {
             servlet.service(servletRequest, servletResponse);
         } catch (SessionExpiredException e)  {
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Session Expired: " + e.getMessage());
+            }
             //Look at moving this into MainServlet instead
             ((HttpServletResponse) servletResponse)
-                    .sendError(500, e.getMessage());
+                    .sendError(500, "Session Expired");
         }
     }
 }
