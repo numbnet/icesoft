@@ -41,23 +41,16 @@
 	<h:outputScript library="javascript" name="showcase.js" target="head" />
     <mobi:googleAnalytics/>
 </h:head>
-
 <h:body>
-    
-	<h:form id="frm">
-		<mobi:viewSelector>
-			<f:facet name="small">
-				<f:subview id="small">
-					<ui:include src="/WEB-INF/includes/views/small.xhtml" />
-				</f:subview>
-			</f:facet>
-			<f:facet name="large">
-				<f:subview id="large">
-					<ui:include src="/WEB-INF/includes/views/large.xhtml" />
-				</f:subview>
-			</f:facet>
-		</mobi:viewSelector>
-        
-	</h:form>
+    <h:form id="frm">
+        <mobi:viewSelector>
+            <f:facet name="small">
+                <ui:include src="/WEB-INF/includes/views/small.xhtml" />
+            </f:facet>
+            <f:facet name="large">
+                <ui:include src="/WEB-INF/includes/views/large.xhtml" />
+            </f:facet>
+        </mobi:viewSelector>
+    </h:form>
 </h:body>
 </html>
