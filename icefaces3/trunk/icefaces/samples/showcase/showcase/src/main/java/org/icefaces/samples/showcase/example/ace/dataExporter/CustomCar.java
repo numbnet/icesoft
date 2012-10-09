@@ -27,7 +27,8 @@ public class CustomCar implements Serializable {
 	protected int acceleration;
 	protected double mpg;
 	protected double cost;
-	protected List<ExpansionData> expansionData;
+	protected List<ExpansionData> expansionData1;
+	protected List<ExpansionData> expansionData2;
 	
 	public CustomCar() {
 	}
@@ -35,7 +36,9 @@ public class CustomCar implements Serializable {
 	public CustomCar(int id,
 	           String name, String chassis,
 	           int weight, int acceleration, 
-	           double mpg, double cost, List<ExpansionData> expansionData) {
+	           double mpg, double cost, 
+			   List<ExpansionData> expansionData1,
+			   List<ExpansionData> expansionData2) {
 		this.id = id;
 		this.name = name;
 		this.chassis = chassis;
@@ -43,7 +46,8 @@ public class CustomCar implements Serializable {
 		this.acceleration = acceleration;
 		this.mpg = mpg;
 		this.cost = cost;
-		this.expansionData = expansionData;
+		this.expansionData1 = expansionData1;
+		this.expansionData2 = expansionData2;
 	}
 	
 	public int getId() {
@@ -88,11 +92,17 @@ public class CustomCar implements Serializable {
 	public void setCost(double cost) {
 	    this.cost = cost;
 	}
-	public List<ExpansionData> getExpansionData() {
-	    return expansionData;
+	public List<ExpansionData> getExpansionData1() {
+	    return expansionData1;
 	}
-	public void setExpansionData(List<ExpansionData> expansionData) {
-	    this.expansionData = expansionData;
+	public void setExpansionData1(List<ExpansionData> expansionData1) {
+	    this.expansionData1 = expansionData1;
+	}
+	public List<ExpansionData> getExpansionData2() {
+	    return expansionData2;
+	}
+	public void setExpansionData2(List<ExpansionData> expansionData2) {
+	    this.expansionData2 = expansionData2;
 	}
 	
 	public void applyValues(CustomCar parent) {

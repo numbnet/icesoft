@@ -28,6 +28,8 @@ import javax.faces.model.SelectItem;
 
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Map;
+import java.util.HashMap;
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -61,10 +63,11 @@ public class DataExporterCustom extends ComponentExampleImpl<DataExporterCustom>
 	public static final String BEAN_NAME = "dataExporterCustom";
 	
 	private static final String OUTER_TABLE_ID = "carTable";
-	private static final String LABEL_EXPRESSION = "#{car.id}";
+	private static final String INNER_TABLE_ID = "innerTable1"; // for header purposes only
 	
     public DataExporterCustom() { 
 		super(DataExporterCustom.class);
+		this.map = new HashMap<Object, String>();
 	}
 	
     @PostConstruct
@@ -81,9 +84,9 @@ public class DataExporterCustom extends ComponentExampleImpl<DataExporterCustom>
 	public List<CustomCar> getCarsData() { return carsData; }
     public void setCarsData(List<CustomCar> carsData) { this.carsData = carsData; }
 	
-	private List<String> selectedItems;
-	public List<String> getSelectedItems() { return selectedItems; }
-	public void setSelectedItems(List<String> selectedItems) { this.selectedItems = selectedItems; }
+	private Map<Object, String> map;
+	public Map getMap() { return map; }
+	public void setMap(Map map) { this.map = map; }
 	
 	public List<SelectItem> getSelectItems() {
 		List<SelectItem> selectItems = new ArrayList<SelectItem>();
@@ -91,38 +94,30 @@ public class DataExporterCustom extends ComponentExampleImpl<DataExporterCustom>
 		UIComponent table = findComponentCustom(facesContext.getViewRoot(), OUTER_TABLE_ID);
 		if (table != null) {
 			DataTable outerTable = (DataTable) table;
-			int rowCount = outerTable.getRowCount();
-			int first = outerTable.getFirst();
-			int size = first + outerTable.getRows();
-			size = size > rowCount ? rowCount : size;
-			String rowIndexVar = outerTable.getRowIndexVar();
-			rowIndexVar = rowIndexVar == null ? "" : rowIndexVar;
-			for (int i = first; i < size; i++) {
-				outerTable.setRowIndex(i);
-				if (!"".equals(rowIndexVar)) {
-					facesContext.getExternalContext().getRequestMap().put(rowIndexVar, i);
-				}
-				Object property = facesContext.getApplication().evaluateExpressionGet(facesContext, LABEL_EXPRESSION, Object.class);
-				String label = property != null ? property.toString() : "no label";
-				PanelExpansion pe = outerTable.getPanelExpansion();
-				if (pe != null) {
-					for (UIComponent kid : pe.getChildren()) {
-						if (kid instanceof DataTable) {
-							selectItems.add(new SelectItem(kid.getClientId(), label));
-							break;
-						}
-					}
-				}
+			PanelExpansion pe = outerTable.getPanelExpansion();
+			if (pe != null) {
+				populateItems(pe, selectItems);
 			}
-			outerTable.setRowIndex(-1);
 		} else {
 			throw new FacesException("Table with id '" + OUTER_TABLE_ID + "' not found in view.");
 		}
 		return selectItems;
 	}
 	
+	private void populateItems(UIComponent component, List<SelectItem> selectItems) {
+		for (UIComponent kid : component.getChildren()) {
+			if (kid instanceof DataTable) {
+				selectItems.add(new SelectItem(kid.getClientId(), kid.getId()));
+			}
+			if (kid.getChildren().size() > 0) {
+				populateItems(kid, selectItems);
+			}
+		}		
+	}
+	
 	public Object getCustomExporter() {
-		return new OuterTableCSVExporter(selectedItems);
+		DataTable innerTable = (DataTable) findComponentCustom(FacesContext.getCurrentInstance().getViewRoot(), INNER_TABLE_ID);
+		return new OuterTableCSVExporter(map, innerTable);
 	}
 	
 	private UIComponent findComponentCustom(UIComponent base, String id) {

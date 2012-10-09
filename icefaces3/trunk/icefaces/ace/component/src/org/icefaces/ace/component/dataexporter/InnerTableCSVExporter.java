@@ -46,8 +46,6 @@ public class InnerTableCSVExporter extends CSVExporter {
 		super.setUp(component, table);
 		pageOnly = false;
 		excludeColumns = null;
-		includeHeaders = false;
-		includeFooters = false;
 	}
 	
 	@Override
@@ -55,21 +53,6 @@ public class InnerTableCSVExporter extends CSVExporter {
 		setUp(component, table);
 		StringBuilder builder = new StringBuilder();
 		List<UIColumn> columns = getColumnsToExport(table, excludeColumns);
-    	
-    	if (includeHeaders) {
-			ColumnGroup columnGroup = getColumnGroupHeader(table);
-			if (columnGroup != null) {
-				List<Row> rows = getRows(columnGroup);
-				for (Row row : rows) {
-					List<UIColumn> rowColumns = getRowColumnsToExport(row, table, excludeColumns);
-					builder.append(parentRow);
-					addFacetColumns(builder, rowColumns, ColumnType.HEADER);
-				}
-			} else {
-				builder.append(parentRow);
-				addFacetColumns(builder, columns, ColumnType.HEADER);
-			}
-		}
     	
 		int rowCount = table.getRowCount();
     	int first = pageOnly ? table.getFirst() : 0;
@@ -96,10 +79,6 @@ public class InnerTableCSVExporter extends CSVExporter {
 				builder.append("\n");
 			}
 		}
-
-        if (hasColumnFooter(columns) && includeFooters) {
-            addFacetColumns(builder, columns, ColumnType.FOOTER);
-        }
     	
     	table.setRowIndex(-1);
         
