@@ -56,17 +56,14 @@ public class GetEnhancedTag extends BaseSimpleTag implements IGetEnhanced{
 		this.blackberryMsg = blackberryMsg;
 	}
 
-    @Override
     public String getClientId() {
         return id;
     }
 
-    @Override
     public String getICEmobileRegisterSXScript() {
         return SXUtils.getICEmobileRegisterSXScript(getRequest(),MobiJspConstants.SX_UPLOAD_PATH);
     }
 
-    @Override
     public boolean isIOSSmartBannerRendered() {
         return Boolean.TRUE.equals(getContext().getAttribute(Constants.IOS_SMART_APP_BANNER_KEY));
     }

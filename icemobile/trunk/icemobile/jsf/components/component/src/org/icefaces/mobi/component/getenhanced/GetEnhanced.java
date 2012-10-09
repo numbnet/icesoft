@@ -9,17 +9,14 @@ import org.icemobile.util.Constants;
 
 public class GetEnhanced extends GetEnhancedBase implements IGetEnhanced {
 
-    @Override
     public String getICEmobileRegisterSXScript() {
         return MobiJSFUtils.getICEmobileRegisterSXScript();
     }
 
-    @Override
     public ClientDescriptor getClient() {
         return MobiJSFUtils.getClientDescriptor();
     }
 
-    @Override
     public boolean isIOSSmartBannerRendered() {
         FacesContext facesContext = FacesContext.getCurrentInstance();
         return Boolean.TRUE.equals(facesContext.getAttributes()
