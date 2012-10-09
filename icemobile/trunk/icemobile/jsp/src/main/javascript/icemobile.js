@@ -18,7 +18,7 @@
 if (!window['ice']) {
     window.ice = {};
 }
-
+//include modernizr.js
 ice.registerAuxUpload = function (sessionid, uploadURL) {
     var auxiframe = document.getElementById('auxiframe');
     if (null == auxiframe) {
@@ -97,7 +97,7 @@ ice.mobiserial = function(formId, typed) {
     return qString.join("");
 }
 
-ice.mobilesx = function (element) {
+ice.mobilesx = function (element, uploadURL) {
     var ampchar = String.fromCharCode(38);
     var form = ice.formOf(element);
     var formID = form.getAttribute('id');
@@ -111,15 +111,20 @@ ice.mobilesx = function (element) {
     var baseURL = barURL.substring(0,
             barURL.lastIndexOf("/")) + "/";
 
-    var uploadURL;
-    if (0 === formAction.indexOf("/")) {
-        uploadURL = window.location.origin + formAction;
-    } else if ((0 === formAction.indexOf("http://")) ||
-            (0 === formAction.indexOf("https://"))) {
-        uploadURL = formAction;
-    } else {
-        uploadURL = baseURL + formAction;
+    if( !uploadURL ){
+        if (0 === formAction.indexOf("/")) {
+            uploadURL = window.location.origin + formAction;
+        } else if ((0 === formAction.indexOf("http://")) ||
+                (0 === formAction.indexOf("https://"))) {
+            uploadURL = formAction;
+        } else {
+            uploadURL = baseURL + formAction;
+        }
     }
+    else{
+        uploadURL += '/';
+    }
+    
 
     var returnURL = window.location;
     if ("" == returnURL.hash) {
@@ -140,7 +145,7 @@ ice.mobilesx = function (element) {
         sessionidClause = "&JSESSIONID=" + escape(sessionid);
     }
     var sxURL = "icemobile://c=" + escape(command +
-            "?id=" + id + ampchar + params) +
+            "?id=" + id + ampchar + (params?params:'')) +
             "&u=" + escape(uploadURL) + "&r=" + escape(returnURL) +
             sessionidClause +
             "&p=" + escape(ice.mobiserial(formID, false));
@@ -1215,3 +1220,4 @@ ice.mobi.locationWithoutViewParam = function(){
 }
 /* add js marker for progressive enhancement */
 document.documentElement.className = document.documentElement.className+' js';
+
