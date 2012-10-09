@@ -432,32 +432,40 @@ public abstract class BridgeExternalContext extends ExternalContext {
             SeamUtilities.switchToCurrentSeamConversation(requestURI);
         }
         String uriString = SeamUtilities.encodeSeamConversationId(requestURI, viewIdentifier);
-        int index = uriString.lastIndexOf('?');
-        final URI uri;
-        try {
-            /*
-             * ICE-3427: URI.create(String) and URI(String) do not encode for
-             *           us. However, the multi-argument constructors do!
-             *
-             * Note: We're not specifically checking to see if the passed
-             *       requestURI is absolute or relative. Using the
-             *       multi-argument URI(...) constructor and passing the
-             *       requestURI as a path regardless of its form might seem
-             *       confusing. However, the result is as desired.
-             */
-            uri =
-                    new URI(
-                            null,                                              // scheme
-                            null,                                            // userInfo
-                            null,                                                // host
-                            -1,                                                  // port
-                            index != -1 ?                                        // path
-                                    uriString.substring(0, index) : uriString,
-                            index != -1 ?                                       // query
-                                    uriString.substring(index + 1) : null,
-                            null);                                           // fragment
-        } catch (URISyntaxException exception) {
-            throw new RuntimeException(exception);
+        URI uri;
+        if (configuration.getAttributeAsBoolean("encodeRedirectURLs", true)) {
+            try {
+                int index = uriString.lastIndexOf('?');
+                /*
+                 * ICE-3427: URI.create(String) and URI(String) do not encode for
+                 *           us. However, the multi-argument constructors do!
+                 *
+                 * Note: We're not specifically checking to see if the passed
+                 *       requestURI is absolute or relative. Using the
+                 *       multi-argument URI(...) constructor and passing the
+                 *       requestURI as a path regardless of its form might seem
+                 *       confusing. However, the result is as desired.
+                 */
+                uri =
+                        new URI(
+                                null,                                              // scheme
+                                null,                                            // userInfo
+                                null,                                                // host
+                                -1,                                                  // port
+                                index != -1 ?                                        // path
+                                        uriString.substring(0, index) : uriString,
+                                index != -1 ?                                       // query
+                                        uriString.substring(index + 1) : null,
+                                null);                                           // fragment
+            } catch (URISyntaxException exception) {
+                throw new RuntimeException(exception);
+            }
+        } else {
+            try {
+                uri = new URI(uriString);
+            } catch (URISyntaxException exception) {
+                throw new RuntimeException(exception);
+            }
         }
         redirector.redirect(encodeResourceURL(uri.toString()));
         facesContext.resetLastViewID();
