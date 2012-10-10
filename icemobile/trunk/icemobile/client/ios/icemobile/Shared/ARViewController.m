@@ -41,6 +41,7 @@
 	[super viewWillAppear:animated];
 	ARView *arView = (ARView *)self.view;
     arView.useCompass = compassSwitch.on; 
+    arView.nativeInterface = self.nativeInterface; 
 	[arView start];
 }
 

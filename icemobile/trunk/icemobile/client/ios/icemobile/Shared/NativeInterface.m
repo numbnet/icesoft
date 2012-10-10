@@ -547,6 +547,39 @@ static char base64EncodingTable[64] = {
             withName:augName];
 }
 
+- (void)startMotionManager {
+    if (nil != self.motionManager)  {
+        return;
+    }
+
+    self.motionManager = [[CMMotionManager alloc] init];
+
+    if (![self.motionManager respondsToSelector:
+            @selector(setShowsDeviceMovementDisplay:)])  {
+        LogError(@"NativeInterface deviceMotion not supported");
+        return;
+    }
+
+	// Tell CoreMotion to show the compass calibration HUD when required to provide true north-referenced attitude
+	self.motionManager.showsDeviceMovementDisplay = YES;
+	
+	self.motionManager.deviceMotionUpdateInterval = 1.0 / 60.0;
+	
+	// New in iOS 5.0: Attitude that is referenced to true north
+//True North causes lingering core motion thread that crashes upon app return
+//	[motionManager startDeviceMotionUpdatesUsingReferenceFrame:CMAttitudeReferenceFrameXTrueNorthZVertical];
+	[self.motionManager startDeviceMotionUpdatesUsingReferenceFrame:CMAttitudeReferenceFrameXMagneticNorthZVertical];
+}
+
+- (void)stopMotionManager  {
+    if (nil == self.motionManager)  {
+        return;
+    }
+    [self.motionManager stopDeviceMotionUpdates];
+    [self.motionManager release];
+    self.motionManager = nil;
+}
+
 - (BOOL)upload: (NSString*)formId  {
     if (self.uploading)  {
     LogInfo(@" already uploading, ignoring request");
@@ -759,6 +792,7 @@ static char base64EncodingTable[64] = {
     if (nil != self.augController)  {
         [self.augController dismissModalViewControllerAnimated:YES];
     }
+    [self stopMotionManager];
 
     LogDebug(@"NativeInterface applicationWillResignActive, dismissing augController");
 }

@@ -18,12 +18,15 @@
 #import <CoreLocation/CoreLocation.h>
 #import <CoreMotion/CoreMotion.h>
 @class PlaceLabel;
+@class NativeInterface;
 
 @interface ARView : UIView  <CLLocationManagerDelegate> {
     CLLocation *location;
+    NativeInterface *nativeInterface;
     BOOL useCompass;
 }
 
+@property (nonatomic, retain) NativeInterface *nativeInterface;
 @property (nonatomic) BOOL useCompass;
 @property (nonatomic, retain) CLLocation *location;
 @property (nonatomic, retain) NSArray *placeLabels;

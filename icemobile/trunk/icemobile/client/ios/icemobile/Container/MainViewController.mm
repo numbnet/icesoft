@@ -50,6 +50,7 @@
     self.nativeInterface = [[NativeInterface alloc] init];
     self.nativeInterface.controller = self;
     self.nativeInterface.uploading = NO;
+    [self.nativeInterface startMotionManager];
     self.canRetry = YES;
 
     self.preferences = [[Preferences alloc] init];
