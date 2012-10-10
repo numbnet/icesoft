@@ -37,11 +37,11 @@ import org.icefaces.ace.model.table.RowStateMap;
  */
 public class OuterTableCSVExporter extends CSVExporter {
 
-	private List<String> innerTables;
+	private String innerTableId;
 	private DataTable innerTable;
 	
-	public OuterTableCSVExporter(List<String> innerTables, DataTable innerTable) {
-		this.innerTables = innerTables;
+	public OuterTableCSVExporter(String innerTableId, DataTable innerTable) {
+		this.innerTableId = innerTableId;
 		this.innerTable = innerTable;
 	}
 	
@@ -135,16 +135,16 @@ public class OuterTableCSVExporter extends CSVExporter {
 		for (UIComponent kid : uiComponent.getChildren()) {
 			String id = kid.getId();
 			if (kid instanceof DataTable) {
-				if (innerTables.size() == 0 || innerTables.contains(id)) {
+				if (innerTableId == null || "".equals(innerTableId) || innerTableId.equals(id)) {
 					exportedInnerTables = true;
 					InnerTableCSVExporter innerExporter = new InnerTableCSVExporter(rowBuilder.toString() + ",");
 					String innerTable = innerExporter.export(facesContext, dataExporter, (DataTable) kid);
 					builder.append(innerTable);
-					if (innerTables.size() == 0) break;
+					break;
 				}
 			}
 			if (kid.getChildren().size() > 0) {
-				exportedInnerTables = exportedInnerTables || exportInnerTables(kid, builder, rowBuilder, facesContext, dataExporter);
+				exportedInnerTables = exportInnerTables(kid, builder, rowBuilder, facesContext, dataExporter);
 			}
 		}
 		return exportedInnerTables;

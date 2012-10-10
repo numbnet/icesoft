@@ -65,7 +65,6 @@ public class DataExporterCustom extends ComponentExampleImpl<DataExporterCustom>
 	
     public DataExporterCustom() { 
 		super(DataExporterCustom.class);
-		this.selectedItems = new ArrayList<String>();
 	}
 	
     @PostConstruct
@@ -82,9 +81,9 @@ public class DataExporterCustom extends ComponentExampleImpl<DataExporterCustom>
 	public List<CustomCar> getCarsData() { return carsData; }
     public void setCarsData(List<CustomCar> carsData) { this.carsData = carsData; }
 
-    private List<String> selectedItems;
-	public List<String> getSelectedItems() { return selectedItems; }
-    public void setSelectedItems(List<String> selectedItems) { this.selectedItems = selectedItems; }	
+    private String selectedItem = null;
+	public String getSelectedItem() { return selectedItem; }
+    public void setSelectedItem(String selectedItem) { this.selectedItem = selectedItem; }	
 	
 	public List<SelectItem> getSelectItems() {
 		List<SelectItem> selectItems = new ArrayList<SelectItem>();
@@ -115,7 +114,7 @@ public class DataExporterCustom extends ComponentExampleImpl<DataExporterCustom>
 	
 	public Object getCustomExporter() {
 		DataTable innerTable = (DataTable) findComponentCustom(FacesContext.getCurrentInstance().getViewRoot(), INNER_TABLE_ID);
-		return new OuterTableCSVExporter(selectedItems, innerTable);
+		return new OuterTableCSVExporter(selectedItem, innerTable);
 	}
 	
 	private UIComponent findComponentCustom(UIComponent base, String id) {
