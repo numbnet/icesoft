@@ -47,7 +47,6 @@ public class BridgeSetup implements SystemEventListener {
 
     private final boolean standardFormSerialization;
     private final boolean deltaSubmit;
-    private final boolean disableDefaultErrorPopups;
     private int seed = 0;
     private String bridgeResourceName;
     private String icepushResourceName;
@@ -56,7 +55,6 @@ public class BridgeSetup implements SystemEventListener {
         FacesContext fc = FacesContext.getCurrentInstance();
         deltaSubmit = EnvUtils.isDeltaSubmit(fc);
         standardFormSerialization = EnvUtils.isStandardFormSerialization(fc);
-        disableDefaultErrorPopups = EnvUtils.disableDefaultErrorPopups(fc);
         bridgeResourceName = fc.isProjectStage(ProjectStage.Development) ? "bridge.uncompressed.js" : "bridge.js";
         icepushResourceName = fc.isProjectStage(ProjectStage.Development) ? "icepush.uncompressed.js" : "icepush.js";
         fc.getExternalContext().getApplicationMap().put(BRIDGE_SETUP, this);
@@ -166,7 +164,7 @@ public class BridgeSetup implements SystemEventListener {
                     writer.write(Boolean.toString(deltaSubmit));
                     writer.write(",");
                     writer.write("disableDefaultErrorPopups: ");
-                    writer.write(Boolean.toString(disableDefaultErrorPopups));
+                    writer.write(Boolean.toString(EnvUtils.disableDefaultErrorPopups(context)));
                     writer.write(",");
                     writer.write("standardFormSerialization: ");
                     writer.write(Boolean.toString(standardFormSerialization));

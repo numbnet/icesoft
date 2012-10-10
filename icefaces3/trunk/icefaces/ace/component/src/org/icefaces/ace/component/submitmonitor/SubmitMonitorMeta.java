@@ -92,6 +92,15 @@ public class SubmitMonitorMeta extends UIComponentBaseMeta {
         defaultValue = "true", defaultValueType = DefaultValueType.EXPRESSION)
     Boolean autoCenter;
 
+    @Property(tlddoc="Style class of the container element.")
+    String styleClass;
+
+    @Property(tlddoc="When using images to indicate a server or network " +
+        "error, they may need to be preloaded while the server is still " +
+        "accessible. This preloads theme images when facets are not used.",
+        defaultValue="true", defaultValueType = DefaultValueType.EXPRESSION)
+    Boolean preload;
+
     @Facets
     class FacetsMeta {
         @Facet
