@@ -106,11 +106,11 @@
 					</ace:panelExpansion>
 				</ace:dataTable>
 				<h:panelGroup style="display:inline-block;padding-left:10px;">
-					<h:outputLabel for="listbox" value="Select inner table(s) to export: " /><br />
-					<h:selectManyListbox id="listbox" value="#{dataExporterCustom.selectedItems}">
+					<h:outputLabel for="listbox" value="Select inner table to export: " /><br />
+					<h:selectOneListbox id="listbox" value="#{dataExporterCustom.selectedItem}">
 						<f:selectItems value="#{dataExporterCustom.selectItems}" />
 						<f:ajax execute="@this" render="@this" />
-					</h:selectManyListbox><br />
+					</h:selectOneListbox><br />
 					<ace:dataExporter id="dataExporter" label="Export" target="carTable" fileName="cars" pageOnly="true" customExporter="#{dataExporterCustom.customExporter}" />
 				</h:panelGroup>
 			</h:panelGrid>
