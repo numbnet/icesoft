@@ -33,6 +33,7 @@ import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.application.ProjectStage;
 import javax.faces.component.*;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.model.SelectItem;
@@ -242,6 +243,7 @@ public class ComponentUtils {
                 buffer.append(form.getClientId(context));
             }
             else {
+                id = encodeNameSpace(context, id);
                 UIComponent comp = component.findComponent(id);
                 //System.out.println("ComponentUtils.findClientIds()    ["+i+"]  comp   : " + (comp == null ? "null" : comp.getClientId(context)));
                 if (comp != null) {
@@ -257,6 +259,51 @@ public class ComponentUtils {
         }
 
         return buffer.toString();
+    }
+
+    /**
+     * Environments like portlets need to namespace the components in order to uniquely identify them
+     * on the page in case there are multiple instances of the same portlet or different portlets that use
+     * the same ids.  This method will prepend the namespace properly taking care to ensure that the
+     * namespace is not added twice and that a colon (:) is added if necessary.
+     *
+     * @param fc The current FacesContext instance
+     * @param id The id to encode
+     * @return The namespace encoded id
+     */
+    public static String encodeNameSpace(FacesContext fc, String id){
+
+        if( id == null || id.trim().length() == 0){
+            return id;
+        }
+
+        String tempId = id;
+        ExternalContext ec = fc.getExternalContext();
+        String encodedId = ec.encodeNamespace(tempId);
+
+        //If no namespace was applied, we're done.
+        if( encodedId.equals(id)){
+            return id;
+        }
+
+        //Extract the actual namespace.
+        int idStart = encodedId.indexOf(id);
+        String ns = encodedId.substring(0,idStart);
+
+        //Check if the id already had the namespace.  If so, we're done.
+        if( id.startsWith(ns) ){
+            return id;
+        }
+
+        //Need to ensure an absolute reference before adding the namespace so that it's
+        //a legal component id.
+        if( !id.startsWith(":")){
+            id = ":" + id;
+        }
+
+        //Add the namespace.
+        id = ns + id;
+        return id;
     }
 
     public static String findComponentClientId(String id) {
