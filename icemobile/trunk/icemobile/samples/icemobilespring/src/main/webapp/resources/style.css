@@ -226,3 +226,7 @@ html.js div#tabs{
 .pagePanelPadding{
 	padding-top:45px;
 }
+/* temp override of jquery mobile link on mobi-button */
+.ui-widget-content a.mobi-button, .ui-widget-content .mobi-button{
+    color: #fff;
+}
