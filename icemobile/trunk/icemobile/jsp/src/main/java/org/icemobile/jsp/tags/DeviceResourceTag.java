@@ -229,6 +229,7 @@ public class DeviceResourceTag extends BaseSimpleTag {
 		}
 		
 		String contextRoot = Util.getContextRoot(pageContext.getRequest());
+		out.write("<script type='text/javascript'>document.documentElement.className = document.documentElement.className+' "+nameVal+"';</script>");
 
 		String cssLink = String.format("<link type='text/css' rel='stylesheet' href='%s%s/%s/%s/%s.css' />", 
 				contextRoot, MobiJspConstants.RESOURCE_BASE_URL, libVal, nameVal, fileName);
