@@ -122,7 +122,7 @@ public class GeolocationRenderer extends CoreRenderer {
 //            String finalScript = "navigator.geolocation.watchPosition(function(pos) { " +  sb.toString() + "} );";
 
             String finalScript = "navigator.geolocation.watchPosition( function(pos) { " + sb.toString() + " }, " +
-                " function() { alert('error in watchPosition'); }, { enableHighAccuracy:true , maximumAge: 60000 }  );";
+                " function() { alert('error in watchPosition'); }, { enableHighAccuracy:true , maximumAge: 5000 }  );";
 
             finalScript += "window.addEventListener('deviceorientation', function(orient){";
             finalScript += "ice.mobi.storeDirection('" + clientId + "_locHidden', orient);";
