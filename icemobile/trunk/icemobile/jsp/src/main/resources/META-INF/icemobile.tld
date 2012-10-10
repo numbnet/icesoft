@@ -1401,4 +1401,17 @@
             <rtexprvalue>true</rtexprvalue>
         </attribute>
     </tag>
+    <tag>
+        <description>The smallView tag will only render its contents for handheld mobile clients.</description>
+        <name>smallView</name>
+        <tag-class>org.icemobile.jsp.tags.SmallViewTag</tag-class>
+        <body-content>JSP</body-content>
+    </tag>
+    <tag>
+        <description>The largeView tag will only render its contents for tablet mobile and desktop clients.</description>
+        <name>largeView</name>
+        <tag-class>org.icemobile.jsp.tags.LargeViewTag</tag-class>
+        <body-content>JSP</body-content>
+    </tag>
+
 </taglib>
