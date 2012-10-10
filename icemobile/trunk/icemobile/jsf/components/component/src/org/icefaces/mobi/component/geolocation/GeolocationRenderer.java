@@ -47,53 +47,53 @@ public class GeolocationRenderer extends CoreRenderer {
         String clientId = geolocation.getClientId();
         try {
             Map requestParameterMap = facesContext.getExternalContext()
-                    .getRequestParameterMap();
+                .getRequestParameterMap();
             String nameHidden = clientId + "_field";
             String locationString = String.valueOf(
-                    requestParameterMap.get(nameHidden));
-            if (null == locationString)  {
+                requestParameterMap.get(nameHidden));
+            if (null == locationString) {
                 return;
             }
 
             String[] params = locationString.split(",");
             Double[] decoded = new Double[4];
-            for (int i = 0; i < params.length; i++)  {
+            for (int i = 0; i < params.length; i++) {
                 try {
                     decoded[i] = Double.parseDouble(params[i]);
-                } catch (Exception e)  {
-                    log.log(Level.FINE, 
-                        "Malformed geolocation " + i +
-                        " " + locationString, e);
+                } catch (Exception e) {
+                    log.log(Level.FINE,
+                            "Malformed geolocation " + i +
+                                " " + locationString, e);
                 }
             }
             //malformed or unprovided values are not propagated
-            if (null != decoded[0])  {
+            if (null != decoded[0]) {
                 geolocation.setLatitude(decoded[0]);
             }
-            if (null != decoded[1])  {
+            if (null != decoded[1]) {
                 geolocation.setLongitude(decoded[1]);
             }
-            if (null != decoded[2])  {
+            if (null != decoded[2]) {
                 geolocation.setAltitude(decoded[2]);
             }
-            if (null != decoded[3])  {
+            if (null != decoded[3]) {
                 geolocation.setDirection(decoded[3]);
             }
 
 
             decodeBehaviors(facesContext, geolocation);
         } catch (Exception e) {
-            log.log(Level.WARNING, "Error decoding geo-location request paramaters.",e);
+            log.log(Level.WARNING, "Error decoding geo-location request paramaters.", e);
         }
     }
 
 
     public void encodeEnd(FacesContext facesContext, UIComponent uiComponent)
-            throws IOException {
+        throws IOException {
         ResponseWriter writer = facesContext.getResponseWriter();
         String clientId = uiComponent.getClientId(facesContext);
         Geolocation locator = (Geolocation) uiComponent;
-        ClientBehaviorHolder cbh = (ClientBehaviorHolder)uiComponent;
+        ClientBehaviorHolder cbh = (ClientBehaviorHolder) uiComponent;
         boolean hasBehaviors = !cbh.getClientBehaviors().isEmpty();
         // root element
         writer.startElement(HTML.SPAN_ELEM, uiComponent);
@@ -109,23 +109,26 @@ public class GeolocationRenderer extends CoreRenderer {
             writer.writeAttribute("disabled", "disabled", null);
         }
         writer.endElement("input");
-        if (!disabled ) {
+        if (!disabled) {
             StringBuilder sb = new StringBuilder(255);
             String fnCall = "ice.mobi.storeLocation('" + clientId + "_locHidden', pos.coords);";
             sb.append(fnCall);
-            if ( hasBehaviors){
-                  sb.append(this.buildAjaxRequest(facesContext, cbh, "activate"));
-            }
-            else if (singleSubmit){
-                String ssCall = "ice.se(null, '"+clientId+"');";
+            if (hasBehaviors) {
+                sb.append(this.buildAjaxRequest(facesContext, cbh, "activate"));
+            } else if (singleSubmit) {
+                String ssCall = "ice.se(null, '" + clientId + "');";
                 sb.append(ssCall);
             }
-            String finalScript = "navigator.geolocation.watchPosition(function(pos) { " +  sb.toString() + "} );";
+//            String finalScript = "navigator.geolocation.watchPosition(function(pos) { " +  sb.toString() + "} );";
+
+            String finalScript = "navigator.geolocation.watchPosition( function(pos) { " + sb.toString() + " }, " +
+                " function() { alert('error in watchPosition'); }, { enableHighAccuracy:true , maximumAge: 60000 }  );";
+
             finalScript += "window.addEventListener('deviceorientation', function(orient){";
-            finalScript +=  "ice.mobi.storeDirection('" + clientId + "_locHidden', orient);";
+            finalScript += "ice.mobi.storeDirection('" + clientId + "_locHidden', orient);";
             finalScript += "});\n";
             writer.startElement("script", uiComponent);
-            writer.writeAttribute("id", clientId+"_script", "id");
+            writer.writeAttribute("id", clientId + "_script", "id");
             writer.write(finalScript);
             writer.endElement("script");
         }
