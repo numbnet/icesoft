@@ -28,8 +28,6 @@ import javax.faces.model.SelectItem;
 
 import java.util.List;
 import java.util.ArrayList;
-import java.util.Map;
-import java.util.HashMap;
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -67,7 +65,7 @@ public class DataExporterCustom extends ComponentExampleImpl<DataExporterCustom>
 	
     public DataExporterCustom() { 
 		super(DataExporterCustom.class);
-		this.map = new HashMap<Object, String>();
+		this.selectedItems = new ArrayList<String>();
 	}
 	
     @PostConstruct
@@ -83,10 +81,10 @@ public class DataExporterCustom extends ComponentExampleImpl<DataExporterCustom>
     private List<CustomCar> carsData = getRandomData();
 	public List<CustomCar> getCarsData() { return carsData; }
     public void setCarsData(List<CustomCar> carsData) { this.carsData = carsData; }
-	
-	private Map<Object, String> map;
-	public Map getMap() { return map; }
-	public void setMap(Map map) { this.map = map; }
+
+    private List<String> selectedItems;
+	public List<String> getSelectedItems() { return selectedItems; }
+    public void setSelectedItems(List<String> selectedItems) { this.selectedItems = selectedItems; }	
 	
 	public List<SelectItem> getSelectItems() {
 		List<SelectItem> selectItems = new ArrayList<SelectItem>();
@@ -107,7 +105,7 @@ public class DataExporterCustom extends ComponentExampleImpl<DataExporterCustom>
 	private void populateItems(UIComponent component, List<SelectItem> selectItems) {
 		for (UIComponent kid : component.getChildren()) {
 			if (kid instanceof DataTable) {
-				selectItems.add(new SelectItem(kid.getClientId(), kid.getId()));
+				selectItems.add(new SelectItem(kid.getId(), kid.getId()));
 			}
 			if (kid.getChildren().size() > 0) {
 				populateItems(kid, selectItems);
@@ -117,11 +115,10 @@ public class DataExporterCustom extends ComponentExampleImpl<DataExporterCustom>
 	
 	public Object getCustomExporter() {
 		DataTable innerTable = (DataTable) findComponentCustom(FacesContext.getCurrentInstance().getViewRoot(), INNER_TABLE_ID);
-		return new OuterTableCSVExporter(map, innerTable);
+		return new OuterTableCSVExporter(selectedItems, innerTable);
 	}
 	
 	private UIComponent findComponentCustom(UIComponent base, String id) {
-
 		if (base.getId() != null && base.getId().equals(id)) return base;
 		List<UIComponent> children = base.getChildren();
 		UIComponent result = null;
