@@ -89,6 +89,8 @@ public class ICEmobileContainer extends Activity
     protected static final boolean INCLUDE_AUDIO = true;
     protected static final boolean INCLUDE_VIDEO = true;
     protected static final boolean INCLUDE_CONTACTS = true;
+    protected static final boolean INCLUDE_QRCODE = true;
+    protected static final boolean INCLUDE_ARVIEW = true;
     protected static final int HISTORY_SIZE = 20;
     protected static final int NETWORK_DOWN_DELAY = 5000;
     protected static final String C2DM_SENDER = "1020381675267";
@@ -191,8 +193,8 @@ public class ICEmobileContainer extends Activity
 	accelerated = prefs.getBoolean("accelerate", false);
 	setHwAccelerate(accelerated, false);
 	includeUtil();
-	includeQRCode();
-	includeARView(); 
+	if (INCLUDE_QRCODE) includeQRCode();
+	if (INCLUDE_ARVIEW && android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.GINGERBREAD_MR1)includeARView(); 
 	if (INCLUDE_CAMERA) includeCamera();
 	if (INCLUDE_AUDIO) includeAudio();
 	if (INCLUDE_VIDEO) includeVideo();
