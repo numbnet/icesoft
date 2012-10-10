@@ -16,6 +16,7 @@
 
 #import <Foundation/Foundation.h>
 #import <AVFoundation/AVFoundation.h>
+#import <CoreMotion/CoreMotion.h>
 #import "NativeInterfaceViewController.h"
 
 @class MainViewController;
@@ -40,6 +41,7 @@
     UIPopoverController *audioPopover;
     UIPopoverController *augPopover;
     ARViewController *augController;
+    CMMotionManager *motionManager;
     CGRect popoverSource;
 }
 
@@ -59,6 +61,7 @@
 @property (nonatomic, retain) UIPopoverController *audioPopover;
 @property (nonatomic, retain) UIPopoverController *augPopover;
 @property (nonatomic, retain) ARViewController *augController;
+@property (nonatomic, retain) CMMotionManager *motionManager;
 @property (nonatomic, assign) CGRect popoverSource;
 
 - (void) applicationWillResignActive;
@@ -74,6 +77,8 @@
 - (void)augHide;
 - (void)augDone;
 - (void)augDismiss;
+- (void)startMotionManager;
+- (void)stopMotionManager;
 - (void)recordStart;
 - (void)recordStop;
 - (void)recordDismiss;

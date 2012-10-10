@@ -47,6 +47,7 @@
 
 #import "ARView.h"
 #import "PlaceLabel.h"
+#import "NativeInterface.h"
 
 #import <AVFoundation/AVFoundation.h>
 
@@ -124,6 +125,7 @@ void ecefToEnu(double lat, double lon, double x, double y, double z, double xr, 
 
 @implementation ARView
 
+@synthesize nativeInterface;
 @synthesize useCompass;
 @synthesize moreLabels;
 @synthesize location;
@@ -154,7 +156,8 @@ void ecefToEnu(double lat, double lon, double x, double y, double z, double xr, 
 {
 	[self stopCameraPreview];
 	[self stopLocation];
-	[self stopDeviceMotion];
+    //handled by nativeInterface startup/shutdown
+//	[self stopDeviceMotion];
 	[self stopDisplayLink];
 }
 
@@ -293,25 +296,28 @@ NSLog(@"addCompassPoints anchored %f,%f", location.coordinate.latitude, location
 
 - (void)startDeviceMotion
 {	
-	motionManager = [[CMMotionManager alloc] init];
+    [self.nativeInterface startMotionManager];
+	motionManager = self.nativeInterface.motionManager;
 
-    if (![motionManager respondsToSelector:
-            @selector(setShowsDeviceMovementDisplay:)])  {
-        NSLog(@"ARView deviceMotion not supported");
-        return;
-    }
-
-	// Tell CoreMotion to show the compass calibration HUD when required to provide true north-referenced attitude
-	motionManager.showsDeviceMovementDisplay = YES;
-
-	
-	motionManager.deviceMotionUpdateInterval = 1.0 / 60.0;
-	
-	// New in iOS 5.0: Attitude that is referenced to true north
-//True North causes lingering core motion thread that crashes upon app return
-//	[motionManager startDeviceMotionUpdatesUsingReferenceFrame:CMAttitudeReferenceFrameXTrueNorthZVertical];
-	[motionManager startDeviceMotionUpdatesUsingReferenceFrame:CMAttitudeReferenceFrameXMagneticNorthZVertical];
-
+//	motionManager = [[CMMotionManager alloc] init];
+//
+//    if (![motionManager respondsToSelector:
+//            @selector(setShowsDeviceMovementDisplay:)])  {
+//        NSLog(@"ARView deviceMotion not supported");
+//        return;
+//    }
+//
+//	// Tell CoreMotion to show the compass calibration HUD when required to provide true north-referenced attitude
+//	motionManager.showsDeviceMovementDisplay = YES;
+//
+//	
+//	motionManager.deviceMotionUpdateInterval = 1.0 / 60.0;
+//	
+//	// New in iOS 5.0: Attitude that is referenced to true north
+////True North causes lingering core motion thread that crashes upon app return
+////	[motionManager startDeviceMotionUpdatesUsingReferenceFrame:CMAttitudeReferenceFrameXTrueNorthZVertical];
+//	[motionManager startDeviceMotionUpdatesUsingReferenceFrame:CMAttitudeReferenceFrameXMagneticNorthZVertical];
+//
 
 }
 
