@@ -122,7 +122,7 @@ public class DeviceStyleSheetRenderer extends Renderer implements javax.faces.ev
          */
         String name = (String)uiComponent.getAttributes().get("name");
         String view = (String)uiComponent.getAttributes().get("view");
-        if( name == null ){
+        if( name == null || "".equals(name)){
             name = CSSUtils.deriveTheme(view, JSFUtils.getRequest()).fileName();
         }
           
