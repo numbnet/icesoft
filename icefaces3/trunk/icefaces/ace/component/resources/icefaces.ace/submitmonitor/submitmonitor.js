@@ -35,6 +35,20 @@
         return tally;
     };
 
+    var isSessionExpired = function(xmlContent) {
+        var sessionExpired = false;
+        if (xmlContent && xmlContent.documentElement) {
+            var errorNames = xmlContent.getElementsByTagName("error-name");
+            if (errorNames && errorNames.length > 0) {
+                var errorName = errorNames[0].firstChild.nodeValue;
+                if (errorName && errorName.indexOf('org.icefaces.application.SessionExpiredException') >= 0) {
+                    sessionExpired = true;
+                }
+            }
+        }
+        return sessionExpired;
+    };
+
     function Overlay(cfg, container) {
         // If the request is processed before our timeouts for adding the
         // elements, then we need to never add them.
@@ -53,24 +67,16 @@
         }
         var overlay = document.createElement('div');
         overlay.className = 'ui-widget-overlay';
-        overlay.style.cssText = 'top: 0px; left: 0px; width: '+overlayWidth+'px; height: '+overlayHeight+'px; position: absolute; z-index: 28000; zoom: 1;';
+        var overlayStyle = 'top: 0px; left: 0px; width: '+overlayWidth+'px; height: '+overlayHeight+'px; position: absolute; z-index: 28000; zoom: 1;';
+        overlay.style.cssText = overlayStyle + ' display: none;';
+        //console.log('Overlay  Built overlay');
+        if (container == document.body) {
+            container.appendChild(overlay);
+        } else {
+            container.parentNode.appendChild(overlay);
+        }
+        //console.log('Overlay  Added overlay');
 
-        setTimeout(function() {
-            if (!addElements) {
-                return;
-            }
-            if (container == document.body) {
-                container.appendChild(overlay);
-            } else {
-                container.parentNode.appendChild(overlay);
-                ice.ace.jq(overlay).position({
-                    my: 'left top',
-                    at: 'left top',
-                    of: container,
-                    collision: 'none'});
-            }
-        }, addDelay);
-        
         var cloneToRemove;
         var revertElem;
         var revertZIndex;
@@ -79,46 +85,67 @@
             cloneToRemove.attr('id', cfg.id + '_clone');
             cloneToRemove.addClass('clone ui-panel ui-widget-content ui-corner-all');
             cloneToRemove.css('z-index', '28001');
+            cloneToRemove.css('display', 'none');
             cloneToRemove.children().addClass('ui-panel-titlebar ui-widget-header ui-corner-all');
+            //console.log('Overlay  autoCenter  built clone');
             if (container == document.body) {
-                setTimeout(function() {
-                    if (!addElements) {
-                        return;
-                    }
-                    cloneToRemove.appendTo(container);
-                    cloneToRemove.css('position', 'fixed');
-                    cloneToRemove.css('display', '');
+                cloneToRemove.appendTo(container);
+                cloneToRemove.css('position', 'fixed');
+                //console.log('Overlay  autoCenter  added clone over body');
+            } else {
+                cloneToRemove.appendTo(container.parentNode);
+                cloneToRemove.css('position', 'absolute');
+                //console.log('Overlay  autoCenter  added clone over other');
+            }
+        } else {
+            revertElem = ice.ace.jq(ice.ace.escapeClientId(cfg.id)+"_display");
+            //console.log('Overlay  !autoCenter  found revert');
+        }
+
+        setTimeout(function() {
+            //console.log('Overlay  setTimeout to add overlay / clone / revert  addElements: ' + addElements);
+            if (!addElements) {
+                return;
+            }
+            if (overlay && overlayStyle) {
+                overlay.style.cssText = overlayStyle;
+                if (container != document.body) {
+                    ice.ace.jq(overlay).position({
+                        my: 'left top',
+                        at: 'left top',
+                        of: container,
+                        collision: 'none'});
+                }
+                //console.log('Overlay  setTimeout  showed and positioned overlay');
+            }
+            if (cloneToRemove) {
+                cloneToRemove.css('display', '');
+                if (container == document.body) {
                     cloneToRemove.position({
                         my: 'center center',
                         at: 'center center',
                         of: window,
                         collision: 'fit'});
-                }, addDelay);
-            } else {
-                setTimeout(function() {
-                    if (!addElements) {
-                        return;
-                    }
-                    cloneToRemove.appendTo(container.parentNode);
-                    cloneToRemove.css('position', 'absolute');
-                    cloneToRemove.css('display', '');
+                    //console.log('Overlay  setTimeout  showed and positioned clone over body');
+                } else {
                     cloneToRemove.position({
                         my: 'center center',
                         at: 'center center',
                         of: container,
                         collision: 'fit'});
-                }, addDelay);
+                    //console.log('Overlay  setTimeout  showed and positioned clone over other');
+                }
             }
-        } else {
-            revertElem = ice.ace.jq(ice.ace.escapeClientId(cfg.id)+"_display");
             if (revertElem) {
                 revertZIndex = revertElem.css('z-index');
                 revertElem.css('z-index', '28001');
                 revertElem.css('display', '');
+                //console.log('Overlay  setTimeout  showed revert');
             }
-        }
+        }, addDelay);
 
         return function() {
+            //console.log('Overlay  function to cleanup overlay and clone  addElements(sets false): ' + addElements);
             addElements = false;
             if (overlay) {
                 try { overlay.parentNode.removeChild(overlay); }
@@ -249,7 +276,7 @@
         var doOverlayIfBlockingUI = function(source) {
             //Only block the UI for client-initiated requests (not push requests)
             if (isBlockUIEnabled()) {
-                //console.log('Monitor '+uniqueId+'>'+jqId+'  Blocking UI');
+                //console.log('Monitor '+uniqueId+'>'+jqId+'  doOverlayIfBlockingUI  Blocking UI');
 
                 var eventSinkFirstClickCount = 0;
                 function eventSinkFirstClick(firstSubmitSource, element, originalOnclick, regularSink) {
@@ -287,8 +314,10 @@
                         }
                     }
                 }
-                
+
+                //console.log('Monitor '+uniqueId+'>'+jqId+'  doOverlayIfBlockingUI  after eventSinkFirstClick');
                 var overlayContainerElem = resolveBlockUIElement(source);
+                //console.log('Monitor '+uniqueId+'>'+jqId+'  doOverlayIfBlockingUI  overlayContainerElem: ' + overlayContainerElem);
                 var blockUIOverlay = Overlay(cfg, overlayContainerElem);
                 var rollbacks = fold(['input', 'select', 'textarea', 'button', 'a'], [], function(result, type) {
                     return result.concat(
@@ -407,6 +436,10 @@
                         whenUpdate(xmlContent, source);
                     }
                 }, 260);
+            } else if (isSessionExpired(xmlContent)) {
+                //console.log('Monitor '+uniqueId+'>'+jqId+'  onBeforeUpdate()  isSessionExpired');
+                anticipatePossibleSecondSubmit = UNANTICIPATED;
+                changeState(SESSION_EXPIRED);
             } else {
                 whenUpdate(xmlContent, source);
             }
@@ -428,6 +461,7 @@
             changeState(NETWORK_ERROR);
         });
 
+        /*
         window.ice.onSessionExpiry(function() {
             //console.log('Monitor '+uniqueId+'>'+jqId+'  onSessionExpiry');
             if (handleCleanup(false)) {
@@ -437,6 +471,7 @@
             anticipatePossibleSecondSubmit = UNANTICIPATED;
             changeState(SESSION_EXPIRED);
         });
+        */
 
         changeState(IDLE);
     }

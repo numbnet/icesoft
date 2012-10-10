@@ -19,15 +19,12 @@ package org.icefaces.ace.component.submitmonitor;
 import org.icefaces.ace.renderkit.CoreRenderer;
 import org.icefaces.ace.util.HTML;
 import org.icefaces.ace.util.JSONBuilder;
+import org.icefaces.ace.util.Utils;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public class SubmitMonitorRenderer extends CoreRenderer {
     @Override
@@ -36,11 +33,16 @@ public class SubmitMonitorRenderer extends CoreRenderer {
         String clientId = component.getClientId();
         SubmitMonitor monitor = (SubmitMonitor)component;
 
+        writer.startElement(HTML.DIV_ELEM, monitor);
+        writer.writeAttribute(HTML.ID_ATTR, clientId, null);
+
         // Encode Component
         writeComponent(context, writer, monitor, clientId);
 
         //Encode Script
         writeScript(context, writer, monitor, clientId);
+
+        writer.endElement(HTML.DIV_ELEM);
     }
 
     private void writeScript(FacesContext context, ResponseWriter writer,
@@ -64,7 +66,8 @@ public class SubmitMonitorRenderer extends CoreRenderer {
             SubmitMonitor monitor, String clientId) throws IOException {
         writer.startElement(HTML.DIV_ELEM, monitor);
         writer.writeAttribute(HTML.ID_ATTR, clientId+"_display", null);
-        writer.writeAttribute(HTML.CLASS_ATTR, "ice-sub-mon ui-widget", null);
+        Utils.writeConcatenatedStyleClasses(
+            writer, "ice-sub-mon ui-widget", monitor.getStyleClass());
         if (Boolean.TRUE.equals(monitor.isHidingIdleSubmitMonitor())) {
             writer.writeAttribute(HTML.STYLE_ATTR, "display:none;", null);
         }
@@ -97,7 +100,7 @@ public class SubmitMonitorRenderer extends CoreRenderer {
                 if (label != null && label.length() > 0) {
                     writer.startElement(HTML.SPAN_ELEM, null);
                     writer.writeAttribute(HTML.CLASS_ATTR, state.getTextClassName(), null);
-                    writer.write(label);
+                    writer.writeText(label, null);
                     writer.endElement(HTML.SPAN_ELEM);
                 }
             }
@@ -105,6 +108,33 @@ public class SubmitMonitorRenderer extends CoreRenderer {
         }
 
         writer.endElement(HTML.DIV_ELEM);
+
+        if (monitor.isPreload()) {
+            writer.startElement(HTML.DIV_ELEM, monitor);
+            writer.writeAttribute(HTML.ID_ATTR, clientId+"_preload", null);
+            writer.writeAttribute(HTML.CLASS_ATTR, "ice-sub-mon ui-widget", null);
+            writer.writeAttribute(HTML.STYLE_ATTR, "position:absolute;top:-99999px;left:-99999px;display:inline;width:0px;height:0px;padding:0px;margin:0px;", null);
+
+            for (State state : State.values()) {
+                writer.startElement(HTML.DIV_ELEM, monitor);
+                writer.writeAttribute(HTML.CLASS_ATTR, state.getMidClassName(), null);
+
+                UIComponent facet = monitor.getFacet(state.name());
+                if (facet == null) {
+                    writer.startElement(HTML.SPAN_ELEM, null);
+                    writer.writeAttribute(HTML.CLASS_ATTR, state.getImageClassName(), null);
+                    writer.endElement(HTML.SPAN_ELEM);
+
+                    writer.startElement(HTML.SPAN_ELEM, null);
+                    writer.writeAttribute(HTML.CLASS_ATTR, state.getTextClassName(), null);
+                    writer.writeText("X", null);
+                    writer.endElement(HTML.SPAN_ELEM);
+                }
+                writer.endElement(HTML.DIV_ELEM);
+            }
+
+            writer.endElement(HTML.DIV_ELEM);
+        }
     }
 
     public JSONBuilder writeConfig(SubmitMonitor monitor, JSONBuilder config) {

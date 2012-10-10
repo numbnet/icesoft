@@ -206,6 +206,16 @@ public class EnvUtils {
     }
 
     /**
+     * Programmatically override the value of blockUIOnSubmit.
+     *
+     * @param facesContext The current FacesContext instance used to access the application map.
+     * @param value 
+     */
+    public static void setBlockUIOnSubmit(FacesContext facesContext, boolean value) {
+        setViewParam(facesContext, BLOCK_UI_ON_SUBMIT, value);
+    }
+
+    /**
      * Returns the value of the context parameter org.icefaces.compressDOM.  The default value is false and indicates
      * that, between requests, the server-side DOM will be serialized and compressed to save memory.
      *
@@ -602,8 +612,24 @@ public class EnvUtils {
     }
 
     public static boolean disableDefaultErrorPopups(FacesContext facesContext) {
-        return EnvConfig.getEnvConfig(facesContext).disableDefaultErrorPopups;
+        Object disableDefaultErrorPopups = getViewParam(facesContext, DISABLE_DEFAULT_ERROR_POPUPS);
+        if (null == disableDefaultErrorPopups) {
+            return EnvConfig.getEnvConfig(facesContext).disableDefaultErrorPopups;
+        }
+        return (Boolean.TRUE.equals(disableDefaultErrorPopups));
     }
+
+
+    /**
+     * Programmatically override the value of disableDefaultErrorPopups.
+     *
+     * @param facesContext The current FacesContext instance used to access the application map.
+     * @param value
+     */
+    public static void setDisableDefaultErrorPopups(FacesContext facesContext, boolean value) {
+        setViewParam(facesContext, DISABLE_DEFAULT_ERROR_POPUPS, value);
+    }
+
 
     public static boolean isFastBusyIndicator(FacesContext facesContext) {
         return EnvConfig.getEnvConfig(facesContext).fastBusyIndicator;
@@ -688,6 +714,13 @@ public class EnvUtils {
         }
         Map viewMap = viewRoot.getViewMap();
         return viewMap.get(name);
+    }
+
+    static void setViewParam(FacesContext facesContext, String name, Object value) {
+        UIViewRoot viewRoot = facesContext.getViewRoot();
+        if (null != viewRoot) {
+            viewRoot.getViewMap().put(name, value);
+        }
     }
 
     public static boolean generateHeadUpdate(FacesContext context) {

@@ -17,8 +17,17 @@
 package org.icefaces.ace.component.submitmonitor;
 
 import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import javax.faces.event.ListenerFor;
+import javax.faces.event.PostAddToViewEvent;
+import javax.faces.event.ComponentSystemEventListener;
+import javax.faces.event.ComponentSystemEvent;
+import javax.faces.event.AbortProcessingException;
 
-public class SubmitMonitor extends SubmitMonitorBase implements java.io.Serializable {
+@ListenerFor(systemEventClass=PostAddToViewEvent.class)
+public class SubmitMonitor extends SubmitMonitorBase
+        implements ComponentSystemEventListener, java.io.Serializable {
+
     boolean isHidingIdleSubmitMonitor() {
         // When using an overlay, the submitMonitor is not shown when idle
         return !"@none".equals(getBlockUI());
@@ -57,5 +66,11 @@ public class SubmitMonitor extends SubmitMonitorBase implements java.io.Serializ
             return null;
         }
         return sb.toString();
+    }
+
+    public void processEvent(ComponentSystemEvent event) throws AbortProcessingException {
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        org.icefaces.util.EnvUtils.setBlockUIOnSubmit(facesContext, false);
+        org.icefaces.util.EnvUtils.setDisableDefaultErrorPopups(facesContext, true);
     }
 }
