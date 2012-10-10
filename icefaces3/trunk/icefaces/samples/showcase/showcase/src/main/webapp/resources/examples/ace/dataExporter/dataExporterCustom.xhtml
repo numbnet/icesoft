@@ -19,7 +19,6 @@
     xmlns:h="http://java.sun.com/jsf/html"
     xmlns:f="http://java.sun.com/jsf/core"
     xmlns:c="http://java.sun.com/jsp/jstl/core"
-	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
     xmlns:ace="http://www.icefaces.org/icefaces/components"
     xmlns:ice="http://www.icesoft.com/icefaces/component"
     xmlns:icecore="http://www.icefaces.org/icefaces/core"
@@ -34,9 +33,13 @@
     <ui:param name="tldResources" value="#{dataExporterResources.tldResources}"/>
 
     <ui:define name="example">
-        
+        <style type="text/css">
+		.grid td {
+			vertical-align: top;
+		}
+		</style>
 		<h:form>
-			<ace:dataExporter id="dataExporter" label="Export File" target="carTable" fileName="cars" pageOnly="true" customExporter="#{dataExporterCustom.customExporter}" />
+			<h:panelGrid columns="2" class="grid">
 				<ace:dataTable id="carTable" value="#{dataExporterCustom.carsData}" var="car" rows="10" paginator="true" paginatorPosition="top" rowIndexVar="i">
 					<ace:ajax event="page" excute="@form" render="@form" />
 					<ace:column id="exp">
@@ -77,11 +80,6 @@
 					</ace:column>
 					<ace:panelExpansion>
 						<h:panelGroup>
-							<h:outputLabel for="listbox" value="Select inner table to export: " />
-							<h:selectOneListbox id="listbox" value="#{dataExporterCustom.map[car]}" rendered="#{fn:length(dataExporterCustom.selectItems) > 1}">
-								<f:selectItems value="#{dataExporterCustom.selectItems}" />
-								<f:ajax execute="@this" render="@this" />
-							</h:selectOneListbox>
 							<ace:dataTable value="#{car.expansionData1}" var="exp" id="innerTable1">
 								<ace:column headerText="Number1">
 									<h:outputText value="#{exp.number1}" />
@@ -106,7 +104,16 @@
 							</ace:dataTable>
 						</h:panelGroup>
 					</ace:panelExpansion>
-			</ace:dataTable>
+				</ace:dataTable>
+				<h:panelGroup style="display:inline-block;padding-left:10px;">
+					<h:outputLabel for="listbox" value="Select inner table(s) to export: " /><br />
+					<h:selectManyListbox id="listbox" value="#{dataExporterCustom.selectedItems}">
+						<f:selectItems value="#{dataExporterCustom.selectItems}" />
+						<f:ajax execute="@this" render="@this" />
+					</h:selectManyListbox><br />
+					<ace:dataExporter id="dataExporter" label="Export" target="carTable" fileName="cars" pageOnly="true" customExporter="#{dataExporterCustom.customExporter}" />
+				</h:panelGroup>
+			</h:panelGrid>
 		</h:form>
     </ui:define>
 </ui:composition>
