@@ -43,14 +43,12 @@
 </h:head>
 <h:body>
     <h:form id="frm">
-        <mobi:viewSelector>
-            <f:facet name="small">
-                <ui:include src="/WEB-INF/includes/views/small.xhtml" />
-            </f:facet>
-            <f:facet name="large">
-                <ui:include src="/WEB-INF/includes/views/large.xhtml" />
-            </f:facet>
-        </mobi:viewSelector>
+        <mobi:smallView>
+           <ui:include src="/WEB-INF/includes/views/small.xhtml" />
+        </mobi:smallView>
+        <mobi:largeView>
+           <ui:include src="/WEB-INF/includes/views/large.xhtml" />
+        </mobi:largeView>
     </h:form>
 </h:body>
 </html>
