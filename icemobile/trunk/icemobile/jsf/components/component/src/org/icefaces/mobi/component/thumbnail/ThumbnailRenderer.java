@@ -30,15 +30,19 @@ import javax.faces.render.Renderer;
 import org.icefaces.mobi.utils.HTML;
 import org.icefaces.mobi.utils.JSFUtils;
 import org.icefaces.mobi.utils.MobiJSFUtils;
-
+import org.icemobile.util.ClientDescriptor;
 
 public class ThumbnailRenderer extends Renderer {
     private static final Logger logger =
             Logger.getLogger(ThumbnailRenderer.class.toString());
 
 
-    public void encodeBegin(FacesContext facesContext, UIComponent uiComponent)
+    public void encodeEnd(FacesContext facesContext, UIComponent uiComponent)
             throws IOException {
+        ClientDescriptor cd = MobiJSFUtils.getClientDescriptor();
+        if (cd.isDesktopBrowser()){
+            return;
+        }
         ResponseWriter writer = facesContext.getResponseWriter();
 
         Thumbnail thumbnail = (Thumbnail) uiComponent;
@@ -75,16 +79,8 @@ public class ThumbnailRenderer extends Renderer {
         writer.writeAttribute(HTML.ID_ATTR, thumbId, null);
         writer.writeAttribute(HTML.WIDTH_ATTR, "64", null);
         writer.writeAttribute(HTML.HEIGHT_ATTR, "64", null);
-
-    }
-
-
-    public void encodeEnd(FacesContext facesContext, UIComponent uiComponent)
-            throws IOException {
-        ResponseWriter writer = facesContext.getResponseWriter();
         writer.endElement("span");
         writer.endElement("img");
     }
-
 
 }
