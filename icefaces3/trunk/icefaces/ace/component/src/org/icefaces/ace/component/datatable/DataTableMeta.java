@@ -169,9 +169,9 @@ public class DataTableMeta extends UIDataMeta {
     @Field(defaultValue = "null", defaultValueIsStringLiteral = false)
     protected Integer valueHashCode;
     @Field(defaultValue = "true", defaultValueIsStringLiteral = false)
-    protected Boolean sortOrderChanged;
+    protected Boolean applyingSorts;
     @Field(defaultValue = "true", defaultValueIsStringLiteral = false)
-    protected Boolean filterValueChanged;
+    protected Boolean applyingFilters;
     // Used to force update of entire table container when using forceTableUpdate
     @Field(defaultValue = "0", defaultValueIsStringLiteral = false)
     protected Integer forcedUpdateCounter;

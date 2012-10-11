@@ -415,7 +415,7 @@ public class DataTable extends DataTableBase implements Serializable {
         iterate(context, PhaseId.APPLY_REQUEST_VALUES);
         decode(context);
 
-        if (isFilterValueChanged()) {
+        if (isApplyingFilters()) {
             Map<String, String> params = context.getExternalContext().getRequestParameterMap();
             queueEvent(
                     new TableFilterEvent(this,
@@ -613,7 +613,7 @@ public class DataTable extends DataTableBase implements Serializable {
     }
 
     /**
-     * Sets the property value of this dataTable to null.
+     * Sets the value property of this dataTable to null.
      */
     public void resetValue() {
         setValue(null);
@@ -628,7 +628,7 @@ public class DataTable extends DataTableBase implements Serializable {
     }
 
     /**
-     * Sets the property of this table to null, clears all filters and resets pagination.
+     * Sets the properties of this table to null, clears all filters and resets pagination.
      */
     public void reset() {
         resetValue();
@@ -684,7 +684,7 @@ public class DataTable extends DataTableBase implements Serializable {
      * to the data model; resorting the table according to the new settings.
      */
     public void applySorting() {
-        setSortOrderChanged(true);
+        setApplyingSorts(true);
     }
 
     /**
@@ -692,10 +692,10 @@ public class DataTable extends DataTableBase implements Serializable {
      * refiltering the data model to meet the new criteria.
      */
     public void applyFilters() {
-        setFilterValueChanged(true);
+        setApplyingFilters(true);
     }
 
-    public Boolean isFilterValueChanged() {
+    public Boolean isApplyingFilters() {
         if (isConstantRefilter()) return true;
 
         Object cached = getCachedGlobalFilter();
@@ -703,7 +703,7 @@ public class DataTable extends DataTableBase implements Serializable {
 
         setCachedGlobalFilter(getFilterValue());
 
-        return super.isFilterValueChanged() || globalFilterChanged;
+        return super.isApplyingFilters() || globalFilterChanged;
     }
     
     public void removeSelectedCell(String deselection) {
@@ -1229,7 +1229,7 @@ public class DataTable extends DataTableBase implements Serializable {
             }
         }
         setForcedUpdateCounter(getForcedUpdateCounter()+1);
-        setSortOrderChanged(false);
+        setApplyingSorts(false);
     }
 
     protected List processFilters(FacesContext context) {
@@ -1381,7 +1381,7 @@ public class DataTable extends DataTableBase implements Serializable {
             return  filteredData;
         } finally {
             setForcedUpdateCounter(getForcedUpdateCounter()+1);
-            setFilterValueChanged(false);
+            setApplyingFilters(false);
         }
     }
 
