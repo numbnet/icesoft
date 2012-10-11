@@ -8,9 +8,11 @@
 </p>
 <form:form id="campushrform" method="POST" enctype="multipart/form-data"
            modelAttribute="cameraBean">
-    <mobi:fieldSetRow>
-        <mobi:getEnhanced/>
-    </mobi:fieldSetRow>
+    <mobi:fieldSetGroup>
+        <mobi:fieldSetRow>
+            <mobi:getEnhanced/>
+        </mobi:fieldSetRow>
+    </mobi:fieldSetGroup>
     <div class="header">
         <h4>Form</h4>
         <c:if test="${not empty message}">
@@ -44,7 +46,7 @@
         <label><form:checkbox path="additionalInfo[mvc]" value="true"/>on
             Spring MVC</label>
         <label><form:checkbox path="additionalInfo[java]" value="true"/>on
-            Java (4-ever)</label>
+            Java (4-eva)</label>
     </fieldset>
 
     <p>

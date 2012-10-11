@@ -130,9 +130,8 @@ MvcUtil.enhanceForm = function(theForm)  {
             return false;
         });
     });
-}
+};
 MvcUtil.enhanceLink = function(link, updateRegion)  {
-   
     $(document).ready(function () {
         var l = $(link)
         l.click(function () {
@@ -140,5 +139,16 @@ MvcUtil.enhanceLink = function(link, updateRegion)  {
             return false;
         });
     });
-
-}
+};
+MvcUtil.enhanceAllLinks = function(parent, updateRegion)  {
+    $(document).ready(function () {
+        $(parent).find('a').each( function(){
+            var href = $(this).attr('href');
+            $(this).click(function () {
+                $(updateRegion).load(href);
+                //return false;
+            });
+            $(this).attr('href','#'+href)
+        });
+    });
+};

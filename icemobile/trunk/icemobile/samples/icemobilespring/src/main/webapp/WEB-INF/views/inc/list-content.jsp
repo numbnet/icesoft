@@ -5,89 +5,65 @@
 <%@ taglib prefix="push" uri="http://www.icepush.org/icepush/jsp/icepush.tld"%>
 <form:form id="listform" method="POST" modelAttribute="listBean">
 
-    <mobi:pagePanel>
-        <mobi:pagePanelHeader >
-            PagePanel Custom Header
-        </mobi:pagePanelHeader>
+    <mobi:fieldSetGroup id="groupOne">
+        <mobi:fieldSetRow style="padding-bottom:10px;">
+A demonstration of the mobi:list, which allows content to be organized
+into styled lists.
+            </mobi:fieldSetRow>
+    </mobi:fieldSetGroup>
 
-        <mobi:pagePanelBody>
+    <h4>List with inset and Grouping</h4>
 
-            <mobi:fieldSetGroup id="groupOne">
-                <mobi:fieldSetRow style="padding-bottom:10px;">
-    A demonstration of two layout tags: mobi:pagePanel, which allows a fixed header
-    and footer to be defined, and mobi:list, which allows content to be organized
-    into styled lists.
-                </mobi:fieldSetRow>
-            </mobi:fieldSetGroup>
-        
-            <h4>List with inset and Grouping</h4>
+    <mobi:outputList inset="true" id="secondList">
+        <mobi:outputListItem group="true" >
+           List 
+        </mobi:outputListItem>
 
-            <mobi:outputList inset="true" id="secondList">
-                <mobi:outputListItem group="true" >
-                   List 
-                </mobi:outputListItem>
-    
-                <mobi:outputListItem>
-                        ICEsoft Ice Sailer
-                </mobi:outputListItem>
-    
-                <mobi:outputListItem>
-                        ICEsoft Icebreaker
-                </mobi:outputListItem>
-    
-            </mobi:outputList>
+        <mobi:outputListItem>
+                ICEsoft Ice Sailer
+        </mobi:outputListItem>
 
-             <h4>List with grouping and no inset</h4>
+        <mobi:outputListItem>
+                ICEsoft Icebreaker
+        </mobi:outputListItem>
 
-            <mobi:outputList inset="false" id="thirdList" >
-                <mobi:outputListItem group="true">
-                   List 
-                </mobi:outputListItem>
-                <mobi:outputListItem>
-                        ICEsoft Ice Sailer
-                </mobi:outputListItem>
-                <mobi:outputListItem>
-                        ICEsoft Icebreaker
-                </mobi:outputListItem>
-            </mobi:outputList>
+    </mobi:outputList>
 
-            <h4>List with no inset or grouping</h4>
+     <h4>List with grouping and no inset</h4>
 
-            <mobi:outputList id="firstList">
-                <mobi:outputListItem>
-                        ICEsoft Ice Sailer
-                </mobi:outputListItem>
-    
-                <mobi:outputListItem>
-                        ICEsoft Icebreaker
-                </mobi:outputListItem>
-            </mobi:outputList>
-    
-            <h4>Iterative list (Grouping on by default) </h4>
+    <mobi:outputList inset="false" id="thirdList" >
+        <mobi:outputListItem group="true">
+           List 
+        </mobi:outputListItem>
+        <mobi:outputListItem>
+                ICEsoft Ice Sailer
+        </mobi:outputListItem>
+        <mobi:outputListItem>
+                ICEsoft Icebreaker
+        </mobi:outputListItem>
+    </mobi:outputList>
 
-            <mobi:outputList  id="listIterator">
-              <mobi:outputListItem group="true"> List of cars </mobi:outputListItem>
-              <c:forEach items="${listBean.carCollection}" var="currCar" >
-                <mobi:outputListItem>
-                    Car title "${currCar.title}"
-                </mobi:outputListItem>
-               </c:forEach>
-            </mobi:outputList>
+    <h4>List with no inset or grouping</h4>
 
-        </mobi:pagePanelBody>
+    <mobi:outputList id="firstList">
+        <mobi:outputListItem>
+                ICEsoft Ice Sailer
+        </mobi:outputListItem>
 
-        <mobi:pagePanelFooter >
-           PagePanel Custom Footer
-        </mobi:pagePanelFooter>
+        <mobi:outputListItem>
+                ICEsoft Icebreaker
+        </mobi:outputListItem>
+    </mobi:outputList>
 
-    </mobi:pagePanel>
-    
-    <script type="text/javascript">
-        $('body').addClass('pagePanelPadding');
-        $('#listform').submit(function () {
-            $('body').removeClass('pagePanelPadding');
-        });
-    </script>
+    <h4>Iterative list (Grouping on by default) </h4>
 
+    <mobi:outputList  id="listIterator">
+      <mobi:outputListItem group="true"> List of cars </mobi:outputListItem>
+      <c:forEach items="${listBean.carCollection}" var="currCar" >
+        <mobi:outputListItem>
+            Car title "${currCar.title}"
+        </mobi:outputListItem>
+       </c:forEach>
+    </mobi:outputList>
  
 </form:form >
