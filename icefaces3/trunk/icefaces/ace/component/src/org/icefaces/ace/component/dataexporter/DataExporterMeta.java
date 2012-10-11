@@ -96,6 +96,9 @@ public class DataExporterMeta extends UIComponentBaseMeta {
 	
 	@Property(required=Required.no, tlddoc="Specify whether the columns should be exported according to the order established by the user in the client. When false, the column order defined in the markup will be used.", defaultValue="true")
 	private boolean userColumnOrder;
+	
+	@Property(required=Required.no, tlddoc="When using row expansion in the table, specify whether the child rows should be exported only if the parent row has been expanded by the user.", defaultValue="false")
+	private boolean expandedOnly;
 
     @Property(required=Required.no, tlddoc = "Custom CSS style class(es) to use for this component. These style classes can be defined in your page or in a theme CSS file.")
     private String styleClass;  

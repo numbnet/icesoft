@@ -70,6 +70,7 @@ public abstract class Exporter {
 	protected boolean includeFooters;
 	protected boolean selectedRowsOnly;
 	protected boolean userColumnOrder;
+	protected boolean expandedOnly;
 	
 	public void setUp(DataExporter component, DataTable table) {
 		filename = component.getFileName();
@@ -82,6 +83,7 @@ public abstract class Exporter {
 		includeFooters = component.isIncludeFooters();
 		selectedRowsOnly = component.isSelectedRowsOnly();
 		userColumnOrder = component.isUserColumnOrder();
+		expandedOnly = component.isExpandedOnly();
 	}
 
     public abstract String export(FacesContext facesContext, DataExporter component, DataTable table) throws IOException;

@@ -43,6 +43,7 @@ import org.icefaces.ace.component.columngroup.ColumnGroup;
 import org.icefaces.ace.component.row.Row;
 import org.icefaces.ace.model.table.RowState;
 import org.icefaces.ace.model.table.RowStateMap;
+import org.icefaces.ace.model.table.TreeDataModel;
 
 public class CSVExporter extends Exporter {
 	
@@ -63,6 +64,14 @@ public class CSVExporter extends Exporter {
 			} else {
 				addFacetColumns(builder, columns, ColumnType.HEADER);
 			}
+		}
+		
+		Object model = table.getModel();
+		TreeDataModel rootModel = null;
+		boolean hasRowExpansion = false;
+		if (model != null && table.hasTreeDataModel()) {
+			rootModel = (TreeDataModel) model;
+			hasRowExpansion = true;
 		}
     	
 		int rowCount = table.getRowCount();
@@ -87,6 +96,9 @@ public class CSVExporter extends Exporter {
 				}
 				addColumnValues(builder, columns);
 				builder.append("\n");
+				if (hasRowExpansion) {
+					exportChildRows(facesContext, rootModel, rowStateMap, table, columns, "" + i, builder);
+				}
 			}
 		}
 
@@ -99,6 +111,47 @@ public class CSVExporter extends Exporter {
 		byte[] bytes = builder.toString().getBytes();
 		
 		return registerResource(bytes, filename + ".csv", "text/csv");
+	}
+	
+	protected void exportChildRows(FacesContext context, TreeDataModel rootModel, RowStateMap rowStateMap,
+		DataTable table, List<UIColumn> columns, String rootIndex, StringBuilder builder) throws IOException {		
+		rootModel.setRootIndex(rootIndex);
+		rootModel.setRowIndex(0);
+
+		RowState rootState = rowStateMap.get(rootModel.getRootData());
+		
+		String rowVar = table.getVar();
+		String rowIndexVar = table.getRowIndexVar();
+		if ((rootState.isExpanded() || !expandedOnly) && rootModel.getRowCount() > 0) {
+			while (rootModel.getRowIndex() < rootModel.getRowCount()) {
+				int rowIndex = rootModel.getRowIndex();
+				Object rowData = rootModel.getRowData();
+                if (rowVar != null) context.getExternalContext()
+                        .getRequestMap().put(rowVar, rowData);
+                if (rowIndexVar != null) context.getExternalContext()
+                        .getRequestMap().put(rowIndexVar, rowData);
+				
+				// export
+				addColumnValues(builder, columns);
+				builder.append("\n");
+				
+				RowState rowState = rowStateMap.get(rootModel.getRowData());
+				if (rowState.isExpanded() || !expandedOnly) {
+					
+					// recurse
+					exportChildRows(context, rootModel, rowStateMap, table, columns, rootIndex + "." + rowIndex, builder);
+					
+					// restore
+					rootModel.setRootIndex(rootIndex);
+					rootModel.setRowIndex(rowIndex);
+				}
+                rootModel.setRowIndex(rootModel.getRowIndex() + 1);
+                if (rowIndexVar != null) context.getExternalContext().getRequestMap().remove(rowIndexVar);
+                if (rowVar != null) context.getExternalContext().getRequestMap().remove(rowVar);
+			}
+		}
+		
+        rootModel.setRootIndex(null);
 	}
 	
 	protected void addColumnValues(StringBuilder builder, List<UIColumn> columns) throws IOException {

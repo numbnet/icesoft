@@ -47,6 +47,7 @@ import org.icefaces.ace.component.column.Column;
 import org.icefaces.ace.component.columngroup.ColumnGroup;
 import org.icefaces.ace.model.table.RowState;
 import org.icefaces.ace.model.table.RowStateMap;
+import org.icefaces.ace.model.table.TreeDataModel;
 
 import java.io.ByteArrayOutputStream;
 
@@ -62,6 +63,14 @@ public class ExcelExporter extends Exporter {
     	if (preProcessor != null) {
     		preProcessor.invoke(facesContext.getELContext(), new Object[]{wb});
     	}
+		
+		Object model = table.getModel();
+		TreeDataModel rootModel = null;
+		boolean hasRowExpansion = false;
+		if (model != null && table.hasTreeDataModel()) {
+			rootModel = (TreeDataModel) model;
+			hasRowExpansion = true;
+		}
 
 		int rowCount = table.getRowCount();
     	int first = pageOnly ? table.getFirst() : 0;
@@ -103,6 +112,9 @@ public class ExcelExporter extends Exporter {
 				for (int j = 0; j < numberOfColumns; j++) {
 					addColumnValue(row, columns.get(j).getChildren(), j);
 				}
+				if (hasRowExpansion) {
+					sheetRowIndex = exportChildRows(facesContext, rootModel, rowStateMap, table, columns, "" + i, sheet, sheetRowIndex, numberOfColumns);
+				}
 			}
 		}
 
@@ -122,6 +134,50 @@ public class ExcelExporter extends Exporter {
 		byte[] bytes = baos.toByteArray();
 		
 		return registerResource(bytes, filename + ".xls", "application/vnd.ms-excel");
+	}
+	
+	protected int exportChildRows(FacesContext context, TreeDataModel rootModel, RowStateMap rowStateMap,
+		DataTable table, List<UIColumn> columns, String rootIndex, Sheet sheet, int sheetRowIndex, int numberOfColumns) throws IOException {		
+		rootModel.setRootIndex(rootIndex);
+		rootModel.setRowIndex(0);
+
+		RowState rootState = rowStateMap.get(rootModel.getRootData());
+		
+		String rowVar = table.getVar();
+		String rowIndexVar = table.getRowIndexVar();
+		if ((rootState.isExpanded() || !expandedOnly) && rootModel.getRowCount() > 0) {
+			while (rootModel.getRowIndex() < rootModel.getRowCount()) {
+				int rowIndex = rootModel.getRowIndex();
+				Object rowData = rootModel.getRowData();
+                if (rowVar != null) context.getExternalContext()
+                        .getRequestMap().put(rowVar, rowData);
+                if (rowIndexVar != null) context.getExternalContext()
+                        .getRequestMap().put(rowIndexVar, rowData);
+				
+				// export
+				Row row = sheet.createRow(sheetRowIndex++);
+				for (int j = 0; j < numberOfColumns; j++) {
+					addColumnValue(row, columns.get(j).getChildren(), j);
+				}
+				
+				RowState rowState = rowStateMap.get(rootModel.getRowData());
+				if (rowState.isExpanded() || !expandedOnly) {
+					
+					// recurse
+					sheetRowIndex = exportChildRows(context, rootModel, rowStateMap, table, columns, rootIndex + "." + rowIndex, sheet, sheetRowIndex, numberOfColumns);
+					
+					// restore
+					rootModel.setRootIndex(rootIndex);
+					rootModel.setRowIndex(rowIndex);
+				}
+                rootModel.setRowIndex(rootModel.getRowIndex() + 1);
+                if (rowIndexVar != null) context.getExternalContext().getRequestMap().remove(rowIndexVar);
+                if (rowVar != null) context.getExternalContext().getRequestMap().remove(rowVar);
+			}
+		}
+		
+        rootModel.setRootIndex(null);
+		return sheetRowIndex;
 	}
 	
 	protected void addFacetColumns(Sheet sheet, List<UIColumn> columns, ColumnType columnType, int rowIndex) {
