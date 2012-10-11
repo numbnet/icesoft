@@ -27,6 +27,7 @@ import org.icepush.PushNotification;
 import javax.faces.context.FacesContext;
 import javax.servlet.ServletContext;
 import java.util.Map;
+import java.util.Set;
 import java.util.logging.Logger;
 
 /**
@@ -74,6 +75,24 @@ public class PushRenderer {
     }
 
     /**
+     * Gets the Push ID associated with the current view.
+     *
+     * @return     The Push ID or <code>null</code> if ICEpush is not present.
+     * @throws     RuntimeException
+     *                 if the current thread is not a JSF thread.
+     */
+    public static synchronized String getCurrentViewPushID() {
+        if (EnvUtils.isICEpushPresent()) {
+            FacesContext context = FacesContext.getCurrentInstance();
+            missingFacesContext(context);
+            return lookupViewState(context);
+        } else {
+            log.warning(MissingICEpushMessage);
+            return null;
+        }
+    }
+
+    /**
      * Remove the current view from the specified group.
      *
      * @param groupName the name of the group to remove the current view from
@@ -110,6 +129,24 @@ public class PushRenderer {
     }
 
     /**
+     * Gets the Set of Push IDs associated with the current session.
+     *
+     * @return     The Set of Push IDs or <code>null</code> if ICEpush is not present.
+     * @throws     RuntimeException
+     *                 if the current thread is not a JSF thread.
+     */
+    public static synchronized Set<String> getCurrentSessionPushIDSet() {
+        if (EnvUtils.isICEpushPresent()) {
+            FacesContext context = FacesContext.getCurrentInstance();
+            missingFacesContext(context);
+            return SessionViewManager.getCurrentSessionViewSet(context);
+        } else {
+            log.warning(MissingICEpushMessage);
+            return null;
+        }
+    }
+
+    /**
      * Remove the current views from the specified group.  Use of this method is
      * optional as group membership is maintained automatically as clients leave.
      *
@@ -123,6 +160,24 @@ public class PushRenderer {
             SessionViewManager.removeCurrentSessionFromGroup(context, groupName);
         } else {
             log.warning(MissingICEpushMessage);
+        }
+    }
+
+    /**
+     * Get the push context.
+     *
+     * @return     The Push context or <code>null</code> if ICEpush is not present.
+     * @throws     RuntimeException
+     *                 if the current thread is not a JSF thread.
+     */
+    public static synchronized PushContext getPushContext() {
+        if (EnvUtils.isICEpushPresent()) {
+            FacesContext context = FacesContext.getCurrentInstance();
+            missingFacesContext(context);
+            return (PushContext)context.getExternalContext().getApplicationMap().get(PushContext.class.getName());
+        } else {
+            log.warning(MissingICEpushMessage);
+            return null;
         }
     }
 
