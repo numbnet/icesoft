@@ -262,7 +262,11 @@ public class DataTableMeta extends UIDataMeta {
     @Property(tlddoc = "Defines the index of the current page, beginning at 1.")
     private int page;
 
-    @Property(tlddoc = "Enables pagination on the table.")
+    @Property(tlddoc = "Enables pagination on the table. Note that the paginator works by adjusting the " +
+            "'first' and 'page' properties and that disabling the paginator will not return these " +
+            "properties to their defaults; instead leaving the table at the position that was paginated to. " +
+            "To return the table to the first page, 'first' must be set to 0, or 'page' must be set to 1." +
+            "Alternately the table has a convenience method for this, DataTable.resetSorting().")
     private boolean paginator;
 
 
