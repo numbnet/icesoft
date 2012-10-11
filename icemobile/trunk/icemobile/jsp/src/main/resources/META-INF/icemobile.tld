@@ -32,36 +32,37 @@
         <tag-class>org.icemobile.jsp.tags.AugTag</tag-class>
         <body-content>JSP</body-content>
         <attribute>
+            <description>Pagewide unique identifier</description>
             <name>id</name>
             <required>true</required>
             <rtexprvalue>true</rtexprvalue>
-            <description>Pagewide unique identifier</description>
+            
         </attribute>
         <attribute>
+            <description>Inline style definition</description>
             <name>style</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <description>Inline style definition</description>
         </attribute>
         <attribute>
+            <description>User defined CSS class</description>
             <name>styleClass</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <description>User defined CSS class</description>
         </attribute>
         <attribute>
-            <name>params</name>
-            <required>false</required>
-            <rtexprvalue>true</rtexprvalue>
             <description>low-level URL-encoded label=lat,lon,alt,dir,url
                 location list (deprecated)
             </description>
+            <name>params</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
         </attribute>
         <attribute>
+            <description>Determines if control is disabled</description>
             <name>disabled</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <description>Determines if control is disabled</description>
         </attribute>
     </tag>
     <tag>
@@ -72,40 +73,40 @@
         </tag-class>
         <body-content>empty</body-content>
         <attribute>
+            <description>location text label</description>
             <name>locationLabel</name>
             <required>true</required>
             <rtexprvalue>true</rtexprvalue>
-            <description>location text label</description>
         </attribute>
         <attribute>
+            <description>location latitude</description>
             <name>locationLat</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <description>location latitude</description>
         </attribute>
         <attribute>
+            <description>location longitude</description>
             <name>locationLon</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <description>location longitude</description>
         </attribute>
         <attribute>
+            <description>location altitude</description>
             <name>locationAlt</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <description>location altitude</description>
         </attribute>
         <attribute>
+            <description>location compass direction 0-359</description>
             <name>locationDir</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <description>location compass direction 0-359</description>
         </attribute>
         <attribute>
+            <description>location icon URL</description>
             <name>locationIcon</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <description>location icon URL</description>
         </attribute>
     </tag>
     <tag>
@@ -115,28 +116,35 @@
         <tag-class>org.icemobile.jsp.tags.CameraTag</tag-class>
         <body-content>empty</body-content>
         <attribute>
+            <description>Pagewide unique identifier</description>
             <name>id</name>
             <required>true</required>
             <rtexprvalue>true</rtexprvalue>
-            <description>Pagewide unique identifier</description>
         </attribute>
         <attribute>
+            <description>Inline style definition</description>
             <name>style</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <description>Inline style definition</description>
         </attribute>
         <attribute>
+            <description>User defined CSS class</description>
             <name>styleClass</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <description>User defined CSS class</description>
         </attribute>
         <attribute>
+            <description>Determines if control is disabled</description>
             <name>disabled</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <description>Determines if control is disabled</description>
+        </attribute>
+        
+        <attribute>
+            <description>When true, runs the container simulator on a desktop</description>
+            <name>containerSimulator</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
         </attribute>
     </tag>
 
@@ -147,30 +155,31 @@
         <tag-class>org.icemobile.jsp.tags.CamcorderTag</tag-class>
         <body-content>empty</body-content>
         <attribute>
+            <description>Pagewide unique identifier</description>
             <name>id</name>
             <required>true</required>
             <rtexprvalue>true</rtexprvalue>
-            <description>Pagewide unique identifier</description>
         </attribute>
         <attribute>
+            <description>Inline style definition</description>
             <name>style</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <description>Inline style definition</description>
         </attribute>
         <attribute>
+            <description>User defined CSS class</description>
             <name>styleClass</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <description>User defined CSS class</description>
+            
         </attribute>
         <attribute>
-            <name>disabled</name>
-            <required>false</required>
-            <rtexprvalue>true</rtexprvalue>
             <description>If true, button to launch the camera is visible, but
                 disabled
             </description>
+            <name>disabled</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
         </attribute>
     </tag>
     <tag>
@@ -180,31 +189,31 @@
         <tag-class>org.icemobile.jsp.tags.MicrophoneTag</tag-class>
         <body-content>empty</body-content>
         <attribute>
+            <description>Pagewide unique identifier</description>
             <name>id</name>
             <required>true</required>
             <rtexprvalue>true</rtexprvalue>
-            <description>Pagewide unique identifier</description>
         </attribute>
         <attribute>
+            <description>Inline style definition</description>
             <name>style</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <description>Inline style definition</description>
         </attribute>
         <attribute>
+            <description>User defined CSS class</description>
             <name>styleClass</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <description>User defined CSS class</description>
         </attribute>
         <attribute>
-            <name>disabled</name>
-            <required>false</required>
-            <rtexprvalue>true</rtexprvalue>
             <description>If true, button to launch the microphone is visible,
                 but
                 disabled
             </description>
+            <name>disabled</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
         </attribute>
     </tag>
 
@@ -215,30 +224,30 @@
         <tag-class>org.icemobile.jsp.tags.ThumbnailTag</tag-class>
         <body-content>empty</body-content>
         <attribute>
+            <description>Pagewide unique identifier</description>
             <name>id</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <description>Pagewide unique identifier</description>
         </attribute>
         <attribute>
+            <description>Inline style definition</description>
             <name>style</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <description>Inline style definition</description>
         </attribute>
         <attribute>
+            <description>User defined CSS class</description>
             <name>styleClass</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <description>User defined CSS class</description>
         </attribute>
         <attribute>
-            <name>for</name>
-            <required>true</required>
-            <rtexprvalue>true</rtexprvalue>
             <description>Id of the camera or camcorder tag which is the source
                 for the camera image.
             </description>
+            <name>for</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
         </attribute>
     </tag>
 
@@ -307,45 +316,29 @@
         <tag-class>org.icemobile.jsp.tags.ContentPaneTag</tag-class>
         <body-content>JSP</body-content>
         <attribute>
+            <description>Pagewide unique identifier</description>
             <name>id</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <description>Pagewide unique identifier</description>
         </attribute>
         <attribute>
+            <description>A textual title appearing above the content
+            </description>
             <name>title</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <description>A textual title appearing above the content
-            </description>
         </attribute>
         <attribute>
+            <description>Inline style definition</description>
             <name>style</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <description>Inline style definition</description>
         </attribute>
         <attribute>
+            <description>User defined CSS class</description>
             <name>styleClass</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <description>User defined CSS class</description>
-        </attribute>
-    </tag>
-
-    <tag>
-        <description>Page Panel Tag comprises a layout manager with
-            three predefined sections, header, body, and footer
-        </description>
-        <display-name>ICEmobile PagePanel Tag</display-name>
-        <name>pagePanel</name>
-        <tag-class>org.icemobile.jsp.tags.PagePanelTag</tag-class>
-        <body-content>JSP</body-content>
-        <attribute>
-            <name>id</name>
-            <required>false</required>
-            <rtexprvalue>true</rtexprvalue>
-            <description>Pagewide unique identifier</description>
         </attribute>
     </tag>
 
@@ -356,24 +349,24 @@
         <tag-class>org.icemobile.jsp.tags.GeolocationTag</tag-class>
         <body-content>empty</body-content>
         <attribute>
+            <description>Pagewide unique identifier</description>
             <name>id</name>
             <required>true</required>
             <rtexprvalue>true</rtexprvalue>
-            <description>Pagewide unique identifier</description>
         </attribute>
         <attribute>
-            <name>name</name>
-            <required>false</required>
-            <rtexprvalue>true</rtexprvalue>
             <description>Name of submitted value,
                 will be a String of the form lat,lon,alt,dir
             </description>
+            <name>name</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
         </attribute>
         <attribute>
+            <description>Determines if control is disabled</description>
             <name>disabled</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <description>Determines if control is disabled</description>
         </attribute>
     </tag>
 
@@ -384,16 +377,16 @@
         <tag-class>org.icemobile.jsp.tags.InputTextTag</tag-class>
         <body-content>empty</body-content>
         <attribute>
+            <description>Pagewide unique identifier</description>
             <name>id</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <description>Pagewide unique identifier</description>
         </attribute>
         <attribute>
+            <description>Name of submitted value</description>
             <name>name</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <description>Name of submitted value</description>
         </attribute>
         <attribute>
             <name>type</name>
@@ -401,68 +394,68 @@
             <rtexprvalue>true</rtexprvalue>
         </attribute>
         <attribute>
+            <description>User defined CSS class</description>
             <name>styleClass</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <description>User defined CSS class</description>
         </attribute>
         <attribute>
+            <description>Inline style definition</description>
             <name>style</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <description>Inline style definition</description>
         </attribute>
         <attribute>
+            <description>The (optional) initial value of the field</description>
             <name>value</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <description>The (optional) initial value of the field</description>
         </attribute>
         <attribute>
+            <description>A placeholder string appearing in the textfield
+            </description>
             <name>placeholder</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <description>A placeholder string appearing in the textfield
-            </description>
         </attribute>
         <attribute>
+            <description>Hint to container about spelling auto correction. Valid
+                values are on/off
+            </description>
             <name>autoCorrect</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
             <type>java.lang.String</type>
-            <description>Hint to container about spelling auto correction. Valid
-                values are on/off
-            </description>
         </attribute>
         <attribute>
+            <description>Hint to container about spelling auto completion. Valid
+                values are on/off
+            </description>
             <name>autoComplete</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
             <type>boolean</type>
-            <description>Hint to container about spelling auto completion. Valid
-                values are on/off
-            </description>
         </attribute>
         <attribute>
+            <description>Hint to container about spelling auto capitalization.
+                Valid values are on/off
+            </description>
             <name>autoCapitalize</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
             <type>boolean</type>
-            <description>Hint to container about spelling auto capitalization.
-                Valid values are on/off
-            </description>
         </attribute>
         <attribute>
+            <description>Row count for input text area</description>
             <name>rows</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <description>Row count for input text area</description>
         </attribute>
         <attribute>
+            <description>Column count for input text area</description>
             <name>cols</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <description>Column count for input text area</description>
         </attribute>
     </tag>
 
@@ -473,28 +466,28 @@
         <tag-class>org.icemobile.jsp.tags.QRScanTag</tag-class>
         <body-content>empty</body-content>
         <attribute>
+            <description>Pagewide unique identifier</description>
             <name>id</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <description>Pagewide unique identifier</description>
         </attribute>
         <attribute>
+            <description>Name of submitted value</description>
             <name>name</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <description>Name of submitted value</description>
         </attribute>
         <attribute>
+            <description>User defined CSS class</description>
             <name>styleClass</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <description>User defined CSS class</description>
         </attribute>
         <attribute>
+            <description>Inline style definition</description>
             <name>style</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <description>Inline style definition</description>
         </attribute>
     </tag>
 
@@ -505,60 +498,60 @@
         <tag-class>org.icemobile.jsp.tags.FlipSwitchTag</tag-class>
         <body-content>empty</body-content>
         <attribute>
+            <description>Pagewide unique identifier</description>
             <name>id</name>
             <required>true</required>
             <rtexprvalue>true</rtexprvalue>
-            <description>Pagewide unique identifier</description>
         </attribute>
         <attribute>
+            <description>Name of submitted value</description>
             <name>name</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <description>Name of submitted value</description>
         </attribute>
         <attribute>
+            <description>Inline style definition</description>
             <name>style</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <description>Inline style definition</description>
         </attribute>
         <attribute>
+            <description>User defined CSS class</description>
             <name>styleClass</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <description>User defined CSS class</description>
         </attribute>
         <attribute>
+            <description>Determines if control is disabled</description>
             <name>disabled</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <description>Determines if control is disabled</description>
         </attribute>
         <attribute>
+            <description>The value displayed in the button</description>
             <name>value</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <description>The value displayed in the button</description>
         </attribute>
         <attribute>
+            <description>Determines if control is read only</description>
             <name>readOnly</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <description>Determines if control is read only</description>
         </attribute>
         <attribute>
+            <description>Value of label when flipswitch is in the ON state
+            </description>
             <name>labelOn</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <description>Value of label when flipswitch is in the ON state
-            </description>
         </attribute>
         <attribute>
+            <description>Value of label when flipswitch is in the OFF state
+            </description>
             <name>labelOff</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <description>Value of label when flipswitch is in the OFF state
-            </description>
         </attribute>
     </tag>
 
@@ -569,61 +562,61 @@
         <tag-class>org.icemobile.jsp.tags.CommandButtonTag</tag-class>
         <body-content>empty</body-content>
         <attribute>
+            <description>Pagewide unique identifier</description>
             <name>id</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <description>Pagewide unique identifier</description>
         </attribute>
         <attribute>
+            <description>Name of submitted value</description>
             <name>name</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <description>Name of submitted value</description>
         </attribute>
         <attribute>
+            <description>Inline style definition</description>
             <name>style</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <description>Inline style definition</description>
         </attribute>
         <attribute>
+            <description>User defined CSS class</description>
             <name>styleClass</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <description>User defined CSS class</description>
         </attribute>
         <attribute>
-            <name>buttonType</name>
-            <required>false</required>
-            <rtexprvalue>true</rtexprvalue>
             <description>Determines style of button. Valid values include
                 default, back, important and attention
             </description>
+            <name>buttonType</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
         </attribute>
         <attribute>
+            <description>Determines if control is disabled</description>
             <name>disabled</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <description>Determines if control is disabled</description>
         </attribute>
         <attribute>
+            <description>Value displayed in button</description>
             <name>value</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <description>Value displayed in button</description>
         </attribute>
         <attribute>
+            <description>Standard button type - button, submit, img, etc
+            </description>
             <name>type</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <description>Standard button type - button, submit, img, etc
-            </description>
         </attribute>
         <attribute>
+            <description>Sets the button style to selected</description>
             <name>selected</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <description>Sets the button style to selected</description>
         </attribute>
     </tag>
 
@@ -634,59 +627,59 @@
         <tag-class>org.icemobile.jsp.tags.CarouselTag</tag-class>
         <body-content>JSP</body-content>
         <attribute>
+            <description>Pagewide unique identifier</description>
             <name>id</name>
             <required>true</required>
             <rtexprvalue>true</rtexprvalue>
-            <description>Pagewide unique identifier</description>
         </attribute>
         <attribute>
+            <description>User defined CSS class</description>
             <name>styleClass</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <description>User defined CSS class</description>
         </attribute>
         <attribute>
+            <description>Inline style definition</description>
             <name>style</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <description>Inline style definition</description>
         </attribute>
 
         <attribute>
-            <name>collection</name>
-            <required>true</required>
-            <rtexprvalue>true</rtexprvalue>
             <description>Collection of carousel elements. Usually a property on
                 a backing bean that defines a collection of content elements in
                 the carousel
             </description>
+            <name>collection</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
         </attribute>
         <attribute>
+            <description>Index of selected tab (0 to collection.size-1)
+            </description>
             <name>selectedIndex</name>
             <required>true</required>
             <rtexprvalue>true</rtexprvalue>
-            <description>Index of selected tab (0 to collection.size-1)
-            </description>
         </attribute>
     </tag>
 
     <tag>
-        <name>carouselItem</name>
         <description>Iterative item reference description</description>
+        <name>carouselItem</name>
         <tag-class>org.icemobile.jsp.tags.CarouselItemTag</tag-class>
         <tei-class>org.icemobile.jsp.tags.CarouselItemTei</tei-class>
         <body-content>JSP</body-content>
         <attribute>
+            <description>reference name of iterative element</description>
             <name>ref</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <description>reference name of iterative element</description>
         </attribute>
         <attribute>
+            <description>Type of iterative element</description>
             <name>type</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <description>Type of iterative element</description>
         </attribute>
     </tag>
 
@@ -697,30 +690,30 @@
         <tag-class>org.icemobile.jsp.tags.FieldSetGroupTag</tag-class>
         <body-content>JSP</body-content>
         <attribute>
+            <description>Pagewide unique identifier</description>
             <name>id</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <description>Pagewide unique identifier</description>
         </attribute>
         <attribute>
+            <description>User defined CSS class</description>
             <name>styleClass</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <description>User defined CSS class</description>
         </attribute>
         <attribute>
+            <description>Inline style definition</description>
             <name>style</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <description>Inline style definition</description>
         </attribute>
         <attribute>
-            <name>inset</name>
-            <required>false</required>
-            <rtexprvalue>true</rtexprvalue>
             <description>If true, 'mobi-fieldset-inset' style class is applied
                 to group
             </description>
+            <name>inset</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
         </attribute>
     </tag>
     <tag>
@@ -730,30 +723,30 @@
         <tag-class>org.icemobile.jsp.tags.FieldSetRowTag</tag-class>
         <body-content>JSP</body-content>
         <attribute>
+            <description>Pagewide unique identifier</description>
             <name>id</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <description>Pagewide unique identifier</description>
         </attribute>
         <attribute>
+            <description>User defined CSS class</description>
             <name>styleClass</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <description>User defined CSS class</description>
         </attribute>
         <attribute>
+            <description>Inline style definition</description>
             <name>style</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <description>Inline style definition</description>
         </attribute>
         <attribute>
-            <name>group</name>
-            <required>false</required>
-            <rtexprvalue>true</rtexprvalue>
             <description>If true, 'mobi-fieldset-row-group' CSS class is applied
                 to row
             </description>
+            <name>group</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
         </attribute>
     </tag>
 
@@ -764,28 +757,28 @@
         <tag-class>org.icemobile.jsp.tags.TabSetTag</tag-class>
         <body-content>JSP</body-content>
         <attribute>
+            <description>Pagewide unique identifier</description>
             <name>id</name>
             <required>true</required>
             <rtexprvalue>true</rtexprvalue>
-            <description>Pagewide unique identifier</description>
         </attribute>
         <attribute>
+            <description>User defined CSS class</description>
             <name>styleClass</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <description>User defined CSS class</description>
         </attribute>
         <attribute>
+            <description>Inline style definition</description>
             <name>style</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <description>Inline style definition</description>
         </attribute>
         <attribute>
+            <description>Index of selected tab (0 - #tabs-1)</description>
             <name>selectedTab</name>
             <required>true</required>
             <rtexprvalue>true</rtexprvalue>
-            <description>Index of selected tab (0 - #tabs-1)</description>
         </attribute>
     </tag>
 
@@ -799,45 +792,45 @@
         <tag-class>org.icemobile.jsp.tags.AccordionTag</tag-class>
         <body-content>JSP</body-content>
         <attribute>
+            <description>Pagewide unique identifier</description>
             <name>id</name>
             <required>true</required>
             <rtexprvalue>true</rtexprvalue>
-            <description>Pagewide unique identifier</description>
         </attribute>
         <attribute>
+            <description>User defined CSS class</description>
             <name>styleClass</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <description>User defined CSS class</description>
         </attribute>
         <attribute>
+            <description>Inline style definition</description>
             <name>style</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <description>Inline style definition</description>
         </attribute>
         <attribute>
+            <description>The currently selected pane id</description>
             <name>selectedId</name>
             <required>true</required>
             <rtexprvalue>true</rtexprvalue>
-            <description>The currently selected pane id</description>
         </attribute>
         <attribute>
-            <name>maxheight</name>
-            <required>false</required>
-            <rtexprvalue>true</rtexprvalue>
             <description>Manual setting of the expanded pane height,
                 applied if autoheight == false
             </description>
-        </attribute>
-        <attribute>
-            <name>autoheight</name>
+            <name>maxheight</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
             <description>If true, the height of the pane is as calculated, if
                 false,
                 height is maxHeight
             </description>
+            <name>autoheight</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
         </attribute>
     </tag>
 
@@ -877,47 +870,47 @@
         <tag-class>org.icemobile.jsp.tags.OutputListTag</tag-class>
         <body-content>JSP</body-content>
         <attribute>
+            <description>Pagewide unique identifier</description>
             <name>id</name>
             <required>true</required>
             <rtexprvalue>true</rtexprvalue>
-            <description>Pagewide unique identifier</description>
         </attribute>
         <attribute>
+            <description>User defined CSS class</description>
             <name>styleClass</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <description>User defined CSS class</description>
         </attribute>
         <attribute>
+            <description>Inline style definition</description>
             <name>style</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <description>Inline style definition</description>
         </attribute>
         <attribute>
-            <name>inset</name>
-            <required>false</required>
-            <rtexprvalue>true</rtexprvalue>
             <description>If true, 'mobi-list-inset' CSS class will be applied to
                 child elements
             </description>
+            <name>inset</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
         </attribute>
     </tag>
 
     <tag>
         <description>ListItem Tag is content container for content within lists
         </description>
-        <name>outputListItem</name>
         <display-name>List Item</display-name>
-        <tag-class>org.icemobile.jsp.tags.ListItemTag</tag-class>
+        <name>outputListItem</name>
+         <tag-class>org.icemobile.jsp.tags.ListItemTag</tag-class>
         <body-content>JSP</body-content>
         <attribute>
-            <name>group</name>
-            <required>false</required>
-            <rtexprvalue>true</rtexprvalue>
             <description>If true, 'mobi-list-item-group' CSS class is applied in
                 conjunction with 'mobi-list-item'
             </description>
+            <name>group</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
         </attribute>
     </tag>
 
@@ -928,62 +921,58 @@
         <tag-class>org.icemobile.jsp.tags.DateSpinnerTag</tag-class>
         <body-content>empty</body-content>
         <attribute>
+            <description>Determines if control is disabled</description>
             <name>disabled</name>
             <required>no</required>
             <rtexprvalue>true</rtexprvalue>
             <type>boolean</type>
-            <description>Determines if control is disabled</description>
         </attribute>
         <attribute>
+            <description>Pagewide unique identifier</description>
             <name>id</name>
             <required>yes</required>
             <rtexprvalue>true</rtexprvalue>
             <type>java.lang.String</type>
-            <description>Pagewide unique identifier</description>
         </attribute>
         <attribute>
+            <description>Name of submitted value</description>
             <name>name</name>
             <required>no</required>
             <rtexprvalue>true</rtexprvalue>
             <type>java.lang.String</type>
-            <description>Name of submitted value</description>
         </attribute>
         <attribute>
+            <description>Date format pattern for localization. Default is
+                "yyyy-MM-dd'
+            </description>
             <name>pattern</name>
             <required>no</required>
             <rtexprvalue>true</rtexprvalue>
             <type>java.lang.String</type>
-            <description>Date format pattern for localization. Default is
-                "yyyy-MM-dd'
-            </description>
         </attribute>
         <attribute>
+            <description>if true, Date Spinner is used for output only
+            </description>
             <name>readonly</name>
             <required>no</required>
             <rtexprvalue>true</rtexprvalue>
             <type>boolean</type>
-            <description>if true, Date Spinner is used for output only
-            </description>
         </attribute>
         <attribute>
+            <description>Inline style definition</description>
             <name>style</name>
             <required>no</required>
             <rtexprvalue>true</rtexprvalue>
             <type>java.lang.String</type>
-            <description>Inline style definition</description>
         </attribute>
         <attribute>
+            <description>User defined CSS class</description>
             <name>styleClass</name>
             <required>no</required>
             <rtexprvalue>true</rtexprvalue>
             <type>java.lang.String</type>
-            <description>User defined CSS class</description>
         </attribute>
         <attribute>
-            <name>useNative</name>
-            <required>no</required>
-            <rtexprvalue>true</rtexprvalue>
-            <type>boolean</type>
             <description>if useNative is true then iOS5, iOS6, and BlackBerry
                 devices will show the builtin date selection popup
                 if false then the mobi datespinner component is shown with
@@ -991,28 +980,32 @@
                 operating
                 systems provide support for html5 input type of date.
             </description>
+            <name>useNative</name>
+            <required>no</required>
+            <rtexprvalue>true</rtexprvalue>
+            <type>boolean</type>
         </attribute>
         <attribute>
+            <description>Initial date value</description>
             <name>value</name>
             <required>no</required>
             <rtexprvalue>true</rtexprvalue>
             <type>java.lang.Object</type>
-            <description>Initial date value</description>
         </attribute>
         <attribute>
+            <description>The end year provided in the year spinner</description>
             <name>yearEnd</name>
             <required>no</required>
             <rtexprvalue>true</rtexprvalue>
             <type>int</type>
-            <description>The end year provided in the year spinner</description>
         </attribute>
         <attribute>
+            <description>The starting year provided in the year spinner
+            </description>
             <name>yearStart</name>
             <required>no</required>
             <rtexprvalue>true</rtexprvalue>
             <type>int</type>
-            <description>The starting year provided in the year spinner
-            </description>
         </attribute>
     </tag>
 
@@ -1023,62 +1016,58 @@
         <tag-class>org.icemobile.jsp.tags.TimeSpinnerTag</tag-class>
         <body-content>empty</body-content>
         <attribute>
+            <description>Determines if control is disabled</description>
             <name>disabled</name>
             <required>no</required>
             <rtexprvalue>true</rtexprvalue>
             <type>boolean</type>
-            <description>Determines if control is disabled</description>
         </attribute>
         <attribute>
+            <description>Pagewide unique identifier</description>
             <name>id</name>
             <required>yes</required>
             <rtexprvalue>true</rtexprvalue>
             <type>java.lang.String</type>
-            <description>Pagewide unique identifier</description>
         </attribute>
         <attribute>
+            <description>Name of submitted value</description>
             <name>name</name>
             <required>no</required>
             <rtexprvalue>true</rtexprvalue>
             <type>java.lang.String</type>
-            <description>Name of submitted value</description>
         </attribute>
         <attribute>
+            <description>Time format pattern for localization. Default is "hh:mm
+                a"
+            </description>
             <name>pattern</name>
             <required>no</required>
             <rtexprvalue>true</rtexprvalue>
             <type>java.lang.String</type>
-            <description>Time format pattern for localization. Default is "hh:mm
-                a"
-            </description>
         </attribute>
         <attribute>
+            <description>if true, Time Spinner is used for output only
+            </description>
             <name>readonly</name>
             <required>no</required>
             <rtexprvalue>true</rtexprvalue>
             <type>boolean</type>
-            <description>if true, Time Spinner is used for output only
-            </description>
         </attribute>
         <attribute>
+            <description>Inline style definition</description>
             <name>style</name>
             <required>no</required>
             <rtexprvalue>true</rtexprvalue>
             <type>java.lang.String</type>
-            <description>Inline style definition</description>
         </attribute>
         <attribute>
+            <description>User defined CSS class</description>
             <name>styleClass</name>
             <required>no</required>
             <rtexprvalue>true</rtexprvalue>
             <type>java.lang.String</type>
-            <description>User defined CSS class</description>
         </attribute>
         <attribute>
-            <name>useNative</name>
-            <required>no</required>
-            <rtexprvalue>true</rtexprvalue>
-            <type>boolean</type>
             <description>if useNative is true then iOS5, iOS6, and BlackBerry
                 devices will show the builtin date selection popup
                 if false then the mobi datespinner component is shown with
@@ -1086,13 +1075,17 @@
                 operating
                 systems provide support for html5 input type of date.
             </description>
+            <name>useNative</name>
+            <required>no</required>
+            <rtexprvalue>true</rtexprvalue>
+            <type>boolean</type>
         </attribute>
         <attribute>
+            <description>Initial time value</description>
             <name>value</name>
             <required>no</required>
             <rtexprvalue>true</rtexprvalue>
             <type>java.lang.Object</type>
-            <description>Initial time value</description>
         </attribute>
     </tag>
 
@@ -1105,10 +1098,10 @@
         <tag-class>org.icemobile.jsp.tags.PagePanelTag</tag-class>
         <body-content>JSP</body-content>
         <attribute>
+            <description>Pagewide unique identifier</description>
             <name>id</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <description>Pagewide unique identifier</description>
         </attribute>
     </tag>
     <tag>
@@ -1123,30 +1116,31 @@
         <tag-class>org.icemobile.jsp.tags.PagePanelBodyTag</tag-class>
         <body-content>JSP</body-content>
         <attribute>
+            <description>If true, style will contain body-noheader class
+            </description>
             <name>noHeader</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <description>If true, style will contain body-noheader class
-            </description>
         </attribute>
         <attribute>
+            <description>If true, style will contain body-nofooter class
+            </description>
             <name>noFooter</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <description>If true, style will contain body-nofooter class
-            </description>
         </attribute>
         <attribute>
+            <description>User defined CSS class</description>
             <name>styleClass</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <description>User defined CSS class</description>
         </attribute>
         <attribute>
+            <description>Inline style definition</description>
             <name>style</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <description>Inline style definition</description>
+            
         </attribute>
     </tag>
     <tag>
@@ -1161,65 +1155,65 @@
         <tag-class>org.icemobile.jsp.tags.PanelPopupTag</tag-class>
         <body-content>JSP</body-content>
         <attribute>
+            <description>Pagewide unique identifier</description>
             <name>id</name>
             <required>true</required>
             <rtexprvalue>true</rtexprvalue>
-            <description>Pagewide unique identifier</description>
         </attribute>
         <attribute>
-            <name>name</name>
-            <required>false</required>
-            <rtexprvalue>true</rtexprvalue>
             <description>if defined, tag will generate hidden input field for
                 submission of
                 value from the popup.
             </description>
+            <name>name</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
         </attribute>
         <attribute>
+            <description>Inline style definition</description>
             <name>style</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <description>Inline style definition</description>
         </attribute>
         <attribute>
+            <description>User defined CSS class</description>
             <name>styleClass</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <description>User defined CSS class</description>
         </attribute>
         <!-- Tag provide a close button, and if so, what label -->
         <attribute>
+            <description>If true, Tag will generate close button</description>
             <name>autoCloseButton</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <description>If true, Tag will generate close button</description>
         </attribute>
         <attribute>
+            <description>Label for close button, if autoCloseButton is true
+            </description>
             <name>closeButtonLabel</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <description>Label for close button, if autoCloseButton is true
-            </description>
         </attribute>
         <attribute>
+            <description>Initial state of popup</description>
             <name>visible</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <description>Initial state of popup</description>
         </attribute>
         <attribute>
+            <description>Title appearing at top of popup panel</description>
             <name>title</name>
             <required>true</required>
             <rtexprvalue>true</rtexprvalue>
-            <description>Title appearing at top of popup panel</description>
         </attribute>
         <attribute>
-            <name>autocenter</name>
-            <required>false</required>
-            <rtexprvalue>true</rtexprvalue>
             <description>If true, panel will autocenter on device, otherwise,
                 popup will appear top-left
             </description>
+            <name>autocenter</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
         </attribute>
     </tag>
     <tag>
@@ -1230,44 +1224,44 @@
         <tag-class>org.icemobile.jsp.tags.ContactListTag</tag-class>
         <body-content>empty</body-content>
         <attribute>
+            <description>The text appearing in the button
+            </description>
             <name>label</name>
             <required>true</required>
             <rtexprvalue>true</rtexprvalue>
-            <description>The text appearing in the button
-            </description>
         </attribute>
         <attribute>
+            <description>The id of the element inserted in the document
+            </description>
             <name>id</name>
             <required>true</required>
             <rtexprvalue>true</rtexprvalue>
-            <description>The id of the element inserted in the document
-            </description>
         </attribute>
         <attribute>
-            <name>pattern</name>
-            <rtexprvalue>true</rtexprvalue>
-            <required>false</required>
             <description>A complete pattern for matching users. Unfortunately,
                 no wildcards
             </description>
+            <name>pattern</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
         </attribute>
         <attribute>
-            <name>multipleSelect</name>
-            <rtexprvalue>true</rtexprvalue>
-            <required>false</required>
-            <type>boolean</type>
             <description>If true, list allows for multiple user selections
             </description>
+            <name>multipleSelect</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+            <type>boolean</type>
         </attribute>
         <attribute>
-            <name>fields</name>
-            <rtexprvalue>true</rtexprvalue>
-            <required>false</required>
-            <type>String</type>
             <description>Can contain one or more of contact, email, and phone
                 fields for retrieval
                 in a csv list. Default is contact information
             </description>
+            <name>fields</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+            <type>String</type>
         </attribute>
     </tag>
     <tag>
