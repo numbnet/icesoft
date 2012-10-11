@@ -29,6 +29,9 @@
     <p>
         jQuery ICEobile Microphone
     </p>
+    <fieldset>
+        <mobi:getEnhanced/>
+    </fieldset>
     <form:form id="micform" method="POST" enctype="multipart/form-data"
                modelAttribute="microphoneBean">
         <div class="header">

@@ -2,67 +2,38 @@
 <%@ taglib uri="http://www.springframework.org/tags" prefix="s" %>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <%@ taglib uri="http://www.icemobile.org/tags" prefix="mobi" %>
-<%@ taglib prefix="push" uri="http://www.icepush.org/icepush/jsp/icepush.tld" %>
+<%@ taglib prefix="push" uri="http://www.icepush.org/icepush/jsp/icepush.tld"%>
 <%@ page session="false" %>
 <c:if test="${!ajaxRequest}">
-    <html>
-    <jsp:include page="./inc/head.jsp"/>
-    <body>
+<html>
+<jsp:include page="./inc/head.jsp"/>
+<body>
 </c:if>
     <div class="ajaxzone">
-    <c:if test="${isGET}">
-        <push:register group="camPush"
-                       callback="function(){$('#campushform').submit();}"/>
-    </c:if>
-    <form:form id="campushform" method="POST" enctype="multipart/form-data"
-               modelAttribute="cameraBean">
-
-        <h4>Camera Push</h4>
-        <mobi:fieldSetGroup inset="true">
-            <mobi:fieldSetRow>
-                <form:label path="name">
-                    Author: <form:errors path="name" cssClass="error"/>
-                </form:label>
-                <form:input path="name"/>
-            </mobi:fieldSetRow>
-            <mobi:fieldSetRow>
-                <mobi:camera id="pushcam"/>
-                <mobi:thumb for="pushcam"
-                            style="height:60px;width:65px;vertical-align:middle;float:right;margin:10px;"/>
-            </mobi:fieldSetRow>
-        </mobi:fieldSetGroup>
-
-        <h4>Uploaded Snapshot</h4>
-        <mobi:fieldSetGroup inset="true">
-            <mobi:fieldSetRow>
-                <img style="height:60px;width:60px;margin:5px;"
-                     src="${imgPath}"/>
-            </mobi:fieldSetRow>
-        </mobi:fieldSetGroup>
-
-        <%-- button types: default|important|attention| back--%>
-        <mobi:commandButton buttonType='important'
-                            style="float:right;margin-right: 25px;"
-                            value="Submit"
-                            type="submit"/>
-        <div style="clear:both;"/>
-        <c:if test="${not empty message}">
-            <div id="message" class="success">${message}<br/>
-                <img style="height:60px;width:60px;" src="${imgPath}">
-            </div>
-        </c:if>
-        <s:bind path="*">
-            <c:if test="${status.error}">
-                <div id="message" class="error">Form has errors</div>
-            </c:if>
-        </s:bind>
-    </form:form>
-
-    <script type="text/javascript">
-        MvcUtil.enhanceForm("#campushform");
-    </script>
-</div>
+        <mobi:pagePanel>
+            <mobi:smallView>
+                 <mobi:pagePanelHeader>ICEmobile - Camera Push</mobi:pagePanelHeader>
+                    <mobi:pagePanelBody>
+                        <%@ include file="/WEB-INF/views/inc/campush-content.jsp" %>
+                    </mobi:pagePanelBody>
+                </mobi:smallView>
+                <mobi:largeView>
+                     <mobi:pagePanelHeader>ICEmobile Spring MVC Showcase - Camera Push</mobi:pagePanelHeader>
+                    <mobi:pagePanelBody>
+                        <div id="left">
+                            <%@ include file="/WEB-INF/views/inc/menu.jsp" %>
+                        </div>
+                        <div id="right">
+                            <%@ include file="/WEB-INF/views/inc/campush-content.jsp" %>
+                        </div>
+                        <script type="text/javascript">
+                        addEqualizeElementHeightsAfterResizeListener('left','right');
+                        </script>
+                    </mobi:pagePanelBody>
+                </mobi:largeView>
+        </mobi:pagePanel>
+    </div>
 <c:if test="${!ajaxRequest}">
-    </body>
-    </html>
+</body>
+</html>
 </c:if>

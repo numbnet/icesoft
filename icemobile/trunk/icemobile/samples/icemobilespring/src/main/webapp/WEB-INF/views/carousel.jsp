@@ -2,33 +2,38 @@
 <%@ taglib uri="http://www.springframework.org/tags" prefix="s" %>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <%@ taglib uri="http://www.icemobile.org/tags" prefix="mobi" %>
-<%@ taglib prefix="push" uri="http://www.icepush.org/icepush/jsp/icepush.tld" %>
+<%@ taglib prefix="push" uri="http://www.icepush.org/icepush/jsp/icepush.tld"%>
 <%@ page session="false" %>
 <c:if test="${!ajaxRequest}">
-    <html>
-    <jsp:include page="./inc/head.jsp"/>
-    <body>
+<html>
+<jsp:include page="./inc/head.jsp"/>
+<body>
 </c:if>
     <div class="ajaxzone">
-    <h4>Carousel</h4>
-    <form:form id="carouselForm" method="POST" modelAttribute="carouselBean">
-        <mobi:fieldSetGroup inset="true">
-            <mobi:fieldSetRow>
-                Carousel of images
-            </mobi:fieldSetRow>
-        </mobi:fieldSetGroup>
-        <mobi:carousel id="carouselOne"
-                       collection="${carouselBean.images}"
-                       selectedIndex="${carouselBean.carouselOne}">
-            <mobi:carouselItem ref="myitem" type="java.lang.String"/>
-        </mobi:carousel>
-    </form:form>
-
-    <script type="text/javascript">
-        MvcUtil.enhanceForm("#carouselForm");
-    </script>
-</div>
+        <mobi:pagePanel>
+            <mobi:smallView>
+                 <mobi:pagePanelHeader>ICEmobile - Carousel</mobi:pagePanelHeader>
+                    <mobi:pagePanelBody>
+                        <%@ include file="/WEB-INF/views/inc/carousel-content.jsp" %>
+                    </mobi:pagePanelBody>
+                </mobi:smallView>
+                <mobi:largeView>
+                     <mobi:pagePanelHeader>ICEmobile Spring MVC Showcase - Carousel</mobi:pagePanelHeader>
+                    <mobi:pagePanelBody>
+                        <div id="left">
+                            <%@ include file="/WEB-INF/views/inc/menu.jsp" %>
+                        </div>
+                        <div id="right">
+                            <%@ include file="/WEB-INF/views/inc/carousel-content.jsp" %>
+                        </div>
+                        <script type="text/javascript">
+                        addEqualizeElementHeightsAfterResizeListener('left','right');
+                        </script>
+                    </mobi:pagePanelBody>
+                </mobi:largeView>
+        </mobi:pagePanel>
+    </div>
 <c:if test="${!ajaxRequest}">
-    </body>
-    </html>
+</body>
+</html>
 </c:if>

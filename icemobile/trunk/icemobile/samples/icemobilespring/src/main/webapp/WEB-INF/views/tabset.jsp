@@ -6,50 +6,33 @@
 <%@ page session="false" %>
 <c:if test="${!ajaxRequest}">
 <html>
-<head>
-	<title>ICEmobile | Tabs demo</title>
-	<link href="<c:url value="/resources/style.css" />" rel="stylesheet"
-              type="text/css"/>
-    <script type="text/javascript" src="<c:url value="/resources/jquery/1.6/jquery.js" />"></script>
-	<script type="text/javascript" src="code.icepush"></script>
-</head>
+<jsp:include page="./inc/head.jsp"/>
 <body>
 </c:if>
     <div class="ajaxzone">
-
-		<h2>Tabset</h2>
-		<form:form id="tabsetform" method="POST"  modelAttribute="tabsetBean" >
-
-            <mobi:tabset id="tabsetOne" selectedTab="${tabsetBean.tabsetOne}">
-                <mobi:headers>
-              	    <mobi:header><span class="mobitab">Desktop</span></mobi:header>
-              	    <mobi:header><span class="mobitab">Mobile</span></mobi:header>
-              	    <mobi:header><span class="mobitab">Ultra Mobile</span></mobi:header>
-                </mobi:headers>
-                <mobi:content>
-                    <mobi:contentPane>
-                       <div>
-                         <img src="resources/desktop.png"></img>
-                       </div>
-                    </mobi:contentPane>
-                    <mobi:contentPane>
-                       <div>
-                         <img src="resources/laptop.png"></img>
-                       </div>
-                    </mobi:contentPane>
-                    <mobi:contentPane>
-                        <div>
-                         <img src="resources/pda.png"></img>
-                       </div>
-                    </mobi:contentPane>
-                </mobi:content>
-            </mobi:tabset>
-		</form:form>
-
-    <script type="text/javascript">
-        MvcUtil.enhanceForm("#tabsetform");
-    </script>
-	</div>
+        <mobi:pagePanel>
+            <mobi:smallView>
+                 <mobi:pagePanelHeader>ICEmobile - Tab Set</mobi:pagePanelHeader>
+                    <mobi:pagePanelBody>
+                        <%@ include file="/WEB-INF/views/inc/tabset-content.jsp" %>
+                    </mobi:pagePanelBody>
+                </mobi:smallView>
+                <mobi:largeView>
+                     <mobi:pagePanelHeader>ICEmobile Spring MVC Showcase - Tab Set</mobi:pagePanelHeader>
+                    <mobi:pagePanelBody>
+                        <div id="left">
+                            <%@ include file="/WEB-INF/views/inc/menu.jsp" %>
+                        </div>
+                        <div id="right">
+                            <%@ include file="/WEB-INF/views/inc/tabset-content.jsp" %>
+                        </div>
+                        <script type="text/javascript">
+                        addEqualizeElementHeightsAfterResizeListener('left','right');
+                        </script>
+                    </mobi:pagePanelBody>
+                </mobi:largeView>
+        </mobi:pagePanel>
+    </div>
 <c:if test="${!ajaxRequest}">
 </body>
 </html>

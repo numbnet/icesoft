@@ -6,116 +6,36 @@
 <%@ page session="false" %>
 <c:if test="${!ajaxRequest}">
 <html>
-<head>
-	<title>ICEmobile | List demo</title>
-	<link href="<c:url value="/resources/style.css" />" rel="stylesheet"
-              type="text/css"/>
-    <script type="text/javascript" src="<c:url value="/resources/jquery/1.6/jquery.js" />"></script>
-	<script type="text/javascript" src="code.icepush"></script>
-</head>
+<jsp:include page="./inc/head.jsp"/>
 <body>
 </c:if>
     <div class="ajaxzone">
-
-      <form:form id="listform" method="POST" modelAttribute="listBean">
-
-    <mobi:pagePanel>
-        <mobi:pagePanelHeader >
-            PagePanel Custom Header
-        </mobi:pagePanelHeader>
-
-        <mobi:pagePanelBody>
-
-        <mobi:fieldSetGroup id="groupOne">
-            <mobi:fieldSetRow style="padding-bottom:10px;">
-A demonstration of two layout tags: mobi:pagePanel, which allows a fixed header
-and footer to be defined, and mobi:list, which allows content to be organized
-into styled lists.
-            </mobi:fieldSetRow>
-        </mobi:fieldSetGroup>
-        <p/>
-
-         <h4>List with inset and Grouping</h4>
-
-        <mobi:outputList inset="true" id="secondList">
-            <mobi:outputListItem group="true" >
-               List 
-            </mobi:outputListItem>
-
-            <mobi:outputListItem>
-                    ICEsoft Ice Sailer
-            </mobi:outputListItem>
-
-            <mobi:outputListItem>
-                    ICEsoft Icebreaker
-            </mobi:outputListItem>
-
-        </mobi:outputList>
-
-         <h4>List with grouping and no inset</h4>
-
-        <mobi:outputList inset="false" id="thirdList" >
-            <mobi:outputListItem group="true">
-               List 
-            </mobi:outputListItem>
-            <mobi:outputListItem>
-                    ICEsoft Ice Sailer
-            </mobi:outputListItem>
-            <mobi:outputListItem>
-                    ICEsoft Icebreaker
-            </mobi:outputListItem>
-        </mobi:outputList>
-
-         <h4>List with no inset or grouping</h4>
-
-        <mobi:outputList id="firstList">
-            <mobi:outputListItem>
-                    ICEsoft Ice Sailer
-            </mobi:outputListItem>
-
-            <mobi:outputListItem>
-                    ICEsoft Icebreaker
-            </mobi:outputListItem>
-        </mobi:outputList>
-
-        <h4>Iterative list (Grouping on by default) </h4>
-
-        <mobi:outputList  id="listIterator">
-          <mobi:outputListItem group="true"> List of cars </mobi:outputListItem>
-          <c:forEach items="${listBean.carCollection}" var="currCar" >
-            <mobi:outputListItem>
-                Car title "${currCar.title}"
-            </mobi:outputListItem>
-           </c:forEach>
-        </mobi:outputList>
-
-        </mobi:pagePanelBody>
-
-        <mobi:pagePanelFooter >
-           PagePanel Custom Footer
-        </mobi:pagePanelFooter>
-
-    </mobi:pagePanel>
-    
-    <script type="text/javascript">
-    $('body').addClass('pagePanelPadding');
-    $('#listform').submit(function () {
-    	$('body').removeClass('pagePanelPadding');
-    });
-    </script>
-
- 
-         </form:form >
-		 
-		 <script type="text/javascript">
-			$('body').addClass('pagePanelPadding');
-			$('#listform').submit(function () {
-				$('body').removeClass('pagePanelPadding');
-			});
-		</script>
-
-
-   </div>
+        <mobi:pagePanel>
+            <mobi:smallView>
+                 <mobi:pagePanelHeader>ICEmobile - Page Panel & Lists</mobi:pagePanelHeader>
+                    <mobi:pagePanelBody>
+                        <%@ include file="/WEB-INF/views/inc/list-content.jsp" %>
+                    </mobi:pagePanelBody>
+                </mobi:smallView>
+                <mobi:largeView>
+                     <mobi:pagePanelHeader>ICEmobile Spring MVC Showcase -  Page Panel & Lists</mobi:pagePanelHeader>
+                    <mobi:pagePanelBody>
+                        <div id="left">
+                            <%@ include file="/WEB-INF/views/inc/menu.jsp" %>
+                        </div>
+                        <div id="right">
+                            <%@ include file="/WEB-INF/views/inc/list-content.jsp" %>
+                        </div>
+                        <script type="text/javascript">
+                        addEqualizeElementHeightsAfterResizeListener('left','right');
+                        </script>
+                    </mobi:pagePanelBody>
+                </mobi:largeView>
+        </mobi:pagePanel>
+        <script type="text/javascript">
+            MvcUtil.enhanceForm("#accordionform");
+        </script>
+    </div>
 <c:if test="${!ajaxRequest}">
 </body>
 </html>

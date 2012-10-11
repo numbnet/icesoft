@@ -19,9 +19,7 @@ package org.icemobile.samples.springbasic;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.icemobile.util.Constants;
 import org.icemobile.util.SXUtils;
-import org.icemobile.util.Utils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -40,7 +38,11 @@ public class EchoController {
     public void ajaxAttribute(WebRequest request, Model model) {
         model.addAttribute("ajaxRequest", AjaxUtils.isAjaxRequest(request));
     }
-
+    
+    @RequestMapping(value = "/menu")
+    public void doRequest() {
+    }
+    
     @RequestMapping(value = "/accordion")
     public void doRequest(
         @ModelAttribute("accordionBean") AccordionBean model) {
