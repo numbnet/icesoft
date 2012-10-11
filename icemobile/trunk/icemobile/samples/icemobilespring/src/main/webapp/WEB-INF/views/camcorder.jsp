@@ -2,60 +2,37 @@
 <%@ taglib uri="http://www.springframework.org/tags" prefix="s" %>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <%@ taglib uri="http://www.icemobile.org/tags" prefix="mobi" %>
-<%@ page session="false" %>
+<%@ taglib prefix="push" uri="http://www.icepush.org/icepush/jsp/icepush.tld"%>
 <c:if test="${!ajaxRequest}">
-    <html>
-    <jsp:include page="./inc/head.jsp"/>
-    <body>
+<html>
+<jsp:include page="./inc/head.jsp"/>
+<body>
 </c:if>
     <div class="ajaxzone">
-    <form:form id="camcorderform" method="POST" enctype="multipart/form-data"
-               modelAttribute="camcorderBean">
-        <h4>Camcorder</h4>
-        <mobi:fieldSetGroup inset="true">
-            <mobi:fieldSetRow>
-                <form:label path="name">Author: <form:errors path="name"
-                                                             cssClass="error"/></form:label>
-                <form:input path="name"/>
-            </mobi:fieldSetRow>
-            <mobi:fieldSetRow>
-                <mobi:camcorder id="camvid"/>
-                <mobi:thumb for="camvid"
-                            style="height:60px;width:65px;vertical-align:middle;float:right;margin:10px;"/>
-            </mobi:fieldSetRow>
-        </mobi:fieldSetGroup>
-        <%-- button types: default|important|attention| back--%>
-        <mobi:commandButton buttonType='important'
-                            style="float:right;margin-right: 25px;"
-                            value="Submit"
-                            type="submit"/>
-        <div style="clear:both;"/>
-
-        <c:if test="${not empty message}">
-            <div id="message" class="success">${message}<br/>
-            </div>
-        </c:if>
-        <c:if test="${mediaReady}">
-            <mobi:fieldSetGroup inset="true">
-                <mobi:fieldSetRow>
-                    <video src="media/video.mp4" controls="controls"/>
-                    <br><a href="media/video.mp4">Play</a>
-                </mobi:fieldSetRow>
-            </mobi:fieldSetGroup>
-        </c:if>
-        <s:bind path="*">
-            <c:if test="${status.error}">
-                <div id="message" class="error">Form has errors</div>
-            </c:if>
-        </s:bind>
-    </form:form>
-
-
-    <script type="text/javascript">
-        MvcUtil.enhanceForm("#camcorderform");
-    </script>
-</div>
+        <mobi:pagePanel>
+            <mobi:smallView>
+                 <mobi:pagePanelHeader>ICEmobile - Camcorder</mobi:pagePanelHeader>
+                    <mobi:pagePanelBody>
+                        <%@ include file="/WEB-INF/views/inc/camcorder-content.jsp" %>
+                    </mobi:pagePanelBody>
+                </mobi:smallView>
+                <mobi:largeView>
+                     <mobi:pagePanelHeader>ICEmobile Spring MVC Showcase - Camcorder</mobi:pagePanelHeader>
+                    <mobi:pagePanelBody>
+                        <div id="left">
+                            <%@ include file="/WEB-INF/views/inc/menu.jsp" %>
+                        </div>
+                        <div id="right">
+                            <%@ include file="/WEB-INF/views/inc/camcorder-content.jsp" %>
+                        </div>
+                        <script type="text/javascript">
+                        addEqualizeElementHeightsAfterResizeListener('left','right');
+                        </script>
+                    </mobi:pagePanelBody>
+                </mobi:largeView>
+        </mobi:pagePanel>
+    </div>
 <c:if test="${!ajaxRequest}">
-    </body>
-    </html>
+</body>
+</html>
 </c:if>

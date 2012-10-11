@@ -2,56 +2,38 @@
 <%@ taglib uri="http://www.springframework.org/tags" prefix="s" %>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <%@ taglib uri="http://www.icemobile.org/tags" prefix="mobi" %>
-<%@ taglib prefix="push" uri="http://www.icepush.org/icepush/jsp/icepush.tld" %>
-<%@ page session="true" %>
+<%@ taglib prefix="push" uri="http://www.icepush.org/icepush/jsp/icepush.tld"%>
+<%@ page session="false" %>
 <c:if test="${!ajaxRequest}">
-    <html>
-    <head>
-        <title>ICEmobile | QR Code Scanner demo</title>
-        <link href="<c:url value="/resources/style.css" />" rel="stylesheet"
-              type="text/css"/>
-        <script type="text/javascript"
-                src="<c:url value="/resources/jquery/1.6/jquery.js" />"></script>
-        <script type="text/javascript" src="code.icepush"></script>
-    </head>
-    <body>
+<html>
+<jsp:include page="./inc/head.jsp"/>
+<body>
 </c:if>
     <div class="ajaxzone">
-
-    <h4>QR Code Scanner</h4>
-    <form:form id="qrscanform" method="POST" modelAttribute="QRScanBean">
-
-        <mobi:fieldSetGroup inset="true">
-            <mobi:fieldSetRow>
-                <label>Scan QR code:</label>
-                <mobi:qrscan id="scanOne" />
-                <br/>
-            </mobi:fieldSetRow>
-            <mobi:fieldSetRow>
-                <%-- button types: default|important|attention| back--%>
-                <mobi:commandButton buttonType='important'
-                                    style="float:right;"
-                                    value="Submit"
-                                    type="submit"/>
-            </mobi:fieldSetRow>
-        </mobi:fieldSetGroup>
-        <%-- QR scanner results --%>
-        <mobi:fieldSetGroup inset="true">
-            <mobi:fieldSetRow>
-                <label>Scanned:</label>
-                <span style="font-style:italic">${QRScanBean.scanOne}</span>
-            </mobi:fieldSetRow>
-        </mobi:fieldSetGroup>
-
-    </form:form>
-
-
-    <script type="text/javascript">
-        MvcUtil.enhanceForm("#qrscanform");
-    </script>
-
-</div>
+        <mobi:pagePanel>
+            <mobi:smallView>
+                 <mobi:pagePanelHeader>ICEmobile - QR Code Scanner</mobi:pagePanelHeader>
+                    <mobi:pagePanelBody>
+                        <%@ include file="/WEB-INF/views/inc/qrscan-content.jsp" %>
+                    </mobi:pagePanelBody>
+                </mobi:smallView>
+                <mobi:largeView>
+                     <mobi:pagePanelHeader>ICEmobile Spring MVC Showcase - QR Code Scanner</mobi:pagePanelHeader>
+                    <mobi:pagePanelBody>
+                        <div id="left">
+                            <%@ include file="/WEB-INF/views/inc/menu.jsp" %>
+                        </div>
+                        <div id="right">
+                            <%@ include file="/WEB-INF/views/inc/qrscan-content.jsp" %>
+                        </div>
+                        <script type="text/javascript">
+                        addEqualizeElementHeightsAfterResizeListener('left','right');
+                        </script>
+                    </mobi:pagePanelBody>
+                </mobi:largeView>
+        </mobi:pagePanel>
+    </div>
 <c:if test="${!ajaxRequest}">
-    </body>
-    </html>
+</body>
+</html>
 </c:if>

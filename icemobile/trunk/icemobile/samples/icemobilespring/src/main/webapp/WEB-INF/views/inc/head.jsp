@@ -5,9 +5,10 @@
 <head>
     <title>ICEmobile Spring</title>
     <mobi:deviceResource  view="small" includePush="true"/>
-    <link href="<c:url value="/resources/jqueryui/1.8/themes/base/jquery.ui.all.css" />"
-          rel="stylesheet" type="text/css"/>
     <link href="<c:url value="/resources/style.css" />" rel="stylesheet"
           type="text/css"/>
+    <script type="text/javascript"
+        src="<c:url value="/resources/jquery/1.6/jquery.js" />"></script>
+    <script type="text/javascript" src="<c:url value="/resources/icemobilespring.js" />"></script> 
     <mobi:googleAnalytics/>
 </head>
