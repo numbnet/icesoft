@@ -156,7 +156,7 @@ public class PushRenderer {
             missingFacesContext(context);
             Boolean pushOthers = (Boolean)options.getAttributes().get(PushOthers.PUSH_OTHERS);
             if (pushOthers != null && pushOthers) {
-                options.getAttributes().put("pushIDList", SessionViewManager.getCurrentViewList(context));
+                options.getAttributes().put("pushIDSet", SessionViewManager.getCurrentSessionViewSet(context));
             }
             Map<String, Object> applicationMap = context.getExternalContext().getApplicationMap();
             PushIsolator.render(applicationMap, group, options);

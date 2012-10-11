@@ -25,9 +25,9 @@ import java.io.Serializable;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
-import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.Set;
+import java.util.concurrent.CopyOnWriteArraySet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -38,7 +38,7 @@ public class SessionViewManager {
         startAddingNewViewsToGroup(facesContext, groupName);
         PushContext pushContext = getPushContext(facesContext);
         State state = getState(facesContext);
-        Iterator<String> viewIDs = state.viewIDList.iterator();
+        Iterator<String> viewIDs = state.viewIDSet.iterator();
         while (viewIDs.hasNext()) {
             pushContext.addGroupMember(groupName, viewIDs.next());
         }
@@ -47,7 +47,7 @@ public class SessionViewManager {
     public static void addView(FacesContext context, String id) {
         PushContext pushContext = getPushContext(context);
         State state = getState(context);
-        state.viewIDList.add(id);
+        state.viewIDSet.add(id);
         pushContext.addGroupMember(state.groupName, id);
         Iterator i = state.groups.iterator();
         while (i.hasNext()) {
@@ -55,15 +55,15 @@ public class SessionViewManager {
         }
     }
 
-    public static List<String> getCurrentViewList(final FacesContext facesContext) {
-        return Collections.unmodifiableList(getState(facesContext).viewIDList);
+    public static Set<String> getCurrentSessionViewSet(final FacesContext facesContext) {
+        return Collections.unmodifiableSet(getState(facesContext).viewIDSet);
     }
 
     public static void removeCurrentSessionFromGroup(final FacesContext facesContext, final String groupName) {
         stopAddingNewViewsToGroup(facesContext, groupName);
         PushContext pushContext = getPushContext(facesContext);
         State state = getState(facesContext);
-        Iterator<String> viewIDs = state.viewIDList.iterator();
+        Iterator<String> viewIDs = state.viewIDSet.iterator();
         while (viewIDs.hasNext()) {
             pushContext.removeGroupMember(groupName, viewIDs.next());
         }
@@ -72,7 +72,7 @@ public class SessionViewManager {
     public static void removeView(FacesContext context, String id) {
         PushContext pushContext = getPushContext(context);
         State state = getState(context);
-        state.viewIDList.remove(id);
+        state.viewIDSet.remove(id);
         pushContext.removeGroupMember(state.groupName, id);
         Iterator i = state.groups.iterator();
         while (i.hasNext()) {
@@ -114,7 +114,7 @@ public class SessionViewManager {
 
     //it is okay to serialize *static* inner classes: http://java.sun.com/javase/6/docs/platform/serialization/spec/serial-arch.html#7182 
     private static class State implements Serializable {
-        private final CopyOnWriteArrayList<String> viewIDList = new CopyOnWriteArrayList<String>();
+        private final CopyOnWriteArraySet<String> viewIDSet = new CopyOnWriteArraySet<String>();
         private String groupName;
         private HashSet groups = new HashSet();
 
