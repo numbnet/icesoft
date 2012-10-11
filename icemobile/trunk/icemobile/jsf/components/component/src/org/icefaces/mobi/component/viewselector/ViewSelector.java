@@ -20,6 +20,7 @@ package org.icefaces.mobi.component.viewselector;
  * small and large.  Which ever view type the component detects the respective
  * child elements are rendered.  .
  */
+@Deprecated
 public class ViewSelector extends ViewSelectorBase {
 
     // facet names that define the three parts of a page
