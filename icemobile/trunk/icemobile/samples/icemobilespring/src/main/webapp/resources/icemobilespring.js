@@ -135,8 +135,15 @@ MvcUtil.enhanceLink = function(link, updateRegion)  {
     $(document).ready(function () {
         var l = $(link)
         l.click(function () {
-            $(updateRegion).load(l.attr('href'));
-            return false;
+            var href = l.attr('href');
+            $(updateRegion).load(href);
+            if( window.history && window.history.pushState ){
+                history.pushState(null, null, href);
+                return false;
+            }
+            else{
+                return true;
+            }
         });
     });
 };
@@ -146,9 +153,22 @@ MvcUtil.enhanceAllLinks = function(parent, updateRegion)  {
             var href = $(this).attr('href');
             $(this).click(function () {
                 $(updateRegion).load(href);
-                //return false;
+                if( window.history && window.history.pushState ){
+                    history.pushState(null, null, href);
+                    return false;
+                }
+                else{
+                    return true;
+                }
+                
             });
-            $(this).attr('href','#'+href)
+            $(this).attr('href','#'+href);
         });
+        
     });
 };
+if( window.history && window.history.pushState ){
+    window.addEventListener("popstate", function(e) {
+        $('.ajaxzone').load(location.pathname);
+    });
+}
