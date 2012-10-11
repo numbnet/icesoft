@@ -62,12 +62,13 @@ span.error {
 }
 
 .iphone .mobi-pagePanel-header .mobi-button{
-  padding: 0.2em 0.5em;
+  padding: 0;
   line-height: 25px;
   font-size: 20px;
   margin-left: 0.3em;
   float: none;
   right: auto;
+  width:30px;height:30px;
 }
 
 .android .mobi-pagePanel-header .mobi-button{
@@ -91,3 +92,16 @@ span.error {
    border-radius:2px;
 }
 .bberry .phdr{ color: #FFF; font-size:15px;}
+
+.ui-icon-shadow {
+   -moz-box-shadow: 0px 1px 0 rgba(255,255,255,.4);
+   -webkit-box-shadow: 0px 1px 0 rgba(255, 255, 255, .4);
+   box-shadow: 0px 1px 0 rgba(255, 255, 255, .4);
+}
+.ui-icon-home {
+   background-position: -570px 50%;
+}
+.ui-icon {
+   background-image: url(icons.png);
+   background-repeat: no-repeat;
+}

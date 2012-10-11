@@ -12,25 +12,30 @@
     <div class="ajaxzone">
         <mobi:pagePanel>
             <mobi:smallView>
-                 <mobi:pagePanelHeader>ICEmobile - Carousel</mobi:pagePanelHeader>
-                    <mobi:pagePanelBody>
+                 <mobi:pagePanelHeader>
+                    <a href="menu" id="menuLink" class="mobi-button  mobi-button-default">&#9776;</a>
+                    ICEmobile - Carousel</mobi:pagePanelHeader>
+                <mobi:pagePanelBody>
+                    <%@ include file="/WEB-INF/views/inc/carousel-content.jsp" %>
+                </mobi:pagePanelBody>
+                <script type="text/javascript">
+                    MvcUtil.enhanceLink("#menuLink","body");
+                </script>
+            </mobi:smallView>
+            <mobi:largeView>
+                 <mobi:pagePanelHeader>ICEmobile Spring MVC Showcase - Carousel</mobi:pagePanelHeader>
+                <mobi:pagePanelBody>
+                    <div id="left">
+                        <%@ include file="/WEB-INF/views/inc/menu.jsp" %>
+                    </div>
+                    <div id="right">
                         <%@ include file="/WEB-INF/views/inc/carousel-content.jsp" %>
-                    </mobi:pagePanelBody>
-                </mobi:smallView>
-                <mobi:largeView>
-                     <mobi:pagePanelHeader>ICEmobile Spring MVC Showcase - Carousel</mobi:pagePanelHeader>
-                    <mobi:pagePanelBody>
-                        <div id="left">
-                            <%@ include file="/WEB-INF/views/inc/menu.jsp" %>
-                        </div>
-                        <div id="right">
-                            <%@ include file="/WEB-INF/views/inc/carousel-content.jsp" %>
-                        </div>
-                        <script type="text/javascript">
-                        addEqualizeElementHeightsAfterResizeListener('left','right');
-                        </script>
-                    </mobi:pagePanelBody>
-                </mobi:largeView>
+                    </div>
+                    <script type="text/javascript">
+                    addEqualizeElementHeightsAfterResizeListener('left','right');
+                    </script>
+                </mobi:pagePanelBody>
+            </mobi:largeView>
         </mobi:pagePanel>
     </div>
 <c:if test="${!ajaxRequest}">

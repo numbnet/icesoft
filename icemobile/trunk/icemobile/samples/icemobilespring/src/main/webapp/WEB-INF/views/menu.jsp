@@ -12,13 +12,18 @@
     <div class="ajaxzone">
         <mobi:pagePanel>
             <mobi:smallView>
-                 <mobi:pagePanelHeader>ICEmobile Showcase</mobi:pagePanelHeader>
+                 <mobi:pagePanelHeader><a id="backBtn"class="mobi-button mobi-button-default ui-icon ui-icon-home ui-icon-shadow"
+                        href='<c:url value="/"/>'> </a>
+                        ICEmobile Showcase</mobi:pagePanelHeader>
                     <mobi:pagePanelBody>
                         <%@ include file="/WEB-INF/views/inc/menu.jsp" %>
                     </mobi:pagePanelBody>
                 </mobi:smallView>
         </mobi:pagePanel>
     </div>
+    <script type="text/javascript">
+        MvcUtil.enhanceAllLinks(".ajaxzone","body");
+    </script>
 <c:if test="${!ajaxRequest}">
     </body>
     </html>
