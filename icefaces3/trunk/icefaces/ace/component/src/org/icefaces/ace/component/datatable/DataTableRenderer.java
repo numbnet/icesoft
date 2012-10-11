@@ -84,17 +84,23 @@ public class DataTableRenderer extends CoreRenderer {
             table.calculatePage();
 
         if (!context.isValidationFailed()) {
-            if (table.isSortOrderChanged())
+            if (table.isApplyingSorts())
                 table.processSorting();
 
-            if (table.isFilterValueChanged())
+            if (table.isApplyingFilters())
                 table.setFilteredData(table.processFilters(context));
         } else {
             SortState sortState = (SortState)table.getSavedSortState();
             FilterState filterState = (FilterState)table.getSavedFilterState();
-            if (table.isSortOrderChanged())
+
+            // Sorting and filtering may be reprocessed without a change to their
+            // state when the backing data model is altered or first rendered,
+            // so null checks must be performed
+
+            if (sortState != null && table.isApplyingSorts())
                 sortState.restoreState(table);
-            if (table.isFilterValueChanged())
+
+            if (filterState != null && table.isApplyingFilters())
                 filterState.restoreState(table);
         }
 
