@@ -57,6 +57,7 @@ import org.icefaces.ace.component.columngroup.ColumnGroup;
 import org.icefaces.ace.component.row.Row;
 import org.icefaces.ace.model.table.RowState;
 import org.icefaces.ace.model.table.RowStateMap;
+import org.icefaces.ace.model.table.TreeDataModel;
 
 import java.util.logging.Logger;
 
@@ -157,7 +158,7 @@ public class PDFExporter extends Exporter {
 	}
 	
 	protected void exportPDFTable(FacesContext facesContext, Object pdfTable, DataTable table, boolean pageOnly, int[] excludeColumns, String encoding, boolean includeHeaders, boolean includeFooters, boolean selectedRowsOnly) 
-		throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
+		throws IOException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
 		List<UIColumn> columns = getColumnsToExport(table, excludeColumns);
     	int numberOfColumns = columns.size();
     	//PdfPTable pdfTable = new PdfPTable(numberOfColumns);
@@ -168,6 +169,14 @@ public class PDFExporter extends Exporter {
 		
 		Object headerFont = fontFactoryClass.getMethod("getFont", new Class[] { String.class, String.class, float.class, int.class }).invoke(null, new Object[] { "Times", encoding, new Integer(12), new Integer(1) });
     	
+		Object model = table.getModel();
+		TreeDataModel rootModel = null;
+		boolean hasRowExpansion = false;
+		if (model != null && table.hasTreeDataModel()) {
+			rootModel = (TreeDataModel) model;
+			hasRowExpansion = true;
+		}
+		
 		int rowCount = table.getRowCount();
     	int first = pageOnly ? table.getFirst() : 0;
     	int size = pageOnly ? (first + table.getRows()) : rowCount;
@@ -204,6 +213,9 @@ public class PDFExporter extends Exporter {
 				for (int j = 0; j < numberOfColumns; j++) {
 					addColumnValue(pdfTable, columns.get(j).getChildren(), j, font);
 				}
+				if (hasRowExpansion) {
+					exportChildRows(facesContext, rootModel, rowStateMap, table, columns, "" + i, pdfTable, numberOfColumns, font);
+				}
 			}
 		}
 
@@ -212,6 +224,48 @@ public class PDFExporter extends Exporter {
         }
     	
     	table.setRowIndex(-1);
+	}
+	
+	protected void exportChildRows(FacesContext context, TreeDataModel rootModel, RowStateMap rowStateMap,
+		DataTable table, List<UIColumn> columns, String rootIndex, Object pdfTable, int numberOfColumns, Object font) throws IOException, IllegalAccessException, InvocationTargetException, InstantiationException {		
+		rootModel.setRootIndex(rootIndex);
+		rootModel.setRowIndex(0);
+
+		RowState rootState = rowStateMap.get(rootModel.getRootData());
+		
+		String rowVar = table.getVar();
+		String rowIndexVar = table.getRowIndexVar();
+		if ((rootState.isExpanded() || !expandedOnly) && rootModel.getRowCount() > 0) {
+			while (rootModel.getRowIndex() < rootModel.getRowCount()) {
+				int rowIndex = rootModel.getRowIndex();
+				Object rowData = rootModel.getRowData();
+                if (rowVar != null) context.getExternalContext()
+                        .getRequestMap().put(rowVar, rowData);
+                if (rowIndexVar != null) context.getExternalContext()
+                        .getRequestMap().put(rowIndexVar, rowData);
+				
+				// export
+				for (int j = 0; j < numberOfColumns; j++) {
+					addColumnValue(pdfTable, columns.get(j).getChildren(), j, font);
+				}
+				
+				RowState rowState = rowStateMap.get(rootModel.getRowData());
+				if (rowState.isExpanded() || !expandedOnly) {
+					
+					// recurse
+					exportChildRows(context, rootModel, rowStateMap, table, columns, rootIndex + "." + rowIndex, pdfTable, numberOfColumns, font);
+					
+					// restore
+					rootModel.setRootIndex(rootIndex);
+					rootModel.setRowIndex(rowIndex);
+				}
+                rootModel.setRowIndex(rootModel.getRowIndex() + 1);
+                if (rowIndexVar != null) context.getExternalContext().getRequestMap().remove(rowIndexVar);
+                if (rowVar != null) context.getExternalContext().getRequestMap().remove(rowVar);
+			}
+		}
+		
+        rootModel.setRootIndex(null);
 	}
 	
 	protected void addFacetColumns(Object pdfTable, List<UIColumn> columns, Object font, ColumnType columnType) 
