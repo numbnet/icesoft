@@ -35,6 +35,7 @@ import java.io.ByteArrayInputStream;
 import java.io.StringWriter;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpResponse;
+import org.apache.http.params.CoreProtocolPNames;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.mime.MultipartEntity;
@@ -153,6 +154,7 @@ public class UtilInterface implements JavascriptInterface,
     public void run() {
 	HttpPost postRequest;
 	DefaultHttpClient httpClient = new DefaultHttpClient();
+	httpClient.getParams().setParameter(CoreProtocolPNames.USER_AGENT, view.getSettings().getUserAgentString());
 	try {
 	    while (postQueue.size() > 0) {
 		sendProgress(0);

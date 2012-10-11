@@ -170,6 +170,7 @@ public class ICEmobileContainer extends Activity
         mWebView.setWebViewClient(new ICEfacesWebViewClient());
         mWebView.setWebChromeClient(new ICEfacesWebChromeClient());
         mWebView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
+	Log.e("ICEmobile", "User Agent = " + mWebView.getSettings().getUserAgentString());
 
         assetManager = getAssets();
 	fileLoader = new FileLoader(assetManager);
