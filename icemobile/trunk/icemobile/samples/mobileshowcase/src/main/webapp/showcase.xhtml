@@ -32,19 +32,11 @@
     <mobi:googleAnalytics/>
 </h:head>
 <h:body>
-
-    <!-- select small or large -->
-    <mobi:viewSelector>
-        <f:facet name="small">
-            <ui:param name="viewSize" value="small" />
-            <ui:include src="WEB-INF/includes/view/small.xhtml" />
-        </f:facet>
-        <f:facet name="large">
-            <ui:param name="viewSize" value="large" />
-            <ui:include src="WEB-INF/includes/view/large.xhtml" />
-        </f:facet>
-    </mobi:viewSelector>
-
-
+    <mobi:largeView>
+        <ui:include src="WEB-INF/includes/view/large.xhtml" />
+    </mobi:largeView>
+    <mobi:smallView>
+        <ui:include src="WEB-INF/includes/view/small.xhtml" />
+    </mobi:smallView>
 </h:body>
 </html>
