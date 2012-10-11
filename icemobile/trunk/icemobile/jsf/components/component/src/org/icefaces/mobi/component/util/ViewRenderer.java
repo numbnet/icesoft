@@ -12,7 +12,7 @@ import org.icefaces.mobi.utils.JSFUtils;
 public class ViewRenderer extends Renderer {
 
     @Override
-    public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
+    public void encodeChildren(FacesContext facesContext, UIComponent component) throws IOException {
         Iterator<UIComponent> iter = component.getChildren().iterator();
         while( iter.hasNext() ){
             UIComponent child = iter.next();
