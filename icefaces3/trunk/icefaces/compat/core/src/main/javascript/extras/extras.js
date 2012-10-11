@@ -2048,6 +2048,10 @@ Autocompleter.Base.prototype = {
             };
         this.options.onHide = this.options.onHide ||
             function(element, update) {
+				if (Prototype.Browser.IE) {
+					update.hide();
+					return;
+				}
                 new Effect.Fade(update, {duration:0.15})
             };
 
@@ -2135,7 +2139,6 @@ Autocompleter.Base.prototype = {
                     //this.selectEntry();
                     //Event.stop(event);
 
-                    this.hidden = true; // Hack to fix before beta. Was popup up the list after a selection was made
                     var idx = this.selectEntry();
                     Ice.Autocompleter.logger.debug("Getting updated choices on enter");
                     this.getUpdatedChoices(true, event, idx);
@@ -2241,7 +2244,6 @@ Autocompleter.Base.prototype = {
     },
 
     onClick: function(event) {
-        this.hidden = true;
         // Hack to fix before beta. Was popup up the list after a selection was made
         var element = Event.findElement(event, 'DIV');
         this.index = element.autocompleteIndex;
@@ -2524,9 +2526,6 @@ Object.extend(Object.extend(Ice.Autocompleter.prototype, Autocompleter.Base.prot
         this.options.defaultParams = this.options.parameters || null;
         this.monitor = new Ice.AutocompleterMonitor(element, ue, options, rowClass, selectedRowClass);
         this.monitor.object = this;
-        if (!Prototype.Browser.IE) {
-            Ice.StateMon.add(this.monitor);
-        }
         Autocompleter.Finder.add(this.element, this);
         Ice.Autocompleter.logger.debug("Done building Ice Autocompleter");
         /*if (this.monitor.changeDetected()) {
@@ -2573,12 +2572,6 @@ Object.extend(Object.extend(Ice.Autocompleter.prototype, Autocompleter.Base.prot
 
     updateNOW: function(text) {
 
-
-        if (this.hidden) {
-            this.hidden = false;
-            //Ice.Autocompleter.logger.debug("Not showing due to hide force");
-            return;
-        }
         this.hasFocus = true;
         Element.cleanWhitespace(this.update);
         this.updateChoices(text);
