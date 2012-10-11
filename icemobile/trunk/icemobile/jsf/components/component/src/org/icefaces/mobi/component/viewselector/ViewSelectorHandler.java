@@ -17,7 +17,6 @@
 package org.icefaces.mobi.component.viewselector;
 
 import org.icefaces.mobi.utils.MobiJSFUtils;
-import org.icefaces.mobi.utils.Utils;
 import org.icemobile.util.ClientDescriptor;
 
 import javax.faces.component.UIComponent;
