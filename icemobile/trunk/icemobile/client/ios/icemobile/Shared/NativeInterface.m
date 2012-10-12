@@ -494,7 +494,13 @@ static char base64EncodingTable[64] = {
                permittedArrowDirections:UIPopoverArrowDirectionAny 
                                animated:YES];
     } else {
-        [controller presentModalViewController:augController animated:YES];
+        self.augController.oldView = controller.view;
+        UIView *containerView = controller.view.superview;
+        [UIView transitionWithView:containerView duration:0.5
+            options:UIViewAnimationOptionTransitionFlipFromRight
+            animations:^ { [controller.view removeFromSuperview];
+            [containerView addSubview:self.augController.view]; }
+            completion:nil];
     }
 
     return YES;
@@ -529,7 +535,12 @@ static char base64EncodingTable[64] = {
     if (nil != self.augPopover)  {
         [self.augPopover dismissPopoverAnimated:YES];
     } else {
-        [controller dismissModalViewControllerAnimated:YES];
+        UIView *containerView = augController.view.superview;
+        [UIView transitionWithView:containerView duration:0.5
+            options:UIViewAnimationOptionTransitionFlipFromLeft
+            animations:^ { [augController.view removeFromSuperview];
+            [containerView addSubview:augController.oldView]; }
+            completion:nil];
     }
 }
 

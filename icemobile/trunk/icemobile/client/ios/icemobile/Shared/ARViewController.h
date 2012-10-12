@@ -18,14 +18,18 @@
 #import "NativeInterface.h"
 
 @interface ARViewController : UIViewController {
+    UIView *oldView;
     NativeInterface *nativeInterface;
     NSString *selectedPlace;
     UISwitch *compassSwitch;
+    UIView *toolbar;
 }
 
+@property (nonatomic, retain) UIView *oldView;
 @property (retain) NativeInterface *nativeInterface;
 @property (nonatomic, retain) NSString *selectedPlace;
 @property (nonatomic, retain) IBOutlet UISwitch *compassSwitch;
+@property (nonatomic, retain) IBOutlet UIView *toolbar;
 
 - (void) setPlaceLabels:(NSArray *)places;
 - (IBAction) doLocations;

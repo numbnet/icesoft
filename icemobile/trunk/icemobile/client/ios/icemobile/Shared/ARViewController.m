@@ -24,9 +24,11 @@
 @end
 
 @implementation ARViewController
+@synthesize oldView;
 @synthesize nativeInterface;
 @synthesize selectedPlace;
 @synthesize compassSwitch;
+@synthesize toolbar;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -42,6 +44,8 @@
 	ARView *arView = (ARView *)self.view;
     arView.useCompass = compassSwitch.on; 
     arView.nativeInterface = self.nativeInterface; 
+    [self.toolbar setBackgroundColor:[UIColor colorWithPatternImage:
+            [UIImage imageNamed:@"bar.png"]] ];
 	[arView start];
 }
 
@@ -106,6 +110,7 @@
 - (IBAction) doCancel  {
     [self.nativeInterface augDismiss];
 }
+
 - (IBAction) compassChanged:(UISwitch *)theSwitch {
 	ARView *arView = (ARView *)self.view;
     [arView setCompass:theSwitch.on];

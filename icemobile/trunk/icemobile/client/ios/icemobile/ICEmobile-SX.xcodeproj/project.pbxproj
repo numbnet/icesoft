@@ -124,6 +124,7 @@
 		9C7A1063156BF9AD0013D23D /* MapController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = MapController.xib; path = Shared/MapController.xib; sourceTree = "<group>"; };
 		9C7A1E87156C24E70013D23D /* ar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ar.png; sourceTree = "<group>"; };
 		9C7A1E88156C24E70013D23D /* ar@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ar@2x.png"; sourceTree = "<group>"; };
+		9C8FBB3C1628BE250073C720 /* Logging.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Logging.h; path = Shared/Logging.h; sourceTree = "<group>"; };
 		9C9314781485505200B21FA1 /* libiconv.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libiconv.dylib; path = usr/lib/libiconv.dylib; sourceTree = SDKROOT; };
 		9C93147A1485506A00B21FA1 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		9C93147C1485507900B21FA1 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
@@ -174,6 +175,7 @@
 		9C1BEADD155473E400795020 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				9C8FBB3C1628BE250073C720 /* Logging.h */,
 				9C42F730158277E00011FECC /* E.png */,
 				9C42F731158277E00011FECC /* E@2x.png */,
 				9C42F732158277E00011FECC /* N.png */,
@@ -499,7 +501,7 @@
 		9CA51B8114730D120065F681 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "ICEmobile-SX/ICEmobile-SX-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
@@ -517,6 +519,7 @@
 		9CA51B8214730D120065F681 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "ICEmobile-SX/ICEmobile-SX-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
@@ -526,6 +529,7 @@
 				INFOPLIST_FILE = "ICEmobile-SX/ICEmobile-SX-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
