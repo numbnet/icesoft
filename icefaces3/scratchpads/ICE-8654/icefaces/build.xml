@@ -32,6 +32,21 @@
 
     <property file="./build.properties"/>
 
+    <property name="icepush.dist.dir" location="icepush/core/build/dist"/>
+    <property name="lib.dir" location="lib"/>
+
+
+    <target name="icepush" description="Builds the ICEpush core library (icepush.jar).">
+        <subant>
+            <fileset dir="." includes="icepush/core/build.xml">
+            </fileset>
+            <propertyset refid="build.properties"/>
+        </subant> 
+        <copy file="${icepush.dist.dir}/${icepush.lib.name}.jar"
+              todir="${lib.dir}"
+              overwrite="true"/>
+    </target>
+
     <target name="core" description="Builds the ICEfaces core framework (icefaces.jar).">
         <subant>
             <fileset dir="." includes="core/build.xml test/build.xml">
@@ -57,7 +72,7 @@
             </subant>
     </target>
 
-    <target name="samples" depends="core, ace, compat" description="Builds the ICEfaces samples.">
+    <target name="samples" depends="icepush, core, ace, compat" description="Builds the ICEfaces samples.">
         <subant>
             <fileset dir="." includes="samples/build.xml">
                 <exclude name="**/maven2/build.xml"/>
@@ -65,7 +80,7 @@
         </subant>
     </target>
 
-    <target name="world" depends="core, compat, ace, samples"  description="Builds all ICEfaces libraries.">
+    <target name="world" depends="icepush, core, compat, ace, samples"  description="Builds all ICEfaces libraries.">
     </target>
 
     <target name="clean" depends="allclean">
@@ -81,6 +96,10 @@
         <subant target="allclean">
             <fileset file="samples/build.xml" />
         </subant>
+        <subant target="clean-all">
+            <fileset file="icepush/build.xml" />
+        </subant>
+        <delete file="lib/${icepush.lib.name}.jar"/>
         <delete file="lib/${icefaces.lib.name}.jar"/>
         <delete file="lib/${icefaces-compat.lib.name}.jar"/>
         <delete file="lib/${icefaces-ace.lib.name}.jar"/>
