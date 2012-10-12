@@ -136,7 +136,8 @@ MvcUtil.enhanceLink = function(link, updateRegion)  {
             var href = l.attr('href');
             $(updateRegion).load(href);
             if( window.history && window.history.pushState ){
-                history.pushState(null, null, href);
+                history.pushState({ src: href }, null, href);
+                e.preventDefault();
                 return false;
             }
             else{
@@ -157,7 +158,8 @@ MvcUtil.enhanceAllLinks = function(parent, updateRegion)  {
                 $(this).css({backgroundColor:'#EFEFEF'});
                 $(updateRegion).load(href);
                 if( window.history && window.history.pushState ){
-                    history.pushState(null, null, href);
+                    history.pushState({ src: href }, null, href);
+                    e.preventDefault();
                     return false;
                 }
                 else{
@@ -170,8 +172,12 @@ MvcUtil.enhanceAllLinks = function(parent, updateRegion)  {
 };
 if( window.history && window.history.pushState ){
     window.addEventListener("popstate", function(e) {
-        if( location.pathname !== '/icemobilespring/' ){
+        if( location.pathname !== '/icemobilespring/' && e.state !== null){
             $('.ajaxzone').load(location.pathname);
+            $('#menu').find('a').each( function(){
+                $(this).attr('style','');
+            });
+            $('#menu a[href='+e.state.src+']').css({backgroundColor:'#EFEFEF'});
             e.preventDefault();
         }
     });
