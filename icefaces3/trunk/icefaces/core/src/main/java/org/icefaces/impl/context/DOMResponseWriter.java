@@ -27,6 +27,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
+import javax.faces.application.ProjectStage;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
@@ -263,6 +264,22 @@ public class DOMResponseWriter extends ResponseWriterWrapper {
     }
 
     public void endElement(String name) throws IOException {
+        if (FacesContext.getCurrentInstance().isProjectStage(ProjectStage.Development)) {
+            if (log.isLoggable(Level.WARNING)) {
+                if (!cursor.getNodeName().equals(name)) {
+                    String path = "";
+                    Node tempCursor = cursor;
+                    while (tempCursor != null) {
+                        if (tempCursor != cursor) {
+                            path = " -> " + path;
+                        }
+                        path = tempCursor.getNodeName() + path;
+                        tempCursor = tempCursor.getParentNode();
+                    }
+                    log.log(Level.WARNING, "Missing end-element for: " + cursor.getNodeName() + " (path: " + path + ")");
+                }
+            }
+        }
         pointCursorAt(cursor.getParentNode());
     }
 
