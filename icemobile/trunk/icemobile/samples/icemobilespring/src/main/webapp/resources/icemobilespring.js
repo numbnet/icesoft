@@ -1,24 +1,23 @@
-function equalizeElementHeights(element1Id,element2Id) {
-    var is_firefox = navigator.userAgent.toLowerCase().indexOf('firefox') > -1;
-    if( !is_firefox ){
-        var element1 = document.getElementById(element1Id);
-        var element2 = document.getElementById(element2Id);
-        if( element1 && element2 ){
-            var height = 0;
-            var body = window.document.body;
-            if (window.innerHeight) {
-                height = window.innerHeight;
-            } else if (body.parentElement.clientHeight) {
-                height = body.parentElement.clientHeight;
-            } else if (body) {
-                if (body.clientHeight) {
-                    height = body.clientHeight;
-                }
+function resizeElementHeight(elId) {
+    var height = 0;
+    var leftNode = document.getElementById(elId+"_left");
+    var rtNode = document.getElementById(elId+"_right");
+    var body = window.document.body || null;
+    if (body ==null) return;
+    if (leftNode && rtNode){
+        if (window.innerHeight) {
+            height = window.innerHeight;
+        } else if (body.parentElement.clientHeight) {
+            height = body.parentElement.clientHeight;
+        } else if (body) {
+            if (body.clientHeight) {
+                height = body.clientHeight;
             }
-            element1.style.height = ((height - element1.offsetTop) + "px");  
-            element2.style.height = ((height - element2.offsetTop) + "px"); 
         }
-        
+        if (height > 0){
+            leftNode.style.height = ((height - leftNode.offsetTop) + "px");
+            rtNode.style.height = ((height - rtNode.offsetTop) + "px");
+        }
     }
 }
 
@@ -30,11 +29,11 @@ function addEqualizeElementHeightsAfterResizeListener(element1Id,element2Id){
         orientationEvent = supportsOrientationChange ? "orientationchange" : "resize";
     
     var resizeHandler = function(updates) {
-        equalizeElementHeights(element1Id,element2Id);
+        resizeElementHeight(element1Id,element2Id);
     }
 
     // resize height on first load
-    equalizeElementHeights(element1Id,element2Id);
+    resizeElementHeight(element1Id,element2Id);
 
     // apply resize on either orientation or window size change.
     window.addEventListener(orientationEvent, resizeHandler);
@@ -171,7 +170,9 @@ MvcUtil.enhanceAllLinks = function(parent, updateRegion)  {
 };
 if( window.history && window.history.pushState ){
     window.addEventListener("popstate", function(e) {
-        $('.ajaxzone').load(location.pathname);
-        e.preventDefault();
+        if( location.pathname !== '/icemobilespring/' ){
+            $('.ajaxzone').load(location.pathname);
+            e.preventDefault();
+        }
     });
 }
