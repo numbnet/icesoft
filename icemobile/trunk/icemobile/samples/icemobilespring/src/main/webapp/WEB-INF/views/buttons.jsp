@@ -21,7 +21,7 @@
                 </mobi:pagePanelBody>
             </mobi:pagePanel>
             <script type="text/javascript">
-                MvcUtil.enhanceLink("#menuLink","body");
+            MvcUtil.enhanceLink(document.getElementById('menuLink'),"body");
             </script>
          </div>
     </mobi:smallView>

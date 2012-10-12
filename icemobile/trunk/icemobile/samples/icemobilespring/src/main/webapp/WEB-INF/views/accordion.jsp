@@ -21,7 +21,7 @@
                         <%@ include file="/WEB-INF/views/inc/accordion-content.jsp" %>
                     </mobi:pagePanelBody>
                     <script type="text/javascript">
-                        MvcUtil.enhanceLink("#menuLink","body");
+                    MvcUtil.enhanceLink(document.getElementById('menuLink'),"body");
                     </script>
             </mobi:pagePanel>
         </div>

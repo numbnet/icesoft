@@ -129,56 +129,45 @@ MvcUtil.enhanceForm = function(theForm)  {
         });
     });
 };
+MvcUtil.addClickLinkHandler = function(link, updateRegion){
+    link.addEventListener("click", function(e) {
+        if( window.history && window.history.pushState ){
+            $('#menu').find('a').each( function(){
+                link.style = '';
+            });
+            link.style = 'background-color: #EFEFEF';
+            $(updateRegion).load(link.href);
+            history.pushState({ src: link.href }, null, link.href);
+            e.preventDefault();
+        }
+      }, true);
+}
 MvcUtil.enhanceLink = function(link, updateRegion)  {
     $(document).ready(function () {
-        var l = $(link)
-        l.click(function () {
-            var href = l.attr('href');
-            $(updateRegion).load(href);
-            if( window.history && window.history.pushState ){
-                history.pushState({ src: href }, null, href);
-                e.preventDefault();
-                return false;
-            }
-            else{
-                return true;
-            }
-        });
+        MvcUtil.addClickLinkHandler(link,updateRegion);
     });
 };
 MvcUtil.enhanceAllLinks = function(parent, updateRegion)  {
     $(document).ready(function () {
         $(parent).find('a').each( function(){
-            var href = $(this).attr('href');
-            $(this).click(function () {
-                //link coloring
-                $('#menu').find('a').each( function(){
-                    $(this).attr('style','');
-                });
-                $(this).css({backgroundColor:'#EFEFEF'});
-                $(updateRegion).load(href);
-                if( window.history && window.history.pushState ){
-                    history.pushState({ src: href }, null, href);
-                    e.preventDefault();
-                    return false;
-                }
-                else{
-                    return true;
-                }
-            });
+            MvcUtil.addClickLinkHandler(this,updateRegion);
         });
-        
     });
 };
-if( window.history && window.history.pushState ){
-    window.addEventListener("popstate", function(e) {
-        if( location.pathname !== '/icemobilespring/' && e.state !== null){
-            $('.ajaxzone').load(location.pathname);
-            $('#menu').find('a').each( function(){
-                $(this).attr('style','');
-            });
-            $('#menu a[href='+e.state.src+']').css({backgroundColor:'#EFEFEF'});
-            e.preventDefault();
-        }
-    });
+window.onload = function() {
+    if( window.history && window.history.pushState ){
+        window.setTimeout(function() {
+            window.addEventListener("popstate", function(e) {
+                $('.ajaxzone').load(location.pathname);
+                if( e.state !== null){
+                    $('#menu').find('a').each( function(){
+                        $(this).attr('style','');
+                    });
+                    var href = e.state.src.indexOf('/') > -1 ? e.state.src.split("/").pop() : e.state.src;
+                    $('#menu a[href='+href+']').css({backgroundColor:'#EFEFEF'});
+                }
+            }, false);
+        }, 1);
+    }
 }
+
