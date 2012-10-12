@@ -261,10 +261,8 @@ public class Participant extends ParticipantInfo  implements Serializable{
      *
      * @return "slideTypeOne"
      */
-    public String toggleSlideTypeOne() {
+    public void toggleSlideTypeOne() {
         slideTypePres = true;
-
-        return "slideTypeOne";
     }
 
     /**
@@ -272,10 +270,8 @@ public class Participant extends ParticipantInfo  implements Serializable{
      *
      * @return "slideTypeTwo"
      */
-    public String toggleSlideTypeTwo() {
+    public void toggleSlideTypeTwo() {
         slideTypePres = false;
-
-        return "slideTypeTwo";
     }
 
     /**
