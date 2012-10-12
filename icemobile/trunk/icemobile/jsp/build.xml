@@ -207,17 +207,11 @@
 		<property name="tmp" value="${build.dir}/tmp.js"/>
 		
 		<mkdir dir="${build.web.resources}"/>
-		<loadfile property="modernizr.js" srcFile="${javascript.dir}/modernizr.js"/>
-		<copy file="src/main/javascript/icemobile.js" tofile="${tmp}" overwrite="yes">
-            <filterset begintoken="//include " endtoken=".js">
-                <filter token="modernizr" value="${modernizr.js}"/>
-            </filterset>
-        </copy>
 		<copy tofile="${build.web.resources}/javascript/icemobile.js">
-            <fileset file="${tmp}"/>
+            <fileset file="src/main/javascript/icemobile.js"/>
         </copy>
 		<copy todir="${build.web.resources}/javascript/">
-            <fileset dir="${javascript.dir}" includes="**/iscroll.js"/>
+            <fileset dir="${javascript.dir}" includes="**/iscroll.js,**/simulator-interface.js"/>
         </copy>
 		<delete file="${tmp}"/>
 		<copy todir="${build.meta}">

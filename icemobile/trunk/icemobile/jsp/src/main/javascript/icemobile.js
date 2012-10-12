@@ -18,8 +18,7 @@
 if (!window['ice']) {
     window.ice = {};
 }
-//include modernizr.js
-ice.registerAuxUpload = function (sessionid, uploadURL) {
+ice.registerAuxUpload = function registerAuxUpload(sessionid, uploadURL) {
     var auxiframe = document.getElementById('auxiframe');
     if (null == auxiframe) {
         auxiframe = document.createElement('iframe');
@@ -34,7 +33,7 @@ ice.registerAuxUpload = function (sessionid, uploadURL) {
     }
 };
 
-ice.mobiserial = function(formId, typed) {
+ice.mobiserial = function mobiserial(formId, typed) {
     var form = document.getElementById(formId);
     var els = form.elements;
     var len = els.length;
@@ -97,7 +96,7 @@ ice.mobiserial = function(formId, typed) {
     return qString.join("");
 }
 
-ice.mobilesx = function (element, uploadURL) {
+ice.mobilesx = function mobilesx(element, uploadURL) {
     var ampchar = String.fromCharCode(38);
     var form = ice.formOf(element);
     var formID = form.getAttribute('id');
@@ -153,7 +152,7 @@ ice.mobilesx = function (element, uploadURL) {
     window.location = sxURL;
 }
 
-ice.formOf = function(element) {
+ice.formOf = function formOf(element) {
     var parent = element;
     while (null != parent) {
         if ("form" == parent.nodeName.toLowerCase()) {
@@ -166,7 +165,7 @@ if (!window['ice.mobi']) {
     window.ice.mobi = {};
 }
 
-ice.mobi.flipvalue = function(id, vars) {
+ice.mobi.flipvalue = function flipvalue(id, vars) {
 
     try {
         this.id = id;
@@ -200,7 +199,7 @@ ice.mobi.flipvalue = function(id, vars) {
 
 ice.mobi.carousel = {
     acarousel: null,
-    loaded: function(clientId) {
+    loaded: function (clientId) {
         var carouselId = clientId + '_carousel';
         //carousel iscroll loading
         setTimeout(function () {
@@ -338,7 +337,7 @@ ice.mobi.tabsetController = {
 //so in effect the returned object can operate on the local state declared in the function ...
 //think about them as object fields in Java, also gone is the chore of copying the constructor parameters into fields
 //-------------------------------------
-    TabSet: function (clientId, cfgIn) {
+    TabSet: function TabSet(clientId, cfgIn) {
         // setup tabContainer
         var myTabId = clientId;
         var tabContainer = document.getElementById(clientId);
@@ -481,7 +480,7 @@ ice.mobi.accordionController = {
     //so in effect the returned object can operate on the local state declared in the function ...
     //think about them as object fields in Java, also gone is the chore of copying the constructor parameters into fields
     //-------------------------------------
-    Accordion: function (clientId, cfgIn) {
+    Accordion: function Accordion(clientId, cfgIn) {
         //local variables are not public but public open, close, visible and updateProperties functions can operate on them
         var theContainer = document.getElementById(clientId);
         var openClass = ".mobi-accordion .open";
@@ -545,7 +544,7 @@ ice.mobi.accordionController = {
     }
 }
 
-ice.mobi.panelAutoCenter = function (clientId) {
+ice.mobi.panelAutoCenter = function panelAutoCenter(clientId) {
     var windowWidth = ice.mobi._windowWidth();
     var windowHeight = ice.mobi._windowHeight();
     var scrollTop = document.body.scrollTop;
@@ -1201,7 +1200,7 @@ ice.mobi.timespinner = {
         this.opened[clientId] = null;
     }
 };
-ice.mobi.setCookie = function(name,val,path){
+ice.mobi.setCookie = function setCookie(name,val,path){
 	if( !val ){
 		var date = new Date();
 		date.setTime(date.getTime()+(-1*24*60*60*1000));
