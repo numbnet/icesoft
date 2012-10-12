@@ -54,10 +54,10 @@ span.error {
     float:left;
 }
 #right{
-    width:70%;overflow:hidden;
+    width:70%;overflow-y:scroll;
 }
 #left{
-    width:30%;overflow-y: auto;
+    width:30%;overflow-y: scroll;
     border-right:1px solid darkgray;
 }
 

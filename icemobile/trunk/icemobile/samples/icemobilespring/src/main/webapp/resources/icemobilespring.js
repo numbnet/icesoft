@@ -6,10 +6,9 @@ function equalizeElementHeights(element1Id,element2Id) {
         if( element1 && element2 ){
             var height = 0;
             var body = window.document.body;
-            /*if (window.innerHeight) {
+            if (window.innerHeight) {
                 height = window.innerHeight;
-            } else */
-            if (body.parentElement.clientHeight) {
+            } else if (body.parentElement.clientHeight) {
                 height = body.parentElement.clientHeight;
             } else if (body) {
                 if (body.clientHeight) {
@@ -172,8 +171,7 @@ MvcUtil.enhanceAllLinks = function(parent, updateRegion)  {
 };
 if( window.history && window.history.pushState ){
     window.addEventListener("popstate", function(e) {
-        if( e.state != null ){ //prevents reloading ajax on first page load
-            $('.ajaxzone').load(location.pathname);
-        }
+        $('.ajaxzone').load(location.pathname);
+        e.preventDefault();
     });
 }
