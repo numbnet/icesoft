@@ -243,7 +243,7 @@ public class DataTableMeta extends UIDataMeta {
     private String currentPageReportTemplate;
 
     @Property(tlddoc = "Defines a coded string representing the controls available as part of" +
-            " the paginator. Default is: \"{FirstPageLink} {PrevgetSEliousPageLink} " +
+            " the paginator. Default is: \"{FirstPageLink} {PreviousPageLink} " +
             "{PageLinks} {NextPageLink} {LastPageLink}\".")
     private String paginatorTemplate;
 

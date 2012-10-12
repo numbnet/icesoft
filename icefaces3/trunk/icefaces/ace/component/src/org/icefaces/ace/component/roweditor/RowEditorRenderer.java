@@ -27,7 +27,6 @@
  */
 package org.icefaces.ace.component.roweditor;
 
-import org.icefaces.ace.component.celleditor.CellEditor;
 import org.icefaces.ace.component.column.Column;
 import org.icefaces.ace.component.datatable.DataTable;
 import org.icefaces.ace.component.datatable.DataTableConstants;
@@ -38,17 +37,51 @@ import org.icefaces.ace.renderkit.CoreRenderer;
 import org.icefaces.ace.util.HTML;
 import org.icefaces.render.MandatoryResourceComponent;
 
-import javax.faces.component.NamingContainer;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UINamingContainer;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import java.io.IOException;
-import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+import java.util.ResourceBundle;
 
 @MandatoryResourceComponent(tagName="rowEditor", value="org.icefaces.ace.component.roweditor.RowEditor")
 public class RowEditorRenderer extends CoreRenderer {
+
+    private static String ACE_MESSAGES_BUNDLE = "org.icefaces.ace.resources.messages";
+    private static String MESSAGE_KEY_PREFIX = "org.icefaces.ace.component.roweditor.";
+
+    private static enum ICON {
+        PENCIL, CHECKMARK, CROSSOUT;
+
+        String getTitle(RowEditor editor) {
+            // Get per component titles
+            String title = null;
+
+            if (this == PENCIL)
+                title = editor.getPencilTitle();
+            else if (this == CHECKMARK)
+                title = editor.getCheckmarkTitle();
+            else if (this == CROSSOUT)
+                title = editor.getCrossoutTitle();
+
+            if (title != null) return title;
+
+            // Get global titles
+            FacesContext context = FacesContext.getCurrentInstance();
+            Locale locale = context.getViewRoot().getLocale();
+            ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+            String bundleName = context.getApplication().getMessageBundle();
+
+            if (classLoader == null) classLoader = bundleName.getClass().getClassLoader();
+            if (bundleName == null) bundleName = ACE_MESSAGES_BUNDLE;
+
+            ResourceBundle bundle = ResourceBundle.getBundle(bundleName, locale, classLoader);
+
+            return bundle.getString(MESSAGE_KEY_PREFIX + this.name() + "_TITLE");
+        }
+    }
 
     @Override
     public void decode(FacesContext context, UIComponent component) {
@@ -101,6 +134,7 @@ public class RowEditorRenderer extends CoreRenderer {
 
             if (!hasActiveEditors) {
                 writer.startElement("a", null);
+                writer.writeAttribute("title", ICON.PENCIL.getTitle(editor), null);
                 writer.writeAttribute("class", "ui-icon ui-icon-pencil", null);
                 writer.writeAttribute("tabindex", "0", null);
                 writer.endElement("a");
@@ -108,11 +142,13 @@ public class RowEditorRenderer extends CoreRenderer {
 
             if (hasActiveEditors) {
                 writer.startElement("a", null);
+                writer.writeAttribute("title", ICON.CHECKMARK.getTitle(editor), null);
                 writer.writeAttribute("class", "ui-icon ui-icon-check", null);
                 writer.writeAttribute("tabindex", "0", null);
                 writer.endElement("a");
 
                 writer.startElement("a", null);
+                writer.writeAttribute("title", ICON.CROSSOUT.getTitle(editor), null);
                 writer.writeAttribute("class", "ui-icon ui-icon-close", null);
                 writer.writeAttribute("tabindex", "0", null);
                 writer.endElement("a");
