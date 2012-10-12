@@ -40,7 +40,7 @@ public class EchoController {
     }
     
     @RequestMapping(value = "/menu")
-    public void doRequest() {
+    public void doMenuRequest() {
     }
     
     @RequestMapping(value = "/accordion")
