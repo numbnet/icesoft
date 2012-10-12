@@ -45,7 +45,7 @@
                          onkeypress="if (event.keyCode == 13) { onchange(); return false; }">
                 <f:ajax event="change" listener="#{mapBean.ajaxLookup}"/>
             </h:inputText>
-            <h:commandButton value="Find Address"
+            <h:commandButton id="findAddress" value="Find Address"
                              actionListener="#{mapBean.lookup}"/>
         </h:form>
 		<p>Relevant section of the Google Maps API: <a href="https://developers.google.com/maps/documentation/javascript/reference#Map">Map</a></p>
