@@ -44,7 +44,7 @@ import org.artofsolving.jodconverter.office.OfficeManager;
 /**
  * Manage startup and shutdown of OpenOffice conversion.
  */
-@ManagedBean
+@ManagedBean(eager = true )
 @ApplicationScoped
 public class OooManager {
     private static Log log = LogFactory.getLog(OooManager.class);
