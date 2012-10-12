@@ -9,9 +9,10 @@
 <jsp:include page="./inc/head.jsp"/>
 <body>
 </c:if>
-    <div class="ajaxzone">
-        <mobi:pagePanel>
-            <mobi:smallView>
+
+    <mobi:smallView>
+        <div class="ajaxzone">
+            <mobi:pagePanel>
                 <mobi:pagePanelHeader>
                     <a href="menu" id="menuLink" class="mobi-button  mobi-button-default">&#9776;</a>
                     ICEmobile - Tab Set
@@ -19,27 +20,44 @@
                 <mobi:pagePanelBody>
                     <%@ include file="/WEB-INF/views/inc/tabset-content.jsp" %>
                 </mobi:pagePanelBody>
-                <script type="text/javascript">
-                    MvcUtil.enhanceLink("#menuLink","body");
-                </script>
-            </mobi:smallView>
-            <mobi:largeView>
-                 <mobi:pagePanelHeader>ICEmobile Spring MVC Showcase - Tab Set</mobi:pagePanelHeader>
-                <mobi:pagePanelBody>
-                    <div id="left">
-                        <%@ include file="/WEB-INF/views/inc/menu.jsp" %>
-                    </div>
-                    <div id="right">
-                        <%@ include file="/WEB-INF/views/inc/tabset-content.jsp" %>
-                    </div>
-                    <script type="text/javascript">
-                    addEqualizeElementHeightsAfterResizeListener('left','right');
-                    </script>
-                </mobi:pagePanelBody>
-            </mobi:largeView>
-        </mobi:pagePanel>
-    </div>
+            </mobi:pagePanel>
+            <script type="text/javascript">
+                MvcUtil.enhanceLink("#menuLink","body");
+            </script>
+         </div>
+    </mobi:smallView>
+    
+    <mobi:largeView>
+        <c:choose>
+            <c:when test="${!ajaxRequest}">
+                <mobi:pagePanel>
+                    <mobi:pagePanelHeader>ICEmobile Spring MVC Showcase - Tab Set</mobi:pagePanelHeader>
+                    <mobi:pagePanelBody>
+                        <div id="left">
+                            <%@ include file="/WEB-INF/views/inc/menu.jsp" %>
+                        </div>
+                        <div id="right">
+                            <div class="ajaxzone">
+                                <%@ include file="/WEB-INF/views/inc/tabset-content.jsp" %>
+                            </div>
+                        </div>
+                        <script type="text/javascript">
+                        addEqualizeElementHeightsAfterResizeListener('left','right');
+                        </script>
+                    </mobi:pagePanelBody>
+                 </mobi:pagePanel>
+             </c:when>
+             <c:otherwise>
+                <%@ include file="/WEB-INF/views/inc/tabset-content.jsp" %>
+             </c:otherwise>
+         </c:choose>
+    </mobi:largeView>
+
+    
 <c:if test="${!ajaxRequest}">
+    <script type="text/javascript">
+        MvcUtil.enhanceAllLinks("#left",".ajaxzone");
+    </script>
 </body>
 </html>
 </c:if>

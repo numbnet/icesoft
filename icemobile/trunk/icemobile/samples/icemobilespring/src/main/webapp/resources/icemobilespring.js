@@ -152,6 +152,11 @@ MvcUtil.enhanceAllLinks = function(parent, updateRegion)  {
         $(parent).find('a').each( function(){
             var href = $(this).attr('href');
             $(this).click(function () {
+                //link coloring
+                $('#menu').find('a').each( function(){
+                    $(this).attr('style','');
+                });
+                $(this).css({backgroundColor:'#EFEFEF'});
                 $(updateRegion).load(href);
                 if( window.history && window.history.pushState ){
                     history.pushState(null, null, href);
@@ -160,15 +165,15 @@ MvcUtil.enhanceAllLinks = function(parent, updateRegion)  {
                 else{
                     return true;
                 }
-                
             });
-            $(this).attr('href','#'+href);
         });
         
     });
 };
 if( window.history && window.history.pushState ){
     window.addEventListener("popstate", function(e) {
-        $('.ajaxzone').load(location.pathname);
+        if( e.state != null ){ //prevents reloading ajax on first page load
+            $('.ajaxzone').load(location.pathname);
+        }
     });
 }
