@@ -1,16 +1,9 @@
 package org.icefaces.mobi.component.largeview;
 
-import java.util.Map;
-import java.util.logging.Logger;
-
 import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
 import javax.faces.view.facelets.ComponentConfig;
 import javax.faces.view.facelets.ComponentHandler;
-import javax.faces.view.facelets.CompositeFaceletHandler;
 import javax.faces.view.facelets.FaceletContext;
-import javax.faces.view.facelets.FaceletHandler;
-import javax.faces.view.facelets.FacetHandler;
 
 import org.icefaces.mobi.utils.MobiJSFUtils;
 import org.icemobile.util.ClientDescriptor;
@@ -31,7 +24,7 @@ public class LargeViewHandler  extends ComponentHandler {
             throws java.io.IOException, javax.faces.FacesException, javax.el.ELException {
 
         ClientDescriptor client = MobiJSFUtils.getClientDescriptor();
-        if (c instanceof LargeView && client.isDesktopBrowser() || client.isTabletBrowser()) {
+        if (c instanceof LargeView && ( client.isDesktopBrowser() || client.isTabletBrowser())) {
             this.nextHandler.apply(ctx, c);
         }
     }
