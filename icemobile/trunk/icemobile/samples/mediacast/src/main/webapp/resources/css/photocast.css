@@ -53,8 +53,12 @@ label{
 	min-height: 20px;
 	padding:10px 10px 5px;
 }
+.viewer{
+    display:block;
+    clear:both;
+}
 
-.imageViewer {
+.viewer video, .viewer audio, .viewer image {
     width: 100%;
 }
 
@@ -250,7 +254,6 @@ textarea {
 .message-title {
 	opacity: 0.5;
 	background-color: #B4B4B4;
-	margin-bottom: -26px;
 	border-bottom: 1px solid black;
 	padding: 0 0 1px 0;
 }
