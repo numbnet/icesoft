@@ -1,12 +1,14 @@
 package org.icemobile.samples.mediacast;
 
+import java.io.Serializable;
+
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 
 @ManagedBean
 @SessionScoped
-public class MediaView {
+public class MediaView implements Serializable{
 	
 	private MediaMessage media;
 	

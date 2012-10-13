@@ -1,5 +1,6 @@
 package org.icemobile.samples.mediacast;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -16,7 +17,7 @@ import org.apache.commons.lang3.StringUtils;
 
 @ManagedBean
 @SessionScoped
-public class GalleryView {
+public class GalleryView implements Serializable {
 	
 	@ManagedProperty(value="#{mediaStore}")
 	private MediaStore mediaStore;
