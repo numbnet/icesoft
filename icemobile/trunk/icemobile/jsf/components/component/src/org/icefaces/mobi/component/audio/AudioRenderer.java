@@ -70,7 +70,7 @@ public class AudioRenderer extends BaseResourceRenderer {
             if (disabled) {
                 writer.writeAttribute("disabled", "disabled", null);
             }
-            writer.writeAttribute("height", "20", null);
+            writer.writeAttribute("height", "45", null);
             writer.writeAttribute("width", "100", null);
             writer.endElement("video");
         }
