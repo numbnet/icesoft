@@ -26,7 +26,7 @@
       xmlns:icecore="http://www.icefaces.org/icefaces/core">
 <h:head>
     <title>ICEfaces Mobile Showcase</title>
-    <mobi:deviceResource theme="#{themeBean.currentTheme}"/>
+    <mobi:deviceResource theme="#{empty themeBean.currentTheme ? '' : themeBean.currentTheme.name}"/>
     <h:outputStylesheet library="css" name="showcase.css" media="screen"/>
     <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=true"/>
     <mobi:googleAnalytics/>
