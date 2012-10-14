@@ -217,6 +217,7 @@
 		<copy todir="${build.meta}">
             <fileset dir="src/main/resources/META-INF" includes="**/icemobile.tld"/>
         </copy>
+		<compressjs comp="icemobile" path="${build.web.resources}/javascript" />
 	</target>
 
     <target name="jar" depends="compile, skins" description="fill the jar">
@@ -388,7 +389,21 @@
 		</sequential>
 	</macrodef>
 
-    
+	<macrodef name="compressjs">
+	    <attribute name="comp" />
+	    <attribute name="path" />
+	    <sequential>
+	        <echo>path is @{path}</echo>
+	        <echo>comp is @{comp}</echo>
+	        <java jar="${lib.dir}/generator/yui-compressor.jar" fork="yes">
+	            <arg line="--preserve-semi" />
+	            <arg value="@{path}/@{comp}.js" />
+	            <arg value="-o" />
+	            <arg value="@{path}/@{comp}-min.js" />
+	        </java>
+	    </sequential>
+	</macrodef>
+
 
 </project>
 

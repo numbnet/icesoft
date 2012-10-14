@@ -27,6 +27,7 @@ import org.icemobile.jsp.util.MobiJspConstants;
 import org.icemobile.jsp.util.Util;
 import org.icemobile.util.ClientDescriptor;
 import org.icemobile.util.Constants;
+import org.icemobile.util.EnvUtils;
 import org.icemobile.util.SXUtils;
 
 /**
@@ -36,8 +37,6 @@ public class DeviceResourceTag extends BaseSimpleTag {
 
 	static Logger log = Logger.getLogger(DeviceResourceTag.class.getName());
 
-	// CSS style extension circa 2011
-	private static final String CSS_EXT = ".css";
 	// compressed css post-fix notation.
 	public static final String CSS_COMPRESSION_POSTFIX = "-min";
 
@@ -76,6 +75,8 @@ public class DeviceResourceTag extends BaseSimpleTag {
 	
 	public static final String SCRIPT_ICEPUSH = "<script type='text/javascript' src='code.icepush'></script>";
 	public static final String SCRIPT_ICEMOBILE = "<script type='text/javascript' src='%s%s/javascript/icemobile.js'></script>";
+	public static final String SCRIPT_ICEMOBILE_PROD = "<script type='text/javascript' src='%s%s/javascript/icemobile-min.js'></script>";
+	public static final String SCRIPT_SIMULATOR = "<script type='text/javascript' src='%s%s/javascript/simulator-interface.js'></script>";
 	
 	//tag attributes
 	private String name;
@@ -116,7 +117,17 @@ public class DeviceResourceTag extends BaseSimpleTag {
 			}
 		}
 		writeOutDeviceStyleSheets();
-		out.write(String.format(SCRIPT_ICEMOBILE, contextRoot, MobiJspConstants.RESOURCE_BASE_URL));
+		if( EnvUtils.isProductionStage(getRequest())){
+		    out.write(String.format(SCRIPT_ICEMOBILE_PROD, contextRoot, MobiJspConstants.RESOURCE_BASE_URL));
+		}
+		else{
+		    out.write(String.format(SCRIPT_ICEMOBILE, contextRoot, MobiJspConstants.RESOURCE_BASE_URL));
+		}
+		
+		if( client.isDesktopBrowser() ){
+		    out.write(String.format(SCRIPT_SIMULATOR, contextRoot, MobiJspConstants.RESOURCE_BASE_URL));
+		}
+		
 		if( includePush ){
 			out.write(SCRIPT_ICEPUSH);
 		}
@@ -209,9 +220,7 @@ public class DeviceResourceTag extends BaseSimpleTag {
 			// load compressed css if this is production environment.
 			fileName = nameVal;
 			
-			String applicationStage = pageContext.getServletContext().
-					getInitParameter("org.icemobile.project.stage");
-			if (applicationStage != null && "production".equalsIgnoreCase(applicationStage)) {
+			if (EnvUtils.isProductionStage(getRequest())) {
 				fileName = fileName.concat(CSS_COMPRESSION_POSTFIX);
 			}
 			libVal = DEFAULT_LIBRARY;
