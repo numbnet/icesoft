@@ -375,7 +375,7 @@ public class TLDGenerator extends AbstractGenerator {
         
         // TODO: pick up version
 //        writer.println("  <tlib-version>" + "@tlib-version@" + "</tlib-version>");
-        writer.println("  <tlib-version>" + "3.0.0" + "</tlib-version>");
+        writer.println("  <tlib-version>" + "3.2.0" + "</tlib-version>");
         writer.println("  <jsp-version>1.2</jsp-version>");
         writer.println("  <short-name>" + getPrefix() + "</short-name>");        
         writer.println("  <uri>" + getURI() + "</uri>");        
