@@ -21,15 +21,14 @@ import javax.el.MethodExpression;
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.context.FacesContext;
-import javax.faces.event.AbortProcessingException;
-import javax.faces.event.FacesEvent;
-import javax.faces.event.PhaseId;
-import javax.faces.event.ValueChangeEvent;
+import javax.faces.event.*;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
-public class TabSet extends TabSetBase {
+@ListenerFor(systemEventClass= PreRenderViewEvent.class)
+public class TabSet extends TabSetBase implements ComponentSystemEventListener {
     
     public TabSet() {
     }
@@ -109,5 +108,59 @@ public class TabSet extends TabSetBase {
                 tabPaneClientIds.get(executeIndex).equals(tabPaneClientId);
 //System.out.println("isExecutingTabPaneContents()    ret: " + ret);
         return ret;
+    }
+
+    List<String> getVisitedTabClientIdsAsList() {
+        String vtc = getVisitedTabClientIds();
+        String[] vtcArray = vtc != null ? vtc.split("\\;") : new String[0];
+        for (int i = 0; i < vtcArray.length; i++) {
+            if ("null".equals(vtcArray[i])) {
+                vtcArray[i] = null;
+            }
+        }
+        List<String> visitedTabClientIds = new ArrayList<String>(Arrays.asList(vtcArray));
+
+        //System.out.println("TabSet.getVisitedTabClientIds  string: " + vtc);
+        //System.out.println("TabSet.getVisitedTabClientIds  list  : " + visitedTabClientIds);
+        //System.out.println("TabSet  initialStateMarked: " + initialStateMarked());
+        return visitedTabClientIds;
+    }
+
+    void setVisitedTabClientIdsFromList(List<String> visitedTabClientIds) {
+        StringBuilder vtcBuilder = new StringBuilder();
+        for (String visited : visitedTabClientIds) {
+            vtcBuilder.append(visited).append(';');
+        }
+        if (vtcBuilder.length() > 0) {
+            vtcBuilder.setLength(vtcBuilder.length()-1);
+        }
+        setVisitedTabClientIds(vtcBuilder.toString());
+        //System.out.println("TabSet.setVisitedTabClientIds  list  : " + visitedTabClientIds);
+        //System.out.println("TabSet.setVisitedTabClientIds  string: " + vtcBuilder.toString());
+    }
+
+    /*
+    @Override
+    public void markInitialState() {
+        System.out.println("TabSet.markInitialState  clientId: " + getClientId() + "  phaseId: " + FacesContext.getCurrentInstance().getCurrentPhaseId());
+        super.markInitialState();
+    }
+
+    @Override
+    public void clearInitialState() {
+        System.out.println("TabSet.clearInitialState  clientId: " + getClientId() + "  phaseId: " + FacesContext.getCurrentInstance().getCurrentPhaseId());
+        Thread.dumpStack();
+        super.clearInitialState();
+    }
+    */
+
+    public void processEvent(ComponentSystemEvent event) throws AbortProcessingException {
+        String vtc = getVisitedTabClientIds();
+        //System.out.println("TabSet.processEvent  vtc: " + vtc);
+        if (vtc == null) {
+            //System.out.println("About to set");
+            setVisitedTabClientIds("");
+            //System.out.println("Done set");
+        }
     }
 }

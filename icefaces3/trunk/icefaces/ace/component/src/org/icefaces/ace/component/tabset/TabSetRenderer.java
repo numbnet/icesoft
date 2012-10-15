@@ -196,12 +196,8 @@ public class TabSetRenderer extends CoreRenderer {
 
         // The tabs whose contents we need to render. Subset of clickableTabs,
         // where the order has a different meaning: [safeIndex] -> tabClientId
-        List visitedTabClientIds = tabSet.getVisitedTabClientIds();
-        if (visitedTabClientIds == null) {
-            visitedTabClientIds = new ArrayList();
-            tabSet.setVisitedTabClientIds(visitedTabClientIds);
-        }
-        
+        List<String> visitedTabClientIds = tabSet.getVisitedTabClientIdsAsList();
+
         // Used to detect changes from last lifecycle
         List<String> toRender = new ArrayList<String>();
         Set<String> renderWithoutUpdate = new HashSet<String>();
@@ -242,12 +238,15 @@ public class TabSetRenderer extends CoreRenderer {
                 visitedTabClientIds.add(tabClientId);
             }
         }
+        tabSet.setVisitedTabClientIdsFromList(visitedTabClientIds);
 
         final String safeIdPrefix = clientId+"_safe_";
         int clickableLen = clickableTabs.size();
         String[] safeIds = new String[clickableLen];
         for (int i = 0; i < clickableLen; i++) {
+            //System.out.println("Clickable + " + i + " of " + clickableLen + " : " + clickableTabs.get(i));
             int safeIndex = visitedTabClientIds.indexOf(clickableTabs.get(i));
+            //System.out.println("  safeIndex: " + safeIndex);
             if (safeIndex >= 0) {
                 safeIds[i] = safeIdPrefix + safeIndex;
             }
