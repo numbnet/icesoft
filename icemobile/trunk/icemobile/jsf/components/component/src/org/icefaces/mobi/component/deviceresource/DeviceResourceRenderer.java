@@ -91,7 +91,7 @@ public class DeviceResourceRenderer  extends Renderer implements javax.faces.eve
             if( ios6 ){
                 writer.write(META_IOS_WEBAPPCAPABLE);
                 writer.write(META_IOS_APPSTATUSBAR);
-                if( comp.isIncludeIOSSmartAppBanner() && !client.isSXRegistered()){
+                if (isNeedAppBanner(context, comp, client))  {
                     String smartAppMeta = String.format(META_IOS_SMARTAPPBANNER, IOS_APP_ID, 
                             SXUtils.getRegisterSXURL(MobiJSFUtils.getRequest(context),
                                     MobiJSFConstants.SX_UPLOAD_PATH));
@@ -109,7 +109,16 @@ public class DeviceResourceRenderer  extends Renderer implements javax.faces.eve
         encodeThemeMarker(writer,theme);
 
     }
-    
+
+    private boolean isNeedAppBanner(FacesContext facesContext, 
+            DeviceResource comp, ClientDescriptor client)  {
+        ProjectStage projectStage = facesContext.getApplication().getProjectStage();
+        if (ProjectStage.Development == projectStage)  {
+            return false;
+        }
+        return (comp.isIncludeIOSSmartAppBanner() && !client.isSXRegistered());
+    }
+
     private void writeOutDeviceStyleSheets(FacesContext facesContext, DeviceResource comp, Theme theme) throws IOException {
         
         /**
