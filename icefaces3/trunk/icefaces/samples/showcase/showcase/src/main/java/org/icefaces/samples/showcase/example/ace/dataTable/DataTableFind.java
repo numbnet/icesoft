@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.icefaces.samples.showcase.example.compat.dataTable.Car;
 import org.icefaces.samples.showcase.dataGenerators.utilityClasses.DataTableData;
+import org.icefaces.samples.showcase.util.FacesUtils;
 
 /**
  * Copyright 2004-2012 ICEsoft Technologies Canada Corp.
@@ -66,12 +67,11 @@ public class DataTableFind extends ComponentExampleImpl<DataTableFind> implement
     public String selectedEffectType = "default";
     public String selectedSearchMode = "contains";
     public String searchQuery = "";
-    public DataTable iceTable = null;
     public String[] selectedColumns = new String[]{"name", "id", "chassis", "weight", "acceleration", "mpg", "cost"};
     public int lastFoundIndex = -1;
     private boolean caseSensitive;
     private List<Car> cars;
-    
+
     public final SelectItem[] SEARCH_MODES = {new SelectItem("startsWith", "Starts With"),
             new SelectItem("endsWith", "Ends With"),
             new SelectItem("contains", "Contains"),
@@ -100,6 +100,8 @@ public class DataTableFind extends ComponentExampleImpl<DataTableFind> implement
     }
 
     public void find(javax.faces.event.ActionEvent e) {
+        DataTable iceTable = ((DataTableBindings)(FacesUtils.getManagedBean("dataTableBindings"))).getTable(this.getClass());
+
         DataTable.SearchType type = null;
         if (selectedSearchMode.equals("contains"))
             type = DataTable.SearchType.CONTAINS;
@@ -176,14 +178,6 @@ public class DataTableFind extends ComponentExampleImpl<DataTableFind> implement
 
     public void setSearchQuery(String searchQuery) {
         this.searchQuery = searchQuery;
-    }
-
-    public DataTable getIceTable() {
-        return iceTable;
-    }
-
-    public void setIceTable(DataTable iceTable) {
-        this.iceTable = iceTable;
     }
 
     public boolean isCaseSensitive() {
