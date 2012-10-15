@@ -28,6 +28,7 @@
 package org.icefaces.ace.component.sliderentry;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 import javax.el.MethodExpression;
 import javax.faces.FacesException;
@@ -46,6 +47,7 @@ import javax.faces.event.ValueChangeEvent;
 
 @MandatoryResourceComponent(tagName="sliderEntry", value="org.icefaces.ace.component.sliderentry.SliderEntry")
 public class SliderEntryRenderer extends CoreRenderer{
+    private Map<String, Object> domUpdateMap = new HashMap<String, Object>();
 
     @Override
     public void decode(FacesContext context, UIComponent component) {
@@ -100,6 +102,7 @@ public class SliderEntryRenderer extends CoreRenderer{
 
     @Override
 	public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
+        domUpdateMap.clear();
 		SliderEntry slider = (SliderEntry) component;
 		
 		encodeMarkup(facesContext, slider);
@@ -178,6 +181,12 @@ public class SliderEntryRenderer extends CoreRenderer{
 			writer.endElement("div");
 		}
 		
+        domUpdateMap.put("value", slider.getValue());
+        writer.startElement("span", null);
+        writer.writeAttribute("data-hashcode", domUpdateMap.hashCode(), null);
+        writer.writeAttribute("style", "display: none;", null);
+        writer.endElement("span");
+
 		writer.endElement("div");
 	}
 
@@ -220,6 +229,7 @@ public class SliderEntryRenderer extends CoreRenderer{
         if(slider.getOnSlideStart() != null) jb.entry("onSlideStart", "function(event, ui) {" + slider.getOnSlideStart() + "}", true);
         if(slider.getOnSlide() != null) jb.entry("onSlide", "function(event, ui) {" + slider.getOnSlide() + "}", true);
         if(slider.getOnSlideEnd() != null) jb.entry("onSlideEnd", "function(event, ui) {" + slider.getOnSlideEnd() + "}", true);
+        jb.entry("value", slider.getValue());
 		
 		encodeClientBehaviors(context, slider, jb);
 		
