@@ -488,24 +488,13 @@ public class DOMUtils {
                 log.log(Level.INFO, "nodeDiff debug " + config);
             }
             if (isDebugAB(config))  {
-                String oldDebug = "null document";
-                String newDebug = "null document";
-                if (null != oldNode)  {
-                    oldDebug = toDebugStringDeep(oldNode);
-                }  
-                if (null != newNode)  {
-                    newDebug = toDebugStringDeep(newNode);
-                }  
-                log.log(Level.INFO, "nodeDiff--------------debugA\n");
-                log.log(Level.INFO, "nodeDiff oldNode \n" + oldDebug);
-                log.log(Level.INFO, "nodeDiff--------------debugB\n");
-                log.log(Level.INFO, "nodeDiff newNode \n" + newDebug);
-                log.log(Level.INFO, "nodeDiff--------------------\n");
+                dumpDebugAB(oldNode, newNode);
             }
             boolean success;
             success = compareNodes(config, nodeDiffs, oldNode, newNode);
             if (!success)  {
                 log.severe("Diff propagated to root but no ID set " + newNode);
+                dumpDebugAB(oldNode, newNode);
             }
             assert checkPrunes(nodeDiffs.asList());
         } catch (Throwable t)  {
@@ -1084,6 +1073,22 @@ public class DOMUtils {
 
     static boolean isDebugAB(DiffConfig config)  {
         return ((null != config) && config.isDebugAB);
+    }
+
+    static void dumpDebugAB(Node oldNode, Node newNode)  {
+        String oldDebug = "null document";
+        String newDebug = "null document";
+        if (null != oldNode)  {
+            oldDebug = toDebugStringDeep(oldNode);
+        }  
+        if (null != newNode)  {
+            newDebug = toDebugStringDeep(newNode);
+        }  
+        log.log(Level.INFO, "nodeDiff--------------debugA\n");
+        log.log(Level.INFO, "nodeDiff oldNode \n" + oldDebug);
+        log.log(Level.INFO, "nodeDiff--------------debugB\n");
+        log.log(Level.INFO, "nodeDiff newNode \n" + newDebug);
+        log.log(Level.INFO, "nodeDiff--------------------\n");
     }
 
     public static String getNodeId(Node node)  {
