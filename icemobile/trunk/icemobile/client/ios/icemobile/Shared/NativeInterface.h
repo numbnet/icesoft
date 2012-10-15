@@ -35,6 +35,7 @@
     BOOL uploading;
     NSMutableData *receivedData;
     QRScanner *qrScanner;
+    UIImagePickerController *currentPicker;
     AVAudioRecorder *soundRecorder;
     UIPopoverController *camPopover;
     UIPopoverController *scanPopover;
@@ -55,6 +56,7 @@
 @property (assign) BOOL uploading;
 @property (retain) NSMutableData *receivedData;
 @property (retain) QRScanner *qrScanner;
+@property (nonatomic, retain) UIImagePickerController *currentPicker;
 @property (retain) AVAudioRecorder *soundRecorder;
 @property (nonatomic, retain) UIPopoverController *camPopover;
 @property (nonatomic, retain) UIPopoverController *scanPopover;
@@ -86,6 +88,7 @@
 - (NSMutableDictionary*)parseQuery: (NSString*)queryString;
 - (void)showImagePicker: (UIImagePickerController*)picker;
 - (void)dismissImagePicker;
+- (void)doAlbumButton:(id)sender;
 - (void)setThumbnail: (UIImage*)image at: (NSString *)thumbId;
 - (UIImage*)scaleImage: (UIImage*)image toSize: (int)finalSize;
 - (UIImage*)scaleImage: (UIImage*)image maxWidth: (int)maxw maxHeight: (int)maxh ;

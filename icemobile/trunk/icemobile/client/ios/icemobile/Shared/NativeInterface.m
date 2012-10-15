@@ -39,6 +39,7 @@
 @synthesize uploading;
 @synthesize receivedData;
 @synthesize qrScanner;
+@synthesize currentPicker;
 @synthesize camPopover;
 @synthesize scanPopover;
 @synthesize audioPopover;
@@ -46,6 +47,7 @@
 @synthesize augController;
 @synthesize soundRecorder;
 @synthesize popoverSource;
+@synthesize motionManager;
 
 static char base64EncodingTable[64] = {
   'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P',
@@ -122,10 +124,28 @@ static char base64EncodingTable[64] = {
     picker.allowsEditing = YES;
     if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera ])  {
         picker.sourceType = UIImagePickerControllerSourceTypeCamera;
+        UIView *overlayView = [[UIView alloc] initWithFrame:picker.view.frame];
+        UIButton *albumButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        [albumButton setTitle:@"Album" forState:UIControlStateNormal];
+        albumButton.alpha = 0.5;
+        [albumButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+        albumButton.frame = CGRectMake(picker.view.frame.size.width - 70,
+            picker.view.frame.size.height - 100,60,30);
+        [albumButton addTarget:self action:@selector(doAlbumButton:)
+                forControlEvents:UIControlEventTouchDown];
+        [overlayView addSubview:albumButton]; 
+        picker.cameraOverlayView = overlayView;
+        self.currentPicker = picker;
     }
     [self showImagePicker:picker];
     
     return YES;
+}
+
+- (void)doAlbumButton:(id)sender  {
+    if (nil != self.currentPicker)  {
+        self.currentPicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+    }
 }
 
 - (BOOL)play: (NSString*)audioId  {
@@ -313,6 +333,7 @@ static char base64EncodingTable[64] = {
     } else {
         [self.controller dismissModalViewControllerAnimated:YES];
     }
+    self.currentPicker = nil;
 }
 
 - (void)setThumbnail: (UIImage*)image at: (NSString *)thumbId  {
