@@ -36,6 +36,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Collection;
 import org.icefaces.samples.showcase.dataGenerators.utilityClasses.DataTableData;
+import org.icefaces.samples.showcase.util.FacesUtils;
 
 @ComponentExample(
         parent = DataTableBean.BEAN_NAME,
@@ -62,9 +63,9 @@ public class DataTableRowState extends ComponentExampleImpl<DataTableRowState> i
     public static final String BEAN_NAME = "dataTableRowState";
 
     private RowStateMap stateMap = new RowStateMap();
-    private DataTable table;
     private List<Car> selection;
     private List<Car> carsData;
+
     /////////////---- CONSTRUCTOR BEGIN
     public DataTableRowState() {
         super(DataTableRowState.class);
@@ -81,8 +82,6 @@ public class DataTableRowState extends ComponentExampleImpl<DataTableRowState> i
     public void setStateMap(RowStateMap stateMap) { this.stateMap = stateMap; }
     public List<Car> getSelection() { return stateMap.getSelected(); }
     public void setSelection(List<Car> selection) {}
-    public DataTable getTable() { return table; }
-    public void setTable(DataTable table) { this.table = table; }
     public List<Car> getCarsData() { return carsData; }
     public void setCarsData(List<Car> carsData) { this.carsData = carsData; }
     
@@ -143,6 +142,7 @@ public class DataTableRowState extends ComponentExampleImpl<DataTableRowState> i
     }
 
     public void startAllEditing(ActionEvent e) {
+        DataTable table = ((DataTableBindings)(FacesUtils.getManagedBean("dataTableBindings"))).getTable(this.getClass());
         Collection<RowState> allRows = stateMap.values();
         List<Column> columns = table.getColumns();
         
@@ -163,6 +163,7 @@ public class DataTableRowState extends ComponentExampleImpl<DataTableRowState> i
         }
     }
     public void startEditing(ActionEvent e) {
+        DataTable table = ((DataTableBindings)(FacesUtils.getManagedBean("dataTableBindings"))).getTable(this.getClass());
         List<Column> columns = table.getColumns();
         for (Object rowData : stateMap.getSelected()) {
             RowState s = stateMap.get(rowData);
@@ -174,6 +175,7 @@ public class DataTableRowState extends ComponentExampleImpl<DataTableRowState> i
         }
     }
     public void stopEditing(ActionEvent e) {
+        DataTable table = ((DataTableBindings)(FacesUtils.getManagedBean("dataTableBindings"))).getTable(this.getClass());
         List<Column> columns = table.getColumns();
         for (Object rowData : stateMap.getSelected()) {
             RowState s = stateMap.get(rowData);
@@ -183,6 +185,7 @@ public class DataTableRowState extends ComponentExampleImpl<DataTableRowState> i
         }
     }
     public void stopAllEditing(ActionEvent e) {
+        DataTable table = ((DataTableBindings)(FacesUtils.getManagedBean("dataTableBindings"))).getTable(this.getClass());
         for (Column c : table.getColumns())
             if (c.getCellEditor() != null)
                 stateMap.setAllEditing(c.getCellEditor(), false);
