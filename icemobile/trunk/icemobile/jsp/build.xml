@@ -30,6 +30,28 @@
 	<property name="build.meta" value="${build.resources}/META-INF"/>
 	<property name="build.web.resources" value="${build.meta}/web-resources"/>
 	
+	<condition property="version.string" value="${version.primary}.${version.secondary}.${version.tertiary}.${release.type}">
+        <isset property="release.type" />
+    </condition>
+    <property name="version.string" value="${version.primary}.${version.secondary}.${version.tertiary}" />
+
+	<property name="javadoc.title" value="${product} ${product.lib} Java API Documentation" />
+    <property name="javadoc.header" value="${product} ${product.lib} ${version.string}&lt;br&gt;Java API Documentation" />
+    <property name="tld.title" value="${product} ${product.lib} ${version.string} Tag Library Reference" />
+    
+	
+	<propertyset id="product.info">
+        <propertyref name="company"/>
+        <propertyref name="product"/>
+        <propertyref name="version.primary"/>
+        <propertyref name="version.secondary"/>
+        <propertyref name="version.tertiary"/>
+        <propertyref name="release.type"/>
+        <propertyref name="build.number"/>
+        <propertyref name="revision"/>
+    </propertyset>
+
+	
     <property name="jar.file.name" value="${ant.project.name}.jar"/>
     <property name="doc" location="build/docs/"/>
     <property name="tld.doc" location="${doc}/tld"/>
