@@ -18,7 +18,6 @@ package org.icefaces.mobi.component.geolocation;
 
 import org.icefaces.mobi.utils.HTML;
 import org.icefaces.mobi.renderkit.CoreRenderer;
-import org.icemobile.jsp.util.Util;
 
 import javax.faces.application.ProjectStage;
 import javax.faces.application.Resource;
