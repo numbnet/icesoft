@@ -276,7 +276,10 @@ public class DOMResponseWriter extends ResponseWriterWrapper {
                         path = tempCursor.getNodeName() + path;
                         tempCursor = tempCursor.getParentNode();
                     }
-                    log.log(Level.WARNING, "Missing end-element for: " + cursor.getNodeName() + " (path: " + path + ")");
+                    Node idNode = cursor.getAttributes().getNamedItem("id");
+                    log.log(Level.WARNING, "Missing end-element for: " 
+                            + cursor.getNodeName() + (idNode == null ? "" : "["+idNode.toString()+"]") 
+                            + " (path: " + path + ")");
                 }
             }
         }
