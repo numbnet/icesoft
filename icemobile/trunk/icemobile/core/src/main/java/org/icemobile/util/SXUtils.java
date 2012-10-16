@@ -173,14 +173,15 @@ public class SXUtils {
     }
 
     public static String getICEmobileSXScript(HttpServletRequest request,
-            String command, String id, String uploadPath) {
+            String command, Map<String,String> params,
+            String id, String uploadPath) {
         String sessionID = null;
         HttpSession httpSession = request.getSession(false);
         if (null != httpSession) {
             sessionID = httpSession.getId();
         }
         String uploadURL = Utils.getBaseURL(request)+uploadPath;
-        String fullCommand = command + "?id=" + id;
+        String fullCommand = command + "?id=" + id + encodeParams(params);
         String script = "window.location='icemobile://c=";
         try{
             script += URLEncoder.encode(fullCommand, "UTF-8")
@@ -197,6 +198,20 @@ public class SXUtils {
             e.printStackTrace();
         }
         return script;
+    }
+
+    public static String encodeParams(Map<String,String> params)  {
+        if (null == params)  {
+            return "";
+        }
+        StringBuilder result = new StringBuilder();
+        for (String name : params.keySet())  {
+            //initial & required to follow id param
+            result.append("&");
+            result.append(URLEncoder.encode(name)).append("=");
+            result.append(URLEncoder.encode(params.get(name)));
+        }
+        return result.toString();
     }
 
     public static String getICEmobileRegisterSXScript(HttpServletRequest request, String uploadPath) {
