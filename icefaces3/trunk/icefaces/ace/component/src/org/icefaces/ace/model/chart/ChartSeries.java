@@ -58,6 +58,7 @@ public abstract class ChartSeries {
     String fillToValue;
     String fillAxis; // x or y
     Boolean useNegativeColors;
+    String[] seriesColors;
 
     /**
      * Return the truth value of this series visibility.
@@ -363,6 +364,54 @@ public abstract class ChartSeries {
         this.shadowAlpha = shadowAlpha;
     }
 
+    /**
+     * Get the transparency of the filled region under the line.
+     * @return integer value 0-100
+     */
+    public Integer getFillAlpha() {
+        return fillAlpha;
+    }
+
+    /**
+     * Set the transparency of the filled region under the line.
+     * @param fillAlpha integer value 0-100
+     */
+    public void setFillAlpha(Integer fillAlpha) {
+        this.fillAlpha = fillAlpha;
+    }
+
+    /**
+     * Get the array of CSS color definitions used to color this series.
+     * @return array of CSS color definition Strings
+     */
+    public String[] getSeriesColors() {
+        return seriesColors;
+    }
+
+    /**
+     * Set the array of the CSS color definitions.
+     * @param seriesColors array of CSS color definition Strings
+     */
+    public void setSeriesColors(String[] seriesColors) {
+        this.seriesColors = seriesColors;
+    }
+
+    /**
+     * Get the CSS color definition of this series
+     * @return CSS color String
+     */
+    public String getColor() {
+        return color;
+    }
+
+    /**
+     * Set the CSS color definition of this series.
+     * @param color CSS color String
+     */
+    public void setColor(String color) {
+        this.color = color;
+    }
+
     /* Can't be a reference to Chart object explicitly due to cyclical dependency issues. */
     public JSONBuilder getDataJSON(UIComponent chart) {
         return JSONBuilder.create().beginArray();
@@ -372,6 +421,8 @@ public abstract class ChartSeries {
         JSONBuilder cfg = JSONBuilder.create();
 
         String label = getLabel();
+        String[] seriesColors = getSeriesColors();
+        String color = getColor();
 
         LineCap cap = getLineCap();
         LineJoin join = getLineJoin();
@@ -390,6 +441,7 @@ public abstract class ChartSeries {
         Integer shadowAlpha = getShadowAlpha();
         Integer shadowOffset = getShadowOffset();
         Integer shadowAngle = getShadowAngle();
+        Integer fillAlpha = getFillAlpha();
 
         cfg.beginMap();
 
@@ -443,8 +495,23 @@ public abstract class ChartSeries {
         if (shadowOffset != null)
             cfg.entry("shadowOffset", shadowOffset);
 
+        if (fillAlpha != null) {
+            cfg.entry("fillAlpha",
+                    fillAlpha.doubleValue() / 100d);
+        }
+
+        if (seriesColors != null) {
+            cfg.beginArray("seriesColors");
+            for (String c : seriesColors)
+                cfg.item(c);
+            cfg.endArray();
+        }
+
+        if (color != null)
+            cfg.entry("color", color);
+
         return cfg;
-    };
+    }
 
     public abstract ChartType getDefaultType();
 
