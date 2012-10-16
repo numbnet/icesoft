@@ -151,13 +151,19 @@ public class MobiJSFUtils {
         return auxMap.containsKey(clientId);
     }
     
-    public static String getICEmobileSXScript(String command, UIComponent comp){
+    public static String getICEmobileSXScript(String command,
+            Map<String,String> params, UIComponent comp){
         FacesContext facesContext = FacesContext.getCurrentInstance();
         HttpServletRequest request = (HttpServletRequest)facesContext.getExternalContext().getRequest();
-        return SXUtils.getICEmobileSXScript(request, command, comp.getClientId(facesContext), 
+        return SXUtils.getICEmobileSXScript(request, command, params,
+                comp.getClientId(facesContext),
                 MobiJSFConstants.SX_UPLOAD_PATH);
     }
-    
+
+    public static String getICEmobileSXScript(String command, UIComponent comp){
+        return getICEmobileSXScript(command, null, comp);
+    }
+
     public static String getSessionIdCookie(FacesContext facesContext) {
         String sessionID = EnvUtils.getSafeSession(facesContext).getId();
         String cookieFormat = (String) facesContext.getExternalContext()

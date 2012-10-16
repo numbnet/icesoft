@@ -117,7 +117,15 @@ public class CameraRenderer extends Renderer {
         //default value of unset in params is Integer.MIN_VALUE
         String script;
         if (isAuxUpload)  {
-            script = MobiJSFUtils.getICEmobileSXScript("camera", uiComponent);
+            HashMap<String,String> params = null;
+            if ( (width != Integer.MIN_VALUE) || 
+                    (height != Integer.MIN_VALUE) ) {
+                params = new HashMap();
+                params.put("maxwidth", String.valueOf(width));
+                params.put("maxheight", String.valueOf(height));
+            }
+            script = MobiJSFUtils.getICEmobileSXScript(
+                    "camera", params, uiComponent);
         } else {
             if ( (width != Integer.MIN_VALUE) || 
                     (height != Integer.MIN_VALUE) ) {
