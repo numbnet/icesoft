@@ -60,6 +60,8 @@ import java.io.Serializable;
                 exampleBeanName = ChartDonutBean.BEAN_NAME),
         @MenuLink(title = "menu.ace.chart.subMenu.candlestick",
                 exampleBeanName = ChartCandlestickBean.BEAN_NAME),
+        @MenuLink(title = "menu.ace.chart.subMenu.bubble",
+                exampleBeanName = ChartBubbleBean.BEAN_NAME),
         @MenuLink(title = "menu.ace.chart.subMenu.dynamic",
                 exampleBeanName = ChartDynamicBean.BEAN_NAME),
         @MenuLink(title = "menu.ace.chart.subMenu.combined",
