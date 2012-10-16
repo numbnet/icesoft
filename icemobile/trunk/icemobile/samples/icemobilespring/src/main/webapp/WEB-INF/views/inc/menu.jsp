@@ -21,6 +21,7 @@
     <mobi:outputListItem><a href="mediaspot">Augmented Reality</a></mobi:outputListItem>
     <mobi:outputListItem><a href="camera">Camera</a></mobi:outputListItem>
     <mobi:outputListItem><a href="campushr">Camera Ajax Push Region</a></mobi:outputListItem>
+    <mobi:outputListItem><a href="camcorder">Camcorder</a></mobi:outputListItem>
     <mobi:outputListItem><a href="contact">Contact List</a></mobi:outputListItem>
     <mobi:outputListItem><a href="microphone">Microphone</a></mobi:outputListItem>
     <mobi:outputListItem><a href="qrscan">QR Scanner</a></mobi:outputListItem>
