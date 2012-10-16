@@ -139,13 +139,6 @@
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
         </attribute>
-        
-        <attribute>
-            <description>When true, runs the container simulator on a desktop</description>
-            <name>containerSimulator</name>
-            <required>false</required>
-            <rtexprvalue>true</rtexprvalue>
-        </attribute>
     </tag>
 
     <tag>
