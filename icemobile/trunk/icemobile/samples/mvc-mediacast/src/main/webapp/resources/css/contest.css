@@ -209,23 +209,6 @@ html.iphone .mobi-pagePanel-body {
 	line-height: 17px;
 	z-index: 1;
 }
-html.iphone .mobi-pagePanel-footer{
-	color: white;
-    position: relative;
-    background: url('css-images/header.png') repeat-x scroll 0 0 #6D84A2;
-}
-html.ipad .mobi-pagePanel-footer {
-	color: #222222;
-    text-align: left;
-    text-shadow: 0 0 1px white;
-    background: -moz-linear-gradient(center top , #A8ACB9, #B6B9C4, #D1D4DB) repeat scroll 0 0 #A8ACB9;
-    background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0, #A8ACB9), color-stop(0.02, #B6B9C4), color-stop(1, #D1D4DB));
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorStr = '#A8ACB9', EndColorStr = '#D1D4DB');
-    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#A8ACB9', EndColorStr='#D1D4DB')";
-    border-top: 1px solid #777777;
-    position: fixed;
-    width: 100%;
-}
 
 .mobi-pagePanel-footer a, .mobi-pagePanel-footer a:visited{
     color: #D7BEE8;
@@ -468,4 +451,19 @@ span.votes{
 	display: block;
 	line-height: 10px;
     padding: 2px;
+}
+div.ajaxloader{
+    height: 32px;
+    width: 32px;
+    display:none;
+    z-index:2;
+}
+html.ipad div.ajaxloader, html.iphone div.ajaxloader{
+    background: transparent url('./css-images/ajax-loader-ios.gif') no-repeat right top;  
+}
+html.android div.ajaxloader, html.honeycomb div.ajaxloader{
+    background: transparent url('./css-images/ajax-loader-android.gif') no-repeat right top;  
+}
+html.bberry div.ajaxloader{
+    background: transparent url('./css-images/ajax-loader-bberry.gif') no-repeat right top;  
 }
