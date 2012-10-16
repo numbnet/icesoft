@@ -44,11 +44,7 @@
         </f:facet>
 
         <f:facet name="footer">
-            <!--
-                footer by default has commands for creating new messages.
-                can be over-ridden if needed.
-            -->
-            <div style="float:left;display:inline-block;text-align:left;line-height: 45px;">
+            <div id="themeCtr" style="float:left;margin-left: 0.3em;">
                 <h:form>
                     <icecore:singleSubmit rendered="false"/>
 
@@ -68,17 +64,12 @@
                     </h:selectOneMenu>
                 </h:form>
             </div>
-            <h:panelGroup
-                    style="float:right;display:inline-block;margin: 5px 15px 0 0;">
-                <h:form>
-                    <h:outputLink 
-                        value="http://www.icemobile.org/demos.html" >
-                        <h:graphicImage library="images"
-                                        name="icemobile_thumb.png"
-                                        style="width:30px;height:30px;border:none;"/>
-                    </h:outputLink>
-                </h:form>
-            </h:panelGroup>
+            <div style="float:right;margin-right: 0.3em;">
+                <a href="http://www.icemobile.org/demos.html">
+                    <h:graphicImage library="images" name="icemobile_thumb.png"
+                                    style="margin: 4px 0;"/>
+                </a>
+            </div>
         </f:facet>
 
     </mobi:pagePanel>
