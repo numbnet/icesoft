@@ -79,8 +79,8 @@ public class ThumbnailRenderer extends Renderer {
         writer.writeAttribute(HTML.ID_ATTR, thumbId, null);
         writer.writeAttribute(HTML.WIDTH_ATTR, "64", null);
         writer.writeAttribute(HTML.HEIGHT_ATTR, "64", null);
-        writer.endElement("span");
         writer.endElement("img");
+        writer.endElement("span");
     }
 
 }
