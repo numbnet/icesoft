@@ -345,6 +345,12 @@ ice.ace.tabset = {
            }
            else {
                var tabviewObj = context.getComponent();
+
+               var existingTabs = tabviewObj.get('tabs');
+               for (var i = 0; existingTabs && (i < existingTabs.length); i++) {
+                   existingTabs[i].set('disabled', false);
+               }
+
                var index = jsfProps.selectedIndex;
                var objIndex = tabviewObj.get('activeIndex');
 
