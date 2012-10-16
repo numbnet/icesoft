@@ -37,14 +37,17 @@
                     <span>#{mmsgs[navigationModel.selectedDestination.title]}</span>
                 </div>
                 <!-- theme selector -->
-                <div style="float:right;padding-right: 35px;vertical-align: middle">
-                     <mobi:menuButton id="themeBtn" value="#{themeBean.largeThemes}" 
-                        selectTitle="Select Theme"
-                        var="theme" buttonLabel="#{empty themeBean.currentTheme ? 'Theme' : themeBean.currentTheme.label}"
-                        style="font-size: 16px;line-height: 16px;text-shadow: none;font-weight: normal;">
-                        <mobi:menuButtonItem value="#{theme.name}" label="#{theme.label}" 
-                            singleSubmit="true" action="#{theme.setTheme}"/>
-                    </mobi:menuButton>
+                 <div style="float:right;padding-right: 35px;vertical-align: middle">
+                    <span style="font-size: 14px">Theme: </span>
+                    <h:selectOneMenu
+                            style="font-size:14px;font-weight:normal;"
+                            onchange="ice.s(event, this);"
+                            value="#{themeBean.currentTheme}">
+                        <f:selectItem itemLabel="Auto" itemValue=""/>
+                        <f:selectItem itemLabel="iPad" itemValue="ipad"/>
+                        <f:selectItem itemLabel="Android" itemValue="honeycomb"/>
+                        <f:ajax disabled="true"/>
+                    </h:selectOneMenu>
 
                 </div>
             </h:form>
