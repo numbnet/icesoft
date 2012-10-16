@@ -40,7 +40,7 @@
     padding: 10px;
     text-align: center;
     border-bottom: 1px solid #e4e4e4;
-    background: url('header.png') repeat-x scroll 0 0 #6D84A2;
+    background: scroll 0 0 #6D84A2;
     font-weight: bold;
 }
 
