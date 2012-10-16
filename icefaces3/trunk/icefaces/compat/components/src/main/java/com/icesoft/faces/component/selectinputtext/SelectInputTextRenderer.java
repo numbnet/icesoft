@@ -33,10 +33,12 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
 public class SelectInputTextRenderer extends DomBasicInputRenderer {
+    private Map domUpdateMap = new HashMap();
     private static final String AUTOCOMPLETE_DIV = "_div";
     static final String AUTOCOMPLETE_INDEX = "_idx";
     private static final Log log =
@@ -52,6 +54,7 @@ public class SelectInputTextRenderer extends DomBasicInputRenderer {
 
     public void encodeBegin(FacesContext facesContext, UIComponent uiComponent)
             throws IOException {
+        domUpdateMap.clear();
         validateParameters(facesContext, uiComponent, null);
         if (log.isTraceEnabled()) {
             log.trace("encodeBegin");
@@ -133,6 +136,12 @@ public class SelectInputTextRenderer extends DomBasicInputRenderer {
                 scriptEle.appendChild(node);
             }
             root.appendChild(scriptEle);
+
+            domUpdateMap.put("rows", component.getRows());
+            Element span = domContext.createElement(HTML.SPAN_ELEM);
+            span.setAttribute("data-hashcode", String.valueOf(domUpdateMap.hashCode()));
+            span.setAttribute("style", "display: none;");
+            root.appendChild(span);
         }
     }
 
