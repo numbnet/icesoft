@@ -74,7 +74,7 @@
                                    value="#{aceDataTableFind.cars}"
                                    rows="6"
                                    paginator="true"
-                                   binding="#{dataTableBindings.tables.get(aceDataTableFind.getClass())}"
+                                   binding="#{dataTableBindings.tables[aceDataTableFind.getClass()]}"
                                    style="width:100%">
                         <ace:column id="id">
                             <f:facet name="header">ID</f:facet>
