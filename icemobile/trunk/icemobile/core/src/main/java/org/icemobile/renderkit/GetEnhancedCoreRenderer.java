@@ -80,7 +80,7 @@ public class GetEnhancedCoreRenderer {
                 writer.writeAttribute(CLASS_ATTR, "mobi-button mobi-button-important");
                 writer.writeAttribute(ONCLICK_ATTR, component.getICEmobileRegisterSXScript());
                 writer.writeText("Enable ICEmobile SX");
-                writer.endElement(null);
+                writer.endElement(ANCHOR_ELEM);
             }
             
             if( component.isIncludeLink() ){
