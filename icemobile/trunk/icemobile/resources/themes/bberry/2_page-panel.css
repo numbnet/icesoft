@@ -13,6 +13,14 @@
  * express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
+.mobi-pagePanel-header, .mobi-pagePanel-footer {
+    background-color: #8C8A8C;
+    border-bottom-color: #2D3642;
+    border-top-color: white;
+    color: #FFFFFF;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.4);
+}
+ /*
 .mobi-pagePanel-header {
     background-color: #8C8A8C;
     border-bottom: 1px solid #2D3642;
@@ -44,4 +52,4 @@
 .mobi-pagePanel-body-content {
     width: 70%;
 }
-
+*/

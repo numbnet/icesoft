@@ -13,52 +13,22 @@
  * express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-
 .mobi-pagePanel-header, .mobi-pagePanel-footer {
-    position: fixed;
-    width: 100%;
-    text-align: center;
-    z-index: 500;
-    margin: 0;
-    padding: 0;
-    left: 0;
-}
-
-.mobi-pagePanel-header {
-    top: 0;
-    height: 44px;
-    line-height: 44px;
-    background: url('header.png') repeat-x scroll 0 0 #6D84A2;
+    background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#AAB8C9), to(#6E84A2), color-stop(.5,#6E84A2));
+    background: -moz-linear-gradient(0% 65% 90deg,#6E84A2, #AAB8C9, #AAB8C9 100%);
     border-bottom: 1px solid #2D3642;
-    padding: 0;
-    font-size: 20px;
-    text-align: center;
     text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.4);
-    white-space: nowrap;
     color: #FFFFFF;
-    font-weight: bold;
 }
-
 .mobi-pagePanel-body, .mobi-pagePanel-body-nofooter {
     background: #c8c8c8 url('pinstripes.png');
-    min-height: 640px;
-    padding-bottom: 50px;
 }
-
-.mobi-pagePanel-body {
-    padding: 44px 0 48px 0;
-    position: static;
-    z-index: 1;
-    top: 0;
-    bottom: 0;
-    overflow: auto;
-    width: 100%;
-    min-height:inherit;
+.mobi-pagePanel-body{
+    min-height: 440px; /* TODO hack for height issue, use flexbox */
 }
-
-
-.mobi-panel-scrollable {
-    width: 100%;
-    position: static;
-    display: inline-block;
+.mobi-pagePanel-body-nofooter {
+    min-height: 480px;
+}
+.mobi-pagePanel-footer{
+    border-top-color: #C7C6C6
 }

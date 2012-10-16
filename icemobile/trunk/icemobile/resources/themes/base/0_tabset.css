@@ -61,8 +61,8 @@
     top: 0;
     left:0;
 }
-.mobi-tabset-tabs-bottom-footer > .mobi-tabset-tabs{ margin-bottom:52px;}
+.mobi-tabset-tabs-bottom-footer > .mobi-tabset-tabs{ margin-bottom:40px;}
 
-.mobi-tabset-tabs-top-header > .mobi-tabset-tabs{ margin-top:31px;}
+.mobi-tabset-tabs-top-header > .mobi-tabset-tabs{ margin-top:40px;}
 
 .mobi-tabpage-hidden { display: none; }
