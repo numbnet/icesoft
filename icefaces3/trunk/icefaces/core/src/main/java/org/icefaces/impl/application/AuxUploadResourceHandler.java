@@ -17,6 +17,7 @@
 package org.icefaces.impl.application;
 
 import org.icefaces.util.EnvUtils;
+import org.icefaces.impl.util.Util;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.Part;
@@ -28,7 +29,10 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.UUID;
@@ -157,7 +161,8 @@ public class AuxUploadResourceHandler extends ResourceHandlerWrapper  {
                                 request.getParameter(part.getName()));
                     }
                 } else {
-                    auxRequestMap.put(partName, part );
+                    auxRequestMap.put(partName,
+                            new PersistentPart(externalContext, part));
                 }
             }
             
@@ -187,4 +192,55 @@ public class AuxUploadResourceHandler extends ResourceHandlerWrapper  {
         return cloudPushId;
     }
 
+}
+
+class PersistentPart implements Part  {
+    Part part;
+    File partFile;
+
+    public PersistentPart(ExternalContext externalContext, Part part)
+        throws IOException  {
+        this.part = part;
+        File tempDir = (File) externalContext.getApplicationMap()
+                .get("javax.servlet.context.tempdir");
+        partFile = File.createTempFile("auxupload", ".tmp", tempDir);
+        Util.copyStream(part.getInputStream(),
+                new FileOutputStream(partFile));
+    }
+
+    public InputStream getInputStream() throws IOException  {
+        return new FileInputStream(partFile);
+    }
+
+    public String getContentType()  {
+        return part.getContentType();
+    }
+
+    public String getName()  {
+        return part.getName();
+    }
+
+    public long getSize()  {
+        return part.getSize();
+    }
+
+    public void write(String name) throws IOException  {
+        part.write(name);
+    }
+
+    public void delete() throws IOException  {
+        part.delete();
+    }
+
+    public String getHeader(String name)  {
+        return part.getHeader(name);
+    }
+
+    public Collection getHeaders(String name)  {
+        return part.getHeaders(name);
+    }
+
+    public Collection getHeaderNames()  {
+        return part.getHeaderNames();
+    }
 }
