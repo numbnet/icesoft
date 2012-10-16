@@ -13,70 +13,43 @@
  * express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-
 .mobi-pagePanel-header, .mobi-pagePanel-footer {
-    position: fixed;
-    width: 100%;
-    text-align: center;
-    z-index: 500;
-    margin: 0;
-    padding: 0;
-    left: 0;
-}
-
-.mobi-pagePanel-header {
-    top: 0;
-    height: 30px;
-    line-height: 30px;
-    font-size: 15px;
-    text-align: center;
-    white-space: nowrap;
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+    border-top-style: solid;
+    border-top-width: 1px;
+    font-size: 1.2em;
     font-weight: bold;
+    height: 38px; /* keep the header at 40px (38+2px border + 0 padding) */
+    left: 0;
+    line-height: 38px;
+    margin: 0;
+    padding: 0; /* keep at 0 for stable header height */
+    position: fixed;
+    text-align: center;
+    width: 100%;
+    white-space: nowrap;
+    z-index: 500;
 }
-
-.mobi-pagePanel-footer {
-    bottom: 0;
-    height: 50px;
-}
-
-.mobi-pagePanel-body > div, .mobi-pagePanel-body-nofooter > div {
-    min-height: 640px;
-}
-
-.mobi-pagePanel-body {
-    padding: 30px 0 50px 0;
-    position: static;
-    z-index: 1;
+.mobi-pagePanel-header{
     top: 0;
+}
+.mobi-pagePanel-footer{
     bottom: 0;
+}
+/* layout for buttons in headers and footers */
+.mobi-pagePanel-header .mobi-button, .mobi-pagePanel-footer .mobi-button{
+    margin: 2px 0.3em;
+ }
+.mobi-pagePanel-body {
+    padding: 40px 0 40px 0;
+    position: static;
     overflow: auto;
     width: 100%;
-    color: white;
 }
-
 .mobi-pagePanel-body-noheader {
     padding-top: 0;
 }
-
 .mobi-pagePanel-body-nofooter {
     padding-bottom: 0;
 }
-
-.mobi-pagePanel-header .branding {
-    width: 16px;
-    height: 16px;
-    margin: 0 3px 0 0;
-}
-
-.mobi-pagePanel-body-menu {
-    width: 30%;
-    float: left;
-    overflow-y: scroll;
-}
-
-.mobi-pagePanel-body-content {
-    width: 70%;
-    float: left;
-    overflow-y: scroll;
-}
-
