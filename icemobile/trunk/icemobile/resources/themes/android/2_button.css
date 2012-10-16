@@ -13,3 +13,24 @@
  * express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
+ .mobi-button.mobi-button-back {
+    background-color: #E7EBE7;
+    border-radius: 2px;
+    -webkit-border-top-left-radius: 10px 15px;
+    -webkit-border-bottom-left-radius: 11px 10px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: -1px -1px 0px rgba(0, 0, 0, 0.2)inset, 0 1px 2px rgba(0, 0, 0, 0.8)inset;
+    color: #444 !important;
+}
+ 
+.mobi-button.mobi-button-back:before{
+    background-color: #E7EBE7;
+    border-left: 1.5px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 1px 1px 0 #E7EBE7 inset, -1px 1px 1px rgba(0, 0, 0, 0.5) inset;
+    -webkit-mask-image: -webkit-gradient(linear, left top, right bottom,
+     from(#000000),
+     color-stop(0.33,#000000),
+     color-stop(0.5, transparent),
+     to(transparent));
+}
+ 
