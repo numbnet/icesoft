@@ -116,38 +116,9 @@
 @media screen and (max-width: 600px) {  
     input[type='file']{ width: 200px; }
  }
- 
- .mobi-menu-btn{
-    position: relative;
-    line-height: 28px;
-    height: 28px;
-    vertical-align:middle;
- }
-
- .mobi-menu-btn-btn{
-    font-size: 16px;
-    line-height: 24px;
-    text-shadow: none;
-    font-weight: normal;
-    height: 24px;
-}
- 
-html.iphone .mobi-pagePanel-footer{
-    color: white;
-    position: relative;
-    background: url('css-images/header.png') repeat-x scroll 0 0 #6D84A2;
-    padding: 2px 5px; 
-    border-top: 1px solid #BEBEBE;
-}
 
 html.bberry .mobi-list-item-group {
     background-color: #EFEFEF;
     text-shadow: none;
     border-top: 1px solid #BBB;
-}
-html.bberry .mobi-menu-btn-btn {
-    background-color: #EFEFEF;
-    background-image: none;
-    color: black;
-    border: solid 1px #BBB;
 }
