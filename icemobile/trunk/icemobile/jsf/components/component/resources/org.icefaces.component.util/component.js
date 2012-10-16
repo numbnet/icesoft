@@ -41,19 +41,19 @@ mobi.AjaxRequest = function (cfg) {
     }
     var form = mobi.findForm(cfg.source);
     var source = (typeof cfg.source == 'string') ? document.getElementById(cfg.source) : cfg.source;
-	if (!source) {
-		if (cfg.node) {
-			source = cfg.node;
-			source.id = cfg.source;
-		}
-	}
-    if (form.length == 0){
-        form = source.form;
-         ice.log.debug(ice.log, "had to find form via element form length = "+form.length);
+    if (!source) {
+        if (cfg.node) {
+            source = cfg.node;
+            source.id = cfg.source;
+        }
     }
-    if (form.length == 0){
-       form = document.forms[0]; //just return first form in the page
-       ice.log.debug(ice.log, 'had to find first form on page');
+    if (form.length == 0) {
+        form = source.form;
+        ice.log.debug(ice.log, "had to find form via element form length = " + form.length);
+    }
+    if (form.length == 0) {
+        form = document.forms[0]; //just return first form in the page
+        ice.log.debug(ice.log, 'had to find first form on page');
     }
     var jsfExecute = cfg.execute || '@all';
     var jsfRender = cfg.render || '@all';
@@ -80,7 +80,8 @@ mobi.AjaxRequest = function (cfg) {
                 parameter(p, cfgParams[p]);
             }
         }
-    }, function (onBeforeSubmit, onBeforeUpdate, onAfterUpdate, onNetworkError, onServerError) {
+    }, function (onBeforeSubmit, onBeforeUpdate, onAfterUpdate, onNetworkError,
+                 onServerError) {
         var context = {};
         onAfterUpdate(function (responseXML) {
             if (cfg.onsuccess && !cfg.onsuccess.call(context, responseXML, null /*status*/, null /*xhr*/)) {
@@ -128,8 +129,8 @@ mobi.panelAutoCenter = function (clientId) {
     }
     if (windowHeight > 0) {
         var contentElement = document.getElementById(clientId);
-        if( contentElement ){
-        	var contentHeight = contentElement.offsetHeight;
+        if (contentElement) {
+            var contentHeight = contentElement.offsetHeight;
             var contentWidth = contentElement.offsetWidth;
             if (windowHeight - contentHeight > 0) {
                 contentElement.style.position = 'absolute';
@@ -368,9 +369,9 @@ if (window.addEventListener) {
 }
 /* javascript for mobi:commandButton component put into component.js as per MOBI-200 */
 mobi.button = {
-    select: function(clientId, cfg){
+    select: function(clientId, cfg) {
         var params = cfg.params || null;
-        if (cfg.snId){
+        if (cfg.snId) {
             mobi.submitnotify.open(cfg.snId, clientId, cfg.singleSubmit, params);
             return;
             //if here, then no panelConfirmation as this action is responsible for submit
@@ -378,18 +379,18 @@ mobi.button = {
         //otherwise, just check for behaviors, singleSubmit and go
         var singleSubmit = cfg.singleSubmit || false;
         var hasBehaviors = cfg.behaviors;
-        if (hasBehaviors){
+        if (hasBehaviors) {
             //show the submitNotification panel
-            if (cfg.behaviors.click){
+            if (cfg.behaviors.click) {
                 cfg.behaviors.click();
             }
             return;  //ensure no other submits
         }
         var event = cfg.event;
-        if (!event){
+        if (!event) {
             event = window.event;
         }
-        if (singleSubmit){
+        if (singleSubmit) {
             ice.se(event, clientId, params);
         } else {
             ice.s(event, clientId, params);
@@ -414,7 +415,7 @@ ice.mobi.sx = function (element) {
     var command = element.getAttribute("data-command");
     var id = element.getAttribute("data-id");
     var ub = element.getAttribute("data-ub");
-    if ((null == id) || ("" == id))  {
+    if ((null == id) || ("" == id)) {
         id = element.getAttribute("id");
     }
     var params = element.getAttribute("data-params");
@@ -423,8 +424,8 @@ ice.mobi.sx = function (element) {
     var baseURL = barURL.substring(0,
             barURL.lastIndexOf("/")) + "/";
     var ubConfig = "";
-    if ((null != ub) && ("" != ub))  {
-        if ("." === ub)  {
+    if ((null != ub) && ("" != ub)) {
+        if ("." === ub) {
             ubConfig = "ub=" + escape(baseURL) + ampchar;
         } else {
             ubConfig = "ub=" + escape(ub) + ampchar;
@@ -457,34 +458,105 @@ ice.mobi.sx = function (element) {
     window.location = sxURL;
 }
 
-ice.mobi.storeLocation = function(id, coords)  {
-    if (!coords) { return; } 
+
+ice.mobi.storeLocation = function(id, coords) {
+    if (!coords) {
+        return;
+    }
     var el = document.getElementById(id);
-    if (!el)  {
+    if (!el) {
         return;
     }
     var elValue = (el.value) ? el.value : "";
     var parts = elValue.split(',');
-    if (4 != parts.length) {parts = new Array(4)};
+    if (4 != parts.length) {
+        parts = new Array(4)
+    }
+    ;
     parts[0] = coords.latitude;
     parts[1] = coords.longitude;
     parts[2] = coords.altitude;
     el.value = parts.join();
 }
 
-ice.mobi.storeDirection = function(id, orient)  {
-    if (orient.webkitCompassAccuracy <= 0)  {
+ice.mobi.storeDirection = function(id, orient) {
+    if (orient.webkitCompassAccuracy <= 0) {
         return;
     }
     var el = document.getElementById(id);
-    if (!el)  {
+    if (!el) {
         return;
     }
     var elValue = (el.value) ? el.value : "";
     var parts = elValue.split(',');
-    if (4 != parts.length) {parts = new Array(4)}
+    if (4 != parts.length) {
+        parts = new Array(4)
+    }
     parts[3] = orient.webkitCompassHeading;
     el.value = parts.join();
 }
+
+
+mobi.geolocation = {
+    watchId: 0,
+    clientId: "",
+
+    // Perform a call to watchPosition to fetch running updates to position
+    startWatch: function (pClientId) {
+
+        mobi.geolocation.clientId = pClientId;
+
+        mobi.geolocation.clearWatch();
+        mobi.geolocation.watchId = navigator.geolocation.watchPosition(
+                // comment out the entire third parameter to revert to original call
+                this.successCallback, this.errorCallback, { enableHighAccuracy:true , maximumAge: 5000 }
+        );
+        ice.logInContainer('Lauching positionWatch for client: ' + pClientId + ' watchId: ' + mobi.geolocation.watchId);
+    },
+
+    successCallback: function(pos) {
+        ice.logInContainer('Position update for client: ' + mobi.geolocation.clientId);
+        try {
+            inputId = mobi.geolocation.clientId + "_locHidden";
+            ice.logInContainer('LOGGING Position TO hidden field: ' + inputId);
+            ice.mobi.storeLocation(inputId, pos.coords);
+
+        } catch(e) {
+            ice.logInContainer('Exception: ' + e);
+        }
+    },
+
+    errorCallback: function(positionError) {
+        ice.logInContainer('Error in watchPosition, code: ' + positionError.code + ' ClientId: ' + mobi.geolocation.clientId);
+        mobi.geolocation.clearWatch();
+    },
+
+    // Clear any existing positionUpdate listeners
+    clearWatch: function() {
+        if (mobi.geolocation.watchId > 0) {
+            ice.logInContainer('Removing existing positionWatch: ' + mobi.geolocation.watchId);
+            navigator.geolocation.clearWatch(mobi.geolocation.watchId);
+            mobi.geolocation.watchId = 0;
+        }
+    },
+
+    // Perform a single position get.
+    getLocation: function (pClientId) {
+
+        mobi.geolocation.clientId = pClientId;
+        mobi.geolocation.clearWatch();
+
+        ice.logInContainer('Launching getCurrentPosition');
+        navigator.geolocation.getCurrentPosition(
+                this.successCallback, this.errorCallback,
+                { enableHighAccuracy:true, timeout: 60000 }
+                // might try this without high accuracy to be more like original
+//            {  timeout: 60000 }
+        );
+    }
+}
+
 /* add js marker for progressive enhancement */
-document.documentElement.className = document.documentElement.className+' js';
+document.documentElement.className = document.documentElement.className + ' js';
+
+
