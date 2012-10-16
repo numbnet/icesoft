@@ -69,7 +69,7 @@ public class DataTableHeadRenderer {
 
             // If its a row, get the row children, else add the column as a pseduo child,
             // if not column, break.
-            if (headerElem.isRendered()) {
+            if (headerElem.isRendered() && (headerElem instanceof Row || headerElem instanceof Column)) {
                 if (headerElem instanceof Row) {
                     Row headerRow = (Row) headerElem;
                     headerRowChildren = headerRow.getChildren();
