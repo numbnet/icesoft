@@ -15,6 +15,7 @@
   -->
 
 <project name="common">
+	<property file="build.properties"/>
     <property file="../../build.properties"/>
     <property name="icefaces.base.dir" location="../.."/>
     <property name="samples.dist.dir" location="${icefaces.base.dir}/samples/dist"/>
@@ -102,6 +103,7 @@
 
     <target name="clean">
         <delete dir="${build.dir}"/>
+        <delete dir="./target"/>
         <!--<delete file="${samples.dist.dir}/${ant.project.name}.war"/>-->
     </target>
 
@@ -211,5 +213,4 @@
 
         <antcall target="war.basic" />
     </target>
-
 </project>
