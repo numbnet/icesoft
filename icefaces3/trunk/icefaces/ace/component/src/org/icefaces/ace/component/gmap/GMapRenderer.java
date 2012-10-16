@@ -62,12 +62,14 @@ public class GMapRenderer extends CoreRenderer {
 			writer.write("ice.ace.gMap.setMapType('" + clientId + "','" + gmap.getType().toUpperCase() + "');");
 			if (gmap.getOptions() != null && gmap.getOptions().length() > 1)
 				writer.write("ice.ace.gMap.addOptions('" + clientId +"',\"" + gmap.getOptions() + "\");");
+            if (gmap.getParent().getClass().getSimpleName().equalsIgnoreCase("HtmlPanelGrid")){
+                writer.write("google.maps.event.addDomListener(ice.ace.gMap.getGMapWrapper('" + clientId +"').getRealGMap(),'bounds_changed', function(){google.maps.event.trigger(ice.ace.gMap.getGMapWrapper('" + clientId + "').getRealGMap(),'resize');});");
+            }
             writer.write("});");
 			writer.endElement("script");
 			writer.endElement("span");
             gmap.setIntialized(true);
 	    }
-
     @Override
     public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
         if (context == null || component == null) {
