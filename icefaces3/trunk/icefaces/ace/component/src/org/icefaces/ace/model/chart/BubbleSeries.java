@@ -199,98 +199,210 @@ public class BubbleSeries extends ChartSeries {
         return BubbleType.BUBBLE;
     }
 
+    /**
+     * Get if this series colors the bubbles with gradients instead of normal colors.
+     * @return enable gradient boolean
+     */
     public Boolean isBubbleGradients() {
         return bubbleGradients;
     }
 
+    /**
+     * Get if this series colors the bubbles with gradients instead of normal colors.
+     * @param bubbleGradients enable gradient boolean
+     */
     public void setBubbleGradients(Boolean bubbleGradients) {
         this.bubbleGradients = bubbleGradients;
     }
 
+    /**
+     * Get the percentage of opacity for the bubble points.
+     * @return integer value 0 to 100
+     */
     public Integer getBubbleAlpha() {
         return bubbleAlpha;
     }
 
+    /**
+     * Set the percentage of opacity for the bubble points.
+     * @param bubbleAlpha integer value 0 to 100
+     */
     public void setBubbleAlpha(Integer bubbleAlpha) {
         this.bubbleAlpha = bubbleAlpha;
     }
 
+    /**
+     * Get if the labels are shown on each bubble.
+     * @return show bubble label boolean
+     */
     public Boolean getShowLabels() {
         return showLabels;
     }
 
+    /**
+     * Set if the labels are shown on each bubble.
+     * @param showLabels show bubble label boolean
+     */
     public void setShowLabels(Boolean showLabels) {
         this.showLabels = showLabels;
     }
 
+    /**
+     * Get the percentage of opacity for a bubble point when hovered over.
+     * @return integer value 0 to 100
+     */
     public Integer getHighlightAlpha() {
         return highlightAlpha;
     }
 
+    /**
+     * Set the percentage of opacity for a bubble point when hovered over.
+     * @param highlightAlpha integer value 0 to 100
+     */
     public void setHighlightAlpha(Integer highlightAlpha) {
         this.highlightAlpha = highlightAlpha;
     }
 
+    /**
+     * Get if this series will vary rendered bubble colors. If true, bubble colors are
+     * supplied by the seriesColors property or the default JQPlot vector of colors.
+     * If there are more bubbles than colors, the colors will loop.
+     * If false, the bubble color is supplied by the color property.
+     * @return enable varied bubble colors
+     */
     public Boolean getVaryBubbleColors() {
         return varyBubbleColors;
     }
 
+    /**
+     * Set if this series will vary rendered bubble colors. If true, bubble colors are
+     * supplied by the seriesColors property or the default JQPlot vector of colors.
+     * If there are more bubbles than colors, the colors will loop.
+     * If false, the bubble color is supplied by the color property.
+     * @param varyBubbleColors
+     */
     public void setVaryBubbleColors(Boolean varyBubbleColors) {
         this.varyBubbleColors = varyBubbleColors;
     }
 
+    /**
+     * Get if the series escapes HTML in the bubble labels.
+     * @return enable label html escaping boolean
+     */
     public Boolean getEscapeHtml() {
         return escapeHtml;
     }
 
+    /**
+     * Set if the series escapes HTML in the bubble labels.
+     * @param escapeHtml enable label html escaping boolean
+     */
     public void setEscapeHtml(Boolean escapeHtml) {
         this.escapeHtml = escapeHtml;
     }
 
+    /**
+     * Get if the series scales the bubbles based on plot scale.
+     * If false, the radius value given is interpreted as raw pixel radius.
+     * @return scale bubble by plot size boolean
+     */
     public Boolean getAutoscaleBubbles() {
         return autoscaleBubbles;
     }
 
+    /**
+     * Set if the series scales the bubbles based on plot scale.
+     * If false, the radius value given is interpreted as raw pixel radius.
+     * @param autoscaleBubbles scale bubble by plot size boolean
+     */
     public void setAutoscaleBubbles(Boolean autoscaleBubbles) {
         this.autoscaleBubbles = autoscaleBubbles;
     }
 
+    /**
+     * Get a multiplier to modify the size of autoscaled bubble radius
+     * @return positive double value
+     */
     public Double getAutoscaleMultiplier() {
         return autoscaleMultiplier;
     }
 
+    /**
+     * Set a multiplier to modify the size of autoscaled bubble radius
+     * @param autoscaleMultiplier positive double value
+     */
     public void setAutoscaleMultiplier(Double autoscaleMultiplier) {
         this.autoscaleMultiplier = autoscaleMultiplier;
     }
 
+    /**
+     * Get factor which decreases bubble size based on how many bubbles are
+     * on on the chart. 0 means no adjustment for number of bubbles.
+     * Negative values will decrease size of bubbles as more bubbles
+     * are added. Values between 0 and -0.2 should work well.
+     * @return point factor
+     */
     public Double getAutoscalePointsFactor() {
         return autoscalePointsFactor;
     }
 
+    /**
+     * Set factor which decreases bubble size based on how many bubbles are
+     * on on the chart. 0 means no adjustment for number of bubbles.
+     * Negative values will decrease size of bubbles as more bubbles
+     * are added. Values between 0 and -0.2 should work well.
+     * @param autoscalePointsFactor double value
+     */
     public void setAutoscalePointsFactor(Double autoscalePointsFactor) {
         this.autoscalePointsFactor = autoscalePointsFactor;
     }
 
+    /**
+     * Get if the highlighter is triggered when mousing over a bubble.
+     * @return mouse over highlight enabled
+     */
     public Boolean getHighlightMouseOver() {
         return highlightMouseOver;
     }
 
+    /**
+     * Set if the highlighter is triggered when mousing over a bubble.
+     * @param highlightMouseOver mouse over highlight enabled
+     */
     public void setHighlightMouseOver(Boolean highlightMouseOver) {
         this.highlightMouseOver = highlightMouseOver;
     }
 
+    /**
+     * Get if the highlighter is triggered when using a mouse button over a bubble.
+     * HighlightMouseOver must be false if this property is enabled.
+     * @return mouse button highlight enabled
+     */
     public Boolean getHighlightMouseDown() {
         return highlightMouseDown;
     }
 
+    /**
+     * Set if the highlighter is triggered when using a mouse button over a bubble.
+     * HighlightMouseOver must be false if this property is enabled.
+     * @param highlightMouseDown mouse button highlight enabled
+     */
     public void setHighlightMouseDown(Boolean highlightMouseDown) {
         this.highlightMouseDown = highlightMouseDown;
     }
 
+    /**
+     * Get the list of CSS color definitions to be applied to the bubbles when highlighted.
+     * @return array of String CSS color definitions
+     */
     public String[] getHighlightColors() {
         return highlightColors;
     }
 
+    /**
+     * Set the list of CSS color definitions to be applied to the bubbles when highlighted.
+     * @param highlightColors array of String CSS color definitions
+     */
     public void setHighlightColors(String[] highlightColors) {
         this.highlightColors = highlightColors;
     }
