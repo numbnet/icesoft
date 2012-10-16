@@ -18,6 +18,7 @@ package org.icefaces.mobi.component.geolocation;
 
 import org.icefaces.mobi.utils.HTML;
 import org.icefaces.mobi.renderkit.CoreRenderer;
+import org.icemobile.jsp.util.Util;
 
 import javax.faces.application.ProjectStage;
 import javax.faces.application.Resource;
@@ -52,6 +53,11 @@ public class GeolocationRenderer extends CoreRenderer {
             String locationString = String.valueOf(
                 requestParameterMap.get(nameHidden));
             if (null == locationString) {
+                log.warning("No Location string present in GEOLocation upload");
+                return;
+            }
+            if ("".equals(locationString)) {
+                log.warning("Empty Location string in GEOLocation upload (position not found yet?)");
                 return;
             }
 
@@ -61,7 +67,7 @@ public class GeolocationRenderer extends CoreRenderer {
                 try {
                     decoded[i] = Double.parseDouble(params[i]);
                 } catch (Exception e) {
-                    log.log(Level.FINE,
+                    log.log(Level.WARNING,
                             "Malformed geolocation " + i +
                                 " " + locationString, e);
                 }
@@ -103,6 +109,7 @@ public class GeolocationRenderer extends CoreRenderer {
         writer.writeAttribute("type", "hidden", null);
         writer.writeAttribute(HTML.ID_ATTR, clientId + "_locHidden", null);
         writer.writeAttribute(HTML.NAME_ATTR, clientId + "_field", null);
+        writer.writeAttribute(HTML.VALUE_ATTR, "", null);
         boolean disabled = locator.isDisabled();
         boolean singleSubmit = locator.isSingleSubmit();
         if (disabled) {
@@ -111,30 +118,23 @@ public class GeolocationRenderer extends CoreRenderer {
         writer.endElement("input");
         if (!disabled) {
             StringBuilder sb = new StringBuilder(255);
-            String fnCall = "ice.mobi.storeLocation('" + clientId + "_locHidden', pos.coords);";
-            sb.append(fnCall);
+            sb.append("mobi.geolocation.getLocation('").append(clientId).append("');");
+//            sb.append( "mobi.geolocation.startWatch('").append(clientId).append("');");
             if (hasBehaviors) {
                 sb.append(this.buildAjaxRequest(facesContext, cbh, "activate"));
             } else if (singleSubmit) {
                 String ssCall = "ice.se(null, '" + clientId + "');";
                 sb.append(ssCall);
             }
-//            String finalScript = "navigator.geolocation.watchPosition(function(pos) { " +  sb.toString() + "} );";
 
-            String finalScript = "navigator.geolocation.watchPosition( function(pos) { " + sb.toString() + " }, " +
-                " function() { alert('error in watchPosition'); }, { enableHighAccuracy:true , maximumAge: 5000 }  );";
-
-            finalScript += "window.addEventListener('deviceorientation', function(orient){";
-            finalScript += "ice.mobi.storeDirection('" + clientId + "_locHidden', orient);";
-            finalScript += "});\n";
+            sb.append("window.addEventListener('deviceorientation', function(orient){");
+            sb.append("ice.mobi.storeDirection('").append(clientId).append("_locHidden', orient);");
+            sb.append("});\n");
             writer.startElement("script", uiComponent);
             writer.writeAttribute("id", clientId + "_script", "id");
-            writer.write(finalScript);
+            writer.write(sb.toString());
             writer.endElement("script");
         }
-
         writer.endElement(HTML.SPAN_ELEM);
     }
-
-
 }
