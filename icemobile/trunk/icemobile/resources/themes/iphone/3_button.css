@@ -13,3 +13,44 @@
  * express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
+ 
+ .mobi-button.mobi-button-back {
+    background-color: rgba(74, 108, 155, 1);
+    background-image: -webkit-linear-gradient(
+         bottom,
+         transparent 0%,
+         transparent 50%,
+         rgba(255, 255, 255, 0.1) 50%,
+         rgba(255, 255, 255, 0.3) 100%
+         );
+    background-image :-moz-linear-gradient(top, transparent, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.3));
+    border-radius: 6px;
+    -webkit-border-top-left-radius: 10px 15px;
+    border-top-left-radius: 10px 15px;
+    -webkit-border-bottom-left-radius: 10px 15px;
+    border-bottom-left-radius: 10px 15px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: -1px -1px 0px rgba(0, 0, 0, 0.2)inset,
+     0 1px 2px rgba(0, 0, 0, 0.8)inset;
+    color: white !important;
+    text-shadow: 0px -1px 0px black;
+}
+ 
+.mobi-button.mobi-button-back:before{
+    background-color: rgba(74,108,155,1);/*change to the same as the main element*/
+    background-image :
+        -webkit-gradient(linear, left bottom, right top,
+            from(rgba(0,0,0,0)),
+            color-stop(0.5, rgba(0,0,0,0)),
+            color-stop(0.5, rgba(255,255,255,0.1)),
+            to(rgba(255,255,255,0.3)));
+    border-left : 1.5px solid rgba(255,255,255,0.3);
+    box-shadow :  1px 1px 0 rgba(0,0,0,0.2) inset,
+        -1px 1px 1px rgba(0,0,0,0.5) inset;
+    -webkit-mask-image :
+        -webkit-gradient(linear, left top, right bottom,
+            from(#000000),
+            color-stop(0.33,#000000),
+            color-stop(0.5, transparent),
+            to(transparent));
+}
