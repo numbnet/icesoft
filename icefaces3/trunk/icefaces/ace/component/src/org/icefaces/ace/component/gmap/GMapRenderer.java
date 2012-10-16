@@ -63,7 +63,11 @@ public class GMapRenderer extends CoreRenderer {
 			if (gmap.getOptions() != null && gmap.getOptions().length() > 1)
 				writer.write("ice.ace.gMap.addOptions('" + clientId +"',\"" + gmap.getOptions() + "\");");
             if (gmap.getParent().getClass().getSimpleName().equalsIgnoreCase("HtmlPanelGrid")){
-                writer.write("google.maps.event.addDomListener(ice.ace.gMap.getGMapWrapper('" + clientId +"').getRealGMap(),'bounds_changed', function(){google.maps.event.trigger(ice.ace.gMap.getGMapWrapper('" + clientId + "').getRealGMap(),'resize');});");
+                writer.write("google.maps.event.addDomListener(ice.ace.gMap.getGMapWrapper('" + clientId +"').getRealGMap(),'bounds_changed', " +
+                        "function(){" +
+                        "var mapCenter = ice.ace.gMap.getGMapWrapper('" + clientId + "').getRealGMap().getCenter();" +
+                        "google.maps.event.trigger(ice.ace.gMap.getGMapWrapper('" + clientId + "').getRealGMap(),'resize');" +
+                        "ice.ace.gMap.getGMapWrapper('" + clientId + "').getRealGMap().setCenter(mapCenter);});");
             }
             writer.write("});");
 			writer.endElement("script");
