@@ -98,7 +98,7 @@ Autocompleter.Base.prototype = {
                             var savedPos = element.style.position;
                             element.style.position = "relative";
                             update.style.left = element.offsetLeft + "px";
-                            if (ieEngine == 7) {
+                            if (ieEngine == 7 || element.getOffsetParent().getStyle("position") == "fixed") {
                                 update.style.top = (element.offsetTop + element.offsetHeight) + "px";
                             } else {
                                 var scrollTop = element.cumulativeScrollOffset().top - document.documentElement.scrollTop;
