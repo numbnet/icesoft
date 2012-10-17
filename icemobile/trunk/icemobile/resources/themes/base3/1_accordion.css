@@ -29,14 +29,12 @@
 
 .mobi-accordion .pointer {
     -webkit-transition: -webkit-transform 0.3s;
-    -moz-transition: -moz-transform 0.3s;
     -ms-transition: -ms-transform 0.3s;
     transition: transform 0.3s;
 }
 
 .mobi-accordion .open .pointer {
     -webkit-transform:rotate(90deg);
-    -moz-transform:rotate(90deg);
     -o-transform:rotate(90deg);
     -ms-transform:rotate(90deg);
     transform:rotate(90deg);
