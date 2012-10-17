@@ -3,7 +3,7 @@
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <%@ taglib uri="http://www.icemobile.org/tags" prefix="mobi" %>
 <%@ taglib prefix="push" uri="http://www.icepush.org/icepush/jsp/icepush.tld"%>
-<%@ page session="false" %>
+<%@ page session="true" %>
 <c:if test="${!ajaxRequest}">
 <html>
 <jsp:include page="./inc/head.jsp"/>

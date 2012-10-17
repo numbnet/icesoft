@@ -29,6 +29,12 @@ public class EchoSessionController {
     public void doRequest(
             @ModelAttribute("QRScanBean") QRScanBean model) {
     }
+    
+    @ModelAttribute
+    public void ajaxAttribute(WebRequest request, Model model) {
+        model.addAttribute("ajaxRequest", AjaxUtils.isAjaxRequest(request));
+    }
+
 
 }
 
