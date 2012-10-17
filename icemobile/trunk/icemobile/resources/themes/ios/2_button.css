@@ -13,11 +13,6 @@
  * express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-.mobi-button-container {
-    padding: 10px;
-    background-color: transparent;
-}
-
 .mobi-button-group-vert .mobi-button {
     margin: 0 0 -1px 0;
 }
