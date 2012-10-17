@@ -258,7 +258,7 @@ public class ICEmobileContainer extends Activity
 	if (!newURL.equals(currentURL)) {
 	    loadUrl();
 	} else {
-	    utilInterface.loadURL("javascript:ice.ajaxRefresh();");
+	    utilInterface.loadURL("javascript:ice.mobiRefresh();");
 	}
 	// Clear any existing C2DM notifications;
 	if (mC2dmHandler != null) {
