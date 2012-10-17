@@ -37,12 +37,7 @@
         <h:form id="canvasForm">
             <ace:chart id="chart"
                        animated="false"
-                       value="#{chartBubbleBean.bubbleData}"
-                       widgetVar="barChart" />
-            <h:commandButton id="exportButton" value="Export as Image"
-                             onclick="barChart.exportToImage(ice.ace.jq('.chartExport')); return false;" />
+                       value="#{chartBubbleBean.bubbleData}" />
         </h:form>
-        
-        <h:graphicImage styleClass="chartExport" />
     </ui:define>
 </ui:composition>

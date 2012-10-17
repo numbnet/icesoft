@@ -60,7 +60,8 @@ public class ChartBubbleBean extends ComponentExampleImpl<ChartBubbleBean> imple
 
     public List<BubbleSeries> bubbleData = new ArrayList<BubbleSeries>() {{
         add(new BubbleSeries() {{
-            setColor("rgba(200,0,0,0.3)");
+            setBubbleAlpha(30);
+            setHighlightAlpha(30);
             setVaryBubbleColors(false);
             add(11,123,1236, "Acura");
             add(45,92,1076, "Alfa Romeo");
@@ -72,7 +73,8 @@ public class ChartBubbleBean extends ComponentExampleImpl<ChartBubbleBean> imple
         }});
 
         add(new BubbleSeries() {{
-            setColor("rgba(0,0,200,0.3)");
+            setBubbleAlpha(30);
+            setHighlightAlpha(30);
             setVaryBubbleColors(false);
             add(11,213,756, "Boeing");
             add(54,60,376, "Airbus");
