@@ -1,5 +1,6 @@
 package org.icemobile.jsp.tags;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -62,6 +63,10 @@ public abstract class BaseSimpleTag  extends SimpleTagSupport {
     	return getRequest().getContextPath();
     }
     
+    ServletContext getServletContext()  {
+        return getContext().getServletContext();
+    }
+
     public ClientDescriptor getClient(){
         return ClientDescriptor.getInstance(getRequest());
     }
