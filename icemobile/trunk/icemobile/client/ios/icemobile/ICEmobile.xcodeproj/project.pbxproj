@@ -15,6 +15,8 @@
 		2860E32E111B888700E27156 /* AppDelegate_iPad.m in Sources */ = {isa = PBXBuildFile; fileRef = 2860E32C111B888700E27156 /* AppDelegate_iPad.m */; };
 		2860E32F111B888700E27156 /* MainWindow_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2860E32D111B888700E27156 /* MainWindow_iPad.xib */; };
 		288765FD0DF74451002DB57D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765FC0DF74451002DB57D /* CoreGraphics.framework */; };
+		9C05859F162F6E59003D1890 /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C05859D162F6E59003D1890 /* AddressBook.framework */; };
+		9C0585A0162F6E59003D1890 /* AddressBookUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C05859E162F6E59003D1890 /* AddressBookUI.framework */; };
 		9C113907132ACD2E00FB7919 /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C113906132ACD2E00FB7919 /* icon.png */; };
 		9C1923F815547FBA00A6BE22 /* AudioController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C1923F615547FBA00A6BE22 /* AudioController.m */; };
 		9C1923F915547FBA00A6BE22 /* AudioController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9C1923F715547FBA00A6BE22 /* AudioController.xib */; };
@@ -83,6 +85,8 @@
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = Container/main.m; sourceTree = "<group>"; };
 		32CA4F630368D1EE00C91783 /* ICEmobile_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ICEmobile_Prefix.pch; path = Container/ICEmobile_Prefix.pch; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* ICEmobile-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "ICEmobile-Info.plist"; path = "Container/ICEmobile-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
+		9C05859D162F6E59003D1890 /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
+		9C05859E162F6E59003D1890 /* AddressBookUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBookUI.framework; path = System/Library/Frameworks/AddressBookUI.framework; sourceTree = SDKROOT; };
 		9C113906132ACD2E00FB7919 /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon.png; path = Container/icon.png; sourceTree = "<group>"; };
 		9C1923F515547FBA00A6BE22 /* AudioController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AudioController.h; path = Shared/AudioController.h; sourceTree = "<group>"; };
 		9C1923F615547FBA00A6BE22 /* AudioController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AudioController.m; path = Shared/AudioController.m; sourceTree = "<group>"; };
@@ -141,6 +145,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9C05859F162F6E59003D1890 /* AddressBook.framework in Frameworks */,
+				9C0585A0162F6E59003D1890 /* AddressBookUI.framework in Frameworks */,
 				9CCD001B15742A710012893A /* MapKit.framework in Frameworks */,
 				9C285F44155DD37400BAC772 /* CoreLocation.framework in Frameworks */,
 				9C285F45155DD37400BAC772 /* CoreMotion.framework in Frameworks */,
@@ -212,6 +218,8 @@
 		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
+				9C05859D162F6E59003D1890 /* AddressBook.framework */,
+				9C05859E162F6E59003D1890 /* AddressBookUI.framework */,
 				9C3B27871427A1B500409376 /* Dependencies */,
 				2860E32A111B888700E27156 /* iPad */,
 				2860E324111B887F00E27156 /* iPhone */,
