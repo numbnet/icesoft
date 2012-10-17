@@ -80,7 +80,7 @@
         </subant>
     </target>
 
-    <target name="world" depends="icepush, core, compat, ace, samples"  description="Builds all ICEfaces libraries.">
+    <target name="world" depends="icepush, core, compat, ace, samples"  description="Builds all ICEfaces/ICEpush libraries.">
     </target>
 
     <target name="clean" depends="allclean">
@@ -96,13 +96,13 @@
         <subant target="allclean">
             <fileset file="samples/build.xml" />
         </subant>
-        <subant target="clean-all">
-            <fileset file="icepush/build.xml" />
+        <subant target="clean">
+            <fileset file="icepush/core/build.xml" />
         </subant>
-        <delete file="lib/${icepush.lib.name}.jar"/>
         <delete file="lib/${icefaces.lib.name}.jar"/>
         <delete file="lib/${icefaces-compat.lib.name}.jar"/>
         <delete file="lib/${icefaces-ace.lib.name}.jar"/>
+        <delete file="lib/${icepush.lib.name}.jar"/>
     </target>
 
     <target name="bundle.clean">
@@ -207,7 +207,8 @@
 			<delete dir="${bundle.dir.bin}/samples/compat/auctionMonitor/build"/>
 			<delete dir="${bundle.dir.bin}/samples/compat/auctionMonitor/src/main/webapp/WEB-INF/lib"/>
 			<delete dir="${bundle.dir.bin}/samples/compat/auctionMonitor/src/main/webapp/WEB-INF/classes"/>
-
+	
+			<delete dir="${bundle.dir.bin}/icepush"/>
 	</target>
 	
     <target name="bundle.bin">
@@ -295,6 +296,21 @@
                 <include name="itext*.jar"/>
             </fileset>
         </delete>
+
+        <delete>
+            <fileset dir="${bundle.dir.src}/icepush">
+                <include name="build.xml"/>
+                <include name="build.packages.xml"/>
+            </fileset>
+        </delete>
+        <delete>
+            <fileset dir="${bundle.dir.src}/icepush/lib">
+                <include name="jstl-1.2"/>
+                <include name="yui-compressor.jar"/>
+            </fileset>
+        </delete>
+
+        <delete dir="${bundle.dir.src}/icepush/samples"/>
 
         <delete dir="${bundle.dir.src}/test"/>
         <delete dir="${bundle.dir.src}/ace/test"/>
