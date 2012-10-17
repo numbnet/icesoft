@@ -21,8 +21,6 @@
     background: white;
     -webkit-box-shadow: inset 0px 1px 4px rgba(0, 0, 0, .2);
     box-shadow: inset 0px 1px 4px rgba(0, 0, 0, .2);
-    -webkit-background-clip: padding;
-    -moz-background-clip: padding;
     background-clip: padding;
     border-radius: .6em;
 }
