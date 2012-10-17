@@ -20,8 +20,11 @@ package org.icefaces.mobi.component.splitpane;
 
 public class SplitPane extends SplitPaneBase {
 
-    public static final String SPLITPANE = "mobi-splitpane" ;
+    public static final String SPLITPANE_BASE = "mobi-splitpane" ;
+    public static final String SPLITPANE_NONSCROLL = "mobi-splitpane-nonScrollable";
     public static final String SPLITPANE_SCROLLABLE = "mobi-splitpane-scrollable";
+    public static final String SPLITPANE_DIVIDER = "mobi-splitpane-divider";
+
 
    // facet names that define the optionally defined layouts
     public static final String LEFT_FACET = "left";

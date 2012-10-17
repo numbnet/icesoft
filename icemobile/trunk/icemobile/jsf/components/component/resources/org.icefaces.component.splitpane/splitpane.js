@@ -6,6 +6,7 @@ if (!window['mobi']) {
         var height = 0;
         var leftNode = document.getElementById(elId+"_left");
         var rtNode = document.getElementById(elId+"_right");
+        var splt  = document.getElementById(elId+"_splt");
         var body = window.document.body || null;
         if (body ==null) return;
         if (leftNode && rtNode){
@@ -34,14 +35,14 @@ if (!window['mobi']) {
         //
         if (cfg.width){
             var width= cfg.width || -1;
-            if (width >0){
+            if (width >0 && width < 99){
                 leftNode.style.width=width + "%";
                 rightNode.style.width=(100-width) + "%";
             }
             var scrollEvent = 'ontouchstart' in window ? "touchmove" : "scroll";
             var supportsOrientationChange = "onorientationchange" in window,
                 orientationEvent = supportsOrientationChange ? "orientationchange" : "resize";
-
+            if (window.hasEventListener)
             if (window.addEventListener) {
                     window.addEventListener(orientationEvent, resizeCall, false);
                     window.addEventListener('resize', resizeCall, false);

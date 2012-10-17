@@ -46,22 +46,47 @@ public class SplitPaneRenderer extends BaseLayoutRenderer {
             logger.warning("This component may ONLY have  " +
                     "both the left and right facets together");
         }
+        StringBuilder baseClass = new StringBuilder(SplitPane.SPLITPANE_BASE);
+        StringBuilder paneClass = new StringBuilder(SplitPane.SPLITPANE_SCROLLABLE) ;
+        StringBuilder spltClass = new StringBuilder(SplitPane.SPLITPANE_DIVIDER) ;
+        if (!pane.isScrollable()) {
+            paneClass = new StringBuilder(SplitPane.SPLITPANE_NONSCROLL) ;
+        }
+        int leftWidth = pane.getColumnDivider();
+        int rightWidth = 100- leftWidth;
+        StringBuilder left = new StringBuilder(String.valueOf(leftWidth)).append("%;");
+        StringBuilder right = new StringBuilder(String.valueOf(rightWidth)).append("%;");
+        String userClass = pane.getStyleClass();
+        if (userClass!=null){
+            baseClass.append(" ").append(userClass) ;
+            paneClass.append(" ").append(userClass);
+            spltClass.append(" ").append(spltClass);
+        }
         if ((leftFacet!=null) && (rightFacet !=null)){
             writeJavascriptFile(facesContext, uiComponent, JS_NAME, JS_MIN_NAME, JS_LIBRARY);
             writer.startElement(HTML.DIV_ELEM, uiComponent);
+            if (pane.getStyle() !=null){
+                writer.writeAttribute(HTML.STYLE_ATTR, pane.getStyle(), HTML.STYLE_ATTR);
+            }
+            writer.writeAttribute(HTML.CLASS_ATTR, baseClass, HTML.CLASS_ATTR);
             writer.writeAttribute(HTML.ID_ATTR, clientId+"_wrp", HTML.ID_ATTR);
             writer.startElement(HTML.DIV_ELEM, uiComponent);
             writer.writeAttribute(HTML.ID_ATTR, clientId+"_left", HTML.ID_ATTR);
-            String baseClass = SplitPane.SPLITPANE;
-            if (pane.isScrollable()){
-                baseClass =  SplitPane.SPLITPANE_SCROLLABLE;
-            }
-            writer.writeAttribute("class", baseClass, null);
+            writer.writeAttribute("class", paneClass, null);
+            writer.writeAttribute(HTML.STYLE_ATTR, left, HTML.STYLE_ATTR);
             JSFUtils.renderChild(facesContext, leftFacet);
             writer.endElement(HTML.DIV_ELEM);
+            /* column Divider */
+            writer.startElement(HTML.DIV_ELEM, uiComponent);
+            writer.writeAttribute(HTML.ID_ATTR, clientId + "_splt", HTML.ID_ATTR);
+            writer.writeAttribute(HTML.CLASS_ATTR, spltClass, HTML.CLASS_ATTR);
+            //with resizable, will have a span styled as a button to close left panel
+            writer.endElement(HTML.DIV_ELEM);
+            /* right side */
             writer.startElement(HTML.DIV_ELEM, uiComponent);
             writer.writeAttribute(HTML.ID_ATTR, clientId+"_right", HTML.ID_ATTR);
-            writer.writeAttribute("class", baseClass, null);
+            writer.writeAttribute("class", paneClass, null);
+            writer.writeAttribute(HTML.STYLE_ATTR, right, HTML.STYLE_ATTR);
             JSFUtils.renderChild(facesContext, rightFacet);
             writer.endElement(HTML.DIV_ELEM);
             encodeScript(facesContext,  uiComponent);
