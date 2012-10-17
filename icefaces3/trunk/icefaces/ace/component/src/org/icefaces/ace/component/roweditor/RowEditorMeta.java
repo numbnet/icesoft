@@ -48,18 +48,18 @@ public class RowEditorMeta extends UIComponentBaseMeta {
                     "editing is canceled. The method receives a single argument, RowEditCancelEvent.")
     private MethodExpression rowEditCancelListener;
 
-    @Property(tlddoc = "Define a String title attribute for the pencil icon. This will be shown as " +
+    @Property(tlddoc = "Define a String title attribute for the begin editing button. This will be shown as " +
             "a browser tooltip when hovering over the icon. The default for this tooltip is defined" +
             "in the ace messages bundle for easy i18n.")
-    private String pencilTitle;
+    private String startTitle;
 
-    @Property(tlddoc = "Define a String title attribute for the checkmark icon. This will be shown as " +
+    @Property(tlddoc = "Define a String title attribute for the finish editing row button. This will be shown as " +
             "a browser tooltip when hovering over the icon. The default for this tooltip is defined" +
             "in the ace messages bundle for easy i18n.")
-    private String checkmarkTitle;
+    private String submitTitle;
 
-    @Property(tlddoc = "Define a String title attribute for the crossout icon. This will be shown as " +
+    @Property(tlddoc = "Define a String title attribute for the cancel editing button. This will be shown as " +
             "a browser tooltip when hovering over the icon. The default for this tooltip is defined" +
             "in the ace messages bundle for easy i18n.")
-    private String crossoutTitle;
+    private String cancelTitle;
 }
