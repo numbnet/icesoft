@@ -13,3 +13,9 @@
  * express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
+ .mobi-tabset-tabs-bottom-footer > .mobi-tabset-tabs{ margin-bottom:0;} /* no floating footer for iphone */
+ .mobi-tabset-tabs-bottom > .mobi-tabset-tabs { position: relative; }
+ .mobi-tabset-tabs-bottom  .mobi-tabset-content {
+    padding-top: 0;
+}
+ 
