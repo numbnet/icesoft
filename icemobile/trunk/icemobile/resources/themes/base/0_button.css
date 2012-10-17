@@ -46,6 +46,7 @@
 .mobi-button {
     border: 1px solid #737173;
     background-color: #E7EBE7;
+    display: inline-block;
     font-size: 12px;
     color: black;
     font-weight: normal;
