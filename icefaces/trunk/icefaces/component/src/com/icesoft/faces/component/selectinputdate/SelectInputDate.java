@@ -1264,6 +1264,11 @@ public class SelectInputDate
             }
         } catch (ConverterException ce) {
             //faces message will be handled by the super class
+        } catch (ClassCastException cce ){
+            //ICE-8161: MyFaces causes an extra ClassCastException so treat it
+            //the same was as the ConverterException except we don't want to
+            //continue to validate as it's already been done.
+            return;
         }
         super.validate(context);
     }    
