@@ -61,48 +61,39 @@ span.error {
     width:30%;overflow-y: scroll;
     border-right:1px solid darkgray;
 }
-
-.iphone .mobi-pagePanel-header .mobi-button{
-  padding: 0;
-  line-height: 25px;
-  font-size: 20px;
-  margin-left: 0.3em;
-  float: none;
-  right: auto;
-  width:30px;height:30px;
-}
-
-.android .mobi-pagePanel-header .mobi-button{
-   padding: 0.2em 0.5em;
-   line-height: 17px;
-   font-size: 14px;
-   margin-left: 0.1em;
-   float: none;
-   margin: 2px;
-   right: auto;
-}
-
-.bberry .mobi-pagePanel-header .mobi-button{
-   padding: 0.2em 0.5em;
-   line-height: 17px;
-   font-size: 15px;
-   margin-left: 0.1em;
-   float: none;
-   margin: 2px;
-   right: auto;
-   border-radius:2px;
-}
 .bberry .phdr{ color: #FFF; font-size:15px;}
 
-.ui-icon-shadow {
+.mobi-pagePanel-header .ui-icon-shadow {
    -moz-box-shadow: 0px 1px 0 rgba(255,255,255,.4);
    -webkit-box-shadow: 0px 1px 0 rgba(255, 255, 255, .4);
    box-shadow: 0px 1px 0 rgba(255, 255, 255, .4);
 }
-.ui-icon-home {
+.mobi-pagePanel-header .ui-icon-home {
    background-position: -570px 50%;
 }
-.ui-icon {
-   background-image: url(icons.png);
+.mobi-pagePanel-header .ui-icon {
    background-repeat: no-repeat;
+}
+html.iphone .mobi-pagePanel-header .ui-icon,
+html.ipad .mobi-pagePanel-header .ui-icon {
+   background-image: url(icons-white.png);
+}
+html.android .mobi-pagePanel-header .ui-icon,
+html.honeycomb .mobi-pagePanel-header .ui-icon,
+html.bberry .mobi-pagePanel-header .ui-icon {
+   background-image: url(icons-black.png);
+}
+#menuLink{
+    font-size: 14px;
+    padding: 0;
+    line-height: 25px;
+    margin-left: 0.3em;
+    width: 30px;
+    left: 0.3em;
+    top: 4px;
+    position: absolute;
+    height: 25px;
+}
+html.bberry #menuLink{
+    font-size: 13px;
 }
