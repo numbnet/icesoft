@@ -64,6 +64,12 @@
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
         </attribute>
+        <attribute>
+            <description>The value of the label for the button. default Value is Reality</description>
+            <name>buttonLabel</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
     </tag>
     <tag>
         <description>Declare an augmented reality location.</description>
@@ -139,6 +145,32 @@
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
         </attribute>
+        <attribute>
+            <description>The value of the label for the button. default Value is Camera</description>
+            <name>buttonLabel</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <description>The maxheight allowed for resolution of the captured image</description>
+            <name>maxheight</name>
+            <required>no</required>
+            <rtexprvalue>true</rtexprvalue>
+            <type>int</type>
+        </attribute>
+        <attribute>
+            <description>The maxwidth allowed for resolution of the captured image</description>
+            <name>maxwidth</name>
+            <required>no</required>
+            <rtexprvalue>true</rtexprvalue>
+            <type>int</type>
+        </attribute>
+        <attribute>
+            <description>When true, runs the container simulator on a desktop</description>
+            <name>containerSimulator</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
     </tag>
 
     <tag>
@@ -164,7 +196,37 @@
             <name>styleClass</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            
+        </attribute>
+       <attribute>
+            <description>The value of the label for the button.
+                default Value is Camera</description>
+            <name>buttonLabel</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <description>The maxheight allowed for resolution of the captured image.
+                Not supported on iOS</description>
+            <name>maxheight</name>
+            <required>no</required>
+            <rtexprvalue>true</rtexprvalue>
+            <type>int</type>
+        </attribute>
+        <attribute>
+            <description>The maxwidth allowed for resolution of the captured image.
+                Not supported on iOS</description>
+            <name>maxwidth</name>
+            <required>no</required>
+            <rtexprvalue>true</rtexprvalue>
+            <type>int</type>
+        </attribute>
+       <attribute>
+            <description>The maxtime determines the maximum length allowed for
+                the video in seconds</description>
+            <name>maxtime</name>
+            <required>no</required>
+            <rtexprvalue>true</rtexprvalue>
+            <type>int</type>
         </attribute>
         <attribute>
             <description>If true, button to launch the camera is visible, but
@@ -196,6 +258,21 @@
         <attribute>
             <description>User defined CSS class</description>
             <name>styleClass</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+       <attribute>
+            <description>The maxtime determines the maximum length allowed for
+                the video in seconds</description>
+            <name>maxtime</name>
+            <required>no</required>
+            <rtexprvalue>true</rtexprvalue>
+            <type>int</type>
+        </attribute>
+        <attribute>
+            <description>The value of the label for the button.
+                default Value is Record</description>
+            <name>buttonLabel</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
         </attribute>
@@ -473,6 +550,13 @@
         <attribute>
             <description>User defined CSS class</description>
             <name>styleClass</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <description>The value of the label for the button.
+                default Value is Scan QRCode</description>
+            <name>buttonLabel</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
         </attribute>

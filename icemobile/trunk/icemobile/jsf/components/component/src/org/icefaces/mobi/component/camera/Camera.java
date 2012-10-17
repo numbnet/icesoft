@@ -16,17 +16,25 @@
 
 package org.icefaces.mobi.component.camera;
 
+import org.icefaces.mobi.utils.MobiJSFUtils;
+import org.icemobile.component.IDevice;
+import org.icemobile.util.ClientDescriptor;
+
 import javax.el.MethodExpression;
 
+import javax.faces.context.FacesContext;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.FacesEvent;
 import javax.faces.event.PhaseId;
 import javax.faces.event.ValueChangeEvent;
+import javax.servlet.http.HttpSession;
 import java.util.Map;
 import java.util.logging.Logger;
 
-public class Camera extends CameraBase {
+public class Camera extends CameraBase implements IDevice {
+
     private static Logger logger = Logger.getLogger(Camera.class.getName());
+
     public Camera() {
         super();
     }
@@ -69,6 +77,42 @@ public class Camera extends CameraBase {
          super.queueEvent(event);
      }
 
+     public String getScript( String clientId, boolean auxUpload) {
+        int width = getMaxwidth() ;
+        int height = getMaxheight();
+        String script;
+        if (auxUpload)  {
+            script = MobiJSFUtils.getICEmobileSXScript("camera", this);
+        } else {
+            if ( (width != Integer.MIN_VALUE) ||
+                    (height != Integer.MIN_VALUE) ) {
+                String params = "'" + clientId + "','maxwidth=" + width +
+                        "&maxheight=" + height + "'";
+                script = "ice.camera(" + params + ");";
+            } else {
+                script = "ice.camera( '" + clientId + "' );";
+            }
+        }
+        return script;
+    }
 
+    public ClientDescriptor getClient() {
+         return MobiJSFUtils.getClientDescriptor();
+    }
+    public boolean isUseCookie(){
+        return false;
+    }
+    public String getComponentType(){
+        return "camera";
+    }
+    /* don't need this for JSF but the interface for the core renderer require it from JSP */
+    public String getSessionId(){
+        HttpSession session = (HttpSession)FacesContext.getCurrentInstance().getExternalContext().getSession(false);
+        return session.getId();
+    }
+    public String getParams(){
+        return null;
+    }
 
 }
+

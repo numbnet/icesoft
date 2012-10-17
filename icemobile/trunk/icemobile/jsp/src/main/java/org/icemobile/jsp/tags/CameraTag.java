@@ -16,11 +16,29 @@
  
 package org.icemobile.jsp.tags;
 
-public class CameraTag extends DeviceTag {
+import org.icemobile.component.IDevice;
+import java.io.IOException;
+import java.lang.Override;
+import java.lang.String;
+import javax.servlet.http.HttpSession;
+
+import org.icemobile.component.IDevice;
+import org.icemobile.util.ClientDescriptor;
+
+public class CameraTag extends DeviceTag implements IDevice{
 
     public CameraTag()  {
         this.command = "camera";
         this.label = "Camera";
+    }
+
+    public void setParams(String params){
+        int width = getMaxwidth() ;
+        int height = getMaxheight();
+        if ( (width != Integer.MIN_VALUE) || (height != Integer.MIN_VALUE) ) {
+            this.setParams ("','maxwidth=" + width +
+            "&maxheight=" + height + "'");
+        }
     }
 
 }

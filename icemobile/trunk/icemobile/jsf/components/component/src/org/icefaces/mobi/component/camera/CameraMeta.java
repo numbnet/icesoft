@@ -58,7 +58,7 @@ public class CameraMeta extends UIComponentBaseMeta {
             tlddoc = "When disabled, files are not selectable for upload.")
     private boolean disabled;
 
-    @Property(defaultValue = "0", tlddoc = "tabindex of the component")
+    @Property( tlddoc = "tabindex of the component")
     private int tabindex;
 
     @Property(tlddoc = "style will be rendered on the root element of this " +
@@ -81,4 +81,19 @@ public class CameraMeta extends UIComponentBaseMeta {
 
     @Property(defaultValue="false", tlddoc="The default value of this attribute is false. If true then value change event will happen in APPLY_REQUEST_VALUES phase and if the value of this attribute is false then event change will happen in INVOKE_APPLICATION phase")
     private boolean immediate;
+
+    @Property(defaultValue="false", tlddoc="When this attribute is set to true, if the device has the capability, the html5" +
+            " input component will be used to upload the photo.  Note that currently the " +
+            " containers do not support this feature yet, and with icemobilSX, it cannot be " +
+            " used dynamically.")
+    private boolean useNative;
+
+    @Property(defaultValue="photo captured", tlddoc="message the camera button displays upon successful " +
+            "capture of picture from device.  This attribute available for internationalization " +
+            "purposes.")
+    private String captureMessageLabel;
+
+    @Property(defaultValue="camera", tlddoc="button label for this component")
+    private String buttonLabel;
+
 }

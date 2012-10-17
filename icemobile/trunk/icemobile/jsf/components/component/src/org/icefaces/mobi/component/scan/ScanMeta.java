@@ -55,4 +55,11 @@ public class ScanMeta extends UIComponentBaseMeta {
             "this component.")
     private String styleClass;
 
+    @Property(defaultValue="scan captured", tlddoc="message the scanner displays upon successful " +
+            "capture from device.  This attribute available for internationalization " +
+            "purposes.")
+    private String captureMessageLabel;
+
+    @Property(defaultValue="Scan QR Code", tlddoc="button label for this component")
+    private String buttonLabel;
 }

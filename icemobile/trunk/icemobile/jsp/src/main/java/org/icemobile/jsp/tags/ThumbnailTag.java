@@ -20,36 +20,24 @@ import javax.servlet.jsp.PageContext;
 import javax.servlet.jsp.tagext.SimpleTagSupport;
 import java.io.IOException;
 import java.io.Writer;
+import java.lang.String;
 
-public class ThumbnailTag extends SimpleTagSupport {
+import org.icemobile.component.IThumbnail;
+import org.icemobile.renderkit.ThumbnailCoreRenderer;
+
+public class ThumbnailTag extends BaseSimpleTag implements IThumbnail{
 
     private String id;
     private String style;
     private String styleClass;
+    private String baseClass;
     private String mFor;
 
     public static final String THUMBNAIL_CLASS = "mobi-thumb";
 
     public void doTag() throws IOException {
-
-        PageContext pageContext = (PageContext) getJspContext();
-
-        Writer out = pageContext.getOut();
-
-        out.write("<span ");
-
-        if (id != null && !"".equals(id)) {
-            out.write(" id='" + getId() + "'");
-        }
-        out.write(" class='" + THUMBNAIL_CLASS);
-        if (null != styleClass) {
-            out.write(" " + styleClass);
-        }
-        out.write("'");
-        if (null != style) {
-            out.write(" style='" + style + "'");
-        }
-        out.write("><img height='64' width='64' id='" + mFor + "-thumb'/></span>");
+	    ThumbnailCoreRenderer renderer = new ThumbnailCoreRenderer();
+        renderer.encode(this, new TagWriter(getContext()));
     }
 
     public String getId() {
@@ -82,6 +70,23 @@ public class ThumbnailTag extends SimpleTagSupport {
 
     public void setFor(String mFor) {
         this.mFor = mFor;
+    }
+
+    public String getBaseClass() {
+        return styleClass;
+    }
+
+    public void setBaseClass(String baseClass) {
+        this.styleClass = baseClass;
+    }
+    public void setMFor(String mFor){
+        this.mFor = mFor;
+    }
+    public String getMFor(){
+        return this.mFor;
+    }
+    public String getClientId() {
+            return id;
     }
 
 }

@@ -17,10 +17,62 @@
 package org.icefaces.mobi.component.scan;
 
 
-public class Scan extends ScanBase {
+import org.icefaces.mobi.utils.MobiJSFUtils;
+import org.icemobile.component.IDevice;
+import org.icemobile.util.ClientDescriptor;
+
+import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpSession;
+
+public class Scan extends ScanBase implements IDevice{
 
     public Scan() {
         super();
     }
 
+     public boolean isUseNative() {
+        return false;
+    }
+
+    public int getMaxwidth() {
+        return Integer.MIN_VALUE;
+    }
+
+    public void setMaxwidth(int i) {
+
+    }
+
+    public int getMaxheight() {
+        return Integer.MIN_VALUE;
+    }
+
+    public void setMaxheight(int i) {
+
+    }
+
+    public String getScript(String clientId, boolean b) {
+        return "ice.scan('" + clientId + "');";
+    }
+
+
+    public boolean isUseCookie() {
+        return false;
+    }
+
+    public String getComponentType() {
+        return "scan";
+    }
+
+  /* don't need this for JSF but the interface for the core renderer require it from JSP */
+    public String getSessionId(){
+        HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
+        return session.getId();
+    }
+    public String getParams(){
+        return null;
+    }
+
+    public ClientDescriptor getClient() {
+         return MobiJSFUtils.getClientDescriptor();
+    }
 }

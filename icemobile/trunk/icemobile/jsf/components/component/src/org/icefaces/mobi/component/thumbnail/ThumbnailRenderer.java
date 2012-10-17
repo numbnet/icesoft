@@ -27,10 +27,14 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.render.Renderer;
 
+import org.icefaces.mobi.api.ThumbnailProvider;
+import org.icefaces.mobi.renderkit.ResponseWriterWrapper;
 import org.icefaces.mobi.utils.HTML;
 import org.icefaces.mobi.utils.JSFUtils;
 import org.icefaces.mobi.utils.MobiJSFUtils;
+import org.icemobile.component.IThumbnail;
 import org.icemobile.util.ClientDescriptor;
+import org.icemobile.renderkit.ThumbnailCoreRenderer;
 
 public class ThumbnailRenderer extends Renderer {
     private static final Logger logger =
@@ -39,48 +43,41 @@ public class ThumbnailRenderer extends Renderer {
 
     public void encodeEnd(FacesContext facesContext, UIComponent uiComponent)
             throws IOException {
-        ClientDescriptor cd = MobiJSFUtils.getClientDescriptor();
-        if (cd.isDesktopBrowser()){
-            return;
-        }
-        ResponseWriter writer = facesContext.getResponseWriter();
-
+        /* checking to see if thumbnail is required is in core renderer */
         Thumbnail thumbnail = (Thumbnail) uiComponent;
-        String cameraId = thumbnail.getFor();
-        String cameraClientId = null;
+        String compId = thumbnail.getFor();
 
-        if (cameraId == null &&
+        if (compId == null &&
                 (facesContext.isProjectStage(ProjectStage.Development) ||
                 logger.isLoggable(Level.FINER))) {
             logger.warning("'for' attribute cannot be null");
         }
-        UIComponent cameraComp = thumbnail.findComponent(cameraId);
-        String thumbId = cameraId + "-thumb";
-        if (null != cameraComp) {
-            cameraClientId = cameraComp.getClientId();
-            thumbId = cameraClientId + "-thumb";
+        UIComponent comp = thumbnail.findComponent(compId);
+        String mFor = comp.getId();
+        if (null != comp) {
+            if (comp instanceof ThumbnailProvider){
+                ThumbnailProvider tp = (ThumbnailProvider)comp;
+                if (tp.isUseNative()){
+                    return;
+                }
+            }
+            mFor = comp.getClientId(facesContext);
+            if (MobiJSFUtils.uploadInProgress(comp))  {
+               thumbnail.setBaseClass(IThumbnail.CSS_DONE_CLASS);
+            } else {
+               thumbnail.setBaseClass(IThumbnail.CSS_CLASS);
+            }
+           // logger.info("comp id="+comp.getClientId(facesContext)+ " baseClass = "+thumbnail.getBaseClass());
         } else if (facesContext.isProjectStage(ProjectStage.Development) ||
                 logger.isLoggable(Level.FINER)){
-            logger.finer(" Cannot find camera component with id=" + cameraId);
+            logger.finer(" Cannot find camera or camcorder component with id=" + compId);
         }
-
-        // boolean disabled = thumbnail.isDisabled();
-        writer.startElement("span", uiComponent);
-        // write out style for input button, same as default device button.
-        String thumbClass = "mobi-thumb";
-        if (MobiJSFUtils.uploadInProgress(cameraClientId))  {
-            thumbClass = "mobi-thumb-done";
-        } 
-        JSFUtils.writeConcatenatedStyleClasses(writer, thumbClass,
-                thumbnail.getStyleClass());
-        writer.writeAttribute(HTML.STYLE_ATTR, thumbnail.getStyle(), HTML.STYLE_ATTR);
-        writer.writeAttribute(HTML.ID_ATTR, "span-thumb", null);
-        writer.startElement("img", uiComponent);
-        writer.writeAttribute(HTML.ID_ATTR, thumbId, null);
-        writer.writeAttribute(HTML.WIDTH_ATTR, "64", null);
-        writer.writeAttribute(HTML.HEIGHT_ATTR, "64", null);
-        writer.endElement("img");
-        writer.endElement("span");
+        if (null==thumbnail.getMFor()){  //only have to set it once
+             thumbnail.setMFor(mFor);
+        }
+        ThumbnailCoreRenderer renderer = new ThumbnailCoreRenderer();
+        ResponseWriterWrapper writer = new ResponseWriterWrapper(facesContext.getResponseWriter());
+        renderer.encode(thumbnail, writer);
     }
 
 }

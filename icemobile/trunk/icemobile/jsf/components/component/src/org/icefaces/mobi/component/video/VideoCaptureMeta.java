@@ -88,4 +88,16 @@ public class VideoCaptureMeta extends UIComponentBaseMeta {
     	            "with a return type of void. ")
     private MethodExpression valueChangeListener;
 
+    @Property(defaultValue="false", tlddoc="When this attribute is set to true, if the device has the capability, the html5" +
+            " input component will be used to upload the video")
+    private boolean useNative;
+
+    @Property(defaultValue="video captured", tlddoc="message the video button displays upon successful " +
+            "capture of picture from device.  This attribute available for internationalization " +
+            "purposes.")
+    private String captureMessageLabel;
+
+    @Property(defaultValue="camcorder", tlddoc="button label for this component")
+    private String buttonLabel;
+
 }
