@@ -107,7 +107,7 @@ public class DeviceResourceTag extends BaseSimpleTag {
 			if( ios6 ){
 				out.write(META_IOS_WEBAPPCAPABLE);
 				out.write(META_IOS_APPSTATUSBAR);
-				if( includeIOSSmartAppBanner && !client.isSXRegistered()){
+				if (isShowAppBanner(client))  {
 				    //String uploadURL = SXUtils.getRegisterSXURL(getRequest(),MobiJspConstants.SX_UPLOAD_PATH); //TODO MOBI-359
 					String uploadURL = SXUtils.getRegisterSXURL(getRequest());
 				    String smartAppMeta = String.format(META_IOS_SMARTAPPBANNER, IOS_APP_ID, uploadURL);
@@ -117,7 +117,7 @@ public class DeviceResourceTag extends BaseSimpleTag {
 			}
 		}
 		writeOutDeviceStyleSheets();
-		if (MobiEnvUtils.isProductionStage(getRequest()))  {
+		if (MobiEnvUtils.isProductionStage(getServletContext()))  {
 		    out.write(String.format(SCRIPT_ICEMOBILE_PROD, contextRoot, MobiJspConstants.RESOURCE_BASE_URL));
 		}
 		else{
@@ -133,6 +133,13 @@ public class DeviceResourceTag extends BaseSimpleTag {
 		}
 	}
 	
+    private boolean isShowAppBanner(ClientDescriptor client)  {
+        if (MobiEnvUtils.isDevelopmentStage(getServletContext()))  {
+            return false;
+        }
+        return (includeIOSSmartAppBanner && !client.isSXRegistered());
+    }
+
 	private void writeOutDeviceStyleSheets() throws IOException {
 		
 		PageContext pageContext = getContext();
@@ -220,7 +227,7 @@ public class DeviceResourceTag extends BaseSimpleTag {
 			// load compressed css if this is production environment.
 			fileName = nameVal;
 			
-			if (MobiEnvUtils.isProductionStage(getRequest())) {
+			if (MobiEnvUtils.isProductionStage(getServletContext())) {
 				fileName = fileName.concat(CSS_COMPRESSION_POSTFIX);
 			}
 			libVal = DEFAULT_LIBRARY;
