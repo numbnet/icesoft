@@ -347,8 +347,10 @@ var singleSubmit;
                 }
 
                 var deltaSubmitForm = document.getElementById(singleSubmitFormID(viewID));
-                var clonedElement = element.cloneNode(true);
                 var appendedElements = [];
+
+                var clonedElement = element.cloneNode(false);
+                append(appendedElements, deltaSubmitForm.appendChild(clonedElement));
 
                 function createHiddenInputInDeltaSubmitForm(name, value) {
                     append(appendedElements, appendHiddenInputElement(deltaSubmitForm, name, value));
@@ -364,7 +366,7 @@ var singleSubmit;
                         createHiddenInputInDeltaSubmitForm(removePrefix + name, value);
                     }));
 
-                    namespace.submitFunction(deltaSubmitForm, event, options);
+                    namespace.submitFunction(clonedElement, event, options);
                 } finally {
                     each(appendedElements, function(element) {
                         deltaSubmitForm.removeChild(element);
