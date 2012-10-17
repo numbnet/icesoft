@@ -52,19 +52,19 @@ public class RowEditorRenderer extends CoreRenderer {
     private static String ACE_MESSAGES_BUNDLE = "org.icefaces.ace.resources.messages";
     private static String MESSAGE_KEY_PREFIX = "org.icefaces.ace.component.roweditor.";
 
-    private static enum ICON {
-        PENCIL, CHECKMARK, CROSSOUT;
+    private static enum BUTTON {
+        START, SUBMIT, CANCEL;
 
         String getTitle(RowEditor editor) {
             // Get per component titles
             String title = null;
 
-            if (this == PENCIL)
-                title = editor.getPencilTitle();
-            else if (this == CHECKMARK)
-                title = editor.getCheckmarkTitle();
-            else if (this == CROSSOUT)
-                title = editor.getCrossoutTitle();
+            if (this == START)
+                title = editor.getStartTitle();
+            else if (this == SUBMIT)
+                title = editor.getSubmitTitle();
+            else if (this == CANCEL)
+                title = editor.getCancelTitle();
 
             if (title != null) return title;
 
@@ -134,7 +134,7 @@ public class RowEditorRenderer extends CoreRenderer {
 
             if (!hasActiveEditors) {
                 writer.startElement("a", null);
-                writer.writeAttribute("title", ICON.PENCIL.getTitle(editor), null);
+                writer.writeAttribute("title", BUTTON.START.getTitle(editor), null);
                 writer.writeAttribute("class", "ui-icon ui-icon-pencil", null);
                 writer.writeAttribute("tabindex", "0", null);
                 writer.endElement("a");
@@ -142,13 +142,13 @@ public class RowEditorRenderer extends CoreRenderer {
 
             if (hasActiveEditors) {
                 writer.startElement("a", null);
-                writer.writeAttribute("title", ICON.CHECKMARK.getTitle(editor), null);
+                writer.writeAttribute("title", BUTTON.SUBMIT.getTitle(editor), null);
                 writer.writeAttribute("class", "ui-icon ui-icon-check", null);
                 writer.writeAttribute("tabindex", "0", null);
                 writer.endElement("a");
 
                 writer.startElement("a", null);
-                writer.writeAttribute("title", ICON.CROSSOUT.getTitle(editor), null);
+                writer.writeAttribute("title", BUTTON.CANCEL.getTitle(editor), null);
                 writer.writeAttribute("class", "ui-icon ui-icon-close", null);
                 writer.writeAttribute("tabindex", "0", null);
                 writer.endElement("a");
