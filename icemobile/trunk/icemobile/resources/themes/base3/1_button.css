@@ -74,13 +74,9 @@
     width: 25px;
     -webkit-transform : rotate(-45deg) skew(-10deg, -10deg);
     transform: rotate(-45deg) skewX(-10deg) skewY(-10deg);
-    -webkit-border-top-right-radius : 100px 40px;
     border-top-left-radius: 100px 40px;
-    -webkit-border-top-left-radius : 30px 2px;
     border-top-left-radius : 30px 2px;
-    -webkit-border-bottom-right-radius : 2px 30px;
     border-bottom-right-radius : 2px 30px;
-    -webkit-border-bottom-left-radius : 40px 100px;
     border-bottom-left-radius : 40px 100px;
     z-index : 1;
     content : ' ';

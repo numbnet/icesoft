@@ -17,7 +17,6 @@
 .mobi-fieldset {
     font-size: 16px;
     box-shadow: 0 0 1px #FFFFFF, 0 1px 0 #E3E3E3 inset;
-    -moz-box-shadow: 0 0 1px #FFFFFF, 0 1px 0 #E3E3E3 inset;
     -webkit-box-shadow: 0 0 1px #FFFFFF, 0 1px 0 #E3E3E3 inset;
 }
 

@@ -36,4 +36,5 @@
     opacity: 1;
     -webkit-transition: left 1s ease-out;
     -moz-transition: left 1s ease-out;
+    -o-transition: left 1s ease-out;
 }
