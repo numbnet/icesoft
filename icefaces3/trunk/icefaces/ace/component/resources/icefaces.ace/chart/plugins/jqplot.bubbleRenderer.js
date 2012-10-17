@@ -195,7 +195,13 @@
         }
         
         if (!this.varyBubbleColors) {
-            this.seriesColors = [this.color];
+            var color = this.color;
+            if (this.bubbleAlpha < 1.0) {
+                comps = $.jqplot.getColorComponents(color);
+                color = 'rgba('+comps[0]+', '+comps[1]+', '+comps[2]+', '+this.bubbleAlpha+')';
+            }
+
+            this.seriesColors = [color];
         }
         
         this.colorGenerator = new $.jqplot.ColorGenerator(this.seriesColors);
