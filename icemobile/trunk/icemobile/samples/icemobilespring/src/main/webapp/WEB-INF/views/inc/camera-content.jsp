@@ -16,7 +16,7 @@
             <form:input path="name"/>
         </mobi:fieldSetRow>
         <mobi:fieldSetRow>
-            <mobi:camera id="cam" containerSimulator="true"/>
+            <mobi:camera id="cam" />
             <mobi:thumb for="cam"
                         style="height:60px;width:65px;vertical-align:middle;float:right;margin:10px;"/>
 

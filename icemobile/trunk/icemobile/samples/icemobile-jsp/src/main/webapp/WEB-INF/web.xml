@@ -7,7 +7,7 @@
    	<display-name>hello-icemobile</display-name>
 
 	<context-param>
-		<param-name>org.icemobile.project.stage</param-name>
+		<param-name>org.icemobile.projectstage</param-name>
 		<param-value>production</param-value>
 	</context-param>
 
