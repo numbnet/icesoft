@@ -36,7 +36,7 @@
     <h:form id="form" style="text-align: center; position:relative;">
         <h:panelGrid columns="2" cellspacing="2" style="left:0; position: absolute;">
             <h:outputText value="Single Select" />
-            <h:selectBooleanCheckbox value="#{treeSelectionBean.singleSelect}">
+            <h:selectBooleanCheckbox id="selectModeCheckbox" value="#{treeSelectionBean.singleSelect}">
                 <f:ajax execute="@this" render="@form" />
             </h:selectBooleanCheckbox>
         </h:panelGrid>
@@ -76,9 +76,9 @@
             </ace:node>
         </ace:tree>
 
-        <h:panelGroup style="display:inline-block; vertical-align:top; padding-left: 1em;">
-            <ui:repeat var="selection" value="#{treeSelectionBean.stateMap.getSelected()}">
-                <h:outputText value="#{selection.name}" /><br/>
+        <h:panelGroup id="panelGroup" style="display:inline-block; vertical-align:top; padding-left: 1em;">
+            <ui:repeat id="repeater" var="selection" value="#{treeSelectionBean.stateMap.getSelected()}">
+                <h:outputText id="outputValue" value="#{selection.name}" /><br/>
             </ui:repeat>
         </h:panelGroup>
     </h:form>
