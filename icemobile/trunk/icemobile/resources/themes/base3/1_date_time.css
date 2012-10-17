@@ -41,14 +41,12 @@
 
 .mobi-date-btn-incr, .mobi-time-btn-incr {
     box-shadow: 0 3px 3px #888;
-    -moz-box-shadow: 0 3px 3px #888;
     -webkit-box-shadow: 0 3px 3px #888;
     border-radius: 3px 3px 0 0;
 }
 
 .mobi-date-btn-decr, .mobi-time-btn-decr  {
     box-shadow: 0 -3px 3px #888;
-    -moz-box-shadow: 0 -3px 3px #888;
     -webkit-box-shadow: 0 -3px 3px #888;
     border-radius: 0 0 3px 3px;
 }
