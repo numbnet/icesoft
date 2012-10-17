@@ -27,7 +27,7 @@ import org.icemobile.jsp.util.MobiJspConstants;
 import org.icemobile.jsp.util.Util;
 import org.icemobile.util.ClientDescriptor;
 import org.icemobile.util.Constants;
-import org.icemobile.util.EnvUtils;
+import org.icemobile.util.MobiEnvUtils;
 import org.icemobile.util.SXUtils;
 
 /**
@@ -117,7 +117,7 @@ public class DeviceResourceTag extends BaseSimpleTag {
 			}
 		}
 		writeOutDeviceStyleSheets();
-		if( EnvUtils.isProductionStage(getRequest())){
+		if (MobiEnvUtils.isProductionStage(getRequest()))  {
 		    out.write(String.format(SCRIPT_ICEMOBILE_PROD, contextRoot, MobiJspConstants.RESOURCE_BASE_URL));
 		}
 		else{
@@ -220,7 +220,7 @@ public class DeviceResourceTag extends BaseSimpleTag {
 			// load compressed css if this is production environment.
 			fileName = nameVal;
 			
-			if (EnvUtils.isProductionStage(getRequest())) {
+			if (MobiEnvUtils.isProductionStage(getRequest())) {
 				fileName = fileName.concat(CSS_COMPRESSION_POSTFIX);
 			}
 			libVal = DEFAULT_LIBRARY;

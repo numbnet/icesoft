@@ -3,7 +3,7 @@ package org.icemobile.util;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 
-public class EnvUtils {
+public class MobiEnvUtils {
     
     public static boolean isProductionStage(HttpServletRequest request){
         String param = getContextParam(request.getSession().getServletContext(), Constants.PROJECT_STAGE_PARAM);
