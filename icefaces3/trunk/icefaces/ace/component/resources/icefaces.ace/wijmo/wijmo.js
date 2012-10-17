@@ -4483,90 +4483,75 @@ function wijmoASPNetParseOptions(o) {
 				ice.ace.submenuRegistry[menuId].push(sublist.get(0));
 			}
 			// ICE-8145 }
+
 			var self = this,
 				o = self.options,
 				animationOptions, direction, showAnimation,
-				animations = $.wijmo.wijmenu.animations;
+				animations = $.wijmo.wijmenu.animations,
+                parentlist = sublist.parent().closest('.wijmo-wijmenu-list'), //ICE-8656
+                show = function() {
+                    if (item.is("a.wijmo-wijmenu-link")) {
+                        item.data("subMenuOpened", true);
+                    }
+                    if (sublist.is(":visible")) {
+                        return;
+                    }
+                    sublist.show();
+                    self._setPosition(item, sublist);
+                    self.nowIndex++;
+                    self._setZindex(sublist, self.nowIndex);
+                    sublist.hide();
+                    self._trigger("showing", e, sublist);
 
-			//now do not support the popup menu and equal-height menu.
-			/*
-			var parentUl = null;
-			if (item.is(".wijmo-wijmenu-link")) {
-			parentUl = item.parent().parent();
-			}
-			var parentHeight = 0;
-			if (parentUl) {
-			parentHeight = parentUl.innerHeight();
-			if (parentHeight === 0) {
-			parentHeight = this.element.data("domObject").menucontainer.innerHeight();
-			}
-			}
-			var tag = false;
-			if (parentHeight > 0 && parentHeight === sublist.innerHeight()) {
-			tag = true;
-			}
-			
-			sublist.show();
-			if (o.mode === "popup") {
-			this._setPopupPosition(e);
-			}
-			else {
-			//this._setPosition(item, sublist, tag);
+                    if ($.fn.wijshow) {
+                        animationOptions = {
+                            context: sublist,
+                            show: true
+                        };
 
-			}
-			*/
-			if (item.is("a.wijmo-wijmenu-link")) {
-				item.data("subMenuOpened", true);
-			}
-			if (sublist.is(":visible")) {
-				return;
-			}
-			sublist.show();
-			self._setPosition(item, sublist);
-			self.nowIndex++;
-			self._setZindex(sublist, self.nowIndex);
-			sublist.hide();
-			self._trigger("showing", e, sublist);
+                        direction = "left";
+                        if (o.orientation === "horizontal") {
+                            if (sublist.parent().closest("ul").get(0) === self.rootMenu.get(0)) {
+                                direction = "up";
+                            }
+                        }
+                        showAnimation = $.extend({}, { option: { direction: direction} },
+                            o.animation, o.showAnimation);
+                        sublist.wijshow(showAnimation, animations,
+                            animationOptions, null, function () {
+                                var browser = $.browser;
+                                if (browser.msie && browser.version === "9.0") {
+                                    sublist.wrap("<div></div>");
+                                    sublist.unwrap();
+                                }
+                                else if (browser.msie && browser.version === "6.0") {
+                                    sublist.css("overflow", "");
+                                }
+                                sublist.attr("aria-hidden", false);
+                            });
+                    }
+                    else {
+                        sublist.show().attr("aria-hidden", false);
+                    }
 
-			if ($.fn.wijshow) {
-				animationOptions = {
-					context: sublist,
-					show: true
-				};
+                    self._isClickToOpen = o.triggerEvent === "click";
 
-				direction = "left";
-				if (o.orientation === "horizontal") {
-					if (sublist.parent().closest("ul").get(0) === this.rootMenu.get(0)) {
-						direction = "up";
-					}
-				}
-				showAnimation = $.extend({}, { option: { direction: direction} },
-					o.animation, o.showAnimation);
-				sublist.wijshow(showAnimation, animations,
-					animationOptions, null, function () {
-						var browser = $.browser;
-						if (browser.msie && browser.version === "9.0") {
-							sublist.wrap("<div></div>");
-							sublist.unwrap();
-						}
-						else if (browser.msie && browser.version === "6.0") {
-							sublist.css("overflow", "");
-						}
-						sublist.attr("aria-hidden", false);
-					});
-			}
-			else {
-				sublist.show().attr("aria-hidden", false);
-			}
+                    if (!sublist.is(".wijmo-wijmenu")) {
+                        if (self.currentMenuList === undefined) {
+                            self.currentMenuList = [];
+                        }
+                        self.currentMenuList.push(sublist);
+                    }
+                };
 
-			self._isClickToOpen = o.triggerEvent === "click";
-
-			if (!sublist.is(".wijmo-wijmenu")) {
-				if (self.currentMenuList === undefined) {
-					self.currentMenuList = [];
-				}
-				self.currentMenuList.push(sublist);
-			}
+            if (parentlist) {
+                var opacity = ice.ace.getOpacity(parentlist);
+                setTimeout(function() {
+                    var newopacity = ice.ace.getOpacity(parentlist);
+                    if (opacity == newopacity && parentlist.is(':visible'))
+                        show();
+                },10);
+            } else show();
 		},
 
 		_hideCurrentSubmenu: function (aItem) {
@@ -4582,7 +4567,8 @@ function wijmoASPNetParseOptions(o) {
 			var menuId = ice.ace.submenuRegistryGetMenuId(this.rootMenu.get(0));
 			if (!ice.ace.submenuRegistryCheck(menuId, sublist.get(0))) return; // exit if submenu is not open
 			// ICE-8145 }
-			if (sublist.parents(".ui-menu-multicolumn").size() > 0) return; // ICE-7827 
+			if (sublist.parents(".ui-menu-multicolumn").size() > 0) return; // ICE-7827
+
 			var self = this,
 				o = self.options,
 				animations = $.wijmo.wijmenu.animations,
