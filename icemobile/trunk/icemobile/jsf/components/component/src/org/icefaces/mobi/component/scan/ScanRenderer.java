@@ -23,15 +23,12 @@ import java.util.logging.Logger;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
 
 import org.icefaces.impl.application.AuxUploadResourceHandler;
 import org.icefaces.mobi.renderkit.BaseInputRenderer;
 import org.icefaces.mobi.renderkit.ResponseWriterWrapper;
-import org.icefaces.mobi.utils.HTML;
-import org.icefaces.mobi.utils.JSFUtils;
 import org.icefaces.mobi.utils.MobiJSFUtils;
-import org.icefaces.util.EnvUtils;
+
 import org.icemobile.renderkit.DeviceCoreRenderer;
 
 
@@ -73,46 +70,6 @@ public class ScanRenderer extends BaseInputRenderer {
         ResponseWriterWrapper writer = new ResponseWriterWrapper(facesContext.getResponseWriter());
         renderer.encode(scan, writer);
     }
-    /*    boolean disabled = scan.isDisabled();
-        // span as per MobI-18
-        boolean isEnhanced = EnvUtils.isEnhancedBrowser(facesContext);
-        boolean isAuxUpload = EnvUtils.isAuxUploadBrowser(facesContext);
-        if (!isEnhanced && !isAuxUpload) {
-            writer.startElement(HTML.SPAN_ELEM, uiComponent);
-            writer.startElement(HTML.INPUT_ELEM, uiComponent);
-            writer.writeAttribute(HTML.TYPE_ATTR, HTML.INPUT_TYPE_TEXT, null);
-            writer.writeAttribute(HTML.ID_ATTR, clientId, null);
-            writer.writeAttribute(HTML.NAME_ATTR, clientId, null);
-            writer.endElement(HTML.INPUT_ELEM);
-            return;
-        }
-        writer.startElement(HTML.SPAN_ELEM, uiComponent);
-        writer.writeAttribute(HTML.ID_ATTR, clientId, null);
-        writer.startElement(HTML.INPUT_ELEM, uiComponent);
-        writer.writeAttribute(HTML.TYPE_ATTR, "button", null);
-        writer.writeAttribute(HTML.ID_ATTR, clientId + "-button", null);
-        writer.writeAttribute(HTML.VALUE_ATTR, "Scan QR Code", null);
-        JSFUtils.writeConcatenatedStyleClasses(writer,
-                "mobi-button mobi-button-default",
-                scan.getStyleClass());
-        writer.writeAttribute(HTML.STYLE_ATTR, scan.getStyle(), HTML.STYLE_ATTR);
-        if (disabled) {
-            writer.writeAttribute("disabled", "disabled", null);
-        }
-        String script;
-        if (isAuxUpload)  {
-            script = MobiJSFUtils.getICEmobileSXScript("scan", uiComponent);
-        } else {
-            script = "ice.scan('" + clientId + "');";
-        }
-        writer.writeAttribute("onclick", script, null);
-        writer.endElement(HTML.INPUT_ELEM);
-    }
 
-  /*  public void encodeEnd(FacesContext facesContext, UIComponent uiComponent)
-            throws IOException {
-        ResponseWriter writer = facesContext.getResponseWriter();
-        writer.endElement(HTML.SPAN_ELEM);
-    } */
 
 }

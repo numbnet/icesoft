@@ -77,54 +77,5 @@ public class MicrophoneRenderer extends Renderer {
         DeviceCoreRenderer renderer = new DeviceCoreRenderer();
         ResponseWriterWrapper writer = new ResponseWriterWrapper(facesContext.getResponseWriter());
         renderer.encode(microphone, writer);
-       /* boolean disabled = microphone.isDisabled();
-        // span as per MobI-18
-        boolean isEnhanced = EnvUtils.isEnhancedBrowser(facesContext);
-        boolean isAuxUpload = EnvUtils.isAuxUploadBrowser(facesContext);
-
-        if (!isEnhanced && !isAuxUpload) {
-            writer.startElement(HTML.SPAN_ELEM, uiComponent);
-            writer.startElement(HTML.INPUT_ELEM, uiComponent);
-            writer.writeAttribute(HTML.TYPE_ATTR, HTML.INPUT_TYPE_FILE, null);
-            writer.writeAttribute(HTML.ID_ATTR, clientId, null);
-            writer.writeAttribute(HTML.NAME_ATTR, clientId, null);
-            writer.endElement(HTML.INPUT_ELEM);
-            writer.endElement(HTML.SPAN_ELEM);
-            return;
-        }
-        int maxtime = microphone.getMaxtime();
-        // button element
-        writer.startElement("input", uiComponent);
-        writer.writeAttribute(HTML.TYPE_ATTR, "button", null);
-        writer.writeAttribute("id", clientId , null);
-        // write out style for input button, same as default device button.
-        JSFUtils.writeConcatenatedStyleClasses(writer,
-                "mobi-button mobi-button-default",
-                microphone.getStyleClass());
-        writer.writeAttribute(HTML.STYLE_ATTR, microphone.getStyle(), HTML.STYLE_ATTR);
-        if (disabled) {
-            writer.writeAttribute("disabled", "disabled", null);
-        }
-        String script;
-        if (isAuxUpload)  {
-            script = MobiJSFUtils.getICEmobileSXScript("microphone", uiComponent);
-        } else {
-            script = writeJSCall(clientId, maxtime).toString();
-        }
-        writer.writeAttribute("onclick", script, null);
-
-        writer.writeAttribute("value", "record", null);
-        writer.endElement("input");
-    }
-
-    private StringBuilder writeJSCall(String clientId, int maxtime) {
-        final StringBuilder script = new StringBuilder();
-        if (maxtime != Integer.MIN_VALUE) {
-            script.append("ice.microphone( '").append(clientId).
-                    append(",'maxtime=").append(maxtime).append("');");
-        } else {
-            script.append("ice.microphone( '").append(clientId).append("');");
-        }
-        return script;  */
     }
 }

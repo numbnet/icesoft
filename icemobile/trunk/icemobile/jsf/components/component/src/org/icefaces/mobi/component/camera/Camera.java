@@ -16,6 +16,7 @@
 
 package org.icefaces.mobi.component.camera;
 
+import org.icefaces.mobi.api.ThumbnailProvider;
 import org.icefaces.mobi.utils.MobiJSFUtils;
 import org.icemobile.component.IDevice;
 import org.icemobile.util.ClientDescriptor;
@@ -31,7 +32,7 @@ import javax.servlet.http.HttpSession;
 import java.util.Map;
 import java.util.logging.Logger;
 
-public class Camera extends CameraBase implements IDevice {
+public class Camera extends CameraBase implements IDevice, ThumbnailProvider {
 
     private static Logger logger = Logger.getLogger(Camera.class.getName());
 

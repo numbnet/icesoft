@@ -15,6 +15,7 @@
  */
 package org.icefaces.mobi.component.video;
 
+import org.icefaces.mobi.api.ThumbnailProvider;
 import org.icefaces.mobi.utils.MobiJSFUtils;
 import org.icemobile.component.IDevice;
 import org.icemobile.util.ClientDescriptor;
@@ -29,7 +30,7 @@ import javax.servlet.http.HttpSession;
 import java.util.Map;
 
 
-public class VideoCapture extends VideoCaptureBase implements IDevice{
+public class VideoCapture extends VideoCaptureBase implements IDevice, ThumbnailProvider{
 
     public VideoCapture() {
         super();
