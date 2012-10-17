@@ -25,8 +25,7 @@
 }
 
 .mobi-contentnavbar-button {
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
+    border-radius: 5px;
 }
 .mobi-contentnavbar-button.menu {
     background-image:   -webkit-gradient(linear, left top, left bottom, from(#7d828c), color-stop(0.5, #303749), color-stop(0.5, #121a2e), to(#121a2e));

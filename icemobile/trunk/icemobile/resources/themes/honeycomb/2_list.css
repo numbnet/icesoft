@@ -33,18 +33,10 @@
     color: #BDBEBD;
 }
 
-.mobi-list-inset > .mobi-list-item:first-child {
-    -webkit-border-radius: 0;
-    -moz-border-radius: 0;
+.mobi-list-inset > .mobi-list-item:first-child,
+.mobi-list-inset > .mobi-list-item:last-child  {
     border-radius: 0;
 }
-
-.mobi-list-inset > .mobi-list-item:last-child {
-    -webkit-border-radius: 0;
-    -moz-border-radius: 0;
-    border-radius: 0;
-}
-
 .mobi-list > .mobi-list-item > .mobi-list-item-default > a {
     display: block;
     color: #fff;

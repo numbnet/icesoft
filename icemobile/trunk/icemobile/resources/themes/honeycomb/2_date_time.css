@@ -30,8 +30,6 @@
     background-color: black;
     border: 1px solid #6595F9;
     border-radius: 0;
-    -webkit-border-radius: 0;
-    -moz-border-radius: 0;
     -moz-box-shadow: none;
     -webkit-box-shadow: none;
     box-shadow: none;
@@ -84,8 +82,6 @@
     -moz-box-shadow:none;
     -webkit-box-shadow: none;
     border-radius: 0;
-    -webkit-border-radius: 0;
-    -moz-border-radius: 0;
 }
 
 .mobi-date-select-value, .mobi-time-select-value {
