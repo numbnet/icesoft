@@ -110,11 +110,8 @@
     top: 0;
     left:0;
 }
-.mobi-tabset-tabs-bottom-footer > .mobi-tabset-tabs{
-    margin-bottom:0;
-}
 .mobi-tabset-tabs-top-header > .mobi-tabset-tabs{
-    margin-top:0;
+    margin-top:0; /* TODO */
 }
 .mobi-tabpage-hidden {
     display: none;

@@ -47,8 +47,4 @@
 .mobi-tabset-tabs-top > .mobi-tabset-tabs{
     position: relative;
 }
-.mobi-tabset-tabs-bottom-footer > .mobi-tabset-tabs{margin-bottom: 0;}
-
-.mobi-tabset-tabs-top-header > .mobi-tabset-tabs{margin-top: 0;}
-
 .mobi-tabpage-hidden {display: none; }
