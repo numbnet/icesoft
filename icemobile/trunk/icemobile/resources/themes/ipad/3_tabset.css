@@ -86,8 +86,6 @@
     background: -moz-linear-gradient(top, #f1f1f2, #b5b6b7) repeat scroll 0 0 #c1c2c3 !important;
     background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0, #f1f1f2), color-stop(1, #b5b6b7)) !important;
     color:#525253;
-    -webkit-border--radius:0;
-    -moz-border-radius:0;
     border-radius:0;
 }
 

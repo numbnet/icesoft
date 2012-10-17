@@ -16,9 +16,7 @@
 
 .mobi-panelconf-container, .mobi-panelpopup-container, .mobi-submitnotific-container  {
     opacity: .8;
-    border-radius: 6px 6px 6px 6px;
-    -webkit-border-radius: 6px;
-    -moz-border-radius: 6px;
+    border-radius: 6px;
     -moz-box-shadow: 3px 3px 5px black;
     -webkit-box-shadow: 3px 3px 5px black;
     box-shadow: 3px 3px 5px black;

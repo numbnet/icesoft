@@ -25,7 +25,5 @@
     -webkit-background-clip: padding;
     -moz-background-clip: padding;
     background-clip: padding;
-    -moz-border-radius: .6em;
-    -webkit-border-radius: .6em;
     border-radius: .6em;
 }
