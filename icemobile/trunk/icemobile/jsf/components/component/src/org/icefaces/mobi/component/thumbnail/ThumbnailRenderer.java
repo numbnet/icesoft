@@ -24,16 +24,12 @@ import java.util.logging.Logger;
 import javax.faces.application.ProjectStage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
 import javax.faces.render.Renderer;
 
 import org.icefaces.mobi.api.ThumbnailProvider;
 import org.icefaces.mobi.renderkit.ResponseWriterWrapper;
-import org.icefaces.mobi.utils.HTML;
-import org.icefaces.mobi.utils.JSFUtils;
 import org.icefaces.mobi.utils.MobiJSFUtils;
 import org.icemobile.component.IThumbnail;
-import org.icemobile.util.ClientDescriptor;
 import org.icemobile.renderkit.ThumbnailCoreRenderer;
 
 public class ThumbnailRenderer extends Renderer {

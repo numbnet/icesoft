@@ -52,12 +52,12 @@ public abstract class BaseBodyTag extends BodyTagSupport{
     protected HttpServletResponse getResponse(){
         return (HttpServletResponse)pageContext.getResponse();
     }
-    
+
     protected String getContextRoot(){
         return getRequest().getContextPath();
     }
     
-    protected ClientDescriptor getClient(){
+    public ClientDescriptor getClient(){
         return ClientDescriptor.getInstance(getRequest());
     }
     public String getId() {

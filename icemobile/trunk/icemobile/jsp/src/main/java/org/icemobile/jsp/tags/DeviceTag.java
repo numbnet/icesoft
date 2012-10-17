@@ -52,56 +52,7 @@ public class DeviceTag extends BaseBodyTag implements IDevice{
             }
             return EVAL_PAGE;
     }
-   /*     else {
-        try {
-            TagWriter writer = new TagWriter(pageContext);
-            writer.startElement(INPUT_ELEM);
-            if (client.isICEmobileContainer()){
-                writer.writeAttribute(TYPE_ATTR, "button");
-                writer.writeAttribute(ID_ATTR, id);
-                writeStandardAttributes(writer);
-                String onclick = null;
-                if (null != params)  {
-                    onclick = String.format(CONTAINER_ONCLICK_PARAMS, command, id, params);
-                } 
-                else{
-                    onclick = String.format(CONTAINER_ONCLICK, command, id);
-                }
-                writer.writeAttribute(ONCLICK_ATTR, onclick);
-                writer.writeAttribute(VALUE_ATTR, label);
-            } else {
-                if (!client.isIOS())  {
-                    writer.writeAttribute(ID_ATTR, id);
-                    writer.writeAttribute(TYPE_ATTR, fallbackType);
-                    writer.writeAttribute(NAME_ATTR, id);
-                    writeStandardAttributesForNonEnhanced(writer);
-                } else {
-                   //or for iOS until we can store the ICEmobile-SX registration
-                    //without a session (likely a cookie)
-                    writer.writeAttribute(TYPE_ATTR, "button");
-                    writer.writeAttribute("data-id", id);
-                    if (null != params)  {
-                        writer.writeAttribute("data-params", params);
-                    }
 
-                    HttpSession session = getRequest().getSession();
-                    if (null != session)  {
-                        String sessionID = session.getId();
-                        writer.writeAttribute("data-jsessionid", sessionID);
-                    }
-                    writeStandardAttributes(writer);
-                    writer.writeAttribute("data-command", command);
-                    writer.writeAttribute(ONCLICK_ATTR, "ice.mobilesx(this)");
-                    writer.writeAttribute(VALUE_ATTR, label);
-                }
-            }
-            writer.endElement();
-        } catch (IOException e) {
-            throw new JspException(e);
-        }
-        return EVAL_PAGE;
-        }
-    }  */
 
     public void writeStandardAttributes(TagWriter writer) throws IOException  {
     	writeStandardAttributes(writer,true);      

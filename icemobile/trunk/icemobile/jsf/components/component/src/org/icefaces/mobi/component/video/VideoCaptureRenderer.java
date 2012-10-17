@@ -24,17 +24,13 @@ import java.util.logging.Logger;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
 import javax.faces.event.ValueChangeEvent;
-
 import org.icefaces.mobi.renderkit.BaseInputResourceRenderer;
 import org.icefaces.mobi.renderkit.ResponseWriterWrapper;
-import org.icefaces.mobi.utils.HTML;
-import org.icefaces.mobi.utils.JSFUtils;
 import org.icefaces.mobi.utils.MobiJSFUtils;
-import org.icefaces.util.EnvUtils;
+
 import org.icemobile.renderkit.DeviceCoreRenderer;
-import org.icemobile.util.ClientDescriptor;
+
 
 
 public class VideoCaptureRenderer extends BaseInputResourceRenderer {
