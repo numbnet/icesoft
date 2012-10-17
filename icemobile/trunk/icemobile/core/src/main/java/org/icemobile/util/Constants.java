@@ -24,6 +24,6 @@ public class Constants{
     public final static String CLOUD_PUSH_KEY = "iceCloudPushId";
     public final static String HEADER_ACCEPT = "Accept";
     public final static String HYPERBROWSER = "HyperBrowser";
-    public final static String PROJECT_STAGE_PARAM = "org.icemobile.project.stage";
+    public final static String PROJECT_STAGE_PARAM = "org.icemobile.projectstage";
 
 }
