@@ -4,7 +4,7 @@
 <%@ page session="false" %>
 <head>
     <title>ICEmobile Spring</title>
-    <mobi:deviceResource  view="small" includePush="true"/>
+    <mobi:deviceResource  includePush="true"/>
     <link href="resources/favicon.ico" rel="icon" type="image/x-icon">
     <link href="resources/favicon.ico" rel="shortcut icon" type="image/x-icon">
     <link href="<c:url value="/resources/style.css" />" rel="stylesheet"
