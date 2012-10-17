@@ -25,9 +25,7 @@
          );
     background-image :-moz-linear-gradient(top, transparent, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.3));
     border-radius: 6px;
-    -webkit-border-top-left-radius: 10px 15px;
     border-top-left-radius: 10px 15px;
-    -webkit-border-bottom-left-radius: 10px 15px;
     border-bottom-left-radius: 10px 15px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.3);
     box-shadow: -1px -1px 0px rgba(0, 0, 0, 0.2)inset,
