@@ -17,13 +17,15 @@
 #import <Foundation/Foundation.h>
 #import <AVFoundation/AVFoundation.h>
 #import <CoreMotion/CoreMotion.h>
+#import <AddressBookUI/AddressBookUI.h>
 #import "NativeInterfaceViewController.h"
 
 @class MainViewController;
 @class QRScanner;
 @class ARViewController;
 
-@interface NativeInterface : NSObject<UIImagePickerControllerDelegate, UINavigationControllerDelegate> {
+@interface NativeInterface : NSObject<UIImagePickerControllerDelegate, 
+        UINavigationControllerDelegate,  ABPeoplePickerNavigationControllerDelegate> {
 
 	UIViewController<NativeInterfaceViewController> *controller;
     NSString *userAgent;
@@ -74,6 +76,7 @@
 - (BOOL)upload: (NSString*)formId;
 - (BOOL)camcorder: (NSString*)cameraId;
 - (BOOL)microphone: (NSString*)micId;
+- (BOOL)address: (NSString*)contactId;
 - (BOOL)aug:(NSString*)augId locations:(NSDictionary*)places;
 - (void)augMarkerView:(NSString*)augId withMarkers:(NSDictionary*)markers;
 - (void)augHide;

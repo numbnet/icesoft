@@ -77,7 +77,7 @@ static char base64EncodingTable[64] = {
 /*Return YES to indicate that the command was successfully dispatched
 */
 - (BOOL)dispatch: (NSString*)command  {
-    LogInfo(@"NativeInterface dispatch %@ ", command);
+    NSLog(@"NativeInterface dispatch %@ ", command);
     NSArray *queryParts = [command componentsSeparatedByString:@"?"];
     NSString *commandName = [queryParts objectAtIndex:0];
     NSDictionary *params;
@@ -103,6 +103,8 @@ static char base64EncodingTable[64] = {
         [self scan:[params objectForKey:@"id"]];
     } else if ([@"aug" isEqualToString:commandName])  {
         [self aug:[params objectForKey:@"id"] locations:params];
+    } else if ([@"address" isEqualToString:commandName])  {
+        [self address:[params objectForKey:@"id"]];
     }
 
     return YES;
@@ -422,6 +424,49 @@ static char base64EncodingTable[64] = {
     } else {
         [controller dismissModalViewControllerAnimated:YES];
     }
+}
+
+- (BOOL)address: (NSString*)contactId  {
+    NSLog(@"NativeInterface address ");
+
+    self.activeDOMElementId = contactId;
+    ABPeoplePickerNavigationController* picker = [[ABPeoplePickerNavigationController alloc] init];
+    picker.peoplePickerDelegate = self;
+    [self.controller presentModalViewController:picker animated:YES];
+
+    return YES;
+}
+
+- (BOOL)peoplePickerNavigationController:(ABPeoplePickerNavigationController *)peoplePicker shouldContinueAfterSelectingPerson:(ABRecordRef)person {
+    NSLog(@"NativeInterface address selected person %@", person);
+    ABMutableMultiValueRef multi = ABRecordCopyValue(person, kABPersonEmailProperty);
+
+    NSString *result;
+
+    if (ABMultiValueGetCount(multi) > 0) {
+        // collect all emails in array
+        for (CFIndex i = 0; i < ABMultiValueGetCount(multi); i++) {
+            CFStringRef emailRef = ABMultiValueCopyValueAtIndex(multi, i);
+            result = (NSString *)emailRef;
+            CFRelease(emailRef);
+        }
+    }
+    CFRelease(multi);
+NSLog(@"Picked email %@", result);
+
+    [controller dismissModalViewControllerAnimated:YES];
+    NSString *addressName = self.activeDOMElementId;
+    [controller completePost:result forComponent:addressName
+            withName:addressName];
+
+    return NO;
+}
+
+- (BOOL)peoplePickerNavigationController:(ABPeoplePickerNavigationController *)peoplePicker shouldContinueAfterSelectingPerson:(ABRecordRef)person property:(ABPropertyID)property identifier:(ABMultiValueIdentifier)identifier {
+    return NO;
+}
+
+- (void)peoplePickerNavigationControllerDidCancel:(ABPeoplePickerNavigationController *)peoplePicker  {
 }
 
 - (BOOL)aug: (NSString*)augId locations:(NSDictionary *)places {

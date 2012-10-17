@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9C058590162F63CC003D1890 /* AddressBookUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C05858F162F63CC003D1890 /* AddressBookUI.framework */; };
+		9C058592162F679F003D1890 /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C058591162F679F003D1890 /* AddressBook.framework */; };
 		9C1F8D1F15670CC6004E59EB /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C1F8D1E15670CC6004E59EB /* MapKit.framework */; };
 		9C403FCC14845E4200FBA6BC /* QRScanner.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9C403FCB14845E4200FBA6BC /* QRScanner.mm */; };
 		9C42F738158277E00011FECC /* E.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C42F730158277E00011FECC /* E.png */; };
@@ -75,6 +77,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		9C05858F162F63CC003D1890 /* AddressBookUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBookUI.framework; path = System/Library/Frameworks/AddressBookUI.framework; sourceTree = SDKROOT; };
+		9C058591162F679F003D1890 /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
 		9C1F8D1E15670CC6004E59EB /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		9C403FC114845A2200FBA6BC /* ZXingWidget.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ZXingWidget.xcodeproj; path = ../zxing/ZXingWidget/ZXingWidget.xcodeproj; sourceTree = "<group>"; };
 		9C403FCA14845E4200FBA6BC /* QRScanner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = QRScanner.h; path = Shared/QRScanner.h; sourceTree = "<group>"; };
@@ -151,6 +155,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9C058592162F679F003D1890 /* AddressBook.framework in Frameworks */,
+				9C058590162F63CC003D1890 /* AddressBookUI.framework in Frameworks */,
 				9C46E924158259FF00EFA276 /* MediaPlayer.framework in Frameworks */,
 				9C1F8D1F15670CC6004E59EB /* MapKit.framework in Frameworks */,
 				9C51734A155DB17900090828 /* CoreMotion.framework in Frameworks */,
@@ -226,6 +232,8 @@
 		9CA51B5414730D110065F681 = {
 			isa = PBXGroup;
 			children = (
+				9C058591162F679F003D1890 /* AddressBook.framework */,
+				9C05858F162F63CC003D1890 /* AddressBookUI.framework */,
 				9C403FBF148459D800FBA6BC /* Dependencies */,
 				9CA51B6914730D110065F681 /* ICEmobile-SX */,
 				9C1BEADD155473E400795020 /* Shared */,
