@@ -20,7 +20,7 @@ public class QRScanTag extends DeviceTag {
 
     public QRScanTag()  {
         this.command = "scan";
-        this.label = "Scan";
+        this.label = "Scan QRCode";
         this.fallbackType = "text";
     }
 

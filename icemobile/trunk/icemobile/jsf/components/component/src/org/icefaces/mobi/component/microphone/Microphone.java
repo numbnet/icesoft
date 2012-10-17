@@ -16,15 +16,21 @@
 
 package org.icefaces.mobi.component.microphone;
 
+import org.icefaces.mobi.utils.MobiJSFUtils;
+import org.icemobile.component.IDevice;
+import org.icemobile.util.ClientDescriptor;
+
 import javax.el.MethodExpression;
+import javax.faces.context.FacesContext;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.FacesEvent;
 import javax.faces.event.PhaseId;
 import javax.faces.event.ValueChangeEvent;
+import javax.servlet.http.HttpSession;
 import java.util.Map;
 
 
-public class Microphone extends MicrophoneBase {
+public class Microphone extends MicrophoneBase implements IDevice{
 
     public Microphone() {
         super();
@@ -66,4 +72,57 @@ public class Microphone extends MicrophoneBase {
          }
          super.queueEvent(event);
      }
+
+    public boolean isUseNative() {
+        return false;
+    }
+
+    public int getMaxwidth() {
+        return Integer.MIN_VALUE;
+    }
+
+    public void setMaxwidth(int i) {
+
+    }
+
+    public int getMaxheight() {
+          return Integer.MIN_VALUE;
+    }
+
+    public void setMaxheight(int i) {
+
+    }
+
+    public String getScript(String clientId, boolean b) {
+        final StringBuilder script = new StringBuilder();
+        if (getMaxtime() != Integer.MIN_VALUE) {
+            script.append("ice.microphone( '").append(clientId).
+                    append(",'maxtime=").append(getMaxtime()).append("');");
+        } else {
+            script.append("ice.microphone( '").append(clientId).append("');");
+        }
+        return script.toString();
+    }
+
+
+    public boolean isUseCookie() {
+        return false;
+    }
+
+    public String getComponentType() {
+        return "microphone";
+    }
+
+  /* don't need this for JSF but the interface for the core renderer require it from JSP */
+    public String getSessionId(){
+        HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
+        return session.getId();
+    }
+    public String getParams(){
+        return null;
+    }
+
+    public ClientDescriptor getClient() {
+         return MobiJSFUtils.getClientDescriptor();
+    }
 }

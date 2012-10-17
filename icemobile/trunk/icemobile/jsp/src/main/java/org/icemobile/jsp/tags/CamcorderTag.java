@@ -15,12 +15,59 @@
  */
  
 package org.icemobile.jsp.tags;
+import org.icemobile.component.IDevice;
 
-public class CamcorderTag extends DeviceTag {
+public class CamcorderTag extends DeviceTag implements IDevice{
+    private int maxtime = Integer.MIN_VALUE;
 
     public CamcorderTag()  {
         this.command = "camcorder";
         this.label = "Camcorder";
     }
+    public void setParams(String params) {
+        int width = getMaxwidth() ;
+        int height = getMaxheight();
+        String script;
+        //default value of unset in params is Integer.MIN_VALUE
+        //only commonality between iPhone and android is duration or maxTime
+        //simplify this scripting when devices have this implemented and is final api
+        int unset = Integer.MIN_VALUE;
+        int numParams = 0;
+        String attributeSeparator = "&";
+        if (maxtime != unset || width != unset || height != unset) {
+            params += ",'";
+        }
+        if (maxtime != unset) {
+            if (numParams > 0) {
+                params += attributeSeparator;
+            }
+            params += "maxtime=" + maxtime;
+            numParams++;
+        }
+        if (width != Integer.MIN_VALUE) {
+            if (numParams > 0) {
+                params += attributeSeparator;
+            }
+            params += "maxwidth=" + width;
+            numParams++;
+        }
+        if (height != Integer.MIN_VALUE) {
+            if (numParams > 0) {
+                params += attributeSeparator;
+            }
+            params += "maxheight=" + height;
+            numParams++;
+        }
+        if (numParams > 0) {
+            params += "'";
+        }
+    }
 
+    public int getMaxtime() {
+        return maxtime;
+    }
+
+    public void setMaxtime(int maxtime) {
+        this.maxtime = maxtime;
+    }
 }

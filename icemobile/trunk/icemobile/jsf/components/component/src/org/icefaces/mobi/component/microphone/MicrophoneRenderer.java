@@ -28,10 +28,12 @@ import javax.faces.context.ResponseWriter;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.render.Renderer;
 
+import org.icefaces.mobi.renderkit.ResponseWriterWrapper;
 import org.icefaces.mobi.utils.HTML;
 import org.icefaces.mobi.utils.JSFUtils;
 import org.icefaces.mobi.utils.MobiJSFUtils;
 import org.icefaces.util.EnvUtils;
+import org.icemobile.renderkit.DeviceCoreRenderer;
 
 
 public class MicrophoneRenderer extends Renderer {
@@ -68,10 +70,14 @@ public class MicrophoneRenderer extends Renderer {
 
     public void encodeEnd(FacesContext facesContext, UIComponent uiComponent)
             throws IOException {
-        ResponseWriter writer = facesContext.getResponseWriter();
-        String clientId = uiComponent.getClientId(facesContext);
         Microphone microphone = (Microphone) uiComponent;
-        boolean disabled = microphone.isDisabled();
+        if (MobiJSFUtils.uploadInProgress(microphone))  {
+           microphone.setButtonLabel(microphone.getCaptureMessageLabel()) ;
+        }
+        DeviceCoreRenderer renderer = new DeviceCoreRenderer();
+        ResponseWriterWrapper writer = new ResponseWriterWrapper(facesContext.getResponseWriter());
+        renderer.encode(microphone, writer);
+       /* boolean disabled = microphone.isDisabled();
         // span as per MobI-18
         boolean isEnhanced = EnvUtils.isEnhancedBrowser(facesContext);
         boolean isAuxUpload = EnvUtils.isAuxUploadBrowser(facesContext);
@@ -119,6 +125,6 @@ public class MicrophoneRenderer extends Renderer {
         } else {
             script.append("ice.microphone( '").append(clientId).append("');");
         }
-        return script;
+        return script;  */
     }
 }

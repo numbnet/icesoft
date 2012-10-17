@@ -28,10 +28,13 @@ import javax.faces.context.ResponseWriter;
 import javax.faces.event.ValueChangeEvent;
 
 import org.icefaces.mobi.renderkit.BaseInputResourceRenderer;
+import org.icefaces.mobi.renderkit.ResponseWriterWrapper;
 import org.icefaces.mobi.utils.HTML;
 import org.icefaces.mobi.utils.JSFUtils;
 import org.icefaces.mobi.utils.MobiJSFUtils;
 import org.icefaces.util.EnvUtils;
+import org.icemobile.renderkit.DeviceCoreRenderer;
+import org.icemobile.util.ClientDescriptor;
 
 
 public class VideoCaptureRenderer extends BaseInputResourceRenderer {
@@ -39,15 +42,15 @@ public class VideoCaptureRenderer extends BaseInputResourceRenderer {
 
     @Override
     public void decode(FacesContext facesContext, UIComponent uiComponent) {
-        VideoCapture video = (VideoCapture) uiComponent;
-        String clientId = video.getClientId();
-        if (!video.isDisabled()) {
+        VideoCapture camcorder = (VideoCapture) uiComponent;
+        String clientId = camcorder.getClientId();
+        if (!camcorder.isDisabled()) {
            try {
               Map<String, Object> map = new HashMap<String, Object>();
               boolean isValid = extractVideo(facesContext, map, clientId);
               if (isValid){
                  if (map !=null){
-                    video.setValue(map);
+                    camcorder.setValue(map);
              //     trigger valueChange and add map as newEvent value old event is NA
                     uiComponent.queueEvent(new ValueChangeEvent(uiComponent,
     		    		    null, map));
@@ -64,22 +67,29 @@ public class VideoCaptureRenderer extends BaseInputResourceRenderer {
         return MobiJSFUtils.decodeComponentFile(facesContext, clientId, map);
     }
 
-    public void encodeBegin(FacesContext facesContext, UIComponent uiComponent)
+    public void encodeEnd(FacesContext facesContext, UIComponent uiComponent)
             throws IOException {
-        ResponseWriter writer = facesContext.getResponseWriter();
-        String clientId = uiComponent.getClientId(facesContext);
-        VideoCapture video = (VideoCapture) uiComponent;
-        boolean isEnhanced = EnvUtils.isEnhancedBrowser(facesContext);
+        VideoCapture camcorder = (VideoCapture) uiComponent;
+        if (MobiJSFUtils.uploadInProgress(camcorder))  {
+            camcorder.setButtonLabel(camcorder.getCaptureMessageLabel()) ;
+        }
+        DeviceCoreRenderer renderer = new DeviceCoreRenderer();
+        ResponseWriterWrapper writer = new ResponseWriterWrapper(facesContext.getResponseWriter());
+        renderer.encode(camcorder, writer);
+
+ /*       boolean isEnhanced =  cd.isICEmobileContainer()  || cd.isSXRegistered() ;
         boolean isAuxUpload = EnvUtils.isAuxUploadBrowser(facesContext);
         // root element
-        boolean disabled = video.isDisabled();
-        if (!isEnhanced && !isAuxUpload) {
+        boolean disabled = camcorder.isDisabled();
+        if (!isEnhanced || camcorder.isUseNative()) {
             writer.startElement(HTML.SPAN_ELEM, uiComponent);
             writer.startElement(HTML.INPUT_ELEM, uiComponent);
             writer.writeAttribute(HTML.TYPE_ATTR, HTML.INPUT_TYPE_FILE, null);
             writer.writeAttribute(HTML.ID_ATTR, clientId, null);
             writer.writeAttribute(HTML.NAME_ATTR, clientId, null);
+            writer.writeAttribute("accept", "camcorder/*", null);
             writer.endElement(HTML.INPUT_ELEM);
+            writer.endElement(HTML.SPAN_ELEM);
             return;
         }
         writer.startElement(HTML.SPAN_ELEM, uiComponent);
@@ -145,12 +155,6 @@ public class VideoCaptureRenderer extends BaseInputResourceRenderer {
         }
         writer.writeAttribute(HTML.ONCLICK_ATTR, script, null);
         writer.endElement("input");
-
-    }
-
-    public void encodeEnd(FacesContext facesContext, UIComponent uiComponent)
-            throws IOException {
-        ResponseWriter writer = facesContext.getResponseWriter();
-        writer.endElement(HTML.SPAN_ELEM);
+        writer.endElement(HTML.SPAN_ELEM);  */
     }
 }

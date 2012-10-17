@@ -23,13 +23,16 @@ import java.io.IOException;
 import javax.servlet.http.HttpSession;
 import javax.servlet.jsp.JspException;
 
+import org.icemobile.component.IDevice;
+import org.icemobile.renderkit.DeviceCoreRenderer;
 import org.icemobile.util.ClientDescriptor;
 
-public class DeviceTag extends BaseBodyTag {
-    
+public class DeviceTag extends BaseBodyTag implements IDevice{
     private static final String CONTAINER_ONCLICK = "ice.%s('%s');";
     private static final String CONTAINER_ONCLICK_PARAMS = "ice.%s('%s','%s');";
-    
+    private static final String CAMERA = "camera";
+    private static final String CAMCORDER = "camcorder";
+
     String command = "undefined";
     String label = "unlabeled";
     String params = null;
@@ -37,6 +40,19 @@ public class DeviceTag extends BaseBodyTag {
 
     public int doEndTag() throws JspException {
         ClientDescriptor client = getClient();
+        /* going to use DeviceCoreRenderer for camera and camcorder
+           so need to put code specific to them first so can call it
+           to do the work
+          */
+            DeviceCoreRenderer renderer = new DeviceCoreRenderer();
+            try {
+                renderer.encode(this, new TagWriter(pageContext));
+            }catch (IOException e) {
+                throw new JspException(e);
+            }
+            return EVAL_PAGE;
+    }
+   /*     else {
         try {
             TagWriter writer = new TagWriter(pageContext);
             writer.startElement(INPUT_ELEM);
@@ -84,7 +100,8 @@ public class DeviceTag extends BaseBodyTag {
             throw new JspException(e);
         }
         return EVAL_PAGE;
-    }
+        }
+    }  */
 
     public void writeStandardAttributes(TagWriter writer) throws IOException  {
     	writeStandardAttributes(writer,true);      
@@ -115,13 +132,7 @@ public class DeviceTag extends BaseBodyTag {
     public void writeStandardAttributesForNonEnhanced(TagWriter writer) throws IOException  {
     	writeStandardAttributes(writer,false);
     }
-    public String getParams() {
-        return styleClass;
-    }
 
-    public void setParams(String params) {
-        this.params = params;
-    }
 
     public boolean isDisabled() {
         return disabled;
@@ -129,6 +140,73 @@ public class DeviceTag extends BaseBodyTag {
 
     public void setDisabled(boolean disabled) {
         this.disabled = disabled;
+    }
+    private boolean isUseCookie = true;
+    private String buttonLabel;
+    private String captureMessageLabel;
+    private int maxheight = Integer.MIN_VALUE;
+    private int maxwidth = Integer.MIN_VALUE;
+    private boolean isUseNative;
+
+    public String getSessionId(){
+         HttpSession session = getRequest().getSession();
+         return session.getId();
+    }
+    public String getComponentType(){
+          return command;
+    }
+    public boolean isUseCookie(){
+        return true;
+    }
+    public String getButtonLabel() {
+        if (buttonLabel != null) {
+            return buttonLabel;
+        }else {
+            return label;
+        }
+    }
+
+    public void setButtonLabel(String buttonLabel) {
+        this.buttonLabel = buttonLabel;
+    }
+
+    public int getMaxheight() {
+        return maxheight;
+    }
+
+    public void setMaxheight(int maxheight) {
+        this.maxheight = maxheight;
+    }
+
+    public int getMaxwidth() {
+        return maxwidth;
+    }
+
+    public void setMaxwidth(int maxwidth) {
+        this.maxwidth = maxwidth;
+    }
+
+    public boolean isUseNative() {
+        return isUseNative;
+    }
+
+    public void setUseNative(boolean useNative) {
+        isUseNative = useNative;
+    }
+
+    public String getScript(String id, boolean isSx){
+        if (null != params)  {
+             return String.format(CONTAINER_ONCLICK_PARAMS, command, id, params);
+        }
+        else{
+             return String.format(CONTAINER_ONCLICK, command, id);
+        }
+    }
+    public String getClientId() {
+        return id;
+    }
+    public String getParams() {
+        return this.params;
     }
 
 }

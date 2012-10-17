@@ -27,10 +27,12 @@ import javax.faces.context.ResponseWriter;
 
 import org.icefaces.impl.application.AuxUploadResourceHandler;
 import org.icefaces.mobi.renderkit.BaseInputRenderer;
+import org.icefaces.mobi.renderkit.ResponseWriterWrapper;
 import org.icefaces.mobi.utils.HTML;
 import org.icefaces.mobi.utils.JSFUtils;
 import org.icefaces.mobi.utils.MobiJSFUtils;
 import org.icefaces.util.EnvUtils;
+import org.icemobile.renderkit.DeviceCoreRenderer;
 
 
 public class ScanRenderer extends BaseInputRenderer {
@@ -61,12 +63,17 @@ public class ScanRenderer extends BaseInputRenderer {
         }
     }
 
-    public void encodeBegin(FacesContext facesContext, UIComponent uiComponent)
+    public void encodeEnd(FacesContext facesContext, UIComponent uiComponent)
             throws IOException {
-        ResponseWriter writer = facesContext.getResponseWriter();
-        String clientId = uiComponent.getClientId(facesContext);
         Scan scan = (Scan) uiComponent;
-        boolean disabled = scan.isDisabled();
+       if (MobiJSFUtils.uploadInProgress(scan))  {
+           scan.setButtonLabel(scan.getCaptureMessageLabel()) ;
+        }
+        DeviceCoreRenderer renderer = new DeviceCoreRenderer();
+        ResponseWriterWrapper writer = new ResponseWriterWrapper(facesContext.getResponseWriter());
+        renderer.encode(scan, writer);
+    }
+    /*    boolean disabled = scan.isDisabled();
         // span as per MobI-18
         boolean isEnhanced = EnvUtils.isEnhancedBrowser(facesContext);
         boolean isAuxUpload = EnvUtils.isAuxUploadBrowser(facesContext);
@@ -102,10 +109,10 @@ public class ScanRenderer extends BaseInputRenderer {
         writer.endElement(HTML.INPUT_ELEM);
     }
 
-    public void encodeEnd(FacesContext facesContext, UIComponent uiComponent)
+  /*  public void encodeEnd(FacesContext facesContext, UIComponent uiComponent)
             throws IOException {
         ResponseWriter writer = facesContext.getResponseWriter();
         writer.endElement(HTML.SPAN_ELEM);
-    }
+    } */
 
 }

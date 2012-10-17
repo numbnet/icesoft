@@ -28,11 +28,14 @@ import javax.faces.context.ResponseWriter;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.render.Renderer;
 
+import org.icefaces.mobi.renderkit.ResponseWriterWrapper;
 import org.icefaces.mobi.utils.HTML;
 import org.icefaces.mobi.utils.JSFUtils;
 import org.icefaces.mobi.utils.MobiJSFUtils;
 import org.icefaces.mobi.utils.Utils;
 import org.icefaces.util.EnvUtils;
+import org.icemobile.util.ClientDescriptor;
+import org.icemobile.renderkit.DeviceCoreRenderer;
 
 
 public class CameraRenderer extends Renderer {
@@ -40,9 +43,7 @@ public class CameraRenderer extends Renderer {
 
 
     public void decode(FacesContext facesContext, UIComponent uiComponent) {
-        Map requestParameterMap = facesContext.getExternalContext().getRequestParameterMap();
         Camera camera = (Camera) uiComponent;
-        String source = String.valueOf(requestParameterMap.get("ice.event.captured"));
         String clientId = camera.getClientId();
         try {
             if (!camera.isDisabled()) {
@@ -78,80 +79,18 @@ public class CameraRenderer extends Renderer {
         return MobiJSFUtils.decodeComponentFile(facesContext, clientId, map);
     }
 
-
-    public void encodeBegin(FacesContext facesContext, UIComponent uiComponent)
-            throws IOException {
-        ResponseWriter writer = facesContext.getResponseWriter();
-        String clientId = uiComponent.getClientId(facesContext);
-        Camera camera = (Camera) uiComponent;
-        boolean isEnhanced = EnvUtils.isEnhancedBrowser(facesContext);
-        boolean isAuxUpload = EnvUtils.isAuxUploadBrowser(facesContext);
-
-        if (!isEnhanced && !isAuxUpload) {
-            writer.startElement(HTML.SPAN_ELEM, uiComponent);
-            writer.startElement(HTML.INPUT_ELEM, uiComponent);
-            writer.writeAttribute(HTML.TYPE_ATTR, HTML.INPUT_TYPE_FILE, null);
-            writer.writeAttribute(HTML.ID_ATTR, clientId, null);
-            writer.writeAttribute(HTML.NAME_ATTR, clientId, null);
-            writer.endElement(HTML.INPUT_ELEM);
-            return;
-        } 
-
-        // root element
-        boolean disabled = camera.isDisabled();
-        // span as per MobI-11
-        writer.startElement(HTML.SPAN_ELEM, uiComponent);
-        writer.writeAttribute(HTML.ID_ATTR, clientId, null);
-        // button element
-        writer.startElement(HTML.BUTTON_ELEM, uiComponent);
-        writer.writeAttribute(HTML.TYPE_ATTR, "button", null);
-        writer.writeAttribute(HTML.NAME_ATTR, clientId + "_button", null);
-        // write out style for input button, same as default device button.
-        JSFUtils.writeConcatenatedStyleClasses(writer,
-                "mobi-button mobi-button-default",
-                camera.getStyleClass());
-        writer.writeAttribute(HTML.STYLE_ATTR, camera.getStyle(), HTML.STYLE_ATTR);
-
-        int width = camera.getMaxwidth();
-        int height = camera.getMaxheight();
-        //default value of unset in params is Integer.MIN_VALUE
-        String script;
-        if (isAuxUpload)  {
-            HashMap<String,String> params = null;
-            if ( (width != Integer.MIN_VALUE) || 
-                    (height != Integer.MIN_VALUE) ) {
-                params = new HashMap();
-                params.put("maxwidth", String.valueOf(width));
-                params.put("maxheight", String.valueOf(height));
-            }
-            script = MobiJSFUtils.getICEmobileSXScript(
-                    "camera", params, uiComponent);
-        } else {
-            if ( (width != Integer.MIN_VALUE) || 
-                    (height != Integer.MIN_VALUE) ) {
-                String params = "'" + clientId + "','maxwidth=" + width + 
-                        "&maxheight=" + height + "'";
-                script = "ice.camera(" + params + ");";
-            } else {
-                script = "ice.camera( '" + clientId + "' );";
-            }
-        }
-        writer.writeAttribute(HTML.ONCLICK_ATTR, script, null);
-        if (MobiJSFUtils.uploadInProgress(uiComponent))  {
-            writer.writeText("photo captured", null);
-        } else {
-            writer.writeText("camera", null);
-        }
-        writer.endElement(HTML.BUTTON_ELEM);
-
-    }
-
+    /*
+      rendering markup moved to core renderer for use with JSP and JSF
+     */
     public void encodeEnd(FacesContext facesContext, UIComponent uiComponent)
-            throws IOException {
-        ResponseWriter writer = facesContext.getResponseWriter();
-        String clientId = uiComponent.getClientId(facesContext);
-        Camera camera = (Camera) uiComponent;
-        writer.endElement(HTML.SPAN_ELEM);
+           throws IOException {
+       Camera camera = (Camera) uiComponent;
+       if (MobiJSFUtils.uploadInProgress(camera))  {
+           camera.setButtonLabel(camera.getCaptureMessageLabel()) ;
+       }
+       DeviceCoreRenderer renderer = new DeviceCoreRenderer();
+       ResponseWriterWrapper writer = new ResponseWriterWrapper(facesContext.getResponseWriter());
+       renderer.encode(camera, writer);
     }
 
 }

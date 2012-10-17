@@ -16,9 +16,10 @@
  
 package org.icemobile.jsp.tags;
 
+import org.icemobile.component.IDevice;
 import org.icemobile.util.Utils;
 
-public class AugTag extends DeviceTag {
+public class AugTag extends DeviceTag implements IDevice{
     static final String PARAMS = "org.icemobile.jsp.tags.AugTag.params";
 
     public AugTag()  {

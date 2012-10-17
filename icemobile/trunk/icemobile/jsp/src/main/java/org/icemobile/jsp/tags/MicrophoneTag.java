@@ -16,11 +16,35 @@
  
 package org.icemobile.jsp.tags;
 
-public class MicrophoneTag extends DeviceTag {
+import org.icemobile.component.IDevice;
+
+public class MicrophoneTag extends DeviceTag implements IDevice {
+    private int maxtime=Integer.MIN_VALUE;
 
     public MicrophoneTag()  {
         this.command = "microphone";
-        this.label = "Microphone";
+        this.label = "Record";
+    }
+    public void setParams(String params) {
+        int maxtime = getMaxtime();
+        String script;
+        //default value of unset in params is Integer.MIN_VALUE
+        //only commonality between iPhone and android is duration or maxTime
+        //simplify this scripting when devices have this implemented and is final api
+        int unset = Integer.MIN_VALUE;
+        String attributeSeparator = "&";
+        if (maxtime != unset ) {
+            params += ",'";
+            params += "maxtime=" + maxtime;
+            params += "'";
+        }
     }
 
+    public int getMaxtime() {
+        return maxtime;
+    }
+
+    public void setMaxtime(int maxtime) {
+        this.maxtime = maxtime;
+    }
 }

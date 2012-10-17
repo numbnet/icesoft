@@ -75,4 +75,12 @@ public class MicrophoneMeta extends UIComponentBaseMeta {
     	            "ValueChangeEvent  parameter, with a return type of void, or to a public method that takes no arguments " +
     	            "with a return type of void. ")
     private MethodExpression valueChangeListener;
+
+    @Property(defaultValue="audio captured", tlddoc="message the microphone button displays upon successful " +
+            "capture of audio from device.  This attribute available for internationalization " +
+            "purposes.")
+    private String captureMessageLabel;
+
+    @Property(defaultValue="record", tlddoc="button label for this component")
+    private String buttonLabel;
 }

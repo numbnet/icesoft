@@ -15,15 +15,21 @@
  */
 package org.icefaces.mobi.component.video;
 
+import org.icefaces.mobi.utils.MobiJSFUtils;
+import org.icemobile.component.IDevice;
+import org.icemobile.util.ClientDescriptor;
+
 import javax.el.MethodExpression;
+import javax.faces.context.FacesContext;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.FacesEvent;
 import javax.faces.event.PhaseId;
 import javax.faces.event.ValueChangeEvent;
+import javax.servlet.http.HttpSession;
 import java.util.Map;
 
 
-public class VideoCapture extends VideoCaptureBase {
+public class VideoCapture extends VideoCaptureBase implements IDevice{
 
     public VideoCapture() {
         super();
@@ -59,4 +65,69 @@ public class VideoCapture extends VideoCaptureBase {
          }
          super.queueEvent(event);
     }
+    public String getScript( String clientId, boolean auxUpload) {
+         int width = getMaxwidth() ;
+         int height = getMaxheight();
+         int maxtime = getMaxtime();
+          String script;
+        if (auxUpload)  {
+            script = MobiJSFUtils.getICEmobileSXScript("camcorder", this);
+        } else {
+            //default value of unset in params is Integer.MIN_VALUE
+            String params = "'" + clientId + "'";
+            //only commonality between iPhone and android is duration or maxTime
+            //simplify this scripting when devices have this implemented and is final api
+            int unset = Integer.MIN_VALUE;
+            int numParams = 0;
+            String attributeSeparator = "&";
+            if (maxtime != unset || width != unset || height != unset) {
+                params += ",'";
+            }
+            if (maxtime != unset) {
+                if (numParams > 0) {
+                    params += attributeSeparator;
+                }
+                params += "maxtime=" + maxtime;
+                numParams++;
+            }
+            if (width != Integer.MIN_VALUE) {
+                if (numParams > 0) {
+                    params += attributeSeparator;
+                }
+                params += "maxwidth=" + width;
+                numParams++;
+            }
+            if (height != Integer.MIN_VALUE) {
+                if (numParams > 0) {
+                    params += attributeSeparator;
+                }
+                params += "maxheight=" + height;
+                numParams++;
+            }
+            if (numParams > 0) {
+                params += "'";
+            }
+            script = "ice.camcorder(" + params + ");";
+        }
+        return script;
+     }
+
+     public ClientDescriptor getClient() {
+          return MobiJSFUtils.getClientDescriptor();
+     }
+     public boolean isUseCookie(){
+         return false;
+     }
+     public String getComponentType(){
+         return "camcorder";
+     }
+     /* don't need this for JSF but the interface for the core renderer require it from JSP */
+     public String getSessionId(){
+         HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
+         return session.getId();
+     }
+     public String getParams(){
+         return null;
+     }
+
 }
