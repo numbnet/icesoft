@@ -14,7 +14,7 @@
             <mobi:pagePanel>
                 <mobi:pagePanelHeader>
                     <a href="menu" id="menuLink" class="mobi-button  mobi-button-default">&#9776;</a>
-                    ICEmobile - Buttons
+                    Buttons
                 </mobi:pagePanelHeader>
                 <mobi:pagePanelBody>
                     <%@ include file="/WEB-INF/views/inc/buttons-content.jsp" %>
@@ -22,6 +22,7 @@
             </mobi:pagePanel>
             <script type="text/javascript">
             MvcUtil.enhanceLink(document.getElementById('menuLink'),"body");
+            window.scrollTo(0, 0);
             </script>
          </div>
     </mobi:smallView>

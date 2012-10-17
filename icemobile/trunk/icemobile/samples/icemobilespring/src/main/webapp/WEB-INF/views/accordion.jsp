@@ -15,13 +15,14 @@
             <mobi:pagePanel>
                     <mobi:pagePanelHeader>
                         <a href="menu" id="menuLink" class="mobi-button  mobi-button-default">&#9776;</a>
-                        ICEmobile - Accordion
+                        Accordion
                     </mobi:pagePanelHeader>
                     <mobi:pagePanelBody>
                         <%@ include file="/WEB-INF/views/inc/accordion-content.jsp" %>
                     </mobi:pagePanelBody>
                     <script type="text/javascript">
                     MvcUtil.enhanceLink(document.getElementById('menuLink'),"body");
+                    window.scrollTo(0, 0);
                     </script>
             </mobi:pagePanel>
         </div>
