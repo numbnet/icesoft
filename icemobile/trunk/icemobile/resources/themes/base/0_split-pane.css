@@ -13,11 +13,17 @@
  * express or implied. See the License for the specific language
  * governing permissions and limitations under the License.   
  */
-   
-.mobi-splitpane {
+
+.mobi-splitpane{
+
+}
+.mobi-splitpane-nonScrollable {
     float:left;  
 }
 .mobi-splitpane-scrollable {   
     float: left; 
     overflow-y: scroll;
+}
+.mobi-splitpane-divider {
+    border-left: solid 1px;
 }

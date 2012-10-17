@@ -63,12 +63,15 @@ public class SplitPaneMeta extends UIPanelMeta {
         UIComponent right;
     }
 
+    @Property(tlddoc = "Style class of the container element.")
+    private String styleClass;
+
     @Property(tlddoc = "style will be rendered on a root element of this component")
     private String style;
 
  /*   @Property(defaultValue="none",
               tlddoc = " TODO resize needs to be further defined, but initially will be 2 adjacent panes " +
              "sharing a common border which can move.  May also do a collapse of one of the panes?" )
-    private String resizable; */
+    private String resizable;  */
 
 }
