@@ -105,7 +105,7 @@
 						</h:panelGroup>
 					</ace:panelExpansion>
 				</ace:dataTable>
-				<h:panelGroup style="display:inline-block;padding-left:10px;">
+				<h:panelGroup id="listboxPanelGroup" style="display:inline-block;padding-left:10px;">
 					<h:outputLabel for="listbox" value="Select inner table to export: " /><br />
 					<h:selectOneListbox id="listbox" value="#{dataExporterCustom.selectedItem}">
 						<f:selectItems value="#{dataExporterCustom.selectItems}" />
