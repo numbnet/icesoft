@@ -497,27 +497,60 @@ ice.mobi.storeDirection = function(id, orient) {
 }
 
 
-mobi.geolocation = {
+ice.mobi.geolocation = {
     watchId: 0,
     clientId: "",
 
-    // Perform a call to watchPosition to fetch running updates to position
-    startWatch: function (pClientId) {
+    /**
+     * Perform a call to watchPosition to fetch running updates to position.
+     *
+     * @param pClientId base id of hidden field
+     * @param highAccuracy true if highAccuracy results to be fetched
+     * @param maxAge oldest acceptable cached results (in ms)
+     * @param timeout longest time to wait for value (in ms)
+     */
+    watchLocation: function (pClientId, highAccuracy, maxAge, timeout) {
 
-        mobi.geolocation.clientId = pClientId;
+        ice.mobi.geolocation.clientId = pClientId;
 
-        mobi.geolocation.clearWatch();
-        mobi.geolocation.watchId = navigator.geolocation.watchPosition(
-                // comment out the entire third parameter to revert to original call
-                this.successCallback, this.errorCallback, { enableHighAccuracy:true , maximumAge: 5000 }
+        ice.mobi.geolocation.clearWatch();
+        if (highAccuracy == 'false') {
+            ice.logInContainer('Launching low precision watchPosition');
+            ice.mobi.geolocation.watchId = navigator.geolocation.watchPosition(
+                    this.successCallback, this.errorCallback
+            );
+
+        } else {
+            ice.logInContainer('Launching HIGH precision watchPosition');
+            ice.mobi.geolocation.watchId = navigator.geolocation.watchPosition(
+                    this.successCallback, this.errorCallback,
+                    { enableHighAccuracy: true, maximumAge: maxAge, timeout: timeout }
+            );
+        }
+        // window.addEventListener('deviceorientation', ice.mobi.geolocation.orientationCallback );
+        ice.onElementUpdate(pClientId, ice.mobi.geolocation.clearWatch);
+        ice.logInContainer('Lauching positionWatch for client: ' + pClientId + ' watchId: ' +
+                ice.mobi.geolocation.watchId + ', highAccuracy? : ' + highAccuracy);
+    },
+
+    /**
+     * Perform a single call to the navigator getCurrentPosition call.
+     */
+    getLocation: function (pClientId, highAccuracy, maxAge, timeout) {
+
+        ice.mobi.geolocation.clientId = pClientId;
+        ice.mobi.geolocation.clearWatch();
+
+        ice.logInContainer('Launching getCurrentPosition');
+        navigator.geolocation.getCurrentPosition(this.successCallback, this.errorCallback,
+                { enableHighAccuracy: highAccuracy, maximumAge: maxAge, timeout: timeout }
         );
-        ice.logInContainer('Lauching positionWatch for client: ' + pClientId + ' watchId: ' + mobi.geolocation.watchId);
     },
 
     successCallback: function(pos) {
-        ice.logInContainer('Position update for client: ' + mobi.geolocation.clientId);
+        ice.logInContainer('Position update for client: ' + ice.mobi.geolocation.clientId);
         try {
-            inputId = mobi.geolocation.clientId + "_locHidden";
+            inputId = ice.mobi.geolocation.clientId + "_locHidden";
             ice.logInContainer('LOGGING Position TO hidden field: ' + inputId);
             ice.mobi.storeLocation(inputId, pos.coords);
 
@@ -527,33 +560,27 @@ mobi.geolocation = {
     },
 
     errorCallback: function(positionError) {
-        ice.logInContainer('Error in watchPosition, code: ' + positionError.code + ' ClientId: ' + mobi.geolocation.clientId);
-        mobi.geolocation.clearWatch();
+        ice.logInContainer('Error in watchPosition, code: ' + positionError.code + ' Message: ' + positionError.message);
+        ice.mobi.geolocation.clearWatch();
+    },
+
+    orientationCallback: function(orient) {
+        inputId = ice.mobi.geolocation.clientId + "_locHidden";
+        ice.mobi.storeDirection(inputId, orient);
     },
 
     // Clear any existing positionUpdate listeners
     clearWatch: function() {
-        if (mobi.geolocation.watchId > 0) {
-            ice.logInContainer('Removing existing positionWatch: ' + mobi.geolocation.watchId);
-            navigator.geolocation.clearWatch(mobi.geolocation.watchId);
-            mobi.geolocation.watchId = 0;
+        ice.logInContainer('ice.geolocation.clearWatch called - existing watchId: ' + ice.mobi.geolocation.watchId);
+        if (ice.mobi.geolocation.watchId > 0) {
+            ice.logInContainer('Existing positionWatch: ' + ice.mobi.geolocation.watchId + ' removed');
+            navigator.geolocation.clearWatch(ice.mobi.geolocation.watchId);
+            ice.mobi.geolocation.watchId = 0;
         }
-    },
-
-    // Perform a single position get.
-    getLocation: function (pClientId) {
-
-        mobi.geolocation.clientId = pClientId;
-        mobi.geolocation.clearWatch();
-
-        ice.logInContainer('Launching getCurrentPosition');
-        navigator.geolocation.getCurrentPosition(
-                this.successCallback, this.errorCallback,
-                { enableHighAccuracy:true, timeout: 60000 }
-                // might try this without high accuracy to be more like original
-//            {  timeout: 60000 }
-        );
+        //window.removeEventListener('deviceorientation', ice.mobi.geolocation.orientationCallback);
     }
+
+
 }
 
 /* add js marker for progressive enhancement */
