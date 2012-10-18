@@ -38,8 +38,8 @@ public class GeolocationRenderer extends CoreRenderer {
     private static final String JS_MIN_NAME = "geolocation-min.js";
     private static final String JS_LIBRARY = "org.icefaces.component.geolocation";
 
-    private final int UNDEFINED_TIMEOUT_VALUE = 60000;
-    private final int UNDEFINED_MAXAGE_VALUE = 5000;
+    private final int UNDEFINED_TIMEOUT_VALUE = 0;   // no timeout
+    private final int UNDEFINED_MAXAGE_VALUE = 3600; // 1 hour
 
     @Override
     public void decode(FacesContext facesContext, UIComponent uiComponent) {
@@ -119,14 +119,14 @@ public class GeolocationRenderer extends CoreRenderer {
         }
         writer.endElement("input");
         if (!disabled) {
-            boolean includeHighAccuracy;
+            boolean includeHighPrecision;
             StringBuilder sb = new StringBuilder(255);
-            String highAccuracy = locator.getEnableHighPrecision();
+            String highPrecision = locator.getEnableHighPrecision();
 
-            if ("asneeded".equalsIgnoreCase(highAccuracy)) {
-                includeHighAccuracy = sniffDevices();
+            if ("asneeded".equalsIgnoreCase(highPrecision)) {
+                includeHighPrecision = sniffDevices();
             } else {
-                includeHighAccuracy = Boolean.valueOf(highAccuracy);
+                includeHighPrecision = Boolean.valueOf(highPrecision);
             }
 
             int maxAge = locator.getMaximumAge();
@@ -145,7 +145,7 @@ public class GeolocationRenderer extends CoreRenderer {
                 sb.append("ice.mobi.geolocation.getLocation('").append(clientId).append("','");
             }
 
-            sb.append(includeHighAccuracy).append("', '");
+            sb.append(includeHighPrecision).append("', '");
             sb.append(maxAge).append("', '").append(timeout).append("'); ");
 
 //            sb.append( "mobi.geolocation.startWatch('").append(clientId).append("');");
