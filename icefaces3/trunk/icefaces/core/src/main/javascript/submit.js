@@ -337,7 +337,18 @@ var singleSubmit;
                 var deltaSubmitForm = document.getElementById(singleSubmitFormID(viewID));
                 var appendedElements = [];
 
-                var clonedElement = element.cloneNode(false);
+                var clonedElement;
+                if (toLowerCase(element.nodeName) == 'form') {
+                    //forms cannot be nested, we create a hidden input element to replace it
+                    clonedElement = document.createElement('input');
+                    clonedElement.setAttribute('id', element.id);
+                    clonedElement.setAttribute('name', element.id);
+                    clonedElement.setAttribute('value', element.id);
+                    clonedElement.setAttribute('type', 'hidden');
+                } else {
+                    clonedElement = element.cloneNode(false);
+                }
+
                 append(appendedElements, deltaSubmitForm.appendChild(clonedElement));
 
                 function createHiddenInputInDeltaSubmitForm(name, value) {
