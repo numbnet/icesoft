@@ -36,7 +36,7 @@
             <name>id</name>
             <required>true</required>
             <rtexprvalue>true</rtexprvalue>
-            
+
         </attribute>
         <attribute>
             <description>Inline style definition</description>
@@ -65,7 +65,9 @@
             <rtexprvalue>true</rtexprvalue>
         </attribute>
         <attribute>
-            <description>The value of the label for the button. default Value is Reality</description>
+            <description>The value of the label for the button. default Value is
+                Reality
+            </description>
             <name>buttonLabel</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
@@ -146,27 +148,34 @@
             <rtexprvalue>true</rtexprvalue>
         </attribute>
         <attribute>
-            <description>The value of the label for the button. default Value is Camera</description>
+            <description>The value of the label for the button. default Value is
+                Camera
+            </description>
             <name>buttonLabel</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
         </attribute>
         <attribute>
-            <description>The maxheight allowed for resolution of the captured image</description>
+            <description>The maxheight allowed for resolution of the captured
+                image
+            </description>
             <name>maxheight</name>
             <required>no</required>
             <rtexprvalue>true</rtexprvalue>
             <type>int</type>
         </attribute>
         <attribute>
-            <description>The maxwidth allowed for resolution of the captured image</description>
+            <description>The maxwidth allowed for resolution of the captured
+                image
+            </description>
             <name>maxwidth</name>
             <required>no</required>
             <rtexprvalue>true</rtexprvalue>
             <type>int</type>
         </attribute>
         <attribute>
-            <description>When true, runs the container simulator on a desktop</description>
+            <description>When true, runs the container simulator on a desktop
+            </description>
             <name>containerSimulator</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
@@ -197,32 +206,38 @@
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
         </attribute>
-       <attribute>
+        <attribute>
             <description>The value of the label for the button.
-                default Value is Camera</description>
+                default Value is Camera
+            </description>
             <name>buttonLabel</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
         </attribute>
         <attribute>
-            <description>The maxheight allowed for resolution of the captured image.
-                Not supported on iOS</description>
+            <description>The maxheight allowed for resolution of the captured
+                image.
+                Not supported on iOS
+            </description>
             <name>maxheight</name>
             <required>no</required>
             <rtexprvalue>true</rtexprvalue>
             <type>int</type>
         </attribute>
         <attribute>
-            <description>The maxwidth allowed for resolution of the captured image.
-                Not supported on iOS</description>
+            <description>The maxwidth allowed for resolution of the captured
+                image.
+                Not supported on iOS
+            </description>
             <name>maxwidth</name>
             <required>no</required>
             <rtexprvalue>true</rtexprvalue>
             <type>int</type>
         </attribute>
-       <attribute>
+        <attribute>
             <description>The maxtime determines the maximum length allowed for
-                the video in seconds</description>
+                the video in seconds
+            </description>
             <name>maxtime</name>
             <required>no</required>
             <rtexprvalue>true</rtexprvalue>
@@ -261,9 +276,10 @@
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
         </attribute>
-       <attribute>
+        <attribute>
             <description>The maxtime determines the maximum length allowed for
-                the video in seconds</description>
+                the video in seconds
+            </description>
             <name>maxtime</name>
             <required>no</required>
             <rtexprvalue>true</rtexprvalue>
@@ -271,7 +287,8 @@
         </attribute>
         <attribute>
             <description>The value of the label for the button.
-                default Value is Record</description>
+                default Value is Record
+            </description>
             <name>buttonLabel</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
@@ -438,6 +455,42 @@
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
         </attribute>
+        <attribute>
+            <name>continuousUpdates</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+            <description>If true, javascript call resolves to watchPosition,
+                else
+                uses getCurrentPosition for a one time update
+            </description>
+        </attribute>
+        <attribute>
+            <name>enableHighAccuracy</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+            <description>Valid values are true, false, and asNeeded. Defaults to
+                asNeeded. Indicates
+                whether or not to turn on the GPS hardware. Some devices require
+                this setting to
+                fetch any reading at all
+            </description>
+        </attribute>
+        <attribute>
+            <name>maxAge</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+            <description>Define the max age (in ms) of an acceptable cached
+                Position reading.
+            </description>
+        </attribute>
+        <attribute>
+            <name>timeout</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+            <description>Defines the maximum time allowed for a successful
+                update (in ms)
+            </description>
+        </attribute>
     </tag>
 
     <tag>
@@ -555,7 +608,8 @@
         </attribute>
         <attribute>
             <description>The value of the label for the button.
-                default Value is Scan QRCode</description>
+                default Value is Scan QRCode
+            </description>
             <name>buttonLabel</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
@@ -979,7 +1033,7 @@
         </description>
         <display-name>List Item</display-name>
         <name>outputListItem</name>
-         <tag-class>org.icemobile.jsp.tags.ListItemTag</tag-class>
+        <tag-class>org.icemobile.jsp.tags.ListItemTag</tag-class>
         <body-content>JSP</body-content>
         <attribute>
             <description>If true, 'mobi-list-item-group' CSS class is applied in
@@ -1217,7 +1271,7 @@
             <name>style</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            
+
         </attribute>
     </tag>
     <tag>
@@ -1473,13 +1527,17 @@
         </attribute>
     </tag>
     <tag>
-        <description>The smallView tag will only render its contents for handheld mobile clients.</description>
+        <description>The smallView tag will only render its contents for
+            handheld mobile clients.
+        </description>
         <name>smallView</name>
         <tag-class>org.icemobile.jsp.tags.SmallViewTag</tag-class>
         <body-content>JSP</body-content>
     </tag>
     <tag>
-        <description>The largeView tag will only render its contents for tablet mobile and desktop clients.</description>
+        <description>The largeView tag will only render its contents for tablet
+            mobile and desktop clients.
+        </description>
         <name>largeView</name>
         <tag-class>org.icemobile.jsp.tags.LargeViewTag</tag-class>
         <body-content>JSP</body-content>
