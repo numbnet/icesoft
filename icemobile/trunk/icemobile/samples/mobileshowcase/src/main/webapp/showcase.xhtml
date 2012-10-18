@@ -33,9 +33,11 @@
 </h:head>
 <h:body>
     <mobi:largeView>
-        <ui:include src="WEB-INF/includes/view/large.xhtml" />
+        <ui:param name="viewSize" value="large" />
+        <ui:include src="WEB-INF/includes/view/large.xhtml"/>
     </mobi:largeView>
     <mobi:smallView>
+        <ui:param name="viewSize" value="small" />
         <ui:include src="WEB-INF/includes/view/small.xhtml" />
     </mobi:smallView>
 </h:body>
