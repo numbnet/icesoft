@@ -15,9 +15,8 @@ import javax.servlet.http.HttpSession;
 public class DeviceCoreRenderer {
     private static final Logger logger =
             Logger.getLogger(DeviceCoreRenderer.class.toString());
-    public void encode(IDevice component, IResponseWriter writer)
+    public void encode(IDevice component, IResponseWriter writer, boolean isJSP)
             throws IOException {
-
         String clientId = component.getClientId();
         String baseClass = IDevice.CSS_CLASS;
         boolean disabled = component.isDisabled();
@@ -31,14 +30,13 @@ public class DeviceCoreRenderer {
         ClientDescriptor cd = component.getClient();
         boolean isEnhanced = cd.isICEmobileContainer()  || cd.isSXRegistered();
     //    logger.info("is SX="+cd.isSXRegistered()+" and useCookie="+ component.isUseCookie());
-        if (cd.isICEmobileContainer() || (cd.isSXRegistered() && !component.isUseCookie())){
-
+        if (cd.isICEmobileContainer() || (cd.isSXRegistered() && !isJSP)){
             writer.writeAttribute(ID_ATTR, clientId);
             // button element
             writer.startElement(BUTTON_ELEM, component);
             writer.writeAttribute(NAME_ATTR, clientId + "_button");
             writer.writeAttribute(TYPE_ATTR, "button");
-            writeStandardAttributes(writer, component);
+            writeStandardAttributes(writer, component, IDevice.CSS_CLASS);
             //default value of unset in params is Integer.MIN_VALUE
             String script = component.getScript(clientId, cd.isSXRegistered());
       //     logger.info("script = "+script);
@@ -46,7 +44,7 @@ public class DeviceCoreRenderer {
             writer.writeText(component.getButtonLabel());
             writer.endElement(BUTTON_ELEM);
         }
-        else if (component.isUseCookie() && cd.isSXRegistered()){
+        else if (isJSP && cd.isSXRegistered()){
       //      logger.info(" SX and using Cookie");
             //for iOS until we can store the ICEmobile-SX registration
             //without a session (likely a cookie)  for JSP
@@ -62,7 +60,7 @@ public class DeviceCoreRenderer {
             if (null != component.getSessionId())  {
                 writer.writeAttribute("data-jsessionid", component.getSessionId());
             }
-            writeStandardAttributes(writer, component);
+            writeStandardAttributes(writer, component, IDevice.CSS_CLASS);
             writer.writeAttribute("data-command", component.getComponentType());
             writer.writeAttribute(ONCLICK_ATTR, "ice.mobilesx(this)");
             writer.writeText(component.getButtonLabel());
@@ -81,7 +79,7 @@ public class DeviceCoreRenderer {
             }
             writer.writeAttribute(ID_ATTR, clientId);
             writer.writeAttribute(NAME_ATTR, clientId);
-            writeStandardAttributes(writer, component);
+            writeStandardAttributes(writer, component, "");
             if (comptype.equals("camera")){
                 writer.writeAttribute("accept", "image/*");
             }
@@ -95,11 +93,11 @@ public class DeviceCoreRenderer {
         }
         writer.endElement(SPAN_ELEM);
     }
-    public void writeStandardAttributes(IResponseWriter writer, IDevice component) throws IOException  {
+    public void writeStandardAttributes(IResponseWriter writer, IDevice component, String baseClass) throws IOException  {
         String comptype = component.getComponentType();
         StringBuilder inputStyle = new StringBuilder("");
         if (!comptype.equals("scan") && (!comptype.equals("aug"))){
-    	    inputStyle.append(IDevice.CSS_CLASS);
+    	    inputStyle.append(baseClass);
         }
         if (component.isDisabled()){
             inputStyle.append(" ").append(IDevice.DISABLED_STYLE_CLASS);

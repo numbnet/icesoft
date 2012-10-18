@@ -46,7 +46,7 @@ public class DeviceTag extends BaseBodyTag implements IDevice{
           */
             DeviceCoreRenderer renderer = new DeviceCoreRenderer();
             try {
-                renderer.encode(this, new TagWriter(pageContext));
+                renderer.encode(this, new TagWriter(pageContext), true);
             }catch (IOException e) {
                 throw new JspException(e);
             }

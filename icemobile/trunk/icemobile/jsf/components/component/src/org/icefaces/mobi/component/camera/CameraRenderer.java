@@ -90,7 +90,7 @@ public class CameraRenderer extends Renderer {
        }
        DeviceCoreRenderer renderer = new DeviceCoreRenderer();
        ResponseWriterWrapper writer = new ResponseWriterWrapper(facesContext.getResponseWriter());
-       renderer.encode(camera, writer);
+       renderer.encode(camera, writer, false);
     }
 
 }

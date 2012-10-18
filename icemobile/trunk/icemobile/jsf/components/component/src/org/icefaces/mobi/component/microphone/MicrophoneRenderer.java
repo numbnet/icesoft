@@ -76,6 +76,6 @@ public class MicrophoneRenderer extends Renderer {
         }
         DeviceCoreRenderer renderer = new DeviceCoreRenderer();
         ResponseWriterWrapper writer = new ResponseWriterWrapper(facesContext.getResponseWriter());
-        renderer.encode(microphone, writer);
+        renderer.encode(microphone, writer, false);
     }
 }
