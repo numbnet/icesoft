@@ -37,7 +37,6 @@
 }
 
 .right {
-    display: block;
     text-align: right;
     padding: 10px;
 }
@@ -108,11 +107,6 @@
     padding: 4px;
     font-size: 12px;
 }
-
-.mobi-tabset-tabs{
-    z-index: 6;
-}
-
 @media screen and (max-width: 600px) {  
     input[type='file']{ width: 200px; }
  }
@@ -122,3 +116,8 @@ html.bberry .mobi-list-item-group {
     text-shadow: none;
     border-top: 1px solid #BBB;
 }
+.exampleTabs > .mobi-tabset-tabs{ 
+    z-index: 0; /* place example tabs underneath the app tabs */
+    border-top:1px solid #A5A9B6;
+}
+
