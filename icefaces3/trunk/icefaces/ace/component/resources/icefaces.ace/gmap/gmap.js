@@ -160,6 +160,17 @@ ice.ace.gMap.getGMapWrapper = function (id) {
         var hiddenField = document.getElementById(ele);
         var mapTypedRegistered = false;
         //google.maps.event.addListener(gmapWrapper.getRealGMap(),"center_changed",function(){});
+        var map = gmapWrapper.getRealGMap();
+        google.maps.event.addDomListener(map,"center_changed",function(){
+            document.getElementById(ele+"_lat").value = map.getCenter().lat();
+            document.getElementById(ele+"_lng").value = map.getCenter().lng();
+        });
+        google.maps.event.addDomListener(map,"zoom_changed",function(){
+            document.getElementById(ele+"_zoom").value = map.getZoom();
+        });
+        google.maps.event.addDomListener(map,"maptypeid_changed",function(){
+            document.getElementById(ele+"_type").value = map.getMapTypeId();
+        });
         initializing = false;
         GMapRepository[ele] = gmapWrapper;
         return gmapWrapper;

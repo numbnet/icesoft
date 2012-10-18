@@ -31,49 +31,106 @@ import org.icefaces.ace.util.ComponentUtils;
 import org.icefaces.ace.util.JSONBuilder;
 import org.icefaces.render.MandatoryResourceComponent;
 
-@MandatoryResourceComponent(tagName="gMap", value="org.icefaces.ace.component.gmap.GMap")
+@MandatoryResourceComponent(tagName = "gMap", value = "org.icefaces.ace.component.gmap.GMap")
 public class GMapRenderer extends CoreRenderer {
 
+    String[] oldValues = {"","","",""};
 
-	    public void encodeBegin(FacesContext context, UIComponent component)
-	            throws IOException {
-            ResponseWriter writer = context.getResponseWriter();
-            String clientId = component.getClientId(context);
-            GMap gmap = (GMap) component;
-            writer.startElement("div", null);
-            writer.writeAttribute("id", clientId + "_wrapper", null);
-            writer.writeAttribute("class", "ice-ace-gmap " + gmap.getStyleClass(), null);
-            writer.writeAttribute("style", gmap.getStyle(), null);
-            writer.startElement("div", null);
-            writer.writeAttribute("id", clientId, null);
-            writer.writeAttribute("style", "height:100%; width:100%", null);
-            writer.endElement("div");
-            writer.endElement("div");
-			writer.startElement("span", null);
-			writer.writeAttribute("id", clientId + "_script", null);
-			writer.startElement("script", null);
-			writer.writeAttribute("type", "text/javascript", null);
-			writer.write("ice.ace.jq(function() {");
-            if ((gmap.isLocateAddress() || !gmap.isIntialized()) && (gmap.getAddress() != null && gmap.getAddress().length() > 2))
-				writer.write("ice.ace.gMap.locateAddress('" + clientId + "', '" + gmap.getAddress() + "');");
-			else
-				writer.write("ice.ace.gMap.getGMapWrapper('" + clientId +"').getRealGMap().setCenter(new google.maps.LatLng("+ gmap.getLatitude() + "," + gmap.getLongitude() + "));");
-            writer.write("ice.ace.gMap.getGMapWrapper('" + clientId +"').getRealGMap().setZoom(" + gmap.getZoomLevel() + ");");
-			writer.write("ice.ace.gMap.setMapType('" + clientId + "','" + gmap.getType().toUpperCase() + "');");
-			if (gmap.getOptions() != null && gmap.getOptions().length() > 1)
-				writer.write("ice.ace.gMap.addOptions('" + clientId +"',\"" + gmap.getOptions() + "\");");
-            if (gmap.getParent().getClass().getSimpleName().equalsIgnoreCase("HtmlPanelGrid")){
-                writer.write("google.maps.event.addDomListener(ice.ace.gMap.getGMapWrapper('" + clientId +"').getRealGMap(),'bounds_changed', " +
-                        "function(){" +
-                        "var mapCenter = ice.ace.gMap.getGMapWrapper('" + clientId + "').getRealGMap().getCenter();" +
-                        "google.maps.event.trigger(ice.ace.gMap.getGMapWrapper('" + clientId + "').getRealGMap(),'resize');" +
-                        "ice.ace.gMap.getGMapWrapper('" + clientId + "').getRealGMap().setCenter(mapCenter);});");
+    public void encodeBegin(FacesContext context, UIComponent component)
+            throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        String clientId = component.getClientId(context);
+        GMap gmap = (GMap) component;
+        writer.startElement("div", null);
+        writer.writeAttribute("id", clientId + "_wrapper", null);
+        writer.writeAttribute("class", "ice-ace-gmap " + gmap.getStyleClass(), null);
+        writer.writeAttribute("style", gmap.getStyle(), null);
+        writer.startElement("div", null);
+        writer.writeAttribute("id", clientId, null);
+        writer.writeAttribute("style", "height:100%; width:100%", null);
+        writer.endElement("div");
+        writer.endElement("div");
+        makeFields(writer,clientId,"lat");
+        makeFields(writer,clientId,"lng");
+        makeFields(writer,clientId,"type");
+        makeFields(writer,clientId,"zoom");
+        updateValues(context,component);
+        writer.startElement("span", null);
+        writer.writeAttribute("id", clientId + "_script", null);
+        writer.startElement("script", null);
+        writer.writeAttribute("type", "text/javascript", null);
+        writer.write("ice.ace.jq(function() {");
+        if ((gmap.isLocateAddress() || !gmap.isIntialized()) && (gmap.getAddress() != null && gmap.getAddress().length() > 2))
+            writer.write("ice.ace.gMap.locateAddress('" + clientId + "', '" + gmap.getAddress() + "');");
+        else
+            writer.write("ice.ace.gMap.getGMapWrapper('" + clientId + "').getRealGMap().setCenter(new google.maps.LatLng(" + gmap.getLatitude() + "," + gmap.getLongitude() + "));");
+        writer.write("ice.ace.gMap.getGMapWrapper('" + clientId + "').getRealGMap().setZoom(" + gmap.getZoomLevel() + ");");
+        writer.write("ice.ace.gMap.setMapType('" + clientId + "','" + gmap.getType().toUpperCase() + "');");
+        if (gmap.getOptions() != null && gmap.getOptions().length() > 1)
+            writer.write("ice.ace.gMap.addOptions('" + clientId + "',\"" + gmap.getOptions() + "\");");
+        if (gmap.getParent().getClass().getSimpleName().equalsIgnoreCase("HtmlPanelGrid")) {
+            writer.write("google.maps.event.addDomListener(ice.ace.gMap.getGMapWrapper('" + clientId + "').getRealGMap(),'bounds_changed', " +
+                    "function(){" +
+                    "var mapCenter = ice.ace.gMap.getGMapWrapper('" + clientId + "').getRealGMap().getCenter();" +
+                    "google.maps.event.trigger(ice.ace.gMap.getGMapWrapper('" + clientId + "').getRealGMap(),'resize');" +
+                    "ice.ace.gMap.getGMapWrapper('" + clientId + "').getRealGMap().setCenter(mapCenter);});");
+        }
+        writer.write("});");
+        writer.endElement("script");
+        writer.endElement("span");
+        gmap.setIntialized(true);
+    }
+
+    public void updateValues(FacesContext context, UIComponent component) {
+        Map requestParameterMap = context.getExternalContext().getRequestParameterMap();
+        GMap map = (GMap) component;
+        String clientId = map.getClientId(context);
+        String lat = String.valueOf(requestParameterMap.get(clientId + "_lat"));
+        String lng = String.valueOf(requestParameterMap.get(clientId + "_lng"));
+        String zoom = String.valueOf(requestParameterMap.get(clientId + "_zoom"));
+        String type = String.valueOf(requestParameterMap.get(clientId + "_type"));
+        if (!map.getLatitude().equalsIgnoreCase(oldValues[0]))
+        {
+            if(map.getLatitude() != null && !map.getLatitude().equalsIgnoreCase("null")){
+                lat = map.getLatitude();
+                oldValues[0] = lat;
             }
-            writer.write("});");
-			writer.endElement("script");
-			writer.endElement("span");
-            gmap.setIntialized(true);
-	    }
+        }
+        if (!map.getLongitude().equalsIgnoreCase(oldValues[1]))
+        {
+            if(map.getLongitude() != null && !map.getLongitude().equalsIgnoreCase("null")){
+                lng = map.getLongitude();
+                oldValues[1] = lng;
+            }
+        }
+        if (!map.getZoomLevel().equalsIgnoreCase(oldValues[2]))
+        {
+            if(map.getZoomLevel() != null && !map.getZoomLevel().equalsIgnoreCase("null")){
+                zoom = map.getZoomLevel();
+                oldValues[2] = zoom;
+            }
+        }
+        if (!map.getType().equalsIgnoreCase(oldValues[3]))
+        {
+            if(map.getType() != null && !map.getType().equalsIgnoreCase("null")){
+                type = map.getType();
+                oldValues[3] = type;
+            }
+        }
+        if (lat != null && !lat.equals("null")){
+            map.setLatitude(lat);
+        }
+        if (lng != null && !lng.equals("null"))   {
+            map.setLongitude(lng);
+        }
+        if (zoom != null && !zoom.equals("null")) {
+            map.setZoomLevel(zoom);
+        }
+        if (type != null && !type.equals("null")) {
+            map.setType(type);
+        }
+    }
+
     @Override
     public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
         if (context == null || component == null) {
@@ -117,5 +174,12 @@ public class GMapRenderer extends CoreRenderer {
     @Override
     public boolean getRendersChildren() {
         return true;
+    }
+    public void makeFields(ResponseWriter writer, String clientId, String fieldName) throws IOException {
+        writer.startElement("input", null);
+        writer.writeAttribute("type", "hidden", null);
+        writer.writeAttribute("id", clientId+"_"+fieldName, null);
+        writer.writeAttribute("name", clientId+"_"+fieldName, null);
+        writer.endElement("input");
     }
 }
