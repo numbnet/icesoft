@@ -20,9 +20,10 @@
     <ui:param name="tldResources" value="#{gMapResources.tldResources}"/>
 
     <ui:define name="example">
-        <ace:gMap id="gMap"  style="width: 675px; height: 500px" latitude="${mapBean.lat}" longitude="${mapBean.lon}" type="${mapBean.type}"
-                  zoomLevel="${mapBean.zoom}" address="${mapBean.address}" locateAddress="${mapBean.locateAddress}"/>
         <h:form id="input">
+		<ace:gMap id="gMap"  style="width: 675px; height: 500px" latitude="${mapBean.lat}" longitude="${mapBean.lon}" type="${mapBean.type}"
+                  zoomLevel="${mapBean.zoom}" address="${mapBean.address}" locateAddress="${mapBean.locateAddress}"/>
+        
             <h:outputLabel for="latitude" value="Latitude:"/>
             <h:inputText label="Latitude" id="latitude" value="#{mapBean.lat}"/>
             <h:outputLabel for="longitude" value="Longitude:"/>

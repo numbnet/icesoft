@@ -57,7 +57,7 @@ public class GMapMeta extends UIPanelMeta {
 	private String latitude;
 	
 	@Property(tlddoc="Starting zoom of the map element.", defaultValue="5")
-	private int zoomLevel;
+	private String zoomLevel;
 	
 	@Property(tlddoc="Additional options to be sent to the map. Check google maps API for more specifics. Form is attribute:'value'")
 	private String options;

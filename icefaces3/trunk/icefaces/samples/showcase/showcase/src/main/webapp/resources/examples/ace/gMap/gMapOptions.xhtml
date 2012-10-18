@@ -18,13 +18,14 @@
 
     <ui:define name="example">
 	
+	<h:form id="input">
     <ace:gMap id="gMap"  style="width: 675px; height: 500px" options="mapTypeControl:${gMapOptionsBean.typeControl}, overviewMapControl:${gMapOptionsBean.overviewControl},
 panControl:${gMapOptionsBean.panControl}, rotateControl:${gMapOptionsBean.rotateControl}, scaleControl:${gMapOptionsBean.scaleControl},
 streetViewControl:${gMapOptionsBean.streetViewControl}, zoomControl:${gMapOptionsBean.zoomControl},
 mapTypeControlOptions:{position: google.maps.ControlPosition.${gMapOptionsBean.typeLocation}, style: google.maps.MapTypeControlStyle.${gMapOptionsBean.typeStyle}},
 draggable:${gMapOptionsBean.draggable}, scrollwheel:${gMapOptionsBean.scrollWheel}, minZoom:${gMapOptionsBean.minZoom}, maxZoom:${gMapOptionsBean.maxZoom}"/>
     
-	<h:form id="input">
+	
         <ace:panel id="controlsPanel"
                    header="Map Controls"
                    closable="false"

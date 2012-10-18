@@ -40,13 +40,13 @@ public class GMapAutocompleteRenderer extends CoreRenderer {
         String url = String.valueOf(requestParameterMap.get(clientId+"_url"));
         String latLng = String.valueOf(requestParameterMap.get(clientId+"_latLng"));
         String types = String.valueOf(requestParameterMap.get(clientId+"_types"));
-        if(address != null && !address.equals(null))
+        if(address != null && !address.equals("null"))
             autocomplete.setAddress(address);
-        if(url != null && !url.equals(null))
+        if(url != null && !url.equals("null"))
             autocomplete.setUrl(url);
-        if(latLng != null && !latLng.equals(null))
+        if(latLng != null && !latLng.equals("null"))
             autocomplete.setLatLng(latLng);
-        if(types != null && !types.equals(null))
+        if(types != null && !types.equals("null"))
             autocomplete.setTypes(types);
     }
 
