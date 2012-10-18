@@ -260,6 +260,10 @@ if (!window.ice.mobile) {
             return;
         }
 
+        namespace.logInContainer = function(message)  {
+            console.log(message);
+        }
+
 //iOS specific code follows
 
         namespace.camera = function(id, atts)  {
