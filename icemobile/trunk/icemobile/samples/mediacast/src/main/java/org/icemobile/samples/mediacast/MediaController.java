@@ -54,7 +54,7 @@ public class MediaController implements Serializable {
     private static Logger logger =
             Logger.getLogger(MediaController.class.toString());
 
-	private transient PortableRenderer portableRenderer;
+	private static transient PortableRenderer portableRenderer;
 	
 	@ManagedProperty(value = "#{uploadModel}")
 	private UploadModel uploadModel;
@@ -64,21 +64,22 @@ public class MediaController implements Serializable {
     
     @ManagedProperty(value="#{navigationModel}")
     private NavigationModel navigationModel;
-	
+
+    //static allows use from UploadServlet
 	@ManagedProperty(value="#{mediaHelper}")
-	private MediaHelper mediaHelper;
-	
+	private static MediaHelper mediaHelper;
+
 	@ManagedProperty(value="#{mediaView}")
 	private MediaView mediaView;
 	
 	private boolean showHelpPopup = false;
 	
-	private SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss");
+	private static SimpleDateFormat dateFormat = 
+            new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss");
 
 	@PostConstruct
 	public void init() {
 		portableRenderer = PushRenderer.getPortableRenderer();
-		
 	}
 
 	/**
@@ -92,7 +93,7 @@ public class MediaController implements Serializable {
 		processUpload(uploadModel, mediaStore);
 	}
 	
-	public void processUpload(UploadModel model, MediaStore store){
+	public static void processUpload(UploadModel model, MediaStore store){
 		if( logger.isLoggable(Level.FINER)){
 			logger.finer("processUpload()");
 		}
@@ -104,30 +105,30 @@ public class MediaController implements Serializable {
 		// check that we have a valid file type before processing.
 		String contentType = null;
 		if (MediaMessage.MEDIA_TYPE_PHOTO.equals(selectedMediaInput)){
-			contentType = (String)uploadModel.getPhotoUploadMap().get("contentType");
+			contentType = (String)model.getPhotoUploadMap().get("contentType");
 			if( contentType != null && contentType.startsWith("image")){
 				mediaHelper.processUploadedImage(model, store);
 			}
 		}
 		else if (MediaMessage.MEDIA_TYPE_VIDEO.equals(selectedMediaInput)){
-			contentType = (String)uploadModel.getVideoUploadMap().get("contentType");
+			contentType = (String)model.getVideoUploadMap().get("contentType");
 			if( contentType.startsWith("video")) {
 				mediaHelper.processUploadedVideo(model, store);
 			}
 		} 
 		else if (MediaMessage.MEDIA_TYPE_AUDIO.equals(selectedMediaInput)){
-			contentType = (String)uploadModel.getAudioUploadMap().get("contentType");
+			contentType = (String)model.getAudioUploadMap().get("contentType");
 			if( contentType.startsWith("audio")) {
 				mediaHelper.processUploadedAudio(model, store);
 			}
 		}
 		model.setSelectedMediaInput(null);
-		logger.finer(uploadModel.getCurrentMediaMessage().toString());
+		logger.finer(model.getCurrentMediaMessage().toString());
 
 		if( contentType == null ){
 			String errorMsg = "An error occurred while upload the "
 					+ selectedMediaInput + " file, please try again.";
-			uploadModel.setUploadFeedbackMessage(errorMsg);
+			model.setUploadFeedbackMessage(errorMsg);
 			logger.warning(errorMsg);
 		}
 	}
@@ -138,23 +139,34 @@ public class MediaController implements Serializable {
 	 * 
 	 * @param ae JSF ActionEvent 
 	 */
+
+	/**
+	 * An action listener method called from the "Done" button clicked when the user
+	 * has completed all uploads
+	 * 
+	 * @param ae JSF ActionEvent 
+	 */
 	public void uploadsCompleted(ActionEvent ae) {
+        uploadsCompleted(uploadModel, mediaStore);
+    }
+
+	public static void uploadsCompleted(UploadModel model, MediaStore store) {
 		logger.finer("uploadsCompleted()");
-		MediaMessage msg = uploadModel.getCurrentMediaMessage();
+		MediaMessage msg = model.getCurrentMediaMessage();
 		if (msg.isHasMedia()) {
-			if( StringUtils.isNotEmpty(uploadModel.getTags())){
-				msg.getTags().addAll(Arrays.asList(StringUtils.split(uploadModel.getTags())));
+			if( StringUtils.isNotEmpty(model.getTags())){
+				msg.getTags().addAll(Arrays.asList(StringUtils.split(model.getTags())));
 			}
 			
 			//set stock icons for small and medium if no photo is included
-			if( uploadModel.getCameraFile() == null ){
+			if( model.getCameraFile() == null ){
 				//they've uploaded video, so we'll use a stock movie icon
-				if( uploadModel.getVideoFile() != null ){
+				if( model.getVideoFile() != null ){
 					msg.addMediumPhoto(mediaHelper.getMovieIcon());
 					msg.addSmallPhoto(mediaHelper.getMovieIconSmall());
 				}
 				//they haven't uploaded video, just audio
-				else if( uploadModel.getAudioFile() != null ){
+				else if( model.getAudioFile() != null ){
 					msg.addMediumPhoto(mediaHelper.getSoundIcon());
 					msg.addSmallPhoto(mediaHelper.getSoundIconSmall());
 				}
@@ -175,18 +187,18 @@ public class MediaController implements Serializable {
 				msg.getTags().add("photo");
 			}
 			
-			mediaStore.addMedia(msg);
+			store.addMedia(msg);
 			logger.finer("added new media message to store: " + msg);
 			try {
 				String body = msg.getTitle();
 				portableRenderer.render(RENDER_GROUP, new PushMessage(
 						"New Media Message", body));
-				uploadModel.clearCurrentMediaMessage();
+				model.clearCurrentMediaMessage();
 			} catch (Exception e) {
 				logger.log(Level.WARNING,
 						"Media message was not sent to recipients.");
 			}
-			uploadModel
+			model
 					.setUploadFeedbackMessage("The Media Message was sent successfully.");
 		}
 

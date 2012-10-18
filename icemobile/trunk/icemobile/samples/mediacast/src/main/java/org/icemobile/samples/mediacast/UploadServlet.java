@@ -50,6 +50,7 @@ public class UploadServlet extends HttpServlet {
         try {
             for (Part part : request.getParts()) {
                 String partType = part.getContentType();
+                String partName = part.getName();
                 String fileName = getAppropriateFileName(partType);
                 if (null != fileName) {
                     String dirPath = servletContext
@@ -65,8 +66,20 @@ public class UploadServlet extends HttpServlet {
                     if( uploadModel == null ){
                     	uploadModel = new UploadModel();
                     }
-                    uploadModel.getCurrentMediaMessage().setTitle(request.getParameter("title"));
-                    uploadModel.getCurrentMediaMessage().setDescription(request.getParameter("description"));
+                    String title;
+                    String description;
+                    //multiple uploads from offline.html are named cam
+                    if (partName.startsWith("cam"))  {
+                        String itemIndex = partName.substring(3);
+                        title = request.getParameter("title" + itemIndex);
+                        description = request.getParameter("description" + itemIndex);
+                    } else {
+                        //otherwise a single upload
+                        title = request.getParameter("title");
+                        description = request.getParameter("description");
+                    }
+                    uploadModel.getCurrentMediaMessage().setTitle(title);
+                    uploadModel.getCurrentMediaMessage().setDescription(description);
                     Map uploadAttributes = new HashMap();
                     uploadAttributes.put("file", new File(fullPath));
                     uploadAttributes.put("contentType", partType);
@@ -80,6 +93,7 @@ public class UploadServlet extends HttpServlet {
                     MediaStore mediaStore = (MediaStore)
                         servletContext.getAttribute(MediaStore.BEAN_NAME);
                     mediaController.processUpload(uploadModel, mediaStore);
+                    mediaController.uploadsCompleted(uploadModel, mediaStore);
                 }
             }
         } catch (Exception e) {
