@@ -13,49 +13,34 @@
  * express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-
-.mobi-button-group-vert .mobi-button, .mobi-button-group-hor .mobi-button {
-    border-radius: 0;
-}
 .mobi-button-group-vert .mobi-button {
-    display: block;
-    margin: 0 0 -1px 0;
-    width: 100%;
 }
-
 .mobi-button-group-hor .mobi-button {
-    display: inline-block;
-    margin: 0 -5px 0 0;
 }
-
 .mobi-button-group .mobi-button-selected {
     background: -moz-linear-gradient(top, #6792E8, #2463DE) repeat scroll 0 0 #6792E8;
     background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0, #6792E8), color-stop(1, #2463DE));
     background-color: #6792E8;
-    border: 1px solid #155678;
-    text-shadow: 0 -1px 1px #145072;
+    border-color: #155678;
     color: #FFFFFF;
+    text-shadow: 0 -1px 1px #145072;
 }
-
 .mobi-button {
-    -webkit-appearance: none;
-    border: 1px solid #999;
     background: -moz-linear-gradient(top, #E7EBE7, #ccc) repeat scroll 0 0 #ccc;
     background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0, #E7EBE7), color-stop(1, #ccc));
     background-color: #ccc;
-    font-weight: bold;
+    border-color: #999;
     border-radius: 0.6em;
+    color: black;
+    font-weight: bold;
 }
-
- .mobi-button.mobi-button-back {
+.mobi-button.mobi-button-back {
     background-color: #CCC;
     border-radius: 0.6em;
     border-bottom-left-radius: 11px 10px;
     box-shadow: -1px -1px 0px rgba(0, 0, 0, 0.2)inset, 0 1px 2px rgba(0, 0, 0, 0.8)inset;
     color: #444 !important;
-    text-shadow: none;
 }
- 
 .mobi-button.mobi-button-back:before{
     background-color: #CCC;
     border-left: 1.5px solid rgba(255, 255, 255, 0.3);
