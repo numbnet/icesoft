@@ -14,18 +14,6 @@
  * governing permissions and limitations under the License.
  */
 
-/* named styles that describe generic characteristics, like .shadow or .h2 */
-body, .mobi-body {
-    font-family: Helvetica, Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background: #c8c8c8;
-}
-
-* {
-    -webkit-tap-highlight-color: #194FDB;
-}
-
-h1, h2, h3, h4, h5, h6 {
-    margin: 8px 10px;
+.mobi-input-text, .mobi-input-secret, .mobi-input-textarea {
+    border: 1px solid #B5B9C0;
 }
