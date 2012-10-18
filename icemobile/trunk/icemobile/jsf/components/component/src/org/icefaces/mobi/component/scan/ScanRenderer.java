@@ -68,7 +68,7 @@ public class ScanRenderer extends BaseInputRenderer {
         }
         DeviceCoreRenderer renderer = new DeviceCoreRenderer();
         ResponseWriterWrapper writer = new ResponseWriterWrapper(facesContext.getResponseWriter());
-        renderer.encode(scan, writer);
+        renderer.encode(scan, writer, false);
     }
 
 

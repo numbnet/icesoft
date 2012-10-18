@@ -71,7 +71,7 @@ public class VideoCaptureRenderer extends BaseInputResourceRenderer {
         }
         DeviceCoreRenderer renderer = new DeviceCoreRenderer();
         ResponseWriterWrapper writer = new ResponseWriterWrapper(facesContext.getResponseWriter());
-        renderer.encode(camcorder, writer);
+        renderer.encode(camcorder, writer, false);
 
  /*       boolean isEnhanced =  cd.isICEmobileContainer()  || cd.isSXRegistered() ;
         boolean isAuxUpload = EnvUtils.isAuxUploadBrowser(facesContext);

@@ -65,14 +65,8 @@ public interface IDevice extends IMobiComponent{
       </p>
      */
     public void setButtonLabel(String buttonLabel);
-    /*
-      <p> differentiates the use of icemobileSX for JSP to the core renderer
-          always true for this purpose
-      </p>
-     */
-    public boolean isUseCookie();
-    /*
-       <p> interface uses this for core renderer since JSP has all devices under
+
+     /*  <p> interface uses this for core renderer since JSP has all devices under
            once class.
        </p>
      */
