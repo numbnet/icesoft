@@ -8211,7 +8211,9 @@
                     if (date) { // only if valid
                         $.datepicker._setDateFromField(inst);
                         $.datepicker._updateAlternate(inst);
-                        $.datepicker._updateDatepicker(inst);
+                        if ($.datepicker._datepickerShowing) { // ICE-8665
+                            $.datepicker._updateDatepicker(inst);
+                        }
                     }
                 }
                 catch (err) {
