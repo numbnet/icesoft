@@ -38,6 +38,9 @@ public class GeolocationRenderer extends CoreRenderer {
     private static final String JS_MIN_NAME = "geolocation-min.js";
     private static final String JS_LIBRARY = "org.icefaces.component.geolocation";
 
+    private final int UNDEFINED_TIMEOUT_VALUE = 60000;
+    private final int UNDEFINED_MAXAGE_VALUE = 5000;
+
     @Override
     public void decode(FacesContext facesContext, UIComponent uiComponent) {
         Geolocation geolocation = (Geolocation) uiComponent;
@@ -116,8 +119,35 @@ public class GeolocationRenderer extends CoreRenderer {
         }
         writer.endElement("input");
         if (!disabled) {
+            boolean includeHighAccuracy;
             StringBuilder sb = new StringBuilder(255);
-            sb.append("mobi.geolocation.getLocation('").append(clientId).append("');");
+            String highAccuracy = locator.getEnableHighPrecision();
+
+            if ("asneeded".equalsIgnoreCase(highAccuracy)) {
+                includeHighAccuracy = sniffDevices();
+            } else {
+                includeHighAccuracy = Boolean.valueOf(highAccuracy);
+            }
+
+            int maxAge = locator.getMaximumAge();
+            // -1 is a value that indicates it hasn't been set.
+            // Default is zero. Same as timeout value below
+            // This would allow us to set it to some non-zero default value if desired
+            maxAge = (maxAge < 0) ? UNDEFINED_MAXAGE_VALUE : maxAge;
+
+            int timeout = locator.getTimeout();
+            timeout = (timeout < 0) ? UNDEFINED_TIMEOUT_VALUE : timeout;
+            boolean continuous = locator.isContinuousUpdates();
+
+            if (continuous) {
+                sb.append("ice.mobi.geolocation.watchLocation('").append(clientId).append("','");
+            } else {
+                sb.append("ice.mobi.geolocation.getLocation('").append(clientId).append("','");
+            }
+
+            sb.append(includeHighAccuracy).append("', '");
+            sb.append(maxAge).append("', '").append(timeout).append("'); ");
+
 //            sb.append( "mobi.geolocation.startWatch('").append(clientId).append("');");
             if (hasBehaviors) {
                 sb.append(this.buildAjaxRequest(facesContext, cbh, "activate"));
@@ -126,14 +156,20 @@ public class GeolocationRenderer extends CoreRenderer {
                 sb.append(ssCall);
             }
 
-            sb.append("window.addEventListener('deviceorientation', function(orient){");
-            sb.append("ice.mobi.storeDirection('").append(clientId).append("_locHidden', orient);");
-            sb.append("});\n");
+//            // This is also wrong.
+//            sb.append("window.addEventListener('deviceorientation', function(orient){");
+//            sb.append("ice.mobi.storeDirection('").append(clientId).append("_locHidden', orient);");
+//            sb.append("});\n");
             writer.startElement("script", uiComponent);
             writer.writeAttribute("id", clientId + "_script", "id");
             writer.write(sb.toString());
             writer.endElement("script");
         }
         writer.endElement(HTML.SPAN_ELEM);
+    }
+
+    private boolean sniffDevices() {
+        return false;
+
     }
 }
