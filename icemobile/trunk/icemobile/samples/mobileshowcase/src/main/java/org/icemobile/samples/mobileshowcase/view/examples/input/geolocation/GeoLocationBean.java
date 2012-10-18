@@ -25,33 +25,33 @@ import javax.faces.bean.SessionScoped;
 import java.io.Serializable;
 
 @Destination(
-        title = "example.input.geolocation.destination.title.short",
-        titleExt = "example.input.geolocation.destination.title.long",
-        titleBack = "example.input.geolocation.destination.title.back"
+    title = "example.input.geolocation.destination.title.short",
+    titleExt = "example.input.geolocation.destination.title.long",
+    titleBack = "example.input.geolocation.destination.title.back"
 )
 @Example(
-        descriptionPath = "/WEB-INF/includes/examples/input/geolocation-desc.xhtml",
-        examplePath = "/WEB-INF/includes/examples/input/geolocation-example.xhtml",
-        resourcesPath = "/WEB-INF/includes/examples/example-resources.xhtml"
+    descriptionPath = "/WEB-INF/includes/examples/input/geolocation-desc.xhtml",
+    examplePath = "/WEB-INF/includes/examples/input/geolocation-example.xhtml",
+    resourcesPath = "/WEB-INF/includes/examples/example-resources.xhtml"
 )
 @ExampleResources(
-        resources = {
-                // xhtml
-                @ExampleResource(type = ResourceType.xhtml,
-                        title = "geolocation-example.xhtml",
-                        resource = "/WEB-INF/includes/examples/input/geolocation-example.xhtml"),
-                // Java Source
-                @ExampleResource(type = ResourceType.java,
-                        title = "GeoLocationBean.java",
-                        resource = "/WEB-INF/classes/org/icemobile/samples/mobileshowcase" +
-                                "/view/examples/input/geolocation/GeoLocationBean.java")
-        }
+    resources = {
+        // xhtml
+        @ExampleResource(type = ResourceType.xhtml,
+                         title = "geolocation-example.xhtml",
+                         resource = "/WEB-INF/includes/examples/input/geolocation-example.xhtml"),
+        // Java Source
+        @ExampleResource(type = ResourceType.java,
+                         title = "GeoLocationBean.java",
+                         resource = "/WEB-INF/classes/org/icemobile/samples/mobileshowcase" +
+                             "/view/examples/input/geolocation/GeoLocationBean.java")
+    }
 )
 
 @ManagedBean(name = GeoLocationBean.BEAN_NAME)
 @SessionScoped
 public class GeoLocationBean extends ExampleImpl<GeoLocationBean> implements
-        Serializable {
+    Serializable {
 
     public static final String BEAN_NAME = "geoLocationBean";
 
@@ -59,6 +59,11 @@ public class GeoLocationBean extends ExampleImpl<GeoLocationBean> implements
     private double longitude = 0.0;
     private double altitude = 0.0;
     private double direction = 0.0;
+
+    private int timeout = 30;
+    private int maximumAge = 3600;
+    private String enableHighPrecision = "false";
+    private boolean continuousUpdates = true;
 
     public GeoLocationBean() {
         super(GeoLocationBean.class);
@@ -80,7 +85,7 @@ public class GeoLocationBean extends ExampleImpl<GeoLocationBean> implements
         this.longitude = longitude;
     }
 
-     public double getLatitudeRead() {
+    public double getLatitudeRead() {
         return latitude;
     }
 
@@ -91,22 +96,55 @@ public class GeoLocationBean extends ExampleImpl<GeoLocationBean> implements
     // lat and long values are read only, no value writing takes place.
     public void setLongitudeRead(double longitude) {
     }
+
     public void setLatitudeRead(double latitude) {
     }
 
-	public double getAltitude() {
-		return altitude;
-	}
+    public double getAltitude() {
+        return altitude;
+    }
 
-	public void setAltitude(double altitude) {
-		this.altitude = altitude;
-	}
+    public void setAltitude(double altitude) {
+        this.altitude = altitude;
+    }
 
-	public double getDirection() {
-		return direction;
-	}
+    public double getDirection() {
+        return direction;
+    }
 
-	public void setDirection(double direction) {
-		this.direction = direction;
-	}
+    public void setDirection(double direction) {
+        this.direction = direction;
+    }
+
+    public int getTimeout() {
+        return timeout;
+    }
+
+    public void setTimeout(int timeout) {
+        this.timeout = timeout;
+    }
+
+    public int getMaximumAge() {
+        return maximumAge;
+    }
+
+    public void setMaximumAge(int maximumAge) {
+        this.maximumAge = maximumAge;
+    }
+
+    public String getEnableHighPrecision() {
+        return enableHighPrecision;
+    }
+
+    public void setEnableHighPrecision(String enableHighPrecision) {
+        this.enableHighPrecision = enableHighPrecision;
+    }
+
+    public boolean isContinuousUpdates() {
+        return continuousUpdates;
+    }
+
+    public void setContinuousUpdates(boolean continuousUpdates) {
+        this.continuousUpdates = continuousUpdates;
+    }
 }
