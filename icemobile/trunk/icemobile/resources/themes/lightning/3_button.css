@@ -14,29 +14,22 @@
  * governing permissions and limitations under the License.
  */
 .mobi-button-group-vert .mobi-button {
-    margin: 0 0 -1px 0;
 }
 
 .mobi-button-group-hor .mobi-button {
-    margin: 0 -5px 0 0;
 }
-
-
+.mobi-button {
+    background-color: #f5f5f5;
+    border-color: #BEBEBE;
+    color: #444444;
+    font-weight: bold;
+}
 .mobi-button-group .mobi-button-selected {
     background-color: #6792E8;
-    border: 1px solid #155678;
+    border-color: #155678;
     color: #FFFFFF;
 }
 
-.mobi-button {
-    background:  #EEEEEE;
-    background-color: #f5f5f5;
-    border: 1px solid #BEBEBE;
-    font-size: 12px !important;
-    color: #444444;
-    font-weight: bold;
-    padding:5px 10px;
-}
 .mobi-button-default, .mobi-button-important, .mobi-button-attention {
     border: 1px solid #155678;
     color: #FFFFFF;
@@ -46,44 +39,6 @@
     background-color: #4A6C9B;
 }
 
- .mobi-button.mobi-button-back {
-    background-color: rgba(74, 108, 155, 1);
-    background-image: -webkit-linear-gradient(
-         bottom,
-         transparent 0%,
-         transparent 50%,
-         rgba(255, 255, 255, 0.1) 50%,
-         rgba(255, 255, 255, 0.3) 100%
-         );
-    border-radius: 6px;
-    border-top-left-radius: 10px 15px;
-    border-bottom-left-radius: 10px 15px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
-    box-shadow: -1px -1px 0px rgba(0, 0, 0, 0.2)inset,
-     0 1px 2px rgba(0, 0, 0, 0.8)inset;
-    color: white !important;
-    text-shadow: 0px -1px 0px black;
-}
- 
-.mobi-button.mobi-button-back:before{
-    background-color: rgba(74,108,155,1);/*change to the same as the main element*/
-    background-image :
-        -webkit-gradient(linear, left bottom, right top,
-            from(rgba(0,0,0,0)),
-            color-stop(0.5, rgba(0,0,0,0)),
-            color-stop(0.5, rgba(255,255,255,0.1)),
-            to(rgba(255,255,255,0.3)));
-    border-left : 1.5px solid rgba(255,255,255,0.3);
-    box-shadow :  1px 1px 0 rgba(0,0,0,0.2) inset,
-        -1px 1px 1px rgba(0,0,0,0.5) inset;
-    -webkit-mask-image :
-        -webkit-gradient(linear, left top, right bottom,
-            from(#000000),
-            color-stop(0.33,#000000),
-            color-stop(0.5, transparent),
-            to(transparent));
-}
-
 .mobi-button-important {
     background-color: #6792E8;
 }
@@ -91,14 +46,3 @@
 .mobi-button-attention {
     background-color: #BC3839;
 }
-
-.mobi-button-icon {
-    border-right: none;
-}
-
-.mobi-panel-stack-header .mobi-button-default,
-.mobi-panel-stack-header .mobi-button-important,
-.mobi-panel-stack-header .mobi-button-attention {
-    padding: 0;
-}
-

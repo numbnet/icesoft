@@ -16,52 +16,45 @@
 .mobi-button-group-vert .mobi-button {
     color: #CCCCCC;
 }
-
 .mobi-button-group-hor .mobi-button {
-    margin: 0 -0 0 0;
     color: #CCCCCC;
 }
-
 .mobi-button-group .mobi-button-selected {
+    background: -moz-linear-gradient(top, #6792E8, #2463DE) repeat scroll 0 0 #6792E8;
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0, #6792E8), color-stop(1, #2463DE));
+    border-color: #737173;
     border-bottom: 2px solid #6595f9;
     color: #FFFFFF;
     font-weight: bold;
 }
-
 .mobi-button:active, .mobi-button[selected] {
     background-color: #082658 !important;
     -webkit-tap-highlight-color: #082658;
     color: white !important;
 }
-
 .mobi-button-dis {
     opacity: 0.5;
     filter: alpha(opacity = 50);
 }
-
 .mobi-button {
-    -webkit-appearance: none;
-    border: 1px solid #38383b;
-    border-top: 1px solid #505054;
     background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0, #424246), color-stop(1, #3f3f42));
     background: -moz-linear-gradient(top, #424246, #3f3f42);
+    background-clip: border-box;/* TODO check if this should be in base3 */
     background-color: #3f3f42;
-    background-clip: border-box;
+    border-color: #38383b;
+    border-top-color: #505054;
     color: #f1f1f1;
+    font-weight: normal;
 }
-
- .mobi-button.mobi-button-back {
+.mobi-button.mobi-button-back {
     background-color: #E7EBE7;
     border-radius: 2px;
-    -webkit-border-top-left-radius: 10px 15px;
     border-top-left-radius: 10px 15px;
-    -webkit-border-bottom-left-radius: 11px 10px;
     border-bottom-left-radius: 11px 10px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.3);
-    box-shadow: -1px -1px 0px rgba(0, 0, 0, 0.2)inset, 0 1px 2px rgba(0, 0, 0, 0.8)inset;
+    box-shadow: -1px -1px 0px rgba(0, 0, 0, 0.2)inset, 0 1px 2px rgba(115, 113, 115, 0.8)inset;
     color: #444 !important;
 }
- 
 .mobi-button.mobi-button-back:before{
     background-color: #E7EBE7;
     border-left: 1.5px solid rgba(255, 255, 255, 0.3);
@@ -72,4 +65,3 @@
      color-stop(0.5, transparent),
      to(transparent));
 }
-
