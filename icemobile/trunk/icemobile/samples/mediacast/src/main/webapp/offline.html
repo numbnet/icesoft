@@ -1,0 +1,49 @@
+<html>
+<head>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0'/>
+</head>
+<body>
+    <script>
+    var currentID = 0;
+    function addRow(event)  {
+        currentID++;
+        var camID = "cam" + currentID;
+        var camThumbID = camID + "-thumb";
+        var titleID = "title" + currentID;
+
+        var theTable = document.getElementById("thetable");
+        var tableRow = theTable.insertRow(-1);
+        var template = 
+        "<td><input type='text' placeholder='Title' size='10' " +
+          "name='title##'></td>" +
+        "<td><input type='button' value='Camera' name='cam##' id='cam##' " +
+          "onclick='ice.camera(this.id);' ></td>" +
+        "<td><img id='cam##-thumb' width='32' height='32'></td>" +
+        "<td>GPS ##</td>" +
+        "<td><input type='button' onclick='addRow(event)' value='+'></td>";
+
+        tableRow.innerHTML = template.replace(/##/g, currentID);
+
+        //hide the old button
+        event.target.type="hidden";
+    }
+    </script>
+
+    <form id="items" action="upload" method="POST" enctype="multipart/form-data">
+        <table id="thetable">
+        <tr>
+        <td><input type='text' placeholder='Title' size='10' name='title0'></td>
+        <td><input type='button' value='Camera' name='cam0' id='cam0' 
+            onclick='ice.camera(this.id);' ></td>
+        <td><img  id='cam0-thumb' width='32' height='32'></td>
+        <td>GPS</td>
+        <td><input type='button' onclick='addRow(event)' value='+'></td>
+        </tr>
+        </table>
+        <br>
+        <input type='button' value='Upload' onclick='ice.upload("items");'>
+    </form>
+
+</body>
+</html>
+
