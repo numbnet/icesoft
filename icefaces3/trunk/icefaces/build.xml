@@ -47,7 +47,7 @@
               overwrite="true"/>
     </target>
 
-    <target name="core" description="Builds the ICEfaces core framework (icefaces.jar).">
+    <target name="core" depends="icepush" description="Builds the ICEfaces core framework (icefaces.jar).">
         <subant>
             <fileset dir="." includes="core/build.xml test/build.xml">
               <exclude name="**/maven2/build.xml"/>
