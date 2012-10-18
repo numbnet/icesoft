@@ -13,28 +13,17 @@
  * express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-
 .mobi-fieldset {
     background: none repeat scroll 0 0 white;
-    border: 1px solid #ccc;
+    border-color: #ccc;
     color: black;
 }
-
-.mobi-fieldset-inset {
-    margin: 5px 5px 5px;
-}
-
 .mobi-fieldset-row {
-    border-bottom: 1px solid #ccc;;
-    padding: 5px 5px 0;
+    border-bottom-color: #ccc;
 }
-
 .mobi-fieldset-row-group {
-    padding: 5px 8px 0;
-    font-weight: bold;
     color: #666;
 }
-
 .mobi-fieldset-row > label {
     font-weight: normal;
 }

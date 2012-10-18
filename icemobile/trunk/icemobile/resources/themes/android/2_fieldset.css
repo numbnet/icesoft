@@ -16,10 +16,12 @@
 
 .mobi-fieldset {
     background: none repeat scroll 0 0 black;
-    border: 1px solid black;
+    border-color: black;
     color: white;
 }
-
 .mobi-fieldset-row {
-    border-bottom: 1px solid #424142;;
+    border-bottom-color: #424142;
+}
+.mobi-fieldset-row-group {
+    color: #666;
 }

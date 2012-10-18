@@ -13,31 +13,31 @@
  * express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-
 .mobi-fieldset {
+    border-width: 1px;
+    border-style: solid;
     font-size: 15px;
     padding: 0;
 }
-
 .mobi-fieldset-inset {
-    margin: 10px 10px 10px;
+    margin: 10px 20px;
 }
-
+.mobi-fieldset-row-group {
+    font-weight: bold;
+}
 .mobi-fieldset-row {
-    min-height: 30px;
-    padding: 10px 10px 0;
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+    padding: 10px;
 }
-
 .mobi-fieldset-row:last-child {
     border-bottom: none;
 }
-
 .mobi-fieldset-row > label {
     font-weight: bold;
-    font-size: 15px;
+    font-size: 15px; /* TODO needed? */
 }
-
 .mobi-fieldset-row > input:last-child,
 .mobi-fieldset-row > select:last-child {
-    float: right;
+    float: right; /* TODO need something better */
 }
