@@ -27,24 +27,24 @@ import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
 
 @Component(
-        tagName = "geolocation",
-        componentClass = "org.icefaces.mobi.component.geolocation.Geolocation",
-        rendererClass = "org.icefaces.mobi.component.geolocation.GeolocationRenderer",
-        generatedClass = "org.icefaces.mobi.component.geolocation.GeolocationBase",
-        componentType = "org.icefaces.Geolocation",
-        rendererType = "org.icefaces.GeolocationRenderer",
-        extendsClass = "javax.faces.component.UIComponentBase",
-        componentFamily = "org.icefaces.Geolocation",
-        tlddoc = "This mobility component captures an geolocation object" +
-                " of longitude and latitude, heading, speed and altitude via" +
-                " html5 navigator api"
+    tagName = "geolocation",
+    componentClass = "org.icefaces.mobi.component.geolocation.Geolocation",
+    rendererClass = "org.icefaces.mobi.component.geolocation.GeolocationRenderer",
+    generatedClass = "org.icefaces.mobi.component.geolocation.GeolocationBase",
+    componentType = "org.icefaces.Geolocation",
+    rendererType = "org.icefaces.GeolocationRenderer",
+    extendsClass = "javax.faces.component.UIComponentBase",
+    componentFamily = "org.icefaces.Geolocation",
+    tlddoc = "This mobility component captures an geolocation object" +
+        " of longitude and latitude, heading, speed and altitude via" +
+        " html5 navigator api"
 )
 @ResourceDependencies({
-        @ResourceDependency(library = "org.icefaces.component.util", name = "component.js")
-})
+                          @ResourceDependency(library = "org.icefaces.component.util", name = "component.js")
+                      })
 @ClientBehaviorHolder(events = {
-	@ClientEvent(name="activate", javadoc="...", tlddoc="...", defaultRender="@this", defaultExecute="@all")
-}, defaultEvent="activate")
+    @ClientEvent(name = "activate", javadoc = "...", tlddoc = "...", defaultRender = "@this", defaultExecute = "@all")
+}, defaultEvent = "activate")
 public class GeolocationMeta extends UIComponentBaseMeta {
 
     @Property(tlddoc = "latitude of mobile device in decimal degrees")
@@ -52,7 +52,7 @@ public class GeolocationMeta extends UIComponentBaseMeta {
 
     @Property(tlddoc = "longitude of mobile device in decimal degrees")
     private Double longitude;
-    
+
     @Property(tlddoc = "altitude of mobile device in meters")
     private Double altitude;
 
@@ -60,26 +60,45 @@ public class GeolocationMeta extends UIComponentBaseMeta {
     private Double direction;
 
     @Property(defaultValue = "false",
-            tlddoc = "When disabled, geolocation is not activated")
+              tlddoc = "When disabled, geolocation is not activated")
     private boolean disabled;
 
     @Property(tlddoc = "tabindex of the component")
     private Integer tabindex;
 
     @Property(tlddoc = "style will be rendered on the root element of this " +
-            "component.")
+        "component.")
     private String style;
 
     @Property(tlddoc = "style class will be rendered on the root element of " +
-            "this component.")
+        "this component.")
     private String styleClass;
 
     @Property(defaultValue = "false",
-            tlddoc = "When singleSubmit is true, changing the value of this component" +
-                    " will submit and execute this component only. Equivalent to " +
-                    " execute=\"@this\" render=\"@all\" of the f ajax tag. " +
-                    "When singleSubmit is false, no submit occurs. The value is simply  " +
-                    "stored in the hidden field. The default value is false.")
+              tlddoc = "When singleSubmit is true, changing the value of this component" +
+                  " will submit and execute this component only. Equivalent to " +
+                  " execute=\"@this\" render=\"@all\" of the f ajax tag. " +
+                  "When singleSubmit is false, no submit occurs. The value is simply  " +
+                  "stored in the hidden field. The default value is false.")
     private boolean singleSubmit;
+
+    @Property(tlddoc = "If true, the component will install a listener to retrieve position " +
+        "updates from navigator.geolocation.watchPosition. If false, the component " +
+        "will fetch a one time update via navigator.gelocation.getCurrentPosition",
+              defaultValue = "true")
+    private boolean continuousUpdates;
+
+    @Property(tlddoc = "Has values of true, false, and asNeeded. If true, the tag will " +
+        "turn on highPrecision geolocation which means GPS", defaultValue = "false")
+    private String enableHighPrecision;
+
+    @Property(tlddoc = "The maximumAge attribute indicates that the application is willing" +
+        "to accept a cached position whose age is no greater than the specified time (in ms)",
+              defaultValue = "-1")
+    private int maximumAge;
+
+    @Property(tlddoc = "The maximum time (in ms) the application will wait for either a success or error response, " +
+        "0 being no timeout ", defaultValue = "-1")
+    private int timeout;
 
 }
