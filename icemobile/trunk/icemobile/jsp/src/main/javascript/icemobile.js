@@ -18,6 +18,16 @@
 if (!window['ice']) {
     window.ice = {};
 }
+
+if (!window.console) {
+    console = {};
+    if (ice.logInContainer)  {
+        console.log = ice.logInContainer;
+    } else {
+        log = function(){};
+    }
+}
+
 ice.registerAuxUpload = function registerAuxUpload(sessionid, uploadURL) {
     var auxiframe = document.getElementById('auxiframe');
     if (null == auxiframe) {
