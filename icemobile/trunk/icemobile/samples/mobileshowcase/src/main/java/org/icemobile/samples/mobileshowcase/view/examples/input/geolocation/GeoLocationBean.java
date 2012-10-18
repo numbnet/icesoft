@@ -22,6 +22,7 @@ import org.icemobile.samples.mobileshowcase.view.metadata.context.ExampleImpl;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.event.ValueChangeEvent;
 import java.io.Serializable;
 
 @Destination(
@@ -146,5 +147,9 @@ public class GeoLocationBean extends ExampleImpl<GeoLocationBean> implements
 
     public void setContinuousUpdates(boolean continuousUpdates) {
         this.continuousUpdates = continuousUpdates;
+    }
+
+    public void continuousUpdatesChange(ValueChangeEvent event) {
+        continuousUpdates = ((Boolean) event.getNewValue()).booleanValue();
     }
 }
