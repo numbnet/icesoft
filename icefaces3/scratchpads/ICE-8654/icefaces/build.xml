@@ -230,7 +230,7 @@
             <propertyset refid="build.properties"/>
         </subant>
 
-        <!-- Create the JavaDocs for core, compat, and ace and move them to the docs directory -->
+        <!-- Create the JavaDocs for core, compat, ace, icepush and move them to the docs directory -->
         <subant target="javadoc">
             <fileset dir="${bundle.dir.bin}/core" includes="build.xml"/>
         </subant>
@@ -250,6 +250,11 @@
             <fileset dir="${bundle.dir.bin}/ace/component" includes="build.xml"/>
         </subant>
         <move file="${bundle.dir.bin}/ace/component/build/doc/javadoc" tofile="${bundle.dir.bin}/docs/ace/api"/>
+
+        <subant target="javadoc">
+            <fileset dir="${bundle.dir.bin}/icepush/core" includes="build.xml"/>
+        </subant>
+        <move file="${bundle.dir.bin}/icepush/core/build/javadocs" tofile="${bundle.dir.bin}/docs/icepush/core/api"/>
 
         <!-- Create the TLD docs for icecore, compat, ace move them to the docs directory -->
         <subant target="tlddoc">
@@ -306,7 +311,6 @@
         <delete>
             <fileset dir="${bundle.dir.src}/icepush/lib">
                 <include name="jstl-1.2"/>
-                <include name="yui-compressor.jar"/>
             </fileset>
         </delete>
 
