@@ -24,6 +24,16 @@ if (!window.ice.mobi) {
 if (!window['mobi']) {
     window.mobi = {};
 }
+
+if (!window.console) {
+    console = {};
+    if (ice.logInContainer)  {
+        console.log = ice.logInContainer;
+    } else {
+        log = function(){};
+    }
+}
+
 mobi.BEHAVIOR_EVENT_PARAM = "javax.faces.behavior.event";
 mobi.PARTIAL_EVENT_PARAM = "javax.faces.partial.event";
 mobi.findForm = function (sourceId) {
@@ -516,7 +526,7 @@ ice.mobi.geolocation = {
         // It seems like on Android that passing any argument at all for enableHighAccuracy
         // enables high accuracy.
         if (highAccuracy == 'false') {
-            ice.logInContainer('Launching low precision watchPosition, maxAge: ' +
+            console.log('Launching low precision watchPosition, maxAge: ' +
                     maxAge + '(s), timeout: ' + timeout + '(s)');
 
             ice.mobi.geolocation.watchId = navigator.geolocation.watchPosition(
@@ -525,7 +535,7 @@ ice.mobi.geolocation = {
             );
 
         } else {
-            ice.logInContainer('Launching HIGH precision watchPosition, maxAge: ' +
+            console.log('Launching HIGH precision watchPosition, maxAge: ' +
                     maxAge + '(s), timeout: ' + timeout + '(s)');
             ice.mobi.geolocation.watchId = navigator.geolocation.watchPosition(
                     this.successCallback, this.errorCallback,
@@ -534,7 +544,7 @@ ice.mobi.geolocation = {
         }
         window.addEventListener('deviceorientation', ice.mobi.geolocation.orientationCallback);
         ice.onElementUpdate(pClientId, ice.mobi.geolocation.clearWatch);
-        ice.logInContainer('Lauching positionWatch for client: ' + pClientId + ' watchId: ' +
+        console.log('Lauching positionWatch for client: ' + pClientId + ' watchId: ' +
                 ice.mobi.geolocation.watchId + ', highAccuracy? : ' + highAccuracy);
     },
 
@@ -546,15 +556,15 @@ ice.mobi.geolocation = {
         ice.mobi.geolocation.clientId = pClientId;
         ice.mobi.geolocation.clearWatch();
 
-        ice.logInContainer('Launching getCurrentPosition');
+        console.log('Launching getCurrentPosition');
         if (highAccuracy == 'false') {
-            ice.logInContainer('Launching low precision getCurrentPosition, maxAge: ' +
+            console.log('Launching low precision getCurrentPosition, maxAge: ' +
                     maxAge + '(s), timeout: ' + timeout + '(s)');
 
             navigator.geolocation.getCurrentPosition(this.successCallback, this.errorCallback,
                     { maximumAge: maxAge, timeout: timeout });
         } else {
-            ice.logInContainer('Launching HIGH precision getCurrentPosition, maxAge: ' +
+            console.log('Launching HIGH precision getCurrentPosition, maxAge: ' +
                     maxAge + '(s), timeout: ' + timeout + '(s)');
             ice.mobi.geolocation.watchId = navigator.geolocation.getCurrentPosition(
                     this.successCallback, this.errorCallback,
@@ -566,19 +576,19 @@ ice.mobi.geolocation = {
     },
 
     successCallback: function(pos) {
-        ice.logInContainer('Position update for client: ' + ice.mobi.geolocation.clientId);
+        console.log('Position update for client: ' + ice.mobi.geolocation.clientId);
         try {
             inputId = ice.mobi.geolocation.clientId + "_locHidden";
-            ice.logInContainer('LOGGING Position TO hidden field: ' + inputId);
+            console.log('LOGGING Position TO hidden field: ' + inputId);
             ice.mobi.storeLocation(inputId, pos.coords);
 
         } catch(e) {
-            ice.logInContainer('Exception: ' + e);
+            console.log('Exception: ' + e);
         }
     },
 
     errorCallback: function(positionError) {
-        ice.logInContainer('Error in watchPosition, code: ' + positionError.code + ' Message: ' + positionError.message);
+        console.log('Error in watchPosition, code: ' + positionError.code + ' Message: ' + positionError.message);
         ice.mobi.geolocation.clearWatch();
     },
 
@@ -589,9 +599,9 @@ ice.mobi.geolocation = {
 
     // Clear any existing positionUpdate listeners
     clearWatch: function() {
-        ice.logInContainer('ice.geolocation.clearWatch called - existing watchId: ' + ice.mobi.geolocation.watchId);
+        console.log('ice.geolocation.clearWatch called - existing watchId: ' + ice.mobi.geolocation.watchId);
         if (ice.mobi.geolocation.watchId > 0) {
-            ice.logInContainer('Existing positionWatch: ' + ice.mobi.geolocation.watchId + ' removed');
+            console.log('Existing positionWatch: ' + ice.mobi.geolocation.watchId + ' removed');
             navigator.geolocation.clearWatch(ice.mobi.geolocation.watchId);
             ice.mobi.geolocation.watchId = 0;
         }
