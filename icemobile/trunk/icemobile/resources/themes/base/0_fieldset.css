@@ -37,7 +37,6 @@
     font-weight: bold;
     font-size: 15px; /* TODO needed? */
 }
-.mobi-fieldset-row > input:last-child,
-.mobi-fieldset-row > select:last-child {
+.mobi-fieldset-row > .mobi-input-text:last-child{
     float: right; /* TODO need something better */
 }
