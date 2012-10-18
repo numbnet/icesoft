@@ -33,6 +33,7 @@
     NSString *maxwidth;
     NSString *maxheight;
     NSString *soundFilePath;
+    NSInteger nextFileIndex;
     BOOL recording;
     BOOL uploading;
     NSMutableData *receivedData;
@@ -54,6 +55,7 @@
 @property (retain) NSString *maxwidth;
 @property (retain) NSString *maxheight;
 @property (retain) NSString *soundFilePath;
+@property (nonatomic, assign) NSInteger nextFileIndex;
 @property (nonatomic, assign) BOOL recording;
 @property (assign) BOOL uploading;
 @property (retain) NSMutableData *receivedData;

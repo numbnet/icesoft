@@ -35,6 +35,7 @@
 @synthesize maxwidth;
 @synthesize maxheight;
 @synthesize soundFilePath;
+@synthesize nextFileIndex;
 @synthesize recording;
 @synthesize uploading;
 @synthesize receivedData;
@@ -383,8 +384,9 @@ static char base64EncodingTable[64] = {
 }
 
 - (NSString*)saveImage: (UIImage*)image  {
+    NSString *imageName = [NSString stringWithFormat:@"image%d.jpg",nextFileIndex++];
     NSString *imagePath = [NSTemporaryDirectory() 
-            stringByAppendingPathComponent:@"test.jpg"];
+            stringByAppendingPathComponent:imageName];
     [UIImageJPEGRepresentation(image, 0.7) writeToFile:imagePath atomically:NO];
     return imagePath;
 }

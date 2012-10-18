@@ -218,8 +218,6 @@
 		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
-				9C05859D162F6E59003D1890 /* AddressBook.framework */,
-				9C05859E162F6E59003D1890 /* AddressBookUI.framework */,
 				9C3B27871427A1B500409376 /* Dependencies */,
 				2860E32A111B888700E27156 /* iPad */,
 				2860E324111B887F00E27156 /* iPhone */,
@@ -245,6 +243,8 @@
 			isa = PBXGroup;
 			children = (
 				9C3B27921427AEA000409376 /* libiconv.dylib */,
+				9C05859D162F6E59003D1890 /* AddressBook.framework */,
+				9C05859E162F6E59003D1890 /* AddressBookUI.framework */,
 				9CCD001A15742A710012893A /* MapKit.framework */,
 				9C285F41155DD37400BAC772 /* CoreLocation.framework */,
 				9C285F42155DD37400BAC772 /* CoreMotion.framework */,
