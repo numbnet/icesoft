@@ -4544,7 +4544,7 @@ function wijmoASPNetParseOptions(o) {
                     }
                 };
 
-            if (parentlist) {
+            if (parentlist && parentlist.length > 0) {
                 var opacity = ice.ace.getOpacity(parentlist);
                 setTimeout(function() {
                     var newopacity = ice.ace.getOpacity(parentlist);
