@@ -512,22 +512,27 @@ ice.mobi.geolocation = {
     watchLocation: function (pClientId, highAccuracy, maxAge, timeout) {
 
         ice.mobi.geolocation.clientId = pClientId;
-
         ice.mobi.geolocation.clearWatch();
+        // It seems like on Android that passing any argument at all for enableHighAccuracy
+        // enables high accuracy.
         if (highAccuracy == 'false') {
-            ice.logInContainer('Launching low precision watchPosition');
+            ice.logInContainer('Launching low precision watchPosition, maxAge: ' +
+                    maxAge + '(s), timeout: ' + timeout + '(s)');
+
             ice.mobi.geolocation.watchId = navigator.geolocation.watchPosition(
-                    this.successCallback, this.errorCallback
+                    this.successCallback, this.errorCallback,
+                    { maximumAge: maxAge * 1000, timeout: timeout * 1000 }
             );
 
         } else {
-            ice.logInContainer('Launching HIGH precision watchPosition');
+            ice.logInContainer('Launching HIGH precision watchPosition, maxAge: ' +
+                    maxAge + '(s), timeout: ' + timeout + '(s)');
             ice.mobi.geolocation.watchId = navigator.geolocation.watchPosition(
                     this.successCallback, this.errorCallback,
-                    { enableHighAccuracy: true, maximumAge: maxAge, timeout: timeout }
+                    { enableHighAccuracy: true, maximumAge: maxAge * 1000, timeout: timeout * 1000 }
             );
         }
-        // window.addEventListener('deviceorientation', ice.mobi.geolocation.orientationCallback );
+        window.addEventListener('deviceorientation', ice.mobi.geolocation.orientationCallback);
         ice.onElementUpdate(pClientId, ice.mobi.geolocation.clearWatch);
         ice.logInContainer('Lauching positionWatch for client: ' + pClientId + ' watchId: ' +
                 ice.mobi.geolocation.watchId + ', highAccuracy? : ' + highAccuracy);
@@ -542,9 +547,22 @@ ice.mobi.geolocation = {
         ice.mobi.geolocation.clearWatch();
 
         ice.logInContainer('Launching getCurrentPosition');
-        navigator.geolocation.getCurrentPosition(this.successCallback, this.errorCallback,
-                { enableHighAccuracy: highAccuracy, maximumAge: maxAge, timeout: timeout }
-        );
+        if (highAccuracy == 'false') {
+            ice.logInContainer('Launching low precision getCurrentPosition, maxAge: ' +
+                    maxAge + '(s), timeout: ' + timeout + '(s)');
+
+            navigator.geolocation.getCurrentPosition(this.successCallback, this.errorCallback,
+                    { maximumAge: maxAge, timeout: timeout });
+        } else {
+            ice.logInContainer('Launching HIGH precision getCurrentPosition, maxAge: ' +
+                    maxAge + '(s), timeout: ' + timeout + '(s)');
+            ice.mobi.geolocation.watchId = navigator.geolocation.getCurrentPosition(
+                    this.successCallback, this.errorCallback,
+                    { enableHighAccuracy: true, maximumAge: maxAge * 1000, timeout: timeout * 1000 }
+            );
+        }
+        window.addEventListener('deviceorientation', ice.mobi.geolocation.orientationCallback);
+        ice.onElementUpdate(pClientId, ice.mobi.geolocation.clearWatch);
     },
 
     successCallback: function(pos) {
@@ -577,7 +595,7 @@ ice.mobi.geolocation = {
             navigator.geolocation.clearWatch(ice.mobi.geolocation.watchId);
             ice.mobi.geolocation.watchId = 0;
         }
-        //window.removeEventListener('deviceorientation', ice.mobi.geolocation.orientationCallback);
+        window.removeEventListener('deviceorientation', ice.mobi.geolocation.orientationCallback);
     }
 
 
