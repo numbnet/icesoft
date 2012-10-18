@@ -295,6 +295,10 @@ if (!window.ice.mobile) {
             ice.native('aug?id=' + id + (atts ? '&' + atts : ''));
         }
 
+        namespace.fetchContacts = function(id, atts)  {
+            ice.native('address?id=' + id + (atts ? '&' + atts : ''));
+        }
+
         namespace.deviceToken = "cafebeef";
 
     })(window.ice)
