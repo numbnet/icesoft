@@ -156,8 +156,8 @@
     	<buildCSS3Skin skin="android" />
 		<buildCSS3Skin skin="bberry" />
 		<buildCSS3Skin skin="honeycomb" />
-		<buildIOSSkin skin="ipad" />
-		<buildIOSSkin skin="iphone" />
+		<buildCSS3Skin skin="ipad" />
+		<buildCSS3Skin skin="iphone" />
         
         <!-- concatenate -->
         <!-- Generate a single CSS file per skin -->
@@ -386,30 +386,6 @@
             </copy>
         </sequential>
     </macrodef>
-
-	<!-- include source images and css for sprite generation -->
-	<macrodef name="buildIOSSkin">
-		<attribute name="skin" />
-		<sequential>
-			<mkdir dir="build/skins/in/@{skin}" />
-			<copy todir="build/skins/in/@{skin}/">
-				<fileset dir="${theme.dir}/base" includes="**" />
-			</copy>
-			<copy todir="build/skins/in/@{skin}/">
-                <fileset dir="${theme.dir}/base3" includes="**" />
-            </copy>
-            <copy todir="build/skins/in/@{skin}/" overwrite="true">
-				<fileset dir="${theme.dir}/ios" includes="**" />
-			</copy>
-			<copy todir="build/skins/in/@{skin}/" overwrite="true">
-				<fileset dir="${theme.dir}/@{skin}" includes="**" />
-			</copy>
-			<mkdir dir="build/skins/out/@{skin}/" />
-			<copy todir="build/skins/out/@{skin}/">
-				<fileset dir="build/skins/in/@{skin}/" excludes="**/*.css" />
-			</copy>
-		</sequential>
-	</macrodef>
 
 	<macrodef name="compressjs">
 	    <attribute name="comp" />

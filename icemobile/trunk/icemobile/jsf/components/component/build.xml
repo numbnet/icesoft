@@ -159,40 +159,6 @@
         </sequential>
     </macrodef>
 
-
-    <!-- include source images and css for sprite generation -->
-	<macrodef name="includeIOSresources">
-		<attribute name="dir" />
-		<attribute name="skin" />
-		<sequential>
-			<mkdir dir="${root.dir.path}/@{skin}" />
-			<!-- Copy all resources to the input directory for SmartSprites. -->
-			<mkdir dir="${root.dir.path}/@{skin}/" />
-            <!-- copy base styles -->
-			<copy todir="${root.dir.path}/@{skin}/">
-				<fileset dir="${theme.dir.path}/${theme.base.dir}" includes="**" />
-			</copy>
-            <!-- copy base css3 styles -->
-            <copy todir="${root.dir.path}/@{skin}/">
-                <fileset dir="${theme.dir.path}/${theme.base3.dir}" includes="**" />
-            </copy>
-            <!-- copy common ios bases -->
-			<copy todir="${root.dir.path}/@{skin}/" overwrite="true">
-				<fileset dir="${theme.dir.path}/ios" includes="**" />
-			</copy>
-            <!-- copy the actual skin -->
-			<copy todir="${root.dir.path}/@{skin}/" overwrite="true">
-				<fileset dir="@{dir}" includes="**" />
-			</copy>
-			<!-- At the same time, copy all resources to the SmartSprites output directory.
-	                   with the exclusion of the the .css files -->
-			<mkdir dir="${output.dir.path}/@{skin}/" />
-			<copy todir="${output.dir.path}/@{skin}/">
-				<fileset dir="${root.dir.path}/@{skin}/" excludes="**/*.css" />
-			</copy>
-		</sequential>
-	</macrodef>
-
 	<!-- check for any file modifications and call smartsprites -->
 	<macrodef name="generatesprites">
 		<attribute name="skin" />
@@ -382,8 +348,8 @@
 	<includeBase3Resources dir="${theme.dir.path}/android" skin="android" />
 	<includeBase3Resources dir="${theme.dir.path}/bberry" skin="bberry" />
 	<includeBase3Resources dir="${theme.dir.path}/honeycomb" skin="honeycomb" />
-	<includeIOSresources dir="${theme.dir.path}/ipad" skin="ipad" />
-	<includeIOSresources dir="${theme.dir.path}/iphone" skin="iphone" />
+	<includeBase3Resources dir="${theme.dir.path}/ipad" skin="ipad" />
+	<includeBase3Resources dir="${theme.dir.path}/iphone" skin="iphone" />
 
 	<!-- Generate a single CSS file per skin -->
 	<concatskin name="android" inputdir="${build}/skins/in" outputdir="${build}/skins/out" />
