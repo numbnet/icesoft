@@ -434,9 +434,19 @@
         </ant>
     </target>
 
-    <target name="lib" depends="compile"
-
+    <target name="lib" depends="compile, lib-jar"
             description="Generate the icefaces-ace.jar">
+    </target>
+
+    <target name="lib-js" depends="richtextentry-resources, res-js-compress, res-js-no-compress, res-copy, lib-jar"
+            description="Update the Javascript and build the icefaces-ace.jar">
+    </target>
+
+    <target name="lib-manual" depends="compile-manual, lib-jar"
+            description="Compile the manual java classes (Component, Renderer) and build the icefaces-ace.jar">
+    </target>
+
+    <target name="lib-jar">
         <!-- Create the distribution directory -->
         <mkdir dir="${dist}"/>
 
