@@ -24,6 +24,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.event.ValueChangeEvent;
 import java.io.Serializable;
+import java.util.ArrayList;
 
 @Destination(
     title = "example.input.geolocation.destination.title.short",
@@ -63,7 +64,7 @@ public class GeoLocationBean extends ExampleImpl<GeoLocationBean> implements
 
     private int timeout = 30;
     private int maximumAge = 3600;
-    private String enableHighPrecision = "false";
+    private String enableHighPrecision = "asNeeded";
     private boolean continuousUpdates = true;
 
     public GeoLocationBean() {
