@@ -152,7 +152,15 @@ public class TabSetRenderer extends BaseLayoutRenderer {
 
         boolean autoWidth = controller.isAutoWidth();
         // calculate the percent width for th tabs
-        String percentWidth = "width:" + (100/tabsNum) + "%" ;
+        int percent = 100/tabsNum;
+        String percentWidth = "width:" + percent + "%;";
+        String lastPercentWidth = null;
+        if( percent * tabsNum != 100){
+            lastPercentWidth = "width:" + (percent+(100-(percent*tabsNum)))+"%;";
+        }
+        else{
+            lastPercentWidth = percentWidth;
+        }
 
         writer.startElement(HTML.UL_ELEM, uiComponent);
         writer.writeAttribute(HTML.ID_ATTR, clientId+"_dc", HTML.ID_ATTR);
@@ -175,7 +183,14 @@ public class TabSetRenderer extends BaseLayoutRenderer {
                     writer.writeAttribute("class", TabSet.TABSET_ACTIVETAB_CLASS, "class");
                 } */
                 if (autoWidth){
-                    writer.writeAttribute(HTML.STYLE_ATTR, percentWidth, HTML.STYLE_ATTR);
+                    String width = null;
+                    if( i < tabsNum-1){
+                        width = percentWidth;
+                    }
+                    else{
+                        width = lastPercentWidth;
+                    }
+                    writer.writeAttribute(HTML.STYLE_ATTR, width, HTML.STYLE_ATTR);
                 }
                 String title = cp.getTitle();
                 writer.write(title);
