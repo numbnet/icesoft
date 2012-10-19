@@ -94,11 +94,11 @@ public class GeolocationMeta extends UIComponentBaseMeta {
 
     @Property(tlddoc = "The maximumAge attribute indicates that the application is willing" +
         "to accept a cached position whose age is no greater than the specified time (in seconds)",
-              defaultValue = "-1")
+              defaultValue = "0")
     private int maximumAge;
 
     @Property(tlddoc = "The maximum time (in seconds) the application will wait for either a success or error response, " +
-        "0 being no timeout ", defaultValue = "-1")
+        "0 being no timeout ", defaultValue = "0")
     private int timeout;
 
 }
