@@ -1,6 +1,28 @@
 <html>
 <head>
 <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0'/>
+    <style>
+        .tbox {
+            width: 100%;
+        }
+        .camera, .plus {
+            background: white;
+            border-radius: 8px;
+            background-size: 75%;
+            background-repeat: no-repeat;
+            background-position: center;
+            height: 32px;
+            width: 32px;
+        }
+
+        .camera {
+            background-image: url("resources/images/camera.png");
+        }
+        .plus {
+            background-image: url("resources/images/plus.png");
+        }
+
+    </style>
 </head>
 <body>
     <script>
@@ -14,13 +36,13 @@
         var theTable = document.getElementById("thetable");
         var tableRow = theTable.insertRow(-1);
         var template = 
-        "<td><input type='text' placeholder='Title' size='10' " +
+        "<td><input type='text' placeholder='Title' class='tbox' " +
           "name='title##'></td>" +
-        "<td><input type='button' value='Camera' name='cam##' id='cam##' " +
+        "<td><input type='button' class='camera' name='cam##' id='cam##' " +
           "onclick='ice.camera(this.id);' ></td>" +
         "<td><img id='cam##-thumb' width='32' height='32'></td>" +
         "<td>GPS ##</td>" +
-        "<td><input type='button' onclick='addRow(event)' value='+'></td>";
+        "<td><input type='button' onclick='addRow(event)' class='plus'></td>";
 
         tableRow.innerHTML = template.replace(/##/g, currentID);
 
@@ -32,12 +54,12 @@
     <form id="items" action="upload" method="POST" enctype="multipart/form-data">
         <table id="thetable" width="100%">
         <tr>
-        <td><input type='text' placeholder='Title' size='10' name='title0'></td>
-        <td><input type='button' value='Camera' name='cam0' id='cam0' 
+        <td width="60%"><input type='text' placeholder='Title' class='tbox' name='title0'></td>
+        <td><input type='button' class='camera' name='cam0' id='cam0'
             onclick='ice.camera(this.id);' ></td>
         <td><img  id='cam0-thumb' width='32' height='32'></td>
         <td>GPS</td>
-        <td><input type='button' onclick='addRow(event)' value='+'></td>
+        <td><input type='button' onclick='addRow(event)' class='plus'></td>
         </tr>
         </table>
         <br>
