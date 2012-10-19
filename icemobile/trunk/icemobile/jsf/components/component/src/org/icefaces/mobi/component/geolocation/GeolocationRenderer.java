@@ -18,6 +18,8 @@ package org.icefaces.mobi.component.geolocation;
 
 import org.icefaces.mobi.utils.HTML;
 import org.icefaces.mobi.renderkit.CoreRenderer;
+import org.icefaces.mobi.utils.MobiJSFUtils;
+import org.icemobile.util.ClientDescriptor;
 
 import javax.faces.application.ProjectStage;
 import javax.faces.application.Resource;
@@ -130,13 +132,7 @@ public class GeolocationRenderer extends CoreRenderer {
             }
 
             int maxAge = locator.getMaximumAge();
-            // -1 is a value that indicates it hasn't been set.
-            // Default is zero. Same as timeout value below
-            // This would allow us to set it to some non-zero default value if desired
-            maxAge = (maxAge < 0) ? UNDEFINED_MAXAGE_VALUE : maxAge;
-
             int timeout = locator.getTimeout();
-            timeout = (timeout < 0) ? UNDEFINED_TIMEOUT_VALUE : timeout;
             boolean continuous = locator.isContinuousUpdates();
 
             if (continuous) {
@@ -148,7 +144,6 @@ public class GeolocationRenderer extends CoreRenderer {
             sb.append(includeHighPrecision).append("', '");
             sb.append(maxAge).append("', '").append(timeout).append("'); ");
 
-//            sb.append( "mobi.geolocation.startWatch('").append(clientId).append("');");
             if (hasBehaviors) {
                 sb.append(this.buildAjaxRequest(facesContext, cbh, "activate"));
             } else if (singleSubmit) {
@@ -156,10 +151,6 @@ public class GeolocationRenderer extends CoreRenderer {
                 sb.append(ssCall);
             }
 
-//            // This is also wrong.
-//            sb.append("window.addEventListener('deviceorientation', function(orient){");
-//            sb.append("ice.mobi.storeDirection('").append(clientId).append("_locHidden', orient);");
-//            sb.append("});\n");
             writer.startElement("script", uiComponent);
             writer.writeAttribute("id", clientId + "_script", "id");
             writer.write(sb.toString());
@@ -169,7 +160,7 @@ public class GeolocationRenderer extends CoreRenderer {
     }
 
     private boolean sniffDevices() {
-        return false;
-
+        ClientDescriptor client = MobiJSFUtils.getClientDescriptor();
+        return (client.isAndroidOS() & client.isTabletBrowser()) || client.isBlackBerryOS();
     }
 }
