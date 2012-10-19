@@ -106,10 +106,10 @@ public class Camera extends CameraBase implements IDevice, ThumbnailProvider {
     public String getComponentType(){
         return "camera";
     }
-    /* don't need this for JSF but the interface for the core renderer require it from JSP */
-    public String getSessionId(){
-        HttpSession session = (HttpSession)FacesContext.getCurrentInstance().getExternalContext().getSession(false);
-        return session.getId();
+    /* Needed for ICEmobile-SX and JSP */
+    public String getSessionId()  {
+        return MobiJSFUtils.getSessionIdCookie(
+                FacesContext.getCurrentInstance());
     }
     public String getParams(){
         return null;
