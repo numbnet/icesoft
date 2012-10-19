@@ -38,8 +38,8 @@
 			vertical-align: top;
 		}
 		</style>
-		<h:form>
-			<h:panelGrid columns="2" class="grid">
+		<h:form id="mainForm" >
+			<h:panelGrid id="panelGrid" columns="2" class="grid">
 				<ace:dataTable id="carTable" value="#{dataExporterCustom.carsData}" var="car" rows="10" paginator="true" paginatorPosition="top" rowIndexVar="i">
 					<ace:ajax event="page" excute="@form" render="@form" />
 					<ace:column id="exp">
