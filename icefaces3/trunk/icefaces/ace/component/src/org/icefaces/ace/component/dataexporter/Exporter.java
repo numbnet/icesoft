@@ -103,6 +103,7 @@ public abstract class Exporter {
 		} else {
 			children = table.getChildren();
 		}
+
 		for (UIComponent child : children) {
             if (child instanceof UIColumn && !(child instanceof PanelExpansion)) {
 				if (shouldExcludeFromExport(child)) continue;
@@ -192,7 +193,7 @@ public abstract class Exporter {
 		rowColumnIndex = -1;
 		
 		for (UIComponent child : table.getChildren()) {
-            if (child instanceof UIColumn) {
+            if (child instanceof UIColumn && !(child instanceof PanelExpansion)) {
 				if (shouldExcludeFromExport(child)) continue;
                 UIColumn column = (UIColumn) child;
                 columnIndex++;
