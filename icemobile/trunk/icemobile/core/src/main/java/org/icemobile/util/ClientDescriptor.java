@@ -186,7 +186,7 @@ public class ClientDescriptor {
             if (_userAgentInfo.isTabletBrowser()) {
                 formFactor = FORM_FACTOR.TABLET;
             }
-            if (_userAgentInfo.isMobileBrowser()){
+            else if (_userAgentInfo.isMobileBrowser()){
                 formFactor = FORM_FACTOR.HANDHELD;
             }
             else {
