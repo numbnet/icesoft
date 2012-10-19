@@ -15,19 +15,50 @@
   -->
 
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-             xmlns:h="http://java.sun.com/jsf/html"
-             xmlns:f="http://java.sun.com/jsf/core"
-             xmlns:ui="http://java.sun.com/jsf/facelets"
-             xmlns:icecore="http://www.icefaces.org/icefaces/core"
-             xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component"
-             id="geoLocFrag">
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:icecore="http://www.icefaces.org/icefaces/core"
+                xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component"
+                id="geoLocFrag">
 
     <h:form prependId="false">
+
+        <mobi:fieldsetGroup>
+            <mobi:fieldsetRow>
+                Continuous Updates:
+                <mobi:flipswitch id="highPrecision"
+                                 labelOn="true" labelOff="false"
+                                 singleSubmit="true" style="float:right"
+                                 valueChangeListener="#{geoLocationBean.continuousUpdatesChange}"
+                                 value="#{geoLocationBean.continuousUpdates}"/>
+            </mobi:fieldsetRow>
+            <mobi:fieldsetRow>
+                enableHighPrecision: (true/false/ asNeeded)
+                <mobi:inputText id="highPrecise"
+                                value="#{geoLocationBean.enableHighPrecision}"/>
+            </mobi:fieldsetRow>
+            <mobi:fieldsetRow>
+                Timeout (longest allowable time for reading to arrive (0-x,
+                seconds):
+                <h:inputText id="timeout" value="#{geoLocationBean.timeout}"/>
+            </mobi:fieldsetRow>
+            <mobi:fieldsetRow>
+                Maximum Age (oldest allowable cached Location reading (0-x,
+                seconds):
+                <h:inputText value="#{geoLocationBean.maximumAge}"/>
+            </mobi:fieldsetRow>
+        </mobi:fieldsetGroup>
+
 
         <mobi:geolocation latitude="#{geoLocationBean.latitude}"
                           longitude="#{geoLocationBean.longitude}"
                           altitude="#{geoLocationBean.altitude}"
-                          direction="#{geoLocationBean.direction}"/>
+                          direction="#{geoLocationBean.direction}"
+                          maximumAge="#{geoLocationBean.maximumAge}"
+                          timeout="#{geoLocationBean.timeout}"
+                          enableHighPrecision="#{geoLocationBean.enableHighPrecision}"
+                          continuousUpdates="#{geoLocationBean.continuousUpdates}"/>
 
 
         <h:panelGroup style="display:block;padding-left:10px;">
@@ -38,16 +69,20 @@
 
         <mobi:fieldsetGroup>
             <mobi:fieldsetRow>
-                Latitude: <h:outputText value="#{geoLocationBean.latitude}"/>
+                Latitude:
+                <h:outputText value="#{geoLocationBean.latitude}"/>
             </mobi:fieldsetRow>
             <mobi:fieldsetRow>
-                Longitude: <h:outputText value="#{geoLocationBean.longitude}"/>
+                Longitude:
+                <h:outputText value="#{geoLocationBean.longitude}"/>
             </mobi:fieldsetRow>
             <mobi:fieldsetRow rendered="#{geoLocationBean.direction gt 0.0}">
-                Direction: <h:outputText value="#{geoLocationBean.direction}"/>
+                Direction:
+                <h:outputText value="#{geoLocationBean.direction}"/>
             </mobi:fieldsetRow>
             <mobi:fieldsetRow rendered="#{geoLocationBean.altitude gt 0.0}">
-                Altitude: <h:outputText value="#{geoLocationBean.altitude}"/>
+                Altitude:
+                <h:outputText value="#{geoLocationBean.altitude}"/>
             </mobi:fieldsetRow>
         </mobi:fieldsetGroup>
 
