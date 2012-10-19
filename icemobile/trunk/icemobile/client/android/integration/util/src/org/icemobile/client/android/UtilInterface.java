@@ -62,6 +62,7 @@ public class UtilInterface implements JavascriptInterface,
 
     private Handler handler;
     private String url;
+    private String userAgent;
     private Activity container;
     private final WebView view;
     private LinkedList<HttpPost> postQueue;
@@ -147,6 +148,7 @@ public class UtilInterface implements JavascriptInterface,
 	//Log.e("ICEutil", "Request q=" + postQueue.size());
 	if (postQueue.size() == 1) {
 	    Thread thread = new Thread(this);
+	    userAgent = view.getSettings().getUserAgentString();  //Don't want to call this from in the new thread;
 	    thread.start();
 	}
     }
@@ -154,7 +156,7 @@ public class UtilInterface implements JavascriptInterface,
     public void run() {
 	HttpPost postRequest;
 	DefaultHttpClient httpClient = new DefaultHttpClient();
-	httpClient.getParams().setParameter(CoreProtocolPNames.USER_AGENT, view.getSettings().getUserAgentString());
+	httpClient.getParams().setParameter(CoreProtocolPNames.USER_AGENT, userAgent);
 	try {
 	    while (postQueue.size() > 0) {
 		sendProgress(0);
