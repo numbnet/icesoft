@@ -5,29 +5,29 @@
 <%@ taglib prefix="push" uri="http://www.icepush.org/icepush/jsp/icepush.tld"%>
 <form:form id="datetimeform" method="POST" modelAttribute="dateTimeSpinnerBean">
 
-    <mobi:fieldSetGroup inset="true">
-        <mobi:fieldSetRow>
+    <mobi:fieldsetGroup inset="true">
+        <mobi:fieldsetRow>
             <label>Date Spinner</label>
             <mobi:dateSpinner name="dateOne" id="d1"
                     value="${dateTimeSpinnerBean.dateOne}"/>
-        </mobi:fieldSetRow>
-        <mobi:fieldSetRow>
+        </mobi:fieldsetRow>
+        <mobi:fieldsetRow>
             <label>Time Spinner</label>
             <mobi:timeSpinner name="timeOne" id="t1" 
                     value="${dateTimeSpinnerBean.timeOne}"/>
-        </mobi:fieldSetRow>
-    </mobi:fieldSetGroup>
+        </mobi:fieldsetRow>
+    </mobi:fieldsetGroup>
     <h4>Spinner Value Echo</h4>
-    <mobi:fieldSetGroup inset="true">
-        <mobi:fieldSetRow>
+    <mobi:fieldsetGroup inset="true">
+        <mobi:fieldsetRow>
             <label>Date</label>
             <label style="float:right">${dateTimeSpinnerBean.dateOne}</label>
-        </mobi:fieldSetRow>
-        <mobi:fieldSetRow>
+        </mobi:fieldsetRow>
+        <mobi:fieldsetRow>
             <label>Time</label>
             <label style="float:right">${dateTimeSpinnerBean.timeOne}</label>
-        </mobi:fieldSetRow>
-    </mobi:fieldSetGroup>
+        </mobi:fieldsetRow>
+    </mobi:fieldsetGroup>
     <mobi:commandButton buttonType='important'
                         style="float:right;margin-right: 25px;"
                         value="Submit"

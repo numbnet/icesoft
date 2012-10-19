@@ -5,44 +5,44 @@
 <%@ taglib prefix="push" uri="http://www.icepush.org/icepush/jsp/icepush.tld"%>
 <form:form id="inputtextform" method="POST" modelAttribute="inputTextBean">
 
-    <mobi:fieldSetGroup inset="true">
-        <mobi:fieldSetRow>
+    <mobi:fieldsetGroup inset="true">
+        <mobi:fieldsetRow>
             <label>Text:</label>
-            <mobi:inputtext name="text" type="text"
+            <mobi:inputText name="text" type="text"
                             autoCorrect="off"
                             placeholder="Text input"
                             value="${inputTextBean.text}"/>
-        </mobi:fieldSetRow>
-        <mobi:fieldSetRow>
+        </mobi:fieldsetRow>
+        <mobi:fieldsetRow>
             <label>Number:</label>
-            <mobi:inputtext name="number" type="number"
+            <mobi:inputText name="number" type="number"
                             autoCorrect="off"
                             placeholder="Number"
                             value="${inputTextBean.number}"/>
-        </mobi:fieldSetRow>
-        <mobi:fieldSetRow>
+        </mobi:fieldsetRow>
+        <mobi:fieldsetRow>
             <label>Text area:</label>
-            <mobi:inputtext name="textarea" type="textarea"
+            <mobi:inputText name="textarea" type="textarea"
                             style="width:99%"
                             autoCorrect="off"
                             placeholder="Text area"
                             value="${inputTextBean.textarea}"/>
-        </mobi:fieldSetRow>
-        <mobi:fieldSetRow>
+        </mobi:fieldsetRow>
+        <mobi:fieldsetRow>
             <label>Password:</label>
-            <mobi:inputtext name="password" type="password"
+            <mobi:inputText name="password" type="password"
                             autoCorrect="off"
                             placeholder="Password input"
                             value="${inputTextBean.password}"/>
-        </mobi:fieldSetRow>
-        <mobi:fieldSetRow>
+        </mobi:fieldsetRow>
+        <mobi:fieldsetRow>
             <label>Date</label>
-            <mobi:inputtext name="date" type="date"
+            <mobi:inputText name="date" type="date"
                             autoCorrect="off"
                             placeholder="yyyy-mm-dd"
                             value="${inputTextBean.date}"/>
-        </mobi:fieldSetRow>
-    </mobi:fieldSetGroup>
+        </mobi:fieldsetRow>
+    </mobi:fieldsetGroup>
     <%-- button types: default|important|attention| back--%>
     <mobi:commandButton buttonType='important'
                         style="float:right;margin-right: 25px;"
@@ -51,28 +51,28 @@
     <div style="clear:right"></div>
 
     <h4>Input Values</h4>
-    <mobi:fieldSetGroup inset="true">
-        <mobi:fieldSetRow>
+    <mobi:fieldsetGroup inset="true">
+        <mobi:fieldsetRow>
             <label>Text:</label>
             <label style="float:right;">${inputTextBean.text}</label>
-        </mobi:fieldSetRow>
-        <mobi:fieldSetRow>
+        </mobi:fieldsetRow>
+        <mobi:fieldsetRow>
             <label>Number:</label>
             <label style="float:right;">${inputTextBean.number}</label>
-        </mobi:fieldSetRow>
-        <mobi:fieldSetRow>
+        </mobi:fieldsetRow>
+        <mobi:fieldsetRow>
             <label>Text area:</label>
             <label style="float:right;">${inputTextBean.textarea}</label>
-        </mobi:fieldSetRow>
-        <mobi:fieldSetRow>
+        </mobi:fieldsetRow>
+        <mobi:fieldsetRow>
             <label>Password:</label>
             <label style="float:right;">${inputTextBean.password}</label>
-        </mobi:fieldSetRow>
-        <mobi:fieldSetRow>
+        </mobi:fieldsetRow>
+        <mobi:fieldsetRow>
             <label>Date</label>
             <label style="float:right;">${inputTextBean.date}</label>
-        </mobi:fieldSetRow>
-    </mobi:fieldSetGroup>
+        </mobi:fieldsetRow>
+    </mobi:fieldsetGroup>
 
 </form:form>
 

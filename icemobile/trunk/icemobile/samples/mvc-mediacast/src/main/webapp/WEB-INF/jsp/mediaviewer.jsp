@@ -10,57 +10,57 @@
 			<span>Media Viewer</span>
 		</mobi:pagePanelHeader>
 		<mobi:pagePanelBody>
-			<mobi:fieldSetGroup inset="true">
-				<mobi:fieldSetRow id="titleRow" style="padding:5px;">
+			<mobi:fieldsetGroup inset="true">
+				<mobi:fieldsetRow id="titleRow" style="padding:5px;">
 					<h3>${media.title}</h3>
-				</mobi:fieldSetRow>
-			</mobi:fieldSetGroup>
+				</mobi:fieldsetRow>
+			</mobi:fieldsetGroup>
 
 			<c:if test="${media.showPhoto}">
-				<mobi:fieldSetGroup inset="true">
-					<mobi:fieldSetRow>
+				<mobi:fieldsetGroup inset="true">
+					<mobi:fieldsetRow>
 						<label>Photo:</label>
-					</mobi:fieldSetRow>
-					<mobi:fieldSetRow style="text-align:center;">
+					</mobi:fieldsetRow>
+					<mobi:fieldsetRow style="text-align:center;">
 						<img id="largePhoto" width="100%" 
 							src='<c:url value="/resources/uploads/${media.largePhoto.name}"/>'
 							class="imageViewer" />
-					</mobi:fieldSetRow>
-				</mobi:fieldSetGroup>
+					</mobi:fieldsetRow>
+				</mobi:fieldsetGroup>
 			</c:if>
 
 			<c:if test="${media.showVideo}">
-				<mobi:fieldSetGroup inset="true">
-					<mobi:fieldSetRow>
+				<mobi:fieldsetGroup inset="true">
+					<mobi:fieldsetRow>
 						<label>Video:</label>
-					</mobi:fieldSetRow>
-					<mobi:fieldSetRow style="text-align:center;">
+					</mobi:fieldsetRow>
+					<mobi:fieldsetRow style="text-align:center;">
 						<video id="videoPlayer"
 							src='<c:url value="/resources/uploads/${media.video.name}"/>' class="imageViewer"
 							controls="controls"></video>
-					</mobi:fieldSetRow>
-				</mobi:fieldSetGroup>
+					</mobi:fieldsetRow>
+				</mobi:fieldsetGroup>
 			</c:if>
 
 			<c:if test="${media.showAudio}">
-				<mobi:fieldSetGroup inset="true">
-					<mobi:fieldSetRow>
+				<mobi:fieldsetGroup inset="true">
+					<mobi:fieldsetRow>
 						<label>Audio:</label>
-					</mobi:fieldSetRow>
-					<mobi:fieldSetRow style="text-align:center;">
+					</mobi:fieldsetRow>
+					<mobi:fieldsetRow style="text-align:center;">
 						<audio id="audioPlayer"
 							src='<c:url value="/resources/uploads/${media.audio.name}"/>' class="imageViewer"
 							controls="controls"></audio>
-					</mobi:fieldSetRow>
-				</mobi:fieldSetGroup>
+					</mobi:fieldsetRow>
+				</mobi:fieldsetGroup>
 			</c:if>
 
-			<mobi:fieldSetGroup inset="true">
-				<mobi:fieldSetRow>
+			<mobi:fieldsetGroup inset="true">
+				<mobi:fieldsetRow>
 					<label>Description: </label>
 					<c:out value="${media.description}" />
-				</mobi:fieldSetRow>
-				<mobi:fieldSetRow>
+				</mobi:fieldsetRow>
+				<mobi:fieldsetRow>
 					<label>Geolocation: </label>
 					<div id="geoGrid">
 						<label>Longitude</label><span>${media.longitude}</span>
@@ -85,8 +85,8 @@
 					vectorLayer.addFeatures(feature);
 					map.addLayer(vectorLayer);
 					</script>
-				</mobi:fieldSetRow>
-				<mobi:fieldSetRow>
+				</mobi:fieldsetRow>
+				<mobi:fieldsetRow>
 					<label>Tags: </label>
 					<c:forEach items="${media.tags}" var="tag">
 						<img src='<c:url value="/resources/images/tag.gif"/>' />
@@ -94,17 +94,17 @@
 							<c:out value="${tag}"/>&#160;
 						</span>
 					</c:forEach>
-				</mobi:fieldSetRow>
-			</mobi:fieldSetGroup>
+				</mobi:fieldsetRow>
+			</mobi:fieldsetGroup>
 
-			<mobi:fieldSetGroup inset="true">
-				<mobi:fieldSetRow style="text-align:center;">
+			<mobi:fieldsetGroup inset="true">
+				<mobi:fieldsetRow style="text-align:center;">
 					<form:form id="delMediaFrm" method="DELETE">
 						<mobi:commandButton name="Delete" buttonType='attention'
                                     value="Delete"/>
 					</form:form>
-				</mobi:fieldSetRow>
-			</mobi:fieldSetGroup>
+				</mobi:fieldsetRow>
+			</mobi:fieldsetGroup>
 
 		</mobi:pagePanelBody>
 		<%@ include file="/WEB-INF/jsp/footer.jsp"%>

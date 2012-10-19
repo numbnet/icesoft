@@ -5,7 +5,7 @@
 <%@ taglib prefix="push" uri="http://www.icepush.org/icepush/jsp/icepush.tld"%>
 <form:form id="tabsetform" method="POST"  modelAttribute="tabsetBean" >
 
-    <mobi:tabset id="tabsetOne" selectedTab="${tabsetBean.tabsetOne}">
+    <mobi:tabSet id="tabsetOne" selectedTab="${tabsetBean.tabsetOne}">
         <mobi:headers>
             <mobi:header><span class="mobitab">Desktop</span></mobi:header>
             <mobi:header><span class="mobitab">Mobile</span></mobi:header>
@@ -28,7 +28,7 @@
                </div>
             </mobi:contentPane>
         </mobi:content>
-    </mobi:tabset>
+    </mobi:tabSet>
 </form:form>
 
 <script type="text/javascript">

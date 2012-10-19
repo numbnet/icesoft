@@ -5,23 +5,23 @@
 <%@ taglib prefix="push" uri="http://www.icepush.org/icepush/jsp/icepush.tld"%>
 <form:form id="camform" method="POST" enctype="multipart/form-data"
            modelAttribute="cameraBean">
-    <mobi:fieldSetGroup inset="true">
-        <mobi:fieldSetRow>
+    <mobi:fieldsetGroup inset="true">
+        <mobi:fieldsetRow>
             <mobi:getEnhanced/>
-        </mobi:fieldSetRow>
-        <mobi:fieldSetRow>
+        </mobi:fieldsetRow>
+        <mobi:fieldsetRow>
             <form:label path="name">
                 Author: <form:errors path="name" cssClass="error"/>
             </form:label>
             <form:input path="name"/>
-        </mobi:fieldSetRow>
-        <mobi:fieldSetRow>
+        </mobi:fieldsetRow>
+        <mobi:fieldsetRow>
             <mobi:camera id="cam" />
-            <mobi:thumb for="cam"
+            <mobi:thumbnail for="cam"
                         style="height:60px;width:65px;vertical-align:middle;float:right;margin:10px;"/>
 
-        </mobi:fieldSetRow>
-    </mobi:fieldSetGroup>
+        </mobi:fieldsetRow>
+    </mobi:fieldsetGroup>
     <%-- button types: default|important|attention| back--%>
     <mobi:commandButton buttonType='important'
                         style="float:right;margin-right: 25px;"
@@ -34,11 +34,11 @@
         </div>
     </c:if>
     <c:if test="${imgUploaded}">
-        <mobi:fieldSetGroup inset="true">
-            <mobi:fieldSetRow>
+        <mobi:fieldsetGroup inset="true">
+            <mobi:fieldsetRow>
                 <img style="text-align:middle;width:100%;padding:5px" src="${imgPath}">
-            </mobi:fieldSetRow>
-        </mobi:fieldSetGroup>
+            </mobi:fieldsetRow>
+        </mobi:fieldsetGroup>
     </c:if>
     <s:bind path="*">
         <c:if test="${status.error}">

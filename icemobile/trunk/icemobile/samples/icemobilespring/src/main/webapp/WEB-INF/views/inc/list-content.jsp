@@ -5,12 +5,12 @@
 <%@ taglib prefix="push" uri="http://www.icepush.org/icepush/jsp/icepush.tld"%>
 <form:form id="listform" method="POST" modelAttribute="listBean">
 
-    <mobi:fieldSetGroup id="groupOne">
-        <mobi:fieldSetRow style="padding-bottom:10px;">
+    <mobi:fieldsetGroup id="groupOne">
+        <mobi:fieldsetRow style="padding-bottom:10px;">
 A demonstration of the mobi:list, which allows content to be organized
 into styled lists.
-            </mobi:fieldSetRow>
-    </mobi:fieldSetGroup>
+            </mobi:fieldsetRow>
+    </mobi:fieldsetGroup>
 
     <h4>List with inset and Grouping</h4>
 

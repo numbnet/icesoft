@@ -5,20 +5,20 @@
 <%@ taglib prefix="push" uri="http://www.icepush.org/icepush/jsp/icepush.tld"%>
 <form:form id="micform" method="POST" enctype="multipart/form-data"
            modelAttribute="microphoneBean" >
-    <mobi:fieldSetGroup inset="true">
-        <mobi:fieldSetRow>
+    <mobi:fieldsetGroup inset="true">
+        <mobi:fieldsetRow>
             <mobi:getEnhanced/>
-        </mobi:fieldSetRow>
-        <mobi:fieldSetRow>
+        </mobi:fieldsetRow>
+        <mobi:fieldsetRow>
             <form:label path="name">
                 Author: <form:errors path="name" cssClass="error"/>
             </form:label>
             <form:input path="name"/>
-        </mobi:fieldSetRow>
-        <mobi:fieldSetRow>
+        </mobi:fieldsetRow>
+        <mobi:fieldsetRow>
             <mobi:microphone id="mic"/>
-        </mobi:fieldSetRow>
-    </mobi:fieldSetGroup>
+        </mobi:fieldsetRow>
+    </mobi:fieldsetGroup>
 
     <%-- button types: default|important|attention| back--%>
     <mobi:commandButton buttonType='important'
@@ -30,12 +30,12 @@
         <div id="message" class="success">${message}</div>
     </c:if>
     <c:if test="${mediaReady}">
-        <mobi:fieldSetGroup inset="true">
-            <mobi:fieldSetRow>
+        <mobi:fieldsetGroup inset="true">
+            <mobi:fieldsetRow>
                 <audio src="${clipName}" controls="controls"/>
                 <br><a href="${clipName}">Play</a>
-            </mobi:fieldSetRow>
-        </mobi:fieldSetGroup>
+            </mobi:fieldsetRow>
+        </mobi:fieldsetGroup>
     </c:if>
     <s:bind path="*">
         <c:if test="${status.error}">
