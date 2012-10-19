@@ -40,6 +40,7 @@
 @synthesize popover;
 @synthesize scanPopover;
 @synthesize canRetry;
+@synthesize refreshCurrentView;
 
 
 - (void)viewDidLoad {
@@ -52,6 +53,7 @@
     self.nativeInterface.uploading = NO;
     [self.nativeInterface startMotionManager];
     self.canRetry = YES;
+    self.refreshCurrentView = NO;
 
     self.preferences = [[Preferences alloc] init];
     self.preferences.mainViewController = self;
@@ -92,7 +94,10 @@
         self.nativeInterface.userAgent = self.userAgent;
         [self loadURL:@"http://www.icemobile.org/demos.html"];
     } else {
-        [self.webView stringByEvaluatingJavaScriptFromString:@"ice.mobiRefresh()"];
+        if (self.refreshCurrentView)  {
+            [self.webView stringByEvaluatingJavaScriptFromString:@"ice.mobiRefresh()"];
+            self.refreshCurrentView = NO;
+        }
     }
 }
 

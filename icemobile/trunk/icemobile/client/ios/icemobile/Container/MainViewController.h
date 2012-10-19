@@ -37,6 +37,7 @@
     UIPopoverController *popover;
     UIPopoverController *scanPopover;
     BOOL canRetry;
+    BOOL refreshCurrentView;
 }
 
 @property (nonatomic, retain) IBOutlet UIWebView *webView;
@@ -53,6 +54,7 @@
 @property (nonatomic, retain) UIPopoverController *popover;
 @property (nonatomic, retain) UIPopoverController *scanPopover;
 @property (nonatomic, assign) BOOL canRetry;
+@property (nonatomic, assign) BOOL refreshCurrentView;
 
 - (void)didBecomeActive;
 - (void)willResignActive;

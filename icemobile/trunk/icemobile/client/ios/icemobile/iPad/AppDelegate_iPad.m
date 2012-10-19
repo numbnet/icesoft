@@ -15,6 +15,7 @@
 */
 
 #import "AppDelegate_iPad.h"
+#import "MainViewController.h"
 
 @implementation AppDelegate_iPad
 
@@ -39,7 +40,7 @@
      Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
      Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
      */
-    [window.rootViewController willResignActive];
+    [(MainViewController*) window.rootViewController willResignActive];
 }
 
 
@@ -47,13 +48,13 @@
     /*
      Restart any tasks that were paused (or not yet started) while the application was inactive.
      */
-    [window.rootViewController didBecomeActive];
+    [(MainViewController*) window.rootViewController didBecomeActive];
     [application registerForRemoteNotificationTypes:UIRemoteNotificationTypeAlert];
 }
 
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
     NSLog(@"didRegisterForRemoteNotificationsWithDeviceToken %@", deviceToken);
-    [window.rootViewController setDeviceToken: deviceToken];
+    [(MainViewController*) window.rootViewController setDeviceToken: deviceToken];
 
 }
 
@@ -62,7 +63,12 @@
 }
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo  {
-    NSLog(@"didReceiveRemoteNotification %@", userInfo);
+    if (application.applicationState == UIApplicationStateInactive)  {
+        NSLog(@"didReceiveRemoteNotification from inactive %@", userInfo);
+        ((MainViewController*)window.rootViewController).refreshCurrentView = YES;
+    } else {
+        NSLog(@"didReceiveRemoteNotification %@", userInfo);
+    }
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application {
