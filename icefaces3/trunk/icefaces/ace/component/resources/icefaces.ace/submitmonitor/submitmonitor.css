@@ -31,13 +31,13 @@
 .ice-sub-mon > .ice-sub-mon-mid.idle > .ice-sub-mon-img {
     background-image: url("#{resource['icefaces.ace:submitmonitor/connect_idle.gif']}");
     background-repeat:no-repeat;
-    width: 26px;
-    height: 26px;
+    width: 32px;
+    height: 32px;
 }
 
 .ice-sub-mon > .ice-sub-mon-mid.active > .ice-sub-mon-img {
     background-image: url("#{resource['icefaces.ace:submitmonitor/connect_active.gif']}");
     background-repeat:no-repeat;
-    width: 26px;
-    height: 26px;
+    width: 32px;
+    height: 32px;
 }
