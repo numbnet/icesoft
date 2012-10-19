@@ -27,10 +27,11 @@ if (!window['mobi']) {
 
 if (!window.console) {
     console = {};
-    if (ice.logInContainer)  {
+    if (ice.logInContainer) {
         console.log = ice.logInContainer;
     } else {
-        log = function(){};
+        log = function() {
+        };
     }
 }
 
@@ -490,6 +491,7 @@ ice.mobi.storeLocation = function(id, coords) {
 }
 
 ice.mobi.storeDirection = function(id, orient) {
+    console.log('Orientation Update!');
     if (orient.webkitCompassAccuracy <= 0) {
         return;
     }
@@ -543,7 +545,7 @@ ice.mobi.geolocation = {
             );
         }
         window.addEventListener('deviceorientation', ice.mobi.geolocation.orientationCallback);
-        ice.onElementUpdate(pClientId, ice.mobi.geolocation.clearWatch);
+        ice.onElementRemove(pClientId, ice.mobi.geolocation.clearWatch);
         console.log('Lauching positionWatch for client: ' + pClientId + ' watchId: ' +
                 ice.mobi.geolocation.watchId + ', highAccuracy? : ' + highAccuracy);
     },
@@ -572,7 +574,7 @@ ice.mobi.geolocation = {
             );
         }
         window.addEventListener('deviceorientation', ice.mobi.geolocation.orientationCallback);
-        ice.onElementUpdate(pClientId, ice.mobi.geolocation.clearWatch);
+        ice.onElementRemove(pClientId, ice.mobi.geolocation.clearWatch);
     },
 
     successCallback: function(pos) {
