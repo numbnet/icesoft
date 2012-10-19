@@ -17,7 +17,7 @@
 		                <label>Enter some tags to filter the messages</label>
 		            </mobi:fieldSetRow>
 		            <mobi:fieldSetRow>
-		                <mobi:inputtext name="filters" 
+		                <mobi:inputText name="filters" 
 	                         	styleClass="input"
 	                         	type="text"
                                 autoCorrect="off"

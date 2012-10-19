@@ -3,7 +3,7 @@
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <%@ taglib uri="http://www.icemobile.org/tags" prefix="mobi" %>
 <%@ taglib prefix="push" uri="http://www.icepush.org/icepush/jsp/icepush.tld"%>
-<mobi:fieldSetGroup inset="true">
+<mobi:fieldsetGroup inset="true">
     <div style="padding:0 20px;">
 
         <div style="float:left;width:100%;">
@@ -24,10 +24,10 @@
             Container is not required, but is recommended to fully experience the
             capabilities of the native components.</p>
     </div>
-</mobi:fieldSetGroup>
+</mobi:fieldsetGroup>
 
 <h3 class="phdr">ICEmobile Overview</h3>
-<mobi:fieldSetGroup inset="true">
+<mobi:fieldsetGroup inset="true">
     <div style="padding:0 20px;">
 
         <p>ICEmobile is an open source project for the development of hybrid mobile applications using pure web-based techniques. ICEmobile supports a range of Java EE presentation layer technologies, but this sample application highlights ICEmobile's integration with JSF and the ICEfaces Framework.</p>
@@ -37,4 +37,4 @@
         <p>Java Enterprise standards are at the heart of ICEmobile, so Enterprise Java developers can leverage existing core competencies, development tools, and best practices to deliver solutions that span the entire spectrum from desktop to mobile devices. ICEmoible's integration with the ICEfaces framework is featured in this application, providing an excellent example of how to build hybrid mobile applications in JSP.</p>
 
     </div>
-</mobi:fieldSetGroup>
+</mobi:fieldsetGroup>

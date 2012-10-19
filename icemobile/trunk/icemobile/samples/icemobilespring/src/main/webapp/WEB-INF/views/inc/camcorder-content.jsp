@@ -5,21 +5,21 @@
 <%@ taglib prefix="push" uri="http://www.icepush.org/icepush/jsp/icepush.tld"%>
 <form:form id="camcorderform" method="POST" enctype="multipart/form-data"
                modelAttribute="camcorderBean">
-    <mobi:fieldSetGroup inset="true">
-        <mobi:fieldSetRow>
+    <mobi:fieldsetGroup inset="true">
+        <mobi:fieldsetRow>
             <mobi:getEnhanced/>
-        </mobi:fieldSetRow>
-        <mobi:fieldSetRow>
+        </mobi:fieldsetRow>
+        <mobi:fieldsetRow>
             <form:label path="name">Author: <form:errors path="name"
                                                          cssClass="error"/></form:label>
             <form:input path="name"/>
-        </mobi:fieldSetRow>
-        <mobi:fieldSetRow>
+        </mobi:fieldsetRow>
+        <mobi:fieldsetRow>
             <mobi:camcorder id="camvid"/>
-            <mobi:thumb for="camvid"
+            <mobi:thumbnail for="camvid"
                         style="height:60px;width:65px;vertical-align:middle;float:right;margin:10px;"/>
-        </mobi:fieldSetRow>
-    </mobi:fieldSetGroup>
+        </mobi:fieldsetRow>
+    </mobi:fieldsetGroup>
     <%-- button types: default|important|attention| back--%>
     <mobi:commandButton buttonType='important'
                         style="float:right;margin-right: 25px;"
@@ -32,12 +32,12 @@
         </div>
     </c:if>
     <c:if test="${mediaReady}">
-        <mobi:fieldSetGroup inset="true">
-            <mobi:fieldSetRow>
+        <mobi:fieldsetGroup inset="true">
+            <mobi:fieldsetRow>
                 <video src="media/video.mp4" controls="controls"/>
                 <br><a href="media/video.mp4">Play</a>
-            </mobi:fieldSetRow>
-        </mobi:fieldSetGroup>
+            </mobi:fieldsetRow>
+        </mobi:fieldsetGroup>
     </c:if>
     <s:bind path="*">
         <c:if test="${status.error}">

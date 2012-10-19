@@ -16,12 +16,12 @@
                             type="submit"/><br>
 
         <h4>Selected Contact List Echo Display</h4>
-        <mobi:fieldSetGroup inset="true">
-            <mobi:fieldSetRow>
+        <mobi:fieldsetGroup inset="true">
+            <mobi:fieldsetRow>
                 <label>Selected Contact(s):</label>
                 <label style="float:right">${contactBean.contactOne}</label>
-            </mobi:fieldSetRow>
-        </mobi:fieldSetGroup>
+            </mobi:fieldsetRow>
+        </mobi:fieldsetGroup>
 
 
     <s:bind path="*">

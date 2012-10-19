@@ -17,7 +17,7 @@
                 </div>
             </div>
             <div id="right">
-                <mobi:tabset id="tabs" selectedTab="0">
+                <mobi:tabSet id="tabs" selectedTab="0">
 	                <mobi:headers>
 	                    <mobi:header><span class="mobitab">Upload</span></mobi:header>
 	                    <mobi:header><span class="mobitab">Viewer</span></mobi:header>
@@ -33,7 +33,7 @@
 	                       <%@ include file="/WEB-INF/jsp/contest-viewer-panel.jsp" %>
                        </mobi:contentPane>
                     </mobi:content>
-                </mobi:tabset>
+                </mobi:tabSet>
             </div>
          </mobi:pagePanelBody>
         <%@ include file="/WEB-INF/jsp/contest-footer.jsp"%>

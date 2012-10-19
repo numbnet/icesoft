@@ -14,11 +14,11 @@
                 Hello ICEmobile!
             </mobi:pagePanelHeader>
 			<mobi:pagePanelBody>
-			    <mobi:fieldSetGroup  style="margin:5px;">
-			        <mobi:fieldSetRow>Item 1</mobi:fieldSetRow>
-			        <mobi:fieldSetRow>Item 2</mobi:fieldSetRow>
-			        <mobi:fieldSetRow>Item 3</mobi:fieldSetRow>
-			    </mobi:fieldSetGroup>
+			    <mobi:fieldsetGroup  style="margin:5px;">
+			        <mobi:fieldsetRow>Item 1</mobi:fieldsetRow>
+			        <mobi:fieldsetRow>Item 2</mobi:fieldsetRow>
+			        <mobi:fieldsetRow>Item 3</mobi:fieldsetRow>
+			    </mobi:fieldsetGroup>
 			</mobi:pagePanelBody>
             <mobi:pagePanelFooter>
                &copy; Acme Inc 2012

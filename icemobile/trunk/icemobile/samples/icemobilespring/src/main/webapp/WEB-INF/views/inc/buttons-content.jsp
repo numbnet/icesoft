@@ -4,8 +4,8 @@
 <%@ taglib uri="http://www.icemobile.org/tags" prefix="mobi" %>
 <%@ taglib prefix="push" uri="http://www.icepush.org/icepush/jsp/icepush.tld"%>
 <form:form id="buttonsform" method="POST" modelAttribute="buttonsBean">
-    <mobi:fieldSetGroup inset="true">
-        <mobi:fieldSetRow>
+    <mobi:fieldsetGroup inset="true">
+        <mobi:fieldsetRow>
             <mobi:commandButton name="submitB" buttonType="default"
                                 value="default"/>
             <mobi:commandButton name="submitB" buttonType='important'
@@ -14,14 +14,14 @@
                                 value="attention"/>
             <mobi:commandButton name="submitB" value="plain"
                                 style="float:none;"/>
-        </mobi:fieldSetRow>
-        <mobi:fieldSetRow>
+        </mobi:fieldsetRow>
+        <mobi:fieldsetRow>
             You Pressed:
             <c:if test="${pressed != null}">
                 ${pressed}
             </c:if>
-        </mobi:fieldSetRow>
-    </mobi:fieldSetGroup>
+        </mobi:fieldsetRow>
+    </mobi:fieldsetGroup>
 </form:form>
 
 <script type="text/javascript">

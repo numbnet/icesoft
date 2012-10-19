@@ -6,8 +6,8 @@
 <form:form id="geolocationform" method="POST"
            modelAttribute="geolocationBean" >
 
-    <mobi:fieldSetGroup inset="true">
-        <mobi:fieldSetRow>
+    <mobi:fieldsetGroup inset="true">
+        <mobi:fieldsetRow>
             <label>Press for geolocation: </label>
             <mobi:geolocation id="geo1" name="geolocation"/>
             <%-- button types: default|important|attention| back--%>
@@ -16,28 +16,28 @@
                                 value="Locate"
                                 type="submit"/>
             <div style="clear:both"/>
-        </mobi:fieldSetRow>
-    </mobi:fieldSetGroup>
+        </mobi:fieldsetRow>
+    </mobi:fieldsetGroup>
 
     <h4>Position</h4>
-    <mobi:fieldSetGroup inset="true">
-        <mobi:fieldSetRow>
+    <mobi:fieldsetGroup inset="true">
+        <mobi:fieldsetRow>
             <label>Latitude:</label>
             <label style="float:right">${geolocationBean.lat}</label>
-        </mobi:fieldSetRow>
-        <mobi:fieldSetRow>
+        </mobi:fieldsetRow>
+        <mobi:fieldsetRow>
             <label>Longitude:</label>
             <label style="float:right">${geolocationBean.lon}</label>
-        </mobi:fieldSetRow>
-        <mobi:fieldSetRow>
+        </mobi:fieldsetRow>
+        <mobi:fieldsetRow>
             <label>Altitude:</label>
             <label style="float:right">${geolocationBean.alt}</label>
-        </mobi:fieldSetRow>
-        <mobi:fieldSetRow>
+        </mobi:fieldsetRow>
+        <mobi:fieldsetRow>
             <label>Direction:</label>
             <label style="float:right">${geolocationBean.dir}</label>
-        </mobi:fieldSetRow>
-    </mobi:fieldSetGroup>
+        </mobi:fieldsetRow>
+    </mobi:fieldsetGroup>
 
 </form:form>
 

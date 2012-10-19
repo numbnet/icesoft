@@ -4,11 +4,11 @@
 <%@ taglib uri="http://www.icemobile.org/tags" prefix="mobi" %>
 <%@ taglib prefix="push" uri="http://www.icepush.org/icepush/jsp/icepush.tld"%>
 <form:form id="carouselForm" method="POST" modelAttribute="carouselBean">
-    <mobi:fieldSetGroup inset="true">
-        <mobi:fieldSetRow>
+    <mobi:fieldsetGroup inset="true">
+        <mobi:fieldsetRow>
             Carousel of images
-        </mobi:fieldSetRow>
-    </mobi:fieldSetGroup>
+        </mobi:fieldsetRow>
+    </mobi:fieldsetGroup>
     <mobi:carousel id="carouselOne"
                    collection="${carouselBean.images}"
                    selectedIndex="${carouselBean.carouselOne}">

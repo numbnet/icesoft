@@ -307,7 +307,7 @@
     <tag>
         <description>Display Thumbnail for Camera or Camcorder.</description>
         <display-name>ICEmobile Thumbnail</display-name>
-        <name>thumb</name>
+        <name>thumbnail</name>
         <tag-class>org.icemobile.jsp.tags.ThumbnailTag</tag-class>
         <body-content>empty</body-content>
         <attribute>
@@ -496,7 +496,7 @@
     <tag>
         <description>Input Text field</description>
         <display-name>Input Text Tag</display-name>
-        <name>inputtext</name>
+        <name>inputText</name>
         <tag-class>org.icemobile.jsp.tags.InputTextTag</tag-class>
         <body-content>empty</body-content>
         <attribute>
@@ -585,7 +585,7 @@
     <tag>
         <description>QRCode Scan Tag</description>
         <display-name>QRScan Tag</display-name>
-        <name>qrscan</name>
+        <name>scan</name>
         <tag-class>org.icemobile.jsp.tags.QRScanTag</tag-class>
         <body-content>empty</body-content>
         <attribute>
@@ -624,8 +624,8 @@
 
     <tag>
         <description>Android style binary input button</description>
-        <display-name>flipSwitch</display-name>
-        <name>flipSwitch</name>
+        <display-name>flipswitch</display-name>
+        <name>flipswitch</name>
         <tag-class>org.icemobile.jsp.tags.FlipSwitchTag</tag-class>
         <body-content>empty</body-content>
         <attribute>
@@ -815,9 +815,9 @@
     </tag>
 
     <tag>
-        <description>Parent Field Group Tag</description>
-        <display-name>fieldGroup</display-name>
-        <name>fieldSetGroup</name>
+        <description>Parent Fieldset Group Tag</description>
+        <display-name>fieldsetGroup</display-name>
+        <name>fieldsetGroup</name>
         <tag-class>org.icemobile.jsp.tags.FieldSetGroupTag</tag-class>
         <body-content>JSP</body-content>
         <attribute>
@@ -848,9 +848,9 @@
         </attribute>
     </tag>
     <tag>
-        <description>Field Row Tag</description>
-        <display-name>FieldRow</display-name>
-        <name>fieldSetRow</name>
+        <description>Fieldset Row Tag</description>
+        <display-name>FieldsetRow</display-name>
+        <name>fieldsetRow</name>
         <tag-class>org.icemobile.jsp.tags.FieldSetRowTag</tag-class>
         <body-content>JSP</body-content>
         <attribute>
@@ -883,8 +883,8 @@
 
     <tag>
         <description>ICEmobile TabSet</description>
-        <display-name>tabset</display-name>
-        <name>tabset</name>
+        <display-name>tabSet</display-name>
+        <name>tabSet</name>
         <tag-class>org.icemobile.jsp.tags.TabSetTag</tag-class>
         <body-content>JSP</body-content>
         <attribute>

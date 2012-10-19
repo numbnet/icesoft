@@ -8,11 +8,11 @@
 </p>
 <form:form id="campushrform" method="POST" enctype="multipart/form-data"
            modelAttribute="cameraBean">
-    <mobi:fieldSetGroup>
-        <mobi:fieldSetRow>
+    <mobi:fieldsetGroup>
+        <mobi:fieldsetRow>
             <mobi:getEnhanced/>
-        </mobi:fieldSetRow>
-    </mobi:fieldSetGroup>
+        </mobi:fieldsetRow>
+    </mobi:fieldsetGroup>
     <div class="header">
         <h4>Form</h4>
         <c:if test="${not empty message}">
@@ -37,7 +37,7 @@
 
     <fieldset>
         <mobi:camera id="cam"/>
-        <mobi:thumb for="cam"/>
+        <mobi:thumbnail for="cam"/>
         <push:region group="camPush" page="/camregion"/>
     </fieldset>
 
@@ -58,14 +58,14 @@
 
     <h3>New tags </h3><br/>
 
-    <mobi:fieldSetGroup id="parent">
-        <mobi:fieldSetRow id="first">
+    <mobi:fieldsetGroup id="parent">
+        <mobi:fieldsetRow id="first">
             <h4> This element in first field set row</h4>
-        </mobi:fieldSetRow>
-        <mobi:fieldSetRow id="second">
+        </mobi:fieldsetRow>
+        <mobi:fieldsetRow id="second">
             <h3> This element is in the second row </h3>
-        </mobi:fieldSetRow>
-    </mobi:fieldSetGroup>
+        </mobi:fieldsetRow>
+    </mobi:fieldsetGroup>
 
 
 </form:form>

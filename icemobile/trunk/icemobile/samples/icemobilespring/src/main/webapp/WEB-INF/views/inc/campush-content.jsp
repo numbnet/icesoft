@@ -10,30 +10,30 @@
 <form:form id="campushform" method="POST" enctype="multipart/form-data"
            modelAttribute="cameraBean">
 
-    <mobi:fieldSetGroup inset="true">
-        <mobi:fieldSetRow>
+    <mobi:fieldsetGroup inset="true">
+        <mobi:fieldsetRow>
             <mobi:getEnhanced/>
-        </mobi:fieldSetRow>
-        <mobi:fieldSetRow>
+        </mobi:fieldsetRow>
+        <mobi:fieldsetRow>
             <form:label path="name">
                 Author: <form:errors path="name" cssClass="error"/>
             </form:label>
             <form:input path="name"/>
-        </mobi:fieldSetRow>
-        <mobi:fieldSetRow>
+        </mobi:fieldsetRow>
+        <mobi:fieldsetRow>
             <mobi:camera id="pushcam"/>
-            <mobi:thumb for="pushcam"
+            <mobi:thumbnail for="pushcam"
                         style="height:60px;width:65px;vertical-align:middle;float:right;margin:10px;"/>
-        </mobi:fieldSetRow>
-    </mobi:fieldSetGroup>
+        </mobi:fieldsetRow>
+    </mobi:fieldsetGroup>
 
     <h4>Uploaded Snapshot</h4>
-    <mobi:fieldSetGroup inset="true">
-        <mobi:fieldSetRow>
+    <mobi:fieldsetGroup inset="true">
+        <mobi:fieldsetRow>
             <img style="height:60px;width:60px;margin:5px;"
                  src="${imgPath}"/>
-        </mobi:fieldSetRow>
-    </mobi:fieldSetGroup>
+        </mobi:fieldsetRow>
+    </mobi:fieldsetGroup>
 
     <%-- button types: default|important|attention| back--%>
     <mobi:commandButton buttonType='important'
