@@ -155,8 +155,9 @@ public class MobiJSFUtils {
             Map<String,String> params, UIComponent comp){
         FacesContext facesContext = FacesContext.getCurrentInstance();
         HttpServletRequest request = (HttpServletRequest)facesContext.getExternalContext().getRequest();
+        String sessionID = getSessionIdCookie(facesContext);
         return SXUtils.getICEmobileSXScript(request, command, params,
-                comp.getClientId(facesContext),
+                comp.getClientId(facesContext), sessionID,
                 MobiJSFConstants.SX_UPLOAD_PATH);
     }
 

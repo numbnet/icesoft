@@ -174,12 +174,7 @@ public class SXUtils {
 
     public static String getICEmobileSXScript(HttpServletRequest request,
             String command, Map<String,String> params,
-            String id, String uploadPath) {
-        String sessionID = null;
-        HttpSession httpSession = request.getSession(false);
-        if (null != httpSession) {
-            sessionID = httpSession.getId();
-        }
+            String id, String sessionID, String uploadPath) {
         String uploadURL = Utils.getBaseURL(request)+uploadPath;
         String fullCommand = command + "?id=" + id + encodeParams(params);
         String script = "window.location='icemobile://c=";
