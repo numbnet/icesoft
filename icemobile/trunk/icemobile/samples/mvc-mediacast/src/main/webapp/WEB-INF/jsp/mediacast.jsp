@@ -4,9 +4,7 @@
 <%@ include file="/WEB-INF/jsp/header.jsp"%>
 <body>
 	<mobi:pagePanel>
-		<mobi:pagePanelHeader>
-			<fmt:message key="heading" />
-		</mobi:pagePanelHeader>
+		<mobi:pagePanelHeader>ICEmobile Mediacast</mobi:pagePanelHeader>
 		<mobi:pagePanelBody>
 			<div>
 				<h4>Recently Uploaded Messages</h4>

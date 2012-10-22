@@ -24,20 +24,16 @@
         <f:facet name="header">
             <h:form id="toolbar" prependId="false">
                 <icecore:singleSubmit rendered="false"/>
-
-                <div style="float:left;padding-left:10px;">
-                    <h:commandLink
-                            action="#{navigationModel.navigateToParam}">
-                        <f:param name="panelID" value="splash"/>
-                        <f:param name="beanName" value="null"/>
-                        <h:graphicImage library="images"
-                                        name="icemobile_thumb.png"
-                                        style="float:left;margin:2px 10px 3px 2px;"/>
-                    </h:commandLink>
-                    <span>#{mmsgs[navigationModel.selectedDestination.title]}</span>
-                </div>
+                <h:commandLink style="position: absolute;left: 0.5em;top: 3px;"
+                        action="#{navigationModel.navigateToParam}">
+                    <f:param name="panelID" value="splash"/>
+                    <f:param name="beanName" value="null"/>
+                    <h:graphicImage library="images"
+                                    name="icemobile_thumb.png"/>
+                </h:commandLink>
+                <span>#{mmsgs[navigationModel.selectedDestination.title]}</span>
                 <!-- theme selector -->
-                 <div style="float:right;padding-right: 35px;vertical-align: middle">
+                 <div style="position: absolute;right: 0.5em;top: 6px;">
                     <span style="font-size: 14px">Theme: </span>
                     <h:selectOneMenu
                             style="font-size:14px;font-weight:normal;"
