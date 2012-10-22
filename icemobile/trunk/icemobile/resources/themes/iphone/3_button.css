@@ -18,8 +18,8 @@
 .mobi-button-group-hor .mobi-button {
 }
 .mobi-button {
-    background: -moz-linear-gradient(center top, #FEFEFE, #EEEEEE) repeat scroll 0 0 #EEEEEE;
     background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0, #FEFEFE), color-stop(1, #EEEEEE));
+    background: linear-gradient(to top, #FEFEFE, #EEEEEE) repeat scroll 0 0 #EEEEEE;
     background-color: #f5f5f5;
     border-color: #BEBEBE;
     border-radius: 0.6em;
@@ -27,8 +27,8 @@
     font-weight: bold;
 }
 .mobi-button-group .mobi-button-selected {
-    background: -moz-linear-gradient(top, #6792E8, #376FE0, #1F57C6, #2463DE) repeat scroll 0 0 #6792E8;
     background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0, #6792E8), color-stop(.45, #376FE0), color-stop(.5, #1F57C6), color-stop(1, #2463DE));
+    background: linear-gradient(to top, #6792E8, #376FE0, #1F57C6, #2463DE) repeat scroll 0 0 #6792E8;
     background-color: #2463DE;
     border-color: #155678;
     color: #FFFFFF;
@@ -40,60 +40,82 @@
     text-shadow: 0 -1px 1px #145072;
     color: #FFFFFF;
 }
-
 .mobi-button-default {
-    background: -moz-linear-gradient(top, #8EA4C1, #5877A2, #476999, #4A6C9B) repeat scroll 0 0 #4A6C9B;
     background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0, #8EA4C1), color-stop(.45, #5877A2), color-stop(.5, #476999), color-stop(1, #4A6C9B));
+    background: linear-gradient(to top, #8EA4C1, #5877A2, #476999, #4A6C9B) repeat scroll 0 0 #4A6C9B;
     background-color: #4A6C9B;
 }
-
-
 .mobi-button-important {
-    background: -moz-linear-gradient(top, #6792E8, #376FE0, #1F57C6, #2463DE) repeat scroll 0 0 #6792E8;
     background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0, #6792E8), color-stop(.45, #376FE0), color-stop(.5, #1F57C6), color-stop(1, #2463DE));
+    background: linear-gradient(to top, #6792E8, #376FE0, #1F57C6, #2463DE) repeat scroll 0 0 #6792E8;
     background-color: #2463DE;
 }
-
 .mobi-button-attention {
     background: -moz-linear-gradient(top, #DF9F9F, #B62728, #AA0102, #BC3839) repeat scroll 0 0 #6792E8;
     background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0, #DF9F9F), color-stop(.45, #B62728), color-stop(.5, #AA0102), color-stop(1, #BC3839));
     background-color: #BC3839;
 }
-.mobi-button.mobi-button-back {
-    background-color: rgba(74, 108, 155, 1);
-    background-image: -webkit-linear-gradient(
-         bottom,
-         transparent 0%,
-         transparent 50%,
-         rgba(255, 255, 255, 0.1) 50%,
-         rgba(255, 255, 255, 0.3) 100%
-         );
-    background-image :-moz-linear-gradient(top, transparent, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.3));
-    border-radius: 6px;
-    border-top-left-radius: 10px 15px;
-    border-bottom-left-radius: 10px 15px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
-    box-shadow: -1px -1px 0px rgba(0, 0, 0, 0.2)inset,
-     0 1px 2px rgba(0, 0, 0, 0.8)inset;
-    color: white !important;
-    text-shadow: 0px -1px 0px black;
+/* back button*/
+div.mobi-button-back{
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0, #8EA4C1), color-stop(.45, #5877A2), color-stop(.5, #476999), color-stop(1, #4A6C9B));
+    background-image: -moz-linear-gradient(to bottom,
+        #8EA4C1 0%,
+        #5877A2 45%,
+        #476999 50%,
+        #4A6C9B 100%);
+    background-image: linear-gradient(to bottom,
+        #8EA4C1 0%,
+        #5877A2 45%,
+        #476999 50%,
+        #4A6C9B 100%);
+    border-top: 1px solid #155678;
+    border-right: 1px solid #155678;
+    border-bottom: 1px solid #155678;
 }
- 
-.mobi-button.mobi-button-back:before{
-    background-color: rgba(74,108,155,1);/*change to the same as the main element*/
-    background-image :
-        -webkit-gradient(linear, left bottom, right top,
-            from(rgba(0,0,0,0)),
-            color-stop(0.5, rgba(0,0,0,0)),
-            color-stop(0.5, rgba(255,255,255,0.1)),
-            to(rgba(255,255,255,0.3)));
-    border-left : 1.5px solid rgba(255,255,255,0.3);
-    box-shadow :  1px 1px 0 rgba(0,0,0,0.2) inset,
-        -1px 1px 1px rgba(0,0,0,0.5) inset;
-    -webkit-mask-image :
-        -webkit-gradient(linear, left top, right bottom,
-            from(#000000),
-            color-stop(0.33,#000000),
-            color-stop(0.5, transparent),
-            to(transparent));
+div.mobi-button-back > span {
+    background-image: -webkit-gradient(linear, 0 0, 100% 100%, color-stop(0, #8EA4C1), color-stop(.45, #5877A2), color-stop(.5, #476999), color-stop(1, #4A6C9B));
+    background-image: -moz-linear-gradient(135deg,
+        #8EA4C1 0%,
+        #5877A2 45%,
+        #476999 50%,
+        #4A6C9B 100%);
+    background-image: linear-gradient(45deg,
+        #8EA4C1 0%,
+        #5877A2 45%,
+        #476999 50%,
+        #4A6C9B 100%);
+    border-left: 1px solid #155678;
+    border-bottom: 1px solid #155678;
+    border-bottom-right-radius: 14px;
+    border-top-right-radius: 100px;
+    border-top-left-radius: 14px;
+}
+div.mobi-button-back > input {
+    color:#FFF;
+    font-weight:bold;
+}
+/* back button in header */
+.mobi-pagePanel-header .mobi-button-back {
+    background-color: rgba(74, 108, 155, 1);
+    border-bottom: 1px solid rgba(255,255,255,0.4);
+    border-radius: 5px;
+    box-shadow :0 -1px 1px rgba(0,0,0,0.2)inset,
+        0 1px 2px rgba(0,0,0,0.8)inset;
+    color:#fff;
+    text-shadow : 0px -1px 0px rgba(0,0,0,0.8);
+}
+.mobi-pagePanel-header .mobi-button-back:after {
+    box-shadow :0 -3px 1px -2px rgba(0,0,0,0.3)inset,
+                0 4px 2px -3px rgba(0,0,0,0.8)inset;
+}
+.mobi-pagePanel-header .mobi-button-back,
+.mobi-pagePanel-header .mobi-button-back:after,
+.mobi-pagePanel-header .mobi-button-back:before {
+    background-color: rgba(74,108,155,1);
+
+}
+.mobi-pagePanel-header .mobi-button-back:hover,
+.mobi-pagePanel-header .mobi-button-back:hover:after,
+.mobi-pagePanel-header .mobi-button-back:hover:before {
+    background-color: rgba(54,88,135,1);
 }

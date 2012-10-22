@@ -41,15 +41,9 @@
     text-align: center;
     text-decoration: none;
 }
-.mobi-button.mobi-button-back {
-    background-repeat: repeat-x;
-    background-size: 30px;
-    color: #000 !important;
-    height: 30px;
-    left: 0.5em;
-    line-height: 30px;
-    padding: 0 0.8em;
-    position: absolute;
-    top: 1px;
-    z-index: 0;
+.mobi-button-back {
+    
+}
+.mobi-pagePanel-header .mobi-button-back {
+    font-weight:bold;
 }

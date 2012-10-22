@@ -34,20 +34,42 @@
     color: black;
     font-weight: bold;
 }
-.mobi-button.mobi-button-back {
-    background-color: #CCC;
-    border-radius: 0.6em;
-    border-bottom-left-radius: 11px 10px;
-    box-shadow: -1px -1px 0px rgba(0, 0, 0, 0.2)inset, 0 1px 2px rgba(0, 0, 0, 0.8)inset;
-    color: #444 !important;
+/* back button*/
+div.mobi-button-back > span {
+    background: -moz-linear-gradient(45deb, #E7EBE7, #CCC) repeat scroll 0 0 #CCC;
+    background-image: -webkit-gradient(linear, 0 0, 100% 100%, color-stop(0, #E7EBE7), color-stop(1, #CCC));
+    border-bottom-right-radius: 22px;
+    border-top-right-radius: 100px;
+    border-top-left-radius: 25px;
+    border-left: 1px solid #999;
+    border-bottom: 1px solid #999;
 }
-.mobi-button.mobi-button-back:before{
-    background-color: #CCC;
-    border-left: 1.5px solid rgba(255, 255, 255, 0.3);
-    box-shadow: 1px 1px 0 #E7EBE7 inset, -1px 1px 1px rgba(0, 0, 0, 0.5) inset;
-    -webkit-mask-image: -webkit-gradient(linear, left top, right bottom,
-     from(#000000),
-     color-stop(0.33,#000000),
-     color-stop(0.5, transparent),
-     to(transparent));
+div.mobi-button-back > input {
+    color:#000;
+    font-weight:bold;
+}
+/* back button in header */
+.mobi-pagePanel-header .mobi-button-back {
+    background-color: #777;
+    border-bottom: 1px solid rgba(255,255,255,0.4);
+    border-radius: 5px;
+    box-shadow :0 -1px 1px rgba(0,0,0,0.2)inset,
+        0 1px 2px rgba(0,0,0,0.8)inset;
+    color:#fff;
+    text-shadow : 0px -1px 0px rgba(0,0,0,0.8);
+}
+.mobi-pagePanel-header .mobi-button-back:after {
+    box-shadow :0 -3px 1px -2px rgba(0,0,0,0.3)inset,
+                0 4px 2px -3px rgba(0,0,0,0.8)inset;
+}
+.mobi-pagePanel-header .mobi-button-back,
+.mobi-pagePanel-header .mobi-button-back:after,
+.mobi-pagePanel-header .mobi-button-back:before {
+    background-color: #777;
+
+}
+.mobi-pagePanel-header .mobi-button-back:hover,
+.mobi-pagePanel-header .mobi-button-back:hover:after,
+.mobi-pagePanel-header .mobi-button-back:hover:before {
+    background-color: #888;
 }

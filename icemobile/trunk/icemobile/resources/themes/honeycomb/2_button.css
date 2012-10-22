@@ -46,22 +46,43 @@
     color: #f1f1f1;
     font-weight: normal;
 }
-.mobi-button.mobi-button-back {
-    background-color: #E7EBE7;
-    border-radius: 2px;
-    border-top-left-radius: 10px 15px;
-    border-bottom-left-radius: 11px 10px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
-    box-shadow: -1px -1px 0px rgba(0, 0, 0, 0.2)inset, 0 1px 2px rgba(115, 113, 115, 0.8)inset;
-    color: #444 !important;
+/* back button*/
+div.mobi-button-back{
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0, #424246), color-stop(1, #3F3F42));
+    background: -moz-linear-gradient(0 0, #424246, #3F3F42);
 }
-.mobi-button.mobi-button-back:before{
-    background-color: #E7EBE7;
-    border-left: 1.5px solid rgba(255, 255, 255, 0.3);
-    box-shadow: 1px 1px 0 #E7EBE7 inset, -1px 1px 1px rgba(0, 0, 0, 0.5) inset;
-    -webkit-mask-image: -webkit-gradient(linear, left top, right bottom,
-     from(#000000),
-     color-stop(0.33,#000000),
-     color-stop(0.5, transparent),
-     to(transparent));
+div.mobi-button-back > span {
+    background-image: -webkit-gradient(linear, 0 0, 100% 100%, color-stop(0, #424246), color-stop(1, #3F3F42));
+    background: -moz-linear-gradient(45deg, #424246, #3F3F42);
+    border-bottom-right-radius: 22px;
+    border-top-right-radius: 100px;
+    border-top-left-radius: 25px;
+}
+div.mobi-button-back > input {
+    color:#FFF;
+}
+/* back button in header */
+.mobi-pagePanel-header .mobi-button-back {
+    background-color: #777;
+    border-bottom: 1px solid rgba(255,255,255,0.4);
+    border-radius: 5px;
+    box-shadow :0 -1px 1px rgba(0,0,0,0.2)inset,
+        0 1px 2px rgba(0,0,0,0.8)inset;
+    color:#fff;
+    text-shadow : 0px -1px 0px rgba(0,0,0,0.8);
+}
+.mobi-pagePanel-header .mobi-button-back:after {
+    box-shadow :0 -3px 1px -2px rgba(0,0,0,0.3)inset,
+                0 4px 2px -3px rgba(0,0,0,0.8)inset;
+}
+.mobi-pagePanel-header .mobi-button-back,
+.mobi-pagePanel-header .mobi-button-back:after,
+.mobi-pagePanel-header .mobi-button-back:before {
+    background-color: #777;
+
+}
+.mobi-pagePanel-header .mobi-button-back:hover,
+.mobi-pagePanel-header .mobi-button-back:hover:after,
+.mobi-pagePanel-header .mobi-button-back:hover:before {
+    background-color: #888;
 }

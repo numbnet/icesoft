@@ -69,8 +69,7 @@
         <h4>Button Type Test</h4>
         <mobi:fieldsetGroup>
             <mobi:fieldsetRow>
-                <mobi:commandButton style="float:left;"
-                                    actionListener="#{buttonBean.buttonType}"
+                <mobi:commandButton actionListener="#{buttonBean.buttonType}"
                                     value="Default" buttonType="default">
                     <f:attribute name="buttonType" value="default"/>
                 </mobi:commandButton>
@@ -85,6 +84,10 @@
                 <mobi:commandButton actionListener="#{buttonBean.buttonType}"
                                     value="Plain" buttonType="">
                     <f:attribute name="buttonType" value="Plain"/>
+                </mobi:commandButton>
+                <mobi:commandButton actionListener="#{buttonBean.buttonType}"
+                                    buttonType="back" value="Back">
+                    <f:attribute name="buttonType" value="back"/>
                 </mobi:commandButton>
             </mobi:fieldsetRow>
             <mobi:fieldsetRow>
