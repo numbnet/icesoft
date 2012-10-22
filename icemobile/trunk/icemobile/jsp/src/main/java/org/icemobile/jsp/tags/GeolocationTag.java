@@ -16,14 +16,19 @@
 
 package org.icemobile.jsp.tags;
 
+import javax.servlet.ServletRequest;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.PageContext;
 import java.io.IOException;
 import java.io.Writer;
 
+import org.icemobile.util.ClientDescriptor;
+
 public class GeolocationTag extends BaseSimpleTag {
 
-    private String name;
-    
+    private final int DEFAULT_TIMEOUT_VALUE = 60;
+    private final int DEFAULT_MAXAGE_VALUE = 3600;
+
     public void doTag() throws IOException {
 
         PageContext pageContext = (PageContext) getJspContext();
@@ -53,41 +58,65 @@ public class GeolocationTag extends BaseSimpleTag {
             out.write("id ='" + id + "_script' ");
         }
         out.write(">\n");
-        out.write("iceStoreLocation = function(id, coords)  {");
-        out.write("if (!coords) { return; } ");
-        out.write("var el = document.getElementById(id + '_locHidden');");
-        out.write("var parts = el.value.split(',');");
-        out.write("if (4 != parts.length) {parts = new Array(4)};");
-        out.write("parts[0] = coords.latitude;");
-        out.write("parts[1] = coords.longitude;");
-        out.write("parts[2] = coords.altitude;");
-        out.write("el.value = parts.join();");
-        out.write("}\n");
-        out.write("iceStoreDirection = function(id, head)  {");
-        out.write("var el = document.getElementById(id + '_locHidden');");
-        out.write("var parts = el.value.split(',');");
-        out.write("if (4 != parts.length) {parts = new Array(4)}");
-        out.write("parts[3] = head;");
-        out.write("el.value = parts.join();");
-        out.write("}\n");
-        //need getCurrentPosition and watchPosition to ensure location is
-        //available after page loads
-        out.write("iceStoreLocation('" + getId() + "', window.icegeocoords);");
-        out.write("navigator.geolocation.getCurrentPosition(function(pos){");
-        out.write("window.icegeocoords =  pos.coords;");
-        out.write("iceStoreLocation('" + getId() + "', pos.coords);");
-        out.write("});\n");
-        out.write("navigator.geolocation.watchPosition(function(pos){");
-        out.write("window.icegeocoords =  pos.coords;");
-        out.write("iceStoreLocation('" + getId() + "', pos.coords);");
-        out.write("});\n");
-        out.write("window.addEventListener('deviceorientation', function(orient){");
-        out.write("iceStoreDirection('" + getId() + "', orient.webkitCompassHeading);");
-        out.write("});\n");
-        out.write("</script>");
-        out.write("</span>");   // end span
+
+        boolean includeHighPrecision;
+        StringBuilder sb = new StringBuilder(255);
+        String highPrecision = getEnableHighPrecision();
+
+        if (highPrecision == null || "asneeded".equalsIgnoreCase(highPrecision)) {
+            includeHighPrecision = sniffDevices(pageContext);
+        } else {
+            includeHighPrecision = Boolean.valueOf(highPrecision);
+        }
+
+        int maxAge = getMaximumAge();
+        //
+        // Values of zero defined from the page are valid, but not necessarily
+        // useful. If no values are defined, specify a default, but also allow
+        // the user to define a value of zero.
+        //
+        // maxage of zero will force an update
+        if (maxAge < 0) {
+            maxAge = DEFAULT_MAXAGE_VALUE;
+        }
+        int timeout = getTimeout();
+        // value of zero causes instant timeout
+        if (timeout < 0) {
+            timeout = DEFAULT_TIMEOUT_VALUE;
+        }
+        boolean continuous = isContinuousUpdates();
+
+        if (continuous) {
+            sb.append("ice.mobi.geolocation.watchLocation('").append(getId()).append("','");
+        } else {
+            sb.append("ice.mobi.geolocation.getLocation('").append(getId()).append("','");
+        }
+        sb.append(includeHighPrecision).append("', '");
+        sb.append(maxAge).append("', '").append(timeout).append("'); ");
+
+        sb.append("</script>");
+        sb.append("</span>");   // end span
+        out.write(sb.toString());
 
     }
+
+    private boolean sniffDevices(PageContext pageContext) {
+        ServletRequest request = pageContext.getRequest();
+        if (request instanceof HttpServletRequest) {
+            HttpServletRequest hsr = (HttpServletRequest) request;
+            ClientDescriptor client = ClientDescriptor.getInstance(hsr);
+            return (client.isAndroidOS() & client.isTabletBrowser()) || client.isBlackBerryOS();
+        } else {
+            return true;
+        }
+    }
+
+    private String name;
+    private boolean continuousUpdates;
+    private int timeout = -1;
+    private int maximumAge = -1;
+    private String enableHighPrecision;
+
 
     public String getId() {
         return id;
@@ -113,4 +142,35 @@ public class GeolocationTag extends BaseSimpleTag {
         this.disabled = disabled;
     }
 
+    public String getEnableHighPrecision() {
+        return enableHighPrecision;
+    }
+
+    public void setEnableHighPrecision(String enableHighPrecision) {
+        this.enableHighPrecision = enableHighPrecision;
+    }
+
+    public boolean isContinuousUpdates() {
+        return continuousUpdates;
+    }
+
+    public void setContinuousUpdates(boolean continuousUpdates) {
+        this.continuousUpdates = continuousUpdates;
+    }
+
+    public int getTimeout() {
+        return timeout;
+    }
+
+    public void setTimeout(int timeout) {
+        this.timeout = timeout;
+    }
+
+    public int getMaximumAge() {
+        return maximumAge;
+    }
+
+    public void setMaximumAge(int maximumAge) {
+        this.maximumAge = maximumAge;
+    }
 }
