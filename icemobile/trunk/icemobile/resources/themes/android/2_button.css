@@ -13,9 +13,8 @@
  * express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-.mobi-button-group-vert .mobi-button {
-}
-.mobi-button-group-hor .mobi-button {
+.mobi-button-group-hor .mobi-button{
+    margin: 0 0 0 -5px;
 }
 .mobi-button-group .mobi-button-selected {
     background-color: #ADADAD;
