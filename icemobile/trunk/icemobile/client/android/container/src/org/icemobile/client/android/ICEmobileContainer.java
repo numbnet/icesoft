@@ -147,6 +147,7 @@ public class ICEmobileContainer extends Activity
     private boolean accelerated;
     private String authUser;
     private String authPw;
+    private String mUserAgentString; 
 
     /**
      * Called when the activity is first created.
@@ -178,6 +179,7 @@ public class ICEmobileContainer extends Activity
         mWebView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
         Log.e("ICEmobile", "User Agent = " + mWebView.getSettings().getUserAgentString());
 
+        mUserAgentString = mWebView.getSettings().getUserAgentString();
         assetManager = getAssets();
         fileLoader = new FileLoader(assetManager);
         mWebView.addJavascriptInterface(fileLoader, "ICEassets");
@@ -562,7 +564,7 @@ public class ICEmobileContainer extends Activity
     }
 
     private void includeUtil() {
-        utilInterface = new UtilInterface(this, mWebView);
+        utilInterface = new UtilInterface(this, mWebView, mUserAgentString);
         mWebView.addJavascriptInterface(utilInterface, "ICEutil");
     }
 
@@ -607,7 +609,7 @@ public class ICEmobileContainer extends Activity
         mAudioInterface = new AudioInterface(mAudioRecorder, mAudioPlayer);
         mWebView.addJavascriptInterface(mAudioInterface, "ICEaudio");
     }
-
+    
     private void includeC2dm() {
         if (mC2dmHandler == null) {
             mC2dmHandler = new C2dmHandler(this, R.drawable.c2dm_icon, "ICE", "ICEmobile", "C2DM Notification", this);
