@@ -27,24 +27,24 @@ public class ListControlRenderer extends CoreRenderer {
     public static final String firstStyleClass = "if-list-dl-1";
     public static final String secondStyleClass = "if-list-dl-2";
 
-    private boolean dualListMode = false;
-    private ACEList one;
-    private ACEList two;
 
     @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         ListControl control = (ListControl)component;
+        ListControlRenderContext renderContext = new ListControlRenderContext();
+
+        control.setRenderContext(renderContext);
 
         String style = control.getStyle();
         DualListPosition position = control.getPosition();
         String styleClass = control.getStyleClass();
         UIComponent facet = control.getFacet("header");
-        dualListMode = hasTwoListChildren(control);
+        renderContext.dualListMode = hasTwoListChildren(control);
 
         if (styleClass == null) styleClass = "";
         else styleClass += " ";
-        if (dualListMode)
+        if (renderContext.dualListMode)
             styleClass = styleClass + dualListContainerStyleClass;
         else
             styleClass = styleClass + containerStyleClass;
@@ -57,13 +57,13 @@ public class ListControlRenderer extends CoreRenderer {
 
         encodeHeader(context, writer, control, facet);
 
-        if (!dualListMode || position.equals(DualListPosition.TOP) || position.equals(DualListPosition.BOTH) || position.equals(DualListPosition.ALL)) {
-            if (dualListMode) {
+        if (!renderContext.dualListMode || position.equals(DualListPosition.TOP) || position.equals(DualListPosition.BOTH) || position.equals(DualListPosition.ALL)) {
+            if (renderContext.dualListMode) {
                 writer.startElement(HTML.DIV_ELEM, null);
                 writer.writeAttribute(HTML.CLASS_ATTR, containerStyleClass.substring(0, containerStyleClass.indexOf(" ")), null);
             }
             encodeControls(context, writer, control);
-            if (dualListMode) {
+            if (renderContext.dualListMode) {
                 writer.endElement(HTML.DIV_ELEM);
             }
         }
@@ -77,8 +77,9 @@ public class ListControlRenderer extends CoreRenderer {
             if (c instanceof ACEList) lists.add((ACEList)c);
 
         if (lists.size() == 2) {
-            one = lists.get(0);
-            two = lists.get(1);
+            ListControlRenderContext context = control.getRenderContext();
+            context.one = lists.get(0);
+            context.two = lists.get(1);
             return true;
         } else if (lists.size() > 2 || lists.size() == 1) {
             throw new FacesException("ListControl " + control + " : " + "Cannot have fewer or greater than 2 ace:list children. The nested list mode only supports dual lists.");
@@ -162,13 +163,15 @@ public class ListControlRenderer extends CoreRenderer {
     public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         ListControl control = (ListControl) component;
+        ListControlRenderContext renderContext = control.getRenderContext();
 
-        if (dualListMode)
-            renderDualListLayout(context, writer, control, one, two);
+        if (renderContext.dualListMode)
+            renderDualListLayout(context, writer, control, renderContext.one, renderContext.two);
     }
 
     private void renderDualListLayout(FacesContext context, ResponseWriter writer, ListControl control, ACEList one, ACEList two) throws IOException {
         DualListPosition position = control.getPosition();
+        ListControlRenderContext renderContext = control.getRenderContext();
         Boolean middleMode = position.equals(DualListPosition.MIDDLE) || position.equals(DualListPosition.ALL);
 
         writer.startElement(HTML.DIV_ELEM, null);
@@ -181,7 +184,7 @@ public class ListControlRenderer extends CoreRenderer {
             writer.writeAttribute(HTML.STYLE_ATTR, "margin-right:1.1em;", null);
         }
 
-        one.encodeAll(context);
+        renderContext.one.encodeAll(context);
 
         writer.endElement(HTML.DIV_ELEM);
         writer.endElement(HTML.SPAN_ELEM);
@@ -199,7 +202,8 @@ public class ListControlRenderer extends CoreRenderer {
         if (middleMode) {
             writer.writeAttribute(HTML.STYLE_ATTR, "margin-right:1.4em;", null);
         }
-        two.encodeAll(context);
+
+        renderContext.two.encodeAll(context);
 
         writer.endElement(HTML.DIV_ELEM);
         writer.endElement(HTML.SPAN_ELEM);
@@ -212,15 +216,21 @@ public class ListControlRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
         UIComponent facet = component.getFacet("footer");
         ListControl control = (ListControl) component;
+        ListControlRenderContext renderContext = control.getRenderContext();
         DualListPosition position = control.getPosition();
 
-        if (dualListMode && position.equals(DualListPosition.BOTTOM) || position.equals(DualListPosition.BOTH) || position.equals(DualListPosition.ALL)) {
-            if (dualListMode) {
+        if (renderContext.dualListMode && position.equals(DualListPosition.BOTTOM)
+                || position.equals(DualListPosition.BOTH)
+                || position.equals(DualListPosition.ALL)) {
+
+            if (renderContext.dualListMode) {
                 writer.startElement(HTML.DIV_ELEM, null);
                 writer.writeAttribute(HTML.CLASS_ATTR, containerStyleClass.substring(0, containerStyleClass.indexOf(" ")), null);
             }
+
             encodeControls(context, writer, control);
-            if (dualListMode) {
+
+            if (renderContext.dualListMode) {
                 writer.endElement(HTML.DIV_ELEM);
             }
         }
@@ -230,11 +240,13 @@ public class ListControlRenderer extends CoreRenderer {
         encodeScript(context, writer, control);
 
         writer.endElement(HTML.DIV_ELEM);
+        control.setRenderContext(null);
     }
 
     private void encodeScript(FacesContext context, ResponseWriter writer, ListControl control) throws IOException {
         String widgetVar = resolveWidgetVar(control);
         String clientId = control.getClientId(context);
+        ListControlRenderContext renderContext = control.getRenderContext();
 
         writer.startElement(HTML.SPAN_ELEM, null);
         writer.writeAttribute(HTML.ID_ATTR, clientId+"_script", null);
@@ -245,7 +257,7 @@ public class ListControlRenderer extends CoreRenderer {
 
         cfgBuilder.beginMap();
         cfgBuilder.entry("separator", UINamingContainer.getSeparatorChar(context));
-        cfgBuilder.entry("selector", control.getSelector(clientId.replace(":","\\:"), dualListMode));
+        cfgBuilder.entry("selector", control.getSelector(clientId.replace(":","\\:"), renderContext.dualListMode));
         cfgBuilder.endMap();
 
         writer.write("var " + widgetVar + " = new ice.ace.ListControl('" + clientId + "', " + cfgBuilder +");");
