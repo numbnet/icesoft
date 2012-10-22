@@ -19,12 +19,18 @@
 
 @implementation Preferences
 
+@synthesize isFancy;
 @synthesize urlField;
 @synthesize emailField;
 @synthesize historyPicker;
 @synthesize oldView;
 @synthesize mainViewController;
 @synthesize history;
+@synthesize doneButton;
+@synthesize goButton;
+@synthesize quitButton;
+@synthesize reloadButton;
+@synthesize clearButton;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -70,6 +76,17 @@
     // e.g. self.myOutlet = nil;
 }
 
+- (void)viewWillAppear:(BOOL)animated  {
+    if (self.isFancy)  {
+        return;
+    }
+    [self makeFancyButton:doneButton];
+    [self makeFancyButton:goButton];
+    [self makeFancyButton:quitButton];
+    [self makeFancyButton:reloadButton];
+    [self makeFancyButton:clearButton];
+}
+
 - (void)update {
     NSString* currentURL = [[mainViewController getCurrentURL] absoluteString];
     self.urlField.text = currentURL;
@@ -78,6 +95,24 @@
 
 - (CGSize)contentSizeForViewInPopoverView {
     return CGSizeMake(320, 480);
+}
+
+- (void)makeFancyButton:(UIButton*)button  {
+    CAGradientLayer *gradientLayer = [[CAGradientLayer alloc] init];
+    [gradientLayer setBounds:[button bounds]];
+    [gradientLayer setPosition:
+                CGPointMake([button bounds].size.width/2,
+                       [button bounds].size.height/2)];
+        [gradientLayer setColors:
+                     [NSArray arrayWithObjects:
+                            (id)[[UIColor whiteColor] CGColor], 
+                            (id)[[UIColor grayColor] CGColor], nil]];
+    [[button layer] insertSublayer:gradientLayer atIndex:0];
+    [gradientLayer release];
+
+    [[button layer] setCornerRadius:8.0f];
+    [[button layer] setMasksToBounds:YES];
+    [[button layer] setBorderWidth:1.0f];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
