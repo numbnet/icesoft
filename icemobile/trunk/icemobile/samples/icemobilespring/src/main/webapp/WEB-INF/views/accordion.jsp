@@ -13,18 +13,18 @@
     <mobi:smallView>
         <div class="ajaxzone">
             <mobi:pagePanel>
-                    <mobi:pagePanelHeader>
-                        <a href="menu" id="menuLink" class="mobi-button  mobi-button-default">&#9776;</a>
-                        Accordion
-                    </mobi:pagePanelHeader>
-                    <mobi:pagePanelBody>
-                        <%@ include file="/WEB-INF/views/inc/accordion-content.jsp" %>
-                    </mobi:pagePanelBody>
-                    <script type="text/javascript">
-                    MvcUtil.enhanceLink(document.getElementById('menuLink'),"body");
-                    window.scrollTo(0, 0);
-                    </script>
+                <mobi:pagePanelHeader>
+                    <a href="menu" id="menuLink" class="mobi-button  mobi-button-default">&#9776;</a>
+                    Accordion
+                </mobi:pagePanelHeader>
+                <mobi:pagePanelBody>
+                    <%@ include file="/WEB-INF/views/inc/accordion-content.jsp" %>
+                </mobi:pagePanelBody>
             </mobi:pagePanel>
+            <script type="text/javascript">
+            MvcUtil.enhanceLink(document.getElementById('menuLink'),"body");
+            window.scrollTo(0, 0);
+            </script>
         </div>
     </mobi:smallView>
     
@@ -33,7 +33,7 @@
             <c:when test="${!ajaxRequest}">
                 <mobi:pagePanel>
                     <mobi:pagePanelHeader>
-                        <a id="backBtn" class="mobi-button mobi-button-default ui-icon ui-icon-home ui-icon-shadow"
+                        <a id="menuLink" class="mobi-button mobi-button-default ui-icon ui-icon-home ui-icon-shadow"
                         href='<c:url value="/"/>'> </a>
                         ICEmobile Spring MVC Showcase
                     </mobi:pagePanelHeader>
@@ -47,8 +47,8 @@
                             </div>
                         </div>
                         <script type="text/javascript">
-                        resizeElementHeight('left');
-                        resizeElementHeight('right');
+                        addResizeHeightAfterResizeListener('left');
+                        addResizeHeightAfterResizeListener('right');
                         </script>
                     </mobi:pagePanelBody>
                 </mobi:pagePanel>
@@ -62,7 +62,7 @@
 <c:if test="${!ajaxRequest}">
     <script type="text/javascript">
         MvcUtil.enhanceAllLinks("#left",".ajaxzone");
-        $('#menu a[href=accordion]').css({backgroundColor:'#EFEFEF'});
+        $('#menu a[href=accordion]').addClass('active');
     </script>
 </body>
 </html>

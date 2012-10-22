@@ -17,7 +17,7 @@
         <mobi:fieldsetRow style="height:90px;">
             <mobi:geolocation id="location"/>
             <mobi:camera id="spotcam"/>
-            <mobi:thumb for="spotcam"
+            <mobi:thumbnail for="spotcam"
                         style="height:60px;width:65px;vertical-align:middle;float:right;margin:10px;"/>
         </mobi:fieldsetRow>
         <mobi:fieldsetRow>

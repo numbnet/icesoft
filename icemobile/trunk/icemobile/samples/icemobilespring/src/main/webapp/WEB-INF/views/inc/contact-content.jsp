@@ -5,9 +5,16 @@
 <%@ taglib prefix="push" uri="http://www.icepush.org/icepush/jsp/icepush.tld"%>
 <form:form id="conform" method="POST" enctype="multipart/form-data"
            modelAttribute="contactBean">
-     <mobi:fetchContact id="contactOne" label="fetch Contacts"  
-        multipleSelect="true"   pattern="a"
-        fields="contact, phone" />
+    <mobi:fieldsetGroup inset="true">
+        <mobi:fieldsetRow>
+            <mobi:getEnhanced/>
+        </mobi:fieldsetRow>
+        <mobi:fieldsetRow>
+             <mobi:fetchContact id="contactOne" label="fetch Contacts"  
+                multipleSelect="true"   pattern="a"
+                fields="contact, phone" />
+        </mobi:fieldsetRow>
+    </mobi:fieldsetGroup>
 
 
         <mobi:commandButton buttonType='important'

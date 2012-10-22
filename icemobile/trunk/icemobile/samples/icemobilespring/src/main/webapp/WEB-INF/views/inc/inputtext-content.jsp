@@ -23,7 +23,7 @@
         <mobi:fieldsetRow>
             <label>Text area:</label>
             <mobi:inputText name="textarea" type="textarea"
-                            style="width:99%"
+                            style="width:99%;float:none;"
                             autoCorrect="off"
                             placeholder="Text area"
                             value="${inputTextBean.textarea}"/>

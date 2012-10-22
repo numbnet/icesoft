@@ -32,9 +32,9 @@
             <c:when test="${!ajaxRequest}">
                 <mobi:pagePanel>
                     <mobi:pagePanelHeader>
-                        <a id="backBtn" class="mobi-button mobi-button-default ui-icon ui-icon-home ui-icon-shadow"
+                        <a id="menuLink" class="mobi-button mobi-button-default ui-icon ui-icon-home ui-icon-shadow"
                         href='<c:url value="/"/>'> </a>
-                        ICEmobile Spring MVC Showcase
+                        <span>ICEmobile Spring MVC Showcase</span>
                     </mobi:pagePanelHeader>
                     <mobi:pagePanelBody>
                         <div id="left">
@@ -50,7 +50,7 @@
                         resizeElementHeight('right');
                         </script>
                     </mobi:pagePanelBody>
-                 </mobi:pagePanel>
+                </mobi:pagePanel>
              </c:when>
              <c:otherwise>
                 <%@ include file="/WEB-INF/views/inc/splash-content.jsp" %>

@@ -7,7 +7,7 @@
    <mobi:fieldsetGroup inset="true">
         <mobi:fieldsetRow>
             <label>Auto-Capitalization</label>
-            <mobi:flipswitchid="onOffFlipSwitch" labelOn="On"
+            <mobi:flipswitch id="onOffFlipSwitch" labelOn="On"
                              style="float:right"
                              labelOff="Off"
                              name="onOffFlipSwitch"
@@ -15,7 +15,7 @@
         </mobi:fieldsetRow>
         <mobi:fieldsetRow>
             <label>Auto-Correction</label>
-            <mobi:flipswitchid="yesNoFlipSwitch" labelOn="Yes"
+            <mobi:flipswitch id="yesNoFlipSwitch" labelOn="Yes"
                              style="float:right"
                              labelOff="No"
                              name="yesNoFlipSwitch"
@@ -23,7 +23,7 @@
         </mobi:fieldsetRow>
         <mobi:fieldsetRow>
             <label>Check Spelling</label>
-            <mobi:flipswitchid="trueFalseFlipSwitch" labelOn="True"
+            <mobi:flipswitch id="trueFalseFlipSwitch" labelOn="True"
                              style="float:right"
                              labelOff="False"
                              name="trueFalseFlipSwitch"
