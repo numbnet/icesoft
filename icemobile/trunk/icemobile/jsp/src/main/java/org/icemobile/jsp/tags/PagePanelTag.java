@@ -26,6 +26,8 @@ import java.util.logging.Logger;
  *
  */
 public class PagePanelTag extends TagSupport {
+    
+    public static final String CTR_CLASS = "mobi-pagePanel-ctr";
 
     private static Logger LOG = Logger.getLogger(PagePanelTag.class.getName());
 

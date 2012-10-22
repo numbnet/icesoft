@@ -68,6 +68,10 @@ public class TagWriter implements IResponseWriter{
         elementStack = elementContext;
     }
     
+    public void push(String str){
+        elementStack.push(str);
+    }
+    
     public void writeAttribute(String name, Object value) throws IOException{
          if( value != null ){
              out.write(SPACE);

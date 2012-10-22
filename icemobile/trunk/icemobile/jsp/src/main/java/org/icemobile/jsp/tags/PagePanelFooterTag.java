@@ -18,6 +18,9 @@ package org.icemobile.jsp.tags;
 
 import javax.servlet.jsp.JspTagException;
 import javax.servlet.jsp.tagext.TagSupport;
+
+import org.icefaces.mobi.utils.HTML;
+
 import java.io.IOException;
 import java.io.Writer;
 import java.util.logging.Logger;
@@ -33,29 +36,30 @@ public class PagePanelFooterTag extends TagSupport {
 
     public int doStartTag() throws JspTagException {
 
-        Writer out = pageContext.getOut();
-
-        StringBuilder tag = new StringBuilder(TagUtil.DIV_TAG);
-        tag.append(" class=\"").append(FOOTER_CLASS).append("\"");
-        tag.append(">");
-
+        TagWriter writer = new TagWriter(pageContext);
         try {
-            out.write(tag.toString());
+            writer.startElement(HTML.DIV_ELEM);
+            writer.writeAttribute(HTML.CLASS_ATTR, FOOTER_CLASS);
+            writer.startElement(HTML.DIV_ELEM);
+            writer.writeAttribute(HTML.CLASS_ATTR, PagePanelTag.CTR_CLASS);
+            writer.closeOffTag();
         } catch (IOException ioe) {
-            LOG.severe("IOException writing PagePanelFooter: " + ioe);
+            LOG.severe("IOException writing PagePanelHeader: " + ioe);
         }
         return EVAL_BODY_INCLUDE;
     }
 
-
     public int doEndTag() throws JspTagException {
-
-        Writer out = pageContext.getOut();
+        TagWriter writer = new TagWriter(pageContext);
+        writer.push(HTML.DIV_ELEM);
+        writer.push(HTML.DIV_ELEM);
         try {
-            out.write(TagUtil.DIV_TAG_END);
+            writer.endElement();
+            writer.endElement();
         } catch (IOException ioe) {
-            LOG.severe("IOException closing PagePanelFooter: " + ioe);
+            LOG.severe("IOException closing PagePanelHeader: " + ioe);
         }
         return EVAL_PAGE;
     }
+
 }
