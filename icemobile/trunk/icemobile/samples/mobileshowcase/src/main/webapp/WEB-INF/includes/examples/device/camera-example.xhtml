@@ -37,7 +37,9 @@
             
             <mobi:fieldsetRow>
                 
-                <mobi:camera id="cam" value="#{cameraBean.cameraImage}">
+                <mobi:camera id="cam" value="#{cameraBean.cameraImage}"
+                        maxwidth="#{cameraBean.maxWidth}"
+                        maxheight="#{cameraBean.maxHeight}">
                     <mobi:thumbnail for="cam"/>
                 </mobi:camera>
 
@@ -58,6 +60,20 @@
                 <h:outputText value="#{cameraBean.uploadMessage}"/>
             </mobi:fieldsetRow>
 
+        </mobi:fieldsetGroup>
+
+    </h:form>
+
+    <h:form >
+        <mobi:fieldsetGroup style="text-align:center;">
+            <mobi:fieldsetRow>
+                <mobi:inputText placeholder="max width" style="width:6em"
+                         type="number" value="#{cameraBean.maxWidth}" />
+                <span/>
+                <mobi:inputText placeholder="max height" style="width:6em"
+                         type="number" value="#{cameraBean.maxHeight}" />
+                <mobi:commandButton buttonType="important" value="Set" />
+            </mobi:fieldsetRow>
         </mobi:fieldsetGroup>
 
     </h:form>

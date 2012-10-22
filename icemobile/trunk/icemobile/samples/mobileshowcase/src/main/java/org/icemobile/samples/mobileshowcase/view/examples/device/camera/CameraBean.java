@@ -83,6 +83,9 @@ public class CameraBean extends ExampleImpl<CameraBean> implements
     // upload error message
     private String uploadMessage;
 
+    private Integer maxHeight;
+    private Integer maxWidth;
+
     public CameraBean() {
         super(CameraBean.class);
     }
@@ -141,5 +144,21 @@ public class CameraBean extends ExampleImpl<CameraBean> implements
 
     public String getUploadMessage() {
         return uploadMessage;
+    }
+
+    public Integer getMaxHeight() {
+        return maxHeight;
+    }
+
+    public void setMaxHeight(Integer height) {
+        this.maxHeight = height;
+    }
+
+    public Integer getMaxWidth() {
+        return maxWidth;
+    }
+
+    public void setMaxWidth(Integer width) {
+        this.maxWidth = width;
     }
 }

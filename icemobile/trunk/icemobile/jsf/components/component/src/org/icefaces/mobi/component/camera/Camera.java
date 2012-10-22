@@ -30,6 +30,7 @@ import javax.faces.event.PhaseId;
 import javax.faces.event.ValueChangeEvent;
 import javax.servlet.http.HttpSession;
 import java.util.Map;
+import java.util.HashMap;
 import java.util.logging.Logger;
 
 public class Camera extends CameraBase implements IDevice, ThumbnailProvider {
@@ -83,16 +84,37 @@ public class Camera extends CameraBase implements IDevice, ThumbnailProvider {
         int height = getMaxheight();
         String script;
         if (auxUpload)  {
-            script = MobiJSFUtils.getICEmobileSXScript("camera", this);
-        } else {
-            if ( (width != Integer.MIN_VALUE) ||
+            HashMap<String,String> params = new HashMap();
+            if ( (width != Integer.MIN_VALUE) || 
                     (height != Integer.MIN_VALUE) ) {
-                String params = "'" + clientId + "','maxwidth=" + width +
-                        "&maxheight=" + height + "'";
-                script = "ice.camera(" + params + ");";
-            } else {
-                script = "ice.camera( '" + clientId + "' );";
+                if (width > 0)  {
+                    params.put("maxwidth", String.valueOf(width));
+                }
+                if (height > 0)  {
+                    params.put("maxheight", String.valueOf(height));
+                }
             }
+            script = MobiJSFUtils.getICEmobileSXScript(
+                    "camera", params, this);
+        } else {
+            script = "ice.camera( '" + clientId + "'";
+            boolean needParams = (width > 0) || (height > 0);
+            if (needParams)  {
+                script += ", '";
+            }
+            if (width > 0)  {
+                script += "maxwidth=" + String.valueOf(width);
+                if (height > 0)  {
+                    script += "&";
+                }
+            }
+            if (height > 0)  {
+                script += "maxheight=" + String.valueOf(height);
+            }
+            if (needParams)  {
+                script += "'";
+            }
+            script += ");";
         }
         return script;
     }
