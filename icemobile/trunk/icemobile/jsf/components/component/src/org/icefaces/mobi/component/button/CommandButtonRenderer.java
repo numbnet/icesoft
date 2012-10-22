@@ -60,16 +60,30 @@ public class  CommandButtonRenderer extends CoreRenderer {
 
     public void encodeBegin(FacesContext facesContext, UIComponent uiComponent)
             throws IOException {
-        ResponseWriter writer = facesContext.getResponseWriter();
-        String clientId = uiComponent.getClientId(facesContext);
         CommandButton commandButton = (CommandButton) uiComponent;
-        // root element
-        writer.startElement(HTML.INPUT_ELEM, uiComponent);
-        writer.writeAttribute(HTML.ID_ATTR, clientId, HTML.ID_ATTR);
 
         // apply button type style classes
         StringBuilder baseClass = new StringBuilder(CommandButton.BASE_STYLE_CLASS);
         String buttonType = commandButton.getButtonType();
+        String styleClass = commandButton.getStyleClass();
+        if (styleClass != null) {
+            baseClass.append(" ").append(styleClass);
+        }
+        // apply selected state if any
+        if (commandButton.isSelected()) {
+            baseClass.append(CommandButton.SELECTED_STYLE_CLASS);
+        }
+        // apply disabled style state if specified.
+        if (commandButton.isDisabled()) {
+            baseClass.append(" ").append(CommandButton.DISABLED_STYLE_CLASS);
+        }
+        String style = commandButton.getStyle();
+        if( style != null ){
+            style = style.trim();
+            if( style.length() == 0){
+                style = null;
+            }
+        }
         // assign button type
         if (CommandButton.BUTTON_TYPE_DEFAULT.equals(buttonType)) {
             baseClass.append(CommandButton.DEFAULT_STYLE_CLASS);
@@ -82,30 +96,36 @@ public class  CommandButtonRenderer extends CoreRenderer {
         } else if (logger.isLoggable(Level.FINER)) {
             baseClass.append(CommandButton.DEFAULT_STYLE_CLASS);
         }
-        // apply selected state if any
-        if (commandButton.isSelected()) {
-            baseClass.append(CommandButton.SELECTED_STYLE_CLASS);
-        }
-        // apply disabled style state if specified.
-        if (commandButton.isDisabled()) {
-            baseClass.append(" ").append(CommandButton.DISABLED_STYLE_CLASS);
-        }
-        // append any user specific style attributes
-        String styleClass = commandButton.getStyleClass();
-        if (styleClass != null) {
-            baseClass.append(" ").append(styleClass);
-        }
-        writer.writeAttribute(HTML.CLASS_ATTR, baseClass.toString(), null);
-
-        // should be auto base though
-        String style = commandButton.getStyle();
-        if (style != null && style.trim().length() > 0) {
-            writer.writeAttribute(HTML.STYLE_ATTR, style, HTML.STYLE_ATTR);
-        }
+        
         String type = commandButton.getType();
         // button type for styling purposes, otherwise use pass through value.
         if (type == null){
             type = "button";
+        }
+
+        ResponseWriter writer = facesContext.getResponseWriter();
+        String clientId = uiComponent.getClientId(facesContext);
+        if (CommandButton.BUTTON_TYPE_BACK.equals(buttonType)){
+            writer.startElement(HTML.DIV_ELEM, commandButton);
+            writer.writeAttribute(HTML.ID_ATTR, clientId, HTML.ID_ATTR+"_ctr");
+            writer.writeAttribute(HTML.CLASS_ATTR, baseClass.toString(), null);
+            // should be auto base though
+            if (style != null ) {
+                writer.writeAttribute(HTML.STYLE_ATTR, style, HTML.STYLE_ATTR);
+            }
+            writer.startElement(HTML.SPAN_ELEM, commandButton);
+            writer.endElement(HTML.SPAN_ELEM);
+        }
+        // root element
+        writer.startElement(HTML.INPUT_ELEM, uiComponent);
+        writer.writeAttribute(HTML.ID_ATTR, clientId, HTML.ID_ATTR);
+        //style and class written to ctr div when back button
+        if (!CommandButton.BUTTON_TYPE_BACK.equals(buttonType)){
+            writer.writeAttribute(HTML.CLASS_ATTR, baseClass.toString(), null);
+            // should be auto base though
+            if (style != null ) {
+                writer.writeAttribute(HTML.STYLE_ATTR, style, HTML.STYLE_ATTR);
+            }
         }
         writer.writeAttribute(HTML.TYPE_ATTR, type, null);
         writer.writeAttribute(HTML.NAME_ATTR, clientId, null);
@@ -115,6 +135,12 @@ public class  CommandButtonRenderer extends CoreRenderer {
             value = oVal.toString();
         }
         writer.writeAttribute(HTML.VALUE_ATTR, value, HTML.VALUE_ATTR);
+        
+        //end ctr div for back button
+        if (CommandButton.BUTTON_TYPE_BACK.equals(buttonType)){
+            writer.endElement(HTML.DIV_ELEM);
+        }
+        
     }
 
     public void encodeEnd(FacesContext facesContext, UIComponent uiComponent)
