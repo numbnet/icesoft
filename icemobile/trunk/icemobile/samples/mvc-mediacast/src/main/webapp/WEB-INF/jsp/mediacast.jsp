@@ -29,15 +29,15 @@
 					<a class="mobi-button mobi-button-default" href='<c:url value="/media"/>'>Media Upload</a>
 					<a class="mobi-button mobi-button-default" href='<c:url value="/media/gallery"/>'>Media Gallery</a>
 				</div>
-				<h4>Send a Media Message</h4>
+				<h4 style="text-align:center;">Share from your location:</h4>
 				<div id="msg">${uploadModel.uploadMsg}</div>
-				<div class="mobi-button-group mobi-button-group-hor ajaxShow">
+				<div class="mobi-button-group mobi-button-group-hor ajaxShow" style="text-align:center;">
 					<a class="mobi-button mobi-button-default" 
-						onclick="showUpload(this,'camera');">Upload a Photo</a>
+						onclick="showUpload(this,'camera');">Photo</a>
 					<a class="mobi-button mobi-button-default"
-						onclick="showUpload(this,'camcorder');">Upload Video</a>
+						onclick="showUpload(this,'camcorder');">Video</a>
 					<a class="mobi-button mobi-button-default" 
-						onclick="showUpload(this,'mic');">Upload Audio</a>
+						onclick="showUpload(this,'mic');">Audio</a>
 				</div>
 				<script type="text/javascript">
 				function showUpload(elem,type){
@@ -115,29 +115,26 @@
 	            <form:form id="uploadForm" method="POST" modelAttribute="uploadModel">
 	                <mobi:fieldsetGroup id="uploadGrp" inset="true" style="margin-top:10px;">
 	                    <mobi:fieldsetRow style="min-height:30px;">
-	                    	 <label for="title">Title</label>
-	                         <mobi:inputText name="title" 
+	                    	 <mobi:inputText name="title" 
 	                         	styleClass="input"
 	                         	type="text"
                                 autoCorrect="off"
-                                placeholder="Add a title.."
+                                placeholder="Title"
                                 value="${uploadModel.title}"/>
 	                     </mobi:fieldsetRow>
 	                     <mobi:fieldsetRow style="min-height:50px;">
-	                         <label for="description">Description</label>
 	                         <mobi:inputText name="description" 
 	                         	styleClass="input"
 	                         	type="textarea"
                                 autoCorrect="off"
-                                placeholder="Add some descriptive text..."
+                                placeholder="Description"
                                 value="${uploadModel.description}"/>
 	                     </mobi:fieldsetRow>
 	                     <mobi:fieldsetRow style="min-height:50px;">
-	                         <label for="description">Tags</label>
 	                         <mobi:inputText name="tags" type="text"
 	                         	styleClass="input"
                                 autoCorrect="off"
-                                placeholder="Add some tags.."
+                                placeholder="Tags"
                                 value="${tags}"/>
 	                     </mobi:fieldsetRow>
 	                     <mobi:fieldsetRow style="text-align:center;">
