@@ -29,15 +29,10 @@
 }
 .mobi-pagePanel-body{
     min-height: 440px; /* TODO hack for height issue, use flexbox */
-    padding-bottom: 0;
 }
 .mobi-pagePanel-body-nofooter {
     min-height: 480px;
 }
 .mobi-pagePanel-footer{
     border-top-color: #C7C6C6;
-    position: relative;
-}
-.mobi-list {
-    margin-bottom: 0; /* no margin necessary when footer doesn't float */
 }

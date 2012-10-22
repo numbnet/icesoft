@@ -22,7 +22,6 @@
     font-weight: bold;
     height: 38px; /* keep the header at 40px (38+2px border + 0 padding) */
     left: 0;
-    line-height: 38px;
     margin: 0;
     padding: 0; /* keep at 0 for stable header height */
     position: fixed;
@@ -30,6 +29,19 @@
     width: 100%;
     white-space: nowrap;
     z-index: 500;
+}
+.mobi-pagePanel-header:before, .mobi-pagePanel-footer:before {
+    content: '';
+    display: inline-block;
+    height: 100%; 
+    vertical-align: middle;
+    margin-right: -0.25em; /* Adjusts for spacing */
+ }
+.mobi-pagePanel-header > .mobi-pagePanel-ctr,
+.mobi-pagePanel-footer > .mobi-pagePanel-ctr{
+    display: inline-block;
+    vertical-align: middle;
+    width:100%;
 }
 .mobi-pagePanel-header{
     top: 0;
@@ -39,7 +51,7 @@
 }
 /* layout for buttons in headers and footers */
 .mobi-pagePanel-header .mobi-button, .mobi-pagePanel-footer .mobi-button{
-    margin: 2px 0.3em;
+    margin: 4px 0.3em;
  }
 .mobi-pagePanel-body {
     padding: 40px 0 40px 0;
