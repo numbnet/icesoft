@@ -10,16 +10,17 @@
     <body>
 </c:if>
     <div class="ajaxzone">
-        <mobi:pagePanel>
-            <mobi:smallView>
-                 <mobi:pagePanelHeader><a id="menuLink" class="mobi-button mobi-button-default ui-icon ui-icon-home ui-icon-shadow"
+        <mobi:smallView>
+            <mobi:pagePanel>
+                <mobi:pagePanelHeader><a id="menuLink" class="mobi-button mobi-button-default ui-icon ui-icon-home ui-icon-shadow"
                         href='<c:url value="/"/>'>&#160;</a>
-                        ICEmobile Showcase</mobi:pagePanelHeader>
-                    <mobi:pagePanelBody>
-                        <%@ include file="/WEB-INF/views/inc/menu.jsp" %>
-                    </mobi:pagePanelBody>
-                </mobi:smallView>
-        </mobi:pagePanel>
+                        <span>ICEmobile Showcase</span>
+                </mobi:pagePanelHeader>
+                <mobi:pagePanelBody>
+                    <%@ include file="/WEB-INF/views/inc/menu.jsp" %>
+                </mobi:pagePanelBody>
+            </mobi:pagePanel>
+        </mobi:smallView>
     </div>
     <script type="text/javascript">
         MvcUtil.enhanceAllLinks(".ajaxzone","body");

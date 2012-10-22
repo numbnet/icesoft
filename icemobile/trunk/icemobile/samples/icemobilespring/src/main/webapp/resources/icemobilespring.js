@@ -1,27 +1,20 @@
-function resizeElementHeight(elId) {
+function resizeElementHeight(elementId) {
+    var element = document.getElementById(elementId);
     var height = 0;
-    var leftNode = document.getElementById(elId+"_left");
-    var rtNode = document.getElementById(elId+"_right");
-    var body = window.document.body || null;
-    if (body ==null) return;
-    if (leftNode && rtNode){
-        if (window.innerHeight) {
-            height = window.innerHeight;
-        } else if (body.parentElement.clientHeight) {
-            height = body.parentElement.clientHeight;
-        } else if (body) {
-            if (body.clientHeight) {
-                height = body.clientHeight;
-            }
-        }
-        if (height > 0){
-            leftNode.style.height = ((height - leftNode.offsetTop) + "px");
-            rtNode.style.height = ((height - rtNode.offsetTop) + "px");
+    var body = window.document.body;
+    if (window.innerHeight) {
+        height = window.innerHeight;
+    } else if (body.parentElement.clientHeight) {
+        height = body.parentElement.clientHeight;
+    } else if (body) {
+        if (body.clientHeight) {
+            height = body.clientHeight;
         }
     }
+    element.style.height = ((height - element.offsetTop) + "px");
 }
 
-function addEqualizeElementHeightsAfterResizeListener(element1Id,element2Id){
+function addResizeHeightAfterResizeListener(elementId){
 
     // check caller to see if orientation changes are support and fall back
     // to window resize events otherwise
@@ -29,11 +22,11 @@ function addEqualizeElementHeightsAfterResizeListener(element1Id,element2Id){
         orientationEvent = supportsOrientationChange ? "orientationchange" : "resize";
     
     var resizeHandler = function(updates) {
-        resizeElementHeight(element1Id,element2Id);
+        resizeElementHeight(elementId);
     }
 
     // resize height on first load
-    resizeElementHeight(element1Id,element2Id);
+    resizeElementHeight(elementId);
 
     // apply resize on either orientation or window size change.
     window.addEventListener(orientationEvent, resizeHandler);
@@ -133,9 +126,9 @@ MvcUtil.addClickLinkHandler = function(link, updateRegion){
     link.addEventListener("click", function(e) {
         if( window.history && window.history.pushState ){
             $('#menu').find('a').each( function(){
-                link.style = '';
+                this.className = '';
             });
-            link.style = 'background-color: #EFEFEF';
+            $(link).addClass('active');
             $(updateRegion).load(link.href);
             history.pushState({ src: link.href }, null, link.href);
             e.preventDefault();
@@ -161,10 +154,10 @@ window.onload = function() {
                 $('.ajaxzone').load(location.pathname);
                 if( e.state !== null){
                     $('#menu').find('a').each( function(){
-                        $(this).attr('style','');
+                        this.className = '';
                     });
                     var href = e.state.src.indexOf('/') > -1 ? e.state.src.split("/").pop() : e.state.src;
-                    $('#menu a[href='+href+']').css({backgroundColor:'#EFEFEF'});
+                    $('#menu a[href='+href+']').addClass('active');
                 }
             }, false);
         }, 1);

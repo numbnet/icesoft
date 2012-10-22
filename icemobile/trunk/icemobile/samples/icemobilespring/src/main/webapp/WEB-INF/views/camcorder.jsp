@@ -32,7 +32,7 @@
             <c:when test="${!ajaxRequest}">
                 <mobi:pagePanel>
                     <mobi:pagePanelHeader>
-                        <a id="backBtn" class="mobi-button mobi-button-default ui-icon ui-icon-home ui-icon-shadow"
+                        <a id="menuLink" class="mobi-button mobi-button-default ui-icon ui-icon-home ui-icon-shadow"
                         href='<c:url value="/"/>'> </a>
                         ICEmobile Spring MVC Showcase
                     </mobi:pagePanelHeader>
@@ -46,8 +46,8 @@
                             </div>
                         </div>
                         <script type="text/javascript">
-                        resizeElementHeight('left');
-                        resizeElementHeight('right');
+                        addResizeHeightAfterResizeListener('left');
+                        addResizeHeightAfterResizeListener('right');
                         </script>
                     </mobi:pagePanelBody>
                  </mobi:pagePanel>
@@ -61,7 +61,7 @@
 <c:if test="${!ajaxRequest}">
     <script type="text/javascript">
         MvcUtil.enhanceAllLinks("#left",".ajaxzone");
-        $('#menu a[href=camcorder]').css({backgroundColor:'#EFEFEF'});
+        $('#menu a[href=camcorder]').addClass('active');
     </script>
 </body>
 </html>
