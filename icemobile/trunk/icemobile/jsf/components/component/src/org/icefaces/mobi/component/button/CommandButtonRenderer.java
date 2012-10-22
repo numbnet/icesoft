@@ -148,6 +148,10 @@ public class  CommandButtonRenderer extends CoreRenderer {
         if (commandButton.isDisabled()) {
             writer.writeAttribute("disabled", "disabled", null);
             writer.endElement(HTML.INPUT_ELEM);
+            //end ctr div for back button
+            if (CommandButton.BUTTON_TYPE_BACK.equals(commandButton.getButtonType())){
+                writer.endElement(HTML.DIV_ELEM);
+            }
             return;
         }
         boolean singleSubmit = commandButton.isSingleSubmit();
