@@ -12,11 +12,11 @@
 		<mobi:pagePanelBody>
 			 <form:form id="filterForm" method="POST" modelAttribute="galleryModel">
 		             
-		         <mobi:fieldSetGroup inset="true">
-		            <mobi:fieldSetRow>
+		         <mobi:fieldsetGroup inset="true">
+		            <mobi:fieldsetRow>
 		                <label>Enter some tags to filter the messages</label>
-		            </mobi:fieldSetRow>
-		            <mobi:fieldSetRow>
+		            </mobi:fieldsetRow>
+		            <mobi:fieldsetRow>
 		                <mobi:inputText name="filters" 
 	                         	styleClass="input"
 	                         	type="text"
@@ -27,14 +27,14 @@
 	                                style="margin: 0;padding: 6px 8px;"
 	                                buttonType="default"
 	                                value="Search"/>
-		            </mobi:fieldSetRow>
-		        </mobi:fieldSetGroup>
+		            </mobi:fieldsetRow>
+		        </mobi:fieldsetGroup>
 		        
-		        <mobi:fieldSetGroup inset="true">
-		            <mobi:fieldSetRow>
+		        <mobi:fieldsetGroup inset="true">
+		            <mobi:fieldsetRow>
 		                <label>Or select a tag from the cloud to filter</label>
-		            </mobi:fieldSetRow>
-		            <mobi:fieldSetRow>
+		            </mobi:fieldsetRow>
+		            <mobi:fieldsetRow>
 		                <ul class="tagCloud">
 		                    <c:forEach var="tag" items="${galleryModel.tags}">
 		                        <li>
@@ -43,14 +43,14 @@
 		                        </li>
 		                    </c:forEach>
 		                </ul>
-		            </mobi:fieldSetRow>
-		        </mobi:fieldSetGroup>
+		            </mobi:fieldsetRow>
+		        </mobi:fieldsetGroup>
 		        
-		        <mobi:fieldSetGroup inset="true">
-		            <mobi:fieldSetRow>
+		        <mobi:fieldsetGroup inset="true">
+		            <mobi:fieldsetRow>
 		                <span id="msgCount">Found ${galleryModel.filteredMessagesCount} messages</span>
-		            </mobi:fieldSetRow>
-		        </mobi:fieldSetGroup>
+		            </mobi:fieldsetRow>
+		        </mobi:fieldsetGroup>
 		    </form:form>
 		    
 		    <form:form id="galleryFrm" method="POST" modelAttribute="galleryModel">
