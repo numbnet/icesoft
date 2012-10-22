@@ -21,12 +21,18 @@
 @interface Preferences : UIViewController<UITextFieldDelegate, 
         UIPickerViewDelegate, UIPickerViewDataSource> {
 
+    BOOL isFancy;
     UITextField* urlField;
     UITextField* emailField;
     UIPickerView* historyPicker;
     MainViewController *mainViewController;
     UIView *oldView;
     NSMutableArray *history;
+    UIButton *doneButton;
+    UIButton *goButton;
+    UIButton *quitButton;
+    UIButton *reloadButton;
+    UIButton *clearButton;
 }
 
 - (IBAction) doDone;
@@ -39,11 +45,17 @@
 - (void) clearHistory;
 - (void) addIfUnique:(NSString *) url;
 
+@property (nonatomic) BOOL isFancy;
 @property (nonatomic, retain) IBOutlet UITextField *urlField;
 @property (nonatomic, retain) IBOutlet UITextField *emailField;
 @property (nonatomic, retain) IBOutlet UIPickerView *historyPicker;
 @property (nonatomic, retain) MainViewController *mainViewController;
 @property (nonatomic, retain) UIView *oldView;
 @property (nonatomic, retain) NSMutableArray *history;
+@property (nonatomic, retain) IBOutlet UIButton *doneButton;
+@property (nonatomic, retain) IBOutlet UIButton *goButton;
+@property (nonatomic, retain) IBOutlet UIButton *quitButton;
+@property (nonatomic, retain) IBOutlet UIButton *reloadButton;
+@property (nonatomic, retain) IBOutlet UIButton *clearButton;
 
 @end
