@@ -77,7 +77,7 @@ public class ListControlRenderer extends CoreRenderer {
             if (c instanceof ACEList) lists.add((ACEList)c);
 
         if (lists.size() == 2) {
-            ListControlRenderContext context = control.getRenderContext();
+            ListControlRenderContext context = ((ListControlRenderContext)control.getRenderContext());
             context.one = lists.get(0);
             context.two = lists.get(1);
             return true;
@@ -163,7 +163,7 @@ public class ListControlRenderer extends CoreRenderer {
     public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         ListControl control = (ListControl) component;
-        ListControlRenderContext renderContext = control.getRenderContext();
+        ListControlRenderContext renderContext = ((ListControlRenderContext)control.getRenderContext());
 
         if (renderContext.dualListMode)
             renderDualListLayout(context, writer, control, renderContext.one, renderContext.two);
@@ -171,7 +171,7 @@ public class ListControlRenderer extends CoreRenderer {
 
     private void renderDualListLayout(FacesContext context, ResponseWriter writer, ListControl control, ACEList one, ACEList two) throws IOException {
         DualListPosition position = control.getPosition();
-        ListControlRenderContext renderContext = control.getRenderContext();
+        ListControlRenderContext renderContext = ((ListControlRenderContext)control.getRenderContext());
         Boolean middleMode = position.equals(DualListPosition.MIDDLE) || position.equals(DualListPosition.ALL);
 
         writer.startElement(HTML.DIV_ELEM, null);
@@ -216,7 +216,7 @@ public class ListControlRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
         UIComponent facet = component.getFacet("footer");
         ListControl control = (ListControl) component;
-        ListControlRenderContext renderContext = control.getRenderContext();
+        ListControlRenderContext renderContext = ((ListControlRenderContext)control.getRenderContext());
         DualListPosition position = control.getPosition();
 
         if (renderContext.dualListMode && position.equals(DualListPosition.BOTTOM)
@@ -246,7 +246,7 @@ public class ListControlRenderer extends CoreRenderer {
     private void encodeScript(FacesContext context, ResponseWriter writer, ListControl control) throws IOException {
         String widgetVar = resolveWidgetVar(control);
         String clientId = control.getClientId(context);
-        ListControlRenderContext renderContext = control.getRenderContext();
+        ListControlRenderContext renderContext = ((ListControlRenderContext)control.getRenderContext());
 
         writer.startElement(HTML.SPAN_ELEM, null);
         writer.writeAttribute(HTML.ID_ATTR, clientId+"_script", null);

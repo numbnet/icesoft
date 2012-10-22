@@ -103,6 +103,7 @@ public class ListControlMeta extends UIComponentBaseMeta {
     )
     private DualListPosition position;
 
+    // Object to prevent circular dependency during meta generation
     @Field
-    ListControlRenderContext renderContext;
+    Object renderContext;
 }
