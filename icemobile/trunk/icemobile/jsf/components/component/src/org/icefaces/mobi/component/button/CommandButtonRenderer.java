@@ -107,7 +107,7 @@ public class  CommandButtonRenderer extends CoreRenderer {
         String clientId = uiComponent.getClientId(facesContext);
         if (CommandButton.BUTTON_TYPE_BACK.equals(buttonType)){
             writer.startElement(HTML.DIV_ELEM, commandButton);
-            writer.writeAttribute(HTML.ID_ATTR, clientId, HTML.ID_ATTR+"_ctr");
+            writer.writeAttribute(HTML.ID_ATTR, clientId+"_ctr", HTML.ID_ATTR);
             writer.writeAttribute(HTML.CLASS_ATTR, baseClass.toString(), null);
             // should be auto base though
             if (style != null ) {
@@ -116,7 +116,6 @@ public class  CommandButtonRenderer extends CoreRenderer {
             writer.startElement(HTML.SPAN_ELEM, commandButton);
             writer.endElement(HTML.SPAN_ELEM);
         }
-        // root element
         writer.startElement(HTML.INPUT_ELEM, uiComponent);
         writer.writeAttribute(HTML.ID_ATTR, clientId, HTML.ID_ATTR);
         //style and class written to ctr div when back button
@@ -136,10 +135,7 @@ public class  CommandButtonRenderer extends CoreRenderer {
         }
         writer.writeAttribute(HTML.VALUE_ATTR, value, HTML.VALUE_ATTR);
         
-        //end ctr div for back button
-        if (CommandButton.BUTTON_TYPE_BACK.equals(buttonType)){
-            writer.endElement(HTML.DIV_ELEM);
-        }
+        
         
     }
 
@@ -227,6 +223,10 @@ public class  CommandButtonRenderer extends CoreRenderer {
             writer.writeAttribute(HTML.ONCLICK_ATTR, noPanelConf.toString(), HTML.ONCLICK_ATTR);
         }
         writer.endElement(HTML.INPUT_ELEM);
+        //end ctr div for back button
+        if (CommandButton.BUTTON_TYPE_BACK.equals(commandButton.getButtonType())){
+            writer.endElement(HTML.DIV_ELEM);
+        }
     }
 
     private StringBuilder getCall(String clientId, String builder ) {
