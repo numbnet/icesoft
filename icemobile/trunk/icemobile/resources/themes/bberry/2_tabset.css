@@ -13,51 +13,25 @@
  * express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-.mobi-tabset {
-    background-color: white;
-}
-
 .mobi-tabset-tabs-top > .mobi-tabset-tabs{
+    background-color: #333333;
     border-bottom:1px solid #000;
-}
-.mobi-tabset-tabs-top .mobi-tabset-tabs > ul{
-    border-bottom:1px solid #424242;
+    padding-top: 2px;
 }
 .mobi-tabset-tabs-bottom > .mobi-tabset-tabs{
-    border-top:1px solid #000;
-    width:100%;
+    border-top:none !important;
 }
-.mobi-tabset-tabs-bottom .mobi-tabset-tabs > ul{ border-top:1px solid #424242; }
-
-.mobi-tabset-tabs > ul{
-    color:#d3d3d3;
-}
-.mobi-tabset-tabs > ul li{
-    line-height: 40px;
-    border-radius:10px 10px 0 0;
-    border: 1px solid gray;
-    margin-right:-1px;
+.mobi-tabset > .mobi-tabset-tabs > ul > li{
     background: -moz-linear-gradient(top, #666666,  #333333) repeat scroll 0 0 #333333;
     background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0, #666666), color-stop(1, #333333));
+    border-radius:10px 10px 0 0;
+    border-top: 1px solid gray;
+    border-right: 1px solid gray;
+    color:#d3d3d3;
+    line-height: 39px;
 }
-
-.mobi-tabset-tabs > ul li:active, mobi-tabset-tabs > ul li[selected] {
-    background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0, #0099ff), color-stop(1, #0066cc));
-    background: -moz-linear-gradient(top, #0099ff, #0066cc);
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorStr = '#0099ff', EndColorStr = '#0066cc');
-    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#0099ff', EndColorStr='#0066cc')";
-    -webkit-tap-highlight-color: #0099ff;
-    color: white !important;
-}
-.activeTab {
-    background-origin: padding;
+.mobi-tabset > .mobi-tabset-tabs > ul > li.activeTab {
     background: -moz-linear-gradient(top, #cccccc,  #999999) repeat scroll 0 0 #2b2b2b !important;
     background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0, #cccccc), color-stop(1, #999999)) !important;
-    background-color: #636363;
     color: #ffffff ;
-}
-
-.mobi-tabset-tabs-top-header > .mobi-tabset-tabs{
-    background-color: #333333;
-    padding-top: 2px;
 }
