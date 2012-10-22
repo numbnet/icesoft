@@ -188,11 +188,19 @@ public class TabSetRenderer extends CoreRenderer {
 
         // The tabs that are depicted as clickable by the user
         List<String> clickableTabs = new ArrayList<String>();
-        ArrayList<Integer> disabledTabs = new ArrayList<Integer>();
+        boolean tabSetDisabled = tabSet.isDisabled();
+        ArrayList<Integer> disabledTabs = tabSetDisabled ? null : new ArrayList<Integer>();
         Map<String, TabPaneCache> tabPaneClientId2Cache =
                 new HashMap<String, TabPaneCache>();
         doTabs(facesContext, uiComponent, Do.GET_CLIENT_IDS, clickableTabs,
                 tabPaneClientId2Cache, disabledTabs);
+        if (tabSetDisabled) {
+            final int num = clickableTabs.size();
+            disabledTabs = new ArrayList<Integer>(num);
+            for (int i = 0; i < num; i++) {
+                disabledTabs.add(i);
+            }
+        }
 
         // The tabs whose contents we need to render. Subset of clickableTabs,
         // where the order has a different meaning: [safeIndex] -> tabClientId
@@ -367,12 +375,7 @@ public class TabSetRenderer extends CoreRenderer {
         }
         writer.writeAttribute(HTML.ID_ATTR, clientId+ "li"+ index, HTML.ID_ATTR);
         UIComponent labelFacet = ((TabPane)tab).getLabelFacet();
-		String styleClass = "";
-        if (tabSet.isDisabled()) {
-			styleClass += "ui-state-disabled";
-        } else {
-			styleClass += "ui-state-default";
-		}
+		String styleClass = "ui-state-default";
 		if ("top".equals(tabSet.getOrientation())) {
 			styleClass += " ui-corner-top";
 		} else if ("bottom".equals(tabSet.getOrientation())) {
@@ -500,7 +503,7 @@ public class TabSetRenderer extends CoreRenderer {
             TabPaneCache cache = orig.resolve(facesContext, tab);
             tabPaneClientId2Cache.put(clientId, cache);
             TabPaneCache revert = cache.getRevertTo();
-            if (tab.isDisabled()) {
+            if (disabledTabs != null && !disabledTabs.contains(index) && tab.isDisabled()) {
                 disabledTabs.add(index);
             }
             if (revert != null && revert != orig) {
