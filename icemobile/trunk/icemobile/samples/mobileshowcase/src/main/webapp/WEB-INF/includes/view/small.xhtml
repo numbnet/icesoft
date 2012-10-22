@@ -20,19 +20,15 @@
                 xmlns:icecore="http://www.icefaces.org/icefaces/core"
                 xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
     <mobi:pagePanel>
-
         <f:facet name="header">
-            <h:form id="toolbar2" prependId="false">
+            <h:form id="toolbar2" prependId="false" rendered="#{navigationModel.canGoBack}">
                 <h:commandLink type="back"
-                               value="Back"
+                               title="Back"
                                styleClass="mobi-button mobi-button-back"
-                               action="#{navigationModel.goBack}"
-                               rendered="#{navigationModel.canGoBack}"/>
-
-                #{mmsgs[navigationModel.selectedDestination.title]}
-
-                <ui:insert name="toolBarContent"/>
+                               action="#{navigationModel.goBack}"/>
             </h:form>
+            <span>#{mmsgs[navigationModel.selectedDestination.title]}</span>
+            <ui:insert name="toolBarContent"/>
         </f:facet>
 
         <f:facet name="body">
@@ -43,31 +39,25 @@
         </f:facet>
 
         <f:facet name="footer">
-            <div id="themeCtr" style="float:left;margin-left: 0.3em;">
-                <h:form>
-                    <icecore:singleSubmit rendered="false"/>
+            <h:form styleClass="theme">
+                <icecore:singleSubmit rendered="false"/>
 
-                    <span style="font-size:14px;color:white;font-weight:bold;">Theme: </span>
-                    <h:selectOneMenu value="#{themeBean.currentTheme}"
-                                     onchange="ice.s(event, this);">
-                        <f:selectItem itemLabel="Auto" itemValue=""/>
-                        <f:selectItem itemLabel="iPhone"
-                                      itemValue="iphone"/>
-                        <f:selectItem itemLabel="Android"
-                                      itemValue="android"/>
-                        <f:selectItem itemLabel="BlackBerry"
-                                      itemValue="bberry"/>
-                        <f:ajax disabled="true"/>
-                    </h:selectOneMenu>
-                </h:form>
-            </div>
-            <div>
-                <a href="http://www.icemobile.org/demos.html"
-                    style="float:right;margin-right: 0.3em;line-height:20px;">
-                    <h:graphicImage library="images" name="icemobile_thumb.png"
-                                    style="margin: 4px 0;"/>
-                </a>
-            </div>
+                <span style="font-size:14px;color:white;font-weight:bold;">Theme: </span>
+                <h:selectOneMenu value="#{themeBean.currentTheme}"
+                                 onchange="ice.s(event, this);">
+                    <f:selectItem itemLabel="Auto" itemValue=""/>
+                    <f:selectItem itemLabel="iPhone"
+                                  itemValue="iphone"/>
+                    <f:selectItem itemLabel="Android"
+                                  itemValue="android"/>
+                    <f:selectItem itemLabel="BlackBerry"
+                                  itemValue="bberry"/>
+                    <f:ajax disabled="true"/>
+                </h:selectOneMenu>
+            </h:form>
+            <a href="http://www.icemobile.org/demos.html" class="icon">
+                <h:graphicImage library="images" name="icemobile_thumb.png"/>
+            </a>
         </f:facet>
 
     </mobi:pagePanel>
