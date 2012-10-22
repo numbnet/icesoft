@@ -71,9 +71,10 @@ public class UtilInterface implements JavascriptInterface,
     private static final int PROGRESS_MSG = 0;
     private static final int RESPONSE_MSG = 1;
 
-    public UtilInterface (Activity container, WebView webView) {
+    public UtilInterface (Activity container, WebView webView, String userAgent) {
 	this.container = container;
 	this.view = webView;
+    this.userAgent = userAgent;
 	postQueue = new LinkedList();
 	responseQueue = new LinkedList();
 	handler = new Handler() {
@@ -148,7 +149,6 @@ public class UtilInterface implements JavascriptInterface,
 	//Log.e("ICEutil", "Request q=" + postQueue.size());
 	if (postQueue.size() == 1) {
 	    Thread thread = new Thread(this);
-	    userAgent = view.getSettings().getUserAgentString();  //Don't want to call this from in the new thread;
 	    thread.start();
 	}
     }
