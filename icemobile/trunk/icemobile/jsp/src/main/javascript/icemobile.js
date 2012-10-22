@@ -21,10 +21,11 @@ if (!window['ice']) {
 
 if (!window.console) {
     console = {};
-    if (ice.logInContainer)  {
+    if (ice.logInContainer) {
         console.log = ice.logInContainer;
     } else {
-        log = function(){};
+        log = function() {
+        };
     }
 }
 
@@ -120,7 +121,7 @@ ice.mobilesx = function mobilesx(element, uploadURL) {
     var baseURL = barURL.substring(0,
             barURL.lastIndexOf("/")) + "/";
 
-    if( !uploadURL ){
+    if (!uploadURL) {
         if (0 === formAction.indexOf("/")) {
             uploadURL = window.location.origin + formAction;
         } else if ((0 === formAction.indexOf("http://")) ||
@@ -130,16 +131,16 @@ ice.mobilesx = function mobilesx(element, uploadURL) {
             uploadURL = baseURL + formAction;
         }
     }
-    else{
+    else {
         uploadURL += '/';
     }
-    
+
 
     var returnURL = window.location;
     if ("" == returnURL.hash) {
         var wloc = "" + returnURL;
         var lastHash = wloc.lastIndexOf("#");
-        if (lastHash > 0)  {
+        if (lastHash > 0) {
             returnURL = wloc.substring(0, lastHash);
         }
         returnURL += "#icemobilesx";
@@ -154,11 +155,11 @@ ice.mobilesx = function mobilesx(element, uploadURL) {
         sessionidClause = "&JSESSIONID=" + escape(sessionid);
     }
     var sxURL = "icemobile://c=" + escape(command +
-            "?id=" + id + ampchar + (params?params:'')) +
+            "?id=" + id + ampchar + (params ? params : '')) +
             "&u=" + escape(uploadURL) + "&r=" + escape(returnURL) +
             sessionidClause +
             "&p=" + escape(ice.mobiserial(formID, false));
-    
+
     window.location = sxURL;
 }
 
@@ -1210,23 +1211,160 @@ ice.mobi.timespinner = {
         this.opened[clientId] = null;
     }
 };
-ice.mobi.setCookie = function setCookie(name,val,path){
-	if( !val ){
-		var date = new Date();
-		date.setTime(date.getTime()+(-1*24*60*60*1000));
-		var expires = "; expires="+date.toGMTString();
-		document.cookie = name + "=''; path=" + path + expires;
-	}
-	else{
-		document.cookie = name + '=' + encodeURIComponent(val) + '; path=' + path;
-	}
+ice.mobi.setCookie = function setCookie(name, val, path) {
+    if (!val) {
+        var date = new Date();
+        date.setTime(date.getTime() + (-1 * 24 * 60 * 60 * 1000));
+        var expires = "; expires=" + date.toGMTString();
+        document.cookie = name + "=''; path=" + path + expires;
+    }
+    else {
+        document.cookie = name + '=' + encodeURIComponent(val) + '; path=' + path;
+    }
 }
-ice.mobi.locationWithoutViewParam = function(){
-	var url = window.location.href;
-	url = url.replace(/l=[m|t|d]/,'');
-	url = url.replace(/\?&/,'\?');
-	return url;
+ice.mobi.locationWithoutViewParam = function() {
+    var url = window.location.href;
+    url = url.replace(/l=[m|t|d]/, '');
+    url = url.replace(/\?&/, '\?');
+    return url;
+}
+
+ice.mobi.storeLocation = function(id, coords) {
+    if (!coords) {
+        return;
+    }
+    var el = document.getElementById(id);
+    if (!el) {
+        return;
+    }
+    var elValue = (el.value) ? el.value : "";
+    var parts = elValue.split(',');
+    if (4 != parts.length) {
+        parts = new Array(4)
+    }
+    ;
+    parts[0] = coords.latitude;
+    parts[1] = coords.longitude;
+    parts[2] = coords.altitude;
+    el.value = parts.join();
+}
+
+ice.mobi.storeDirection = function(id, orient) {
+    console.log('__ StoreDirection! __');
+    if (orient.webkitCompassAccuracy <= 0) {
+        return;
+    }
+    var el = document.getElementById(id);
+    if (!el) {
+        return;
+    }
+    var elValue = (el.value) ? el.value : "";
+    var parts = elValue.split(',');
+    if (4 != parts.length) {
+        parts = new Array(4)
+    }
+    parts[3] = orient.webkitCompassHeading;
+    el.value = parts.join();
+}
+
+ice.mobi.geolocation = {
+    watchId: 0,
+    clientId: "",
+
+    /**
+     * Perform a call to watchPosition to fetch running updates to position.
+     *
+     * @param pClientId base id of hidden field
+     * @param highAccuracy true if highAccuracy results to be fetched
+     * @param maxAge oldest acceptable cached results (in ms)
+     * @param timeout longest time to wait for value (in ms)
+     */
+    watchLocation: function (pClientId, highAccuracy, maxAge, timeout) {
+
+        ice.mobi.geolocation.clientId = pClientId;
+        ice.mobi.geolocation.clearWatch();
+        // It seems like on Android (at least) that passing any argument at all
+        // for enableHighAccuracy enables high accuracy.
+        if (highAccuracy == 'false') {
+            console.log('Launching low precision watchPosition, maxAge: ' +
+                    maxAge + '(s), timeout: ' + timeout + '(s)');
+
+            ice.mobi.geolocation.watchId = navigator.geolocation.watchPosition(
+                    this.successCallback, this.errorCallback,
+                    { maximumAge: maxAge * 1000, timeout: timeout * 1000 }
+            );
+
+        } else {
+            console.log('Launching HIGH precision watchPosition, maxAge: ' +
+                    maxAge + '(s), timeout: ' + timeout + '(s)');
+            ice.mobi.geolocation.watchId = navigator.geolocation.watchPosition(
+                    this.successCallback, this.errorCallback,
+                    { enableHighAccuracy: true, maximumAge: maxAge * 1000, timeout: timeout * 1000 }
+            );
+        }
+        window.addEventListener('deviceorientation', ice.mobi.geolocation.orientationCallback);
+        console.log('Lauching positionWatch for client: ' + pClientId + ' watchId: ' +
+                ice.mobi.geolocation.watchId + ', highAccuracy? : ' + highAccuracy);
+    },
+
+    /**
+     * Perform a single call to the navigator getCurrentPosition call.
+     */
+    getLocation: function (pClientId, highAccuracy, maxAge, timeout) {
+
+        ice.mobi.geolocation.clientId = pClientId;
+        ice.mobi.geolocation.clearWatch();
+
+        console.log('Launching getCurrentPosition');
+        if (highAccuracy == 'false') {
+            console.log('Launching low precision getCurrentPosition, maxAge: ' +
+                    maxAge + '(s), timeout: ' + timeout + '(s)');
+
+            navigator.geolocation.getCurrentPosition(this.successCallback, this.errorCallback,
+                    { maximumAge: maxAge, timeout: timeout });
+        } else {
+            console.log('Launching HIGH precision getCurrentPosition, maxAge: ' +
+                    maxAge + '(s), timeout: ' + timeout + '(s)');
+            ice.mobi.geolocation.watchId = navigator.geolocation.getCurrentPosition(
+                    this.successCallback, this.errorCallback,
+                    { enableHighAccuracy: true, maximumAge: maxAge * 1000, timeout: timeout * 1000 }
+            );
+        }
+        window.addEventListener('deviceorientation', ice.mobi.geolocation.orientationCallback);
+    },
+
+    successCallback: function(pos) {
+        console.log('Position update for client: ' + ice.mobi.geolocation.clientId);
+        try {
+            inputId = ice.mobi.geolocation.clientId + "_locHidden";
+            console.log('LOGGING Position TO hidden field: ' + inputId);
+            ice.mobi.storeLocation(inputId, pos.coords);
+
+        } catch(e) {
+            console.log('Exception: ' + e);
+        }
+    },
+
+    errorCallback: function(positionError) {
+        console.log('Error in watchPosition, code: ' + positionError.code + ' Message: ' + positionError.message);
+        ice.mobi.geolocation.clearWatch();
+    },
+
+    orientationCallback: function(orient) {
+        inputId = ice.mobi.geolocation.clientId + "_locHidden";
+        ice.mobi.storeDirection(inputId, orient);
+    },
+
+    // Clear any existing positionUpdate listeners
+    clearWatch: function() {
+        if (ice.mobi.geolocation.watchId > 0) {
+            console.log('Existing positionWatch: ' + ice.mobi.geolocation.watchId + ' removed');
+            navigator.geolocation.clearWatch(ice.mobi.geolocation.watchId);
+            ice.mobi.geolocation.watchId = 0;
+        }
+        window.removeEventListener('deviceorientation', ice.mobi.geolocation.orientationCallback);
+    }
 }
 /* add js marker for progressive enhancement */
-document.documentElement.className = document.documentElement.className+' js';
+document.documentElement.className = document.documentElement.className + ' js';
 
