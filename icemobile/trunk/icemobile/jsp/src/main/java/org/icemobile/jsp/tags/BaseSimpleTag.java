@@ -76,5 +76,9 @@ public abstract class BaseSimpleTag  extends SimpleTagSupport {
     public void setId(String id) {
         this.id = id;
     }
+    
+    public String getClientId(){
+        return id;
+    }
 
 }
