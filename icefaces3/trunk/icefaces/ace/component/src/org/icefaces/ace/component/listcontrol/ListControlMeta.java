@@ -2,6 +2,7 @@ package org.icefaces.ace.component.listcontrol;
 
 import org.icefaces.ace.meta.annotation.Component;
 import org.icefaces.ace.meta.annotation.DefaultValueType;
+import org.icefaces.ace.meta.annotation.Field;
 import org.icefaces.ace.meta.annotation.Property;
 import org.icefaces.ace.meta.baseMeta.UIComponentBaseMeta;
 import org.icefaces.render.MandatoryResourceComponent;
@@ -101,4 +102,7 @@ public class ListControlMeta extends UIComponentBaseMeta {
             defaultValueType = DefaultValueType.EXPRESSION
     )
     private DualListPosition position;
+
+    @Field
+    ListControlRenderContext renderContext;
 }
