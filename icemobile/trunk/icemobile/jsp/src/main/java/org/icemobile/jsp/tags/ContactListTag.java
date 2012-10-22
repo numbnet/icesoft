@@ -16,65 +16,12 @@
 
 package org.icemobile.jsp.tags;
 
-import javax.servlet.jsp.PageContext;
-import javax.servlet.jsp.tagext.SimpleTagSupport;
 import java.io.IOException;
-import java.io.Writer;
-import java.util.logging.Logger;
 
-/**
- *
- */
-public class ContactListTag extends SimpleTagSupport {
+import org.icemobile.component.IContactList;
+import org.icemobile.renderkit.ContactListCoreRenderer;
 
-
-    private static Logger LOG = Logger.getLogger(ContactListTag.class.getName());
-
-    public void doTag() throws IOException {
-
-        PageContext pageContext = (PageContext) getJspContext();
-        Writer out = pageContext.getOut();
-
-        TagWriter tag = new TagWriter(pageContext);
-
-        tag.startDiv();
-        tag.writeAttribute("id", getId());
-
-        tag.startElement("input");
-        tag.writeAttribute("type", "button");
-
-
-        StringBuilder args = new StringBuilder();
-
-        if (pattern != null && !"".equals(pattern)) {
-            args.append("pattern=").append(pattern);
-        }
-
-
-        if (multipleSelect) {
-            if (args.length() > 0) {
-                args.append("&");
-            }
-            args.append("select=multiple");
-        }
-
-        if (fields != null && !"".equals(fields)) {
-            if (args.length() > 0) {
-                args.append("&");
-            }
-            args.append("fields=").append(fields);
-        }
-
-        if (args.length() > 0) {
-            tag.writeAttribute("onclick", "ice.fetchContacts('" + getId() + "', '" + args.toString() + "' );");
-        } else {
-            tag.writeAttribute("onclick", "ice.fetchContacts('" + getId() + "' );");
-        }
-        tag.writeAttribute("value", getLabel());
-        tag.endElement();
-        tag.endElement();
-
-    }
+public class ContactListTag extends BaseSimpleTag implements IContactList {
 
     private String label;
     private String id;
@@ -82,6 +29,11 @@ public class ContactListTag extends SimpleTagSupport {
     private boolean multipleSelect;
     private String fields;
 
+    public void doTag() throws IOException {
+        
+        ContactListCoreRenderer renderer = new ContactListCoreRenderer();
+        renderer.encode(this,  new TagWriter(getContext()));
+    }
 
     public String getLabel() {
         return label;
@@ -121,5 +73,9 @@ public class ContactListTag extends SimpleTagSupport {
 
     public void setFields(String fields) {
         this.fields = fields;
+    }
+
+    public String getClientId() {
+        return id;
     }
 }
