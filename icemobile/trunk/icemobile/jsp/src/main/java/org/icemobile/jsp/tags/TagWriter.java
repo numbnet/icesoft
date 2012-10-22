@@ -15,7 +15,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Stack;
 
+import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.PageContext;
+import javax.servlet.jsp.tagext.JspFragment;
 
 import org.icemobile.renderkit.IResponseWriter;
 
@@ -67,12 +69,24 @@ public class TagWriter implements IResponseWriter{
     }
     
     public void writeAttribute(String name, Object value) throws IOException{
-         out.write(SPACE);
-         out.write(name);
-         out.write(SQ);
-         out.write(value != null ? value.toString() : EM);
-         out.write(EQ);
+         if( value != null ){
+             out.write(SPACE);
+             out.write(name);
+             out.write(SQ);
+             out.write(value != null ? value.toString() : EM);
+             out.write(EQ);
+         }
     }
+    
+    public void writeAttribute(String name, String value) throws IOException{
+        if( value != null && !"".equals(value)){
+            out.write(SPACE);
+            out.write(name);
+            out.write(SQ);
+            out.write(value != null ? value.toString() : EM);
+            out.write(EQ);
+        }
+   }
     
     public void writeAttribute(String name, boolean value) throws IOException{
         out.write(SPACE);
@@ -104,6 +118,11 @@ public class TagWriter implements IResponseWriter{
         out.write(name);
         lastElementClosed = false;
         elementStack.push(name);
+    }
+    
+    public void closeOffTag() throws IOException{
+        out.write(GT);
+        lastElementClosed = true;
     }
     
     public void endElement() throws IOException{
@@ -225,8 +244,4 @@ public class TagWriter implements IResponseWriter{
     public void startElement(String name, Object component) throws IOException {
         startElement(name);        
     }
-
-    
-    
-
 }
