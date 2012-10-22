@@ -13,19 +13,24 @@
  * express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-.mobi-tabset-tabs > ul{
-    color:#d3d3d3;
-}
-.mobi-tabset-tabs > ul li{
-    border-bottom: 2px solid #999999;
+.mobi-tabset > .mobi-tabset-tabs > ul > li{
     background-color: black;
-
+    color:#d3d3d3;
+    line-height:39px;
 }
-.activeTab {
+.mobi-tabset.mobi-tabset-tabs-bottom > .mobi-tabset-tabs > ul > li{
+    border-left: 1px solid #A5A9B6;
+}
+.mobi-tabset.mobi-tabset-tabs-bottom > .mobi-tabset-tabs > ul > li{
+    border-top: 1px solid #A5A9B6;
+}
+.mobi-tabset.mobi-tabset-tabs-top > .mobi-tabset-tabs > ul > li{
+    border-bottom: 1px solid #A5A9B6;
+}
+.mobi-tabset > .mobi-tabset-tabs > ul > li.activeTab {
     background: -moz-linear-gradient(top, #cccccc, #999999) repeat scroll 0 0 #999999 !important;
+    background-color: #999999;
     background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0, #cccccc), color-stop(1, #999999)) !important;
     filter: progid:DXImageTransform.Microsoft.gradient(startColorStr = '#cccccc', EndColorStr = '#999999');
-    background-color: #999999;
-    border-bottom: 2px solid #999999 !important;
     color:white;
 }

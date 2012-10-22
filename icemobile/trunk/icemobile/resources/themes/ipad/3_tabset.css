@@ -13,90 +13,42 @@
  * express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-.mobi-tabset {
-    display: block;
-    background-color: white;
-    margin: 0;
-    padding: 0;
-    width: 100%;
-    float:left;
-}
-.mobi-tabset-tabs {
-    text-align: center;
-}
 .mobi-tabset-tabs-top > .mobi-tabset-tabs{
     border-bottom:1px solid #7A8091;
-    border-top:1px solid #7A8091;
-    width:100%;
-    float:left;
-    position: relative;
-    top: 0;
-    left:0;
-}
-.mobi-tabset-tabs-top .mobi-tabset-tabs > ul{
-    border-bottom: none;
 }
 .mobi-tabset-tabs-bottom > .mobi-tabset-tabs{
     border-top:2px solid #f4f4f6;
     -webkit-box-shadow: 0px -3px 5px grey;
     box-shadow: 0px -3px 5px grey;
-    position:relative;
 }
-.mobi-tabset-tabs-bottom .mobi-tabset-tabs > ul{
+.mobi-tabset > .mobi-tabset-tabs > ul{
+    background-color: #e8e9ea;
+}
+.mobi-tabset-tabs-bottom > .mobi-tabset-tabs > ul{
     border-top:1px solid #424242;
 }
-.mobi-tabset-tabs > ul{
-    display: block;
-    width:100%;
-    list-style: none outside none;
-    margin: 0; padding: 0;
-    background-color: #e8e9ea;
-    color:#868688;
-    font-weight: bold;
-    background-image: none;
-}
-.mobi-tabset-tabs > ul li{
-    display: inline-block;
+.mobi-tabset > .mobi-tabset-tabs > ul > li{
     background: -moz-linear-gradient(top, #f1f1f2, #d9dadb) repeat scroll 0 0 #d9dadb;
     background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0, #f1f1f2), color-stop(1, #d9dadb));
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorStr = '#f1f1f2', EndColorStr = '#d9dadb');
-    text-align: center;
-    padding: 3px 10px;
-    text-shadow: 0 1px 1px #ffffff;
     border: 1px solid #999;
+    color:#868688;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorStr = '#f1f1f2', EndColorStr = '#d9dadb');
+    font-weight: bold;
+    line-height: 28px;
     margin: 5px -5px 5px 0;
-    cursor: pointer;
-    line-height: inherit;
+    padding: 0 10px;
+    text-shadow: 0 1px 1px #ffffff;
 }
-.mobi-tabset-tabs > ul li:first-child{
+.mobi-tabset > .mobi-tabset-tabs > ul > li:first-child{
     border-top-left-radius:5px;
     border-bottom-left-radius:5px;
 }
-.mobi-tabset-tabs > ul li:last-child{
+.mobi-tabset > .mobi-tabset-tabs > ul > li:last-child{
     border-top-right-radius:5px;
     border-bottom-right-radius:5px;
 }
-.activeTab {
-    background-origin: padding;
-    border-radius:4px;
-    background-color: #636363;
+.mobi-tabset > .mobi-tabset-tabs > ul > li.activeTab {
     background: -moz-linear-gradient(top, #f1f1f2, #b5b6b7) repeat scroll 0 0 #c1c2c3 !important;
     background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0, #f1f1f2), color-stop(1, #b5b6b7)) !important;
     color:#525253;
-    border-radius:0;
-
 }
-.mobi-tabset-content {
-    text-align: left;
-}
-.mobi-tabset-tabs-top .mobi-tabset-content{
-    height:100%;
-    padding-top:40px;
-}
-.mobi-tabset-tabs-top-header > .mobi-tabset-tabs{
-    margin-top:0; /* TODO */
-}
-.mobi-tabpage-hidden {
-    display: none;
-}
-.mobi-tabset-tabs-bottom-footer > .mobi-tabset-tabs{ margin-bottom:0;}

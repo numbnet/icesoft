@@ -27,6 +27,9 @@
     border-top:1px solid #7A8091;
     width:100%;
     float:left;
+    position: relative;
+    top: 0;
+    left:0;
 }
 .mobi-tabset-tabs-top .mobi-tabset-tabs > ul{
     border-bottom: none;
@@ -80,11 +83,6 @@
 .mobi-tabset-tabs-bottom > .mobi-tabset-tabs{
     position: relative;
     bottom: 0;
-    left:0;
-}
-.mobi-tabset-tabs-top > .mobi-tabset-tabs{
-    position: relative;
-    top: 0;
     left:0;
 }
 .mobi-tabset-tabs-top-header > .mobi-tabset-tabs{
