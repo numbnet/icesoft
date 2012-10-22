@@ -1,4 +1,4 @@
-<%@ page import="org.icemobile.jsp.tags.TagUtil" %>
+<%@ page import="org.icemobile.util.Utils" %>
 <head>
 	<title><fmt:message key="title" /></title>
 	<mobi:deviceResource includePush="true"/>
@@ -8,7 +8,7 @@
 	<script type="text/javascript" src='<c:url value="/resources/javascript/mediacast.js"/>'></script>
     <script type="text/javascript">
         <%
-            String cloudPushId = TagUtil.getCloudPushId(pageContext);
+            String cloudPushId = Utils.getCloudPushId(request);
             if (null != cloudPushId) {
                 out.println("window.addEventListener('load', function() { ice.push.parkInactivePushIds('" + cloudPushId + "'); }, false);");
             }
