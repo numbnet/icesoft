@@ -456,40 +456,44 @@
             <rtexprvalue>true</rtexprvalue>
         </attribute>
         <attribute>
-            <name>continuousUpdates</name>
-            <required>false</required>
-            <rtexprvalue>true</rtexprvalue>
             <description>If true, javascript call resolves to watchPosition,
                 else
                 uses getCurrentPosition for a one time update
             </description>
-        </attribute>
-        <attribute>
-            <name>enableHighAccuracy</name>
+            <name>continuousUpdates</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
+            <type>boolean</type>
+        </attribute>
+        <attribute>
             <description>Valid values are true, false, and asNeeded. Defaults to
                 asNeeded. Indicates
                 whether or not to turn on the GPS hardware. Some devices require
                 this setting to
                 fetch any reading at all
             </description>
+            <name>enableHighPrecision</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+            <type>java.lang.String</type>
         </attribute>
         <attribute>
+            <description>Define the max age (in seconds) of an acceptable cached
+                Position reading.
+            </description>
             <name>maxAge</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <description>Define the max age (in ms) of an acceptable cached
-                Position reading.
-            </description>
+            <type>int</type>
         </attribute>
         <attribute>
+            <description>Defines the maximum time allowed for a successful
+                update (in seconds)
+            </description>
             <name>timeout</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <description>Defines the maximum time allowed for a successful
-                update (in ms)
-            </description>
+            <type>int</type>
         </attribute>
     </tag>
 
