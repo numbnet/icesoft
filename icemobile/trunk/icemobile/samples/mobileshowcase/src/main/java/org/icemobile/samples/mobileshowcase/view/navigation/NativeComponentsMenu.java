@@ -16,18 +16,20 @@
 
 package org.icemobile.samples.mobileshowcase.view.navigation;
 
+import java.io.Serializable;
+
+import javax.annotation.PostConstruct;
+import javax.faces.bean.ApplicationScoped;
+import javax.faces.bean.ManagedBean;
+
 import org.icemobile.samples.mobileshowcase.view.examples.device.camcorder.CamcorderBean;
 import org.icemobile.samples.mobileshowcase.view.examples.device.camera.CameraBean;
+import org.icemobile.samples.mobileshowcase.view.examples.device.contacts.ContactsBean;
 import org.icemobile.samples.mobileshowcase.view.examples.device.microphone.MicrophoneBean;
 import org.icemobile.samples.mobileshowcase.view.examples.device.notification.NotificationBean;
 import org.icemobile.samples.mobileshowcase.view.examples.device.qrcode.QrCodeBean;
 import org.icemobile.samples.mobileshowcase.view.examples.device.reality.RealityBean;
 import org.icemobile.samples.mobileshowcase.view.metadata.annotation.MenuLink;
-
-import javax.annotation.PostConstruct;
-import javax.faces.bean.ApplicationScoped;
-import javax.faces.bean.ManagedBean;
-import java.io.Serializable;
 
 /**
  * Menu items for native integration
@@ -52,7 +54,10 @@ import java.io.Serializable;
                         examplePanelId = "qrcode"),
                 @MenuLink(title = "menu.native.reality.title",
                         exampleBeanName = RealityBean.BEAN_NAME,
-                        examplePanelId = "reality")
+                        examplePanelId = "reality"),
+                @MenuLink(title = "menu.native.contacts.title",
+                exampleBeanName = ContactsBean.BEAN_NAME,
+                examplePanelId = "contacts")
         })
 @ManagedBean(name = NativeComponentsMenu.BEAN_NAME)
 @ApplicationScoped
