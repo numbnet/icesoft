@@ -85,6 +85,7 @@
     [self makeFancyButton:quitButton];
     [self makeFancyButton:reloadButton];
     [self makeFancyButton:clearButton];
+    self.isFancy = YES;
 }
 
 - (void)update {
