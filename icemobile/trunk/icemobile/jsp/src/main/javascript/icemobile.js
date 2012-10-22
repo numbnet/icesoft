@@ -1326,7 +1326,7 @@ ice.mobi.geolocation = {
             console.log('Launching HIGH precision getCurrentPosition, maxAge: ' +
                     maxAge + '(s), timeout: ' + timeout + '(s)');
             ice.mobi.geolocation.watchId = navigator.geolocation.getCurrentPosition(
-                    this.successCallback, this.errorCallback,
+                    this.oneTimeSuccessCallback, this.errorCallback,
                     { enableHighAccuracy: true, maximumAge: maxAge * 1000, timeout: timeout * 1000 }
             );
         }
@@ -1343,6 +1343,14 @@ ice.mobi.geolocation = {
         } catch(e) {
             console.log('Exception: ' + e);
         }
+    },
+
+    // Success Callback for getCurrentPosition  in that it removes deviceorientation listener
+    oneTimeSuccessCallback: function(pos) {
+        console.log('Position update for client: ' + ice.mobi.geolocation.clientId);
+        inputId = ice.mobi.geolocation.clientId + "_locHidden";
+        ice.mobi.storeLocation(inputId, pos.coords);
+        clearWatch();
     },
 
     errorCallback: function(positionError) {
