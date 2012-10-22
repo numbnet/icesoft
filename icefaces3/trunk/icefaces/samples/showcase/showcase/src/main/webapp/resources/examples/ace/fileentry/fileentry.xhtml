@@ -77,14 +77,14 @@
                 <br/>
                 <hr/>
                 <br/>
-                <h:dataTable id="tbl" value="#{fileEntry.fileData}" var="fileDataVal">
-                    <h:column>
+                <ace:dataTable id="tbl" value="#{fileEntry.fileData}" var="fileDataVal">
+                    <ace:column>
                         <f:facet name="header">
                             <h:outputText value="Upload results"/>
                         </f:facet>
                         <h:outputText id="fileData" value="#{fileDataVal}"/>
-                    </h:column>
-                </h:dataTable>
+                    </ace:column>
+                </ace:dataTable>
                 <h:messages id="msgs" layout="table" for="example-form:file-entry"/>
             </ace:panel>
         </h:form>
