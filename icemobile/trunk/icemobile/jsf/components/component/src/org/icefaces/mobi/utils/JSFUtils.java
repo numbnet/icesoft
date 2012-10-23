@@ -202,7 +202,6 @@ public class JSFUtils {
         if (!child.isRendered()) {
             return;
         }
-
         child.encodeBegin(facesContext);
         if (child.getRendersChildren()) {
             child.encodeChildren(facesContext);
