@@ -55,20 +55,9 @@
         var addElements = true;
         var addDelay = 250;
 
-        var overlayWidth = 0, overlayHeight = 0;
-        if (container == document.body) {
-            overlayWidth = Math.max(document.documentElement.scrollWidth,
-                Math.max(document.body.scrollWidth, document.body.parentNode.offsetWidth));
-            overlayHeight = Math.max(document.documentElement.scrollHeight,
-                Math.max(document.body.scrollHeight, document.body.parentNode.offsetHeight));
-        } else {
-            overlayWidth = container.offsetWidth;
-            overlayHeight = container.offsetHeight;
-        }
         var overlay = document.createElement('div');
         overlay.className = 'ui-widget-overlay';
-        var overlayStyle = 'top: 0px; left: 0px; width: '+overlayWidth+'px; height: '+overlayHeight+'px; position: absolute; z-index: 28000; zoom: 1;';
-        overlay.style.cssText = overlayStyle + ' display: none;';
+        overlay.style.cssText = 'position: absolute; z-index: 28000; zoom: 1; display: none;';
         //console.log('Overlay  Built overlay');
         if (container == document.body) {
             container.appendChild(overlay);
@@ -113,8 +102,18 @@
                 revertElem.css('display', '');
                 //console.log('Overlay  setTimeout  showed revert');
             }
-            if (overlay && overlayStyle) {
-                overlay.style.cssText = overlayStyle;
+            if (overlay) {
+                var overlayWidth = 0, overlayHeight = 0;
+                if (container == document.body) {
+                    overlayWidth = Math.max(document.documentElement.scrollWidth,
+                        Math.max(document.body.scrollWidth, document.body.parentNode.offsetWidth));
+                    overlayHeight = Math.max(document.documentElement.scrollHeight,
+                        Math.max(document.body.scrollHeight, document.body.parentNode.offsetHeight));
+                } else {
+                    overlayWidth = container.offsetWidth;
+                    overlayHeight = container.offsetHeight;
+                }
+                overlay.style.cssText = 'top: 0px; left: 0px; width: '+overlayWidth+'px; height: '+overlayHeight+'px; position: absolute; z-index: 28000; zoom: 1;';
                 if (container != document.body) {
                     ice.ace.jq(overlay).position({
                         my: 'left top',
