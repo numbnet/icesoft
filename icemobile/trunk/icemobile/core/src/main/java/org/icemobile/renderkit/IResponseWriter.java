@@ -11,5 +11,6 @@ public interface IResponseWriter {
     public void startElement(String name) throws IOException;
     public void endElement(String name) throws IOException;
     public void writeText(String text) throws IOException;
+    public void closeOffTag() throws IOException;
 
 }

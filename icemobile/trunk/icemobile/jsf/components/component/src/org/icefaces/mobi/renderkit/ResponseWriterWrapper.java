@@ -43,4 +43,8 @@ public class ResponseWriterWrapper implements IResponseWriter{
         wrapped.startElement(name, null);        
     }
 
+    public void closeOffTag() throws IOException {
+        //not necessary in jsp content        
+    }
+
 }
