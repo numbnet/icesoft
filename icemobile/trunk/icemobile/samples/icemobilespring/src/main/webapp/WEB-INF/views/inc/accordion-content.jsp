@@ -5,23 +5,23 @@
 <%@ taglib prefix="push" uri="http://www.icepush.org/icepush/jsp/icepush.tld"%>
 <form:form id="accordionform" method="POST" modelAttribute="accordionBean">
 
+     <mobi:fieldsetGroup>
+        <mobi:fieldsetRow>
+            The accordion component shows one active content pane at time.
+            Non-active content panes are represented as collapsed views.
+        </mobi:fieldsetRow>
+    </mobi:fieldsetGroup>
+
     <mobi:accordion id="accordionOne" selectedId="${accordionBean.accordionOne}" autoheight="true"  >
         <mobi:content>
-            <mobi:contentPane title="Fixed (desktop) items" id="tab1" >
-
-                <div>
-                  <img src="resources/desktop.png"></img>
-                </div>
+            <mobi:contentPane title="ICE Sailor" id="accordionPane1" >
+                <%@ include file="inc-icesailor.jsp" %>
             </mobi:contentPane>
-            <mobi:contentPane title="Mobile items" id="tab2">
-                 <div>
-                  <img src="resources/laptop.png"></img>
-                </div>
+            <mobi:contentPane title="ICE Breaker" id="accordionPane2">
+                 <%@ include file="inc-icebreaker.jsp" %>
             </mobi:contentPane>
-            <mobi:contentPane title="Ultra mobile items" id="tab3">
-                <div>
-                  <img src="resources/pda.png"></img>
-                </div>
+            <mobi:contentPane title="ICE Skate" id="accordionPane3">
+                <%@ include file="inc-iceskate.jsp" %>
             </mobi:contentPane>
         </mobi:content>
     </mobi:accordion>

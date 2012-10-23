@@ -187,3 +187,15 @@ html.ipad #splash > h5, html.iphone #splash > h5{
 html.honeycomb h3{
     border-bottom: 1px solid #6595F9;
 }
+.example img{
+    display:inline-block;
+    width:20%;
+    max-width:100px;
+}
+.example p{
+    display: inline-block;
+    width: 76%;
+    margin: 0;
+    vertical-align: top;
+    padding: 0 1%;
+}
