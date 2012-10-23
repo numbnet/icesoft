@@ -28,6 +28,7 @@
 @synthesize nativeInterface;
 @synthesize selectedPlace;
 @synthesize compassSwitch;
+@synthesize compassPref;
 @synthesize toolbar;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -42,11 +43,13 @@
 - (void)viewWillAppear:(BOOL)animated  {
 	[super viewWillAppear:animated];
 	ARView *arView = (ARView *)self.view;
-    arView.useCompass = compassSwitch.on; 
     arView.nativeInterface = self.nativeInterface; 
     [self.toolbar setBackgroundColor:[UIColor colorWithPatternImage:
             [UIImage imageNamed:@"bar.png"]] ];
 	[arView start];
+    //compass markers still getting stuck
+//    self.compassSwitch.on = self.compassPref;
+//    arView.useCompass = compassSwitch.on; 
 }
 
 - (void)viewDidAppear:(BOOL)animated  {
@@ -108,11 +111,17 @@
 }
 
 - (IBAction) doCancel  {
+	ARView *arView = (ARView *)self.view;
+    self.compassSwitch.on = NO;
+    [arView setCompass:NO];
+    [arView stop];
     [self.nativeInterface augDismiss];
 }
 
 - (IBAction) compassChanged:(UISwitch *)theSwitch {
 	ARView *arView = (ARView *)self.view;
+    self.compassPref = theSwitch.on;
+    NSLog(@"compassPref %d", self.compassPref);
     [arView setCompass:theSwitch.on];
 }
 
@@ -133,6 +142,7 @@
                          (fabs(offTouch.y - placeCenter.y) < 25) );
         if (inPlace)  {
             self.selectedPlace = place.placeName;
+            [arView stop];
             [self.nativeInterface augDone];
             return;
         }

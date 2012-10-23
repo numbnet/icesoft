@@ -22,6 +22,7 @@
     NativeInterface *nativeInterface;
     NSString *selectedPlace;
     UISwitch *compassSwitch;
+    BOOL compassPref;
     UIView *toolbar;
 }
 
@@ -29,6 +30,7 @@
 @property (retain) NativeInterface *nativeInterface;
 @property (nonatomic, retain) NSString *selectedPlace;
 @property (nonatomic, retain) IBOutlet UISwitch *compassSwitch;
+@property (nonatomic) BOOL compassPref;
 @property (nonatomic, retain) IBOutlet UIView *toolbar;
 
 - (void) setPlaceLabels:(NSArray *)places;
