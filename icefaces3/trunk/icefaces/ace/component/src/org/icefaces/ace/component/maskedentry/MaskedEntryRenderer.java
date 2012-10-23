@@ -27,6 +27,7 @@
 package org.icefaces.ace.component.maskedentry;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.faces.component.UIComponent;
@@ -136,7 +137,8 @@ public class MaskedEntryRenderer extends InputRenderer {
 		writer.startElement("input", null);
 		writer.writeAttribute("name", fieldClientId, null);
 		writer.writeAttribute("type", "text", null);
-		
+        writer.writeAttribute("role", "textbox", null);
+
 		String valueToRender = ComponentUtils.getStringValueToRender(context, maskedEntry);
         boolean hasLabel = (Boolean) labelAttributes.get("hasLabel");
         String labelPosition = (String) labelAttributes.get("labelPosition");
@@ -160,6 +162,15 @@ public class MaskedEntryRenderer extends InputRenderer {
 		}
 		
 		renderPassThruAttributes(context, maskedEntry, HTML.INPUT_TEXT_ATTRS);
+
+        final MaskedEntry compoent = maskedEntry;
+        Map<String, Object> ariaAttributes = new HashMap<String, Object>() {{
+            put("readonly", compoent.isReadonly());
+            put("required", compoent.isRequired());
+            put("disabled", compoent.isDisabled());
+            put("invalid", !compoent.isValid());
+        }};
+        writeAriaAttributes(ariaAttributes, labelAttributes);
 
         if(maskedEntry.isDisabled()) writer.writeAttribute("disabled", "disabled", "disabled");
         if(maskedEntry.isReadonly()) writer.writeAttribute("readonly", "readonly", "readonly");
