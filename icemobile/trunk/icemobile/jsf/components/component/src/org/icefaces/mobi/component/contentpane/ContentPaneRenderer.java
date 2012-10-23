@@ -30,7 +30,6 @@ import org.icefaces.mobi.component.tabset.TabSet;
 import org.icefaces.mobi.renderkit.BaseLayoutRenderer;
 import org.icefaces.mobi.utils.HTML;
 import org.icefaces.mobi.utils.JSFUtils;
-import org.icefaces.mobi.utils.Utils;
 
 
 public class ContentPaneRenderer extends BaseLayoutRenderer {
