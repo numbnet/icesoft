@@ -29,16 +29,14 @@
     <h:form id="conform">
         <h4>Contact List</h4>
 
-        <mobi:fetchContact id="contactOne" label="fetch Contacts" pattern="p" />
-
-        <mobi:commandButton buttonType='important'
-                            style="float:right;margin-right: 25px;"
-                            value="Submit"
-                            type="submit"/><br/>
-        <h4>Contact List Value Echo</h4>
         <mobi:fieldsetGroup inset="true">
-            <mobi:fieldsetRow>
+            <mobi:fieldsetRow style="text-align:center;">
                 <mobi:getEnhanced/>
+                <mobi:fetchContact id="contactOne" label="fetch Contacts" pattern="p" 
+                    value="#{contactsBean.contactOne}"/>
+                <mobi:commandButton buttonType='important'
+                                    value="Submit"
+                                    type="submit"/>
             </mobi:fieldsetRow>
             <mobi:fieldsetRow>
                 <label>Selected Contact:</label>

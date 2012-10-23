@@ -6,6 +6,16 @@ public class CSSUtils {
     
     public static final String CSS_COMPRESSION_POSTFIX = "-min";
     
+    /* Common CSS Class Names */
+    public static final String HIDDEN = "ui-screen-hidden";
+    
+    /* Mobi Style Classes */
+    public static final String STYLECLASS_BUTTON = "mobi-button";
+    public static final String STYLECLASS_BUTTON_DEFAULT = "mobi-button-default";
+    public static final String STYLECLASS_BUTTON_ATTENTION = "mobi-button-attention";
+    public static final String STYLECLASS_BUTTON_IMPORTANT = "mobi-button-important";
+    public static final String STYLECLASS_BUTTON_BACK = "mobi-button-back";
+    
     public enum Theme{ IPAD, IPHONE, BBERRY, ANDROID, HONEYCOMB, LIGHTNING;
         public String fileName(){
             return this.name().toLowerCase();
