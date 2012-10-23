@@ -43,6 +43,9 @@ import java.util.*;
 
 @MandatoryResourceComponent(tagName="dataTable", value="org.icefaces.ace.component.datatable.DataTable")
 public class DataTableRenderer extends CoreRenderer {
+    private static String ACE_MESSAGES_BUNDLE = "org.icefaces.ace.resources.messages";
+    private static String MESSAGE_KEY_PREFIX = "org.icefaces.ace.component.datatable.";
+
     @Override
 	public void decode(FacesContext context, UIComponent component) {
         DataTable table = (DataTable) component;
@@ -375,7 +378,27 @@ public class DataTableRenderer extends CoreRenderer {
             if (rowCountArray.length > 0) {
                 configJson.beginArray("rowsPerPageOptions");
                 for (String i : rowCountArray)
-                    configJson.item(Integer.parseInt(i.trim()));
+                    try {
+                        configJson.item(Integer.parseInt(i.trim()));
+                    } catch (NumberFormatException e) {
+                        if ("all".equals(i.toLowerCase())) {
+                            Locale locale = context.getViewRoot().getLocale();
+                            ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+                            String bundleName = context.getApplication().getMessageBundle();
+
+                            if (classLoader == null) classLoader = bundleName.getClass().getClassLoader();
+                            if (bundleName == null) bundleName = ACE_MESSAGES_BUNDLE;
+
+                            ResourceBundle bundle = ResourceBundle.getBundle(bundleName, locale, classLoader);
+
+                            String label = bundle.getString(MESSAGE_KEY_PREFIX + "ALL_LABEL");
+
+                            configJson.beginMap();
+                            configJson.entry("text",label);
+                            configJson.entry("value",0);
+                            configJson.endMap();
+                        } else throw e;
+                    }
                 configJson.endArray();
             }
         }
