@@ -31,7 +31,7 @@ public class ContactListMeta {
     private String pattern;
     
     @Property(tlddoc = "If true, list allows for multiple user selections")
-    private boolean multipleSelect;
+    private boolean multipleSelect; 
     
     @Property(tlddoc = "Can contain one or more of contact, email, and phone fields for " +
     		"retrieval in a csv list. Default is contact information")
@@ -48,6 +48,9 @@ public class ContactListMeta {
     @Property(tlddoc = "style class will be rendered on the root element of " +
             "this component.")
     private String styleClass;
+    
+    @Property(tlddoc = "The result")
+    private String value;
 
 
 
