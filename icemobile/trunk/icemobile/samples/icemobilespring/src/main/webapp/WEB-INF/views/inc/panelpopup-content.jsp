@@ -5,7 +5,7 @@
 <%@ taglib prefix="push" uri="http://www.icepush.org/icepush/jsp/icepush.tld"%>
 <div class="panelContent">
 
-    <mobi:fieldsetGroup id="groupOne" inset="true">
+    <mobi:fieldsetGroup id="groupOne">
         <mobi:fieldsetRow>
             <form:form id="panelform" method="POST"  modelAttribute="panelPopupBean" cssClass="cleanform">
               <input type="button" value="Open Popup" onclick="ice.mobi.panelpopup.open('panelConfirmation');" />
@@ -48,7 +48,7 @@
 
     <h4> PanelPopup example with auto generated close button </h4>
 
-    <mobi:fieldsetGroup id="groupOne" inset="true">
+    <mobi:fieldsetGroup id="groupOne">
         <mobi:fieldsetRow>
             <form:form id="panelTwoform" method="POST"  modelAttribute="panelPopupBean" cssClass="cleanform">
               <input type="button" value="Open Popup (with client dismiss)" onclick="ice.mobi.panelpopup.open('panelClient');" />

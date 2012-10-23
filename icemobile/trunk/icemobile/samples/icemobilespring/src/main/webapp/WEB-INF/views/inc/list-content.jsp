@@ -5,7 +5,7 @@
 <%@ taglib prefix="push" uri="http://www.icepush.org/icepush/jsp/icepush.tld"%>
 <form:form id="listform" method="POST" modelAttribute="listBean">
 
-    <mobi:fieldsetGroup id="groupOne" inset="true">
+    <mobi:fieldsetGroup id="groupOne">
         <mobi:fieldsetRow>
             A demonstration of the mobi:list, which allows content to be organized
             into styled lists.
@@ -14,7 +14,7 @@
 
     <h4>List with inset and Grouping</h4>
 
-    <mobi:outputList inset="true" id="secondList">
+    <mobi:outputList id="secondList">
         <mobi:outputListItem group="true" >
            List 
         </mobi:outputListItem>

@@ -6,7 +6,7 @@
 <form:form id="geolocationform" method="POST"
            modelAttribute="geolocationBean" >
 
-    <mobi:fieldsetGroup inset="true">
+    <mobi:fieldsetGroup>
         <mobi:fieldsetRow>
             <label>Press for geolocation: </label>
             <mobi:geolocation id="geo1" name="geolocation"/>
@@ -20,7 +20,7 @@
     </mobi:fieldsetGroup>
 
     <h4>Position</h4>
-    <mobi:fieldsetGroup inset="true">
+    <mobi:fieldsetGroup>
         <mobi:fieldsetRow>
             <label>Latitude:</label>
             <label style="float:right">${geolocationBean.lat}</label>

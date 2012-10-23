@@ -4,7 +4,7 @@
 <%@ taglib uri="http://www.icemobile.org/tags" prefix="mobi" %>
 <%@ taglib prefix="push" uri="http://www.icepush.org/icepush/jsp/icepush.tld"%>
 <form:form id="flipswitchform" method="POST" modelAttribute="flipSwitchBean">
-   <mobi:fieldsetGroup inset="true">
+   <mobi:fieldsetGroup>
         <mobi:fieldsetRow>
             <label>Auto-Capitalization</label>
             <mobi:flipswitch id="onOffFlipSwitch" labelOn="On"
@@ -36,7 +36,7 @@
                         value="Submit"
                         type="submit"/><br>
     <h4>Flip Switch Value Echo</h4>
-    <mobi:fieldsetGroup inset="true">
+    <mobi:fieldsetGroup>
         <mobi:fieldsetRow>
             <label>Auto-Capitalization</label>
             <label style="float:right">${flipSwitchBean.onOffFlipSwitch}</label>

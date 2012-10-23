@@ -5,7 +5,7 @@
 <%@ taglib prefix="push" uri="http://www.icepush.org/icepush/jsp/icepush.tld"%>
 <form:form id="datetimeform" method="POST" modelAttribute="dateTimeSpinnerBean">
 
-    <mobi:fieldsetGroup inset="true">
+    <mobi:fieldsetGroup>
         <mobi:fieldsetRow>
             <label>Date Spinner</label>
             <mobi:dateSpinner name="dateOne" id="d1"
@@ -18,7 +18,7 @@
         </mobi:fieldsetRow>
     </mobi:fieldsetGroup>
     <h4>Spinner Value Echo</h4>
-    <mobi:fieldsetGroup inset="true">
+    <mobi:fieldsetGroup>
         <mobi:fieldsetRow>
             <label>Date</label>
             <label style="float:right">${dateTimeSpinnerBean.dateOne}</label>
