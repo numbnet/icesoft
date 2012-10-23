@@ -440,7 +440,7 @@ static char base64EncodingTable[64] = {
 }
 
 - (BOOL)peoplePickerNavigationController:(ABPeoplePickerNavigationController *)peoplePicker shouldContinueAfterSelectingPerson:(ABRecordRef)person {
-    NSLog(@"NativeInterface address selected person %@", person);
+    NSLog(@"NativeInterface address selected person");
     ABMutableMultiValueRef multi = ABRecordCopyValue(person, kABPersonEmailProperty);
 
     NSString *result;
