@@ -271,6 +271,7 @@
                 <file name="icefaces.ace/chart/plugins/jqplot.dragable.js"/>
                 <file name="icefaces.ace/chart/plugins/jqplot.cursor.js"/>
                 <file name="icefaces.ace/chart/plugins/jqplot.bubbleRenderer.js"/>
+                <file name="icefaces.ace/chart/plugins/jqplot.meterGaugeRenderer.js"/>
                 <file name="icefaces.ace/chart/plugins/jqplot.ohlcRenderer.js"/>
                 <file name="icefaces.ace/chart/chart.js"/>
             </filelist>
