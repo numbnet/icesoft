@@ -296,7 +296,6 @@ NSLog(@"hideControls");
     }
     [self hideProgress];
     [self showControls];
-    self.launchedFromApp = NO;
     self.nativeInterface = [[NativeInterface alloc] init];
     self.nativeInterface.controller = self;
     self.nativeInterface.uploading = NO;
@@ -370,8 +369,12 @@ NSLog(@"hideControls");
 }
 
 - (void)applicationWillResignActive {
-    self.launchedFromApp = NO;
     [self.nativeInterface applicationWillResignActive];
+}
+
+- (void) applicationDidEnterBackground  {
+    [self showControls];
+    [self hideProgress];
 }
 
 @end

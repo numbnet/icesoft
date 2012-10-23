@@ -128,6 +128,7 @@ void ecefToEnu(double lat, double lon, double x, double y, double z, double xr, 
 @synthesize nativeInterface;
 @synthesize useCompass;
 @synthesize moreLabels;
+@synthesize addedSubviews;
 @synthesize location;
 @dynamic placeLabels;
 
@@ -138,6 +139,7 @@ void ecefToEnu(double lat, double lon, double x, double y, double z, double xr, 
 	[location release];
 	[captureView removeFromSuperview];
 	[captureView release];
+    [addedSubviews release];
 	if (placeLabelCoordinates != NULL) {
 		free(placeLabelCoordinates);
 	}
@@ -146,6 +148,7 @@ void ecefToEnu(double lat, double lon, double x, double y, double z, double xr, 
 
 - (void)start
 {
+    self.addedSubviews = [[NSMutableArray alloc] init];
 	[self startCameraPreview];
 	[self startLocation];
 	[self startDeviceMotion];
@@ -154,11 +157,20 @@ void ecefToEnu(double lat, double lon, double x, double y, double z, double xr, 
 
 - (void)stop
 {
+    [self removePlaceSubviews];
 	[self stopCameraPreview];
 	[self stopLocation];
     //handled by nativeInterface startup/shutdown
 //	[self stopDeviceMotion];
 	[self stopDisplayLink];
+}
+
+- (void)removePlaceSubviews  {
+    NSLog(@"ARView removing %d", [self.addedSubviews count]);
+    for (UIView *placeView in self.addedSubviews) {
+        [placeView removeFromSuperview];
+    }
+    [self.addedSubviews removeAllObjects];
 }
 
 - (void)setCompass:(BOOL) value  {
@@ -401,7 +413,8 @@ NSLog(@"updatePlaceLabelCoordinates updating location %f,%f", place.location.coo
 	// Add subviews in descending Z-order so they overlap properly
 	for (NSData *d in [orderedDistances reverseObjectEnumerator]) {
 		const DistanceAndIndex *distanceAndIndex = (const DistanceAndIndex *)d.bytes;
-		PlaceLabel *place = (PlaceLabel *)[moreLabels objectAtIndex:distanceAndIndex->index];		
+		PlaceLabel *place = (PlaceLabel *)[moreLabels objectAtIndex:distanceAndIndex->index];
+        [self.addedSubviews addObject:place.view];	
 		[self addSubview:place.view];
 	}	
 }

@@ -439,24 +439,41 @@ static char base64EncodingTable[64] = {
     return YES;
 }
 
+- (void)dismissAddress {
+//    if (nil != self.addressPopover)  {
+//        [self.addressPopover dismissPopoverAnimated:YES];
+//    } else {
+        [controller dismissModalViewControllerAnimated:YES];
+//    }
+}
+
 - (BOOL)peoplePickerNavigationController:(ABPeoplePickerNavigationController *)peoplePicker shouldContinueAfterSelectingPerson:(ABRecordRef)person {
     NSLog(@"NativeInterface address selected person");
-    ABMutableMultiValueRef multi = ABRecordCopyValue(person, kABPersonEmailProperty);
 
-    NSString *result;
 
-    if (ABMultiValueGetCount(multi) > 0) {
-        // collect all emails in array
-        for (CFIndex i = 0; i < ABMultiValueGetCount(multi); i++) {
-            CFStringRef emailRef = ABMultiValueCopyValueAtIndex(multi, i);
-            result = (NSString *)emailRef;
-            CFRelease(emailRef);
-        }
-    }
+    NSString *firstName = ABRecordCopyValue(person, kABPersonFirstNameProperty);
+    NSString *lastName  = ABRecordCopyValue(person, kABPersonLastNameProperty);
+
+    ABMutableMultiValueRef multi;
+
+    multi = ABRecordCopyValue(person, kABPersonEmailProperty);
+    NSString *emailResult = [self getOneFromMultiRef:multi];
     CFRelease(multi);
-NSLog(@"Picked email %@", result);
 
-    [controller dismissModalViewControllerAnimated:YES];
+    multi = ABRecordCopyValue(person, kABPersonPhoneProperty);
+    NSString *phone = [self getOneFromMultiRef:multi];
+    CFRelease(multi);
+    
+    NSString *fullName = [NSString stringWithFormat:@"%@ %@", firstName, lastName];
+
+    NSString *result = [NSString stringWithFormat:@"name=%@&email=%@&phone=%@", 
+            [fullName stringByAddingPercentEscapesUsingEncoding:NSASCIIStringEncoding], 
+            [emailResult stringByAddingPercentEscapesUsingEncoding:NSASCIIStringEncoding], 
+            [phone stringByAddingPercentEscapesUsingEncoding:NSASCIIStringEncoding] ];
+
+NSLog(@"Found record %@", result);
+
+    [self dismissAddress];
     NSString *addressName = self.activeDOMElementId;
     [controller completePost:result forComponent:addressName
             withName:addressName];
@@ -464,11 +481,28 @@ NSLog(@"Picked email %@", result);
     return NO;
 }
 
+- (NSString*)getOneFromMultiRef:(ABMutableMultiValueRef) multi  {
+    NSString *result;
+
+    if (ABMultiValueGetCount(multi) > 0) {
+        // collect all emails in array
+        for (CFIndex i = 0; i < ABMultiValueGetCount(multi); i++) {
+            CFStringRef oneResult = ABMultiValueCopyValueAtIndex(multi, i);
+            result = (NSString *)oneResult;
+            CFRelease(oneResult);
+        }
+    }
+
+    return result;
+}
+
 - (BOOL)peoplePickerNavigationController:(ABPeoplePickerNavigationController *)peoplePicker shouldContinueAfterSelectingPerson:(ABRecordRef)person property:(ABPropertyID)property identifier:(ABMultiValueIdentifier)identifier {
     return NO;
 }
 
 - (void)peoplePickerNavigationControllerDidCancel:(ABPeoplePickerNavigationController *)peoplePicker  {
+    NSLog(@"NativeInterface peoplePickerNavigationControllerDidCancel ");
+    [self dismissAddress];
 }
 
 - (BOOL)aug: (NSString*)augId locations:(NSDictionary *)places {
@@ -616,6 +650,7 @@ NSLog(@"Picked email %@", result);
 }
 
 - (void)augDismiss  {
+    [self.augController stop];
     [self augHide];
     [self.controller doCancel];
 }
@@ -872,11 +907,11 @@ NSLog(@"Picked email %@", result);
 - (void)applicationWillResignActive {
 
     if (nil != self.augController)  {
-        [self.augController dismissModalViewControllerAnimated:YES];
+        [self augDismiss];
     }
     [self stopMotionManager];
 
-    LogDebug(@"NativeInterface applicationWillResignActive, dismissing augController");
+    NSLog(@"NativeInterface applicationWillResignActive");
 }
 
 @end
