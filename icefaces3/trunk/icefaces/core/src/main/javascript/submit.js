@@ -346,7 +346,7 @@ var singleSubmit;
                     clonedElement.setAttribute('value', element.id);
                     clonedElement.setAttribute('type', 'hidden');
                 } else {
-                    clonedElement = element.cloneNode(false);
+                    clonedElement = element.cloneNode(true);
                 }
 
                 append(appendedElements, deltaSubmitForm.appendChild(clonedElement));
