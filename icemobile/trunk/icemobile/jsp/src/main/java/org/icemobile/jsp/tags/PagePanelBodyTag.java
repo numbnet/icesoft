@@ -17,7 +17,6 @@
 package org.icemobile.jsp.tags;
 
 import javax.servlet.jsp.JspTagException;
-import javax.servlet.jsp.tagext.Tag;
 import javax.servlet.jsp.tagext.TagSupport;
 import java.io.IOException;
 import java.io.Writer;

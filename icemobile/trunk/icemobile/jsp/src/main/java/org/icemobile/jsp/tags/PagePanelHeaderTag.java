@@ -16,15 +16,12 @@
 
 package org.icemobile.jsp.tags;
 
+import java.io.IOException;
+import java.util.logging.Logger;
+
 import javax.servlet.jsp.JspTagException;
-import javax.servlet.jsp.tagext.TagSupport;
 
 import org.icefaces.mobi.utils.HTML;
-
-import java.io.IOException;
-import java.io.Writer;
-import java.util.Stack;
-import java.util.logging.Logger;
 
 /**
  *
