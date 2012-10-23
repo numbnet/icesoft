@@ -34,6 +34,7 @@ import javax.el.ExpressionFactory;
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.application.Resource;
+import javax.faces.application.ProjectStage;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIOutput;
 import javax.faces.component.UIViewRoot;
@@ -56,11 +57,53 @@ public class HeadRenderer extends Renderer implements ComponentSystemEventListen
         //Resources
         UIViewRoot viewRoot = context.getViewRoot();
         ListIterator<UIComponent> iter = (viewRoot.getComponentResources(context, "head")).listIterator();
+		boolean developmentStage = context.isProjectStage(ProjectStage.Development);
         while (iter.hasNext()) {
             UIComponent resource = (UIComponent) iter.next();
+			if (developmentStage) {
+				resource = modifyIfAceScriptResource(resource);
+			}
             resource.encodeAll(context);
         }
     }
+	
+	private UIComponent modifyIfAceScriptResource(UIComponent resource) {
+		if (resource instanceof UIOutput) {
+			if ("javax.faces.resource.Script".equals(resource.getRendererType())) {
+				Map<String, Object> attrs = resource.getAttributes();
+				Object library = attrs.get("library");
+				Object nameValue = attrs.get("name");
+				if ("icefaces.ace".equals(library)) {
+					String name = nameValue == null ? "" : (String) nameValue;
+					if (name.endsWith("ace-yui.js")) {
+						return createAceScriptResource("util/ace-yui.uncompressed.js");
+					} else if (name.endsWith("ace-jquery.js")) {
+						return createAceScriptResource("util/ace-jquery.uncompressed.js");
+					} else if (name.endsWith("ace-datatable.js")) {
+						return createAceScriptResource("util/ace-datatable.uncompressed.js");
+					} else if (name.endsWith("ace-menu.js")) {
+						return createAceScriptResource("util/ace-menu.uncompressed.js");
+					} else if (name.endsWith("ace-components.js")) {
+						return createAceScriptResource("util/ace-components.uncompressed.js");
+					} else if (name.endsWith("ace-chart.js")) {
+						return createAceScriptResource("chart/ace-chart.uncompressed.js");
+					}
+				}
+			}
+		}
+		return resource;
+	}
+	
+	private UIComponent createAceScriptResource(String name) {
+        UIComponent resource = FacesContext.getCurrentInstance().getApplication().createComponent("javax.faces.Output");
+        resource.setRendererType("javax.faces.resource.Script");
+
+        Map<String, Object> attrs = resource.getAttributes();
+        attrs.put("name", name);
+        attrs.put("library", "icefaces.ace");
+
+        return resource;	
+	}
 
     @Override
     public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
