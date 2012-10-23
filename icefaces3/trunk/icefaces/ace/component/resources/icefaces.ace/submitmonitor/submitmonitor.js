@@ -107,6 +107,12 @@
             if (!addElements) {
                 return;
             }
+            if (revertElem) {
+                revertZIndex = revertElem.css('z-index');
+                revertElem.css('z-index', '28001');
+                revertElem.css('display', '');
+                //console.log('Overlay  setTimeout  showed revert');
+            }
             if (overlay && overlayStyle) {
                 overlay.style.cssText = overlayStyle;
                 if (container != document.body) {
@@ -135,12 +141,6 @@
                         collision: 'fit'});
                     //console.log('Overlay  setTimeout  showed and positioned clone over other');
                 }
-            }
-            if (revertElem) {
-                revertZIndex = revertElem.css('z-index');
-                revertElem.css('z-index', '28001');
-                revertElem.css('display', '');
-                //console.log('Overlay  setTimeout  showed revert');
             }
         }, addDelay);
 
