@@ -120,14 +120,12 @@
         <zip destfile="${bundle.dir}/${bundle.name.bin}.zip">
             <zipfileset dir="${bundle.dir}/${bundle.name.bin}" prefix="${bundle.name.bin}"/>
         </zip>
-
         <copy todir="${bundle.dir.src}">
           <fileset dir="."/>
         </copy>
         <antcall target="bundle.src"/>
 
 		<antcall target="zip.os.bundles" />
-
     </target>
 
 	<target name="zip.os.bundles" depends="checkIfEEBundle" if="isOSBundle">
@@ -308,11 +306,13 @@
                 <include name="build.packages.xml"/>
             </fileset>
         </delete>
-        <delete>
+        <copy todir="${bundle.dir.src}/lib">
             <fileset dir="${bundle.dir.src}/icepush/lib">
-                <include name="jstl-1.2"/>
+                <include name="jsp-api.jar" />
+                <include name="mail.jar" />
             </fileset>
-        </delete>
+        </copy>
+        <delete dir="${bundle.dir.src}/icepush/lib" />
 
         <delete dir="${bundle.dir.src}/icepush/samples"/>
 
