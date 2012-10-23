@@ -24,14 +24,16 @@
    <f:facet name="body">
      <mobi:splitPane id="lp1" scrollable="true" columnDivider="30">
           <f:facet name="left">
-             <h5> simple outputLIst with group of simple text items</h5>
+             <h:panelGroup>
+             <h5> PAN 1simple outputLIst with group of simple text fitems</h5>
                 <mobi:outputList id="simpleList" inset="false" >
                     <mobi:outputListItem type="group">Simple List</mobi:outputListItem>
                     <mobi:outputListItems value="#{list.simpleList}" var="simple" type="default">
                         <h:outputText value="#{simple}"/>
                     </mobi:outputListItems>
                 </mobi:outputList>
-                <h5> next list has 2 lists of items stacked into one group</h5>
+
+                <h5> PAN 2 next list has 2 lists of items stacked into one group</h5>
                 <mobi:outputList id="stackedGroupslist" inset="true"  >
                     <mobi:outputListItem type="group">Cars List</mobi:outputListItem>
                     <mobi:outputListItems   value="#{list.carList}" var="car">
@@ -42,7 +44,8 @@
                         <h:outputLink  value="#{item.url}">#{item.title}</h:outputLink>
                     </mobi:outputListItems>
                 </mobi:outputList>
-                <h5> next list has gropu of images in h link component</h5>
+
+                <h5> Third listnext list has gropu of images in h link component</h5>
                 <mobi:outputList id="imgList" type="thumb" inset="false">
                     <mobi:outputListItem type="group">Image List</mobi:outputListItem>
                     <mobi:outputListItems value="#{carousel.imageList}" var="item" type="thumb">
@@ -54,7 +57,7 @@
                     </mobi:outputListItems>
                 </mobi:outputList>
                 <h:form id="layoutform">
-                <h5>this list has list of commandLinks</h5>
+                <h5>4th listthis list has list of commandLinks</h5>
                     <mobi:outputList id="commandLinkList" inset="true">
                         <mobi:outputListItem type="group">commandLinks List</mobi:outputListItem>
                         <mobi:outputListItems value="#{list.linksList}" var="cmdLnk">
@@ -62,42 +65,32 @@
                         </mobi:outputListItems>
                     </mobi:outputList>
                 </h:form>
+              </h:panelGroup>
           </f:facet>
           <f:facet name="right">
-             <h:panelGroup>
-              <fieldset title="panel1">
-                      <legend>Panel1</legend>
+             <h:panelGroup id="innerright">
                     <h3> header for panel 1</h3>
                      <p> content for panel 1 - king of clubs </p>
-                       <figure>
-                         <img width="85" height="150"
-                          src="../images/kingOfClubs.jpg"
+                       <mobi:graphicImage width="85" height="150"
+                          value="../images/kingOfClubs.jpg"
                             alt="king of clubs" />
-                         <figcaption>King of Clubs</figcaption>
-                        </figure>
-                    <ui:include src="included.xhtml"/>
-                </fieldset>
+                    <h3> header for panel 1</h3>
+                     <p> content for panel  -Joker </p>
+                        <mobi:graphicImage width="85" height="150"
+                          value="../images/Joker.jpg"
+                            alt="joker" />
+
+                     <p> content for panel 1 - more and more </p>
+                     <p>more more more more </p>
+                     <p> more</p>
+                     <p>more</p>
+                <p>more more more more </p>
+                 <p> more</p>
+                 <p>more</p>
+                 <p>more more more more </p>
+                 <p> more</p>
+                 <p>more</p>
                </h:panelGroup>
-              <h:panelGroup id="extrstuff">
-                     <p> content for panel 1 - king of clubs </p>
-                       <figure>
-                         <img width="85" height="150"
-                          src="../images/kingOfClubs.jpg"
-                            alt="king of clubs" />
-                         <figcaption>King of Clubs</figcaption>
-                        </figure>
-                    <ui:include src="included.xhtml"/>
-              </h:panelGroup>
-             <h:panelGroup id="extrstuff2">
-                     <p> content for panel 1 - king of clubs </p>
-                       <figure>
-                         <img width="85" height="150"
-                          src="../images/kingOfClubs.jpg"
-                            alt="king of clubs" />
-                         <figcaption>King of Clubs</figcaption>
-                        </figure>
-                    <ui:include src="included.xhtml"/>
-              </h:panelGroup>
           </f:facet>
        </mobi:splitPane>
     </f:facet>
