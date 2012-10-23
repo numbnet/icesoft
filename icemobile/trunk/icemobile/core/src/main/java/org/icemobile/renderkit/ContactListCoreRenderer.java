@@ -1,15 +1,11 @@
 package org.icemobile.renderkit;
 
-import static org.icemobile.util.HTML.DIV_ELEM;
-import static org.icemobile.util.HTML.ID_ATTR;
-import static org.icemobile.util.HTML.INPUT_ELEM;
-import static org.icemobile.util.HTML.ONCLICK_ATTR;
-import static org.icemobile.util.HTML.TYPE_ATTR;
-import static org.icemobile.util.HTML.VALUE_ATTR;
+import static org.icemobile.util.HTML.*;
 
 import java.io.IOException;
 
 import org.icemobile.component.IContactList;
+import org.icemobile.util.CSSUtils;
 
 public class ContactListCoreRenderer {
     
@@ -23,6 +19,7 @@ public class ContactListCoreRenderer {
 
         writer.startElement(INPUT_ELEM);
         writer.writeAttribute(TYPE_ATTR, "button");
+        writer.writeAttribute(CLASS_ATTR, CSSUtils.STYLECLASS_BUTTON);
 
         StringBuilder args = new StringBuilder();
 
