@@ -1,10 +1,8 @@
 package org.icefaces.ace.component.chart;
 
-import org.icefaces.ace.meta.annotation.Component;
+import org.icefaces.ace.meta.annotation.*;
 import org.icefaces.ace.meta.baseMeta.UIComponentBaseMeta;
 import org.icefaces.ace.model.chart.ChartSeries;
-import org.icefaces.ace.meta.annotation.*;
-import org.icefaces.render.MandatoryResourceComponent;
 
 import javax.el.MethodExpression;
 import javax.faces.application.ResourceDependencies;
@@ -20,8 +18,7 @@ import java.util.List;
         rendererType    = "org.icefaces.ace.component.ChartRenderer",
         rendererClass   = "org.icefaces.ace.component.chart.ChartRenderer",
         componentFamily = "org.icefaces.ace.Chart",
-        tlddoc =
-        ""
+        tlddoc = ""
 )
 @ResourceDependencies({
         @ResourceDependency(library = "icefaces.ace", name = "util/ace-jquery.js"),
