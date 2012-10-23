@@ -80,7 +80,7 @@ public class FragmentTag extends BaseBodyTag implements IFragment{
             renderer.encodePane(this, writer, style);
             writer.closeOffTag();
         } catch (IOException ioe){
-            ioe.printStackTrace();
+            throw new JspTagException(" Error with startTag of FragmentTag");
         }
         return EVAL_BODY_INCLUDE;
     }
@@ -99,7 +99,7 @@ public class FragmentTag extends BaseBodyTag implements IFragment{
                renderer.encodeColumnDivider(myParent, writer);
            }
        } catch (IOException ioe){
-               ioe.printStackTrace();
+           throw new JspTagException(" Error with endTag of FragmentTag");
        }
        return EVAL_PAGE;
     }
