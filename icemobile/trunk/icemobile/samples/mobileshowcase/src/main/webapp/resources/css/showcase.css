@@ -106,13 +106,84 @@ html.bberry .mobi-list-item-group {
     /*border-top:1px solid #A5A9B6;*/
 }
 .mobi-pagePanel-footer .theme{
-    display:inline-block;
-    padding-left:0.5em;
-    text-align:left;
-    width:100%;
+    position: absolute;
+    left: 0.5em;
+    bottom: 6px;
 }
 .mobi-pagePanel-footer .icon{
-   position: absolute;
-   top: 3px;
-   right: 0.5em;
+    position: absolute;
+    right: 2em;
+    bottom: 0px;
+}
+.ui-icon {
+    width: 25px;
+    height: 25px;
+    background-image: url(images/icons-white.png.jsf);
+    border-top: 1px solid white;
+    border-radius: 7px;
+    display: block;
+    border-bottom: 1px solid #AAB8C9;
+    border-left: 1px solid #C3D2E4;
+    border-right: 1px solid #C3D2E4;
+    position: absolute;
+    left: 0.5em;
+    top: 5px;
+}
+.ui-icon-home {
+    background-position: -572px 50%;
+}
+.ui-icon-menu {
+    background-position: -428px 50%;
+}
+#splash header{ 
+    text-align: center;
+    width: 100%;
+    text-shadow: 2px 2px 3px #DEC6F3;
+}
+html.honeycomb #splash header,
+html.android #splash header{
+    text-shadow: 2px 2px 3px #502874;
+}
+#splash p{
+    margin: 0 0 1em 0;
+    line-height: 1.5em;
+}
+#splash p:last-child{
+    margin-bottom:0;
+}
+html.iphone #splash figure,
+html.bberry #splash figure,
+html.android #splash figure{
+    display:block;
+    text-align:center;
+}
+html.ipad #splash fieldset, html.honeycomb #splash fieldset{ 
+    padding: 20px;
+}
+html.ipad #splash header, html.honeycomb #splash header,
+html.ipad #splash figure, html.honeycomb #splash figure{ 
+    margin-left:auto;
+    margin-top:auto;
+    margin-right:auto;
+    text-align: left;
+    display:inline-block;
+    width:auto;
+    vertical-align:top;
+}
+#splash header, #splash figure{
+    margin-bottom: 1em;
+}
+#splash h3,
+#splash h4,
+#splash h5{ 
+    margin-left:20px;
+    width:auto;
+}
+html.ipad #splash > h3, html.iphone #splash > h3,
+html.ipad #splash > h4, html.iphone #splash > h4,
+html.ipad #splash > h5, html.iphone #splash > h5{ 
+    text-shadow: 1px 1px 1px #FFF;
+}
+html.honeycomb h3{
+    border-bottom: 1px solid #6595F9;
 }
