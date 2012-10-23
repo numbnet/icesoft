@@ -16,6 +16,12 @@
 
 package org.icemobile.samples.mobileshowcase.view.navigation;
 
+import java.io.Serializable;
+
+import javax.annotation.PostConstruct;
+import javax.faces.bean.ApplicationScoped;
+import javax.faces.bean.ManagedBean;
+
 import org.icemobile.samples.mobileshowcase.view.examples.input.button.ButtonBean;
 import org.icemobile.samples.mobileshowcase.view.examples.input.dateSpinner.DateBean;
 import org.icemobile.samples.mobileshowcase.view.examples.input.flipSwitch.FlipSwitchBean;
@@ -23,13 +29,9 @@ import org.icemobile.samples.mobileshowcase.view.examples.input.geolocation.GeoL
 import org.icemobile.samples.mobileshowcase.view.examples.input.input.InputBean;
 import org.icemobile.samples.mobileshowcase.view.examples.input.menubutton.MenuButtonBean;
 import org.icemobile.samples.mobileshowcase.view.examples.input.submitnotification.SubmitNotificationBean;
+import org.icemobile.samples.mobileshowcase.view.examples.layout.gmap.GMapBean;
 import org.icemobile.samples.mobileshowcase.view.metadata.annotation.MenuLink;
 import org.icemobile.samples.mobileshowcase.view.metadata.context.Menu;
-
-import javax.annotation.PostConstruct;
-import javax.faces.bean.ApplicationScoped;
-import javax.faces.bean.ManagedBean;
-import java.io.Serializable;
 
 /**
  * Menu items for input and selection components
@@ -40,24 +42,29 @@ import java.io.Serializable;
                 @MenuLink(title = "menu.input.button.title",
                         exampleBeanName = ButtonBean.BEAN_NAME,
                         examplePanelId = "button"),
+                @MenuLink(title = "menu.input.date.title",
+                        exampleBeanName = DateBean.BEAN_NAME,
+                        examplePanelId = "date"),
                 @MenuLink(title = "menu.input.flipswitch.title",
                         exampleBeanName = FlipSwitchBean.BEAN_NAME,
                         examplePanelId = "flipswitch"),
                 @MenuLink(title = "menu.input.geolocation.title",
                         exampleBeanName = GeoLocationBean.BEAN_NAME,
                         examplePanelId = "geolocation"),
+                        @MenuLink(title = "menu.layout.gmap.title",
+                        exampleBeanName = GMapBean.BEAN_NAME,
+                        examplePanelId = "gmap"),
                 @MenuLink(title = "menu.input.input.title",
                         exampleBeanName = InputBean.BEAN_NAME,
                         examplePanelId = "input"),
-                @MenuLink(title = "menu.input.date.title",
-                        exampleBeanName = DateBean.BEAN_NAME,
-                        examplePanelId = "date"),
                 @MenuLink(title = "menu.input.menuButton.title",
-                exampleBeanName = MenuButtonBean.BEAN_NAME,
+                        exampleBeanName = MenuButtonBean.BEAN_NAME,
                         examplePanelId = "menubutton"),
                 @MenuLink(title = "menu.input.submitNotification.title",
                         exampleBeanName = SubmitNotificationBean.BEAN_NAME,
                         examplePanelId = "submitnotification")
+                
+        
         })
 @ManagedBean(name = InputAndSelectionMenu.BEAN_NAME)
 @ApplicationScoped

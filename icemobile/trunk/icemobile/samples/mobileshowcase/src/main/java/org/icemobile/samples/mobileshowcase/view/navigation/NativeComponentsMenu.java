@@ -37,12 +37,18 @@ import org.icemobile.samples.mobileshowcase.view.metadata.annotation.MenuLink;
 @org.icemobile.samples.mobileshowcase.view.metadata.annotation.Menu(
         title = "menu.native.title",
         menuLinks = {
+                @MenuLink(title = "menu.native.reality.title",
+                        exampleBeanName = RealityBean.BEAN_NAME,
+                        examplePanelId = "reality"),
                 @MenuLink(title = "menu.native.camcorder.title",
                         exampleBeanName = CamcorderBean.BEAN_NAME,
                         examplePanelId = "camcorder"),
                 @MenuLink(title = "menu.native.camera.title",
                         exampleBeanName = CameraBean.BEAN_NAME,
                         examplePanelId = "camera"),
+                        @MenuLink(title = "menu.native.contacts.title",
+                        exampleBeanName = ContactsBean.BEAN_NAME,
+                        examplePanelId = "contacts"),
                 @MenuLink(title = "menu.native.microphone.title",
                         exampleBeanName = MicrophoneBean.BEAN_NAME,
                         examplePanelId = "microphone"),
@@ -51,13 +57,9 @@ import org.icemobile.samples.mobileshowcase.view.metadata.annotation.MenuLink;
                         examplePanelId = "notification"),
                 @MenuLink(title = "menu.native.qrcode.title",
                         exampleBeanName = QrCodeBean.BEAN_NAME,
-                        examplePanelId = "qrcode"),
-                @MenuLink(title = "menu.native.reality.title",
-                        exampleBeanName = RealityBean.BEAN_NAME,
-                        examplePanelId = "reality"),
-                @MenuLink(title = "menu.native.contacts.title",
-                exampleBeanName = ContactsBean.BEAN_NAME,
-                examplePanelId = "contacts")
+                        examplePanelId = "qrcode")
+                
+                
         })
 @ManagedBean(name = NativeComponentsMenu.BEAN_NAME)
 @ApplicationScoped
