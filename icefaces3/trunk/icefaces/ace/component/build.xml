@@ -51,18 +51,24 @@
     <property name="smartsprites.basedir" location="../tools/smartsprites"/>
 	
     <!-- combined resources -->
-    <property name="ace-yui.js" location="${resources}/icefaces.ace/util/ace-yui.js"/>
-    <property name="ace-yui.js.tmp" location="${ace-yui.js}.tmp.js"/>
-    <property name="ace-jquery.js" location="${resources}/icefaces.ace/util/ace-jquery.js"/>
-    <property name="ace-jquery.js.tmp" location="${ace-jquery.js}.tmp.js"/>
-    <property name="ace-datatable.js" location="${resources}/icefaces.ace/util/ace-datatable.js"/>
-    <property name="ace-datatable.js.tmp" location="${ace-datatable.js}.tmp.js"/>
-    <property name="ace-menu.js" location="${resources}/icefaces.ace/util/ace-menu.js"/>
-    <property name="ace-menu.js.tmp" location="${ace-menu.js}.tmp.js"/>
-    <property name="ace-components.js" location="${resources}/icefaces.ace/util/ace-components.js"/>
-    <property name="ace-components.js.tmp" location="${ace-components.js}.tmp.js"/>
-    <property name="ace-chart.js" location="${resources}/icefaces.ace/chart/ace-chart.js"/>
-    <property name="ace-chart.js.tmp" location="${ace-chart.js}.tmp.js"/>
+    <property name="ace-yui.js.base" value="${resources}/icefaces.ace/util/ace-yui"/>
+	<property name="ace-yui.js" location="${ace-yui.js.base}.js"/>
+    <property name="ace-yui.js.uncompressed" location="${ace-yui.js.base}.uncompressed.js"/>
+    <property name="ace-jquery.js.base" value="${resources}/icefaces.ace/util/ace-jquery"/>
+	<property name="ace-jquery.js" location="${ace-jquery.js.base}.js"/>
+    <property name="ace-jquery.js.uncompressed" location="${ace-jquery.js.base}.uncompressed.js"/>
+    <property name="ace-datatable.js.base" value="${resources}/icefaces.ace/util/ace-datatable"/>
+	<property name="ace-datatable.js" location="${ace-datatable.js.base}.js"/>
+    <property name="ace-datatable.js.uncompressed" location="${ace-datatable.js.base}.uncompressed.js"/>
+    <property name="ace-menu.js.base" value="${resources}/icefaces.ace/util/ace-menu"/>
+	<property name="ace-menu.js" location="${ace-menu.js.base}.js"/>
+    <property name="ace-menu.js.uncompressed" location="${ace-menu.js.base}.uncompressed.js"/>
+    <property name="ace-components.js.base" value="${resources}/icefaces.ace/util/ace-components"/>
+	<property name="ace-components.js" location="${ace-components.js.base}.js"/>
+    <property name="ace-components.js.uncompressed" location="${ace-components.js.base}.uncompressed.js"/>
+	<property name="ace-chart.js.base" location="${resources}/icefaces.ace/chart/ace-chart"/>
+    <property name="ace-chart.js" location="${ace-chart.js.base}.js"/>
+    <property name="ace-chart.js.uncompressed" location="${ace-chart.js.base}.uncompressed.js"/>
 
     <property name="root.dir.path" location="${build}/skins/in"/>
     <property name="output.dir.path" location="${build}/skins/out"/>
@@ -179,8 +185,8 @@
 
     <target name="res-js-combine">
         <!-- ace-yui.js -->
-        <delete file="${ace-yui.js.tmp}" verbose="true"/>
-        <concat destfile="${ace-yui.js.tmp}" force="true" fixlastline="true">
+        <delete file="${ace-yui.js.uncompressed}" verbose="true"/>
+        <concat destfile="${ace-yui.js.uncompressed}" force="true" fixlastline="true">
             <filelist dir="${resources}">
                 <file name="yui/2_8_2/yahoo-dom-event/yahoo-dom-event.js"/>
                 <file name="yui/2_8_2/element/element.js"/>
@@ -195,8 +201,8 @@
             </filelist>
         </concat>
         <!-- ace-jquery.js -->
-        <delete file="${ace-jquery.js.tmp}" verbose="true"/>
-        <concat destfile="${ace-jquery.js.tmp}" force="true" fixlastline="true">
+        <delete file="${ace-jquery.js.uncompressed}" verbose="true"/>
+        <concat destfile="${ace-jquery.js.uncompressed}" force="true" fixlastline="true">
             <filelist dir="${resources}">
                 <file name="icefaces.ace/jquery/jquery.js"/>
                 <file name="icefaces.ace/jquery/ui/jquery-ui.js"/>
@@ -206,8 +212,8 @@
             </filelist>
         </concat>
         <!-- ace-datatable.js -->
-        <delete file="${ace-datatable.js.tmp}" verbose="true"/>
-        <concat destfile="${ace-datatable.js.tmp}" force="true" fixlastline="true">
+        <delete file="${ace-datatable.js.uncompressed}" verbose="true"/>
+        <concat destfile="${ace-datatable.js.uncompressed}" force="true" fixlastline="true">
             <filelist dir="${resources}">
                 <file name="icefaces.ace/yui/utilities/utilities.js"/>
                 <file name="icefaces.ace/datatable/datatable.js"/>
@@ -217,16 +223,16 @@
             </filelist>
         </concat>
         <!-- ace-menu.js -->
-        <delete file="${ace-menu.js.tmp}" verbose="true"/>
-        <concat destfile="${ace-menu.js.tmp}" force="true" fixlastline="true">
+        <delete file="${ace-menu.js.uncompressed}" verbose="true"/>
+        <concat destfile="${ace-menu.js.uncompressed}" force="true" fixlastline="true">
             <filelist dir="${resources}">
                 <file name="icefaces.ace/wijmo/wijmo.js"/>
                 <file name="icefaces.ace/menu/menu.js"/>
             </filelist>
         </concat>
         <!-- ace-components.js -->
-        <delete file="${ace-components.js.tmp}" verbose="true"/>
-        <concat destfile="${ace-components.js.tmp}" force="true" fixlastline="true">
+        <delete file="${ace-components.js.uncompressed}" verbose="true"/>
+        <concat destfile="${ace-components.js.uncompressed}" force="true" fixlastline="true">
             <filelist dir="${resources}">
                 <file name="icefaces.ace/datetimeentry/jquery-ui-timepicker-addon.js"/>
                 <file name="icefaces.ace/datetimeentry/datetimeentry.js"/>
@@ -254,8 +260,8 @@
             </filelist>
         </concat>
         <!-- ace-chart.js -->
-        <delete file="${ace-chart.js.tmp}" verbose="true"/>
-        <concat destfile="${ace-chart.js.tmp}" force="true" fixlastline="true">
+        <delete file="${ace-chart.js.uncompressed}" verbose="true"/>
+        <concat destfile="${ace-chart.js.uncompressed}" force="true" fixlastline="true">
             <filelist dir="${resources}">
                 <file name="icefaces.ace/chart/excanvas.js"/>
                 <file name="icefaces.ace/chart/jquery.jqplot.js"/>
@@ -285,60 +291,54 @@
             <arg line="--preserve-semi"/>
             <arg value="-o"/>
             <arg value="${ace-yui.js}"/>
-            <arg value="${ace-yui.js.tmp}"/>
+            <arg value="${ace-yui.js.uncompressed}"/>
         </java>
-        <delete file="${ace-yui.js.tmp}" verbose="true"/>
         <java jar="${lib.dir}/yui-compressor.jar" fork="yes">
             <arg line="--preserve-semi"/>
             <arg value="-o"/>
             <arg value="${ace-jquery.js}"/>
-            <arg value="${ace-jquery.js.tmp}"/>
+            <arg value="${ace-jquery.js.uncompressed}"/>
         </java>
-        <delete file="${ace-jquery.js.tmp}" verbose="true"/>
         <java jar="${lib.dir}/yui-compressor.jar" fork="yes">
             <arg line="--preserve-semi"/>
             <arg value="-o"/>
             <arg value="${ace-datatable.js}"/>
-            <arg value="${ace-datatable.js.tmp}"/>
+            <arg value="${ace-datatable.js.uncompressed}"/>
         </java>
-        <delete file="${ace-datatable.js.tmp}" verbose="true"/>
         <java jar="${lib.dir}/yui-compressor.jar" fork="yes">
             <arg line="--preserve-semi"/>
             <arg value="-o"/>
             <arg value="${ace-menu.js}"/>
-            <arg value="${ace-menu.js.tmp}"/>
+            <arg value="${ace-menu.js.uncompressed}"/>
         </java>
-        <delete file="${ace-menu.js.tmp}" verbose="true"/>
         <java jar="${lib.dir}/yui-compressor.jar" fork="yes">
             <arg line="--preserve-semi"/>
             <arg value="-o"/>
             <arg value="${ace-components.js}"/>
-            <arg value="${ace-components.js.tmp}"/>
+            <arg value="${ace-components.js.uncompressed}"/>
         </java>
-        <delete file="${ace-components.js.tmp}" verbose="true"/>
         <java jar="${lib.dir}/yui-compressor.jar" fork="yes">
             <arg line="--preserve-semi"/>
             <arg value="-o"/>
             <arg value="${ace-chart.js}"/>
-            <arg value="${ace-chart.js.tmp}"/>
+            <arg value="${ace-chart.js.uncompressed}"/>
         </java>
-        <delete file="${ace-chart.js.tmp}" verbose="true"/>
     </target>
 
     <target name="res-js-no-compress" depends="res-js-combine" if="no-compress">
         <echo message="Not compressing combined javascript code"/>
-        <move file="${ace-yui.js.tmp}" tofile="${ace-yui.js}" overwrite="yes">
-        </move>
-        <move file="${ace-jquery.js.tmp}" tofile="${ace-jquery.js}" overwrite="yes">
-        </move>
-        <move file="${ace-datatable.js.tmp}" tofile="${ace-datatable.js}" overwrite="yes">
-        </move>
-        <move file="${ace-menu.js.tmp}" tofile="${ace-menu.js}" overwrite="yes">
-        </move>
-        <move file="${ace-components.js.tmp}" tofile="${ace-components.js}" overwrite="yes">
-        </move>
-        <move file="${ace-chart.js.tmp}" tofile="${ace-chart.js}" overwrite="yes">
-        </move>
+        <copy file="${ace-yui.js.uncompressed}" tofile="${ace-yui.js}" overwrite="yes">
+        </copy>
+        <copy file="${ace-jquery.js.uncompressed}" tofile="${ace-jquery.js}" overwrite="yes">
+        </copy>
+        <copy file="${ace-datatable.js.uncompressed}" tofile="${ace-datatable.js}" overwrite="yes">
+        </copy>
+        <copy file="${ace-menu.js.uncompressed}" tofile="${ace-menu.js}" overwrite="yes">
+        </copy>
+        <copy file="${ace-components.js.uncompressed}" tofile="${ace-components.js}" overwrite="yes">
+        </copy>
+        <copy file="${ace-chart.js.uncompressed}" tofile="${ace-chart.js}" overwrite="yes">
+        </copy>
     </target>
 
     <target name="res-css-combine">
@@ -522,18 +522,18 @@
         <antcall target="clean-skins"/>
         <antcall target="clean-richtextentry-resources"/>
         <subant buildpath="${cssurlmapper.rootdir}" target="clean"/>
-	 	<delete file="${ace-yui.js.tmp}" />
+	 	<delete file="${ace-yui.js.uncompressed}" />
 	 	<delete file="${ace-yui.js}" />
 	 	<delete file="${resources}/icefaces.ace/util/combined.css" />
-	 	<delete file="${ace-jquery.js.tmp}" />
+	 	<delete file="${ace-jquery.js.uncompressed}" />
 	 	<delete file="${ace-jquery.js}" />
-	 	<delete file="${ace-datatable.js.tmp}" />
+	 	<delete file="${ace-datatable.js.uncompressed}" />
 	 	<delete file="${ace-datatable.js}" />
-	 	<delete file="${ace-menu.js.tmp}" />
+	 	<delete file="${ace-menu.js.uncompressed}" />
 	 	<delete file="${ace-menu.js}" />
-	 	<delete file="${ace-components.js.tmp}" />
+	 	<delete file="${ace-components.js.uncompressed}" />
 	 	<delete file="${ace-components.js}" />
-        <delete file="${ace-chart.js.tmp}" />
+        <delete file="${ace-chart.js.uncompressed}" />
         <delete file="${ace-chart.js}" />
     </target>
 
