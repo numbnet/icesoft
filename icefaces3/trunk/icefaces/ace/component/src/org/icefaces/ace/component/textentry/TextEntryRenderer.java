@@ -26,10 +26,8 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.HashSet;
+import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 @MandatoryResourceComponent(tagName="textEntry", value="org.icefaces.ace.component.textentry.TextEntry")
 public class TextEntryRenderer extends InputRenderer {
@@ -78,6 +76,7 @@ public class TextEntryRenderer extends InputRenderer {
         writer.startElement("input", null);
         writer.writeAttribute("id", clientId + "_input", null);
         writer.writeAttribute("type", "text", null);
+        writer.writeAttribute("role", "textbox", null);
 
         String embeddedLabel = null;
         String nameToRender = clientId + "_input";
@@ -104,6 +103,15 @@ public class TextEntryRenderer extends InputRenderer {
         writer.writeAttribute("value", valueToRender , null);
 
         renderPassThruAttributes(context, textEntry, HTML.INPUT_TEXT_ATTRS);
+
+        final TextEntry compoent = (TextEntry) component;
+        Map<String, Object> ariaAttributes = new HashMap<String, Object>() {{
+            put("readonly", compoent.isReadonly());
+            put("required", compoent.isRequired());
+            put("disabled", compoent.isDisabled());
+            put("invalid", !compoent.isValid());
+        }};
+        writeAriaAttributes(ariaAttributes, labelAttributes);
 
         if(textEntry.isDisabled()) writer.writeAttribute("disabled", "disabled", "disabled");
         if(textEntry.isReadonly()) writer.writeAttribute("readonly", "readonly", "readonly");

@@ -117,6 +117,9 @@ public class DateTimeEntryRenderer extends InputRenderer {
         writer.writeAttribute("name", inputId, null);
         writer.writeAttribute("type", type, null);
 		writer.writeAttribute("tabindex", dateTimeEntry.getTabindex(), null);
+        if (popup) {
+            writer.writeAttribute("role", "textbox", null);
+        }
 
         String styleClasses = (themeForms() ? DateTimeEntry.INPUT_STYLE_CLASS : "") + getStateStyleClasses(dateTimeEntry);
         if(!isValueBlank(value)) {
@@ -147,6 +150,15 @@ public class DateTimeEntryRenderer extends InputRenderer {
                 size = formattedDate.length();
             }
             writer.writeAttribute("size", size, null);
+
+            final DateTimeEntry compoent = dateTimeEntry;
+            Map<String, Object> ariaAttributes = new HashMap<String, Object>() {{
+                put("readonly", compoent.isReadonly());
+                put("required", compoent.isRequired());
+                put("disabled", compoent.isDisabled());
+                put("invalid", !compoent.isValid());
+            }};
+            writeAriaAttributes(ariaAttributes, labelAttributes);
 
 //            renderPassThruAttributes(context, dateTimeEntry, HTML.INPUT_TEXT_ATTRS);
         }

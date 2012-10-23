@@ -31,6 +31,7 @@ import javax.faces.convert.ConverterException;
 import javax.el.ELContext;
 import javax.el.ValueExpression;
 
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.io.IOException;
@@ -115,6 +116,7 @@ public class AutoCompleteEntryRenderer extends InputRenderer {
 		writer.startElement("input", null);
         writer.writeAttribute("type", "text", null);
 		writer.writeAttribute("name", inputClientId, null);
+        writer.writeAttribute("role", "textbox", null);
 		String mousedownScript = (String) uiComponent.getAttributes().get("onmousedown");
 		mousedownScript = mousedownScript == null ? "" : mousedownScript;
 		writer.writeAttribute("onmousedown", mousedownScript + "this.focus();", null);
@@ -150,6 +152,17 @@ public class AutoCompleteEntryRenderer extends InputRenderer {
 			//writer.writeAttribute("value", "", null);
 			value = "";
 		}
+
+        final AutoCompleteEntry compoent = (AutoCompleteEntry) uiComponent;
+        Map<String, Object> ariaAttributes = new HashMap<String, Object>() {{
+            put("autocomplete", "list");
+            put("readonly", compoent.isReadonly());
+            put("required", compoent.isRequired());
+            put("disabled", compoent.isDisabled());
+            put("invalid", !compoent.isValid());
+        }};
+        writeAriaAttributes(ariaAttributes, labelAttributes);
+
 		writer.endElement("input");
         writeLabelAndIndicatorAfter(labelAttributes);
 

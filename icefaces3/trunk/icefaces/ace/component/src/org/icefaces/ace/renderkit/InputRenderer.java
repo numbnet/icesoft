@@ -163,76 +163,6 @@ public class InputRenderer extends CoreRenderer {
     protected void writeInputField(UIComponent component, Map<String, Object> labelAttributes) throws IOException {
     }
 
-    protected void writeLabelAndIndicatorBefore(ResponseWriter writer, String label, boolean hasLabel, String labelPosition, String indicator, boolean hasIndicator, String indicatorPosition, boolean required) throws IOException {
-        if (hasLabel && labelPosition.equals("top")) {
-            writeLabel(writer, label, labelPosition, indicator, indicatorPosition, required, hasIndicator);
-            writer.startElement("br", null);
-            writer.endElement("br");
-        }
-        if (hasIndicator && indicatorPosition.equals("top")) {
-            if (hasLabel && labelPosition.equals("left")) {
-                writeHiddenLabel(writer, label);
-            }
-            writeIndicator(writer, required, indicator, indicatorPosition);
-            writer.startElement("br", null);
-            writer.endElement("br");
-        }
-        if (hasLabel) {
-            if (labelPosition.equals("left")/* || labelPosition.equals("top")*/) {
-                writeLabel(writer, label, labelPosition, indicator, indicatorPosition, required, hasIndicator);
-            }
-            if (labelPosition.equals("top")) {
-//                writer.startElement("br", null);
-//                writer.endElement("br");
-            }
-        }
-        if (hasIndicator) {
-            if (indicatorPosition.equals("top") || indicatorPosition.equals("bottom")) {
-//                writer.startElement("span", null);
-            }
-            if (indicatorPosition.equals("left")/* || indicatorPosition.equals("top")*/) {
-                writeIndicator(writer, required, indicator, indicatorPosition);
-            }
-            if (indicatorPosition.equals("top")) {
-//                writer.startElement("br", null);
-//                writer.endElement("br");
-            }
-        }
-    }
-
-    protected void writeLabelAndIndicatorAfter(ResponseWriter writer, String label, boolean hasLabel, String labelPosition, String indicator, boolean hasIndicator, String indicatorPosition, boolean required) throws IOException {
-        if (hasIndicator && indicatorPosition.equals("right")) {
-            writeIndicator(writer, required, indicator, indicatorPosition);
-        }
-        if (hasLabel && labelPosition.equals("right")) {
-            writeLabel(writer, label, labelPosition, indicator, indicatorPosition, required, hasIndicator);
-        }
-        if (hasIndicator) {
-            if (indicatorPosition.equals("bottom")) {
-                writer.startElement("br", null);
-                writer.endElement("br");
-            }
-            if (/*indicatorPosition.equals("right") || */indicatorPosition.equals("bottom")) {
-                if (hasLabel && labelPosition.equals("left")) {
-                    writeHiddenLabel(writer, label);
-                }
-                writeIndicator(writer, required, indicator, indicatorPosition);
-            }
-            if (indicatorPosition.equals("top") || indicatorPosition.equals("bottom")) {
-//                writer.endElement("span");
-            }
-        }
-        if (hasLabel) {
-            if (labelPosition.equals("bottom")) {
-                writer.startElement("br", null);
-                writer.endElement("br");
-            }
-            if (/*labelPosition.equals("right") || */labelPosition.equals("bottom")) {
-                writeLabel(writer, label, labelPosition, indicator, indicatorPosition, required, hasIndicator);
-            }
-        }
-    }
-
     private void writeHiddenLabel(ResponseWriter writer, String label) throws IOException {
         writer.startElement("span", null);
         writer.writeAttribute("class", LABEL_STYLE_CLASS + " hidden", null);
@@ -240,7 +170,12 @@ public class InputRenderer extends CoreRenderer {
         writer.endElement("span");
     }
 
-    private void writeLabel(ResponseWriter writer, String label, String labelPosition, String indicator, String indicatorPosition, boolean required, boolean hasIndicator) throws IOException {
+    private void writeLabel(Map<String, Object> attributes) throws IOException {
+        ResponseWriter writer = FacesContext.getCurrentInstance().getResponseWriter();
+        boolean required = (Boolean) attributes.get("required"), hasIndicator = (Boolean) attributes.get("hasIndicator");
+        String clientId = (String) attributes.get("clientId");
+        String label = (String) attributes.get("label"), labelPosition = (String) attributes.get("labelPosition");
+        String indicator = (String) attributes.get("indicator"), indicatorPosition = (String) attributes.get("indicatorPosition");
         if (hasIndicator) {
             if (indicatorPosition.equals("labelLeft") || indicatorPosition.equals("labelRight")) {
                 writer.startElement("span", null);
@@ -263,6 +198,7 @@ public class InputRenderer extends CoreRenderer {
 */
         }
         writer.startElement("span", null);
+        writer.writeAttribute("id", "label_" + clientId, null);
         if (!hasIndicator || (!indicatorPosition.equals("labelLeft") && !indicatorPosition.equals("labelRight"))) {
             writer.writeAttribute("class", LABEL_STYLE_CLASS + " " + LABEL_STYLE_CLASS + "-" + labelPosition, null);
         }
@@ -348,6 +284,7 @@ public class InputRenderer extends CoreRenderer {
                 }
             }
 
+            put("clientId", component.getClientId());
             put("required", required);
             put("label", label);
             put("labelPosition", labelPosition);
@@ -367,7 +304,7 @@ public class InputRenderer extends CoreRenderer {
         String label = (String) attributes.get("label"), labelPosition = (String) attributes.get("labelPosition");
         String indicator = (String) attributes.get("indicator"), indicatorPosition = (String) attributes.get("indicatorPosition");
         if (hasLabel && labelPosition.equals("top")) {
-            writeLabel(writer, label, labelPosition, indicator, indicatorPosition, required, hasIndicator);
+            writeLabel(attributes);
             writer.startElement("br", null);
             writer.endElement("br");
         }
@@ -381,7 +318,7 @@ public class InputRenderer extends CoreRenderer {
         }
         if (hasLabel) {
             if (labelPosition.equals("left")/* || labelPosition.equals("top")*/) {
-                writeLabel(writer, label, labelPosition, indicator, indicatorPosition, required, hasIndicator);
+                writeLabel(attributes);
             }
             if (labelPosition.equals("top")) {
 //                writer.startElement("br", null);
@@ -412,7 +349,7 @@ public class InputRenderer extends CoreRenderer {
             writeIndicator(writer, required, indicator, indicatorPosition);
         }
         if (hasLabel && labelPosition.equals("right")) {
-            writeLabel(writer, label, labelPosition, indicator, indicatorPosition, required, hasIndicator);
+            writeLabel(attributes);
         }
         if (hasIndicator) {
             if (indicatorPosition.equals("bottom")) {
@@ -435,7 +372,49 @@ public class InputRenderer extends CoreRenderer {
                 writer.endElement("br");
             }
             if (/*labelPosition.equals("right") || */labelPosition.equals("bottom")) {
-                writeLabel(writer, label, labelPosition, indicator, indicatorPosition, required, hasIndicator);
+                writeLabel(attributes);
+            }
+        }
+    }
+
+    protected void writeAriaAttributes(Map<String, Object> ariaAttributes, Map<String, Object> labelAttributes) throws IOException {
+        ResponseWriter writer = FacesContext.getCurrentInstance().getResponseWriter();
+
+        String autocomplete = (String) ariaAttributes.get("autocomplete");
+        Boolean multiline = (Boolean) ariaAttributes.get("multiline");
+        Boolean readonly = (Boolean) ariaAttributes.get("readonly");
+        Boolean required = (Boolean) labelAttributes.get("required");
+        Boolean disabled = (Boolean) ariaAttributes.get("disabled");
+        Boolean invalid = (Boolean) ariaAttributes.get("invalid");
+
+        String clientId = (String) labelAttributes.get("clientId");
+        String label = (String) labelAttributes.get("label");
+        String labelPosition = (String) labelAttributes.get("labelPosition");
+        boolean hasLabel = (Boolean) labelAttributes.get("hasLabel");
+
+        if (autocomplete != null && !autocomplete.equals("none")) {
+            writer.writeAttribute("aria-autocomplete", autocomplete, null);
+        }
+        if (multiline != null && multiline) {
+            writer.writeAttribute("aria-multiline", true, null);
+        }
+        if (readonly != null && readonly) {
+            writer.writeAttribute("aria-readonly", true, "readonly");
+        }
+        if (required != null && required) {
+            writer.writeAttribute("aria-required", true, "required");
+        }
+        if (disabled != null && disabled) {
+            writer.writeAttribute("aria-disabled", true, "disabled");
+        }
+        if (invalid != null && invalid) {
+            writer.writeAttribute("aria-invalid", true, "valid");
+        }
+        if (hasLabel) {
+            if (labelPosition.equals("inField")) {
+                writer.writeAttribute("aria-label", label, "label");
+            } else {
+                writer.writeAttribute("aria-labelledby", "label_" + clientId, null);
             }
         }
     }
