@@ -21,11 +21,20 @@
                 xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
     <mobi:pagePanel>
         <f:facet name="header">
-            <h:form id="toolbar2" prependId="false" rendered="#{navigationModel.canGoBack}">
+            <h:form id="toolbar2" prependId="false" >
                 <h:commandLink type="back"
                                title="Back"
                                styleClass="mobi-button mobi-button-back"
-                               action="#{navigationModel.goBack}"/>
+                               action="#{navigationModel.goBack}"
+                               rendered="#{navigationModel.canGoBack}"/>
+                <h:commandLink title="&amp;#9776;"
+                               styleClass="ui-icon ui-icon-home"
+                               action="#{navigationModel.goToHome}"
+                               rendered="#{navigationModel.selectedPanel eq 'menu'}"/>
+                <h:commandLink title="&amp;#9776;"
+                               styleClass="ui-icon ui-icon-menu"
+                               action="#{navigationModel.goToMenu}"
+                               rendered="#{navigationModel.selectedPanel eq 'splash'}"/>
             </h:form>
             <span>#{mmsgs[navigationModel.selectedDestination.title]}</span>
             <ui:insert name="toolBarContent"/>
@@ -34,7 +43,7 @@
         <f:facet name="body">
             <ui:include src="/WEB-INF/includes/content/content-stack.xhtml">
                 <ui:param name="selectedPanel"
-                          value="#{navigationModel.selectedPanel == null?'menu':navigationModel.selectedPanel}"/>
+                          value="#{navigationModel.selectedPanel}"/>
             </ui:include>
         </f:facet>
 

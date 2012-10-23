@@ -25,17 +25,19 @@ public class NavigationModel implements Serializable {
     public static final String BEAN_NAME = "navigationModel";
 
     // currently selected panel and stack to keep track of history
-    private String selectedPanel;
+    private String selectedPanel = "splash";
     private Stack<String> history = new Stack<String>();
 
     // Destination stores title information for display purposes.
-    private Destination selectedDestination;
+    private Destination selectedDestination = DESTINATION_SPLASH;
     // Selected example represents the currently selected example bean.
     private ExampleImpl selectedExample;
     // home destination, if stack is empty
-    public static final Destination DESTINATION_HOME =
+    public static final Destination DESTINATION_SPLASH =
             new Destination(
                     "content.home.title", "content.home.title", "content.home.title");
+    public static final Destination DESTINATION_MENU =
+            new Destination("content.menu.title", "content.menu.title", "content.menu.title");
 
     public String navigateToParam()  {
         Map<String,String> params = 
@@ -63,7 +65,7 @@ public class NavigationModel implements Serializable {
         if (selectedExample != null) {
             selectedDestination = selectedExample.getDestination();
         } else {
-            selectedDestination = DESTINATION_HOME;
+            selectedDestination = DESTINATION_SPLASH;
         }
         scrollToTopOfPage();
         return null;
@@ -89,8 +91,21 @@ public class NavigationModel implements Serializable {
             selectedPanel = history.pop();
         }
         if (history.isEmpty()) {
-            selectedDestination = DESTINATION_HOME;
+            selectedDestination = DESTINATION_SPLASH;
         }
+        scrollToTopOfPage();
+        return null;
+    }
+    
+    public String goToHome(){
+        selectedPanel = "splash";
+        history.clear();
+        scrollToTopOfPage();
+        return null;
+    }
+    
+    public String goToMenu(){
+        selectedPanel = "menu";
         scrollToTopOfPage();
         return null;
     }
@@ -119,7 +134,7 @@ public class NavigationModel implements Serializable {
         if (selectedDestination != null) {
             return selectedDestination;
         } else {
-            return DESTINATION_HOME;
+            return DESTINATION_SPLASH;
         }
     }
 
