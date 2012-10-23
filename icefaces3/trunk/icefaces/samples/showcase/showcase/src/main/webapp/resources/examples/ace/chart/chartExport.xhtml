@@ -24,31 +24,35 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 template="/resources/templates/content-template.xhtml">
 
-    <ui:param name="title" value="#{msgs[chartBean.title]}"/>
-    <ui:param name="description" value="#{msgs[chartBean.description]}"/>
-    <ui:param name="subMenuTitle" value="#{msgs[chartBean.subMenuTitle]}"/>
-    <ui:param name="subMenuLinks" value="#{chartBean.subMenuLinks}"/>
-    <ui:param name="resourceValue" value="#{chartBean.exampleResource}"/>
+    <ui:param name="title" value="#{msgs[chartExportBean.title]}"/>
+    <ui:param name="description" value="#{msgs[chartExportBean.description]}"/>
+    <ui:param name="resourceValue" value="#{chartExportBean.exampleResource}"/>
 
     <ui:param name="wikiResources" value="#{chartResources.wikiResources}"/>
     <ui:param name="tldResources" value="#{chartResources.tldResources}"/>
 
     <ui:define name="example">
-        <h:form id="canvasForm">
+        <h:form id="exportForm">
+            <h:commandButton id="exportButton" value="Export as Image"
+                             onclick="exportChart.exportToImage(ice.ace.jq('.chartExport')); return false;" />
+
             <ace:chart id="chart"
                        animated="false"
-                       value="#{chartBean.barData}"
+                       value="#{chartCombinedBean.barData}"
                        stackSeries="false"
-                       defaultAxesConfig="#{chartBean.barDemoDefaultAxis}"
-                       xAxis="#{chartBean.barDemoXAxis}"
-                       yAxis="#{chartBean.barDemoYAxis}"
+                       defaultAxesConfig="#{chartCombinedBean.barDemoDefaultAxis}"
+                       xAxis="#{chartCombinedBean.barDemoXOneAxis}"
+                       x2Axis="#{chartCombinedBean.barDemoXTwoAxis}"
+                       yAxes="#{chartCombinedBean.barDemoYAxes}"
                        legend="true"
                        legendPlacement="OUTSIDE_GRID"
                        highlighter="true"
                        highlighterLocation="N"
                        highlighterShowMarker="false"
                        highlighterBringSeriesToFront="true"
-                       widgetVar="barChart" />
+                       widgetVar="exportChart" />
         </h:form>
+
+        <h:graphicImage styleClass="chartExport" />
     </ui:define>
 </ui:composition>

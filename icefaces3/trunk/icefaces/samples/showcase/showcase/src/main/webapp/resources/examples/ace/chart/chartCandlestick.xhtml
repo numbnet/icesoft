@@ -44,10 +44,6 @@
                        highlighterAxes="XY"
                        highlighterYValueCount="4"
                        highlighterFormatString="#{chartCandlestickBean.formatString}"/>
-            <h:commandButton id="exportButton" value="Export as Image"
-                             onclick="ohlcChart.exportToImage(ice.ace.jq('.chartExport')); return false;" />
         </h:form>
-        
-        <h:graphicImage styleClass="chartExport" />
     </ui:define>
 </ui:composition>
