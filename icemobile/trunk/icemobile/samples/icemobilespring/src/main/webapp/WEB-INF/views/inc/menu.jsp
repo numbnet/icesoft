@@ -10,12 +10,14 @@
     <mobi:outputListItem><a href="list">Lists</a></mobi:outputListItem>
     <mobi:outputListItem><a href="panelPopup">Panel Popup</a></mobi:outputListItem>
     <mobi:outputListItem><a href="tabset">Tab Set</a></mobi:outputListItem>
+    
     <mobi:outputListItem group="true">Input & Selection</mobi:outputListItem>
     <mobi:outputListItem><a href="buttons">Buttons</a></mobi:outputListItem>
     <mobi:outputListItem><a href="datetime">Date Time</a></mobi:outputListItem>
     <mobi:outputListItem><a href="flipswitch">Flip Switch</a></mobi:outputListItem>
     <mobi:outputListItem><a href="geolocation">Geolocation</a></mobi:outputListItem>
     <mobi:outputListItem><a href="inputtext">HTML5 Input</a></mobi:outputListItem>
+    
     <mobi:outputListItem group="true">Native Components</mobi:outputListItem>
     <mobi:outputListItem><a href="campush">Ajax Push</a></mobi:outputListItem>
     <mobi:outputListItem><a href="mediaspot">Augmented Reality</a></mobi:outputListItem>
@@ -25,4 +27,5 @@
     <mobi:outputListItem><a href="contact">Contact List</a></mobi:outputListItem>
     <mobi:outputListItem><a href="microphone">Microphone</a></mobi:outputListItem>
     <mobi:outputListItem><a href="qrscan">QR Scanner</a></mobi:outputListItem>
+    
 </mobi:outputList>
