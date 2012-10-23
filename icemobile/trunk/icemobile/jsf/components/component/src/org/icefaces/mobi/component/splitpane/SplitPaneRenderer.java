@@ -24,7 +24,8 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import org.icefaces.mobi.renderkit.BaseLayoutRenderer;
-import org.icefaces.mobi.utils.HTML;
+import org.icefaces.mobi.renderkit.ResponseWriterWrapper;
+import org.icemobile.renderkit.SplitPaneCoreRenderer;
 import org.icefaces.mobi.utils.JSFUtils;
 
 public class SplitPaneRenderer extends BaseLayoutRenderer {
@@ -34,69 +35,41 @@ public class SplitPaneRenderer extends BaseLayoutRenderer {
     private static final String JS_LIBRARY = "org.icefaces.component.splitpane";
 
     @Override
-    public void encodeEnd(FacesContext facesContext, UIComponent uiComponent)throws IOException {
-         ResponseWriter writer = facesContext.getResponseWriter();
-         String clientId = uiComponent.getClientId(facesContext);
-         SplitPane pane = (SplitPane)uiComponent;
-            /* write out root tag.  For current incarnation html5 semantic markup is ignored */
-
+    public void encodeBegin(FacesContext facesContext, UIComponent uiComponent)throws IOException {
+        String clientId = uiComponent.getClientId(facesContext);
+        SplitPane pane = (SplitPane)uiComponent;
         UIComponent leftFacet = pane.getFacet(SplitPane.LEFT_FACET);
         UIComponent rightFacet = pane.getFacet(SplitPane.RIGHT_FACET);
         if ( leftFacet ==null && rightFacet ==null){
-            logger.warning("This component may ONLY have  " +
-                    "both the left and right facets together");
+           logger.warning("This component may ONLY have  " +
+                   "both the left and right facets together");
+            return;
         }
-        StringBuilder baseClass = new StringBuilder(SplitPane.SPLITPANE_BASE);
-        StringBuilder paneClass = new StringBuilder(SplitPane.SPLITPANE_SCROLLABLE) ;
-        StringBuilder spltClass = new StringBuilder(SplitPane.SPLITPANE_DIVIDER) ;
-        if (!pane.isScrollable()) {
-            paneClass = new StringBuilder(SplitPane.SPLITPANE_NONSCROLL) ;
-        }
-        int leftWidth = pane.getColumnDivider();
-        int rightWidth = 100- leftWidth;
-        StringBuilder left = new StringBuilder(String.valueOf(leftWidth)).append("%;");
-        StringBuilder right = new StringBuilder(String.valueOf(rightWidth)).append("%;");
-        String userClass = pane.getStyleClass();
-        if (userClass!=null){
-            baseClass.append(" ").append(userClass) ;
-            paneClass.append(" ").append(userClass);
-            spltClass.append(" ").append(spltClass);
-        }
+        SplitPaneCoreRenderer renderer = new SplitPaneCoreRenderer();
+        ResponseWriterWrapper writer = new ResponseWriterWrapper(facesContext.getResponseWriter());
+        renderer.encodeBegin(pane, writer);
         if ((leftFacet!=null) && (rightFacet !=null)){
-            writeJavascriptFile(facesContext, uiComponent, JS_NAME, JS_MIN_NAME, JS_LIBRARY);
-            writer.startElement(HTML.DIV_ELEM, uiComponent);
-            if (pane.getStyle() !=null){
-                writer.writeAttribute(HTML.STYLE_ATTR, pane.getStyle(), HTML.STYLE_ATTR);
-            }
-            writer.writeAttribute(HTML.CLASS_ATTR, baseClass, HTML.CLASS_ATTR);
-            writer.writeAttribute(HTML.ID_ATTR, clientId+"_wrp", HTML.ID_ATTR);
-            writer.startElement(HTML.DIV_ELEM, uiComponent);
-            writer.writeAttribute(HTML.ID_ATTR, clientId+"_left", HTML.ID_ATTR);
-            writer.writeAttribute("class", paneClass, null);
-            writer.writeAttribute(HTML.STYLE_ATTR, left, HTML.STYLE_ATTR);
-            JSFUtils.renderChild(facesContext, leftFacet);
-            writer.endElement(HTML.DIV_ELEM);
-            /* column Divider */
-            writer.startElement(HTML.DIV_ELEM, uiComponent);
-            writer.writeAttribute(HTML.ID_ATTR, clientId + "_splt", HTML.ID_ATTR);
-            writer.writeAttribute(HTML.CLASS_ATTR, spltClass, HTML.CLASS_ATTR);
-            //with resizable, will have a span styled as a button to close left panel
-            writer.endElement(HTML.DIV_ELEM);
-            /* right side */
-            writer.startElement(HTML.DIV_ELEM, uiComponent);
-            writer.writeAttribute(HTML.ID_ATTR, clientId+"_right", HTML.ID_ATTR);
-            writer.writeAttribute("class", paneClass, null);
-            writer.writeAttribute(HTML.STYLE_ATTR, right, HTML.STYLE_ATTR);
-            JSFUtils.renderChild(facesContext, rightFacet);
-            writer.endElement(HTML.DIV_ELEM);
-            encodeScript(facesContext,  uiComponent);
-            writer.endElement(HTML.DIV_ELEM);
+           writeJavascriptFile(facesContext, uiComponent, JS_NAME, JS_MIN_NAME, JS_LIBRARY);
         }
+        renderer.encodePane(pane, writer, "left");
+        JSFUtils.renderChild(facesContext, leftFacet);
+        renderer.encodePaneEnd(writer);
+        renderer.encodeColumnDivider(pane, writer) ;
+        renderer.encodePane(pane, writer, "right");
+        JSFUtils.renderChild(facesContext, rightFacet);
+        renderer.encodePaneEnd(writer);
     }
 
+    public void encodeEnd(FacesContext facesContext, UIComponent component)
+        throws IOException{
+        SplitPane pane = (SplitPane)component;
+        SplitPaneCoreRenderer renderer = new SplitPaneCoreRenderer();
+        ResponseWriterWrapper writer = new ResponseWriterWrapper(facesContext.getResponseWriter());
+        renderer.encodeEnd(pane, writer);
+    }
     @Override
     public void encodeChildren(FacesContext facesContext, UIComponent component) throws IOException {
-        //Rendering happens on encodeEnd
+        //Rendering happens on encodeBegin and encodeEnd
     }
 
     @Override
@@ -111,9 +84,9 @@ public class SplitPaneRenderer extends BaseLayoutRenderer {
         writer.startElement("span", uiComponent);
         writer.startElement("script", uiComponent);
         writer.writeAttribute("text", "text/javascript", null);
-        StringBuilder sb = new StringBuilder("mobi.splitpane.initClient('").append(clientId).append("'");
+        StringBuilder sb = new StringBuilder("ice.mobi.splitpane.initClient('").append(clientId).append("'");
         sb.append(",{ scrollable: '").append(pane.isScrollable()).append("'");
-     //   sb.append(", resize: ").append(pane.isResizable());
+     //   sb.append(", resize: ").append(pane.isResizable()); not yet implemented.
         int width = pane.getColumnDivider();
         sb.append(",width: '").append(width).append("'");
         sb.append("});");

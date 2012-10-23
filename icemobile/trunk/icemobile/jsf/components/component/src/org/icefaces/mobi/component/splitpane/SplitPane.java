@@ -16,9 +16,12 @@
 
 package org.icefaces.mobi.component.splitpane;
 
+import org.icefaces.mobi.utils.MobiJSFUtils;
+import org.icemobile.component.ISplitPane;
+import org.icemobile.util.ClientDescriptor;
 
 
-public class SplitPane extends SplitPaneBase {
+public class SplitPane extends SplitPaneBase implements ISplitPane{
 
     public static final String SPLITPANE_BASE = "mobi-splitpane" ;
     public static final String SPLITPANE_NONSCROLL = "mobi-splitpane-nonScrollable";
@@ -30,5 +33,14 @@ public class SplitPane extends SplitPaneBase {
     public static final String LEFT_FACET = "left";
     public static final String RIGHT_FACET = "right";
 
+       public ClientDescriptor getClient() {
+         return MobiJSFUtils.getClientDescriptor();
+    }
 
+    public boolean isDisabled(){
+        return false;
+    }
+    public void setDisabled(boolean anything){
+        //na
+    }
 }

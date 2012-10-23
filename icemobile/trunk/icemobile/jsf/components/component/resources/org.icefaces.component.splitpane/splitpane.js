@@ -1,6 +1,9 @@
 if (!window['mobi']) {
     window.mobi = {};
 }
+if (!window['ice.mobi']) {
+    window.ice.mobi = {};
+}
 (function() {
     function resizeElementHeight(elId) {
         var height = 0;
@@ -67,7 +70,7 @@ if (!window['mobi']) {
            }
         }
     }
-    mobi.splitpane = {
+    ice.mobi.splitpane = {
         panels: {},
         initClient: function(clientId, cfgIn) {
             if (!this.panels[clientId]){
