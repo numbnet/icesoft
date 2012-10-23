@@ -59,6 +59,7 @@
 @property (nonatomic, retain) IBOutlet UISegmentedControl *actionSelector;
 
 - (void) applicationWillResignActive;
+- (void) applicationDidEnterBackground;
 - (void) dispatchCurrentCommand;
 - (void) reloadCurrentURL;
 - (void) hideControls;

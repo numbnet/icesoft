@@ -69,6 +69,9 @@
 - (void)viewDidLoad
 {
 	[super viewDidLoad];
+    self.toolbar.frame = CGRectMake(0, 
+        self.view.frame.size.height - self.toolbar.frame.size.height, 
+        self.view.frame.size.width, self.view.frame.size.height);
 }
 
 - (void)viewDidUnload
@@ -110,11 +113,15 @@
     [mapController release];
 }
 
-- (IBAction) doCancel  {
+- (void)stop  {
 	ARView *arView = (ARView *)self.view;
     self.compassSwitch.on = NO;
     [arView setCompass:NO];
     [arView stop];
+}
+
+- (IBAction) doCancel  {
+    [self stop];
     [self.nativeInterface augDismiss];
 }
 

@@ -34,6 +34,7 @@
 @property (nonatomic, retain) IBOutlet UIView *toolbar;
 
 - (void) setPlaceLabels:(NSArray *)places;
+- (void)stop;
 - (IBAction) doLocations;
 - (IBAction) doCancel;
 - (IBAction) compassChanged:(UISwitch *)theSwitch;

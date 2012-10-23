@@ -232,8 +232,6 @@
 		9CA51B5414730D110065F681 = {
 			isa = PBXGroup;
 			children = (
-				9C058591162F679F003D1890 /* AddressBook.framework */,
-				9C05858F162F63CC003D1890 /* AddressBookUI.framework */,
 				9C403FBF148459D800FBA6BC /* Dependencies */,
 				9CA51B6914730D110065F681 /* ICEmobile-SX */,
 				9C1BEADD155473E400795020 /* Shared */,
@@ -254,6 +252,8 @@
 			isa = PBXGroup;
 			children = (
 				9C9314781485505200B21FA1 /* libiconv.dylib */,
+				9C058591162F679F003D1890 /* AddressBook.framework */,
+				9C05858F162F63CC003D1890 /* AddressBookUI.framework */,
 				9C46E923158259FF00EFA276 /* MediaPlayer.framework */,
 				9C1F8D1E15670CC6004E59EB /* MapKit.framework */,
 				9C517349155DB17900090828 /* CoreMotion.framework */,

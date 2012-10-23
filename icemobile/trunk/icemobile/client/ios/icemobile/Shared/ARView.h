@@ -24,6 +24,7 @@
     CLLocation *location;
     NativeInterface *nativeInterface;
     BOOL useCompass;
+    NSMutableArray *addedSubviews;
 }
 
 @property (nonatomic, retain) NativeInterface *nativeInterface;
@@ -31,10 +32,12 @@
 @property (nonatomic, retain) CLLocation *location;
 @property (nonatomic, retain) NSArray *placeLabels;
 @property (nonatomic, retain) NSArray *moreLabels;
+@property (nonatomic, retain) NSMutableArray *addedSubviews;
 
 - (void)addPlace:(PlaceLabel *) place;
 - (void)setCompass:(BOOL) value;
 - (void)start;
 - (void)stop;
+- (void)removePlaceSubviews;
 
 @end

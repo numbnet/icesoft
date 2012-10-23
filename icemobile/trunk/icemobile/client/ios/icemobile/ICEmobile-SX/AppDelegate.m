@@ -64,8 +64,7 @@
      Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later. 
      If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
      */
-    [self.viewController showControls];
-    [self.viewController hideProgress];
+    [self.viewController applicationDidEnterBackground];
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application
@@ -94,6 +93,7 @@
 
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation  {
     [self.viewController hideControls];
+    self.viewController.launchedFromApp = NO;
     LogInfo(@"handleOpenURL %@ %@", sourceApplication, url);
     NSString *reqString = [url absoluteString];
     NSString *body = [reqString substringFromIndex:[@"icemobile://" length]];
