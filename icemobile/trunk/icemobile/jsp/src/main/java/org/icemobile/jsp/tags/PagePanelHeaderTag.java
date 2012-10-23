@@ -21,7 +21,8 @@ import java.util.logging.Logger;
 
 import javax.servlet.jsp.JspTagException;
 
-import org.icefaces.mobi.utils.HTML;
+import org.icemobile.util.HTML;
+
 
 /**
  *
