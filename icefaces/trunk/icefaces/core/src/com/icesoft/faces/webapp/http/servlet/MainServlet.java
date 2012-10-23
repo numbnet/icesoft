@@ -183,7 +183,7 @@ public class MainServlet extends HttpServlet {
                         }
                     });
             dispatcher.dispatchOn(".*/ice-static/.*", resourceServer);
-            dispatcher.dispatchOn(".*(\\/$|block\\/|\\.iface$|\\.jsf|\\.faces$|\\.jsp$|\\.jspx$|\\.html$|\\.xhtml$|\\.seam$|uploadHtml$|/spring/)", sessionDispatcher);
+            dispatcher.dispatchOn(".*(\\/$|block\\/|\\.iface($|;)|\\.jsf($|;)|\\.faces($|;)|\\.jsp($|;)|\\.jspx($|;)|\\.html($|;)|\\.xhtml($|;)|\\.seam($|;)|uploadHtml($|;)|/spring/)", sessionDispatcher);
             dispatcher.dispatchOn(".*", resourceServer);
         } catch (Exception e) {
             throw new ServletException(e);
@@ -258,6 +258,7 @@ public class MainServlet extends HttpServlet {
 
     private void returnNotFound(final HttpServletResponse response)
     throws IOException {
+        Thread.dumpStack();
         response.setStatus(404);
         response.setHeader("Content-Type", "text/plain; charset=UTF-8");
         Writer writer = new OutputStreamWriter(response.getOutputStream(), "UTF-8");
