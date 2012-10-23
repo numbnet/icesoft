@@ -31,7 +31,7 @@ public class FieldSetGroupTag extends TagSupport {
 
 
     private String id;
-    private boolean inset;
+    private boolean inset = true;
     private String styleClass;
     private String style;
 
