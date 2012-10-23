@@ -408,6 +408,10 @@ NSLog(@"updatePlaceLabelCoordinates updating location %f,%f", place.location.coo
 
 - (void)onDisplayLink:(id)sender
 {
+    if (nil == motionManager)  {
+        NSLog(@"motionManager nil");
+        return;
+    }
 	CMDeviceMotion *d = motionManager.deviceMotion;
 	if (d != nil) {
 		CMRotationMatrix r = d.attitude.rotationMatrix;

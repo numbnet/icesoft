@@ -290,7 +290,7 @@ static char base64EncodingTable[64] = {
 
 - (void) imagePickerController: (UIImagePickerController *)picker
             didFinishPickingMediaWithInfo: (NSDictionary *)info  {
-    NSLog(@"imagePickerController didFinishPickingMediaWithInfo %@", info);
+    LogDebug(@"imagePickerController didFinishPickingMediaWithInfo %@", info);
     UIImage *editedImage = (UIImage *) [info objectForKey:
                     UIImagePickerControllerEditedImage];
     if (nil != editedImage)  {
