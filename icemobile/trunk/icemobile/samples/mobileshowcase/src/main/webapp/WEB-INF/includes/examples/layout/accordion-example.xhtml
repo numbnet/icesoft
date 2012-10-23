@@ -21,7 +21,7 @@
 
     <h:form>
         <mobi:fieldsetGroup>
-            <mobi:fieldsetRow style="padding-bottom:10px;">
+            <mobi:fieldsetRow>
                 The accordion component shows one active content pane at time.
                 Non-active content panes are represented as collapsed views.
             </mobi:fieldsetRow>
@@ -30,43 +30,16 @@
         <mobi:accordion currentId="#{accordionBean.currentId}"
                         autoHeight="false">
 
-            <mobi:contentPane title="Ice sailor" id="tab1">
-                <mobi:fieldsetGroup>
-                    <mobi:fieldsetRow style="padding-bottom:10px;">
-                        <h:graphicImage style="float:left;padding-right:10px;"
-                                        library="images/auction"
-                                        name="icesailor.png"/>
-
-                        <p><b>ICEsoft Ice Sailer</b><br/>
-                            Put him on the ice and watch him go!</p>
-                    </mobi:fieldsetRow>
-                </mobi:fieldsetGroup>
+            <mobi:contentPane title="ICE Sailor" id="accordionPane1">
+                <ui:include src="/WEB-INF/includes/content/inc-icesailor.xhtml"/>
             </mobi:contentPane>
 
-            <mobi:contentPane title="Ice Breaker" id="tab2">
-                <mobi:fieldsetGroup>
-                    <mobi:fieldsetRow style="padding-bottom:10px;">
-                        <h:graphicImage style="float:left;padding-right:10px;"
-                                        library="images/auction"
-                                        name="icebreaker.png"/>
-
-                        <p><b>ICEsoft Icebreaker</b><br/>
-                            Used icebreaker with very few dents.</p>
-                    </mobi:fieldsetRow>
-                </mobi:fieldsetGroup>
+            <mobi:contentPane title="ICE Breaker" id="accordionPane2">
+                <ui:include src="/WEB-INF/includes/content/inc-icebreaker.xhtml"/>
             </mobi:contentPane>
 
-            <mobi:contentPane title="Ice Skater" id="tab3">
-                <mobi:fieldsetGroup>
-                    <mobi:fieldsetRow style="padding-bottom:10px;">
-                        <h:graphicImage style="float:left;padding-right:10px;"
-                                        library="images/auction"
-                                        name="iceskate.png"/>
-
-                        <p><b>ICEsoft Ice Skate</b><br/>
-                            A single sharpened ice skate, size 7.</p>
-                    </mobi:fieldsetRow>
-                </mobi:fieldsetGroup>
+            <mobi:contentPane title="ICE Skate" id="accordionPane3">
+                <ui:include src="/WEB-INF/includes/content/inc-iceskater.xhtml"/>
             </mobi:contentPane>
 
         </mobi:accordion>
