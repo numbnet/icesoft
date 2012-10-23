@@ -10,7 +10,7 @@
 <form:form id="campushform" method="POST" enctype="multipart/form-data"
            modelAttribute="cameraBean">
 
-    <mobi:fieldsetGroup inset="true">
+    <mobi:fieldsetGroup>
         <mobi:fieldsetRow>
             <mobi:getEnhanced/>
         </mobi:fieldsetRow>
@@ -28,7 +28,7 @@
     </mobi:fieldsetGroup>
 
     <h4>Uploaded Snapshot</h4>
-    <mobi:fieldsetGroup inset="true">
+    <mobi:fieldsetGroup>
         <mobi:fieldsetRow>
             <img style="height:60px;width:60px;margin:5px;"
                  src="${imgPath}"/>

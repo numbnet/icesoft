@@ -5,7 +5,7 @@
 <%@ taglib prefix="push" uri="http://www.icepush.org/icepush/jsp/icepush.tld"%>
 <form:form id="camform" method="POST" enctype="multipart/form-data"
            modelAttribute="cameraBean">
-    <mobi:fieldsetGroup inset="true">
+    <mobi:fieldsetGroup>
         <mobi:fieldsetRow>
             <mobi:getEnhanced/>
         </mobi:fieldsetRow>
@@ -34,7 +34,7 @@
         </div>
     </c:if>
     <c:if test="${imgUploaded}">
-        <mobi:fieldsetGroup inset="true">
+        <mobi:fieldsetGroup>
             <mobi:fieldsetRow>
                 <img style="text-align:middle;width:100%;padding:5px" src="${imgPath}">
             </mobi:fieldsetRow>

@@ -5,7 +5,7 @@
 <%@ taglib prefix="push" uri="http://www.icepush.org/icepush/jsp/icepush.tld"%>
 <form:form id="micform" method="POST" enctype="multipart/form-data"
            modelAttribute="microphoneBean" >
-    <mobi:fieldsetGroup inset="true">
+    <mobi:fieldsetGroup>
         <mobi:fieldsetRow>
             <mobi:getEnhanced/>
         </mobi:fieldsetRow>
@@ -30,7 +30,7 @@
         <div id="message" class="success">${message}</div>
     </c:if>
     <c:if test="${mediaReady}">
-        <mobi:fieldsetGroup inset="true">
+        <mobi:fieldsetGroup>
             <mobi:fieldsetRow>
                 <audio src="${clipName}" controls="controls"/>
                 <br><a href="${clipName}">Play</a>

@@ -5,7 +5,7 @@
 <%@ taglib prefix="push" uri="http://www.icepush.org/icepush/jsp/icepush.tld"%>
 <form:form id="conform" method="POST" enctype="multipart/form-data"
            modelAttribute="contactBean">
-    <mobi:fieldsetGroup inset="true">
+    <mobi:fieldsetGroup>
         <mobi:fieldsetRow>
             <mobi:getEnhanced/>
         </mobi:fieldsetRow>
@@ -23,7 +23,7 @@
                             type="submit"/><br>
 
         <h4>Selected Contact List Echo Display</h4>
-        <mobi:fieldsetGroup inset="true">
+        <mobi:fieldsetGroup>
             <mobi:fieldsetRow>
                 <label>Selected Contact(s):</label>
                 <label style="float:right">${contactBean.contactOne}</label>

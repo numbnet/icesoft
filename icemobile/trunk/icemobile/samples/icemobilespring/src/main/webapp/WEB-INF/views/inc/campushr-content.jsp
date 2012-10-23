@@ -6,7 +6,7 @@
 <form:form id="campushrform" method="POST" enctype="multipart/form-data"
            modelAttribute="cameraBean">
 
-    <mobi:fieldsetGroup inset="true">
+    <mobi:fieldsetGroup>
         <mobi:fieldsetRow>
             <mobi:getEnhanced/>
         </mobi:fieldsetRow>
@@ -15,7 +15,7 @@
     <h4>Form</h4>
 
     <c:if test="${not empty message}">
-        <mobi:fieldsetGroup inset="true">
+        <mobi:fieldsetGroup>
             <mobi:fieldsetRow>
                 <div id="message" class="success">${message}<br/>
                     <img style="height:60px;width:60px;" src="${imgPath}">
@@ -26,7 +26,7 @@
    
    <s:bind path="*">
       <c:if test="${status.error}">
-           <mobi:fieldsetGroup inset="true">
+           <mobi:fieldsetGroup>
                 <mobi:fieldsetRow>
                         <div id="message" class="error">Form has errors</div>
                 </mobi:fieldsetRow>
@@ -34,7 +34,7 @@
        </c:if>
    </s:bind>
    
-   <mobi:fieldsetGroup inset="true">
+   <mobi:fieldsetGroup>
         <mobi:fieldsetRow group="true">Personal Info</mobi:fieldsetRow>
         <mobi:fieldsetRow>
             <form:label path="name">
@@ -44,7 +44,7 @@
         </mobi:fieldsetRow>
     </mobi:fieldsetGroup>
 
-    <mobi:fieldsetGroup inset="true">
+    <mobi:fieldsetGroup>
         <mobi:fieldsetRow>
             <mobi:camera id="cam"/>
             <mobi:thumbnail for="cam"/>
@@ -52,7 +52,7 @@
         </mobi:fieldsetRow>
     </mobi:fieldsetGroup>
 
-    <mobi:fieldsetGroup inset="true">
+    <mobi:fieldsetGroup>
         <mobi:fieldsetRow group="true">Request Additional Info</mobi:fieldsetRow>
         <mobi:fieldsetRow>
             <label><form:checkbox path="additionalInfo[mvc]" value="true"/>on
@@ -62,7 +62,7 @@
         </mobi:fieldsetRow>
     </mobi:fieldsetGroup>
 
-    <mobi:fieldsetGroup inset="true">
+    <mobi:fieldsetGroup>
         <mobi:fieldsetRow>
             <button type="submit">Submit</button>
         </mobi:fieldsetRow>
@@ -70,7 +70,7 @@
 
     <h3>New tags </h3><br/>
 
-    <mobi:fieldsetGroup id="parent" inset="true">
+    <mobi:fieldsetGroup id="parent">
         <mobi:fieldsetRow id="first">
             <h4> This element in first field set row</h4>
         </mobi:fieldsetRow>

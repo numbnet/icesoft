@@ -5,7 +5,7 @@
 <%@ taglib prefix="push" uri="http://www.icepush.org/icepush/jsp/icepush.tld"%>
 <form:form id="camcorderform" method="POST" enctype="multipart/form-data"
                modelAttribute="camcorderBean">
-    <mobi:fieldsetGroup inset="true">
+    <mobi:fieldsetGroup>
         <mobi:fieldsetRow>
             <mobi:getEnhanced/>
         </mobi:fieldsetRow>
@@ -32,7 +32,7 @@
         </div>
     </c:if>
     <c:if test="${mediaReady}">
-        <mobi:fieldsetGroup inset="true">
+        <mobi:fieldsetGroup>
             <mobi:fieldsetRow>
                 <video src="media/video.mp4" controls="controls"/>
                 <br><a href="media/video.mp4">Play</a>

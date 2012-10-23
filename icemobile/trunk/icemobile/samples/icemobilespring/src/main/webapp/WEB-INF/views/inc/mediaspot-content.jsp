@@ -6,7 +6,7 @@
 <h4>Add Marker Photo</h4>
 <form:form id="mediaspotform" method="POST" enctype="multipart/form-data"
            modelAttribute="mediaspotBean">
-    <mobi:fieldsetGroup inset="true">
+    <mobi:fieldsetGroup>
         <mobi:fieldsetRow>
             <mobi:getEnhanced/>
         </mobi:fieldsetRow>
@@ -27,7 +27,7 @@
         </mobi:fieldsetRow>
     </mobi:fieldsetGroup>
 
-    <mobi:fieldsetGroup inset="true">
+    <mobi:fieldsetGroup>
         <mobi:fieldsetRow>
             View augmented: 
             <mobi:augmentedReality id="selection">
@@ -53,7 +53,7 @@
         </c:if>
     </s:bind>
     <c:if test="${null != selection}">
-        <mobi:fieldsetGroup inset="true">
+        <mobi:fieldsetGroup>
             <mobi:fieldsetRow>
                 Selected location:<br />
                 <img style="height:120px;width:120px;padding:5px;"
@@ -64,7 +64,7 @@
         </mobi:fieldsetGroup>
     </c:if>
     
-    <mobi:fieldsetGroup inset="true">
+    <mobi:fieldsetGroup>
         <mobi:fieldsetRow>
             Use your camera to add location pictures to the
             augmented reality overlay. Touch an icon in the augmented

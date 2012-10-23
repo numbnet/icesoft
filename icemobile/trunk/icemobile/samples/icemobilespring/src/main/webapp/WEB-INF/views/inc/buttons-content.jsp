@@ -4,7 +4,7 @@
 <%@ taglib uri="http://www.icemobile.org/tags" prefix="mobi" %>
 <%@ taglib prefix="push" uri="http://www.icepush.org/icepush/jsp/icepush.tld"%>
 <form:form id="buttonsform" method="POST" modelAttribute="buttonsBean">
-    <mobi:fieldsetGroup inset="true">
+    <mobi:fieldsetGroup>
         <mobi:fieldsetRow>
             <mobi:commandButton name="submitB" buttonType="default"
                                 value="default"/>

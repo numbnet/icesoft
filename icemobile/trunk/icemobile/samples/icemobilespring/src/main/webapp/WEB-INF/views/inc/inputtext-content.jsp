@@ -5,7 +5,7 @@
 <%@ taglib prefix="push" uri="http://www.icepush.org/icepush/jsp/icepush.tld"%>
 <form:form id="inputtextform" method="POST" modelAttribute="inputTextBean">
 
-    <mobi:fieldsetGroup inset="true">
+    <mobi:fieldsetGroup>
         <mobi:fieldsetRow>
             <label>Text:</label>
             <mobi:inputText name="text" type="text"
@@ -51,7 +51,7 @@
     <div style="clear:right"></div>
 
     <h4>Input Values</h4>
-    <mobi:fieldsetGroup inset="true">
+    <mobi:fieldsetGroup>
         <mobi:fieldsetRow>
             <label>Text:</label>
             <label style="float:right;">${inputTextBean.text}</label>
