@@ -19,18 +19,16 @@ package org.icefaces.samples.showcase.example.ace.chart;
 import org.icefaces.ace.component.chart.Axis;
 import org.icefaces.ace.component.chart.AxisType;
 import org.icefaces.ace.model.chart.CartesianSeries;
-import org.icefaces.ace.model.chart.DragConstraintAxis;
 import org.icefaces.samples.showcase.metadata.annotation.*;
 import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
-import javax.faces.context.FacesContext;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.io.Serializable;
 
 @ComponentExample(
     title = "example.ace.chart.title",
@@ -65,7 +63,9 @@ import java.io.Serializable;
         @MenuLink(title = "menu.ace.chart.subMenu.dynamic",
                 exampleBeanName = ChartDynamicBean.BEAN_NAME),
         @MenuLink(title = "menu.ace.chart.subMenu.combined",
-                exampleBeanName = ChartCombinedBean.BEAN_NAME)
+                exampleBeanName = ChartCombinedBean.BEAN_NAME),
+        @MenuLink(title = "menu.ace.chart.subMenu.gauge",
+            exampleBeanName = ChartGaugeBean.BEAN_NAME)
     }
 )
 
