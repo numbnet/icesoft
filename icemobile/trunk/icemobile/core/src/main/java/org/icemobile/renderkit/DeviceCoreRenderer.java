@@ -3,7 +3,6 @@ package org.icemobile.renderkit;
 import java.io.IOException;
 
 import org.icemobile.component.IDevice;
-import org.icemobile.component.IThumbnail;
 import org.icemobile.util.ClientDescriptor;
 
 import java.lang.StringBuilder;
@@ -12,13 +11,17 @@ import java.util.logging.Logger;
 import static org.icemobile.util.HTML.*;
 import javax.servlet.http.HttpSession;
 
-public class DeviceCoreRenderer {
+public class DeviceCoreRenderer extends BaseCoreRenderer{
     private static final Logger logger =
             Logger.getLogger(DeviceCoreRenderer.class.toString());
     public void encode(IDevice component, IResponseWriter writer, boolean isJSP)
             throws IOException {
         String clientId = component.getClientId();
         String baseClass = IDevice.CSS_CLASS;
+        String comptype = component.getComponentType();
+        if (comptype.equals("scan") || (comptype.equals("aug"))){
+    	    baseClass= "";
+        }
         boolean disabled = component.isDisabled();
         if (component.getStyleClass() !=null){
             baseClass+= component.getStyleClass();
@@ -36,7 +39,7 @@ public class DeviceCoreRenderer {
             writer.startElement(BUTTON_ELEM, component);
             writer.writeAttribute(NAME_ATTR, clientId + "_button");
             writer.writeAttribute(TYPE_ATTR, "button");
-            writeStandardAttributes(writer, component, IDevice.CSS_CLASS);
+            writeStandardAttributes(writer, component, IDevice.CSS_CLASS, IDevice.DISABLED_STYLE_CLASS);
             //default value of unset in params is Integer.MIN_VALUE
             String script = component.getScript(clientId, cd.isSXRegistered());
       //     logger.info("script = "+script);
@@ -60,7 +63,7 @@ public class DeviceCoreRenderer {
             if (null != component.getSessionId())  {
                 writer.writeAttribute("data-jsessionid", component.getSessionId());
             }
-            writeStandardAttributes(writer, component, IDevice.CSS_CLASS);
+            writeStandardAttributes(writer, component, baseClass, IDevice.DISABLED_STYLE_CLASS);
             writer.writeAttribute("data-command", component.getComponentType());
             writer.writeAttribute(ONCLICK_ATTR, "ice.mobilesx(this)");
             writer.writeText(component.getButtonLabel());
@@ -69,7 +72,6 @@ public class DeviceCoreRenderer {
         /** use html5 input type of file as default */
         // else  (!isEnhanced || component.isUseNative()){
         else {
-            String comptype = component.getComponentType();
       //      logger.info("comptype="+comptype);
             writer.startElement(INPUT_ELEM, component);
             if (comptype.equals("scan") || comptype.equals("aug")){
@@ -79,7 +81,7 @@ public class DeviceCoreRenderer {
             }
             writer.writeAttribute(ID_ATTR, clientId);
             writer.writeAttribute(NAME_ATTR, clientId);
-            writeStandardAttributes(writer, component, "");
+            writeStandardAttributes(writer, component, baseClass, IDevice.DISABLED_STYLE_CLASS);
             if (comptype.equals("camera")){
                 writer.writeAttribute("accept", "image/*");
             }
@@ -93,10 +95,10 @@ public class DeviceCoreRenderer {
         }
         writer.endElement(SPAN_ELEM);
     }
-    public void writeStandardAttributes(IResponseWriter writer, IDevice component, String baseClass) throws IOException  {
+/*    public void writeStandardAttributes(IResponseWriter writer, IDevice component, String baseClass) throws IOException  {
         String comptype = component.getComponentType();
-        StringBuilder inputStyle = new StringBuilder("");
-        if (!comptype.equals("scan") && (!comptype.equals("aug"))){
+        StringBuilder inputStyle = new StringBuilder(baseClass);
+       if (!comptype.equals("scan") && (!comptype.equals("aug"))){
     	    inputStyle.append(baseClass);
         }
         if (component.isDisabled()){
@@ -114,5 +116,5 @@ public class DeviceCoreRenderer {
         if (component.isDisabled())  {
             writer.writeAttribute(DISABLED_ATTR, "disabled");
         }
-    }
+    } */
 }
