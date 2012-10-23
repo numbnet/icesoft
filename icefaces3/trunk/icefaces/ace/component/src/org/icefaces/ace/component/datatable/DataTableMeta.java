@@ -235,7 +235,10 @@ public class DataTableMeta extends UIDataMeta {
     /* ############################# Pagination ############################ */
     /* ##################################################################### */
     @Property(tlddoc = "Defines a list of comma separated integer values that represent the options " +
-            "for \"number of items per page\" presented to the user.")
+            "of \"number of items per page\" presented to the user. \"all\" is a special keyword that allows" +
+            "a user to reset the pagination offset show all rows. The \"all\" option label is defined by the " +
+            " message key \"org.icefaces.ace.component.datatable.ALL_LABEL\". Any non-numerical value other than " +
+            "\"all\" will cause a NumberFormatException.")
     private String rowsPerPageTemplate;
 
     @Property(tlddoc = "Defines a coded string representing the layout of the text displaying" +

@@ -676,7 +676,7 @@ Paginator.prototype = {
      */
     updateVisibility : function (e) {
         var alwaysVisible = this.get('alwaysVisible'),
-            totalRecords,visible,rpp,rppOptions,i,len;
+            totalRecords,visible,rpp,rppOptions,i,len,rppOption,rppValue;
 
         if (!e || e.type === 'alwaysVisibleChange' || !alwaysVisible) {
             totalRecords = this.get('totalRecords');
@@ -686,7 +686,9 @@ Paginator.prototype = {
 
             if (isArray(rppOptions)) {
                 for (i = 0, len = rppOptions.length; i < len; ++i) {
-                    rpp = Math.min(rpp,rppOptions[i]);
+                    rppOption = rppOptions[i];
+                    rppValue  = YAHOO.lang.isValue(rppOption.value) ? rppOption.value : rppOption;
+                    rpp       = Math.min(rpp,rppValue);
                 }
             }
 
@@ -876,8 +878,7 @@ Paginator.prototype = {
      * changeRequest event
      */
     setRowsPerPage : function (rpp,silent) {
-        if (Paginator.isNumeric(rpp) && +rpp > 0 &&
-            +rpp !== this.get('rowsPerPage')) {
+        if (Paginator.isNumeric(rpp) && +rpp !== this.get('rowsPerPage')) {
             if (this.get('updateOnChange') || silent) {
                 this.set('rowsPerPage',rpp);
             } else {
@@ -1001,11 +1002,12 @@ Paginator.prototype = {
         state = {
             paginator    : this,
             before       : currentState,
-
-            rowsPerPage  : changes.rowsPerPage || currentState.rowsPerPage,
-            totalRecords : (Paginator.isNumeric(changes.totalRecords) ?
-                                max(changes.totalRecords,UNLIMITED) :
-                                +currentState.totalRecords)
+            rowsPerPage  : (Paginator.isNumeric(changes.rowsPerPage) && changes.rowsPerPage > -1)
+                                ? changes.rowsPerPage
+                                : currentState.rowsPerPage,
+            totalRecords : (Paginator.isNumeric(changes.totalRecords)
+                                ? max(changes.totalRecords,UNLIMITED)
+                                : +currentState.totalRecords)
         };
 
         if (state.totalRecords === 0) {
@@ -1018,11 +1020,15 @@ Paginator.prototype = {
                             +changes.recordOffset :
                             currentState.recordOffset;
 
-            state.recordOffset = normalizeOffset(offset,
-                                    state.totalRecords,
-                                    state.rowsPerPage);
+            state.recordOffset = state.rowsPerPage == 0
+                                    ? 0 // Return to first row of set as first row of page when showing all rows in page
+                                    : normalizeOffset(offset,
+                                        state.totalRecords,
+                                        state.rowsPerPage);
 
-            state.page = ceil(state.recordOffset / state.rowsPerPage) + 1;
+            state.page = state.rowsPerPage == 0
+                            ? 1 // Catch divide by zero when showing all rows
+                            : ceil(state.recordOffset / state.rowsPerPage) + 1;
         }
 
         state.records = [ state.recordOffset,
