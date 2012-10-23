@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.util.logging.Logger;
 
 import javax.servlet.jsp.JspException;
+import javax.servlet.jsp.JspTagException;
 import javax.servlet.jsp.tagext.BodyContent;
 
 /**
@@ -51,7 +52,7 @@ public class SplitPaneTag extends BaseBodyTag implements ISplitPane {
         }
     }
 
-    public int doStartTag() {
+    public int doStartTag() throws JspTagException{
         /* put class here */
         logger.info("doStartTag spiltPane leftstyle="+this.getLeftStyle()+" rightstyle="+this.getRightStyle()) ;
         calculatePanelWidths();
@@ -61,7 +62,7 @@ public class SplitPaneTag extends BaseBodyTag implements ISplitPane {
             renderer.encodeBegin(this, writer);
             writer.closeOffTag();
         } catch (IOException ioe){
-            ioe.printStackTrace();
+            throw new JspTagException(" Error with startTag of SplitPaneTag");
         }
         return EVAL_BODY_INCLUDE;
     }
@@ -69,12 +70,12 @@ public class SplitPaneTag extends BaseBodyTag implements ISplitPane {
     /**
     * @return
     */
-    public int doEndTag() {
+    public int doEndTag() throws JspTagException{
         renderer= getRenderer();
         try {
             this.renderer.encodeEnd(this, writer);
         } catch (IOException ioe){
-            ioe.printStackTrace();
+            throw new JspTagException(" Error with endTag of SplitPaneTag") ;
         }
         return EVAL_PAGE;
     }
