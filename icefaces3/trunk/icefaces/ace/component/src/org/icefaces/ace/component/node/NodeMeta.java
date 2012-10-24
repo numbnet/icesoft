@@ -33,7 +33,8 @@ import javax.faces.application.ResourceDependency;
         extendsClass   = "javax.faces.component.UIComponentBase",
         componentType  = "org.icefaces.ace.component.Node",
         componentFamily = "org.icefaces.ace.Node",
-        tlddoc = "")
+        tlddoc = "Defines the contents of a node of the parent tree. Multiple nodes of different types " +
+                "can be rendered by the same tree by matching the ace:tree 'type' property.")
 @ResourceDependencies({
         @ResourceDependency(library="icefaces.ace", name="util/ace-jquery.js")
 })
