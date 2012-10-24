@@ -355,7 +355,7 @@
             } else {
                 var target = capturedEvent.srcElement || capturedEvent.target;
                 //is it a DOM event?
-                if (target.nodeName) {
+                if (target && target.nodeName) {
                     return This.Event.adaptToPlainEvent(e, currentElement);
                 } else {
                     return new This.UnknownEvent(currentElement);
