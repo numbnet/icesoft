@@ -19,6 +19,8 @@ public class UserAgentTests  {
     
     List<String> androidPhones = new ArrayList<String>();
     List<String> androidTablets = new ArrayList<String>();
+    List<String> blackberries = new ArrayList<String>();
+    
     
     private void processUserAgentFile(String file, List<String> list) throws IOException{
         InputStream in = this.getClass().getResourceAsStream(file);
@@ -35,6 +37,7 @@ public class UserAgentTests  {
     public void setUp() throws Exception {
         processUserAgentFile("android-tablets.txt",androidTablets);
         processUserAgentFile("android-handhelds.txt",androidPhones);
+        processUserAgentFile("blackberries.txt",blackberries);
     }
            
     @Test
@@ -73,5 +76,22 @@ public class UserAgentTests  {
         
     }
 
+    @Test
+    public void testBlackberries() throws Exception{
+        
+        for( String userAgent : blackberries ){
+            UserAgentInfo userAgentInfo = new UserAgentInfo(userAgent);
+            System.out.println("Testing Blackberries: "+userAgent);
+            assertFalse("android: "+userAgent, userAgentInfo.isAndroidOS());
+            assertFalse("tablet: "+userAgent, userAgentInfo.isTabletBrowser());
+            assertTrue("not handheld: "+userAgent, userAgentInfo.isMobileBrowser());
+            assertFalse("desktop: "+userAgent, userAgentInfo.isDesktopBrowser());
+            assertTrue("blackberry: "+userAgent, userAgentInfo.isBlackberryOS());
+            assertFalse("ios: "+userAgent, userAgentInfo.isIOS());
+            assertFalse("windows: "+userAgent, userAgentInfo.isWindowsOS());
+            assertFalse("mac: "+userAgent, userAgentInfo.isMacOS());
+        }
+        
+    }
 
 }
