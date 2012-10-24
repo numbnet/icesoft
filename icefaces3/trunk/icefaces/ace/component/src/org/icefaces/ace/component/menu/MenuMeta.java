@@ -50,7 +50,7 @@ public class MenuMeta extends UIComponentBaseMeta {
     @Property(tlddoc = "org.icefaces.ace.model.MenuModel instance to create menus programmatically. " +
             "For the menuitem and submenu components, use explicit ids, and " +
             "avoid long processing in the getter method for this property, " +
-            "as it will be called multiple times, in every lifecycle.")
+            "as it will be called multiple times, in every lifecycle. If using MyFaces, see wiki page for some known issues.")
     private MenuModel model;
 
     @Property(tlddoc="Server-side id of the component that will trigger the dynamic menu when the triggerEvent occurs. Used when position is dynamic. It is also possible to specify a client-side id of a plain HTML element on the page.")

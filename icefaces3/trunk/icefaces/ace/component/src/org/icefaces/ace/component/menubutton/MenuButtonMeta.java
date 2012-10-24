@@ -50,7 +50,7 @@ public class MenuButtonMeta extends UIComponentBaseMeta {
     @Property(tlddoc = "MenuModel instance to create menus programmatically. " +
             "For the menuitem and submenu components, use explicit ids, and " +
             "avoid long processing in the getter method for this property, " +
-            "as it will be called multiple times, in every lifecycle.")
+            "as it will be called multiple times, in every lifecycle. If using MyFaces, see wiki page for some known issues.")
     private MenuModel model;
 
     @Property(tlddoc = "Label of the button.")
