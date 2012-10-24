@@ -172,14 +172,14 @@ public class GaugeSeries extends ChartSeries {
     }
 
     /**
-     * @return does gauge stop needle just below/above the min/max values if data is below/above min/max, as if the meter is “pegged”.
+     * @return does gauge stop needle just below or above the min or max values if data is below or above min or max, as if the meter is “pegged”.
      */
     public Boolean getPegNeedle() {
         return pegNeedle;
     }
 
     /**
-     * @param pegNeedle does gauge stop needle just below/above the min/max values if data is below/above min/max, as if the meter is “pegged”.
+     * @param pegNeedle does gauge stop needle just below or above the min or max values if data is below or above min or max, as if the meter is “pegged”.
      */
     public void setPegNeedle(Boolean pegNeedle) {
         this.pegNeedle = pegNeedle;
