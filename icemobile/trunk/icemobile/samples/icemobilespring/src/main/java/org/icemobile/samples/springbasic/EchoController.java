@@ -67,6 +67,10 @@ public class EchoController {
         @ModelAttribute("dateTimeSpinnerBean")
         DateTimeSpinnerBean model) {
     }
+    
+    @RequestMapping(value = "/fieldset")
+    public void doFieldsetRequest() {
+    }
 
     @RequestMapping(value = "/flipswitch")
     public void doRequest(

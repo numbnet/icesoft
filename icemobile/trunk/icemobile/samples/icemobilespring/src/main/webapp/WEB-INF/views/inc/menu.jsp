@@ -7,6 +7,7 @@
     <mobi:outputListItem group="true">Layout and Navigation</mobi:outputListItem>
     <mobi:outputListItem><a href="accordion">Accordion</a></mobi:outputListItem>
     <mobi:outputListItem><a href="carousel">Carousel</a></mobi:outputListItem>
+    <mobi:outputListItem><a href="fieldset">Fieldset</a></mobi:outputListItem>
     <mobi:outputListItem><a href="list">Lists</a></mobi:outputListItem>
     <mobi:outputListItem><a href="panelPopup">Panel Popup</a></mobi:outputListItem>
     <mobi:outputListItem><a href="tabset">Tab Set</a></mobi:outputListItem>
