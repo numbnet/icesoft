@@ -1397,6 +1397,29 @@ ice.mobi.splitpane = {
             this.panels[clientId].unload(clientid);
         }
     },
+    resizeElementHeight: function(elId){
+        var height = 0;
+        var leftNode = document.getElementById(elId+"_left");
+        var rtNode = document.getElementById(elId+"_right");
+        var splt  = document.getElementById(elId+"_splt");
+        var body = window.document.body || null;
+        if (body ==null) return;
+        if (leftNode && rtNode){
+            if (window.innerHeight) {
+                height = window.innerHeight;
+            } else if (body.parentElement.clientHeight) {
+                height = body.parentElement.clientHeight;
+            } else if (body) {
+                if (body.clientHeight) {
+                    height = body.clientHeight;
+                }
+            }
+            if (height > 0){
+                leftNode.style.height = ((height - leftNode.offsetTop) + "px");
+                rtNode.style.height = ((height - rtNode.offsetTop) + "px");
+            }
+        }
+    },
     Scrollable: function Scrollable(clientId, cfgIn) {
         var wrapPanel = clientId+"_wrp";
         var leftNode = document.getElementById(clientId+"_left") ;
@@ -1412,7 +1435,6 @@ ice.mobi.splitpane = {
             var scrollEvent = 'ontouchstart' in window ? "touchmove" : "scroll";
             var supportsOrientationChange = "onorientationchange" in window,
                 orientationEvent = supportsOrientationChange ? "orientationchange" : "resize";
-            if (window.hasEventListener)
             if (window.addEventListener) {
                     window.addEventListener(orientationEvent, resizeCall, false);
                     window.addEventListener('resize', resizeCall, false);
@@ -1423,7 +1445,7 @@ ice.mobi.splitpane = {
                    }
         return {
            resize: function(clientId){
-                resizeElementHeight(clientId);
+                ice.mobi.splitpane.resizeElementHeight(clientId);
            },
            unload: function(clientId){
                //remove listeners and set object back to empty

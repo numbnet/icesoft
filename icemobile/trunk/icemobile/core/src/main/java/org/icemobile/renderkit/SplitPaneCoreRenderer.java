@@ -36,7 +36,7 @@ public class SplitPaneCoreRenderer extends BaseCoreRenderer {
             this.setSpltClass(splitClass.append(" ").append(userClass).toString());
         }
         writer.startElement(DIV_ELEM, component);
-        writer.writeAttribute(ID_ATTR, component.getClientId()+Constants.SUFFIX_WRAPPER);
+        writer.writeAttribute(ID_ATTR, component.getClientId());
         writeStandardLayoutAttributes(writer, component, baseClass.toString() );
     }
     public void encodePane(IFragment component, IResponseWriter writer, String style)
@@ -50,17 +50,22 @@ public class SplitPaneCoreRenderer extends BaseCoreRenderer {
     public void encodePaneEnd(IResponseWriter writer)
         throws IOException{
         writer.endElement(DIV_ELEM);
+        writer.endElement(DIV_ELEM);
+    }
+    public void encodeParentEnd(IResponseWriter writer)throws Exception{
+        writer.endElement(DIV_ELEM);
     }
     public void encodePane(ISplitPane component, IResponseWriter writer, String side)
         throws IOException {
         writer.startElement(DIV_ELEM, component);
-        writer.writeAttribute(CLASS_ATTR, this.getPaneClass());
-        writer.writeAttribute(ID_ATTR, component.getClientId()+"_"+side);
         String width = this.getLeftwidth();
         if (side.equals("right")){
            width = this.getRightwidth();
         }
         writer.writeAttribute(STYLE_ATTR, width);
+        writer.startElement(DIV_ELEM, component);
+        writer.writeAttribute(CLASS_ATTR, this.getPaneClass());
+        writer.writeAttribute(ID_ATTR, component.getClientId()+"_"+side);
     }
 
     public void encodeColumnDivider(ISplitPane component, IResponseWriter writer)
