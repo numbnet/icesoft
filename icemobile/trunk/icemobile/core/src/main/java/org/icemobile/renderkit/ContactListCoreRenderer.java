@@ -28,13 +28,6 @@ public class ContactListCoreRenderer {
             args.append("pattern=").append(pattern);
         }
 
-        if (component.isMultipleSelect()) {
-            if (args.length() > 0) {
-                args.append("&");
-            }
-            args.append("select=multiple");
-        }
-
         String fields = component.getFields();
         if (fields != null && !"".equals(fields)) {
             if (args.length() > 0) {

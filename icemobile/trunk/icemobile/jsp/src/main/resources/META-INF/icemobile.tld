@@ -1381,14 +1381,6 @@
             <rtexprvalue>true</rtexprvalue>
         </attribute>
         <attribute>
-            <description>If true, list allows for multiple user selections
-            </description>
-            <name>multipleSelect</name>
-            <required>false</required>
-            <rtexprvalue>true</rtexprvalue>
-            <type>boolean</type>
-        </attribute>
-        <attribute>
             <description>Can contain one or more of contact, email, and phone
                 fields for retrieval
                 in a csv list. Default is contact information
