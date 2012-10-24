@@ -17,6 +17,7 @@
 #import "MapController.h"
 #import "PlaceLabel.h"
 #import "ARView.h"
+#import "IceUtil.h"
 
 @interface MapController ()
 
@@ -26,6 +27,7 @@
 @synthesize mapView;
 @synthesize arView;
 @synthesize popover;
+@synthesize doneButton;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -58,6 +60,7 @@
 {
     [super viewWillAppear:animated];
 
+    [IceUtil makeFancyButton:doneButton];
     UILongPressGestureRecognizer *gestureRec = 
             [[UILongPressGestureRecognizer alloc] 
     initWithTarget:self action:@selector(handleGesture:)];

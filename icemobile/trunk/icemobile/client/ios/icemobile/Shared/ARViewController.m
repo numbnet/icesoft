@@ -18,6 +18,7 @@
 #import "PlaceLabel.h"
 #import "ARView.h"
 #import "MapController.h"
+#import "IceUtil.h"
 
 @interface ARViewController ()
 
@@ -28,6 +29,8 @@
 @synthesize nativeInterface;
 @synthesize selectedPlace;
 @synthesize compassSwitch;
+@synthesize mapButton;
+@synthesize cancelButton;
 @synthesize compassPref;
 @synthesize toolbar;
 
@@ -72,6 +75,8 @@
     self.toolbar.frame = CGRectMake(0, 
         self.view.frame.size.height - self.toolbar.frame.size.height, 
         self.view.frame.size.width, self.view.frame.size.height);
+    [IceUtil makeFancyButton:mapButton];
+    [IceUtil makeFancyButton:cancelButton];
 }
 
 - (void)viewDidUnload
