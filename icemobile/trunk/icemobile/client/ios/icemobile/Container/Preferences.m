@@ -16,6 +16,7 @@
 
 #import "Preferences.h"
 #import "MainViewController.h"
+#import "IceUtil.h"
 
 @implementation Preferences
 
@@ -80,11 +81,11 @@
     if (self.isFancy)  {
         return;
     }
-    [self makeFancyButton:doneButton];
-    [self makeFancyButton:goButton];
-    [self makeFancyButton:quitButton];
-    [self makeFancyButton:reloadButton];
-    [self makeFancyButton:clearButton];
+    [IceUtil makeFancyButton:doneButton];
+    [IceUtil makeFancyButton:goButton];
+    [IceUtil makeFancyButton:quitButton];
+    [IceUtil makeFancyButton:reloadButton];
+    [IceUtil makeFancyButton:clearButton];
     self.isFancy = YES;
 }
 
@@ -96,24 +97,6 @@
 
 - (CGSize)contentSizeForViewInPopoverView {
     return CGSizeMake(320, 480);
-}
-
-- (void)makeFancyButton:(UIButton*)button  {
-    CAGradientLayer *gradientLayer = [[CAGradientLayer alloc] init];
-    [gradientLayer setBounds:[button bounds]];
-    [gradientLayer setPosition:
-                CGPointMake([button bounds].size.width/2,
-                       [button bounds].size.height/2)];
-        [gradientLayer setColors:
-                     [NSArray arrayWithObjects:
-                            (id)[[UIColor whiteColor] CGColor], 
-                            (id)[[UIColor grayColor] CGColor], nil]];
-    [[button layer] insertSublayer:gradientLayer atIndex:0];
-    [gradientLayer release];
-
-    [[button layer] setCornerRadius:8.0f];
-    [[button layer] setMasksToBounds:YES];
-    [[button layer] setBorderWidth:1.0f];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation

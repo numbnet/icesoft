@@ -1,5 +1,5 @@
 /*
-* Copyright 2004-2011 ICEsoft Technologies Canada Corp. (c)
+* Copyright 2004-2012 ICEsoft Technologies Canada Corp. (c)
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -14,22 +14,11 @@
 * limitations under the License.
 */
 
+#import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
-#import "MapKit/MapKit.h"
-@class ARView;
 
-@interface MapController : UIViewController {
-    MKMapView *mapView;
-    ARView *arView;
-    UIPopoverController *popover;
-    UIButton *doneButton;
-}
+@interface IceUtil : NSObject
 
-@property (nonatomic, retain) IBOutlet MKMapView *mapView;
-@property (nonatomic, retain) ARView *arView;
-@property (nonatomic, retain) UIPopoverController *popover;
-@property (nonatomic, retain) IBOutlet UIButton *doneButton;
-
-- (IBAction) doDone;
++ (void)makeFancyButton:(UIButton*)button;
 
 @end

@@ -22,6 +22,8 @@
     NativeInterface *nativeInterface;
     NSString *selectedPlace;
     UISwitch *compassSwitch;
+    UIButton *mapButton;
+    UIButton *cancelButton;
     BOOL compassPref;
     UIView *toolbar;
 }
@@ -30,6 +32,8 @@
 @property (retain) NativeInterface *nativeInterface;
 @property (nonatomic, retain) NSString *selectedPlace;
 @property (nonatomic, retain) IBOutlet UISwitch *compassSwitch;
+@property (nonatomic, retain) IBOutlet UIButton *mapButton;
+@property (nonatomic, retain) IBOutlet UIButton *cancelButton;
 @property (nonatomic) BOOL compassPref;
 @property (nonatomic, retain) IBOutlet UIView *toolbar;
 
