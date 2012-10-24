@@ -21,6 +21,7 @@ import org.icefaces.ace.util.HTML;
 import org.icefaces.ace.util.JSONBuilder;
 import org.icefaces.ace.util.Utils;
 import org.icefaces.render.MandatoryResourceComponent;
+import org.icefaces.util.EnvUtils;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -58,6 +59,7 @@ public class TextEntryRenderer extends InputRenderer {
 		TextEntry textEntry = (TextEntry) component;
         ResponseWriter writer = context.getResponseWriter();
         String clientId = textEntry.getClientId(context);
+        boolean ariaEnabled = EnvUtils.isAriaEnabled(context);
 
         writer.startElement("span", component);
         writer.writeAttribute("id", clientId, "clientId");
@@ -76,7 +78,9 @@ public class TextEntryRenderer extends InputRenderer {
         writer.startElement("input", null);
         writer.writeAttribute("id", clientId + "_input", null);
         writer.writeAttribute("type", "text", null);
-        writer.writeAttribute("role", "textbox", null);
+        if (ariaEnabled) {
+            writer.writeAttribute("role", "textbox", null);
+        }
 
         String embeddedLabel = null;
         String nameToRender = clientId + "_input";
@@ -104,14 +108,16 @@ public class TextEntryRenderer extends InputRenderer {
 
         renderPassThruAttributes(context, textEntry, HTML.INPUT_TEXT_ATTRS);
 
-        final TextEntry compoent = (TextEntry) component;
-        Map<String, Object> ariaAttributes = new HashMap<String, Object>() {{
-            put("readonly", compoent.isReadonly());
-            put("required", compoent.isRequired());
-            put("disabled", compoent.isDisabled());
-            put("invalid", !compoent.isValid());
-        }};
-        writeAriaAttributes(ariaAttributes, labelAttributes);
+        if (ariaEnabled) {
+            final TextEntry compoent = (TextEntry) component;
+            Map<String, Object> ariaAttributes = new HashMap<String, Object>() {{
+                put("readonly", compoent.isReadonly());
+                put("required", compoent.isRequired());
+                put("disabled", compoent.isDisabled());
+                put("invalid", !compoent.isValid());
+            }};
+            writeAriaAttributes(ariaAttributes, labelAttributes);
+        }
 
         if(textEntry.isDisabled()) writer.writeAttribute("disabled", "disabled", "disabled");
         if(textEntry.isReadonly()) writer.writeAttribute("readonly", "readonly", "readonly");

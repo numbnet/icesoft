@@ -43,6 +43,7 @@ import org.icefaces.ace.util.HTML;
 import org.icefaces.ace.util.JSONBuilder;
 import org.icefaces.impl.util.Util;
 import org.icefaces.render.MandatoryResourceComponent;
+import org.icefaces.util.EnvUtils;
 
 @MandatoryResourceComponent(tagName="dateTimeEntry", value="org.icefaces.ace.component.datetimeentry.DateTimeEntry")
 public class DateTimeEntryRenderer extends InputRenderer {
@@ -91,6 +92,7 @@ public class DateTimeEntryRenderer extends InputRenderer {
         boolean popup = dateTimeEntry.isPopup();
         Map paramMap = context.getExternalContext().getRequestParameterMap();
         String iceFocus = (String) paramMap.get("ice.focus");
+        boolean ariaEnabled = EnvUtils.isAriaEnabled(context);
 
         writer.startElement("span", dateTimeEntry);
         writer.writeAttribute("id", clientId, null);
@@ -117,7 +119,7 @@ public class DateTimeEntryRenderer extends InputRenderer {
         writer.writeAttribute("name", inputId, null);
         writer.writeAttribute("type", type, null);
 		writer.writeAttribute("tabindex", dateTimeEntry.getTabindex(), null);
-        if (popup) {
+        if (popup && ariaEnabled) {
             writer.writeAttribute("role", "textbox", null);
         }
 
@@ -151,14 +153,16 @@ public class DateTimeEntryRenderer extends InputRenderer {
             }
             writer.writeAttribute("size", size, null);
 
-            final DateTimeEntry compoent = dateTimeEntry;
-            Map<String, Object> ariaAttributes = new HashMap<String, Object>() {{
-                put("readonly", compoent.isReadonly());
-                put("required", compoent.isRequired());
-                put("disabled", compoent.isDisabled());
-                put("invalid", !compoent.isValid());
-            }};
-            writeAriaAttributes(ariaAttributes, labelAttributes);
+            if (ariaEnabled) {
+                final DateTimeEntry compoent = dateTimeEntry;
+                Map<String, Object> ariaAttributes = new HashMap<String, Object>() {{
+                    put("readonly", compoent.isReadonly());
+                    put("required", compoent.isRequired());
+                    put("disabled", compoent.isDisabled());
+                    put("invalid", !compoent.isValid());
+                }};
+                writeAriaAttributes(ariaAttributes, labelAttributes);
+            }
 
 //            renderPassThruAttributes(context, dateTimeEntry, HTML.INPUT_TEXT_ATTRS);
         }

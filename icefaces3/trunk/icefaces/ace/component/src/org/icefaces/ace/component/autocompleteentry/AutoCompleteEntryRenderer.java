@@ -19,6 +19,7 @@ package org.icefaces.ace.component.autocompleteentry;
 import org.icefaces.ace.renderkit.InputRenderer;
 import org.icefaces.render.MandatoryResourceComponent;
 import org.icefaces.ace.util.JSONBuilder;
+import org.icefaces.util.EnvUtils;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.ExternalContext;
@@ -90,6 +91,7 @@ public class AutoCompleteEntryRenderer extends InputRenderer {
 		ResponseWriter writer = facesContext.getResponseWriter();
         String clientId = uiComponent.getClientId(facesContext);
         AutoCompleteEntry autoCompleteEntry = (AutoCompleteEntry) uiComponent;
+        boolean ariaEnabled = EnvUtils.isAriaEnabled(facesContext);
 		
 		// root
         writer.startElement("div", null);
@@ -116,8 +118,10 @@ public class AutoCompleteEntryRenderer extends InputRenderer {
 		writer.startElement("input", null);
         writer.writeAttribute("type", "text", null);
 		writer.writeAttribute("name", inputClientId, null);
-        writer.writeAttribute("role", "textbox", null);
-		String mousedownScript = (String) uiComponent.getAttributes().get("onmousedown");
+        if (ariaEnabled) {
+            writer.writeAttribute("role", "textbox", null);
+        }
+        String mousedownScript = (String) uiComponent.getAttributes().get("onmousedown");
 		mousedownScript = mousedownScript == null ? "" : mousedownScript;
 		writer.writeAttribute("onmousedown", mousedownScript + "this.focus();", null);
 		int width = autoCompleteEntry.getWidth();
@@ -153,17 +157,19 @@ public class AutoCompleteEntryRenderer extends InputRenderer {
 			value = "";
 		}
 
-        final AutoCompleteEntry compoent = (AutoCompleteEntry) uiComponent;
-        Map<String, Object> ariaAttributes = new HashMap<String, Object>() {{
-            put("autocomplete", "list");
-            put("readonly", compoent.isReadonly());
-            put("required", compoent.isRequired());
-            put("disabled", compoent.isDisabled());
-            put("invalid", !compoent.isValid());
-        }};
-        writeAriaAttributes(ariaAttributes, labelAttributes);
+        if (ariaEnabled) {
+            final AutoCompleteEntry compoent = (AutoCompleteEntry) uiComponent;
+            Map<String, Object> ariaAttributes = new HashMap<String, Object>() {{
+                put("autocomplete", "list");
+                put("readonly", compoent.isReadonly());
+                put("required", compoent.isRequired());
+                put("disabled", compoent.isDisabled());
+                put("invalid", !compoent.isValid());
+            }};
+            writeAriaAttributes(ariaAttributes, labelAttributes);
+        }
 
-		writer.endElement("input");
+        writer.endElement("input");
         writeLabelAndIndicatorAfter(labelAttributes);
 
 		// div

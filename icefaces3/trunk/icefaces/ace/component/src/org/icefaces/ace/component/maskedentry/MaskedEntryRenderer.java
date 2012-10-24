@@ -40,6 +40,7 @@ import org.icefaces.ace.util.HTML;
 import org.icefaces.ace.util.Utils;
 import org.icefaces.ace.util.JSONBuilder;
 import org.icefaces.render.MandatoryResourceComponent;
+import org.icefaces.util.EnvUtils;
 
 @MandatoryResourceComponent(tagName="maskedEntry", value="org.icefaces.ace.component.maskedentry.MaskedEntry")
 public class MaskedEntryRenderer extends InputRenderer {
@@ -131,15 +132,18 @@ public class MaskedEntryRenderer extends InputRenderer {
         String defaultClass = themeForms() ? MaskedEntry.THEME_INPUT_CLASS : MaskedEntry.PLAIN_INPUT_CLASS;
         String styleClass = maskedEntry.getStyleClass();
         defaultClass += getStateStyleClasses(maskedEntry);
+        boolean ariaEnabled = EnvUtils.isAriaEnabled(context);
 
 		writer.startElement("span", null);
 		writer.writeAttribute("id", clientId, null);
 		writer.startElement("input", null);
 		writer.writeAttribute("name", fieldClientId, null);
 		writer.writeAttribute("type", "text", null);
-        writer.writeAttribute("role", "textbox", null);
+        if (ariaEnabled) {
+            writer.writeAttribute("role", "textbox", null);
+        }
 
-		String valueToRender = ComponentUtils.getStringValueToRender(context, maskedEntry);
+        String valueToRender = ComponentUtils.getStringValueToRender(context, maskedEntry);
         boolean hasLabel = (Boolean) labelAttributes.get("hasLabel");
         String labelPosition = (String) labelAttributes.get("labelPosition");
         String label = (String) labelAttributes.get("label");
@@ -163,14 +167,16 @@ public class MaskedEntryRenderer extends InputRenderer {
 		
 		renderPassThruAttributes(context, maskedEntry, HTML.INPUT_TEXT_ATTRS);
 
-        final MaskedEntry compoent = maskedEntry;
-        Map<String, Object> ariaAttributes = new HashMap<String, Object>() {{
-            put("readonly", compoent.isReadonly());
-            put("required", compoent.isRequired());
-            put("disabled", compoent.isDisabled());
-            put("invalid", !compoent.isValid());
-        }};
-        writeAriaAttributes(ariaAttributes, labelAttributes);
+        if (ariaEnabled) {
+            final MaskedEntry compoent = maskedEntry;
+            Map<String, Object> ariaAttributes = new HashMap<String, Object>() {{
+                put("readonly", compoent.isReadonly());
+                put("required", compoent.isRequired());
+                put("disabled", compoent.isDisabled());
+                put("invalid", !compoent.isValid());
+            }};
+            writeAriaAttributes(ariaAttributes, labelAttributes);
+        }
 
         if(maskedEntry.isDisabled()) writer.writeAttribute("disabled", "disabled", "disabled");
         if(maskedEntry.isReadonly()) writer.writeAttribute("readonly", "readonly", "readonly");
