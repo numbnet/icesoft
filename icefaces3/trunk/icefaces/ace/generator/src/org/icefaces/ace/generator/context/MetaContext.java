@@ -162,10 +162,10 @@ public abstract class MetaContext {
 			propertyValues.tlddoc = "";
 		}
 		if (propertyValues.javadocGet.equals(Property.Null)) {
-			propertyValues.javadocGet = "";
+			propertyValues.javadocGet = propertyValues.tlddoc;
 		}
 		if (propertyValues.javadocSet.equals(Property.Null)) {
-			propertyValues.javadocSet = "";
+			propertyValues.javadocSet = propertyValues.tlddoc;
 		}
 		if (propertyValues.required == Required.UNSET) {
 			propertyValues.required = Required.DEFAULT;

@@ -488,19 +488,19 @@ public class ComponentArtifact extends Artifact{
     private void addJavaDoc(String name, boolean isSetter, String doc) {
         writer.append("\n\t/**\n");
         if (isSetter) {
-            writer.append("\t* <p>Set the value of the <code>");
+            writer.append("\t * <p>Set the value of the <code>");
         } else {
-            writer.append("\t* <p>Return the value of the <code>");
+            writer.append("\t * <p>Return the value of the <code>");
         }
         writer.append(name);
         writer.append("</code> property.</p>");
         if (doc != null && !"".equals(doc)) {
             String[] lines = doc.split("\n");
-            writer.append("\n\t* <p>Contents:");
+            writer.append("\n\t * <p>Contents: ");
 
             for (int j=0; j < lines.length; j++){
                 if (j>0) {
-                    writer.append("\n\t* ");
+                    writer.append("\n\t * ");
                 }
                 writer.append(lines[j]);
                 if (j == (lines.length-1)) {
@@ -508,7 +508,7 @@ public class ComponentArtifact extends Artifact{
                 }
             }
         }
-        writer.append("\n\t*/\n");
+        writer.append("\n\t */\n");
     }
 
 
