@@ -34,9 +34,12 @@
         <pre style="font-family: Verdana, Arial, sans serif;">3:  </pre><h:inputText id="latitude3" value="#{markerBean.latList[2]}"/>
         <h:inputText id="longitude3" value="#{markerBean.longList[2]}"/><h:inputText id="options3" value="#{markerBean.optionsList[2]}"/>
     </h:panelGrid>
+	<br/>
+	<h:commandButton value="Submit" type="submit"/>
     </h:form>
     <p>Options are set as name:value, and are separated by commas.
 	<p>Relevant section of the Google Maps API: <a href="https://developers.google.com/maps/documentation/javascript/reference#Marker">Map Marker</a></p>
+	<br/>A few good example options are 'flat:true', which will remove the 3d 'shadow' from the marker, and 'draggable:false', which will force the marker into one position.
     </p>
 </ui:define>
 </ui:composition>
