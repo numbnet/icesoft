@@ -56,18 +56,18 @@ import java.util.Random;
                 exampleBeanName = ChartBubbleBean.BEAN_NAME),
         @MenuLink(title = "menu.ace.chart.subMenu.candlestick",
             exampleBeanName = ChartCandlestickBean.BEAN_NAME),
-        @MenuLink(title = "menu.ace.chart.subMenu.combined",
-                    exampleBeanName = ChartCombinedBean.BEAN_NAME),
         @MenuLink(title = "menu.ace.chart.subMenu.donut",
                 exampleBeanName = ChartDonutBean.BEAN_NAME),
-        @MenuLink(title = "menu.ace.chart.subMenu.dynamic",
-                    exampleBeanName = ChartDynamicBean.BEAN_NAME),
-        @MenuLink(title = "menu.ace.chart.subMenu.export",
-                exampleBeanName = ChartExportBean.BEAN_NAME),
         @MenuLink(title = "menu.ace.chart.subMenu.gauge",
             exampleBeanName = ChartGaugeBean.BEAN_NAME),
         @MenuLink(title = "menu.ace.chart.subMenu.pie",
-                exampleBeanName = ChartPieBean.BEAN_NAME)
+                exampleBeanName = ChartPieBean.BEAN_NAME),
+        @MenuLink(title = "menu.ace.chart.subMenu.combined",
+                exampleBeanName = ChartCombinedBean.BEAN_NAME),
+        @MenuLink(title = "menu.ace.chart.subMenu.dynamic",
+                exampleBeanName = ChartDynamicBean.BEAN_NAME),
+        @MenuLink(title = "menu.ace.chart.subMenu.export",
+                exampleBeanName = ChartExportBean.BEAN_NAME),
     }
 )
 
