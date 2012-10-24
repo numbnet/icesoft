@@ -28,7 +28,7 @@ import org.icefaces.ace.meta.baseMeta.UIComponentBaseMeta;
         componentType   = "org.icefaces.ace.component.Delegate",
         rendererType    = "org.icefaces.ace.component.DelegateRenderer",
 		componentFamily = "org.icefaces.ace.Delegate",
-		tlddoc = "The Delegate is a container component that will receive the tooltip functionality on behalf of some other inner component. This is useful in cases where such inner component is prone to be completely replaced from the DOM during dynmic updates, where it could lose the tooltip functionality." +
+		tlddoc = "The Delegate is a container component that will receive the tooltip functionality on behalf of some other inner component. This is useful in cases where such inner component is prone to be completely replaced from the DOM during dynmic updates, where it could lose the tooltip functionality. This component doesn't have any visual impact on the page; it simply renders span elements to apply listeners to." +
                 "<p>For more information, see the <a href=\"http://wiki.icefaces.org/display/ICE/Delegate\">Delegate Wiki Documentation</a>."
         )
 
