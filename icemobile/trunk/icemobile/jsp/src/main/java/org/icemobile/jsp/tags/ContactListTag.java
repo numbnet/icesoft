@@ -74,8 +74,4 @@ public class ContactListTag extends BaseSimpleTag implements IContactList {
     public void setFields(String fields) {
         this.fields = fields;
     }
-
-    public String getClientId() {
-        return id;
-    }
 }

@@ -80,5 +80,9 @@ public abstract class BaseSimpleTag  extends SimpleTagSupport {
     public String getClientId(){
         return id;
     }
-
+    public void release(){
+        this.styleClass= null;
+        this.style = null;
+        this.id= null;
+    }
 }

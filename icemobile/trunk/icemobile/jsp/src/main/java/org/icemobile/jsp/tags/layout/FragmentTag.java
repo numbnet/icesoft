@@ -35,9 +35,6 @@ public class FragmentTag extends BaseBodyTag implements IFragment{
 
     private SplitPaneCoreRenderer renderer;
     private String name;
-    private String clientId;
-    private String styleClass;
-    private String style;
     private boolean firstChild;
     private TagWriter writer;
     private SplitPaneTag myParent;
@@ -60,12 +57,12 @@ public class FragmentTag extends BaseBodyTag implements IFragment{
            LOG.info(" name of facet must be left or right");
         } else {
            if (name.equals(LOC_LEFT)){
-            this.setClientId(parentId+"_left");
+            id = parentId+"_left";
             this.style = parent.getLeftStyle();
             firstChild = true;
         }
         else if (name.equals(LOC_RIGHT)){
-            this.setClientId(parentId+"_right");
+            id = parentId+"_right";
             this.style = parent.getRightStyle();
             firstChild = false;
         } //error checking??
@@ -104,14 +101,6 @@ public class FragmentTag extends BaseBodyTag implements IFragment{
        return EVAL_PAGE;
     }
 
-
-    public String getClientId() {
-        return this.clientId;
-    }
-    public void setClientId(String id){
-        this.clientId = id;
-    }
-
     public String getName() {
         return name;
     }
@@ -121,11 +110,8 @@ public class FragmentTag extends BaseBodyTag implements IFragment{
     }
 
     public void release(){
-        //this.name=null;
+        super.release();
         LOG.info("release Fragment");
-        this.clientId=null;
-        this.styleClass= null;
-        this.style = null;
         this.writer= null;
         this.renderer=null;
     }

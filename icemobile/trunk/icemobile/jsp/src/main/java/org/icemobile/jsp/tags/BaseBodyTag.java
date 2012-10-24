@@ -66,5 +66,13 @@ public abstract class BaseBodyTag extends BodyTagSupport{
     public void setId(String id) {
         this.id = id;
     }
+    public String getClientId(){
+        return this.id;
+    }
+    public void release(){
+        this.styleClass= null;
+        this.style = null;
+        this.id= null;
+    }
 
 }
