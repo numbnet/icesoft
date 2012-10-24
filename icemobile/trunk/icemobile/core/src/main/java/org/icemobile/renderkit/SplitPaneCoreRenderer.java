@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import org.icemobile.component.IFragment;
 import org.icemobile.component.ISplitPane;
+import org.icemobile.util.Constants;
 
 import java.util.logging.Logger;
 import static org.icemobile.util.HTML.*;
@@ -35,7 +36,7 @@ public class SplitPaneCoreRenderer extends BaseCoreRenderer {
             this.setSpltClass(splitClass.append(" ").append(userClass).toString());
         }
         writer.startElement(DIV_ELEM, component);
-        writer.writeAttribute(ID_ATTR, component.getClientId()+"_wrp");
+        writer.writeAttribute(ID_ATTR, component.getClientId()+Constants.SUFFIX_WRAPPER);
         writeStandardLayoutAttributes(writer, component, baseClass.toString() );
     }
     public void encodePane(IFragment component, IResponseWriter writer, String style)
