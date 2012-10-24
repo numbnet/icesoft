@@ -21,7 +21,7 @@ import java.util.Set;
     tlddoc = "Renders an Array or List of objects as a styled HTML UL element. Supports dual & multi" +
             "list configurations, reordering, item drag/drop, selection & block style layout.  The component " +
             "strives to be exceptionally easy to style and adjust layout.The List can optionally " +
-            "take SelectItem objects to use their String value representations as list item contents; or" +
+            "take SelectItem objects to use their String value representations as list item contents; or " +
             "the ace:list tag defines child components that are iteratively rendered for each object." +
             "The components are associated with the iterative object via bindings of the 'var' property."
 )

@@ -36,7 +36,9 @@ import javax.faces.application.ResourceDependency;
         componentType  = "org.icefaces.ace.component.Tree",
         rendererType   = "org.icefaces.ace.component.TreeRenderer",
         componentFamily = "org.icefaces.ace.Tree",
-        tlddoc = "")
+        tlddoc = "Renders a hierarchical structure of ace:node contents. Supports client-side and server-side node" +
+                "selection and expansion. Other features available include: user reordering of nodes, multiple selection " +
+                "and lazy node state initialization.")
 @ResourceDependencies({
         @ResourceDependency(library="icefaces.ace", name="util/combined.css"),
         @ResourceDependency(library="icefaces.ace", name="util/ace-jquery.js"),
