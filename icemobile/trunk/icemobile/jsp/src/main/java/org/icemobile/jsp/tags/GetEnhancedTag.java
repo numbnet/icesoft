@@ -56,10 +56,6 @@ public class GetEnhancedTag extends BaseSimpleTag implements IGetEnhanced{
 		this.blackberryMsg = blackberryMsg;
 	}
 
-    public String getClientId() {
-        return id;
-    }
-
     public String getICEmobileRegisterSXScript() {
         return SXUtils.getICEmobileRegisterSXScript(getRequest(),MobiJspConstants.SX_UPLOAD_PATH);
     }

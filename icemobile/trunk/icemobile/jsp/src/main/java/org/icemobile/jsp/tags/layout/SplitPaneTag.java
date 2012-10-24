@@ -99,10 +99,7 @@ public class SplitPaneTag extends BaseBodyTag implements ISplitPane {
             return false;
         }
     }
-    public String getClientId(){
-                return this.id;
-    }
-
+    
     public SplitPaneCoreRenderer getRenderer() {
         return new SplitPaneCoreRenderer();
     }

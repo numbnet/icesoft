@@ -153,9 +153,6 @@ public class DeviceTag extends BaseBodyTag implements IDevice{
              return String.format(CONTAINER_ONCLICK, command, id);
         }
     }
-    public String getClientId() {
-        return id;
-    }
     public String getParams() {
         return this.params;
     }

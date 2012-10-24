@@ -85,8 +85,5 @@ public class ThumbnailTag extends BaseSimpleTag implements IThumbnail{
     public String getMFor(){
         return this.mFor;
     }
-    public String getClientId() {
-            return id;
-    }
 
 }
