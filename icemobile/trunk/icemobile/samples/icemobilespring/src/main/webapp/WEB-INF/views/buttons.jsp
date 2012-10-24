@@ -37,18 +37,16 @@
                         ICEmobile Spring MVC Showcase
                     </mobi:pagePanelHeader>
                     <mobi:pagePanelBody>
-                        <div id="left">
-                            <%@ include file="/WEB-INF/views/inc/menu.jsp" %>
-                        </div>
-                        <div id="right">
-                            <div class="ajaxzone">
-                                <%@ include file="/WEB-INF/views/inc/buttons-content.jsp" %>
-                            </div>
-                        </div>
-                        <script type="text/javascript">
-                        addResizeHeightAfterResizeListener('left');
-                        addResizeHeightAfterResizeListener('right');
-                        </script>
+                         <mobi:splitPane id="sp" scrollable="true" columnDivider="30">
+                            <mobi:fragment name="left">
+                                <%@ include file="/WEB-INF/views/inc/menu.jsp" %>
+                            </mobi:fragment>
+                            <mobi:fragment name="right">
+                                <div class="ajaxzone">
+                                    <%@ include file="/WEB-INF/views/inc/buttons-content.jsp" %>
+                                </div>
+                            </mobi:fragment>
+                         </mobi:splitPane>
                     </mobi:pagePanelBody>
                  </mobi:pagePanel>
              </c:when>
@@ -60,7 +58,7 @@
     
 <c:if test="${!ajaxRequest}">
     <script type="text/javascript">
-        MvcUtil.enhanceAllLinks("#left",".ajaxzone");
+        MvcUtil.enhanceAllLinks("#sp_left",".ajaxzone");
         $('#menu a[href=buttons]').addClass('active');
     </script>
 </body>
