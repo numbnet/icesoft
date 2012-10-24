@@ -31,7 +31,9 @@ import javax.faces.application.ResourceDependency;
         extendsClass    = "javax.faces.component.UIPanel",
         componentType   = "org.icefaces.ace.component.GMapInfoWindow",
         rendererType    = "org.icefaces.ace.component.GMapInfoWindowRenderer",
-		componentFamily = "org.icefaces.ace.component"
+		componentFamily = "org.icefaces.ace.component",
+        tlddoc = "ace:gMapInfoWindow creates a pop-up window within the parent ace:gMap, which can be used to display either text via the 'content' attribute or " +
+                "nested html or jsf tags. If placed within an ace:gMapMarker, the window will 'bind' to the marker, and move along with it."
         )
 
 @ResourceDependencies({
@@ -47,9 +49,11 @@ public class GMapInfoWindowMeta extends UIPanelMeta {
     @Property(tlddoc="The latitude for the marker, will be overridden if a child of a marker.")
     private String latitude;
 
-    @Property(tlddoc="The content of the window. Will be overwritten if the ace:gMapInfoWindow tag has children.")
+    @Property(tlddoc="The text content to be displayed within the info window. " +
+            "If this component has child tags(either html or another jsf component), this attribute will not be used, placing the children within the window instead.")
     private String content;
 
-    @Property(tlddoc="Additional options to be sent to the window. Check google maps API for more specifics. Form is attribute:'value'", defaultValue="none")
+    @Property(tlddoc="Additional options to be sent to the window. Check google maps API for more specifics at " +
+            "https://developers.google.com/maps/documentation/javascript/reference#InfoWindowOptions. Form is attribute:'value'.", defaultValue="none")
     private String options;
 }

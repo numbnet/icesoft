@@ -32,8 +32,12 @@ import javax.faces.application.ResourceDependency;
         extendsClass    = "javax.faces.component.UIPanel",
         componentType   = "org.icefaces.ace.component.GMapAutocomplete",
         rendererType    = "org.icefaces.ace.component.GMapAutocompleteRenderer",
-		componentFamily = "org.icefaces.ace.component"
-        )
+		componentFamily = "org.icefaces.ace.component",
+        tlddoc = "An Icesoft implementation of Google’s Places autocomplete tool. " +
+                "Ace:gMapAutocomplete will create a text box which will provide locations that match the currently typed string, " +
+                "then return information about the selected location such as the types Google has assigned to it, or the url to Google’s " +
+                "information page on it."
+)
 
 @ResourceDependencies({
 	@ResourceDependency(library="icefaces.ace", name="jquery/ui/jquery-ui.css"),
@@ -46,13 +50,16 @@ public class GMapAutocompleteMeta extends UIPanelMeta {
     private String size;
     @Property(tlddoc="Styling options to be sent to the autocomplete box")
     private String style;
-    @Property(tlddoc="Additional options to be sent to the info window displayed. Leave blank for default, and set to 'off' to turn marker/window off. Check google maps API for more specifics. Form is attribute:'value'", defaultValue="none")
+    @Property(tlddoc="Additional options to be sent to the info window displayed. " +
+            "Leave blank for default, and set to 'off' to turn marker/window off. " +
+            "Check google maps API for more specifics at https://developers.google.com/maps/documentation/javascript/reference#AutocompleteOptions." +
+            " Form is attribute:'value'", defaultValue="none")
     private String windowOptions;
     @Property(tlddoc="The location to send the text value of the address selected by gMapAutocomplete")
     private String address;
     @Property(tlddoc="The location to send the lat/lng coordinates of the address selected by gMapAutocomplete")
     private String latLng;
-    @Property(tlddoc="The location to send the type information of the address selected by gMapAutocomplete")
+    @Property(tlddoc="The location to send the array of typles that Google determines match the address selected by gMapAutocomplete")
     private String types;
     @Property(tlddoc="The location to send the url attributed to the address selected by gMapAutocomplete")
     private String url;

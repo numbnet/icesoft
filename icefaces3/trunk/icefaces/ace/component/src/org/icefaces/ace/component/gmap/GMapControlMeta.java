@@ -31,7 +31,9 @@ import javax.faces.application.ResourceDependency;
         extendsClass    = "javax.faces.component.UIPanel",
         componentType   = "org.icefaces.ace.component.GMapControl",
         rendererType    = "org.icefaces.ace.component.GMapControlRenderer",
-		componentFamily = "org.icefaces.ace.component"
+		componentFamily = "org.icefaces.ace.component",
+        tlddoc = "Ace:gMapControl serves as an easy interface to modify the position, style and " +
+                "rendered state of the controls that appear on the ace:gMap that this tag is nested within."
         )
 
 @ResourceDependencies({
@@ -41,13 +43,13 @@ import javax.faces.application.ResourceDependency;
 })
 
 public class GMapControlMeta extends UIPanelMeta {
-    @Property(tlddoc="The name of the control to affect. Valid entries are: all,type,overview,pan,rotate,scale,streetView and zoom")
+    @Property(tlddoc="The name of the control to affect. Valid entries are: 'all', 'type', 'overview', 'pan', 'rotate', 'scale', 'streetView' and 'zoom'.")
     private String name;
 
-    @Property(tlddoc="The location for the chosen control to display. Valid entries are bottomCenter, bottomLeft, bottomRight, leftBottom, leftCenter, leftTop, rightBottom, rightCenter, rightTop, topCenter, topLeft, topRight", defaultValue="none")
+    @Property(tlddoc="The location for the chosen control to display. Valid entries are 'bottomCenter', 'bottomLeft', 'bottomRight', 'leftBottom', 'leftCenter', 'leftTop', 'rightBottom', 'rightCenter', 'rightTop', 'topCen   ter', 'topLeft', 'topRight'.", defaultValue="none")
     private String position;
 
-    @Property(tlddoc="The style that will be used on the control. Will only affect Zoom and Type controls. Type style options are: default, dropdown and bar. Zoom style options are default, large and small. ", defaultValue="none")
+    @Property(tlddoc="The style that will be used on the control. Will only affect Zoom and Type controls. Type style options are: 'default', 'dropdown' and 'bar'. Zoom style options are 'default', 'large' and 'small'. ", defaultValue="none")
     private String controlStyle;
 
     @Property(tlddoc="Choose whether or not to display the chosen map control.", defaultValue="false")
