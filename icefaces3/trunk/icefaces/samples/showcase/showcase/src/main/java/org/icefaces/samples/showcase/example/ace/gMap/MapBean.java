@@ -137,10 +137,12 @@ public class MapBean extends ComponentExampleImpl<MapBean> implements Serializab
 
     public void lookup(ActionEvent event) {
         locateAddress = true;
+		zoom = 12;
     }
 
     public void ajaxLookup(AjaxBehaviorEvent event){
         locateAddress = true;
+		zoom = 12;
     }	
 
     @PostConstruct
