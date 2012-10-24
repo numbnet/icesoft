@@ -42,8 +42,10 @@
                                 <%@ include file="/WEB-INF/views/inc/menu.jsp" %>
                             </mobi:fragment>
                             <mobi:fragment name="right">
+                            <div class="ajaxzone">
                                 <%@ include file="/WEB-INF/views/inc/splash-content.jsp" %>
-                            </mobi:fragment>
+                            </div>
+                        </mobi:fragment>
                        </mobi:splitPane>
                     </mobi:pagePanelBody>
                 </mobi:pagePanel>
