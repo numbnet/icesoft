@@ -37,15 +37,15 @@
                         <span>ICEmobile Spring MVC Showcase</span>
                     </mobi:pagePanelHeader>
                     <mobi:pagePanelBody>
-                        <mobi:splitPane id="sp1" scrollable="true" columnDivider="30">
+                        <mobi:splitPane id="sp" scrollable="true" columnDivider="30">
                             <mobi:fragment name="left">
                                 <%@ include file="/WEB-INF/views/inc/menu.jsp" %>
                             </mobi:fragment>
                             <mobi:fragment name="right">
-                            <div class="ajaxzone">
-                                <%@ include file="/WEB-INF/views/inc/splash-content.jsp" %>
-                            </div>
-                        </mobi:fragment>
+                                <div class="ajaxzone">
+                                    <%@ include file="/WEB-INF/views/inc/splash-content.jsp" %>
+                                </div>
+                            </mobi:fragment>
                        </mobi:splitPane>
                     </mobi:pagePanelBody>
                 </mobi:pagePanel>
@@ -59,7 +59,7 @@
     
 <c:if test="${!ajaxRequest}">
     <script type="text/javascript">
-        MvcUtil.enhanceAllLinks("#sp1_left",".ajaxzone");
+        MvcUtil.enhanceAllLinks("#sp_left",".ajaxzone");
     </script>
 </body>
 </html>
