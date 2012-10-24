@@ -6,9 +6,10 @@
 <form:form id="carouselForm" method="POST" modelAttribute="carouselBean">
     <mobi:fieldsetGroup>
         <mobi:fieldsetRow>
-            Carousel of images
+            Carousel items can be moved via a finger swipe or mouse drag gesture.
         </mobi:fieldsetRow>
     </mobi:fieldsetGroup>
+    
     <mobi:carousel id="carouselOne"
                    collection="${carouselBean.images}"
                    selectedIndex="${carouselBean.carouselOne}">
