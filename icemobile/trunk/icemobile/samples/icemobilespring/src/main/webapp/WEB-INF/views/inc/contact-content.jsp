@@ -11,8 +11,7 @@
         </mobi:fieldsetRow>
         <mobi:fieldsetRow>
              <mobi:fetchContact id="contactOne" label="fetch Contacts"  
-                multipleSelect="true"   pattern="a"
-                fields="contact, phone" />
+                pattern="a" fields="contact, phone" />
         </mobi:fieldsetRow>
     </mobi:fieldsetGroup>
 

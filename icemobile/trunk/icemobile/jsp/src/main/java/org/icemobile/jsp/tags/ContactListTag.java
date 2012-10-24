@@ -25,7 +25,6 @@ public class ContactListTag extends BaseSimpleTag implements IContactList {
 
     private String label;
     private String pattern;
-    private boolean multipleSelect;
     private String fields;
 
     public void doTag() throws IOException {
@@ -49,14 +48,6 @@ public class ContactListTag extends BaseSimpleTag implements IContactList {
         this.pattern = pattern;
     }
 
-    public boolean isMultipleSelect() {
-        return multipleSelect;
-    }
-
-    public void setMultipleSelect(boolean multipleSelect) {
-        this.multipleSelect = multipleSelect;
-    }
-
     public String getFields() {
         return fields;
     }
@@ -69,7 +60,6 @@ public class ContactListTag extends BaseSimpleTag implements IContactList {
         this.label = null;
         this.pattern = null;
         this.fields= null;
-        this.multipleSelect = false;
     }
 
 }
