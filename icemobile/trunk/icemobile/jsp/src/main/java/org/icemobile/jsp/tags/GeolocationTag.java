@@ -28,6 +28,12 @@ public class GeolocationTag extends BaseSimpleTag {
 
     private final int DEFAULT_TIMEOUT_VALUE = 60;
     private final int DEFAULT_MAXAGE_VALUE = 3600;
+    
+    private String name;
+    private boolean continuousUpdates;
+    private int timeout = -1;
+    private int maximumAge = -1;
+    private String enableHighPrecision;
 
     public void doTag() throws IOException {
 
@@ -111,13 +117,6 @@ public class GeolocationTag extends BaseSimpleTag {
         }
     }
 
-    private String name;
-    private boolean continuousUpdates;
-    private int timeout = -1;
-    private int maximumAge = -1;
-    private String enableHighPrecision;
-
-
     public String getId() {
         return id;
     }
@@ -172,5 +171,14 @@ public class GeolocationTag extends BaseSimpleTag {
 
     public void setMaximumAge(int maximumAge) {
         this.maximumAge = maximumAge;
+    }
+    
+    public void release(){
+        super.release();
+        name = null;
+        continuousUpdates = false;
+        timeout = -1;
+        maximumAge = -1;
+        enableHighPrecision = null;
     }
 }

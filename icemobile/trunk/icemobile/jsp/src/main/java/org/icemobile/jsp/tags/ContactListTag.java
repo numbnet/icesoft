@@ -24,7 +24,6 @@ import org.icemobile.renderkit.ContactListCoreRenderer;
 public class ContactListTag extends BaseSimpleTag implements IContactList {
 
     private String label;
-    private String id;
     private String pattern;
     private boolean multipleSelect;
     private String fields;
@@ -42,15 +41,6 @@ public class ContactListTag extends BaseSimpleTag implements IContactList {
     public void setLabel(String label) {
         this.label = label;
     }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
     public String getPattern() {
         return pattern;
     }
@@ -74,4 +64,12 @@ public class ContactListTag extends BaseSimpleTag implements IContactList {
     public void setFields(String fields) {
         this.fields = fields;
     }
+    public void release(){
+        super.release();
+        this.label = null;
+        this.pattern = null;
+        this.fields= null;
+        this.multipleSelect = false;
+    }
+
 }

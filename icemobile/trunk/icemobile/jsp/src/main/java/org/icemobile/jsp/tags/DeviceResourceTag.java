@@ -293,5 +293,13 @@ public class DeviceResourceTag extends BaseSimpleTag {
 		this.includePush = includePush;
 	}
 	
+	public void release(){
+	    super.release();
+	    name = null;
+	    library = null;
+	    view = null;
+	    includeIOSSmartAppBanner = true;
+	    includePush = false;
+	}
 
 }

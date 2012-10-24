@@ -70,6 +70,7 @@ public abstract class BaseBodyTag extends BodyTagSupport{
         return this.id;
     }
     public void release(){
+        this.disabled = false;
         this.styleClass= null;
         this.style = null;
         this.id= null;

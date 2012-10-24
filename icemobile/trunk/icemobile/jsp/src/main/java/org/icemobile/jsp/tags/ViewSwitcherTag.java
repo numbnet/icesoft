@@ -222,5 +222,12 @@ public class ViewSwitcherTag extends BaseSimpleTag{
 	public void setDesktopView(String desktopView) {
 		this.desktopView = desktopView;
 	}
+	
+	public void release(){
+	    super.release();
+	    tabletView = null;
+	    mobileView = null;
+	    desktopView = null;
+	}
 
 }
