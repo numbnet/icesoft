@@ -75,7 +75,7 @@ MvcUtil.enhanceForm = function(theForm)  {
             var updateRegion = $(this).closest("div.ajaxzone");
             if (window.ice && ice.upload) {
                 window.ice.handleResponse = function (data) {
-                    updateRegion.replaceWith(unescape(data));
+                    updateRegion.html(unescape(data));
                     var msgElem = $("#message");
                     if( msgElem.length > 0 ){
                         $('html, body').animate({ scrollTop:msgElem.offset().top }, 500);
@@ -105,7 +105,7 @@ MvcUtil.enhanceForm = function(theForm)  {
                     processData:false,
                     type:'POST',
                     success:function (html) {
-                        updateRegion.replaceWith(html);
+                        updateRegion.html(html);
                         var msgElem = $("#message");
                         if( msgElem.length > 0 ){
                             $('html, body').animate({ scrollTop:msgElem.offset().top }, 500);

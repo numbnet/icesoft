@@ -39,7 +39,7 @@
                     if (tracker) {
                         tracker.parentNode.removeChild(tracker);
                     }
-                    updateRegion.replaceWith(unescape(data));
+                    updateRegion.html(unescape(data));
                     var msgElem = $("#message");
                     if( msgElem.length > 0 ){
                         $('html, body').animate({ scrollTop:msgElem.offset().top }, 500);
@@ -77,7 +77,7 @@
                 processData:false,
                 type:'POST',
                 success:function (html) {
-                    updateRegion.replaceWith(html);
+                    updateRegion.html(html);
                     var msgElem = $("#message");
                     if( msgElem.length > 0 ){
                         $('html, body').animate({ scrollTop:msgElem.offset().top }, 500);
