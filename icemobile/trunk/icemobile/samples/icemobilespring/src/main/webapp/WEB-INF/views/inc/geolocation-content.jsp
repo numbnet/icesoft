@@ -17,6 +17,10 @@
                                 type="submit"/>
             <div style="clear:both"/>
         </mobi:fieldsetRow>
+        <mobi:fieldsetRow>
+            <mobi:commandButton name="submit" value="Update"
+                                style="float:none;"/>
+        </mobi:fieldsetRow>
     </mobi:fieldsetGroup>
 
     <h4>Position</h4>
