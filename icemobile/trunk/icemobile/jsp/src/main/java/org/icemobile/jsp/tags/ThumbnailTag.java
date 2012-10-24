@@ -16,21 +16,13 @@
 
 package org.icemobile.jsp.tags;
 
-import javax.servlet.jsp.PageContext;
-import javax.servlet.jsp.tagext.SimpleTagSupport;
 import java.io.IOException;
-import java.io.Writer;
-import java.lang.String;
 
 import org.icemobile.component.IThumbnail;
 import org.icemobile.renderkit.ThumbnailCoreRenderer;
 
 public class ThumbnailTag extends BaseSimpleTag implements IThumbnail{
 
-    private String id;
-    private String style;
-    private String styleClass;
-    private String baseClass;
     private String mFor;
 
     public static final String THUMBNAIL_CLASS = "mobi-thumb";
@@ -39,31 +31,6 @@ public class ThumbnailTag extends BaseSimpleTag implements IThumbnail{
 	    ThumbnailCoreRenderer renderer = new ThumbnailCoreRenderer();
         renderer.encode(this, new TagWriter(getContext()));
     }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getStyle() {
-        return style;
-    }
-
-    public void setStyle(String style) {
-        this.style = style;
-    }
-
-    public String getStyleClass() {
-        return styleClass;
-    }
-
-    public void setStyleClass(String styleClass) {
-        this.styleClass = styleClass;
-    }
-
     public String getFor() {
         return mFor;
     }
@@ -84,6 +51,10 @@ public class ThumbnailTag extends BaseSimpleTag implements IThumbnail{
     }
     public String getMFor(){
         return this.mFor;
+    }
+    public void release(){
+        super.release();
+        this.mFor = null;
     }
 
 }

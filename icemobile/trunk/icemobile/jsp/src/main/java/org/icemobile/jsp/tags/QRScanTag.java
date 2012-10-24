@@ -19,9 +19,18 @@ package org.icemobile.jsp.tags;
 public class QRScanTag extends DeviceTag {
 
     public QRScanTag()  {
+        init();
+    }
+    
+    private void init(){
         this.command = "scan";
         this.label = "Scan QRCode";
         this.fallbackType = "text";
+    }
+    
+    public void release(){
+        super.release();
+        init();
     }
 
 }

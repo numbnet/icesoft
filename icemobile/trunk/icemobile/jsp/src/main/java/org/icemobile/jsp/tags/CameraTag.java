@@ -28,8 +28,7 @@ import org.icemobile.util.ClientDescriptor;
 public class CameraTag extends DeviceTag implements IDevice{
 
     public CameraTag()  {
-        this.command = "camera";
-        this.label = "Camera";
+        init();
     }
 
     public void setParams(String params){
@@ -39,6 +38,16 @@ public class CameraTag extends DeviceTag implements IDevice{
             this.setParams ("','maxwidth=" + width +
             "&maxheight=" + height + "'");
         }
+    }
+    
+    public void release(){
+        super.release();
+        init();
+    }
+    
+    private void init(){
+        this.command = "camera";
+        this.label = "Camera";
     }
 
 }

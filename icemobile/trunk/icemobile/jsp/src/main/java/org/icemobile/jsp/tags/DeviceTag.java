@@ -27,30 +27,34 @@ import org.icemobile.component.IDevice;
 import org.icemobile.renderkit.DeviceCoreRenderer;
 import org.icemobile.util.ClientDescriptor;
 
-public class DeviceTag extends BaseBodyTag implements IDevice{
+public abstract class DeviceTag extends BaseBodyTag implements IDevice{
     private static final String CONTAINER_ONCLICK = "ice.%s('%s');";
     private static final String CONTAINER_ONCLICK_PARAMS = "ice.%s('%s','%s');";
-    private static final String CAMERA = "camera";
-    private static final String CAMCORDER = "camcorder";
 
-    String command = "undefined";
-    String label = "unlabeled";
-    String params = null;
-    String fallbackType = "file";
+    protected String command = "undefined";
+    protected String label = "unlabeled";
+    protected String params = null;
+    protected String fallbackType = "file";
+    protected boolean isUseCookie = true;
+    protected String buttonLabel;
+    protected String captureMessageLabel;
+    protected int maxheight = Integer.MIN_VALUE;
+    protected int maxwidth = Integer.MIN_VALUE;
+    protected boolean isUseNative;
 
+    
     public int doEndTag() throws JspException {
-        ClientDescriptor client = getClient();
         /* going to use DeviceCoreRenderer for camera and camcorder
            so need to put code specific to them first so can call it
            to do the work
           */
-            DeviceCoreRenderer renderer = new DeviceCoreRenderer();
-            try {
-                renderer.encode(this, new TagWriter(pageContext), true);
-            }catch (IOException e) {
-                throw new JspException(e);
-            }
-            return EVAL_PAGE;
+        DeviceCoreRenderer renderer = new DeviceCoreRenderer();
+        try {
+            renderer.encode(this, new TagWriter(pageContext), true);
+        }catch (IOException e) {
+            throw new JspException(e);
+        }
+        return EVAL_PAGE;
     }
 
 
@@ -92,13 +96,6 @@ public class DeviceTag extends BaseBodyTag implements IDevice{
     public void setDisabled(boolean disabled) {
         this.disabled = disabled;
     }
-    private boolean isUseCookie = true;
-    private String buttonLabel;
-    private String captureMessageLabel;
-    private int maxheight = Integer.MIN_VALUE;
-    private int maxwidth = Integer.MIN_VALUE;
-    private boolean isUseNative;
-
     public String getSessionId(){
          HttpSession session = getRequest().getSession();
          return session.getId();
@@ -155,6 +152,18 @@ public class DeviceTag extends BaseBodyTag implements IDevice{
     }
     public String getParams() {
         return this.params;
+    }
+    public void release(){
+        command = "undefined";
+        label = "unlabeled";
+        params = null;
+        fallbackType = "file";
+        isUseCookie = true;
+        buttonLabel = null;
+        captureMessageLabel = null;
+        maxheight = Integer.MIN_VALUE;
+        maxwidth = Integer.MIN_VALUE;
+        isUseNative = false;
     }
 
 }

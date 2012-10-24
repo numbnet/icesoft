@@ -11,7 +11,6 @@ import org.icemobile.util.SXUtils;
 
 public class GetEnhancedTag extends BaseSimpleTag implements IGetEnhanced{
 	
-	
 	private boolean includeLink = true;
 	private String androidMsg;
 	private String iosMsg;
@@ -64,5 +63,11 @@ public class GetEnhancedTag extends BaseSimpleTag implements IGetEnhanced{
         return Boolean.TRUE.equals(getContext().getAttribute(Constants.IOS_SMART_APP_BANNER_KEY));
     }
 	
-
+    public void release(){
+        super.release();
+        includeLink = true;
+        androidMsg = null;
+        iosMsg = null;
+        blackberryMsg = null;
+    }
 }

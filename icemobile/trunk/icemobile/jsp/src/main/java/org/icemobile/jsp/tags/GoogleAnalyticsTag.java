@@ -69,6 +69,12 @@ public class GoogleAnalyticsTag extends BaseSimpleTag{
 			+"})();";
 		return script;
 	}
+	
+	public void release(){
+	    super.release();
+	    account = null;
+	    domain = null;
+	}
 			
 
 }

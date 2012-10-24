@@ -23,9 +23,7 @@ public class AugTag extends DeviceTag implements IDevice{
     static final String PARAMS = "org.icemobile.jsp.tags.AugTag.params";
 
     public AugTag()  {
-        this.command = "aug";
-        this.label = "Reality";
-        this.fallbackType = "text";
+        init();
     }
 
     public void doInitBody()  {
@@ -43,6 +41,17 @@ public class AugTag extends DeviceTag implements IDevice{
     public void setParams(String params) {
         String baseURL = Utils.getBaseURL(pageContext.getRequest());
         this.params = "ub=" + baseURL + "&" + params;
+    }
+    
+    public void release(){
+        super.release();
+        init();
+    }
+    
+    public void init(){
+        this.command = "aug";
+        this.label = "Reality";
+        this.fallbackType = "text";
     }
 
 }

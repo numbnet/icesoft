@@ -81,6 +81,7 @@ public abstract class BaseSimpleTag  extends SimpleTagSupport {
         return id;
     }
     public void release(){
+        this.disabled = false;
         this.styleClass= null;
         this.style = null;
         this.id= null;
