@@ -37,7 +37,10 @@ import org.icefaces.ace.api.IceClientBehaviorHolder;
         componentType   = "org.icefaces.ace.component.GMap",
         rendererType    = "org.icefaces.ace.component.GMapRenderer",
 		componentFamily = "org.icefaces.ace.component",
-		tlddoc = "A version 3.0 API google map interface."
+		tlddoc = "The base component for Icesoft's xhtml/jsf compatible google map API container." +
+                "This component is how to define and control the map proper, as well as serving as a parent for the other gMap subcomponents." +
+                "Important note: To function properly, you must define the property 'org.icefaces.ace.gmapKey' in your web.xml." +
+                "You can get an API key at http://code.google.com/apis/maps/signup.html."
         )
 
 @ResourceDependencies({
@@ -59,7 +62,7 @@ public class GMapMeta extends UIPanelMeta {
 	@Property(tlddoc="Starting zoom of the map element.", defaultValue="5")
 	private String zoomLevel;
 	
-	@Property(tlddoc="Additional options to be sent to the map. Check google maps API for more specifics. Form is attribute:'value'")
+	@Property(tlddoc="Additional options to be sent to the map. Check google maps API at https://developers.google.com/maps/documentation/javascript/reference#MapOptions for more specifics. Form is attribute:'value'.")
 	private String options;
 	
 	@Property(tlddoc="Whether the map should be locating the specified address. Default is false.", defaultValue="false")
@@ -71,12 +74,12 @@ public class GMapMeta extends UIPanelMeta {
 	@Property(tlddoc="Address to locate.")
 	private String address;
 	
-	@Property(tlddoc="Map type to display by default. Possible values are HYBRID, ROADMAP, SATELLITE and TERRAIN, case insensitive", defaultValue="ROADMAP")
+	@Property(tlddoc="Map type to display by default. Possible values are 'HYBRID', 'ROADMAP', 'SATELLITE' and 'TERRAIN', case insensitive.", defaultValue="ROADMAP")
 	private String type;
 
-    @Property(tlddoc="Styling for the main gMap div")
+    @Property(tlddoc="Styling for the main gMap div.")
     private String style;
 
-    @Property(tlddoc="The classname for the main gMap div")
+    @Property(tlddoc="The classname for the main gMap div.")
     private String styleClass;
 }

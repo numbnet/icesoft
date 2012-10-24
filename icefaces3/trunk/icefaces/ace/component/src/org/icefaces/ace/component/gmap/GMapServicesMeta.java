@@ -32,7 +32,8 @@ import javax.faces.application.ResourceDependency;
         componentType   = "org.icefaces.ace.component.GMapServices",
         rendererType    = "org.icefaces.ace.component.GMapServicesRenderer",
 		componentFamily = "org.icefaces.ace.component",
-		tlddoc = "A version 3.0 API google map interface."
+		tlddoc = "gMapServices allows access to the various 'services' that Google provides through its maps API. Elevation gives the height of any point above or below sea level. Max zoom gives the highest level of satellite zoom available. " +
+                "Distance gives the distance between two points along a set mode of transit and directions show the way between given locations."
         )
 
 @ResourceDependencies({
@@ -43,13 +44,13 @@ import javax.faces.application.ResourceDependency;
 
 public class GMapServicesMeta extends UIPanelMeta {
 
-	@Property(tlddoc="The name of the service type you want to create. Valid entries are: Directions, Elevation, MaxZoom, Distance (Case insensitive)")
+	@Property(tlddoc="The name of the service type you want to create. Valid entries are: 'Directions', 'Elevation', 'MaxZoom', 'Distance' (Case insensitive).")
 	private String name;
 	
-	@Property(tlddoc="The points that the service is applied to. Format is (lat,long) or, for Directions and Distance only, a standard address. Separate points with :")
+	@Property(tlddoc="The points that the service is applied to. Format is (lat,long) or, for Directions and Distance only, a standard address. Separate points with ':'.")
 	private String points;
 	
-	@Property(tlddoc="Additional options to be sent to the service. Check google maps API for more specifics. Form is attribute:'value'", defaultValue = "travelMode:'DRIVING'")
+	@Property(tlddoc="Additional options to be sent to the service. Check google maps API for more specifics at https://developers.google.com/maps/documentation/javascript/reference. Form is attribute:'value'.", defaultValue = "travelMode:'DRIVING'")
 	private String options;
 
     @Property(tlddoc="id of the div you with to set text directions in. null or none to clear.", defaultValue="none")

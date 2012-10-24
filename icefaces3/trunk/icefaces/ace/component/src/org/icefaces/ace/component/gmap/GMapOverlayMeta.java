@@ -32,7 +32,8 @@ import javax.faces.application.ResourceDependency;
         componentType   = "org.icefaces.ace.component.GMapOverlay",
         rendererType    = "org.icefaces.ace.component.GMapOverlayRenderer",
 		componentFamily = "org.icefaces.ace.component",
-		tlddoc = "A version 3.0 API google map interface."
+		tlddoc = "ace:gMapOverlay allows for the creation of user defined shapes on the parent ace:gMap. Google provides rectangles and circles for ease of use, but polygon and polyline can be used for greater control." +
+                " Colours and borders can be set through options."
         )
 
 @ResourceDependencies({
@@ -43,13 +44,13 @@ import javax.faces.application.ResourceDependency;
 
 public class GMapOverlayMeta extends UIPanelMeta {
 
-	@Property(tlddoc="The name of the shape overlay you want to create. Valid entries are: Line, Polygon, Rectangle, Circle  (Case insensitive)")
+	@Property(tlddoc="The name of the shape overlay you want to create. Valid entries are: 'Line', 'Polygon', 'Rectangle', 'Circle'  (Case insensitive).")
 	private String shape;
 	
-	@Property(tlddoc="The points that the service is applied to. Format is (lat,long) or, for Directions and Distance only, a standard address. Separate points with :")
+	@Property(tlddoc="The points that the service is applied to. Format is (lat,long) or, for Directions and Distance only, a standard address. Separate points with ':'.")
 	private String points;
 	
-	@Property(tlddoc="Additional options to be sent to the service. Check google maps API for more specifics. Form is attribute:'value'", defaultValue = "travelMode:'DRIVING'")
+	@Property(tlddoc="Additional options to be sent to the service. Check google maps API for more specifics at https://developers.google.com/maps/documentation/javascript/reference#PolylineOptions. Form is attribute:'value'.")
 	private String options;
 
 }
