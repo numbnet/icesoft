@@ -34,17 +34,20 @@
 
 <ui:define name="example">
     <h:form id="form" style="text-align: center; position:relative;">
-        <h:panelGrid columns="2" cellspacing="2" style="left:0; position: absolute;">
-            <h:outputText value="Single Select" />
+        <h:panelGroup style="float: left;">
+            <h:outputText value="Single Select: " />
             <h:selectBooleanCheckbox id="selectModeCheckbox" value="#{treeSelectionBean.singleSelect}">
                 <f:ajax execute="@this" render="@form" />
             </h:selectBooleanCheckbox>
-        </h:panelGrid>
+        </h:panelGroup>
+        <br/>
+        <br/>
 
         <style type="text/css">
             #form\3Atree {
                 line-height: 1 !important;
                 height:205px;
+                width:230px;
                 overflow: auto;
                 position:relative;
                 text-align: left;
@@ -52,35 +55,55 @@
             #form\3Atree table {
                 font-size: 1em;
             }
+            #form > table > tr {
+                vertical-align: top;
+            }
+            .eqCell {
+                width:50%;
+                text-align: center;
+            }
+            ul.output {
+                height:184px;
+                width:120px;
+                display:inline-block;
+                overflow: auto;
+                padding-left: 1em;
+                list-style: disc inside;
+            }
         </style>
-        <ace:tree id="tree"
-                expansion="true"
-                selection="true"
-                selectMultiple="#{not treeSelectionBean.singleSelect}"
-                value="#{treeSelectionBean.treeRoots}"
-                var="node"
-                stateMap="#{treeSelectionBean.stateMap}"
-                stateVar="nState"
-                type="#{node.type}">
-            <ace:ajax event="select" render="@form" execute="@this" />
-            <ace:ajax event="deselect" render="@form" execute="@this" />
-            <ace:node type="country">
-                Country: <h:outputText value="#{node.name}" />
-            </ace:node>
-            <ace:node type="province">
-                Province: <h:outputText value="#{node.name}" />
-            </ace:node>
-            // Default node type
-            <ace:node>
-                City: <h:outputText value="#{node.name}" />
-            </ace:node>
-        </ace:tree>
+        <h:panelGrid columns="2" width="80%" style="margin: auto;" columnClasses="eqCell,eqCell">
+            <ace:tree id="tree"
+                    expansion="true"
+                    selection="true"
+                    selectMultiple="#{not treeSelectionBean.singleSelect}"
+                    value="#{treeSelectionBean.treeRoots}"
+                    var="node"
+                    stateMap="#{treeSelectionBean.stateMap}"
+                    stateVar="nState"
+                    type="#{node.type}">
+                <ace:ajax event="select" render="@form" execute="@this" />
+                <ace:ajax event="deselect" render="@form" execute="@this" />
+                <ace:node type="country">
+                    Country: <h:outputText value="#{node.name}" />
+                </ace:node>
+                <ace:node type="province">
+                    Province: <h:outputText value="#{node.name}" />
+                </ace:node>
+                // Default node type
+                <ace:node>
+                    City: <h:outputText value="#{node.name}" />
+                </ace:node>
+            </ace:tree>
 
-        <h:panelGroup id="panelGroup" style="display:inline-block; vertical-align:top; padding-left: 1em;">
-            <ui:repeat id="repeater" var="selection" value="#{treeSelectionBean.stateMap.getSelected()}">
-                <h:outputText id="outputValue" value="#{selection.name}" /><br/>
-            </ui:repeat>
-        </h:panelGroup>
+            <h:panelGroup id="panelGroup" style="display:inline-block; vertical-align:top; padding-left: 1em;">
+                <span style="font-weight:bold; text-align: left">Selections:</span><br/>
+                <ul class="output ui-corner-all ui-widget-content" style="">
+                    <ui:repeat id="repeater" var="selection" value="#{treeSelectionBean.stateMap.getSelected()}">
+                        <li><h:outputText id="outputValue" value="#{selection.name}" /></li>
+                    </ui:repeat>
+                </ul>
+            </h:panelGroup>
+        </h:panelGrid>
     </h:form>
 </ui:define>
 </ui:composition>
