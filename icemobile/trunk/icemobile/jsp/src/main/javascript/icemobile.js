@@ -214,6 +214,9 @@ ice.mobi.carousel = {
         var carouselId = clientId + '_carousel';
         //carousel iscroll loading
         setTimeout(function () {
+            if( !document.getElementById(clientId)){
+                return;
+            }
             if (this.acarousel) {
                 ice.mobi.carousel.refresh(clientId);
             }
@@ -266,6 +269,9 @@ ice.mobi.carousel = {
             document.querySelector('.mobi-carousel-cursor-list > li.active').className = '';
             document.querySelector('.mobi-carousel-cursor-list > li:nth-child(' + (this.currPageX + 1) + ')').className = 'active';
             setTimeout(function() {
+                if( !document.getElementById(clientId)){
+                    return;
+                }
                 this.acarousel.refresh();
 
             }, 0);
