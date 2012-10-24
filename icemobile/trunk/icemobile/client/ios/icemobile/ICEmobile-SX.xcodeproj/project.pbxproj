@@ -64,6 +64,7 @@
 		9CA51B7714730D120065F681 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CA51B7614730D120065F681 /* ViewController.m */; };
 		9CA51B7A14730D120065F681 /* ViewController_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9CA51B7814730D120065F681 /* ViewController_iPhone.xib */; };
 		9CA51B7D14730D120065F681 /* ViewController_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9CA51B7B14730D120065F681 /* ViewController_iPad.xib */; };
+		9CBF5ACD1638AB1E0015E267 /* IceUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CBF5ACC1638AB1E0015E267 /* IceUtil.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -148,6 +149,8 @@
 		9CA51B7614730D120065F681 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		9CA51B7914730D120065F681 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/ViewController_iPhone.xib; sourceTree = "<group>"; };
 		9CA51B7C14730D120065F681 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/ViewController_iPad.xib; sourceTree = "<group>"; };
+		9CBF5ACB1638AB1E0015E267 /* IceUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IceUtil.h; path = Shared/IceUtil.h; sourceTree = "<group>"; };
+		9CBF5ACC1638AB1E0015E267 /* IceUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = IceUtil.m; path = Shared/IceUtil.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -209,6 +212,8 @@
 				9C7A1061156BF9AD0013D23D /* MapController.h */,
 				9C7A1062156BF9AD0013D23D /* MapController.m */,
 				9C7A1063156BF9AD0013D23D /* MapController.xib */,
+				9CBF5ACB1638AB1E0015E267 /* IceUtil.h */,
+				9CBF5ACC1638AB1E0015E267 /* IceUtil.m */,
 			);
 			name = Shared;
 			sourceTree = "<group>";
@@ -428,6 +433,7 @@
 				9C517337155DA99C00090828 /* PlaceLabel.m in Sources */,
 				9C51733A155DACE300090828 /* ARView.m in Sources */,
 				9C7A1064156BF9AD0013D23D /* MapController.m in Sources */,
+				9CBF5ACD1638AB1E0015E267 /* IceUtil.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
