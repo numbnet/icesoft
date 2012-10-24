@@ -42,25 +42,6 @@ span.success {
 span.error {
 	color: #D8000C;
 }
-
-#left, #right{
-    overflow-y:scroll;
-    overflow-x:hidden;
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    -ms-box-sizing: border-box;
-    box-sizing: border-box;
-    margin-top:0;
-    margin-bottom:0;
-    float:left;
-}
-#right{
-    width:70%;overflow-y:scroll;
-}
-#left{
-    width:30%;overflow-y: scroll;
-    border-right:1px solid darkgray;
-}
 .bberry .phdr{ color: #FFF; font-size:15px;}
 
 .mobi-pagePanel-header .ui-icon-shadow {
