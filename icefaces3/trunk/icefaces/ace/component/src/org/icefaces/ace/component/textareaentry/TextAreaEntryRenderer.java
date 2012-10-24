@@ -21,6 +21,7 @@ import org.icefaces.ace.util.HTML;
 import org.icefaces.ace.util.JSONBuilder;
 import org.icefaces.ace.util.Utils;
 import org.icefaces.render.MandatoryResourceComponent;
+import org.icefaces.util.EnvUtils;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -114,13 +115,16 @@ public class TextAreaEntryRenderer extends InputRenderer {
         ResponseWriter writer = context.getResponseWriter();
         Map paramMap = context.getExternalContext().getRequestParameterMap();
         TextAreaEntry textAreaEntry = (TextAreaEntry) component;
+        boolean ariaEnabled = EnvUtils.isAriaEnabled(context);
 
         String clientId = textAreaEntry.getClientId(context);
 
         writer.startElement("textarea", null);
         writer.writeAttribute("id", clientId + "_input", null);
         writer.writeAttribute("name", clientId + "_input", null);
-        writer.writeAttribute("role", "textbox", null);
+        if (ariaEnabled) {
+            writer.writeAttribute("role", "textbox", null);
+        }
 
         String iceFocus = (String) paramMap.get("ice.focus");
         String inFieldLabel = (String) labelAttributes.get("inFieldLabel");
@@ -137,15 +141,17 @@ public class TextAreaEntryRenderer extends InputRenderer {
 
         renderPassThruAttributes(context, textAreaEntry, HTML.INPUT_TEXTAREA_ATTRS);
 
-        final TextAreaEntry compoent = (TextAreaEntry) component;
-        Map<String, Object> ariaAttributes = new HashMap<String, Object>() {{
-            put("multiline", true);
-            put("readonly", compoent.isReadonly());
-            put("required", compoent.isRequired());
-            put("disabled", compoent.isDisabled());
-            put("invalid", !compoent.isValid());
-        }};
-        writeAriaAttributes(ariaAttributes, labelAttributes);
+        if (ariaEnabled) {
+            final TextAreaEntry compoent = (TextAreaEntry) component;
+            Map<String, Object> ariaAttributes = new HashMap<String, Object>() {{
+                put("multiline", true);
+                put("readonly", compoent.isReadonly());
+                put("required", compoent.isRequired());
+                put("disabled", compoent.isDisabled());
+                put("invalid", !compoent.isValid());
+            }};
+            writeAriaAttributes(ariaAttributes, labelAttributes);
+        }
 
         if (textAreaEntry.isDisabled()) writer.writeAttribute("disabled", "disabled", "disabled");
         if (textAreaEntry.isReadonly()) writer.writeAttribute("readonly", "readonly", "readonly");
