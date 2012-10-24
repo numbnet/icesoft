@@ -19,10 +19,14 @@
 }
 .mobi-splitpane-nonScrollable {
     float:left;  
+    margin-top:0;
+    margin-bottom:0;
 }
 .mobi-splitpane-scrollable {   
     float: left; 
-    overflow-y: scroll;
+    margin-top:0;
+    margin-bottom:0;
+    overflow-y: auto;
 }
 .mobi-splitpane-divider {
     border-left: solid 1px;
