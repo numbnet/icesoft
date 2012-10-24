@@ -49,7 +49,7 @@
         return sessionExpired;
     };
 
-    function Overlay(cfg, container) {
+    function Overlay(cfg, container, whenShownFunc) {
         // If the request is processed before our timeouts for adding the
         // elements, then we need to never add them.
         var addElements = true;
@@ -93,6 +93,7 @@
 
         setTimeout(function() {
             //console.log('Overlay  setTimeout to add overlay / clone / revert  addElements: ' + addElements);
+            whenShownFunc();
             if (!addElements) {
                 return;
             }
@@ -277,10 +278,18 @@
             if (isBlockUIEnabled()) {
                 //console.log('Monitor '+uniqueId+'>'+jqId+'  doOverlayIfBlockingUI  Blocking UI');
 
+                var overlayShown = false;
+                var overlayShownFunc = function() {
+                    overlayShown = true;
+                };
                 var eventSinkFirstClickCount = 0;
                 function eventSinkFirstClick(firstSubmitSource, element, originalOnclick, regularSink) {
                     return function(e) {
-                        //console.log('Monitor '+uniqueId+'>'+jqId+'  eventSinkFirstClick()  eventSinkFirstClickCount: ' + eventSinkFirstClickCount);
+                        //console.log('Monitor '+uniqueId+'>'+jqId+'  eventSinkFirstClick()  overlayShown: ' + overlayShown + '  eventSinkFirstClickCount: ' + eventSinkFirstClickCount);
+                        if (overlayShown) {
+                            //console.log('eventSinkFirstClick()  overlay shown');
+                            return regularSink(e);
+                        }
                         if (eventSinkFirstClickCount > 0) {
                             //console.log('eventSinkFirstClick()  not first click');
                             return regularSink(e);
@@ -317,7 +326,7 @@
                 //console.log('Monitor '+uniqueId+'>'+jqId+'  doOverlayIfBlockingUI  after eventSinkFirstClick');
                 var overlayContainerElem = resolveBlockUIElement(source);
                 //console.log('Monitor '+uniqueId+'>'+jqId+'  doOverlayIfBlockingUI  overlayContainerElem: ' + overlayContainerElem);
-                var blockUIOverlay = Overlay(cfg, overlayContainerElem);
+                var blockUIOverlay = Overlay(cfg, overlayContainerElem, overlayShownFunc);
                 var rollbacks = fold(['input', 'select', 'textarea', 'button', 'a'], [], function(result, type) {
                     return result.concat(
                             ice.ace.jq.map(overlayContainerElem.getElementsByTagName(type), function(e) {
