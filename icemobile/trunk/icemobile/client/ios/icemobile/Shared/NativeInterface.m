@@ -452,7 +452,13 @@ static char base64EncodingTable[64] = {
 
 
     NSString *firstName = ABRecordCopyValue(person, kABPersonFirstNameProperty);
+    if (nil == firstName)  {
+        firstName = @"";
+    }
     NSString *lastName  = ABRecordCopyValue(person, kABPersonLastNameProperty);
+    if (nil == lastName)  {
+        lastName = @"";
+    }
 
     ABMutableMultiValueRef multi;
 
@@ -463,7 +469,7 @@ static char base64EncodingTable[64] = {
     multi = ABRecordCopyValue(person, kABPersonPhoneProperty);
     NSString *phone = [self getOneFromMultiRef:multi];
     CFRelease(multi);
-    
+
     NSString *fullName = [NSString stringWithFormat:@"%@ %@", firstName, lastName];
 
     NSString *result = [NSString stringWithFormat:@"name=%@&email=%@&phone=%@", 
@@ -482,14 +488,18 @@ NSLog(@"Found record %@", result);
 }
 
 - (NSString*)getOneFromMultiRef:(ABMutableMultiValueRef) multi  {
-    NSString *result;
+    NSString *result = @"";
 
     if (ABMultiValueGetCount(multi) > 0) {
-        // collect all emails in array
         for (CFIndex i = 0; i < ABMultiValueGetCount(multi); i++) {
-            CFStringRef oneResult = ABMultiValueCopyValueAtIndex(multi, i);
-            result = (NSString *)oneResult;
-            CFRelease(oneResult);
+            CFTypeRef cfValue = ABMultiValueCopyValueAtIndex(multi, i);
+            CFTypeID cfType = CFGetTypeID(cfValue);
+            if (cfType == CFStringGetTypeID()) {
+                result = (NSString *)cfValue;
+            } else {
+                result = @"notCFString";
+            }
+            CFRelease(cfValue);
         }
     }
 
