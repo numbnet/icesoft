@@ -346,15 +346,15 @@ ice.ace.tabset = {
            else {
                var tabviewObj = context.getComponent();
 
-               var existingTabs = tabviewObj.get('tabs');
-               for (var i = 0; existingTabs && (i < existingTabs.length); i++) {
-                   existingTabs[i].set('disabled', false);
-               }
-
                var index = jsfProps.selectedIndex;
                var objIndex = tabviewObj.get('activeIndex');
 
+               var existingTabs = tabviewObj.get('tabs');
+               existingTabs[index].set('disabled', false);
+
                if (index != objIndex) {
+                   existingTabs[objIndex].set('disabled', false);
+
                    var rootElem = document.getElementById(clientId);
                    rootElem.suppressTabChange = true;
                    rootElem.suppressServerSideTransition = true;
@@ -397,15 +397,10 @@ ice.ace.tabset = {
        }
 
        ice.ace.getInstance(clientId, function(yuiComp) {
-           var oldDisabledTabIndexes = oldJSFProps ? oldJSFProps['disabledTabs'] : [];
-           var disabledTabDiff = oldDisabledTabIndexes.diff(jsfProps['disabledTabs']).concat(jsfProps['disabledTabs'].diff(oldDisabledTabIndexes));
-           if (disabledTabDiff.length > 0) {
-               var component = yuiComp,
-                   tabs = component.get('tabs');
-
-               for (var i = 0; i < disabledTabDiff.length; i++) {
-                   tabs[disabledTabDiff[i]].set('disabled', ice.ace.jq.inArray(disabledTabDiff[i], jsfProps['disabledTabs']) > -1);
-               }
+           var newDisabledTabs = jsfProps['disabledTabs'];
+           var tabs = yuiComp.get('tabs');
+           for (var i = 0; i < tabs.length; i++) {
+               tabs[i].set('disabled', ice.ace.jq.inArray(i, newDisabledTabs) > -1);
            }
        }, lib, jsProps, jsfProps);
 
