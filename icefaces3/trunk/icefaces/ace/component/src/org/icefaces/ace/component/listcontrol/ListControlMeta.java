@@ -5,7 +5,6 @@ import org.icefaces.ace.meta.annotation.DefaultValueType;
 import org.icefaces.ace.meta.annotation.Field;
 import org.icefaces.ace.meta.annotation.Property;
 import org.icefaces.ace.meta.baseMeta.UIComponentBaseMeta;
-import org.icefaces.render.MandatoryResourceComponent;
 
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
@@ -22,7 +21,8 @@ import javax.faces.application.ResourceDependency;
             " selector that defines the set of ace:list components to move items between. Defaults " +
             "to all lists. " +
             "Optionally if this component has two nested ace:list children, they will be rendered " +
-            "within a styled container, and connected via this control without configuration."
+            "within a styled container, and connected via this control without configuration." +
+            "<p>For more information, see the <a href=\"http://wiki.icefaces.org/display/ICE/List\">List Control Wiki Documentation</a>.</p>"
 )
 @ResourceDependencies({
     @ResourceDependency(library="icefaces.ace", name="util/combined.css"),

@@ -18,7 +18,9 @@ import java.util.List;
         rendererType    = "org.icefaces.ace.component.ChartRenderer",
         rendererClass   = "org.icefaces.ace.component.chart.ChartRenderer",
         componentFamily = "org.icefaces.ace.Chart",
-        tlddoc = ""
+        tlddoc = "Render a HTML <canvas> data visualization using a Java interface to the jqPlot charting API. " +
+                "A List of ChartSeries subclasses define the data and its representation in the visualization." +
+                "<p>For more information, see the <a href=\"http://wiki.icefaces.org/display/ICE/Chart\">Chart Wiki Documentation</a>.</p>"
 )
 @ResourceDependencies({
         @ResourceDependency(library = "icefaces.ace", name = "util/ace-jquery.js"),

@@ -2,7 +2,6 @@ package org.icefaces.ace.component.list;
 
 import org.icefaces.ace.meta.annotation.*;
 import org.icefaces.ace.meta.baseMeta.UIDataMeta;
-import org.icefaces.render.MandatoryResourceComponent;
 
 import javax.el.MethodExpression;
 import javax.faces.application.ResourceDependencies;
@@ -23,7 +22,8 @@ import java.util.Set;
             "strives to be exceptionally easy to style and adjust layout.The List can optionally " +
             "take SelectItem objects to use their String value representations as list item contents; or " +
             "the ace:list tag defines child components that are iteratively rendered for each object." +
-            "The components are associated with the iterative object via bindings of the 'var' property."
+            "The components are associated with the iterative object via bindings of the 'var' property." +
+            "<p>For more information, see the <a href=\"http://wiki.icefaces.org/display/ICE/List\">List Wiki Documentation</a>.</p>"
 )
 @ResourceDependencies({
     @ResourceDependency(library="icefaces.ace", name="util/combined.css"),
