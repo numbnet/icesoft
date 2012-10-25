@@ -186,5 +186,12 @@ public class Utils {
         }
     }
 
+    public static int generateHashCode(Object value) {
+        int hashCode = 0;
+        if (value != null) {
+            hashCode = value.toString().hashCode();
+        }
+        return hashCode;
+    }
 
 }
