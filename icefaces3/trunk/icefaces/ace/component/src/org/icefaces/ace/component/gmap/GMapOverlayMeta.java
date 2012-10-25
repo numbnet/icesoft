@@ -32,7 +32,7 @@ import javax.faces.application.ResourceDependency;
         componentType   = "org.icefaces.ace.component.GMapOverlay",
         rendererType    = "org.icefaces.ace.component.GMapOverlayRenderer",
 		componentFamily = "org.icefaces.ace.component",
-		tlddoc = "ace:gMapOverlay allows for the creation of user defined shapes on the parent ace:gMap. Google provides rectangles and circles for ease of use, but polygon and polyline can be used for greater control." +
+		tlddoc = "The ace:gMapOverlay component allows for the creation of user defined shapes on the parent ace:gMap. Google provides rectangles and circles for ease of use, but polygon and polyline can be used for greater control." +
                 " Colours and borders can be set through options."
         )
 

@@ -32,7 +32,7 @@ import javax.faces.application.ResourceDependency;
         componentType   = "org.icefaces.ace.component.GMapInfoWindow",
         rendererType    = "org.icefaces.ace.component.GMapInfoWindowRenderer",
 		componentFamily = "org.icefaces.ace.component",
-        tlddoc = "ace:gMapInfoWindow creates a pop-up window within the parent ace:gMap, which can be used to display either text via the 'content' attribute or " +
+        tlddoc = "The ace:gMapInfoWindow component creates a pop-up window within the parent ace:gMap, which can be used to display either text via the 'content' attribute or " +
                 "nested html or jsf tags. If placed within an ace:gMapMarker, the window will 'bind' to the marker, and move along with it."
         )
 
@@ -43,10 +43,10 @@ import javax.faces.application.ResourceDependency;
 })
 
 public class GMapInfoWindowMeta extends UIPanelMeta {
-    @Property(tlddoc="The longitude for the window, will be overridden if a child of a marker.")
+    @Property(tlddoc="The longitude for the window, will be overridden if the component is the child of a marker.")
     private String longitude;
 
-    @Property(tlddoc="The latitude for the marker, will be overridden if a child of a marker.")
+    @Property(tlddoc="The latitude for the window, will be overridden if the component is the child of a marker.")
     private String latitude;
 
     @Property(tlddoc="The text content to be displayed within the info window. " +

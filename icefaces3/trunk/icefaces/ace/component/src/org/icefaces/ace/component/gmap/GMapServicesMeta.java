@@ -32,7 +32,7 @@ import javax.faces.application.ResourceDependency;
         componentType   = "org.icefaces.ace.component.GMapServices",
         rendererType    = "org.icefaces.ace.component.GMapServicesRenderer",
 		componentFamily = "org.icefaces.ace.component",
-		tlddoc = "gMapServices allows access to the various 'services' that Google provides through its maps API. Elevation gives the height of any point above or below sea level. Max zoom gives the highest level of satellite zoom available. " +
+		tlddoc = "The ace:gMapServices tag allows access to the various 'services' that Google provides through its maps API. Elevation gives the height of any point above or below sea level. Max zoom gives the highest level of satellite zoom available. " +
                 "Distance gives the distance between two points along a set mode of transit and directions show the way between given locations."
         )
 
@@ -53,7 +53,7 @@ public class GMapServicesMeta extends UIPanelMeta {
 	@Property(tlddoc="Additional options to be sent to the service. Check google maps API for more specifics at https://developers.google.com/maps/documentation/javascript/reference. Form is attribute:'value'.", defaultValue = "travelMode:'DRIVING'")
 	private String options;
 
-    @Property(tlddoc="id of the div you with to set text directions in. null or none to clear.", defaultValue="none")
+    @Property(tlddoc="Id of the div you with to set text directions in. null or none to clear.", defaultValue="none")
     private String div;
 
 }
