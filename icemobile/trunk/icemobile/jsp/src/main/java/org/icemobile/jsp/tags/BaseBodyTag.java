@@ -1,18 +1,49 @@
 package org.icemobile.jsp.tags;
 
+import java.io.IOException;
+
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.BodyTagSupport;
 
+import org.icemobile.component.IMobiComponent;
+import org.icemobile.renderkit.IRenderer;
 import org.icemobile.util.ClientDescriptor;
 
-public abstract class BaseBodyTag extends BodyTagSupport{
+public abstract class BaseBodyTag extends BodyTagSupport implements IMobiComponent{
     
     protected String id;
     protected boolean disabled;
     protected String style;
     protected String styleClass;
+    protected IRenderer renderer;
+    protected TagWriter writer;
+    
+    /* Base impl of doStartTag
+     * Subclasses must renderer on Tag before calling
+     */
+    protected int _doStartTag() throws JspException {
+        
+        try {
+            writer = new TagWriter(pageContext);
+            renderer.encodeBegin(this, writer, true);
+            writer.closeOffTag();
+        }catch (IOException e) {
+            throw new JspException(e);
+        }
+        return EVAL_BODY_INCLUDE;
+    }
+    
+    public int doEndTag() throws JspException{
+        try {
+            renderer.encodeEnd(this, writer, true);
+        }catch (IOException e) {
+            throw new JspException(e);
+        }
+        return EVAL_PAGE;
+    }
     
     public boolean isDisabled() {
         return disabled;
@@ -74,6 +105,8 @@ public abstract class BaseBodyTag extends BodyTagSupport{
         this.styleClass= null;
         this.style = null;
         this.id= null;
+        this.renderer = null;
+        this.writer = null;
     }
 
 }
