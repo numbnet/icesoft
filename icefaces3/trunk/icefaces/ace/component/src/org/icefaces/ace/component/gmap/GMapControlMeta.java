@@ -33,7 +33,8 @@ import javax.faces.application.ResourceDependency;
         rendererType    = "org.icefaces.ace.component.GMapControlRenderer",
 		componentFamily = "org.icefaces.ace.component",
         tlddoc = "The ace:gMapControl component serves as an easy interface to modify the position, style and " +
-                "rendered state of the controls that appear on the ace:gMap that this tag is nested within."
+                "rendered state of the controls that appear on the ace:gMap that this tag is nested within." +
+                " For more information, see the <a href=\"http://wiki.icefaces.org/display/ICE/GMap\">gMap</a> Wiki Documentation."
         )
 
 @ResourceDependencies({

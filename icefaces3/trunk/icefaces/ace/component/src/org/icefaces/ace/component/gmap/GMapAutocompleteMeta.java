@@ -36,7 +36,8 @@ import javax.faces.application.ResourceDependency;
         tlddoc = "An Icesoft implementation of Google's Places autocomplete tool. " +
                 "The ace:gMapAutocomplete component will create a text box which will provide locations that match the currently typed string, " +
                 "then return information about the selected location such as the types Google has assigned to it, or the url to Google's " +
-                "information page on it."
+                "information page on it." +
+                " For more information, see the <a href=\"http://wiki.icefaces.org/display/ICE/GMap\">gMap</a> Wiki Documentation."
 )
 
 @ResourceDependencies({

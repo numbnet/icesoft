@@ -40,7 +40,8 @@ import org.icefaces.ace.api.IceClientBehaviorHolder;
 		tlddoc = "The base component for the ACE gMap (Google Maps API) set of components." +
                 " This component is how to define and control the map proper, as well as serving as a parent for the other gMap subcomponents." +
                 " Important note: To function properly, you must define the property 'org.icefaces.ace.gmapKey' in your web.xml." +
-                " You can get an API key at http://code.google.com/apis/maps/signup.html."
+                " You can get an API key at http://code.google.com/apis/maps/signup.html." +
+                " For more information, see the <a href=\"http://wiki.icefaces.org/display/ICE/GMap\">gMap</a> Wiki Documentation."
         )
 
 @ResourceDependencies({
