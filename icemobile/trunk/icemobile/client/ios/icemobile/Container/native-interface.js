@@ -292,7 +292,7 @@ if (!window.ice.mobile) {
         }
 
         namespace.fetchContacts = function(id, atts)  {
-            ice.native('address?id=' + id + (atts ? '&' + atts : ''));
+            ice.native('fetchContacts?id=' + id + (atts ? '&' + atts : ''));
         }
 
         namespace.deviceToken = "cafebeef";

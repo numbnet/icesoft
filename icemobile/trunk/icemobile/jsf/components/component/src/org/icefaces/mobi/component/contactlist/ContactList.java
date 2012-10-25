@@ -11,4 +11,9 @@ public class ContactList extends ContactListBase implements IContactList{
         return MobiJSFUtils.getClientDescriptor();
     }
 
+    public String getScript(String id, boolean isSX)  {
+       return MobiJSFUtils.getICEmobileSXScript(
+                "fetchContacts", null, this);
+    }
+
 }

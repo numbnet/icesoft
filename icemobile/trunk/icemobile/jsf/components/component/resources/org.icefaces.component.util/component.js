@@ -419,12 +419,13 @@ ice.mobi.formOf = function(element) {
     }
 }
 
-ice.mobi.sx = function (element) {
+ice.mobi.sx = function (element, uploadURL) {
     var ampchar = String.fromCharCode(38);
     var form = ice.mobi.formOf(element);
     var formAction = form.getAttribute("action");
     var command = element.getAttribute("data-command");
     var id = element.getAttribute("data-id");
+    var sessionid = element.getAttribute("data-jsessionid");
     var ub = element.getAttribute("data-ub");
     if ((null == id) || ("" == id)) {
         id = element.getAttribute("id");
@@ -442,14 +443,18 @@ ice.mobi.sx = function (element) {
             ubConfig = "ub=" + escape(ub) + ampchar;
         }
     }
-    var uploadURL;
-    if (0 === formAction.indexOf("/")) {
-        uploadURL = window.location.origin + formAction;
-    } else if ((0 === formAction.indexOf("http://")) ||
-            (0 === formAction.indexOf("https://"))) {
-        uploadURL = formAction;
+
+    if (!uploadURL) {
+        if (0 === formAction.indexOf("/")) {
+            uploadURL = window.location.origin + formAction;
+        } else if ((0 === formAction.indexOf("http://")) ||
+                (0 === formAction.indexOf("https://"))) {
+            uploadURL = formAction;
+        } else {
+            uploadURL = baseURL + formAction;
+        }
     } else {
-        uploadURL = baseURL + formAction;
+        uploadURL += '/';
     }
 
     var returnURL = window.location;
@@ -461,9 +466,14 @@ ice.mobi.sx = function (element) {
         params = ubConfig + params;
     }
 
+    var sessionidClause = "";
+    if ("" != sessionid) {
+        sessionidClause = "&JSESSIONID=" + escape(sessionid);
+    }
     var sxURL = "icemobile://c=" + escape(command +
             "?id=" + id + ampchar + params) +
             "&u=" + escape(uploadURL) + "&r=" + escape(returnURL) +
+            sessionidClause +
             "&p=" + escape(ice.mobi.serialize(form, false));
 
     window.location = sxURL;

@@ -12,6 +12,7 @@ import javax.faces.render.Renderer;
 import org.icefaces.mobi.renderkit.ResponseWriterWrapper;
 import org.icemobile.component.IContactList;
 import org.icemobile.renderkit.ContactListCoreRenderer;
+import org.icefaces.impl.application.AuxUploadResourceHandler;
 
 public class ContactListRenderer extends Renderer {
     
@@ -24,9 +25,14 @@ public class ContactListRenderer extends Renderer {
         try {
             Map requestParameterMap = facesContext.getExternalContext()
                 .getRequestParameterMap();
-            String contactListResult = String.valueOf(
-                requestParameterMap.get(clientId));
-            contactList.setValue(contactListResult);
+            String contactListResult = (String) requestParameterMap.get(clientId);
+            if (null == contactListResult)  {
+                Map auxMap = AuxUploadResourceHandler.getAuxRequestMap();
+                contactListResult = (String) auxMap.get(clientId);
+            }
+            if (null != contactListResult)  {
+                contactList.setValue(contactListResult);
+            }
         } catch (Exception e) {
             log.log(Level.WARNING, "Error decoding fetchContacts request paramaters.", e);
         }

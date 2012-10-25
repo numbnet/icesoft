@@ -8,5 +8,6 @@ public interface IContactList extends IMobiComponent{
     public void setPattern(String pattern);
     public String getFields();
     public void setFields(String fields);
-    
+    public String getScript(String id, boolean isSX);
+
 }

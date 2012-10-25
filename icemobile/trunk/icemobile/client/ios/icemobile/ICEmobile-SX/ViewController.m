@@ -306,7 +306,7 @@ NSLog(@"hideControls");
             @"Audio Upload", @"microphone", 
             @"QR Code Scan", @"scan", 
             @"Augmented Reality View", @"aug", 
-            @"Address Book", @"address", 
+            @"Address Book", @"fetchContacts", 
             nil];
     self.confirmMessages = [NSDictionary dictionaryWithObjectsAndKeys:
             @"Register with server ", @"register", 
@@ -315,7 +315,7 @@ NSLog(@"hideControls");
             @"Upload audio recording to ", @"microphone", 
             @"Send QR Code to ", @"scan", 
             @"Send augmented reality location to ", @"aug", 
-            @"Send contact to ", @"address", 
+            @"Send contact to ", @"fetchContacts", 
             nil];
     self.commandNames = [NSArray arrayWithObjects:
             @"camera", 
@@ -323,7 +323,7 @@ NSLog(@"hideControls");
             @"microphone", 
             @"scan", 
             @"aug", 
-            @"address", 
+            @"fetchContacts", 
             nil];
 }
 

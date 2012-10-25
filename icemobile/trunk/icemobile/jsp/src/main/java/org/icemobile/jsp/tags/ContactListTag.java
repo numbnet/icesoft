@@ -62,4 +62,8 @@ public class ContactListTag extends BaseSimpleTag implements IContactList {
         this.fields= null;
     }
 
+    public String getScript(String id, boolean isSX)  {
+        return "ice.mobi.sx(this)";
+    }
+
 }

@@ -6,6 +6,7 @@ import java.io.IOException;
 
 import org.icemobile.component.IContactList;
 import org.icemobile.util.CSSUtils;
+import org.icemobile.util.ClientDescriptor;
 
 public class ContactListCoreRenderer {
     
@@ -13,7 +14,8 @@ public class ContactListCoreRenderer {
             throws IOException {
         
         String clientId = component.getClientId();
-        
+        ClientDescriptor cd = component.getClient();
+
         writer.startElement(DIV_ELEM);
         writer.writeAttribute(ID_ATTR, clientId);
 
@@ -36,10 +38,18 @@ public class ContactListCoreRenderer {
             args.append("fields=").append(fields);
         }
 
-        if (args.length() > 0) {
-            writer.writeAttribute(ONCLICK_ATTR, "ice.fetchContacts('" + clientId + "', '" + args.toString() + "' );");
+        if (cd.isSXRegistered())  {
+            writer.writeAttribute("data-command", "fetchContacts");
+            writer.writeAttribute("data-id", clientId);
+            String script = component.getScript(clientId, true);
+            writer.writeAttribute(ONCLICK_ATTR, script);
+            //TODO encode extra parameters into data-params attribute
         } else {
-            writer.writeAttribute(ONCLICK_ATTR, "ice.fetchContacts('" + clientId + "' );");
+            if (args.length() > 0) {
+                writer.writeAttribute(ONCLICK_ATTR, "ice.fetchContacts('" + clientId + "', '" + args.toString() + "' );");
+            } else {
+                writer.writeAttribute(ONCLICK_ATTR, "ice.fetchContacts('" + clientId + "' );");
+            }
         }
         writer.writeAttribute(VALUE_ATTR, component.getLabel());
         writer.endElement(INPUT_ELEM);

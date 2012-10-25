@@ -18,6 +18,9 @@
 if (!window['ice']) {
     window.ice = {};
 }
+if (!window['ice.mobi']) {
+    window.ice.mobi = {};
+}
 
 if (!window.console) {
     console = {};
@@ -163,6 +166,8 @@ ice.mobilesx = function mobilesx(element, uploadURL) {
     window.location = sxURL;
 }
 
+ice.mobi.sx = ice.mobilesx;
+
 ice.formOf = function formOf(element) {
     var parent = element;
     while (null != parent) {
@@ -171,9 +176,6 @@ ice.formOf = function formOf(element) {
         }
         parent = parent.parentNode;
     }
-}
-if (!window['ice.mobi']) {
-    window.ice.mobi = {};
 }
 
 ice.mobi.flipvalue = function flipvalue(id, vars) {
