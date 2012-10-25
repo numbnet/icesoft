@@ -39,9 +39,12 @@ public class SplitPaneCoreRenderer extends BaseCoreRenderer {
         writer.writeAttribute(ID_ATTR, component.getClientId());
         writeStandardLayoutAttributes(writer, component, baseClass.toString() );
     }
+    /*
+      used by JSP tag for rendering fragment
+     */
     public void encodePane(IFragment component, IResponseWriter writer, String style)
         throws IOException {
-        logger.info("printing pane with id="+component.getClientId()+" style="+style);
+     //   logger.info("printing pane with id="+component.getClientId()+" style="+style);
         writer.startElement(DIV_ELEM, component);
         writer.writeAttribute(ID_ATTR, component.getClientId());
         writer.writeAttribute(CLASS_ATTR, this.getPaneClass());
@@ -50,11 +53,8 @@ public class SplitPaneCoreRenderer extends BaseCoreRenderer {
     public void encodePaneEnd(IResponseWriter writer)
         throws IOException{
         writer.endElement(DIV_ELEM);
-        writer.endElement(DIV_ELEM);
     }
-    public void encodeParentEnd(IResponseWriter writer)throws Exception{
-        writer.endElement(DIV_ELEM);
-    }
+    /* used by jsf renderer  for facets */
     public void encodePane(ISplitPane component, IResponseWriter writer, String side)
         throws IOException {
         writer.startElement(DIV_ELEM, component);
@@ -63,19 +63,17 @@ public class SplitPaneCoreRenderer extends BaseCoreRenderer {
            width = this.getRightwidth();
         }
         writer.writeAttribute(STYLE_ATTR, width);
-        writer.startElement(DIV_ELEM, component);
         writer.writeAttribute(CLASS_ATTR, this.getPaneClass());
         writer.writeAttribute(ID_ATTR, component.getClientId()+"_"+side);
     }
 
     public void encodeColumnDivider(ISplitPane component, IResponseWriter writer)
         throws IOException {
-   //     writer.endElement(DIV_ELEM);  //end of left side
-            /* column Divider */
-        writer.startElement(DIV_ELEM, component);
+            /* column Divider for next iteration of component  if resizable is true then render */
+  /*      writer.startElement(DIV_ELEM, component);
         writer.writeAttribute(ID_ATTR, component.getClientId()+"_splt");
         writer.writeAttribute(CLASS_ATTR, this.getSpltClass());
-        writer.endElement(DIV_ELEM);
+        writer.endElement(DIV_ELEM);   */
     }
 
     public void encodeEnd(ISplitPane pane, IResponseWriter writer)
