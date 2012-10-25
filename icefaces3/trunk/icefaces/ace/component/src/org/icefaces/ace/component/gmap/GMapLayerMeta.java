@@ -32,8 +32,8 @@ import javax.faces.application.ResourceDependency;
         componentType   = "org.icefaces.ace.component.GMapLayer",
         rendererType    = "org.icefaces.ace.component.GMapLayerRenderer",
 		componentFamily = "org.icefaces.ace.component",
-		tlddoc = "ace:gMapLayer creates one of a variety of layers on top of the parent ace:gMap, to enhance or display new information. " +
-                "Google provides Bicycling, Traffic and Transit layers, which display bike paths, traffic flow and public transportations routes respectively." +
+		tlddoc = "The ace:gMapLayer component creates one of a variety of layers on top of the parent ace:gMap, to enhance or display new information. " +
+                "Google provides Bicycling, Traffic and Transit layers, which display bike paths, traffic flow and public transportations routes respectively. " +
                 "Alternatively, a user defined kml file can also be used."
         )
 
