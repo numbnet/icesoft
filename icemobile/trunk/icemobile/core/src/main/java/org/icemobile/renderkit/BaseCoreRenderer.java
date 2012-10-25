@@ -5,11 +5,11 @@ import java.io.IOException;
 import org.icemobile.component.IMobiComponent;
 
 import java.lang.StringBuilder;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import static org.icemobile.util.HTML.*;
+import static org.icemobile.util.Constants.*;
 
-public class BaseCoreRenderer {
+public abstract class BaseCoreRenderer{
     private static final Logger logger =
             Logger.getLogger(BaseCoreRenderer.class.toString());
 
@@ -30,7 +30,7 @@ public class BaseCoreRenderer {
             writer.writeAttribute(STYLE_ATTR, component.getStyle());
         }
         if (component.isDisabled())  {
-            writer.writeAttribute(DISABLED_ATTR, "disabled");
+            writer.writeAttribute(DISABLED_ATTR, DISABLED_ATTR);
         }
     }
 
@@ -38,7 +38,7 @@ public class BaseCoreRenderer {
                     IMobiComponent component, String baseClass) throws IOException  {
         StringBuilder inputStyle = new StringBuilder(baseClass);
         if (null != component.getStyleClass())  {
-            inputStyle.append(" ").append(component.getStyleClass());
+            inputStyle.append(SPACE).append(component.getStyleClass());
         }
         if( inputStyle.length() > 0 ){
             writer.writeAttribute(CLASS_ATTR, inputStyle);
@@ -46,5 +46,15 @@ public class BaseCoreRenderer {
         if (null != component.getStyle())  {
             writer.writeAttribute(STYLE_ATTR, component.getStyle());
         }
+    }
+    
+    public void writeHiddenInput(IResponseWriter writer, IMobiComponent comp) throws IOException{
+        writer.startElement(SPAN_ELEM, comp);
+        writer.startElement(INPUT_ELEM, comp);
+        writer.writeAttribute(TYPE_ATTR, INPUT_TYPE_HIDDEN);
+        writer.writeAttribute(ID_ATTR, comp.getClientId()+SUFFIX_HIDDEN);
+        writer.writeAttribute(NAME_ATTR, comp.getClientId()+SUFFIX_HIDDEN);
+        writer.endElement(INPUT_ELEM);
+        writer.endElement(SPAN_ELEM);
     }
 }
