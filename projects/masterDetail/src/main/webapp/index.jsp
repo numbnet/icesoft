@@ -1,6 +1,3 @@
-<html>
-    <head> </head>
-    <body>
-        <jsp:forward page="faces/updateStaff.xhtml" />
-    </body>
-</html>
+<%
+response.sendRedirect("faces/updateStaff.xhtml");
+%>
