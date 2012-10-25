@@ -25,6 +25,10 @@ public class Constants{
     public final static String HEADER_ACCEPT = "Accept";
     public final static String HYPERBROWSER = "HyperBrowser";
     public final static String PROJECT_STAGE_PARAM = "org.icemobile.projectstage";
+    
+    //rendering standard items
     public final static String SUFFIX_WRAPPER = "_wrp";
+    public final static String SUFFIX_HIDDEN = "_hidden";
+    public final static String SPACE = " ";
 
 }
