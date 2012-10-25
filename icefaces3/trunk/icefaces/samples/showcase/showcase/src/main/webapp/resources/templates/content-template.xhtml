@@ -27,6 +27,16 @@ Available ui:params to pass:
  resourceValue
 -->
     <div class="example">
+		<style type="text/css">
+			@-moz-document url-prefix() { 
+			  .moz-float-left {
+				 float:left;
+			  }
+			}
+			.reduced-menu-padding .wijmo-wijmenu-link {
+				padding:2px;
+			}
+		</style>
         <ace:panel header="#{title}" id="examplePanel" styleClass="containerPanelStyle">
         <div class="content">
             <div class="desc">
@@ -36,19 +46,26 @@ Available ui:params to pass:
                 <ui:insert name="example"/>
             </h:panelGroup>
         </div>
-            <f:facet name="options">  
-                <ace:menu >
-                    <ace:submenu label="WIKI Documentation">
-                        <c:forEach items="#{wikiResources}" var="wiki">
-                           <ace:menuItem value="#{wiki.title}" url="#{wiki.resource}" target="_blank"/>
-                        </c:forEach>
-                    </ace:submenu>
-                    <ace:submenu label="TLD Documentation">
-                        <c:forEach items="#{tldResources}" var="tld">
-                           <ace:menuItem value="#{tld.title}" url="#{tld.resource}" target="_blank"/>
-                        </c:forEach>
-                    </ace:submenu>
-                </ace:menu>  
+            <f:facet name="header">  
+				<h:outputText value="#{title}" class="moz-float-left" style=""/>
+				<ace:menuBar style="right:3px;top:4px;bottom:3px;position:absolute;font-size:75%;padding:0;height:2em;" styleClass="reduced-menu-padding">
+					<ace:multiColumnSubmenu label="#{msgs[menu.documentation]}">
+						<ace:menuColumn>
+							<ace:submenu label="WIKI Documentation">
+								<c:forEach items="#{wikiResources}" var="wiki">
+								   <ace:menuItem value="#{wiki.title}" url="#{wiki.resource}" target="_blank"/>
+								</c:forEach>
+							</ace:submenu>
+						</ace:menuColumn>
+						<ace:menuColumn>
+							<ace:submenu label="TLD Documentation">
+								<c:forEach items="#{tldResources}" var="tld">
+								   <ace:menuItem value="#{tld.title}" url="#{tld.resource}" target="_blank"/>
+								</c:forEach>
+							</ace:submenu>
+						</ace:menuColumn>
+					</ace:multiColumnSubmenu>
+				</ace:menuBar>
             </f:facet>  
         </ace:panel>
         
