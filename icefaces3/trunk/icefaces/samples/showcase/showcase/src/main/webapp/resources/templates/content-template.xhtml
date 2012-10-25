@@ -48,8 +48,8 @@ Available ui:params to pass:
         </div>
             <f:facet name="header">  
 				<h:outputText value="#{title}" class="moz-float-left" style=""/>
-				<ace:menuBar style="right:3px;top:4px;bottom:3px;position:absolute;font-size:75%;padding:0;height:2em;" styleClass="reduced-menu-padding">
-					<ace:multiColumnSubmenu label="#{msgs[menu.documentation]}">
+				<ace:menuBar style="right:3px;top:4px;position:absolute;font-size:75%;padding:0;height:25px;" styleClass="reduced-menu-padding">
+					<ace:multiColumnSubmenu label="Documentation">
 						<ace:menuColumn>
 							<ace:submenu label="WIKI Documentation">
 								<c:forEach items="#{wikiResources}" var="wiki">
