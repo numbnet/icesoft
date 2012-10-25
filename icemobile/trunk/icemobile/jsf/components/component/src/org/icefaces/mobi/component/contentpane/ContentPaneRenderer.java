@@ -174,7 +174,7 @@ public class ContentPaneRenderer extends BaseLayoutRenderer {
          writer.writeAttribute(HTML.STYLE_ATTR, pane.getStyle(), "style");
          writer.startElement(HTML.DIV_ELEM, uiComponent);
          writer.writeAttribute("class", handleClass, "class");
-         writer.writeAttribute("onclick", "mobi.accordionController.toggleClient('"+accordionId+"',this,"+client+");","onclick");
+         writer.writeAttribute("onclick", "ice.mobi.accordionController.toggleClient('"+accordionId+"',this,"+client+");","onclick");
         //may want to do touch support??
          writer.startElement(HTML.DIV_ELEM, uiComponent);
          writer.writeAttribute("class", pointerClass, "class");
