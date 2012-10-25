@@ -32,7 +32,6 @@ public class SplitPaneTag extends BaseBodyTag implements ISplitPane {
         //prepare for evaulation of the body just before the first body evaulation - no return action
             /* check for attributes set */
         //init default values?
-        logger.info("doInitBody SplitPane");
     }
 
     private void calculatePanelWidths() {
@@ -54,7 +53,6 @@ public class SplitPaneTag extends BaseBodyTag implements ISplitPane {
 
     public int doStartTag() throws JspTagException{
         /* put class here */
-        logger.info("doStartTag spiltPane leftstyle="+this.getLeftStyle()+" rightstyle="+this.getRightStyle()) ;
         calculatePanelWidths();
 	    renderer= getRenderer();
         try {
