@@ -33,7 +33,6 @@ import java.util.ArrayList;
 import javax.faces.model.SelectItem;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import javax.faces.event.ActionEvent;
 
 @ComponentExample(
         title = "example.ace.autocompleteentry.title",
@@ -110,10 +109,6 @@ public class AutoCompleteEntryBean extends ComponentExampleImpl<AutoCompleteEntr
 	private String selectedText = null; // Text the user is typing in
 	public String getSelectedText() { return selectedText; }
 	public void setSelectedText(String selectedText) { this.selectedText = selectedText; }
-	
-	public void submitText(ActionEvent event) {
-
-	}
 	
 	/**
 	 * Method to read the list of cities from the file CITIES_FILENAME

@@ -33,7 +33,6 @@ import java.util.StringTokenizer;
 
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import javax.faces.event.ActionEvent;
 
 import javax.faces.event.ValueChangeEvent;
 
@@ -82,14 +81,6 @@ public class AutoCompleteEntryLazyBean extends ComponentExampleImpl<AutoComplete
 		}
 		
 		return null; 
-	}
-	
-	public void submitText(ActionEvent event) {
-		for (City city : cities) {
-			if (city.getName().equalsIgnoreCase(selectedText)) {
-				break;
-			}
-		}
 	}
 	
 	private List<City> cities = new ArrayList<City>();

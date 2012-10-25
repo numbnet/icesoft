@@ -34,7 +34,6 @@ import java.util.StringTokenizer;
 
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import javax.faces.event.ActionEvent;
 
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
