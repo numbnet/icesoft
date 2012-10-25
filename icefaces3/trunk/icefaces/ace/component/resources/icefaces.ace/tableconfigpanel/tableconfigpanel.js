@@ -28,6 +28,8 @@ ice.ace.TableConf = function (id, cfg) {
 
     this.$this.draggable();
 
+    this.$this.css('top', this.$table.offset().top + 15);
+
     if (cfg.reorderable) {
         // Return a helper with preserved width of cells
         var fixHelper = function(e, ui) {
