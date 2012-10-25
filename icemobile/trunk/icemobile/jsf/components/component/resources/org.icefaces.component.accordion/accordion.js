@@ -69,15 +69,14 @@
         } else {
             //  var scrollEvent = 'ontouchstart' in window ? "touchmove" : "scroll";
             var autoheight = cfgIn.autoheight || false;
-            var maxheight = cfgIn.maxheight || "150px";
+            var fixedHeight = cfgIn.fixedHeight || "200px";
             if (autoheight == true) {
                 var calcht = calcMaxDivHeight(clientId)
                 if (calcht > 0) {
-                    maxheight = calcht;
+                    fixedHeight = calcht;
                 }
             }
-            var heightString = maxheight + "px";
-            updateHeightInOpenClass(openClass, heightString);
+            updateHeightInOpenClass(openClass, fixedHeight);
         }
         return {
             toggle: function(el, cached) {
@@ -107,14 +106,14 @@
             },
             updateProperties: function (clientId, cfgUpd) {
                 cfgObj = cfgIn; //not sure I need to keep this?
-                //server may want to push new dynamic values for maxheight and autoheight
+                //server may want to push new dynamic values for fixedHeight and autoheight
                 var change = false;
                 if (autoheight != cfgUpd.autoheight) {
                     autoheight = cfgUpd.autoheight || false;
                     change = true;
                 }
-                if (maxheight != cfgUpd.maxheight) {
-                    maxheight = cfgUpd.maxheight || "200px";
+                if (fixedHeight != cfgUpd.fixedHeight) {
+                    fixedHeight = cfgUpd.fixedHeight || "200px";
                     change = true;
                 }
                 if (change == true) {
@@ -128,7 +127,7 @@
         }
     }
 
-    mobi.accordionController = {
+    ice.mobi.accordionController = {
         panels: {},
         initClient: function(clientId, cfg) {
             if (!this.panels[clientId]) {

@@ -17,55 +17,63 @@
 package org.icefaces.mobi.component.accordion;
 
 
-import org.icefaces.mobi.api.ContentPaneController;
-
-import javax.annotation.PostConstruct;
-import javax.faces.component.UIComponent;
-import javax.faces.component.behavior.FacesBehavior;
-import javax.faces.context.FacesContext;
-import javax.faces.event.AbortProcessingException;
-import javax.el.MethodExpression;
-import javax.faces.event.FacesEvent;
-import javax.faces.event.PhaseId;
-import javax.faces.event.ValueChangeEvent;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class Accordion extends AccordionBase implements ContentPaneController {
-     private static Logger logger = Logger.getLogger(Accordion.class.getName());
-     public static final String ACCORDION_CLASS = "mobi-accordion";
-     public static final String ACCORDION_RIGHT_POINTING_TRIANGLE = "&#9654;";
-     public static final String ACCORDION_RIGHT_POINTING_POINTER= "&#9658;";
-     public static final String ACCORDION_LEFT_POINTING_TRIANGLE = "&#9664;";
-     public static final String ACCORDION_LEFT_POINTING_POINTER= "&#9668;";
-     private String selectedId;
-     /**
+import javax.el.MethodExpression;
+import javax.faces.application.ProjectStage;
+import javax.faces.application.Resource;
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import javax.faces.event.AbortProcessingException;
+import javax.faces.event.FacesEvent;
+import javax.faces.event.PhaseId;
+import javax.faces.event.ValueChangeEvent;
+
+import org.icefaces.mobi.api.ContentPaneController;
+import org.icefaces.mobi.renderkit.InlineScriptEventListener;
+import org.icefaces.mobi.utils.JSFUtils;
+import org.icefaces.mobi.utils.MobiJSFUtils;
+import org.icemobile.component.IAccordion;
+import org.icemobile.util.ClientDescriptor;
+
+public class Accordion extends AccordionBase implements ContentPaneController, IAccordion {
+    
+    public static final String JS_LIBRARY = "org.icefaces.component.accordion";
+    
+    private static Logger logger = Logger.getLogger(Accordion.class.getName());
+     
+    /**
      * method is required by ContentPaneController interface
      * returns null if their are no children of type contentPane or no children at all.
      * If activeIndex is outside of the range of 0 -> number of children -1, then the default
      * valid value is the first child.
      * @return
      */
-     public Accordion(){
-         super();
-     }
+    public Accordion(){
+        super();
+    }
 
-     /**
-      * method is required by ContentPaneController interface no error checking as
-      * component is not in the tree
+    /**
+      * override deprecated method
       */
-     public String getSelectedId(){
-         return getCurrentId();
-     }
+    @Override
+    public String getCurrentId(){
+        return getSelectedId();
+    }
+    @Override
+    public void setCurrentId(String id){
+        setSelectedId(id);
+    }
 
      public void queueEvent(FacesEvent event) {
-        if (event.getComponent() == this) {
-            if (logger.isLoggable(Level.FINEST)){
-                logger.finest("invoked event for Accordion with selectedId= " + this.getSelectedId());
-            }   //no immediate for this component
-            event.setPhaseId(PhaseId.INVOKE_APPLICATION);
-        }
-        super.queueEvent(event);
+       if (event.getComponent() == this) {
+           if (logger.isLoggable(Level.FINEST)){
+               logger.finest("invoked event for Accordion with selectedId= " + this.getSelectedId());
+           }   //no immediate for this component
+           event.setPhaseId(PhaseId.INVOKE_APPLICATION);
+       }
+       super.queueEvent(event);
      }
 
      public void broadcast(javax.faces.event.FacesEvent event) throws AbortProcessingException {
@@ -76,5 +84,50 @@ public class Accordion extends AccordionBase implements ContentPaneController {
             me.invoke(facesContext.getELContext(), new Object[] {event});
         }
      }
+
+    public ClientDescriptor getClient() {
+        return MobiJSFUtils.getClientDescriptor();
+    }
+
+    public boolean isProductionProjectStage() {
+        return FacesContext.getCurrentInstance().isProjectStage(ProjectStage.Production);
+    }
+
+    public String getJavascriptFileRequestPath() {
+        String jsFname = JS_NAME;
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        if (FacesContext.getCurrentInstance().isProjectStage(ProjectStage.Production)){
+            jsFname = JS_MIN_NAME;
+        }
+        //set jsFname to min if development stage
+        Resource jsFile = facesContext.getApplication().getResourceHandler()
+                .createResource(jsFname, JS_LIBRARY);
+        return jsFile.getRequestPath();
+    }
+
+    public boolean isScriptLoaded() {
+        return InlineScriptEventListener.isScriptLoaded(FacesContext.getCurrentInstance(), IAccordion.JS_NAME);
+    }
+
+    public void setScriptLoaded() {
+        InlineScriptEventListener.setScriptLoaded(FacesContext.getCurrentInstance(), IAccordion.JS_NAME);
+    }
+
+    public String getOpenedPaneClientId() {
+        UIComponent openPane = null;  //all children must be panels
+        String currentId = getSelectedId();
+
+        if (getChildCount() <= 0){
+            logger.finer("this component must have panels defined as children. Please read DOCS.");
+                return null;
+        } 
+        //check whether we have exceeded maximum number of children for accordion???
+        openPane = JSFUtils.getChildById(this, currentId);
+        String clId = null;
+        if (openPane !=null){
+            clId = openPane.getClientId(FacesContext.getCurrentInstance());
+        }
+        return clId;
+    }
 
 }

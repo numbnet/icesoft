@@ -16,105 +16,26 @@
 
 package org.icemobile.jsp.tags;
 
-import javax.servlet.jsp.JspTagException;
-import javax.servlet.jsp.tagext.TagSupport;
-import java.io.IOException;
-import java.io.Writer;
 import java.util.logging.Logger;
 
-public class AccordionTag extends TagSupport {
+import javax.servlet.jsp.JspException;
 
-    private static final String ACCORDION_CLASS = "mobi-accordion";
+import org.icemobile.component.IAccordion;
+import org.icemobile.renderkit.AccordionCoreRenderer;
+
+public class AccordionTag extends BaseBodyTag implements IAccordion {
+
     private static Logger LOG = Logger.getLogger(AccordionTag.class.getName());
-
-    public int doStartTag() throws JspTagException {
-
-        Writer out = pageContext.getOut();
-
-        StringBuilder sb = new StringBuilder(TagUtil.DIV_TAG);
-        sb.append(" id=\"").append(getId()).append("\"");
-
-        sb.append(" class=\"").append(ACCORDION_CLASS);
-        if (styleClass != null && !"".equals(styleClass)) {
-            sb.append(" ").append(getStyleClass());
-        }
-        sb.append("\"");
-
-        if (style != null && !"".equals(style)) {
-            sb.append(" style=\"").append(getStyle()).append("\"");
-        }
-
-        if (selectedId != null && !"".equals(selectedId)) {
-            sb.append(" data-opened=\"").append(selectedId).append("\"");
-        }
-
-        sb.append(">");
-        try {
-            out.write(sb.toString());
-
-        } catch (IOException ioe) {
-            LOG.severe("Exception writing AccordionTag: " + ioe);
-        }
-
-        return EVAL_BODY_INCLUDE;
-    }
-
-    public int doEndTag() {
-
-        Writer out = pageContext.getOut();
-        try {
-            // Write hidden input field with id matching javascript
-            StringBuilder tag = new StringBuilder(TagUtil.SPAN_TAG);
-            tag.append(">").append(TagUtil.INPUT_TAG);
-            tag.append(" id=\"").append(getId()).append("_hidden\"");
-            tag.append(" name=\"").append(getId()).append("\"");
-            tag.append(" type=\"hidden\"/>");
-            out.write(tag.toString());
-
-            out.write(TagUtil.SPAN_TAG_END);
-            out.write(TagUtil.DIV_TAG_END);
-            encodeScript(out);
-        } catch (IOException ioe) {
-            LOG.severe("IOException closing AccordionTag: " + ioe);
-        }
-
-        return EVAL_PAGE;
-    }
-
-
-    public void encodeScript(Writer writer) throws IOException {
-        //need to initialize the component on the page and can also
-        String clientId = getId();
-        StringBuilder sb = new StringBuilder(TagUtil.SPAN_TAG);
-        sb.append(" id=\"").append(getId()).append("_script\">");
-
-        sb.append(TagUtil.SCRIPT_TAG);
-        sb.append(" type=\"text/javascript\">");
-
-        StringBuilder cfg = new StringBuilder("{ ");
-        cfg.append(" autoheight: ").append(isAutoheight());
-        // only include maxHeight if specified, otherwise it will equate to zero
-        if (getMaxheight() > 0) {
-            cfg.append(", maxheight: '").append(getMaxheight()).append("'");
-        }
-        cfg.append("}");
-
-        writer.write(sb.toString());
-        writer.write("ice.mobi.accordionController.initClient('" + clientId + "'," + cfg.toString() + ");");
-        writer.write(TagUtil.SCRIPT_TAG_END);
-        writer.write(TagUtil.SPAN_TAG_END);
-    }
-
-
-    // Tag properties
-
-    private String id;
+    
     private String name;
-    private String styleClass;
-    private String style;
-    private boolean autoheight;
-    private int maxheight;
+    private boolean autoHeight = true;//default
+    private String fixedHeight = "200px";
     private String selectedId;
+
+    public int doStartTag() throws JspException {
+        renderer = new AccordionCoreRenderer();
+        return _doStartTag(); 
+    }
 
     public String getName() {
         return name;
@@ -131,44 +52,38 @@ public class AccordionTag extends TagSupport {
     public void setSelectedId(String selectedId) {
         this.selectedId = selectedId;
     }
-
-    public boolean isAutoheight() {
-        return autoheight;
+    public void setFixedHeight(String fixedHeight) {
+        this.fixedHeight = fixedHeight;        
     }
 
-    public void setAutoheight(boolean autoheight) {
-        this.autoheight = autoheight;
+    public String getFixedHeight() {
+        return this.fixedHeight;
     }
 
-    public String getId() {
-        return id;
+    public void setAutoHeight(boolean autoHeight) {
+        this.autoHeight = autoHeight;       
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public boolean isAutoHeight() {
+        return this.autoHeight;
     }
 
-    public String getStyleClass() {
-        return styleClass;
+    public String getJavascriptFileRequestPath() {
+        //not used in JSP
+        return null;
     }
 
-    public void setStyleClass(String styleClass) {
-        this.styleClass = styleClass;
+    public boolean isScriptLoaded() {
+       //not used in JSP
+        return false;
     }
 
-    public String getStyle() {
-        return style;
+    public void setScriptLoaded() {
+      //not used in JSP
     }
 
-    public void setStyle(String style) {
-        this.style = style;
-    }
-
-    public int getMaxheight() {
-        return maxheight;
-    }
-
-    public void setMaxheight(int maxHeight) {
-        this.maxheight = maxHeight;
+    public String getOpenedPaneClientId() {
+        // TODO Auto-generated method stub
+        return null;
     }
 }

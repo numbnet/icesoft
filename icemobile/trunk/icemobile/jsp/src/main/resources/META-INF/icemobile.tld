@@ -933,13 +933,13 @@
             <rtexprvalue>true</rtexprvalue>
         </attribute>
         <attribute>
-            <description>User defined CSS class</description>
+            <description>Style class of the container element.</description>
             <name>styleClass</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
         </attribute>
         <attribute>
-            <description>Inline style definition</description>
+            <description>Inline style of the container element.</description>
             <name>style</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
@@ -951,19 +951,22 @@
             <rtexprvalue>true</rtexprvalue>
         </attribute>
         <attribute>
-            <description>Manual setting of the expanded pane height,
-                applied if autoheight == false
+            <description>fixeHeight, default 200px, can be used when autoHeight is false. Must be valid height for element.style.height
             </description>
-            <name>maxheight</name>
+            <name>fixedHeight</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
         </attribute>
         <attribute>
-            <description>If true, the height of the pane is as calculated, if
-                false,
-                height is maxHeight
+            <description>When set to true (default), pane with highest content is used to calculate the height.
             </description>
-            <name>autoheight</name>
+            <name>autoHeight</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <description>Disables or enables the accordion.</description>
+            <name>disabled</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
         </attribute>
