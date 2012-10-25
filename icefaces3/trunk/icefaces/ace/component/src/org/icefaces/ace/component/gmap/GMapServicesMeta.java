@@ -33,7 +33,8 @@ import javax.faces.application.ResourceDependency;
         rendererType    = "org.icefaces.ace.component.GMapServicesRenderer",
 		componentFamily = "org.icefaces.ace.component",
 		tlddoc = "The ace:gMapServices tag allows access to the various 'services' that Google provides through its maps API. Elevation gives the height of any point above or below sea level. Max zoom gives the highest level of satellite zoom available. " +
-                "Distance gives the distance between two points along a set mode of transit and directions show the way between given locations."
+                "Distance gives the distance between two points along a set mode of transit and directions show the way between given locations." +
+                " For more information, see the <a href=\"http://wiki.icefaces.org/display/ICE/GMap\">gMap</a> Wiki Documentation."
         )
 
 @ResourceDependencies({

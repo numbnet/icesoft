@@ -33,7 +33,8 @@ import javax.faces.application.ResourceDependency;
         rendererType    = "org.icefaces.ace.component.GMapInfoWindowRenderer",
 		componentFamily = "org.icefaces.ace.component",
         tlddoc = "The ace:gMapInfoWindow component creates a pop-up window within the parent ace:gMap, which can be used to display either text via the 'content' attribute or " +
-                "nested html or jsf tags. If placed within an ace:gMapMarker, the window will 'bind' to the marker, and move along with it."
+                "nested html or jsf tags. If placed within an ace:gMapMarker, the window will 'bind' to the marker, and move along with it." +
+                " For more information, see the <a href=\"http://wiki.icefaces.org/display/ICE/GMap\">gMap</a> Wiki Documentation."
         )
 
 @ResourceDependencies({

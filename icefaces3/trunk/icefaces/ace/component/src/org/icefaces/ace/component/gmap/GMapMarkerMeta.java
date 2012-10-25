@@ -37,7 +37,8 @@ import org.icefaces.ace.api.IceClientBehaviorHolder;
         componentType   = "org.icefaces.ace.component.GMapMarker",
         rendererType    = "org.icefaces.ace.component.GMapMarkerRenderer",
 		componentFamily = "org.icefaces.ace.component",
-        tlddoc = "The ace:gMapMarker component places one of Google's markers upon the given latitude/longitude coordinates of the parent ace:gMap."
+        tlddoc = "The ace:gMapMarker component places one of Google's markers upon the given latitude/longitude coordinates of the parent ace:gMap."+
+                " For more information, see the <a href=\"http://wiki.icefaces.org/display/ICE/GMap\">gMap</a> Wiki Documentation."
         )
 
 @ResourceDependencies({
