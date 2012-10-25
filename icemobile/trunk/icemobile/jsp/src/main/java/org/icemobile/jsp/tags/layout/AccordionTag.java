@@ -14,13 +14,14 @@
  * governing permissions and limitations under the License.
  */
 
-package org.icemobile.jsp.tags;
+package org.icemobile.jsp.tags.layout;
 
 import java.util.logging.Logger;
 
 import javax.servlet.jsp.JspException;
 
 import org.icemobile.component.IAccordion;
+import org.icemobile.jsp.tags.BaseBodyTag;
 import org.icemobile.renderkit.AccordionCoreRenderer;
 
 public class AccordionTag extends BaseBodyTag implements IAccordion {

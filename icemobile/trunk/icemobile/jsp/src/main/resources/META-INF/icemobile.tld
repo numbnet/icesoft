@@ -924,7 +924,7 @@
         </description>
         <display-name>accordion</display-name>
         <name>accordion</name>
-        <tag-class>org.icemobile.jsp.tags.AccordionTag</tag-class>
+        <tag-class>org.icemobile.jsp.tags.layout.AccordionTag</tag-class>
         <body-content>JSP</body-content>
         <attribute>
             <description>Pagewide unique identifier</description>

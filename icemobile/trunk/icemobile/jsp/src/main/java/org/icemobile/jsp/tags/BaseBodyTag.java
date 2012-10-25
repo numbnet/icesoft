@@ -22,7 +22,7 @@ public abstract class BaseBodyTag extends BodyTagSupport implements IMobiCompone
     protected TagWriter writer;
     
     /* Base impl of doStartTag
-     * Subclasses must renderer on Tag before calling
+     * Subclasses must set renderer on Tag before calling
      */
     protected int _doStartTag() throws JspException {
         
