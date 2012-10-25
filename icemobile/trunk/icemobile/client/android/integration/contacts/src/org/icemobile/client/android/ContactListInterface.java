@@ -1,6 +1,7 @@
 package org.icemobile.client.android;
 
 
+import java.net.URLEncoder;
 import java.util.Arrays;
 import java.util.StringTokenizer;
 
@@ -55,8 +56,6 @@ public class ContactListInterface implements JavascriptInterface {
 		mResolver = cr; 
 		mInterface = util;
 	}
-
-
 
 	public void fetchContacts(String id, String attr) {
 
@@ -210,13 +209,14 @@ public class ContactListInterface implements JavascriptInterface {
 			} 
 		}
 
-		String base64String = Base64.encodeToString(contactList.toString().getBytes(), Base64.DEFAULT);
-
-		//    	mInterface.loadURL(
-		//        	  "javascript:ice.addHidden(ice.currentContactId, ice.currentContactId, '" +  base64String + "'); ");
-
-		mInterface.loadURL(
-				"javascript:ice.addHidden(ice.currentContactId, ice.currentContactId, '" +  contactList.toString() + "'); ");
+		String encodedContactList = null; 
+		try { 
+			encodedContactList = URLEncoder.encode(contactList.toString(), "utf-8");
+			mInterface.loadURL(
+				"javascript:ice.addHidden(ice.currentContactId, ice.currentContactId, '" +  encodedContactList + "'); ");
+		} catch (Exception e) { 
+			Log.e("ICEmobile", "Exception encoding contact information: " + e); 
+		}
 	}
 
 
