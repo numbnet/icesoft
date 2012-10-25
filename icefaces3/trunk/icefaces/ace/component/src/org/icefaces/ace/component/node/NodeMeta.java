@@ -34,7 +34,8 @@ import javax.faces.application.ResourceDependency;
         componentType  = "org.icefaces.ace.component.Node",
         componentFamily = "org.icefaces.ace.Node",
         tlddoc = "Defines the contents of a node of the parent tree. Multiple nodes of different types " +
-                "can be rendered by the same tree by matching the ace:tree 'type' property.")
+                "can be rendered by the same tree by matching the ace:tree 'type' property." +
+                "<p>For more information, see the <a href=\"http://wiki.icefaces.org/display/ICE/Tree\">Node Wiki Documentation</a>.</p>")
 @ResourceDependencies({
         @ResourceDependency(library="icefaces.ace", name="util/ace-jquery.js")
 })
