@@ -18,6 +18,9 @@ package org.icemobile.jsp.tags;
 
 import javax.servlet.jsp.tagext.Tag;
 import javax.servlet.jsp.tagext.TagSupport;
+
+import org.icemobile.jsp.tags.layout.AccordionTag;
+
 import java.io.IOException;
 import java.io.Writer;
 import java.util.logging.Logger;
