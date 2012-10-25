@@ -83,10 +83,13 @@ ice.ace.Tree.prototype.setupReordering = function () {
             connectWith:this.sortableTarget,
 
             receive:function (event, ui) {
-                var newParent = ice.ace.jq(this).closest('.if-node-cnt, .if-tree'),
+                // Prevent bugged double submit
+                if (!self.droppedItemSameParent(ui.item)) {
+                    var newParent = ice.ace.jq(this).closest('.if-node-cnt, .if-tree'),
                     source = ice.ace.jq(ui.item),
                     index = source.index();
-                self.sendReorderingRequest(source, newParent, index);
+                    self.sendReorderingRequest(source, newParent, index);
+                }
             },
             update:function (event, ui) {
                 if (self.droppedItemSameParent(ui.item)) {
