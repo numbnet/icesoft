@@ -94,7 +94,7 @@
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation  {
     [self.viewController hideControls];
     self.viewController.launchedFromApp = NO;
-    LogInfo(@"handleOpenURL %@ %@", sourceApplication, url);
+    NSLog(@"handleOpenURL %@ %@", sourceApplication, url);
     NSString *reqString = [url absoluteString];
     NSString *body = [reqString substringFromIndex:[@"icemobile://" length]];
     NSDictionary *params = 

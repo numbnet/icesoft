@@ -104,7 +104,7 @@ static char base64EncodingTable[64] = {
         [self scan:[params objectForKey:@"id"]];
     } else if ([@"aug" isEqualToString:commandName])  {
         [self aug:[params objectForKey:@"id"] locations:params];
-    } else if ([@"address" isEqualToString:commandName])  {
+    } else if ([@"fetchContacts" isEqualToString:commandName])  {
         [self address:[params objectForKey:@"id"]];
     }
 
