@@ -83,7 +83,7 @@ import android.graphics.Paint;
 
 public class ICEmobileContainer extends Activity
     implements SharedPreferences.OnSharedPreferenceChangeListener,
-    ConnectionChangeListener, C2dmRegistrationHandler {
+	       ConnectionChangeListener, C2dmRegistrationHandler {
 
     /* Container configuration constants */
     protected static final String HOME_URL = "http://www.icemobile.org/demos.html";
@@ -148,6 +148,7 @@ public class ICEmobileContainer extends Activity
     private String authUser;
     private String authPw;
     private String mUserAgentString; 
+    private boolean pendingCloudPush;
 
     /**
      * Called when the activity is first created.
@@ -156,7 +157,7 @@ public class ICEmobileContainer extends Activity
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         self = this;
-
+	pendingCloudPush = false;
 
         /* Bind to network connectivity monitoring service */
         Intent bindingIntent = new Intent(self, ConnectionChangeService.class);
@@ -277,18 +278,19 @@ public class ICEmobileContainer extends Activity
     }
 
     @Override
-    protected void onResume() {
+	protected void onResume() {
         super.onResume();
         utilInterface.loadURL("javascript:ice.push.connection.resumeConnection();");
         if (!newURL.equals(currentURL)) {
             loadUrl();
         } else {
-            utilInterface.loadURL("javascript:ice.mobiRefresh();");
-        }
-        // Clear any existing C2DM notifications;
-        if (mC2dmHandler != null) {
-            mC2dmHandler.clearPendingNotification();
-        }
+	    // Clear any existing C2DM notifications;
+	    if (pendingCloudPush) {
+		pendingCloudPush = false;
+		mC2dmHandler.clearPendingNotification();
+		utilInterface.loadURL("javascript:ice.mobiRefresh();");
+	    }
+	}
     }
 
     @Override
@@ -400,6 +402,10 @@ public class ICEmobileContainer extends Activity
 
     public void handleC2dmRegistration(String id) {
         setCloudNotificationId();
+    }
+
+    public void handleC2dmNotification() {
+        pendingCloudPush = true;
     }
 
     protected void setCloudNotificationId() {
