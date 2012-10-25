@@ -507,13 +507,12 @@ ice.mobi.accordionController = {
         var alreadyOpenId = theContainer.getAttribute('data-opened'); //do I care about this?
         var scrollEvent = 'ontouchstart' in window ? "touchmove" : "scroll";
         var cgfObj = cfgIn;
-        var autoheight = cfgIn.autoheight || false;
-        var maxheight = cfgIn.maxheight || "200";
-        if (autoheight == true) {
-            maxheight = ice.mobi.accordionController.calcMaxDivHeight(clientId);
+        var autoHeight = cfgIn.autoHeight || false;
+        var fixedHeight = cfgIn.fixedHeight || "200px";
+        if (autoHeight === true) {
+            fixedHeight = ice.mobi.accordionController.calcMaxDivHeight(clientId);
         }
-        var heightString = maxheight + "px";
-        ice.mobi.accordionController.updateHeightInOpenClass(openClass, heightString);
+        ice.mobi.accordionController.updateHeightInOpenClass(openClass, fixedHeight);
         //as you can see all the 'this' noise is gone
         //object properly encapsulates state
         return {
@@ -547,12 +546,12 @@ ice.mobi.accordionController = {
                 cfgObj = cfgIn; //not sure I need to keep this?
                 //server may want to push new dynamic values for maxheight and autoheight
                 var change = false;
-                if (autoheight != cfgUpd.autoheight) {
-                    autoheight = cfgUpd.autoheight || false;
+                if (autoHeight != cfgUpd.autoHeight) {
+                    autoHeight = cfgUpd.autoHeight || false;
                     change = true;
                 }
-                if (maxheight != cfgUpd.maxheight) {
-                    maxheight = cfgUpd.maxheight || "200px";
+                if (fixedHeight != cfgUpd.fixedHeight) {
+                    fixedHeight = cfgUpd.fixedHeight || "200px";
                     change = true;
                 }
                 if (change == true) {

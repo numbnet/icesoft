@@ -20,31 +20,49 @@
              xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
 
     <h:form>
+    
+        <h2>ICEmobile Accordion Component</h2>
+        
         <mobi:fieldsetGroup>
             <mobi:fieldsetRow>
                 The accordion component shows one active content pane at time.
                 Non-active content panes are represented as collapsed views.
             </mobi:fieldsetRow>
         </mobi:fieldsetGroup>
+        
+        <h3>Basic Accordion</h3>
 
-        <mobi:accordion currentId="#{accordionBean.currentId}"
-                        autoHeight="false">
+        <mobi:accordion id="basicAccordion" selectedId="#{accordionBean.selectedId1}">
 
             <mobi:contentPane title="ICE Sailor" id="accordionPane1">
-                <ui:include src="/WEB-INF/includes/content/inc-icesailor.xhtml"/>
+                <ui:include src="/WEB-INF/includes/content/fieldset-icesailor.xhtml"/>
             </mobi:contentPane>
 
             <mobi:contentPane title="ICE Breaker" id="accordionPane2">
-                <ui:include src="/WEB-INF/includes/content/inc-icebreaker.xhtml"/>
+                <ui:include src="/WEB-INF/includes/content/fieldset-icebreaker.xhtml"/>
             </mobi:contentPane>
 
             <mobi:contentPane title="ICE Skate" id="accordionPane3">
-                <ui:include src="/WEB-INF/includes/content/inc-iceskater.xhtml"/>
+                <ui:include src="/WEB-INF/includes/content/fieldset-iceskater.xhtml"/>
             </mobi:contentPane>
 
         </mobi:accordion>
+        
+        <h3>Accordion without autoHeight</h3>
+    
+        <mobi:accordion id="accordionNoAutoHeight" selectedId="#{accordionBean.selectedId2}"
+            autoHeight="false" fixedHeight="300px">
+            <mobi:contentPane title="ICE Sailor" id="accordionPane4" >
+                <ui:include src="/WEB-INF/includes/content/fieldset-icesailor.xhtml"/>
+            </mobi:contentPane>
+            <mobi:contentPane title="ICE Breaker" id="accordionPane5">
+                 <ui:include src="/WEB-INF/includes/content/fieldset-icebreaker.xhtml"/>
+            </mobi:contentPane>
+            <mobi:contentPane title="ICE Skate" id="accordionPane6">
+                <ui:include src="/WEB-INF/includes/content/fieldset-iceskater.xhtml"/>
+            </mobi:contentPane>
+        </mobi:accordion>
 
     </h:form>
-
 
 </ui:composition>

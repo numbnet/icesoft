@@ -46,7 +46,11 @@ import javax.faces.application.ResourceDependency;
 public class AccordionMeta extends UIPanelMeta {
 
     @Property( tlddoc="id of the panel that is active in the accordion.")
+    @Deprecated
     private String currentId;
+    
+    @Property( tlddoc="id of the panel that is active in the accordion.")
+    private String selectedId;
 
 	@Property(tlddoc="Inline style of the container element.")
 	private String style;
@@ -60,11 +64,11 @@ public class AccordionMeta extends UIPanelMeta {
 	@Property(tlddoc="Effect to use when toggling the panes.", defaultValue="slide")
 	private String effect;
 
-	@Property(tlddoc="When enabled, pane with highest content is used to calculate the height.", defaultValue="true")
+	@Property(tlddoc="When set to true (default), pane with highest content is used to calculate the height.", defaultValue="true")
 	private boolean autoHeight;
 
     @Property(defaultValue="200px",
-            tlddoc="fixeHeight can be used when autoHeight is false. Must be valid height for element.style.height")
+            tlddoc="fixeHeight, default 200px, can be used when autoHeight is false. Must be valid height for element.style.height")
     private String fixedHeight;
 
  	@Property(tlddoc="Server side listener to invoke when active pane changes",
