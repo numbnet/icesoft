@@ -97,7 +97,10 @@ if (!window.ice.mobile) {
                 alert("JSF error " + param.source + " " + param.description);
             }
         }
-        var tempInputs = [];
+
+        function encodeParam(name, value)  {
+            return "&" + escape("hidden-" + name) + "=" + escape(value);
+        }
 
         namespace.handleResponse = function(data) {
             if (null == context.sourceid) {
@@ -112,12 +115,6 @@ if (!window.ice.mobile) {
             jsfResponse.responseXML = xmlDoc;
             jsf.ajax.response(jsfResponse, context);
 
-            var form = document.getElementById(context.formid);
-            for (var i in tempInputs) {
-                if (form == tempInputs[i].parentNode) {
-                    form.removeChild(tempInputs[i]);
-                }
-            }
             context.sourceid = "";
             context.formid = "";
             context.serialized = "";
@@ -129,10 +126,6 @@ if (!window.ice.mobile) {
         namespace.submitFunction = function(element, event, options) {
             var source = event ? event.target : element;
             var form = ice.formOf(element);
-            if (form.elements['javax.faces.source']) {
-                //submit is in progress, but callback not completed by container
-                return;
-            }
             var formId = form.id;
             var sourceId = element ? element.id : event.target.id;
 
@@ -153,25 +146,18 @@ if (!window.ice.mobile) {
                 options.render = "@all";
             }
 
-            tempInputs = [];
-            tempInputs.push(ice.addHiddenFormField(formId,
-                    "javax.faces.source", sourceId));
-            tempInputs.push(ice.addHiddenFormField(formId,
-                    "javax.faces.partial.execute", options.execute));
-            tempInputs.push(ice.addHiddenFormField(formId,
-                    "javax.faces.partial.render", options.render));
-            tempInputs.push(ice.addHiddenFormField(formId,
-                    "javax.faces.partial.ajax", "true"));
+            var serialTail = "";
+            serialTail += encodeParam("javax.faces.source", sourceId);
+            serialTail += encodeParam("javax.faces.partial.execute", options.execute);
+            serialTail += encodeParam("javax.faces.partial.render", options.render);
+            serialTail += encodeParam("javax.faces.partial.ajax", "true");
             if (event) {
-                tempInputs.push(ice.addHiddenFormField(formId,
-                        "javax.faces.partial.event", event.type));
+                serialTail += encodeParam("javax.faces.partial.event", event.type);
             }
-
             if (options) {
                 for (var p in options) {
                     if ("function" != typeof(options[p])) {
-                        tempInputs.push(
-                                ice.addHiddenFormField(formId, p, options[p]));
+                        serialTail += encodeParam(p, options[p]);
                     }
                 }
             }
@@ -180,7 +166,7 @@ if (!window.ice.mobile) {
             context.formid = formId;
             context.onevent = options.onevent;
             context.onerror = options.onerror;
-            ice.upload(formId);
+            ice.upload(formId, serialTail);
         };
 
         namespace.formOf = function(element) {
@@ -193,10 +179,11 @@ if (!window.ice.mobile) {
             }
         }
 
-        namespace.upload = function(id) {
+        namespace.upload = function(id, serialTail) {
             var form = document.getElementById(id);
             context.serialized = ice.serialize(id, true);
-            window.ICEutil.submitForm(form.action, context.serialized);
+            window.ICEutil.submitForm(form.action, context.serialized +
+                    serialTail));
         }
 
         namespace.addHidden = function(target, name, value, vtype) {
@@ -220,6 +207,20 @@ if (!window.ice.mobile) {
 
         namespace.addHiddenFormField = function(target, name, value) {
             var targetElm = document.getElementById(target);
+            var hidden = document.createElement("input");
+            hidden.setAttribute("type", "hidden");
+            hidden.setAttribute("name", name);
+            hidden.setAttribute("value", value);
+            targetElm.appendChild(hidden);
+            return hidden;
+        }
+
+        namespace.putHiddenFormField = function(target, name, value) {
+            var targetElm = document.getElementById(target);
+            var existing = document.getElementById(target);
+            if (existing) {
+                existing.parentNode.removeChild(existing);
+            }
             var hidden = document.createElement("input");
             hidden.setAttribute("type", "hidden");
             hidden.setAttribute("name", name);
