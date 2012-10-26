@@ -70,6 +70,8 @@ import org.apache.commons.logging.LogFactory;
 public class ServletExternalContext extends BridgeExternalContext {
     private static final Log Log = LogFactory.getLog(ServletExternalContext.class);
 
+    private static final HttpMessageHeaderValueValidator HEADER_VALUE_VALIDATOR = new HttpMessageHeaderValueValidator();
+
     private final ServletContext context;
     private final HttpSession session;
     private RequestAttributes requestAttributes;
@@ -293,10 +295,16 @@ public class ServletExternalContext extends BridgeExternalContext {
     public void switchToNormalMode() {
         redirector = new Redirector() {
             public void redirect(String uri) {
-                try {
-                    response.sendRedirect(uri);
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
+                if (HEADER_VALUE_VALIDATOR.isValid(uri)) {
+                    try {
+                        response.sendRedirect(uri);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                } else {
+                    if (Log.isWarnEnabled()) {
+                        Log.warn("HTTP Message Header Value contains illegal characters: [" + uri + "]");
+                    }
                 }
             }
         };
