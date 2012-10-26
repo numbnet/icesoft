@@ -326,6 +326,50 @@
     </portlet>
 
     <portlet>
+        <portlet-name>chartBar</portlet-name>
+        <display-name>Chart Bar</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/portlet-view.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/chart/chartBar.xhtml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>Chart Bar</title>
+            <keywords>ICEfaces ACE Component Showcase Chart Bar</keywords>
+        </portlet-info>
+    </portlet>
+
+    <portlet>
+        <portlet-name>chartBubble</portlet-name>
+        <display-name>Chart Bubble</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/portlet-view.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/chart/chartBubble.xhtml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>Chart Bubble</title>
+            <keywords>ICEfaces ACE Component Showcase Chart Bubble</keywords>
+        </portlet-info>
+    </portlet>
+
+    <portlet>
         <portlet-name>chartCandlestick</portlet-name>
         <display-name>Chart Candlestick</display-name>
         <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
@@ -410,6 +454,72 @@
         <portlet-info>
             <title>Chart Dynamic</title>
             <keywords>ICEfaces ACE Component Showcase Chart Dynamic</keywords>
+        </portlet-info>
+    </portlet>
+
+    <portlet>
+        <portlet-name>chartExport</portlet-name>
+        <display-name>Chart Export</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/portlet-view.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/chart/chartExport.xhtml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>Chart Export</title>
+            <keywords>ICEfaces ACE Component Showcase Chart Export</keywords>
+        </portlet-info>
+    </portlet>
+
+    <portlet>
+        <portlet-name>chartGauge</portlet-name>
+        <display-name>Chart Guage</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/portlet-view.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/chart/chartGauge.xhtml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>Chart Guage</title>
+            <keywords>ICEfaces ACE Component Showcase Chart Guage</keywords>
+        </portlet-info>
+    </portlet>
+
+    <portlet>
+        <portlet-name>chartLine</portlet-name>
+        <display-name>Chart Line</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/portlet-view.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/chart/chartLine.xhtml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>Chart Line</title>
+            <keywords>ICEfaces ACE Component Showcase Chart Line</keywords>
         </portlet-info>
     </portlet>
 

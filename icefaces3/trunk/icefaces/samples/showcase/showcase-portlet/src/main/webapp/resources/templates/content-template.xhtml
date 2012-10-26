@@ -22,7 +22,17 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets">
 
     <div class="example">
-        <ace:panel header="#{title}" id="examplePanel">
+		<style type="text/css">
+			@-moz-document url-prefix() {
+			  .moz-float-left {
+				 float:left;
+			  }
+			}
+			.reduced-menu-padding .wijmo-wijmenu-link {
+				padding:2px;
+			}
+		</style>
+        <ace:panel header="#{title}" id="examplePanel" styleClass="containerPanelStyle">
         <div class="content">
             <div class="desc">
                 <ice:outputText value="#{description}" escape="false" nospan="true"/>

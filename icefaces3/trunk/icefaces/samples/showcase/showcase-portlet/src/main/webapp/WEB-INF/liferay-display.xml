@@ -49,10 +49,15 @@
             </category>
             <category name="Chart">
                 <portlet id="chart"/>
+                <portlet id="chartBar"/>
+                <portlet id="chartBubble"/>
                 <portlet id="chartCandlestick"/>
                 <portlet id="chartCombined"/>
                 <portlet id="chartDonut"/>
                 <portlet id="chartDynamic"/>
+                <portlet id="chartExport"/>
+                <portlet id="chartGauge"/>
+                <portlet id="chartLine"/>
                 <portlet id="chartPie"/>
             </category>
             <category name="Dialog">
