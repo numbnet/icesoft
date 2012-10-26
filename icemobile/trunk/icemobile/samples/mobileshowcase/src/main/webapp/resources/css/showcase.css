@@ -116,7 +116,7 @@ html.bberry .mobi-list-item-group {
     bottom: 0px;
 }
 .ui-icon {
-    width: 25px;
+    width: 30px;
     height: 25px;
     border-top: 1px solid white;
     border-radius: 7px;
@@ -128,14 +128,14 @@ html.bberry .mobi-list-item-group {
     left: 0.5em;
     top: 5px;
 }
-html.iphone .mobi-pagePanel-header .ui-icon,
-html.ipad .mobi-pagePanel-header .ui-icon,
-html.honeycomb .mobi-pagePanel-header .ui-icon {
-   background-image: url(images/icons-white.png);
+html.iphone .ui-icon,
+html.ipad .ui-icon,
+html.honeycomb .ui-icon {
+   background-image: url(images/icons-white.png.jsf);
 }
-html.android .mobi-pagePanel-header .ui-icon,
-html.bberry .mobi-pagePanel-header .ui-icon {
-   background-image: url(images/icons-black.png);
+html.android .ui-icon,
+html.bberry .ui-icon {
+   background-image: url(images/icons-black.png.jsf);
 }
 @media only screen and (-webkit-min-device-pixel-ratio: 1.5),
        only screen and (min--moz-device-pixel-ratio: 1.5),
@@ -154,10 +154,10 @@ html.bberry .mobi-pagePanel-header .ui-icon {
     }
 }
 .ui-icon-home {
-    background-position: -572px 50%;
+    background-position: -570px 50%;
 }
 .ui-icon-menu {
-    background-position: -428px 50%;
+    background-position: -426px 50%;
 }
 #splash header{ 
     text-align: center;
