@@ -66,6 +66,22 @@ ice.ace.Tooltip = function(cfg) {
 	events.hide = function() { delete ice.ace.Tooltips[self.cfg.id] };
 	this.cfg.events = events;
 	
+	if (ice.ace.jq.browser.msie) {
+		var content = ice.ace.jq(ice.ace.escapeClientId(this.cfg.id+'_content'));
+		var contentStyle = content.attr('style');
+		contentStyle = typeof contentStyle == 'undefined'? '': contentStyle;
+		content.css('left', -10000);
+		content.attr('style', contentStyle + ' display: block !important;');
+		content.find('img').each(function(i,e) {
+			var self = ice.ace.jq(e);;
+			var width = self.width();
+			var height = self.height();
+			e.width = width;
+			e.height = height;
+		});
+		content.attr('style', contentStyle);
+	}
+	
 	if (!this.cfg.forDelegate) {
 		this.jq.qtip(this.cfg);
 	} else {
