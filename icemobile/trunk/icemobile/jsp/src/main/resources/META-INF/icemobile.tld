@@ -521,6 +521,18 @@
             <rtexprvalue>true</rtexprvalue>
         </attribute>
         <attribute>
+            <description>Determines if control is disabled</description>
+            <name>disabled</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <description>Determines if control is read only</description>
+            <name>readOnly</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
             <description>User defined CSS class</description>
             <name>styleClass</name>
             <required>false</required>
@@ -621,6 +633,12 @@
         <attribute>
             <description>Inline style definition</description>
             <name>style</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <description>Determines if control is disabled</description>
+            <name>disabled</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
         </attribute>
@@ -1392,6 +1410,13 @@
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
             <type>String</type>
+        </attribute>
+        <attribute>
+            <description>Determines if control is disabled</description>
+            <name>disabled</name>
+            <required>no</required>
+            <rtexprvalue>true</rtexprvalue>
+            <type>boolean</type>
         </attribute>
     </tag>
     <tag>
