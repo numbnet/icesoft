@@ -54,26 +54,23 @@ public class DataTableBean implements Serializable {
 
 	public void selectionListener(SelectEvent event) {
 		// First selection or no changes to the current record
-		Person temp = (Person)event.getObject();
+		Person temp = (Person) event.getObject();
 		if (personDetails == null || !change) {
-			
-			//Person selected = (Person)event.getObject();
-			//index = event.getRow();
+
 			try {
-				setPersonDetails((Person)temp.clone());
+				setPersonDetails((Person) temp.clone());
 			} catch (CloneNotSupportedException e) {
 				System.out.println(e);
 			}
 
 			detailsHidden = false;
 		}
-		 //Something else is already selected
+		// Something else is already selected
 		else if (!getPersonDetails().equals(event.getObject())) {
 			// Throw a warning to the user
-			try{
-				newIndex = (Person)temp.clone();
-			}
-			catch (CloneNotSupportedException e){
+			try {
+				newIndex = (Person) temp.clone();
+			} catch (CloneNotSupportedException e) {
 				System.out.println(e);
 			}
 			setConfirmDialog(true);
