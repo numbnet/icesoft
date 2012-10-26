@@ -1,7 +1,10 @@
 if (!window['mobi']) {
     window.mobi = {};
 }
-if (!window['ice.mobi']) {
+if( !window['ice']){
+    window.ice = {};
+}
+if (!window.ice['mobi']) {
     window.ice.mobi = {};
 }
 ice.mobi.splitpane = {
