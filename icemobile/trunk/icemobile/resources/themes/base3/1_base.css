@@ -4,3 +4,33 @@
     -webkit-box-shadow: 0px 1px 0 rgba(255,255,255,.4);
     box-shadow: 0px 1px 0 rgba(255,255,255,.4);
 }
+
+.mobi-grid{
+    display:-webkit-box;
+    display:-moz-box;
+    padding: 10px;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    text-align:center;
+    min-width:100%;
+    min-height:100%;
+    position: relative;
+}
+.mobi-col {
+    overflow:hidden;
+    text-align:center;
+    display:block;
+    float:none !important;
+}
+.mobi-weight1 {
+    -webkit-box-flex:1;
+    -moz-box-flex:1;
+}
+.mobi-weight2 {
+    -webkit-box-flex:2;
+    -moz-box-flex:2;
+}
+.mobi-weight3 {
+    -webkit-box-flex:3;
+    -moz-box-flex:3;
+}
