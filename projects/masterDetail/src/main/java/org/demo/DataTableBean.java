@@ -10,8 +10,7 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.event.AjaxBehaviorEvent;
 
 import org.demo.model.Person;
-
-import com.icesoft.faces.component.ext.RowSelectorEvent;
+import org.icefaces.ace.event.SelectEvent;
 
 @ManagedBean
 @ViewScoped
@@ -20,8 +19,7 @@ public class DataTableBean implements Serializable {
 	private static final long serialVersionUID = -2904483316550697214L;
 	private List<Person> personData;
 	private Person personDetails;
-	private Integer index = null;
-	private Integer newIndex;
+	private Person newIndex;
 	private boolean confirmDialog = false;
 	private boolean detailsHidden = true;
 	private boolean change = false;
@@ -54,29 +52,36 @@ public class DataTableBean implements Serializable {
 		this.personDetails = personDetails;
 	}
 
-	public void selectionListener(RowSelectorEvent event) {
+	public void selectionListener(SelectEvent event) {
 		// First selection or no changes to the current record
-		if (index == null || !change) {
-			index = event.getRow();
+		Person temp = (Person)event.getObject();
+		if (personDetails == null || !change) {
+			
+			//Person selected = (Person)event.getObject();
+			//index = event.getRow();
 			try {
-				setPersonDetails((Person) personData.get(index).clone());
+				setPersonDetails((Person)temp.clone());
 			} catch (CloneNotSupportedException e) {
 				System.out.println(e);
 			}
 
 			detailsHidden = false;
 		}
-		// Something else is already selected
-		else if (index != event.getRow()) {
+		 //Something else is already selected
+		else if (!getPersonDetails().equals(event.getObject())) {
 			// Throw a warning to the user
-			newIndex = event.getRow();
+			try{
+				newIndex = (Person)temp.clone();
+			}
+			catch (CloneNotSupportedException e){
+				System.out.println(e);
+			}
 			setConfirmDialog(true);
 		}
 	}
 
 	public void confirmYes() {
-		index = newIndex;
-		setPersonDetails(personData.get(index));
+		setPersonDetails(newIndex);
 		confirmDialog = false;
 		detailsHidden = false;
 		change = false; // We discard the old record
@@ -96,6 +101,7 @@ public class DataTableBean implements Serializable {
 		// Reset the change flag
 		change = false;
 		// Save the person
+		int index = personData.indexOf(getPersonDetails());
 		personData.set(index, personDetails);
 	}
 

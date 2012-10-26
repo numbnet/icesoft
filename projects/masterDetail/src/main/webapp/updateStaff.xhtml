@@ -12,28 +12,26 @@
 	<link rel="stylesheet" type="text/css"
 		href="./xmlhttp/css/rime/rime.css" />
 </h:head>
-<h:body>
+<h:body styleClass="ice-skin-rime">
 	<h:form id="master">
 
 		<center>
 			<ace:panel header="Staff List" toggleable="true" style="width: 50%">
 
-				<ice:dataTable id="masterTable" value="#{dataTableBean.personData}"
-					var="person">
-					<ice:column id="id" headerText="ID">
-						<ice:rowSelector value="#{person.selected}"
-							selectionListener="#{dataTableBean.selectionListener}" />
+				<ace:dataTable id="masterTable" value="#{dataTableBean.personData}" selectionMode="single"
+					var="person" rowSelectListener="#{dataTableBean.selectionListener}">
+					<ace:column id="id" headerText="ID">
 						<h:outputText id="idCell" value="#{person.id}" />
-					</ice:column>
+					</ace:column>
 
-					<ice:column id="name" headerText="Full Name">
+					<ace:column id="name" headerText="Full Name">
 						<h:outputText id="nameCell" value="#{person.name}" />
-					</ice:column>
+					</ace:column>
 
-					<ice:column id="address" headerText="Address">
+					<ace:column id="address" headerText="Address">
 						<h:outputText id="addressCell" value="#{person.address}" />
-					</ice:column>
-				</ice:dataTable>
+					</ace:column>
+				</ace:dataTable>
 			</ace:panel>
 		</center>
 	</h:form>
@@ -71,14 +69,14 @@
 		<!-- Confirm Dialog -->
 		<ice:panelPopup visible="#{dataTableBean.confirmDialog}" modal="true">
 			<f:facet name="header">
-				<ice:panelGroup styleClass="headerStyleClass">
+				<ice:panelGroup style="background-color: #DC143C;">
 					<ice:outputText value="Warning" />
 				</ice:panelGroup>
 			</f:facet>
 			<f:facet name="body">
-				<ice:panelGroup styleClass="bodyStyleClass">
+				<ice:panelGroup style="background-color: #FFFFFF;">
 					<ice:outputText
-						value="You have unsaved data. &lt;br/&gt; Are you sure you want to change to a new master record?"
+						value="You have unsaved data. &lt;br/&gt; Are you sure you want to change to a new record?"
 						escape="false" />
 					<ice:panelGroup>
 						<h:commandButton value="Yes" action="#{dataTableBean.confirmYes}" />
