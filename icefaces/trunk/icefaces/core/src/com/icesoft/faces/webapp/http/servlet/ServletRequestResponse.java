@@ -62,14 +62,14 @@ import org.apache.commons.logging.LogFactory;
 
 public class ServletRequestResponse implements Request, Response {
     private final static Log log = LogFactory.getLog(ServletRequestResponse.class);
+
     private final static DateFormat DATE_FORMAT = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz");
-    private static Pattern HEADER_FIXER = null;
+    private static final HttpMessageHeaderValueValidator HEADER_VALUE_VALIDATOR = new HttpMessageHeaderValueValidator();
 
     private URI requestURI;
 
     static {
         DATE_FORMAT.setTimeZone(TimeZone.getTimeZone("GMT"));
-        HEADER_FIXER = Pattern.compile("[\r\n]");
     }
 
     protected HttpServletRequest request;
@@ -248,8 +248,12 @@ public class ServletRequestResponse implements Request, Response {
 
     public void setHeader(String name, String value) {
         if (ignoreHeader(name, value)) return;
-        //CR and LF embedded in headers can corrupt the HTTP response
-        value = HEADER_FIXER.matcher(value).replaceAll("");
+        if (!HEADER_VALUE_VALIDATOR.isValid(value)) {
+            if (log.isWarnEnabled()) {
+                log.warn("HTTP Message Header Value contains illegal characters: [" + value + "]");
+            }
+            return;
+        }
         if ("Content-Type".equals(name)) {
             response.setContentType(value);
         } else if ("Content-Length".equals(name)) {
@@ -262,8 +266,13 @@ public class ServletRequestResponse implements Request, Response {
     public void setHeader(String name, String[] values) {
         if (ignoreHeader(name, values)) return;
         for (int i = 0; i < values.length; i++) {
-            String safeValue = HEADER_FIXER.matcher(values[i]).replaceAll("");
-            response.addHeader(name, safeValue);
+            if (!HEADER_VALUE_VALIDATOR.isValid(values[i])) {
+                if (log.isWarnEnabled()) {
+                    log.warn("HTTP Message Header Value contains illegal characters: [" + values[i] + "]");
+                }
+                continue;
+            }
+            response.addHeader(name, values[i]);
         }
     }
 
