@@ -16,3 +16,7 @@
 .mobi-fieldset {
     border-radius: 0.1em;
 }
+.mobi-fieldset-row.mobi-grid > label {
+    padding-right: 10px;
+    text-align:right;
+}

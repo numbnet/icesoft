@@ -36,6 +36,8 @@
 .mobi-fieldset-row > label {
     font-weight: bold;
     font-size: 15px; /* TODO needed? */
+    padding-right: 10px;
+    text-align:right;
 }
 .mobi-fieldset-row > .mobi-input-text:last-child{
     float: right; /* TODO need something better */
