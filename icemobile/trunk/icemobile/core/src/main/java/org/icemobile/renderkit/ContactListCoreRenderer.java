@@ -8,7 +8,7 @@ import org.icemobile.component.IContactList;
 import org.icemobile.util.CSSUtils;
 import org.icemobile.util.ClientDescriptor;
 
-public class ContactListCoreRenderer {
+public class ContactListCoreRenderer extends BaseCoreRenderer {
     
     public void encode(IContactList component, IResponseWriter writer)
             throws IOException {
@@ -21,8 +21,7 @@ public class ContactListCoreRenderer {
 
         writer.startElement(INPUT_ELEM);
         writer.writeAttribute(TYPE_ATTR, "button");
-        writer.writeAttribute(CLASS_ATTR, CSSUtils.STYLECLASS_BUTTON);
-
+	writeStandardAttributes(writer, component, CSSUtils.STYLECLASS_BUTTON, CSSUtils.STYLECLASS_BUTTON_DISABLED);
         StringBuilder args = new StringBuilder();
 
         String pattern = component.getPattern();

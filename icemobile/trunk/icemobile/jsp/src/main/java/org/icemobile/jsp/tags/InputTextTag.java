@@ -33,6 +33,8 @@ public class InputTextTag extends SimpleTagSupport {
     private String styleClass;
     private String type;
     private String value;
+    private boolean disabled;
+    private boolean readOnly;
 
     // textarea only
     private int cols;
@@ -80,6 +82,14 @@ public class InputTextTag extends SimpleTagSupport {
         out.write(" autocorrect=\"" + autoCorrect + "\"");
         out.write(" autocapitalize=\"" + autoCapitalize + "\"");
         out.write(" placeholder=\"" + placeholder + "\"");
+	// Disabled and readonly;
+        if (isDisabled()) {
+            out.write(" disabled=\"true\"");
+        }
+        if (isReadOnly()) {
+            out.write(" readonly=\"true\"");
+        }
+
         // apply textarea passthough attributes.
         if (rows > 0) {
             out.write(" rows=\"" + this.type + "\"");
@@ -197,5 +207,20 @@ public class InputTextTag extends SimpleTagSupport {
 
     public void setRows(int rows) {
         this.rows = rows;
+    }
+
+    public boolean isDisabled() {
+        return disabled;
+    }
+
+    public void setDisabled(boolean disabled) {
+        this.disabled = disabled;
+    }
+    public boolean isReadOnly() {
+        return readOnly;
+    }
+
+    public void setReadOnly(boolean readonly) {
+        this.readOnly = readonly;
     }
 }
