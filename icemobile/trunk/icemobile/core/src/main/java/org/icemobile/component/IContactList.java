@@ -9,5 +9,8 @@ public interface IContactList extends IMobiComponent{
     public String getFields();
     public void setFields(String fields);
     public String getScript(String id, boolean isSX);
+    //move to base class once vetted
+    public String getPostURL();
+    public String getSessionId();
 
 }

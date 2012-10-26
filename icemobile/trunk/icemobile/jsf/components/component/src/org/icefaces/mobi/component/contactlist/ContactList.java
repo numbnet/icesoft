@@ -16,4 +16,12 @@ public class ContactList extends ContactListBase implements IContactList{
                 "fetchContacts", null, this);
     }
 
+    public String getPostURL()  {
+       return MobiJSFUtils.getPostURL();
+    }
+
+    public String getSessionId()  {
+       return MobiJSFUtils.getSessionIdCookie();
+    }
+
 }

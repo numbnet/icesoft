@@ -17,6 +17,7 @@
 package org.icemobile.jsp.tags;
 
 import java.io.IOException;
+import javax.servlet.http.HttpSession;
 
 import org.icemobile.component.IContactList;
 import org.icemobile.renderkit.ContactListCoreRenderer;
@@ -64,6 +65,16 @@ public class ContactListTag extends BaseSimpleTag implements IContactList {
 
     public String getScript(String id, boolean isSX)  {
         return "ice.mobi.sx(this)";
+    }
+
+    public String getPostURL()  {
+        return null;
+    }
+
+    //this will not work on websphere
+    public String getSessionId(){
+         HttpSession session = getRequest().getSession();
+         return session.getId();
     }
 
 }
