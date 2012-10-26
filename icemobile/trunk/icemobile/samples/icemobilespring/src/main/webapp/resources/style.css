@@ -64,6 +64,22 @@ html.android .mobi-pagePanel-header .ui-icon,
 html.bberry .mobi-pagePanel-header .ui-icon {
    background-image: url(icons-black.png);
 }
+@media only screen and (-webkit-min-device-pixel-ratio: 1.5),
+       only screen and (min--moz-device-pixel-ratio: 1.5),
+       only screen and (min-resolution: 240dpi) {
+    .ui-icon {
+        -moz-background-size: 776px 18px;
+        -o-background-size: 776px 18px;
+        -webkit-background-size: 776px 18px;
+        background-size: 776px 18px;
+    }
+     html.iphone .ui-icon, html.ipad .ui-icon, html.honeycomb .ui-icon {
+        background-image: url(icons-36-white.png.jsf);
+    }
+     html.android .ui-icon, html.bberry .ui-icon {
+        background-image: url(icons-36-black.png.jsf);
+    }
+}
 #menuLink{
     font-size: 14px;
     padding: 0;
