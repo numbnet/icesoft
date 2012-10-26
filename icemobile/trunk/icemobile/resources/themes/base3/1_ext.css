@@ -1,10 +1,14 @@
 /* Theme Roller compatibility */
+.ui-screen-hidden{
+    display:none;
+}
 .ui-icon-shadow {
     -moz-box-shadow: 0px 1px 0 rgba(255,255,255,.4);
     -webkit-box-shadow: 0px 1px 0 rgba(255,255,255,.4);
     box-shadow: 0px 1px 0 rgba(255,255,255,.4);
 }
 
+/* Flexbox */
 .mobi-grid{
     display:-webkit-box;
     display:-moz-box;
