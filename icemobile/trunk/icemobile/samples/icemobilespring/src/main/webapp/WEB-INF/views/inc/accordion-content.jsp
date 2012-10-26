@@ -5,7 +5,7 @@
 <%@ taglib prefix="push" uri="http://www.icepush.org/icepush/jsp/icepush.tld"%>
 <form:form id="accordionform" method="POST" modelAttribute="accordionBean">
 
-    <h2>ICEmobile Accordion Component</h2>
+    <h2>Accordion Component</h2>
 
      <mobi:fieldsetGroup>
         <mobi:fieldsetRow>
