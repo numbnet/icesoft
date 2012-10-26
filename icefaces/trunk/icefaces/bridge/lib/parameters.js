@@ -54,7 +54,10 @@
         asURIEncodedString: function() {
             var result = [];
             for (var i = 0, length = this.parameters.length; i < length; i++) {
-                result.push(this.parameters[i].asURIEncodedString());
+                var encodedParameter = this.parameters[i].asURIEncodedString();
+                if (!encodedParameter.startsWith('=')) {
+                    result.push(encodedParameter);
+                }
             }
             return result.join('&');
         },
