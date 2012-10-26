@@ -20,8 +20,8 @@
 }
 
 body {
-    font-family: "Arial","Helvetica",sans-serif;
-    text-align: center;  /* IE 6 Fix */
+    /*font-family: "Arial","Helvetica",sans-serif;*/
+    /*text-align: center;*/
 }
 
 p+ul {
@@ -52,15 +52,75 @@ a:link, a:visited {
 }    
 
 
-#container { 
+.container { 
     width: 95%;
     margin: 0 auto; 
-} 
+}
 
 
+/*HEADER STYLES BEGIN*/
+.header
+{
+    background: url("#{resource['css/images/topBannerImages/showcaseHeaderBlank.png']}") no-repeat;
+    background-color: transparent;
+    background-position: top center;
+    width: 100%;
+    height: 123px;
+}
 
-#header, #mid, #footer { text-align: left; }
-#header ul, #header li, #mid ul { list-style: none outside none; }
+.headerCenter
+{
+    background-color: transparent;
+    width: 1020px;
+    height: 110px;
+    margin: 0 auto;
+    overflow: hidden;
+}
+
+.headerLogo
+{
+    overflow: hidden;
+    float: left;
+    padding-top: 8px;
+}
+
+.headerTabs
+{
+    text-align: right;
+    overflow: hidden;
+    padding-top: 29px;
+}
+
+.linkTableStyle
+{
+    float:right;
+}
+.linksHolder
+{
+    display: inline-block;
+    background-color: transparent;
+}
+
+.aceSuiteLink
+{
+    margin-right: 0px;
+}
+
+.iceSuiteLink
+{
+    margin-right: 0px;
+}
+
+.suiteLinkImageStyle
+{
+    background-color: transparent;
+    border-style:  none;
+}
+/*HEADER STYLES END*/
+
+
+.mid, .footer { text-align: left; }
+.mid ul { list-style: none outside none; }
 
 #meta-nav {
     height: 19px;
@@ -74,45 +134,14 @@ a:link, a:visited {
 }
 #meta-nav li.first { padding-left: 0; }
 
-#logo-button {
-    background: url("#{resource['css/images/header.png']}") no-repeat;
-	background-position:center top;
-    width: 14%;
-	display: inline-block;
-	vertical-align: top;
-	line-height: 61px;
-    /* Empty Link Content Fix */
-	font-size: 1px;
-	color: #fff;
+#main-nav
+{
+      display: inline-block;
+      border-radius: 3px 3px 3px 3px;
 }
 
-/* nav menu. */
-#main-nav {
-    background: url("#{resource['css/images/comp_select_bg.png']}") repeat;
-    background-color: #d3d3d3;
-	-moz-border-radius: 3px 3px 3px 3px;
-	border-radius:3px;
-	display: inline-block;
-	line-height: 61px;
-	padding-right: 8px; 
-                width: 84%;
-}
 #main-nav ul { width: 543px; }
-#main-nav li { display: inline; }
-#main-nav li a {
-    background: url("#{resource['css/images/comp_select_div.png']}") no-repeat right;
-    display: inline-block;
-    font-size: 13px;
-    color: #FFFFFF;
-    padding: 0px 20px;
-    text-shadow: 1px 1px 2px#222;
-}
-#main-nav li.first a { padding-left: 40px; }
-#main-nav li.last a { padding-right: 20px; background: none; }
-#main-nav li a.selected {
-    text-shadow: 1px 1px 6px#000; 
-	letter-spacing: .2em;
-}
+#main-nav li { display: inline-block; }
 
 /* search bar*/
 #search-group  {
@@ -141,24 +170,31 @@ a:link, a:visited {
 
 
 /* content */
-#mid  { padding-top: 18px; overflow:hidden; }
+.mid  { padding-top: 18px; overflow:hidden; }
 
-#primary {
+.primary {
 	display: inline-block;
     width: 775px;
 }                           
 
-#menu {
+.menu {
 	vertical-align: top;
 	display: inline-block;
     margin-right: 10px;
     width: 230px;
     font-size: 10pt;
 }
+
+.containerPanelStyle
+{
+    border: none;
+}
+
+
 .menuContainer {
     -moz-border-radius: 5px;
 	border-radius:5px;
-    background-color: #F5F5F1;
+    background-color: #F1F1F1;
     margin-bottom: 10px;
     padding: 16px 19px;    
 }
@@ -172,7 +208,7 @@ a:link, a:visited {
 }
 .menuContainer li a { line-height: 19px; }
 .menuContainer li span[disabled='true'] { line-height: 19px; text-decoration:line-through; margin:0; }
-#menu .selected { font-weight:bold; }
+.menu .selected { font-weight:bold; }
   
 .breadCrumbs, .themeSelect{
     color: #ccc;
@@ -199,8 +235,10 @@ a:link, a:visited {
     margin-bottom: 15px;
 }
 /* Example Element Containers */
+/* Don't use broad matches like span and div since components internally use those elements
 .example span, .example div { margin: 6px; font-size: 10pt;} 
 .example * span, .example * div { margin: 0;}
+*/
 div .resources { font-size: 10pt;}
 .content ul { padding:.5em 40px .5em 0; }
 .content .yui-nav { padding: 0; }
@@ -239,7 +277,7 @@ div .resources { font-size: 10pt;}
 	padding-top: 10px;
 }
 .example .instance {
-  	background-color: #F5F5F1;
+  	background-color: #F1F1F1;
                 font-size: 10pt;
 	padding: 8px 6px 6px 12px;    
 	margin: 8px;
@@ -249,8 +287,10 @@ div .resources { font-size: 10pt;}
                 -moz-border-radius: 5px 5px 5px 5px;
 	border-radius:5px;
 }
+/* Don't use broad matches like span and div since components internally use those elements
 .instance .yui-content div { margin: 6px; }
 .example .instance .ice-file-entry { margin-bottom: 10px; }                                   
+*/
 .example .submenu h2, .example .resources h2 {
     font-size: 12px; 
 	border-bottom: 1px solid #ECECEC;
@@ -294,18 +334,20 @@ div .resources { font-size: 10pt;}
     margin:2px 2px;
 }
 .example .instance form .row { text-align: left; clear:both; }
+/* This keeps the indeterminate progress from showing properly for fileEntry
 .example .instance form .uploading { float: right; clear:right; }
+*/
 
-#footer {
+.footer {
     border-top: 1px solid #EAEAEA;
     margin: 40px 0 10px;
     padding: 8px 0 8px;
     font-size: 11px;
     color: #666666;
 }
-#footer p { float: left; }
-#footer ul.footer-nav { float: right; }
-#footer ul.footer-nav li { display: inline; padding: 0 6px; }         
+.footer p { float: left; }
+.footer ul.footer-nav { float: right; }
+.footer ul.footer-nav li { display: inline; padding: 0 6px; }         
 
 
 /* Component Styles */

@@ -98,6 +98,19 @@
         <instanceable>false</instanceable>
         <ajaxable>false</ajaxable>
     </portlet>
+
+    <portlet>
+        <portlet-name>chartBar</portlet-name>
+        <instanceable>false</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+
+    <portlet>
+        <portlet-name>chartBubble</portlet-name>
+        <instanceable>false</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+
     <portlet>
         <portlet-name>chartCandlestick</portlet-name>
         <instanceable>false</instanceable>
@@ -118,6 +131,24 @@
 
     <portlet>
         <portlet-name>chartDynamic</portlet-name>
+        <instanceable>false</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+
+    <portlet>
+        <portlet-name>chartExport</portlet-name>
+        <instanceable>false</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+
+    <portlet>
+        <portlet-name>chartGauge</portlet-name>
+        <instanceable>false</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+
+    <portlet>
+        <portlet-name>chartLine</portlet-name>
         <instanceable>false</instanceable>
         <ajaxable>false</ajaxable>
     </portlet>

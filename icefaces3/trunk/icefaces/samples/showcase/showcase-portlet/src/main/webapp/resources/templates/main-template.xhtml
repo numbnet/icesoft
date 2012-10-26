@@ -15,33 +15,33 @@
   ~ governing permissions and limitations under the License.
   -->
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" 
-	    xmlns:h="http://java.sun.com/jsf/html"
-	    xmlns:f="http://java.sun.com/jsf/core" 
-	    xmlns:ui="http://java.sun.com/jsf/facelets"
-	    xmlns:ice="http://www.icesoft.com/icefaces/component">
-	<ui:insert name="metadata"/>
-	
-    <h:head>
-        <title id="title">#{msgs['showcase.title']}</title>
-        <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7"/><!-- To 'fix' IE8 dynamic resize problem -->
-        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    </h:head>
-	
-	<h:body styleClass="suite ice-skin-rime">
-	<f:view contentType="text/html">
-		
-		<div id="container" style="width: 95%;">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:ice="http://www.icesoft.com/icefaces/component"
+      xmlns:icecore="http://www.icefaces.org/icefaces/core">
 
-			<div id="mid">
-					<ui:insert name="component-example"/>
-			</div>
+<ui:insert name="metadata"/>
 
-		</div>
+<h:head>
+    <title id="title">#{msgs['showcase.title']}</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <icecore:config mandatoryResource="dataTable" />
+</h:head>
 
+<h:body styleClass="suite ice-skin-rime">
+    <f:view contentType="text/html">
+
+        <h:panelGroup styleClass="container" layout="block">
+            <h:panelGroup styleClass="primary">
+                <ui:insert name="component-example"/>
+            </h:panelGroup>
+
+        </h:panelGroup>
     </f:view>
-        <h:outputStylesheet library="css" name="demo_template.css"/>
-        <h:outputStylesheet library="css" name="override_styles.css"/>
-        <h:outputStylesheet library="css" name="showcase_styles.css"/>
-	</h:body>
+    <h:outputStylesheet library="css" name="demo_template.css" target="head"/>
+    <h:outputStylesheet library="css" name="override_styles.css" target="head"/>
+    <h:outputStylesheet library="css" name="showcase_styles.css" target="head"/>
+</h:body>
 </html>
