@@ -165,7 +165,6 @@ public class PanelConfirmationRenderer extends DomBasicRenderer {
             Element clientOnly = domContext.createElement(HTML.INPUT_ELEM);
 	        clientOnly.setAttribute(HTML.TYPE_ATTR, "hidden");
 	        clientOnly.setAttribute(HTML.ID_ATTR, id + "clientOnly");
-            clientOnly.setAttribute(HTML.NAME_ATTR, id + "clientOnly");
 	        rootDiv.appendChild(clientOnly);
         }
         
