@@ -378,6 +378,9 @@ version: 2.8.2r1
             this.DOM_EVENTS.submit = false;
             this.DOM_EVENTS.focus = false;
             this.DOM_EVENTS.blur = false;
+            this.DOM_EVENTS.mousemove = false;
+            this.DOM_EVENTS.mouseover = false;
+            this.DOM_EVENTS.mouseout = false;
 
             for (var type in this.DOM_EVENTS) {
                 if ( YAHOO.lang.hasOwnProperty(this.DOM_EVENTS, type) ) {
