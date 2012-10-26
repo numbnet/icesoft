@@ -445,6 +445,9 @@ ice.mobi.sx = function (element, uploadURL) {
     }
 
     if (!uploadURL) {
+        uploadURL = element.getAttribute("data-posturl");
+    }
+    if (!uploadURL) {
         if (0 === formAction.indexOf("/")) {
             uploadURL = window.location.origin + formAction;
         } else if ((0 === formAction.indexOf("http://")) ||
@@ -453,13 +456,14 @@ ice.mobi.sx = function (element, uploadURL) {
         } else {
             uploadURL = baseURL + formAction;
         }
-    } else {
-        uploadURL += '/';
     }
+//    } else {
+//        uploadURL += '/';
+//    }
 
     var returnURL = window.location;
     if ("" == returnURL.hash) {
-        returnURL += "#icemobilesx";
+        returnURL.hash = "icemobilesx";
     }
 
     if ("" != params) {
@@ -479,6 +483,19 @@ ice.mobi.sx = function (element, uploadURL) {
     window.location = sxURL;
 }
 
+ice.mobi.invoke = function(element)  {
+    var command = element.getAttribute("data-command");
+    if (ice[command])  {
+        var params = element.getAttribute("data-params");
+        var id = element.getAttribute("data-id");
+        if ((null == id) || ("" == id)) {
+            id = element.getAttribute("id");
+        }
+        ice[command](id,params);
+    } else {
+        ice.mobi.sx(element);
+    }
+}
 
 ice.mobi.storeLocation = function(id, coords) {
     if (!coords) {

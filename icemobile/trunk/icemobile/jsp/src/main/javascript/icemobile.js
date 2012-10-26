@@ -123,8 +123,11 @@ ice.mobilesx = function mobilesx(element, uploadURL) {
     var barURL = windowLocation.toString();
     var baseURL = barURL.substring(0,
             barURL.lastIndexOf("/")) + "/";
-
+    
     if (!uploadURL) {
+        uploadURL = element.getAttribute("data-posturl");
+    }
+    if (!uploadURL) {        
         if (0 === formAction.indexOf("/")) {
             uploadURL = window.location.origin + formAction;
         } else if ((0 === formAction.indexOf("http://")) ||
@@ -134,19 +137,14 @@ ice.mobilesx = function mobilesx(element, uploadURL) {
             uploadURL = baseURL + formAction;
         }
     }
-    else {
-        uploadURL += '/';
-    }
+//    else {
+//        uploadURL += '/';
+//    }
 
 
     var returnURL = window.location;
     if ("" == returnURL.hash) {
-        var wloc = "" + returnURL;
-        var lastHash = wloc.lastIndexOf("#");
-        if (lastHash > 0) {
-            returnURL = wloc.substring(0, lastHash);
-        }
-        returnURL += "#icemobilesx";
+        returnURL.hash = "icemobilesx";
     }
 
     if ("" != params) {
@@ -167,6 +165,20 @@ ice.mobilesx = function mobilesx(element, uploadURL) {
 }
 
 ice.mobi.sx = ice.mobilesx;
+
+ice.mobi.invoke = function(element)  {
+    var command = element.getAttribute("data-command");
+    if (ice[command])  {
+        var params = element.getAttribute("data-params");
+        var id = element.getAttribute("data-id");
+        if ((null == id) || ("" == id)) {
+            id = element.getAttribute("id");
+        }
+        ice[command](id,params);
+    } else {
+        ice.mobi.sx(element);
+    }
+}
 
 ice.formOf = function formOf(element) {
     var parent = element;

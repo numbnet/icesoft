@@ -165,6 +165,10 @@ public class MobiJSFUtils {
         return getICEmobileSXScript(command, null, comp);
     }
 
+    public static String getSessionIdCookie() {
+        return getSessionIdCookie(FacesContext.getCurrentInstance());
+    }
+
     public static String getSessionIdCookie(FacesContext facesContext) {
         String sessionID = EnvUtils.getSafeSession(facesContext).getId();
         String cookieFormat = (String) facesContext.getExternalContext()
@@ -186,7 +190,11 @@ public class MobiJSFUtils {
         String uploadURL = AuxUploadSetup.getInstance().getUploadURL();
         return "mobi.registerAuxUpload('"+sessionIdParam+"','"+uploadURL+"');";
     }
-    
+
+    public static String getPostURL()  {
+        return AuxUploadSetup.getInstance().getUploadURL();
+    }
+
     /**
      * use this to ascertain that the domdiff does not wipe out the script tag
      * for updating components
