@@ -13,14 +13,14 @@
  * express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-* {-webkit-tap-highlight-color: #F79A21;}
-
-body, .mobi-body {
-    font-family: droid, Helvetica, Arial, sans-serif;
+ 
+* {
+    -webkit-tap-highlight-color: #F79A21;
+}
+body{
+    font-family: Droid, Helvetica, Arial, sans-serif;
     background: black;
     color: white;
 }
-
 a:link { color: white; }
 
-h1, h2, h3, h4, h5, h6 {color: white;}

@@ -13,8 +13,12 @@
  * express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-body, .mobi-body { margin: 0; padding: 0;}
-
-h1, h2, h3, h4, h5, h6 { margin: 8px 10px; }
-
+body{ 
+    font-family: Helvetica, Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+h1, h2, h3, h4, h5, h6 { 
+    margin: 8px 10px; 
+}
 img{ border:none; }

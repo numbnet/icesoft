@@ -13,10 +13,7 @@
  * express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-
-/* named styles that describe generic characteristics, like .shadow or .h2 */
-body, .mobi-body { font-family: Helvetica, Arial, sans-serif; }
-
-* { -webkit-tap-highlight-color: #0099ff; }
-
-h1, h2, h3, h4, h5, h6 { color: black; }
+ 
+* { 
+    -webkit-tap-highlight-color: #0099ff; 
+}
