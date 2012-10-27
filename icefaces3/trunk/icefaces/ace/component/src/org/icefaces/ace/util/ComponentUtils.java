@@ -243,9 +243,21 @@ public class ComponentUtils {
                 buffer.append(form.getClientId(context));
             }
             else {
-                id = encodeNameSpace(context, id);
                 UIComponent comp = component.findComponent(id);
-                //System.out.println("ComponentUtils.findClientIds()    ["+i+"]  comp   : " + (comp == null ? "null" : comp.getClientId(context)));
+
+                //For portlets, if the standard search doesn't work, it may be necessary to do an absolute search
+                //which requires including the portlet's namespace. So the resulting encoded id looks something
+                //like portletNamespace:container:componentId.  We make the search absolute by pre-pending
+                //a leading colon (:).
+                if(comp == null){
+                    String encodedId = encodeNameSpace(context,id);
+                    if( !encodedId.startsWith(":")){
+                        encodedId = ":" + encodedId;
+                    }
+                    comp = component.findComponent(encodedId);
+//                    System.out.println("ComponentUtils.findClientIds()   ["+i+"]  comp   : " + (comp == null ? "null" : comp.getClientId(context)) + "  id: " + encodedId);
+                }
+
                 if (comp != null) {
                     buffer.append(comp.getClientId(context));
                 }
@@ -295,9 +307,9 @@ public class ComponentUtils {
             return id;
         }
 
-        //Need to ensure an absolute reference before adding the namespace so that it's
-        //a legal component id.
-        if( !id.startsWith(":")){
+        //If necessary, add the separator character before including the namespace.
+        String sep = String.valueOf(UINamingContainer.getSeparatorChar(fc));
+        if( !id.startsWith(sep)){
             id = ":" + id;
         }
 
