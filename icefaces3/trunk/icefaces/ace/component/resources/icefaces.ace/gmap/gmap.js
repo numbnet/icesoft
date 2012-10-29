@@ -162,14 +162,18 @@ ice.ace.gMap.getGMapWrapper = function (id) {
         //google.maps.event.addListener(gmapWrapper.getRealGMap(),"center_changed",function(){});
         var map = gmapWrapper.getRealGMap();
         google.maps.event.addDomListener(map,"center_changed",function(){
-            document.getElementById(ele+"_lat").value = map.getCenter().lat();
-            document.getElementById(ele+"_lng").value = map.getCenter().lng();
+			var lat = document.getElementById(ele+"_lat");
+            if (lat) lat.value = map.getCenter().lat();
+			var lng = document.getElementById(ele+"_lng");
+            if (lng) lng.value = map.getCenter().lng();
         });
         google.maps.event.addDomListener(map,"zoom_changed",function(){
-            document.getElementById(ele+"_zoom").value = map.getZoom();
+            var zoom = document.getElementById(ele+"_zoom");
+			if (zoom) zoom.value = map.getZoom();
         });
         google.maps.event.addDomListener(map,"maptypeid_changed",function(){
-            document.getElementById(ele+"_type").value = map.getMapTypeId();
+            var type = document.getElementById(ele+"_type");
+			if (type) type.value = map.getMapTypeId();
         });
         initializing = false;
         GMapRepository[ele] = gmapWrapper;
