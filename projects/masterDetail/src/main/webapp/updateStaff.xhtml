@@ -9,8 +9,7 @@
 	xmlns:ice="http://www.icesoft.com/icefaces/component">
 <h:head>
 	<title>Master/Details demo</title>
-	<link rel="stylesheet" type="text/css"
-		href="./xmlhttp/css/rime/rime.css" />
+	<ice:outputStyle href="./xmlhttp/css/rime/rime.css"/>
 </h:head>
 <h:body styleClass="ice-skin-rime">
 	<h:form id="master">
@@ -18,24 +17,16 @@
 		<center>
 			<ace:panel header="Staff List" toggleable="true" style="width: 50%">
 
-				<ace:dataTable id="masterTable" value="#{dataTableBean.personData}" selectionMode="single"
-					var="person" rowSelectListener="#{dataTableBean.selectionListener}">
-					<ace:column id="id" headerText="ID">
-						<h:outputText id="idCell" value="#{person.id}" />
-					</ace:column>
-
-					<ace:column id="name" headerText="Full Name">
-						<h:outputText id="nameCell" value="#{person.name}" />
-					</ace:column>
-
-					<ace:column id="address" headerText="Address">
-						<h:outputText id="addressCell" value="#{person.address}" />
-					</ace:column>
+				<ace:dataTable id="masterTable" value="#{dataTableBean.personData}"
+					selectionMode="single" var="person"
+					rowSelectListener="#{dataTableBean.selectionListener}">
+					<ace:column id="id" headerText="ID">#{person.id}</ace:column>
+					<ace:column id="name" headerText="Full Name"> #{person.name} </ace:column> 
+					<ace:column id="address" headerText="Address">#{person.address}</ace:column>
 				</ace:dataTable>
 			</ace:panel>
 		</center>
 	</h:form>
-	<p />
 
 	<h:form id="details">
 
@@ -46,26 +37,29 @@
 					<ice:outputLabel for="firstName" value="First Name" />
 					<h:inputText id="firstName"
 						value="#{dataTableBean.personDetails.firstName}" size="55">
-						<f:ajax event="change" listener="#{dataTableBean.changeListener}"/>
+						<ace:ajax event="change" listener="#{dataTableBean.changeListener}" />
 					</h:inputText>
 
 					<ice:outputLabel for="lastName" value="Last Name" />
 					<h:inputText id="lastName"
 						value="#{dataTableBean.personDetails.lastName}" size="55">
-						<f:ajax event="change" listener="#{dataTableBean.changeListener}"/>
+						<ace:ajax event="change" listener="#{dataTableBean.changeListener}" />
 					</h:inputText>
 
 					<ice:outputLabel for="address" value="Address" />
 					<h:inputText id="address"
 						value="#{dataTableBean.personDetails.address}" size="55">
-						<f:ajax event="change" listener="#{dataTableBean.changeListener}" />
+						<ace:ajax event="change" listener="#{dataTableBean.changeListener}" />
 					</h:inputText>
-					<ice:outputText />
+					<f:facet name="footer">
 					<ice:commandButton value="Update Details"
 						action="#{dataTableBean.save}" />
+						</f:facet>
 				</ice:panelGrid>
 			</ace:panel>
 		</center>
+		</h:form>
+		<h:form id="confirmDialog">
 		<!-- Confirm Dialog -->
 		<ice:panelPopup visible="#{dataTableBean.confirmDialog}" modal="true">
 			<f:facet name="header">
@@ -76,7 +70,7 @@
 			<f:facet name="body">
 				<ice:panelGroup style="background-color: #FFFFFF;">
 					<ice:outputText
-						value="You have unsaved data. &lt;br/&gt; Are you sure you want to change to a new record?"
+						value="You have unsaved data. Are you sure you want to change to a new record?"
 						escape="false" />
 					<ice:panelGroup>
 						<h:commandButton value="Yes" action="#{dataTableBean.confirmYes}" />
@@ -86,5 +80,6 @@
 			</f:facet>
 		</ice:panelPopup>
 	</h:form>
+	
 </h:body>
 </html>

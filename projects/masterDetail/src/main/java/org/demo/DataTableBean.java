@@ -26,7 +26,7 @@ public class DataTableBean implements Serializable {
 
 	@PostConstruct
 	public void initData() {
-		personData = new ArrayList<Person>();
+		personData = new ArrayList<Person>(3);
 		// Add some people
 		personData.add(new Person(1, "Peter", "Parker",
 				"150 Main Street, New York, NY, USA"));
