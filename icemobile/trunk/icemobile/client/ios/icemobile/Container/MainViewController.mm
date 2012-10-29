@@ -154,7 +154,8 @@
             pathForResource:@"native-interface" ofType:@"js"];
     NSString *script = [[NSString alloc] initWithContentsOfFile:localPath
             encoding:NSUTF8StringEncoding error:&error];
-    NSString *result = [wView stringByEvaluatingJavaScriptFromString: script];
+    [wView stringByEvaluatingJavaScriptFromString: script];
+    [script release];
 
     if ( (nil != self.notificationEmail) && 
          ([self.notificationEmail length] > 0) )  {
@@ -169,7 +170,7 @@
         script = [NSString stringWithFormat:scriptTemplate, self.hexDeviceToken];
     }
     NSLog(@"ICEpush parking: %@", script );
-    result = [wView stringByEvaluatingJavaScriptFromString: script];
+    [wView stringByEvaluatingJavaScriptFromString: script];
 }
 
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error  {
@@ -244,12 +245,11 @@ NSLog(@"Warning: consider renaming to completeParameter given ICEmobile Containe
 - (void)completeFile:(NSString *)path forComponent:(NSString *)componentID withName:(NSString *)componentName   {
     NSString *scriptTemplate;
     NSString *script;
-    NSString *result;
 
     scriptTemplate = @"ice.addHidden('%@', '%@', '%@', 'file');";
     script = [NSString stringWithFormat:scriptTemplate, componentID, componentName, path];
 NSLog(@"completeFile %@", script);
-    result = [self.webView stringByEvaluatingJavaScriptFromString: script];
+    [self.webView stringByEvaluatingJavaScriptFromString: script];
 }
 
 - (NSString *) prepareUpload:(NSString *)formID  {
@@ -322,9 +322,10 @@ NSLog(@"ICEmobile Container setProgress %d", percent);
     [soundData writeToFile:soundPath atomically:YES];
     NSLog(@"will play sound %@", [fullURL absoluteURL]);
 
+
     NSError* err;
-    AVAudioPlayer *player = [[AVAudioPlayer alloc] initWithContentsOfURL:
-            [NSURL fileURLWithPath:soundPath] error:&err];
+    AVAudioPlayer *player = [[[AVAudioPlayer alloc] initWithContentsOfURL:
+            [NSURL fileURLWithPath:soundPath] error:&err] autorelease];
     [player play];
 
     if (nil != err)  {
@@ -341,12 +342,11 @@ NSLog(@"ICEmobile Container setProgress %d", percent);
 
     NSString *scriptTemplate;
     NSString *script;
-    NSString *result;
 
     NSString *thumbName = [thumbID stringByAppendingString:@"-thumb"];
     scriptTemplate = @"ice.setThumbnail(\"%@\", \"%@\");";
     script = [NSString stringWithFormat:scriptTemplate, thumbName, dataURL];
-    result = [self.webView stringByEvaluatingJavaScriptFromString: script];
+    [self.webView stringByEvaluatingJavaScriptFromString: script];
 }
 
 - (void) handleResponse:(NSString *)responseString  {
@@ -471,6 +471,7 @@ NSLog(@"handleResponse for ICEmobile Container");
     NSHTTPCookie *cookie = [NSHTTPCookie cookieWithProperties:properties];
     NSLog(@"setCookie %@ for request %@ ", cookie, [[req URL] absoluteString] );
     [[NSHTTPCookieStorage sharedHTTPCookieStorage] setCookie: cookie];
+    [properties release];
 }
 
 - (void)reloadCurrentPage {

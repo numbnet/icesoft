@@ -84,6 +84,8 @@ static char base64EncodingTable[64] = {
     NSDictionary *params;
     if ([queryParts count] > 1) {
         params = [self parseQuery:[queryParts objectAtIndex:1]];
+    } else {
+        params = [[[NSDictionary alloc] init] autorelease];
     }
 
     if ([@"register" isEqualToString:commandName])  {
@@ -187,8 +189,7 @@ static char base64EncodingTable[64] = {
 }
 
 - (void)recordStart  {
-    NSString *micName = self.activeDOMElementId;
-    LogDebug(@"called microphone for %@", micName);
+    LogDebug(@"called recordStart");
 
     NSURL *soundFileURL = [[NSURL alloc] 
             initFileURLWithPath: self.soundFilePath];
@@ -792,7 +793,7 @@ NSLog(@"Found record %@", result);
 
     if ( do_now < lentext )
     {
-        char tmpbuf[2] = {0,0};
+        unsigned char tmpbuf[2] = {0,0};
         int left = lentext%3;
         for ( int i=0; i < left; i++ )
         {
@@ -907,6 +908,7 @@ NSLog(@"Found record %@", result);
 
     [controller setProgress:100];
     [controller handleResponse:responseString];
+    [responseString release];
 
     // release the connection, and the data object
     [connection release];
