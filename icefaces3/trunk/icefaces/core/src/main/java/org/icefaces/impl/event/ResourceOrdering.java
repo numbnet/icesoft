@@ -112,6 +112,9 @@ public class ResourceOrdering implements SystemEventListener {
     private void orderResources(FacesContext context, UIViewRoot root, String target) {
         String facetName = EnvUtils.isMojarra() ? "javax_faces_location_" + target.toUpperCase() : target;
         UIComponent headResourceContainer = root.getFacets().get(facetName);
+        //make resource containers transient so that the removal and addition of resource is not track by the JSF state saving
+        headResourceContainer.setTransient(true);
+
         ArrayList<UIComponent> orderedChildren = new ArrayList();
 
         for (ResourceEntry resourceEntry : masterDependencyList) {
@@ -133,6 +136,9 @@ public class ResourceOrdering implements SystemEventListener {
         for (UIComponent componentResource : orderedChildren) {
             root.addComponentResource(context, componentResource, target);
         }
+
+        //restore reource container to non transient state
+        headResourceContainer.setTransient(false);
     }
 
     public boolean isListenerForSource(final Object source) {
