@@ -21,7 +21,7 @@
 
     <ui:define name="example">
         <h:form id="input">
-		<ace:gMap id="gMap"  style="width: 675px; height: 500px" latitude="${mapBean.lat}" longitude="${mapBean.lon}" type="${mapBean.type}"
+		<ace:gMap id="gMapBasic"  style="width: 675px; height: 500px" latitude="${mapBean.lat}" longitude="${mapBean.lon}" type="${mapBean.type}"
                   zoomLevel="${mapBean.zoom}" address="${mapBean.address}" locateAddress="${mapBean.locateAddress}"/>
 			<br/>
             <h:outputLabel for="latitude" value="Latitude:"/>
