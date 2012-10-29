@@ -22,14 +22,13 @@
 
     <h:form>
         <mobi:fieldsetGroup>
-            <mobi:fieldsetRow style="padding-bottom:10px;">
+            <mobi:fieldsetRow>
                 The contentStack component can be used to show content
                 dynamically.  The following contentStack can be controlled
                 by the selectOne menu or the next and previous controls. .
             </mobi:fieldsetRow>
         </mobi:fieldsetGroup>
         <mobi:fieldsetGroup>
-
             <mobi:fieldsetRow>
                 <h:outputLabel for="selectedPanel" value="Select Pane:"/>
                 <h:selectOneMenu id="selectedPanel" style="float:right"
@@ -45,82 +44,55 @@
         </mobi:fieldsetGroup>
 
         <mobi:contentStack currentId="#{contentStackBean.selectedPaneId}">
-            <mobi:contentPane id="panel1" facelet="false" client="true">
-                <mobi:fieldsetGroup>
-                    <mobi:fieldsetRow>
-                        <h:graphicImage style="float:left;padding-right:10px;"
-                                library="images/auction" name="icesailor.png"/>
-                        <p><b>ICEsoft Ice Sailer</b><br />
-                        Put him on the ice and watch him go!</p>
-                    </mobi:fieldsetRow>
-                    <mobi:commandButton
-                                value="Next"
-                                buttonType="important"
-                                style="float:right;"
-                                action="#{contentStackBean.nextPaneParam}" >
+            <mobi:contentPane id="panel1" facelet="true" client="false">
+                <ui:include src="/WEB-INF/includes/content/fieldset-icesailor.xhtml"/>
+                <div class="mobi-grid mobi-right">
+                    <mobi:commandButton value="Next"
+                                action="#{contentStackBean.nextPaneParam}" 
+                                styleClass="mobi-col mobi-weight1">
                         <f:param name="paneName" value="panel2" />
                     </mobi:commandButton>
-                </mobi:fieldsetGroup>
+                </div>
             </mobi:contentPane>
-            <mobi:contentPane id="panel2" facelet="false" client="true">
-                <mobi:fieldsetGroup>
-                    <mobi:fieldsetRow>
-                        <h:graphicImage style="float:left;padding-right:10px;"
-                                        library="images/auction" name="icebreaker.png"/>
-                        <p><b>ICEsoft Icebreaker</b><br />
-                            Used icebreaker with very few dents.</p>
-                    </mobi:fieldsetRow>
+            <mobi:contentPane id="panel2" facelet="true" client="false">
+                <ui:include src="/WEB-INF/includes/content/fieldset-icebreaker.xhtml"/>
+                <div class="mobi-grid mobi-justify">
                     <mobi:commandButton value="Previous"
-                                        buttonType="important"
-                                        style="float:left;"
+                                        styleClass="mobi-col mobi-weight1"
                                         action="#{contentStackBean.nextPaneParam}" >
                         <f:param name="paneName" value="panel1" />
                     </mobi:commandButton>
                     <mobi:commandButton value="Next"
-                                        buttonType="important"
-                                        style="float:right;"
+                                        styleClass="mobi-col mobi-weight1"
                                         action="#{contentStackBean.nextPaneParam}" >
                         <f:param name="paneName" value="panel3" />
                     </mobi:commandButton>
-                </mobi:fieldsetGroup>
+                </div>
             </mobi:contentPane>
-            <mobi:contentPane id="panel3" facelet="false" client="true">
-                <mobi:fieldsetGroup>
-                    <mobi:fieldsetRow>
-                        <h:graphicImage style="float:left;padding-right:10px;"
-                                        library="images/auction" name="iceskate.png"/>
-                        <p><b>ICEsoft Ice Skate</b><br />
-                            A single sharpened ice skate, size 7.</p>
-                    </mobi:fieldsetRow>
+            <mobi:contentPane id="panel3" facelet="true" client="false">
+                <ui:include src="/WEB-INF/includes/content/fieldset-iceskater.xhtml"/>
+                <div class="mobi-grid mobi-justify">
                     <mobi:commandButton value="Previous"
-                                        buttonType="important"
-                                        style="float:left;"
+                                        styleClass="mobi-col mobi-weight1"
                                         action="#{contentStackBean.nextPaneParam}" >
                         <f:param name="paneName" value="panel2" />
                     </mobi:commandButton>
                     <mobi:commandButton value="Next"
-                                        buttonType="important"
-                                        style="float:right;"
+                                        styleClass="mobi-col mobi-weight1"
                                         action="#{contentStackBean.nextPaneParam}" >
                         <f:param name="paneName" value="panel4" />
                     </mobi:commandButton>
-                </mobi:fieldsetGroup>
+                </div>
             </mobi:contentPane>
-            <mobi:contentPane id="panel4" facelet="false" client="true">
-                <mobi:fieldsetGroup>
-                    <mobi:fieldsetRow>
-                        <h:graphicImage style="float:left;padding-right:10px;"
-                                        library="images/auction" name="icecar.png"/>
-                        <p><b>ICEsoft Ice Car</b><br />
-                            Beautiful ice car with metal car filling.</p>
-                    </mobi:fieldsetRow>
+            <mobi:contentPane id="panel4" facelet="true" client="false">
+                <ui:include src="/WEB-INF/includes/content/fieldset-icecar.xhtml"/>
+                <div class="mobi-grid mobi-left">
                     <mobi:commandButton value="Previous"
-                            buttonType="important"
-                            style="float:left;"
-                            action="#{contentStackBean.nextPaneParam}" >
+                                        styleClass="mobi-col mobi-weight1"
+                                        action="#{contentStackBean.nextPaneParam}" >
                         <f:param name="paneName" value="panel3" />
                     </mobi:commandButton>
-                </mobi:fieldsetGroup>
+                </div>
             </mobi:contentPane>
 
         </mobi:contentStack>
