@@ -65,10 +65,6 @@ public class  CommandButtonRenderer extends CoreRenderer {
         // apply button type style classes
         StringBuilder baseClass = new StringBuilder(CommandButton.BASE_STYLE_CLASS);
         String buttonType = commandButton.getButtonType();
-        String styleClass = commandButton.getStyleClass();
-        if (styleClass != null) {
-            baseClass.append(" ").append(styleClass);
-        }
         // apply selected state if any
         if (commandButton.isSelected()) {
             baseClass.append(CommandButton.SELECTED_STYLE_CLASS);
@@ -96,6 +92,12 @@ public class  CommandButtonRenderer extends CoreRenderer {
         } else if (logger.isLoggable(Level.FINER)) {
             baseClass.append(CommandButton.DEFAULT_STYLE_CLASS);
         }
+        
+        String styleClass = commandButton.getStyleClass();
+        if (styleClass != null) {
+            baseClass.append(" ").append(styleClass);
+        }
+        
         
         String type = commandButton.getType();
         // button type for styling purposes, otherwise use pass through value.
