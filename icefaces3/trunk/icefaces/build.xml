@@ -36,12 +36,12 @@
     <property name="lib.dir" location="lib"/>
 
 
-    <target name="icepush" description="Builds the ICEpush core library (icepush.jar).">
+    <target name="icepush" depends="checkIfEEBundle" if="isOSBundle" description="Builds the ICEpush core library (icepush.jar).">
         <subant>
             <fileset dir="." includes="icepush/core/build.xml">
             </fileset>
             <propertyset refid="build.properties"/>
-        </subant> 
+        </subant>
         <copy file="${icepush.dist.dir}/${icepush.lib.name}.jar"
               todir="${lib.dir}"
               overwrite="true"/>
@@ -87,7 +87,7 @@
     </target>
 
 
-    <target name="allclean"  description="Cleans all remnants of previous ICEfaces builds.">
+    <target name="allclean" depends="checkIfEEBundle" description="Cleans all remnants of previous ICEfaces builds.">
         <subant target="clean">
             <fileset dir="." includes="*/build.xml">
                 <exclude name="**/maven2/build.xml"/>
@@ -99,10 +99,14 @@
         <subant target="clean">
             <fileset file="icepush/core/build.xml" />
         </subant>
-        <delete file="lib/${icefaces.lib.name}.jar"/>
-        <delete file="lib/${icefaces-compat.lib.name}.jar"/>
-        <delete file="lib/${icefaces-ace.lib.name}.jar"/>
-        <delete file="lib/${icepush.lib.name}.jar"/>
+        <delete>
+            <fileset dir="lib">
+                <include name="${icefaces.lib.name}.jar" />
+                <include name="${icefaces-compat.lib.name}.jar" />
+                <include name="${icefaces-ace.lib.name}.jar" />
+                <include name="${icepush.lib.name}.jar" if="isOSBundle" />
+            </fileset>
+        </delete>
     </target>
 
     <target name="bundle.clean">
