@@ -17,7 +17,7 @@
     <ui:param name="tldResources" value="#{gMapResources.tldResources}"/>
 
     <ui:define name="example">
-    <ace:gMap id="gMap"  style="width: 675px; height: 500px" latitude="0" longitude="0" zoomLevel="3">
+    <ace:gMap id="gMapOverlay"  style="width: 675px; height: 500px" latitude="0" longitude="0" zoomLevel="3">
         <ace:gMapOverlay shape="${overlayBean.shape}" points="${overlayBean.points}" options="${overlayBean.options}"/>
     </ace:gMap>
 	<br/>

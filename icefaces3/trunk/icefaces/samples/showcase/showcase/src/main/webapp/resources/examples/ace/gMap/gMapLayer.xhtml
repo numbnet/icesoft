@@ -17,7 +17,7 @@
     <ui:param name="tldResources" value="#{gMapResources.tldResources}"/>
 
     <ui:define name="example">
-    <ace:gMap id="gMap"  style="width: 675px; height: 500px" zoomLevel="16" latitude="${layerBean.lat}" longitude="${layerBean.lon}">
+    <ace:gMap id="gMapLayer"  style="width: 675px; height: 500px" zoomLevel="16" latitude="${layerBean.lat}" longitude="${layerBean.lon}">
         <ace:gMapLayer id="BikeLayer" layerType="Bicycling" visible="${layerBean.bikeLayer}"/>
         <ace:gMapLayer id="TrafficLayer" layerType="Traffic" visible="${layerBean.trafficLayer}"/>
         <ace:gMapLayer id="TransitLayer" layerType="Transit" visible="${layerBean.transitLayer}"/>
