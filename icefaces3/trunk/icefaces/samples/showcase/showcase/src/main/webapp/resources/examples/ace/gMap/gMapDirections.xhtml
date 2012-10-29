@@ -20,6 +20,7 @@
     <ace:gMap id="gMap"  style="width: 675px; height: 500px" latitude="0" longitude="0" zoomLevel="3">
         <ace:gMapServices name="Directions" points="${directionBean.points}" options="travelMode:'${directionBean.travelMode}',${directionBean.options}" div="directionsOut"/>
     </ace:gMap>
+	<br/>
     <h:form id="inputForm">
         <h:outputLabel for="optionsIn" value="Options:"/>
         <h:inputText  id="optionsIn" value="${directionBean.options}"/>
@@ -42,8 +43,9 @@
 		<br/>A good test of options is using 'optimizeWaypoints:true' and setting several waypoints in a non-logical order; going from London to Moscow to Paris to Berlin is a good example.
 		If optimize waypoint is true, the map should automatically reorder the waypoints(NOT the start/end points) to give the shortest possible route.
     </p>
+	<p>Relevant section of the Google Maps API: <a style="color:blue;" href="https://developers.google.com/maps/documentation/javascript/reference#DirectionsRequest">Directions</a></p>
 	<div id="directionsOut">
 	</div>
-	<p>Relevant section of the Google Maps API: <a href="https://developers.google.com/maps/documentation/javascript/reference#DirectionsRequest">Directions</a></p>
+	
 </ui:define>
 </ui:composition>
