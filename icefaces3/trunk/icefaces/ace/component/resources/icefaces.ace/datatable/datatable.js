@@ -244,9 +244,9 @@ ice.ace.DataTable = function (id, cfg) {
 }
 
 
-/* #########################################################################
- ########################## Event Binding & Setup ########################
- ######################################################################### */
+/* ########################################################################
+   ########################## Event Binding & Setup #######################
+   ######################################################################## */
 ice.ace.DataTable.prototype.unload = function() {
     var jqSelf = ice.ace.jq(this.jqId);
 
@@ -842,20 +842,7 @@ ice.ace.DataTable.prototype.setupResizableColumns = function () {
 }
 
 ice.ace.DataTable.prototype.resizeScrolling = function () {
-    var scrollableTable = ice.ace.jq(this.jqId),
-        resizableTableParents = scrollableTable.parents('.ui-datatable-scrollable');
-
-    // If our parents are resizeable tables, allow them to resize before I resize myself
-    if (resizableTableParents.size() > 0) {
-        if (!this.parentResizeDelaySet) {
-            this.parentResizeDelaySet = true;
-            var _self = this;
-            setTimeout(function () {
-                _self.resizeScrolling()
-            }, resizableTableParents.size() * 5);
-            return;
-        }
-    }
+    var scrollableTable = ice.ace.jq(this.jqId);
 
     // Reattempt resize in 100ms if I or a parent of mine is currently hidden.
     // Sizing will not be accurate if the table is not being displayed, like at tabset load.
@@ -868,92 +855,125 @@ ice.ace.DataTable.prototype.resizeScrolling = function () {
             }, 100);
         }
     } else {
-        var headerTable = scrollableTable.find(' > div.ui-datatable-scrollable-header > table'),
-            footerTable = scrollableTable.find(' > div.ui-datatable-scrollable-footer > table'),
-            bodyTable = scrollableTable.find(' > div.ui-datatable-scrollable-body > table'),
-            dupeHead = bodyTable.find(' > thead'),
-            dupeFoot = bodyTable.find(' > tfoot');
+        var resizableTableParents = scrollableTable.parents('.ui-datatable-scrollable');
 
-        var dupeHeadCols = dupeHead.find('th > div.ui-header-column').get().reverse();
-        var dupeFootCols = dupeFoot.find('td > div.ui-footer-column').get().reverse();
+        // If our parents are resizeable tables, allow them to resize before I resize myself
+        if (resizableTableParents.size() > 0) {
+            if (!this.parentResizeDelaySet) {
+                this.parentResizeDelaySet = true;
+                var _self = this;
+                setTimeout(function () {
+                    _self.resizeScrolling()
+                }, resizableTableParents.size() * 5);
+                return;
+            }
+        }
 
-        var realHeadCols = ice.ace.jq(this.jqId + ' .ui-datatable-scrollable-header:first > table > thead > tr > th > .ui-header-column').get().reverse();
-        var realFootCols = ice.ace.jq(this.jqId + ' .ui-datatable-scrollable-footer:first > table > tfoot > tr > td > .ui-footer-column').get().reverse();
-        var bodySingleCols = ice.ace.jq(this.jqId + ' .ui-datatable-scrollable-body:first > table > tbody > tr:visible:not(.dt-cond-row):first > td > div').get().reverse();
-        var bodyFirstConditional = ice.ace.jq(this.jqId + ' .ui-datatable-scrollable-body:first > table > tbody > tr:visible:first').is('.dt-cond-row');
-
-        // Reset overflow if it was disabled as a hack from previous sizing
-        var bodyTableParent = bodyTable.parent().css('overflow', '');
-        headerTable.parent().css('overflow', '');
-        footerTable.parent().css('overflow', '');
-        headerTable.css('width', '');
-        footerTable.css('width', '');
-
-        // Reset fixed sizing if set by previous sizing.
-        for (var i = 0; i < bodySingleCols.length; i++)
-            ice.ace.jq(bodySingleCols[i]).css('width', 'auto');
-
-        // Reset padding if added to offset scrollbar issues
-        bodyTableParent.css('padding-right', '');
-
-        var unsizedVScrollShown = bodyTableParent.is(':scrollable(vertical)'),
-            unsizedBodyVScrollShown = ice.ace.jq('html').is(':scrollable(vertical)');
-
-        // Show Duplicate Header / Footer
-        dupeHead.css('display', 'table-header-group');
-        dupeFoot.css('display', 'table-footer-group');
-
-        // Get Duplicate Header/Footer Sizing
-        var dupeHeadColumn, dupeFootColumn, dupeHeadColumnWidths = [], bodySingleColWidths = [], dupeFootColumnWidths = [], realHeadColumn, realFootColumn, bodyColumn,
-            safari = ice.ace.jq.browser.safari,
+        var safari = ice.ace.jq.browser.safari,
             chrome = ice.ace.jq.browser.chrome,
             mac = ice.ace.jq.browser.os == 'mac',
             ie7 = ice.ace.jq.browser.msie && ice.ace.jq.browser.version == 7,
             ie8 = ice.ace.jq.browser.msie && ice.ace.jq.browser.version == 8,
             ie9 = ice.ace.jq.browser.msie && ice.ace.jq.browser.version == 9,
-            ie8as7 = false,
+            ie8as7 = this.cfg.scrollIE8Like7 && ie8,
             firefox = ice.ace.jq.browser.mozilla;
 
-        if (this.cfg.scrollIE8Like7 && ie8) {
+        if (ie8as7) {
             ie7 = true;
             ie8 = false;
-            ie8as7 = true;
         }
 
-        // If duplicate header/footer row causes body table to barely
-        // exceed min-table size (causing scrollbar)
-        var dupeCausesScrollChange = false,
-            dupeCausesBodyScrollChange = false,
-            vScrollShown = bodyTable.parent().is(':scrollable(vertical)'),
-            bodyVScrollShown = ice.ace.jq('html').is(':scrollable(vertical)');
+        var headerTable, footerTable, bodyTable, dupeHead, dupeFoot, bodyFirstConditional, bodyTableParent;
 
-        if (!unsizedVScrollShown && vScrollShown)
-            dupeCausesScrollChange = true;
+        var initializeVar = function() {
+            headerTable = scrollableTable.find(' > div.ui-datatable-scrollable-header > table');
+            footerTable = scrollableTable.find(' > div.ui-datatable-scrollable-footer > table');
+            bodyTable = scrollableTable.find(' > div.ui-datatable-scrollable-body > table');
+            bodyTableParent = bodyTable.parent().css('overflow', '');
+            dupeHead = bodyTable.find(' > thead');
+            dupeFoot = bodyTable.find(' > tfoot');
+            bodyFirstConditional = ice.ace.jq(this.jqId + ' > div.ui-datatable-scrollable-body:first > table > tbody > tr:visible:first').is('.dt-cond-row');
+        }
+        initializeVar();
 
-        if (!unsizedBodyVScrollShown && bodyVScrollShown)
-            dupeCausesBodyScrollChange = true;
+        if (!ie7) {
+            var dupeHeadCols = dupeHead.find('th > div.ui-header-column').get().reverse();
+            var dupeFootCols = dupeFoot.find('td > div.ui-footer-column').get().reverse();
 
-        // Change table rendering algorithm to get more accurate sizing
-        if (!ie7) bodyTable.css('table-layout', 'auto');
-
-        // IE7 scrollbar fix
-        if (bodyTable.size() > 0 && ie7 && bodyTable.parent().is(':scrollable(vertical)')) {
-            bodyTable.parent().css('overflow-x', 'hidden');
-            bodyTable.parent().css('padding-right', '17px');
-            headerTable.parent().css('padding-right', '17px');
-            footerTable.parent().css('padding-right', '17px');
+            var realHeadCols = ice.ace.jq(this.jqId + ' > div.ui-datatable-scrollable-header:first > table > thead > tr > th > .ui-header-column').get().reverse();
+            var realFootCols = ice.ace.jq(this.jqId + ' > div.ui-datatable-scrollable-footer:first > table > tfoot > tr > td > .ui-footer-column').get().reverse();
+            var bodySingleCols = ice.ace.jq(this.jqId + ' > div.ui-datatable-scrollable-body:first > table > tbody > tr:visible:not(.dt-cond-row):first > td > div').get().reverse();
         }
 
-        // Return overflow to visible so sizing doesn't have scrollbar errors
-        if (dupeCausesScrollChange) {
-            bodyTable.parent().css('overflow', 'visible');
+        var resetScrollingOverflow = function() {
+            // Reset overflow if it was disabled as a hack from previous sizing
+            headerTable.parent().css('overflow', '');
+            footerTable.parent().css('overflow', '');
+            headerTable.css('width', '');
+            footerTable.css('width', '');
         }
-        if (dupeCausesBodyScrollChange) {
-            ice.ace.jq('html').css('overflow', 'hidden');
+        resetScrollingOverflow();
+
+        if (!ie7) {
+            // Reset fixed sizing if set by previous sizing.
+            for (var i = 0; i < bodySingleCols.length; i++)
+                ice.ace.jq(bodySingleCols[i]).css('width', 'auto');
         }
+
+        // Reset padding if added to offset scrollbar issues
+        bodyTableParent.css('padding-right', '');
+
+        if (!ie7) {
+            var unsizedVScrollShown = bodyTableParent.is(':scrollable(vertical)'),
+                unsizedBodyVScrollShown = ice.ace.jq('html').is(':scrollable(vertical)');
+
+            // Show Duplicate Header / Footer
+            dupeHead.css('display', 'table-header-group');
+            dupeFoot.css('display', 'table-footer-group');
+        }
+
+        // Get Duplicate Header/Footer Sizing
+        var dupeHeadColumn, dupeFootColumn, dupeHeadColumnWidths = [], bodySingleColWidths = [],
+            dupeFootColumnWidths = [], realHeadColumn, realFootColumn, bodyColumn, dupeCausesScrollChange = false,
+            dupeCausesBodyScrollChange = false;
+
+        if (!ie7) {
+            // If duplicate header/footer row causes body table to barely
+            // exceed min-table size (causing scrollbar)
+
+            var vScrollShown = bodyTable.parent().is(':scrollable(vertical)'),
+                bodyVScrollShown = ice.ace.jq('html').is(':scrollable(vertical)');
+
+            if (!unsizedVScrollShown && vScrollShown)
+                dupeCausesScrollChange = true;
+
+            if (!unsizedBodyVScrollShown && bodyVScrollShown)
+                dupeCausesBodyScrollChange = true;
+
+            // Change table rendering algorithm to get more accurate sizing
+            bodyTable.css('table-layout', 'auto');
+        }
+
+        var ie7ScrollbarFix = function() {
+            if (bodyTable.size() > 0 && bodyTable.parent().is(':scrollable(vertical)')) {
+                bodyTable.parent().css('overflow-x', 'hidden');
+                bodyTable.parent().css('padding-right', '17px');
+                headerTable.parent().css('padding-right', '17px');
+                footerTable.parent().css('padding-right', '17px');
+            }
+        }
+        if (ie7) ie7ScrollbarFix();
 
         // Get Duplicate Sizing
         if (!ie7) {
+            // Return overflow to visible so sizing doesn't have scrollbar errors
+            if (dupeCausesScrollChange) {
+                bodyTable.parent().css('overflow', 'visible');
+            }
+            if (dupeCausesBodyScrollChange) {
+                ice.ace.jq('html').css('overflow', 'hidden');
+            }
+
             for (var i = 0; i < dupeHeadCols.length; i++) {
                 dupeHeadColumn = ice.ace.jq(dupeHeadCols[i]);
                 dupeHeadColumnWidths[i] = dupeHeadColumn.width();
@@ -968,73 +988,75 @@ ice.ace.DataTable.prototype.resizeScrolling = function () {
                 dupeFootColumn = ice.ace.jq(dupeFootCols[i]);
                 dupeFootColumnWidths[i] = dupeFootColumn.width();
             }
+
+            // Return overflow value
+            if (dupeCausesScrollChange) {
+                bodyTable.parent().css('overflow', '');
+            }
+            if (dupeCausesBodyScrollChange) {
+                ice.ace.jq('html').css('overflow', '');
+            }
         }
 
-
-        // Return overflow value
-        if (dupeCausesScrollChange) {
-            bodyTable.parent().css('overflow', '');
-        }
-        if (dupeCausesBodyScrollChange) {
-            ice.ace.jq('html').css('overflow', '');
-        }
-
-        if (ie7) {
+        var ie7TableLayout = function() {
             headerTable.css('table-layout', 'fixed');
             bodyTable.css('table-layout', 'fixed');
             footerTable.css('table-layout', 'fixed');
         }
+        if (ie7) ie7TableLayout();
 
         // Set Duplicate Sizing
-        if (!ie7) for (var i = 0; i < bodySingleCols.length; i++) {
-            bodyColumn = ice.ace.jq(bodySingleCols[i]);
+        if (!ie7) {
+            for (var i = 0; i < bodySingleCols.length; i++) {
+                bodyColumn = ice.ace.jq(bodySingleCols[i]);
 
-            // Work around webkit bug described here: https://bugs.webkit.org/show_bug.cgi?id=13339
-            var bodyColumnWidth = (safari && ice.ace.jq.browser.version < 6)
-                ? bodySingleColWidths[i] + parseInt(bodyColumn.parent().css('padding-right')) + parseInt(bodyColumn.parent().css('padding-left')) + 1
-                : bodySingleColWidths[i];
+                // Work around webkit bug described here: https://bugs.webkit.org/show_bug.cgi?id=13339
+                var bodyColumnWidth = (safari && ice.ace.jq.browser.version < 6)
+                    ? bodySingleColWidths[i] + parseInt(bodyColumn.parent().css('padding-right')) + parseInt(bodyColumn.parent().css('padding-left')) + 1
+                    : bodySingleColWidths[i];
 
-            // Set Duplicate Header Sizing to Body Columns
-            // Equiv of max width
-            bodyColumn.parent().width(bodyColumnWidth);
-            // Equiv of min width
-            bodyColumnWidth = i == 0 ? bodySingleColWidths[i] - 1 : bodySingleColWidths[i];
-            bodyColumn.width(bodyColumnWidth);
-        }
+                // Set Duplicate Header Sizing to Body Columns
+                // Equiv of max width
+                bodyColumn.parent().width(bodyColumnWidth);
+                // Equiv of min width
+                bodyColumnWidth = i == 0 ? bodySingleColWidths[i] - 1 : bodySingleColWidths[i];
+                bodyColumn.width(bodyColumnWidth);
+            }
 
-        if (!ie7) for (var i = 0; i < realHeadCols.length; i++) {
-            realHeadColumn = ice.ace.jq(realHeadCols[i]);
+            for (var i = 0; i < realHeadCols.length; i++) {
+                realHeadColumn = ice.ace.jq(realHeadCols[i]);
 
-            var realHeadColumnWidth = dupeHeadColumnWidths[i];
+                var realHeadColumnWidth = dupeHeadColumnWidths[i];
 
-            // Set Duplicate Header Sizing to True Header Columns
-            realHeadColumn.width(realHeadColumnWidth);
-            // Apply same width to stacked sibling columns
-            realHeadColumn.siblings('.ui-header-column').width(realHeadColumnWidth);
-            // Equiv of max width
-            realHeadColumn.parent().width(realHeadColumnWidth);
-        }
+                // Set Duplicate Header Sizing to True Header Columns
+                realHeadColumn.width(realHeadColumnWidth);
+                // Apply same width to stacked sibling columns
+                realHeadColumn.siblings('.ui-header-column').width(realHeadColumnWidth);
+                // Equiv of max width
+                realHeadColumn.parent().width(realHeadColumnWidth);
+            }
 
-        if (!ie7) for (var i = 0; i < realFootCols.length; i++) {
-            realFootColumn = ice.ace.jq(realFootCols[i]);
+            for (var i = 0; i < realFootCols.length; i++) {
+                realFootColumn = ice.ace.jq(realFootCols[i]);
 
-            // Work around webkit bug described here: https://bugs.webkit.org/show_bug.cgi?id=13339
-            var realFootColumnWidth = (safari && ice.ace.jq.browser.version < 6)
-                ? dupeFootColumnWidths[i] + parseInt(realFootColumn.parent().css('padding-right')) + parseInt(realFootColumn.parent().css('padding-left'))
-                : dupeFootColumnWidths[i];
+                // Work around webkit bug described here: https://bugs.webkit.org/show_bug.cgi?id=13339
+                var realFootColumnWidth = (safari && ice.ace.jq.browser.version < 6)
+                    ? dupeFootColumnWidths[i] + parseInt(realFootColumn.parent().css('padding-right')) + parseInt(realFootColumn.parent().css('padding-left'))
+                    : dupeFootColumnWidths[i];
 
-            // Set Duplicate Header Sizing to True Header Columns
-            realFootColumn.parent().width(realFootColumnWidth);
-            realFootColumn.width(realFootColumnWidth);
-            // Apply same width to stacked sibling columns
-            realFootColumn.siblings('.ui-footer-column').width(realFootColumnWidth);
+                // Set Duplicate Header Sizing to True Header Columns
+                realFootColumn.parent().width(realFootColumnWidth);
+                realFootColumn.width(realFootColumnWidth);
+                // Apply same width to stacked sibling columns
+                realFootColumn.siblings('.ui-footer-column').width(realFootColumnWidth);
+            }
         }
 
         // Browser / Platform specific scrollbar fixes
         // Fix body scrollbar overlapping content
         // Instance check to prevent IE7 dynamic scrolling change errors
         // Recheck scrollable, it may have changed again post resize
-        if (vScrollShown && bodyTable.parent().is(':scrollable(vertical)')) {
+        if (!ie7 && vScrollShown && bodyTable.parent().is(':scrollable(vertical)')) {
             if (((firefox) || ((safari || chrome) && !mac) || (ie9 || ie8)) && !dupeCausesScrollChange) {
                 var offset = firefox ? 14 : 17;
                 headerTable.parent().css('margin-right', offset + 'px');
@@ -1068,15 +1090,17 @@ ice.ace.DataTable.prototype.resizeScrolling = function () {
         // If the body of the table starts with a conditonal row, duplicate the first non
         // conditional row and insert it before the conditionals with styling to hide it,
         // while still keeping it in flow to set the table sizing.
-        if (bodyFirstConditional) {
+        var firstRowConditionalHandling = function() {
             var firstNonCond = ice.ace.jq(this.jqId + ' .ui-datatable-scrollable-body:first > table > tbody > tr:not(.dt-cond-row):first');
 
             firstNonCond.clone().attr('id', this.id + '_condAlgnr_'+Math.floor((Math.random()*100)+1))
-                    .css('visibility', 'hidden').prependTo(bodyTable.find('> tbody'))
-                    .find('td').attr('rowspan', 1);
+                .css('visibility', 'hidden').prependTo(bodyTable.find('> tbody'))
+                .find('td').attr('rowspan', 1);
 
             bodyTable.css('margin-top',0 - firstNonCond.height());
         }
+        if (bodyFirstConditional & !ie7)
+            firstRowConditionalHandling();
 
         // Hide Duplicate Segments
         dupeHead.css('display', 'none');
