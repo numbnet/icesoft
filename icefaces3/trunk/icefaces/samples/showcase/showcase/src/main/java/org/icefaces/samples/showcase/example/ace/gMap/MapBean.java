@@ -72,7 +72,8 @@ import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
 public class MapBean extends ComponentExampleImpl<MapBean> implements Serializable{
 	public static final String BEAN_NAME = "mapBean";
     
-	private double lat,lon=0.0;
+	private double lat = 51.0453246;
+	private double lon = -114.05810120000001;
     private int zoom = 4;
     private String type = "map";
     private boolean locateAddress = false;
