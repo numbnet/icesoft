@@ -5,6 +5,16 @@
             <resource name="util/combined.css"  library="icefaces.ace"/>
         </depends-on>
     </resource>
+    <resource name="util/combined.css" library="icefaces.ace">
+        <depends-on>
+            <resource name="themes/sam/theme.css"  library="icefaces.ace"/>
+        </depends-on>
+    </resource>
+    <resource name="util/combined.css" library="icefaces.ace">
+        <depends-on>
+            <resource name="themes/rime/theme.css"  library="icefaces.ace"/>
+        </depends-on>
+    </resource>
     <resource name="demo_template.css" library="css">
         <depends-on>
             <resource name="override_styles.css" library="css"/>
