@@ -3,8 +3,10 @@ package org.demo.model;
 import java.io.Serializable;
 
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.RequestScoped;
 
 @ManagedBean
+@RequestScoped
 public class Person implements Serializable, Cloneable {
 
 	private static final long serialVersionUID = -3540661397516075104L;
@@ -67,6 +69,10 @@ public class Person implements Serializable, Cloneable {
 	}
 
 	@Override
+	/*
+	 * Method to create a copy of this object.
+	 * The super method does a copy of each member of this object into a new object
+	 */
 	public Object clone() throws CloneNotSupportedException {
 		return super.clone();
 	}
@@ -81,7 +87,6 @@ public class Person implements Serializable, Cloneable {
 			else
 				return false;
 		}
-		// TODO Auto-generated method stub
 		return super.equals(obj);
 	}
 }
