@@ -66,6 +66,12 @@ ice.ace.Dialog = function(id, cfg) {
             }
         }
     }
+	if (this.cfg.show == 'explode') {
+        var browser = ice.ace.Dialog.browser();
+        if (browser == 'ie7' || browser == 'ie8') {
+			this.cfg.show = null;
+		}
+	}
 
     //Remove scripts to prevent duplicate widget issues
     this.jq.find("script").remove();

@@ -55,6 +55,9 @@ ice.ace.ConfirmDialog = function(id, cfg) {
 			if (show == 'puff' || show == 'scale')
 				this.cfg.show = null;
 		}
+		if (show == 'explode') {
+			this.cfg.show = null;
+		}
 	}
 
     //Remove scripts to prevent duplicate widget issues
