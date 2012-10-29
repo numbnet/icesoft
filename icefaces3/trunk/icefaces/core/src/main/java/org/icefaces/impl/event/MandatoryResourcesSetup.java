@@ -49,12 +49,21 @@ public class MandatoryResourcesSetup implements SystemEventListener {
         Map collectedResourceComponents = new HashMap();
         String version = EnvUtils.isUniqueResourceURLs(context) ? String.valueOf(hashCode()) : null;
         ResourceHandler resourceHandler = context.getApplication().getResourceHandler();
+        //make resource containers transient so that the removal and addition of resource is not track by the JSF state saving
+        Collection<UIComponent> facets = context.getViewRoot().getFacets().values();
+        for (UIComponent c: facets) {
+            c.setTransient(true);
+        }
         //add mandatory resources, replace any resources previously added by JSF
         addMandatoryResources(context, collectedResourceComponents, version);
         //jsf.js might be added already by a page or component
         UIOutput jsfResource = new JavascriptResourceOutput(resourceHandler, "jsf.js", "javax.faces", version);
         //add jsf.js resource or replace it if already added by JSF
         addOrCollectReplacingResource(context, "jsf.js", "javax.faces", "head", jsfResource, collectedResourceComponents);
+        //restore resource containers to non-transient state
+        for (UIComponent c: facets) {
+            c.setTransient(false);
+        }
     }
 
     private void addMandatoryResources(FacesContext context,
