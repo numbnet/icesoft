@@ -40,9 +40,18 @@ import java.lang.String;
     componentFamily = "org.icefaces.ace.SubmitMonitor",
     tlddoc = "Monitors submits to the server, and indicates the status of " +
         "the submits, server and network connection, and session validity. " +
+        "Examples of supported submit methods are: components doing full " +
+        "form submits, singleSubmit(s) such as via icecore:singleSubmit, " +
+        "partialSubmit(s) by ice: components, f:ajax submits by h: " +
+        "components, ace:ajax submits by ace: components, and direct use " +
+        "of ICEfaces javascript submit APIs. " +
         "Supports configurable text labels and image state indicators, or " +
         "facets for a fully configurable UI. Optionally uses an overlay for " +
-        "UI blocking during submits."
+        "UI blocking during submits. Can be set to monitor a portion of " +
+        "the page, in tandem with other submitMonitors each monitoring " +
+        "their own distinct portions.<p>For more information, see the " +
+        "<a href=\"http://wiki.icefaces.org/display/ICE/SubmitMonitor\">" +
+        "SubmitMonitor Wiki Documentation</a>."
 )
 @ResourceDependencies({
     @ResourceDependency(library = "icefaces.ace", name = "util/combined.css"),
@@ -50,7 +59,9 @@ import java.lang.String;
 	@ResourceDependency(library = "icefaces.ace", name = "util/ace-components.js")
 })
 public class SubmitMonitorMeta extends UIComponentBaseMeta {
-    @Property(tlddoc = "Label to be displayed on the submitMonitor when no submit is in progress.")
+    @Property(tlddoc = "Label to be displayed on the submitMonitor when no " +
+        "submit is in progress. This is only shown if blockUI=\"@none\", " +
+        "since with the popup cases, the submitMonitor is not shown when idle.")
     String idleLabel;
 
     @Property(tlddoc = "Label to be displayed on the submitMonitor while a submit is in progress.")
@@ -70,7 +81,10 @@ public class SubmitMonitorMeta extends UIComponentBaseMeta {
         "components and, recursively, all of their children, will be " +
         "monitored by this component when they act as the source for " +
         "submits. When this property is empty or unspecified, this " +
-        "component will monitor all submits from all sources.")
+        "component will monitor all submits from all sources. This property " +
+        "allows for different submitMonitor components to co-exist on a " +
+        "page, and each monitor different, non-overlapping, regions of the " +
+        "page, and be shown with their own unique labels etc.")
     String For;
 
     @Property(tlddoc = "When enabled, display a translucent overlay on a " +
