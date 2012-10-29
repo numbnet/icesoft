@@ -37,6 +37,7 @@
     display: inline-block;
     font-size: 12px;
     margin: 0.5em 5px;
+    max-width:300px;
     padding: 0.6em 15px;
     text-align: center;
     text-decoration: none;

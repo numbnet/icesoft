@@ -13,32 +13,9 @@
  * express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-.mobi-fieldset {
-    border-width: 1px;
-    border-style: solid;
-    font-size: 15px;
-    padding: 0;
+* {
+    -webkit-tap-highlight-color: #194FDB;
 }
-.mobi-fieldset-inset {
-    margin: 10px 20px;
-}
-.mobi-fieldset-row-group {
-    font-weight: bold;
-}
-.mobi-fieldset-row {
-    border-bottom-width: 1px;
-    border-bottom-style: solid;
-    padding: 10px;
-}
-.mobi-fieldset-row:last-child {
-    border-bottom: none;
-}
-.mobi-fieldset-row > label {
-    font-weight: bold;
-    font-size: 15px; /* TODO needed? */
-    padding-right: 10px;
-    text-align:right;
-}
-.mobi-fieldset-row > .mobi-input-text:last-child{
-    float: right; /* TODO need something better */
+body{
+    background-color: #c8c8c8;
 }

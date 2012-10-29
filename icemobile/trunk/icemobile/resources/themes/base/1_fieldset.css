@@ -14,16 +14,29 @@
  * governing permissions and limitations under the License.
  */
 .mobi-fieldset {
-    background: none repeat scroll 0 0 #FFFFFF;
-    border-color: #999999;
-    border-radius: 0.6em;
-    font-size: 16px;
-    box-shadow: 0 0 1px #FFFFFF, 0 1px 0 #E3E3E3 inset;
-    -webkit-box-shadow: 0 0 1px #FFFFFF, 0 1px 0 #E3E3E3 inset;
+    border-width: 1px;
+    border-style: solid;
+    padding: 0;
+}
+.mobi-fieldset-inset {
+    margin: 10px;
+}
+.mobi-fieldset-row-group {
+    font-weight: bold;
 }
 .mobi-fieldset-row {
-    border-bottom-color: #999999;
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+    padding: 10px;
+}
+.mobi-fieldset-row:last-child {
+    border-bottom: none;
 }
 .mobi-fieldset-row > label {
-    font-size: 16px;
+    font-weight: bold;
+    font-size: 15px; /* TODO needed? */
+    padding-right: 10px;
+}
+.mobi-fieldset-row > .mobi-input-text:last-child{
+    float: right; /* TODO need something better */
 }

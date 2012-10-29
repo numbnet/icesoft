@@ -13,10 +13,13 @@
  * express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-
-* {
-    -webkit-tap-highlight-color: #194FDB;
+.mobi-fieldset {
+    background: none repeat scroll 0 0 #FFFFFF;
+    border-color: #999999;
+    border-radius: 0.6em;
+    box-shadow: 0 0 1px #FFFFFF, 0 1px 0 #E3E3E3 inset;
+    -webkit-box-shadow: 0 0 1px #FFFFFF, 0 1px 0 #E3E3E3 inset;
 }
-body{
-    background: #c8c8c8;
+.mobi-fieldset-row {
+    border-bottom-color: #999999;
 }
