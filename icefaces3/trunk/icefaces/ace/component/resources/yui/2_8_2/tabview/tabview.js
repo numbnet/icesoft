@@ -381,6 +381,14 @@ version: 2.8.2r1
             this.DOM_EVENTS.mousemove = false;
             this.DOM_EVENTS.mouseover = false;
             this.DOM_EVENTS.mouseout = false;
+            this.DOM_EVENTS.dblclick = false;
+            this.DOM_EVENTS.keyup = false;
+            this.DOM_EVENTS.mousedown = false;
+            this.DOM_EVENTS.mouseup = false;
+            this.DOM_EVENTS.mouseenter = false;
+            this.DOM_EVENTS.mouseleave = false;
+            this.DOM_EVENTS.change = false;
+            // Leave: click, keydown, keypress
 
             for (var type in this.DOM_EVENTS) {
                 if ( YAHOO.lang.hasOwnProperty(this.DOM_EVENTS, type) ) {
