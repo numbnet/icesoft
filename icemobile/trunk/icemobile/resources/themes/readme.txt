@@ -22,12 +22,8 @@ as follows:
     |
     |-- honeycomb - CSS 3 Android 3.x theme
     |
+    |-- ipad - CSS 3 iPad component theme
     |
-    |--- ios - CSS 3 common component classes for ipad and iphone
-       |
-       |
-       |-- ipad - CSS 3 iPad component theme
-       |
-       |
-       |-- iphone - CSS 3 iPhone component theme
+    |
+    |-- iphone - CSS 3 iPhone component theme
 

@@ -14,9 +14,13 @@
  * governing permissions and limitations under the License.
  */
 .mobi-fieldset {
-    border-radius: 0.1em;
+    background: none repeat scroll 0 0 white;
+    border-color: #ccc;
+    color: black;
 }
-.mobi-fieldset-row.mobi-grid > label {
-    padding-right: 10px;
-    text-align:right;
+.mobi-fieldset-row {
+    border-bottom-color: #ccc;
+}
+.mobi-fieldset-row-group {
+    color: #666;
 }

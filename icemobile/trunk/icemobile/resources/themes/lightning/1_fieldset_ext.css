@@ -15,17 +15,8 @@
  */
 
 .mobi-fieldset {
-    font-size: 16px;
     background: none repeat scroll 0 0 #FFFFFF;
     border: 1px solid #999999;
-}
-
-.mobi-fieldset-inset {
-    margin: 10px 25px 20px;
-}
-
-.mobi-fieldset-row > label {
-    font-size: 16px;
 }
 
 .mobi-fieldset-row {
