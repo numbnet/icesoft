@@ -39,6 +39,14 @@ Available ui:params to pass:
 			.documentation-menu .wijmo-wijmenu-item {
 				margin:0;
 			}
+            .documentation-menu {
+                right:6px;
+                top:6px;
+                font-size:75% !important;
+                position:absolute;
+                padding:0;
+                heights:22px !important;
+            }
 		</style>
         <ace:panel header="#{title}" id="examplePanel" styleClass="containerPanelStyle">
         <div class="content">
@@ -51,7 +59,7 @@ Available ui:params to pass:
         </div>
             <f:facet name="header">  
 				<h:outputText value="#{title}" class="moz-float-left" escape="false"/>
-				<ace:menuBar autoSubmenuDisplay="true" style="right:6px;top:6px;font-size:75%;position:absolute;padding:0;height:22px;" direction="down left" styleClass="documentation-menu">
+				<ace:menuBar direction="down left" styleClass="documentation-menu">
 					<ace:multiColumnSubmenu label="Documentation">
 						<ace:menuColumn>
 							<ace:submenu label="WIKI Documentation">
