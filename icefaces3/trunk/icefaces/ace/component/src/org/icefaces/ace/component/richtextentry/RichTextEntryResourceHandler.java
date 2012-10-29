@@ -189,6 +189,12 @@ public class RichTextEntryResourceHandler extends ResourceHandlerWrapper {
             return cssResources.get(resourceName);
         } else {
             //let JSF serve the rest of resources
+            //ICE-8710: add the library as it wasn't initially encoded during calculation of the extension mapping
+            if(resourceName != null && resourceName.contains(RICHTEXTENTRY_CKEDITOR_DIR)){
+                if( libraryName == null || libraryName.trim().equals("")){
+                    libraryName = ICEFACES_ACE_LIB;
+                }
+            }
             return super.createResource(resourceName, libraryName, contentType);
         }
     }
