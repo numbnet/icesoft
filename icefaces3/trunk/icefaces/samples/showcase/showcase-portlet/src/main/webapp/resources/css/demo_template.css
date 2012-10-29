@@ -53,7 +53,7 @@ a:link, a:visited {
 
 
 .container { 
-    width: 95%;
+    /*width: 95%;*/
     margin: 0 auto; 
 }
 
@@ -174,7 +174,7 @@ a:link, a:visited {
 
 .primary {
 	display: inline-block;
-    width: 775px;
+    width: 100%;
 }                           
 
 .menu {
