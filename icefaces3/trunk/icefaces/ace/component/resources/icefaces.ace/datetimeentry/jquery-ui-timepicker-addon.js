@@ -410,7 +410,7 @@ $.extend(Timepicker.prototype, {
 			});
 
 
-			this.timezone_select = $tp.find('#ui_tpicker_timezone_'+ dp_id).append('<select></select>').find("select");
+			this.timezone_select = $tp.find('#ui_tpicker_timezone_'+ dp_id).append('<select></select>').find("select").attr("name", this.inst.input[0].id + "_timezone_select");
 			$.fn.append.apply(this.timezone_select,
 				$.map(o.timezoneList, function(val, idx) {
 					return $("<option />")
