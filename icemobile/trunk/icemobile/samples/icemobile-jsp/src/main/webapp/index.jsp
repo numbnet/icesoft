@@ -1,8 +1,6 @@
 <%@ taglib uri="http://java.sun.com/jstl/core" prefix="c" %>
 <%@ taglib uri="http://www.icemobile.org/tags" prefix="mobi" %>
-
 <!DOCTYPE html >
-
 <html>
     <head>
     	<title>Hello ICEmobile!</title>

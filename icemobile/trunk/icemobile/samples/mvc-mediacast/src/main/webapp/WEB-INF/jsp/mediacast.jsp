@@ -82,7 +82,6 @@
 		                     <mobi:fieldsetRow style="text-align:center;">
 		                          <mobi:commandButton name="uploadVideo"
 		                                style="float:none;"
-		                                buttonType="default"
 		                                value="Add my video to the message"/>
 		                                
 		                    </mobi:fieldsetRow>
@@ -101,7 +100,6 @@
 		                     <mobi:fieldsetRow style="text-align:center;">
 		                          <mobi:commandButton name="uploadAudio"
 		                                style="float:none;"
-		                                buttonType="default"
 		                                value="Add my audio to the message"/>
 		                                
 		                    </mobi:fieldsetRow>
@@ -137,7 +135,6 @@
 	                     <mobi:fieldsetRow style="text-align:center;">
 	                          <mobi:commandButton name="submit"
 	                                style="float:none;"
-	                                buttonType="default"
 	                                value="Submit my message"/>
 	                                
 	                    </mobi:fieldsetRow>

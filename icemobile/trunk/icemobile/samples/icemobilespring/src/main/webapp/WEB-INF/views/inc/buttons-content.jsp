@@ -29,7 +29,7 @@
                                 styleClass="mobi-col mobi-weight1"/>
         </mobi:fieldsetRow>
         <mobi:fieldsetRow styleClass="mobi-grid mobi-center">
-            <mobi:commandButton id="disabledDefault" value="Disabled" buttonType="default" 
+            <mobi:commandButton id="disabledDefault" value="Disabled" 
                 disabled="true" styleClass="mobi-col mobi-weight1"/>
         </mobi:fieldsetRow>
         <mobi:fieldsetRow>
