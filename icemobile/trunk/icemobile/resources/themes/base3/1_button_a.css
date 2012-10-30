@@ -49,6 +49,7 @@
 }
 /* back button */
 div.mobi-button-back{
+    line-height:18px; /* button height matches before point */
     margin: 0.5em 5px 0.5em 15px;
     padding: 5px 5px 5px 0px;
     position: relative;
