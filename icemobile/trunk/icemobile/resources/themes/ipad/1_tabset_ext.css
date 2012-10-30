@@ -13,8 +13,11 @@
  * express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-.mobi-tabset-tabs-top > .mobi-tabset-tabs{
-    border-bottom:1px solid #7A8091;
+ 
+.mobi-tabset-tabs-top > .mobi-tabset-tabs {
+    border-bottom: 1px solid #999;
+    border-top: 1px solid #999;
+    margin-top: -1px;
 }
 .mobi-tabset-tabs-bottom > .mobi-tabset-tabs{
     border-top:2px solid #f4f4f6;
@@ -23,9 +26,6 @@
 }
 .mobi-tabset > .mobi-tabset-tabs > ul{
     background-color: #e8e9ea;
-}
-.mobi-tabset-tabs-bottom > .mobi-tabset-tabs > ul{
-    border-top:1px solid #424242;
 }
 .mobi-tabset > .mobi-tabset-tabs > ul > li{
     background: -moz-linear-gradient(top, #f1f1f2, #d9dadb) repeat scroll 0 0 #d9dadb;
