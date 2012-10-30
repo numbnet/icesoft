@@ -18,8 +18,6 @@
     min-width:100%;
     min-height:100%;
     position: relative;
-    -webkit-box-pack: justify;
-    -moz-box-pack: justify;
 }
 .mobi-left{
     -webkit-box-pack: start;
