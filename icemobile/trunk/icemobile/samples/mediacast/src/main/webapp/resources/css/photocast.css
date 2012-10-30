@@ -48,11 +48,6 @@ label{
     margin-right: 5px;
     font-weight: bold;
 }
-
-.mobi-fieldset-row {
-	min-height: 20px;
-	padding:10px 10px 5px;
-}
 .viewer{
     display:block;
     clear:both;
@@ -86,34 +81,6 @@ ul.weighted a.selected {
 	color: red;
 }
 
-.mobi-button-forward {
-	-moz-border-image: url('/mediacast/resources/images/forward-button-border.png') 0 14 0 8;
-	-webkit-border-image: url('/mediacast/resources/images/forward-button-border.png')0 14 0 8;
-	border-image: url('/mediacast/resources/images/forward-button-border.png') 0 14 0 8;
-	border-radius: 0;
-	-webkit-border-radius: 0;
-	-moz-border-radius: 0;
-	border-color: transparent;
-	background: url('/mediacast/javax.faces.resource/org.icefaces.component.skins/iphone/back-button-bg.png.jsf') repeat-x scroll 0;
-	margin: 0;
-	padding: 0;
-	border-width: 0 14px 0 8px;
-	height: 30px;
-	line-height: 30px;
-	display: inline-block;
-	color: white;
-	position: absolute;
-	top: 7px;
-	right: 6px;
-}
-.mobi-pagePanel-body-menu {
-	width: 25%;
-}
-
-.mobi-pagePanel-body-content {
-	width: 75%;
-}
-
 .mobi-list.recentMediaList{
 	text-align:center;
 }
@@ -129,7 +96,7 @@ ul.weighted a.selected {
 	width:auto;
 	left:auto;
 }
-
+/*
 .mobi-list.recentMediaList.mobi-list-item > div {
 	margin:auto;
 }
@@ -138,6 +105,7 @@ ul.weighted a.selected {
 	margin:auto;
 	margin-top: -30px;
 }
+*/
 .sub-header {
 	top: 0;
 	height: 44px;
@@ -157,9 +125,6 @@ img.branding{
 	margin:3px;
 	vertical-align: text-bottom;
 }
-.mobi-pagePanel-body-content {
-	overflow-y: auto;
-}
 .left-arrow{
 	background-image: url("/mediacast/javax.faces.resource/images/arrow-left.png.jsf");
 	background-attachment: scroll;
@@ -172,6 +137,7 @@ img.branding{
 	background-position: 0 50%;
 	background-repeat: no-repeat;
 }
+/*
 .mobi-pagePanel-body-menu .mobi-list {
     border-right: none;
 }
@@ -219,15 +185,22 @@ input.mobi-input-text, input.mobi-input-secret, textarea.mobi-input-text {
 	margin: 10px;
 	padding: 10px;
 }
+*/
+.mobi-tabset > .mobi-tabset-tabs{
+    position:relative;
+    top:0;
+}
 textarea {
 	font-family: Helvetica, Arial, sans-serif;
 }
+/*
 .mobi-pagePanel-header {
 	position:relative;
 }
 .mobi-pagePanel-body {
 	padding: 0 0 48px 0;
 }
+*/
 .mobi-carousel, .mobi-carousel-scroller, .mobi-carousel-list, .mobi-carousel-list li{
 	height: 75px;
 }
@@ -269,9 +242,11 @@ textarea {
 	display: inline-block;
 	height: 23px;
 }
+/*
 .mobi-tabset {
 	position: relative;	
 }
+*/
 .subtitle{
     text-align:center;
 }
@@ -298,9 +273,6 @@ textarea {
 	.mobi-tabset-content{
 		border-top: 1px solid darkGray;
 	}
-	.mobi-button{
-		padding: 0.5em 2em;
-	}
 	h4 {
 		font-size:18px;
 	}
@@ -312,8 +284,8 @@ textarea {
 	}
 	.helpIcon{
 		position: absolute;
-		right: 31px;
-		top: 0;
+		right: 8px;
+		top: 5px;
 		z-index: 3;
 	}
 	.subtitle{
@@ -337,9 +309,6 @@ textarea {
 		position: absolute;
 		top: 0;
 		right: 5px;
-	}
-	.mobi-tabset-tabs-bottom > .mobi-tabset-tabs {
-		bottom: 30px;
 	}
 	.session-tags{
        position: fixed; bottom: 0; width: 100%;text-align:center;
@@ -374,17 +343,11 @@ textarea {
         box-shadow: 0px 0px 100px gray;
     }
 }
-
-.mobi-tabset-tabs-top-header > .mobi-tabset-tabs{
-	position: relative;
-    margin-top: 0;
-}
-
 html.android .mobi-pagePanel-header a.mobi-button, 
 html.android .mobi-pagePanel-header a.mobi-button:visited {
 	color: black;
 }
-
-.mobi-tabpage{
-    position: relative;
+.mobi-tabset.mobi-tabset-tabs-top.mobi-tabset-tabs-top-header > .mobi-tabset-tabs{
+    position:relative;
+    top: 0;
 }
