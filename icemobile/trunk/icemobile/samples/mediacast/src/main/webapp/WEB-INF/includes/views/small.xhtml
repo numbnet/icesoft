@@ -22,51 +22,48 @@
            Mediacast
        </f:facet>
 	<f:facet name="body">
-		<h:panelGroup>
-			<div style="border-top: 1px solid #999999; z-index: 1;">
-				<mobi:carousel id="recentMediaCarousel" var="mediaMessage"
-					value="#{mediaStore.media}"
-					rendered="#{not empty mediaStore.media}">
-					<h:column>
-						<div style="overflow: hidden; height: 75px;">
-							<h:commandLink id="mediaLink">
-                                <mobi:graphicImage id="mediaImg" style="border:none;height:75px;"
-                                    title="#{mediaMessage.title}"
-                                    value="#{mediaMessage.mediumPhoto.data}" />
-                                <f:setPropertyActionListener target="#{mediaView.media}"
-                                    value="#{mediaMessage}" />
-                                <f:setPropertyActionListener
-                                    target="#{navigationModel.currentTab}" value="viewer" />
-                            </h:commandLink>
-						</div>
-						
-					</h:column>
-				</mobi:carousel>
-			</div>
-			<div style="clear: both;" />
-			<mobi:tabSet style="background-color:transparent;" autoWidth="true"
-				orientation="top" currentId="#{navigationModel.currentTab}"
-				singleSubmit="true">
-				<mobi:contentPane facelet="false" client="true" id="home"
-					title="Upload">
-					<h4 style="text-align:center;">Share from your location:</h4>
-					<ui:include src="/WEB-INF/includes/content/message-upload.xhtml" />
-				</mobi:contentPane>
-				<mobi:contentPane facelet="false" client="true" id="feed"
-					title="Feed">
-					<script type="text/javascript">
-						window.scrollTo(0, 0);
-					</script>
-					<ui:include src="/WEB-INF/includes/content/tag-cloud.xhtml" />
-					<ui:include src="/WEB-INF/includes/content/feed.xhtml"/>
-					<ui:include src="/WEB-INF/includes/content/augmented-reality.xhtml" />
-				</mobi:contentPane>
-				<mobi:contentPane facelet="false" client="true" id="viewer"
-					title="Viewer">
-					<ui:include src="/WEB-INF/includes/content/media-viewer.xhtml" />
-				</mobi:contentPane>
-			</mobi:tabSet>
-			<ui:include src="/WEB-INF/includes/content/session-tags.xhtml"/>
-		</h:panelGroup>
+		<div style="border-top: 1px solid #999999; z-index: 1;">
+			<mobi:carousel id="recentMediaCarousel" var="mediaMessage"
+				value="#{mediaStore.media}"
+				rendered="#{not empty mediaStore.media}">
+				<h:column>
+					<div style="overflow: hidden; height: 75px;">
+						<h:commandLink id="mediaLink">
+                            <mobi:graphicImage id="mediaImg" style="border:none;height:75px;"
+                                title="#{mediaMessage.title}"
+                                value="#{mediaMessage.mediumPhoto.data}" />
+                            <f:setPropertyActionListener target="#{mediaView.media}"
+                                value="#{mediaMessage}" />
+                            <f:setPropertyActionListener
+                                target="#{navigationModel.currentTab}" value="viewer" />
+                        </h:commandLink>
+					</div>
+					
+				</h:column>
+			</mobi:carousel>
+		</div>
+		<mobi:tabSet style="padding-top:0;clear:both;" autoWidth="true"
+			orientation="top" currentId="#{navigationModel.currentTab}"
+			singleSubmit="true">
+			<mobi:contentPane facelet="false" client="true" id="home"
+				title="Upload">
+				<h4 style="text-align:center;">Share from your location:</h4>
+				<ui:include src="/WEB-INF/includes/content/message-upload.xhtml" />
+			</mobi:contentPane>
+			<mobi:contentPane facelet="false" client="true" id="feed"
+				title="Feed">
+				<script type="text/javascript">
+					window.scrollTo(0, 0);
+				</script>
+				<ui:include src="/WEB-INF/includes/content/tag-cloud.xhtml" />
+				<ui:include src="/WEB-INF/includes/content/feed.xhtml"/>
+				<ui:include src="/WEB-INF/includes/content/augmented-reality.xhtml" />
+			</mobi:contentPane>
+			<mobi:contentPane facelet="false" client="true" id="viewer"
+				title="Viewer">
+				<ui:include src="/WEB-INF/includes/content/media-viewer.xhtml" />
+			</mobi:contentPane>
+		</mobi:tabSet>
+		<!-- ui:include src="/WEB-INF/includes/content/session-tags.xhtml"/-->
 	</f:facet>
 </mobi:pagePanel>
