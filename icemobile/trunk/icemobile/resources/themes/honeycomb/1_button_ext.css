@@ -32,10 +32,6 @@
     -webkit-tap-highlight-color: #082658;
     color: white !important;
 }
-.mobi-button-dis {
-    opacity: 0.5;
-    filter: alpha(opacity = 50);
-}
 .mobi-button {
     background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0, #424246), color-stop(1, #3f3f42));
     background: -moz-linear-gradient(top, #424246, #3f3f42);
