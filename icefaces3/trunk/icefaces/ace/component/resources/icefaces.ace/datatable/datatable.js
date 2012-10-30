@@ -883,7 +883,7 @@ ice.ace.DataTable.prototype.resizeScrolling = function () {
             ie8 = false;
         }
 
-        var headerTable, footerTable, bodyTable, dupeHead, dupeFoot, bodyFirstConditional, bodyTableParent;
+        var headerTable, footerTable, bodyTable, dupeHead, dupeFoot, bodyFirstConditional = false, bodyTableParent;
 
         var initializeVar = function() {
             headerTable = scrollableTable.find(' > div.ui-datatable-scrollable-header > table');
@@ -998,7 +998,7 @@ ice.ace.DataTable.prototype.resizeScrolling = function () {
             }
         }
 
-        var ie7TableLayout = function() {
+        var tableLayout = function() {
             headerTable.css('table-layout', 'fixed');
             bodyTable.css('table-layout', 'fixed');
             footerTable.css('table-layout', 'fixed');
@@ -1015,11 +1015,22 @@ ice.ace.DataTable.prototype.resizeScrolling = function () {
                     ? bodySingleColWidths[i] + parseInt(bodyColumn.parent().css('padding-right')) + parseInt(bodyColumn.parent().css('padding-left')) + 1
                     : bodySingleColWidths[i];
 
+                // Adjust last column size to stop prevent horizontal scrollbar
+                if (i == 0) {
+                    if (ie9) bodyColumnWidth = bodySingleColWidths[i] - 1;
+                }
+
                 // Set Duplicate Header Sizing to Body Columns
                 // Equiv of max width
                 bodyColumn.parent().width(bodyColumnWidth);
+
+                // Adjust last column size to stop prevent horizontal scrollbar
+                if (i == 0) {
+                    if (ie9) bodyColumnWidth = bodySingleColWidths[i] - 2;
+                    else bodyColumnWidth = bodySingleColWidths[i] - 1;
+                }
+
                 // Equiv of min width
-                bodyColumnWidth = i == 0 ? bodySingleColWidths[i] - 1 : bodySingleColWidths[i];
                 bodyColumn.width(bodyColumnWidth);
             }
 
@@ -1027,6 +1038,8 @@ ice.ace.DataTable.prototype.resizeScrolling = function () {
                 realHeadColumn = ice.ace.jq(realHeadCols[i]);
 
                 var realHeadColumnWidth = dupeHeadColumnWidths[i];
+
+                if (ie9 && i == 0) realHeadColumnWidth = realHeadColumnWidth - 1;
 
                 // Set Duplicate Header Sizing to True Header Columns
                 realHeadColumn.width(realHeadColumnWidth);
@@ -1044,6 +1057,8 @@ ice.ace.DataTable.prototype.resizeScrolling = function () {
                     ? dupeFootColumnWidths[i] + parseInt(realFootColumn.parent().css('padding-right')) + parseInt(realFootColumn.parent().css('padding-left'))
                     : dupeFootColumnWidths[i];
 
+                if (ie9 && i == 0) realFootColumnWidth = realFootColumnWidth - 1;
+
                 // Set Duplicate Header Sizing to True Header Columns
                 realFootColumn.parent().width(realFootColumnWidth);
                 realFootColumn.width(realFootColumnWidth);
@@ -1056,9 +1071,18 @@ ice.ace.DataTable.prototype.resizeScrolling = function () {
         // Fix body scrollbar overlapping content
         // Instance check to prevent IE7 dynamic scrolling change errors
         // Recheck scrollable, it may have changed again post resize
+        if (ie9 && bodyTable.parent().is(':scrollable(horizontal)'))
+            bodyTable.css('table-layout','fixed');
+
         if (!ie7 && vScrollShown && bodyTable.parent().is(':scrollable(vertical)')) {
             if (((firefox) || ((safari || chrome) && !mac) || (ie9 || ie8)) && !dupeCausesScrollChange) {
-                var offset = firefox ? 14 : 17;
+                var offset;
+                if (firefox) offset = 14;
+                if (ie9 || ie8) offset = 16;
+                else offset = 17;
+
+                if (ie8) bodyTableParent.css('padding-right', '1px');
+
                 headerTable.parent().css('margin-right', offset + 'px');
                 footerTable.parent().css('margin-right', offset + 'px');
             }
