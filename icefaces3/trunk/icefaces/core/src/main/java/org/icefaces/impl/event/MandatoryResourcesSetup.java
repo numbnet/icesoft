@@ -52,7 +52,7 @@ public class MandatoryResourcesSetup implements SystemEventListener {
         //make resource containers transient so that the removal and addition of resource is not track by the JSF state saving
         Collection<UIComponent> facets = context.getViewRoot().getFacets().values();
         for (UIComponent c: facets) {
-            c.setTransient(true);
+            c.setInView(false);
         }
         //add mandatory resources, replace any resources previously added by JSF
         addMandatoryResources(context, collectedResourceComponents, version);
@@ -62,7 +62,7 @@ public class MandatoryResourcesSetup implements SystemEventListener {
         addOrCollectReplacingResource(context, "jsf.js", "javax.faces", "head", jsfResource, collectedResourceComponents);
         //restore resource containers to non-transient state
         for (UIComponent c: facets) {
-            c.setTransient(false);
+            c.setInView(true);
         }
     }
 
