@@ -42,16 +42,19 @@
                           
         <!-- show new message creation buttons, image, movie and audio -->
         <h:panelGroup rendered="#{empty uploadModel.selectedMediaInput}"
-                style="display: inline-block;padding-bottom: 3px;width: 100%;margin: 7px 0 -5px 0;text-align: center;">
+                styleClass="mobi-grid">
             <mobi:commandButton value="Photo" id="addPhotoBtn"
                                 actionListener="#{mediaController.chooseCamera}"
-                                rendered="#{empty uploadModel.currentMediaMessage.largePhoto}"/>
+                                rendered="#{empty uploadModel.currentMediaMessage.largePhoto}"
+                                styleClass="mobi-col mobi-weight1"/>
             <mobi:commandButton value="Video" id="addVideoBtn"
                                 actionListener="#{mediaController.chooseCamcorder}"
-                                rendered="#{empty uploadModel.currentMediaMessage.video}"/>
+                                rendered="#{empty uploadModel.currentMediaMessage.video}"
+                                styleClass="mobi-col mobi-weight1"/>
             <mobi:commandButton value="Audio" id="addAudioBtn"
                                 actionListener="#{mediaController.chooseMicrophone}"
-                                rendered="#{empty uploadModel.currentMediaMessage.audio}"/>
+                                rendered="#{empty uploadModel.currentMediaMessage.audio}"
+                                styleClass="mobi-col mobi-weight1"/>
             
             <script type="text/javascript">window.scrollTo(0,0);</script>
         </h:panelGroup>
@@ -112,21 +115,24 @@
         
         <mobi:fieldsetGroup>    
             
-            <mobi:fieldsetRow>
+            <mobi:fieldsetRow styleClass="mobi-grid">
                 <mobi:inputText id="title"
                                 placeholder="Title"
-                                value="#{uploadModel.currentMediaMessage.title}"/>
+                                value="#{uploadModel.currentMediaMessage.title}"
+                                styleClass="mobi-col mobi-weight1"/>
             </mobi:fieldsetRow>
-            <mobi:fieldsetRow style="min-height:50px;">
+            <mobi:fieldsetRow styleClass="mobi-grid">
                 <mobi:inputText id="description"
                                 placeholder="Description"
                                 value="#{uploadModel.currentMediaMessage.description}"
-                                type="textarea"/>
+                                type="textarea"
+                                styleClass="mobi-col mobi-weight1"/>
             </mobi:fieldsetRow>
-            <mobi:fieldsetRow>
+            <mobi:fieldsetRow styleClass="mobi-grid">
                 <mobi:inputText id="url"
                                 placeholder="URL"
-                                value="#{uploadModel.url}"/>
+                                value="#{uploadModel.url}"
+                                styleClass="mobi-col mobi-weight1"/>
             </mobi:fieldsetRow>
             <mobi:fieldsetRow rendered="#{not empty uploadModel.currentMediaMessage.largePhoto or not empty uploadModel.currentMediaMessage.video or not empty uploadModel.currentMediaMessage.audio}">
                 <h:outputLabel value="Uploaded Media:"/><br/>
@@ -147,18 +153,20 @@
                                     rendered="#{not empty uploadModel.currentMediaMessage.audio}"/>
             </mobi:fieldsetRow>
             
-            <mobi:fieldsetRow style="text-align:center;">    
+            <mobi:fieldsetRow>    
                 <div style="padding:5px;">#{uploadModel.uploadFeedbackMessage}</div>
-                <mobi:commandButton id="cancelUploadBtn"
-                        styleClass="mobi-button"
-                        actionListener="#{mediaController.cancelUpload}"
-                        style="width:100px;"
-                        value="Cancel"/>
-                <mobi:commandButton id="doneBtn"
-                        style="width:100px;"
-                        buttonType="important"
-                        actionListener="#{mediaController.uploadsCompleted}"
-                        value="Share"/> 
+                <div class="mobi-grid mobi-justify">
+                    <mobi:commandButton id="cancelUploadBtn"
+                            styleClass="mobi-col mobi-weight1"
+                            buttonType="unimportant"
+                            actionListener="#{mediaController.cancelUpload}"
+                            value="Cancel"/>
+                    <mobi:commandButton id="doneBtn"
+                            styleClass="mobi-col mobi-weight1"
+                            buttonType="important"
+                            actionListener="#{mediaController.uploadsCompleted}"
+                            value="Share"/> 
+                </div>
              </mobi:fieldsetRow>
         </mobi:fieldsetGroup>
      </div>
