@@ -6,8 +6,7 @@
 <form:form id="buttonsform" method="POST" modelAttribute="buttonsBean">
     <mobi:fieldsetGroup>
         <mobi:fieldsetRow>
-            <mobi:commandButton name="submitB" buttonType="default"
-                                value="default"/>
+            <mobi:commandButton name="submitB" value="default"/>
             <mobi:commandButton name="submitB" buttonType='important'
                                 value="important"/>
             <mobi:commandButton name="submitB" buttonType='attention'
