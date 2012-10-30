@@ -45,14 +45,10 @@
             <resource name="fileentry/fileEntry.css" library="icefaces.ace"/>
         </depends-on>
     </resource>
-    <resource name="themes/rime/theme.css" library="icefaces.ace">
+    <resource name="util/combined.css"  library="icefaces.ace">
         <depends-on>
-            <resource name="util/combined.css"  library="icefaces.ace"/>
-        </depends-on>
-    </resource>
-    <resource name="themes/sam/theme.css" library="icefaces.ace">
-        <depends-on>
-            <resource name="util/combined.css"  library="icefaces.ace"/>
+				    <resource name="themes/rime/theme.css" library="icefaces.ace"/>
+				    <resource name="themes/sam/theme.css" library="icefaces.ace"/>
         </depends-on>
     </resource>
 </dependencies>
