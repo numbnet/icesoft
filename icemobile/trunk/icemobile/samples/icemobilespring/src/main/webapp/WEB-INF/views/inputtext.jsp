@@ -14,7 +14,7 @@
         <div class="ajaxzone">
             <mobi:pagePanel>
                 <mobi:pagePanelHeader>
-                    <a href="menu" id="menuLink" class="mobi-button  mobi-button-default">&#9776;</a>
+                    <a href="menu" id="menuLink" class="mobi-button">&#9776;</a>
                     HTML5 Input
                 </mobi:pagePanelHeader>
                 <mobi:pagePanelBody>
