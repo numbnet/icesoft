@@ -25,7 +25,6 @@
                                 value="${galleryModel.filterString}"/>
 		                <mobi:commandButton name="submit"
 	                                style="margin: 0;padding: 6px 8px;"
-	                                buttonType="default"
 	                                value="Search"/>
 		            </mobi:fieldsetRow>
 		        </mobi:fieldsetGroup>

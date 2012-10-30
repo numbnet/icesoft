@@ -48,7 +48,7 @@
           <h:outputText value="#{input.eventString}"/>
        <h5>SingleSubmit will not be
             available with panelConfirmation</h5>
-       <mobi:commandButton id="defaultOne" buttonType="default" value="StandardSubmit"
+       <mobi:commandButton id="defaultOne" value="StandardSubmit"
                            panelConfirmation="pc1"
                            actionListener="#{input.defaultEvent}"/>
        <mobi:panelConfirmation id="pc1" message="working"/>
@@ -65,7 +65,7 @@
 
        <h4>this button is standard submit with no mobi ajax tag and incorrect reference to panelConfirmation </h4>
        <h5>Should just do standard submit if panelConfirmation not found</h5>
-       <mobi:commandButton id="defaultTwo" buttonType="default" value="Incorrect"
+       <mobi:commandButton id="defaultTwo" value="Incorrect"
                            panelConfirmation="pc2"
                            actionListener="#{input.defaultEvent}"/>
         <br />
@@ -81,7 +81,7 @@
        </p>
 
        <h4>Button 1 is standard submit with no mobi ajax tag and refers to same panelConfirmation as Buttton 2</h4>
-       <mobi:commandButton id="def3" buttonType="default" value="Button1"
+       <mobi:commandButton id="def3" value="Button1"
                            panelConfirmation="pc1a"
                            actionListener="#{input.defaultEvent}"/>
        <mobi:commandButton id="def4" buttonType="default" value="Button2"

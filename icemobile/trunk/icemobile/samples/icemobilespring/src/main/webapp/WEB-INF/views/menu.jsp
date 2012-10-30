@@ -12,7 +12,7 @@
     <div class="ajaxzone">
         <mobi:smallView>
             <mobi:pagePanel>
-                <mobi:pagePanelHeader><a id="menuLink" class="mobi-button mobi-button-default ui-icon ui-icon-home ui-icon-shadow"
+                <mobi:pagePanelHeader><a id="menuLink" class="mobi-button ui-icon ui-icon-home ui-icon-shadow"
                         href='<c:url value="/"/>'>&#160;</a>
                         <span>ICEmobile Showcase</span>
                 </mobi:pagePanelHeader>
