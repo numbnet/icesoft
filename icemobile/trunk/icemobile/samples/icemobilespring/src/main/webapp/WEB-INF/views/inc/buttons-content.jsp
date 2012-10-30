@@ -4,24 +4,44 @@
 <%@ taglib uri="http://www.icemobile.org/tags" prefix="mobi" %>
 <%@ taglib prefix="push" uri="http://www.icepush.org/icepush/jsp/icepush.tld"%>
 <form:form id="buttonsform" method="POST" modelAttribute="buttonsBean">
+
+    <h4>Button Types</h4>
     <mobi:fieldsetGroup>
-        <mobi:fieldsetRow>
-            <mobi:commandButton name="submitB" value="default"/>
-            <mobi:commandButton name="submitB" buttonType='important'
-                                value="important"/>
-            <mobi:commandButton name="submitB" buttonType='attention'
-                                value="attention"/>
-            <mobi:commandButton name="submitB" value="plain"
-                                style="float:none;"/>
+        <mobi:fieldsetRow styleClass="mobi-grid mobi-center">
+            <mobi:commandButton name="submitB"
+                                value="Default"
+                                styleClass="mobi-col mobi-weight1"/>
+            <mobi:commandButton name="submitB"
+                                value="Important" buttonType="important"
+                                styleClass="mobi-col mobi-weight1"/>
+        </mobi:fieldsetRow>
+        <mobi:fieldsetRow styleClass="mobi-grid mobi-center">
+            <mobi:commandButton name="submitB"
+                                value="Attention" buttonType="attention"
+                                styleClass="mobi-col mobi-weight1"/>
+            <mobi:commandButton name="submitB"
+                                value="Unimportant" 
+                                styleClass="mobi-col mobi-weight1"/>
+        </mobi:fieldsetRow>
+        <mobi:fieldsetRow styleClass="mobi-grid mobi-center">
+            <mobi:commandButton name="submitB"
+                                buttonType="back" value="Back"
+                                styleClass="mobi-col mobi-weight1"/>
+        </mobi:fieldsetRow>
+        <mobi:fieldsetRow styleClass="mobi-grid mobi-center">
+            <mobi:commandButton id="disabledDefault" value="Disabled" buttonType="default" 
+                disabled="true" styleClass="mobi-col mobi-weight1"/>
         </mobi:fieldsetRow>
         <mobi:fieldsetRow>
-            You Pressed:
+            <label>Selected Value: </label>
             <c:if test="${pressed != null}">
                 ${pressed}
             </c:if>
         </mobi:fieldsetRow>
     </mobi:fieldsetGroup>
+
 </form:form>
+
 
 <script type="text/javascript">
 
