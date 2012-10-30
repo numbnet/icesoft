@@ -14,34 +14,40 @@
         <mobi:fieldsetRow group="true">
             Information
         </mobi:fieldsetRow>
-        <mobi:fieldsetRow>
-            <label for="songs">Songs</label>
-            <mobi:inputText id="songs" value="2500"/>
+        <mobi:fieldsetRow styleClass="mobi-grid">
+            <label for="songs" class="mobi-col mobi-weight1"
+                style="width:100px">Songs</label>
+            <mobi:inputText id="songs" value="2500" styleClass="mobi-col mobi-weight2"/>
         </mobi:fieldsetRow>
-        <mobi:fieldsetRow>
-            <label for="videos">Videos</label>
-            <mobi:inputText id="videos" value="5"/>
+        <mobi:fieldsetRow styleClass="mobi-grid">
+            <label for="videos" class="mobi-col mobi-weight1"
+                style="width:100px">Videos</label>
+            <mobi:inputText id="videos" value="5" styleClass="mobi-col mobi-weight2"/>
         </mobi:fieldsetRow>
-        <mobi:fieldsetRow>
-            <label for="photos">Photos</label>
-            <mobi:inputText id="photos" value="621"/>
+        <mobi:fieldsetRow styleClass="mobi-grid">
+            <label for="photos" class="mobi-col mobi-weight1"
+                style="width:100px">Photos</label>
+            <mobi:inputText id="photos" value="621" styleClass="mobi-col mobi-weight2"/>
         </mobi:fieldsetRow>
 
     </mobi:fieldsetGroup>
 
     <mobi:fieldsetGroup>
 
-        <mobi:fieldsetRow>
-            <label for="first">First Name</label>
-            <mobi:inputText id="first" value="John"/>
+        <mobi:fieldsetRow styleClass="mobi-grid">
+            <label for="first" class="mobi-col mobi-weight1"
+                style="width:100px">First Name</label>
+            <mobi:inputText id="first" value="John" styleClass="mobi-col mobi-weight2"/>
         </mobi:fieldsetRow>
-        <mobi:fieldsetRow>
-            <label for="last">Last Name</label>
-            <mobi:inputText id="last" value="Doe"/>
+        <mobi:fieldsetRow styleClass="mobi-grid">
+            <label for="last" class="mobi-col mobi-weight1"
+                style="width:100px">Last Name</label>
+            <mobi:inputText id="last" value="Doe" styleClass="mobi-col mobi-weight2"/>
         </mobi:fieldsetRow>
-        <mobi:fieldsetRow>
-            <label for="address">Address</label>
-            <mobi:inputText id="address" value="123 Fake St."/>
+        <mobi:fieldsetRow styleClass="mobi-grid">
+            <label for="address" class="mobi-col mobi-weight1"
+                style="width:100px">Address</label>
+            <mobi:inputText id="address" value="123 Fake St." styleClass="mobi-col mobi-weight2"/>
         </mobi:fieldsetRow>
 
     </mobi:fieldsetGroup>

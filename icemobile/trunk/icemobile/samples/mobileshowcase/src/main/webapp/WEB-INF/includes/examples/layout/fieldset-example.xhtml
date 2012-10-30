@@ -20,7 +20,7 @@
              xmlns:ui="http://java.sun.com/jsf/facelets"
              xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
 
-    <h:form>
+    <h:form id="frmFieldset">
         <mobi:fieldsetGroup>
             <mobi:fieldsetRow>
                 The fieldsetGroup component can be used to
@@ -31,34 +31,38 @@
             <mobi:fieldsetRow group="true">
                 Information
             </mobi:fieldsetRow>
-            <mobi:fieldsetRow>
-                <h:outputLabel for="songs" value="Songs"/>
-                <mobi:inputText id="songs" value="2500"/>
+            <mobi:fieldsetRow styleClass="mobi-grid">
+                <h:outputLabel for="songs" value="Songs" styleClass="mobi-col mobi-weight1"
+                    style="width:100px"/>
+                <mobi:inputText id="songs" value="2500" styleClass="mobi-col mobi-weight2"/>
             </mobi:fieldsetRow>
-            <mobi:fieldsetRow>
-                <h:outputLabel for="videos" value="Videos"/>
-                <mobi:inputText id="videos" value="5"/>
+            <mobi:fieldsetRow styleClass="mobi-grid">
+                <h:outputLabel for="videos" value="Videos" styleClass="mobi-col mobi-weight1"
+                    style="width:100px"/>
+                <mobi:inputText id="videos" value="5" styleClass="mobi-col mobi-weight2"/>
             </mobi:fieldsetRow>
-            <mobi:fieldsetRow>
-                <h:outputLabel for="photos" value="Photos"/>
-                <mobi:inputText id="photos" value="621"/>
+            <mobi:fieldsetRow styleClass="mobi-grid">
+                <h:outputLabel for="photos" value="Photos" styleClass="mobi-col mobi-weight1"
+                    style="width:100px"/>
+                <mobi:inputText id="photos" value="621" styleClass="mobi-col mobi-weight2"/>
             </mobi:fieldsetRow>
-
         </mobi:fieldsetGroup>
 
         <mobi:fieldsetGroup>
-
-            <mobi:fieldsetRow>
-                <h:outputLabel for="first" value="First Name"/>
-                <mobi:inputText id="first" value="John"/>
+            <mobi:fieldsetRow styleClass="mobi-grid">
+                <h:outputLabel for="first" value="First Name" styleClass="mobi-col mobi-weight1"
+                    style="width:100px"/>
+                <mobi:inputText id="first" value="John" styleClass="mobi-col mobi-weight2"/>
             </mobi:fieldsetRow>
-            <mobi:fieldsetRow>
-                <h:outputLabel for="last" value="Last Name"/>
-                <mobi:inputText id="last" value="Doe"/>
+            <mobi:fieldsetRow styleClass="mobi-grid">
+                <h:outputLabel for="last" value="Last Name" styleClass="mobi-col mobi-weight1"
+                    style="width:100px"/>
+                <mobi:inputText id="last" value="Doe" styleClass="mobi-col mobi-weight2"/>
             </mobi:fieldsetRow>
-            <mobi:fieldsetRow>
-                <h:outputLabel for="address" value="Address"/>
-                <mobi:inputText id="address" value="123 Fake St."/>
+            <mobi:fieldsetRow styleClass="mobi-grid">
+                <h:outputLabel for="address" value="Address" styleClass="mobi-col mobi-weight1"
+                    style="width:100px"/>
+                <mobi:inputText id="address" value="123 Fake St." styleClass="mobi-col mobi-weight2"/>
             </mobi:fieldsetRow>
 
         </mobi:fieldsetGroup>
