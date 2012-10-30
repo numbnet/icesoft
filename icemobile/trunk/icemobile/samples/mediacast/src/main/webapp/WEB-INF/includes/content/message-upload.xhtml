@@ -44,15 +44,12 @@
         <h:panelGroup rendered="#{empty uploadModel.selectedMediaInput}"
                 style="display: inline-block;padding-bottom: 3px;width: 100%;margin: 7px 0 -5px 0;text-align: center;">
             <mobi:commandButton value="Photo" id="addPhotoBtn"
-                                buttonType="default"
                                 actionListener="#{mediaController.chooseCamera}"
                                 rendered="#{empty uploadModel.currentMediaMessage.largePhoto}"/>
             <mobi:commandButton value="Video" id="addVideoBtn"
-                                buttonType="default"
                                 actionListener="#{mediaController.chooseCamcorder}"
                                 rendered="#{empty uploadModel.currentMediaMessage.video}"/>
             <mobi:commandButton value="Audio" id="addAudioBtn"
-                                buttonType="default"
                                 actionListener="#{mediaController.chooseMicrophone}"
                                 rendered="#{empty uploadModel.currentMediaMessage.audio}"/>
             
@@ -74,7 +71,6 @@
                  <mobi:fieldsetRow style="text-align:center;">
                       <mobi:commandButton id="uploadPhoto"
                             style="float:none;"
-                            buttonType="default"
                             actionListener="#{mediaController.upload}"
                             value="Attach"/>
                             
@@ -91,7 +87,6 @@
                 <mobi:fieldsetRow style="text-align:center;">
                       <mobi:commandButton id="uploadVideo"
                             style="float:none;"
-                            buttonType="default"
                             actionListener="#{mediaController.upload}"
                             value="Attach"/>
                             
@@ -107,7 +102,6 @@
                 <mobi:fieldsetRow style="text-align:center;"> 
                    <mobi:commandButton id="uploadAudio"
                         style="float:none;"
-                        buttonType="default"
                         actionListener="#{mediaController.upload}"
                         value="Attach"/>
                         
@@ -156,7 +150,7 @@
             <mobi:fieldsetRow style="text-align:center;">    
                 <div style="padding:5px;">#{uploadModel.uploadFeedbackMessage}</div>
                 <mobi:commandButton id="cancelUploadBtn"
-                        styleClass="mobi-button mobi-button-default"
+                        styleClass="mobi-button"
                         actionListener="#{mediaController.cancelUpload}"
                         style="width:100px;"
                         value="Cancel"/>

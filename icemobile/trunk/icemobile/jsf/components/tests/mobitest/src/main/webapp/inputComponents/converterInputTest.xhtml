@@ -66,8 +66,8 @@
           <h:outputText value="#{input.eventString}"/>
           
        </p>
-       <mobi:commandButton  id="defaultTwo" buttonType="default" value="defaultSSFalse" actionListener="#{input.defaultEvent}"/>
-       <mobi:commandButton id="defaultOne" buttonType="default" singleSubmit="true" actionListener="#{input.defaultEvent}">
+       <mobi:commandButton  id="defaultTwo" value="defaultSSFalse" actionListener="#{input.defaultEvent}"/>
+       <mobi:commandButton id="defaultOne" singleSubmit="true" actionListener="#{input.defaultEvent}">
           <f:param name="testParam" value="stringValueParameter"/>
           <f:param name="test2Param" value="string2"/>
        </mobi:commandButton>

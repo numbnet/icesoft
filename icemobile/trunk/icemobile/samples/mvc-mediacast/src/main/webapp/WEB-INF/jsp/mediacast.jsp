@@ -24,17 +24,17 @@
 			
 			<div style="margin-top:10px;">
 				<div class="mobi-button-group mobi-button-group-hor" style="text-align:center;">
-					<a class="mobi-button mobi-button-default" href='<c:url value="/media"/>'>Media Upload</a>
-					<a class="mobi-button mobi-button-default" href='<c:url value="/media/gallery"/>'>Media Gallery</a>
+					<a class="mobi-button" href='<c:url value="/media"/>'>Media Upload</a>
+					<a class="mobi-button" href='<c:url value="/media/gallery"/>'>Media Gallery</a>
 				</div>
 				<h4 style="text-align:center;">Share from your location:</h4>
 				<div id="msg">${uploadModel.uploadMsg}</div>
 				<div class="mobi-button-group mobi-button-group-hor ajaxShow" style="text-align:center;">
-					<a class="mobi-button mobi-button-default" 
+					<a class="mobi-button" 
 						onclick="showUpload(this,'camera');">Photo</a>
-					<a class="mobi-button mobi-button-default"
+					<a class="mobi-button"
 						onclick="showUpload(this,'camcorder');">Video</a>
-					<a class="mobi-button mobi-button-default" 
+					<a class="mobi-button" 
 						onclick="showUpload(this,'mic');">Audio</a>
 				</div>
 				<script type="text/javascript">
@@ -61,7 +61,6 @@
 		                     <mobi:fieldsetRow style="text-align:center;">
 		                          <mobi:commandButton name="uploadPhoto"
 		                                style="float:none;"
-		                                buttonType="default"
 		                                value="Add my photo to the message"/>
 		                                
 		                    </mobi:fieldsetRow>
