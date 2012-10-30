@@ -17,12 +17,6 @@
  html, body{
  	height: 100%;
 }
-.descriptionPanel, .examplePanel, .resourcesPanel {
-
-}
-.changeThemeLink {
-
-}
 .center {
     display: block;
     text-align: center;
@@ -123,14 +117,8 @@
     left: 0.5em;
     top: 5px;
 }
-html.bberry .ui-icon,
-html.iphone .ui-icon,
-html.ipad .ui-icon,
-html.honeycomb .ui-icon {
+.ui-icon{
    background-image: url(images/icons-white.png.jsf);
-}
-html.android .ui-icon{
-   background-image: url(images/icons-black.png.jsf);
 }
 @media only screen and (-webkit-min-device-pixel-ratio: 1.5),
        only screen and (min--moz-device-pixel-ratio: 1.5),
@@ -141,10 +129,10 @@ html.android .ui-icon{
         -webkit-background-size: 776px 18px;
         background-size: 776px 18px;
     }
-     html.iphone .ui-icon, html.ipad .ui-icon, html.honeycomb .ui-icon {
+    html.iphone .ui-icon, html.ipad .ui-icon, html.honeycomb .ui-icon, html.android .ui-icon {
         background-image: url(images/icons-36-white.png.jsf);
     }
-     html.android .ui-icon, html.bberry .ui-icon {
+    html.bberry .ui-icon {
         background-image: url(images/icons-36-black.png.jsf);
     }
 }
