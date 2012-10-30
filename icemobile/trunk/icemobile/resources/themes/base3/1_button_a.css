@@ -57,6 +57,7 @@ div.mobi-button-back{
     position: relative;
     border-top-left-radius: 6px;
     border-bottom-left-radius: 6px;
+    overflow:initial !important;
 }
 div.mobi-button-back > span {
     display: inline-block;

@@ -14,13 +14,18 @@
  * governing permissions and limitations under the License.
  */
 .mobi-button-group {
-    margin: 0.5em 5px;
     padding: 0;
+}
+.mobi-button-group-vert{
+    max-width:300px;
 }
 .mobi-button-group-vert .mobi-button {
     display: block;
     margin: 0 0 -1px 0;
     width: 100%;
+}
+.mobi-button-group-vert .mobi-button:last-child{
+    margin-bottom: 0;
 }
 .mobi-button-group-hor .mobi-button {
     display: inline-block;
