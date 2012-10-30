@@ -106,7 +106,7 @@
             </mobi:fieldsetRow>
             <mobi:fieldsetRow>
                 <h:outputLabel value="Selected Value: " />
-                <h:outputText value="#{buttonBean.buttonType}" />
+                <h:outputText value="#{empty buttonBean.buttonType ? 'Default' : buttonBean.buttonType}" />
             </mobi:fieldsetRow>
         </mobi:fieldsetGroup>
 
