@@ -7,58 +7,37 @@
 
     <mobi:fieldsetGroup id="groupOne">
         <mobi:fieldsetRow>
-            A demonstration of the mobi:list, which allows content to be organized
-            into styled lists.
+            The outputList component shown with and without insets.
         </mobi:fieldsetRow>
     </mobi:fieldsetGroup>
 
     <h4>List with inset and Grouping</h4>
 
-    <mobi:outputList id="secondList">
-        <mobi:outputListItem group="true" >
-           List 
-        </mobi:outputListItem>
-
-        <mobi:outputListItem>
-                ICEsoft Ice Sailer
-        </mobi:outputListItem>
-
-        <mobi:outputListItem>
-                ICEsoft Icebreaker
-        </mobi:outputListItem>
-
+    <mobi:outputList id="secondList" inset="true">
+        <mobi:outputListItem group="true">List</mobi:outputListItem>
+        <mobi:outputListItem>ICEsoft ICE Sailer</mobi:outputListItem>
+        <mobi:outputListItem>ICEsoft ICE Breaker</mobi:outputListItem>
     </mobi:outputList>
 
      <h4>List with grouping and no inset</h4>
 
-    <mobi:outputList inset="false" id="thirdList" >
-        <mobi:outputListItem group="true">
-           List 
-        </mobi:outputListItem>
-        <mobi:outputListItem>
-                ICEsoft Ice Sailer
-        </mobi:outputListItem>
-        <mobi:outputListItem>
-                ICEsoft Icebreaker
-        </mobi:outputListItem>
+    <mobi:outputList id="thirdList">
+        <mobi:outputListItem group="true">List</mobi:outputListItem>
+        <mobi:outputListItem>ICEsoft ICE Sailer</mobi:outputListItem>
+        <mobi:outputListItem>ICEsoft ICE Breaker</mobi:outputListItem>
     </mobi:outputList>
 
     <h4>List with no inset or grouping</h4>
 
     <mobi:outputList id="firstList">
-        <mobi:outputListItem>
-                ICEsoft Ice Sailer
-        </mobi:outputListItem>
-
-        <mobi:outputListItem>
-                ICEsoft Icebreaker
-        </mobi:outputListItem>
+        <mobi:outputListItem>ICEsoft ICE Sailer</mobi:outputListItem>
+        <mobi:outputListItem>ICEsoft ICE Breaker</mobi:outputListItem>
     </mobi:outputList>
 
-    <h4>Iterative list (Grouping on by default) </h4>
+    <h4>Iterative list</h4>
 
     <mobi:outputList  id="listIterator">
-      <mobi:outputListItem group="true"> List of cars </mobi:outputListItem>
+      <mobi:outputListItem group="true">List of cars</mobi:outputListItem>
       <c:forEach items="${listBean.carCollection}" var="currCar" >
         <mobi:outputListItem>
             Car title "${currCar.title}"

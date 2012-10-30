@@ -12,10 +12,23 @@ public class CSSUtils {
     /* Mobi Style Classes */
     public static final String STYLECLASS_BUTTON = "mobi-button";
     public static final String STYLECLASS_BUTTON_DISABLED = " mobi-button-dis";
-    public static final String STYLECLASS_BUTTON_DEFAULT = "mobi-button-default";
     public static final String STYLECLASS_BUTTON_ATTENTION = "mobi-button-attention";
     public static final String STYLECLASS_BUTTON_IMPORTANT = "mobi-button-important";
     public static final String STYLECLASS_BUTTON_BACK = "mobi-button-back";
+    
+    /* jQuery Mobile Classes */
+    /* Collapsible */
+    //div
+    public static final String STYLECLASS_COLLAPSIBLESET = "ui-collapsible-set";
+       //div
+    public static final String STYLECLASS_COLLAPSIBLE = "ui-collapsible";
+    public static final String STYLECLASS_COLLAPSED = "ui-collapsible-collapsed";
+    public static final String STYLECLASS_COLLAPSIBLEINSET = "ui-collapsible-inset"; //if inset
+          //h2
+    public static final String STYLECLASS_COLLAPSIBLEHEADING = "ui-collapsible-heading";
+    public static final String STYLECLASS_COLLAPSIBLEHEADINGTOGGLE = "ui-collapsible-heading-toggle";
+       //div
+    public static final String STYLECLASS_COLLAPSIBLECONTENT = "ui-collapsible-content";
     
     public enum Theme{ IPAD, IPHONE, BBERRY, ANDROID, HONEYCOMB, LIGHTNING;
         public String fileName(){

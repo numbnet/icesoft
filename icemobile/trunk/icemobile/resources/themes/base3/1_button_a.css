@@ -47,9 +47,6 @@
     opacity: 0.5;
     filter: alpha(opacity = 50);
 }
-.mobi-button-default, .mobi-button-important, .mobi-button-attention {
-    border-radius: 0;
-}
 /* back button */
 div.mobi-button-back{
     margin: 0.5em 5px 0.5em 15px;

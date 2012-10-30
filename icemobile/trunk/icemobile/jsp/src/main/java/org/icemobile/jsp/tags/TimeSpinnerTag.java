@@ -205,7 +205,7 @@ public class TimeSpinnerTag extends SimpleTagSupport {
         writer.write(tu.DIV_TAG);                          //button container for set or cancel
         tu.writeAttribute(writer, "class", "mobi-time-submit-container");
         writer.write(">" + tu.INPUT_TAG);
-        tu.writeAttribute(writer, "class", "mobi-button mobi-button-default");
+        tu.writeAttribute(writer, "class", "mobi-button");
         tu.writeAttribute(writer, "type", "button");
         tu.writeAttribute(writer, "value", "Set");
 
@@ -222,7 +222,7 @@ public class TimeSpinnerTag extends SimpleTagSupport {
         writer.write(">" + tu.INPUT_TAG_END);
 
         writer.write(tu.INPUT_TAG);
-        tu.writeAttribute(writer, "class", "mobi-button mobi-button-default");
+        tu.writeAttribute(writer, "class", "mobi-button");
         tu.writeAttribute(writer, "type", "button");
         tu.writeAttribute(writer, "value", "Cancel");
         tu.writeAttribute(writer, CLICK_EVENT, "ice.mobi.timespinner.close('" + id + "');");

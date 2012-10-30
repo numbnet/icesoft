@@ -20,7 +20,7 @@ package org.icefaces.mobi.component.button;
 public class CommandButton extends CommandButtonBase {
 
     // Default button types.
-    public static final String BUTTON_TYPE_DEFAULT = "default";
+    public static final String BUTTON_TYPE_UNIMPORTANT = "unimportant";
     public static final String BUTTON_TYPE_IMPORTANT = "important";
     public static final String BUTTON_TYPE_ATTENTION = "attention";
     public static final String BUTTON_TYPE_BACK = "back";
@@ -28,7 +28,7 @@ public class CommandButton extends CommandButtonBase {
     // button styles.
     public static final String BASE_STYLE_CLASS = "mobi-button";
     public static final String DISABLED_STYLE_CLASS = "mobi-button-dis";
-    public static final String DEFAULT_STYLE_CLASS = " mobi-button-default";
+    public static final String UNIMPORTANT_STYLE_CLASS = " mobi-button-unimportant";
     public static final String IMPORTANT_STYLE_CLASS = " mobi-button-important";
     public static final String BACK_STYLE_CLASS = " mobi-button-back";
     public static final String ATTENTION_STYLE_CLASS = " mobi-button-attention";

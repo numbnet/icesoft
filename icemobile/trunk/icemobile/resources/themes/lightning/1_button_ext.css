@@ -30,12 +30,12 @@
     color: #FFFFFF;
 }
 
-.mobi-button-default, .mobi-button-important, .mobi-button-attention {
+.mobi-button-important, .mobi-button-attention {
     border: 1px solid #155678;
     color: #FFFFFF;
 }
 
-.mobi-button-default {
+.mobi-button{
     background-color: #4A6C9B;
 }
 

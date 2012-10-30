@@ -13,7 +13,7 @@
         <div class="ajaxzone">
             <mobi:pagePanel>
                 <mobi:pagePanelHeader>
-                    <a href="menu" id="menuLink" class="mobi-button  mobi-button-default">&#9776;</a>
+                    <a href="menu" id="menuLink" class="mobi-button">&#9776;</a>
                     Buttons
                 </mobi:pagePanelHeader>
                 <mobi:pagePanelBody>
@@ -32,7 +32,7 @@
             <c:when test="${!ajaxRequest}">
                 <mobi:pagePanel>
                     <mobi:pagePanelHeader>
-                        <a id="menuLink" class="mobi-button mobi-button-default ui-icon ui-icon-home ui-icon-shadow"
+                        <a id="menuLink" class="mobi-button ui-icon ui-icon-home ui-icon-shadow"
                         href='<c:url value="/"/>'> </a>
                         ICEmobile Spring MVC Showcase
                     </mobi:pagePanelHeader>

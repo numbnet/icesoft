@@ -62,19 +62,19 @@
     -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#f4f5f7', EndColorStr='#a8acb9')";
 }
 
-.mobi-date-submit-container .mobi-button-default,
-.mobi-time-submit-container .mobi-button-default{
+.mobi-date-submit-container .mobi-button,
+.mobi-time-submit-container .mobi-button{
     width: 49%;
     margin: 0;
 }
 
-.mobi-date-submit-container .mobi-button-default:first-child,
-.mobi-time-submit-container .mobi-button-default:first-child{
+.mobi-date-submit-container .mobi-button:first-child,
+.mobi-time-submit-container .mobi-button:first-child{
     float: left;
 }
 
-.mobi-date-submit-container .mobi-button-default:last-child,
-.mobi-time-submit-container .mobi-button-default:last-child{
+.mobi-date-submit-container .mobi-button:last-child,
+.mobi-time-submit-container .mobi-button:last-child{
     float: right;
 }
 
