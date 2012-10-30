@@ -33,9 +33,6 @@ public class AccordionCoreRenderer extends BaseCoreRenderer implements IRenderer
         /* write out root tag.  For current incarnation html5 semantic markup is ignored */
         writer.startElement(DIV_ELEM, accordion);
         writer.writeAttribute(ID_ATTR, accordion.getClientId());
-        if (accordion.getSelectedId() != null && !"".equals(accordion.getSelectedId())) {
-            writer.writeAttribute(" data-opened", accordion.getSelectedId());
-        }
         
         StringBuilder styleClass = new StringBuilder(IAccordion.ACCORDION_CLASS);
         String userDefinedClass = accordion.getStyleClass();
