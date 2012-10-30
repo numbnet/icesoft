@@ -20,6 +20,7 @@ import org.icefaces.impl.application.AuxUploadResourceHandler;
 import org.icefaces.mobi.utils.HTML;
 import org.icefaces.mobi.utils.Utils;
 import org.icefaces.util.EnvUtils;
+import org.icemobile.util.CSSUtils;
 
 import javax.faces.application.ProjectStage;
 import javax.faces.component.UIComponent;
@@ -66,7 +67,7 @@ public class AugmentedRealityRenderer extends BaseInputRenderer  {
                  writer.writeAttribute(HTML.STYLE_ATTR, style, HTML.STYLE_ATTR);
              }
          }
-         StringBuilder defaultClass = new StringBuilder(AugmentedReality.DEFAULT_STYLE_CLASS);
+         StringBuilder defaultClass = new StringBuilder(CSSUtils.STYLECLASS_BUTTON);
          if (null!=ag.getStyleClass()) {
              String styleClass = ag.getStyleClass();
              defaultClass.append(" ").append(styleClass);

@@ -61,6 +61,7 @@ public class  CommandButtonRenderer extends CoreRenderer {
     public void encodeBegin(FacesContext facesContext, UIComponent uiComponent)
             throws IOException {
         CommandButton commandButton = (CommandButton) uiComponent;
+        String clientId = uiComponent.getClientId(facesContext);
 
         // apply button type style classes
         StringBuilder baseClass = new StringBuilder(CommandButton.BASE_STYLE_CLASS);
@@ -81,24 +82,25 @@ public class  CommandButtonRenderer extends CoreRenderer {
             }
         }
         // assign button type
-        if (CommandButton.BUTTON_TYPE_DEFAULT.equals(buttonType)) {
-            baseClass.append(CommandButton.DEFAULT_STYLE_CLASS);
-        } else if (CommandButton.BUTTON_TYPE_BACK.equals(buttonType)) {
-            baseClass.append(CommandButton.BACK_STYLE_CLASS);
-        } else if (CommandButton.BUTTON_TYPE_ATTENTION.equals(buttonType)) {
-            baseClass.append(CommandButton.ATTENTION_STYLE_CLASS);
-        } else if (CommandButton.BUTTON_TYPE_IMPORTANT.equals(buttonType)) {
-            baseClass.append(CommandButton.IMPORTANT_STYLE_CLASS);
-        } else if (logger.isLoggable(Level.FINER)) {
-            baseClass.append(CommandButton.DEFAULT_STYLE_CLASS);
+        if( buttonType != null && !"".equals(buttonType)){
+            if (CommandButton.BUTTON_TYPE_UNIMPORTANT.equals(buttonType)) {
+                baseClass.append(CommandButton.UNIMPORTANT_STYLE_CLASS);
+            } else if (CommandButton.BUTTON_TYPE_BACK.equals(buttonType)) {
+                baseClass.append(CommandButton.BACK_STYLE_CLASS);
+            } else if (CommandButton.BUTTON_TYPE_ATTENTION.equals(buttonType)) {
+                baseClass.append(CommandButton.ATTENTION_STYLE_CLASS);
+            } else if (CommandButton.BUTTON_TYPE_IMPORTANT.equals(buttonType)) {
+                baseClass.append(CommandButton.IMPORTANT_STYLE_CLASS);
+            } else if (logger.isLoggable(Level.WARNING)) {
+                logger.warning("unsupported button type: '" + buttonType + "' for "+ clientId);
+            }
         }
         
         String styleClass = commandButton.getStyleClass();
         if (styleClass != null) {
             baseClass.append(" ").append(styleClass);
         }
-        
-        
+
         String type = commandButton.getType();
         // button type for styling purposes, otherwise use pass through value.
         if (type == null){
@@ -106,7 +108,7 @@ public class  CommandButtonRenderer extends CoreRenderer {
         }
 
         ResponseWriter writer = facesContext.getResponseWriter();
-        String clientId = uiComponent.getClientId(facesContext);
+        
         if (CommandButton.BUTTON_TYPE_BACK.equals(buttonType)){
             writer.startElement(HTML.DIV_ELEM, commandButton);
             writer.writeAttribute(HTML.ID_ATTR, clientId+"_ctr", HTML.ID_ATTR);
@@ -136,9 +138,7 @@ public class  CommandButtonRenderer extends CoreRenderer {
             value = oVal.toString();
         }
         writer.writeAttribute(HTML.VALUE_ATTR, value, HTML.VALUE_ATTR);
-        
-        
-        
+
     }
 
     public void encodeEnd(FacesContext facesContext, UIComponent uiComponent)

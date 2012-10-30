@@ -28,7 +28,7 @@ import java.io.Writer;
 public class CommandButtonTag extends SimpleTagSupport {
 
     // Default button types.
-    public static final String BUTTON_TYPE_DEFAULT = "default";
+    public static final String BUTTON_TYPE_UNIMPORTANT = "default";
     public static final String BUTTON_TYPE_IMPORTANT = "important";
     public static final String BUTTON_TYPE_ATTENTION = "attention";
     public static final String BUTTON_TYPE_BACK = "back";
@@ -36,8 +36,8 @@ public class CommandButtonTag extends SimpleTagSupport {
     // button styles.
     public static final String BASE_STYLE_CLASS = "mobi-button";
     public static final String DISABLED_STYLE_CLASS = " mobi-button-dis";
-    public static final String DEFAULT_STYLE_CLASS = " mobi-button-default";
     public static final String IMPORTANT_STYLE_CLASS = " mobi-button-important";
+    public static final String UNIMPORTANT_STYLE_CLASS = " mobi-button-unimportant";
     public static final String BACK_STYLE_CLASS = " mobi-button-back";
     public static final String ATTENTION_STYLE_CLASS = " mobi-button-attention";
     public static final String SELECTED_STYLE_CLASS = " mobi-button-selected";
@@ -71,8 +71,8 @@ public class CommandButtonTag extends SimpleTagSupport {
         }
 
         StringBuilder builder = new StringBuilder(BASE_STYLE_CLASS);
-        if (BUTTON_TYPE_DEFAULT.equals(buttonType)) {
-            builder.append(DEFAULT_STYLE_CLASS);
+        if (BUTTON_TYPE_UNIMPORTANT.equals(buttonType)) {
+            builder.append(UNIMPORTANT_STYLE_CLASS);
         } else if (BUTTON_TYPE_BACK.equals(buttonType)) {
             builder.append(BACK_STYLE_CLASS);
         } else if (BUTTON_TYPE_ATTENTION.equals(buttonType)) {

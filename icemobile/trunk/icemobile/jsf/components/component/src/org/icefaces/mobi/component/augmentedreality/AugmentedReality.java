@@ -16,5 +16,4 @@
 package org.icefaces.mobi.component.augmentedreality;
 
 public class AugmentedReality extends AugmentedRealityBase {
-    public static final String DEFAULT_STYLE_CLASS = " mobi-button-default";
 }

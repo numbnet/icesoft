@@ -98,7 +98,7 @@ public class VideoCaptureRenderer extends BaseInputResourceRenderer {
         writer.writeAttribute("value", "camcorder", null);
         // write out style for input button, same as default device button.
         JSFUtils.writeConcatenatedStyleClasses(writer,
-                "mobi-button mobi-button-default",
+                "mobi-button",
                 video.getStyleClass());
         writer.writeAttribute(HTML.STYLE_ATTR, video.getStyle(), HTML.STYLE_ATTR);
         if (disabled) writer.writeAttribute("disabled", "disabled", null);

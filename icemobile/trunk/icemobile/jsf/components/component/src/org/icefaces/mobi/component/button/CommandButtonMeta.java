@@ -70,7 +70,7 @@ public class CommandButtonMeta extends UICommandMeta {
     @Property(tlddoc = "style of the component, rendered on the div root of the component")
     private String style;
 
-    @Property(tlddoc = "Four types of buttons are allowed default, important, back and attention",
+    @Property(tlddoc = "Four types of buttons are allowed: important, back and attention, and if empty or null, default",
             required = Required.no)
     private String buttonType;
     @Property(tlddoc = "Standard button type, button, submit, img etc.",

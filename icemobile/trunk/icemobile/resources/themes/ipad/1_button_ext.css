@@ -63,7 +63,7 @@
     background-color: inherit;
     background: none;
 }
-.mobi-button-default, .mobi-button-important, .mobi-button-attention {
+.mobi-button-important, .mobi-button-attention {
     border: 1px solid #155678;
     text-shadow: 0 -1px 1px #145072;
     color: #FFFFFF;
