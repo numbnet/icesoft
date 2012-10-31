@@ -13,41 +13,21 @@
  * express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-
-.mobi-flip-switch-off, .mobi-flip-switch-on {
-    border: 1px solid #888888;
-}
-
-.mobi-flip-switch-off {
-    background: -moz-linear-gradient(top, #c8c8c8, #ffffff) repeat scroll 0 0 #ffffff;
-    background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0, #c8c8c8), color-stop(1, #ffffff));
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorStr='#c8c8c8', EndColorStr='#ffffff');
-    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#c8c8c8', EndColorStr='#ffffff')";
-}
-
-.mobi-flip-switch-on {
-    background-color: #A5A2A5;
-}
-
-.mobi-flip-switch-on span{
-    border-left: 1px solid #888888;
-}
-
-.mobi-flip-switch-off span:first-child, .mobi-flip-switch-on span:last-child {
-    border-top: 1px solid white;
-    background: -moz-linear-gradient(top, #e3e3e3, #fcfcfc) repeat scroll 0 0 #fcfcfc;
-    background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0, #e3e3e3), color-stop(1, #fcfcfc));
-    filter:  progid:DXImageTransform.Microsoft.gradient(startColorStr='#e3e3e3', EndColorStr='#fcfcfc');
-    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#e3e3e3', EndColorStr='#fcfcfc')";
-    color: transparent;
+ 
+ .mobi-flip-switch{
+    border-bottom: none;
+    background-color: #555;
+ }
+ .mobi-flip-switch-txt {
+    font-weight: bold;
+    color: #3B3E3E;
     text-shadow: none;
 }
-
-.mobi-flip-switch-on span:last-child {
-    border-left: 1px solid #888888;
+.mobi-flip-switch-on span:first-child {
+    background-color: #33B5E5;
+    border-top: 1px solid #6FCAEC;
 }
-
-.mobi-flip-switch-off span:first-child {
-    border-right: 1px solid #888888;
-    color: transparent;
+.mobi-flip-switch-off span:last-child {
+    background-color: #DDD;
+    border-top: 1px solid #878787;
 }

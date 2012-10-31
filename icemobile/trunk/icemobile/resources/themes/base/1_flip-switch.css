@@ -35,6 +35,7 @@
 }
 
 .mobi-flip-switch-txt {
+    color:transparent;
     font-size: 15px;
     display: inline-block;
     text-align: center;
