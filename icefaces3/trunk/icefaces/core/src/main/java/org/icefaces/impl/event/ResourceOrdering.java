@@ -35,7 +35,7 @@ public class ResourceOrdering implements SystemEventListener {
             while (urls.hasMoreElements()) {
                 URL url = urls.nextElement();
                 try {
-                    InputStream stream = (InputStream) url.getContent();
+                    InputStream stream = url.openStream();
                     Document doc = db.parse(stream);
                     doc.normalizeDocument();
 
