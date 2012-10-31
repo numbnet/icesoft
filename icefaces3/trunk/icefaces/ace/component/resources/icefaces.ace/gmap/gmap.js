@@ -40,6 +40,9 @@ function GMapWrapper(eleId, realGMap) {
     this.eleId = eleId;
     this.realGMap = realGMap;
     this.overlays = new Object();
+    this.markers = new Object();
+    this.freeWindows = new Object();
+    this.windows = new Object();
     this.directions = new Object();
     var options = "";
     this.services = new Object();
@@ -187,12 +190,33 @@ ice.ace.gMap.getGMapWrapper = function (id) {
         var lng = map.getCenter().lng();
         var zoom = map.getZoom();
         var type = map.getMapTypeId();
+        var markers = gmapWrapper.markers;
+        var freeWindows = gmapWrapper.freeWindows;
+        var overlays = gmapWrapper.overlays;
         ice.ace.gMap.remove(ele);
         gmapWrapper = ice.ace.gMap.create(ele,lat,lng,zoom,type);
         map = gmapWrapper.getRealGMap();
         if(options != undefined)
             map.setOptions(eval("({"+options+"})"));
         gmapWrapper.options = options;
+        for (marker in markers) {
+            if (gmapWrapper.markers[marker] == null) {
+                markers[marker].setMap(map);
+                gmapWrapper.markers[marker]=markers[marker];
+            }
+        }
+        for (window in freeWindows) {
+            if (gmapWrapper.freeWindows[window] == null) {
+                freeWindows[window].open(map);
+                gmapWrapper.freeWindows[window]=freeWindows[window];
+            }
+        }
+        for (overlay in overlays){
+            if (gmapWrapper.overlays[overlay] == null){
+                overlays[overlay].setMap(map);
+                gmapWrapper.overlays[overlay]=overlays[overlay];
+            }
+        }
         return gmapWrapper;
     }
 
@@ -221,38 +245,38 @@ ice.ace.gMap.getGMapWrapper = function (id) {
 
     ice.ace.gMap.addMarker = function (ele, markerID, Lat, Lon, options) {
         var wrapper = ice.ace.gMap.getGMapWrapper(ele);
-        var overlay = wrapper.overlays[markerID];
-        if (overlay == null || overlay.getMap() == null) {
+        var marker = wrapper.markers[markerID];
+        if (marker == null || marker.getMap() == null) {
             if (options != null)
                 var markerOps = "({map:wrapper.getRealGMap(), position: new google.maps.LatLng(" + Lat + "," + Lon + "), " + options + "});";
             else
                 var markerOps = "({map:wrapper.getRealGMap(), position: new google.maps.LatLng(" + Lat + "," + Lon + ")});";
             var marker = new google.maps.Marker(eval(markerOps));
-            wrapper.overlays[markerID] = marker;
+            wrapper.markers[markerID] = marker;
         }
     }
 
-    ice.ace.gMap.removeMarker = function (ele, overlayId) {
+    ice.ace.gMap.removeMarker = function (ele, markerId) {
         var gmapWrapper = ice.ace.gMap.getGMapWrapper(ele);
-        var overlay = gmapWrapper.overlays[overlayId];
-        if (overlay != null) {
-            overlay.setMap(null);
+        var marker = gmapWrapper.markers[markerId];
+        if (marker != null) {
+            marker.setMap(null);
         } else {
             //nothing found just return
             return;
         }
-        var newOvrLyArray = new Object();
-        for (overlayObj in gmapWrapper.overlays) {
-            if (overlay != overlayObj) {
-                newOvrLyArray[overlayObj] = gmapWrapper.overlays[overlayObj];
+        var newMarkerArray = new Object();
+        for (markerObj in gmapWrapper.markers) {
+            if (marker != markerObj) {
+                newMarkerArray[markerObj] = gmapWrapper.markers[markerObj];
             }
         }
-        gmapWrapper.overlays = newOvrLyArray;
+        gmapWrapper.markers = newMarkerArray;
     }
 
-    ice.ace.gMap.animateMarker = function (ele, overlayId, animation) {
+    ice.ace.gMap.animateMarker = function (ele, markerId, animation) {
         var gmapWrapper = ice.ace.gMap.getGMapWrapper(ele);
-        var marker = gmapWrapper.overlays[overlayId];
+        var marker = gmapWrapper.markers[markerId];
         if(animation=="none")
             marker.setOptions({animation:null});
         else if(animation.toLowerCase()=="bounce")
@@ -595,7 +619,7 @@ ice.ace.gMap.getGMapWrapper = function (id) {
     ice.ace.gMap.addGWindow = function (ele, windowId, content, position,options,markerId) {
         var wrapper = ice.ace.gMap.getGMapWrapper(ele);
         var map = ice.ace.gMap.getGMapWrapper(ele).getRealGMap();
-        var window = wrapper.overlays[windowId];
+        var window = wrapper.windows[windowId];
         if (window != null)
             window.close();
         window = new google.maps.InfoWindow();
@@ -607,12 +631,15 @@ ice.ace.gMap.getGMapWrapper = function (id) {
         }
         if (markerId != "none")
         {
-            var marker = wrapper.overlays[markerId];
+            var marker = wrapper.markers[markerId];
             window.open(map,marker);
         }
         else
+        {
             window.open(map);
-        wrapper.overlays[windowId] = window;
+            wrapper.freeWindows[windowId]=window;
+        }
+        wrapper.windows[windowId] = window;
     }
 
     ice.ace.gMap.setMapType = function (ele, type) {
