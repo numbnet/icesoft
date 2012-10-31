@@ -58,7 +58,7 @@ public class CarouselBean extends ExampleImpl<CarouselBean> implements
     public static final String BEAN_NAME = "carouselBean";
 
     private ArrayList<String> images = new ArrayList<String>();
-
+    private String selected;
     private int selectedItem =3;
 
     public CarouselBean() {
@@ -85,5 +85,9 @@ public class CarouselBean extends ExampleImpl<CarouselBean> implements
 
     public void setSelectedItem(int selectedItem) {
         this.selectedItem = selectedItem;
+    }
+
+    public String getSelected() {
+        return images.get(selectedItem);
     }
 }
