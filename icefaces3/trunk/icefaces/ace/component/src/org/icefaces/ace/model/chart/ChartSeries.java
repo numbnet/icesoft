@@ -3,6 +3,7 @@ package org.icefaces.ace.model.chart;
 import org.icefaces.ace.util.JSONBuilder;
 
 import javax.faces.component.UIComponent;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,7 +27,7 @@ import java.util.List;
  * Date: 12-05-03
  * Time: 1:02 PM
  */
-public abstract class ChartSeries {
+public abstract class ChartSeries implements Serializable {
     public interface ChartType {}
 
     List<Object> data;
