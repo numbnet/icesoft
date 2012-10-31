@@ -72,20 +72,9 @@
             <mobi:fieldsetRow styleClass="mobi-grid mobi-center">
                 <mobi:commandButton actionListener="#{buttonBean.buttonType}"
                                     value="Default"
-                                    styleClass="mobi-col mobi-weight1">
+                                    styleClass="mobi-col mobi-weight1"
+                                    style="padding: 0.6em 31px;">
                     <f:attribute name="buttonType" value=""/>
-                </mobi:commandButton>
-                <mobi:commandButton actionListener="#{buttonBean.buttonType}"
-                                    value="Important" buttonType="important"
-                                    styleClass="mobi-col mobi-weight1">
-                        <f:attribute name="buttonType" value="important"/>
-                </mobi:commandButton>
-            </mobi:fieldsetRow>
-            <mobi:fieldsetRow styleClass="mobi-grid mobi-center">
-                <mobi:commandButton actionListener="#{buttonBean.buttonType}"
-                                    value="Attention" buttonType="attention"
-                                    styleClass="mobi-col mobi-weight1">
-                    <f:attribute name="buttonType" value="attention"/>
                 </mobi:commandButton>
                 <mobi:commandButton actionListener="#{buttonBean.buttonType}"
                                     value="Unimportant" 
@@ -95,8 +84,20 @@
             </mobi:fieldsetRow>
             <mobi:fieldsetRow styleClass="mobi-grid mobi-center">
                 <mobi:commandButton actionListener="#{buttonBean.buttonType}"
-                                    buttonType="back" value="Back"
+                                    value="Important" buttonType="important"
                                     styleClass="mobi-col mobi-weight1">
+                        <f:attribute name="buttonType" value="important"/>
+                </mobi:commandButton>
+                <mobi:commandButton actionListener="#{buttonBean.buttonType}"
+                                    value="Attention" buttonType="attention"
+                                    styleClass="mobi-col mobi-weight1">
+                    <f:attribute name="buttonType" value="attention"/>
+                </mobi:commandButton>
+            </mobi:fieldsetRow>
+            <mobi:fieldsetRow style="text-align:center;">
+                <mobi:commandButton actionListener="#{buttonBean.buttonType}"
+                                    buttonType="back" value="Back"
+                                    style="width:150px">
                     <f:attribute name="buttonType" value="back"/>
                 </mobi:commandButton>
             </mobi:fieldsetRow>
