@@ -1003,7 +1003,7 @@ ice.ace.DataTable.prototype.resizeScrolling = function () {
             bodyTable.css('table-layout', 'fixed');
             footerTable.css('table-layout', 'fixed');
         }
-        if (ie7) ie7TableLayout();
+        if (ie7) tableLayout();
 
         // Set Duplicate Sizing
         if (!ie7) {
