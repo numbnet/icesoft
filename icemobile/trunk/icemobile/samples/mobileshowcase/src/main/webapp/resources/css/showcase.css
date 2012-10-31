@@ -197,7 +197,7 @@ html.honeycomb h3{
 .example img{
     display:inline-block;
     width:20%;
-    max-width:100px;
+    max-width:55px;
 }
 .example p{
     display: inline-block;

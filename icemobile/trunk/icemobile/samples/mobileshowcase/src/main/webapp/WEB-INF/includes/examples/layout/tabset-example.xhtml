@@ -42,44 +42,19 @@
 
             <mobi:contentPane title="Ice Sailer" id="tab1"
                               facelet="false" client="true" >
-                <mobi:fieldsetGroup>
-                    <mobi:fieldsetRow>
-                        <h:graphicImage style="float:left;padding-right:10px;"
-                                        library="images/auction" name="icesailor.png"/>
-                        <p><b>ICEsoft Ice Sailer</b><br />
-                            Put him on the ice and watch him go!</p>
-                    </mobi:fieldsetRow>
-
-                </mobi:fieldsetGroup>
+                <ui:include src="/WEB-INF/includes/content/fieldset-icesailor.xhtml"/>
             </mobi:contentPane>
 
             <mobi:contentPane title="Ice Breaker" id="tab2"
                           facelet="false" client="true" >
 
-                <mobi:fieldsetGroup>
-                    <mobi:fieldsetRow>
-                        <h:graphicImage style="float:left;padding-right:10px;"
-                                        library="images/auction" name="icebreaker.png"/>
-                        <p><b>ICEsoft Icebreaker</b><br />
-                            Used icebreaker with very few dents.</p>
-                    </mobi:fieldsetRow>
-
-                </mobi:fieldsetGroup>
+                 <ui:include src="/WEB-INF/includes/content/fieldset-icebreaker.xhtml"/>
 
             </mobi:contentPane>
 
             <mobi:contentPane title="Ice Skater" id="tab3"
                               facelet="false" client="true" >
-                <mobi:fieldsetGroup>
-                    <mobi:fieldsetRow>
-                        <h:graphicImage style="float:left;padding-right:10px;"
-                                        library="images/auction" name="iceskate.png"/>
-                        <p><b>ICEsoft Ice Skate</b><br />
-                            A single sharpened ice skate, size 7.</p>
-                    </mobi:fieldsetRow>
-
-                </mobi:fieldsetGroup>
-
+                 <ui:include src="/WEB-INF/includes/content/fieldset-iceskater.xhtml"/>
             </mobi:contentPane>
 
         </mobi:tabSet>
