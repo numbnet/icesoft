@@ -711,20 +711,31 @@ ice.ace.Autocompleter.prototype = {
         }
         this.hasFocus = true;
         ice.ace.Autocompleter.cleanWhitespace(this.update);
-        this.updateChoices(text);
-        this.show();
-        this.render();
-		this.element.focus();
+		if (ice.ace.jq.support.leadingWhitespace) { // browsers other than IE7/8
+			this.updateChoices(text);
+			this.show();
+			this.render();
+			this.element.focus();
+		}
+		else { // give time to IE7/8 to have nodes ready when the full form has been updated
+			var self = this;
+			setTimeout(function() { 
+				self.updateChoices(text);
+				self.show();
+				self.render();
+				if (focus) ice.ace.jq(ice.ace.escapeClientId(self.element.id)).focus(); 
+			}, 50);
+		}
     },
 	
 	updateField: function(value, focus) {
 		var currentValue = this.element.value;
 		if (currentValue.indexOf(value) != 0)
 			this.element.value = value;
-		if (focus) this.element.focus();
-		var element = this.element;
+		if (focus && ice.ace.jq.support.leadingWhitespace) this.element.focus(); // browsers other than IE7/8
 		if (!ice.ace.jq.support.leadingWhitespace) { // force IE7/8 to set focus on the text field
-			setTimeout(function() { if (focus) ice.ace.jq(ice.ace.escapeClientId(element.id)).focus(); }, 100);
+			var element = this.element;
+			setTimeout(function() { if (focus) ice.ace.jq(ice.ace.escapeClientId(element.id)).focus(); }, 50);
 		}
 	}
 }
