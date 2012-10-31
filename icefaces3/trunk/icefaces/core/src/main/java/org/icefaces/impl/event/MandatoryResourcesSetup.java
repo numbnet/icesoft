@@ -217,8 +217,7 @@ public class MandatoryResourcesSetup implements SystemEventListener {
                                                  String name, String library,
                                                  String version) {
         if (JAVAX_FACES_RESOURCE_SCRIPT.endsWith(rendererType)) {
-            //use non transient components to match the behaviour of the replaced components
-            return new NonTransientJavascriptResourceOutput(resourceHandler, name, library, version);
+            return new JavascriptResourceOutput(resourceHandler, name, library, version);
         } else {
             return new ResourceOutput(rendererType, name, library);
         }
