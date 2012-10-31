@@ -797,8 +797,14 @@ ice.ace.DataTable.prototype.setupScrolling = function () {
             scrollLeftVal = $this.scrollLeft(),
             scrollTopVal = $this.scrollTop();
 
-        $header.scrollLeft(scrollLeftVal);
-        $footer.scrollLeft(scrollLeftVal);
+        if (ice.ace.jq.browser.os == 'mac' && ice.ace.jq.browser.mozilla && scrollLeftVal == 0) {
+            $header.scrollLeft(-1);
+            $footer.scrollLeft(-1);
+        } else {
+            $header.scrollLeft(scrollLeftVal);
+            $footer.scrollLeft(scrollLeftVal);
+        }
+
         _self.scrollLeft = scrollLeftVal;
         _self.scrollTop = scrollTopVal;
     });
@@ -1047,7 +1053,7 @@ ice.ace.DataTable.prototype.resizeScrolling = function () {
                 // Adjust last column size to stop prevent horizontal scrollbar / align vertical
                 if (i == 0) {
                     if (ie9) bodyColumnWidth = bodySingleColWidths[i] - 1;
-                    else if (firefox) bodyColumnWidth = bodySingleColWidths[i] + 1;
+                    else if (firefox && !mac) bodyColumnWidth = bodySingleColWidths[i] + 1;
                 }
 
                 // Set Duplicate Header Sizing to Body Columns
@@ -1057,7 +1063,7 @@ ice.ace.DataTable.prototype.resizeScrolling = function () {
                 // Adjust last column size to stop prevent horizontal scrollbar / align vertical
                 if (i == 0) {
                     if (ie9) bodyColumnWidth = bodySingleColWidths[i] - 2;
-                    else if (firefox) bodyColumnWidth = bodySingleColWidths[i] + 1;
+                    else if (firefox && !mac) bodyColumnWidth = bodySingleColWidths[i] + 1;
                     else bodyColumnWidth = bodySingleColWidths[i] - 1;
                 }
 
@@ -1070,8 +1076,10 @@ ice.ace.DataTable.prototype.resizeScrolling = function () {
 
                 var realHeadColumnWidth = dupeHeadColumnWidths[i];
 
-                if (ie9 && i == 0) realHeadColumnWidth = realHeadColumnWidth - 1;
-                else if (firefox && i == 0) realHeadColumnWidth = realHeadColumnWidth + 1;
+                if (i == 0) {
+                    if (ie9) realHeadColumnWidth = realHeadColumnWidth - 1;
+                    else if (firefox && !mac) realHeadColumnWidth = realHeadColumnWidth + 1;
+                }
 
                 // Set Duplicate Header Sizing to True Header Columns
                 realHeadColumn.width(realHeadColumnWidth);
@@ -1089,8 +1097,10 @@ ice.ace.DataTable.prototype.resizeScrolling = function () {
                     ? dupeFootColumnWidths[i] + parseInt(realFootColumn.parent().css('padding-right')) + parseInt(realFootColumn.parent().css('padding-left'))
                     : dupeFootColumnWidths[i];
 
-                if (ie9 && i == 0) realFootColumnWidth = realFootColumnWidth - 1;
-                else if (firefox && i == 0) realFootColumnWidth = realFootColumnWidth + 1;
+                if (i == 0) {
+                    if (ie9) realFootColumnWidth = realFootColumnWidth - 1;
+                    else if (firefox && !mac) realFootColumnWidth = realFootColumnWidth + 1;
+                }
 
                 // Set Duplicate Header Sizing to True Header Columns
                 realFootColumn.parent().width(realFootColumnWidth);
@@ -1104,7 +1114,7 @@ ice.ace.DataTable.prototype.resizeScrolling = function () {
         // Fix body scrollbar overlapping content
         // Instance check to prevent IE7 dynamic scrolling change errors
         // Recheck scrollable, it may have changed again post resize
-        if (ie9 && bodyTable.parent().is(':scrollable(horizontal)'))
+        if ((ie9 || firefox) && bodyTable.parent().is(':scrollable(horizontal)'))
             bodyTable.css('table-layout','fixed');
 
         if (!ie7 && vScrollShown && bodyTable.parent().is(':scrollable(vertical)')) {
