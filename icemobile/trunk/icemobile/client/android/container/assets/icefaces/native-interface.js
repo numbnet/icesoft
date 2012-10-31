@@ -60,7 +60,7 @@ if (!window.ice.mobile) {
         namespace.fetchContacts = function(id, attr) {
 
             ice.currentContactId = id;
-            var result = window.ICEContacts.fetchContacts(id, attr);
+            var result = window.ICEContacts.fetchContact(id, attr);
             return result;
         }
 
