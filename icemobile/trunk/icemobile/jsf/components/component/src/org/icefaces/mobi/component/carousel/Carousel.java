@@ -19,6 +19,8 @@ package org.icefaces.mobi.component.carousel;
 import javax.el.ELException;
 import javax.el.MethodExpression;
 import javax.el.ValueExpression;
+import javax.faces.application.Resource;
+import javax.faces.component.behavior.ClientBehaviorHolder;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.FacesEvent;
 import javax.faces.event.PhaseId;
@@ -26,16 +28,14 @@ import javax.faces.event.ValueChangeEvent;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.icefaces.mobi.utils.MobiJSFUtils;
+import org.icemobile.component.ICarousel;
+import org.icemobile.util.ClientDescriptor;
 
-public class Carousel extends CarouselBase {
 
+public class Carousel extends CarouselBase implements ICarousel{
     private static Logger logger = Logger.getLogger(Carousel.class.getName());
-
-    public static final String CAROUSEL_CLASS = "mobi-carousel ";
-    public static final String CAROUSEL_ITEM_CLASS = "mobi-carousel-list ";
-    public static final String CAROUSEL_CURSOR_CLASS = "mobi-carousel-cursor ";
-    public static final String CAROUSEL_CURSOR_LISTCLASS = "mobi-carousel-cursor-list ";
-    public static final String CAROUSEL_CURSOR_CURSOR_CENTER_CLASS = "mobi-carousel-cursor-center";
+    private String behaviors;
 
     public void broadcast(FacesEvent event)
             throws AbortProcessingException {
@@ -78,6 +78,39 @@ public class Carousel extends CarouselBase {
             }
         }
         super.queueEvent(event);
+    }
+
+    public String getIScrollSrc() {
+        Resource jsFile = getFacesContext().getApplication().getResourceHandler().createResource(ICarousel.JS_ISCROLL, ICarousel.LIB_ISCROLL);
+        String src = jsFile.getRequestPath();
+        return src;
+    }
+
+    public StringBuilder getJSConfigOptions(){
+        StringBuilder builder = new StringBuilder(255);
+        String clientId = getClientId(getFacesContext());
+        builder.append(",{ singleSubmit: ").append(isSingleSubmit());
+        builder.append(", key: ").append(getSelectedItem());
+        int hashcode = MobiJSFUtils.generateHashCode(getSelectedItem()+this.getRowCount());
+        builder.append(", hash: ").append(hashcode);
+        boolean hasBehaviors = !getClientBehaviors().isEmpty();
+        if (hasBehaviors){
+            builder.append(behaviors);
+        }
+        builder.append("}");
+        return builder;
+    }
+
+    public ClientDescriptor getClient() {
+         return MobiJSFUtils.getClientDescriptor();
+    }
+
+    public String getBehaviors() {
+        return behaviors;
+    }
+
+    public void setBehaviors(String behaviors) {
+        this.behaviors = behaviors;
     }
 
 }

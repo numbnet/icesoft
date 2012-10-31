@@ -30,9 +30,11 @@ import javax.faces.context.ResponseWriter;
 import javax.faces.event.ValueChangeEvent;
 
 import org.icefaces.mobi.renderkit.BaseLayoutRenderer;
+import org.icemobile.renderkit.CarouselCoreRenderer;
+import org.icemobile.component.ICarousel;
+import org.icefaces.mobi.renderkit.ResponseWriterWrapper;
 import org.icefaces.mobi.utils.HTML;
 import org.icefaces.mobi.utils.MobiJSFUtils;
-import org.icefaces.mobi.utils.Utils;
 
 
 public class CarouselRenderer extends BaseLayoutRenderer {
@@ -40,9 +42,6 @@ public class CarouselRenderer extends BaseLayoutRenderer {
     private static final String JS_NAME = "carousel.js";
     private static final String JS_MIN_NAME = "carousel-min.js";
     private static final String JS_LIBRARY = "org.icefaces.component.carousel";
-    private static final String JS_ISCROLL = "iscroll.js";
-    private static final String JS_ISCROLL_MIN = "iscroll.js";
-    private static final String LIB_ISCROLL = "org.icefaces.component.util";
 
 
     public void decode(FacesContext facesContext, UIComponent uiComponent) {
@@ -67,36 +66,39 @@ public class CarouselRenderer extends BaseLayoutRenderer {
         }
     }
 
-    public void encodeBegin(FacesContext facesContext, UIComponent uiComponent) throws IOException {
-        ResponseWriter writer = facesContext.getResponseWriter();
-        String clientId = uiComponent.getClientId(facesContext);
-        writeJavascriptFile(facesContext, uiComponent, JS_NAME, JS_MIN_NAME, JS_LIBRARY,
-                JS_ISCROLL, JS_ISCROLL_MIN, LIB_ISCROLL);
+    public void encodeEnd(FacesContext facesContext, UIComponent uiComponent) throws IOException {
         Carousel carousel = (Carousel) uiComponent;
-        writer.startElement(HTML.SPAN_ELEM, uiComponent);
-        writer.writeAttribute("id", clientId, "ui");
-        writer.writeAttribute("name", clientId, "name");
+        String clientId = uiComponent.getClientId(facesContext);
+        //jsp does not write the carousel js file out so core renderer won't bother
+        writeJavascriptFile(facesContext, uiComponent, JS_NAME, JS_MIN_NAME, JS_LIBRARY);
+        ResponseWriterWrapper writer = new ResponseWriterWrapper(facesContext.getResponseWriter());
+        CarouselCoreRenderer renderer = new CarouselCoreRenderer();
         writer.startElement(HTML.DIV_ELEM, uiComponent);
-        writer.writeAttribute(HTML.ID_ATTR, clientId + "_carousel", HTML.ID_ATTR);
-        String userDefinedClass = carousel.getStyleClass();
-        String styleClass = Carousel.CAROUSEL_CLASS;
-        if (userDefinedClass != null) {
-            styleClass += userDefinedClass;
+        writer.writeAttribute(HTML.ID_ATTR, clientId+"_iSlib");
+        if (!isScriptLoaded(facesContext, ICarousel.JS_ISCROLL)){
+            renderer.encodeIScrollLib(carousel, writer);
+            setScriptLoaded(facesContext, ICarousel.JS_ISCROLL);
         }
-        writer.writeAttribute("class", styleClass, "styleClass");
-        if (carousel.getStyle() != null) {
-            writer.writeAttribute("style", carousel.getStyle(), "style");
+        writer.endElement(HTML.DIV_ELEM);
+        renderer.encodeBegin(carousel, writer);
+        /* writing list is part of UISeries so jsf only */
+        encodeCarouselList(carousel, facesContext);
+        boolean hasBehaviors = !carousel.getClientBehaviors().isEmpty();
+        if (hasBehaviors){
+            ClientBehaviorHolder cbh = (ClientBehaviorHolder)this;
+            String behaviors = encodeClientBehaviors(facesContext, cbh, "change").toString();
+            behaviors = behaviors.replace("\"", "\'");
+            carousel.setBehaviors(behaviors);
+        } else {
+            carousel.setBehaviors(null);
         }
-        writer.startElement(HTML.DIV_ELEM, uiComponent);
-        writer.writeAttribute("class", "mobi-carousel-scroller", null);
-        writer.startElement(HTML.UL_ELEM, uiComponent);
-        writer.writeAttribute("class", "mobi-carousel-list", null);
+        renderer.encodeEnd(carousel, writer);
+        ((Carousel) uiComponent).setRowIndex(-1);
 
     }
 
-
     public void encodeChildren(FacesContext facesContext, UIComponent component) throws IOException {
-        //Rendering happens on encodeEnd
+        //Rendering happens on encodeBegin and encodeEnd
     }
 
     private void encodeCarouselList(Carousel carousel, FacesContext facesContext)
@@ -117,106 +119,30 @@ public class CarouselRenderer extends BaseLayoutRenderer {
 
     }
 
-
-
-    public void encodeEnd(FacesContext facesContext, UIComponent uiComponent)
-            throws IOException {
-        ResponseWriter writer = facesContext.getResponseWriter();
-        String clientId = uiComponent.getClientId(facesContext);
-        Carousel carousel = (Carousel) uiComponent;
-        int selected = carousel.getSelectedItem();
-        String savedId = carousel.getId();
-        encodeCarouselList(carousel, facesContext);
-        //no javascript tag for this component
-        //check to ensure children are all of type OutputListItem
-        writer.endElement(HTML.UL_ELEM);
-        writer.endElement(HTML.DIV_ELEM);
-        writer.endElement(HTML.DIV_ELEM);
-        //now do the paginator for the carousel
-        writer.startElement(HTML.DIV_ELEM, uiComponent);
-        writer.writeAttribute(HTML.ID_ATTR, clientId+"_list", HTML.ID_ATTR);
-        writer.writeAttribute(HTML.NAME_ATTR, clientId+"_list", HTML.NAME_ATTR);
-        Object prevLabel = carousel.getPreviousLabel();
-        if (prevLabel !=null){
-            renderPagination(facesContext, uiComponent, writer, String.valueOf(prevLabel),clientId, "prev" );
-        }
-        Object nextLabel = carousel.getNextLabel();
-        if (nextLabel !=null ){
-            renderPagination(facesContext, uiComponent, writer, String.valueOf(nextLabel),clientId, "next" );
-        }
-        writer.startElement(HTML.DIV_ELEM, uiComponent);
-        writer.writeAttribute("class", Carousel.CAROUSEL_CURSOR_CLASS, null);
-        writer.writeAttribute("style", carousel.getStyle(), null);
-        writer.startElement(HTML.DIV_ELEM, uiComponent);
-        writer.writeAttribute("class", Carousel.CAROUSEL_CURSOR_CURSOR_CENTER_CLASS, null);
-        writer.startElement(HTML.UL_ELEM, null);
-        writer.writeAttribute("class", Carousel.CAROUSEL_CURSOR_LISTCLASS, null);
-        int size = carousel.getRowCount();
-        if (selected > size - 1 || selected < 0) {
-            selected = 0;
-        }
-        for (int i = 0; i < size; i++) {
-            writer.startElement(HTML.LI_ELEM, null);
-            if (selected == i) {
-                writer.writeAttribute("class", "active", null);
-            }
-            writer.write(String.valueOf(i + 1));
-            writer.endElement(HTML.LI_ELEM);
-        }
-        //do the list of dots for pagination
-        writer.endElement(HTML.UL_ELEM);
-
-        writer.endElement(HTML.DIV_ELEM);
-        writer.endElement(HTML.DIV_ELEM);
-        this.encodeHiddenSelected(facesContext, clientId, selected);
-        renderScript(uiComponent, facesContext, clientId);
-        writer.endElement(HTML.DIV_ELEM);
-        writer.endElement(HTML.SPAN_ELEM);
-        ((Carousel) uiComponent).setRowIndex(-1);
-    }
-
-    private void renderPagination(FacesContext facesContext, UIComponent uiComponent, ResponseWriter writer,
-                                  String value, String id,String ind) throws IOException{
-        String call = "mobi.carousel.scrollTo('";
-        String eventStr = Utils.isTouchEventEnabled(facesContext) ?
-                TOUCH_START_EVENT : CLICK_EVENT;
-        writer.startElement(HTML.DIV_ELEM, uiComponent);
-        writer.writeAttribute(HTML.ID_ATTR, id+"_"+ind, HTML.ID_ATTR);
-        StringBuilder prevBuilder = new StringBuilder(call).append(id).append("', '").append(ind).append("'); return false");
-        writer.writeAttribute(eventStr, prevBuilder.toString(), null);
-        writer.write(value);
-        writer.endElement(HTML.DIV_ELEM);
-    }
-    private void renderScript(UIComponent uiComponent, FacesContext facesContext, String clientId) throws IOException {
-        ResponseWriter writer = facesContext.getResponseWriter();
-        Carousel carousel = (Carousel) uiComponent;
-        ClientBehaviorHolder cbh = (ClientBehaviorHolder)uiComponent;
-        boolean singleSubmit = carousel.isSingleSubmit();
-        writer.startElement("span", uiComponent);
-        writer.writeAttribute("id", clientId + "_script", "id");
-        writer.startElement("script", null);
-   //     writer.writeAttribute("id", clientId+"_script", "id");
-        writer.writeAttribute("text", "text/javascript", null);
-        //define mobi namespace if necessary
+    /**
+     * jsf options to javascript for this component
+     * @param uiComponent
+     * @param facesContext
+     * @return
+     * @throws IOException
+     */
+    private StringBuilder getCfgOptions(UIComponent uiComponent,FacesContext facesContext)
+          throws IOException{
         StringBuilder builder = new StringBuilder(255);
-        builder.append(clientId).append("',{ singleSubmit: ").append(singleSubmit);
+        String clientId = uiComponent.getClientId(facesContext);
+        Carousel carousel = (Carousel)uiComponent;
+        builder.append("',{ singleSubmit: ").append(carousel.isSingleSubmit());
         int hashcode = MobiJSFUtils.generateHashCode(carousel.getSelectedItem());
         builder.append(", hash: ").append(hashcode);
         boolean hasBehaviors = !carousel.getClientBehaviors().isEmpty();
         if (hasBehaviors){
+            ClientBehaviorHolder cbh = (ClientBehaviorHolder)uiComponent;
             String behaviors = encodeClientBehaviors(facesContext, cbh, "change").toString();
             behaviors = behaviors.replace("\"", "\'");
             builder.append(behaviors);
         }
-        builder.append("});");
-        writer.write("setTimeout(function () {mobi.carousel.loaded('");
-		writer.write(builder.toString());
-		writer.write("}, 1);");
-   /*     if (!Utils.isTouchEventEnabled(facesContext) && !Utils.isAndroid()) {
-                writer.write("document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);");
-        } */
-        writer.endElement("script");
-        writer.endElement("span");
+        builder.append("}");
+        return builder;
     }
 
     /**
@@ -226,13 +152,4 @@ public class CarouselRenderer extends BaseLayoutRenderer {
         return true;
     }
 
-    private void encodeHiddenSelected(FacesContext facesContext, String id, int selectedIndex) throws IOException {
-        ResponseWriter writer = facesContext.getResponseWriter();
-        writer.startElement("input", null);
-        writer.writeAttribute("id", id + "_hidden", null);
-        writer.writeAttribute("name", id + "_hidden", null);
-        writer.writeAttribute("type", "hidden", null);
-        writer.writeAttribute("value", String.valueOf(selectedIndex), null);
-        writer.endElement("input");
-    }
 }

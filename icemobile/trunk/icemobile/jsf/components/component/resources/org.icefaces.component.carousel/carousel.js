@@ -13,9 +13,14 @@
  * express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-
 if (!window['mobi']) {
     window.mobi = {};
+}
+if( !window['ice']){
+    window.ice = {};
+}
+if (!window.ice['mobi']) {
+    window.ice.mobi = {};
 }
 (function() {
     //functions that do not encapsulate any state, they just work with the provided parameters
@@ -30,82 +35,128 @@ if (!window['mobi']) {
                         checkDOMChanges: false,
                         zoom: true,
 	                    onScrollEnd: function () {
-                            mobi.carousel.scrollUpd(clientId, this.currPageX);
+                            ice.mobi.carousel.scrollUpd(event, clientId, this.currPageX);
     	                }
 	    });
         return iscroller;
     }
-    function Carousel(clientId) {
+    function Carousel(clientId, key) {
         var myScroll = enhance(clientId);
-    //    myScroll.refresh();
+        var myId = clientId;
+        var currentVal=0;
         return {
-           scrollUpdate: function( clientId, pageVal, cfg) {
-               var hidden = document.getElementById(clientId+'_hidden');
+           scrollUpdate: function(event, pageVal, cfg) {
                var changedVal = false;
-               if (hidden){
-                   var temp = hidden.value;
-                   if (temp!=pageVal){
-                        changedVal = true;
-                        hidden.value=pageVal;
-                        ice.log.debug(ice.log, 'old hidden='+temp+ ' updated to hidden.value = '+hidden.value);
-                        document.querySelector('.mobi-carousel-cursor-list > li.active').className = '';
-                        document.querySelector('.mobi-carousel-cursor-list > li:nth-child(' + (pageVal + 1) + ')').className = 'active';
+               console.log('pageVal passed in='+pageVal);
+               if (currentVal!=pageVal){
+                    changedVal = true;
+                   // this.setActive();
+                   var undoNode = document.querySelector('.mobi-carousel-cursor-list > li.active');
+                   if (undoNode){
+                       undoNode.className = '';
                    }
+                //   console.log( 'old hidden='+this.getHiddenVal()+ ' updated to hidden.value = '+pageVal);
+                   this.setActive(pageVal);
                }
                if (changedVal){
                    var behaviors = cfg.behaviors;
-                   var hasBehaviors = false;
-                    if (behaviors){
-                        hasBehaviors = true;
-                    }
-                   var singleSubmit = cfg.singleSubmit;
-                   if (hasBehaviors){
-                      if (behaviors.change){
-                            behaviors.change();
-                        }
-                    }
-                    if (!hasBehaviors && singleSubmit){
-                        ice.se(null, clientId);
-                    }
+                   var submitcfg = {};
+                   submitcfg.source = myId;
+                   submitcfg.execute = "@all";
+                   submitcfg.render = "@all";
+                   if (cfg.singleSubmit){
+                       submitcfg.execute = "@this";
+                   }
+                   if (behaviors){
+                       /** to do ensure proper format */
+                       submitcfg.behaviors = behaviors;
+                   }
+                   var refreshXHR = function(xhr, status, args) {console.log('refreshXHR'); ice.mobi.carousel.refreshCall(clientId, pageVal);};
+                   submitcfg.oncomplete = refreshXHR;
+                   mobi.AjaxRequest(submitcfg);
                }
-        //       myScroll.refresh();
+           },
+           getClientId: function(){
+               return myId;
+           },
+           getSelectedItem: function(){
+               return currentVal;
+           } ,
+           updateHidden: function( val){
+             var hidden = document.getElementById(myId+"_hidden");
+             if (hidden){
+                 hidden.value= val;
+             }
+           },
+           getHiddenVal: function(){
+              var hidden = document.getElementById(myId+'_hidden');
+              if (hidden){
+                  var temp = hidden.value;
+                  return temp;
+              } else {
+                  return 0;
+              }
+           },
+           setActive: function(val){
+               if (currentVal != val){
+                  var nodeoldActive = document.querySelector('.mobi-carousel-cursor-list > li.active');
+                  if (nodeoldActive){
+                      nodeoldActive.className='';
+                  }
+                  currentVal =  val;
+                  this.updateHidden(val);
+               }
+               var node =  document.querySelector('.mobi-carousel-cursor-list > li:nth-child(' + (currentVal + 1) + ')');
+               if (node){
+                   node.className = 'active';
+               }
            },
            scrollToPage: function(key){
                myScroll.scrollToPage(key,0);
+               this.setActive(key);
                myScroll.refresh();
            } ,
-           updateProperties: function (clientId) {
-                //detect if DOM was updated and new iScroll needed
-                //myScroll.scroller is undocumented in iScroll
-                if (myScroll.scroller.parent == undefined)  {
-                    enhance(clientId);
-                }
-               var hidden = document.getElementById(clientId+'_hidden');
-               if (hidden){
-                   var temp = hidden.value;
-                   this.scrollUpdate(clientId, temp);
+           refreshMe: function(key){
+               if (myScroll){
+                  myScroll.refresh();
+                  this.setActive(key);
                }
-                myScroll.refresh();
+           } ,
+           updateProperties: function (clientId, cfgIn) {
+               if (cfgIn.key != currentVal){
+                  this.scrollToPage(key);
+                  this.setActive(cfgIn.key);
+               }
+               if (!myScroll.wrapper)  {
+                   console.log('WARNING:_ reinitialized scroller');
+                   enhance(clientId);
+               }
            }
+
         }
     }
-    mobi.carousel = {
+    ice.mobi.carousel = {
         acarousel: {},
         cfg: {},
         loaded: function(clientId, cfgIn) {
             if (!this.acarousel[clientId]){
                 this.cfg[clientId] = cfgIn;
-                this.acarousel[clientId] = Carousel(clientId);
+                this.acarousel[clientId] = Carousel(clientId, cfgIn.key);
+                this.acarousel[clientId].setActive(cfgIn.key);
             } else {
                 this.cfg[clientId] = cfgIn;
-                this.acarousel[clientId].updateProperties(clientId);
+                this.acarousel[clientId].updateProperties(clientId, cfgIn);
+                this.acarousel[clientId].setActive(cfgIn.key);
             }
         },
-        scrollUpd: function(clientId, pageVal){
-            this.acarousel[clientId].scrollUpdate(clientId, pageVal, this.cfg[clientId]);
+        scrollUpd: function(event, clientId, pageVal){
+            this.acarousel[clientId].scrollUpdate(event, pageVal, this.cfg[clientId]);
         },
         scrollTo: function(clientId, key){
             this.acarousel[clientId].scrollToPage(key);
+        },
+        refreshCall: function(clientId, key){
+            this.acarousel[clientId].refreshMe(key);
         }
     }
 

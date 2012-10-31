@@ -3,6 +3,7 @@ package org.icemobile.renderkit;
 import java.io.IOException;
 
 import org.icemobile.component.IMobiComponent;
+import org.icemobile.util.ClientDescriptor;
 
 import java.lang.StringBuilder;
 import java.util.logging.Logger;
@@ -56,5 +57,17 @@ public abstract class BaseCoreRenderer{
         writer.writeAttribute(NAME_ATTR, comp.getClientId()+SUFFIX_HIDDEN);
         writer.endElement(INPUT_ELEM);
         writer.endElement(SPAN_ELEM);
+    }
+
+    protected boolean isTouchEventEnabled(ClientDescriptor client) {
+        // commenting out Blackberry at this time as support of touch events is
+        // problematic
+        // if (uai.sniffIphone() || uai.sniffAndroid() || uai.sniffBlackberry()
+        if (client.isAndroidOS() && client.isTabletBrowser())
+            return false;
+        if (client.isIOS() || client.isAndroidOS() ) { //assuming android phone
+            return true;
+        }
+        return false;
     }
 }

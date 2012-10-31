@@ -98,5 +98,7 @@ public class CarouselMeta extends UISeriesBaseMeta {
     @Property(tlddoc = "If set the label for the next link will be shown.  otherwise, no pagination for next used ")
     private String nextLabel;
 
+    @Property(defaultValue="false", tlddoc = "TODO must define what disabled means to carousel component")
+    private boolean disabled;
     /** other possible attributes include vertical, scroll increment, circular, numbershown, currentIndex */
 }
