@@ -63,6 +63,35 @@ if (!window.ice.ace['DataTables']) {
         hidden:false
     };
 
+    $.getScrollWidth = function() {
+        var inner = $('<p></p>').css({
+            'width':'100%',
+            'height':'100%'
+        });
+        var outer = $('<div></div>').css({
+            'position':'absolute',
+            'width':'100px',
+            'height':'100px',
+            'top':'0',
+            'left':'0',
+            'visibility':'hidden',
+            'overflow':'hidden'
+        }).append(inner);
+
+        $(document.body).append(outer);
+
+        var w1 = inner.width();
+        outer.css('overflow','scroll');
+        var w2 = inner.width();
+        if (w1 == w2 && outer[0].clientWidth) {
+            w2 = outer[0].clientWidth;
+        }
+
+        outer.detach();
+
+        return (w1 - w2);
+    };
+
     $.extend($.expr[":"], {
         scrollable:function (element, index, meta, stack) {
             var direction = converter[typeof (meta[3]) === "string" && meta[3].toLowerCase()] || converter.both;
@@ -1076,10 +1105,7 @@ ice.ace.DataTable.prototype.resizeScrolling = function () {
 
         if (!ie7 && vScrollShown && bodyTable.parent().is(':scrollable(vertical)')) {
             if (((firefox) || ((safari || chrome) && !mac) || (ie9 || ie8)) && !dupeCausesScrollChange) {
-                var offset;
-                if (firefox) offset = 14;
-                if (ie9 || ie8) offset = 16;
-                else offset = 17;
+                var offset = ice.ace.jq.getScrollWidth();
 
                 if (ie8) bodyTableParent.css('padding-right', '1px');
 
