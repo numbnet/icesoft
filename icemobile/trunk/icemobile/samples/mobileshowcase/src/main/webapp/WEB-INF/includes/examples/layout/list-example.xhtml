@@ -19,82 +19,69 @@
              xmlns:f="http://java.sun.com/jsf/core"
              xmlns:ui="http://java.sun.com/jsf/facelets"
              xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
-    <h:form style="margin-top:10px;">
+    <h:form>
 
         <mobi:fieldsetGroup inset="true">
-            <mobi:fieldsetRow style="padding-bottom:10px;">
-                The outputList component shown without and with insets.
+            <mobi:fieldsetRow>
+                The outputList component shown with and without insets.
             </mobi:fieldsetRow>
         </mobi:fieldsetGroup>
-        <p/>
-        <mobi:outputList inset="false">
-            <mobi:outputListItem group="true">
-                Common Link Structure
-            </mobi:outputListItem>
-            <mobi:outputListItem>
-                <h:outputLink value="." >Link to this page</h:outputLink>
-            </mobi:outputListItem>
-            <mobi:outputListItem>
-                <h:commandLink action="#{navigationModel.goBack}">
-                    Previously viewed page</h:commandLink>
-            </mobi:outputListItem>
-            <mobi:outputListItem type="default">
-                <h:outputLink value="." >
-                    <p class="mobi-list-item-aside"><strong>2:30</strong>AM</p>
 
-                    <h3>John Doe</h3>
-
-                    <p>
-                        <strong>You've been invited to Calgary.</strong>
-                    </p>
-
-                    <p>Hi John, how was Calgary this year?</p>
-                </h:outputLink>
-            </mobi:outputListItem>
-        </mobi:outputList>
-
+        <h4>List with Inset and Grouping</h4>
+        
+        <style>
+            .mobi-list img{ width:50%; }
+        </style>
+    
         <mobi:outputList inset="true">
-            <mobi:outputListItem group="true">
-                Thumbnail display
-            </mobi:outputListItem>
+            <mobi:outputListItem group="true">Thumbnail display</mobi:outputListItem>
             <mobi:outputListItem>
                 <h:outputLink value="." >
-                    <h:graphicImage library="images/auction" name="icesailor.png"/>
-
-                    <h3>ICEsoft Ice Sailer</h3>
-
-                    <p>Put him on the ice and watch him go!</p>
+                    <ui:include src="/WEB-INF/includes/content/inc-icesailor.xhtml"/>
                 </h:outputLink>
             </mobi:outputListItem>
             <mobi:outputListItem>
                 <h:outputLink value="." >
-                    <h:graphicImage library="images/auction"
-                                    name="icebreaker.png"/>
-
-                    <h3>ICEsoft Icebreaker</h3>
-
-                    <p>Used icebreaker with very few dents.</p>
+                    <ui:include src="/WEB-INF/includes/content/inc-icebreaker.xhtml"/>
                 </h:outputLink>
             </mobi:outputListItem>
             <mobi:outputListItem>
                 <h:outputLink value="." >
-                    <h:graphicImage library="images/auction"
-                                    styleClass="list"
-                                    name="iceskate.png"/>
-                    <h3>ICEsoft Ice Skate</h3>
-
-                    <p>A single sharpened ice skate, size 7.</p>
+                    <ui:include src="/WEB-INF/includes/content/inc-iceskater.xhtml"/>
                 </h:outputLink>
             </mobi:outputListItem>
             <mobi:outputListItem>
                 <h:outputLink value="." >
-                    <h:graphicImage library="images/auction" name="icecar.png"/>
-
-                    <h3>ICEsoft Ice Car</h3>
-
-                    <p>Beautiful ice car with metal car filling.</p>
+                    <ui:include src="/WEB-INF/includes/content/inc-icecar.xhtml"/>
                 </h:outputLink>
             </mobi:outputListItem>
         </mobi:outputList>
+    
+         <h4>List with grouping and no inset</h4>
+    
+        <mobi:outputList id="thirdList">
+            <mobi:outputListItem group="true">List</mobi:outputListItem>
+            <mobi:outputListItem>ICEsoft ICE Sailer</mobi:outputListItem>
+            <mobi:outputListItem>ICEsoft ICE Breaker</mobi:outputListItem>
+        </mobi:outputList>
+    
+        <h4>List with no inset or grouping</h4>
+    
+        <mobi:outputList id="firstList">
+            <mobi:outputListItem>ICEsoft ICE Sailer</mobi:outputListItem>
+            <mobi:outputListItem>ICEsoft ICE Breaker</mobi:outputListItem>
+        </mobi:outputList>
+    
+        <h4>Iterative list</h4>
+    
+        <mobi:outputList  id="listIterator">
+            <mobi:outputListItem group="true">List of cars</mobi:outputListItem>
+            <mobi:outputListItems value="#{listBean.cars}" var="currCar" >
+                Car title "#{currCar.title}"
+            </mobi:outputListItems>
+        </mobi:outputList>
+        
+
+
     </h:form>
 </ui:composition>
