@@ -13,10 +13,7 @@
  * express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-.mobi-button-group-vert .mobi-button {
-}
-.mobi-button-group-hor .mobi-button {
-}
+
 .mobi-button-group .mobi-button-selected {
     background: -moz-linear-gradient(top, #6792E8, #2463DE) repeat scroll 0 0 #6792E8;
     background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0, #6792E8), color-stop(1, #2463DE));
