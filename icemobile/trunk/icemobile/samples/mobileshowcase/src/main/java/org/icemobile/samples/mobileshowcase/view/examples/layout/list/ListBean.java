@@ -22,6 +22,8 @@ import org.icemobile.samples.mobileshowcase.view.metadata.context.ExampleImpl;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -55,9 +57,36 @@ public class ListBean extends ExampleImpl<ListBean> implements
         Serializable {
 
     public static final String BEAN_NAME = "listBean";
+    private List<Car> cars = new ArrayList<Car>();
 
     public ListBean() {
         super(ListBean.class);
+        cars.add(new Car("Porsche 924", 45000));
+        cars.add(new Car("Audi A8", 90000));
+        cars.add(new Car("BMW M3", 500000));
+        cars.add(new Car("Bugatti Veyron", 2000000));
+    }
+    
+    public List<Car> getCars() {
+        return cars;
+    }
+
+    public class Car {
+        private String title;
+        private int cost;
+
+        Car(String title, int cost) {
+            this.title = title;
+            this.cost = cost;
+        }
+
+        public String getTitle() {
+            return title;
+        }
+
+        public int getCost() {
+            return cost;
+        }
     }
 
 }
