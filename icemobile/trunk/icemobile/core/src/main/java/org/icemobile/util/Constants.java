@@ -31,4 +31,8 @@ public class Constants{
     public final static String SUFFIX_HIDDEN = "_hidden";
     public final static String SPACE = " ";
 
+    // rendering mouse vs touch events
+    public static final String TOUCH_START_EVENT = "ontouchstart";
+    public static final String CLICK_EVENT = "onclick";
+
 }

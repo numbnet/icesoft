@@ -20,6 +20,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
 import javax.faces.event.ValueChangeEvent;
 
 import java.io.Serializable;
@@ -79,6 +80,7 @@ public class CarouselBean implements Serializable {
     public void changedIndex(ValueChangeEvent vce){
         System.out.println(" new value is "+ vce.getNewValue().toString());
     }
+
     public void setSelectedIndex(int sel){
         this.selectedIndex = sel;
     }
@@ -86,6 +88,10 @@ public class CarouselBean implements Serializable {
         return this.selectedIndex;
     }
 
+    public void addItem(ActionEvent ae){
+        this.imageList.add(new ImageItem ("../images/queen.jpg", "Pic EXTRA", height, style));
+        this.selectedIndex = imageList.size(); //it gets added at the end of the list
+    }
 
 	public class ImageItem implements Serializable{
     	private String imageUrl;
