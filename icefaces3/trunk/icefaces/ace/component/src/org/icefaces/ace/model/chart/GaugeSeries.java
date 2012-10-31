@@ -501,7 +501,7 @@ public class GaugeSeries extends ChartSeries {
         return GaugeType.GAUGE;
     }
 
-    private enum LabelPosition {
+    public enum LabelPosition {
         INSIDE, BOTTOM
     }
 }
