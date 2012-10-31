@@ -1044,18 +1044,20 @@ ice.ace.DataTable.prototype.resizeScrolling = function () {
                     ? bodySingleColWidths[i] + parseInt(bodyColumn.parent().css('padding-right')) + parseInt(bodyColumn.parent().css('padding-left')) + 1
                     : bodySingleColWidths[i];
 
-                // Adjust last column size to stop prevent horizontal scrollbar
+                // Adjust last column size to stop prevent horizontal scrollbar / align vertical
                 if (i == 0) {
                     if (ie9) bodyColumnWidth = bodySingleColWidths[i] - 1;
+                    else if (firefox) bodyColumnWidth = bodySingleColWidths[i] + 1;
                 }
 
                 // Set Duplicate Header Sizing to Body Columns
                 // Equiv of max width
                 bodyColumn.parent().width(bodyColumnWidth);
 
-                // Adjust last column size to stop prevent horizontal scrollbar
+                // Adjust last column size to stop prevent horizontal scrollbar / align vertical
                 if (i == 0) {
                     if (ie9) bodyColumnWidth = bodySingleColWidths[i] - 2;
+                    else if (firefox) bodyColumnWidth = bodySingleColWidths[i] + 1;
                     else bodyColumnWidth = bodySingleColWidths[i] - 1;
                 }
 
@@ -1069,6 +1071,7 @@ ice.ace.DataTable.prototype.resizeScrolling = function () {
                 var realHeadColumnWidth = dupeHeadColumnWidths[i];
 
                 if (ie9 && i == 0) realHeadColumnWidth = realHeadColumnWidth - 1;
+                else if (firefox && i == 0) realHeadColumnWidth = realHeadColumnWidth + 1;
 
                 // Set Duplicate Header Sizing to True Header Columns
                 realHeadColumn.width(realHeadColumnWidth);
@@ -1087,6 +1090,7 @@ ice.ace.DataTable.prototype.resizeScrolling = function () {
                     : dupeFootColumnWidths[i];
 
                 if (ie9 && i == 0) realFootColumnWidth = realFootColumnWidth - 1;
+                else if (firefox && i == 0) realFootColumnWidth = realFootColumnWidth + 1;
 
                 // Set Duplicate Header Sizing to True Header Columns
                 realFootColumn.parent().width(realFootColumnWidth);
