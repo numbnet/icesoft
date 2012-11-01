@@ -82,27 +82,33 @@
                                     </mobi:fieldsetRow>
                                 </mobi:fieldsetGroup>
                                 
-                                
-                                <mobi:accordion autoHeight="false">
-                                    <mobi:contentPane title="Photo" id="photoPane"
-                                        rendered="#{mediaView.media.showPhoto}">
-                                        <mobi:graphicImage id="largePhoto"
-                                            value="#{mediaView.media.largePhoto.data}"
-                                            styleClass="viewer" />
-                                    </mobi:contentPane>
-                                    <mobi:contentPane title="Video" id="videoPane"
-                                        rendered="#{mediaView.media.showVideo}">
-                                        <mobi:videoPlayer id="videoPlayer"
-                                            value="#{mediaView.media.video.data}" styleClass="viewer"
-                                            linkLabel="Play" />
-                                    </mobi:contentPane>
-                                    <mobi:contentPane title="Audio" id="audioPane"
-                                        rendered="#{mediaView.media.showAudio}">
-                                        <mobi:audioPlayer id="audioPlayer"
-                                            value="#{mediaView.media.audio.data}" styleClass="viewer"
-                                            linkLabel="Play"/>
-                                    </mobi:contentPane>
-                                </mobi:accordion>
+                                <mobi:fieldsetGroup>
+                                    <mobi:fieldsetRow rendered="#{mediaView.media.showPhoto}">
+                                        <h4>Photo</h4>
+                                        <h:panelGroup styleClass="center">
+                                            <mobi:graphicImage id="largePhoto"
+                                                value="#{mediaView.media.largePhoto.data}"
+                                                styleClass="viewer" />
+                                        </h:panelGroup>
+                                    </mobi:fieldsetRow>
+                                    <mobi:fieldsetRow rendered="#{mediaView.media.showVideo}">
+                                        <h4>Video</h4>
+                                        <h:panelGroup styleClass="center">
+                                            <mobi:videoPlayer id="videoPlayer"
+                                                value="#{mediaView.media.video.data}" styleClass="viewer"
+                                                linkLabel="Play" width="250" controls="true" preload="auto"/>
+                                         </h:panelGroup>
+                                     </mobi:fieldsetRow>
+                                     <mobi:fieldsetRow rendered="#{mediaView.media.showAudio}">
+                                        <h4>Audio</h4>
+                                        <h:panelGroup styleClass="center">
+                                            <mobi:audioPlayer id="audioPlayer"
+                                                value="#{mediaView.media.audio.data}" styleClass="viewer"
+                                                linkLabel="Play" controls="true"
+                                                preload="auto"/>
+                                         </h:panelGroup>
+                                     </mobi:fieldsetRow>
+                                 </mobi:fieldsetGroup>
 
                             </h:panelGroup>
                         </mobi:contentPane>
