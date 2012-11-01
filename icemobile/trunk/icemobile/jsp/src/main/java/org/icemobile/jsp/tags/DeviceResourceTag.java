@@ -29,6 +29,7 @@ import org.icemobile.util.ClientDescriptor;
 import org.icemobile.util.Constants;
 import org.icemobile.util.MobiEnvUtils;
 import org.icemobile.util.SXUtils;
+import org.icemobile.util.Utils;
 
 /**
  * This is the Device specific detection and script writing tag.
@@ -130,6 +131,14 @@ public class DeviceResourceTag extends BaseSimpleTag {
 		
 		if( includePush ){
 			out.write(SCRIPT_ICEPUSH);
+            String cloudPushId = Utils.getCloudPushId(getRequest());
+            if (null != cloudPushId) {
+                out.write("<script type='text/javascript'>");
+                out.write(
+                        "window.addEventListener('load', function() { ice.push.parkInactivePushIds('"
+                                + cloudPushId + "'); }, false);");
+                out.write("</script>");
+            }
 		}
 	}
 	
