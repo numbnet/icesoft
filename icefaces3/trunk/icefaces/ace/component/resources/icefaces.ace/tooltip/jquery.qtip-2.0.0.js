@@ -499,16 +499,6 @@ function QTip(target, options, id, attr)
 			tooltip.toggleClass(hoverClass, state);
 		});
 
-		// If using mouseout/mouseleave as a hide event...
-		if(/mouse(out|leave)/i.test(options.hide.event)) {
-			// Hide tooltips when leaving current window/frame (but not select/option elements)
-			if(options.hide.leave === 'window') {
-				targets.window.bind('mouseout'+namespace+' blur'+namespace, function(event) {
-					if(!/select|option/.test(event.target.nodeName) && !event.relatedTarget) { self.hide(event); }
-				});
-			}
-		}
-
 		// Enable hide.fixed
 		if(options.hide.fixed) {
 			// Add tooltip as a hide target
@@ -1024,8 +1014,25 @@ function QTip(target, options, id, attr)
 
 					// If set, hide tooltip when inactive for delay period
 					opts.target.trigger('qtip-'+id+'-inactive');
+					
+					// If using mouseout/mouseleave as a hide event...
+					if(/mouse(out|leave)/i.test(options.hide.event)) { // ICE-8699
+						// Hide tooltips when leaving current window/frame (but not select/option elements)
+						if(options.hide.leave === 'window') {
+							self._windowMouseoutHandler = function(event) {
+								if(!/select|option/.test(event.target.nodeName) && !event.relatedTarget) {
+									self.hide(event);
+								}
+							}
+							$(window).bind('mouseout'+namespace+' blur'+namespace, self._windowMouseoutHandler);
+						}
+					}
 				}
 				else {
+					if (self._windowMouseoutHandler) { // ICE-8699
+						$(window).unbind('mouseout'+namespace+' blur'+namespace, self._windowMouseoutHandler);
+						self._windowMouseoutHandler = null;
+					}
 					// Reset CSS states
 					tooltip.css({
 						display: '',

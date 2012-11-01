@@ -5,3 +5,4 @@ ICEsoft custom modifications
 * jquery.qtip-2.0.0.js	removed line 188 to avoid applying ui-widget-content class to inner div
 * jquery.qtip-2.0.0.css	added custom extensions at the bottom
 * jquery.qtip-2.0.0.css	removed max-width
+* jquery.qtip-2.0.0.js	ICE-8699 added logic to only register the window mouseout event handler when the tooltip is shown and unregister it when the tooltip is hidden
