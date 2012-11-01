@@ -19,12 +19,17 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Map;
 import java.util.UUID;
+import java.util.Timer;
+import java.util.TimerTask;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.inject.Inject;
 
 @Controller
+@SessionAttributes("cloudpushBean")
 public class CloudPushController {
+
+    Timer pushTimer = new Timer(true);
 
     @Inject
     private WebApplicationContext context;
@@ -45,9 +50,8 @@ public class CloudPushController {
         model.addAttribute("isGET", Boolean.TRUE);
     }
 
-    @RequestMapping(value = "/cloudpushregion", method = RequestMethod.GET)
-    public void camRegion(HttpServletRequest request, Model model) {
-        model.addAttribute("isGET", Boolean.TRUE);
+    @RequestMapping(value = "/cloudpushregion")
+    public void cloudRegion() {
     }
 
     @ModelAttribute("cloudpushBean")
@@ -56,13 +60,32 @@ public class CloudPushController {
     }
 
     @RequestMapping(value = "/cloudpush", method = RequestMethod.POST)
-    public void processUpload(
+    public void process(
             @RequestParam(value = "pushType", required = false) String pushType,
             @ModelAttribute("cloudpushBean") CloudPushBean model)
             throws IOException {
-        PushContext.getInstance(context.getServletContext())
-                .push("cloudPush",
-                new PushNotification(model.title, model.message));
+
+        final PushContext pushContext = PushContext.getInstance(
+                context.getServletContext() );
+        final String title = model.title;
+        final String message = model.message;
+        model.setTitle("");
+        model.setMessage("");
+        final CloudPushBean cloudBean = model;
+        final boolean isCloud = "Priority Push".equals(pushType);
+        TimerTask pushTask = new TimerTask()  {
+            public void run()  {
+                cloudBean.title = title;
+                cloudBean.message = message;
+                if (isCloud)  {
+                    pushContext.push("cloudPush",
+                            new PushNotification(title, message));
+                } else  {
+                    pushContext.push("cloudPush");
+                }
+            }
+        };
+        pushTimer.schedule(pushTask, model.delay * 1000);
     }
 
 }

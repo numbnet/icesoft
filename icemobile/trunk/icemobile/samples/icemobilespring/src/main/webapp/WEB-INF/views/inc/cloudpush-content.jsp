@@ -23,7 +23,7 @@
         </mobi:fieldsetRow>
         <mobi:fieldsetRow>
             <form:label path="delay">
-                Title: <form:errors path="delay" cssClass="error"/>
+                Delay: <form:errors path="delay" cssClass="error"/>
             </form:label>
             <form:select path="delay">
                 <form:option value="5" label="5s" />
@@ -48,11 +48,7 @@
     </mobi:fieldsetGroup>
 
     <h4>Message</h4>
-    <mobi:fieldsetGroup>
-        <mobi:fieldsetRow>
-            <push:region group="cloudPush" page="/WEB-INF/views/cloudpushregion.jsp"/>
-        </mobi:fieldsetRow>
-    </mobi:fieldsetGroup>
+    <push:region group="cloudPush" page="/cloudpushregion"/>
 
     <div style="clear:both;"/>
     <s:bind path="*">
@@ -63,5 +59,5 @@
 </form:form>
 
 <script type="text/javascript">
-    MvcUtil.enhanceForm("#campushform");
+    MvcUtil.enhanceForm("#cloudpushform");
 </script>
