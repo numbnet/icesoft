@@ -797,9 +797,17 @@ ice.ace.DataTable.prototype.setupScrolling = function () {
             scrollLeftVal = $this.scrollLeft(),
             scrollTopVal = $this.scrollTop();
 
-        if (ice.ace.jq.browser.os == 'mac' && ice.ace.jq.browser.mozilla && scrollLeftVal == 0) {
-            $header.scrollLeft(-1);
-            $footer.scrollLeft(-1);
+        if (ice.ace.jq.browser.mozilla) {
+            if (scrollLeftVal == 0) {
+                $header.scrollLeft(-1);
+                $footer.scrollLeft(-1);
+            } else if (scrollLeftVal == (this.scrollWidth - this.clientWidth)){
+                $header.scrollLeft(scrollLeftVal + 1);
+                $footer.scrollLeft(scrollLeftVal + 1);
+            }
+
+            $header.scrollLeft(scrollLeftVal);
+            $footer.scrollLeft(scrollLeftVal);
         } else {
             $header.scrollLeft(scrollLeftVal);
             $footer.scrollLeft(scrollLeftVal);
