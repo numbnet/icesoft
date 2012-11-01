@@ -60,9 +60,11 @@ public class GMapInfoWindowRenderer extends CoreRenderer {
 			mapId = infoWindow.getParent().getClientId(context);
 		}
 		if (infoWindow.getChildCount() == 0) {
-			writer.write("ice.ace.gMap.addGWindow('" + mapId +"', '" + clientId + "','" + infoWindow.getContent() + "', new google.maps.LatLng("+ infoWindow.getLatitude() + "," + infoWindow.getLongitude() + "), \"" + infoWindow.getOptions() + "\", '" + markerId + "');");
+			writer.write("ice.ace.gMap.addGWindow('" + mapId +"', '" + clientId + "','" + infoWindow.getContent() + "', new google.maps.LatLng("+ infoWindow.getLatitude() + ","
+                    + infoWindow.getLongitude() + "), \"" + infoWindow.getOptions() + "\", '" + markerId + "','" + infoWindow.isShowOnClick() + "','" + infoWindow.isStartOpen() + "');");
 		} else {
-			writer.write("ice.ace.gMap.addGWindow('" + mapId + "', '" + clientId + "', document.getElementById('" + clientId + "_content'), new google.maps.LatLng(" + infoWindow.getLatitude() + "," + infoWindow.getLongitude() + "), \"" + infoWindow.getOptions() + "\", '" + markerId + "');");
+			writer.write("ice.ace.gMap.addGWindow('" + mapId + "', '" + clientId + "', document.getElementById('" + clientId + "_content'), new google.maps.LatLng("
+                    + infoWindow.getLatitude() + "," + infoWindow.getLongitude() + "), \"" + infoWindow.getOptions() + "\", '" + markerId + "','" + infoWindow.isShowOnClick() + "','" + infoWindow.isStartOpen() + "');");
 		}
 
 		writer.write("});");
