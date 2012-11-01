@@ -35,7 +35,7 @@ ice.ace.AccordionPanel = function(id, cfg) {
     this.id = id;
     this.cfg = cfg;
     this.jqId = ice.ace.escapeClientId(id);
-    this.jq = ice.ace.jq(this.jqId + '_acco');
+    this.jq = ice.ace.jq(this.jqId).children().eq(0);
 	this.activeId = this.jqId + '_active';
     var _self = this;
 	

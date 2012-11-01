@@ -89,7 +89,6 @@ public class AccordionRenderer extends CoreRenderer {
 		if(styleClass != null) writer.writeAttribute("class", styleClass, null);
 
         writer.startElement("div", null);
-		writer.writeAttribute("id", clientId + "_acco", null);
 
 		encodeTabs(context, accordionPanel);
   
