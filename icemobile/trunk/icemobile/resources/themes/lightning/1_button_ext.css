@@ -14,31 +14,139 @@
  * governing permissions and limitations under the License.
  */
 
+.mobi-button-group-vert .mobi-button, .mobi-button-group-hor .mobi-button {
+    border-radius:0; 
+}
+.mobi-button-group-vert .mobi-button:first-child{
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+}
+.mobi-button-group-vert .mobi-button:last-child {
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+.mobi-button-group-hor .mobi-button:first-child {
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+    background-origin: padding;
+    background-clip: border-box;
+}
+.mobi-button-group-hor .mobi-button:last-child {
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    background-origin: padding;
+    background-clip: border-box;
+}
 .mobi-button {
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorStr = '#8EA4C1', EndColorStr = '#4A6C9B');
+    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#8EA4C1', EndColorStr='#4A6C9B')";
+    background-color: #4A6C9B;
+    border: 1px solid #155678;
+    border-radius: 0.6em;
+    color: #FFFFFF;
+    font-weight: bold;
+    text-shadow: 0 -1px 1px #145072;
+}
+.mobi-button-unimportant {
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorStr = '#FEFEFE', EndColorStr = '#EEEEEE');
+    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#FEFEFE', EndColorStr='#EEEEEE')";
+    background-color: #f5f5f5;
+    border-color: #BEBEBE;
+    border-radius: 0.6em;
+    color: #444444;
+    font-weight: bold;
+    text-shadow:none;
+}
+.mobi-button-group .mobi-button{
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorStr = '#FEFEFE', EndColorStr = '#EEEEEE');
+    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#FEFEFE', EndColorStr='#EEEEEE')";
     background-color: #f5f5f5;
     border-color: #BEBEBE;
     color: #444444;
     font-weight: bold;
+    text-shadow:none;
 }
 .mobi-button-group .mobi-button-selected {
-    background-color: #6792E8;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorStr = '#6792E8', EndColorStr = '#2463DE');
+    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#6792E8', EndColorStr='#2463DE')";
+    background-color: #2463DE;
     border-color: #155678;
     color: #FFFFFF;
+    text-shadow: 0 -1px 1px #145072;
 }
-
-.mobi-button-important, .mobi-button-attention {
-    border: 1px solid #155678;
-    color: #FFFFFF;
-}
-
-.mobi-button{
+.mobi-button:active, .mobi-button[selected] {
+    /* 4286F5  194FDB */
+    background-color: #0099ff !important;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorStr = '#8EA4C1', EndColorStr = '#4A6C9B');
+    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#8EA4C1', EndColorStr='#4A6C9B')";
     background-color: #4A6C9B;
 }
 
-.mobi-button-important {
-    background-color: #6792E8;
+.mobi-button-dis:active, .mobi-button-dis[selected] {
+    background-color: inherit;
+    background: none;
 }
-
+.mobi-button-important, .mobi-button-attention {
+    border: 1px solid #155678;
+    text-shadow: 0 -1px 1px #145072;
+    color: #FFFFFF;
+}
+.mobi-button-important {
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorStr = '#6792E8', EndColorStr = '#2463DE');
+    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#6792E8', EndColorStr='#2463DE')";
+    background-color: #2463DE;
+}
 .mobi-button-attention {
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorStr = '#DF9F9F', EndColorStr = '#BC3839');
+    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#DF9F9F', EndColorStr='#BC3839')";
     background-color: #BC3839;
+}
+/* back button*/
+div.mobi-button-back{
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorStr = '#8EA4C1', EndColorStr = '#4A6C9B');
+    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#8EA4C1', EndColorStr='#4A6C9B')";
+    border-top: 1px solid #155678;
+    border-right: 1px solid #155678;
+    border-bottom: 1px solid #155678;
+}
+div.mobi-button-back > span {
+    display:none;
+}
+div.mobi-button-back > input {
+    color:#FFF;
+    font-weight:bold;
+    background-color:transparent;
+    border:none;
+}
+/* back button in header */
+.mobi-pagePanel-header .mobi-button-back {
+    background-color: #777;
+    border-bottom: 1px solid rgba(255,255,255,0.4);
+    border-radius: 5px;
+    box-shadow :0 -1px 1px rgba(0,0,0,0.2)inset,
+        0 1px 2px rgba(0,0,0,0.8)inset;
+    color:#fff;
+    text-shadow : 0px -1px 0px rgba(0,0,0,0.8);
+}
+.mobi-pagePanel-header .mobi-button-back:after {
+    box-shadow :0 -3px 1px -2px rgba(0,0,0,0.3)inset,
+                0 4px 2px -3px rgba(0,0,0,0.8)inset;
+}
+.mobi-button-back,
+.mobi-button-back:after,
+.mobi-button-back:before {
+    background-color: #777;
+
+}
+.mobi-button-back:hover,
+.mobi-button-back:hover:after,
+.mobi-button-back:hover:before {
+    background-color: #888;
+}
+.mobi-button.mobi-button-dis, .mobi-button.mobi-button:disabled {
+    filter: alpha(opacity = 50);
 }
