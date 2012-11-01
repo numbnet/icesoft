@@ -36,6 +36,12 @@ public class CameraController {
         model.addAttribute("ajaxRequest", AjaxUtils.isAjaxRequest(request));
     }
 
+    @RequestMapping(value = "/camera", 
+            headers="content-type=application/x-www-form-urlencoded")
+    public void fileUploadFormPost(HttpServletRequest request, Model model) {
+        fileUploadForm(request, model);
+    }
+
     @RequestMapping(value = "/camera", method = RequestMethod.GET)
     public void fileUploadForm(HttpServletRequest request, Model model) {
         model.addAttribute("isGET", Boolean.TRUE);
