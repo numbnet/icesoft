@@ -3608,6 +3608,7 @@ function wijmoASPNetParseOptions(o) {
 						$(document).off(event + namespace, o.trigger).on(event + namespace, o.trigger, function (e) {
 							if (o.mode !== "popup") {
 								self._displaySubmenu(e, triggerEle, menuContainer);
+								self._registerDocumentClickHandler(); // ICE-8699
 								if (o.menuComponent) { // ICE-8568
 									var menuId = ice.ace.submenuRegistryGetMenuId(self.rootMenu.get(0));
 									if (menuId) {
@@ -3621,17 +3622,20 @@ function wijmoASPNetParseOptions(o) {
 					case "mouseenter":
 						$(document).off(event + namespace, o.trigger).on(event + namespace, o.trigger, function (e) {
 							self._displaySubmenu(e, triggerEle, menuContainer);
+							self._registerDocumentClickHandler(); // ICE-8699
 						});
 						break;
 					case "dblclick":
 						$(document).off(event + namespace, o.trigger).on(event + namespace, o.trigger, function (e) {
 							self._displaySubmenu(e, triggerEle, menuContainer);
+							self._registerDocumentClickHandler(); // ICE-8699
 						});
 						break;
 					case "rtclick":
 						$(document).off("contextmenu" + namespace, o.trigger).on("contextmenu" + namespace, o.trigger, function (e) {
 							menuContainer.hide();
 							self._displaySubmenu(e, triggerEle, menuContainer);
+							self._registerDocumentClickHandler(); // ICE-8699
 							e.preventDefault();
 						});
 						break;
@@ -3642,23 +3646,27 @@ function wijmoASPNetParseOptions(o) {
 						triggerEle.bind(event + namespace, function (e) {
 							if (o.mode !== "popup") {
 								self._displaySubmenu(e, triggerEle, menuContainer);
+								self._registerDocumentClickHandler(); // ICE-8699
 							}
 						});
 						break;
 					case "mouseenter":
 						triggerEle.bind(event + namespace, function (e) {
 							self._displaySubmenu(e, triggerEle, menuContainer);
+							self._registerDocumentClickHandler(); // ICE-8699
 						});
 						break;
 					case "dblclick":
 						triggerEle.bind(event + namespace, function (e) {
 							self._displaySubmenu(e, triggerEle, menuContainer);
+							self._registerDocumentClickHandler(); // ICE-8699
 						});
 						break;
 					case "rtclick":
 						triggerEle.bind("contextmenu" + namespace, function (e) {
 							menuContainer.hide();
 							self._displaySubmenu(e, triggerEle, menuContainer);
+							self._registerDocumentClickHandler(); // ICE-8699
 							e.preventDefault();
 						});
 						break;
@@ -3815,9 +3823,25 @@ function wijmoASPNetParseOptions(o) {
 					self._initTrigger(triggerEle);
 				}
 			}
-			$(document).bind("click.wijmenudoc", function (e) {
+
+			this._menuContainer = menucontainer;
+		},
+		
+		_registerDocumentClickHandler: function() { // ICE-8699
+		
+			if (this._documentClickHandler) {
+				return;
+			}
+			
+			var self = this;
+			var o = self.options;
+			var menucontainer = this._menuContainer;
+			var triggerEle = self._getTriggerEle();
+			
+			this._documentClickHandler = function (e) {
 				///fixed when click the breadcrumb choose item link to show
 				/// the root menu in sliding menu.
+				if (ice.ace.submenuRegistryIsEmpty()) return;
 				if ($(e.target).parent().is(".wijmo-wijmenu-all-lists")) {
 					return;
 				}
@@ -3825,7 +3849,7 @@ function wijmoASPNetParseOptions(o) {
 				var obj = $(e.target).closest(".wijmo-wijmenu");
 				if (obj.length === 0) {
 					if (o.mode === "sliding") {
-						breadcrumb = $(".wijmo-wijmenu-breadcrumb", menucontainer);
+						var breadcrumb = $(".wijmo-wijmenu-breadcrumb", menucontainer);
 						// fixed a bug, when the trigger is not seted. 
 						// when click the document, trigger this method!
 						if (o.trigger === "") {
@@ -3834,15 +3858,26 @@ function wijmoASPNetParseOptions(o) {
 						self._resetDrilldownMenu(breadcrumb);
 					}
 					else if (o.mode === "flyout" && o.triggerEvent !== "mouseenter") {
+						self._unregisterDocumentClickHandler();
 						self._hideAllMenus();
 						return;
 					}
 
 					if (triggerEle && triggerEle.length > 0) {
+						self._unregisterDocumentClickHandler();
 						self._hideSubmenu(menucontainer);
 					}
 				}
-			});
+			}
+			
+			$(document).bind("click.wijmenudoc", this._documentClickHandler); // ICE-8699
+		},
+		
+		_unregisterDocumentClickHandler: function() { // ICE-8699
+			if (this._documentClickHandler) {
+				$(document).unbind("click.wijmenudoc", this._documentClickHandler);
+				this._documentClickHandler = null;
+			}
 		},
 
 		_showFlyoutSubmenu: function (e, li, subList) {
@@ -3860,6 +3895,7 @@ function wijmoASPNetParseOptions(o) {
 				}
 			}
 			self._displaySubmenu(e, li.find('.wijmo-wijmenu-link:eq(0)'), subList);
+			this._registerDocumentClickHandler(); // ICE-8699
 		},
 
 		_getItemTriggerEvent: function (item) {
@@ -4729,4 +4765,11 @@ ice.ace.submenuRegistryGetMenuId = function(menu) {
 	} else {
 		return menu.id || '';
 	}
+}
+ice.ace.submenuRegistryIsEmpty = function () {
+	var registry = ice.ace.submenuRegistry;
+	for (var menuId in registry) {
+		if (registry[menuId].length > 0) return false;
+	}
+	return true;
 }
