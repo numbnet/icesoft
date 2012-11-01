@@ -13,15 +13,18 @@
  * express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
+
 .mobi-accordion{
     border-top: 1px solid #b5b9c0;
     border-bottom: 1px solid #b5b9c0;
 }
-
 .mobi-accordion .handle {
-    background-color: #F4F5F7;
+    background-color: #A8ACB9;
+    border-bottom: 1px solid #7A8091;
     border-top: 1px solid #fff;
     color: #717880;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorStr = '#F4F5F7', EndColorStr = '#A8ACB9');
+    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#F4F5F7', EndColorStr='#A8ACB9')";
     font-weight: bold;
     height:31px;
 }

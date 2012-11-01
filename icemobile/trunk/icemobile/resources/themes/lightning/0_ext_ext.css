@@ -14,27 +14,33 @@
  * governing permissions and limitations under the License.
  */
 
-.mobi-carousel {
-    float:none;
+/* Theme Roller compatibility */
+.ui-icon-shadow {
+    box-shadow: 0px 1px 0 rgba(255,255,255,.4);
+}
+/* Flexbox */
+.mobi-grid{
+    padding: 0 10px;
+    box-sizing: border-box;
     position: relative;
 }
-
-.mobi-carousel-scroller {
-    float:none;
-    position: relative;
+.mobi-left{
+    -webkit-box-pack: start;
+    -moz-box-pack: start;
 }
-
-.mobi-carousel-list {
-    float:none;
-    position: relative;
+.mobi-right{
+    -webkit-box-pack: end;
+    -moz-box-pack: end;
 }
-.mobi-carousel-list li { background-color: white;}
-.mobi-carousel-cursor-list > li.active { background: #888;}
-.mobi-carousel-cursor {
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorStr = '#F2F2F2', EndColorStr = '#7B7B7B');
-    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#F2F2F2', EndColorStr='#7B7B7B')";
-    border-bottom: 1px solid #999999;
-    border-top: 1px solid #7D7D7D;
-    color: #FFFFFF;
+.mobi-justify{
+    text-align:center;
 }
-
+.mobi-center{
+    text-align:center;
+}
+.mobi-col {
+    box-sizing: border-box;
+    overflow:hidden;
+    display:inline-block !important;
+    float:none !important;
+}

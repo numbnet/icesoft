@@ -14,9 +14,6 @@
  * governing permissions and limitations under the License.
  */
 
-* {
-    -webkit-tap-highlight-color: #194FDB;
-}
 body{
-    background-color: #E8E9EA;
+    background: #c8c8c8;
 }
