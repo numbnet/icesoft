@@ -9,6 +9,8 @@ Custom Extensions
 - Add disabled check on menuitem activate (wijmo.js #3153)
 - Add disabled check on menuitem hover (wijmo.js #3486) 
 - Add live event binding to menu triggers (wijmo.js #3362)
+- ICE-8699 Added logic to only register the click event handler on the document when a submenu is showing
+   and unregister the handler when all submenus have been hidden
 
 Custom Fixes
 ICE-7638 Add ace:submenu support to ace:contextMenu
