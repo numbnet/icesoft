@@ -196,9 +196,11 @@ public class DateTimeEntryRenderer extends InputRenderer {
         JSONBuilder json = JSONBuilder.create();
 
         script.append("ice.ace.jq(function(){").append(resolveWidgetVar(dateTimeEntry)).append(" = new ");
-        json.beginFunction("ice.ace.Calendar").
-            item(clientId).
+        json./*beginFunction("ice.ace.Calendar").
+            item(clientId).*/
             beginMap().
+                entry("widgetVar", resolveWidgetVar(dateTimeEntry)).
+                entry("id", clientId).
                 entry("popup", dateTimeEntry.isPopup()).
                 entry("locale", dateTimeEntry.calculateLocale(context).toString());
 //                if(!isValueBlank(value) && !timeOnly && dateTimeEntry.isValid()) json.entry("defaultDate", value);
@@ -264,11 +266,14 @@ public class DateTimeEntryRenderer extends InputRenderer {
                 json.entry("singleSubmit", dateTimeEntry.isSingleSubmit());
                 json.entry("withinSingleSubmit", Util.withinSingleSubmit(dateTimeEntry));
             json.endMap();
-        json.endFunction();
+//        json.endFunction();
+        String initScript = "ice.ace.Calendar.init(" + json + ");";
+//        System.out.println(initScript);
+        writer.write(initScript);
 
         script.append(json.toString()).append("});");
 //        System.out.println(script);
-        writer.write(script.toString());
+//        writer.write(script.toString());
 
         writer.endElement("script");
     }

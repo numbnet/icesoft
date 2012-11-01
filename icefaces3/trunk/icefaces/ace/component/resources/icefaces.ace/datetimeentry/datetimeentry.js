@@ -57,11 +57,14 @@ ice.ace.Calendar = function(id, cfg) {
     //Initialize calendar
     if(!this.cfg.disabled) {
         if(hasTimePicker) {
-            if(this.cfg.timeOnly)
+            if (this.cfg.timeOnly) {
                 this.jq.timepicker(this.cfg);
+                this.pickerFn = "timepicker";
+            }
             else {
                 this.cfg.altFieldTimeOnly = false;
                 this.jq.datetimepicker(this.cfg);
+                this.pickerFn = "datetimepicker";
                 if (!this.cfg.popup && $.type(altFieldVal) === "string") {
 //                    this.cfg.altField.val(altFieldVal);
                     this.jq.datetimepicker("setDate", $.trim(altFieldVal));
@@ -70,6 +73,7 @@ ice.ace.Calendar = function(id, cfg) {
         }
         else {
             this.jq.datepicker(this.cfg);
+            this.pickerFn = "datepicker";
             if (!this.cfg.popup && $.type(altFieldVal) === "string") {
                 this.jq.datepicker("setDate", $.trim(altFieldVal));
             }
@@ -103,13 +107,13 @@ ice.ace.Calendar = function(id, cfg) {
 
 ice.ace.Calendar.prototype.configureLocale = function() {
     var localeSettings = ice.ace.locales[this.cfg.locale];
-	
+
     if(localeSettings) {
         for(var setting in localeSettings) {
             this.cfg[setting] = localeSettings[setting];
         }
     }
-}
+};
 
 ice.ace.Calendar.prototype.bindDateSelectListener = function() {
     var _self = this;
@@ -155,17 +159,65 @@ ice.ace.Calendar.prototype.hasTimePicker = function() {
 
 ice.ace.Calendar.prototype.setDate = function(date) {
     this.jq.datetimepicker('setDate', date);
-}
+};
 
 ice.ace.Calendar.prototype.getDate = function() {
     return this.jq.datetimepicker('getDate');
-}
+};
 
 ice.ace.Calendar.prototype.enable = function() {
     this.jq.datetimepicker('enable');
-}
+};
 
 ice.ace.Calendar.prototype.disable = function() {
     this.jq.datetimepicker('disable');
-}
+};
+
+ice.ace.Calendar.init = function(options) {
+    $(function() {
+        var widgetVar = options.widgetVar, id = options.id;
+        var input = $(ice.ace.escapeClientId(id) + "_input");
+        var trigger = null, triggerClass = $.datepicker._triggerClass;
+        var defaults = $.datepicker._defaults;
+        var showOn = options.showOn || defaults.showOn;
+        var buttonText = options.buttonText || defaults.buttonText;
+        var buttonImage = options.buttonImage || defaults.buttonImage;
+        var buttonImageOnly = options.buttonImageOnly || defaults.buttonImageOnly;
+        var isRTL = options.isRTL || defaults.isRTL;
+
+        if (!options.popup) {
+            window[widgetVar] = new ice.ace.Calendar(id, options);
+            return;
+        }
+
+        window[widgetVar] = null;
+        if ($.inArray(showOn, ["button","both"]) >= 0) {
+            trigger = buttonImageOnly ?
+                $('<img/>').addClass(triggerClass).
+                    attr({ src: buttonImage, alt: buttonText, title: buttonText }) :
+                $('<button type="button"></button>').addClass(triggerClass).
+                    html(buttonImage == '' ? buttonText : $('<img/>').attr(
+                    { src:buttonImage, alt:buttonText, title:buttonText }));
+            input[isRTL ? 'before' : 'after'](trigger);
+            trigger.one("click", function() {
+                if (!window[widgetVar]) {
+                    trigger.remove();
+                    window[widgetVar] = new ice.ace.Calendar(id, options);
+                    window[widgetVar].jq[window[widgetVar].pickerFn]("show");
+                }
+            });
+        }
+        if ($.inArray(showOn, ["focus","both"]) >= 0) {
+            input.one("focus", function() {
+                if (!window[widgetVar]) {
+                    if (trigger) {
+                        trigger.remove();
+                    }
+                    window[widgetVar] = new ice.ace.Calendar(id, options);
+                    window[widgetVar].jq[window[widgetVar].pickerFn]("show");
+                }
+            });
+        }
+    });
+};
 }(ice.ace.jq));
