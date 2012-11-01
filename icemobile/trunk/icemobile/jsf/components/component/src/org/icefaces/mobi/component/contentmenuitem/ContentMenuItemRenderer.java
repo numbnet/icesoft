@@ -295,7 +295,7 @@ public class ContentMenuItemRenderer extends BaseLayoutRenderer {
         writer.writeAttribute("class", closeClass, "class");
         writer.startElement(HTML.DIV_ELEM, childComp);
         writer.writeAttribute("class", handleClass, "class");
-        writer.writeAttribute("onclick", "mobi.accordionController.toggleMenu('" + menuId + "',this);", "onclick");
+        writer.writeAttribute("onclick", "ice.mobi.accordionController.toggleMenu('" + menuId + "',this);", "onclick");
         writer.startElement(HTML.DIV_ELEM, childComp);
         writer.writeAttribute("class", pointerClass, "class");
         writer.write(Accordion.ACCORDION_RIGHT_POINTING_POINTER);
