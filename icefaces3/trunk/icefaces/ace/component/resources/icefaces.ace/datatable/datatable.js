@@ -681,50 +681,44 @@ ice.ace.DataTable.prototype.setupSelectionEvents = function () {
     var selectEvent = this.cfg.dblclickSelect ? 'dblclick' : 'click',
         selector = this.isCellSelectionEnabled()
             ? this.cellSelector
-            : this.rowSelector;
+            : this.rowSelector,
+        $target = ice.ace.jq(selector),
+        $dt = ice.ace.jq(this.jqId);
 
-    ice.ace.jq(selector)
-        .css('cursor', 'pointer')
-        .closest('table').bind('mouseleave',function () {
-            if (!(_self.cfg.noiehover
-                && ((ice.ace.jq.browser.msie && ice.ace.jq.browser.version == 7) ||
-                (ice.ace.jq.browser.msie && ice.ace.jq.browser.version == 8)))) {
-                var element = (_self.isCellSelectionEnabled() ? 'td' : 'tr');
-                ice.ace.jq(this).find('tbody ' + element + ".ui-state-hover")
-                    .removeClass('ui-state-hover');
-            }
+    $target.css('cursor', 'pointer');
+
+    $dt.on(selectEvent, selector, function (event) {
+        if (this.nodeName == 'TR') _self.onRowClick(event, this);
+        else _self.onCellClick(event, this);
+    });
+
+    if (!(_self.cfg.nohover)) {
+        $target.closest('table').bind('mouseleave',function () {
+            var element = (_self.isCellSelectionEnabled() ? 'td' : 'tr');
+            ice.ace.jq(this).find('tbody ' + element + ".ui-state-hover")
+                .removeClass('ui-state-hover');
         }).find('thead').bind('mouseenter', function () {
-            if (!(_self.cfg.noiehover
-                && ((ice.ace.jq.browser.msie && ice.ace.jq.browser.version == 7) ||
-                (ice.ace.jq.browser.msie && ice.ace.jq.browser.version == 8)))) {
-                var element = (_self.isCellSelectionEnabled() ? 'td' : 'tr');
-                ice.ace.jq(this).siblings().find(element + ".ui-state-hover")
-                    .removeClass('ui-state-hover');
-            }
+            var element = (_self.isCellSelectionEnabled() ? 'td' : 'tr');
+            ice.ace.jq(this).siblings().find(element + ".ui-state-hover")
+                .removeClass('ui-state-hover');
         });
-    ice.ace.jq(this.jqId)
-        .off('mouseenter', selector)
-        .on('mouseenter', selector, function () {
-            if (!(_self.cfg.noiehover
-                && ((ice.ace.jq.browser.msie && ice.ace.jq.browser.version == 7) ||
-                (ice.ace.jq.browser.msie && ice.ace.jq.browser.version == 8)))) {
-                var element = ice.ace.jq(this);
-                if (!element.hasClass('dt-cond-row') &&
-                    (!_self.isCellSelectionEnabled() || !element.parent().hasClass('dt-cond-row')))
-                    element.addClass('ui-state-hover');
 
-                element.siblings('.ui-state-hover')
+        $dt.off('mouseenter', selector);
+
+        $dt.on('mouseenter', selector, function () {
+            var element = ice.ace.jq(this);
+            if (!element.hasClass('dt-cond-row') &&
+                    (!_self.isCellSelectionEnabled() || !element.parent().hasClass('dt-cond-row')))
+                element.addClass('ui-state-hover');
+
+            element.siblings('.ui-state-hover')
                     .removeClass('ui-state-hover');
-                if (_self.isCellSelectionEnabled()) {
-                    element.parent().siblings().children('.ui-state-hover')
+            if (_self.isCellSelectionEnabled()) {
+                element.parent().siblings().children('.ui-state-hover')
                         .removeClass('ui-state-hover');
-                }
             }
-        })
-        .on(selectEvent, selector, function (event) {
-            if (this.nodeName == 'TR') _self.onRowClick(event, this);
-            else _self.onCellClick(event, this);
         });
+    }
 }
 
 ice.ace.DataTable.prototype.setupReorderableColumns = function () {
@@ -890,7 +884,7 @@ ice.ace.DataTable.prototype.resizeScrolling = function () {
     // Reattempt resize in 100ms if I or a parent of mine is currently hidden.
     // Sizing will not be accurate if the table is not being displayed, like at tabset load.
     // Hidden is true if any ancestors are hidden.
-    if (scrollableTable.is(':hidden')) {
+    if (!(this.cfg.nohidden) && scrollableTable.is(':hidden')) {
         if (!this.cfg.disableHiddenSizing) {
             var _self = this;
             setTimeout(function () {
