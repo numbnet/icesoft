@@ -23,7 +23,7 @@
 
     <groupId>org.icefaces</groupId>
     <artifactId>bundle-parent</artifactId>
-    <version>3.1.0-RC1-SNAPSHOT</version>
+    <version>3.2.0</version>
     <packaging>pom</packaging>
     <name>ICEfaces Core and Components</name>
     <!--<name>ICEfaces EE Core and Components</name>-->
@@ -55,7 +55,7 @@
         <module>icepush</module>
         <module>ace</module>
         <module>compat</module>
-        <!--<module>samples</module>-->
+        <module>samples</module>
     </modules>
 
     <properties>
