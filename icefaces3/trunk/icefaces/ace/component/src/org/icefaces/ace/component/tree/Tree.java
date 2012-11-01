@@ -16,6 +16,8 @@ import javax.faces.context.FacesContext;
 import javax.faces.el.PropertyNotFoundException;
 import javax.faces.event.*;
 import javax.faces.model.DataModel;
+import javax.faces.render.Renderer;
+import javax.faces.view.Location;
 import java.io.Serializable;
 import java.util.*;
 
@@ -964,7 +966,7 @@ public class Tree<N> extends TreeBase implements Serializable {
         if (isNested == null) {
             UIComponent parent = this;
             while (null != (parent = parent.getParent())) {
-                if (parent instanceof UIData) {
+                if (parent instanceof UIData || "facelets.ui.Repeat".equals(parent.getRendererType())) {
                     isNested = Boolean.TRUE;
                     break;
                 }
@@ -973,10 +975,155 @@ public class Tree<N> extends TreeBase implements Serializable {
                 isNested = Boolean.FALSE;
             }
             return isNested;
-        } else {
-            return isNested;
-        }
+        } else return isNested;
     }
+
+    private String getComponentLocation(UIComponent component) {
+        Location location = (Location) component.getAttributes().get(UIComponent.VIEW_LOCATION_KEY);
+        if (location != null) {
+            return location.toString();
+        }
+        return null;
+    }
+
+    private String getPathToComponent(UIComponent component) {
+        StringBuffer buf = new StringBuffer();
+
+        if (component == null) {
+            buf.append("{Component-Path : ");
+            buf.append("[null]}");
+            return buf.toString();
+        }
+
+        getPathToComponent(component, buf);
+
+        buf.insert(0, "{Component-Path : ");
+        buf.append("}");
+
+        return buf.toString();
+    }
+
+    private void getPathToComponent(UIComponent component, StringBuffer buf) {
+        if (component == null) {
+            return;
+        }
+
+        StringBuffer intBuf = new StringBuffer();
+
+        intBuf.append("[Class: ");
+        intBuf.append(component.getClass().getName());
+        if (component instanceof UIViewRoot) {
+            intBuf.append(",ViewId: ");
+            intBuf.append(((UIViewRoot) component).getViewId());
+        }
+        else {
+            intBuf.append(",Id: ");
+            intBuf.append(component.getId());
+        }
+        intBuf.append("]");
+
+        buf.insert(0, intBuf.toString());
+
+        getPathToComponent(component.getParent(), buf);
+    }
+
+    static UniqueIdVendor findParentUniqueIdVendor(UIComponent component) {
+        UIComponent parent = component.getParent();
+
+        while (parent != null) {
+            if (parent instanceof UniqueIdVendor) {
+                return (UniqueIdVendor) parent;
+            }
+            parent = parent.getParent();
+        }
+        return null;
+    }
+
+    static UIComponent findParentNamingContainer(UIComponent component, boolean returnRootIfNotFound) {
+        UIComponent parent = component.getParent();
+        if (returnRootIfNotFound && parent == null) {
+            return component;
+        }
+        while (parent != null) {
+            if (parent instanceof NamingContainer) {
+                return parent;
+            }
+            if (returnRootIfNotFound) {
+                UIComponent nextParent = parent.getParent();
+                if (nextParent == null) {
+                    return parent; // Root
+                }
+                parent = nextParent;
+            }
+            else {
+                parent = parent.getParent();
+            }
+        }
+        return null;
+    }
+
+    protected String UIComponentBase_getClientId(FacesContext context) {
+        if (context == null) {
+            throw new NullPointerException();
+        }
+
+        //boolean idWasNull = false;
+        String id = getId();
+        if (id == null) {
+            // Although this is an error prone side effect, we automatically create a new id
+            // just to be compatible to the RI
+
+            // The documentation of UniqueIdVendor says that this interface should be implemented by
+            // components that also implements NamingContainer. The only component that does not implement
+            // NamingContainer but UniqueIdVendor is UIViewRoot. Anyway we just can't be 100% sure about this
+            // fact, so it is better to scan for the closest UniqueIdVendor. If it is not found use
+            // viewRoot.createUniqueId, otherwise use UniqueIdVendor.createUniqueId(context,seed).
+            UniqueIdVendor parentUniqueIdVendor = findParentUniqueIdVendor(this);
+            if (parentUniqueIdVendor == null) {
+                UIViewRoot viewRoot = context.getViewRoot();
+                if (viewRoot != null) {
+                    id = viewRoot.createUniqueId();
+                }
+                else {
+                    // The RI throws a NPE
+                    String location = getComponentLocation(this);
+                    throw new FacesException("Cannot create clientId. No id is assigned for component"
+                            + " to create an id and UIViewRoot is not defined: "
+                            + getPathToComponent(this)
+                            + (location != null ? " created from: " + location : ""));
+                }
+            }
+            else {
+                id = parentUniqueIdVendor.createUniqueId(context, null);
+            }
+            setId(id);
+            // We remember that the id was null and log a warning down below
+            // idWasNull = true;
+        }
+        String clientId;
+        UIComponent namingContainer = findParentNamingContainer(this, false);
+        if (namingContainer != null) {
+            String containerClientId = namingContainer.getContainerClientId(context);
+            if (containerClientId != null) {
+                StringBuilder bld = new StringBuilder(containerClientId.length()+1+id.length());
+                clientId = bld.append(containerClientId).append(UINamingContainer.getSeparatorChar(context)).append(id).toString();
+            }
+            else {
+                clientId = id;
+            }
+        }
+        else {
+            clientId = id;
+        }
+
+        Renderer renderer = getRenderer(context);
+        if (renderer != null) {
+            clientId = renderer.convertClientId(context, clientId);
+        }
+
+        return clientId;
+    }
+
 
     @Override
     public String getClientId(FacesContext context) {
@@ -997,7 +1144,7 @@ public class Tree<N> extends TreeBase implements Serializable {
         //     this instance's ID
         if (baseClientId == null && clientIdBuilder == null) {
             if (!isNestedWithinUIData()) {
-                clientIdBuilder = new StringBuilder(super.getClientId(context));
+                clientIdBuilder = new StringBuilder(UIComponentBase_getClientId(context));
                 baseClientId = clientIdBuilder.toString();
                 baseClientIdLength = (baseClientId.length() + 3);
                 clientIdBuilder
@@ -1028,7 +1175,7 @@ public class Tree<N> extends TreeBase implements Serializable {
                 // each time.  Reuse the same clientIdBuilder instance
                 // for each call by resetting the length to 0 after
                 // the ID has been computed.
-                String baseId = super.getClientId(context);
+                String baseId = UIComponentBase_getClientId(context);
 
                 if (lastContainerId != null && !baseId.equals(lastContainerId)) {
                     stateMap = null;
@@ -1051,7 +1198,7 @@ public class Tree<N> extends TreeBase implements Serializable {
                 // Not nested and no row available, so just return our baseClientId
                 return (baseClientId);
             } else {
-                String baseId = super.getClientId(context);
+                String baseId = UIComponentBase_getClientId(context);
 
                 if (lastContainerId != null && !baseId.equals(lastContainerId)) {
                     stateMap = null;
