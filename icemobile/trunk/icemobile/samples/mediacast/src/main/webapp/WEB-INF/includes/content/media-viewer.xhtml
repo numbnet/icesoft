@@ -52,7 +52,7 @@
         </mobi:fieldsetGroup>
     </h:panelGroup>
 	
-		<mobi:accordion autoHeight="false">
+		<!-- mobi:accordion autoHeight="false">
             <mobi:contentPane title="Photo" id="photoPane"
                 rendered="#{mediaView.media.showPhoto}">
                 <mobi:graphicImage id="largePhoto"
@@ -71,7 +71,35 @@
                     value="#{mediaView.media.audio.data}" styleClass="viewer"
                     linkLabel="Play"/>
             </mobi:contentPane>
-        </mobi:accordion>
+        </mobi:accordion-->
+        
+        <mobi:fieldsetGroup>
+            <mobi:fieldsetRow rendered="#{mediaView.media.showPhoto}">
+                <h4>Photo</h4>
+                <h:panelGroup styleClass="center">
+                    <mobi:graphicImage id="largePhoto"
+                        value="#{mediaView.media.largePhoto.data}"
+                        styleClass="viewer" />
+                </h:panelGroup>
+            </mobi:fieldsetRow>
+            <mobi:fieldsetRow rendered="#{mediaView.media.showVideo}">
+                <h4>Video</h4>
+                <h:panelGroup styleClass="center">
+                    <mobi:videoPlayer id="videoPlayer"
+                        value="#{mediaView.media.video.data}" styleClass="viewer"
+                        linkLabel="Play" width="250" controls="true" preload="auto"/>
+                 </h:panelGroup>
+             </mobi:fieldsetRow>
+             <mobi:fieldsetRow rendered="#{mediaView.media.showVideo}">
+                <h4>Audio</h4>
+                <h:panelGroup styleClass="center">
+                    <mobi:audioPlayer id="audioPlayer"
+                        value="#{mediaView.media.audio.data}" styleClass="viewer"
+                        linkLabel="Play" controls="true"
+                        preload="auto"/>
+                 </h:panelGroup>
+             </mobi:fieldsetRow>
+         </mobi:fieldsetGroup>
 	    
 	    
     <h:panelGroup rendered="#{empty mediaView.media}" style="font-size: 15px;font-weight: bold;padding: 5px;display: inline-block;color:#6C6666;">
