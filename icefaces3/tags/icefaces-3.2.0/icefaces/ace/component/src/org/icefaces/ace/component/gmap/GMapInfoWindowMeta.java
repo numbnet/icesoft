@@ -57,4 +57,10 @@ public class GMapInfoWindowMeta extends UIPanelMeta {
     @Property(tlddoc="Additional options to be sent to the window. Check google maps API for more specifics at " +
             "https://developers.google.com/maps/documentation/javascript/reference#InfoWindowOptions. Form is attribute:'value'.", defaultValue="none")
     private String options;
+
+    @Property(tlddoc="Boolean value that determines whether or not the info window appears upon a click of the marker it is bound to. This attribute will not have any effect if the info window is not nested in a marker.",defaultValue="true")
+    private boolean showOnClick;
+
+    @Property(tlddoc="Boolean value that determines whether or not the info window will open upon loading the map, or whether it will remain hidden until the parent marker is clicked. Will only have an effect if window is nested inside a marker, and showOnClick is true.",defaultValue="true")
+    private boolean startOpen;
 }

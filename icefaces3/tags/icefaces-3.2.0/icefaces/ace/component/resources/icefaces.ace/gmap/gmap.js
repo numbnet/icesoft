@@ -616,7 +616,7 @@ ice.ace.gMap.getGMapWrapper = function (id) {
         wrapper.overlays[overlayID] = overlay;
     }
 
-    ice.ace.gMap.addGWindow = function (ele, windowId, content, position,options,markerId) {
+    ice.ace.gMap.addGWindow = function (ele, windowId, content, position,options,markerId,showOnClick,startOpen) {
         var wrapper = ice.ace.gMap.getGMapWrapper(ele);
         var map = ice.ace.gMap.getGMapWrapper(ele).getRealGMap();
         var window = wrapper.windows[windowId];
@@ -632,11 +632,23 @@ ice.ace.gMap.getGMapWrapper = function (id) {
         if (markerId != "none")
         {
             var marker = wrapper.markers[markerId];
-            window.open(map,marker);
+            if(showOnClick=="true")
+            {
+              google.maps.event.addDomListener(marker,"click",function(){
+                  window.open(map,marker);
+              });
+              if(startOpen=="true")
+                  window.open(map,marker);
+            }
+            else
+                window.open(map,marker);
         }
         else
         {
             window.open(map);
+            google.maps.event.addDomListener(window,"closeclick",function(){
+                wrapper.freeWindows[windowId]=null;
+            });
             wrapper.freeWindows[windowId]=window;
         }
         wrapper.windows[windowId] = window;
