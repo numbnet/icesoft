@@ -32,6 +32,7 @@ import org.icemobile.client.blackberry.script.audio.AudioRecorderLauncher;
 import org.icemobile.client.blackberry.script.camera.VideoController;
 import org.icemobile.client.blackberry.script.camera.WidgetCameraController;
 import org.icemobile.client.blackberry.script.debug.JavascriptDebugger;
+import org.icemobile.client.blackberry.script.pim.PIMReader;
 import org.icemobile.client.blackberry.script.scan.QRCodeScanner;
 import org.icemobile.client.blackberry.script.test.ScriptableTest;
 import org.icemobile.client.blackberry.script.upload.AjaxUpload;
@@ -56,12 +57,16 @@ import net.rim.device.api.browser.field2.BrowserFieldRequest;
 import net.rim.device.api.browser.field2.ProtocolController;
 import net.rim.device.api.io.IOUtilities;
 import net.rim.device.api.io.http.HttpHeaders;
+import net.rim.device.api.lowmemory.LowMemoryListener;
+import net.rim.device.api.lowmemory.LowMemoryManager;
 import net.rim.device.api.script.ScriptEngine;
 import net.rim.device.api.system.ApplicationManager;
 import net.rim.device.api.system.CoverageInfo;
 import net.rim.device.api.system.DeviceInfo;
 import net.rim.device.api.system.EncodedImage;
 import net.rim.device.api.system.EventLogger;
+import net.rim.device.api.system.Memory;
+import net.rim.device.api.system.MemoryStats;
 import net.rim.device.api.system.SystemListener;
 import net.rim.device.api.ui.UiApplication;
 import net.rim.device.api.ui.component.BitmapField;
@@ -74,12 +79,13 @@ import net.rim.blackberry.api.messagelist.*;
  * graphical user interface.
  */
 public class ICEmobileContainer extends UiApplication implements SystemListener,
-                                                                         ContainerController {
+                                                                         ContainerController, 
+                                                                         LowMemoryListener {
 
     // Default, compile time, initial page. This value is passed to BlackberryOptionsProperties
     // during construction to be used if the Properties object is new
     public static final String HOME_URL = "http://www.icemobile.org/demos.html";
-
+    
     public static final int HISTORY_SIZE = 10;
 
     // Some startup branding options
@@ -93,6 +99,7 @@ public class ICEmobileContainer extends UiApplication implements SystemListener,
     private BrowserFieldCookieManager mBrowserCookieManager;
     private BrowserFieldHistory mBrowserHistory;
     private BrowserFieldController mBrowserController;
+    private AuthenticatingProtocolHandler mBrowserAuthHandler;
     private String mInitialScript;
     private RenderingSession mRenderingSession;
 
@@ -171,6 +178,8 @@ public class ICEmobileContainer extends UiApplication implements SystemListener,
 
     public ICEmobileContainer() {
 
+    	LowMemoryManager.addLowMemoryListener(this);
+    	logMemory();
         EventLogger.clearLog();
         EventLogger.register(GUID, "ICE", EventLogger.VIEWER_STRING);
         EventLogger.setMinimumLevel(EventLogger.DEBUG_INFO);
@@ -313,22 +322,24 @@ public class ICEmobileContainer extends UiApplication implements SystemListener,
 
                                             // TODO: convert to single dispatcher instance
                                             mScriptEngine.addExtension("icefaces.shootPhoto",
-                                                                       new WidgetCameraController(ICEmobileContainer.this));
+                                                                              new WidgetCameraController(ICEmobileContainer.this));
                                             mScriptEngine.addExtension("icefaces.test",
-                                                                       new ScriptableTest());
+                                                                              new ScriptableTest());
                                             mScriptEngine.addExtension("icefaces.ajaxUpload",
-                                                                       new AjaxUpload(ICEmobileContainer.this));
+                                                                              new AjaxUpload(ICEmobileContainer.this));
                                             mScriptEngine.addExtension("icefaces.getResult",
-                                                                       new ScriptResultReader(ICEmobileContainer.this));
+                                                                              new ScriptResultReader(ICEmobileContainer.this));
                                             mScriptEngine.addExtension("icefaces.shootVideo",
-                                                                       new VideoController(ICEmobileContainer.this));
+                                                                              new VideoController(ICEmobileContainer.this));
                                             mScriptEngine.addExtension("icefaces.scan",
-                                                                       new QRCodeScanner(ICEmobileContainer.this));
+                                                                              new QRCodeScanner(ICEmobileContainer.this));
                                             mScriptEngine.addExtension("icefaces.logInContainer",
-                                                                       new JavascriptDebugger());
-                                            mScriptEngine.addExtension("icefaces.recordAudio",
-                                                                       new AudioRecorderLauncher(ICEmobileContainer.this));
-
+                                                                              new JavascriptDebugger());
+                                            mScriptEngine.addExtension("icefaces.recordAudio", 
+                                            							new AudioRecorderLauncher(ICEmobileContainer.this)); 
+                                            mScriptEngine.addExtension("icefaces.fetchContacts", 
+                                            							new PIMReader(ICEmobileContainer.this)); 
+                                           
                                             Logger.DEBUG("ICEmobile - native script executed");
                                             invokeLater(mParkScriptRunner);
 
@@ -400,10 +411,9 @@ public class ICEmobileContainer extends UiApplication implements SystemListener,
         mBrowserField = new BrowserField(bfc);
         mBrowserHistory = mBrowserField.getHistory();
         mBrowserController = mBrowserField.getController();
-        AuthenticatingProtocolHandler browserAuthHandler =
-                new AuthenticatingProtocolHandler(mAuthenticationManager, mBrowserField);
-        ((ProtocolController) mBrowserController).setNavigationRequestHandler("http", browserAuthHandler);
-        ((ProtocolController) mBrowserController).setResourceRequestHandler("http", browserAuthHandler);
+        mBrowserAuthHandler = new AuthenticatingProtocolHandler(mAuthenticationManager, mBrowserField);
+        ((ProtocolController)mBrowserController).setNavigationRequestHandler("http", mBrowserAuthHandler); 
+        ((ProtocolController)mBrowserController).setResourceRequestHandler("http", mBrowserAuthHandler); 
 
         mBrowserCookieManager = mBrowserField.getCookieManager();
         mMainScreen.add(mBrowserField);
@@ -507,7 +517,49 @@ public class ICEmobileContainer extends UiApplication implements SystemListener,
         mAppIndicator.setVisible(show);
     }
 
+    // -------------- Two generic methods for inserting hidden fields in DOM
+    
+    /**
+     * Insert a value into a hidden field using the four argument javascript 
+     * method 
+     *
+     * @param id    The id of an element to insert the hidden field under
+     * @param value value of the hidden field
+     * @param type  Any optional type extensions 'file' 'text', etc. 
+     */
+    private void insertHiddenFieldTyped(final String id,
+                                           final String value, 
+                                           final String type) {
 
+        if (value != null && value.length() > 0) {
+
+            String updateScript = "ice.addHidden('" + id + "', '" + id + "', '" + 
+                                                 value + "', '" + type + "' );";
+            insertHiddenScript(updateScript);
+        } else {
+            Logger.ERROR("ICEmobile - Invalid hidden field ");
+        }
+    }
+    
+    /**
+     * Insert a filename hidden field before a given id. It's necessary to do this in the event there
+     * are more than one file inserting components on the page.
+     *
+     * @param id       The id of an element to insert the filename before
+     * @param filename the name of the file in the local filesystem.
+     */
+    public void insertHiddenFieldUntyped(final String id, final String hiddenArgument) {
+
+        if (hiddenArgument != null && hiddenArgument.length() > 0) {
+            String updateScript = "ice.addHidden('" + id + "', '" + id + "', '" + hiddenArgument + "' );";
+            insertHiddenScript(updateScript);
+        } else {
+            Logger.ERROR("ICEmobile - Empty argument to insertHiddenArgScript ");
+        }
+    }
+    
+    
+    
     /**
      * Insert a filename hidden field before a given id. It's necessary to do this in the event there
      * are more than one file inserting components on the page.
@@ -517,30 +569,16 @@ public class ICEmobileContainer extends UiApplication implements SystemListener,
      */
     public void insertHiddenFilenameScript(final String id,
                                            final String filename) {
-
-        if (filename != null && filename.length() > 0) {
-
-            String updateScript = "ice.addHidden('" + id + "', '" + id + "', '" + filename + "', 'file' );";
-            insertHiddenScript(updateScript);
-        } else {
-            Logger.ERROR("ICEmobile - Captured filename is invalid ");
-        }
+    	insertHiddenFieldTyped(id, filename, "file" ); 
     }
+    
 
     /**
      * @param id       The id of an element to insert the filename before
      * @param qrResult the scanned result
      */
     public void insertQRCodeScript(final String id, final String qrResult) {
-
-        if (qrResult != null && qrResult.length() > 0) {
-            String updateScript = "ice.addHidden('" + id + "', '" + id + "', ' " + qrResult + "', 'text' );";
-            insertHiddenScript(updateScript);
-            Logger.DEBUG("ICEmobile - QRCode text inserted");
-
-        } else {
-            Logger.ERROR("ICEmobile - Invalid qrCode scan result");
-        }
+    	insertHiddenFieldTyped(id, qrResult, "text" ); 
     }
 
     /**
@@ -629,12 +667,12 @@ public class ICEmobileContainer extends UiApplication implements SystemListener,
     }
 
     private void navigateUsingFieldController(String url) {
-
-        try {
-            BrowserFieldConnectionManager bfconman = mBrowserField.getConnectionManager();
-            BrowserFieldRequest request = new BrowserFieldRequest(url);
-            mBrowserField.requestContent(request);
-
+            
+           try { 
+            	BrowserFieldConnectionManager bfconman = mBrowserField.getConnectionManager();            
+            	BrowserFieldRequest request = new BrowserFieldRequest(url);
+            	mBrowserField.requestContent(request);             
+            
         } catch (Exception e) {
             Logger.ERROR("ICEmobile - exception requesting content: " + e);
         }
@@ -658,6 +696,7 @@ public class ICEmobileContainer extends UiApplication implements SystemListener,
         mReloadOnActivate = true;
     }
 
+       
     /**
      * Callback for options change. DO NOTHING LONG HERE.
      */
@@ -680,7 +719,7 @@ public class ICEmobileContainer extends UiApplication implements SystemListener,
 
         // Use either an email notification (if desired) or the 
         // RIM push version
-        mParkScript = "if( ice.push ){ ice.push.parkInactivePushIds" + argument + "}";
+        mParkScript = "ice.push.parkInactivePushIds" + argument;
 
         mPauseScript = "try { ice.push.connection.pauseConnection(); " +
                                "icefaces.logInContainer('ice.push.connection.pauseConnection success'); " +
@@ -704,9 +743,9 @@ public class ICEmobileContainer extends UiApplication implements SystemListener,
 //    	mBrowserField.refresh(); 
         mBrowserHistory.refresh();
     }
-
-    public void clearAuthorizationCache() {
-        mAuthenticationManager.clearAuthorizationCache();
+    
+    public void clearAuthorizationCache() { 
+    	mAuthenticationManager.clearAuthorizationCache(); 
     }
 
 
@@ -808,7 +847,7 @@ public class ICEmobileContainer extends UiApplication implements SystemListener,
             return true;
         }
     }
-
+    
     // -------------------- System event methods ----------------------------
 
     public void batteryGood() {
@@ -839,5 +878,46 @@ public class ICEmobileContainer extends UiApplication implements SystemListener,
             Logger.DEBUG("ice.test - script engine is null!");
         }
     }
+
+    
+    // 
+	public boolean freeStaleObject(int arg0) {
+		// TODO Auto-generated method stub
+		Logger.DIALOG("ice.mobile asked to free Stale objects level " + arg0);
+		logMemory();
+		return false;
+	}
+	
+	public static void logMemory() { 
+		MemoryStats code = Memory.getCodeStats();
+		
+		Logger.DEBUG("CODE STATS: Allocated: " + code.getAllocated() +  // amount of flash for code modules 
+					", Free: " + code.getFree() +  // Amount of free flash in system 
+		            ", Objects: " + code.getObjectCount()); // number of java objects which point to objects in code module
+		
+		code = Memory.getObjectStats(); 
+		Logger.DEBUG("Object stats: Allocated: " + code.getAllocated() +  // Total number of java objects
+		            ", Free: " + code.getFree() +                     // number of java objects that can be instantiated
+		            ", Objects: " + code.getObjectCount() +    // max number of java objects that VM can instantiate 
+		            ", Object size: " + code.getObjectSize()); // Total size of all java objects or 0 
+		
+		code = Memory.getTransientStats(); 
+		Logger.DEBUG("Transient flash stats: Allocated: " + code.getAllocated() +  // Total number of java objects
+		            ", Free: " + code.getFree() +                     // number of java objects that can be instantiated
+		            ", Objects: " + code.getObjectCount() +    // max number of java objects that VM can instantiate 
+		            ", Object size: " + code.getObjectSize()); // Total size of all java objects or 0 
+		
+		code = Memory.getPersistentStats(); 
+		Logger.DEBUG("Persistent flash stats: Allocated: " + code.getAllocated() +  // Total number of java objects
+		            ", Free: " + code.getFree() +                     // number of java objects that can be instantiated
+		            ", Objects: " + code.getObjectCount() +    // max number of java objects that VM can instantiate 
+		            ", Object size: " + code.getObjectSize()); // Total size of all java objects or 0 
+		
+		code = Memory.getRAMStats(); 
+		Logger.DEBUG("RAM stats: Allocated: " + code.getAllocated() +  // VM allocated RAM
+		            ", Free: " + code.getFree() +                     // Free RAM in the system (free heap?) 
+		            ", Objects: " + code.getObjectCount() +           // number of objects in RAM (heap? )
+		            ", Object size: " + code.getObjectSize());        // Total size of all java objects in RAM
+	}
 }
 
