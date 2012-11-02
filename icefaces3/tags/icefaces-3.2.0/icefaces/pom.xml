@@ -51,11 +51,11 @@
     </scm>
 
     <modules>
-        <module>core</module>
         <module>icepush</module>
+        <module>core</module>
         <module>ace</module>
         <module>compat</module>
-        <module>samples</module>
+        <!--<module>samples</module>-->
     </modules>
 
     <properties>
