@@ -27,10 +27,10 @@ public interface ContainerController {
 
     // Application GUID
     // In Eclipse, type a string, select it and right click->"Convert String to Long"
-    // to create a unique GUID. Last value is "ICEmobileContainer 1.0 GA"
-    public final String PRODUCT_ID = "ICEmobileContainer 1.0 GA";
-    public final long GUID = 0x65b825d8f9c83f15L;
-
+    // to create a unique GUID. Last value is "ICEmobileContainer 1.2 GA"
+    public final String PRODUCT_ID = "ICEmobileContainer 1.2 GA";
+    public final long GUID = 0x7431b7489db67f16L;
+    
     // Container navigation methods
     public void reloadCurrentPage();
 
@@ -66,11 +66,10 @@ public interface ContainerController {
     public void testJavascript();
 
     /**
-     * Post a request to the server
-     *
-     * @param actionMethod action method from the form
-     * @param request      Body of the request
-     * @param headers      pre set header fields
+     * Post a request to the server 
+     * @param actionMethod action method from the form 
+     * @param request Body of the request
+     * @param headers pre set header fields 
      * @return InputConnection for reading response
      * @throws Exception
      */
@@ -120,7 +119,7 @@ public interface ContainerController {
 
     /**
      * Insert a thumbnail image into the DOM. Executes the following javascript:
-     * <code>ice.setThumbnail( id + '-thumb', icon ); </code>
+     * <code>ice.setThumbnail( id, icon ); </code>
      *
      * @param fieldId The id of the component
      * @param icon    The base64 encoded image to insert
@@ -129,7 +128,7 @@ public interface ContainerController {
 
     /**
      * Insert a scanned QR code message into the DOM. Executes the following javascript:
-     * <code>ice.addHiddenField( id, message); </code>
+     * <code>ice.addHiddenField( id , message); </code>
      *
      * @param fieldId The Id of the component.
      * @param message
@@ -142,9 +141,9 @@ public interface ContainerController {
      * Dissolve the BIS push agents and reconstruct
      */
     public void resetPushAgent();
-
+    
     /**
-     * Reset any cached Authorization keys causing user to be
+     * Reset any cached Authorization keys causing user to be 
      * prompted for new username/password
      */
     public void clearAuthorizationCache();
@@ -159,11 +158,19 @@ public interface ContainerController {
 
     /**
      * Insert a filename as a hidden field in the DOM. Executes teh following javascript:
-     * <code>ice.addHiddenField( id + '-file', filename); </code>
+     * <code>ice.addHiddenField( id, filename); </code>
      *
      * @param fieldId  fieldId of the component
      * @param filename filename to insert
      */
     public void insertHiddenFilenameScript(String fieldId, String filename);
-
+    
+    /**
+     * This method will insert a hidden field value into the DOM. 
+     * @param id The id of the parent in which to insert the hidden input field
+     * @param hiddenArgument The value of the input field. 
+     */
+    public void insertHiddenFieldUntyped(final String id, final String hiddenArgument); 
+    
+  
 }
