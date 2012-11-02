@@ -104,12 +104,6 @@ public class EchoController {
     public void doRequest(
         @ModelAttribute("panelPopupBean") PanelPopupBean model) {
     }
-    
-    @RequestMapping(value="/icemobile", method = RequestMethod.POST)
-    public void postICEmobileSX(HttpServletRequest request)  {
-        SXUtils.setSXSessionKeys(request);
-    }
-
 
 }
 
