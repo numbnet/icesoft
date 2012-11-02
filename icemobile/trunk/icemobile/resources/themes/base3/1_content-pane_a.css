@@ -21,20 +21,20 @@
     opacity: 1;
  }
  .mobi-contentpane-single-menu-hidden {
-   -webkit-transition: left 1s ease-in;
-   -moz-transition: left 1s ease-in;
-   -o-transition: opacity .25s linear, visibility .1s linear .5s;
-   transition: opacity .25s linear, visibility .1s linear .5s;
+   -webkit-transition: left .1s ease-in;
+   -moz-transition: left .1s ease-in;
+   -o-transition: opacity .1s linear, visibility .1s linear .2s;
+   transition: opacity .1s linear, visibility .1s linear .2s;
 }
 .mobi-contentpane-single-hidden {
-   -webkit-transition: left 1s ease-out;
-   -moz-transition: left 1s ease-in;
-   -o-transition: opacity .25s linear, visibility .1s linear .5s;
+   -webkit-transition: left .1s ease-out;
+   -moz-transition: left .1s ease-in;
+   -o-transition: opacity .1s linear, visibility .1s linear .2s;
    opacity: 0;
 }
 .mobi-contentpane-single {
     opacity: 1;
-    -webkit-transition: left 1s ease-out;
-    -moz-transition: left 1s ease-out;
-    -o-transition: left 1s ease-out;
+    -webkit-transition: left .1s ease-out;
+    -moz-transition: left .1s ease-out;
+    -o-transition: left .1s ease-out;
 }
