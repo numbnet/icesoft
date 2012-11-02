@@ -70,6 +70,12 @@ if (!window.ice.mobile) {
         namespace.camcorder = function(id, attr) {
             var result = icefaces.shootVideo(id, attr);
         }
+        
+        namespace.fetchContacts = function(id, attr) { 
+        	var result = icefaces.fetchContacts(id, attr);
+        	icefaces.logInContainer("Contact at js layer: " + result); 
+        	return result; 
+        } 
 
         namespace.microphone = function(id, attr) {
 
@@ -90,6 +96,10 @@ if (!window.ice.mobile) {
             var result = icefaces.scan(id, attr);
             ice.currentScanId = id;
         }
+        
+        namespace.logInContainer = function(message) { 
+            icefaces.logInContainer(message); 
+        } 
 
         namespace.test = function(obj) {
             try {
