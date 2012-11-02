@@ -65,6 +65,8 @@
 		9CA51B7A14730D120065F681 /* ViewController_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9CA51B7814730D120065F681 /* ViewController_iPhone.xib */; };
 		9CA51B7D14730D120065F681 /* ViewController_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9CA51B7B14730D120065F681 /* ViewController_iPad.xib */; };
 		9CBF5ACD1638AB1E0015E267 /* IceUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CBF5ACC1638AB1E0015E267 /* IceUtil.m */; };
+		9CE8327416443D7D00F6C270 /* contacts.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CE8327216443D7D00F6C270 /* contacts.png */; };
+		9CE8327516443D7D00F6C270 /* contacts@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CE8327316443D7D00F6C270 /* contacts@2x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -151,6 +153,8 @@
 		9CA51B7C14730D120065F681 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/ViewController_iPad.xib; sourceTree = "<group>"; };
 		9CBF5ACB1638AB1E0015E267 /* IceUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IceUtil.h; path = Shared/IceUtil.h; sourceTree = "<group>"; };
 		9CBF5ACC1638AB1E0015E267 /* IceUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = IceUtil.m; path = Shared/IceUtil.m; sourceTree = "<group>"; };
+		9CE8327216443D7D00F6C270 /* contacts.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = contacts.png; sourceTree = "<group>"; };
+		9CE8327316443D7D00F6C270 /* contacts@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "contacts@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -295,6 +299,8 @@
 				9C5CD03E14BCBCA70070662F /* camera@2x.png */,
 				9C5CD03F14BCBCA70070662F /* microphone.png */,
 				9C5CD04014BCBCA70070662F /* microphone@2x.png */,
+				9CE8327216443D7D00F6C270 /* contacts.png */,
+				9CE8327316443D7D00F6C270 /* contacts@2x.png */,
 				9C5CD04114BCBCA70070662F /* qr.png */,
 				9C5CD04214BCBCA70070662F /* qr@2x.png */,
 				9C77C791147310F90079FDF5 /* icon-72.png */,
@@ -413,6 +419,8 @@
 				9C42F73F158277E00011FECC /* W@2x.png in Resources */,
 				9C5324B3160B8C8900F9580D /* stripes.png in Resources */,
 				9C5324B5160B8F5700F9580D /* bar.png in Resources */,
+				9CE8327416443D7D00F6C270 /* contacts.png in Resources */,
+				9CE8327516443D7D00F6C270 /* contacts@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
