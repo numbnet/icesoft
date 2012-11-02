@@ -57,9 +57,9 @@ public class  ContentStackMenuRenderer extends BaseLayoutRenderer {
             ContentStack stack = (ContentStack)stackComp;
             String indexStr = params.get(clientId + "_hidden");
             String newStr = params.get(stackId);
-            if (newStr !=null){
+        /*    if (newStr !=null){
                 logger.info("submitted "+newStr+" from request");
-            }
+            }  */
             String oldIndex = stack.getCurrentId();
             if( null != indexStr) {
                 //find the activeIndex and set it
@@ -126,20 +126,20 @@ public class  ContentStackMenuRenderer extends BaseLayoutRenderer {
         }  else {
              //doing it with indiv ContentMenuItem tag's
              renderChildren(facesContext, menu);
-         }
-        writer.endElement(HTML.UL_ELEM);
-        this.encodeHidden(facesContext, uiComponent);
-        writer.endElement(HTML.DIV_ELEM);
+        }
+
     }
     @Override
     public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
         ResponseWriter writer = facesContext.getResponseWriter();
         ContentStackMenu menu = (ContentStackMenu) component;
-        this.encodeHidden(facesContext, component);
-        writer.endElement(HTML.DIV_ELEM);
+        writer.endElement(HTML.UL_ELEM);
         if (menu.isAccordion()){
             writer.endElement(HTML.DIV_ELEM);
+            writer.endElement(HTML.SECTION_ELEM);
         }
+        this.encodeHidden(facesContext, component);
+        writer.endElement(HTML.DIV_ELEM);
     }
 
     @Override
