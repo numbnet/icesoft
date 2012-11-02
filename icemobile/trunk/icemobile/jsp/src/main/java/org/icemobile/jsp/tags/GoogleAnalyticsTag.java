@@ -2,6 +2,7 @@ package org.icemobile.jsp.tags;
 
 import java.io.IOException;
 import java.util.logging.Logger;
+import javax.servlet.ServletContext;
 
 import static org.icemobile.util.HTML.*;
 
@@ -12,7 +13,7 @@ public class GoogleAnalyticsTag extends BaseSimpleTag{
 	
 	public static final String ACCOUNT_ENVVAR = "org.icemobile.googleAnalyticsAccount";
 	public static final String DOMAIN_ENVVAR = "org.icemobile.googleAnalyticsDomain";
-	private static final String ACCOUNT_WARNING_MSG = "org.icemobile.googleAnalytics.accountWarning";
+	private static final String ACCOUNT_WARNING = "org.icemobile.googleAnalytics.accountWarning";
 	
 	private String account;
 	private String domain;	
@@ -21,13 +22,19 @@ public class GoogleAnalyticsTag extends BaseSimpleTag{
 		TagWriter writer = new TagWriter(getContext());
 		if( account == null ){
 			account = System.getProperty(ACCOUNT_ENVVAR);
-			if( account == null && getRequest().getSession().getServletContext().getAttribute(ACCOUNT_WARNING_MSG) == null){
-				log.warning("The Google Analytics account has not been set for the <mobi:googleAnalytics> tag. " +
-						"Please use the 'account' tag attribute, or the '"+ACCOUNT_ENVVAR+"' " +
-								"system environment variable. The Google Analytics script will not be generated.");
-				getRequest().getSession().getServletContext().setAttribute(ACCOUNT_WARNING_MSG, Boolean.TRUE);
-				return;
-			}
+			if (account == null)  {
+                ServletContext servletContext = getServletContext();
+                if (servletContext.getAttribute(ACCOUNT_WARNING) == null) {
+                    log.warning("The Google Analytics account has not " +
+                        "been set for the <mobi:googleAnalytics> tag. " +
+                        "Please use the 'account' tag attribute, or the '" +
+                        ACCOUNT_ENVVAR +
+                        "' system property. The Google Analytics script " +
+                        "will not be generated.");
+                    servletContext.setAttribute(ACCOUNT_WARNING, Boolean.TRUE);
+                }
+                return;
+            }
 		}
 		if( domain == null ){
         	domain = System.getProperty(DOMAIN_ENVVAR);
