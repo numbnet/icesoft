@@ -62,6 +62,8 @@ public class TreeRenderer extends CoreRenderer {
          new TreeDecoder(context, (Tree) component) {{
              decode();
          }};
+
+        decodeBehaviors(context, component);
     }
 
     @Override
