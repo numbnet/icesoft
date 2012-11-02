@@ -217,6 +217,7 @@ public class ContentMenuItemRenderer extends BaseLayoutRenderer {
                  writer.startElement(HTML.DIV_ELEM, uiComponent);
                  writer.writeAttribute("class", ContentMenuItem.OUTPUTLISTITEMDEFAULT_CLASS, "class");
                  writer.write(label);
+                 writer.endElement(HTML.DIV_ELEM);
                  writer.endElement(HTML.LI_ELEM);
              }
          }else {
@@ -227,7 +228,7 @@ public class ContentMenuItemRenderer extends BaseLayoutRenderer {
              }
              writer.startElement(HTML.DIV_ELEM, uiComponent);
              writer.writeAttribute("class", ContentMenuItem.OUTPUTLISTITEMDEFAULT_CLASS, "class");
-             writer.startElement(HTML.ANCHOR_ELEM, uiComponent);
+             writer.startElement(HTML.ANCHOR_ELEM, uiComponent);;
              //verify location of panel and get proper id of the contentPane for onclick
              // if url or target then put that in the onclick  otherwise use the value lmi.getValue()
              if (lmi.isDisabled()){
