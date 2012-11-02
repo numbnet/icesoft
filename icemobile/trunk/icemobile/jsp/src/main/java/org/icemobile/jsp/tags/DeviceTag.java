@@ -97,8 +97,11 @@ public abstract class DeviceTag extends BaseBodyTag implements IDevice{
         this.disabled = disabled;
     }
     public String getSessionId(){
-         HttpSession session = getRequest().getSession();
-         return session.getId();
+        HttpSession session = getRequest().getSession(false);
+        if (null == session)  {
+            return null;
+        }
+        return session.getId();
     }
     public String getComponentType(){
           return command;

@@ -73,8 +73,11 @@ public class ContactListTag extends BaseSimpleTag implements IContactList {
 
     //this will not work on websphere
     public String getSessionId(){
-         HttpSession session = getRequest().getSession();
-         return session.getId();
+        HttpSession session = getRequest().getSession(false);
+        if (null == session)  {
+            return null;
+        }
+        return session.getId();
     }
 
 }
