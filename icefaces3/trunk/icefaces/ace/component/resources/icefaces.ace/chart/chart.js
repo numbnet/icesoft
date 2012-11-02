@@ -83,11 +83,16 @@ ice.ace.Chart = function (id, data, cfg) {
             }
     );
 
-    if (this.chart_region.is(':hidden')) {
-        if (!this.cfg.disableHiddenInit) {
-            var _self = this;
-            setTimeout(function () { _self.plot.replot(); }, 100);
-        }
+    var _self = this,
+        replotWhenVis = function () {
+            if (!_self.chart_region.is(':hidden')) {
+                _self.plot.replot();
+            } else
+                setTimeout(replotWhenVis, 400);
+        };
+
+    if (!this.cfg.disableHiddenInit && this.chart_region.is(':hidden')) {
+        setTimeout(replotWhenVis, 400);
     }
 };
 
