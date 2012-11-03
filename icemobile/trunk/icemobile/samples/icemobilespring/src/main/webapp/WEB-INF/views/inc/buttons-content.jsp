@@ -11,8 +11,8 @@
             <mobi:commandButton name="submitB"
                                 value="Default"
                                 styleClass="mobi-col mobi-weight1"/>
-            <mobi:commandButton name="submitB"
-                                value="Important" buttonType="important"
+             <mobi:commandButton name="submitB"
+                                value="Unimportant" 
                                 styleClass="mobi-col mobi-weight1"/>
         </mobi:fieldsetRow>
         <mobi:fieldsetRow styleClass="mobi-grid mobi-center">
@@ -20,13 +20,13 @@
                                 value="Attention" buttonType="attention"
                                 styleClass="mobi-col mobi-weight1"/>
             <mobi:commandButton name="submitB"
-                                value="Unimportant" 
+                                value="Important" buttonType="important"
                                 styleClass="mobi-col mobi-weight1"/>
         </mobi:fieldsetRow>
-        <mobi:fieldsetRow styleClass="mobi-grid mobi-center">
+        <mobi:fieldsetRow style="text-align:center;">
             <mobi:commandButton name="submitB"
                                 buttonType="back" value="Back"
-                                styleClass="mobi-col mobi-weight1"/>
+                                style="width:150px"/>
         </mobi:fieldsetRow>
         <mobi:fieldsetRow styleClass="mobi-grid mobi-center">
             <mobi:commandButton id="disabledDefault" value="Disabled" 
