@@ -23,6 +23,12 @@
     <mobi:contentStack currentId="#{navigationModel.selectedPanel}" id="contentStack"
         contentMenuId="menuStack">
         <mobi:contentPane id="menu" client="true" menuOrHome="true">
+            <h:form>
+                <mobi:contentNavBar id="navBar" >
+                   <mobi:contentMenuItem label="Home" value="splash"/>
+                   <h3>Mobile Suite</h3>
+                </mobi:contentNavBar>
+            </h:form>
             <h:form id="frmMenu">
                 <mobi:contentStackMenu id="menuStack" contentStackId="contentStack"
                       selectedPane="#{navigationModel.selectedPanel}">
@@ -31,7 +37,6 @@
                     <mobi:contentMenuItem label="Accordion" value="accordion"/>
                     <mobi:contentMenuItem label="Carousel" value="carousel"/>
                     <mobi:contentMenuItem label="Content Stack" value="contentstack"/>
-                    <!-- 
                     <mobi:contentMenuItem label="Device Themes" value="theme"/>
                     <mobi:contentMenuItem label="Fieldset" value="fieldset"/>
                     <mobi:contentMenuItem label="List" value="list"/>
@@ -62,7 +67,6 @@
                     <mobi:contentMenuItem label="Contact List" value="contacts"/>
                     <mobi:contentMenuItem label="Microphone" value="microphone"/>
                     <mobi:contentMenuItem label="QR Code" value="qrcode"/>
-                    -->
                     
                 </mobi:contentStackMenu>
             </h:form>
@@ -81,62 +85,62 @@
             <ui:include src="/WEB-INF/includes/content/menu-navbar.xhtml">
                 <ui:param name="title" value="Accordion"/>
             </ui:include>
-            <ui:include src="/WEB-INF/includes/examples/layout/accordion.xhtml" />
+            <ui:include src="/WEB-INF/includes/examples/layout/accordion-example.xhtml" />
         </mobi:contentPane>
         <mobi:contentPane id="carousel" facelet="true" client="false" >
             <ui:include src="/WEB-INF/includes/content/menu-navbar.xhtml">
                 <ui:param name="title" value="Carousel"/>
             </ui:include>
-            <ui:include src="/WEB-INF/includes/examples/layout/carousel.xhtml" />
+            <ui:include src="/WEB-INF/includes/examples/layout/carousel-example.xhtml" />
         </mobi:contentPane>
         <mobi:contentPane id="contentstack" facelet="true" client="false" >
             <ui:include src="/WEB-INF/includes/content/menu-navbar.xhtml">
                 <ui:param name="title" value="Content Stack"/>
             </ui:include>
-            <ui:include src="/WEB-INF/includes/examples/layout/contentstack.xhtml" />
+            <ui:include src="/WEB-INF/includes/examples/layout/contentstack-example.xhtml" />
         </mobi:contentPane>
         
         <mobi:contentPane id="tabset" facelet="true" client="false" >
             <ui:include src="/WEB-INF/includes/content/menu-navbar.xhtml">
                 <ui:param name="title" value="Tabset"/>
             </ui:include>
-            <ui:include src="/WEB-INF/includes/examples/layout/tabset.xhtml" />
+            <ui:include src="/WEB-INF/includes/examples/layout/tabset-example.xhtml" />
         </mobi:contentPane>
         <mobi:contentPane id="fieldset" facelet="true" client="false" >
             <ui:include src="/WEB-INF/includes/content/menu-navbar.xhtml">
                 <ui:param name="title" value="Fieldset"/>
             </ui:include>
-            <ui:include src="/WEB-INF/includes/examples/layout/fieldset.xhtml" />
+            <ui:include src="/WEB-INF/includes/examples/layout/fieldset-example.xhtml" />
         </mobi:contentPane>
         <mobi:contentPane id="list" facelet="true" client="false" >
             <ui:include src="/WEB-INF/includes/content/menu-navbar.xhtml">
                 <ui:param name="title" value="Lists"/>
             </ui:include>
-            <ui:include src="/WEB-INF/includes/examples/layout/list.xhtml" />
+            <ui:include src="/WEB-INF/includes/examples/layout/list-example.xhtml" />
         </mobi:contentPane>
         <mobi:contentPane id="panelconfirmation" facelet="true" client="false" >
             <ui:include src="/WEB-INF/includes/content/menu-navbar.xhtml">
                 <ui:param name="title" value="Panel Confirmation"/>
             </ui:include>
-            <ui:include src="/WEB-INF/includes/examples/layout/panelconfirmation.xhtml" />
+            <ui:include src="/WEB-INF/includes/examples/layout/panelconfirmation-example.xhtml" />
         </mobi:contentPane>
         <mobi:contentPane id="panelpopup" facelet="true" client="false" >
             <ui:include src="/WEB-INF/includes/content/menu-navbar.xhtml">
                 <ui:param name="title" value="Popup"/>
             </ui:include>
-            <ui:include src="/WEB-INF/includes/examples/layout/panelpopup.xhtml" />
+            <ui:include src="/WEB-INF/includes/examples/layout/panelpopup-example.xhtml" />
         </mobi:contentPane>
         <mobi:contentPane id="theme" facelet="true" client="false" >
             <ui:include src="/WEB-INF/includes/content/menu-navbar.xhtml">
                 <ui:param name="title" value="Themes"/>
             </ui:include>
-            <ui:include src="/WEB-INF/includes/examples/layout/theme.xhtml" />
+            <ui:include src="/WEB-INF/includes/examples/layout/theme-example.xhtml" />
         </mobi:contentPane>
         <mobi:contentPane id="gmap" facelet="true" client="false" >
             <ui:include src="/WEB-INF/includes/content/menu-navbar.xhtml">
                 <ui:param name="title" value="Google Maps"/>
             </ui:include>
-            <ui:include src="/WEB-INF/includes/examples/layout/gmap.xhtml" />
+            <ui:include src="/WEB-INF/includes/examples/layout/gmap-example.xhtml" />
         </mobi:contentPane>
 
         <!-- Device input examples -->
@@ -144,43 +148,43 @@
            <ui:include src="/WEB-INF/includes/content/menu-navbar.xhtml">
                 <ui:param name="title" value="Camcorder"/>
             </ui:include>
-            <ui:include src="/WEB-INF/includes/examples/device/camcorder.xhtml" />
+            <ui:include src="/WEB-INF/includes/examples/device/camcorder-example.xhtml" />
         </mobi:contentPane>
         <mobi:contentPane id="camera" facelet="true" client="false"  >
             <ui:include src="/WEB-INF/includes/content/menu-navbar.xhtml">
                 <ui:param name="title" value="Camera"/>
             </ui:include>
-            <ui:include src="/WEB-INF/includes/examples/device/camera.xhtml" />
+            <ui:include src="/WEB-INF/includes/examples/device/camera-example.xhtml" />
         </mobi:contentPane>
         <mobi:contentPane id="microphone" facelet="true" client="false" >
             <ui:include src="/WEB-INF/includes/content/menu-navbar.xhtml">
                 <ui:param name="title" value="Microphone"/>
             </ui:include>
-            <ui:include src="/WEB-INF/includes/examples/device/microphone.xhtml" />
+            <ui:include src="/WEB-INF/includes/examples/device/microphone-example.xhtml" />
         </mobi:contentPane>
         <mobi:contentPane id="notification" facelet="true" client="false" >
             <ui:include src="/WEB-INF/includes/content/menu-navbar.xhtml">
                 <ui:param name="title" value="Cloud Push"/>
             </ui:include>
-            <ui:include src="/WEB-INF/includes/examples/device/notification.xhtml" />
+            <ui:include src="/WEB-INF/includes/examples/device/notification-example.xhtml" />
         </mobi:contentPane>
         <mobi:contentPane id="qrcode" facelet="true" client="false" >
             <ui:include src="/WEB-INF/includes/content/menu-navbar.xhtml">
                 <ui:param name="title" value="QR Code"/>
             </ui:include>
-            <ui:include src="/WEB-INF/includes/examples/device/qrcode.xhtml" />
+            <ui:include src="/WEB-INF/includes/examples/device/qrcode-example.xhtml" />
         </mobi:contentPane>
         <mobi:contentPane id="reality" facelet="true" client="false" >
             <ui:include src="/WEB-INF/includes/content/menu-navbar.xhtml">
                 <ui:param name="title" value="Augmented Reality"/>
             </ui:include>
-            <ui:include src="/WEB-INF/includes/examples/device/reality.xhtml" />
+            <ui:include src="/WEB-INF/includes/examples/device/reality-example.xhtml" />
         </mobi:contentPane>
         <mobi:contentPane id="contacts" facelet="true" client="false" >
             <ui:include src="/WEB-INF/includes/content/menu-navbar.xhtml">
                 <ui:param name="title" value="Contact List"/>
             </ui:include>
-            <ui:include src="/WEB-INF/includes/examples/device/contactlist.xhtml" />
+            <ui:include src="/WEB-INF/includes/examples/device/contactlist-example.xhtml" />
         </mobi:contentPane>
 
         <!-- input examples -->
@@ -188,43 +192,43 @@
             <ui:include src="/WEB-INF/includes/content/menu-navbar.xhtml">
                 <ui:param name="title" value="Buttons"/>
             </ui:include>
-            <ui:include src="/WEB-INF/includes/examples/input/button.xhtml" />
+            <ui:include src="/WEB-INF/includes/examples/input/button-example.xhtml" />
         </mobi:contentPane>
         <mobi:contentPane id="date" >
             <ui:include src="/WEB-INF/includes/content/menu-navbar.xhtml">
                 <ui:param name="title" value="Date and Time"/>
             </ui:include>
-            <ui:include src="/WEB-INF/includes/examples/input/date.xhtml" />
+            <ui:include src="/WEB-INF/includes/examples/input/date-example.xhtml" />
         </mobi:contentPane>
         <mobi:contentPane id="flipswitch" facelet="true" client="false" >
             <ui:include src="/WEB-INF/includes/content/menu-navbar.xhtml">
                 <ui:param name="title" value="Flipswitch"/>
             </ui:include>
-            <ui:include src="/WEB-INF/includes/examples/input/flip-switch.xhtml" />
+            <ui:include src="/WEB-INF/includes/examples/input/flip-switch-example.xhtml" />
         </mobi:contentPane>
         <mobi:contentPane id="geolocation" facelet="true" client="false" >
             <ui:include src="/WEB-INF/includes/content/menu-navbar.xhtml">
                 <ui:param name="title" value="Geolocation"/>
             </ui:include>
-            <ui:include src="/WEB-INF/includes/examples/input/geolocation.xhtml" />
+            <ui:include src="/WEB-INF/includes/examples/input/geolocation-example.xhtml" />
         </mobi:contentPane>
         <mobi:contentPane id="input" facelet="true" client="false" >
             <ui:include src="/WEB-INF/includes/content/menu-navbar.xhtml">
                 <ui:param name="title" value="HTML5 Input"/>
             </ui:include>
-            <ui:include src="/WEB-INF/includes/examples/input/input.xhtml" />
+            <ui:include src="/WEB-INF/includes/examples/input/input-example.xhtml" />
         </mobi:contentPane>
         <mobi:contentPane id="menubutton" facelet="true" client="false" >
             <ui:include src="/WEB-INF/includes/content/menu-navbar.xhtml">
                 <ui:param name="title" value="Menu Button"/>
             </ui:include>
-            <ui:include src="/WEB-INF/includes/examples/input/menubutton.xhtml" />
+            <ui:include src="/WEB-INF/includes/examples/input/menubutton-example.xhtml" />
         </mobi:contentPane>
         <mobi:contentPane id="submitnotification" facelet="true" client="false" >
             <ui:include src="/WEB-INF/includes/content/menu-navbar.xhtml">
                 <ui:param name="title" value="Submit Notification"/>
             </ui:include>
-            <ui:include src="/WEB-INF/includes/examples/input/submitnotification.xhtml" />
+            <ui:include src="/WEB-INF/includes/examples/input/submitnotification-example.xhtml" />
         </mobi:contentPane>
 
         <!-- media examles -->
@@ -232,19 +236,19 @@
             <ui:include src="/WEB-INF/includes/content/menu-navbar.xhtml">
                 <ui:param name="title" value="Audio"/>
             </ui:include>
-            <ui:include src="/WEB-INF/includes/examples/media/audio.xhtml" />
+            <ui:include src="/WEB-INF/includes/examples/media/audio-example.xhtml" />
         </mobi:contentPane>
         <mobi:contentPane id="image" facelet="true" client="false" >
-            <ui:include src="/WEB-INF/includes/content/menu-navbar.xhtml">
+            <ui:include src="/WEB-INF/includes/content/menu-navbar-example.xhtml">
                 <ui:param name="title" value="Image"/>
             </ui:include>
-            <ui:include src="/WEB-INF/includes/examples/media/image.xhtml" />
+            <ui:include src="/WEB-INF/includes/examples/media/image-example.xhtml" />
         </mobi:contentPane>
         <mobi:contentPane id="video" facelet="true" client="false" >
-            <ui:include src="/WEB-INF/includes/content/menu-navbar.xhtml">
+            <ui:include src="/WEB-INF/includes/content/menu-navbar-example.xhtml">
                 <ui:param name="title" value="Video"/>
             </ui:include>
-            <ui:include src="/WEB-INF/includes/examples/media/video.xhtml" />
+            <ui:include src="/WEB-INF/includes/examples/media/video-example.xhtml" />
         </mobi:contentPane>
 
     </mobi:contentStack>

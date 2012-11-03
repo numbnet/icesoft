@@ -26,6 +26,7 @@
             <h:form id="frmMenu">
                 <mobi:contentStackMenu id="menuStack" contentStackId="contentStack"
                       selectedPane="#{navigationModel.selectedPanel}">
+                      
                     <mobi:contentMenuItem label="#{mmsgs[layoutAndNavigationMenu.title]}"/>
                     <mobi:contentMenuItem label="Accordion" value="accordion"/>
                     <mobi:contentMenuItem label="Carousel" value="carousel"/>
@@ -73,6 +74,69 @@
             <ui:include src="/WEB-INF/includes/content/splash.xhtml" />
         </mobi:contentPane>
         
+        <!-- layout examles -->
+        <mobi:contentPane id="accordion" facelet="true" client="false" >
+            <ui:param name="title" value="Accordion"/>
+            <ui:decorate template="/WEB-INF/includes/content/small-page-panel.xhtml">
+                <ui:include src="/WEB-INF/includes/examples/layout/accordion.xhtml" />
+            </ui:decorate>
+        </mobi:contentPane>
+        <mobi:contentPane id="carousel" facelet="true" client="false" >
+            <ui:param name="title" value="Carousel"/>
+            <ui:decorate template="/WEB-INF/includes/content/small-page-panel.xhtml">
+                <ui:include src="/WEB-INF/includes/examples/layout/carousel.xhtml" />
+            </ui:decorate>
+        </mobi:contentPane>
+        <mobi:contentPane id="contentstack" facelet="true" client="false" >
+            <ui:param name="title" value="Content Stack"/>
+            <ui:decorate template="/WEB-INF/includes/content/small-page-panel.xhtml">
+                <ui:include src="/WEB-INF/includes/examples/layout/contentstack.xhtml" />
+            </ui:decorate>
+        </mobi:contentPane>
+        
+        <mobi:contentPane id="tabset" facelet="true" client="false" >
+            <ui:include src="/WEB-INF/includes/content/menu-navbar.xhtml">
+                <ui:param name="title" value="Tabset"/>
+            </ui:include>
+            <ui:include src="/WEB-INF/includes/examples/layout/tabset.xhtml" />
+        </mobi:contentPane>
+        <mobi:contentPane id="fieldset" facelet="true" client="false" >
+            <ui:include src="/WEB-INF/includes/content/menu-navbar.xhtml">
+                <ui:param name="title" value="Fieldset"/>
+            </ui:include>
+            <ui:include src="/WEB-INF/includes/examples/layout/fieldset.xhtml" />
+        </mobi:contentPane>
+        <mobi:contentPane id="list" facelet="true" client="false" >
+            <ui:include src="/WEB-INF/includes/content/menu-navbar.xhtml">
+                <ui:param name="title" value="Lists"/>
+            </ui:include>
+            <ui:include src="/WEB-INF/includes/examples/layout/list.xhtml" />
+        </mobi:contentPane>
+        <mobi:contentPane id="panelconfirmation" facelet="true" client="false" >
+            <ui:include src="/WEB-INF/includes/content/menu-navbar.xhtml">
+                <ui:param name="title" value="Panel Confirmation"/>
+            </ui:include>
+            <ui:include src="/WEB-INF/includes/examples/layout/panelconfirmation.xhtml" />
+        </mobi:contentPane>
+        <mobi:contentPane id="panelpopup" facelet="true" client="false" >
+            <ui:include src="/WEB-INF/includes/content/menu-navbar.xhtml">
+                <ui:param name="title" value="Popup"/>
+            </ui:include>
+            <ui:include src="/WEB-INF/includes/examples/layout/panelpopup.xhtml" />
+        </mobi:contentPane>
+        <mobi:contentPane id="theme" facelet="true" client="false" >
+            <ui:include src="/WEB-INF/includes/content/menu-navbar.xhtml">
+                <ui:param name="title" value="Themes"/>
+            </ui:include>
+            <ui:include src="/WEB-INF/includes/examples/layout/theme.xhtml" />
+        </mobi:contentPane>
+        <mobi:contentPane id="gmap" facelet="true" client="false" >
+            <ui:include src="/WEB-INF/includes/content/menu-navbar.xhtml">
+                <ui:param name="title" value="Google Maps"/>
+            </ui:include>
+            <ui:include src="/WEB-INF/includes/examples/layout/gmap.xhtml" />
+        </mobi:contentPane>
+
         <!-- Device input examples -->
         <mobi:contentPane id="camcorder" facelet="true" client="false" >
            <ui:include src="/WEB-INF/includes/content/menu-navbar.xhtml">
@@ -159,68 +223,6 @@
                 <ui:param name="title" value="Submit Notification"/>
             </ui:include>
             <ui:include src="/WEB-INF/includes/examples/input/submitnotification.xhtml" />
-        </mobi:contentPane>
-
-        <!-- layout examles -->
-        <mobi:contentPane id="carousel" facelet="true" client="false" >
-            <ui:include src="/WEB-INF/includes/content/menu-navbar.xhtml">
-                <ui:param name="title" value="Carousel"/>
-            </ui:include>
-            <ui:include src="/WEB-INF/includes/examples/layout/carousel.xhtml" />
-        </mobi:contentPane>
-        <mobi:contentPane id="contentstack" facelet="true" client="false" >
-            <ui:include src="/WEB-INF/includes/content/menu-navbar.xhtml">
-                <ui:param name="title" value="Content Stack"/>
-            </ui:include>
-            <ui:include src="/WEB-INF/includes/examples/layout/contentstack.xhtml" />
-        </mobi:contentPane>
-        <mobi:contentPane id="tabset" facelet="true" client="false" >
-            <ui:include src="/WEB-INF/includes/content/menu-navbar.xhtml">
-                <ui:param name="title" value="Tabset"/>
-            </ui:include>
-            <ui:include src="/WEB-INF/includes/examples/layout/tabset.xhtml" />
-        </mobi:contentPane>
-        <mobi:contentPane id="accordion" facelet="true" client="false" >
-            <ui:include src="/WEB-INF/includes/content/menu-navbar.xhtml">
-                <ui:param name="title" value="Accordion"/>
-            </ui:include>
-            <ui:include src="/WEB-INF/includes/examples/layout/accordion.xhtml" />
-        </mobi:contentPane>
-        <mobi:contentPane id="fieldset" facelet="true" client="false" >
-            <ui:include src="/WEB-INF/includes/content/menu-navbar.xhtml">
-                <ui:param name="title" value="Fieldset"/>
-            </ui:include>
-            <ui:include src="/WEB-INF/includes/examples/layout/fieldset.xhtml" />
-        </mobi:contentPane>
-        <mobi:contentPane id="list" facelet="true" client="false" >
-            <ui:include src="/WEB-INF/includes/content/menu-navbar.xhtml">
-                <ui:param name="title" value="Lists"/>
-            </ui:include>
-            <ui:include src="/WEB-INF/includes/examples/layout/list.xhtml" />
-        </mobi:contentPane>
-        <mobi:contentPane id="panelconfirmation" facelet="true" client="false" >
-            <ui:include src="/WEB-INF/includes/content/menu-navbar.xhtml">
-                <ui:param name="title" value="Panel Confirmation"/>
-            </ui:include>
-            <ui:include src="/WEB-INF/includes/examples/layout/panelconfirmation.xhtml" />
-        </mobi:contentPane>
-        <mobi:contentPane id="panelpopup" facelet="true" client="false" >
-            <ui:include src="/WEB-INF/includes/content/menu-navbar.xhtml">
-                <ui:param name="title" value="Popup"/>
-            </ui:include>
-            <ui:include src="/WEB-INF/includes/examples/layout/panelpopup.xhtml" />
-        </mobi:contentPane>
-        <mobi:contentPane id="theme" facelet="true" client="false" >
-            <ui:include src="/WEB-INF/includes/content/menu-navbar.xhtml">
-                <ui:param name="title" value="Themes"/>
-            </ui:include>
-            <ui:include src="/WEB-INF/includes/examples/layout/theme.xhtml" />
-        </mobi:contentPane>
-        <mobi:contentPane id="gmap" facelet="true" client="false" >
-            <ui:include src="/WEB-INF/includes/content/menu-navbar.xhtml">
-                <ui:param name="title" value="Google Maps"/>
-            </ui:include>
-            <ui:include src="/WEB-INF/includes/examples/layout/gmap.xhtml" />
         </mobi:contentPane>
 
         <!-- media examles -->
