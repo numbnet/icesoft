@@ -28,7 +28,6 @@
     <title>ICEfaces Mobile Showcase</title>
     <mobi:deviceResource theme="#{themeBean.currentTheme}"/>
     <h:outputStylesheet library="css" name="showcase.css" media="screen"/>
-    <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=true"/>
     <mobi:googleAnalytics/>
 </h:head>
 <h:body>
@@ -41,11 +40,10 @@
             <mobi:pagePanel>
             <f:facet name="header">
                 <h:form id="toolbar2" prependId="false" >
-                    <h:commandLink type="back"
-                                   title="Back"
-                                   styleClass="mobi-button-back"
+                    <mobi:commandButton buttonType="back"
                                    action="#{navigationModel.goBack}"
-                                   rendered="#{navigationModel.canGoBack}"/>
+                                   rendered="#{navigationModel.canGoBack}"
+                                   value="Back"/>
                     <h:commandLink title="&amp;#9776;"
                                    styleClass="ui-icon ui-icon-home"
                                    action="#{navigationModel.goToHome}"
