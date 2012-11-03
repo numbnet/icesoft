@@ -89,4 +89,7 @@ public class CommandButtonMeta extends UICommandMeta {
     @Property(defaultValue = "false", tlddoc = "Selected state of button, normally activated when parent component is a button group.")
     // todo move selected state out into CommandButtonGroup model. Would be nice if this was transparent.
     private boolean selected;
+    
+    @Property(tlddoc="id of panel in contentStack that will be displayed when selecting this item.")
+    private String openContentPane;
 }
