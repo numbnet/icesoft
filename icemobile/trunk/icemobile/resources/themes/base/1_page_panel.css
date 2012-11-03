@@ -50,9 +50,6 @@
     bottom: 0;
 }
 /* layout for buttons in headers and footers */
-.mobi-pagePanel-header .mobi-button, .mobi-pagePanel-footer .mobi-button{
-    margin: 4px 0.3em;
- }
 .mobi-pagePanel-body {
     padding: 40px 0 40px 0;
     position: static;
