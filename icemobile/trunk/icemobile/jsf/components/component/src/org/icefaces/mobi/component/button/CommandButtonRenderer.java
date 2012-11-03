@@ -28,6 +28,8 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.event.ActionEvent;
 
+import org.icefaces.mobi.component.contentpane.ContentPane;
+import org.icefaces.mobi.component.contentstack.ContentStack;
 import org.icefaces.mobi.component.panelconfirmation.PanelConfirmationRenderer;
 import org.icefaces.mobi.component.submitnotification.SubmitNotificationRenderer;
 import org.icefaces.mobi.renderkit.CoreRenderer;
@@ -219,20 +221,61 @@ public class  CommandButtonRenderer extends CoreRenderer {
                 writer.writeAttribute(HTML.ONCLICK_ATTR, noPanelConf.toString(), HTML.ONCLICK_ATTR);
             }
         } else {  //no panelConfirmation requested so button does job
-            StringBuilder noPanelConf = this.getCall(clientId, builder.toString());
-            if (hasBehaviors){
-                String behaviors = this.encodeClientBehaviors(facesContext, cbh, "click").toString();
-                behaviors = behaviors.replace("\"", "\'");
-                noPanelConf.append(behaviors);
+            StringBuilder noPanelConf = null;
+            if( commandButton.getOpenContentPane() != null ){
+                UIComponent stack = findParentContentStack(uiComponent);
+                if (stack!=null){
+                    noPanelConf = new StringBuilder("mobi.layoutMenu.showContent('").append(stack.getClientId());
+                    noPanelConf.append("', event");
+                    noPanelConf.append(",{ selectedId: '").append(commandButton.getOpenContentPane()).append("'");
+                    noPanelConf.append(",singleSubmit: ").append(commandButton.isSingleSubmit());
+                    noPanelConf.append(", item: '").append(commandButton.getClientId(facesContext)).append("'");
+                    UIComponent pane = stack.findComponent(commandButton.getOpenContentPane());
+                    if (pane!=null){
+                        String paneId = pane.getClientId(facesContext);
+                        noPanelConf.append(",selClientId: '").append(paneId).append("'");
+                        ContentPane cp = (ContentPane)pane;
+                        noPanelConf.append(",client: ").append(cp.isClient());
+                    }
+                    noPanelConf.append("});");
+                }
             }
-            noPanelConf.append("});");
+            else{
+                noPanelConf = this.getCall(clientId, builder.toString());
+                if (hasBehaviors){
+                    String behaviors = this.encodeClientBehaviors(facesContext, cbh, "click").toString();
+                    behaviors = behaviors.replace("\"", "\'");
+                    noPanelConf.append(behaviors);
+                }
+                noPanelConf.append("});");
+            }
+            
             writer.writeAttribute(HTML.ONCLICK_ATTR, noPanelConf.toString(), HTML.ONCLICK_ATTR);
         }
         writer.endElement(HTML.INPUT_ELEM);
+        
         //end ctr div for back button
         if (CommandButton.BUTTON_TYPE_BACK.equals(commandButton.getButtonType())){
+            writer.startElement("b", commandButton);
+            writer.writeAttribute(HTML.CLASS_ATTR, "mobi-button-placeholder", null);
+            Object oVal = commandButton.getValue();
+            String value = null;
+            if (null != oVal) {
+                value = oVal.toString();
+                writer.writeText(value, null);
+            }
+            writer.endElement("b");
             writer.endElement(HTML.DIV_ELEM);
         }
+    }
+        
+    protected static UIComponent findParentContentStack(UIComponent component) {
+        UIComponent parent = component;
+        while (parent != null)
+            if (parent instanceof ContentStack) break;
+            else parent = parent.getParent();
+
+        return parent;
     }
 
     private StringBuilder getCall(String clientId, String builder ) {
