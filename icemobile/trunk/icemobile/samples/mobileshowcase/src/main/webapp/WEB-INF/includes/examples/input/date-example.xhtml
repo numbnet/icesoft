@@ -27,8 +27,10 @@
         <mobi:fieldsetGroup>
            <!-- date spinner -->
             <mobi:fieldsetRow>
-                <h:outputLabel value="Date: "/>
+                <h:outputLabel value="Date:"/>
+               
                 <h:panelGroup style="float:right;">
+                    <span style="font-size: 10px;display: block;margin-top: -12px;">(yyyy-mm-dd)</span>
                     <mobi:dateSpinner style="width:100px;"
                                       useNative="true"
                                      value="#{dateBean.dateInput}">
@@ -38,8 +40,10 @@
             </mobi:fieldsetRow>
             <!-- time spinner -->
             <mobi:fieldsetRow>
-                <h:outputLabel value="Time: "/>
+                <h:outputLabel value="Time:"/>
+                
                 <h:panelGroup style="float:right;">
+                    <span style="font-size: 10px;display: block;margin-top: -12px;">(hh:mm AM/PM)</span>
                     <mobi:timeSpinner style="width:100px;"
                                       useNative="true"  timeZone="#{dateBean.timeZone}"
                                      value="#{dateBean.timeInput}">
