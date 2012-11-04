@@ -207,7 +207,6 @@ html.honeycomb h3{
     padding: 0 1%;
     font-weight:normal;
 }
-/*
-#frmFieldset .mobi-fieldset-row > * {
-    float:none;
-}*/
+html.android .back{
+    background-color:#333;
+}
