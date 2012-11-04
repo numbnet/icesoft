@@ -75,6 +75,12 @@ div.mobi-button-back > input {
     font-weight:bold;
     left:0;
 }
+.mobi-pagePanel-header .mobi-button{
+    background-color: transparent;
+    border-radius: 0.5em;
+    border: 1px solid #878787;
+}
 .mobi-pagePanel-header .mobi-button-back{
     left: 0.5em;
+    border:none;
 }
