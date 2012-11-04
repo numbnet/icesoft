@@ -14,8 +14,8 @@
  * governing permissions and limitations under the License.
  */
 .mobi-pagePanel-header, .mobi-pagePanel-footer {
-    background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#8D8D8D), to(#808080), color-stop(.5,#868686));
-    background: -moz-linear-gradient(0% 65% 90deg,#8D8D8D, #868686, #808080 100%);
+    background: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0, #CCC), color-stop(1, #999));
+    background: -moz-linear-gradient(0% 65% 90deg,#CCC, #999 100%);
     background-color: #8C8A8C;
     border-bottom-color: #2D3642;
     border-top-color: white;
