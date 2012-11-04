@@ -26,7 +26,8 @@
                 <mobi:commandButton buttonType="#{empty buttonType ? 'back' : buttonType}"
                                action="#{navigationModel.goBack}"
                                value="#{empty buttonLabel ? 'Back' : buttonLabel}"
-                               openContentPane="#{empty nav ? 'menu' : nav}"/>
+                               openContentPane="#{empty nav ? 'menu' : nav}"
+                               singleSubmit="true"/>
             </h:form>
             <span>#{title}</span>
         </f:facet>

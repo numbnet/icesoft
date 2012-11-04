@@ -31,7 +31,6 @@
                 <h:form>
                     <mobi:contentStackMenu id="menuStack" contentStackId="contentStack"
                           selectedPane="#{navigationModel.selectedPanel}">
-                          
                         <mobi:contentMenuItem label="#{mmsgs[layoutAndNavigationMenu.title]}"/>
                         <mobi:contentMenuItem label="Accordion" value="accordion"/>
                         <mobi:contentMenuItem label="Carousel" value="carousel"/>
@@ -73,7 +72,7 @@
         </mobi:contentPane>
 
         <!-- menu and splash screen -->
-        <mobi:contentPane id="splash" facelet="true" client="false" >
+        <mobi:contentPane id="splash" facelet="false" client="true" >
             <ui:decorate template="/WEB-INF/includes/content/small-page-panel.xhtml">
                 <ui:param name="nav" value="menu"/>
                 <ui:param name="buttonType" value="default"/>
