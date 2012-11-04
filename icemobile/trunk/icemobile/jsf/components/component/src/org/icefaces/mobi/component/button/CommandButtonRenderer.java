@@ -93,7 +93,7 @@ public class  CommandButtonRenderer extends CoreRenderer {
                 baseClass.append(CommandButton.ATTENTION_STYLE_CLASS);
             } else if (CommandButton.BUTTON_TYPE_IMPORTANT.equals(buttonType)) {
                 baseClass.append(CommandButton.IMPORTANT_STYLE_CLASS);
-            } else if (logger.isLoggable(Level.WARNING)) {
+            } else if( !"default".equalsIgnoreCase(buttonType) && logger.isLoggable(Level.WARNING)) {
                 logger.warning("unsupported button type: '" + buttonType + "' for "+ clientId);
             }
         }
