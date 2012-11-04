@@ -194,6 +194,10 @@ html.ipad #splash > h5, html.iphone #splash > h5{
 html.honeycomb h3{
     border-bottom: 1px solid #6595F9;
 }
+.example{
+    display: block;
+    padding: 10px;    
+}
 .example img{
     display:inline-block;
     width:20%;
