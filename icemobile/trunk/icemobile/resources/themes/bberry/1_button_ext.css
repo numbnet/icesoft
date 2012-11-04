@@ -32,41 +32,25 @@
     font-weight: bold;
 }
 /* back button*/
+div.mobi-button-back{
+    border-color: #DDD;
+    padding-left: 20px;
+}
 div.mobi-button-back > span {
-    background: -moz-linear-gradient(45deb, #E7EBE7, #CCC) repeat scroll 0 0 #CCC;
-    background-image: -webkit-gradient(linear, 0 0, 100% 100%, color-stop(0, #E7EBE7), color-stop(1, #CCC));
-    border-bottom-right-radius: 22px;
-    border-top-right-radius: 100px;
-    border-top-left-radius: 25px;
-    border-left: 1px solid #999;
-    border-bottom: 1px solid #999;
+    background-color:transparent;
 }
 div.mobi-button-back > input {
-    color:#000;
-    font-weight:bold;
+    background: url('back.png');
+    background-position: -2px 43%;
+    background-repeat: no-repeat;
+    background-size: 17px;
+    background-color: transparent;
+    font-weight: bold;
+    height: 98%;
+    left: 0;
+    padding-left: 5px;
+    width: 98%;
 }
-/* back button in header */
-.mobi-pagePanel-header .mobi-button-back {
-    background-color: #777;
-    border-bottom: 1px solid rgba(255,255,255,0.4);
-    border-radius: 5px;
-    box-shadow :0 -1px 1px rgba(0,0,0,0.2)inset,
-        0 1px 2px rgba(0,0,0,0.8)inset;
-    color:#fff;
-    text-shadow : 0px -1px 0px rgba(0,0,0,0.8);
-}
-.mobi-pagePanel-header .mobi-button-back:after {
-    box-shadow :0 -3px 1px -2px rgba(0,0,0,0.3)inset,
-                0 4px 2px -3px rgba(0,0,0,0.8)inset;
-}
-.mobi-pagePanel-header .mobi-button-back,
-.mobi-pagePanel-header .mobi-button-back:after,
-.mobi-pagePanel-header .mobi-button-back:before {
-    background-color: #777;
-
-}
-.mobi-pagePanel-header .mobi-button-back:hover,
-.mobi-pagePanel-header .mobi-button-back:hover:after,
-.mobi-pagePanel-header .mobi-button-back:hover:before {
-    background-color: #888;
+.mobi-pagePanel-header .mobi-button-back{
+    left: 0.5em;
 }
