@@ -307,7 +307,8 @@ public class DataTableRenderer extends CoreRenderer {
         final boolean hiddenScrollableSizing = table.isHiddenScrollableSizing();
         final boolean height = scroll && table.getScrollHeight() != Integer.MIN_VALUE;
         final boolean scrollIE8Like7 = Boolean.parseBoolean(context.getExternalContext().getInitParameter("org.icefaces.ace.datatable.scroll.ie8like7"));
-        final boolean noIEHover = Boolean.parseBoolean(context.getExternalContext().getInitParameter("org.icefaces.ace.datatable.selection.noiehover"));
+        final boolean noHover = Boolean.parseBoolean(context.getExternalContext().getInitParameter("org.icefaces.ace.datatable.selection.nohover"));
+        final boolean noHidden = Boolean.parseBoolean(context.getExternalContext().getInitParameter("org.icefaces.ace.datatable.scroll.nohiddencheck"));
         final String widgetVar = resolveWidgetVar(table);
 
         json.beginMap();
@@ -328,7 +329,8 @@ public class DataTableRenderer extends CoreRenderer {
         if (reorder) json.entry("reorderableColumns", true);
         if (snglSrt) json.entry("singleSort", true);
         if (disable) json.entry("disable", true);
-        if (noIEHover) json.entry("noiehover",true);
+        if (noHover) json.entry("nohover",true);
+        if (noHidden) json.entry("nohidden",true);
         if (scroll) {
             json.entry("scrollable", true);
             json.entry("liveScroll", table.isLiveScroll());
