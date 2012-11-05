@@ -22,10 +22,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-
-@XmlRootElement
 public class MediaMessage implements Serializable{
 
 	private static final Logger logger =
@@ -46,18 +42,8 @@ public class MediaMessage implements Serializable{
 	private File smallPhoto = null;
     private File largePhoto = null;
     private long created;
-    private long lastVote;
-
-	public long getLastVote() {
-		return lastVote;
-	}
-
-	public void setLastVote(long lastVote) {
-		this.lastVote = lastVote;
-	}
-
-	private List<String> votes = new ArrayList<String>();
-
+    
+	
 	public static final String MEDIA_TYPE_PHOTO = "Photo";
 	public static final String MEDIA_TYPE_VIDEO = "Video";
 	public static final String MEDIA_TYPE_AUDIO = "Audio";
@@ -71,10 +57,8 @@ public class MediaMessage implements Serializable{
 		latitude = 0;
 		longitude = 0;
 		tags = new ArrayList<String>();
-		votes = new ArrayList<String>();
 		title = null;
 		video = null;
-		lastVote = 0;
 		created = 0;
 		smallPhoto = null;
 		largePhoto = null;
@@ -95,8 +79,6 @@ public class MediaMessage implements Serializable{
 		cloned.setTitle(title);
 		cloned.setVideo(video);
 		cloned.setCreated(created);
-		cloned.getVotes().addAll(votes);
-		cloned.setLastVote(lastVote);
 		cloned.setLargePhoto(largePhoto);
 		return cloned;
 	}
@@ -138,7 +120,6 @@ public class MediaMessage implements Serializable{
 		 return direction;
 	 }
 
-	 @XmlElement
 	 public String getId() {
 		 return id;
 	 }
@@ -223,26 +204,15 @@ public class MediaMessage implements Serializable{
 				+ ", altitude=" + altitude + ", direction=" + direction
 				+ ", uploadMsg=" + uploadMsg + ", video="
 				+ video + ", audio=" + audio + ", smallPhoto=" + smallPhoto
-				+ ", largePhoto=" + largePhoto + ", created=" + created
-				+ ", lastVote=" + lastVote + ", votes=" + votes + "]";
+				+ ", largePhoto=" + largePhoto + ", created=" + created + "]";
 	}
 
-	@XmlElement
 	 public String getEmail() {
 		 return email;
 	 }
 
 	 public void setEmail(String email) {
 		 this.email = email;
-	 }
-
-	 @XmlElement
-	 public List<String> getVotes(){
-		 return votes;
-	 }
-
-	 public long getNumberOfVotes(){
-		 return votes.size();
 	 }
 
 	 public long getCreated() {
@@ -268,16 +238,5 @@ public class MediaMessage implements Serializable{
 	public void setLargePhoto(File largePhoto) {
 		this.largePhoto = largePhoto;
 	}
-
-	public String getVotesAsString(){
-		StringBuilder str = new StringBuilder();
-		for( String vote : votes ){
-			str.append(vote);
-			str.append(" ");
-		}
-		return str.toString();
-	}
-
-
 
 }

@@ -12,7 +12,7 @@
 				<div style="border-top: 1px solid #999999;">
 					<mobi:carousel id="recentMessagesCarousel"
 						collection="${mediaService.mediaImageMarkup}"
-						selectedIndex="${mediaView.selectedIndex}"
+						selectedIndex="${dummy}"
 						style="border-top: 1px solid #999999;">
 						<mobi:carouselItem ref="myitem" type="java.lang.String" />
 					</mobi:carousel>
@@ -21,18 +21,21 @@
 			</div>
 			<div style="clear:both;">
 			</div>
+            ${mediaService.mediaImageMarkup}
+            
 			
-			<div style="margin-top:10px;">
-				<div class="mobi-button-group mobi-button-group-hor" style="text-align:center;">
-					<a class="mobi-button" href='<c:url value="/media"/>'>Media Upload</a>
+			<div style="margin-top:10px;text-align:center;">
+                <mobi:getEnhanced/>
+        		<div class="mobi-button-group mobi-button-group-hor" style="text-align:center;">
+					<a class="mobi-button" style="margin-right:-5px;" href='<c:url value="/media"/>'>Media Upload</a>
 					<a class="mobi-button" href='<c:url value="/media/gallery"/>'>Media Gallery</a>
 				</div>
 				<h4 style="text-align:center;">Share from your location:</h4>
 				<div id="msg">${uploadModel.uploadMsg}</div>
 				<div class="mobi-button-group mobi-button-group-hor ajaxShow" style="text-align:center;">
-					<a class="mobi-button" 
+					<a class="mobi-button" style="margin-right:-5px;" 
 						onclick="showUpload(this,'camera');">Photo</a>
-					<a class="mobi-button"
+					<a class="mobi-button" style="margin-right:-5px;" 
 						onclick="showUpload(this,'camcorder');">Video</a>
 					<a class="mobi-button" 
 						onclick="showUpload(this,'mic');">Audio</a>
@@ -109,25 +112,25 @@
 	            
 	            <form:form id="uploadForm" method="POST" modelAttribute="uploadModel">
 	                <mobi:fieldsetGroup id="uploadGrp" inset="true" style="margin-top:10px;">
-	                    <mobi:fieldsetRow style="min-height:30px;">
+	                    <mobi:fieldsetRow  styleClass="mobi-grid">
 	                    	 <mobi:inputText name="title" 
-	                         	styleClass="input"
+	                         	styleClass="mobi-col mobi-weight1"
 	                         	type="text"
                                 autoCorrect="off"
                                 placeholder="Title"
                                 value="${uploadModel.title}"/>
 	                     </mobi:fieldsetRow>
-	                     <mobi:fieldsetRow style="min-height:50px;">
+	                     <mobi:fieldsetRow styleClass="mobi-grid">
 	                         <mobi:inputText name="description" 
-	                         	styleClass="input"
+	                         	styleClass="mobi-col mobi-weight1"
 	                         	type="textarea"
                                 autoCorrect="off"
                                 placeholder="Description"
                                 value="${uploadModel.description}"/>
 	                     </mobi:fieldsetRow>
-	                     <mobi:fieldsetRow style="min-height:50px;">
+	                     <mobi:fieldsetRow styleClass="mobi-grid">
 	                         <mobi:inputText name="tags" type="text"
-	                         	styleClass="input"
+	                         	styleClass="mobi-col mobi-weight1"
                                 autoCorrect="off"
                                 placeholder="Tags"
                                 value="${tags}"/>
@@ -135,6 +138,7 @@
 	                     <mobi:fieldsetRow style="text-align:center;">
 	                          <mobi:commandButton name="submit"
 	                                style="float:none;"
+                                    buttonType="important"
 	                                value="Submit my message"/>
 	                                
 	                    </mobi:fieldsetRow>

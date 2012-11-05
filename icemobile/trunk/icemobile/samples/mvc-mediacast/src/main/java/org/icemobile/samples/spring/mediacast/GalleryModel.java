@@ -45,7 +45,6 @@ public class GalleryModel {
 		this.filteredMessagesCount = filteredMessagesCount;
 	}
 	public List<String> getTags() {
-		log.debug("tags******************** " + tags);
 		return tags;
 	}
 	public void setTags(List<String> tags) {
