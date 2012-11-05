@@ -47,7 +47,7 @@ if (!window.ice['mobi']) {
         return {
            scrollUpdate: function(event, pageVal, cfg) {
                var changedVal = false;
-               console.log('pageVal passed in='+pageVal);
+            //   console.log('pageVal passed in='+pageVal);
                if (currentVal!=pageVal){
                     changedVal = true;
                    // this.setActive();
@@ -71,7 +71,7 @@ if (!window.ice['mobi']) {
                        /** to do ensure proper format */
                        submitcfg.behaviors = behaviors;
                    }
-                   var refreshXHR = function(xhr, status, args) {console.log('refreshXHR'); ice.mobi.carousel.refreshCall(clientId, pageVal);};
+                   var refreshXHR = function(xhr, status, args) { ice.mobi.carousel.refreshCall(clientId, pageVal);};
                    submitcfg.oncomplete = refreshXHR;
                    mobi.AjaxRequest(submitcfg);
                }
@@ -128,7 +128,7 @@ if (!window.ice['mobi']) {
                   this.setActive(cfgIn.key);
                }
                if (!myScroll.wrapper)  {
-                   console.log('WARNING:_ reinitialized scroller');
+                //   console.log('WARNING:_ reinitialized scroller');
                    enhance(clientId);
                }
            }
