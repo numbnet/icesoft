@@ -88,7 +88,7 @@ MvcUtil.enhanceForm = function(theForm)  {
     });
 };
 MvcUtil.addClickLinkHandler = function(link, updateRegion){
-    link.addEventListener("click", function(e) {
+    $(link).click( function(e) {
         if( window.history && window.history.pushState ){
             $('#menu').find('a').each( function(){
                 this.className = '';
@@ -98,7 +98,7 @@ MvcUtil.addClickLinkHandler = function(link, updateRegion){
             history.pushState({ src: link.href }, null, link.href);
             e.preventDefault();
         }
-      }, true);
+      });
 }
 MvcUtil.enhanceLink = function(link, updateRegion)  {
     $(document).ready(function () {
