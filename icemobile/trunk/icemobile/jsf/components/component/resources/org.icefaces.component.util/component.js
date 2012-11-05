@@ -461,9 +461,13 @@ ice.mobi.sx = function (element, uploadURL) {
 //        uploadURL += '/';
 //    }
 
-    var returnURL = window.location;
-    if ("" == returnURL.hash) {
-        returnURL.hash = "icemobilesx";
+    var returnURL = "" + window.location;
+    if ("" == window.location.hash) {
+        var lastHash = returnURL.lastIndexOf("#");
+        if (lastHash > 0) {
+            returnURL = returnURL.substring(0, lastHash);
+        }
+        returnURL += "#icemobilesx";
     }
 
     if ("" != params) {
