@@ -53,7 +53,7 @@ public class Caching implements Serializable {
     }
 
     protected String getNewValue() {
-        return Long.toHexString(System.currentTimeMillis() + counter);
+        return Long.toHexString(System.currentTimeMillis() + counter++);
     }
 
     public String getStaticAutoInput() {

@@ -20,7 +20,7 @@ ice.ace.tabset = {
 	 
 		 YAHOO.util.Event.onDOMReady(function () {
 		 var Dom = YAHOO.util.Dom;
-	
+
        var tabview = new YAHOO.widget.TabView(clientId), cachedOldTabs = [], cachedNewTab = null;
        tabview.set('orientation', jsProps.orientation);
 
@@ -262,7 +262,13 @@ ice.ace.tabset = {
 		}
 	}
 
-    
+       ice.onAfterUpdate(function(xmlContent, source) {
+           var contentDiv = document.getElementById(clientId + 'cnt');
+           if (contentDiv) {
+               ice.ace.tabset.loadDeferredIframeContent(contentDiv);
+           }
+       });
+
 	   //console.info('effect >>> '+ jsfProps.effect );
  
 	   tabview.addListener('activeTabChange', tabChange);
@@ -699,6 +705,20 @@ ice.ace.tabset = {
             var contentsToMove = safeDiv.firstChild;
             safeDiv.removeChild(contentsToMove);
             tabContentDiv.appendChild(contentsToMove);
+            ice.ace.tabset.loadDeferredIframeContent(contentsToMove);
+        }
+    },
+
+    loadDeferredIframeContent : function(element) {
+        var key = 'org.icefaces.ace.component.tabset.deferred_src';
+        var iframes = element.getElementsByTagName('iframe');
+        for (var i = 0; i < iframes.length; i++) {
+            var ifr = iframes[i];
+            var dsrc = ifr.attributes[key];
+            if (dsrc) {
+                ifr.src = dsrc.value;
+                ifr.removeAttribute(key);
+            }
         }
     }
 };
