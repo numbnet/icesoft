@@ -88,13 +88,20 @@ public class CameraController {
         }
     }
 
-    @RequestMapping(value = "/campushr", method = RequestMethod.POST)
+    @RequestMapping(value = "/campushr", method = RequestMethod.POST, consumes="multipart/form-data")
     public void pushCamerar(
             HttpServletRequest request, ModelBean modelBean,
             @RequestParam(value = "cam", required = false) MultipartFile file,
             Model model) throws IOException {
 
         this.pushCamera(request, modelBean, file, model);
+    }
+    
+    //non-file upload post
+    @RequestMapping(value = "/campushr", method = RequestMethod.POST)
+    public void camPushrPost(HttpServletRequest request, Model model) {
+        model.addAttribute("isGET", Boolean.TRUE);
+        model.addAttribute("imgPath", getCurrentFileName(request));
     }
 
     @RequestMapping(value = "/campush", method = RequestMethod.POST)
