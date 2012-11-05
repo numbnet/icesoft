@@ -43,7 +43,6 @@ public class FragmentTag extends BaseBodyTag implements IFragment{
     public void setParent(Tag parent) {
         if ((parent instanceof SplitPaneTag)) {
             myParent = (SplitPaneTag) parent;
-      //      setAttributesSplitPaneFragment (myParent);
         }else {
             throw new IllegalArgumentException("FragmentTag currently only supports SplitPaneTag as parent");
         }

@@ -33,7 +33,7 @@ public class SplitPane extends SplitPaneBase implements ISplitPane{
     public static final String LEFT_FACET = "left";
     public static final String RIGHT_FACET = "right";
 
-       public ClientDescriptor getClient() {
+    public ClientDescriptor getClient() {
          return MobiJSFUtils.getClientDescriptor();
     }
 
