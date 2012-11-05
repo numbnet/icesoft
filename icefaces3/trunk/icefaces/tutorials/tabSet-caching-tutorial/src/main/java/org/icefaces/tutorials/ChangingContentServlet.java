@@ -47,7 +47,7 @@ public class ChangingContentServlet extends HttpServlet {
         String iframeId = requestURI.substring(begin, end);
 
         // Using the iframe identifier, find the cookie that tracks what the last content was
-        final String cookiePrefix = "ChangingContent";
+        final String cookiePrefix = "ChangingContent." + req.getSession().getId();
         final String cookieName = cookiePrefix + "." + iframeId;
         Cookie[] cookies = req.getCookies();
         for (Cookie c : cookies) {

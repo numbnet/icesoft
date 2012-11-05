@@ -56,8 +56,16 @@ import java.util.List;
         "TabSet may use application configurable animations to accentuate " +
         "the transition from the previously selected TabPane to the newly " +
         "selected TabPane. The label portion of the TabPanes may be shown " +
-        "on the bottom, top, left, or right of the TabSet.<p>For more " +
-        "information, see the <a href=\"http://wiki.icefaces.org/display/ICE/TabSet\">TabSet Wiki Documentation</a>."
+        "on the bottom, top, left, or right of the TabSet. To support the " +
+        "capability of dynamically adding and removing TabPane(s) without " +
+        "updating the entire TabSet, there is a side-effect where any " +
+        "iframe(s) within them can get loaded twice in rapid succession, " +
+        "when first shown or subsequently updated. To eliminate the " +
+        "redundant load by deferring the loading until the TabSet is ready, " +
+        "do not use a src attribute on the iframe(s), but rather set the " +
+        "org.icefaces.ace.component.tabset.deferred_src attribute to what " +
+        "src would have been.<p>For more information, see the " +
+        "<a href=\"http://wiki.icefaces.org/display/ICE/TabSet\">TabSet Wiki Documentation</a>."
 )
 @ResourceDependencies({
     @ResourceDependency(library = "icefaces.ace", name = "util/combined.css"),
