@@ -66,10 +66,10 @@ span.error {
 }
 html.iphone .ui-icon,
 html.ipad .ui-icon,
-html.honeycomb .ui-icon {
+html.honeycomb .ui-icon,
+html.android .ui-icon {
    background-image: url(icons-white.png);
 }
-html.android .ui-icon,
 html.bberry .ui-icon {
    background-image: url(icons-black.png);
 }
@@ -82,10 +82,10 @@ html.bberry .ui-icon {
         -webkit-background-size: 776px 18px;
         background-size: 776px 18px;
     }
-     html.iphone .ui-icon, html.ipad .ui-icon, html.honeycomb .ui-icon {
+    html.iphone .ui-icon, html.ipad .ui-icon, html.honeycomb .ui-icon, html.android .ui-icon {
         background-image: url(icons-36-white.png);
     }
-     html.android .ui-icon, html.bberry .ui-icon {
+    html.bberry .ui-icon {
         background-image: url(icons-36-black.png);
     }
 }
@@ -96,7 +96,7 @@ html.bberry .ui-icon {
     margin-left: 0.3em;
     width: 30px;
     left: 0.3em;
-    top: 1px;
+    top: 5px;
     position: absolute;
     height: 25px;
 }

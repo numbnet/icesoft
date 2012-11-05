@@ -9,12 +9,14 @@
         <mobi:fieldsetRow>
             <label>Date Spinner</label>
             <mobi:dateSpinner name="dateOne" id="d1"
-                    value="${dateTimeSpinnerBean.dateOne}"/>
+                style="width:100px;"
+                value="${dateTimeSpinnerBean.dateOne}"/>
         </mobi:fieldsetRow>
         <mobi:fieldsetRow>
             <label>Time Spinner</label>
             <mobi:timeSpinner name="timeOne" id="t1" 
-                    value="${dateTimeSpinnerBean.timeOne}"/>
+                style="width:100px;"
+                value="${dateTimeSpinnerBean.timeOne}"/>
         </mobi:fieldsetRow>
     </mobi:fieldsetGroup>
     <h4>Spinner Value Echo</h4>
