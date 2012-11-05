@@ -183,7 +183,7 @@ if (!window.ice.mobile) {
             var form = document.getElementById(id);
             context.serialized = ice.serialize(id, true);
             window.ICEutil.submitForm(form.action, context.serialized +
-                    serialTail));
+                    serialTail);
         }
 
         namespace.addHidden = function(target, name, value, vtype) {
