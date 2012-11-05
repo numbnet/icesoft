@@ -772,70 +772,51 @@
             <rtexprvalue>true</rtexprvalue>
         </attribute>
     </tag>
-
     <tag>
-        <description>ICEmobile Carousel container</description>
-        <display-name>carousel</display-name>
-        <name>carousel</name>
-        <tag-class>org.icemobile.jsp.tags.CarouselTag</tag-class>
-        <body-content>JSP</body-content>
-        <attribute>
-            <description>Pagewide unique identifier</description>
-            <name>id</name>
-            <required>true</required>
-            <rtexprvalue>true</rtexprvalue>
-        </attribute>
-        <attribute>
-            <description>User defined CSS class</description>
-            <name>styleClass</name>
-            <required>false</required>
-            <rtexprvalue>true</rtexprvalue>
-        </attribute>
-        <attribute>
-            <description>Inline style definition</description>
-            <name>style</name>
-            <required>false</required>
-            <rtexprvalue>true</rtexprvalue>
-        </attribute>
-
-        <attribute>
-            <description>Collection of carousel elements. Usually a property on
-                a backing bean that defines a collection of content elements in
-                the carousel
-            </description>
-            <name>collection</name>
-            <required>true</required>
-            <rtexprvalue>true</rtexprvalue>
-        </attribute>
-        <attribute>
+         <description>ICEmobile Carousel container</description>
+         <display-name>carousel</display-name>
+         <name>carousel</name>
+         <tag-class>org.icemobile.jsp.tags.CarouselTag</tag-class>
+         <body-content>JSP</body-content>
+         <attribute>
+             <description>Pagewide unique identifier</description>
+             <name>id</name>
+             <required>true</required>
+             <rtexprvalue>true</rtexprvalue>
+         </attribute>
+         <attribute>
+             <description>User defined CSS class</description>
+             <name>styleClass</name>
+             <required>false</required>
+             <rtexprvalue>true</rtexprvalue>
+         </attribute>
+         <attribute>
+             <description>Inline style definition</description>
+             <name>style</name>
+             <required>false</required>
+             <rtexprvalue>true</rtexprvalue>
+         </attribute>
+         <attribute>
             <description>Index of selected tab (0 to collection.size-1)
             </description>
-            <name>selectedIndex</name>
+            <name>selectedItem</name>
             <required>true</required>
+            <type>int</type>
             <rtexprvalue>true</rtexprvalue>
         </attribute>
-    </tag>
-
-    <tag>
+     </tag>
+   <tag>
         <description>Iterative item reference description</description>
         <name>carouselItem</name>
         <tag-class>org.icemobile.jsp.tags.CarouselItemTag</tag-class>
-        <tei-class>org.icemobile.jsp.tags.CarouselItemTei</tei-class>
         <body-content>JSP</body-content>
         <attribute>
-            <description>reference name of iterative element</description>
-            <name>ref</name>
-            <required>false</required>
-            <rtexprvalue>true</rtexprvalue>
-        </attribute>
-        <attribute>
-            <description>Type of iterative element</description>
-            <name>type</name>
-            <required>false</required>
-            <rtexprvalue>true</rtexprvalue>
-        </attribute>
+             <description>Pagewide unique identifier</description>
+             <name>id</name>
+             <required>false</required>
+             <rtexprvalue>true</rtexprvalue>
+         </attribute>
     </tag>
-
     <tag>
         <description>Parent Fieldset Group Tag</description>
         <display-name>fieldsetGroup</display-name>

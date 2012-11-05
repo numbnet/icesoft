@@ -16,7 +16,7 @@ public class CarouselBean {
      */
 
     private int carouselOne;
-
+    private int carouselTwo;
 
     public CarouselBean() {
 
@@ -42,6 +42,32 @@ public class CarouselBean {
         images.add(new String("<img src=\"resources/monitor.png\" />"));
         images.add(new String("<img src=\"resources/laptop.png\" />"));
         images.add(new String("<img src=\"resources/pda.png\" />"));
+        images.add(new String("<img src=\"resources/desktop.png\" />"));
+        images.add(new String("<img src=\"resources/monitor.png\" />"));
+        images.add(new String("<img src=\"resources/laptop.png\" />"));
+        images.add(new String("<img src=\"resources/pda.png\" />"));
+        images.add(new String("<img src=\"resources/desktop.png\" />"));
+        images.add(new String("<img src=\"resources/monitor.png\" />"));
+        images.add(new String("<img src=\"resources/laptop.png\" />"));
+        images.add(new String("<img src=\"resources/pda.png\" />"));
         return images;
+    }
+    public Collection getImagesA() {
+        ArrayList images = new ArrayList();
+        images.add(new String("<img src=\"resources/desktop.png\" />"));
+        images.add(new String("<img src=\"resources/monitor.png\" />"));
+        images.add(new String("<img src=\"resources/laptop.png\" />"));
+        images.add(new String("<img src=\"resources/pda.png\" />"));
+        images.add(new String("<img src=\"resources/desktop.png\" />"));
+        images.add(new String("<img src=\"resources/monitor.png\" />"));
+        return images;
+    }
+
+    public int getCarouselTwo() {
+        return carouselTwo;
+    }
+
+    public void setCarouselTwo(int carouselTwo) {
+        this.carouselTwo = carouselTwo;
     }
 }

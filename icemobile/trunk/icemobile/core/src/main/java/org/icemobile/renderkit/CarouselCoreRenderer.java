@@ -16,7 +16,6 @@ public class CarouselCoreRenderer extends BaseCoreRenderer {
     StringBuilder baseClass = new StringBuilder(ICarousel.CAROUSEL_CLASS);
     StringBuilder scrollerClass = new StringBuilder(ICarousel.SCROLLER_CLASS) ;
     StringBuilder listClass = new StringBuilder(ICarousel.LIST_CLASS) ;
-    StringBuilder itemClass = new StringBuilder(ICarousel.CAROUSEL_ITEM_CLASS);
     StringBuilder pagClass = new StringBuilder("") ; //currently a problem with existing css
 
     public void encodeBegin(ICarousel component, IResponseWriter writer)
@@ -47,10 +46,6 @@ public class CarouselCoreRenderer extends BaseCoreRenderer {
     public void encodeEnd(ICarousel carousel, IResponseWriter writer)
             throws IOException{
         String clientId= carousel.getClientId();
-   /*      String userItemStyleClass = carousel.getItemStyleClass();
-       if (userItemStyleClass !=null){
-           itemClass.append(" ").append(userItemStyleClass);
-        } */
         writer.endElement(UL_ELEM);
         writer.endElement(DIV_ELEM);
         writer.endElement(DIV_ELEM);
@@ -80,12 +75,6 @@ public class CarouselCoreRenderer extends BaseCoreRenderer {
         }
         for (int i = 0; i < size; i++) {
             writer.startElement(LI_ELEM, null);
-    /*     can't implement this unless javascript gets passed the updated
-            styleclass as querySelector has this info.
-           if (carousel.getItemStyle() != null){
-                writer.writeAttribute(STYLE_ATTR, carousel.getItemStyle());
-            }      */
-      //      writer.writeAttribute(STYLE_CLASS_ATTR, userItemStyleClass);
             writer.writeText(String.valueOf(i + 1));
             writer.endElement(LI_ELEM);
         }

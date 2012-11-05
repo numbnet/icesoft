@@ -28,6 +28,9 @@ if (!window.ice['mobi']) {
 
     function enhance(clientId)  {
         var carouselId = clientId+'_carousel';
+   //     var carElem = document.getElementById(carouselId);
+    //    carElem.addEventListener ("DOMNodeRemoved", ice.mobi.carousel.nodeRemoved(event), false);
+    //    carElem.addEventListener('DOMNodeRemovedFromDocument', ice.mobi.carousel.nodeRemovedFromDoc(event), false);
         var iscroller = new iScroll(carouselId, {
 	                    snap: 'li',
 	                    momentum: false,
@@ -47,18 +50,16 @@ if (!window.ice['mobi']) {
         return {
            scrollUpdate: function(event, pageVal, cfg) {
                var changedVal = false;
-               console.log('pageVal passed in='+pageVal);
                if (currentVal!=pageVal){
                     changedVal = true;
-                   // this.setActive();
                    var undoNode = document.querySelector('.mobi-carousel-cursor-list > li.active');
                    if (undoNode){
                        undoNode.className = '';
                    }
-                //   console.log( 'old hidden='+this.getHiddenVal()+ ' updated to hidden.value = '+pageVal);
                    this.setActive(pageVal);
                }
-               if (changedVal){
+               var isJsfSubmit = (cfg.singleSubmit || behaviors);
+               if (changedVal && isJsfSubmit){
                    var behaviors = cfg.behaviors;
                    var submitcfg = {};
                    submitcfg.source = myId;
@@ -71,7 +72,7 @@ if (!window.ice['mobi']) {
                        /** to do ensure proper format */
                        submitcfg.behaviors = behaviors;
                    }
-                   var refreshXHR = function(xhr, status, args) {console.log('refreshXHR'); ice.mobi.carousel.refreshCall(clientId, pageVal);};
+                   var refreshXHR = function(xhr, status, args) { ice.mobi.carousel.refreshCall(clientId, pageVal);};
                    submitcfg.oncomplete = refreshXHR;
                    mobi.AjaxRequest(submitcfg);
                }
@@ -113,6 +114,7 @@ if (!window.ice['mobi']) {
            },
            scrollToPage: function(key){
                myScroll.scrollToPage(key,0);
+               this.updateHidden(key);
                this.setActive(key);
                myScroll.refresh();
            } ,
@@ -122,15 +124,13 @@ if (!window.ice['mobi']) {
                   this.setActive(key);
                }
            } ,
-           updateProperties: function (clientId, cfgIn) {
-               if (cfgIn.key != currentVal){
-                  this.scrollToPage(key);
-                  this.setActive(cfgIn.key);
-               }
+           updateProperties: function (clientId) {
+               this.setActive(this.getHiddenVal());
                if (!myScroll.wrapper)  {
                    console.log('WARNING:_ reinitialized scroller');
                    enhance(clientId);
                }
+
            }
 
         }
@@ -138,15 +138,22 @@ if (!window.ice['mobi']) {
     ice.mobi.carousel = {
         acarousel: {},
         cfg: {},
+        unload: {},
         loaded: function(clientId, cfgIn) {
             if (!this.acarousel[clientId]){
                 this.cfg[clientId] = cfgIn;
                 this.acarousel[clientId] = Carousel(clientId, cfgIn.key);
                 this.acarousel[clientId].setActive(cfgIn.key);
+                this.unload[clientId] = function () {
+                    ice.mobi.carousel.unloadTest(clientId);
+                 };
+                 document.addEventListener("DOMSubtreeModified", this.unload[clientId], false);
+              //  document.addEventListener("DOMContentLoaded", this.unload(clientId), false);
+
             } else {
                 this.cfg[clientId] = cfgIn;
-                this.acarousel[clientId].updateProperties(clientId, cfgIn);
-                this.acarousel[clientId].setActive(cfgIn.key);
+                this.acarousel[clientId].updateProperties(clientId);
+              //  this.refreshCall(clientId, cfgIn.key); //just need this for jsp version
             }
         },
         scrollUpd: function(event, clientId, pageVal){
@@ -157,7 +164,22 @@ if (!window.ice['mobi']) {
         },
         refreshCall: function(clientId, key){
             this.acarousel[clientId].refreshMe(key);
+        },
+        unloadTest: function(clientId){
+       //    console.log('unloadTest fncall');
+            if (!document.getElementById(clientId) && this.acarousel[clientId]!=null){
+               console.log("unloadTest setting id="+clientId+" to null");
+               this.acarousel[clientId] = null;
+               this.cfg[clientId] = null;
+               document.removeEventListener("DOMSubtreeModified",this.unload[clientId], false ) ;
+            }
         }
-    }
+  /*      nodeRemoved: function (event) {
+            alert ("The element  has been removed with event="+event);
+        } ,
+        nodeRemovedFromDoc: function (event) {
+            alert ("The element  been removed FROM DOC with event="+event);
+        } */
 
+    }
   })();
