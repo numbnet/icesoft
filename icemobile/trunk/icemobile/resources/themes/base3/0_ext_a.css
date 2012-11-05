@@ -24,9 +24,15 @@
 .mobi-grid{
     display:-webkit-box;
     display:-moz-box;
+    -webkit-box-orient: horizontal;
+    -moz-box-orient: horizontal;
+    -webkit-box-align:baseline;
+    -moz-box-align:baseline;
     padding: 0 10px;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
+    -moz-box-orient: horizontal;
+    box-orient: horizontal;
     min-width:100%;
     /* min-height:100%; TODO causing tall buttons in jsp ex */
     position: relative;
