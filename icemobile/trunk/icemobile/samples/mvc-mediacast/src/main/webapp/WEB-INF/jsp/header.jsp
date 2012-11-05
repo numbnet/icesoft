@@ -1,5 +1,5 @@
 <head>
-	<title><fmt:message key="title" /></title>
+	<title>MVC Mediacast</title>
 	<mobi:deviceResource view="small" includePush="true"/>
 	<link rel="stylesheet" href="<c:url value="/resources/css/mediacast.css"/>"/>
 	<script type="text/javascript" src="code.icepush"></script>

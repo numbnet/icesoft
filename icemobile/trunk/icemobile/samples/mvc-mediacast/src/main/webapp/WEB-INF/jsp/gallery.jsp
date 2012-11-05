@@ -6,7 +6,7 @@
 	<mobi:pagePanel>
 		<mobi:pagePanelHeader>
 			<a id="backBtn" class="mobi-button"
-				href='<c:url value="/contest"/>'>Upload</a>
+				href='<c:url value="/media"/>'>Upload</a>
 			<span>Photo Gallery</span>
 		</mobi:pagePanelHeader>
 		<mobi:pagePanelBody>

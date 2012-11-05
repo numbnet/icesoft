@@ -1,0 +1,337 @@
+/* INPUTS */
+
+input, textarea{ font-family: droid, Helvetica, Arial, sans-serif;}
+html.bberry input, html.bberry textara{
+    padding:3px;
+}
+html.android input::-webkit-input-placeholder, html.honeycomb input::-webkit-input-placeholder,
+html.android textarea::-webkit-input-placeholder, html.honeycomb textarea::-webkit-input-placeholder  {
+    color:#333333;
+}
+.input{
+    width: 100%;
+    font-size:15px; 
+}
+
+/* FIELDSETS */
+
+.mobi-fieldset{
+    box-shadow: 0px 2px 7px gray;
+}
+html.android .mobi-fieldset, html.honeycomb .mobi-fieldset{
+	box-shadow: none;
+}
+.mobi-fieldset-row {
+    padding: 10px;
+}
+.mobi-fieldset-row > input:last-child, 
+.mobi-fieldset-row > select:last-child,
+.mobi-fieldset-row > textarea:last-child {
+	float: none;
+	-webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+/* BUTTONS */
+input.mobi-button:disabled{
+    opacity:0.5;
+}
+.mobi-button-group{
+	text-align:center;
+}
+html.android .mobi-button{
+	border-radius: 0.2em;
+	border: 1px solid white;
+}
+html.honeycomb .mobi-button{
+	color: white !important;
+    border-radius: 0.2em;
+}
+html.android a.mobi-button-default, 
+html.android a.mobi-button-important, 
+html.android a.mobi-button-attention,
+html.android .mobi-pagePanel-header a.mobi-button, 
+html.android .mobi-pagePanel-header a.mobi-button:visited {
+    color: black !important;
+}
+html.android .mobi-pagePanel-body a, html.android .mobi-pagePanel-footer a{
+    color: #91C4E8;
+}
+html.honeycomb .mobi-pagePanel-body a{
+    color: #91C4E8;
+}
+html.iphone .mobi-pagePanel-footer a, html.ipad .mobi-pagePanel-footer a{
+    color: #461357;
+}
+
+/* LISTS */
+
+.mobi-list-item {
+    border-right:none;
+    padding: 0;
+    text-shadow:none;
+}
+#galleryFrm .mobi-list {
+    margin-bottom: 0;
+}
+#galleryFrm .mobi-list-item {
+    min-width: 150px;
+}
+.mobi-list-item-default span.desc {
+	padding: 5px;
+	vertical-align: top;
+	font-weight: 200;
+	font-size: 15px;
+	text-overflow: ellipsis;
+	max-width: 125px;
+	height: 50px;
+	margin: 0;
+	display: inline-block;
+	overflow: hidden;
+	-webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    box-sizing: border-box;
+	line-height: 40px;
+    white-space: nowrap;
+}
+.mobi-list-item-default {
+    position: relative; 
+    margin: 0;
+    padding: 0;
+    height: 50px;
+}
+.mobi-list > .mobi-list-item > .mobi-list-item-default > a.mediaLink {
+    height: 50px;
+    padding: 0;
+    position: relative;
+    margin: 0;
+    display:inline-block;
+}
+.mobi-list .mobi-list-item a.editLink{
+    position: absolute; 
+    margin-top: -20px;
+    height:20px;
+    width:20px;
+}
+
+/* PAGE PANEL */
+.mobi-pagePanel-footer a, .mobi-pagePanel-footer a:visited{
+    color: #D7BEE8;
+    text-decoration:none;
+}
+
+/* CAROUSEL */
+
+.mobi-carousel {
+    height: 76px;
+}
+.mobi-carousel-list li {
+    width: auto;
+}
+.mobi-carousel-cursor {
+    height: 5px;
+    padding: 2px 0 3px 0;
+}
+.mobi-carousel-cursor-list { display:none;}
+.mobi-carousel-list li > img{
+    height:75px;
+}
+.mobi-carousel-list li div{
+    overflow:hidden;
+    height:75px;
+}
+
+/* TABS */
+
+.mobi-tabset-content {
+    background-color: transparent;
+}
+.mobi-tabset {
+    background-color: transparent;
+}
+html.bberry .mobi-tabset-tabs > ul {
+	margin-top: 2px;
+}
+html.ipad .mobi-tabset-tabs > ul {
+    background-color: #CCCFD7;
+}
+html.bberry .mobi-tabset-tabs > ul li {
+    padding: 0 10px;
+}
+
+/* APP */
+
+#icemobileIcon{
+    position: absolute;
+    margin-top: -5px;
+    left: 0.5em;
+}
+
+#largePhoto img{
+	border-radius: 0.6em;
+	-webkit-border-radius: 0.6em;
+	-moz-border-radius: 0.6em;
+	margin-bottom: 5px;
+}
+
+.message-desc {
+	opacity: 0.5;
+	background-color: #B4B4B4;
+	border-bottom: 1px solid black;
+	padding: 0 0 1px 0;
+	width: 100%;
+}
+.message-desc h3{
+    margin: 0 1em;
+    text-align: center;
+}
+
+.mediaLink .desc{
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	width: 70%;
+	font-size: 12px;
+	font-weight: normal;
+	float: left;
+	padding: 10px;
+	height: 50px;
+	overflow: hidden;
+	-webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    box-sizing: border-box;
+	display: inline-block;
+}
+.p{
+    border:none;float:left;height:50px;
+}
+
+#viewerPanel{
+	text-align: center;
+	position: relative;
+}
+.lightbox{
+	background-color:black;
+}
+
+/* SMALL SCREEN */
+@media screen and (max-width: 579px) {	
+	.imageViewer {
+	    width: 100%;
+	}
+}
+
+/* LARGE SCREEN */
+@media screen and (min-width: 580px) {  
+	.mobi-pagePanel-header img{
+	   vertical-align:text-bottom;
+	   margin-right:5px;
+	}
+    .imageViewer {
+        width: 500px;
+    }
+    .mobi-view-switcher{
+	   text-align: center;
+	   position: absolute;
+	   right: 75px;
+    }
+    #left, #right{
+        overflow-y:scroll;
+        overflow-x:hidden;
+        -webkit-box-sizing: border-box;
+	    -moz-box-sizing: border-box;
+	    -ms-box-sizing: border-box;
+	    box-sizing: border-box;
+	    margin-top:0;
+	    margin-bottom:0;
+	    float:left;
+    }
+    #right{
+        width:70%;overflow:hidden;
+    }
+    #left{
+        width:30%;overflow-y: auto;
+        border-right:1px solid darkgray;
+    }
+}
+/* LARGE SCREEN PORTAIT */
+@media screen and (max-width: 999px) {  
+	#left #galleryFrm .mobi-list-item {
+	    min-width: 150px;
+	}
+	#left span.desc{
+       display: none;
+    }
+}
+#left #galleryFrm .mobi-list-item{
+    -webkit-transition: all 3s;
+    -moz-transition: all 3s ease-in-out;
+    -o-transition: all 3s ease-in-out;
+    -ms-transition: all 3s ease-in-out;
+    transition:  all 3s ease-in-out;
+}
+.title-msg{
+	position: absolute;
+	left: 5px;
+	font-size: 15px;
+}
+
+.viewer-back{
+	width: 23px; height: 34px;
+	background: url('css-images/back.png') center right no-repeat;
+	display: block;
+    top: 14px;
+    position: absolute;
+    left: 0;
+    padding: 10px;
+    opacity: 0.6;
+}
+.viewer-forward{
+    width: 23px;
+	height: 34px;
+	background: transparent url('css-images/forward.png') center left no-repeat;
+	display: block;
+	top: 14px;
+	position: absolute;
+	right: 0;
+	padding: 10px;
+    opacity: 0.6;
+}
+
+#tally{
+	position: absolute;
+	color: black;
+	opacity: 0.4;
+	font-weight: bold;
+	font-style: italic;
+	text-align: center;
+	background-color: white;
+	width: 100%;
+	font-size: 18px;
+}
+#tabstab1_wrapper{
+	background-color:black;
+}
+
+#uploadFormContainer{
+	clear:both;
+	padding-top: 10px;
+}
+div.ajaxloader{
+    height: 32px;
+    width: 32px;
+    display:none;
+    z-index:2;
+}
+html.ipad div.ajaxloader, html.iphone div.ajaxloader{
+    background: transparent url('./css-images/ajax-loader-ios.gif') no-repeat right top;  
+}
+html.android div.ajaxloader, html.honeycomb div.ajaxloader{
+    background: transparent url('./css-images/ajax-loader-android.gif') no-repeat right top;  
+}
+html.bberry div.ajaxloader{
+    background: transparent url('./css-images/ajax-loader-bberry.gif') no-repeat right top;  
+}

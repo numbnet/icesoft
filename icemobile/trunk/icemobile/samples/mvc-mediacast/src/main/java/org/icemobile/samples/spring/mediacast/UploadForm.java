@@ -5,7 +5,7 @@ import javax.validation.constraints.Size;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
 
-public class ContestForm {
+public class UploadForm {
 	
 	public static final String PAGE_UPLOAD = "upload";
 	public static final String PAGE_GALLERY = "gallery";
@@ -31,7 +31,6 @@ public class ContestForm {
 	
 	private String form;
 	
-	private String voterId;
 	
 	public String getForm() {
 		return form;
@@ -99,17 +98,6 @@ public class ContestForm {
 		return false;
 	}
 
-	public String getVoterId() {
-		return voterId;
-	}
-
-	public void setVoterId(String voterId) {
-		if( notNullOrEmpty(voterId)){
-			this.voterId = cleanParam(voterId);
-		}
-	}
-	
-
 	public String getP() {
 		return p;
 	}
@@ -120,9 +108,9 @@ public class ContestForm {
 
 	@Override
 	public String toString() {
-		return "ContestForm [email=" + email + ", description=" + description
+		return "UploadForm [email=" + email + ", description=" + description
 				+ ", l=" + l + ", p=" + p + ", photoId=" + photoId + ", form="
-				+ form + ", voterId=" + voterId  + "]";
+				+ form  + "]";
 	}
 
 
