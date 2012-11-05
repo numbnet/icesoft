@@ -84,6 +84,7 @@
 - (void)augHide;
 - (void)augDone;
 - (void)augDismiss;
+- (void)augMarkerDismiss;
 - (void)startMotionManager;
 - (void)stopMotionManager;
 - (void)recordStart;
