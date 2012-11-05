@@ -48,7 +48,7 @@ public class MicrophoneController {
         model.addAttribute("clipName", currentFileName);
     }
 
-	@RequestMapping(value = "/microphone", method=RequestMethod.POST)
+	@RequestMapping(value = "/microphone", method=RequestMethod.POST, consumes="multipart/form-data")
 	public void processMicrophone(HttpServletRequest request, ModelBean modelBean, 
             @RequestParam(value = "mic", required = false) MultipartFile file, Model model) throws IOException {
 
@@ -58,6 +58,14 @@ public class MicrophoneController {
 		model.addAttribute("message", "Hello " + modelBean.getName() + ", your audio file '" + fileName + "' was uploaded successfully.");
 
     }
+	
+	//non-file upload
+	@RequestMapping(value = "/microphone", method=RequestMethod.POST)
+    public void processMicrophoneP(Model model)  {
+        model.addAttribute("mediaReady", new Boolean(null != currentFileName));
+        model.addAttribute("clipName", currentFileName);
+    }
+
 
 	@RequestMapping(value = "/jsonmic", method=RequestMethod.POST)
 	public @ResponseBody MicUpdate jsonMicrophone(HttpServletRequest request, ModelBean modelBean, @RequestParam(value = "mic", required = false) MultipartFile file, Model model) throws IOException {

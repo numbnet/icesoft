@@ -35,7 +35,7 @@ public class CamcorderController {
         model.addAttribute("mediaReady", new Boolean(mediaReady));
     }
 
-	@RequestMapping(value = "/camcorder", method=RequestMethod.POST)
+	@RequestMapping(value = "/camcorder", method=RequestMethod.POST, consumes="multipart/form-data")
 	public void processVideo(HttpServletRequest request, ModelBean modelBean,
                              @RequestParam(value = "camvid", required = false) MultipartFile file,
                              Model model) throws IOException {
@@ -50,6 +50,12 @@ public class CamcorderController {
 		model.addAttribute("message", "Hello " + modelBean.getName() +
                 ", your video file '" + fileName + "' was uploaded successfully.");
 
+    }
+	
+	//non-file upload
+	@RequestMapping(value = "/camcorder", method=RequestMethod.POST)
+    public void processVideoP(Model model)  {
+        model.addAttribute("mediaReady", new Boolean(mediaReady));
     }
 
 }
