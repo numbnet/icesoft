@@ -27,6 +27,7 @@ public class AttributeExtractor {
     public AttributeExtractor(String attr) {
 	if (attr == null) {
 	    attribute = null;
+	    return;
 	} else {
 	    attribute = attr.split("&");
 	}
