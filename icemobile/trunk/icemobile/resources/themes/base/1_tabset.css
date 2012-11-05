@@ -75,6 +75,8 @@ html.ipad .mobi-tabset > .mobi-tabset-tabs, html.honeycomb .mobi-tabset > .mobi-
     line-height: 40px;
     padding: 0;
     /*text-align: center;*/
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
 }
 .mobi-tabpage-hidden { 
     display: none; 
