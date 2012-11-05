@@ -660,6 +660,15 @@ NSLog(@"Found record %@", result);
     }
 }
 
+- (void)augMarkerHide  {
+    [self.controller dismissModalViewControllerAnimated:YES];
+}
+
+- (void)augMarkerDismiss  {
+    [self augMarkerHide];
+    [self.controller doCancel];
+}
+
 - (void)augDismiss  {
     [self.augController stop];
     [self augHide];
