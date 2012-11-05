@@ -95,9 +95,15 @@ public class SourceCodeLoaderConnection implements Map, Serializable{
         Object request = FacesContext.getCurrentInstance().getExternalContext().getRequest();
         if ((request != null) && (request instanceof HttpServletRequest)) {
             HttpServletRequest httpRequest = (HttpServletRequest)request;
-            
+            String hostName = "localhost";
+            try {
+            	//construct a url (SOURCE_SERVLET_URL) from getLocalName is not reliable
+            	//should use host from requestURL.
+            	URL requestUrl = new URL(httpRequest.getRequestURL().toString());
+            	hostName = requestUrl.getHost();
+            } catch (MalformedURLException mfException) {}
             SOURCE_SERVLET_URL = "http://" +
-                                 httpRequest.getLocalName() +
+                                 hostName +
                                  ":" +
                                  httpRequest.getLocalPort() +
                                  httpRequest.getContextPath() +
@@ -105,7 +111,6 @@ public class SourceCodeLoaderConnection implements Map, Serializable{
         }
         else {
             String fromFile = FacesUtils.getFacesParameter("org.icefaces.samples.showcase.SOURCE_SERVLET_URL");
-            
             if (fromFile != null) {
                 SOURCE_SERVLET_URL = fromFile;
             }
