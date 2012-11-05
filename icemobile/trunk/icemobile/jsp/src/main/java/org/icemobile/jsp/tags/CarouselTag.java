@@ -15,241 +15,123 @@
  */
 
 package org.icemobile.jsp.tags;
-
-import javax.servlet.jsp.JspTagException;
-import javax.servlet.jsp.tagext.BodyTagSupport;
-import javax.servlet.jsp.tagext.TagSupport;
-
+import org.icemobile.component.ICarousel;
+import org.icemobile.jsp.tags.BaseBodyTag;
 import org.icemobile.jsp.util.MobiJspConstants;
 import org.icemobile.jsp.util.Util;
+import org.icemobile.renderkit.CarouselCoreRenderer;
 
+
+import javax.servlet.jsp.JspTagException;
 import java.io.IOException;
-import java.io.Writer;
-import java.util.Collection;
+
 import java.util.logging.Logger;
 
+
 /**
+ *   This component tag renders a collection of items within a carousel which is created
+ *   with use of iScroll javascript libary.
  *
  */
-public class CarouselTag extends TagSupport {
+public class CarouselTag extends BaseBodyTag implements ICarousel {
 
-    private static Logger LOG = Logger.getLogger(CarouselTag.class.getName());
+    private static final Logger logger = Logger.getLogger(CarouselTag.class.getName());
 
+    private int selectedItem;
+     private boolean disabled;
+     private String nextLabel;
+     private String previousLabel;
+     private TagWriter writer;
+     private CarouselCoreRenderer renderer;
+     private int rowCount = 0;
 
-    private static final String JS_ISCROLL = "iscroll.js";
-    private static final String LIB_ISCROLL = "javascript";
-
-    private String id;
-    private String styleClass;
-    private String style;
-
-    public static final String CAROUSEL_CLASS = "mobi-carousel ";
-    public static final String CAROUSEL_SCROLLER = "mobi-carousel-scroller";
-    public static final String CAROUSEL_ITEM_CLASS = "mobi-carousel-list";
-    public static final String CAROUSEL_CURSOR_CLASS = "mobi-carousel-cursor ";
-    public static final String CAROUSEL_CURSOR_LISTCLASS = "mobi-carousel-cursor-list";
-    public static final String CAROUSEL_CURSOR_CURSOR_CENTER_CLASS = "mobi-carousel-cursor-center";
-
-
-    private Collection collection;
-    private int originalCollectionSize;
-    private int iterationCount;
-    private int selectedIndex;
-
-
-    public int doStartTag() throws JspTagException {
+     public int doStartTag() throws JspTagException {
+         renderer= new CarouselCoreRenderer();
+         rowCount = 0;
+         try {
+             writer = new TagWriter(pageContext);
+             renderer.encodeIScrollLib(this, writer);
+             renderer.encodeBegin(this, writer);
+             writer.closeOffTag();
+         } catch (IOException e) {
+             throw new JspTagException("problem in doStart of CarouselTag exception="+e) ;
+         }
+         return EVAL_BODY_INCLUDE;
+     }
 
 
-        Writer out = pageContext.getOut();
-        originalCollectionSize = collection == null ? 0 : collection.size();
-        iterationCount = 0;
+     public int doEndTag() throws JspTagException {
+         try {
+             renderer.encodeEnd(this, writer);
 
-        try {
+         } catch (IOException ioe) {
+             logger.severe("IOException closing Carousel Tag: " + ioe);
+         }
+         return EVAL_PAGE;
+     }
 
-            out.write("<span id=\"" + getId() + "_jscript\">");
-            out.write("<span id=\"" + getId() + "_libJS\">");  // nested span
-            out.write("<script type='text/javascript' src='"+ Util.getContextRoot(pageContext.getRequest()) + MobiJspConstants.RESOURCE_BASE_URL + "/" +
-                          LIB_ISCROLL + "/" + JS_ISCROLL + "'></script>");
-            out.write("</span>"); // end of iscroll script
-
-            out.write("</span>"); // end of script span sections
-
-            out.write("<span id=\"" + getId() + "\" >");
-
-            out.write("<div id=\"" + getId() + "_carousel\"");
-            String styleClass = CAROUSEL_CLASS;
-
-            String userStyleClass = getStyleClass();
-            if (userStyleClass != null && !"".equals(userStyleClass)) {
-                styleClass += " " + userStyleClass;
-            }
-
-            out.write(" class=\"" + styleClass + "\">");
-            out.write("<div class=\"" + CAROUSEL_SCROLLER + "\">");
-            out.write("<ul class=\"" + CAROUSEL_ITEM_CLASS + "\">");
-
-        } catch (IOException ioe) {
-            LOG.severe("IOException creating carousel tag: " + ioe);
-        }
-
-        // If we're done, skip the content
-        if (collection == null || collection.isEmpty() || iterationCount >= collection.size()) {
-            return BodyTagSupport.SKIP_BODY;
-        }
-        return EVAL_BODY_INCLUDE;
-    }
+     public StringBuilder getJSConfigOptions(){
+         StringBuilder sb = new StringBuilder(",{key: ").append(getSelectedItem()).append("}");
+         return sb;
+     }
 
 
-    public int doAfterBody() throws JspTagException {
+     public int getSelectedItem() {
+         return selectedItem;
+     }
 
-        // The last test
-        // below prevents infinite recursion if the carousel Tag has no item child
-        // defined (which  you can't catch in the tld)
-        iterationCount++;
-        if (collection == null || collection.isEmpty() || iterationCount >= originalCollectionSize) {
-            return BodyTagSupport.SKIP_BODY;
-        }
-        return EVAL_BODY_AGAIN;
-    }
+     public void setSelectedItem(int selectedIdx) {
+         this.selectedItem = selectedIdx;
+     }
 
-
-    public int doEndTag() throws JspTagException {
-
-        Writer out = pageContext.getOut();
-        try {
-
-            out.write(TagUtil.UL_TAG_END);  // surrounding items
-            out.write(TagUtil.DIV_TAG_END); // carousel-scroller div
-            out.write(TagUtil.DIV_TAG_END);
-
-            //now do the paginator for the carousel
-            StringBuilder builder = new StringBuilder(TagUtil.DIV_TAG);
-            builder.append(" id=\"").append(getId()).append("_list").append("\">");
-            out.write(builder.toString());
-
-            builder = new StringBuilder(TagUtil.DIV_TAG);
-            builder.append(" class=\"").append(CAROUSEL_CURSOR_CLASS).append("\">");
-            out.write(builder.toString());
-
-            builder = new StringBuilder(TagUtil.DIV_TAG);
-            builder.append(" class=\"").append(CAROUSEL_CURSOR_CURSOR_CENTER_CLASS).append("\">");
-            out.write(builder.toString());
-
-            builder = new StringBuilder(TagUtil.UL_TAG);
-            builder.append(" class=\"").append(CAROUSEL_CURSOR_LISTCLASS).append("\">");
-            out.write(builder.toString());
-
-            int size = originalCollectionSize;
-            if (selectedIndex > size - 1 || selectedIndex < 0) {
-                selectedIndex = 0;
-            }
-            for (int i = 0; i < size; i++) {
-                out.write(TagUtil.LI_TAG);
-
-                if (selectedIndex == i) {
-                    out.write(" class=\"active\"");
-                }
-                out.write(">");
-                out.write(String.valueOf(i + 1));
-
-                out.write(TagUtil.LI_TAG_END);
-            }
-            //do the list of dots for pagination
-            out.write(TagUtil.UL_TAG_END);
-            out.write(TagUtil.DIV_TAG_END);
-            out.write(TagUtil.DIV_TAG_END);
-
-            this.encodeHiddenSelected(out, getId());
-
-            out.write(TagUtil.DIV_TAG_END);
-            out.write(TagUtil.SPAN_TAG_END);
-
-            renderScript(out, getId());
-
-        } catch (IOException ioe) {
-            LOG.severe("IOException closing Carousel Tag: " + ioe);
-        }
-        return EVAL_PAGE;
-    }
+     /**
+      *  responsible for providing the src attribute to load the iscroll library
+      * @return
+      */
+     public String getIScrollSrc() {
+         String separator = "/";
+         StringBuilder sb = new StringBuilder();
+         sb.append(Util.getContextRoot(pageContext.getRequest()));
+         sb.append(MobiJspConstants.RESOURCE_BASE_URL).append(separator);
+         sb.append(ICarousel.LIB_ISCROLL_JSP).append(separator).append(ICarousel.JS_ISCROLL);
+         return  sb.toString()  ;
+     }
 
 
-    private void encodeHiddenSelected(Writer out, String id) throws
-        IOException {
-        out.write("<input");
-        out.write(" id=\"" + id + "_hidden\"");
-        out.write(" name=\"" + id + "\"");
-        out.write(" type=\"hidden\"");
-        out.write(" value=\"" + String.valueOf(selectedIndex) + "\"/>");
-    }
 
-    private void renderScript(Writer out, String clientId) throws IOException {
+     public String getPreviousLabel() {
+         return previousLabel;
+     }
 
-        out.write(TagUtil.SCRIPT_TAG);
-        StringBuilder builder = new StringBuilder();
-//
-        builder.append(" id=\"").append(clientId).append("_script").append("\"");
-        builder.append(" type=\"text/javascript\">");
-        out.write(builder.toString());
-        out.write("supportsOrientationChange = 'onorientationchange' in window," +
-                      "orientationEvent = supportsOrientationChange ? 'orientationchange' : 'resize';\n");
+     public void setPreviousLabel(String prevLabel) {
+         this.previousLabel = prevLabel;
+     }
 
-        out.write("window.addEventListener(orientationEvent, function() {" +
+     public String getClientId() {
+         return id;
+     }
 
-                      "  setTimeout(function () { " +
-                      "       ice.mobi.carousel.refresh('" + clientId + "');" +
-                      "  \n}, 100); " +
-                      " }, false);\n");
+     public String getNextLabel() {
+         return nextLabel;
+     }
 
-        out.write("ice.mobi.carousel.loaded('" + clientId + "');");
-        out.write("</script>");
-    }
+     public void setNextLabel(String nextLabel) {
+         this.nextLabel = nextLabel;
+     }
 
-    public String getId() {
-        return id;
-    }
+     public int getRowCount() {
+         return rowCount;
+     }
 
-    public void setId(String id) {
-        this.id = id;
-    }
+     public void setRowCount(int rowCount) {
+         this.rowCount = rowCount;
+     }
 
-    public String getStyleClass() {
-        return styleClass;
-    }
 
-    public void setStyleClass(String styleClass) {
-        this.styleClass = styleClass;
-    }
-
-    public String getStyle() {
-        return style;
-    }
-
-    public void setStyle(String style) {
-        this.style = style;
-    }
-
-    public Collection getCollection() {
-        return collection;
-    }
-
-    public void setCollection(Collection collection) {
-        this.collection = collection;
-    }
-
-    public int getSelectedIndex() {
-        return selectedIndex;
-    }
-
-    public void setSelectedIndex(int selectedIdx) {
-        this.selectedIndex = selectedIdx;
-    }
-
-    /**
-     * Allow iterating item tag to fetch current rendering index
-     *
-     * @return
-     */
-    int getIterationCount() {
-        return iterationCount;
-    }
-}
+     public void release(){
+    //     logger.info("release carousel tag");
+         this.renderer= null;
+         this.writer = null;
+         this.id=null;
+     }
+ }

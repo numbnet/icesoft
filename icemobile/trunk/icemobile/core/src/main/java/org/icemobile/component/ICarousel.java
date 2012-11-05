@@ -11,18 +11,6 @@ public interface ICarousel extends IMobiComponent{
     public static final String CAROUSEL_CURSOR_CLASS = "mobi-carousel-cursor ";
     public static final String CAROUSEL_CURSOR_LISTCLASS = "mobi-carousel-cursor-list ";
     public static final String CAROUSEL_CURSOR_CURSOR_CENTER_CLASS = "mobi-carousel-cursor-center";
-    public static final String CAROUSEL_ITEM_CLASS = "mobi-carousel-list";
-
-    /*
-       <p> itemStyleClass may be used to write user defined styleClass
-        definitions to the list items of the carousel</p>
-    */
-    public String getItemStyleClass();
-
-    /*
-       <p> itemStyle may be used to write user defined style definitions to the list items of the carousel</p>
-    */
-    public String getItemStyle();
 
     public String getPreviousLabel();
     public void setPreviousLabel(String prevLabel);
