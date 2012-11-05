@@ -234,6 +234,9 @@ ice.ace.tabset = {
            //support enter key regardless of keyboard or aria support 
            tabs[i].on('keypress', onKeyPress, i); 
        }
+       if (!onKeyDown) {
+           tabview.removeListener('keydown', tabview.DOMEventHandler);
+       }
 
 	tabview.contentTransition = function(newTab, oldTab) {
         // Server side handles its own content transition

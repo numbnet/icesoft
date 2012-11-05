@@ -152,7 +152,7 @@ version: 2.8.2r1
                 tabEl,
                 contentEl;
 
-            
+
             if (Dom.isAncestor(tabParent, target) ) {
                 for (var i = 0, len = tabs.length; i < len; i++) {
                     tabEl = tabs[i].get(ELEMENT);
@@ -378,6 +378,9 @@ version: 2.8.2r1
             this.DOM_EVENTS.submit = false;
             this.DOM_EVENTS.focus = false;
             this.DOM_EVENTS.blur = false;
+
+            // In IE there's a noticeable CPU cost for all these listeners,
+            // so disable the ones we're not specifically using ourselves
             this.DOM_EVENTS.mousemove = false;
             this.DOM_EVENTS.mouseover = false;
             this.DOM_EVENTS.mouseout = false;
