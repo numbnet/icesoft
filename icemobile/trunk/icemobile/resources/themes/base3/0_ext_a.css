@@ -26,8 +26,8 @@
     display:-moz-box;
     -webkit-box-orient: horizontal;
     -moz-box-orient: horizontal;
-    -webkit-box-align:baseline;
-    -moz-box-align:baseline;
+    -webkit-box-align:center;
+    -moz-box-align:center;
     padding: 0 10px;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
