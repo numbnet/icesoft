@@ -19,30 +19,30 @@
     <mobi:accordion id="basicAccordion" selectedId="${accordionBean.selectedId1}">
         <mobi:content>
             <mobi:contentPane title="ICE Sailor" id="accordionPane1" >
-                <%@ include file="inc-icesailor.jsp" %>
+                <%@ include file="fieldset-icesailor.jsp" %>
             </mobi:contentPane>
             <mobi:contentPane title="ICE Breaker" id="accordionPane2">
-                 <%@ include file="inc-icebreaker.jsp" %>
+                 <%@ include file="fieldset-icebreaker.jsp" %>
             </mobi:contentPane>
             <mobi:contentPane title="ICE Skate" id="accordionPane3">
-                <%@ include file="inc-iceskate.jsp" %>
+                <%@ include file="fieldset-iceskate.jsp" %>
             </mobi:contentPane>
         </mobi:content>
     </mobi:accordion>
     
-    <h3>Accordion without autoHeight</h3>
+    <h3 style="margin-top:30px;">Accordion without autoHeight</h3>
     
     <mobi:accordion id="accordionNoAutoHeight" selectedId="${accordionBean.selectedId2}"
         autoHeight="false">
         <mobi:content>
             <mobi:contentPane title="ICE Sailor" id="accordionPane4" >
-                <%@ include file="inc-icesailor.jsp" %>
+                <%@ include file="fieldset-icesailor.jsp" %>
             </mobi:contentPane>
             <mobi:contentPane title="ICE Breaker" id="accordionPane5">
-                 <%@ include file="inc-icebreaker.jsp" %>
+                 <%@ include file="fieldset-icebreaker.jsp" %>
             </mobi:contentPane>
             <mobi:contentPane title="ICE Skate" id="accordionPane6">
-                <%@ include file="inc-iceskate.jsp" %>
+                <%@ include file="fieldset-iceskate.jsp" %>
             </mobi:contentPane>
         </mobi:content>
     </mobi:accordion>
