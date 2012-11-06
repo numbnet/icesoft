@@ -6,45 +6,48 @@
 <form:form id="cloudpushform" method="POST" enctype="multipart/form-data"
            modelAttribute="cloudpushBean">
 
-    <mobi:getEnhanced/>
-
-    <mobi:fieldsetGroup>
+    <mobi:fieldsetGroup style="text-align:center;">
         <mobi:fieldsetRow>
-            <form:label path="title">
+            <mobi:getEnhanced/>
+        </mobi:fieldsetRow>
+        
+        <mobi:fieldsetRow styleClass="mobi-grid">
+            <form:label path="title" style="width:100px;text-align:left;" cssClass="mobi-col mobi-weight1">
                 Title: <form:errors path="title" cssClass="error"/>
             </form:label>
-            <form:input path="title"/>
+            <form:input path="title" cssClass="mobi-col mobi-weight2"/>
         </mobi:fieldsetRow>
-        <mobi:fieldsetRow>
-            <form:label path="message">
+        
+        <mobi:fieldsetRow styleClass="mobi-grid">
+            <form:label path="message" style="width:100px;text-align:left;" cssClass="mobi-col mobi-weight1">
                 Message: <form:errors path="message" cssClass="error"/>
             </form:label>
-            <form:input path="message"/>
+            <form:input path="message" cssClass="mobi-col mobi-weight2"/>
         </mobi:fieldsetRow>
-        <mobi:fieldsetRow>
-            <form:label path="delay">
+        
+        <mobi:fieldsetRow styleClass="mobi-grid">
+            <form:label path="delay" style="width:100px;text-align:left;" cssClass="mobi-col mobi-weight1">
                 Delay: <form:errors path="delay" cssClass="error"/>
             </form:label>
-            <form:select path="delay">
+            <form:select path="delay" cssClass="mobi-col mobi-weight2">
                 <form:option value="5" label="5s" />
                 <form:option value="10" label="10s" />
                 <form:option value="15" label="15s" />
             </form:select>
         </mobi:fieldsetRow>
 
-        <mobi:fieldsetRow>
-    <mobi:commandButton buttonType='important'
-                        name="pushType"
-                        style="float:right;margin-right: 25px;"
-                        value="Simple Push"
-                        type="submit"/>
-    <mobi:commandButton buttonType='attention'
-                        name="pushType"
-                        style="float:right;margin-right: 25px;"
-                        value="Priority Push"
-                        type="submit"/>
+        <mobi:fieldsetRow styleClass="mobi-grid mobi-justify">
+            <mobi:commandButton buttonType='important'
+                                name="pushType"
+                                value="Simple Push"
+                                type="submit"
+                                styleClass="mobi-col mobi-weight1"/>
+            <mobi:commandButton buttonType='attention'
+                                name="pushType"
+                                value="Priority Push"
+                                type="submit"
+                                styleClass="mobi-col mobi-weight1"/>
         </mobi:fieldsetRow>
-
     </mobi:fieldsetGroup>
 
     <h4>Message</h4>

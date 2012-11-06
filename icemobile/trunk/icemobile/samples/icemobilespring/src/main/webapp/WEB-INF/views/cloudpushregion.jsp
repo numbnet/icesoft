@@ -2,9 +2,9 @@
 
 <mobi:fieldsetGroup>
     <mobi:fieldsetRow>
-        <label>Title:</label> ${sessionScope.cloudpushBean.title}
+        <label style="width:100px;text-align:left;display:inline-block;">Title:</label> ${sessionScope.cloudpushBean.title}
     </mobi:fieldsetRow>
     <mobi:fieldsetRow>
-        <label>Message:</label> ${sessionScope.cloudpushBean.message}
+        <label style="width:100px;text-align:left;display:inline-block;">Message:</label> ${sessionScope.cloudpushBean.message}
     </mobi:fieldsetRow>
 </mobi:fieldsetGroup>
