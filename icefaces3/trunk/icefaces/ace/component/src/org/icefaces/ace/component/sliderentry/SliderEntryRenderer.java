@@ -42,12 +42,14 @@ import org.icefaces.ace.renderkit.CoreRenderer;
 import org.icefaces.ace.util.ComponentUtils;
 import org.icefaces.ace.util.JSONBuilder;
 import org.icefaces.render.MandatoryResourceComponent;
+import org.icefaces.util.EnvUtils;
 
 import javax.faces.event.ValueChangeEvent;
 
 @MandatoryResourceComponent(tagName="sliderEntry", value="org.icefaces.ace.component.sliderentry.SliderEntry")
 public class SliderEntryRenderer extends CoreRenderer{
     private Map<String, Object> domUpdateMap = new HashMap<String, Object>();
+    private boolean ariaEnabled = EnvUtils.isAriaEnabled(FacesContext.getCurrentInstance());
 
     @Override
     public void decode(FacesContext context, UIComponent component) {
@@ -230,7 +232,8 @@ public class SliderEntryRenderer extends CoreRenderer{
         if(slider.getOnSlide() != null) jb.entry("onSlide", "function(event, ui) {" + slider.getOnSlide() + "}", true);
         if(slider.getOnSlideEnd() != null) jb.entry("onSlideEnd", "function(event, ui) {" + slider.getOnSlideEnd() + "}", true);
         jb.entry("value", slider.getValue());
-		
+        jb.entry("ariaEnabled", ariaEnabled);
+
 		encodeClientBehaviors(context, slider, jb);
 		
         jb.endMap().endFunction();

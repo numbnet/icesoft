@@ -6941,12 +6941,22 @@
         },
 
         _create: function() {
+            var ariaAttrStr = "";
+            this._detectOrientation();
+            if (this.options.ariaEnabled) {
+                ariaAttrStr += " role='slider'";
+                ariaAttrStr += " aria-orientation='" + this.orientation + "'";
+                ariaAttrStr += " aria-valuemax='" + this._valueMax() + "'";
+                ariaAttrStr += " aria-valuemin='" + this._valueMin() + "'";
+                ariaAttrStr += " aria-valuenow='" + this._value() + "'";
+                ariaAttrStr += " aria-valuetext='" + this._value() + "'";
+            }
             var self = this,
-                    o = this.options,
-                    existingHandles = this.element.find( ".ui-slider-handle" ).addClass( "ui-state-default ui-corner-all" ),
-                    handle = "<a class='ui-slider-handle ui-state-default ui-corner-all' href='#'></a>",
-                    handleCount = ( o.values && o.values.length ) || 1,
-                    handles = [];
+                o = this.options,
+                existingHandles = this.element.find( ".ui-slider-handle" ).addClass( "ui-state-default ui-corner-all" ),
+                handle = "<a class='ui-slider-handle ui-state-default ui-corner-all' href='#'" + ariaAttrStr + "></a>",
+                handleCount = ( o.values && o.values.length ) || 1,
+                handles = [];
 
             this._keySliding = false;
             this._mouseSliding = false;
@@ -7312,6 +7322,9 @@
                     } );
                     if ( allowed !== false ) {
                         this.value( newVal );
+                        if (this.options.ariaEnabled) {
+                            this.handle.attr({"aria-valuenow":newVal, "aria-valuetext":newVal});
+                        }
                     }
                 }
             }
