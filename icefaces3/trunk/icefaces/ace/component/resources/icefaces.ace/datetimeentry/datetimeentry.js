@@ -59,6 +59,7 @@ ice.ace.Calendar = function(id, cfg) {
         if(hasTimePicker) {
             if (this.cfg.timeOnly) {
                 this.jq.timepicker(this.cfg);
+                this.jq.timepicker("setTime", $.trim(altFieldVal));
                 this.pickerFn = "timepicker";
             }
             else {
