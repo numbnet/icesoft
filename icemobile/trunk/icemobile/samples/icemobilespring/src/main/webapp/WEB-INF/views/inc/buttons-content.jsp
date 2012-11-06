@@ -12,7 +12,7 @@
                                 value="Default"
                                 styleClass="mobi-col mobi-weight1"/>
              <mobi:commandButton name="submitB"
-                                value="Unimportant!" 
+                                value="Unimportant" 
                                 buttonType="unimportant"
                                 styleClass="mobi-col mobi-weight1"/>
         </mobi:fieldsetRow>
