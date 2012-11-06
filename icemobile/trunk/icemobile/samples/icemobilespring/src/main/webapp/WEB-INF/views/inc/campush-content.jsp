@@ -10,7 +10,7 @@
 <form:form id="campushform" method="POST" enctype="multipart/form-data"
            modelAttribute="cameraBean">
 
-    <mobi:fieldsetGroup>
+    <mobi:fieldsetGroup style>
         <mobi:fieldsetRow>
             <mobi:getEnhanced/>
         </mobi:fieldsetRow>

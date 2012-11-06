@@ -6,54 +6,37 @@
 <form:form id="campushrform" method="POST" enctype="multipart/form-data"
            modelAttribute="cameraBean">
 
-    <mobi:fieldsetGroup>
+    <mobi:fieldsetGroup style="text-align:center;">
         <mobi:fieldsetRow>
             <mobi:getEnhanced/>
         </mobi:fieldsetRow>
-    </mobi:fieldsetGroup>
-
-    <h4>Form</h4>
-
-    <c:if test="${not empty message}">
-        <mobi:fieldsetGroup>
+        <c:if test="${not empty message}">
             <mobi:fieldsetRow>
                 <div id="message" class="success">${message}<br/>
                     <img style="height:60px;width:60px;" src="${imgPath}">
                 </div>
             </mobi:fieldsetRow>
-       </mobi:fieldsetGroup>
-   </c:if>
-   
-   <s:bind path="*">
-      <c:if test="${status.error}">
-           <mobi:fieldsetGroup>
+       </c:if>
+       <s:bind path="*">
+          <c:if test="${status.error}">
                 <mobi:fieldsetRow>
                         <div id="message" class="error">Form has errors</div>
                 </mobi:fieldsetRow>
-           </mobi:fieldsetGroup>
-       </c:if>
-   </s:bind>
-   
-   <mobi:fieldsetGroup>
-        <mobi:fieldsetRow group="true">Personal Info</mobi:fieldsetRow>
-        <mobi:fieldsetRow>
-            <form:label path="name">
+           </c:if>
+       </s:bind>
+       <mobi:fieldsetRow group="true" style="text-align:left;">Personal Info</mobi:fieldsetRow>
+       <mobi:fieldsetRow styleClass="mobi-grid">
+            <form:label path="name" cssClass="mobi-col mobi-weight1" style="width:100px;text-align:left;">
                 Name <form:errors path="name" cssClass="error"/>
             </form:label>
-            <form:input path="name"/>
+            <form:input path="name" cssClass="mobi-col mobi-weight2"/>
         </mobi:fieldsetRow>
-    </mobi:fieldsetGroup>
-
-    <mobi:fieldsetGroup>
         <mobi:fieldsetRow>
             <mobi:camera id="cam"/>
             <mobi:thumbnail for="cam"/>
             <push:region group="camPush" page="/camregion"/>
         </mobi:fieldsetRow>
-    </mobi:fieldsetGroup>
-
-    <mobi:fieldsetGroup>
-        <mobi:fieldsetRow group="true">Request Additional Info</mobi:fieldsetRow>
+        <mobi:fieldsetRow group="true" style="text-align:left;">Request Additional Info</mobi:fieldsetRow>
         <mobi:fieldsetRow>
             <label><form:checkbox path="additionalInfo[mvc]" value="true"/>on
                 Spring MVC</label>
@@ -62,22 +45,10 @@
         </mobi:fieldsetRow>
     </mobi:fieldsetGroup>
 
-    <mobi:fieldsetGroup>
-        <mobi:fieldsetRow>
-            <button type="submit">Submit</button>
-        </mobi:fieldsetRow>
-    </mobi:fieldsetGroup>
-
-    <h3>New tags </h3><br/>
-
-    <mobi:fieldsetGroup id="parent">
-        <mobi:fieldsetRow id="first">
-            <h4> This element in first field set row</h4>
-        </mobi:fieldsetRow>
-        <mobi:fieldsetRow id="second">
-            <h3> This element is in the second row </h3>
-        </mobi:fieldsetRow>
-    </mobi:fieldsetGroup>
+    <mobi:commandButton buttonType='important'
+                        style="float:right;margin-right: 10px;width:50%;"
+                        value="Submit"
+                        type="submit"/>
 
 </form:form>
 

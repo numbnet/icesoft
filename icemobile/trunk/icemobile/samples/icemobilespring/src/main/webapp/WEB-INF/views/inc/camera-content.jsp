@@ -22,11 +22,12 @@
 
         </mobi:fieldsetRow>
     </mobi:fieldsetGroup>
-    <%-- button types: default|important|attention| back--%>
+    
     <mobi:commandButton buttonType='important'
                         style="float:right;margin-right: 10px;width:50%;"
                         value="Submit"
                         type="submit"/>
+                        
     <div style="clear:both;"></div>
     <c:if test="${not empty message}">
         <div id="message" class="success">${message}<br/>
