@@ -89,10 +89,15 @@ public class ARView extends View {
                 continue;
             }
             String [] coordparts = coordstr.split(",");
-            if (null != currentLocation)  {
+            if ((null != currentLocation) && (coordparts.length >= 2)) {
                 float[] labelLoc = new float[2];
-                labelLoc[0] = Float.parseFloat(coordparts[0]);
-                labelLoc[1] = Float.parseFloat(coordparts[1]);
+                try {
+                    labelLoc[0] = Float.parseFloat(coordparts[0]);
+                    labelLoc[1] = Float.parseFloat(coordparts[1]);
+                } catch (Exception e)  {
+                    Log.d("ARView ", "malformed AR item " + label + ":" +
+                            coordstr);
+                }
 
                 float[] coord = new float[4];
                 coord[0] = 1000 * (labelLoc[0] 
