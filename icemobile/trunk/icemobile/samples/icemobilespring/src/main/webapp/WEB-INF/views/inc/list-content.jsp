@@ -5,44 +5,74 @@
 <%@ taglib prefix="push" uri="http://www.icepush.org/icepush/jsp/icepush.tld"%>
 <form:form id="listform" method="POST" modelAttribute="listBean">
 
-    <mobi:fieldsetGroup id="groupOne">
+    <mobi:fieldsetGroup inset="true">
         <mobi:fieldsetRow>
             The outputList component shown with and without insets.
         </mobi:fieldsetRow>
     </mobi:fieldsetGroup>
 
-    <h4>List with inset and Grouping</h4>
-
-    <mobi:outputList id="secondList" inset="true">
-        <mobi:outputListItem group="true">List</mobi:outputListItem>
-        <mobi:outputListItem>ICEsoft ICE Sailer</mobi:outputListItem>
-        <mobi:outputListItem>ICEsoft ICE Breaker</mobi:outputListItem>
+    <h4>List with Inset and Grouping</h4>
+    
+    <mobi:outputList inset="true" id="insetListWithGrouping">
+        <mobi:outputListItem group="true">Thumbnail display</mobi:outputListItem>
+        <mobi:outputListItem>
+            <%@ include file="inc-icesailor.jsp" %>
+        </mobi:outputListItem>
+        <mobi:outputListItem>
+            <%@ include file="inc-icebreaker.jsp" %>
+        </mobi:outputListItem>
+        <mobi:outputListItem>
+            <%@ include file="inc-iceskate.jsp" %>
+        </mobi:outputListItem>
+        <mobi:outputListItem>
+            <%@ include file="inc-icecar.jsp" %>
+        </mobi:outputListItem>
     </mobi:outputList>
 
      <h4>List with grouping and no inset</h4>
 
-    <mobi:outputList id="thirdList">
+    <mobi:outputList id="noinsetListWithGrouping">
         <mobi:outputListItem group="true">List</mobi:outputListItem>
-        <mobi:outputListItem>ICEsoft ICE Sailer</mobi:outputListItem>
-        <mobi:outputListItem>ICEsoft ICE Breaker</mobi:outputListItem>
+        <mobi:outputListItem>
+            <%@ include file="inc-icesailor.jsp" %>
+        </mobi:outputListItem>
+        <mobi:outputListItem>
+            <%@ include file="inc-icebreaker.jsp" %>
+        </mobi:outputListItem>
+        <mobi:outputListItem>
+            <%@ include file="inc-iceskate.jsp" %>
+        </mobi:outputListItem>
+        <mobi:outputListItem>
+            <%@ include file="inc-icecar.jsp" %>
+        </mobi:outputListItem>
     </mobi:outputList>
 
     <h4>List with no inset or grouping</h4>
 
-    <mobi:outputList id="firstList">
-        <mobi:outputListItem>ICEsoft ICE Sailer</mobi:outputListItem>
-        <mobi:outputListItem>ICEsoft ICE Breaker</mobi:outputListItem>
+    <mobi:outputList id="noInsetListWithoutGrouping">
+        <mobi:outputListItem>
+            <%@ include file="inc-icesailor.jsp" %>
+        </mobi:outputListItem>
+        <mobi:outputListItem>
+            <%@ include file="inc-icebreaker.jsp" %>
+        </mobi:outputListItem>
+        <mobi:outputListItem>
+            <%@ include file="inc-iceskate.jsp" %>
+        </mobi:outputListItem>
+        <mobi:outputListItem>
+            <%@ include file="inc-icecar.jsp" %>
+        </mobi:outputListItem>
     </mobi:outputList>
 
     <h4>Iterative list</h4>
 
-    <mobi:outputList  id="listIterator">
+    <mobi:outputList id="listIterator">
       <mobi:outputListItem group="true">List of cars</mobi:outputListItem>
       <c:forEach items="${listBean.carCollection}" var="currCar" >
         <mobi:outputListItem>
-            Car title "${currCar.title}"
+            <div style="padding:5px;">Car title "${currCar.title}"</div>
         </mobi:outputListItem>
        </c:forEach>
     </mobi:outputList>
- 
+
 </form:form >

@@ -175,7 +175,7 @@ html.ipad #splash > h4, html.iphone #splash > h4,
 html.ipad #splash > h5, html.iphone #splash > h5{ 
     text-shadow: 1px 1px 1px #FFF;
 }
-html.honeycomb h3{
+html.honeycomb h3, html.android h3{
     border-bottom: 1px solid #6595F9;
 }
 .f {
@@ -199,15 +199,20 @@ html.honeycomb h3{
     box-sizing: border-box;
     width: 100%;
 }
+.example{
+    display: block;
+    padding: 10px;    
+}
 .example img{
     display:inline-block;
     width:20%;
-    max-width:100px;
+    max-width:55px;
 }
 .example p{
     display: inline-block;
-    width: 76%;
+    width: 70%;
     margin: 0;
     vertical-align: top;
     padding: 0 1%;
+    font-weight:normal;
 }
