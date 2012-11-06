@@ -98,6 +98,12 @@ public class ARViewActivity extends Activity implements SensorEventListener,
             if ("ub".equals(name))  {
                 continue;
             }
+            if ("v".equals(name))  {
+                //Detect AR Markers here
+                //not currently implemented
+                Log.d("ARViewActivity", "Ignore viewer " + attributes.get(name));
+                continue;
+            }
             places.put(name, attributes.get(name));
         }
     
