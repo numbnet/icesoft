@@ -30,10 +30,14 @@
     border-radius: 0.6em;
     color: black;
     font-weight: bold;
+    max-width: 120px;
+}
+.mobi-button-group .mobi-button {
+    max-width: 300px;
 }
 /* back button*/
 div.mobi-button-back{
-    border-color: #DDD;
+    border-color: #999;
     padding-left: 20px;
 }
 div.mobi-button-back > span {
@@ -41,7 +45,7 @@ div.mobi-button-back > span {
 }
 div.mobi-button-back > input {
     background: url('back.png');
-    background-position: -2px 43%;
+    background-position: -1px 43%;
     background-repeat: no-repeat;
     background-size: 17px;
     background-color: transparent;
