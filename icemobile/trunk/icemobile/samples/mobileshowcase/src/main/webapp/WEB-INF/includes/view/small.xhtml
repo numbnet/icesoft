@@ -130,12 +130,7 @@
             </ui:include>
             <ui:include src="/WEB-INF/includes/examples/layout/theme.xhtml" />
         </mobi:contentPane>
-        <mobi:contentPane id="gmap" facelet="true" client="false" >
-            <ui:include src="/WEB-INF/includes/content/menu-navbar.xhtml">
-                <ui:param name="title" value="Google Maps"/>
-            </ui:include>
-            <ui:include src="/WEB-INF/includes/examples/layout/gmap.xhtml" />
-        </mobi:contentPane>
+        
 
         <!-- Device input examples -->
         <mobi:contentPane id="camcorder" facelet="true" client="false" >
@@ -205,6 +200,12 @@
                 <ui:param name="title" value="Geolocation"/>
             </ui:include>
             <ui:include src="/WEB-INF/includes/examples/input/geolocation.xhtml" />
+        </mobi:contentPane>
+        <mobi:contentPane id="gmap" facelet="true" client="false" >
+            <ui:include src="/WEB-INF/includes/content/menu-navbar.xhtml">
+                <ui:param name="title" value="Google Maps"/>
+            </ui:include>
+            <ui:include src="/WEB-INF/includes/examples/input/gmap.xhtml" />
         </mobi:contentPane>
         <mobi:contentPane id="input" facelet="true" client="false" >
             <ui:include src="/WEB-INF/includes/content/menu-navbar.xhtml">
