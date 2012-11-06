@@ -22,30 +22,32 @@ if (!window.mobi['gmap']) {
 (function() {
 	
 	function GMapWrapper(clientId, cfgIn) {
-		var ts = new Date().getTime();
+	    var ts = new Date().getTime();
 		var id = clientId;
 		var cfg = cfgIn;
 		var ele = document.getElementById(clientId);
-		var map = new google.maps.Map(ele, {mapTypeId : google.maps.MapTypeId.ROADMAP});
-		var mapTypedRegistered = false;
-		var initializing = false;
-		var controls = new Object();
-		var overlays = new Object();
-		var geoMarker = new Object();
-		var directions = new Object();
-		var services = new Object();
-		var markers = new Object();
-		markers.ts = new Date().getTime();
-		var layers = new Object();
-		var geoMarkerAddress;
-		var geoMarkerSet = false;
-		/*
-		if (cfg.dynamic && cfg.cache) {
-			this.markAsLoaded(this.jq.children('div').get(this.cfg.active));
-		}*/
+		if( ele ){
+		    var map = new google.maps.Map(ele, {mapTypeId : google.maps.MapTypeId.ROADMAP});
+	        var mapTypedRegistered = false;
+	        var initializing = false;
+	        var controls = new Object();
+	        var overlays = new Object();
+	        var geoMarker = new Object();
+	        var directions = new Object();
+	        var services = new Object();
+	        var markers = new Object();
+	        markers.ts = new Date().getTime();
+	        var layers = new Object();
+	        var geoMarkerAddress;
+	        var geoMarkerSet = false;
+	        /*
+	        if (cfg.dynamic && cfg.cache) {
+	            this.markAsLoaded(this.jq.children('div').get(this.cfg.active));
+	        }*/
+		}
 
 		return {
-			getTimestamp : function(){
+		    getTimestamp : function(){
 				return ts;
 			},
 			getMap : function(){
@@ -407,14 +409,15 @@ if (!window.mobi['gmap']) {
 		}
 		return wrapper;
 	}
-	
+
 	mobi.gmap.create = function(id){
 		var oldWrapper = mobi.gmap.repo[id];
 		if( oldWrapper ){
 			oldWrapper.remove();
 		}
 		delete mobi.gmap.repo[id];
-		var wrapper = GMapWrapper(id, {mapTypeId : google.maps.MapTypeId.ROADMAP});
+		
+		var wrapper = GMapWrapper(id, {mapTypeId : 'roadmap'});
 		wrapper.initializing = false;
 		mobi.gmap.repo[id] = wrapper;
 		return wrapper;
