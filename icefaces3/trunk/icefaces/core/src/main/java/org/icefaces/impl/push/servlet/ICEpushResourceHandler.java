@@ -77,7 +77,7 @@ public class ICEpushResourceHandler extends ResourceHandlerWrapper implements Ph
         }
         if (EnvUtils.isICEpushPresent()) {
             String serverInfo = servletContext.getServerInfo();
-            if (!serverInfo.startsWith("JBossWeb") && !serverInfo.startsWith("JBoss Web")) {
+            if (!serverInfo.startsWith("JBoss Web/3.0.0-CR1")) {
                 this.resourceHandler = new ICEpushResourceHandlerImpl();
                 this.resourceHandler.initialize(resourceHandler, servletContext, this);
             } else {
