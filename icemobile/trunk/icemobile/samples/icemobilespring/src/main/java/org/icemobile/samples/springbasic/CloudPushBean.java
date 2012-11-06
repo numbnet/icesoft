@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 @SessionAttributes("cloudpushBean")
 public class CloudPushBean {
 
-    String title;
-    String message;
+    String title = "Add a new title";
+    String message = "Add a new message";
     int delay;
 
     public String getTitle() {
