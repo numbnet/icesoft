@@ -53,7 +53,7 @@
     <h4>Message</h4>
     <push:region group="cloudPush" page="/cloudpushregion"/>
 
-    <div style="clear:both;"/>
+    <div style="clear:both;"></div>
     <s:bind path="*">
         <c:if test="${status.error}">
             <div id="message" class="error">Form has errors</div>

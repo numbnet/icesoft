@@ -22,7 +22,7 @@
     </mobi:fieldsetGroup>
     
     <mobi:commandButton buttonType='important'
-                        style="float:right;margin-right: 10px;width:50%;"
+                        styleClass="submit"
                         value="Submit"
                         type="submit"/>
                         
