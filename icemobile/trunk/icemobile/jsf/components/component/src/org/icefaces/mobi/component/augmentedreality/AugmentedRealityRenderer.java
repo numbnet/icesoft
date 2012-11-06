@@ -19,6 +19,7 @@ import org.icefaces.mobi.renderkit.BaseInputRenderer;
 import org.icefaces.impl.application.AuxUploadResourceHandler;
 import org.icefaces.mobi.utils.HTML;
 import org.icefaces.mobi.utils.Utils;
+import org.icefaces.mobi.utils.MobiJSFUtils;
 import org.icefaces.util.EnvUtils;
 import org.icemobile.util.CSSUtils;
 
@@ -101,6 +102,8 @@ public class AugmentedRealityRenderer extends BaseInputRenderer  {
         if (isAuxUpload)  {
             writer.writeAttribute("data-params", arParams, null);
             writer.writeAttribute("data-command", "aug", null);
+            String sessionId = MobiJSFUtils.getSessionIdCookie();
+            writer.writeAttribute("data-jsessionid", sessionId, null);
             script = "ice.mobi.sx(this);";
         } else {
             script = "ice.aug( '" + clientId + "', '" + 
