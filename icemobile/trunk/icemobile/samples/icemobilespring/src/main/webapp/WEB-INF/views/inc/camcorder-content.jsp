@@ -5,26 +5,27 @@
 <%@ taglib prefix="push" uri="http://www.icepush.org/icepush/jsp/icepush.tld"%>
 <form:form id="camcorderform" method="POST" enctype="multipart/form-data"
                modelAttribute="camcorderBean">
-    <mobi:fieldsetGroup>
+    <mobi:fieldsetGroup style="text-align:center;">
         <mobi:fieldsetRow>
             <mobi:getEnhanced/>
         </mobi:fieldsetRow>
-        <mobi:fieldsetRow>
-            <form:label path="name">Author: <form:errors path="name"
-                                                         cssClass="error"/></form:label>
-            <form:input path="name"/>
+        <mobi:fieldsetRow styleClass="mobi-grid">
+            <form:label path="name" cssClass="mobi-col mobi-weight1" style="width:100px;text-align:left;">
+                Author: <form:errors path="name" cssClass="error"/>
+            </form:label>
+            <form:input path="name" cssClass="mobi-col mobi-weight2"/>
         </mobi:fieldsetRow>
         <mobi:fieldsetRow>
             <mobi:camcorder id="camvid"/>
-            <mobi:thumbnail for="camvid"
-                        style="height:60px;width:65px;vertical-align:middle;float:right;margin:10px;"/>
+            <mobi:thumbnail for="camvid"/>
         </mobi:fieldsetRow>
     </mobi:fieldsetGroup>
-    <%-- button types: default|important|attention| back--%>
+    
     <mobi:commandButton buttonType='important'
-                        style="float:right;margin-right: 25px;"
+                        style="float:right;margin-right: 10px;width:50%;"
                         value="Submit"
                         type="submit"/>
+                        
     <div style="clear:both;"/>
 
     <c:if test="${not empty message}">
