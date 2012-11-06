@@ -103,6 +103,11 @@ ice.ace.Calendar = function(id, cfg) {
             });
         }
     }
+
+    var widget = this;
+    ice.onElementUpdate(id, function() {
+        widget.destroy();
+    });
 };
 
 ice.ace.Calendar.prototype.configureLocale = function() {
@@ -173,6 +178,11 @@ ice.ace.Calendar.prototype.disable = function() {
     this.jq.datetimepicker('disable');
 };
 
+ice.ace.Calendar.prototype.destroy = function() {
+    if (this.pickerFn) this.jq[this.pickerFn]("destroy");
+    window[this.cfg.widgetVar] = this.jq = this.cfg.altField = null;
+};
+
 ice.ace.Calendar.init = function(options) {
     $(function() {
         var widgetVar = options.widgetVar, id = options.id;
@@ -184,6 +194,14 @@ ice.ace.Calendar.init = function(options) {
         var buttonImage = options.buttonImage || defaults.buttonImage;
         var buttonImageOnly = options.buttonImageOnly || defaults.buttonImageOnly;
         var isRTL = options.isRTL || defaults.isRTL;
+        var initAndShow = function() {
+            if (window[widgetVar]) return;
+            if (trigger) trigger.remove();
+            window[widgetVar] = new ice.ace.Calendar(id, options);
+            if (!window[widgetVar].pickerFn) return;
+            window[widgetVar].jq[window[widgetVar].pickerFn]("show");
+        };
+        var initEltSet = $();
 
         if (!options.popup) {
             window[widgetVar] = new ice.ace.Calendar(id, options);
@@ -199,25 +217,17 @@ ice.ace.Calendar.init = function(options) {
                     html(buttonImage == '' ? buttonText : $('<img/>').attr(
                     { src:buttonImage, alt:buttonText, title:buttonText }));
             input[isRTL ? 'before' : 'after'](trigger);
-            trigger.one("click", function() {
-                if (!window[widgetVar]) {
-                    trigger.remove();
-                    window[widgetVar] = new ice.ace.Calendar(id, options);
-                    window[widgetVar].jq[window[widgetVar].pickerFn]("show");
-                }
-            });
+            trigger.one("click.init", initAndShow);
+            initEltSet = initEltSet.add(trigger);
         }
         if ($.inArray(showOn, ["focus","both"]) >= 0) {
-            input.one("focus", function() {
-                if (!window[widgetVar]) {
-                    if (trigger) {
-                        trigger.remove();
-                    }
-                    window[widgetVar] = new ice.ace.Calendar(id, options);
-                    window[widgetVar].jq[window[widgetVar].pickerFn]("show");
-                }
-            });
+            input.one("focus.init", initAndShow);
+            initEltSet = initEltSet.add(input);
         }
+
+        ice.onElementUpdate(id, function() {
+            initEltSet.unbind(".init");
+        });
     });
 };
 }(ice.ace.jq));
