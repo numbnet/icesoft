@@ -26,7 +26,7 @@
                         value="Submit"
                         type="submit"/>
                         
-    <div style="clear:both;"/>
+    <div style="clear:both;"></div>
 
     <c:if test="${not empty message}">
         <div id="message" class="success">${message}<br/>
