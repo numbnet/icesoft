@@ -49,7 +49,6 @@
                     <mobi:contentMenuItem label="Date and Time" value="date"/>
                     <mobi:contentMenuItem label="Flip Switch" value="flipswitch"/>
                     <mobi:contentMenuItem label="Geolocation" value="geolocation"/>
-                    <mobi:contentMenuItem label="Google Map" value="gmap"/>
                     <mobi:contentMenuItem label="HTML5 Input" value="input"/>
                     <mobi:contentMenuItem label="Menu Button" value="menubutton"/>
                     <mobi:contentMenuItem label="Submit Notification" value="submitnotification"/>
@@ -136,12 +135,7 @@
             </ui:include>
             <ui:include src="/WEB-INF/includes/examples/layout/theme-example.xhtml" />
         </mobi:contentPane>
-        <mobi:contentPane id="gmap" facelet="true" client="false" >
-            <ui:include src="/WEB-INF/includes/content/menu-navbar.xhtml">
-                <ui:param name="title" value="Google Maps"/>
-            </ui:include>
-            <ui:include src="/WEB-INF/includes/examples/layout/gmap-example.xhtml" />
-        </mobi:contentPane>
+        
 
         <!-- Device input examples -->
         <mobi:contentPane id="camcorder" facelet="true" client="false" >

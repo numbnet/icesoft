@@ -45,7 +45,9 @@ public class NavigationModel implements Serializable {
      
         String panelID = params.get("panelID");
         String beanName = params.get("beanName");
-        return navigateTo(panelID, beanName);
+        String redirect = params.get("redirect");
+        
+        return navigateTo(panelID, beanName, "true".equalsIgnoreCase(redirect));
     }
 
     /**
@@ -56,7 +58,8 @@ public class NavigationModel implements Serializable {
      * @param beanName        bean name of the currently selected example
      * @return always null, no jsf navigation.
      */
-    public String navigateTo(String selectedPanelId, String beanName) {
+    public String navigateTo(String selectedPanelId, String beanName, boolean redirect) {
+        System.out.println("navigateTo("+selectedPanelId+","+beanName+","+redirect+")");
         // add previous location to history.
         history.push(this.selectedPanel);
         this.selectedPanel = selectedPanelId;
@@ -67,8 +70,14 @@ public class NavigationModel implements Serializable {
         } else {
             selectedDestination = DESTINATION_SPLASH;
         }
-        scrollToTopOfPage();
-        return null;
+        if( redirect ){
+            return "showcase?faces-redirect=true";
+        }
+        else{
+            scrollToTopOfPage();
+            return null;
+        }
+        
     }
 
     /**

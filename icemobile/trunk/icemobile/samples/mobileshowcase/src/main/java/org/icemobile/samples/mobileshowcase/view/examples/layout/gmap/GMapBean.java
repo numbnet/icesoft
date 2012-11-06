@@ -18,8 +18,8 @@ import org.icemobile.samples.mobileshowcase.view.metadata.context.ExampleImpl;
         titleBack = "example.layout.gmap.destination.title.back"
 )
 @Example(
-        descriptionPath = "/WEB-INF/includes/examples/layout/gmap-desc.xhtml",
-        examplePath = "/WEB-INF/includes/examples/layout/gmap-example.xhtml",
+        descriptionPath = "/WEB-INF/includes/examples/input/gmap-desc.xhtml",
+        examplePath = "/WEB-INF/includes/examples/input/gmap-example.xhtml",
         resourcesPath = "/WEB-INF/includes/examples/example-resources.xhtml"
 )
 @ExampleResources(
@@ -27,12 +27,12 @@ import org.icemobile.samples.mobileshowcase.view.metadata.context.ExampleImpl;
                 // xhtml
                 @ExampleResource(type = ResourceType.xhtml,
                         title = "gmap-example.xhtml",
-                        resource = "/WEB-INF/includes/examples/layout/gmap-example.xhtml"),
+                        resource = "/WEB-INF/includes/examples/input/gmap-example.xhtml"),
                 // Java Source
                 @ExampleResource(type = ResourceType.java,
                         title = "GMapBean.java",
                         resource = "/WEB-INF/classes/org/icemobile/samples/mobileshowcase" +
-                                "/view/examples/layout/gmap/GMapBean.java")
+                                "/view/examples/input/gmap/GMapBean.java")
         }
 )
 

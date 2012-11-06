@@ -27,6 +27,7 @@ public class MenuLink {
     private boolean isNew;
     private String exampleBeanName;
     private String examplePanelId;
+    private boolean redirect;
 
     public MenuLink(String title, boolean aDefault, boolean aNew, boolean isDisabled, String exampleBeanName) {
         this.title = title;
@@ -36,12 +37,14 @@ public class MenuLink {
         this.exampleBeanName = exampleBeanName;
     }
 
-    public MenuLink(String title, boolean aDefault, boolean aNew, boolean isDisabled, String exampleBeanName, String examplePanelId) {
+    public MenuLink(String title, boolean aDefault, boolean aNew, boolean isDisabled, String exampleBeanName, 
+            String examplePanelId, boolean redirect) {
         this.title = title;
         isDefault = aDefault;
         isNew = aNew;
         this.exampleBeanName = exampleBeanName;
         this.examplePanelId = examplePanelId;
+        this.redirect = redirect;
     }
 
     public String getTitle() {
@@ -66,5 +69,9 @@ public class MenuLink {
 
     public String getExamplePanelId() {
         return examplePanelId;
+    }
+    
+    public boolean isRedirect(){
+        return redirect;
     }
 }

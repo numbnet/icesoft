@@ -38,4 +38,6 @@ public @interface MenuLink {
     String exampleBeanName();
 
     String examplePanelId() default "";
+    
+    boolean isRedirect() default false;
 }
