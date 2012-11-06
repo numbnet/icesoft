@@ -245,7 +245,8 @@ Autocompleter.Base.prototype = {
         if (this.active) this.render();
         if (this.observer) clearTimeout(this.observer);
 		var self = this;
-        this.observer = setTimeout(function(){self.onObserverEvent(event);}, this.options.frequency * 1000);
+		var eventClone = Object.clone(event);
+        this.observer = setTimeout(function(){self.onObserverEvent(eventClone);}, this.options.frequency * 1000);
     },
 
     onKeyDown: function(event) {
@@ -260,7 +261,8 @@ Autocompleter.Base.prototype = {
                 case Event.KEY_DELETE:
                     if (this.observer) clearTimeout(this.observer);
 					var self = this;
-                    this.observer = setTimeout(function(){self.onObserverEvent(event);}, this.options.frequency * 1000);
+					var eventClone = Object.clone(event);
+                    this.observer = setTimeout(function(){self.onObserverEvent(eventClone);}, this.options.frequency * 1000);
                     return;
             }
         }
@@ -289,7 +291,8 @@ Autocompleter.Base.prototype = {
                 case Event.KEY_DELETE:
                     if (this.observer) clearTimeout(this.observer);
 					var self = this;
-                    this.observer = setTimeout(function(){self.onObserverEvent(event);}, this.options.frequency * 1000);
+					var eventClone = Object.clone(event);
+                    this.observer = setTimeout(function(){self.onObserverEvent(eventClone);}, this.options.frequency * 1000);
                     return;
             }
         }
@@ -356,7 +359,8 @@ Autocompleter.Base.prototype = {
         if (this.active) this.render();
         if (this.observer) clearTimeout(this.observer);
 		var self = this;
-        this.observer = setTimeout(function(){self.onObserverEvent(event);}, this.options.frequency * 1000);
+		var eventClone = Object.clone(event);
+        this.observer = setTimeout(function(){self.onObserverEvent(eventClone);}, this.options.frequency * 1000);
         return;
     },
 
