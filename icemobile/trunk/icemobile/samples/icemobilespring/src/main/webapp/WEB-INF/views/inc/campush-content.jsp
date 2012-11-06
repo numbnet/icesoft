@@ -37,10 +37,11 @@
 
     <%-- button types: default|important|attention| back--%>
     <mobi:commandButton buttonType='important'
-                        style="float:right;margin-right: 25px;"
+                        styleClass="submit"
                         value="Submit"
                         type="submit"/>
-    <div style="clear:both;"/>
+    <div style="clear:both;"></div>
+    
     <c:if test="${not empty message}">
         <div id="message" class="success">${message}<br/>
             <img style="height:60px;width:60px;" src="${imgPath}">

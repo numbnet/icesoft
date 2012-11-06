@@ -216,3 +216,22 @@ html.honeycomb h3, html.android h3{
     padding: 0 1%;
     font-weight:normal;
 }
+/* LARGE SCREEN */
+@media screen and (min-width: 580px) {  
+    .submit{
+        float: right;
+        margin: 10px;
+        width: 100%;
+        max-width: 300px;
+    }
+ 
+}
+/* SMALL SCREEN */
+@media screen and (max-width: 579px) {  
+    .submit{
+        display: block;
+        margin: 10px auto;
+        width: 100%;
+        max-width: 300px;
+    }
+}
