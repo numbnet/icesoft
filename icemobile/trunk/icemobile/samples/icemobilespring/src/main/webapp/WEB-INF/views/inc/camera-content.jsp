@@ -5,15 +5,15 @@
 <%@ taglib prefix="push" uri="http://www.icepush.org/icepush/jsp/icepush.tld"%>
 <form:form id="camform" method="POST" enctype="multipart/form-data"
            modelAttribute="cameraBean">
-    <mobi:fieldsetGroup>
+    <mobi:fieldsetGroup style="text-align:center;">
         <mobi:fieldsetRow>
             <mobi:getEnhanced/>
         </mobi:fieldsetRow>
-        <mobi:fieldsetRow>
-            <form:label path="name">
+        <mobi:fieldsetRow styleClass="mobi-grid">
+            <form:label path="name" style="width:100px;text-align:left;" cssClass="mobi-col mobi-weight1">
                 Author: <form:errors path="name" cssClass="error"/>
             </form:label>
-            <form:input path="name"/>
+            <form:input path="name" cssClass="mobi-col mobi-weight2"/>
         </mobi:fieldsetRow>
         <mobi:fieldsetRow>
             <mobi:camera id="cam" />
@@ -24,7 +24,7 @@
     </mobi:fieldsetGroup>
     <%-- button types: default|important|attention| back--%>
     <mobi:commandButton buttonType='important'
-                        style="float:right;margin-right: 25px;"
+                        style="float:right;margin-right: 10px;width:50%;"
                         value="Submit"
                         type="submit"/>
     <div style="clear:both;"></div>
