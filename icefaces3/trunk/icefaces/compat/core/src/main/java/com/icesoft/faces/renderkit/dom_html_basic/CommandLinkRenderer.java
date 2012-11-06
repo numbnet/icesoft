@@ -193,17 +193,17 @@ public class CommandLinkRenderer extends DomBasicRenderer {
 
             //ICE-8415: need to escape any single quotes in the value
             //of the parameter to ensure a valid JavaScript string.
-            buffer.append(escapeQuote(nextParamValue.toString()));
+            buffer.append(escapeQuote(nextParamValue));
             buffer.append("';");
         }
         return buffer.toString();
     }
 
-    protected static String escapeQuote(String value) {
+    protected static String escapeQuote(Object value) {
         if (null == value) {
             return "";
         }
-        char[] chars = value.toCharArray();
+        char[] chars = value.toString().toCharArray();
         StringBuffer buffer = new StringBuffer(chars.length);
         for (int index = 0; index < chars.length; index++) {
             char ch = chars[index];
