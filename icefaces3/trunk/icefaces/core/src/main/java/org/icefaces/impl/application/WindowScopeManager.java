@@ -359,6 +359,10 @@ public class WindowScopeManager extends SessionAwareResourceHandlerWrapper {
         return (String) requestMap.get(WindowScopeManager.class.getName());
     }
 
+    public static void associateWindowIDToRequest(String id, FacesContext facesContext) {
+        associateWindowID(id, facesContext.getExternalContext().getRequestMap());
+    }
+
     private static void associateWindowID(String id, Map requestMap) {
         requestMap.put(WindowScopeManager.class.getName(), id);
     }

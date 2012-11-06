@@ -16,6 +16,7 @@
 
 package org.icefaces.ace.component.fileentry;
 
+import org.icefaces.impl.application.WindowScopeManager;
 import org.icefaces.impl.context.DOMPartialViewContext;
 import org.icefaces.impl.util.CoreUtils;
 import org.icefaces.apache.commons.fileupload.FileItemStream;
@@ -107,6 +108,10 @@ public class FileEntryResourceHandler extends ResourceHandlerWrapper {
                             parameterListMap.put(name, parameterList);
                         }
                         parameterList.add(value);
+
+                        if ("ice.window".equals(name)) {
+                            WindowScopeManager.associateWindowIDToRequest(value, facesContext);
+                        }
                     } else {
                         uploadFile(facesContext, item,
                                 clientId2Results, clientId2Callbacks,
