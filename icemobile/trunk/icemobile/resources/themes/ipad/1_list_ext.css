@@ -66,8 +66,7 @@
     text-shadow: 0 1px 0 #969fa6;
 }
 .mobi-list-inset,
-.mobi-list-inset > .mobi-list-item:first-child,
-.mobi-list-inset > .mobi-list-item:last-child {
+.mobi-list-inset > .mobi-list-item:first-child{
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
 }
