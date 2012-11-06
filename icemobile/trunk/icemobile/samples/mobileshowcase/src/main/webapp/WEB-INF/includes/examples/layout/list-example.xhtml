@@ -29,10 +29,6 @@
 
         <h4>List with Inset and Grouping</h4>
         
-        <style>
-            .mobi-list img{ width:50%; }
-        </style>
-    
         <mobi:outputList inset="true">
             <mobi:outputListItem group="true">Thumbnail display</mobi:outputListItem>
             <mobi:outputListItem>
@@ -89,11 +85,9 @@
         <mobi:outputList  id="listIterator">
             <mobi:outputListItem group="true">List of cars</mobi:outputListItem>
             <mobi:outputListItems value="#{listBean.cars}" var="currCar" >
-                Car title "#{currCar.title}"
+                <div style="padding:5px;">Car title "#{currCar.title}"</div>
             </mobi:outputListItems>
         </mobi:outputList>
-        
-
 
     </h:form>
 </ui:composition>
