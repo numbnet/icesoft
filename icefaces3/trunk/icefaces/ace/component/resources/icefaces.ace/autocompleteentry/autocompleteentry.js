@@ -136,17 +136,6 @@ ice.ace.Autocompleter.prototype = {
         this.options.minChars = this.options.minChars || 1;
         this.options.onShow = this.options.onShow ||
             function(element, update) {
-                // Based on code from MSDN
-                var ieEngine = null;
-                if (window.navigator.appName == "Microsoft Internet Explorer") {
-                    if (document.documentMode) {
-                        ieEngine = document.documentMode;
-                    } else if (document.compatMode && document.compatMode == "CSS1Compat") {
-                        ieEngine = 7;
-                    } else {
-                        ieEngine = 5;
-                    }
-                }
                 try {
                     if (update["style"] && (!update.style.position || update.style.position == 'absolute')) {
                         update.style.position = 'absolute';
@@ -170,23 +159,19 @@ ice.ace.Autocompleter.prototype = {
 						if (self.direction == 'up' || autoUp) {
 							var updateHeight = jqUpdate.height();
 							updateHeight = updateHeight > self.height ? self.height : updateHeight;
-							jqUpdate.css({ position: "absolute", top: pos.top - updateHeight, left: pos.left, marginTop: 0, marginLeft: 0, width: jqElement.width(), maxHeight: self.height, overflow: "auto" });
-							if (ieEngine >= 7 || jqElement.parents('.yui-navset').length > 0) {
-								var savedPos = element.style.position;
-								element.style.position = "relative";
-								update.style.left = element.offsetLeft + "px";
-								update.style.top = (element.offsetTop - updateHeight) + "px";
-								element.style.position = savedPos;
-							}						
+							jqUpdate.css({ position: "absolute", marginTop: 0, marginLeft: 0, width: jqElement.width(), maxHeight: self.height, overflow: "auto" });
+							var savedPos = element.style.position;
+							element.style.position = "relative";
+							update.style.left = element.offsetLeft + "px";
+							update.style.top = (element.offsetTop - updateHeight) + "px";
+							element.style.position = savedPos;
 						} else {
-							jqUpdate.css({ position: "absolute", top: pos.top + element.offsetHeight, left: pos.left, marginTop: 0, marginLeft: 0, width: jqElement.width(), maxHeight: self.height, overflow: "auto" });
-							if (ieEngine >= 7 || jqElement.parents('.yui-navset').length > 0) {
-								var savedPos = element.style.position;
-								element.style.position = "relative";
-								update.style.left = element.offsetLeft + "px";
-								update.style.top = (element.offsetTop + element.offsetHeight) + "px";
-								element.style.position = savedPos;
-							}
+							jqUpdate.css({ position: "absolute", marginTop: 0, marginLeft: 0, width: jqElement.width(), maxHeight: self.height, overflow: "auto" });
+							var savedPos = element.style.position;
+							element.style.position = "relative";
+							update.style.left = element.offsetLeft + "px";
+							update.style.top = (element.offsetTop + element.offsetHeight) + "px";
+							element.style.position = savedPos;
 						}
                     }
                     ice.ace.jq(update).fadeIn(150)
