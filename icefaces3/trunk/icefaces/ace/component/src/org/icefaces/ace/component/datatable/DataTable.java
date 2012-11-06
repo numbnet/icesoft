@@ -320,6 +320,7 @@ public class DataTable extends DataTableBase implements Serializable {
         // Refresh data model before setRowIndex does for an incorrect clientId / filteredData state.
         setRowIndex(-1);
         getDataModel();
+        getStateMap();
         if (treeEvent) {
             treeModel = (TreeDataModel) getDataModel();
             if (tevent.getRootIndexes() != null && tevent.getRootIndexes().length > 0)
