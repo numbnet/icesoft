@@ -22,10 +22,10 @@
 
     <mobi:fieldsetGroup>
         <mobi:fieldsetRow style="padding-bottom:10px;">
-            Use your camera to add location pictures to the augmented
-            reality overlay.
-            Depending on GPS accuracy, you may need to walk 10m between
-            locations.
+        Augmented Reality makes use of the camera and video overlays to allow mobile applications to blend with real world objects.
+
+            <mobi:getEnhanced/>
+
         </mobi:fieldsetRow>
     </mobi:fieldsetGroup>
 
@@ -33,9 +33,11 @@
         <mobi:uploadhelper/>
 
         <mobi:fieldsetGroup style="text-align:center;">
-            <mobi:fieldsetRow>
-                <mobi:getEnhanced/>
-            </mobi:fieldsetRow>
+        <mobi:fieldsetRow >
+            Use your camera to add pictures at various locations.
+            (Depending on GPS accuracy, you may need to walk 10m between
+            locations.)
+        </mobi:fieldsetRow>
             <mobi:fieldsetRow>
                 <mobi:geolocation 
                           latitude="#{realityBean.latitude}"
@@ -64,6 +66,9 @@
     <h:form >
 
         <mobi:fieldsetGroup>
+        <mobi:fieldsetRow style="padding-bottom:10px;">
+            Next view the pictures superimposed on the camera view in the Augmented Reality overlay. (This is an alpha level feature on iOS and pre-alpha on Android only.)
+        </mobi:fieldsetRow>
 
             <mobi:fieldsetRow>
                 <mobi:augmentedReality 
@@ -94,6 +99,9 @@
     <h:form >
 
         <mobi:fieldsetGroup>
+            <mobi:fieldsetRow style="padding-bottom:10px;">
+                Print, cut-out, then view the <a href="resources/images/markers.html">Augmented Reality Markers</a> with 3D overlays. (This is an alpha level feature on iOS only.)
+            </mobi:fieldsetRow>
 
             <mobi:fieldsetRow>
             Markers: 
