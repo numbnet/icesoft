@@ -22,8 +22,8 @@
     color: #FFFFFF;
 }
 .mobi-pagePanel-body{
-    min-height: 600px; /* TODO hack for height issue, use flexbox */
+    min-height: 400px; /* TODO hack for height issue, use flexbox */
 }
 .mobi-pagePanel-body-nofooter {
-    min-height: 640px;
+    min-height: 480px;
 }
