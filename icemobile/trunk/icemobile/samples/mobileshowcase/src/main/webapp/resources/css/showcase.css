@@ -214,3 +214,6 @@ html.honeycomb h3{
 html.android .back{
     background-color:#333;
 }
+html.honeycomb h3, html.android h3{
+    border-bottom: 1px solid #6595F9;
+}

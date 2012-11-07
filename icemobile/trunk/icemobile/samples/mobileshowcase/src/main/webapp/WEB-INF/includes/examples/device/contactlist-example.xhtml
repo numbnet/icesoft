@@ -20,15 +20,7 @@
              xmlns:ui="http://java.sun.com/jsf/facelets"
              xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
 
-    <mobi:fieldsetGroup>
-        <mobi:fieldsetRow style="padding-bottom:10px;">
-            Contact List
-        </mobi:fieldsetRow>
-    </mobi:fieldsetGroup>
-
     <h:form id="conform">
-        <h4>Contact List</h4>
-
         <mobi:fieldsetGroup>
             <mobi:fieldsetRow style="text-align:center;">
                 <mobi:getEnhanced/>
@@ -42,11 +34,9 @@
             </mobi:fieldsetRow>
             <mobi:fieldsetRow>
                 <label>Selected Contact:</label>
-                <label style="float:right">#{contactsBean.contactOne}</label>
+                <span>#{contactsBean.contactOne}</span>
             </mobi:fieldsetRow>
         </mobi:fieldsetGroup>
-
-
         
     </h:form>
 
