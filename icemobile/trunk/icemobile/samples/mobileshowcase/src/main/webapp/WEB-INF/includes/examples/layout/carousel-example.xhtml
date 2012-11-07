@@ -36,12 +36,13 @@
             </h:panelGroup>
         </mobi:carousel>
     </h:form>
-    <h4>Carousel Echo</h4>
+    
+    <h3 style="clear:both;padding-top:10px;">Carousel Echo</h3>
     <div id="outputCarousel">
      <mobi:fieldsetGroup>
          <!-- Text output-->
          <mobi:fieldsetRow>
-             <h:outputLabel value="Selected Image: "/>
+             <h:outputLabel value="Current position: "/>
              <h:panelGroup>
                 <h:graphicImage id="selimg" library="images" name="#{carouselBean.selected}"/>
             </h:panelGroup>
