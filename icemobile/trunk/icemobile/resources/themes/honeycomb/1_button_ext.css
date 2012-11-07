@@ -69,38 +69,30 @@
     color: #999;
 }
 /* back button*/
+div.mobi-button-back{
+    background-image: url('back.png');
+    background-color: transparent;
+    background-position: -3px 43%;
+    background-repeat: no-repeat;
+    padding-left: 20px;
+    border: none;
+    background-size: 16px;
+    border-radius:0;
+}
 div.mobi-button-back > span {
-    background-color: #555;
-    border-bottom-right-radius: 22px;
-    border-top-right-radius: 100px;
-    border-top-left-radius: 25px;
+    background-color:transparent;
 }
 div.mobi-button-back > input {
-    color:#FFF;
-    font-weight: bold;
+    color:#F1F1F1;
+    font-weight:bold;
+    left:0;
 }
-/* back button in header */
-.mobi-pagePanel-header .mobi-button-back {
-    background-color: #777;
-    border-bottom: 1px solid rgba(255,255,255,0.4);
-    border-radius: 5px;
-    box-shadow :0 -1px 1px rgba(0,0,0,0.2)inset,
-        0 1px 2px rgba(0,0,0,0.8)inset;
-    color:#fff;
-    text-shadow : 0px -1px 0px rgba(0,0,0,0.8);
+.mobi-pagePanel-header .mobi-button{
+    background-color: transparent;
+    border-radius: 0.5em;
+    border: 1px solid #878787;
 }
-.mobi-pagePanel-header .mobi-button-back:after {
-    box-shadow :0 -3px 1px -2px rgba(0,0,0,0.3)inset,
-                0 4px 2px -3px rgba(0,0,0,0.8)inset;
-}
-.mobi-pagePanel-header .mobi-button-back,
-.mobi-pagePanel-header .mobi-button-back:after,
-.mobi-pagePanel-header .mobi-button-back:before {
-    background-color: #777;
-
-}
-.mobi-pagePanel-header .mobi-button-back:hover,
-.mobi-pagePanel-header .mobi-button-back:hover:after,
-.mobi-pagePanel-header .mobi-button-back:hover:before {
-    background-color: #888;
+.mobi-pagePanel-header .mobi-button-back{
+    left: 0.5em;
+    border:none;
 }
