@@ -1390,28 +1390,31 @@ ice.mobi.geolocation = {
 
         ice.mobi.geolocation.clientId = pClientId;
         ice.mobi.geolocation.clearWatch();
-        // It seems like on Android (at least) that passing any argument at all
-        // for enableHighAccuracy enables high accuracy.
-        if (highAccuracy == 'false') {
-            console.log('Launching low precision watchPosition, maxAge: ' +
-                    maxAge + '(s), timeout: ' + timeout + '(s)');
-
-            ice.mobi.geolocation.watchId = navigator.geolocation.watchPosition(
-                    this.successCallback, this.errorCallback,
-                    { maximumAge: maxAge * 1000, timeout: timeout * 1000 }
-            );
-
-        } else {
-            console.log('Launching HIGH precision watchPosition, maxAge: ' +
-                    maxAge + '(s), timeout: ' + timeout + '(s)');
-            ice.mobi.geolocation.watchId = navigator.geolocation.watchPosition(
-                    this.successCallback, this.errorCallback,
-                    { enableHighAccuracy: true, maximumAge: maxAge * 1000, timeout: timeout * 1000 }
-            );
+        // It seems like on Android that passing any argument at all for enableHighAccuracy
+        // enables high accuracy.
+        var geoParams = {};
+        if (maxAge > 0)  {
+            geoParams.maximumAge = maxAge * 1000;
         }
+        if (timeout > 0)  {
+            geoParams.timeout = timeout * 1000;
+        }
+        if (highAccuracy != 'false')  {
+            geoParams.enableHighAccuracy = true;
+        }
+        console.log('Launching watchPosition, ' + 
+            'maxAge: ' + geoParams.maximumAge + '(s),' + 
+            ' timeout: ' + geoParams.timeout + '(s)' +
+            ' highAccuracy: ' + geoParams.enableHighAccuracy);
+
+        ice.mobi.geolocation.watchId = navigator.geolocation.watchPosition(
+                this.successCallback, this.errorCallback,
+                geoParams );
+
         window.addEventListener('deviceorientation', ice.mobi.geolocation.orientationCallback);
-        console.log('Lauching positionWatch for client: ' + pClientId + ' watchId: ' +
-                ice.mobi.geolocation.watchId + ', highAccuracy? : ' + highAccuracy);
+        ice.onElementRemove(pClientId, ice.mobi.geolocation.clearWatch);
+        console.log('Lauching positionWatch for client: ' + pClientId + 
+                ' watchId: ' + ice.mobi.geolocation.watchId);
     },
 
     /**
