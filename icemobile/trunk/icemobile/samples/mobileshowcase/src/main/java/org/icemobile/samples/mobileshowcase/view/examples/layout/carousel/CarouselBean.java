@@ -72,7 +72,7 @@ public class CarouselBean extends ExampleImpl<CarouselBean> implements
         images.add("flags/Hong-Kong.png");
         images.add("flags/Italy.png");
         images.add("flags/Japan.png");
-        images.add("flags/New Zealand.png");
+        images.add("flags/New-Zealand.png");
         images.add("flags/Romania.png");
         images.add("flags/Spain.png");
         images.add("flags/USA.png");
