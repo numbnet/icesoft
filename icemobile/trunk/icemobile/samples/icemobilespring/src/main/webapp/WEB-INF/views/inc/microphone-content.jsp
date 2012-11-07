@@ -4,7 +4,7 @@
 <%@ taglib uri="http://www.icemobile.org/tags" prefix="mobi" %>
 <%@ taglib prefix="push" uri="http://www.icepush.org/icepush/jsp/icepush.tld"%>
 <form:form id="micform" method="POST" enctype="multipart/form-data"
-           modelAttribute="microphoneBean" >
+           modelAttribute="microphoneBean" cssClass="form">
     <mobi:fieldsetGroup>
         <mobi:fieldsetRow>
             <mobi:getEnhanced/>
@@ -20,19 +20,18 @@
         </mobi:fieldsetRow>
     </mobi:fieldsetGroup>
 
-    <%-- button types: default|important|attention| back--%>
     <mobi:commandButton buttonType='important'
-                        style="float:right;margin-right: 25px;"
                         value="Submit"
-                        type="submit"/>
-    <div style="clear:both"/>
+                        type="submit"
+                        styleClass="submit"/>
+   
     <c:if test="${not empty message}">
         <div id="message" class="success">${message}</div>
     </c:if>
     <c:if test="${mediaReady}">
         <mobi:fieldsetGroup>
             <mobi:fieldsetRow>
-                <audio src="${clipName}" controls="controls"/>
+                <audio src="${clipName}" controls="controls"></audio>
                 <br><a href="${clipName}">Play</a>
             </mobi:fieldsetRow>
         </mobi:fieldsetGroup>

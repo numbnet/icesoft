@@ -4,16 +4,16 @@
 <%@ taglib uri="http://www.icemobile.org/tags" prefix="mobi" %>
 <%@ taglib prefix="push" uri="http://www.icepush.org/icepush/jsp/icepush.tld"%>
 <form:form id="camcorderform" method="POST" enctype="multipart/form-data"
-               modelAttribute="camcorderBean">
-    <mobi:fieldsetGroup style="text-align:center;">
+               modelAttribute="camcorderBean" cssClass="form">
+    <mobi:fieldsetGroup>
         <mobi:fieldsetRow>
             <mobi:getEnhanced/>
         </mobi:fieldsetRow>
-        <mobi:fieldsetRow styleClass="mobi-grid">
-            <form:label path="name" cssClass="mobi-col mobi-weight1" style="width:100px;text-align:left;">
+        <mobi:fieldsetRow>
+            <form:label path="name">
                 Author: <form:errors path="name" cssClass="error"/>
             </form:label>
-            <form:input path="name" cssClass="mobi-col mobi-weight2"/>
+            <form:input path="name"/>
         </mobi:fieldsetRow>
         <mobi:fieldsetRow>
             <mobi:camcorder id="camvid"/>
@@ -26,8 +26,6 @@
                         value="Submit"
                         type="submit"/>
                         
-    <div style="clear:both;"></div>
-
     <c:if test="${not empty message}">
         <div id="message" class="success">${message}<br/>
         </div>
@@ -35,7 +33,7 @@
     <c:if test="${mediaReady}">
         <mobi:fieldsetGroup>
             <mobi:fieldsetRow>
-                <video src="media/video.mp4" controls="controls"/>
+                <video src="media/video.mp4" controls="controls"></video>
                 <br><a href="media/video.mp4">Play</a>
             </mobi:fieldsetRow>
         </mobi:fieldsetGroup>
