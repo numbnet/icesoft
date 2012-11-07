@@ -1116,7 +1116,7 @@ ice.ace.DataTable.prototype.resizeScrolling = function () {
         // Fix body scrollbar overlapping content
         // Instance check to prevent IE7 dynamic scrolling change errors
         // Recheck scrollable, it may have changed again post resize
-        if ((ie9 || firefox) && bodyTable.parent().is(':scrollable(horizontal)'))
+        if (ie9 && bodyTable.parent().is(':scrollable(horizontal)'))
             bodyTable.css('table-layout','fixed');
 
         if (!ie7 && vScrollShown && bodyTable.parent().is(':scrollable(vertical)')) {
