@@ -21,6 +21,7 @@ import org.icemobile.samples.mobileshowcase.view.examples.device.DeviceInput;
 import org.icemobile.samples.mobileshowcase.view.metadata.annotation.*;
 import org.icemobile.samples.mobileshowcase.view.metadata.context.ExampleImpl;
 import org.icefaces.application.ResourceRegistry;
+import org.icefaces.mobi.utils.MobiJSFUtils;
 
 import javax.annotation.PreDestroy;
 import javax.faces.context.FacesContext;
@@ -285,6 +286,10 @@ public class RealityBean extends ExampleImpl<RealityBean> implements
         FileOutputStream fs = new FileOutputStream(imageFile);
         ImageIO.write(image, "jpg", fs);
         fs.close();
+    }
+    
+    public boolean isIos(){
+        return MobiJSFUtils.getClientDescriptor().isIOS();
     }
 
 }
