@@ -20,10 +20,9 @@
              xmlns:ui="http://java.sun.com/jsf/facelets"
              xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
 
+    <h3>Resource Backed Video</h3>
     <mobi:fieldsetGroup>
-
         <mobi:fieldsetRow>
-            <h4>Resource Backed Video</h4>
             <h:panelGroup styleClass="center">
                 <mobi:videoPlayer value="#{videoBean.videoResourceData}"
                                   scope="application" width="250" playsinline="true"
@@ -32,9 +31,11 @@
                                   linkLabel="Play" />
             </h:panelGroup>
         </mobi:fieldsetRow>
+    </mobi:fieldsetGroup>
 
+    <h3>Byte Array Backed Video</h3>
+    <mobi:fieldsetGroup>
         <mobi:fieldsetRow>
-            <h4>Byte Array Backed Video</h4>
             <h:panelGroup styleClass="center">
                 <mobi:videoPlayer value="#{videoBean.videoByteData}"
                                   scope="application" width="250" playsinline="true"
@@ -43,9 +44,11 @@
                                   linkLabel="Play" />
             </h:panelGroup>
         </mobi:fieldsetRow>
+    </mobi:fieldsetGroup>
 
+    <h3>Fixed URL Video</h3>
+    <mobi:fieldsetGroup>
         <mobi:fieldsetRow>
-            <h4>Fixed URL Video</h4>
             <h:panelGroup styleClass="center">
                 <mobi:videoPlayer
                         scope="application" width="250" playsinline="true"
@@ -55,7 +58,6 @@
                         linkLabel="Play"/>
             </h:panelGroup>
         </mobi:fieldsetRow>
-
     </mobi:fieldsetGroup>
 
 </ui:composition>

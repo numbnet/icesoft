@@ -20,19 +20,20 @@
              xmlns:ui="http://java.sun.com/jsf/facelets"
              xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
 
+    <h3>Resource Backed Audio</h3>
     <mobi:fieldsetGroup>
-
         <mobi:fieldsetRow>
-            <h4>Resource Backed Audio</h4>
             <h:panelGroup styleClass="center">
                 <mobi:audioPlayer value="#{audioBean.audioResourceData}"
                             linkLabel="Play"
                             controls="true" preload="auto"/>
             </h:panelGroup>
         </mobi:fieldsetRow>
-
+    </mobi:fieldsetGroup>
+    
+    <h3>Byte Array Backed Audio</h3>
+    <mobi:fieldsetGroup>
         <mobi:fieldsetRow>
-            <h4>Byte Array Backed Audio</h4>
             <h:panelGroup styleClass="center">
                 <mobi:audioPlayer value="#{audioBean.audioByteData}"
                             mimeType="audio/mpeg"
@@ -41,16 +42,17 @@
                             preload="auto"/>
             </h:panelGroup>
         </mobi:fieldsetRow>
-
+    </mobi:fieldsetGroup>
+    
+    <h3>Fixed URL Audio</h3>
+    <mobi:fieldsetGroup>
         <mobi:fieldsetRow>
-            <h4>Fixed URL Audio</h4>
             <h:panelGroup styleClass="center">
                 <mobi:audioPlayer value="./resources/audio/audio_clip.mp3"
                             linkLabel="Play"
                             controls="true" preload="auto"/>
             </h:panelGroup>
         </mobi:fieldsetRow>
-
     </mobi:fieldsetGroup>
 
 </ui:composition>
