@@ -24,7 +24,7 @@
     </div>
     <script type="text/javascript">
         MvcUtil.enhanceAllLinks(".ajaxzone","body");
-        window.scrollTo(0, 0);
+        //window.scrollTo(0, 0);
     </script>
 <c:if test="${!ajaxRequest}">
     </body>
