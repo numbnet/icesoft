@@ -8,9 +8,9 @@
                    callback="function(){$('#campushform').submit();}"/>
 </c:if>
 <form:form id="campushform" method="POST" enctype="multipart/form-data"
-           modelAttribute="cameraBean">
+           modelAttribute="cameraBean" cssClass="form">
 
-    <mobi:fieldsetGroup style>
+    <mobi:fieldsetGroup>
         <mobi:fieldsetRow>
             <mobi:getEnhanced/>
         </mobi:fieldsetRow>
@@ -22,29 +22,26 @@
         </mobi:fieldsetRow>
         <mobi:fieldsetRow>
             <mobi:camera id="pushcam"/>
-            <mobi:thumbnail for="pushcam"
-                        style="height:60px;width:65px;vertical-align:middle;float:right;margin:10px;"/>
+            <mobi:thumbnail for="pushcam"/>
         </mobi:fieldsetRow>
     </mobi:fieldsetGroup>
 
     <h4>Uploaded Snapshot</h4>
     <mobi:fieldsetGroup>
         <mobi:fieldsetRow>
-            <img style="height:60px;width:60px;margin:5px;"
-                 src="${imgPath}"/>
+            <img src="${imgPath}"/>
         </mobi:fieldsetRow>
     </mobi:fieldsetGroup>
 
-    <%-- button types: default|important|attention| back--%>
-    <mobi:commandButton buttonType='important'
+    <mobi:commandButton buttonType="important"
                         styleClass="submit"
                         value="Submit"
-                        type="submit"/>
-    <div style="clear:both;"></div>
+                        type="submit"
+                        styleClass="submit"/>
     
     <c:if test="${not empty message}">
         <div id="message" class="success">${message}<br/>
-            <img style="height:60px;width:60px;" src="${imgPath}">
+            <img src="${imgPath}">
         </div>
     </c:if>
     <s:bind path="*">

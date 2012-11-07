@@ -5,7 +5,7 @@
 <%@ taglib prefix="push" uri="http://www.icepush.org/icepush/jsp/icepush.tld"%>
 <h4>Add Marker Photo</h4>
 <form:form id="mediaspotform" method="POST" enctype="multipart/form-data"
-           modelAttribute="mediaspotBean">
+           modelAttribute="mediaspotBean" cssClass="form">
     <mobi:fieldsetGroup>
         <mobi:fieldsetRow>
             <mobi:getEnhanced/>
@@ -14,18 +14,17 @@
             <label>Title: </label>
             <form:input path="title" placeholder="Title"/>
         </mobi:fieldsetRow>
-        <mobi:fieldsetRow style="height:90px;">
+        <mobi:fieldsetRow>
             <mobi:geolocation id="location"/>
             <mobi:camera id="spotcam"/>
-            <mobi:thumbnail for="spotcam"
-                        style="height:60px;width:65px;vertical-align:middle;float:right;margin:10px;"/>
-        </mobi:fieldsetRow>
-        <mobi:fieldsetRow>
-            <mobi:commandButton buttonType='important'
-                                value="Submit"
-                                type="submit"/>
+            <mobi:thumbnail for="spotcam"/>
         </mobi:fieldsetRow>
     </mobi:fieldsetGroup>
+    
+    <mobi:commandButton buttonType='important'
+                        value="Submit"
+                        type="submit"
+                        styleClass="submit"/>
 
     <mobi:fieldsetGroup>
         <mobi:fieldsetRow>
@@ -45,9 +44,7 @@
         </mobi:fieldsetRow>
     </mobi:fieldsetGroup>
 
-    <%-- button types: default|important|attention|back--%>
-    <div style="clear:both;"/>
-    <s:bind path="*">
+     <s:bind path="*">
         <c:if test="${status.error}">
             <div id="message" class="error">Form has errors</div>
         </c:if>
@@ -56,8 +53,7 @@
         <mobi:fieldsetGroup>
             <mobi:fieldsetRow>
                 Selected location:<br />
-                <img style="height:120px;width:120px;padding:5px;"
-                     src="${imgPath}"/>
+                <img src="${imgPath}"/>
 
                 <div style="font-style:italic">${selection}</div>
             </mobi:fieldsetRow>
