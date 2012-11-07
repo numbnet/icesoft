@@ -49,7 +49,6 @@ import javax.faces.event.ValueChangeEvent;
 @MandatoryResourceComponent(tagName="sliderEntry", value="org.icefaces.ace.component.sliderentry.SliderEntry")
 public class SliderEntryRenderer extends CoreRenderer{
     private Map<String, Object> domUpdateMap = new HashMap<String, Object>();
-    private boolean ariaEnabled = EnvUtils.isAriaEnabled(FacesContext.getCurrentInstance());
 
     @Override
     public void decode(FacesContext context, UIComponent component) {
@@ -195,6 +194,7 @@ public class SliderEntryRenderer extends CoreRenderer{
 	protected void encodeScript(FacesContext context, SliderEntry slider) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
 		String clientId = slider.getClientId(context);
+        boolean ariaEnabled = EnvUtils.isAriaEnabled(context);
 
 		writer.startElement("script", slider);
 		writer.writeAttribute("type", "text/javascript", null);
