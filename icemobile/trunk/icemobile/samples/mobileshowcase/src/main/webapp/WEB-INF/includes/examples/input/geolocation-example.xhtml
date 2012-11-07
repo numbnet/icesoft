@@ -40,34 +40,6 @@
         <mobi:commandButton value="Locate Me"/>
     </h:panelGroup>
     
-    <h3>Geolocation Settings:</h3>
-        
-    <mobi:fieldsetGroup>
-        <mobi:fieldsetRow>
-            Continuous Updates:
-            <mobi:flipswitch id="highPrecision"
-                             labelOn="true" labelOff="false"
-                             singleSubmit="true" style="float:right"
-                             valueChangeListener="#{geoLocationBean.continuousUpdatesChange}"
-                             value="#{geoLocationBean.continuousUpdates}"/>
-        </mobi:fieldsetRow>
-        <mobi:fieldsetRow>
-            enableHighPrecision: (true/false/ asNeeded)
-            <mobi:inputText id="highPrecise"
-                            value="#{geoLocationBean.enableHighPrecision}"/>
-        </mobi:fieldsetRow>
-        <mobi:fieldsetRow>
-            Timeout (longest allowable time for reading to arrive (0-x,
-            seconds):
-            <h:inputText id="timeout" value="#{geoLocationBean.timeout}"/>
-        </mobi:fieldsetRow>
-        <mobi:fieldsetRow>
-            Maximum Age (oldest allowable cached Location reading (0-x,
-            seconds):
-            <h:inputText value="#{geoLocationBean.maximumAge}"/>
-        </mobi:fieldsetRow>
-    </mobi:fieldsetGroup>
-    
     <h3>Geolocation Results:</h3>
 
     <mobi:fieldsetGroup>
@@ -88,6 +60,38 @@
             <h:outputText value="#{geoLocationBean.altitude}"/>
         </mobi:fieldsetRow>
     </mobi:fieldsetGroup>
+
+    <h3>Geolocation Settings:</h3>
+        
+    <mobi:fieldsetGroup>
+        <mobi:fieldsetRow>
+            <h:outputLabel value="Continuous Updates:" for="highPrecision"/>
+            <mobi:flipswitch id="highPrecision"
+                             labelOn="true" labelOff="false"
+                             singleSubmit="true" 
+                             valueChangeListener="#{geoLocationBean.continuousUpdatesChange}"
+                             value="#{geoLocationBean.continuousUpdates}"/>
+        </mobi:fieldsetRow>
+        <mobi:fieldsetRow>
+            <h:outputLabel value="enableHighPrecision:" for="highPrecise"/> 
+            <h:selectOneMenu id="highPrecise" value="#{geoLocationBean.enableHighPrecision}">
+                <f:selectItem itemValue="true"/>
+                <f:selectItem itemValue="false"/>
+                <f:selectItem itemValue="asNeeded"/>
+            </h:selectOneMenu>
+        </mobi:fieldsetRow>
+        <mobi:fieldsetRow>
+            <h:outputLabel value="Timeout (longest allowable time for reading to arrive (0-x,
+            seconds):" for="timeout"/>
+            <h:inputText id="timeout" value="#{geoLocationBean.timeout}"/>
+        </mobi:fieldsetRow>
+        <mobi:fieldsetRow>
+            <h:outputLabel value="Maximum Age (oldest allowable cached Location reading (0-x,
+            seconds):" for="maxAge"/>
+            <h:inputText id="maxAge" value="#{geoLocationBean.maximumAge}"/>
+        </mobi:fieldsetRow>
+    </mobi:fieldsetGroup>
+    
 
     </h:form>
     <script type="text/javascript">
