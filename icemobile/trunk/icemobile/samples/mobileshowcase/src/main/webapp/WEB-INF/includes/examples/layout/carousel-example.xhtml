@@ -32,7 +32,7 @@
                        singleSubmit="true"
                        var="item">
             <h:panelGroup>
-                <h:graphicImage library="images" name="#{item}"/>
+                <h:graphicImage library="images" name="#{item}" style="height:98px;"/>
             </h:panelGroup>
         </mobi:carousel>
     </h:form>
@@ -42,9 +42,10 @@
      <mobi:fieldsetGroup>
          <!-- Text output-->
          <mobi:fieldsetRow>
-             <h:outputLabel value="Current position: "/>
+             <h:outputLabel value="Current position: " style="vertical-align:top;"/>
              <h:panelGroup>
-                <h:graphicImage id="selimg" library="images" name="#{carouselBean.selected}"/>
+                <h:graphicImage id="selimg" library="images" name="#{carouselBean.selected}"
+                    style="width:98px;"/>
             </h:panelGroup>
          </mobi:fieldsetRow>
      </mobi:fieldsetGroup>

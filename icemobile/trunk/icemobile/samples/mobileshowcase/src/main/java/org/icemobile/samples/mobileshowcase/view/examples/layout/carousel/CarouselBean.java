@@ -58,21 +58,25 @@ public class CarouselBean extends ExampleImpl<CarouselBean> implements
     public static final String BEAN_NAME = "carouselBean";
 
     private ArrayList<String> images = new ArrayList<String>();
-    private String selected;
-    private int selectedItem =3;
+    private int selectedItem =2;
 
     public CarouselBean() {
         super(CarouselBean.class);
 
-        images.add("desktop.png");
-        images.add("laptop.png");
-        images.add("monitor.png");
-        images.add("pda.png");
-        images.add("desktop.png");
-        images.add("laptop.png");
-        images.add("monitor.png");
-        images.add("pda.png");
-        images.add("desktop.png");
+        images.add("flags/Argentina.png");
+        images.add("flags/Brazil.png");
+        images.add("flags/Canada.png");
+        images.add("flags/Denmark.png");
+        images.add("flags/France.png");
+        images.add("flags/Germany.png");
+        images.add("flags/Hong-Kong.png");
+        images.add("flags/Italy.png");
+        images.add("flags/Japan.png");
+        images.add("flags/New Zealand.png");
+        images.add("flags/Romania.png");
+        images.add("flags/Spain.png");
+        images.add("flags/USA.png");
+        images.add("flags/Venezuala.png");
     }
 
     public ArrayList<String> getImages() {
