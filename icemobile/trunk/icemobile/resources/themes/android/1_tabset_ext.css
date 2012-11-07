@@ -18,8 +18,11 @@
     color:#d3d3d3;
     line-height:39px;
 }
-.mobi-tabset.mobi-tabset-tabs-bottom > .mobi-tabset-tabs > ul > li{
+.mobi-tabset > .mobi-tabset-tabs > ul > li{
     border-left: 1px solid #A5A9B6;
+}
+.mobi-tabset > .mobi-tabset-tabs > ul > li:first-child{
+    border-left:none;
 }
 .mobi-tabset.mobi-tabset-tabs-bottom > .mobi-tabset-tabs > ul > li{
     border-top: 1px solid #A5A9B6;
