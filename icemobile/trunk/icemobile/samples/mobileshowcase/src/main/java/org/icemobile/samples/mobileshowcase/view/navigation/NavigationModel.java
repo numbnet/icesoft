@@ -59,7 +59,6 @@ public class NavigationModel implements Serializable {
      * @return always null, no jsf navigation.
      */
     public String navigateTo(String selectedPanelId, String beanName, boolean redirect) {
-        System.out.println("navigateTo("+selectedPanelId+","+beanName+","+redirect+")");
         // add previous location to history.
         history.push(this.selectedPanel);
         this.selectedPanel = selectedPanelId;
