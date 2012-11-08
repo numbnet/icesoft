@@ -33,7 +33,7 @@ ice.ace.gMap = function (id, cfg) {
     }
 }
 
-var GMapRepository = new Array();
+if (!GMapRepository) var GMapRepository = new Array();
 
 
 function GMapWrapper(eleId, realGMap) {

@@ -1,7 +1,7 @@
 if (!window.ice['ace']) {
     window.ice.ace = {};
 }
-ice.ace.Charts = {};
+if (!ice.ace.Charts) ice.ace.Charts = {};
 ice.ace.Chart = function (id, data, cfg) {
     var self = this;
     this.id = id;

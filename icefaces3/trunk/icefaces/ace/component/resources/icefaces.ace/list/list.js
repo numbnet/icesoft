@@ -2,7 +2,7 @@ if (!window.ice['ace']) {
     window.ice.ace = {};
 }
 
-ice.ace.Lists = {};
+if (!ice.ace.Lists) ice.ace.Lists = {};
 
 ice.ace.List = function(id, cfg) {
     var self = this;
