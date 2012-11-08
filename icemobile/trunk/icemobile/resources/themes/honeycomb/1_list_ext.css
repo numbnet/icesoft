@@ -14,10 +14,13 @@
  * governing permissions and limitations under the License.
  */
 
-.mobi-list-item a:active, .mobi-list-item a[selected] {
+.mobi-list-item a:active, .mobi-list-item a:focus, .mobi-list-item a[selected] {
     -moz-box-shadow: inset 0px 0px 3px #6595F9, 0px 0px 9px #6595F9;
     -webkit-box-shadow: inset 0px 0px 3px #6595F9, 0px 0px 9px #6595F9;
     box-shadow: inset 0px 0px 3px #6595F9, 0px 0px 9px #6595F9;
+    outline: #6595F9 auto 5px;
+    background-color:#6595F9;
+    color:#FFF;
 }
 
 .mobi-list-item {

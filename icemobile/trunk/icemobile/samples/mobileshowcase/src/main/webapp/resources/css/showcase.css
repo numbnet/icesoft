@@ -120,6 +120,20 @@
 .ui-icon{
    background-image: url(images/icons-white.png.jsf);
 }
+html.android .ui-icon:active, html.android .ui-icon:focus, html.android .ui-icon[selected] {
+    -moz-box-shadow: inset 0px 0px 3px #66AFFF, 0px 0px 9px #66AFFF;
+    -webkit-box-shadow: inset 0px 0px 3px #66AFFF, 0px 0px 9px #66AFFF;
+    box-shadow: inset 0px 0px 3px #66AFFF, 0px 0px 9px #66AFFF;
+    background-color:#66AFFF;
+    color:#FFF;
+}
+html.honeycomb .ui-icon:active, html.honeycomb .ui-icon:focus, html.honeycomb .ui-icon[selected] {
+    -moz-box-shadow: inset 0px 0px 3px #6595F9, 0px 0px 9px #6595F9;
+    -webkit-box-shadow: inset 0px 0px 3px #6595F9, 0px 0px 9px #6595F9;
+    box-shadow: inset 0px 0px 3px #6595F9, 0px 0px 9px #6595F9;
+    background-color:#6595F9;
+    color:#FFF;
+}
 @media only screen and (-webkit-min-device-pixel-ratio: 1.5),
        only screen and (min--moz-device-pixel-ratio: 1.5),
        only screen and (min-resolution: 240dpi) {
@@ -292,8 +306,8 @@ html.honeycomb h3{
 html.android .back{
     background-color:#333;
 }
-html.honeycomb h3, html.android h3{
-    border-bottom: 1px solid #6595F9;
+html.android h3{
+    border-bottom: 1px solid #66AFFF;
 }
 .mobi-button.mobi-button-back.back, .mobi-button.mobi-button-dis{
     width: 150px;

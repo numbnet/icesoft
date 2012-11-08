@@ -1556,3 +1556,7 @@ ice.mobi.splitpane = {
 /* add js marker for progressive enhancement */
 document.documentElement.className = document.documentElement.className + ' js';
 
+/* touch active state support */
+document.addEventListener("touchstart", function(){}, true);
+
+
