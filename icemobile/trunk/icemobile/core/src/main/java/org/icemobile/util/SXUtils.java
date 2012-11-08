@@ -49,7 +49,8 @@ public class SXUtils {
         String forward = (String) request
                 .getAttribute("javax.servlet.forward.servlet_path");
         if (forward == null) {
-            forward = "";
+            forward = request.getRequestURI().substring(
+                    request.getContextPath().length() + 1);
         } else if (forward.startsWith("/")) {
             forward = forward.substring(1);
         }
