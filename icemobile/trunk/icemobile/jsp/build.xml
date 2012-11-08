@@ -85,7 +85,11 @@
               value="${version.primary}.${version.secondary}.${version.tertiary}"/>
 	
 	<path id="core.classpath">
-        <fileset dir="${lib.dir}" includes="*.jar" excludes="**/javax.faces.jar,**/jsp-api.jar,**/javax.servlet.jsp.jar,**/icemobile-jsp.jar"/>
+        <fileset dir="${lib.dir}" includes="*.jar" excludes="**/javax.faces.jar,**/jsp-api.jar,**/javax.servlet.jsp.jar,**/icemobile-jsp.jar,**/icefaces-mobi.jar"/>
+    </path>
+	
+	<path id="jsp.classpath">
+        <fileset dir="${lib.dir}" includes="*.jar" excludes="**/javax.faces.jar,**/icefaces-mobi.jar"/>
     </path>
 	
     <import file="../resources/build/build.xml"/>
@@ -312,8 +316,7 @@
                 <src location="@{src.dir}"/>
                 <include name="**/*.java"/>
                 <exclude name="@{src.javac.excludes}"/>
-                <classpath>
-                    <fileset dir="${lib.dir}"/>
+                <classpath refid="jsp.classpath">
                     <add.classpath.elements/>
                 </classpath>
                 <add.javac.elements/>

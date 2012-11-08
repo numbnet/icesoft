@@ -16,8 +16,6 @@
 
 package org.icemobile.jsp.tags;
 
-import org.icefaces.mobi.utils.HTML;
-
 import java.io.IOException;
 
 import static org.icemobile.util.HTML.*;
@@ -80,17 +78,17 @@ public class CommandButtonTag extends BaseSimpleTag {
         }
         
         if (BUTTON_TYPE_BACK.equals(buttonType)){
-            writer.startElement(HTML.DIV_ELEM);
+            writer.startElement(DIV_ELEM);
             if( id != null ){
-                writer.writeAttribute(HTML.ID_ATTR, id+"_ctr");
+                writer.writeAttribute(ID_ATTR, id+"_ctr");
             }
-            writer.writeAttribute(HTML.CLASS_ATTR, baseClass.toString());
+            writer.writeAttribute(CLASS_ATTR, baseClass.toString());
             // should be auto base though
             if (style != null ) {
-                writer.writeAttribute(HTML.STYLE_ATTR, style);
+                writer.writeAttribute(STYLE_ATTR, style);
             }
-            writer.startElement(HTML.SPAN_ELEM);
-            writer.endElement(HTML.SPAN_ELEM);
+            writer.startElement(SPAN_ELEM);
+            writer.endElement(SPAN_ELEM);
         }
         
         writer.startElement(INPUT_ELEM);
@@ -105,10 +103,10 @@ public class CommandButtonTag extends BaseSimpleTag {
         
         //style and class written to ctr div when back button
         if (!BUTTON_TYPE_BACK.equals(buttonType)){
-            writer.writeAttribute(HTML.CLASS_ATTR, baseClass.toString());
+            writer.writeAttribute(CLASS_ATTR, baseClass.toString());
             // should be auto base though
             if (style != null ) {
-                writer.writeAttribute(HTML.STYLE_ATTR, style);
+                writer.writeAttribute(STYLE_ATTR, style);
             }
         }
         
@@ -125,12 +123,12 @@ public class CommandButtonTag extends BaseSimpleTag {
       //end ctr div for back button
         if (BUTTON_TYPE_BACK.equals(buttonType)){
             writer.startElement("b");
-            writer.writeAttribute(HTML.CLASS_ATTR, "mobi-button-placeholder");
+            writer.writeAttribute(CLASS_ATTR, "mobi-button-placeholder");
             if (value != null) {
                 writer.writeText(value);
             }
             writer.endElement("b");
-            writer.endElement(HTML.DIV_ELEM);
+            writer.endElement(DIV_ELEM);
         }
 
     }
