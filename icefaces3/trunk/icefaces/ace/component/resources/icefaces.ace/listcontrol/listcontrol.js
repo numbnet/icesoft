@@ -2,7 +2,7 @@ if (!window.ice['ace']) {
     window.ice.ace = {};
 }
 
-ice.ace.ListControls = {};
+if (!ice.ace.ListControls) ice.ace.ListControls = {};
 
 ice.ace.ListControl = function(id, cfg) {
     this.id = id;

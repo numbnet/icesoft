@@ -14,8 +14,8 @@
  * governing permissions and limitations under the License.
  */
 
-ice.ace.Tooltips = {};
-ice.ace.DelegateTooltips = {};
+if (!ice.ace.Tooltips) ice.ace.Tooltips = {};
+if (!ice.ace.DelegateTooltips) ice.ace.DelegateTooltips = {};
 /*
  *  Tooltip Widget
  */

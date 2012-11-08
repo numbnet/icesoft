@@ -16,7 +16,7 @@
 
 if (!window['ice']) window.ice = {};
 if (!window.ice['ace']) window.ice.ace = {};
-ice.ace.Autocompleters = {};
+if (!ice.ace.Autocompleters) ice.ace.Autocompleters = {};
 
 ice.ace.Autocompleter = function(id, updateId, rowClass, selectedRowClass, delay, minChars, height, direction, behaviors, cfg) {
 	this.id = id;

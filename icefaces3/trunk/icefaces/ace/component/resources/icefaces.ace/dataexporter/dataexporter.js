@@ -16,7 +16,7 @@
 
 if (!window['ice']) window.ice = {};
 if (!window.ice['ace']) window.ice.ace = {};
-ice.ace.DataExporters = {};
+if (!ice.ace.DataExporters) ice.ace.DataExporters = {};
 
 ice.ace.DataExporter = function(id, behaviors) {
 	this.id = id;

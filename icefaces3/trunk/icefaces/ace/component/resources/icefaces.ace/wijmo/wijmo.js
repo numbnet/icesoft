@@ -4734,7 +4734,7 @@ function wijmoASPNetParseOptions(o) {
 	});
 } (ice.ace.jq));
 
-ice.ace.submenuRegistry = {};
+if (!ice.ace.submenuRegistry) ice.ace.submenuRegistry = {};
 
 // checks if submenu has been registered and removes it from registry
 ice.ace.submenuRegistryCheck = function(containerId, submenuRoot) {
