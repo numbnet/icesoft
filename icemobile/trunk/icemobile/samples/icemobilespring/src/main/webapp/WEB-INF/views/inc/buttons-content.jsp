@@ -23,12 +23,11 @@
         <mobi:fieldsetRow>
             <mobi:commandButton name="submitB"
                                 buttonType="back" value="Back"
-                                styleClass="back"
-                                style="width:150px;margin:0 auto;"/>
+                                styleClass="back"/>
         </mobi:fieldsetRow>
-        <mobi:fieldsetRow styleClass="mobi-center">
+        <mobi:fieldsetRow>
             <mobi:commandButton id="disabledDefault" value="Disabled" 
-                disabled="true" styleClass="mobi-col mobi-weight1"/>
+                disabled="true"/>
         </mobi:fieldsetRow>
         <mobi:fieldsetRow>
             <label>Selected Value: </label>

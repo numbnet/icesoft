@@ -298,5 +298,7 @@ html.android .back{
     background-color:#333;
 }
 .mobi-button.mobi-button-back.back, .mobi-button.mobi-button-dis{
-    max-width:150px;
+    width: 150px;
+    margin: 0 auto;
+    max-width: 150px;
 }
