@@ -294,3 +294,9 @@ html.honeycomb h3, html.android h3{
         max-width: 300px;
     }
 }
+html.android .back{
+    background-color:#333;
+}
+.mobi-button.mobi-button-back.back, .mobi-button.mobi-button-dis{
+    max-width:150px;
+}

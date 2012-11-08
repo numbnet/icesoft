@@ -3,40 +3,37 @@
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <%@ taglib uri="http://www.icemobile.org/tags" prefix="mobi" %>
 <%@ taglib prefix="push" uri="http://www.icepush.org/icepush/jsp/icepush.tld"%>
-<form:form id="buttonsform" method="POST" modelAttribute="buttonsBean">
+<form:form id="buttonsform" method="POST" modelAttribute="buttonsBean" cssClass="form">
 
-    <h4>Button Types</h4>
+    <h3>Button Types</h3>
     <mobi:fieldsetGroup>
-        <mobi:fieldsetRow styleClass="mobi-grid mobi-center">
+        <mobi:fieldsetRow styleClass="mobi-center">
             <mobi:commandButton name="submitB"
-                                value="Default"
-                                styleClass="mobi-col mobi-weight1"/>
+                                value="Default"/>
              <mobi:commandButton name="submitB"
                                 value="Unimportant" 
-                                buttonType="unimportant"
-                                styleClass="mobi-col mobi-weight1"/>
+                                buttonType="unimportant"/>
         </mobi:fieldsetRow>
-        <mobi:fieldsetRow styleClass="mobi-grid mobi-center">
+        <mobi:fieldsetRow styleClass="mobi-center">
             <mobi:commandButton name="submitB"
-                                value="Attention" buttonType="attention"
-                                styleClass="mobi-col mobi-weight1"/>
+                                value="Attention" buttonType="attention"/>
             <mobi:commandButton name="submitB"
-                                value="Important" buttonType="important"
-                                styleClass="mobi-col mobi-weight1"/>
+                                value="Important" buttonType="important"/>
         </mobi:fieldsetRow>
-        <mobi:fieldsetRow style="text-align:center;">
+        <mobi:fieldsetRow>
             <mobi:commandButton name="submitB"
                                 buttonType="back" value="Back"
-                                style="width:150px"/>
+                                styleClass="back"
+                                style="width:150px;margin:0 auto;"/>
         </mobi:fieldsetRow>
-        <mobi:fieldsetRow styleClass="mobi-grid mobi-center">
+        <mobi:fieldsetRow styleClass="mobi-center">
             <mobi:commandButton id="disabledDefault" value="Disabled" 
                 disabled="true" styleClass="mobi-col mobi-weight1"/>
         </mobi:fieldsetRow>
         <mobi:fieldsetRow>
             <label>Selected Value: </label>
             <c:if test="${pressed != null}">
-                ${pressed}
+                <span>${pressed}</span>
             </c:if>
         </mobi:fieldsetRow>
     </mobi:fieldsetGroup>
