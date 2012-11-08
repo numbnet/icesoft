@@ -304,7 +304,8 @@ html.honeycomb h3{
     }
 }
 html.android .back{
-    background-color:#333;
+    background-color: #CCC;
+    color: black;
 }
 html.android h3{
     border-bottom: 1px solid #66AFFF;
