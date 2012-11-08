@@ -568,8 +568,8 @@ ice.mobi.geolocation = {
             geoParams.enableHighAccuracy = true;
         }
         console.log('Launching watchPosition, ' + 
-            'maxAge: ' + geoParams.maximumAge + '(s),' + 
-            ' timeout: ' + geoParams.timeout + '(s)' +
+            'maxAge: ' + geoParams.maximumAge + '(ms),' +
+            ' timeout: ' + geoParams.timeout + '(ms)' +
             ' highAccuracy: ' + geoParams.enableHighAccuracy);
 
         ice.mobi.geolocation.watchId = navigator.geolocation.watchPosition(
@@ -590,21 +590,24 @@ ice.mobi.geolocation = {
         ice.mobi.geolocation.clientId = pClientId;
         ice.mobi.geolocation.clearWatch();
 
-        console.log('Launching getCurrentPosition');
-        if (highAccuracy == 'false') {
-            console.log('Launching low precision getCurrentPosition, maxAge: ' +
-                    maxAge + '(s), timeout: ' + timeout + '(s)');
-
-            navigator.geolocation.getCurrentPosition(this.successCallback, this.errorCallback,
-                    { maximumAge: maxAge, timeout: timeout });
-        } else {
-            console.log('Launching HIGH precision getCurrentPosition, maxAge: ' +
-                    maxAge + '(s), timeout: ' + timeout + '(s)');
-            ice.mobi.geolocation.watchId = navigator.geolocation.getCurrentPosition(
-                    this.successCallback, this.errorCallback,
-                    { enableHighAccuracy: true, maximumAge: maxAge * 1000, timeout: timeout * 1000 }
-            );
+        var geoParams = {};
+        if (maxAge > 0)  {
+            geoParams.maximumAge = maxAge * 1000;
         }
+        if (timeout > 0)  {
+            geoParams.timeout = timeout * 1000;
+        }
+        if (highAccuracy != 'false')  {
+            geoParams.enableHighAccuracy = true;
+        }
+        console.log('Launching getCurrentPosition, ' +
+            'maxAge: ' + geoParams.maximumAge + '(ms),' +
+            ' timeout: ' + geoParams.timeout + '(ms)' +
+            ' highAccuracy: ' + geoParams.enableHighAccuracy);
+
+       navigator.geolocation.getCurrentPosition(this.successCallback, this.errorCallback,
+                    geoParams );
+
         window.addEventListener('deviceorientation', ice.mobi.geolocation.orientationCallback);
         ice.onElementRemove(pClientId, ice.mobi.geolocation.clearWatch);
     },
@@ -633,7 +636,6 @@ ice.mobi.geolocation = {
 
     // Clear any existing positionUpdate listeners
     clearWatch: function() {
-        console.log('ice.geolocation.clearWatch called - existing watchId: ' + ice.mobi.geolocation.watchId);
         if (ice.mobi.geolocation.watchId > 0) {
             console.log('Existing positionWatch: ' + ice.mobi.geolocation.watchId + ' removed');
             navigator.geolocation.clearWatch(ice.mobi.geolocation.watchId);
