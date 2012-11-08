@@ -19,12 +19,11 @@
              xmlns:f="http://java.sun.com/jsf/core"
              xmlns:ui="http://java.sun.com/jsf/facelets"
              xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
-    <h:form>
-        <h4>Vertical Button List</h4>
+    <h:form styleClass="form">
+        <h3>Vertical Button List</h3>
         <mobi:fieldsetGroup>
-            <mobi:fieldsetRow styleClass="mobi-grid mobi-center">
-                <mobi:commandButtonGroup orientation="vertical" rendered="true" 
-                    styleClass="mobi-col mobi-weight1">
+            <mobi:fieldsetRow>
+                <mobi:commandButtonGroup orientation="vertical" style="width:80%;margin:0 auto;">
                     <mobi:commandButton value="Yes"
                              actionListener="#{buttonBean.commandGroup1Selected}"
                              selected="#{buttonBean.selectedButton1 eq 'Yes'}">
@@ -44,7 +43,7 @@
             </mobi:fieldsetRow>
         </mobi:fieldsetGroup>
 
-        <h4>Horizontal button list</h4>
+        <h3>Horizontal button list</h3>
         <mobi:fieldsetGroup>
             <mobi:fieldsetRow>
                 <mobi:commandButtonGroup orientation="horizontal" style="width:80%;margin:0 auto;">
@@ -67,43 +66,38 @@
             </mobi:fieldsetRow>
         </mobi:fieldsetGroup>
 
-        <h4>Button Types</h4>
+        <h3>Button Types</h3>
         <mobi:fieldsetGroup>
-            <mobi:fieldsetRow styleClass="mobi-grid mobi-center">
+            <mobi:fieldsetRow styleClass="mobi-center">
                 <mobi:commandButton actionListener="#{buttonBean.buttonType}"
-                                    value="Default"
-                                    styleClass="mobi-col mobi-weight1">
+                                    value="Default">
                     <f:attribute name="buttonType" value=""/>
                 </mobi:commandButton>
                 <mobi:commandButton actionListener="#{buttonBean.buttonType}"
-                                    value="Unimportant" 
-                                    styleClass="mobi-col mobi-weight1">
+                                    value="Unimportant">
                     <f:attribute name="buttonType" value="unimportant"/>
                 </mobi:commandButton>
             </mobi:fieldsetRow>
-            <mobi:fieldsetRow styleClass="mobi-grid mobi-center">
+            <mobi:fieldsetRow styleClass="mobi-center">
                 <mobi:commandButton actionListener="#{buttonBean.buttonType}"
-                                    value="Important" buttonType="important"
-                                    styleClass="mobi-col mobi-weight1">
+                                    value="Important" buttonType="important">
                         <f:attribute name="buttonType" value="important"/>
                 </mobi:commandButton>
                 <mobi:commandButton actionListener="#{buttonBean.buttonType}"
-                                    value="Attention" buttonType="attention"
-                                    styleClass="mobi-col mobi-weight1">
+                                    value="Attention" buttonType="attention">
                     <f:attribute name="buttonType" value="attention"/>
                 </mobi:commandButton>
             </mobi:fieldsetRow>
-            <mobi:fieldsetRow style="text-align:center;">
+            <mobi:fieldsetRow>
                 <mobi:commandButton actionListener="#{buttonBean.buttonType}"
                                     buttonType="back" value="Back"
-                                    styleClass="back"
-                                    style="width:150px">
+                                    styleClass="back">
                     <f:attribute name="buttonType" value="back"/>
                 </mobi:commandButton>
             </mobi:fieldsetRow>
-            <mobi:fieldsetRow styleClass="mobi-grid mobi-center">
+            <mobi:fieldsetRow>
                 <mobi:commandButton id="disabledDefault" value="Disabled" 
-                    disabled="true" styleClass="mobi-col mobi-weight1"/>
+                    disabled="true"/>
             </mobi:fieldsetRow>
             <mobi:fieldsetRow>
                 <h:outputLabel value="Selected Value: " />

@@ -211,9 +211,92 @@ html.honeycomb h3{
     padding: 0 1%;
     font-weight:normal;
 }
+.form .mobi-fieldset{
+    text-align:center;
+}
+.form .mobi-fieldset-row{
+    display: -webkit-box;
+    display: -moz-box;
+    -webkit-box-orient: horizontal;
+    -moz-box-orient: horizontal;
+    -webkit-box-align: center;
+    -moz-box-align: center;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    -moz-box-orient: horizontal;
+    box-orient: horizontal;
+    position: relative;
+}
+.form .mobi-fieldset-row .mobi-getenhanced{
+    display: block;
+    width: 100%;
+}
+.form .mobi-fieldset-row .mobi-getenhanced .mobi-button{
+    box-sizing: content-box;
+}
+.form label{
+    width:100px;
+    text-align:left;
+    -webkit-box-flex: 1;
+    -moz-box-flex: 1;
+    box-sizing: border-box;
+    overflow: hidden;
+    display: block!important;
+    float: none!important;
+}
+.form .mobi-fieldset-row > input, .form .mobi-fieldset-row > select, .form .mobi-fieldset-row > span{
+    -webkit-box-flex: 2;
+    -moz-box-flex: 2;
+    -moz-box-sizing: border-box;
+    -wekit-box-sizing: border-box;
+    box-sizing: border-box;
+    overflow: hidden;
+    display: block!important;
+    float: none!important;
+}
+.form .mobi-fieldset-row > span > input{
+    display:block;
+    width:100%;
+ }
+.form .mobi-fieldset > .mobi-fieldset-row > .mobi-button{
+    -moz-box-sizing: border-box;
+    -wekit-box-sizing: border-box;
+    box-sizing: border-box;
+    overflow: hidden;
+    display: block!important;
+    float: none!important;
+    -webkit-box-flex: 1;
+    -moz-box-flex: 1;
+}
+.center{
+    margin: 0 auto;
+}
+/* LARGE SCREEN */
+@media screen and (min-width: 580px) {  
+    input.submit, button.submit{
+        float: right !important;
+        margin: 0 10px;
+        width: 100%;
+        max-width: 300px;
+    }
+}
+/* SMALL SCREEN */
+@media screen and (max-width: 579px) {  
+    input.submit, button.submit{
+        display: block;
+        margin: 10px auto;
+        width: 100%;
+        max-width: 300px;
+    }
+}
 html.android .back{
     background-color:#333;
 }
 html.honeycomb h3, html.android h3{
     border-bottom: 1px solid #6595F9;
+}
+.mobi-button.mobi-button-back.back, .mobi-button.mobi-button-dis{
+    width: 150px;
+    margin: 0 auto;
+    max-width: 150px;
 }
