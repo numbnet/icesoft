@@ -45,9 +45,9 @@ div.mobi-button-back > span {
 }
 div.mobi-button-back > input {
     background: url('back.png');
-    background-position: -1px 43%;
+    background-position: 0px 44%;
     background-repeat: no-repeat;
-    background-size: 17px;
+    background-size: 15px;
     background-color: transparent;
     font-weight: bold;
     height: 98%;
