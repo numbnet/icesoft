@@ -28,10 +28,12 @@
     color: #FFFFFF;
     font-weight: bold;
 }
-.mobi-button:active, .mobi-button[selected] {
+.mobi-button:active, .mobi-button:focus, .mobi-button[selected], div.mobi-button-back > input:active {
     -moz-box-shadow: inset 0px 0px 3px #6595F9, 0px 0px 9px #6595F9;
     -webkit-box-shadow: inset 0px 0px 3px #6595F9, 0px 0px 9px #6595F9;
     box-shadow: inset 0px 0px 3px #6595F9, 0px 0px 9px #6595F9;
+    background-color:#6595F9;
+    color:#FFF;
 }
 .mobi-button {
      background-color: #555;
@@ -95,9 +97,4 @@ div.mobi-button-back > input {
 .mobi-pagePanel-header .mobi-button-back{
     left: 0.5em;
     border:none;
-}
-.mobi-button:focus {
-    -moz-box-shadow: inset 0px 0px 3px      #387bbe /*{global-active-background-color}*/, 0px 0px 9px       #387bbe /*{global-active-background-color}*/;
-    -webkit-box-shadow: inset 0px 0px 3px   #387bbe /*{global-active-background-color}*/, 0px 0px 9px       #387bbe /*{global-active-background-color}*/;
-    box-shadow: inset 0px 0px 3px           #387bbe /*{global-active-background-color}*/, 0px 0px 9px       #387bbe /*{global-active-background-color}*/;
 }

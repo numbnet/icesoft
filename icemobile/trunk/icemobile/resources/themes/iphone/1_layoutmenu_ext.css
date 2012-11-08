@@ -17,18 +17,6 @@
 .mobi-layoutmenu .mobi-list {
     border-right: 1px solid black;
 }
-
-.mobi-list-item a:active, .mobi-list-item a.selected {
-    background-color: #0099ff !important;
-    background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0, #4286F5), color-stop(1, #194FDB));
-    background: -moz-linear-gradient(top, #4286F5, #194FDB);
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorStr = '#4286F5', EndColorStr = '#194FDB');
-    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#4286F5', EndColorStr='#194FDB')";
-    -webkit-tap-highlight-color: #0099ff;
-    color: #FFFFFF !important;
-    text-shadow: 0 1px 0 #666666;
-}
-
 .mobi-layoutmenu-navbar {
     left: 0;
     padding: 5px 0px;

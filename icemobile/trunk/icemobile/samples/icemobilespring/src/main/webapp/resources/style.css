@@ -117,11 +117,8 @@ html.ipad #menu .active{
 html.iphone #menu .active{
     background-color:#EFEFEF;
 }
-html.honeycomb #menu .active{
+html.honeycomb #menu .active, html.android #menu .active{
     background-color:#383838;
-}
-html.android #menu .active{
-    background-color:#EFEFEF;
 }
 html.bberry #menu .active{
     background-color:#EFEFEF;

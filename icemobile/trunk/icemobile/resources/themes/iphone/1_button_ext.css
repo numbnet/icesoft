@@ -107,3 +107,8 @@ div.mobi-button-back > input {
     color:#FFF;
     font-weight:bold;
 }
+.mobi-button:active, .mobi-button[selected], div.mobi-button-back > input:active {
+    -moz-box-shadow: inset 0px 0px 3px #6595F9, 0px 0px 9px #6595F9;
+    -webkit-box-shadow: inset 0px 0px 3px #6595F9, 0px 0px 9px #6595F9;
+    box-shadow: inset 0px 0px 3px #6595F9, 0px 0px 9px #6595F9;
+}

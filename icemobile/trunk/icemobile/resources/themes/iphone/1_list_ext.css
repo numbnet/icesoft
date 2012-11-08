@@ -14,6 +14,7 @@
  * governing permissions and limitations under the License.
  */
  .mobi-list-item a:active, .mobi-list-item a[selected] {
+    /*
     background-color: #194FDB !important;
     background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0, #4286F5), color-stop(1, #194FDB));
     background-image: -moz-linear-gradient(top, #4286F5, #194FDB);
@@ -22,6 +23,11 @@
     -webkit-tap-highlight-color: #0099ff;
     color: #FFFFFF !important;
     text-shadow: 0 1px 0 #666666;
+    */
+    -moz-box-shadow: inset 0px 0px 3px #6595F9, 0px 0px 9px #6595F9;
+    -webkit-box-shadow: inset 0px 0px 3px #6595F9, 0px 0px 9px #6595F9;
+    box-shadow: inset 0px 0px 3px #6595F9, 0px 0px 9px #6595F9;
+    
 }
 
 .mobi-list-item {
