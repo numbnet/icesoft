@@ -16,19 +16,19 @@
 
 package org.icemobile.jsp.tags;
 
-import javax.servlet.ServletRequest;
-import javax.servlet.jsp.PageContext;
-import javax.servlet.jsp.tagext.SimpleTagSupport;
+import org.icefaces.mobi.utils.HTML;
+
 import java.io.IOException;
-import java.io.Writer;
+
+import static org.icemobile.util.HTML.*;
 
 /**
  *
  */
-public class CommandButtonTag extends SimpleTagSupport {
+public class CommandButtonTag extends BaseSimpleTag {
 
     // Default button types.
-    public static final String BUTTON_TYPE_UNIMPORTANT = "default";
+    public static final String BUTTON_TYPE_UNIMPORTANT = "unimportant";
     public static final String BUTTON_TYPE_IMPORTANT = "important";
     public static final String BUTTON_TYPE_ATTENTION = "attention";
     public static final String BUTTON_TYPE_BACK = "back";
@@ -50,70 +50,88 @@ public class CommandButtonTag extends SimpleTagSupport {
 
     private boolean disabled;
     private String value;
-    private String type;
+    private String type = "submit";
     private boolean selected;
 
     public void doTag() throws IOException {
 
-
-        PageContext pageContext = (PageContext) getJspContext();
-        Writer out = pageContext.getOut();
-        ServletRequest sr = pageContext.getRequest();
-
-        out.write("<input ");
-
-        if (id != null && !"".equals(id)) {
-            out.write(" id='" + getId() + "'");
+        TagWriter writer = new TagWriter(getContext());
+        StringBuilder baseClass = new StringBuilder(BASE_STYLE_CLASS);
+        if (selected) {
+            baseClass.append(SELECTED_STYLE_CLASS);
         }
-
-        if (name != null && !"".equals(name)) {
-            out.write(" name='" + getName() + "'");
+        if (disabled) {
+            baseClass.append(" ").append(DISABLED_STYLE_CLASS);
         }
-
-        StringBuilder builder = new StringBuilder(BASE_STYLE_CLASS);
-        if (BUTTON_TYPE_UNIMPORTANT.equals(buttonType)) {
-            builder.append(UNIMPORTANT_STYLE_CLASS);
-        } else if (BUTTON_TYPE_BACK.equals(buttonType)) {
-            builder.append(BACK_STYLE_CLASS);
-        } else if (BUTTON_TYPE_ATTENTION.equals(buttonType)) {
-            builder.append(ATTENTION_STYLE_CLASS);
-        } else if (BUTTON_TYPE_IMPORTANT.equals(buttonType)) {
-            builder.append(IMPORTANT_STYLE_CLASS);
+        if( buttonType != null && !"".equals(buttonType)){
+            if (BUTTON_TYPE_UNIMPORTANT.equals(buttonType)) {
+                baseClass.append(UNIMPORTANT_STYLE_CLASS);
+            } else if (BUTTON_TYPE_BACK.equals(buttonType)) {
+                baseClass.append(BACK_STYLE_CLASS);
+            } else if (BUTTON_TYPE_ATTENTION.equals(buttonType)) {
+                baseClass.append(ATTENTION_STYLE_CLASS);
+            } else if (BUTTON_TYPE_IMPORTANT.equals(buttonType)) {
+                baseClass.append(IMPORTANT_STYLE_CLASS);
+            } 
         }
-
-        // apply selected state if any
-        if (isSelected()) {
-            builder.append(SELECTED_STYLE_CLASS);
-        }
-        // apply disabled style state if specified.
-        if (isDisabled()) {
-            builder.append(DISABLED_STYLE_CLASS);
-        }
-        // append any user specific style attributes
+        
         if (styleClass != null) {
-            builder.append(" ").append(styleClass);
+            baseClass.append(" ").append(styleClass);
         }
-        out.write(" class='" + builder.toString() + "'");
-
-        // should be auto base though
-        if (null != style) {
-            out.write(" style='" + style + "'");
+        
+        if (BUTTON_TYPE_BACK.equals(buttonType)){
+            writer.startElement(HTML.DIV_ELEM);
+            if( id != null ){
+                writer.writeAttribute(HTML.ID_ATTR, id+"_ctr");
+            }
+            writer.writeAttribute(HTML.CLASS_ATTR, baseClass.toString());
+            // should be auto base though
+            if (style != null ) {
+                writer.writeAttribute(HTML.STYLE_ATTR, style);
+            }
+            writer.startElement(HTML.SPAN_ELEM);
+            writer.endElement(HTML.SPAN_ELEM);
+        }
+        
+        writer.startElement(INPUT_ELEM);
+        if (id != null && !"".equals(id)) {
+            writer.writeAttribute(ID_ATTR, id);
+        }
+        if (name != null && !"".equals(name)) {
+            writer.writeAttribute(NAME_ATTR,name);
         }
         // button type for styling purposes
-        if (type == null) {
-            out.write(" type='submit'");
-        } else {
-            out.write(" type='" + type + "'");
+        writer.writeAttribute(TYPE_ATTR, type);
+        
+        //style and class written to ctr div when back button
+        if (!BUTTON_TYPE_BACK.equals(buttonType)){
+            writer.writeAttribute(HTML.CLASS_ATTR, baseClass.toString());
+            // should be auto base though
+            if (style != null ) {
+                writer.writeAttribute(HTML.STYLE_ATTR, style);
+            }
         }
-
+        
+       
         if (isDisabled()) {
-            out.write(" disabled=\"true\"");
+            writer.writeAttribute(DISABLED_ATTR,DISABLED_ATTR);
         }
 
         if (null != value) {
-            out.write(" value='" + value + "'");
+            writer.writeAttribute(VALUE_ATTR, value);
         }
-        out.write("/>");
+        writer.endElement();
+        
+      //end ctr div for back button
+        if (BUTTON_TYPE_BACK.equals(buttonType)){
+            writer.startElement("b");
+            writer.writeAttribute(HTML.CLASS_ATTR, "mobi-button-placeholder");
+            if (value != null) {
+                writer.writeText(value);
+            }
+            writer.endElement("b");
+            writer.endElement(HTML.DIV_ELEM);
+        }
 
     }
 
