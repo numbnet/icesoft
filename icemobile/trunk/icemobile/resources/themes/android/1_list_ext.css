@@ -15,8 +15,9 @@
  */
 
 .mobi-list-item a:active, .mobi-list-item a[selected] {
-    background-color: #F79A21 !important;
-    -webkit-tap-highlight-color: #F79A21;
+    -moz-box-shadow: inset 0px 0px 3px #6595F9, 0px 0px 9px #6595F9;
+    -webkit-box-shadow: inset 0px 0px 3px #6595F9, 0px 0px 9px #6595F9;
+    box-shadow: inset 0px 0px 3px #6595F9, 0px 0px 9px #6595F9;
 }
 
 .mobi-list-item {

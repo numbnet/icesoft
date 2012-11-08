@@ -15,7 +15,7 @@
  */
  
 * {
-    -webkit-tap-highlight-color: #F79A21;
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
 }
 body{
     font-family: Droid, Helvetica, Arial, sans-serif;
