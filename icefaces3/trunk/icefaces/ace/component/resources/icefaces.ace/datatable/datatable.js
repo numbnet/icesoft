@@ -780,11 +780,11 @@ ice.ace.DataTable.prototype.setupScrolling = function () {
     this.resizeScrolling();
 
     // Persist scrolling position if one has been loaded from previous instance
-    ice.ace.jq(this.scrollBodySelector)
-        .scrollTop(this.scrollTop)
-        .scrollLeft(this.scrollLeft);
+    var scrollBody = ice.ace.jq(this.scrollBodySelector);
+    if (this.scrollTop) scrollBody.scrollTop(this.scrollTop);
+    if (this.scrollLeft) scrollBody.scrollLeft(this.scrollLeft);
 
-    ice.ace.jq(this.scrollBodySelector).bind('scroll', function () {
+    scrollBody.bind('scroll', function () {
         var $this = ice.ace.jq(this),
             $header = ice.ace.jq(_self.jqId + ' > div.ui-datatable-scrollable-header'),
             $footer = ice.ace.jq(_self.jqId + ' > div.ui-datatable-scrollable-footer'),
