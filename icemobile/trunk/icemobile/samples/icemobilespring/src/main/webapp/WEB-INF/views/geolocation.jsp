@@ -1,3 +1,4 @@
+<%@ include file="/WEB-INF/views/httpheaders.jsp" %>
 <jsp:include page="template.jsp">
     <jsp:param name="demoID"    value="geolocation" />
     <jsp:param name="demoTitle" value="Geolocation" />

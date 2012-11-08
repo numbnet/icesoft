@@ -1,3 +1,4 @@
+<%@ include file="/WEB-INF/views/httpheaders.jsp" %>
 <jsp:include page="template.jsp">
     <jsp:param name="demoID"    value="panelPopup" />
     <jsp:param name="demoTitle" value="Panel Popup" />

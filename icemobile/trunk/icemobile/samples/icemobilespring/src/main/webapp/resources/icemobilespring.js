@@ -94,7 +94,7 @@ MvcUtil.addClickLinkHandler = function(link, updateRegion){
                 this.className = '';
             });
             $(link).addClass('active');
-            $(updateRegion).load(link.href + "?" + Math.random());
+            $(updateRegion).load(link.href, {cache:false});
             history.pushState({ src: link.href }, null, link.href);
             e.preventDefault();
         }
