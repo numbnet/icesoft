@@ -50,7 +50,11 @@ public class Scan extends ScanBase implements IDevice{
 
     }
 
-    public String getScript(String clientId, boolean b) {
+    public String getScript(String clientId, boolean auxUpload) {
+        if (auxUpload)  {
+            return MobiJSFUtils.getICEmobileSXScript(
+                    "scan", null, this);
+        }
         return "ice.scan('" + clientId + "');";
     }
 
@@ -65,8 +69,8 @@ public class Scan extends ScanBase implements IDevice{
 
   /* don't need this for JSF but the interface for the core renderer require it from JSP */
     public String getSessionId(){
-        HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
-        return session.getId();
+        return MobiJSFUtils.getSessionIdCookie(
+                FacesContext.getCurrentInstance());
     }
     public String getParams(){
         return null;
