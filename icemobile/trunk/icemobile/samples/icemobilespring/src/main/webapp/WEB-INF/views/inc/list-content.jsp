@@ -11,45 +11,28 @@
         </mobi:fieldsetRow>
     </mobi:fieldsetGroup>
 
-    <h4>List with Inset and Grouping</h4>
+    <h4>List with inset and grouping</h4>
     
     <mobi:outputList inset="true" id="insetListWithGrouping">
-        <mobi:outputListItem group="true">Thumbnail display</mobi:outputListItem>
+        <mobi:outputListItem group="true">Winter Recreations</mobi:outputListItem>
         <mobi:outputListItem>
             <%@ include file="inc-icesailor.jsp" %>
         </mobi:outputListItem>
         <mobi:outputListItem>
-            <%@ include file="inc-icebreaker.jsp" %>
-        </mobi:outputListItem>
-        <mobi:outputListItem>
             <%@ include file="inc-iceskate.jsp" %>
+        </mobi:outputListItem>
+        <mobi:outputListItem group="true">Winter Excursions</mobi:outputListItem>
+        <mobi:outputListItem>
+            <%@ include file="inc-icebreaker.jsp" %>
         </mobi:outputListItem>
         <mobi:outputListItem>
             <%@ include file="inc-icecar.jsp" %>
         </mobi:outputListItem>
     </mobi:outputList>
 
-     <h4>List with grouping and no inset</h4>
+     <h4>List with no inset</h4>
 
-    <mobi:outputList id="noinsetListWithGrouping">
-        <mobi:outputListItem group="true">List</mobi:outputListItem>
-        <mobi:outputListItem>
-            <%@ include file="inc-icesailor.jsp" %>
-        </mobi:outputListItem>
-        <mobi:outputListItem>
-            <%@ include file="inc-icebreaker.jsp" %>
-        </mobi:outputListItem>
-        <mobi:outputListItem>
-            <%@ include file="inc-iceskate.jsp" %>
-        </mobi:outputListItem>
-        <mobi:outputListItem>
-            <%@ include file="inc-icecar.jsp" %>
-        </mobi:outputListItem>
-    </mobi:outputList>
-
-    <h4>List with no inset or grouping</h4>
-
-    <mobi:outputList id="noInsetListWithoutGrouping">
+    <mobi:outputList id="noinsetList">
         <mobi:outputListItem>
             <%@ include file="inc-icesailor.jsp" %>
         </mobi:outputListItem>
