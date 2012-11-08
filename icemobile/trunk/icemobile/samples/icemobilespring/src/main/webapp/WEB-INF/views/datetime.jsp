@@ -1,3 +1,4 @@
+<%@ include file="/WEB-INF/views/httpheaders.jsp" %>
 <jsp:include page="template.jsp">
     <jsp:param name="demoID"    value="datetime" />
     <jsp:param name="demoTitle" value="Date and Time" />

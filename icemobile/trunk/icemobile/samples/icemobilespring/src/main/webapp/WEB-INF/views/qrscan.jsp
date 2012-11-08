@@ -1,3 +1,4 @@
+<%@ include file="/WEB-INF/views/httpheaders.jsp" %>
 <jsp:include page="template.jsp">
     <jsp:param name="demoID"    value="qrscan" />
     <jsp:param name="demoTitle" value="QR Code Scanner" />
