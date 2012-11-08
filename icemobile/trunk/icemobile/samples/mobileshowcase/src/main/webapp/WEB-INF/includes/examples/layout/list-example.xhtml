@@ -27,56 +27,39 @@
             </mobi:fieldsetRow>
         </mobi:fieldsetGroup>
 
-        <h3>List with Inset and Grouping</h3>
+        <h3>List with inset and grouping</h3>
         
         <mobi:outputList inset="true">
-            <mobi:outputListItem group="true">Thumbnail display</mobi:outputListItem>
+            <mobi:outputListItem group="true">Winter Recreations</mobi:outputListItem>
             <mobi:outputListItem>
                 <ui:include src="/WEB-INF/includes/content/inc-icesailor.xhtml"/>
+            </mobi:outputListItem>
+             <mobi:outputListItem>
+                <ui:include src="/WEB-INF/includes/content/inc-iceskater.xhtml"/>
+            </mobi:outputListItem>
+            <mobi:outputListItem group="true">Winter Excursions</mobi:outputListItem>
+            <mobi:outputListItem>
+                <ui:include src="/WEB-INF/includes/content/inc-icecar.xhtml"/>
             </mobi:outputListItem>
             <mobi:outputListItem>
                 <ui:include src="/WEB-INF/includes/content/inc-icebreaker.xhtml"/>
             </mobi:outputListItem>
-            <mobi:outputListItem>
-                <ui:include src="/WEB-INF/includes/content/inc-iceskater.xhtml"/>
-            </mobi:outputListItem>
-            <mobi:outputListItem>
-                <ui:include src="/WEB-INF/includes/content/inc-icecar.xhtml"/>
-            </mobi:outputListItem>
         </mobi:outputList>
     
-         <h3>List with grouping and no inset</h3>
+         <h3>List with no inset</h3>
     
         <mobi:outputList id="thirdList">
-            <mobi:outputListItem group="true">List</mobi:outputListItem>
             <mobi:outputListItem>
                 <ui:include src="/WEB-INF/includes/content/inc-icesailor.xhtml"/>
             </mobi:outputListItem>
-            <mobi:outputListItem>
-                <ui:include src="/WEB-INF/includes/content/inc-icebreaker.xhtml"/>
-            </mobi:outputListItem>
-            <mobi:outputListItem>
+             <mobi:outputListItem>
                 <ui:include src="/WEB-INF/includes/content/inc-iceskater.xhtml"/>
             </mobi:outputListItem>
             <mobi:outputListItem>
                 <ui:include src="/WEB-INF/includes/content/inc-icecar.xhtml"/>
             </mobi:outputListItem>
-        </mobi:outputList>
-    
-        <h3>List with no inset or grouping</h3>
-    
-        <mobi:outputList id="firstList">
-            <mobi:outputListItem>
-                <ui:include src="/WEB-INF/includes/content/inc-icesailor.xhtml"/>
-            </mobi:outputListItem>
             <mobi:outputListItem>
                 <ui:include src="/WEB-INF/includes/content/inc-icebreaker.xhtml"/>
-            </mobi:outputListItem>
-            <mobi:outputListItem>
-                <ui:include src="/WEB-INF/includes/content/inc-iceskater.xhtml"/>
-            </mobi:outputListItem>
-            <mobi:outputListItem>
-                <ui:include src="/WEB-INF/includes/content/inc-icecar.xhtml"/>
             </mobi:outputListItem>
         </mobi:outputList>
     
