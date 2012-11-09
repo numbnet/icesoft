@@ -21,10 +21,17 @@
              xmlns:ui="http://java.sun.com/jsf/facelets"
              xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
 
-    <h:form>
-        <h3>Keyboard Input Test</h3>
-        <mobi:fieldsetGroup>
+    <h:form id="inputForm" styleClass="form">
+    
+        <mobi:fieldsetGroup styleClass="intro">
+            <mobi:fieldsetRow>
+                Enter input below in the different fields for text, number, date, and password input types.
+                Supported browsers and devices will offer native controls appropriate to the input type.
+            </mobi:fieldsetRow>
+        </mobi:fieldsetGroup>
 
+        <mobi:fieldsetGroup>
+        
             <!-- Text input -->
             <mobi:fieldsetRow>
                 <h:outputLabel for="textInput" value="Text:"/>
@@ -49,9 +56,8 @@
 
             <!-- textarea input -->
             <mobi:fieldsetRow>
-                <h:outputLabel for="textAreaInput" value="Text area:"/><br/>
-                <!-- TODO get rid of float -->
-                <mobi:inputText id="textAreaInput" styleClass="mobi-col mobi-weight1"
+                <h:outputLabel for="textAreaInput" value="Text area:"/>
+                <mobi:inputText id="textAreaInput"
                                 type="textarea"
                                 singleSubmit="false"
                                 placeholder="Text area"
@@ -84,15 +90,15 @@
 
             <mobi:fieldsetRow styleClass="right">
                  <h:messages/>
-                 <mobi:commandButton value="Submit" />
             </mobi:fieldsetRow>
 
         </mobi:fieldsetGroup>
-
+        
+        <mobi:commandButton value="Submit" styleClass="submit"/>
 
     </h:form>
 
-    <h3>Input Echo</h3>
+    <h3 style="clear:both;">Input Echo</h3>
     <mobi:fieldsetGroup>
         <!-- Text output-->
         <mobi:fieldsetRow>
@@ -130,7 +136,6 @@
                 <f:convertDateTime dateStyle="full" />
             </h:outputText>
         </mobi:fieldsetRow>
-
 
     </mobi:fieldsetGroup>
 

@@ -21,6 +21,7 @@
     display: block;
     text-align: center;
     padding: 10px;
+    margin: 0 auto;
 }
 .vcentered span {
     vertical-align:middle;
@@ -296,9 +297,6 @@ html.honeycomb h3{
     float: none!important;
     -webkit-box-flex: 1;
     -moz-box-flex: 1;
-}
-.center{
-    margin: 0 auto;
 }
 /* LARGE SCREEN */
 @media screen and (min-width: 580px) {  

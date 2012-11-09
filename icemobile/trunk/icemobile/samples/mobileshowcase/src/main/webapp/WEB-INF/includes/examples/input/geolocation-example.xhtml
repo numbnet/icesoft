@@ -42,10 +42,11 @@
     
     <mobi:fieldsetGroup>
         <mobi:fieldsetRow>
-            <canvas id="mapCanvas" width="#{viewSize eq 'small' ? '260' : '360'}" height="#{viewSize eq 'small' ? '130' : '180'}" class="center"/>
+            <canvas id="mapCanvas" width="#{viewSize eq 'small' ? '260' : '360'}" height="#{viewSize eq 'small' ? '130' : '180'}" class="center"></canvas>
         </mobi:fieldsetRow>
         <mobi:fieldsetRow styleClass="mobi-center">
-            <mobi:commandButton value="Reset Values" actionListener="#{geoLocationBean.resetValues}"/>
+            <mobi:commandButton value="Reset Values" actionListener="#{geoLocationBean.resetValues}"
+                buttonType="unimportant"/>
             <mobi:commandButton value="Locate Me"/>
         </mobi:fieldsetRow>
     </mobi:fieldsetGroup>
