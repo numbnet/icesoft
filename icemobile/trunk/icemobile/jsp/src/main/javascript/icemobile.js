@@ -1442,7 +1442,7 @@ ice.mobi.geolocation = {
 
         navigator.geolocation.getCurrentPosition(this.oneTimeSuccessCallback, this.errorCallback,
                                                  geoParams);
-        }
+
         window.addEventListener('deviceorientation', ice.mobi.geolocation.orientationCallback);
     },
 
