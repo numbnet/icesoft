@@ -226,6 +226,9 @@ ice.mobi.flipvalue = function flipvalue(id, vars) {
 };
 
 (function() {
+    //functions that do not encapsulate any state, they just work with the provided parameters
+    //and globally accessible variables
+
     function enhance(clientId)  {
         var carouselId = clientId+'_carousel';
         var iscroller = new iScroll(carouselId, {
@@ -233,6 +236,7 @@ ice.mobi.flipvalue = function flipvalue(id, vars) {
 	                    momentum: false,
 	                    hScrollbar: false,
                         checkDOMChanges: false,
+                        bounce: false,
                         zoom: true,
 	                    onScrollEnd: function () {
                             ice.mobi.carousel.scrollUpd(event, clientId, this.currPageX);
@@ -242,21 +246,24 @@ ice.mobi.flipvalue = function flipvalue(id, vars) {
     }
     function Carousel(clientId, key) {
         var myScroll = enhance(clientId);
+        myScroll.scrollToPage(key);
         var myId = clientId;
-        var currentVal=0;
+        var currentVal=key;
         return {
            scrollUpdate: function(event, pageVal, cfg) {
                var changedVal = false;
+            //   console.log('pageVal passed in='+pageVal);
                if (currentVal!=pageVal){
                     changedVal = true;
+                   // this.setActive();
                    var undoNode = document.querySelector('.mobi-carousel-cursor-list > li.active');
                    if (undoNode){
                        undoNode.className = '';
                    }
+               //    console.log( 'old hidden='+this.getHiddenVal()+ ' updated to hidden.value = '+pageVal);
                    this.setActive(pageVal);
                }
-               var isJsfSubmit = (cfg.singleSubmit || behaviors);
-               if (changedVal && isJsfSubmit){
+               if (changedVal){
                    var behaviors = cfg.behaviors;
                    var submitcfg = {};
                    submitcfg.source = myId;
@@ -264,14 +271,14 @@ ice.mobi.flipvalue = function flipvalue(id, vars) {
                    submitcfg.render = "@all";
                    if (cfg.singleSubmit){
                        submitcfg.execute = "@this";
+                       var refreshXHR = function(xhr, status, args) { ice.mobi.carousel.refreshCall(clientId, pageVal);};
+                       submitcfg.oncomplete = refreshXHR;
+                       mobi.AjaxRequest(submitcfg);
                    }
-                   if (behaviors){
-                       /** to do ensure proper format */
+               /*    if (behaviors){  disabled for now until determined if required
                        submitcfg.behaviors = behaviors;
-                   }
-                   var refreshXHR = function(xhr, status, args) { ice.mobi.carousel.refreshCall(clientId, pageVal);};
-                   submitcfg.oncomplete = refreshXHR;
-                   mobi.AjaxRequest(submitcfg);
+                   }  */
+
                }
            },
            getClientId: function(){
@@ -295,41 +302,45 @@ ice.mobi.flipvalue = function flipvalue(id, vars) {
                   return 0;
               }
            },
-           setActive: function(val){
-               currentVal = this.getHiddenVal();
-               if (currentVal != val){
+           setActive: function(pageVal){
+               if (currentVal != pageVal){
                   var nodeoldActive = document.querySelector('.mobi-carousel-cursor-list > li.active');
                   if (nodeoldActive){
                       nodeoldActive.className='';
                   }
-                  currentVal =  val;
-                  this.updateHidden(val);
+                  currentVal =  pageVal;
+                  this.updateHidden(pageVal);
                }
-               var node =  document.querySelector('.mobi-carousel-cursor-list > li:nth-child(' + (currentVal + 1) + ')');
-               if (node){
-                   node.className = 'active';
+               var anode = document.querySelector('.mobi-carousel-cursor-list > li:nth-child('+(pageVal + 1) + ')');
+               if (anode){
+                   anode.className = 'active';
                }
+               myScroll.refresh();
            },
            scrollToPage: function(key){
                myScroll.scrollToPage(key,0);
-               this.updateHidden(key);
-               this.setActive();
-               myScroll.refresh();
-           } ,
+               var newVal = currentVal;
+               if (key == "next"){
+                   newVal++;
+               }
+               if (key== "prev"){
+                   newVal--;
+               }
+               this.setActive(newVal);
+           },
            refreshMe: function(key){
                if (myScroll){
-                  myScroll.refresh();
                   this.setActive(key);
                }
-           } ,
-           updateProperties: function (clientId) {
-               var key = this.getHiddenVal();
-               if (key != currentVal){
-                  this.scrollToPage();
-                  this.setActive(key);
+           },
+           updateProperties: function (clientId, cfgIn) {
+               var hid= this.getHiddenVal();
+               if (hid != currentVal){
+                  this.scrollToPage(hid);
+                  this.setActive(hid);
                }
                if (!myScroll.wrapper)  {
-          //         console.log('WARNING:_ reinitialized scroller');
+                //   console.log('WARNING:_ reinitialized scroller');
                    enhance(clientId);
                }
            }
@@ -347,13 +358,14 @@ ice.mobi.flipvalue = function flipvalue(id, vars) {
                 this.acarousel[clientId].setActive(cfgIn.key);
                 this.unload[clientId] = function () {
                     ice.mobi.carousel.unloadTest(clientId);
-                 };
-                document.addEventListener("DOMSubtreeModified", this.unload[clientId], false);
+                };
+                var node = document.getElementById(clientId);
+                node.addEventListener("DOMSubtreeModified", this.unload[clientId], false);
             } else {
                 this.cfg[clientId] = cfgIn;
-                this.acarousel[clientId].updateProperties(clientId);
-                this.acarousel[clientId].setActive();
-                this.refreshCall(clientId, cfgIn.key); //just need this for jsp version
+                this.acarousel[clientId].updateProperties(clientId, cfgIn);
+                this.acarousel[clientId].setActive(cfgIn.key);
+
             }
         },
         scrollUpd: function(event, clientId, pageVal){
@@ -367,15 +379,15 @@ ice.mobi.flipvalue = function flipvalue(id, vars) {
         },
         unloadTest: function(clientId){
             if (!document.getElementById(clientId) && this.acarousel[clientId]!=null){
-            //   console.log("unloadTest setting id="+clientId+" to null");
+           //    console.log("unloadTest setting id="+clientId+" to null");
                this.acarousel[clientId] = null;
                this.cfg[clientId] = null;
-               document.removeEventListener("DOMSubtreeModified",this.unload[clientId], false ) ;
+            //   document.removeEventListener("DOMSubtreeModified",this.unload[clientId], false ) ;
             }
         }
     }
-
   })();
+
 
 ice.mobi.tabsetController = {
     panels: {},

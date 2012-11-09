@@ -26,7 +26,7 @@
     float: left;
     height: 100%;
     padding: 0;
-    width: 2100px;
+    width: 4100px;
 }
 
 .mobi-carousel-list {
@@ -62,7 +62,7 @@
 }
 
 .mobi-carousel-cursor-center {
-    width: 125px;
+    width: 100%;
     margin: 0 auto 0 auto;
 }
 
