@@ -156,8 +156,8 @@ if (!window.ice['mobi']) {
                 this.unload[clientId] = function () {
                     ice.mobi.carousel.unloadTest(clientId);
                 };
-                var node = document.getElementById(clientId);
-                node.addEventListener("DOMSubtreeModified", this.unload[clientId], false);
+            //    var node = document.getElementById(clientId);
+                document.addEventListener("DOMSubtreeModified", this.unload[clientId], false);
             } else {
                 this.cfg[clientId] = cfgIn;
                 this.acarousel[clientId].updateProperties(clientId, cfgIn);
@@ -179,7 +179,7 @@ if (!window.ice['mobi']) {
            //    console.log("unloadTest setting id="+clientId+" to null");
                this.acarousel[clientId] = null;
                this.cfg[clientId] = null;
-            //   document.removeEventListener("DOMSubtreeModified",this.unload[clientId], false ) ;
+               document.removeEventListener("DOMSubtreeModified",this.unload[clientId], false ) ;
             }
         }
     }

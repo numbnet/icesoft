@@ -41,24 +41,12 @@ public class Carousel extends CarouselBase implements ICarousel{
             throws AbortProcessingException {
         if (event instanceof ValueChangeEvent) {
             if (event != null) {
-                ValueExpression ve = getValueExpression("selectedIten");
-                if (ve != null) {
-                    try {
-                        ve.setValue(getFacesContext().getELContext(), ((ValueChangeEvent) event).getNewValue());
-                    } catch (ELException e) {
-                        logger.log(Level.WARNING, "Error creating selected value change event",e);
-                    }
-                } else {
-                    int tempInt = (Integer) ((ValueChangeEvent) event).getNewValue();
-                    this.setSelectedItem(tempInt);
-                    if (logger.isLoggable(Level.FINEST)){
-                        logger.finest("After setting the selectedItem to " + tempInt);
-                    }
-                }
-                MethodExpression method = getValueChangeListener();
-                if (method != null) {
+                int tempInt = (Integer)((ValueChangeEvent)event).getNewValue();
+                this.setSelectedItem(tempInt);
+            }
+            MethodExpression method = getValueChangeListener();
+            if (method != null) {
                     method.invoke(getFacesContext().getELContext(), new Object[]{event});
-                }
             }
         } else {
             super.broadcast(event);
@@ -66,7 +54,7 @@ public class Carousel extends CarouselBase implements ICarousel{
     }
 
     public void queueEvent(FacesEvent event) {
-        if (event.getComponent() instanceof Carousel) {
+        if (event.getComponent() == this) {
             boolean isImmediate = isImmediate();
             if (logger.isLoggable(Level.FINEST)){
                 logger.finest("invoked event for immediate " + isImmediate);
