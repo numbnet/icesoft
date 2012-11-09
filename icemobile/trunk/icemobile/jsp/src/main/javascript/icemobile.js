@@ -1477,7 +1477,6 @@ ice.mobi.geolocation = {
                 geoParams );
 
         window.addEventListener('deviceorientation', ice.mobi.geolocation.orientationCallback);
-        ice.onElementRemove(pClientId, ice.mobi.geolocation.clearWatch);
         console.log('Lauching positionWatch for client: ' + pClientId + 
                 ' watchId: ' + ice.mobi.geolocation.watchId);
     },
