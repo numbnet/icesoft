@@ -48,6 +48,9 @@ public class LayoutBean implements Serializable {
     private String selectedPane2 = FORTH_PANE;
  //   private String lmenuPane = MENUPANE;
     private int counter;
+    private boolean autoHeight;
+    private boolean fixedHeight;
+    private String fixedHeightVal;
 
 	public LayoutBean(){
         this.selectedPane = FIRSTPANE;
@@ -102,8 +105,31 @@ public class LayoutBean implements Serializable {
         this.selectedPane = THIRDPANE;
     }
 
+    public boolean isAutoHeight() {
+        return autoHeight;
+    }
 
- /*   public String getLmenuPane() {
+    public void setAutoHeight(boolean autoHeight) {
+        this.autoHeight = autoHeight;
+    }
+
+    public boolean isFixedHeight() {
+        return fixedHeight;
+    }
+
+    public void setFixedHeight(boolean fixedHeight) {
+        this.fixedHeight = fixedHeight;
+    }
+
+    public String getFixedHeightVal() {
+       return "120px";
+    }
+
+    public void setFixedHeightVal(String fixedHeightVal) {
+        this.fixedHeightVal = fixedHeightVal;
+    }
+
+/*   public String getLmenuPane() {
         return lmenuPane;
     }
 

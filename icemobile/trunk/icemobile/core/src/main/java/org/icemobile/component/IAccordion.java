@@ -9,7 +9,8 @@ public interface IAccordion extends IMobiComponent{
     public static final String ACCORDION_LEFT_POINTING_POINTER= "&#9668;";
     public static final String JS_NAME = "accordion.js";
     public static final String JS_MIN_NAME = "accordion-min.js";
-    
+    public static final String LIB_JSF = "org.icefaces.component.accordion";
+    public static final String LIB_JSP = "javascript";
         
     public void setFixedHeight(String fixedHeight);
     public String getFixedHeight();

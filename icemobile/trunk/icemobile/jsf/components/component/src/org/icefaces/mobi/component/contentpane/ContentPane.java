@@ -23,7 +23,15 @@ import javax.faces.component.UIViewRoot;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ContentPane extends ContentPaneBase {
+import org.icefaces.mobi.component.accordion.Accordion;
+import org.icefaces.mobi.component.contentstack.ContentStack;
+import org.icefaces.mobi.component.tabset.TabSet;
+import org.icefaces.mobi.utils.MobiJSFUtils;
+import org.icemobile.component.IAccordion;
+import org.icemobile.component.IContentPane;
+import org.icemobile.util.ClientDescriptor;
+
+public class ContentPane extends ContentPaneBase implements IContentPane{
     public static final String CONTENT_BASE_CLASS = "mobi-contentpane ";
     public static final String CONTENT_HIDDEN_CLASS = "mobi-contentpane-hidden ";
     public static final String CONTENT_SINGLE_BASE_CLASS = "mobi-contentpane-single";
@@ -82,4 +90,19 @@ public class ContentPane extends ContentPaneBase {
 			return true;
 		}
 	}
+    public boolean isAccordionPane(){
+        return (this.getParent() instanceof Accordion);
+    }
+    public IAccordion getAccordionParent(){
+        return (IAccordion)getParent();
+    }
+    public boolean isStackPane(){
+        return (this.getParent() instanceof ContentStack);
+    }
+    public boolean isTabPane(){
+        return (this.getParent() instanceof TabSet);
+    }
+    public ClientDescriptor getClient() {
+        return MobiJSFUtils.getClientDescriptor();
+    }
   }

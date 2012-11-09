@@ -28,8 +28,13 @@ import org.icefaces.mobi.component.accordion.Accordion;
 import org.icefaces.mobi.component.contentstack.ContentStack;
 import org.icefaces.mobi.component.tabset.TabSet;
 import org.icefaces.mobi.renderkit.BaseLayoutRenderer;
+import org.icefaces.mobi.renderkit.ResponseWriterWrapper;
 import org.icefaces.mobi.utils.HTML;
 import org.icefaces.mobi.utils.JSFUtils;
+
+import org.icemobile.component.IContentPane;
+import org.icemobile.renderkit.ContentPaneCoreRenderer;
+import org.icemobile.renderkit.IResponseWriter;
 
 
 public class ContentPaneRenderer extends BaseLayoutRenderer {
@@ -38,12 +43,12 @@ public class ContentPaneRenderer extends BaseLayoutRenderer {
 
     public void encodeBegin(FacesContext facesContext, UIComponent uiComponent)throws IOException {
         Object parent = uiComponent.getParent();
-        ContentPane pane = (ContentPane) uiComponent;
-      //  String cacheType = checkCacheType(pane.getCacheType().toLowerCase().trim());
+        IContentPane pane = (IContentPane) uiComponent;
         if (parent instanceof Accordion){
-             Accordion accordion = (Accordion)parent;
-              //eventually this will be replaced by facet to allow developer to design their own?
-             encodePaneAccordionHandle(facesContext, uiComponent, accordion);
+            //use core renderer for accordion
+            IResponseWriter writer = new ResponseWriterWrapper(facesContext.getResponseWriter());
+            ContentPaneCoreRenderer renderer = new ContentPaneCoreRenderer();
+            renderer.encodeBegin(pane, writer, false);
         } else if (parent instanceof TabSet){
             encodeTabSetPage(facesContext, uiComponent);
         }  else {
@@ -87,7 +92,7 @@ public class ContentPaneRenderer extends BaseLayoutRenderer {
         //am I the selected pane?  Can I count on the taghandler to already have
         //things constructed?? assume so for now.
          else if (iAmSelected(facesContext, uiComponent)){
-        //     logger.info("rendering the children of "+uiComponent.getClientId(facesContext));
+           //  logger.info("rendering the children of "+uiComponent.getClientId(facesContext));
              JSFUtils.renderChildren(facesContext, uiComponent);
         }
 
@@ -99,10 +104,9 @@ public class ContentPaneRenderer extends BaseLayoutRenderer {
         String selectedId= null;
         //might change this to just test if it implements the interface....
         if (parent instanceof ContentPaneController){
-           // logger.info(" instance of ContentPaneController");
             ContentPaneController paneController = (ContentPaneController)parent;
             selectedId = paneController.getSelectedId();
-        //    logger.info("iAmSelected()  id: " + uiComponent.getId() + "  selectedId: " + selectedId);
+          //  logger.info("iAmSelected()  id: " + uiComponent.getId() + "  selectedId: " + selectedId);
             if (null == selectedId){
                 return false;
             }
@@ -135,14 +139,17 @@ public class ContentPaneRenderer extends BaseLayoutRenderer {
 
     public void encodeEnd(FacesContext facesContext, UIComponent uiComponent)
           throws IOException {
-        ResponseWriter writer = facesContext.getResponseWriter();
-        if (uiComponent.getParent() instanceof Accordion){
-            writer.endElement(HTML.SECTION_ELEM);
+        IContentPane pane = (IContentPane)uiComponent;
+        if (pane.isAccordionPane()){
+            IResponseWriter writer = new ResponseWriterWrapper(facesContext.getResponseWriter());
+            ContentPaneCoreRenderer renderer = new ContentPaneCoreRenderer();
+            renderer.encodeEnd(pane, writer, false);
             return;
-        } else {
-            writer.endElement(HTML.DIV_ELEM);
-            writer.endElement(HTML.DIV_ELEM);
         }
+        ResponseWriter writer = facesContext.getResponseWriter();
+        writer.endElement(HTML.DIV_ELEM);
+        writer.endElement(HTML.DIV_ELEM);
+
     }
 
     public void encodePaneAccordionHandle(FacesContext facesContext, UIComponent uiComponent, Accordion accordion)
@@ -158,21 +165,22 @@ public class ContentPaneRenderer extends BaseLayoutRenderer {
          String handleClass = "handle";
          String pointerClass = "pointer";
          writer.startElement(HTML.SECTION_ELEM, uiComponent);
-         writer.writeAttribute(HTML.ID_ATTR, clientId, HTML.ID_ATTR);
+         writer.writeAttribute(HTML.ID_ATTR, clientId+"_sect", HTML.ID_ATTR);
             // apply default style class for panel-stack
          StringBuilder styleClass = new StringBuilder("closed");
-         if (myId.equals(imOpened)){
+       /*  if (myId.equals(imOpened)){
              styleClass = new StringBuilder("open");
-         }
+         } */
                // user specified style class
          String userDefinedClass = pane.getStyleClass();
          if (userDefinedClass != null && userDefinedClass.length() > 0){
               handleClass+= " " + userDefinedClass;
               pointerClass+=" " + userDefinedClass;
          }
-         writer.writeAttribute("class", styleClass.toString(), "class");
+    //     writer.writeAttribute("class", styleClass.toString(), "class");
          writer.writeAttribute(HTML.STYLE_ATTR, pane.getStyle(), "style");
          writer.startElement(HTML.DIV_ELEM, uiComponent);
+         writer.writeAttribute(HTML.ID_ATTR, clientId+"_hndl", HTML.ID_ATTR);
          writer.writeAttribute("class", handleClass, "class");
          writer.writeAttribute("onclick", "ice.mobi.accordionController.toggleClient('"+accordionId+"',this,"+client+");","onclick");
         //may want to do touch support??
@@ -183,6 +191,13 @@ public class ContentPaneRenderer extends BaseLayoutRenderer {
          String title = pane.getTitle();
          writer.write(title);
          writer.endElement(HTML.DIV_ELEM);
+         writer.startElement(HTML.DIV_ELEM, uiComponent);
+         writer.writeAttribute(HTML.ID_ATTR, clientId+"wrp", HTML.ID_ATTR);
+         if (!accordion.isAutoHeight() && null != accordion.getFixedHeight()) {
+            writer.writeAttribute(HTML.STYLE_ATTR, "height: "+accordion.getFixedHeight()+"; overflow-y: scroll;", HTML.STYLE_ATTR) ;
+         }
+         writer.startElement(HTML.DIV_ELEM, uiComponent);
+         writer.writeAttribute(HTML.ID_ATTR, clientId, HTML.ID_ATTR);
     }
 
 }

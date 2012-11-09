@@ -15,9 +15,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Stack;
 
-import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.PageContext;
-import javax.servlet.jsp.tagext.JspFragment;
 
 import org.icemobile.renderkit.IResponseWriter;
 
@@ -194,6 +192,9 @@ public class TagWriter implements IResponseWriter{
         }
         out.write(text);
         lastElementClosed = true;
+    }
+    public void write(String text) throws IOException{
+        writeText(text);
     }
     
     public void writeExternalScript(String src) throws IOException{
