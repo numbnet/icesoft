@@ -245,15 +245,6 @@ public abstract class SessionDispatcher implements PseudoServlet {
         } catch (Exception e) {
             Log.debug(e);
         }
-        synchronized (SessionMonitors) {
-            try {
-                sessionDestroy(sessionId);
-            } catch (Exception e) {
-                Log.debug(e);
-            }
-            //ICE-3189 - do this before invalidating the session
-            SessionMonitors.remove(sessionId);
-        }
     }
 
     /**
@@ -268,6 +259,23 @@ public abstract class SessionDispatcher implements PseudoServlet {
         SessionDispatcher sessionDispatcher = lookupSessionDispatcher(context);
         if (sessionDispatcher != null) {
             sessionDispatcher.notifySessionShutdown(session);
+
+            synchronized (SessionMonitors) {
+                String sessionId = session.getId();
+                try {
+                  sessionDispatcher.sessionDestroy(sessionId);
+                } catch (Exception e) {
+                    Log.debug(e);
+                }
+                Monitor monitor = (Monitor) SessionMonitors.get(sessionId);
+                if (monitor != null) {
+                      monitor.removeSessionContext(context);
+                      if(monitor.getSessionContextSize() == 0){
+                            //ICE-3189 - do this before invalidating the session
+                            SessionMonitors.remove(sessionId);
+                      }
+                }
+            }
         }
     }
 
@@ -443,6 +451,14 @@ public abstract class SessionDispatcher implements PseudoServlet {
 
         public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
             //ignore
+        }
+
+        public void removeSessionContext(ServletContext context) {
+            contexts.remove(context);
+        }
+
+        public int getSessionContextSize() {
+            return contexts.size();
         }
 
         public Monitor() {
