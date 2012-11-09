@@ -61,10 +61,10 @@ public class ContentPaneMeta extends UIPanelMeta{
     private String styleClass;
 
     @Property(defaultValue="false", implementation = Implementation.EXISTS_IN_SUPERCLASS,
-               tlddoc = "if true, this attribute must have cacheType of server in order to be utilised and will" +
+               tlddoc = "if true, this attribute must have client=false in order to be utilised and will" +
                        " utilize the ContentPaneHandler in order to optimise server-side performance and reducing the size of the " +
                        " server-side component tree, by ensuring that any non-selected contentPane which is not selected will not have" +
-                       " its children added to the component tree. If true, then normal jsf construction of the component tree is done. " +
+                       " its children added to the component tree. If false, then normal jsf construction of the component tree is done. " +
                        " Default value is false.")
     private boolean facelet;
 
@@ -82,5 +82,7 @@ public class ContentPaneMeta extends UIPanelMeta{
                      " want the transitions to slide in proper direction.")
     private boolean menuOrHome;
 
-
+    @Property(defaultValue="false",
+               tlddoc=" not implemented yet, but will eventually allow developers to tag a pane unselectable")
+    private boolean disabled;
 }

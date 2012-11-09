@@ -39,6 +39,9 @@ public class ResponseWriterWrapper implements IResponseWriter{
         wrapped.writeText(text,null);
     }
 
+    public void write(String input) throws IOException {
+        wrapped.write(input);
+    }
     public void startElement(String name) throws IOException {
         wrapped.startElement(name, null);        
     }

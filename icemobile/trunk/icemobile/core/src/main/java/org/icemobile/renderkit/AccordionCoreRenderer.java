@@ -17,23 +17,29 @@ public class AccordionCoreRenderer extends BaseCoreRenderer implements IRenderer
             throws IOException {
         
         IAccordion accordion = (IAccordion)component;
-        
+        String clientId = accordion.getClientId();
         /* JSF comp writes script into 1st span */
-        if (!isJSP && !accordion.isScriptLoaded()) {
+        if (!accordion.isScriptLoaded() && !isJSP)  {
+            writer.startElement(DIV_ELEM);
+            writer.writeAttribute(ID_ATTR, clientId +"_libJSDiv");
             writer.startElement(SPAN_ELEM, accordion);
-            writer.writeAttribute(ID_ATTR, accordion.getClientId()+"_libJS");
+            writer.writeAttribute(ID_ATTR, clientId +"_libJS");
             writer.startElement("script", accordion);
             writer.writeAttribute("text", "text/javascript");
             writer.writeAttribute("src", accordion.getJavascriptFileRequestPath());
             writer.endElement("script");
             accordion.setScriptLoaded();
             writer.endElement(SPAN_ELEM);
+            writer.endElement(DIV_ELEM);
         } 
         
         /* write out root tag.  For current incarnation html5 semantic markup is ignored */
+ //       logger.info("DIV_START root wrapper of accordion");
         writer.startElement(DIV_ELEM, accordion);
-        writer.writeAttribute(ID_ATTR, accordion.getClientId());
-        
+        writer.writeAttribute(ID_ATTR, clientId);
+ //       logger.info("\t DIV_START acc");
+        writer.startElement(DIV_ELEM, accordion);
+        writer.writeAttribute(ID_ATTR, clientId+"_acc");
         StringBuilder styleClass = new StringBuilder(IAccordion.ACCORDION_CLASS);
         String userDefinedClass = accordion.getStyleClass();
         if (userDefinedClass != null && userDefinedClass.length() > 0){
@@ -45,20 +51,26 @@ public class AccordionCoreRenderer extends BaseCoreRenderer implements IRenderer
     
     public void encodeEnd(IMobiComponent component, IResponseWriter writer, boolean isJSP)
             throws IOException {
-        
         IAccordion accordion = (IAccordion)component;
-        
-        super.writeHiddenInput(writer, accordion);
-
-        writer.endElement(DIV_ELEM);
-        
+        String clientId=accordion.getClientId();
+        String openedPaneId = accordion.getOpenedPaneClientId();
+ //       logger.info("\t DIV_END acc");
+        writer.endElement(DIV_ELEM);  //end of _acc div
+ //       logger.info("\t DIV_START hidden and script");
+        writer.startElement(DIV_ELEM, accordion); //start of div for hidden and script
+        writer.writeAttribute(ID_ATTR, clientId+"_hid");
+        if (null != openedPaneId){
+            super.writeHiddenInput(writer, accordion, openedPaneId);
+        }else{
+             super.writeHiddenInput(writer,accordion);
+        }
+ //       logger.info("SPAN_START script");
         writer.startElement(SPAN_ELEM, accordion);
-        writer.writeAttribute(ID_ATTR, accordion.getClientId() + "_script");
+        writer.writeAttribute(ID_ATTR, clientId + "_script");
         writer.startElement(SCRIPT_ELEM, null);
         writer.writeAttribute(INPUT_TYPE_TEXT, "text/javascript");
-        StringBuilder cfg = new StringBuilder("{singleSubmit: false");
-        
-        String openedPaneId = accordion.getOpenedPaneClientId();
+        StringBuilder cfg = new StringBuilder("{singleSubmit: true");
+
         if (null!=openedPaneId){
             cfg.append(", opened: '").append(openedPaneId).append("'");
         }
@@ -66,7 +78,9 @@ public class AccordionCoreRenderer extends BaseCoreRenderer implements IRenderer
         int hashcode = Utils.generateHashCode(openedPaneId);
         cfg.append(", hash: ").append(hashcode);
         cfg.append(", autoHeight: ").append(autoheight);
-        cfg.append(", fixedHeight: '").append(accordion.getFixedHeight()).append("'");
+        if (accordion.getFixedHeight()!=null){
+            cfg.append(", fixedHeight: '").append(accordion.getFixedHeight()).append("'");
+        }
         cfg.append("}");
          //just have to add behaviors if we are going to use them.
         
@@ -75,6 +89,11 @@ public class AccordionCoreRenderer extends BaseCoreRenderer implements IRenderer
         
         writer.endElement(SCRIPT_ELEM);
         writer.endElement(SPAN_ELEM);
+//        logger.info("SPAN_END");
+        writer.endElement(DIV_ELEM);
+//        logger.info("\t DIV_END script and hidden");
+        writer.endElement(DIV_ELEM);
+ //       logger.info("DIV_END FINAL!");
     }
 
 }

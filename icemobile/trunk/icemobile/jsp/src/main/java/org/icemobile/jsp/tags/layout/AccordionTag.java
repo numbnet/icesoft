@@ -16,12 +16,17 @@
 
 package org.icemobile.jsp.tags.layout;
 
+import java.io.IOException;
 import java.util.logging.Logger;
 
 import javax.servlet.jsp.JspException;
+import javax.servlet.jsp.JspTagException;
 
 import org.icemobile.component.IAccordion;
 import org.icemobile.jsp.tags.BaseBodyTag;
+import org.icemobile.jsp.tags.TagWriter;
+import org.icemobile.jsp.util.MobiJspConstants;
+import org.icemobile.jsp.util.Util;
 import org.icemobile.renderkit.AccordionCoreRenderer;
 
 public class AccordionTag extends BaseBodyTag implements IAccordion {
@@ -30,14 +35,35 @@ public class AccordionTag extends BaseBodyTag implements IAccordion {
     
     private String name;
     private boolean autoHeight = true;//default
-    private String fixedHeight = "200px";
+    private String fixedHeight;
     private String selectedId;
+    private AccordionCoreRenderer renderer;
+    private TagWriter writer;
 
     public int doStartTag() throws JspException {
         renderer = new AccordionCoreRenderer();
-        return _doStartTag(); 
+       try {
+            writer = new TagWriter(pageContext);
+            renderer.encodeBegin(this, writer,true);
+            writer.closeOffTag();
+        } catch (IOException e) {
+            throw new JspTagException("problem in doStart of AccordionTag exception="+e) ;
+        }
+        return EVAL_BODY_INCLUDE;
     }
-
+   /**
+     *
+     * @return
+     * @throws javax.servlet.jsp.JspTagException
+     */
+    public int doEndTag() throws JspTagException {
+        try {
+            renderer.encodeEnd(this, writer, true);
+        } catch (IOException e) {
+            throw new JspTagException("problem in doEnd of AccordionTag exception="+e) ;
+        }
+        return EVAL_PAGE;
+    }
     public String getName() {
         return name;
     }
@@ -68,14 +94,21 @@ public class AccordionTag extends BaseBodyTag implements IAccordion {
     public boolean isAutoHeight() {
         return this.autoHeight;
     }
-
+    /**
+     *  responsible for providing the src attribute to load the iscroll library
+     * @return
+     */
     public String getJavascriptFileRequestPath() {
-        //not used in JSP
-        return null;
+        String separator = "/";
+        StringBuilder sb = new StringBuilder();
+        sb.append(Util.getContextRoot(pageContext.getRequest()));
+        sb.append(MobiJspConstants.RESOURCE_BASE_URL).append(separator);
+        sb.append(IAccordion.LIB_JSP).append(separator).append(IAccordion.JS_NAME);
+        System.out.println("javscript src = "+sb.toString());
+        return sb.toString();
     }
 
     public boolean isScriptLoaded() {
-       //not used in JSP
         return false;
     }
 
@@ -84,7 +117,10 @@ public class AccordionTag extends BaseBodyTag implements IAccordion {
     }
 
     public String getOpenedPaneClientId() {
-        // TODO Auto-generated method stub
-        return null;
+        return selectedId;
+    }
+    public void release(){
+        this.renderer=null;
+        this.fixedHeight = null;
     }
 }

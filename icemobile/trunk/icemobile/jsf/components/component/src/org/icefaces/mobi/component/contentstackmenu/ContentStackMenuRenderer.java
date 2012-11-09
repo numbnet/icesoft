@@ -107,6 +107,8 @@ public class  ContentStackMenuRenderer extends BaseLayoutRenderer {
              writer.writeAttribute("style", menu.getStyle(), "style");
          }
          if (accordion){
+             writer.startElement(HTML.DIV_ELEM, uiComponent);
+             writer.writeAttribute(HTML.ID_ATTR, clientId+"_acc", HTML.ID_ATTR);
              writer.writeAttribute("class",baseAccordionClass.toString(), null);
          }   else {
              writer.writeAttribute(HTML.CLASS_ATTR, baseClass.toString(), null);
@@ -137,6 +139,7 @@ public class  ContentStackMenuRenderer extends BaseLayoutRenderer {
         if (menu.isAccordion()){
             writer.endElement(HTML.DIV_ELEM);
             writer.endElement(HTML.SECTION_ELEM);
+            writer.endElement(HTML.DIV_ELEM);
         }
         this.encodeHidden(facesContext, component);
         writer.endElement(HTML.DIV_ELEM);

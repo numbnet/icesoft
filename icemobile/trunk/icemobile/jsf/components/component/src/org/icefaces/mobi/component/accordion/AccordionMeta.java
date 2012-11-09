@@ -67,8 +67,9 @@ public class AccordionMeta extends UIPanelMeta {
 	@Property(tlddoc="When set to true (default), pane with highest content is used to calculate the height.", defaultValue="true")
 	private boolean autoHeight;
 
-    @Property(defaultValue="200px",
-            tlddoc="fixeHeight, default 200px, can be used when autoHeight is false. Must be valid height for element.style.height")
+    @Property(tlddoc="fixeHeight,can be used when autoHeight is false. Must be valid height for " +
+            "element.style.height.  If no fixedHeight is set and autoHeight is false, then " +
+            "panes for accordion will just render at their content height")
     private String fixedHeight;
 
  	@Property(tlddoc="Server side listener to invoke when active pane changes",

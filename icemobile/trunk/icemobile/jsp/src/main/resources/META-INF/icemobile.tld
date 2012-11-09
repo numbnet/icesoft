@@ -970,6 +970,38 @@
             <rtexprvalue>true</rtexprvalue>
         </attribute>
     </tag>
+    <tag>
+         <description>Accordion Pane Tag</description>
+         <display-name>ICEmobile AccordionPane</display-name>
+         <name>accordionPane</name>
+         <tag-class>org.icemobile.jsp.tags.layout.AccordionPaneTag</tag-class>
+         <body-content>JSP</body-content>
+         <attribute>
+             <description>Pagewide unique identifier</description>
+             <name>id</name>
+             <required>false</required>
+             <rtexprvalue>true</rtexprvalue>
+         </attribute>
+         <attribute>
+             <description>A textual title appearing above the content
+             </description>
+             <name>title</name>
+             <required>false</required>
+             <rtexprvalue>true</rtexprvalue>
+         </attribute>
+         <attribute>
+             <description>Inline style definition</description>
+             <name>style</name>
+             <required>false</required>
+             <rtexprvalue>true</rtexprvalue>
+         </attribute>
+         <attribute>
+             <description>User defined CSS class</description>
+             <name>styleClass</name>
+             <required>false</required>
+             <rtexprvalue>true</rtexprvalue>
+         </attribute>
+     </tag>
 
     <tag>
         <description>A tag identifying the header portion of the Tabset

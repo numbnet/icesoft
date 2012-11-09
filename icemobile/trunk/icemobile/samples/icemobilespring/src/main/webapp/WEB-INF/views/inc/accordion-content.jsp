@@ -17,34 +17,30 @@
     <h3>Basic Accordion</h3>
 
     <mobi:accordion id="basicAccordion" selectedId="${accordionBean.selectedId1}">
-        <mobi:content>
-            <mobi:contentPane title="ICE Sailor" id="accordionPane1" >
+            <mobi:accordionPane title="ICE Sailor" id="accordionPane1" >
                 <%@ include file="fieldset-icesailor.jsp" %>
-            </mobi:contentPane>
-            <mobi:contentPane title="ICE Breaker" id="accordionPane2">
+            </mobi:accordionPane>
+            <mobi:accordionPane title="ICE Breaker" id="accordionPane2">
                  <%@ include file="fieldset-icebreaker.jsp" %>
-            </mobi:contentPane>
-            <mobi:contentPane title="ICE Skate" id="accordionPane3">
+            </mobi:accordionPane>
+            <mobi:accordionPane title="ICE Skate" id="accordionPane3">
                 <%@ include file="fieldset-iceskate.jsp" %>
-            </mobi:contentPane>
-        </mobi:content>
+            </mobi:accordionPane>
     </mobi:accordion>
     
     <h3 style="margin-top:30px;">Accordion without autoHeight</h3>
     
     <mobi:accordion id="accordionNoAutoHeight" selectedId="${accordionBean.selectedId2}"
-        autoHeight="false">
-        <mobi:content>
-            <mobi:contentPane title="ICE Sailor" id="accordionPane4" >
+        autoHeight="false" fixedHeight="140px">
+            <mobi:accordionPane title="ICE Sailor" id="accordionPane4" >
                 <%@ include file="fieldset-icesailor.jsp" %>
-            </mobi:contentPane>
-            <mobi:contentPane title="ICE Breaker" id="accordionPane5">
+            </mobi:accordionPane>
+            <mobi:accordionPane title="ICE Breaker" id="accordionPane5">
                  <%@ include file="fieldset-icebreaker.jsp" %>
-            </mobi:contentPane>
-            <mobi:contentPane title="ICE Skate" id="accordionPane6">
+            </mobi:accordionPane>
+            <mobi:accordionPane title="ICE Skate" id="accordionPane6">
                 <%@ include file="fieldset-iceskate.jsp" %>
-            </mobi:contentPane>
-        </mobi:content>
+            </mobi:accordionPane>
     </mobi:accordion>
     
 </form:form>

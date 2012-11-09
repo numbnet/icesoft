@@ -228,9 +228,6 @@ ice.mobi.flipvalue = function flipvalue(id, vars) {
 (function() {
     function enhance(clientId)  {
         var carouselId = clientId+'_carousel';
-   //     var carElem = document.getElementById(carouselId);
-    //    carElem.addEventListener ("DOMNodeRemoved", ice.mobi.carousel.nodeRemoved(event), false);
-    //    carElem.addEventListener('DOMNodeRemovedFromDocument', ice.mobi.carousel.nodeRemovedFromDoc(event), false);
         var iscroller = new iScroll(carouselId, {
 	                    snap: 'li',
 	                    momentum: false,
@@ -332,7 +329,7 @@ ice.mobi.flipvalue = function flipvalue(id, vars) {
                   this.setActive(key);
                }
                if (!myScroll.wrapper)  {
-                   console.log('WARNING:_ reinitialized scroller');
+          //         console.log('WARNING:_ reinitialized scroller');
                    enhance(clientId);
                }
            }
@@ -352,8 +349,6 @@ ice.mobi.flipvalue = function flipvalue(id, vars) {
                     ice.mobi.carousel.unloadTest(clientId);
                  };
                 document.addEventListener("DOMSubtreeModified", this.unload[clientId], false);
-              //  document.addEventListener("DOMContentLoaded", this.unload(clientId), false);
-
             } else {
                 this.cfg[clientId] = cfgIn;
                 this.acarousel[clientId].updateProperties(clientId);
@@ -371,19 +366,12 @@ ice.mobi.flipvalue = function flipvalue(id, vars) {
             this.acarousel[clientId].refreshMe(key);
         },
         unloadTest: function(clientId){
-           console.log('unloadTest fncall');
             if (!document.getElementById(clientId) && this.acarousel[clientId]!=null){
             //   console.log("unloadTest setting id="+clientId+" to null");
                this.acarousel[clientId] = null;
                this.cfg[clientId] = null;
                document.removeEventListener("DOMSubtreeModified",this.unload[clientId], false ) ;
             }
-        }  ,
-        nodeRemoved: function (event) {
-            alert ("The element  has been removed with event="+event);
-        } ,
-        nodeRemovedFromDoc: function (event) {
-            alert ("The element  been removed FROM DOC with event="+event);
         }
     }
 
@@ -523,144 +511,210 @@ ice.mobi.tabsetController = {
             }
         }
     }
-}
-
-ice.mobi.accordionController = {
-
-    // Panels wont ever have more than one panel in it, since it's a single accordian.
-    panels: {},
-    initClient: function(clientId, cfg) {
-        this.panels[clientId] = ice.mobi.accordionController.Accordion(clientId, cfg);
-    },
-    toggleClient: function(clientId, el, cachetyp) {
-        if (this.panels[clientId]) {
-            this.panels[clientId].toggle(el, cachetyp);
-        }
-    },
-
+};
+(function() {
     //functions that do not encapsulate any state, they just work with the provided parameters
     //and globally accessible variables
     //---------------------------------------
-    updateHidden: function (clientId, value) {
+    function updateHidden(clientId, value) {
         var hidden = document.getElementById(clientId + "_hidden");
         if (hidden) {
             hidden.value = value;
         }
-    },
-
-    getDivHeight: function (clientId) {
-        return document.getElementById(clientId).innerHeight;
-    },
-
-    updateHeightInOpenClass: function (ruleName, height) {
-
-        if (document.styleSheets) {
-            for (var i = 0; i < document.styleSheets.length; i++) {
-                var styleSh = document.styleSheets[i];
-                var index = 0;
-                var found = false;
-                var cssRule;
-                do {
-                    if (styleSh.cssRules) {
-                        cssRule = styleSh.cssRules[index];
-                    }
-                    else {
-                        cssRule = styleSh.rules[index];
-                    }
-                    // Not every cssRule had a selectorText, which was
-                    // throwing an exception
-                    if (cssRule && cssRule.selectorText) {
-                        if (cssRule.selectorText.toLowerCase() == ruleName) {
-                            //update height and maxheight
-                            cssRule.style.maxHeight = height;
-                            cssRule.style.height = height;
-                            break;
-                        }
-                    }
-                    index ++;
-                } while (cssRule);
-            }
+    }
+    function getHiddenVal(clientId){
+        var hidden = document.getElementById(clientId+"_hidden");
+        if (hidden && hidden.value){
+            return hidden.value;
+        } else {
+            return null;
         }
-    },
-    calcMaxDivHeight: function (clientId) {
+    }
+    function getHandleHeight(aRoot){
+        var handleNode = aRoot.querySelector('.mobi-accordion .handle');
+        var handleHeight = "33"; //default css handle height is 33px
+        if (handleNode){
+           var temp = handleNode.scrollHeight || handleNode.height || handleNode.offsetHeight || handleNode.maxHeight;
+           if (temp > 0){
+               handleHeight = temp;
+           }
+        }
+        return handleHeight;
+    }
+    function calcMaxDivHeight(clientId, handleHt) {
         var accord = document.getElementById(clientId);
         var mxht = 0;
         //find all sections of the clientId and calc height.  set maxheight and height to max height of the divs
         var children = document.getElementById(clientId).getElementsByTagName('section');
         for (var i = 0; i < children.length; i++) {
-            if (children[i].scrollHeight > mxht) {
-                mxht = children[i].scrollHeight;
+            var anode = children[i];
+            var max = Math.max(anode.offsetHeight, anode.scrollHeight, anode.clientHeight);
+            //init all classes to close
+         //   anode.className = "close";
+         //   anode.style.height = handleHt+"px";
+            if (max > 0 && max > mxht) {
+                mxht = max;
             }
         }
-        return mxht;
-    },
-
-    //declare functions who creates object with methods that have access to the local variables of the function
-    //so in effect the returned object can operate on the local state declared in the function ...
-    //think about them as object fields in Java, also gone is the chore of copying the constructor parameters into fields
-    //-------------------------------------
-    Accordion: function Accordion(clientId, cfgIn) {
-        //local variables are not public but public open, close, visible and updateProperties functions can operate on them
-        var theContainer = document.getElementById(clientId);
-        var openClass = ".mobi-accordion .open";
-        var myclient = clientId;
-        var alreadyOpenId = theContainer.getAttribute('data-opened'); //do I care about this?
-        var scrollEvent = 'ontouchstart' in window ? "touchmove" : "scroll";
-        var cgfObj = cfgIn;
-        var autoHeight = cfgIn.autoHeight || false;
-        var fixedHeight = cfgIn.fixedHeight || "200px";
-        if (autoHeight === true) {
-            fixedHeight = ice.mobi.accordionController.calcMaxDivHeight(clientId);
+        if (mxht <= handleHt && accord.clientHeight>0) {
+            mxht = accord.clientHeight - handleHt;
         }
-        ice.mobi.accordionController.updateHeightInOpenClass(openClass, fixedHeight);
-        //as you can see all the 'this' noise is gone
-        //object properly encapsulates state
+        return mxht;
+    }
+    function updateFixedHeight(clientId, handleheight, fixedHeight){
+         var calcht = calcMaxDivHeight(clientId, handleheight) ;
+         if (calcht > 0) {
+             return  calcht+"px";
+         }
+        else return fixedHeight;
+    }
+    function setHeight(opened, height){
+        opened.style.height = height;
+        opened.style.maxHeight = height;
+    }
+    function setPane(elem, height, style){
+        elem.className=style;
+        if (height){
+            setHeight(elem, height);
+        }
+    }
+    function Accordion(clientId, cfgIn) {
+        var containerId = clientId+"_acc" ;
+        var paneOpId = cfgIn.opened || null;
+        var accordRoot = document.getElementById(containerId);
+        if (!paneOpId && accordRoot.hasChildNodes()){
+            paneOpId = accordRoot.firstChild.id;
+        }
+        var scroll = false;
+        paneOpId += "_sect";
+        var openElem = document.getElementById(paneOpId);
+        var handleheight = getHandleHeight(accordRoot);
+        var autoheight = cfgIn.autoHeight || false;
+        var fixedHeight = cfgIn.fixedHeight || null;
+        if (autoheight == true) {
+            fixedHeight = updateFixedHeight(containerId, handleheight, fixedHeight, scroll);
+        }  else {
+            scroll = true;
+        }
+        if (scroll){
+            //so this with js? or with renderer?? see how it affects domdiff
+        }
+        openElem.className="open";
+        if (fixedHeight){
+            setHeight(openElem, fixedHeight);
+        }
         return {
-            toggle: function(el, cached) {
+            toggle: function(clientId, el, cached) {
                 var theParent = el.parentElement;
                 if (!theParent) {
                     theParent = el.parentNode; //mozilla
                 }
+                var accId = clientId+"_acc";
+                var autoheight = ice.mobi.accordionController.autoheight[clientId];
                 //which child is the element?
-                ice.mobi.accordionController.updateHidden(myclient, theParent.id);
-//                if (!cached){
-//                    ice.se(null, myclient);
-//                }
-                var alreadyOpen = theContainer.getAttribute('data-opened');
-                if (alreadyOpen && alreadyOpen !== theParent.id) {
-                    var openedEl = document.getElementById(alreadyOpen);
-                    if (openedEl) {
-                        document.getElementById(alreadyOpen).className = 'closed';
+                var changed= true;
+                openElem = document.getElementById(paneOpId);
+                if (paneOpId && paneOpId == theParent.id){
+                    if (openElem.className=="open"){
+                        setPane(openElem, handleheight+"px", "closed");
+
+                    } else {
+                        setPane( openElem, fixedHeight, "open");
+                    }
+                    changed=false;
+                }
+                else {//panel has changed
+                    setPane(openElem, handleheight+"px", "closed");
+                    if (autoheight){
+                        fixedHeight = updateFixedHeight(accId, handleheight, fixedHeight);
+                    }
+                    setPane(theParent,fixedHeight,"open");
+                    paneOpId = theParent.id;
+                }
+                var pString = theParent.getAttribute("id");
+                var subString = pString.replace("_sect","");
+                updateHidden(clientId, subString);
+                if (!cached && ice.mobi.accordionController.singleSubmit[clientId] && changed) { //renderer take care of closed panes
+                    ice.se(null, clientId);
+                }
+            },
+            updateProperties: function (clientId, cfgUpd) {
+                  var fixedHeight=cfgUpd.fixedHeight ||null;
+                var autoheight = cfgUpd.autoHeight;
+                if (autoheight ) {
+                    ice.mobi.accordionController.autoheight[clientId] = autoheight;
+                }
+                if (autoheight) {
+                    var updHeight = updateFixedHeight(clientId+"_acc", handleheight, fixedHeight);
+                    if (fixedHeight != updHeight){
+                        fixedHeight = updHeight;
+                        setHeight(document.getElementById(paneOpId), fixedHeight);
                     }
                 }
-                if ('open' === theParent.className) {
-                    theParent.className = 'closed';
-                } else {
-                    theParent.className = 'open';
-                    theContainer.setAttribute('data-opened', theParent.id);
+                if( !paneOpId){
+                    paneOpId = cfgIn.opened+"_sect" || null;
                 }
-
-            },
-
-            updateProperties: function (clientId, cfgUpd) {
-                cfgObj = cfgIn; //not sure I need to keep this?
-                //server may want to push new dynamic values for maxheight and autoheight
-                var change = false;
-                if (autoHeight != cfgUpd.autoHeight) {
-                    autoHeight = cfgUpd.autoHeight || false;
-                    change = true;
+                var opened = document.getElementById(paneOpId);
+                if (!opened){  //may have been deleted or removed
+                    var root = document.getElementById(clientId+"_acc");
+                    opened = root.firstChild;
+                    paneOpId = root.firstChild.id;
                 }
-                if (fixedHeight != cfgUpd.fixedHeight) {
-                    fixedHeight = cfgUpd.fixedHeight || "200px";
-                    change = true;
-                }
-                if (change == true) {
-                    var newHeight = ice.mobi.accordionController.calcMaxDivHeight(clientId);
+                var hiddenVal = getHiddenVal(clientId); //could have pushed new value
+                if (hiddenVal!=null) {
+                    var newPane = hiddenVal+"_sect";
+                    if (newPane!=paneOpId){
+                       setPane(opened, handleheight+"px", "closed");
+                       var newElem = document.getElementById(newPane);
+                       if (newElem){
+                           setPane(newElem, fixedHeight, "open");
+                       }
+                        paneOpId = newPane;
+                        openElem = newElem;
+                    }
                 }
             }
         }
     }
-}
+
+    ice.mobi.accordionController = {
+        panels: {},
+        autoheight: {},
+        singleSubmit: {},
+        initClient: function(clientId, cfg) {
+            if (!this.panels[clientId]) {
+                this.autoheight[clientId]= cfg.autoHeight;
+                this.singleSubmit[clientId] = cfg.singleSubmit;
+                this.panels[clientId] = Accordion(clientId, cfg);
+            } else {
+                this.panels[clientId].updateProperties(clientId, cfg);
+            }
+        },
+        toggleClient: function(clientId, el, cachetyp) {
+            if (this.panels[clientId]) {
+                this.panels[clientId].toggle(clientId, el, cachetyp);
+            } else {
+                this.initClient(clientId, {});
+                this.panels[clientId].toggle(clientId, el, cachetyp);
+            }
+        },
+        toggleMenu: function(clientId, el){
+            if (this.panels[clientId]) {
+                this.panels[clientId].toggle(el, true);
+            } else{
+                this.initClient(clientId, {autoheight:false});
+                this.panels[clientId].toggle(clientId, el, true);
+            }
+        } ,
+        unload: function(clientId){
+            this.panels[clientId] = null;
+            this.autoheight[clientId]=null;
+            this.panels[clientId]=null;
+        }
+    }
+
+})();
+
 
 ice.mobi.panelAutoCenter = function panelAutoCenter(clientId) {
     var windowWidth = ice.mobi._windowWidth();

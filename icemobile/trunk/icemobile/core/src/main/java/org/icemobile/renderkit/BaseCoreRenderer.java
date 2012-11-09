@@ -58,7 +58,16 @@ public abstract class BaseCoreRenderer{
         writer.endElement(INPUT_ELEM);
         writer.endElement(SPAN_ELEM);
     }
-
+    public void writeHiddenInput(IResponseWriter writer, IMobiComponent comp, String value) throws IOException{
+        writer.startElement(SPAN_ELEM, comp);
+        writer.startElement(INPUT_ELEM, comp);
+        writer.writeAttribute(TYPE_ATTR, INPUT_TYPE_HIDDEN);
+        writer.writeAttribute(ID_ATTR, comp.getClientId()+SUFFIX_HIDDEN);
+        writer.writeAttribute(NAME_ATTR, comp.getClientId()+SUFFIX_HIDDEN);
+        writer.writeAttribute(VALUE_ATTR, value);
+        writer.endElement(INPUT_ELEM);
+        writer.endElement(SPAN_ELEM);
+    }
     protected boolean isTouchEventEnabled(ClientDescriptor client) {
         // commenting out Blackberry at this time as support of touch events is
         // problematic
