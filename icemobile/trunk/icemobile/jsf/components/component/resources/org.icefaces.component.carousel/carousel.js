@@ -33,6 +33,7 @@ if (!window.ice['mobi']) {
 	                    momentum: false,
 	                    hScrollbar: false,
                         checkDOMChanges: false,
+                        bounce: false,
                         zoom: true,
 	                    onScrollEnd: function () {
                             ice.mobi.carousel.scrollUpd(event, clientId, this.currPageX);
@@ -42,8 +43,9 @@ if (!window.ice['mobi']) {
     }
     function Carousel(clientId, key) {
         var myScroll = enhance(clientId);
+        myScroll.scrollToPage(key);
         var myId = clientId;
-        var currentVal=0;
+        var currentVal=key;
         return {
            scrollUpdate: function(event, pageVal, cfg) {
                var changedVal = false;
@@ -55,7 +57,7 @@ if (!window.ice['mobi']) {
                    if (undoNode){
                        undoNode.className = '';
                    }
-                //   console.log( 'old hidden='+this.getHiddenVal()+ ' updated to hidden.value = '+pageVal);
+               //    console.log( 'old hidden='+this.getHiddenVal()+ ' updated to hidden.value = '+pageVal);
                    this.setActive(pageVal);
                }
                if (changedVal){
@@ -66,14 +68,14 @@ if (!window.ice['mobi']) {
                    submitcfg.render = "@all";
                    if (cfg.singleSubmit){
                        submitcfg.execute = "@this";
+                       var refreshXHR = function(xhr, status, args) { ice.mobi.carousel.refreshCall(clientId, pageVal);};
+                       submitcfg.oncomplete = refreshXHR;
+                       mobi.AjaxRequest(submitcfg);
                    }
-                   if (behaviors){
-                       /** to do ensure proper format */
+               /*    if (behaviors){  disabled for now until determined if required
                        submitcfg.behaviors = behaviors;
-                   }
-                   var refreshXHR = function(xhr, status, args) { ice.mobi.carousel.refreshCall(clientId, pageVal);};
-                   submitcfg.oncomplete = refreshXHR;
-                   mobi.AjaxRequest(submitcfg);
+                   }  */
+
                }
            },
            getClientId: function(){
@@ -97,35 +99,42 @@ if (!window.ice['mobi']) {
                   return 0;
               }
            },
-           setActive: function(val){
-               if (currentVal != val){
+           setActive: function(pageVal){
+               if (currentVal != pageVal){
                   var nodeoldActive = document.querySelector('.mobi-carousel-cursor-list > li.active');
                   if (nodeoldActive){
                       nodeoldActive.className='';
                   }
-                  currentVal =  val;
-                  this.updateHidden(val);
+                  currentVal =  pageVal;
+                  this.updateHidden(pageVal);
                }
-               var node =  document.querySelector('.mobi-carousel-cursor-list > li:nth-child(' + (currentVal + 1) + ')');
-               if (node){
-                   node.className = 'active';
+               var anode = document.querySelector('.mobi-carousel-cursor-list > li:nth-child('+(pageVal + 1) + ')');
+               if (anode){
+                   anode.className = 'active';
                }
+               myScroll.refresh();
            },
            scrollToPage: function(key){
                myScroll.scrollToPage(key,0);
-               this.setActive(key);
-               myScroll.refresh();
-           } ,
+               var newVal = currentVal;
+               if (key == "next"){
+                   newVal++;
+               }
+               if (key== "prev"){
+                   newVal--;
+               }
+               this.setActive(newVal);
+           },
            refreshMe: function(key){
                if (myScroll){
-                  myScroll.refresh();
                   this.setActive(key);
                }
-           } ,
+           },
            updateProperties: function (clientId, cfgIn) {
-               if (cfgIn.key != currentVal){
-                  this.scrollToPage(key);
-                  this.setActive(cfgIn.key);
+               var hid= this.getHiddenVal();
+               if (hid != currentVal){
+                  this.scrollToPage(hid);
+                  this.setActive(hid);
                }
                if (!myScroll.wrapper)  {
                 //   console.log('WARNING:_ reinitialized scroller');
@@ -144,14 +153,16 @@ if (!window.ice['mobi']) {
                 this.cfg[clientId] = cfgIn;
                 this.acarousel[clientId] = Carousel(clientId, cfgIn.key);
                 this.acarousel[clientId].setActive(cfgIn.key);
+                this.unload[clientId] = function () {
+                    ice.mobi.carousel.unloadTest(clientId);
+                };
+                var node = document.getElementById(clientId);
+                node.addEventListener("DOMSubtreeModified", this.unload[clientId], false);
             } else {
                 this.cfg[clientId] = cfgIn;
                 this.acarousel[clientId].updateProperties(clientId, cfgIn);
                 this.acarousel[clientId].setActive(cfgIn.key);
-               this.unload[clientId] = function () {
-                    ice.mobi.carousel.unloadTest(clientId);
-               };
-               document.addEventListener("DOMSubtreeModified", this.unload[clientId], false);
+
             }
         },
         scrollUpd: function(event, clientId, pageVal){
@@ -164,12 +175,11 @@ if (!window.ice['mobi']) {
             this.acarousel[clientId].refreshMe(key);
         },
         unloadTest: function(clientId){
-        //   console.log('unloadTest fncall');
             if (!document.getElementById(clientId) && this.acarousel[clientId]!=null){
-        //       console.log("unloadTest setting id="+clientId+" to null");
+           //    console.log("unloadTest setting id="+clientId+" to null");
                this.acarousel[clientId] = null;
                this.cfg[clientId] = null;
-               document.removeEventListener("DOMSubtreeModified",this.unload[clientId], false ) ;
+            //   document.removeEventListener("DOMSubtreeModified",this.unload[clientId], false ) ;
             }
         }
     }
