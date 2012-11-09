@@ -34,13 +34,6 @@
                          type="org.icemobile.samples.mobileshowcase.view.metadata.context.ExampleImpl"
                          shortDescription="Manged bean used for this component example"/>
 
-    <composite:attribute name="renderDescription" default="true"
-                         displayName="Render Description tab"/>
-    <composite:attribute name="renderExample" default="true"
-                         displayName="Render Example tab"/>
-    <composite:attribute name="renderSource" default="true"
-                         displayName="Render Source tab"/>
-
     <composite:attribute name="autoWidth" default="true"
                          displayName="Passthough attirbue for tabset which when true
                          enabled the component to set the width in percent of the child
@@ -68,26 +61,20 @@
                  parentFooter="#{cc.attrs.parentFooter}"
                  autoWidth="#{cc.attrs.autoWidth}"
                  orientation="top">
-        <!-- description tab -->
         <mobi:contentPane
                 facelet="true" client="true"
-                rendered="#{cc.attrs.renderDescription}"
                 id="desc" title="#{mmsgs['example.description.label']}">
             <ui:include src="#{cc.attrs.exampleBean.descriptionPath}"/>
         </mobi:contentPane>
-        <!-- example tab -->
         <mobi:contentPane
                 facelet="false" client="true"
-                rendered="#{cc.attrs.renderDescription}"
                 id="example" title="#{mmsgs['example.example.label']}">
             <ui:include src="#{cc.attrs.exampleBean.examplePath}">
                 <ui:param name="viewSize" value="#{cc.attrs.viewSize}"/>
             </ui:include>
         </mobi:contentPane>
-        <!-- docs tab -->
         <mobi:contentPane
                 facelet="false" client="true"
-                rendered="#{cc.attrs.renderDescription}"
                 id="docs" title="#{mmsgs['example.resources.label']}">
             <ui:include src="#{cc.attrs.exampleBean.resourcesPath}"/>
         </mobi:contentPane>
