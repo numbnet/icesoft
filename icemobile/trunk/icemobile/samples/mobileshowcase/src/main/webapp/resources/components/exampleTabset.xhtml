@@ -55,6 +55,10 @@
                          shortDescription="Set the default selected tabset conent pane.  By
                          default the 'example' pane is set by default. Valud values
                          are desc|example|docs"/>
+                         
+     <composite:attribute name="viewSize" required="false"
+                         default="small"
+                         shortDescription="large|small"/>
 
 </composite:interface>
 
@@ -76,7 +80,9 @@
                 facelet="false" client="true"
                 rendered="#{cc.attrs.renderDescription}"
                 id="example" title="#{mmsgs['example.example.label']}">
-            <ui:include src="#{cc.attrs.exampleBean.examplePath}"/>
+            <ui:include src="#{cc.attrs.exampleBean.examplePath}">
+                <ui:param name="viewSize" value="#{cc.attrs.viewSize}"/>
+            </ui:include>
         </mobi:contentPane>
         <!-- docs tab -->
         <mobi:contentPane

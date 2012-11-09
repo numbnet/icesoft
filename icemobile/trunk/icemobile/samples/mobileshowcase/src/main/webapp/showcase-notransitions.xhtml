@@ -33,12 +33,12 @@
 </h:head>
 <h:body>
     <mobi:largeView>
-        <ui:param name="viewSize" value="large" />
-        <ui:include src="WEB-INF/includes/view/large.xhtml"/>
+        <ui:include src="WEB-INF/includes/view/large.xhtml">
+            <ui:param name="viewSize" value="large" />
+        </ui:include>
     </mobi:largeView>
     <mobi:smallView>
-        <ui:param name="viewSize" value="small" />
-            <mobi:pagePanel>
+        <mobi:pagePanel>
             <f:facet name="header">
                 <h:form id="toolbar2" prependId="false" >
                     <mobi:commandButton buttonType="back"
@@ -62,6 +62,7 @@
                 <ui:include src="/WEB-INF/includes/content/content-stack.xhtml">
                     <ui:param name="selectedPanel"
                               value="#{navigationModel.selectedPanel}"/>
+                    <ui:param name="viewSize" value="small" />
                 </ui:include>
             </f:facet>
     
@@ -87,7 +88,6 @@
                     <h:graphicImage library="images" name="icemobile_thumb.png"/>
                 </a>
             </f:facet>
-    
         </mobi:pagePanel>
     </mobi:smallView>
 </h:body>
