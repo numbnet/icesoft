@@ -92,6 +92,7 @@ ice.ace.Calendar = function(id, cfg) {
             ice.ace.skinInput(this.jq);
         }
         behavior = this.cfg && this.cfg.behaviors && this.cfg.behaviors.dateTextChange;
+/*
         if (behavior) {
             this.jq.change(function() {
                 setFocus();
@@ -103,6 +104,7 @@ ice.ace.Calendar = function(id, cfg) {
                 ice.se(event, cfg.clientId);
             });
         }
+*/
     }
 
     var widget = this;
@@ -203,11 +205,27 @@ ice.ace.Calendar.init = function(options) {
             window[widgetVar].jq[window[widgetVar].pickerFn]("show");
         };
         var initEltSet = $();
+        var behavior = options.behaviors && options.behaviors.dateTextChange;
 
         if (!options.popup) {
             window[widgetVar] = new ice.ace.Calendar(id, options);
             return;
         }
+
+        input.one("focus.init", function() {
+            if (behavior) {
+                input.change(function() {
+                    setFocus();
+                    ice.ace.ab(behavior);
+                });
+            } else if (options.singleSubmit) {
+                input.change(function(event) {
+                    setFocus();
+                    ice.se(event, id);
+                });
+            }
+        });
+        initEltSet = initEltSet.add(input);
 
         window[widgetVar] = null;
         if ($.inArray(showOn, ["button","both"]) >= 0) {
@@ -223,7 +241,7 @@ ice.ace.Calendar.init = function(options) {
         }
         if ($.inArray(showOn, ["focus","both"]) >= 0) {
             input.one("focus.init", initAndShow);
-            initEltSet = initEltSet.add(input);
+//            initEltSet = initEltSet.add(input);
         }
 
         ice.onElementUpdate(id, function() {
