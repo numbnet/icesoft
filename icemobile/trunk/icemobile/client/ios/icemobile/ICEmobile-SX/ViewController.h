@@ -70,5 +70,6 @@
 - (IBAction) doMobileshowcase;
 - (IBAction) chooseAction;
 - (IBAction) returnPressed;
+- (IBAction) showLicense;
 
 @end

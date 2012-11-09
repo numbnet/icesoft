@@ -209,6 +209,9 @@ NSLog(@"hideControls");
 }
 
 - (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
+    if ([@"ICEmobile-SX License" isEqualToString: alertView.title])  {
+        return;
+    }
 
     if (buttonIndex == 0) {
         NSURL *theURL = [NSURL URLWithString:self.currentURL];
@@ -236,6 +239,23 @@ NSLog(@"hideControls");
     }
     LogDebug(@"Alert dismissed via button %d", buttonIndex);
 
+}
+
+- (IBAction) showLicense  {
+    LogDebug(@"ViewController showLicense");
+    NSError *error = nil;
+    NSString *localPath = [[NSBundle mainBundle] 
+            pathForResource:@"license" ofType:@"txt"];
+    NSString *licenseText = [[NSString alloc] initWithContentsOfFile:localPath
+            encoding:NSASCIIStringEncoding error:&error];
+
+    UIAlertView *alert = [[UIAlertView alloc] 
+            initWithTitle:@"ICEmobile-SX License" 
+            message:licenseText 
+            delegate:self cancelButtonTitle:@"OK" 
+            otherButtonTitles:nil];
+    [alert show];
+    [alert release];
 }
 
 - (IBAction) doMediacast  {
