@@ -1357,7 +1357,6 @@ ice.mobi.storeLocation = function(id, coords) {
 }
 
 ice.mobi.storeDirection = function(id, orient) {
-    console.log('__ StoreDirection! __');
     if (orient.webkitCompassAccuracy <= 0) {
         return;
     }
@@ -1403,8 +1402,8 @@ ice.mobi.geolocation = {
             geoParams.enableHighAccuracy = true;
         }
         console.log('Launching watchPosition, ' + 
-            'maxAge: ' + geoParams.maximumAge + '(s),' + 
-            ' timeout: ' + geoParams.timeout + '(s)' +
+            'maxAge: ' + geoParams.maximumAge + '(ms),' +
+            ' timeout: ' + geoParams.timeout + '(ms)' +
             ' highAccuracy: ' + geoParams.enableHighAccuracy);
 
         ice.mobi.geolocation.watchId = navigator.geolocation.watchPosition(
@@ -1425,20 +1424,24 @@ ice.mobi.geolocation = {
         ice.mobi.geolocation.clientId = pClientId;
         ice.mobi.geolocation.clearWatch();
 
-        console.log('Launching getCurrentPosition');
-        if (highAccuracy == 'false') {
-            console.log('Launching low precision getCurrentPosition, maxAge: ' +
-                    maxAge + '(s), timeout: ' + timeout + '(s)');
+        var geoParams = {};
+        if (maxAge > 0)  {
+            geoParams.maximumAge = maxAge * 1000;
+        }
+        if (timeout > 0)  {
+            geoParams.timeout = timeout * 1000;
+        }
+        if (highAccuracy != 'false')  {
+            geoParams.enableHighAccuracy = true;
+        }
+        console.log('Launching watchPosition, ' +
+                'maxAge: ' + geoParams.maximumAge + '(ms),' +
+                ' timeout: ' + geoParams.timeout + '(ms)' +
+                ' highAccuracy: ' + geoParams.enableHighAccuracy);
 
-            navigator.geolocation.getCurrentPosition(this.successCallback, this.errorCallback,
-                    { maximumAge: maxAge, timeout: timeout });
-        } else {
-            console.log('Launching HIGH precision getCurrentPosition, maxAge: ' +
-                    maxAge + '(s), timeout: ' + timeout + '(s)');
-            ice.mobi.geolocation.watchId = navigator.geolocation.getCurrentPosition(
-                    this.oneTimeSuccessCallback, this.errorCallback,
-                    { enableHighAccuracy: true, maximumAge: maxAge * 1000, timeout: timeout * 1000 }
-            );
+
+        navigator.geolocation.getCurrentPosition(this.oneTimeSuccessCallback, this.errorCallback,
+                                                 geoParams);
         }
         window.addEventListener('deviceorientation', ice.mobi.geolocation.orientationCallback);
     },
