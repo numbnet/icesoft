@@ -241,6 +241,18 @@ html.honeycomb h3{
     box-orient: horizontal;
     position: relative;
 }
+.form .mobi-fieldset.intro{
+    text-align:left;
+}
+.intro .mobi-fieldset-row:first-child:first-letter,
+.exampleDescription p:first-child:first-letter {
+    float: left; 
+    font-family: Georgia, Times, serif;
+    font-size: 40px; 
+    line-height: 0.8;
+    margin: 3px 3px 0 0;
+    text-shadow: 2px 2px 3px #B5B6B7;
+}
 .form .mobi-fieldset-row .mobi-getenhanced{
     display: block;
     width: 100%;
@@ -258,7 +270,10 @@ html.honeycomb h3{
     display: block!important;
     float: none!important;
 }
-.form .mobi-fieldset-row > input, .form .mobi-fieldset-row > select, .form .mobi-fieldset-row > span{
+.form .mobi-fieldset-row > input, 
+.form .mobi-fieldset-row > select, 
+.form .mobi-fieldset-row > span,
+.form .mobi-fieldset-row > textarea{
     -webkit-box-flex: 2;
     -moz-box-flex: 2;
     -moz-box-sizing: border-box;

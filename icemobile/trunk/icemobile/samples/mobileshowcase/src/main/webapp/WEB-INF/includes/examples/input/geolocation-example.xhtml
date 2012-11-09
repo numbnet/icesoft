@@ -22,7 +22,7 @@
                 xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component"
                 id="geoLocFrag">
 
-    <h:form prependId="false">
+    <h:form prependId="false" id="geoForm" styleClass="form">
 
     <mobi:geolocation latitude="#{geoLocationBean.latitude}"
                       longitude="#{geoLocationBean.longitude}"
@@ -33,30 +33,40 @@
                       enableHighPrecision="#{geoLocationBean.enableHighPrecision}"
                       continuousUpdates="#{geoLocationBean.continuousUpdates}"/>
 
-
-    <h:panelGroup style="display:block;padding-left:10px;">
-        <canvas id="mapCanvas" width="300" height="150"/>
-        <br/>
-        <mobi:commandButton value="Locate Me"/>
-    </h:panelGroup>
+    <mobi:fieldsetGroup styleClass="intro">
+        <mobi:fieldsetRow>
+            Click the 'Locate Me' button below to calculate your current location and update the map. 
+            Various settings for the geolocation component can also be adjusted below.
+        </mobi:fieldsetRow>
+    </mobi:fieldsetGroup>
+    
+    <mobi:fieldsetGroup>
+        <mobi:fieldsetRow>
+            <canvas id="mapCanvas" width="#{viewSize eq 'small' ? '260' : '360'}" height="#{viewSize eq 'small' ? '130' : '180'}" class="center"/>
+        </mobi:fieldsetRow>
+        <mobi:fieldsetRow styleClass="mobi-center">
+            <mobi:commandButton value="Reset Values" actionListener="#{geoLocationBean.resetValues}"/>
+            <mobi:commandButton value="Locate Me"/>
+        </mobi:fieldsetRow>
+    </mobi:fieldsetGroup>
     
     <h3>Geolocation Results:</h3>
 
     <mobi:fieldsetGroup>
         <mobi:fieldsetRow>
-            Latitude:
+            <label>Latitude:</label>
             <h:outputText value="#{geoLocationBean.latitude}"/>
         </mobi:fieldsetRow>
         <mobi:fieldsetRow>
-            Longitude:
+            <label>Longitude:</label>
             <h:outputText value="#{geoLocationBean.longitude}"/>
         </mobi:fieldsetRow>
         <mobi:fieldsetRow rendered="#{geoLocationBean.direction gt 0.0}">
-            Direction:
+            <label>Direction:</label>
             <h:outputText value="#{geoLocationBean.direction}"/>
         </mobi:fieldsetRow>
         <mobi:fieldsetRow rendered="#{geoLocationBean.altitude gt 0.0}">
-            Altitude:
+            <label>Altitude:</label>
             <h:outputText value="#{geoLocationBean.altitude}"/>
         </mobi:fieldsetRow>
     </mobi:fieldsetGroup>
@@ -74,24 +84,35 @@
         </mobi:fieldsetRow>
         <mobi:fieldsetRow>
             <h:outputLabel value="enableHighPrecision:" for="highPrecise"/> 
-            <h:selectOneMenu id="highPrecise" value="#{geoLocationBean.enableHighPrecision}">
+            <h:selectOneMenu id="highPrecise" value="#{geoLocationBean.enableHighPrecision}"
+                style="max-width:100px;">
                 <f:selectItem itemValue="true"/>
                 <f:selectItem itemValue="false"/>
                 <f:selectItem itemValue="asNeeded"/>
+                <f:ajax execute="@this" render="@form"/>
             </h:selectOneMenu>
         </mobi:fieldsetRow>
         <mobi:fieldsetRow>
-            <h:outputLabel value="Timeout (longest allowable time for reading to arrive (0-x,
-            seconds):" for="timeout"/>
-            <h:inputText id="timeout" value="#{geoLocationBean.timeout}"/>
+            <h:outputLabel value="Timeout:" for="timeout"/>
+            <div style="max-width:50%;">
+                <span style="font-size: 11px;float: right;margin: -5px -5px 5px -15px;text-align: left;">
+                    (longest allowable time for reading to arrive (0-x, seconds)
+                </span>
+                <mobi:inputText id="timeout" value="#{geoLocationBean.timeout}"
+                    singleSubmit="true" type="number" style="float: right;clear: both;"/>
+            </div>
         </mobi:fieldsetRow>
         <mobi:fieldsetRow>
-            <h:outputLabel value="Maximum Age (oldest allowable cached Location reading (0-x,
-            seconds):" for="maxAge"/>
-            <h:inputText id="maxAge" value="#{geoLocationBean.maximumAge}"/>
+            <label>Maximum Age:</label>
+            <div style="max-width:50%;">
+                <span style="font-size: 11px;float: right;margin: -5px -5px 5px -15px;text-align: left;">
+                    (oldest allowable cached Location reading (0-x, seconds)
+                </span>
+                <mobi:inputText id="maxAge" value="#{geoLocationBean.maximumAge}"
+                    singleSubmit="true" type="number" style="float: right;clear: both;"/>
+            </div>
         </mobi:fieldsetRow>
     </mobi:fieldsetGroup>
-    
 
     </h:form>
     <script type="text/javascript">
