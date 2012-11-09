@@ -14,3 +14,4 @@
 * limitations under the License.
 */
 
+Contains code from ZXing under Apache License 2.0.
