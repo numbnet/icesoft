@@ -2,6 +2,7 @@ package org.icemobile.jsp.tags;
 
 import java.io.IOException;
 import java.util.logging.Logger;
+import javax.servlet.http.HttpSession;
 
 import org.icemobile.component.IGetEnhanced;
 import org.icemobile.jsp.util.MobiJspConstants;
@@ -60,7 +61,13 @@ public class GetEnhancedTag extends BaseSimpleTag implements IGetEnhanced{
     }
 
     public boolean isIOSSmartBannerRendered() {
-        return Boolean.TRUE.equals(getContext().getAttribute(Constants.IOS_SMART_APP_BANNER_KEY));
+        HttpSession httpSession = getRequest().getSession(false);
+        if (null == httpSession)  {
+            return Boolean.TRUE.equals( getRequest().getAttribute(
+                    Constants.IOS_SMART_APP_BANNER_KEY) );
+        }
+        return Boolean.TRUE.equals( httpSession.getAttribute(
+                Constants.IOS_SMART_APP_BANNER_KEY) );
     }
 	
     public void release(){
