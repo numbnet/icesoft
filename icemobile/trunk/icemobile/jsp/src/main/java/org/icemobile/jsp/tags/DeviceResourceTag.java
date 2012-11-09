@@ -22,6 +22,7 @@ import java.util.logging.Logger;
 
 import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.PageContext;
+import javax.servlet.http.HttpSession;
 
 import org.icemobile.jsp.util.MobiJspConstants;
 import org.icemobile.jsp.util.Util;
@@ -113,7 +114,15 @@ public class DeviceResourceTag extends BaseSimpleTag {
 					String uploadURL = SXUtils.getRegisterSXURL(getRequest());
 				    String smartAppMeta = String.format(META_IOS_SMARTAPPBANNER, IOS_APP_ID, uploadURL);
 					out.write(smartAppMeta);
-					pageContext.setAttribute(Constants.IOS_SMART_APP_BANNER_KEY, Boolean.TRUE);
+                    HttpSession httpSession = getRequest().getSession(false);
+                    if (null == httpSession)  {
+                        getRequest().setAttribute(Constants.IOS_SMART_APP_BANNER_KEY, 
+                                Boolean.TRUE);
+                    } else {
+                        httpSession.setAttribute(Constants.IOS_SMART_APP_BANNER_KEY, 
+                                Boolean.TRUE);
+                    }
+
 				}
 			}
 		}
