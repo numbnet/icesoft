@@ -17,6 +17,12 @@ public class GeolocationBean {
     private String altitude;
     private String direction;
 
+    private int timeout = 30;
+    private int maximumAge = 3600;
+    private String enableHighPrecision = "asNeeded";
+    private boolean continuousUpdates = true;
+
+
     @ModelAttribute("geolocationBean")
     public GeolocationBean createBean() {
         return new GeolocationBean();
@@ -39,20 +45,61 @@ public class GeolocationBean {
         }
     }
 
-    public String getLat() {
+    public String getLatitude() {
         return latitude;
     }
 
-    public String getLon() {
+    public String getLongitude() {
         return longitude;
     }
 
-    public String getAlt() {
+    public String getAltitude() {
         return altitude;
     }
 
-    public String getDir() {
+    public String getDirection() {
         return direction;
     }
+    
+
+    public int getTimeout() {
+        return timeout;
+    }
+
+    public void setTimeout(int timeout) {
+        this.timeout = timeout;
+    }
+
+    public int getMaximumAge() {
+        return maximumAge;
+    }
+
+    public void setMaximumAge(int maximumAge) {
+        this.maximumAge = maximumAge;
+    }
+
+    public String getEnableHighPrecision() {
+        return enableHighPrecision;
+    }
+
+    public void setEnableHighPrecision(String enableHighPrecision) {
+        this.enableHighPrecision = enableHighPrecision;
+    }
+
+    public boolean isContinuousUpdates() {
+        return continuousUpdates;
+    }
+
+    public void setContinuousUpdates(boolean continuousUpdates) {
+        this.continuousUpdates = continuousUpdates;
+    }
+    
+    public void resetValues(){
+        this.latitude = null;
+        this.longitude = null;
+        this.altitude = null;
+        this.direction = null;
+    }
+
 
 }
