@@ -46,6 +46,7 @@
 .mobi-button-dis, .mobi-button:disabled {
     opacity: 0.5;
     filter: alpha(opacity = 50);
+    -webkit-tap-highlight-color: #000;
 }
 /* back button */
 div.mobi-button-back{
