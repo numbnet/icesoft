@@ -284,11 +284,14 @@ html.honeycomb h3, html.android h3{
     display: block!important;
     float: none!important;
 }
+.form .mobi-fieldset-row > span{
+     text-align:right;
+}
 .form .mobi-fieldset-row > span > input{
     display:block;
     width:100%;
  }
-.form .mobi-fieldset .mobi-button{
+.form .mobi-fieldset > .fieldset-rwo > .mobi-button{
     -moz-box-sizing: border-box;
     -wekit-box-sizing: border-box;
     box-sizing: border-box;
