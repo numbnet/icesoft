@@ -1,7 +1,4 @@
 (function() {
-    //functions that do not encapsulate any state, they just work with the provided parameters
-    //and globally accessible variables
-    //---------------------------------------
     function updateHidden(clientId, value) {
         var hidden = document.getElementById(clientId + "_hidden");
         if (hidden) {
@@ -34,16 +31,13 @@
         var children = document.getElementById(clientId).getElementsByTagName('section');
         for (var i = 0; i < children.length; i++) {
             var anode = children[i];
-            var max = Math.max(anode.offsetHeight, anode.scrollHeight, anode.clientHeight);
-            //init all classes to close
-         //   anode.className = "close";
-         //   anode.style.height = handleHt+"px";
+            var max = Math.max(anode.scrollHeight, anode.offsetHeight, anode.clientHeight);
             if (max > 0 && max > mxht) {
                 mxht = max;
             }
         }
-        if (mxht <= handleHt && accord.clientHeight>0) {
-            mxht = accord.clientHeight - handleHt;
+        if (mxht <= handleHt ) {
+            mxht = 0;
         }
         return mxht;
     }
@@ -52,120 +46,163 @@
          if (calcht > 0) {
              return  calcht+"px";
          }
-        else return fixedHeight;
+         else {
+             return fixedHeight;
+         }
     }
     function setHeight(opened, height){
-        opened.style.height = height;
-        opened.style.maxHeight = height;
+        if (opened && height){
+            opened.style.height = height;
+            opened.style.maxHeight = height;
+        }
     }
-    function setPane(elem, height, style){
-        elem.className=style;
+    function openPane(elem, height){
+        elem.className="open";
         if (height){
             setHeight(elem, height);
-        }  else {
-            setHeight(elem, " ");
         }
+    }
+    function closePane(elem, closeHt){
+        elem.className="closed";
+        if (closeHt) {
+            setHeight(elem, closeHt);
+        }
+    }
+    function updateHt(paneId){
+        console.log("triggered update on height for id="+paneId);
+        var pane = document.getElementById(paneId);
+        console.log("scrollHeight="+pane.scrollHeight+" offsetHeight="+pane.offsetHeight+" clientHt="+pane.clientHeight);
     }
     function Accordion(clientId, cfgIn) {
         var containerId = clientId+"_acc" ;
-        var paneOpId = cfgIn.opened || null;
+        var paneId = cfgIn.opened || null;
         var accordRoot = document.getElementById(containerId);
-        if (!paneOpId && accordRoot.hasChildNodes()){
-            var childNodes = accordRoot.getElementsByTagName('section');
-            paneOpId = childNodes[0].id;
+        var paneOpId;
+        if (paneId) {
+            paneOpId = paneId + "_sect";
         }
+        if (!paneOpId && accordRoot.hasChildNodes()){
+            var children = accordRoot.getElementsByTagName("section");
+            paneOpId = children[0].id;
+        }
+        console.log("paneOpId="+paneOpId);
         var openElem = document.getElementById(paneOpId);
+        if (openElem){
+            openElem.className = "open";
+            console.log("opened element has height="+openElem.offsetHeight);
+        }
         var handleheight = getHandleHeight(accordRoot);
+        var handleht = handleheight + "px";
         var autoheight = cfgIn.autoHeight || false;
         var fixedHeight = cfgIn.fixedHeight || null;
-        if (autoheight == true) {
-            fixedHeight = updateFixedHeight(containerId, handleheight, fixedHeight, scroll);
+        if (!autoheight && !fixedHeight){
+            handleht = null;
         }
-        if (openElem){
-            openElem.className="open";
+        var maxHeight = calcMaxDivHeight(containerId, handleheight);
+        if (autoheight && (maxHeight > 0)){
+            ice.mobi.accordionController.maxHt[clientId]=maxHeight;
+            openPane(openElem, maxHeight+"px");
         }
-
-        if (fixedHeight){
-            setHeight(openElem, fixedHeight);
+        if (autoheight && (maxHeight==0)){
+            ice.onAfterUpdate(function() {
+                ice.mobi.accordionController.updateHeight(clientId, handleheight);
+            });
         }
         return {
             toggle: function(clientId, el, cached) {
+                var singleSubmit  = ice.mobi.accordionController.singleSubmit[clientId];
+                if (autoheight){
+                    var tmp = ice.mobi.accordionController.maxHt[clientId];
+                    if (tmp && maxHeight==0){
+                        console.log("toggle and maxHeight = "+maxHeight+" tmp="+tmp) ;
+                        maxHeight = tmp;
+                    } if (tmp && maxHeight > 0){
+                        maxhHeight = Math.max(tmp, maxHeight);
+                    }
+                }
                 var theParent = el.parentElement;
                 if (!theParent) {
                     theParent = el.parentNode; //mozilla
                 }
-                var accId = clientId+"_acc";
-                var autoheight = ice.mobi.accordionController.autoheight[clientId];
-                //which child is the element?
-                var changed= true;
-                openElem = document.getElementById(paneOpId);
-                if (paneOpId && paneOpId == theParent.id){
-                    if (openElem.className=="open"){
-                        setPane(openElem, handleheight+"px", "closed");
-
-                    } else {
-                        setPane( openElem, fixedHeight, "open");
-                    }
-                    changed=false;
-                }
-                else {//panel has changed
-                    setPane(openElem, handleheight+"px", "closed");
-                    if (autoheight){
-                        fixedHeight = updateFixedHeight(accId, handleheight, fixedHeight);
-                    }
-                    setPane(theParent,fixedHeight,"open");
-                    paneOpId = theParent.id;
-                }
                 var pString = theParent.getAttribute("id");
                 var subString = pString.replace("_sect","");
                 updateHidden(clientId, subString);
-                if (!cached && ice.mobi.accordionController.singleSubmit[clientId] && changed) { //renderer take care of closed panes
-                    ice.se(null, clientId);
+              //  console.log("paneOpId="+paneOpId+" parentId ="+theParent.id);
+                openElem = document.getElementById(paneOpId);
+                if (autoheight && openElem && (maxHeight > 0)){
+                    fixedHeight = maxHeight+"px";
+                   // console.log("updated fixedHeight="+fixedHeight);
+                }
+                if (paneOpId && paneOpId == theParent.id){
+                    if (openElem.className=="open"){
+                      //  console.log("no pane change so close existing");
+                        closePane(openElem, handleht);
+                    } else {
+                     //   console.log("no pane change to open existing");
+                        openPane( openElem, fixedHeight);
+                    }
+                }
+                else {//panel has changed
+                    closePane(openElem, handleht);
+                    openPane(theParent,fixedHeight);
+                    paneOpId = theParent.id;
+                    if (cached){
+                        openElem = theParent;
+                        openPane(openElem, fixedHeight);
+                    }
+                    if (!cached && singleSubmit) {
+                       ice.se(null, clientId);
+                    }
                 }
             },
+            updateHeight: function(clientId, handleheight){
+                    maxHeight = calcMaxDivHeight(clientId,  handleheight);
+                    return maxHeight;
+            } ,
             updateProperties: function (clientId, cfgUpd) {
                 var fixedHeight=cfgUpd.fixedHeight ||null;
-                var autoheight = cfgUpd.autoHeight;
-                if (autoheight ) {
-                    ice.mobi.accordionController.autoheight[clientId] = autoheight;
-                }
+                autoheight = cfgUpd.autoHeight;
                 if (autoheight) {
-                    var updHeight = updateFixedHeight(clientId+"_acc", handleheight, fixedHeight);
-                    if (fixedHeight != updHeight){
-                        fixedHeight = updHeight;
-                        setHeight(document.getElementById(paneOpId), fixedHeight);
+                    //calc new maxHeight
+                    var tmp1 = calcMaxDivHeight(clientId, handleheight);
+                    maxHeight = Math.max(tmp1, maxHeight);
+                    if (maxHeight == 0){
+                        if (!ice.mobi.accordionController[clientId]) {
+                           ice.onAfterUpdate(function() {
+                               ice.mobi.accordionController.updateHeight(clientId, handleheight);
+                            }) ;
+                        }else {
+                        //if tmp comes back 0 may not have page loaded..then what
+                            maxHeight = Math.max(ice.mobi.accordionController.maxHt[clientId], maxHeight);
+                        }
+                    }
+                    if ( maxHeight && maxHeight > 0){
+                        ice.mobi.accordionController.maxHt[clientId]=maxHeight;
+                        fixedHeight = maxHeight+"px";
                     }
                 }
-                if( !paneOpId){
-                    paneOpId = cfgIn.opened+"_sect" || null;
+                if (openElem){
+                    closePane(openElem, handleheight+"px");
+                } else {  //may have been deleted or removed
+                     var root = document.getElementById(clientId+"_acc");
+                     openElem = root.firstChild;
+                     paneOpId = root.firstChild.id;
                 }
-                var opened = document.getElementById(paneOpId);
-                if (!opened){  //may have been deleted or removed
-                    var root = document.getElementById(clientId+"_acc");
-                    opened = root.firstChild;
-                    paneOpId = root.firstChild.id;
-                }
-                var hiddenVal = getHiddenVal(clientId); //could have pushed new value
-                if (hiddenVal!=null) {
-                    var newPane = hiddenVal+"_sect";
-                    if (newPane!=paneOpId){
-                       setPane(opened, handleheight+"px", "closed");
-                       var newElem = document.getElementById(newPane);
-                       if (newElem){
-                           setPane(newElem, fixedHeight, "open");
-                       }
-                        paneOpId = newPane;
-                        openElem = newElem;
-                    }
+                var pushedId = getHiddenVal(clientId)+"_sect";
+                if(paneOpId != pushedId){
+                    paneOpId = pushedId || null;
+                    openElem = document.getElementById(paneOpId);
+                    openPane(openElem, fixedHeight) ;
                 }
             }
         }
     }
-
     ice.mobi.accordionController = {
         panels: {},
         autoheight: {},
+        maxHt: {},
         singleSubmit: {},
+        lastOpen: {},
         initClient: function(clientId, cfg) {
             if (!this.panels[clientId]) {
                 this.autoheight[clientId]= cfg.autoHeight;
@@ -180,6 +217,7 @@
                 this.panels[clientId].toggle(clientId, el, cachetyp);
             } else {
                 this.initClient(clientId, {});
+                console.log(" had to init accordion again!");
                 this.panels[clientId].toggle(clientId, el, cachetyp);
             }
         },
@@ -187,17 +225,25 @@
             if (this.panels[clientId]) {
                 this.panels[clientId].toggle(clientId, el, true);
             } else{
-                this.autoheight[clientId]= true;
-                this.initClient(clientId, {autoHeight:true});
-              //  this.panels[clientId].toggle(clientId, el, true);
+                this.initClient(clientId, {autoheight:true});
             }
         } ,
+        updateHeight: function(clientId, handleHt){
+            if (this.panels[clientId]){
+            //    console.log("updateHeight");
+                var tmp = this.panels[clientId].updateHeight(clientId, handleHt);
+                if (!this.maxHt[clientId] && tmp > 0){
+                    this.maxHt[clientId] = tmp;
+                }else {
+                    this.maxHt[clientId] = Math.max(tmp, this.maxHt[clientId]);
+                }
+             //   console.log("updateProps ->maxHt clientId = "+this.maxHt[clientId]);
+            }
+        },
         unload: function(clientId){
             this.panels[clientId] = null;
             this.autoheight[clientId]=null;
             this.panels[clientId]=null;
         }
     }
-
 })();
-
