@@ -10,15 +10,29 @@
         </mobi:fieldsetRow>
     </mobi:fieldsetGroup>
     <mobi:carousel id="cartwo"
-                     selectedItem="${carouselBean.carouselTwo}">
-         <c:forEach items="${carouselBean.imagesA}" var="item">
+                     selectedItem="${carouselBean.index}">
+         <c:forEach items="${carouselBean.images}" var="item">
              <mobi:carouselItem>
                  ${item}
              </mobi:carouselItem>
          </c:forEach>
     </mobi:carousel>
+    <mobi:commandButton type="submit" buttonType="important"/>
 
 </form:form>
+
+<h3 style="clear:both;padding-top:10px;">Carousel Echo</h3>
+<div id="outputCarousel">
+     <mobi:fieldsetGroup>
+         <!-- Text output-->
+         <mobi:fieldsetRow>
+             <label style="vertical-align:top;">Current position:</label>
+             <div>
+                ${carouselBean.selectedImage}
+            </div>
+         </mobi:fieldsetRow>
+     </mobi:fieldsetGroup>
+</div>
 
 <script type="text/javascript">
     MvcUtil.enhanceForm("#carouselForm");
