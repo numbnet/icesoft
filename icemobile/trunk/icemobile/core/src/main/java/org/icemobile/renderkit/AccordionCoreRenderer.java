@@ -34,10 +34,8 @@ public class AccordionCoreRenderer extends BaseCoreRenderer implements IRenderer
         } 
         
         /* write out root tag.  For current incarnation html5 semantic markup is ignored */
- //       logger.info("DIV_START root wrapper of accordion");
         writer.startElement(DIV_ELEM, accordion);
         writer.writeAttribute(ID_ATTR, clientId);
- //       logger.info("\t DIV_START acc");
         writer.startElement(DIV_ELEM, accordion);
         writer.writeAttribute(ID_ATTR, clientId+"_acc");
         StringBuilder styleClass = new StringBuilder(IAccordion.ACCORDION_CLASS);
@@ -54,9 +52,7 @@ public class AccordionCoreRenderer extends BaseCoreRenderer implements IRenderer
         IAccordion accordion = (IAccordion)component;
         String clientId=accordion.getClientId();
         String openedPaneId = accordion.getOpenedPaneClientId();
- //       logger.info("\t DIV_END acc");
         writer.endElement(DIV_ELEM);  //end of _acc div
- //       logger.info("\t DIV_START hidden and script");
         writer.startElement(DIV_ELEM, accordion); //start of div for hidden and script
         writer.writeAttribute(ID_ATTR, clientId+"_hid");
         if (null != openedPaneId){
@@ -64,7 +60,6 @@ public class AccordionCoreRenderer extends BaseCoreRenderer implements IRenderer
         }else{
              super.writeHiddenInput(writer,accordion);
         }
- //       logger.info("SPAN_START script");
         writer.startElement(SPAN_ELEM, accordion);
         writer.writeAttribute(ID_ATTR, clientId + "_script");
         writer.startElement(SCRIPT_ELEM, null);
@@ -83,17 +78,12 @@ public class AccordionCoreRenderer extends BaseCoreRenderer implements IRenderer
         }
         cfg.append("}");
          //just have to add behaviors if we are going to use them.
-        
-        writer.writeText("ice.mobi.accordionController.initClient('" 
+        writer.writeText("ice.mobi.accordionController.initClient('"
                 + accordion.getClientId() + "'," +cfg.toString()+");");
-        
         writer.endElement(SCRIPT_ELEM);
         writer.endElement(SPAN_ELEM);
-//        logger.info("SPAN_END");
         writer.endElement(DIV_ELEM);
-//        logger.info("\t DIV_END script and hidden");
         writer.endElement(DIV_ELEM);
- //       logger.info("DIV_END FINAL!");
     }
 
 }

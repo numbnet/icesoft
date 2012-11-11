@@ -41,6 +41,7 @@ public class ContentPaneCoreRenderer extends BaseCoreRenderer {
           String accordionId = accordion.getClientId();
           String clientId = pane.getClientId();
           boolean client = pane.isClient();
+          boolean autoheight = accordion.isAutoHeight();
           String myId = pane.getId();
           String handleClass = "handle";
           String pointerClass = "pointer";
@@ -72,7 +73,10 @@ public class ContentPaneCoreRenderer extends BaseCoreRenderer {
           writer.endElement(DIV_ELEM);
           writer.startElement(DIV_ELEM, pane);
           writer.writeAttribute(ID_ATTR, clientId+"wrp");
-          if (!accordion.isAutoHeight() && null != accordion.getFixedHeight()) {
+          if (autoheight){
+             writer.writeAttribute("onload", "ice.mobi.accordionController.updateHeight('"+accordionId+"', '"+clientId+"');");
+          }
+          if (!autoheight && null != accordion.getFixedHeight()) {
              writer.writeAttribute(STYLE_ATTR, "height: "+accordion.getFixedHeight()+"; overflow-y: scroll;") ;
           }
           writer.startElement(DIV_ELEM, pane);
