@@ -359,8 +359,8 @@ ice.mobi.flipvalue = function flipvalue(id, vars) {
                 this.unload[clientId] = function () {
                     ice.mobi.carousel.unloadTest(clientId);
                 };
-                var node = document.getElementById(clientId);
-                node.addEventListener("DOMSubtreeModified", this.unload[clientId], false);
+              //  var node = document.getElementById(clientId);
+                document.addEventListener("DOMSubtreeModified", this.unload[clientId], false);
             } else {
                 this.cfg[clientId] = cfgIn;
                 this.acarousel[clientId].updateProperties(clientId, cfgIn);
@@ -382,7 +382,7 @@ ice.mobi.flipvalue = function flipvalue(id, vars) {
            //    console.log("unloadTest setting id="+clientId+" to null");
                this.acarousel[clientId] = null;
                this.cfg[clientId] = null;
-            //   document.removeEventListener("DOMSubtreeModified",this.unload[clientId], false ) ;
+               document.removeEventListener("DOMSubtreeModified",this.unload[clientId], false ) ;
             }
         }
     }
@@ -646,9 +646,10 @@ ice.mobi.tabsetController = {
                 var pString = theParent.getAttribute("id");
                 var subString = pString.replace("_sect","");
                 updateHidden(clientId, subString);
-                if (!cached && ice.mobi.accordionController.singleSubmit[clientId] && changed) { //renderer take care of closed panes
+  /*              var singleSubmit=(ice.mobi.accordionController.singleSubmit[clientId]==true);
+                if (!cached && singleSubmit && changed) { //renderer take care of closed panes
                     ice.se(null, clientId);
-                }
+                } */
             },
             updateProperties: function (clientId, cfgUpd) {
                   var fixedHeight=cfgUpd.fixedHeight ||null;
