@@ -1499,7 +1499,7 @@ ice.mobi.geolocation = {
         if (highAccuracy != 'false')  {
             geoParams.enableHighAccuracy = true;
         }
-        console.log('Launching watchPosition, ' +
+        console.log('Launching getCurrentPosition, ' +
                 'maxAge: ' + geoParams.maximumAge + '(ms),' +
                 ' timeout: ' + geoParams.timeout + '(ms)' +
                 ' highAccuracy: ' + geoParams.enableHighAccuracy);
@@ -1514,7 +1514,7 @@ ice.mobi.geolocation = {
     successCallback: function(pos) {
         console.log('Position update for client: ' + ice.mobi.geolocation.clientId);
         try {
-            inputId = ice.mobi.geolocation.clientId + "_locHidden";
+            var inputId = ice.mobi.geolocation.clientId + "_locHidden";
             console.log('LOGGING Position TO hidden field: ' + inputId);
             ice.mobi.storeLocation(inputId, pos.coords);
 
@@ -1525,10 +1525,10 @@ ice.mobi.geolocation = {
 
     // Success Callback for getCurrentPosition  in that it removes deviceorientation listener
     oneTimeSuccessCallback: function(pos) {
-        console.log('Position update for client: ' + ice.mobi.geolocation.clientId);
-        inputId = ice.mobi.geolocation.clientId + "_locHidden";
+        console.log('getCurrentPosition update for client: ' + ice.mobi.geolocation.clientId);
+        var inputId = ice.mobi.geolocation.clientId + "_locHidden";
         ice.mobi.storeLocation(inputId, pos.coords);
-        clearWatch();
+        ice.mobi.clearWatch();
     },
 
     errorCallback: function(positionError) {
@@ -1537,7 +1537,7 @@ ice.mobi.geolocation = {
     },
 
     orientationCallback: function(orient) {
-        inputId = ice.mobi.geolocation.clientId + "_locHidden";
+        var inputId = ice.mobi.geolocation.clientId + "_locHidden";
         ice.mobi.storeDirection(inputId, orient);
     },
 
