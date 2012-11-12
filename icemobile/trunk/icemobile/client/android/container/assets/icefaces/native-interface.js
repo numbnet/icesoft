@@ -182,8 +182,14 @@ if (!window.ice.mobile) {
         namespace.upload = function(id, serialTail) {
             var form = document.getElementById(id);
             context.serialized = ice.serialize(id, true);
-            window.ICEutil.submitForm(form.action, context.serialized +
+            // Mobi-512 Guard against people calling ice.upload from
+            // someplace other than the submit function
+            if (serialTail) {
+                window.ICEutil.submitForm(form.action, context.serialized +
                     serialTail);
+            } else {
+                window.ICEutil.submitForm(form.action, context.serialized );
+            }
         }
 
         namespace.addHidden = function(target, name, value, vtype) {
