@@ -20,9 +20,10 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:icecore="http://www.icefaces.org/icefaces/core"
                 xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
                 id="geoLocFrag">
 
-    <h:form prependId="false" id="geoForm" styleClass="form">
+    <h:form styleClass="form">
 
     <mobi:geolocation latitude="#{geoLocationBean.latitude}"
                       longitude="#{geoLocationBean.longitude}"
@@ -41,7 +42,7 @@
     </mobi:fieldsetGroup>
     
     <mobi:fieldsetGroup>
-        <mobi:fieldsetRow>
+        <mobi:fieldsetRow rendered="#{!geoLocationBean.androidContainer}">
             <canvas id="mapCanvas" width="#{viewSize eq 'small' ? '260' : '360'}" height="#{viewSize eq 'small' ? '130' : '180'}" class="center"></canvas>
         </mobi:fieldsetRow>
         <mobi:fieldsetRow styleClass="mobi-center">
@@ -114,51 +115,53 @@
             </div>
         </mobi:fieldsetRow>
     </mobi:fieldsetGroup>
-
+    
     </h:form>
-    <script type="text/javascript">
-
-        function showLocation() {
-            var canvas = document.getElementById('mapCanvas');
-            if (!canvas) {
-                return;
+    <c:if test="#{!geoLocationBean.androidContainer}">
+        <script type="text/javascript">
+    
+            function showLocation() {
+                var canvas = document.getElementById('mapCanvas');
+                if (!canvas) {
+                    return;
+                }
+                // temporary work around for drawing location on canvas
+                var lat = '#{geoLocationBean.latitude}';
+                var lon = '#{geoLocationBean.longitude}';
+    
+                if (canvas.getContext) {
+                    var ctx = canvas.getContext('2d');
+                    ctx.clearRect(0, 0, 600, 400);
+                    var height = canvas.height;
+                    var width = canvas.width;
+    
+                    ctx.drawImage(image, 0, 0, width, height);
+                    var x = Math.floor(lon * width / 2 / 180 + (width / 2));
+                    var y = Math.floor(-1 * lat * (height / 2) / 90 + (height / 2));
+                    ctx.fillStyle = "#FFFF00";
+                    ctx.beginPath();
+                    ctx.arc(x, y, 5, 0, Math.PI * 2, true);
+                    ctx.fill();
+                }
             }
-            // temporary work around for drawing location on canvas
-            var lat = '#{geoLocationBean.latitude}';
-            var lon = '#{geoLocationBean.longitude}';
-
-            if (canvas.getContext) {
-                var ctx = canvas.getContext('2d');
-                ctx.clearRect(0, 0, 600, 400);
-                var height = canvas.height;
-                var width = canvas.width;
-
-                ctx.drawImage(image, 0, 0, width, height);
-                var x = Math.floor(lon * width / 2 / 180 + (width / 2));
-                var y = Math.floor(-1 * lat * (height / 2) / 90 + (height / 2));
-                ctx.fillStyle = "#FFFF00";
-                ctx.beginPath();
-                ctx.arc(x, y, 5, 0, Math.PI * 2, true);
-                ctx.fill();
+    
+            function updateLocation(data) {
+                if (data.status == "success") {
+                    showLocation();
+                }
             }
-        }
-
-        function updateLocation(data) {
-            if (data.status == "success") {
+    
+            var image = new Image();
+            //scaled and cropped http://nf.nci.org.au/facilities/software/GMT/4.3.1/doc/html/GMT_Docs/node97.html
+            image.src = "#{resource['images:map.png']}";
+            image.onload = function() {
                 showLocation();
             }
-        }
-
-        var image = new Image();
-        //scaled and cropped http://nf.nci.org.au/facilities/software/GMT/4.3.1/doc/html/GMT_Docs/node97.html
-        image.src = "#{resource['images:map.png']}";
-        image.onload = function() {
-            showLocation();
-        }
-
-        jsf.ajax.addOnEvent(updateLocation);
-
-    </script>
+    
+            jsf.ajax.addOnEvent(updateLocation);
+    
+        </script>
+    </c:if>
 
 
 </ui:composition>
