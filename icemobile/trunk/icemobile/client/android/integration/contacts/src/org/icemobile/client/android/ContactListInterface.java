@@ -110,7 +110,7 @@ import android.util.Log;
 			}
 		    });
 
-		builder.setSingleChoiceItems(mContactArray, 0 , new SingleSelectListener() );
+		builder.setSingleChoiceItems(mContactArray, -1 , new SingleSelectListener() );
 		builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int which) {
 			    uploadContactInfo();
@@ -152,44 +152,46 @@ import android.util.Log;
 	 */
 	private void uploadContactInfo() {
 
-	    StringBuilder contactList = new StringBuilder(); 
-	    if (mFetchContact) { 
-		contactList.append( "contact=" + mContactArray [selected] + "&");
-	    }
-
-	    String[] projection;
-	    Cursor dataCur;
-	    String phone;
-	    String email;
-	    if (mFetchPhone) { 
-		// Get phone;
-		projection = new String[] { ContactsContract.CommonDataKinds.Phone.NUMBER };
-		dataCur = mResolver.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, 
-					  projection,ContactsContract.CommonDataKinds.Email.CONTACT_ID + 						     " = " + mIdArray[selected], null, null);
-		if (dataCur.moveToFirst()) {
-		    contactList.append("phone=" + dataCur.getString(dataCur.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)) + "&");
-		dataCur.close();
+	    if (selected >= 0) {
+		StringBuilder contactList = new StringBuilder(); 
+		if (mFetchContact) { 
+		    contactList.append( "contact=" + mContactArray [selected] + "&");
 		}
-	    }
-	    if (mFetchEmail) { 
-		// Get email;
-		projection = new String[] { ContactsContract.CommonDataKinds.Phone.NUMBER };  //should be ContactsContract.CommonDataKinds.Email.ADDRESS but not available until API 11
-		dataCur = mResolver.query(ContactsContract.CommonDataKinds.Email.CONTENT_URI, 
-					  projection,ContactsContract.CommonDataKinds.Email.CONTACT_ID + 						     " = " + mIdArray[selected], null, null);
-		if (dataCur.moveToFirst()) {
-		    contactList.append("email=" + dataCur.getString(dataCur.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)) + "&");
-		dataCur.close();
-		}
-	    }
 
-	    String encodedContactList = null; 
-	    try { 
-		encodedContactList = URLEncoder.encode(contactList.toString(), "utf-8");
-		Log.e("ICEcontacts", "Encoded Contact = " + encodedContactList);
-		mInterface.loadURL(
-				   "javascript:ice.addHidden(ice.currentContactId, ice.currentContactId, '" +  encodedContactList + "'); ");
-	    } catch (Exception e) { 
-		Log.e("ICEmobile", "Exception encoding contact information: " + e); 
+		String[] projection;
+		Cursor dataCur;
+		String phone;
+		String email;
+		if (mFetchPhone) { 
+		    // Get phone;
+		    projection = new String[] { ContactsContract.CommonDataKinds.Phone.NUMBER };
+		    dataCur = mResolver.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, 
+					      projection,ContactsContract.CommonDataKinds.Email.CONTACT_ID + 						     " = " + mIdArray[selected], null, null);
+		    if (dataCur.moveToFirst()) {
+			contactList.append("phone=" + dataCur.getString(dataCur.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)) + "&");
+			dataCur.close();
+		    }
+		}
+		if (mFetchEmail) { 
+		    // Get email;
+		    projection = new String[] { ContactsContract.CommonDataKinds.Phone.NUMBER };  //should be ContactsContract.CommonDataKinds.Email.ADDRESS but not available until API 11
+		    dataCur = mResolver.query(ContactsContract.CommonDataKinds.Email.CONTENT_URI, 
+					      projection,ContactsContract.CommonDataKinds.Email.CONTACT_ID + 						     " = " + mIdArray[selected], null, null);
+		    if (dataCur.moveToFirst()) {
+			contactList.append("email=" + dataCur.getString(dataCur.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)) + "&");
+			dataCur.close();
+		    }
+		}
+
+		String encodedContactList = null; 
+		try { 
+		    encodedContactList = URLEncoder.encode(contactList.toString(), "utf-8");
+		    Log.e("ICEcontacts", "Encoded Contact = " + encodedContactList);
+		    mInterface.loadURL(
+				       "javascript:ice.addHidden(ice.currentContactId, ice.currentContactId, '" +  encodedContactList + "'); ");
+		} catch (Exception e) { 
+		    Log.e("ICEmobile", "Exception encoding contact information: " + e); 
+		}
 	    }
 	}
 
