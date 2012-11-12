@@ -167,7 +167,6 @@ public class GeoLocationBean extends ExampleImpl<GeoLocationBean> implements
     public boolean isAndroidContainer(){
         ClientDescriptor client = MobiJSFUtils.getClientDescriptor();
         boolean result = client.isAndroidOS() && client.isICEmobileContainer();
-        System.out.println("isAndroidContainer="+result);
         return result;
     }
 }
