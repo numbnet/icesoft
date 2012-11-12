@@ -29,9 +29,4 @@
     border-top: 1px solid #7D7D7D;
     color: #FFFFFF;
 }
-
-.mobi-carousel-cursor-center {
-    width: 125px;
-    margin: 0 auto 0 auto;
-}
 .mobi-carousel-cursor-list > li.active { background: #888; }

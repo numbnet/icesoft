@@ -28,11 +28,6 @@
     color: #FFFFFF;
 }
 
-.mobi-carousel-cursor-center {
-    width: 125px;
-    margin: 0 auto 0 auto;
-}
-
 .mobi-carousel-cursor li { background: none repeat scroll 0 0 #333; }
 
 .mobi-carousel-cursor-list > li.active { background: #fff; }
