@@ -9,7 +9,7 @@
             Carousel items can be moved via a finger swipe or mouse drag gesture.
         </mobi:fieldsetRow>
     </mobi:fieldsetGroup>
-    <mobi:carousel id="cartwo"
+    <mobi:carousel id="cartwo"  name="index"
                      selectedItem="${carouselBean.index}">
          <c:forEach items="${carouselBean.images}" var="item">
              <mobi:carouselItem>

@@ -35,15 +35,16 @@ import java.util.logging.Logger;
  */
 public class CarouselTag extends BaseBodyTag implements ICarousel {
 
-    private static final Logger logger = Logger.getLogger(CarouselTag.class.getName());
+     private static final Logger logger = Logger.getLogger(CarouselTag.class.getName());
 
-    private int selectedItem;
+     private int selectedItem;
      private boolean disabled;
      private String nextLabel;
      private String previousLabel;
      private TagWriter writer;
      private CarouselCoreRenderer renderer;
      private int rowCount = 0;
+     private String name;
 
      public int doStartTag() throws JspTagException {
          renderer= new CarouselCoreRenderer();
@@ -127,6 +128,12 @@ public class CarouselTag extends BaseBodyTag implements ICarousel {
          this.rowCount = rowCount;
      }
 
+     public String getName(){
+         return this.name;
+     }
+     public void setName(String name){
+         this.name=name;
+     }
 
      public void release(){
     //     logger.info("release carousel tag");

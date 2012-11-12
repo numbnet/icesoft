@@ -12,6 +12,7 @@ public interface ICarousel extends IMobiComponent{
     public static final String CAROUSEL_CURSOR_LISTCLASS = "mobi-carousel-cursor-list ";
     public static final String CAROUSEL_CURSOR_CURSOR_CENTER_CLASS = "mobi-carousel-cursor-center";
 
+    public String getName();//required for jsp submit
     public String getPreviousLabel();
     public void setPreviousLabel(String prevLabel);
 

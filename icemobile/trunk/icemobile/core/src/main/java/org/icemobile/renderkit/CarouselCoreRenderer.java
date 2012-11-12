@@ -86,7 +86,7 @@ public class CarouselCoreRenderer extends BaseCoreRenderer {
         writer.startElement(DIV_ELEM);
         writer.writeAttribute(ID_ATTR, clientId+"_upd");
         writer.writeAttribute(NAME_ATTR, clientId+"_upd");
-        this.encodeHiddenSelected(writer, clientId, selected);
+        encodeHiddenSelected(writer, clientId, selected, carousel.getName());
         renderScript(carousel, writer);
         writer.endElement(DIV_ELEM);
         writer.endElement(DIV_ELEM);
@@ -125,10 +125,11 @@ public class CarouselCoreRenderer extends BaseCoreRenderer {
      * @param selectedIndex
      * @throws IOException
      */
-    private void encodeHiddenSelected(IResponseWriter writer, String id, int selectedIndex) throws IOException {
+    private void encodeHiddenSelected(IResponseWriter writer, String id, int selectedIndex,
+                                      String name) throws IOException {
         writer.startElement("input");
         writer.writeAttribute("id", id + "_hidden");
-        writer.writeAttribute("name", id + "_hidden");
+        writer.writeAttribute("name", name);
         writer.writeAttribute("type", "hidden");
         writer.writeAttribute("value", String.valueOf(selectedIndex));
         writer.endElement("input");

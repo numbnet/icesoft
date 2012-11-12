@@ -785,6 +785,11 @@
              <rtexprvalue>true</rtexprvalue>
          </attribute>
          <attribute>
+             <description>value to bind the selectedItem to Required if binding value to backing bean</description>
+             <name>name</name>
+             <rtexprvalue>true</rtexprvalue>
+         </attribute>
+         <attribute>
              <description>User defined CSS class</description>
              <name>styleClass</name>
              <required>false</required>
