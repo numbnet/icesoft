@@ -17,8 +17,10 @@
 package org.icemobile.samples.mobileshowcase.view.examples.input.geolocation;
 
 
+import org.icefaces.mobi.utils.MobiJSFUtils;
 import org.icemobile.samples.mobileshowcase.view.metadata.annotation.*;
 import org.icemobile.samples.mobileshowcase.view.metadata.context.ExampleImpl;
+import org.icemobile.util.ClientDescriptor;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -160,5 +162,12 @@ public class GeoLocationBean extends ExampleImpl<GeoLocationBean> implements
         this.longitude = 0;
         this.altitude = 0;
         this.direction = 0;
+    }
+    
+    public boolean isAndroidContainer(){
+        ClientDescriptor client = MobiJSFUtils.getClientDescriptor();
+        boolean result = client.isAndroidOS() && client.isICEmobileContainer();
+        System.out.println("isAndroidContainer="+result);
+        return result;
     }
 }
