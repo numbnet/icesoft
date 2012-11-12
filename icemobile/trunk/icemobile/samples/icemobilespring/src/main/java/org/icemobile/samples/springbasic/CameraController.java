@@ -61,12 +61,6 @@ public class CameraController {
         model.addAttribute("imgPath", getCurrentFileName(request));
     }
 
-    @RequestMapping(value = "/campushr", method = RequestMethod.GET)
-    public void camPushr(HttpServletRequest request, Model model) {
-        model.addAttribute("isGET", Boolean.TRUE);
-        model.addAttribute("imgPath", getCurrentFileName(request));
-    }
-
     @ModelAttribute("cameraBean")
     public ModelBean createBean() {
         return new ModelBean();
@@ -86,22 +80,6 @@ public class CameraController {
         } else {
             model.addAttribute("imgPath", "resources/uploaded.jpg");
         }
-    }
-
-    @RequestMapping(value = "/campushr", method = RequestMethod.POST, consumes="multipart/form-data")
-    public void pushCamerar(
-            HttpServletRequest request, ModelBean modelBean,
-            @RequestParam(value = "cam", required = false) MultipartFile file,
-            Model model) throws IOException {
-
-        this.pushCamera(request, modelBean, file, model);
-    }
-    
-    //non-file upload post
-    @RequestMapping(value = "/campushr", method = RequestMethod.POST)
-    public void camPushrPost(HttpServletRequest request, Model model) {
-        model.addAttribute("isGET", Boolean.TRUE);
-        model.addAttribute("imgPath", getCurrentFileName(request));
     }
 
     @RequestMapping(value = "/campush", method = RequestMethod.POST)
