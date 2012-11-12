@@ -26,3 +26,20 @@
     -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#cccccc', EndColorStr='#999999')";
     border-bottom: 1px solid #999999;
 }
+.mobi-accordion .open, .mobi-accordion .closed {
+    -webkit-transition-property: none;
+    -o-transition-property: none;
+    -ms-transition-property: none;
+    transition-property:  none;
+}
+.mobi-accordion .pointer {
+    -webkit-transition-property: none;
+    -o-transition-property: none;
+    -ms-transition-property: none;
+    transition-property:  none;
+}
+.mobi-accordion .open .pointer {
+    -webkit-transform:rotate(90deg);
+    -ms-transform:rotate(90deg);
+    transform:rotate(90deg);
+}
