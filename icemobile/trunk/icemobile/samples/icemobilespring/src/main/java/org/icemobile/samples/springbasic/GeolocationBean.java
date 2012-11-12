@@ -2,8 +2,6 @@ package org.icemobile.samples.springbasic;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.icemobile.util.ClientDescriptor;
-
 /**
  * This is a sample backing bean for the MVC supported state
  * The properties should be the same
@@ -99,7 +97,6 @@ public class GeolocationBean {
     }
     
     public boolean isAndroidContainer(){
-        System.out.println("isAndroidContainer="+isAndroidContainer);
         return isAndroidContainer;
     }
     
