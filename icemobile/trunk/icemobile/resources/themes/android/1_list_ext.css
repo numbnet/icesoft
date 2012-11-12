@@ -15,20 +15,9 @@
  */
 
 .mobi-list-item a:active, .mobi-list-item a[selected] {
-    -moz-box-shadow: inset 0px 0px 3px #66AFFF, 0px 0px 9px #66AFFF;
-    -webkit-box-shadow: inset 0px 0px 3px #66AFFF, 0px 0px 9px #66AFFF;
-    box-shadow: inset 0px 0px 3px #66AFFF, 0px 0px 9px #66AFFF;
+    background-color: #082658 !important;
+    -webkit-tap-highlight-color: #082658;
 }
-.mobi-list-item a:active, .mobi-list-item a:focus, .mobi-list-item a[selected] {
-    -moz-box-shadow: inset 0px 0px 3px #66AFFF, 0px 0px 9px #66AFFF;
-    -webkit-box-shadow: inset 0px 0px 3px #66AFFF, 0px 0px 9px #66AFFF;
-    box-shadow: inset 0px 0px 3px #66AFFF, 0px 0px 9px #66AFFF;
-    outline: #66AFFF auto 5px;
-    background-color:#66AFFF;
-    color:#FFF;
-}
-
-
 .mobi-list-item {
     border: 1px solid #424142;
     background-color: #000;
