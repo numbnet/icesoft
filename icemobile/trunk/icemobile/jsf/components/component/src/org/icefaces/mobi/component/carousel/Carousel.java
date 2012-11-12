@@ -101,4 +101,8 @@ public class Carousel extends CarouselBase implements ICarousel{
         this.behaviors = behaviors;
     }
 
+    public String getName(){
+        return getClientId()+"_hidden";
+    }
+
 }

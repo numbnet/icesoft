@@ -12,9 +12,9 @@ public class CarouselBean {
      * This is a sample backing bean for the MVC supported
      * Carousel
      */
-
     private int index;
     private String selectedImage;
+    private String indexString;
     private List<String> images = new ArrayList<String>();
     
     public CarouselBean(){
@@ -32,7 +32,8 @@ public class CarouselBean {
         images.add("<img src='resources/flags/Spain.png' style='width:98px'/>");
         images.add("<img src='resources/flags/USA.png' style='width:98px'/>");
         images.add("<img src='resources/flags/Venezuela.png' style='width:98px'/>");
-        selectedImage = images.get(0);
+      //  selectedImage = images.get(0);
+        index = 0;
     }
 
     public int getIndex() {
@@ -41,6 +42,7 @@ public class CarouselBean {
 
     public void setIndex(int index) {
         this.index = index;
+        System.out.println(" setting index to ="+index);
         this.selectedImage = images.get(index);
     }
 
@@ -49,6 +51,8 @@ public class CarouselBean {
     }
     
     public String getSelectedImage(){
-        return selectedImage;
+        return images.get(index);
+   //     return selectedImage;
     }
+
 }
