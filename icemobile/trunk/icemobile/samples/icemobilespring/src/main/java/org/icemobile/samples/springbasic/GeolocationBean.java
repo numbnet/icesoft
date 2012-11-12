@@ -1,13 +1,13 @@
 package org.icemobile.samples.springbasic;
 
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.SessionAttributes;
+import javax.servlet.http.HttpServletRequest;
+
+import org.icemobile.util.ClientDescriptor;
 
 /**
  * This is a sample backing bean for the MVC supported state
  * The properties should be the same
  */
-@SessionAttributes("geolocationBean")
 public class GeolocationBean {
 
     // Location
@@ -21,12 +21,9 @@ public class GeolocationBean {
     private int maximumAge = 3600;
     private String enableHighPrecision = "asNeeded";
     private boolean continuousUpdates = true;
+    
+    private boolean isAndroidContainer;
 
-
-    @ModelAttribute("geolocationBean")
-    public GeolocationBean createBean() {
-        return new GeolocationBean();
-    }
 
     public String getGeo1() {
         return location;
@@ -99,6 +96,15 @@ public class GeolocationBean {
         this.longitude = null;
         this.altitude = null;
         this.direction = null;
+    }
+    
+    public boolean isAndroidContainer(){
+        System.out.println("isAndroidContainer="+isAndroidContainer);
+        return isAndroidContainer;
+    }
+    
+    public void setAndroidContainer(boolean val){
+        isAndroidContainer = val;
     }
 
 
