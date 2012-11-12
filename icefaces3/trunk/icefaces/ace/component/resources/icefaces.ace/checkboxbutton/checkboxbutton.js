@@ -76,6 +76,9 @@ ice.ace.checkboxbutton = {
                 }
             };
             buttonNode = document.getElementById(spanId);
+            if (context.jsfProps.ariaEnabled) {
+                buttonNode.firstChild.setAttribute("aria-checked", e.newValue);
+            }
             divNode = document.getElementById(clientId);
             //get the current value of checked
             var submittedValue = e.newValue;
@@ -106,10 +109,10 @@ ice.ace.checkboxbutton = {
         };
         setTimeout(addIcon, 10);
 
-        if (jsfProps.aria) {
+        if (jsfProps.ariaEnabled) {
             //add roles and attributes to the YUI slider widget
             buttonNode = document.getElementById(spanId);
-            buttonNode.firstChild.setAttribute("role", "button");
+            buttonNode.firstChild.setAttribute("role", "checkbox");
             buttonNode.firstChild.setAttribute("aria-describedby", jsProps.label);
             if (jsfProps.disabled) {
                 buttonNode.firstChild.setAttribute("aria-disabled", jsfProps.disabled);
