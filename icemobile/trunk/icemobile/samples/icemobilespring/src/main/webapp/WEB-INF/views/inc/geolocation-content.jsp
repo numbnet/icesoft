@@ -3,6 +3,7 @@
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <%@ taglib uri="http://www.icemobile.org/tags" prefix="mobi" %>
 <%@ taglib prefix="push" uri="http://www.icepush.org/icepush/jsp/icepush.tld"%>
+<div>
 <form:form id="geolocationform" method="POST"
            modelAttribute="geolocationBean" cssClass="form">
            
@@ -19,14 +20,23 @@
         </mobi:fieldsetRow>
     </mobi:fieldsetGroup>
     
-    <mobi:fieldsetGroup>
-        <mobi:fieldsetRow>
-            <canvas id="mapCanvas" width="260" height="130" class="center"></canvas>
-        </mobi:fieldsetRow>
-        <mobi:fieldsetRow styleClass="mobi-center">
-            <mobi:commandButton value="Locate Me" type="submit"/>
-        </mobi:fieldsetRow>
-    </mobi:fieldsetGroup>
+    <c:if test="${!geolocationBean.androidContainer}">
+        <mobi:fieldsetGroup>
+            <mobi:fieldsetRow>
+                <canvas id="mapCanvas" width="260" height="130" class="center"></canvas>
+            </mobi:fieldsetRow>
+            <mobi:fieldsetRow styleClass="mobi-center">
+                 <mobi:commandButton value="Locate Me" type="submit" buttonType="important"/>
+            </mobi:fieldsetRow>
+        </mobi:fieldsetGroup>
+    </c:if>
+    <c:if test="${geolocationBean.androidContainer}">
+        <mobi:fieldsetGroup>
+            <mobi:fieldsetRow styleClass="mobi-center">
+                 <mobi:commandButton value="Locate Me" type="submit" buttonType="important"/>
+            </mobi:fieldsetRow>
+        </mobi:fieldsetGroup>
+    </c:if>
     
     <h3>Geolocation Results:</h3>
 
@@ -53,14 +63,14 @@
         
     <mobi:fieldsetGroup>
         <mobi:fieldsetRow>
-            <label for="highPrecision">Continuous Updates:</label>
-            <mobi:flipswitch id="highPrecision"
-                             labelOn="true" labelOff="false"
+            <label for="continuousUpdates">Continuous Updates:</label>
+            <mobi:flipswitch id="continuousUpdates" name="continuousUpdates"
+                             labelOn="true" labelOff="false" 
                              value="${geolocationBean.continuousUpdates}"/>
         </mobi:fieldsetRow>
         <mobi:fieldsetRow>
-            <label for="highPrecise">enableHighPrecision:</label>
-            <select name="highPrecise"
+            <label for="enableHighPrecision">enableHighPrecision:</label>
+            <select name="enableHighPrecision"
                 style="max-width:100px;">
                 <option selected="${geolocationBean.enableHighPrecision eq 'true' ? 'selected' : ''}">true</option>
                 <option selected="${geolocationBean.enableHighPrecision eq 'false' ? 'selected' : ''}">false</option>
@@ -73,8 +83,8 @@
                 <span style="font-size: 11px;float: right;margin: -5px -5px 5px -15px;text-align: left;">
                     (longest allowable time for reading to arrive (0-x, seconds)
                 </span>
-                <mobi:inputText id="timeout" value="${geolocationBean.timeout}"
-                    type="number" style="float: right;clear: both;"/>
+                <mobi:inputText id="timeout" name="timeout" value="${geolocationBean.timeout}"
+                    type="number" style="float: right;clear: both;" />
             </div>
         </mobi:fieldsetRow>
         <mobi:fieldsetRow>
@@ -83,51 +93,57 @@
                 <span style="font-size: 11px;float: right;margin: -5px -5px 5px -15px;text-align: left;">
                     (oldest allowable cached Location reading (0-x, seconds)
                 </span>
-                <mobi:inputText id="maxAge" value="${geolocationBean.maximumAge}"
+                <mobi:inputText id="maxAge" name="maxAge" value="${geolocationBean.maximumAge}"
                     type="number" style="float: right;clear: both;"/>
             </div>
         </mobi:fieldsetRow>
     </mobi:fieldsetGroup>
+    
+    <mobi:commandButton type="submit" buttonType="important" 
+        styleClass="submit" value="Update Settings"/>
 
-    <script type="text/javascript">
-
-        function showLocation() {
-            var canvas = document.getElementById('mapCanvas');
-            if (!canvas) {
-                return;
+    <c:if test="${!geolocationBean.androidContainer}">
+        <script type="text/javascript">
+    
+            function showLocation() {
+                var canvas = document.getElementById('mapCanvas');
+                if (!canvas) {
+                    return;
+                }
+                // temporary work around for drawing location on canvas
+                var lat = '${geolocationBean.latitude}';
+                var lon = '${geolocationBean.longitude}';
+    
+                if (canvas.getContext && lat && lon) {
+                    var ctx = canvas.getContext('2d');
+                    ctx.clearRect(0, 0, 600, 400);
+                    var height = canvas.height;
+                    var width = canvas.width;
+    
+                    ctx.drawImage(image, 0, 0, width, height);
+                    var x = Math.floor(lon * width / 2 / 180 + (width / 2));
+                    var y = Math.floor(-1 * lat * (height / 2) / 90 + (height / 2));
+                    ctx.fillStyle = "#FFFF00";
+                    ctx.beginPath();
+                    ctx.arc(x, y, 5, 0, Math.PI * 2, true);
+                    ctx.fill();
+                }
             }
-            // temporary work around for drawing location on canvas
-            var lat = '${geolocationBean.latitude}';
-            var lon = '${geolocationBean.longitude}';
-
-            if (canvas.getContext && lat && lon) {
-                var ctx = canvas.getContext('2d');
-                ctx.clearRect(0, 0, 600, 400);
-                var height = canvas.height;
-                var width = canvas.width;
-
-                ctx.drawImage(image, 0, 0, width, height);
-                var x = Math.floor(lon * width / 2 / 180 + (width / 2));
-                var y = Math.floor(-1 * lat * (height / 2) / 90 + (height / 2));
-                ctx.fillStyle = "#FFFF00";
-                ctx.beginPath();
-                ctx.arc(x, y, 5, 0, Math.PI * 2, true);
-                ctx.fill();
+    
+            var image = new Image();
+            //scaled and cropped http://nf.nci.org.au/facilities/software/GMT/4.3.1/doc/html/GMT_Docs/node97.html
+            image.src = "resources/images/map.png";
+            image.onload = function() {
+                showLocation();
             }
-        }
-
-        var image = new Image();
-        //scaled and cropped http://nf.nci.org.au/facilities/software/GMT/4.3.1/doc/html/GMT_Docs/node97.html
-        image.src = "resources/images/map.png";
-        image.onload = function() {
             showLocation();
-        }
-        showLocation();
-
-    </script>
+    
+        </script>
+    </c:if>
 
 </form:form>
 
 <script type="text/javascript">
     MvcUtil.enhanceForm("#geolocationform");
 </script>
+</div>

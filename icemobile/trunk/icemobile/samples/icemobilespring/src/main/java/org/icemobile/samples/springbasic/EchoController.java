@@ -19,19 +19,20 @@ package org.icemobile.samples.springbasic;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.icemobile.util.SXUtils;
+import org.icemobile.util.ClientDescriptor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.context.request.WebRequest;
 
 /**
  * General Controller for echoing simple input pages
  */
 @Controller
+@SessionAttributes("geolocationBean")
 public class EchoController {
 
     @ModelAttribute
@@ -83,8 +84,15 @@ public class EchoController {
     }
 
     @RequestMapping(value = "/geolocation")
-    public void doRequest(
-        @ModelAttribute("geolocationBean") GeolocationBean model) {
+    public void doRequest(@ModelAttribute("geolocationBean") GeolocationBean model) {
+    }
+    
+    @ModelAttribute("geolocationBean")
+    public GeolocationBean createBean(HttpServletRequest request) {
+        GeolocationBean bean = new GeolocationBean();
+        ClientDescriptor client = ClientDescriptor.getInstance(request);
+        bean.setAndroidContainer( client.isAndroidOS() && client.isICEmobileContainer() );
+        return bean;
     }
 
     @RequestMapping(value = "/inputtext")
