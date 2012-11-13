@@ -228,6 +228,7 @@ html.honeycomb h3, html.android h3{
     padding: 0 1%;
     font-weight:normal;
 }
+.form{ height: 100% }
 .form .mobi-fieldset{
     text-align:center;
 }
