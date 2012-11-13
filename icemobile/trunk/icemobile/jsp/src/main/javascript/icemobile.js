@@ -246,7 +246,7 @@ ice.mobi.flipvalue = function flipvalue(id, vars) {
     }
     function Carousel(clientId, key) {
         var myScroll = enhance(clientId);
-        myScroll.scrollToPage(key);
+        myScroll.scrollToPage(key, 0, 10);
         var myId = clientId;
         var currentVal=key;
         return {
