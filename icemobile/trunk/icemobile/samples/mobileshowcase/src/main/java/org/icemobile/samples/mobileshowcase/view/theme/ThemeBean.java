@@ -18,6 +18,11 @@ package org.icemobile.samples.mobileshowcase.view.theme;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpServletRequest;
+
+import org.icemobile.util.CSSUtils;
+
 import java.io.Serializable;
 
 /**
@@ -37,5 +42,11 @@ public class ThemeBean implements Serializable {
 
     public void setCurrentTheme(String currentTheme) {
         this.currentTheme = currentTheme;
+    }
+    
+    public String getDerivedTheme(){
+        return CSSUtils.deriveTheme(
+                (HttpServletRequest)FacesContext.getCurrentInstance()
+                .getExternalContext().getRequest()).fileName();
     }
 }
