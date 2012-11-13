@@ -43,7 +43,10 @@ import com.icesoft.tutorial.resources.ResourceUtil;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
+import java.util.Map;
 
 /**
  * The Participant class stores information about an individual participant
@@ -71,6 +74,24 @@ public class Participant implements Renderable, DisposableBean {
     public Participant() {
         state = PersistentFacesState.getInstance();
     }
+
+    public String getCookies(){
+        FacesContext fc = FacesContext.getCurrentInstance();
+        ExternalContext ec = fc.getExternalContext();
+
+ 	    Map cookies = ec.getRequestCookieMap();
+        System.out.println("Participant.getCookies: cookies = " + cookies);
+
+        if( cookies != null ){
+            return cookies.toString();
+        }
+        return "[no cookies for me]";
+    }
+
+    public void dumpCookies(ActionEvent event) {
+        String cookies = getCookies();
+    }
+
 
     public String getHandle() {
         state = PersistentFacesState.getInstance();
