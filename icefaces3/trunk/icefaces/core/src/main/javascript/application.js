@@ -86,7 +86,7 @@ if (!window.ice.icefaces) {
 
         var elementUpdateListeners = [];
         namespace.onElementUpdate = function(id, callback) {
-            append(elementUpdateListeners, Cell(id, callback));
+            append(elementUpdateListeners, {identifier: id, handler: callback});
         };
 
         function configurationOf(element) {
@@ -847,13 +847,13 @@ if (!window.ice.icefaces) {
             var updatedElement = document.getElementById(updatedElementId);
             if (updatedElement) {
                 elementUpdateListeners = reject(elementUpdateListeners, function(idCallbackTuple) {
-                    var id = key(idCallbackTuple);
+                    var id = idCallbackTuple.identifier;
                     var element = document.getElementById(id);
                     //test if inner element still exists, sometimes client side code can remove DOM fragments
                     if (element) {
                         var updated = isAncestorOf(updatedElement, element);
                         if (updated) {
-                            var callback = value(idCallbackTuple);
+                            var callback = idCallbackTuple.handler;
                             try {
                                 callback(element);
                             } catch (e) {
