@@ -24,8 +24,11 @@ import java.util.logging.Logger;
 
 public class TabSetTag extends TagSupport {
 
+    public static final StringBuilder TABSET_CONTENT_CLASS = new StringBuilder("mobi-tabset-content ");
     private final String TABSET_CONTAINER_CLASS = "mobi-tabset ";
     private static Logger LOG = Logger.getLogger(TabSetTag.class.getName());
+    public static final StringBuilder TABSET_CONTAINER_TOP_CLASS = new StringBuilder("mobi-tabset-tabs-top ");
+    public static final StringBuilder TABSET_CONTAINER_TOP_HEADER_CLASS = new StringBuilder("mobi-tabset-tabs-top-header ");
 
     public int doStartTag() throws JspTagException {
 
@@ -35,10 +38,13 @@ public class TabSetTag extends TagSupport {
         try {
 
 //        writeJavascriptFile(facesContext, uiComponent, JS_NAME, JS_MIN_NAME, JS_LIBRARY);
-
+            StringBuilder compStyleClass = new StringBuilder(TABSET_CONTAINER_CLASS);
+            compStyleClass.append(TABSET_CONTAINER_TOP_CLASS);
+            //assume a top header for now
+            compStyleClass.append(TABSET_CONTAINER_TOP_HEADER_CLASS);
             StringBuilder tabset = new StringBuilder(TagUtil.DIV_TAG);
             tabset.append(" id=\"").append(getId()).append("\"");
-            tabset.append(" class=\"").append(TABSET_CONTAINER_CLASS);
+            tabset.append(" class=\"").append(compStyleClass.toString());
             if (styleClass != null && !"".equals(styleClass)) {
                 tabset.append(styleClass);
             }
