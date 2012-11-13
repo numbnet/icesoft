@@ -22,7 +22,8 @@ public class ContactListCoreRenderer extends BaseCoreRenderer {
         writer.startElement(INPUT_ELEM);
         writer.writeAttribute(TYPE_ATTR, "button");
         //
-        if (!cd.isICEmobileContainer()) {
+        boolean targetAudience = cd.isICEmobileContainer() | cd.isSXRegistered();
+        if (! targetAudience ) {
             component.setDisabled( true);
         }
 	writeStandardAttributes(writer, component, CSSUtils.STYLECLASS_BUTTON, CSSUtils.STYLECLASS_BUTTON_DISABLED);
