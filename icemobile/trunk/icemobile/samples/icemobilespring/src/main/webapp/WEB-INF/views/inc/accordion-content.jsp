@@ -14,7 +14,7 @@
         </mobi:fieldsetRow>
     </mobi:fieldsetGroup>
     
-    <h3>Basic Accordion</h3>
+    <h3>Accordion with autoHeight</h3>
 
     <mobi:accordion id="basicAccordion" selectedId="${accordionBean.selectedId1}">
             <mobi:accordionPane title="ICE Sailor" id="accordionPane1" >
@@ -28,10 +28,10 @@
             </mobi:accordionPane>
     </mobi:accordion>
     
-    <h3 style="margin-top:30px;">Accordion without autoHeight</h3>
+    <h3 style="margin-top:30px;">Accordion with fixedHeight</h3>
     
     <mobi:accordion id="accordionNoAutoHeight" selectedId="${accordionBean.selectedId2}"
-        autoHeight="false" fixedHeight="140px">
+        autoHeight="false" fixedHeight="100px">
             <mobi:accordionPane title="ICE Sailor" id="accordionPane4" >
                 <%@ include file="fieldset-icesailor.jsp" %>
             </mobi:accordionPane>
