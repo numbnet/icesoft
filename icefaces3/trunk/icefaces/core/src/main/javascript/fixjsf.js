@@ -245,7 +245,15 @@
             var id = update.getAttribute('id');
             var e = lookupElementById(id);
             if (e) {
-                each(e.getElementsByTagName('*'), clearEventHandlers);
+                each(['a', 'iframe'], function(type) {
+                    each(e.getElementsByTagName(type), clearEventHandlers);
+                });
+
+                each(e.getElementsByTagName('form'), function(form) {
+                    form.submit = null;
+                    form.onsubmit = null;
+                    each(form.elements, clearEventHandlers);
+                });
             }
         });
     });
