@@ -35,6 +35,7 @@ import org.icefaces.ace.util.JSONBuilder;
 import org.icefaces.render.MandatoryResourceComponent;
 
 import javax.faces.FacesException;
+import javax.faces.application.ProjectStage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -310,6 +311,7 @@ public class DataTableRenderer extends CoreRenderer {
         final boolean noHover = Boolean.parseBoolean(context.getExternalContext().getInitParameter("org.icefaces.ace.datatable.selection.nohover"));
         final boolean noHidden = Boolean.parseBoolean(context.getExternalContext().getInitParameter("org.icefaces.ace.datatable.scroll.nohiddencheck"));
         final String widgetVar = resolveWidgetVar(table);
+        final boolean devMode = FacesContext.getCurrentInstance().isProjectStage(ProjectStage.Development);
 
         json.beginMap();
         json.entry("formId", form.getClientId(context));
@@ -331,6 +333,7 @@ public class DataTableRenderer extends CoreRenderer {
         if (disable) json.entry("disable", true);
         if (noHover) json.entry("nohover",true);
         if (noHidden) json.entry("nohidden",true);
+        if (devMode) json.entry("devMode",true);
         if (scroll) {
             json.entry("scrollable", true);
             json.entry("liveScroll", table.isLiveScroll());
