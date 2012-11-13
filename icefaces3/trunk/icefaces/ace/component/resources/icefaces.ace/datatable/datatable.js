@@ -771,7 +771,8 @@ ice.ace.DataTable.prototype.setupPanelExpansionEvents = function () {
 }
 
 ice.ace.DataTable.prototype.setupScrolling = function () {
-    var _self = this,
+    var startTime = new Date().getTime(),
+        _self = this,
         delayedCleanUpResizeToken,
         delayedCleanUpResize = function () {
             _self.resizeScrolling();
@@ -835,6 +836,10 @@ ice.ace.DataTable.prototype.setupScrolling = function () {
             }
         });
     }
+
+    if (console && this.cfg.devMode) {
+        console.log("ace:dataTable - ID: " + this.id + " - setupScrolling - " + (new Date().getTime() - startTime)/1000 + "s");
+    }
 }
 
 ice.ace.DataTable.prototype.setupResizableColumns = function () {
@@ -879,12 +884,12 @@ ice.ace.DataTable.prototype.setupResizableColumns = function () {
 }
 
 ice.ace.DataTable.prototype.resizeScrolling = function () {
-    var scrollableTable = ice.ace.jq(this.jqId);
+    var startTime = new Date().getTime(),
+        scrollableTable = ice.ace.jq(this.jqId);
 
     // Reattempt resize in 100ms if I or a parent of mine is currently hidden.
     // Sizing will not be accurate if the table is not being displayed, like at tabset load.
-    // Hidden is true if any ancestors are hidden.
-    if (!(this.cfg.nohidden) && scrollableTable.is(':hidden')) {
+    if (!(this.cfg.nohidden) && (scrollableTable.width() == 0)) {
         if (!this.cfg.disableHiddenSizing) {
             var _self = this;
             setTimeout(function () {
@@ -1171,6 +1176,10 @@ ice.ace.DataTable.prototype.resizeScrolling = function () {
         // Hide Duplicate Segments
         dupeHead.css('display', 'none');
         dupeFoot.css('display', 'none');
+
+        if (console && this.cfg.devMode) {
+            console.log("ace:dataTable - ID: " + this.id + " - resizeScrolling - " + (new Date().getTime() - startTime)/1000 + "s");
+        }
     }
 }
 
