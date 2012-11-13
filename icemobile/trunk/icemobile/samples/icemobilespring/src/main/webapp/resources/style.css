@@ -329,6 +329,9 @@ html.android .back{
     background-color: #CCC;
     color: black;
 }
+html.honeycomb .back{
+    background-color: #555;
+}
 .mobi-button.mobi-button-back.back, .mobi-button.mobi-button-dis{
     width: 150px;
     margin: 0 auto;
