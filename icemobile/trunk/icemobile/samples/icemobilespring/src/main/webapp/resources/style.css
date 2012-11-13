@@ -315,6 +315,7 @@ html.honeycomb h3, html.android h3{
         margin: 0 10px;
         width: 100%;
         max-width: 300px;
+        clear:both;
     }
 }
 /* SMALL SCREEN */
@@ -337,4 +338,8 @@ html.honeycomb .back{
     width: 150px;
     margin: 0 auto;
     max-width: 150px;
+}
+.imageView{ 
+    margin: 0 auto;
+    width:50%;
 }

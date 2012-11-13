@@ -22,15 +22,21 @@
 
     <mobi:fieldsetGroup>
         <mobi:fieldsetRow>
-                <figure>
-                    <h:graphicImage style="width:125px;height:125px;"
-                            library="images" name="qrcode.png"/>
-                </figure>
-                <header>
-                    <h3>ICEmobile Showcase</h3>
-                    <h4>ICEmobile 1.2</h4>
-                    <h5>ICEsoft Technologies Inc.</h5>
-                </header>
+            <figure>
+                <h:graphicImage style="width:125px;height:125px;"
+                        library="images" name="qrcode.png"/>
+            </figure>
+            <header>
+                <h3>ICEmobile Showcase</h3>
+                <h4>ICEmobile 1.2</h4>
+                <h5>ICEsoft Technologies Inc.</h5>
+            </header>
+
+            <mobi:smallView>
+                <h:form>
+                    <h:commandLink action="#{navigationModel.goToMenu}">View the examples</h:commandLink>
+                </h:form>
+            </mobi:smallView>
             
             <p>A showcase of the ICEmobile-Faces Component Suite where you can experience all
                 the ICEmobile components in action. Each component includes a working example,
