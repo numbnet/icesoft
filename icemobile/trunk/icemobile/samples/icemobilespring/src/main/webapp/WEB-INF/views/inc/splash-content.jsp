@@ -16,6 +16,13 @@
                 <h4>ICEmobile 1.2</h4>
                 <h5>ICEsoft Technologies Inc.</h5>
             </header>
+            
+            <mobi:smallView>
+                <a href="menu" id="menuLink2" style="margin:10px auto; display:block;">View the examples</a>
+                <script type="text/javascript">
+                    MvcUtil.enhanceLink(document.getElementById('menuLink2'),"body");
+                </script>
+            </mobi:smallView>
     
             <p>A showcase of the ICEmobile-JSP Component Suite where you can experience all
                 the ICEmobile components in action. Each component includes a working example,
