@@ -32,7 +32,7 @@ import org.springframework.web.context.request.WebRequest;
  * General Controller for echoing simple input pages
  */
 @Controller
-@SessionAttributes("geolocationBean")
+@SessionAttributes({"geolocationBean", "carouselBean"})
 public class EchoController {
 
     @ModelAttribute
@@ -62,6 +62,11 @@ public class EchoController {
     public void doRequest(
         @ModelAttribute("carouselBean") CarouselBean model) {
     }
+    
+    @ModelAttribute("carouselBean")
+    public CarouselBean createBean() {
+        return new CarouselBean();
+    }
 
     @RequestMapping(value = "/datetime")
     public void doRequest(
@@ -88,7 +93,7 @@ public class EchoController {
     }
     
     @ModelAttribute("geolocationBean")
-    public GeolocationBean createBean(HttpServletRequest request) {
+    public GeolocationBean createGeolocationBean(HttpServletRequest request) {
         GeolocationBean bean = new GeolocationBean();
         ClientDescriptor client = ClientDescriptor.getInstance(request);
         bean.setAndroidContainer( client.isAndroidOS() && client.isICEmobileContainer() );
