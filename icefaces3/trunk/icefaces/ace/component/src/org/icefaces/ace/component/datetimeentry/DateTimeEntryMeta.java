@@ -192,6 +192,6 @@ public class DateTimeEntryMeta extends UIInputMeta {
             "When singleSubmit is false, no submit will occur. &lt;ace:ajax&gt; submit events have precedence over singleSubmit.")
     private boolean singleSubmit;
 
-    @Property(defaultValue = "...", tlddoc = "The text to display on the trigger button. Use in conjunction with the showOn option set to \"button\" or \"both\".")
+    @Property(defaultValue = "", tlddoc = "The text to display on the trigger button. Use in conjunction with the showOn option set to \"button\" or \"both\". Default = \"\".")
     private String buttonText;
 }
