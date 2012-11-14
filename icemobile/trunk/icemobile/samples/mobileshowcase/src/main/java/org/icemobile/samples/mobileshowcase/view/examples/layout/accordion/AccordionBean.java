@@ -44,6 +44,7 @@ public class AccordionBean extends ExampleImpl<AccordionBean> implements
 
     private String selectedId1 = "accordionPane1";
     private String selectedId2 = "accordionPane4";
+    private String selectedId3 = "accordionPane7";
 
     public AccordionBean() {
         super(AccordionBean.class);
@@ -63,6 +64,14 @@ public class AccordionBean extends ExampleImpl<AccordionBean> implements
 
     public void setSelectedId2(String selectedId2) {
         this.selectedId2 = selectedId2;
+    }
+
+    public String getSelectedId3() {
+        return selectedId3;
+    }
+
+    public void setSelectedId3(String selectedId3) {
+        this.selectedId3 = selectedId3;
     }
 
     
