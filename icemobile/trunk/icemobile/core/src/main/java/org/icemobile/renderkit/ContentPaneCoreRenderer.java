@@ -15,11 +15,12 @@ public class ContentPaneCoreRenderer extends BaseCoreRenderer {
     private static final Logger logger =
             Logger.getLogger(ContentPaneCoreRenderer.class.toString());
     
-    public void encodeBegin(IContentPane pane, IResponseWriter writer, boolean isJsp)
+    public void encodeBegin(IContentPane pane, IResponseWriter writer,
+                            boolean isJsp, boolean selected)
             throws IOException{
         if (pane.isAccordionPane()){
             IAccordion accordion = pane.getAccordionParent();
-            encodeAccordionHandle(accordion, pane, writer, isJsp);
+            encodeAccordionHandle(accordion, pane, writer, isJsp, selected);
         }
     }
 
@@ -36,7 +37,7 @@ public class ContentPaneCoreRenderer extends BaseCoreRenderer {
         } */
     }
     public void encodeAccordionHandle(IAccordion accordion, IContentPane pane,
-                                      IResponseWriter writer, boolean isJsp )
+                  IResponseWriter writer, boolean isJsp, boolean selected )
          throws IOException{
           String accordionId = accordion.getClientId();
           String clientId = pane.getClientId();
@@ -49,6 +50,9 @@ public class ContentPaneCoreRenderer extends BaseCoreRenderer {
           writer.writeAttribute(ID_ATTR, clientId+"_sect");
              // apply default style class for panel-stack
           StringBuilder styleClass = new StringBuilder("closed");
+          if (!isJsp && selected){
+              styleClass = new StringBuilder("open") ;
+          }
           String userDefinedClass = pane.getStyleClass();
           if (userDefinedClass != null && userDefinedClass.length() > 0){
                handleClass+= " " + userDefinedClass;

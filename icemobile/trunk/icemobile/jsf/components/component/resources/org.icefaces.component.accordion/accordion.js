@@ -69,9 +69,8 @@
         }
     }
     function updateHt(paneId){
-        console.log("triggered update on height for id="+paneId);
         var pane = document.getElementById(paneId);
-        console.log("scrollHeight="+pane.scrollHeight+" offsetHeight="+pane.offsetHeight+" clientHt="+pane.clientHeight);
+   //     console.log("scrollHeight="+pane.scrollHeight+" offsetHeight="+pane.offsetHeight+" clientHt="+pane.clientHeight);
     }
     function Accordion(clientId, cfgIn) {
         var containerId = clientId+"_acc" ;
@@ -85,11 +84,13 @@
             var children = accordRoot.getElementsByTagName("section");
             paneOpId = children[0].id;
         }
-        console.log("paneOpId="+paneOpId);
+      //  console.log("paneOpId="+paneOpId);
         var openElem = document.getElementById(paneOpId);
         if (openElem){
             openElem.className = "open";
-            console.log("opened element has height="+openElem.offsetHeight);
+            openElem.height = "";
+            openElem.maxHeight = "";
+          //  console.log("opened element has height="+openElem.offsetHeight);
         }
         var handleheight = getHandleHeight(accordRoot);
         var handleht = handleheight + "px";
@@ -114,7 +115,7 @@
                 if (autoheight){
                     var tmp = ice.mobi.accordionController.maxHt[clientId];
                     if (tmp && maxHeight==0){
-                        console.log("toggle and maxHeight = "+maxHeight+" tmp="+tmp) ;
+                      //  console.log("toggle and maxHeight = "+maxHeight+" tmp="+tmp) ;
                         maxHeight = tmp;
                     } if (tmp && maxHeight > 0){
                         maxhHeight = Math.max(tmp, maxHeight);
@@ -156,8 +157,11 @@
                 }
             },
             updateHeight: function(clientId, handleheight){
-                    maxHeight = calcMaxDivHeight(clientId,  handleheight);
-                    return maxHeight;
+                    var node = document.getElementById(clientId);
+                    if (node){
+                        maxHeight = calcMaxDivHeight(clientId,  handleheight);
+                        return maxHeight;
+                    }
             } ,
             updateProperties: function (clientId, cfgUpd) {
                 var fixedHeight=cfgUpd.fixedHeight ||null;
@@ -167,7 +171,7 @@
                     var tmp1 = calcMaxDivHeight(clientId, handleheight);
                     maxHeight = Math.max(tmp1, maxHeight);
                     if (maxHeight == 0){
-                        if (!ice.mobi.accordionController[clientId]) {
+                        if (!ice.mobi.accordionController.maxHt[clientId]) {
                            ice.onAfterUpdate(function() {
                                ice.mobi.accordionController.updateHeight(clientId, handleheight);
                             }) ;
@@ -202,12 +206,14 @@
         autoheight: {},
         maxHt: {},
         singleSubmit: {},
-        lastOpen: {},
         initClient: function(clientId, cfg) {
             if (!this.panels[clientId]) {
                 this.autoheight[clientId]= cfg.autoHeight;
                 this.singleSubmit[clientId] = cfg.singleSubmit;
                 this.panels[clientId] = Accordion(clientId, cfg);
+                ice.onElementUpdate(clientId, function(){
+                    ice.mobi.accordionController.unload(clientId);
+                });
             } else {
                 this.panels[clientId].updateProperties(clientId, cfg);
             }
@@ -217,7 +223,6 @@
                 this.panels[clientId].toggle(clientId, el, cachetyp);
             } else {
                 this.initClient(clientId, {});
-                console.log(" had to init accordion again!");
                 this.panels[clientId].toggle(clientId, el, cachetyp);
             }
         },
@@ -241,9 +246,13 @@
             }
         },
         unload: function(clientId){
-            this.panels[clientId] = null;
-            this.autoheight[clientId]=null;
-            this.panels[clientId]=null;
+            var anode = document.getElementById(clientId);
+            if (!anode){
+            //    console.log("REMOVE ACCORDION WITH  id="+clientId);
+                this.panels[clientId] = null;
+                this.autoheight[clientId]=null;
+                this.panels[clientId]=null;
+            }
         }
     }
 })();
