@@ -202,6 +202,7 @@ public class DateTimeEntryRenderer extends InputRenderer {
                 json.entry("clientId", clientId);
                 json.entry("singleSubmit", dateTimeEntry.isSingleSubmit());
                 json.entry("withinSingleSubmit", Util.withinSingleSubmit(dateTimeEntry));
+                json.entry("buttonText", dateTimeEntry.getButtonText());
             json.endMap();
         json.endFunction();
 
