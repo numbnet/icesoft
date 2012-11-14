@@ -24,11 +24,6 @@
     overflow: hidden;
 }
 
-.mobi-accordion .open {
-    height: 150px;
-    max-height: 150px;
-}
-
 .mobi-accordion .closed {
     max-height: 33px;
     height: 33px;
