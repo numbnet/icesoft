@@ -188,7 +188,9 @@
         <delete file="${ace-yui.js.uncompressed}" verbose="true"/>
         <concat destfile="${ace-yui.js.uncompressed}" force="true" fixlastline="true">
             <filelist dir="${resources}">
-                <file name="yui/2_8_2/yahoo-dom-event/yahoo-dom-event.js"/>
+                <file name="yui/2_8_2/yahoo/yahoo.js"/>
+                <file name="yui/2_8_2/dom/dom.js"/>
+                <file name="yui/2_8_2/event/event.js"/>
                 <file name="yui/2_8_2/element/element.js"/>
                 <file name="yui/2_8_2/button/button.js"/>
                 <file name="yui/2_8_2/tabview/tabview.js"/>
@@ -215,7 +217,11 @@
         <delete file="${ace-datatable.js.uncompressed}" verbose="true"/>
         <concat destfile="${ace-datatable.js.uncompressed}" force="true" fixlastline="true">
             <filelist dir="${resources}">
-                <file name="icefaces.ace/yui/utilities/utilities.js"/>
+                <file name="yui/2_8_2/yahoo/yahoo.js"/>
+                <file name="yui/2_8_2/dom/dom.js"/>
+                <file name="yui/2_8_2/event/event.js"/>
+                <file name="yui/2_8_2/element/element.js"/>
+                <file name="yui/2_8_2/get/get.js"/>
                 <file name="icefaces.ace/datatable/datatable.js"/>
                 <file name="icefaces.ace/paginator/paginator.js"/>
                 <file name="icefaces.ace/tableconfigpanel/tableconfigpanel.js"/>
