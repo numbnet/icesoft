@@ -1,4 +1,5 @@
 /*html,body{ height: 100%; }*/
+h3{ clear: both }
 div.info,div.success,div.warning,div.error {
 	border: 1px solid;
 	margin: 10px 0px;
