@@ -1096,14 +1096,16 @@ Paginator.prototype = {
     
     applyTheme : function() {
         	
-    	 ice.ace.jq('.ui-paginator-page, a.ui-paginator-next, a.ui-paginator-last, a.ui-paginator-previous, a.ui-paginator-first').hover(
+    	 ice.ace.jq(this._containers)
+             .find('.ui-paginator-page, a.ui-paginator-next, a.ui-paginator-last, a.ui-paginator-previous, a.ui-paginator-first')
+             .hover(
  				function() {
  					ice.ace.jq(this).addClass('ui-state-hover');
  				}, function(){
  					ice.ace.jq(this).removeClass('ui-state-hover');
  				});
 
- 		ice.ace.jq('.ui-paginator-page').click(
+ 		ice.ace.jq(this._containers).find('.ui-paginator-page').click(
  			function() {
  				ice.ace.jq(this).parent().children('.ui-state-active').removeClass('ui-state-active');
  				ice.ace.jq(this).addClass('ui-state-active');
