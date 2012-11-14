@@ -265,6 +265,7 @@ public class DateTimeEntryRenderer extends InputRenderer {
                 json.entry("labelIsInField", (Boolean) labelAttributes.get("labelIsInField"));
                 json.entry("singleSubmit", dateTimeEntry.isSingleSubmit());
                 json.entry("withinSingleSubmit", Util.withinSingleSubmit(dateTimeEntry));
+                json.entry("buttonText", dateTimeEntry.getButtonText());
             json.endMap();
 //        json.endFunction();
         String initScript = "ice.ace.Calendar.init(" + json + ");";
