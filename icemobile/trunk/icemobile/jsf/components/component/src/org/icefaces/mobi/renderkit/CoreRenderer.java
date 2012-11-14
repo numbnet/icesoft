@@ -227,7 +227,7 @@ public class CoreRenderer extends Renderer {
             Resource jsFile = facesContext.getApplication().getResourceHandler().createResource(jsFname, JS_LIBRARY);
             String src = jsFile.getRequestPath();
             writer.startElement("script", component);
-            writer.writeAttribute("text", "text/javascript", null);
+            writer.writeAttribute("type", "text/javascript", null);
             writer.writeAttribute("src", src, null);
             writer.endElement("script");
             setScriptLoaded(facesContext, JS_NAME);
