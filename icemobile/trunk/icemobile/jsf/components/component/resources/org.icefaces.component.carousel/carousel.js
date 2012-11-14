@@ -26,12 +26,14 @@ if (!window.ice['mobi']) {
     //functions that do not encapsulate any state, they just work with the provided parameters
     //and globally accessible variables
 
-    function enhance(clientId)  {
+    function enhance(clientId, key)  {
         var carouselId = clientId+'_carousel';
+        var page = key || 0;
         var iscroller = new iScroll(carouselId, {
 	                    snap: 'li',
 	                    momentum: false,
 	                    hScrollbar: false,
+                        x: page,
                         checkDOMChanges: false,
                         bounce: false,
                         zoom: true,
@@ -42,8 +44,8 @@ if (!window.ice['mobi']) {
         return iscroller;
     }
     function Carousel(clientId, key) {
-        var myScroll = enhance(clientId);
-        myScroll.scrollToPage(key);
+        var myScroll = enhance(clientId, key);
+        myScroll.scrollToPage(key, 0, 10);
         var myId = clientId;
         var currentVal=key;
         return {
@@ -133,15 +135,17 @@ if (!window.ice['mobi']) {
            updateProperties: function (clientId, cfgIn) {
                var hid= this.getHiddenVal();
                if (hid != currentVal){
-                  this.scrollToPage(hid);
+                  this.scrollToPage(hid, 0, 10);
                   this.setActive(hid);
                }
                if (!myScroll.wrapper)  {
                 //   console.log('WARNING:_ reinitialized scroller');
                    enhance(clientId);
                }
+           },
+           disable: function(){
+              myScroll.disable();
            }
-
         }
     }
     ice.mobi.carousel = {
@@ -176,10 +180,11 @@ if (!window.ice['mobi']) {
         },
         unloadTest: function(clientId){
             if (!document.getElementById(clientId) && this.acarousel[clientId]!=null){
-           //    console.log("unloadTest setting id="+clientId+" to null");
-               this.acarousel[clientId] = null;
-               this.cfg[clientId] = null;
-               document.removeEventListener("DOMSubtreeModified",this.unload[clientId], false ) ;
+                this.acarousel[clientId].disable();
+              //  console.log("unloadTest disable and then setting id ="+clientId+" to null");
+                this.acarousel[clientId] = null;
+                this.cfg[clientId] = null;
+                document.removeEventListener("DOMSubtreeModified",this.unload[clientId], false ) ;
             }
         }
     }
