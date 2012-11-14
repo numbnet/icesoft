@@ -141,7 +141,7 @@ public class CameraController {
         String fileName = null;
         String uuid = Long.toString(
                                            Math.abs(UUID.randomUUID().getMostSignificantBits()), 32);
-        String newFileName = "resources/img-" + uuid + ".jpg";
+        String newFileName = "resources/media/img-" + uuid + ".jpg";
         if ((null != file) && !file.isEmpty()) {
             fileName = file.getOriginalFilename();
             file.transferTo(new File(request.getRealPath("/" + newFileName)));
@@ -165,7 +165,7 @@ public class CameraController {
 
     private String getCurrentFileName(HttpServletRequest request) {
         if (null == currentFileName) {
-            return "resources/uploaded.jpg";
+            return "resources/media/uploaded.jpg";
         }
         return currentFileName;
     }
