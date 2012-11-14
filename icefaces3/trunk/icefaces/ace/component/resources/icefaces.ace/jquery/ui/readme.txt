@@ -6,3 +6,4 @@ ICE-7867: Add touch-screen interface support to ACE components. (Added plugin jq
 ICE-8631: added line that was missing in 1.8.24 in progress bar widget, where the value and percentage numbers are passed to the event
 ICE-8665: ace:dateTimeEntry text input key-events causing slowdown with large DOMs in IE7/8.
 ICE-8752: Add ARIA role and attributes to SliderEntry.
+ICE-8644: ace:dateTimeEntry - Add a way to change the calendar icon title tooltip.
