@@ -48,7 +48,8 @@ public class ContentPaneRenderer extends BaseLayoutRenderer {
             //use core renderer for accordion
             IResponseWriter writer = new ResponseWriterWrapper(facesContext.getResponseWriter());
             ContentPaneCoreRenderer renderer = new ContentPaneCoreRenderer();
-            renderer.encodeBegin(pane, writer, false);
+            boolean amSelected = iAmSelected(facesContext, uiComponent);
+            renderer.encodeBegin(pane, writer, false, amSelected);
         } else if (parent instanceof TabSet){
             encodeTabSetPage(facesContext, uiComponent);
         }  else {

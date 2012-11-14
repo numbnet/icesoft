@@ -51,7 +51,7 @@ public class AccordionPaneTag extends BaseBodyTag implements IContentPane {
         renderer = new ContentPaneCoreRenderer();
         writer = new TagWriter(pageContext);
          try {
-            renderer.encodeBegin(this, writer, true);
+            renderer.encodeBegin(this, writer, true, false);
             writer.closeOffTag();
         } catch (IOException e) {
             throw new JspTagException("problem in doStart of AccordionPaneTag exception="+e) ;
