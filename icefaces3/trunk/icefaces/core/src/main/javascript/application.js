@@ -86,7 +86,18 @@ if (!window.ice.icefaces) {
 
         var elementUpdateListeners = [];
         namespace.onElementUpdate = function(id, callback) {
-            append(elementUpdateListeners, {identifier: id, handler: callback});
+            var element  = document.getElementById(id);
+
+            var ancestorIDs = [];
+            var parent = element;
+            while (null != (parent = parent.parentNode))  {
+                var parentID = parent.id;
+                if ((null != parentID) && ("" != parentID)) {
+                    ancestorIDs.push(parentID);
+                }
+            }
+            append(elementUpdateListeners, {identifier: id, handler: callback, 
+                    ancestors: " " + ancestorIDs.join(" ") + " "});
         };
 
         function configurationOf(element) {
@@ -844,6 +855,13 @@ if (!window.ice.icefaces) {
 
         function findAndNotifyUpdatedElements(update) {
             var updatedElementId = update.getAttribute('id');
+            if ("javax.faces.ViewState" === updatedElementId)  {
+                return;
+            }
+            var fvsTail = updatedElementId.substr(updatedElementId.length - 13);
+            if ("_fixviewstate" === fvsTail)  {
+                return;
+            }
             var updatedElement = document.getElementById(updatedElementId);
             if (updatedElement) {
                 elementUpdateListeners = reject(elementUpdateListeners, function(idCallbackTuple) {
@@ -851,7 +869,8 @@ if (!window.ice.icefaces) {
                     var element = document.getElementById(id);
                     //test if inner element still exists, sometimes client side code can remove DOM fragments
                     if (element) {
-                        var updated = isAncestorOf(updatedElement, element);
+                        var updated = (-1 != 
+                            idCallbackTuple.ancestors.indexOf(" " + updatedElementId + " "));
                         if (updated) {
                             var callback = idCallbackTuple.handler;
                             try {
@@ -868,7 +887,7 @@ if (!window.ice.icefaces) {
                         return true;
                     }
                 });
-            }
+            } 
         }
         // determine which elements are about to be removed by an update,
         // and clean them up while they're still in place
