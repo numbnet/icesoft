@@ -20,12 +20,25 @@ if (!window['mobi']) {
 }
 
 mobi.flipswitch = {
+    lastTime: 0,
+
     init: function(clientId, cfg){
+        // Mobi-526 filter double clicks
+        if (cfg.transHack) {
+            var currentTimeMillis = new Date().getTime();
+            if ( (currentTimeMillis - mobi.flipswitch.lastTime) < 100 ) {
+                console.log("Double click suppression required");
+                return;
+            }
+            mobi.flipswitch.lastTime = currentTimeMillis;
+        }
+
         this.id = clientId;
         this.cfg = cfg;
         this.flipperEl = cfg.elVal;
         this.singleSubmit = cfg.singleSubmit;
         this.event = cfg.event;
+
         var hasBehaviors = false;
         if (this.cfg.behaviors){
            hasBehaviors = true;
