@@ -43,8 +43,8 @@
     </context-param>
 
     <context-param>
-        <param-name>org.icefaces.mandatoryResourceConfiguration</param-name>
-        <param-value>all</param-value>
+        <param-name>javax.faces.FACELETS_SKIP_COMMENTS</param-name>
+        <param-value>true</param-value>
     </context-param>
 
     <!-- Faces Servlet -->
