@@ -70,9 +70,7 @@ public class FileEntryCallbackBean extends
 	// Executed before the upload starts
 	public void begin(FileEntryResults.FileInfo fileInfo) {
 		// Check the file type
-		if (fileInfo.getContentType().equals("application/pdf")) {
-			validFile = false;
-		}
+		validFile = !fileInfo.getContentType().equals("application/pdf");
 		// Initialize the message digest
 		try {
 			digest = MessageDigest.getInstance("SHA");
