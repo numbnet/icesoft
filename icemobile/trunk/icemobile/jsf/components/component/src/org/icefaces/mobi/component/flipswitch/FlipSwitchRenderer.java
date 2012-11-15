@@ -19,12 +19,16 @@ package org.icefaces.mobi.component.flipswitch;
 import org.icefaces.mobi.utils.HTML;
 import org.icefaces.mobi.utils.PassThruAttributeWriter;
 import org.icefaces.mobi.renderkit.CoreRenderer;
+import org.icemobile.util.ClientDescriptor;
+import org.icemobile.util.UserAgentInfo;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.behavior.ClientBehaviorHolder;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.convert.ConverterException;
+import javax.servlet.ServletRequest;
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -109,7 +113,12 @@ public class FlipSwitchRenderer extends CoreRenderer {
             behaviors = behaviors.replace("\"", "\'");
             builder.append(behaviors);
         }
-        builder.append("});");
+        // Mobi-526 pass transformer hack flag
+        if (isTransformerHack(facesContext)) {
+            logger.finest("Transformer Prime hack active");
+            builder.append(", transHack: 'true'");
+        }
+        builder.append("}); return false; ");
 
         String jsCall = builder.toString();
         if (!disabled | !readonly)writer.writeAttribute("onclick", jsCall, null);
@@ -164,5 +173,26 @@ public class FlipSwitchRenderer extends CoreRenderer {
      */
     public boolean getRendersChildren() {
         return true;
+    }
+
+    /**
+     * MOBI-526 Check if the device is An Asus Transformer Prime for a
+     * bad hack involving suppression of double clicks on flipswitch.
+     * @param pageContext
+     * @return
+     */
+    private boolean isTransformerHack(FacesContext pageContext) {
+        Object request = pageContext.getExternalContext().getRequest();
+        if (request instanceof HttpServletRequest) {
+            HttpServletRequest hsr = (HttpServletRequest) request;
+            ClientDescriptor client = ClientDescriptor.getInstance(hsr);
+
+            String ua = client.getUserAgent();
+            if (ua != null) {
+                ua = ua.toLowerCase();
+                return ua.contains( UserAgentInfo.TABLET_TRANSORMER_PRIME );
+            }
+        }
+        return false;
     }
 }
