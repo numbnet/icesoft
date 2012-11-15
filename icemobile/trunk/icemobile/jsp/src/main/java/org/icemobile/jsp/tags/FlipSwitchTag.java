@@ -16,6 +16,10 @@
 
 package org.icemobile.jsp.tags;
 
+import org.icemobile.util.ClientDescriptor;
+import org.icemobile.util.UserAgentInfo;
+
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.PageContext;
 import javax.servlet.jsp.tagext.SimpleTagSupport;
 import java.io.IOException;
@@ -61,7 +65,11 @@ public class FlipSwitchTag extends SimpleTagSupport {
 
         // write javascript
         StringBuilder builder = new StringBuilder(255);
-        builder.append("ice.mobi.flipvalue('").append(getId()).append("', { event: event, elVal: this  }); ");
+        builder.append("ice.mobi.flipvalue('").append(getId()).append("' ,{ event: event, elVal: this");
+        if ( isTransformerHack(pageContext )) {
+            builder.append(", transHack: 'true'");
+        }
+        builder.append("} );");
 
         if (!isDisabled() | !isReadOnly()) {
             out.write(" onclick=\"" + builder.toString() + "\"");
@@ -90,6 +98,21 @@ public class FlipSwitchTag extends SimpleTagSupport {
         out.write("</a>");
     }
 
+    private boolean isTransformerHack(PageContext pageContext) {
+
+        Object request = pageContext.getRequest();
+        if (request instanceof HttpServletRequest) {
+            HttpServletRequest hsr = (HttpServletRequest) request;
+            ClientDescriptor client = ClientDescriptor.getInstance(hsr);
+
+            String ua = client.getUserAgent();
+            if (ua != null) {
+                ua = ua.toLowerCase();
+                return ua.contains( UserAgentInfo.TABLET_TRANSORMER_PRIME );
+            }
+        }
+        return false;
+    }
 
     private boolean isChecked(String hiddenValue) {
         if (hiddenValue == null) {
