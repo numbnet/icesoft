@@ -74,7 +74,7 @@ public class SingleViewServer implements Server {
             if (views.containsKey(viewNumber)) {
                 view = (View) views.get(viewNumber);
             } else {
-                view = new View(viewNumber, sessionID, session, allUpdatedViews, configuration, sessionMonitor, resourceDispatcher, blockingRequestHandlerContext, authorization);
+                view = new View(viewNumber, sessionID, session, allUpdatedViews, configuration, sessionMonitor, resourceDispatcher, blockingRequestHandlerContext, authorization, request);
                 views.put(viewNumber, view);
             }
         }

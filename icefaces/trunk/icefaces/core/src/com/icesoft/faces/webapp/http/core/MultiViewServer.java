@@ -48,6 +48,7 @@ import org.apache.commons.logging.LogFactory;
 
 public class MultiViewServer implements Server {
     private static final Log LOG = LogFactory.getLog(MultiViewServer.class);
+    private static final Log VIEW_LOG = LogFactory.getLog(View.class);
     private int viewCount = 0;
     private int viewCap = 0;
     private Map views;
@@ -93,16 +94,10 @@ public class MultiViewServer implements Server {
                 if (isInteger(viewIdentifier) && views.containsKey(viewIdentifier)) {
                     view = (View) views.get(viewIdentifier);
                 } else {
-                    view = createView();
-                    if (LOG.isDebugEnabled())  {
-                        LOG.debug("View created: " + view + " " + request.getURI());
-                    }
+                    view = createView(request);
                 }
             } else {
-                view = createView();
-                if (LOG.isDebugEnabled())  {
-                    LOG.debug("View created: " + view + " " + request.getURI());
-                }
+                view = createView(request);
             }
         }
 
@@ -119,16 +114,19 @@ public class MultiViewServer implements Server {
         }
     }
 
-    private View createView() throws Exception {
+    private View createView(Request req) throws Exception {
         if (views.size()  > viewCap)  {
             //check views.size rather than viewCount since disposed views
             //are not a problem
             LOG.warn("Concurrent view limit of " + viewCap + 
                 " exceeded for session " + sessionID);
+            if(VIEW_LOG.isDebugEnabled()){
+                View.logViewStatus(session);
+            }
             throw new RuntimeException("Concurrent view limit exceeded.");
         }
         String viewNumber = String.valueOf(++viewCount);
-        View view = new View(viewNumber, sessionID, session, asynchronouslyUpdatedViews, configuration, sessionMonitor, resourceDispatcher, blockingRequestHandlerContext, authorization);
+        View view = new View(viewNumber, sessionID, session, asynchronouslyUpdatedViews, configuration, sessionMonitor, resourceDispatcher, blockingRequestHandlerContext, authorization, req);
         views.put(viewNumber, view);
         return view;
     }
