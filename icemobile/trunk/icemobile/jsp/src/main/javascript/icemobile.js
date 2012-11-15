@@ -194,9 +194,23 @@ ice.formOf = function formOf(element) {
     }
 }
 
+ice.mobi.flipswitch = {
+ lastTime: 0
+}
+
 ice.mobi.flipvalue = function flipvalue(id, vars) {
 
     try {
+
+        // Mobi-526 filter double clicks if necessary
+        if (vars.transHack) {
+            var currentTimeMillis = new Date().getTime();
+            if ( (currentTimeMillis - ice.mobi.flipswitch.lastTime) < 100 ) {
+                console.log("Double click suppression required");
+                return;
+            }
+            ice.mobi.flipswitch.lastTime = currentTimeMillis;
+        }
         this.id = id;
         this.flipperEl = vars.elVal;
 
@@ -221,7 +235,7 @@ ice.mobi.flipvalue = function flipvalue(id, vars) {
         }
 
     } catch (e) {
-        alert('Exception finding switcher: ' + e);
+        console.log('Exception finding switcher: ' + e);
     }
 };
 
