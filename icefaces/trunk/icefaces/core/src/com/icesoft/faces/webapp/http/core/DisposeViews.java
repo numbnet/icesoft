@@ -61,15 +61,9 @@ public class DisposeViews implements Server {
                 View view = (View) views.remove(viewIdentifiers[i]);
                 // Jira 1616 Logout throws NPE.
                 if (view != null) {
-                    if (Log.isDebugEnabled())  {
-                        Log.debug("Disposing View: " + view);
-                    }
                     associatedPageViews.disposeAssociatedViews(views,view);
                     view.dispose();
                 }
-            }
-            if (Log.isDebugEnabled())  {
-                Log.debug("Views disposed for " + sessionID + ". Remaining views: " + views);
             }
         } else {
             //this usually happens with Seam filters in synchronous mode
