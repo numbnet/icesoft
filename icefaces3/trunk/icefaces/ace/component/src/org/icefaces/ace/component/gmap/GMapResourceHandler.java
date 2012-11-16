@@ -79,8 +79,13 @@ public class GMapResourceHandler extends ResourceHandlerWrapper {
     public Resource createResource(String resourceName, String libraryName, String contentType) {
         if (GMAP_API.equals(resourceName) && gmapKey != null) {
             if (apiJS == null) {
-                apiJS = recreateResource(super.createResource(resourceName), 
-					"http://maps.googleapis.com/maps/api/js?key=" + gmapKey + "&sensor=true");
+				System.out.println("Page is secured: " + FacesContext.getCurrentInstance().getExternalContext().isSecure());
+                if(!FacesContext.getCurrentInstance().getExternalContext().isSecure())
+					apiJS = recreateResource(super.createResource(resourceName), 
+						"http://maps.googleapis.com/maps/api/js?key=" + gmapKey + "&sensor=true");
+				else
+					apiJS = recreateResource(super.createResource(resourceName), 
+						"https://maps.googleapis.com/maps/api/js?key=" + gmapKey + "&sensor=true");
 			}
             return apiJS;
         } else {

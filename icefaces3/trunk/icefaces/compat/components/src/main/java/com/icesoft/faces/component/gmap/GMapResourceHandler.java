@@ -49,7 +49,10 @@ public class GMapResourceHandler extends ResourceHandlerWrapper {
         if (GMAP_JS.equals(resourceName) && gmapKey != null) {
             if (gmapJS == null) {
                 //change returned resource to point to a different URI
+				if(!FacesContext.getCurrentInstance().getExternalContext().isSecure())
                 return gmapJS = recreateResource(resource, "http://maps.googleapis.com/maps/api/js?key=" + gmapKey + "&sensor=true");
+				else
+				return gmapJS = recreateResource(resource, "https://maps.googleapis.com/maps/api/js?key=" + gmapKey + "&sensor=true");
             } else {
                 //return cached resource
                 return gmapJS;
