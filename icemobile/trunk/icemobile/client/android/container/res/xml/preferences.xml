@@ -58,12 +58,6 @@
             android:title="Progress Dialog"
             android:defaultValue="false"
         />
-        <CheckBoxPreference
-            android:key="accelerate"
-            android:summary="Enable Hardware Acceleration."
-            android:title="Hardware Acceleration"
-            android:defaultValue="false"
-        />
     </PreferenceCategory>
     
 </PreferenceScreen>

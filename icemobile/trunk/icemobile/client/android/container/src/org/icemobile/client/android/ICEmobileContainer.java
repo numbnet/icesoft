@@ -202,7 +202,7 @@ public class ICEmobileContainer extends Activity
         /* Establish initial container configuration */
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
         accelerated = prefs.getBoolean("accelerate", false);
-        setHwAccelerate(accelerated, false);
+        //setHwAccelerate(accelerated, false);
         includeUtil();
         if (INCLUDE_QRCODE) {
             includeQRCode();
@@ -395,7 +395,7 @@ public class ICEmobileContainer extends Activity
         } else if (key.equals("accelerate")) {
             if (accelerated != prefs.getBoolean("accelerate", false)) {
                 accelerated = !accelerated;
-                setHwAccelerate(accelerated, true);
+                //setHwAccelerate(accelerated, true);
             }
         }
     }

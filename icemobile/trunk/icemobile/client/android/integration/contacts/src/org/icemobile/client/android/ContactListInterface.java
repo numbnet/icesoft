@@ -186,9 +186,8 @@ import android.util.Log;
 		String encodedContactList = null; 
 		try { 
 		    encodedContactList = URLEncoder.encode(contactList.toString(), "utf-8");
-		    Log.e("ICEcontacts", "Encoded Contact = " + encodedContactList);
-		    mInterface.loadURL(
-				       "javascript:ice.addHidden(ice.currentContactId, ice.currentContactId, '" +  encodedContactList + "'); ");
+		    Log.d("ICEcontacts", "Encoded Contact = " + encodedContactList);
+		    mInterface.loadURL("javascript:ice.addHidden(ice.currentContactId, ice.currentContactId, '" +  encodedContactList + "'); ");
 		} catch (Exception e) { 
 		    Log.e("ICEmobile", "Exception encoding contact information: " + e); 
 		}
