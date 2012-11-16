@@ -28,6 +28,7 @@ import javax.faces.event.PhaseId;
 import javax.faces.event.ValueChangeEvent;
 import javax.servlet.http.HttpSession;
 import java.util.Map;
+import java.util.HashMap;
 
 
 public class Microphone extends MicrophoneBase implements IDevice{
@@ -93,13 +94,26 @@ public class Microphone extends MicrophoneBase implements IDevice{
 
     }
 
-    public String getScript(String clientId, boolean b) {
+    public String getScript(String clientId, boolean auxUpload) {
         final StringBuilder script = new StringBuilder();
-        if (getMaxtime() != Integer.MIN_VALUE) {
-            script.append("ice.microphone( '").append(clientId).
-                    append(",'maxtime=").append(getMaxtime()).append("');");
+        if (auxUpload)  {
+            HashMap<String,String> params = new HashMap();
+            if (getMaxtime() > 0)  {
+                params.put("maxtime", String.valueOf(getMaxtime()));
+            }
+            script.append(MobiJSFUtils.getICEmobileSXScript(
+                    "microphone", null, this));
         } else {
-            script.append("ice.microphone( '").append(clientId).append("');");
+            if (getMaxtime() != Integer.MIN_VALUE) {
+                script.append("ice.microphone( '")
+                .append(clientId)
+                .append(",'maxtime=")
+                .append(getMaxtime()).append("');");
+            } else {
+                script.append("ice.microphone( '")
+                .append(clientId)
+                .append("');");
+            }
         }
         return script.toString();
     }
@@ -115,8 +129,8 @@ public class Microphone extends MicrophoneBase implements IDevice{
 
   /* don't need this for JSF but the interface for the core renderer require it from JSP */
     public String getSessionId(){
-        HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
-        return session.getId();
+        return MobiJSFUtils.getSessionIdCookie(
+                FacesContext.getCurrentInstance());
     }
     public String getParams(){
         return null;
