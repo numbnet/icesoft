@@ -42,7 +42,7 @@
     </mobi:fieldsetGroup>
     
     <mobi:fieldsetGroup>
-        <mobi:fieldsetRow rendered="#{!geoLocationBean.androidContainer}">
+        <mobi:fieldsetRow>
             <canvas id="mapCanvas" width="#{viewSize eq 'small' ? '260' : '360'}" height="#{viewSize eq 'small' ? '130' : '180'}" class="center"></canvas>
         </mobi:fieldsetRow>
         <mobi:fieldsetRow styleClass="mobi-center">
@@ -117,51 +117,49 @@
     </mobi:fieldsetGroup>
     
     </h:form>
-    <c:if test="#{!geoLocationBean.androidContainer}">
-        <script type="text/javascript">
-    
-            function showLocation() {
-                var canvas = document.getElementById('mapCanvas');
-                if (!canvas) {
-                    return;
-                }
-                // temporary work around for drawing location on canvas
-                var lat = '#{geoLocationBean.latitude}';
-                var lon = '#{geoLocationBean.longitude}';
-    
-                if (canvas.getContext) {
-                    var ctx = canvas.getContext('2d');
-                    ctx.clearRect(0, 0, 600, 400);
-                    var height = canvas.height;
-                    var width = canvas.width;
-    
-                    ctx.drawImage(image, 0, 0, width, height);
-                    var x = Math.floor(lon * width / 2 / 180 + (width / 2));
-                    var y = Math.floor(-1 * lat * (height / 2) / 90 + (height / 2));
-                    ctx.fillStyle = "#FFFF00";
-                    ctx.beginPath();
-                    ctx.arc(x, y, 5, 0, Math.PI * 2, true);
-                    ctx.fill();
-                }
+    <script type="text/javascript">
+
+        function showLocation() {
+            var canvas = document.getElementById('mapCanvas');
+            if (!canvas) {
+                return;
             }
-    
-            function updateLocation(data) {
-                if (data.status == "success") {
-                    showLocation();
-                }
+            // temporary work around for drawing location on canvas
+            var lat = '#{geoLocationBean.latitude}';
+            var lon = '#{geoLocationBean.longitude}';
+
+            if (canvas.getContext) {
+                var ctx = canvas.getContext('2d');
+                ctx.clearRect(0, 0, 600, 400);
+                var height = canvas.height;
+                var width = canvas.width;
+
+                ctx.drawImage(image, 0, 0, width, height);
+                var x = Math.floor(lon * width / 2 / 180 + (width / 2));
+                var y = Math.floor(-1 * lat * (height / 2) / 90 + (height / 2));
+                ctx.fillStyle = "#FFFF00";
+                ctx.beginPath();
+                ctx.arc(x, y, 5, 0, Math.PI * 2, true);
+                ctx.fill();
             }
-    
-            var image = new Image();
-            //scaled and cropped http://nf.nci.org.au/facilities/software/GMT/4.3.1/doc/html/GMT_Docs/node97.html
-            image.src = "#{resource['images:map.png']}";
-            image.onload = function() {
+        }
+
+        function updateLocation(data) {
+            if (data.status == "success") {
                 showLocation();
             }
-    
-            jsf.ajax.addOnEvent(updateLocation);
-    
-        </script>
-    </c:if>
+        }
+
+        var image = new Image();
+        //scaled and cropped http://nf.nci.org.au/facilities/software/GMT/4.3.1/doc/html/GMT_Docs/node97.html
+        image.src = "#{resource['images:map.png']}";
+        image.onload = function() {
+            showLocation();
+        }
+
+        jsf.ajax.addOnEvent(updateLocation);
+
+    </script>
 
 
 </ui:composition>
