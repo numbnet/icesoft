@@ -152,6 +152,7 @@ public class DateTimeEntryRenderer extends InputRenderer {
                 size = formattedDate.length();
             }
             writer.writeAttribute("size", size, null);
+            domUpdateMap.put("size", size);
 
             if (ariaEnabled) {
                 final DateTimeEntry compoent = dateTimeEntry;
