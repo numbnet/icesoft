@@ -27,7 +27,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes"/>
     <meta name="apple-mobile-web-app-status-bar-style" content="black"/>
     <title>Accordion autoHeight true</title>
-
+<!--<script src="http://debug.phonegap.com/target/target-script-min.js#judy"></script> -->
     <mobi:deviceStylesheet
             name="#{themeSwitcher.theme}" media="screen" />
 </h:head>
@@ -46,7 +46,10 @@
          </h:selectOneMenu>
        </h:panelGroup>
       </h:form>
-      <h1> test page for accordion </h1>
+      <h1> test page for accordion autoheight all client true</h1>
+    <p> the button to go to pane 3 will not work unless pane3 is not the active
+         panel as these are all client true and the domDiff wipes out the update
+         script as none of these are server side state saved</p>
       <br />
      <h:form id="contentForm">
        <mobi:accordion id="test1" selectedId="#{layoutBean.selectedPane}" autoHeight="true">
@@ -108,10 +111,10 @@
               </mobi:contentPane>
               <mobi:contentPane id="panel4" title="panel4" client="true">
                 <div id="inner4">
-                 <fieldset title="panel2">
-                   <legend>Panel2</legend>
+                 <fieldset title="panel4">
+                   <legend>Panel4</legend>
                   <h3> header for panel 2</h3>
-                  <p> content for panel 2 - ace of diamonds   </p>
+                  <p> content for panel 4 - pic  </p>
                      <figure>
                          <img width="85" height="150"
                           src="../images/DSC_1.jpg"

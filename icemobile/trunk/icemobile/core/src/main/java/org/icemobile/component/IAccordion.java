@@ -22,5 +22,5 @@ public interface IAccordion extends IMobiComponent{
     public boolean isScriptLoaded();
     public void setScriptLoaded();
     public String getOpenedPaneClientId();
-
+    public String getHashVal();
 }

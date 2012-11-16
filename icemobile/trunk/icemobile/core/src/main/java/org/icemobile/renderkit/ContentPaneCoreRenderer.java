@@ -77,11 +77,13 @@ public class ContentPaneCoreRenderer extends BaseCoreRenderer {
           writer.endElement(DIV_ELEM);
           writer.startElement(DIV_ELEM, pane);
           writer.writeAttribute(ID_ATTR, clientId+"wrp");
-          if (autoheight){
+       /*   if (autoheight){
              writer.writeAttribute("onload", "ice.mobi.accordionController.updateHeight('"+accordionId+"', '"+clientId+"');");
-          }
+          }  */
+     //    String fixedHeight = accordion.getFixedHeight();
           if (!autoheight && null != accordion.getFixedHeight()) {
-             writer.writeAttribute(STYLE_ATTR, "height: "+accordion.getFixedHeight()+"; overflow-y: scroll;") ;
+         //     logger.info("writing out fixedHeight="+accordion.getFixedHeight());
+              writer.writeAttribute(STYLE_ATTR, "height: "+accordion.getFixedHeight()+"; overflow-y: scroll;") ;
           }
           writer.startElement(DIV_ELEM, pane);
           writer.writeAttribute(ID_ATTR, clientId);

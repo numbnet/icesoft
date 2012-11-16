@@ -42,7 +42,16 @@ public class AccordionRenderer extends BaseLayoutRenderer {
          Map<String, String> params = context.getExternalContext().getRequestParameterMap();
        // no ajax behavior defined yet
          String indexStr = params.get(clientId + "_hidden");
-         if( null != indexStr) {
+         String submittedStr = indexStr;
+         int ind = indexStr.indexOf(",");
+         if (ind > -1){
+             String [] split = indexStr.split(",");
+             submittedStr = split[0];
+             accordion.setHashVal(indexStr);
+         } else {
+             accordion.setHashVal(null);
+         }
+         if( null != submittedStr) {
              String oldId = accordion.getCurrentId();
              String newId = JSFUtils.getIdOfChildByClientId(context, accordion, indexStr);
              if (newId != null && !newId.equals(oldId)) {

@@ -123,4 +123,8 @@ public class AccordionTag extends BaseBodyTag implements IAccordion {
         this.renderer=null;
         this.fixedHeight = null;
     }
+    /** this is not required for jsp since no domDiff to wipe out update script */
+    public String getHashVal(){
+        return null;
+    }
 }

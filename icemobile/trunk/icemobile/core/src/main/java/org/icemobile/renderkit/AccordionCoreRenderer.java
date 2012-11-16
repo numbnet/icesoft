@@ -71,6 +71,9 @@ public class AccordionCoreRenderer extends BaseCoreRenderer implements IRenderer
         }
         boolean autoheight = accordion.isAutoHeight();
         int hashcode = Utils.generateHashCode(openedPaneId);
+        if (null != accordion.getHashVal()){
+            hashcode = Utils.generateHashCode(accordion.getHashVal());
+        }
         cfg.append(", hash: ").append(hashcode);
         cfg.append(", autoHeight: ").append(autoheight);
         if (accordion.getFixedHeight()!=null){
