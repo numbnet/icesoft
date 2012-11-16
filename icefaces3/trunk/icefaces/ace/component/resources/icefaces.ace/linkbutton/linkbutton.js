@@ -44,17 +44,19 @@ ice.ace.linkButton = {
 
         root = document.getElementById(spanId);
 
-        root.firstChild.setAttribute("role", "link");
-        root.firstChild.setAttribute("aria-labelledby", jsProps.label);
-        if (jsfProps.disabled) {
-            root.firstChild.setAttribute("aria-disabled", jsfProps.disabled);
-        }
-        // If there's no action listener, this is standard anchor behaviour
-        // otherwise it's got an actionListener/action attribute. Described by offers further description
-        if (!jsfProps.doAction) {
-            root.firstChild.setAttribute("aria-describedby", "Standard HTML anchor");
-        } else {
-            root.firstChild.setAttribute("aria-describedby", "JSF action event source");
+        if (jsfProps.ariaEnabled) {
+            root.firstChild.setAttribute("role", jsfProps.doAction ? "button" : "link");
+            root.firstChild.setAttribute("aria-labelledby", jsProps.label);
+            if (jsfProps.disabled) {
+                root.firstChild.setAttribute("aria-disabled", jsfProps.disabled);
+            }
+            // If there's no action listener, this is standard anchor behaviour
+            // otherwise it's got an actionListener/action attribute. Described by offers further description
+            if (!jsfProps.doAction) {
+                root.firstChild.setAttribute("aria-describedby", "Standard HTML anchor");
+            } else {
+                root.firstChild.setAttribute("aria-describedby", "JSF action event source");
+            }
         }
 
         bindYUI(oLinkButton);
