@@ -6375,6 +6375,12 @@
                     }
                 });
             }
+			
+			if ($.browser.msie && $.browser.version < 8) // ICE-8748
+				if (self.overlay) {
+					self.overlay.$el.css('position', 'fixed').css('top', 0).css('left', 0);
+					self.overlay.$el.appendTo(uiDialog.parent().parent());
+				}
 
             // set focus to the first tabbable element in the content area or the first button
             // if there are no tabbable elements, set focus on the dialog itself

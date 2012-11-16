@@ -7,3 +7,4 @@ ICE-8631: added line that was missing in 1.8.24 in progress bar widget, where th
 ICE-8665: ace:dateTimeEntry text input key-events causing slowdown with large DOMs in IE7/8.
 ICE-8752: Add ARIA role and attributes to SliderEntry.
 ICE-8644: ace:dateTimeEntry - Add a way to change the calendar icon title tooltip.
+ICE-8748: added code to bring the modal dialog overlay to the same dom tree level as the dialog itself, so that the overlay doesn't appear on top of the dialog
