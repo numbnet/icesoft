@@ -98,7 +98,7 @@ ice.ace.pushbutton = {
         };
 
         buttonRoot = document.getElementById(spanId);
-        if (jsfProps.aria) {
+        if (jsfProps.ariaEnabled) {
             //add roles and attributes to the YUI slider widget
             buttonRoot.firstChild.setAttribute("role", "button");
             if (jsfProps.ariaLabel) {
