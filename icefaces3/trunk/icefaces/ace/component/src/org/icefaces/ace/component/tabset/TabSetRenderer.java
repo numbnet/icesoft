@@ -19,6 +19,7 @@ package org.icefaces.ace.component.tabset;
 import java.io.IOException;
 import java.util.*;
 
+import javax.faces.application.ProjectStage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -281,13 +282,14 @@ public class TabSetRenderer extends CoreRenderer {
         item(clientId).
         beginMap().
             entry("orientation", orientation).
-			entry("showEffect", showEffect).
-			entry("showEffectLength", showEffectLength).
-	    endMap().
+            entry("showEffect", showEffect).
+            entry("showEffectLength", showEffectLength).
+        endMap().
         beginMap().
-	        entry("isClientSide", isClientSide).
-	        entry("aria", EnvUtils.isAriaEnabled(facesContext)).
-	        entry("selectedIndex", selectedIndex).
+            entry("devMode", facesContext.isProjectStage(ProjectStage.Development)).
+            entry("isClientSide", isClientSide).
+            entry("aria", EnvUtils.isAriaEnabled(facesContext)).
+            entry("selectedIndex", selectedIndex).
             entry("safeIds", safeIds).
             beginArray("disabledTabs");
 

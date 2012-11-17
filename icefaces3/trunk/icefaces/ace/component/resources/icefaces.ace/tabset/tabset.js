@@ -46,6 +46,7 @@ ice.ace.tabset = {
        
        //logger.info('3. tabset initialize');
        var tabChange=function(event) {
+            var tabChangeStartTime = new Date().getTime();
             //alert('tabChange: ENTER');
             var rootElem = document.getElementById(clientId);
             if (rootElem.suppressTabChange) {
@@ -149,6 +150,9 @@ ice.ace.tabset = {
                     //logger.info(e);
                 }
             }//end if
+            if (console && jsfProps.devMode) {
+                console.log("ace:tabSet - ID: " + this.id + " - tabChange - " + (new Date().getTime() - tabChangeStartTime) + "ms");
+            }
             //alert('tabChange: EXIT end');
        };//tabchange;
        
@@ -328,8 +332,10 @@ ice.ace.tabset = {
  
    //delegate call to ice.yui.updateProperties(..)  with the reference of this lib
    updateProperties:function(clientId, jsProps, jsfProps, events) {
+      var updatePropertiesStartTime = new Date().getTime();
        var lib = this;
 	   YAHOO.util.Event.onDOMReady(function () {
+           var updatePropertiesDOMReadyStartTime = new Date().getTime();
            YAHOO.widget.Tab.prototype.ACTIVE_CLASSNAME = 'ui-state-active';
            YAHOO.widget.Tab.prototype.HIDDEN_CLASSNAME = 'ui-tabs-hide';
            YAHOO.widget.Tab.prototype.DISABLED_CLASSNAME = 'ui-state-disabled';
@@ -414,7 +420,14 @@ ice.ace.tabset = {
        }, lib, jsProps, jsfProps);
 
        ice.ace.updateProperties(clientId, jsProps, jsfProps, events, lib);
+
+       if (console && jsfProps.devMode) {
+           console.log("ace:tabSet - ID: " + this.id + " - updateProperties DR - " + (new Date().getTime() - updatePropertiesDOMReadyStartTime) + "ms");
+       }
        });
+       if (console && jsfProps.devMode) {
+           console.log("ace:tabSet - ID: " + this.id + " - updateProperties - " + (new Date().getTime() - updatePropertiesStartTime) + "ms");
+       }
    },
  
    //delegate call to ice.yui.getInstance(..) with the reference of this lib 
