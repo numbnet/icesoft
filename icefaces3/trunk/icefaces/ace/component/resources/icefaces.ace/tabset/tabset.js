@@ -16,6 +16,7 @@
 
 ice.ace.tabset = {
     initialize:function(clientId, jsProps, jsfProps, bindYUI) {
+       var initializeStartTime = new Date().getTime();
        //logger.info('1. tabset initialize');
 	 
 		 YAHOO.util.Event.onDOMReady(function () {
@@ -112,7 +113,11 @@ ice.ace.tabset = {
             	ice.ace.clientState.set(clientId, currentIndex);
                 if (sJSFProps.behaviors) {
                     if (sJSFProps.behaviors.clientSideTabChange) {
+                        var submitClientSideStartTime = new Date().getTime();
                         ice.ace.ab(sJSFProps.behaviors.clientSideTabChange);
+                        if (console && jsfProps.devMode) {
+                            console.log("ace:tabSet - ID: " + clientId + " - submit CS - " + (new Date().getTime() - submitClientSideStartTime) + "ms");
+                        }
                     }
                 }
                 ice.ace.jq(tabview._contentParent).css({opacity:1});
@@ -136,22 +141,30 @@ ice.ace.tabset = {
                             //replace id with the id of tabset component, so the "execute" property can be set to tabset id
                             targetElement.id = clientId;
                             var otherParams = {};
+                            var submitBehaviourStartTime = new Date().getTime();
                             ice.ace.ab(ice.ace.extendAjaxArguments(
                                     sJSFProps.behaviors.serverSideTabChange,
                                     {params: otherParams, execute: "@this", render: "@this", onsuccess: doOnSuccess}));
                             //restore id
                             targetElement.id = elementId;
+                            if (console && jsfProps.devMode) {
+                                console.log("ace:tabSet - ID: " + clientId + " - submit B - " + (new Date().getTime() - submitBehaviourStartTime) + "ms");
+                            }
                         }
                     }
                     if (!haveBehaviour) {
+                        var submitServerSideStartTime = new Date().getTime();
                         ice.submit(event, targetElement, params);
+                        if (console && jsfProps.devMode) {
+                            console.log("ace:tabSet - ID: " + clientId + " - submit SS - " + (new Date().getTime() - submitServerSideStartTime) + "ms");
+                        }
                     }
                 } catch(e) {
                     //logger.info(e);
                 }
             }//end if
             if (console && jsfProps.devMode) {
-                console.log("ace:tabSet - ID: " + this.id + " - tabChange - " + (new Date().getTime() - tabChangeStartTime) + "ms");
+                console.log("ace:tabSet - ID: " + clientId + " - tabChange - " + (new Date().getTime() - tabChangeStartTime) + "ms");
             }
             //alert('tabChange: EXIT end');
        };//tabchange;
@@ -283,6 +296,9 @@ ice.ace.tabset = {
        bindYUI(tabview);
 
 	 }); // *** end of domready
+       if (console && jsfProps.devMode) {
+           console.log("ace:tabSet - ID: " + clientId + " - initialize - " + (new Date().getTime() - initializeStartTime) + "ms");
+       }
    },
    
    //this function is responsible to provide an element that keeps tab index
@@ -422,11 +438,11 @@ ice.ace.tabset = {
        ice.ace.updateProperties(clientId, jsProps, jsfProps, events, lib);
 
        if (console && jsfProps.devMode) {
-           console.log("ace:tabSet - ID: " + this.id + " - updateProperties DR - " + (new Date().getTime() - updatePropertiesDOMReadyStartTime) + "ms");
+           console.log("ace:tabSet - ID: " + clientId + " - updateProperties DR - " + (new Date().getTime() - updatePropertiesDOMReadyStartTime) + "ms");
        }
        });
        if (console && jsfProps.devMode) {
-           console.log("ace:tabSet - ID: " + this.id + " - updateProperties - " + (new Date().getTime() - updatePropertiesStartTime) + "ms");
+           console.log("ace:tabSet - ID: " + clientId + " - updateProperties - " + (new Date().getTime() - updatePropertiesStartTime) + "ms");
        }
    },
  
