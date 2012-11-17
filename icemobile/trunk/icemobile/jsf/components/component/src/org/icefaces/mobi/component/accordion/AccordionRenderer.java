@@ -40,23 +40,25 @@ public class AccordionRenderer extends BaseLayoutRenderer {
          Accordion accordion = (Accordion) component;
          String clientId = accordion.getClientId(context);
          Map<String, String> params = context.getExternalContext().getRequestParameterMap();
-       // no ajax behavior defined yet
+       // no ajax behaviors defined yet
          String indexStr = params.get(clientId + "_hidden");
-         String submittedStr = indexStr;
-         int ind = indexStr.indexOf(",");
-         if (ind > -1){
-             String [] split = indexStr.split(",");
-             submittedStr = split[0];
-             accordion.setHashVal(indexStr);
-         } else {
-             accordion.setHashVal(null);
-         }
-         if( null != submittedStr) {
-             String oldId = accordion.getCurrentId();
-             String newId = JSFUtils.getIdOfChildByClientId(context, accordion, indexStr);
-             if (newId != null && !newId.equals(oldId)) {
-                 accordion.setCurrentId(newId);
-                 component.queueEvent(new ValueChangeEvent(component, oldId, newId));
+         if (null != indexStr){
+             String submittedStr = indexStr;
+             int ind = indexStr.indexOf(",");
+             if (ind > -1){
+                 String [] split = indexStr.split(",");
+                 submittedStr = split[0];
+                 accordion.setHashVal(indexStr);
+             } else {
+                 accordion.setHashVal(null);
+             }
+             if( null != submittedStr) {
+                 String oldId = accordion.getCurrentId();
+                 String newId = JSFUtils.getIdOfChildByClientId(context, accordion, indexStr);
+                 if (newId != null && !newId.equals(oldId)) {
+                     accordion.setCurrentId(newId);
+                     component.queueEvent(new ValueChangeEvent(component, oldId, newId));
+                 }
              }
          }
     }
