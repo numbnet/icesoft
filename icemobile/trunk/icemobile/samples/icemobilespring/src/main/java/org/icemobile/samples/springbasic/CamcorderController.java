@@ -31,11 +31,17 @@ public class CamcorderController {
 	}
 
 	@RequestMapping(value = "/camcorder", method=RequestMethod.GET)
-    public void processVideo(Model model)  {
+    public void get(Model model)  {
+        model.addAttribute("mediaReady", new Boolean(mediaReady));
+    }
+	
+	@RequestMapping(value = "/camcorder", method=RequestMethod.POST)
+    public void post(Model model)  {
         model.addAttribute("mediaReady", new Boolean(mediaReady));
     }
 
-	@RequestMapping(value = "/camcorder", method=RequestMethod.POST)
+
+	@RequestMapping(value = "/camcorder", method=RequestMethod.POST, consumes="multipart/form-data")
 	public void processVideo(HttpServletRequest request, ModelBean modelBean,
                              @RequestParam(value = "camvid", required = false) MultipartFile file,
                              Model model) throws IOException {
