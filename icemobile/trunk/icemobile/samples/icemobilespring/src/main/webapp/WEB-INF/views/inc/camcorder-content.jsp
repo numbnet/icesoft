@@ -26,6 +26,8 @@
                         value="Submit"
                         type="submit"/>
                         
+    <h3 style="clear:both;margin-top:10px;">Camcorder Upload</h3>
+                        
     <c:if test="${not empty message}">
         <div id="message" class="success">${message}<br/>
         </div>
