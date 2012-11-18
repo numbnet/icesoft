@@ -42,4 +42,6 @@
     font-weight: normal;
     padding: 3px;
     width: 45px;
+    border-bottom:none;
+    border-top:none;
 }

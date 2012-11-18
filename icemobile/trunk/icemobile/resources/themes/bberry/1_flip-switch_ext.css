@@ -50,7 +50,6 @@
 
 
 .mobi-flip-switch-off span:first-child, .mobi-flip-switch-on span:last-child {
-    border-top: 1px solid white;
     background: -moz-linear-gradient(top, #e3e3e3, #fcfcfc) repeat scroll 0 0 #fcfcfc;
     background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0, #e3e3e3), color-stop(1, #fcfcfc));
     filter:  progid:DXImageTransform.Microsoft.gradient(startColorStr='#e3e3e3', EndColorStr='#fcfcfc');
