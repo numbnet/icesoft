@@ -20,24 +20,15 @@
         </mobi:fieldsetRow>
     </mobi:fieldsetGroup>
     
-    <c:if test="${!geolocationBean.androidContainer}">
-        <mobi:fieldsetGroup>
-            <mobi:fieldsetRow>
-                <canvas id="mapCanvas" width="260" height="130" class="center"></canvas>
-            </mobi:fieldsetRow>
-            <mobi:fieldsetRow styleClass="mobi-center">
-                 <mobi:commandButton value="Locate Me" type="submit" buttonType="important"/>
-            </mobi:fieldsetRow>
-        </mobi:fieldsetGroup>
-    </c:if>
-    <c:if test="${geolocationBean.androidContainer}">
-        <mobi:fieldsetGroup>
-            <mobi:fieldsetRow styleClass="mobi-center">
-                 <mobi:commandButton value="Locate Me" type="submit" buttonType="important"/>
-            </mobi:fieldsetRow>
-        </mobi:fieldsetGroup>
-    </c:if>
-    
+    <mobi:fieldsetGroup>
+        <mobi:fieldsetRow>
+            <canvas id="mapCanvas" width="260" height="130" class="center"></canvas>
+        </mobi:fieldsetRow>
+        <mobi:fieldsetRow styleClass="mobi-center">
+             <mobi:commandButton value="Locate Me" type="submit" buttonType="important"/>
+        </mobi:fieldsetRow>
+    </mobi:fieldsetGroup>
+     
     <h3>Geolocation Results:</h3>
 
     <mobi:fieldsetGroup>
@@ -102,44 +93,42 @@
     <mobi:commandButton type="submit" buttonType="important" 
         styleClass="submit" value="Update Settings"/>
 
-    <c:if test="${!geolocationBean.androidContainer}">
-        <script type="text/javascript">
-    
-            function showLocation() {
-                var canvas = document.getElementById('mapCanvas');
-                if (!canvas) {
-                    return;
-                }
-                // temporary work around for drawing location on canvas
-                var lat = '${geolocationBean.latitude}';
-                var lon = '${geolocationBean.longitude}';
-    
-                if (canvas.getContext && lat && lon) {
-                    var ctx = canvas.getContext('2d');
-                    ctx.clearRect(0, 0, 600, 400);
-                    var height = canvas.height;
-                    var width = canvas.width;
-    
-                    ctx.drawImage(image, 0, 0, width, height);
-                    var x = Math.floor(lon * width / 2 / 180 + (width / 2));
-                    var y = Math.floor(-1 * lat * (height / 2) / 90 + (height / 2));
-                    ctx.fillStyle = "#FFFF00";
-                    ctx.beginPath();
-                    ctx.arc(x, y, 5, 0, Math.PI * 2, true);
-                    ctx.fill();
-                }
+    <script type="text/javascript">
+
+        function showLocation() {
+            var canvas = document.getElementById('mapCanvas');
+            if (!canvas) {
+                return;
             }
-    
-            var image = new Image();
-            //scaled and cropped http://nf.nci.org.au/facilities/software/GMT/4.3.1/doc/html/GMT_Docs/node97.html
-            image.src = "resources/images/map.png";
-            image.onload = function() {
-                showLocation();
+            // temporary work around for drawing location on canvas
+            var lat = '${geolocationBean.latitude}';
+            var lon = '${geolocationBean.longitude}';
+
+            if (canvas.getContext && lat && lon) {
+                var ctx = canvas.getContext('2d');
+                ctx.clearRect(0, 0, 600, 400);
+                var height = canvas.height;
+                var width = canvas.width;
+
+                ctx.drawImage(image, 0, 0, width, height);
+                var x = Math.floor(lon * width / 2 / 180 + (width / 2));
+                var y = Math.floor(-1 * lat * (height / 2) / 90 + (height / 2));
+                ctx.fillStyle = "#FFFF00";
+                ctx.beginPath();
+                ctx.arc(x, y, 5, 0, Math.PI * 2, true);
+                ctx.fill();
             }
+        }
+
+        var image = new Image();
+        //scaled and cropped http://nf.nci.org.au/facilities/software/GMT/4.3.1/doc/html/GMT_Docs/node97.html
+        image.src = "resources/images/map.png";
+        image.onload = function() {
             showLocation();
-    
-        </script>
-    </c:if>
+        }
+        showLocation();
+
+    </script>
 
 </form:form>
 
