@@ -83,3 +83,12 @@ Mozilla/5.0 (Linux; U; Android 2.1-update1; en-us; GT-I9000T Build/ECLAIR) Apple
 Mozilla/5.0 (Linux; U; Android 2.2.1; en-gb; I7500 Build/FRG83) AppleWebKit/533.1 (KHTML, like Gecko) Version/4.0 Mobile Safari/533.1
 Mozilla/5.0 (Linux; U; Android 2.2.2; en-us; GT-S5830L Build/FROYO) AppleWebKit/533.1 (KHTML, like Gecko) Version/4.0 Mobile Safari/533.1
 Mozilla/5.0 (Linux; U; Android 2.3.6; en-; GT-I9220 Build/GINGERBREAD) AppleWebKit/533.1 (KHTML, like Gecko) Version/4.0 Mobile Safari/533.1
+Mozilla/5.0 (Linux; Android 4.0.4; GT-I9300 Build/IMM76D) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1025.166 Mobile Safari/535.19
+Mozilla/5.0 (Linux; U; Android 2.1-update1; en-us; HTC Desire Build/ERE27) AppleWebKit/525.10 +(KHTML, like Gecko) Version/3.0.4 Mobile Safari/523.12.2
+Mozilla/5.0 (Linux; U; Android 2.2; en-gb; Desire_A8181 Build/FRF91) AppleWebKit/533.1 (KHTML, like Gecko) Version/4.0 Mobile Safari/533.1
+Mozilla/5.0 (Linux; U; Android 2.1; en-us; ADR6200 Build/ERD79) AppleWebKit/530.17 (KHTML, like Gecko) Version/4.0 Mobile Safari/530.17
+Mozilla/5.0 (Linux; U; Android 1.6; en-gb; HTC Magic Build/DRC92) AppleWebKit/528.5+ (KHTML, like Gecko) Version/3.1.2 Mobile Safari/525.20.1
+Mozilla/5.0 (Linux; U; Android 2.2.1; en-gb; HTC Magic Build/FRG83D) AppleWebKit/533.1 (KHTML, like Gecko) Version/4.0 Mobile Safari/533.1
+Mozilla/5.0 (Linux; U; Android 2.1-update1; en-gb; GT-I9000 Build/ECLAIR) AppleWebKit/530.17 (KHTML, like  Gecko) Version/4.0 Mobile Safari/530.17
+Mozilla/5.0 (Linux; Android 4.0.4; SAMSUNG-SGH-I747 Build/IMM76D) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1025.166 Mobile Safari/535.19
+Mozilla/5.0 Linux U Android 4.0.4 en-us SGH-T999 Build/IMM76D AppleWebKit/534.30 KHTML, like Gecko Version/4.0 Mobile Safari/534.30
