@@ -82,6 +82,6 @@ html.ipad .mobi-tabset > .mobi-tabset-tabs, html.honeycomb .mobi-tabset > .mobi-
     display: none; 
 }
 .mobi-tabset-content{
-    position:relative;
+/*     position:relative; */
 }
 }
