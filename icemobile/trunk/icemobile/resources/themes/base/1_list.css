@@ -31,14 +31,13 @@
 
 .mobi-list-item {
     margin: 0;
-    font-size: 17px;
+    font-size: 15px;
     font-weight: bold;
     list-style: none;
     border-bottom-width: 0 !important;
 }
 
 .mobi-list-item-group {
-    font-size: 15px;
     font-weight: bold;
     padding: 8px 10px;
     top: 0;
