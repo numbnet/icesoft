@@ -1,5 +1,8 @@
 /*html,body{ height: 100%; }*/
 h3{ clear: both }
+header,nav,aside,section,article {
+    display:block;
+}
 div.info,div.success,div.warning,div.error {
 	border: 1px solid;
 	margin: 10px 0px;
@@ -122,22 +125,6 @@ html.bberry #menuLink{
 html.ipad #menuLink{
     background-color: #BBBFCA;
     border-color: #A2A2A2;
-}
-html.ipad #menu .active{
-    background: -moz-linear-gradient(top,#6792E8,#376FE0,#1F57C6,#2463DE) repeat scroll 0 0 #2463DE;
-    background-image: -webkit-gradient(linear,0 0,0 100%,color-stop(0,#6792E8),color-stop(.45,#376FE0),color-stop(.5,#1F57C6),color-stop(1,#2463DE));
-    background-color: #2463DE;
-    color: #FFF;
-    text-shadow:none;
-}
-html.iphone #menu .active{
-    background-color:#EFEFEF;
-}
-html.honeycomb #menu .active, html.android #menu .active{
-    background-color:#383838;
-}
-html.bberry #menu .active{
-    background-color:#EFEFEF;
 }
 #splash header{ 
     text-align: center;
@@ -327,6 +314,9 @@ html.honeycomb h3, html.android h3{
         width: 100%;
         max-width: 300px;
     }
+    .qr div{
+        max-width: 172px;
+    }
 }
 html.android .back{
     background-color: #CCC;
@@ -343,4 +333,13 @@ html.honeycomb .back{
 .imageView{ 
     margin: 0 auto;
     width:50%;
+}
+.qr{
+    display:block !important;
+    text-align:left;
+}
+.qr label, .qr div{
+    display: inline !important;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
