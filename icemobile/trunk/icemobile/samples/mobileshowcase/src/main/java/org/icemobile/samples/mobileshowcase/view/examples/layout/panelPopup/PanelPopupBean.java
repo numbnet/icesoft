@@ -55,23 +55,30 @@ public class PanelPopupBean extends ExampleImpl<PanelPopupBean> implements
 
     public static final String BEAN_NAME = "panelPopupBean";
 
-    public boolean rendered;
-    public String selectedListItem;
+    private boolean visible;
+    private String selectedListItem;
+    private boolean clientSide;
+    private boolean autoCenter = true;
+    private String openButtonLabel = "Open";
+    private int width = Integer.MIN_VALUE;
+    private int height = Integer.MIN_VALUE;
+    private int minWidth = Integer.MIN_VALUE;
+    private int minHeight = Integer.MIN_VALUE;
 
     public PanelPopupBean() {
         super(PanelPopupBean.class);
     }
 
-    public boolean isRendered() {
-        return rendered;
+    public boolean isVisible() {
+        return visible;
     }
 
-    public void setRendered(boolean rendered) {
-        this.rendered = rendered;
+    public void setVisible(boolean visible) {
+        this.visible = visible;
     }
 
-    public String toggleRendered() {
-        rendered = !rendered;
+    public String toggleVisible() {
+        visible = !visible;
         return null;
     }
 
@@ -81,6 +88,66 @@ public class PanelPopupBean extends ExampleImpl<PanelPopupBean> implements
 
     public String getSelectedListItem() {
         return selectedListItem;
+    }
+
+    public boolean isClientSide() {
+        return clientSide;
+    }
+
+    public void setClientSide(boolean clientSide) {
+        this.clientSide = clientSide;
+    }
+
+    public boolean isAutoCenter() {
+        return autoCenter;
+    }
+
+    public void setAutoCenter(boolean autoCenter) {
+        this.autoCenter = autoCenter;
+    }
+
+    public String getOpenButtonLabel() {
+        return openButtonLabel;
+    }
+
+    public void setOpenButtonLabel(String openButtonLabel) {
+        this.openButtonLabel = openButtonLabel;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public void setWidth(int width) {
+        this.width = width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public void setHeight(int height) {
+        this.height = height;
+    }
+
+    public int getMinWidth() {
+        return minWidth;
+    }
+
+    public void setMinWidth(int minWidth) {
+        this.minWidth = minWidth;
+    }
+
+    public int getMinHeight() {
+        return minHeight;
+    }
+
+    public void setMinHeight(int minHeight) {
+        this.minHeight = minHeight;
+    }
+
+    public void setSelectedListItem(String selectedListItem) {
+        this.selectedListItem = selectedListItem;
     }
 
 }
