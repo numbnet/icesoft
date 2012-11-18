@@ -60,10 +60,10 @@ public class PanelPopupBean extends ExampleImpl<PanelPopupBean> implements
     private boolean clientSide;
     private boolean autoCenter = true;
     private String openButtonLabel = "Open";
-    private int width = Integer.MIN_VALUE;
-    private int height = Integer.MIN_VALUE;
-    private int minWidth = Integer.MIN_VALUE;
-    private int minHeight = Integer.MIN_VALUE;
+    private int width = 400;
+    private int height = 400;
+    private int minWidth = 400;
+    private int minHeight = 400;
 
     public PanelPopupBean() {
         super(PanelPopupBean.class);

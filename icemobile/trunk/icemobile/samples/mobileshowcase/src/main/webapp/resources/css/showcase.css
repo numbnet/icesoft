@@ -229,6 +229,7 @@ html.honeycomb h3{
 .form{ height: 100% }
 .form .mobi-fieldset{
     text-align:center;
+    clear:both;
 }
 .form .mobi-fieldset-row{
     display: -webkit-box;
@@ -306,6 +307,7 @@ html.honeycomb h3{
         margin: 0 10px;
         width: 100%;
         max-width: 300px;
+        margin-bottom:10px;
     }
 }
 /* SMALL SCREEN */
@@ -315,6 +317,7 @@ html.honeycomb h3{
         margin: 10px auto;
         width: 100%;
         max-width: 300px;
+        margin-bottom:10px;
     }
 }
 html.android .back{
