@@ -93,7 +93,6 @@ MvcUtil.addClickLinkHandler = function(link, updateRegion){
             $('#menu').find('a').each( function(){
                 this.className = '';
             });
-            $(link).addClass('active');
             $(updateRegion).load(link.href, {cache:false});
             history.pushState({ src: link.href }, null, link.href);
             e.preventDefault();
@@ -117,13 +116,6 @@ window.onload = function() {
         window.setTimeout(function() {
             window.addEventListener("popstate", function(e) {
                 $('.ajaxzone').load(location.pathname, {cache:false});
-                if( e.state !== null){
-                    $('#menu').find('a').each( function(){
-                        this.className = '';
-                    });
-                    var href = e.state.src.indexOf('/') > -1 ? e.state.src.split("/").pop() : e.state.src;
-                    $('#menu a[href='+href+']').addClass('active');
-                }
             }, false);
         }, 1);
     }

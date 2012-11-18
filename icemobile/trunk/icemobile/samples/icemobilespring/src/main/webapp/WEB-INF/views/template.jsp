@@ -56,12 +56,10 @@
              </c:otherwise>
          </c:choose>
     </mobi:largeView>
-
     
 <c:if test="${!ajaxRequest}">
     <script type="text/javascript">
         MvcUtil.enhanceAllLinks("#sp_left",".ajaxzone");
-        $('#menu a[href=${param.demoID}]').addClass('active');
     </script>
 </body>
 </html>
