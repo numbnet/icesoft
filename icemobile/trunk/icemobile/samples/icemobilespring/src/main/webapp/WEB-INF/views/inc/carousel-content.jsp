@@ -17,8 +17,10 @@
              </mobi:carouselItem>
          </c:forEach>
     </mobi:carousel>
-    <mobi:commandButton type="submit" buttonType="important"
-        styleClass="submit" style="margin-top:10px;"/>
+    <div style="clear:both;padding-top:10px;">
+        <mobi:commandButton type="submit" buttonType="important"
+            styleClass="submit"/>
+    </div>
 
 </form:form>
 
