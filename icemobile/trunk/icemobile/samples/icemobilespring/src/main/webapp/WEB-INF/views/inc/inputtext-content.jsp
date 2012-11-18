@@ -49,7 +49,7 @@
                         value="Submit"
                         type="submit"/>
 
-    <h4>Input Values</h4>
+    <h3 style="clear:both;margin-top:10px;">Input Values</h3>
     <mobi:fieldsetGroup>
         <mobi:fieldsetRow>
             <label>Text:</label>
