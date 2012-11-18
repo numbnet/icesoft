@@ -20,26 +20,54 @@
              xmlns:ui="http://java.sun.com/jsf/facelets"
              xmlns:util="http://java.sun.com/jsf/composite/components"
              xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
-    <h:form style="margin-top:10px;">
+    <h:form styleClass="form">
 
-        <mobi:fieldsetGroup>
+        <mobi:fieldsetGroup styleClass="intro">
             <mobi:fieldsetRow>
-                <!-- panel confirmation component -->
                 The panelConfirmation component will be dipsplayed when the
                 execute button is pressed. The user then has the choice to
-                veto execution or let it proceed. <br/>
-                <mobi:commandButton value="Execute" style="padding-top:5px;"
+                veto execution or let it proceed.
+            </mobi:fieldsetRow>
+        </mobi:fieldsetGroup>
+        
+        <mobi:commandButton value="Execute" styleClass="submit"
                                     panelConfirmation="panelConfirmation"
                                     actionListener="#{panelConfirmationBean.execute}"/>
-                <mobi:panelConfirmation id="panelConfirmation"
+        
+        <mobi:panelConfirmation id="panelConfirmation"
                                         title="Confirm"
-                                        message="Are you sure you want to execute?"
-                                        acceptLabel="Yes"/>
-            </mobi:fieldsetRow>
+                                        message="#{panelConfirmationBean.message}"
+                                        acceptLabel="#{panelConfirmationBean.acceptLabel}"
+                                        cancelLabel="#{panelConfirmationBean.cancelLabel}"
+                                        type="#{panelConfirmationBean.type}"/>
+        
+        <mobi:fieldsetGroup>
             <mobi:fieldsetRow>
                 <h:outputText
                         value="Execution count: #{panelConfirmationBean.count}"/>
             </mobi:fieldsetRow>
+            <mobi:fieldsetRow>
+                <h:outputLabel for="message" value="Message:"/>
+                <mobi:inputText id="message" value="#{panelConfirmationBean.message}" singleSubmit="true"/>
+            </mobi:fieldsetRow>
+            <mobi:fieldsetRow>
+                <h:outputLabel for="acceptLabel" value="Accept Label:"/>
+                <mobi:inputText id="acceptLabel" value="#{panelConfirmationBean.acceptLabel}" singleSubmit="true"/>
+            </mobi:fieldsetRow>
+            <mobi:fieldsetRow>
+                <h:outputLabel for="cancelLabel" value="Cancel Label:"/>
+                <mobi:inputText id="cancelLabel" value="#{panelConfirmationBean.cancelLabel}" singleSubmit="true"/>
+            </mobi:fieldsetRow>
+            <mobi:fieldsetRow>
+                <h:outputLabel for="type" value="Type:"/>
+                <h:selectOneMenu id="type" value="#{panelConfirmationBean.type}">
+                    <f:selectItem itemValue="both"/>
+                    <f:selectItem itemValue="acceptOnly"/>
+                    <f:selectItem itemValue="confirmOnly"/>
+                    <f:ajax execute="@this" render="@all"/>
+                </h:selectOneMenu>
+            </mobi:fieldsetRow>
         </mobi:fieldsetGroup>
+        
     </h:form>
 </ui:composition>

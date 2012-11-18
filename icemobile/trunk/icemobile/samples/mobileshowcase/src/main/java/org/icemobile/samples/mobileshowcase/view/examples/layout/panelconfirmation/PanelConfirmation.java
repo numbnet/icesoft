@@ -58,6 +58,10 @@ public class PanelConfirmation extends ExampleImpl<PanelConfirmation> implements
 
     public boolean rendered;
     private int count;
+    private String message = "Are you sure you want to execute?";
+    private String acceptLabel = "Yes";
+    private String cancelLabel = "Cancel";
+    private String type = "both";
 
     public PanelConfirmation() {
         super(PanelConfirmation.class);
@@ -77,5 +81,37 @@ public class PanelConfirmation extends ExampleImpl<PanelConfirmation> implements
 
     public int getCount() {
         return count;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public String getAcceptLabel() {
+        return acceptLabel;
+    }
+
+    public void setAcceptLabel(String acceptLabel) {
+        this.acceptLabel = acceptLabel;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getCancelLabel() {
+        return cancelLabel;
+    }
+
+    public void setCancelLabel(String cancelLabel) {
+        this.cancelLabel = cancelLabel;
     }
 }
