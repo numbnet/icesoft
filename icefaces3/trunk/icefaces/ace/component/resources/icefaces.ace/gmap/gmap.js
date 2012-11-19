@@ -435,7 +435,7 @@ ice.ace.gMap.getGMapWrapper = function (id) {
                 return "google.maps.ControlPosition.TOP_RIGHT";
                 break;
             case "topleft":
-                return "google.maps.ControlPosition.TOP_CENTER";
+                return "google.maps.ControlPosition.TOP_LEFT";
                 break;
             case "lefttop":
                 return "google.maps.ControlPosition.LEFT_TOP";
