@@ -56,9 +56,9 @@
     font-size: 0.9em;
 }
 .mobi-button-unimportant{
-    background-color: #444;
-    color: #999;
-    border-color: #444;
+    background-color: #555;
+    color: #BBB;
+    border-top-color: #878787;
 }
 .mobi-button-dis {
     color: #999;
