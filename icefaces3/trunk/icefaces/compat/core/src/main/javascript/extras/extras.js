@@ -190,7 +190,8 @@ Ice.tableRowClicked = function(event, useEvent, rowid, formId, hdnFld, toggleCla
                     tname == 'select' ||
                     tname == 'option' ||
                     (tname == 'a' && 'iceHdnLnk' != targ.className) ||
-                    tname == 'textarea') {
+                    tname == 'textarea' ||
+                    tname == 'button') {
                     return;
                 }
                 // Search up to see if we're deep within an anchor

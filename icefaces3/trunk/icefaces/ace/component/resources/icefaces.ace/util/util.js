@@ -37,7 +37,7 @@ if (!window['ice']['ace']['util']) {
 ice.ace.util.isEventSourceInputElement = function(event) {
     var elem = ice.ace.util.eventTarget(event);
     var tag = elem.tagName.toLowerCase();
-    if (tag == 'input' || tag == 'select' || tag == 'option' || tag == 'a' || tag == 'textarea') {
+    if (tag == 'input' || tag == 'select' || tag == 'option' || tag == 'a' || tag == 'textarea' || tag == 'button') {
         return true;
     } else {
         return false;
