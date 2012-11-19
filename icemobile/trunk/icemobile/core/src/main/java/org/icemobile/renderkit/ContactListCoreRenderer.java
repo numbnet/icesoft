@@ -16,17 +16,15 @@ public class ContactListCoreRenderer extends BaseCoreRenderer {
         String clientId = component.getClientId();
         ClientDescriptor cd = component.getClient();
 
-        writer.startElement(DIV_ELEM);
-        writer.writeAttribute(ID_ATTR, clientId);
-
         writer.startElement(INPUT_ELEM);
+        writer.writeAttribute(ID_ATTR, clientId);
         writer.writeAttribute(TYPE_ATTR, "button");
         //
         boolean targetAudience = cd.isICEmobileContainer() | cd.isSXRegistered();
         if (! targetAudience ) {
             component.setDisabled( true);
         }
-	writeStandardAttributes(writer, component, CSSUtils.STYLECLASS_BUTTON, CSSUtils.STYLECLASS_BUTTON_DISABLED);
+        writeStandardAttributes(writer, component, CSSUtils.STYLECLASS_BUTTON, CSSUtils.STYLECLASS_BUTTON_DISABLED);
         StringBuilder args = new StringBuilder();
 
         String pattern = component.getPattern();
@@ -59,7 +57,6 @@ public class ContactListCoreRenderer extends BaseCoreRenderer {
 
         writer.writeAttribute(VALUE_ATTR, component.getLabel());
         writer.endElement(INPUT_ELEM);
-        writer.endElement(DIV_ELEM);
     }
 
 }
