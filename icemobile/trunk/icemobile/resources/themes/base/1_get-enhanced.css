@@ -14,15 +14,14 @@
  * governing permissions and limitations under the License.
  */
 .mobi-getenhanced{
-	display: inline-block;
-	text-align: center;
 	font-size: 14px;
 	line-height: 22px;
+	margin: 10px auto;
+	text-align: center;
+	padding: 0 10px;
 }
 .mobi-getenhanced a {
-	display: block;
 	max-width: 140px;
-	margin: 11px auto 10px;
+	margin: 10px;
 	line-height: 20px;
-}
 }
