@@ -20,36 +20,41 @@
              xmlns:ui="http://java.sun.com/jsf/facelets"
              xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
 
-    <mobi:fieldsetGroup>
-        <mobi:fieldsetRow style="padding-bottom:10px;">
-            Use your mobile device's microphone to make a recording and upload
-            it to the server.
-        </mobi:fieldsetRow>
-    </mobi:fieldsetGroup>
 
-    <h:form prependId="false">
+    <h:form prependId="false" styleClass="form">
+    
         <mobi:uploadhelper/>
-
-        <mobi:fieldsetGroup style="text-align:center;">
+        
+        <mobi:fieldsetGroup styleClass="intro">
             <mobi:fieldsetRow>
-                <mobi:getEnhanced/>
+                Use your mobile device's microphone to make a recording and upload
+                it to the server.
             </mobi:fieldsetRow>
+        </mobi:fieldsetGroup>
+            
+        <mobi:getEnhanced/>
+
+        <mobi:fieldsetGroup>
             <mobi:fieldsetRow>
                 <mobi:microphone duration="10"
                                  styleClass="mobi-button"
                                  value="#{microphoneBean.audioFileMap}"/>
 
-                <h:commandButton style="float:none;"
-                                 styleClass="mobi-button mobi-button-important"
-                                 actionListener="#{microphoneBean.processUploadedAudio}"
-                                 value="Upload"/>
+                
                 
             </mobi:fieldsetRow>
+        </mobi:fieldsetGroup>
+        
+        <mobi:commandButton styleClass="submit" buttonType="important"
+                         actionListener="#{microphoneBean.processUploadedAudio}"
+                         value="Upload"/>
 
+        <h3>Uploaded Audio</h3>
+        
+        <mobi:fieldsetGroup>
             <mobi:fieldsetRow>
                 <ui:fragment
                         rendered="#{microphoneBean.outputResource != null}">
-                    Uploaded Audio:<br/>
                     <mobi:audioPlayer linkLabel="Play"
                             value="#{microphoneBean.outputResource}"
                             controls="true"/>
@@ -57,11 +62,8 @@
                 <br />
                 <h:outputText value="#{microphoneBean.uploadMessage}"/>
             </mobi:fieldsetRow>
-
         </mobi:fieldsetGroup>
 
-
     </h:form>
-
 
 </ui:composition>

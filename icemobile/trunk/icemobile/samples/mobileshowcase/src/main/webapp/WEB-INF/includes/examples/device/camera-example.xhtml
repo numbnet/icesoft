@@ -20,61 +20,63 @@
              xmlns:ui="http://java.sun.com/jsf/facelets"
              xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
 
-    <mobi:fieldsetGroup>
-        <mobi:fieldsetRow style="padding-bottom:10px;">
-            Use your mobile device's camera to take a picture and upload
-            it to the server.
-        </mobi:fieldsetRow>
-    </mobi:fieldsetGroup>
 
-    <h:form prependId="false" id="form">
+    <h:form prependId="false" id="form" styleClass="form">
         <mobi:uploadhelper/>
-
-        <mobi:fieldsetGroup style="text-align:center;">
+        
+        <mobi:fieldsetGroup styleClass="intro">
             <mobi:fieldsetRow>
-                <mobi:getEnhanced/>
+                Use your mobile device's camera to take a picture and upload
+                it to the server.
             </mobi:fieldsetRow>
-            
+        </mobi:fieldsetGroup>
+        
+        <mobi:getEnhanced/>
+        
+        <mobi:fieldsetGroup>
             <mobi:fieldsetRow>
-                
                 <mobi:camera id="cam" value="#{cameraBean.cameraImage}"
                         maxwidth="#{cameraBean.maxWidth}"
                         maxheight="#{cameraBean.maxHeight}">
                     <mobi:thumbnail for="cam"/>
                 </mobi:camera>
-
-                <h:commandButton id="upload1"
-                                 style="float:none;"
-                                 styleClass="mobi-button mobi-round-all mobi-button-important"
-                                 actionListener="#{cameraBean.processUploadedImage}"
-                                 value="Upload"/>
             </mobi:fieldsetRow>
+        </mobi:fieldsetGroup>
+        
+        <mobi:commandButton id="upload1" buttonType="important"
+                         styleClass="submit"
+                         actionListener="#{cameraBean.processUploadedImage}"
+                         value="Upload"/>
+                         
+        <h3>Uploaded Image</h3>
 
+        <mobi:fieldsetGroup>
             <mobi:fieldsetRow>
                 <ui:fragment rendered="#{cameraBean.outputResource != null}">
-                    Uploaded Image:<br/>
                     <mobi:graphicImage
-                            value="#{cameraBean.outputResource}" width="180"/>
+                            value="#{cameraBean.outputResource}"/>
                 </ui:fragment>
                 <br />
                 <h:outputText value="#{cameraBean.uploadMessage}"/>
             </mobi:fieldsetRow>
-
         </mobi:fieldsetGroup>
-
-    </h:form>
-
-    <h:form >
-        <mobi:fieldsetGroup style="text-align:center;">
+        
+        <h3>Image Dimension Settings</h3>
+        
+        <mobi:fieldsetGroup>
             <mobi:fieldsetRow>
-                <mobi:inputText placeholder="max width" style="width:6em"
+                <h:outputLabel value="Max width:" for="maxWidth"/>
+                <mobi:inputText id="maxWidth" placeholder="max width" style="width:6em"
                          type="number" value="#{cameraBean.maxWidth}" />
-                <span/>
-                <mobi:inputText placeholder="max height" style="width:6em"
+            </mobi:fieldsetRow>
+            <mobi:fieldsetRow>
+                <h:outputLabel value="Max height:" for="maxHeight"/>
+                <mobi:inputText id="maxHeight" placeholder="max height" style="width:6em"
                          type="number" value="#{cameraBean.maxHeight}" />
-                <mobi:commandButton buttonType="important" value="Set" />
             </mobi:fieldsetRow>
         </mobi:fieldsetGroup>
+        
+        <mobi:commandButton buttonType="important" value="Set Image Dimensions" styleClass="submit"/>
 
     </h:form>
 

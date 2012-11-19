@@ -20,9 +20,10 @@
              xmlns:ui="http://java.sun.com/jsf/facelets"
              xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
 
-    <h:form prependId="false" enctype="multipart/form-data">
+    <h:form prependId="false" enctype="multipart/form-data" styleClass="form">
 
         <h3>Send Notification</h3>
+        
         <mobi:fieldsetGroup>
             <mobi:fieldsetRow>
                 <h:outputLabel value="Subject" for="subject"/>
@@ -49,37 +50,32 @@
                 </h:selectOneMenu>
             </mobi:fieldsetRow>
             <mobi:fieldsetRow>
-                <h:messages />
-                <mobi:commandButton style="float:right"
-                        value="Priority Push"
+                <mobi:commandButton value="Priority Push"
                         buttonType="attention"
                         actionListener="#{notificationBean.sendPriorityPushMessage}"/>
                 <mobi:commandButton value="Simple Push" buttonType="important"
-                                    style="float:right;"
                                     actionListener="#{notificationBean.sendNormalPushMessage}"/>
             </mobi:fieldsetRow>
         </mobi:fieldsetGroup>
-    </h:form>
-
-    <h:form>
+        
+        <h:messages />
+        
         <h3>Notification Echo</h3>
         <mobi:fieldsetGroup>
             <mobi:fieldsetRow>
                 <h:outputLabel value="Subject" for="subject"/>
                 <h:outputText id="subject"
-                              styleClass="fr"
                               value="#{notificationBean.echoedSubject}"
                               placeholder="subject"/>
             </mobi:fieldsetRow>
             <mobi:fieldsetRow>
                 <h:outputLabel value="Message" for="message"/>
                 <h:outputText id="message"
-                                styleClass="fr"
                                 value="#{notificationBean.echoedMessage}"
                                 placeholder="message"/>
             </mobi:fieldsetRow>
         </mobi:fieldsetGroup>
-
+        
     </h:form>
 
 </ui:composition>

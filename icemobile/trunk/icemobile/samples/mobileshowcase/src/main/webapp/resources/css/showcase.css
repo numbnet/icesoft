@@ -286,6 +286,9 @@ html.honeycomb h3{
     display: block!important;
     float: none!important;
 }
+.form .mobi-fieldset-row > span.mobi-thumb{
+    display: inline-block!important;
+}
 .form .mobi-fieldset-row > span > input{
     display:block;
     width:100%;

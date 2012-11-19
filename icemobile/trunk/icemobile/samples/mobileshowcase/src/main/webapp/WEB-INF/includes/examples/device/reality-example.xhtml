@@ -20,56 +20,59 @@
              xmlns:ui="http://java.sun.com/jsf/facelets"
              xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
 
-    <mobi:fieldsetGroup>
-        <mobi:fieldsetRow style="padding-bottom:10px;">
-        Augmented Reality makes use of the camera and video overlays to allow mobile applications to blend with real world objects.
 
-            <mobi:getEnhanced/>
-
-        </mobi:fieldsetRow>
-    </mobi:fieldsetGroup>
-
-    <h:form prependId="false" id="form">
-        <mobi:uploadhelper/>
-
-        <mobi:fieldsetGroup style="text-align:center;">
-        <mobi:fieldsetRow >
-            Use your camera to add pictures at various locations.
-            (Depending on GPS accuracy, you may need to walk 10m between
-            locations.)
-        </mobi:fieldsetRow>
+    <h:form prependId="false" id="form" styleClass="form">
+    
+        <mobi:fieldsetGroup styleClass="intro">
             <mobi:fieldsetRow>
-                <mobi:geolocation 
+            Augmented Reality makes use of the camera and video overlays to allow mobile applications 
+            to blend with real world objects.
+            </mobi:fieldsetRow>
+        </mobi:fieldsetGroup>
+        
+        <mobi:getEnhanced/>
+        
+        <mobi:uploadhelper/>
+        
+        <mobi:geolocation 
                           latitude="#{realityBean.latitude}"
                           longitude="#{realityBean.longitude}"/>
 
-                <h:panelGroup class="vcentered">
+        <mobi:fieldsetGroup>
+            <mobi:fieldsetRow >
+                Use your camera to add pictures at various locations.
+                (Depending on GPS accuracy, you may need to walk 10m between
+                locations.)
+            </mobi:fieldsetRow>
+            <mobi:fieldsetRow>
                 <mobi:camera id="cam" value="#{realityBean.cameraImage}">
                     <mobi:thumbnail for="cam"/>
                 </mobi:camera>
+            </mobi:fieldsetRow>
+            <mobi:fieldsetRow>
                 <mobi:inputText value="#{realityBean.label}" 
                         placeholder="Label" />
-                <h:commandButton id="upload1"
-                                 style="float:none;"
-                                 styleClass="mobi-button mobi-round-all mobi-button-important"
-                                 actionListener="#{realityBean.processUploadedImage}"
-                                 value="Submit"/>
-
-                </h:panelGroup>
-                <br />
-                <h:outputText value="#{realityBean.uploadMessage}"/>
             </mobi:fieldsetRow>
         </mobi:fieldsetGroup>
+        
+        <mobi:commandButton id="upload1"
+                                 styleClass="submit" buttonType="important"
+                                 actionListener="#{realityBean.processUploadedImage}"
+                                 value="Submit"/>
+        
+        <h:outputText value="#{realityBean.uploadMessage}"/>
 
     </h:form>
 
-    <h:form >
+    <h:form styleClass="form">
 
+        <mobi:fieldsetGroup styleClass="intro">
+            <mobi:fieldsetRow>
+                Next view the pictures superimposed on the camera view in the Augmented Reality overlay. (This is an alpha level feature on iOS and pre-alpha on Android only.)
+            </mobi:fieldsetRow>
+        </mobi:fieldsetGroup>
+        
         <mobi:fieldsetGroup>
-        <mobi:fieldsetRow style="padding-bottom:10px;">
-            Next view the pictures superimposed on the camera view in the Augmented Reality overlay. (This is an alpha level feature on iOS and pre-alpha on Android only.)
-        </mobi:fieldsetRow>
-
             <mobi:fieldsetRow>
                 <mobi:augmentedReality 
                     styleClass="mobi-button mobi-round-all"
@@ -82,8 +85,6 @@
                         locationLon="#{place.longitude}"
                         locationIcon="#{place.fileName}" />
                 </mobi:augmentedReality>
-                <h:commandButton styleClass="mobi-button mobi-round-all mobi-button-important"
-                                 value="Submit"/>
                 <br />
                 <h:panelGroup style="text-align:center;"
                     rendered="#{realityBean.image != null}">
@@ -94,17 +95,23 @@
                 </h:panelGroup>
             </mobi:fieldsetRow>
         </mobi:fieldsetGroup>
+        
+        <mobi:commandButton styleClass="submit" buttonType="important"
+                                 value="Submit"/>
     </h:form>
 
-    <h:form rendered="#{realityBean.ios}">
+    <h:form rendered="#{realityBean.ios}" styleClass="form">
 
-        <mobi:fieldsetGroup>
-            <mobi:fieldsetRow style="padding-bottom:10px;">
+        <mobi:fieldsetGroup styleClass="intro">
+            <mobi:fieldsetRow>
                 Print, cut-out, then view the <a href="resources/images/markers.html">Augmented Reality Markers</a> with 3D overlays. (This is an alpha level feature on iOS only.)
             </mobi:fieldsetRow>
+        </mobi:fieldsetGroup>
+        
+        <h3>Markers</h3>
 
+        <mobi:fieldsetGroup>
             <mobi:fieldsetRow>
-            Markers: 
                 <mobi:augmentedReality 
                     styleClass="mobi-button mobi-round-all"
                     urlBase="#{realityBean.baseURL}"
@@ -114,10 +121,12 @@
                         markerLabel="#{marker.label}"
                         markerModel="#{marker.model}" />
                 </mobi:augmentedReality>
-                <h:commandButton styleClass="mobi-button mobi-round-all mobi-button-important"
-                                 value="Submit"/>
+                
             </mobi:fieldsetRow>
         </mobi:fieldsetGroup>
+        
+        <mobi:commandButton styleClass="submit" buttonType="important"
+                                 value="Submit"/>
     </h:form>
 
 

@@ -20,39 +20,38 @@
              xmlns:ui="http://java.sun.com/jsf/facelets"
              xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
 
-    <h:form prependId="false" >
+    <h:form prependId="false" styleClass="form">
+    
         <mobi:uploadhelper/>
 
-        <mobi:fieldsetGroup>
-            <mobi:fieldsetRow style="padding-bottom:10px;">
+        <mobi:fieldsetGroup styleClass="intro">
+            <mobi:fieldsetRow>
                 Use your mobile device's video camera to take a video and upload
                 it to the server.
             </mobi:fieldsetRow>
         </mobi:fieldsetGroup>
+        
+        <mobi:getEnhanced/>
 
-        <mobi:fieldsetGroup style="text-align:center;">
-            <mobi:fieldsetRow>
-                <mobi:getEnhanced/>
-            </mobi:fieldsetRow>
-
+        <mobi:fieldsetGroup>
             <mobi:fieldsetRow>
                <!-- device input and thumbnail preview -->
                 <mobi:camcorder id="cc" value="#{camcorderBean.clip}"
-                                type="basic">
-                </mobi:camcorder>
+                                type="basic"/>
                 <mobi:thumbnail for="cc"/>
-
-                <!--upload handler -->
-                <h:commandButton id="upload1"
-                                 style="float:none;"
-                                 styleClass="mobi-button mobi-round-all mobi-button-important"
-                                 actionListener="#{camcorderBean.processUploadedVideo}"
-                                 value="Upload"/>
             </mobi:fieldsetRow>
+        </mobi:fieldsetGroup>
+            
+        <mobi:commandButton id="upload1"
+                             styleClass="submit" buttonType="important"
+                             actionListener="#{camcorderBean.processUploadedVideo}"
+                             value="Upload"/>
+                                 
+        <h3>Uploaded Video</h3>
 
+        <mobi:fieldsetGroup>
             <mobi:fieldsetRow>
                 <ui:fragment rendered="#{camcorderBean.outputResource != null}">
-                    Uploaded Video:<br/>
                     <mobi:videoPlayer
                             value="#{camcorderBean.outputResource}"
                             linkLabel="Play" width="250" playsinline="true"
@@ -61,8 +60,6 @@
                 <br />
                 <h:outputText value="#{camcorderBean.uploadMessage}"/>
             </mobi:fieldsetRow>
-
-
         </mobi:fieldsetGroup>
 
 

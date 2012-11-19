@@ -20,21 +20,17 @@
              xmlns:ui="http://java.sun.com/jsf/facelets"
              xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
 
-    <h:form prependId="false">
+    <h:form prependId="false" styleClass="form">
 
        <h3>QR Code Scanner</h3>
-       <mobi:fieldsetGroup style="text-align:center;">
-            <mobi:fieldsetRow>
-                <mobi:getEnhanced/>
-            </mobi:fieldsetRow>
+       
+       <mobi:getEnhanced/>
+       
+       <mobi:fieldsetGroup>
             <mobi:fieldsetRow>
                 <mobi:scan value="#{qrCodeBean.qrScanner}"
                            id="scanOne"
                            singleSubmit="true"/>
-                <mobi:commandButton value="submit"
-                                    actionListener="#{qrCodeBean.checkCodeForUrl}"
-                                    style="float:right;"
-                                    buttonType="important"/>
             </mobi:fieldsetRow>
             <mobi:fieldsetRow>
                 <h:outputLabel value="QR Code: "/>
@@ -46,10 +42,12 @@
                         #{qrCodeBean.qrScanner}</h:outputLink>
                 </em>
             </mobi:fieldsetRow>
-
         </mobi:fieldsetGroup>
-    </h:form>
-    <h:form prependId="false" >
+        
+        <mobi:commandButton value="submit" styleClass="submit"
+                            actionListener="#{qrCodeBean.checkCodeForUrl}"
+                            buttonType="important"/>
+
         <h3>QR Code Generator</h3>
         <mobi:fieldsetGroup>
             <mobi:fieldsetRow>
@@ -57,18 +55,13 @@
                 <mobi:inputText type="text" value="#{qrCodeBean.qrString}" />
             </mobi:fieldsetRow>
             <mobi:fieldsetRow>
-                <mobi:commandButton value="Create" buttonType="important"
-                                    styleClass="fr" />
-                <div style="clear:both" />
-            </mobi:fieldsetRow>
-            <!-- qr code echo-->
-            <mobi:fieldsetRow>
                 <h:outputLabel value="QR Output: "/>
-                <mobi:qrcode value="#{qrCodeBean.qrString}"
-                             style="width:160px;height:160px;"
-                             styleClass="fr"/>
+                <mobi:qrcode value="#{qrCodeBean.qrString}"/>
             </mobi:fieldsetRow>
         </mobi:fieldsetGroup>
+        
+        <mobi:commandButton value="Create" buttonType="important"
+                                    styleClass="submit" />
     </h:form>
 
 
