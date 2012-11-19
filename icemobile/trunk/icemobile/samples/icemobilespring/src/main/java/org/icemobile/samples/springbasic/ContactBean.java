@@ -13,18 +13,56 @@ import java.util.Collection;
 @SessionAttributes("ContactBean")
 public class ContactBean {
 
-    private String contactOne;
+    private String contact;
+    private String name;
+    private String phone;
+    private String email;
+    private String pattern = "";
 
     @ModelAttribute("contactBean")
     public org.icemobile.samples.springbasic.ContactBean createBean() {
         return new org.icemobile.samples.springbasic.ContactBean();
     }
 
-    public String getContactOne() {
-        return contactOne;
+    public String getContact() {
+        return contact;
     }
 
-    public void setContactOne(String contactOne) {
-        this.contactOne = contactOne;
+    public String getName() {
+        return name;
     }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setContact(String contact) {
+        this.contact = contact;
+    }
+
+    public String getPattern() {
+        return pattern;
+    }
+
+    public void setPattern(String pattern) {
+        this.pattern = pattern;
+    }
+    
+    
 }

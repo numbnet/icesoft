@@ -290,6 +290,10 @@ html.honeycomb h3, html.android h3{
     -webkit-box-flex: 1;
     -moz-box-flex: 1;
 }
+.form h3{
+    clear:both;
+    padding-top:10px;
+}
 .center{
     margin: 0 auto;
     display: block;

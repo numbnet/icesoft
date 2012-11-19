@@ -5,15 +5,18 @@
 <%@ taglib prefix="push" uri="http://www.icepush.org/icepush/jsp/icepush.tld"%>
 <form:form id="conform" method="POST" enctype="multipart/form-data"
            modelAttribute="contactBean" cssClass="form">
+           
+    <mobi:getEnhanced/>
+    
     <mobi:fieldsetGroup>
         <mobi:fieldsetRow>
-            <mobi:getEnhanced/>
+             <label>Contact Filter:</label>
+             <mobi:inputText name="pattern" value="${contactBean.pattern}"/>
+             <mobi:commandButton value="Update" type="submit"/>
         </mobi:fieldsetRow>
         <mobi:fieldsetRow>
-            <div class="center">
-                 <mobi:fetchContact id="contactOne" label="fetch Contacts"  
-                    pattern="a" fields="contact, phone"/>
-            </div>
+             <mobi:fetchContact id="contact" label="fetch Contacts"  
+                pattern="${contactBean.pattern}" fields="contact, phone, email"/>
         </mobi:fieldsetRow>
     </mobi:fieldsetGroup>
 
@@ -22,11 +25,19 @@
                         value="Submit"
                         type="submit"/>
 
-    <h4>Selected Contact List Echo Display</h4>
+    <h3>Selected Contact</h3>
     <mobi:fieldsetGroup>
         <mobi:fieldsetRow>
-            <label>Selected Contact(s):</label>
-            <span>${contactBean.contactOne}</span>
+            <label>Name:</label>
+            <span>${contactBean.name}</span>
+        </mobi:fieldsetRow>
+        <mobi:fieldsetRow>
+            <label>Phone:</label>
+            <span>${contactBean.phone}</span>
+        </mobi:fieldsetRow>
+        <mobi:fieldsetRow>
+            <label>Email:</label>
+            <span>${contactBean.email}</span>
         </mobi:fieldsetRow>
     </mobi:fieldsetGroup>
 
