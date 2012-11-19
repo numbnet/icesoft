@@ -193,7 +193,7 @@ public class UtilInterface implements JavascriptInterface,
 	return path;
     }
 
-    protected void loadURL(final String url) {
+    public void loadURL(final String url) {
 	handler.post(new Runnable() {
 		public void run() {
 		    //Log.e("ICEmobile","Loading URL: " + url);
