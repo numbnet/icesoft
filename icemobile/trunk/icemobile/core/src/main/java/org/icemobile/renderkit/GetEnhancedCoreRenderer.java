@@ -6,7 +6,7 @@ import static org.icemobile.util.HTML.DISABLED_ATTR;
 import static org.icemobile.util.HTML.HREF_ATTR;
 import static org.icemobile.util.HTML.ID_ATTR;
 import static org.icemobile.util.HTML.ONCLICK_ATTR;
-import static org.icemobile.util.HTML.SPAN_ELEM;
+import static org.icemobile.util.HTML.DIV_ELEM;
 import static org.icemobile.util.HTML.STYLE_ATTR;
 
 import java.io.IOException;
@@ -27,7 +27,7 @@ public class GetEnhancedCoreRenderer {
         ClientDescriptor client = component.getClient();
         
         if( !client.isICEmobileContainer() && !client.isSXRegistered()){
-            writer.startElement(SPAN_ELEM, component);
+            writer.startElement(DIV_ELEM, component);
             writer.writeAttribute(ID_ATTR, clientId);
             String styleClass = component.getStyleClass();
             if( styleClass != null ){
@@ -91,7 +91,7 @@ public class GetEnhancedCoreRenderer {
                 writer.endElement(ANCHOR_ELEM);
             }
             
-            writer.endElement(SPAN_ELEM);
+            writer.endElement(DIV_ELEM);
         }
     }
 
