@@ -306,7 +306,7 @@ html.honeycomb h3, html.android h3{
         float: right !important;
         margin: 0 10px;
         width: 100%;
-        max-width: 300px;
+        max-width: 35%;
         clear:both;
     }
 }

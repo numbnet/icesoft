@@ -17,7 +17,7 @@ public class ContactBean {
     private String name;
     private String phone;
     private String email;
-    private String pattern = "";
+    private String pattern = "a";
 
     @ModelAttribute("contactBean")
     public org.icemobile.samples.springbasic.ContactBean createBean() {

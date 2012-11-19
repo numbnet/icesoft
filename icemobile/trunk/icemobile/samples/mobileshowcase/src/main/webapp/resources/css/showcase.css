@@ -300,13 +300,18 @@ html.honeycomb h3{
     -webkit-box-flex: 1;
     -moz-box-flex: 1;
 }
+.form h3{
+    clear:both;
+    padding-top:10px;
+}
+
 /* LARGE SCREEN */
 @media screen and (min-width: 580px) {  
     input.submit, button.submit{
         float: right !important;
         margin: 0 10px;
         width: 100%;
-        max-width: 300px;
+        max-width: 35%;
         margin-bottom:10px;
     }
 }

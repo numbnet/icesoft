@@ -20,23 +20,46 @@
              xmlns:ui="http://java.sun.com/jsf/facelets"
              xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
 
-    <h:form id="conform">
+    <h:form id="conform" styleClass="form">
+    
+        <mobi:getEnhanced/>
+        
         <mobi:fieldsetGroup>
-            <mobi:fieldsetRow style="text-align:center;">
-                <mobi:getEnhanced/>
-                <mobi:fetchContact id="contactOne" 
-                    label="fetch Contacts" 
-                    pattern="p" 
-                    value="#{contactsBean.contactOne}"/>
-                <mobi:commandButton buttonType='important'
-                                    value="Submit"
-                                    type="submit"/>
+            <mobi:fieldsetRow>
+                <h:outputLabel for="pattern" value="Contact Filter:"/>
+                <mobi:inputText id="pattern" value="#{contactsBean.pattern}"/>
+                <mobi:commandButton value="Update"/>
             </mobi:fieldsetRow>
             <mobi:fieldsetRow>
-                <label>Selected Contact:</label>
-                <span>#{contactsBean.contactOne}</span>
+                <mobi:fetchContact id="contact" 
+                    label="Fetch Contacts" 
+                    pattern="#{contactsBean.pattern}" 
+                    fields="contact, email, phone"
+                    value="#{contactsBean.contact}"/>
             </mobi:fieldsetRow>
         </mobi:fieldsetGroup>
+        
+        <mobi:commandButton buttonType="important"
+                            value="Submit"
+                            type="submit"
+                            styleClass="submit"/>
+                            
+        <h3>Selected Contact</h3>
+        <mobi:fieldsetGroup>
+            <mobi:fieldsetRow>
+                <label>Name:</label>
+                <span>#{contactsBean.name}</span>
+            </mobi:fieldsetRow>
+            <mobi:fieldsetRow>
+                <label>Phone:</label>
+                <span>#{contactsBean.phone}</span>
+            </mobi:fieldsetRow>
+            <mobi:fieldsetRow>
+                <label>Email:</label>
+                <span>#{contactsBean.email}</span>
+            </mobi:fieldsetRow>
+        </mobi:fieldsetGroup>
+
         
     </h:form>
 
