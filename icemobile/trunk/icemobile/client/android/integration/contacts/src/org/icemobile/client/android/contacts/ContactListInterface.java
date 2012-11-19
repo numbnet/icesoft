@@ -1,4 +1,4 @@
-package org.icemobile.client.android;
+package org.icemobile.client.android.contacts;
 
 import java.net.URLEncoder;
 import java.util.Arrays;
