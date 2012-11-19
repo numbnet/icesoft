@@ -13,6 +13,7 @@ import java.util.Collection;
 @SessionAttributes("ContactBean")
 public class ContactBean {
 
+    private String rawContact;
     private String contact;
     private String name;
     private String phone;
@@ -62,6 +63,14 @@ public class ContactBean {
 
     public void setPattern(String pattern) {
         this.pattern = pattern;
+    }
+
+    public String getRawContact() {
+        return rawContact;
+    }
+
+    public void setRawContact(String rawContact) {
+        this.rawContact = rawContact;
     }
     
     

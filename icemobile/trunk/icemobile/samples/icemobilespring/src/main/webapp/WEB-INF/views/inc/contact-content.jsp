@@ -10,12 +10,12 @@
     
     <mobi:fieldsetGroup>
         <mobi:fieldsetRow>
-             <label>Contact Filter:</label>
-             <mobi:inputText name="pattern" value="${contactBean.pattern}"/>
-             <mobi:commandButton value="Update" type="submit"/>
+             <label style="width:50px">Contact Filter:</label>
+             <mobi:inputText name="pattern" value="${contactBean.pattern}" style="width:80px"/>
+             <mobi:commandButton value="Update" type="submit" style="padding: 0.6em 5px;"/>
         </mobi:fieldsetRow>
         <mobi:fieldsetRow>
-             <mobi:fetchContact id="contact" label="fetch Contacts"  
+             <mobi:fetchContact id="rawContact" label="fetch Contacts"  
                 pattern="${contactBean.pattern}" fields="contact, phone, email"/>
         </mobi:fieldsetRow>
     </mobi:fieldsetGroup>
@@ -30,6 +30,10 @@
         <mobi:fieldsetRow>
             <label>Name:</label>
             <span>${contactBean.name}</span>
+        </mobi:fieldsetRow>
+        <mobi:fieldsetRow>
+            <label>Contact:</label>
+            <span>${contactBean.contact}</span>
         </mobi:fieldsetRow>
         <mobi:fieldsetRow>
             <label>Phone:</label>

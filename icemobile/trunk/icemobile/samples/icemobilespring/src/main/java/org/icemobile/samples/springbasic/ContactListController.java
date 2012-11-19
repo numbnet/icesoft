@@ -1,6 +1,8 @@
 package org.icemobile.samples.springbasic;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.StringTokenizer;
 
 import org.springframework.stereotype.Controller;
@@ -32,25 +34,35 @@ public class ContactListController {
 
     @RequestMapping(value = "/contact", method = RequestMethod.POST)
     public void process(ContactBean contactBean) throws IOException {
-        String rawContact = contactBean.getContact();
-        System.out.println("rawContact="+rawContact);
-        if( rawContact != null ){
-            String[] tokens = rawContact.split("%26");
-            for( int i = 0 ; i < tokens.length ; i++ ){
-                System.out.println("tokens="+tokens);
-                String key = tokens[i].substring(0,tokens[i].indexOf("%3D"));
-                String val = tokens[i].substring(tokens[i].indexOf("%3D")+3);
-                System.out.println("key="+key+", val="+val);
-                if( "contact".equals(key)){
-                    contactBean.setName(val);
+        //raw contact string will be in encoded format 
+        //of [contact=val&][phone=val&][email=val&]
+        String rawContact = contactBean.getRawContact();
+        if( rawContact != null && !"".equals(rawContact)){
+            try {
+                //contact string has to be decoded
+                String decoded = URLDecoder.decode(rawContact,"UTF-8");
+                String[] tokens = decoded.split("&");
+                for( int i = 0 ; i < tokens.length ; i++ ){
+                    //each contact field will have a key and value
+                    String key = tokens[i].substring(0,tokens[i].indexOf("="));
+                    String val = tokens[i].substring(tokens[i].indexOf("=")+1);
+                    //possible keys are 'contact', 'name', 'phone', and 'email'
+                    if( "contact".equals(key)){
+                        contactBean.setContact(val);
+                    }
+                    else if( "name".equals(key)){
+                        contactBean.setName(val);
+                    }
+                    else if( "phone".equals(key)){
+                        contactBean.setPhone(val);
+                    }
+                    else if( "email".equals(key)){
+                        contactBean.setEmail(val);
+                    }
+                    
                 }
-                else if( "phone".equals(key)){
-                    contactBean.setPhone(val);
-                }
-                else if( "email".equals(key)){
-                    contactBean.setEmail(val);
-                }
-                
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
             }
         }
     }
