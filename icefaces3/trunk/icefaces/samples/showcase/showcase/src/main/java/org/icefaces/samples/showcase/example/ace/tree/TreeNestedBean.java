@@ -42,7 +42,7 @@ public class TreeNestedBean extends ComponentExampleImpl<TreeNestedBean> impleme
 
     public TreeNestedBean() {
         super(TreeNestedBean.class);
-        treeRoots = Arrays.asList(TreeDataFactory.getTreeRoots().clone());
+        treeRoots = TreeDataFactory.getTreeRoots();
     }
 
     public List<LocationNodeImpl> getTreeRoots() {

@@ -69,7 +69,7 @@ public class TreeSelectionBean extends ComponentExampleImpl<TreeSelectionBean> i
         super.initMetaData();
     }
 
-    private List<LocationNodeImpl> treeRoots = new ArrayList<LocationNodeImpl>(Arrays.asList(TreeDataFactory.getTreeRoots()));
+    private List<LocationNodeImpl> treeRoots = TreeDataFactory.getTreeRoots();
     private NodeStateMap stateMap;
     private boolean singleSelect = false;
 

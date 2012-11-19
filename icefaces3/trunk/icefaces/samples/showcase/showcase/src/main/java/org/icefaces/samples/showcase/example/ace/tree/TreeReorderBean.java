@@ -70,7 +70,7 @@ public class TreeReorderBean extends ComponentExampleImpl<TreeReorderBean> imple
         super.initMetaData();
     }
 
-    private List<LocationNodeImpl> treeRoots = new ArrayList<LocationNodeImpl>(Arrays.asList(TreeDataFactory.getTreeRoots()));
+    private List<LocationNodeImpl> treeRoots = TreeDataFactory.getTreeRoots();
 
     private NodeStateCreationCallback expandAllInit = new ExpandAllNodeInitCallback();
 
