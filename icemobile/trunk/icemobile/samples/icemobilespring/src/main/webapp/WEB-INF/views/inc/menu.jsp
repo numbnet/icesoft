@@ -20,10 +20,10 @@
     <mobi:outputListItem><a href="inputtext">HTML5 Input</a></mobi:outputListItem>
     
     <mobi:outputListItem group="true">Native Components</mobi:outputListItem>
-    <mobi:outputListItem><a href="cloudpush">Cloud Push</a></mobi:outputListItem>
     <mobi:outputListItem><a href="mediaspot">Augmented Reality</a></mobi:outputListItem>
     <mobi:outputListItem><a href="camera">Camera</a></mobi:outputListItem>
     <mobi:outputListItem><a href="camcorder">Camcorder</a></mobi:outputListItem>
+    <mobi:outputListItem><a href="cloudpush">Cloud Push</a></mobi:outputListItem>
     <mobi:outputListItem><a href="contact">Contact List</a></mobi:outputListItem>
     <mobi:outputListItem><a href="microphone">Microphone</a></mobi:outputListItem>
     <mobi:outputListItem><a href="qrscan">QR Scanner</a></mobi:outputListItem>

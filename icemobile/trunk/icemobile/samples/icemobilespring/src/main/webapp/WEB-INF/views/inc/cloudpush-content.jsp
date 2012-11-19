@@ -5,12 +5,10 @@
 <%@ taglib prefix="push" uri="http://www.icepush.org/icepush/jsp/icepush.tld"%>
 <form:form id="cloudpushform" method="POST" enctype="multipart/form-data" cssClass="form"
            modelAttribute="cloudpushBean">
+           
+    <mobi:getEnhanced/>
 
     <mobi:fieldsetGroup>
-        <mobi:fieldsetRow>
-            <mobi:getEnhanced/>
-        </mobi:fieldsetRow>
-        
         <mobi:fieldsetRow>
             <form:label path="title">
                 Title: <form:errors path="title" cssClass="error"/>
@@ -48,7 +46,7 @@
         </mobi:fieldsetRow>
     </mobi:fieldsetGroup>
 
-    <h4>Message</h4>
+    <h3>Message</h3>
     <push:region group="cloudPush" page="/cloudpushregion"/>
 
     <div style="clear:both;"></div>
