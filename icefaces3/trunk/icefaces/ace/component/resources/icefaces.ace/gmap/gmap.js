@@ -162,7 +162,6 @@ ice.ace.gMap.getGMapWrapper = function (id) {
             var gmapWrapper = new GMapWrapper(ele, new google.maps.Map(document.getElementById(ele), {mapTypeId:type, zoom:zoom, center: new google.maps.LatLng(lat,lng)}));
         var hiddenField = document.getElementById(ele);
         var mapTypedRegistered = false;
-        //google.maps.event.addListener(gmapWrapper.getRealGMap(),"center_changed",function(){});
         var map = gmapWrapper.getRealGMap();
         google.maps.event.addDomListener(map,"center_changed",function(){
 			var lat = document.getElementById(ele+"_lat");
@@ -192,6 +191,7 @@ ice.ace.gMap.getGMapWrapper = function (id) {
         var type = map.getMapTypeId();
         var markers = gmapWrapper.markers;
         var freeWindows = gmapWrapper.freeWindows;
+        var windows = gmapWrapper.windows;
         var overlays = gmapWrapper.overlays;
         ice.ace.gMap.remove(ele);
         gmapWrapper = ice.ace.gMap.create(ele,lat,lng,zoom,type);
@@ -209,6 +209,12 @@ ice.ace.gMap.getGMapWrapper = function (id) {
             if (gmapWrapper.freeWindows[window] == null) {
                 freeWindows[window].open(map);
                 gmapWrapper.freeWindows[window]=freeWindows[window];
+            }
+        }
+        //alert(JSON.stringify(windows));
+        for (window in windows) {
+            if (gmapWrapper.windows[window] == null) {
+                gmapWrapper.windows[window]=windows[window];
             }
         }
         for (overlay in overlays){
@@ -342,6 +348,7 @@ ice.ace.gMap.getGMapWrapper = function (id) {
         else {
             control = ice.ace.gMap.nameToControl(name);
             if (givenPosition != "none" || style != "none") {
+                i
                 if (givenPosition != "none" && style == "none") {
                     var position = ice.ace.gMap.textToPosition(givenPosition);
                     option = control + ":true," + control + "Options:{position:" + position + "}";
@@ -355,9 +362,10 @@ ice.ace.gMap.getGMapWrapper = function (id) {
                     var fullStyle = ice.ace.gMap.textToStyle(name, style);
                     option = control + ":true," + control + "Options:{position:" + position + ", style:" + fullStyle + "}";
                 }
+
             }
             else
-                map.setOptions(eval("({" + control + ":true})"));
+                option = control + ":true";
         }
         if(wrapper.options == undefined)
             wrapper.options=option;
@@ -389,7 +397,7 @@ ice.ace.gMap.getGMapWrapper = function (id) {
                 return "mapTypeControl";
                 break;
             case "overview":
-                return "overviewControl";
+                return "overviewMapControl";
                 break;
             case "pan":
                 return "panControl";
@@ -575,9 +583,20 @@ ice.ace.gMap.getGMapWrapper = function (id) {
 
     ice.ace.gMap.removeGOverlay = function (ele, overlayID) {
         var wrapper = ice.ace.gMap.getGMapWrapper(ele);
-        if (wrapper.overlays[overlayID] != null) {
-            wrapper.overlays[overlayID].setMap(null);
+        var overlay = wrapper.overlays[overlayID];
+        if (overlay != null) {
+            overlay.setMap(null);
+        } else {
+            //nothing found just return
+            return;
         }
+        var newOverlayArray = new Object();
+        for (overlayObj in wrapper.overlays) {
+            if (overlay != overlayObj) {
+                newOverlayArray[overlayObj] = wrapper.overlays[overlayObj];
+            }
+        }
+        wrapper.overlays = newOverlayArray;
     }
 
     ice.ace.gMap.gOverlay = function (ele, overlayID, shape, locationList, options) {
@@ -674,4 +693,26 @@ ice.ace.gMap.getGMapWrapper = function (id) {
                     break;
             }
         }
+    }
+
+    ice.ace.gMap.addEvent = function (mapId,parentId,eventId,parentName,eventType,rendererType,script){
+        var wrapper = ice.ace.gMap.getGMapWrapper(mapId);
+        var map = wrapper.getRealGMap();
+        var parent;
+        //Add something to keep track of autocompletes
+        if (parentName.indexOf("gmap.GMapAutocomplete") != -1)
+            parent = wrapper.windows[parentId];
+        else if (parentName.indexOf("gmap.GMapInfoWindow") != -1)
+            parent = wrapper.windows[parentId];
+        else if (parentName.indexOf("gmap.GMapLayer") != -1)
+            parent = wrapper.layers[parentId];
+        else if (parentName.indexOf("gmap.GMapMarker") != -1)
+            parent = wrapper.markers[parentId];
+        else if (parentName.indexOf("gmap.GMapOverlay") != -1)
+            parent = wrapper.overlays[parentId];
+        else if(parentName.indexOf("gmap.GMap") != -1)
+            parent = wrapper.getRealGMap();
+        google.maps.event.addDomListener(parent,eventType,function(){
+            eval(script);
+        });
     }
