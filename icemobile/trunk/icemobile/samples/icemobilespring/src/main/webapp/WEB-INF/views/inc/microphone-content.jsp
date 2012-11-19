@@ -5,10 +5,10 @@
 <%@ taglib prefix="push" uri="http://www.icepush.org/icepush/jsp/icepush.tld"%>
 <form:form id="micform" method="POST" enctype="multipart/form-data"
            modelAttribute="microphoneBean" cssClass="form">
+           
+    <mobi:getEnhanced/>
+    
     <mobi:fieldsetGroup>
-        <mobi:fieldsetRow>
-            <mobi:getEnhanced/>
-        </mobi:fieldsetRow>
         <mobi:fieldsetRow>
             <form:label path="name">
                 Author: <form:errors path="name" cssClass="error"/>
@@ -20,10 +20,12 @@
         </mobi:fieldsetRow>
     </mobi:fieldsetGroup>
 
-    <mobi:commandButton buttonType='important'
+    <mobi:commandButton buttonType="important"
                         value="Submit"
                         type="submit"
                         styleClass="submit"/>
+                        
+     <h3>Microphone Upload</h3>
    
     <c:if test="${not empty message}">
         <div id="message" class="success">${message}</div>

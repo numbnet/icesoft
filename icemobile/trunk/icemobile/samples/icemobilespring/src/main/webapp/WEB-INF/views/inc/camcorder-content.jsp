@@ -5,10 +5,10 @@
 <%@ taglib prefix="push" uri="http://www.icepush.org/icepush/jsp/icepush.tld"%>
 <form:form id="camcorderform" method="POST" enctype="multipart/form-data"
                modelAttribute="camcorderBean" cssClass="form">
+               
+    <mobi:getEnhanced/>
+    
     <mobi:fieldsetGroup>
-        <mobi:fieldsetRow>
-            <mobi:getEnhanced/>
-        </mobi:fieldsetRow>
         <mobi:fieldsetRow>
             <form:label path="name">
                 Author: <form:errors path="name" cssClass="error"/>
@@ -26,7 +26,7 @@
                         value="Submit"
                         type="submit"/>
                         
-    <h3 style="clear:both;margin-top:10px;">Camcorder Upload</h3>
+    <h3>Camcorder Upload</h3>
                         
     <c:if test="${not empty message}">
         <div id="message" class="success">${message}<br/>

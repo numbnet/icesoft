@@ -3,13 +3,23 @@
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <%@ taglib uri="http://www.icemobile.org/tags" prefix="mobi" %>
 <%@ taglib prefix="push" uri="http://www.icepush.org/icepush/jsp/icepush.tld"%>
-<h4>Add Marker Photo</h4>
+
 <form:form id="mediaspotform" method="POST" enctype="multipart/form-data"
            modelAttribute="mediaspotBean" cssClass="form">
-    <mobi:fieldsetGroup>
+           
+    <mobi:getEnhanced/>
+    
+    <mobi:fieldsetGroup styleClass="intro">
         <mobi:fieldsetRow>
-            <mobi:getEnhanced/>
+            Use your camera to add location pictures to the
+            augmented reality overlay. Touch an icon in the augmented
+            reality view to select and view that image.
         </mobi:fieldsetRow>
+    </mobi:fieldsetGroup>
+
+    <h3>Add Marker Photo</h3>
+    
+    <mobi:fieldsetGroup>
         <mobi:fieldsetRow>
             <label>Title: </label>
             <form:input path="title" placeholder="Title"/>
@@ -25,13 +35,14 @@
                         value="Submit"
                         type="submit"
                         styleClass="submit"/>
+                        
+    <h3>Augmented Reality</h3>
 
     <mobi:fieldsetGroup>
         <mobi:fieldsetRow>
-            View augmented: 
-            <mobi:augmentedReality id="selection">
+            <mobi:augmentedReality id="selection" buttonLabel="Enter Augmented Reality">
                 <c:forEach items="${locations}" var="location" >
-                    <mobi:augmentedRealityLocation 
+                    <mobi:augmentedRealityLocation
                         locationLabel="${location.title}"
                         locationLat="${location.latitude}"
                         locationLon="${location.longitude}"
@@ -60,13 +71,6 @@
         </mobi:fieldsetGroup>
     </c:if>
     
-    <mobi:fieldsetGroup>
-        <mobi:fieldsetRow>
-            Use your camera to add location pictures to the
-            augmented reality overlay. Touch an icon in the augmented
-            reality view to select and view that image.
-        </mobi:fieldsetRow>
-    </mobi:fieldsetGroup>
 
 </form:form>
 

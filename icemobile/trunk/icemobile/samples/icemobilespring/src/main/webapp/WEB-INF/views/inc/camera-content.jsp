@@ -5,10 +5,10 @@
 <%@ taglib prefix="push" uri="http://www.icepush.org/icepush/jsp/icepush.tld"%>
 <form:form id="camform" method="POST" enctype="multipart/form-data"
            modelAttribute="cameraBean" cssClass="form">
+           
+    <mobi:getEnhanced/>
+    
     <mobi:fieldsetGroup>
-        <mobi:fieldsetRow>
-            <mobi:getEnhanced/>
-        </mobi:fieldsetRow>
         <mobi:fieldsetRow>
             <form:label path="name">
                 Author: <form:errors path="name" cssClass="error"/>

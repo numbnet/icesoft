@@ -5,17 +5,16 @@
 <%@ taglib prefix="push" uri="http://www.icepush.org/icepush/jsp/icepush.tld"%>
 <form:form id="qrscanform" method="POST" modelAttribute="QRScanBean" cssClass="form">
 
+    <mobi:getEnhanced/>
+    
     <mobi:fieldsetGroup>
-        <mobi:fieldsetRow>
-            <mobi:getEnhanced/>
-        </mobi:fieldsetRow>
         <mobi:fieldsetRow>
             <label>Scan QR code:</label>
             <mobi:scan id="scanOne"/>
         </mobi:fieldsetRow>
-        <mobi:fieldsetRow>
+        <mobi:fieldsetRow styleClass="qr">
             <label>Scanned:</label>
-            <span>${QRScanBean.scanOne}</span>
+            <div>${QRScanBean.scanOne}</div>
         </mobi:fieldsetRow>
     </mobi:fieldsetGroup>
     
