@@ -1,6 +1,8 @@
 package org.icemobile.samples.mobileshowcase.view.examples.device.contacts;
 
 import java.io.Serializable;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -39,8 +41,9 @@ import org.icemobile.samples.mobileshowcase.view.metadata.context.ExampleImpl;
 @SessionScoped
 public class ContactsBean extends ExampleImpl<ContactsBean> implements Serializable{
     
-    private String contact;
+    private String rawContact;
     private String name;
+    private String contact;
     private String phone;
     private String email;
     private String pattern;
@@ -55,25 +58,35 @@ public class ContactsBean extends ExampleImpl<ContactsBean> implements Serializa
         return contact;
     }
 
-    public void setContact(String contact) {
-        this.contact = contact;
-        if( contact != null && !"".equals(contact)){
-            String[] tokens = contact.split("%26");
-            for( int i = 0 ; i < tokens.length ; i++ ){
-                System.out.println("tokens="+tokens);
-                String key = tokens[i].substring(0,tokens[i].indexOf("%3D"));
-                String val = tokens[i].substring(tokens[i].indexOf("%3D")+3);
-                System.out.println("key="+key+", val="+val);
-                if( "contact".equals(key)){
-                    name = val;
+    public void setRawContact(String rawContact) {
+        this.rawContact = rawContact;
+        //raw contact string will be in encoded format 
+        //of [contact=val&][phone=val&][email=val&]
+        if( rawContact != null && !"".equals(rawContact)){
+            try {
+              //contact string has to be decoded
+                String decoded = URLDecoder.decode(rawContact,"UTF-8");
+                String[] tokens = decoded.split("&");
+                for( int i = 0 ; i < tokens.length ; i++ ){
+                  //each contact field will have a key and value
+                    String key = tokens[i].substring(0,tokens[i].indexOf("="));
+                    String val = tokens[i].substring(tokens[i].indexOf("=")+1);
+                  //possible keys are 'contact', 'name', 'phone', and 'email'
+                    if( "contact".equals(key)){
+                        contact = val;
+                    }
+                    else if( "name".equals(key)){
+                        name = val;
+                    }
+                    else if( "phone".equals(key)){
+                        phone = val;
+                    }
+                    else if( "email".equals(key)){
+                        email = val;
+                    }
                 }
-                else if( "phone".equals(key)){
-                    phone = val;
-                }
-                else if( "email".equals(key)){
-                    email = val;
-                }
-                
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
             }
         }
     }
@@ -96,6 +109,10 @@ public class ContactsBean extends ExampleImpl<ContactsBean> implements Serializa
 
     public void setPattern(String pattern) {
         this.pattern = pattern;
+    }
+
+    public String getRawContact() {
+        return rawContact;
     }
 
 }
