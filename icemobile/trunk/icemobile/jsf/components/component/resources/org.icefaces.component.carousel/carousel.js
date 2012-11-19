@@ -145,7 +145,11 @@ if (!window.ice['mobi']) {
            },
            disable: function(){
               myScroll.disable();
-           }
+           } ,
+            unload: function(){
+                myScroll.destroy();
+                myScroll = null;
+            }
         }
     }
     ice.mobi.carousel = {
@@ -170,7 +174,9 @@ if (!window.ice['mobi']) {
             }
         },
         scrollUpd: function(event, clientId, pageVal){
-            this.acarousel[clientId].scrollUpdate(event, pageVal, this.cfg[clientId]);
+            if (this.acarousel[clientId]){
+                this.acarousel[clientId].scrollUpdate(event, pageVal, this.cfg[clientId]);
+            }
         },
         scrollTo: function(clientId, key){
             this.acarousel[clientId].scrollToPage(key);
@@ -180,7 +186,7 @@ if (!window.ice['mobi']) {
         },
         unloadTest: function(clientId){
             if (!document.getElementById(clientId) && this.acarousel[clientId]!=null){
-                this.acarousel[clientId].disable();
+                this.acarousel[clientId].unload();
               //  console.log("unloadTest disable and then setting id ="+clientId+" to null");
                 this.acarousel[clientId] = null;
                 this.cfg[clientId] = null;
