@@ -357,6 +357,10 @@ ice.mobi.flipvalue = function flipvalue(id, vars) {
                 //   console.log('WARNING:_ reinitialized scroller');
                    enhance(clientId);
                }
+           } ,
+           unload: function (){
+               myScroll.destroy();
+               myScroll = null;
            }
 
         }
@@ -383,7 +387,9 @@ ice.mobi.flipvalue = function flipvalue(id, vars) {
             }
         },
         scrollUpd: function(event, clientId, pageVal){
-            this.acarousel[clientId].scrollUpdate(event, pageVal, this.cfg[clientId]);
+            if (this.acarousel[clientId]){
+                this.acarousel[clientId].scrollUpdate(event, pageVal, this.cfg[clientId]);
+            }
         },
         scrollTo: function(clientId, key){
             this.acarousel[clientId].scrollToPage(key);
@@ -393,7 +399,8 @@ ice.mobi.flipvalue = function flipvalue(id, vars) {
         },
         unloadTest: function(clientId){
             if (!document.getElementById(clientId) && this.acarousel[clientId]!=null){
-           //    console.log("unloadTest setting id="+clientId+" to null");
+            //   console.log("unloadTest setting id="+clientId+" to null");
+               this.acarousel[clientId].unload();
                this.acarousel[clientId] = null;
                this.cfg[clientId] = null;
                document.removeEventListener("DOMSubtreeModified",this.unload[clientId], false ) ;
