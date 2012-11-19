@@ -69,7 +69,7 @@ import java.util.List;
 @CustomScoped(value = "#{window}")
 public class TreeBean extends ComponentExampleImpl<TreeBean> implements Serializable {
     public static final String BEAN_NAME = "treeBean";
-    private List<LocationNodeImpl> treeRoots = new ArrayList<LocationNodeImpl>(Arrays.asList(TreeDataFactory.getTreeRoots()));
+    private List<LocationNodeImpl> treeRoots = TreeDataFactory.getTreeRoots();
     private NodeStateMap stateMap;
 
     private NodeStateCreationCallback contractProvinceInit = new NodeStateCreationCallback() {

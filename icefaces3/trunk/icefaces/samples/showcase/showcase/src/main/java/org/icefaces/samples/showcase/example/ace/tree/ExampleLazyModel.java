@@ -27,7 +27,7 @@ import java.util.List;
  * Time: 1:34 PM
  */
 public class ExampleLazyModel extends LazyNodeDataModel<LocationNodeImpl> {
-    private List<LocationNodeImpl> treeRoots = Arrays.asList(TreeDataFactory.getTreeRoots().clone());
+    private List<LocationNodeImpl> treeRoots = TreeDataFactory.getTreeRoots();
 
     @Override
     public List<LocationNodeImpl> loadChildrenForNode(LocationNodeImpl node) {
