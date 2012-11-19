@@ -83,11 +83,6 @@ public class EchoController {
         @ModelAttribute("flipSwitchBean") FlipSwitchBean model) {
     }
 
-    @RequestMapping(value = "/contact")
-    public void doRequest(
-        @ModelAttribute("contactBean") ContactBean model) {
-    }
-
     @RequestMapping(value = "/geolocation")
     public void doRequest(@ModelAttribute("geolocationBean") GeolocationBean model) {
     }
