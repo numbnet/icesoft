@@ -1547,7 +1547,7 @@ ice.mobi.geolocation = {
         console.log('getCurrentPosition update for client: ' + ice.mobi.geolocation.clientId);
         var inputId = ice.mobi.geolocation.clientId + "_locHidden";
         ice.mobi.storeLocation(inputId, pos.coords);
-        ice.mobi.clearWatch();
+        ice.mobi.geolocation.clearWatch();
     },
 
     errorCallback: function(positionError) {
