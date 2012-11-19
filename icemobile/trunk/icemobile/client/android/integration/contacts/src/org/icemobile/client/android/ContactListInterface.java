@@ -33,7 +33,7 @@ import android.util.Log;
 
 	private final String SELECT_TYPE_ARG = "select";
 	private final String FIELDS_ARG = "fields"; 
-	private final String CONTACT_FIELD = "contact"; 
+	private final String NAME_FIELD = "name"; 
 	private final String EMAIL_FIELD = "email"; 
 	private final String PHONE_FIELD = "phone"; 
 	private final String SORT_ORDER =  " asc"; 
@@ -56,7 +56,7 @@ import android.util.Log;
 
 	    selected = -1;
 	    AttributeExtractor attributes = new AttributeExtractor(attr);
-	    String selectedFields = attributes.getAttribute( FIELDS_ARG, "contact");
+	    String selectedFields = attributes.getAttribute( FIELDS_ARG, NAME_FIELD);
 	    processFields(selectedFields); 
 
 	    String presetFilter = attributes.getAttribute("pattern", null);
@@ -139,7 +139,7 @@ import android.util.Log;
 		t = st.nextToken().trim(); 
 		if (EMAIL_FIELD.equalsIgnoreCase(t)) {
 		    mFetchEmail = true; 
-		} else if (CONTACT_FIELD.equalsIgnoreCase(t)) { 
+		} else if (NAME_FIELD.equalsIgnoreCase(t)) { 
 		    mFetchContact = true; 
 		} else if (PHONE_FIELD.equalsIgnoreCase(t)) { 
 		    mFetchPhone = true; 
@@ -155,7 +155,7 @@ import android.util.Log;
 	    if (selected >= 0) {
 		StringBuilder contactList = new StringBuilder(); 
 		if (mFetchContact) { 
-		    contactList.append( "contact=" + mContactArray [selected] + "&");
+		    contactList.append( NAME_FIELD+"=" + mContactArray [selected] + "&");
 		}
 
 		String[] projection;
