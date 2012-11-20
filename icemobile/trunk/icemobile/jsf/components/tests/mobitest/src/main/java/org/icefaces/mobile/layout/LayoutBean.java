@@ -79,6 +79,10 @@ public class LayoutBean implements Serializable {
         logger.info("in tabChangeListener old val="+vce.getOldValue()+" new index="+vce.getNewValue());
     }
 
+    public void paneChange(ValueChangeEvent pce){
+        logger.info("pane Changed!!!"+" oldId="+pce.getOldValue()+" newId="+pce.getNewValue());
+
+    }
     public void addContentPane(ActionEvent event) {
         logger.info("LayoutBean.addContentPane()");
         counter++;
