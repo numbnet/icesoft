@@ -50,7 +50,8 @@
     <p>autoHeight is true</p>
       <br />
      <h:form id="contentForm">
-       <mobi:accordion id="test1" selectedId="#{layoutBean.selectedPane}" autoHeight="true">
+       <mobi:accordion id="test1" selectedId="#{layoutBean.selectedPane}"
+                       paneChangeListener="#{layoutBean.paneChange}" autoHeight="true">
               <mobi:contentPane id="panel1" title="panel1" client="true">
                   <div id="inner1">
                       <fieldset title="panel1">
