@@ -52,6 +52,7 @@ import java.util.List;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.HashMap;
+import java.net.URLDecoder;
 
 import org.icemobile.client.android.util.AttributeExtractor;
 
@@ -74,6 +75,7 @@ public class ARViewActivity extends Activity implements SensorEventListener,
     private final float[] mRotationMatrix = new float[16];
     private float azimuth = 0.0f;
     HashMap<String,String> places = new HashMap();
+    private String urlBase = null;
 
     // The first rear facing camera
     int defaultCameraId;
@@ -98,6 +100,7 @@ public class ARViewActivity extends Activity implements SensorEventListener,
                 continue;
             }
             if ("ub".equals(name))  {
+                urlBase = URLDecoder.decode(attributes.get(name));
                 continue;
             }
             if ("v".equals(name))  {
@@ -139,6 +142,7 @@ public class ARViewActivity extends Activity implements SensorEventListener,
         
         arView = new ARView(this);
         arView.setPlaces(places);
+        arView.setUrlBase(urlBase);
         arView.setRotation(mRotationMatrix);
         LayoutParams arLayout = new LayoutParams(
                 LayoutParams.WRAP_CONTENT, 
@@ -220,18 +224,8 @@ public class ARViewActivity extends Activity implements SensorEventListener,
             if (gotRot)  {
                 //average out some noise
                 azimuth = (azimuth * 9 + apr[0]) / 10;
-
-                float cx = (float) Math.cos(azimuth);
-                float cy = (float) Math.sin(azimuth);
-
-//Log.d("AR ", String.format("azimuth: %+10.4f cx: %+10.4f cy: %+10.4f",azimuth, cx, cy));
-                float[] look = new float[16];
-                Matrix.setLookAtM (look, 0,
-                    0.0f, 0.0f, 100.0f, //eye
-                    0.0f, 0.0f, 0.0f, //center
-                    cx, cy, 0.0f //up
-                );
-                arView.setRotation(look);
+                arView.setCompass(azimuth);
+                arView.setRotation(rotation);
                 arView.postInvalidate();
             }
         }
@@ -424,6 +418,10 @@ class Preview extends ViewGroup implements SurfaceHolder.Callback {
     public void surfaceChanged(SurfaceHolder holder, int format, int w, int h) {
         // Now that the size is known, set up the camera parameters and begin
         // the preview.
+        if (null == mCamera)  {
+            Log.e(TAG, "camera not available, proceeding with black AR view");
+            return;
+        }
         Camera.Parameters parameters = mCamera.getParameters();
         parameters.setPreviewSize(mPreviewSize.width, mPreviewSize.height);
         requestLayout();

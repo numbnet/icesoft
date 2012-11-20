@@ -18,11 +18,14 @@ package org.icemobile.client.android.arview;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Paint;
 import android.view.View;
 import android.util.Log;
 import android.location.Location;
 import android.opengl.Matrix;
+import java.net.URL;
 import java.util.Map;
 import java.util.HashMap;
 
@@ -30,8 +33,11 @@ public class ARView extends View {
     private Paint mTextPaint;
     private Paint mTextPaintRed;
     HashMap<String,String> places = new HashMap();
+    HashMap<String,Bitmap> icons = null;
     float[] deviceTransform = new float[16];
+    float compass = 0;
     Location currentLocation;
+    String urlBase = null;
 
     public ARView(Context context) {
         super(context);
@@ -53,6 +59,14 @@ public class ARView extends View {
 
     void setRotation(float[] transform)  {
         this.deviceTransform = transform;
+    }
+
+    void setUrlBase(String url)  {
+        this.urlBase = url;
+    }
+
+    void setCompass(float radians)  {
+        this.compass = radians;
     }
 
     void setLocation(Location location)  {
@@ -81,15 +95,63 @@ public class ARView extends View {
           0, 0, 0, 1
     };
 
+    public Bitmap getImage(String url)  {
+        Bitmap bitmap = null;
+        try {
+            bitmap = BitmapFactory.decodeStream(
+                    new URL(url).openConnection()
+                      .getInputStream() );
+        } catch (Exception e)  {
+            e.printStackTrace();
+        }
+        return bitmap;
+    }
+
+    public HashMap<String,Bitmap> getIcons()  {
+        try {
+            if (null == icons)  {
+                icons = new HashMap();
+                for (String label : places.keySet())  {
+                    String coordstr = places.get(label);
+                    if (null == coordstr)  {
+                        continue;
+                    }
+                    String [] coordparts = coordstr.split(",");
+                    
+                    if (coordparts.length >= 4)  {
+                        String iconPath = coordparts[4];
+                        if (null != urlBase)  {
+                            iconPath = urlBase + iconPath;
+                        }
+                        Bitmap icon = getImage(iconPath);
+                        icons.put(label, icon);
+                    }
+                }
+            }
+        } catch (Exception e)  {
+            e.printStackTrace();
+        }
+        return icons;
+    }
+
+
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
+
+        HashMap<String,Bitmap> iconBitmaps = getIcons();
+
         for (String label : places.keySet())  {
             String coordstr = places.get(label);
             if (null == coordstr)  {
                 continue;
             }
             String [] coordparts = coordstr.split(",");
+            
             if ((null != currentLocation) && (coordparts.length >= 2)) {
+                String iconPath = null;
+                if (coordparts.length >= 4)  {
+                    iconPath = coordparts[4];
+                }
                 float[] labelLoc = new float[2];
                 try {
                     labelLoc[0] = Float.parseFloat(coordparts[0]);
@@ -105,25 +167,27 @@ public class ARView extends View {
                 coord[1] = 1000 * (labelLoc[1] 
                         - (float)currentLocation.getLongitude());
                 coord[2] = 0f;
-                coord[3] = 1f;
+                coord[3] = 0f;
 
-                float[] mat = new float[16];
-//                Matrix.invertM(mat, 0, deviceTransform, 0);
-                mat = deviceTransform;
-                float[] v1 = new float[]{0, 0, 0, 1};
-                Matrix.multiplyMV(v1, 0, mat, 0, coord, 0);
                 float[] v = new float[]{0, 0, 0, 1};
-                Matrix.multiplyMV(v, 0, adjust, 0, v1, 0);
+                Matrix.multiplyMV(v, 0, deviceTransform, 0, coord, 0);
 
                 //project x-z and discard y=x as behind us
                 canvas.save();
-                canvas.rotate(270, v[0], v[1]);
-                if ( (v[1] - v[0]) > 0)  {
-                    canvas.drawText(label, v[0] - 300, v[1] + 300, mTextPaint);
-                } else {
-                    canvas.drawText(label, v[0] - 300, v[1] + 300, mTextPaintRed);
+                canvas.rotate(270, 300, 300);
+                if (null != iconBitmaps)  {
+                    Bitmap myIcon = iconBitmaps.get(label);
+                    if (null != myIcon)  {
+                        canvas.drawBitmap(myIcon, v[0] + 300, v[1] + 300,
+                                mTextPaint);
+                    }
                 }
-Log.d("ARView ", "rotated " + label + v[0] + "," + v[1]);
+                if ( (v[1] - v[0]) > 0)  {
+                    canvas.drawText(label, v[0] + 300, v[1] + 300, mTextPaint);
+                } else {
+                    canvas.drawText(label, v[0] + 300, v[1] + 300, mTextPaintRed);
+                }
+//Log.d("ARView ", "drawing " + label + " " + v[0] + "," + v[1]);
                 canvas.restore();
             }
         }
