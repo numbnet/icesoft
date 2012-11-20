@@ -14,7 +14,7 @@
  * governing permissions and limitations under the License.
  */
 
-package org.icemobile.client.android;
+package org.icemobile.client.android.audio;
 
 import android.util.Log;
 import android.media.MediaPlayer;
@@ -85,7 +85,7 @@ public class AudioPlayer implements MediaPlayer.OnCompletionListener,
 	release();
     }
 
-    protected void release() {
+    public void release() {
 	if (player != null) {
 	    player.release();
 	    player = null;

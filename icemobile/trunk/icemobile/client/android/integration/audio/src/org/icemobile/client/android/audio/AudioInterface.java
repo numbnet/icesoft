@@ -14,7 +14,10 @@
  * governing permissions and limitations under the License.
  */
 
-package org.icemobile.client.android;
+package org.icemobile.client.android.audio;
+
+import org.icemobile.client.android.util.JavascriptInterface;
+import org.icemobile.client.android.util.AttributeExtractor;
 
 public class AudioInterface implements JavascriptInterface {
 

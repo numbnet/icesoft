@@ -20,7 +20,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.util.Log;
 
-import org.icemobile.client.android.JavascriptInterface;
+import org.icemobile.client.android.util.JavascriptInterface;
 
 public class CaptureJSInterface implements JavascriptInterface {
   private static final String TAG = CaptureJSInterface.class.getSimpleName();
