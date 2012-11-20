@@ -26,4 +26,24 @@
     -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#7F7F7F', EndColorStr='#575757')";
     border-bottom: 1px solid #020202;
     border-top: 1px solid #7B7B7B;
+    position:relative;
+    left:0;
+}
+ .mobi-accordion .open .handle .pointer {
+    width: 0;
+    height: 0;
+    position: relative;
+    top: 10px;
+    border-left:  6px solid transparent;
+    border-right:  6px solid transparent;
+    border-top:  6px solid white;
+}
+.mobi-accordion .closed .handle .pointer {
+    width:0;
+    height: 0;
+    position: relative;
+    top:5px;
+    border-top:  3px solid transparent;
+    border-bottom: 3px solid transparent;
+    border-left: 3px solid white;
 }

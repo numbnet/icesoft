@@ -28,3 +28,19 @@
     font-weight: bold;
     height:31px;
 }
+.mobi-accordion .open .handle .pointer {
+    width: 0;
+    height: 0;
+    position: relative;
+    top: 10px;
+    border-left:  4px solid transparent;
+    border-right:  4px solid transparent;
+    border-top:  4px solid white;
+}
+.mobi-accordion .closed .handle .pointer {
+    width:0;
+    height: 0;
+    border-top:  4px solid transparent;
+    border-bottom: 4px solid transparent;
+    border-left: 4px solid white;
+}

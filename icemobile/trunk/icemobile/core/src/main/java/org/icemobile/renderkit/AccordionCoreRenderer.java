@@ -1,6 +1,7 @@
 package org.icemobile.renderkit;
 
 import java.io.IOException;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.icemobile.component.IAccordion;
@@ -77,7 +78,25 @@ public class AccordionCoreRenderer extends BaseCoreRenderer implements IRenderer
         cfg.append(", hash: ").append(hashcode);
         cfg.append(", autoHeight: ").append(autoheight);
         if (accordion.getFixedHeight()!=null){
+            String htString = accordion.getFixedHeight();
+            int fixedHtVal = -1;
+            StringBuffer numbers = new StringBuffer();
+            for(char c : htString.toCharArray()){
+               if(Character.isDigit(c)) {
+                   numbers.append(c);
+               }
+            }
+            try {
+               fixedHtVal = Integer.valueOf(numbers.toString());
+            }   catch (NumberFormatException nfe){
+                if (logger.isLoggable(Level.WARNING)){
+                    logger.warning(" could not parse int value of fixedHeight");
+                }
+            }
             cfg.append(", fixedHeight: '").append(accordion.getFixedHeight()).append("'");
+            if (fixedHtVal > 30) {
+               cfg.append(", fHtVal: ").append(fixedHtVal);
+            }
         }
         cfg.append("}");
          //just have to add behaviors if we are going to use them.

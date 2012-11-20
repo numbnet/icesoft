@@ -21,15 +21,9 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
 <h:head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
-    <meta name="apple-mobile-web-app-capable" content="yes"/>
-    <meta name="apple-mobile-web-app-status-bar-style" content="black"/>
+    <mobi:deviceResource includeIOSSmartAppBanner="false" theme="#{themeSwitcher.theme}"/>
     <title>Accordion fixedHeight example</title>
-<!--<script src="http://debug.phonegap.com/target/target-script-min.js#judy"></script> -->
-    <mobi:deviceStylesheet
-            name="#{themeSwitcher.theme}" media="screen" />
+    <script src="http://debug.phonegap.com/target/target-script-min.js#judy"></script>
 </h:head>
 
 <h:body>
@@ -50,7 +44,7 @@
       <br />
      <h:form id="contentForm">
        <mobi:accordion id="test1" selectedId="#{layoutBean.selectedPane}"
-                       autoHeight="false" fixedHeight="100px">
+                       autoHeight="false" fixedHeight="200px">
               <mobi:contentPane id="panel1" title="panel1" client="true">
                   <div id="inner1">
                       <fieldset title="panel1">
@@ -70,7 +64,7 @@
                   </fieldset>
                   </div>
               </mobi:contentPane>
-               <mobi:contentPane id="panel2" title="panel2"  >
+               <mobi:contentPane id="panel2" title="panel2" client="true" >
                 <div id="inner2">
                  <fieldset title="panel2">
                    <legend>Panel2</legend>
@@ -92,7 +86,7 @@
                   </fieldset>
                  </div>
               </mobi:contentPane>
-             <mobi:contentPane id="panel3" title="panel3" >
+             <mobi:contentPane id="panel3" title="panel3" client="true">
                  <div id="inner3">
                  <fieldset title="panel3">
                       <legend>Panel3</legend>
@@ -107,7 +101,7 @@
                   </fieldset>
                  </div>
               </mobi:contentPane>
-              <mobi:contentPane id="panel4" title="panel4" facelet="true">
+              <mobi:contentPane id="panel4" title="panel4" client="true">
                 <div id="inner4">
                  <fieldset title="panel2">
                    <legend>Panel2</legend>

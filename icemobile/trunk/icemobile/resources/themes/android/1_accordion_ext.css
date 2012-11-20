@@ -16,6 +16,7 @@
 .mobi-accordion{
     border-top: 1px solid #7B7B7B;
     border-bottom: 1px solid #7B7B7B;
+    overflow: hidden;
 }
 
 .mobi-accordion .handle {
@@ -25,4 +26,22 @@
     filter: progid:DXImageTransform.Microsoft.gradient(startColorStr = '#cccccc', EndColorStr = '#999999');
     -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#cccccc', EndColorStr='#999999')";
     border-bottom: 1px solid #999999;
+    position:relative;
+    left:0;
+}
+ .mobi-accordion .open .handle .pointer {
+    width: 0;
+    height: 0;
+    position: relative;
+    top: 10px;
+    border-left:  4px solid transparent;
+    border-right:  4px solid transparent;
+    border-top:  4px solid white;
+}
+.mobi-accordion .closed .handle .pointer {
+    width:0;
+    height: 0;
+    border-top:  4px solid transparent;
+    border-bottom: 4px solid transparent;
+    border-left: 4px solid white;
 }

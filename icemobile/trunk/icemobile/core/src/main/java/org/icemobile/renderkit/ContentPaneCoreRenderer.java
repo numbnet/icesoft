@@ -1,10 +1,12 @@
 package org.icemobile.renderkit;
 
+import com.sun.jdi.connect.Connector;
 import org.icemobile.component.IAccordion;
 import org.icemobile.component.IContentPane;
 
 
 import java.io.IOException;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import static org.icemobile.util.HTML.*;
@@ -64,26 +66,37 @@ public class ContentPaneCoreRenderer extends BaseCoreRenderer {
           writer.writeAttribute(ID_ATTR, clientId+"_hndl");
           writer.writeAttribute(CLASS_ATTR, handleClass);
           writer.writeAttribute("onclick", "ice.mobi.accordionController.toggleClient('"+accordionId+"',this,"+client+");");
-          writer.startElement(DIV_ELEM, pane);
+          writer.startElement(SPAN_ELEM, pane);
           writer.writeAttribute("class", pointerClass);
-          if (!isJsp){
+       /*   if (!isJsp){
               writer.write(IAccordion.ACCORDION_RIGHT_POINTING_POINTER);
           } else {
               writer.writeText(IAccordion.ACCORDION_RIGHT_POINTING_POINTER);
-          }
-          writer.endElement(DIV_ELEM);
+          }*/
+          writer.endElement(SPAN_ELEM);
           String title = pane.getTitle();
           writer.writeText(title);
           writer.endElement(DIV_ELEM);
           writer.startElement(DIV_ELEM, pane);
-          writer.writeAttribute(ID_ATTR, clientId+"wrp");
-       /*   if (autoheight){
-             writer.writeAttribute("onload", "ice.mobi.accordionController.updateHeight('"+accordionId+"', '"+clientId+"');");
-          }  */
-     //    String fixedHeight = accordion.getFixedHeight();
-          if (!autoheight && null != accordion.getFixedHeight()) {
-         //     logger.info("writing out fixedHeight="+accordion.getFixedHeight());
-              writer.writeAttribute(STYLE_ATTR, "height: "+accordion.getFixedHeight()+"; overflow-y: scroll;") ;
+          String fixedHeight = accordion.getFixedHeight();
+          if (!autoheight && null != fixedHeight) {
+              String htString = accordion.getFixedHeight();
+              int fixedHtVal = -1;
+              StringBuffer numbers = new StringBuffer();
+              for(char c : htString.toCharArray()){
+                 if(Character.isDigit(c)) {
+                     numbers.append(c);
+                 }
+              }
+              try {
+                 fixedHtVal = Integer.valueOf(numbers.toString());
+              }   catch (NumberFormatException nfe){
+                  if (logger.isLoggable(Level.WARNING)){
+                      logger.warning(" could not parse int value of fixedHeight");
+                  }
+              }
+            //  writer.writeAttribute(STYLE_ATTR, "height: "+accordion.getFixedHeight()+";"); // overflow-y: scroll;") ;
+               writer.writeAttribute(STYLE_ATTR, "height: "+fixedHeight+"; maxHeight: "+fixedHeight+"; overflow-y: scroll;") ;
           }
           writer.startElement(DIV_ELEM, pane);
           writer.writeAttribute(ID_ATTR, clientId);
