@@ -14,7 +14,7 @@
  * governing permissions and limitations under the License.
  */
 
-package org.icemobile.client.android;
+package org.icemobile.client.android.util;
 
 import java.util.Map;
 import java.util.HashMap;

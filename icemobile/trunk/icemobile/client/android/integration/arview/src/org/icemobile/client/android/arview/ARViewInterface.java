@@ -14,7 +14,22 @@
  * governing permissions and limitations under the License.
  */
 
-package org.icemobile.client.android;
+package org.icemobile.client.android.arview;
 
-public interface JavascriptInterface {
+import java.util.Map;
+import java.util.HashMap;
+import org.icemobile.client.android.util.JavascriptInterface;
+
+public class ARViewInterface implements JavascriptInterface {
+
+    private ARViewHandler handler;
+    private String result;
+
+    public ARViewInterface (ARViewHandler handler) {
+        this.handler = handler;
+    }
+
+    public String arView(String id, String attr) {
+        return handler.arView(id, attr);
+    }
 }

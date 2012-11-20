@@ -14,25 +14,35 @@
  * governing permissions and limitations under the License.
  */
 
-package org.icemobile.client.android;
+package org.icemobile.client.android.video;
+import android.util.Log;
 
-public class CameraInterface implements JavascriptInterface {
+import org.icemobile.client.android.util.JavascriptInterface;
+import org.icemobile.client.android.util.AttributeExtractor;
 
-    private CameraHandler handler;
+public class VideoInterface implements JavascriptInterface {
+
+    private VideoHandler handler;
     private String result;
 
-    public CameraInterface (CameraHandler handler) {
+    public VideoInterface (VideoHandler handler) {
 	this.handler = handler;
     }
 
-    public String shootPhoto(String id, String attr) {
+    public String shootVideo(String thumbId, String attr) { 
+
 	AttributeExtractor attributes = new AttributeExtractor(attr);
 	int width = Integer.parseInt(attributes.getAttribute("maxwidth", "640"));
 	int height = Integer.parseInt(attributes.getAttribute("maxheight", "480"));
 	int thumbWidth = Integer.parseInt(attributes.getAttribute("thumbWidth", "64"));
 	int thumbHeight = Integer.parseInt(attributes.getAttribute("thumbHeight", "64"));
-	String thumbId = attributes.getAttribute("thumbId", id + "-thumb");
-        return handler.shootPhoto(width, height, thumbId, 
-				  thumbWidth, thumbHeight);
+	int maxDuration = Integer.parseInt(attributes.getAttribute("maxtime", "-1"));
+	int quality;
+	if (width > 640 || height >480) {
+	    quality = 1; // High res
+	} else {
+	    quality = 0; // Low res
+	}
+        return handler.shootVideo(quality, thumbId, thumbWidth, thumbHeight, maxDuration);
     }
 }

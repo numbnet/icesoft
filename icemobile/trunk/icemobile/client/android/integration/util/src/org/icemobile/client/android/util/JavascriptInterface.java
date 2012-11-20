@@ -14,9 +14,7 @@
  * governing permissions and limitations under the License.
  */
 
-package org.icemobile.client.android;
+package org.icemobile.client.android.util;
 
-public interface UploadProgressListener {
-	public void transferred(long count);
-    }
-
+public interface JavascriptInterface {
+}

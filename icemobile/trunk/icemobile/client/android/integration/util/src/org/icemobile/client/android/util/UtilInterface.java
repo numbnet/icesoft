@@ -14,7 +14,7 @@
  * governing permissions and limitations under the License.
  */
 
-package org.icemobile.client.android;
+package org.icemobile.client.android.util;
 
 import android.app.Activity;
 import android.webkit.WebView;
@@ -185,7 +185,7 @@ public class UtilInterface implements JavascriptInterface,
 	sendProgress(new Long(count*PROGRESS_INTERVAL).intValue());
     } 
 
-    protected File getTempPath(){
+    public File getTempPath(){
 	File path = new File( Environment.getExternalStorageDirectory(), container.getPackageName() );
 	if(!path.exists()){
 	    path.mkdir();
@@ -236,7 +236,7 @@ public class UtilInterface implements JavascriptInterface,
         return res.toArray(new BasicNameValuePair[0]);
     }
 
-    protected void setUrl(String URL) {
+    public void setUrl(String URL) {
         CookieSyncManager.createInstance(container);
 	    CookieManager cookieManager = CookieManager.getInstance();
         cookieManager.setCookie(URL,

@@ -14,7 +14,7 @@
  * governing permissions and limitations under the License.
  */
 
-package org.icemobile.client.android;
+package org.icemobile.client.android.camera;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -38,6 +38,8 @@ import android.os.Bundle;
 
 import android.media.ExifInterface;
 import android.graphics.Matrix;
+
+import org.icemobile.client.android.util.UtilInterface;
 
 public class CameraHandler {
     private Activity container;

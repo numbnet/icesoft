@@ -75,6 +75,21 @@ import org.icemobile.client.android.qrcode.CaptureActivity;
 import org.icemobile.client.android.qrcode.CaptureJSInterface;
 import org.icemobile.client.android.qrcode.Intents;
 
+import org.icemobile.client.android.arview.ARViewInterface;
+import org.icemobile.client.android.arview.ARViewHandler;
+import org.icemobile.client.android.audio.AudioInterface;
+import org.icemobile.client.android.audio.AudioRecorder;
+import org.icemobile.client.android.audio.AudioPlayer;
+import org.icemobile.client.android.camera.CameraInterface;
+import org.icemobile.client.android.camera.CameraHandler;
+import org.icemobile.client.android.contacts.ContactListInterface;
+import org.icemobile.client.android.video.VideoInterface;
+import org.icemobile.client.android.video.VideoHandler;
+
+import org.icemobile.client.android.util.UtilInterface;
+import org.icemobile.client.android.util.JavascriptLoggerInterface;
+import org.icemobile.client.android.util.FileLoader;
+
 import java.lang.reflect.Method;
 import java.lang.reflect.Field;
 

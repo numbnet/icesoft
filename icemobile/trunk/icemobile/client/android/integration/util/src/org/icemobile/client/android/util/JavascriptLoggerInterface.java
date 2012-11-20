@@ -1,4 +1,4 @@
-package org.icemobile.client.android;
+package org.icemobile.client.android.util;
 
 import android.util.Log;
 

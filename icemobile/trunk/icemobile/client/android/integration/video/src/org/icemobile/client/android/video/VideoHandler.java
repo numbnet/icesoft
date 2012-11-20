@@ -14,7 +14,7 @@
  * governing permissions and limitations under the License.
  */
 
-package org.icemobile.client.android;
+package org.icemobile.client.android.video;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -40,6 +40,8 @@ import android.media.ThumbnailUtils;
 import android.net.Uri;
 
 import java.io.ByteArrayOutputStream;
+
+import org.icemobile.client.android.util.UtilInterface;
 
 public class VideoHandler {
     private Activity container;

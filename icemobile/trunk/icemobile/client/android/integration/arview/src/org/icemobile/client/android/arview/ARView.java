@@ -14,7 +14,7 @@
  * governing permissions and limitations under the License.
  */
 
-package org.icemobile.client.android;
+package org.icemobile.client.android.arview;
 
 import android.content.Context;
 import android.graphics.Canvas;

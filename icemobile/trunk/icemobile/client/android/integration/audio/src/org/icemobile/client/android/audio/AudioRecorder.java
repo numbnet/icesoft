@@ -14,7 +14,7 @@
  * governing permissions and limitations under the License.
  */
 
-package org.icemobile.client.android;
+package org.icemobile.client.android.audio;
 
 import android.app.Activity;
 import android.util.Log;
@@ -29,6 +29,8 @@ import java.io.IOException;
 import java.io.File;
 import java.lang.reflect.Field;
 import android.os.Build;
+
+import org.icemobile.client.android.util.UtilInterface;
 
 public class AudioRecorder {
 

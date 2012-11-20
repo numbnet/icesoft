@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.icemobile.client.android;
+package org.icemobile.client.android.arview;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -52,6 +52,8 @@ import java.util.List;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.HashMap;
+
+import org.icemobile.client.android.util.AttributeExtractor;
 
 public class ARViewActivity extends Activity implements SensorEventListener, 
     LocationListener, OnTouchListener {
