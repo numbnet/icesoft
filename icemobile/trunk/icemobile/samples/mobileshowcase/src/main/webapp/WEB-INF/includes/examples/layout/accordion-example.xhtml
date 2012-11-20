@@ -59,15 +59,16 @@
         
         <mobi:fieldsetGroup>
             <mobi:fieldsetRow>
-                <h:outputLabel for="autoHeight" value="Auto Height:"/>
+                <h:outputLabel for="autoHeight" value="Auto Height:" />
                 <mobi:flipswitch id="autoHeight" value="#{accordionBean.autoHeight}" singleSubmit="true"/>
             </mobi:fieldsetRow>
             <mobi:fieldsetRow>
-                <h:outputLabel for="fixedHeight" value="Fixed Height:"/>
+                <h:outputLabel for="fixedHeight" value="Fixed Height:" style="width:50px"/>
                 <mobi:inputText id="fixedHeight" value="#{accordionBean.fixedHeight}" 
-                    singleSubmit="true" placeholder="Add a fixed height, eg '10em'"/>
+                    singleSubmit="true" placeholder="Fixed height, eg '10em'"
+                    style="font-size:12px"/>
                 <mobi:commandButton value="Clear" actionListener="#{accordionBean.clearFixedHeight}"
-                    style="max-width:40px;min-width:40px;"/>
+                    style="max-width:50px;min-width:50px;"/>
             </mobi:fieldsetRow>        
         </mobi:fieldsetGroup>
 
