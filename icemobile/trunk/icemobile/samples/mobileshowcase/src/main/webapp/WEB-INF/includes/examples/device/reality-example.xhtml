@@ -74,7 +74,7 @@
         
         <mobi:fieldsetGroup>
             <mobi:fieldsetRow>
-                <mobi:augmentedReality 
+                <mobi:augmentedReality buttonLabel="Augmented Reality"
                     urlBase="#{realityBean.baseURL}"
                     value="#{realityBean.selection}">
                     <mobi:augmentedRealityLocations 
@@ -94,9 +94,6 @@
                 </h:panelGroup>
             </mobi:fieldsetRow>
         </mobi:fieldsetGroup>
-        
-        <mobi:commandButton styleClass="submit" buttonType="important"
-                                 value="Submit"/>
     </h:form>
 
     <h:form rendered="#{realityBean.ios}" styleClass="form">
@@ -122,9 +119,6 @@
                 
             </mobi:fieldsetRow>
         </mobi:fieldsetGroup>
-        
-        <mobi:commandButton styleClass="submit" buttonType="important"
-                                 value="Submit"/>
     </h:form>
 
 
