@@ -61,9 +61,6 @@ public class AccordionMeta extends UIPanelMeta {
 	@Property(tlddoc="Disables or enables the accordion.", defaultValue="false")
 	private boolean disabled;
 
-	@Property(tlddoc="Effect to use when toggling the panes.", defaultValue="slide")
-	private String effect;
-
 	@Property(tlddoc="When set to true (default), pane with highest content is used to calculate the height.", defaultValue="true")
 	private boolean autoHeight;
 
