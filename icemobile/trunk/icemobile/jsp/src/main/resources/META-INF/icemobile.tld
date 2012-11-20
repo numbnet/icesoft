@@ -438,7 +438,7 @@
         <attribute>
             <description>Pagewide unique identifier</description>
             <name>id</name>
-            <required>true</required>
+            <required>false</required>
             <rtexprvalue>true</rtexprvalue>
         </attribute>
         <attribute>
@@ -446,7 +446,7 @@
                 will be a String of the form lat,lon,alt,dir
             </description>
             <name>name</name>
-            <required>false</required>
+            <required>true</required>
             <rtexprvalue>true</rtexprvalue>
         </attribute>
         <attribute>
@@ -481,7 +481,7 @@
             <description>Define the max age (in seconds) of an acceptable cached
                 Position reading.
             </description>
-            <name>maxAge</name>
+            <name>maximumAge</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
             <type>int</type>
