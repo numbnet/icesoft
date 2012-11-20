@@ -34,7 +34,8 @@
         <h3>Accordion</h3>
 
         <mobi:accordion id="accordion" selectedId="#{accordionBean.selectedId}"
-            autoHeight="#{accordionBean.autoHeight}" fixedHeight="#{accordionBean.fixedHeight}">
+            autoHeight="#{accordionBean.autoHeight}" fixedHeight="#{accordionBean.fixedHeight}"
+            paneChangeListener="#{accordionBean.paneChangeListener}">
             <mobi:contentPane title="ICE Sailor" id="accordionPane1" client="true">
                 <div style="height:100px;background-color:#00ADFF">
                     <ui:include src="/WEB-INF/includes/content/inc-icesailor.xhtml"/>
@@ -51,6 +52,8 @@
                 </div>
             </mobi:contentPane>
         </mobi:accordion>
+        
+        <h:outputText value="#{accordionBean.paneChangeMsg}" style="margin-left:10px"/>
         
         <h3>Accordion Settings</h3>
         
