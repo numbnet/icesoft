@@ -31,12 +31,9 @@ public class TabSetTag extends TagSupport {
     public static final StringBuilder TABSET_CONTAINER_TOP_HEADER_CLASS = new StringBuilder("mobi-tabset-tabs-top-header ");
 
     public int doStartTag() throws JspTagException {
-
         Writer out = pageContext.getOut();
 
-
         try {
-
 //        writeJavascriptFile(facesContext, uiComponent, JS_NAME, JS_MIN_NAME, JS_LIBRARY);
             StringBuilder compStyleClass = new StringBuilder(TABSET_CONTAINER_CLASS);
             compStyleClass.append(TABSET_CONTAINER_TOP_CLASS);
@@ -102,6 +99,9 @@ public class TabSetTag extends TagSupport {
         StringBuilder cfg = new StringBuilder("{ ");
         //     boolean autoheight = tabset.isAutoheight();
         cfg.append(" tIndex: ").append(selectedTab);
+        if (autoWidth){
+            cfg.append(", autoWidth: ").append(autoWidth);
+        }
         cfg.append("}");
         sb.append("ice.mobi.tabsetController.initClient('").append(clientId).
             append("',").append(cfg.toString()).append(");");
@@ -118,6 +118,7 @@ public class TabSetTag extends TagSupport {
     private String styleClass;
     private String selectedTab;
     private int mIndex;
+    private boolean autoWidth;
 //    private String
 
     public String getId() {
@@ -166,5 +167,11 @@ public class TabSetTag extends TagSupport {
 
     public void resetIndex() {
         mIndex = 0;
+    }
+    public boolean isAutoWidth(){
+        return this.autoWidth;
+    }
+    public void setAutoWidth(boolean autowidth){
+        this.autoWidth=autowidth;
     }
 }
