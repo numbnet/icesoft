@@ -1,6 +1,5 @@
 package org.icemobile.renderkit;
 
-import com.sun.jdi.connect.Connector;
 import org.icemobile.component.IAccordion;
 import org.icemobile.component.IContentPane;
 
