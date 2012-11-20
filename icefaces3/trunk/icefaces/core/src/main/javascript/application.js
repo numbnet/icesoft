@@ -96,7 +96,7 @@ if (!window.ice.icefaces) {
                     ancestorIDs.push(parentID);
                 }
             }
-            append(elementUpdateListeners, {identifier: id, handler: callback, 
+            append(elementUpdateListeners, {identifier: id, handler: callback,
                     ancestors: " " + ancestorIDs.join(" ") + " "});
         };
 
@@ -303,6 +303,10 @@ if (!window.ice.icefaces) {
             return doc && doc.documentElement;
         }
 
+        function containsHTMLData(doc) {
+            return doc.documentElement.nodeName == 'html';
+        }
+
         //define function to be wired as submit callback into JSF bridge
         function submitEventBroadcaster(perRequestOnBeforeSubmitListeners, perRequestOnBeforeUpdateListeners, perRequestOnAfterUpdateListeners) {
             perRequestOnBeforeSubmitListeners = perRequestOnBeforeSubmitListeners || [];
@@ -328,7 +332,12 @@ if (!window.ice.icefaces) {
                         case 'complete':
                             var xmlContent = submitEvent.responseXML;
                             if (containsXMLData(xmlContent)) {
-                                broadcast(perRequestOnBeforeUpdateListeners, [ xmlContent, submitElement ]);
+                                if (containsHTMLData(xmlContent)) {
+                                    //reload page when html markup is received instead of the partial update
+                                    document.location.reload();
+                                } else {
+                                    broadcast(perRequestOnBeforeUpdateListeners, [ xmlContent, submitElement ]);
+                                }
                             } else {
                                 warn(logger, 'the response does not contain XML data');
                             }
@@ -869,7 +878,7 @@ if (!window.ice.icefaces) {
                     var element = document.getElementById(id);
                     //test if inner element still exists, sometimes client side code can remove DOM fragments
                     if (element) {
-                        var updated = (-1 != 
+                        var updated = (-1 !=
                             idCallbackTuple.ancestors.indexOf(" " + updatedElementId + " "));
                         if (updated) {
                             var callback = idCallbackTuple.handler;
@@ -887,7 +896,7 @@ if (!window.ice.icefaces) {
                         return true;
                     }
                 });
-            } 
+            }
         }
         // determine which elements are about to be removed by an update,
         // and clean them up while they're still in place
