@@ -25,15 +25,15 @@
 }
 
 .mobi-accordion .closed {
-    max-height: 33px;
+  /*  max-height: 33px;*/
     height: 33px;
 }
 
 .mobi-accordion .pointer {
-    font-size: 10px;
-    margin: 10px 6px 0 6px;
+    font-size: 1px;
+    margin: 15px 15px 0 9px;
     line-height: 18px;
-    display: inline-block;
+/*  display: inline-block;  */
 }
 
 .mobi-accordion section.menu, .mobi-accordion section.content {
