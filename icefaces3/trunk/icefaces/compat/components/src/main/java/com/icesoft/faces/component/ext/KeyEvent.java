@@ -92,7 +92,13 @@ public class KeyEvent extends ActionEvent {
     public int getKeyCode() {
         String s = (String) this.requestMap.get("ice.event.keycode");
         if(s == null)return -1;
-        return Integer.parseInt(s);
+		int code;
+		try {
+			code = Integer.parseInt(s);
+		} catch (Exception e) {
+			code = -1;
+		}
+        return code;
     }
 
     public String getType() {
