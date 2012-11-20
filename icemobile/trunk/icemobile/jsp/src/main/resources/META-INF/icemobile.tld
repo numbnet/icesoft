@@ -436,9 +436,10 @@
         <tag-class>org.icemobile.jsp.tags.GeolocationTag</tag-class>
         <body-content>empty</body-content>
         <attribute>
-            <description>Pagewide unique identifier</description>
+            <description>Pagewide unique identifier. Required for locating hidden
+                         field by id</description>
             <name>id</name>
-            <required>false</required>
+            <required>true</required>
             <rtexprvalue>true</rtexprvalue>
         </attribute>
         <attribute>
