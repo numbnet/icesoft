@@ -65,11 +65,6 @@ public class MenuButtonRenderer extends BaseMenuRenderer {
 		writer.startElement("span", button);
 		writer.writeAttribute("id", clientId, "id");
 
-       String styleClass = button.getStyleClass();
-       if(styleClass != null) writer.writeAttribute("class", styleClass, "class");
-       String style = button.getStyle();
-       if(style != null) writer.writeAttribute("style", style, "style");
-
         //button
 		writer.startElement("button", null);
 		writer.writeAttribute("id", buttonId, null);
@@ -138,7 +133,9 @@ public class MenuButtonRenderer extends BaseMenuRenderer {
                     entry("animated", button.getEffect()).
                     entry("duration", button.getEffectDuration()).
                 endMap().
-                entry("zindex", button.getZindex());
+                entry("zindex", button.getZindex()).
+				entryNonNullValue("styleClass", button.getStyleClass()).
+				entryNonNullValue("style", button.getStyle());
 
                 if(button.isDisabled()) {
                     json.entry("disabled", true);
