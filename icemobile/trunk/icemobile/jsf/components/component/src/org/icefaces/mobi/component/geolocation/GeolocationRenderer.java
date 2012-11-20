@@ -151,10 +151,12 @@ public class GeolocationRenderer extends CoreRenderer {
                 sb.append(ssCall);
             }
 
-            writer.startElement("script", uiComponent);
+            writer.startElement(HTML.SPAN_ELEM, uiComponent);
             writer.writeAttribute("id", clientId + "_script", "id");
+            writer.startElement("script", uiComponent);
             writer.write(sb.toString());
             writer.endElement("script");
+            writer.endElement(HTML.SPAN_ELEM);
         }
         writer.endElement(HTML.SPAN_ELEM);
     }
