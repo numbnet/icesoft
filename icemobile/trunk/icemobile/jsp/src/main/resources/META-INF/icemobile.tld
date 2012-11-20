@@ -919,6 +919,14 @@
             <required>true</required>
             <rtexprvalue>true</rtexprvalue>
         </attribute>
+        <attribute>
+            <description>When set to true (default),tabs are evenly spread out to 100% .
+            </description>
+            <name>autoWidth</name>
+            <required>false</required>
+            <type>boolean</type>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
     </tag>
 
     <tag>

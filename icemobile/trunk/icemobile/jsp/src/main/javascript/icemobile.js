@@ -458,7 +458,21 @@ ice.mobi.tabsetController = {
             ele.className = " ";
         }
     },
-
+    setWidthStyle: function(root){
+        var nodes = root.getElementsByTagName('ul');
+        var ul = nodes[0];
+        var children = ul.getElementsByTagName('li');
+        var liLngth = children.length;
+        var width = Math.floor(100/liLngth);
+        var rem = 100 % liLngth;
+        for (var i = 0; i < liLngth; i++){
+            if (i != liLngth){
+               children[i].style.width = width+"%";
+            }else {
+                children[i].style.width = width+rem+"%";
+            }
+        }
+    } ,
     findAndSet: function (pool, searchToken, newClass) {
 
         var page;
@@ -472,18 +486,16 @@ ice.mobi.tabsetController = {
             }
         }
     },
-
-//declare functions who creates object with methods that have access to the local variables of the function
-//so in effect the returned object can operate on the local state declared in the function ...
-//think about them as object fields in Java, also gone is the chore of copying the constructor parameters into fields
-//-------------------------------------
     TabSet: function TabSet(clientId, cfgIn) {
-        // setup tabContainer
         var myTabId = clientId;
         var tabContainer = document.getElementById(clientId);
         var tabContent = document.getElementById(clientId + "_tabContent");
         var cfg = cfgIn;
         var tabIndex = cfgIn.tIndex;
+        var autoWidth = cfgIn.autoWidth;
+        if (autoWidth){
+            this.setWidthStyle(tabContainer);
+        }
         if (cfgIn.height) {
             tabContainer.style.height = height;
         } else {
