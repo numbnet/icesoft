@@ -16,11 +16,14 @@
 
 package org.icefaces.ace.component.dnd;
 
+import org.icefaces.ace.meta.annotation.ClientBehaviorHolder;
+import org.icefaces.ace.meta.annotation.ClientEvent;
 import org.icefaces.ace.meta.annotation.Component;
 import org.icefaces.ace.meta.annotation.DefaultValueType;
+import org.icefaces.ace.meta.annotation.Expression;
 import org.icefaces.ace.meta.annotation.Property;
 import org.icefaces.ace.meta.baseMeta.UIComponentBaseMeta;
-
+import javax.el.MethodExpression;
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
 
@@ -37,6 +40,10 @@ import javax.faces.application.ResourceDependency;
                  "<p>For more information, see the " +
                  "<a href=\"http://wiki.icefaces.org/display/ICE/Draggable\">Draggable Wiki Documentation</a>."
 )
+@ClientBehaviorHolder(events = {
+	@ClientEvent(name="start", javadoc="Fired when the target component starts to be dragged  (default event).", 
+	tlddoc="Fired when the target component starts to be dragged (default event).", defaultRender="@none", defaultExecute="@this")
+}, defaultEvent="start")
 @ResourceDependencies({
 	@ResourceDependency(library="icefaces.ace", name="util/ace-jquery.js"),
 	@ResourceDependency(library="icefaces.ace", name="util/ace-components.js")
@@ -91,4 +98,9 @@ public class DraggableMeta extends UIComponentBaseMeta {
               defaultValueType = DefaultValueType.EXPRESSION,
               tlddoc = "The opacity for the helper during dragging. Values can range from 0.00 to 1.00.")
     Double opacity;
+	
+    @Property(expression = Expression.METHOD_EXPRESSION,
+              methodExpressionArgument = "org.icefaces.ace.event.DragDropEvent",
+              tlddoc = "MethodExpression reference to a method called whenever the target component starts to be dragged.")
+    MethodExpression dragStartListener;
 }

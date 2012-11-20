@@ -28,6 +28,7 @@
 package org.icefaces.ace.component.dnd;
 
 import java.io.IOException;
+import java.util.Map;
 
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
@@ -35,6 +36,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 //import org.icefaces.ace.component.dashboard.Dashboard;
+import org.icefaces.ace.event.DragDropEvent;
 import org.icefaces.ace.renderkit.CoreRenderer;
 import org.icefaces.ace.util.ComponentUtils;
 import org.icefaces.render.MandatoryResourceComponent;
@@ -43,6 +45,21 @@ import org.icefaces.ace.util.JSONBuilder;
 
 @MandatoryResourceComponent(tagName="draggable", value="org.icefaces.ace.component.dnd.Draggable")
 public class DraggableRenderer extends CoreRenderer {
+
+    @Override
+    public void decode(FacesContext context, UIComponent component) {
+        Map<String, String> params = context.getExternalContext().getRequestParameterMap();
+        Draggable draggable = (Draggable) component;
+        String clientId = draggable.getClientId(context);
+
+        if(params.containsKey(clientId)) {
+            if (params.containsKey(clientId + "_dragStart")) {
+				DragDropEvent event = new DragDropEvent(draggable, clientId, null);
+				draggable.queueEvent(event);
+			}
+        }
+        decodeBehaviors(context, component);
+    }
 
     @Override
     public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
@@ -62,7 +79,7 @@ public class DraggableRenderer extends CoreRenderer {
 		jb.beginFunction("ice.ace.Draggable");
 			jb.item(clientId);
 			jb.beginMap();
-			jb.entry("target", target);System.out.println("* " + draggable.getCursor());
+			jb.entry("target", target);
 			jb.entryNonNullValue("cursor", draggable.getCursor());
         //Configuration
         if (draggable.isDisabled())
@@ -93,6 +110,10 @@ public class DraggableRenderer extends CoreRenderer {
             if (draggable.getSnapMode() != null)
                 jb.entry("snapMode", draggable.getSnapMode());
         }
+        if(draggable.getDragStartListener() != null) {
+            jb.entry("dragStart", true);
+        }
+		encodeClientBehaviors(facesContext, draggable, jb);
         //Dashboard support
 /*
         if (dashboard != null) {

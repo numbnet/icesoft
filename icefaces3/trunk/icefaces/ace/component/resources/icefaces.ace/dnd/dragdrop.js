@@ -32,7 +32,44 @@ ice.ace.Draggable = function(id, cfg) {
     this.cfg = cfg;
 	this.jq = ice.ace.jq(ice.ace.escapeClientId(this.cfg.target));
 	this.jq.draggable('destroy');
+	
+	if (this.cfg.dragStart || (this.cfg.behaviors && this.cfg.behaviors.start)) {
+		this.setupDragStartHandler();
+	}
+	
     this.jq.draggable(this.cfg);
+}
+
+ice.ace.Draggable.prototype.setupDragStartHandler = function() {
+    this.cfg.formId = ice.ace.jq(ice.ace.escapeClientId(this.id)).parents('form:first').attr('id');
+
+    var _self = this;
+    
+    this.cfg.start = function(event, ui) {
+        var dragStartBehaviour = _self.cfg && _self.cfg.behaviors && _self.cfg.behaviors.start;
+
+        var options = {
+            source: _self.id,
+            execute: _self.id,
+            render: '@none',
+            formId: _self.cfg.formId
+        };
+	
+        var params = {};
+        params[_self.id + "_dragStart"] = true;
+
+        options.params = params;
+
+        if (dragStartBehaviour) {
+            options.params[_self.id] = _self.id; // also triggers drag start listener, if any
+            ice.ace.ab(
+                ice.ace.extendAjaxArguments(
+                    dragStartBehaviour,
+                    ice.ace.removeExecuteRenderOptions(options)
+                )
+            );
+        } else ice.ace.AjaxRequest(options);
+    };
 }
 
 ice.ace.Droppable = function(id, cfg) {
