@@ -343,3 +343,7 @@ html.android h3{
     margin: 0 auto;
     max-width: 150px;
 }
+.imageView{ 
+    margin: 0 auto;
+    width:50%;
+}

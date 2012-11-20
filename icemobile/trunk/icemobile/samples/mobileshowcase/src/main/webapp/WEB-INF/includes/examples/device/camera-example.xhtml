@@ -34,7 +34,7 @@
         <mobi:getEnhanced/>
         
         <mobi:fieldsetGroup>
-            <mobi:fieldsetRow>
+            <mobi:fieldsetRow styleClass="mobi-center">
                 <mobi:camera id="cam" value="#{cameraBean.cameraImage}"
                         maxwidth="#{cameraBean.maxWidth}"
                         maxheight="#{cameraBean.maxHeight}">
@@ -53,30 +53,33 @@
         <mobi:fieldsetGroup>
             <mobi:fieldsetRow>
                 <ui:fragment rendered="#{cameraBean.outputResource != null}">
-                    <mobi:graphicImage
+                    <mobi:graphicImage  styleClass="imageView"
                             value="#{cameraBean.outputResource}"/>
                 </ui:fragment>
-                <br />
-                <h:outputText value="#{cameraBean.uploadMessage}"/>
             </mobi:fieldsetRow>
         </mobi:fieldsetGroup>
+        
+        <h:outputText value="#{cameraBean.uploadMessage}" style="margin-left:10px"/>
         
         <h3>Image Dimension Settings</h3>
         
         <mobi:fieldsetGroup>
+            <mobi:fieldsetRow style="text-align:left">
+                Set the maximum width and height dimensions for the photo
+            </mobi:fieldsetRow>
             <mobi:fieldsetRow>
                 <h:outputLabel value="Max width:" for="maxWidth"/>
-                <mobi:inputText id="maxWidth" placeholder="max width" style="width:6em"
+                <mobi:inputText id="maxWidth" placeholder="max width" 
                          type="number" value="#{cameraBean.maxWidth}" />
             </mobi:fieldsetRow>
             <mobi:fieldsetRow>
                 <h:outputLabel value="Max height:" for="maxHeight"/>
-                <mobi:inputText id="maxHeight" placeholder="max height" style="width:6em"
+                <mobi:inputText id="maxHeight" placeholder="max height" 
                          type="number" value="#{cameraBean.maxHeight}" />
             </mobi:fieldsetRow>
         </mobi:fieldsetGroup>
         
-        <mobi:commandButton buttonType="important" value="Set Image Dimensions" styleClass="submit"/>
+        <mobi:commandButton buttonType="important" value="Set Dimensions" styleClass="submit"/>
 
     </h:form>
 
