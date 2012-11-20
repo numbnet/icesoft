@@ -29,7 +29,6 @@ public class DeviceCoreRenderer extends BaseCoreRenderer{
         if (disabled){
             baseClass+=" "+IDevice.DISABLED_STYLE_CLASS;
         }
-        writer.startElement(SPAN_ELEM, component);
         ClientDescriptor cd = component.getClient();
         boolean isEnhanced = cd.isICEmobileContainer()  || cd.isSXRegistered();
     //    logger.info("is SX="+cd.isSXRegistered()+" and useCookie="+ component.isUseCookie());
@@ -93,7 +92,6 @@ public class DeviceCoreRenderer extends BaseCoreRenderer{
             }
             writer.endElement(INPUT_ELEM);
         }
-        writer.endElement(SPAN_ELEM);
     }
 /*    public void writeStandardAttributes(IResponseWriter writer, IDevice component, String baseClass) throws IOException  {
         String comptype = component.getComponentType();
