@@ -27,6 +27,7 @@
     line-height:33px;
 }
 .mobi-accordion > section > .handle > .pointer {
+    display:inline-block;
     font-size: 1px;
     line-height: 33px;
     vertical-align: middle;
@@ -34,10 +35,10 @@
 }
 .mobi-accordion > section.open > .handle > .pointer{
     border-top: 9px solid #FFF;
-    margin: 0 7px 0 3px;
-    vertical-align: baseline;
+    margin: 3px 7px 0 3px;
+/*     vertical-align: baseline; */
 }
 .mobi-accordion > section.closed > .handle > .pointer{
     border-left: 8px solid #FFF;
-    margin: 0 3px 0 5px;
+    margin: 0 3px 3px 5px;
 }
