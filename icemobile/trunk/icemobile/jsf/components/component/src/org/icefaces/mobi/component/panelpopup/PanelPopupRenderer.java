@@ -23,6 +23,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
+import org.icefaces.mobi.component.button.CommandButton;
 import org.icefaces.mobi.renderkit.BaseLayoutRenderer;
 import org.icefaces.mobi.utils.HTML;
 import org.icefaces.mobi.utils.JSFUtils;
@@ -92,6 +93,7 @@ public class PanelPopupRenderer extends BaseLayoutRenderer {
                 writer.startElement(HTML.INPUT_ELEM, uiComponent);
                 writer.writeAttribute(HTML.ID_ATTR, clientId + "_open", HTML.ID_ATTR);
                 writer.writeAttribute(HTML.TYPE_ATTR, "button", HTML.TYPE_ATTR);
+                writer.writeAttribute(HTML.CLASS_ATTR, CommandButton.BASE_STYLE_CLASS, HTML.CLASS_ATTR);
                 writer.writeAttribute(HTML.VALUE_ATTR, panelPopup.getOpenButtonLabel(), HTML.VALUE_ATTR);
                 StringBuilder openClick = new StringBuilder("mobi.panelPopup.openClient('" + clientId + "');");
                 writer.writeAttribute(HTML.ONCLICK_ATTR, openClick, HTML.ONCLICK_ATTR);
@@ -124,15 +126,13 @@ public class PanelPopupRenderer extends BaseLayoutRenderer {
                     writer.startElement(HTML.INPUT_ELEM, uiComponent);
                     writer.writeAttribute(HTML.TYPE_ATTR, "button", HTML.TYPE_ATTR);
                     writer.writeAttribute("value", "Close", null);
+                    writer.writeAttribute(HTML.CLASS_ATTR, CommandButton.BASE_STYLE_CLASS, HTML.CLASS_ATTR);
                     writer.writeAttribute(HTML.ONCLICK_ATTR, "mobi.panelPopup.closeClient('" + clientId + "');", HTML.ONCLICK_ATTR);
                     writer.endElement(HTML.INPUT_ELEM);
                 }
             }
             writer.endElement(HTML.DIV_ELEM);
         }
-
-        /**   writer.startElement(HTML.DIV_ELEM, uiComponent);
-         writer.writeAttribute("class", PanelPopup.INTERIOR_CONT_CLASS, null); **/
         renderChildren(facesContext, panelPopup);
         if (clientSide) {
             writer.startElement(HTML.INPUT_ELEM, uiComponent);
