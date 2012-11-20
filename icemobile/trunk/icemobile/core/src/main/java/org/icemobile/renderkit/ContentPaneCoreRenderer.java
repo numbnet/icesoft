@@ -95,7 +95,7 @@ public class ContentPaneCoreRenderer extends BaseCoreRenderer {
                   }
               }
             //  writer.writeAttribute(STYLE_ATTR, "height: "+accordion.getFixedHeight()+";"); // overflow-y: scroll;") ;
-               writer.writeAttribute(STYLE_ATTR, "height: "+fixedHeight+"; maxHeight: "+fixedHeight+"; overflow-y: scroll;") ;
+               writer.writeAttribute(STYLE_ATTR, "height: "+fixedHeight+"; max-height: "+fixedHeight+"; overflow-y: auto;") ;
           }
           writer.startElement(DIV_ELEM, pane);
           writer.writeAttribute(ID_ATTR, clientId);

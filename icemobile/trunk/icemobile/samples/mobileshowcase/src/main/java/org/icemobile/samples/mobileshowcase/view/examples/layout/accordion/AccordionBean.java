@@ -5,6 +5,8 @@ import org.icemobile.samples.mobileshowcase.view.metadata.context.ExampleImpl;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.event.ActionEvent;
+
 import java.io.Serializable;
 
 /**
@@ -41,38 +43,40 @@ public class AccordionBean extends ExampleImpl<AccordionBean> implements
 
     public static final String BEAN_NAME = "accordionBean";
 
-
-    private String selectedId1 = "accordionPane1";
-    private String selectedId2 = "accordionPane4";
-    private String selectedId3 = "accordionPane7";
+    private String selectedId = "accordionPane1";
+    private boolean autoHeight = true;
+    private String fixedHeight = "";
 
     public AccordionBean() {
         super(AccordionBean.class);
     }
 
-    public String getSelectedId1() {
-        return selectedId1;
+    public String getSelectedId() {
+        return selectedId;
     }
 
-    public void setSelectedId1(String selectedId1) {
-        this.selectedId1 = selectedId1;
+    public void setSelectedId(String selectedId) {
+        this.selectedId = selectedId;
     }
 
-    public String getSelectedId2() {
-        return selectedId2;
+    public boolean isAutoHeight() {
+        return autoHeight;
     }
 
-    public void setSelectedId2(String selectedId2) {
-        this.selectedId2 = selectedId2;
+    public void setAutoHeight(boolean autoHeight) {
+        this.autoHeight = autoHeight;
     }
 
-    public String getSelectedId3() {
-        return selectedId3;
+    public String getFixedHeight() {
+        return fixedHeight;
     }
 
-    public void setSelectedId3(String selectedId3) {
-        this.selectedId3 = selectedId3;
+    public void setFixedHeight(String fixedHeight) {
+        this.fixedHeight = fixedHeight;
     }
-
+    
+    public void clearFixedHeight(ActionEvent evt){
+        this.fixedHeight = "";
+    }
     
 }

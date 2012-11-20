@@ -13,51 +13,22 @@
  * express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
+ 
 .mobi-accordion{
     border-top: 1px solid #b5b9c0;
     border-bottom: 1px solid #b5b9c0;
 }
-
 .mobi-accordion .handle {
-    color: black;
+    color: #000;
     background: -moz-linear-gradient(top, #cccccc, #999999) repeat scroll 0 0 #999999;
     background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0, #cccccc), color-stop(1, #999999));
     filter: progid:DXImageTransform.Microsoft.gradient(startColorStr = '#cccccc', EndColorStr = '#999999');
     -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#cccccc', EndColorStr='#999999')";
     border-bottom: 1px solid #999999;
-    position:relative;
-    left:0;
 }
-/*.mobi-accordion .open, .mobi-accordion .closed {
-    -webkit-transition-property: none;
-    -o-transition-property: none;
-    -ms-transition-property: none;
-    transition-property:  none;
+.mobi-accordion > section.open > .handle > .pointer{
+    border-top-color: #000;
 }
-.mobi-accordion .pointer {
-    -webkit-transition-property: none;
-    -o-transition-property: none;
-    -ms-transition-property: none;
-    transition-property:  none;
-}
-.mobi-accordion .open .pointer {
-    -webkit-transform:rotate(90deg);
-    -ms-transform:rotate(90deg);
-    transform:rotate(90deg);
-}     */
-.mobi-accordion .open .handle .pointer {
-    width: 0;
-    height: 0;
-    position: relative;
-    top: 10px;
-    border-left:  6px solid transparent;
-    border-right:  6px solid transparent;
-    border-top:  6px solid white;
-}
-.mobi-accordion .closed .handle .pointer {
-    width:0;
-    height: 0;
-    border-top:  3px solid transparent;
-    border-bottom: 3px solid transparent;
-    border-left: 3px solid white;
+.mobi-accordion > section.closed > .handle > .pointer{
+    border-left-color: #000;
 }
