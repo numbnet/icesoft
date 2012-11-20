@@ -6,6 +6,7 @@ import org.icemobile.samples.mobileshowcase.view.metadata.context.ExampleImpl;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.event.ActionEvent;
+import javax.faces.event.ValueChangeEvent;
 
 import java.io.Serializable;
 
@@ -46,6 +47,7 @@ public class AccordionBean extends ExampleImpl<AccordionBean> implements
     private String selectedId = "accordionPane1";
     private boolean autoHeight = true;
     private String fixedHeight = "";
+    private String paneChangeMsg;
 
     public AccordionBean() {
         super(AccordionBean.class);
@@ -77,6 +79,15 @@ public class AccordionBean extends ExampleImpl<AccordionBean> implements
     
     public void clearFixedHeight(ActionEvent evt){
         this.fixedHeight = "";
+    }
+    
+    public void paneChangeListener(ValueChangeEvent evt){
+        paneChangeMsg = "Selected " + selectedId + " pane";
+        System.out.println(paneChangeMsg);
+    }
+
+    public String getPaneChangeMsg() {
+        return paneChangeMsg;
     }
     
 }
