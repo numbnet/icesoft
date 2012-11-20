@@ -42,16 +42,12 @@ public class GeolocationTag extends BaseSimpleTag {
         Writer out = pageContext.getOut();
         out.write("<span ");
 
-        if (id != null && !"".equals(id)) {
-            out.write(" id='" + getId() + "'");
-        }
+        out.write(" id='" + getId() + "'");
         out.write(">");
         out.write("<input type='hidden' ");
 
-        if (id != null && !"".equals(id)) {
-            out.write(" id='" + getId() + "_locHidden'");
-            out.write(" name='" + getId() + "' ");
-        }
+        out.write(" id='" + getId() + "_locHidden'");
+        out.write(" name='" + getName() + "' ");
 
         if (disabled) {
             out.write("disabled='true' ");
