@@ -26,21 +26,10 @@
     filter: progid:DXImageTransform.Microsoft.gradient(startColorStr = '#F4F5F7', EndColorStr = '#A8ACB9');
     -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#F4F5F7', EndColorStr='#A8ACB9')";
     font-weight: bold;
-    height:31px;
 }
-.mobi-accordion .open .handle .pointer {
-    width: 0;
-    height: 0;
-    position: relative;
-    top: 10px;
-    border-left:  4px solid transparent;
-    border-right:  4px solid transparent;
-    border-top:  4px solid white;
+.mobi-accordion > section.open > .handle > .pointer{
+    border-top-color: #717880;
 }
-.mobi-accordion .closed .handle .pointer {
-    width:0;
-    height: 0;
-    border-top:  4px solid transparent;
-    border-bottom: 4px solid transparent;
-    border-left: 4px solid white;
+.mobi-accordion > section.closed > .handle > .pointer{
+    border-left-color: #717880;
 }

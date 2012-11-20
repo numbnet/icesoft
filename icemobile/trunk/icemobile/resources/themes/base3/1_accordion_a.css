@@ -24,16 +24,3 @@
     transition:  max-height 0.2s, height 0.2s ease-in-out;
     transition-delay: 0.1s, 0.1s;
 }
-/*.mobi-accordion .pointer {
-    -webkit-transition: -webkit-transform 0.2s;
-    -ms-transition: -ms-transform 0.2s;
-    transition: transform 0.2s;
-    -webkit-transform-style: preserv-3d;
-}
-.mobi-accordion .open .pointer {
-    -webkit-transform:rotate(90deg);
-    -webkit-transform-style: preserv-3d;
-    -webkit-transform-origin: 50% 50%;
-    -ms-transform:rotate(90deg);
-    transform:rotate(90deg);
-}*/

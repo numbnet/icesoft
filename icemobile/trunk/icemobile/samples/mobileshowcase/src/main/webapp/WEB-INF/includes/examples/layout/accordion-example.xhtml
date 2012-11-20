@@ -19,69 +19,54 @@
              xmlns:ui="http://java.sun.com/jsf/facelets"
              xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
 
-    <h:form>
+    <h:form styleClass="form">
     
-        <mobi:fieldsetGroup>
+        <mobi:fieldsetGroup styleClass="intro">
             <mobi:fieldsetRow>
                 The accordion component shows one active content pane at time.
-                Non-active content panes are represented as collapsed views.
+                Non-active content panes are represented as collapsed views. Adjust the
+                accordion settings below for autoHeight and fixedHeight to see the accordion
+                behaviour. autoHeight sets the height of each pane to the height of the tallest pane. 
+                fixedHeight allows you to set the height of each pane to a specified height.
             </mobi:fieldsetRow>
         </mobi:fieldsetGroup>
 
-        <h3>Accordion with autoHeight</h3>
+        <h3>Accordion</h3>
 
-        <mobi:accordion id="basicAccordion" selectedId="#{accordionBean.selectedId1}">
-
-            <mobi:contentPane title="ICE Sailor" id="accordionPane1" >
-                <ui:include src="/WEB-INF/includes/content/fieldset-icesailor.xhtml"/>
-            </mobi:contentPane>
-
-            <mobi:contentPane title="ICE Breaker" id="accordionPane2" >
-                <ui:include src="/WEB-INF/includes/content/fieldset-icebreaker.xhtml"/>
-            </mobi:contentPane>
-
-            <mobi:contentPane title="ICE Skate" id="accordionPane3" >
-                <ui:include src="/WEB-INF/includes/content/fieldset-iceskater.xhtml"/>
-            </mobi:contentPane>
-
-        </mobi:accordion>
-        
-        <h3 style="margin-top:30px;">Accordion with fixedHeight</h3>
-
-        <mobi:accordion id="accordionNoAutoHeight" selectedId="#{accordionBean.selectedId2}"
-            autoHeight="false" fixedHeight="90px">
-            <mobi:contentPane title="ICE Sailor" id="accordionPane4" client="true">
-                <ui:include src="/WEB-INF/includes/content/fieldset-icesailor.xhtml"/>
-            </mobi:contentPane>
-            <mobi:contentPane title="ICE Breaker" id="accordionPane5" client="true">
-                 <ui:include src="/WEB-INF/includes/content/fieldset-icebreaker.xhtml"/>
-            </mobi:contentPane>
-            <mobi:contentPane title="ICE Skate" id="accordionPane6" client="true">
-                <ui:include src="/WEB-INF/includes/content/fieldset-iceskater.xhtml"/>
-            </mobi:contentPane>
-        </mobi:accordion>
-
-        <h3 style="margin-top:30px;">Accordion autoHeight false</h3>
-    
-        <mobi:accordion id="accordionIndividualHeight" selectedId="#{accordionBean.selectedId3}"
-            autoHeight="false">
-            <mobi:contentPane title="ICE Sailor" id="accordionPane7" client="true">
-                <div style="height:100px">
-                    <ui:include src="/WEB-INF/includes/content/fieldset-icesailor.xhtml"/>
+        <mobi:accordion id="accordion" selectedId="#{accordionBean.selectedId}"
+            autoHeight="#{accordionBean.autoHeight}" fixedHeight="#{accordionBean.fixedHeight}">
+            <mobi:contentPane title="ICE Sailor" id="accordionPane1" client="true">
+                <div style="height:100px;background-color:#00ADFF">
+                    <ui:include src="/WEB-INF/includes/content/inc-icesailor.xhtml"/>
                 </div>
             </mobi:contentPane>
-            <mobi:contentPane title="ICE Breaker" id="accordionPane8" client="true">
-                 <div style="height:200px">
-                    <ui:include src="/WEB-INF/includes/content/fieldset-icebreaker.xhtml"/>
-                 </div>
+            <mobi:contentPane title="ICE Breaker" id="accordionPane2" client="true">
+                <div style="height:150px;background-color:#C0F">
+                    <ui:include src="/WEB-INF/includes/content/inc-icebreaker.xhtml"/>
+                </div>
             </mobi:contentPane>
-            <mobi:contentPane title="ICE Skate" id="accordionPane9" client="true">
-                <div style="height:300px">
-                    <ui:include src="/WEB-INF/includes/content/fieldset-iceskater.xhtml"/>
+            <mobi:contentPane title="ICE Skate" id="accordionPane3" client="true">
+                <div style="height:200px;background-color:#F0C82A">
+                    <ui:include src="/WEB-INF/includes/content/inc-iceskater.xhtml"/>
                 </div>
             </mobi:contentPane>
         </mobi:accordion>
         
+        <h3>Accordion Settings</h3>
+        
+        <mobi:fieldsetGroup>
+            <mobi:fieldsetRow>
+                <h:outputLabel for="autoHeight" value="Auto Height:"/>
+                <mobi:flipswitch id="autoHeight" value="#{accordionBean.autoHeight}" singleSubmit="true"/>
+            </mobi:fieldsetRow>
+            <mobi:fieldsetRow>
+                <h:outputLabel for="fixedHeight" value="Fixed Height:"/>
+                <mobi:inputText id="fixedHeight" value="#{accordionBean.fixedHeight}" 
+                    singleSubmit="true" placeholder="Add a fixed height, eg '10em'"/>
+                <mobi:commandButton value="Clear" actionListener="#{accordionBean.clearFixedHeight}"
+                    style="max-width:40px"/>
+            </mobi:fieldsetRow>        
+        </mobi:fieldsetGroup>
 
     </h:form>
 

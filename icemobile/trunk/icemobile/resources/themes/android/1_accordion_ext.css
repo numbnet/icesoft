@@ -13,35 +13,23 @@
  * express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
+ 
 .mobi-accordion{
     border-top: 1px solid #7B7B7B;
     border-bottom: 1px solid #7B7B7B;
-    overflow: hidden;
 }
 
 .mobi-accordion .handle {
-    color: white;
+    color: #FFF;
     background: -moz-linear-gradient(top, #cccccc, #999999) repeat scroll 0 0 #999999;
     background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0, #cccccc), color-stop(1, #999999));
     filter: progid:DXImageTransform.Microsoft.gradient(startColorStr = '#cccccc', EndColorStr = '#999999');
     -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#cccccc', EndColorStr='#999999')";
     border-bottom: 1px solid #999999;
-    position:relative;
-    left:0;
 }
- .mobi-accordion .open .handle .pointer {
-    width: 0;
-    height: 0;
-    position: relative;
-    top: 10px;
-    border-left:  4px solid transparent;
-    border-right:  4px solid transparent;
-    border-top:  4px solid white;
+.mobi-accordion > section.open > .handle > .pointer{
+    border-top-color: #FFF;
 }
-.mobi-accordion .closed .handle .pointer {
-    width:0;
-    height: 0;
-    border-top:  4px solid transparent;
-    border-bottom: 4px solid transparent;
-    border-left: 4px solid white;
+.mobi-accordion > section.closed > .handle > .pointer{
+    border-left-color: #FFF;
 }
