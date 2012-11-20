@@ -115,7 +115,7 @@ ice.ace.tabset = {
                     if (sJSFProps.behaviors.clientSideTabChange) {
                         var submitClientSideStartTime = new Date().getTime();
                         ice.ace.ab(sJSFProps.behaviors.clientSideTabChange);
-                        if (console && jsfProps.devMode) {
+                        if (window.console && jsfProps.devMode) {
                             console.log("ace:tabSet - ID: " + clientId + " - submit CS - " + (new Date().getTime() - submitClientSideStartTime) + "ms");
                         }
                     }
@@ -147,7 +147,7 @@ ice.ace.tabset = {
                                     {params: otherParams, execute: "@this", render: "@this", onsuccess: doOnSuccess}));
                             //restore id
                             targetElement.id = elementId;
-                            if (console && jsfProps.devMode) {
+                            if (window.console && jsfProps.devMode) {
                                 console.log("ace:tabSet - ID: " + clientId + " - submit B - " + (new Date().getTime() - submitBehaviourStartTime) + "ms");
                             }
                         }
@@ -155,7 +155,7 @@ ice.ace.tabset = {
                     if (!haveBehaviour) {
                         var submitServerSideStartTime = new Date().getTime();
                         ice.submit(event, targetElement, params);
-                        if (console && jsfProps.devMode) {
+                        if (window.console && jsfProps.devMode) {
                             console.log("ace:tabSet - ID: " + clientId + " - submit SS - " + (new Date().getTime() - submitServerSideStartTime) + "ms");
                         }
                     }
@@ -163,7 +163,7 @@ ice.ace.tabset = {
                     //logger.info(e);
                 }
             }//end if
-            if (console && jsfProps.devMode) {
+            if (window.console && jsfProps.devMode) {
                 console.log("ace:tabSet - ID: " + clientId + " - tabChange - " + (new Date().getTime() - tabChangeStartTime) + "ms");
             }
             //alert('tabChange: EXIT end');
@@ -296,7 +296,7 @@ ice.ace.tabset = {
        bindYUI(tabview);
 
 	 }); // *** end of domready
-       if (console && jsfProps.devMode) {
+       if (window.console && jsfProps.devMode) {
            console.log("ace:tabSet - ID: " + clientId + " - initialize - " + (new Date().getTime() - initializeStartTime) + "ms");
        }
    },
@@ -437,11 +437,11 @@ ice.ace.tabset = {
 
        ice.ace.updateProperties(clientId, jsProps, jsfProps, events, lib);
 
-       if (console && jsfProps.devMode) {
+       if (window.console && jsfProps.devMode) {
            console.log("ace:tabSet - ID: " + clientId + " - updateProperties DR - " + (new Date().getTime() - updatePropertiesDOMReadyStartTime) + "ms");
        }
        });
-       if (console && jsfProps.devMode) {
+       if (window.console && jsfProps.devMode) {
            console.log("ace:tabSet - ID: " + clientId + " - updateProperties - " + (new Date().getTime() - updatePropertiesStartTime) + "ms");
        }
    },
