@@ -158,6 +158,7 @@ ice.ace.Menubar = function(id, cfg) {
 
 
     this.jq.wijmenu(this.cfg);
+	ice.ace.jq(this.jqId).attr('style', '');
 
     if(this.cfg.style)
         this.jq.parent().parent().attr('style', this.cfg.style);
@@ -193,6 +194,7 @@ ice.ace.Menu = function(id, cfg) {
     };
 
     this.jq.wijmenu(this.cfg);
+	ice.ace.jq(this.jqId).attr('style', '');
 
     this.element = this.jq.parent().parent();       //overlay element
     this.element.css('z-index', this.cfg.zindex);
@@ -210,6 +212,7 @@ ice.ace.MenuButton = function(id, cfg) {
 	this.id = id;
 	this.cfg = cfg;
 	this.jqId = ice.ace.escapeClientId(id);
+	this.root = ice.ace.jq(this.jqId);
     this.jqbutton = ice.ace.jq(this.jqId + '_button');
     this.jqMenu = ice.ace.jq(this.jqId + ' ul:first');
 
@@ -231,12 +234,18 @@ ice.ace.MenuButton = function(id, cfg) {
     //crete button and menu
     this.jqbutton.button({icons:{primary:'ui-icon-triangle-1-s'}});
     this.jqMenu.wijmenu(this.cfg);
+	this.root.attr('style', '');
 
     if(this.cfg.disabled) {
         this.jqbutton.button('disable');
     }
 
     this.jqMenu.parent().parent().css('z-index', this.cfg.zindex);      //overlay element
+	
+    if(this.cfg.style)
+        this.root.attr('style', this.cfg.style);
+    if(this.cfg.styleClass)
+        this.root.addClass(this.cfg.styleClass);
 }
 
 /*
@@ -358,6 +367,7 @@ ice.ace.ContextMenu = function(id, cfg) {
 	}
 
     this.jq.wijmenu(this.cfg);
+	ice.ace.jq(this.jqId).attr('style', '');
 
     this.element = this.jq.parent().parent();   //overlay element
     this.element.css('z-index', this.cfg.zindex);

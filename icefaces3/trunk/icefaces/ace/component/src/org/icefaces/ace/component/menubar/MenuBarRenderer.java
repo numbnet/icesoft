@@ -100,6 +100,7 @@ public class MenuBarRenderer extends BaseMenuRenderer {
 
         writer.startElement("div", menubar);
         writer.writeAttribute("id", clientId, null);
+		writer.writeAttribute("style", "display:none;", null);
 
 		writer.startElement("ul", null);
 
