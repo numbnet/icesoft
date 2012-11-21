@@ -37,6 +37,9 @@ public class ContactListController {
         //raw contact string will be in encoded format 
         //of [contact=val&][phone=val&][email=val&]
         String rawContact = contactBean.getRawContact();
+        contactBean.setEmail(null);
+        contactBean.setPhone(null);
+        contactBean.setName(null);
         if( rawContact != null && !"".equals(rawContact)){
             try {
                 //contact string has to be decoded
@@ -46,11 +49,8 @@ public class ContactListController {
                     //each contact field will have a key and value
                     String key = tokens[i].substring(0,tokens[i].indexOf("="));
                     String val = tokens[i].substring(tokens[i].indexOf("=")+1);
-                    //possible keys are 'contact', 'name', 'phone', and 'email'
-                    if( "contact".equals(key)){
-                        contactBean.setContact(val);
-                    }
-                    else if( "name".equals(key)){
+                    //possible keys are 'name', 'phone', and 'email'
+                    if( "name".equals(key)){
                         contactBean.setName(val);
                     }
                     else if( "phone".equals(key)){
