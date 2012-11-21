@@ -16,6 +16,8 @@
 
 package org.icefaces.samples.showcase.example.ace.dataTable;
 
+import org.icefaces.samples.showcase.dataGenerators.utilityClasses.DataTableData;
+import org.icefaces.samples.showcase.example.compat.dataTable.Car;
 import org.icefaces.samples.showcase.metadata.annotation.*;
 import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
 
@@ -25,8 +27,6 @@ import javax.faces.bean.ManagedBean;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import org.icefaces.samples.showcase.dataGenerators.utilityClasses.DataTableData;
-import org.icefaces.samples.showcase.example.compat.dataTable.Car;
 
 @ComponentExample(
         title = "example.ace.dataTable.title",
@@ -70,6 +70,7 @@ import org.icefaces.samples.showcase.example.compat.dataTable.Car;
             @MenuLink(title = "menu.ace.dataTable.subMenu.multiRowHeader", exampleBeanName = DataTableMultiRowHeader.BEAN_NAME),
             @MenuLink(title = "menu.ace.dataTable.subMenu.paginator", exampleBeanName = DataTablePaginator.BEAN_NAME),
             @MenuLink(title = "menu.ace.dataTable.subMenu.panelexpansion", exampleBeanName = DataTablePanelExpansion.BEAN_NAME),
+            @MenuLink(title = "menu.ace.dataTable.subMenu.pinning", exampleBeanName = DataTablePinning.BEAN_NAME),
             @MenuLink(title = "menu.ace.dataTable.subMenu.rowexpansion", exampleBeanName = DataTableRowExpansion.BEAN_NAME),
             @MenuLink(title = "menu.ace.dataTable.subMenu.listener", exampleBeanName = DataTableListener.BEAN_NAME),
             @MenuLink(title = "menu.ace.dataTable.subMenu.selector", exampleBeanName = DataTableSelector.BEAN_NAME),
