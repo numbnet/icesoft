@@ -31,6 +31,9 @@ public class DataTableConstants {
     public static final String HEADER_LEFT_CLASS = "ui-header-left";
     public static final String FOOTER_CLASS = "ui-datatable-footer ui-widget-header ui-corner-bl ui-corner-br";
     public static final String HEAD_TEXT_CLASS = "ui-header-text";
+
+    public static final String PIN_COLUMN_CONTROL_CLASS = "ui-pin-control";
+
     public static final String SORTABLE_COLUMN_CLASS = "ui-sortable-column";
     public static final String SORTABLE_COLUMN_CONTROL_CLASS = "ui-sortable-control";
     public static final String SORTABLE_COLUMN_ICON_CONTAINER = "ui-sortable-column-icon";

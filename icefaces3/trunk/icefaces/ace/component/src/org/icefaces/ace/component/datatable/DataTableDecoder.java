@@ -7,6 +7,8 @@ import org.icefaces.ace.component.tableconfigpanel.TableConfigPanel;
 import org.icefaces.ace.context.RequestContext;
 import org.icefaces.ace.event.SelectEvent;
 import org.icefaces.ace.event.UnselectEvent;
+import org.icefaces.ace.json.JSONException;
+import org.icefaces.ace.json.JSONObject;
 import org.icefaces.ace.model.table.RowState;
 import org.icefaces.ace.model.table.RowStateMap;
 import org.icefaces.ace.model.table.TreeDataModel;
@@ -437,5 +439,20 @@ public class DataTableDecoder {
         }
 
         return newSortKeys;
+    }
+
+    public static void decodeColumnPinning(FacesContext context, DataTable table) throws JSONException {
+        String clientId = table.getClientId(context);
+        Map<String,String> params = context.getExternalContext().getRequestParameterMap();
+        String pinning = params.get(clientId + "_pinning");
+        JSONObject pinningState = new JSONObject(pinning);
+        List<Column> columns = table.getColumns();
+
+        for (String key : pinningState.getKeys()) {
+            int columnIndex = Integer.parseInt(key);
+            int pinOrder = pinningState.getInt(key);
+            Column c = columns.get(columnIndex);
+            c.setPinningOrder(pinOrder);
+        }
     }
 }

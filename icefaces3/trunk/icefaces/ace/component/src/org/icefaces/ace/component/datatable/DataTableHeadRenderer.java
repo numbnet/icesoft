@@ -203,7 +203,7 @@ public class DataTableHeadRenderer {
         boolean configButton = panelTargetsColumn(panel, column, tableContext.isFirstColumn(),
                 tableContext.isLastColumn(), false);
 
-        if (tableContext.isColumnSortable() || configButton)
+        if (tableContext.isColumnSortable() || tableContext.isColumnPinningEnabled() || configButton)
             encodeRightSideControls(writer, context, tableContext, column, configButton);
 
         //Filter
@@ -248,6 +248,8 @@ public class DataTableHeadRenderer {
     }
 
     private static void encodeRightSideControls(ResponseWriter writer, FacesContext context, DataTableRenderingContext tableContext, Column column, boolean renderConfButton) throws IOException {
+        writer.write("&nbsp;");
+
         writer.startElement(HTML.SPAN_ELEM, null);
         writer.writeAttribute(HTML.CLASS_ATTR, DataTableConstants.HEADER_RIGHT_CLASS, null);
 
@@ -255,11 +257,33 @@ public class DataTableHeadRenderer {
         if (tableContext.isColumnSortable())
             encodeSortControl(writer, context, tableContext, column);
 
+        if (tableContext.isColumnPinningEnabled() && tableContext.showPinningControls())
+            encodePinningControl(writer, context, tableContext, column);
+
         //Configurable last-col controls
         if (renderConfButton)
             encodeConfigPanelLaunchButton(writer, tableContext.getTable(), false);
 
         writer.endElement(HTML.SPAN_ELEM);
+    }
+
+    private static void encodePinningControl(ResponseWriter writer, FacesContext context, DataTableRenderingContext tableContext, Column column) throws IOException {
+        writer.startElement(HTML.SPAN_ELEM, null);
+        writer.writeAttribute(HTML.CLASS_ATTR, DataTableConstants.PIN_COLUMN_CONTROL_CLASS, null);
+        writer.startElement(HTML.ANCHOR_ELEM, null);
+
+        writer.writeAttribute(HTML.CLASS_ATTR, "ui-state-default ui-corner-all", null);
+        writer.writeAttribute(HTML.HREF_ATTR, "#", null);
+        writer.writeAttribute(HTML.ONCLICK_ATTR,
+                CoreRenderer.resolveWidgetVar(tableContext.getTable())+".pinColumn(ice.ace.jq((event && event.target ? event.target : window.event.srcElement)).closest('th').index() + 1);", null);
+        writer.startElement(HTML.SPAN_ELEM, null);
+
+        writer.writeAttribute(HTML.CLASS_ATTR, "ui-icon ui-icon-arrowthickstop-1-w", null);
+
+        writer.endElement(HTML.SPAN_ELEM);
+        writer.endElement(HTML.ANCHOR_ELEM);
+        writer.endElement(HTML.SPAN_ELEM);
+
     }
 
     private static void encodeSortControl(ResponseWriter writer, FacesContext context, DataTableRenderingContext tableContext, Column column) throws IOException {

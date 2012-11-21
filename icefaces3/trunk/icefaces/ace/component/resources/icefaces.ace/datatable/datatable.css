@@ -26,13 +26,16 @@
 
 .ui-datatable .ui-header-text {
     font-weight:bold;
+    line-height: 1.4;
 }
 .ui-datatable th,.ui-datatable tfoot td {
+    vertical-align: middle;
     text-align:center;
     margin:0;
     padding:0;
 }
-.ui-datatable th .ui-header-column {
+.ui-datatable th .ui-header-column > span {
+    vertical-align: middle;
 }
 
 .ui-datatable .ui-header-column, .ui-datatable .ui-footer-column { padding:4px 10px; }
@@ -69,6 +72,7 @@
 }
 
 .ui-sortable-control {
+    vertical-align: middle;
     cursor:pointer;
 }
 
@@ -121,7 +125,7 @@
 }
 .ui-sortable-column-icon .ui-icon-triangle-1-n {
     position:absolute;
-    top:-3px;
+    top:-2px;
     left:1px;
     /* IE 8 */
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=20)";
@@ -144,7 +148,7 @@
 
 .ui-sortable-column-icon .ui-icon-triangle-1-s {
     position:absolute;
-    bottom:0;
+    bottom:-1px;
     *left:0px;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=20)";
     filter: alpha(opacity=20);
@@ -196,6 +200,14 @@
 
 .ui-datatable-scrollable .ui-datatable-scrollable-body > table {
     table-layout: fixed;
+}
+
+.ui-datatable-scrollable .ui-datatable-scrollable-body > table > tbody {
+    border-top:none;
+}
+
+.ui-datatable-scrollable .ui-datatable-scrollable-body > table > tbody > tr:first-child > td {
+    border-top:none;
 }
 
 .ui-datatable-scrollable .ui-datatable-scrollable-header, .ui-datatable-scrollable .ui-datatable-scrollable-footer {
@@ -263,4 +275,19 @@
 .ui-datatable .ui-icon-pencil, .ui-datatable .ui-icon-check, .ui-datatable .ui-icon-close {
     margin-left:auto;
     margin-right:auto;
+}
+
+*+html .ui-pin-control {
+    /* IE7 inline block hack */
+    padding: 2px 4px;
+    margin: 0px 2px;
+    display:inline;
+    width:16px; /* required for inline-block on IE7 */
+}
+
+.ui-pin-control > a {
+    padding: 2px 4px;
+    margin: 0px 2px;
+    display: inline-block;
+    width:16px; /* required for inline-block on IE7 */
 }
