@@ -34,12 +34,12 @@ import net.rim.device.api.script.ScriptableFunction;
 
 public class PIMReader extends ScriptableFunction {
 
-	private final String FETCH_CONTACT = "contact"; 
+	private final String FETCH_NAME = "name"; 
 	private final String FETCH_EMAIL = "email"; 
 	private final String FETCH_PHONE = "phone"; 
 
 	private ContainerController mContainer;
-	private boolean mFetchContacts; 
+	private boolean mFetchName; 
 	private boolean mFetchPhone;
 	private boolean mFetchEmail; 
 	private String mClientId; 
@@ -62,7 +62,7 @@ public class PIMReader extends ScriptableFunction {
 			Logger.DEBUG("arg[0] = " + args[0]);
 			mClientId = (String) args[0];
 			
-			mFetchContacts = false; 
+			mFetchName = false; 
 			mFetchEmail = false; 
 			mFetchPhone = false;
 			
@@ -77,8 +77,8 @@ public class PIMReader extends ScriptableFunction {
 				}
 			} 
 		}
-		if ( !(mFetchContacts | mFetchEmail | mFetchPhone)) { 
-			mFetchContacts = true; 
+		if ( !(mFetchName | mFetchEmail | mFetchPhone)) { 
+			mFetchName = true; 
 		}
 		
 		BlackBerryContactList contactList = null;
@@ -88,7 +88,7 @@ public class PIMReader extends ScriptableFunction {
 			
 			PIMItem contact = contactList.choose(); 
 			if (contact != null ) { 
-				if (mFetchContacts) { 
+				if (mFetchName) { 
 					String[] names = contact.getStringArray(Contact.NAME, 0); 
 					contactsString.append("name=").append( names[Contact.NAME_FAMILY] )
 								  .append(", ").append( names[Contact.NAME_GIVEN]); 
@@ -121,8 +121,8 @@ public class PIMReader extends ScriptableFunction {
 
 		String[] tokens = UploadUtilities.split(fields.getValue(), ",");
 		for (int idx = 0; idx < tokens.length; idx ++ ) { 
-			if (tokens[idx].equals(FETCH_CONTACT) ) { 
-				mFetchContacts = true; 
+			if (tokens[idx].equals(FETCH_NAME) ) { 
+				mFetchName = true; 
 			} else if (tokens[idx].equals(FETCH_EMAIL)) { 
 				mFetchEmail = true;   			
 			} else if (tokens[idx].equalsIgnoreCase(FETCH_PHONE) ) { 
