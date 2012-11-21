@@ -78,6 +78,6 @@ public class CamcorderTag extends DeviceTag implements IDevice{
     private void init(){
         this.maxtime = Integer.MIN_VALUE;
         this.command = "camcorder";
-        this.label = "Camcorder";
+        this.buttonLabel = "Camcorder";
     }
 }

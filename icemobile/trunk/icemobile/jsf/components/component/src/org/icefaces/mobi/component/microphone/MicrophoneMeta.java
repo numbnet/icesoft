@@ -81,6 +81,6 @@ public class MicrophoneMeta extends UIComponentBaseMeta {
             "purposes.")
     private String captureMessageLabel;
 
-    @Property(defaultValue="record", tlddoc="button label for this component")
+    @Property(defaultValue="Record", tlddoc="button label for this component")
     private String buttonLabel;
 }

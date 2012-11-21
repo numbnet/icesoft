@@ -24,8 +24,8 @@ import org.icefaces.ace.meta.annotation.Property;
 
 public class ContactListMeta {
     
-    @Property(tlddoc = "The text appearing in the button")
-    private String label;
+    @Property(tlddoc = "The text appearing in the button", defaultValue="Fetch Contact")
+    private String buttonLabel;
 
     @Property(tlddoc = "A complete pattern for matching users. Unfortunately, no wildcards")
     private String pattern;

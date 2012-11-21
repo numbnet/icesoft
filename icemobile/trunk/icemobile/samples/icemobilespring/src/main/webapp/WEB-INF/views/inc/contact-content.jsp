@@ -15,8 +15,8 @@
              <mobi:commandButton value="Update" type="submit" style="padding: 0.6em 5px;"/>
         </mobi:fieldsetRow>
         <mobi:fieldsetRow>
-             <mobi:fetchContact id="rawContact" label="fetch Contacts"  
-                pattern="${contactBean.pattern}" fields="contact, phone, email"/>
+             <mobi:fetchContact id="rawContact" buttonLabel="Fetch Contact"  
+                pattern="${contactBean.pattern}" fields="name, phone, email"/>
         </mobi:fieldsetRow>
     </mobi:fieldsetGroup>
 

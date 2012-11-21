@@ -24,7 +24,7 @@ public class QRScanTag extends DeviceTag {
     
     private void init(){
         this.command = "scan";
-        this.label = "Scan QRCode";
+        this.buttonLabel = "Scan QRCode";
         this.fallbackType = "text";
     }
     

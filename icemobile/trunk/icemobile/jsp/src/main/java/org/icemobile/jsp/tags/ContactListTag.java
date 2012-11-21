@@ -24,9 +24,13 @@ import org.icemobile.renderkit.ContactListCoreRenderer;
 
 public class ContactListTag extends BaseSimpleTag implements IContactList {
 
-    private String label;
+    private String buttonLabel;
     private String pattern;
     private String fields;
+    
+    public ContactListTag(){
+        init();
+    }
 
     public void doTag() throws IOException {
         
@@ -34,12 +38,12 @@ public class ContactListTag extends BaseSimpleTag implements IContactList {
         renderer.encode(this,  new TagWriter(getContext()));
     }
 
-    public String getLabel() {
-        return label;
+    public String getButtonLabel() {
+        return buttonLabel;
     }
 
-    public void setLabel(String label) {
-        this.label = label;
+    public void setButtonLabel(String buttonLabel) {
+        this.buttonLabel = buttonLabel;
     }
     public String getPattern() {
         return pattern;
@@ -56,11 +60,16 @@ public class ContactListTag extends BaseSimpleTag implements IContactList {
     public void setFields(String fields) {
         this.fields = fields;
     }
-    public void release(){
-        super.release();
-        this.label = null;
+    
+    private void init(){
+        this.buttonLabel = "Fetch Contact";
         this.pattern = null;
         this.fields= null;
+    }
+    
+    public void release(){
+        super.release();
+        init();
     }
 
     public String getScript(String id, boolean isSX)  {

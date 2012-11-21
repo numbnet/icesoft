@@ -32,7 +32,6 @@ public abstract class DeviceTag extends BaseBodyTag implements IDevice{
     private static final String CONTAINER_ONCLICK_PARAMS = "ice.%s('%s','%s');";
 
     protected String command = "undefined";
-    protected String label = "unlabeled";
     protected String params = null;
     protected String fallbackType = "file";
     protected boolean isUseCookie = true;
@@ -110,11 +109,7 @@ public abstract class DeviceTag extends BaseBodyTag implements IDevice{
         return true;
     }
     public String getButtonLabel() {
-        if (buttonLabel != null) {
-            return buttonLabel;
-        }else {
-            return label;
-        }
+        return buttonLabel;
     }
 
     public void setButtonLabel(String buttonLabel) {
@@ -158,7 +153,6 @@ public abstract class DeviceTag extends BaseBodyTag implements IDevice{
     }
     public void release(){
         command = "undefined";
-        label = "unlabeled";
         params = null;
         fallbackType = "file";
         isUseCookie = true;

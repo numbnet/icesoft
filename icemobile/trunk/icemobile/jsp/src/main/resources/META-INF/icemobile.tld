@@ -66,7 +66,7 @@
         </attribute>
         <attribute>
             <description>The value of the label for the button. default Value is
-                Reality
+                'Augmented Reality'
             </description>
             <name>buttonLabel</name>
             <required>false</required>
@@ -207,8 +207,8 @@
             <rtexprvalue>true</rtexprvalue>
         </attribute>
         <attribute>
-            <description>The value of the label for the button.
-                default Value is Camera
+            <description>The value of the label for the button,
+                default value is 'Camcorder'.
             </description>
             <name>buttonLabel</name>
             <required>false</required>
@@ -1409,7 +1409,7 @@
         <attribute>
             <description>The text appearing in the button
             </description>
-            <name>label</name>
+            <name>buttonLabel</name>
             <required>true</required>
             <rtexprvalue>true</rtexprvalue>
         </attribute>

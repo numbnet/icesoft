@@ -50,7 +50,7 @@ public class AugTag extends DeviceTag implements IDevice{
     
     public void init(){
         this.command = "aug";
-        this.label = "Reality";
+        this.buttonLabel = "Augmented Reality";
         this.fallbackType = "text";
     }
 
