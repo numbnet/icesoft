@@ -54,6 +54,8 @@
             <category android:name="android.intent.category.SAMPLE_CODE" />
         </intent-filter>
     </activity>
+    <activity android:name=".audio.SimpleAudioRecorder" android:label="Audio Recorder" android:screenOrientation="portrait">
+    </activity>
 
     <activity android:name=".HistoryList" android:label="@string/history_name"/>
     <activity android:name=".qrcode.CaptureActivity"
