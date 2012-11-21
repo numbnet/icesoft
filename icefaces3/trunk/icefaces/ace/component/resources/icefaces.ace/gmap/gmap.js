@@ -695,24 +695,4 @@ ice.ace.gMap.getGMapWrapper = function (id) {
         }
     }
 
-    ice.ace.gMap.addEvent = function (mapId,parentId,eventId,parentName,eventType,rendererType,script){
-        var wrapper = ice.ace.gMap.getGMapWrapper(mapId);
-        var map = wrapper.getRealGMap();
-        var parent;
-        //Add something to keep track of autocompletes
-        if (parentName.indexOf("gmap.GMapAutocomplete") != -1)
-            parent = wrapper.windows[parentId];
-        else if (parentName.indexOf("gmap.GMapInfoWindow") != -1)
-            parent = wrapper.windows[parentId];
-        else if (parentName.indexOf("gmap.GMapLayer") != -1)
-            parent = wrapper.layers[parentId];
-        else if (parentName.indexOf("gmap.GMapMarker") != -1)
-            parent = wrapper.markers[parentId];
-        else if (parentName.indexOf("gmap.GMapOverlay") != -1)
-            parent = wrapper.overlays[parentId];
-        else if(parentName.indexOf("gmap.GMap") != -1)
-            parent = wrapper.getRealGMap();
-        google.maps.event.addDomListener(parent,eventType,function(){
-            eval(script);
-        });
-    }
+
