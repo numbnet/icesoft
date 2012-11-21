@@ -6,6 +6,13 @@
 <form:form id="micform" method="POST" enctype="multipart/form-data"
            modelAttribute="microphoneBean" cssClass="form">
            
+    <mobi:fieldsetGroup styleClass="intro">
+        <mobi:fieldsetRow>
+            Use your mobile device's microphone to make a recording and upload
+            it to the server.
+        </mobi:fieldsetRow>
+    </mobi:fieldsetGroup>
+    
     <mobi:getEnhanced/>
     
     <mobi:fieldsetGroup>
@@ -15,7 +22,7 @@
             </form:label>
             <form:input path="name"/>
         </mobi:fieldsetRow>
-        <mobi:fieldsetRow>
+        <mobi:fieldsetRow styleClass="mobi-center">
             <mobi:microphone id="mic" buttonLabel="Record Audio"/>
         </mobi:fieldsetRow>
     </mobi:fieldsetGroup>

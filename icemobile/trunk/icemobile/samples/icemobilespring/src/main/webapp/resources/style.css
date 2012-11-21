@@ -280,7 +280,7 @@ html.honeycomb h3, html.android h3{
     display:block;
     width:100%;
  }
-.form .mobi-fieldset > .fieldset-rwo > .mobi-button{
+.form .mobi-fieldset > .mobi-fieldset-row > .mobi-button{
     -moz-box-sizing: border-box;
     -wekit-box-sizing: border-box;
     box-sizing: border-box;
@@ -300,6 +300,8 @@ html.honeycomb h3, html.android h3{
     text-align: center;
     padding: 10px;
 }
+.form p{ text-align:left; margin:0;}
+
 /* LARGE SCREEN */
 @media screen and (min-width: 580px) {  
     input.submit, button.submit{
