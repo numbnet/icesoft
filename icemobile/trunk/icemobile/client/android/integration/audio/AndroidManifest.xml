@@ -19,4 +19,9 @@
       package="org.icemobile.client.android.audio"
       android:versionCode="1"
       android:versionName="1.0">
+    <intent-filter>
+        <action android:name="android.provider.MediaStore.RECORD_SOUND" />
+        <category android:name="android.intent.category.DEFAULT" />
+    </intent-filter>
+    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
 </manifest> 

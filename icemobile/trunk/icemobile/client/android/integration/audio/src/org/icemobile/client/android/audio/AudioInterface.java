@@ -16,6 +16,7 @@
 
 package org.icemobile.client.android.audio;
 
+import android.util.Log;
 import org.icemobile.client.android.util.JavascriptInterface;
 import org.icemobile.client.android.util.AttributeExtractor;
 
@@ -35,9 +36,15 @@ public class AudioInterface implements JavascriptInterface {
     }
 
     public String recordAudio(String attr) {
-	AttributeExtractor attributes = new AttributeExtractor(attr);
-	int maxDuration = Integer.parseInt(attributes.getAttribute("maxtime", "-1"));
-	return recorder.recordAudio(maxDuration);
+    String result = "";
+    try {
+        AttributeExtractor attributes = new AttributeExtractor(attr);
+        int maxDuration = Integer.parseInt(attributes.getAttribute("maxtime", "-1"));
+        result = recorder.recordAudio(maxDuration);
+    } catch (Exception e)  {
+        Log.e("ICEmobile", "recordAudio failed ", e);
+    }
+	return result;
     }
 
     public void playUrl(String url, boolean autoRelease) {
