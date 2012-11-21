@@ -25,6 +25,9 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.content.Intent;
 import android.os.Environment;
+import android.os.Bundle;
+import android.content.pm.PackageManager;
+import java.util.List;
 import java.io.IOException;
 import java.io.File;
 import java.lang.reflect.Field;
@@ -144,18 +147,40 @@ public class AudioRecorder {
 	}
     }
 
+
     public String recordAudio(int maxDuration) {
 	Intent intent = new Intent(MediaStore.Audio.Media.RECORD_SOUND_ACTION);
-	// Would like to set the location, but it does not work;
-	//intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(audioFile));
-	if (maxDuration > 0) {
-	    intent.putExtra(MediaStore.EXTRA_DURATION_LIMIT, maxDuration);
-	}
-	container.startActivityForResult(intent, recordCode);
-	return audioFile.getAbsolutePath();
+    PackageManager packageManager = container.getPackageManager();
+    List list = packageManager.queryIntentActivities(intent,  
+            packageManager.MATCH_DEFAULT_ONLY);
+    if (0 == list.size())  {
+        Log.d("ICEaudio", "falling back to SimpleAudioRecorder");
+        intent = new Intent(container.getApplicationContext(), 
+                SimpleAudioRecorder.class);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, audioFile.getAbsolutePath());
+    }
+
+    // Would like to set the location, but it does not work;
+    //intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(audioFile));
+    if (maxDuration > 0) {
+        intent.putExtra(MediaStore.EXTRA_DURATION_LIMIT, maxDuration);
+    }
+    container.startActivityForResult(intent, recordCode);
+    return audioFile.getAbsolutePath();
     }
 
     public void gotAudio(Intent data) {
+    Bundle extras = data.getExtras();
+    if (null != extras) {
+        String recordedAudioFilePath = 
+                extras.getString(MediaStore.EXTRA_OUTPUT);
+        if (null != recordedAudioFilePath)  {
+            File file = new File(recordedAudioFilePath);
+            file.renameTo(audioFile);
+            return;
+        }
+    }
+
 	Uri uri = data.getData();
 	String[] projection = { MediaStore.Audio.Media.DATA };
 	Cursor cursor = container.managedQuery(uri, projection, null, null, null); 
