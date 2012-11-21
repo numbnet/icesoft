@@ -4,6 +4,7 @@ import org.icemobile.component.IAccordion;
 import org.icemobile.component.IContentPane;
 
 
+import javax.swing.text.html.HTML;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -99,6 +100,12 @@ public class ContentPaneCoreRenderer extends BaseCoreRenderer {
           }
           writer.startElement(DIV_ELEM, pane);
           writer.writeAttribute(ID_ATTR, clientId);
+          if (pane.getStyle() !=null){
+              writer.writeAttribute(STYLE_ATTR, pane);
+          }
+          if (userDefinedClass!=null){
+              writer.writeAttribute(CLASS_ATTR, userDefinedClass);
+          }
      }
 
 }

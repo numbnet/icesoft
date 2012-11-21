@@ -71,11 +71,15 @@ public class ContentPaneRenderer extends BaseLayoutRenderer {
             /* write out root tag.  For current incarnation html5 semantic markup is ignored */
             writer.startElement(HTML.DIV_ELEM, uiComponent);
             writer.writeAttribute(HTML.ID_ATTR, clientId, HTML.ID_ATTR);
-       //     String contentSingleClass = ContentPane.CONTENT_SINGLE_HIDDEN_CLASS;
-
+            if (stack.getStyle()!=null){
+                writer.writeAttribute(HTML.STYLE_ATTR, stack.getStyle(), HTML.STYLE_ATTR);
+            }
             // apply default style class for panel-stack for singleView & menu the js will do so.
             if (stack.getContentMenuId()==null || stack.getContentMenuId().equals("")) {
                 writer.writeAttribute("class", classToWrite, "class");
+            }else if (stack.getStyleClass()!=null){
+                writer.writeAttribute(HTML.CLASS_ATTR, stack.getStyleClass(), HTML.CLASS_ATTR);
+
             }
         }
     }
@@ -93,7 +97,6 @@ public class ContentPaneRenderer extends BaseLayoutRenderer {
         //am I the selected pane?  Can I count on the taghandler to already have
         //things constructed?? assume so for now.
          else if (iAmSelected(facesContext, uiComponent)){
-           //  logger.info("rendering the children of "+uiComponent.getClientId(facesContext));
              JSFUtils.renderChildren(facesContext, uiComponent);
         }
 
@@ -125,6 +128,7 @@ public class ContentPaneRenderer extends BaseLayoutRenderer {
             throws IOException{
         ResponseWriter writer = facesContext.getResponseWriter();
         String clientId = uiComponent.getClientId(facesContext);
+        ContentPane pane= (ContentPane)uiComponent;
         writer.startElement(HTML.DIV_ELEM, uiComponent);
         writer.writeAttribute(HTML.ID_ATTR, clientId+"_wrapper", HTML.ID_ATTR);
         String pageClass = TabSet.TABSET_HIDDEN_PAGECLASS.toString();
@@ -135,7 +139,12 @@ public class ContentPaneRenderer extends BaseLayoutRenderer {
          /* write out root tag.  For current incarnation html5 semantic markup is ignored */
         writer.startElement(HTML.DIV_ELEM, uiComponent);
         writer.writeAttribute(HTML.ID_ATTR, clientId, HTML.ID_ATTR);
-        //if cacheType is client and not selected must use invisible rendering
+        if (pane.getStyle()!=null){
+            writer.writeAttribute(HTML.STYLE_ATTR, pane.getStyle(), HTML.STYLE_ATTR);
+        }
+        if (pane.getStyleClass() !=null){
+            writer.writeAttribute(HTML.CLASS_ATTR, pane.getStyleClass(), HTML.STYLE_CLASS_ATTR);
+        }
     }
 
     public void encodeEnd(FacesContext facesContext, UIComponent uiComponent)
@@ -153,8 +162,10 @@ public class ContentPaneRenderer extends BaseLayoutRenderer {
 
     }
 
-    public void encodePaneAccordionHandle(FacesContext facesContext, UIComponent uiComponent, Accordion accordion)
-        throws IOException{
+ /*  accordion now uses ContentPaneCoreRenderer
+  public void encodePaneAccordionHandle(FacesContext facesContext, UIComponent uiComponent, Accordion accordion)
+   */
+        /*throws IOException{
         // only selected pane is open/active
          String imOpened = accordion.getCurrentId();
          String accordionId = accordion.getClientId(facesContext);
@@ -173,12 +184,12 @@ public class ContentPaneRenderer extends BaseLayoutRenderer {
              styleClass = new StringBuilder("open");
          } */
                // user specified style class
-         String userDefinedClass = pane.getStyleClass();
+      /*   String userDefinedClass = pane.getStyleClass();
          if (userDefinedClass != null && userDefinedClass.length() > 0){
               handleClass+= " " + userDefinedClass;
               pointerClass+=" " + userDefinedClass;
          }
-    //     writer.writeAttribute("class", styleClass.toString(), "class");
+    //   writer.writeAttribute("class", styleClass.toString(), "class");
          writer.writeAttribute(HTML.STYLE_ATTR, pane.getStyle(), "style");
          writer.startElement(HTML.DIV_ELEM, uiComponent);
          writer.writeAttribute(HTML.ID_ATTR, clientId+"_hndl", HTML.ID_ATTR);
@@ -199,6 +210,6 @@ public class ContentPaneRenderer extends BaseLayoutRenderer {
          }
          writer.startElement(HTML.DIV_ELEM, uiComponent);
          writer.writeAttribute(HTML.ID_ATTR, clientId, HTML.ID_ATTR);
-    }
+    }  */
 
 }
