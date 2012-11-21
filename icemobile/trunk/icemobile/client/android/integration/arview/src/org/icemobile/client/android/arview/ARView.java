@@ -29,6 +29,8 @@ import java.net.URL;
 import java.util.Map;
 import java.util.HashMap;
 
+import org.icemobile.client.android.util.UtilInterface;
+
 public class ARView extends View {
     private Paint mTextPaint;
     private Paint mTextPaintRed;
@@ -99,8 +101,7 @@ public class ARView extends View {
         Bitmap bitmap = null;
         try {
             bitmap = BitmapFactory.decodeStream(
-                    new URL(url).openConnection()
-                      .getInputStream() );
+                    UtilInterface.getContentStream(url) );
         } catch (Exception e)  {
             e.printStackTrace();
         }
