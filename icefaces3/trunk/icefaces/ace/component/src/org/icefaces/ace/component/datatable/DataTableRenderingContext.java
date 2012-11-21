@@ -33,7 +33,9 @@ public class DataTableRenderingContext {
     private boolean reorderableColumns;
     private boolean columnSortable;
     private boolean columnFilterable;
+    private boolean columnPinningEnabled;
     private int tabIndex;
+    private boolean showPinControl;
 
     public DataTableRenderingContext(DataTable table) {
         this.table = table;
@@ -57,6 +59,8 @@ public class DataTableRenderingContext {
         reorderableColumns = table.isReorderableColumns();
         var = table.getVar();
         tabIndex = table.getTabIndex();
+        columnPinningEnabled = table.isColumnPinning();
+        showPinControl = table.isColumnPinningControlsInHeader();
     }
 
     public DataTable getTable() {
@@ -181,5 +185,13 @@ public class DataTableRenderingContext {
 
     public int getTabIndex() {
         return tabIndex;
+    }
+
+    public boolean isColumnPinningEnabled() {
+        return columnPinningEnabled;
+    }
+
+    public boolean showPinningControls() {
+        return showPinControl;
     }
 }

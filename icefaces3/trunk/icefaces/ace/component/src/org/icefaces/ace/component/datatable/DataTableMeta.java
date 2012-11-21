@@ -228,7 +228,14 @@ public class DataTableMeta extends UIDataMeta {
     private MethodExpression filterListener;
 
 
+    /* ##################################################################### */
+    /* ######################### Column Pinning ############################ */
+    /* ##################################################################### */
+    @Property(tlddoc = "Enable statically positioned columns along the left hand side of a scrollable table.")
+    boolean columnPinning;
 
+    @Property(tlddoc = "Enable client controls to add column to the list of statically positioned columns.")
+    boolean columnPinningControlsInHeader;
 
 
     /* ##################################################################### */

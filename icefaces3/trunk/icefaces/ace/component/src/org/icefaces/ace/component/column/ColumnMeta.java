@@ -138,6 +138,11 @@ public class ColumnMeta extends UIColumnMeta {
             defaultValue = "true", defaultValueType = DefaultValueType.EXPRESSION)
     private boolean reorderable;
 
+    @Property(tlddoc = "Define the position of this column in the pinned column " +
+            "region when column pinning and scrolling are enabled at the table level. " +
+            "Having a value in this field indicates a column is pinned. ")
+    private Integer pinningOrder;
+
 //    These per-feature configuration attributes will be used when the 'value' property is added to Column.
 //    Until then they are redundant.
 //    @Property(tlddoc="Enables per-column control of column sorting when either the " +

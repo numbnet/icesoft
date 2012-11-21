@@ -43,13 +43,9 @@ SOFTWARE.
 import java.io.IOException;
 import java.io.Writer;
 import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
 import java.lang.reflect.Method;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.TreeSet;
+import java.lang.reflect.Modifier;
+import java.util.*;
 
 /**
  * A JSONObject is an unordered collection of name/value pairs. Its
@@ -1067,6 +1063,15 @@ public class JSONObject {
     public JSONObject put(String key, Map value) throws JSONException {
         put(key, new JSONObject(value));
         return this;
+    }
+
+
+    /**
+     * Get the String keys / member names of the JSONObject where the value
+     * will be produced from the JSONObject backing Map.
+     */
+    public Collection<String> getKeys() {
+        return (Collection<String>)map.keySet();
     }
 
 

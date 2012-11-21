@@ -28,6 +28,7 @@ package org.icefaces.ace.component.datatable;
 
 import org.icefaces.ace.component.column.Column;
 import org.icefaces.ace.component.tableconfigpanel.TableConfigPanel;
+import org.icefaces.ace.json.JSONException;
 import org.icefaces.ace.renderkit.CoreRenderer;
 import org.icefaces.ace.util.ComponentUtils;
 import org.icefaces.ace.util.HTML;
@@ -55,6 +56,13 @@ public class DataTableRenderer extends CoreRenderer {
         if (table.isSelectionEnabled())
             DataTableDecoder.decodeSelection(context, table);
 
+        if (table.isColumnPinning())
+            try {
+                DataTableDecoder.decodeColumnPinning(context, table);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
         // Other features will occurs as individual requests
         if (table.isFilterRequest(context))
             DataTableDecoder.decodeFilters(context, table);
@@ -70,6 +78,8 @@ public class DataTableRenderer extends CoreRenderer {
 
         else if (table.isTableConfigurationRequest(context))
             DataTableDecoder.decodeTableConfigurationRequest(context, table);
+
+
 
         decodeBehaviors(context, component);
 	}
@@ -168,6 +178,9 @@ public class DataTableRenderer extends CoreRenderer {
         if (table.isSelectionEnabled())
             encodeSelectionAndDeselectionHolder(context, table);
 
+        if (table.isColumnPinning())
+            encodePinningStateHolder(context, table);
+
         // Scripts
         encodeScript(context, table);
 
@@ -181,6 +194,33 @@ public class DataTableRenderer extends CoreRenderer {
         }
 
         writer.endElement(HTML.DIV_ELEM);
+    }
+
+    private void encodePinningStateHolder(FacesContext context, DataTable table) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        String id = table.getClientId(context) + "_pinning";
+        String value = getPinningState(table);
+
+        writer.startElement(HTML.INPUT_ELEM, null);
+        writer.writeAttribute(HTML.TYPE_ATTR, "hidden", null);
+        writer.writeAttribute(HTML.ID_ATTR, id, null);
+        writer.writeAttribute(HTML.NAME_ATTR, id, null);
+        writer.writeAttribute(HTML.VALUE_ATTR, value, null);
+        writer.endElement(HTML.INPUT_ELEM);
+    }
+
+    private String getPinningState(DataTable table) {
+        JSONBuilder json = JSONBuilder.create().beginMap();
+        List<Column> columns = table.getColumns();
+
+        for (Integer i = 0; i < columns.size(); i++) {
+            Column c = columns.get(i);
+            Integer order = c.getPinningOrder();
+            if (order != null)
+                json.entry(i.toString(), order);
+        }
+
+        return json.endMap().toString();
     }
 
     private void encodeTable(FacesContext context, DataTableRenderingContext tableContext) throws IOException {
@@ -305,6 +345,7 @@ public class DataTableRenderer extends CoreRenderer {
         final boolean snglSrt = table.isSingleSort();
         final boolean disable = table.isDisabled();
         final boolean scroll = table.isScrollable();
+        final boolean pinning = table.isColumnPinning();
         final boolean hiddenScrollableSizing = table.isHiddenScrollableSizing();
         final boolean height = scroll && table.getScrollHeight() != Integer.MIN_VALUE;
         final boolean scrollIE8Like7 = Boolean.parseBoolean(context.getExternalContext().getInitParameter("org.icefaces.ace.datatable.scroll.ie8like7"));
@@ -333,7 +374,7 @@ public class DataTableRenderer extends CoreRenderer {
         if (disable) json.entry("disable", true);
         if (noHover) json.entry("nohover",true);
         if (noHidden) json.entry("nohidden",true);
-        if (devMode) json.entry("devMode",true);
+        if (pinning) json.entry("pinning",true);
         if (scroll) {
             json.entry("scrollable", true);
             json.entry("liveScroll", table.isLiveScroll());
