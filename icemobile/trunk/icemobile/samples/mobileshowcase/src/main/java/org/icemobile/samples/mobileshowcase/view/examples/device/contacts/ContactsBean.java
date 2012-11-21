@@ -43,7 +43,6 @@ public class ContactsBean extends ExampleImpl<ContactsBean> implements Serializa
     
     private String rawContact;
     private String name;
-    private String contact;
     private String phone;
     private String email;
     private String pattern;
@@ -54,12 +53,11 @@ public class ContactsBean extends ExampleImpl<ContactsBean> implements Serializa
         super(ContactsBean.class);
     }
 
-    public String getContact() {
-        return contact;
-    }
-
     public void setRawContact(String rawContact) {
         this.rawContact = rawContact;
+        this.email = null;
+        this.phone = null;
+        this.name = null;
         //raw contact string will be in encoded format 
         //of [contact=val&][phone=val&][email=val&]
         if( rawContact != null && !"".equals(rawContact)){
@@ -71,11 +69,8 @@ public class ContactsBean extends ExampleImpl<ContactsBean> implements Serializa
                   //each contact field will have a key and value
                     String key = tokens[i].substring(0,tokens[i].indexOf("="));
                     String val = tokens[i].substring(tokens[i].indexOf("=")+1);
-                  //possible keys are 'contact', 'name', 'phone', and 'email'
-                    if( "contact".equals(key)){
-                        contact = val;
-                    }
-                    else if( "name".equals(key)){
+                  //possible keys are 'name', 'phone', and 'email'
+                    if( "name".equals(key)){
                         name = val;
                     }
                     else if( "phone".equals(key)){

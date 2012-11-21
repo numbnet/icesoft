@@ -32,10 +32,6 @@
             <span>${contactBean.name}</span>
         </mobi:fieldsetRow>
         <mobi:fieldsetRow>
-            <label>Contact:</label>
-            <span>${contactBean.contact}</span>
-        </mobi:fieldsetRow>
-        <mobi:fieldsetRow>
             <label>Phone:</label>
             <span>${contactBean.phone}</span>
         </mobi:fieldsetRow>
