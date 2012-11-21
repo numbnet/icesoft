@@ -49,7 +49,7 @@ public class MicrophoneTag extends DeviceTag implements IDevice {
     private void init(){
         maxtime=Integer.MIN_VALUE;
         this.command = "microphone";
-        this.label = "Record";
+        this.buttonLabel = "Record";
     }
     
     public void release(){

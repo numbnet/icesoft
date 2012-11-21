@@ -97,7 +97,7 @@ public class VideoCaptureMeta extends UIComponentBaseMeta {
             "purposes.")
     private String captureMessageLabel;
 
-    @Property(defaultValue="camcorder", tlddoc="button label for this component")
+    @Property(defaultValue="Camcorder", tlddoc="button label for this component")
     private String buttonLabel;
 
 }

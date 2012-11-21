@@ -47,7 +47,7 @@ public class CameraTag extends DeviceTag implements IDevice{
     
     private void init(){
         this.command = "camera";
-        this.label = "Camera";
+        this.buttonLabel = "Camera";
     }
 
 }

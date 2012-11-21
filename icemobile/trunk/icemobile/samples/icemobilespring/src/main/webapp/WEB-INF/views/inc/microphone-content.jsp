@@ -16,7 +16,7 @@
             <form:input path="name"/>
         </mobi:fieldsetRow>
         <mobi:fieldsetRow>
-            <mobi:microphone id="mic"/>
+            <mobi:microphone id="mic" buttonLabel="Record Audio"/>
         </mobi:fieldsetRow>
     </mobi:fieldsetGroup>
 

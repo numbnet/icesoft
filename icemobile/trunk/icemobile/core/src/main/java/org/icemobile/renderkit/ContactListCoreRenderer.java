@@ -55,7 +55,7 @@ public class ContactListCoreRenderer extends BaseCoreRenderer {
         }
         writer.writeAttribute(ONCLICK_ATTR, "ice.mobi.invoke(this)");
 
-        writer.writeAttribute(VALUE_ATTR, component.getLabel());
+        writer.writeAttribute(VALUE_ATTR, component.getButtonLabel());
         writer.endElement(INPUT_ELEM);
     }
 
