@@ -34,7 +34,7 @@ public class ResetPushMenuItem  extends MenuItem {
     private ContainerController mController; 
 
     public ResetPushMenuItem(ContainerController controller ) { 
-        super(new StringProvider("Reset BIS Push"), 4, 0);
+        super(new StringProvider("Reset BIS Push"), 9, 0);
         mController = controller;
         super.setCommand( new Command( new ResetPushImmediateHandler() ));
     }
