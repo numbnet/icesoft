@@ -21,6 +21,7 @@ import org.icemobile.client.blackberry.menu.LogMemoryMenuItem;
 import org.icemobile.client.blackberry.menu.ReloadCurrentMenuItem;
 import org.icemobile.client.blackberry.menu.ReloadHomeMenuItem;
 import org.icemobile.client.blackberry.menu.ResetAuthorizationMenuItem;
+import org.icemobile.client.blackberry.menu.ResetPushMenuItem;
 //import org.icemobile.client.blackberry.menu.ResetPushMenuItem;
 //import org.icemobile.client.blackberry.menu.TestJavascriptMenuItem;
 import org.icemobile.client.blackberry.menu.URLEntryMenu;
@@ -48,7 +49,7 @@ import net.rim.device.api.ui.menu.SubMenu;
      private MenuItem mLogMemMenu;
      
      
-//     private MenuItem mResetPushMenu;
+     private MenuItem mResetPushMenu;
      private MenuItem mBackMenu; 
 //     private MenuItem mTestJavascriptMenu;
      
@@ -86,7 +87,7 @@ import net.rim.device.api.ui.menu.SubMenu;
          mReloadMenu = new ReloadHomeMenuItem(mController);         
          mReloadCurrentMenu = new ReloadCurrentMenuItem(mController);
 //         mResetAudioMenu = new ResetAudioMenuItem( mContainer); 
-//         mResetPushMenu = new ResetPushMenuItem(mController);         
+         mResetPushMenu = new ResetPushMenuItem(mController);         
          mBackMenu = new BackMenuItem(mController); 
          mURLMenu = new URLEntryMenu(mController);
 //         mTestJavascriptMenu = new TestJavascriptMenuItem(mContainer);
@@ -108,7 +109,7 @@ import net.rim.device.api.ui.menu.SubMenu;
     	 menu.add(mResetAuthCacheMenu);
     	 menu.add(mLogMemMenu);
 //    	 menu.add(mTestJavascriptMenu);
-//    	 menu.add(mResetPushMenu);  
+    	 menu.add(mResetPushMenu);  
     	 
     	 
     	 SubMenu urlSubmenu = new SubMenu(null, "URL History", 5, 3);
