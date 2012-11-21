@@ -38,6 +38,7 @@ import org.apache.http.HttpResponse;
 import org.apache.http.params.CoreProtocolPNames;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.entity.mime.content.InputStreamBody;
 import org.apache.http.entity.mime.content.StringBody;
@@ -91,6 +92,15 @@ public class UtilInterface implements JavascriptInterface,
 		    }
 		}
 	    };
+    }
+
+    public static InputStream getContentStream(String url) throws IOException {
+        DefaultHttpClient httpClient = new DefaultHttpClient();
+        HttpGet getRequest = new HttpGet(url);
+	    CookieManager cookieManager = CookieManager.getInstance();
+	    getRequest.setHeader("Cookie", cookieManager.getCookie(url));
+		HttpResponse res = httpClient.execute(getRequest);
+        return res.getEntity().getContent();
     }
 
     public void submitForm(String actionUrl, String serializedForm) {
