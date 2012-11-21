@@ -138,6 +138,8 @@ public class ARView extends View {
 
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
+        int xCenter = canvas.getWidth() / 2;
+        int yCenter = canvas.getHeight() / 2;
 
         HashMap<String,Bitmap> iconBitmaps = getIcons();
 
@@ -163,9 +165,9 @@ public class ARView extends View {
                 }
 
                 float[] coord = new float[4];
-                coord[0] = 1000 * (labelLoc[0] 
+                coord[0] = 4000 * (labelLoc[0] 
                         - (float)currentLocation.getLatitude()); 
-                coord[1] = 1000 * (labelLoc[1] 
+                coord[1] = 4000 * (labelLoc[1] 
                         - (float)currentLocation.getLongitude());
                 coord[2] = 0f;
                 coord[3] = 0f;
@@ -173,20 +175,19 @@ public class ARView extends View {
                 float[] v = new float[]{0, 0, 0, 1};
                 Matrix.multiplyMV(v, 0, deviceTransform, 0, coord, 0);
 
-                //project x-z and discard y=x as behind us
                 canvas.save();
-                canvas.rotate(270, 300, 300);
-                if (null != iconBitmaps)  {
-                    Bitmap myIcon = iconBitmaps.get(label);
-                    if (null != myIcon)  {
-                        canvas.drawBitmap(myIcon, v[0] + 300, v[1] + 300,
-                                mTextPaint);
+                canvas.rotate(270, xCenter, yCenter);
+                if ( v[2] > 0)  {
+                    if (null != iconBitmaps)  {
+                        Bitmap myIcon = iconBitmaps.get(label);
+                        if (null != myIcon)  {
+                            canvas.drawBitmap(myIcon, v[0] + xCenter, v[1] + yCenter,
+                                    mTextPaint);
+                        }
                     }
-                }
-                if ( (v[1] - v[0]) > 0)  {
-                    canvas.drawText(label, v[0] + 300, v[1] + 300, mTextPaint);
+                    canvas.drawText(label, v[0] + xCenter, v[1] + yCenter, mTextPaint);
                 } else {
-                    canvas.drawText(label, v[0] + 300, v[1] + 300, mTextPaintRed);
+//                    canvas.drawText(label, v[0] + xCenter, v[1] + yCenter, mTextPaintRed);
                 }
 //Log.d("ARView ", "drawing " + label + " " + v[0] + "," + v[1]);
                 canvas.restore();

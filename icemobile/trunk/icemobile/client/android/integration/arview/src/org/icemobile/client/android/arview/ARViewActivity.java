@@ -191,14 +191,22 @@ public class ARViewActivity extends Activity implements SensorEventListener,
         mSensorManager.unregisterListener(this);
     }
 
+    public float[] smoothClone(float[] oldVec, float[] newVec)  {
+        float[] result = new float[oldVec.length];
+        for (int i=0; i <oldVec.length; i++)  {
+            result[i] = (oldVec[i] * 9 + newVec[i]) / 10;
+        }
+        return result;
+    }
+
     public void onSensorChanged(SensorEvent event) {
         boolean viewChanged = false;
         if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
-            gravity = event.values.clone();
+            gravity = smoothClone(gravity, event.values);
             viewChanged = true;
         }
         if (event.sensor.getType() == Sensor.TYPE_MAGNETIC_FIELD) {
-            compass = event.values.clone();
+            compass = smoothClone(compass, event.values);
             viewChanged = true;
         }
         if (event.sensor.getType() == Sensor.TYPE_ROTATION_VECTOR) {
