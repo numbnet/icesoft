@@ -40,11 +40,11 @@
 
         <mobi:fieldsetGroup>
             <mobi:fieldsetRow >
-                Use your camera to add pictures at various locations.
+                <p>Use your camera to add pictures at various locations.
                 (Depending on GPS accuracy, you may need to walk 10m between
-                locations.)
+                locations.)</p>
             </mobi:fieldsetRow>
-            <mobi:fieldsetRow>
+            <mobi:fieldsetRow styleClass="mobi-center">
                 <mobi:camera id="cam" value="#{realityBean.cameraImage}">
                     <mobi:thumbnail for="cam"/>
                 </mobi:camera>
@@ -66,15 +66,17 @@
 
     <h:form styleClass="form">
 
-        <mobi:fieldsetGroup styleClass="intro">
+        <mobi:fieldsetGroup>
             <mobi:fieldsetRow>
-                Next view the pictures superimposed on the camera view in the Augmented Reality overlay. (This is an alpha level feature on iOS and pre-alpha on Android only.)
+                <p>Next view the pictures superimposed on the camera view in the 
+                Augmented Reality overlay. (This is an alpha level feature on iOS 
+                and pre-alpha on Android only.)</p>
             </mobi:fieldsetRow>
         </mobi:fieldsetGroup>
         
         <mobi:fieldsetGroup>
             <mobi:fieldsetRow styleClass="mobi-center">
-                <mobi:augmentedReality buttonLabel="Augmented Reality"
+                <mobi:augmentedReality
                     urlBase="#{realityBean.baseURL}"
                     value="#{realityBean.selection}">
                     <mobi:augmentedRealityLocations 
@@ -96,11 +98,12 @@
         </mobi:fieldsetGroup>
     </h:form>
 
-    <h:form rendered="#{realityBean.ios}" styleClass="form">
+    <h:form styleClass="form">
 
-        <mobi:fieldsetGroup styleClass="intro">
+        <mobi:fieldsetGroup>
             <mobi:fieldsetRow>
-                Print, cut-out, then view the <a href="resources/images/markers.html">Augmented Reality Markers</a> with 3D overlays. (This is an alpha level feature on iOS only.)
+                <p>Print, cut-out, then view the <a href="resources/images/markers.html">Augmented Reality Markers</a> 
+                with 3D overlays. (This is an alpha level feature on iOS only.)</p>
             </mobi:fieldsetRow>
         </mobi:fieldsetGroup>
         
@@ -110,7 +113,8 @@
             <mobi:fieldsetRow styleClass="mobi-center">
                 <mobi:augmentedReality  buttonLabel="3D Augmented Reality"
                     urlBase="#{realityBean.baseURL}"
-                    value="#{realityBean.selection}">
+                    value="#{realityBean.selection}"
+                    disabled="#{not realityBean.ios}">
                     <mobi:augmentedRealityMarkers
                         value="#{realityBean.markers}" var="marker"
                         markerLabel="#{marker.label}"

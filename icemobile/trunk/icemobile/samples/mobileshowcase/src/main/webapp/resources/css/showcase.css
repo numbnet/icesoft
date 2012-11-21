@@ -111,9 +111,7 @@
     border-top: 1px solid white;
     border-radius: 7px;
     display: block;
-    border-bottom: 1px solid #AAB8C9;
-    border-left: 1px solid #C3D2E4;
-    border-right: 1px solid #C3D2E4;
+    border: 1px solid #C3D2E4;
     position: absolute;
     left: 0.5em;
     top: 5px;
@@ -247,6 +245,7 @@ html.honeycomb h3{
 .form .mobi-fieldset.intro{
     text-align:left;
 }
+.form p{ text-align:left; margin:0;}
 .intro .mobi-fieldset-row:first-child:first-letter,
 .exampleDescription p:first-child:first-letter {
     float: left; 
