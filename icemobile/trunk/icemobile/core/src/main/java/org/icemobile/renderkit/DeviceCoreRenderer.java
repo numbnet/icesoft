@@ -33,9 +33,9 @@ public class DeviceCoreRenderer extends BaseCoreRenderer{
         boolean isEnhanced = cd.isICEmobileContainer()  || cd.isSXRegistered();
     //    logger.info("is SX="+cd.isSXRegistered()+" and useCookie="+ component.isUseCookie());
         if (cd.isICEmobileContainer() || (cd.isSXRegistered() && !isJSP)){
-            writer.writeAttribute(ID_ATTR, clientId);
             // button element
             writer.startElement(BUTTON_ELEM, component);
+            writer.writeAttribute(ID_ATTR, clientId);
             writer.writeAttribute(NAME_ATTR, clientId + "_button");
             writer.writeAttribute(TYPE_ATTR, "button");
             writeStandardAttributes(writer, component, IDevice.CSS_CLASS, IDevice.DISABLED_STYLE_CLASS);
@@ -51,6 +51,7 @@ public class DeviceCoreRenderer extends BaseCoreRenderer{
             //for iOS until we can store the ICEmobile-SX registration
             //without a session (likely a cookie)  for JSP
             writer.startElement(BUTTON_ELEM, component);
+            writer.writeAttribute(ID_ATTR, clientId);
             writer.writeAttribute(NAME_ATTR, clientId+"_button");
             writer.writeAttribute(TYPE_ATTR, "button");
             writer.writeAttribute("data-id", component.getClientId());
