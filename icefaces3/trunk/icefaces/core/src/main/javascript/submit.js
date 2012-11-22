@@ -225,6 +225,38 @@ var singleSubmit;
             ( (e.target) ? e.target : e.srcElement );
     }
 
+    function isFormElement(e) {
+        var type = toLowerCase(e.nodeName);
+        return (type == 'input' && (e.name != 'javax.faces.ViewState')) ||
+            type == 'select' ||
+            type == 'textarea';
+    }
+
+    function recalculateFormPreviousParameters(element, form) {
+        return function(updates) {
+            var updatedFragments = collect(updates.getElementsByTagName('update'), function(update) {
+                var id = update.getAttribute('id');
+                return lookupElementById(id);
+            });
+            var updatedForms = inject(updatedFragments, [ form ] , function(result, e) {
+                if (isFormElement(e) && not(contains(result, e.form))) {
+                    append(result, e.form);
+                } else {
+                    each(e.getElementsByTagName('form'), function(form) {
+                        append(result, form);
+                    });
+                }
+
+                return result;
+            });
+
+            each(updatedForms, function(form) {
+                debug(logger, 'recalculate initial parameters for updated form["' + form.id + '"]');
+                form.previousParameters = HashSet(jsf.getViewState(form).split('&'));
+            });
+        };
+    }
+
     fullSubmit = function(execute, render, event, element, additionalParameters, callbacks) {
         var f = null;
         var extractedElement = extractTarget(event);
@@ -322,6 +354,8 @@ var singleSubmit;
             ], '\n'));
 
             if (isDeltaSubmit) {
+                append(onAfterUpdateListeners, recalculateFormPreviousParameters(element, f));
+
                 var previousParameters = form.previousParameters || HashSet();
                 var currentParameters = HashSet(jsf.getViewState(form).split('&'));
                 var addedParameters = complement(currentParameters, previousParameters);
