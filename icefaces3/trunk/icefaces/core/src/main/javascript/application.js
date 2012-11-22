@@ -464,26 +464,6 @@ if (!window.ice.icefaces) {
 
                 setupDefaultIndicators(container, configuration);
 
-                //recalculate delta submit previous parameters for the updated forms, if necessary
-                namespace.onAfterUpdate(function(updates, source) {
-                    var formsWithUpdatedInputElements = select(collect(updates.getElementsByTagName('update'), function(update) {
-                        var id = update.getAttribute('id');
-                        return lookupElementById(id);
-                    }), function(e) {
-                        return e && containsFormElements(e);
-                    });
-
-                    each(container.getElementsByTagName('form'), function(form) {
-                        try {
-                            if (deltaSubmit(form) && (contains(formsWithUpdatedInputElements, form) || source.id != retrieveUpdateFormID(viewID))) {
-                                debug(logger, 'recalculate initial parameters for updated form["' + form.id + '"]');
-                                form.previousParameters = HashSet(jsf.getViewState(form).split('&'));
-                            }
-                        } catch (ex) {
-                            //cannot find enclosing form, some updates are for elements located outside forms
-                        }
-                    });
-                });
                 //clear the event handlers on the elements that will most likely create a memory leak
                 onUnload(window, function() {
                     container.configuration = null;
@@ -819,25 +799,6 @@ if (!window.ice.icefaces) {
                 });
             });
         });
-
-        function containsFormElements(e) {
-            var type = toLowerCase(e.nodeName);
-            if ((type == 'input' && e.name != 'javax.faces.ViewState') ||
-                type == 'select' ||
-                type == 'textarea' ||
-                type == 'form') {
-                return true;
-            } else {
-                var inputs = e.getElementsByTagName('input');
-                if ((notEmpty(inputs) && inputs[0].name != 'javax.faces.ViewState') ||
-                    notEmpty(e.getElementsByTagName('select')) ||
-                    notEmpty(e.getElementsByTagName('textarea'))) {
-                    return true;
-                } else {
-                    return false;
-                }
-            }
-        }
 
         //determine which elements are not present after an update, invoke corresponding callback when element was removed
         namespace.onAfterUpdate(function(updates) {
