@@ -37,6 +37,31 @@ if (!window.console) {
 
 mobi.BEHAVIOR_EVENT_PARAM = "javax.faces.behavior.event";
 mobi.PARTIAL_EVENT_PARAM = "javax.faces.partial.event";
+ice.mobi.ready = function (callback) {
+    if (document.addEventListener){
+        document.addEventListener('DOMContentLoaded', callback, false);
+    } else {
+        window.attachEvent('onload', callback);
+    }
+};
+ice.mobi.addListener= function(obj, event, fnc){
+    if (obj.addEventListener){
+        obj.addEventListener(event, fnc, false);
+    } else if (obj.attachEvent) {
+        obj.attachEvent(event, fnc);
+    } else {
+        ice.log.debug(ice.log, 'WARNING:- this browser does not support addEventListener or attachEvent');
+    }
+} ;
+ice.mobi.removeListener= function(obj, event, fnc){
+    if (obj.addEventListener){
+        obj.removeEventListener(event, fnc, false);
+    } else if (obj.attachEvent){
+        obj.detachEvent(event, fnc);
+    } else {
+        ice.log.debug(ice.log, 'WARNING cannot remove listener for event='+event+' node='+obj);
+    }
+};
 mobi.findForm = function (sourceId) {
     var node = document.getElementById(sourceId);
     while (node.nodeName.toLowerCase() != "form" && node.parentNode) {
@@ -130,7 +155,53 @@ mobi.registerAuxUpload = function (sessionid, uploadURL) {
         document.body.appendChild(auxiframe);
     }
 };
-
+ice.mobi.panelCenter = function(clientId, cfg){
+    var paneNode = document.getElementById(clientId);
+    var containerElem = cfg.containerElem || null;
+    if (!paneNode){
+       ice.console.log (ice.log,"Element Not Found id="+clientId);
+       return;
+    }
+    var container =document.getElementById(containerElem);
+    var contWidth;
+    var contHeight;
+    var elemWidth = cfg.width || paneNode.offsetWidth;
+    var styleVar = "";
+    var elemHeight = cfg.width || paneNode.offsetHeight;
+    wStr = elemWidth+"px";
+    hStr = elemHeight+"px";
+    styleVar += "width: "+wStr+";";
+    styleVar += "height: "+hStr+";";
+    var contWidth;
+    var contHeight;
+    if (container){
+        contWidth = container.offsetWidth;
+        contHeight = container.offsetHeight;
+    } else {
+        contWidth = mobi._windowWidth();
+        contHeight = mobi._windowHeight();
+    }
+    var scrollTop = document.body.scrollTop;
+    if (scrollTop == 0){
+        scrollTop = document.documentElement.scrollTop;
+    }
+    if (contHeight > 0){
+        var posStyle = "position: 'absolute';";
+        var posLeft =((contWidth/2)-(elemWidth/2))+'px';
+        var top = scrollTop +((contHeight/2)-(elemHeight/2))+'px';
+        if (contHeight - elemHeight >0){
+            styleVar += posStyle;
+            styleVar += " top: " +top +";";
+            styleVar +=" left:"+posLeft+";";
+        }else {
+            styleVar += posStyle;
+            styleVar +=" left:'"+posLeft+";'";
+        }
+        paneNode.setAttribute('style',styleVar);
+    }  else {
+        ice.log.debug(ice.log," Containing div or window has no height to autocenter popup of id="+clientId);
+    }
+};
 mobi.panelAutoCenter = function (clientId) {
     var windowWidth = mobi._windowWidth();
     var windowHeight = mobi._windowHeight();

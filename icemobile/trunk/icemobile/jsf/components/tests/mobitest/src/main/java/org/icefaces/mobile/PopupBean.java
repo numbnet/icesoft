@@ -12,10 +12,21 @@ public class PopupBean implements Serializable {
 
     public boolean visible ;
     public boolean visibleClient;
+    public boolean clientSide;
+    public boolean disabled;
+    public boolean autoCenter;
+    public int width;
+    public int height;
+    public boolean centerOnForm;
 
     public PopupBean(){
         this.visible=false; //initial value
         this.visibleClient=false;
+        this.autoCenter = true;
+        this.disabled=false;
+        this.width=400;
+        this.height = 400;
+        this.centerOnForm = false;
     }
 
     public boolean isVisible() {
@@ -46,5 +57,53 @@ public class PopupBean implements Serializable {
 
     public void setVisibleClient(boolean visibleClient) {
         this.visibleClient = visibleClient;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public void setHeight(int height) {
+        this.height = height;
+    }
+
+    public boolean isClientSide() {
+        return clientSide;
+    }
+
+    public void setClientSide(boolean clientSide) {
+        this.clientSide = clientSide;
+    }
+
+    public boolean isDisabled() {
+        return disabled;
+    }
+
+    public void setDisabled(boolean disabled) {
+        this.disabled = disabled;
+    }
+
+    public boolean isAutoCenter() {
+        return autoCenter;
+    }
+
+    public void setAutoCenter(boolean autoCenter) {
+        this.autoCenter = autoCenter;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public void setWidth(int width) {
+        this.width = width;
+    }
+
+    public boolean isCenterOnForm() {
+        return centerOnForm;
+    }
+
+    public void setCenterOnForm(boolean centerOnForm) {
+        this.centerOnForm = centerOnForm;
     }
 }

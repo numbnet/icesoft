@@ -27,7 +27,7 @@ public class PanelPopup extends PanelPopupBase {
     public static final String HIDDEN_CONTAINER_CLASS = "mobi-panelpopup-container-hide ";
     // TODO refine or remove.- even if we use a facet still need to define a style
  //   public static final String TITLE_CLASS = "mobi-panelpopup-title-container ";
-    public static final String TITLE_CLASS = "mobi-date-title-container ";
+    public static final String TITLE_CLASS = "mobi-panelpopup-title-container ";
 
     protected FacesContext getFacesContext() {
         return FacesContext.getCurrentInstance();

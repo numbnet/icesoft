@@ -47,7 +47,7 @@ public class PanelPopupRenderer extends BaseLayoutRenderer {
         //update with hidden field
         String submittedString = String.valueOf(requestParameterMap.get(clientId));
         if (submittedString != null) {
-            if (submittedString.trim().equals("true")){
+            if (submittedString.trim().equals("true") && !panel.isDisabled()){
                 panel.setVisible(true);
             }else{
                 panel.setVisible(false);
@@ -62,7 +62,7 @@ public class PanelPopupRenderer extends BaseLayoutRenderer {
         String clientId = component.getClientId(facesContext);
         writeJavascriptFile(facesContext, component, JS_NAME, JS_MIN_NAME, JS_LIBRARY);
         encodeMarkup(facesContext, component);
-        encodeScript(facesContext, component);
+
     }
 
     protected void encodeMarkup(FacesContext facesContext, UIComponent uiComponent) throws IOException {
@@ -70,14 +70,14 @@ public class PanelPopupRenderer extends BaseLayoutRenderer {
         PanelPopup panelPopup = (PanelPopup) uiComponent;
         boolean clientSide = panelPopup.isClientSide();
         boolean visible = panelPopup.isVisible();
-        if (!clientSide && !visible) {
-            return;
-        }
+        boolean disabled = panelPopup.isDisabled();
         String clientId = panelPopup.getClientId(facesContext);
         writer.startElement(HTML.DIV_ELEM, uiComponent);
         writer.writeAttribute(HTML.ID_ATTR, clientId, HTML.ID_ATTR);
         StringBuilder popupBaseClass = new StringBuilder(PanelPopup.HIDDEN_CONTAINER_CLASS);
         StringBuilder popupBGClass = new StringBuilder(PanelPopup.BLACKOUT_PNL_HIDDEN_CLASS);
+        StringBuilder popupButtonClass = new StringBuilder(CommandButton.BASE_STYLE_CLASS);
+        StringBuilder popupDisabledClass = new StringBuilder(CommandButton.DISABLED_STYLE_CLASS);
         UIComponent labelFacet = panelPopup.getFacet("label");
         if (visible) {
             popupBaseClass = new StringBuilder(PanelPopup.CONTAINER_CLASS);
@@ -87,31 +87,28 @@ public class PanelPopupRenderer extends BaseLayoutRenderer {
         if (null != userClass) {
             popupBGClass.append(userClass);
             popupBaseClass.append(userClass);
+            popupButtonClass.append(" ").append(userClass);
+            popupDisabledClass.append(" ").append(userClass);
         }
-        if (clientSide) {
-            if (!visible) {
-                writer.startElement(HTML.INPUT_ELEM, uiComponent);
-                writer.writeAttribute(HTML.ID_ATTR, clientId + "_open", HTML.ID_ATTR);
-                writer.writeAttribute(HTML.TYPE_ATTR, "button", HTML.TYPE_ATTR);
-                writer.writeAttribute(HTML.CLASS_ATTR, CommandButton.BASE_STYLE_CLASS, HTML.CLASS_ATTR);
-                writer.writeAttribute(HTML.VALUE_ATTR, panelPopup.getOpenButtonLabel(), HTML.VALUE_ATTR);
-                StringBuilder openClick = new StringBuilder("mobi.panelPopup.openClient('" + clientId + "');");
-                writer.writeAttribute(HTML.ONCLICK_ATTR, openClick, HTML.ONCLICK_ATTR);
-                writer.endElement(HTML.INPUT_ELEM);
-            }
-        }
+        writer.startElement(HTML.DIV_ELEM, uiComponent);
+        writer.writeAttribute(HTML.ID_ATTR, clientId+"_wrp", HTML.ID_ATTR);
         // div that is use to hide/show the popup screen black out--will manipulate using js
-
         writer.startElement(HTML.DIV_ELEM, uiComponent);
         writer.writeAttribute(HTML.ID_ATTR, clientId + "_bg", HTML.ID_ATTR);
         writer.writeAttribute(HTML.CLASS_ATTR, popupBGClass.toString(), HTML.CLASS_ATTR);
         writer.endElement(HTML.DIV_ELEM);
         //panel
-
         writer.startElement(HTML.DIV_ELEM, uiComponent);
         writer.writeAttribute(HTML.ID_ATTR, clientId + "_popup", HTML.ID_ATTR);
+
         writer.writeAttribute("class", popupBaseClass.toString(), "class");
-        writer.writeAttribute("style", panelPopup.getStyle(), "style");
+        StringBuilder style = new StringBuilder(256);
+        if (null != panelPopup.getStyle()) {
+            style.append(panelPopup.getStyle());
+        }
+        if (style.length() > 1)  {
+            writer.writeAttribute("style", style.toString(), "style");
+        }
         //title  if present
         String headerText = panelPopup.getHeader();
         if (labelFacet != null || headerText != null) {
@@ -122,14 +119,6 @@ public class PanelPopupRenderer extends BaseLayoutRenderer {
                 JSFUtils.renderChild(facesContext, labelFacet);
             } else if (headerText != null) {
                 writer.write(headerText);
-                if (clientSide) {
-                    writer.startElement(HTML.INPUT_ELEM, uiComponent);
-                    writer.writeAttribute(HTML.TYPE_ATTR, "button", HTML.TYPE_ATTR);
-                    writer.writeAttribute("value", "Close", null);
-                    writer.writeAttribute(HTML.CLASS_ATTR, CommandButton.BASE_STYLE_CLASS, HTML.CLASS_ATTR);
-                    writer.writeAttribute(HTML.ONCLICK_ATTR, "mobi.panelPopup.closeClient('" + clientId + "');", HTML.ONCLICK_ATTR);
-                    writer.endElement(HTML.INPUT_ELEM);
-                }
             }
             writer.endElement(HTML.DIV_ELEM);
         }
@@ -143,6 +132,8 @@ public class PanelPopupRenderer extends BaseLayoutRenderer {
             writer.endElement(HTML.INPUT_ELEM);
         }
         writer.endElement(HTML.DIV_ELEM);
+        writer.endElement(HTML.DIV_ELEM);
+        encodeScript(facesContext, panelPopup);
         writer.endElement(HTML.DIV_ELEM);
     }
 
@@ -161,20 +152,43 @@ public class PanelPopupRenderer extends BaseLayoutRenderer {
         ResponseWriter writer = facesContext.getResponseWriter();
         PanelPopup panelPopup = (PanelPopup) component;
         String clientId = panelPopup.getClientId(facesContext);
+        writer.startElement(HTML.DIV_ELEM, component);
+        writer.writeAttribute(HTML.ID_ATTR, clientId+"_scrDiv", HTML.ID_ATTR);
         writer.startElement(HTML.SPAN_ELEM, component);
         writer.writeAttribute(HTML.ID_ATTR, clientId + "_scrSpan", HTML.ID_ATTR);
         writer.startElement("script", null);
         writer.writeAttribute("text", "text/javascript", null);
         StringBuilder builder = new StringBuilder(255);
-        int hashcode = MobiJSFUtils.generateHashCode(System.currentTimeMillis());
-        builder.append("mobi.panelPopup.initClient('").append(clientId)
+        String hashString = String.valueOf(panelPopup.isClientSide()) + String.valueOf(panelPopup.isVisible())+
+                String.valueOf(panelPopup.isAutoCenter());
+        int hashcode = MobiJSFUtils.generateHashCode(hashString);
+        boolean disabled = panelPopup.isDisabled();
+      /*  if (disabled){
+            panelPopup.setVisible(false);
+        } */
+        builder.append("ice.mobi.panelPopup.init('").append(clientId)
                 .append("', {visible: ").append(panelPopup.isVisible())
                 .append(", hash: ").append(hashcode)
                 .append(",autocenter: ").append(panelPopup.isAutoCenter())
-                .append("});\n");
+                .append(", client: ").append(panelPopup.isClientSide())
+                .append(", id: '").append(panelPopup.getId()).append("'") ;
+        if (panelPopup.getWidth() != Integer.MIN_VALUE){
+            builder.append(", width: ").append(panelPopup.getWidth());
+        }if (panelPopup.getHeight() != Integer.MIN_VALUE){
+            builder.append(", height: ").append(panelPopup.getHeight());
+        }
+  /*      if (panelPopup.isCenterOnForm()){
+            builder.append(", useForm: ").append(panelPopup.isCenterOnForm());
+        }       */
+        if (disabled){
+            builder.append(", disabled: ").append(panelPopup.isDisabled());
+        }
+        builder.append("});");
         writer.write(builder.toString());
+     //   logger.info(" script is="+builder.toString());
         writer.endElement("script");
         writer.endElement(HTML.SPAN_ELEM);
+        writer.endElement(HTML.DIV_ELEM);
     }
 
 }

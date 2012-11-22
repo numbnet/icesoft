@@ -33,12 +33,8 @@
                          visible="#{panelPopupBean.visible}"
                          clientSide="#{panelPopupBean.clientSide}"
                          autoCenter="#{panelPopupBean.autoCenter}"
-                         openButtonLabel="#{panelPopupBean.openButtonLabel}"
                          width="#{panelPopupBean.width}"
-                         height="#{panelPopupBean.height}"
-                         minWidth="#{panelPopupBean.minWidth}"
-                         minHeight="#{panelPopupBean.minHeight}"
-                         disabled="true">
+                         height="#{panelPopupBean.height}">
             <mobi:outputList inset="false">
                 <mobi:outputListItem group="true">
                     Panel Popup
@@ -84,20 +80,28 @@
                         Model Number
                     </h:commandLink>
                 </mobi:outputListItem>
-                <mobi:outputListItem style="text-align:right;">
+                <mobi:outputListItem style="text-align:right;" >
+                  <h:panelGroup rendered="#{not panelPopupBean.clientSide}">
                     <mobi:commandButton  singleSubmit="true"
                         actionListener="#{panelPopupBean.toggleVisible}"
                         buttonType="important"
                         value="Hide Popup"/>
+                  </h:panelGroup>
+                  <h:panelGroup rendered="#{panelPopupBean.clientSide}">
+                     <a href="javascript:;"  onclick="ice.mobi.panelPopup.closeClient('panelPopup');">Access js api to close client popup </a>
+                  </h:panelGroup>
                 </mobi:outputListItem>
             </mobi:outputList>
             
         </mobi:panelPopup>
-        
+
         <mobi:commandButton styleClass="submit"
                             value="Show Popup"
                             actionListener="#{panelPopupBean.toggleVisible}"
                             rendered="#{not panelPopupBean.clientSide}"/>
+        <h:panelGroup rendered="#{panelPopupBean.clientSide}">
+           <a href="javascript:;"  onclick="ice.mobi.panelPopup.openClient('panelPopup');">Access js api to open client popup </a>
+        </h:panelGroup>
                             
         <mobi:fieldsetGroup>
             <mobi:fieldsetRow>
@@ -112,10 +116,6 @@
                 <h:outputLabel for="autoCenter" value="Auto-center:"/>
                 <mobi:flipswitch id="autoCenter" value="#{panelPopupBean.autoCenter}" singleSubmit="true"/>
             </mobi:fieldsetRow>
-            <mobi:fieldsetRow rendered="#{panelPopupBean.clientSide}">
-                <h:outputLabel for="openButtonLabel" value="Open Button Label:"/>
-                <mobi:inputText id="openButtonLabel" value="#{panelPopupBean.openButtonLabel}" singleSubmit="true"/>
-            </mobi:fieldsetRow>
             <mobi:fieldsetRow>
                 <h:outputLabel for="width" value="Width:"/>
                 <mobi:inputText id="width" value="#{panelPopupBean.width}" singleSubmit="true" type="number"/>
@@ -124,19 +124,7 @@
                 <h:outputLabel for="height" value="Height:"/>
                 <mobi:inputText id="height" value="#{panelPopupBean.height}" singleSubmit="true" type="number"/>
             </mobi:fieldsetRow>
-            <mobi:fieldsetRow>
-                <h:outputLabel for="minWidth" value="Min-width:"/>
-                <mobi:inputText id="minWidth" value="#{panelPopupBean.minWidth}" singleSubmit="true" type="number"/>
-            </mobi:fieldsetRow>
-            <mobi:fieldsetRow>
-                <h:outputLabel for="minHeight" value="Min-height:"/>
-                <mobi:inputText id="minHeight" value="#{panelPopupBean.minHeight}" singleSubmit="true" type="number"/>
-            </mobi:fieldsetRow>
         </mobi:fieldsetGroup>
-        
-        
-        
-
 
     </h:form>
 </ui:composition>

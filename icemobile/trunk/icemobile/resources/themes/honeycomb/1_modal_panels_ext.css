@@ -30,7 +30,12 @@ mobi-panelpopup-container { background-color: #2B2A2F; }
     margin: 10px;
     padding: 10px;
 }
-
+.mobi-panelpopup-title-container{
+    background-color: #000;
+    color: white;
+    text-align: center;
+    border-bottom: 1px solid white;
+}
 .mobi-panelconf-body-container {
     color: white;
 }
