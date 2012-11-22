@@ -237,20 +237,23 @@ implements
      *                 <code>null</code>.
      */
     public void sendUpdatedViews(final UpdatedViews updatedViews) {
-        synchronized (sessionMap) {
-            String _iceFacesId = updatedViews.getICEfacesID();
-            if (isValid(_iceFacesId)) {
-                ReentrantLock _lock = getSessionContext(_iceFacesId).getLock();
-                _lock.lock();
-                try {
-                    updatedViewsManager.push(updatedViews);
-                    Handler _handler = requestManager.pull(_iceFacesId);
-                    if (_handler != null) {
-                        _handler.handleNow();
+        String _iceFacesId = updatedViews.getICEfacesID();
+        SessionContext _sessionContext = getSessionContext(_iceFacesId);
+        if (_sessionContext != null) {
+            ReentrantLock _lock = _sessionContext.getLock();
+            _lock.lock();
+            try {
+                synchronized (sessionMap) {
+                    if (isValid(_iceFacesId)) {
+                        updatedViewsManager.push(updatedViews);
+                        Handler _handler = requestManager.pull(_iceFacesId);
+                        if (_handler != null) {
+                            _handler.handleNow();
+                        }
                     }
-                } finally {
-                    _lock.unlock();
                 }
+            } finally {
+                _lock.unlock();
             }
         }
     }
