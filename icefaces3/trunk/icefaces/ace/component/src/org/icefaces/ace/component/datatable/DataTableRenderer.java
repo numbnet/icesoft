@@ -216,8 +216,8 @@ public class DataTableRenderer extends CoreRenderer {
         for (Integer i = 0; i < columns.size(); i++) {
             Column c = columns.get(i);
             Integer order = c.getPinningOrder();
-            if (order != null)
-                json.entry(i.toString(), order);
+            if (order > 0)
+                json.entry(i.toString(), order - 1);
         }
 
         return json.endMap().toString();

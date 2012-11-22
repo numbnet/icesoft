@@ -1383,6 +1383,59 @@ ice.ace.DataTable.prototype.repairPinnedColumn = function(i) {
     tbody.parent().bind('scroll', this.columnPinScrollListener[i]);
 }
 
+ice.ace.DataTable.prototype.pinThisColumn = function(event) {
+    var target = (event && event.target) ? event.target : window.event.srcElement,
+        cell = ice.ace.jq(target).closest('th,td');
+
+    if (cell.hasClass('pinned'))
+        this.unpinColumn(cell.index() + 1);
+    else
+        this.pinColumn(cell.index() + 1);
+}
+
+ice.ace.DataTable.prototype.unpinColumn = function(i) {
+    var safari = ice.ace.jq.browser.safari,
+        chrome = ice.ace.jq.browser.chrome,
+        ie7 = ice.ace.jq.browser.msie && ice.ace.jq.browser.version == 7,
+        ie8 = ice.ace.jq.browser.msie && ice.ace.jq.browser.version == 8,
+        ie9 = ice.ace.jq.browser.msie && ice.ace.jq.browser.version == 9,
+        firefox = ice.ace.jq.browser.mozilla;
+
+    var tbody = ice.ace.jq(this.jqId + ' > div.ui-datatable-scrollable-body > table'),
+        thead = ice.ace.jq(this.jqId + ' > div.ui-datatable-scrollable-header > table'),
+        tfoot = ice.ace.jq(this.jqId + ' > div.ui-datatable-scrollable-footer > table');
+
+    // Handle non static header cases
+    if (tbody.length == 0) tbody = ice.ace.jq(this.jqId + ' > div > table');
+
+    var bodyCells = tbody.find(' > tbody > tr > td:nth-child('+i+')'),
+        headCells = thead.find(' > thead > tr > th:nth-child('+i+')'),
+        footCells = tfoot.find(' > tfoot > tr > td:nth-child('+i+')'),
+        offset = headCells.first().width(),
+        bodyContainer = tbody.parent();
+
+    if (safari || chrome) offset = offset + 1;
+
+    // Add new column to pinning state
+    this.columnPinOrder[i - 1] = undefined;
+    this.columnPinPosition[i - 1] = undefined;
+    // todo: reorder column pin order
+    this.writePinningState();
+
+    bodyCells.add(footCells).add(headCells).css('position','').removeClass('pinned ui-widget-content');
+
+    this.currentPinRegionOffset = this.currentPinRegionOffset - offset;
+    bodyContainer.add(tfoot.parent()).add(thead.parent()).css('margin-left', this.currentPinRegionOffset);
+
+    // Send request
+    if (this.behaviors && this.behaviors.unpin) {
+        var options = {
+            source: this.id
+        }
+        ice.ace.ab(ice.ace.extendAjaxArguments(this.behaviors.unpin, options));
+    }
+}
+
 ice.ace.DataTable.prototype.pinColumn = function(i) {
     var safari = ice.ace.jq.browser.safari,
         chrome = ice.ace.jq.browser.chrome,
@@ -1532,6 +1585,15 @@ ice.ace.DataTable.prototype.pinColumn = function(i) {
     };
 
     tbody.parent().bind('scroll', this.columnPinScrollListener[i]);
+
+    // Send request
+    if (this.behaviors && this.behaviors.pin) {
+        var options = {
+            source: this.id
+        }
+
+        ice.ace.ab(ice.ace.extendAjaxArguments(this.behaviors.pin, options));
+    }
 }
 
 ice.ace.DataTable.prototype.setupDisabledStyling = function () {

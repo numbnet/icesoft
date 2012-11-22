@@ -71,7 +71,11 @@ import java.util.Map;
         @ClientEvent(name="expand", javadoc="Fired when a child ExpansionToggler component is clicked to expand.",
                 tlddoc="Fired when a child ExpansionToggler component is clicked to expand.", defaultRender="@all", defaultExecute="@this"),
         @ClientEvent(name="contract", javadoc="Fired when a child ExpansionToggler component is clicked to contract.",
-                tlddoc="Fired when a child ExpansionToggler component is clicked to contract.", defaultRender="@all", defaultExecute="@this")} ,
+                tlddoc="Fired when a child ExpansionToggler component is clicked to contract.", defaultRender="@all", defaultExecute="@this"),
+        @ClientEvent(name="pin", javadoc="Fired when a column is added to the pinning region of the table.",
+                tlddoc="Fired when a column is added to the pinning region of the table.", defaultRender="@this", defaultExecute="@this"),
+        @ClientEvent(name="unpin", javadoc="Fired when a column is removed to the pinning region of the table.",
+                tlddoc="Fired when a column is removed to the pinning region of the table.", defaultRender="@this", defaultExecute="@this")} ,
         defaultEvent = "select"
 )
 public class DataTableMeta extends UIDataMeta {

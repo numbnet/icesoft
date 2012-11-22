@@ -140,7 +140,7 @@ public class ColumnMeta extends UIColumnMeta {
 
     @Property(tlddoc = "Define the position of this column in the pinned column " +
             "region when column pinning and scrolling are enabled at the table level. " +
-            "Having a value in this field indicates a column is pinned. ")
+            "Having a value in this field indicates a column is pinned. 1 indexed.")
     private Integer pinningOrder;
 
 //    These per-feature configuration attributes will be used when the 'value' property is added to Column.

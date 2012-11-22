@@ -40,10 +40,12 @@ public class DataTablePinning extends ComponentExampleImpl<DataTablePinning> imp
     public static final String BEAN_NAME = "dataTablePinning";
 
     private List<Car> carsData;
+    private Integer[] pinOrder;
 
     public DataTablePinning() {
         super(DataTablePinning.class);
         carsData = new ArrayList<Car>(DataTableData.getDefaultData());
+        pinOrder = new Integer[7];
     }
 
     @PostConstruct
@@ -57,5 +59,13 @@ public class DataTablePinning extends ComponentExampleImpl<DataTablePinning> imp
 
     public void setCarsData(List<Car> carsData) {
         this.carsData = carsData;
+    }
+
+    public Integer[] getPinOrder() {
+        return pinOrder;
+    }
+
+    public void setPinOrder(Integer[] pinOrder) {
+        this.pinOrder = pinOrder;
     }
 }
