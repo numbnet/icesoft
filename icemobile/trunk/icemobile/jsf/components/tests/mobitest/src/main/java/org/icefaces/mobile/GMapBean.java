@@ -1,9 +1,10 @@
-package org.icefaces.mobile;
+package org.icemobile.samples.mobileshowcase.view.examples.layout.gmap;
 
 import java.io.Serializable;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+
 
 @ManagedBean(name = GMapBean.BEAN_NAME)
 @SessionScoped
