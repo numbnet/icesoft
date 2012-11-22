@@ -140,8 +140,8 @@ public class UpdatedViewsManager {
                                         _updatedViewsQueue.getSize() + "]");
                     }
                 } catch (UpdatedViewsQueueExceededException exception) {
-                    if (LOG.isInfoEnabled()) {
-                        LOG.info(
+                    if (LOG.isDebugEnabled()) {
+                        LOG.debug(
                             "Updated views queue exceeded: " +
                                 updatedViews.getICEfacesID());
                     }
