@@ -15,61 +15,59 @@ package org.icefaces.ace.component.gmap;
  * governing permissions and limitations under the License.
  */
 
-import java.io.IOException;
-import java.util.Iterator;
-import java.util.Map;
+import org.icefaces.ace.renderkit.CoreRenderer;
+import org.icefaces.render.MandatoryResourceComponent;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import javax.faces.event.PhaseId;
+import java.io.IOException;
+import java.util.Iterator;
 
-import org.icefaces.ace.component.ajax.AjaxBehavior;
-import org.icefaces.ace.renderkit.CoreRenderer;
-import org.icefaces.ace.util.ComponentUtils;
-import org.icefaces.ace.util.JSONBuilder;
-import org.icefaces.render.MandatoryResourceComponent;
-
-@MandatoryResourceComponent(tagName="gMap", value="org.icefaces.ace.component.gmap.GMap")
+@MandatoryResourceComponent(tagName = "gMap", value = "org.icefaces.ace.component.gmap.GMap")
 public class GMapMarkerRenderer extends CoreRenderer {
 
 
-	    public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
-			ResponseWriter writer = context.getResponseWriter();
-			GMapMarker marker = (GMapMarker) component;
-			String clientId = marker.getClientId(context);
-			writer.startElement("span", null);
-			writer.writeAttribute("id", clientId + "_marker", null);
-			writer.startElement("script", null);
-			writer.writeAttribute("type", "text/javascript", null);
-			writer.write("ice.ace.jq(function() {");
-			String oldLatitude = "";
-			String oldLongitude = "";
-			String currentLat = marker.getLatitude();
-			String currentLon = marker.getLongitude();
-			//create a marker if lat and lon defined on the component itself
-			if (currentLat != null &&  currentLon != null
-					&& currentLat.length() > 0 && currentLon.length() > 0) {
-				if (!currentLat.equals(oldLatitude) ||
-						!currentLon.equals(oldLongitude)) {
-					//to dynamic support first to remove if any
-					writer.write("ice.ace.gMap.removeMarker('"+ marker.getParent().getClientId(context)+"', '"+ clientId +"');");
-					if (marker.getOptions() != null)
-						writer.write("ice.ace.gMap.addMarker('" + marker.getParent().getClientId(context) + "', '" + clientId +
-							"', '"+ currentLat + "', '" + currentLon + "', \"" + marker.getOptions() + "\");");
-					else
-						writer.write("ice.ace.gMap.addMarker('" + marker.getParent().getClientId(context) + "', '" + clientId +
-							"', '"+ currentLat + "', '" + currentLon + "');");
-				}
-				oldLatitude = currentLat;
-				oldLongitude = currentLon;
-			}
-            if(marker.getAnimation() != null)
-                writer.write("ice.ace.gMap.animateMarker('"+ marker.getParent().getClientId(context)+"', '"+ clientId +"','"+ marker.getAnimation() +"');");
-			writer.write("});");
-			writer.endElement("script");
-			writer.endElement("span");
-	}
+    public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        GMapMarker marker = (GMapMarker) component;
+        String clientId = marker.getClientId(context);
+        writer.startElement("span", null);
+        writer.writeAttribute("id", clientId + "_marker", null);
+        writer.startElement("script", null);
+        writer.writeAttribute("type", "text/javascript", null);
+        writer.write("ice.ace.jq(function() {");
+        String oldLatitude = "";
+        String oldLongitude = "";
+        String currentLat = marker.getLatitude();
+        String currentLon = marker.getLongitude();
+        //create a marker if lat and lon defined on the component itself
+        if (!marker.isDisabled()) {
+            if (currentLat != null && currentLon != null
+                    && currentLat.length() > 0 && currentLon.length() > 0) {
+                if (!currentLat.equals(oldLatitude) ||
+                        !currentLon.equals(oldLongitude)) {
+                    //to dynamic support first to remove if any
+                    writer.write("ice.ace.gMap.removeMarker('" + marker.getParent().getClientId(context) + "', '" + clientId + "');");
+                    if (marker.getOptions() != null)
+                        writer.write("ice.ace.gMap.addMarker('" + marker.getParent().getClientId(context) + "', '" + clientId +
+                                "', '" + currentLat + "', '" + currentLon + "', \"" + marker.getOptions() + "\");");
+                    else
+                        writer.write("ice.ace.gMap.addMarker('" + marker.getParent().getClientId(context) + "', '" + clientId +
+                                "', '" + currentLat + "', '" + currentLon + "');");
+                }
+                oldLatitude = currentLat;
+                oldLongitude = currentLon;
+            }
+            if (marker.getAnimation() != null)
+                writer.write("ice.ace.gMap.animateMarker('" + marker.getParent().getClientId(context) + "', '" + clientId + "','" + marker.getAnimation() + "');");
+        } else {
+            writer.write("ice.ace.gMap.removeMarker('" + marker.getParent().getClientId(context) + "', '" + clientId + "');");
+        }
+        writer.write("});");
+        writer.endElement("script");
+        writer.endElement("span");
+    }
 
     @Override
     public void encodeChildren(FacesContext context, UIComponent component) throws IOException {

@@ -24,38 +24,38 @@ import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
 
 @Component(
-        tagName         = "gMapLayer",
-        componentClass  = "org.icefaces.ace.component.gmap.GMapLayer",
-        rendererClass   = "org.icefaces.ace.component.gmap.GMapLayerRenderer",
-        generatedClass  = "org.icefaces.ace.component.gmap.GMapLayerBase",
-        extendsClass    = "javax.faces.component.UIPanel",
-        componentType   = "org.icefaces.ace.component.GMapLayer",
-        rendererType    = "org.icefaces.ace.component.GMapLayerRenderer",
-		componentFamily = "org.icefaces.ace.component",
-		tlddoc = "The ace:gMapLayer component creates one of a variety of layers on top of the parent ace:gMap, to enhance or display new information. " +
+        tagName = "gMapLayer",
+        componentClass = "org.icefaces.ace.component.gmap.GMapLayer",
+        rendererClass = "org.icefaces.ace.component.gmap.GMapLayerRenderer",
+        generatedClass = "org.icefaces.ace.component.gmap.GMapLayerBase",
+        extendsClass = "javax.faces.component.UIPanel",
+        componentType = "org.icefaces.ace.component.GMapLayer",
+        rendererType = "org.icefaces.ace.component.GMapLayerRenderer",
+        componentFamily = "org.icefaces.ace.component",
+        tlddoc = "The ace:gMapLayer component creates one of a variety of layers on top of the parent ace:gMap, to enhance or display new information. " +
                 "Google provides Bicycling, Traffic and Transit layers, which display bike paths, traffic flow and public transportations routes respectively. " +
                 "Alternatively, a user defined kml file can also be used." +
                 " For more information, see the <a href=\"http://wiki.icefaces.org/display/ICE/GMap\">gMap</a> Wiki Documentation."
-        )
+)
 
 @ResourceDependencies({
-	@ResourceDependency(library="icefaces.ace", name="jquery/ui/jquery-ui.css"),
-	@ResourceDependency(library="icefaces.ace", name="util/ace-jquery.js"),
-	@ResourceDependency(library="icefaces.ace", name="util/ace-components.js")
+        @ResourceDependency(library = "icefaces.ace", name = "jquery/ui/jquery-ui.css"),
+        @ResourceDependency(library = "icefaces.ace", name = "util/ace-jquery.js"),
+        @ResourceDependency(library = "icefaces.ace", name = "util/ace-components.js")
 })
 
 public class GMapLayerMeta extends UIPanelMeta {
 
-	@Property(tlddoc="The type of layer that you wish to create. Options are 'Bicycling', 'Traffic', 'Transit', 'Fusion' and 'Kml'. (Case insensitive)")
-	private String layerType;
-	
-	@Property(tlddoc="The URL from which to draw kml data.")
-	private String url;
-	
-	@Property(tlddoc="Additional options to be sent to the layer. Check google maps API for more specifics at https://developers.google.com/maps/documentation/javascript/reference#KmlLayerOptions. Form is attribute:'value'.", defaultValue = "Skip")
-	private String options;
+    @Property(tlddoc = "The type of layer that you wish to create. Options are 'Bicycling', 'Traffic', 'Transit', 'Fusion' and 'Kml'. (Case insensitive)")
+    private String layerType;
 
-    @Property(tlddoc="Whether to make the chosen layer visible or not.")
+    @Property(tlddoc = "The URL from which to draw kml data.")
+    private String url;
+
+    @Property(tlddoc = "Additional options to be sent to the layer. Check google maps API for more specifics at https://developers.google.com/maps/documentation/javascript/reference#KmlLayerOptions. Form is attribute:'value'.", defaultValue = "Skip")
+    private String options;
+
+    @Property(tlddoc = "Whether to make the chosen layer visible or not.")
     private boolean visible;
 
 }

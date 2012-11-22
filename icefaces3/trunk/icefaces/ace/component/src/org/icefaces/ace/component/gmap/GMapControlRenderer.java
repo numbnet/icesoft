@@ -36,11 +36,11 @@ public class GMapControlRenderer extends CoreRenderer {
         writer.startElement("script", null);
         writer.writeAttribute("type", "text/javascript", null);
         writer.write("ice.ace.jq(function() {");
-        if(control.isDisabled())
+        if (control.isDisabled())
             writer.write("ice.ace.gMap.removeControl('" + control.getParent().getClientId(context) + "', '" + control.getName() + "');");
-        else{
+        else {
             writer.write("ice.ace.gMap.addControl('" + control.getParent().getClientId(context) + "', '" + control.getName() +
-                "', '" + control.getPosition() + "', '" + control.getControlStyle() + "');");
+                    "', '" + control.getPosition() + "', '" + control.getControlStyle() + "');");
         }
         writer.write("});");
         writer.endElement("script");

@@ -24,34 +24,34 @@ import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
 
 @Component(
-        tagName         = "gMapOverlay",
-        componentClass  = "org.icefaces.ace.component.gmap.GMapOverlay",
-        rendererClass   = "org.icefaces.ace.component.gmap.GMapOverlayRenderer",
-        generatedClass  = "org.icefaces.ace.component.gmap.GMapOverlayBase",
-        extendsClass    = "javax.faces.component.UIPanel",
-        componentType   = "org.icefaces.ace.component.GMapOverlay",
-        rendererType    = "org.icefaces.ace.component.GMapOverlayRenderer",
-		componentFamily = "org.icefaces.ace.component",
-		tlddoc = "The ace:gMapOverlay component allows for the creation of user defined shapes on the parent ace:gMap. Google provides rectangles and circles for ease of use, but polygon and polyline can be used for greater control." +
+        tagName = "gMapOverlay",
+        componentClass = "org.icefaces.ace.component.gmap.GMapOverlay",
+        rendererClass = "org.icefaces.ace.component.gmap.GMapOverlayRenderer",
+        generatedClass = "org.icefaces.ace.component.gmap.GMapOverlayBase",
+        extendsClass = "javax.faces.component.UIPanel",
+        componentType = "org.icefaces.ace.component.GMapOverlay",
+        rendererType = "org.icefaces.ace.component.GMapOverlayRenderer",
+        componentFamily = "org.icefaces.ace.component",
+        tlddoc = "The ace:gMapOverlay component allows for the creation of user defined shapes on the parent ace:gMap. Google provides rectangles and circles for ease of use, but polygon and polyline can be used for greater control." +
                 " Colours and borders can be set through options." +
                 " For more information, see the <a href=\"http://wiki.icefaces.org/display/ICE/GMap\">gMap</a> Wiki Documentation."
-        )
+)
 
 @ResourceDependencies({
-	@ResourceDependency(library="icefaces.ace", name="jquery/ui/jquery-ui.css"),
-	@ResourceDependency(library="icefaces.ace", name="util/ace-jquery.js"),
-	@ResourceDependency(library="icefaces.ace", name="util/ace-components.js")
+        @ResourceDependency(library = "icefaces.ace", name = "jquery/ui/jquery-ui.css"),
+        @ResourceDependency(library = "icefaces.ace", name = "util/ace-jquery.js"),
+        @ResourceDependency(library = "icefaces.ace", name = "util/ace-components.js")
 })
 
 public class GMapOverlayMeta extends UIPanelMeta {
 
-	@Property(tlddoc="The name of the shape overlay you want to create. Valid entries are: 'Line', 'Polygon', 'Rectangle', 'Circle'  (Case insensitive).")
-	private String shape;
-	
-	@Property(tlddoc="The points that the service is applied to. Format is (lat,long) or, for Directions and Distance only, a standard address. Separate points with ':'.")
-	private String points;
-	
-	@Property(tlddoc="Additional options to be sent to the service. Check google maps API for more specifics at https://developers.google.com/maps/documentation/javascript/reference#PolylineOptions. Form is attribute:'value'.")
-	private String options;
+    @Property(tlddoc = "The name of the shape overlay you want to create. Valid entries are: 'Line', 'Polygon', 'Rectangle', 'Circle'  (Case insensitive).")
+    private String shape;
+
+    @Property(tlddoc = "The points that the service is applied to. Format is (lat,long) or, for Directions and Distance only, a standard address. Separate points with ':'.")
+    private String points;
+
+    @Property(tlddoc = "Additional options to be sent to the service. Check google maps API for more specifics at https://developers.google.com/maps/documentation/javascript/reference#PolylineOptions. Form is attribute:'value'.")
+    private String options;
 
 }

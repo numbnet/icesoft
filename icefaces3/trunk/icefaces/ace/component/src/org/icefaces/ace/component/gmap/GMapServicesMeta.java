@@ -24,37 +24,37 @@ import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
 
 @Component(
-        tagName         = "gMapServices",
-        componentClass  = "org.icefaces.ace.component.gmap.GMapServices",
-        rendererClass   = "org.icefaces.ace.component.gmap.GMapServicesRenderer",
-        generatedClass  = "org.icefaces.ace.component.gmap.GMapServicesBase",
-        extendsClass    = "javax.faces.component.UIPanel",
-        componentType   = "org.icefaces.ace.component.GMapServices",
-        rendererType    = "org.icefaces.ace.component.GMapServicesRenderer",
-		componentFamily = "org.icefaces.ace.component",
-		tlddoc = "The ace:gMapServices tag allows access to the various 'services' that Google provides through its maps API. Elevation gives the height of any point above or below sea level. Max zoom gives the highest level of satellite zoom available. " +
+        tagName = "gMapServices",
+        componentClass = "org.icefaces.ace.component.gmap.GMapServices",
+        rendererClass = "org.icefaces.ace.component.gmap.GMapServicesRenderer",
+        generatedClass = "org.icefaces.ace.component.gmap.GMapServicesBase",
+        extendsClass = "javax.faces.component.UIPanel",
+        componentType = "org.icefaces.ace.component.GMapServices",
+        rendererType = "org.icefaces.ace.component.GMapServicesRenderer",
+        componentFamily = "org.icefaces.ace.component",
+        tlddoc = "The ace:gMapServices tag allows access to the various 'services' that Google provides through its maps API. Elevation gives the height of any point above or below sea level. Max zoom gives the highest level of satellite zoom available. " +
                 "Distance gives the distance between two points along a set mode of transit and directions show the way between given locations." +
                 " For more information, see the <a href=\"http://wiki.icefaces.org/display/ICE/GMap\">gMap</a> Wiki Documentation."
-        )
+)
 
 @ResourceDependencies({
-	@ResourceDependency(library="icefaces.ace", name="jquery/ui/jquery-ui.css"),
-	@ResourceDependency(library="icefaces.ace", name="util/ace-jquery.js"),
-	@ResourceDependency(library="icefaces.ace", name="util/ace-components.js")
+        @ResourceDependency(library = "icefaces.ace", name = "jquery/ui/jquery-ui.css"),
+        @ResourceDependency(library = "icefaces.ace", name = "util/ace-jquery.js"),
+        @ResourceDependency(library = "icefaces.ace", name = "util/ace-components.js")
 })
 
 public class GMapServicesMeta extends UIPanelMeta {
 
-	@Property(tlddoc="The name of the service type you want to create. Valid entries are: 'Directions', 'Elevation', 'MaxZoom', 'Distance' (Case insensitive).")
-	private String name;
-	
-	@Property(tlddoc="The points that the service is applied to. Format is (lat,long) or, for Directions and Distance only, a standard address. Separate points with ':'.")
-	private String points;
-	
-	@Property(tlddoc="Additional options to be sent to the service. Check google maps API for more specifics at https://developers.google.com/maps/documentation/javascript/reference. Form is attribute:'value'.", defaultValue = "travelMode:'DRIVING'")
-	private String options;
+    @Property(tlddoc = "The name of the service type you want to create. Valid entries are: 'Directions', 'Elevation', 'MaxZoom', 'Distance' (Case insensitive).")
+    private String name;
 
-    @Property(tlddoc="Id of the div you with to set text directions in. null or none to clear.", defaultValue="none")
+    @Property(tlddoc = "The points that the service is applied to. Format is (lat,long) or, for Directions and Distance only, a standard address. Separate points with ':'.")
+    private String points;
+
+    @Property(tlddoc = "Additional options to be sent to the service. Check google maps API for more specifics at https://developers.google.com/maps/documentation/javascript/reference. Form is attribute:'value'.", defaultValue = "travelMode:'DRIVING'")
+    private String options;
+
+    @Property(tlddoc = "Id of the div you with to set text directions in. null or none to clear.", defaultValue = "none")
     private String div;
 
 }

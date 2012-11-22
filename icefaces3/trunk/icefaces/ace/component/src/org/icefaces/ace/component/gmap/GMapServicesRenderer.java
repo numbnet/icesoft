@@ -24,25 +24,25 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import java.io.IOException;
 
-@MandatoryResourceComponent(tagName="gMap", value="org.icefaces.ace.component.gmap.GMap")
+@MandatoryResourceComponent(tagName = "gMap", value = "org.icefaces.ace.component.gmap.GMap")
 public class GMapServicesRenderer extends CoreRenderer {
 
 
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
 
-		ResponseWriter writer = context.getResponseWriter();
+        ResponseWriter writer = context.getResponseWriter();
         GMapServices service = (GMapServices) component;
         String clientId = service.getClientId(context);
-		writer.startElement("span", null);
-		writer.writeAttribute("id", clientId + "_services", null);
+        writer.startElement("span", null);
+        writer.writeAttribute("id", clientId + "_services", null);
         writer.startElement("script", null);
         writer.writeAttribute("type", "text/javascript", null);
         writer.write("ice.ace.jq(function() {");
-        if (service.getPoints() != null && service.getName() != null){
+        if (service.getPoints() != null && service.getName() != null) {
             writer.write("ice.ace.gMap.gService('" + service.getParent().getClientId(context) + "' , '" + service.getName() + "' , \"" + service.getPoints() + "\" , \"" + service.getOptions() + "\",'" + service.getDiv() + "');");
         }
         writer.write("});");
         writer.endElement("script");
-		writer.endElement("span");
+        writer.endElement("span");
     }
 }

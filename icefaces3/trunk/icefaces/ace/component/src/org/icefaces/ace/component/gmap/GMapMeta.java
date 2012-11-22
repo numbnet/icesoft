@@ -16,71 +16,66 @@
 
 package org.icefaces.ace.component.gmap;
 
-import javax.faces.application.ResourceDependencies;
-import javax.faces.application.ResourceDependency;
-import javax.el.MethodExpression;
-
 import org.icefaces.ace.meta.annotation.Component;
 import org.icefaces.ace.meta.annotation.Property;
 import org.icefaces.ace.meta.baseMeta.UIPanelMeta;
-import org.icefaces.ace.meta.annotation.Expression;
-import org.icefaces.ace.meta.annotation.ClientBehaviorHolder;
-import org.icefaces.ace.meta.annotation.ClientEvent;
-import org.icefaces.ace.api.IceClientBehaviorHolder;
+
+import javax.faces.application.ResourceDependencies;
+import javax.faces.application.ResourceDependency;
 
 @Component(
-        tagName         = "gMap",
-        componentClass  = "org.icefaces.ace.component.gmap.GMap",
-        rendererClass   = "org.icefaces.ace.component.gmap.GMapRenderer",
-        generatedClass  = "org.icefaces.ace.component.gmap.GMapBase",
-        extendsClass    = "javax.faces.component.UIPanel",
-        componentType   = "org.icefaces.ace.component.GMap",
-        rendererType    = "org.icefaces.ace.component.GMapRenderer",
-		componentFamily = "org.icefaces.ace.component",
-		tlddoc = "The base component for the ACE gMap (Google Maps API) set of components." +
+        tagName = "gMap",
+        componentClass = "org.icefaces.ace.component.gmap.GMap",
+        rendererClass = "org.icefaces.ace.component.gmap.GMapRenderer",
+        generatedClass = "org.icefaces.ace.component.gmap.GMapBase",
+        extendsClass = "javax.faces.component.UIPanel",
+        componentType = "org.icefaces.ace.component.GMap",
+        rendererType = "org.icefaces.ace.component.GMapRenderer",
+        componentFamily = "org.icefaces.ace.component",
+        tlddoc = "The base component for the ACE gMap (Google Maps API) set of components." +
                 " This component is how to define and control the map proper, as well as serving as a parent for the other gMap subcomponents." +
                 " Important note: To function properly, you must define the property 'org.icefaces.ace.gmapKey' in your web.xml." +
                 " You can get an API key at http://code.google.com/apis/maps/signup.html." +
                 " For more information, see the <a href=\"http://wiki.icefaces.org/display/ICE/GMap\">gMap</a> Wiki Documentation."
-        )
+)
 
 @ResourceDependencies({
-	@ResourceDependency(name = "icefaces.ace/gmap/api.js"),
-    @ResourceDependency(name="util/combined.css",library="icefaces.ace"),
-	@ResourceDependency(library="icefaces.ace", name="jquery/ui/jquery-ui.css"),
-	@ResourceDependency(library="icefaces.ace", name="util/ace-jquery.js"),
-	@ResourceDependency(library="icefaces.ace", name="util/ace-components.js")
+        @ResourceDependency(name = "icefaces.ace/gmap/api.js"),
+        @ResourceDependency(name = "util/combined.css", library = "icefaces.ace"),
+        @ResourceDependency(library = "icefaces.ace", name = "jquery/ui/jquery-ui.css"),
+        @ResourceDependency(library = "icefaces.ace", name = "util/ace-jquery.js"),
+        @ResourceDependency(library = "icefaces.ace", name = "util/ace-components.js")
 })
 
 public class GMapMeta extends UIPanelMeta {
 
-	@Property(tlddoc="The starting longitude for the map. Will be overridden if an address is provided.", defaultValue="-114.08538937568665")
-	private String longitude;
-	
-	@Property(tlddoc="The starting latitude for the map. Will be overridden if an address is provided.", defaultValue="51.06757388616548")
-	private String latitude;
-	
-	@Property(tlddoc="Starting zoom of the map element.", defaultValue="5")
-	private String zoomLevel;
-	
-	@Property(tlddoc="Additional options to be sent to the map. Check google maps API at https://developers.google.com/maps/documentation/javascript/reference#MapOptions for more specifics. Form is attribute:'value'.")
-	private String options;
-	
-	@Property(tlddoc="Whether the map should be locating the specified address. Default is false.", defaultValue="false")
-	private boolean locateAddress;
-	
-	@Property(tlddoc="Specifies whether the map has been initialized or not.", defaultValue="false")
-	private boolean intialized;
-	
-	@Property(tlddoc="Address to locate.")
-	private String address;
-	
-	@Property(tlddoc="Map type to display by default. Possible values are 'HYBRID', 'ROADMAP', 'SATELLITE' and 'TERRAIN', case insensitive.", defaultValue="ROADMAP")
-	private String type;
+    @Property(tlddoc = "The starting longitude for the map. Will be overridden if an address is provided.", defaultValue = "-114.08538937568665")
+    private String longitude;
 
-    @Property(tlddoc="Styling for the main gMap div.")
+    @Property(tlddoc = "The starting latitude for the map. Will be overridden if an address is provided.", defaultValue = "51.06757388616548")
+    private String latitude;
+
+    @Property(tlddoc = "Starting zoom of the map element.", defaultValue = "5")
+    private String zoomLevel;
+
+    @Property(tlddoc = "Additional options to be sent to the map. Check google maps API at https://developers.google.com/maps/documentation/javascript/reference#MapOptions for more specifics. Form is attribute:'value'.")
+    private String options;
+
+    @Property(tlddoc = "Whether the map should be locating the specified address. Default is false.", defaultValue = "false")
+    private boolean locateAddress;
+
+    @Property(tlddoc = "Specifies whether the map has been initialized or not.", defaultValue = "false")
+    private boolean intialized;
+
+    @Property(tlddoc = "Address to locate.")
+    private String address;
+
+    @Property(tlddoc = "Map type to display by default. Possible values are 'HYBRID', 'ROADMAP', 'SATELLITE' and 'TERRAIN', case insensitive.", defaultValue = "ROADMAP")
+    private String type;
+
+    @Property(tlddoc = "Styling for the main gMap div.")
     private String style;
 
-    @Property(tlddoc="The classname for the main gMap div.")
+    @Property(tlddoc = "The classname for the main gMap div.")
     private String styleClass;
 }

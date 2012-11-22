@@ -211,7 +211,6 @@ ice.ace.gMap.getGMapWrapper = function (id) {
                 gmapWrapper.freeWindows[window]=freeWindows[window];
             }
         }
-        //alert(JSON.stringify(windows));
         for (window in windows) {
             if (gmapWrapper.windows[window] == null) {
                 gmapWrapper.windows[window]=windows[window];
@@ -639,6 +638,8 @@ ice.ace.gMap.getGMapWrapper = function (id) {
         var wrapper = ice.ace.gMap.getGMapWrapper(ele);
         var map = ice.ace.gMap.getGMapWrapper(ele).getRealGMap();
         var window = wrapper.windows[windowId];
+        var windows = wrapper.windows;
+        var freeWindows = wrapper.freeWindows;
         if (window != null)
             window.close();
         window = new google.maps.InfoWindow();
@@ -666,11 +667,36 @@ ice.ace.gMap.getGMapWrapper = function (id) {
         {
             window.open(map);
             google.maps.event.addDomListener(window,"closeclick",function(){
-                wrapper.freeWindows[windowId]=null;
+                ice.ace.gMap.removeGWindow(ele,windowId)
             });
-            wrapper.freeWindows[windowId]=window;
+            freeWindows[windowId]=window;
         }
-        wrapper.windows[windowId] = window;
+        windows[windowId] = window;
+        wrapper.windows=windows;
+        wrapper.freeWindows=freeWindows;
+    }
+
+    ice.ace.gMap.removeGWindow = function(mapId,windowId){
+        var wrapper = ice.ace.gMap.getGMapWrapper(mapId);
+        var window = wrapper.windows[windowId];
+        if(window!=null)
+            window.close();
+        else
+            return;
+        var newWindowArray = new Object();
+        for (windowObj in wrapper.windows) {
+            if (window != windowObj) {
+                newWindowArray[windowObj] = wrapper.windows[windowObj];
+            }
+        }
+        var newFreeWindowArray = new Object();
+        for (windowObj in wrapper.freeWindows) {
+            if (window != windowObj) {
+                newFreeWindowArray[windowObj] = wrapper.freeWindows[windowObj];
+            }
+        }
+        wrapper.windows=newWindowArray;
+        wrapper.freeWindows=newFreeWindowArray;
     }
 
     ice.ace.gMap.setMapType = function (ele, type) {
@@ -695,4 +721,21 @@ ice.ace.gMap.getGMapWrapper = function (id) {
         }
     }
 
-
+    ice.ace.gMap.addEvent = function (mapId,parentId,eventId,parentName,eventType,rendererType,script){
+        var wrapper = ice.ace.gMap.getGMapWrapper(mapId);
+        var map = wrapper.getRealGMap();
+        var parent;
+        if (parentName.indexOf("gmap.GMapAutocomplete") != -1)
+            parent = wrapper.windows[parentId];
+        else if (parentName.indexOf("gmap.GMapInfoWindow") != -1)
+            parent = wrapper.windows[parentId];
+        else if (parentName.indexOf("gmap.GMapLayer") != -1)
+            parent = wrapper.layers[parentId];
+        else if (parentName.indexOf("gmap.GMapMarker") != -1)
+            parent = wrapper.markers[parentId];
+        else if (parentName.indexOf("gmap.GMapOverlay") != -1)
+            parent = wrapper.overlays[parentId];
+        else if(parentName.indexOf("gmap.GMap") != -1)
+            parent = wrapper.getRealGMap();
+        google.maps.event.addDomListener(parent,eventType,function(){eval(script);});
+    }

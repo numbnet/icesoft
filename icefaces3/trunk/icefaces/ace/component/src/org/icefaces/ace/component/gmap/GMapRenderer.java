@@ -16,25 +16,20 @@
 
 package org.icefaces.ace.component.gmap;
 
-import java.io.IOException;
-import java.util.Iterator;
-import java.util.Map;
+import org.icefaces.ace.renderkit.CoreRenderer;
+import org.icefaces.render.MandatoryResourceComponent;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import javax.faces.event.PhaseId;
-
-import org.icefaces.ace.component.ajax.AjaxBehavior;
-import org.icefaces.ace.renderkit.CoreRenderer;
-import org.icefaces.ace.util.ComponentUtils;
-import org.icefaces.ace.util.JSONBuilder;
-import org.icefaces.render.MandatoryResourceComponent;
+import java.io.IOException;
+import java.util.Iterator;
+import java.util.Map;
 
 @MandatoryResourceComponent(tagName = "gMap", value = "org.icefaces.ace.component.gmap.GMap")
 public class GMapRenderer extends CoreRenderer {
 
-    String[] oldValues = {"","","",""};
+    String[] oldValues = {"", "", "", ""};
 
     public void encodeBegin(FacesContext context, UIComponent component)
             throws IOException {
@@ -50,11 +45,11 @@ public class GMapRenderer extends CoreRenderer {
         writer.writeAttribute("style", "height:100%; width:100%", null);
         writer.endElement("div");
         writer.endElement("div");
-        makeFields(writer,clientId,"lat");
-        makeFields(writer,clientId,"lng");
-        makeFields(writer,clientId,"type");
-        makeFields(writer,clientId,"zoom");
-        updateValues(context,component);
+        makeFields(writer, clientId, "lat");
+        makeFields(writer, clientId, "lng");
+        makeFields(writer, clientId, "type");
+        makeFields(writer, clientId, "zoom");
+        updateValues(context, component);
         writer.startElement("span", null);
         writer.writeAttribute("id", clientId + "_script", null);
         writer.startElement("script", null);
@@ -89,38 +84,34 @@ public class GMapRenderer extends CoreRenderer {
         String lng = String.valueOf(requestParameterMap.get(clientId + "_lng"));
         String zoom = String.valueOf(requestParameterMap.get(clientId + "_zoom"));
         String type = String.valueOf(requestParameterMap.get(clientId + "_type"));
-        if (!map.getLatitude().equalsIgnoreCase(oldValues[0]))
-        {
-            if(map.getLatitude() != null && !map.getLatitude().equalsIgnoreCase("null")){
+        if (!map.getLatitude().equalsIgnoreCase(oldValues[0])) {
+            if (map.getLatitude() != null && !map.getLatitude().equalsIgnoreCase("null")) {
                 lat = map.getLatitude();
                 oldValues[0] = lat;
             }
         }
-        if (!map.getLongitude().equalsIgnoreCase(oldValues[1]))
-        {
-            if(map.getLongitude() != null && !map.getLongitude().equalsIgnoreCase("null")){
+        if (!map.getLongitude().equalsIgnoreCase(oldValues[1])) {
+            if (map.getLongitude() != null && !map.getLongitude().equalsIgnoreCase("null")) {
                 lng = map.getLongitude();
                 oldValues[1] = lng;
             }
         }
-        if (!map.getZoomLevel().equalsIgnoreCase(oldValues[2]))
-        {
-            if(map.getZoomLevel() != null && !map.getZoomLevel().equalsIgnoreCase("null")){
+        if (!map.getZoomLevel().equalsIgnoreCase(oldValues[2])) {
+            if (map.getZoomLevel() != null && !map.getZoomLevel().equalsIgnoreCase("null")) {
                 zoom = map.getZoomLevel();
                 oldValues[2] = zoom;
             }
         }
-        if (!map.getType().equalsIgnoreCase(oldValues[3]))
-        {
-            if(map.getType() != null && !map.getType().equalsIgnoreCase("null")){
+        if (!map.getType().equalsIgnoreCase(oldValues[3])) {
+            if (map.getType() != null && !map.getType().equalsIgnoreCase("null")) {
                 type = map.getType();
                 oldValues[3] = type;
             }
         }
-        if (lat != null && !lat.equals("null")){
+        if (lat != null && !lat.equals("null")) {
             map.setLatitude(lat);
         }
-        if (lng != null && !lng.equals("null"))   {
+        if (lng != null && !lng.equals("null")) {
             map.setLongitude(lng);
         }
         if (zoom != null && !zoom.equals("null")) {
@@ -175,11 +166,12 @@ public class GMapRenderer extends CoreRenderer {
     public boolean getRendersChildren() {
         return true;
     }
+
     public void makeFields(ResponseWriter writer, String clientId, String fieldName) throws IOException {
         writer.startElement("input", null);
         writer.writeAttribute("type", "hidden", null);
-        writer.writeAttribute("id", clientId+"_"+fieldName, null);
-        writer.writeAttribute("name", clientId+"_"+fieldName, null);
+        writer.writeAttribute("id", clientId + "_" + fieldName, null);
+        writer.writeAttribute("name", clientId + "_" + fieldName, null);
         writer.endElement("input");
     }
 }

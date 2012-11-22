@@ -17,12 +17,14 @@ package org.icefaces.ace.component.gmap;
 
 import org.icefaces.ace.renderkit.CoreRenderer;
 import org.icefaces.render.MandatoryResourceComponent;
+
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import java.io.IOException;
+import java.util.Iterator;
 
-@MandatoryResourceComponent(tagName="gMap", value="org.icefaces.ace.component.gmap.GMap")
+@MandatoryResourceComponent(tagName = "gMap", value = "org.icefaces.ace.component.gmap.GMap")
 public class GMapOverlayRenderer extends CoreRenderer {
 
 
@@ -32,17 +34,39 @@ public class GMapOverlayRenderer extends CoreRenderer {
         GMapOverlay overlay = (GMapOverlay) component;
         ResponseWriter writer = context.getResponseWriter();
         String clientId = overlay.getClientId(context);
-		writer.startElement("span", null);
-		writer.writeAttribute("id", clientId + "_overlay", null);
+        writer.startElement("span", null);
+        writer.writeAttribute("id", clientId + "_overlay", null);
         writer.startElement("script", null);
         writer.writeAttribute("type", "text/javascript", null);
         writer.write("ice.ace.jq(function() {");
-        if (overlay.getPoints() != null && overlay.getShape() != null){
+        if (overlay.getPoints() != null && overlay.getShape() != null) {
             writer.write("ice.ace.gMap.removeGOverlay('" + overlay.getParent().getClientId(context) + "', '" + clientId + "');");
             writer.write("ice.ace.gMap.gOverlay('" + overlay.getParent().getClientId(context) + "', '" + clientId + "' , '" + overlay.getShape() + "' , '" + overlay.getPoints() + "' , \"" + overlay.getOptions() + "\");");
         }
         writer.write("});");
         writer.endElement("script");
-		writer.endElement("span");
+        writer.endElement("span");
+    }
+
+    @Override
+    public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
+        if (context == null || component == null) {
+            throw new NullPointerException();
+        }
+        if (component.getChildCount() == 0) return;
+        Iterator kids = component.getChildren().iterator();
+        while (kids.hasNext()) {
+            UIComponent kid = (UIComponent) kids.next();
+            kid.encodeBegin(context);
+            if (kid.getRendersChildren()) {
+                kid.encodeChildren(context);
+            }
+            kid.encodeEnd(context);
+        }
+    }
+
+    @Override
+    public boolean getRendersChildren() {
+        return true;
     }
 }
