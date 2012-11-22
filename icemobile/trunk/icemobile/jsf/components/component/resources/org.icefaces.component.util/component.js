@@ -344,6 +344,7 @@ function html5handleResponse(context, data) {
 
 function html5submitFunction(element, event, options) {
     var source = event ? event.target : element;
+    source = source ? source : element;
     var form = element;
     while ((null != form) && ("form" != form.tagName.toLowerCase())) {
         form = form.parentNode;
