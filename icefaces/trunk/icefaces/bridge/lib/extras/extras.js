@@ -531,8 +531,8 @@ Ice.tblRowFocus = function(anc, singleSelection) {
 
                         //lookup the scrollable container
                         var scrollableContainer = parent.parentNode.parentNode.parentNode;
-                        var rowTop = tr.style.top;
-                        var scrollableAreaTop = scrollableContainer.style.top;
+                        var rowTop = Element.cumulativeOffset(tr).top;
+                        var scrollableAreaTop = Element.cumulativeOffset(scrollableContainer).top;
                         var scrolled = scrollableContainer.scrollTop;
                         var delta = rowTop - (scrollableAreaTop + scrolled);
                         if (delta < 0) {
@@ -559,12 +559,12 @@ Ice.tblRowFocus = function(anc, singleSelection) {
 
                         //lookup the scrollable container
                         var scrollableContainer = parent.parentNode.parentNode.parentNode;
-                        var rowTop = tr.style.top;
-                        var rowHeight = Element.measure(tr, 'height');
-                        var scrollableAreaTop = scrollableContainer.style.top;
+                        var rowTop = Element.cumulativeOffset(tr).top;
+                        var rowHeight = Element.getHeight(tr);
+                        var scrollableAreaTop = Element.cumulativeOffset(scrollableContainer).top;
                         var scrollableAreaHeight = Element.getHeight(scrollableContainer);
                         var scrolled = scrollableContainer.scrollTop;
-                        var delta = (rowTop + rowHeight) - (scrollableAreaTop + scrollableAreaHeight + scrolled);
+                        var delta = (rowTop + rowHeight) - (scrollableAreaHeight + scrolled + scrollableAreaTop);
                         if (delta > 0) {
                             scrollableContainer.scrollTop = scrolled + delta;
                         }
