@@ -23,26 +23,49 @@
             hidden.value = value;
         }
     }
-
-
     //-------------------------------------
     function PanelPopup(clientId, cfgIn) {
+        var cId = clientId;
+        var myId = cfgIn.id || null;
+        var client = cfgIn.client;
         var visible = cfgIn.visible || false;
         var idPanel = clientId + "_bg";
         var containerId = clientId + "_popup";
         var autocenter = cfgIn.autocenter || true;
         var centerCalculation = {};
-        this.mobi.panelPopup.visible[clientId]= visible;
+        ice.mobi.panelPopup.visible[clientId]= visible;
         return {
-           openPopup: function(clientId, cfg) {
-                var autocenter = cfg.autocenter || true;
+            openPopup: function(clientId, cfg) {
+                autocenter = cfg.autocenter || true;
+              //  console.log("openPopup: disabled="+cfg.disabled);
+                if (cfg.disabled){
+                    return;//no opening
+                }
                 var scrollEvent = 'ontouchstart' in window ? "touchmove" : "scroll";
-                document.getElementById(idPanel).className = "mobi-panelpopup-bg ";
-                document.getElementById(containerId).className = "mobi-panelpopup-container ";
-                if (autocenter) {
+                var fadedDiv = document.getElementById(idPanel);
+                if (fadedDiv){
+                   document.getElementById(idPanel).className = "mobi-panelpopup-bg ";
+                }
+                var containerNode = document.getElementById(containerId);
+                containerNode.className = "mobi-panelpopup-container ";
+                if (cfg.autocenter==true) {
+                    centerCfg = {} ;
+                    if (cfg.width){
+                        centerCfg.width = cfg.width;
+                    }
+                    if (cfg.height){
+                        centerCfg.height = cfg.height;
+                    }
+                    if (cfg.useForm){
+                        var frm = mobi.findForm(clientId);
+                        if (frm){
+                           centerCfg.containerElem = frm.id;
+                           // console.log("form id="+frm.id);
+                        }
+                    }
                     // add scroll listener
                     centerCalculation[clientId] = function () {
-                        mobi.panelAutoCenter(containerId);
+                        ice.mobi.panelCenter(containerId, centerCfg);
                     };
                     if (window.addEventListener) {
                         window.addEventListener(scrollEvent, centerCalculation[clientId], false);
@@ -52,23 +75,36 @@
                         window.attachEvent("resize", centerCalculation[clientId]);
                     }
                     // calculate center for first view
-                    mobi.panelAutoCenter(containerId);
+                    ice.mobi.panelCenter(containerId, centerCfg);
+                }  else{
+                    console.log("NO AUTOCENTER");
+                    var styleVar = "";
+                    if (cfg.width){
+                        var wStr = width+"px";
+                        styleVar+="width: "+cfg.width+"px;";
+                    }
+                    if (cfg.height){
+                        var hStr = height+"px";
+                        styleVar +=" height: "+cfg.height+"px;";
+                    }
+                    containerNode.setAttribute("style", styleVar);
                 }
-        //        this.visible[clientId] = true;
+                ice.mobi.panelPopup.visible[clientId] = true;
                 updateHidden(clientId, true);
            },
            closePopup: function(clientId, cfg){
-               var autocenter = cfg.autocenter || true;
+               console.log("closePopup");
+               var containerNode = clientId+"_popup";
                var scrollEvent = 'ontouchstart' in window ? "touchmove" : "scroll";
                var greyed = document.getElementById(clientId+"_bg");
-               var container = document.getElementById(clientId+"_popup");
+               var container = document.getElementById(containerNode);
                if (greyed){
                    greyed.className = "mobi-panelpopup-bg-hide ";
                }
                if (container){
-                   document.getElementById(clientId + "_popup").className = "mobi-panelpopup-container-hide ";
+                   document.getElementById(containerNode).className = "mobi-panelpopup-container-hide ";
                }
-               if (autocenter) {
+               if (cfg.autocenter==true) {
                      if (window.removeEventListener) {
                          window.removeEventListener(scrollEvent, centerCalculation[clientId], false);
                          window.removeEventListener('resize', centerCalculation[clientId], false);
@@ -77,40 +113,95 @@
                          window.detachEvent('resize', centerCalculation[clientId], false);
                      }
                      centerCalculation[clientId] = undefined;
+               } else {
+                   containerNode.setAttribute("style", "");
                }
-         //      this.visible[clientId] = false;
+               ice.mobi.panelPopup.visible[clientId] = false;
                updateHidden(clientId, false);
+           },
+           getId: function(){
+               return myId;
+           },
+           getClientId: function(){
+               return cId;
+           },
+           isClient: function(){
+               return client;
            }
         }
     }
-    mobi.panelPopup = {
-        panels: {},
+    ice.mobi.panelPopup = {
+        panels: new Array(),
         visible: {},
-        centerCalculation:{},
         cfg: {},
-        initClient: function(clientId, cfgIn) {
-            this.cfg = cfgIn;
-            if (!this.panels[clientId]){
-                this.panels[clientId] = PanelPopup(clientId, cfgIn);
+        centerCalculation:{},
+        init: function(clientId, cfgIn) {
+            this.cfg[clientId] = cfgIn;
+            var thisOne = this.findPanel(clientId, false);
+            if (thisOne == null){
+                this.panels[0] = PanelPopup(clientId, cfgIn);
             } else {
-               // this.panels[clientId].updateProperties(clientId, cfg);
                 var vis = cfgIn.visible || false;
-               if (vis==true){
-                   this.panels[clientId].openPopup(clientId, cfgIn);
-               }else{
-                   this.panels[clientId].closePopup(clientId, cfgIn);
-               }
+              //  console.log(" disabled="+cfgIn.disabled+"  VISIBLE="+vis);
+                if (vis==true){
+                   thisOne.openPopup(clientId, cfgIn);
+                }else{
+                   thisOne.closePopup(clientId, cfgIn);
+                }
             }
         },
-        openClient: function(clientId){
-            if (this.panels[clientId]){
-                this.panels[clientId].openPopup(clientId, this.cfg);
+        openClient: function(popupId){
+            var opC = this.findPanel(popupId, true);
+            if (!opC){
+                var index = this.panels.length;
+            }
+            if (opC){
+                var cId = opC.getClientId();
+                var cfgA = this.cfg[cId];
+                if (!cfgA.disabled){
+                    var chkNode = document.getElementById(cId);
+                    if (!chkNode){
+                        ice.log.debg(ice.log,"NO ELEMENT CAN BE FOUND FOR ID="+popupId+" clientId="+cId);
+                    } else {
+                       opC.openPopup(cId, cfgA);
+                    }
+                }
             }
         },
-        closeClient: function(clientId){
-            if (this.panels[clientId]){
-                this.panels[clientId].closePopup(clientId, this.cfg);
+        closeClient: function(popupId){
+            var clA = this.findPanel(popupId,true);
+            if (clA){
+                var cId =clA.getClientId();
+                var cfgA = this.cfg[cId];
+                clA.closePopup(cId, cfgA);
             }
+        },
+        findPanel: function(popupId, isId){
+            if (this.panels.length < 1){
+                ice.log.debug(ice.log,' no popups available in view to open');
+                return;
+            }
+            var found = false;
+            for (var i=0; i < this.panels.length; i++){
+                var pane = this.panels[i];
+                if (isId){
+                    var myId = pane.getId();
+                    console.log ("id of pane="+myId);
+                    if (pane.getId()==popupId){
+                        found = true;
+                        return pane;
+                    }
+                }else {
+                    if (pane.getClientId()==popupId){
+                        found = true;
+                        return pane;
+                    }
+                }
+            }
+            if (!found){
+                ice.log.debug(ice.log, ' Cannot find popup with id='+popupId);
+            }
+            return null;
         }
     }
 
