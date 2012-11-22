@@ -101,6 +101,19 @@ if (!window.ice.icefaces) {
         };
 
         function configurationOf(element) {
+            var result = configurationOfImpl(element);
+            if (result)  {
+                return result;
+            }
+            result = configurationOfImpl(document.getElementById(element.id));
+            if (result)  {
+                return result;
+            }
+            debug(logger, 'configuration not found for ' + element.nodeName);
+            return {};
+        }
+
+        function configurationOfImpl(element) {
             configParent = detect(parents(element),
                 function(e) {
                     if (null != e) {
@@ -111,8 +124,7 @@ if (!window.ice.icefaces) {
             if (null != configParent) {
                 return configParent.configuration;
             }
-            debug(logger, 'configuration not found for ' + element.nodeName);
-            return {};
+            return null;
         }
 
         function deltaSubmit(element) {
