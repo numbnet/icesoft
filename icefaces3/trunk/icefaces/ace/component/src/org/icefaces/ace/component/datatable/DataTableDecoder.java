@@ -448,11 +448,19 @@ public class DataTableDecoder {
         JSONObject pinningState = new JSONObject(pinning);
         List<Column> columns = table.getColumns();
 
-        for (String key : pinningState.getKeys()) {
-            int columnIndex = Integer.parseInt(key);
-            int pinOrder = pinningState.getInt(key);
-            Column c = columns.get(columnIndex);
+        Integer i = 0;
+        for (Column c : columns) {
+            Integer pinOrder = null;
+
+            try {
+                pinOrder = pinningState.getInt(i.toString()) + 1;
+            } catch (JSONException e) {
+                // leave pin order null if order missing from json state,
+                // to wipe order from column
+            }
+
             c.setPinningOrder(pinOrder);
+            i++;
         }
     }
 }

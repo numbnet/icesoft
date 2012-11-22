@@ -44,27 +44,28 @@
                            scrollable="true"
                            scrollHeight="200"
                            style="width:70%; margin:auto;">
-               <ace:ajax event="select" />
+               <ace:ajax event="pin" />
+               <ace:ajax event="unpin" />
 
-                <ace:column headerText="ID" footerText="ID">
+                <ace:column headerText="ID" footerText="ID" pinningOrder="#{dataTablePinning.pinOrder[0]}">
                     <h:outputText  value="#{car.id}" />
                 </ace:column>
-                <ace:column headerText="Name" footerText="Name">
+                <ace:column headerText="Name" footerText="Name" pinningOrder="#{dataTablePinning.pinOrder[1]}">
                     <h:outputText value="#{car.name}"/>
                 </ace:column>
-                <ace:column headerText="Chassis" footerText="Chassis">
+                <ace:column headerText="Chassis" footerText="Chassis" pinningOrder="#{dataTablePinning.pinOrder[2]}">
                     <h:outputText value="#{car.chassis}"/>
                 </ace:column>
-                <ace:column headerText="Weight" footerText="Weight">
+                <ace:column headerText="Weight" footerText="Weight" pinningOrder="#{dataTablePinning.pinOrder[3]}">
                     <h:outputText value="#{car.weight}lbs."/>
                 </ace:column>
-                <ace:column headerText="Accel" footerText="Accel">
+                <ace:column headerText="Accel" footerText="Accel" pinningOrder="#{dataTablePinning.pinOrder[4]}">
                     <h:outputText value="#{car.acceleration}"/>
                 </ace:column>
-                <ace:column headerText="MPG" footerText="MPG">
+                <ace:column headerText="MPG" footerText="MPG" pinningOrder="#{dataTablePinning.pinOrder[5]}">
                     <h:outputText  value="#{car.mpg}"/>
                 </ace:column>
-               <ace:column headerText="Cost" footerText="Cost">
+               <ace:column headerText="Cost" footerText="Cost" pinningOrder="#{dataTablePinning.pinOrder[6]}">
                     <h:outputText id="costCell" value="#{car.cost}">
                         <f:convertNumber type="currency"
                                          currencySymbol="$"
