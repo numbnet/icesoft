@@ -119,11 +119,6 @@ implements
     public void iceFacesIdDisposed(
         final String servletContextPath, final String iceFacesId) {
 
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException exception) {
-            // ignore interrupts.
-        }
         if (LOG.isDebugEnabled()) {
             LOG.debug(
                 "ICEfaces ID disposed: " +
