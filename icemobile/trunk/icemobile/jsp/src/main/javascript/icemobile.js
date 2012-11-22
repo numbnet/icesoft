@@ -463,10 +463,10 @@ ice.mobi.tabsetController = {
         var ul = nodes[0];
         var children = ul.getElementsByTagName('li');
         var liLngth = children.length;
-        var width = Math.floor(98/liLngth); /*for some reason spring on android small view not good with100 */
+        var width = Math.floor(100/liLngth);
         var rem = 100 % liLngth;
         for (var i = 0; i < liLngth; i++){
-            if (i != liLngth){
+            if (i < liLngth-1){
                children[i].style.width = width+"%";
             }else {
                 children[i].style.width = width+rem+"%";
@@ -1656,6 +1656,8 @@ ice.mobi.splitpane = {
 document.documentElement.className = document.documentElement.className + ' js';
 
 /* touch active state support */
-document.addEventListener("touchstart", function(){}, true);
+ice.mobi.noop = function(){};
+document.addEventListener("touchstart", ice.mobi.noop, true);
+
 
 
