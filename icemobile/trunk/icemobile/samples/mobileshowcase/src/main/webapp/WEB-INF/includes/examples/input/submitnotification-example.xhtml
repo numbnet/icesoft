@@ -20,24 +20,45 @@
              xmlns:ui="http://java.sun.com/jsf/facelets"
              xmlns:util="http://java.sun.com/jsf/composite/components"
              xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
-    <h:form style="margin-top:10px;" id="notificationForm">
-
-        <mobi:fieldsetGroup>
+    <h:form style="margin-top:10px;" id="notificationForm" styleClass="form">
+    
+        <mobi:fieldsetGroup styleClass="intro">
             <mobi:fieldsetRow>
-                <!-- panel confirmation component -->
                 The submitNotification panel provides the user with visual feed
                 back that a submit has taken place. Once the response has been
-                received, the notification panel is hidden. <br/>
-
+                received, the notification panel is hidden.
+             </mobi:fieldsetRow>
+        </mobi:fieldsetGroup>
+        
+        <h3>submitNotification with a commandButton</h3>
+        <mobi:fieldsetGroup>
+            <mobi:fieldsetRow styleClass="mobi-center">
                 <mobi:commandButton value="Execute Long Task"
-                                    style="float:left;"
-                                    submitNotification="submitNotification"
+                                    submitNotification="submitNotification1"
                                     actionListener="#{submitNotificationBean.longRunningTask}"/>
-                <mobi:submitNotification id="submitNotification">
-                    <h:outputText value="Processing Request"/>
-                </mobi:submitNotification>
             </mobi:fieldsetRow>
         </mobi:fieldsetGroup>
+        
+        <mobi:submitNotification id="submitNotification1">
+            <h:outputText value="Processing Command Button Request"/>
+        </mobi:submitNotification>
+        
+        <h3>submitNotification with a menuButton</h3>
+        <mobi:fieldsetGroup>
+            <mobi:fieldsetRow styleClass="mobi-center">
+                <mobi:menuButton buttonLabel="Action Menu" id="menuButton"
+                                 var="item" value="#{submitNotificationBean.menuButtons}">
+                     <mobi:menuButtonItem label="Execute Long Task"
+                            actionListener="#{submitNotificationBean.longRunningTask}"
+                            submitNotification="submitNotification2"/>
+                </mobi:menuButton>
+            </mobi:fieldsetRow>
+        </mobi:fieldsetGroup>
+        
+        <mobi:submitNotification id="submitNotification2">
+            <h:outputText value="Processing Menu Button Request"/>
+        </mobi:submitNotification>
+        
         <script type="text/javascript">
             var preloaded = new Array();
             preloaded[0] = document.createElement('img');
