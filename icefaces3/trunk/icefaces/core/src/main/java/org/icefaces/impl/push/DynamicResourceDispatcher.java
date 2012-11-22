@@ -27,6 +27,7 @@ import javax.faces.application.ResourceHandler;
 import javax.faces.application.ResourceHandlerWrapper;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.*;
 import java.net.URI;
@@ -135,6 +136,11 @@ public class DynamicResourceDispatcher extends ResourceHandlerWrapper implements
         public void handleResourceRequest(FacesContext facesContext) throws IOException {
             ExternalContext externalContext = facesContext.getExternalContext();
             String path = getFullPath(externalContext);
+            Object request = externalContext.getRequest();
+            if (request instanceof HttpServletRequest) {
+                HttpServletRequest httpServletRequest = (HttpServletRequest) request;
+                path = java.net.URLDecoder.decode(httpServletRequest.getRequestURI(), "UTF-8");
+            }
 
             Iterator i = mappings.values().iterator();
             while (i.hasNext()) {
@@ -253,7 +259,7 @@ public class DynamicResourceDispatcher extends ResourceHandlerWrapper implements
             }
             String contentDispositionFileName = Util.encodeContentDispositionFilename(options.fileName);
             if (options.attachement && contentDispositionFileName != null) {
-                externalContext.setResponseHeader("Content-Disposition", "attachment; filename" + options.contentDispositionFileName);
+                externalContext.setResponseHeader("Content-Disposition", "attachment; filename" + contentDispositionFileName);
             }
             InputStream inputStream = resource.open();
             if (inputStream == null) {
