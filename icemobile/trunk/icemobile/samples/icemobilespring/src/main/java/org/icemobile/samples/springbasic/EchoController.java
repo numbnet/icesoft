@@ -54,6 +54,9 @@ public class EchoController {
                           @RequestParam(value = "submitB", required = false)
                           String submitted) {
         if (submitted != null) {
+            if( submitted.indexOf(",") > -1 ){
+                submitted = submitted.substring(submitted.indexOf(",")+1).trim();
+            }
             model.addAttribute("pressed", "[" + submitted + "]");
         }
     }
