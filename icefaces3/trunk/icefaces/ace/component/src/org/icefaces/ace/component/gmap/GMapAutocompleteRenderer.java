@@ -15,8 +15,8 @@ package org.icefaces.ace.component.gmap;
  * governing permissions and limitations under the License.
  */
 
-import org.icefaces.ace.util.JSONBuilder;
 import org.icefaces.ace.renderkit.CoreRenderer;
+import org.icefaces.ace.util.JSONBuilder;
 import org.icefaces.render.MandatoryResourceComponent;
 
 import javax.faces.component.UIComponent;
@@ -28,7 +28,7 @@ import java.util.Map;
 @MandatoryResourceComponent(tagName = "gMap", value = "org.icefaces.ace.component.gmap.GMap")
 public class GMapAutocompleteRenderer extends CoreRenderer {
 
-    public GMapAutocompleteRenderer(){
+    public GMapAutocompleteRenderer() {
         super();
     }
 
@@ -37,16 +37,16 @@ public class GMapAutocompleteRenderer extends CoreRenderer {
         GMapAutocomplete autocomplete = (GMapAutocomplete) component;
         String clientId = autocomplete.getClientId(context);
         String address = String.valueOf(requestParameterMap.get(clientId + "_address"));
-        String url = String.valueOf(requestParameterMap.get(clientId+"_url"));
-        String latLng = String.valueOf(requestParameterMap.get(clientId+"_latLng"));
-        String types = String.valueOf(requestParameterMap.get(clientId+"_types"));
-        if(address != null && !address.equals("null"))
+        String url = String.valueOf(requestParameterMap.get(clientId + "_url"));
+        String latLng = String.valueOf(requestParameterMap.get(clientId + "_latLng"));
+        String types = String.valueOf(requestParameterMap.get(clientId + "_types"));
+        if (address != null && !address.equals("null"))
             autocomplete.setAddress(address);
-        if(url != null && !url.equals("null"))
+        if (url != null && !url.equals("null"))
             autocomplete.setUrl(url);
-        if(latLng != null && !latLng.equals("null"))
+        if (latLng != null && !latLng.equals("null"))
             autocomplete.setLatLng(latLng);
-        if(types != null && !types.equals("null"))
+        if (types != null && !types.equals("null"))
             autocomplete.setTypes(types);
     }
 
@@ -63,10 +63,10 @@ public class GMapAutocompleteRenderer extends CoreRenderer {
         writer.writeAttribute("style", autocomplete.getStyle(), null);
         writer.writeAttribute("id", "autocomplete_input", null);
         writer.endElement("input");
-        makeFields(writer,clientId,"address");
-        makeFields(writer,clientId,"latLng");
-        makeFields(writer,clientId,"types");
-        makeFields(writer,clientId,"url");
+        makeFields(writer, clientId, "address");
+        makeFields(writer, clientId, "latLng");
+        makeFields(writer, clientId, "types");
+        makeFields(writer, clientId, "url");
         writer.startElement("span", null);
 
         writer.startElement("script", null);
@@ -90,8 +90,8 @@ public class GMapAutocompleteRenderer extends CoreRenderer {
     public void makeFields(ResponseWriter writer, String clientId, String fieldName) throws IOException {
         writer.startElement("input", null);
         writer.writeAttribute("type", "hidden", null);
-        writer.writeAttribute("id", clientId+"_"+fieldName, null);
-        writer.writeAttribute("name", clientId+"_"+fieldName, null);
+        writer.writeAttribute("id", clientId + "_" + fieldName, null);
+        writer.writeAttribute("name", clientId + "_" + fieldName, null);
         writer.endElement("input");
     }
 }

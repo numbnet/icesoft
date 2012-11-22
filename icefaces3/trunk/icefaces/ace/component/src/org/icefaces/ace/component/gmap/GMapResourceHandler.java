@@ -23,12 +23,12 @@ import org.icefaces.util.EnvUtils;
 import javax.faces.application.Resource;
 import javax.faces.application.ResourceHandler;
 import javax.faces.application.ResourceHandlerWrapper;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.PreRenderViewEvent;
 import javax.faces.event.SystemEvent;
 import javax.faces.event.SystemEventListener;
-import javax.faces.context.ExternalContext;
-import javax.faces.context.FacesContext;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -49,19 +49,19 @@ public class GMapResourceHandler extends ResourceHandlerWrapper {
     public GMapResourceHandler(ResourceHandler handler) {
         this.handler = handler;
         gmapKey = FacesContext.getCurrentInstance().getExternalContext().getInitParameter("org.icefaces.ace.gmapKey");
-		FacesContext.getCurrentInstance().getApplication().subscribeToEvent(PreRenderViewEvent.class, new SystemEventListener() {
-			public void processEvent(SystemEvent event) throws AbortProcessingException {
-				try {
-					if (apiJS == null) createResource(GMAP_API);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
+        FacesContext.getCurrentInstance().getApplication().subscribeToEvent(PreRenderViewEvent.class, new SystemEventListener() {
+            public void processEvent(SystemEvent event) throws AbortProcessingException {
+                try {
+                    if (apiJS == null) createResource(GMAP_API);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
 
-			public boolean isListenerForSource(Object source) {
-				return EnvUtils.isICEfacesView(FacesContext.getCurrentInstance());
-			}
-		});
+            public boolean isListenerForSource(Object source) {
+                return EnvUtils.isICEfacesView(FacesContext.getCurrentInstance());
+            }
+        });
     }
 
     public ResourceHandler getWrapped() {
@@ -79,13 +79,13 @@ public class GMapResourceHandler extends ResourceHandlerWrapper {
     public Resource createResource(String resourceName, String libraryName, String contentType) {
         if (GMAP_API.equals(resourceName) && gmapKey != null) {
             if (apiJS == null) {
-                if(!FacesContext.getCurrentInstance().getExternalContext().isSecure())
-					apiJS = recreateResource(super.createResource(resourceName), 
-						"http://maps.googleapis.com/maps/api/js?key=" + gmapKey + "&sensor=true");
-				else
-					apiJS = recreateResource(super.createResource(resourceName), 
-						"https://maps.googleapis.com/maps/api/js?key=" + gmapKey + "&sensor=true");
-			}
+                if (!FacesContext.getCurrentInstance().getExternalContext().isSecure())
+                    apiJS = recreateResource(super.createResource(resourceName),
+                            "http://maps.googleapis.com/maps/api/js?key=" + gmapKey + "&sensor=true");
+                else
+                    apiJS = recreateResource(super.createResource(resourceName),
+                            "https://maps.googleapis.com/maps/api/js?key=" + gmapKey + "&sensor=true");
+            }
             return apiJS;
         } else {
             return super.createResource(resourceName, libraryName, contentType);

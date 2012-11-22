@@ -5,6 +5,9 @@ import org.icefaces.render.MandatoryResourceComponent;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
+import java.io.IOException;
+
 /*
  * Copyright 2004-2012 ICEsoft Technologies Canada Corp.
  *
@@ -21,37 +24,32 @@ import javax.faces.context.FacesContext;
  * governing permissions and limitations under the License.
  */
 
-import javax.faces.context.ResponseWriter;
-import java.io.IOException;
-import java.util.Iterator;
-
-@MandatoryResourceComponent(tagName="gMap", value="org.icefaces.ace.component.gmap.GMap")
+@MandatoryResourceComponent(tagName = "gMap", value = "org.icefaces.ace.component.gmap.GMap")
 public class GMapLayerRenderer extends CoreRenderer {
 
 
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = component.getClientId(context);
-		GMapLayer gMapLayer = (GMapLayer) component;
-		writer.startElement("span", null);
-		writer.writeAttribute("id", clientId + "_layer", null);
+        GMapLayer gMapLayer = (GMapLayer) component;
+        writer.startElement("span", null);
+        writer.writeAttribute("id", clientId + "_layer", null);
         writer.startElement("script", null);
         writer.writeAttribute("type", "text/javascript", null);
         writer.write("ice.ace.jq(function() {");
-        if (gMapLayer.getLayerType() != null){
-            writer.write("ice.ace.gMap.removeMapLayer('" + gMapLayer.getParent().getClientId(context) + "', '" + clientId +"');");
-            if(gMapLayer.isVisible())
-            {
-                if(gMapLayer.getUrl() != null)
+        if (gMapLayer.getLayerType() != null) {
+            writer.write("ice.ace.gMap.removeMapLayer('" + gMapLayer.getParent().getClientId(context) + "', '" + clientId + "');");
+            if (gMapLayer.isVisible()) {
+                if (gMapLayer.getUrl() != null)
                     writer.write("ice.ace.gMap.addMapLayer('" + gMapLayer.getParent().getClientId(context) + "', '" + clientId +
-                        "', '"+ gMapLayer.getLayerType() + "', \"" + gMapLayer.getOptions() + "\", '" + gMapLayer.getUrl() + "');");
+                            "', '" + gMapLayer.getLayerType() + "', \"" + gMapLayer.getOptions() + "\", '" + gMapLayer.getUrl() + "');");
                 else
                     writer.write("ice.ace.gMap.addMapLayer('" + gMapLayer.getParent().getClientId(context) + "', '" + clientId +
-                        "', '"+ gMapLayer.getLayerType() + "', \"" + gMapLayer.getOptions() + "\");");
+                            "', '" + gMapLayer.getLayerType() + "', \"" + gMapLayer.getOptions() + "\");");
             }
         }
         writer.write("});");
         writer.endElement("script");
-		writer.endElement("span");
+        writer.endElement("span");
     }
 }
