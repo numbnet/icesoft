@@ -16,6 +16,16 @@ public class GMapRenderer extends CoreRenderer {
 		ResponseWriter writer = context.getResponseWriter();
 		String clientId = component.getClientId(context);
 		GMap gmap = (GMap) component;
+		
+		writer.startElement("div", null);
+		writer.writeAttribute("id", clientId+"_wrp", null);
+		if( gmap.getStyle() != null ){
+		    writer.writeAttribute("style", gmap.getStyle(), null );
+		}
+		if( gmap.getStyleClass() != null ){
+		    writer.writeAttribute("class", gmap.getStyleClass(), null);
+		}
+		
 		writer.startElement("div", null);
 		writer.writeAttribute("id", clientId, null);
 		writer.writeAttribute("style", "height: 97%;", null);
@@ -45,6 +55,7 @@ public class GMapRenderer extends CoreRenderer {
 		}
 		writer.endElement("script");
 		writer.endElement("span");
+		writer.endElement("div");
 		gmap.setIntialized(true);
 	}
 
