@@ -52,9 +52,7 @@ extends UIComponentBase {
         }
     }
 
-    @Override
-    public void encodeAll(final FacesContext facesContext)
-    throws IOException {
+    public void encodeBegin(final FacesContext facesContext)  {
         PushRenderer.addCurrentView(getGroup());
     }
 
