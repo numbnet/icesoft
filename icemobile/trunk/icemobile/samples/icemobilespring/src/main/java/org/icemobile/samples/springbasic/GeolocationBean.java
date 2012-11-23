@@ -23,11 +23,11 @@ public class GeolocationBean {
     private boolean isAndroidContainer;
 
 
-    public String getGeo1() {
+    public String getGeolocation() {
         return location;
     }
 
-    public void setGeo1(String location) {
+    public void setGeolocation(String location) {
         this.location = location;
         try {
             String[] parts = location.split(",");
