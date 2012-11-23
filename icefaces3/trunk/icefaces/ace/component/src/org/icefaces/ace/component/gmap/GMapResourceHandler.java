@@ -40,7 +40,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class GMapResourceHandler extends ResourceHandlerWrapper {
-    private static final String GMAP_API = "icefaces.ace/gmap/api.js";
+	private static final String GMAP_API = "gmap/api.js";
+	private static final String ICEFACES_ACE_LIB = "icefaces.ace";
     private static final byte[] NO_BYTES = new byte[0];
     private ResourceHandler handler;
     private String gmapKey;
@@ -80,10 +81,10 @@ public class GMapResourceHandler extends ResourceHandlerWrapper {
         if (GMAP_API.equals(resourceName) && gmapKey != null) {
             if (apiJS == null) {
                 if (!FacesContext.getCurrentInstance().getExternalContext().isSecure())
-                    apiJS = recreateResource(super.createResource(resourceName),
+                    apiJS = recreateResource(super.createResource(resourceName, ICEFACES_ACE_LIB),
                             "http://maps.googleapis.com/maps/api/js?key=" + gmapKey + "&sensor=true");
                 else
-                    apiJS = recreateResource(super.createResource(resourceName),
+                    apiJS = recreateResource(super.createResource(resourceName, ICEFACES_ACE_LIB),
                             "https://maps.googleapis.com/maps/api/js?key=" + gmapKey + "&sensor=true");
             }
             return apiJS;
