@@ -89,31 +89,40 @@ if (!window.ice.mobile) {
 }
 if (!window.ice.mobile.simulator) {
     window.ice.mobile.simulator = {
-        IMAGE_GALLERY_ID: 'imageGallery',
+        IMAGE_GALLERY_ID: 'org.icemobile.simulator.imageGallery',
         CLOSE_IMAGE_GALLERY_ID: 'closeImageGallery',
+        template:
+        "<div align='center' class='simTitle'>Simulated Camera</div>" +
+        "<input type='button' class='camera' name='cam##' " +
+          "onclick='alert(this.name);' >" +
+        "<div style='position:absolute;bottom:0;right:2;'><input type='button' onclick='ice.mobile.simulator.closeImageGallery()' class='simClose' value='close'></div>",
         images: {},
         addImage: function addImage(thumbPath, imagePath){
             images[thumbPath] = imagePath;
         },
         openImageGallery: function openImageGallery(){
-            var imageGallery = document.getElementById(this.IMAGE_GALLERY_ID);
+            var imageGallery = document.getElementById(
+                    this.IMAGE_GALLERY_ID);
             if( imageGallery ){
                 closeImageGallery();
             }
             var rootDiv = document.createElement("div");
             rootDiv.setAttribute("id",this.IMAGE_GALLERY_ID);
-            var closeBtn = document.createElement("a");
-            closeBtn.setAttribute("id",this.CLOSE_IMAGE_GALLERY_ID);
-            closeBtn.setAttribute("onclick", "ice.mobile.simulator.closeImageGallery();")
-            var closeBtnText = document.createTextNode("Close");
-            closeBtn.appendChild(closeBtnText);
-            rootDiv.appendChild(closeBtn);
+            rootDiv.setAttribute("style",
+                "width: 200px; height: 300px; " +
+                " background-color: #567; position:absolute; " +
+                "left: 50%; top: 50%; " +
+                "margin-left: -100px; margin-top: -150px;"
+            );
+
+            rootDiv.innerHTML = this.template.replace(/##/g, "zzz");
+
             document.body.appendChild(rootDiv);
-            ice.mobile.simulator.imageGallery = rootDiv;
         },
         closeImageGallery: function closeImageGallery(){
-            document.body.removeChild(ice.mobile.simulator.imageGallery);
-            ice.mobile.simulator.imageGallery = null;
+            var imageGallery = document.getElementById(
+                    this.IMAGE_GALLERY_ID);
+            document.body.removeChild(imageGallery);
         }
         
     };
