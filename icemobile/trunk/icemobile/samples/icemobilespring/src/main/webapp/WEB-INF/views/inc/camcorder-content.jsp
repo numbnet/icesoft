@@ -35,8 +35,8 @@
     <c:if test="${mediaReady}">
         <mobi:fieldsetGroup>
             <mobi:fieldsetRow>
-                <video src="media/video.mp4" controls="controls"></video>
-                <br><a href="media/video.mp4">Play</a>
+                <video src="./resources/media/video.mp4" controls="controls"></video>
+                <br><a href="./resources/media/video.mp4">Play</a>
             </mobi:fieldsetRow>
         </mobi:fieldsetGroup>
     </c:if>
