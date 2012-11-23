@@ -17,30 +17,30 @@
     <h3>Accordion with autoHeight</h3>
 
     <mobi:accordion id="basicAccordion" selectedId="${accordionBean.selectedId1}">
-            <mobi:accordionPane title="ICE Sailor" id="accordionPane1" >
-                <%@ include file="fieldset-icesailor.jsp" %>
-            </mobi:accordionPane>
-            <mobi:accordionPane title="ICE Breaker" id="accordionPane2">
-                 <%@ include file="fieldset-icebreaker.jsp" %>
-            </mobi:accordionPane>
-            <mobi:accordionPane title="ICE Skate" id="accordionPane3">
-                <%@ include file="fieldset-iceskate.jsp" %>
-            </mobi:accordionPane>
+        <mobi:accordionPane title="ICE Sailor" id="accordionPane1" style="background-color:#00ADFF">
+            <%@ include file="inc-icesailor.jsp" %>
+        </mobi:accordionPane>
+        <mobi:accordionPane title="ICE Breaker" id="accordionPane2" style="background-color:#C0F">
+             <%@ include file="inc-icebreaker.jsp" %>
+        </mobi:accordionPane>
+        <mobi:accordionPane title="ICE Skate" id="accordionPane3" style="background-color:#F0C82A">
+            <%@ include file="inc-iceskate.jsp" %>
+        </mobi:accordionPane>
     </mobi:accordion>
     
     <h3 style="margin-top:30px;">Accordion with fixedHeight</h3>
     
     <mobi:accordion id="accordionNoAutoHeight" selectedId="${accordionBean.selectedId2}"
-        autoHeight="false" fixedHeight="100px">
-            <mobi:accordionPane title="ICE Sailor" id="accordionPane4" >
-                <%@ include file="fieldset-icesailor.jsp" %>
-            </mobi:accordionPane>
-            <mobi:accordionPane title="ICE Breaker" id="accordionPane5">
-                 <%@ include file="fieldset-icebreaker.jsp" %>
-            </mobi:accordionPane>
-            <mobi:accordionPane title="ICE Skate" id="accordionPane6">
-                <%@ include file="fieldset-iceskate.jsp" %>
-            </mobi:accordionPane>
+        autoHeight="false" fixedHeight="200px">
+        <mobi:accordionPane title="ICE Sailor" id="accordionPane4" style="background-color:#00ADFF">
+            <%@ include file="inc-icesailor.jsp" %>
+        </mobi:accordionPane>
+        <mobi:accordionPane title="ICE Breaker" id="accordionPane5" style="background-color:#C0F">
+             <%@ include file="inc-icebreaker.jsp" %>
+        </mobi:accordionPane>
+        <mobi:accordionPane title="ICE Skate" id="accordionPane6" style="background-color:#F0C82A">
+            <%@ include file="inc-iceskate.jsp" %>
+        </mobi:accordionPane>
     </mobi:accordion>
     
 </form:form>
