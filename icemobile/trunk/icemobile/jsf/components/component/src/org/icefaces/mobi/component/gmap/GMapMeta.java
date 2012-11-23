@@ -50,5 +50,13 @@ public class GMapMeta extends UIPanelMeta{
 	
 	@Property(tlddoc="Use HTML5 geolocation to center and place a marker at the user's current location", defaultValue="false")
 	private boolean geolocate;
+	
+	@Property(defaultValue = "", tlddoc = "style will be rendered on a root element of this component")
+    private String style;
+
+    @Property(defaultValue = "", tlddoc = "style class will be rendered on a root element of this component")
+    private String styleClass;
+
+    
 
 }
