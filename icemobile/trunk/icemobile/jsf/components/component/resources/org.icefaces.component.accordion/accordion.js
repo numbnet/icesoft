@@ -41,15 +41,17 @@
         }
         return mxht;
     }
- /*   function updateFixedHeight(clientId, handleheight, oldHeight){
-         var calcht = calcMaxDivHeight(clientId, handleheight) ;
-         if (calcht > 0) {
-             return  calcht+"px";
-         }
-         else {
-             return oldHeight;
-         }
-    }*/
+    function calcFixedSectionHeight(fixedHeight, handleHeight){
+        try {
+            var fHtVal =parseInt(fixedHeight);
+        }catch (Exception ){
+            ice.log.debug("problem calculating height of contentPane to set section Height");
+        }
+        if (fHtVal) {
+            return  fHtVal+handleHeight;
+        }
+        else return null;
+    }
     function setHeight(opened, fht){
         if (opened && fht){
             opened.setAttribute("style", "height:"+fht+"; maxHeight: "+fht+";");
@@ -100,6 +102,7 @@
         }
         var autoheight = cfgIn.autoHeight || false;
         var fixedHeight = cfgIn.fixedHeight || null;
+        var fHtVal = cfgIn.fHtVal || null;
         if (!openElem){
             ice.log.debug(ice.log,"Accordion has no children");
             this.disable(clientId);
@@ -118,10 +121,14 @@
         if (autoheight && (maxHeight > 0)){
             ice.mobi.accordionController.maxHt[clientId]=maxHeight;
             fixedHeight = maxHeight+"px";
-            openPane(openElem, fixedHeight);
         } else if (fixedHeight){
-            openPane(openElem, fixedHeight);
+            if (fHtVal){
+                fixedHeight = fHtVal+handleheight + "px";
+            }else {
+                fixedHeight = calcFixedSectionHeight(fixedHeight, handleheight);
+            }
         }
+        openPane(openElem, fixedHeight);
         if (autoheight && (maxHeight==0)){
             console.log("\t had to listen for a height none calc");
             ice.onAfterUpdate(function() {
