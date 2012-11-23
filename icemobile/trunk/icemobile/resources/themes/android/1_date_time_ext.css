@@ -18,7 +18,9 @@
     width: 27px;
     height: 24px;
 }
-
+.mobi-date-btn, .mobi-time-btn, .mobi-date-popup-btn, .mobi-time-popup-btn {
+    -webkit-tap-highlight-color: rgba(101, 149, 249, 0.3);
+}
 .mobi-time-popup-btn {
     width: 28px;
     height: 26px;
