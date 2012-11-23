@@ -40,6 +40,12 @@ public class EchoController {
         model.addAttribute("ajaxRequest", AjaxUtils.isAjaxRequest(request));
     }
     
+    @ModelAttribute
+    public void viewSizeAttribute(HttpServletRequest request, Model model) {
+        model.addAttribute("viewSize", ClientDescriptor.getInstance(request).isHandheldBrowser() ? "small" : "large");
+    }
+    
+    
     @RequestMapping(value = "/menu")
     public void doMenuRequest() {
     }
@@ -93,8 +99,6 @@ public class EchoController {
     @ModelAttribute("geolocationBean")
     public GeolocationBean createGeolocationBean(HttpServletRequest request) {
         GeolocationBean bean = new GeolocationBean();
-        ClientDescriptor client = ClientDescriptor.getInstance(request);
-        bean.setAndroidContainer( client.isAndroidOS() && client.isICEmobileContainer() );
         return bean;
     }
 
