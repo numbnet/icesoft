@@ -17,6 +17,7 @@
  .mobi-flip-switch{
     border-bottom: none;
     background-color: #555;
+    -webkit-tap-highlight-color: rgba(101, 149, 249, 0.3);
  }
  .mobi-flip-switch-txt {
     font-weight: bold;
