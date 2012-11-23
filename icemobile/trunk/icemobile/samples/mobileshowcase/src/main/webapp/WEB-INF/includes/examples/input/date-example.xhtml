@@ -22,60 +22,61 @@
              xmlns:ui="http://java.sun.com/jsf/facelets"
              xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
 
-    <h3>Date-Time Spinner Input</h3>
+    <h3>Date Time Spinners</h3>
     <h:form>
-        <mobi:fieldsetGroup>
+        <mobi:fieldsetGroup style="text-align:right">
            <!-- date spinner -->
             <mobi:fieldsetRow>
-                <h:outputLabel value="Date:"/>
-               
-                <h:panelGroup style="float:right;">
-                    <span style="font-size: 10px;display: block;margin-top: -12px;">(yyyy-mm-dd)</span>
-                    <mobi:dateSpinner style="width:100px;"
-                                      useNative="true"
-                                     value="#{dateBean.dateInput}">
-                        <f:convertDateTime type="date" pattern="yyyy-MM-dd" timeZone="#{dateBean.timeZone}"/>
-                    </mobi:dateSpinner>
-                </h:panelGroup>
+                <h:outputLabel value="Date:" style="float:left" for="date"/>
+                <div style="display:inline-block">
+                    <span style="font-size: 10px;float:right;">(yyyy-mm-dd)</span>
+                    <div style="clear:both;">
+                        <mobi:dateSpinner useNative="true" id="date"
+                                         value="#{dateBean.dateInput}">
+                            <f:convertDateTime type="date" pattern="yyyy-MM-dd" timeZone="#{dateBean.timeZone}"/>
+                        </mobi:dateSpinner>
+                    </div>
+                </div>
             </mobi:fieldsetRow>
             <!-- time spinner -->
             <mobi:fieldsetRow>
-                <h:outputLabel value="Time:"/>
-                
-                <h:panelGroup style="float:right;">
-                    <span style="font-size: 10px;display: block;margin-top: -12px;">(hh:mm AM/PM)</span>
-                    <mobi:timeSpinner style="width:100px;"
-                                      useNative="true"  timeZone="#{dateBean.timeZone}"
-                                     value="#{dateBean.timeInput}">
-                    </mobi:timeSpinner>
-                </h:panelGroup>
+                <h:outputLabel value="Time:" style="float:left" for="time"/>
+                <div style="display:inline-block">
+                    <span style="font-size: 10px;float:right;">(hh:mm AM/PM)</span>
+                    <div style="clear:both;">
+                        <mobi:timeSpinner id="time" useNative="true"  timeZone="#{dateBean.timeZone}"
+                                         value="#{dateBean.timeInput}">
+                        </mobi:timeSpinner>
+                    </div>
+                </div>
+            </mobi:fieldsetRow>
+        </mobi:fieldsetGroup>
+        
+        <mobi:commandButton value="Submit" type="submit"
+            styleClass="submit"/>
+        
+        <h:messages style="margin-left:10px"/>
+
+        <h3 style="clear:both;padding-top:10px;">Date-Time Spinner Values</h3>
+        <mobi:fieldsetGroup>
+            <mobi:fieldsetRow>
+                <h:outputLabel value="Date:"/>
+                <h:outputText styleClass="fr"
+                              value="#{dateBean.dateInput}">
+                    <f:convertDateTime type="date" />
+                </h:outputText>
             </mobi:fieldsetRow>
             <mobi:fieldsetRow>
-                <mobi:commandButton value="Submit" />
+                <h:outputLabel value="Time:"/>
+                <h:outputText styleClass="fr"
+                              value="#{dateBean.timeInput}">
+                    <f:convertDateTime type="time" pattern="hh:mm a" timeZone="#{dateBean.timeZone}"/>
+                </h:outputText>
             </mobi:fieldsetRow>
-
+    
         </mobi:fieldsetGroup>
-        <h:messages />
+        
     </h:form>
-
-    <h3>Date-Time Spinner Value Echo</h3>
-    <mobi:fieldsetGroup>
-        <mobi:fieldsetRow>
-            <h:outputLabel value="Date:"/>
-            <h:outputText styleClass="fr"
-                          value="#{dateBean.dateInput}">
-                <f:convertDateTime type="date" />
-            </h:outputText>
-        </mobi:fieldsetRow>
-        <mobi:fieldsetRow>
-            <h:outputLabel value="Time:"/>
-            <h:outputText styleClass="fr"
-                          value="#{dateBean.timeInput}">
-                <f:convertDateTime type="time" pattern="hh:mm a" timeZone="#{dateBean.timeZone}"/>
-            </h:outputText>
-        </mobi:fieldsetRow>
-
-    </mobi:fieldsetGroup>
 
 
 </ui:composition>
