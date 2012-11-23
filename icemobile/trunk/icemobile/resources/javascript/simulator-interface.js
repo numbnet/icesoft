@@ -44,11 +44,10 @@
     };
     
     ice.camera = function(id, attr) {
-        ice.mobile.simulator.openImageGallery();
-        
-        
-        //var result = window.ICEcamera.shootPhoto(id, attr);
-        //ice.addHidden(id, id, "" + result, 'file');
+        ice.mobi.sim.simAction = function(simPick)  {
+            ice.addHidden(id, id, "" + simPick, 'file');
+        }
+        ice.mobi.sim.openImageGallery();
     };
     
     ice.camcorder = function(id, attr) {
@@ -82,23 +81,50 @@
         }
     };
     var tempInputs = [];
-    
+
+    ice.addHidden = function(target, name, value, vtype)  {
+        var hiddenID = name + "-hid";
+        var existing = document.getElementById(hiddenID);
+        if (existing)  {
+            existing.parentNode.removeChild(existing);
+        }
+        var targetElm = document.getElementById(target);
+        var hidden = document.createElement("input");
+        hidden.setAttribute("type", "hidden");
+        hidden.setAttribute("id", hiddenID);
+        hidden.setAttribute("name", name);
+        hidden.setAttribute("value", value);
+        if (vtype)  {
+            hidden.setAttribute("data-type", vtype);
+        }
+        targetElm.parentNode.insertBefore(hidden, targetElm);
+    }
+
 })();
-if (!window.ice.mobile) {
-    window.ice.mobile = {};
+if (!window.ice.mobi) {
+    window.ice.mobi = {};
 }
-if (!window.ice.mobile.simulator) {
-    window.ice.mobile.simulator = {
+if (!window.ice.mobi.sim) {
+    window.ice.mobi.sim = {
         IMAGE_GALLERY_ID: 'org.icemobile.simulator.imageGallery',
         CLOSE_IMAGE_GALLERY_ID: 'closeImageGallery',
         template:
         "<div align='center' class='simTitle'>Simulated Camera</div>" +
-        "<input type='button' class='camera' name='cam##' " +
-          "onclick='alert(this.name);' >" +
-        "<div style='position:absolute;bottom:0;right:2;'><input type='button' onclick='ice.mobile.simulator.closeImageGallery()' class='simClose' value='close'></div>",
+        "<input type='button' class='galButton b1' name='cam##' " +
+          "onclick='ice.mobi.sim.pickItem(this);' data-itemref='one' >" +
+        "<input type='button' class='galButton b2' name='cam##' " +
+          "onclick='ice.mobi.sim.pickItem(this);' data-itemref='two' >" +
+        "<input type='button' class='galButton b3' name='cam##' " +
+          "onclick='ice.mobi.sim.pickItem(this);' data-itemref='three' >" +
+        "<div class='simClose'><input type='button' onclick='ice.mobi.sim.closeImageGallery()' class='simClose' value='close'></div>",
         images: {},
+        simAction: null,
         addImage: function addImage(thumbPath, imagePath){
             images[thumbPath] = imagePath;
+        },
+        pickItem: function(element) {
+            this.simAction(element.getAttribute("data-itemref"));
+            ice.mobi.sim.closeImageGallery();
         },
         openImageGallery: function openImageGallery(){
             var imageGallery = document.getElementById(
@@ -108,12 +134,7 @@ if (!window.ice.mobile.simulator) {
             }
             var rootDiv = document.createElement("div");
             rootDiv.setAttribute("id",this.IMAGE_GALLERY_ID);
-            rootDiv.setAttribute("style",
-                "width: 200px; height: 300px; " +
-                " background-color: #567; position:absolute; " +
-                "left: 50%; top: 50%; " +
-                "margin-left: -100px; margin-top: -150px;"
-            );
+            rootDiv.setAttribute("class", "simRoot");
 
             rootDiv.innerHTML = this.template.replace(/##/g, "zzz");
 

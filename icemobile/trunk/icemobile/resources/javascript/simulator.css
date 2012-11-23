@@ -1,0 +1,47 @@
+.simRoot {
+    width: 200px;
+    height: 300px;
+    background-color: #567;
+    position:absolute;
+    left: 50%;
+    top: 50%;
+    margin-left: -100px;
+    margin-top: -150px;"
+}
+
+.galButton {
+    background: white;
+    border-radius: 8px;
+    background-size: 75%;
+    background-repeat: no-repeat;
+    background-position: center;
+    height: 60px;
+    width: 60px;
+    padding: 4px;
+}
+
+.simClose {
+    position:absolute;
+    bottom:0;
+    float:right;
+}
+
+.b1 {
+    background-color: green;
+    background-image: url("resources/images/camera.png");
+}
+
+.b2 {
+    background-color: orange;
+    background-image: url("resources/images/camera.png");
+}
+
+.b3 {
+    background-color: blue;
+    background-image: url("resources/images/camera.png");
+}
+
+.camera {
+    background-image: url("resources/images/camera.png");
+}
+
