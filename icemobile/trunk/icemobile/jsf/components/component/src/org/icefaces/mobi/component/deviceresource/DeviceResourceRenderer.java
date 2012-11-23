@@ -52,6 +52,7 @@ public class DeviceResourceRenderer  extends Renderer implements javax.faces.eve
     public static final String SCRIPT_ICEPUSH = "<script type='text/javascript' src='code.icepush'></script>";
     public static final String SCRIPT_ICEMOBILE = "<script type='text/javascript' src='%s%s/javascript/icemobile.js'></script>";
 	public static final String SCRIPT_SIMULATOR = "simulator-interface.js";
+	public static final String CSS_SIMULATOR = "simulator.css";
 
     public void processEvent(ComponentSystemEvent event)
             throws AbortProcessingException {
@@ -113,7 +114,7 @@ public class DeviceResourceRenderer  extends Renderer implements javax.faces.eve
         }
         writeOutDeviceStyleSheets(context,comp,theme);
         if (isSimulated)  {
-            writeSimulatorScripts(context, comp, theme);
+            writeSimulatorResources(context, comp, theme);
         }
         encodeThemeMarker(writer,theme);
 
@@ -171,9 +172,21 @@ public class DeviceResourceRenderer  extends Renderer implements javax.faces.eve
         
     }
 
-    private void writeSimulatorScripts(FacesContext facesContext,
+    private void writeSimulatorResources(FacesContext facesContext,
             DeviceResource component, Theme theme) throws IOException {
         ResponseWriter writer = facesContext.getResponseWriter();
+
+        Resource simulatorCss = facesContext.getApplication()
+            .getResourceHandler().createResource(
+                CSS_SIMULATOR, UTIL_RESOURCE );
+        writer.startElement(HTML.LINK_ELEM, component);
+        writer.writeAttribute(HTML.TYPE_ATTR, HTML.LINK_TYPE_TEXT_CSS,
+                HTML.TYPE_ATTR);
+        writer.writeAttribute(HTML.REL_ATTR, HTML.STYLE_REL_STYLESHEET,
+                HTML.REL_ATTR);
+        writer.writeURIAttribute(HTML.HREF_ATTR,
+                simulatorCss.getRequestPath(), HTML.HREF_ATTR);
+        writer.endElement(HTML.LINK_ELEM);
 
         Resource simulatorScript = facesContext.getApplication()
             .getResourceHandler().createResource(
