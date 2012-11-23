@@ -36,7 +36,7 @@
                             value="${inputTextBean.password}"/>
         </mobi:fieldsetRow>
         <mobi:fieldsetRow>
-            <label>Date</label>
+            <label>Date: (yyyy-mm-dd)</label>
             <mobi:inputText name="date" type="date"
                             autoCorrect="off"
                             placeholder="yyyy-mm-dd"
