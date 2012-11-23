@@ -14,16 +14,17 @@
  * governing permissions and limitations under the License.
  */
 
+.mobi-date-btn, .mobi-time-btn, .mobi-date-popup-btn, .mobi-time-popup-btn {
+    -webkit-tap-highlight-color: rgba(101, 149, 249, 0.3);
+}
 .mobi-date-popup-btn {
     width: 27px;
     height: 24px;
 }
-
 .mobi-time-popup-btn {
     width: 28px;
     height: 26px;
 }
-
 .mobi-date-container, .mobi-time-container {
     opacity: 1;
     width:inherit;
@@ -34,7 +35,6 @@
     box-shadow: none;
     color: white;
 }
-
 .mobi-date-title-container, .mobi-time-title-container {
     color: white;
     font-weight: bold;
@@ -43,19 +43,15 @@
     margin: 10px;
     padding: 10px;
     background-image: none;
-
 }
-
 .mobi-date-select-container, .mobi-time-select-container {
     color: white;
 }
-
 .mobi-date-submit-container, .mobi-time-submit-container {
     color: black;
     width: 315px;
     padding: 3px;
 }
-
 .mobi-date-select-value-cont, .mobi-time-select-value-cont  {
     width: 50px;
     margin: 5px;
@@ -63,7 +59,6 @@
     background-color: black;
     border-radius: 0;
 }
-
 .mobi-date-btn-cont-incr, .mobi-time-btn-cont-incr,
     .mobi-date-btn-cont-decr, .mobi-time-btn-cont-decr{
     border-radius: 0;
@@ -74,16 +69,12 @@
     filter: progid:DXImageTransform.Microsoft.gradient(startColorStr = '#424246', EndColorStr = '#3f3f42');
     -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#424246', EndColorStr='#3f3f42')";
 }
-
 .mobi-date-btn-incr, .mobi-time-btn-incr,
 .mobi-date-btn-decr, .mobi-time-btn-decr{
     box-shadow:none;
     -webkit-box-shadow: none;
     border-radius: 0;
 }
-
 .mobi-date-select-value, .mobi-time-select-value {
     color: white;
 }
-
-
