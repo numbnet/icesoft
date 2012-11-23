@@ -1207,37 +1207,60 @@ ice.ace.DataTable.prototype.ie7PinColumn = function(i) {
     // Set table as position bounds and hide overflowing pinned cols
     tbody.parent()
         .css('position','static') // turn off ie7 multirow header scrolling fix, it makes column pinning of this sort impossible
-        .parent().css('position', 'relative').css('overflow','hidden');
+        .parent().parent().css('position', 'relative').css('overflow-y','hidden');
+
+    tbody.parent().css('width','800px');
 
     var bodyCells = tbody.find(' > tbody > tr > td:nth-child('+i+')'),
         headCells = thead.find(' > thead > tr > th:nth-child('+i+')'),
         footCells = tfoot.find(' > tfoot > tr > td:nth-child('+i+')'),
         cellWidth = bodyCells.eq(0).width();
 
-    // Reposition cells
+    tfoot.parent().add(thead.parent()).css('width',800-(cellWidth + 20)+'px');
 
+    tbody.parent().parent().css('overflow-x','scroll');
+
+    var cellWidth;
+    var cellOffsets = [];
     bodyCells
         .css('position','relative')
         .each(function(i,e) {
-            ice.ace.jq(e)
-                .clone()
-                    .prependTo(ice.ace.jq(e).parent())
-                    .css('position','')
-                    .css('visibility','hidden')
-                .end()
-                .css('width', ice.ace.jq(e).width())
-                .css('top', e.offsetTop - i);
+            cellOffsets[i] = i > 0 ? e.offsetTop - (i - 1) : e.offsetTop;
         })
         .css('position','absolute')
-        .css('left','0');
+        .css('left','0')
+        .css('border-top','none')
+        .each(function(i,e) {
+            e = ice.ace.jq(e);
+            var sibling = e.nextAll(':not(.pinned)').first();
+
+            if (sibling.length == 0)
+                sibling = e.prevAll(':not(.pinned)').first();
+
+            e.css('height', sibling.height());
+
+            e.clone()
+                .prependTo(ice.ace.jq(e).parent())
+                .css('position','')
+                .css('visibility','hidden')
+            .end()
+            .css('width', cellWidth + 1)
+            .css('top', cellOffsets[i])
+            .addClass('pinned');
+        });
 
     headCells.add(footCells)
+        .css('width', cellWidth + 21)
         .css('position','absolute')
+        .addClass('pinned')
         .css('left','0');
 
     // Add table offset
     var tableOffset = cellWidth + 20;
     thead.add(tfoot).parent().css('margin-left', tableOffset);
+
+    // Raise head cell z-index to prevent overlap in IE & FF
+    headCells.css('z-index', '1');
 
     // Add scrolling
     var cachedScrollTopVal = 0;
@@ -1249,7 +1272,6 @@ ice.ace.DataTable.prototype.ie7PinColumn = function(i) {
         cachedScrollTopVal = scrollTopVal;
     });
 
-    //tbody.add(thead).add(tfoot).css('width','800px');
 }
 
 ice.ace.DataTable.prototype.getPinnedColumns = function() {
@@ -1305,6 +1327,7 @@ ice.ace.DataTable.prototype.repairPinnedColumn = function(i) {
 
         cellWidth = bodyCells.eq(0).width(),
         offset = this.columnPinPosition[i],
+        ie7 = ice.ace.jq.browser.msie && ice.ace.jq.browser.version == 7,
         ie8 = ice.ace.jq.browser.msie && ice.ace.jq.browser.version == 8,
         ie9 = ice.ace.jq.browser.msie && ice.ace.jq.browser.version == 9,
         firefox = ice.ace.jq.browser.mozilla;
@@ -1321,14 +1344,14 @@ ice.ace.DataTable.prototype.repairPinnedColumn = function(i) {
     }
 
     bodyCells.css('position','absolute')
-            .css('left', offset)
-            .css('width', cellWidth)
-            .css('border-bottom','0px')
-            .css('border-left','1px solid') // correct previously removed border if removed due to pinning corrections
-            .addClass('pinned')
-            .addClass('ui-widget-content')
-            .find('> div').css('width', cellWidth).end()
-            .first().css('border-top','0px').addClass('pinned');
+        .css('left', offset)
+        .css('width', cellWidth)
+        .css('border-bottom','0px')
+        .css('border-left','1px solid') // correct previously removed border if removed due to pinning corrections
+        .addClass('pinned')
+        .addClass('ui-widget-content')
+        .find('> div').css('width', cellWidth).end()
+        .first().css('border-top','0px').addClass('pinned');
 
     if (firefox)
         bodyCells.css('margin-top','-1px');
@@ -1486,6 +1509,7 @@ ice.ace.DataTable.prototype.pinColumn = function(i) {
 
     // Reposition cells
     this.columnPinPosition[i] = this.currentPinRegionOffset;
+
     bodyCells.css('position','absolute')
         .css('left', this.columnPinPosition[i])
         .css('width', cellWidth)
