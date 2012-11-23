@@ -114,7 +114,7 @@
                      }
                      centerCalculation[clientId] = undefined;
                } else {
-                   containerNode.setAttribute("style", "");
+                   container.setAttribute("style", "");
                }
                ice.mobi.panelPopup.visible[clientId] = false;
                updateHidden(clientId, false);
