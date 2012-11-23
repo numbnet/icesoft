@@ -222,16 +222,6 @@ html.honeycomb h3, html.android h3{
 .form .mobi-fieldset.intro{
     text-align:left;
 }
-.intro .mobi-fieldset-row:first-child:first-letter,
-.exampleDescription p:first-child:first-letter {
-    float: left; 
-    font-family: Georgia, Times, serif;
-    font-size: 40px; 
-    line-height: 0.8;
-    margin: 3px 3px 0 0;
-    text-shadow: 2px 2px 3px #B5B6B7;
-}
-
 .form .mobi-fieldset-row{
     display: -webkit-box;
     display: -moz-box;
