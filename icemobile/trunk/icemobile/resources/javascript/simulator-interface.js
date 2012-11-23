@@ -88,34 +88,32 @@ if (!window.ice.mobile) {
     window.ice.mobile = {};
 }
 if (!window.ice.mobile.simulator) {
-    window.ice.mobile.simulator = function(){
-        var IMAGE_GALLERY_ID = 'imageGallery';
-        var CLOSE_IMAGE_GALLERY_ID = 'closeImageGallery';
-        var images = {};
-        return {
-            addImage: function addImage(thumbPath, imagePath){
-                images[thumbPath] = imagePath;
-            },
-            openImageGallery: function openImageGallery(){
-                var imageGallery = document.getElementById(this.IMAGE_GALLERY_ID);
-                if( imageGallery ){
-                    closeImageGallery();
-                }
-                var rootDiv = document.createElement("div");
-                rootDiv.setAttribute("id",this.IMAGE_GALLERY_ID);
-                var closeBtn = document.createElement("a");
-                closeBtn.setAttribute("id",this.CLOSE_IMAGE_GALLERY_ID);
-                closeBtn.setAttribute("onclick", "ice.mobile.simulator.closeImageGallery();")
-                var closeBtnText = document.createTextNode("Close");
-                closeBtn.appendChild(closeBtnText);
-                rootDiv.appendChild(closeBtn);
-                document.body.appendChild(rootDiv);
-                ice.mobile.simulator.imageGallery = rootDiv;
-            },
-            closeImageGallery: function closeImageGallery(){
-                document.body.removeChild(ice.mobile.simulator.imageGallery);
-                ice.mobile.simulator.imageGallery = null;
+    window.ice.mobile.simulator = {
+        IMAGE_GALLERY_ID: 'imageGallery',
+        CLOSE_IMAGE_GALLERY_ID: 'closeImageGallery',
+        images: {},
+        addImage: function addImage(thumbPath, imagePath){
+            images[thumbPath] = imagePath;
+        },
+        openImageGallery: function openImageGallery(){
+            var imageGallery = document.getElementById(this.IMAGE_GALLERY_ID);
+            if( imageGallery ){
+                closeImageGallery();
             }
+            var rootDiv = document.createElement("div");
+            rootDiv.setAttribute("id",this.IMAGE_GALLERY_ID);
+            var closeBtn = document.createElement("a");
+            closeBtn.setAttribute("id",this.CLOSE_IMAGE_GALLERY_ID);
+            closeBtn.setAttribute("onclick", "ice.mobile.simulator.closeImageGallery();")
+            var closeBtnText = document.createTextNode("Close");
+            closeBtn.appendChild(closeBtnText);
+            rootDiv.appendChild(closeBtn);
+            document.body.appendChild(rootDiv);
+            ice.mobile.simulator.imageGallery = rootDiv;
+        },
+        closeImageGallery: function closeImageGallery(){
+            document.body.removeChild(ice.mobile.simulator.imageGallery);
+            ice.mobile.simulator.imageGallery = null;
         }
         
     };

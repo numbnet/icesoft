@@ -17,8 +17,10 @@ package org.icemobile.util;
 
 import java.util.logging.Logger;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 /**
  * A central client feature and detection class for ICEmobile. 
@@ -32,6 +34,7 @@ public class ClientDescriptor {
     private final static String HEADER_ACCEPT_BLACKBERRY_EMUL = "vnd.rim";  //found when emulating IE or FF on BB
     private final static String COOKIE_NAME_ICEMOBILE_CONTAINER = "com.icesoft.user-agent";
     private final static String COOKIE_VALUE_ICEMOBILE_CONTAINER = "HyperBrowser";
+    private final static String SIMULATOR_KEY = "org.icemobile.simulator";
 
     private static Logger log = Logger.getLogger(ClientDescriptor.class.getName());
     
@@ -45,6 +48,7 @@ public class ClientDescriptor {
     private FORM_FACTOR formFactor;
     private boolean icemobileContainer;
     private boolean sxRegistered;
+    private boolean isSimulator = false;
     
     private UserAgentInfo _userAgentInfo;
     
@@ -55,10 +59,13 @@ public class ClientDescriptor {
         updateFormFactor();
         updateICEmobileContainer(request);
         updateSXRegistered(request);
+        updateSimulator(request);
+        //TODO use getSession(false)
         request.getSession().setAttribute(SESSION_KEY, this);
     }
     
     public static ClientDescriptor getInstance(HttpServletRequest request){
+        //TODO use getSession(false)
         ClientDescriptor cd = (ClientDescriptor)request.getSession().getAttribute(SESSION_KEY);
         //always update if user agent changed
         if( cd == null || cd.isUserAgentUpdateRequired(request)){
@@ -67,6 +74,10 @@ public class ClientDescriptor {
         //check if sx has been newly registered
         if( !cd.isSXRegistered() ){
             cd.updateSXRegistered(request);
+        }
+        //check if simulator state updated
+        if( !cd.isSimulator() ){
+            cd.updateSimulator(request);
         }
         return cd;        
     }
@@ -142,8 +153,15 @@ public class ClientDescriptor {
     public boolean isSXRegistered(){
         return sxRegistered;
     }
+
+    public boolean isSimulator(){
+        return isSimulator;
+    }
     
     public boolean isICEmobileContainer(){
+        if (isSimulator)  {
+            return true;
+        }
         return icemobileContainer;
     }
     
@@ -179,6 +197,39 @@ public class ClientDescriptor {
     
     private void updateSXRegistered(HttpServletRequest request){
         sxRegistered = SXUtils.isSXRegistered(request);
+    }
+
+    private void updateSimulator(HttpServletRequest request){
+        HttpSession session = request.getSession(false);
+        ServletContext servletContext = null;
+        if (null != session)  {
+            servletContext = session.getServletContext();
+            String simulatorSetting = (String)
+                session.getAttribute(SIMULATOR_KEY);
+            if ("true".equalsIgnoreCase(simulatorSetting))  {
+                isSimulator = true;
+                return;
+            }
+        }
+        if (isSimulator)  {
+            return;
+        }
+        //settings below cannot change after deployment
+        String simulatorSetting = System.getProperty(SIMULATOR_KEY);
+        if ("true".equalsIgnoreCase(simulatorSetting))  {
+            isSimulator = true;
+            return;
+        }
+        //cannot getServletContext from request without Servlet 3.0,
+        //so init parameter only works if there is a session for now
+        if (null != servletContext)  {
+            simulatorSetting = servletContext
+                    .getInitParameter(SIMULATOR_KEY);
+        }
+        if ("true".equalsIgnoreCase(simulatorSetting))  {
+            isSimulator = true;
+            return;
+        }
     }
     
     private void updateFormFactor(){

@@ -35,6 +35,8 @@ public class DeviceResourceRenderer  extends Renderer implements javax.faces.eve
     
 
     public static final String CSS_LOCATION = "org.icefaces.component.skins";
+    public static final String UTIL_RESOURCE =
+            "org.icefaces.component.util";
     public static final String RESOURCE_URL_ERROR = "RES_NOT_FOUND";
     public static final String IOS_APP_ID = "485908934";
     
@@ -49,8 +51,8 @@ public class DeviceResourceRenderer  extends Renderer implements javax.faces.eve
     
     public static final String SCRIPT_ICEPUSH = "<script type='text/javascript' src='code.icepush'></script>";
     public static final String SCRIPT_ICEMOBILE = "<script type='text/javascript' src='%s%s/javascript/icemobile.js'></script>";
-    
-    
+	public static final String SCRIPT_SIMULATOR = "simulator-interface.js";
+
     public void processEvent(ComponentSystemEvent event)
             throws AbortProcessingException {
         // http://javaserverfaces.java.net/nonav/docs/2.0/pdldocs/facelets/index.html
@@ -71,14 +73,18 @@ public class DeviceResourceRenderer  extends Renderer implements javax.faces.eve
         
         boolean ios6 = false;
         boolean desktop = false;
-        
+        boolean isSimulated = false;
+    
         ClientDescriptor client = ClientDescriptor
                 .getInstance((HttpServletRequest)context.getExternalContext().getRequest());
         ios6 = client.isIOS6();
         if( !ios6 ){
             desktop = client.isDesktopBrowser();
         }
-            
+        if (desktop) {
+            isSimulated = client.isSimulator();
+        }
+
         String contextRoot = context.getExternalContext().getRequestContextPath();
         
         ResponseWriter writer = context.getResponseWriter();
@@ -106,6 +112,9 @@ public class DeviceResourceRenderer  extends Renderer implements javax.faces.eve
             theme = CSSUtils.deriveTheme(targetView, JSFUtils.getRequest());
         }
         writeOutDeviceStyleSheets(context,comp,theme);
+        if (isSimulated)  {
+            writeSimulatorScripts(context, comp, theme);
+        }
         encodeThemeMarker(writer,theme);
 
     }
@@ -160,6 +169,26 @@ public class DeviceResourceRenderer  extends Renderer implements javax.faces.eve
         writer.writeURIAttribute(HTML.HREF_ATTR, resourceUrl, HTML.HREF_ATTR);
         writer.endElement(HTML.LINK_ELEM);
         
+    }
+
+    private void writeSimulatorScripts(FacesContext facesContext,
+            DeviceResource component, Theme theme) throws IOException {
+        ResponseWriter writer = facesContext.getResponseWriter();
+
+        Resource simulatorScript = facesContext.getApplication()
+            .getResourceHandler().createResource(
+                SCRIPT_SIMULATOR, UTIL_RESOURCE );
+        String src = simulatorScript.getRequestPath();
+        writer.startElement("script", component);
+        writer.writeAttribute("text", "text/javascript", null);
+        writer.writeAttribute("src", src, null);
+        writer.endElement("script");
+
+        writer.startElement("script", null);
+        writer.writeAttribute("type", "text/javascript", null);
+        writer.writeText(
+            "console.log('Welcome to the Matrix');",null);
+        writer.endElement("script");
     }
 
     public void encodeThemeMarker(ResponseWriter writer, Theme theme) throws IOException {
