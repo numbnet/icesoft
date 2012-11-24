@@ -10,19 +10,25 @@
 }
 
 .galButton {
-    background: white;
     border-radius: 8px;
     background-size: 75%;
     background-repeat: no-repeat;
     background-position: center;
     height: 60px;
     width: 60px;
+    margin: 2px;
+}
+
+.simTitle {
+    background:#999;
     padding: 4px;
+    margin: 2px;
 }
 
 .simClose {
     position:absolute;
     bottom:0;
+    right:0;
     float:right;
 }
 
