@@ -103,8 +103,13 @@
             // temporary work around for drawing location on canvas
             var lat = '${geolocationBean.latitude}';
             var lon = '${geolocationBean.longitude}';
+            
+            if( !lat && !lon ){
+                lat = 0; 
+                lon = 0;
+            }
 
-            if (canvas.getContext && lat && lon) {
+            if (canvas.getContext) {
                 var ctx = canvas.getContext('2d');
                 ctx.clearRect(0, 0, 600, 400);
                 var height = canvas.height;
