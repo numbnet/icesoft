@@ -27,21 +27,14 @@
 }
 
 .b1 {
-    background-color: green;
-    background-image: url("resources/images/camera.png");
+    background-image: url(#{resource['org.icefaces.component.util:sim-one.png']});
 }
 
 .b2 {
-    background-color: orange;
-    background-image: url("resources/images/camera.png");
+    background-image: url(#{resource['org.icefaces.component.util:sim-two.png']});
 }
 
 .b3 {
-    background-color: blue;
-    background-image: url("resources/images/camera.png");
-}
-
-.camera {
-    background-image: url("resources/images/camera.png");
+    background-image: url(#{resource['org.icefaces.component.util:sim-three.png']});
 }
 
