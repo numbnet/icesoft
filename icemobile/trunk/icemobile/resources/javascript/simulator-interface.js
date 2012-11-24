@@ -111,11 +111,11 @@ if (!window.ice.mobi.sim) {
         template:
         "<div align='center' class='simTitle'>Simulated Camera</div>" +
         "<input type='button' class='galButton b1' name='cam##' " +
-          "onclick='ice.mobi.sim.pickItem(this);' data-itemref='one' >" +
+          "onclick='ice.mobi.sim.pickItem(this);' data-itemref='sim-one' >" +
         "<input type='button' class='galButton b2' name='cam##' " +
-          "onclick='ice.mobi.sim.pickItem(this);' data-itemref='two' >" +
+          "onclick='ice.mobi.sim.pickItem(this);' data-itemref='sim-two' >" +
         "<input type='button' class='galButton b3' name='cam##' " +
-          "onclick='ice.mobi.sim.pickItem(this);' data-itemref='three' >" +
+          "onclick='ice.mobi.sim.pickItem(this);' data-itemref='sim-three' >" +
         "<div class='simClose'><input type='button' onclick='ice.mobi.sim.closeImageGallery()' class='simClose' value='close'></div>",
         images: {},
         simAction: null,

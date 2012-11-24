@@ -77,6 +77,14 @@ public class MobiJSFUtils {
         if (null != part) {
             contentType = part.getContentType();
             fileStream = part.getInputStream();
+            if (null == contentType)  {
+                //part was found, but missing contentType indicates simulator
+                contentType = "image/png";
+                fileStream = MobiJSFUtils.class
+                    .getClassLoader().getResourceAsStream(
+                        "META-INF/resources/org.icefaces.component.util/" +
+                        request.getParameter(partUploadName) + ".png");
+            }
         }
 
         String fileName = Long.toString(
