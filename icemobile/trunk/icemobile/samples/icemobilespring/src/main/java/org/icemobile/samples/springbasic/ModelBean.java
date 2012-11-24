@@ -6,7 +6,6 @@ public class ModelBean {
 	
 	private String name;
 	
-	
 	private Map<String, String> additionalInfo;
 
     public String getName() {

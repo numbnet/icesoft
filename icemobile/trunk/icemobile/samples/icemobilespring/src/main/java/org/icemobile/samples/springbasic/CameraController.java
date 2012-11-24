@@ -9,24 +9,19 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.WebRequest;
-import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.multipart.MultipartFile;
 
-import org.icepush.PushContext;
+import org.icemobile.util.ClientDescriptor;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.Map;
 import java.util.UUID;
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
-import javax.inject.Inject;
 
 @Controller
+@SessionAttributes({"cameraMessage", "cameraUpload"})
 public class CameraController {
-
-    @Inject
-    private WebApplicationContext context;
 
     String currentFileName = null;
     String currentUserName = null;
@@ -34,6 +29,11 @@ public class CameraController {
     @ModelAttribute
     public void ajaxAttribute(WebRequest request, Model model) {
         model.addAttribute("ajaxRequest", AjaxUtils.isAjaxRequest(request));
+    }
+    
+    @ModelAttribute
+    public void iosAttribute(HttpServletRequest request, Model model) {
+        model.addAttribute("ios", ClientDescriptor.getInstance(request).isIOS());
     }
 
     @RequestMapping(value = "/camera", 
@@ -45,20 +45,6 @@ public class CameraController {
     @RequestMapping(value = "/camera", method = RequestMethod.GET)
     public void fileUploadForm(HttpServletRequest request, Model model) {
         model.addAttribute("isGET", Boolean.TRUE);
-        model.addAttribute("imgPath", getCurrentFileName(request));
-        model.addAttribute("imgUploaded", new Boolean(null != currentFileName));
-    }
-
-    @RequestMapping(value = "/camregion", method = RequestMethod.GET)
-    public void camRegion(HttpServletRequest request, Model model) {
-        model.addAttribute("isGET", Boolean.TRUE);
-        model.addAttribute("imgPath", getCurrentFileName(request));
-    }
-
-    @RequestMapping(value = "/campush", method = RequestMethod.GET)
-    public void camPush(HttpServletRequest request, Model model) {
-        model.addAttribute("isGET", Boolean.TRUE);
-        model.addAttribute("imgPath", getCurrentFileName(request));
     }
 
     @ModelAttribute("cameraBean")
@@ -71,36 +57,17 @@ public class CameraController {
             HttpServletRequest request, ModelBean modelBean,
             @RequestParam(value = "cam", required = false) MultipartFile file,
             Model model) throws IOException {
+        System.out.println("processUpload(): modelBean=" + modelBean + ", file="+file);
         String newFileName = saveImage(request, file, null);
         if ((null != file) && !file.isEmpty()) {
-            model.addAttribute("message", "Hello " + modelBean.getName() + ", your file '" + newFileName + "' was uploaded successfully.");
+            model.addAttribute("cameraMessage", "Hello " + modelBean.getName() + ", your file '" + newFileName + "' was uploaded successfully.");
         }
         if (null != newFileName) {
-            model.addAttribute("imgPath", newFileName);
+            model.addAttribute("cameraUpload", newFileName);
         } else {
-            model.addAttribute("imgPath", "resources/uploaded.jpg");
+            model.addAttribute("cameraUpload", "resources/uploaded.jpg");
         }
     }
-
-    @RequestMapping(value = "/campush", method = RequestMethod.POST)
-    public void pushCamera(
-            HttpServletRequest request, ModelBean modelBean,
-            @RequestParam(value = "pushcam", required = false) MultipartFile file,
-            Model model) throws IOException {
-
-        String newFileName = saveImage(request, file, null);
-        if ( ((null != file) && !file.isEmpty()) ) {
-            model.addAttribute("message", "Hello " + modelBean.getName() + ", your file '" + newFileName + "' was uploaded successfully.");
-            PushContext.getInstance(context.getServletContext())
-                    .push("camPush");
-        }
-        if (null != newFileName) {
-            model.addAttribute("imgPath", newFileName);
-        } else {
-            model.addAttribute("imgPath", "resources/uploaded.jpg");
-        }
-    }
-
 
     @RequestMapping(value = "/jsoncam", method = RequestMethod.POST)
     public
