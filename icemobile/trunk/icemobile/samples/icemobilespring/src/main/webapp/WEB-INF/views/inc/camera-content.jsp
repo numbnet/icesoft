@@ -21,20 +21,22 @@
         </mobi:fieldsetRow>
     </mobi:fieldsetGroup>
     
-    <mobi:commandButton buttonType="important"
-                        styleClass="submit"
-                        value="Submit"
-                        type="submit"/>
+    <c:if test="${!ios}"><!-- SX on iOS auto-submits -->
+        <mobi:commandButton buttonType="important"
+                            styleClass="submit"
+                            value="Submit"
+                            type="submit"/>
+    </c:if>
                         
     <h3>Camera Upload</h3>
                         
-    <c:if test="${not empty message}">
-        <div id="message" class="success">${message}</div>
+    <c:if test="${not empty cameraMessage}">
+        <div id="message" class="success">${cameraMessage}</div>
     </c:if>
-    <c:if test="${not empty message or imgUploaded}">
+    <c:if test="${not empty cameraMessage}">
         <mobi:fieldsetGroup>
             <mobi:fieldsetRow>
-                <img src="${imgPath}" class="imageView">
+                <img src="${cameraUpload}" class="imageView">
             </mobi:fieldsetRow>
         </mobi:fieldsetGroup>
     </c:if>
