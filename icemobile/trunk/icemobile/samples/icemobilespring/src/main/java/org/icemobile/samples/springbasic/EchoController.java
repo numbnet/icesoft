@@ -116,8 +116,7 @@ public class EchoController {
     }
 
     @RequestMapping(value = "/panelPopup")
-    public void doRequest(
-        @ModelAttribute("panelPopupBean") PanelPopupBean model) {
+    public void doPanelPopupRequest() {
     }
 
 }
