@@ -70,38 +70,43 @@
         <mobi:fieldsetGroup>
             <mobi:fieldsetRow styleClass="mobi-center">
                 <mobi:commandButton actionListener="#{buttonBean.buttonType}"
-                                    value="Default">
+                                    value="Default"
+                                    style="width:40%;max-width:300px">
                     <f:attribute name="buttonType" value=""/>
                 </mobi:commandButton>
                 <mobi:commandButton actionListener="#{buttonBean.buttonType}"
-                                    value="Unimportant">
+                                    value="Unimportant"
+                                    style="width:40%;max-width:300px">
                     <f:attribute name="buttonType" value="unimportant"/>
                 </mobi:commandButton>
             </mobi:fieldsetRow>
             <mobi:fieldsetRow styleClass="mobi-center">
                 <mobi:commandButton actionListener="#{buttonBean.buttonType}"
-                                    value="Important" buttonType="important">
+                                    value="Important" buttonType="important"
+                                    style="width:40%;max-width:300px">
                         <f:attribute name="buttonType" value="important"/>
                 </mobi:commandButton>
                 <mobi:commandButton actionListener="#{buttonBean.buttonType}"
-                                    value="Attention" buttonType="attention">
+                                    value="Attention" buttonType="attention"
+                                    style="width:40%;max-width:300px">
                     <f:attribute name="buttonType" value="attention"/>
                 </mobi:commandButton>
             </mobi:fieldsetRow>
             <mobi:fieldsetRow>
                 <mobi:commandButton actionListener="#{buttonBean.buttonType}"
                                     buttonType="back" value="Back"
-                                    styleClass="back">
+                                    styleClass="back" style="margin:0 auto;width:300px">
                     <f:attribute name="buttonType" value="back"/>
                 </mobi:commandButton>
             </mobi:fieldsetRow>
             <mobi:fieldsetRow>
                 <mobi:commandButton id="disabledDefault" value="Disabled" 
-                    disabled="true"/>
+                    disabled="true" style="margin:0 auto;width:300px"/>
             </mobi:fieldsetRow>
             <mobi:fieldsetRow>
                 <h:outputLabel value="Selected Value: " />
-                <h:outputText value="#{empty buttonBean.buttonType ? 'Default' : buttonBean.buttonType}" />
+                <h:outputText value="#{empty buttonBean.buttonType ? 'Default' : buttonBean.buttonType}" 
+                    style="text-align:right"/>
             </mobi:fieldsetRow>
         </mobi:fieldsetGroup>
 
