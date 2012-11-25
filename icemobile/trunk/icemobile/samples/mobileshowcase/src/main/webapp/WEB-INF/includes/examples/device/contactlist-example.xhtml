@@ -35,7 +35,10 @@
                     label="Fetch Contacts" 
                     pattern="#{contactsBean.pattern}" 
                     fields="name, email, phone"
-                    value="#{contactsBean.rawContact}"/>
+                    value="#{contactsBean.rawContact}"
+                    name="#{contactsBean.name}"
+                    email="#{contactsBean.email}"
+                    phone="#{contactsBean.phone}"/>
             </mobi:fieldsetRow>
         </mobi:fieldsetGroup>
         

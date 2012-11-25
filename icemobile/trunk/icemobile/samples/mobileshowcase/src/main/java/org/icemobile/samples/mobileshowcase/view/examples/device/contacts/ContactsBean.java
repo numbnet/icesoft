@@ -55,35 +55,6 @@ public class ContactsBean extends ExampleImpl<ContactsBean> implements Serializa
 
     public void setRawContact(String rawContact) {
         this.rawContact = rawContact;
-        this.email = null;
-        this.phone = null;
-        this.name = null;
-        //raw contact string will be in encoded format 
-        //of [contact=val&][phone=val&][email=val&]
-        if( rawContact != null && !"".equals(rawContact)){
-            try {
-              //contact string has to be decoded
-                String decoded = URLDecoder.decode(rawContact,"UTF-8");
-                String[] tokens = decoded.split("&");
-                for( int i = 0 ; i < tokens.length ; i++ ){
-                  //each contact field will have a key and value
-                    String key = tokens[i].substring(0,tokens[i].indexOf("="));
-                    String val = tokens[i].substring(tokens[i].indexOf("=")+1);
-                  //possible keys are 'name', 'phone', and 'email'
-                    if( "name".equals(key)){
-                        name = val;
-                    }
-                    else if( "phone".equals(key)){
-                        phone = val;
-                    }
-                    else if( "email".equals(key)){
-                        email = val;
-                    }
-                }
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
-            }
-        }
     }
 
     public String getName() {
@@ -108,6 +79,18 @@ public class ContactsBean extends ExampleImpl<ContactsBean> implements Serializa
 
     public String getRawContact() {
         return rawContact;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
 }

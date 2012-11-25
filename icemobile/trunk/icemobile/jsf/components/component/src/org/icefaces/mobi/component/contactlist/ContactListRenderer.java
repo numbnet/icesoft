@@ -10,6 +10,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.render.Renderer;
 
 import org.icefaces.mobi.renderkit.ResponseWriterWrapper;
+import org.icemobile.component.ContactDecoder;
 import org.icemobile.component.IContactList;
 import org.icemobile.renderkit.ContactListCoreRenderer;
 import org.icefaces.impl.application.AuxUploadResourceHandler;
@@ -32,6 +33,10 @@ public class ContactListRenderer extends Renderer {
             }
             if (null != contactListResult)  {
                 contactList.setValue(contactListResult);
+                ContactDecoder modelHelper = new ContactDecoder(contactListResult);
+                contactList.setName(modelHelper.getName());
+                contactList.setEmail(modelHelper.getEmail());
+                contactList.setPhone(modelHelper.getPhone());
             }
         } catch (Exception e) {
             log.log(Level.WARNING, "Error decoding fetchContacts request paramaters.", e);
