@@ -67,7 +67,6 @@
                     Device Information
                 </mobi:outputListItem>
                 <mobi:outputListItem>
-                    autoCenterPopup
                     <a onclick="ice.mobi.panelPopup.closeClient('autoCenterPopup');">
                        This will be a dismissive link </a>
                 </mobi:outputListItem>
