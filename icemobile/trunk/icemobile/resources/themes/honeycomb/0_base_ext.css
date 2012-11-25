@@ -22,3 +22,7 @@ body{
     background-color: black;
     color: white;
 }
+
+.mobi-tap-highlight{
+    -webkit-tap-highlight-color: #082658;
+}
