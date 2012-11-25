@@ -139,8 +139,9 @@
             console.log("INIT");
             this.cfg[clientId] = cfgIn;
             var thisOne = this.findPanel(clientId, false);
+            var i = this.panels.length;
             if (thisOne == null){
-                this.panels[0] = PanelPopup(clientId, cfgIn);
+                this.panels[i] = PanelPopup(clientId, cfgIn);
             } else {
                 var vis = cfgIn.visible || false;
                 console.log(" disabled="+cfgIn.disabled+"  VISIBLE="+vis);
