@@ -17,6 +17,7 @@
 package org.icefaces.mobi.component.timespinner;
 
 import org.icefaces.mobi.renderkit.BaseInputRenderer;
+import org.icefaces.mobi.utils.HTML;
 import org.icefaces.mobi.utils.MobiJSFUtils;
 import org.icefaces.mobi.utils.PassThruAttributeWriter;
 import org.icefaces.mobi.utils.Utils;
@@ -146,6 +147,9 @@ public class TimeSpinnerRenderer extends BaseInputRenderer {
         StringBuilder classNames = new StringBuilder(TimeSpinner.INPUT_CLASS)
                 .append(" ").append(timeEntry.getStyleClass());
         writer.writeAttribute("class", classNames.toString(), null);
+       if (timeEntry.getStyle() !=null){
+            writer.writeAttribute(HTML.STYLE_ATTR, timeEntry.getStyle(), HTML.STYLE_ATTR);
+        }
         if (value != null) {
             writer.writeAttribute("value", value, null);
         }

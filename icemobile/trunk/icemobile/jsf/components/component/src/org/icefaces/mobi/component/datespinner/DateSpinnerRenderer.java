@@ -17,10 +17,9 @@
 package org.icefaces.mobi.component.datespinner;
 
 import org.icefaces.mobi.renderkit.BaseInputRenderer;
-import org.icefaces.mobi.utils.MobiJSFUtils;
 import org.icefaces.mobi.utils.PassThruAttributeWriter;
 import org.icefaces.mobi.utils.Utils;
-import org.icemobile.util.ClientDescriptor;
+import org.icefaces.mobi.utils.HTML;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.behavior.ClientBehaviorHolder;
@@ -170,7 +169,10 @@ public class DateSpinnerRenderer extends BaseInputRenderer {
         if (null != checker) {
             classNames.append(" ").append(dateSpinner.getStyleClass());
         }
-        writer.writeAttribute("class", classNames.toString(), null);
+        writer.writeAttribute(HTML.CLASS_ATTR, classNames.toString(), HTML.CLASS_ATTR);
+        if (dateSpinner.getStyle() !=null){
+            writer.writeAttribute(HTML.STYLE_ATTR, dateSpinner.getStyle(), HTML.STYLE_ATTR);
+        }
         if (value != null) {
             writer.writeAttribute("value", value, null);
         }
