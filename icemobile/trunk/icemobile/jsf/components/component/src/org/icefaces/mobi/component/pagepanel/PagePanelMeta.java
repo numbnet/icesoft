@@ -28,7 +28,6 @@ import javax.faces.component.UIComponent;
         componentClass = "org.icefaces.mobi.component.pagepanel.PagePanel",
         rendererClass = "org.icefaces.mobi.component.pagepanel.PagePanelRenderer",
         generatedClass = "org.icefaces.mobi.component.pagepanel.PagePanelBase",
-
         componentType = "org.icefaces.PagePanel",
         rendererType = "org.icefaces.PagePanelRenderer",
         extendsClass = "javax.faces.component.UIPanel",

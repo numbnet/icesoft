@@ -211,6 +211,19 @@ public class JSFUtils {
         child.encodeEnd(facesContext);
     }
 
+    /**
+     * used by PagePanelRenderer to ensure no problems with push
+     * @param facesContext
+     * @param child
+     * @throws IOException
+     */
+    public static void renderLayoutChild(FacesContext facesContext, UIComponent child)
+            throws IOException {
+        if (!child.isRendered()) {
+            return;
+        }
+        child.encodeAll(facesContext);
+    }
     public static UIComponent findNamingContainer(UIComponent uiComponent) {
         UIComponent parent = uiComponent.getParent();
         while (parent != null) {

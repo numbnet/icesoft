@@ -60,7 +60,7 @@ public class PagePanelRenderer extends BaseLayoutRenderer {
             writer.writeAttribute(HTML.ID_ATTR, clientId + "_pgPnlHdr", HTML.ID_ATTR);
             writer.startElement(HTML.DIV_ELEM, component);
             writer.writeAttribute(HTML.CLASS_ATTR, PagePanel.CTR_CLASS, HTML.STYLE_CLASS_ATTR);
-            JSFUtils.renderChild(facesContext, headerFacet);
+            JSFUtils.renderLayoutChild(facesContext, headerFacet);
             writer.endElement(HTML.DIV_ELEM);
             writer.endElement(HTML.DIV_ELEM);
         }
@@ -78,7 +78,7 @@ public class PagePanelRenderer extends BaseLayoutRenderer {
             writer.startElement(HTML.DIV_ELEM, pagePanel);
             writer.writeAttribute(HTML.CLASS_ATTR, bodyStyleClass, HTML.CLASS_ATTR);
             writer.writeAttribute(HTML.ID_ATTR, clientId + "_pgPnlBdy", HTML.ID_ATTR);
-            JSFUtils.renderChild(facesContext, bodyFacet);
+            JSFUtils.renderLayoutChild(facesContext, bodyFacet);
             writer.endElement(HTML.DIV_ELEM);
         }
 
@@ -89,7 +89,7 @@ public class PagePanelRenderer extends BaseLayoutRenderer {
             writer.writeAttribute(HTML.ID_ATTR, clientId + "_pgPnlFtr", HTML.ID_ATTR);
             writer.startElement(HTML.DIV_ELEM, component);
             writer.writeAttribute(HTML.CLASS_ATTR, PagePanel.CTR_CLASS, HTML.STYLE_CLASS_ATTR);
-            JSFUtils.renderChild(facesContext, footerFacet);
+            JSFUtils.renderLayoutChild(facesContext, footerFacet);
             writer.endElement(HTML.DIV_ELEM);
             writer.endElement(HTML.DIV_ELEM);
         }
