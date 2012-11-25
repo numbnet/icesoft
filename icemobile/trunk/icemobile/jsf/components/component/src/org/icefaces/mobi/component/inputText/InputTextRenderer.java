@@ -127,7 +127,7 @@ public class InputTextRenderer extends BaseInputRenderer {
               writer.writeAttribute(event, cbhCall, null);
         }
         else if (inputText.isSingleSubmit()){
-            String jsCall = "ice.se(event, '" + clientId + "');";
+            String jsCall = "ice.setFocus(null); ice.se(event, '" + clientId + "');";
             writer.writeAttribute(event, jsCall, null);
         }
         writer.endElement(componentType);
