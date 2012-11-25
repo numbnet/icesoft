@@ -23,23 +23,23 @@
                 Panel Popup Links (select one)
             </mobi:outputListItem>
             <mobi:outputListItem>
-                System Update
+                <a href="#">System Update</a>
             </mobi:outputListItem>
             <mobi:outputListItem>
-                Status
+                <a href="#">Status</a>
             </mobi:outputListItem>
             <mobi:outputListItem>
-                Battery use
+                <a href="#">Battery use</a>
             </mobi:outputListItem>
             <mobi:outputListItem>
-                Device Information
+                <a href="#">Device Information</a>
             </mobi:outputListItem>
             <mobi:outputListItem>
                 <a onclick="ice.mobi.panelPopup.closeClient('popup');">
                    This will be a dismissive link </a>
             </mobi:outputListItem>
         </mobi:outputList>
-        <div class="text-align:right">
+        <div style="text-align:right;background-color:rgba(255, 255, 255, 0.5)">
             <input type="button" value="Close via markup" class="mobi-button mobi-button-important"
                 onclick="ice.mobi.panelPopup.closeClient('popup');"/>
         </div>
@@ -55,23 +55,23 @@
                     Panel Popup Links (select one)
                 </mobi:outputListItem>
                 <mobi:outputListItem>
-                    System Update
+                    <a href="#">System Update</a>
                 </mobi:outputListItem>
                 <mobi:outputListItem>
-                    Status
+                    <a href="#">Status</a>
                 </mobi:outputListItem>
                 <mobi:outputListItem>
-                    Battery use
+                    <a href="#">Battery use</a>
                 </mobi:outputListItem>
                 <mobi:outputListItem>
-                    Device Information
+                    <a href="#">Device Information</a>
                 </mobi:outputListItem>
                 <mobi:outputListItem>
                     <a onclick="ice.mobi.panelPopup.closeClient('autoCenterPopup');">
                        This will be a dismissive link </a>
                 </mobi:outputListItem>
             </mobi:outputList>
-            <div class="text-align:right">
+            <div style="text-align:right;background-color:rgba(255, 255, 255, 0.5)">
                 <input type="button" value="Close via markup" class="mobi-button mobi-button-important"
                     onclick="ice.mobi.panelPopup.closeClient('autoCenterPopup');"/>
             </div>
