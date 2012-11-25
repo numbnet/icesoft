@@ -48,7 +48,7 @@ Serializable {
     private double altitude = 0.0;
     private double direction = 0.0;
     private int zoom = 4;
-    private String type = "map";
+    private String type = "roadmap";
     
     public GMapBean() {
         super(GMapBean.class);
