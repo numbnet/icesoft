@@ -21,22 +21,25 @@
         </mobi:fieldsetRow>
     </mobi:fieldsetGroup>
     
-    <mobi:commandButton buttonType='important'
-                        styleClass="submit"
-                        value="Submit"
-                        type="submit"/>
+    <c:if test="${!ios}"><!-- SX on iOS auto-submits -->
+        <mobi:commandButton buttonType='important'
+                            styleClass="submit"
+                            value="Submit"
+                            type="submit"/>
+    </c:if>
                         
     <h3>Camcorder Upload</h3>
                         
-    <c:if test="${not empty message}">
-        <div id="message" class="success">${message}<br/>
+    <c:if test="${not empty camcorderMessage}">
+        <div id="message" class="success">${camcorderMessage}<br/>
         </div>
     </c:if>
-    <c:if test="${mediaReady}">
+    <c:if test="${camcorderUploadReady}">
         <mobi:fieldsetGroup>
             <mobi:fieldsetRow>
-                <video src="./resources/media/video.mp4" controls="controls"></video>
-                <br><a href="./resources/media/video.mp4">Play</a>
+                <video src="${camcorderUpload}" controls="controls"
+                     class="imageView"></video>
+                <br><a href="${camcorderUpload}">Play</a>
             </mobi:fieldsetRow>
         </mobi:fieldsetGroup>
     </c:if>
