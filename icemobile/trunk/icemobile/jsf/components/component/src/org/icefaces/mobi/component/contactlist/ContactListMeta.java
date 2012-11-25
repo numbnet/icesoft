@@ -48,6 +48,15 @@ public class ContactListMeta {
     
     @Property(tlddoc = "The result")
     private String value;
+    
+    @Property(tlddoc = "The name of the contact")
+    private String name;
+    
+    @Property(tlddoc = "The phone number of the contact")
+    private String phone;
+    
+    @Property(tlddoc = "The email of the contact")
+    private String email;
 
 
 
