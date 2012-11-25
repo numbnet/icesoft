@@ -1158,6 +1158,13 @@ ice.mobi.datespinner = {
         this.opened[clientId] = null;
     }
 } ;
+ice.mobi.ready = function (callback) {
+    if (document.addEventListener){
+        document.addEventListener('DOMContentLoaded', callback, false);
+    } else {
+        window.attachEvent('onload', callback);
+    }
+};
 (function() {
     //functions that do not encapsulate any state, they just work with the provided parameters
     //and globally accessible variables
@@ -1281,10 +1288,12 @@ ice.mobi.datespinner = {
         cfg: {},
         centerCalculation:{},
         init: function(clientId, cfgIn) {
+            console.log("initiallizing popup with id="+clientId);
             this.cfg[clientId] = cfgIn;
             var thisOne = this.findPanel(clientId, false);
+            var i = this.panels.length;
             if (thisOne == null){
-                this.panels[0] = PanelPopup(clientId, cfgIn);
+                this.panels[i] = PanelPopup(clientId, cfgIn);
             } else {
                 var vis = cfgIn.visible || false;
               //  console.log(" disabled="+cfgIn.disabled+"  VISIBLE="+vis);
