@@ -60,10 +60,8 @@ public class PanelPopupBean extends ExampleImpl<PanelPopupBean> implements
     private boolean clientSide;
     private boolean autoCenter = true;
     private String openButtonLabel = "Open";
-    private int width = 400;
-    private int height = 400;
-    private int minWidth = 400;
-    private int minHeight = 400;
+    private int width = 260;
+    private int height = 300;
 
     public PanelPopupBean() {
         super(PanelPopupBean.class);
@@ -128,22 +126,6 @@ public class PanelPopupBean extends ExampleImpl<PanelPopupBean> implements
 
     public void setHeight(int height) {
         this.height = height;
-    }
-
-    public int getMinWidth() {
-        return minWidth;
-    }
-
-    public void setMinWidth(int minWidth) {
-        this.minWidth = minWidth;
-    }
-
-    public int getMinHeight() {
-        return minHeight;
-    }
-
-    public void setMinHeight(int minHeight) {
-        this.minHeight = minHeight;
     }
 
     public void setSelectedListItem(String selectedListItem) {

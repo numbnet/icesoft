@@ -337,3 +337,17 @@ html.android h3{
     margin: 0 auto;
     width:50%;
 }
+html.android .examplesLink{
+    color: rgb(102, 175, 255);
+    text-decoration: none;
+    margin: 10px 0;
+    display: inline-block;
+    font-weight: bold;
+}
+html.iphone .examplesLink{
+    color: rgb(65, 115, 170);
+    text-decoration: none;
+    margin: 10px 0;
+    display: inline-block;
+    font-weight: bold;
+}
