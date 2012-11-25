@@ -1229,7 +1229,7 @@ ice.mobi.ready = function (callback) {
                     // calculate center for first view
                     ice.mobi.panelCenter(containerId, centerCfg);
                 }  else{
-                    console.log("NO AUTOCENTER");
+                    //console.log("NO AUTOCENTER");
                     var styleVar = "";
                     if (cfg.width){
                         var wStr = width+"px";
@@ -1288,7 +1288,6 @@ ice.mobi.ready = function (callback) {
         cfg: {},
         centerCalculation:{},
         init: function(clientId, cfgIn) {
-            console.log("initiallizing popup with id="+clientId);
             this.cfg[clientId] = cfgIn;
             var thisOne = this.findPanel(clientId, false);
             var i = this.panels.length;
