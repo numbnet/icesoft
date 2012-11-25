@@ -23,9 +23,6 @@ import javax.servlet.http.HttpServletRequest;
 @SessionAttributes({"cameraMessage", "cameraUpload"})
 public class CameraController {
 
-    String currentFileName = null;
-    String currentUserName = null;
-
     @ModelAttribute
     public void ajaxAttribute(WebRequest request, Model model) {
         model.addAttribute("ajaxRequest", AjaxUtils.isAjaxRequest(request));
@@ -57,16 +54,14 @@ public class CameraController {
             HttpServletRequest request, ModelBean modelBean,
             @RequestParam(value = "cam", required = false) MultipartFile file,
             Model model) throws IOException {
-        System.out.println("processUpload(): modelBean=" + modelBean + ", file="+file);
+        
         String newFileName = saveImage(request, file, null);
         if ((null != file) && !file.isEmpty()) {
             model.addAttribute("cameraMessage", "Hello " + modelBean.getName() + ", your file '" + newFileName + "' was uploaded successfully.");
         }
         if (null != newFileName) {
             model.addAttribute("cameraUpload", newFileName);
-        } else {
-            model.addAttribute("cameraUpload", "resources/uploaded.jpg");
-        }
+        } 
     }
 
     @RequestMapping(value = "/jsoncam", method = RequestMethod.POST)
@@ -78,11 +73,7 @@ public class CameraController {
                          Model model) throws IOException {
 
         String newFileName = saveImage(request, file, inputFile);
-        String submittedName = modelBean.getName();
-        if (null != submittedName)  {
-            currentUserName = submittedName;
-        }
-
+        
         Map additionalParams = modelBean.getAdditionalInfo();
         String imcheck = " ";
         String jqcheck = " ";
@@ -95,7 +86,7 @@ public class CameraController {
             }
         }
 
-        return new CamUpdate( "Thanks for the photo, " + currentUserName +
+        return new CamUpdate( "Thanks for the photo, " + modelBean.getName() +
                 " and your interest in [" + imcheck +
                 "] ICEmobile and [" + jqcheck + "] jquery.", 
                 request.getContextPath() + "/" + newFileName );
@@ -105,36 +96,17 @@ public class CameraController {
                              MultipartFile file, MultipartFile inputFile) throws
             IOException {
 
-        String fileName = null;
-        String uuid = Long.toString(
-                                           Math.abs(UUID.randomUUID().getMostSignificantBits()), 32);
-        String newFileName = "resources/media/img-" + uuid + ".jpg";
+        String uuid = Long.toString(Math.abs(UUID.randomUUID().getMostSignificantBits()), 32);
+        String cameraFilename = "media/img-" + uuid + ".jpg";
         if ((null != file) && !file.isEmpty()) {
-            fileName = file.getOriginalFilename();
-            file.transferTo(new File(request.getRealPath("/" + newFileName)));
-            currentFileName = newFileName;
+            file.transferTo(new File(request.getRealPath("/" + cameraFilename)));
         }
         if ((null != inputFile) && !inputFile.isEmpty()) {
-            fileName = inputFile.getOriginalFilename();
             inputFile.transferTo(
-                    new File(request.getRealPath("/" + newFileName)));
-            currentFileName = newFileName;
+                    new File(request.getRealPath("/" + cameraFilename)));
         }
 
-        if (null == fileName) {
-            //use previously uploaded file, such as from ICEmobile-SX
-            newFileName = getCurrentFileName(request);
-
-        }
-
-        return newFileName;
-    }
-
-    private String getCurrentFileName(HttpServletRequest request) {
-        if (null == currentFileName) {
-            return "resources/media/uploaded.jpg";
-        }
-        return currentFileName;
+        return cameraFilename;
     }
 }
 

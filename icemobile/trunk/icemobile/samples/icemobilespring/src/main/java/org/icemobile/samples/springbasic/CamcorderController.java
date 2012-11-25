@@ -2,6 +2,7 @@ package org.icemobile.samples.springbasic;
 
 import java.io.IOException;
 
+import org.icemobile.util.ClientDescriptor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -13,17 +14,23 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.util.UUID;
+
 import javax.servlet.http.HttpServletRequest;
 
 @Controller
-@SessionAttributes("camcorderBean")
+@SessionAttributes({"camcorderBean","camcorderUploadReady","camcorderMessage","camcorderUpload"})
 public class CamcorderController {
-    boolean mediaReady = false;
 
 	@ModelAttribute
 	public void ajaxAttribute(WebRequest request, Model model) {
 		model.addAttribute("ajaxRequest", AjaxUtils.isAjaxRequest(request));
 	}
+	
+    @ModelAttribute
+    public void iosAttribute(HttpServletRequest request, Model model) {
+        model.addAttribute("ios", ClientDescriptor.getInstance(request).isIOS());
+    }
 
 	@ModelAttribute("camcorderBean")
 	public ModelBean createBean() {
@@ -32,12 +39,10 @@ public class CamcorderController {
 
 	@RequestMapping(value = "/camcorder", method=RequestMethod.GET)
     public void get(Model model)  {
-        model.addAttribute("mediaReady", new Boolean(mediaReady));
     }
 	
 	@RequestMapping(value = "/camcorder", method=RequestMethod.POST)
     public void post(Model model)  {
-        model.addAttribute("mediaReady", new Boolean(mediaReady));
     }
 
 
@@ -45,16 +50,14 @@ public class CamcorderController {
 	public void processVideo(HttpServletRequest request, ModelBean modelBean,
                              @RequestParam(value = "camvid", required = false) MultipartFile file,
                              Model model) throws IOException {
-
-        String fileName = "empty";
+	    String videoFilename = "video-" + Long.toString(Math.abs(UUID.randomUUID().getMostSignificantBits()), 32) + ".mp4";
         if (null != file)  {
-            fileName = file.getOriginalFilename();
-            file.transferTo(new File(request.getRealPath("/resources/media/video.mp4")));
-            mediaReady = true;
+            file.transferTo(new File(request.getRealPath("/media/"+videoFilename)));
         }
-        model.addAttribute("mediaReady", new Boolean(mediaReady));
-		model.addAttribute("message", "Hello " + modelBean.getName() +
-                ", your video file '" + fileName + "' was uploaded successfully.");
+        model.addAttribute("camcorderUploadReady", true);
+		model.addAttribute("camcorderMessage", "Hello " + modelBean.getName() +
+                ", your video was uploaded successfully.");
+		model.addAttribute("camcorderUpload", "./media/"+videoFilename);
 
     }
 
