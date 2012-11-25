@@ -77,7 +77,7 @@
                     // calculate center for first view
                     ice.mobi.panelCenter(containerId, centerCfg);
                 }  else{
-                    console.log("NO AUTOCENTER");
+                 //   console.log("NO AUTOCENTER");
                     var styleVar = "";
                     if (cfg.width){
                         var wStr = width+"px";
@@ -93,7 +93,6 @@
                 updateHidden(clientId, "true");
            },
            closePopup: function(clientId, cfg){
-               console.log("closePopup");
                var containerNode = clientId+"_popup";
                var scrollEvent = 'ontouchstart' in window ? "touchmove" : "scroll";
                var greyed = document.getElementById(clientId+"_bg");
@@ -136,7 +135,7 @@
         cfg: {},
         centerCalculation:{},
         init: function(clientId, cfgIn) {
-            console.log("INIT");
+          //  console.log("INIT");
             this.cfg[clientId] = cfgIn;
             var thisOne = this.findPanel(clientId, false);
             var i = this.panels.length;
@@ -144,7 +143,7 @@
                 this.panels[i] = PanelPopup(clientId, cfgIn);
             } else {
                 var vis = cfgIn.visible || false;
-                console.log(" disabled="+cfgIn.disabled+"  VISIBLE="+vis);
+             //   console.log(" disabled="+cfgIn.disabled+"  VISIBLE="+vis);
                 if (vis==true){
                    thisOne.openPopup(clientId, cfgIn);
                 }else{
