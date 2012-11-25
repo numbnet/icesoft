@@ -16,89 +16,50 @@
 
 package org.icemobile.jsp.tags;
 
-import static org.icemobile.util.HTML.*;
+import org.icemobile.component.IPanelPopup;
+import org.icemobile.renderkit.PanelPopupCoreRenderer;
+
 
 import java.io.IOException;
-import java.util.Stack;
 import java.util.logging.Logger;
 
 import javax.servlet.jsp.JspTagException;
-import javax.servlet.jsp.tagext.TagSupport;
 
 /**
  *
  */
-public class PanelPopupTag extends TagSupport {
+public class PanelPopupTag extends BaseBodyTag implements IPanelPopup {
 
     private static Logger LOG = Logger.getLogger(PanelPopupTag.class.getName());
-    public static final String HIDDEN_CONTAINER_CLASS = "mobi-panelpopup-container-hide ";
-    public static final String BLACKOUT_PNL_HIDDEN_CLASS = "mobi-panelpopup-bg-hide ";
-    public static final String CONTAINER_CLASS = "mobi-panelpopup-container ";
-    public static final String BLACKOUT_PNL_CLASS = "mobi-panelpopup-bg ";
-    public static final String TITLE_CLASS = "mobi-date-title-container ";
+    private TagWriter writer;
+    private PanelPopupCoreRenderer renderer;
 
     public int doStartTag() throws JspTagException {
-    	
-    	try{
     		         
-            TagWriter writer = new TagWriter(pageContext);
-            // popup background
-            writer.startDiv();
-            writer.writeAttribute("id", id+"_bg");
-            writer.writeStyleClass(BLACKOUT_PNL_HIDDEN_CLASS);
-            writer.endElement();
-            
-        	// popup container section
-        	writer.startDiv();
-        	writer.writeAttribute("id", id+"_popup");
-        	writer.writeStyleClassWithBase(styleClass, CONTAINER_CLASS);
-        	
-        	// popupPanel Title section
-            if (title != null && !"".equals(title)) {
+  	    renderer= getRenderer();
+        try {
+            writer = new TagWriter(pageContext);
+            renderer.encodeBegin(this, writer);
+        	// popupPanel Header section
+            if (headerText != null && !"".equals(headerText)) {
             	writer.startDiv();
             	writer.writeAttribute("id", id+"_title");
                 writer.writeStyleClass(TITLE_CLASS);
-                writer.writeText(title);
-
-                // Only do a close button if configured.
-                if (isAutoCloseButton()) {
-                	writer.startElement(INPUT_ELEM);
-                	writer.writeAttribute(TYPE_ATTR, "button");
-                	if (closeButtonLabel != null && !"".equals(closeButtonLabel)) {
-                		writer.writeAttribute(VALUE_ATTR, closeButtonLabel);
-                    } else {
-                    	writer.writeAttribute(VALUE_ATTR, "Close");
-                    }
-                	writer.writeAttribute(ONCLICK_ATTR, "ice.mobi.panelpopup.close('"+id+"');");
-                	writer.endElement();
-                }
+                writer.writeText(headerText);
                 writer.endElement();// Close title section
             }
+            writer.closeOffTag();
     	}
     	catch(IOException ioe){
     		LOG.severe("IOException starting panelPopup tag: " + ioe);
     	}
-        // Allow children to render. Container DIV is open
         return EVAL_BODY_INCLUDE;
     }
 
     public int doEndTag() throws JspTagException {
+        renderer= getRenderer();
     	try{
-	    	Stack<String> initialContext = new Stack<String>();
-	    	initialContext.push(DIV_ELEM);
-	    	TagWriter writer = new TagWriter(pageContext,initialContext);
-	    	if (name == null || "".equals(name)) {
-	            LOG.warning("No Name attribute for PanelPopup for value submission");
-	        } else {
-	        	writer.startElement(INPUT_ELEM);
-	        	writer.writeAttribute(TYPE_ATTR, "hidden");
-	        	writer.writeAttribute(ID_ATTR, id+"_hidden");
-	        	writer.writeAttribute(NAME_ATTR, name);
-	        	writer.endElement();
-	        }
-	    	writer.endElement();
-	    	
-	    	encodeScript(writer);
+	       renderer.encodeEnd(this, writer);
 	    }
 		catch(IOException ioe){
 			LOG.severe("IOException starting panelPopup tag: " + ioe);
@@ -107,70 +68,14 @@ public class PanelPopupTag extends TagSupport {
 
     }
 
-    public void encodeScript(TagWriter writer) throws IOException{
-    	writer.startElement(SPAN_ELEM);
-    	writer.writeAttribute(ID_ATTR, id+"_srcSpan");
-    	
-    	writer.startElement(SCRIPT_ELEM);
-    	writer.writeAttribute(TYPE_ATTR, "text/javascript");
-    	writer.writeAttribute(ID_ATTR, id+"_script");
-    	
-    	writer.writeText("ice.mobi.panelpopup.init('"+id+"',{visible:"+visible
-    			+",autocenter:"+autocenter+"});");
-    	writer.endElement();
-    	writer.endElement();
-    }
 
-
-    private String id;
-    private String name;
-    private String style;
-    private String styleClass;
-    private String title;
+    private String headerText;
     private boolean visible;
-    private boolean autocenter;
-    private boolean autoCloseButton;
-    private String closeButtonLabel;
-
-    public String getStyle() {
-        return style;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setStyle(String style) {
-        this.style = style;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getStyleClass() {
-        return styleClass;
-    }
-
-    public void setStyleClass(String styleClass) {
-        this.styleClass = styleClass;
-    }
+    private boolean autoCenter;
+    private String name;
+    private boolean clientSide;
+    private int height;
+    private int width;
 
     public boolean isVisible() {
         return visible;
@@ -180,27 +85,67 @@ public class PanelPopupTag extends TagSupport {
         this.visible = visible;
     }
 
-    public boolean isAutocenter() {
-        return autocenter;
+    public boolean isAutoCenter() {
+        return autoCenter;
     }
 
-    public void setAutocenter(boolean autocenter) {
-        this.autocenter = autocenter;
+    public void setAutoCenter(boolean autocenter) {
+        this.autoCenter = autocenter;
     }
 
-    public boolean isAutoCloseButton() {
-        return autoCloseButton;
+    public PanelPopupCoreRenderer getRenderer() {
+        return new PanelPopupCoreRenderer();
     }
 
-    public void setAutoCloseButton(boolean autoCloseButton) {
-        this.autoCloseButton = autoCloseButton;
+    public void setRenderer(PanelPopupCoreRenderer renderer) {
+        this.renderer = renderer;
     }
 
-    public String getCloseButtonLabel() {
-        return closeButtonLabel;
+    public String getHeaderText() {
+        return headerText;
     }
 
-    public void setCloseButtonLabel(String closeButtonLabel) {
-        this.closeButtonLabel = closeButtonLabel;
+    public void setHeaderText(String headerText) {
+        this.headerText = headerText;
+    }
+
+    public String getName(){
+        return this.name;
+    }
+    public void setName(String name){
+        this.name = name;
+    }
+
+    public boolean isClientSide() {
+        return true;
+    }
+
+    public void setClientSide(boolean clientSide) {
+        this.clientSide = clientSide;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public void setHeight(int height) {
+        this.height = height;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public void setWidth(int width) {
+        this.width = width;
+    }
+
+    public void release(){
+ 	    super.release();
+		id = null;
+        name=null;
+		style = null;
+		styleClass = null;
+        renderer = null;
     }
 }

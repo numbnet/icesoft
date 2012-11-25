@@ -90,7 +90,7 @@
                     containerNode.setAttribute("style", styleVar);
                 }
                 ice.mobi.panelPopup.visible[clientId] = true;
-                updateHidden(clientId, true);
+                updateHidden(clientId, "true");
            },
            closePopup: function(clientId, cfg){
                console.log("closePopup");
@@ -117,7 +117,7 @@
                    container.setAttribute("style", "");
                }
                ice.mobi.panelPopup.visible[clientId] = false;
-               updateHidden(clientId, false);
+               updateHidden(clientId, "false");
            },
            getId: function(){
                return myId;
@@ -136,13 +136,14 @@
         cfg: {},
         centerCalculation:{},
         init: function(clientId, cfgIn) {
+            console.log("INIT");
             this.cfg[clientId] = cfgIn;
             var thisOne = this.findPanel(clientId, false);
             if (thisOne == null){
                 this.panels[0] = PanelPopup(clientId, cfgIn);
             } else {
                 var vis = cfgIn.visible || false;
-              //  console.log(" disabled="+cfgIn.disabled+"  VISIBLE="+vis);
+                console.log(" disabled="+cfgIn.disabled+"  VISIBLE="+vis);
                 if (vis==true){
                    thisOne.openPopup(clientId, cfgIn);
                 }else{
@@ -161,7 +162,7 @@
                 if (!cfgA.disabled){
                     var chkNode = document.getElementById(cId);
                     if (!chkNode){
-                        ice.log.debg(ice.log,"NO ELEMENT CAN BE FOUND FOR ID="+popupId+" clientId="+cId);
+                        ice.log.debug(ice.log,"NO ELEMENT CAN BE FOUND FOR ID="+popupId+" clientId="+cId);
                     } else {
                        opC.openPopup(cId, cfgA);
                     }

@@ -47,8 +47,9 @@ public class PanelPopupMeta extends UIPanelMeta {
     @Property(tlddoc = "style class will be rendered on a root element of this component")
     private String styleClass;
 
-    @Property(tlddoc = "Header text")
-    private String header;
+    @Property(tlddoc = "Header text. Will not display if a label facet is used. But may be used instead" +
+            " of a label facet")
+    private String headerText;
 
     @Property(defaultValue = "false", tlddoc = "means there is need to expose the js api for devloper. " +
             " to access the ability to open and close the popup")

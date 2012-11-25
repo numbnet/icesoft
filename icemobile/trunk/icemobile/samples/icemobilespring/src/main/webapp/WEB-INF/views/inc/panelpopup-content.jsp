@@ -8,12 +8,13 @@
     <mobi:fieldsetGroup id="groupOne">
         <mobi:fieldsetRow>
             <form:form id="panelform" method="POST"  modelAttribute="panelPopupBean" cssClass="cleanform">
-              <input type="button" value="Open Popup" onclick="ice.mobi.panelpopup.open('panelConfirmation');" />
-        
+              <input type="button" value="Open Popup" onclick="ice.mobi.panelPopup.openClient('panelConfirmation');" />
+
                 <mobi:panelPopup id="panelConfirmation"
-                                     style="width:300px"
-                                     title="Group of popup items"
-                                     autocenter="true"
+                                     width = "200"
+                                     height = "400"
+                                     headerText="Group of popup items"
+                                     autoCenter="true"
                                      visible="${panelPopupBean.visible}">
         
                         <mobi:outputList inset="false" id="itemList" >
@@ -33,66 +34,22 @@
                                 Device Information
                             </mobi:outputListItem>
                             <mobi:outputListItem>
-                                <a onclick="ice.mobi.panelpopup.close('panelConfirmation');">
+                                <a onclick="ice.mobi.panelPopup.closeClient('panelConfirmation');">
                                    This will be a dismissive link </a>
                             </mobi:outputListItem>
                         </mobi:outputList>
                         <input type="button" value="Close via markup"
-                        onclick="ice.mobi.panelpopup.close('panelConfirmation');" />
+                        onclick="ice.mobi.panelPopup.closeClient('panelConfirmation');" />
                     </mobi:panelPopup>
-        
-            </form:form>
-        </mobi:fieldsetRow>
-    </mobi:fieldsetGroup>
+
+                <h3>PanelPopup Settings</h3>
 
 
-    <h4> PanelPopup example with auto generated close button </h4>
+        </form:form>
+     </mobi:fieldsetRow>
+  </mobi:fieldsetGroup>
 
-    <mobi:fieldsetGroup id="groupOne">
-        <mobi:fieldsetRow>
-            <form:form id="panelTwoform" method="POST"  modelAttribute="panelPopupBean" cssClass="cleanform">
-              <input type="button" value="Open Popup (with client dismiss)" onclick="ice.mobi.panelpopup.open('panelClient');" />
-        
-                <mobi:panelPopup id="panelClient"
-                                    name="propertyTwo"
-                                     style="width:300px"
-                                     title="Group of popup items"
-                                     autocenter="true"
-                                     autoCloseButton="true"
-                                     closeButtonLabel="Close"
-                                     visible="false">
-        
-                        <mobi:outputList inset="false" id="seconditemList" >
-                            <mobi:outputListItem group="true">
-                                Panel Popup Links (select one)
-                            </mobi:outputListItem>
-                            <mobi:outputListItem>
-                                 <span onclick="ice.mobi.panelpopup.close('panelClient');">
-                                   System Update </span>
-                            </mobi:outputListItem>
-                            <mobi:outputListItem>
-                                 <span onclick="ice.mobi.panelpopup.close('panelClient');">
-                                   Status </span>
-                            </mobi:outputListItem>
-                            <mobi:outputListItem>
-                                 <span onclick="ice.mobi.panelpopup.close('panelClient');">
-                                   Battery Use </span>
-                            </mobi:outputListItem>
-                            <mobi:outputListItem>
-                                 <span onclick="ice.mobi.panelpopup.close('panelClient');">
-                                   Device Information </span>
-                            </mobi:outputListItem>
-                            <mobi:outputListItem>
-                                <span onclick="ice.mobi.panelpopup.close('panelClient');">
-                                               Device Categories
-                                    </span>
-                            </mobi:outputListItem>
-                        </mobi:outputList>
-                 </mobi:panelPopup>
-            </form:form>
-        </mobi:fieldsetRow>
-    </mobi:fieldsetGroup>
-    <script type="text/javascript">
+   <!-- <script type="text/javascript">
 
         $(document).ready(function() {
             $("#panelform").submit(function() {
@@ -130,6 +87,6 @@
             });         
         });
 
-    </script>
+    </script>  -->
     
 </div>

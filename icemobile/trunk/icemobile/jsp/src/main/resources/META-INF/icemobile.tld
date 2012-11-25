@@ -1366,17 +1366,18 @@
         </attribute>
         <!-- Tag provide a close button, and if so, what label -->
         <attribute>
-            <description>If true, Tag will generate close button</description>
-            <name>autoCloseButton</name>
+            <description>User specified width of popup</description>
+            <name>width</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
+            <type>int</type>
         </attribute>
         <attribute>
-            <description>Label for close button, if autoCloseButton is true
-            </description>
-            <name>closeButtonLabel</name>
+            <description>User specified height of popup</description>
+            <name>height</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
+            <type>int</type>
         </attribute>
         <attribute>
             <description>Initial state of popup</description>
@@ -1385,8 +1386,8 @@
             <rtexprvalue>true</rtexprvalue>
         </attribute>
         <attribute>
-            <description>Title appearing at top of popup panel</description>
-            <name>title</name>
+            <description>HeaderText appearing at top of popup panel</description>
+            <name>headerText</name>
             <required>true</required>
             <rtexprvalue>true</rtexprvalue>
         </attribute>
@@ -1394,7 +1395,7 @@
             <description>If true, panel will autocenter on device, otherwise,
                 popup will appear top-left
             </description>
-            <name>autocenter</name>
+            <name>autoCenter</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
         </attribute>

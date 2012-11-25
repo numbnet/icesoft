@@ -781,7 +781,53 @@ ice.mobi.panelAutoCenter = function panelAutoCenter(clientId) {
         }
     }
 };
-
+ice.mobi.panelCenter = function(clientId, cfg){
+    var paneNode = document.getElementById(clientId);
+    var containerElem = cfg.containerElem || null;
+    if (!paneNode){
+       console.log("Element Not Found id="+clientId);
+       return;
+    }
+    var container =document.getElementById(containerElem);
+    var contWidth;
+    var contHeight;
+    var elemWidth = cfg.width || paneNode.offsetWidth;
+    var styleVar = "";
+    var elemHeight = cfg.height|| paneNode.offsetHeight;
+    wStr = elemWidth+"px";
+    hStr = elemHeight+"px";
+    styleVar += "width: "+wStr+";";
+    styleVar += "height: "+hStr+";";
+    var contWidth;
+    var contHeight;
+    if (container){
+        contWidth = container.offsetWidth;
+        contHeight = container.offsetHeight;
+    } else {
+        contWidth = ice.mobi._windowWidth();
+        contHeight = ice.mobi._windowHeight();
+    }
+    var scrollTop = document.body.scrollTop;
+    if (scrollTop == 0){
+        scrollTop = document.documentElement.scrollTop;
+    }
+    if (contHeight > 0){
+        var posStyle = "position: 'absolute';";
+        var posLeft =((contWidth/2)-(elemWidth/2))+'px';
+        var top = scrollTop +((contHeight/2)-(elemHeight/2))+'px';
+        if (contHeight - elemHeight >0){
+            styleVar += posStyle;
+            styleVar += " top: " +top +";";
+            styleVar +=" left:"+posLeft+";";
+        }else {
+            styleVar += posStyle;
+            styleVar +=" left:"+posLeft+";";
+        }
+        paneNode.setAttribute('style',styleVar);
+    }  else {
+        console.log(" Containing div or window has no height to autocenter popup of id="+clientId);
+    }
+};
 ice.mobi._windowHeight = function () {
     var windowHeight = 0;
     if (typeof(window.innerHeight) == 'number') {
@@ -1111,98 +1157,199 @@ ice.mobi.datespinner = {
         this.pattern[clientId] = null;
         this.opened[clientId] = null;
     }
-}
-
-ice.mobi.panelpopup = {
-    visible:{},
-    centerCalculation:{},
-    cfg:{},
-    init:function (clientId, cfgIn) {
-        this.cfg[clientId] = cfgIn;
-        var cfg = this.cfg[clientId];
-        var visible = cfg.visible;
-        var autoCenter = cfg.autocenter;
-        var containerId = clientId + "_popup";
-
-        //if nothing already in client saved state, then we use the server passed value
-        if (!this.visible[clientId]) {
-            this.visible[clientId] = visible;
-        }
-
-        if (this.visible[clientId]) {
-            this.open(clientId);
-        } else {
-            this.close(clientId);
-        }
-    },
-    // only called when in client side mode
-    open:function (clientId) {
-        var idPanel = clientId + "_bg";
-        var containerId = clientId + "_popup";
-        var cfg = this.cfg[clientId];
-        var autocenter = cfg.autocenter;
-        var scrollEvent = 'ontouchstart' in window ? "touchmove" : "scroll";
-
-        document.getElementById(idPanel).className = "mobi-panelpopup-bg ";
-        document.getElementById(containerId).className = "mobi-panelpopup-container ";
-
-        if (autocenter) {
-            // add scroll listener
-            this.centerCalculation[clientId] = function () {
-                ice.mobi.panelAutoCenter(containerId);
-            };
-
-            if (window.addEventListener) {
-                window.addEventListener(scrollEvent, this.centerCalculation[clientId], false);
-                window.addEventListener('resize', this.centerCalculation[clientId], false);
-            } else { // older ie event listener
-                window.attachEvent(scrollEvent, this.centerCalculation[clientId]);
-                window.attachEvent("resize", this.centerCalculation[clientId]);
-            }
-            // calculate center for first view
-            ice.mobi.panelAutoCenter(containerId);
-        }
-
-        this.visible[clientId] = true;
-//        this.updateHidden(clientId, true);
-    },
-    // only called when in client side mode
-    close:function (clientId) {
-        var idPanel = clientId + "_bg";
-        var cfg = this.cfg[clientId];
-        var autocenter = cfg.autocenter;
-        var scrollEvent = 'ontouchstart' in window ? "touchmove" : "scroll";
-
-        document.getElementById(idPanel).className = "mobi-panelpopup-bg-hide ";
-        document.getElementById(clientId + "_popup").className = "mobi-panelpopup-container-hide ";
-
-        if (autocenter) {
-            if (window.removeEventListener) {
-                window.removeEventListener(scrollEvent, this.centerCalculation[clientId], false);
-                window.removeEventListener('resize', this.centerCalculation[clientId], false);
-            } else { // older ie cleanup
-                window.detachEvent(scrollEvent, this.centerCalculation[clientId], false);
-                window.detachEvent('resize', this.centerCalculation[clientId], false);
-            }
-            this.centerCalculation[clientId] = undefined;
-        }
-
-        this.visible[clientId] = false;
-//        this.updateHidden(clientId, false);
-    },
-    updateHidden:function (clientId, value) {
-        var hidden = document.getElementById(clientId + "_hidden");
+} ;
+(function() {
+    //functions that do not encapsulate any state, they just work with the provided parameters
+    //and globally accessible variables
+    //---------------------------------------
+    function updateHidden(clientId, value) {
+        var hidden = document.getElementById(clientId+"_hidden");
         if (hidden) {
             hidden.value = value;
         }
-    },
-    unload:function (clientId) {
-        this.cfg[clientId] = null;
-        this.visible[clientId] = null;
+    }
+    //-------------------------------------
+    function PanelPopup(clientId, cfgIn) {
+        var cId = clientId;
+        var myId = cfgIn.id || null;
+        var client = cfgIn.client;
+        var visible = cfgIn.visible || false;
+        var idPanel = clientId + "_bg";
+        var containerId = clientId + "_popup";
+        var autocenter = cfgIn.autocenter || true;
+        var centerCalculation = {};
+        ice.mobi.panelPopup.visible[clientId]= visible;
+        return {
+            openPopup: function(clientId, cfg) {
+                autocenter = cfg.autocenter || true;
+              //  console.log("openPopup: disabled="+cfg.disabled);
+                if (cfg.disabled){
+                    return;//no opening
+                }
+                var scrollEvent = 'ontouchstart' in window ? "touchmove" : "scroll";
+                var fadedDiv = document.getElementById(idPanel);
+                if (fadedDiv){
+                   document.getElementById(idPanel).className = "mobi-panelpopup-bg ";
+                }
+                var containerNode = document.getElementById(containerId);
+                containerNode.className = "mobi-panelpopup-container ";
+                if (cfg.autocenter==true) {
+                    centerCfg = {} ;
+                    if (cfg.width){
+                        centerCfg.width = cfg.width;
+                    }
+                    if (cfg.height){
+                        centerCfg.height = cfg.height;
+                    }
+                    if (cfg.useForm){
+                        var frm = mobi.findForm(clientId);
+                        if (frm){
+                           centerCfg.containerElem = frm.id;
+                           // console.log("form id="+frm.id);
+                        }
+                    }
+                    // add scroll listener
+                    centerCalculation[clientId] = function () {
+                        ice.mobi.panelCenter(containerId, centerCfg);
+                    };
+                    if (window.addEventListener) {
+                        window.addEventListener(scrollEvent, centerCalculation[clientId], false);
+                        window.addEventListener('resize', centerCalculation[clientId], false);
+                    } else { // older ie event listener
+                        window.attachEvent(scrollEvent, centerCalculation[clientId]);
+                        window.attachEvent("resize", centerCalculation[clientId]);
+                    }
+                    // calculate center for first view
+                    ice.mobi.panelCenter(containerId, centerCfg);
+                }  else{
+                    console.log("NO AUTOCENTER");
+                    var styleVar = "";
+                    if (cfg.width){
+                        var wStr = width+"px";
+                        styleVar+="width: "+cfg.width+"px;";
+                    }
+                    if (cfg.height){
+                        var hStr = height+"px";
+                        styleVar +=" height: "+cfg.height+"px;";
+                    }
+                    containerNode.setAttribute("style", styleVar);
+                }
+                ice.mobi.panelPopup.visible[clientId] = true;
+                updateHidden(clientId, true);
+           },
+           closePopup: function(clientId, cfg){
+               console.log("closePopup");
+               var containerNode = clientId+"_popup";
+               var scrollEvent = 'ontouchstart' in window ? "touchmove" : "scroll";
+               var greyed = document.getElementById(clientId+"_bg");
+               var container = document.getElementById(containerNode);
+               if (greyed){
+                   greyed.className = "mobi-panelpopup-bg-hide ";
+               }
+               if (container){
+                   document.getElementById(containerNode).className = "mobi-panelpopup-container-hide ";
+               }
+               if (cfg.autocenter==true) {
+                     if (window.removeEventListener) {
+                         window.removeEventListener(scrollEvent, centerCalculation[clientId], false);
+                         window.removeEventListener('resize', centerCalculation[clientId], false);
+                     } else { // older ie cleanup
+                         window.detachEvent(scrollEvent, centerCalculation[clientId], false);
+                         window.detachEvent('resize', centerCalculation[clientId], false);
+                     }
+                     centerCalculation[clientId] = undefined;
+               } else {
+                   container.setAttribute("style", "");
+               }
+               ice.mobi.panelPopup.visible[clientId] = false;
+               updateHidden(clientId, false);
+           },
+           getId: function(){
+               return myId;
+           },
+           getClientId: function(){
+               return cId;
+           },
+           isClient: function(){
+               return client;
+           }
+        }
+    }
+    ice.mobi.panelPopup = {
+        panels: new Array(),
+        visible: {},
+        cfg: {},
+        centerCalculation:{},
+        init: function(clientId, cfgIn) {
+            this.cfg[clientId] = cfgIn;
+            var thisOne = this.findPanel(clientId, false);
+            if (thisOne == null){
+                this.panels[0] = PanelPopup(clientId, cfgIn);
+            } else {
+                var vis = cfgIn.visible || false;
+              //  console.log(" disabled="+cfgIn.disabled+"  VISIBLE="+vis);
+                if (vis==true){
+                   thisOne.openPopup(clientId, cfgIn);
+                }else{
+                   thisOne.closePopup(clientId, cfgIn);
+                }
+            }
+        },
+        openClient: function(popupId){
+            var opC = this.findPanel(popupId, true);
+            if (!opC){
+                var index = this.panels.length;
+            }
+            if (opC){
+                var cId = opC.getClientId();
+                var cfgA = this.cfg[cId];
+                if (!cfgA.disabled){
+                    var chkNode = document.getElementById(cId);
+                    if (!chkNode){
+                        console.log("NO ELEMENT CAN BE FOUND FOR ID="+popupId+" clientId="+cId);
+                    } else {
+                       opC.openPopup(cId, cfgA);
+                    }
+                }
+            }
+        },
+        closeClient: function(popupId){
+            var clA = this.findPanel(popupId,true);
+            if (clA){
+                var cId =clA.getClientId();
+                var cfgA = this.cfg[cId];
+                clA.closePopup(cId, cfgA);
+            }
+        },
+        findPanel: function(popupId, isId){
+            if (this.panels.length < 1){
+                console.log(' no popups available in view to open');
+                return;
+            }
+            var found = false;
+            for (var i=0; i < this.panels.length; i++){
+                var pane = this.panels[i];
+                if (isId){
+                    var myId = pane.getId();
+                    if (pane.getId()==popupId){
+                        found = true;
+                        return pane;
+                    }
+                }else {
+                    if (pane.getClientId()==popupId){
+                        found = true;
+                        return pane;
+                    }
+                }
+            }
+            if (!found){
+                console.log( ' Cannot find popup with id='+popupId);
+            }
+            return null;
+        }
     }
 
-}
-
+  })();
 ice.mobi.timespinner = {
     pattern:{}, //only supports 'hh:mm a' at this time.
     opened:{},
