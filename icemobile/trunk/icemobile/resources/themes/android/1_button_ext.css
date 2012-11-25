@@ -60,9 +60,6 @@
     color: #BBB;
     border-top-color: #878787;
 }
-.mobi-button-dis {
-    color: #999;
-}
 /* back button*/
 div.mobi-button-back{
     background-image: url('back.png');
