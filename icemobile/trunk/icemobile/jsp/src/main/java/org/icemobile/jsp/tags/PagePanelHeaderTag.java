@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.util.logging.Logger;
 
 import javax.servlet.jsp.JspTagException;
+import javax.servlet.jsp.tagext.Tag;
 
 import org.icemobile.util.HTML;
 
@@ -30,15 +31,28 @@ import org.icemobile.util.HTML;
 public class PagePanelHeaderTag extends BaseBodyTag {
 
     public static final String HEADER_CLASS = "mobi-pagePanel-header";
-
     private static Logger LOG = Logger.getLogger(PagePanelHeaderTag.class.getName());
+    public PagePanelTag mParent;
+
+    public void setParent(Tag parent) {
+       if (!(parent instanceof PagePanelTag)) {
+           throw new IllegalArgumentException("PagePanelHeaderTag must be child of PagePanelTag");
+       }
+       mParent = (PagePanelTag) parent;
+   }
 
     public int doStartTag() throws JspTagException {
-
+        StringBuilder headerClass = new StringBuilder(HEADER_CLASS);
+        if (mParent != null) {
+            mParent.setHasHeader(true);
+            if (mParent.getStyleClass() !=null){
+                headerClass.append(" ").append(mParent.getStyleClass()) ;
+            }
+         }
         TagWriter writer = new TagWriter(pageContext);
         try {
             writer.startElement(HTML.DIV_ELEM);
-            writer.writeAttribute(HTML.CLASS_ATTR, HEADER_CLASS);
+            writer.writeAttribute(HTML.CLASS_ATTR, headerClass.toString());
             writer.startElement(HTML.DIV_ELEM);
             writer.writeAttribute(HTML.CLASS_ATTR, PagePanelTag.CTR_CLASS);
             writer.closeOffTag();

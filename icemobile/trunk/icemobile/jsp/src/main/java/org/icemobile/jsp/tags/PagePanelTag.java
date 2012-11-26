@@ -31,6 +31,8 @@ public class PagePanelTag extends TagSupport {
 
     private static Logger LOG = Logger.getLogger(PagePanelTag.class.getName());
 
+    private boolean hasHeader;
+
     public int doStartTag() throws JspTagException {
 
         Writer out = pageContext.getOut();
@@ -62,6 +64,7 @@ public class PagePanelTag extends TagSupport {
     }
 
     private String id;
+    private String styleClass;
 
     public String getId() {
         return id;
@@ -69,5 +72,21 @@ public class PagePanelTag extends TagSupport {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public boolean isHasHeader() {
+        return hasHeader;
+    }
+
+    public void setHasHeader(boolean hasHeader) {
+        this.hasHeader = hasHeader;
+    }
+
+    public String getStyleClass() {
+        return styleClass;
+    }
+
+    public void setStyleClass(String styleClass) {
+        this.styleClass = styleClass;
     }
 }

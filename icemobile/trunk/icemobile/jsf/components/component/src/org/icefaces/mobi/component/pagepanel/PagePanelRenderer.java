@@ -42,6 +42,13 @@ public class PagePanelRenderer extends BaseLayoutRenderer {
         PassThruAttributeWriter.renderNonBooleanAttributes(writer, pagePanel,
                 pagePanel.getCommonAttributeNames());
         writer.writeAttribute(HTML.ID_ATTR, clientId + "_pgPnl", HTML.ID_ATTR);
+        if (pagePanel.getStyle()!=null){
+            writer.writeAttribute(HTML.STYLE_ATTR, pagePanel.getStyle(), HTML.STYLE_ATTR);
+        }
+        StringBuilder headerClass = new StringBuilder(PagePanel.HEADER_CLASS);
+        StringBuilder bodyClass = new StringBuilder(PagePanel.BODY_CLASS);
+        StringBuilder footerClass = new StringBuilder(PagePanel.FOOTER_CLASS);
+        StringBuilder headerFooterContentsClass = new StringBuilder(PagePanel.CTR_CLASS);
 
         // find out if header and/or footer facets are present as this will directly 
         // effect which style classes to apply
@@ -52,14 +59,26 @@ public class PagePanelRenderer extends BaseLayoutRenderer {
             logger.warning("PagePanel header, body and footer were not defined, " +
                     "no content will be rendered by this component.");
         }
-
+        if (headerFacet==null) {
+            bodyClass.append(" ").append(PagePanel.BODY_NO_HEADER_CLASS);
+        }
+        if (footerFacet ==null){
+            bodyClass.append(" ").append(PagePanel.BODY_NO_FOOTER_CLASS);
+        }
+        String userDefStyle = pagePanel.getStyleClass();
+        if (userDefStyle!=null){
+            headerClass.append(" ").append(userDefStyle);
+            bodyClass.append(" ").append(userDefStyle);
+            footerClass.append(" ").append(userDefStyle);
+            headerFooterContentsClass.append(" ").append(userDefStyle);
+        }
         // write header if present
         if (headerFacet != null) {
             writer.startElement(HTML.DIV_ELEM, pagePanel);
-            writer.writeAttribute(HTML.CLASS_ATTR, PagePanel.HEADER_CLASS, HTML.CLASS_ATTR);
+            writer.writeAttribute(HTML.CLASS_ATTR, headerClass.toString(), HTML.CLASS_ATTR);
             writer.writeAttribute(HTML.ID_ATTR, clientId + "_pgPnlHdr", HTML.ID_ATTR);
             writer.startElement(HTML.DIV_ELEM, component);
-            writer.writeAttribute(HTML.CLASS_ATTR, PagePanel.CTR_CLASS, HTML.STYLE_CLASS_ATTR);
+            writer.writeAttribute(HTML.CLASS_ATTR, headerFooterContentsClass.toString(), HTML.STYLE_CLASS_ATTR);
             JSFUtils.renderLayoutChild(facesContext, headerFacet);
             writer.endElement(HTML.DIV_ELEM);
             writer.endElement(HTML.DIV_ELEM);
@@ -68,15 +87,8 @@ public class PagePanelRenderer extends BaseLayoutRenderer {
         /// write body with no-footer or no-header considerations
         if (bodyFacet != null) {
             // build out style class depending on header footer visibility
-            StringBuilder bodyStyleClass = new StringBuilder(PagePanel.BODY_CLASS);
-            if (headerFacet == null) {
-                bodyStyleClass.append(" ").append(PagePanel.BODY_NO_HEADER_CLASS);
-            }
-            if (footerFacet == null) {
-                bodyStyleClass.append(" ").append(PagePanel.BODY_NO_FOOTER_CLASS);
-            }
             writer.startElement(HTML.DIV_ELEM, pagePanel);
-            writer.writeAttribute(HTML.CLASS_ATTR, bodyStyleClass, HTML.CLASS_ATTR);
+            writer.writeAttribute(HTML.CLASS_ATTR, bodyClass.toString(), HTML.CLASS_ATTR);
             writer.writeAttribute(HTML.ID_ATTR, clientId + "_pgPnlBdy", HTML.ID_ATTR);
             JSFUtils.renderLayoutChild(facesContext, bodyFacet);
             writer.endElement(HTML.DIV_ELEM);
@@ -85,10 +97,10 @@ public class PagePanelRenderer extends BaseLayoutRenderer {
         // write footer f present
         if (footerFacet != null) {
             writer.startElement(HTML.DIV_ELEM, pagePanel);
-            writer.writeAttribute(HTML.CLASS_ATTR, PagePanel.FOOTER_CLASS, HTML.CLASS_ATTR);
+            writer.writeAttribute(HTML.CLASS_ATTR, footerClass.toString(), HTML.CLASS_ATTR);
             writer.writeAttribute(HTML.ID_ATTR, clientId + "_pgPnlFtr", HTML.ID_ATTR);
             writer.startElement(HTML.DIV_ELEM, component);
-            writer.writeAttribute(HTML.CLASS_ATTR, PagePanel.CTR_CLASS, HTML.STYLE_CLASS_ATTR);
+            writer.writeAttribute(HTML.CLASS_ATTR, headerFooterContentsClass, HTML.STYLE_CLASS_ATTR);
             JSFUtils.renderLayoutChild(facesContext, footerFacet);
             writer.endElement(HTML.DIV_ELEM);
             writer.endElement(HTML.DIV_ELEM);

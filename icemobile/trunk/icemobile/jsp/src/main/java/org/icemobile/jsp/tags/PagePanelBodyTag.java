@@ -17,6 +17,7 @@
 package org.icemobile.jsp.tags;
 
 import javax.servlet.jsp.JspTagException;
+import javax.servlet.jsp.tagext.Tag;
 import javax.servlet.jsp.tagext.TagSupport;
 import java.io.IOException;
 import java.io.Writer;
@@ -30,26 +31,37 @@ public class PagePanelBodyTag extends TagSupport {
     public static final String BODY_CLASS = "mobi-pagePanel-body";
     public static final String BODY_NO_HEADER_CLASS = "mobi-pagePanel-body-noheader";
     public static final String BODY_NO_FOOTER_CLASS = "mobi-pagePanel-body-nofooter";
+    public PagePanelTag mParent;
 
     private static Logger LOG = Logger.getLogger(PagePanelBodyTag.class.getName());
-
+     public void setParent(Tag parent) {
+        if (!(parent instanceof PagePanelTag)) {
+            throw new IllegalArgumentException("PagePanelBodyTag must be child of PagePanelTag");
+        }
+        mParent = (PagePanelTag) parent;
+    }
 
     public int doStartTag() throws JspTagException {
-
-        Writer out = pageContext.getOut();
-
-        StringBuilder tag = new StringBuilder(TagUtil.DIV_TAG);
-        tag.append(" class=\"").append(BODY_CLASS);
-        if (noHeader) {
-            tag.append(" ").append(BODY_NO_HEADER_CLASS);
+        StringBuilder bodyClass = new StringBuilder(BODY_CLASS);
+        if (this.noHeader || !mParent.isHasHeader()){
+            bodyClass.append(" ").append(BODY_NO_HEADER_CLASS);
         }
-        if (noFooter) {
-            tag.append(" ").append(BODY_NO_FOOTER_CLASS);
+        if (this.noFooter){
+            bodyClass.append(" ").append(BODY_NO_FOOTER_CLASS);
+        }
+        if (mParent.getStyleClass()!=null) {
+            bodyClass.append(" ").append(mParent.getStyleClass());
+        }
+        Writer out = pageContext.getOut();
+        StringBuilder tag = new StringBuilder(TagUtil.DIV_TAG);
+        tag.append(" class=\"").append(bodyClass.toString());
+        /* style is not available for body element of pagePanel for JSF */
+        if (getStyle()!=null){
+            tag.append("  style=\"").append(getStyle());
         }
         tag.append("\"");
         tag.append(">");
         tag.append(TagUtil.DIV_TAG).append(">");
-
         try {
             out.write(tag.toString());
         } catch (IOException ioe) {
@@ -60,7 +72,6 @@ public class PagePanelBodyTag extends TagSupport {
 
 
     public int doEndTag() throws JspTagException {
-
         Writer out = pageContext.getOut();
         try {
             out.write(TagUtil.DIV_TAG_END);
@@ -73,6 +84,7 @@ public class PagePanelBodyTag extends TagSupport {
 
     private boolean noHeader;
     private boolean noFooter;
+    private String style;
 
     public boolean isNoHeader() {
         return noHeader;
@@ -89,4 +101,13 @@ public class PagePanelBodyTag extends TagSupport {
     public void setNoFooter(boolean noFooter) {
         this.noFooter = noFooter;
     }
+
+    public String getStyle() {
+        return style;
+    }
+
+    public void setStyle(String style) {
+        this.style = style;
+    }
+
 }
