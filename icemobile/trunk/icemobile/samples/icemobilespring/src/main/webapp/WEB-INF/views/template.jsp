@@ -5,6 +5,7 @@
 <%@ taglib prefix="push" uri="http://www.icepush.org/icepush/jsp/icepush.tld"%>
 <%@ page session="false" %>
 <c:if test="${!ajaxRequest}">
+<!doctype html>
 <html>
 <jsp:include page="./inc/head.jsp"/>
 <body>
