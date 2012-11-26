@@ -4,6 +4,7 @@
 <%@ taglib uri="http://www.icemobile.org/tags" prefix="mobi" %>
 <%@ taglib prefix="push" uri="http://www.icepush.org/icepush/jsp/icepush.tld"%>
 <c:if test="${!ajaxRequest}">
+<!doctype html>
 <html>
 <jsp:include page="./inc/head.jsp"/>
 <body>
