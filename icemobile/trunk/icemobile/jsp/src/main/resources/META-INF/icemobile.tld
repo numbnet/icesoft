@@ -345,28 +345,9 @@
         <tag-class>org.icemobile.jsp.tags.DeviceResourceTag</tag-class>
         <body-content>empty</body-content>
         <attribute>
-            <description>Name of the CSS file. If not specified, tag will
-                generate
-                markup based on device detection code
+            <description>Theme to use.
             </description>
             <name>name</name>
-            <required>false</required>
-            <rtexprvalue>true</rtexprvalue>
-        </attribute>
-        <attribute>
-            <description>Directory containing CSS resources. Default value is
-                org.icefaces.component.skins
-            </description>
-            <name>library</name>
-            <required>false</required>
-            <rtexprvalue>true</rtexprvalue>
-        </attribute>
-        <attribute>
-            <description>Optional value of either 'small' or 'large' which
-                tailors
-                CSS resource linking specialized for either phones or tablets
-            </description>
-            <name>view</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
         </attribute>

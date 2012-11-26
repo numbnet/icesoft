@@ -15,8 +15,10 @@ public class CSSUtils {
     public static final String STYLECLASS_BUTTON_ATTENTION = "mobi-button-attention";
     public static final String STYLECLASS_BUTTON_IMPORTANT = "mobi-button-important";
     public static final String STYLECLASS_BUTTON_BACK = "mobi-button-back";
+    public static final String STYLECLASS_TAP_HIGHLIGHT = "mobi-tap-highlight";
     
     /* jQuery Mobile Classes */
+    public static final String STYLECLASS_DISABLED = "ui-disabled";
     /* Collapsible */
     //div
     public static final String STYLECLASS_COLLAPSIBLESET = "ui-collapsible-set";
@@ -30,7 +32,7 @@ public class CSSUtils {
        //div
     public static final String STYLECLASS_COLLAPSIBLECONTENT = "ui-collapsible-content";
     
-    public enum Theme{ IPAD, IPHONE, BBERRY, ANDROID, HONEYCOMB, LIGHTNING;
+    public enum Theme{ IPAD, IPHONE, BBERRY, ANDROID, HONEYCOMB, ARCHAIC;
         public String fileName(){
             return this.name().toLowerCase();
         }
@@ -99,8 +101,8 @@ public class CSSUtils {
                 theme = Theme.IPAD;
             }
         } 
-        else if( client.isIEBrowser()){ 
-            theme = Theme.LIGHTNING;
+        else if( client.isIE8orLessBrowser()){ 
+            theme = Theme.ARCHAIC;
         }
         else{
             theme = Theme.IPAD; //default for all others

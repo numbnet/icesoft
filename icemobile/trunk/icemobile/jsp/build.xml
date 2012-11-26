@@ -156,7 +156,7 @@
         <mkdir dir="${build.dir}/skins/in"/>
         <mkdir dir="${build.dir}/skins/out"/>
 
-    	<buildSkin skin="lightning" />
+    	<buildSkin skin="archaic" />
     	<buildCSS3Skin skin="android" />
 		<buildCSS3Skin skin="bberry" />
 		<buildCSS3Skin skin="honeycomb" />
@@ -190,9 +190,9 @@
 		<replaceregexp file="${build.dir}/skins/out/ipad/ipad.css"
 		               match="(\/\*\*\*([\s\S]*?)(Copyright)+([\s\S]*?)\*\/)" flags="mg"
 		               replace=""/>
-    	<concatskin name="lightning" inputdir="${build.dir}/skins/in"
+    	<concatskin name="archaic" inputdir="${build.dir}/skins/in"
                     outputdir="${build.dir}/skins/out"/>
-        <replaceregexp file="${build.dir}/skins/out/lightning/lightning.css"
+        <replaceregexp file="${build.dir}/skins/out/archaic/archaic.css"
                        match="(\/\*\*\*([\s\S]*?)(Copyright)+([\s\S]*?)\*\/)" flags="mg"
                        replace=""/>
     	        

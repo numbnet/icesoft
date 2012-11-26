@@ -33,6 +33,9 @@ public class UserAgentInfo {
     public static final String MAC = "macintosh"; 
     public static final String WINDOWS = "windows";
     public static final String MSIE = "msie";
+    public static final String MSIE6 = "msie 6.0";
+    public static final String MSIE7 = "msie 7.0";
+    public static final String MSIE8 = "msie 8.0";
     public static final String ANDROID = "android";
     public static final String MOBILE = "mobile";
     public static final String BLACKBERRY = "blackberry";
@@ -166,6 +169,10 @@ public class UserAgentInfo {
    
    public boolean isIE(){
        return userAgentString.contains(MSIE);
+   }
+   
+   public boolean isIE8orLess(){
+       return userAgentString.contains(MSIE6) || userAgentString.contains(MSIE7) || userAgentString.contains(MSIE8);
    }
 
 }
