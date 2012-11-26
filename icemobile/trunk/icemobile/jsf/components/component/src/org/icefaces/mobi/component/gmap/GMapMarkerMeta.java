@@ -35,8 +35,7 @@ import org.icefaces.ace.meta.baseMeta.UIPanelMeta;
         )
 
 @ResourceDependencies({
-    @ResourceDependency(library = "org.icefaces.component.util", name = "component.js"),
-    @ResourceDependency(library = "org.icefaces.component.gmap", name = "gmap.js")
+    @ResourceDependency(library = "org.icefaces.component.util", name = "component.js")
 })
 
 public class GMapMarkerMeta extends UIPanelMeta {
