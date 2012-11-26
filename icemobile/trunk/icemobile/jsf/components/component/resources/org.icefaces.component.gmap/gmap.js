@@ -19,6 +19,7 @@ if (!window['mobi']) {
 if (!window.mobi['gmap']) {
 	window.mobi.gmap = {};
 }
+mobi.gmap.repo = new Object();
 (function() {
 	
 	function GMapWrapper(clientId, cfgIn) {
