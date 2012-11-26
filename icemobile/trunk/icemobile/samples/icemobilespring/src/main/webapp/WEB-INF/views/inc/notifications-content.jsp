@@ -3,10 +3,28 @@
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <%@ taglib uri="http://www.icemobile.org/tags" prefix="mobi" %>
 <%@ taglib prefix="push" uri="http://www.icepush.org/icepush/jsp/icepush.tld"%>
-<form:form id="cloudpushform" method="POST" enctype="multipart/form-data" cssClass="form"
-           modelAttribute="cloudpushBean">
+<form:form id="notificationsform" method="POST" enctype="multipart/form-data" cssClass="form"
+           modelAttribute="notificationsBean">
            
     <mobi:getEnhanced/>
+        
+    <mobi:fieldsetGroup>
+        <mobi:fieldsetRow style="display:block">
+        <p>Real-time, asynchronous, push-based user notifications can be used with ICEmobile. 
+        User notifications can be delivered via a pure-web mechanism of Ajax Push, or higher priority
+        delivery mechanisms that leverage native integration and a cloud-based infrastructure 
+        with <strong>Cloud Push</strong>. A multi-channel delivery system can deliver a user notification 
+        via a web-based Ajax Push, through a device notification, or through email.</p>
+        <p>Enter a custom message below and send a delayed asynchronous notification with
+        either a 'Simple Push' or 'Priority Push' strategy. The Priority Push strategy will
+        use a native device notification if ICEmobile has been activated on your device, 
+        but the notification is not deliverable via the normal web route. This mechanism 
+        can use Cloud Push to actively deliver the message over cloud-based message 
+        delivery networks.</p>
+        </mobi:fieldsetRow>
+    </mobi:fieldsetGroup>
+    
+    <h3>Send Notification</h3>
 
     <mobi:fieldsetGroup>
         <mobi:fieldsetRow>
@@ -34,7 +52,7 @@
             </form:select>
         </mobi:fieldsetRow>
 
-        <mobi:fieldsetRow styleClass="mobi-justify">
+        <mobi:fieldsetRow styleClass="mobi-center">
             <mobi:commandButton buttonType='important'
                                 name="pushType"
                                 value="Simple Push"
@@ -47,7 +65,7 @@
     </mobi:fieldsetGroup>
 
     <h3>Message</h3>
-    <push:region group="cloudPush" page="/cloudpushregion"/>
+    <push:region group="notifications" page="/notificationsregion"/>
 
     <div style="clear:both;"></div>
     <s:bind path="*">
@@ -58,5 +76,5 @@
 </form:form>
 
 <script type="text/javascript">
-    MvcUtil.enhanceForm("#cloudpushform");
+    MvcUtil.enhanceForm("#notificationsform");
 </script>
