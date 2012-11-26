@@ -48,7 +48,7 @@ public class PanelPopupTag extends BaseBodyTag implements IPanelPopup {
                 writer.writeText(headerText);
                 writer.endElement();// Close title section
             }
-            writer.closeOffTag();
+           // writer.closeOffTag();
     	}
     	catch(IOException ioe){
     		LOG.severe("IOException starting panelPopup tag: " + ioe);
