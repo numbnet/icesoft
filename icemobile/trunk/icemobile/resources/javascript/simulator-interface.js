@@ -43,12 +43,10 @@
     
     ice.currentContactId = "";
     ice.fetchContacts = function(id, attr) {
-    
-        ice.currentContactId = id;
-        window.jsLogger.logInContainer("Fetch Contact id: "
-                + ice.currentContactId + ", original: " + id);
-        var result = window.ICEContacts.fetchContacts(id, attr);
-        return result;
+        ice.mobi.sim.simAction = function(simPick)  {
+            ice.addHidden(id, id, "" + simPick, 'file');
+        }
+        ice.mobi.sim.openContacts();
     };
     
     ice.camera = function(id, attr) {
@@ -137,6 +135,18 @@ if (!window.ice.mobi.sim) {
         "<input type='button' class='galButton b3' name='cam##' " +
           "onclick='ice.mobi.sim.pickItem(this);' data-itemref='sim-three.png' >" +
         "<div class='simClose'><input type='button' onclick='ice.mobi.sim.closeGallery()' class='simClose' value='close'></div>",
+        CONTACT_TEMPLATE:
+        "<div align='center' class='simTitle'>Simulated Contacts</div>" +
+        "<a onclick='ice.mobi.sim.pickItem(this);' data-itemref='name=Carl%20Sagan&phone=555-1212&email=seti@home.com'>" +
+        "<div class='simContact'>Carl Sagan</div>" +
+        "</a>" + 
+        "<a onclick='ice.mobi.sim.pickItem(this);' data-itemref='name=James%20Bond&phone=007-1212'>" +
+        "<div class='simContact'>James Bond</div>" +
+        "</a>" + 
+        "<a onclick='ice.mobi.sim.pickItem(this);' data-itemref='name=ICEsoft&phone=403-663-3322&email=product.support@icesoft.com'>" +
+        "<div class='simContact'>ICEsoft Technologies</div>" +
+        "</a>" + 
+        "<div class='simClose'><input type='button' onclick='ice.mobi.sim.closeGallery()' class='simClose' value='close'></div>",
         SINGLE_TEMPLATE:
         "<div align='center' class='simTitle'>##title</div>" +
         "<a onclick='ice.mobi.sim.pickItem(this);' data-itemref='##itemRef'>" +
@@ -169,6 +179,9 @@ if (!window.ice.mobi.sim) {
             rootDiv.innerHTML = htmlReplacement;
 
             document.body.appendChild(rootDiv);
+        },
+        openContacts: function openContacts() {
+            this.openGallery(this.CONTACT_TEMPLATE);
         },
         openImageGallery: function openImageGallery() {
             this.openGallery(this.CAM_TEMPLATE);
