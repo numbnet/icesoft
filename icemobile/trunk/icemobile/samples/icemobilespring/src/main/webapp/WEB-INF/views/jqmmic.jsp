@@ -14,7 +14,7 @@
               href="./resources/jquery.mobile-1.1.1/jquery.mobile-1.1.1.min.css"/>
         <script src="./resources/jquery/1.7.1/jquery-1.7.1.min.js"></script>
         <script src="./resources/jquery.mobile-1.1.1/jquery.mobile-1.1.1.min.js"></script>
-        <mobi:deviceResource  view="small"/>
+        <mobi:deviceResource/>
     </head>
     <body>
 </c:if>
