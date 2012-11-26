@@ -32,6 +32,8 @@
         <mobi:fieldsetGroup>
         	<mobi:fieldsetRow style="text-align:center;">
         		<mobi:commandButton value="Locate Me" style="float:none;"/>
+                <input type="button" value="Click Me Honeycomb" style="float:none;"
+                    class="mobi-button" onclick="if( mobi.gmap.repo['gmapTabs:gmapFrm:gMap'] ){delete mobi.gmap.repo['gmapTabs:gmapFrm:gMap'];}mobi.gmap.repo['gmapTabs:gmapFrm:gMap'] = new google.maps.Map(document.getElementById('gmapTabs:gmapFrm:gMap'), {mapTypeId : google.maps.MapTypeId.ROADMAP});var map = mobi.gmap.repo['gmapTabs:gmapFrm:gMap'];map.setCenter(new google.maps.LatLng(0.0,0.0));map.setZoom(4);"/>
         	</mobi:fieldsetRow>
             <mobi:fieldsetRow>
                 Latitude: <h:outputText value="#{gMapBean.latitude}"/>
