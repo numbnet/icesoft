@@ -30,8 +30,8 @@ public class ContactListMeta {
     @Property(tlddoc = "A complete pattern for matching users. Unfortunately, no wildcards")
     private String pattern;
     
-    @Property(tlddoc = "Can contain one or more of contact, email, and phone fields for " +
-    		"retrieval in a csv list. Default is contact information")
+    @Property(tlddoc = "Can contain one or more of name, email, and phone fields submitted " +
+    		"as an url-encoded string. Default is name")
     private String fields;
     
     @Property(defaultValue = "false", 
