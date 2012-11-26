@@ -43,7 +43,7 @@ public class PanelConfirmationMeta extends UIPanelMeta {
     @Property(defaultValue = "Confirm", tlddoc = "title of confirmation panel in an attribute so el can be used to internationalize")
     private String title;
 
-    @Property(tlddoc = " acceptOnly means only accept button, confirmOnly means only confirm button, both has both")
+    @Property(tlddoc = " acceptOnly means only accept button, cancelOnly means only cancel button, both has both")
     private String type;
 
     @Property(defaultValue = "Cancel", tlddoc = "title of cancel button")
