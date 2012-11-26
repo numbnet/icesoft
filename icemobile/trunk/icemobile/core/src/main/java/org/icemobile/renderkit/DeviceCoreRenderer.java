@@ -81,7 +81,7 @@ public class DeviceCoreRenderer extends BaseCoreRenderer{
             }
             writer.writeAttribute(ID_ATTR, clientId);
             writer.writeAttribute(NAME_ATTR, clientId);
-            writeStandardAttributes(writer, component, baseClass, IDevice.DISABLED_STYLE_CLASS);
+            writeStandardAttributes(writer, component, "", "");
             if (comptype.equals("camera")){
                 writer.writeAttribute("accept", "image/*");
             }
@@ -94,26 +94,5 @@ public class DeviceCoreRenderer extends BaseCoreRenderer{
             writer.endElement(INPUT_ELEM);
         }
     }
-/*    public void writeStandardAttributes(IResponseWriter writer, IDevice component, String baseClass) throws IOException  {
-        String comptype = component.getComponentType();
-        StringBuilder inputStyle = new StringBuilder(baseClass);
-       if (!comptype.equals("scan") && (!comptype.equals("aug"))){
-    	    inputStyle.append(baseClass);
-        }
-        if (component.isDisabled()){
-            inputStyle.append(" ").append(IDevice.DISABLED_STYLE_CLASS);
-        }
-        if (null != component.getStyleClass())  {
-            inputStyle.append(" ").append(component.getStyleClass());
-        }
-        if( inputStyle.length() > 0 ){
-            writer.writeAttribute(CLASS_ATTR, inputStyle);
-        }
-        if (null != component.getStyle())  {
-            writer.writeAttribute(STYLE_ATTR, component.getStyle());
-        }
-        if (component.isDisabled())  {
-            writer.writeAttribute(DISABLED_ATTR, "disabled");
-        }
-    } */
+
 }
