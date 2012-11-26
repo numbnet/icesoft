@@ -20,7 +20,7 @@
                 xmlns:icecore="http://www.icefaces.org/icefaces/core"
                 xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
    
-    <mobi:pagePanel>
+    <mobi:pagePanel id="pagePanel">
         <f:facet name="header">
             <h:form id="toolbar" prependId="false">
                 <icecore:singleSubmit rendered="false"/>
@@ -60,7 +60,7 @@
 
 				<f:facet name="right">
                 <!-- main content include of page content -->
-                  <ui:include src="/WEB-INF/includes/content/content-stack.xhtml">
+                  <ui:include src="/WEB-INF/includes/content/content-stack-large.xhtml">
                      <ui:param name="selectedPanel"
                               value="#{navigationModel.selectedPanel == null?'splash':navigationModel.selectedPanel}"/>
                   </ui:include>
