@@ -61,3 +61,11 @@
     background-image: url(#{resource['org.icefaces.component.util:sim-three.png']});
 }
 
+.vid1 {
+    background-image: url(#{resource['org.icefaces.component.util:sim-vid1.png']});
+}
+
+.mic1 {
+    background-image: url(#{resource['org.icefaces.component.util:sim-snd1.png']});
+}
+

@@ -59,15 +59,17 @@
     };
     
     ice.camcorder = function(id, attr) {
-        alert('into camcorder');
-        //var result = window.ICEvideo.shootVideo(id + '-thumb', attr);
-        //ice.addHidden(id, id, "" + result, 'file');
+        ice.mobi.sim.simAction = function(simPick)  {
+            ice.addHidden(id, id, "" + simPick, 'file');
+        }
+        ice.mobi.sim.openVideoGallery();
     };
     
     ice.microphone = function(id, attr) {
-        alert('into microphone');
-        //var result = window.ICEaudio.recordAudio(attr);
-        //ice.addHidden(id, id, "" + result, 'file');
+        ice.mobi.sim.simAction = function(simPick)  {
+            ice.addHidden(id, id, "" + simPick, 'file');
+        }
+        ice.mobi.sim.openAudioGallery();
     };
     
     ice.play = function(id) {
@@ -115,23 +117,32 @@ if (!window.ice.mobi) {
 }
 if (!window.ice.mobi.sim) {
     window.ice.mobi.sim = {
-        IMAGE_GALLERY_ID: 'org.icemobile.simulator.imageGallery',
-        CLOSE_IMAGE_GALLERY_ID: 'closeImageGallery',
+        GALLERY_ID: 'org.icemobile.simulator.imageGallery',
+        MIC_TEMPLATE:
+        "<div align='center' class='simTitle'>Sim Audio Gallery</div>" +
+        "<input type='button' class='galButton mic1' name='cam##' " +
+          "onclick='ice.mobi.sim.pickItem(this);' data-itemref='sim-snd.mp3' >" +
+        "<div class='simClose'><input type='button' onclick='ice.mobi.sim.closeGallery()' class='simClose' value='close'></div>",
+        VID_TEMPLATE:
+        "<div align='center' class='simTitle'>Sim Video Gallery</div>" +
+        "<input type='button' class='galButton vid1' name='cam##' " +
+          "onclick='ice.mobi.sim.pickItem(this);' data-itemref='sim-vid.mp4' >" +
+        "<div class='simClose'><input type='button' onclick='ice.mobi.sim.closeGallery()' class='simClose' value='close'></div>",
         CAM_TEMPLATE:
         "<div align='center' class='simTitle'>Simulated Camera</div>" +
         "<input type='button' class='galButton b1' name='cam##' " +
-          "onclick='ice.mobi.sim.pickItem(this);' data-itemref='sim-one' >" +
+          "onclick='ice.mobi.sim.pickItem(this);' data-itemref='sim-one.png' >" +
         "<input type='button' class='galButton b2' name='cam##' " +
-          "onclick='ice.mobi.sim.pickItem(this);' data-itemref='sim-two' >" +
+          "onclick='ice.mobi.sim.pickItem(this);' data-itemref='sim-two.png' >" +
         "<input type='button' class='galButton b3' name='cam##' " +
-          "onclick='ice.mobi.sim.pickItem(this);' data-itemref='sim-three' >" +
-        "<div class='simClose'><input type='button' onclick='ice.mobi.sim.closeImageGallery()' class='simClose' value='close'></div>",
+          "onclick='ice.mobi.sim.pickItem(this);' data-itemref='sim-three.png' >" +
+        "<div class='simClose'><input type='button' onclick='ice.mobi.sim.closeGallery()' class='simClose' value='close'></div>",
         SINGLE_TEMPLATE:
         "<div align='center' class='simTitle'>##title</div>" +
         "<a onclick='ice.mobi.sim.pickItem(this);' data-itemref='##itemRef'>" +
         "<div class='##itemClass'></div>" +
         "</a>" + 
-        "<div class='simClose'><input type='button' onclick='ice.mobi.sim.closeImageGallery()' class='simClose' value='close'></div>",
+        "<div class='simClose'><input type='button' onclick='ice.mobi.sim.closeGallery()' class='simClose' value='close'></div>",
         images: {},
         simAction: null,
         addImage: function addImage(thumbPath, imagePath){
@@ -139,16 +150,16 @@ if (!window.ice.mobi.sim) {
         },
         pickItem: function(element) {
             this.simAction(element.getAttribute("data-itemref"));
-            ice.mobi.sim.closeImageGallery();
+            ice.mobi.sim.closeGallery();
         },
         openSingleView: function openSingleView(title, viewClass){
-            var imageGallery = document.getElementById(
-                    this.IMAGE_GALLERY_ID);
-            if( imageGallery ){
-                closeImageGallery();
+            var gallery = document.getElementById(
+                    this.GALLERY_ID);
+            if (gallery)  {
+                this.closeGallery();
             }
             var rootDiv = document.createElement("div");
-            rootDiv.setAttribute("id",this.IMAGE_GALLERY_ID);
+            rootDiv.setAttribute("id",this.GALLERY_ID);
             rootDiv.setAttribute("class", "simRoot");
 
             var htmlReplacement = this.SINGLE_TEMPLATE.replace(/##title/, title);
@@ -159,24 +170,33 @@ if (!window.ice.mobi.sim) {
 
             document.body.appendChild(rootDiv);
         },
-        openImageGallery: function openImageGallery(){
-            var imageGallery = document.getElementById(
-                    this.IMAGE_GALLERY_ID);
-            if( imageGallery ){
-                closeImageGallery();
+        openImageGallery: function openImageGallery() {
+            this.openGallery(this.CAM_TEMPLATE);
+        },
+        openVideoGallery: function openImageGallery() {
+            this.openGallery(this.VID_TEMPLATE);
+        },
+        openAudioGallery: function openImageGallery() {
+            this.openGallery(this.MIC_TEMPLATE);
+        },
+        openGallery: function openGallery(template){
+            var gallery = document.getElementById(
+                    this.GALLERY_ID);
+            if( gallery ){
+                this.closeGallery();
             }
             var rootDiv = document.createElement("div");
-            rootDiv.setAttribute("id",this.IMAGE_GALLERY_ID);
+            rootDiv.setAttribute("id",this.GALLERY_ID);
             rootDiv.setAttribute("class", "simRoot");
 
-            rootDiv.innerHTML = this.CAM_TEMPLATE.replace(/##/g, "zzz");
+            rootDiv.innerHTML = template.replace(/##/g, "zzz");
 
             document.body.appendChild(rootDiv);
         },
-        closeImageGallery: function closeImageGallery(){
-            var imageGallery = document.getElementById(
-                    this.IMAGE_GALLERY_ID);
-            document.body.removeChild(imageGallery);
+        closeGallery: function closeGallery(){
+            var gallery = document.getElementById(
+                    this.GALLERY_ID);
+            document.body.removeChild(gallery);
         }
         
     };
