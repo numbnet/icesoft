@@ -22,6 +22,7 @@ import org.icefaces.mobi.utils.Utils;
 import org.icefaces.mobi.utils.MobiJSFUtils;
 import org.icefaces.util.EnvUtils;
 import org.icemobile.util.CSSUtils;
+import org.icemobile.util.ClientDescriptor;
 
 import javax.faces.application.ProjectStage;
 import javax.faces.component.UIComponent;
@@ -50,7 +51,9 @@ public class AugmentedRealityRenderer extends BaseInputRenderer  {
          String clientId = uiComponent.getClientId(facesContext);
          AugmentedReality ag = (AugmentedReality)uiComponent;
 
-         boolean isEnhanced = EnvUtils.isEnhancedBrowser(facesContext);
+//         boolean isEnhanced = EnvUtils.isEnhancedBrowser(facesContext);
+         ClientDescriptor clientDescriptor = MobiJSFUtils.getClientDescriptor();
+         boolean isEnhanced = clientDescriptor.isICEmobileContainer();
          boolean isAuxUpload = EnvUtils.isAuxUploadBrowser(facesContext);
          if (!isEnhanced && !isAuxUpload) {  //no container or SX, use text field
              writer.startElement(HTML.INPUT_ELEM, uiComponent);

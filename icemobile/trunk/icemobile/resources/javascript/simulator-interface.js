@@ -33,7 +33,12 @@
         ice.mobi.sim.simAction = function(simPick)  {
             ice.addHidden(id, id, "" + simPick, 'file');
         }
-        ice.mobi.sim.openSingleView("Simulated Augmented Reality", "simAug" );
+        var cssClass = "simAugL";
+        var onclick = document.getElementById(id).onclick.toString();
+        if (onclick.indexOf("vuforia") > -1)  {
+            cssClass = "simAugM";
+        }
+        ice.mobi.sim.openSingleView("Simulated Augmented Reality", cssClass );
     };
     
     ice.currentContactId = "";
@@ -75,7 +80,7 @@
         ice.mobi.sim.simAction = function(simPick)  {
             ice.addHidden(id, id, "" + simPick, 'file');
         }
-        ice.mobi.sim.openSingleView("Simulated QR Code Scanner", "simScan" );
+        ice.mobi.sim.openSingleView("Simulated QR Scan", "simScan" );
     };
     
     var context = {

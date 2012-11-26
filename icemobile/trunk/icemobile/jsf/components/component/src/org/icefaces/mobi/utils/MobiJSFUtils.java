@@ -87,6 +87,19 @@ public class MobiJSFUtils {
             }
         }
 
+        //final case is a simulated upload
+        if (null == contentType)  {
+            String simulatedFile = request.getParameter(partUploadName);
+            if (null != simulatedFile)  {
+                //missing contentType indicates simulator
+                contentType = "image/png";
+                fileStream = MobiJSFUtils.class
+                    .getClassLoader().getResourceAsStream(
+                        "META-INF/resources/org.icefaces.component.util/" +
+                        simulatedFile + ".png");
+            }
+        }
+
         String fileName = Long.toString(
                 Math.abs(UUID.randomUUID().getMostSignificantBits()), 32);
         String fileExtension = Utils.FILE_EXT_BY_CONTENT_TYPE.get(contentType);
