@@ -26,9 +26,9 @@
     <title>ICEfaces Mobile Showcase</title>
     <mobi:deviceResource theme="#{themeBean.currentTheme}"/>
     <h:outputStylesheet library="css" name="showcase.css" media="screen"/>
-    <c:if test="#{navigationModel.selectedPanel eq 'gmap'}">
+<!--     <c:if test="#{navigationModel.selectedPanel eq 'gmap'}"> -->
         <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=true"/>
-    </c:if>
+<!--     </c:if> -->
     <mobi:googleAnalytics/>
 </h:head>
 <h:body>
