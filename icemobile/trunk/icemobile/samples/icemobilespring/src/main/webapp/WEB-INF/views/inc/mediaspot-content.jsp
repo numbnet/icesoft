@@ -25,16 +25,27 @@
             <form:input path="title" placeholder="Title"/>
         </mobi:fieldsetRow>
         <mobi:fieldsetRow>
-            <mobi:geolocation id="location"/>
+            <mobi:geolocation id="location" name="location"/>
             <mobi:camera id="spotcam"/>
             <mobi:thumbnail for="spotcam"/>
         </mobi:fieldsetRow>
     </mobi:fieldsetGroup>
     
-    <mobi:commandButton buttonType='important'
-                        value="Submit"
-                        type="submit"
-                        styleClass="submit"/>
+    <c:if test="${!ios}"><!-- SX on iOS auto-submits -->
+        <mobi:commandButton buttonType='important'
+                            value="Submit"
+                            type="submit"
+                            styleClass="submit"/>
+    </c:if>
+                        
+    <c:if test="${not empty augmentedRealityMessage}">
+        <div id="message" class="success">${augmentedRealityMessage}</div>
+        <mobi:fieldsetGroup>
+            <mobi:fieldsetRow>
+                <img src="${augmentedRealityUpload}" class="imageView">
+            </mobi:fieldsetRow>
+        </mobi:fieldsetGroup>
+    </c:if>
                         
     <h3>Augmented Reality</h3>
 
@@ -64,7 +75,7 @@
         <mobi:fieldsetGroup>
             <mobi:fieldsetRow>
                 Selected location:<br />
-                <img src="${imgPath}"/>
+                <img src="${augmentedRealityImage}"/>
 
                 <div style="font-style:italic">${selection}</div>
             </mobi:fieldsetRow>

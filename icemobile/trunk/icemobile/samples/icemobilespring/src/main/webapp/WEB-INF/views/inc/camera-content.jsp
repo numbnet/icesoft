@@ -32,8 +32,6 @@
                         
     <c:if test="${not empty cameraMessage}">
         <div id="message" class="success">${cameraMessage}</div>
-    </c:if>
-    <c:if test="${not empty cameraMessage}">
         <mobi:fieldsetGroup>
             <mobi:fieldsetRow>
                 <img src="${cameraUpload}" class="imageView">
