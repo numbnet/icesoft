@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.util.logging.Logger;
 
 import javax.servlet.jsp.JspTagException;
+import javax.servlet.jsp.tagext.Tag;
 import javax.servlet.jsp.tagext.TagSupport;
 
 import org.icemobile.util.HTML;
@@ -33,18 +34,31 @@ public class PagePanelFooterTag extends TagSupport {
     public static final String FOOTER_CLASS = "mobi-pagePanel-footer";
 
     private static Logger LOG = Logger.getLogger(PagePanelFooterTag.class.getName());
+    public PagePanelTag mParent;
 
+    public void setParent(Tag parent) {
+       if (!(parent instanceof PagePanelTag)) {
+           throw new IllegalArgumentException("PagePanelFooterTag must be child of PagePanelTag");
+       }
+       mParent = (PagePanelTag) parent;
+   }
     public int doStartTag() throws JspTagException {
-
+        StringBuilder footerClass = new StringBuilder(FOOTER_CLASS);
+        if (mParent != null) {
+            mParent.setHasHeader(true);
+            if (mParent.getStyleClass() !=null){
+                footerClass.append(" ").append(mParent.getStyleClass()) ;
+            }
+         }
         TagWriter writer = new TagWriter(pageContext);
         try {
             writer.startElement(HTML.DIV_ELEM);
-            writer.writeAttribute(HTML.CLASS_ATTR, FOOTER_CLASS);
+            writer.writeAttribute(HTML.CLASS_ATTR, footerClass);
             writer.startElement(HTML.DIV_ELEM);
             writer.writeAttribute(HTML.CLASS_ATTR, PagePanelTag.CTR_CLASS);
             writer.closeOffTag();
         } catch (IOException ioe) {
-            LOG.severe("IOException writing PagePanelHeader: " + ioe);
+            LOG.severe("IOException writing PagePanelFooter: " + ioe);
         }
         return EVAL_BODY_INCLUDE;
     }

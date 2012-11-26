@@ -18,7 +18,7 @@
                     <a href="menu" id="menuLink" class="mobi-button ui-icon ui-icon-menu ui-icon-shadow"></a>
                     ${param.demoTitle}
                 </mobi:pagePanelHeader>
-                <mobi:pagePanelBody>
+                <mobi:pagePanelBody noFooter="true">
                     <jsp:include page="${param.demoPath}" />
                 </mobi:pagePanelBody>
             </mobi:pagePanel>
@@ -38,7 +38,7 @@
                         href='<c:url value="/"/>'> </a>
                         ICEmobile Spring MVC Showcase
                     </mobi:pagePanelHeader>
-                    <mobi:pagePanelBody>
+                    <mobi:pagePanelBody noFooter="true">
                          <mobi:splitPane id="sp" scrollable="true" columnDivider="30">
                             <mobi:fragment name="left">
                                 <%@ include file="/WEB-INF/views/inc/menu.jsp" %>
