@@ -30,29 +30,31 @@ public class GMapRenderer extends CoreRenderer {
 		writer.writeAttribute("id", clientId, null);
 		writer.writeAttribute("style", "height: 100%;", null);
 		writer.endElement("div");
-		writeJavascriptFile(context, component, "gmap.js", "gmap.js", "org.icefaces.component.gmap");
 		writer.startElement("span", null);
 		writer.writeAttribute("id", clientId + "_script", null);
 		writer.startElement("script", null);
 		writer.writeAttribute("type", "text/javascript", null);
-		writer.write(String.format("var wrapper = mobi.gmap.create('%s');",clientId));
+		
+		StringBuilder sb = new StringBuilder();
+		sb.append("if( mobi.gmap.repo['"+ clientId + "'] ){");
+		sb.append(    "delete mobi.gmap.repo['"+ clientId + "'];");
+		sb.append("}");
+		sb.append("mobi.gmap.repo['"+ clientId + "'] = new google.maps.Map(document.getElementById('"+ clientId + "'), {mapTypeId : google.maps.MapTypeId."
+		        +gmap.getType().toUpperCase()+"});var map = mobi.gmap.repo['"+ clientId + "'];");
 		if ((gmap.isLocateAddress() || !gmap.isIntialized())
 				&& (gmap.getAddress() != null && gmap.getAddress().length() > 2)) {
-			writer.write(String.format(
-					"wrapper.locateAddress('%s');",gmap.getAddress()));
+			sb.append("new google.maps.Geocoder()");
+			sb.append(  ".geocode({'address' : '" + gmap.getAddress() + "'},");
+			sb.append(  "function(results, status) {if (status == google.maps.GeocoderStatus.OK) {map.setCenter(results[0].geometry.location);}});");
 		} else {
-			writer.write(String
-					.format("wrapper.getMap().setCenter(new google.maps.LatLng(%s,%s));",
-							gmap.getLatitude(), gmap.getLongitude()));
+			sb.append("map.setCenter(new google.maps.LatLng("+gmap.getLatitude()+","
+			        +gmap.getLongitude()+"));");
 		}
-		writer.write(String.format(
-				"wrapper.getMap().setZoom(%s);", gmap.getZoomLevel()));
-		writer.write(String.format(
-				"wrapper.setMapType('%s');",gmap.getType().toUpperCase()));
+		sb.append("map.setZoom("+gmap.getZoomLevel()+");");
 		if (gmap.getOptions() != null && gmap.getOptions().length() > 1) {
-			writer.write(String.format(
-					"wrapper.addOptions('%s');", gmap.getOptions()));
+			sb.append("map.setOptions(eval(({" + gmap.getOptions() + "})));");
 		}
+		writer.write(sb.toString());
 		writer.endElement("script");
 		writer.endElement("span");
 		writer.endElement("div");

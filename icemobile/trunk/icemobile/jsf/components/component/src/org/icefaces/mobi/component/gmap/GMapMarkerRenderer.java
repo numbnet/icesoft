@@ -16,20 +16,15 @@ package org.icefaces.mobi.component.gmap;
  */
 
 import java.io.IOException;
-import java.util.Map;
-
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import javax.faces.event.PhaseId;
-
 import org.icefaces.render.MandatoryResourceComponent;
 
 import org.icefaces.mobi.renderkit.CoreRenderer;
 
 @MandatoryResourceComponent(tagName="gMap", value="org.icefaces.mobi.component.gmap.GMap")
 public class GMapMarkerRenderer extends CoreRenderer {
-
 
 	    public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
 			ResponseWriter writer = context.getResponseWriter();
@@ -45,9 +40,17 @@ public class GMapMarkerRenderer extends CoreRenderer {
 			if (currentLat != null &&  currentLon != null
 					&& currentLat.length() > 0 && currentLon.length() > 0) {
 				//to dynamic support first to remove if any
-				writer.write(String.format(
-					"var wrapper = mobi.gmap.getWrapper('%s');wrapper.removeMarker('%s');wrapper.addMarker('%s','%s','%s');",
-					marker.getParent().getClientId(context),clientId,clientId,currentLat, currentLon));
+				StringBuilder sb = new StringBuilder();
+				sb.append("var map = mobi.gmap.repo['"+ marker.getParent().getClientId(context) + "'];");
+				sb.append("var marker = mobi.gmap.markers['"+clientId+"'];");
+				sb.append("if( marker ){");
+				sb.append(   "marker.setMap(null);");
+				sb.append(   "delete mobi.gmap.markers['"+clientId+"'];");
+				sb.append("}");
+				sb.append("var ll = new google.maps.LatLng("+currentLat+","+currentLon+");");
+				sb.append("marker = new google.maps.Marker({position: ll, map: map});");
+				sb.append("mobi.gmap.markers['"+clientId+"'] = marker;");
+				writer.write(sb.toString());
 			}
 			writer.endElement("script");
 			writer.endElement("span");
