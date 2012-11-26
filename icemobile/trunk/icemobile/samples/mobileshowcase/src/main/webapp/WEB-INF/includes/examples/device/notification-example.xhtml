@@ -49,7 +49,7 @@
                     <f:selectItem itemLabel="30 sec" itemValue="30"/>
                 </h:selectOneMenu>
             </mobi:fieldsetRow>
-            <mobi:fieldsetRow>
+            <mobi:fieldsetRow styleClass="mobi-center">
                 <mobi:commandButton value="Priority Push"
                         buttonType="attention"
                         actionListener="#{notificationBean.sendPriorityPushMessage}"/>
@@ -58,21 +58,21 @@
             </mobi:fieldsetRow>
         </mobi:fieldsetGroup>
         
-        <h:messages />
+        <h:messages style="margin-left:10px"/>
         
-        <h3>Notification Echo</h3>
+        <h3>Message</h3>
         <mobi:fieldsetGroup>
             <mobi:fieldsetRow>
                 <h:outputLabel value="Subject" for="subjectOut"/>
                 <h:outputText id="subjectOut"
                               value="#{notificationBean.echoedSubject}"
-                              placeholder="subject"/>
+                              placeholder="subject" style="text-align:right"/>
             </mobi:fieldsetRow>
             <mobi:fieldsetRow>
                 <h:outputLabel value="Message" for="messageOut"/>
                 <h:outputText id="messageOut"
                                 value="#{notificationBean.echoedMessage}"
-                                placeholder="message"/>
+                                placeholder="message" style="text-align:right"/>
             </mobi:fieldsetRow>
         </mobi:fieldsetGroup>
         
