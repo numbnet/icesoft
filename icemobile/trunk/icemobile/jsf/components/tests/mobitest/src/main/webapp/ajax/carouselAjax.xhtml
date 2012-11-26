@@ -23,14 +23,9 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
 <h:head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <meta name="viewport"
-          content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0"/>
-    <meta name="apple-mobile-web-app-capable" content="yes"/>
-    <meta name="apple-mobile-web-app-status-bar-style" content="black"/>
     <title>carousel ajax test</title>
 
-    <mobi:deviceStylesheet
+    <mobi:deviceResource
             name="#{themeSwitcher.theme}" media="screen" />
 
 </h:head>
@@ -43,7 +38,7 @@
     <h:form id="carForm">
         <ui:debug/>
 	    <mobi:carousel id="carOne" value="#{carousel.imageList}" var="item" valueChangeListener="#{carousel.changedIndex}"
-	         selectedIten="#{carousel.selectedIndex}" >
+	         selectedItem="#{carousel.selectedIndex}" >
             <mobi:ajax event="change" execute="#{ajaxTest.execute}" render="#{ajaxTest.render}" />
 	        <h:panelGroup id="imgPanel">
 	            <h:graphicImage id="innerImg" value="#{item.imageUrl}"

@@ -85,7 +85,7 @@ public class CarouselRenderer extends BaseLayoutRenderer {
         encodeCarouselList(carousel, facesContext);
         boolean hasBehaviors = !carousel.getClientBehaviors().isEmpty();
         if (hasBehaviors){
-            ClientBehaviorHolder cbh = (ClientBehaviorHolder)this;
+            ClientBehaviorHolder cbh = (ClientBehaviorHolder)uiComponent;
             String behaviors = encodeClientBehaviors(facesContext, cbh, "change").toString();
             behaviors = behaviors.replace("\"", "\'");
             carousel.setBehaviors(behaviors);
@@ -126,7 +126,7 @@ public class CarouselRenderer extends BaseLayoutRenderer {
      * @return
      * @throws IOException
      */
-    private StringBuilder getCfgOptions(UIComponent uiComponent,FacesContext facesContext)
+  /*  private StringBuilder getCfgOptions(UIComponent uiComponent,FacesContext facesContext)
           throws IOException{
         StringBuilder builder = new StringBuilder(255);
         String clientId = uiComponent.getClientId(facesContext);
@@ -143,7 +143,7 @@ public class CarouselRenderer extends BaseLayoutRenderer {
         }
         builder.append("}");
         return builder;
-    }
+    } */
 
     /**
      * will render it's own children
