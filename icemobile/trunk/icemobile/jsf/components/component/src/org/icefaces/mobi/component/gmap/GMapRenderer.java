@@ -39,8 +39,8 @@ public class GMapRenderer extends CoreRenderer {
 		sb.append("if( mobi.gmap.repo['"+ clientId + "'] ){");
 		sb.append(    "delete mobi.gmap.repo['"+ clientId + "'];");
 		sb.append("}");
-		sb.append("mobi.gmap.repo['"+ clientId + "'] = new google.maps.Map(document.getElementById('"+ clientId + "'), {mapTypeId : google.maps.MapTypeId."
-		        +gmap.getType().toUpperCase()+"});var map = mobi.gmap.repo['"+ clientId + "'];");
+		sb.append("mobi.gmap.repo['"+ clientId + "'] = new google.maps.Map(document.getElementById('"+ clientId + "'), {mapTypeId : '"
+		        +gmap.getType()+"'});var map = mobi.gmap.repo['"+ clientId + "'];");
 		if ((gmap.isLocateAddress() || !gmap.isIntialized())
 				&& (gmap.getAddress() != null && gmap.getAddress().length() > 2)) {
 			sb.append("new google.maps.Geocoder()");
