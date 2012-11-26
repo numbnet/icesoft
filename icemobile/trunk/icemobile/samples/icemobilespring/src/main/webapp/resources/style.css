@@ -252,7 +252,10 @@ html.honeycomb h3, html.android h3{
     display: block!important;
     float: none!important;
 }
-.form .mobi-fieldset-row > input, .form .mobi-fieldset-row > select, .form .mobi-fieldset-row > span{
+.form .mobi-fieldset-row > input, 
+.form .mobi-fieldset-row > select, 
+.form .mobi-fieldset-row > span,
+.form .mobi-fieldset-row > textarea{
     -webkit-box-flex: 2;
     -moz-box-flex: 2;
     -moz-box-sizing: border-box;
