@@ -38,10 +38,6 @@ MvcUtil.enhanceForm = function(theForm)  {
             if (window.ice && ice.upload) {
                 window.ice.handleResponse = function (data) {
                     updateRegion.html(unescape(data));
-                    var msgElem = $("#message");
-                    if( msgElem.length > 0 ){
-                        $('html, body').animate({ scrollTop:msgElem.offset().top }, 500);
-                    }
                 }
                 ice.upload($(this).attr("id"));
                 return false;
