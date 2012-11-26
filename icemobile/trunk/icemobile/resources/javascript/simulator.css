@@ -25,6 +25,18 @@
     margin: 2px;
 }
 
+.simAug {
+    background-image: url(#{resource['org.icefaces.component.util:sim-aug.jpg']});
+    background-size: cover;
+    height: 80%;
+}
+
+.simScan {
+    background-image: url(#{resource['org.icefaces.component.util:sim-qrscan.jpg']});
+    background-size: cover;
+    height: 80%;
+}
+
 .simClose {
     position:absolute;
     bottom:0;
