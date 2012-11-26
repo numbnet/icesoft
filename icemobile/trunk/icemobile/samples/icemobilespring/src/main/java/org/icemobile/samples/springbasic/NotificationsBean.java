@@ -3,10 +3,10 @@ package org.icemobile.samples.springbasic;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 /**
- * This is a sample backing bean for Cloud Push
+ * This is a sample backing bean for notifications
  */
-@SessionAttributes("cloudpushBean")
-public class CloudPushBean {
+@SessionAttributes("notificationsBean")
+public class NotificationsBean {
 
     String title = "Add a new title";
     String message = "Add a new message";
