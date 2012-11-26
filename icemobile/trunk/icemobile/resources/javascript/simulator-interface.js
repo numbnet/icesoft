@@ -30,7 +30,10 @@
     };
     
     ice.aug = function(id, attr) {
-        console.log("aug not implemented in simulator")
+        ice.mobi.sim.simAction = function(simPick)  {
+            ice.addHidden(id, id, "" + simPick, 'file');
+        }
+        ice.mobi.sim.openSingleView("Simulated Augmented Reality", "simAug" );
     };
     
     ice.currentContactId = "";
@@ -69,9 +72,10 @@
     
     ice.currentScanId = "";
     ice.scan = function(id, attr) {
-        alert('scan');
-        //var result = window.ICEqrcode.scan(id, attr);
-        //ice.currentScanId = id;
+        ice.mobi.sim.simAction = function(simPick)  {
+            ice.addHidden(id, id, "" + simPick, 'file');
+        }
+        ice.mobi.sim.openSingleView("Simulated QR Code Scanner", "simScan" );
     };
     
     var context = {
@@ -108,7 +112,7 @@ if (!window.ice.mobi.sim) {
     window.ice.mobi.sim = {
         IMAGE_GALLERY_ID: 'org.icemobile.simulator.imageGallery',
         CLOSE_IMAGE_GALLERY_ID: 'closeImageGallery',
-        template:
+        CAM_TEMPLATE:
         "<div align='center' class='simTitle'>Simulated Camera</div>" +
         "<input type='button' class='galButton b1' name='cam##' " +
           "onclick='ice.mobi.sim.pickItem(this);' data-itemref='sim-one' >" +
@@ -116,6 +120,12 @@ if (!window.ice.mobi.sim) {
           "onclick='ice.mobi.sim.pickItem(this);' data-itemref='sim-two' >" +
         "<input type='button' class='galButton b3' name='cam##' " +
           "onclick='ice.mobi.sim.pickItem(this);' data-itemref='sim-three' >" +
+        "<div class='simClose'><input type='button' onclick='ice.mobi.sim.closeImageGallery()' class='simClose' value='close'></div>",
+        SINGLE_TEMPLATE:
+        "<div align='center' class='simTitle'>##title</div>" +
+        "<a onclick='ice.mobi.sim.pickItem(this);' data-itemref='##itemRef'>" +
+        "<div class='##itemClass'></div>" +
+        "</a>" + 
         "<div class='simClose'><input type='button' onclick='ice.mobi.sim.closeImageGallery()' class='simClose' value='close'></div>",
         images: {},
         simAction: null,
@@ -125,6 +135,24 @@ if (!window.ice.mobi.sim) {
         pickItem: function(element) {
             this.simAction(element.getAttribute("data-itemref"));
             ice.mobi.sim.closeImageGallery();
+        },
+        openSingleView: function openSingleView(title, viewClass){
+            var imageGallery = document.getElementById(
+                    this.IMAGE_GALLERY_ID);
+            if( imageGallery ){
+                closeImageGallery();
+            }
+            var rootDiv = document.createElement("div");
+            rootDiv.setAttribute("id",this.IMAGE_GALLERY_ID);
+            rootDiv.setAttribute("class", "simRoot");
+
+            var htmlReplacement = this.SINGLE_TEMPLATE.replace(/##title/, title);
+            htmlReplacement = htmlReplacement.replace(/##itemClass/, viewClass);
+            htmlReplacement = htmlReplacement.replace(/##itemRef/, viewClass);
+            
+            rootDiv.innerHTML = htmlReplacement;
+
+            document.body.appendChild(rootDiv);
         },
         openImageGallery: function openImageGallery(){
             var imageGallery = document.getElementById(
@@ -136,7 +164,7 @@ if (!window.ice.mobi.sim) {
             rootDiv.setAttribute("id",this.IMAGE_GALLERY_ID);
             rootDiv.setAttribute("class", "simRoot");
 
-            rootDiv.innerHTML = this.template.replace(/##/g, "zzz");
+            rootDiv.innerHTML = this.CAM_TEMPLATE.replace(/##/g, "zzz");
 
             document.body.appendChild(rootDiv);
         },
