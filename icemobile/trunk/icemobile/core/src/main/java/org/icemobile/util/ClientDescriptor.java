@@ -138,6 +138,10 @@ public class ClientDescriptor {
         return _userAgentInfo.isIE();
     }
 
+    public boolean isIE8orLessBrowser() {
+        return _userAgentInfo.isIE8orLess();
+    }
+    
     public boolean isIOS() {
         return os == OS.IOS;
     }

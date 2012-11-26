@@ -22,10 +22,12 @@ import java.util.logging.Logger;
 
 import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.PageContext;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.icemobile.jsp.util.MobiJspConstants;
 import org.icemobile.jsp.util.Util;
+import org.icemobile.util.CSSUtils;
 import org.icemobile.util.ClientDescriptor;
 import org.icemobile.util.Constants;
 import org.icemobile.util.MobiEnvUtils;
@@ -41,18 +43,6 @@ public class DeviceResourceTag extends BaseSimpleTag {
 
 	// compressed css post-fix notation.
 	public static final String CSS_COMPRESSION_POSTFIX = "-min";
-
-	// iPhone style sheet name found in jar.
-	public static final String IPHONE_CSS = "iphone.css";
-	// iPad style sheet name found in jar.
-	public static final String IPAD_CSS = "ipad.css";
-	// Android style sheet name found in jar.
-	public static final String ANDROID_CSS = "android.css";
-	// Android honeycomb style sheet name found in jar.
-	public static final String HONEYCOMB_CSS = "honeycomb.css";
-	// Blackberry style sheet name found in jar.
-	public static final String BBERRY_CSS = "bberry.css";
-
 
 	// default resource library for a default themes,  if not specified in
 	// component definition this library will be loaded.
@@ -163,110 +153,22 @@ public class DeviceResourceTag extends BaseSimpleTag {
 		PageContext pageContext = getContext();
 		JspWriter out = pageContext.getOut();
 		
-		/**
-		 * The component has three modes in which it executes.
-		 * 1.) no attributes - then component tries to detect a mobile device
-		 *     in from the user-agent.  If a mobile device is discovered, then
-		 *     it will fall into three possible matches, iphone, ipad,  android and
-		 *     blackberry.  If the mobile device is not not know then ipad
-		 *     is loaded. Library is always assumed to be DEFAULT_LIBRARY.
-		 *
-		 * 2.) name attribute - component will default to using a library name
-		 *     of DEFAULT_LIBRARY.  The name attribute specifies one of the
-		 *     possible device themes; iphone.css, android.css or bberry.css.
-		 *     Error will result if named resource could not be resolved.
-		 *
-		 * 3.) name and libraries attributes. - component will use the library
-		 *     and name specified by the user.  Component is fully manual in this
-		 *     mode. Error will result if name and library can not generate a
-		 *     value resource.
-		 */
-
-		// check for the existence of the name and library attributes.
-		String nameVal = getName();
-		String fileName = nameVal;
-		String libVal = getLibrary();
-
-		String viewVal = getView();
-
-		// check for empty string on name attribute used for auto mode where
-		// name value binding is used.
-		nameVal = nameVal != null && nameVal.equals(EMPTY_STRING) ? null : name;
-
-		// 1.) full automatic device detection.
-		if (nameVal == null && libVal == null) {
-		    ClientDescriptor client = getClient();
-		    if( client.isIOS()){
-		        if( client.isHandheldBrowser()){
-		            nameVal = "iphone";
-		        }
-		        else{
-		            nameVal = "ipad";
-		        }
-		    }
-		    else if( client.isAndroidOS()){
-		        if( client.isHandheldBrowser()){
-		            nameVal = "android";
-		        }
-		        else{
-		            nameVal = "honeycomb";
-		        }
-		    }
-		    else if( client.isBlackBerryOS()){
-		        nameVal = "bberry";
-		    }
-		    else{
-		        nameVal = "ipad";
-		    }
-			log.fine("detected " + nameVal);
-
-			// the view attribute if specified will apply a small or large
-			// theme, large theme's are tablet based, so ipad and honeycomb.
-			// small themes are android, iphone, and bberry.
-			if (viewVal != null) {
-				// forces a small view
-				if (viewVal.equalsIgnoreCase(TagUtil.VIEW_TYPE_SMALL)) {
-					if (nameVal.equals("ipad")) {
-						nameVal = "iphone";
-					} else if (nameVal.equals("honeycomb")) {
-						nameVal = "android";
-					}
-				} else if (viewVal.equalsIgnoreCase(TagUtil.VIEW_TYPE_LARGE)) {
-					if (nameVal.equals("iphone")) {
-						nameVal = "ipad";
-					} else if (name.equals("android")) {
-						nameVal = "honeycomb";
-					}
-				} else {
-					log.warning("View type " + viewVal + " is not a recognized view type");
-				}
-			}
-
-			// load compressed css if this is production environment.
-			fileName = nameVal;
-			
-			if (MobiEnvUtils.isProductionStage(getServletContext())) {
-				fileName = fileName.concat(CSS_COMPRESSION_POSTFIX);
-			}
-			libVal = DEFAULT_LIBRARY;
-
-		}
-		// 2.) User has specified a named theme they want to load, no auto detect
-		else if (nameVal != null && libVal == null) {
-			// keep the name but apply default library.
-			libVal = DEFAULT_LIBRARY;
-		}
-		// 3.) User has specified a name and theme of their own, anything goes.
-		else {
-			// nothing to do, any error will be displayed back to user at runtime
-			// if the resource can't be found.
+		String theme = getName();
+		if( theme == null || "".equals(theme) ){
+		    theme = CSSUtils.deriveTheme((HttpServletRequest)pageContext.getRequest()).fileName();
 		}
 		
+		String fileName = theme;
+		
+		if (MobiEnvUtils.isProductionStage(getServletContext())) {
+            fileName = fileName.concat(CSS_COMPRESSION_POSTFIX);
+        }
+		
 		String contextRoot = Util.getContextRoot(pageContext.getRequest());
-		out.write("<script type='text/javascript'>document.documentElement.className = document.documentElement.className+' "+nameVal+"';</script>");
+		out.write("<script type='text/javascript'>document.documentElement.className = document.documentElement.className+' "+theme+"';</script>");
 
 		String cssLink = String.format("<link type='text/css' rel='stylesheet' href='%s%s/%s/%s/%s.css' />", 
-				contextRoot, MobiJspConstants.RESOURCE_BASE_URL, libVal, nameVal, fileName);
+				contextRoot, MobiJspConstants.RESOURCE_BASE_URL, DEFAULT_LIBRARY, theme, fileName);
 		out.write(cssLink);
 		
 	}

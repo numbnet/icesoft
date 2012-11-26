@@ -7,7 +7,7 @@ as follows:
 
 -- base - CSS 2 common component classes
  |
- |-- lightning - CSS2 light weight component theme
+ |-- archaic - IE6-8+Eclipse light weight component theme
  |
  |--- base3 - CSS 3 common component classes
     |
