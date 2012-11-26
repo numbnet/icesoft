@@ -36,18 +36,21 @@
         <mobi:accordion id="accordion" selectedId="#{accordionBean.selectedId}"
             autoHeight="#{accordionBean.autoHeight}" fixedHeight="#{accordionBean.fixedHeight}"
             paneChangeListener="#{accordionBean.paneChangeListener}">
-            <mobi:contentPane title="ICE Sailor" id="accordionPane1" client="true">
-                <div style="background-color:#00ADFF">
+            <mobi:contentPane title="ICE Sailor" id="accordionPane1" client="true"
+                style="background-color:#00ADFF">
+                <div>
                     <ui:include src="/WEB-INF/includes/content/inc-icesailor.xhtml"/>
                 </div>
             </mobi:contentPane>
-            <mobi:contentPane title="ICE Breaker" id="accordionPane2" client="true">
-                <div style="background-color:#C0F">
+            <mobi:contentPane title="ICE Breaker" id="accordionPane2" client="true"
+                style="background-color:#C0F">
+                <div>
                     <ui:include src="/WEB-INF/includes/content/inc-icebreaker.xhtml"/>
                 </div>
             </mobi:contentPane>
-            <mobi:contentPane title="ICE Skate" id="accordionPane3" client="true">
-                <div style="background-color:#F0C82A">
+            <mobi:contentPane title="ICE Skate" id="accordionPane3" client="true" 
+                style="background-color:#F0C82A">
+                <div>
                     <ui:include src="/WEB-INF/includes/content/inc-iceskater.xhtml"/>
                 </div>
             </mobi:contentPane>
