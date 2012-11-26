@@ -1,3 +1,4 @@
+
 .simRoot {
     width: 200px;
     height: 300px;
@@ -25,16 +26,19 @@
     margin: 2px;
 }
 
-.simAug {
-    background-image: url(#{resource['org.icefaces.component.util:sim-aug.jpg']});
-    background-size: cover;
-    height: 80%;
+.simAugL {
+    background-image: url(#{resource['org.icefaces.component.util:sim-augl.jpg']});
+    height: 225px;
+}
+
+.simAugM {
+    background-image: url(#{resource['org.icefaces.component.util:sim-augm.jpg']});
+    height: 225px;
 }
 
 .simScan {
     background-image: url(#{resource['org.icefaces.component.util:sim-qrscan.jpg']});
-    background-size: cover;
-    height: 80%;
+    height: 225px;
 }
 
 .simClose {
