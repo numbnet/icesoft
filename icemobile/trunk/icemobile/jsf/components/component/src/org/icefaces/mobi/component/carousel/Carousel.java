@@ -81,7 +81,7 @@ public class Carousel extends CarouselBase implements ICarousel{
         builder.append(", key: ").append(getSelectedItem());
         int hashcode = MobiJSFUtils.generateHashCode(getSelectedItem()+this.getRowCount());
         builder.append(", hash: ").append(hashcode);
-        boolean hasBehaviors = !getClientBehaviors().isEmpty();
+        boolean hasBehaviors = getBehaviors()!=null;
         if (hasBehaviors){
             builder.append(behaviors);
         }

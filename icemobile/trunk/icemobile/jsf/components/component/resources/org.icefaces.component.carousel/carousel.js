@@ -33,7 +33,6 @@ if (!window.ice['mobi']) {
 	                    snap: 'li',
 	                    momentum: false,
 	                    hScrollbar: false,
-                        x: page,
                         checkDOMChanges: false,
                         bounce: false,
                         zoom: true,
@@ -64,6 +63,10 @@ if (!window.ice['mobi']) {
                }
                if (changedVal){
                    var behaviors = cfg.behaviors;
+                   var hasBehaviors = false;
+                   if (cfg.behaviors){
+                       hasBehaviors = true;
+                   }
                    var submitcfg = {};
                    submitcfg.source = myId;
                    submitcfg.execute = "@all";
@@ -74,10 +77,11 @@ if (!window.ice['mobi']) {
                        submitcfg.oncomplete = refreshXHR;
                        mobi.AjaxRequest(submitcfg);
                    }
-               /*    if (behaviors){  disabled for now until determined if required
-                       submitcfg.behaviors = behaviors;
-                   }  */
-
+                   else if (hasBehaviors){
+                      if (behaviors.change){
+                          behaviors.change();
+                      }
+                   }
                }
            },
            getClientId: function(){
