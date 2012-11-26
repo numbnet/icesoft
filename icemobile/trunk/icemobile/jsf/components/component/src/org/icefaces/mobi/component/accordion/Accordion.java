@@ -61,17 +61,7 @@ public class Accordion extends AccordionBase implements ContentPaneController, I
     public String getHashVal(){
         return this.hashVal;
     }
-    /**
-      * override deprecated method
-      */
-    @Override
-    public String getCurrentId(){
-        return getSelectedId();
-    }
-    @Override
-    public void setCurrentId(String id){
-        setSelectedId(id);
-    }
+
 
      public void queueEvent(FacesEvent event) {
        if (event.getComponent() == this) {

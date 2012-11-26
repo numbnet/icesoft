@@ -45,9 +45,9 @@ import javax.faces.application.ResourceDependency;
 })
 public class AccordionMeta extends UIPanelMeta {
 
-    @Property( tlddoc="id of the panel that is active in the accordion.")
+  /*  @Property( tlddoc="id of the panel that is active in the accordion.")
     @Deprecated
-    private String currentId;
+    private String currentId; */
     
     @Property( tlddoc="id of the panel that is active in the accordion.")
     private String selectedId;

@@ -53,10 +53,10 @@ public class AccordionRenderer extends BaseLayoutRenderer {
                  accordion.setHashVal(null);
              }
              if( null != submittedStr) {
-                 String oldId = accordion.getCurrentId();
+                 String oldId = accordion.getSelectedId();
                  String newId = JSFUtils.getIdOfChildByClientId(context, accordion, indexStr);
                  if (newId != null && !newId.equals(oldId)) {
-                     accordion.setCurrentId(newId);
+                     accordion.setSelectedId(newId);
                      component.queueEvent(new ValueChangeEvent(component, oldId, newId));
                  }
              }
