@@ -81,6 +81,10 @@ public class TimeSpinnerRenderer extends BaseInputRenderer {
         spinner.setTouchEnabled(Utils.isTouchEventEnabled(context));
 
         if (shouldUseNative(spinner)) {
+            writer.startElement(HTML.SPAN_ELEM, component);
+            if (spinner.getStyle()!=null){
+                writer.writeAttribute(HTML.STYLE_ATTR, spinner.getStyle(), HTML.STYLE_ATTR);
+            }
             writer.startElement("input", component);
             writer.writeAttribute("type", "time", "type");
             writer.writeAttribute("id", clientId, "id");
@@ -114,6 +118,7 @@ public class TimeSpinnerRenderer extends BaseInputRenderer {
                 writer.writeAttribute("onblur", "ice.se(event, this);", null);
             }
             writer.endElement("input");
+            writer.endElement(HTML.SPAN_ELEM);
         } else {
             writeJavascriptFile(context, component, JS_NAME, JS_MIN_NAME, JS_LIBRARY);
             String value = this.encodeValue(spinner, initialValue);
@@ -133,6 +138,10 @@ public class TimeSpinnerRenderer extends BaseInputRenderer {
 
         //first do the input field and the button
         // build out first input field
+        writer.startElement(HTML.SPAN_ELEM, uiComponent);
+        if (timeEntry.getStyle()!=null){
+            writer.writeAttribute(HTML.STYLE_ATTR, timeEntry.getStyle(), HTML.STYLE_ATTR);
+        }
         writer.startElement("span", uiComponent);
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("name", clientId, "name");
@@ -147,9 +156,6 @@ public class TimeSpinnerRenderer extends BaseInputRenderer {
         StringBuilder classNames = new StringBuilder(TimeSpinner.INPUT_CLASS)
                 .append(" ").append(timeEntry.getStyleClass());
         writer.writeAttribute("class", classNames.toString(), null);
-       if (timeEntry.getStyle() !=null){
-            writer.writeAttribute(HTML.STYLE_ATTR, timeEntry.getStyle(), HTML.STYLE_ATTR);
-        }
         if (value != null) {
             writer.writeAttribute("value", value, null);
         }
@@ -173,6 +179,7 @@ public class TimeSpinnerRenderer extends BaseInputRenderer {
             writer.writeAttribute(CLICK_EVENT, "mobi.timespinner.toggle('" + clientId + "');", null);
         }
         writer.endElement("input");
+        writer.endElement(HTML.SPAN_ELEM);
         // div that is use to hide/show the popup screen black out.
         writer.startElement("div", uiComponent);
         writer.writeAttribute("id", clientId + "_bg", "id");

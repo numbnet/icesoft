@@ -85,6 +85,10 @@ public class DateSpinnerRenderer extends BaseInputRenderer {
         String initialValue = getStringValueToRender(context, component);
         // detect if an iOS device
         if (shouldUseNative(spinner)) {
+            writer.startElement(HTML.SPAN_ELEM, component);
+            if (spinner.getStyle()!=null){
+                writer.writeAttribute(HTML.STYLE_ATTR, spinner.getStyle(), HTML.STYLE_ATTR);
+            }
             writer.startElement("input", component);
             writer.writeAttribute("type", "date", "type");
             writer.writeAttribute("id", clientId, "id");
@@ -114,6 +118,7 @@ public class DateSpinnerRenderer extends BaseInputRenderer {
                 writer.writeAttribute("onblur", "ice.se(event, this);", null);
             }
             writer.endElement("input");
+            writer.endElement(HTML.SPAN_ELEM);
         } else {
             writeJavascriptFile(context, component, JS_NAME, JS_MIN_NAME, JS_LIBRARY);
             String value = encodeValue(spinner, initialValue);
@@ -152,6 +157,10 @@ public class DateSpinnerRenderer extends BaseInputRenderer {
         String jsCall = builder.toString();
         //first do the input field and the button
         // build out first input field
+        writer.startElement(HTML.SPAN_ELEM, uiComponent);
+        if (dateSpinner.getStyle() !=null){
+            writer.writeAttribute(HTML.STYLE_ATTR, uiComponent, HTML.STYLE_ATTR);
+        }
         writer.startElement("span", uiComponent);
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("name", clientId, "name");
@@ -170,9 +179,6 @@ public class DateSpinnerRenderer extends BaseInputRenderer {
             classNames.append(" ").append(dateSpinner.getStyleClass());
         }
         writer.writeAttribute(HTML.CLASS_ATTR, classNames.toString(), HTML.CLASS_ATTR);
-        if (dateSpinner.getStyle() !=null){
-            writer.writeAttribute(HTML.STYLE_ATTR, dateSpinner.getStyle(), HTML.STYLE_ATTR);
-        }
         if (value != null) {
             writer.writeAttribute("value", value, null);
         }
@@ -204,7 +210,7 @@ public class DateSpinnerRenderer extends BaseInputRenderer {
             writer.writeAttribute(CLICK_EVENT, "mobi.datespinner.toggle('" + clientId + "');", null);
         }
         writer.endElement("input");
-
+        writer.endElement("span"); //end of first span
         // dive that is use to hide/show the popup screen black out, invisible by default.
         writer.startElement("div", uiComponent);
         writer.writeAttribute("id", clientId + "_bg", "id");
