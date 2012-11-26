@@ -136,16 +136,17 @@ public class DynamicResourceDispatcher extends ResourceHandlerWrapper implements
         public void handleResourceRequest(FacesContext facesContext) throws IOException {
             ExternalContext externalContext = facesContext.getExternalContext();
             String path = getFullPath(externalContext);
+            String uri = path;
             Object request = externalContext.getRequest();
             if (request instanceof HttpServletRequest) {
                 HttpServletRequest httpServletRequest = (HttpServletRequest) request;
-                path = java.net.URLDecoder.decode(httpServletRequest.getRequestURI(), "UTF-8");
+                uri = java.net.URLDecoder.decode(httpServletRequest.getRequestURI(), "UTF-8");
             }
 
             Iterator i = mappings.values().iterator();
             while (i.hasNext()) {
                 Mapping mapping = (Mapping) i.next();
-                if (mapping != null && mapping.matches(path)) {
+                if (mapping != null && (mapping.matches(path) || mapping.matches(uri))) {
                     mapping.handleResourceRequest(facesContext);
                     return;
                 }
