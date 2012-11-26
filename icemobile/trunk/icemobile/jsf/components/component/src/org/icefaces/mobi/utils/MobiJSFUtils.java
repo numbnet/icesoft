@@ -7,6 +7,7 @@ import java.io.InputStream;
 import java.util.Formatter;
 import java.util.List;
 import java.util.Map;
+import java.util.HashMap;
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -31,7 +32,16 @@ public class MobiJSFUtils {
     private static Logger logger = Logger.getLogger(Utils.class.getName());
     
     static String COOKIE_FORMAT = "org.icemobile.cookieformat";
-    
+
+    private static Map<String, String> CONTENT_TYPES;
+    static {
+        CONTENT_TYPES = new HashMap<String, String>();
+        CONTENT_TYPES.put(".png", "image/png");
+        CONTENT_TYPES.put(".jpg", "image/jpg");
+        CONTENT_TYPES.put(".mp3", "audio/mp3");
+        CONTENT_TYPES.put(".mp4", "video/mp4");
+    }
+
     public static HttpServletRequest getRequest(FacesContext facesContext){
         return (HttpServletRequest)facesContext.getExternalContext().getRequest();
     }
@@ -77,32 +87,27 @@ public class MobiJSFUtils {
         if (null != part) {
             contentType = part.getContentType();
             fileStream = part.getInputStream();
-            if (null == contentType)  {
-                //part was found, but missing contentType indicates simulator
-                contentType = "image/png";
-                fileStream = MobiJSFUtils.class
-                    .getClassLoader().getResourceAsStream(
-                        "META-INF/resources/org.icefaces.component.util/" +
-                        request.getParameter(partUploadName) + ".png");
-            }
         }
+
+        String fileName = Long.toString(
+                Math.abs(UUID.randomUUID().getMostSignificantBits()), 32);
+        String fileExtension = Utils.FILE_EXT_BY_CONTENT_TYPE.get(contentType);
 
         //final case is a simulated upload
         if (null == contentType)  {
             String simulatedFile = request.getParameter(partUploadName);
             if (null != simulatedFile)  {
                 //missing contentType indicates simulator
-                contentType = "image/png";
+                fileExtension = simulatedFile.substring(
+                        simulatedFile.lastIndexOf(".") );
+                contentType = CONTENT_TYPES.get(fileExtension);
                 fileStream = MobiJSFUtils.class
                     .getClassLoader().getResourceAsStream(
                         "META-INF/resources/org.icefaces.component.util/" +
-                        simulatedFile + ".png");
+                        simulatedFile );
             }
         }
 
-        String fileName = Long.toString(
-                Math.abs(UUID.randomUUID().getMostSignificantBits()), 32);
-        String fileExtension = Utils.FILE_EXT_BY_CONTENT_TYPE.get(contentType);
         if (null != fileExtension) {
             fileName += fileExtension;
         } else {
