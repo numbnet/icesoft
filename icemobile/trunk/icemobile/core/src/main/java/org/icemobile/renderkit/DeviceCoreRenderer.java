@@ -17,17 +17,10 @@ public class DeviceCoreRenderer extends BaseCoreRenderer{
     public void encode(IDevice component, IResponseWriter writer, boolean isJSP)
             throws IOException {
         String clientId = component.getClientId();
-        String baseClass = IDevice.CSS_CLASS;
+        StringBuilder baseClass = new StringBuilder(IDevice.CSS_CLASS);
         String comptype = component.getComponentType();
         if (comptype.equals("scan") || (comptype.equals("aug"))){
-    	    baseClass= "";
-        }
-        boolean disabled = component.isDisabled();
-        if (component.getStyleClass() !=null){
-            baseClass+= component.getStyleClass();
-        }
-        if (disabled){
-            baseClass+=" "+IDevice.DISABLED_STYLE_CLASS;
+    	    baseClass = new StringBuilder("");
         }
         ClientDescriptor cd = component.getClient();
         boolean isEnhanced = cd.isICEmobileContainer()  || cd.isSXRegistered();
@@ -38,7 +31,7 @@ public class DeviceCoreRenderer extends BaseCoreRenderer{
             writer.writeAttribute(ID_ATTR, clientId);
             writer.writeAttribute(NAME_ATTR, clientId + "_button");
             writer.writeAttribute(TYPE_ATTR, "button");
-            writeStandardAttributes(writer, component, IDevice.CSS_CLASS, IDevice.DISABLED_STYLE_CLASS);
+            writeStandardAttributes(writer, component, baseClass.toString(), IDevice.DISABLED_STYLE_CLASS);
             //default value of unset in params is Integer.MIN_VALUE
             String script = component.getScript(clientId, cd.isSXRegistered());
       //     logger.info("script = "+script);
@@ -63,7 +56,7 @@ public class DeviceCoreRenderer extends BaseCoreRenderer{
             if (null != component.getSessionId())  {
                 writer.writeAttribute("data-jsessionid", component.getSessionId());
             }
-            writeStandardAttributes(writer, component, baseClass, IDevice.DISABLED_STYLE_CLASS);
+            writeStandardAttributes(writer, component, baseClass.toString(), IDevice.DISABLED_STYLE_CLASS);
             writer.writeAttribute("data-command", component.getComponentType());
             writer.writeAttribute(ONCLICK_ATTR, "ice.mobilesx(this)");
             writer.writeText(component.getButtonLabel());
