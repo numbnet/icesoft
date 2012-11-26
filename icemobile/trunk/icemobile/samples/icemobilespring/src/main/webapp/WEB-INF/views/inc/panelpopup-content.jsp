@@ -17,7 +17,7 @@
       <mobi:panelPopup id="popup"
              width = "260"
              headerText="Group of popup items"
-             autoCenter="false">
+             autoCenter="false" style="top:50px;left:50px">
         <mobi:outputList inset="false" id="itemList">
             <mobi:outputListItem group="true">
                 Panel Popup Links (select one)
