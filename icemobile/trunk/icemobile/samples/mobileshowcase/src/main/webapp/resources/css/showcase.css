@@ -180,8 +180,8 @@ html.android #splash figure{
 html.ipad #splash fieldset, html.honeycomb #splash fieldset{ 
     padding: 20px;
 }
-html.ipad #splash header, html.honeycomb #splash header,
-html.ipad #splash figure, html.honeycomb #splash figure{ 
+html.ipad #splash header, html.honeycomb #splash header, html.arcahic #splash header,
+html.ipad #splash figure, html.honeycomb #splash figure, html.archaic #splash figure{ 
     margin-left:auto;
     margin-top:auto;
     margin-right:auto;
@@ -241,9 +241,13 @@ html.honeycomb h3{
     -moz-box-orient: horizontal;
     box-orient: horizontal;
     position: relative;
+    min-width:100%;
 }
 .form .mobi-fieldset.intro{
     text-align:left;
+}
+.form .mobi-fieldset.intro > .mobi-fieldset-row{
+    display:block;
 }
 .form p{ text-align:left; margin:0;}
 .form .mobi-fieldset-row .mobi-getenhanced{
