@@ -1430,9 +1430,8 @@
             <rtexprvalue>true</rtexprvalue>
         </attribute>
         <attribute>
-            <description>Can contain one or more of contact, email, and phone
-                fields for retrieval
-                in a csv list. Default is contact information
+            <description>Can contain one or more of name, email, and phone
+                fields for retrieval in an url-encoded list. Default is name
             </description>
             <name>fields</name>
             <required>false</required>
