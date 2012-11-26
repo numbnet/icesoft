@@ -2,6 +2,7 @@ package org.icemobile.samples.springbasic;
 
 import java.io.IOException;
 
+import org.icemobile.util.ClientDescriptor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -15,7 +16,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.FileOutputStream;
 import javax.servlet.http.HttpServletRequest;
-import java.util.UUID;
 import java.util.HashMap;
 import javax.imageio.ImageIO;
 import java.awt.geom.AffineTransform;
@@ -23,8 +23,9 @@ import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 
 @Controller
+@SessionAttributes({"augmentedRealityMessage", "augmentedRealityUpload"})
 public class MediaSpotController {
-    HashMap<String,MediaSpotBean> messages = new HashMap();
+    HashMap<String,MediaSpotBean> messages = new HashMap<String,MediaSpotBean>();
     MediaSpotBean selectedMessage = null;
     static int THUMBSIZE = 128;
     int count = 0;
@@ -38,6 +39,11 @@ public class MediaSpotController {
     @ModelAttribute("mediaspotBean")
     public MediaSpotBean createBean() {
         return new MediaSpotBean();
+    }
+    
+    @ModelAttribute
+    public void iosAttribute(HttpServletRequest request, Model model) {
+        model.addAttribute("ios", ClientDescriptor.getInstance(request).isIOS());
     }
 
 	@RequestMapping(value = "/mediaspot", method=RequestMethod.GET)
@@ -54,32 +60,39 @@ public class MediaSpotController {
 	public void processPost(HttpServletRequest request, 
             @RequestParam(value = "spotcam", required = false) MultipartFile photoFile,
             MediaSpotBean spotBean,
-            Model model) throws IOException {
-
+            Model model)  {
+	    System.out.println("processPost() photoFile="+photoFile+", bean="+spotBean);
         String newFileName = null;
-        String fileName = "empty";
-        if (null != photoFile)  {
-            newFileName = saveMedia(request, "img-%1$s.jpg", photoFile);
-            fileName = photoFile.getOriginalFilename();
-            spotBean.setFileName(newFileName);
-            String title = spotBean.getTitle();
-            if ((null == title) || "".equals(title))  {
-                spotBean.setTitle("Marker" + count++);
+        try {
+            if (null != photoFile)  {
+                newFileName = FileUploadUtils.saveImage(request, photoFile, null);
+                
+                System.out.println("newFileName="+newFileName);
+                spotBean.setFileName(newFileName);
+                String title = spotBean.getTitle();
+                if ((null == title) || "".equals(title))  {
+                    spotBean.setTitle("Marker" + count++);
+                }
+                messages.put(spotBean.getTitle(), spotBean);
+                System.out.println("scaling image");
+                scaleImage( new File(request.getRealPath("/" + newFileName)) );
             }
-            messages.put(spotBean.getTitle(), spotBean);
-            scaleImage( new File(request.getRealPath("/" + newFileName)) );
-        }
-		model.addAttribute("locations", messages.values());
-		model.addAttribute("message", "Hello your file '" + fileName + "' was uploaded successfully.");
-        String selection = spotBean.getSelection();
-        MediaSpotBean mySelectedMessage = messages.get(selection);
-        if (null != mySelectedMessage) {
-            selectedMessage = mySelectedMessage;
-        }
-        if (null != selectedMessage) {
-            model.addAttribute("selection", selectedMessage.getTitle());
-            model.addAttribute("imgPath", 
-                    selectedMessage.getFileName());
+    		model.addAttribute("locations", messages.values());
+    		model.addAttribute("augmentedRealityMessage", "Hello your file was uploaded successfully, you may now enter augmented reality.");
+    		model.addAttribute("augmentedRealityUpload", newFileName);
+            String selection = spotBean.getSelection();
+            MediaSpotBean mySelectedMessage = messages.get(selection);
+            if (null != mySelectedMessage) {
+                selectedMessage = mySelectedMessage;
+            }
+            if (null != selectedMessage) {
+                model.addAttribute("selection", selectedMessage.getTitle());
+                model.addAttribute("imgPath", 
+                        selectedMessage.getFileName());
+            }
+        } catch (IOException e) {
+            model.addAttribute("augmentedRealityMessage", "Sorry, there was a problem processing the image upload.");
+            e.printStackTrace();
         }
     }
 	
@@ -92,36 +105,6 @@ public class MediaSpotController {
             model.addAttribute("imgPath", 
                     selectedMessage.getFileName());
         }
-    }
-
-    private String saveMedia(HttpServletRequest request, String format,
-                             MultipartFile file) throws
-            IOException {
-
-        String fileName = null;
-        String uuid = Long.toString(
-                Math.abs(UUID.randomUUID().getMostSignificantBits()), 32);
-        String newFileName = "media/" + String.format(format, uuid);
-        if ((null != file) && !file.isEmpty()) {
-            fileName = file.getOriginalFilename();
-            file.transferTo(new File(request.getRealPath("/" + newFileName)));
-            currentFileName = newFileName;
-        }
-
-        if (null == fileName) {
-            //use previously uploaded file, such as from ICEmobile-SX
-            newFileName = getCurrentFileName(request);
-
-        }
-
-        return newFileName;
-    }
-
-    private String getCurrentFileName(HttpServletRequest request) {
-        if (null == currentFileName) {
-            return "resources/uploaded.jpg";
-        }
-        return currentFileName;
     }
     
     private void scaleImage(File photoFile) throws IOException  {

@@ -13,10 +13,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import org.icemobile.util.ClientDescriptor;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.Map;
-import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
 
 @Controller
@@ -55,7 +53,7 @@ public class CameraController {
             @RequestParam(value = "cam", required = false) MultipartFile file,
             Model model) throws IOException {
         
-        String newFileName = saveImage(request, file, null);
+        String newFileName = FileUploadUtils.saveImage(request, file, null);
         if ((null != file) && !file.isEmpty()) {
             model.addAttribute("cameraMessage", "Hello " + modelBean.getName() + ", your file '" + newFileName + "' was uploaded successfully.");
         }
@@ -72,7 +70,7 @@ public class CameraController {
                          @RequestParam(value = "cam", required = false) MultipartFile inputFile,
                          Model model) throws IOException {
 
-        String newFileName = saveImage(request, file, inputFile);
+        String newFileName = FileUploadUtils.saveImage(request, file, inputFile);
         
         Map additionalParams = modelBean.getAdditionalInfo();
         String imcheck = " ";
@@ -90,23 +88,6 @@ public class CameraController {
                 " and your interest in [" + imcheck +
                 "] ICEmobile and [" + jqcheck + "] jquery.", 
                 request.getContextPath() + "/" + newFileName );
-    }
-
-    private String saveImage(HttpServletRequest request,
-                             MultipartFile file, MultipartFile inputFile) throws
-            IOException {
-
-        String uuid = Long.toString(Math.abs(UUID.randomUUID().getMostSignificantBits()), 32);
-        String cameraFilename = "media/img-" + uuid + ".jpg";
-        if ((null != file) && !file.isEmpty()) {
-            file.transferTo(new File(request.getRealPath("/" + cameraFilename)));
-        }
-        if ((null != inputFile) && !inputFile.isEmpty()) {
-            inputFile.transferTo(
-                    new File(request.getRealPath("/" + cameraFilename)));
-        }
-
-        return cameraFilename;
     }
 }
 
