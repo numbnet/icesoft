@@ -66,6 +66,26 @@
         </mobi:fieldsetRow>
     </mobi:fieldsetGroup>
 
+
+    <mobi:fieldsetGroup>
+        <mobi:fieldsetRow>
+            <p>Print, cut-out, then view the <a href="resources/images/markers.html">Augmented Reality Markers</a> 
+            with 3D overlays. (This is an alpha level feature on iOS only.)</p>
+        </mobi:fieldsetRow>
+        <mobi:fieldsetRow>
+            <mobi:augmentedReality id="selection" 
+                buttonLabel="Augmented Reality Markers">
+                <c:forEach items="${markers}" var="marker" >
+                    <mobi:augmentedRealityMarker
+                        markerLabel="${marker.label}"
+                        markerModel="${marker.model}"
+                         />
+                </c:forEach>
+            </mobi:augmentedReality>
+        </mobi:fieldsetRow>
+    </mobi:fieldsetGroup>
+
+
      <s:bind path="*">
         <c:if test="${status.error}">
             <div id="message" class="error">Form has errors</div>

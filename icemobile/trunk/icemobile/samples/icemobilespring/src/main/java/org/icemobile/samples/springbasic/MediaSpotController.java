@@ -12,10 +12,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.core.io.Resource;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
+import java.util.ArrayList;
 import java.util.HashMap;
 import javax.imageio.ImageIO;
 import java.awt.geom.AffineTransform;
@@ -30,6 +33,35 @@ public class MediaSpotController {
     static int THUMBSIZE = 128;
     int count = 0;
     String currentFileName = null;
+
+    private String selectedModel = "icemobile";
+
+    private List getMarkerList(HttpServletRequest request)  {
+
+        String urlBase = request.getScheme() + "://" +
+                request.getServerName() + ":" + request.getServerPort() +
+                request.getContextPath();
+        
+        ArrayList markerList = new ArrayList();
+        HashMap marker;
+
+        marker = new HashMap();
+        marker.put("label", "icemobile");
+        marker.put("model", urlBase + "/resources/3d/icemobile.obj" );
+        markerList.add(marker);
+
+        marker = new HashMap();
+        marker.put("label", "puz1");
+        marker.put("model", urlBase + "/resources/3d/puz1.obj" );
+        markerList.add(marker);
+
+        marker = new HashMap();
+        marker.put("label", "puz2");
+        marker.put("model", urlBase + "/resources/3d/puz2.obj" );
+        markerList.add(marker);
+
+        return markerList;
+    }
 
 	@ModelAttribute
 	public void ajaxAttribute(WebRequest request, Model model) {
@@ -47,8 +79,9 @@ public class MediaSpotController {
     }
 
 	@RequestMapping(value = "/mediaspot", method=RequestMethod.GET)
-    public void processGet(Model model)  {
+    public void processGet(HttpServletRequest request, Model model)  {
 		model.addAttribute("locations", messages.values());
+		model.addAttribute("markers", getMarkerList(request));
         if (null != selectedMessage) {
             model.addAttribute("selection", selectedMessage.getTitle());
             model.addAttribute("imgPath", 
