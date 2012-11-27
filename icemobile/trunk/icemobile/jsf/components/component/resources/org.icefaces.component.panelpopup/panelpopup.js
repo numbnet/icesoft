@@ -78,7 +78,12 @@
                     ice.mobi.panelCenter(containerId, centerCfg);
                 }  else{
                  //   console.log("NO AUTOCENTER");
-                    var styleVar = "";
+                    //check to see if existing style var
+                    if (containerNode.getAttribute("style")){
+                        styleVar = containerNode.getAttribute("style");
+                    }else {
+                        var styleVar = "";
+                    }
                     if (cfg.width){
                         var wStr = width+"px";
                         styleVar+="width: "+cfg.width+"px;";
@@ -142,7 +147,10 @@
             if (thisOne == null){
                 this.panels[i] = PanelPopup(clientId, cfgIn);
             } else {
-                var vis = cfgIn.visible || false;
+                var vis =  cfgIn.visible || false;
+                if (cfgIn.client && ice.mobi.panelPopup.visible[clientId]){
+                     vis = ice.mobi.panelPopup.visible[clientId];
+                }
              //   console.log(" disabled="+cfgIn.disabled+"  VISIBLE="+vis);
                 if (vis==true){
                    thisOne.openPopup(clientId, cfgIn);

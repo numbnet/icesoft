@@ -793,11 +793,18 @@ ice.mobi.panelCenter = function(clientId, cfg){
     var contHeight;
     var elemWidth = cfg.width || paneNode.offsetWidth;
     var styleVar = "";
+    if (paneNode.getAttribute("style")){
+        styleVar = paneNode.getAttribute("style");
+    }
     var elemHeight = cfg.height|| paneNode.offsetHeight;
-    wStr = elemWidth+"px";
-    hStr = elemHeight+"px";
-    styleVar += "width: "+wStr+";";
-    styleVar += "height: "+hStr+";";
+    if (cfg.width){
+        var wStr = elemWidth+"px";
+        styleVar += " width: "+wStr+";";
+    }
+    if (cfg.height){
+        var hStr = elemHeight+"px";
+        styleVar += " height: "+hStr+";";
+    }
     var contWidth;
     var contHeight;
     if (container){
@@ -812,10 +819,10 @@ ice.mobi.panelCenter = function(clientId, cfg){
         scrollTop = document.documentElement.scrollTop;
     }
     if (contHeight > 0){
-        var posStyle = "position: 'absolute';";
+        var posStyle = " position: 'absolute';";
         var posLeft =((contWidth/2)-(elemWidth/2))+'px';
         var top = scrollTop +((contHeight/2)-(elemHeight/2))+'px';
-        if (contHeight - elemHeight >0){
+        if (contHeight - elemHeight > 0){
             styleVar += posStyle;
             styleVar += " top: " +top +";";
             styleVar +=" left:"+posLeft+";";
@@ -1230,12 +1237,16 @@ ice.mobi.ready = function (callback) {
                     ice.mobi.panelCenter(containerId, centerCfg);
                 }  else{
                     //console.log("NO AUTOCENTER");
-                    var styleVar = "";
-                    if (cfg.width){
-                        var wStr = width+"px";
-                        styleVar+="width: "+cfg.width+"px;";
+                    if (containerNode.getAttribute("style")){
+                        styleVar = containerNode.getAttribute("style");
+                    }else {
+                        var styleVar = "";
                     }
-                    if (cfg.height){
+                    if (cfg.width && cfg.width> 0){
+                        var wStr = width+"px";
+                        styleVar+=" width: "+cfg.width+"px;";
+                    }
+                    if (cfg.height && cfg.height > 0){
                         var hStr = height+"px";
                         styleVar +=" height: "+cfg.height+"px;";
                     }
@@ -1245,7 +1256,6 @@ ice.mobi.ready = function (callback) {
                 updateHidden(clientId, true);
            },
            closePopup: function(clientId, cfg){
-               console.log("closePopup");
                var containerNode = clientId+"_popup";
                var scrollEvent = 'ontouchstart' in window ? "touchmove" : "scroll";
                var greyed = document.getElementById(clientId+"_bg");
@@ -1265,8 +1275,6 @@ ice.mobi.ready = function (callback) {
                          window.detachEvent('resize', centerCalculation[clientId], false);
                      }
                      centerCalculation[clientId] = undefined;
-               } else {
-                   container.setAttribute("style", "");
                }
                ice.mobi.panelPopup.visible[clientId] = false;
                updateHidden(clientId, false);
@@ -1295,7 +1303,14 @@ ice.mobi.ready = function (callback) {
                 this.panels[i] = PanelPopup(clientId, cfgIn);
             } else {
                 var vis = cfgIn.visible || false;
-              //  console.log(" disabled="+cfgIn.disabled+"  VISIBLE="+vis);
+              //  console.log("client="+cfgIn.client+" stored vis="+ice.mobi.panelPopup.visible[clientId]);
+                if (cfgIn.client && ice.mobi.panelPopup.visible[clientId]){
+                    vis = ice.mobi.panelPopup.visible[clientId];
+                }
+                if (cfgIn.disabled==true){
+                    vis= false;
+                }
+             //   console.log(" disabled="+cfgIn.disabled+"  VISIBLE="+vis);
                 if (vis==true){
                    thisOne.openPopup(clientId, cfgIn);
                 }else{
@@ -1331,7 +1346,7 @@ ice.mobi.ready = function (callback) {
         },
         findPanel: function(popupId, isId){
             if (this.panels.length < 1){
-                console.log(' no popups available in view to open');
+              //  console.log(' no popups yet available in view to open');
                 return;
             }
             var found = false;
