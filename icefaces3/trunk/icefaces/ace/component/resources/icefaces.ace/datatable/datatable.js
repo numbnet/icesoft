@@ -826,8 +826,9 @@ ice.ace.DataTable.prototype.setupScrolling = function () {
     });
 
     this.scrollableResizeCallback = function () {
-        if (_self.parentSize != ice.ace.jq(_self.jqId).parent().width()) {
-            _self.parentSize = ice.ace.jq(_self.jqId).parent().width();
+        var parentWidth = ice.ace.jq(_self.jqId).parent().width();
+        if (_self.parentSize != parentWidth) {
+            _self.parentSize = parentWidth;
             clearTimeout(delayedCleanUpResizeToken);
             delayedCleanUpResizeToken = setTimeout(delayedCleanUpResize, 100);
         }
