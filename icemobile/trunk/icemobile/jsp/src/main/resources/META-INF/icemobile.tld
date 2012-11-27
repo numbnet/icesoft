@@ -1252,7 +1252,6 @@
             <type>java.lang.Object</type>
         </attribute>
     </tag>
-
     <tag>
         <description>Page Panel content layout tag manages a page with three
             optional sections,
@@ -1264,6 +1263,13 @@
         <attribute>
             <description>Pagewide unique identifier</description>
             <name>id</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <description>User defined CSS class to define for all children tags
+                as well as pagePanel</description>
+            <name>styleClass</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
         </attribute>
@@ -1285,6 +1291,7 @@
             <name>noHeader</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
+            <type>boolean</type>
         </attribute>
         <attribute>
             <description>If true, style will contain body-nofooter class
@@ -1292,19 +1299,13 @@
             <name>noFooter</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-        </attribute>
-        <attribute>
-            <description>User defined CSS class</description>
-            <name>styleClass</name>
-            <required>false</required>
-            <rtexprvalue>true</rtexprvalue>
+            <type>boolean</type>
         </attribute>
         <attribute>
             <description>Inline style definition</description>
             <name>style</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-
         </attribute>
     </tag>
     <tag>
