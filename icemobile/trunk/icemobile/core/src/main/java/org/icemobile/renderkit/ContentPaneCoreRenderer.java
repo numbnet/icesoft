@@ -79,7 +79,7 @@ public class ContentPaneCoreRenderer extends BaseCoreRenderer {
           writer.endElement(DIV_ELEM);
           writer.startElement(DIV_ELEM, pane);
           String htString = accordion.getFixedHeight();
-          if (!autoheight && (null != htString) && !htString.isEmpty() && !htString.equals(" ")) {
+          if (!autoheight && (null != htString) && !htString.equals("")) {
             //  writer.writeAttribute(STYLE_ATTR, "height: "+accordion.getFixedHeight()+";"); // overflow-y: scroll;") ;
                writer.writeAttribute(STYLE_ATTR, "height: "+htString+"; max-height: "+htString+"; overflow-y: auto;") ;
           }
