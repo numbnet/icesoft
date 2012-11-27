@@ -201,14 +201,12 @@ ice.ace.gMap.getGMapWrapper = function (id) {
             map.setOptions(eval("({"+options+"})"));
         gmapWrapper.options = options;
         for (marker in markers) {
-            console.log(marker);
             if (gmapWrapper.markers[marker] == null) {
                 markers[marker].setMap(map);
                 gmapWrapper.markers[marker]=markers[marker];
             }
         }
         for (win in freeWindows) {
-            console.log(win);
             if (gmapWrapper.freeWindows[win] == null) {
                 freeWindows[win].open(map);
                 gmapWrapper.freeWindows[win]=freeWindows[win];
