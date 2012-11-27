@@ -35,14 +35,14 @@ var concatenate = operator(function(items, other) {
     return items.concat(other);
 });
 
-var append = operator($witch(function(condition) {
-    condition(isArray, function(items, item) {
+var append = operator(function(items, item) {
+    if (isArray(items)) {
         items.push(item);
         return items;
-    });
-
-    condition(any, operationNotSupported);
-}));
+    } else {
+        operationNotSupported();
+    }
+});
 
 var insert = operator($witch(function(condition) {
     condition(isArray, function(items, item) {
