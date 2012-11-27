@@ -77,11 +77,11 @@ public class AccordionCoreRenderer extends BaseCoreRenderer implements IRenderer
         }
         cfg.append(", hash: ").append(hashcode);
         cfg.append(", autoHeight: ").append(autoheight);
-        if (accordion.getFixedHeight()!=null){
-            String htString = accordion.getFixedHeight();
+        String fixedHeight = accordion.getFixedHeight();
+        if (fixedHeight!=null && !autoheight && fixedHeight.length()>0){
             int fixedHtVal = -1;
             StringBuffer numbers = new StringBuffer();
-            for(char c : htString.toCharArray()){
+            for(char c : fixedHeight.toCharArray()){
                if(Character.isDigit(c)) {
                    numbers.append(c);
                }
@@ -90,10 +90,10 @@ public class AccordionCoreRenderer extends BaseCoreRenderer implements IRenderer
                fixedHtVal = Integer.valueOf(numbers.toString());
             }   catch (NumberFormatException nfe){
                 if (logger.isLoggable(Level.WARNING)){
-                    logger.warning(" could not parse int value of fixedHeight");
+                    logger.warning(" could not parse int value of fixedHeight="+fixedHeight);
                 }
             }
-            cfg.append(", fixedHeight: '").append(accordion.getFixedHeight()).append("'");
+            cfg.append(", fixedHeight: '").append(fixedHeight).append("'");
             if (fixedHtVal > 30) {
                cfg.append(", fHtVal: ").append(fixedHtVal);
             }
