@@ -26,15 +26,15 @@
     position: fixed;
     top: 0;
     left: 0;
-    z-index: 1000;
+    z-index: 498;
 }
 .mobi-panelconf-container, .mobi-panelpopup-container, .mobi-submitnotific-container {
     padding: 0;
-    z-index: 1001;
+    z-index: 499;
     position: absolute;
     top: 0;
     left: 0;
-    overflow:auto;
+/*     overflow:hidden; */
 }
 .mobi-submitnotific-container {
     background-color: black;
