@@ -13,12 +13,10 @@
  * express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
+ 
 .mobi-tabset {
-    /*display: block;*/
-    /*float:left;*/
     margin: 0;
     padding: 0;
-    /*width: 100%;*/
 }
 /* padding for pagepanel */
 .mobi-tabset.mobi-tabset-tabs-top-header{
@@ -31,7 +29,7 @@
     position: fixed;
     text-align:center;
     width: 100%;
-    z-index: 1;
+    z-index: 496;
 }
 .mobi-tabset.mobi-tabset-tabs-top > .mobi-tabset-tabs{
     top: 0;
