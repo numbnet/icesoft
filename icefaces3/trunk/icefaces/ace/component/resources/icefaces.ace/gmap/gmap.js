@@ -185,6 +185,7 @@ ice.ace.gMap.getGMapWrapper = function (id) {
     ice.ace.gMap.recreate = function (ele, gmapWrapper) {
         var map = gmapWrapper.getRealGMap();
         var options = gmapWrapper.options;
+
         var lat = map.getCenter().lat();
         var lng = map.getCenter().lng();
         var zoom = map.getZoom();
@@ -200,20 +201,22 @@ ice.ace.gMap.getGMapWrapper = function (id) {
             map.setOptions(eval("({"+options+"})"));
         gmapWrapper.options = options;
         for (marker in markers) {
+            console.log(marker);
             if (gmapWrapper.markers[marker] == null) {
                 markers[marker].setMap(map);
                 gmapWrapper.markers[marker]=markers[marker];
             }
         }
-        for (window in freeWindows) {
-            if (gmapWrapper.freeWindows[window] == null) {
-                freeWindows[window].open(map);
-                gmapWrapper.freeWindows[window]=freeWindows[window];
+        for (win in freeWindows) {
+            console.log(win);
+            if (gmapWrapper.freeWindows[win] == null) {
+                freeWindows[win].open(map);
+                gmapWrapper.freeWindows[win]=freeWindows[win];
             }
         }
-        for (window in windows) {
-            if (gmapWrapper.windows[window] == null) {
-                gmapWrapper.windows[window]=windows[window];
+        for (win in windows) {
+            if (gmapWrapper.windows[win] == null) {
+                gmapWrapper.windows[win]=windows[win];
             }
         }
         for (overlay in overlays){
@@ -634,10 +637,10 @@ ice.ace.gMap.getGMapWrapper = function (id) {
         wrapper.overlays[overlayID] = overlay;
     }
 
-    ice.ace.gMap.addGWindow = function (ele, windowId, content, position,options,markerId,showOnClick,startOpen) {
+    ice.ace.gMap.addGWindow = function (ele, winId, content, position,options,markerId,showOnClick,startOpen) {
         var wrapper = ice.ace.gMap.getGMapWrapper(ele);
         var map = ice.ace.gMap.getGMapWrapper(ele).getRealGMap();
-        var window = wrapper.windows[windowId];
+        var window = wrapper.windows[winId];
         var windows = wrapper.windows;
         var freeWindows = wrapper.freeWindows;
         if (window != null)
@@ -667,36 +670,26 @@ ice.ace.gMap.getGMapWrapper = function (id) {
         {
             window.open(map);
             google.maps.event.addDomListener(window,"closeclick",function(){
-                ice.ace.gMap.removeGWindow(ele,windowId)
+                ice.ace.gMap.removeGWindow(ele,winId)
             });
-            freeWindows[windowId]=window;
+            ice.ace.gMap.getGMapWrapper(ele).freeWindows[winId]=window;
         }
-        windows[windowId] = window;
-        wrapper.windows=windows;
-        wrapper.freeWindows=freeWindows;
+        ice.ace.gMap.getGMapWrapper(ele).windows[winId]=window;
     }
 
-    ice.ace.gMap.removeGWindow = function(mapId,windowId){
+    ice.ace.gMap.removeGWindow = function(mapId,winId){
+
         var wrapper = ice.ace.gMap.getGMapWrapper(mapId);
-        var window = wrapper.windows[windowId];
+        var window = wrapper.windows[winId];
         if(window!=null)
             window.close();
         else
             return;
         var newWindowArray = new Object();
-        for (windowObj in wrapper.windows) {
-            if (window != windowObj) {
-                newWindowArray[windowObj] = wrapper.windows[windowObj];
-            }
-        }
+        delete(wrapper.windows[winId]);
         var newFreeWindowArray = new Object();
-        for (windowObj in wrapper.freeWindows) {
-            if (window != windowObj) {
-                newFreeWindowArray[windowObj] = wrapper.freeWindows[windowObj];
-            }
-        }
-        wrapper.windows=newWindowArray;
-        wrapper.freeWindows=newFreeWindowArray;
+        if(wrapper.freeWindows[winId]!=null)
+            delete(wrapper.freeWindows[winId]);
     }
 
     ice.ace.gMap.setMapType = function (ele, type) {
