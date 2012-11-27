@@ -95,7 +95,8 @@ public class AccordionTag extends BaseBodyTag implements IAccordion {
         return this.autoHeight;
     }
     /**
-     *  responsible for providing the src attribute to load the iscroll library
+     *  responsible for providing the src attribute to load the javascript
+     *  not used yet.
      * @return
      */
     public String getJavascriptFileRequestPath() {

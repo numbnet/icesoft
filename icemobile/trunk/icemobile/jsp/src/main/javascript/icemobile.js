@@ -606,6 +606,18 @@ ice.mobi.tabsetController = {
         }
         return mxht;
     }
+    function calcFixedSectionHeight(fixedHeight, handleHeight, fixedHtVal){
+        if (fixedHtVal && fixedHtVal > 0){
+            return fixedHtVal + handleHeight;
+        } else {
+            try {
+               return parseInt(fixedHeight);
+            }catch (Exception ){
+                ice.log.debug("problem calculating height of contentPane to set section Height");
+            }
+        }
+        return null;
+    }
     function updateFixedHeight(clientId, handleheight, fixedHeight){
          var calcht = calcMaxDivHeight(clientId, handleheight) ;
          if (calcht > 0) {
@@ -629,6 +641,7 @@ ice.mobi.tabsetController = {
         elem.className="closed";
     }
     function Accordion(clientId, cfgIn) {
+        var disabled = cfgIn || false;
         var containerId = clientId+"_acc" ;
         var paneOpId = cfgIn.opened || null;
         var accordRoot = document.getElementById(containerId);
@@ -641,14 +654,33 @@ ice.mobi.tabsetController = {
         var handleHt = handleheight+"px";
         var autoheight = cfgIn.autoHeight || false;
         var fixedHeight = cfgIn.fixedHeight || null;
-        if (autoheight == true) {
-            fixedHeight = updateFixedHeight(containerId, handleheight, fixedHeight, scroll);
+        var fHtVal = cfgIn.fHtVal || null;
+        if (!openElem){
+             console.log("Accordion has no children");
+             this.disable(clientId);
         }
-        if (fixedHeight){
-            openPane(openElem, fixedHeight);
+        var handleheight = getHandleHeight(accordRoot);
+        var handleht = handleheight + "px";
+        if (!autoheight && !fixedHeight){
+            handleht = null;
         }
-        if ( !fixedHeight){
-            handleHt = null;
+        var maxHeight;
+        if (autoheight){ //default
+            maxHeight = calcMaxDivHeight(containerId, handleheight);
+        }
+        if (autoheight && (maxHeight > 0)){
+            ice.mobi.accordionController.maxHt[clientId]=maxHeight;
+            fixedHeight = maxHeight+"px";
+        } else if (fixedHeight){
+            if (fHtVal){
+                var tmp1 = parseInt(fHtVal)+parseInt(handleheight);
+                fixedHeight = tmp1 + "px";
+            }else {
+                fixedHeight = calcFixedSectionHeight(fixedHeight, handleheight, fHtVal);
+            }
+        }
+        if (!disabled){
+             openPane(openElem, fixedHeight);
         }
         return {
             toggle: function(clientId, el, cached) {
@@ -684,8 +716,21 @@ ice.mobi.tabsetController = {
                 updateHidden(clientId, subString);
             },
             updateProperties: function (clientId, cfgUpd) {
-                var fixedHeight=cfgUpd.fixedHeight ||null;
-                var autoheight = cfgUpd.autoHeight;
+                disabled = cfgUpd.disabled || false;
+                var changedFH = false;
+                var changedAH = false;
+                if (fixedHeight != cfgUpd.fixedHeight) {
+                    fixedHeight=cfgUpd.fixedHeight || null;
+                    changedFH = true;
+                }
+                if (autoheight != cfgUpd.autoHeight){
+                    autoheight = cfgUpd.autoHeight;
+                    changedAH=true;
+                }
+                if (changedAH || changedFH && autoheight){
+                    ice.mobi.accordionController.maxHt[clientId]=null;
+                    maxHeight=0;
+                }
                 if (autoheight ) {
                     ice.mobi.accordionController.autoheight[clientId] = autoheight;
                     var updHeight = updateFixedHeight(clientId+"_acc", handleheight, fixedHeight);
@@ -693,6 +738,10 @@ ice.mobi.tabsetController = {
                         fixedHeight = updHeight;
                         setHeight(document.getElementById(paneOpId), fixedHeight);
                     }
+                }
+                else if (fixedHeight && changedFH){
+                    var fixedHtVal = cfgUpd.fHtVal || null;
+                    fixedHeight = calcFixedSectionHeight(fixedHeight, handleheight, fixedHtVal );
                 }
                 if( !paneOpId){
                     paneOpId = cfgIn.opened+"_sect" || null;
@@ -723,11 +772,10 @@ ice.mobi.tabsetController = {
     ice.mobi.accordionController = {
         panels: {},
         autoheight: {},
-        singleSubmit: {},
+        maxHt: {},
         initClient: function(clientId, cfg) {
             if (!this.panels[clientId]) {
                 this.autoheight[clientId]= cfg.autoHeight;
-                this.singleSubmit[clientId] = cfg.singleSubmit;
                 this.panels[clientId] = Accordion(clientId, cfg);
             } else {
                 this.panels[clientId].updateProperties(clientId, cfg);
@@ -752,6 +800,7 @@ ice.mobi.tabsetController = {
         unload: function(clientId){
             this.panels[clientId] = null;
             this.autoheight[clientId]=null;
+            this.maxHt[clientId]= null;
             this.panels[clientId]=null;
         }
     }
