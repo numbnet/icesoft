@@ -98,7 +98,9 @@ public class RealityBean extends ExampleImpl<RealityBean> implements
     private double longitude = 0.0;
     HashMap<String,RealityMessage> messages = new HashMap();
     static int THUMBSIZE = 128;
-    List markerList;
+    HashMap<String,HashMap> allMarkers = new HashMap();;
+    List<HashMap> markerList;
+    private String selectedModel = "icemobile";
 
     // upload error message
     private String uploadMessage;
@@ -124,6 +126,10 @@ public class RealityBean extends ExampleImpl<RealityBean> implements
         marker.put("model", getBaseURL() +
                 "/mobileshowcase/resources/3d/icemobile.obj" );
         markerList.add(marker);
+
+        for (HashMap theMarker : markerList)  {
+            allMarkers.put((String) theMarker.get("label"), theMarker);
+        }
 
     }
 
@@ -210,6 +216,16 @@ public class RealityBean extends ExampleImpl<RealityBean> implements
 
     public double getLongitude() {
         return longitude;
+    }
+
+    public String getSelectedModel() {
+        return selectedModel;
+    }
+
+    public void setSelectedModel(String selectedModel) {
+        this.selectedModel = selectedModel;
+        HashMap marker = allMarkers.get(selectedModel);
+        markerList.set(0, marker);
     }
 
     public String getSelection()  {
