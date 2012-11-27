@@ -19,9 +19,6 @@ public class DeviceCoreRenderer extends BaseCoreRenderer{
         String clientId = component.getClientId();
         StringBuilder baseClass = new StringBuilder(IDevice.CSS_CLASS);
         String comptype = component.getComponentType();
-        if (comptype.equals("scan") || (comptype.equals("aug"))){
-    	    baseClass = new StringBuilder("");
-        }
         ClientDescriptor cd = component.getClient();
         boolean isEnhanced = cd.isICEmobileContainer()  || cd.isSXRegistered();
     //    logger.info("is SX="+cd.isSXRegistered()+" and useCookie="+ component.isUseCookie());
