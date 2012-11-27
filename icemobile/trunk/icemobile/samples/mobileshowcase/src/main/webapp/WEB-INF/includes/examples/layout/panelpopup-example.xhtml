@@ -42,32 +42,28 @@
                 </mobi:outputListItem>
                 <mobi:outputListItem>
                     <h:commandLink
-                            actionListener="#{panelPopupBean.selectListItemAction}"
-                            action="#{panelPopupBean.toggleVisible}">
+                            actionListener="#{panelPopupBean.selectListItemAction}">
                         <f:param name="listItem" value="System Update"/>
                         System Update
                     </h:commandLink>
                 </mobi:outputListItem>
                 <mobi:outputListItem>
                     <h:commandLink
-                            actionListener="#{panelPopupBean.selectListItemAction}"
-                            action="#{panelPopupBean.toggleVisible}">
+                            actionListener="#{panelPopupBean.selectListItemAction}">
                         <f:param name="listItem" value="Status"/>
                         Status
                     </h:commandLink>
                 </mobi:outputListItem>
                 <mobi:outputListItem>
                     <h:commandLink
-                            actionListener="#{panelPopupBean.selectListItemAction}"
-                            action="#{panelPopupBean.toggleVisible}">
+                            actionListener="#{panelPopupBean.selectListItemAction}">
                         <f:param name="listItem" value="Battery Use"/>
                         Battery use
                     </h:commandLink>
                 </mobi:outputListItem>
                 <mobi:outputListItem>
                     <h:commandLink
-                            actionListener="#{panelPopupBean.selectListItemAction}"
-                            action="#{panelPopupBean.toggleVisible}">
+                            actionListener="#{panelPopupBean.selectListItemAction}">
                         <f:param name="listItem"
                                  value="Device Information"/>
                         Device Information
@@ -78,18 +74,19 @@
                             actionListener="#{panelPopupBean.selectListItemAction}"
                             action="#{panelPopupBean.toggleVisible}">
                         <f:param name="listItem" value="Model Number"/>
-                        Model Number
+                        Model Number (Dismisses Popup)
                     </h:commandLink>
                 </mobi:outputListItem>
                 <mobi:outputListItem style="text-align:right;" >
                   <h:panelGroup rendered="#{not panelPopupBean.clientSide}">
-                    <mobi:commandButton  singleSubmit="true"
-                        actionListener="#{panelPopupBean.toggleVisible}"
-                        buttonType="important"
-                        value="Hide Popup"/>
-                  </h:panelGroup>
-                  <h:panelGroup rendered="#{panelPopupBean.clientSide}">
-                     <a href="javascript:;"  onclick="ice.mobi.panelPopup.closeClient('panelPopup');">Access js api to close client popup </a>
+                        <mobi:commandButton  singleSubmit="true"
+                            actionListener="#{panelPopupBean.toggleVisible}"
+                            buttonType="important"
+                            value="Close Popup"/>
+                   </h:panelGroup>
+                   <h:panelGroup rendered="#{panelPopupBean.clientSide}">
+                    <button onclick="ice.mobi.panelPopup.closeClient('panelPopup');"
+                        class="mobi-button submit">Close Popup</button>
                   </h:panelGroup>
                 </mobi:outputListItem>
             </mobi:outputList>
@@ -102,9 +99,8 @@
                             rendered="#{not panelPopupBean.clientSide}"/>
                             
         <c:if test="#{panelPopupBean.clientSide}">
-         <!--  <button onclick="ice.mobi.panelPopup.openClient('panelPopup');"
-                class="mobi-button submit">Show Client-side Popup</button> -->
-         <a href="javascript:;"  onclick="ice.mobi.panelPopup.openClient('panelPopup');">Access js api to open client popup </a>
+            <button onclick="ice.mobi.panelPopup.openClient('panelPopup');"
+                class="mobi-button submit">Show Client-side Popup</button>
         </c:if>
                             
         <mobi:fieldsetGroup>
@@ -131,23 +127,4 @@
         </mobi:fieldsetGroup>
 
     </h:form>
-    <h3>echo of values</h3>
-    <mobi:fieldsetGroup>
-          <mobi:fieldsetRow>
-              <h:outputLabel for="outVis" value="Current Value for visible:"/>
-              <h:outputText id="outVis" value="#{panelPopupBean.visible}"/>
-          </mobi:fieldsetRow>
-          <mobi:fieldsetRow>
-              <h:outputLabel for="outAc" value="Current Value for autoCenter:"/>
-              <h:outputText id="outAc" value="#{panelPopupBean.autoCenter}"/>
-          </mobi:fieldsetRow>
-          <mobi:fieldsetRow>
-              <h:outputLabel for="outHt" value="Current Value for height:"/>
-              <h:outputText id="outHt" value="#{panelPopupBean.height}"/>
-          </mobi:fieldsetRow>
-          <mobi:fieldsetRow>
-              <h:outputLabel for="outWd" value="Current Value for width:"/>
-              <h:outputText id="outWd" value="#{panelPopupBean.width}"/>
-          </mobi:fieldsetRow>
-    </mobi:fieldsetGroup>
 </ui:composition>
