@@ -78,25 +78,10 @@ public class ContentPaneCoreRenderer extends BaseCoreRenderer {
           writer.writeText(title);
           writer.endElement(DIV_ELEM);
           writer.startElement(DIV_ELEM, pane);
-          String fixedHeight = accordion.getFixedHeight();
-          if (!autoheight && null != fixedHeight) {
-              String htString = accordion.getFixedHeight();
-              int fixedHtVal = -1;
-              StringBuffer numbers = new StringBuffer();
-              for(char c : htString.toCharArray()){
-                 if(Character.isDigit(c)) {
-                     numbers.append(c);
-                 }
-              }
-              try {
-                 fixedHtVal = Integer.valueOf(numbers.toString());
-              }   catch (NumberFormatException nfe){
-                  if (logger.isLoggable(Level.WARNING)){
-                      logger.warning(" could not parse int value of fixedHeight");
-                  }
-              }
+          String htString = accordion.getFixedHeight();
+          if (!autoheight && (null != htString) && !htString.isEmpty() && !htString.equals(" ")) {
             //  writer.writeAttribute(STYLE_ATTR, "height: "+accordion.getFixedHeight()+";"); // overflow-y: scroll;") ;
-               writer.writeAttribute(STYLE_ATTR, "height: "+fixedHeight+"; max-height: "+fixedHeight+"; overflow-y: auto;") ;
+               writer.writeAttribute(STYLE_ATTR, "height: "+htString+"; max-height: "+htString+"; overflow-y: auto;") ;
           }
           writer.startElement(DIV_ELEM, pane);
           writer.writeAttribute(ID_ATTR, clientId);
@@ -107,5 +92,6 @@ public class ContentPaneCoreRenderer extends BaseCoreRenderer {
               writer.writeAttribute(CLASS_ATTR, userDefinedClass);
           }
      }
+
 
 }

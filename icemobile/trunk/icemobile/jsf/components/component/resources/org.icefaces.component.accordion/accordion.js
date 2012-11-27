@@ -85,6 +85,7 @@
         return mH ;
     }
     function Accordion(clientId, cfgIn) {
+        var disabled = cfgIn.disabled || false;
         var containerId = clientId+"_acc" ;
         var paneId = cfgIn.opened || null;
         var accordRoot = document.getElementById(containerId);
@@ -107,8 +108,6 @@
             ice.log.debug(ice.log,"Accordion has no children");
             this.disable(clientId);
         }
-        openElem.className = "open";
-        openElem.setAttribute("style", '');//ensure opened pane is shown
         var handleheight = getHandleHeight(accordRoot);
         var handleht = handleheight + "px";
         if (!autoheight && !fixedHeight){
@@ -128,9 +127,13 @@
                 fixedHeight = calcFixedSectionHeight(fixedHeight, handleheight);
             }
         }
-        openPane(openElem, fixedHeight);
+        if (!disabled){
+            openPane(openElem, fixedHeight);
+        }else {
+             ice.log.debug(ice.log, "Accordion has been disabled");
+        }
         if (autoheight && (maxHeight==0)){
-            console.log("\t had to listen for a height none calc");
+           // console.log("\t had to listen for a height none calc");
             ice.onAfterUpdate(function() {
                 ice.mobi.accordionController.updateHeight(clientId, handleheight);
             });
@@ -188,21 +191,29 @@
                 }
             },
             updateHeight: function(clientId, handleheight){
-                console.log(" updateHeight major called");
                 var node = document.getElementById(clientId);
                 if (node){
                     maxHeight = calcMaxDivHeight(clientId,  handleheight);
-                    console.log("returning maxHeight="+maxHeight);
+             //       console.log("returning maxHeight="+maxHeight);
                     return maxHeight;
                 }
             } ,
             updateProperties: function (clientId, cfgUpd) {
-                var changedFixedHt = false;
+                disabled = cfgUpd.disabled || false;
+                var changedFH = false;
+                var changedAH = false;
                 if (fixedHeight != cfgUpd.fixedHeight) {
                     fixedHeight=cfgUpd.fixedHeight || null;
-                    changedFixedHt = true;
+                    changedFH = true;
                 }
-                autoheight = cfgUpd.autoHeight;
+                if (autoheight != cfgUpd.autoHeight){
+                    autoheight = cfgUpd.autoHeight;
+                    changedAH=true;
+                }
+                if (changedAH || changedFH && autoheight){
+                    ice.mobi.accordionController.maxHt[clientId]=null;
+                    maxHeight=0;
+                }
                 if (autoheight) {
                     //calc new maxHeight
                     var tmp1 = calcMaxDivHeight(clientId, handleheight);
@@ -215,15 +226,23 @@
                             }) ;
                     }
                     else {
-                       // console.log(" taking max of maxHeight and stored value = "+storedHt);
                         maxHeight = Math.max(storedHt, maxHeight);
                     }
                     if (maxHeight && maxHeight > 0){
                         ice.mobi.accordionController.maxHt[clientId]=maxHeight;
                         fixedHeight = maxHeight+"px";
-                     //   console.log(" have maxHeight and stored fixedHeight="+fixedHeight);
+                    }
+                } else if (fixedHeight && changedFH){
+                    if (cfgUpd.fHtVal){
+                        var val = parseInt(fixedHeight);
+                        var val2 = parseInt(handleheight);
+                        var val3 = val + val2;
+                        fixedHeight = val3 + "px";
+                    }else {
+                        fixedHeight = calcFixedSectionHeight(fixedHeight, handleheight);
                     }
                 }
+                //allow server to push last submitted or encoded value
                 openElem = document.getElementById(paneOpId);
                 if (openElem){
                     closePane(openElem, handleheight+"px");
@@ -246,8 +265,11 @@
                     openPane(openElem, fixedHeight);
                 }
             },
-            disable: function(clientId){
-                ice.mobi.accordionController[clientId] = true;
+            getDisabled: function(){
+                return disabled;
+            },
+            setDisabled: function(dis){
+                disabled= dis;
             }
         }
 
@@ -256,7 +278,6 @@
         panels: {},
         autoheight: {},
         maxHt: {},
-        disabled: {},
         singleSubmit: {},
         initClient: function(clientId, cfg) {
             if (!this.panels[clientId]) {
@@ -271,20 +292,17 @@
             }
         },
         toggleClient: function(clientId, el, cachetyp) {
-            if (this.disabled[clientId]){
-             //   console.log("accordion has been disabled");
-                return;
-            }
-            if (this.panels[clientId]) {
-                this.panels[clientId].toggle(clientId, el, cachetyp);
+            if (this.panels[clientId] && !this.panels[clientId].getDisabled()){
+                   this.panels[clientId].toggle(clientId, el, cachetyp);
             } else {
-         //       console.log("toggleClient had to run init first");
                 this.initClient(clientId, {});
-                this.panels[clientId].toggle(clientId, el, cachetyp);
+                if (!this.panels[clientId].getDisabled()){
+                    this.panels[clientId].toggle(clientId, el, cachetyp);
+                }
             }
         },
         toggleMenu: function(clientId, el){
-            if (this.panels[clientId]) {
+            if (this.panels[clientId]) {  //have yet to implement disabled for menu
                 this.panels[clientId].toggle(clientId, el, true);
             } else{
                 this.initClient(clientId, {autoheight:true});
@@ -292,14 +310,12 @@
         } ,
         updateHeight: function(clientId, handleHt){
             if (this.panels[clientId]){
-              //  console.log("updateHeight");
                 var tmp = this.panels[clientId].updateHeight(clientId, handleHt);
                 if (!this.maxHt[clientId] && tmp > 0){
                     this.maxHt[clientId] = tmp;
                 }else {
                     this.maxHt[clientId] = Math.max(tmp, this.maxHt[clientId]);
                 }
-              //  console.log("updateProps ->maxHt clientId = "+this.maxHt[clientId]);
             }
         },
         unload: function(clientId){
@@ -310,7 +326,6 @@
                 this.autoheight[clientId]=null;
                 this.panels[clientId]=null;
                 this.maxHt[clientId]=null;
-                this.disabled[clientId]=null;
             }
         }
     }
