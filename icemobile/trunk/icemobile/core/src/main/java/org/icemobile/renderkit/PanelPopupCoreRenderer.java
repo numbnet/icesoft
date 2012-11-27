@@ -101,6 +101,9 @@ public class PanelPopupCoreRenderer extends BaseCoreRenderer {
   /*      if (panelPopup.isCenterOnForm()){
             builder.append(", useForm: ").append(panelPopup.isCenterOnForm());
         }       */
+        if (panelPopup.getStyle()!=null){
+            builder.append(", style: '").append(panelPopup.getStyle()).append("'");
+        }
         if (disabled){
             builder.append(", disabled: ").append(panelPopup.isDisabled());
         }

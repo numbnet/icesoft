@@ -793,9 +793,6 @@ ice.mobi.panelCenter = function(clientId, cfg){
     var contHeight;
     var elemWidth = cfg.width || paneNode.offsetWidth;
     var styleVar = "";
-    if (paneNode.getAttribute("style")){
-        styleVar = paneNode.getAttribute("style");
-    }
     var elemHeight = cfg.height|| paneNode.offsetHeight;
     if (cfg.width){
         var wStr = elemWidth+"px";
@@ -829,6 +826,9 @@ ice.mobi.panelCenter = function(clientId, cfg){
         }else {
             styleVar += posStyle;
             styleVar +=" left:"+posLeft+";";
+        }
+        if (cfg.style){
+            styleVar+=cfg.style;
         }
         paneNode.setAttribute('style',styleVar);
     }  else {
@@ -1237,11 +1237,7 @@ ice.mobi.ready = function (callback) {
                     ice.mobi.panelCenter(containerId, centerCfg);
                 }  else{
                     //console.log("NO AUTOCENTER");
-                    if (containerNode.getAttribute("style")){
-                        styleVar = containerNode.getAttribute("style");
-                    }else {
-                        var styleVar = "";
-                    }
+                    var styleVar = "";
                     if (cfg.width && cfg.width> 0){
                         var wStr = width+"px";
                         styleVar+=" width: "+cfg.width+"px;";
@@ -1249,6 +1245,9 @@ ice.mobi.ready = function (callback) {
                     if (cfg.height && cfg.height > 0){
                         var hStr = height+"px";
                         styleVar +=" height: "+cfg.height+"px;";
+                    }
+                    if (cfg.style){
+                        styleVar+=cfg.style;
                     }
                     containerNode.setAttribute("style", styleVar);
                 }
@@ -1366,7 +1365,7 @@ ice.mobi.ready = function (callback) {
                 }
             }
             if (!found){
-                console.log( ' Cannot find popup with id='+popupId);
+                console.log( ' Initialize popup with id='+popupId);
             }
             return null;
         }
