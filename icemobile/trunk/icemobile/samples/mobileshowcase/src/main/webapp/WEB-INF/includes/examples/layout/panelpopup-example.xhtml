@@ -72,22 +72,29 @@
                 <mobi:outputListItem>
                     <h:commandLink
                             actionListener="#{panelPopupBean.selectListItemAction}"
-                            action="#{panelPopupBean.toggleVisible}">
+                            action="#{panelPopupBean.toggleVisible}"
+                            rendered="#{not panelPopupBean.clientSide}">
                         <f:param name="listItem" value="Model Number"/>
                         Model Number (Dismisses Popup)
                     </h:commandLink>
+                    <h:commandLink
+                            actionListener="#{panelPopupBean.selectListItemAction}"
+                            rendered="#{panelPopupBean.clientSide}">
+                        <f:param name="listItem" value="Model Number"/>
+                        Model Number
+                    </h:commandLink>
                 </mobi:outputListItem>
                 <mobi:outputListItem style="text-align:right;" >
-                  <h:panelGroup rendered="#{not panelPopupBean.clientSide}">
+                  <c:if test="#{not panelPopupBean.clientSide}">
                         <mobi:commandButton  singleSubmit="true"
                             actionListener="#{panelPopupBean.toggleVisible}"
                             buttonType="important"
                             value="Close Popup"/>
-                   </h:panelGroup>
-                   <h:panelGroup rendered="#{panelPopupBean.clientSide}">
+                   </c:if>
+                   <c:if test="#{panelPopupBean.clientSide}">
                     <button onclick="ice.mobi.panelPopup.closeClient('panelPopup');"
-                        class="mobi-button submit">Close Popup</button>
-                  </h:panelGroup>
+                        class="mobi-button mobi-button-important submit">Close Popup</button>
+                  </c:if>
                 </mobi:outputListItem>
             </mobi:outputList>
             
