@@ -167,11 +167,18 @@ ice.mobi.panelCenter = function(clientId, cfg){
     var contHeight;
     var elemWidth = cfg.width || paneNode.offsetWidth;
     var styleVar = "";
+    if (paneNode.getAttribute("style")){
+        styleVar = paneNode.getAttribute("style");
+    }
     var elemHeight = cfg.height|| paneNode.offsetHeight;
-    wStr = elemWidth+"px";
-    hStr = elemHeight+"px";
-    styleVar += "width: "+wStr+";";
-    styleVar += "height: "+hStr+";";
+    if (cfg.width){
+        var wStr = elemWidth+"px";
+        styleVar += " width: "+wStr+";";
+    }
+    if (cfg.height){
+        var hStr = elemHeight+"px";
+        styleVar += " height: "+hStr+";";
+    }
     var contWidth;
     var contHeight;
     if (container){
@@ -186,7 +193,7 @@ ice.mobi.panelCenter = function(clientId, cfg){
         scrollTop = document.documentElement.scrollTop;
     }
     if (contHeight > 0){
-        var posStyle = "position: 'absolute';";
+        var posStyle = " position: 'absolute';";
         var posLeft =((contWidth/2)-(elemWidth/2))+'px';
         var top = scrollTop +((contHeight/2)-(elemHeight/2))+'px';
         if (contHeight - elemHeight >0){
@@ -197,6 +204,9 @@ ice.mobi.panelCenter = function(clientId, cfg){
             styleVar += posStyle;
             styleVar +=" left:"+posLeft+";";
         }
+  //      console.log(" contht="+contHeight+" elemHeight="+elemHeight);
+  //      console.log(" scrollTop="+scrollTop+" contWidth="+contWidth+" elemWidth="+elemWidth);
+  //      console.log("styleVar = "+styleVar);
         paneNode.setAttribute('style',styleVar);
     }  else {
         ice.log.debug(ice.log," Containing div or window has no height to autocenter popup of id="+clientId);
