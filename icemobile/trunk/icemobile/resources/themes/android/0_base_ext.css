@@ -24,3 +24,7 @@ body{
 }
 a:link { color: white; }
 
+.mobi-tap-highlight{
+    -webkit-tap-highlight-color: #082658;
+}
+

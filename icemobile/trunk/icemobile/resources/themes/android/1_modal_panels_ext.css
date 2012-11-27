@@ -13,6 +13,7 @@
  * express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
+ 
 .mobi-panelconf-container, .mobi-panelpopup-container, .mobi-submitnotific-container {
     background-color: #ccc;
     border-radius: 1px;
@@ -22,16 +23,20 @@
 .mobi-submitnotific-container{
     background-color: #000000;
 }
-
-.mobi-panelconf-title-container {
+.mobi-panelconf-title-container{
     background-color: #000000;
 
 }
-
+.mobi-panelpopup-title-container  {
+    background: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0, #CCC), color-stop(1, #999));
+    background: -moz-linear-gradient(0% 65% 90deg,#CCC, #999 100%);
+    background-color: #8C8A8C;
+    border-bottom-color: #2D3642;
+    color: #FFFFFF;
+}
 .mobi-panelconf-body-container {
     color: black;
 }
-
 .mobi-panelconf-submit-container {
     color: black;
     background-color: #9a9a9a;

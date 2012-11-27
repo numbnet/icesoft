@@ -13,6 +13,7 @@
  * express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
+ 
 .mobi-pagePanel-header, .mobi-pagePanel-footer {
     background: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0, #CCC), color-stop(1, #999));
     background: -moz-linear-gradient(0% 65% 90deg,#CCC, #999 100%);
