@@ -56,6 +56,9 @@
                     if (cfg.height){
                         centerCfg.height = cfg.height;
                     }
+                    if (cfg.style){
+                        centerCfg.style = cfg.style;
+                    }
                     if (cfg.useForm){
                         var frm = mobi.findForm(clientId);
                         if (frm){
@@ -78,12 +81,7 @@
                     ice.mobi.panelCenter(containerId, centerCfg);
                 }  else{
                  //   console.log("NO AUTOCENTER");
-                    //check to see if existing style var
-                    if (containerNode.getAttribute("style")){
-                        styleVar = containerNode.getAttribute("style");
-                    }else {
-                        var styleVar = "";
-                    }
+                    var styleVar = "";
                     if (cfg.width){
                         var wStr = width+"px";
                         styleVar+="width: "+cfg.width+"px;";
@@ -91,6 +89,9 @@
                     if (cfg.height){
                         var hStr = height+"px";
                         styleVar +=" height: "+cfg.height+"px;";
+                    }
+                    if (cfg.style){
+                        styleVar += cfg.style;
                     }
                     containerNode.setAttribute("style", styleVar);
                 }
@@ -118,7 +119,7 @@
                      }
                      centerCalculation[clientId] = undefined;
                } else {
-                   container.setAttribute("style", "");
+             //      container.setAttribute("style", "");
                }
                ice.mobi.panelPopup.visible[clientId] = false;
                updateHidden(clientId, "false");
@@ -195,7 +196,7 @@
                 var pane = this.panels[i];
                 if (isId){
                     var myId = pane.getId();
-                    console.log ("id of pane="+myId);
+                  //  console.log ("id of pane="+myId);
                     if (pane.getId()==popupId){
                         found = true;
                         return pane;

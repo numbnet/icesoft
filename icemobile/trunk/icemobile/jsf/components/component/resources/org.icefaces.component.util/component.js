@@ -167,9 +167,6 @@ ice.mobi.panelCenter = function(clientId, cfg){
     var contHeight;
     var elemWidth = cfg.width || paneNode.offsetWidth;
     var styleVar = "";
-    if (paneNode.getAttribute("style")){
-        styleVar = paneNode.getAttribute("style");
-    }
     var elemHeight = cfg.height|| paneNode.offsetHeight;
     if (cfg.width){
         var wStr = elemWidth+"px";
@@ -203,6 +200,9 @@ ice.mobi.panelCenter = function(clientId, cfg){
         }else {
             styleVar += posStyle;
             styleVar +=" left:"+posLeft+";";
+        }
+        if (cfg.style){
+            styleVar+=cfg.style;
         }
   //      console.log(" contht="+contHeight+" elemHeight="+elemHeight);
   //      console.log(" scrollTop="+scrollTop+" contWidth="+contWidth+" elemWidth="+elemWidth);
