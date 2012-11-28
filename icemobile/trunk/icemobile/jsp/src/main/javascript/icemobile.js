@@ -865,7 +865,7 @@ ice.mobi.panelCenter = function(clientId, cfg){
         scrollTop = document.documentElement.scrollTop;
     }
     if (contHeight > 0){
-        var posStyle = " position: 'absolute';";
+        var posStyle = " position: absolute;";
         var posLeft =((contWidth/2)-(elemWidth/2))+'px';
         var top = scrollTop +((contHeight/2)-(elemHeight/2))+'px';
         if (contHeight - elemHeight > 0){
@@ -1270,6 +1270,9 @@ ice.mobi.ready = function (callback) {
                            centerCfg.containerElem = frm.id;
                            // console.log("form id="+frm.id);
                         }
+                    }
+                    if (cfg.style){
+                        centerCfg.style = cfg.style;
                     }
                     // add scroll listener
                     centerCalculation[clientId] = function () {
