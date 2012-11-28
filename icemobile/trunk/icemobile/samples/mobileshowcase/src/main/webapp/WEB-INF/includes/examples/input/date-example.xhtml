@@ -32,7 +32,7 @@
                     <span style="font-size: 10px;float:right;">(yyyy-mm-dd)</span>
                     <div style="clear:both;">
                         <mobi:dateSpinner useNative="true" id="date"
-                                         value="#{dateBean.dateInput}">
+                                         value="#{dateBean.dateInput}" style="margin-right:20px">
                             <f:convertDateTime type="date" pattern="yyyy-MM-dd" timeZone="#{dateBean.timeZone}"/>
                         </mobi:dateSpinner>
                     </div>
@@ -45,7 +45,7 @@
                     <span style="font-size: 10px;float:right;">(hh:mm AM/PM)</span>
                     <div style="clear:both;">
                         <mobi:timeSpinner id="time" useNative="true"  timeZone="#{dateBean.timeZone}"
-                                         value="#{dateBean.timeInput}">
+                                         value="#{dateBean.timeInput}" style="margin-right:20px">
                         </mobi:timeSpinner>
                     </div>
                 </div>
