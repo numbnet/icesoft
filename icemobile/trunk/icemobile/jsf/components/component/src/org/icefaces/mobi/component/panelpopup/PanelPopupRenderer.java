@@ -47,14 +47,11 @@ public class PanelPopupRenderer extends BaseLayoutRenderer {
         }
         //update with hidden field
         String submittedString = String.valueOf(requestParameterMap.get(clientId+"_hidden"));
-      //  logger.info("submittedString="+submittedString);
-        if (submittedString != null) {
+        if (submittedString != null && !isValueBlank(submittedString)) {
             if (submittedString.trim().equals("true") && !panel.isDisabled()){
-              //  logger.info("IM visible!");
                 panel.setVisible(true);
             }else{
                 panel.setVisible(false);
-              //  logger.info("IM Invisible");
             }
         }
     }
@@ -86,7 +83,11 @@ public class PanelPopupRenderer extends BaseLayoutRenderer {
             }
             writer.endElement(HTML.DIV_ELEM);
         }
-        renderChildren(facesContext, panelPopup);
+        boolean clientSide = panelPopup.isClientSide();
+        boolean visible = panelPopup.isVisible();
+        if (clientSide || visible) {
+            renderChildren(facesContext, panelPopup);
+        }
         renderer.encodeEnd(panelPopup, writer);
     }
 
