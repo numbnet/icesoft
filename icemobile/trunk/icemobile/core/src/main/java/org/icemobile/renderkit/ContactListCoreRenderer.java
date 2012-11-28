@@ -27,11 +27,6 @@ public class ContactListCoreRenderer extends BaseCoreRenderer {
         writeStandardAttributes(writer, component, CSSUtils.STYLECLASS_BUTTON, CSSUtils.STYLECLASS_BUTTON_DISABLED);
         StringBuilder args = new StringBuilder();
 
-        String pattern = component.getPattern();
-        if (pattern != null && !"".equals(pattern)) {
-            args.append("pattern=").append(pattern);
-        }
-
         String fields = component.getFields();
         if (fields != null && !"".equals(fields)) {
             if (args.length() > 0) {
