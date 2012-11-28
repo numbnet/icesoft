@@ -39,7 +39,6 @@ public class ContentTag extends TagSupport {
     private static Logger LOG = Logger.getLogger(ContentTag.class.getName());
 
     private TabSetTag mTabParent;
-    private AccordionTag mAccParent;
 
     private String mContentClass;
     private String mSelectedItem;
@@ -51,11 +50,7 @@ public class ContentTag extends TagSupport {
             mContentClass = MOBI_TABSET_CONTENT_CLASS;
             mTabParent = (TabSetTag) parent;
             mSelectedItem = mTabParent.getSelectedTab();
-        } else if (parent instanceof AccordionTag) {
-            mContentClass = "";
-            mAccParent = (AccordionTag) parent;
-            mSelectedItem = mAccParent.getSelectedId();
-        } else {
+        }  else {
             throw new IllegalArgumentException("ContentTag must have TabSet or Accordian parent");
         }
     }
@@ -119,14 +114,14 @@ public class ContentTag extends TagSupport {
         if (mTabParent != null) {
             return mTabParent.getIndex();
         }
-        throw new UnsupportedOperationException("getIndex() should not be called from Accordion");
+        throw new UnsupportedOperationException("getIndex() has no value");
     }
 
     public String getId() {
         if (mTabParent != null) {
             return mTabParent.getId();
         } else {
-            return mAccParent.getId();
+            throw new UnsupportedOperationException("getId() has no value");
         }
     }
 }
