@@ -3,6 +3,7 @@ package org.icemobile.samples.springbasic;
 import java.io.IOException;
 
 import org.icemobile.util.ClientDescriptor;
+import org.icemobile.util.Utils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -38,10 +39,8 @@ public class MediaSpotController {
 
     private List getMarkerList(HttpServletRequest request)  {
 
-        String urlBase = request.getScheme() + "://" +
-                request.getServerName() + ":" + request.getServerPort() +
-                request.getContextPath();
-        
+        String urlBase = Utils.getBaseURL(request);
+
         ArrayList markerList = new ArrayList();
         HashMap marker;
 
@@ -94,20 +93,17 @@ public class MediaSpotController {
             @RequestParam(value = "spotcam", required = false) MultipartFile photoFile,
             MediaSpotBean spotBean,
             Model model)  {
-	    System.out.println("processPost() photoFile="+photoFile+", bean="+spotBean);
         String newFileName = null;
         try {
             if (null != photoFile)  {
                 newFileName = FileUploadUtils.saveImage(request, photoFile, null);
                 
-                System.out.println("newFileName="+newFileName);
                 spotBean.setFileName(newFileName);
                 String title = spotBean.getTitle();
                 if ((null == title) || "".equals(title))  {
                     spotBean.setTitle("Marker" + count++);
                 }
                 messages.put(spotBean.getTitle(), spotBean);
-                System.out.println("scaling image");
                 scaleImage( new File(request.getRealPath("/" + newFileName)) );
             }
     		model.addAttribute("locations", messages.values());
