@@ -25,6 +25,7 @@ public class QRScanBean {
 
     // Name of the parameter in demo is scanOne
     private String scanOne;
+    private String plaintextOne = "www.icesoft.org";
 
     public String getScanOne() {
         return scanOne;
@@ -32,5 +33,13 @@ public class QRScanBean {
 
     public void setScanOne(String scanOne) {
         this.scanOne = scanOne;
+    }
+
+    public String getPlaintextOne() {
+        return plaintextOne;
+    }
+
+    public void setPlaintextOne(String plaintextOne) {
+        this.plaintextOne = plaintextOne;
     }
 }
