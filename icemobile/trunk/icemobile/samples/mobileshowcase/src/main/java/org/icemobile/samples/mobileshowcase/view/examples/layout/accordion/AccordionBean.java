@@ -45,6 +45,7 @@ public class AccordionBean extends ExampleImpl<AccordionBean> implements
     public static final String BEAN_NAME = "accordionBean";
 
     private String selectedId = "accordionPane1";
+    private String selectedId2 = "accordionPane4";
     private boolean autoHeight = true;
     private String fixedHeight = "";
     private String paneChangeMsg;
@@ -97,6 +98,14 @@ public class AccordionBean extends ExampleImpl<AccordionBean> implements
 
     public void setClientSide(boolean clientSide) {
         this.clientSide = clientSide;
+    }
+
+    public String getSelectedId2() {
+        return selectedId2;
+    }
+
+    public void setSelectedId2(String selectedId2) {
+        this.selectedId2 = selectedId2;
     }
     
 }
