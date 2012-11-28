@@ -118,6 +118,26 @@
         </attribute>
     </tag>
     <tag>
+        <description>Declare an augmented reality marker.</description>
+        <display-name>ICEmobile Augmented Reality Marker</display-name>
+        <name>augmentedRealityMarker</name>
+        <tag-class>org.icemobile.jsp.tags.AugmentedRealityMarkerTag
+        </tag-class>
+        <body-content>empty</body-content>
+        <attribute>
+            <description>marker text label</description>
+            <name>markerLabel</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <description>marker model URL</description>
+            <name>markerModel</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+    </tag>
+    <tag>
         <description>Capture image with device camera.</description>
         <display-name>ICEmobile Camera</display-name>
         <name>camera</name>
