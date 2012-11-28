@@ -33,6 +33,7 @@
 package com.icesoft.faces.webapp.http.core;
 
 import com.icesoft.faces.context.View;
+import com.icesoft.faces.context.ViewStatus;
 import com.icesoft.faces.env.Authorization;
 import com.icesoft.faces.webapp.http.common.Configuration;
 import com.icesoft.faces.webapp.http.common.Request;
@@ -48,7 +49,6 @@ import org.apache.commons.logging.LogFactory;
 
 public class MultiViewServer implements Server {
     private static final Log LOG = LogFactory.getLog(MultiViewServer.class);
-    private static final Log VIEW_LOG = LogFactory.getLog(View.class);
     private int viewCount = 0;
     private int viewCap = 0;
     private Map views;
@@ -120,9 +120,7 @@ public class MultiViewServer implements Server {
             //are not a problem
             LOG.warn("Concurrent view limit of " + viewCap + 
                 " exceeded for session " + sessionID);
-            if(VIEW_LOG.isDebugEnabled()){
-                View.logViewStatus(session);
-            }
+            ViewStatus.log(session);
             throw new RuntimeException("Concurrent view limit exceeded.");
         }
         String viewNumber = String.valueOf(++viewCount);

@@ -71,7 +71,6 @@ public class View implements CommandQueue {
 
     public static final String ICEFACES_STATE_MAPS = "icefaces.state.maps";
     private static final Log Log = LogFactory.getLog(View.class);
-    private static final String VIEW_STATUS_KEY = "com.icesoft.faces.ViewStatus";
     private static final NOOP NOOP = new NOOP();
     private static final Runnable DoNothing = new Runnable() {
         public void run() {
@@ -167,7 +166,7 @@ public class View implements CommandQueue {
             public void run() {
                 //dispose view only once
                 dispose = DoNothing;
-                recordViewDisposal();
+                ViewStatus.recordViewDisposal(session, sessionID, viewIdentifier);
                 installThreadLocals();
                 notifyViewDisposal();
                 releaseAll();
@@ -177,7 +176,7 @@ public class View implements CommandQueue {
                 allServedViews.remove(viewIdentifier);
             }
         };
-        recordViewCreation(req);
+        ViewStatus.recordViewCreation(session, req, sessionID, viewIdentifier);
     }
 
     //this is the "postback" request
@@ -363,43 +362,6 @@ public class View implements CommandQueue {
 
     public void onRelease(Runnable runnable) {
         onReleaseListeners.add(runnable);
-    }
-
-    private void recordViewCreation(Request req){
-        if (Log.isDebugEnabled())  {
-            Log.debug("created " + this + " for " + req.getURI());
-            ViewStatus viewStatus = getViewStatus(session);
-            viewStatus.recordViewCreated(viewIdentifier, req.getURI());
-        }
-    }
-
-    private void recordViewDisposal(){
-        if (Log.isDebugEnabled())  {
-            Log.debug("disposed " + this);
-            ViewStatus viewStatus = getViewStatus(session);
-            viewStatus.recordViewDisposed(viewIdentifier);
-        }
-    }
-
-    private static ViewStatus getViewStatus(HttpSession sess){
-        ViewStatus viewStatus = null;
-        Object obj = sess.getAttribute(VIEW_STATUS_KEY);
-        if(obj == null){
-            viewStatus = new ViewStatus();
-            sess.setAttribute(VIEW_STATUS_KEY, viewStatus);
-        } else {
-            viewStatus = (ViewStatus)obj;
-        }
-        return viewStatus;
-    }
-
-    public static void logViewStatus(HttpSession sess){
-        ViewStatus viewStatus = getViewStatus(sess);
-        if(viewStatus != null){
-            String key = MainSessionBoundServlet.class.getName();
-            String id = (String)sess.getAttribute(key);
-            Log.info(viewStatus.getCurrentStatus(id));
-        }
     }
 
     private interface Page {
