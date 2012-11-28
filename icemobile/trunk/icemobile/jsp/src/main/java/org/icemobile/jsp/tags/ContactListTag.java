@@ -45,13 +45,6 @@ public class ContactListTag extends BaseSimpleTag implements IContactList {
     public void setButtonLabel(String buttonLabel) {
         this.buttonLabel = buttonLabel;
     }
-    public String getPattern() {
-        return pattern;
-    }
-
-    public void setPattern(String pattern) {
-        this.pattern = pattern;
-    }
 
     public String getFields() {
         return fields;
@@ -63,7 +56,6 @@ public class ContactListTag extends BaseSimpleTag implements IContactList {
     
     private void init(){
         this.buttonLabel = "Fetch Contact";
-        this.pattern = null;
         this.fields= null;
     }
     
