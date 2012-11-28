@@ -42,7 +42,7 @@ function GMapWrapper(eleId, realGMap) {
     this.overlays = new Object();
     this.markers = new Object();
     this.freeWindows = new Object();
-    this.windows = new Object();
+    this.infoWindows = new Object();
     this.directions = new Object();
     var options = "";
     this.services = new Object();
@@ -185,14 +185,13 @@ ice.ace.gMap.getGMapWrapper = function (id) {
     ice.ace.gMap.recreate = function (ele, gmapWrapper) {
         var map = gmapWrapper.getRealGMap();
         var options = gmapWrapper.options;
-
         var lat = map.getCenter().lat();
         var lng = map.getCenter().lng();
         var zoom = map.getZoom();
         var type = map.getMapTypeId();
         var markers = gmapWrapper.markers;
         var freeWindows = gmapWrapper.freeWindows;
-        var windows = gmapWrapper.windows;
+        var infoWindows = gmapWrapper.infoWindows;
         var overlays = gmapWrapper.overlays;
         ice.ace.gMap.remove(ele);
         gmapWrapper = ice.ace.gMap.create(ele,lat,lng,zoom,type);
@@ -206,16 +205,18 @@ ice.ace.gMap.getGMapWrapper = function (id) {
                 gmapWrapper.markers[marker]=markers[marker];
             }
         }
-        for (win in freeWindows) {
-            if (gmapWrapper.freeWindows[win] == null) {
-                freeWindows[win].open(map);
-                gmapWrapper.freeWindows[win]=freeWindows[win];
+        for (freeWin in freeWindows) {
+            if (gmapWrapper.freeWindows[freeWin] == null) {
+                freeWindows[freeWin].open(map);
+                gmapWrapper.freeWindows[freeWin]=freeWindows[freeWin];
             }
         }
-        for (win in windows) {
-            if (gmapWrapper.windows[win] == null) {
-                gmapWrapper.windows[win]=windows[win];
+        for (win in infoWindows) {
+
+            if (gmapWrapper.infoWindows[win] == null) {
+                gmapWrapper.infoWindows[win]=infoWindows[win];
             }
+
         }
         for (overlay in overlays){
             if (gmapWrapper.overlays[overlay] == null){
@@ -233,7 +234,6 @@ ice.ace.gMap.getGMapWrapper = function (id) {
                 newRepository[map] = GMapRepository[map];
             }
             else{
-
                 var divParent = document.getElementById(ele).parentNode;
                 var styleClass = document.getElementById(ele).getAttribute('class');
                 var style = document.getElementById(ele).getAttribute('style');
@@ -638,17 +638,15 @@ ice.ace.gMap.getGMapWrapper = function (id) {
     ice.ace.gMap.addGWindow = function (ele, winId, content, position,options,markerId,showOnClick,startOpen) {
         var wrapper = ice.ace.gMap.getGMapWrapper(ele);
         var map = ice.ace.gMap.getGMapWrapper(ele).getRealGMap();
-        var window = wrapper.windows[winId];
-        var windows = wrapper.windows;
-        var freeWindows = wrapper.freeWindows;
-        if (window != null)
-            window.close();
-        window = new google.maps.InfoWindow();
-        window.setPosition(position);
-        window.setContent(content);
+        var win = wrapper.infoWindows[winId];
+        if (win != null)
+            win.close();
+        win = new google.maps.InfoWindow();
+        win.setPosition(position);
+        win.setContent(content);
         if (options != "none")
         {
-            window.setOptions(eval("({" + options + "})"));
+            win.setOptions(eval("({" + options + "})"));
         }
         if (markerId != "none")
         {
@@ -656,35 +654,35 @@ ice.ace.gMap.getGMapWrapper = function (id) {
             if(showOnClick=="true")
             {
               google.maps.event.addDomListener(marker,"click",function(){
-                  window.open(map,marker);
+                  var map = ice.ace.gMap.getGMapWrapper(ele).getRealGMap();
+                  win.open(map,marker);
               });
               if(startOpen=="true")
-                  window.open(map,marker);
+                  win.open(map,marker);
             }
             else
-                window.open(map,marker);
+                win.open(map,marker);
         }
         else
         {
-            window.open(map);
-            google.maps.event.addDomListener(window,"closeclick",function(){
+            win.open(map);
+            google.maps.event.addDomListener(win,"closeclick",function(){
                 ice.ace.gMap.removeGWindow(ele,winId)
             });
-            ice.ace.gMap.getGMapWrapper(ele).freeWindows[winId]=window;
+            ice.ace.gMap.getGMapWrapper(ele).freeWindows[winId]=win;
         }
-        ice.ace.gMap.getGMapWrapper(ele).windows[winId]=window;
+        ice.ace.gMap.getGMapWrapper(ele).infoWindows[winId]=win;
     }
 
     ice.ace.gMap.removeGWindow = function(mapId,winId){
-
         var wrapper = ice.ace.gMap.getGMapWrapper(mapId);
-        var window = wrapper.windows[winId];
-        if(window!=null)
-            window.close();
+        var win = wrapper.infoWindows[winId];
+        if(win!=null)
+            win.close();
         else
             return;
         var newWindowArray = new Object();
-        delete(wrapper.windows[winId]);
+        delete(wrapper.infoWindows[winId]);
         var newFreeWindowArray = new Object();
         if(wrapper.freeWindows[winId]!=null)
             delete(wrapper.freeWindows[winId]);
@@ -717,9 +715,9 @@ ice.ace.gMap.getGMapWrapper = function (id) {
         var map = wrapper.getRealGMap();
         var parent;
         if (parentName.indexOf("gmap.GMapAutocomplete") != -1)
-            parent = wrapper.windows[parentId];
+            parent = wrapper.infoWindows[parentId];
         else if (parentName.indexOf("gmap.GMapInfoWindow") != -1)
-            parent = wrapper.windows[parentId];
+            parent = wrapper.infoWindows[parentId];
         else if (parentName.indexOf("gmap.GMapLayer") != -1)
             parent = wrapper.layers[parentId];
         else if (parentName.indexOf("gmap.GMapMarker") != -1)
