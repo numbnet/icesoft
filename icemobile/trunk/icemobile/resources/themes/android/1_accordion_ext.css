@@ -26,6 +26,7 @@
     filter: progid:DXImageTransform.Microsoft.gradient(startColorStr = '#cccccc', EndColorStr = '#999999');
     -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#cccccc', EndColorStr='#999999')";
     border-bottom: 1px solid #999999;
+    -webkit-tap-highlight-color: rgba(101, 149, 249, 0.3);
 }
 .mobi-accordion > section.open > .handle > .pointer{
     border-top-color: #FFF;

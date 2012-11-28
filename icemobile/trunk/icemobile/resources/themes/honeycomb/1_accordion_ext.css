@@ -26,4 +26,5 @@
     -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#7F7F7F', EndColorStr='#575757')";
     border-bottom: 1px solid #020202;
     border-top: 1px solid #7B7B7B;
+    -webkit-tap-highlight-color: rgba(101, 149, 249, 0.3);
 }
