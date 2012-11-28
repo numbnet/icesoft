@@ -159,7 +159,7 @@ public class DateSpinnerRenderer extends BaseInputRenderer {
         // build out first input field
         writer.startElement(HTML.SPAN_ELEM, uiComponent);
         if (dateSpinner.getStyle() !=null){
-            writer.writeAttribute(HTML.STYLE_ATTR, uiComponent, HTML.STYLE_ATTR);
+            writer.writeAttribute(HTML.STYLE_ATTR, dateSpinner.getStyle(), HTML.STYLE_ATTR);
         }
         writer.startElement("span", uiComponent);
         writer.writeAttribute("id", clientId, "id");
