@@ -626,6 +626,38 @@
         </attribute>
     </tag>
 
+       <tag>
+        <description>QRCode Generation Tag</description>
+        <display-name>QR Code Generator Tag</display-name>
+        <name>qrcode</name>
+        <tag-class>org.icemobile.jsp.tags.QRCodeTag</tag-class>
+        <body-content>empty</body-content>
+        <attribute>
+            <description>Value of encoded string</description>
+            <name>value</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <description>User defined CSS class</description>
+            <name>styleClass</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <description>Inline style definition</description>
+            <name>style</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <description>Determines if control is disabled</description>
+            <name>disabled</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+    </tag>
+
     <tag>
         <description>Android style binary input button</description>
         <display-name>flipswitch</display-name>
