@@ -25,15 +25,9 @@
         <mobi:getEnhanced/>
         
         <mobi:fieldsetGroup>
-            <mobi:fieldsetRow>
-                <h:outputLabel for="pattern" value="Contact Filter:" style="width:50px"/>
-                <mobi:inputText id="pattern" value="#{contactsBean.pattern}" style="width:80px"/>
-                <mobi:commandButton value="Update" style="padding: 0.6em 5px;"/>
-            </mobi:fieldsetRow>
             <mobi:fieldsetRow styleClass="mobi-center">
                 <mobi:fetchContact id="contact" 
                     label="Fetch Contacts" 
-                    pattern="#{contactsBean.pattern}" 
                     fields="name, email, phone"
                     value="#{contactsBean.rawContact}"
                     name="#{contactsBean.name}"
