@@ -24,60 +24,57 @@
         <mobi:fieldsetGroup styleClass="intro">
             <mobi:fieldsetRow>
                 The accordion component shows one active content pane at time.
-                Non-active content panes are represented as collapsed views. Adjust the
-                accordion settings below for autoHeight and fixedHeight to see the accordion
-                behaviour. autoHeight sets the height of each pane to the height of the tallest pane. 
-                fixedHeight allows you to set the height of each pane to a specified height.
+                Non-active content panes are represented as collapsed views. The
+                accordion component can be used with autoHeight, so that the
+                height of the tallest pane is used, or with fixedHeight, where a
+                set height is used for all panes.
             </mobi:fieldsetRow>
         </mobi:fieldsetGroup>
-
-        <h3>Accordion Settings</h3>
         
-        <mobi:fieldsetGroup>
-            <mobi:fieldsetRow>
-                <h:outputLabel for="autoHeight" value="Auto Height:" />
-                <mobi:flipswitch id="autoHeight" value="#{accordionBean.autoHeight}" singleSubmit="true"/>
-            </mobi:fieldsetRow>
-            <mobi:fieldsetRow>
-                <h:outputLabel for="fixedHeight" value="Fixed Height:" style="width:50px"/>
-                <mobi:inputText id="fixedHeight" value="#{accordionBean.fixedHeight}" 
-                    singleSubmit="true" placeholder="Fixed height, eg '10em'"
-                    style="font-size:12px"/>
-                <mobi:commandButton value="Clear" actionListener="#{accordionBean.clearFixedHeight}"
-                    style="max-width:50px;min-width:50px"/>
-            </mobi:fieldsetRow>   
-            <mobi:fieldsetRow>
-                <h:outputLabel for="clientSide" value="Client Side:" />
-                <mobi:flipswitch id="clientSide" value="#{accordionBean.clientSide}" singleSubmit="true"/>
-            </mobi:fieldsetRow>     
-        </mobi:fieldsetGroup>
+        <div style="margin:10px">#{accordionBean.paneChangeMsg}</div>
 
-        <h3>Accordion</h3>
-
-        <mobi:accordion id="accordion" selectedId="#{accordionBean.selectedId}"
-            autoHeight="#{accordionBean.autoHeight}" fixedHeight="#{accordionBean.fixedHeight}"
-            paneChangeListener="#{accordionBean.paneChangeListener}" style="padding-bottom:50px">
+        <h3>Auto-height Accordion</h3>
+        <mobi:accordion id="autoHeightAccordion" selectedId="#{accordionBean.selectedId}"
+            autoHeight="true" 
+            paneChangeListener="#{accordionBean.paneChangeListener}">
             <mobi:contentPane title="ICE Sailor" id="accordionPane1"
-                style="background-color:#00ADFF" client="#{accordionBean.clientSide}">
+                style="background-color:#00ADFF" client="true">
                 <div style="height:80px">
                     <ui:include src="/WEB-INF/includes/content/inc-icesailor.xhtml"/>
                 </div>
             </mobi:contentPane>
             <mobi:contentPane title="ICE Breaker" id="accordionPane2"
-                style="background-color:#C0F" client="#{accordionBean.clientSide}">
+                style="background-color:#C0F" client="true">
                 <div style="height:90px">
                     <ui:include src="/WEB-INF/includes/content/inc-icebreaker.xhtml"/>
                 </div>
             </mobi:contentPane>
             <mobi:contentPane title="ICE Skate" id="accordionPane3"
-                style="background-color:#F0C82A" client="#{accordionBean.clientSide}">
+                style="background-color:#F0C82A" client="true">
                 <div style="height:100px">
                     <ui:include src="/WEB-INF/includes/content/inc-iceskater.xhtml"/>
                 </div>
             </mobi:contentPane>
         </mobi:accordion>
         
-        <div style="margin:10px">#{accordionBean.paneChangeMsg}</div>
+        <h3>Fixed-height Accordion (200px)</h3>
+        <mobi:accordion id="fixedHeightAccordion" selectedId="#{accordionBean.selectedId2}"
+            fixedHeight="200px" 
+            paneChangeListener="#{accordionBean.paneChangeListener}">
+            <mobi:contentPane title="ICE Sailor" id="accordionPane4"
+                style="background-color:#00ADFF" client="true">
+                <p style="font-size:12px;padding:10px">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+            </mobi:contentPane>
+            <mobi:contentPane title="ICE Breaker" id="accordionPane5"
+                style="background-color:#C0F" client="true">
+                <p style="font-size:14px;padding:15px">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+            </mobi:contentPane>
+            <mobi:contentPane title="ICE Skate" id="accordionPane6"
+                style="background-color:#F0C82A" client="true">
+                <p style="font-size:16px;padding:20px">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+            </mobi:contentPane>
+        </mobi:accordion>
+        
         
 
     </h:form>
