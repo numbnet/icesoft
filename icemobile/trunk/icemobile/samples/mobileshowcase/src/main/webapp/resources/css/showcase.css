@@ -93,7 +93,6 @@
  }
 .exampleTabs > .mobi-tabset-tabs{ 
     z-index: 495; /* place example tabs underneath the app tabs */
-    /*border-top:1px solid #A5A9B6;*/
 }
 .mobi-pagePanel-footer .theme{
     position: absolute;
