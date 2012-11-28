@@ -14,7 +14,6 @@ public class ContactBean {
     private String name;
     private String phone;
     private String email;
-    private String pattern = "a";
 
     @ModelAttribute("contactBean")
     public org.icemobile.samples.springbasic.ContactBean createBean() {
@@ -43,14 +42,6 @@ public class ContactBean {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public String getPattern() {
-        return pattern;
-    }
-
-    public void setPattern(String pattern) {
-        this.pattern = pattern;
     }
 
     public String getRawContact() {
