@@ -15,7 +15,7 @@
       </mobi:fieldsetGroup>
       
       <mobi:panelPopup id="popup"
-             width = "260"
+             width="260"
              headerText="Group of popup items"
              autoCenter="false" style="top:50px;left:50px">
         <mobi:outputList inset="false" id="itemList">
@@ -40,14 +40,14 @@
             </mobi:outputListItem>
         </mobi:outputList>
         <div style="text-align:right;background-color:rgba(255, 255, 255, 0.5)">
-            <input type="button" value="Close via markup" class="mobi-button mobi-button-important"
+            <input type="button" value="Close" class="mobi-button mobi-button-important"
                 onclick="ice.mobi.panelPopup.closeClient('popup');"/>
         </div>
       </mobi:panelPopup>
       
       
       <mobi:panelPopup id="autoCenterPopup"
-                     width = "260"
+                     width="260"
                      headerText="Group of popup items"
                      autoCenter="true">
             <mobi:outputList inset="false" id="itemList">
@@ -72,7 +72,7 @@
                 </mobi:outputListItem>
             </mobi:outputList>
             <div style="text-align:right;background-color:rgba(255, 255, 255, 0.5)">
-                <input type="button" value="Close via markup" class="mobi-button mobi-button-important"
+                <input type="button" value="Close" class="mobi-button mobi-button-important"
                     onclick="ice.mobi.panelPopup.closeClient('autoCenterPopup');"/>
             </div>
         </mobi:panelPopup>
