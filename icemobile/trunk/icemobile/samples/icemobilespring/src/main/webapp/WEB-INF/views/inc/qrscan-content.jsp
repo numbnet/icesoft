@@ -6,7 +6,8 @@
 <form:form id="qrscanform" method="POST" modelAttribute="QRScanBean" cssClass="form">
 
     <mobi:getEnhanced/>
-    
+
+    <h3>QR Code Scanner</h3>
     <mobi:fieldsetGroup>
         <mobi:fieldsetRow>
             <label>Scan QR code:</label>
@@ -21,6 +22,26 @@
     <mobi:commandButton buttonType="important"
                        styleClass="submit"
                        value="Submit"
+                       type="submit"/>
+
+<br/>
+<h3>QR Code Generator</h3>
+
+ <mobi:fieldsetGroup>
+        <mobi:fieldsetRow>
+            <label>Enter plaintext:</label>
+            <mobi:inputText value="${QRScanBean.plaintextOne}" name="plaintextOne" />
+        </mobi:fieldsetRow>
+        <mobi:fieldsetRow styleClass="qr">
+            <label>QR Code:</label>
+            <div><mobi:qrcode value="${QRScanBean.plaintextOne}" />
+            </div>
+        </mobi:fieldsetRow>
+    </mobi:fieldsetGroup>
+
+    <mobi:commandButton buttonType="important"
+                       styleClass="submit"
+                       value="Create QRCode"
                        type="submit"/>
 
 </form:form>
