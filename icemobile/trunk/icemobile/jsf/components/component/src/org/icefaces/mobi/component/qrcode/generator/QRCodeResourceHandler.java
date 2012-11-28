@@ -1,8 +1,8 @@
 package org.icefaces.mobi.component.qrcode.generator;
 
-import org.icefaces.mobi.component.qrcode.generator.zxing.BarcodeFormat;
-import org.icefaces.mobi.component.qrcode.generator.zxing.common.BitMatrix;
-import org.icefaces.mobi.component.qrcode.generator.zxing.qrcode.QRCodeWriter;
+import org.icemobile.zxing.qrcode.QRCodeWriter;
+import org.icemobile.zxing.common.BitMatrix;
+import org.icemobile.zxing.BarcodeFormat;
 import org.icefaces.util.EnvUtils;
 
 import javax.faces.application.ResourceHandler;
