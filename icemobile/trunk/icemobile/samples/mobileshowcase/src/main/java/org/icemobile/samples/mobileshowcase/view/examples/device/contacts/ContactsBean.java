@@ -45,7 +45,6 @@ public class ContactsBean extends ExampleImpl<ContactsBean> implements Serializa
     private String name;
     private String phone;
     private String email;
-    private String pattern;
     
     public static final String BEAN_NAME = "contactsBean";
     
@@ -67,14 +66,6 @@ public class ContactsBean extends ExampleImpl<ContactsBean> implements Serializa
 
     public String getEmail() {
         return email;
-    }
-
-    public String getPattern() {
-        return pattern;
-    }
-
-    public void setPattern(String pattern) {
-        this.pattern = pattern;
     }
 
     public String getRawContact() {
