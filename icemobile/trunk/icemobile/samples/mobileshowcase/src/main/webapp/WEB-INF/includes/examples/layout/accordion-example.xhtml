@@ -31,33 +31,6 @@
             </mobi:fieldsetRow>
         </mobi:fieldsetGroup>
 
-        <h3>Accordion</h3>
-
-        <mobi:accordion id="accordion" selectedId="#{accordionBean.selectedId}"
-            autoHeight="#{accordionBean.autoHeight}" fixedHeight="#{accordionBean.fixedHeight}"
-            paneChangeListener="#{accordionBean.paneChangeListener}">
-            <mobi:contentPane title="ICE Sailor" id="accordionPane1"
-                style="background-color:#00ADFF">
-                <div style="height:80px">
-                    <ui:include src="/WEB-INF/includes/content/inc-icesailor.xhtml"/>
-                </div>
-            </mobi:contentPane>
-            <mobi:contentPane title="ICE Breaker" id="accordionPane2"
-                style="background-color:#C0F">
-                <div style="height:90px">
-                    <ui:include src="/WEB-INF/includes/content/inc-icebreaker.xhtml"/>
-                </div>
-            </mobi:contentPane>
-            <mobi:contentPane title="ICE Skate" id="accordionPane3"
-                style="background-color:#F0C82A">
-                <div style="height:100px">
-                    <ui:include src="/WEB-INF/includes/content/inc-iceskater.xhtml"/>
-                </div>
-            </mobi:contentPane>
-        </mobi:accordion>
-        
-        <h:outputText value="#{accordionBean.paneChangeMsg}" style="margin-left:10px"/>
-        
         <h3>Accordion Settings</h3>
         
         <mobi:fieldsetGroup>
@@ -71,9 +44,41 @@
                     singleSubmit="true" placeholder="Fixed height, eg '10em'"
                     style="font-size:12px"/>
                 <mobi:commandButton value="Clear" actionListener="#{accordionBean.clearFixedHeight}"
-                    style="max-width:50px;min-width:50px;"/>
-            </mobi:fieldsetRow>        
+                    style="max-width:50px;min-width:50px"/>
+            </mobi:fieldsetRow>   
+            <mobi:fieldsetRow>
+                <h:outputLabel for="clientSide" value="Client Side:" />
+                <mobi:flipswitch id="clientSide" value="#{accordionBean.clientSide}" singleSubmit="true"/>
+            </mobi:fieldsetRow>     
         </mobi:fieldsetGroup>
+
+        <h3>Accordion</h3>
+
+        <mobi:accordion id="accordion" selectedId="#{accordionBean.selectedId}"
+            autoHeight="#{accordionBean.autoHeight}" fixedHeight="#{accordionBean.fixedHeight}"
+            paneChangeListener="#{accordionBean.paneChangeListener}">
+            <mobi:contentPane title="ICE Sailor" id="accordionPane1"
+                style="background-color:#00ADFF" client="#{accordionBean.clientSide}">
+                <div style="height:80px">
+                    <ui:include src="/WEB-INF/includes/content/inc-icesailor.xhtml"/>
+                </div>
+            </mobi:contentPane>
+            <mobi:contentPane title="ICE Breaker" id="accordionPane2"
+                style="background-color:#C0F" client="#{accordionBean.clientSide}">
+                <div style="height:90px">
+                    <ui:include src="/WEB-INF/includes/content/inc-icebreaker.xhtml"/>
+                </div>
+            </mobi:contentPane>
+            <mobi:contentPane title="ICE Skate" id="accordionPane3"
+                style="background-color:#F0C82A" client="#{accordionBean.clientSide}">
+                <div style="height:100px">
+                    <ui:include src="/WEB-INF/includes/content/inc-iceskater.xhtml"/>
+                </div>
+            </mobi:contentPane>
+        </mobi:accordion>
+        
+        <div style="margin:10px">#{accordionBean.paneChangeMsg}</div>
+        
 
     </h:form>
 

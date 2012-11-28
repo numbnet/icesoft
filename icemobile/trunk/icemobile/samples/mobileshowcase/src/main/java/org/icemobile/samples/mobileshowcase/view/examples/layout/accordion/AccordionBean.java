@@ -48,6 +48,7 @@ public class AccordionBean extends ExampleImpl<AccordionBean> implements
     private boolean autoHeight = true;
     private String fixedHeight = "";
     private String paneChangeMsg;
+    private boolean clientSide = true;
 
     public AccordionBean() {
         super(AccordionBean.class);
@@ -88,6 +89,14 @@ public class AccordionBean extends ExampleImpl<AccordionBean> implements
 
     public String getPaneChangeMsg() {
         return paneChangeMsg;
+    }
+
+    public boolean isClientSide() {
+        return clientSide;
+    }
+
+    public void setClientSide(boolean clientSide) {
+        this.clientSide = clientSide;
     }
     
 }
