@@ -33,6 +33,7 @@
 package com.icesoft.faces.webapp.http.servlet;
 
 import com.icesoft.faces.context.View;
+import com.icesoft.faces.context.ViewStatus;
 import com.icesoft.faces.env.Authorization;
 import com.icesoft.faces.webapp.http.common.Configuration;
 import com.icesoft.faces.webapp.http.core.SessionExpiredException;
@@ -69,7 +70,6 @@ import org.apache.commons.logging.LogFactory;
 
 public abstract class SessionDispatcher implements PseudoServlet {
     private final static Log Log = LogFactory.getLog(SessionDispatcher.class);
-    private static final Log VIEW_LOG = LogFactory.getLog(View.class);
     //ICE-3073 - manage sessions with this structure
     private final static Map SessionMonitors = new HashMap();
 
@@ -351,9 +351,7 @@ public abstract class SessionDispatcher implements PseudoServlet {
 
         public void sessionDestroyed(HttpSessionEvent event) {
             HttpSession session = event.getSession();
-            if( VIEW_LOG.isDebugEnabled() ){
-                View.logViewStatus(session);
-            }
+            ViewStatus.log(session);
             notifySessionShutdown(session, session.getServletContext());
         }
     }
