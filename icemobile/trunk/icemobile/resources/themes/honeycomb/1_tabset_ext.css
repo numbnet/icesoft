@@ -28,9 +28,6 @@
     padding: 0 15px;
     -webkit-tap-highlight-color: rgba(101, 149, 249, 0.3);
 }
-.mobi-tabset > .mobi-tabset-tabs > ul > li:last-child{ 
-    border-right: none; 
-}
 .mobi-tabset > .mobi-tabset-tabs > ul > li.activeTab { 
     border-bottom: 3px solid #6595f9 !important; 
     line-height:39px;
