@@ -149,10 +149,9 @@
                 this.panels[i] = PanelPopup(clientId, cfgIn);
             } else {
                 var vis =  cfgIn.visible || false;
-                if (cfgIn.client && ice.mobi.panelPopup.visible[clientId]){
+             /*   if (cfgIn.client && ice.mobi.panelPopup.visible[clientId]){
                      vis = ice.mobi.panelPopup.visible[clientId];
-                }
-             //   console.log(" disabled="+cfgIn.disabled+"  VISIBLE="+vis);
+                } */
                 if (vis==true){
                    thisOne.openPopup(clientId, cfgIn);
                 }else{
