@@ -1430,14 +1430,6 @@
             <rtexprvalue>true</rtexprvalue>
         </attribute>
         <attribute>
-            <description>A complete pattern for matching users. Unfortunately,
-                no wildcards
-            </description>
-            <name>pattern</name>
-            <required>false</required>
-            <rtexprvalue>true</rtexprvalue>
-        </attribute>
-        <attribute>
             <description>Can contain one or more of name, email, and phone
                 fields for retrieval in an url-encoded list. Default is name
             </description>
