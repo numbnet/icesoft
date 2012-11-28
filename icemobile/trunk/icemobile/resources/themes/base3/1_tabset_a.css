@@ -14,9 +14,6 @@
  * governing permissions and limitations under the License.
  */
  
- .mobi-tabset-tabs{
-    /*box-sizing: border-box;*/
- }
 .mobi-tabset > .mobi-tabset-tabs > ul > li{
     -moz-box-sizing: border-box;
     box-sizing: border-box;
