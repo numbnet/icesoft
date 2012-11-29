@@ -26,6 +26,6 @@
     <mobi:outputListItem><a href="notifications">Cloud Push</a></mobi:outputListItem>
     <mobi:outputListItem><a href="contact">Contact List</a></mobi:outputListItem>
     <mobi:outputListItem><a href="microphone">Microphone</a></mobi:outputListItem>
-    <mobi:outputListItem><a href="qrscan">QR Scanner</a></mobi:outputListItem>
+    <mobi:outputListItem><a href="qrscan">QR Codes</a></mobi:outputListItem>
     
 </mobi:outputList>
