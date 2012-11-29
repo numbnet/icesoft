@@ -61,7 +61,7 @@ public class ContentPaneCoreRenderer extends BaseCoreRenderer {
                pointerClass+=" " + userDefinedClass;
           }
           writer.writeAttribute(CLASS_ATTR, styleClass);
-          writer.writeAttribute(STYLE_ATTR, pane.getStyle());
+     //     writer.writeAttribute(STYLE_ATTR, pane.getStyle());  style goes on contentPaneDiv
           writer.startElement(DIV_ELEM, pane);
           writer.writeAttribute(ID_ATTR, clientId+"_hndl");
           writer.writeAttribute(CLASS_ATTR, handleClass);
