@@ -37,7 +37,7 @@
         }
         if (mxht <= handleHt ) {
             mxht = 0;
-         //   console.log("COULD NOT CALC A mxht");
+            console.log("COULD NOT CALC A mxht");
         }
         return mxht;
     }
@@ -60,18 +60,11 @@
         }
     }
     function openPane(elem, h){
-        if (h){
-            setHeight(elem, h);
-        }
+        setHeight(elem, h);
         elem.className="open";
     }
     function closePane(elem, closeHt){
-        elem.style.height=closeHt;
-        elem.style.maxHeight= closeHt;
-     /*   if (closeHt) {   leave here in case closed class is removed as well
-            console.log("setting close height to="+closeHt);
-         setHeight(elem, closeHt);
-        }   */
+        setHeight(elem, closeHt);
         elem.className="closed";
     }
     function updateMaxHeight(clientId, mH, hH){
@@ -137,19 +130,14 @@
              ice.log.debug(ice.log, "Accordion has been disabled");
         }
         if (autoheight && (maxHeight==0)){
-           // console.log("\t had to listen for a height none calc");
             ice.onAfterUpdate(function() {
                 ice.mobi.accordionController.updateHeight(clientId, handleheight);
             });
         }
         return {
             toggle: function(clientId, el, cached) {
-              /*  if (disabled){
-                    ice.log.debug("accordion id="+clientId+" has been disabled");
-                    return;
-                } */
-                if (!el || disabled){
-                    ice.log.debug('accordion id='+clientId+' unable to open handle or is disabled');
+                if (!el || disabled){    //is getting triggered on page load
+                 //   ice.log.debug(ice.log, 'accordion id='+clientId+' unable to open handle or is disabled');
                     return;
                 }
                 var singleSubmit  = ice.mobi.accordionController.singleSubmit[clientId];

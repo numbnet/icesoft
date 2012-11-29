@@ -594,9 +594,7 @@ ice.mobi.tabsetController = {
         for (var i = 0; i < children.length; i++) {
             var anode = children[i];
             var max = Math.max(anode.offsetHeight, anode.scrollHeight, anode.clientHeight);
-            //init all classes to close
-         //   anode.className = "close";
-         //   anode.style.height = handleHt+"px";
+            //init all classes to close done in renderer
             if (max > 0 && max > mxht) {
                 mxht = max;
             }
@@ -627,21 +625,20 @@ ice.mobi.tabsetController = {
     }
     function setHeight(opened, fht){
         if (opened && fht){
-            opened.setAttribute("style", "height:"+fht+"; maxheight: "+fht+";");
+            opened.style.height=fht;
+            opened.style.maxHeight = fht;
         }
     }
     function openPane(elem, h){
-        if (h){
-            setHeight(elem, h);
-        }
+        setHeight(elem, h);
         elem.className="open";
     }
     function closePane(elem, closeHt){
-        elem.setAttribute("style", "");
+        setHeight(elem, closeHt);
         elem.className="closed";
     }
     function Accordion(clientId, cfgIn) {
-        var disabled = cfgIn || false;
+        var disabled = cfgIn.disabled || false;
         var containerId = clientId+"_acc" ;
         var paneOpId = cfgIn.opened || null;
         var accordRoot = document.getElementById(containerId);
@@ -654,6 +651,10 @@ ice.mobi.tabsetController = {
         var handleHt = handleheight+"px";
         var autoheight = cfgIn.autoHeight || false;
         var fixedHeight = cfgIn.fixedHeight || null;
+        var isFixedHeight = false
+        if (!autoheight && fixedHeight){
+            isFixedHeight=true;
+        }
         var fHtVal = cfgIn.fHtVal || null;
         if (!openElem){
              console.log("Accordion has no children");
@@ -684,7 +685,10 @@ ice.mobi.tabsetController = {
         }
         return {
             toggle: function(clientId, el, cached) {
-              //  alert('triggered event to open '+el.parentElement.id);
+                if (!el || disabled==true){
+                 //   console.log('accordion id='+clientId+' unable to open handle or is disabled');
+                    return;
+                }
                 var theParent = el.parentElement;
                 if (!theParent) {
                     theParent = el.parentNode; //mozilla
@@ -726,6 +730,9 @@ ice.mobi.tabsetController = {
                 if (autoheight != cfgUpd.autoHeight){
                     autoheight = cfgUpd.autoHeight;
                     changedAH=true;
+                }
+                if (!autoheight && fixedheight) {
+                    isFixedHeight = true;
                 }
                 if (changedAH || changedFH && autoheight){
                     ice.mobi.accordionController.maxHt[clientId]=null;
