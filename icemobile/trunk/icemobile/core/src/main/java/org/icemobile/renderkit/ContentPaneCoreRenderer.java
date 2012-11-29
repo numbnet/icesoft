@@ -82,8 +82,9 @@ public class ContentPaneCoreRenderer extends BaseCoreRenderer {
           String htString = accordion.getHeight();
           StringBuilder style = new StringBuilder(256);
           if (!autoheight && (null != htString) && !htString.equals("")) {
-              style.append( "height: ").append(htString).append("; max-height: ").append(htString);
-              style.append("; overflow-y: auto;");
+            //  style.append( "height: ").append(htString).append("; max-height: ").append(htString);
+             // style.append("; overflow-y: auto;");
+              style.append("overflow-y: auto; ");
           }
           if (pane.getStyle() !=null){
                style.append(pane.getStyle());

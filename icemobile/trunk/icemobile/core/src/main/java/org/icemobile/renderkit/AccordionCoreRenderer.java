@@ -103,8 +103,8 @@ public class AccordionCoreRenderer extends BaseCoreRenderer implements IRenderer
         }
         cfg.append("}");
          //just have to add behaviors if we are going to use them.
-        writer.writeText("ice.mobi.accordionController.initClient('"
-                + accordion.getClientId() + "'," +cfg.toString()+");");
+        writer.writeText("setTimeout(function () {ice.mobi.accordionController.initClient('"
+                + accordion.getClientId() + "'," +cfg.toString()+");"+"}, 200);");
         writer.endElement(SCRIPT_ELEM);
         writer.endElement(SPAN_ELEM);
         writer.endElement(DIV_ELEM);
