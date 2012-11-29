@@ -2,9 +2,6 @@ package org.icemobile.samples.spring.mediacast;
 
 import javax.validation.constraints.Size;
 
-import org.hibernate.validator.constraints.Email;
-import org.hibernate.validator.constraints.NotEmpty;
-
 public class UploadForm {
 	
 	public static final String PAGE_UPLOAD = "upload";
@@ -16,9 +13,6 @@ public class UploadForm {
 	public static final String DESKTOP = "d";
 	public static final String MOBILE = "m";
 	public static final String TABLET = "t";
-	
-	@NotEmpty @Email 
-	private String email;
 	
 	@Size(max = 164)
 	private String description;
@@ -48,14 +42,6 @@ public class UploadForm {
 		this.photoId = cleanParam(photoId);
 	}
 
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = cleanParam(email);
-	}
-
 	public String getDescription() {
 		return description;
 	}
@@ -78,10 +64,6 @@ public class UploadForm {
 				p = PAGE_UPLOAD;
 			}
 		}
-	}
-	
-	public boolean isEmpty(){
-		return this.email == null || this.email.length() == 0;
 	}
 	
 	public String cleanParam(String param){
@@ -108,7 +90,7 @@ public class UploadForm {
 
 	@Override
 	public String toString() {
-		return "UploadForm [email=" + email + ", description=" + description
+		return "UploadForm [description=" + description
 				+ ", l=" + l + ", p=" + p + ", photoId=" + photoId + ", form="
 				+ form  + "]";
 	}

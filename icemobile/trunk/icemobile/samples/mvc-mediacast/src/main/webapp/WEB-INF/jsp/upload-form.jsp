@@ -1,7 +1,8 @@
 <%@ include file="/WEB-INF/jsp/include.jsp"%>
 <div id="uploadFormContainer">
      
-    <form:form id="cameraUploadForm" method="POST" enctype="multipart/form-data" htmlEscape="true" style="text-align:center;">
+    <form:form id="uploadForm" method="POST" enctype="multipart/form-data" 
+        htmlEscape="true" cssClass="form">
         <input type="hidden" name="layout" value="${layout}"/>
         <input type="hidden" name="fullPost" id="fullPost" value="false"/>
         <input type="hidden" name="operation" id="operation"/>
@@ -9,40 +10,51 @@
         
         <mobi:getEnhanced/>
         
-        <mobi:fieldsetGroup inset="true" style="margin-top: 10px;">
-           <mobi:fieldsetRow style="font-weight: bold;text-align: center;color: #326ADB;">
-                <c:choose>
-                    <c:when test="${desktop}">
-                        Share a photo, video clip, or audio recording with your mobile device.
-                    </c:when>
-                    <c:otherwise>
-                        Upload a photo, video clip, or audio recording.
-                    </c:otherwise>
-                </c:choose>
+        <mobi:fieldsetGroup inset="true">
+           <mobi:fieldsetRow style="font-weight: bold;color: #326ADB">
+                <span>
+                    <c:choose>
+                        <c:when test="${desktop}">
+                            Share a photo, video clip, or audio recording with your mobile device.
+                        </c:when>
+                        <c:otherwise>
+                            Upload a photo, video clip, or audio recording.
+                        </c:otherwise>
+                    </c:choose>
+                </span>
            </mobi:fieldsetRow>
         </mobi:fieldsetGroup>
+        
+        <div id="msg" style="clear: both;margin:10px;font-size:12px;color:#326ADB;font-weight:bold">${msg}</div>
+        
         <c:if test="${sessionScope['sxRegistered'] or enhanced}">
-            <mobi:fieldsetGroup inset="true" style="margin-top: 10px;">
-                 <mobi:fieldsetRow style="text-align:center;">
-                    <c:if test="${!desktop and empty sessionScope['sxUpload']}">
-                        <mobi:camera id="upload" style="width:70%;vertical-align:top;max-width:200px;"/>
+            <mobi:fieldsetGroup inset="true">
+                 <mobi:fieldsetRow>
+                    <c:if test="${!desktop and empty sessionScope['sxPhotoUpload']}">
+                        <mobi:camera id="camera"/>
                     </c:if>
-                    <c:if test="${!sessionScope['sxRegistered']}">
-                        <mobi:thumbnail for="upload" style="margin: 0 2px"/>
+                    <c:if test="${!desktop and empty sessionScope['sxVideoUpload']}">
+                        <mobi:camcorder id="camcorder"/>
                     </c:if>
-                    <c:if test="${not empty sxThumbnail and not empty sessionScope['sxUpload']}">
+                    <c:if test="${!desktop and empty sessionScope['sxAudioUpload']}">
+                        <mobi:microphone id="microphone" buttonLabel="Audio"/>
+                    </c:if>
+                 </mobi:fieldsetRow>  
+                 <mobi:fieldsetRow>
+                     <c:if test="${!sessionScope['sxRegistered']}">
+                        <mobi:thumbnail for="camera"/>
+                    </c:if>
+                    <c:if test="${not empty sxThumbnail and not empty sessionScope['sxPhotoUpload']}">
                         <img src='resources/uploads/${sxThumbnail.name}'/>
                     </c:if>
-                 </mobi:fieldsetRow>
-                 <mobi:fieldsetRow style="min-height:0;">
-                     <mobi:inputText name="email" 
-                        styleClass="input"
-                        type="email"
-                        autoCorrect="off"
-                        placeholder="Email"
-                        value="${email}"/>
-                 </mobi:fieldsetRow>
-                 <mobi:fieldsetRow style="min-height:0;">
+                    <c:if test="${not empty sxVideoUpload}">
+                        <img src='resources/images/movieIcon.png' style="height:85px;width:81px"/>
+                    </c:if>
+                    <c:if test="${not empty sxAudioUpload}">
+                        <img src='resources/images/soundIcon.png' style="height:85px;width:81px"/>
+                    </c:if>
+                 </mobi:fieldsetRow>     
+                 <mobi:fieldsetRow>
                      <mobi:inputText name="description" 
                         styleClass="input"
                         type="textarea"
@@ -50,9 +62,8 @@
                         placeholder="Description"/>
                  </mobi:fieldsetRow>
                  <mobi:fieldsetRow style="text-align:center;">
-                    <div id="msg" style="margin: 0 0 8px 0;font-size:12px;color:#326ADB;font-weight:bold;">${msg}</div>
-                    <input type="submit" class="mobi-button mobi-button-default"
-                           value="Cancel" style="width:100px;margin-top:0;margin-bottom:0;"
+                    <input type="submit" class="mobi-button"
+                           value="Cancel" style="width:100px;margin-top:0;margin-bottom:0"
                            onclick="$('#operation').val('cancel')"/>
                     <input type="submit" class="mobi-button mobi-button-important"
                            value="Share" style="float:none;width:100px;margin-top:0;margin-bottom:0;"
@@ -68,7 +79,7 @@
         </mobi:fieldsetGroup>
     </form:form>
     <script type="text/javascript">
-        enhanceForm("#cameraUploadForm","#uploadFormContainer");
+        enhanceForm("#uploadForm","#root");
         window.onhashchange = function()  {
             if ("#icemobilesx" === window.location.hash)  {
                 window.location.hash = "";

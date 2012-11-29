@@ -10,5 +10,17 @@
         <div class="message-desc">
             <h3><c:out value="${media.description}"/></h3>
         </div>
+        <c:if test="${not empty media.video}">
+            <h3>Video</h3>
+            <div>
+                <video src="resources/uploads/${media.video.name}" controls="controls"></video>
+            </div>
+        </c:if>
+        <c:if test="${not empty media.audio}">
+            <h3>Audio</h3>
+            <div>
+                <audio src="resources/uploads/${media.audio.name}" controls="controls"></audio>
+            </div>
+        </c:if>
     </c:if>
 </div>

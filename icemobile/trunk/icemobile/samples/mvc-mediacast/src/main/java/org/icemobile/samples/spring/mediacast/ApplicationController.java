@@ -27,7 +27,6 @@ import javax.inject.Inject;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -49,7 +48,10 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.multipart.MultipartFile;
 
 @Controller
-@SessionAttributes(value = {"desktop", "sxThumbnail", "email", "enhanced",
+@SessionAttributes(value = {"desktop", "sxThumbnail", "enhanced",
+        ApplicationController.SX_VIDEO_UPLOAD_KEY,
+        ApplicationController.SX_AUDIO_UPLOAD_KEY,
+        ApplicationController.SX_PHOTO_UPLOAD_KEY,
         TagUtil.USER_AGENT_COOKIE, TagUtil.CLOUD_PUSH_KEY},
         types=UploadForm.class)
 public class ApplicationController implements ServletContextAware {
@@ -77,7 +79,9 @@ public class ApplicationController implements ServletContextAware {
     private static final String MOBILE = "m";
     private static final String TABLET = "t";
 
-    private static final String SX_UPLOAD_KEY = "sxUpload";
+    public static final String SX_PHOTO_UPLOAD_KEY = "sxPhotoUpload";
+    public static final String SX_VIDEO_UPLOAD_KEY = "sxVideoUpload";
+    public static final String SX_AUDIO_UPLOAD_KEY = "sxAudioUpload";
 
     @PostConstruct
     public void init(){
@@ -167,14 +171,14 @@ public class ApplicationController implements ServletContextAware {
         return view;
     }
 
-    @RequestMapping(value="/carousel", method = RequestMethod.GET)
+    @RequestMapping(value="/carousel")
     public String getCarouselContent(UploadForm form, Model model) {
         model.addAttribute("carouselItems", mediaService
                 .getMediaImageMarkup(form.getL()));
         model.addAttribute("layout",form.getL());
         return "carousel";
     }
-
+    
     @RequestMapping(value="/viewer", method = RequestMethod.GET)
     public String getViewerContent(@RequestParam(value="action", required=false) String action, 
             UploadForm form, Model model) {
@@ -217,111 +221,150 @@ public class ApplicationController implements ServletContextAware {
         return results;
     }
 
-
-
-
     private File getSXThumbnailFile(String sessionId){
         return new File(servletContext.getRealPath("/resources/uploads")
                 +File.separator+"sx-"+sessionId+"-small.png");
     }
 
-
     @RequestMapping(value="/app", method = RequestMethod.POST, consumes="multipart/form-data")
     public String postUpload(
             HttpServletRequest request,
             HttpServletResponse response,
-            @RequestParam(value = "upload", required = false) MultipartFile multiPart,
+            @RequestParam(value = "camera", required = false) MultipartFile cameraMultiPart,
+            @RequestParam(value = "camcorder", required = false) MultipartFile camcorderMultiPart,
+            @RequestParam(value = "microphone", required = false) MultipartFile microphoneMultiPart,
             @RequestParam(value="fullPost", defaultValue="true") String fullPost,
             @RequestParam(value="operation", required=false) String operation,
-            @Valid UploadForm form, BindingResult result,
+            UploadForm form, BindingResult result,
             @ModelAttribute("msg") String msg,
             @ModelAttribute("desktop") boolean desktop,
             Model model)
                     throws IOException {
+        
+        log.info("postUpload()");
 
         log.info("user-agent="+request.getHeader("User-Agent"));
         log.info(form);
         
-        if( multiPart != null ){
-            log.info("incoming upload " + multiPart.getContentType() + multiPart.getSize() );
+        if( cameraMultiPart != null ){
+            log.info("incoming camera upload " + cameraMultiPart.getContentType() + cameraMultiPart.getSize() );
+        }
+        if( camcorderMultiPart != null ){
+            log.info("incoming video upload " + camcorderMultiPart.getContentType() + camcorderMultiPart.getSize() );
+        }
+        if( microphoneMultiPart != null ){
+            log.info("incoming microphone upload " + microphoneMultiPart.getContentType() + microphoneMultiPart.getSize() );
         }
         
         if( operation != null && "cancel".equals(operation)){
-            request.getSession().removeAttribute(SX_UPLOAD_KEY);
+            log.info("redirecting on cancel");
+            request.getSession().removeAttribute(SX_PHOTO_UPLOAD_KEY);
+            request.getSession().removeAttribute(SX_AUDIO_UPLOAD_KEY);
+            request.getSession().removeAttribute(SX_VIDEO_UPLOAD_KEY);
             return "redirect:/" + "app?l=" + form.getL()+(MOBILE.equals(form.getL())?"p=upload":"");
         }
+        
+        boolean hasUpload = cameraMultiPart != null || camcorderMultiPart != null || microphoneMultiPart != null;
 
         //SX Image upload before full form post
-        if( multiPart != null && !"true".equals(fullPost) && SXUtils.isSXRegistered(request)){
+        if( hasUpload && !"true".equals(fullPost) && SXUtils.isSXRegistered(request)){
             log.info("SX upload");
             String sessionId = request.getSession().getId();
-            File sxMasterFile = getOriginalFile(sessionId);
-            multiPart.transferTo(sxMasterFile);
-            request.getSession().setAttribute(SX_UPLOAD_KEY, sxMasterFile);
-            File sxThumbnail = mediaHelper.processSmallImage(sxMasterFile, "sx-"+sessionId);
-            model.addAttribute("sxThumbnail",sxThumbnail);
-            model.addAttribute("email",form.getEmail());
+            if( cameraMultiPart != null ){
+                File sxPhotoMasterFile = getOriginalPhotoFile(sessionId);
+                cameraMultiPart.transferTo(sxPhotoMasterFile);
+                request.getSession().setAttribute(SX_PHOTO_UPLOAD_KEY, sxPhotoMasterFile);
+                File sxThumbnail = mediaHelper.processSmallImage(sxPhotoMasterFile, "sx-"+sessionId);
+                model.addAttribute("sxThumbnail",sxThumbnail);
+            }
+            else if( camcorderMultiPart != null ){
+                File sxVideoMasterFile = getOriginalVideoFile(sessionId);
+                camcorderMultiPart.transferTo(sxVideoMasterFile);
+                request.getSession().setAttribute(SX_VIDEO_UPLOAD_KEY, sxVideoMasterFile);
+                model.addAttribute(SX_VIDEO_UPLOAD_KEY,sxVideoMasterFile);
+            }
+            else if( microphoneMultiPart != null ){
+                File sxAudioMasterFile = getOriginalAudioFile(sessionId);
+                microphoneMultiPart.transferTo(sxAudioMasterFile);
+                request.getSession().setAttribute(SX_AUDIO_UPLOAD_KEY, sxAudioMasterFile);
+                model.addAttribute(SX_AUDIO_UPLOAD_KEY,sxAudioMasterFile);
+            }
             return postUploadFormResponseView(false, false, form.getL());
         }
 
         boolean success = false;
 
-        if (result.hasErrors() ) {
-            log.info("form has errors " + result);
-            if( form.getEmail() != null && form.getEmail().length() > 0 ){
-                model.addAttribute("msg","Is that your correct email?");
-                log.warn("invalid email");
+        File sxPhotoUpload = (File)request.getSession().getAttribute(SX_PHOTO_UPLOAD_KEY);
+        File sxVideoUpload = (File)request.getSession().getAttribute(SX_VIDEO_UPLOAD_KEY);
+        File sxAudioUpload = (File)request.getSession().getAttribute(SX_AUDIO_UPLOAD_KEY);
+        log.info("sxPhotoUpload="+sxPhotoUpload);
+        log.info("sxVideoUpload="+sxVideoUpload);
+        log.info("sxAudioUpload="+sxAudioUpload);
+        
+        File[] processedImageFiles = null;
+        MediaMessage media = new MediaMessage();
+        String id = newId();
+        media.setId(id);
+        media.setDescription(form.getDescription());
+        media.setCreated(System.currentTimeMillis());
+        //Save and process image files
+        if( cameraMultiPart != null || sxPhotoUpload != null ){
+            log.info("saving photo upload..");
+            File origPhotoFile = getOriginalPhotoFile(id);
+            if( sxPhotoUpload != null ){
+                sxPhotoUpload.renameTo(origPhotoFile);
+                File sxThumbnail = getSXThumbnailFile(request.getSession().getId());
+                if( sxThumbnail.exists() ){
+                    sxThumbnail.delete();
+                }
+                request.getSession().removeAttribute(SX_PHOTO_UPLOAD_KEY);
             }
             else{
-                model.addAttribute("msg","Sorry, I think you missed something.");
-                log.warn("missing required form values");
+                saveMultipartUploadToFile(cameraMultiPart,getOriginalPhotoFile(id));
             }
-
+            processedImageFiles = mediaHelper.processSmallAndLargeImages(origPhotoFile, id);
+            if( processedImageFiles != null ){
+                media.setSmallPhoto(processedImageFiles[0]);
+                media.setLargePhoto(processedImageFiles[1]);
+            }
         }
-        else{
-            log.info("form has no errors");
-            File sxUpload = (File)request.getSession().getAttribute(SX_UPLOAD_KEY);
-            if( sxUpload == null && (multiPart == null || multiPart.isEmpty()) ){
-                model.addAttribute("msg","Sorry, I think you missed the photo.");
+        //Save uploaded video files
+        if( camcorderMultiPart != null || sxVideoUpload != null ){
+            log.info("saving video upload...");
+            File origVideoFile = getOriginalVideoFile(id);
+            if( sxVideoUpload != null ){
+                sxVideoUpload.renameTo(origVideoFile);
+                request.getSession().removeAttribute(SX_VIDEO_UPLOAD_KEY);
             }
-            if( multiPart != null || sxUpload != null ){
-                String id = newId();
-                File origFile = getOriginalFile(id);
-                if( sxUpload != null ){
-                    sxUpload.renameTo(origFile);
-                    File sxThumbnail = getSXThumbnailFile(request.getSession().getId());
-                    if( sxThumbnail.exists() ){
-                        sxThumbnail.delete();
-                    }
-                    request.getSession().removeAttribute(SX_UPLOAD_KEY);
-                }
-                else{
-                    saveMultipartUploadToFile(multiPart,id);
-                }
-                File[] processedFiles = mediaHelper.processSmallAndLargeImages(origFile, id);
-                if( processedFiles != null ){
-                    MediaMessage media = new MediaMessage();
-                    media.setId(id);
-                    media.setDescription(form.getDescription());
-                    media.setEmail(form.getEmail());
-                    media.setCreated(System.currentTimeMillis());
-                    media.setSmallPhoto(processedFiles[0]);
-                    media.setLargePhoto(processedFiles[1]);
-                    mediaService.addMedia(media);
-                    log.info("created new media: "+media);
-
-                    model.addAttribute("msg","Thank you, your file was uploaded successfully.");
-                    model.addAttribute("email", form.getEmail());
-
-                    PushContext pc = PushContext.getInstance(servletContext);
-                    String pushId = pc.createPushId(request, response);
-                    pc.addGroupMember(form.getEmail(), pushId);
-                    pc.push("photos");  
-
-                    success = true;
-                }
-
+            else{
+                saveMultipartUploadToFile(camcorderMultiPart,origVideoFile);
             }
+            media.setVideo(origVideoFile);
+        }
+        //Save uploaded audio files
+        if( microphoneMultiPart != null || sxAudioUpload != null ){
+            log.info("saving audio upload...");
+            File origAudioFile = getOriginalAudioFile(id);
+            if( sxAudioUpload != null ){
+                sxAudioUpload.renameTo(origAudioFile);
+                request.getSession().removeAttribute(SX_AUDIO_UPLOAD_KEY);
+            }
+            else{
+                saveMultipartUploadToFile(microphoneMultiPart,origAudioFile);
+            }
+            media.setAudio(origAudioFile);
+        }
+        log.info("media.isHasMedia()="+media.isHasMedia());
+        if( media.isHasMedia() ){
+            mediaService.addMedia(media);
+            log.info("created new media: "+media);
+    
+            model.addAttribute("msg","Thank you, your files were uploaded successfully.");
+            
+            PushContext pc = PushContext.getInstance(servletContext);
+            pc.push("photos");  
+    
+            success = true;
         }
         addCommonModel(model, form.getL());
         return postUploadFormResponseView(isAjaxRequest(request),success,form.getL());
@@ -400,12 +443,24 @@ public class ApplicationController implements ServletContextAware {
                 Math.abs(UUID.randomUUID().getMostSignificantBits()), 32);
     }
 
-    private File getOriginalFile(String id){
-        String fileName = id + "-orig.jpg";
+    private File getOriginalPhotoFile(String id){
+        String fileName = id + ".jpg";
         String path = getUploadsDir() + File.separator + fileName;
         return new File(path);
     }
 
+    private File getOriginalVideoFile(String id){
+        String fileName = id + ".mp4";
+        String path = getUploadsDir() + File.separator + fileName;
+        return new File(path);
+    }
+    
+    private File getOriginalAudioFile(String id){
+        String fileName = id + ".m4a";
+        String path = getUploadsDir() + File.separator + fileName;
+        return new File(path);
+    }
+    
     private File getUploadsDir(){
         return new File(servletContext.getRealPath("/resources/uploads"));
     }
@@ -419,10 +474,8 @@ public class ApplicationController implements ServletContextAware {
         log.info("attempting checking upload dir " + exists + ", "+uploadsDir.getAbsolutePath());
     }
 
-    private File saveMultipartUploadToFile(MultipartFile upload, String id){
-        File file = null;
+    private File saveMultipartUploadToFile(MultipartFile upload, File file){
         if( upload != null && !upload.isEmpty()){
-            file = getOriginalFile(id);
             ensureUploadDirExists();
             log.info("writing new image file " + file.getAbsolutePath());
             try {

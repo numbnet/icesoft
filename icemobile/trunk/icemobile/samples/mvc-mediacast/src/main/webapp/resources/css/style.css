@@ -1,9 +1,4 @@
 /* INPUTS */
-
-input, textarea{ font-family: droid, Helvetica, Arial, sans-serif;}
-html.bberry input, html.bberry textara{
-    padding:3px;
-}
 html.android input::-webkit-input-placeholder, html.honeycomb input::-webkit-input-placeholder,
 html.android textarea::-webkit-input-placeholder, html.honeycomb textarea::-webkit-input-placeholder  {
     color:#333333;
@@ -13,49 +8,6 @@ html.android textarea::-webkit-input-placeholder, html.honeycomb textarea::-webk
     font-size:15px; 
 }
 
-/* FIELDSETS */
-
-.mobi-fieldset{
-    box-shadow: 0px 2px 7px gray;
-}
-html.android .mobi-fieldset, html.honeycomb .mobi-fieldset{
-	box-shadow: none;
-}
-.mobi-fieldset-row {
-    padding: 10px;
-}
-.mobi-fieldset-row > input:last-child, 
-.mobi-fieldset-row > select:last-child,
-.mobi-fieldset-row > textarea:last-child {
-	float: none;
-	-webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    -ms-box-sizing: border-box;
-    box-sizing: border-box;
-}
-
-/* BUTTONS */
-input.mobi-button:disabled{
-    opacity:0.5;
-}
-.mobi-button-group{
-	text-align:center;
-}
-html.android .mobi-button{
-	border-radius: 0.2em;
-	border: 1px solid white;
-}
-html.honeycomb .mobi-button{
-	color: white !important;
-    border-radius: 0.2em;
-}
-html.android a.mobi-button-default, 
-html.android a.mobi-button-important, 
-html.android a.mobi-button-attention,
-html.android .mobi-pagePanel-header a.mobi-button, 
-html.android .mobi-pagePanel-header a.mobi-button:visited {
-    color: black !important;
-}
 html.android .mobi-pagePanel-body a, html.android .mobi-pagePanel-footer a{
     color: #91C4E8;
 }
@@ -238,47 +190,12 @@ html.bberry .mobi-tabset-tabs > ul li {
 	   position: absolute;
 	   right: 75px;
     }
-    #left, #right{
-        overflow-y:scroll;
-        overflow-x:hidden;
-        -webkit-box-sizing: border-box;
-	    -moz-box-sizing: border-box;
-	    -ms-box-sizing: border-box;
-	    box-sizing: border-box;
-	    margin-top:0;
-	    margin-bottom:0;
-	    float:left;
-    }
-    #right{
-        width:70%;overflow:hidden;
-    }
-    #left{
-        width:30%;overflow-y: auto;
-        border-right:1px solid darkgray;
-    }
-}
-/* LARGE SCREEN PORTAIT */
-@media screen and (max-width: 999px) {  
-	#left #galleryFrm .mobi-list-item {
-	    min-width: 150px;
-	}
-	#left span.desc{
-       display: none;
-    }
-}
-#left #galleryFrm .mobi-list-item{
-    -webkit-transition: all 3s;
-    -moz-transition: all 3s ease-in-out;
-    -o-transition: all 3s ease-in-out;
-    -ms-transition: all 3s ease-in-out;
-    transition:  all 3s ease-in-out;
 }
 .title-msg{
 	position: absolute;
 	left: 5px;
 	font-size: 15px;
 }
-
 .viewer-back{
 	width: 23px; height: 34px;
 	background: url('css-images/back.png') center right no-repeat;
@@ -300,22 +217,9 @@ html.bberry .mobi-tabset-tabs > ul li {
 	padding: 10px;
     opacity: 0.6;
 }
-
-#tally{
-	position: absolute;
-	color: black;
-	opacity: 0.4;
-	font-weight: bold;
-	font-style: italic;
-	text-align: center;
-	background-color: white;
-	width: 100%;
-	font-size: 18px;
-}
 #tabstab1_wrapper{
 	background-color:black;
 }
-
 #uploadFormContainer{
 	clear:both;
 	padding-top: 10px;
@@ -334,4 +238,101 @@ html.android div.ajaxloader, html.honeycomb div.ajaxloader{
 }
 html.bberry div.ajaxloader{
     background: transparent url('./css-images/ajax-loader-bberry.gif') no-repeat right top;  
+}
+.form .mobi-fieldset{
+    text-align:center;
+    clear:both;
+}
+.form .mobi-fieldset-row{
+    display: -webkit-box;
+    display: -moz-box;
+    -webkit-box-orient: horizontal;
+    -moz-box-orient: horizontal;
+    -webkit-box-align: center;
+    -moz-box-align: center;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    -moz-box-orient: horizontal;
+    box-orient: horizontal;
+    position: relative;
+    min-width:100%;
+}
+.form .mobi-fieldset.intro{
+    text-align:left;
+}
+.form .mobi-fieldset.intro > .mobi-fieldset-row{
+    display:block;
+}
+.form p{ text-align:left; margin:0;}
+.form .mobi-fieldset-row .mobi-getenhanced{
+    display: block;
+    width: 100%;
+}
+.form .mobi-fieldset-row .mobi-getenhanced .mobi-button{
+    box-sizing: content-box;
+}
+.form label{
+    width:100px;
+    text-align:left;
+    -webkit-box-flex: 1;
+    -moz-box-flex: 1;
+    box-sizing: border-box;
+    overflow: hidden;
+    display: block!important;
+    float: none!important;
+}
+.form .mobi-fieldset-row > input, 
+.form .mobi-fieldset-row > select, 
+.form .mobi-fieldset-row > span,
+.form .mobi-fieldset-row > textarea{
+    -webkit-box-flex: 2;
+    -moz-box-flex: 2;
+    -moz-box-sizing: border-box;
+    -wekit-box-sizing: border-box;
+    box-sizing: border-box;
+    overflow: hidden;
+    display: block!important;
+    float: none!important;
+}
+.form .mobi-fieldset-row > span.mobi-thumb, .form .mobi-fieldset-row > span.mobi-thumb-done{
+    display: inline-block!important;
+}
+.form .mobi-fieldset-row > span > input{
+    display:block;
+    width:100%;
+ }
+.form .mobi-fieldset > .mobi-fieldset-row > .mobi-button{
+    -moz-box-sizing: border-box;
+    -wekit-box-sizing: border-box;
+    box-sizing: border-box;
+    overflow: hidden;
+    display: block!important;
+    float: none!important;
+    -webkit-box-flex: 1;
+    -moz-box-flex: 1;
+}
+.form h3{
+    clear:both;
+    padding-top:10px;
+}
+
+/* LARGE SCREEN */
+@media screen and (min-width: 580px) {  
+    input.submit, button.submit{
+        float: right !important;
+        margin: 0 10px;
+        width: 100%;
+        max-width: 35%;
+        margin-bottom:10px;
+    }
+}
+/* SMALL SCREEN */
+@media screen and (max-width: 579px) {  
+    input.submit, button.submit{
+        display: block;
+        margin: 10px auto;
+        width: 100%;
+        max-width: 300px;
+        margin-bottom:10px;
+    }
 }

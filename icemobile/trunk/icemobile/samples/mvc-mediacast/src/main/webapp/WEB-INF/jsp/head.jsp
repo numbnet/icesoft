@@ -14,5 +14,5 @@
             }
         %>
     </script>
-    <mobi:googleAnalytics account="test" domain="www.icemobile.org"/>
+    <mobi:googleAnalytics/>
 </head>
