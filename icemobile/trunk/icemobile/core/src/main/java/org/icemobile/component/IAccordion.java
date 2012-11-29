@@ -13,8 +13,8 @@ public interface IAccordion extends IMobiComponent{
     public static final String LIB_JSF = "org.icefaces.component.accordion";
     public static final String LIB_JSP = "javascript";
         
-    public void setFixedHeight(String fixedHeight);
-    public String getFixedHeight();
+    public void setHeight(String fixedHeight);
+    public String getHeight();
     public void setSelectedId(String currentId);
     public String getSelectedId();
     public void setAutoHeight(boolean autoHeight);

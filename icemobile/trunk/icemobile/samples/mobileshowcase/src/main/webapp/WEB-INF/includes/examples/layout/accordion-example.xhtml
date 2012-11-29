@@ -19,7 +19,7 @@
              xmlns:ui="http://java.sun.com/jsf/facelets"
              xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
 
-    <h:form styleClass="form" style="min-height:600px">
+    <h:form id="accordionFormEx" styleClass="form" style="min-height:600px">
     
         <mobi:fieldsetGroup styleClass="intro">
             <mobi:fieldsetRow>
@@ -31,7 +31,7 @@
             </mobi:fieldsetRow>
         </mobi:fieldsetGroup>
         
-        <div style="margin:10px">#{accordionBean.paneChangeMsg}</div>
+        <div id="msgAcc" style="margin:10px">#{accordionBean.paneChangeMsg}</div>
 
         <h3>Auto-height Accordion</h3>
         <mobi:accordion id="autoHeightAccordion" selectedId="#{accordionBean.selectedId}"
@@ -39,9 +39,9 @@
             paneChangeListener="#{accordionBean.paneChangeListener}">
             <mobi:contentPane title="ICE Sailor" id="accordionPane1"
                 style="background-color:#00ADFF" client="true">
-                <div style="height:80px">
+
                     <ui:include src="/WEB-INF/includes/content/inc-icesailor.xhtml"/>
-                </div>
+
             </mobi:contentPane>
             <mobi:contentPane title="ICE Breaker" id="accordionPane2"
                 style="background-color:#C0F" client="true">
@@ -59,7 +59,7 @@
         
         <h3>Fixed-height Accordion (200px)</h3>
         <mobi:accordion id="fixedHeightAccordion" selectedId="#{accordionBean.selectedId2}"
-            fixedHeight="200px" autoHeight="false"
+            height="200px" autoHeight="false"
             paneChangeListener="#{accordionBean.paneChangeListener}">
             <mobi:contentPane title="ICE Sailor" id="accordionPane4"
                 style="background-color:#00ADFF" client="true">

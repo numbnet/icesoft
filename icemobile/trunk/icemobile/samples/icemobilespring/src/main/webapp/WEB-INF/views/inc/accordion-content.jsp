@@ -44,7 +44,7 @@
 
 	<mobi:accordion id="accordionNoAutoHeight"
 		selectedId="${accordionBean.selectedId2}" autoHeight="false"
-		fixedHeight="200px">
+		height="200px">
 		<mobi:accordionPane title="ICE Sailor" id="accordionPane4"
 			style="background-color:#00ADFF">
 			<%@ include file="inc-icesailor.jsp"%>
