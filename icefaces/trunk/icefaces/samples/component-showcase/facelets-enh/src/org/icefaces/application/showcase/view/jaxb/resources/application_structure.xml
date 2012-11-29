@@ -1041,7 +1041,7 @@
                 <documents>
                     <resource-reference
                             label="Menu Popup"
-                            resourceRef="menuPopupContentDesc"/>
+                            resourceRef="menuPopupDoc"/>
                 </documents>
                 <tlds>
                     <resource-reference
@@ -2236,6 +2236,9 @@
             <resource id="menuBarDoc"
                       pathType="include"
                       path="/docs/menuBarDoc.html"/>
+            <resource id="menuPopupDoc"
+                      pathType="include"
+                      path="/docs/menuPopupDoc.html"/>
             <resource id="outputConnectionStatusDoc"
                       pathType="include"
                       path="/docs/outputConnectionStatusDoc.html"/>
