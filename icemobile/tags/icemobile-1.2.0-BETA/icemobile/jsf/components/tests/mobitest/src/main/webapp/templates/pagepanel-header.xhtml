@@ -1,0 +1,27 @@
+<!DOCTYPE html >
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
+<h:head>
+    <title>ICEmobile</title>
+    <mobi:deviceResource/>
+    <ui:insert name="head"/>
+</h:head>
+<h:body>
+    <mobi:pagePanel>
+        <f:facet name="header">
+            ICEmobile Tests
+        </f:facet>
+        <f:facet name="body">
+            <mobi:largeView>
+                <ui:insert name="large"/>
+            </mobi:largeView>
+            <mobi:smallView>
+                <ui:insert name="small"/>
+            </mobi:smallView>
+        </f:facet>
+    </mobi:pagePanel>
+</h:body>
+</html>
