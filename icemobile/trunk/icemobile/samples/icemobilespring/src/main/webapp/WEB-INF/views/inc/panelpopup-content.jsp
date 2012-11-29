@@ -6,7 +6,7 @@
 	uri="http://www.icepush.org/icepush/jsp/icepush.tld"%>
 <div class="panelContent">
 
-	<h2>PanelPopup Component</h2>
+	<h3>PanelPopup Component</h3>
 
 	<mobi:fieldsetGroup>
 		<mobi:fieldsetRow group="true">
