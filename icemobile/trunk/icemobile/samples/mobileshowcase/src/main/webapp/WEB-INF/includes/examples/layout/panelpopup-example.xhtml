@@ -33,8 +33,7 @@
                          visible="#{panelPopupBean.visible}"
                          clientSide="#{panelPopupBean.clientSide}"
                          autoCenter="#{panelPopupBean.autoCenter}"
-                         width="#{panelPopupBean.width}"
-                         height="#{panelPopupBean.height}"
+                         width="260"
                          style="#{panelPopupBean.autoCenter ? '' : 'top:50px;left:50px'}">
             <mobi:outputList inset="false">
                 <mobi:outputListItem group="true">
@@ -122,14 +121,6 @@
             <mobi:fieldsetRow>
                 <h:outputLabel for="autoCenter" value="Auto-center:"/>
                 <mobi:flipswitch id="autoCenter" value="#{panelPopupBean.autoCenter}" singleSubmit="true"/>
-            </mobi:fieldsetRow>
-            <mobi:fieldsetRow>
-                <h:outputLabel for="width" value="Width:"/>
-                <mobi:inputText id="width" value="#{panelPopupBean.width}" singleSubmit="true" type="number"/>
-            </mobi:fieldsetRow>
-            <mobi:fieldsetRow>
-                <h:outputLabel for="height" value="Height:"/>
-                <mobi:inputText id="height" value="#{panelPopupBean.height}" singleSubmit="true" type="number"/>
             </mobi:fieldsetRow>
         </mobi:fieldsetGroup>
 
