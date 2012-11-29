@@ -32,6 +32,8 @@ import java.util.Map;
 
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
+import javax.faces.component.UIData;
+import javax.faces.component.UINamingContainer;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
@@ -51,10 +53,32 @@ public class DraggableRenderer extends CoreRenderer {
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
         Draggable draggable = (Draggable) component;
         String clientId = draggable.getClientId(context);
+		String datasourceId = draggable.getDatasource();
 
         if(params.containsKey(clientId)) {
             if (params.containsKey(clientId + "_dragStart")) {
-				DragDropEvent event = new DragDropEvent(draggable, clientId, null);
+				String dragId = params.get(clientId + "_dragStart"); // id of component being dragged
+				if (dragId == null) dragId = "";
+				DragDropEvent event = null;
+				if (datasourceId != null) {
+					UIData datasource = findDatasource(context, draggable, datasourceId);
+					String[] idTokens = dragId.split(String.valueOf(UINamingContainer.getSeparatorChar(context)));
+					int rowIndex;
+					try {
+						rowIndex = Integer.parseInt(idTokens[idTokens.length - 2]);
+					} catch (Exception e) {
+						rowIndex = -1;
+					}
+					datasource.setRowIndex(rowIndex);
+					Object data = datasource.getRowData();
+					datasource.setRowIndex(-1);
+
+					event = new DragDropEvent(draggable, dragId, null, data);
+
+				}
+				else {
+					event = new DragDropEvent(draggable, dragId, null, null);
+				}
 				draggable.queueEvent(event);
 			}
         }
@@ -139,5 +163,14 @@ public class DraggableRenderer extends CoreRenderer {
                 throw new FacesException("Cannot find component \"" + _for + "\" in view.");
             else return component.getClientId(facesContext);
         else  return draggable.getParent().getClientId(facesContext);
+    }
+	
+    protected UIData findDatasource(FacesContext context, Draggable draggable, String datasourceId) {
+        UIComponent datasource = draggable.findComponent(datasourceId);
+        
+        if(datasource == null)
+            throw new FacesException("Cannot find component \"" + datasourceId + "\" in view.");
+        else
+            return (UIData) datasource;
     }
 }
