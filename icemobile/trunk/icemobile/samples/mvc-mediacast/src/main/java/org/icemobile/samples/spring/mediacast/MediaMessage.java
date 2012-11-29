@@ -27,7 +27,6 @@ public class MediaMessage implements Serializable{
 	private static final Logger logger =
 			Logger.getLogger(MediaMessage.class.toString());
 
-	private String email;
 	private String title;
 	private String id;
 	private String description;
@@ -52,7 +51,6 @@ public class MediaMessage implements Serializable{
 		audio = null;
 		description = null;
 		direction = 0;
-		email = null;
 		id = null;
 		latitude = 0;
 		longitude = 0;
@@ -69,7 +67,6 @@ public class MediaMessage implements Serializable{
 		cloned.setAudio(audio);
 		cloned.setDescription(description);
 		cloned.setDirection(direction);
-		cloned.setEmail(email);
 		cloned.setId(id);
 		cloned.setLatitude(latitude);
 		cloned.setLongitude(longitude);
@@ -198,7 +195,7 @@ public class MediaMessage implements Serializable{
 
 	 @Override
 	public String toString() {
-		return "MediaMessage [email=" + email + ", title=" + title + ", id="
+		return "MediaMessage [title=" + title + ", id="
 				+ id + ", description=" + description + ", tags=" + tags
 				+ ", latitude=" + latitude + ", longitude=" + longitude
 				+ ", altitude=" + altitude + ", direction=" + direction
@@ -207,15 +204,7 @@ public class MediaMessage implements Serializable{
 				+ ", largePhoto=" + largePhoto + ", created=" + created + "]";
 	}
 
-	 public String getEmail() {
-		 return email;
-	 }
-
-	 public void setEmail(String email) {
-		 this.email = email;
-	 }
-
-	 public long getCreated() {
+	public long getCreated() {
 		 return created;
 	 }
 
