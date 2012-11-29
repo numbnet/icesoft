@@ -24,30 +24,24 @@
 		autoWidth="${viewSize eq 'small'}">
 		<mobi:headers>
 			<mobi:header>
-				<span class="mobitab">Desktop</span>
+				<span class="mobitab">Ice Sailer</span>
 			</mobi:header>
 			<mobi:header>
-				<span class="mobitab">Mobile</span>
+				<span class="mobitab">Ice Breaker</span>
 			</mobi:header>
 			<mobi:header>
-				<span class="mobitab">Ultra Mobile</span>
+				<span class="mobitab">Ice Skater</span>
 			</mobi:header>
 		</mobi:headers>
 		<mobi:content>
 			<mobi:contentPane>
-				<div>
-					<img src="resources/desktop.png"></img>
-				</div>
+				<%@ include file="fieldset-icesailor.jsp"%>
 			</mobi:contentPane>
 			<mobi:contentPane>
-				<div>
-					<img src="resources/laptop.png"></img>
-				</div>
+				<%@ include file="fieldset-icebreaker.jsp"%>
 			</mobi:contentPane>
 			<mobi:contentPane>
-				<div>
-					<img src="resources/pda.png"></img>
-				</div>
+				<%@ include file="fieldset-iceskate.jsp"%>
 			</mobi:contentPane>
 		</mobi:content>
 	</mobi:tabSet>
