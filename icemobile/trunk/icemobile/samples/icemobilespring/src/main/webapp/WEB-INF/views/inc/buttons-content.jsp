@@ -32,7 +32,7 @@
 				style="width:130px" />
 		</mobi:fieldsetRow>
 		<mobi:fieldsetRow styleClass="mobi-center">
-			<mobi:commandButton buttonType="back" value="Back"/>
+			<mobi:commandButton buttonType="back" value="Back" styleClass="back" />
 		</mobi:fieldsetRow>
 		<mobi:fieldsetRow>
 			<mobi:commandButton id="disabledDefault" value="Disabled"
