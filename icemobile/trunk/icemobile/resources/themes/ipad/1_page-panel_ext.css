@@ -14,7 +14,7 @@
  * governing permissions and limitations under the License.
  */
  
- .mobi-pagePanel-header {
+ .mobi-pagePanel-header, .mobi-pagePanel-footer {
     background: -moz-linear-gradient(top, #f4f5f7, #a8acb9) repeat scroll 0 0 #a8acb9;
     background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0, #f4f5f7), color-stop(1, #a8acb9));
     filter: progid:DXImageTransform.Microsoft.gradient(startColorStr = '#f4f5f7', EndColorStr = '#a8acb9');
