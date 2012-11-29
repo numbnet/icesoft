@@ -99,6 +99,9 @@ public class DraggableMeta extends UIComponentBaseMeta {
               tlddoc = "The opacity for the helper during dragging. Values can range from 0.00 to 1.00.")
     Double opacity;
 	
+    @Property(tlddoc = "Allows you to set the ID of an UIData component that will provide a Java object as input for the drag start event. That object is defined by matching the index of the draggable to an object at the same index in the UIData component backing.")
+    String datasource;
+	
     @Property(expression = Expression.METHOD_EXPRESSION,
               methodExpressionArgument = "org.icefaces.ace.event.DragDropEvent",
               tlddoc = "MethodExpression reference to a method called whenever the target component starts to be dragged.")

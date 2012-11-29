@@ -56,7 +56,7 @@ ice.ace.Draggable.prototype.setupDragStartHandler = function() {
         };
 	
         var params = {};
-        params[_self.id + "_dragStart"] = true;
+        params[_self.id + "_dragStart"] = ui.helper.attr('id');
 
         options.params = params;
 
