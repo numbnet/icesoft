@@ -214,7 +214,7 @@ html.honeycomb h3, html.android h3{
     padding: 0 1%;
     font-weight:normal;
 }
-.form{ min-height: 400px; }
+html.android .form, html.honeycomb .form{ height: 100%; }
 .form .mobi-fieldset{
     text-align:center;
 }
