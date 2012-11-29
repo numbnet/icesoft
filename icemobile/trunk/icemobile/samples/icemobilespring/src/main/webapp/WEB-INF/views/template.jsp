@@ -24,7 +24,6 @@
             </mobi:pagePanel>
             <script type="text/javascript">
             MvcUtil.enhanceLink(document.getElementById('menuLink'),"body");
-            window.scrollTo(0, 0);
             </script>
          </div>
     </mobi:smallView>

@@ -55,7 +55,7 @@
 		<mobi:fieldsetGroup>
 			<mobi:fieldsetRow>
 				<video src="${camcorderUpload}" controls="controls"
-					class="imageView"></video>
+					class="imageView" style="min-width:200px"></video>
 				<br>
 				<a href="${camcorderUpload}">Play</a>
 			</mobi:fieldsetRow>
