@@ -33,7 +33,8 @@
     <ui:param name="tldResources" value="#{dataTableResources.tldResources}"/>
 
     <ui:define name="example">
-        <h:form id="form2">
+        <h:form id="form2"
+                style="width:70%; margin:auto;">
             <ace:dataTable id="carTable"
                            widgetVar="carTable"
                            columnPinning="true"
@@ -43,7 +44,7 @@
                            selectionMode="single"
                            scrollable="true"
                            scrollHeight="200"
-                           style="width:70%; margin:auto;">
+                           scrollWidthIE7="800">
                <ace:ajax event="pin" />
                <ace:ajax event="unpin" />
 

@@ -62,7 +62,6 @@
 .ui-datatable .ui-header-right {
     display:inline-block;
     white-space: nowrap;
-    position: relative;
 }
 
 .ui-datatable .ui-header-left {
@@ -292,10 +291,13 @@
     width:16px; /* required for inline-block on IE7 */
 }
 
-th .ui-pin-control > a > span.ui-icon {
+.ui-datatable th .ui-pin-control > a > span.ui-icon {
     background-position: -240px -48px;
 }
 
-th.pinned .ui-pin-control > a > span.ui-icon {
+.ui-datatable th.pinned .ui-pin-control > a > span.ui-icon {
     background-position: -208px -48px;
+}
+.ui-datatable .ui-datatable-scrollable-header {
+    zoom:1;
 }
