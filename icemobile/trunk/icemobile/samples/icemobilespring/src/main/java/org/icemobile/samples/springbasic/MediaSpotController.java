@@ -127,8 +127,9 @@ public class MediaSpotController {
 	
 	//non-file upload
 	@RequestMapping(value = "/mediaspot", method=RequestMethod.POST)
-    public void processPost(Model model)  {
-        model.addAttribute("locations", messages.values());
+    public void processPost(HttpServletRequest request, Model model)  {
+		model.addAttribute("locations", messages.values());
+		model.addAttribute("markers", getMarkerList(request));
         if (null != selectedMessage) {
             model.addAttribute("selection", selectedMessage.getTitle());
             model.addAttribute("imgPath", 
