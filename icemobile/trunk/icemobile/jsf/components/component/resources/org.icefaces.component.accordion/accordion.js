@@ -54,7 +54,9 @@
     }
     function setHeight(opened, fht){
         if (opened && fht){
-            opened.setAttribute("style", "height:"+fht+"; maxHeight: "+fht+";");
+           // opened.setAttribute("style", "height:"+fht+"; maxHeight: "+fht+";");
+            opened.style.height=fht;
+            opened.style.maxHeight = fht;
         }
     }
     function openPane(elem, h){
@@ -64,7 +66,8 @@
         elem.className="open";
     }
     function closePane(elem, closeHt){
-        elem.setAttribute("style", "");
+        elem.style.height=closeHt;
+        elem.style.maxHeight= closeHt;
      /*   if (closeHt) {   leave here in case closed class is removed as well
             console.log("setting close height to="+closeHt);
          setHeight(elem, closeHt);
@@ -106,7 +109,7 @@
         var fHtVal = cfgIn.fHtVal || null;
         if (!openElem){
             ice.log.debug(ice.log,"Accordion has no children");
-            this.disable(clientId);
+            this.setDisabled(true);
         }
         var handleheight = getHandleHeight(accordRoot);
         var handleht = handleheight + "px";
@@ -122,7 +125,8 @@
             fixedHeight = maxHeight+"px";
         } else if (fixedHeight){
             if (fHtVal){
-                fixedHeight = fHtVal+handleheight + "px";
+                var val = parseInt(fHtVal)+ parseInt(handleheight);
+                fixedHeight = val + "px";
             }else {
                 fixedHeight = calcFixedSectionHeight(fixedHeight, handleheight);
             }
@@ -140,6 +144,14 @@
         }
         return {
             toggle: function(clientId, el, cached) {
+              /*  if (disabled){
+                    ice.log.debug("accordion id="+clientId+" has been disabled");
+                    return;
+                } */
+                if (!el || disabled){
+                    ice.log.debug('accordion id='+clientId+' unable to open handle or is disabled');
+                    return;
+                }
                 var singleSubmit  = ice.mobi.accordionController.singleSubmit[clientId];
                 if (autoheight){
                     maxHeight = updateMaxHeight(clientId, maxHeight, handleheight);
@@ -174,7 +186,6 @@
                         openPane(theParent,fixedHeight);
                         paneOpId = theParent.id;
                         openElem = theParent;
-                      //  openPane(openElem, fixedHeight);
                     }
                     if (!cached && singleSubmit) {
                         if (lastServerId == theParent.id){
@@ -200,6 +211,9 @@
             } ,
             updateProperties: function (clientId, cfgUpd) {
                 disabled = cfgUpd.disabled || false;
+                if (disabled){
+                    return;
+                }
                 var changedFH = false;
                 var changedAH = false;
                 if (fixedHeight != cfgUpd.fixedHeight) {
@@ -234,10 +248,8 @@
                     }
                 } else if (fixedHeight && changedFH){
                     if (cfgUpd.fHtVal){
-                        var val = parseInt(fixedHeight);
-                        var val2 = parseInt(handleheight);
-                        var val3 = val + val2;
-                        fixedHeight = val3 + "px";
+                        var val = parseInt(fixedHeight) + parseInt(handleheight);
+                        fixedHeight = val + "px";
                     }else {
                         fixedHeight = calcFixedSectionHeight(fixedHeight, handleheight);
                     }

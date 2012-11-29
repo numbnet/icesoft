@@ -77,6 +77,9 @@ public class AccordionCoreRenderer extends BaseCoreRenderer implements IRenderer
         }
         cfg.append(", hash: ").append(hashcode);
         cfg.append(", autoHeight: ").append(autoheight);
+        if (accordion.isDisabled()){
+            cfg.append(", disabled: ").append(accordion.isDisabled());
+        }
         String fixedHeight = accordion.getFixedHeight();
         if (fixedHeight!=null && !autoheight && fixedHeight.length()>0){
             int fixedHtVal = -1;

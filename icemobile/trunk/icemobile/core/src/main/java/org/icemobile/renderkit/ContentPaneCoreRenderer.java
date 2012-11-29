@@ -78,20 +78,23 @@ public class ContentPaneCoreRenderer extends BaseCoreRenderer {
           writer.writeText(title);
           writer.endElement(DIV_ELEM);
           writer.startElement(DIV_ELEM, pane);
+          writer.writeAttribute(ID_ATTR, clientId+"wrp");
           String htString = accordion.getFixedHeight();
+          StringBuilder style = new StringBuilder(256);
           if (!autoheight && (null != htString) && !htString.equals("")) {
+              style.append( "height: ").append(htString).append("; max-height: ").append(htString);
+              style.append("; overflow-y: auto;");
             //  writer.writeAttribute(STYLE_ATTR, "height: "+accordion.getFixedHeight()+";"); // overflow-y: scroll;") ;
-               writer.writeAttribute(STYLE_ATTR, "height: "+htString+"; max-height: "+htString+"; overflow-y: auto;") ;
+            //   writer.writeAttribute(STYLE_ATTR, "height: "+htString+"; max-height: "+htString+"; overflow-y: auto;") ;
+          }
+          if (pane.getStyle() !=null){
+               style.append(pane.getStyle());
+          }
+          if (style.length()>0){
+              writer.writeAttribute(STYLE_ATTR, pane.getStyle());
           }
           writer.startElement(DIV_ELEM, pane);
           writer.writeAttribute(ID_ATTR, clientId);
-          if (pane.getStyle() !=null){
-              writer.writeAttribute(STYLE_ATTR, pane.getStyle());
-          }
-          if (userDefinedClass!=null){
-              writer.writeAttribute(CLASS_ATTR, userDefinedClass);
-          }
      }
-
 
 }

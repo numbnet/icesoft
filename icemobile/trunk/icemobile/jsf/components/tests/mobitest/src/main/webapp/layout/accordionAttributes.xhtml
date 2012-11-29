@@ -26,37 +26,35 @@
           content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
     <meta name="apple-mobile-web-app-capable" content="yes"/>
     <meta name="apple-mobile-web-app-status-bar-style" content="black"/>
-    <title>Accordion testing dynamic attributes</title>
-
+    <title>Accordion dynamic attributes test</title>
     <mobi:deviceStylesheet
             name="#{themeSwitcher.theme}" media="screen" />
 </h:head>
 
 <h:body>
 
-       <h3>set fixedHeight to 100px</h3>
-    <p>
-        if autoHeight is true then max height of all viewable content is used to calc div height
-        if autoHeight is false and fixedHeight has a value, then fixed Height is used.
-    </p>
-     <h:form id="selectForm">
-         <h:outputLabel for="selectFixed" value="Check for fixedHeight"/>
-         <h:selectBooleanCheckbox id="selectFixed" title="fixedHeight 200px" value="#{layoutBean.fixedHeight}">
+   <h:form id="selectForm">
+       <h:panelGroup id="selectorGroup">
+         <h:outputText  value="select the pane to open:-"/>
+         <h:selectOneMenu id="selectPane"  value="#{layoutBean.selectedPane}">
+             <f:selectItem itemValue="panel1" itemLabel="Open First panel"/>
+             <f:selectItem itemValue="panel2" itemLabel="Open 2nd panel" />
+             <f:selectItem itemValue="panel3" itemLabel="Open 3rd panel" />
+             <f:selectItem itemValue="panel4" itemLabel="Open 4th panel" />
              <f:ajax execute="@this" render="@all"/>
-         </h:selectBooleanCheckbox>
-         <br />
-         <h:outputLabel for="autoselect" value="Check for autoHeight true"/>
-         <h:selectBooleanCheckbox id="autoselect" title="autoHeight" value="#{layoutBean.autoHeight}">
-             <f:ajax execute="@this" render="@all"/>
-         </h:selectBooleanCheckbox>
-          <br />
-     </h:form>
-       <h1> test page for accordion dynamic attributes</h1>
+         </h:selectOneMenu>
+       </h:panelGroup>
+      </h:form>
+      <h1> test page for accordion pane1 client, pane3 facelet true</h1>
+    <p>autoHeight is true</p>
       <br />
      <h:form id="contentForm">
        <mobi:accordion id="test1" selectedId="#{layoutBean.selectedPane}"
-                       autoHeight="#{layoutBean.autoHeight}" fixedHeight="#{layoutBean.fixedHeightVal}">
-              <mobi:contentPane id="panel1" title="panel1" client="true">
+                       fixedHeight="#{layoutBean.fixedHeightString}"
+                       paneChangeListener="#{layoutBean.paneChange}"
+                       disabled="#{layoutBean.disabled}"
+                       autoHeight="#{layoutBean.autoHeight}">
+              <mobi:contentPane id="panel1" title="panel1">
                   <div id="inner1">
                       <fieldset title="panel1">
                       <legend>Panel1</legend>
@@ -75,7 +73,7 @@
                   </fieldset>
                   </div>
               </mobi:contentPane>
-               <mobi:contentPane id="panel2" title="panel2" >
+               <mobi:contentPane id="panel2" title="panel2" style="background-color:#00ADFF">
                 <div id="inner2">
                  <fieldset title="panel2">
                    <legend>Panel2</legend>
@@ -112,6 +110,28 @@
                   </fieldset>
                  </div>
               </mobi:contentPane>
+              <mobi:contentPane id="panel4" title="panel4" >
+                <div id="inner4">
+                 <fieldset title="panel2">
+                   <legend>Panel2</legend>
+                  <h3> header for panel 2</h3>
+                  <p> content for panel 2 - ace of diamonds   </p>
+                     <figure>
+                         <img width="85" height="150"
+                          src="../images/DSC_1.jpg"
+                            alt="ottawa" />
+                         <figcaption>Ottawa</figcaption>
+                        </figure>
+                      <br />
+                     Change panes with this button
+                   <br />
+                     <mobi:commandButton id="but4"  singleSubmit="true"
+                                  value="SelectPane3" actionListener="#{layoutBean.changeToPane3}">
+                      </mobi:commandButton>
+                     <br />
+                  </fieldset>
+                 </div>
+              </mobi:contentPane>
        </mobi:accordion>
       </h:form>
       <h:form id="outputfrm">
@@ -119,10 +139,27 @@
           selected pane ... <mark>#{layoutBean.selectedPane}</mark> ... is selected pane
        </div>
       <div>
-           <mobi:commandButton id="but1"
-                                  value="SelectPane3" actionListener="#{layoutBean.changeToPane3}">
-               <mobi:ajax execute="@this" render="@all"/>
-           </mobi:commandButton>
+         <h3>Accordion Settings</h3>
+
+        <mobi:fieldsetGroup>
+            <mobi:fieldsetRow>
+                <h:outputLabel for="autoHeight" value="Auto Height:" />
+                <mobi:flipswitch id="autoHeight" value="#{layoutBean.autoHeight}" singleSubmit="true"/>
+            </mobi:fieldsetRow>
+            <mobi:fieldsetRow>
+                <h:outputLabel for="disabled" value="Disabled:" />
+                <mobi:flipswitch id="disabled" value="#{layoutBean.disabled}" singleSubmit="true"/>
+            </mobi:fieldsetRow>
+            <mobi:fieldsetRow>
+                <h:outputLabel for="fixedHeight" value="Fixed Height:" style="width:50px"/>
+                <mobi:inputText id="fixedHeight" value="#{layoutBean.fixedHeightString}"
+                    singleSubmit="true" placeholder="Fixed height, eg '10em'"
+                    style="font-size:12px"/>
+                <mobi:commandButton value="Clear" actionListener="#{layoutBean.clearFixedHeight}"
+                                    singleSubmit="true"
+                    style="max-width:50px;min-width:50px;"/>
+            </mobi:fieldsetRow>
+        </mobi:fieldsetGroup>
       </div>
      </h:form>
     <footer>
