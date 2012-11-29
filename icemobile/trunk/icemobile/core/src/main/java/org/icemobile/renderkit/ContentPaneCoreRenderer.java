@@ -61,7 +61,7 @@ public class ContentPaneCoreRenderer extends BaseCoreRenderer {
                pointerClass+=" " + userDefinedClass;
           }
           writer.writeAttribute(CLASS_ATTR, styleClass);
-     //     writer.writeAttribute(STYLE_ATTR, pane.getStyle());  style goes on contentPaneDiv
+          writer.writeAttribute(STYLE_ATTR, pane.getStyle());
           writer.startElement(DIV_ELEM, pane);
           writer.writeAttribute(ID_ATTR, clientId+"_hndl");
           writer.writeAttribute(CLASS_ATTR, handleClass);
@@ -79,20 +79,18 @@ public class ContentPaneCoreRenderer extends BaseCoreRenderer {
           writer.endElement(DIV_ELEM);
           writer.startElement(DIV_ELEM, pane);
           writer.writeAttribute(ID_ATTR, clientId+"wrp");
-          String htString = accordion.getFixedHeight();
+          String htString = accordion.getHeight();
           StringBuilder style = new StringBuilder(256);
           if (!autoheight && (null != htString) && !htString.equals("")) {
               style.append( "height: ").append(htString).append("; max-height: ").append(htString);
               style.append("; overflow-y: auto;");
-            //  writer.writeAttribute(STYLE_ATTR, "height: "+accordion.getFixedHeight()+";"); // overflow-y: scroll;") ;
-            //   writer.writeAttribute(STYLE_ATTR, "height: "+htString+"; max-height: "+htString+"; overflow-y: auto;") ;
           }
           if (pane.getStyle() !=null){
                style.append(pane.getStyle());
           }
-          if (style.length()>0){
+   /*       if (style.length()>0){
               writer.writeAttribute(STYLE_ATTR, pane.getStyle());
-          }
+          } */
           writer.startElement(DIV_ELEM, pane);
           writer.writeAttribute(ID_ATTR, clientId);
      }

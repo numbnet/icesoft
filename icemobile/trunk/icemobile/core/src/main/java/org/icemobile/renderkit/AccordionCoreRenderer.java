@@ -80,7 +80,7 @@ public class AccordionCoreRenderer extends BaseCoreRenderer implements IRenderer
         if (accordion.isDisabled()){
             cfg.append(", disabled: ").append(accordion.isDisabled());
         }
-        String fixedHeight = accordion.getFixedHeight();
+        String fixedHeight = accordion.getHeight();
         if (fixedHeight!=null && !autoheight && fixedHeight.length()>0){
             int fixedHtVal = -1;
             StringBuffer numbers = new StringBuffer();

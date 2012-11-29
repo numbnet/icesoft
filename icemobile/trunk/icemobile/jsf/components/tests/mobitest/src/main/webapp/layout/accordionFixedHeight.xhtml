@@ -23,10 +23,12 @@
 <h:head>
     <mobi:deviceResource includeIOSSmartAppBanner="false" theme="#{themeSwitcher.theme}"/>
     <title>Accordion fixedHeight example</title>
+       <mobi:deviceStylesheet
+            name="#{themeSwitcher.theme}" media="screen" />
 </h:head>
 
 <h:body>
-
+    <ui:include src="/WEB-INF/includes/composite/theme-switcher.xhtml"/>
    <h:form id="selectForm">
        <h:panelGroup id="selectorGroup">
          <h:outputText  value="select the pane to open:-"/>
@@ -43,7 +45,7 @@
       <br />
      <h:form id="contentForm">
        <mobi:accordion id="test1" selectedId="#{layoutBean.selectedPane}"
-                       autoHeight="false" fixedHeight="200px">
+                       autoHeight="false" height="200px">
               <mobi:contentPane id="panel1" title="panel1" client="true">
                   <div id="inner1">
                       <fieldset title="panel1">

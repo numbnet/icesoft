@@ -993,7 +993,7 @@
         <attribute>
             <description>fixeHeight, default 200px, can be used when autoHeight is false. Must be valid height for element.style.height
             </description>
-            <name>fixedHeight</name>
+            <name>height</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
         </attribute>

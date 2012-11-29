@@ -35,7 +35,7 @@ public class AccordionTag extends BaseBodyTag implements IAccordion {
     
     private String name;
     private boolean autoHeight = true;//default
-    private String fixedHeight;
+    private String height;
     private String selectedId;
     private AccordionCoreRenderer renderer;
     private TagWriter writer;
@@ -79,12 +79,12 @@ public class AccordionTag extends BaseBodyTag implements IAccordion {
     public void setSelectedId(String selectedId) {
         this.selectedId = selectedId;
     }
-    public void setFixedHeight(String fixedHeight) {
-        this.fixedHeight = fixedHeight;        
+    public void setHeight(String fixedHeight) {
+        this.height = fixedHeight;
     }
 
-    public String getFixedHeight() {
-        return this.fixedHeight;
+    public String getHeight() {
+        return this.height;
     }
 
     public void setAutoHeight(boolean autoHeight) {
@@ -122,7 +122,7 @@ public class AccordionTag extends BaseBodyTag implements IAccordion {
     }
     public void release(){
         this.renderer=null;
-        this.fixedHeight = null;
+        this.height = null;
     }
     /** this is not required for jsp since no domDiff to wipe out update script */
     public String getHashVal(){
