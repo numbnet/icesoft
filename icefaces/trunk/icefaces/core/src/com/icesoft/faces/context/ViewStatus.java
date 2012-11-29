@@ -68,12 +68,12 @@ public class ViewStatus {
     }
 
     public static void log(final HttpSession session) {
-        if (LOG.isInfoEnabled()) {
+        if (LOG.isDebugEnabled()) {
             ViewStatus viewStatus = getInstance(session);
             if(viewStatus != null){
                 String key = MainSessionBoundServlet.class.getName();
                 String id = (String)session.getAttribute(key);
-                LOG.info(viewStatus.getCurrentStatus(id));
+                LOG.debug(viewStatus.getCurrentStatus(id));
             }
         }
     }
