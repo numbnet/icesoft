@@ -234,9 +234,13 @@ var singleSubmit;
 
     function recalculateFormPreviousParameters(element, form) {
         return function(updates) {
-            var updatedFragments = collect(updates.getElementsByTagName('update'), function(update) {
+            var updatedFragments = inject(updates.getElementsByTagName('update'), [], function(result, update) {
                 var id = update.getAttribute('id');
-                return lookupElementById(id);
+                if (id == 'javax.faces.ViewState' || endsWith(id, '_fixviewstate')) {
+                    return result;
+                } else {
+                    return append(result, lookupElementById(id));
+                }
             });
             var updatedForms = inject(updatedFragments, [ form ] , function(result, e) {
                 if (isFormElement(e) && not(contains(result, e.form))) {
