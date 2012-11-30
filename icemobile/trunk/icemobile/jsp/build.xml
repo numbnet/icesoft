@@ -237,7 +237,7 @@
             <fileset file="src/main/javascript/icemobile.js"/>
         </copy>
 		<copy todir="${build.web.resources}/javascript/">
-            <fileset dir="${javascript.dir}" includes="**/iscroll.js,**/simulator-interface.js"/>
+            <fileset dir="${javascript.dir}" includes="*"/>
         </copy>
 		<delete file="${tmp}"/>
 		<copy todir="${build.meta}">
