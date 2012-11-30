@@ -48,15 +48,15 @@
                             styleClass="submit"/>
     </c:if>
 
-	<c:if test="${not empty message}">
-		<div id="message" class="success">${message}</div>
+	<c:if test="${not empty micMessage}">
+		<div id="message" class="success">${micMessage}</div>
 	</c:if>
-	<c:if test="${mediaReady}">
+	<c:if test="${micUploadReady}">
 		<mobi:fieldsetGroup>
 			<mobi:fieldsetRow>
-				<audio src="${clipName}" controls="controls"></audio>
+				<audio src="${micUpload}" controls="controls"></audio>
 				<br>
-				<a href="${clipName}">Play</a>
+				<a href="${micUpload}">Play</a>
 			</mobi:fieldsetRow>
 		</mobi:fieldsetGroup>
 	</c:if>
