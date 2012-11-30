@@ -89,7 +89,7 @@ MvcUtil.addClickLinkHandler = function(link, updateRegion){
             $('#menu').find('a').each( function(){
                 this.className = '';
             });
-            $(updateRegion).load(link.href, {cache:false});
+            $(updateRegion).load(link.href, function(){ $('html, body').animate({ scrollTop:0 }, 400);});
             history.pushState({ src: link.href }, null, link.href);
             e.preventDefault();
         }
