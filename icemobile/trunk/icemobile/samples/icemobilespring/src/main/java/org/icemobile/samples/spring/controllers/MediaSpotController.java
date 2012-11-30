@@ -1,8 +1,9 @@
-package org.icemobile.samples.springbasic;
+package org.icemobile.samples.spring.controllers;
 
 import java.io.IOException;
 
-import org.icemobile.util.ClientDescriptor;
+import org.icemobile.samples.spring.FileUploadUtils;
+import org.icemobile.samples.spring.MediaSpotBean;
 import org.icemobile.util.Utils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,9 +12,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.core.io.Resource;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -21,6 +20,8 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
+
 import javax.imageio.ImageIO;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
@@ -28,33 +29,31 @@ import java.awt.image.BufferedImage;
 
 @Controller
 @SessionAttributes({"augmentedRealityMessage", "augmentedRealityUpload"})
-public class MediaSpotController {
+public class MediaSpotController extends BaseController{
     HashMap<String,MediaSpotBean> messages = new HashMap<String,MediaSpotBean>();
     MediaSpotBean selectedMessage = null;
     static int THUMBSIZE = 128;
     int count = 0;
     String currentFileName = null;
 
-    private String selectedModel = "icemobile";
-
-    private List getMarkerList(HttpServletRequest request)  {
+    private List<Map<String,String>> getMarkerList(HttpServletRequest request)  {
 
         String urlBase = Utils.getBaseURL(request);
 
-        ArrayList markerList = new ArrayList();
-        HashMap marker;
+        List<Map<String,String>> markerList = new ArrayList<Map<String,String>>();
+        Map<String,String> marker;
 
-        marker = new HashMap();
+        marker = new HashMap<String,String>();
         marker.put("label", "icemobile");
         marker.put("model", urlBase + "/resources/3d/icemobile.obj" );
         markerList.add(marker);
 
-        marker = new HashMap();
+        marker = new HashMap<String,String>();
         marker.put("label", "puz1");
         marker.put("model", urlBase + "/resources/3d/puz1.obj" );
         markerList.add(marker);
 
-        marker = new HashMap();
+        marker = new HashMap<String,String>();
         marker.put("label", "puz2");
         marker.put("model", urlBase + "/resources/3d/puz2.obj" );
         markerList.add(marker);
@@ -62,22 +61,12 @@ public class MediaSpotController {
         return markerList;
     }
 
-	@ModelAttribute
-	public void ajaxAttribute(WebRequest request, Model model) {
-		model.addAttribute("ajaxRequest", AjaxUtils.isAjaxRequest(request));
-	}
-
-    @ModelAttribute("mediaspotBean")
+	@ModelAttribute("mediaspotBean")
     public MediaSpotBean createBean() {
         return new MediaSpotBean();
     }
     
-    @ModelAttribute
-    public void iosAttribute(HttpServletRequest request, Model model) {
-        model.addAttribute("ios", ClientDescriptor.getInstance(request).isIOS());
-    }
-
-	@RequestMapping(value = "/mediaspot", method=RequestMethod.GET)
+    @RequestMapping(value = "/mediaspot", method=RequestMethod.GET)
     public void processGet(HttpServletRequest request, Model model)  {
 		model.addAttribute("locations", messages.values());
 		model.addAttribute("markers", getMarkerList(request));

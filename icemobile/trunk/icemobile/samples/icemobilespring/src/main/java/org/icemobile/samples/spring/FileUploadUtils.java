@@ -1,4 +1,4 @@
-package org.icemobile.samples.springbasic;
+package org.icemobile.samples.spring;
 
 import java.io.File;
 import java.io.IOException;

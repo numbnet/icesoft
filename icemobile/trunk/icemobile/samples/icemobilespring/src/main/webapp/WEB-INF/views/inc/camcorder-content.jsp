@@ -8,20 +8,17 @@
 	enctype="multipart/form-data" modelAttribute="camcorderBean"
 	cssClass="form">
 
-	<mobi:getEnhanced />
-
-	<h2>Camcorder Component</h2>
-
-	<mobi:fieldsetGroup>
-		<mobi:fieldsetRow group="true">
-			Description
-		</mobi:fieldsetRow>
+	<c:if test="${viewSize eq 'large'}"><h3>Camcorder</h3></c:if>
+    
+    <mobi:getEnhanced />
+	
+	<mobi:fieldsetGroup styleClass="intro">
 		<mobi:fieldsetRow>
-			<p>The camcorder component allows access to a mobile devices'
-				video camera. The component renders a simple button that, when
-				pressed, launches the native video camera application on the device.
-				Once a video has been taken and accepted, the user is returned to
-				the web application.</p>
+			The Camcorder allows access to a mobile devices'
+			video camera. The tag renders a simple button that, when
+			pressed, launches the native video camera application on the device.
+			Once a video has been taken and accepted, the user is returned to
+			the web application.
 		</mobi:fieldsetRow>
 	</mobi:fieldsetGroup>
 

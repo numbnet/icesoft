@@ -1,4 +1,4 @@
-package org.icemobile.samples.springbasic;
+package org.icemobile.samples.spring;
 
 import org.springframework.core.MethodParameter;
 import org.springframework.web.bind.support.WebDataBinderFactory;

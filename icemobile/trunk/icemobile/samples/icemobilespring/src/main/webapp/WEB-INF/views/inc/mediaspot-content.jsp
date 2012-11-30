@@ -7,6 +7,8 @@
 <form:form id="mediaspotform" method="POST" enctype="multipart/form-data"
            modelAttribute="mediaspotBean" cssClass="form">
            
+    <c:if test="${viewSize eq 'large'}"><h3>Augmented Reality</h3></c:if>
+           
     <mobi:getEnhanced/>
     
     <mobi:fieldsetGroup styleClass="intro">

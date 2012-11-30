@@ -19,7 +19,7 @@
     <mobi:outputListItem><a href="geolocation">Geolocation</a></mobi:outputListItem>
     <mobi:outputListItem><a href="inputtext">HTML5 Input</a></mobi:outputListItem>
     
-    <mobi:outputListItem group="true">Native Components</mobi:outputListItem>
+    <mobi:outputListItem group="true">Native Integration</mobi:outputListItem>
     <mobi:outputListItem><a href="mediaspot">Augmented Reality</a></mobi:outputListItem>
     <mobi:outputListItem><a href="camera">Camera</a></mobi:outputListItem>
     <mobi:outputListItem><a href="camcorder">Camcorder</a></mobi:outputListItem>

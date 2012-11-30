@@ -1,11 +1,10 @@
-package org.icemobile.samples.springbasic;
+package org.icemobile.samples.spring.controllers;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-import java.util.StringTokenizer;
 
 import org.icemobile.component.ContactDecoder;
+import org.icemobile.samples.spring.AjaxUtils;
+import org.icemobile.samples.spring.ContactBean;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -16,13 +15,8 @@ import org.springframework.web.context.request.WebRequest;
 
 @Controller
 @SessionAttributes("contactBean")
-public class ContactListController {
+public class ContactListController extends BaseController {
     
-    @ModelAttribute
-    public void ajaxAttribute(WebRequest request, Model model) {
-        model.addAttribute("ajaxRequest", AjaxUtils.isAjaxRequest(request));
-    }
-
     @ModelAttribute("contactBean")
     public ContactBean createBean() {
         return new ContactBean();

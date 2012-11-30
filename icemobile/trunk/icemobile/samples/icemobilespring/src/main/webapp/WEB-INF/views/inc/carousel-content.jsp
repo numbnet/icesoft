@@ -6,20 +6,18 @@
 	uri="http://www.icepush.org/icepush/jsp/icepush.tld"%>
 <form:form id="carouselForm" method="POST" modelAttribute="carouselBean">
 
-	<h2>Carousel Component</h2>
+	<c:if test="${viewSize eq 'large'}"><h3>Carousel</h3></c:if>
 
 	<mobi:fieldsetGroup>
-		<mobi:fieldsetRow group="true">
-			Description
-		</mobi:fieldsetRow>
 		<mobi:fieldsetRow>
-			<p>The carousel component displays a list of child elements,
-				allowing a user to swipe right or left to view non-visible child
-				elements. The most common use of this component is for displaying a
-				list of images that the user can swipe to view additional images in
-				the list.</p>
+			The carousel displays a list of child elements,
+			allowing a user to swipe right or left to view non-visible child
+			elements. The most common use of this tag is for displaying a
+			list of images that the user can swipe to view additional images in
+			the list.
 		</mobi:fieldsetRow>
 	</mobi:fieldsetGroup>
+    
 	<mobi:carousel id="cartwo" name="index"
 		selectedItem="${carouselBean.index}">
 		<c:forEach items="${carouselBean.images}" var="item">

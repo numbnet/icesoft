@@ -1,4 +1,4 @@
-package org.icemobile.samples.springbasic;
+package org.icemobile.samples.spring;
 
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.SessionAttributes;

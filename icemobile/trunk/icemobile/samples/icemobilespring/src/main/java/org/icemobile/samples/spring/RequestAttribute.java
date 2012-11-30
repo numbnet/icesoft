@@ -1,4 +1,4 @@
-package org.icemobile.samples.springbasic;
+package org.icemobile.samples.spring;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;

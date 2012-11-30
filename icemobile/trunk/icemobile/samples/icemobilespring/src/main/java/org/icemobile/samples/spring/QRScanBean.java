@@ -15,7 +15,7 @@
  *
  */
 
-package org.icemobile.samples.springbasic;
+package org.icemobile.samples.spring;
 
 /**
  *

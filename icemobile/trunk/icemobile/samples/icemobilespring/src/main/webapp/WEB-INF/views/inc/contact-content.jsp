@@ -7,23 +7,23 @@
 <form:form id="conform" method="POST" enctype="multipart/form-data"
 	modelAttribute="contactBean" cssClass="form">
 
-	<mobi:getEnhanced />
+	<c:if test="${viewSize eq 'large'}"><h3>Contact List</h3></c:if>
+    
+    <mobi:getEnhanced />
 
-	<h2>ContactList Component</h2>
-
-	<mobi:fieldsetGroup>
-		<mobi:fieldsetRow group="true">
-		Description
-	</mobi:fieldsetRow>
+	<mobi:fieldsetGroup styleClass="intro">
 		<mobi:fieldsetRow>
-			<p>ContactList.</p>
+			The fetchContact tag provides access to the contact database
+            or address book on the device.  The user selects a single contact,
+            and the name, email address, and phone number are returned as
+            values.
 		</mobi:fieldsetRow>
 	</mobi:fieldsetGroup>
 
 	<mobi:fieldsetGroup>
-		<mobi:fieldsetRow>
-			<mobi:fetchContact id="rawContact" buttonLabel="Fetch Contact"
-				fields="name, phone, email" />
+		<mobi:fieldsetRow style="text-align:center">
+            <mobi:fetchContact id="rawContact" buttonLabel="Fetch Contact"
+    				fields="name, phone, email"/>
 		</mobi:fieldsetRow>
 	</mobi:fieldsetGroup>
 

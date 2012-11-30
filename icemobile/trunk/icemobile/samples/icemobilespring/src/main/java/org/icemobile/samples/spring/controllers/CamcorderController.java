@@ -1,8 +1,8 @@
-package org.icemobile.samples.springbasic;
+package org.icemobile.samples.spring.controllers;
 
 import java.io.IOException;
 
-import org.icemobile.util.ClientDescriptor;
+import org.icemobile.samples.spring.ModelBean;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -20,17 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 
 @Controller
 @SessionAttributes({"camcorderBean","camcorderUploadReady","camcorderMessage","camcorderUpload"})
-public class CamcorderController {
-
-	@ModelAttribute
-	public void ajaxAttribute(WebRequest request, Model model) {
-		model.addAttribute("ajaxRequest", AjaxUtils.isAjaxRequest(request));
-	}
-	
-    @ModelAttribute
-    public void iosAttribute(HttpServletRequest request, Model model) {
-        model.addAttribute("ios", ClientDescriptor.getInstance(request).isIOS());
-    }
+public class CamcorderController extends BaseController{
 
 	@ModelAttribute("camcorderBean")
 	public ModelBean createBean() {
@@ -44,7 +33,6 @@ public class CamcorderController {
 	@RequestMapping(value = "/camcorder", method=RequestMethod.POST)
     public void post(Model model)  {
     }
-
 
 	@RequestMapping(value = "/camcorder", method=RequestMethod.POST, consumes="multipart/form-data")
 	public void processVideo(HttpServletRequest request, ModelBean modelBean,
