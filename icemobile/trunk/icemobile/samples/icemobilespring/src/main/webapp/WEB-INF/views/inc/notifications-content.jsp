@@ -7,13 +7,12 @@
 <form:form id="notificationsform" method="POST"
 	enctype="multipart/form-data" cssClass="form"
 	modelAttribute="notificationsBean">
+    
+    <c:if test="${viewSize eq 'large'}"><h3>Cloud Push</h3></c:if>
 
 	<mobi:getEnhanced />
 
 	<mobi:fieldsetGroup>
-		<mobi:fieldsetRow group="true">
-				Description
-		</mobi:fieldsetRow>
 		<mobi:fieldsetRow style="display:block">
 			<p>
 				Real-time, asynchronous, push-based user notifications can be used

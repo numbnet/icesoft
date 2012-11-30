@@ -1,4 +1,4 @@
-package org.icemobile.samples.springbasic;
+package org.icemobile.samples.spring.controllers;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -8,10 +8,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.multipart.MultipartFile;
 
-import org.icemobile.util.ClientDescriptor;
+import org.icemobile.samples.spring.FileUploadUtils;
+import org.icemobile.samples.spring.ModelBean;
 
 import java.io.IOException;
 import java.util.Map;
@@ -19,17 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 
 @Controller
 @SessionAttributes({"cameraMessage", "cameraUpload"})
-public class CameraController {
-
-    @ModelAttribute
-    public void ajaxAttribute(WebRequest request, Model model) {
-        model.addAttribute("ajaxRequest", AjaxUtils.isAjaxRequest(request));
-    }
-    
-    @ModelAttribute
-    public void iosAttribute(HttpServletRequest request, Model model) {
-        model.addAttribute("ios", ClientDescriptor.getInstance(request).isIOS());
-    }
+public class CameraController extends BaseController{
 
     @RequestMapping(value = "/camera", 
             headers="content-type=application/x-www-form-urlencoded")

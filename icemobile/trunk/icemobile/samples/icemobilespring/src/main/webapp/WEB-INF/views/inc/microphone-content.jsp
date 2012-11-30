@@ -7,19 +7,16 @@
 <form:form id="micform" method="POST" enctype="multipart/form-data"
 	modelAttribute="microphoneBean" cssClass="form">
 
-	<mobi:getEnhanced />
+	<c:if test="${viewSize eq 'large'}"><h3>Microphone</h3></c:if>
+    
+    <mobi:getEnhanced />
 
-	<h2>Microphone Component</h2>
-
-	<mobi:fieldsetGroup>
-		<mobi:fieldsetRow group="true">
-            Description
-    </mobi:fieldsetRow>
+	<mobi:fieldsetGroup styleClass="intro">
 		<mobi:fieldsetRow>
-			<p>The microphone component allows access to a mobile devices'
-				microphone. The component renders a simple button that, when
-				pressed, activates a native interface that captures audio using the
-				device's microphone.</p>
+			The microphone tag allows access to a mobile devices'
+			microphone. The tag renders a simple button that, when
+			pressed, activates a native interface that captures audio using the
+			device's microphone.
 		</mobi:fieldsetRow>
 	</mobi:fieldsetGroup>
 	<mobi:fieldsetGroup styleClass="intro">
@@ -31,8 +28,6 @@
             it to the server.
         </mobi:fieldsetRow>
 	</mobi:fieldsetGroup>
-
-
 
 	<mobi:fieldsetGroup>
 		<mobi:fieldsetRow>
@@ -46,8 +41,12 @@
 		</mobi:fieldsetRow>
 	</mobi:fieldsetGroup>
 
-	<mobi:commandButton buttonType="important" value="Submit" type="submit"
-		styleClass="submit" />
+	<c:if test="${!ios}"><!-- SX on iOS auto-submits -->
+        <mobi:commandButton buttonType="important"
+                            value="Submit"
+                            type="submit"
+                            styleClass="submit"/>
+    </c:if>
 
 	<c:if test="${not empty message}">
 		<div id="message" class="success">${message}</div>

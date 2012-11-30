@@ -1,4 +1,4 @@
-package org.icemobile.samples.springbasic;
+package org.icemobile.samples.spring.controllers;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -7,9 +7,9 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.context.WebApplicationContext;
 
+import org.icemobile.samples.spring.NotificationsBean;
 import org.icepush.PushContext;
 import org.icepush.PushNotification;
 
@@ -21,17 +21,12 @@ import javax.inject.Inject;
 
 @Controller
 @SessionAttributes("notificationsBean")
-public class NotificationsController {
+public class NotificationsController extends BaseController{
 
     Timer pushTimer = new Timer(true);
 
     @Inject
     private WebApplicationContext context;
-
-    @ModelAttribute
-    public void ajaxAttribute(WebRequest request, Model model) {
-        model.addAttribute("ajaxRequest", AjaxUtils.isAjaxRequest(request));
-    }
 
     @RequestMapping(value = "/notifications", 
             headers="content-type=application/x-www-form-urlencoded")
@@ -63,16 +58,16 @@ public class NotificationsController {
 
         final PushContext pushContext = PushContext.getInstance(
                 context.getServletContext() );
-        final String title = model.title;
-        final String message = model.message;
+        final String title = model.getTitle();
+        final String message = model.getMessage();
         model.setTitle("");
         model.setMessage("");
         final NotificationsBean notificationsBean = model;
         final boolean isCloud = "Priority Push".equals(pushType);
         TimerTask pushTask = new TimerTask()  {
             public void run()  {
-                notificationsBean.title = title;
-                notificationsBean.message = message;
+                notificationsBean.setTitle(title);
+                notificationsBean.setMessage(message);
                 if (isCloud)  {
                     pushContext.push("notifications",
                             new PushNotification(title, message));
@@ -81,7 +76,7 @@ public class NotificationsController {
                 }
             }
         };
-        pushTimer.schedule(pushTask, model.delay * 1000);
+        pushTimer.schedule(pushTask, model.getDelay() * 1000);
     }
 
 }

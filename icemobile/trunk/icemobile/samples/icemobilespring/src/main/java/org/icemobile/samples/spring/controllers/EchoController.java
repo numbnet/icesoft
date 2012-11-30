@@ -15,37 +15,32 @@
  *
  */
 
-package org.icemobile.samples.springbasic;
+package org.icemobile.samples.spring.controllers;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.icemobile.util.ClientDescriptor;
+import org.icemobile.samples.spring.AccordionBean;
+import org.icemobile.samples.spring.CarouselBean;
+import org.icemobile.samples.spring.DateTimeSpinnerBean;
+import org.icemobile.samples.spring.FlipSwitchBean;
+import org.icemobile.samples.spring.GeolocationBean;
+import org.icemobile.samples.spring.InputTextBean;
+import org.icemobile.samples.spring.ListBean;
+import org.icemobile.samples.spring.TabsetBean;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
-import org.springframework.web.context.request.WebRequest;
 
 /**
  * General Controller for echoing simple input pages
  */
 @Controller
 @SessionAttributes({"geolocationBean", "carouselBean"})
-public class EchoController {
+public class EchoController extends BaseController{
 
-    @ModelAttribute
-    public void ajaxAttribute(WebRequest request, Model model) {
-        model.addAttribute("ajaxRequest", AjaxUtils.isAjaxRequest(request));
-    }
-    
-    @ModelAttribute
-    public void viewSizeAttribute(HttpServletRequest request, Model model) {
-        model.addAttribute("viewSize", ClientDescriptor.getInstance(request).isHandheldBrowser() ? "small" : "large");
-    }
-    
-    
     @RequestMapping(value = "/menu")
     public void doMenuRequest() {
     }

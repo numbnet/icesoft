@@ -6,17 +6,14 @@
 	uri="http://www.icepush.org/icepush/jsp/icepush.tld"%>
 <form:form id="tabsetform" method="POST" modelAttribute="tabsetBean">
 
-	<h2>TabSet Component</h2>
+	<c:if test="${viewSize eq 'large'}"><h3>Tabset</h3></c:if>
 
 	<mobi:fieldsetGroup>
-		<mobi:fieldsetRow group="true">
-			Description
-		</mobi:fieldsetRow>
 		<mobi:fieldsetRow>
-			<p>The tabset component provides controls for easily selecting
-				which child contentPane component is to be displayed. The tabset
-				selection tabs can be orientated on the top or bottom of the child
-				content.</p>
+			The tabset provides controls for easily selecting
+			which child contentPane tag is to be displayed. The tabset
+			selection tabs can be oriented on the top or bottom of the child
+			content for handhelds.
 		</mobi:fieldsetRow>
 	</mobi:fieldsetGroup>
 

@@ -24,12 +24,12 @@
                 </script>
             </mobi:smallView>
     
-            <p>A showcase of the ICEmobile-JSP Component Suite where you can experience all
-                the ICEmobile components in action. Each component includes a working example,
+            <p>A show case of the ICEmobile-JSP Suite where you can experience all
+                the ICEmobile tags in action. Each tag includes a working example,
                 descriptions on how to use it, and source code resources. This demo is
                 optimized for mobile, but can be viewed using any browser. The ICEmobile
                 Container is not required, but is recommended to fully experience the
-                capabilities of the native components.</p>
+                capabilities of native integration.</p>
         </mobi:fieldsetRow>
     </mobi:fieldsetGroup>
     

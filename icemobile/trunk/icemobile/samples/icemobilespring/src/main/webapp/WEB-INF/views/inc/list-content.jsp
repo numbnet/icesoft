@@ -6,19 +6,16 @@
 	uri="http://www.icepush.org/icepush/jsp/icepush.tld"%>
 <form:form id="listform" method="POST" modelAttribute="listBean">
 
-	<h2>OutputList component</h2>
+	<c:if test="${viewSize eq 'large'}"><h3>Lists</h3></c:if>
 
 	<mobi:fieldsetGroup inset="true">
-		<mobi:fieldsetRow group="true">
-			Description
-		</mobi:fieldsetRow>
 		<mobi:fieldsetRow>
-            <p>The outputList component is used to display a list of data, and is commonly 
-            used to generate navigation hierarchies.</p>
+            The outputList tag is used to display a list of data, and is commonly 
+            used to generate navigation hierarchies.
         </mobi:fieldsetRow>
 	</mobi:fieldsetGroup>
 
-	<h4>List with inset and grouping</h4>
+	<h3>List with inset and grouping</h3>
 
 	<mobi:outputList inset="true" id="insetListWithGrouping">
 		<mobi:outputListItem group="true">Winter Recreations</mobi:outputListItem>
@@ -37,7 +34,7 @@
 		</mobi:outputListItem>
 	</mobi:outputList>
 
-	<h4>List with no inset</h4>
+	<h3>List with no inset</h3>
 
 	<mobi:outputList id="noinsetList">
 		<mobi:outputListItem>
@@ -54,7 +51,7 @@
 		</mobi:outputListItem>
 	</mobi:outputList>
 
-	<h4>Iterative list</h4>
+	<h3>Iterative list</h3>
 
 	<mobi:outputList id="listIterator">
 		<mobi:outputListItem group="true">List of cars</mobi:outputListItem>

@@ -14,7 +14,7 @@
  * governing permissions and limitations under the License.
  */
 
-package org.icemobile.samples.springbasic;
+package org.icemobile.samples.spring;
 
 import javax.inject.Inject;
 import javax.annotation.PostConstruct;

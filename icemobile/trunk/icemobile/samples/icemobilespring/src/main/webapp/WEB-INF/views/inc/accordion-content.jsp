@@ -7,18 +7,15 @@
 <form:form id="accordionform" method="POST"
 	modelAttribute="accordionBean">
 
-	<h2>Accordion Component</h2>
+	<c:if test="${viewSize eq 'large'}"><h3>Accordion</h3></c:if>
 
 	<mobi:fieldsetGroup>
-		<mobi:fieldsetRow group="true">
-			Description
-		</mobi:fieldsetRow>
 		<mobi:fieldsetRow>
-			<p>The accordion component manages a stack of accordionPane's and
+			The accordion manages a stack of accordionPane's and
 				will show one active pane at a time. The attribute "selectedId"
 				determines which of the panes in the stack is currently visible. All
 				other non-selected accordionPane's are represented as collapsed
-				views.</p>
+				views.
 		</mobi:fieldsetRow>
 	</mobi:fieldsetGroup>
 

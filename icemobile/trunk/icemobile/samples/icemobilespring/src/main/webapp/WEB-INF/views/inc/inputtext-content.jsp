@@ -7,17 +7,14 @@
 <form:form id="inputtextform" method="POST"
 	modelAttribute="inputTextBean" cssClass="form">
 
-	<h2>HTML5 Input Components</h2>
+	<c:if test="${viewSize eq 'large'}"><h3>HTML5 Input</h3></c:if>
 
-	<mobi:fieldsetGroup>
-		<mobi:fieldsetRow group="true">
-			Description
-		</mobi:fieldsetRow>
+	<mobi:fieldsetGroup styleClass="intro">
 		<mobi:fieldsetRow>
-			<p>The HTML5 input component exposes the new set of HTML5 input
-				features on supported browsers. Most notable is the type attribute,
-				which can act as a hint to load a specific keyboard, which matches
-				the specified type.</p>
+			The HTML5 input tag exposes the new set of HTML5 input
+			features on supported browsers. Most notable is the type attribute,
+			which can act as a hint to load a specific keyboard, which matches
+			the specified type.
 		</mobi:fieldsetRow>
 	</mobi:fieldsetGroup>
 

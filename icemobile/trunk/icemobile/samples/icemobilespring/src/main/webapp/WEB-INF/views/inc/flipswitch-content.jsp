@@ -7,17 +7,14 @@
 <form:form id="flipswitchform" method="POST"
 	modelAttribute="flipSwitchBean">
 
-	<h2>FlipSwitch Component</h2>
+	<c:if test="${viewSize eq 'large'}"><h3>FlipSwitch</h3></c:if>
 
 	<mobi:fieldsetGroup>
-		<mobi:fieldsetRow group="true">
-			Description
-		</mobi:fieldsetRow>
 		<mobi:fieldsetRow>
-			<p>The flipSwitch component displays a command button that
-				toggles between on and off states. This UI element is common on the
-				iOS platform for toggling on/off settings. This component generates
-				a server-side action event when pressed.</p>
+			The flipSwitch displays a command button that
+			toggles between on and off states. This UI element is common on the
+			iOS platform for toggling on/off settings. This tag generates
+			a server-side action event when pressed.
 		</mobi:fieldsetRow>
 	</mobi:fieldsetGroup>
 
@@ -41,11 +38,11 @@
 				value="${flipSwitchBean.trueFalseFlipSwitch}" />
 		</mobi:fieldsetRow>
 	</mobi:fieldsetGroup>
-	<%-- button types: default|important|attention| back--%>
-	<mobi:commandButton buttonType='important'
-		style="float:right;margin-right: 25px;" value="Submit" type="submit" />
-	<br>
-	<h4>Flip Switch Value Echo</h4>
+	
+    <mobi:commandButton buttonType='important' styleClass="submit"
+		value="Submit" type="submit" />
+	
+    <h3>Flip Switch Value Echo</h3>
 	<mobi:fieldsetGroup>
 		<mobi:fieldsetRow>
 			<label>Auto-Capitalization</label>

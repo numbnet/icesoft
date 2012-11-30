@@ -7,11 +7,11 @@
 %>
 <form:form id="buttonsform" method="POST" modelAttribute="buttonsBean">
 
-    <h2>Button Components</h2>
+    <c:if test="${viewSize eq 'large'}"><h3>Buttons</h3></c:if>
 
     <mobi:fieldsetGroup styleClass="intro">
         <mobi:fieldsetRow>
-            The Button component provides themed buttons in a variety of named types.
+            The CommandButton provides themed buttons in a variety of named types for form submission.
         </mobi:fieldsetRow>
     </mobi:fieldsetGroup>
 

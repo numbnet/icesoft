@@ -12,7 +12,7 @@
     <annotation-driven conversion-service="conversionService">
         <argument-resolvers>
             <beans:bean
-                    class="org.icemobile.samples.springbasic.CustomArgumentResolver"/>
+                    class="org.icemobile.samples.spring.CustomArgumentResolver"/>
         </argument-resolvers>
     </annotation-driven>
 
@@ -20,7 +20,7 @@
     <resources mapping="/icemobile-resources/**" location="classpath:/META-INF/web-resources/"/>
 
     <beans:bean id="rangingResourceHandler"
-                class="org.icemobile.samples.springbasic.RangingResourceHttpRequestHandler"/>
+                class="org.icemobile.samples.spring.RangingResourceHttpRequestHandler"/>
 
     <beans:bean
             class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">

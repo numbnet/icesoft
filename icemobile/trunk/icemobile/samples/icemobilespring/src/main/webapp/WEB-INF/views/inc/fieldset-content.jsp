@@ -6,21 +6,19 @@
 	uri="http://www.icepush.org/icepush/jsp/icepush.tld"%>
 <form id="fieldset">
 
-	<h2>FieldSet Component</h2>
+	<c:if test="${viewSize eq 'large'}"><h3>FieldSets</h3></c:if>
 
 	<mobi:fieldsetGroup>
-		<mobi:fieldsetRow group="true">
-			Description
-		</mobi:fieldsetRow>
 		<mobi:fieldsetRow>
-			<p>The fieldsetGroup component displays sets of application input
-				such as for settings panels or input forms. The fieldsetComponent
-				component can contain one or more child fieldsetRow components,
-				which logically divides the fieldset into subsections. The component
-				has an optional inset attribute which can be useful when
-				distinguishing multiple fieldsetGroups on one page.</p>
+			The fieldsetGroup displays sets of application input
+			such as for settings panels or input forms. The fieldset 
+			tag can contain one or more child fieldsetRows,
+			which logically divides the fieldset into subsections. The tag
+			has an optional inset attribute which can be useful when
+			distinguishing multiple fieldsetGroups on one page.</p>
 		</mobi:fieldsetRow>
 	</mobi:fieldsetGroup>
+    
 	<mobi:fieldsetGroup>
 		<mobi:fieldsetRow group="true">
             Information

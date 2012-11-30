@@ -6,26 +6,23 @@
 	uri="http://www.icepush.org/icepush/jsp/icepush.tld"%>
 <div class="panelContent">
 
-	<h3>PanelPopup Component</h3>
+	<c:if test="${viewSize eq 'large'}"><h3>Panel Popup</h3></c:if>
 
 	<mobi:fieldsetGroup>
-		<mobi:fieldsetRow group="true">
-		Description
-	</mobi:fieldsetRow>
 		<mobi:fieldsetRow>
-			<p>The panelPopup is a container component that renders a
-				modalpopup panel that hovers on top of a web page. The child
-				elements of the component are inserted into the popup panel.</p>
+			The panelPopup is a container tag that renders a
+			modalpopup panel that hovers on top of a web page. The child
+			elements of the tag are inserted into the popup panel.
 		</mobi:fieldsetRow>
 	</mobi:fieldsetGroup>
 	
 	<form:form id="panelform" method="POST" cssClass="form">
 		<mobi:fieldsetGroup id="groupOne">
 			<mobi:fieldsetRow styleClass="mobi-center">
-				<input type="button" value="Open Popup"
+				<input type="button" value="Popup"
 					onclick="ice.mobi.panelPopup.openClient('popup');"
 					class="mobi-button mobi-button-important" />
-				<input type="button" value="Open Auto-center Popup"
+				<input type="button" value="Auto-center Popup"
 					onclick="ice.mobi.panelPopup.openClient('autoCenterPopup');"
 					class="mobi-button mobi-button-important" />
 			</mobi:fieldsetRow>

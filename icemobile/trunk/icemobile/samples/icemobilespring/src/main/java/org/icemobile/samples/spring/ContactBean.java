@@ -1,4 +1,4 @@
-package org.icemobile.samples.springbasic;
+package org.icemobile.samples.spring;
 
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.SessionAttributes;
@@ -16,8 +16,8 @@ public class ContactBean {
     private String email;
 
     @ModelAttribute("contactBean")
-    public org.icemobile.samples.springbasic.ContactBean createBean() {
-        return new org.icemobile.samples.springbasic.ContactBean();
+    public org.icemobile.samples.spring.ContactBean createBean() {
+        return new org.icemobile.samples.spring.ContactBean();
     }
 
     public String getName() {

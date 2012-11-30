@@ -1,18 +1,14 @@
 
-package org.icemobile.samples.springbasic;
+package org.icemobile.samples.spring.controllers;
 
+import org.icemobile.samples.spring.QRScanBean;
 import org.icemobile.zxing.qrcode.QRCodeWriter;
 import org.icemobile.zxing.common.BitMatrix;
 import org.icemobile.zxing.BarcodeFormat;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.context.request.WebRequest;
 
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletResponse;
@@ -28,7 +24,7 @@ import java.util.logging.Logger;
  */
 @Controller
 @SessionAttributes("QRScanBean")
-public class EchoSessionController {
+public class EchoSessionController extends BaseController {
 
 private static Logger LOG = Logger.getLogger(EchoSessionController.class.getName());
 
@@ -61,11 +57,6 @@ private static Logger LOG = Logger.getLogger(EchoSessionController.class.getName
         } catch (IOException ioe) {
             LOG.severe("IOException writing QRCode to stream");
         }
-    }
-
-    @ModelAttribute
-    public void ajaxAttribute(WebRequest request, Model model) {
-        model.addAttribute("ajaxRequest", AjaxUtils.isAjaxRequest(request));
     }
 
     private void writeQRToStream(String data, OutputStream out)  {

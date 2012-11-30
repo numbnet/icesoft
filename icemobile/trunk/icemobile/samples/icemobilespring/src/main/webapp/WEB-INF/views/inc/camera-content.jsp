@@ -7,17 +7,14 @@
 <form:form id="camform" method="POST" enctype="multipart/form-data"
 	modelAttribute="cameraBean" cssClass="form">
 	
-	<mobi:getEnhanced />
+	<c:if test="${viewSize eq 'large'}"><h3>Camera</h3></c:if>
+    
+    <mobi:getEnhanced />
 
-	<h2>Camera Component</h2>
-
-	<mobi:fieldsetGroup>
-		<mobi:fieldsetRow group="true">
-			Description
-	</mobi:fieldsetRow>
+	<mobi:fieldsetGroup styleClass="intro">
 		<mobi:fieldsetRow>
-			The camera component allows access to a mobile devices' camera. 
-			The component renders a simple button that, when pressed, launches the native camera 
+			The camera tag allows access to a mobile devices' camera. 
+			The tag renders a simple button that, when pressed, launches the native camera 
 			application on the device. Once a picture has been taken and accepted, the user is returned 
 			to the web application.  
         </mobi:fieldsetRow>
