@@ -36,6 +36,7 @@ import javax.faces.context.ResponseWriter;
 import org.icefaces.ace.renderkit.CoreRenderer;
 import org.icefaces.ace.util.JSONBuilder;
 import org.icefaces.render.MandatoryResourceComponent;
+import org.icefaces.util.EnvUtils;
 
 @MandatoryResourceComponent(tagName="confirmationDialog", value="org.icefaces.ace.component.confirmationdialog.ConfirmationDialog")
 public class ConfirmationDialogRenderer extends CoreRenderer {
@@ -95,7 +96,8 @@ public class ConfirmationDialogRenderer extends CoreRenderer {
 	protected void encodeScript(FacesContext context, ConfirmationDialog dialog) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
 		String clientId = dialog.getClientId();
-		
+        boolean ariaEnabled = EnvUtils.isAriaEnabled(context);
+
 		writer.startElement("script", dialog);
 		writer.writeAttribute("type", "text/javascript", null);
 		
@@ -134,6 +136,7 @@ public class ConfirmationDialogRenderer extends CoreRenderer {
 				jb.entry("position", position);
 		}
 		
+        jb.entry("ariaEnabled", ariaEnabled);
         jb.endMap().endFunction();
 		writer.write(jb.toString());
 
