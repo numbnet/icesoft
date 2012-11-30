@@ -25,11 +25,11 @@
 			<form:label path="name">
                 Author: <form:errors path="name" cssClass="error" />
 			</form:label>
-			<form:input path="name" />
+			<mobi:inputText id="name" name="name" value="${cameraBean.name}" placeholder="Your name"/>
 		</mobi:fieldsetRow>
 		<mobi:fieldsetRow>
-			<mobi:camera id="cam" />
-			<mobi:thumbnail for="cam" />
+            <mobi:thumbnail for="cam" />
+			<mobi:camera id="cam" style="margin-left:20px"/>
 		</mobi:fieldsetRow>
 	</mobi:fieldsetGroup>
 

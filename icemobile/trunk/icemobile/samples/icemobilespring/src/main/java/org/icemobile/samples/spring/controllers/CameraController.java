@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.icemobile.samples.spring.FileUploadUtils;
 import org.icemobile.samples.spring.ModelBean;
 
@@ -18,38 +20,53 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 @Controller
-@SessionAttributes({"cameraMessage", "cameraUpload"})
+@SessionAttributes({"cameraMessage", "cameraUpload", "cameraBean"})
 public class CameraController extends BaseController{
+    
+    private static final Log log = LogFactory
+            .getLog(CameraController.class);
 
-    @RequestMapping(value = "/camera", 
-            headers="content-type=application/x-www-form-urlencoded")
-    public void fileUploadFormPost(HttpServletRequest request, Model model) {
-        fileUploadForm(request, model);
-    }
 
     @RequestMapping(value = "/camera", method = RequestMethod.GET)
-    public void fileUploadForm(HttpServletRequest request, Model model) {
-        model.addAttribute("isGET", Boolean.TRUE);
+    public void get(HttpServletRequest request, ModelBean cameraBean, Model model) {
+        model.addAttribute("cameraBean",cameraBean);
     }
 
     @ModelAttribute("cameraBean")
     public ModelBean createBean() {
         return new ModelBean();
     }
-
+    
     @RequestMapping(value = "/camera", method = RequestMethod.POST)
-    public void processUpload(
-            HttpServletRequest request, ModelBean modelBean,
+    public void post(
+            HttpServletRequest request, 
+            ModelBean cameraBean,
             @RequestParam(value = "cam", required = false) MultipartFile file,
-            Model model) throws IOException {
-        
-        String newFileName = FileUploadUtils.saveImage(request, file, null);
-        if ((null != file) && !file.isEmpty()) {
-            model.addAttribute("cameraMessage", "Hello " + modelBean.getName() + ", your file '" + newFileName + "' was uploaded successfully.");
+            Model model) {
+        if( file != null ){
+            processUpload(request,cameraBean,file,model);
         }
-        if (null != newFileName) {
-            model.addAttribute("cameraUpload", newFileName);
-        } 
+        model.addAttribute("cameraBean",cameraBean);
+    }
+
+    public void processUpload(
+            HttpServletRequest request, 
+            ModelBean cameraBean,
+            MultipartFile file,
+            Model model) {
+        log.info("processUpload() "+ cameraBean);
+        String newFileName;
+        try {
+            newFileName = FileUploadUtils.saveImage(request, file, null);
+            model.addAttribute("cameraMessage", "Hello " + cameraBean.getName() 
+                    + ", your file was uploaded successfully.");
+            if (null != newFileName) {
+                model.addAttribute("cameraUpload", newFileName);
+            } 
+        } catch (IOException e) {
+            e.printStackTrace();
+            model.addAttribute("cameraMessage","There was an error uploading the image.");
+        }
     }
 
     @RequestMapping(value = "/jsoncam", method = RequestMethod.POST)
