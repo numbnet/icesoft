@@ -24,7 +24,7 @@
     <mobi:fieldsetGroup>
         <mobi:fieldsetRow>
             <label>Title: </label>
-            <form:input path="title" placeholder="Title"/>
+            <mobi:inputText id="title" name="title" placeholder="Title" value="${mediaspotBean.title}"/>
         </mobi:fieldsetRow>
         <mobi:fieldsetRow>
             <mobi:geolocation id="location" name="location"/>
@@ -41,7 +41,8 @@
     </c:if>
                         
     <c:if test="${not empty augmentedRealityMessage}">
-        <div id="message" class="success">${augmentedRealityMessage}</div>
+        <h3>Upload</h3>
+        <div id="message" style="margin:10px">${augmentedRealityMessage}</div>
         <mobi:fieldsetGroup>
             <mobi:fieldsetRow>
                 <img src="${augmentedRealityUpload}" class="imageView">
@@ -68,10 +69,9 @@
         </mobi:fieldsetRow>
     </mobi:fieldsetGroup>
 
-
     <mobi:fieldsetGroup>
         <mobi:fieldsetRow>
-            <p>Print, cut-out, then view the <a href="resources/images/markers.html">Augmented Reality Markers</a> 
+            <p>Print, cut-out, then view the <a href="resources/images/markers.html" style="color: rgb(101, 149, 249);text-decoration: none">Augmented Reality Markers</a> 
             with 3D overlays. (This is an alpha level feature on iOS only.)</p>
         </mobi:fieldsetRow>
         <mobi:fieldsetRow>
