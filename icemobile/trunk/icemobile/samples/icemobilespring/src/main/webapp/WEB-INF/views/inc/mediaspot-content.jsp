@@ -11,6 +11,8 @@
            
     <mobi:getEnhanced/>
     
+    <mobi:geolocation id="location" name="location"/>
+    
     <mobi:fieldsetGroup styleClass="intro">
         <mobi:fieldsetRow>
             Use your camera to add location pictures to the
@@ -27,9 +29,8 @@
             <mobi:inputText id="title" name="title" placeholder="Title" value="${mediaspotBean.title}"/>
         </mobi:fieldsetRow>
         <mobi:fieldsetRow>
-            <mobi:geolocation id="location" name="location"/>
-            <mobi:camera id="spotcam"/>
             <mobi:thumbnail for="spotcam"/>
+            <mobi:camera id="spotcam" style="margin-left:20px"/>
         </mobi:fieldsetRow>
     </mobi:fieldsetGroup>
     
@@ -53,7 +54,7 @@
     <h3>Augmented Reality</h3>
 
     <mobi:fieldsetGroup>
-        <mobi:fieldsetRow>
+        <mobi:fieldsetRow styleClass="mobi-center">
             <mobi:augmentedReality id="selection" buttonLabel="Enter Augmented Reality">
                 <c:forEach items="${locations}" var="location" >
                     <mobi:augmentedRealityLocation
@@ -70,11 +71,11 @@
     </mobi:fieldsetGroup>
 
     <mobi:fieldsetGroup>
-        <mobi:fieldsetRow>
-            <p>Print, cut-out, then view the <a href="resources/images/markers.html" style="color: rgb(101, 149, 249);text-decoration: none">Augmented Reality Markers</a> 
-            with 3D overlays. (This is an alpha level feature on iOS only.)</p>
+        <mobi:fieldsetRow style="text-align:left">
+            Print, cut-out, then view the <a href="resources/images/markers.html" style="color: rgb(101, 149, 249);text-decoration: none">Augmented Reality Markers</a> 
+            with 3D overlays. (This is an alpha level feature on iOS only.)
         </mobi:fieldsetRow>
-        <mobi:fieldsetRow>
+        <mobi:fieldsetRow styleClass="mobi-center">
             <mobi:augmentedReality id="selection" 
                 buttonLabel="Augmented Reality Markers">
                 <c:forEach items="${markers}" var="marker" >
