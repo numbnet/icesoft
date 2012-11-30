@@ -322,11 +322,6 @@ html.android .back{
 html.honeycomb .back{
     background-color: #555;
 }
-.mobi-button.mobi-button-back.back, .mobi-button.mobi-button-dis{
-    width: 150px;
-    margin: 0 auto;
-    max-width: 150px;
-}
 .imageView{ 
     margin: 0 auto;
     width:50%;
@@ -340,3 +335,5 @@ html.honeycomb .back{
     overflow: hidden;
     text-overflow: ellipsis;
 }
+.buttons .mobi-fieldset-row{ text-align:center; }
+.buttons .mobi-button{ min-width:125px;max-width:300px;width:40%; }

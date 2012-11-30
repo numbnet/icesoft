@@ -61,25 +61,17 @@
     color: #BBB;
     border-top-color: #878787;
 }
-/* back button*/
-div.mobi-button-back{
+.mobi-button-back{
     background-image: url('back.png');
     background-color: transparent;
     background-position: -3px 43%;
     background-repeat: no-repeat;
-    color:#F1F1F1;
-    padding-left: 20px;
-    border: none;
     background-size: 16px;
+    border: none;
     border-radius:0;
-}
-div.mobi-button-back > span {
-    background-color:transparent;
-}
-div.mobi-button-back > input {
-    color:inherit;
+    color:#F1F1F1;
     font-weight:bold;
-    left:0;
+    padding-left: 20px;
 }
 .mobi-pagePanel-header .mobi-button{
     background-color: transparent;

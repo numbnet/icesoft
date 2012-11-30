@@ -36,6 +36,7 @@ import org.icefaces.mobi.renderkit.CoreRenderer;
 import org.icefaces.mobi.utils.HTML;
 import org.icefaces.mobi.utils.JSFUtils;
 import org.icefaces.mobi.utils.MobiJSFUtils;
+import org.icemobile.util.ClientDescriptor;
 
 
 public class  CommandButtonRenderer extends CoreRenderer {
@@ -63,6 +64,7 @@ public class  CommandButtonRenderer extends CoreRenderer {
     public void encodeBegin(FacesContext facesContext, UIComponent uiComponent)
             throws IOException {
         CommandButton commandButton = (CommandButton) uiComponent;
+        ClientDescriptor client = MobiJSFUtils.getClientDescriptor();
         String clientId = uiComponent.getClientId(facesContext);
 
         // apply button type style classes
@@ -111,7 +113,7 @@ public class  CommandButtonRenderer extends CoreRenderer {
 
         ResponseWriter writer = facesContext.getResponseWriter();
         
-        if (CommandButton.BUTTON_TYPE_BACK.equals(buttonType)){
+        if (CommandButton.BUTTON_TYPE_BACK.equals(buttonType) && client.isIOS()){
             writer.startElement(HTML.DIV_ELEM, commandButton);
             writer.writeAttribute(HTML.ID_ATTR, clientId+"_ctr", HTML.ID_ATTR);
             writer.writeAttribute(HTML.CLASS_ATTR, baseClass.toString(), null);
@@ -125,7 +127,7 @@ public class  CommandButtonRenderer extends CoreRenderer {
         writer.startElement(HTML.INPUT_ELEM, uiComponent);
         writer.writeAttribute(HTML.ID_ATTR, clientId, HTML.ID_ATTR);
         //style and class written to ctr div when back button
-        if (!CommandButton.BUTTON_TYPE_BACK.equals(buttonType)){
+        if (!CommandButton.BUTTON_TYPE_BACK.equals(buttonType) || !client.isIOS()){
             writer.writeAttribute(HTML.CLASS_ATTR, baseClass.toString(), null);
             // should be auto base though
             if (style != null ) {
@@ -146,6 +148,7 @@ public class  CommandButtonRenderer extends CoreRenderer {
     public void encodeEnd(FacesContext facesContext, UIComponent uiComponent)
             throws IOException {
         ResponseWriter writer = facesContext.getResponseWriter();
+        ClientDescriptor client = MobiJSFUtils.getClientDescriptor();
         String clientId = uiComponent.getClientId(facesContext);
         CommandButton commandButton = (CommandButton) uiComponent;
         uiParamChildren = JSFUtils.captureParameters( commandButton );
@@ -153,7 +156,7 @@ public class  CommandButtonRenderer extends CoreRenderer {
             writer.writeAttribute("disabled", "disabled", null);
             writer.endElement(HTML.INPUT_ELEM);
             //end ctr div for back button
-            if (CommandButton.BUTTON_TYPE_BACK.equals(commandButton.getButtonType())){
+            if (CommandButton.BUTTON_TYPE_BACK.equals(commandButton.getButtonType()) && client.isIOS()){
                 writer.endElement(HTML.DIV_ELEM);
             }
             return;
@@ -255,7 +258,7 @@ public class  CommandButtonRenderer extends CoreRenderer {
         writer.endElement(HTML.INPUT_ELEM);
         
         //end ctr div for back button
-        if (CommandButton.BUTTON_TYPE_BACK.equals(commandButton.getButtonType())){
+        if (CommandButton.BUTTON_TYPE_BACK.equals(commandButton.getButtonType()) && client.isIOS()){
             writer.startElement("b", commandButton);
             writer.writeAttribute(HTML.CLASS_ATTR, "mobi-button-placeholder", null);
             Object oVal = commandButton.getValue();

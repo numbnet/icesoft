@@ -105,47 +105,14 @@
     -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#DF9F9F', EndColorStr='#BC3839')";
     background-color: #BC3839;
 }
-/* back button*/
-div.mobi-button-back{
+.mobi-button-back{
     filter: progid:DXImageTransform.Microsoft.gradient(startColorStr = '#8EA4C1', EndColorStr = '#4A6C9B');
     -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#8EA4C1', EndColorStr='#4A6C9B')";
     border-top: 1px solid #155678;
     border-right: 1px solid #155678;
     border-bottom: 1px solid #155678;
-}
-div.mobi-button-back > span {
-    display:none;
-}
-div.mobi-button-back > input {
     color:#FFF;
     font-weight:bold;
-    background-color:transparent;
-    border:none;
-}
-/* back button in header */
-.mobi-pagePanel-header .mobi-button-back {
-    background-color: #777;
-    border-bottom: 1px solid rgba(255,255,255,0.4);
-    border-radius: 5px;
-    box-shadow :0 -1px 1px rgba(0,0,0,0.2)inset,
-        0 1px 2px rgba(0,0,0,0.8)inset;
-    color:#fff;
-    text-shadow : 0px -1px 0px rgba(0,0,0,0.8);
-}
-.mobi-pagePanel-header .mobi-button-back:after {
-    box-shadow :0 -3px 1px -2px rgba(0,0,0,0.3)inset,
-                0 4px 2px -3px rgba(0,0,0,0.8)inset;
-}
-.mobi-button-back,
-.mobi-button-back:after,
-.mobi-button-back:before {
-    background-color: #777;
-
-}
-.mobi-button-back:hover,
-.mobi-button-back:hover:after,
-.mobi-button-back:hover:before {
-    background-color: #888;
 }
 .mobi-button.mobi-button-dis, .mobi-button.mobi-button:disabled {
     filter: alpha(opacity = 50);

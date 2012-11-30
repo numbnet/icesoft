@@ -349,3 +349,5 @@ html.iphone .examplesLink{
     display: inline-block;
     font-weight: bold;
 }
+.buttons .mobi-fieldset-row{ text-align:center; }
+.buttons .mobi-button{ min-width:125px;max-width:300px;width:40%; }
