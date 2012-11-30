@@ -2,6 +2,8 @@ package org.icemobile.samples.spring.controllers;
 
 import java.io.IOException;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.icemobile.samples.spring.FileUploadUtils;
 import org.icemobile.samples.spring.MediaSpotBean;
 import org.icemobile.util.Utils;
@@ -28,13 +30,16 @@ import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 
 @Controller
-@SessionAttributes({"augmentedRealityMessage", "augmentedRealityUpload"})
+@SessionAttributes({"augmentedRealityMessage", "augmentedRealityUpload", "mediaspotBean"})
 public class MediaSpotController extends BaseController{
     HashMap<String,MediaSpotBean> messages = new HashMap<String,MediaSpotBean>();
     MediaSpotBean selectedMessage = null;
     static int THUMBSIZE = 128;
     int count = 0;
     String currentFileName = null;
+    
+    private static final Log log = LogFactory
+            .getLog(MediaSpotController.class);
 
     private List<Map<String,String>> getMarkerList(HttpServletRequest request)  {
 
@@ -76,12 +81,26 @@ public class MediaSpotController extends BaseController{
                     selectedMessage.getFileName());
         }
     }
-
-	@RequestMapping(value = "/mediaspot", method=RequestMethod.POST, consumes="multipart/form-data")
-	public void processPost(HttpServletRequest request, 
+    
+    @RequestMapping(value = "/mediaspot", method=RequestMethod.POST)
+    public void post(HttpServletRequest request, 
             @RequestParam(value = "spotcam", required = false) MultipartFile photoFile,
             MediaSpotBean spotBean,
+            Model model){
+        log.info("post(): " + spotBean);
+        if( photoFile != null ){
+            processPhotoUpload(request,photoFile,spotBean,model);
+        }
+        else{
+            processMarkerSubmit(request, model);
+        }
+    }
+
+	public void processPhotoUpload(HttpServletRequest request, 
+            MultipartFile photoFile,
+            MediaSpotBean spotBean,
             Model model)  {
+	    log.info("postPhotoUpload() photoFile="+photoFile);
         String newFileName = null;
         try {
             if (null != photoFile)  {
@@ -114,9 +133,8 @@ public class MediaSpotController extends BaseController{
         }
     }
 	
-	//non-file upload
-	@RequestMapping(value = "/mediaspot", method=RequestMethod.POST)
-    public void processPost(HttpServletRequest request, Model model)  {
+	private void processMarkerSubmit(HttpServletRequest request, Model model)  {
+	    log.info("processMarkerSubmit()");
 		model.addAttribute("locations", messages.values());
 		model.addAttribute("markers", getMarkerList(request));
         if (null != selectedMessage) {

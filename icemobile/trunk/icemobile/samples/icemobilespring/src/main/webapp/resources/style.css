@@ -20,7 +20,6 @@ div.info {
 div.success {
 	color: #4F8A10;
 	background-color: #DFF2BF;
-	background-image: url('success.png');
 }
 
 div.warning {
