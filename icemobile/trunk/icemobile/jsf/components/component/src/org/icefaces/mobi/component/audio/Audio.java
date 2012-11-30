@@ -32,8 +32,6 @@ public class Audio extends AudioBase {
             new Attribute("style", null)};
 
     private Attribute[] attributesNames = {new Attribute("url", null),
-            new Attribute("controls", null),
-            new Attribute("autoplay", null),
             new Attribute("loops", null),
             new Attribute("tabindex", null),
             new Attribute("name", null),

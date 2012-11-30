@@ -61,12 +61,17 @@ public class AudioRenderer extends BaseResourceRenderer {
             if (disabled) {
                 writer.writeAttribute("disabled", "disabled", null);
             }
+            if (audio.isAutoPlay()){
+                writer.writeAttribute("autoplay", "true", null);
+            }
             srcAttribute = writeCommonAttributes(writer, audio, facesContext, clientId);
             writer.endElement("audio");
         } else {
             writer.startElement("video", uiComponent);
             srcAttribute = writeCommonAttributes(writer, audio, facesContext, clientId);
-            writer.writeAttribute("autoplay", "true", null);
+            if (audio.isAutoPlay()){
+                writer.writeAttribute("autoplay", "true", null);
+            }
             if (disabled) {
                 writer.writeAttribute("disabled", "disabled", null);
             }
