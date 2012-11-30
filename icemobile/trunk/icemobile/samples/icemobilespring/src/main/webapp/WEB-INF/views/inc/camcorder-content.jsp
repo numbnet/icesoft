@@ -27,11 +27,11 @@
 			<form:label path="name">
                 Author: <form:errors path="name" cssClass="error" />
 			</form:label>
-			<form:input path="name" />
+			<mobi:inputText id="name" name="name" value="${camcorderBean.name}" placeholder="Your name"/>
 		</mobi:fieldsetRow>
 		<mobi:fieldsetRow>
-			<mobi:camcorder id="camvid" />
-			<mobi:thumbnail for="camvid" />
+            <mobi:thumbnail for="camvid" />
+			<mobi:camcorder id="camvid" style="margin-left:20px"/>
 		</mobi:fieldsetRow>
 	</mobi:fieldsetGroup>
 
@@ -50,9 +50,9 @@
 	</c:if>
 	<c:if test="${camcorderUploadReady}">
 		<mobi:fieldsetGroup>
-			<mobi:fieldsetRow>
+			<mobi:fieldsetRow styleClass="mobi-center">
 				<video src="${camcorderUpload}" controls="controls"
-					class="imageView" style="min-width:200px"></video>
+					class="imageView" style="min-width:260px"></video>
 				<br>
 				<a href="${camcorderUpload}">Play</a>
 			</mobi:fieldsetRow>

@@ -27,26 +27,24 @@ public class CamcorderController extends BaseController{
 	}
 
 	@RequestMapping(value = "/camcorder", method=RequestMethod.GET)
-    public void get(Model model)  {
+    public void get(ModelBean camcorderBean, Model model)  {
     }
 	
 	@RequestMapping(value = "/camcorder", method=RequestMethod.POST)
-    public void post(Model model)  {
-    }
-
-	@RequestMapping(value = "/camcorder", method=RequestMethod.POST, consumes="multipart/form-data")
 	public void processVideo(HttpServletRequest request, ModelBean modelBean,
                              @RequestParam(value = "camvid", required = false) MultipartFile file,
                              Model model) throws IOException {
-	    String videoFilename = "video-" + Long.toString(Math.abs(UUID.randomUUID().getMostSignificantBits()), 32) + ".mp4";
-        if (null != file)  {
-            file.transferTo(new File(request.getRealPath("/media/"+videoFilename)));
-        }
-        model.addAttribute("camcorderUploadReady", true);
-		model.addAttribute("camcorderMessage", "Hello " + modelBean.getName() +
-                ", your video was uploaded successfully.");
-		model.addAttribute("camcorderUpload", "./media/"+videoFilename);
-
+	    if( file != null ){
+    	    String videoFilename = "video-" + Long.toString(Math.abs(UUID.randomUUID().getMostSignificantBits()), 32) + ".mp4";
+            if (null != file)  {
+                file.transferTo(new File(request.getRealPath("/media/"+videoFilename)));
+            }
+            model.addAttribute("camcorderUploadReady", true);
+    		model.addAttribute("camcorderMessage", "Hello " + modelBean.getName() +
+                    ", your video was uploaded successfully.");
+    		model.addAttribute("camcorderUpload", "./media/"+videoFilename);
+	    }
+	    model.addAttribute("camcorderBean",modelBean);
     }
 
 }
