@@ -4,7 +4,7 @@ import java.util.Map;
 
 public class ModelBean {
 	
-	private String name;
+	private String name = "";
 	
 	private Map<String, String> additionalInfo;
 
