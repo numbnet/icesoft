@@ -77,7 +77,7 @@ public class CommandButtonTag extends BaseSimpleTag {
             baseClass.append(" ").append(styleClass);
         }
         
-        if (BUTTON_TYPE_BACK.equals(buttonType)){
+        if (BUTTON_TYPE_BACK.equals(buttonType) && getClient().isIOS()){
             writer.startElement(DIV_ELEM);
             if( id != null ){
                 writer.writeAttribute(ID_ATTR, id+"_ctr");
@@ -102,7 +102,7 @@ public class CommandButtonTag extends BaseSimpleTag {
         writer.writeAttribute(TYPE_ATTR, type);
         
         //style and class written to ctr div when back button
-        if (!BUTTON_TYPE_BACK.equals(buttonType)){
+        if (!BUTTON_TYPE_BACK.equals(buttonType) || !getClient().isIOS()){
             writer.writeAttribute(CLASS_ATTR, baseClass.toString());
             // should be auto base though
             if (style != null ) {
@@ -121,7 +121,7 @@ public class CommandButtonTag extends BaseSimpleTag {
         writer.endElement();
         
       //end ctr div for back button
-        if (BUTTON_TYPE_BACK.equals(buttonType)){
+        if (BUTTON_TYPE_BACK.equals(buttonType) && getClient().isIOS()){
             writer.startElement("b");
             writer.writeAttribute(CLASS_ATTR, "mobi-button-placeholder");
             if (value != null) {
