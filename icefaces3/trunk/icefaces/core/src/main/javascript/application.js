@@ -86,18 +86,27 @@ if (!window.ice.icefaces) {
 
         var elementUpdateListeners = [];
         namespace.onElementUpdate = function(id, callback) {
-            var element  = document.getElementById(id);
-
+            var element = lookupElementById(id);
             var ancestorIDs = [];
-            var parent = element;
-            while (null != (parent = parent.parentNode))  {
-                var parentID = parent.id;
-                if ((null != parentID) && ("" != parentID)) {
-                    ancestorIDs.push(parentID);
+            var cursor = element;
+            while (cursor)  {
+                var cursorID;
+                if (cursor == document.body) {
+                    cursorID = 'javax.faces.ViewBody';
+                } else if (cursor == document.documentElement) {
+                    cursorID = 'javax.faces.ViewRoot';
+                } else if (cursor == document.getElementsByTagName('head')[0]) {
+                    cursorID = 'javax.faces.ViewHead';
+                } else {
+                    cursorID = cursor.id;
                 }
+
+                if (cursorID) {
+                    ancestorIDs.push(cursorID);
+                }
+                cursor = cursor.parentNode;
             }
-            append(elementUpdateListeners, {identifier: id, handler: callback,
-                    ancestors: " " + ancestorIDs.join(" ") + " "});
+            append(elementUpdateListeners, {identifier: id, handler: callback, ancestors: ancestorIDs.join('*')});
         };
 
         function configurationOf(element) {
@@ -844,15 +853,14 @@ if (!window.ice.icefaces) {
             if ("_fixviewstate" === fvsTail)  {
                 return;
             }
-            var updatedElement = document.getElementById(updatedElementId);
+            var updatedElement = lookupElementById(updatedElementId);
             if (updatedElement) {
                 elementUpdateListeners = reject(elementUpdateListeners, function(idCallbackTuple) {
                     var id = idCallbackTuple.identifier;
-                    var element = document.getElementById(id);
+                    var element = lookupElementById(id);
                     //test if inner element still exists, sometimes client side code can remove DOM fragments
                     if (element) {
-                        var updated = (-1 !=
-                            idCallbackTuple.ancestors.indexOf(" " + updatedElementId + " "));
+                        var updated = contains(idCallbackTuple.ancestors, updatedElementId);
                         if (updated) {
                             var callback = idCallbackTuple.handler;
                             try {
