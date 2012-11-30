@@ -35,6 +35,7 @@ import javax.faces.context.ResponseWriter;
 import org.icefaces.ace.renderkit.CoreRenderer;
 import org.icefaces.ace.util.JSONBuilder;
 import org.icefaces.render.MandatoryResourceComponent;
+import org.icefaces.util.EnvUtils;
 
 @MandatoryResourceComponent(tagName="dialog", value="org.icefaces.ace.component.dialog.Dialog")
 public class DialogRenderer extends CoreRenderer {
@@ -62,6 +63,7 @@ public class DialogRenderer extends CoreRenderer {
     protected void encodeScript(FacesContext context, Dialog dialog) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = dialog.getClientId(context);
+        boolean ariaEnabled = EnvUtils.isAriaEnabled(context);
 
         writer.startElement("script", null);
         writer.writeAttribute("type", "text/javascript", null);
@@ -115,6 +117,7 @@ public class DialogRenderer extends CoreRenderer {
         if(onShow != null) jb.entry("onShow", "function(event, ui) {" + onShow + "}", true);
 		String onHide = dialog.getOnHide();
         if(onHide != null) jb.entry("onHide", "function(event, ui) {" + onHide + "}", true);
+        jb.entry("ariaEnabled", ariaEnabled);
 
         //Behaviors
         encodeClientBehaviors(context, dialog, jb);

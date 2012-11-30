@@ -6144,10 +6144,12 @@
                                     event.preventDefault();
                                 }
                             })
+/*
                             .attr({
                                 role: 'dialog',
                                 'aria-labelledby': titleId
                             })
+*/
                             .mousedown(function(event) {
                                 self.moveToTop(false, event);
                             }),
@@ -6174,7 +6176,7 @@
                             'ui-dialog-titlebar-close ' +
                                     'ui-corner-all'
                     )
-                            .attr('role', 'button')
+//                            .attr('role', 'button')
                             .hover(
                             function() {
                                 uiDialogTitlebarClose.addClass('ui-state-hover');
@@ -6208,7 +6210,14 @@
                             .attr('id', titleId)
                             .html(title)
                             .prependTo(uiDialogTitlebar);
-
+            if (options.ariaEnabled) {
+                uiDialog.attr({
+                    role: 'dialog',
+                    'aria-labelledby': titleId ,
+                    'aria-hidden': !options.autoOpen
+                });
+                uiDialogTitlebarClose.attr('role', 'button');
+            }
             //handling of deprecated beforeclose (vs beforeClose) option
             //Ticket #4669 http://dev.jqueryui.com/ticket/4669
             //TODO: remove in 1.9pre
@@ -6287,6 +6296,9 @@
                 self.uiDialog.hide();
                 self._trigger('close', event);
             }
+            if (self.options.ariaEnabled) {
+                self.uiDialog.attr('aria-hidden', true);
+            }
 
             $.ui.dialog.overlay.resize();
 
@@ -6353,6 +6365,9 @@
             self._size();
             self._position(options.position);
             uiDialog.show(options.show);
+            if (options.ariaEnabled) {
+                uiDialog.attr('aria-hidden', false);
+            }
             self.moveToTop(true);
 
             // prevent tabbing out of modal dialogs
