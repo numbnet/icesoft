@@ -74,6 +74,11 @@ public class AudioMeta extends UIComponentBaseMeta {
             "this component.")
     private String styleClass;
 
+    @Property (defaultValue="false",
+               tlddoc=" may be required for some older devices to play, but can also be used if " +
+            " audio is to play as soon as page is loaded")
+    private boolean autoPlay;
+
     @Property(defaultValue = "session")
     private String scope;
 
