@@ -651,10 +651,6 @@ ice.mobi.tabsetController = {
         var handleHt = handleheight+"px";
         var autoheight = cfgIn.autoHeight || false;
         var fixedHeight = cfgIn.fixedHeight || null;
-        var isFixedHeight = false
-        if (!autoheight && fixedHeight){
-            isFixedHeight=true;
-        }
         var fHtVal = cfgIn.fHtVal || null;
         if (!openElem){
              console.log("Accordion has no children");
@@ -730,9 +726,6 @@ ice.mobi.tabsetController = {
                 if (autoheight != cfgUpd.autoHeight){
                     autoheight = cfgUpd.autoHeight;
                     changedAH=true;
-                }
-                if (!autoheight && fixedheight) {
-                    isFixedHeight = true;
                 }
                 if (changedAH || changedFH && autoheight){
                     ice.mobi.accordionController.maxHt[clientId]=null;
