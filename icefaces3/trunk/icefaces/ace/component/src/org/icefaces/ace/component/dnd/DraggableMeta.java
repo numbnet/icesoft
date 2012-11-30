@@ -104,6 +104,6 @@ public class DraggableMeta extends UIComponentBaseMeta {
 	
     @Property(expression = Expression.METHOD_EXPRESSION,
               methodExpressionArgument = "org.icefaces.ace.event.DragDropEvent",
-              tlddoc = "MethodExpression reference to a method called whenever the target component starts to be dragged.")
+              tlddoc = "MethodExpression reference to a method called whenever the target component starts to be dragged. (It is advised not to use this event for updating the component being dragged, in order to avoid having its markup replaced while still dragging it. See wiki for more details.)")
     MethodExpression dragStartListener;
 }
