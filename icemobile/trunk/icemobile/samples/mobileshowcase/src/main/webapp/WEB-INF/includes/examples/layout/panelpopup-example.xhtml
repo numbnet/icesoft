@@ -34,7 +34,7 @@
                          clientSide="#{panelPopupBean.clientSide}"
                          autoCenter="#{panelPopupBean.autoCenter}"
                          width="260"
-                         style="#{panelPopupBean.autoCenter ? '' : 'top:50px;left:50px'}">
+                         style="#{panelPopupBean.autoCenter ? '' : (viewSize eq 'large' ? 'top:100pxleft:40%' : 'top:100px;left:50px' )}">
             <mobi:outputList inset="false">
                 <mobi:outputListItem group="true">
                     Panel Popup
