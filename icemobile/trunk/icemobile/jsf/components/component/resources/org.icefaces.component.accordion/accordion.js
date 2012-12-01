@@ -239,7 +239,10 @@
                         var val = parseInt(fixedHeight) + parseInt(handleheight);
                         fixedHeight = val + "px";
                     }else {
-                        fixedHeight = calcFixedSectionHeight(fixedHeight, handleheight);
+                        var temp = calcFixedSectionHeight(fixedHeight, handleheight);
+                        if (temp !=null){
+                            fixedHeight = temp +"px";
+                        }
                     }
                 }
                 //allow server to push last submitted or encoded value
