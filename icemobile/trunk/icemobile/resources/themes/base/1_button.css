@@ -22,6 +22,7 @@
 .mobi-button-group-vert .mobi-button {
     display: block;
     margin: 0 0 -1px 0;
+    padding: 0.8em 15px;
     width: 100%;
 }
 .mobi-button-group-vert .mobi-button:last-child{
