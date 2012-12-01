@@ -20,34 +20,29 @@ if (!ice.ace.Autocompleters) ice.ace.Autocompleters = {};
 
 ice.ace.Autocompleter = function(id, updateId, rowClass, selectedRowClass, delay, minChars, height, direction, behaviors, cfg) {
 	this.id = id;
+	var isInitialized = false;
+	if (ice.ace.Autocompleters[this.id] && ice.ace.Autocompleters[this.id].initialized) isInitialized = true;
 	ice.ace.Autocompleters[this.id] = this;
 	this.delay = delay;
 	this.minChars = minChars;
 	this.height = height == 0 ? 'auto' : height;
 	this.direction = direction;
     this.cfg = cfg;
-
 	var options = {minChars:0};
 	this.root = ice.ace.jq(ice.ace.escapeClientId(this.id));
-	var element = this.root.find('input[name="'+this.id+'_input"]').get(0);
-	element.id = this.id + "_input";
-	var ue = ice.ace.jq(ice.ace.escapeClientId(updateId)).get(0);
-	this.baseInitialize(element, ue, options, rowClass, selectedRowClass);
-
-	var self = this;
-	this.options.onComplete = function() { self.onComplete() };
-	this.options.defaultParams = this.options.parameters || null;
+	var $element = this.root.find('input[name="'+this.id+'_input"]');
+	this.element = $element.get(0);
+	this.element.id = this.id + "_input";
+	this.update = ice.ace.jq(ice.ace.escapeClientId(updateId)).get(0);
 	
-	if (behaviors) {
-		if (behaviors.behaviors) {
-			if (behaviors.behaviors.submit) {
-				this.ajaxSubmit = behaviors.behaviors.submit;
-				this.ajaxSubmit.source = this.ajaxSubmit.source + "_input";
-			}
-			if (behaviors.behaviors.blur) {
-				this.ajaxBlur = behaviors.behaviors.blur;
-			}
-		}
+	if (isInitialized) {
+		this.initialize(this.element, this.update, options, rowClass, selectedRowClass, behaviors);
+	} else {
+		var self = this;
+		$element.on('focus', function() {
+			$element.off('focus');
+			self.initialize(self.element, self.update, options, rowClass, selectedRowClass, behaviors); 
+		});
 	}
 };
 
@@ -113,10 +108,8 @@ ice.ace.Autocompleter.cleanWhitespace = function(element) {
 
 ice.ace.Autocompleter.prototype = {
 
-    baseInitialize: function(element, update, options, rowC, selectedRowC) {
+    initialize: function(element, update, options, rowC, selectedRowC, behaviors) {
         var self = this;
-        this.element = element;
-        this.update = update;
         this.hasFocus = false;
         this.changed = false;
         this.active = false;
@@ -201,6 +194,21 @@ ice.ace.Autocompleter.prototype = {
         // ICE-3830
         if (ice.ace.Autocompleter.Browser.IE || ice.ace.Autocompleter.Browser.WebKit)
 		ice.ace.jq(this.element).on("paste", function(e) { self.onPaste.call(self, e); });
+		
+		// ajax behaviors
+		if (behaviors) {
+			if (behaviors.behaviors) {
+				if (behaviors.behaviors.submit) {
+					this.ajaxSubmit = behaviors.behaviors.submit;
+					this.ajaxSubmit.source = this.ajaxSubmit.source + "_input";
+				}
+				if (behaviors.behaviors.blur) {
+					this.ajaxBlur = behaviors.behaviors.blur;
+				}
+			}
+		}
+		
+		this.initialized = true;
     },
 
     show: function() {
@@ -656,12 +664,6 @@ ice.ace.Autocompleter.prototype = {
         entry = encodeURIComponent(this.options.paramName) + '=' +
             encodeURIComponent(this.getToken());
 
-        this.options.parameters = this.options.callback ?
-            this.options.callback(this.element, entry) : entry;
-
-        if (this.options.defaultParams)
-            this.options.parameters += '&' + this.options.defaultParams;
-
 		if (this.observer) clearTimeout(this.observer);
 		if (this.blurObserver) clearTimeout(this.blurObserver);
 		if (isHardSubmit) {
@@ -682,10 +684,6 @@ ice.ace.Autocompleter.prototype = {
 				ice.s(event, this.element);
 			}
 		}
-    },
-
-    onComplete: function(request) {
-        this.updateChoices(request.responseText);
     },
 
     updateNOW: function(text) {
