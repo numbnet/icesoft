@@ -60,10 +60,11 @@
     <mobi:tabSet defaultId="#{cc.attrs.exampleBean.defaultId}"
                  parentFooter="#{cc.attrs.parentFooter}"
                  autoWidth="#{cc.attrs.autoWidth}"
-                 orientation="top" id="#{cc.id}">
+                 orientation="top" id="#{cc.id}_tabs">
         <mobi:contentPane
-                facelet="true" client="true"
-                id="desc" title="#{mmsgs['example.description.label']}">
+                facelet="false" client="true"
+                id="desc" title="#{mmsgs['example.description.label']}"
+                style="min-height:300px">
             <ui:include src="#{cc.attrs.exampleBean.descriptionPath}"/>
         </mobi:contentPane>
         <mobi:contentPane
