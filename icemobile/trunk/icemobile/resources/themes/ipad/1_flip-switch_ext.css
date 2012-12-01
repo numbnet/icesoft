@@ -17,6 +17,7 @@
     border-radius: 1em;
     background-origin:padding;
     background-clip: border-box;
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
 }
 
 .mobi-flip-switch-off, .mobi-flip-switch-on {
