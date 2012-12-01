@@ -1830,7 +1830,8 @@ ice.mobi.splitpane = {
             var width= cfgIn.width || -1;
             if (width >0 && width < 99){
                 leftNode.style.width=width + "%";
-                rightNode.style.width=(100-width) + "%";
+                rightNode.style.width=(99-width) + "%";
+                rightNode.style.float = 'right';
             }
         }
         if (window.addEventListener) {
@@ -1857,8 +1858,20 @@ ice.mobi.splitpane = {
                         }
                     }
                     if (height > 0){
-                        leftNode.style.height = ((height - leftNode.offsetTop) + "px");
-                        rtNode.style.height = ((height - rtNode.offsetTop) + "px");
+                        var leftHeight = height - leftNode.offsetTop;
+                        var rightHeight = height - rtNode.offsetTop;
+                        if( leftHeight > 0 ){
+                            leftNode.style.height = (leftHeight + "px");
+                            rtNode.style.height = (leftHeight + "px");
+                        }
+                        /*
+                        if( rightHeight > 0 ){
+                            rtNode.style.height = (rightHeight + "px");
+                        }*/
+                        console.log('left height: '+leftNode.style.height + ', right height: '+ rtNode.style.height);
+                    }
+                    else{
+                        console.log('height calculated to 0, but not set');
                     }
                 }
            },
