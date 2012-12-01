@@ -14,20 +14,16 @@
  * governing permissions and limitations under the License.   
  */
 
-.mobi-splitpane{
-
-}
 .mobi-splitpane-nonScrollable {
-    float:left;  
-    margin-top:0;
-    margin-bottom:0;
+    margin: 0;
+    display:inline-block;
+    vertical-align:top;
 }
 .mobi-splitpane-scrollable {   
-    float: left; 
-    margin-top:0;
-    margin-bottom:0;
+    margin:0;
     overflow-y: auto;
-/*     position:relative; */
+    display:inline-block;
+    vertical-align:top;
 }
 .mobi-splitpane-divider {
     border-left: solid 1px;
