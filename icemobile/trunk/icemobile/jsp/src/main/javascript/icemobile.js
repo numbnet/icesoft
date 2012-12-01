@@ -577,7 +577,7 @@ ice.mobi.tabsetController = {
     }
     function getHandleHeight(aRoot){
         var handleNode = aRoot.querySelector('.mobi-accordion .handle');
-        var handleHeight = "33"; //default css handle height is 33px
+        var handleHeight = 33; //default css handle height is 33px
         if (handleNode){
            var temp = handleNode.scrollHeight || handleNode.height || handleNode.offsetHeight || handleNode.maxHeight;
            if (temp > 0){
@@ -606,12 +606,12 @@ ice.mobi.tabsetController = {
     }
     function calcFixedSectionHeight(fixedHeight, handleHeight, fixedHtVal){
         if (fixedHtVal && fixedHtVal > 0){
-            return fixedHtVal + handleHeight;
+            return parseInt(fixedHtVal) + parseInt(handleHeight);
         } else {
             try {
                return parseInt(fixedHeight);
             }catch (Exception ){
-                ice.log.debug("problem calculating height of contentPane to set section Height");
+                console.log("problem calculating height of contentPane to set section Height");
             }
         }
         return null;
@@ -625,6 +625,7 @@ ice.mobi.tabsetController = {
     }
     function setHeight(opened, fht){
         if (opened && fht){
+            console.log("setting id="+opened.id+" to height="+fht);
             opened.style.height=fht;
             opened.style.maxHeight = fht;
         }
@@ -673,7 +674,11 @@ ice.mobi.tabsetController = {
                 var tmp1 = parseInt(fHtVal)+parseInt(handleheight);
                 fixedHeight = tmp1 + "px";
             }else {
-                fixedHeight = calcFixedSectionHeight(fixedHeight, handleheight, fHtVal);
+                var tmp = calcFixedSectionHeight(fixedHeight, handleheight, fHtVal);
+             //   console.log("tmp that is cacl ="+tmp);
+                 if (tmp) {
+                     fixedHeight = tmp+"px";
+                 }
             }
         }
         if (!disabled){
@@ -692,7 +697,6 @@ ice.mobi.tabsetController = {
                 var accId = clientId+"_acc";
                 var autoheight = ice.mobi.accordionController.autoheight[clientId];
                 //which child is the element?
-                var changed= true;
                 openElem = document.getElementById(paneOpId);
                 if (paneOpId && paneOpId == theParent.id){
                     if (openElem.className=="open"){
@@ -701,7 +705,6 @@ ice.mobi.tabsetController = {
                     } else {
                         openPane( openElem, fixedHeight);
                     }
-                    changed=false;
                 }
                 else {//panel has changed
                     closePane(openElem, handleHt);
@@ -741,7 +744,10 @@ ice.mobi.tabsetController = {
                 }
                 else if (fixedHeight && changedFH){
                     var fixedHtVal = cfgUpd.fHtVal || null;
-                    fixedHeight = calcFixedSectionHeight(fixedHeight, handleheight, fixedHtVal );
+                    var tmp = calcFixedSectionHeight(fixedHeight, handleheight, fixedHtVal );
+                    if (tmp !=null){
+                        fixedHeight=tmp+"px";
+                    }
                 }
                 if( !paneOpId){
                     paneOpId = cfgIn.opened+"_sect" || null;
