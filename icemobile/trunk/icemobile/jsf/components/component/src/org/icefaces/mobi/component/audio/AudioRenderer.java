@@ -76,7 +76,7 @@ public class AudioRenderer extends BaseResourceRenderer {
                 writer.writeAttribute("disabled", "disabled", null);
             }
             writer.writeAttribute("height", "45", null);
-            writer.writeAttribute("width", "100", null);
+            writer.writeAttribute("width", "260", null);
             writer.endElement("video");
         }
         // write inline image link
