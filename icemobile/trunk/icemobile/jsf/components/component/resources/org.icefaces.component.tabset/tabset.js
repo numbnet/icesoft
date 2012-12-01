@@ -120,6 +120,9 @@
                     tabIndex = cfgIn.tIndex || 0;
                     var newPage = contents[tabIndex];
                     newPage.className = classVis;
+                    //hack for Nexus 7
+                    newPage.style.position = "absolute";
+                    setTimeout(function(){newPage.style.position = ""; },10)
                 }
                 //remove class of activetabheader and hide old contents
                 el.setAttribute("class", clsActiveTab);
