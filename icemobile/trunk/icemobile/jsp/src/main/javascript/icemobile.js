@@ -625,7 +625,6 @@ ice.mobi.tabsetController = {
     }
     function setHeight(opened, fht){
         if (opened && fht){
-            console.log("setting id="+opened.id+" to height="+fht);
             opened.style.height=fht;
             opened.style.maxHeight = fht;
         }
