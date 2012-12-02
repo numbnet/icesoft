@@ -3,7 +3,7 @@
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <%@ taglib uri="http://www.icemobile.org/tags" prefix="mobi" %>
 <%@ taglib prefix="push" uri="http://www.icepush.org/icepush/jsp/icepush.tld"%>
-<%@ page session="false" %>
+<%@ page session="false" trimDirectiveWhitespaces="true"%>
 <c:if test="${!ajaxRequest}">
 <!doctype html>
 <html>
@@ -38,7 +38,7 @@
                         ICEmobile Spring MVC Showcase
                     </mobi:pagePanelHeader>
                     <mobi:pagePanelBody noFooter="true">
-                         <mobi:splitPane id="sp" scrollable="true" columnDivider="30">
+                        <mobi:splitPane id="sp" scrollable="true" columnDivider="30">
                             <mobi:fragment name="left">
                                 <%@ include file="/WEB-INF/views/inc/menu.jsp" %>
                             </mobi:fragment>
