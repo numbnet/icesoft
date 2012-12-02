@@ -1,7 +1,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://www.icemobile.org/tags" prefix="mobi" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ page session="false" %>
+<%@ page session="false" trimDirectiveWhitespaces="true" %>
 <head>
     <title>ICEmobile Spring</title>
     <mobi:deviceResource  includePush="true"/>

@@ -1835,10 +1835,7 @@ ice.mobi.splitpane = {
             var width= cfgIn.width || -1;
             if (width >0 && width < 99){
                 leftNode.style.width=width + "%";
-                rightNode.style.width=(99-width) + "%";
-                //styleFloat for IE compatibility
-                rightNode.style.styleFloat = 'right';
-                rightNode.style.cssFloat = 'right';
+                rightNode.style.width=(100-width) + "%";
             }
         }
         if (window.addEventListener) {
