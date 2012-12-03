@@ -7,30 +7,31 @@
 <form:form id="conform" method="POST" enctype="multipart/form-data"
 	modelAttribute="contactBean" cssClass="form">
 
-	<c:if test="${viewSize eq 'large'}"><h3>Contact List</h3></c:if>
-    
-    <mobi:getEnhanced />
+	<c:if test="${viewSize eq 'large'}">
+		<h3>Contact List</h3>
+	</c:if>
+
+	<mobi:getEnhanced />
 
 	<mobi:fieldsetGroup styleClass="intro">
 		<mobi:fieldsetRow>
 			The fetchContact tag provides access to the contact database
-            or address book on the device.  The user selects a single contact,
-            and the name, email address, and phone number are returned as
-            values.
+            or address book on the device.
 		</mobi:fieldsetRow>
 	</mobi:fieldsetGroup>
 
 	<mobi:fieldsetGroup>
 		<mobi:fieldsetRow styleClass="mobi-center">
-            <mobi:fetchContact id="rawContact" buttonLabel="Fetch Contact"
-    				fields="name, phone, email"/>
+			<mobi:fetchContact id="rawContact" buttonLabel="Fetch Contact"
+				fields="name, phone, email" />
 		</mobi:fieldsetRow>
 	</mobi:fieldsetGroup>
 
-	<c:if test="${!sxRegistered}"><!-- SX on iOS auto-submits -->
-        <mobi:commandButton buttonType='important' styleClass="submit"
-            value="Submit" type="submit" />
-    </c:if>
+	<c:if test="${!sxRegistered}">
+		<!-- SX on iOS auto-submits -->
+		<mobi:commandButton buttonType='important' styleClass="submit"
+			value="Submit" type="submit" />
+	</c:if>
 
 	<h3>Selected Contact</h3>
 	<mobi:fieldsetGroup styleClass="results">
@@ -53,6 +54,18 @@
 			<div id="message" class="error">Form has errors</div>
 		</c:if>
 	</s:bind>
+
+	<mobi:fieldsetGroup>
+		<mobi:fieldsetRow group="true">
+			Description
+		</mobi:fieldsetRow>
+		<mobi:fieldsetRow>
+			The fetchContact tag provides access to the contact database
+            or address book on the device.  The user selects a single contact,
+            and the name, email address, and phone number are returned as
+            values.
+		</mobi:fieldsetRow>
+	</mobi:fieldsetGroup>
 </form:form>
 
 <script type="text/javascript">

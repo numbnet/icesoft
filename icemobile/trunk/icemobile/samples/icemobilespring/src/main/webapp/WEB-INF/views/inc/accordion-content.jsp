@@ -7,15 +7,13 @@
 <form:form id="accordionform" method="POST"
 	modelAttribute="accordionBean">
 
-	<c:if test="${viewSize eq 'large'}"><h3>Accordion</h3></c:if>
+	<c:if test="${viewSize eq 'large'}">
+		<h3>Accordion</h3>
+	</c:if>
 
-	<mobi:fieldsetGroup>
+	<mobi:fieldsetGroup styleClass="intro">
 		<mobi:fieldsetRow>
-			The accordion manages a stack of accordionPane's and
-				will show one active pane at a time. The attribute "selectedId"
-				determines which of the panes in the stack is currently visible. All
-				other non-selected accordionPane's are represented as collapsed
-				views.
+			The accordion tag shows one active content pane at time. Non-active content panes are represented as collapsed views. 
 		</mobi:fieldsetRow>
 	</mobi:fieldsetGroup>
 
@@ -49,9 +47,20 @@
 			<%@ include file="inc-iceskate.jsp"%>
 		</mobi:accordionPane>
 	</mobi:accordion>
+
+	<mobi:fieldsetGroup>
+		<mobi:fieldsetRow group="true">
+			Description
+		</mobi:fieldsetRow>
+		<mobi:fieldsetRow>
+			The accordion tag manages a stack of accordionPane's and
+				will show one active pane at a time. The attribute "selectedId"
+				determines which of the panes in the stack is currently visible. All
+				other non-selected accordionPane's are represented as collapsed
+				views.
+		</mobi:fieldsetRow>
+	</mobi:fieldsetGroup>
 </form:form>
 <script type="text/javascript">
 	MvcUtil.enhanceForm("#accordionform");
-
-	
 </script>

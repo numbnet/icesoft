@@ -42,6 +42,15 @@
         </mobi:fieldsetRow>
     </mobi:fieldsetGroup>
     <input type="hidden" name="submitB" id="hiddenSubmitVal" />
+    
+    <mobi:fieldsetGroup>
+    	<mobi:fieldsetRow group="true">
+    		Description
+    	</mobi:fieldsetRow>
+        <mobi:fieldsetRow>
+            The CommandButton provides themed buttons in a variety of named types for form submission.
+        </mobi:fieldsetRow>
+    </mobi:fieldsetGroup>
 
 </form:form>
 <script type="text/javascript">

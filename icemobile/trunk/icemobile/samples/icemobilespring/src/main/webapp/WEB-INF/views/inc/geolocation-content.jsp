@@ -8,7 +8,9 @@
 	<form:form id="geolocationform" method="POST"
 		modelAttribute="geolocationBean" cssClass="form">
 
-		<c:if test="${viewSize eq 'large'}"><h3>GeoLocation</h3></c:if>
+		<c:if test="${viewSize eq 'large'}">
+			<h3>GeoLocation</h3>
+		</c:if>
 
 		<mobi:geolocation id="geo1" name="geolocation"
 			timeout="${geolocationBean.timeout}"
@@ -17,11 +19,16 @@
 		<!-- maximumAge="${geolocationBean.maximumAge}" -->
 
 		<mobi:fieldsetGroup>
-			<mobi:fieldsetRow style="display:block">
-                <p>The geolocation tag determines the user's current location.</p>
-                <p>Click the 'Locate Me' button below to calculate your current 
+			<mobi:fieldsetRow styleClass="intro">
+                The geolocation tag determines the user's current location.     
+            </mobi:fieldsetRow>
+		</mobi:fieldsetGroup>
+
+		<mobi:fieldsetGroup>
+			<mobi:fieldsetRow>
+                Click the 'Locate Me' button below to calculate your current 
                 location and update the map. Various settings for the geolocation
-                tag can also be adjusted below.</p>
+                tag can also be adjusted below.
             </mobi:fieldsetRow>
 		</mobi:fieldsetGroup>
 
@@ -102,6 +109,8 @@
 
 		<mobi:commandButton type="submit" buttonType="important"
 			styleClass="submit" value="Update Settings" />
+			
+	   <br/>
 
 		<script type="text/javascript">
 			function showLocation() {

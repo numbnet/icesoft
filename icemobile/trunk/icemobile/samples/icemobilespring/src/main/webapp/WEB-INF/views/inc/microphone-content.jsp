@@ -7,22 +7,13 @@
 <form:form id="micform" method="POST" enctype="multipart/form-data"
 	modelAttribute="microphoneBean" cssClass="form">
 
-	<c:if test="${viewSize eq 'large'}"><h3>Microphone</h3></c:if>
-    
-    <mobi:getEnhanced />
+	<c:if test="${viewSize eq 'large'}">
+		<h3>Microphone</h3>
+	</c:if>
+
+	<mobi:getEnhanced />
 
 	<mobi:fieldsetGroup styleClass="intro">
-		<mobi:fieldsetRow>
-			The microphone tag allows access to a mobile devices'
-			microphone. The tag renders a simple button that, when
-			pressed, activates a native interface that captures audio using the
-			device's microphone.
-		</mobi:fieldsetRow>
-	</mobi:fieldsetGroup>
-	<mobi:fieldsetGroup styleClass="intro">
-		<mobi:fieldsetRow group="true">
-           Microphone Upload
-    </mobi:fieldsetRow>
 		<mobi:fieldsetRow>
             Use your mobile device's microphone to make a recording and upload
             it to the server.
@@ -41,14 +32,13 @@
 		</mobi:fieldsetRow>
 	</mobi:fieldsetGroup>
 
-	<c:if test="${!sxRegistered}"><!-- SX on iOS auto-submits -->
-        <mobi:commandButton buttonType="important"
-                            value="Submit"
-                            type="submit"
-                            styleClass="submit"/>
-    </c:if>
-    
-    <h3>Audio Upload</h3>
+	<c:if test="${!sxRegistered}">
+		<!-- SX on iOS auto-submits -->
+		<mobi:commandButton buttonType="important" value="Submit"
+			type="submit" styleClass="submit" />
+	</c:if>
+
+	<h3>Audio Upload</h3>
 
 	<c:if test="${not empty micMessage}">
 		<div id="message" class="success">${micMessage}</div>
@@ -67,6 +57,18 @@
 			<div id="message" class="error">Form has errors</div>
 		</c:if>
 	</s:bind>
+
+	<mobi:fieldsetGroup>
+		<mobi:fieldsetRow group="true">
+			Description
+		</mobi:fieldsetRow>
+		<mobi:fieldsetRow>
+			The microphone tag allows access to a mobile devices'
+			microphone. The tag renders a simple button that, when
+			pressed, activates a native interface that captures audio using the
+			device's microphone.
+		</mobi:fieldsetRow>
+	</mobi:fieldsetGroup>
 </form:form>
 
 

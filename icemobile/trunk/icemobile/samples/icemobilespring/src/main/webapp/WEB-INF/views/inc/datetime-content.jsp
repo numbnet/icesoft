@@ -7,9 +7,11 @@
 <form:form id="datetimeform" method="POST"
 	modelAttribute="dateTimeSpinnerBean">
 
-	<c:if test="${viewSize eq 'large'}"><h3>Date & Time Spinners</h3></c:if>
+	<c:if test="${viewSize eq 'large'}">
+		<h3>Date & Time Spinners</h3>
+	</c:if>
 
-	<mobi:fieldsetGroup>
+	<mobi:fieldsetGroup styleClass="intro">
 		<mobi:fieldsetRow>
 			The dateSpinner displays a popup that allows a user to select a date value. Likewise,
 			the timeSpinner displays a popup that allows a user to select a time.
@@ -54,6 +56,18 @@
 			<span style="float: right">${dateTimeSpinnerBean.timeOne}</span>
 		</mobi:fieldsetRow>
 	</mobi:fieldsetGroup>
+
+	<mobi:fieldsetGroup>
+		<mobi:fieldsetRow group="true">
+			Description
+		</mobi:fieldsetRow>
+		<mobi:fieldsetRow>
+			The dateSpinner component displays a popup that allows a user to select a date value. 
+			The component must be value bound to a Date object and support converters and timezone assignment.
+			Likewise, the timeSpinner component displays a popup that allows a user to select a time.
+		</mobi:fieldsetRow>
+	</mobi:fieldsetGroup>
+
 
 </form:form>
 

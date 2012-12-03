@@ -6,9 +6,11 @@
 	uri="http://www.icepush.org/icepush/jsp/icepush.tld"%>
 <form:form id="listform" method="POST" modelAttribute="listBean">
 
-	<c:if test="${viewSize eq 'large'}"><h3>Lists</h3></c:if>
+	<c:if test="${viewSize eq 'large'}">
+		<h3>Lists</h3>
+	</c:if>
 
-	<mobi:fieldsetGroup inset="true">
+	<mobi:fieldsetGroup styleClass="intro">
 		<mobi:fieldsetRow>
             The outputList tag is used to display a list of data, and is commonly 
             used to generate navigation hierarchies.
@@ -61,5 +63,15 @@
 			</mobi:outputListItem>
 		</c:forEach>
 	</mobi:outputList>
+
+	<mobi:fieldsetGroup>
+		<mobi:fieldsetRow group="true">
+			Description
+		</mobi:fieldsetRow>
+		<mobi:fieldsetRow>
+	 		The outputList component is used to display a list of data, and is commonly 
+            used to generate navigation hierarchies.
+		</mobi:fieldsetRow>
+	</mobi:fieldsetGroup>
 
 </form:form>
