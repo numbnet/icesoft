@@ -43,6 +43,15 @@ public class MicrophoneController extends BaseController{
     public void processMicrophone(Model model)  {
     }
 
+    @RequestMapping(value = "/microphone", method = RequestMethod.POST, 
+            consumes = "application/x-www-form-urlencoded")
+    public void formPost(
+            HttpServletRequest request, 
+            ModelBean microphoneBean,
+            Model model) {
+        model.addAttribute("microphoneBean",microphoneBean);
+    }
+
 	@RequestMapping(value = "/microphone", method=RequestMethod.POST)
 	public void processMicrophone(HttpServletRequest request, ModelBean microphoneBean, 
             @RequestParam(value = "mic", required = false) MultipartFile file, 
