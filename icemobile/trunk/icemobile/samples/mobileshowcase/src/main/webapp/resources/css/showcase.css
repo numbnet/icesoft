@@ -277,7 +277,9 @@ html.honeycomb h3{
     overflow: hidden;
     display: block!important;
     float: none!important;
-    /*width:60%;*/
+}
+.form .results .mobi-fieldset-row > span{
+    text-align:right;
 }
 .form .mobi-fieldset-row > span.mobi-thumb, .form .mobi-fieldset-row > span.mobi-thumb-done{
     display: inline-block!important;

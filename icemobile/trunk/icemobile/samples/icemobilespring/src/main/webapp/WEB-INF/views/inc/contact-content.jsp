@@ -21,7 +21,7 @@
 	</mobi:fieldsetGroup>
 
 	<mobi:fieldsetGroup>
-		<mobi:fieldsetRow style="text-align:center">
+		<mobi:fieldsetRow styleClass="mobi-center">
             <mobi:fetchContact id="rawContact" buttonLabel="Fetch Contact"
     				fields="name, phone, email"/>
 		</mobi:fieldsetRow>
@@ -31,7 +31,7 @@
 		value="Submit" type="submit" />
 
 	<h3>Selected Contact</h3>
-	<mobi:fieldsetGroup>
+	<mobi:fieldsetGroup styleClass="results">
 		<mobi:fieldsetRow>
 			<label>Name:</label>
 			<span>${contactBean.name}</span>
