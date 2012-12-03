@@ -8,17 +8,16 @@
 	enctype="multipart/form-data" modelAttribute="camcorderBean"
 	cssClass="form">
 
-	<c:if test="${viewSize eq 'large'}"><h3>Camcorder</h3></c:if>
-    
-    <mobi:getEnhanced />
-	
+	<c:if test="${viewSize eq 'large'}">
+		<h3>Camcorder</h3>
+	</c:if>
+
+	<mobi:getEnhanced />
+
 	<mobi:fieldsetGroup styleClass="intro">
 		<mobi:fieldsetRow>
 			The Camcorder allows access to a mobile devices'
-			video camera. The tag renders a simple button that, when
-			pressed, launches the native video camera application on the device.
-			Once a video has been taken and accepted, the user is returned to
-			the web application.
+			video camera.
 		</mobi:fieldsetRow>
 	</mobi:fieldsetGroup>
 
@@ -27,11 +26,12 @@
 			<form:label path="name">
                 Author: <form:errors path="name" cssClass="error" />
 			</form:label>
-			<mobi:inputText id="name" name="name" value="${camcorderBean.name}" placeholder="Your name"/>
+			<mobi:inputText id="name" name="name" value="${camcorderBean.name}"
+				placeholder="Your name" />
 		</mobi:fieldsetRow>
 		<mobi:fieldsetRow>
-            <mobi:thumbnail for="camvid" />
-			<mobi:camcorder id="camvid" style="margin-left:20px"/>
+			<mobi:thumbnail for="camvid" />
+			<mobi:camcorder id="camvid" style="margin-left:20px" />
 		</mobi:fieldsetRow>
 	</mobi:fieldsetGroup>
 
@@ -52,7 +52,7 @@
 		<mobi:fieldsetGroup>
 			<mobi:fieldsetRow styleClass="mobi-center">
 				<video src="${camcorderUpload}" controls="controls"
-					class="imageView" style="min-width:260px"></video>
+					class="imageView" style="min-width: 260px"></video>
 				<br>
 				<a href="${camcorderUpload}">Play</a>
 			</mobi:fieldsetRow>
@@ -63,6 +63,20 @@
 			<div id="message" class="error">Form has errors</div>
 		</c:if>
 	</s:bind>
+
+	<mobi:fieldsetGroup>
+		<mobi:fieldsetRow group="true">
+			Description
+		</mobi:fieldsetRow>
+		<mobi:fieldsetRow>
+			The Camcorder allows access to a mobile devices'
+			video camera. The tag renders a simple button that, when
+			pressed, launches the native video camera application on the device.
+			Once a video has been taken and accepted, the user is returned to
+			the web application.
+		</mobi:fieldsetRow>
+	</mobi:fieldsetGroup>
+
 </form:form>
 <script type="text/javascript">
 	MvcUtil.enhanceForm("#camcorderform");

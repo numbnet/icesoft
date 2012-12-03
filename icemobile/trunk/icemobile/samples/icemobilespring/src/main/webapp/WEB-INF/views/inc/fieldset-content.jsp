@@ -6,19 +6,16 @@
 	uri="http://www.icepush.org/icepush/jsp/icepush.tld"%>
 <form id="fieldset">
 
-	<c:if test="${viewSize eq 'large'}"><h3>FieldSets</h3></c:if>
+	<c:if test="${viewSize eq 'large'}">
+		<h3>FieldSets</h3>
+	</c:if>
 
-	<mobi:fieldsetGroup>
+	<mobi:fieldsetGroup styleClass="intro">
 		<mobi:fieldsetRow>
-			The fieldsetGroup displays sets of application input
-			such as for settings panels or input forms. The fieldset 
-			tag can contain one or more child fieldsetRows,
-			which logically divides the fieldset into subsections. The tag
-			has an optional inset attribute which can be useful when
-			distinguishing multiple fieldsetGroups on one page.</p>
+			The fieldsetGroup tag can be used to displaying application input.
 		</mobi:fieldsetRow>
 	</mobi:fieldsetGroup>
-    
+
 	<mobi:fieldsetGroup>
 		<mobi:fieldsetRow group="true">
             Information
@@ -40,11 +37,9 @@
 			<mobi:inputText id="photos" value="621"
 				styleClass="mobi-col mobi-weight2" />
 		</mobi:fieldsetRow>
-
 	</mobi:fieldsetGroup>
 
 	<mobi:fieldsetGroup>
-
 		<mobi:fieldsetRow styleClass="mobi-grid">
 			<label for="first" class="mobi-col mobi-weight1" style="width: 100px">First
 				Name</label>
@@ -63,6 +58,19 @@
 			<mobi:inputText id="address" value="123 Fake St."
 				styleClass="mobi-col mobi-weight2" />
 		</mobi:fieldsetRow>
+	</mobi:fieldsetGroup>
 
+	<mobi:fieldsetGroup>
+		<mobi:fieldsetRow group="true">
+			Description
+		</mobi:fieldsetRow>
+		<mobi:fieldsetRow>
+			The fieldsetGroup displays sets of application input
+			such as for settings panels or input forms. The fieldset 
+			tag can contain one or more child fieldsetRows,
+			which logically divides the fieldset into subsections. The tag
+			has an optional inset attribute which can be useful when
+			distinguishing multiple fieldsetGroups on one page.</p>
+		</mobi:fieldsetRow>
 	</mobi:fieldsetGroup>
 </form>

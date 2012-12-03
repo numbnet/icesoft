@@ -6,18 +6,16 @@
 	uri="http://www.icepush.org/icepush/jsp/icepush.tld"%>
 <form:form id="qrscanform" method="POST" modelAttribute="QRScanBean"
 	cssClass="form">
-    
-    <c:if test="${viewSize eq 'large'}"><h3>QR Codes</h3></c:if>
+
+	<c:if test="${viewSize eq 'large'}">
+		<h3>QR Codes</h3>
+	</c:if>
 
 	<mobi:getEnhanced />
 
 	<mobi:fieldsetGroup>
-		<mobi:fieldsetRow style="display:block">
-			<p>The qrscan and qrcode tags are used to read or create QR
-				codes. The ICEmobile Container is needed for reading QR codes.</p>
-			<p>The qrscan tag accesses the device's camera to read a QR
-				code. If successful, the decoded qr code will be assigned to the
-				backing bean.</p>
+		<mobi:fieldsetRow styleClass="intro">
+			The qrscan and qrcode tags are used to read or create QR codes. 
 		</mobi:fieldsetRow>
 	</mobi:fieldsetGroup>
 
@@ -56,6 +54,20 @@
 	<mobi:commandButton buttonType="important" styleClass="submit"
 		value="Create QRCode" type="submit" />
 
+	<br />
+	<br />
+	<mobi:fieldsetGroup>
+		<mobi:fieldsetRow group="true">
+			Description
+		</mobi:fieldsetRow>
+		<mobi:fieldsetRow>
+			The qrscan and qrcode tags are used to read or create QR
+			codes. The ICEmobile Container is needed for reading QR codes.
+			<br />
+			The qrscan tag accesses the device's camera to read a QR code.
+			If successful, the decoded qr code will be assigned to the backing bean.
+		</mobi:fieldsetRow>
+	</mobi:fieldsetGroup>
 </form:form>
 
 

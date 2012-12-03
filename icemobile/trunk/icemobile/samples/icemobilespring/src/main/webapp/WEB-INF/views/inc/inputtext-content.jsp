@@ -7,14 +7,14 @@
 <form:form id="inputtextform" method="POST"
 	modelAttribute="inputTextBean" cssClass="form">
 
-	<c:if test="${viewSize eq 'large'}"><h3>HTML5 Input</h3></c:if>
+	<c:if test="${viewSize eq 'large'}">
+		<h3>HTML5 Input</h3>
+	</c:if>
 
 	<mobi:fieldsetGroup styleClass="intro">
 		<mobi:fieldsetRow>
 			The HTML5 input tag exposes the new set of HTML5 input
-			features on supported browsers. Most notable is the type attribute,
-			which can act as a hint to load a specific keyboard, which matches
-			the specified type.
+			features on supported browsers.
 		</mobi:fieldsetRow>
 	</mobi:fieldsetGroup>
 
@@ -70,6 +70,18 @@
 		<mobi:fieldsetRow>
 			<label>Date</label>
 			<span>${inputTextBean.date}</span>
+		</mobi:fieldsetRow>
+	</mobi:fieldsetGroup>
+
+	<mobi:fieldsetGroup>
+		<mobi:fieldsetRow group="true">
+			Description
+		</mobi:fieldsetRow>
+		<mobi:fieldsetRow>
+			The HTML5 input tag exposes the new set of HTML5 input features on supported browsers. 
+			Most notable is the type attribute, which can act as a hint to load a specific keyboard, 
+			which matches the specified type. Another notable features is the placeholder attribute, 
+			which supports ghost input hints that disappear when the user types content.
 		</mobi:fieldsetRow>
 	</mobi:fieldsetGroup>
 
