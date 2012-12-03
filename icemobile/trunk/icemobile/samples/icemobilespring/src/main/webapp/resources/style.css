@@ -299,6 +299,9 @@ html.honeycomb h3, html.android h3{
     padding: 10px;
 }
 .form p{ text-align:left; margin:0 0 10px 0;}
+.form .mobi-fieldset-row > span.mobi-thumb, .form .mobi-fieldset-row > span.mobi-thumb-done{
+    display: inline-block!important;
+}
 
 /* LARGE SCREEN */
 @media screen and (min-width: 580px) {  
