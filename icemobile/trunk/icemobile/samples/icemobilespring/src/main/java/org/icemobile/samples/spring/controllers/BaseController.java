@@ -24,6 +24,11 @@ public abstract class BaseController {
     public void iosAttribute(HttpServletRequest request, Model model) {
         model.addAttribute("ios", ClientDescriptor.getInstance(request).isIOS());
     }
+    
+    @ModelAttribute
+    public void sxRegistered(HttpServletRequest request, Model model){
+        model.addAttribute("sxRegistered", ClientDescriptor.getInstance(request).isSXRegistered());
+    }
 
     
 
