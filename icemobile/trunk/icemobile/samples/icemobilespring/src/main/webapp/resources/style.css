@@ -214,7 +214,11 @@ html.honeycomb h3, html.android h3{
     font-weight:normal;
 }
 .form .mobi-fieldset{
+    clear: both;
     text-align:center;
+}
+.form .mobi-fieldset.intro > .mobi-fieldset-row {
+    display: block;
 }
 .form .mobi-fieldset.intro{
     text-align:left;
@@ -231,6 +235,7 @@ html.honeycomb h3, html.android h3{
     -moz-box-orient: horizontal;
     box-orient: horizontal;
     position: relative;
+    min-width: 100%;
 }
 .form .results .mobi-fieldset-row > span{
     text-align:right;
