@@ -1,5 +1,8 @@
 package org.icemobile.samples.spring.controllers;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.icemobile.samples.spring.FileUploadUtils;
 import org.icemobile.samples.spring.ModelBean;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,15 +14,16 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.Map;
-import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
 
 @Controller
 @SessionAttributes({"microphoneBean","micUploadReady","micMessage","micUpload"})
 public class MicrophoneController extends BaseController{
+    
+    private static final Log log = LogFactory
+            .getLog(MicrophoneController.class);
 
 	@ModelAttribute("microphoneBean")
 	public ModelBean createBean() {
@@ -39,27 +43,44 @@ public class MicrophoneController extends BaseController{
     public void processMicrophone(Model model)  {
     }
 
-	@RequestMapping(value = "/microphone", method=RequestMethod.POST, consumes="multipart/form-data")
-	public void processMicrophone(HttpServletRequest request, ModelBean modelBean, 
-            @RequestParam(value = "mic", required = false) MultipartFile file, Model model) throws IOException {
-
-        String fileName = saveClip(request, file);
-        model.addAttribute("micUploadReady", null != fileName);
-        model.addAttribute("micUpload", "media/" + fileName);
-		model.addAttribute("micMessage", "Hello " + modelBean.getName() + ", your audio file was uploaded successfully.");
+	@RequestMapping(value = "/microphone", method=RequestMethod.POST)
+	public void processMicrophone(HttpServletRequest request, ModelBean microphoneBean, 
+            @RequestParam(value = "mic", required = false) MultipartFile file, 
+            Model model){
+	    
+	    if( file != null ){
+            processUpload(request,microphoneBean,file,model);
+        }
+        model.addAttribute("microphoneBean",microphoneBean);
 
     }
-	
-	//non-file upload
-	@RequestMapping(value = "/microphone", method=RequestMethod.POST)
-    public void processMicrophoneP(Model model)  {
+
+    public void processUpload(
+            HttpServletRequest request, 
+            ModelBean microphoneBean,
+            MultipartFile file,
+            Model model) {
+        log.info("processUpload() "+ microphoneBean);
+        String newFileName;
+        try {
+            newFileName = FileUploadUtils.saveAudio(request, file, null);
+            model.addAttribute("micMessage", "Hello " + microphoneBean.getName() 
+                    + ", your file was uploaded successfully.");
+            if (null != newFileName) {
+                model.addAttribute("micUpload", newFileName);
+                model.addAttribute("micUploadReady", true);
+            } 
+        } catch (IOException e) {
+            e.printStackTrace();
+            model.addAttribute("micMessage","There was an error uploading the file.");
+        }
     }
 
 
 	@RequestMapping(value = "/jsonmic", method=RequestMethod.POST)
 	public @ResponseBody MicUpdate jsonMicrophone(HttpServletRequest request, ModelBean modelBean, @RequestParam(value = "mic", required = false) MultipartFile file, Model model) throws IOException {
 
-        String newFileName = saveClip(request, file);
+        String newFileName = FileUploadUtils.saveImage(request, file, null);
 
         Map additionalParams = modelBean.getAdditionalInfo();
         String imcheck = " ";
@@ -76,16 +97,6 @@ public class MicrophoneController extends BaseController{
                 " and your interest in [" + imcheck +
                 "] ICEmobile and [" + jqcheck + "] jquery.", 
                 request.getContextPath() + "/" + newFileName );
-    }
-
-    private String saveClip(HttpServletRequest request, MultipartFile file)
-            throws IOException {
-
-        String fileName = "audio-" + Long.toString(Math.abs(UUID.randomUUID().getMostSignificantBits()), 32) + ".m4a";
-        if ((null != file) && !file.isEmpty()) {
-            file.transferTo(new File(request.getRealPath("/media/" + fileName)));
-        }
-        return fileName;
     }
 
 }

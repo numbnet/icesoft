@@ -26,5 +26,23 @@ public class FileUploadUtils {
 
         return cameraFilename;
     }
+    
+    public static String saveAudio(HttpServletRequest request,
+            MultipartFile file, MultipartFile inputFile) throws IOException {
+
+        String uuid = Long.toString(
+                Math.abs(UUID.randomUUID().getMostSignificantBits()), 32);
+        String audioFilename = "media/audio-" + uuid + ".m4a";
+        if ((null != file) && !file.isEmpty()) {
+            file.transferTo(new File(request.getRealPath("/" + audioFilename)));
+        }
+        if ((null != inputFile) && !inputFile.isEmpty()) {
+            inputFile.transferTo(new File(request.getRealPath("/"
+                    + audioFilename)));
+        }
+
+        return audioFilename;
+    }
+
 
 }
