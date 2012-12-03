@@ -40,7 +40,7 @@ public class CamcorderController extends BaseController{
             model.addAttribute("camcorderUploadReady", true);
     		model.addAttribute("camcorderMessage", "Hello " + modelBean.getName() +
                     ", your video was uploaded successfully.");
-    		model.addAttribute("camcorderUpload", "./media/"+videoFilename);
+    		model.addAttribute("camcorderUpload", "./"+videoFilename);
 	    }
 	    model.addAttribute("camcorderBean",modelBean);
     }
