@@ -3,6 +3,7 @@ package com.icesoft.faces.context;
 import com.icesoft.faces.webapp.http.common.Request;
 import com.icesoft.faces.webapp.http.servlet.MainSessionBoundServlet;
 
+import java.io.Serializable;
 import java.net.URI;
 import java.util.HashMap;
 
@@ -11,7 +12,8 @@ import javax.servlet.http.HttpSession;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-public class ViewStatus {
+public class ViewStatus
+implements Serializable {
     private static final Log LOG = LogFactory.getLog(ViewStatus.class);
 
     private static final String VIEW_STATUS_KEY = "com.icesoft.faces.ViewStatus";
