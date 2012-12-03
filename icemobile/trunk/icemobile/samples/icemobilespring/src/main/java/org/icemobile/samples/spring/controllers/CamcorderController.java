@@ -2,6 +2,7 @@ package org.icemobile.samples.spring.controllers;
 
 import java.io.IOException;
 
+import org.icemobile.samples.spring.FileUploadUtils;
 import org.icemobile.samples.spring.ModelBean;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -35,10 +36,7 @@ public class CamcorderController extends BaseController{
                              @RequestParam(value = "camvid", required = false) MultipartFile file,
                              Model model) throws IOException {
 	    if( file != null ){
-    	    String videoFilename = "video-" + Long.toString(Math.abs(UUID.randomUUID().getMostSignificantBits()), 32) + ".mp4";
-            if (null != file)  {
-                file.transferTo(new File(request.getRealPath("/media/"+videoFilename)));
-            }
+    	    String videoFilename = FileUploadUtils.saveVideo(request, file, null);
             model.addAttribute("camcorderUploadReady", true);
     		model.addAttribute("camcorderMessage", "Hello " + modelBean.getName() +
                     ", your video was uploaded successfully.");
