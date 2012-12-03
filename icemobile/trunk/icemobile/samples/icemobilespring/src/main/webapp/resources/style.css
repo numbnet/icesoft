@@ -115,6 +115,7 @@ html.honeycomb .ui-icon:active, html.honeycomb .ui-icon:focus, html.honeycomb .u
     top: 5px;
     position: absolute;
     height: 25px;
+    background-repeat: no-repeat;
 }
 html.bberry #menuLink{
     font-size: 13px;

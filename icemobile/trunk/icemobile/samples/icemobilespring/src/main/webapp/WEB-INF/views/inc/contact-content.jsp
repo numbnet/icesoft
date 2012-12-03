@@ -27,7 +27,7 @@
 		</mobi:fieldsetRow>
 	</mobi:fieldsetGroup>
 
-	<c:if test="${!ios}"><!-- SX on iOS auto-submits -->
+	<c:if test="${!sxRegistered}"><!-- SX on iOS auto-submits -->
         <mobi:commandButton buttonType='important' styleClass="submit"
             value="Submit" type="submit" />
     </c:if>
