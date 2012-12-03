@@ -31,6 +31,10 @@ public class ContactListController extends BaseController {
     public void process(ContactBean contactBean) throws IOException {
         //raw contact string will be in encoded format 
         //of [contact=val&][phone=val&][email=val&]
+        String rawContact = contactBean.getRawContact();
+        if (null == rawContact)  {
+            return;
+        }
         ContactDecoder contactDecoder = new ContactDecoder(contactBean.getRawContact());
         contactBean.reset();
         contactBean.setEmail(contactDecoder.getEmail());
