@@ -36,7 +36,16 @@ public class CameraController extends BaseController{
     public ModelBean createBean() {
         return new ModelBean();
     }
-    
+
+    @RequestMapping(value = "/camera", method = RequestMethod.POST, 
+            consumes = "application/x-www-form-urlencoded")
+    public void formPost(
+            HttpServletRequest request, 
+            ModelBean cameraBean,
+            Model model) {
+        model.addAttribute("cameraBean",cameraBean);
+    }
+
     @RequestMapping(value = "/camera", method = RequestMethod.POST)
     public void post(
             HttpServletRequest request, 

@@ -30,7 +30,16 @@ public class CamcorderController extends BaseController{
 	@RequestMapping(value = "/camcorder", method=RequestMethod.GET)
     public void get(ModelBean camcorderBean, Model model)  {
     }
-	
+
+    @RequestMapping(value = "/camcorder", method = RequestMethod.POST, 
+            consumes = "application/x-www-form-urlencoded")
+    public void formPost(
+            HttpServletRequest request, 
+            ModelBean modelBean,
+            Model model) {
+	    model.addAttribute("camcorderBean",modelBean);
+    }
+
 	@RequestMapping(value = "/camcorder", method=RequestMethod.POST)
 	public void processVideo(HttpServletRequest request, ModelBean modelBean,
                              @RequestParam(value = "camvid", required = false) MultipartFile file,
