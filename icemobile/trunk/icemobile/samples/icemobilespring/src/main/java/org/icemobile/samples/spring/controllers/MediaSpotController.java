@@ -81,7 +81,15 @@ public class MediaSpotController extends BaseController{
                     selectedMessage.getFileName());
         }
     }
-    
+
+    @RequestMapping(value = "/mediaspot", method = RequestMethod.POST, 
+            consumes = "application/x-www-form-urlencoded")
+    public void formPost(
+            HttpServletRequest request, 
+            Model model) {
+        processGet(request, model);
+    }
+
     @RequestMapping(value = "/mediaspot", method=RequestMethod.POST)
     public void post(HttpServletRequest request, 
             @RequestParam(value = "spotcam", required = false) MultipartFile photoFile,
