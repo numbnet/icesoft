@@ -223,7 +223,6 @@ html.honeycomb h3{
     padding: 0 1%;
     font-weight:normal;
 }
-html.android .form, html.honeycomb .form{ height: 100%; }
 .form .mobi-fieldset{
     text-align:center;
     clear:both;
@@ -257,7 +256,7 @@ html.android .form, html.honeycomb .form{ height: 100%; }
     box-sizing: content-box;
 }
 .form label{
-    width:100px;
+    width:105px;
     text-align:left;
     -webkit-box-flex: 1;
     -moz-box-flex: 1;
@@ -278,6 +277,7 @@ html.android .form, html.honeycomb .form{ height: 100%; }
     overflow: hidden;
     display: block!important;
     float: none!important;
+    /*width:60%;*/
 }
 .form .mobi-fieldset-row > span.mobi-thumb, .form .mobi-fieldset-row > span.mobi-thumb-done{
     display: inline-block!important;
@@ -287,7 +287,7 @@ html.android .form, html.honeycomb .form{ height: 100%; }
     width:100%;
  }
 .form .mobi-fieldset > .mobi-fieldset-row > .mobi-button{
-    -moz-box-sizing: border-box;
+    -moz-box-sizing: border-box; 
     -wekit-box-sizing: border-box;
     box-sizing: border-box;
     overflow: hidden;
@@ -300,7 +300,6 @@ html.android .form, html.honeycomb .form{ height: 100%; }
     clear:both;
     padding-top:10px;
 }
-
 /* LARGE SCREEN */
 @media screen and (min-width: 580px) {  
     input.submit, button.submit{
