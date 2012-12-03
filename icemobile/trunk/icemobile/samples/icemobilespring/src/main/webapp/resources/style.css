@@ -213,7 +213,6 @@ html.honeycomb h3, html.android h3{
     padding: 0 1%;
     font-weight:normal;
 }
-html.android .form, html.honeycomb .form{ height: 100%; }
 .form .mobi-fieldset{
     text-align:center;
 }
@@ -232,6 +231,9 @@ html.android .form, html.honeycomb .form{ height: 100%; }
     -moz-box-orient: horizontal;
     box-orient: horizontal;
     position: relative;
+}
+.form .results .mobi-fieldset-row > span{
+    text-align:right;
 }
 .form .mobi-fieldset-row .mobi-getenhanced{
     display: block;
