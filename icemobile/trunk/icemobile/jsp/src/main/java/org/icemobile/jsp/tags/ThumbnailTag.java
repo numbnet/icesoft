@@ -25,8 +25,6 @@ public class ThumbnailTag extends BaseSimpleTag implements IThumbnail{
 
     private String mFor;
 
-    public static final String THUMBNAIL_CLASS = "mobi-thumb";
-
     public void doTag() throws IOException {
 	    ThumbnailCoreRenderer renderer = new ThumbnailCoreRenderer();
         renderer.encode(this, new TagWriter(getContext()));
@@ -40,7 +38,7 @@ public class ThumbnailTag extends BaseSimpleTag implements IThumbnail{
     }
 
     public String getBaseClass() {
-        return styleClass;
+        return IThumbnail.CSS_CLASS;
     }
 
     public void setBaseClass(String baseClass) {
