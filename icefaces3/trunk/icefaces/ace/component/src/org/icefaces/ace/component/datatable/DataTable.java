@@ -34,6 +34,7 @@ import org.icefaces.ace.component.tableconfigpanel.TableConfigPanel;
 import org.icefaces.ace.event.SelectEvent;
 import org.icefaces.ace.event.TableFilterEvent;
 import org.icefaces.ace.event.UnselectEvent;
+import org.icefaces.ace.meta.annotation.Field;
 import org.icefaces.ace.model.MultipleExpressionComparator;
 import org.icefaces.ace.model.filter.ContainsFilterConstraint;
 import org.icefaces.ace.model.table.*;
@@ -81,6 +82,8 @@ public class DataTable extends DataTableBase implements Serializable {
     // and getFilteredData will fail.
     private List filteredData;
     private String lastContainerClientId;
+    transient protected SortState savedSortState;
+    transient protected FilterState savedFilterState;
 
     static {
         try {

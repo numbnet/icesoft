@@ -179,13 +179,6 @@ public class DataTableMeta extends UIDataMeta {
     // Used to force update of entire table container when using forceTableUpdate
     @Field(defaultValue = "0", defaultValueIsStringLiteral = false)
     protected Integer forcedUpdateCounter;
-    // track column that sort/filter occurred for during this request, if validations
-    // fails, restore their old state
-    // object fields to avoid circular dependencies during meta compilation
-    @Field
-    protected Object savedSortState;
-    @Field
-    protected Object savedFilterState;
     @Field
     private Object cachedGlobalFilter;
 

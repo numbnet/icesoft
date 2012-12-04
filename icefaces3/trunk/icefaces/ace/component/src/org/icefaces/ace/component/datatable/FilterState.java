@@ -27,7 +27,7 @@ import java.util.Map;
  * Date: 2012-09-20
  * Time: 12:16 PM
  */
-public class FilterState implements Serializable {
+public class FilterState {
     Map<Column, String> valueMap = new HashMap<Column, String>();
 
     public FilterState() {}

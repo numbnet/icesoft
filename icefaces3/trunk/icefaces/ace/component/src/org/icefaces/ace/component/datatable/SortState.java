@@ -27,7 +27,7 @@ import java.util.Map;
  * Date: 2012-09-20
  * Time: 12:16 PM
  */
-public class SortState implements Serializable {
+public class SortState {
     Map<Column, ColumnState> stateMap = new HashMap<Column, ColumnState>();
 
     class ColumnState implements Serializable {
