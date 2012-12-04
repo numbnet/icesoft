@@ -1219,7 +1219,8 @@ ice.ace.DataTable.prototype.initializePinningState = function() {
             });
 
     for (var i = 0; i < pinOrder.length; i++)
-        this.pinColumn(pinOrder[i] + 1, true);
+        if (pinOrder[i] == 0 || pinOrder[i]) // explcitly catch 0 case
+            this.pinColumn(pinOrder[i] + 1, true);
 };
 
 ice.ace.DataTable.prototype.repairPinnedColumn = function(i) {
@@ -1244,7 +1245,7 @@ ice.ace.DataTable.prototype.repairPinnedColumn = function(i) {
 
     if (ie8 || ie9) {
         bodyCells.first().css('border-top','0px');
-        bodyCells.css('position','relative')
+        bodyCells.css('top', '').css('height','').css('position','relative')
                 .each(function(i,e) {
                     var topVal = e.offsetTop;
                     if (((i + 1)%3 == 0) || ((i + 2)%3 == 0))
@@ -1262,6 +1263,8 @@ ice.ace.DataTable.prototype.repairPinnedColumn = function(i) {
             .addClass('ui-widget-content')
             .find('> div').css('width', cellWidth).end()
             .first().css('border-top','0px').addClass('pinned');
+
+    headCells.add(footCells).css('left', offset);
 
     if (firefox)
         bodyCells.css('margin-top','-1px');
@@ -1316,6 +1319,21 @@ ice.ace.DataTable.prototype.repairPinnedColumn = function(i) {
     tbody.parent().bind('scroll', this.columnPinScrollListener[i]);
 }
 
+ice.ace.DataTable.prototype.fixPinnedColumnPositions = function(state) {
+    var table = this,
+        order = state.order,
+        offset = state.offset,
+        columns = ice.ace.jq(this.jqId + ' > div.ui-datatable-scrollable-body > table > tbody > tr:first-child > td');
+
+    columns.each(function(i) {
+        if (table.columnPinOrder[i] > order) {
+            table.columnPinOrder[i] = table.columnPinOrder[i] - 1;
+            table.columnPinPosition[i + 1] = table.columnPinPosition[i + 1] - offset;
+            table.repairPinnedColumn(i + 1);
+        }
+    });
+}
+
 ice.ace.DataTable.prototype.pinThisColumn = function(event) {
     var target = (event && event.target) ? event.target : window.event.srcElement,
         cell = ice.ace.jq(target).closest('th,td'),
@@ -1348,26 +1366,27 @@ ice.ace.DataTable.prototype.ie7UnpinColumn = function(i) {
     var bodyCells = tbody.find(' > tbody > tr > td:nth-child('+i+')'),
         headCells = thead.find(' > thead > tr > th:nth-child('+i+')'),
         footCells = tfoot.find(' > tfoot > tr > td:nth-child('+i+')'),
-        offset = headCells.first().width(),
+        offsetWidth = headCells.first().width(),
         bodyContainer = tbody.parent();
 
-    if (safari || chrome) offset = offset + 1;
+    if (safari || chrome) offsetWidth = offsetWidth + 1;
 
     if (this.columnPinScrollListener[i - 1])
         tbody.parent().unbind('scroll', this.columnPinScrollListener[i - 1]);
 
     // Add new column to pinning state
+    var oldState = { order : this.columnPinOrder[i - 1], offset : bodyCells.eq(i-1).outerWidth()};
     this.columnPinOrder[i - 1] = undefined;
-    this.columnPinPosition[i - 1] = undefined;
+    this.columnPinPosition[i] = undefined;
     this.columnPinScrollListener[i - 1] = undefined;
-
-
     this.writePinningState();
+
+    this.fixPinnedColumnPositions(oldState);
 
     bodyCells.add(footCells).add(headCells).css('border','1px solid').css('position','')
             .css('height','').css('top','').removeClass('pinned');
 
-    this.currentPinRegionOffset = this.currentPinRegionOffset - offset;
+    this.currentPinRegionOffset = this.currentPinRegionOffset - offsetWidth;
     tbody.add(tfoot.parent()).add(thead.parent()).css('margin-left', this.currentPinRegionOffset);
 
     // Send request
@@ -1396,25 +1415,26 @@ ice.ace.DataTable.prototype.unpinColumn = function(i) {
     var bodyCells = tbody.find(' > tbody > tr > td:nth-child('+i+')'),
             headCells = thead.find(' > thead > tr > th:nth-child('+i+')'),
             footCells = tfoot.find(' > tfoot > tr > td:nth-child('+i+')'),
-            offset = headCells.first().width(),
+            offsetWidth = headCells.first().width(),
             bodyContainer = tbody.parent();
 
-    if (safari || chrome) offset = offset + 1;
+    if (safari || chrome) offsetWidth = offsetWidth + 1;
 
-    if (this.columnPinScrollListener[i - 1])
-        tbody.parent().unbind('scroll', this.columnPinScrollListener[i - 1]);
+    if (this.columnPinScrollListener[i])
+        tbody.parent().unbind('scroll', this.columnPinScrollListener[i]);
 
     // Remove col from pinning state
+    var oldState = { order : this.columnPinOrder[i - 1], offset : bodyCells.eq(i-1).outerWidth()};
     this.columnPinOrder[i - 1] = undefined;
-    this.columnPinPosition[i - 1] = undefined;
-    this.columnPinScrollListener[i - 1] = undefined;
-
-    // todo: reorder column pin order
+    this.columnPinPosition[i] = undefined;
+    this.columnPinScrollListener[i] = undefined;
     this.writePinningState();
 
-    bodyCells.add(footCells).add(headCells).css('position','').removeClass('pinned ui-widget-content');
+    this.fixPinnedColumnPositions(oldState);
 
-    this.currentPinRegionOffset = this.currentPinRegionOffset - offset;
+    bodyCells.add(footCells).add(headCells).css('position','').css('height','').css('top','').removeClass('pinned ui-widget-content');
+
+    this.currentPinRegionOffset = this.currentPinRegionOffset - offsetWidth;
     bodyContainer.add(tfoot.parent()).add(thead.parent()).css('margin-left', this.currentPinRegionOffset);
 
     // Send request
@@ -1448,9 +1468,9 @@ ice.ace.DataTable.prototype.pinColumn = function(i) {
     tbody.parent().parent().css('position', 'relative').css('overflow','hidden');
 
     var bodyCells = tbody.find(' > tbody > tr > td:nth-child('+i+')'),
-            headCells = thead.find(' > thead > tr > th:nth-child('+i+')'),
-            footCells = tfoot.find(' > tfoot > tr > td:nth-child('+i+')'),
-            cellWidth = bodyCells.eq(0).width();
+        headCells = thead.find(' > thead > tr > th:nth-child('+i+')'),
+        footCells = tfoot.find(' > tfoot > tr > td:nth-child('+i+')'),
+        cellWidth = bodyCells.eq(0).width();
 
     // Exit if already pinned
     if (bodyCells.first().is('.pinned'))
@@ -1467,10 +1487,7 @@ ice.ace.DataTable.prototype.pinColumn = function(i) {
         bodyCells.first().css('border-top','0px');
         bodyCells.css('position','relative')
                 .each(function(i,e) {
-                    var topVal = e.offsetTop;
-                    if (((i + 1)%3 == 0) || ((i + 2)%3 == 0))
-                        topVal = topVal - 1;
-                    ice.ace.jq(e).css('top', topVal);
+                    ice.ace.jq(e).css('top', e.offsetTop);
                 });
     }
 
@@ -1502,12 +1519,19 @@ ice.ace.DataTable.prototype.pinColumn = function(i) {
         if (!borderRightColor) borderRightColor = sibling.css('border-right-color');
         e.css('border-color', borderRightColor);
 
-        if (e.parent().is(':last-child'))
-            e.css('height', sibling.height() + ice.ace.jq.getScrollWidth());
-        else if (safari || chrome)
-            e.css('height', sibling.height() + 1);
-        else
-            e.css('height', sibling.height());
+        var siblingHeight = sibling.outerHeight(),
+            ownHeight = e.outerHeight();
+
+        if (siblingHeight < ownHeight) {
+            e.siblings().css('height', ownHeight);
+        } else {
+            if (e.parent().is(':last-child'))
+                e.css('height', siblingHeight + ice.ace.jq.getScrollWidth());
+            else if (safari || chrome)
+                e.css('height', siblingHeight + 1);
+            else
+                e.css('height', siblingHeight);
+        }
     });
 
     headCells.each(function(i,e) {
@@ -1554,10 +1578,7 @@ ice.ace.DataTable.prototype.pinColumn = function(i) {
 
     // Add table offset
     this.currentPinRegionOffset = cellWidth + 21 + this.currentPinRegionOffset;
-    tbody.parent().css('margin-left', this.currentPinRegionOffset);
-
-    if (firefox && i == 1) this.currentPinRegionOffset = this.columnPinPosition[i] + 1;
-    thead.add(tfoot).parent().css('margin-left', this.currentPinRegionOffset);
+    tbody.add(thead.add(tfoot)).parent().css('margin-left', this.currentPinRegionOffset);
 
     // Add scrolling
     if (this.columnPinScrollListener[i])
@@ -1625,7 +1646,10 @@ ice.ace.DataTable.prototype.ie7PinColumn = function(i) {
             if (sibling.length == 0)
                 sibling = e.prevAll(':not(.pinned)').first();
 
-            e.css('height', sibling.height());
+            var siblingHeight = sibling.outerHeight()
+                - parseInt(sibling.css('padding-top'))
+                - parseInt(sibling.css('padding-bottom')) - 1;
+            e.css('height', siblingHeight);
 
 //            e.clone()
 //                .prependTo(ice.ace.jq(e).parent())
