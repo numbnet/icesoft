@@ -18,11 +18,12 @@ if (!window['ice']) window.ice = {};
 if (!window.ice['ace']) window.ice.ace = {};
 if (!ice.ace.Autocompleters) ice.ace.Autocompleters = {};
 
-ice.ace.Autocompleter = function(id, updateId, rowClass, selectedRowClass, delay, minChars, height, direction, behaviors, cfg) {
+ice.ace.Autocompleter = function(id, updateId, rowClass, selectedRowClass, delay, minChars, height, direction, behaviors, cfg, clientSideModeCfg) {
 	this.id = id;
 	var isInitialized = false;
 	if (ice.ace.Autocompleters[this.id] && ice.ace.Autocompleters[this.id].initialized) isInitialized = true;
 	ice.ace.Autocompleters[this.id] = this;
+	this.clientSideModeCfg = clientSideModeCfg;
 	this.delay = delay;
 	this.minChars = minChars;
 	this.height = height == 0 ? 'auto' : height;
@@ -34,6 +35,7 @@ ice.ace.Autocompleter = function(id, updateId, rowClass, selectedRowClass, delay
 	this.element = $element.get(0);
 	this.element.id = this.id + "_input";
 	this.update = ice.ace.jq(ice.ace.escapeClientId(updateId)).get(0);
+	$element.data("labelIsInField", this.cfg.labelIsInField);
 	
 	if (isInitialized) {
 		this.initialize(this.element, this.update, options, rowClass, selectedRowClass, behaviors);
@@ -41,6 +43,12 @@ ice.ace.Autocompleter = function(id, updateId, rowClass, selectedRowClass, delay
 		var self = this;
 		$element.on('focus', function() {
 			$element.off('focus');
+			if ($element.data("labelIsInField")) {
+				$element.val("");
+				$element.removeClass(self.cfg.inFieldLabelStyleClass);
+				$element.data("labelIsInField", false);
+				self.cfg.labelIsInField = false;
+			}
 			self.initialize(self.element, self.update, options, rowClass, selectedRowClass, behaviors); 
 		});
 	}
@@ -183,7 +191,7 @@ ice.ace.Autocompleter.prototype = {
         this.observer = null;
         this.element.setAttribute('autocomplete', 'off');
         ice.ace.jq(this.update).hide();
-        ice.ace.jq(this.element).data("labelIsInField", this.cfg.labelIsInField);
+		ice.ace.jq(this.element).data("labelIsInField", this.cfg.labelIsInField);
 		ice.ace.jq(this.element).on("blur", function(e) { self.onBlur.call(self, e); });
 		ice.ace.jq(this.element).on("focus", function(e) { self.onFocus.call(self, e); });
         var keyEvent = "keypress";
@@ -206,6 +214,20 @@ ice.ace.Autocompleter.prototype = {
 					this.ajaxBlur = behaviors.behaviors.blur;
 				}
 			}
+		}
+		
+		// prepare data model for client side mode
+		if (this.clientSideModeCfg) {
+			var model = [];
+			var $root = ice.ace.jq(ice.ace.escapeClientId(this.id + '_update')).children('div:first');
+			this.clientSideModeCfg.data = $root.children();
+			if ($root.hasClass('facet')) {
+				this.clientSideModeCfg.data.children('span.label').each(function(i,e){model.push(e.innerHTML)});
+			} else {
+				this.clientSideModeCfg.data.each(function(i,e){model.push(e.innerHTML)});
+			}
+			this.clientSideModeCfg.model = model;
+			//$root.detach();
 		}
 		
 		this.initialized = true;
@@ -678,13 +700,72 @@ ice.ace.Autocompleter.prototype = {
 				ice.s(event, this.element);
 			}
 		} else {
-			if (this.ajaxSubmit) {
+			if (this.clientSideModeCfg) {
+				this.clientSideModeUpdate();
+			} else if (this.ajaxSubmit) {
 				ice.ace.ab(this.ajaxSubmit);
 			} else {
 				ice.s(event, this.element);
 			}
 		}
     },
+	
+	clientSideModeUpdate: function() {
+		
+		var data = this.clientSideModeCfg.data;
+		var model = this.clientSideModeCfg.model;
+		var length = this.clientSideModeCfg.model.length;
+		var caseSensitive = this.clientSideModeCfg.caseSensitive;
+		var rows = this.clientSideModeCfg.rows;
+		var value = this.element.value;
+		if (!caseSensitive) value = value.toLowerCase();
+		var filter;
+		switch (this.clientSideModeCfg.filterMatchMode) {
+			case 'contains':
+			filter = this.containsFilter;
+			break;
+			case 'exact':
+			filter = this.exactFilter;
+			break;
+			case 'startsWith':
+			filter = this.startsWithFilter;
+			break;
+			case 'endsWith':
+			filter = this.endsWithFilter;
+			break;
+			default:
+			filter = this.noFilter;
+			break;
+		}
+		
+		var rowCount = 0;
+		var result = ice.ace.jq('<div />');
+		for (var i = 0; i < length; i++) {
+			var item = caseSensitive ? model[i] : model[i].toLowerCase();
+			if (filter(item, value)) {
+				rowCount++;
+				result.append(data.get(i).cloneNode(true));
+			}
+			if (rowCount >= rows) break;
+		}
+		this.updateNOW('<div>'+result.html()+'</div>');
+	},
+	
+	containsFilter: function(item, value) {
+		return item.indexOf(value) > -1;
+	},
+	exactFilter: function(item, value) {
+		return item == value;
+	},
+	startsWithFilter: function(item, value) {
+		return item.indexOf(value) == 0;
+	},
+	endsWithFilter: function(item, value) {
+		return item.indexOf(value, item.length - value.length) > -1;
+	},
+	noFilter: function(item, value) {
+		return true;
+	},
 
     updateNOW: function(text) {
 

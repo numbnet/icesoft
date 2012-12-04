@@ -118,6 +118,9 @@ public class AutoCompleteEntryMeta extends HtmlInputTextMeta {
 
     @Property(tlddoc = "Direction in which to show the list of possible matches. Possible values are \"up\", \"down\", and \"auto\".")
     private String direction;
+	
+	@Property(tlddoc = "Boolean value that indicates whether the autocomplete functionality should be done on the client or on the server.", defaultValue="false")
+	private boolean clientSideMode;
 
     @Field(defaultValue="false")
     private Boolean populateList;
