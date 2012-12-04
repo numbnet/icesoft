@@ -135,7 +135,8 @@ extends HttpServlet {
                 new SessionManager(
                     pushServerMessageService,
                     new UpdatedViewsManager(
-                        _servletContextConfiguration, pushServerMessageService));
+                        _servletContextConfiguration, pushServerMessageService),
+                    new ServletContextConfiguration("com.icesoft.faces.push.server", servletContext));
             SessionDispatcher _sessionDispatcher =
                 new SessionDispatcher(servletContext, _servletContextConfiguration) {
                     protected PseudoServlet newServer(

@@ -31,6 +31,7 @@
  */
 package org.icefaces.push.server;
 
+import com.icesoft.faces.webapp.http.common.Configuration;
 import edu.emory.mathcs.backport.java.util.concurrent.locks.ReentrantLock;
 
 import java.util.HashMap;
@@ -55,12 +56,12 @@ implements
 
     private final RequestManager requestManager;
     private final UpdatedViewsManager updatedViewsManager;
-
+    private final long iceFacesIdDisposalDelay;
     private PushServerMessageService pushServerMessageService;
 
     public SessionManager(
-        final PushServerMessageService pushServerMessageService,
-        final UpdatedViewsManager updatedViewsManager) {
+        final PushServerMessageService pushServerMessageService, final UpdatedViewsManager updatedViewsManager,
+        final Configuration configuration) {
 
         this.pushServerMessageService = pushServerMessageService;
         this.pushServerMessageService.getBufferedContextEventsMessageHandler().
@@ -72,6 +73,7 @@ implements
         this.requestManager = new RequestManager();
         this.updatedViewsManager = updatedViewsManager;
         this.updatedViewsManager.setSessionManager(this);
+        this.iceFacesIdDisposalDelay = Math.max(configuration.getAttributeAsLong("iceFacesIdDisposalDelay", 1000), 0);
     }
 
     public PushServerMessageService getPushServerMessageService() {
@@ -119,6 +121,11 @@ implements
     public void iceFacesIdDisposed(
         final String servletContextPath, final String iceFacesId) {
 
+        try {
+            Thread.sleep(iceFacesIdDisposalDelay);
+        } catch (InterruptedException exception) {
+            // ignore interrupts.
+        }
         if (LOG.isDebugEnabled()) {
             LOG.debug(
                 "ICEfaces ID disposed: " +
