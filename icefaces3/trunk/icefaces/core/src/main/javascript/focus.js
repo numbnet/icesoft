@@ -17,6 +17,8 @@
 var setFocus;
 var applyFocus;
 var currentFocus = '';
+var monitorFocusChanges;
+var restoreMonitorFocusChangesOnUpdate;
 
 (function () {
     setFocus = function (id) {
@@ -130,34 +132,29 @@ var currentFocus = '';
         }
     }
 
-    function setFocusListener(e) {
+    function saveCurrentFocus(e) {
         var evt = e || window.event;
         var element = evt.srcElement || evt.target;
         setFocus(element.id);
     }
 
-    var focusableElements = ['select', 'input', 'button', 'a'];
-
-    function captureFocusIn(root) {
-        if (contains(focusableElements, root.nodeName)) {
-            registerElementListener(root, 'onfocus', setFocusListener);
+    monitorFocusChanges = function(element) {
+        if (element.attachEvent) {
+            element.attachEvent('onfocusin', saveCurrentFocus);
+        } else {
+            element.addEventListener('focus', saveCurrentFocus, true);
         }
-        each(focusableElements, function (type) {
-            each(root.getElementsByTagName(type), function (element) {
-                registerElementListener(element, 'onfocus', setFocusListener);
-            });
-        });
-    }
+    };
 
-    namespace.onAfterUpdate(function (updates) {
-        each(updates.getElementsByTagName('update'), function (update) {
-            var id = update.getAttribute('id');
-            var element = lookupElementById(id);
-            if (id != 'javax.faces.ViewState' && element) captureFocusIn(element);
+    restoreMonitorFocusChangesOnUpdate = function(element) {
+        var id = element.id;
+        namespace.onAfterUpdate(function(updates) {
+            if (detect(updates, function(update) {
+                return update.getAttribute('id') == id;
+            })) {
+                //resume focus monitoring for the element that was updated
+                monitorFocusChanges(lookupElementById(id));
+            }
         });
-    });
-
-    onLoad(window, function () {
-        captureFocusIn(document);
-    });
+    };
 })();

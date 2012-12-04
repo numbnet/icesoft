@@ -43,6 +43,7 @@ public class ConfigHandler extends TagHandler {
     private final TagAttribute diffConfig;
     private final TagAttribute mandatoryResource;
     private final TagAttribute messagePersistence;
+    private final TagAttribute focusManaged;
 
     public ConfigHandler(TagConfig config) {
         super(config);
@@ -54,6 +55,7 @@ public class ConfigHandler extends TagHandler {
         this.diffConfig = this.getAttribute("diffConfig");
         this.mandatoryResource = this.getAttribute("mandatoryResource");
         this.messagePersistence = this.getAttribute("messagePersistence");
+        this.focusManaged = this.getAttribute("focusManaged");
     }
 
     public void apply(FaceletContext ctx, UIComponent parent) throws IOException {
@@ -80,6 +82,11 @@ public class ConfigHandler extends TagHandler {
         if (lazyPush != null) {
             viewMap.put(EnvUtils.LAZY_PUSH,
                     new Boolean(lazyPush.getValue()));
+        }
+
+        if (focusManaged != null) {
+            viewMap.put(EnvUtils.FOCUS_MANAGED,
+                    new Boolean(focusManaged.getValue()));
         }
 
         if (subtreeDiff != null) {

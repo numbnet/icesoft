@@ -482,9 +482,11 @@ if (!window.ice.icefaces) {
                 if (configuration.sendDisposeWindow) {
                     onBeforeUnload(window, disposeWindow(viewID));
                 }
-
+                if (configuration.focusManaged) {
+                    monitorFocusChanges(container);
+                    restoreMonitorFocusChangesOnUpdate(container);
+                }
                 setupDefaultIndicators(container, configuration);
-
                 //clear the event handlers on the elements that will most likely create a memory leak
                 onUnload(window, function() {
                     container.configuration = null;
