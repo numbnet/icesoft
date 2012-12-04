@@ -47,6 +47,7 @@ public class BridgeSetup implements SystemEventListener {
 
     private final boolean standardFormSerialization;
     private final boolean deltaSubmit;
+    private final boolean focusManaged;
     private int seed = 0;
     private String bridgeResourceName;
     private String icepushResourceName;
@@ -54,6 +55,7 @@ public class BridgeSetup implements SystemEventListener {
     public BridgeSetup() {
         FacesContext fc = FacesContext.getCurrentInstance();
         deltaSubmit = EnvUtils.isDeltaSubmit(fc);
+        focusManaged = EnvUtils.isFocusManaged(fc);
         standardFormSerialization = EnvUtils.isStandardFormSerialization(fc);
         bridgeResourceName = fc.isProjectStage(ProjectStage.Development) ? "bridge.uncompressed.js" : "bridge.js";
         icepushResourceName = fc.isProjectStage(ProjectStage.Development) ? "icepush.uncompressed.js" : "icepush.js";
@@ -162,6 +164,9 @@ public class BridgeSetup implements SystemEventListener {
                     writer.write("', {");
                     writer.write("deltaSubmit: ");
                     writer.write(Boolean.toString(deltaSubmit));
+                    writer.write(",");
+                    writer.write("focusManaged: ");
+                    writer.write(Boolean.toString(focusManaged));
                     writer.write(",");
                     writer.write("disableDefaultErrorPopups: ");
                     writer.write(Boolean.toString(EnvUtils.disableDefaultErrorPopups(context)));

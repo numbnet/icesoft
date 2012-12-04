@@ -48,6 +48,7 @@ public class EnvUtils {
     public static String COMPRESS_DOM = "org.icefaces.compressDOM";
     public static String COMPRESS_RESOURCES = "org.icefaces.compressResources";
     public static String DELTA_SUBMT = "org.icefaces.deltaSubmit";
+    public static String FOCUS_MANAGED = "org.icefaces.focusManaged";
     public static String DIFF_CONFIG = "org.icefaces.diffConfig";
     public static String LAZY_PUSH = "org.icefaces.lazyPush";
     public static String STANDARD_FORM_SERIALIZATION = "org.icefaces.standardFormSerialization";
@@ -277,6 +278,21 @@ public class EnvUtils {
      */
     public static boolean isDeltaSubmit(FacesContext facesContext) {
         return EnvConfig.getEnvConfig(facesContext).deltaSubmit;
+    }
+
+    /**
+     * Returns the value of the context parameter org.icefaces.focusManaged.  The default value is true and indicates that
+     * the focus retention feature is currently enabled.
+     *
+     * @param facesContext The current FacesContext instance used to access the application map.
+     * @return Returns the current setting of org.icefaces.focusManaged.  The default is true.
+     */
+    public static boolean isFocusManaged(FacesContext facesContext) {
+        Object focusManaged = getViewParam(facesContext, FOCUS_MANAGED);
+        if (null == focusManaged) {
+            return EnvConfig.getEnvConfig(facesContext).focusManaged;
+        }
+        return (Boolean.TRUE.equals(focusManaged));
     }
 
     /**
@@ -760,6 +776,7 @@ class EnvConfig {
     boolean replayNavigationOnReload;
     boolean generateHeadUpdate;
     public boolean includeScrollOffsets;
+    public boolean focusManaged;
 
     public EnvConfig(Map initMap) {
         init(initMap);
@@ -777,6 +794,7 @@ class EnvConfig {
         connectionLostRedirectURI = decodeString(initMap, EnvUtils.CONNECTION_LOST_REDIRECT_URI, null, info);
         diffConfig = decodeString(initMap, EnvUtils.DIFF_CONFIG, null, info);
         deltaSubmit = decodeBoolean(initMap, EnvUtils.DELTA_SUBMT, false, info);
+        focusManaged = decodeBoolean(initMap, EnvUtils.FOCUS_MANAGED, true, info);
         lazyPush = decodeBoolean(initMap, EnvUtils.LAZY_PUSH, true, info);
         generateHeadUpdate = decodeBoolean(initMap, EnvUtils.GENERATE_HEAD_UPDATE, false, info);
         includeScrollOffsets = decodeBoolean(initMap, EnvUtils.INCLUDE_SCROLL_OFFSETS, true, info);
