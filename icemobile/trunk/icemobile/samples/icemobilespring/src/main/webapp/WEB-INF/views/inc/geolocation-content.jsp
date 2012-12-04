@@ -6,7 +6,7 @@
 	uri="http://www.icepush.org/icepush/jsp/icepush.tld"%>
 <div>
 	<form:form id="geolocationform" method="POST"
-		modelAttribute="geolocationBean" cssClass="form">
+		modelAttribute="geolocationBean" cssClass="form geolocpage">
 
 		<c:if test="${viewSize eq 'large'}">
 			<h3>GeoLocation</h3>
@@ -83,9 +83,9 @@
 						selected="${geolocationBean.enableHighPrecision eq 'asNeeded' ? 'selected' : ''}">asNeeded</option>
 				</select>
 			</mobi:fieldsetRow>
-			<mobi:fieldsetRow>
+			<mobi:fieldsetRow styleClass="timeout">
 				<label for="timeout">Timeout:</label>
-				<div style="max-width: 50%;">
+				<div style="max-width: 50%">
 					<span
 						style="font-size: 11px; float: right; margin: -5px -5px 5px -15px; text-align: left;">
 						(longest allowable time for reading to arrive (0-x, seconds) </span>
@@ -94,9 +94,9 @@
 						style="float: right;clear: both;" />
 				</div>
 			</mobi:fieldsetRow>
-			<mobi:fieldsetRow>
-				<label>Maximum Age:</label>
-				<div style="max-width: 50%;">
+			<mobi:fieldsetRow styleClass="maxage">
+				<label for="maxAge">Maximum Age:</label>
+				<div style="max-width: 50%">
 					<span
 						style="font-size: 11px; float: right; margin: -5px -5px 5px -15px; text-align: left;">
 						(oldest allowable cached Location reading (0-x, seconds) </span>

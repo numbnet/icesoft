@@ -4,7 +4,7 @@
 <%@ taglib uri="http://www.icemobile.org/tags" prefix="mobi"%>
 <%@ taglib prefix="push"
 	uri="http://www.icepush.org/icepush/jsp/icepush.tld"%>
-<form:form id="tabsetform" method="POST" modelAttribute="tabsetBean">
+<form:form id="tabsetform" method="POST" modelAttribute="tabsetBean" cssClass="tabsetpage">
 
 	<c:if test="${viewSize eq 'large'}">
 		<h3>Tabset</h3>

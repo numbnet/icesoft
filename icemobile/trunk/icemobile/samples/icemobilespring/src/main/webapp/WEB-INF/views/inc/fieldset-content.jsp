@@ -4,7 +4,7 @@
 <%@ taglib uri="http://www.icemobile.org/tags" prefix="mobi"%>
 <%@ taglib prefix="push"
 	uri="http://www.icepush.org/icepush/jsp/icepush.tld"%>
-<form id="fieldset">
+<form id="fieldset" class="form fieldsetpage">
 
 	<c:if test="${viewSize eq 'large'}">
 		<h3>FieldSets</h3>
@@ -16,51 +16,42 @@
 		</mobi:fieldsetRow>
 	</mobi:fieldsetGroup>
 
-	<mobi:fieldsetGroup>
+	<mobi:fieldsetGroup styleClass="form">
 		<mobi:fieldsetRow group="true">
             Information
         </mobi:fieldsetRow>
-		<mobi:fieldsetRow styleClass="mobi-grid">
-			<label for="songs" class="mobi-col mobi-weight1" style="width: 100px">Songs</label>
-			<mobi:inputText id="songs" value="2500"
-				styleClass="mobi-col mobi-weight2" />
+		<mobi:fieldsetRow>
+			<label for="songs">Songs</label>
+			<mobi:inputText id="songs" value="2500"/>
 		</mobi:fieldsetRow>
-		<mobi:fieldsetRow styleClass="mobi-grid">
-			<label for="videos" class="mobi-col mobi-weight1"
-				style="width: 100px">Videos</label>
-			<mobi:inputText id="videos" value="5"
-				styleClass="mobi-col mobi-weight2" />
+		<mobi:fieldsetRow>
+			<label for="videos">Videos</label>
+			<mobi:inputText id="videos" value="5"/>
 		</mobi:fieldsetRow>
-		<mobi:fieldsetRow styleClass="mobi-grid">
-			<label for="photos" class="mobi-col mobi-weight1"
-				style="width: 100px">Photos</label>
-			<mobi:inputText id="photos" value="621"
-				styleClass="mobi-col mobi-weight2" />
+		<mobi:fieldsetRow>
+			<label for="photos">Photos</label>
+			<mobi:inputText id="photos" value="621"/>
 		</mobi:fieldsetRow>
 	</mobi:fieldsetGroup>
 
-	<mobi:fieldsetGroup>
-		<mobi:fieldsetRow styleClass="mobi-grid">
-			<label for="first" class="mobi-col mobi-weight1" style="width: 100px">First
+	<mobi:fieldsetGroup styleClass="form">
+		<mobi:fieldsetRow>
+			<label for="first">First
 				Name</label>
-			<mobi:inputText id="first" value="John"
-				styleClass="mobi-col mobi-weight2" />
+			<mobi:inputText id="first" value="John"/>
 		</mobi:fieldsetRow>
-		<mobi:fieldsetRow styleClass="mobi-grid">
-			<label for="last" class="mobi-col mobi-weight1" style="width: 100px">Last
+		<mobi:fieldsetRow>
+			<label for="last">Last
 				Name</label>
-			<mobi:inputText id="last" value="Doe"
-				styleClass="mobi-col mobi-weight2" />
+			<mobi:inputText id="last" value="Doe"/>
 		</mobi:fieldsetRow>
-		<mobi:fieldsetRow styleClass="mobi-grid">
-			<label for="address" class="mobi-col mobi-weight1"
-				style="width: 100px">Address</label>
-			<mobi:inputText id="address" value="123 Fake St."
-				styleClass="mobi-col mobi-weight2" />
+		<mobi:fieldsetRow>
+			<label for="address">Address</label>
+			<mobi:inputText id="address" value="123 Fake St."/>
 		</mobi:fieldsetRow>
 	</mobi:fieldsetGroup>
 
-	<mobi:fieldsetGroup>
+	<mobi:fieldsetGroup styleClass="intro">
 		<mobi:fieldsetRow group="true">
 			Description
 		</mobi:fieldsetRow>

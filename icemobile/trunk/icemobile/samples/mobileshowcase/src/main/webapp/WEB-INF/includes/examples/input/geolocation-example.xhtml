@@ -23,7 +23,7 @@
                 xmlns:c="http://java.sun.com/jsp/jstl/core"
                 id="geoLocFrag">
 
-    <h:form id="geolocForm" styleClass="form">
+    <h:form id="geolocForm" styleClass="form geolocpage">
 
     <mobi:geolocation latitude="#{geoLocationBean.latitude}"
                       longitude="#{geoLocationBean.longitude}"
@@ -94,7 +94,7 @@
                 <f:ajax execute="@this" render="@form"/>
             </h:selectOneMenu>
         </mobi:fieldsetRow>
-        <mobi:fieldsetRow>
+        <mobi:fieldsetRow styleClass="timeout">
             <h:outputLabel value="Timeout:" for="timeout"/>
             <div style="max-width:50%;">
                 <span style="font-size: 11px;float: right;margin: -5px -5px 5px -15px;text-align: left;">
@@ -104,7 +104,7 @@
                     singleSubmit="true" type="number" style="float: right;clear: both;"/>
             </div>
         </mobi:fieldsetRow>
-        <mobi:fieldsetRow>
+        <mobi:fieldsetRow styleClass="maxage">
             <h:outputLabel for="maxAge" value="Maximum Age:"/>
             <div style="max-width:50%;">
                 <span style="font-size: 11px;float: right;margin: -5px -5px 5px -15px;text-align: left;">
