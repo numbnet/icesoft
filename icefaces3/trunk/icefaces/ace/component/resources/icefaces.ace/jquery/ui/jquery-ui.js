@@ -9534,13 +9534,17 @@
 
         _create: function() {
             this.element
-                    .addClass( "ui-progressbar ui-widget ui-widget-content ui-corner-all" )
+                    .addClass( "ui-progressbar ui-widget ui-widget-content ui-corner-all" );
+            if (this.options.ariaEnabled) {
+                this.element
                     .attr({
-                        role: "progressbar",
-                        "aria-valuemin": this.min,
-                        "aria-valuemax": this.options.max,
-                        "aria-valuenow": this._value()
-                    });
+                    role: "progressbar",
+                    "aria-valuemin": this.min,
+                    "aria-valuemax": this.options.max,
+                    "aria-valuenow": this._value(),
+                    "aria-disabled": this.options.disabled
+                });
+            }
 
             this.valueDiv = $( "<div class='ui-progressbar-value ui-widget-header ui-corner-left'></div>" )
                     .appendTo( this.element );
@@ -9555,7 +9559,8 @@
                     .removeAttr( "role" )
                     .removeAttr( "aria-valuemin" )
                     .removeAttr( "aria-valuemax" )
-                    .removeAttr( "aria-valuenow" );
+                    .removeAttr( "aria-valuenow" )
+                    .removeAttr( "aria-disabled" );
 
             this.valueDiv.remove();
 
