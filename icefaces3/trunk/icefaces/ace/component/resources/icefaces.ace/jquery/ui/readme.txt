@@ -9,3 +9,4 @@ ICE-8752: Add ARIA role and attributes to SliderEntry.
 ICE-8644: ace:dateTimeEntry - Add a way to change the calendar icon title tooltip.
 ICE-8748: added code to bring the modal dialog overlay to the same dom tree level as the dialog itself, so that the overlay doesn't appear on top of the dialog
 ICE-8695: Added ARIA role and attributes to Dialog.
+ICE-8801: Add ARIA role and attributes to ProgressBar.

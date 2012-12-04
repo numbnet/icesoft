@@ -41,6 +41,7 @@ import org.icefaces.ace.renderkit.CoreRenderer;
 import org.icefaces.ace.util.ComponentUtils;
 import org.icefaces.ace.util.JSONBuilder;
 import org.icefaces.render.MandatoryResourceComponent;
+import org.icefaces.util.EnvUtils;
 
 @MandatoryResourceComponent(tagName="progressBar", value="org.icefaces.ace.component.progressbar.ProgressBar")
 public class ProgressBarRenderer extends CoreRenderer {
@@ -110,6 +111,7 @@ public class ProgressBarRenderer extends CoreRenderer {
         ResponseWriter writer = facesContext.getResponseWriter();
         String clientId = progressBar.getClientId(facesContext);
         boolean hasChangeListener = progressBar.getChangeListener() != null;
+        boolean ariaEnabled = EnvUtils.isAriaEnabled(facesContext);
 
         writer.startElement("script", progressBar);
         writer.writeAttribute("type", "text/javascript", null);
@@ -135,6 +137,7 @@ public class ProgressBarRenderer extends CoreRenderer {
                 }
                 json.entry("hasChangeListener", hasChangeListener);
                 encodeClientBehaviors(facesContext, progressBar, json);
+                json.entry("ariaEnabled", ariaEnabled);
             json.endMap();
         json.endFunction();
         writer.write(json.toString());
