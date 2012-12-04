@@ -57,6 +57,11 @@ span.error {
     left: 0.5em;
     top: 5px;
 }
+html.bberry .ui-icon{
+    border-color: rgb(119, 119, 119);
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}
 .ui-icon-shadow {
    -moz-box-shadow: 0px 1px 0 rgba(255,255,255,.4);
    -webkit-box-shadow: 0px 1px 0 rgba(255, 255, 255, .4);
@@ -73,6 +78,9 @@ html.android .ui-icon {
 }
 html.bberry .ui-icon {
    background-image: url(icons-black.png);
+   border-color: rgb(119, 119, 119);
+   -webkit-box-shadow: none;
+   box-shadow: none;
 }
 html.android .ui-icon:active, html.android .ui-icon:focus, html.android .ui-icon[selected] {
     -moz-box-shadow: inset 0px 0px 3px #66AFFF, 0px 0px 9px #66AFFF;
@@ -218,13 +226,22 @@ html.honeycomb h3, html.android h3{
     clear: both;
     text-align:center;
 }
-.form .mobi-fieldset.intro > .mobi-fieldset-row {
+html.android .form .mobi-fieldset.intro .mobi-fieldset-row,
+html.honeycomb .form .mobi-fieldset.intro .mobi-fieldset-row,
+html.ipad .form .mobi-fieldset.intro .mobi-fieldset-row,
+html.iphone .form .mobi-fieldset.intro .mobi-fieldset-row{
     display: block;
 }
 .form .mobi-fieldset.intro{
     text-align:left;
 }
-.form .mobi-fieldset-row{
+html.bberry .form .mobi-fieldset{
+    text-align:left;
+}
+html.android .form .mobi-fieldset-row,
+html.honeycomb .form .mobi-fieldset-row,
+html.ipad .form .mobi-fieldset-row,
+html.iphone .form .mobi-fieldset-row{
     display: -webkit-box;
     display: -moz-box;
     -webkit-box-orient: horizontal;
@@ -245,10 +262,16 @@ html.honeycomb h3, html.android h3{
     display: block;
     width: 100%;
 }
-.form .mobi-fieldset-row .mobi-getenhanced .mobi-button{
+html.android .form .mobi-fieldset-row .mobi-getenhanced .mobi-button,
+html.honeycomb .form .mobi-fieldset-row .mobi-getenhanced .mobi-button,
+html.ipad .form .mobi-fieldset-row .mobi-getenhanced .mobi-button,
+html.iphone .form .mobi-fieldset-row .mobi-getenhanced .mobi-button{
     box-sizing: content-box;
 }
-.form label{
+html.android .form label,
+html.honeycomb .form label,
+html.ipad .form label,
+html.iphone .form label{
     width:100px;
     text-align:left;
     -webkit-box-flex: 1;
@@ -258,10 +281,10 @@ html.honeycomb h3, html.android h3{
     display: block!important;
     float: none!important;
 }
-.form .mobi-fieldset-row > input, 
-.form .mobi-fieldset-row > select, 
-.form .mobi-fieldset-row > span,
-.form .mobi-fieldset-row > textarea{
+html.android .form .mobi-fieldset-row > input, html.honeycomb .form .mobi-fieldset-row > input, html.ipad .form .mobi-fieldset-row > input, html.iphone .form .mobi-fieldset-row > input, 
+html.android .form .mobi-fieldset-row > select, html.honeycomb .form .mobi-fieldset-row > select, html.ipad .form .mobi-fieldset-row > select, html.iphone .form .mobi-fieldset-row > select, 
+html.android .form .mobi-fieldset-row > span, html.honeycomb .form .mobi-fieldset-row > span, html.ipad .form .mobi-fieldset-row > span, html.iphone .form .mobi-fieldset-row > span,
+html.android .form .mobi-fieldset-row > textarea, html.honeycomb .form .mobi-fieldset-row > textarea, html.ipad .form .mobi-fieldset-row > textarea, html.iphone .form .mobi-fieldset-row > textarea{
     -webkit-box-flex: 2;
     -moz-box-flex: 2;
     -moz-box-sizing: border-box;
@@ -271,14 +294,26 @@ html.honeycomb h3, html.android h3{
     display: block!important;
     float: none!important;
 }
-.form .mobi-fieldset-row > span{
+.form .mobi-fieldset-row.mobi-fieldset-row-group{
+    text-align:left;
+}
+html.android .form .results .mobi-fieldset-row > span, 
+html.honeycomb .form .results .mobi-fieldset-row > span,
+html.iphone .form .results .mobi-fieldset-row > span,
+html.ipad .form .results .mobi-fieldset-row > span{
      text-align:right;
 }
-.form .mobi-fieldset-row > span > input{
+html.android .form .mobi-fieldset-row > span > input,
+html.honeycomb .form .mobi-fieldset-row > span > input,
+html.ipad .form .mobi-fieldset-row > span > input,
+html.iphone .form .mobi-fieldset-row > span > input{
     display:block;
     width:100%;
  }
-.form .mobi-fieldset > .mobi-fieldset-row > .mobi-button{
+html.android .form .mobi-fieldset > .mobi-fieldset-row > .mobi-button,
+html.honeycomb .form .mobi-fieldset > .mobi-fieldset-row > .mobi-button,
+html.ipad .form .mobi-fieldset > .mobi-fieldset-row > .mobi-button,
+html.iphone .form .mobi-fieldset > .mobi-fieldset-row > .mobi-button{
     -moz-box-sizing: border-box;
     -wekit-box-sizing: border-box;
     box-sizing: border-box;
@@ -299,7 +334,10 @@ html.honeycomb h3, html.android h3{
     padding: 10px;
 }
 .form p{ text-align:left; margin:0 0 10px 0;}
-.form .mobi-fieldset-row > span.mobi-thumb, .form .mobi-fieldset-row > span.mobi-thumb-done{
+html.android .form .mobi-fieldset-row > span.mobi-thumb, html.android .form .mobi-fieldset-row > span.mobi-thumb-done,
+html.honeycomb .form .mobi-fieldset-row > span.mobi-thumb, html.honeycomb .form .mobi-fieldset-row > span.mobi-thumb-done,
+html.ipad .form .mobi-fieldset-row > span.mobi-thumb, html.ipad .form .mobi-fieldset-row > span.mobi-thumb-done,
+html.iphone .form .mobi-fieldset-row > span.mobi-thumb, html.iphone .form .mobi-fieldset-row > span.mobi-thumb-done{
     display: inline-block!important;
 }
 
@@ -347,3 +385,41 @@ html.honeycomb .back{
 }
 .buttons .mobi-fieldset-row{ text-align:center; }
 .buttons .mobi-button{ min-width:125px;max-width:300px;width:40%; }
+html.bberry .fieldsetpage input{
+    float: right;
+}
+html.bberry .fieldsetpage .form .mobi-fieldset-row{
+    height: 30px;
+}
+html.bberry .fieldsetpage .form .mobi-fieldset-row-group{
+    height: 20px;
+}
+html.bberry .mobi-fieldset-row > label{
+    line-height: 26px;
+}
+html.bberry .mobi-fieldset-row-group {
+    background-color: #EEE;
+}
+html.bberry .mobi-center{
+    text-align:center;
+}
+html.bberry .tabsetpage, html.iphone .tabsetpage, html.android .tabsetpage{
+    padding-top: 40px;
+}
+html.bberry .tabsetpage .mobi-tabset.mobi-tabset-tabs-top-header,
+html.android .tabsetpage .mobi-tabset.mobi-tabset-tabs-top-header,
+html.iphone .tabsetpage .mobi-tabset.mobi-tabset-tabs-top-header{
+    padding-top: 0;
+}
+html.bberry .geolocpage .timeout{
+    height: 80px;
+}
+html.bberry .geolocpage .maxage{
+    height: 60px;
+}
+html.bberry .geolocpage .timeout label, html.bberry .geolocpage .maxage label{
+    float: left;
+}
+html.bberry .geolocpage .timeout div, html.bberry .geolocpage .maxage div{
+    float: right;
+}
