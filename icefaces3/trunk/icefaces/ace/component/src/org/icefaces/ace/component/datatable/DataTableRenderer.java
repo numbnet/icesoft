@@ -104,8 +104,8 @@ public class DataTableRenderer extends CoreRenderer {
             if (table.isApplyingFilters())
                 table.setFilteredData(table.processFilters(context));
         } else {
-            SortState sortState = (SortState)table.getSavedSortState();
-            FilterState filterState = (FilterState)table.getSavedFilterState();
+            SortState sortState = table.savedSortState;
+            FilterState filterState = table.savedFilterState;
 
             // Sorting and filtering may be reprocessed without a change to their
             // state when the backing data model is altered or first rendered,
