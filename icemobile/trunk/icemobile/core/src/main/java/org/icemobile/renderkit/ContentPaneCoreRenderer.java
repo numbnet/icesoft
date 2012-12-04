@@ -2,11 +2,11 @@ package org.icemobile.renderkit;
 
 import org.icemobile.component.IAccordion;
 import org.icemobile.component.IContentPane;
+import org.icemobile.util.ClientDescriptor;
+import org.icemobile.util.Utils;
 
 
-import javax.swing.text.html.HTML;
 import java.io.IOException;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import static org.icemobile.util.HTML.*;
@@ -65,7 +65,15 @@ public class ContentPaneCoreRenderer extends BaseCoreRenderer {
           writer.startElement(DIV_ELEM, pane);
           writer.writeAttribute(ID_ATTR, clientId+"_hndl");
           writer.writeAttribute(CLASS_ATTR, handleClass);
-          writer.writeAttribute("onclick", "ice.mobi.accordionController.toggleClient('"+accordionId+"',this,"+client+");");
+        StringBuilder args = new StringBuilder("ice.mobi.accordionController.toggleClient('");
+        args.append(accordionId).append("', this, '").append(client).append("'");
+        ClientDescriptor cd = accordion.getClient();
+        if (Utils.isTransformerHack(cd)) {
+            args.append(", 'true'");
+        }
+        args.append(");");
+        writer.writeAttribute("onclick", args.toString() );
+
           writer.startElement(SPAN_ELEM, pane);
           writer.writeAttribute("class", pointerClass);
        /*   if (!isJsp){
@@ -95,5 +103,4 @@ public class ContentPaneCoreRenderer extends BaseCoreRenderer {
           writer.startElement(DIV_ELEM, pane);
           writer.writeAttribute(ID_ATTR, clientId);
      }
-
 }
