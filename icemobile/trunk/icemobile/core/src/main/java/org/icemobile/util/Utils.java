@@ -130,6 +130,19 @@ public class Utils {
     }
 
     /**
+     * Method to simply check for the Asus transformer prime.
+     * @param client ClientDescriptor for request
+     * @return true if the Asus was detected
+     */
+    public static boolean isTransformerHack(ClientDescriptor client ) {
+         String ua = client.getUserAgent();
+         if (ua != null) {
+             ua = ua.toLowerCase();
+             return ua.contains( UserAgentInfo.TABLET_TRANSORMER_PRIME );
+         }
+         return false;
+     }
+    /**
      * Get the base URL for the request.
      * 
      * The base URL will include the scheme, server name, port, and application
