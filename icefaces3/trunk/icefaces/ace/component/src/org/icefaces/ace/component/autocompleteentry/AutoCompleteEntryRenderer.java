@@ -218,9 +218,23 @@ public class AutoCompleteEntryRenderer extends InputRenderer {
                 .entryNonNullValue("inFieldLabel", inFieldLabel)
                 .entry("inFieldLabelStyleClass", IN_FIELD_LABEL_STYLE_CLASS)
                 .entry("labelIsInField", labelIsInField);
-            jb.endMap().endFunction();
+            jb.endMap();
+			if (autoCompleteEntry.isClientSideMode()) {
+				int rows = autoCompleteEntry.getRows();
+				if (rows == 0) rows = Integer.MAX_VALUE;
+				FilterMatchMode filterMatchMode = getFilterMatchMode(autoCompleteEntry);
+				jb.beginMap()
+					.entry("rows", rows)
+					.entry("filterMatchMode", filterMatchMode.toString())
+					.entry("caseSensitive", autoCompleteEntry.isCaseSensitive())
+				.endMap();
+			} else {
+				jb.item("null", false);
+			}
+			jb.endFunction();
 			writer.writeText("new " + jb.toString(), null);
-		}		
+		}
+		
 		writer.endElement("script");
 		
 		// field update script
@@ -241,7 +255,9 @@ public class AutoCompleteEntryRenderer extends InputRenderer {
 		ResponseWriter writer = facesContext.getResponseWriter();
         AutoCompleteEntry autoCompleteEntry = (AutoCompleteEntry) uiComponent;
 		String clientId = autoCompleteEntry.getClientId(facesContext);
-		if (autoCompleteEntry.getValue() != null && autoCompleteEntry.isPopulateList()) {
+		if (autoCompleteEntry.isClientSideMode()) {
+			populateClientSideList(facesContext, autoCompleteEntry);
+		} else if (autoCompleteEntry.getValue() != null && autoCompleteEntry.isPopulateList()) {
 			populateList(facesContext, autoCompleteEntry);
         } else {
             writer.startElement("div", null);
@@ -341,6 +357,80 @@ public class AutoCompleteEntryRenderer extends InputRenderer {
                 encodeDynamicScript(facesContext, autoCompleteEntry, call + "// " + mainValue);
             }
         }
+		writer.endElement("div");
+    }
+	
+    public void populateClientSideList(FacesContext facesContext, AutoCompleteEntry autoCompleteEntry) throws IOException {
+		ResponseWriter writer = facesContext.getResponseWriter();
+		String clientId = autoCompleteEntry.getClientId(facesContext);
+        autoCompleteEntry.populateItemList();
+        Iterator matches = autoCompleteEntry.getItemListIterator();
+        writer.startElement("div", null);
+		writer.writeAttribute("id", clientId + "_update", null);
+		writer.startElement("div", null);
+		writer.writeAttribute("style", "display: none;", null);
+        if (autoCompleteEntry.getSelectFacet() != null) {
+			writer.writeAttribute("class", "facet", null);
+
+            UIComponent facet = autoCompleteEntry.getSelectFacet();
+			ValueExpression filterBy = autoCompleteEntry.getValueExpression("filterBy");
+			ELContext elContext = facesContext.getELContext();
+			String listVar = autoCompleteEntry.getListVar();
+
+            Map requestMap = facesContext.getExternalContext().getRequestMap();
+            //set index to 0, so child components can get client id from autoComplete component
+            autoCompleteEntry.setIndex(0);
+            while (matches.hasNext()) {
+
+				requestMap.put(listVar, matches.next());
+				String value = (String) filterBy.getValue(elContext);
+			
+				writer.startElement("div", null);
+				writer.writeAttribute("style", "border: 0;", null);
+				
+				// When HTML is display we still need a selected value. Hidding the value in a hidden span
+				// accomplishes this.
+				writer.startElement("span", null); // span to display
+				writer.writeAttribute("class", "informal", null);
+				encodeParentAndChildren(facesContext, facet);
+				writer.endElement("span");
+				writer.startElement("span", null); // span to select
+				writer.writeAttribute("class", "label", null);
+				writer.writeAttribute("style", "visibility:hidden;display:none;", null);
+				String itemLabel;
+				try {
+					itemLabel = (String) getConvertedValue(facesContext, autoCompleteEntry, value, true);
+				} catch (Exception e) {
+					itemLabel = value;
+				}
+				writer.writeText(itemLabel, null);
+				writer.endElement("span");
+				autoCompleteEntry.resetId(facet);
+				writer.endElement("div");
+				
+				requestMap.remove(listVar);
+            }
+            autoCompleteEntry.setIndex(-1);
+        } else {
+            if (matches.hasNext()) {
+                StringBuffer sb = new StringBuffer();
+                SelectItem item = null;
+                while (matches.hasNext()) {
+                    item = (SelectItem) matches.next();
+                    String itemLabel = item.getLabel();
+                    if (itemLabel == null) {
+						try {
+							itemLabel = (String) getConvertedValue(facesContext, autoCompleteEntry, item.getValue(), true);
+						} catch (Exception e) {
+							itemLabel = item.getValue().toString();
+						}
+                    }
+                    sb.append("<div style=\"border: 0;\">").append(itemLabel).append("</div>");
+                }
+				writer.write(escapeSingleQuote(sb.toString()));
+            }
+        }
+		writer.endElement("div");
 		writer.endElement("div");
     }
 
