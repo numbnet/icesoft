@@ -164,7 +164,9 @@ public class ClientDescriptor {
     
     public boolean isICEmobileContainer(){
         if (isSimulator)  {
-            return true;
+            if (isDesktopBrowser())  {
+                return true;
+            }
         }
         return icemobileContainer;
     }
