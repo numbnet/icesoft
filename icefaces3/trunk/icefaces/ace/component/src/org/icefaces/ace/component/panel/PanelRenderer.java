@@ -167,18 +167,6 @@ public class PanelRenderer extends CoreRenderer {
         writer.writeAttribute("id", clientId + "_header", null);
         writer.writeAttribute("class", Panel.PANEL_TITLEBAR_CLASS, null);
 
-        //Title
-        writer.startElement("span", null);
-        writer.writeAttribute("class", Panel.PANEL_TITLE_CLASS, null);
-
-        if(header != null) {
-            renderChild(context, header);
-        } else if(headerText != null) {
-            writer.write(headerText);
-        }
-
-        writer.endElement("span");
-
         //Options
         if(panel.isClosable()) {
             encodeIcon(context, panel, "ui-icon-closethick", clientId + "_closer");
@@ -192,6 +180,18 @@ public class PanelRenderer extends CoreRenderer {
         if(panel.getOptionsMenu() != null) {
             encodeIcon(context, panel, "ui-icon-gear", clientId + "_menu");
         }
+
+        //Title
+        writer.startElement("span", null);
+        writer.writeAttribute("class", Panel.PANEL_TITLE_CLASS, null);
+
+        if(header != null) {
+            renderChild(context, header);
+        } else if(headerText != null) {
+            writer.write(headerText);
+        }
+
+        writer.endElement("span");
 
         writer.endElement("div");
     }
