@@ -282,6 +282,7 @@
         autoheight: {},
         maxHt: {},
         singleSubmit: {},
+        lastTime: 0,
         initClient: function(clientId, cfg) {
             if (!this.panels[clientId]) {
                 this.autoheight[clientId]= cfg.autoHeight;
@@ -294,7 +295,15 @@
                 this.panels[clientId].updateProperties(clientId, cfg);
             }
         },
-        toggleClient: function(clientId, el, cachetyp) {
+        toggleClient: function(clientId, el, cachetyp, transHack) {
+          if (transHack ) {
+              var currentTimeMillis = new Date().getTime();
+              if ( (currentTimeMillis - this.lastTime) < 100 ) {
+                   console.log("__Accordion Double click suppression required");
+                   return;
+               }
+               this.lastTime = currentTimeMillis;
+           }
             if (this.panels[clientId] && !this.panels[clientId].getDisabled()){
                    this.panels[clientId].toggle(clientId, el, cachetyp);
             } else {
