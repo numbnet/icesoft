@@ -1906,5 +1906,19 @@ document.documentElement.className = document.documentElement.className + ' js';
 ice.mobi.noop = function(){};
 document.addEventListener("touchstart", ice.mobi.noop, true);
 
+if (window.addEventListener) {
 
+    window.addEventListener("pagehide", function () {
+        if (ice.push) {
+            ice.push.connection.pauseConnection();
+        }
+    }, false);
+
+    window.addEventListener("pageshow", function () {
+        if (ice.push) {
+            ice.push.connection.resumeConnection();
+        }
+    }, false);
+
+}
 
