@@ -46,6 +46,7 @@ public class BridgeSetup implements SystemEventListener {
     private final static Logger log = Logger.getLogger(BridgeSetup.class.getName());
 
     private final boolean standardFormSerialization;
+    private final boolean reloadOnUpdateFailure;
     private final boolean deltaSubmit;
     private final boolean focusManaged;
     private int seed = 0;
@@ -54,6 +55,7 @@ public class BridgeSetup implements SystemEventListener {
 
     public BridgeSetup() {
         FacesContext fc = FacesContext.getCurrentInstance();
+        reloadOnUpdateFailure = EnvUtils.reloadOnUpdateFailure(fc);
         deltaSubmit = EnvUtils.isDeltaSubmit(fc);
         focusManaged = EnvUtils.isFocusManaged(fc);
         standardFormSerialization = EnvUtils.isStandardFormSerialization(fc);
@@ -162,6 +164,9 @@ public class BridgeSetup implements SystemEventListener {
                     writer.write("', '");
                     writer.write(windowID);
                     writer.write("', {");
+                    writer.write("reloadOnUpdateFailure: ");
+                    writer.write(Boolean.toString(reloadOnUpdateFailure));
+                    writer.write(",");
                     writer.write("deltaSubmit: ");
                     writer.write(Boolean.toString(deltaSubmit));
                     writer.write(",");
