@@ -22,11 +22,10 @@
 
     <mobi:fieldsetGroup styleClass="exampleDescription">
 
-        <p>The video component is a rendering aid for
-            loading images from a data source other then the file system, for instance
-            a database. The component can take byte[], Resource or a fixed URL
-            to a valid video. Playback support may be limited by
-            the device capabilities. </p>
+        <p>The videoPlayer component can play video from a variety of sources.
+        A database, byte array in memory, JSF Resource, or any server-side video
+        file can be used. Play back support may be limited by
+        the device capabilities. </p>
 
 <pre>
 &lt;mobi:videoPlayer
@@ -35,15 +34,15 @@
     preload="auto" &gt;
 </pre>
         <p>
-            The video component uses JSF 2 resource handling, making it
+            The videoPlayer component uses JSF 2 resource handling, making it
             necessary to set scope on the video resource. Resource scope is
             similar to bean scope and defines how long the video resource will
             remain in scope.
         </p>
 
         <p>
-            The video component is support in both the ICEfaces container and a
-            standalone mobile browser.
+            The videoPlayer component is supported in both the ICEmobile container and a
+            stand-alone mobile browser.
         </p>
 
     </mobi:fieldsetGroup>
