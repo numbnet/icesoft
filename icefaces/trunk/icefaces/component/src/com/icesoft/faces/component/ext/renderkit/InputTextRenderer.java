@@ -76,6 +76,8 @@ public class InputTextRenderer extends com.icesoft.faces.renderkit.dom_html_basi
         rendererJavascriptPartialSubmit = new HashMap();
         rendererJavascriptPartialSubmit.put(HTML.ONKEYUP_ATTR,
                 DomBasicRenderer.ICESUBMIT);
+        rendererJavascriptPartialSubmit.put(HTML.ONKEYPRESS_ATTR,
+                "var e = $event(event); if (e.isEnterKey()) e.cancelDefaultAction();");
         rendererJavascriptPartialSubmit.put(HTML.ONFOCUS_ATTR,
                 "setFocus(this.id);");
         rendererJavascriptPartialSubmit.put(HTML.ONBLUR_ATTR,
