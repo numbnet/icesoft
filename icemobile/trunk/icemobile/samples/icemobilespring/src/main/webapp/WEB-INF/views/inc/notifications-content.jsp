@@ -14,8 +14,8 @@
 
 	<mobi:getEnhanced />
 
-	<mobi:fieldsetGroup>
-		<mobi:fieldsetRow styleClass="intro">
+	<mobi:fieldsetGroup styleClass="intro">
+		<mobi:fieldsetRow>
 			Enter a custom message below and send a delayed asynchronous
 				notification with either a 'Simple Push' or 'Priority Push'
 				strategy. The Priority Push strategy will use a native device
@@ -72,7 +72,7 @@
 		</c:if>
 	</s:bind>
 
-	<mobi:fieldsetGroup>
+	<mobi:fieldsetGroup styleClass="intro">
 		<mobi:fieldsetRow group="true">
 			Description
 		</mobi:fieldsetRow>

@@ -12,7 +12,7 @@
 
 	<mobi:fieldsetGroup>
 		<mobi:fieldsetRow styleClass="intro">
-			The tabset component provided selectable buttons to control which content pane is visible.
+			The tabset component provides a tabbed layout.
 		</mobi:fieldsetRow>
 	</mobi:fieldsetGroup>
 
@@ -48,9 +48,8 @@
 			Description
 		</mobi:fieldsetRow>
 		<mobi:fieldsetRow>
-			The tabset component provides controls for easily selecting which child contentPane 
-			component is to be dipslayed. The tabset selection tabs can be orientated on the top 
-			or bottom of the child content.
+			The tabset tag provides controls for easily selecting which child contentPane 
+			component is to be displayed. 
 		</mobi:fieldsetRow>
 </mobi:fieldsetGroup>
 

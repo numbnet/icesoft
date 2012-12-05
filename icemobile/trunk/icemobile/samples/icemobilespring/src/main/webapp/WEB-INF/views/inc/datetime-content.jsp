@@ -63,7 +63,7 @@
 		</mobi:fieldsetRow>
 		<mobi:fieldsetRow>
 			The dateSpinner component displays a popup that allows a user to select a date value. 
-			The component must be value bound to a Date object and support converters and timezone assignment.
+			The component must be value bound to a Date object and support converters and time zone assignment.
 			Likewise, the timeSpinner component displays a popup that allows a user to select a time.
 		</mobi:fieldsetRow>
 	</mobi:fieldsetGroup>

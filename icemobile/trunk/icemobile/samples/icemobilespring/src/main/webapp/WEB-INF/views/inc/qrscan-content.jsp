@@ -13,8 +13,8 @@
 
 	<mobi:getEnhanced />
 
-	<mobi:fieldsetGroup>
-		<mobi:fieldsetRow styleClass="intro">
+	<mobi:fieldsetGroup styleClass="intro">
+		<mobi:fieldsetRow>
 			The qrscan and qrcode tags are used to read or create QR codes. 
 		</mobi:fieldsetRow>
 	</mobi:fieldsetGroup>
@@ -39,7 +39,7 @@
 
 	<mobi:fieldsetGroup>
 		<mobi:fieldsetRow>
-			<label>Enter plaintext:</label>
+			<label>Enter plain text:</label>
 			<mobi:inputText value="${QRScanBean.plaintextOne}"
 				name="plaintextOne" />
 		</mobi:fieldsetRow>
@@ -56,7 +56,7 @@
 
 	<br />
 	<br />
-	<mobi:fieldsetGroup>
+	<mobi:fieldsetGroup styleClass="intro">
 		<mobi:fieldsetRow group="true">
 			Description
 		</mobi:fieldsetRow>
@@ -65,7 +65,7 @@
 			codes. The ICEmobile Container is needed for reading QR codes.
 			<br />
 			The qrscan tag accesses the device's camera to read a QR code.
-			If successful, the decoded qr code will be assigned to the backing bean.
+			If successful, the decoded QR Code will be assigned to the backing bean.
 		</mobi:fieldsetRow>
 	</mobi:fieldsetGroup>
 </form:form>
