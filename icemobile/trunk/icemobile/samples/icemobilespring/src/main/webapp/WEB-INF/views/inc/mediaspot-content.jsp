@@ -79,7 +79,8 @@
 				href="resources/images/markers.html"
 				style="color: rgb(101, 149, 249); text-decoration: none">Augmented
 				Reality Markers</a> 
-            with 3D overlays. (This is an alpha level feature on iOS only.)
+            with 3D overlays. (This is an alpha level feature on iOS only.
+                Note that the view may take 30 seconds to display.)
         </mobi:fieldsetRow>
 		<mobi:fieldsetRow styleClass="mobi-center">
 			<mobi:augmentedReality id="selection"
