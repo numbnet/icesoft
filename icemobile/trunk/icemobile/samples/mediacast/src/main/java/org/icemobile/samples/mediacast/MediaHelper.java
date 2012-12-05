@@ -157,6 +157,7 @@ public class MediaHelper implements Serializable{
 		}
 
 		Media customMovieIcon = movieIcon;
+		Media customMovieIconSmall = movieIconSmall;
 
 		try {
 			// check to see if we can process the video file into an mp4 format
@@ -177,13 +178,20 @@ public class MediaHelper implements Serializable{
 				File thumbImage = processFile(model.getVideoFile(),
 						thumbConvertCommand, ".jpg");
 				customMovieIcon = createPhoto(thumbImage);
+				customMovieIconSmall = createPhoto(thumbImage);
+                customMovieIconSmall.setWidth(movieIconSmall.getWidth());
+                customMovieIconSmall.setHeight(movieIconSmall.getHeight());
 				thumbImage.delete();
 			}
 
 			model.getCurrentMediaMessage().setVideoMedia(
 					createMedia("video/mp4", model.getVideoFile()));
 			model.getCurrentMediaMessage()
-					.setVideoThumbnailSmall(customMovieIcon);
+					.setVideoThumbnailMed(customMovieIcon);
+			model.getCurrentMediaMessage()
+					.addMediumPhoto(customMovieIcon);
+			model.getCurrentMediaMessage()
+					.addSmallPhoto(customMovieIconSmall);
 		} catch (Exception e) {
 			// conversion fails, but we may proceed with original file
 			logger.log(Level.WARNING, "Error processing video.", e);
