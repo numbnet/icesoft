@@ -22,6 +22,8 @@ ice.ace.Autocompleter = function(id, updateId, rowClass, selectedRowClass, delay
 	this.id = id;
 	var isInitialized = false;
 	if (ice.ace.Autocompleters[this.id] && ice.ace.Autocompleters[this.id].initialized) isInitialized = true;
+	this.showingList = false;
+	if (isInitialized) this.showingList = ice.ace.Autocompleters[this.id].showingList;
 	ice.ace.Autocompleters[this.id] = this;
 	this.clientSideModeCfg = clientSideModeCfg;
 	this.delay = delay;
@@ -231,6 +233,10 @@ ice.ace.Autocompleter.prototype = {
 		}
 		
 		this.initialized = true;
+		
+		if (this.clientSideModeCfg && this.showingList) {
+			this.clientSideModeUpdate();
+		}
     },
 
     show: function() {
@@ -269,6 +275,7 @@ ice.ace.Autocompleter.prototype = {
         this.stopIndicator();
         if (ice.ace.jq(this.update).css('display') != 'none') this.options.onHide(this.element, this.update);
         if (this.iefix) ice.ace.jq(this.iefix).hide();
+		this.showingList = false;
     },
 
     startIndicator: function() {
@@ -696,15 +703,16 @@ ice.ace.Autocompleter.prototype = {
 				options.params['ice.event.keycode'] = event.keyCode;
 				ice.ace.jq.extend(ajaxCfg, this.ajaxSubmit, options);
 				ice.ace.ab(ajaxCfg);
-			} else {
+			} else if (!this.clientSideModeCfg) {
 				ice.s(event, this.element);
 			}
 		} else {
 			if (this.clientSideModeCfg) {
 				this.clientSideModeUpdate();
-			} else if (this.ajaxSubmit) {
+			}
+			if (this.ajaxSubmit) {
 				ice.ace.ab(this.ajaxSubmit);
-			} else {
+			} else if (!this.clientSideModeCfg) {
 				ice.s(event, this.element);
 			}
 		}
@@ -749,6 +757,7 @@ ice.ace.Autocompleter.prototype = {
 			if (rowCount >= rows) break;
 		}
 		this.updateNOW('<div>'+result.html()+'</div>');
+		this.showingList = true;
 	},
 	
 	containsFilter: function(item, value) {
