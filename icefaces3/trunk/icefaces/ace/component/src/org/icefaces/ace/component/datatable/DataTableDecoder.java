@@ -224,16 +224,14 @@ public class DataTableDecoder {
     static void decodeFilters(FacesContext context, DataTable table) {
         String clientId = table.getClientId(context);
         Map<String,String> params = context.getExternalContext().getRequestParameterMap();
-        String filteredId = params.get(clientId + "_filteredColumn");
-        Column filteredColumn = null;
-
-        table.savedFilterState = new FilterState(table);
-
         // Ensure this refiltering occurs on the original data
         table.setFirst(0);
         table.setPage(1);
 
         if (table.isLazy()) {
+            String filteredId = params.get(clientId + "_filteredColumn");
+            Column filteredColumn = null;
+
             // If in lazy case, just save change to filter input. Load method must account for the rest.
             Map<String,Column> filterMap = table.getFilterMap();
             filteredColumn = filterMap.get(filteredId);
@@ -243,19 +241,7 @@ public class DataTableDecoder {
                 if (RequestContext.getCurrentInstance() != null)
                     RequestContext.getCurrentInstance().addCallbackParam("totalRecords", table.getRowCount());
         } else {
-            Map<String,Column> filterMap = table.getFilterMap();
-
-            // If applying a new filter, save the value to the column
-            filteredColumn = filterMap.get(filteredId);
-
-            if (filteredColumn != null)
-                filteredColumn.setFilterValue(params.get(filteredId).toLowerCase());
-
-            // Get the value of the global filter
-            //String globalFilter = params.get(clientId + UINamingContainer.getSeparatorChar(context) + "globalFilter");
-            //table.setFilterValue(globalFilter);
-
-            // Queue filters for later processing
+            table.savedFilterState = new FilterState(context, table);
             table.applyFilters();
         }
     }
@@ -266,75 +252,15 @@ public class DataTableDecoder {
     // Sort ---------------------------------------------------------------- //
     // --------------------------------------------------------------------- //
     static void decodeSortRequest(FacesContext context, DataTable table, String clientId, String sortKeysInput) {
-        List<Column> columns = new ArrayList<Column>();
-        table.savedSortState = new SortState(table);
-        Map<String,String> params = context.getExternalContext().getRequestParameterMap();
-        ColumnGroup group = table.getColumnGroup("header");
-        Column sortColumn = null;
-
-        // ClientId null if coming from the tableConfigPanel decode.
-        if (clientId == null) clientId = table.getClientId(context);
-        String[] sortKeys = (sortKeysInput != null) ? sortKeysInput.split(",") : params.get(clientId + "_sortKeys").split(",");
-        String[] sortDirs = params.get(clientId + "_sortDirs").split(",");
-
-        // Get header columns from grouped header
-        if (group != null) {
-            for (UIComponent c : group.getChildren()) {
-                if (c instanceof Row) for (UIComponent rc : c.getChildren()) {
-                    if (rc instanceof Column) columns.add((Column)rc);
-                }
-            }
-        } else columns = table.getColumns();
-
-        // Reset all priorities, new list incoming
-        for (Column c : columns) {
-            c.setSortPriority(null);
-        }
-
-        if (sortKeys[0].equals("")) {
-            return;
-        }
-
-        int i = 0;
-        for (String sortKey : sortKeys) {
-            if (group != null) {
-                outer: for (UIComponent child : group.getChildren()) {
-                    for (UIComponent headerRowChild : ((Row)child).getChildren()) {
-                        if (headerRowChild instanceof Column)
-                            if (headerRowChild.getClientId(context).equals(sortKey)) {
-                                sortColumn = (Column) headerRowChild;
-                                break outer;
-                            }
-                    }
-                }
-            } else {
-                for (Column column : table.getColumns()) {
-                    if (column.getClientId(context).equals(sortKey)) {
-                        sortColumn = column;
-                        break;
-                    }
-                }
-            }
-
-            sortColumn.setSortPriority(i+1);
-            sortColumn.setSortAscending(Boolean.parseBoolean(sortDirs[i]));
-            i++;
-        }
+        table.savedSortState = new SortState(context, table);
+        table.applySorting();
     }
 
     // --------------------------------------------------------------------- //
     // Pagination ---------------------------------------------------------- //
     // --------------------------------------------------------------------- //
     static void decodePageRequest(FacesContext context, DataTable table) {
-        String clientId = table.getClientId(context);
-        Map<String,String> params = context.getExternalContext().getRequestParameterMap();
-
-        String rowsParam = params.get(clientId + "_rows");
-        String pageParam = params.get(clientId + "_page");
-
-        table.setRows(Integer.valueOf(rowsParam));
-        table.setPage(Integer.valueOf(pageParam));
-        table.setFirst((table.getPage() - 1) * table.getRows());
+        table.savedPageState = new PageState(context, table);
     }
 
     
