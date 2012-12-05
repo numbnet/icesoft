@@ -1,7 +1,9 @@
 package org.icefaces.ace.component.datatable;
 
 import org.icefaces.ace.component.column.Column;
+import org.icefaces.ace.context.RequestContext;
 
+import javax.faces.context.FacesContext;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
@@ -38,8 +40,27 @@ public class FilterState {
             saveState(column);
     }
 
+    public FilterState(FacesContext context, DataTable table) {
+        String clientId = table.getClientId(context);
+        Map<String,String> params = context.getExternalContext().getRequestParameterMap();
+        String filteredId = params.get(clientId + "_filteredColumn");
+        Column filteredColumn = null;
+
+        Map<String,Column> filterMap = table.getFilterMap();
+
+        // If applying a new filter, save the value to the column
+        filteredColumn = filterMap.get(filteredId);
+
+        if (filteredColumn != null)
+            saveState(filteredColumn, params.get(filteredId).toLowerCase());
+    }
+
     public void saveState(Column column) {
         valueMap.put(column, column.getFilterValue());
+    }
+
+    public void saveState(Column column, String value) {
+        valueMap.put(column, value);
     }
 
     private void restoreState(Column column) {

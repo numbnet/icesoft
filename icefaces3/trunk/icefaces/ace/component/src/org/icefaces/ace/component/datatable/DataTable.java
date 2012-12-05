@@ -84,6 +84,7 @@ public class DataTable extends DataTableBase implements Serializable {
     private String lastContainerClientId;
     transient protected SortState savedSortState;
     transient protected FilterState savedFilterState;
+    transient protected PageState savedPageState;
 
     static {
         try {
@@ -401,6 +402,19 @@ public class DataTable extends DataTableBase implements Serializable {
             // Required to prevent child input component processing on filter and pagination initiated submits.
             if (isAlwaysExecuteContents() || !isTableFeatureRequest(context))
                 iterate(context, PhaseId.UPDATE_MODEL_VALUES);
+
+            if (savedPageState != null)
+                savedPageState.restoreState(this);
+
+            if (savedSortState != null && isApplyingSorts()) {
+                savedSortState.restoreState(this);
+                processSorting();
+            }
+
+            if (savedFilterState != null && isApplyingFilters()) {
+                savedFilterState.restoreState(this);
+                setFilteredData(processFilters(context));
+            }
 
             popComponentFromEL(context);
     }
