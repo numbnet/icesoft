@@ -94,13 +94,13 @@
 			</div>
 		</mobi:panelPopup>
 
-		<mobi:fieldsetGroup>
+		<mobi:fieldsetGroup styleClass="intro">
 			<mobi:fieldsetRow group="true">
 				Description
 			</mobi:fieldsetRow>
 			<mobi:fieldsetRow>
 				The panelPopup is a container tag that renders a
-				modalpopup panel that hovers on top of a web page. The child
+				modal popup panel that hovers on top of a web page. The child
 				elements of the tag are inserted into the popup panel.
 			</mobi:fieldsetRow>
 		</mobi:fieldsetGroup>

@@ -73,7 +73,7 @@
 		</mobi:fieldsetRow>
 	</mobi:fieldsetGroup>
 
-	<mobi:fieldsetGroup>
+	<mobi:fieldsetGroup styleClass="intro">
 		<mobi:fieldsetRow group="true">
 			Description
 		</mobi:fieldsetRow>

@@ -18,13 +18,13 @@
 			continuousUpdates="${geolocationBean.continuousUpdates}" />
 		<!-- maximumAge="${geolocationBean.maximumAge}" -->
 
-		<mobi:fieldsetGroup>
-			<mobi:fieldsetRow styleClass="intro">
+		<mobi:fieldsetGroup styleClass="intro">
+			<mobi:fieldsetRow>
                 The geolocation tag determines the user's current location.     
             </mobi:fieldsetRow>
 		</mobi:fieldsetGroup>
 
-		<mobi:fieldsetGroup>
+		<mobi:fieldsetGroup styleClass="intro">
 			<mobi:fieldsetRow>
                 Click the 'Locate Me' button below to calculate your current 
                 location and update the map. Various settings for the geolocation
