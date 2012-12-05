@@ -160,13 +160,8 @@ public class MediaController implements Serializable {
 			
 			//set stock icons for small and medium if no photo is included
 			if( model.getCameraFile() == null ){
-				//they've uploaded video, so we'll use a stock movie icon
-				if( model.getVideoFile() != null ){
-					msg.addMediumPhoto(mediaHelper.getMovieIcon());
-					msg.addSmallPhoto(mediaHelper.getMovieIconSmall());
-				}
-				//they haven't uploaded video, just audio
-				else if( model.getAudioFile() != null ){
+				//they have uploaded audio
+                if( model.getAudioFile() != null ){
 					msg.addMediumPhoto(mediaHelper.getSoundIcon());
 					msg.addSmallPhoto(mediaHelper.getSoundIconSmall());
 				}

@@ -142,10 +142,10 @@
                                     value="#{uploadModel.currentMediaMessage.mediumPhoto.data}"
                                     rendered="#{not empty uploadModel.currentMediaMessage.largePhoto}"/>
                 <mobi:graphicImage style="border:none;"
-                                    width="#{mediaHelper.movieIcon.width}"
-                                    height="#{mediaHelper.movieIcon.height}"
-                                    value="#{mediaHelper.movieIcon.data}"
-                                    rendered="#{not empty uploadModel.currentMediaMessage.video}"/>
+                    width="#{uploadModel.currentMediaMessage.videoThumbnail.width}"
+                    height="#{uploadModel.currentMediaMessage.videoThumbnail.height}"
+                    value="#{uploadModel.currentMediaMessage.videoThumbnail.data}"
+                    rendered="#{not empty uploadModel.currentMediaMessage.video}"/>
                 <mobi:graphicImage style="border:none;"
                                     width="#{mediaHelper.soundIcon.width}"
                                     height="#{mediaHelper.soundIcon.height}"
