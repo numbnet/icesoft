@@ -22,34 +22,29 @@
 	xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
 <h:head>
 	<title id="title">panelPopup Tests</title>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"></meta>
-	<meta name="viewport"
-		content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
-	<meta name="apple-mobile-web-app-capable" content="yes" />
-	<meta name="apple-mobile-web-app-status-bar-style" content="black" />
- 
-  <!--  deviceStylesheet tag with no properties will load default styles for mobile device based on useragent info -->
-   <mobi:deviceStylesheet
+   <mobi:deviceResource
             name="#{themeSwitcher.theme}" media="screen" />
 
 </h:head>
 
 <h:body>
  
-   <h3>panelPopup server side round trip</h3>
+   <h3>panelPopup dynamic attributes</h3>
       <h:form id="inputForm">
-    
+       <h:panelGroup rendered="#{not popup.clientSide}">
        <h5>panelPopup example  click on button to show panel</h5>
        <mobi:commandButton
                value="#{popup.visible?'Hide':'Show'} Popup Server-side"
                actionListener="#{popup.toggleVisible}"/>
-
-       </h:form>
-       <h:form id="popupFrm">
-        <mobi:panelPopup id="panelPopServer" autoCenter="#{popup.autoCenter}"
-                         disabled="#{popup.disabled}"
+        </h:panelGroup>
+       <h:panelGroup rendered="#{popup.clientSide}">
+           <a href="javascript:;"  onclick="ice.mobi.panelPopup.openClient('panelPopup');">Access js api to open client popup </a>
+        </h:panelGroup>
+        <mobi:panelPopup id="panelPopup" autoCenter="#{popup.autoCenter}"
                          width="#{popup.width}"
                          height="#{popup.height}"
+                         disabled="#{popup.disabled}"
+                         clientSide="#{popup.clientSide}"
                          visible="#{popup.visible}">
                <f:facet name="label">
                   <h:panelGrid columns="2">
@@ -57,21 +52,23 @@
                        <mobi:graphicImage value="../images/album-af.jpg" />
                   </h:panelGrid>
                </f:facet>
-                <mobi:commandButton
+               <h:panelGroup rendered="#{not popup.clientSide}">
+                   <mobi:commandButton
                                  value="Hide Popup Server-side"
                                  actionListener="#{popup.close}"/>
-                <mobi:fieldsetGroup>
+               </h:panelGroup>
+               <mobi:fieldsetGroup>
                             <!-- Text input -->
-                            <mobi:fieldsetRow>
-                                <h:outputLabel for="textInput" value="Text:"/>
-                                <mobi:inputText id="textInput"
+                   <mobi:fieldsetRow>
+                        <h:outputLabel for="textInput" value="Text:"/>
+                        <mobi:inputText id="textInput"
                                                 autocorrect="on"
                                                 singleSubmit="true"
                                                 type="text"
                                                 style="float:right"
                                                 placeholder="Text input"
                                                 value="#{input.someText}"/>
-                            </mobi:fieldsetRow>
+                     </mobi:fieldsetRow>
                      <mobi:fieldsetRow>
                         <h:commandLink
                             action="#{popup.popupAction('Keep Open')}">
@@ -84,35 +81,47 @@
                             Input will close popup
                         </h:commandLink>
                      </mobi:fieldsetRow>
-              </mobi:fieldsetGroup>
+                    <mobi:fieldsetRow>
+                         <a href="javascript:;"  onclick="ice.mobi.panelPopup.closeClient('panelPopup');">Access js api to close client popup </a>
+                    </mobi:fieldsetRow>
+                </mobi:fieldsetGroup>
 
-         </mobi:panelPopup>
+           </mobi:panelPopup>
 
         <br />
+            <mobi:fieldsetRow>
+                <h:outputLabel for="echoText" value="inputFromPopup:"/>
+                <h:outputText id="echoText" value="#{input.someText}"/>
+            </mobi:fieldsetRow>
+            <mobi:fieldsetRow>
+                <h:outputLabel for="clientSide" value="Client Side:"/>
+                <mobi:flipswitch id="clientSide" value="#{popup.clientSide}" singleSubmit="true"/>
+            </mobi:fieldsetRow>
+            <mobi:fieldsetRow>
+                <h:outputLabel for="autoCenter" value="Auto-center:"/>
+                <mobi:flipswitch id="autoCenter" value="#{popup.autoCenter}" singleSubmit="true"/>
+            </mobi:fieldsetRow>
+ <!--          <mobi:fieldsetRow>
+                <h:outputLabel for="centerForm" value="Auto Center on parent form:"/>
+                <mobi:flipswitch id="centerForm" value="#{popup.centerOnForm}" singleSubmit="true"/>
+            </mobi:fieldsetRow>  -->
+           <mobi:fieldsetRow>
+                <h:outputLabel for="disabled" value="Disabled:"/>
+                <mobi:flipswitch id="disabled" value="#{popup.disabled}" singleSubmit="true"/>
+            </mobi:fieldsetRow>
+            <mobi:fieldsetRow>
+                <h:outputLabel for="width" value="Width:"/>
+                <mobi:inputText id="width" value="#{popup.width}" singleSubmit="true" type="number"/>
+            </mobi:fieldsetRow>
+            <mobi:fieldsetRow>
+                <h:outputLabel for="height" value="Height:"/>
+                <mobi:inputText id="height" value="#{popup.height}" singleSubmit="true" type="number"/>
+            </mobi:fieldsetRow>
 
+    </h:form>
 
-         <h3>DYNAMIC UPDATES</h3>
-                    <mobi:fieldsetRow>
-                        <h:outputLabel for="autoCenter" value="Auto-center:"/>
-                        <mobi:flipswitch id="autoCenter" value="#{popup.autoCenter}" singleSubmit="true"/>
-                    </mobi:fieldsetRow>
-         <!--          <mobi:fieldsetRow>
-                        <h:outputLabel for="centerForm" value="Auto Center on parent form:"/>
-                        <mobi:flipswitch id="centerForm" value="#{popup.centerOnForm}" singleSubmit="true"/>
-                    </mobi:fieldsetRow>  -->
-                   <mobi:fieldsetRow>
-                        <h:outputLabel for="disabled" value="Disabled:"/>
-                        <mobi:flipswitch id="disabled" value="#{popup.disabled}" singleSubmit="true"/>
-                    </mobi:fieldsetRow>
-                    <mobi:fieldsetRow>
-                        <h:outputLabel for="width" value="Width:"/>
-                        <mobi:inputText id="width" value="#{popup.width}" singleSubmit="true" type="number"/>
-                    </mobi:fieldsetRow>
-                    <mobi:fieldsetRow>
-                        <h:outputLabel for="height" value="Height:"/>
-                        <mobi:inputText id="height" value="#{popup.height}" singleSubmit="true" type="number"/>
-                    </mobi:fieldsetRow>
-      <h3>RESULTS:</h3>
+    <h3>RESULTS</h3>
+     <h3>RESULTS:</h3>
 
             <mobi:fieldsetRow>
                 <h:outputLabel for="out1" value="A. simple:-"/>
@@ -139,9 +148,6 @@
                  <h:outputText id="heightOut" value="#{popup.height}"/>
             </mobi:fieldsetRow>
 
- </h:form>
-
-    <br />
 	<li><a href="../latestComponents.html">index page</a>
 	</li>
 </h:body>
