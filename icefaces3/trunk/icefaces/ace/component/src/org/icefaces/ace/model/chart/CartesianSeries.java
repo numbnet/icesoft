@@ -112,7 +112,6 @@ public class CartesianSeries extends ChartSeries {
             // x-axis is not autoscaled correctly.
             Object outObj = null;
 
-            // TODO: Add java date obj support
             if (key != null && keyType == null) {
                 if (key instanceof Number) keyType = Number.class;
                 else if (key instanceof String) keyType = String.class;
@@ -125,8 +124,9 @@ public class CartesianSeries extends ChartSeries {
                 else if (value instanceof Date) valueType = Date.class;
             }
 
-            if (key != null) {
+            if (key != null && value != null) {
                 data.beginArray();
+
                 if (keyType == Number.class)
                     data.item(((Number)key).doubleValue());
                 else if (keyType == String.class) {
@@ -145,29 +145,28 @@ public class CartesianSeries extends ChartSeries {
                 }
                 else if (keyType == Date.class)
                     data.item(((Date)key).getTime());
-            }
 
-            if (valueType == Number.class)
-                data.item(((Number)value).doubleValue());
-            else if (valueType == String.class) {
-                String strVal = value.toString();
+                if (valueType == Number.class)
+                    data.item(((Number)value).doubleValue());
+                else if (valueType == String.class) {
+                    String strVal = value.toString();
 
-                // If string and plotted against CategoryAxis with defined ticks,
-                // convert Strings to matching tick indicies if available.
-                if (areAxisTicksPredefined(chart, 'y')) {
-                    if (yCategoryToIndexMap == null)
-                        yCategoryToIndexMap = createCategoryToIndexMap(chart, 'y');
+                    // If string and plotted against CategoryAxis with defined ticks,
+                    // convert Strings to matching tick indicies if available.
+                    if (areAxisTicksPredefined(chart, 'y')) {
+                        if (yCategoryToIndexMap == null)
+                            yCategoryToIndexMap = createCategoryToIndexMap(chart, 'y');
 
-                    data.item(yCategoryToIndexMap.get(strVal));
+                        data.item(yCategoryToIndexMap.get(strVal));
+                    }
+                    else
+                        data.item(strVal);
                 }
-                else
-                    data.item(strVal);
-            }
-            else if (keyType == Date.class)
-                data.item(((Date)key).getTime());
+                else if (keyType == Date.class)
+                    data.item(((Date)key).getTime());
 
-            if (key != null)
                 data.endArray();
+            }
         }
         data.endArray();
         return data;
