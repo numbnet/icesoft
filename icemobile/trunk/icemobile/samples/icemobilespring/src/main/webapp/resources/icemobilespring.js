@@ -50,6 +50,7 @@ MvcUtil.enhanceForm = function(theForm)  {
                    (!window.clientInformation || 
                        ("BlackBerry" !== window.clientInformation.platform)) )  {
                     formData = new FormData(this);
+                    formData.append("x-ignored-field","makeie10work");
                 } else {
                     formData = $(theForm).serialize();
                     mimeType = "application/x-www-form-urlencoded";
