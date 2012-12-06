@@ -37,7 +37,11 @@ import org.icefaces.ace.meta.annotation.ClientEvent;
         componentFamily = "org.icefaces.InputText",
         tlddoc = "This mobility component renders an inputText object" +
                 "with added attributes of html5 input component and css support " +
-                "for mobility devices"
+                "for mobility devices. Attributes are only available where supported, " +
+                "so it is up to the developer to be aware of what is supported on the" +
+                " devices they are using.  Most of the common ones here are supported " +
+                "on iOS5, ioS6, Blackberry 6.0 and greater, Android 3 and greater. SingleSubmit and mobi:ajax " +
+                "are supported on this component."
 )
 
 @ResourceDependencies({
@@ -97,13 +101,14 @@ public class InputTextMeta extends UIInputMeta {
     @Property(tlddoc = "can have a title which is like tooltip")
     private String title;
     
-    @Property(defaultValue = "Integer.MIN_VALUE", tlddoc="minimum value")
+    @Property(defaultValue = "Integer.MIN_VALUE", tlddoc="minimum value, only applicable to type number")
     private int min;
 
-    @Property(defaultValue = "Integer.MIN_VALUE", tlddoc="maximum value")
+    @Property(defaultValue = "Integer.MIN_VALUE", tlddoc="maximum value, only applicable to type number")
     private int max;
     
-    @Property(defaultValue = "Integer.MIN_VALUE", tlddoc="step to increase/decrease the value of the number input")
+    @Property(defaultValue = "Integer.MIN_VALUE", tlddoc="step to increase/decrease the value of the number input. " +
+            "Applicable only to type number")
     private int step;
     
     //see miketaylr.com/code/input-type-attr.html to see what is supported on browser used don't have list of supported browsers yet
@@ -116,7 +121,7 @@ public class InputTextMeta extends UIInputMeta {
     @Property(defaultValue = "", tlddoc = "style class will be rendered on a root element of this component")
     private String styleClass;
 
-    @Property(defaultValue = "false", tlddoc = "If true then this date time entry will be disabled and can not be entered.")
+    @Property(defaultValue = "false", tlddoc = "If true then this input entry will be disabled and can not be entered.")
     private boolean disabled;
 
     @Property(tlddoc = "tabindex of the component")

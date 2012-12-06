@@ -35,7 +35,9 @@ import javax.faces.component.UIComponent;
         extendsClass = "javax.faces.component.UIPanel",
         componentFamily = "org.icefaces.PanelPopup",
         tlddoc = "This mobility component " +
-                "renders a confirmation panel to be used with any mobi commandButton or menuButton"
+                "renders a confirmation panel to be used with any mobi commandButton or menuButton if" +
+                "clientSide is false.  If clientSide is true, then use of the clientSide api is available." +
+                " ice.mobile.panelPopup.openClient(id) will open and "
 )
 @ResourceDependencies({
         @ResourceDependency(library = "org.icefaces.component.util", name = "component.js")

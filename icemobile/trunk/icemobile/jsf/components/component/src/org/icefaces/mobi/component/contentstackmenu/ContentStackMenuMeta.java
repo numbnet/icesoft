@@ -35,7 +35,17 @@ import javax.faces.application.ResourceDependency;
         rendererType = "org.icefaces.ContentStackMenuRenderer",
         componentFamily = "org.icefaces.ContentStackMenu",
         tlddoc = "This component renders a menu represented by a collection of contentMenuItem " +
-                " and is meant to be used with a contentStack component for layout "
+                " and is meant to be used with a contentStack component for layout and navigation " +
+                "through the designated contentStack.  When a small view, the contentStackMenu is " +
+                "meant to be within one of th contentPane children of the contentStack.  When in " +
+                "large view with splitPane, it is meant to be sibling to the contentStack and not within" +
+                " a contentPane itself.  In this way the component knows how to behave regarding transisitons" +
+                " currently defined transitions are sliding panes within small view only." +
+                " Related components for navigation through contentStack are contentMenuItem which is" +
+                " only legitimate child component of this one, and contentNavBar which also takes " +
+                "contentMenuItem as children. This component may take a list of contentMenuItem as children " +
+                "or a Collection can be value bound to the value attribute with a var attribute to a single" +
+                " contentMenuItem child to be iterated over. "
 )
 
 @ResourceDependencies({
@@ -57,14 +67,15 @@ public class ContentStackMenuMeta extends UISeriesBaseMeta {
              required=Required.yes)
     private String contentStackId;
 
-    @Property(tlddoc = "id of either menuItem or contentPane that menuItem reflects..not sure which yet")
+    @Property(tlddoc = "id of contentPane that is currentId in contentStack. ContentMenuItem will " +
+            "modify this value which will keep the state of the contentStack for this component and will" +
+            "allow value binding in bean for contentStack and this component to keep in sync.")
     private String selectedPane;
 
     @Property(defaultValue="false", tlddoc=" if value is true, " +
-            "group headings of menu are handles of accordion pane for menu content")
+            "group headings of menu are handles of accordion pane for menu content. If false, get data list " +
+            "styling.  This does not affect function, merely the layout and no state of which panel is open is" +
+            " currently available for this component.")
     private boolean accordion;
-
-    @Property(tlddoc="fake")
-    private boolean openHandle;
 
 }

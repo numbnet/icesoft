@@ -45,7 +45,10 @@ import java.util.List;
         rendererType = "org.icefaces.component.MenuButtonRenderer",
         componentFamily = "org.icefaces.MenuButton",
         tlddoc = "This component renders a select menu button with a collection of menuButtonItems " +
-                "upon selection of a menuButtonItem, and actionListener will be queued. "
+                "upon selection of a menuButtonItem, an actionListener will be queued. Children may" +
+                " only be menuButtonItem, and a collection may be specified by the value attribute " +
+                "with the var attribute as per UISeries implementation.  Otherwise, several " +
+                "menuButtonItem children can be designated as children of this component."
 )
 
 @ResourceDependencies({
