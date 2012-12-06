@@ -299,6 +299,7 @@ ice.ace.Autocompleter.prototype = {
 					}
                     this.getUpdatedChoices(true, event, -1);
                     return;
+				case ice.ace.Autocompleter.keys.KEY_UP:
                 case ice.ace.Autocompleter.keys.KEY_DOWN:
                     this.getUpdatedChoices(false, event, -1);
                     return;
@@ -364,6 +365,7 @@ ice.ace.Autocompleter.prototype = {
     onKeyDown: function(event) {
         if (!this.active) {
             switch (event.keyCode) {
+				case ice.ace.Autocompleter.keys.KEY_UP:
                 case ice.ace.Autocompleter.keys.KEY_DOWN:
                     this.getUpdatedChoices(false, event, -1);
                     return;

@@ -65,7 +65,8 @@ public class AutoCompleteEntryRenderer extends InputRenderer {
 			autoCompleteEntry.setSubmittedValue(value);
         }
 		
-        boolean isEventSource = false;
+        KeyEvent keyEvent = new KeyEvent(autoCompleteEntry, requestMap);
+		boolean isEventSource = false;
 		Object sourceId = requestMap.get("ice.event.captured");
         if (sourceId != null && sourceId.toString().equals(clientId + "_input")) {
 			isEventSource = true;
@@ -74,11 +75,12 @@ public class AutoCompleteEntryRenderer extends InputRenderer {
 			if (isHardSubmit(facesContext, autoCompleteEntry)) {
 					autoCompleteEntry.setPopulateList(false);
 					autoCompleteEntry.queueEvent(new ActionEvent(autoCompleteEntry));
+			} else if (keyEvent.getKeyCode() == KeyEvent.UP_ARROW_KEY || keyEvent.getKeyCode() == KeyEvent.DOWN_ARROW_KEY) {
+				autoCompleteEntry.setPopulateList(true);
 			}
         } else {
 			autoCompleteEntry.setPopulateList(false);
 		}
-		KeyEvent keyEvent = new KeyEvent(autoCompleteEntry, requestMap);
 		if (keyEvent.getKeyCode() == KeyEvent.TAB) {
 			autoCompleteEntry.setPopulateList(false);
 		}
@@ -275,6 +277,7 @@ public class AutoCompleteEntryRenderer extends InputRenderer {
 		String filter = ((String) autoCompleteEntry.getValue());
 		FilterMatchMode filterMatchMode = getFilterMatchMode(autoCompleteEntry);
 		String mainValue = (String) autoCompleteEntry.getValue();
+		String timestamp = getTimestamp(facesContext, autoCompleteEntry);
         int rows = autoCompleteEntry.getRows();
         if (rows == 0) rows = Integer.MAX_VALUE;
         int rowCounter = 0;
@@ -330,7 +333,7 @@ public class AutoCompleteEntryRenderer extends InputRenderer {
 			writer.endElement("div");
             String call = "ice.ace.Autocompleters[\"" + clientId +
                     "\"].updateNOW(ice.ace.jq(ice.ace.escapeClientId('" + clientId + "_update')).get(0).firstChild.innerHTML);";
-            encodeDynamicScript(facesContext, autoCompleteEntry, call + "// " + mainValue);
+            encodeDynamicScript(facesContext, autoCompleteEntry, call + "// " + mainValue + " " + timestamp);
 			writer.endElement("div");
         } else {
             if (matches.hasNext()) {
@@ -354,7 +357,7 @@ public class AutoCompleteEntryRenderer extends InputRenderer {
                 sb.append("</div>");
                 String call = "ice.ace.Autocompleters[\"" + clientId + "\"]" +
                         ".updateNOW('" + escapeSingleQuote(sb.toString()) + "');";
-                encodeDynamicScript(facesContext, autoCompleteEntry, call + "// " + mainValue);
+                encodeDynamicScript(facesContext, autoCompleteEntry, call + "// " + mainValue + " " + timestamp);
             }
         }
 		writer.endElement("div");
@@ -478,6 +481,20 @@ public class AutoCompleteEntryRenderer extends InputRenderer {
 
         return buffer.toString();
     }
+	
+	private String getTimestamp(FacesContext facesContext, AutoCompleteEntry autoCompleteEntry) {
+		Map requestMap = facesContext.getExternalContext().getRequestParameterMap();
+		Object sourceId = requestMap.get("ice.event.captured");
+		String clientId = autoCompleteEntry.getClientId(facesContext);
+		KeyEvent keyEvent = new KeyEvent(autoCompleteEntry, requestMap);
+		String timestamp = "";
+		// only include a timestamp if the user pressed the up or down arrow keys to introduce a difference from previous dom
+		// so that the domdiff sends the call to update the list of options
+		if (keyEvent.getKeyCode() == KeyEvent.UP_ARROW_KEY || keyEvent.getKeyCode() == KeyEvent.DOWN_ARROW_KEY) {
+			timestamp = "" + System.currentTimeMillis();
+		}
+		return timestamp;
+	}
 	
     // taken from com.icesoft.faces.renderkit.dom_html_basic.DomBasicRenderer
 	public static void encodeParentAndChildren(FacesContext facesContext, UIComponent parent) throws IOException {
