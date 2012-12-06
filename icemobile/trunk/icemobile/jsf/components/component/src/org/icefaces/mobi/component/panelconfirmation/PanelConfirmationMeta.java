@@ -19,6 +19,9 @@ import org.icefaces.ace.meta.annotation.Component;
 import org.icefaces.ace.meta.annotation.Property;
 import org.icefaces.ace.meta.baseMeta.UIPanelMeta;
 
+import javax.faces.application.ResourceDependencies;
+import javax.faces.application.ResourceDependency;
+
 @Component(
         tagName = "panelConfirmation",
         componentClass = "org.icefaces.mobi.component.panelconfirmation.PanelConfirmation",
@@ -31,7 +34,9 @@ import org.icefaces.ace.meta.baseMeta.UIPanelMeta;
         tlddoc = "This mobility component " +
                 "renders a confirmation panel to be used with any mobi commandButton or menuButton"
 )
-
+@ResourceDependencies({
+        @ResourceDependency(library = "org.icefaces.component.util", name = "component.js")
+})
 public class PanelConfirmationMeta extends UIPanelMeta {
 
     @Property(tlddoc = "style will be rendered on a root element of this component")
@@ -43,13 +48,14 @@ public class PanelConfirmationMeta extends UIPanelMeta {
     @Property(defaultValue = "Confirm", tlddoc = "title of confirmation panel in an attribute so el can be used to internationalize")
     private String title;
 
-    @Property(tlddoc = " acceptOnly means only accept button, cancelOnly means only cancel button, both has both")
+    @Property(tlddoc = " acceptOnly means only accept button, cancelOnly means only cancel button, both has both" +
+            " and accept and cancel button on the same popup")
     private String type;
 
-    @Property(defaultValue = "Cancel", tlddoc = "title of cancel button")
+    @Property(defaultValue = "Cancel", tlddoc = "label of cancel button")
     private String cancelLabel;
 
-    @Property(defaultValue = "Confirm", tlddoc = "title of confirm/accept button")
+    @Property(defaultValue = "Confirm", tlddoc = "label of confirm/accept button")
     private String acceptLabel;
 
     @Property(defaultValue = "Confirm?", tlddoc = "Message")

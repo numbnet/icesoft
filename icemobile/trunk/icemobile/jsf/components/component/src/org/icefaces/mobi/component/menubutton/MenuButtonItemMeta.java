@@ -38,7 +38,10 @@ import javax.faces.application.ResourceDependency;
         rendererType = "org.icefaces.component.MenuButtonItemRenderer",
         componentFamily = "org.icefaces.MenuButtonItem",
         tlddoc = "This component fires an actionListener from a menu button. " +
-                "It has the same functionality of a regular jsf command menubutton "
+                "It has the same functionality of a regular jsf UICommand. It may " +
+                "have a panelConfirmation and/or a submitNotification component attributes " +
+                "to allow the developer to confirm a submit and to disable the page showing" +
+                "the disable while the submit is happening."
 )
 @ResourceDependencies({
         @ResourceDependency(library = "org.icefaces.component.util", name = "component.js")

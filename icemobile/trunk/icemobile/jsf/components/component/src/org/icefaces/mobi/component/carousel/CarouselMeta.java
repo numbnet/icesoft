@@ -84,7 +84,7 @@ public class CarouselMeta extends UISeriesBaseMeta {
                     "is, but this can be useful in cases where a notification is needed that \"this value changed\".")
     private MethodExpression valueChangeListener;
 
-    @Property(defaultValue = "0", tlddoc = " selectedItem will show the item in the list at the center location")
+    @Property(defaultValue = "0", tlddoc = " selectedItem will show the index of the item in the list at the center location")
     private int selectedItem;
 
     @Property(defaultValue = "false", tlddoc = "The default value of this attribute is false. If true then value change " +
@@ -92,13 +92,15 @@ public class CarouselMeta extends UISeriesBaseMeta {
             "attribute is false then event change will happen in INVOKE_APPLICATION phase")
     private boolean immediate;
 
-    @Property(tlddoc = "If set the label for the previous link will be shown.  otherwise, no pagination for previous used ")
+    @Property(tlddoc = " Beta pagination feature. Currently not styled. " +
+            "If set the label for the previous link will be shown.  otherwise, no pagination for previous used ")
     private String previousLabel;
 
-    @Property(tlddoc = "If set the label for the next link will be shown.  otherwise, no pagination for next used ")
+    @Property(tlddoc = "Beta pagination feature. Currently not styled. " +
+            "If set the label for the next link will be shown.  otherwise, no pagination for next used ")
     private String nextLabel;
 
-    @Property(defaultValue="false", tlddoc = "TODO must define what disabled means to carousel component")
+    @Property(defaultValue="false", tlddoc = "If true, the carousel bet set disabled and no submit will be allowed. ")
     private boolean disabled;
     /** other possible attributes include vertical, scroll increment, circular, numbershown, currentIndex */
 }

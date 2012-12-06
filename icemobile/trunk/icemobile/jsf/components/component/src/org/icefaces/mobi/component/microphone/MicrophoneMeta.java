@@ -37,7 +37,7 @@ import java.util.Map;
         extendsClass = "javax.faces.component.UIComponentBase",
         componentFamily = "org.icefaces.Microphone",
         tlddoc = "This mobility component captures an audio file via a mobile device microphone" +
-                " and stores this file on the server. "
+                " and with ability to upload onto the server. "
 )
 
 @ResourceDependencies({

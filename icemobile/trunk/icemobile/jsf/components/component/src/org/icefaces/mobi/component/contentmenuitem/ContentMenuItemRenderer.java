@@ -203,7 +203,7 @@ public class ContentMenuItemRenderer extends BaseLayoutRenderer {
                  logger.warning("Unable to find contentPane with id="+selId);
              }
          }
-         String icon = lmi.getIcon();
+    //     String icon = lmi.getIcon();
          String label = lmi.getLabel();
          if (null==selId) {
              if (accordion){
@@ -234,7 +234,7 @@ public class ContentMenuItemRenderer extends BaseLayoutRenderer {
              if (lmi.isDisabled()){
                 writer.writeAttribute("disabled", "disabled", null);
              }
-             if (lmi.getUrl() != null){
+             if (!lmi.isDisabled() && lmi.getUrl() != null){
                  writer.writeAttribute("href", getResourceURL(facesContext,lmi.getUrl()), null);
              }
              else {
@@ -251,9 +251,9 @@ public class ContentMenuItemRenderer extends BaseLayoutRenderer {
                     writer.writeAttribute("onclick", sb.toString(), null);
                  }
              }
-             if (icon !=null){
+        /*     if (icon !=null){
                 //TODO implementation of icon needs to be defined  --base64?
-             }
+             } */
              writer.write(lmi.getLabel());
              writer.endElement(HTML.ANCHOR_ELEM);
              writer.endElement(HTML.DIV_ELEM);

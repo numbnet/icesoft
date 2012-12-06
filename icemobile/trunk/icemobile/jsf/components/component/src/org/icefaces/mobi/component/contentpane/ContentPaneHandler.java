@@ -57,14 +57,16 @@ public class ContentPaneHandler extends ComponentHandler {
         if (parent != null) {
             updateFlagShouldOptimiseSkipChildConstruction(ctx, c, parent);
         }
-        
+
+      //  if (parent != null) System.out.println("Parent id: " + parent.getId());
+
         Boolean skip = (Boolean) c.getAttributes().get(SKIP_CONSTRUCTION_KEY);
         if (skip == null || !skip.booleanValue()) {
-            //System.out.println("CPH.applyNextHandler  Construct children");
+         //   System.out.println("  " + c.getId() + "\t\tConstruct children");
             super.applyNextHandler(ctx, c);
         }
         else {
-            //System.out.println("CPH.applyNextHandler  Don't construct children");
+          //  System.out.println("  " + c.getId() + "\t\tDon't construct children");
         }
     }
 

@@ -32,10 +32,13 @@ import org.icefaces.ace.meta.baseMeta.UICommandMeta;
                 " or, more typically, an id to a panel in the contentStack that is controlled by its" +
                 " parent, which must be either a ContentStackMenu or a ContentNavBar. If it's a child of" +
                 " the ContentStackMenu, then it's rendered as a list item.  If a child of the  " +
-                " ContentNavBar, it is rendered as a button on a tool bar.  If the menuHeader attribute "+
-                " is true, then it becomes a menu heading and no selection of the contentStack is done. " +
-                " A contentNavBar does not have menu headings, so the menuHeading attribute is only "+
-                " applicable for a ContentStackMenu."
+                " ContentNavBar, it is rendered as a button on a tool bar.  If the value attribute "+
+                " is null, then it becomes a menu heading and no selection of the contentStack is done. A" +
+                " non-null value must represent the id of the contentPane in the contentStack to make " +
+                " current." +
+                " If the contentStackMenu has attribute accordion equal to true, then a null value attribute " +
+                " will render an accordion handle with accordion functionality.  The following contentMenuItems " +
+                " with non-null values will be children of that accordion pane, to the next, etc. Beta feature"
 )
 
 public class ContentMenuItemMeta extends UICommandMeta {
@@ -68,7 +71,7 @@ public class ContentMenuItemMeta extends UICommandMeta {
      @Property(tlddoc = "style of the component, rendered on the div root of the component")
      private String style;
 
-     @Property(tlddoc = "Path of the menuitem image. Not implemented yet.")
-     private String icon;
+/*     @Property(tlddoc = "Path of the menuitem image. Not implemented yet TODO.")
+     private String icon; */
 
 }
