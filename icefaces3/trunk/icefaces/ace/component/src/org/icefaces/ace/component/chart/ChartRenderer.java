@@ -97,7 +97,7 @@ public class ChartRenderer extends CoreRenderer {
 
     private void encodeScript(FacesContext context, ResponseWriter writer, String clientId, Chart component) throws IOException {
         String widgetVar = resolveWidgetVar(component);
-        List<ChartSeries> data = component.getValue();
+        List<ChartSeries> data = (List<ChartSeries>)component.getValue();
         ChartSeries seriesDefaults = component.getDefaultSeriesConfig();
         Boolean stacking = component.isStackSeries();
         Boolean animated = component.isAnimated();

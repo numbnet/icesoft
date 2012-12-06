@@ -53,8 +53,8 @@ public class ChartMeta extends UIComponentBaseMeta {
     private String widgetVar;
 
     @Property(tlddoc =
-                "Define a collection of ChartSeries object to draw on this plot.")
-    private List<ChartSeries> value;
+                "Define an individual instance or List of ChartSeries objects to draw on this plot.")
+    private Object value;
 
     @Property(tlddoc = 
                 "Define a ChartSeries whose configuration is used where other ChartSeries " +
