@@ -49,7 +49,7 @@ import java.util.List;
                 @ExampleResource(type = ResourceType.java,
                         title = "SubmitNotificationBean.java",
                         resource = "/WEB-INF/classes/org/icemobile/samples/mobileshowcase" +
-                                "/view/examples/input/submitnotification/SumbitNotificationBean.java")
+                                "/view/examples/input/submitnotification/SubmitNotificationBean.java")
         }
 )
 
