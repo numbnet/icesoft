@@ -44,7 +44,7 @@ import java.io.Serializable;
                 @ExampleResource(type = ResourceType.java,
                         title = "PanelPopupBean.java",
                         resource = "/WEB-INF/classes/org/icemobile/samples/mobileshowcase" +
-                                "/view/examples/layout/panelpopup/PanelPopupBean.java")
+                                "/view/examples/layout/panelPopup/PanelPopupBean.java")
         }
 )
 
