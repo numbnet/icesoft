@@ -133,7 +133,7 @@ public class AutoCompleteEntryRenderer extends InputRenderer {
 		mousedownScript = mousedownScript == null ? "" : mousedownScript;
 		writer.writeAttribute("onmousedown", mousedownScript + "this.focus();", null);
 		int width = autoCompleteEntry.getWidth();
-		writer.writeAttribute("style", "width: " + width + "px;", null);
+		writer.writeAttribute("style", "width: " + width + "px;" + autoCompleteEntry.getStyle(), null);
         writer.writeAttribute("class", "ui-inputfield ui-widget ui-state-default ui-corner-all" + getStateStyleClasses(autoCompleteEntry) + inFieldLabelStyleClass, null);
 		writer.writeAttribute("autocomplete", "off", null);
         String onfocusCombinedValue = "setFocus(this.id);";
