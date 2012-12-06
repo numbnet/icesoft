@@ -1,4 +1,4 @@
-package org.icemobile.samples.mobileshowcase.view.examples.layout.gmap;
+package org.icemobile.samples.mobileshowcase.view.examples.input.gmap;
 
 import java.io.Serializable;
 
