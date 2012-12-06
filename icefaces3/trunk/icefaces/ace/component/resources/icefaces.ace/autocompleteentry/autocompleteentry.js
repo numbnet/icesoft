@@ -140,43 +140,7 @@ ice.ace.Autocompleter.prototype = {
         this.options.onShow = this.options.onShow ||
             function(element, update) {
                 try {
-                    if (update["style"] && (!update.style.position || update.style.position == 'absolute')) {
-                        update.style.position = 'absolute';
-						var jqElement = ice.ace.jq(element);
-						var jqUpdate = ice.ace.jq(update);
-						var pos = jqElement.offset();
-						var autoUp = false;
-						if (self.direction == 'auto') {
-							var updateHeight = jqUpdate.height();
-							updateHeight = updateHeight > self.height ? self.height : updateHeight;
-							var winHeight = ice.ace.jq(window).height();
-							var docHeight = ice.ace.jq(document).height();
-							var scrollTop = ice.ace.jq(document).scrollTop()
-							var lengthAbove = pos.top - scrollTop;
-							var lengthBelow = scrollTop + winHeight - pos.top - element.offsetHeight;
-							if (lengthBelow < updateHeight) {
-								if (lengthAbove > lengthBelow)
-									autoUp = true;
-							}
-						}
-						if (self.direction == 'up' || autoUp) {
-							var updateHeight = jqUpdate.height();
-							updateHeight = updateHeight > self.height ? self.height : updateHeight;
-							jqUpdate.css({ position: "absolute", marginTop: 0, marginLeft: 0, width: jqElement.width(), maxHeight: self.height, overflow: "auto" });
-							var savedPos = element.style.position;
-							element.style.position = "relative";
-							update.style.left = element.offsetLeft + "px";
-							update.style.top = (element.offsetTop - updateHeight) + "px";
-							element.style.position = savedPos;
-						} else {
-							jqUpdate.css({ position: "absolute", marginTop: 0, marginLeft: 0, width: jqElement.width(), maxHeight: self.height, overflow: "auto" });
-							var savedPos = element.style.position;
-							element.style.position = "relative";
-							update.style.left = element.offsetLeft + "px";
-							update.style.top = (element.offsetTop + element.offsetHeight) + "px";
-							element.style.position = savedPos;
-						}
-                    }
+					self.calculateListPosition();
                     ice.ace.jq(update).fadeIn(150)
                 } catch(e) {
                     //logger.info(e);
@@ -238,6 +202,48 @@ ice.ace.Autocompleter.prototype = {
 			this.clientSideModeUpdate();
 		}
     },
+	
+	calculateListPosition: function() {
+		var element = this.element;
+		var update = this.update;
+		if (update["style"] && (!update.style.position || update.style.position == 'absolute')) {
+			update.style.position = 'absolute';
+			var jqElement = ice.ace.jq(element);
+			var jqUpdate = ice.ace.jq(update);
+			var pos = jqElement.offset();
+			var autoUp = false;document.title=jqUpdate.height();
+			if (this.direction == 'auto') {
+				var updateHeight = jqUpdate.height();
+				updateHeight = updateHeight > this.height ? this.height : updateHeight;
+				var winHeight = ice.ace.jq(window).height();
+				var docHeight = ice.ace.jq(document).height();
+				var scrollTop = ice.ace.jq(document).scrollTop()
+				var lengthAbove = pos.top - scrollTop;
+				var lengthBelow = scrollTop + winHeight - pos.top - element.offsetHeight;
+				if (lengthBelow < updateHeight) {
+					if (lengthAbove > lengthBelow)
+						autoUp = true;
+				}
+			}
+			if (this.direction == 'up' || autoUp) {
+				var updateHeight = jqUpdate.height();
+				updateHeight = updateHeight > this.height ? this.height : updateHeight;
+				jqUpdate.css({ position: "absolute", marginTop: 0, marginLeft: 0, width: jqElement.width(), maxHeight: this.height, overflow: "auto" });
+				var savedPos = element.style.position;
+				element.style.position = "relative";
+				update.style.left = element.offsetLeft + "px";
+				update.style.top = (element.offsetTop - updateHeight) + "px";
+				element.style.position = savedPos;
+			} else {
+				jqUpdate.css({ position: "absolute", marginTop: 0, marginLeft: 0, width: jqElement.width(), maxHeight: this.height, overflow: "auto" });
+				var savedPos = element.style.position;
+				element.style.position = "relative";
+				update.style.left = element.offsetLeft + "px";
+				update.style.top = (element.offsetTop + element.offsetHeight) + "px";
+				element.style.position = savedPos;
+			}
+		}
+	},
 
     show: function() {
         try {
@@ -608,6 +614,7 @@ ice.ace.Autocompleter.prototype = {
     updateChoices: function(choices) {
         if (!this.changed && this.hasFocus) {
             this.update.innerHTML = choices;
+			this.calculateListPosition();
             ice.ace.Autocompleter.cleanWhitespace(this.update);
             ice.ace.Autocompleter.cleanWhitespace(this.update.firstChild);
 
