@@ -56,9 +56,15 @@ public class AutoCompleteEntryRenderer extends InputRenderer {
 		String oldValue = (String) autoCompleteEntry.getValue();
 		
         if (value != null) {
-            if (!value.equalsIgnoreCase(oldValue)) {
-                autoCompleteEntry.setPopulateList(true);
-            }
+			if (autoCompleteEntry.isCaseSensitive()) {
+				if (!value.equals(oldValue)) {
+					autoCompleteEntry.setPopulateList(true);
+				}
+			} else {
+				if (!value.equalsIgnoreCase(oldValue)) {
+					autoCompleteEntry.setPopulateList(true);
+				}			
+			}
 			if ("".equals(value) && oldValue == null) {
 				autoCompleteEntry.setPopulateList(false);
 			}
