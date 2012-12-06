@@ -29,7 +29,7 @@ import org.icemobile.samples.mobileshowcase.view.examples.input.geolocation.GeoL
 import org.icemobile.samples.mobileshowcase.view.examples.input.input.InputBean;
 import org.icemobile.samples.mobileshowcase.view.examples.input.menubutton.MenuButtonBean;
 import org.icemobile.samples.mobileshowcase.view.examples.input.submitnotification.SubmitNotificationBean;
-import org.icemobile.samples.mobileshowcase.view.examples.layout.gmap.GMapBean;
+import org.icemobile.samples.mobileshowcase.view.examples.input.gmap.GMapBean;
 import org.icemobile.samples.mobileshowcase.view.metadata.annotation.MenuLink;
 import org.icemobile.samples.mobileshowcase.view.metadata.context.Menu;
 
