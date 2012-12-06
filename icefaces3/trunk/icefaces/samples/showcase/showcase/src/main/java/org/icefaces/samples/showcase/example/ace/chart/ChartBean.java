@@ -82,18 +82,16 @@ public class ChartBean extends ComponentExampleImpl<ChartBean> implements Serial
     
     private Random randomizer = new Random(System.currentTimeMillis());
     
-    private List<CartesianSeries> barData = new ArrayList<CartesianSeries>() {{
-        add(new CartesianSeries() {{
-            setType(CartesianType.BAR);
-            add("HDTV Receiver", randomizer.nextInt(20));
-            add("Cup Holder Pinion Bob", randomizer.nextInt(20));
-            add("Generic Fog Lamp", randomizer.nextInt(20));
-            add("8 Track Control Module", randomizer.nextInt(20));
-            add("Sludge Pump Fourier Modulator", randomizer.nextInt(20));
-            add("Transceiver Spice Rack", randomizer.nextInt(20));
-            add("Hair Spray Danger Indicator", randomizer.nextInt(20));
-            setLabel("Product / Sales");
-        }});
+    private CartesianSeries barData = new CartesianSeries() {{
+        setType(CartesianType.BAR);
+        add("HDTV Receiver", randomizer.nextInt(20));
+        add("Cup Holder Pinion Bob", randomizer.nextInt(20));
+        add("Generic Fog Lamp", randomizer.nextInt(20));
+        add("8 Track Control Module", randomizer.nextInt(20));
+        add("Sludge Pump Fourier Modulator", randomizer.nextInt(20));
+        add("Transceiver Spice Rack", randomizer.nextInt(20));
+        add("Hair Spray Danger Indicator", randomizer.nextInt(20));
+        setLabel("Product / Sales");
     }};
     
     private Axis barDemoDefaultAxis = new Axis() {{
@@ -114,15 +112,15 @@ public class ChartBean extends ComponentExampleImpl<ChartBean> implements Serial
         setTicks(new String[] {"Nickle", "Aluminum", "Xenon", "Silver", "Sulfur", "Silicon", "Vanadium"});
         setType(AxisType.CATEGORY);
     }};
-    
-    public List<CartesianSeries> getBarData() {
+
+    public CartesianSeries getBarData() {
         return barData;
     }
 
-    public void setBarData(List<CartesianSeries> barData) {
+    public void setBarData(CartesianSeries barData) {
         this.barData = barData;
     }
-    
+
     public Axis getBarDemoXAxis() {
         return barDemoXAxis;
     }
