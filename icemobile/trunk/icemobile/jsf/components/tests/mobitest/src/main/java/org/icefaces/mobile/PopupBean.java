@@ -4,6 +4,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.event.ActionEvent;
 import java.io.Serializable;
+import java.lang.String;
 
 @ManagedBean(name = "popup")
 @SessionScoped
@@ -18,6 +19,7 @@ public class PopupBean implements Serializable {
     public int width;
     public int height;
     public boolean centerOnForm;
+    public String statusMsg;
 
     public PopupBean(){
         this.visible=false; //initial value
@@ -105,5 +107,21 @@ public class PopupBean implements Serializable {
 
     public void setCenterOnForm(boolean centerOnForm) {
         this.centerOnForm = centerOnForm;
+    }
+    public void popupAction(String statusMsg){
+        this.statusMsg = statusMsg;
+        this.visible = true;
+    }
+    public void popupActionClose(String statusMsg){
+        this.statusMsg=statusMsg;
+        this.visible = false;
+    }
+
+    public String getStatusMsg() {
+        return statusMsg;
+    }
+
+    public void setStatusMsg(String statusMsg) {
+        this.statusMsg = statusMsg;
     }
 }

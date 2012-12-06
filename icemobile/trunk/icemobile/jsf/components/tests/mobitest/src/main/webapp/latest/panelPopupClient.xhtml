@@ -41,17 +41,27 @@
       <h:form id="inputForm">
 
        <h5>panelPopup example can click on button to show panel</h5>
-       <mobi:commandButton
-               value="#{popup.visibleClient?'Hide':'Show'} trigger Client popup from Server-side"
-               actionListener="#{popup.toggleVisibleClient}"/>
+       <p>
+           the client api will be overridden by the value of the visible property ONLY if
+           the value of visible is true first. (otherwise, the script won't update from the server.
+           so in this test, if you open the popup from the client you need to set visible to true first
+           with the first link and then make it false (this is a result of the domdiff wiping out the
+           script tag to update the component. if it's already false, and you set it false, then
+           no change so it doesn't get written to be invoked.
+       </p>
+       <a href="javascript:;"  onclick="ice.mobi.panelPopup.openClient('panelPopClient');">Open client popup </a>
 
        </h:form>
 
         <h:form id="panelForm">
 
-           <mobi:panelPopup id="panelPopClient" header="Popup Panel Client Side" clientSide="true"
-                            autocenter="true"
-                            visible="#{popup.visibleClient}">
+           <mobi:panelPopup id="panelPopClient" header="Popup Panel Client Side"
+                            clientSide="true"
+                            height="#{popup.height}"
+                            width="#{popup.width}"
+                            autoCenter="#{popup.autoCenter}"
+                            disabled="#{popup.disabled}"
+                            visible="#{popup.visible}">
 
                <mobi:fieldsetGroup>
                             <!-- Text input -->
@@ -65,30 +75,74 @@
                                                 placeholder="Text input"
                                                 value="#{input.someText}"/>
                      </mobi:fieldsetRow>
-                     </mobi:fieldsetGroup>
-                     <mobi:outputList id="imgList2" type="thumb" inset="false">
-                           <mobi:outputListItem type="group">Image List</mobi:outputListItem>
-                           <mobi:outputListItems value="#{carousel.imageList}" var="item" type="thumb">
-                               <h:link >
-                                   <img alt="" src="#{item.imageUrl}" height="20px"/>
-                                   <h3 >#{item.title}"</h3>
-                                   <p >picture with img link</p>
-                                </h:link>
-                           </mobi:outputListItems>
-                     </mobi:outputList>
+                     <mobi:fieldsetRow>
+                        <h:commandLink
+                            action="#{popup.popupAction('Keep Open')}">
+                            Keep Open leaves popup open
+                        </h:commandLink>
+                     </mobi:fieldsetRow>
+                    <mobi:fieldsetRow>
+                        <h:commandLink
+                            action="#{popup.popupActionClose('Input and Close')}">
+                            Input will close popup
+                        </h:commandLink>
+                     </mobi:fieldsetRow>
+                </mobi:fieldsetGroup>
+               <a href="javascript:;" onclick="ice.mobi.panelPopup.closeClient('panelPopClient');">Close client popup </a>
            </mobi:panelPopup>
-       </h:form>
+
        <br />
 
 
-    <h3>RESULTS</h3>
-    <h:outputText id="out1" value="#{input.someText}">
-            <h:outputLabel for="out1" value="A. simple:-"/>
-    </h:outputText>
-    <br />
-    <h:outputText id="visId" value="VisibleClient val is #{popup.visibleClient}"/>
+    <h3>DYNAMIC UPDATES</h3>
+            <mobi:fieldsetRow>
+                <h:outputLabel for="autoCenter" value="Auto-center:"/>
+                <mobi:flipswitch id="autoCenter" value="#{popup.autoCenter}" singleSubmit="true"/>
+            </mobi:fieldsetRow>
+ <!--          <mobi:fieldsetRow>
+                <h:outputLabel for="centerForm" value="Auto Center on parent form:"/>
+                <mobi:flipswitch id="centerForm" value="#{popup.centerOnForm}" singleSubmit="true"/>
+            </mobi:fieldsetRow>  -->
+           <mobi:fieldsetRow>
+                <h:outputLabel for="disabled" value="Disabled:"/>
+                <mobi:flipswitch id="disabled" value="#{popup.disabled}" singleSubmit="true"/>
+            </mobi:fieldsetRow>
+            <mobi:fieldsetRow>
+                <h:outputLabel for="width" value="Width:"/>
+                <mobi:inputText id="width" value="#{popup.width}" singleSubmit="true" type="number"/>
+            </mobi:fieldsetRow>
+            <mobi:fieldsetRow>
+                <h:outputLabel for="height" value="Height:"/>
+                <mobi:inputText id="height" value="#{popup.height}" singleSubmit="true" type="number"/>
+            </mobi:fieldsetRow>
 
+      <h3>RESULTS:</h3>
 
+            <mobi:fieldsetRow>
+                <h:outputLabel for="out1" value="A. simple:-"/>
+                 <h:outputText id="out1" value="#{input.someText}"/>
+            </mobi:fieldsetRow>
+            <mobi:fieldsetRow>
+                <h:outputLabel for="statusMsg" value="Height:"/>
+                <h:outputText id="statusMsg" value="#{popup.statusMsg}"/>
+            </mobi:fieldsetRow>
+            <mobi:fieldsetRow>
+                <h:outputLabel for="visible" value="Visible:"/>
+                 <h:outputText id="visible" value="#{popup.visible}"/>
+            </mobi:fieldsetRow>
+            <mobi:fieldsetRow>
+                <h:outputLabel for="aCout" value="AutoCenter:"/>
+                 <h:outputText id="aCout" value="#{popup.autoCenter}"/>
+            </mobi:fieldsetRow>
+            <mobi:fieldsetRow>
+                <h:outputLabel for="widthOut" value="Width:"/>
+                 <h:outputText id="widthOut" value="#{popup.width}"/>
+            </mobi:fieldsetRow>
+            <mobi:fieldsetRow>
+                <h:outputLabel for="heightOut" value="Height:"/>
+                 <h:outputText id="heightOut" value="#{popup.height}"/>
+            </mobi:fieldsetRow>
+        </h:form>
     <br />
 	<li><a href="../latestComponents.html">index page</a>
 	</li>
