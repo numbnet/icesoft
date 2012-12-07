@@ -1255,21 +1255,24 @@ ice.mobi.ready = function (callback) {
         var containerId = clientId + "_popup";
         var autocenter = cfgIn.autocenter || true;
         var centerCalculation = {};
-        var opencontClass = "mobi-panelpopup-container ";
+        var baseopenClass = "mobi-panelpopup-container ";
         var openbgClass= "mobi-panelpopup-bg ";
         var closebgClass = "mobi-panelpopup-bg-hide ";
-        var closecontClass = "mobi-panelpopup-container-hide ";
-        if (cfgIn.sclass){
-            openbgClass+= cfgIn.sclass;
-            opencontClass+=cfgIn.sclass;
-            closebgClass+=cfgIn.sclass;
-            closecontClass+=cfgIn.sclass;
+        var basecloseClass = "mobi-panelpopup-container-hide ";
+        var opencontClass;
+        var closecontClass;
+        var origClass = cfgIn.sclass || null;
+        if (origClass){
+            opencontClass=baseopenClass+ cfgIn.sclass;
+            closecontClass=basecloseClass +cfgIn.sclass;
+        } else {
+            opencontClass=  baseopenClass;
+            closecontClass= basecloseClass;
         }
         ice.mobi.panelPopup.visible[clientId]= visible;
         return {
             openPopup: function(clientId, cfg) {
                 autocenter = cfg.autocenter || true;
-              //  console.log("openPopup: disabled="+cfg.disabled);
                 if (cfg.disabled){
                     return;//no opening
                 }
@@ -1312,7 +1315,6 @@ ice.mobi.ready = function (callback) {
                     // calculate center for first view
                     ice.mobi.panelCenter(containerId, centerCfg);
                 }  else{
-                    //console.log("NO AUTOCENTER");
                     var styleVar = "";
                     if (cfg.width && cfg.width> 0){
                         var wStr = width+"px";
@@ -1378,14 +1380,12 @@ ice.mobi.ready = function (callback) {
                 this.panels[i] = PanelPopup(clientId, cfgIn);
             } else {
                 var vis = cfgIn.visible || false;
-              //  console.log("client="+cfgIn.client+" stored vis="+ice.mobi.panelPopup.visible[clientId]);
                 if (cfgIn.client && ice.mobi.panelPopup.visible[clientId]){
                     vis = ice.mobi.panelPopup.visible[clientId];
                 }
                 if (cfgIn.disabled==true){
                     vis= false;
                 }
-             //   console.log(" disabled="+cfgIn.disabled+"  VISIBLE="+vis);
                 if (vis==true){
                    thisOne.openPopup(clientId, cfgIn);
                 }else{
@@ -1421,7 +1421,6 @@ ice.mobi.ready = function (callback) {
         },
         findPanel: function(popupId, isId){
             if (this.panels.length < 1){
-              //  console.log(' no popups yet available in view to open');
                 return;
             }
             var found = false;

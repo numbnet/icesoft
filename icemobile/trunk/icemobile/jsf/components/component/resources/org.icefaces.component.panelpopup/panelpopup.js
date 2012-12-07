@@ -33,28 +33,35 @@
         var containerId = clientId + "_popup";
         var autocenter = cfgIn.autocenter || true;
         var centerCalculation = {};
-        var opencontClass = "mobi-panelpopup-container ";
+        var baseopenClass = "mobi-panelpopup-container ";
         var openbgClass= "mobi-panelpopup-bg ";
         var closebgClass = "mobi-panelpopup-bg-hide ";
-        var closecontClass = "mobi-panelpopup-container-hide ";
-        if (cfgIn.sclass){
-            openbgClass+= cfgIn.sclass;
-            opencontClass+=cfgIn.sclass;
-            closebgClass+=cfgIn.sclass;
-            closecontClass+=cfgIn.sclass;
+        var basecloseClass = "mobi-panelpopup-container-hide ";
+        var opencontClass;
+        var closecontClass;
+        var origClass = cfgIn.sclass || null;
+        if (origClass){
+            opencontClass=baseopenClass+ cfgIn.sclass;
+            closecontClass=basecloseClass +cfgIn.sclass;
+        } else {
+            opencontClass=  baseopenClass;
+            closecontClass= basecloseClass;
         }
         ice.mobi.panelPopup.visible[clientId]= visible;
         return {
             openPopup: function(clientId, cfg) {
                 autocenter = cfg.autocenter || true;
-              //  console.log("openPopup: disabled="+cfg.disabled);
+                if (cfg.sclass && origClass!==cfg.sclass){  //so can update dynamically
+                    opencontClass=baseopenClass + cfg.sclass;
+                    closecontClass=basecloseClass + cfg.sclass;
+                }
                 if (cfg.disabled){
                     return;//no opening
                 }
                 var scrollEvent = 'ontouchstart' in window ? "touchmove" : "scroll";
                 var fadedDiv = document.getElementById(idPanel);
                 if (fadedDiv){
-                   document.getElementById(idPanel).className = opencontClass;
+                   document.getElementById(idPanel).className = openbgClass;
                 }
                 var containerNode = document.getElementById(containerId);
                 containerNode.className = opencontClass;
@@ -159,9 +166,6 @@
                 this.panels[i] = PanelPopup(clientId, cfgIn);
             } else {
                 var vis =  cfgIn.visible || false;
-             /*   if (cfgIn.client && ice.mobi.panelPopup.visible[clientId]){
-                     vis = ice.mobi.panelPopup.visible[clientId];
-                } */
                 if (vis==true){
                    thisOne.openPopup(clientId, cfgIn);
                 }else{
