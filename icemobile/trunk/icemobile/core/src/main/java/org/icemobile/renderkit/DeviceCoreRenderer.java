@@ -75,11 +75,13 @@ public class DeviceCoreRenderer extends BaseCoreRenderer{
             if (comptype.equals("camera")){
                 writer.writeAttribute("accept", "image/*");
             }
-            if (comptype.equals("camcorder")){
-                writer.writeAttribute("accept", "video/*");
-            }
-            if (comptype.equals("microphone")){
-                writer.writeAttribute("accept", "audio/*");
+            if (!cd.isDesktopBrowser()){
+                if (comptype.equals("camcorder")){
+                    writer.writeAttribute("accept", "video/*");
+                }
+                if (comptype.equals("microphone")){
+                    writer.writeAttribute("accept", "audio/*");
+                }
             }
             writer.endElement(INPUT_ELEM);
         }
