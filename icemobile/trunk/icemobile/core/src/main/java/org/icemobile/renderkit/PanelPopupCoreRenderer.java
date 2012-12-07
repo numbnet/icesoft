@@ -30,7 +30,7 @@ public class PanelPopupCoreRenderer extends BaseCoreRenderer {
         }
         String userClass = panelPopup.getStyleClass();
         if (null != userClass) {
-            popupBGClass.append(String.valueOf(userClass));
+          //  popupBGClass.append(String.valueOf(userClass));
             popupBaseClass.append(userClass);
         }
         writer.startElement(DIV_ELEM, component);
