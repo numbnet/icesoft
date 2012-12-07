@@ -23,13 +23,14 @@ public class PanelPopupCoreRenderer extends BaseCoreRenderer {
         writer.writeAttribute(ID_ATTR, clientId);
         StringBuilder popupBaseClass = new StringBuilder(IPanelPopup.HIDDEN_CONTAINER_CLASS);
         StringBuilder popupBGClass = new StringBuilder(IPanelPopup.BLACKOUT_PNL_HIDDEN_CLASS);
+        //leave user class appending here, but it's actually done in js
         if (visible) {
             popupBaseClass = new StringBuilder(IPanelPopup.CONTAINER_CLASS);
             popupBGClass = new StringBuilder(IPanelPopup.BLACKOUT_PNL_CLASS);
         }
-        Object userClass = panelPopup.getStyleClass();
+        String userClass = panelPopup.getStyleClass();
         if (null != userClass) {
-            popupBGClass.append(userClass);
+            popupBGClass.append(String.valueOf(userClass));
             popupBaseClass.append(userClass);
         }
         writer.startElement(DIV_ELEM, component);
@@ -42,7 +43,6 @@ public class PanelPopupCoreRenderer extends BaseCoreRenderer {
         //panel
         writer.startElement(DIV_ELEM, component);
         writer.writeAttribute(ID_ATTR, clientId + "_popup");
-
         writer.writeAttribute("class", popupBaseClass.toString());
         if (null != panelPopup.getStyle()) {
              writer.writeAttribute(STYLE_ATTR, panelPopup.getStyle());
@@ -97,6 +97,9 @@ public class PanelPopupCoreRenderer extends BaseCoreRenderer {
             builder.append(", width: ").append(panelPopup.getWidth());
         }if (panelPopup.getHeight() != Integer.MIN_VALUE){
             builder.append(", height: ").append(panelPopup.getHeight());
+        }
+        if (null !=panelPopup.getStyleClass()){
+            builder.append(", sclass: '").append(panelPopup.getStyleClass()).append("'");
         }
   /*      if (panelPopup.isCenterOnForm()){
             builder.append(", useForm: ").append(panelPopup.isCenterOnForm());

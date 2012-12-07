@@ -1255,6 +1255,16 @@ ice.mobi.ready = function (callback) {
         var containerId = clientId + "_popup";
         var autocenter = cfgIn.autocenter || true;
         var centerCalculation = {};
+        var opencontClass = "mobi-panelpopup-container ";
+        var openbgClass= "mobi-panelpopup-bg ";
+        var closebgClass = "mobi-panelpopup-bg-hide ";
+        var closecontClass = "mobi-panelpopup-container-hide ";
+        if (cfgIn.sclass){
+            openbgClass+= cfgIn.sclass;
+            opencontClass+=cfgIn.sclass;
+            closebgClass+=cfgIn.sclass;
+            closecontClass+=cfgIn.sclass;
+        }
         ice.mobi.panelPopup.visible[clientId]= visible;
         return {
             openPopup: function(clientId, cfg) {
@@ -1266,10 +1276,10 @@ ice.mobi.ready = function (callback) {
                 var scrollEvent = 'ontouchstart' in window ? "touchmove" : "scroll";
                 var fadedDiv = document.getElementById(idPanel);
                 if (fadedDiv){
-                   document.getElementById(idPanel).className = "mobi-panelpopup-bg ";
+                   document.getElementById(idPanel).className = openbgClass;
                 }
                 var containerNode = document.getElementById(containerId);
-                containerNode.className = "mobi-panelpopup-container ";
+                containerNode.className = opencontClass;
                 if (cfg.autocenter==true) {
                     centerCfg = {} ;
                     if (cfg.width){
@@ -1326,10 +1336,10 @@ ice.mobi.ready = function (callback) {
                var greyed = document.getElementById(clientId+"_bg");
                var container = document.getElementById(containerNode);
                if (greyed){
-                   greyed.className = "mobi-panelpopup-bg-hide ";
+                   greyed.className = closebgClass;
                }
                if (container){
-                   document.getElementById(containerNode).className = "mobi-panelpopup-container-hide ";
+                   document.getElementById(containerNode).className = closecontClass;
                }
                if (cfg.autocenter==true) {
                      if (window.removeEventListener) {
