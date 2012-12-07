@@ -47,6 +47,7 @@
        </h:form>
        <h:form id="popupFrm">
         <mobi:panelPopup id="panelPopServer" autoCenter="#{popup.autoCenter}"
+                         styleClass="#{popup.styleClass}"
                          disabled="#{popup.disabled}"
                          width="#{popup.width}"
                          height="#{popup.height}"
@@ -109,6 +110,10 @@
                         <mobi:inputText id="width" value="#{popup.width}" singleSubmit="true" type="number"/>
                     </mobi:fieldsetRow>
                     <mobi:fieldsetRow>
+                        <h:outputLabel for="sc" value="StyleClass"/>
+                        <mobi:inputText id="sc" value="#{popup.styleClass}" singleSubmit="true" />
+                    </mobi:fieldsetRow>
+                    <mobi:fieldsetRow>
                         <h:outputLabel for="height" value="Height:"/>
                         <mobi:inputText id="height" value="#{popup.height}" singleSubmit="true" type="number"/>
                     </mobi:fieldsetRow>
@@ -137,6 +142,10 @@
             <mobi:fieldsetRow>
                 <h:outputLabel for="heightOut" value="Height:"/>
                  <h:outputText id="heightOut" value="#{popup.height}"/>
+            </mobi:fieldsetRow>
+            <mobi:fieldsetRow>
+                <h:outputLabel for="scOut" value="styleClass:"/>
+                 <h:outputText id="scOut" value="#{popup.styleClass}"/>
             </mobi:fieldsetRow>
 
  </h:form>

@@ -20,6 +20,7 @@ public class PopupBean implements Serializable {
     public int height;
     public boolean centerOnForm;
     public String statusMsg;
+    public String styleClass;
 
     public PopupBean(){
         this.visible=false; //initial value
@@ -123,5 +124,13 @@ public class PopupBean implements Serializable {
 
     public void setStatusMsg(String statusMsg) {
         this.statusMsg = statusMsg;
+    }
+
+    public String getStyleClass() {
+        return styleClass;
+    }
+
+    public void setStyleClass(String styleClass) {
+        this.styleClass = styleClass;
     }
 }
