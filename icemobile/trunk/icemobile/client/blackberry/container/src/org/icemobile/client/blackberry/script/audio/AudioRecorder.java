@@ -17,6 +17,11 @@ package org.icemobile.client.blackberry.script.audio;
 
 import java.io.IOException;
 
+import javax.microedition.io.Connector;
+import javax.microedition.io.file.FileConnection;
+import javax.microedition.media.Player;
+import javax.microedition.medial.control.RecordControl;
+
 import org.icemobile.client.blackberry.ContainerController;
 import org.icemobile.client.blackberry.Logger;
 import org.icemobile.client.blackberry.utils.FileUtils;
