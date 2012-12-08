@@ -119,8 +119,8 @@ public class AutoCompleteEntryMeta extends HtmlInputTextMeta {
     @Property(tlddoc = "Direction in which to show the list of possible matches. Possible values are \"up\", \"down\", and \"auto\".")
     private String direction;
 	
-	@Property(tlddoc = "Boolean value that indicates whether the autocomplete functionality should be done on the client or on the server. Client-side mode can be faster, as no round trips to the server need to made. However, if the list of possible results is too large, the browser might become slower, since the entire list has to be sent to the client. It is recommended not to use lists of more than 1000 items when using the client-side mode.", defaultValue="false")
-	private boolean clientSideMode;
+	@Property(tlddoc = "Boolean value that indicates whether the autocomplete functionality should be done on the client or on the server. Client-side mode can be faster, as no round trips to the server need to be made. However, if the list of possible results is too large, the browser might become slower, since the entire list has to be stored in the client as HTML nodes. It is recommended not to use lists of more than 1000 items when using the client-side mode.", defaultValue="false")
+	private boolean clientSide;
 
     @Field(defaultValue="false")
     private Boolean populateList;
