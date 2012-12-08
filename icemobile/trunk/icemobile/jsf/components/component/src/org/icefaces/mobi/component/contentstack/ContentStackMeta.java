@@ -36,24 +36,19 @@ import javax.faces.component.UIComponent;
         rendererType = "org.icefaces.ContentStackRenderer",
         extendsClass = "javax.faces.component.UIPanel",
         componentFamily = "org.icefaces.ContentStack",
-        tlddoc = "This mobility component controls which of it's child panels is rendered. Child Panels must be " +
-                " contentPane components.  "
-)
+        tlddoc = "contentStack manages child contentPanes, controlling which child is visible.")
 public class ContentStackMeta extends UIPanelMeta {
 
-     @Property( tlddoc="id of the panel that is visible in this stack of panels.  If one is selected, then a single" +
-             " column view is shown.")
+     @Property( tlddoc="The id of the panel that is visible.")
      private String currentId;
 
-     @Property(tlddoc = "style will be rendered on the root element of this " +
-     "component.")
+     @Property(tlddoc = org.icefaces.mobi.utils.TLDConstants.STYLE)
      private String style;
 
-     @Property(tlddoc = "style class will be rendered on the root element of " +
-        "this component.")
+     @Property(tlddoc = org.icefaces.mobi.utils.TLDConstants.STYLECLASS)
      private String styleClass;
 
-     @Property(tlddoc=" id of contentStackMenu used with this stack")
+     @Property(tlddoc="The id of contentStackMenu used with this stack.")
      private String contentMenuId;
 
 }

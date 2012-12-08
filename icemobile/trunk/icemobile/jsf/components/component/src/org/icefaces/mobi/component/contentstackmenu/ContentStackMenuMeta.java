@@ -34,16 +34,16 @@ import javax.faces.application.ResourceDependency;
         componentType = "org.icefaces.ContentStackMenu",
         rendererType = "org.icefaces.ContentStackMenuRenderer",
         componentFamily = "org.icefaces.ContentStackMenu",
-        tlddoc = "This component renders a menu represented by a collection of contentMenuItem " +
-                " and is meant to be used with a contentStack component for layout and navigation " +
-                "through the designated contentStack.  When a small view, the contentStackMenu is " +
-                "meant to be within one of th contentPane children of the contentStack.  When in " +
-                "large view with splitPane, it is meant to be sibling to the contentStack and not within" +
-                " a contentPane itself.  In this way the component knows how to behave regarding transisitons" +
-                " currently defined transitions are sliding panes within small view only." +
-                " Related components for navigation through contentStack are contentMenuItem which is" +
-                " only legitimate child component of this one, and contentNavBar which also takes " +
-                "contentMenuItem as children. This component may take a list of contentMenuItem as children " +
+        tlddoc = "contentStackMenu renders a menu represented by a collection of contentMenuItems " +
+                "and is meant to be used with a contentStack component for layout and navigation " +
+                "through the designated contentStack.  When in a small view, the contentStackMenu is " +
+                "meant to be within one of the contentPane children of the contentStack.  When in " +
+                "a large view with splitPane, it is meant to be a sibling to the contentStack and not within" +
+                " a contentPane itself.  In this way the component knows how to behave regarding transisitons." +
+                " Currently defined transitions are sliding panes within small view only." +
+                " Related components for navigation through contentStack are contentMenuItem, which is" +
+                " only legitimate child component of this one, and contentNavBar, which also takes " +
+                "contentMenuItem as children. This component may take a list of contentMenuItems as children, " +
                 "or a Collection can be value bound to the value attribute with a var attribute to a single" +
                 " contentMenuItem child to be iterated over. "
 )
@@ -53,29 +53,25 @@ import javax.faces.application.ResourceDependency;
 })
 
 public class ContentStackMenuMeta extends UISeriesBaseMeta {
-    @Property(tlddoc = "style will be rendered on the root element of this " +
-            "component.")
-    private String style;
 
-    @Property(tlddoc = "style class will be rendered on the root element of " +
-            "this component.")
-    private String styleClass;
+     @Property(tlddoc = org.icefaces.mobi.utils.TLDConstants.STYLE)
+     private String style;
 
-    @Property(tlddoc = "id of contentStack this menu will be responsible for manipulating "+
-           " the contentStack either needs to be a sibling within the same form or you need "+
-            " to use the exact jsf clientId for it. for example:- myform:mystack",
+     @Property(tlddoc = org.icefaces.mobi.utils.TLDConstants.STYLECLASS)
+     private String styleClass;
+
+    @Property(tlddoc = "The id of contentStack this menu will be responsible for manipulating."+
+           " The contentStack either needs to be a sibling within the same form, or it "+
+            " must use the exact jsf clientId (ie: myform:mystack).",
              required=Required.yes)
     private String contentStackId;
 
-    @Property(tlddoc = "id of contentPane that is currentId in contentStack. ContentMenuItem will " +
-            "modify this value which will keep the state of the contentStack for this component and will" +
-            "allow value binding in bean for contentStack and this component to keep in sync.")
+    @Property(tlddoc = "The id of contentPane that is currentId in contentStack. ContentMenuItem will " +
+            "modify this value, keeping the state of the contentStack for this component." +
+            " It also allows value bindings in a bean so contentStack and this component to can stay in sync.")
     private String selectedPane;
 
-    @Property(defaultValue="false", tlddoc=" if value is true, " +
-            "group headings of menu are handles of accordion pane for menu content. If false, get data list " +
-            "styling.  This does not affect function, merely the layout and no state of which panel is open is" +
-            " currently available for this component.")
+    @Property(defaultValue="false", tlddoc="Determines if menu acts as an accordion.")
     private boolean accordion;
 
 }
