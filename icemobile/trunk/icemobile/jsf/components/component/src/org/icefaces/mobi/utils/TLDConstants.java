@@ -2,8 +2,10 @@ package org.icefaces.mobi.utils;
 
 public class TLDConstants {
     
-    public static final String STYLE = "The style attribute sets the CSS style definition to be applied to this component when it is rendered.";
-    public static final String STYLECLASS = "The styleClass attribute sets the CSS class to apply to this component when it is rendered.";
-    public static final String DISABLED = "The disabled attribute is a boolean flag that when set to true indicates that this component should not receive focus or be included in a form submit.";
-
+    public static final String STYLE = "Sets the CSS style definition to be applied to this component.";
+    public static final String STYLECLASS = "Sets the CSS class to apply to this component.";
+    public static final String DISABLED = "Disables this component, so it does not receive focus or get submitted.";
+    public static final String SINGLESUBMIT = "Enables this component to submit itself.";
+    public static final String READONLY = "Sets this component to read only, so value cannot be changed.";
+    public static final String TABINDEX = "The tabindex of this component.";
 }

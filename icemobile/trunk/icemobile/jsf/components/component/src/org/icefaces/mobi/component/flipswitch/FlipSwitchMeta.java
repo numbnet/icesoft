@@ -45,7 +45,7 @@ import javax.faces.application.ResourceDependency;
         componentType = "org.icesoft.faces.FlipSwitch",
         rendererType = "org.icesoft.faces.FlipSwitchRenderer",
         componentFamily = "org.icefaces.component.FlipSwitch",
-        tlddoc = "The FlipSwitch is a component that enables the user to turn a feature on or off "                
+        tlddoc = "The flipswitch provides a control that toggles between on and off."                
 )
 
 
@@ -58,26 +58,24 @@ import javax.faces.application.ResourceDependency;
 public class FlipSwitchMeta extends UISelectBooleanMeta {
 
     @Property(defaultValue = "false",
-            tlddoc = "When singleSubmit is true, changing the value of this component will submit and execute this " +
-                    "component only (equivalent to &lt;f:ajax execute=\"@this\" render=\"@all\"&gt;). " +
-                    "When singleSubmit is false, no submit will occur. The default value is false.")
+            tlddoc = org.icefaces.mobi.utils.TLDConstants.SINGLESUBMIT)
     private boolean singleSubmit;
 
-    @Property(tlddoc = "style of the component")
+    @Property(tlddoc = org.icefaces.mobi.utils.TLDConstants.STYLE)
     private String style;
 
-    @Property(defaultValue = "Integer.MIN_VALUE", tlddoc = "tabindex of the component")
+    @Property(defaultValue = "Integer.MIN_VALUE", tlddoc = org.icefaces.mobi.utils.TLDConstants.TABINDEX)
     private int tabindex;
 
-    @Property(tlddoc = "Boolean indicating if the component should be disabled.")
+    @Property(tlddoc = org.icefaces.mobi.utils.TLDConstants.DISABLED)
     private boolean disabled;
 
-    @Property(tlddoc=" Boolean indicating if the component allows entry to submit to server")
+    @Property(tlddoc=org.icefaces.mobi.utils.TLDConstants.READONLY)
     private boolean readonly;
 
-    @Property(defaultValue="ON", tlddoc = "label for switch when on ...not sure if we will use this yet?")
+    @Property(defaultValue="ON", tlddoc = "The label for switch when on.")
     private String labelOn;
-    @Property(defaultValue="OFF", tlddoc = "label for switch when off ...not sure if we will use this yet?")
+    @Property(defaultValue="OFF", tlddoc = "The label for switch when off.")
     private String labelOff;    
 
 }
