@@ -6,16 +6,16 @@ import org.icemobile.zxing.qrcode.QRCodeWriter;
 import org.icemobile.zxing.common.BitMatrix;
 import org.icemobile.zxing.BarcodeFormat;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.SessionAttributes;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.imageio.ImageIO;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.net.URLDecoder;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -28,7 +28,8 @@ public class EchoSessionController extends BaseController {
 
 private static Logger LOG = Logger.getLogger(EchoSessionController.class.getName());
 
-     private String PLAINTEXT_DEFAULT = "Is there in truth, no beauty?";
+    private String PLAINTEXT_DEFAULT = "Is there in truth, no beauty?";
+    private final String QRCODE_TOKEN = "/qrcode:";
 
 
     @ModelAttribute("QRScanBean")
@@ -41,14 +42,24 @@ private static Logger LOG = Logger.getLogger(EchoSessionController.class.getName
         @ModelAttribute("QRScanBean") QRScanBean model) {
     }
 
-    @RequestMapping(value = "/qrscan/theImage")
-    public void doImageRequest( HttpServletResponse response,
+    @RequestMapping(value = "/qrcode:{theMessage}")
+    public void doImageRequest( HttpServletResponse response, @PathVariable String theMessage,
+                                HttpServletRequest request,
                                 @ModelAttribute("QRScanBean") QRScanBean model) {
 
-        String plaintext = model.getPlaintextOne();
+        // Ideally, theMessage would be what we want, but Spring is cutting off
+        // portions of this string if the String contains multiple periods "."
+        String path = request.getRequestURI();
+        String plaintext = PLAINTEXT_DEFAULT;
+        int spos = path.indexOf(QRCODE_TOKEN);
+        if (spos > 0) {
+            plaintext = path.substring(spos + QRCODE_TOKEN.length());
+            plaintext = URLDecoder.decode(plaintext);
+        }
         if (plaintext == null || "".equals(plaintext)) {
             plaintext = PLAINTEXT_DEFAULT;
         }
+
         OutputStream out = null;
         try {
             out = response.getOutputStream();
