@@ -15,7 +15,7 @@ import org.icefaces.ace.meta.annotation.Property;
         rendererType = "org.icefaces.ContactListRenderer",
         extendsClass = "javax.faces.component.UIComponentBase",
         componentFamily = "org.icefaces.ContactList",
-        tlddoc = "The Contact List Tag will invoke the containers native " +
+        tlddoc = "The fetchContact Tag invokes the containers native " +
         		"interface to fetch various fields from the contacts database "
 )
 @ResourceDependencies({
@@ -24,37 +24,31 @@ import org.icefaces.ace.meta.annotation.Property;
 
 public class ContactListMeta {
     
-    @Property(tlddoc = "The text appearing in the button", defaultValue="Fetch Contact")
+    @Property(tlddoc = "The text appearing in the button.", defaultValue="Fetch Contact")
     private String buttonLabel;
     
-    @Property(tlddoc = "Can contain one or more of name, email, and phone fields submitted " +
-    		"as an url-encoded string. Default is name")
+    @Property(defaultValue = "name", tlddoc = "Deterimes which contact fields are fetched.  Can contain one or more of 'name', 'email', and 'phone' fields submitted contained in a comma-separated string.")
     private String fields;
     
     @Property(defaultValue = "false", 
-            tlddoc = "When disabled, geolocation is not activated")
+            tlddoc = org.icefaces.mobi.utils.TLDConstants.DISABLED)
     private boolean disabled;
 
-    @Property(tlddoc = "style will be rendered on the root element of this " +
-            "component.")
+    @Property(tlddoc = org.icefaces.mobi.utils.TLDConstants.STYLE)
     private String style;
 
-    @Property(tlddoc = "style class will be rendered on the root element of " +
-            "this component.")
+    @Property(tlddoc = org.icefaces.mobi.utils.TLDConstants.STYLECLASS)
     private String styleClass;
     
-    @Property(tlddoc = "The result")
+    @Property(tlddoc = "The result.")
     private String value;
     
-    @Property(tlddoc = "The name of the contact")
+    @Property(tlddoc = "The name of the contact.")
     private String name;
     
-    @Property(tlddoc = "The phone number of the contact")
+    @Property(tlddoc = "The phone number of the contact.")
     private String phone;
     
-    @Property(tlddoc = "The email of the contact")
+    @Property(tlddoc = "The email of the contact.")
     private String email;
-
-
-
 }
