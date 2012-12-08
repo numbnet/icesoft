@@ -16,9 +16,9 @@
 
 package org.icemobile.jsp.tags;
 
-import javax.servlet.ServletContext;
 import javax.servlet.jsp.PageContext;
 import java.io.*;
+import java.net.URLEncoder;
 import java.util.logging.Logger;
 
 
@@ -30,19 +30,23 @@ public class QRCodeTag extends BaseSimpleTag {
     private static Logger LOG = Logger.getLogger(QRCodeTag.class.getName());
 
     // Code for the controller to map the request
-    private final String QR_CODE_IMG = "qrscan/theImage";
+    private final String QR_PREFIX = "/qrcode:";
 
 
 
     public void doTag() throws IOException {
 
         PageContext pageContext = (PageContext) getJspContext();
-        ServletContext sc = pageContext.getServletContext();
 
         Writer out = pageContext.getOut();
+        String contextPath = pageContext.getServletContext().getContextPath();
         StringBuilder tag = new StringBuilder();
         tag.append("<img ");
-        tag.append("src=\"").append( QR_CODE_IMG ).append("\" ");
+
+        String result = contextPath + QR_PREFIX + URLEncoder.encode(value);
+        result = result.replace(".", "%2E");
+
+        tag.append("src=\"").append(result).append("\" ");
 
         if (styleClass != null && !"".equals(styleClass)) {
             tag.append("class=\"").append(getStyleClass()).append("\"");
