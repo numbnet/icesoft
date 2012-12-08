@@ -227,7 +227,7 @@ public class AutoCompleteEntryRenderer extends InputRenderer {
                 .entry("inFieldLabelStyleClass", IN_FIELD_LABEL_STYLE_CLASS)
                 .entry("labelIsInField", labelIsInField);
             jb.endMap();
-			if (autoCompleteEntry.isClientSideMode()) {
+			if (autoCompleteEntry.isClientSide()) {
 				int rows = autoCompleteEntry.getRows();
 				if (rows == 0) rows = Integer.MAX_VALUE;
 				FilterMatchMode filterMatchMode = getFilterMatchMode(autoCompleteEntry);
@@ -263,7 +263,7 @@ public class AutoCompleteEntryRenderer extends InputRenderer {
 		ResponseWriter writer = facesContext.getResponseWriter();
         AutoCompleteEntry autoCompleteEntry = (AutoCompleteEntry) uiComponent;
 		String clientId = autoCompleteEntry.getClientId(facesContext);
-		if (autoCompleteEntry.isClientSideMode()) {
+		if (autoCompleteEntry.isClientSide()) {
 			populateClientSideList(facesContext, autoCompleteEntry);
 		} else if (autoCompleteEntry.getValue() != null && autoCompleteEntry.isPopulateList()) {
 			populateList(facesContext, autoCompleteEntry);
