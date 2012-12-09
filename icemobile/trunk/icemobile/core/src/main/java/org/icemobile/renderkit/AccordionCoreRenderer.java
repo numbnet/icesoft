@@ -65,20 +65,21 @@ public class AccordionCoreRenderer extends BaseCoreRenderer implements IRenderer
         writer.writeAttribute(ID_ATTR, clientId + "_script");
         writer.startElement(SCRIPT_ELEM, null);
         writer.writeAttribute(INPUT_TYPE_TEXT, "text/javascript");
-        StringBuilder cfg = new StringBuilder("{singleSubmit: true");
-
+        StringBuilder jsCall = new StringBuilder("ice.mobi.accordionController.initClient('");
+        jsCall.append(clientId).append("', ");
+        jsCall.append("{singleSubmit: true");
         if (null!=openedPaneId){
-            cfg.append(", opened: '").append(openedPaneId).append("'");
+            jsCall.append(", opened: '").append(openedPaneId).append("'");
         }
         boolean autoheight = accordion.isAutoHeight();
         int hashcode = Utils.generateHashCode(openedPaneId);
         if (null != accordion.getHashVal()){
             hashcode = Utils.generateHashCode(accordion.getHashVal());
         }
-        cfg.append(", hash: ").append(hashcode);
-        cfg.append(", autoHeight: ").append(autoheight);
+        jsCall.append(", hash: ").append(hashcode);
+        jsCall.append(", autoHeight: ").append(autoheight);
         if (accordion.isDisabled()){
-            cfg.append(", disabled: ").append(accordion.isDisabled());
+            jsCall.append(", disabled: ").append(accordion.isDisabled());
         }
         String fixedHeight = accordion.getHeight();
         if (fixedHeight!=null && !autoheight && fixedHeight.length()>0){
@@ -96,15 +97,18 @@ public class AccordionCoreRenderer extends BaseCoreRenderer implements IRenderer
                     logger.warning(" could not parse int value of fixedHeight="+fixedHeight);
                 }
             }
-            cfg.append(", fixedHeight: '").append(fixedHeight).append("'");
+            jsCall.append(", fixedHeight: '").append(fixedHeight).append("'");
+            if (accordion.isScrollablePaneContent()){
+                jsCall.append(", scp: true");
+            }
             if (fixedHtVal > 30) {
-               cfg.append(", fHtVal: ").append(fixedHtVal);
+               jsCall.append(", fHtVal: ").append(fixedHtVal);
             }
         }
-        cfg.append("}");
+        jsCall.append("});");
          //just have to add behaviors if we are going to use them.
-        writer.writeText("setTimeout(function () {ice.mobi.accordionController.initClient('"
-                + accordion.getClientId() + "'," +cfg.toString()+");"+"}, 200);");
+      //  writer.writeText(jsCall.toString());
+        writer.writeText("setTimeout(function () {"+jsCall.toString()+"}, 200);");
         writer.endElement(SCRIPT_ELEM);
         writer.endElement(SPAN_ELEM);
         writer.endElement(DIV_ELEM);

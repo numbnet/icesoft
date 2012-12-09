@@ -37,7 +37,7 @@
         }
         if (mxht <= handleHt ) {
             mxht = 0;
-            console.log("COULD NOT CALC A mxht");
+            ice.log.debug(ice.log,"COULD NOT CALC A mxht");
         }
         return mxht;
     }
@@ -56,7 +56,7 @@
         if (opened && fht){
            // opened.setAttribute("style", "height:"+fht+"; maxHeight: "+fht+";");
             opened.style.height=fht;
-            opened.style.maxHeight = fht;
+           // opened.style.maxHeight = fht;
         }
     }
     function openPane(elem, h){
@@ -87,6 +87,8 @@
         var accordRoot = document.getElementById(containerId);
         var paneOpId;
         var lastServerId = paneId;
+        var origHeight, fixedHeight, maxHeight, scp;
+        scp = cfgIn.scp || false;
         if (paneId) {
             paneOpId = paneId + "_sect";
         }
@@ -98,7 +100,7 @@
             paneOpId = children[0].id;
         }
         var autoheight = cfgIn.autoHeight || false;
-        var fixedHeight = cfgIn.fixedHeight || null;
+        origHeight = fixedHeight =  cfgIn.fixedHeight || null;
         var fHtVal = cfgIn.fHtVal || null;
         if (!openElem){
             ice.log.debug(ice.log,"Accordion has no children");
@@ -106,10 +108,9 @@
         }
         var handleheight = getHandleHeight(accordRoot);
         var handleht = handleheight + "px";
-        if (!autoheight && !fixedHeight){
+        if (autoheight==false && !fixedHeight){
             handleht = null;
         }
-        var maxHeight;
         if (autoheight){ //default
             maxHeight = calcMaxDivHeight(containerId, handleheight);
         }
@@ -124,7 +125,7 @@
                 fixedHeight = calcFixedSectionHeight(fixedHeight, handleheight);
             }
         }
-        if (!disabled){
+        if (disabled!=true){
             openPane(openElem, fixedHeight);
         }else {
              ice.log.debug(ice.log, "Accordion has been disabled");
@@ -136,7 +137,7 @@
         }
         return {
             toggle: function(clientId, el, cached) {
-                if (!el || disabled){    //is getting triggered on page load
+                if (!el || disabled==true){    //is getting triggered on page load
                  //   ice.log.debug(ice.log, 'accordion id='+clientId+' unable to open handle or is disabled');
                     return;
                 }
@@ -170,12 +171,12 @@
                 }
                 else {//panel has changed
                     closePane(openElem, handleht);
-                    if (cached){
+                    if (cached==true){
                         openPane(theParent,fixedHeight);
                         paneOpId = theParent.id;
                         openElem = theParent;
                     }
-                    if (!cached && singleSubmit) {
+                    else if ( singleSubmit) { //only have singleSubmit support for now
                         if (lastServerId == theParent.id){
                             cntr= cntr + 1;
                             //try to keep correct pane open despite caching
@@ -193,24 +194,29 @@
                 var node = document.getElementById(clientId);
                 if (node){
                     maxHeight = calcMaxDivHeight(clientId,  handleheight);
-             //       console.log("returning maxHeight="+maxHeight);
                     return maxHeight;
                 }
             } ,
             updateProperties: function (clientId, cfgUpd) {
                 disabled = cfgUpd.disabled || false;
-                if (disabled){
+                if (disabled==true){
                     return;
                 }
-                var changedFH = false;
-                var changedAH = false;
-                if (fixedHeight != cfgUpd.fixedHeight) {
-                    fixedHeight=cfgUpd.fixedHeight || null;
-                    changedFH = true;
+                var changedFH, changed, changedAH;
+                changedFH = changed = changedAH = false;
+
+                if (cfgUpd.scp != scp){
+                    changed= true;
+                    scp = cfgUpd.scp;
+                }
+                if (origHeight != cfgUpd.fixedHeight) {
+                    origHeight=cfgUpd.fixedHeight || null;
+                    fixedHeight = origHeight;
+                    changed = changedFH = true;
                 }
                 if (autoheight != cfgUpd.autoHeight){
                     autoheight = cfgUpd.autoHeight;
-                    changedAH=true;
+                    changed = changedAH=true;
                 }
                 if (changedAH || changedFH && autoheight){
                     ice.mobi.accordionController.maxHt[clientId]=null;
@@ -234,27 +240,36 @@
                         ice.mobi.accordionController.maxHt[clientId]=maxHeight;
                         fixedHeight = maxHeight+"px";
                     }
-                } else if (fixedHeight && changedFH){
+                } else if (fixedHeight && changed){
                     if (cfgUpd.fHtVal){
-                        var val = parseInt(fixedHeight) + parseInt(handleheight);
+                        var val = parseInt(cfgUpd.fHtVal) + parseInt(handleheight);
                         fixedHeight = val + "px";
-                    }else {
+                    }else if (changedFH){
                         var temp = calcFixedSectionHeight(fixedHeight, handleheight);
                         if (temp !=null){
                             fixedHeight = temp +"px";
                         }
                     }
                 }
+                if (autoheight==false && !fixedHeight){
+                    handleht = null;
+                } else {
+                    handleht = getHandleHeight(accordRoot) + "px";
+                }
+                //did the active pane change?
+                var pushedId = getHiddenVal(clientId)+"_sect";
+                if ((paneOpId == pushedId) || disabled==true){
+                    return;
+                }
                 //allow server to push last submitted or encoded value
                 openElem = document.getElementById(paneOpId);
                 if (openElem){
-                    closePane(openElem, handleheight+"px");
+                    closePane(openElem, handleht);
                 } else {  //may have been deleted or removed
                      var root = document.getElementById(clientId+"_acc");
                      openElem = root.firstChild;
                      paneOpId = root.firstChild.id;
                 }
-                var pushedId = getHiddenVal(clientId)+"_sect";
                 var delPushed=false;
                 if (!document.getElementById(pushedId)){
                     pushedId = paneOpId;
@@ -263,9 +278,9 @@
                 if(paneOpId != pushedId){
                     paneOpId = pushedId || null;
                     openElem = document.getElementById(paneOpId);
+                }
+                if (openElem.className=="closed" || changed){ //only modify opened pane if height changes
                     openPane(openElem, fixedHeight) ;
-                } else if (!delPushed){
-                    openPane(openElem, fixedHeight);
                 }
             },
             getDisabled: function(){
@@ -292,32 +307,34 @@
                     ice.mobi.accordionController.unload(clientId);
                 });
             } else {
+                //getting phantom calls to this
+                if (!cfg.hash){
+                    return;
+                }
                 this.panels[clientId].updateProperties(clientId, cfg);
             }
         },
         toggleClient: function(clientId, el, cachetyp, transHack) {
-          if (transHack ) {
-              var currentTimeMillis = new Date().getTime();
-              if ( (currentTimeMillis - this.lastTime) < 100 ) {
-                   console.log("__Accordion Double click suppression required");
+            if (transHack ) {
+                var currentTimeMillis = new Date().getTime();
+                if ( (currentTimeMillis - this.lastTime) < 100 ) {
+                   ice.log.debug(ice.log,"__Accordion Double click suppression required");
                    return;
-               }
-               this.lastTime = currentTimeMillis;
-           }
+                }
+                this.lastTime = currentTimeMillis;
+            }
             if (this.panels[clientId] && !this.panels[clientId].getDisabled()){
                    this.panels[clientId].toggle(clientId, el, cachetyp);
-            } else {
-                this.initClient(clientId, {});
-                if (!this.panels[clientId].getDisabled()){
-                    this.panels[clientId].toggle(clientId, el, cachetyp);
-                }
+            } else if (!this.panels[clientId].getDisabled()) {
+               this.initClient(clientId, {});
+                   this.panels[clientId].toggle(clientId, el, cachetyp);
             }
         },
         toggleMenu: function(clientId, el){
             if (this.panels[clientId]) {  //have yet to implement disabled for menu
                 this.panels[clientId].toggle(clientId, el, true);
             } else{
-                this.initClient(clientId, {autoheight:true});
+                this.initClient(clientId, {autoheight:false});
             }
         } ,
         updateHeight: function(clientId, handleHt){
