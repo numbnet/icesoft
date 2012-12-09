@@ -42,12 +42,12 @@ public class CarouselBean implements Serializable {
 
 	
 	public CarouselBean(){
-        imageList.add(new ImageItem("../images/DSC_1.jpg", "Pic One", height, style));
-        imageList.add(new ImageItem ("../images/DSC_2.JPG", "Pic Two", height, style));
-        imageList.add(new ImageItem ("../images/DSC_3.JPG", "Pic Three", height, style));
-        imageList.add(new ImageItem ("../images/DSC_4.JPG", "Pic Four", height, style));
-        imageList.add(new ImageItem ("../images/DSC_5.JPG", "Pic Five", height, style));
-        imageList.add(new ImageItem ("../images/DSC_6.JPG", "Pic Six", height, style));
+        imageList.add(new ImageItem("../../images/DSC_1.jpg", "Pic One", height, style));
+        imageList.add(new ImageItem ("../../images/DSC_2.JPG", "Pic Two", height, style));
+        imageList.add(new ImageItem ("../../images/DSC_3.JPG", "Pic Three", height, style));
+        imageList.add(new ImageItem ("../../images/DSC_4.JPG", "Pic Four", height, style));
+        imageList.add(new ImageItem ("../../images/DSC_5.JPG", "Pic Five", height, style));
+        imageList.add(new ImageItem ("../../images/DSC_6.JPG", "Pic Six", height, style));
 
 	}
 	
@@ -89,7 +89,7 @@ public class CarouselBean implements Serializable {
     }
 
     public void addItem(ActionEvent ae){
-        this.imageList.add(new ImageItem ("../images/queen.jpg", "Pic EXTRA", height, style));
+        this.imageList.add(new ImageItem ("../../images/queen.jpg", "Pic EXTRA", height, style));
         this.selectedIndex = imageList.size(); //it gets added at the end of the list
     }
 

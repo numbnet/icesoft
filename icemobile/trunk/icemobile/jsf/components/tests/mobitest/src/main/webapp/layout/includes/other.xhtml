@@ -19,10 +19,9 @@
              xmlns:f="http://java.sun.com/jsf/core"
              xmlns:ui="http://java.sun.com/jsf/facelets"
              xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
-
+<f:subview>
     <mobi:fieldsetGroup>
         <div style="padding:0 20px;"/>
-        Component Count: #{compTreeMonitor.treeSize}
        <h:form id="contentForm">
          <mobi:tabSet id="tabother"
                     parentHeader="false" autoWidth="false"
@@ -53,7 +52,7 @@
                   <p> content for panel 2 - ace of diamonds   </p>
                      <figure>
                          <img width="85" height="150"
-                          src="../images/queen.jpg"
+                          src="#{facesContext.externalContext.requestContextPath}/images/queen.jpg"
                             alt="queen of clubs" />
                          <figcaption>Queen of Clubs</figcaption>
                         </figure>
@@ -70,7 +69,7 @@
                   <p> content for panel 3 - some other card..</p>
                      <figure>
                          <img width="85" height="150"
-                          src="../images/Joker.jpg"
+                          src="#{facesContext.externalContext.requestContextPath}/images/Joker.jpg"
                             alt="joker" />
                          <figcaption>joker</figcaption>
                         </figure>
@@ -81,6 +80,6 @@
 
      </h:form>
     </mobi:fieldsetGroup>
-
+</f:subview>
 
 </ui:composition>

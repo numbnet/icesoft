@@ -50,7 +50,12 @@ public class LayoutBean implements Serializable {
     private int counter;
     private boolean autoHeight;
     private boolean fixedHeight;
+    private String fixedHeightString;
     private String fixedHeightVal;
+    private boolean disabled;
+    private String styleClass;
+    private String style;
+    private boolean scrollablePaneContent;
 
 	public LayoutBean(){
         this.selectedPane = FIRSTPANE;
@@ -65,14 +70,17 @@ public class LayoutBean implements Serializable {
         dataListMultiRow.add(new DataValue(THIRDPANE));
         eachContentPane.add(new EachContentPane("panel1", true, false, "panel1",
             "Panel1", "header for panel 1", "content for panel 1 - king of clubs",
-            "../images/kingOfClubs.jpg", "king of clubs", "King of Clubs"));
+            "../../images/kingOfClubs.jpg", "king of clubs", "King of Clubs"));
         eachContentPane.add(new EachContentPane("panel2", false, false, "panel2",
             "Panel2", "header for panel 2", "content for panel 2 - queen of clubs",
-            "../images/queen.jpg", "queen of clubs", "Queen of Clubs"));
+            "../../images/queen.jpg", "queen of clubs", "Queen of Clubs"));
         eachContentPane.add(new EachContentPane("panel3", false, true, "panel3",
             "Panel3", "header for panel 3", "content for panel 3 - some other card",
-            "../images/Joker.jpg", "joker", "Joker"));
+            "../../images/Joker.jpg", "joker", "Joker"));
         counter = eachContentPane.size();
+        disabled = false;
+        this.fixedHeightString="120px";
+        this.scrollablePaneContent = true;
     }
 
     public void tabChangeListener(ValueChangeEvent vce){
@@ -88,7 +96,7 @@ public class LayoutBean implements Serializable {
         counter++;
         eachContentPane.add(new EachContentPane("panel"+counter, false, true, "panel"+counter,
             "Panel"+counter, "header for panel "+counter, "content for panel "+counter+" - some other card",
-            "../images/Joker.jpg", "joker", "Joker"));
+            "../../images/Joker.jpg", "joker", "Joker"));
     }
 
     public void removeContentPane(ActionEvent event) {
@@ -104,7 +112,9 @@ public class LayoutBean implements Serializable {
             }
         }
     }
-
+    public void clearFixedHeight(ActionEvent evt){
+        this.fixedHeightString = "";
+    }
     public void changeToPane3(){
         this.selectedPane = THIRDPANE;
     }
@@ -117,6 +127,14 @@ public class LayoutBean implements Serializable {
         this.autoHeight = autoHeight;
     }
 
+    public boolean isDisabled() {
+        return disabled;
+    }
+
+    public void setDisabled(boolean disabled) {
+        this.disabled = disabled;
+    }
+
     public boolean isFixedHeight() {
         return fixedHeight;
     }
@@ -126,20 +144,28 @@ public class LayoutBean implements Serializable {
     }
 
     public String getFixedHeightVal() {
-       return "120px";
+       return fixedHeightVal;
     }
 
     public void setFixedHeightVal(String fixedHeightVal) {
         this.fixedHeightVal = fixedHeightVal;
     }
 
-/*   public String getLmenuPane() {
-        return lmenuPane;
+    public String getStyleClass() {
+        return styleClass;
     }
 
-    public void setLmenuPane(String lmenuPane) {
-        this.lmenuPane = lmenuPane;
-    }  */
+    public void setStyleClass(String styleClass) {
+        this.styleClass = styleClass;
+    }
+
+    public String getStyle() {
+        return style;
+    }
+
+    public void setStyle(String style) {
+        this.style = style;
+    }
 
     public String getSelectedPane() {
         return selectedPane;
@@ -166,6 +192,14 @@ public class LayoutBean implements Serializable {
         this.menuList = menuList;
     }
 
+    public String getFixedHeightString() {
+        return fixedHeightString;
+    }
+
+    public void setFixedHeightString(String fixedHeightString) {
+        this.fixedHeightString = fixedHeightString;
+    }
+
     public List getDataList() { return dataList; }
 
     public List getDataListMultiRow() { return dataListMultiRow; }
@@ -180,7 +214,14 @@ public class LayoutBean implements Serializable {
         }
         return items;
     }
-    
+
+    public boolean isScrollablePaneContent() {
+        return scrollablePaneContent;
+    }
+
+    public void setScrollablePaneContent(boolean scrollablePaneContent) {
+        this.scrollablePaneContent = scrollablePaneContent;
+    }
 
     public static class MenuValue implements Serializable{
         private String label;

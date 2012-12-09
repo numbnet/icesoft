@@ -5,16 +5,11 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
 <h:head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<meta name="viewport"
-		content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
-	<meta name="apple-mobile-web-app-capable" content="yes" />
-	<meta name="apple-mobile-web-app-status-bar-style" content="black" />
-	<mobi:deviceStylesheet />
-    <script src="http://debug.phonegap.com/target/target-script-min.js#jgug"></script>
+	<mobi:deviceResource />
 </h:head>
 <h:body>
-	<mobi:viewSelector defaultView="large">
+	<mobi:viewSelector defaultView="#{navigationBean.defaultView}"
+                       forceView="#{navigationBean.forceView}">
 		<f:facet name="small">
 			<ui:include src="../templates/small.xhtml" />
 		</f:facet>
@@ -22,5 +17,31 @@
 			<ui:include src="../templates/large.xhtml" />
 		</f:facet>
 	</mobi:viewSelector>
+    <h:form>
+        <h3>DYNAMIC UPDATES</h3>
+            <mobi:fieldsetRow>
+               <h:outputText value="view"/>
+                <h:selectOneMenu id="viewSelector" value="#{navigationBean.defaultView}" onchange="ice.se(event, this);">
+                    <f:selectItem itemLabel="small" itemValue="small"/>
+                    <f:selectItem itemLabel="large" itemValue="large"/>
+                </h:selectOneMenu>
+             </mobi:fieldsetRow>
+             <mobi:fieldsetRow>
+                 <h:outputLabel for="forceView" value="ForceView:"/>
+                 <mobi:flipswitch id="forceView" value="#{navigationBean.forceView}" singleSubmit="true"/>
+             </mobi:fieldsetRow>
+
+       <h3>RESULTS:</h3>
+
+             <mobi:fieldsetRow>
+                 <h:outputLabel for="defView" value="DefaultView:"/>
+                  <h:outputText id="defView" value="#{navigationBean.defaultView}"/>
+             </mobi:fieldsetRow>
+             <mobi:fieldsetRow>
+                 <h:outputLabel for="forView" value="ForceView:"/>
+                 <h:outputText id="forView" value="#{navigationBean.forceView}"/>
+             </mobi:fieldsetRow>
+
+    </h:form>
 </h:body>
 </html>

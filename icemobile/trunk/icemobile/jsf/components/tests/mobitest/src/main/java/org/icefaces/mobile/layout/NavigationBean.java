@@ -27,12 +27,17 @@ import javax.faces.bean.ViewScoped;
 public class NavigationBean implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	
+
+    private String defaultView;
+    private boolean forceView;
 	private String singleColSelectedPane = "mnuPanelS";
 	private String twoColSelectedPane = "panel1L";
 	private String selectedTabPane = "panelt1";
     private String selPane = "panel1";
-	
+
+    public NavigationBean(){
+        this.defaultView="large";
+    }
 	public String getSingleColSelectedPane() {
 		return singleColSelectedPane;
 	}
@@ -58,5 +63,21 @@ public class NavigationBean implements Serializable {
 
     public void setSelPane(String selPane) {
         this.selPane = selPane;
+    }
+
+    public String getDefaultView() {
+        return defaultView;
+    }
+
+    public void setDefaultView(String defaultView) {
+        this.defaultView = defaultView;
+    }
+
+    public boolean isForceView() {
+        return forceView;
+    }
+
+    public void setForceView(boolean forceView) {
+        this.forceView = forceView;
     }
 }

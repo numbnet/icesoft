@@ -24,15 +24,8 @@
 	xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
 <h:head>
 	<title id="title">timeSpinner basic test</title>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"></meta>
-	<meta name="viewport"
-		content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
-	<meta name="apple-mobile-web-app-capable" content="yes" />
-	<meta name="apple-mobile-web-app-status-bar-style" content="black" />
- 
-  <!--  deviceStylesheet tag with no properties will load default styles for mobile device based on useragent info -->
-   <mobi:deviceStylesheet
-            name="#{themeSwitcher.theme}" media="screen" />
+   <mobi:deviceResource   includeIOSSmartAppBanner="false"
+            name="#{themeSwitcher.theme}" />
 
 </h:head>
 
@@ -53,14 +46,14 @@
          <h:outputText value="A. time"/>
 
          <mobi:timeSpinner id="timeId" value="#{date.time1}"  timeZone="Mountain Standard Time"
-                          singleSubmit="#{date.singleSubmit}"
+                          singleSubmit="#{date.singleSubmit}"  style="border: 1px solid red;"
                           title="time input field"/>
 
 
        <h5>this one has useNative as true...also has built in conversion</h5>
        <h:outputLabel for="timeIOS5" value="B. iOS5 capable:"/>
         <mobi:timeSpinner id="timeIOS5" useNative="true" value="#{date.time2}" title="date ios5 cap"
-                 singleSubmit="#{date.singleSubmit}">
+                 singleSubmit="#{date.singleSubmit}"  style="border: 1px solid red;">
         </mobi:timeSpinner>
 
           <h5>ActionListener for buttons will change following field to reflect which button was pressed</h5>

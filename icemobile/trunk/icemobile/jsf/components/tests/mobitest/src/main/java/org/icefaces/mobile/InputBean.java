@@ -17,6 +17,7 @@
 package org.icefaces.mobile;
 
 import java.io.Serializable;
+import java.lang.String;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Date;
@@ -57,6 +58,7 @@ public class InputBean implements Serializable {
    private boolean boolean2 = false;
    private String dateString = "2012-12-12";
    private Date dateObj = new Date();
+   private String attrTest;
    
     public InputBean(){
 
@@ -176,6 +178,9 @@ public class InputBean implements Serializable {
         val+=checkTestParam("test2Param");
         this.setEventString(val);
     }
+    public void updateAttribute(ActionEvent ae){
+        this.attrTest = (String)ae.getComponent().getAttributes().get("attrib");
+    }
     public void clear() {
          this.eventString="clear";
     }
@@ -280,5 +285,13 @@ public class InputBean implements Serializable {
 
     public void setDateObj(Date dateObj) {
         this.dateObj = dateObj;
+    }
+
+    public String getAttrTest() {
+        return attrTest;
+    }
+
+    public void setAttrTest(String attrTest) {
+        this.attrTest = attrTest;
     }
 }
