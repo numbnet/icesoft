@@ -39,6 +39,7 @@ public class AccordionTag extends BaseBodyTag implements IAccordion {
     private String selectedId;
     private AccordionCoreRenderer renderer;
     private TagWriter writer;
+  //  private boolean scrollablePaneContent;
 
     public int doStartTag() throws JspException {
         renderer = new AccordionCoreRenderer();
@@ -120,12 +121,23 @@ public class AccordionTag extends BaseBodyTag implements IAccordion {
     public String getOpenedPaneClientId() {
         return selectedId;
     }
-    public void release(){
-        this.renderer=null;
-        this.height = null;
-    }
+
     /** this is not required for jsp since no domDiff to wipe out update script */
     public String getHashVal(){
         return null;
+    }
+
+    public boolean isScrollablePaneContent() {
+        return false;
+    }
+
+  /*  public void setScrollablePaneContent(boolean scrollablePaneContent){
+        this.scrollablePaneContent = scrollablePaneContent;
+    } */
+
+    public void release(){
+        this.renderer = null;
+        this.writer = null;
+        this.name = null;
     }
 }

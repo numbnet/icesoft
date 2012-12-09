@@ -41,30 +41,30 @@ public class ContentPaneCoreRenderer extends BaseCoreRenderer {
     public void encodeAccordionHandle(IAccordion accordion, IContentPane pane,
                   IResponseWriter writer, boolean isJsp, boolean selected )
          throws IOException{
-          String accordionId = accordion.getClientId();
-          String clientId = pane.getClientId();
-          boolean client = pane.isClient();
-          boolean autoheight = accordion.isAutoHeight();
-          String myId = pane.getId();
-          String handleClass = "handle";
-          String pointerClass = "pointer";
-          writer.startElement(SECTION_ELEM, pane);
-          writer.writeAttribute(ID_ATTR, clientId+"_sect");
-             // apply default style class for panel-stack
-          StringBuilder styleClass = new StringBuilder("closed");
-          if (!isJsp && selected){
-              styleClass = new StringBuilder("open") ;
-          }
-          String userDefinedClass = pane.getStyleClass();
-          if (userDefinedClass != null && userDefinedClass.length() > 0){
-               handleClass+= " " + userDefinedClass;
-               pointerClass+=" " + userDefinedClass;
-          }
-          writer.writeAttribute(CLASS_ATTR, styleClass);
-          writer.writeAttribute(STYLE_ATTR, pane.getStyle());
-          writer.startElement(DIV_ELEM, pane);
-          writer.writeAttribute(ID_ATTR, clientId+"_hndl");
-          writer.writeAttribute(CLASS_ATTR, handleClass);
+        String accordionId = accordion.getClientId();
+        String clientId = pane.getClientId();
+        boolean client = pane.isClient();
+        boolean autoheight = accordion.isAutoHeight();
+        String myId = pane.getId();
+        String handleClass = "handle";
+        String pointerClass = "pointer";
+        writer.startElement(SECTION_ELEM, pane);
+        writer.writeAttribute(ID_ATTR, clientId+"_sect");
+           // apply default style class for panel-stack
+        StringBuilder styleClass = new StringBuilder("closed");
+    /*    if (!isJsp && selected){
+            styleClass = new StringBuilder("open") ;
+        }  */
+        String userDefinedClass = pane.getStyleClass();
+        if (userDefinedClass != null && userDefinedClass.length() > 0){
+             handleClass+= " " + userDefinedClass;
+             pointerClass+=" " + userDefinedClass;
+        }
+        writer.writeAttribute(CLASS_ATTR, styleClass);
+        writer.writeAttribute(STYLE_ATTR, pane.getStyle());
+        writer.startElement(DIV_ELEM, pane);
+        writer.writeAttribute(ID_ATTR, clientId+"_hndl");
+        writer.writeAttribute(CLASS_ATTR, handleClass);
         StringBuilder args = new StringBuilder("ice.mobi.accordionController.toggleClient('");
         args.append(accordionId).append("', this, '").append(client).append("'");
         ClientDescriptor cd = accordion.getClient();
@@ -73,34 +73,22 @@ public class ContentPaneCoreRenderer extends BaseCoreRenderer {
         }
         args.append(");");
         writer.writeAttribute("onclick", args.toString() );
-
-          writer.startElement(SPAN_ELEM, pane);
-          writer.writeAttribute("class", pointerClass);
-       /*   if (!isJsp){
-              writer.write(IAccordion.ACCORDION_RIGHT_POINTING_POINTER);
-          } else {
-              writer.writeText(IAccordion.ACCORDION_RIGHT_POINTING_POINTER);
-          }*/
-          writer.endElement(SPAN_ELEM);
-          String title = pane.getTitle();
-          writer.writeText(title);
-          writer.endElement(DIV_ELEM);
-          writer.startElement(DIV_ELEM, pane);
-          writer.writeAttribute(ID_ATTR, clientId+"wrp");
-          String htString = accordion.getHeight();
-          StringBuilder style = new StringBuilder(256);
-          if (!autoheight && (null != htString) && !htString.equals("")) {
-            //  style.append( "height: ").append(htString).append("; max-height: ").append(htString);
-             // style.append("; overflow-y: auto;");
-              style.append("overflow-y: auto; ");
-          }
-          if (pane.getStyle() !=null){
-               style.append(pane.getStyle());
-          }
-   /*       if (style.length()>0){
-              writer.writeAttribute(STYLE_ATTR, pane.getStyle());
-          } */
-          writer.startElement(DIV_ELEM, pane);
-          writer.writeAttribute(ID_ATTR, clientId);
-     }
+        writer.startElement(SPAN_ELEM, pane);
+        writer.writeAttribute("class", pointerClass);
+        writer.endElement(SPAN_ELEM);
+        String title = pane.getTitle();
+        writer.writeText(title);
+        writer.endElement(DIV_ELEM);
+        writer.startElement(DIV_ELEM, pane);
+        writer.writeAttribute(ID_ATTR, clientId+"wrp");
+        String htString = accordion.getHeight();
+        boolean scrollablePaneContent = accordion.isScrollablePaneContent();
+        StringBuilder style = new StringBuilder(256);
+        if (!autoheight && (null != htString) && !htString.equals("") && scrollablePaneContent) {
+           style.append( "height: ").append(htString).append("; overflow-y: auto;");
+           writer.writeAttribute(STYLE_ATTR, style.toString()) ;
+        }
+        writer.startElement(DIV_ELEM, pane);
+        writer.writeAttribute(ID_ATTR, clientId);
+    }
 }

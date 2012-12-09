@@ -55,7 +55,7 @@ public class AccordionRenderer extends BaseLayoutRenderer {
              if( null != submittedStr) {
                  String oldId = accordion.getSelectedId();
                  String newId = JSFUtils.getIdOfChildByClientId(context, accordion, indexStr);
-                 if (newId != null && !newId.equals(oldId)) {
+                 if (null!=newId  && !newId.equals(oldId)) {
                      accordion.setSelectedId(newId);
                      component.queueEvent(new ValueChangeEvent(component, oldId, newId));
                  }

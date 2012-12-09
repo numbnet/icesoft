@@ -638,30 +638,35 @@ ice.mobi.tabsetController = {
         elem.className="closed";
     }
     function Accordion(clientId, cfgIn) {
-        var disabled = cfgIn.disabled || false;
+       var disabled = cfgIn.disabled || false;
         var containerId = clientId+"_acc" ;
-        var paneOpId = cfgIn.opened || null;
+        var paneId = cfgIn.opened || null;
         var accordRoot = document.getElementById(containerId);
-        if (!paneOpId && accordRoot.hasChildNodes()){
-            paneOpId = accordRoot.firstChild.id;
+        var paneOpId;
+        var lastServerId = paneId;
+        var origHeight, fixedHeight, maxHeight, scp;
+        scp = cfgIn.scp || false;
+        if (paneId) {
+            paneOpId = paneId + "_sect";
         }
-        paneOpId += "_sect";
         var openElem = document.getElementById(paneOpId);
-        var handleheight = getHandleHeight(accordRoot);
-        var handleHt = handleheight+"px";
+        if (!openElem && accordRoot.hasChildNodes()){
+            var children = accordRoot.getElementsByTagName("section");
+            openElem = children[0];
+            paneOpId = children[0].id;
+        }
         var autoheight = cfgIn.autoHeight || false;
-        var fixedHeight = cfgIn.fixedHeight || null;
+        origHeight = fixedHeight =  cfgIn.fixedHeight || null;
         var fHtVal = cfgIn.fHtVal || null;
         if (!openElem){
-             console.log("Accordion has no children");
-             this.disable(clientId);
+            console.log("Accordion has no children");
+            this.setDisabled(true);
         }
         var handleheight = getHandleHeight(accordRoot);
         var handleht = handleheight + "px";
-        if (!autoheight && !fixedHeight){
+        if (autoheight==false && !fixedHeight){
             handleht = null;
         }
-        var maxHeight;
         if (autoheight){ //default
             maxHeight = calcMaxDivHeight(containerId, handleheight);
         }
@@ -670,18 +675,16 @@ ice.mobi.tabsetController = {
             fixedHeight = maxHeight+"px";
         } else if (fixedHeight){
             if (fHtVal){
-                var tmp1 = parseInt(fHtVal)+parseInt(handleheight);
-                fixedHeight = tmp1 + "px";
+                var val = parseInt(fHtVal)+ parseInt(handleheight);
+                fixedHeight = val + "px";
             }else {
-                var tmp = calcFixedSectionHeight(fixedHeight, handleheight, fHtVal);
-             //   console.log("tmp that is cacl ="+tmp);
-                 if (tmp) {
-                     fixedHeight = tmp+"px";
-                 }
+                fixedHeight = calcFixedSectionHeight(fixedHeight, handleheight);
             }
         }
-        if (!disabled){
-             openPane(openElem, fixedHeight);
+        if (disabled!=true){
+            openPane(openElem, fixedHeight);
+        }else {
+             console.log("Accordion has been disabled");
         }
         return {
             toggle: function(clientId, el, cached) {
@@ -699,14 +702,14 @@ ice.mobi.tabsetController = {
                 openElem = document.getElementById(paneOpId);
                 if (paneOpId && paneOpId == theParent.id){
                     if (openElem.className=="open"){
-                        closePane(openElem, handleHt);
+                        closePane(openElem, handleht);
 
                     } else {
                         openPane( openElem, fixedHeight);
                     }
                 }
                 else {//panel has changed
-                    closePane(openElem, handleHt);
+                    closePane(openElem, handleht);
                     if (autoheight){
                         fixedHeight = updateFixedHeight(accId, handleheight, fixedHeight);
                     }
@@ -761,7 +764,7 @@ ice.mobi.tabsetController = {
                 if (hiddenVal!=null) {
                     var newPane = hiddenVal+"_sect";
                     if (newPane!=paneOpId){
-                       closePane(opened, handleHt);
+                       closePane(opened, handleht);
                        var newElem = document.getElementById(newPane);
                        if (newElem){
                            openPane(newElem, fixedHeight);
@@ -1890,7 +1893,7 @@ ice.mobi.splitpane = {
                         if( rightHeight > 0 ){
                             rtNode.style.height = (rightHeight + "px");
                         }*/
-                        console.log('left height: '+leftNode.style.height + ', right height: '+ rtNode.style.height);
+                       // console.log('left height: '+leftNode.style.height + ', right height: '+ rtNode.style.height);
                     }
                     else{
                         console.log('height calculated to 0, but not set');
