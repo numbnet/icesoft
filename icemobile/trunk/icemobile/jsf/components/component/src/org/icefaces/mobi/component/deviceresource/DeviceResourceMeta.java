@@ -16,8 +16,9 @@ import org.icefaces.ace.meta.baseMeta.UIComponentBaseMeta;
         rendererType = "org.icefaces.DeviceResourceRenderer",
         extendsClass = "javax.faces.component.UIComponentBase",
         componentFamily = "org.icefaces.DeviceResource",
-        tlddoc = "This mobility component renders the necessary head resources for a device, " +
-                "including the device-specific meta tags, the CSS themes, and javascript."
+        tlddoc = "Render the necessary HTML head resources for a detected " +
+                "device, including the device-specific meta tags, the CSS " +
+                "themes, and javascript."
         )
 @ResourceDependencies({
     @ResourceDependency(library = "org.icefaces.component.util", name = "component.js")
@@ -25,19 +26,22 @@ import org.icefaces.ace.meta.baseMeta.UIComponentBaseMeta;
 
 public class DeviceResourceMeta extends UIComponentBaseMeta {
 
-    @Property(tlddoc = "The CSS theme to use")
+    @Property(tlddoc = "Name of the CSS theme to apply.")
     private String theme;
 
-    @Property(defaultValue="true", tlddoc = "If true (default), the deviceResource tag will cause IOS 6 to"
+    @Property(defaultValue="true", tlddoc = "Flag indicating whether to use " +
+        "Smart App Banners on iOS. " +
+        "If true (default), the deviceResource tag will cause IOS 6 to"
             +" render a Smart App Banner for the application, allowing the user to install ICEmobile SX,"
             +"  if it is not already installed, and open it, if the app is installed."
             +" If the user chooses to open the installed app, the session will be auto-registered.")   
     private boolean includeIOSSmartAppBanner = true;
 
-    @Property(tlddoc = "library is also used by h comp outputStyleSheet")
+    @Property(tlddoc = "Resource library name as also used by the " +   
+            "h:outputStyleSheet component.")
     private String library;
 
-    @Property(tlddoc = "View size, small or large ")
+    @Property(tlddoc = "View size name, values \"small\" or \"large\".")
     private String view;
 
 }
