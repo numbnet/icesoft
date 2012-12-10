@@ -32,17 +32,17 @@ import javax.faces.component.UIComponent;
         rendererType = "org.icefaces.PagePanelRenderer",
         extendsClass = "javax.faces.component.UIPanel",
         componentFamily = "org.icefaces.PagePanel",
-        tlddoc = "This mobility component renders a header/body/footer layout that " +
-                "is defined using the facet tag.  The facets for header and footer" +
+        tlddoc = "Renders a header/body/footer layout that " +
+                "is defined using the facet tag.  The facets for header and footer " +
                 "are optional."
 )
 
 public class PagePanelMeta extends UIPanelMeta {
 
-    @Property(tlddoc = "style will be rendered on a root element of this component")
+    @Property(tlddoc = "CSS style(s) to be applied when this component is rendered.")
     private String style;
 
-    @Property(tlddoc = "style class will be rendered on a root element of this component")
+    @Property(tlddoc = "Space-separated list of CSS style class(es) to be applied when this element is rendered.")
     private String styleClass;
 
     /**
