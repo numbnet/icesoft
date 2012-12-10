@@ -45,8 +45,11 @@ import org.icefaces.mobi.utils.TLDConstants;
         @ResourceDependency(library = "org.icefaces.component.util", name = "component.js")
 })
 @ClientBehaviorHolder(events = {
-	@ClientEvent(name="blur", javadoc="...", tlddoc="...", defaultRender="@this", defaultExecute="@all"),
-	@ClientEvent(name="change", javadoc="...", tlddoc="...", defaultRender="@this", defaultExecute="@all")
+	@ClientEvent(name="blur", javadoc="Fired when the inputText component has lost focus.",
+            tlddoc="Fired when the inputText component has lost focus.", defaultRender="@this", defaultExecute="@all"),
+	@ClientEvent(name="change", javadoc="Fired when the inputText component detects value is changed.",
+            tlddoc="Fired when the inputText component detects value is changed.",
+            defaultRender="@this", defaultExecute="@all")
 }, defaultEvent="change")
 public class InputTextMeta extends UIInputMeta {
 
