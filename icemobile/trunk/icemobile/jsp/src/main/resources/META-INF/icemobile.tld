@@ -673,7 +673,7 @@
     </tag>
 
     <tag>
-        <description>Android style binary input button.</description>
+        <description>The flipswitch provides a control that toggles between on and off states.</description>
         <display-name>flipswitch</display-name>
         <name>flipswitch</name>
         <tag-class>org.icemobile.jsp.tags.FlipSwitchTag</tag-class>
@@ -834,8 +834,8 @@
             </description>
             <name>selectedItem</name>
             <required>true</required>
-            <type>int</type>
             <rtexprvalue>true</rtexprvalue>
+            <type>int</type>
         </attribute>
      </tag>
    <tag>
@@ -952,8 +952,8 @@
             </description>
             <name>autoWidth</name>
             <required>false</required>
-            <type>boolean</type>
             <rtexprvalue>true</rtexprvalue>
+            <type>boolean</type>
         </attribute>
     </tag>
 
@@ -991,7 +991,10 @@
             <rtexprvalue>true</rtexprvalue>
         </attribute>
         <attribute>
-            <description>fixeHeight, default 200px, can be used when autoHeight is false. Must be valid height for element.style.height
+            <description>This attribute can be used only when autoHeight is false.
+            It must represent a valid css height for element.style.height.
+            If no height is set and autoHeight is false, then 
+            panes for accordion will just render at their content height.
             </description>
             <name>height</name>
             <required>false</required>
