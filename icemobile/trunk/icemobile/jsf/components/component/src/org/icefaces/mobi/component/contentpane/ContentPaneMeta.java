@@ -23,6 +23,7 @@ import org.icefaces.ace.meta.annotation.ClientBehaviorHolder;
 import org.icefaces.ace.meta.annotation.ClientEvent;
 import org.icefaces.ace.meta.annotation.Required;
 import org.icefaces.ace.meta.annotation.Implementation;
+import org.icefaces.mobi.utils.TLDConstants;
 
 import javax.faces.component.UIComponent;
 
@@ -36,53 +37,53 @@ import javax.faces.component.UIComponent;
         rendererType = "org.icefaces.ContentPaneRenderer",
         extendsClass = "javax.faces.component.UIPanel",
         componentFamily = "org.icefaces.ContentPane",
-        tlddoc = "This mobility component is a child of several different layout containers.  No client behavior" +
-                " goes with this component.  In order to have any client-side behavior, it must be used with one" +
-                " of the other layout components.  Children of contentStack, accordion or tabSet, or any other mobility" +
-                " component which implements ContentPaneController.  The facelet attribute determines whether the children" +
-                " of this component/panel are constructed in the server side component tree" +
-                " facelet attribute defaults to false meaning that the children are constructed " +
-                " and present in server side component tree" +
-                " client = true, means children of this component are not only constructed but also are rendered" +
-                "    on the client --best for static data  "
+        tlddoc = "This mobility component is a child of several different layout components such as contentStack, " +
+                "accordion or tabSet, or any other future mobility component which implements ContentPaneController.  " +
+                "The facelet attribute determines whether the children of this component are constructed in the " +
+                "server side component tree. A special tag handler is utilised to assist with this task.  The desired " +
+                "outcome of this feature is to allow developers to maintain as small a server-side component tree as " +
+                "possible for purposes of increased scalability." +
+                "The facelet attribute defaults to false meaning that the children are constructed " +
+                "and present in server side component tree. " +
+                "If the client attribute is true, this means children of this component are not only constructed but " +
+                "area also always rendered on the client --best for static data  "
 )
 
 public class ContentPaneMeta extends UIPanelMeta{
 
-    @Property(defaultValue=" ", tlddoc="used when ContentPane is child of Accordion or tabSet")
+    @Property(defaultValue=" ", tlddoc="This attribute is only used when ContentPane is child of accordion " +
+            "or tabSet component, and refers to the text that is rendered on the accordion handle or tabSet tab.")
     private String title;
 
-    @Property(tlddoc = "style will be rendered on the root element of this " +
-    "component.  Just for purposes of accordion or tabset")
+    @Property(tlddoc = TLDConstants.STYLE)
     private String style;
 
-    @Property(tlddoc = "style class will be rendered on the root element of " +
-       "this component. Just for purposes of accordion or tabset")
+    @Property(tlddoc = TLDConstants.STYLECLASS)
     private String styleClass;
 
     @Property(defaultValue="false", implementation = Implementation.EXISTS_IN_SUPERCLASS,
-               tlddoc = "if true, this attribute must have client=false in order to be utilised and will" +
-                       " utilize the ContentPaneHandler in order to optimise server-side performance and reducing the size of the " +
-                       " server-side component tree, by ensuring that any non-selected contentPane which is not selected will not have" +
-                       " its children added to the component tree. If false, then normal jsf construction of the component tree is done. " +
-                       " Default value is false.")
+               tlddoc = "If this attribute is \"true\" the component utilizes the ContentPaneHandler to optimise " +
+                       "server-side performance by reducing the size of the server-side component tree. " +
+                       "Any non-selected contentPane will not have its children added to the component tree. " +
+                       "If this attribute evaluates to \"false\", then normal jsf construction of the component tree occurs. " +
+                       "Must have client=\"false\" which is the default value for that attribute.. " +
+                       "Default value for this attribute is false.")
     private boolean facelet;
 
     @Property(defaultValue="false",
-             tlddoc = " if true, the contentPane's children are always rendered to the client/browser.  This is ideal for " +
-                     " content which is static.  Default value is false, which means that the children of any non-selected" +
-                     " contentPane are not rendered to the client.  Used in conjunction with facelet attribute if the tagHandler" +
-                     " is required for optimization. If client is true, then facelet attribute is ignored.  Facelet attribute is " +
-                     " only relevant if this attribute is false.")
+             tlddoc = "If this attribute evaluates to \"true\", the contentPane's children are always rendered to the client/browser. " +
+                     "This is ideal for static content. Default value is false.  " +
+                     "The acelet attribute is only relevant if this attribute is false.")
     private boolean client;
 
     @Property(defaultValue="false",
-             tlddoc = " menuOrHome attribute means that this contentPane contains either a layoutMenu or Home page for a single " +
-                     "page application.  default is false, so be sure to set it if you have a menu page and " +
-                     " want the transitions to slide in proper direction.")
+             tlddoc = "The menuOrHome attribute means that this contentPane contains either a layoutMenu or Home page for a single " +
+                     "page application using contentStackMenu with a contentStack containing contentPanes. The default is false." +
+                     "This attribute helps assist in sliding panes effects for transition definition. ")
     private boolean menuOrHome;
 
-    @Property(defaultValue="false",
+ /*   @Property(defaultValue="false",
                tlddoc=" not implemented yet, but will eventually allow developers to tag a pane unselectable")
-    private boolean disabled;
+    private boolean disabled;  */
+
 }
