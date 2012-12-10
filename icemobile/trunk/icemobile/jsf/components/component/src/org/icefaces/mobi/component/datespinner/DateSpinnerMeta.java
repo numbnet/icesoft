@@ -40,11 +40,13 @@ import javax.faces.application.ResourceDependency;
         @ResourceDependency(library = "org.icefaces.component.util", name = "component.js")
 })
 @ClientBehaviorHolder(events = {
-        @ClientEvent(name = "change", javadoc = "...", tlddoc = "...", defaultRender = "@this", defaultExecute = "@all")
+        @ClientEvent(name = "change", javadoc = "Fired when a date is selected.", 
+                tlddoc = "Fired when a date is selected.", 
+                defaultRender = "@this", defaultExecute = "@all")
 }, defaultEvent = "change")
 public class DateSpinnerMeta extends UIInputMeta {
 
-    @Property(defaultValue = "yyyy-MM-dd", tlddoc = "A DateFormat pattern for localization.")
+    @Property(defaultValue = "yyyy-MM-dd", tlddoc = "The DateFormat pattern.")
     private String pattern;
 
     @Property(defaultValue = "1980", tlddoc = "The first year to appear in the dateScroller.")
@@ -78,7 +80,7 @@ public class DateSpinnerMeta extends UIInputMeta {
     @Property(tlddoc = org.icefaces.mobi.utils.TLDConstants.SINGLESUBMIT)
     private boolean singleSubmit;
 
-    @Property(defaultValue = "false", tlddoc = "Deterines if native date picker should be used when available.  Currently, native support is available for iOS5, iOS6, and BlackBerry devices.")
+    @Property(defaultValue = "false", tlddoc = "Determines if native date picker should be used when available.  Currently, native support is available for iOS5, iOS6, and BlackBerry devices.")
     private boolean useNative;
 
 }
