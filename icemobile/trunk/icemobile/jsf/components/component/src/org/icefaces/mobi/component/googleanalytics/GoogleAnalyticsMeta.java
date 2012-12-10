@@ -30,7 +30,7 @@ import org.icefaces.ace.meta.annotation.Property;
     rendererType = "org.icefaces.GoogleAnalyticsRenderer",
     extendsClass = "javax.faces.component.UIPanel",
     componentFamily = "org.icefaces.GoogleAnalytics",
-    tlddoc = "The googleAnalytics component will render the necessary script for the using "
+    tlddoc = "The googleAnalytics component will render the necessary script for using "
         + " Google Analytics. The ga account and domain may be specified with "
         + "the system properties org.icemobile.googleAnalyticsAccount and "
         + "org.icemobile.googleAnalyticsDomain or the component attributes "
