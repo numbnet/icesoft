@@ -1,0 +1,425 @@
+/*html,body{ height: 100%; }*/
+h3{ clear: both }
+header,nav,aside,section,article {
+    display:block;
+}
+div.info,div.success,div.warning,div.error {
+	border: 1px solid;
+	margin: 10px 0px;
+	padding: 15px 10px 15px 50px;
+	background-repeat: no-repeat;
+	background-position: 10px center;
+}
+
+div.info {
+	color: #00529B;
+	background-color: #BDE5F8;
+	background-image: url('info.png');
+}
+
+div.success {
+	color: #4F8A10;
+	background-color: #DFF2BF;
+}
+
+div.warning {
+	color: #9F6000;
+	background-color: #FEEFB3;
+	background-image: url('warning.png');
+}
+
+div.error {
+	color: #D8000C;
+	background-color: #FFBABA;
+	background-image: url('error.png');
+}
+
+span.success,span.error {
+	margin: 5px 5px 5px 5px;
+}
+
+span.success {
+	color: #4F8A10;
+}
+
+span.error {
+	color: #D8000C;
+}
+.bberry .phdr{ color: #FFF; font-size:15px;}
+.ui-icon {
+    width: 30px;
+    height: 25px;
+    border-top: 1px solid white;
+    border-radius: 7px;
+    display: block;
+    border: 1px solid rgba(255,255,255,0.5);
+    position: absolute;
+    left: 0.5em;
+    top: 5px;
+}
+html.bberry .ui-icon{
+    border-color: rgb(119, 119, 119);
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}
+.ui-icon-shadow {
+   -moz-box-shadow: 0px 1px 0 rgba(255,255,255,.4);
+   -webkit-box-shadow: 0px 1px 0 rgba(255, 255, 255, .4);
+   box-shadow: 0px 1px 0 rgba(255, 255, 255, .4);
+}
+.ui-icon-home {
+   background-position: -570px 50%;
+}
+html.iphone .ui-icon,
+html.ipad .ui-icon,
+html.honeycomb .ui-icon,
+html.android .ui-icon {
+   background-image: url(icons-white.png);
+}
+html.bberry .ui-icon {
+   background-image: url(icons-black.png);
+   border-color: rgb(119, 119, 119);
+   -webkit-box-shadow: none;
+   box-shadow: none;
+}
+html.android .ui-icon:active, html.android .ui-icon:focus, html.android .ui-icon[selected] {
+    -moz-box-shadow: inset 0px 0px 3px #66AFFF, 0px 0px 9px #66AFFF;
+    -webkit-box-shadow: inset 0px 0px 3px #66AFFF, 0px 0px 9px #66AFFF;
+    box-shadow: inset 0px 0px 3px #66AFFF, 0px 0px 9px #66AFFF;
+    background-color:#66AFFF;
+    color:#FFF;
+}
+html.honeycomb .ui-icon:active, html.honeycomb .ui-icon:focus, html.honeycomb .ui-icon[selected] {
+    -moz-box-shadow: inset 0px 0px 3px #6595F9, 0px 0px 9px #6595F9;
+    -webkit-box-shadow: inset 0px 0px 3px #6595F9, 0px 0px 9px #6595F9;
+    box-shadow: inset 0px 0px 3px #6595F9, 0px 0px 9px #6595F9;
+    background-color:#6595F9;
+    color:#FFF;
+}
+
+@media only screen and (-webkit-min-device-pixel-ratio: 1.5),
+       only screen and (min--moz-device-pixel-ratio: 1.5),
+       only screen and (min-resolution: 240dpi) {
+    .ui-icon {
+        -moz-background-size: 776px 18px;
+        -o-background-size: 776px 18px;
+        -webkit-background-size: 776px 18px;
+        background-size: 776px 18px;
+    }
+    html.iphone .ui-icon, html.ipad .ui-icon, html.honeycomb .ui-icon, html.android .ui-icon {
+        background-image: url(icons-36-white.png);
+    }
+    html.bberry .ui-icon {
+        background-image: url(icons-36-black.png);
+    }
+}
+#menuLink{
+    font-size: 14px;
+    padding: 0;
+    line-height: 25px;
+    margin-left: 0.3em;
+    width: 30px;
+    left: 0.3em;
+    top: 5px;
+    position: absolute;
+    height: 25px;
+    background-repeat: no-repeat;
+}
+html.bberry #menuLink{
+    font-size: 13px;
+}
+html.ipad #menuLink{
+    background-color: #BBBFCA;
+    border-color: #A2A2A2;
+}
+#splash header{ 
+    text-align: center;
+    width: 100%;
+    text-shadow: 2px 2px 3px #DEC6F3;
+}
+html.honeycomb #splash header,
+html.android #splash header{
+    text-shadow: 2px 2px 3px #502874;
+}
+#splash p{
+    margin: 0 0 1em 0;
+    line-height: 1.5em;
+}
+#splash p:last-child{
+    margin-bottom:0;
+}
+html.iphone #splash figure,
+html.bberry #splash figure,
+html.android #splash figure{
+    display:block;
+    text-align:center;
+}
+html.ipad #splash fieldset, html.honeycomb #splash fieldset{ 
+    padding: 20px;
+}
+html.ipad #splash header, html.honeycomb #splash header,
+html.ipad #splash figure, html.honeycomb #splash figure{ 
+    margin-left:auto;
+    margin-top:auto;
+    margin-right:auto;
+    text-align: left;
+    display:inline-block;
+    width:auto;
+    vertical-align:top;
+}
+#splash header, #splash figure{
+    margin-bottom: 1em;
+}
+#splash h3,
+#splash h4,
+#splash h5{ 
+    margin-left:20px;
+    width:auto;
+}
+html.ipad #splash > h3, html.iphone #splash > h3,
+html.ipad #splash > h4, html.iphone #splash > h4,
+html.ipad #splash > h5, html.iphone #splash > h5{ 
+    text-shadow: 1px 1px 1px #FFF;
+}
+html.honeycomb h3, html.android h3{
+    border-bottom: 1px solid #6595F9;
+}
+.f {
+    width: 25px;
+    height: 25px;
+    background-image: url(images/icons-white.png);
+    border-top: 1px solid white;
+    border-radius: 7px;
+    display: block;
+    border-bottom: 1px solid #AAB8C9;
+    border-left: 1px solid #C3D2E4;
+    border-right: 1px solid #C3D2E4;
+    position: absolute;
+    left: 0.5em;
+    top: 5px;
+}
+.ui-icon-menu {
+    background-position: -426px 50%;
+}
+#splash{
+    box-sizing: border-box;
+    width: 100%;
+}
+.example{
+    display: block;
+    padding: 10px;    
+}
+.example img{
+    display:inline-block;
+    width:20%;
+    max-width:55px;
+}
+.example p{
+    display: inline-block;
+    width: 70%;
+    margin: 0;
+    vertical-align: top;
+    padding: 0 1%;
+    font-weight:normal;
+}
+.form .mobi-fieldset{
+    clear: both;
+    text-align:center;
+}
+html.android .form .mobi-fieldset.intro .mobi-fieldset-row,
+html.honeycomb .form .mobi-fieldset.intro .mobi-fieldset-row,
+html.ipad .form .mobi-fieldset.intro .mobi-fieldset-row,
+html.iphone .form .mobi-fieldset.intro .mobi-fieldset-row{
+    display: block;
+}
+.form .mobi-fieldset.intro{
+    text-align:left;
+}
+html.bberry .form .mobi-fieldset{
+    text-align:left;
+}
+html.android .form .mobi-fieldset-row,
+html.honeycomb .form .mobi-fieldset-row,
+html.ipad .form .mobi-fieldset-row,
+html.iphone .form .mobi-fieldset-row{
+    display: -webkit-box;
+    display: -moz-box;
+    -webkit-box-orient: horizontal;
+    -moz-box-orient: horizontal;
+    -webkit-box-align: center;
+    -moz-box-align: center;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    -moz-box-orient: horizontal;
+    box-orient: horizontal;
+    position: relative;
+    min-width: 100%;
+}
+.form .results .mobi-fieldset-row > span{
+    text-align:right;
+}
+.form .mobi-fieldset-row .mobi-getenhanced{
+    display: block;
+    width: 100%;
+}
+html.android .form .mobi-fieldset-row .mobi-getenhanced .mobi-button,
+html.honeycomb .form .mobi-fieldset-row .mobi-getenhanced .mobi-button,
+html.ipad .form .mobi-fieldset-row .mobi-getenhanced .mobi-button,
+html.iphone .form .mobi-fieldset-row .mobi-getenhanced .mobi-button{
+    box-sizing: content-box;
+}
+html.android .form label,
+html.honeycomb .form label,
+html.ipad .form label,
+html.iphone .form label{
+    width:100px;
+    text-align:left;
+    -webkit-box-flex: 1;
+    -moz-box-flex: 1;
+    box-sizing: border-box;
+    overflow: hidden;
+    display: block!important;
+    float: none!important;
+}
+html.android .form .mobi-fieldset-row > input, html.honeycomb .form .mobi-fieldset-row > input, html.ipad .form .mobi-fieldset-row > input, html.iphone .form .mobi-fieldset-row > input, 
+html.android .form .mobi-fieldset-row > select, html.honeycomb .form .mobi-fieldset-row > select, html.ipad .form .mobi-fieldset-row > select, html.iphone .form .mobi-fieldset-row > select, 
+html.android .form .mobi-fieldset-row > span, html.honeycomb .form .mobi-fieldset-row > span, html.ipad .form .mobi-fieldset-row > span, html.iphone .form .mobi-fieldset-row > span,
+html.android .form .mobi-fieldset-row > textarea, html.honeycomb .form .mobi-fieldset-row > textarea, html.ipad .form .mobi-fieldset-row > textarea, html.iphone .form .mobi-fieldset-row > textarea{
+    -webkit-box-flex: 2;
+    -moz-box-flex: 2;
+    -moz-box-sizing: border-box;
+    -wekit-box-sizing: border-box;
+    box-sizing: border-box;
+    overflow: hidden;
+    display: block!important;
+    float: none!important;
+}
+.form .mobi-fieldset-row.mobi-fieldset-row-group{
+    text-align:left;
+}
+html.android .form .results .mobi-fieldset-row > span, 
+html.honeycomb .form .results .mobi-fieldset-row > span,
+html.iphone .form .results .mobi-fieldset-row > span,
+html.ipad .form .results .mobi-fieldset-row > span{
+     text-align:right;
+}
+html.android .form .mobi-fieldset-row > span > input,
+html.honeycomb .form .mobi-fieldset-row > span > input,
+html.ipad .form .mobi-fieldset-row > span > input,
+html.iphone .form .mobi-fieldset-row > span > input{
+    display:block;
+    width:100%;
+ }
+html.android .form .mobi-fieldset > .mobi-fieldset-row > .mobi-button,
+html.honeycomb .form .mobi-fieldset > .mobi-fieldset-row > .mobi-button,
+html.ipad .form .mobi-fieldset > .mobi-fieldset-row > .mobi-button,
+html.iphone .form .mobi-fieldset > .mobi-fieldset-row > .mobi-button{
+    -moz-box-sizing: border-box;
+    -wekit-box-sizing: border-box;
+    box-sizing: border-box;
+    overflow: hidden;
+    display: block!important;
+    float: none!important;
+    -webkit-box-flex: 1;
+    -moz-box-flex: 1;
+}
+.form h3{
+    clear:both;
+    padding-top:10px;
+}
+.center{
+    margin: 0 auto;
+    display: block;
+    text-align: center;
+    padding: 10px;
+}
+.form p{ text-align:left; margin:0 0 10px 0;}
+html.android .form .mobi-fieldset-row > span.mobi-thumb, html.android .form .mobi-fieldset-row > span.mobi-thumb-done,
+html.honeycomb .form .mobi-fieldset-row > span.mobi-thumb, html.honeycomb .form .mobi-fieldset-row > span.mobi-thumb-done,
+html.ipad .form .mobi-fieldset-row > span.mobi-thumb, html.ipad .form .mobi-fieldset-row > span.mobi-thumb-done,
+html.iphone .form .mobi-fieldset-row > span.mobi-thumb, html.iphone .form .mobi-fieldset-row > span.mobi-thumb-done{
+    display: inline-block!important;
+}
+
+/* LARGE SCREEN */
+@media screen and (min-width: 580px) {  
+    input.submit, button.submit{
+        float: right !important;
+        margin: 0 10px;
+        width: 100%;
+        max-width: 35%;
+        clear:both;
+    }
+}
+/* SMALL SCREEN */
+@media screen and (max-width: 579px) {  
+    input.submit, button.submit{
+        display: block;
+        margin: 10px auto;
+        width: 100%;
+        max-width: 300px;
+    }
+    .qr div{
+        max-width: 172px;
+    }
+}
+html.android .back{
+    background-color: #CCC;
+    color: black;
+}
+html.honeycomb .back{
+    background-color: #555;
+}
+.imageView{ 
+    margin: 0 auto;
+    width:50%;
+}
+.qr{
+    display:block !important;
+    text-align:left;
+}
+.qr label, .qr div{
+    display: inline !important;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.buttons .mobi-fieldset-row{ text-align:center; }
+.buttons .mobi-button{ min-width:125px;max-width:300px;width:40%; }
+html.bberry .fieldsetpage input{
+    float: right;
+}
+html.bberry .fieldsetpage .form .mobi-fieldset-row{
+    height: 30px;
+}
+html.bberry .fieldsetpage .form .mobi-fieldset-row-group{
+    height: 20px;
+}
+html.bberry .mobi-fieldset-row > label{
+    line-height: 26px;
+}
+html.bberry .mobi-fieldset-row-group {
+    background-color: #EEE;
+}
+html.bberry .mobi-center{
+    text-align:center;
+}
+html.bberry .tabsetpage, html.iphone .tabsetpage, html.android .tabsetpage{
+    padding-top: 40px;
+}
+html.bberry .tabsetpage .mobi-tabset.mobi-tabset-tabs-top-header,
+html.android .tabsetpage .mobi-tabset.mobi-tabset-tabs-top-header,
+html.iphone .tabsetpage .mobi-tabset.mobi-tabset-tabs-top-header{
+    padding-top: 0;
+}
+html.bberry .geolocpage .timeout{
+    height: 80px;
+}
+html.bberry .geolocpage .maxage{
+    height: 60px;
+}
+html.bberry .geolocpage .timeout label, html.bberry .geolocpage .maxage label{
+    float: left;
+}
+html.bberry .geolocpage .timeout div, html.bberry .geolocpage .maxage div{
+    float: right;
+}
