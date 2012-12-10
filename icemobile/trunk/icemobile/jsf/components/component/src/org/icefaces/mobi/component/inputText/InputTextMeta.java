@@ -24,6 +24,7 @@ import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
 import org.icefaces.ace.meta.annotation.ClientBehaviorHolder;
 import org.icefaces.ace.meta.annotation.ClientEvent;
+import org.icefaces.mobi.utils.TLDConstants;
 
 
 @Component(
@@ -35,13 +36,9 @@ import org.icefaces.ace.meta.annotation.ClientEvent;
         rendererType = "org.icefaces.InputTextRenderer",
         extendsClass = "javax.faces.component.UIInput",
         componentFamily = "org.icefaces.InputText",
-        tlddoc = "This mobility component renders an inputText object" +
-                "with added attributes of html5 input component and css support " +
-                "for mobility devices. Attributes are only available where supported, " +
-                "so it is up to the developer to be aware of what is supported on the" +
-                " devices they are using.  Most of the common ones here are supported " +
-                "on iOS5, ioS6, Blackberry 6.0 and greater, Android 3 and greater. SingleSubmit and mobi:ajax " +
-                "are supported on this component."
+        tlddoc = "The inputText component renders an input element with HTML5 and Ajax support. " +
+        		"This component supports various input types, when supported on the client platform," +
+        		" such as \"date\", \"number\" and \"email\". " 
 )
 
 @ResourceDependencies({
@@ -53,33 +50,39 @@ import org.icefaces.ace.meta.annotation.ClientEvent;
 }, defaultEvent="change")
 public class InputTextMeta extends UIInputMeta {
 
-    //at this time list and autocomplete are not supported on webkit safari mobile
-    //type of text, search, url and tel all support the following attributes
-    //password supports all the following but not list
-
-    @Property(defaultValue = "text", tlddoc = "html5 type attribute.  Currently supports text, textarea, inputSecret,"+
-    		"phone, url, email, number, date, time, datetime.  Each of the last 4 types brings up the proper keyboard on the mobility device")
+    @Property(defaultValue = "text", tlddoc = "The type attribute for the input element. " +
+    		"Currently supports text, textarea, inputSecret,"+
+    		"phone, url, email, number, date, time, datetime.  Depending " +
+    		"on device capability, a type-specific keyboard may be displayed. ")
     private String type;
 
-    @Property(tlddoc = "default value of placeholder from html5 properties")
+    @Property(tlddoc = "The HTML5 placeholder attribute represents a short hint" +
+    		" (a word or short phrase) intended to aid the user with data entry " +
+    		"when the input element has no value.")
     private String placeholder;
 
-    @Property(defaultValue = "false", tlddoc = "support readonly property of html5 so value of field cannot be modified")
+    @Property(defaultValue = "false", tlddoc = TLDConstants.READONLY)
     private boolean readonly;
 
     @Property(defaultValue = "Integer.MIN_VALUE",
-            tlddoc = "maxlength of input field allowed from html5")
+            tlddoc = "The maximum number of characters that may be entered in this field. ")
     private int maxlength;
 
     @Property(defaultValue = "Integer.MIN_VALUE",
-            tlddoc = "specifies number of characters visible in the input field")
+            tlddoc = "The number of characters used to determine the width of this field. ")
     private int size;
 
-    @Property(tlddoc = "regexp_pattern to format ")
+    @Property(tlddoc = "The pattern attribute specifies a regular expression against which " +
+    		"the control's value, or, when the multiple attribute applies and is set, " +
+    		"the control's values, are to be checked. ")
     private String pattern;
 
     @Property(defaultValue = "false",
-            tlddoc = "not implemented in many browsers yet")
+            tlddoc = "If the value of this attribute is \"off\", render \"off\" as " +
+            		"the value of the attribute. This indicates that the browser should " +
+            		"disable its autocomplete feature for this component. This is useful " +
+            		"for components that perform autocompletion and do not want the browser " +
+            		"interfering. If this attribute is not set or the value is \"on\", render nothing.")
     private boolean autocomplete;
 
     @Property(defaultValue = "on",
@@ -107,34 +110,28 @@ public class InputTextMeta extends UIInputMeta {
     @Property(defaultValue = "Integer.MIN_VALUE", tlddoc="maximum value, only applicable to type number")
     private int max;
     
-    @Property(defaultValue = "Integer.MIN_VALUE", tlddoc="step to increase/decrease the value of the number input. " +
-            "Applicable only to type number")
+    @Property(defaultValue = "Integer.MIN_VALUE", tlddoc="The step to increase/decrease the value of the number input. " +
+            "Applicable only to type \"number\". ")
     private int step;
     
-    //see miketaylr.com/code/input-type-attr.html to see what is supported on browser used don't have list of supported browsers yet
-    @Property(implementation = Implementation.EXISTS_IN_SUPERCLASS, tlddoc = "Value of the component as a Date object.")
+    @Property(implementation = Implementation.EXISTS_IN_SUPERCLASS, tlddoc = "Value of the component. ")
     private Object value;
 
-    @Property(defaultValue = "", tlddoc = "style will be rendered on a root element of this component")
+    @Property(defaultValue = "", tlddoc = TLDConstants.STYLE)
     private String style;
 
-    @Property(defaultValue = "", tlddoc = "style class will be rendered on a root element of this component")
+    @Property(defaultValue = "", tlddoc = TLDConstants.STYLECLASS)
     private String styleClass;
 
-    @Property(defaultValue = "false", tlddoc = "If true then this input entry will be disabled and can not be entered.")
+    @Property(defaultValue = "false", tlddoc = TLDConstants.DISABLED)
     private boolean disabled;
 
-    @Property(tlddoc = "tabindex of the component")
+    @Property(tlddoc = TLDConstants.TABINDEX)
     private Integer tabindex;
 
-    @Property(defaultValue = "false", tlddoc = "immediate as per jsf specs")
+    @Property(defaultValue = "false", tlddoc = TLDConstants.IMMEDIATE_INPUT)
     private boolean immediate;
 
-    @Property(defaultValue = "false",
-            tlddoc = "When singleSubmit is true, triggering an action on this component will submit" +
-                    " and execute this component only. Equivalent to <f:ajax execute='@this' render='@all'>." +
-                    " When singleSubmit is false, triggering an action on this component will only update a hidden field " +
-                    " and another component must do the submit of the form to achieve server side updates. " +
-                    " The default value is false.")
+    @Property(defaultValue = "false", tlddoc = TLDConstants.SINGLESUBMIT)
     private boolean singleSubmit;
 }
