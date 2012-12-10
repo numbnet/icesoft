@@ -23,6 +23,7 @@ import org.icefaces.ace.meta.annotation.Expression;
 import org.icefaces.ace.meta.baseMeta.UISeriesBaseMeta;
 import org.icefaces.ace.meta.annotation.ClientBehaviorHolder;
 import org.icefaces.ace.meta.annotation.ClientEvent;
+import org.icefaces.mobi.utils.TLDConstants;
 
 import javax.el.MethodExpression;
 import javax.faces.application.ResourceDependencies;
@@ -39,68 +40,54 @@ import javax.faces.application.ResourceDependency;
         rendererType = "org.icefaces.CarouselRenderer",
         extendsClass = "org.icefaces.impl.component.UISeriesBase",
         componentFamily = "org.icefaces.Carousel",
-        tlddoc = "This mobility component " +
-                "represents a grouping of a grouping of <li> tags that make up a scrollable " +
-                "array of pictures, touch enabled. "
+        tlddoc = "Renders a scrollable, touch-enabled, horizontal list. "
 )
 @ResourceDependencies({
-        @ResourceDependency(library = "org.icefaces.component.util", name = "component.js")
+        @ResourceDependency(library = "org.icefaces.component.util",
+                name = "component.js")
 })
 @ClientBehaviorHolder(events = {
-	@ClientEvent(name="change", javadoc="...", tlddoc="...", defaultRender="@this", defaultExecute="@all")
+        @ClientEvent(name = "change",
+                javadoc = "Fired when the carousel position is changed.",
+                tlddoc = "Fired when the carousel position is changed. ",
+                defaultRender = "@this", defaultExecute = "@all")
 })
 public class CarouselMeta extends UISeriesBaseMeta {
 
-    @Property(defaultValue = "false",
-            tlddoc = "When singleSubmit is true, triggering an action on this component will submit" +
-                    " and execute this component only. Equivalent to <f:ajax execute='@this' render='@all'>." +
-                    " When singleSubmit is false, triggering an action on this component will submit and execute " +
-                    " the full form that this component is contained within." +
-                    " The default value is false.")
+    @Property(defaultValue = "false", tlddoc = TLDConstants.SINGLESUBMIT)
     private boolean singleSubmit;
 
-    @Property(tlddoc = "style will be rendered on the root element of this " +
-            "component.")
+    @Property(tlddoc = TLDConstants.STYLE)
     private String style;
 
-    @Property(tlddoc = "style class will be rendered on the root element of " +
-            "this component.")
+    @Property(tlddoc = TLDConstants.STYLECLASS)
     private String styleClass;
 
-    @Property(tlddoc = "style class for item will be rendered list element of " +
-            "this component.")
+    @Property(tlddoc = "The inline CSS style to be rendered for every list " +
+    		"element of this component. ")
     private String itemStyle;
 
 
-    @Property(tlddoc = "style class will be rendered on the list element of " +
-            "this component.")
+    @Property(tlddoc = "The CSS style class to be rendered for every list " +
+    		"element of this component")
     private String itemStyleClass;
 
     @Property(expression = Expression.METHOD_EXPRESSION, methodExpressionArgument = "javax.faces.event.ValueChangeEvent",
-            tlddoc = "MethodExpression representing a value change listener method that will be notified when a new value has " +
-                    "been set for this input component. The expression must evaluate to a public method that takes a " +
-                    "ValueChangeEvent  parameter, with a return type of void, or to a public method that takes no arguments " +
-                    "with a return type of void. In the latter case, the method has no way of easily knowing what the new value " +
-                    "is, but this can be useful in cases where a notification is needed that \"this value changed\".")
+            tlddoc = TLDConstants.VALUECHANGELISTENER)
     private MethodExpression valueChangeListener;
 
-    @Property(defaultValue = "0", tlddoc = " selectedItem will show the index of the item in the list at the center location")
+    @Property(defaultValue = "0", tlddoc = "The index of the currently selected item. ")
     private int selectedItem;
 
-    @Property(defaultValue = "false", tlddoc = "The default value of this attribute is false. If true then value change " +
-            "event will happen in APPLY_REQUEST_VALUES phase and if the value of this " +
-            "attribute is false then event change will happen in INVOKE_APPLICATION phase")
+    @Property(defaultValue = "false", tlddoc = TLDConstants.IMMEDIATE_INPUT)
     private boolean immediate;
 
-    @Property(tlddoc = " Beta pagination feature. Currently not styled. " +
-            "If set the label for the previous link will be shown.  otherwise, no pagination for previous used ")
+    @Property(tlddoc = "When \"true\", the label for the previous link will be shown. ")
     private String previousLabel;
 
-    @Property(tlddoc = "Beta pagination feature. Currently not styled. " +
-            "If set the label for the next link will be shown.  otherwise, no pagination for next used ")
+    @Property(tlddoc = "When \"true\", the label for the next link will be shown. ")
     private String nextLabel;
 
-    @Property(defaultValue="false", tlddoc = "If true, the carousel bet set disabled and no submit will be allowed. ")
+    @Property(defaultValue="false", tlddoc = TLDConstants.DISABLED)
     private boolean disabled;
-    /** other possible attributes include vertical, scroll increment, circular, numbershown, currentIndex */
 }
