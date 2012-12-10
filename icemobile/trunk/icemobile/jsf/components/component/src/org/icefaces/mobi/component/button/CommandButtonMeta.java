@@ -21,6 +21,8 @@ import org.icefaces.ace.meta.baseMeta.UICommandMeta;
 import org.icefaces.ace.meta.annotation.ClientBehaviorHolder;
 import org.icefaces.ace.meta.annotation.ClientEvent;
 import org.icefaces.ace.api.IceClientBehaviorHolder;
+import org.icefaces.mobi.utils.TLDConstants;
+
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
 
@@ -33,63 +35,61 @@ import javax.faces.application.ResourceDependency;
         componentType = "org.icefaces.component.CommandButton",
         rendererType = "org.icefaces.component.CommandButtonRenderer",
         componentFamily = "org.icefaces.CommandButton",
-        tlddoc = "This component allows entry of a complete form or just itself. " +
-                "It has the same functionality of a regular jsf command button " +
-                "but without having to add extra attributes other than determining singleSubmit " +
-                "to be true or false"
+        tlddoc = "Renders an HTML \"input\" element. The component can be styled for the " +
+        		"supported mobile device platforms, as well as be used in a group of buttons. " 
 )
 
 @ResourceDependencies({
         @ResourceDependency(library = "org.icefaces.component.util", name = "component.js")
 })
 @ClientBehaviorHolder(events = {
-	@ClientEvent(name="click", javadoc="Fired when a command button is clicked",
-            tlddoc="Fired when commandButton is clicked", defaultRender="@all",
+	@ClientEvent(name="click", javadoc="Fired when a command button is clicked. ",
+            tlddoc="Fired when commandButton is clicked. ", defaultRender="@all",
             defaultExecute="@all")}, defaultEvent="click")
 public class CommandButtonMeta extends UICommandMeta {
 
-    @Property(defaultValue = "false",
-            tlddoc = "When singleSubmit is true, triggering an action on this component will submit" +
-                    " and execute this component only. Equivalent to <f:ajax execute='@this' render='@all'>." +
-                    " When singleSubmit is false, triggering an action on this component will submit and execute " +
-                    " the full form that this component is contained within." +
-                    " The default value is false.")
+    @Property(defaultValue = "false", tlddoc =TLDConstants.SINGLESUBMIT)
     private boolean singleSubmit;
 
-    @Property(defaultValue = "false",
-            tlddoc = "disabled property. If true no input may be submitted via this" +
-                    "component.  Is required by aria specs")
+    @Property(defaultValue = "false", tlddoc = TLDConstants.DISABLED)
     private boolean disabled;
 
-    @Property(tlddoc = "tabindex of the component")
+    @Property(tlddoc = TLDConstants.TABINDEX)
     private Integer tabindex;
 
-    @Property(tlddoc = "style class of the component, rendered on the div root of the component")
+    @Property(tlddoc = TLDConstants.STYLECLASS)
     private String styleClass;
 
-    @Property(tlddoc = "style of the component, rendered on the div root of the component")
+    @Property(tlddoc = TLDConstants.STYLE)
     private String style;
 
-    @Property(tlddoc = "Four types of buttons are allowed: important, back and attention, and if empty or null, default",
+    @Property(tlddoc = "Determines the button style. Four styles of buttons are allowed: \"important\"," +
+    		" \"back\" and \"attention\", \"unimportant\", and, if empty or null, \"default\". ",
             required = Required.no)
     private String buttonType;
-    @Property(tlddoc = "Standard button type, button, submit, img etc.",
+    
+    @Property(tlddoc = "The value of the \"type\" attribute for the input element, \"button\", \"submit\", or " +
+    		"\"image\". The default is \"button\". ",
             required = Required.no)
     private String type;
 
-    @Property(defaultValue = "false", tlddoc = "immediate as per jsf specs")
+    @Property(defaultValue = "false", tlddoc = "Flag indicating that, if this component is activated by the " +
+    		"user, notifications should be delivered to interested listeners and actions immediately (that is," +
+    		" during Apply Request Values phase) rather than waiting until Invoke Application phase.")
     private boolean immediate;
 
-    @Property(tlddoc="id of panelConfirmation to be used with this component")
+    @Property(tlddoc=" The id of panelConfirmation component to be associated with the commandButton. ")
     private String panelConfirmation;
 
-    @Property(tlddoc="id of blocking submitNotification panel which blocks any further access to page until process is complete")
+    @Property(tlddoc="The id of blocking submitNotification panel, which will block UI access " +
+    		"to the page until the response has been received. ")
     private String submitNotification;
 
-    @Property(defaultValue = "false", tlddoc = "Selected state of button, normally activated when parent component is a button group.")
-    // todo move selected state out into CommandButtonGroup model. Would be nice if this was transparent.
+    @Property(defaultValue = "false", tlddoc = "The selected state of button. This is normally activated " +
+    		"when the commandButton is part of a commandButtonGroup.")
+    // TODO move selected state out into CommandButtonGroup model. Would be nice if this was transparent.
     private boolean selected;
     
-    @Property(tlddoc="id of panel in contentStack that will be displayed when selecting this item.")
+    @Property(tlddoc="The id of a contentPane in a contentStack that will be displayed when selecting the commandButton. ")
     private String openContentPane;
 }
