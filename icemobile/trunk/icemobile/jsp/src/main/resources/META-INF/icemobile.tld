@@ -36,7 +36,6 @@
             <name>id</name>
             <required>true</required>
             <rtexprvalue>true</rtexprvalue>
-
         </attribute>
         <attribute>
             <description>Inline style definition.</description>
@@ -66,7 +65,7 @@
         </attribute>
         <attribute>
             <description>The value of the label for the button. default Value is
-                'Augmented Reality'
+                'Augmented Reality'.
             </description>
             <name>buttonLabel</name>
             <required>false</required>
@@ -81,37 +80,37 @@
         </tag-class>
         <body-content>empty</body-content>
         <attribute>
-            <description>location text label.</description>
+            <description>Location text label.</description>
             <name>locationLabel</name>
             <required>true</required>
             <rtexprvalue>true</rtexprvalue>
         </attribute>
         <attribute>
-            <description>location latitude.</description>
+            <description>Location latitude.</description>
             <name>locationLat</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
         </attribute>
         <attribute>
-            <description>location longitude.</description>
+            <description>Location longitude.</description>
             <name>locationLon</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
         </attribute>
         <attribute>
-            <description>location altitude.</description>
+            <description>Location altitude.</description>
             <name>locationAlt</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
         </attribute>
         <attribute>
-            <description>location compass direction 0-359</description>
+            <description>Location compass direction 0-359.</description>
             <name>locationDir</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
         </attribute>
         <attribute>
-            <description>location icon URL</description>
+            <description>Location icon URL.</description>
             <name>locationIcon</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
@@ -125,13 +124,13 @@
         </tag-class>
         <body-content>empty</body-content>
         <attribute>
-            <description>marker text label.</description>
+            <description>Marker text label.</description>
             <name>markerLabel</name>
             <required>true</required>
             <rtexprvalue>true</rtexprvalue>
         </attribute>
         <attribute>
-            <description>marker model URL</description>
+            <description>Marker model URL.</description>
             <name>markerModel</name>
             <required>true</required>
             <rtexprvalue>true</rtexprvalue>
@@ -169,7 +168,7 @@
         </attribute>
         <attribute>
             <description>The value of the label for the button. default Value is
-                Camera
+                Camera.
             </description>
             <name>buttonLabel</name>
             <required>false</required>
@@ -177,7 +176,7 @@
         </attribute>
         <attribute>
             <description>The maxheight allowed for resolution of the captured
-                image
+                image.
             </description>
             <name>maxheight</name>
             <required>no</required>
@@ -186,7 +185,7 @@
         </attribute>
         <attribute>
             <description>The maxwidth allowed for resolution of the captured
-                image
+                image.
             </description>
             <name>maxwidth</name>
             <required>no</required>
@@ -237,7 +236,7 @@
         <attribute>
             <description>The maxheight allowed for resolution of the captured
                 image.
-                Not supported on iOS
+                Not supported on iOS.
             </description>
             <name>maxheight</name>
             <required>no</required>
@@ -247,7 +246,7 @@
         <attribute>
             <description>The maxwidth allowed for resolution of the captured
                 image.
-                Not supported on iOS
+                Not supported on iOS.
             </description>
             <name>maxwidth</name>
             <required>no</required>
@@ -256,7 +255,7 @@
         </attribute>
         <attribute>
             <description>The maxtime determines the maximum length allowed for
-                the video in seconds
+                the video in seconds.
             </description>
             <name>maxtime</name>
             <required>no</required>
@@ -265,7 +264,7 @@
         </attribute>
         <attribute>
             <description>If true, button to launch the camera is visible, but
-                disabled
+                disabled.
             </description>
             <name>disabled</name>
             <required>false</required>
@@ -298,7 +297,7 @@
         </attribute>
         <attribute>
             <description>The maxtime determines the maximum length allowed for
-                the video in seconds
+                the video in seconds.
             </description>
             <name>maxtime</name>
             <required>no</required>
@@ -307,7 +306,7 @@
         </attribute>
         <attribute>
             <description>The value of the label for the button.
-                default Value is Record
+                default Value is 'Record'.
             </description>
             <name>buttonLabel</name>
             <required>false</required>
@@ -315,8 +314,7 @@
         </attribute>
         <attribute>
             <description>If true, button to launch the microphone is visible,
-                but
-                disabled
+                but disabled.
             </description>
             <name>disabled</name>
             <required>false</required>
@@ -410,7 +408,7 @@
             <rtexprvalue>true</rtexprvalue>
         </attribute>
         <attribute>
-            <description>A textual title appearing above the content
+            <description>A textual title appearing above the content.
             </description>
             <name>title</name>
             <required>false</required>
@@ -460,7 +458,7 @@
         <attribute>
             <description>If true, javascript call resolves to watchPosition,
                 else
-                uses getCurrentPosition for a one time update
+                uses getCurrentPosition for a one time update.
             </description>
             <name>continuousUpdates</name>
             <required>false</required>
@@ -472,7 +470,7 @@
                 asNeeded. Indicates
                 whether or not to turn on the GPS hardware. Some devices require
                 this setting to
-                fetch any reading at all
+                fetch any reading at all.
             </description>
             <name>enableHighPrecision</name>
             <required>false</required>
@@ -490,7 +488,7 @@
         </attribute>
         <attribute>
             <description>Defines the maximum time allowed for a successful
-                update (in seconds)
+                update (in seconds).
             </description>
             <name>timeout</name>
             <required>false</required>
@@ -518,6 +516,8 @@
             <rtexprvalue>true</rtexprvalue>
         </attribute>
         <attribute>
+            <description>If type="inputtext", text field is rendered as such, otherwise
+            textfield is rendered.</description>
             <name>type</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
@@ -553,7 +553,7 @@
             <rtexprvalue>true</rtexprvalue>
         </attribute>
         <attribute>
-            <description>A placeholder string appearing in the textfield
+            <description>A placeholder string appearing in the textfield.
             </description>
             <name>placeholder</name>
             <required>false</required>
@@ -561,7 +561,7 @@
         </attribute>
         <attribute>
             <description>Hint to container about spelling auto correction. Valid
-                values are on/off
+                values are on/off.
             </description>
             <name>autoCorrect</name>
             <required>false</required>
@@ -570,7 +570,7 @@
         </attribute>
         <attribute>
             <description>Hint to container about spelling auto completion. Valid
-                values are on/off
+                values are on/off.
             </description>
             <name>autoComplete</name>
             <required>false</required>
@@ -579,7 +579,7 @@
         </attribute>
         <attribute>
             <description>Hint to container about spelling auto capitalization.
-                Valid values are on/off
+                Valid values are on/off.
             </description>
             <name>autoCapitalize</name>
             <required>false</required>
@@ -626,7 +626,7 @@
         </attribute>
         <attribute>
             <description>The value of the label for the button.
-                default Value is Scan QRCode
+                Default Value is Scan QRCode.
             </description>
             <name>buttonLabel</name>
             <required>false</required>
@@ -1534,7 +1534,7 @@
         <tag-class>org.icemobile.jsp.tags.ViewSwitcherTag</tag-class>
         <body-content>empty</body-content>
         <attribute>
-            <description>pass through attribute.</description>
+            <description>Pass through attribute.</description>
             <name>disabled</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
