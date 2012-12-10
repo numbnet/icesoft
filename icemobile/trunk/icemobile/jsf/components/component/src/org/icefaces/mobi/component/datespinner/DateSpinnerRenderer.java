@@ -310,7 +310,7 @@ public class DateSpinnerRenderer extends BaseInputRenderer {
         writer.startElement("span", uiComponent);
         writer.writeAttribute("id", clientId + "_script", "id");
         writer.startElement("script", null);
-        writer.writeAttribute("text", "text/javascript", null);
+        writer.writeAttribute("type", "text/javascript", null);
         writer.write("mobi.datespinner.init('" + clientId + "'," + yrInt + ","
                 + mnthInt + "," + dateInt + ",'" + findPattern(spinner) + "');");
         writer.endElement("script");

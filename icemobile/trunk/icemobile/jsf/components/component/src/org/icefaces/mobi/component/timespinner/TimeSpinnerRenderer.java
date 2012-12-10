@@ -328,7 +328,7 @@ public class TimeSpinnerRenderer extends BaseInputRenderer {
         writer.startElement("span", uiComponent);
         writer.writeAttribute("id", clientId + "_script", "id");
         writer.startElement("script", null);
-        writer.writeAttribute("text", "text/javascript", null);
+        writer.writeAttribute("type", "text/javascript", null);
         writer.write("mobi.timespinner.init('" + clientId + "'," + hourInt +
                 "," + minuteInt + "," + ampm + ",'" + spinner.getPattern() + "');");
         writer.endElement("script");

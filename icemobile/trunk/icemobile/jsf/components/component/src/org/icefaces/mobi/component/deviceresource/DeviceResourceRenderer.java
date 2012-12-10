@@ -193,7 +193,7 @@ public class DeviceResourceRenderer  extends Renderer implements javax.faces.eve
                 SCRIPT_SIMULATOR, UTIL_RESOURCE );
         String src = simulatorScript.getRequestPath();
         writer.startElement("script", component);
-        writer.writeAttribute("text", "text/javascript", null);
+        writer.writeAttribute("type", "text/javascript", null);
         writer.writeAttribute("src", src, null);
         writer.endElement("script");
 

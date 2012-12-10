@@ -140,7 +140,7 @@ public class ContentStackRenderer extends BaseLayoutRenderer {
         writer.startElement("span", uiComponent);
         writer.writeAttribute("id", clientId+"_initScr", "id");
         writer.startElement("script", uiComponent);
-        writer.writeAttribute("text", "text/javascript", null);
+        writer.writeAttribute("type", "text/javascript", null);
         String selectedPaneId = stack.getSelectedId();
         String selectedPaneClientId = null;
         String homeId = null;
