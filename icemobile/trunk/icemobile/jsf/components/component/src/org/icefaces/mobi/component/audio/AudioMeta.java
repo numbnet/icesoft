@@ -20,6 +20,7 @@ package org.icefaces.mobi.component.audio;
 import org.icefaces.ace.meta.annotation.Component;
 import org.icefaces.ace.meta.annotation.Property;
 import org.icefaces.ace.meta.baseMeta.UIComponentBaseMeta;
+import org.icefaces.mobi.utils.TLDConstants;
 
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
@@ -34,7 +35,8 @@ import javax.faces.application.ResourceDependency;
         rendererType = "org.icefaces.AudioRenderer",
         extendsClass = "javax.faces.component.UIComponentBase",
         componentFamily = "org.icefaces.Audio",
-        tlddoc = "This mobility component renders an html5 audio object"
+        tlddoc = "This component renders an HTML5 audio element. The component can be bound to a variety of source types. " +
+        		"Play back options can be controlled. JSF Resource management options are also available. "
 )
 
 @ResourceDependencies({
@@ -43,57 +45,56 @@ import javax.faces.application.ResourceDependency;
 
 public class AudioMeta extends UIComponentBaseMeta {
 
-    @Property(defaultValue = "auto", tlddoc = "whether to preload the file accepted values are auto,none or metadata,  " +
-            "where metadata means preload just the metadata and auto leaves the broswer to " +
-            "decide whether to preload the entire file")
+    @Property(defaultValue = "auto", tlddoc = "Options for preloading the audio file. Accepted values are " +
+    		"\"auto\" (allow the browser to decide), \"none\" or \"metadata\" (preload only the metadata). ")
     private String preload;
 
-    @Property(defaultValue = "true", tlddoc = "whether the controls are used or not")
+    @Property(defaultValue = "true", tlddoc = "If \"true\", will render the audio player controls. ")
     private boolean controls;
 
-    @Property(tlddoc = "value can be byte[] or String filename or Resource")
+    @Property(tlddoc = "The audio file source. The value may resolve to a byte array, the String of a file name, " +
+    		"or a JSF Resource. ")
     private Object value;
 
 
-    @Property(defaultValue = "false", tlddoc = "boolean which specifies whether the file should be " +
-            "played repeatedly")
+    @Property(defaultValue = "false", tlddoc = "If \"true\", will play the the audio file repeatedly. ")
     private boolean loop;
 
-    @Property(defaultValue = "false",
-            tlddoc = "When disabled, audio is not activated")
+    @Property(defaultValue = "false", tlddoc = TLDConstants.DISABLED)
     private boolean disabled;
 
-    @Property(tlddoc = "tabindex of the component")
+    @Property(tlddoc = TLDConstants.TABINDEX)
     private Integer tabindex;
 
-    @Property(tlddoc = "style will be rendered on the root element of this " +
-            "component.")
+    @Property(tlddoc = TLDConstants.STYLE)
     private String style;
 
-    @Property(tlddoc = "style class will be rendered on the root element of " +
-            "this component.")
+    @Property(tlddoc = TLDConstants.STYLECLASS)
     private String styleClass;
 
     @Property (defaultValue="false",
-               tlddoc=" may be required for some older devices to play, but can also be used if " +
-            " audio is to play as soon as page is loaded")
+               tlddoc="Will cause the audio to automatically play when the page is load. This may be required " +
+               		"for some older devices to play. ")
     private boolean autoPlay;
 
-    @Property(defaultValue = "session")
+    @Property(defaultValue = "session", tlddoc="The JSF Resource scope of the object resolving from the \"value\" " +
+    		"attribute. Possible values are \"flash\", \"request\", \"view\", \"session\", and \"application\". ")
     private String scope;
 
-    @Property(tlddoc = "name is used for resource registering")
+    @Property(tlddoc = "The name is used for JSF Resource registration. ")
     private String name;
-    @Property(tlddoc = "library is used for resource registering")
+    
+    @Property(tlddoc = "The library used for JSF Resource regisration. ")
     private String library;
 
-    @Property(tlddoc = "if value is empty will look for url to use")
+    @Property(tlddoc = "The URL of the audio file. If the \"value\" attribute is empty, the \"url\" attribute will" +
+    		" be used. ")
     private String url;
 
-    @Property(tlddoc = "mimeType of audio file")
+    @Property(tlddoc = "The mime type of audio file. ")
     private String type;
 
-    @Property( tlddoc = "Label for link that launches a system audio player")
+    @Property( tlddoc = "The Label for the link that launches a system audio player. ")
     private String linkLabel;
 
 }
