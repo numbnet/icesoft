@@ -22,6 +22,8 @@ import org.icefaces.ace.meta.annotation.Expression;
 import org.icefaces.ace.meta.annotation.Implementation;
 import org.icefaces.ace.meta.annotation.Property;
 import org.icefaces.ace.meta.baseMeta.UIComponentBaseMeta;
+import org.icefaces.mobi.utils.TLDConstants;
+
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
 
@@ -39,8 +41,10 @@ import java.util.Map;
         rendererType = "org.icefaces.VideoCaptureRenderer",
         extendsClass = "javax.faces.component.UIComponentBase",
         componentFamily = "org.icefaces.VideoCapture",
-        tlddoc = "This mobility component captures a video file via a mobile device video capture" +
-                " using the ICEfaces mobility container, and stores this file on the server. "
+        tlddoc = "Renders a button that can access the device video recording capabilities. " +
+        		"Will fall back to rendering a input type file for non-supported clients. The " +
+        		"recorded or selected video file can then be uploaded, stored and processed " +
+        		"on the server.  "
 )
 
 
@@ -49,55 +53,50 @@ import java.util.Map;
 })
 public class VideoCaptureMeta extends UIComponentBaseMeta {
 
-    @Property(defaultValue = "Integer.MIN_VALUE", tlddoc = "length of audio clip in seconds")
+    @Property(defaultValue = "Integer.MIN_VALUE", tlddoc = "The maxium length of audio clip in seconds. ")
     private int maxtime;
 
-    @Property(defaultValue = "false",
-            tlddoc = "When disabled, files are not selectable for upload.")
+    @Property(defaultValue = "false", tlddoc = TLDConstants.DISABLED)
     private boolean disabled;
 
-    @Property(tlddoc = "tabindex of the component")
+    @Property(tlddoc = TLDConstants.TABINDEX)
     private int tabindex;
 
-    @Property(tlddoc = "style will be rendered on the root element of this " +
-            "component.")
+    @Property(tlddoc = TLDConstants.STYLE)
     private String style;
 
-    @Property(tlddoc = "style class will be rendered on the root element of " +
-            "this component.")
+    @Property(tlddoc = TLDConstants.STYLECLASS)
     private String styleClass;
 
     @Property(defaultValue = "Integer.MIN_VALUE",
-            tlddoc = "int value of maxwidth for video size in container and passed as a parameter ")
+            tlddoc = "The maximum width in pixels of the recorded video. ")
     private int maxwidth;
 
     @Property(defaultValue = "Integer.MIN_VALUE",
-            tlddoc = "int value of maxheight passed as a parameter to device")
+            tlddoc = "The maxium height in pixels of the recorded video. ")
     private int maxheight;
 
-    @Property(tlddoc = "as per specs the image information is stored in a Map")
+    @Property(tlddoc = "The map object for the uploaded contents. Must resolve to a java.util.Map<String,Object>. " +
+            "The uploaded file will be available in the map with the key of \"file\". ")
     private Map<String, Object> value;
 
-    @Property(defaultValue="false", tlddoc="The default value of this attribute is false. If true then value change event will happen in APPLY_REQUEST_VALUES phase and if the value of this attribute is false then event change will happen in INVOKE_APPLICATION phase")
+    @Property(defaultValue = "false", tlddoc = TLDConstants.IMMEDIATE_INPUT)
     private boolean immediate;
 
-    @Property(expression= Expression.METHOD_EXPRESSION, methodExpressionArgument="javax.faces.event.ValueChangeEvent",
-    	    tlddoc = "MethodExpression representing a value change listener method that will be notified when a file has " +
-    	            "been uploaded with a valid file size > 0. The expression must evaluate to a public method that takes a " +
-    	            "ValueChangeEvent  parameter, with a return type of void, or to a public method that takes no arguments " +
-    	            "with a return type of void. ")
+    @Property(expression= Expression.METHOD_EXPRESSION, 
+            methodExpressionArgument="javax.faces.event.ValueChangeEvent",
+    	    tlddoc = TLDConstants.VALUECHANGELISTENER)
     private MethodExpression valueChangeListener;
 
-    @Property(defaultValue="false", tlddoc="When this attribute is set to true, if the device has the capability, the html5" +
-            " input component will be used to upload the video")
+    @Property(defaultValue="false", tlddoc = "When this attribute is \"true\" an HTML5 input " +
+            "acceptType=\"video/*\" will be used when the ICEmobile container is not available. ")
     private boolean useNative;
 
-    @Property(defaultValue="video captured", tlddoc="message the video button displays upon successful " +
-            "capture of picture from device.  This attribute available for internationalization " +
-            "purposes.")
+    @Property(defaultValue="Video Captured", tlddoc = "The message to be displayed on the button on a successful " +
+            "video capture. ")
     private String captureMessageLabel;
 
-    @Property(defaultValue="Camcorder", tlddoc="button label for this component")
+    @Property(defaultValue="Camcorder", tlddoc = "The button label. ")
     private String buttonLabel;
 
 }
