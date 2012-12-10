@@ -63,14 +63,14 @@ public class CarouselMeta extends UISeriesBaseMeta {
     @Property(tlddoc = TLDConstants.STYLECLASS)
     private String styleClass;
 
-    @Property(tlddoc = "The inline CSS style to be rendered for every list " +
+  /*  @Property(tlddoc = "The inline CSS style to be rendered for every list " +
     		"element of this component. ")
     private String itemStyle;
 
 
     @Property(tlddoc = "The CSS style class to be rendered for every list " +
     		"element of this component")
-    private String itemStyleClass;
+    private String itemStyleClass; */
 
     @Property(expression = Expression.METHOD_EXPRESSION, methodExpressionArgument = "javax.faces.event.ValueChangeEvent",
             tlddoc = TLDConstants.VALUECHANGELISTENER)
