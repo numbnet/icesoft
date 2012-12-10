@@ -1469,14 +1469,14 @@
     <tag>
         <description>The getEnhanced tag will dynamically render a download link
             for the
-            ICEmobile container. The renderd link will depend on the type of
-            detecteed device.
+            ICEmobile container. The rendered link will depend on the type of
+            detected device.
         </description>
         <name>getEnhanced</name>
         <tag-class>org.icemobile.jsp.tags.GetEnhancedTag</tag-class>
         <body-content>empty</body-content>
         <attribute>
-            <description>pass through attribute.</description>
+            <description>Pass through attribute.</description>
             <name>disabled</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
