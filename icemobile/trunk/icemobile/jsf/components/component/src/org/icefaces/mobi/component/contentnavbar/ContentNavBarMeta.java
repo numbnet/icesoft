@@ -18,6 +18,7 @@ package org.icefaces.mobi.component.contentnavbar;
 
 import org.icefaces.ace.meta.annotation.Component;
 import org.icefaces.ace.meta.annotation.Property;
+import org.icefaces.mobi.utils.TLDConstants;
 
 @Component(
         tagName = "contentNavBar",
@@ -29,16 +30,16 @@ import org.icefaces.ace.meta.annotation.Property;
         rendererType = "org.icefaces.ContentNavBarRenderer",
         extendsClass = "javax.faces.component.UIPanel",
         componentFamily = "org.icefaces.ContentNavBar",
-        tlddoc = "This mobility component renders a navigation tool bar for the contentPane" +
-                " component that will allow children of contentMenuItem, and title. " +
-                "   Must be a child of the contentPane. "
+        tlddoc = "Renders a navigation tool bar for the contentPane component. " +
+        		"Allowable children are contentMenuItems and HTML content. " +
+        		"The contentNavBar must used inside of a contentPane. "
 )
 
 public class ContentNavBarMeta {
-    @Property(tlddoc = "style will be rendered on a root element of this component")
+    @Property(tlddoc = TLDConstants.STYLE)
     private String style;
 
-    @Property(tlddoc = "style class will be rendered on a root element of this component")
+    @Property(tlddoc = TLDConstants.STYLECLASS)
     private String styleClass;
 
 }
