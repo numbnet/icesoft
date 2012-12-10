@@ -19,6 +19,7 @@ import org.icefaces.ace.meta.annotation.Component;
 import org.icefaces.ace.meta.annotation.Expression;
 import org.icefaces.ace.meta.annotation.Property;
 import org.icefaces.ace.meta.baseMeta.UIPanelMeta;
+import org.icefaces.mobi.utils.TLDConstants;
 
 import javax.el.MethodExpression;
 import javax.faces.application.ResourceDependencies;
@@ -40,11 +41,11 @@ import javax.faces.application.ResourceDependency;
         @ResourceDependency(library = "org.icefaces.component.util", name = "component.js")
 })
 public class TabSetMeta extends UIPanelMeta {
-    @Property(tlddoc = "id of the panel that is active.")
+    @Property(tlddoc = "The id of the contentPane that is active.")
     private String currentId;
 
-    @Property(tlddoc = "id of the child contentPane that will be selected by default.  " +
-            "This is only used once and currentId must be used after to dynamically change" +
+    @Property(tlddoc = " The id of the child contentPane that will be selected by default.  " +
+            "This is only used once on load, and currentId must be used after to dynamically change" +
             "the currentId.")
     private String defaultId;
 
@@ -67,27 +68,22 @@ public class TabSetMeta extends UIPanelMeta {
     @Property(tlddoc = "MethodExpression representing a method that will be " +
             "invoked when the selected TabPane has changed. The expression " +
             "must evaluate to a public method that takes a ValueChangeEvent " +
-            "parameter, with a return type of void. NOT IMPLEMENTED YET!!!",
+            "parameter, with a return type of void.",
             expression = Expression.METHOD_EXPRESSION,
             methodExpressionArgument = "javax.faces.event.ValueChangeEvent")
     private MethodExpression tabChangeListener;
 
-    @Property(defaultValue = "false", tlddoc = "The default value of this attribute is false. " +
-            "If true then value change event will happen in APPLY_REQUEST_VALUES phase " +
-            "and if the value of this attribute is false then event change will happen in " +
-            "INVOKE_APPLICATION phase")
+    @Property(defaultValue = "false", tlddoc = TLDConstants.IMMEDIATE_INPUT)
     private boolean immediate;
 
     @Property(defaultValue = "true",
-            tlddoc = "When singleSubmit is true, triggering an action on this component will submit" +
-                    " and execute this component only. Equivalent to <f:ajax execute='@this' render='@all'>." +
-                    " When singleSubmit is false, triggering an action on this component will submit and execute " +
-                    " the full form that this component is contained within." +
-                    " The default value is true in case this component is not placed within a form.")
+            tlddoc = TLDConstants.SINGLESUBMIT)
     private boolean singleSubmit;
 
     @Property(defaultValue = "bottom",
-            tlddoc = "Sets the orientation of the tabset bar to either bottom or top. " +
+            tlddoc = "This attribute sets the orientation of the tabset bar " +
+                    "to either bottom or top. Currently this attribute is applicable only " +
+                    "to small view. " +
                     "The default value if not specified is bottom. ")
     private String orientation;
 
