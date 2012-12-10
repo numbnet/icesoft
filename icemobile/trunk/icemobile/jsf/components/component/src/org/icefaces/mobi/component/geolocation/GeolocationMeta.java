@@ -35,9 +35,9 @@ import javax.faces.application.ResourceDependency;
     rendererType = "org.icefaces.GeolocationRenderer",
     extendsClass = "javax.faces.component.UIComponentBase",
     componentFamily = "org.icefaces.Geolocation",
-    tlddoc = "This mobility component captures an geolocation object" +
+    tlddoc = "geolocation captures n geolocation object" +
         " of longitude and latitude, heading, speed and altitude via" +
-        " html5 navigator api"
+        " html5 navigator API."
 )
 @ResourceDependencies({
                           @ResourceDependency(library = "org.icefaces.component.util", name = "component.js")
@@ -47,58 +47,47 @@ import javax.faces.application.ResourceDependency;
 }, defaultEvent = "activate")
 public class GeolocationMeta extends UIComponentBaseMeta {
 
-    @Property(tlddoc = "latitude of mobile device in decimal degrees")
+    @Property(tlddoc = "Latitude of mobile device in decimal degrees.")
     private Double latitude;
 
-    @Property(tlddoc = "longitude of mobile device in decimal degrees")
+    @Property(tlddoc = "Longitude of mobile device in decimal degrees.")
     private Double longitude;
 
-    @Property(tlddoc = "altitude of mobile device in meters")
+    @Property(tlddoc = "Altitude of mobile device in meters.")
     private Double altitude;
 
-    @Property(tlddoc = "direction of mobile device in degrees from North")
+    @Property(tlddoc = "Direction of mobile device in degrees from North.")
     private Double direction;
 
     @Property(defaultValue = "false",
-              tlddoc = "When disabled, geolocation is not activated")
+            tlddoc = org.icefaces.mobi.utils.TLDConstants.DISABLED)
     private boolean disabled;
 
-    @Property(tlddoc = "tabindex of the component")
-    private Integer tabindex;
+    @Property(tlddoc = org.icefaces.mobi.utils.TLDConstants.TABINDEX)
+    private int tabindex;
 
-    @Property(tlddoc = "style will be rendered on the root element of this " +
-        "component.")
-    private String style;
+     @Property(tlddoc = org.icefaces.mobi.utils.TLDConstants.STYLE)
+     private String style;
 
-    @Property(tlddoc = "style class will be rendered on the root element of " +
-        "this component.")
-    private String styleClass;
+     @Property(tlddoc = org.icefaces.mobi.utils.TLDConstants.STYLECLASS)
+     private String styleClass;
 
-    @Property(defaultValue = "false",
-              tlddoc = "When singleSubmit is true, changing the value of this component" +
-                  " will submit and execute this component only. Equivalent to " +
-                  " execute=\"@this\" render=\"@all\" of the f ajax tag. " +
-                  "When singleSubmit is false, no submit occurs. The value is simply  " +
-                  "stored in the hidden field. The default value is false.")
+    @Property(defaultValue = "false", tlddoc = org.icefaces.mobi.utils.TLDConstants.SINGLESUBMIT + 
+	      " When singleSubmit is false, no submit occurs. The value is simply stored in the hidden field.")
     private boolean singleSubmit;
 
-    @Property(tlddoc = "If true, the component will install a listener to retrieve position " +
-        "updates from navigator.geolocation.watchPosition. If false, the component " +
-        "will fetch a one time update via navigator.gelocation.getCurrentPosition",
+	      @Property(tlddoc = "Determines if the component will coninuously update the position. If true, a listener is used to retrieve position from navigator.geolocation.watchPosition. If false, the component will fetch a one time update via navigator.gelocation.getCurrentPosition",
               defaultValue = "true")
     private boolean continuousUpdates;
 
-    @Property(tlddoc = "Has values of true, false, and asNeeded. If true, the tag will " +
-        "turn on highPrecision geolocation which means GPS", defaultValue = "false")
+	      @Property(tlddoc = "Determines if high precision location is retrieved using GPS.  Has values of true, false, and asNeeded; where true means use GPS, false means don't use GPS, and asNeeded means use GPS only if needed to get a position.", defaultValue = "asNeeded")
     private String enableHighPrecision;
 
-    @Property(tlddoc = "The maximumAge attribute indicates that the application is willing" +
-        "to accept a cached position whose age is no greater than the specified time (in seconds)",
+    @Property(tlddoc = "Indicates maximum age in seconds, of a cached position that is acceptable for use.",
               defaultValue = "0")
     private int maximumAge;
 
-    @Property(tlddoc = "The maximum time (in seconds) the application will wait for either a success or error response, " +
-        "0 being no timeout ", defaultValue = "0")
+    @Property(tlddoc = "The maximum time in seconds to wait for success or error response. A value of 0 indicates no timeout.", defaultValue = "0")
     private int timeout;
 
 }

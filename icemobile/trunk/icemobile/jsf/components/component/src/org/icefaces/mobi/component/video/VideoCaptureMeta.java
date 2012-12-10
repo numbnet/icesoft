@@ -41,11 +41,9 @@ import java.util.Map;
         rendererType = "org.icefaces.VideoCaptureRenderer",
         extendsClass = "javax.faces.component.UIComponentBase",
         componentFamily = "org.icefaces.VideoCapture",
-        tlddoc = "Renders a button that can access the device video recording capabilities. " +
-        		"Will fall back to rendering a input type file for non-supported clients. The " +
-        		"recorded or selected video file can then be uploaded, stored and processed " +
-        		"on the server.  "
-)
+        tlddoc = "camcorder renders a button to access the device video recording capabilities. " +
+        		"For non-supported clients it renders an input type file.  The " +
+        		"recorded or selected video file can be uploaded to the server.")
 
 
 @ResourceDependencies({

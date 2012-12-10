@@ -35,8 +35,7 @@ import javax.faces.application.ResourceDependency;
         rendererType = "org.icefaces.FieldSetGroupRenderer",
         extendsClass = "javax.faces.component.UIComponentBase",
         componentFamily = "org.icefaces.FieldSetGroup",
-        tlddoc = "This mobility component " +
-                "represents a grouping of unordered list items.  The immediate children " +
+        tlddoc = "fieldSetGroup organizes a grouping of unordered list items. The immediate children " +
                 "must be fieldsetRow components. "
 )
 
