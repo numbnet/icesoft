@@ -18,6 +18,7 @@ package org.icefaces.mobi.component.panelconfirmation;
 import org.icefaces.ace.meta.annotation.Component;
 import org.icefaces.ace.meta.annotation.Property;
 import org.icefaces.ace.meta.baseMeta.UIPanelMeta;
+import org.icefaces.mobi.utils.TLDConstants;
 
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
@@ -31,34 +32,38 @@ import javax.faces.application.ResourceDependency;
         rendererType = "org.icefaces.PanelConfirmationRenderer",
         extendsClass = "javax.faces.component.UIPanel",
         componentFamily = "org.icefaces.PanelConfirmation",
-        tlddoc = "This mobility component " +
-                "renders a confirmation panel to be used with any mobi commandButton or menuButton"
+        tlddoc = "This mobility component renders a confirmation panel to be used with any mobi " +
+                "commandButton or menuButton component.  See commandButton and menuButton docs " +
+                "for the correct attribute to bind this component to the button components. "
 )
 @ResourceDependencies({
         @ResourceDependency(library = "org.icefaces.component.util", name = "component.js")
 })
 public class PanelConfirmationMeta extends UIPanelMeta {
 
-    @Property(tlddoc = "style will be rendered on a root element of this component")
+    @Property(tlddoc = TLDConstants.STYLE)
     private String style;
 
-    @Property(tlddoc = "style class will be rendered on a root element of this component")
+    @Property(tlddoc = TLDConstants.STYLECLASS)
     private String styleClass;
 
-    @Property(defaultValue = "Confirm", tlddoc = "title of confirmation panel in an attribute so el can be used to internationalize")
+    @Property(defaultValue = "Confirm", tlddoc = "The title of the confirmation panel in an attribute " +
+            "to allow internationalization of this component.")
     private String title;
 
-    @Property(tlddoc = " acceptOnly means only accept button, cancelOnly means only cancel button, both has both" +
-            " and accept and cancel button on the same popup")
+    @Property(tlddoc = " Three distinct types are allows. Type acceptOnly means only accept button will " +
+            "appear on the confirmation panel popup. The type of " +
+            "cancelOnly means only a cancel button appears, and type of both means the confirmation dialog " +
+            "will contain both the accept and cancel button.")
     private String type;
 
-    @Property(defaultValue = "Cancel", tlddoc = "label of cancel button")
+    @Property(defaultValue = "Cancel", tlddoc = "The label for the cancel button.")
     private String cancelLabel;
 
-    @Property(defaultValue = "Confirm", tlddoc = "label of confirm/accept button")
+    @Property(defaultValue = "Confirm", tlddoc = "The label for the confirm/accept button.")
     private String acceptLabel;
 
-    @Property(defaultValue = "Confirm?", tlddoc = "Message")
+    @Property(defaultValue = "Confirm?", tlddoc = "The message to appear on the confirmation diablog.")
     private String message;
 
 

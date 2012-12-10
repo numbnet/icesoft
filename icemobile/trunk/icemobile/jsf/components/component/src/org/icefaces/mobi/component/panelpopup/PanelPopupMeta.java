@@ -20,6 +20,7 @@ import org.icefaces.ace.meta.annotation.Facet;
 import org.icefaces.ace.meta.annotation.Facets;
 import org.icefaces.ace.meta.annotation.Property;
 import org.icefaces.ace.meta.baseMeta.UIPanelMeta;
+import org.icefaces.mobi.utils.TLDConstants;
 
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
@@ -36,46 +37,52 @@ import javax.faces.component.UIComponent;
         componentFamily = "org.icefaces.PanelPopup",
         tlddoc = "This mobility component " +
                 "renders a confirmation panel to be used with any mobi commandButton or menuButton if" +
-                "clientSide is false.  If clientSide is true, then use of the clientSide api is available." +
-                " ice.mobile.panelPopup.openClient(id) will open and "
+                "clientSide is false.  If clientSide is true, then use of the clientSide api is available. See " +
+                "wiki docs for api for clientSide \"true\" or sample apps." +
+                "A facet with name of label is available which show styled facet heading while allowing " +
+                "developers to add images or other markup rather than simple text as does the headerText attribute.  " +
+                "If a label facet is present, the headerText attribute is ignored. "
 )
 @ResourceDependencies({
         @ResourceDependency(library = "org.icefaces.component.util", name = "component.js")
 })
 public class PanelPopupMeta extends UIPanelMeta {
-    @Property(tlddoc = "style will be rendered on a root element of this component")
+    @Property(tlddoc = TLDConstants.STYLE)
     private String style;
 
-    @Property(tlddoc = "style class will be rendered on a root element of this component")
+    @Property(tlddoc = TLDConstants.STYLECLASS)
     private String styleClass;
 
-    @Property(tlddoc = "Header text. Will not display if a label facet is used. But may be used instead" +
-            " of a label facet")
+    @Property(tlddoc = " The header text to be rendered on the popup. Header test will not display if a label " +
+            "facet is specififed, but may be used instead of a label Facet." )
     private String headerText;
 
-    @Property(defaultValue = "false", tlddoc = "means there is need to expose the js api for devloper. " +
-            " to access the ability to open and close the popup")
+    @Property(defaultValue = "false", tlddoc = "THis attribute is used when there is need to expose the javascript " +
+            "api to the devloper. The contents of the popup will be always rendered so the developer " +
+            "can  open and close the popup with appropriate javascript function call.  See wiki or examples apps.")
     private boolean clientSide;
 
-    @Property(tlddoc = "visible can be used to toggle visibility on the server, rendered should not be used that way, setting rendered=false on a visible modal dialog will not remove the modality layer, visible=false must be set first (or client-side JS function called)", defaultValue = "false")
+    @Property(tlddoc = "The visible attribute can be used to toggle visibility from the server. " +
+            "Note that setting rendered=false on a visible modal dialog will not remove the modality layer, " +
+            "visible \"false\"  must be set first (or client-side JS function called).", defaultValue = "false")
     private boolean visible;
 
-    @Property(tlddoc = "if ture, does not allow the popup to be visible)", defaultValue = "false")
+    @Property(tlddoc = "When \"true\" the popup us now allowed to become visible.)", defaultValue = "false")
     private boolean disabled;
 
-    @Property(defaultValue = "true", tlddoc = "autoCenter of panel")
+    @Property(defaultValue = "true", tlddoc = "Invokes a calculations to be done to autoCenter the panel in the view.")
     private boolean autoCenter;
 
-    @Property(tlddoc = "Width of the element in pixels. Default (not specified or value <= 0) is auto. ", defaultValue = "Integer.MIN_VALUE")
+    @Property(tlddoc = "Width of the element in pixels. If not specified, will just be whatever contents determine. ", defaultValue = "Integer.MIN_VALUE")
     private int width;
 
-    @Property(tlddoc = "Height of the element in pixels. Default (not specified or value <= 0) is auto.", defaultValue = "Integer.MIN_VALUE")
+    @Property(tlddoc = "Height of the element in pixels. If not specified, will just be whatever contents determine.", defaultValue = "Integer.MIN_VALUE")
     private int height;
 
  /*   @Property(defaultValue="true", tlddoc=" when true, the popup will center on it's surrounding form. WHen false, it will" +
             " center on the window.  Only used if autoCenter is true")
     private boolean centerOnForm;  */
-    @Facets
+
     class FacetsMeta {
         @Facet
         UIComponent label;
