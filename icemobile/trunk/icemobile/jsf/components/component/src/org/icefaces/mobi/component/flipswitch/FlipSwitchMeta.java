@@ -26,26 +26,16 @@ import javax.el.MethodExpression;
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
 
-// Each Meta class requires a @Component annotation
 @Component(
-        // The tag name, as it will be used in view definitions (.xhtml files)
         tagName = "flipswitch",
-        // The end class that will be used by applications. Hand-coded.
-        // The componentClass extends generatedClass, which extends extendsClass.
         componentClass = "org.icefaces.mobi.component.flipswitch.FlipSwitch",
-        // The renderer, which outputs the html markup and javascript. Hand-coded. 
         rendererClass = "org.icefaces.mobi.component.flipswitch.FlipSwitchRenderer",
-        // Generated, to contain all of the properties, getters, setters, and
-        //  state saving methods. 
         generatedClass = "org.icefaces.mobi.component.flipswitch.FlipSwitchBase",
-        // The super-class of the component. Did not extend UIInput, because
-        //  none of the conversion nor validation facilities it provides are
-        //  relevant to a slider.
         extendsClass = "javax.faces.component.UISelectBoolean",
         componentType = "org.icesoft.faces.FlipSwitch",
         rendererType = "org.icesoft.faces.FlipSwitchRenderer",
         componentFamily = "org.icefaces.component.FlipSwitch",
-        tlddoc = "The flipswitch provides a control that toggles between on and off."                
+        tlddoc = "The flipswitch provides a control that toggles between on and off states."                
 )
 
 
@@ -53,7 +43,10 @@ import javax.faces.application.ResourceDependency;
         @ResourceDependency(library = "org.icefaces.component.util", name = "component.js")
 })
 @ClientBehaviorHolder(events = {
-	@ClientEvent(name="activate", javadoc="...", tlddoc="...", defaultRender="@this", defaultExecute="@all")
+	@ClientEvent(name="activate", 
+	        javadoc="Fired for either the touch or click event, depending on the client.", 
+	        tlddoc="Fired for either the touch or click event, depending on the client.", 
+	        defaultRender="@this", defaultExecute="@all")
 }, defaultEvent="activate")
 public class FlipSwitchMeta extends UISelectBooleanMeta {
 
@@ -73,9 +66,10 @@ public class FlipSwitchMeta extends UISelectBooleanMeta {
     @Property(tlddoc=org.icefaces.mobi.utils.TLDConstants.READONLY)
     private boolean readonly;
 
-    @Property(defaultValue="ON", tlddoc = "The label for switch when on.")
+    @Property(defaultValue="ON", tlddoc = "The label for the switch when \"true\". ")
     private String labelOn;
-    @Property(defaultValue="OFF", tlddoc = "The label for switch when off.")
+    
+    @Property(defaultValue="OFF", tlddoc = "The label for the switch when \"false\". ")
     private String labelOff;    
 
 }
