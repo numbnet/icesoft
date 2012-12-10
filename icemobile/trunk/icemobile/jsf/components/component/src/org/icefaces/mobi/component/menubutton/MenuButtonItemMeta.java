@@ -19,6 +19,7 @@ import org.icefaces.ace.meta.baseMeta.UICommandMeta;
 import org.icefaces.ace.meta.annotation.ClientBehaviorHolder;
 import org.icefaces.ace.meta.annotation.ClientEvent;
 import org.icefaces.ace.api.IceClientBehaviorHolder;
+import org.icefaces.mobi.utils.TLDConstants;
 
 import javax.el.MethodExpression;
 import javax.faces.application.ResourceDependencies;
@@ -38,51 +39,50 @@ import javax.faces.application.ResourceDependency;
         rendererType = "org.icefaces.component.MenuButtonItemRenderer",
         componentFamily = "org.icefaces.MenuButtonItem",
         tlddoc = "This component fires an actionListener from a menu button. " +
-                "It has the same functionality of a regular jsf UICommand. It may " +
-                "have a panelConfirmation and/or a submitNotification component attributes " +
+                "It has the same functionality of a regular JSF UICommand. It may " +
+                "have a panelConfirmation and/or a submitNotification component attribute specified " +
                 "to allow the developer to confirm a submit and to disable the page showing" +
                 "the disable while the submit is happening."
 )
 @ResourceDependencies({
         @ResourceDependency(library = "org.icefaces.component.util", name = "component.js")
 })
-
 public class MenuButtonItemMeta extends UICommandMeta {
       @Property(defaultValue = "false",
-            tlddoc = "When singleSubmit is true, triggering an action on this component will submit" +
-                    " and execute this component only. Equivalent to <f:ajax execute='@this' render='@all'>." +
-                    " When singleSubmit is false, triggering an action on this component will submit and execute " +
-                    " the full form that this component is contained within." +
-                    " The default value is false.")
+            tlddoc = TLDConstants.SINGLESUBMIT)
       private boolean singleSubmit;
 
         @Property(defaultValue = "false",
-                tlddoc = "disabled property. If true no input may be submitted via this" +
-                        "component.  Is required by aria specs")
+                tlddoc = TLDConstants.DISABLED)
         private boolean disabled;
 
-        @Property(tlddoc = "tabindex of the component")
+        @Property(tlddoc = TLDConstants.TABINDEX)
         private Integer tabindex;
 
-        @Property(tlddoc="value of menuButtonItem")
+        @Property(tlddoc="The value of menuButtonItem to be submitted to Server.")
         private String value;
 
-        @Property(tlddoc="label of menutButtonItem")
+        @Property(tlddoc="The label of menutButtonItem in the select list.")
         private String label;
 
-        @Property(tlddoc = "style class of the component, rendered on the div root of the component")
+        @Property(tlddoc = TLDConstants.STYLECLASS)
         private String styleClass;
 
-        @Property(tlddoc = "style of the component, rendered on the div root of the component")
+        @Property(tlddoc = TLDConstants.STYLE)
         private String style;
 
-        @Property(defaultValue = "false", tlddoc = "immediate as per jsf specs")
+        @Property(defaultValue = "false", tlddoc = TLDConstants.IMMEDIATE_INPUT)
         private boolean immediate;
 
-        @Property(tlddoc="id of panelConfirmation to be used with this component")
+        @Property(tlddoc="The id of a panelConfirmation component in the same view to be used with this component." +
+                "In order to find the panelConfirmation component referenced by this id, it is best to have the " +
+                "panelConfirmation component and menuButton in the same form or naming container.")
         private String panelConfirmation;
 
-        @Property(tlddoc="id of blocking submitNotification panel which blocks any further access to page until process is complete")
+        @Property(tlddoc="The id of blocking submitNotification panel which blocks any further access to page " +
+                "until process is complete.  In order to successfully find the submitNotification component " +
+                "referenced by this id, it is advisable to have the submitNotification component and the " +
+                "menuButton in the same form or naming container.")
         private String submitNotification;
 
 }
