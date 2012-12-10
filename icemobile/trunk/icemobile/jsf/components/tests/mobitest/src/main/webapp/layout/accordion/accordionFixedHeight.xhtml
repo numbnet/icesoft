@@ -44,7 +44,6 @@
        <mobi:accordion id="test1" selectedId="#{layoutBean.selectedPane}"
                        autoHeight="false"
                        disabled="#{layoutBean.disabled}"
-                       scrollablePaneContent="#{layoutBean.scrollablePaneContent}"
                        height="#{layoutBean.fixedHeightString}">
               <mobi:contentPane id="panel1" title="panel1" >
                   <div id="inner1">
@@ -145,10 +144,10 @@
                 <h:outputLabel for="disabled" value="Disabled:"/>
                 <mobi:flipswitch id="disabled" value="#{layoutBean.disabled}" singleSubmit="true"/>
            </mobi:fieldsetRow>
-           <mobi:fieldsetRow>
+  <!--         <mobi:fieldsetRow>
                 <h:outputLabel for="spc" value="ScrollablePaneContent:"/>
                 <mobi:flipswitch id="spc" value="#{layoutBean.scrollablePaneContent}" singleSubmit="true"/>
-           </mobi:fieldsetRow>
+           </mobi:fieldsetRow> -->
       <h3>RESULTS:</h3>
 
             <mobi:fieldsetRow>
@@ -159,10 +158,10 @@
                 <h:outputLabel for="disabledOut" value="Disabled:"/>
                 <h:outputText id="disabledOut" value="#{layoutBean.disabled}"/>
             </mobi:fieldsetRow>
-            <mobi:fieldsetRow>
+   <!--         <mobi:fieldsetRow>
                 <h:outputLabel for="spcOut" value="ScrollablePaneContent:"/>
                 <h:outputText id="spcOut" value="#{layoutBean.scrollablePaneContent}"/>
-            </mobi:fieldsetRow>
+            </mobi:fieldsetRow>  -->
      </h:form>
     <footer>
 

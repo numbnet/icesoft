@@ -98,9 +98,9 @@ public class AccordionCoreRenderer extends BaseCoreRenderer implements IRenderer
                 }
             }
             jsCall.append(", fixedHeight: '").append(fixedHeight).append("'");
-            if (accordion.isScrollablePaneContent()){
+         /*   if (accordion.isScrollablePaneContent()){
                 jsCall.append(", scp: true");
-            }
+            }  */
             if (fixedHtVal > 30) {
                jsCall.append(", fHtVal: ").append(fixedHtVal);
             }

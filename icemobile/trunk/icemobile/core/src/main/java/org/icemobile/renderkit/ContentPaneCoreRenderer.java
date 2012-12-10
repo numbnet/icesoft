@@ -82,7 +82,8 @@ public class ContentPaneCoreRenderer extends BaseCoreRenderer {
         writer.startElement(DIV_ELEM, pane);
         writer.writeAttribute(ID_ATTR, clientId+"wrp");
         String htString = accordion.getHeight();
-        boolean scrollablePaneContent = accordion.isScrollablePaneContent();
+    //    boolean scrollablePaneContent = accordion.isScrollablePaneContent();
+        boolean scrollablePaneContent = false;  // leave false until Jira is targeted EE or 1.3 Beta
         StringBuilder style = new StringBuilder(256);
         if (!autoheight && (null != htString) && !htString.equals("") && scrollablePaneContent) {
            style.append( "height: ").append(htString).append("; overflow-y: auto;");
