@@ -17,6 +17,7 @@ package org.icefaces.mobi.component.contentmenuitem;
 
 import org.icefaces.ace.meta.annotation.*;
 import org.icefaces.ace.meta.baseMeta.UICommandMeta;
+import org.icefaces.mobi.utils.TLDConstants;
 
 
 @Component(
@@ -43,35 +44,27 @@ import org.icefaces.ace.meta.baseMeta.UICommandMeta;
 
 public class ContentMenuItemMeta extends UICommandMeta {
      @Property(defaultValue = "true",
-            tlddoc = "When singleSubmit is true, triggering an action on this component will submit" +
-                    " and execute this component only. Equivalent to <f:ajax execute='@this' render='@all'>." +
-                    " When singleSubmit is false, triggering an action on this component will submit and execute " +
-                    " the full form that this component is contained within." +
-                    " The default value is false.")
+            tlddoc = TLDConstants.SINGLESUBMIT)
      private boolean singleSubmit;
 
-     @Property(tlddoc = "Url to be navigated when menuitem is clicked. Outside of the ContentStackMenu contentStack.")
+     @Property(tlddoc = "The URL to be navigated to when then menuitem is clicked. ")
      private String url;
 
      @Property(defaultValue = "false",
-                tlddoc = "disabled property. If true nothing will be submitted via this" +
-                        "component.  ")
+                tlddoc = TLDConstants.DISABLED)
      private boolean disabled;
 
-     @Property(tlddoc="label of layoutMenuItem", required=Required.yes)
+     @Property(tlddoc = "The button label. ", required = Required.yes)
      private String label;
 
-     @Property(tlddoc="id of panel in contentStack that will be displayed when selecting this item." +
-             "  default value will be first contentPane in the stack as long as url is blank as well")
+     @Property(tlddoc = "The contentPane id that will be displayed when selecting this button." +
+             "  This will default to the first contentPane if the \"url\" attribute is null. ")
      private String value;
 
-     @Property(tlddoc = "style class of the component, rendered on the div root of the component")
+     @Property(tlddoc = TLDConstants.STYLECLASS)
      private String styleClass;
 
-     @Property(tlddoc = "style of the component, rendered on the div root of the component")
+     @Property(tlddoc = TLDConstants.STYLE)
      private String style;
-
-/*     @Property(tlddoc = "Path of the menuitem image. Not implemented yet TODO.")
-     private String icon; */
 
 }
