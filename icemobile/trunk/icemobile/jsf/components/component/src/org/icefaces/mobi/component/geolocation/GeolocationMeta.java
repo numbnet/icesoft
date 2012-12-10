@@ -42,9 +42,9 @@ import javax.faces.application.ResourceDependency;
 @ResourceDependencies({
                           @ResourceDependency(library = "org.icefaces.component.util", name = "component.js")
                       })
-@ClientBehaviorHolder(events = {
+/*@ClientBehaviorHolder(events = {
     @ClientEvent(name = "activate", javadoc = "...", tlddoc = "...", defaultRender = "@this", defaultExecute = "@all")
-}, defaultEvent = "activate")
+}, defaultEvent = "activate") */
 public class GeolocationMeta extends UIComponentBaseMeta {
 
     @Property(tlddoc = "Latitude of mobile device in decimal degrees.")

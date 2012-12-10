@@ -91,7 +91,7 @@ public class GeolocationRenderer extends CoreRenderer {
             }
 
 
-            decodeBehaviors(facesContext, geolocation);
+          //  decodeBehaviors(facesContext, geolocation);
         } catch (Exception e) {
             log.log(Level.WARNING, "Error decoding geo-location request paramaters.", e);
         }
@@ -103,8 +103,8 @@ public class GeolocationRenderer extends CoreRenderer {
         ResponseWriter writer = facesContext.getResponseWriter();
         String clientId = uiComponent.getClientId(facesContext);
         Geolocation locator = (Geolocation) uiComponent;
-        ClientBehaviorHolder cbh = (ClientBehaviorHolder) uiComponent;
-        boolean hasBehaviors = !cbh.getClientBehaviors().isEmpty();
+    //    ClientBehaviorHolder cbh = (ClientBehaviorHolder) uiComponent;
+     //   boolean hasBehaviors = !cbh.getClientBehaviors().isEmpty();
         // root element
         writer.startElement(HTML.SPAN_ELEM, uiComponent);
         writer.writeAttribute(HTML.ID_ATTR, clientId, null);
@@ -144,9 +144,10 @@ public class GeolocationRenderer extends CoreRenderer {
             sb.append(includeHighPrecision).append("', '");
             sb.append(maxAge).append("', '").append(timeout).append("'); ");
 
-            if (hasBehaviors) {
+        /*    if (hasBehaviors) {
                 sb.append(this.buildAjaxRequest(facesContext, cbh, "activate"));
-            } else if (singleSubmit) {
+            } else */
+            if (singleSubmit) {
                 String ssCall = "ice.se(null, '" + clientId + "');";
                 sb.append(ssCall);
             }
