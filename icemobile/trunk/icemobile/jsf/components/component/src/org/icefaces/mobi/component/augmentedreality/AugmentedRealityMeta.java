@@ -31,30 +31,32 @@ import javax.faces.application.ResourceDependency;
         rendererType = "org.icefaces.AugmentedRealityRenderer",
         extendsClass = "javax.faces.component.UIInput",
         componentFamily = "org.icefaces.AugmentedReality",
-        tlddoc = "This mobility component implements an augmentedReality for a selected item" +
-                " within the locationItems list that is it's child."
+        tlddoc = "Renders a button that will launch an Augmented Reality view" +
+                " displaying any child marker models or locations."
 )
 
 @ResourceDependencies({
         @ResourceDependency(library = "org.icefaces.component.util", name = "component.js")
 })
 public class AugmentedRealityMeta extends UIComponentBaseMeta  {
-    @Property(required=Required.no, tlddoc="required formatted params for augmentedReality component")
+    @Property(tlddoc="Additional parameters for experimental features.", 
+            required = Required.no)
     private String params;
 
-    @Property(tlddoc="URL base for loading resources in AR view")
+    @Property(tlddoc="URL base used as a prefix for loading resources in AR view.",
+            required = Required.no)
     private String urlBase;
 
-    @Property(tlddoc = "style class of the component, rendered on the select root of the component")
+    @Property(tlddoc = "Style class of the component.", required = Required.no)
     private String styleClass;
 
-    @Property(tlddoc = "style of the component, rendered on the div root of the component")
+    @Property(tlddoc = "Style of the component.", required = Required.no)
     private String style;
 
-    @Property(tlddoc = "input value, name of the location selected by the user")
+    @Property(tlddoc = "The current value, typically the user-selected location or marker.", required = Required.no)
     private String value;
 	
-	@Property(tlddoc = "The label to display on the augmented reality button.", defaultValue="Augmented Reality")
+	@Property(tlddoc = "The label to display on the augmented reality button.", defaultValue="Augmented Reality", required = Required.no)
     private String buttonLabel;
 
 }

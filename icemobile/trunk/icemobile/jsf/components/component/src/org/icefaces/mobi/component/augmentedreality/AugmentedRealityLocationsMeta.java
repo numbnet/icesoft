@@ -36,33 +36,36 @@ import java.util.List;
         rendererType = "org.icefaces.AugmentedRealityLocationsRenderer",
         extendsClass = "javax.faces.component.UIComponentBase",
         componentFamily = "org.icefaces.AugmentedRealityLocations",
-        tlddoc = "This mobility component ....."
+        tlddoc = "Renders a list of locations to be displayed according to their " +
+            "latitude, longitude, icon and text label on an Augmented Reality " +
+            "video overlay view."
 )
 
 public class AugmentedRealityLocationsMeta extends UIComponentBaseMeta  {
 
-    @Property(tlddoc="list iterator variable name")
+    @Property(tlddoc="Name of request scope attribute for list iterator variable.",
+            required = Required.yes)
     private String var;
 
-    @Property(tlddoc="value containing location items")
+    @Property(tlddoc="List containing location items.", required = Required.yes)
     private Object value;
 
-    @Property(tlddoc="Location String label")
+    @Property(tlddoc="String containing location label.", required = Required.yes)
     private String locationLabel;
 
-    @Property(tlddoc="location latitude")
+    @Property(tlddoc="String containing location latitude.", required = Required.no)
     private String locationLat;
 
-    @Property(tlddoc="location longitude")
+    @Property(tlddoc="String containing location longitude.", required = Required.no)
     private String locationLon;
 
-    @Property(tlddoc="location altitude")
+    @Property(tlddoc="String containing location altitude.", required = Required.no)
     private String locationAlt;
 
-    @Property(tlddoc="location direction 0-359 from North")
+    @Property(tlddoc="String containing location direction 0-359 from North.", required = Required.no)
     private String locationDir;
 
-    @Property(tlddoc="location Icon URL")
+    @Property(tlddoc="String containing location Icon URL.", required = Required.no)
     private String locationIcon;
 
 }
