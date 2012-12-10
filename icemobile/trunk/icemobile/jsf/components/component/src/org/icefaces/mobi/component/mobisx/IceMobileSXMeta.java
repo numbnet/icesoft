@@ -31,26 +31,25 @@ import org.icefaces.ace.meta.annotation.ClientEvent;
         componentType = "org.icefaces.component.IceMobileSX",
         rendererType = "org.icefaces.component.IceMobileSXRenderer",
         componentFamily = "org.icefaces.IceMobileSX",
-        tlddoc = "This component assists ICEmobile-SX Surf Expander"
+        tlddoc = "Renders a button for registration and download of ICEmobile-SX Surf Expander.  This component is superceeded by mobi:getEnhanced."
 )
 
 public class IceMobileSXMeta extends UICommandMeta {
 
     @Property(defaultValue = "true",
-              tlddoc=" to enable the SX Surf Expander")
+              tlddoc="Flag indicating that the component is enabled.")
     private boolean enabled;
 
     @Property(defaultValue = "false",
-            tlddoc = "disabled property. If true no input may be submitted via this" +
-                    "component.  Is required by aria specs")
+            tlddoc = "Flag indicating that the component should not receive input focus.")
     private boolean disabled;
 
-    @Property(tlddoc = "tabindex of the component")
+    @Property(tlddoc = "Integer containing the tabindex.")
     private Integer tabindex;
 
-    @Property(tlddoc = "style class of the component, rendered on the div root of the component")
+    @Property(tlddoc = "Style class of the component.")
     private String styleClass;
 
-    @Property(tlddoc = "style of the component, rendered on the div root of the component")
+    @Property(tlddoc = "Style of the component.")
     private String style;
 }
