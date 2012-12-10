@@ -19,7 +19,7 @@
         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-jsptaglibrary_2_1.xsd"
         version="2.1">
 
-    <description>ICEmobile JSP Tag Library</description>
+    <description>ICEmobile JSP Tag Library.</description>
     <display-name>ICEmobile JSP Tag Library</display-name>
     <tlib-version>2.0.0</tlib-version>
     <short-name>icemobile</short-name>
@@ -32,20 +32,20 @@
         <tag-class>org.icemobile.jsp.tags.AugTag</tag-class>
         <body-content>JSP</body-content>
         <attribute>
-            <description>Pagewide unique identifier</description>
+            <description>Pagewide unique identifier.</description>
             <name>id</name>
             <required>true</required>
             <rtexprvalue>true</rtexprvalue>
 
         </attribute>
         <attribute>
-            <description>Inline style definition</description>
+            <description>Inline style definition.</description>
             <name>style</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
         </attribute>
         <attribute>
-            <description>User defined CSS class</description>
+            <description>User defined CSS class.</description>
             <name>styleClass</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
@@ -59,7 +59,7 @@
             <rtexprvalue>true</rtexprvalue>
         </attribute>
         <attribute>
-            <description>Determines if control is disabled</description>
+            <description>Determines if control is disabled.</description>
             <name>disabled</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
@@ -81,25 +81,25 @@
         </tag-class>
         <body-content>empty</body-content>
         <attribute>
-            <description>location text label</description>
+            <description>location text label.</description>
             <name>locationLabel</name>
             <required>true</required>
             <rtexprvalue>true</rtexprvalue>
         </attribute>
         <attribute>
-            <description>location latitude</description>
+            <description>location latitude.</description>
             <name>locationLat</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
         </attribute>
         <attribute>
-            <description>location longitude</description>
+            <description>location longitude.</description>
             <name>locationLon</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
         </attribute>
         <attribute>
-            <description>location altitude</description>
+            <description>location altitude.</description>
             <name>locationAlt</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
@@ -125,7 +125,7 @@
         </tag-class>
         <body-content>empty</body-content>
         <attribute>
-            <description>marker text label</description>
+            <description>marker text label.</description>
             <name>markerLabel</name>
             <required>true</required>
             <rtexprvalue>true</rtexprvalue>
@@ -144,25 +144,25 @@
         <tag-class>org.icemobile.jsp.tags.CameraTag</tag-class>
         <body-content>empty</body-content>
         <attribute>
-            <description>Pagewide unique identifier</description>
+            <description>Pagewide unique identifier.</description>
             <name>id</name>
             <required>true</required>
             <rtexprvalue>true</rtexprvalue>
         </attribute>
         <attribute>
-            <description>Inline style definition</description>
+            <description>Inline style definition.</description>
             <name>style</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
         </attribute>
         <attribute>
-            <description>User defined CSS class</description>
+            <description>User defined CSS class.</description>
             <name>styleClass</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
         </attribute>
         <attribute>
-            <description>Determines if control is disabled</description>
+            <description>Determines if control is disabled.</description>
             <name>disabled</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
@@ -209,19 +209,19 @@
         <tag-class>org.icemobile.jsp.tags.CamcorderTag</tag-class>
         <body-content>empty</body-content>
         <attribute>
-            <description>Pagewide unique identifier</description>
+            <description>Pagewide unique identifier.</description>
             <name>id</name>
             <required>true</required>
             <rtexprvalue>true</rtexprvalue>
         </attribute>
         <attribute>
-            <description>Inline style definition</description>
+            <description>Inline style definition.</description>
             <name>style</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
         </attribute>
         <attribute>
-            <description>User defined CSS class</description>
+            <description>User defined CSS class.</description>
             <name>styleClass</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
@@ -279,19 +279,19 @@
         <tag-class>org.icemobile.jsp.tags.MicrophoneTag</tag-class>
         <body-content>empty</body-content>
         <attribute>
-            <description>Pagewide unique identifier</description>
+            <description>Pagewide unique identifier.</description>
             <name>id</name>
             <required>true</required>
             <rtexprvalue>true</rtexprvalue>
         </attribute>
         <attribute>
-            <description>Inline style definition</description>
+            <description>Inline style definition.</description>
             <name>style</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
         </attribute>
         <attribute>
-            <description>User defined CSS class</description>
+            <description>User defined CSS class.</description>
             <name>styleClass</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
@@ -331,19 +331,19 @@
         <tag-class>org.icemobile.jsp.tags.ThumbnailTag</tag-class>
         <body-content>empty</body-content>
         <attribute>
-            <description>Pagewide unique identifier</description>
+            <description>Pagewide unique identifier.</description>
             <name>id</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
         </attribute>
         <attribute>
-            <description>Inline style definition</description>
+            <description>Inline style definition.</description>
             <name>style</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
         </attribute>
         <attribute>
-            <description>User defined CSS class</description>
+            <description>User defined CSS class.</description>
             <name>styleClass</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
@@ -359,7 +359,7 @@
     </tag>
 
     <tag>
-        <description>Device detection and script/css insertion</description>
+        <description>Device detection and script/css insertion.</description>
         <display-name>ICEmobile Device Detection</display-name>
         <name>deviceResource</name>
         <tag-class>org.icemobile.jsp.tags.DeviceResourceTag</tag-class>
@@ -398,13 +398,13 @@
     </tag>
 
     <tag>
-        <description>Content Pane Tag</description>
+        <description>Content Pane Tag.</description>
         <display-name>ICEmobile ContentPane</display-name>
         <name>contentPane</name>
         <tag-class>org.icemobile.jsp.tags.ContentPaneTag</tag-class>
         <body-content>JSP</body-content>
         <attribute>
-            <description>Pagewide unique identifier</description>
+            <description>Pagewide unique identifier.</description>
             <name>id</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
@@ -417,13 +417,13 @@
             <rtexprvalue>true</rtexprvalue>
         </attribute>
         <attribute>
-            <description>Inline style definition</description>
+            <description>Inline style definition.</description>
             <name>style</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
         </attribute>
         <attribute>
-            <description>User defined CSS class</description>
+            <description>User defined CSS class.</description>
             <name>styleClass</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
@@ -431,14 +431,14 @@
     </tag>
 
     <tag>
-        <description>Geolocation Tag</description>
+        <description>Geolocation Tag.</description>
         <display-name>ICEmobile Geolocation Tag</display-name>
         <name>geolocation</name>
         <tag-class>org.icemobile.jsp.tags.GeolocationTag</tag-class>
         <body-content>empty</body-content>
         <attribute>
             <description>Pagewide unique identifier. Required for locating hidden
-                         field by id</description>
+                         field by id.</description>
             <name>id</name>
             <required>true</required>
             <rtexprvalue>true</rtexprvalue>
@@ -452,7 +452,7 @@
             <rtexprvalue>true</rtexprvalue>
         </attribute>
         <attribute>
-            <description>Determines if control is disabled</description>
+            <description>Determines if control is disabled.</description>
             <name>disabled</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
@@ -500,19 +500,19 @@
     </tag>
 
     <tag>
-        <description>Input Text field</description>
+        <description>Input Text field.</description>
         <display-name>Input Text Tag</display-name>
         <name>inputText</name>
         <tag-class>org.icemobile.jsp.tags.InputTextTag</tag-class>
         <body-content>empty</body-content>
         <attribute>
-            <description>Pagewide unique identifier</description>
+            <description>Pagewide unique identifier.</description>
             <name>id</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
         </attribute>
         <attribute>
-            <description>Name of submitted value</description>
+            <description>Name of submitted value.</description>
             <name>name</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
@@ -523,31 +523,31 @@
             <rtexprvalue>true</rtexprvalue>
         </attribute>
         <attribute>
-            <description>Determines if control is disabled</description>
+            <description>Determines if control is disabled.</description>
             <name>disabled</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
         </attribute>
         <attribute>
-            <description>Determines if control is read only</description>
+            <description>Determines if control is read only.</description>
             <name>readOnly</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
         </attribute>
         <attribute>
-            <description>User defined CSS class</description>
+            <description>User defined CSS class.</description>
             <name>styleClass</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
         </attribute>
         <attribute>
-            <description>Inline style definition</description>
+            <description>Inline style definition.</description>
             <name>style</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
         </attribute>
         <attribute>
-            <description>The (optional) initial value of the field</description>
+            <description>The (optional) initial value of the field.</description>
             <name>value</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
@@ -587,13 +587,13 @@
             <type>boolean</type>
         </attribute>
         <attribute>
-            <description>Row count for input text area</description>
+            <description>Row count for input text area.</description>
             <name>rows</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
         </attribute>
         <attribute>
-            <description>Column count for input text area</description>
+            <description>Column count for input text area.</description>
             <name>cols</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
@@ -601,25 +601,25 @@
     </tag>
 
     <tag>
-        <description>QRCode Scan Tag</description>
+        <description>QRCode Scan Tag.</description>
         <display-name>QRScan Tag</display-name>
         <name>scan</name>
         <tag-class>org.icemobile.jsp.tags.QRScanTag</tag-class>
         <body-content>empty</body-content>
         <attribute>
-            <description>Pagewide unique identifier</description>
+            <description>Pagewide unique identifier.</description>
             <name>id</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
         </attribute>
         <attribute>
-            <description>Name of submitted value</description>
+            <description>Name of submitted value.</description>
             <name>name</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
         </attribute>
         <attribute>
-            <description>User defined CSS class</description>
+            <description>User defined CSS class.</description>
             <name>styleClass</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
@@ -633,13 +633,13 @@
             <rtexprvalue>true</rtexprvalue>
         </attribute>
         <attribute>
-            <description>Inline style definition</description>
+            <description>Inline style definition.</description>
             <name>style</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
         </attribute>
         <attribute>
-            <description>Determines if control is disabled</description>
+            <description>Determines if control is disabled.</description>
             <name>disabled</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
@@ -647,25 +647,25 @@
     </tag>
 
        <tag>
-        <description>QRCode Generation Tag</description>
+        <description>QRCode Generation Tag.</description>
         <display-name>QR Code Generator Tag</display-name>
         <name>qrcode</name>
         <tag-class>org.icemobile.jsp.tags.QRCodeTag</tag-class>
         <body-content>empty</body-content>
         <attribute>
-            <description>Value of encoded string</description>
+            <description>Value of encoded string.</description>
             <name>value</name>
             <required>true</required>
             <rtexprvalue>true</rtexprvalue>
         </attribute>
         <attribute>
-            <description>User defined CSS class</description>
+            <description>User defined CSS class.</description>
             <name>styleClass</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
         </attribute>
         <attribute>
-            <description>Inline style definition</description>
+            <description>Inline style definition.</description>
             <name>style</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
@@ -673,49 +673,49 @@
     </tag>
 
     <tag>
-        <description>Android style binary input button</description>
+        <description>Android style binary input button.</description>
         <display-name>flipswitch</display-name>
         <name>flipswitch</name>
         <tag-class>org.icemobile.jsp.tags.FlipSwitchTag</tag-class>
         <body-content>empty</body-content>
         <attribute>
-            <description>Pagewide unique identifier</description>
+            <description>Pagewide unique identifier.</description>
             <name>id</name>
             <required>true</required>
             <rtexprvalue>true</rtexprvalue>
         </attribute>
         <attribute>
-            <description>Name of submitted value</description>
+            <description>Name of submitted value.</description>
             <name>name</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
         </attribute>
         <attribute>
-            <description>Inline style definition</description>
+            <description>Inline style definition.</description>
             <name>style</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
         </attribute>
         <attribute>
-            <description>User defined CSS class</description>
+            <description>User defined CSS class.</description>
             <name>styleClass</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
         </attribute>
         <attribute>
-            <description>Determines if control is disabled</description>
+            <description>Determines if control is disabled.</description>
             <name>disabled</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
         </attribute>
         <attribute>
-            <description>The value displayed in the button</description>
+            <description>The value displayed in the button.</description>
             <name>value</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
         </attribute>
         <attribute>
-            <description>Determines if control is read only</description>
+            <description>Determines if control is read only.</description>
             <name>readOnly</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
@@ -737,31 +737,31 @@
     </tag>
 
     <tag>
-        <description>Mobile Styled Button</description>
+        <description>Mobile Styled Button.</description>
         <display-name>commandButton</display-name>
         <name>commandButton</name>
         <tag-class>org.icemobile.jsp.tags.CommandButtonTag</tag-class>
         <body-content>empty</body-content>
         <attribute>
-            <description>Pagewide unique identifier</description>
+            <description>Pagewide unique identifier.</description>
             <name>id</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
         </attribute>
         <attribute>
-            <description>Name of submitted value</description>
+            <description>Name of submitted value.</description>
             <name>name</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
         </attribute>
         <attribute>
-            <description>Inline style definition</description>
+            <description>Inline style definition.</description>
             <name>style</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
         </attribute>
         <attribute>
-            <description>User defined CSS class</description>
+            <description>User defined CSS class.</description>
             <name>styleClass</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
@@ -775,13 +775,13 @@
             <rtexprvalue>true</rtexprvalue>
         </attribute>
         <attribute>
-            <description>Determines if control is disabled</description>
+            <description>Determines if control is disabled.</description>
             <name>disabled</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
         </attribute>
         <attribute>
-            <description>Value displayed in button</description>
+            <description>Value displayed in button.</description>
             <name>value</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
@@ -794,37 +794,37 @@
             <rtexprvalue>true</rtexprvalue>
         </attribute>
         <attribute>
-            <description>Sets the button style to selected</description>
+            <description>Sets the button style to selected.</description>
             <name>selected</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
         </attribute>
     </tag>
     <tag>
-         <description>ICEmobile Carousel container</description>
+         <description>ICEmobile Carousel container.</description>
          <display-name>carousel</display-name>
          <name>carousel</name>
          <tag-class>org.icemobile.jsp.tags.CarouselTag</tag-class>
          <body-content>JSP</body-content>
          <attribute>
-             <description>Pagewide unique identifier</description>
+             <description>Pagewide unique identifier.</description>
              <name>id</name>
              <required>true</required>
              <rtexprvalue>true</rtexprvalue>
          </attribute>
          <attribute>
-             <description>value to bind the selectedItem to Required if binding value to backing bean</description>
+             <description>value to bind the selectedItem to Required if binding value to backing bean.</description>
              <name>name</name>
              <rtexprvalue>true</rtexprvalue>
          </attribute>
          <attribute>
-             <description>User defined CSS class</description>
+             <description>User defined CSS class.</description>
              <name>styleClass</name>
              <required>false</required>
              <rtexprvalue>true</rtexprvalue>
          </attribute>
          <attribute>
-             <description>Inline style definition</description>
+             <description>Inline style definition.</description>
              <name>style</name>
              <required>false</required>
              <rtexprvalue>true</rtexprvalue>
@@ -839,37 +839,37 @@
         </attribute>
      </tag>
    <tag>
-        <description>Iterative item reference description</description>
+        <description>Iterative item reference description.</description>
         <name>carouselItem</name>
         <tag-class>org.icemobile.jsp.tags.CarouselItemTag</tag-class>
         <body-content>JSP</body-content>
         <attribute>
-             <description>Pagewide unique identifier</description>
+             <description>Pagewide unique identifier.</description>
              <name>id</name>
              <required>false</required>
              <rtexprvalue>true</rtexprvalue>
          </attribute>
     </tag>
     <tag>
-        <description>Parent Fieldset Group Tag</description>
+        <description>Parent Fieldset Group Tag.</description>
         <display-name>fieldsetGroup</display-name>
         <name>fieldsetGroup</name>
         <tag-class>org.icemobile.jsp.tags.FieldSetGroupTag</tag-class>
         <body-content>JSP</body-content>
         <attribute>
-            <description>Pagewide unique identifier</description>
+            <description>Pagewide unique identifier.</description>
             <name>id</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
         </attribute>
         <attribute>
-            <description>User defined CSS class</description>
+            <description>User defined CSS class.</description>
             <name>styleClass</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
         </attribute>
         <attribute>
-            <description>Inline style definition</description>
+            <description>Inline style definition.</description>
             <name>style</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
@@ -884,25 +884,25 @@
         </attribute>
     </tag>
     <tag>
-        <description>Fieldset Row Tag</description>
+        <description>Fieldset Row Tag.</description>
         <display-name>FieldsetRow</display-name>
         <name>fieldsetRow</name>
         <tag-class>org.icemobile.jsp.tags.FieldSetRowTag</tag-class>
         <body-content>JSP</body-content>
         <attribute>
-            <description>Pagewide unique identifier</description>
+            <description>Pagewide unique identifier.</description>
             <name>id</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
         </attribute>
         <attribute>
-            <description>User defined CSS class</description>
+            <description>User defined CSS class.</description>
             <name>styleClass</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
         </attribute>
         <attribute>
-            <description>Inline style definition</description>
+            <description>Inline style definition.</description>
             <name>style</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
@@ -918,25 +918,25 @@
     </tag>
 
     <tag>
-        <description>ICEmobile TabSet</description>
+        <description>ICEmobile TabSet.</description>
         <display-name>tabSet</display-name>
         <name>tabSet</name>
         <tag-class>org.icemobile.jsp.tags.TabSetTag</tag-class>
         <body-content>JSP</body-content>
         <attribute>
-            <description>Pagewide unique identifier</description>
+            <description>Pagewide unique identifier.</description>
             <name>id</name>
             <required>true</required>
             <rtexprvalue>true</rtexprvalue>
         </attribute>
         <attribute>
-            <description>User defined CSS class</description>
+            <description>User defined CSS class.</description>
             <name>styleClass</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
         </attribute>
         <attribute>
-            <description>Inline style definition</description>
+            <description>Inline style definition.</description>
             <name>style</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
@@ -967,7 +967,7 @@
         <tag-class>org.icemobile.jsp.tags.layout.AccordionTag</tag-class>
         <body-content>JSP</body-content>
         <attribute>
-            <description>Pagewide unique identifier</description>
+            <description>Pagewide unique identifier.</description>
             <name>id</name>
             <required>true</required>
             <rtexprvalue>true</rtexprvalue>
@@ -985,7 +985,7 @@
             <rtexprvalue>true</rtexprvalue>
         </attribute>
         <attribute>
-            <description>The currently selected pane id</description>
+            <description>The currently selected pane id.</description>
             <name>selectedId</name>
             <required>true</required>
             <rtexprvalue>true</rtexprvalue>
@@ -1012,13 +1012,13 @@
         </attribute>
     </tag>
     <tag>
-         <description>Accordion Pane Tag</description>
+         <description>Accordion Pane Tag.</description>
          <display-name>ICEmobile AccordionPane</display-name>
          <name>accordionPane</name>
          <tag-class>org.icemobile.jsp.tags.layout.AccordionPaneTag</tag-class>
          <body-content>JSP</body-content>
          <attribute>
-             <description>Pagewide unique identifier</description>
+             <description>Pagewide unique identifier.</description>
              <name>id</name>
              <required>false</required>
              <rtexprvalue>true</rtexprvalue>
@@ -1031,13 +1031,13 @@
              <rtexprvalue>true</rtexprvalue>
          </attribute>
          <attribute>
-             <description>Inline style definition</description>
+             <description>Inline style definition.</description>
              <name>style</name>
              <required>false</required>
              <rtexprvalue>true</rtexprvalue>
          </attribute>
          <attribute>
-             <description>User defined CSS class</description>
+             <description>User defined CSS class.</description>
              <name>styleClass</name>
              <required>false</required>
              <rtexprvalue>true</rtexprvalue>
@@ -1054,7 +1054,7 @@
     </tag>
 
     <tag>
-        <description>An individual tabset header</description>
+        <description>An individual tabset header.</description>
         <display-name>Header</display-name>
         <name>header</name>
         <tag-class>org.icemobile.jsp.tags.HeaderTag</tag-class>
@@ -1080,19 +1080,19 @@
         <tag-class>org.icemobile.jsp.tags.OutputListTag</tag-class>
         <body-content>JSP</body-content>
         <attribute>
-            <description>Pagewide unique identifier</description>
+            <description>Pagewide unique identifier.</description>
             <name>id</name>
             <required>true</required>
             <rtexprvalue>true</rtexprvalue>
         </attribute>
         <attribute>
-            <description>User defined CSS class</description>
+            <description>User defined CSS class.</description>
             <name>styleClass</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
         </attribute>
         <attribute>
-            <description>Inline style definition</description>
+            <description>Inline style definition.</description>
             <name>style</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
@@ -1131,21 +1131,21 @@
         <tag-class>org.icemobile.jsp.tags.DateSpinnerTag</tag-class>
         <body-content>empty</body-content>
         <attribute>
-            <description>Determines if control is disabled</description>
+            <description>Determines if control is disabled.</description>
             <name>disabled</name>
             <required>no</required>
             <rtexprvalue>true</rtexprvalue>
             <type>boolean</type>
         </attribute>
         <attribute>
-            <description>Pagewide unique identifier</description>
+            <description>Pagewide unique identifier.</description>
             <name>id</name>
             <required>yes</required>
             <rtexprvalue>true</rtexprvalue>
             <type>java.lang.String</type>
         </attribute>
         <attribute>
-            <description>Name of submitted value</description>
+            <description>Name of submitted value.</description>
             <name>name</name>
             <required>no</required>
             <rtexprvalue>true</rtexprvalue>
@@ -1169,14 +1169,14 @@
             <type>boolean</type>
         </attribute>
         <attribute>
-            <description>Inline style definition</description>
+            <description>Inline style definition.</description>
             <name>style</name>
             <required>no</required>
             <rtexprvalue>true</rtexprvalue>
             <type>java.lang.String</type>
         </attribute>
         <attribute>
-            <description>User defined CSS class</description>
+            <description>User defined CSS class.</description>
             <name>styleClass</name>
             <required>no</required>
             <rtexprvalue>true</rtexprvalue>
@@ -1196,14 +1196,14 @@
             <type>boolean</type>
         </attribute>
         <attribute>
-            <description>Initial date value</description>
+            <description>Initial date value.</description>
             <name>value</name>
             <required>no</required>
             <rtexprvalue>true</rtexprvalue>
             <type>java.lang.Object</type>
         </attribute>
         <attribute>
-            <description>The end year provided in the year spinner</description>
+            <description>The end year provided in the year spinner.</description>
             <name>yearEnd</name>
             <required>no</required>
             <rtexprvalue>true</rtexprvalue>
@@ -1226,21 +1226,21 @@
         <tag-class>org.icemobile.jsp.tags.TimeSpinnerTag</tag-class>
         <body-content>empty</body-content>
         <attribute>
-            <description>Determines if control is disabled</description>
+            <description>Determines if control is disabled.</description>
             <name>disabled</name>
             <required>no</required>
             <rtexprvalue>true</rtexprvalue>
             <type>boolean</type>
         </attribute>
         <attribute>
-            <description>Pagewide unique identifier</description>
+            <description>Pagewide unique identifier.</description>
             <name>id</name>
             <required>yes</required>
             <rtexprvalue>true</rtexprvalue>
             <type>java.lang.String</type>
         </attribute>
         <attribute>
-            <description>Name of submitted value</description>
+            <description>Name of submitted value.</description>
             <name>name</name>
             <required>no</required>
             <rtexprvalue>true</rtexprvalue>
@@ -1264,14 +1264,14 @@
             <type>boolean</type>
         </attribute>
         <attribute>
-            <description>Inline style definition</description>
+            <description>Inline style definition.</description>
             <name>style</name>
             <required>no</required>
             <rtexprvalue>true</rtexprvalue>
             <type>java.lang.String</type>
         </attribute>
         <attribute>
-            <description>User defined CSS class</description>
+            <description>User defined CSS class.</description>
             <name>styleClass</name>
             <required>no</required>
             <rtexprvalue>true</rtexprvalue>
@@ -1291,7 +1291,7 @@
             <type>boolean</type>
         </attribute>
         <attribute>
-            <description>Initial time value</description>
+            <description>Initial time value.</description>
             <name>value</name>
             <required>no</required>
             <rtexprvalue>true</rtexprvalue>
@@ -1307,27 +1307,27 @@
         <tag-class>org.icemobile.jsp.tags.PagePanelTag</tag-class>
         <body-content>JSP</body-content>
         <attribute>
-            <description>Pagewide unique identifier</description>
+            <description>Pagewide unique identifier.</description>
             <name>id</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
         </attribute>
         <attribute>
             <description>User defined CSS class to define for all children tags
-                as well as pagePanel</description>
+                as well as pagePanel.</description>
             <name>styleClass</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
         </attribute>
     </tag>
     <tag>
-        <description>Page Panel Header</description>
+        <description>Page Panel Header.</description>
         <name>pagePanelHeader</name>
         <tag-class>org.icemobile.jsp.tags.PagePanelHeaderTag</tag-class>
         <body-content>JSP</body-content>
     </tag>
     <tag>
-        <description>Page Panel Body</description>
+        <description>Page Panel Body.</description>
         <name>pagePanelBody</name>
         <tag-class>org.icemobile.jsp.tags.PagePanelBodyTag</tag-class>
         <body-content>JSP</body-content>
@@ -1348,25 +1348,25 @@
             <type>boolean</type>
         </attribute>
         <attribute>
-            <description>Inline style definition</description>
+            <description>Inline style definition.</description>
             <name>style</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
         </attribute>
     </tag>
     <tag>
-        <description>Page Panel Footer</description>
+        <description>Page Panel Footer.</description>
         <name>pagePanelFooter</name>
         <tag-class>org.icemobile.jsp.tags.PagePanelFooterTag</tag-class>
         <body-content>JSP</body-content>
     </tag>
     <tag>
-        <description>Popup panel of content on device</description>
+        <description>Popup panel of content on device.</description>
         <name>panelPopup</name>
         <tag-class>org.icemobile.jsp.tags.PanelPopupTag</tag-class>
         <body-content>JSP</body-content>
         <attribute>
-            <description>Pagewide unique identifier</description>
+            <description>Pagewide unique identifier.</description>
             <name>id</name>
             <required>true</required>
             <rtexprvalue>true</rtexprvalue>
@@ -1381,40 +1381,40 @@
             <rtexprvalue>true</rtexprvalue>
         </attribute>
         <attribute>
-            <description>Inline style definition</description>
+            <description>Inline style definition.</description>
             <name>style</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
         </attribute>
         <attribute>
-            <description>User defined CSS class</description>
+            <description>User defined CSS class.</description>
             <name>styleClass</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
         </attribute>
         <!-- Tag provide a close button, and if so, what label -->
         <attribute>
-            <description>User specified width of popup</description>
+            <description>User specified width of popup.</description>
             <name>width</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
             <type>int</type>
         </attribute>
         <attribute>
-            <description>User specified height of popup</description>
+            <description>User specified height of popup.</description>
             <name>height</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
             <type>int</type>
         </attribute>
         <attribute>
-            <description>Initial state of popup</description>
+            <description>Initial state of popup.</description>
             <name>visible</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
         </attribute>
         <attribute>
-            <description>HeaderText appearing at top of popup panel</description>
+            <description>HeaderText appearing at top of popup panel.</description>
             <name>headerText</name>
             <required>true</required>
             <rtexprvalue>true</rtexprvalue>
@@ -1459,7 +1459,7 @@
             <type>String</type>
         </attribute>
         <attribute>
-            <description>Determines if control is disabled</description>
+            <description>Determines if control is disabled.</description>
             <name>disabled</name>
             <required>no</required>
             <rtexprvalue>true</rtexprvalue>
@@ -1476,19 +1476,19 @@
         <tag-class>org.icemobile.jsp.tags.GetEnhancedTag</tag-class>
         <body-content>empty</body-content>
         <attribute>
-            <description>pass through attribute</description>
+            <description>pass through attribute.</description>
             <name>disabled</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
         </attribute>
         <attribute>
-            <description>Sets the class attribute</description>
+            <description>Sets the class attribute.</description>
             <name>styleClass</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
         </attribute>
         <attribute>
-            <description>Sets the style attribute</description>
+            <description>Sets the style attribute.</description>
             <name>style</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
@@ -1531,19 +1531,19 @@
         <tag-class>org.icemobile.jsp.tags.ViewSwitcherTag</tag-class>
         <body-content>empty</body-content>
         <attribute>
-            <description>pass through attribute</description>
+            <description>pass through attribute.</description>
             <name>disabled</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
         </attribute>
         <attribute>
-            <description>Sets the class attribute</description>
+            <description>Sets the class attribute.</description>
             <name>styleClass</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
         </attribute>
         <attribute>
-            <description>Sets the style attribute</description>
+            <description>Sets the style attribute.</description>
             <name>style</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
@@ -1627,19 +1627,19 @@
         <tag-class>org.icemobile.jsp.tags.layout.SplitPaneTag</tag-class>
         <body-content>JSP</body-content>
         <attribute>
-            <description>Pagewide unique identifier</description>
+            <description>Pagewide unique identifier.</description>
             <name>id</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
         </attribute>
        <attribute>
-            <description>Sets the class attribute</description>
+            <description>Sets the class attribute.</description>
             <name>styleClass</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
         </attribute>
         <attribute>
-            <description>Sets the style attribute</description>
+            <description>Sets the style attribute.</description>
             <name>style</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
