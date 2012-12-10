@@ -32,7 +32,7 @@ import javax.faces.application.ResourceDependency;
         rendererType = "org.icefaces.QRCodeRenderer",
         extendsClass = "javax.faces.component.UIOutput",
         componentFamily = "org.icefaces.QRCode",
-        tlddoc = "This mobility component displays a QR code value."
+        tlddoc = "qrcode displays a QR code value."
 )
 
 @ResourceDependencies({
@@ -41,18 +41,15 @@ import javax.faces.application.ResourceDependency;
 public class QRCodeMeta extends UIComponentBaseMeta {
 
     @Property(defaultValue = "false",
-            tlddoc = "When disabled, component is hidden.")
+            tlddoc = org.icefaces.mobi.utils.TLDConstants.DISABLED)
     private boolean disabled;
 
-    @Property(tlddoc = "tabindex of the component")
+    @Property(tlddoc = org.icefaces.mobi.utils.TLDConstants.TABINDEX)
     private int tabindex;
 
-    @Property(tlddoc = "style will be rendered on the root element of this " +
-            "component.")
-    private String style;
+     @Property(tlddoc = org.icefaces.mobi.utils.TLDConstants.STYLE)
+     private String style;
 
-    @Property(tlddoc = "style class will be rendered on the root element of " +
-            "this component.")
-    private String styleClass;
-
+     @Property(tlddoc = org.icefaces.mobi.utils.TLDConstants.STYLECLASS)
+     private String styleClass;
 }

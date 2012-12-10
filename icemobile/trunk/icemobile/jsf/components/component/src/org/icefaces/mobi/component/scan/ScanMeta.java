@@ -32,7 +32,7 @@ import javax.faces.application.ResourceDependency;
         rendererType = "org.icefaces.ScanRenderer",
         extendsClass = "javax.faces.component.UIInput",
         componentFamily = "org.icefaces.Scan",
-        tlddoc = "This mobility component captures a QR code value."
+        tlddoc = "The Scan component captures a QR code value."
 )
 
 @ResourceDependencies({
@@ -41,25 +41,21 @@ import javax.faces.application.ResourceDependency;
 public class ScanMeta extends UIComponentBaseMeta {
 
     @Property(defaultValue = "false",
-            tlddoc = "When disabled, scanning does not occur.")
+            tlddoc = org.icefaces.mobi.utils.TLDConstants.DISABLED)
     private boolean disabled;
 
-    @Property(tlddoc = "tabindex of the component")
+    @Property(tlddoc = org.icefaces.mobi.utils.TLDConstants.TABINDEX)
     private int tabindex;
 
-    @Property(tlddoc = "style will be rendered on the root element of this " +
-            "component.")
-    private String style;
+     @Property(tlddoc = org.icefaces.mobi.utils.TLDConstants.STYLE)
+     private String style;
 
-    @Property(tlddoc = "style class will be rendered on the root element of " +
-            "this component.")
-    private String styleClass;
+     @Property(tlddoc = org.icefaces.mobi.utils.TLDConstants.STYLECLASS)
+     private String styleClass;
 
-    @Property(defaultValue="scan captured", tlddoc="message the scanner displays upon successful " +
-            "capture from device.  This attribute available for internationalization " +
-            "purposes.")
+    @Property(defaultValue="scan captured", tlddoc="The message displays upon successful capture from device.")
     private String captureMessageLabel;
 
-    @Property(defaultValue="Scan QR Code", tlddoc="button label for this component")
+    @Property(defaultValue="Scan QR Code", tlddoc="The button label for this component.")
     private String buttonLabel;
 }

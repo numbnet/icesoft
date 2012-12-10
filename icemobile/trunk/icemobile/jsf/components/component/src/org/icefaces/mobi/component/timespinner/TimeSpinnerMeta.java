@@ -34,7 +34,7 @@ import javax.faces.application.ResourceDependency;
         componentFamily = "org.icefaces.component.TimeSpinner",
         componentType = "org.icefaces.component.TimeSpinner",
         rendererType = "org.icefaces.component.TimeSpinnerRenderer",
-        tlddoc = "TimeSpinner is an input component to provide a time input for mobile components. ")
+        tlddoc = "TimeSpinner is an input component that provides a time input.")
 
 
 @ResourceDependencies({
@@ -45,37 +45,36 @@ import javax.faces.application.ResourceDependency;
 }, defaultEvent="change")
 public class TimeSpinnerMeta extends UIInputMeta {
 
-    @Property(defaultValue = "hh:mm a", tlddoc = "TimeFormat pattern for localization")
+    @Property(defaultValue = "hh:mm a", tlddoc = "The TimeFormat pattern used for localization.")
     private String pattern;
 
-    @Property(defaultValue = "15", tlddoc="width of the input text field in characters, where the value of the date will reside")
+    @Property(defaultValue = "15", tlddoc="The width, in characters, of the input text field where the value of the date resides.")
     private String size;
 
-    @Property(tlddoc = "Locale to be used for labels and conversion.")
+    @Property(tlddoc = " The locale to be used for labels and conversion.")
     private Object locale;
 
-    @Property(tlddoc = "String or a java.util.TimeZone instance to specify the timezone used for date " +
-            "conversion, defaults to TimeZone.getDefault()")
+    @Property(tlddoc = "A String or a java.util.TimeZone instance that specify the timezone used for date " +
+            "conversion. Defaults to TimeZone.getDefault().")
     private Object timeZone;
 
-    @Property(tlddoc = "style will be rendered on a root element of this component")
-    private String style;
+     @Property(tlddoc = org.icefaces.mobi.utils.TLDConstants.STYLE)
+     private String style;
 
-    @Property(tlddoc = "style class will be rendered on a root element of this component")
-    private String styleClass;
+     @Property(tlddoc = org.icefaces.mobi.utils.TLDConstants.STYLECLASS)
+     private String styleClass;
 
-    @Property(tlddoc = "If true then this date time entry will be disabled and can not be entered.")
+    @Property(defaultValue = "false",
+            tlddoc = org.icefaces.mobi.utils.TLDConstants.DISABLED)
     private boolean disabled;
 
-    @Property(tlddoc = "If true then this date time entry will be read-only and can not be entered.")
-    private boolean readonly;
+     @Property(tlddoc = org.icefaces.mobi.utils.TLDConstants.READONLY)
+     private boolean readonly;
 
-    @Property(tlddoc = "If true then this date time entry will submit itself.")
-    private boolean singleSubmit;
+     @Property(tlddoc = org.icefaces.mobi.utils.TLDConstants.SINGLESUBMIT)
+     private boolean singleSubmit;
 
-    @Property(defaultValue = "false", tlddoc ="if useNative is true then iOS5, iOS6, and BlackBerry devices will show the builtin date selection popup"+
-            " if false then the mobi datespinner component is shown with native device styling.  This can be expanded if other device operating"+
-            " systems provide support for html5 input type of date.")
+    @Property(defaultValue = "false", tlddoc = "Deterines if native time picker should be used when available.  Currently, native support is available for iOS5, iOS6, and BlackBerry devices.")
     private boolean useNative;
 
 }

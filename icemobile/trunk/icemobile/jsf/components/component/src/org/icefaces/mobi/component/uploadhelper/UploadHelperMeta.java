@@ -33,7 +33,7 @@ import javax.faces.application.ResourceDependency;
         rendererType = "org.icefaces.UploadHelperRenderer",
         extendsClass = "javax.faces.component.UIComponentBase",
         componentFamily = "org.icefaces.UploadHelper",
-        tlddoc = "This mobility component " +
+        tlddoc = "uploadhelper " +
                 " detects mobile and desktop cases to support upload. "
 )
 

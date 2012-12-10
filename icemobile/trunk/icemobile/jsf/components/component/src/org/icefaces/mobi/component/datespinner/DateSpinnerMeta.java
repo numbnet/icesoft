@@ -59,8 +59,8 @@ public class DateSpinnerMeta extends UIInputMeta {
     @Property(tlddoc = "The locale to be used for labels and conversion.")
     private Object locale;
 
-    @Property(tlddoc = "A String or a java.util.TimeZone instance specify the timezone used." +
-            "conversion, defaults to TimeZone.getDefault()")
+    @Property(tlddoc = "A String or a java.util.TimeZone instance specify the timezone used for time conversion." +
+            " Defaults to TimeZone.getDefault().")
     private Object timeZone;
 
     @Property(tlddoc = org.icefaces.mobi.utils.TLDConstants.STYLE)

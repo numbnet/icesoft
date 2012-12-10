@@ -34,29 +34,25 @@ import javax.faces.application.ResourceDependency;
         rendererType = "org.icefaces.ThumbnailRenderer",
         extendsClass = "javax.faces.component.UIComponentBase",
         componentFamily = "org.icefaces.Thumbnail",
-        tlddoc = "This mobility component supports a thumbnail of an image taken by an " +
-                "ICEfaces camera component. "
-)
+        tlddoc = "thumbnail provides a thumbnail image to a camera or camcorder component.")
 
 @ResourceDependencies({
         @ResourceDependency(library = "org.icefaces.component.util", name = "component.js")
 })
 public class ThumbnailMeta extends UIComponentBaseMeta {
 
-    @Property(defaultValue = "0", tlddoc = "tabindex of the component")
+    @Property(tlddoc = org.icefaces.mobi.utils.TLDConstants.TABINDEX)
     private int tabindex;
 
-    @Property(tlddoc = "style will be rendered on the root element of this " +
-            "component.")
-    private String style;
+     @Property(tlddoc = org.icefaces.mobi.utils.TLDConstants.STYLE)
+     private String style;
 
-    @Property(tlddoc = "style class will be rendered on the root element of " +
-            "this component.")
-    private String styleClass;
+     @Property(tlddoc = org.icefaces.mobi.utils.TLDConstants.STYLECLASS)
+     private String styleClass;
 
     @Property( name = "for",
                required = Required.yes,
-               tlddoc = "id of camera component the thumbnail uses to find the image for")
+               tlddoc = "The id of camera or camcorder component the thumbnail is associated with.")
     private String For;
 
 }
