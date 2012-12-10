@@ -16,6 +16,7 @@
 
 package org.icefaces.mobi.component.gmap;
 
+/** The gMapMarker component. */
 public class GMapMarker extends GMapMarkerBase {
 
 }

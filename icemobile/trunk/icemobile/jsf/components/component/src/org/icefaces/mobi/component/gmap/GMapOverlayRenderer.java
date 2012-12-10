@@ -1,4 +1,3 @@
-package org.icefaces.mobi.component.gmap;
 /*
  * Copyright 2004-2012 ICEsoft Technologies Canada Corp.
  *
@@ -15,6 +14,8 @@ package org.icefaces.mobi.component.gmap;
  * governing permissions and limitations under the License.
  */
 
+package org.icefaces.mobi.component.gmap;
+
 import java.io.IOException;
 
 import javax.faces.component.UIComponent;
@@ -22,29 +23,39 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import org.icefaces.mobi.renderkit.CoreRenderer;
-import org.icefaces.render.MandatoryResourceComponent;
 
-@MandatoryResourceComponent(tagName="gMap", value="org.icefaces.mobi.component.gmap.GMap")
+/** The gMapOverlay component renderer. */
 public class GMapOverlayRenderer extends CoreRenderer {
 
 
+    /**
+     * If our rendered property is true, render the beginning of the current
+     * state of this UIComponent to the response contained in the specified
+     * FacesContext.
+     *
+     * @throws IOException - if an input/output error occurs while rendering
+     */
     public void encodeBegin(FacesContext context, UIComponent component)
             throws IOException {
 
         GMapOverlay overlay = (GMapOverlay) component;
         ResponseWriter writer = context.getResponseWriter();
         String clientId = overlay.getClientId(context);
-		writer.startElement("span", null);
-		writer.writeAttribute("id", clientId + "_overlay", null);
+        writer.startElement("span", null);
+        writer.writeAttribute("id", clientId + "_overlay", null);
         writer.startElement("script", null);
         writer.writeAttribute("type", "text/javascript", null);
-        if (overlay.getPoints() != null && overlay.getShape() != null){
-            writer.write(String.format("var wrapper = mobi.gmap.getWrapper('%s');wrapper.removeGOverlay('%s');",
-            	overlay.getParent().getClientId(context),clientId));
-            writer.write(String.format("wrapper.gOverlay('%s','%s');",
-            	clientId, overlay.getShape(),overlay.getPoints(), overlay.getOptions()));
+        if (overlay.getPoints() != null && overlay.getShape() != null) {
+            writer.write(
+                    String.format("var wrapper = mobi.gmap.getWrapper('%s');"
+                            + "wrapper.removeGOverlay('%s');",
+                       overlay.getParent().getClientId(context), clientId));
+            writer.write(
+                    String.format("wrapper.gOverlay('%s','%s','%s','%s');",
+                            clientId, overlay.getShape(),
+                            overlay.getPoints(), overlay.getOptions()));
         }
         writer.endElement("script");
-		writer.endElement("span");
+        writer.endElement("span");
     }
 }

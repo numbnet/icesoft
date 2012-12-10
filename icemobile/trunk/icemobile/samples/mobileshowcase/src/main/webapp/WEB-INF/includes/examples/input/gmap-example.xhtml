@@ -45,12 +45,22 @@
             <mobi:fieldsetRow rendered="#{gMapBean.altitude gt 0.0}">
                 Altitude: <h:outputText value="#{gMapBean.altitude}"/>
             </mobi:fieldsetRow>
+            <mobi:fieldsetRow>
+                <h:outputLabel value="Map Type:"/>
+                <h:selectOneMenu id="mapType" value="#{gMapBean.type}">
+                    <f:selectItem itemValue="ROADMAP"/>
+                    <f:selectItem itemValue="SATELLITE"/>
+                    <f:selectItem itemValue="HYBRID"/>
+                    <f:selectItem itemValue="TERRAIN"/>
+                    <f:ajax execute="@this" render="@all"/>
+                </h:selectOneMenu>
+            </mobi:fieldsetRow>
         </mobi:fieldsetGroup>
         
         <mobi:fieldsetGroup>
         	<mobi:fieldsetRow style="height:400px;">
         		<mobi:gMap id="gMap" latitude="#{gMapBean.latitude}" longitude="#{gMapBean.longitude}" 
-                type="#{gMapBean.type}" zoomLevel="#{gMapBean.zoom}" style="height:380px">
+                       type="#{gMapBean.type}" zoomLevel="#{gMapBean.zoom}" style="height:380px">
                   	<mobi:gMapMarker id="marker1" rendered="#{gMapBean.latitude gt 0.001 || gMapBean.latitude lt -0.001}"
                   		latitude="#{gMapBean.latitude}" longitude="#{gMapBean.longitude}"/>
                 </mobi:gMap>
