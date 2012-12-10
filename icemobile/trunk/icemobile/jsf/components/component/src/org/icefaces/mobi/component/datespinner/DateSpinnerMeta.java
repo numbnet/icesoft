@@ -40,8 +40,8 @@ import javax.faces.application.ResourceDependency;
         @ResourceDependency(library = "org.icefaces.component.util", name = "component.js")
 })
 @ClientBehaviorHolder(events = {
-        @ClientEvent(name = "change", javadoc = "Fired when a date is selected.", 
-                tlddoc = "Fired when a date is selected.", 
+        @ClientEvent(name = "change", javadoc = "Fired when a change is detected from date selection.",
+                tlddoc = "Fired when a change is detected in date selection.",
                 defaultRender = "@this", defaultExecute = "@all")
 }, defaultEvent = "change")
 public class DateSpinnerMeta extends UIInputMeta {

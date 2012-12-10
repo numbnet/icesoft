@@ -41,7 +41,9 @@ import javax.faces.application.ResourceDependency;
         @ResourceDependency(library = "org.icefaces.component.util", name = "component.js")
 })
 @ClientBehaviorHolder(events = {
-	@ClientEvent(name="change", javadoc="...", tlddoc="...", defaultRender="@this", defaultExecute="@all")
+	@ClientEvent(name="change", javadoc="Fires when a change is detected in the time spinner.",
+            tlddoc="Fires when a change is detected in the time spinner.",
+            defaultRender="@this", defaultExecute="@all")
 }, defaultEvent="change")
 public class TimeSpinnerMeta extends UIInputMeta {
 

@@ -44,8 +44,8 @@ import javax.faces.application.ResourceDependency;
 })
 @ClientBehaviorHolder(events = {
 	@ClientEvent(name="activate", 
-	        javadoc="Fired for either the touch or click event, depending on the client.", 
-	        tlddoc="Fired for either the touch or click event, depending on the client.", 
+	        javadoc="Fired when flip switch has realized an onclick event.",
+	        tlddoc="Fired when the the flip switch has realized an onclick event",
 	        defaultRender="@this", defaultExecute="@all")
 }, defaultEvent="activate")
 public class FlipSwitchMeta extends UISelectBooleanMeta {
