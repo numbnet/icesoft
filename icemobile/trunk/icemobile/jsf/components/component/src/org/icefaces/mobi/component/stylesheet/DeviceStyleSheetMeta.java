@@ -69,6 +69,6 @@ public class DeviceStyleSheetMeta {
     @Property(tlddoc = "The CSS media type, screen, print and others. ")
     private String media;
 
-    @Property(tlddoc = "View size, small or large as per  ")
+    @Property(tlddoc = "View size, small or large for user designated selection of stylesheet to be loaded. ")
     private String view;
 }
