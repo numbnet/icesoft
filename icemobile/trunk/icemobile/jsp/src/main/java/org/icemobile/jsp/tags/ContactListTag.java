@@ -56,7 +56,7 @@ public class ContactListTag extends BaseSimpleTag implements IContactList {
     
     private void init(){
         this.buttonLabel = "Fetch Contact";
-        this.fields= null;
+        this.fields= "name, email, phone";
     }
     
     public void release(){
