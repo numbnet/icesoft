@@ -21,6 +21,8 @@ import org.icefaces.ace.meta.annotation.Component;
 import org.icefaces.ace.meta.annotation.Expression;
 import org.icefaces.ace.meta.annotation.Property;
 import org.icefaces.ace.meta.baseMeta.UIComponentBaseMeta;
+import org.icefaces.mobi.utils.TLDConstants;
+
 import javax.el.MethodExpression;
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
@@ -36,8 +38,10 @@ import java.util.Map;
         rendererType = "org.icefaces.MicrophoneRenderer",
         extendsClass = "javax.faces.component.UIComponentBase",
         componentFamily = "org.icefaces.Microphone",
-        tlddoc = "This mobility component captures an audio file via a mobile device microphone" +
-                " and with ability to upload onto the server. "
+        tlddoc = "Renders a button to access the device audio recording features. " +
+        		"The component will fall back to input file type element on unsupported " +
+        		"clients. The audio file can then be uploaded, processed and stored " +
+        		"on the server. "
 )
 
 @ResourceDependencies({
@@ -45,42 +49,40 @@ import java.util.Map;
 })
 public class MicrophoneMeta extends UIComponentBaseMeta {
 
-    @Property(defaultValue = "Integer.MIN_VALUE", tlddoc = "maximun allowed length of audio clip in seconds")
+    @Property(defaultValue = "Integer.MIN_VALUE", 
+            tlddoc = "The maxium length of audio clip in seconds.")
     private int maxtime;
 
-    @Property(defaultValue = "false",
-            tlddoc = "When disabled, files are not selectable for upload.")
+    @Property(defaultValue = "false", tlddoc = TLDConstants.DISABLED)
     private boolean disabled;
 
-    @Property(tlddoc = "tabindex of the component")
+    @Property(tlddoc = TLDConstants.TABINDEX)
     private int tabindex;
 
-    @Property(tlddoc = "style will be rendered on the root element of this " +
-            "component.")
+    @Property(tlddoc = TLDConstants.STYLE)
     private String style;
 
-    @Property(tlddoc = "style class will be rendered on the root element of " +
-            "this component.")
+    @Property(tlddoc = TLDConstants.STYLECLASS)
     private String styleClass;
 
-    @Property(tlddoc = "as per specs the image information is stored in a Map")
+    @Property(tlddoc = "The map object for the uploaded contents. Must " +
+            "resolve to a java.util.Map<String,Object>. The uploaded " +
+            "file will be available in the map with the key of \"file\". ")
     private Map<String, Object> value;
 
-    @Property(defaultValue="false", tlddoc="The default value of this attribute is false. If true then value change event will happen in APPLY_REQUEST_VALUES phase and if the value of this attribute is false then event change will happen in INVOKE_APPLICATION phase")
+    @Property(defaultValue="false", tlddoc = TLDConstants.IMMEDIATE_INPUT)
     private boolean immediate;
 
-    @Property(expression= Expression.METHOD_EXPRESSION, methodExpressionArgument="javax.faces.event.ValueChangeEvent",
-    	    tlddoc = "MethodExpression representing a value change listener method that will be notified when a file has " +
-    	            "been uploaded with a valid file size > 0. The expression must evaluate to a public method that takes a " +
-    	            "ValueChangeEvent  parameter, with a return type of void, or to a public method that takes no arguments " +
-    	            "with a return type of void. ")
+    @Property(expression= Expression.METHOD_EXPRESSION, 
+            methodExpressionArgument="javax.faces.event.ValueChangeEvent",
+    	    tlddoc = TLDConstants.VALUECHANGELISTENER)
     private MethodExpression valueChangeListener;
 
-    @Property(defaultValue="audio captured", tlddoc="message the microphone button displays upon successful " +
-            "capture of audio from device.  This attribute available for internationalization " +
-            "purposes.")
+    @Property(defaultValue= "Audio Captured", 
+            tlddoc = "The button label to be displayed upon successful " +
+            "capture of audio from the device.")
     private String captureMessageLabel;
 
-    @Property(defaultValue="Record", tlddoc="button label for this component")
+    @Property(defaultValue="Record", tlddoc = "The button label.")
     private String buttonLabel;
 }

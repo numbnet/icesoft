@@ -51,7 +51,7 @@ import java.util.Map;
 })
 public class VideoCaptureMeta extends UIComponentBaseMeta {
 
-    @Property(defaultValue = "Integer.MIN_VALUE", tlddoc = "The maxium length of audio clip in seconds. ")
+    @Property(defaultValue = "Integer.MIN_VALUE", tlddoc = "The maxium length of video clip in seconds. ")
     private int maxtime;
 
     @Property(defaultValue = "false", tlddoc = TLDConstants.DISABLED)
