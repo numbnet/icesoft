@@ -1,0 +1,88 @@
+/***
+ * Copyright 2004-2012 ICEsoft Technologies Canada Corp.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the
+ * License. You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an "AS
+ * IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ * express or implied. See the License for the specific language
+ * governing permissions and limitations under the License.
+ */
+ 
+.mobi-tabset {
+    margin: 0;
+    padding: 0;
+}
+/* padding for pagepanel */
+.mobi-tabset.mobi-tabset-tabs-top-header{
+    padding-top: 40px;
+}
+.mobi-tabset.mobi-tabset-tabs-bottom-footer{ 
+    padding-bottom:40px;
+}
+.mobi-tabset > .mobi-tabset-tabs{
+    position: fixed;
+    text-align:center;
+    width: 100%;
+    z-index: 496;
+}
+.mobi-tabset.mobi-tabset-tabs-top > .mobi-tabset-tabs{
+    top: 0;
+}
+.mobi-tabset-tabs-bottom > .mobi-tabset-tabs{ 
+    bottom: 0; 
+}
+.mobi-tabset.mobi-tabset-tabs-top.mobi-tabset-tabs-top-header > .mobi-tabset-tabs{
+    top: 40px;
+}
+.mobi-tabset.mobi-tabset-tabs-bottom.mobi-tabset-tabs-bottom-footer > .mobi-tabset-tabs{
+    bottom: 40px;
+}
+/* TODO functional css but needs to lose theme name dependencies */
+html.ipad .mobi-tabset, html.honeycomb .mobi-tabset{
+    padding-top: 0;
+    padding-bottom: 0;
+}
+html.ipad .mobi-tabset.mobi-tabset-tabs-top.mobi-tabset-tabs-top-header > .mobi-tabset-tabs,
+html.honeycomb .mobi-tabset.mobi-tabset-tabs-top.mobi-tabset-tabs-top-header > .mobi-tabset-tabs{
+    top: 0;
+}
+html.ipad .mobi-tabset.mobi-tabset-tabs-bottom.mobi-tabset-tabs-bottom-footer > .mobi-tabset-tabs,
+html.honeycomb .mobi-tabset.mobi-tabset-tabs-bottom.mobi-tabset-tabs-bottom-footer > .mobi-tabset-tabs{
+    bottom: 0;
+}
+html.ipad .mobi-tabset > .mobi-tabset-tabs, html.honeycomb .mobi-tabset > .mobi-tabset-tabs{
+    position:relative;
+    width:auto;
+}
+.mobi-tabset > .mobi-tabset-tabs > ul{
+    margin: 0;
+    padding: 0;
+}
+.mobi-tabset > .mobi-tabset-tabs > ul > li{
+    cursor: pointer;
+    display: inline-block;
+    line-height: 40px;
+    padding: 0;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.mobi-tabpage-hidden { 
+    display: none; 
+}
+.mobi-tabpage{
+}
