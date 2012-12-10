@@ -20,6 +20,8 @@ package org.icefaces.mobi.component.button;
 import org.icefaces.ace.meta.annotation.Component;
 import org.icefaces.ace.meta.annotation.Property;
 import org.icefaces.ace.meta.baseMeta.UIComponentBaseMeta;
+import org.icefaces.mobi.utils.TLDConstants;
+
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
 
@@ -32,10 +34,8 @@ import javax.faces.application.ResourceDependency;
         componentType = "org.icefaces.component.CommandButtonGroup",
         rendererType = "org.icefaces.component.CommandButtonGroupRenderer",
         componentFamily = "org.icefaces.CommandButtonGroup",
-        tlddoc = "This mobile component allows the grouping of mobile command " +
-                "buttons.  The grouping can be either in the horizontal or " +
-                "vertical plain.  The 'selected' attribute on a command button " +
-                "can but used to set the selected button in the group."
+        tlddoc = "This component allows the grouping of commandButtons. The buttons "
+           + "can be grouped horizontally or vertically."
 )
 @ResourceDependencies({
         @ResourceDependency(library = "org.icefaces.component.util", name = "component.js")
@@ -43,14 +43,14 @@ import javax.faces.application.ResourceDependency;
 
 public class CommandButtonGroupMeta extends UIComponentBaseMeta {
 
-    @Property(tlddoc = "style class of the component, rendered on the div root of the component")
+    @Property(tlddoc = TLDConstants.STYLECLASS)
     private String styleClass;
 
-    @Property(tlddoc = "style of the component, rendered on the div root of the component")
+    @Property(tlddoc = TLDConstants.STYLE)
     private String style;
 
     @Property(defaultValue = "horizontal",
-            tlddoc = "Change the layout orientation of the button group child to either horizontal or vertical")
+            tlddoc = "The layout orientation of the button group, \"vertical\" or \"horizontal\". ")
     private String orientation;
 
 
