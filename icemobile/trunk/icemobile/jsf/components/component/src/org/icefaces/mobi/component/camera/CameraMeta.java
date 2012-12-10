@@ -24,6 +24,8 @@ import org.icefaces.ace.meta.baseMeta.UIComponentBaseMeta;
 import javax.el.MethodExpression;
 import org.icefaces.ace.meta.annotation.ClientBehaviorHolder;
 import org.icefaces.ace.meta.annotation.ClientEvent;
+import org.icefaces.mobi.utils.TLDConstants;
+
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
 
@@ -38,9 +40,9 @@ import java.util.Map;
         rendererType = "org.icefaces.CameraRenderer",
         extendsClass = "javax.faces.component.UIComponentBase",
         componentFamily = "org.icefaces.Camera",
-        tlddoc = "This mobility component captures an image via a mobile device camera" +
-                " and stores it on the mobile device. Available is "+
-                " valueChangeListener support"
+        tlddoc = "Renders a button to access the camera on supported clients, and" +
+        		" allows uploading and storing an image from the camera or image gallery. " +
+        		"The component will fallback to a input file type on unsupported browsers. "
 )
 
 @ResourceDependencies({
@@ -48,52 +50,47 @@ import java.util.Map;
 })
 public class CameraMeta extends UIComponentBaseMeta {
 
-    @Property(defaultValue = "Integer.MIN_VALUE", tlddoc = "maxium allowed width of image")
+    @Property(defaultValue = "Integer.MIN_VALUE",
+            tlddoc = "The maxium allowed width of image on those platforms where image cropping is supported. ")
     private int maxwidth;
 
-    @Property(defaultValue = "Integer.MIN_VALUE", tlddoc = "maximum allowed height of image")
+    @Property(defaultValue = "Integer.MIN_VALUE",
+            tlddoc = "The maximum allowed height of image on those platforms where image cropping is supported. ")
     private int maxheight;
 
-    @Property(defaultValue = "false",
-            tlddoc = "When disabled, files are not selectable for upload.")
+    @Property(defaultValue = "false", tlddoc = TLDConstants.DISABLED)
     private boolean disabled;
 
-    @Property( tlddoc = "tabindex of the component")
+    @Property( tlddoc = TLDConstants.TABINDEX)
     private int tabindex;
 
-    @Property(tlddoc = "style will be rendered on the root element of this " +
-            "component.")
+    @Property(tlddoc = TLDConstants.STYLE)
     private String style;
 
-    @Property(tlddoc = "style class will be rendered on the root element of " +
-            "this component.")
+    @Property(tlddoc = TLDConstants.STYLECLASS)
     private String styleClass;
 
-    @Property(tlddoc = "as per specs the image information is stored in a Map")
+    @Property(tlddoc = "The map object for the uploaded contents. Must resolve to a java.util.Map<String,Object>. " +
+    		"The uploaded file will be available in the map with the key of \"file\". ")
     private Map<String, Object> value;
 
-    @Property(expression= Expression.METHOD_EXPRESSION, methodExpressionArgument="javax.faces.event.ValueChangeEvent",
-    	    tlddoc = "MethodExpression representing a value change listener method that will be notified when a file has " +
-    	            "been uploaded with a valid file size > 0. The expression must evaluate to a public method that takes a " +
-    	            "ValueChangeEvent  parameter, with a return type of void, or to a public method that takes no arguments " +
-    	            "with a return type of void. ")
+    @Property(expression= Expression.METHOD_EXPRESSION, 
+            methodExpressionArgument="javax.faces.event.ValueChangeEvent",
+    	    tlddoc = TLDConstants.VALUECHANGELISTENER)
     private MethodExpression valueChangeListener;
 
-    @Property(defaultValue="false", tlddoc="The default value of this attribute is false. If true then value change event will happen in APPLY_REQUEST_VALUES phase and if the value of this attribute is false then event change will happen in INVOKE_APPLICATION phase")
+    @Property(defaultValue="false", tlddoc=TLDConstants.IMMEDIATE_INPUT)
     private boolean immediate;
 
-    @Property(defaultValue="false", tlddoc="When this attribute is set to true, if the device has the capability, the html5" +
-            " input component will be used to upload the photo.  Note that currently the " +
-            " containers do not support this feature yet, and with icemobilSX, it cannot be " +
-            " used dynamically.")
+    @Property(defaultValue="false", tlddoc="When this attribute is \"true\" an HTML5 input " +
+    		"acceptType=\"image/*\" will be used when the ICEmobile container is not available. ")
     private boolean useNative;
 
-    @Property(defaultValue="photo captured", tlddoc="message the camera button displays upon successful " +
-            "capture of picture from device.  This attribute available for internationalization " +
-            "purposes.")
+    @Property(defaultValue="Photo Captured", tlddoc="The message to be displayed on the button on a successful " +
+            "image capture. ")
     private String captureMessageLabel;
 
-    @Property(defaultValue="Camera", tlddoc="button label for this component")
+    @Property(defaultValue="Camera", tlddoc="The label to be displayed on the button. ")
     private String buttonLabel;
 
 }
