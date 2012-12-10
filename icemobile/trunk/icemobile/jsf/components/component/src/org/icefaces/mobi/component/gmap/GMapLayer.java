@@ -16,6 +16,7 @@
 
 package org.icefaces.mobi.component.gmap;
 
+/** The gMapLayer component. */
 public class GMapLayer extends GMapLayerBase {
 
 }

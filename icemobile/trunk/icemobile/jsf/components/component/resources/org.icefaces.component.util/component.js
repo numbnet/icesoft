@@ -722,17 +722,9 @@ ice.mobi.geolocation = {
         }
         window.removeEventListener('deviceorientation', ice.mobi.geolocation.orientationCallback);
     }
-
-
 }
 
 /* touch active state support */
 document.addEventListener("touchstart", function(){}, true);
-
-if (!window.mobi['gmap']) {
-    window.mobi.gmap = {};
-    mobi.gmap.repo = new Object();
-    mobi.gmap.markers = new Object();
-}
 
 

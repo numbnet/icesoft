@@ -22,10 +22,9 @@ if (!window.mobi['gmap']) {
 mobi.gmap.repo = new Object();
 (function() {
 	
-	function GMapWrapper(clientId, cfgIn) {
+	function GMapWrapper(clientId) {
 	    var ts = new Date().getTime();
 		var id = clientId;
-		var cfg = cfgIn;
 		var ele = document.getElementById(clientId);
 		if( ele ){
 		    var map = new google.maps.Map(ele, {mapTypeId : google.maps.MapTypeId.ROADMAP});
@@ -114,7 +113,7 @@ mobi.gmap.repo = new Object();
 					geoMarkerSet = false;
 				}
 				if (type == "MAP"){
-					type = "ROADMAP";//TODO why?
+					type = "ROADMAP";
 				}
 				if (map.getMapTypeId() != null) {
 					var g = google.maps;
@@ -418,7 +417,7 @@ mobi.gmap.repo = new Object();
 		}
 		delete mobi.gmap.repo[id];
 		
-		var wrapper = GMapWrapper(id, {mapTypeId : 'roadmap'});
+		var wrapper = GMapWrapper(id);
 		wrapper.initializing = false;
 		mobi.gmap.repo[id] = wrapper;
 		return wrapper;

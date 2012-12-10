@@ -23,6 +23,7 @@ import org.icefaces.ace.meta.annotation.Component;
 import org.icefaces.ace.meta.annotation.Property;
 import org.icefaces.ace.meta.baseMeta.UIPanelMeta;
 
+/** The gMapMarker component configuration meta class. */
 @Component(
         tagName         = "gMapMarker",
         componentClass  = "org.icefaces.mobi.component.gmap.GMapMarker",
@@ -31,17 +32,21 @@ import org.icefaces.ace.meta.baseMeta.UIPanelMeta;
         extendsClass    = "javax.faces.component.UIPanel",
         componentType   = "org.icefaces.mobi.component.GMapMarker",
         rendererType    = "org.icefaces.mobi.component.GMapMarkerRenderer",
-		componentFamily = "org.icefaces.mobi.component"
+        componentFamily = "org.icefaces.mobi.component"
         )
 
 @ResourceDependencies({
-    @ResourceDependency(library = "org.icefaces.component.util", name = "component.js")
+    @ResourceDependency(library = "org.icefaces.component.util",
+            name = "component.js")
 })
 
 public class GMapMarkerMeta extends UIPanelMeta {
-    @Property(tlddoc="The longitude for the marker.")
+
+    /** */
+    @Property(tlddoc = "The longitude for the marker.")
     private String longitude;
 
-    @Property(tlddoc="The latitude for the marker.")
+    /** */
+    @Property(tlddoc = "The latitude for the marker.")
     private String latitude;
 }
