@@ -105,4 +105,23 @@ public class ContentPane extends ContentPaneBase implements IContentPane{
     public ClientDescriptor getClient() {
         return MobiJSFUtils.getClientDescriptor();
     }
+
+    /**
+     * TODO implement disabled for this component which will affect
+     * contentStack, tabSet and accordion components.  Need to return something
+     * for IContentPane interface in core .
+     * @return
+     */
+    public boolean isDisabled(){
+        return false;
+    }
+    /**
+     * TODO implement disabled for this component which will affect
+     * contentStack, tabSet and accordion components.  Need to return something
+     * for IContentPane interface in core .
+     * @return
+     */
+    public void setDisabled(boolean disabled){
+        //noop
+    }
   }
