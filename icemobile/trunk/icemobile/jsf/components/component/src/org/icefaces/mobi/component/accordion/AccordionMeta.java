@@ -23,6 +23,8 @@ import org.icefaces.ace.meta.baseMeta.UIPanelMeta;
 import org.icefaces.ace.meta.annotation.ClientBehaviorHolder;
 import org.icefaces.ace.meta.annotation.ClientEvent;
 import org.icefaces.ace.meta.annotation.Required;
+import org.icefaces.mobi.utils.TLDConstants;
+
 import javax.el.MethodExpression;
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
@@ -41,49 +43,41 @@ import javax.faces.application.ResourceDependency;
                 "a stacked manner.  Only a single pane may be active at a time which is the selectedId " +
                 "which must be bound to a value in a backing bean as the accordion component makes use of " +
                 "the ContentPaneTagHandler class. " +
-                "Default for the" +
-                "content pane height will be autoHeight of true, in which case the contentPanes " +
-                "height will all be set to the largest height of all the contentPanes.  Since some of the " +
-                "contentPane children may not be rendered yet, the process to find the maximum height " +
+                "Default for the content pane height will be autoHeight of true, in which case the contentPanes " +
+                "height will all be set to the largest known height of all the contentPanes.  " +
+                "Since some of the contentPane children may not be fully  rendered yet, " +
+                "the process to find the maximum height " +
                 "of contentPanes may be ongoing until all the panes have been opened.  " +
-                "If autoHeight is set to false, then a fixedHeight may be used.  For older mobile browsers, " +
-                "the scrollablePaneContent attribute should be set to false."
+                "If autoHeight is set to false, then a fixedHeight may be used. "
 )
 @ResourceDependencies({
         @ResourceDependency(library = "org.icefaces.component.util", name = "component.js")
 })
 public class AccordionMeta extends UIPanelMeta {
     
-    @Property( tlddoc="id of the panel that is active in the accordion.")
+    @Property( tlddoc = "The id of the panel that is active in the accordion.")
     private String selectedId;
 
-	@Property(tlddoc="Inline style of the container element.")
+	@Property(tlddoc = TLDConstants.STYLE)
 	private String style;
 
-	@Property(tlddoc="Style class of the container element.")
+	@Property(tlddoc = TLDConstants.STYLECLASS)
 	private String styleClass;
 
-	@Property(tlddoc="Disables or enables the accordion.", defaultValue="false")
+	@Property(tlddoc = TLDConstants.DISABLED, defaultValue="false")
 	private boolean disabled;
 
-	@Property(tlddoc="When set to true (default), pane with highest content is used to calculate the height.", defaultValue="true")
+	@Property(tlddoc = "When \"true\", (default), the pane with highest known content is used to " +
+            "calculate the height.", defaultValue="true")
 	private boolean autoHeight;
 
-    @Property(tlddoc="This attribute can be used only when autoHeight is false. It must represent a " +
-            " valid height for element.style.height.  " +
+    @Property(tlddoc = "This attribute can be used only when autoHeight is false. " +
+            "It must represent a valid css height for element.style.height.  " +
             "If no height is set and autoHeight is false, then " +
-            "panes for accordion will just render at their content height. if content is larger than" +
-            "height of content pane, then contents will scroll")
+            "panes for accordion will just render at their content height.")
     private String height;
 
-    @Property(defaultValue="false",
-              tlddoc="This attribute is only used when autoHeight is false and a value is set into " +
-            "the height property.  Currently, android container and stock browsers on older mobile " +
-            "devices will not work correctly when using this feature. When all browsers support the " +
-            "scrolling feature, this attribute will be removed and the feature made automatic.")
-    private boolean scrollablePaneContent;
-
- 	@Property(tlddoc="Server side listener to invoke when active pane changes",
+ 	@Property(tlddoc = "Server side listener to invoke when the active pane changes",
                   expression= Expression.METHOD_EXPRESSION,
                   methodExpressionArgument="javax.faces.event.ValueChangeEvent")
 	private MethodExpression paneChangeListener;
