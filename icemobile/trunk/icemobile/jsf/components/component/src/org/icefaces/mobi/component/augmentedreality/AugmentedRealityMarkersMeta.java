@@ -36,21 +36,24 @@ import java.util.List;
         rendererType = "org.icefaces.AugmentedRealityMarkersRenderer",
         extendsClass = "javax.faces.component.UIComponentBase",
         componentFamily = "org.icefaces.AugmentedRealityMarkers",
-        tlddoc = "This mobility component displays a set of three dimensional markers corresponding to the marker ID matching their index"
+        tlddoc = "Renders a list of three dimensional models attached to markers " +
+                "displayed so that the marker ID corresponds to the list index " +
+                "of the model."
 )
 
 public class AugmentedRealityMarkersMeta extends UIComponentBaseMeta  {
 
-    @Property(tlddoc="list iterator variable name")
+    @Property(tlddoc="Name of request scope attribute for list iterator variable.",
+            required = Required.yes)
     private String var;
 
-    @Property(tlddoc="value containing marker items")
+    @Property(tlddoc="List containing marker items.", required = Required.yes)
     private Object value;
 
-    @Property(tlddoc="Marker String label")
+    @Property(tlddoc="String containing Marker label.", required = Required.yes)
     private String markerLabel;
 
-    @Property(tlddoc="location marker URL")
+    @Property(tlddoc="URL pointing to marker model object.", required = Required.yes)
     private String markerModel;
 
 }
