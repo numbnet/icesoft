@@ -34,7 +34,7 @@ import javax.faces.application.ResourceDependency;
         rendererType = "org.icefaces.VideoPlayerRenderer",
         extendsClass = "javax.faces.component.UIComponentBase",
         componentFamily = "org.icefaces.VideoPlayer",
-        tlddoc = "This mobility component renders a video Player to play back supported codecs for mobility devices"
+        tlddoc = "videoPlayer renders a video player to play back videos."
 )
 
 
@@ -43,60 +43,58 @@ import javax.faces.application.ResourceDependency;
 })
 public class VideoPlayerMeta extends UIComponentBaseMeta {
 
-    @Property(defaultValue = "auto", tlddoc = "whether to preload the file accepted values are auto,none or metadata;  " +
-            "where metadata means preload just the metadata and auto leaves the browser to " +
-            "decide whether to preload the entire file")
+    @Property(defaultValue = "auto", tlddoc = "Determies whether video source is preloaded. Accepted values are auto,none or metadata;  " +
+            "where metadata means preload just the metadata, auto leaves the browser to " +
+	      "decide preload strategy, and none performs no preloading")
     private String preload;
 
-    @Property(defaultValue = "true", tlddoc = "whether the controls are displayed or not")
+    @Property(defaultValue = "true", tlddoc = "Determines if the controls are displayed.")
     private boolean controls;
 
-    @Property(tlddoc = "value can be byte[] or String filename or Resource")
+    @Property(tlddoc = "The value of the video resource.  Can be byte[], filename string, or Resource")
     private Object value;
 
-    @Property(defaultValue = "false", tlddoc = "boolean which specifies whether the file should be " +
-            "played repeatedly")
+    @Property(defaultValue = "false", tlddoc = "Specifies if the file should be " +
+            "played repeatedly.")
     private boolean loop;
 
-    @Property(tlddoc = "allows webkit supported browsers to play back the video inline rather than a new window")
+    @Property(tlddoc = "Allows webkit supported browsers to play back the video inline rather than a new window.")
     private boolean playsinline;
 
     @Property(defaultValue = "false",
-            tlddoc = "boolean, when disabled, audio is not activated")
+            tlddoc = org.icefaces.mobi.utils.TLDConstants.DISABLED)
     private boolean disabled;
 
-    @Property(tlddoc = "tabindex of the component")
+    @Property(tlddoc = org.icefaces.mobi.utils.TLDConstants.TABINDEX)
     private int tabindex;
 
-    @Property(tlddoc = "style will be rendered on the root element of this " +
-            "component.")
-    private String style;
+     @Property(tlddoc = org.icefaces.mobi.utils.TLDConstants.STYLE)
+     private String style;
 
-    @Property(tlddoc = "style class will be rendered on the root element of " +
-            "this component.")
-    private String styleClass;
+     @Property(tlddoc = org.icefaces.mobi.utils.TLDConstants.STYLECLASS)
+     private String styleClass;
 
-    @Property(tlddoc = "name is used for resource registering")
+    @Property(tlddoc = "The name used for registering resources.")
     private String name;
 
-    @Property(tlddoc = "url of video stream to play")
+    @Property(tlddoc = "The URL of video stream to play.")
     private String url;
 
-    @Property(tlddoc = "not implemented, display a static photo until the video is played")
-    private String poster;
+    /* TODO    @Property(tlddoc = "not implemented, display a static photo until the video is played") 
+       private String poster; */
 
-    @Property(defaultValue = "Integer.MIN_VALUE", tlddoc = "maximum width of video area")
+    @Property(defaultValue = "Integer.MIN_VALUE", tlddoc = "The maximum width of video area.")
     private int width;
 
-    @Property(defaultValue = "Integer.MIN_VALUE", tlddoc = "maximum height of video area")
+    @Property(defaultValue = "Integer.MIN_VALUE", tlddoc = "The maximum height of video area.")
     private int height;
 
-    @Property(defaultValue = "session", tlddoc = "support for resource based video which can be registered in various scopes")
+    @Property(defaultValue = "session", tlddoc = "Deterimes the scope of the video resource.")
     private String scope;
 
-    @Property( tlddoc = "contentType or mimeType for video file")
+    @Property( tlddoc = "The contentType or mimeType for the video file.")
     private String type;
 
-    @Property( tlddoc = "Label for link that launches a system video player")
+    @Property( tlddoc = "The label on a link that launches a system video player.")
     private String linkLabel;
 }

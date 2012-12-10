@@ -27,7 +27,7 @@ import org.icefaces.ace.meta.annotation.Component;
         componentType = "org.icefaces.SmallView",
         rendererType = "org.icefaces.ViewRenderer",
         componentFamily = "org.icefaces.SmallView",
-        tlddoc = "Will include and render the child components when the client is a handheld"
+        tlddoc = "smallView will include and render the child components when the client is a handheld."
 )
 
 public class SmallViewMeta {

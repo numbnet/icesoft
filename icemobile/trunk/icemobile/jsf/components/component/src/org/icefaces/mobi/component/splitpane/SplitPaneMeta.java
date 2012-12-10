@@ -34,7 +34,7 @@ import javax.faces.component.UIComponent;
         rendererType = "org.icefaces.SplitPaneRenderer",
         extendsClass = "javax.faces.component.UIPanel",
         componentFamily = "org.icefaces.SplitPane",
-        tlddoc = "This mobility component renders a div with two children that can be defined for  " +
+        tlddoc = "splitPane renders a div with two children that can be defined for  " +
                 "page layout.  It can be scrollable, have columnDivider at certain location. " +
                 " Requires a left and right facet for two, side by side, panels." +
                 " Eventually will also be resizable."
@@ -45,15 +45,12 @@ import javax.faces.component.UIComponent;
 })
 public class SplitPaneMeta extends UIPanelMeta {
     @Property(defaultValue="true",
-             tlddoc=" determines if the content of this panel is scrollable.")
+             tlddoc="Determines if the content of this panel is scrollable.")
     private boolean scrollable;
 
     @Property(defaultValue="25",
-            tlddoc=" location of divider % for left pane when left and right facet used This " +
-            " For example a value of 30 will mean that the left facet gets 30% and the right facet 70%." +
-            " If default Value is used, both panes will not be modified for width by this component")
+            tlddoc="The % of the total width assigned to the left pane.")
     private int columnDivider;
-
 
     @Facets
     class FacetsMeta {

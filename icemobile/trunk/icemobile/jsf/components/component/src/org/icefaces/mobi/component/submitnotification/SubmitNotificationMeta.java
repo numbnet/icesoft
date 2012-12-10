@@ -28,20 +28,17 @@ import org.icefaces.ace.meta.baseMeta.UIPanelMeta;
         rendererType = "org.icefaces.SubmitNotificationRenderer",
         extendsClass    = "javax.faces.component.UIPanel",
         componentFamily = "org.icefaces.SubmitNotification",
-        tlddoc = "This mobility component " +
-                "renders a panel to be used with any mobi commandButton which blocks any other submission for the duration "+
-                " the process triggered by the button until the update is complete")
+        tlddoc = "submitNoftification " +
+                "renders a panel, to be used with any mobi commandButton, which blocks any other submission until a response is recieved and the update completes.")
 public class SubmitNotificationMeta extends UIPanelMeta {
 
-    @Property(tlddoc = "tabindex of the component")
+    @Property(tlddoc = org.icefaces.mobi.utils.TLDConstants.TABINDEX)
     private int tabindex;
 
-    @Property(tlddoc = "style will be rendered on the root element of this " +
-            "component.")
-    private String style;
+     @Property(tlddoc = org.icefaces.mobi.utils.TLDConstants.STYLE)
+     private String style;
 
-    @Property(tlddoc = "style class will be rendered on the root element of " +
-            "this component.")
-    private String styleClass;
+     @Property(tlddoc = org.icefaces.mobi.utils.TLDConstants.STYLECLASS)
+     private String styleClass;
 
 }
