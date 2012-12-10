@@ -220,7 +220,7 @@ public class TabSetRenderer extends BaseLayoutRenderer {
         writer.startElement("span", uiComponent);
         writer.writeAttribute("id", clientId + "_script", "id");
         writer.startElement("script", null);
-        writer.writeAttribute("text", "text/javascript", null);
+        writer.writeAttribute("type", "text/javascript", null);
        // int hashcode = Utils.generateHashCode(System.currentTimeMillis());
         int hashcode = MobiJSFUtils.generateHashCode(tabset.getSelectedId());
         StringBuilder cfg = new StringBuilder("{singleSubmit: ");

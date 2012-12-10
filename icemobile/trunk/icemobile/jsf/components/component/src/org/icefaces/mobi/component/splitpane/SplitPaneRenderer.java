@@ -83,7 +83,7 @@ public class SplitPaneRenderer extends BaseLayoutRenderer {
         String clientId = pane.getClientId(facesContext);
         writer.startElement("span", uiComponent);
         writer.startElement("script", uiComponent);
-        writer.writeAttribute("text", "text/javascript", null);
+        writer.writeAttribute("type", "text/javascript", null);
         StringBuilder sb = new StringBuilder("ice.mobi.splitpane.initClient('").append(clientId).append("'");
         sb.append(",{ scrollable: '").append(pane.isScrollable()).append("'");
      //   sb.append(", resize: ").append(pane.isResizable()); not yet implemented.

@@ -146,7 +146,7 @@ public class MenuButtonRenderer extends BaseLayoutRenderer {
         writer.startElement("span", uiComponent);
         writer.writeAttribute("id", clientId+"_initScr", "id");
         writer.startElement("script", uiComponent);
-        writer.writeAttribute("text", "text/javascript", null);
+        writer.writeAttribute("type", "text/javascript", null);
         StringBuilder sb = new StringBuilder("mobi.menubutton.initmenu('");
         sb.append(clientId).append("',").append("{ selectTitle: '").append(menu.getSelectTitle()).append("'});");
         writer.write(sb.toString());
