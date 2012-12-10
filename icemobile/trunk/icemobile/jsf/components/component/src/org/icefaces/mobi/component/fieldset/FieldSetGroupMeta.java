@@ -20,6 +20,8 @@ package org.icefaces.mobi.component.fieldset;
 import org.icefaces.ace.meta.annotation.Component;
 import org.icefaces.ace.meta.annotation.Property;
 import org.icefaces.ace.meta.baseMeta.UIComponentBaseMeta;
+import org.icefaces.mobi.utils.TLDConstants;
+
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
 
@@ -34,8 +36,8 @@ import javax.faces.application.ResourceDependency;
         extendsClass = "javax.faces.component.UIComponentBase",
         componentFamily = "org.icefaces.FieldSetGroup",
         tlddoc = "This mobility component " +
-                "represents a grouping of unordered list items.  The child component "+
-                "of this component should only be fieldsetRow. "
+                "represents a grouping of unordered list items.  The immediate children " +
+                "must be fieldsetRow components. "
 )
 
 @ResourceDependencies({
@@ -44,15 +46,13 @@ import javax.faces.application.ResourceDependency;
 public class FieldSetGroupMeta extends UIComponentBaseMeta {
 	
     @Property(defaultValue="true",
-    		  tlddoc = "true enables padding around list group")
+    		  tlddoc = "When \"true\", renders padding around list group. ")
     private boolean inset;
  
-    @Property(tlddoc = "style will be rendered on the root element of this " +
-    "component.")
+    @Property(tlddoc = TLDConstants.STYLE)
     private String style;
 
-    @Property(tlddoc = "style class will be rendered on the root element of " +
-        "this component.")
+    @Property(tlddoc = TLDConstants.STYLECLASS)
     private String styleClass;
 
 }

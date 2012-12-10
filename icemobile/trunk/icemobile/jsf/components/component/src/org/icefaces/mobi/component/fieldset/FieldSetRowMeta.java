@@ -20,6 +20,7 @@ package org.icefaces.mobi.component.fieldset;
 import org.icefaces.ace.meta.annotation.Component;
 import org.icefaces.ace.meta.annotation.Property;
 import org.icefaces.ace.meta.baseMeta.UIComponentBaseMeta;
+import org.icefaces.mobi.utils.TLDConstants;
 
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
@@ -45,15 +46,13 @@ public class FieldSetRowMeta extends UIComponentBaseMeta {
         	
 
     @Property(defaultValue="false",
-    		  tlddoc = "true means the item is styled as a group header")
+    		  tlddoc = "When \"true\", will render the item with a list header style. ")
     private boolean group;
 
-    @Property(tlddoc = "style will be rendered on the root element of this " +
-    "component.")
+    @Property(tlddoc = TLDConstants.STYLE)
     private String style;
 
-    @Property(tlddoc = "style class will be rendered on the root element of " +
-        "this component.")
+    @Property(tlddoc = TLDConstants.STYLECLASS)
     private String styleClass;
 
 }
