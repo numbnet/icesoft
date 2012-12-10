@@ -43,8 +43,14 @@ public class QRCodeTag extends BaseSimpleTag {
         StringBuilder tag = new StringBuilder();
         tag.append("<img ");
 
-        String result = contextPath + QR_PREFIX + URLEncoder.encode(value);
+        String result = URLEncoder.encode(value);
         result = result.replace(".", "%2E");
+        result = result.replace("?", "%3F");
+        result = result.replace(",", "%2C");
+        result = result.replace("-", "%2D");
+        result = result.replace("=", "%3D");
+        result = result.replace("/", "%2F");
+        result = contextPath + QR_PREFIX + result;
 
         tag.append("src=\"").append(result).append("\" ");
 
