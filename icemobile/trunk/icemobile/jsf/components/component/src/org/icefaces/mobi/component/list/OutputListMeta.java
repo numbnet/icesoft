@@ -33,9 +33,8 @@ import javax.faces.application.ResourceDependency;
         rendererType = "org.icefaces.OutputListRenderer",
         extendsClass = "javax.faces.component.UIComponentBase",
         componentFamily = "org.icefaces.OutputList",
-        tlddoc = "This mobility component " +
-                "represents a grouping of unordered list items.  The child component "+
-                "of this component should only be outputListItem. "
+        tlddoc = "outputList defines a grouping of unordered list items.  The child component "+
+                "of this component must be outputListItem components. "
 )
 
 
@@ -45,15 +44,13 @@ import javax.faces.application.ResourceDependency;
 public class OutputListMeta extends UIComponentBaseMeta {
 	
     @Property(defaultValue="false",
-    		  tlddoc = "true enables padding around list group")
+    		  tlddoc = "Determines if inset padding is applied around list group.")
     private boolean inset;
 
-    @Property(tlddoc = "style will be rendered on the root element of this " +
-    "component.")
-    private String style;
+     @Property(tlddoc = org.icefaces.mobi.utils.TLDConstants.STYLE)
+     private String style;
 
-    @Property(tlddoc = "style class will be rendered on the root element of " +
-        "this component.")
-    private String styleClass;
+     @Property(tlddoc = org.icefaces.mobi.utils.TLDConstants.STYLECLASS)
+     private String styleClass;
 
 }

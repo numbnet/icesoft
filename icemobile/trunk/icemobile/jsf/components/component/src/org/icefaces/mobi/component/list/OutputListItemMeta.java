@@ -33,7 +33,7 @@ import javax.faces.application.ResourceDependency;
         rendererType = "org.icefaces.OutputListItemRenderer",
         extendsClass = "javax.faces.component.UIComponentBase",
         componentFamily = "org.icefaces.OutputListItem",
-        tlddoc = "This mobility component is used within an outputlist tag to group unordered list items."
+        tlddoc = "outputListItem is used within an outputList tag to group unordered list items."
 )
 
 @ResourceDependencies({
@@ -41,19 +41,14 @@ import javax.faces.application.ResourceDependency;
 })
 public class OutputListItemMeta extends UIComponentBaseMeta {
         	
-    @Property(defaultValue="default", tlddoc = "type is default or thumb  " )
-    private String type;
-	
     @Property(defaultValue="false",
-    		  tlddoc = "true means the item is styled as a group header")
+    		  tlddoc = "Determines if the item is styled as a group header.")
     private boolean group;
 
-    @Property(tlddoc = "style will be rendered on the root element of this " +
-    "component.")
-    private String style;
+     @Property(tlddoc = org.icefaces.mobi.utils.TLDConstants.STYLE)
+     private String style;
 
-    @Property(tlddoc = "style class will be rendered on the root element of " +
-        "this component.")
-    private String styleClass;
+     @Property(tlddoc = org.icefaces.mobi.utils.TLDConstants.STYLECLASS)
+     private String styleClass;
 
 }

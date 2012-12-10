@@ -32,7 +32,7 @@ import javax.faces.application.ResourceDependency;
         rendererType = "org.icefaces.OutputListItemsRenderer",
         extendsClass = "org.icefaces.impl.component.UISeriesBase",
         componentFamily = "org.icefaces.OutputListItems",
-        tlddoc = "This mobility component is used within an outputlist tag to group lists of items."
+        tlddoc = "outputListItems is used within an outputList tag to group lists of items."
 )
 
 @ResourceDependencies({
@@ -41,19 +41,13 @@ import javax.faces.application.ResourceDependency;
 public class OutputListItemsMeta extends UISeriesBaseMeta {
 
     @Property(defaultValue="false",
-    		  tlddoc = "true enables padding around list group")
+	      tlddoc = "Determines if inset padding is included around list group.")
     private boolean inset;
 
-    @Property(defaultValue="default", tlddoc = " default or thumb  " )
-    private String type;
-
-    @Property(tlddoc = "style will be rendered on the root element of this " +
-     "component.")
+     @Property(tlddoc = org.icefaces.mobi.utils.TLDConstants.STYLE)
      private String style;
 
-    @Property(tlddoc = "style class will be rendered on the root element of " +
-        "this component.")
-    private String styleClass;
-
+     @Property(tlddoc = org.icefaces.mobi.utils.TLDConstants.STYLECLASS)
+     private String styleClass;
 }
 
