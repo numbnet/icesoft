@@ -27,8 +27,8 @@ import org.icefaces.ace.meta.annotation.Component;
         componentType = "org.icefaces.LargeView",
         rendererType = "org.icefaces.ViewRenderer",
         componentFamily = "org.icefaces.LargeView",
-        tlddoc = "Will include and render the child components when the client is a desktop" +
-        		" or tablet view"
+        tlddoc = "LargeView will include and render the child components when " +
+                "the client is a desktop or tablet view."
 )
 
 public class LargeViewMeta {
