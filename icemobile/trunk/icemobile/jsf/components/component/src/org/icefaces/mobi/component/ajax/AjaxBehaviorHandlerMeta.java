@@ -31,20 +31,31 @@ import javax.el.MethodExpression;
     extendsClass = "javax.faces.view.facelets.TagHandler",
 	behaviorId = "org.icefaces.mobi.component.AjaxBehavior",
 	behaviorClass = "org.icefaces.mobi.component.ajax.AjaxBehavior",
-    tlddoc = "Applied on components that support client behaviors similar to the standard f:ajax behavior."
+    tlddoc = "Register an AjaxBehavior instance on one UIComponent implementing the " +
+    		"ClientBehaviorHolder interface. This tag may be nested witin a single component " +
+    		" to enable Ajax for that single component."
 )
 public class AjaxBehaviorHandlerMeta {
 
-	@Property(required=Required.no, tlddoc="Method to process in partial request.")
+	@Property(required=Required.no, tlddoc="Method expression referencing a method that will be called when an " +
+			"AjaxBehaviorEvent has been broadcast for the listener.")
 	private MethodExpression listener;
 	
-	@Property(required=Required.no, tlddoc="Boolean value that determines the phaseId, when true actions are processed at apply_request_values, when false at invoke_application phase. If not specified, the component's immediate value is applied.")
+	@Property(required=Required.no, tlddoc="If \"true\" behavior events generated from this behavior " +
+			"are broadcast during Apply Request Values phase. Otherwise, the events will be broadcast " +
+			"during Invoke Aplications phase.")
 	private boolean immediate;
 	
-	@Property(required=Required.no, tlddoc="Component(s) to execute in the ajax request. The format is the same as that of the f:ajax tag.")
+	@Property(required=Required.no, tlddoc="Evaluates to Collection. Identifiers of components that will participate in the \"execute\" " +
+			"portion of the Request Processing Lifecycle. If a literal is specified the identifiers must " +
+			"be space delimited. Any of the keywords \"@this\", \"@form\", \"@all\", \"@none\" may be specified " +
+			"in the identifier list.")
 	private String execute;
 	
-	@Property(required=Required.no, tlddoc="Component(s) to render in the ajax rquest. The format is the same as that of the f:ajax tag.")
+	@Property(required=Required.no, tlddoc="Evaluates to Collection. Identifiers of components that will participate in the \"render\" " +
+			"portion of the Request Processing Lifecycle. If a literal is specified the " +
+			"identifiers must be space delimited. Any of the keywords \"@this\", \"@form\", \"@all\", \"@none\" may be " +
+			"specified in the identifier list.")
 	private String render;
 	
 	@Property(required=Required.no, tlddoc="Javascript handler to execute before ajax request is begins. The function has to return 'true' to continue with the ajax request; if 'false' or nothing is returned, the ajax request will be aborted.")
@@ -56,12 +67,18 @@ public class AjaxBehaviorHandlerMeta {
 	@Property(required=Required.no, tlddoc="Javascript handler to execute when ajax request succeeds.")
 	private String onSuccess;
 	
-	@Property(required=Required.no, tlddoc="Javascript handler to execute when ajax request fails.")
+	@Property(required=Required.no, tlddoc="The name of the JavaScript function that will handle errors.")
 	private String onError;
 	
-	@Property(required=Required.no, tlddoc="Disables ajax behavior.")
+	@Property(required=Required.no, tlddoc="A value of \"true\" indicates the AjaxBehavior should not be rendered. " +
+			"A value of \"false\" indicates the AjaxBehavior should be rendered. \"false\" is the default.")
 	private boolean disabled;
 	
-	@Property(required=Required.no, tlddoc="Name of the event that will trigger the ajax request.")
+	@Property(required=Required.no, tlddoc="A String identifying the type of event the Ajax action will apply to. " +
+			"If specified, it must be one of the events supported by the component the Ajax behavior is being applied to. " +
+			"For HTML components this would be the set of supported DOM events for the component, plus \"action\" for " +
+			"Faces ActionSource components and \"valueChange\" for Faces EditableValueHolder components. " +
+			"If not specified, the default event is determined for the component. The DOM event name is the" +
+			" actual DOM event name (for example: \"click\") as opposed to (for example: \"onclick\").")
 	private String event;
 }
