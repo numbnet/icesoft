@@ -406,13 +406,15 @@ public class DataTable extends DataTableBase implements Serializable {
             if (savedPageState != null)
                 savedPageState.restoreState(this);
 
-            if (savedSortState != null && isApplyingSorts()) {
-                savedSortState.restoreState(this);
+            if (isApplyingSorts()) {
+                if (savedSortState != null)
+                    savedSortState.restoreState(this);
                 processSorting();
             }
 
-            if (savedFilterState != null && isApplyingFilters()) {
-                savedFilterState.restoreState(this);
+            if (isApplyingFilters()) {
+                if (savedFilterState != null)
+                    savedFilterState.restoreState(this);
                 setFilteredData(processFilters(context));
             }
 
@@ -717,9 +719,13 @@ public class DataTable extends DataTableBase implements Serializable {
         if (isConstantRefilter()) return true;
 
         Object cached = getCachedGlobalFilter();
-        boolean globalFilterChanged = cached != null && !cached.equals(getFilterValue());
+        String gFilterVal = getFilterValue();
 
-        setCachedGlobalFilter(getFilterValue());
+        boolean globalFilterChanged = (cached == null)
+                ?  gFilterVal != null && !gFilterVal.equals("")
+                : !cached.equals(gFilterVal);
+
+        setCachedGlobalFilter(gFilterVal);
 
         return super.isApplyingFilters() || globalFilterChanged;
     }
