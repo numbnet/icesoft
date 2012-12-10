@@ -22,9 +22,7 @@
              xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component"
              xmlns:util="http://java.sun.com/jsf/composite/components">
              
-    <mobi:viewSelector>
-        <f:facet name="small">
-            <f:subview id="small">
+        <mobi:smallView>
             <ui:param name="viewSize" value="small" />
             <mobi:pagePanel>
                 <f:facet name="header">
@@ -36,10 +34,8 @@
                     </div>
                 </f:facet>
             </mobi:pagePanel>
-            </f:subview>
-        </f:facet>
-        <f:facet name="large">
-            <f:subview id="large">
+        </mobi:smallView>
+        <mobi:largeView>
             <ui:param name="viewSize" value="large" />
             <mobi:pagePanel>
                 <f:facet name="header">
@@ -64,9 +60,7 @@
                 </f:facet>
         
             </mobi:pagePanel>
-            </f:subview>
-        </f:facet>
-    </mobi:viewSelector>
+        </mobi:largeView>
     
     <mobi:submitNotification/>
  
