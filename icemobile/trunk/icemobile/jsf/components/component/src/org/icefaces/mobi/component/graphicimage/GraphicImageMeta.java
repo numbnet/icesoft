@@ -31,62 +31,61 @@ import javax.faces.application.ResourceDependency;
         rendererType = "org.icefaces.GraphicImageRenderer",
         extendsClass = "javax.faces.component.UIComponentBase",
         componentFamily = "org.icefaces.GraphicImage",
-        tlddoc = "This mobility component creates graphicImage markup while supporting " +
-                "the byte[] format for image from database " +
-                "based on the compat graphicImage component"
+        tlddoc = "Render markup for &lt;img&gt; with support for " +
+                " byte[] for images from database."
 )
 
 @ResourceDependencies({
         @ResourceDependency(library = "org.icefaces.component.util", name = "component.js")
 })
 public class GraphicImageMeta {
-    @Property(tlddoc = "alternate to display if image is unavailable")
+    @Property(tlddoc = "Alternate textual discription as \"alt\" attribute for this image.")
     private String alt;
 
-    @Property(defaultValue = "Integer.MIN_VALUE", tlddoc = "width of small mobile image")
+    @Property(defaultValue = "Integer.MIN_VALUE", tlddoc = "Integer specifying  the width of this image.")
     private int width;
 
-    @Property(defaultValue = "Integer.MIN_VALUE", tlddoc = "height of gallery small mobil image is default")
+    @Property(defaultValue = "Integer.MIN_VALUE", tlddoc = "Integer specifying the height of this image.")
     private int height;
 
-    @Property(tlddoc = "src is supported similar to compat graphicImage")
+    @Property(tlddoc = "Override for the \"src\" attribute of this image.")
     private String src;
 
-    @Property(tlddoc = "value can be byte[] or String filename or Resource")
+    @Property(tlddoc = "Value of the image, which can be byte[], String filename, or Resource.")
     private Object value;
 
-    @Property(tlddoc = "url is supported in compat and h graphicImage")
+    @Property(tlddoc = "Equivalent to the \"src\" attribute.")
     private String url;
 
-    @Property(tlddoc = "mimetype of graphic")
+    @Property(tlddoc = "Override for the MIME type of the image.")
     private String mimeType;
 
-    @Property(defaultValue = "scope", tlddoc = "scope of object to place resource into")
+    @Property(defaultValue = "session", tlddoc = "Scope of Resource or byte[] when image is specified with a dynamic data value.")
     private String scope;
 
-    @Property(tlddoc = "resource name for this component")
+    @Property(tlddoc = "Name of resource object stored when image is specified with a dynamic data value.")
     private String name;
 
-    @Property(tlddoc = "ismap of html markup-specifies image as server-side image map")
+    @Property(tlddoc = "Flag indicating that the image serves as a client-side image map via the HTML \"ismap\" attribute.")
     private String ismap;
 
-    @Property(tlddoc = "URI to a long description of the image")
+    @Property(tlddoc = "URI to a long description of the image.")
     private String longdesc;
 
-    @Property(tlddoc = "usemap of html markup, specifies image as client-side image map")
+    @Property(tlddoc = "Value for the HTML \"usemap\" attribute, providing the hash fragment reference to a client-side image map <map> tag in the page.")
     private String usemap;
 
-    @Property(tlddoc = "styleClass as per basic component standards for overwriting styleClass")
+    @Property(tlddoc = "Space-separated list of CSS style class(es) to be applied when this element is rendered.")
     private String styleClass;
 
-    @Property(tlddoc = "style as per basic component standards for overwriting style")
+    @Property(tlddoc = "CSS style(s) to be applied when this component is rendered.")
     private String style;
 
-    @Property(tlddoc = "direction indication for text that does not inherit directionality. Valid values are LTR " +
-            "or RTL  left to right or right to left")
+    @Property(tlddoc = "HTML text direction for text that does not inherit directionality. Valid values are LTR " +
+            "or RTL  left to right or right to left.")
     private String dir;
 
-    @Property(tlddoc = "title as per UIGraphic")
+    @Property(tlddoc = "HTML title attribute providing extra information about the element.")
     private String title;
 
 }
