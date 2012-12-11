@@ -70,7 +70,7 @@
 	<context-param>
         <description>Google Maps API key is required if gMap component is used. Sign up for an API key from http://code.google.com/apis/maps/signup.html</description>
         <param-name>org.icefaces.ace.gmapKey</param-name>
-        <param-value>AIzaSyAATyWVqT2qNusNGmcVTyQ0QmymkpU-B5o</param-value>
+        <param-value>AIzaSyAATyWVqT2qNusNGmcVTyQ0QmymkpU-B5o&amp;libraries=places</param-value>
     </context-param>
 
 	

@@ -51,7 +51,6 @@ public class GMapAutocompleteMeta extends UIPanelMeta {
     @Property(tlddoc = "Styling options to be sent to the autocomplete box.")
     private String style;
     @Property(tlddoc = "Additional options to be sent to the info window displayed. " +
-            "Leave blank for default, and set to 'off' to turn marker/window off. " +
             "Check google maps API for more specifics at https://developers.google.com/maps/documentation/javascript/reference#AutocompleteOptions." +
             " Form is attribute:'value'.", defaultValue = "none")
     private String windowOptions;
@@ -65,5 +64,7 @@ public class GMapAutocompleteMeta extends UIPanelMeta {
     private String url;
     @Property(tlddoc = "Value to shift the map after finding new location, in pixels. (useful for mobile devices) Form is x,y.", defaultValue = "0,0")
     private String offset;
+    @Property(tlddoc = "Determine whether or not to display an Info Window with information on the selected point.", defaultValue="true")
+    private boolean window;
 
 }
