@@ -69,7 +69,6 @@ public class SubmitNotificationBean extends ExampleImpl<SubmitNotificationBean> 
     
     public void longRunningTask(ActionEvent event){
         try {
-            System.out.println("starting long running task");
             Thread.sleep(3000);
         } catch (InterruptedException e) {
             e.printStackTrace();
