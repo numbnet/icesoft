@@ -46,7 +46,7 @@ function GMapWrapper(eleId, realGMap) {
     this.directions = new Object();
     var options = "";
     this.services = new Object();
-    this.layers = new Object();
+    this.layer = null;
     this.getElementId = ice.ace.gMap.getElementId;
     this.getRealGMap = ice.ace.gMap.getRealGMap;
 }
@@ -118,26 +118,18 @@ ice.ace.gMap.getGMapWrapper = function (id) {
                 console.log("ERROR: Not a valid layer type");
                 return;
         }//switch
-        gmapWrapper.layers[layerId] = layer;
+        gmapWrapper.layer = layer;
+        //console.log(ice.ace.gMap.getGMapWrapper(ele).layer);
 
     }
 
     ice.ace.gMap.removeMapLayer = function (ele, layerId) {
         var gmapWrapper = ice.ace.gMap.getGMapWrapper(ele);
-        var layer = gmapWrapper.layers[layerId];
+        var layer = gmapWrapper.layer;
         if (layer != null) {
             layer.setMap(null);
-        } else {
-            //nothing found just return
-            return;
         }
-        var newLayerArray = new Object();
-        for (layerObj in gmapWrapper.layers) {
-            if (layerId != layerObj) {
-                newLayerArray[layerObj] = gmapWrapper.layers[layerObj];
-            }
-        }
-        gmapWrapper.layers = newLayerArray;
+        gmapWrapper.layer = null;
     }
 
     ice.ace.gMap.locateAddress = function (clientId, address) {
@@ -193,6 +185,7 @@ ice.ace.gMap.getGMapWrapper = function (id) {
         var freeWindows = gmapWrapper.freeWindows;
         var infoWindows = gmapWrapper.infoWindows;
         var overlays = gmapWrapper.overlays;
+        var layer = gmapWrapper.layer;
         ice.ace.gMap.remove(ele);
         gmapWrapper = ice.ace.gMap.create(ele,lat,lng,zoom,type);
         map = gmapWrapper.getRealGMap();
@@ -223,6 +216,11 @@ ice.ace.gMap.getGMapWrapper = function (id) {
                 overlays[overlay].setMap(map);
                 gmapWrapper.overlays[overlay]=overlays[overlay];
             }
+        }
+        if(layer!=null)
+        {
+            layer.setMap(map);
+            gmapWrapper.layer=layer;
         }
         return gmapWrapper;
     }
@@ -300,12 +298,12 @@ ice.ace.gMap.getGMapWrapper = function (id) {
         map.setOptions(eval(fullOps));
     }
 
-    ice.ace.gMap.addAutoComplete = function(mapId, autoId, windowOptions, offset){
+    ice.ace.gMap.addAutoComplete = function(mapId, autoId, windowOptions, offset, windowRender){
 
         var input = document.getElementById('autocomplete_input');
         var autocomplete = new google.maps.places.Autocomplete(input);
         var map = ice.ace.gMap.getGMapWrapper(mapId).getRealGMap();
-        if(windowOptions!="off"){
+        if(windowRender){
         var infowindow = new google.maps.InfoWindow();
         var marker = new google.maps.Marker({
             map: map
@@ -324,10 +322,10 @@ ice.ace.gMap.getGMapWrapper = function (id) {
             var yOffset = splitOffset[1];
 
             map.panBy(eval(xOffset),eval(yOffset));
-            if(windowOptions!="off"){
+            if(windowRender){
             marker.setPosition(place.geometry.location);
             infowindow.setContent("<a href='"+place.url+"' target='_blank'>" + place.formatted_address + "</a>");
-            if(windowOptions!="none")
+            if(windowOptions!=null&&windowOptions!="none")
                 infowindow.setOptions(eval("({" + windowOptions + "})"));
             infowindow.open(map,marker);
             }
@@ -632,7 +630,7 @@ ice.ace.gMap.getGMapWrapper = function (id) {
                 console.log("Not a valid shape");
                 return;
         }//switch
-        wrapper.overlays[overlayID] = overlay;
+        ice.ace.gMap.getGMapWrapper(ele).overlays[overlayID] = overlay;
     }
 
     ice.ace.gMap.addGWindow = function (ele, winId, content, position,options,markerId,showOnClick,startOpen) {
@@ -719,7 +717,7 @@ ice.ace.gMap.getGMapWrapper = function (id) {
         else if (parentName.indexOf("gmap.GMapInfoWindow") != -1)
             parent = wrapper.infoWindows[parentId];
         else if (parentName.indexOf("gmap.GMapLayer") != -1)
-            parent = wrapper.layers[parentId];
+            parent = wrapper.layer;
         else if (parentName.indexOf("gmap.GMapMarker") != -1)
             parent = wrapper.markers[parentId];
         else if (parentName.indexOf("gmap.GMapOverlay") != -1)

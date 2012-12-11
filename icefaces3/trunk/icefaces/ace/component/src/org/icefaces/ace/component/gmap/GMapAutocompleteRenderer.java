@@ -78,6 +78,7 @@ public class GMapAutocompleteRenderer extends CoreRenderer {
                 .item(clientId)
                 .item(autocomplete.getWindowOptions())
                 .item(autocomplete.getOffset())
+                .item(autocomplete.isWindow())
                 .endFunction();
         writer.write(jb.toString());
         writer.write("});");
