@@ -32,7 +32,7 @@ import javax.el.MethodExpression;
 	behaviorId = "org.icefaces.mobi.component.AjaxBehavior",
 	behaviorClass = "org.icefaces.mobi.component.ajax.AjaxBehavior",
     tlddoc = "Register an AjaxBehavior instance on one UIComponent implementing the " +
-    		"ClientBehaviorHolder interface. This tag may be nested witin a single component " +
+    		"ClientBehaviorHolder interface. This tag may be nested within a single component " +
     		" to enable Ajax for that single component."
 )
 public class AjaxBehaviorHandlerMeta {
