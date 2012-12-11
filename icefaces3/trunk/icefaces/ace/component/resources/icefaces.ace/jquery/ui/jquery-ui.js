@@ -7764,6 +7764,9 @@
                 target.id = 'dp' + this.uuid;
             }
             var inst = this._newInst($(target), inline);
+            if (settings.ariaEnabled) {
+                inst.dpDiv.attr({"aria-labelledby": target.id + "_mo_yr", role: "grid"});
+            }
             inst.settings = $.extend({}, settings || {}, inlineSettings || {});
             if (nodeName == 'input') {
                 this._connectDatepicker(target, inst);
@@ -7908,6 +7911,9 @@
                     }).bind("getData.datepicker", function(event, key){
                         return this._get(inst, key);
                     });
+            if (inst.settings.ariaEnabled) {
+                divSpan.attr("aria-labelledby", target.id + "_mo_yr");
+            }
             $.data(target, PROP_NAME, inst);
             this._setDate(inst, this._getDefaultDate(inst), true);
             this._updateDatepicker(inst);
@@ -8331,6 +8337,9 @@
                 };
                 inst.dpDiv.zIndex($(input).zIndex()+1);
                 $.datepicker._datepickerShowing = true;
+                if (inst.settings.ariaEnabled) {
+                    inst.dpDiv.attr("aria-hidden", false);
+                }
                 if ($.effects && $.effects[showAnim])
                     inst.dpDiv.show(showAnim, $.datepicker._get(inst, 'showOptions'), duration, postProcess);
                 else
@@ -8452,6 +8461,9 @@
                 if (!showAnim)
                     postProcess();
                 this._datepickerShowing = false;
+                if (inst.settings.ariaEnabled) {
+                    inst.dpDiv.attr("aria-hidden", true);
+                }
                 var onClose = this._get(inst, 'onClose');
                 if (onClose)
                     onClose.apply((inst.input ? inst.input[0] : null),
@@ -9171,6 +9183,10 @@
             var calculateWeek = this._get(inst, 'calculateWeek') || this.iso8601Week;
             var defaultDate = this._getDefaultDate(inst);
             var html = '';
+            var ariaEnabled = inst.settings.ariaEnabled;
+            var presentationRole = ariaEnabled ? ' role="presentation"' : '';
+            var columnheaderRole = ariaEnabled ? ' role="columnheader"' : '';
+            var gridcellRole = ariaEnabled ? ' role="gridcell"' : '';
             for (var row = 0; row < numMonths[0]; row++) {
                 var group = '';
                 this.maxRows = 4;
@@ -9190,7 +9206,7 @@
                             }
                         calender += '">';
                     }
-                    calender += '<div class="ui-datepicker-header ui-widget-header ui-helper-clearfix' + cornerClass + '">' +
+                    calender += '<div class="ui-datepicker-header ui-widget-header ui-helper-clearfix' + cornerClass + '"' + presentationRole + '>' +
                             (/all|left/.test(cornerClass) && row == 0 ? (isRTL ? next : prev) : '') +
                             (/all|right/.test(cornerClass) && row == 0 ? (isRTL ? prev : next) : '') +
                             this._generateMonthYearHeader(inst, drawMonth, drawYear, minDate, maxDate,
@@ -9200,7 +9216,7 @@
                     var thead = (showWeek ? '<th class="ui-datepicker-week-col">' + this._get(inst, 'weekHeader') + '</th>' : '');
                     for (var dow = 0; dow < 7; dow++) { // days of the week
                         var day = (dow + firstDay) % 7;
-                        thead += '<th' + ((dow + firstDay + 6) % 7 >= 5 ? ' class="ui-datepicker-week-end"' : '') + '>' +
+                        thead += '<th' + ((dow + firstDay + 6) % 7 >= 5 ? ' class="ui-datepicker-week-end"' : '') + columnheaderRole + '>' +
                                 '<span title="' + dayNames[day] + '">' + dayNamesMin[day] + '</span></th>';
                     }
                     calender += thead + '</tr></thead><tbody>';
@@ -9234,7 +9250,8 @@
                                             (printDate.getTime() == currentDate.getTime() ? ' ' + this._currentClass : '') + // highlight selected day
                                             (printDate.getTime() == today.getTime() ? ' ui-datepicker-today' : '')) + '"' + // highlight today (if different)
                                     ((!otherMonth || showOtherMonths) && daySettings[2] ? ' title="' + daySettings[2] + '"' : '') + // cell title
-                                    (unselectable ? '' : ' data-handler="selectDay" data-event="click" data-month="' + printDate.getMonth() + '" data-year="' + printDate.getFullYear() + '"') + '>' + // actions
+                                    (unselectable ? '' : ' data-handler="selectDay" data-event="click" data-month="' + printDate.getMonth() + '" data-year="' + printDate.getFullYear() + '"') + // actions
+                                    (printDate.getTime() == currentDate.getTime() && ariaEnabled ? ' aria-selected="true"' : '') + gridcellRole + '>' +
                                     (otherMonth && !showOtherMonths ? '&#xa0;' : // display for other months
                                             (unselectable ? '<span class="ui-state-default">' + printDate.getDate() + '</span>' : '<a class="ui-state-default' +
                                                     (printDate.getTime() == today.getTime() ? ' ui-state-highlight' : '') +
@@ -9269,7 +9286,8 @@
             var changeMonth = this._get(inst, 'changeMonth');
             var changeYear = this._get(inst, 'changeYear');
             var showMonthAfterYear = this._get(inst, 'showMonthAfterYear');
-            var html = '<div class="ui-datepicker-title">';
+            var html = '<div class="ui-datepicker-title"' +
+                (inst.settings.ariaEnabled ? ' id="' + inst.input[0].id + '_mo_yr" role="heading" aria-live="assertive" aria-atomic="true"' : '') + '>';
             var monthHtml = '';
             // month selection
             if (secondary || !changeMonth)
@@ -9309,7 +9327,7 @@
                     var endYear = Math.max(year, determineYear(years[1] || ''));
                     year = (minDate ? Math.max(year, minDate.getFullYear()) : year);
                     endYear = (maxDate ? Math.min(endYear, maxDate.getFullYear()) : endYear);
-                    inst.yearshtml += '<select class="ui-datepicker-year" ' + 'name="' + inst.input[0].id + '_sel_month" ' +
+                    inst.yearshtml += '<select class="ui-datepicker-year" ' + 'name="' + inst.input[0].id + '_sel_year" ' +
                             'data-handler="selectYear" data-event="change">';
                     for (; year <= endYear; year++) {
                         inst.yearshtml += '<option value="' + year + '"' +
@@ -9479,6 +9497,9 @@
 
         /* Initialise the date picker. */
         if (!$.datepicker.initialized) {
+            if (options.ariaEnabled) {
+                $.datepicker.dpDiv.attr("aria-hidden", true);
+            }
             $(document).mousedown($.datepicker._checkExternalClick).
                     find('body').append($.datepicker.dpDiv);
             $.datepicker.initialized = true;
