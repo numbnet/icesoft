@@ -10,4 +10,4 @@
     response.setHeader("Expires", "0");//prevents proxy caching
 %>
 <%@page contentType="text/html"%>
-<%@page pageEncoding="UTF-8"%>
+<%@page pageEncoding="UTF-8" trimDirectiveWhitespaces="true"%>
