@@ -96,6 +96,9 @@ ice.ace.Menubar = function(id, cfg) {
 					_at = 'right ';
 					_collision = 'none ';
 				} else {
+					_myFirst = 'left ';
+					_atFirst = 'left ';
+					_collisionFirst = 'flip ';
 					_my = 'left ';
 					_at = 'right ';
 					_collision = 'flip ';				
@@ -116,12 +119,10 @@ ice.ace.Menubar = function(id, cfg) {
 					_at += 'top';
 					_collision += 'none';
 				} else {
-					_myFirst = 'left top';
-					_atFirst = 'left bottom';
-					_collisionFirst = 'flip';
+					_myFirst += 'top';
+					_atFirst += 'bottom';
 					_my += 'top';
 					_at += 'top';
-					_collision += 'flip';
 				}
 			}
 			
@@ -137,6 +138,19 @@ ice.ace.Menubar = function(id, cfg) {
 				
 				_this.css('list-style-type', 'none');
 				var _item = _this.parents('li:first');
+				if (_self.cfg.directionX == 'auto' && _self.cfg.directionY == 'auto') {
+					if (ice.ace.ContextMenu.shouldDisplayAbove(_item.offset().top, _this.height())) {
+						_collision = 'flip'; _collisionFirst = 'flip';
+					} else {
+						_collision = 'none'; _collisionFirst = 'none';
+					}
+				} else if (_self.cfg.directionY == 'auto') {
+					if (ice.ace.ContextMenu.shouldDisplayAbove(_item.offset().top, _this.height())) {
+						_collision += 'flip'; _collisionFirst += 'flip';
+					} else {
+						_collision += 'none'; _collisionFirst += 'none';
+					}
+				}
 				if (isFirstSubmenu(_item)) { // first submenu level
 					_this.position({
 						my: _myFirst,
@@ -296,7 +310,6 @@ ice.ace.ContextMenu = function(id, cfg) {
     this.cfg.position = {
             my: 'left top',
             using: function(to) {
-
 			// default values
 			var _my = 'left top';
 			var _at = 'right top';
@@ -331,13 +344,19 @@ ice.ace.ContextMenu = function(id, cfg) {
 				} else {
 					_my += 'top';
 					_at += 'top';
-					_collision += 'flip';
 				}
 			}
 			
 			var _this = ice.ace.jq(this);
 			if (!_this.parent().get(0)) return;
 			if (_this.parent().get(0).id == _self.id) { // root menu
+				if (_self.cfg.directionX == 'auto' && _self.cfg.directionY == 'auto') {
+					if (ice.ace.ContextMenu.shouldDisplayAbove(ice.ace.ContextMenu.pageY, _this.height())) _collision = 'flip';
+					else _collision = 'none';
+				} else if (_self.cfg.directionY == 'auto') {
+					if (ice.ace.ContextMenu.shouldDisplayAbove(ice.ace.ContextMenu.pageY, _this.height())) _collision += 'flip';
+					else _collision += 'none';
+				}
 				_this.position({
 					my: _my,
 					of: ice.ace.ContextMenu.event,
@@ -345,11 +364,18 @@ ice.ace.ContextMenu = function(id, cfg) {
 				});
 			} else { // submenus
 				_this.css('list-style-type', 'none');
-				var _item = _this.parents('li:first').get(0);
+				var _item = _this.parents('li:first');
+				if (_self.cfg.directionX == 'auto' && _self.cfg.directionY == 'auto') {
+					if (ice.ace.ContextMenu.shouldDisplayAbove(_item.offset().top, _this.height())) _collision = 'flip';
+					else _collision = 'none';
+				} else if (_self.cfg.directionY == 'auto') {
+					if (ice.ace.ContextMenu.shouldDisplayAbove(_item.offset().top, _this.height())) _collision += 'flip';
+					else _collision += 'none';
+				}
 				_this.position({
 					my: _my,
 					at: _at,
-					of: _item,
+					of: _item.get(0),
 					collision: _collision
 				});
 			}
@@ -376,4 +402,18 @@ ice.ace.ContextMenu = function(id, cfg) {
         this.element.attr('style', this.cfg.style);
     if(this.cfg.styleClass)
         this.element.addClass(this.cfg.styleClass);
+}
+
+ice.ace.ContextMenu.shouldDisplayAbove = function(top, height) {
+	var up = false;
+	var winHeight = ice.ace.jq(window).height();
+	var docHeight = ice.ace.jq(document).height();
+	var scrollTop = ice.ace.jq(document).scrollTop()
+	var lengthAbove = top - scrollTop;
+	var lengthBelow = scrollTop + winHeight - top;
+	if (lengthBelow < height) {
+		if (lengthAbove >= height)
+			up = true;
+	}
+	return up;
 }
