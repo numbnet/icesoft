@@ -54,8 +54,6 @@ public class NotificationsController extends BaseController{
             @ModelAttribute("notificationsBean") NotificationsBean model)
             throws IOException {
         
-        System.out.println("process: subject=" + model.getTitle() + ", message=" + model.getMessage());
-
         final PushContext pushContext = PushContext.getInstance(
                 context.getServletContext() );
         final String title = model.getTitle();

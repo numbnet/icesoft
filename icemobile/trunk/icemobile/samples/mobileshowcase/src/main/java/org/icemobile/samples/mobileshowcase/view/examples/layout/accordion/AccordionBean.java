@@ -85,7 +85,6 @@ public class AccordionBean extends ExampleImpl<AccordionBean> implements
     
     public void paneChangeListener(ValueChangeEvent evt){
         paneChangeMsg = "Selected " + selectedId + " pane";
-        System.out.println(paneChangeMsg);
     }
 
     public String getPaneChangeMsg() {
