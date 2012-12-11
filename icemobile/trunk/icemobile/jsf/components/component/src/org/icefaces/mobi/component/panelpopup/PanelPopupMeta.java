@@ -57,17 +57,17 @@ public class PanelPopupMeta extends UIPanelMeta {
             "facet is specififed, but may be used instead of a label Facet." )
     private String headerText;
 
-    @Property(defaultValue = "false", tlddoc = "THis attribute is used when there is need to expose the javascript " +
+    @Property(defaultValue = "false", tlddoc = "Used when there is need to expose the javascript " +
             "api to the devloper. The contents of the popup will be always rendered so the developer " +
             "can  open and close the popup with appropriate javascript function call.  See wiki or examples apps.")
     private boolean clientSide;
 
-    @Property(tlddoc = "The visible attribute can be used to toggle visibility from the server. " +
+    @Property(tlddoc = "Used to toggle visibility from the server. " +
             "Note that setting rendered=false on a visible modal dialog will not remove the modality layer, " +
             "visible \"false\"  must be set first (or client-side JS function called).", defaultValue = "false")
     private boolean visible;
 
-    @Property(tlddoc = "When \"true\" the popup us now allowed to become visible.)", defaultValue = "false")
+    @Property(tlddoc = "When \"true\" the popup is allowed to become visible.)", defaultValue = "false")
     private boolean disabled;
 
     @Property(defaultValue = "true", tlddoc = "Invokes a calculations to be done to autoCenter the panel in the view.")

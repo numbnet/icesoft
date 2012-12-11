@@ -72,13 +72,13 @@ public class ContentPaneMeta extends UIPanelMeta{
 
     @Property(defaultValue="false",
              tlddoc = "If this attribute evaluates to \"true\", the contentPane's children are always rendered to the client/browser. " +
-                     "This is ideal for static content. Default value is false.  " +
+                     "This is ideal for static content. " +
                      "The acelet attribute is only relevant if this attribute is false.")
     private boolean client;
 
     @Property(defaultValue="false",
-             tlddoc = "The menuOrHome attribute means that this contentPane contains either a layoutMenu or Home page for a single " +
-                     "page application using contentStackMenu with a contentStack containing contentPanes. The default is false." +
+             tlddoc = "Determines if this contentPane contains either a layoutMenu or Home page for a single " +
+                     "page application using contentStackMenu with a contentStack containing contentPanes. " +
                      "This attribute helps assist in sliding panes effects for transition definition. ")
     private boolean menuOrHome;
 

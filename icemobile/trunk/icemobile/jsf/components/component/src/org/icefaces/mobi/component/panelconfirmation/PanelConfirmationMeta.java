@@ -51,7 +51,7 @@ public class PanelConfirmationMeta extends UIPanelMeta {
             "to allow internationalization of this component.")
     private String title;
 
-    @Property(tlddoc = " Three distinct types are allows. Type acceptOnly means only accept button will " +
+    @Property(tlddoc = " Three distinct types are allowed - acceptOnly, cancelOnly and both. Type acceptOnly means only accept button will " +
             "appear on the confirmation panel popup. The type of " +
             "cancelOnly means only a cancel button appears, and type of both means the confirmation dialog " +
             "will contain both the accept and cancel button.")
