@@ -187,7 +187,7 @@ public class DateTimeEntryRenderer extends InputRenderer {
     protected void encodeScript(FacesContext context, DateTimeEntry dateTimeEntry, String value, Map<String, Object> labelAttributes) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = dateTimeEntry.getClientId(context);
-       
+
         writer.startElement("script", null);
         writer.writeAttribute("type", "text/javascript", null);
 
@@ -267,6 +267,7 @@ public class DateTimeEntryRenderer extends InputRenderer {
                 json.entry("singleSubmit", dateTimeEntry.isSingleSubmit());
                 json.entry("withinSingleSubmit", Util.withinSingleSubmit(dateTimeEntry));
                 json.entry("buttonText", dateTimeEntry.getButtonText());
+                json.entry("ariaEnabled", EnvUtils.isAriaEnabled(context));
             json.endMap();
 //        json.endFunction();
         String initScript = "ice.ace.Calendar.init(" + json + ");";
