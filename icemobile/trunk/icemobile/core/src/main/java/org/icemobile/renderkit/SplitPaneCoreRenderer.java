@@ -95,7 +95,7 @@ public class SplitPaneCoreRenderer extends BaseCoreRenderer {
 
     public String getLeftwidth() {
         if (this.leftwidth != null){
-            return "width:" +leftwidth+"%;";}
+            return "width:" +leftwidth+";";}
         else {
             return "width: 30%;"; //default value
         }
@@ -107,7 +107,7 @@ public class SplitPaneCoreRenderer extends BaseCoreRenderer {
 
     public String getRightwidth() {
         if (this.rightwidth !=null){
-            return "width:" + rightwidth+"%;";
+            return "width:" + rightwidth+";";
         } else {
             return "width: 70%;";
         }
