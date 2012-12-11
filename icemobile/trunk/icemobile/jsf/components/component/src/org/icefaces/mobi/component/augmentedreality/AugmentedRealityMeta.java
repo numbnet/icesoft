@@ -47,11 +47,11 @@ public class AugmentedRealityMeta extends UIComponentBaseMeta  {
             required = Required.no)
     private String urlBase;
 
-    @Property(tlddoc = "Style class of the component.", required = Required.no)
-    private String styleClass;
+     @Property(tlddoc = org.icefaces.mobi.utils.TLDConstants.STYLE)
+     private String style;
 
-    @Property(tlddoc = "Style of the component.", required = Required.no)
-    private String style;
+     @Property(tlddoc = org.icefaces.mobi.utils.TLDConstants.STYLECLASS)
+     private String styleClass;
 
     @Property(tlddoc = "The current value, typically the user-selected location or marker.", required = Required.no)
     private String value;

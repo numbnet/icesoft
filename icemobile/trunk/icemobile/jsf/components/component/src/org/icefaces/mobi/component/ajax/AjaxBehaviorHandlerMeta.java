@@ -58,7 +58,7 @@ public class AjaxBehaviorHandlerMeta {
 			"specified in the identifier list.")
 	private String render;
 	
-	@Property(required=Required.no, tlddoc="Javascript handler to execute before ajax request is begins. The function has to return 'true' to continue with the ajax request; if 'false' or nothing is returned, the ajax request will be aborted.")
+	@Property(required=Required.no, tlddoc="Javascript handler to execute before ajax request begins. The function has to return 'true' to continue with the ajax request; if 'false' or nothing is returned, the ajax request will be aborted.")
 	private String onStart;
 	
 	@Property(required=Required.no, tlddoc="Javascript handler to execute when ajax request is completed.")

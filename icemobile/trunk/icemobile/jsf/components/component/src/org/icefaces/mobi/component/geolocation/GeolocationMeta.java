@@ -35,7 +35,7 @@ import javax.faces.application.ResourceDependency;
     rendererType = "org.icefaces.GeolocationRenderer",
     extendsClass = "javax.faces.component.UIComponentBase",
     componentFamily = "org.icefaces.Geolocation",
-    tlddoc = "geolocation captures n geolocation object" +
+    tlddoc = "geolocation captures a geolocation object" +
         " of longitude and latitude, heading, speed and altitude via" +
         " html5 navigator API."
 )

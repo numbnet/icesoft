@@ -31,7 +31,7 @@ import javax.faces.application.ResourceDependency;
         rendererType = "org.icefaces.DeviceStyleSheetRenderer",
         extendsClass = "javax.faces.component.UIComponentBase",
         componentFamily = "org.icefaces.DeviceStyleSheet",
-        tlddoc = "This mobility component loads an outputStyleSheet in the head of a jsf view page based " +
+        tlddoc = "deviceStylesheet component loads an outputStyleSheet in the head of a jsf view page based " +
                 "upon a detected device/desktop or a user-specified theme. " +
                 "If the JSF content parameter of Project Stage evaluates to \"Production\" the " +
                 "compressed css file is loaded into the head.  " +
@@ -63,7 +63,7 @@ public class DeviceStyleSheetMeta {
     @Property(tlddoc = "The name reference for the stylesheet as a JSF resource.")
     private String name;
 
-    @Property(tlddoc = "THe library reference for the stylesheet as a  JSF resource.")
+    @Property(tlddoc = "The library reference for the stylesheet as a  JSF resource.")
     private String library;
 
     @Property(tlddoc = "The CSS media type, screen, print and others. ")

@@ -89,28 +89,28 @@ public class InputTextMeta extends UIInputMeta {
     private boolean autocomplete;
 
     @Property(defaultValue = "on",
-            tlddoc = "capitalize the first character of the field")
+            tlddoc = "Capitalize the first character of the field.")
     private String autocapitalize;
 
     @Property(defaultValue = "on",
-            tlddoc = "correct spelling errors in the field")
+            tlddoc = "Correct spelling errors in the field.")
     private String autocorrect;
 
     @Property(defaultValue = "false",
-            tlddoc = "use and integrate required with jsf")
+            tlddoc = "Use and integrate required with jsf.")
     private boolean required;
 
-    @Property(defaultValue = "3", tlddoc = "magnifying glass for webkit used to show last three searches on a search field")
+    @Property(defaultValue = "3", tlddoc = "Magnifying glass for webkit used to show last three searches on a search field.")
     private int results;
 
 
-    @Property(tlddoc = "can have a title which is like tooltip")
+    @Property(tlddoc = "Can have a title which is like tooltip.")
     private String title;
     
-    @Property(defaultValue = "Integer.MIN_VALUE", tlddoc="minimum value, only applicable to type number")
+    @Property(defaultValue = "Integer.MIN_VALUE", tlddoc="Minimum value, only applicable to type number.")
     private int min;
 
-    @Property(defaultValue = "Integer.MIN_VALUE", tlddoc="maximum value, only applicable to type number")
+    @Property(defaultValue = "Integer.MIN_VALUE", tlddoc="Maximum value, only applicable to type number.")
     private int max;
     
     @Property(defaultValue = "Integer.MIN_VALUE", tlddoc="The step to increase/decrease the value of the number input. " +
