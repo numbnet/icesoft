@@ -56,6 +56,8 @@ public class LayoutBean implements Serializable {
     private String styleClass;
     private String style;
     private boolean scrollablePaneContent;
+    private long timestamp;
+    private long headTimestamp; 
 
 	public LayoutBean(){
         this.selectedPane = FIRSTPANE;
@@ -222,6 +224,17 @@ public class LayoutBean implements Serializable {
     public void setScrollablePaneContent(boolean scrollablePaneContent) {
         this.scrollablePaneContent = scrollablePaneContent;
     }
+ 
+    public long getTimestamp(){ return timestamp; }
+    public long getHeadTimestamp(){ return headTimestamp; }
+    
+    public void updateTimestamp(ActionEvent evt){
+        timestamp = System.currentTimeMillis();
+    }
+    
+    public void updateHeadTimestamp(ActionEvent evt){
+        headTimestamp = System.currentTimeMillis();
+    }
 
     public static class MenuValue implements Serializable{
         private String label;
@@ -280,6 +293,7 @@ public class LayoutBean implements Serializable {
         public void setMenuHeader(boolean menuHeader) {
             this.menuHeader = menuHeader;
         }
+        
     }
 
 
@@ -343,5 +357,6 @@ public class LayoutBean implements Serializable {
         public String getImgSrc() { return imgSrc; }
         public String getAlt() { return alt; }
         public String getFigcaption() { return figcaption; }
+        
     }
 }
