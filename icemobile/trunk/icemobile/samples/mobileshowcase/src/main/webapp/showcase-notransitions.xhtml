@@ -26,69 +26,69 @@
     <title>ICEfaces Mobile Showcase</title>
     <mobi:deviceResource theme="#{themeBean.currentTheme}"/>
     <h:outputStylesheet library="css" name="showcase.css" media="screen"/>
-<!--     <c:if test="#{navigationModel.selectedPanel eq 'gmap'}"> -->
+    <c:if test="#{navigationModel.selectedPanel eq 'gmap'}">
         <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=true"/>
-<!--     </c:if> -->
+    </c:if>
     <mobi:googleAnalytics/>
 </h:head>
-<h:body>
-    <mobi:largeView>
-        <ui:include src="WEB-INF/includes/view/large.xhtml">
-            <ui:param name="viewSize" value="large" />
-        </ui:include>
-    </mobi:largeView>
-    <mobi:smallView>
-        <mobi:pagePanel>
-            <f:facet name="header">
-                <h:form id="toolbar2" prependId="false" >
-                    <mobi:commandButton buttonType="back"
-                                   action="#{navigationModel.goBack}"
-                                   rendered="#{navigationModel.canGoBack}"
-                                   value="Back"/>
-                    <h:commandLink title="&amp;#9776;"
-                                   styleClass="ui-icon ui-icon-home"
-                                   action="#{navigationModel.goToHome}"
-                                   rendered="#{navigationModel.selectedPanel eq 'menu'}"/>
-                    <h:commandLink title="&amp;#9776;"
-                                   styleClass="ui-icon ui-icon-menu"
-                                   action="#{navigationModel.goToMenu}"
-                                   rendered="#{navigationModel.selectedPanel eq 'splash'}"/>
-                </h:form>
-                <span>#{mmsgs[navigationModel.selectedDestination.title]}</span>
-                <ui:insert name="toolBarContent"/>
-            </f:facet>
-    
-            <f:facet name="body">
-                <ui:include src="/WEB-INF/includes/content/content-stack.xhtml">
-                    <ui:param name="selectedPanel"
-                              value="#{navigationModel.selectedPanel}"/>
-                    <ui:param name="viewSize" value="small" />
-                </ui:include>
-            </f:facet>
-    
-            <f:facet name="footer">
-                <h:form styleClass="theme">
-                    <icecore:singleSubmit rendered="false"/>
-    
-                    <span style="font-size:14px;color:white;font-weight:bold;">Theme: </span>
-                    <h:selectOneMenu value="#{themeBean.currentTheme}"
-                                     onchange="ice.s(event, this);"
-                                     style="font-size:13px;">
-                        <f:selectItem itemLabel="Auto" itemValue=""/>
-                        <f:selectItem itemLabel="iPhone"
-                                      itemValue="iphone"/>
-                        <f:selectItem itemLabel="Android"
-                                      itemValue="android"/>
-                        <f:selectItem itemLabel="BlackBerry"
-                                      itemValue="bberry"/>
-                        <f:ajax disabled="true"/>
-                    </h:selectOneMenu>
-                </h:form>
-                <a href="http://www.icemobile.org/demos.html" class="icon">
-                    <h:graphicImage library="images" name="icemobile_thumb.png"/>
-                </a>
-            </f:facet>
-        </mobi:pagePanel>
-    </mobi:smallView>
-</h:body>
+    <h:body>
+        <mobi:largeView>
+            <ui:include src="WEB-INF/includes/view/large.xhtml">
+                <ui:param name="viewSize" value="large" />
+            </ui:include>
+        </mobi:largeView>
+        <mobi:smallView>
+            <mobi:pagePanel>
+                <f:facet name="header">
+                    <h:form id="toolbar2" prependId="false" >
+                        <mobi:commandButton buttonType="back"
+                                       action="#{navigationModel.goBack}"
+                                       rendered="#{navigationModel.canGoBack}"
+                                       value="Back"/>
+                        <h:commandLink title="&amp;#9776;"
+                                       styleClass="ui-icon ui-icon-home"
+                                       action="#{navigationModel.goToHome}"
+                                       rendered="#{navigationModel.selectedPanel eq 'menu'}"/>
+                        <h:commandLink title="&amp;#9776;"
+                                       styleClass="ui-icon ui-icon-menu"
+                                       action="#{navigationModel.goToMenu}"
+                                       rendered="#{navigationModel.selectedPanel eq 'splash'}"/>
+                    </h:form>
+                    <span>#{mmsgs[navigationModel.selectedDestination.title]}</span>
+                    <ui:insert name="toolBarContent"/>
+                </f:facet>
+        
+                <f:facet name="body">
+                    <ui:include src="/WEB-INF/includes/content/content-stack.xhtml">
+                        <ui:param name="selectedPanel"
+                                  value="#{navigationModel.selectedPanel}"/>
+                        <ui:param name="viewSize" value="small" />
+                    </ui:include>
+                </f:facet>
+        
+                <f:facet name="footer">
+                    <h:form styleClass="theme">
+                        <icecore:singleSubmit rendered="false"/>
+        
+                        <span style="font-size:14px;color:white;font-weight:bold;">Theme: </span>
+                        <h:selectOneMenu value="#{themeBean.currentTheme}"
+                                         onchange="ice.s(event, this);"
+                                         style="font-size:13px;">
+                            <f:selectItem itemLabel="Auto" itemValue=""/>
+                            <f:selectItem itemLabel="iPhone"
+                                          itemValue="iphone"/>
+                            <f:selectItem itemLabel="Android"
+                                          itemValue="android"/>
+                            <f:selectItem itemLabel="BlackBerry"
+                                          itemValue="bberry"/>
+                            <f:ajax disabled="true"/>
+                        </h:selectOneMenu>
+                    </h:form>
+                    <a href="http://www.icemobile.org/demos.html" class="icon">
+                        <h:graphicImage library="images" name="icemobile_thumb.png"/>
+                    </a>
+                </f:facet>
+            </mobi:pagePanel>
+        </mobi:smallView>
+    </h:body>
 </html>
