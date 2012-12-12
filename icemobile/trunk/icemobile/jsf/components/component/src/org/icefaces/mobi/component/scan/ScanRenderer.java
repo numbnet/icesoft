@@ -63,12 +63,14 @@ public class ScanRenderer extends BaseInputRenderer {
     public void encodeEnd(FacesContext facesContext, UIComponent uiComponent)
             throws IOException {
         Scan scan = (Scan) uiComponent;
-       if (MobiJSFUtils.uploadInProgress(scan))  {
+        String oldLabel = scan.getButtonLabel();
+        if (MobiJSFUtils.uploadInProgress(scan))  {
            scan.setButtonLabel(scan.getCaptureMessageLabel()) ;
-        }
+        } 
         DeviceCoreRenderer renderer = new DeviceCoreRenderer();
         ResponseWriterWrapper writer = new ResponseWriterWrapper(facesContext.getResponseWriter());
         renderer.encode(scan, writer, false);
+        scan.setButtonLabel(oldLabel);
     }
 
 

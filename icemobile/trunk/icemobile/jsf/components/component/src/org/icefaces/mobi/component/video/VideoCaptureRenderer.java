@@ -66,12 +66,14 @@ public class VideoCaptureRenderer extends BaseInputResourceRenderer {
     public void encodeEnd(FacesContext facesContext, UIComponent uiComponent)
             throws IOException {
         VideoCapture camcorder = (VideoCapture) uiComponent;
+        String oldLabel = camcorder.getButtonLabel();
         if (MobiJSFUtils.uploadInProgress(camcorder))  {
             camcorder.setButtonLabel(camcorder.getCaptureMessageLabel()) ;
-        }
+        } 
         DeviceCoreRenderer renderer = new DeviceCoreRenderer();
         ResponseWriterWrapper writer = new ResponseWriterWrapper(facesContext.getResponseWriter());
         renderer.encode(camcorder, writer, false);
+        camcorder.setButtonLabel(oldLabel);
 
  /*       boolean isEnhanced =  cd.isICEmobileContainer()  || cd.isSXRegistered() ;
         boolean isAuxUpload = EnvUtils.isAuxUploadBrowser(facesContext);
