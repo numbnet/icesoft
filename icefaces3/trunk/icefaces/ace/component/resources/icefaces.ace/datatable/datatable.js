@@ -851,8 +851,8 @@ ice.ace.DataTable.prototype.setupScrolling = function () {
         });
     }
 
-    if (console && this.cfg.devMode) {
-        console.log("ace:dataTable - ID: " + this.id + " - setupScrolling - " + (new Date().getTime() - startTime)/1000 + "s");
+    if (window.console && this.cfg.devMode) {
+        window.console.log("ace:dataTable - ID: " + this.id + " - setupScrolling - " + (new Date().getTime() - startTime)/1000 + "s");
     }
 }
 
@@ -1200,8 +1200,8 @@ ice.ace.DataTable.prototype.resizeScrolling = function () {
             bodyTable.parent().parent().css('overflow-x','scroll');
         }
 
-        if (console && this.cfg.devMode) {
-            console.log("ace:dataTable - ID: " + this.id + " - resizeScrolling - " + (new Date().getTime() - startTime)/1000 + "s");
+        if (window.console && this.cfg.devMode) {
+            window.console.log("ace:dataTable - ID: " + this.id + " - resizeScrolling - " + (new Date().getTime() - startTime)/1000 + "s");
         }
     }
 }
