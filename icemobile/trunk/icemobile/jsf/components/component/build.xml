@@ -249,7 +249,7 @@
 			<!-- the short name of the library is specified as the first attribute, the namespace as the second -->
 			<arg line="mobi http://www.icesoft.com/icefaces/mobile/component" />
 			<sysproperty key="generator.tld.doc.display.name" value="Mobile Components" />
-			<sysproperty key="generator.tld.doc.version" value="1.0.0" />
+			<sysproperty key="generator.tld.doc.version" value="${version.string}" />
 		</java>
 		<java classname="org.icefaces.ace.generator.xmlbuilder.FacesConfigMerge" classpathref="compile.run.classpath" fork="true" classpath="${build}">
 			<arg value="${generator.faces-config.host}" />
