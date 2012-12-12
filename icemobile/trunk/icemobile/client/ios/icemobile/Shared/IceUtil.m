@@ -19,22 +19,37 @@
 
 @implementation IceUtil
 
-+ (void)makeFancyButton:(UIButton*)button  {
++ (void)makeFancyButton:(UIButton*)button withColor:(UIColor*)color  {
+    CALayer *oldLayer = nil;
+    for (CALayer *theLayer in [[button layer] sublayers]) {
+        if ([@"fancyGradient" isEqualToString:theLayer.name ])  {
+            oldLayer = theLayer;
+        }
+    }
+    if (nil != oldLayer)  {
+        [oldLayer removeFromSuperlayer];
+    }
     CAGradientLayer *gradientLayer = [[CAGradientLayer alloc] init];
     [gradientLayer setBounds:[button bounds]];
+    gradientLayer.name = @"fancyGradient";
     [gradientLayer setPosition:
                 CGPointMake([button bounds].size.width/2,
                        [button bounds].size.height/2)];
         [gradientLayer setColors:
                      [NSArray arrayWithObjects:
                             (id)[[UIColor whiteColor] CGColor], 
-                            (id)[[UIColor grayColor] CGColor], nil]];
+                            (id)[color CGColor], nil]];
+    NSLog(@"makeFancyButton layers %@", [[button layer] sublayers]);
     [[button layer] insertSublayer:gradientLayer atIndex:0];
     [gradientLayer release];
 
     [[button layer] setCornerRadius:8.0f];
     [[button layer] setMasksToBounds:YES];
     [[button layer] setBorderWidth:1.0f];
+}
+
++ (void)makeFancyButton:(UIButton*)button  {
+    [IceUtil makeFancyButton:button withColor:[UIColor grayColor]];
 }
 
 @end
