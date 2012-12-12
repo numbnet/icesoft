@@ -38,7 +38,7 @@ public class MapMarkerBean extends ComponentExampleImpl<MapMarkerBean> implement
 	public static final String BEAN_NAME = "markerBean";
     private Double[] latList = {0.0,7.5,-10.0};
     private Double[] longList = {0.0,7.5,-10.0};
-    private String[] optionsList = {"title:'Hover mouse over this marker to see title'","","draggable:true"};
+    private String[] optionsList = {"title:'Hover mouse over this marker to see title'","raiseOnDrag:false,draggable:true","draggable:true"};
 
 	public MapMarkerBean() {
         super(MapMarkerBean.class);

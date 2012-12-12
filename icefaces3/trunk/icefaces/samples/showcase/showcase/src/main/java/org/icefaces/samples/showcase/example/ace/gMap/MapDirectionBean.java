@@ -37,7 +37,7 @@ public class MapDirectionBean extends ComponentExampleImpl<MapDirectionBean> imp
 	public static final String BEAN_NAME = "directionBean";
 
     private String points="Regent's Park, London: Kingston upon Thames";
-    private String options="";
+    private String options="optimizeWaypoints:true";
     private String travelMode="DRIVING";
 
 	public MapDirectionBean() {
