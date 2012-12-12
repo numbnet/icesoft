@@ -22,7 +22,7 @@
     <parent>
         <groupId>org.icefaces.mobi.samples</groupId>
         <artifactId>samples-parent</artifactId>
-        <version>1.0.0</version>
+        <version>1.2.0</version>
     </parent>
     <artifactId>icemobile-jsp</artifactId>
     <packaging>war</packaging>
