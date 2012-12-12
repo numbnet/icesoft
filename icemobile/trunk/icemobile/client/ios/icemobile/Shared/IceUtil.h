@@ -19,6 +19,7 @@
 
 @interface IceUtil : NSObject
 
++ (void)makeFancyButton:(UIButton*)button withColor:(UIColor*)color;
 + (void)makeFancyButton:(UIButton*)button;
 
 @end
