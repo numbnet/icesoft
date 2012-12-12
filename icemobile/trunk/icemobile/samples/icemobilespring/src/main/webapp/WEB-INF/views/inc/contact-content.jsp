@@ -39,7 +39,7 @@
 	<mobi:fieldsetGroup>
 		<mobi:fieldsetRow styleClass="mobi-center">
 			<mobi:fetchContact id="rawContact" buttonLabel="Fetch Contact"
-				fields="name, phone, email" style="color:red" styleClass="test" disabled="true" />
+				fields="name, phone, email" />
 		</mobi:fieldsetRow>
 	</mobi:fieldsetGroup>
 
