@@ -9,8 +9,8 @@ The following utilities are provided:
 2) ant target "get-maven" will copy off the internet (make sure you have internet access)  the required jar to run maven from ant, to icemobile/lib
 3) ant target "install" will install icefaces-push, icefaces and icefaces-mobi jar and poms to your local repository.
 
-This really isn't necessary if you can use the snapshot repository at
-http://anonsvn.icefaces.org/repo/maven2/snapshots/
+This really isn't necessary if you can use the releases repository at
+http://anonsvn.icefaces.org/repo/maven2/releases/
 Once the release has been made, it will take a day or so for the proper entries to be accessed.
 
 
