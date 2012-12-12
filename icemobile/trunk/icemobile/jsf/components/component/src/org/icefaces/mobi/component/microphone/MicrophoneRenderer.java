@@ -71,11 +71,13 @@ public class MicrophoneRenderer extends Renderer {
     public void encodeEnd(FacesContext facesContext, UIComponent uiComponent)
             throws IOException {
         Microphone microphone = (Microphone) uiComponent;
+        String oldLabel = microphone.getButtonLabel();
         if (MobiJSFUtils.uploadInProgress(microphone))  {
            microphone.setButtonLabel(microphone.getCaptureMessageLabel()) ;
-        }
+        } 
         DeviceCoreRenderer renderer = new DeviceCoreRenderer();
         ResponseWriterWrapper writer = new ResponseWriterWrapper(facesContext.getResponseWriter());
         renderer.encode(microphone, writer, false);
+        microphone.setButtonLabel(oldLabel);
     }
 }
