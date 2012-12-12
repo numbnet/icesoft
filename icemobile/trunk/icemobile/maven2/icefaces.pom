@@ -20,7 +20,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.icefaces</groupId>
     <artifactId>icefaces</artifactId>
-    <version>3.1.0</version>
+    <version>3.2.0</version>
     <packaging>jar</packaging>
     <name>ICEfaces Core</name>
     <url>http://www.icefaces.org</url>
