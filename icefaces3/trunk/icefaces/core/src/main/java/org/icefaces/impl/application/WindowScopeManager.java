@@ -225,6 +225,7 @@ public class WindowScopeManager extends SessionAwareResourceHandlerWrapper {
         //it's possible to have dispose-window request arriving after an application restart or re-deploy
         if (scopeMap != null) {
             scopeMap.disactivate(state);
+            scopeMap.discardIfExpired(context);
         }
 
         //notify annotated scope beans that all windows were closed
