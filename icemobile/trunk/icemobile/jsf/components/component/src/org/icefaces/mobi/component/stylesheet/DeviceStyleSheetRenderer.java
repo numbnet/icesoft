@@ -80,7 +80,7 @@ public class DeviceStyleSheetRenderer extends Renderer implements javax.faces.ev
 
     // default resource library for a default themes,  if not specified in
     // component definition this library will be loaded.
-    private static final String DEFAULT_LIBRARY = "org.icefaces.component.skins";
+  //  private static final String DEFAULT_LIBRARY = "org.icefaces.component.skins";
     // url of a resource that could not be resolved, danger Will Robertson.
     public static final String RESOURCE_URL_ERROR = "RES_NOT_FOUND";
     // key to store if algorithm to detect device type has run. If a device
@@ -163,7 +163,7 @@ public class DeviceStyleSheetRenderer extends Renderer implements javax.faces.ev
     private String deriveLibrary(Map attributes){
     	String library = (String) attributes.get(HTML.LIBRARY_ATTR);
         if( library == null ){
-        	library = DEFAULT_LIBRARY;
+        	library = DeviceStyleSheet.DEFAULT_LIBRARY;
         }
     	return library;
     }
