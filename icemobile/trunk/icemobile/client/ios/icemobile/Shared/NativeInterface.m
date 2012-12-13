@@ -130,8 +130,10 @@ static char base64EncodingTable[64] = {
     if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera ])  {
         picker.sourceType = UIImagePickerControllerSourceTypeCamera;
         picker.showsCameraControls = YES;
+        //showImagePicker must be called before overlay to work on iPad
+        [self showImagePicker:picker];
         CGRect overlayFrame = CGRectMake(0,picker.view.frame.size.height - 100,
-            picker.view.frame.size.width, 100);
+            picker.view.frame.size.width, 50);
         UIView *overlayView = [[UIView alloc] initWithFrame:overlayFrame];
         UIButton *albumButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
         [albumButton setTitle:@"Album" forState:UIControlStateNormal];
@@ -144,8 +146,9 @@ static char base64EncodingTable[64] = {
         [overlayView addSubview:albumButton];
         picker.cameraOverlayView = overlayView;
         self.currentPicker = picker;
+    } else  {
+        [self showImagePicker:picker];
     }
-    [self showImagePicker:picker];
     
     return YES;
 }
