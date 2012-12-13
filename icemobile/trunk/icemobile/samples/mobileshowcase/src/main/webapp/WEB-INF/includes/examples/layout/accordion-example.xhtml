@@ -19,7 +19,7 @@
              xmlns:ui="http://java.sun.com/jsf/facelets"
              xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
 
-    <h:form id="accordionFormEx">
+    <h:form id="accordionFormEx" styleClass="accordionpage">
     
         <mobi:fieldsetGroup styleClass="intro">
             <mobi:fieldsetRow>
@@ -31,43 +31,45 @@
             </mobi:fieldsetRow>
         </mobi:fieldsetGroup>
         
-        <div id="msgAcc" style="margin:10px">#{accordionBean.paneChangeMsg}</div>
-
         <h3>Auto-height Accordion</h3>
-        <mobi:accordion id="autoHeightAccordion" selectedId="#{accordionBean.selectedId}"
-            autoHeight="true" 
-            paneChangeListener="#{accordionBean.paneChangeListener}">
-            <mobi:contentPane title="ICE Sailor" id="accordionPane1" client="true">
-
-                    <ui:include src="/WEB-INF/includes/content/inc-icesailor.xhtml"/>
-
-            </mobi:contentPane>
-            <mobi:contentPane title="ICE Breaker" id="accordionPane2" client="true">
-                <div style="height:90px">
-                    <ui:include src="/WEB-INF/includes/content/inc-icebreaker.xhtml"/>
-                </div>
-            </mobi:contentPane>
-            <mobi:contentPane title="ICE Skate" id="accordionPane3" client="true">
-                <div style="height:100px">
-                    <ui:include src="/WEB-INF/includes/content/inc-iceskater.xhtml"/>
-                </div>
-            </mobi:contentPane>
-        </mobi:accordion>
+        <div style="min-height:240px">
+            <mobi:accordion id="autoHeightAccordion" selectedId="#{accordionBean.selectedId}"
+                autoHeight="true" 
+                paneChangeListener="#{accordionBean.paneChangeListener}">
+                <mobi:contentPane title="ICE Sailor" id="accordionPane1" client="true">
+    
+                        <ui:include src="/WEB-INF/includes/content/inc-icesailor.xhtml"/>
+    
+                </mobi:contentPane>
+                <mobi:contentPane title="ICE Breaker" id="accordionPane2" client="true">
+                    <div style="height:90px">
+                        <ui:include src="/WEB-INF/includes/content/inc-icebreaker.xhtml"/>
+                    </div>
+                </mobi:contentPane>
+                <mobi:contentPane title="ICE Skate" id="accordionPane3" client="true">
+                    <div style="height:100px">
+                        <ui:include src="/WEB-INF/includes/content/inc-iceskater.xhtml"/>
+                    </div>
+                </mobi:contentPane>
+            </mobi:accordion>
+        </div>
         
         <h3>Fixed-height Accordion (200px)</h3>
-        <mobi:accordion id="fixedHeightAccordion" selectedId="#{accordionBean.selectedId2}"
-            height="200px" autoHeight="false"
-            paneChangeListener="#{accordionBean.paneChangeListener}">
-            <mobi:contentPane title="ICE Sailor" id="accordionPane4" client="true">
-                <p style="font-size:12px;padding:0 10px">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-            </mobi:contentPane>
-            <mobi:contentPane title="ICE Breaker" id="accordionPane5" client="true">
-                <p style="font-size:13px;padding:0 10px">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-            </mobi:contentPane>
-            <mobi:contentPane title="ICE Skate" id="accordionPane6" client="true">
-                <p style="font-size:14px;padding:0 10px">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-            </mobi:contentPane>
-        </mobi:accordion>
+        <div style="min-height:240px">
+            <mobi:accordion id="fixedHeightAccordion" selectedId="#{accordionBean.selectedId2}"
+                height="200px" autoHeight="false"
+                paneChangeListener="#{accordionBean.paneChangeListener}">
+                <mobi:contentPane title="ICE Sailor" id="accordionPane4" client="true">
+                    <p style="font-size:12px;padding:0 10px">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                </mobi:contentPane>
+                <mobi:contentPane title="ICE Breaker" id="accordionPane5" client="true">
+                    <p style="font-size:13px;padding:0 10px">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                </mobi:contentPane>
+                <mobi:contentPane title="ICE Skate" id="accordionPane6" client="true">
+                    <p style="font-size:14px;padding:0 10px">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                </mobi:contentPane>
+            </mobi:accordion>
+        </div>
         
         
 
