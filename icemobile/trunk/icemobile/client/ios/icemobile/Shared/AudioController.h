@@ -25,8 +25,6 @@
     UIButton *recordStopButton;
     UIButton *cancelButton;
     UIButton *useButton;
-    UISegmentedControl *recordControl;
-    UISegmentedControl *submitControl;
 
 }
 
@@ -35,15 +33,11 @@
 @property (nonatomic, retain) IBOutlet UIButton *recordStopButton;
 @property (nonatomic, retain) IBOutlet UIButton *cancelButton;
 @property (nonatomic, retain) IBOutlet UIButton *useButton;
-@property (nonatomic, retain) IBOutlet UISegmentedControl *recordControl;
-@property (nonatomic, retain) IBOutlet UISegmentedControl *submitControl;
 
 - (IBAction) doRecordStop;
 - (IBAction) doRecord;
 - (IBAction) doStop;
 - (IBAction) doDone;
 - (IBAction) doCancel;
-- (IBAction) recordAction;
-- (IBAction) submitAction;
 
 @end

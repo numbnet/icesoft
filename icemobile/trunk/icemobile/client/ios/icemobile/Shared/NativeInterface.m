@@ -241,6 +241,11 @@ static char base64EncodingTable[64] = {
             forComponent:audioName withName:audioName];
 }
 
+- (void)recordCancel  {
+    [self recordDismiss];
+    [self.controller doCancel];
+}
+
 - (void)recordDismiss  {
     if (nil != self.audioPopover)  {
         [self.audioPopover dismissPopoverAnimated:YES];
