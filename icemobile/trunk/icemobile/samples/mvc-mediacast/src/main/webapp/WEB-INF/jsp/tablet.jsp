@@ -29,7 +29,7 @@
             
             <mobi:splitPane id="splitPane" scrollable="true" columnDivider="30">
                 <mobi:fragment name="left">
-                    <%@ include file="/WEB-INF/jsp/photo-list.jsp" %>
+                    <%@ include file="/WEB-INF/jsp/gallery-list.jsp" %>
                 </mobi:fragment>
                 <mobi:fragment name="right">
                     <mobi:tabSet id="tabs" selectedTab="0">

@@ -30,7 +30,7 @@
                 <img src="./resources/images/icemobile.png" style="position: absolute;top: 10px;right: 2em;"/>
     		</mobi:pagePanelHeader>
     		<mobi:pagePanelBody>
-    		    <%@ include file="/WEB-INF/jsp/photo-list.jsp" %>
+    		    <%@ include file="/WEB-INF/jsp/gallery-list.jsp" %>
             </mobi:pagePanelBody>
     		<%@ include file="/WEB-INF/jsp/footer.jsp"%>
     	</mobi:pagePanel>
