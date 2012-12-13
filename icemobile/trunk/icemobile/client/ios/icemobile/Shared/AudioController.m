@@ -25,8 +25,6 @@
 @synthesize recordStopButton;
 @synthesize cancelButton;
 @synthesize useButton;
-@synthesize recordControl;
-@synthesize submitControl;
 
 - (IBAction) doRecordStop {
     NSLog(@"AudioController doRecordStop");
@@ -56,12 +54,20 @@
 
 - (IBAction) doDone  {
     NSLog(@"AudioController doDone");
+    if (self.isRecording)  {
+        [self.nativeInterface recordStop];
+        self.isRecording = NO;
+    }
     [self.nativeInterface recordDone];
 }
 
 - (IBAction) doCancel  {
     NSLog(@"AudioController doCancel");
-    [self.nativeInterface recordDismiss];
+    if (self.isRecording)  {
+        [self.nativeInterface recordStop];
+        self.isRecording = NO;
+    }
+    [self.nativeInterface recordCancel];
 }
 
 

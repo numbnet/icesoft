@@ -90,6 +90,7 @@
 - (void)recordStart;
 - (void)recordStop;
 - (void)recordDismiss;
+- (void)recordCancel;
 - (void)recordDone;
 - (NSMutableDictionary*)parseQuery: (NSString*)queryString;
 - (void)showImagePicker: (UIImagePickerController*)picker;
