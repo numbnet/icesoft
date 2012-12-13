@@ -1039,6 +1039,26 @@ public class DataTable extends DataTableBase implements Serializable {
         isInDuplicateSegment = inFakeHeader;
     }
 
+    protected Boolean isInConditionalRow() {
+        return isInConditionalRow;
+    }
+
+    protected void setInConditionalRow(Boolean inConditionalRow, final List<Column> rowColumns) {
+        Stack<UIComponent> compsToIdReinit = new Stack<UIComponent>() {{
+            addAll(rowColumns);
+        }};
+
+        while (!compsToIdReinit.empty()) {
+            UIComponent c = compsToIdReinit.pop();
+            c.setId(c.getId());
+            Iterator<UIComponent> fnc = c.getFacetsAndChildren();
+            while (fnc.hasNext()) compsToIdReinit.push(fnc.next());
+        }
+
+        if (inConditionalRow) conditionalRowIndex++;
+        isInConditionalRow = inConditionalRow;
+    }
+
     protected Map<String,Column> getFilterMap() {
         if (filterMap == null) {
             filterMap = new HashMap<String,Column>();
@@ -1683,7 +1703,9 @@ public class DataTable extends DataTableBase implements Serializable {
     private Boolean isNested = null;
     // Used to toggle generating alternate clientIds for a duplicate header used
     // for scrollable table sizing reasons.
-    private Boolean isInDuplicateSegment = false;
+    private transient Boolean isInDuplicateSegment = false;
+    private transient Boolean isInConditionalRow = false;
+    private transient int conditionalRowIndex = -1;
     public String getBaseClientId(FacesContext context) {
         if (baseClientId == null && clientIdBuilder == null) {
             if (!isNestedWithinUIData()) {
@@ -1737,7 +1759,7 @@ public class DataTable extends DataTableBase implements Serializable {
             }
         }
         int rowIndex = getRowIndex();
-        if (rowIndex >= 0) {
+        if (rowIndex >= 0 && !isInConditionalRow) {
             String cid;
             if (!isNestedWithinUIData()) {
                 // we're not nested, so the clientIdBuilder is already
@@ -1774,20 +1796,36 @@ public class DataTable extends DataTableBase implements Serializable {
                 clientIdBuilder.setLength(0);
                 }
 
-            return isInDuplicateSegment ? (cid) + UINamingContainer.getSeparatorChar(context) + "dupeSeg"
-                                  : (cid);
+//            if (isInDuplicateSegment)
+//                cid = (cid) + UINamingContainer.getSeparatorChar(context) + "dupeSeg";
+//            else if (isInConditionalRow)
+//                cid = (cid) + UINamingContainer.getSeparatorChar(context) + "c" + conditionalRowIndex;
+
+            return cid;
         } else {
+            String ret;
+
             if (!isNestedWithinUIData()) {
                 // Not nested and no row available, so just return our baseClientId
-                return isInDuplicateSegment ? (baseClientId) + UINamingContainer.getSeparatorChar(context) + "dupeSeg"
-                                      : (baseClientId);
+                if (isInDuplicateSegment)
+                    ret = (baseClientId) + UINamingContainer.getSeparatorChar(context) + "dupeSeg";
+                else if (isInConditionalRow)
+                    ret = (baseClientId) + UINamingContainer.getSeparatorChar(context) + "c" + conditionalRowIndex;
+                else
+                    ret = baseClientId;
             } else {
                 // nested and no row available, return the result of getClientId().
                 // this is necessary as the client ID will reflect the row that
                 // this table represents
-                return isInDuplicateSegment ? UIData_getContainerClientId(context) + UINamingContainer.getSeparatorChar(context) + "dupeSeg"
-                                      : UIData_getContainerClientId(context);
+                if (isInDuplicateSegment)
+                    ret = UIData_getContainerClientId(context) + UINamingContainer.getSeparatorChar(context) + "dupeSeg";
+                else if (isInConditionalRow)
+                    ret = UIData_getContainerClientId(context) + UINamingContainer.getSeparatorChar(context) + "c" + conditionalRowIndex;
+                else
+                    ret = UIData_getContainerClientId(context);
             }
+
+            return ret;
         }
     }
 

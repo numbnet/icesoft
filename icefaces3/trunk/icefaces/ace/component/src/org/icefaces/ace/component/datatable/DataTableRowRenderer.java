@@ -67,7 +67,7 @@ public class DataTableRowRenderer {
 
             // Add leading conditional row for this row object if required
             List<Row> leadingRows = table.getConditionalRows(rowIndex, true);
-            for (Row r : leadingRows) encodeConditionalRow(context, r);
+            for (Row r : leadingRows) encodeConditionalRow(context, tableContext, r);
 
             String userRowStyleClass = tableContext.getRowStyleClass();
             String expandedClass = expanded ? DataTableConstants.EXPANDED_ROW_CLASS : "";
@@ -137,7 +137,7 @@ public class DataTableRowRenderer {
 
             // Add tailing conditional row for this row object if required
             List<Row> tailingRows = table.getConditionalRows(rowIndex, false);
-            for (Row r : tailingRows) encodeConditionalRow(context, r);
+            for (Row r : tailingRows) encodeConditionalRow(context, tableContext, r);
 
             return innerTdDivRequired;
         }
@@ -145,7 +145,7 @@ public class DataTableRowRenderer {
         return false;
     }
 
-    private static void encodeConditionalRow(FacesContext context, Row r) throws IOException {
+    private static void encodeConditionalRow(FacesContext context, DataTableRenderingContext tableContext, Row r) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         writer.startElement(HTML.TR_ELEM, null);
 
@@ -164,9 +164,11 @@ public class DataTableRowRenderer {
             if (kid instanceof Column)
                 rowColumns.add((Column)kid);
 
+        tableContext.getTable().setInConditionalRow(true, rowColumns);
         for (Column kid : rowColumns)
             if (kid.isRendered())
                 encodeConditionalRowCell(context, kid);
+        tableContext.getTable().setInConditionalRow(false, rowColumns);
 
         writer.endElement(HTML.TR_ELEM);
     }
