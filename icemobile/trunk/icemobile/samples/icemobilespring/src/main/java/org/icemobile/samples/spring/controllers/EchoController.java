@@ -17,13 +17,10 @@
 
 package org.icemobile.samples.spring.controllers;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.icemobile.samples.spring.AccordionBean;
 import org.icemobile.samples.spring.CarouselBean;
 import org.icemobile.samples.spring.DateTimeSpinnerBean;
 import org.icemobile.samples.spring.FlipSwitchBean;
-import org.icemobile.samples.spring.GeolocationBean;
 import org.icemobile.samples.spring.InputTextBean;
 import org.icemobile.samples.spring.ListBean;
 import org.icemobile.samples.spring.TabsetBean;
@@ -85,16 +82,6 @@ public class EchoController extends BaseController{
     @RequestMapping(value = "/flipswitch")
     public void doRequest(
         @ModelAttribute("flipSwitchBean") FlipSwitchBean model) {
-    }
-
-    @RequestMapping(value = "/geolocation")
-    public void doRequest(@ModelAttribute("geolocationBean") GeolocationBean model) {
-    }
-    
-    @ModelAttribute("geolocationBean")
-    public GeolocationBean createGeolocationBean(HttpServletRequest request) {
-        GeolocationBean bean = new GeolocationBean();
-        return bean;
     }
 
     @RequestMapping(value = "/inputtext")
