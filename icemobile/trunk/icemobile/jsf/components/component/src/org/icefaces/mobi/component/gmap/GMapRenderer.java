@@ -25,16 +25,33 @@ import javax.faces.context.ResponseWriter;
 
 import org.icefaces.mobi.renderkit.CoreRenderer;
 
+/**
+ * gMap Renderer.
+ *
+ *
+ */
 public class GMapRenderer extends CoreRenderer {
 
+    /**
+     * If our rendered property is true, render the beginning of the current
+     * state of this UIComponent to the response contained in the specified
+     * FacesContext.
+     *
+     * @param context The JSF Context
+     * @param component The JSF Component reference
+     *
+     * @throws IOException - if an input/output error occurs while rendering
+     */
+    @Override
     public void encodeBegin(FacesContext context, UIComponent component)
             throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = component.getClientId(context);
         GMap gmap = (GMap) component;
 
-//        writer.startElement("div", component);
-//        writer.writeAttribute("id", clientId+"_wrp", null);
+        writer.startElement("div", component);
+        writer.writeAttribute("id", clientId + "_wrp", null);
+        writer.writeAttribute("style", "height: 100%;", null);
         
         writer.startElement("div", null);
         writer.writeAttribute("id", clientId, null);
@@ -44,9 +61,6 @@ public class GMapRenderer extends CoreRenderer {
         writeJavascriptFile(context, component, "gmap.js", "gmap.js",
                 "org.icefaces.component.gmap");
 
-        writer.startElement("span", null);
-        writer.writeAttribute("id", clientId + "_script", null);
-        
         writer.startElement("script", null);
         writer.writeAttribute("type", "text/javascript", null);
         writer.write(String.format("var wrapper = mobi.gmap.create('%s');",
@@ -69,22 +83,28 @@ public class GMapRenderer extends CoreRenderer {
                     gmap.getOptions()));
         }
         writer.endElement("script");
-        
-        writer.endElement("span");
-        
-//        writer.endElement("div");
-        gmap.setIntialized(true);
     }
 
+    /**
+     * If our rendered property is true, render the children of this UIComponent
+     * to the response contained in the specified
+     * FacesContext.
+     *
+     * @param context The JSF Context
+     * @param component The JSF Component reference
+     *
+     * @throws IOException - if an input/output error occurs while rendering
+     */
     @Override
     public void encodeChildren(FacesContext context, UIComponent component)
             throws IOException {
         if (context == null || component == null) {
             throw new NullPointerException();
         }
-        if (component.getChildCount() == 0)
+        if (component.getChildCount() == 0) {
             return;
-        Iterator kids = component.getChildren().iterator();
+        }
+        Iterator<UIComponent> kids = component.getChildren().iterator();
         while (kids.hasNext()) {
             UIComponent kid = (UIComponent) kids.next();
             kid.encodeBegin(context);
@@ -94,6 +114,25 @@ public class GMapRenderer extends CoreRenderer {
             kid.encodeEnd(context);
         }
 
+    }
+    
+    /**
+     * If our rendered property is true, render the end of the current
+     * state of this UIComponent to the response contained in the specified
+     * FacesContext.
+     *
+     * @param context The JSF Context
+     * @param component The JSF Component reference
+     *
+     * @throws IOException - if an input/output error occurs while rendering
+     */
+    @Override
+    public void encodeEnd(FacesContext context, UIComponent component)
+        throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        GMap gmap = (GMap) component;
+        writer.endElement("div");
+        gmap.setIntialized(true);
     }
 
     @Override

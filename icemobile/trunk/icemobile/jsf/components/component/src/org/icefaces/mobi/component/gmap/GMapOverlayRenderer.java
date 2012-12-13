@@ -41,8 +41,6 @@ public class GMapOverlayRenderer extends CoreRenderer {
         GMapOverlay overlay = (GMapOverlay) component;
         ResponseWriter writer = context.getResponseWriter();
         String clientId = overlay.getClientId(context);
-        writer.startElement("span", null);
-        writer.writeAttribute("id", clientId + "_overlay", null);
         writer.startElement("script", null);
         writer.writeAttribute("type", "text/javascript", null);
         if (overlay.getPoints() != null && overlay.getShape() != null) {
@@ -56,6 +54,5 @@ public class GMapOverlayRenderer extends CoreRenderer {
                             overlay.getPoints(), overlay.getOptions()));
         }
         writer.endElement("script");
-        writer.endElement("span");
     }
 }

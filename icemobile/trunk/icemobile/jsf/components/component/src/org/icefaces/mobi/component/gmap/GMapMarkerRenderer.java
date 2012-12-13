@@ -28,7 +28,7 @@ import org.icefaces.mobi.renderkit.CoreRenderer;
 public class GMapMarkerRenderer extends CoreRenderer {
 
     /**
-     * If our rendered property is true, render the beginning of the current
+     * If the rendered property is true, render the beginning of the current
      * state of this UIComponent to the response contained in the specified
      * FacesContext.
      *
@@ -42,8 +42,6 @@ public class GMapMarkerRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
         GMapMarker marker = (GMapMarker) component;
         String clientId = marker.getClientId(context);
-        writer.startElement("span", null);
-        writer.writeAttribute("id", clientId + "_marker", null);
         writer.startElement("script", null);
         writer.writeAttribute("type", "text/javascript", null);
         String currentLat = marker.getLatitude();
@@ -53,9 +51,9 @@ public class GMapMarkerRenderer extends CoreRenderer {
                 && currentLon.length() > 0) {
             // to dynamic support first to remove if any
             writer.write(String.format(
-                    "var wrapper = mobi.gmap.getWrapper('%s');" +
-                    "wrapper.removeMarker('%s');" +
-                    "wrapper.addMarker('%s','%s','%s');",
+                    "var wrapper = mobi.gmap.getWrapper('%s');"
+                  + "wrapper.removeMarker('%s');"
+                  + "wrapper.addMarker('%s','%s','%s');",
                     marker.getParent().getClientId(context),
                     clientId,
                     clientId,
@@ -63,6 +61,5 @@ public class GMapMarkerRenderer extends CoreRenderer {
                     currentLon));
         }
         writer.endElement("script");
-        writer.endElement("span");
     }
 }
