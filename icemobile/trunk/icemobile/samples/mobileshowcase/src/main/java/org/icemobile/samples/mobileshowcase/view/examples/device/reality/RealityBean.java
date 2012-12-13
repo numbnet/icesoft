@@ -100,7 +100,8 @@ public class RealityBean extends ExampleImpl<RealityBean> implements
     static int THUMBSIZE = 128;
     HashMap<String,HashMap> allMarkers = new HashMap();;
     List<HashMap> markerList;
-    private String selectedModel = "icemobile";
+    private String selectedModel1 = "icemobile";
+    private String selectedModel2 = "icemobile";
 
     // upload error message
     private String uploadMessage;
@@ -218,14 +219,24 @@ public class RealityBean extends ExampleImpl<RealityBean> implements
         return longitude;
     }
 
-    public String getSelectedModel() {
-        return selectedModel;
+    public String getSelectedModel1() {
+        return selectedModel1;
     }
 
-    public void setSelectedModel(String selectedModel) {
-        this.selectedModel = selectedModel;
+    public void setSelectedModel1(String selectedModel) {
+        this.selectedModel1 = selectedModel;
         HashMap marker = allMarkers.get(selectedModel);
         markerList.set(0, marker);
+    }
+
+    public String getSelectedModel2() {
+        return selectedModel2;
+    }
+
+    public void setSelectedModel2(String selectedModel) {
+        this.selectedModel2 = selectedModel;
+        HashMap marker = allMarkers.get(selectedModel);
+        markerList.set(1, marker);
     }
 
     public String getSelection()  {

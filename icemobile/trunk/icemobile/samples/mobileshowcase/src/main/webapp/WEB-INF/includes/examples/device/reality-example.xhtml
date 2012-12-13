@@ -115,8 +115,8 @@
                 <p>Select your desired 3D model:</p>
             </mobi:fieldsetRow>
             <mobi:fieldsetRow styleClass="mobi-center">
-                <h:selectOneMenu id="dynamicMarker"
-                        value="#{realityBean.selectedModel}">
+                <h:selectOneMenu id="dynamicMarker1"
+                        value="#{realityBean.selectedModel1}">
                     <f:selectItem itemLabel="ICEmobile Logo"
                             itemValue="icemobile"/>
                     <f:selectItem itemLabel="Puzzle Block 1"
@@ -125,7 +125,17 @@
                             itemValue="puz2"/>
                     <f:ajax execute="@this" render="@all"/>
                 </h:selectOneMenu>
-            </mobi:fieldsetRow>
+                 <h:selectOneMenu id="dynamicMarker2"
+                        value="#{realityBean.selectedModel2}">
+                    <f:selectItem itemLabel="ICEmobile Logo"
+                            itemValue="icemobile"/>
+                    <f:selectItem itemLabel="Puzzle Block 1"
+                            itemValue="puz1"/>
+                    <f:selectItem itemLabel="Puzzle Block 2"
+                            itemValue="puz2"/>
+                    <f:ajax execute="@this" render="@all"/>
+                </h:selectOneMenu>
+           </mobi:fieldsetRow>
             <mobi:fieldsetRow styleClass="mobi-center">
                 <mobi:augmentedReality  buttonLabel="3D Augmented Reality"
                     urlBase="#{realityBean.baseURL}"
