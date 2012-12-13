@@ -101,25 +101,6 @@ public class DeviceStyleSheetRenderer extends Renderer implements javax.faces.ev
         Map contextMap = context.getAttributes();
         Map attributes = uiComponent.getAttributes();
         DeviceStyleSheet stylesheet = (DeviceStyleSheet) uiComponent;
-
-        /**
-         * The component has three modes in which it executes.
-         * 1.) no attributes - then component tries to detect a mobile device
-         *     in from the user-agent.  If a mobile device is discovered, then
-         *     it will fall into three possible matches, iphone, ipad,  android and
-         *     blackberry.  If the mobile device is not not know then ipad
-         *     is loaded. Library is always assumed to be DEFAULT_LIBRARY.
-         *
-         * 2.) name attribute - component will default to using a library name
-         *     of DEFAULT_LIBRARY.  The name attribute specifies one of the
-         *     possible device themes; iphone.css, android.css or bberry.css.
-         *     Error will result if named resource could not be resolved.
-         *
-         * 3.) name and libraries attributes. - component will use the library
-         *     and name specified by the user.  Component is fully manual in this
-         *     mode. Error will result if name and library can not generate a
-         *     value resource.
-         */
         String name = (String)uiComponent.getAttributes().get("name");
         String view = (String)uiComponent.getAttributes().get("view");
         if( name == null || "".equals(name)){
