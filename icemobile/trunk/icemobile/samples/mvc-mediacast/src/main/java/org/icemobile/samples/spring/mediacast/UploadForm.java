@@ -1,3 +1,18 @@
+/*
+ * Copyright 2004-2012 ICEsoft Technologies Canada Corp.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the
+ * License. You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an "AS
+ * IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ * express or implied. See the License for the specific language
+ * governing permissions and limitations under the License.
+ */
 package org.icemobile.samples.spring.mediacast;
 
 import javax.validation.constraints.Size;
@@ -21,7 +36,7 @@ public class UploadForm {
 	
 	private String p = PAGE_UPLOAD;//page
 	
-	private String photoId;
+	private String id;
 	
 	private String form;
 	
@@ -34,12 +49,12 @@ public class UploadForm {
 		this.form = form;
 	}
 
-	public String getPhotoId() {
-		return photoId;
+	public String getId() {
+		return id;
 	}
 
-	public void setPhotoId(String photoId) {
-		this.photoId = cleanParam(photoId);
+	public void setId(String id) {
+		this.id = cleanParam(id);
 	}
 
 	public String getDescription() {
@@ -91,7 +106,7 @@ public class UploadForm {
 	@Override
 	public String toString() {
 		return "UploadForm [description=" + description
-				+ ", l=" + l + ", p=" + p + ", photoId=" + photoId + ", form="
+				+ ", l=" + l + ", p=" + p + ", id=" + id + ", form="
 				+ form  + "]";
 	}
 

@@ -1,3 +1,19 @@
+/*
+ * Copyright 2004-2012 ICEsoft Technologies Canada Corp.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the
+ * License. You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an "AS
+ * IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ * express or implied. See the License for the specific language
+ * governing permissions and limitations under the License.
+ */
+
 function enhanceGet(link){
     $(link).click(function(event){
         var elem = $('#ajaxloader');
@@ -74,7 +90,7 @@ function enhanceForm(theForm,updateTarget)  {
 }
 
 function updateViewerPanel(id,action){
-    var url = 'viewer?photoId='+id+'&l=t';
+    var url = 'viewer?id='+id+'&l=t';
     if( action ){
         url += '&action='+action;
     }
@@ -145,7 +161,7 @@ function getGalleryUpdate(){
     if( isNaN(updated) ){
         updated = 0;
     }
-    var url = 'photo-list-json?since='+updated;
+    var url = 'gallery-list-json?since='+updated;
     console.log('getGalleryUpdate(): '+url);
     $.ajax({
         url:url,
@@ -161,7 +177,7 @@ function getGalleryUpdate(){
 function getGalleryRefresh(){
     console.log('getGalleryRefresh()');
     $.ajax({
-        url:'photo-list',
+        url:'gallery-list',
         cache:false,
         processData:false,
         type:'GET',
@@ -184,9 +200,17 @@ function updateGalleryList(json){
             var msg = json[m];
             updated = Math.max(updated, msg.created);
             var item = start+"<div id='"+msg.id+"' data-created='"+msg.created+"'>"
-                + "<a class='mediaLink' href='#' onclick=\"updateViewerPanel('"+msg.id+"');\">"
-                + "<img src='resources/uploads/"+msg.fileName+"' class='p'>"
-                + "</a><span class='desc'>"+msg.description+"</span>";
+                + "<a class='mediaLink' href='#' onclick=\"updateViewerPanel('"+msg.id+"');\">";
+            if( msg.photo ){
+                item += "<img src='resources/uploads/"+msg.photoFileName+"' class='p'>";
+            }
+            else if( msg.video ){
+                item += "<img src='resources/images/movieIcon.png' class='p'>";
+            }
+            else if( msg.audio ){
+                item += "<img src='resources/images/soundIcon.png' class='p'>";
+            }
+            item += "<span class='desc'>"+msg.description+"</span></a>";
             
             var galleryList = $('#galleryList').children();
             var found = false;

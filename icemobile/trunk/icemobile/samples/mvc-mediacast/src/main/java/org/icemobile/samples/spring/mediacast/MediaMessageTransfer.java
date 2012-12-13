@@ -21,22 +21,29 @@ public class MediaMessageTransfer {
 	
 	private String id;
 	private String description;
-	private String fileName;
+	private String photoFileName;
 	private long created;
+	private boolean hasVideo;
+	private boolean hasPhoto;
+	private boolean hasAudio;
+	
 	
 	public MediaMessageTransfer(MediaMessage msg){
 		id = msg.getId();
 		description = msg.getDescription();
 		if( msg.getSmallPhoto() != null ){
-			fileName = msg.getSmallPhoto().getName();
+		    photoFileName = msg.getSmallPhoto().getName();
+		    hasPhoto = true;
 		}
+		hasAudio = msg.getShowAudio();
+		hasVideo = msg.getShowVideo();
 		created = msg.getCreated();
 	}
 
 	@Override
 	public String toString() {
 		return "MediaMessageTransfer [id=" + id + ", description="
-				+ description + ", fileName=" + fileName  + ", created=" + created + "]";
+				+ description + ", fileName=" + photoFileName  + ", created=" + created + "]";
 	}
 
 	public long getCreated() {
@@ -51,8 +58,20 @@ public class MediaMessageTransfer {
 		return description;
 	}
 
-	public String getFileName() {
-		return fileName;
+	public String getPhotoFileName() {
+		return photoFileName;
+	}
+	
+	public boolean isAudio(){
+	    return hasAudio;
+	}
+	
+	public boolean isVideo(){
+	    return hasVideo;
+	}
+	
+	public boolean isPhoto(){
+	    return hasPhoto;
 	}
 
 }

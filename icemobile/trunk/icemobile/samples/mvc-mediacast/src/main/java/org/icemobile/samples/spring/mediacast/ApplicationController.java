@@ -158,12 +158,12 @@ public class ApplicationController implements ServletContextAware {
             view = "gallery-page";
         }
         else if( PAGE_VIEWER.equals(form.getP())){
-            addViewerViewModel(form.getPhotoId(),form.getL(), model, false, false);
+            addViewerViewModel(form.getId(),form.getL(), model, false, false);
             view = "viewer";
         }
         else if( PAGE_ALL.equals(form.getP())){
             addUploadViewModel(PAGE_ALL, form.getL(), model);
-            addViewerViewModel(form.getPhotoId(), form.getL(), model, false, false);
+            addViewerViewModel(form.getId(), form.getL(), model, false, false);
             view = "tablet";
         }
         log.debug("forwarding to " + view);
@@ -187,18 +187,18 @@ public class ApplicationController implements ServletContextAware {
         boolean back = "back".equals(actionParam);
         boolean forward = "forward".equals(actionParam);
         addCommonModel(model, form.getL());
-        addViewerViewModel(form.getPhotoId(), form.getL(), model, back, forward);
+        addViewerViewModel(form.getId(), form.getL(), model, back, forward);
         return "viewer-panel";
     }
 
-    @RequestMapping(value="/photo-list", method=RequestMethod.GET)
-    public String getPhotoListContent(UploadForm form, Model model){
+    @RequestMapping(value="/gallery-list", method=RequestMethod.GET)
+    public String getGalleryListContent(UploadForm form, Model model){
         addCommonModel(model, form.getL());
-        return "photo-list";
+        return "gallery-list";
     }
 
-    @RequestMapping(value="/photo-list-json", method=RequestMethod.GET, produces="application/json")
-    public @ResponseBody List<MediaMessageTransfer> getPhotoListJSON(
+    @RequestMapping(value="/gallery-list-json", method=RequestMethod.GET, produces="application/json")
+    public @ResponseBody List<MediaMessageTransfer> getGalleryListJSON(
             @RequestParam(value="since") long since,
             @RequestParam(value="_", required=false) String jqTimestamp){
 
@@ -402,16 +402,16 @@ public class ApplicationController implements ServletContextAware {
                 .getMediaImageMarkup(layout));
     }
 
-    private void addViewerViewModel(String photoId, String layout, Model model, boolean back, boolean forward){
+    private void addViewerViewModel(String id, String layout, Model model, boolean back, boolean forward){
 
         MediaMessage msg = null;
-        if( photoId != null ){
+        if( id != null ){
             if( back || forward ){
                 List<MediaMessage> list = mediaService.getMediaListSortedByTime();
                 if( list != null ){
                     for(int i = 0 ; i < list.size() ; i++ ){
                         String pid = list.get(i).getId();
-                        if( pid != null && pid.equals(photoId) ){
+                        if( pid != null && pid.equals(id) ){
                             int target = (back ? i-1 : i+1);
                             if( target == -1 ){
                                 target = list.size()-1;
@@ -425,7 +425,7 @@ public class ApplicationController implements ServletContextAware {
                 }
             }
             else{
-                msg = mediaService.getMediaMessage(photoId);
+                msg = mediaService.getMediaMessage(id);
             }
 
         }
