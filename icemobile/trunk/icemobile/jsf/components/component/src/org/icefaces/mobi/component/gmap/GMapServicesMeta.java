@@ -36,7 +36,7 @@ import javax.faces.application.ResourceDependency;
         )
 
 @ResourceDependencies({
-    @ResourceDependency(library = "org.icefaces.component.util", name = "component.js"),
+    @ResourceDependency(library = "org.icefaces.component.util", name = "component.js")
 })
 
 public class GMapServicesMeta extends UIPanelMeta {
