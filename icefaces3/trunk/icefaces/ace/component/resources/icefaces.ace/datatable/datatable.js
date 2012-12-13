@@ -351,7 +351,7 @@ ice.ace.DataTable.prototype.setupFilterEvents = function () {
     });
     else if (this.cfg.filterEvent == "change") ice.ace.jq(this.filterSelector).off('keyup').on('keyup', function (event) {
         var _event = event;
-        if (event.which != 9) {
+        if (event.which == 8 || event.which == 13 || event.which > 40) {
             if (_self.delayedFilterCall) clearTimeout(_self.delayedFilterCall);
             _self.delayedFilterCall = setTimeout(function () {
                 _self.filter(_event);
@@ -851,8 +851,8 @@ ice.ace.DataTable.prototype.setupScrolling = function () {
         });
     }
 
-    if (window.console && this.cfg.devMode) {
-        window.console.log("ace:dataTable - ID: " + this.id + " - setupScrolling - " + (new Date().getTime() - startTime)/1000 + "s");
+    if (console && this.cfg.devMode) {
+        console.log("ace:dataTable - ID: " + this.id + " - setupScrolling - " + (new Date().getTime() - startTime)/1000 + "s");
     }
 }
 
@@ -1200,8 +1200,8 @@ ice.ace.DataTable.prototype.resizeScrolling = function () {
             bodyTable.parent().parent().css('overflow-x','scroll');
         }
 
-        if (window.console && this.cfg.devMode) {
-            window.console.log("ace:dataTable - ID: " + this.id + " - resizeScrolling - " + (new Date().getTime() - startTime)/1000 + "s");
+        if (console && this.cfg.devMode) {
+            console.log("ace:dataTable - ID: " + this.id + " - resizeScrolling - " + (new Date().getTime() - startTime)/1000 + "s");
         }
     }
 }
@@ -1956,7 +1956,6 @@ ice.ace.DataTable.prototype.filter = function (evn) {
         // Search by id rather than $(evn.target) to get updated copy now in DOM
         var newInput = ice.ace.jq(ice.ace.escapeClientId(ice.ace.jq(_self.filterSource).attr('id')));
         // Reset input value after focus to prevent selection of text
-        newInput.setCaretToEnd();
 
         return false;
     };
