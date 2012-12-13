@@ -42,7 +42,8 @@ import javax.faces.application.ResourceDependency;
                 "blackberry.  If the mobile device is not not know then ipad as default "+
                 "is loaded. Library is always assumed to be DEFAULT_LIBRARY. \n"+
                 "2.) name attribute - component will default to using a library name  "+
-                "of DEFAULT_LIBRARY.  The name attribute specifies one of the "+
+                "of DEFAULT_LIBRARY (currently set to org.icefaces.component.skins. " +
+                "The name attribute specifies one of the "+
                 "possible device themes; iphone.css, android.css or bberry.css "+
                 "An Error will result if named resource could not be resolved.\n" +
                 "3.) name and libraries attributes. - component will use the library "+

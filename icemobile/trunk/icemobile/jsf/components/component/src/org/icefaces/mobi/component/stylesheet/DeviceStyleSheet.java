@@ -23,7 +23,7 @@ import java.util.logging.Logger;
 
 public class DeviceStyleSheet extends DeviceStyleSheetBase {
     private static Logger log = Logger.getLogger(DeviceStyleSheet.class.getName());
-
+    public static final String DEFAULT_LIBRARY = "org.icefaces.component.skins";
     // pass through attributes for input text
     public Attribute[] PASS_THOUGH_ATTRIBUTES = {
             new Attribute("media", null)
