@@ -16,11 +16,9 @@
 
 package org.icemobile.samples.spring;
 
-import javax.servlet.http.HttpServletRequest;
-
 /**
- * This is a sample backing bean for the MVC supported state
- * The properties should be the same
+ * This is a sample backing bean for the MVC supported state.
+ * The properties should be the same.
  */
 public class GeolocationBean {
 
@@ -36,9 +34,6 @@ public class GeolocationBean {
     private String enableHighPrecision = "asNeeded";
     private boolean continuousUpdates = true;
     
-    private boolean isAndroidContainer;
-
-
     public String getGeolocation() {
         return location;
     }
@@ -86,6 +81,7 @@ public class GeolocationBean {
     }
 
     public void setMaximumAge(int maximumAge) {
+        System.out.println("setMaximumAge()="+maximumAge);
         this.maximumAge = maximumAge;
     }
 
@@ -104,21 +100,5 @@ public class GeolocationBean {
     public void setContinuousUpdates(boolean continuousUpdates) {
         this.continuousUpdates = continuousUpdates;
     }
-    
-    public void resetValues(){
-        this.latitude = null;
-        this.longitude = null;
-        this.altitude = null;
-        this.direction = null;
-    }
-    
-    public boolean isAndroidContainer(){
-        return isAndroidContainer;
-    }
-    
-    public void setAndroidContainer(boolean val){
-        isAndroidContainer = val;
-    }
-
 
 }
