@@ -430,6 +430,7 @@ static char base64EncodingTable[64] = {
     } else {
         [controller dismissModalViewControllerAnimated:YES];
     }
+    [self.controller doCancel];
 }
 
 - (BOOL)address: (NSString*)contactId  {
@@ -517,6 +518,7 @@ NSLog(@"Found record %@", result);
 - (void)peoplePickerNavigationControllerDidCancel:(ABPeoplePickerNavigationController *)peoplePicker  {
     NSLog(@"NativeInterface peoplePickerNavigationControllerDidCancel ");
     [self dismissAddress];
+    [self.controller doCancel];
 }
 
 - (BOOL)aug: (NSString*)augId locations:(NSDictionary *)places {
