@@ -20,6 +20,7 @@ import org.icefaces.ace.meta.annotation.Facet;
 import org.icefaces.ace.meta.annotation.Facets;
 import org.icefaces.ace.meta.annotation.Property;
 import org.icefaces.ace.meta.baseMeta.UIPanelMeta;
+import org.icefaces.mobi.utils.TLDConstants;
 
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
@@ -49,7 +50,7 @@ public class SplitPaneMeta extends UIPanelMeta {
     private boolean scrollable;
 
     @Property(defaultValue="25",
-            tlddoc="The % of the total width assigned to the left pane.")
+            tlddoc="An integer value representing the % of the total width assigned to the left pane.")
     private int columnDivider;
 
     @Facets
@@ -60,15 +61,20 @@ public class SplitPaneMeta extends UIPanelMeta {
         UIComponent right;
     }
 
-    @Property(tlddoc = "Style class of the container element.")
+    @Property(tlddoc = TLDConstants.STYLECLASS)
     private String styleClass;
 
-    @Property(tlddoc = "style will be rendered on a root element of this component")
+    @Property(tlddoc = TLDConstants.STYLE)
     private String style;
 
  /*   @Property(defaultValue="none",
               tlddoc = " TODO resize needs to be further defined, but initially will be 2 adjacent panes " +
-             "sharing a common border which can move.  May also do a collapse of one of the panes?" )
+             "sharing a common border which can move.  Will also provide a button to collapse left pane" )
     private String resizable;  */
+
+    /*
+    @Property(tlddoc = "A disabled splitPane will not be able to resize or collapse the left panel")
+    private boolean disabled; TODO once resize is completed
+     */
 
 }
