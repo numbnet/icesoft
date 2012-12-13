@@ -194,4 +194,8 @@ public class DateTimeEntryMeta extends UIInputMeta {
 
     @Property(defaultValue = "", tlddoc = "The text to display on the trigger button. Use in conjunction with the showOn option set to \"button\" or \"both\". Default = \"\".")
     private String buttonText;
+
+    @Property(defaultValue = "true", tlddoc = "With lenient parsing, the Java date parser may use heuristics to interpret" +
+            " inputs that do not precisely match this date's format. With strict parsing, inputs must match this date's format.")
+    private boolean parsingLenient;
 }
