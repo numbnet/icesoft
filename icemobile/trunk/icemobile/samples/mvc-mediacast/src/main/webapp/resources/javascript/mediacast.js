@@ -43,11 +43,17 @@ function enhanceForm(theForm,updateTarget)  {
     //submitting the form will update 
     $(document).ready(function () {
         $(theForm).submit(function () {
+            console.log('submit');
+            if( $('#operation').val() == 'cancel'){
+                console.log('cancel submit');
+                return true;
+            }
             var updateRegion = $(updateTarget);
             if (window.ice && ice.upload) {
                 window.ice.handleResponse = function (data) {
                     updateRegion.replaceWith(unescape(data));
                 }
+                console.log('ice.upload');
                 ice.upload($(this).attr("id"));
                 return false;
             }
@@ -72,6 +78,7 @@ function enhanceForm(theForm,updateTarget)  {
                     processData:false,
                     type:'POST',
                     success:function (html) {
+                        console.log('ajax response: '+html);
                         updateRegion.replaceWith(html);
                     }
                 });
@@ -84,6 +91,7 @@ function enhanceForm(theForm,updateTarget)  {
                     alert(err);
                 }
             }
+            console.log('submit return false');
             return false;
         });
     });
