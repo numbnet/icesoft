@@ -128,7 +128,7 @@ public class  PanelConfirmationRenderer extends BaseLayoutRenderer {
                 panelConfirmation = (PanelConfirmation)(uiForm.findComponent(panelConfirmationId));
             }
         }
-        if (panelConfirmation != null) {
+        if (!panelConfirmation.isDisabled() && panelConfirmation != null) {
             FacesContext facesContext = FacesContext.getCurrentInstance();
             panelConfirmationId = panelConfirmation.getClientId(facesContext);
             StringBuilder sb = new StringBuilder("mobi.panelConf.init('").append(panelConfirmationId).append("','");

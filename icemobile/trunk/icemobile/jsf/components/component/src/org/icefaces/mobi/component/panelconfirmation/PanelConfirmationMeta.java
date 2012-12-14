@@ -44,6 +44,9 @@ public class PanelConfirmationMeta extends UIPanelMeta {
     @Property(tlddoc = TLDConstants.STYLE)
     private String style;
 
+    @Property(tlddoc = TLDConstants.DISABLED)
+    private boolean disabled;
+
     @Property(tlddoc = TLDConstants.STYLECLASS)
     private String styleClass;
 
