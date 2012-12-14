@@ -25,29 +25,19 @@ public class UploadForm {
 	public static final String PAGE_ALL = "all";
 
 
-	public static final String DESKTOP = "d";
-	public static final String MOBILE = "m";
-	public static final String TABLET = "t";
+	public static final String DESKTOP = "desktop";
+	public static final String MOBILE = "mobile";
+	public static final String TABLET = "tablet";
 	
 	@Size(max = 164)
 	private String description;
 	
-	private String l;//layout
+	private String view;
 	
-	private String p = PAGE_UPLOAD;//page
+	private String page = PAGE_UPLOAD;
 	
 	private String id;
 	
-	private String form;
-	
-	public String getForm() {
-		return form;
-	}
-
-	public void setForm(String form) {
-		this.form = form;
-	}
-
 	public String getId() {
 		return id;
 	}
@@ -64,18 +54,18 @@ public class UploadForm {
 		this.description = description;
 	}
 
-	public String getL() {
-		return l;
+	public String getView() {
+		return view;
 	}
 
-	public void setL(String layout) {
-		if( notNullOrEmpty(layout)){
-			this.l = cleanParam(layout);
-			if( TABLET.equals(l) ){
-				p = PAGE_ALL;
+	public void setView(String view) {
+		if( notNullOrEmpty(view)){
+			this.view = cleanParam(view);
+			if( TABLET.equals(view) ){
+				page = PAGE_ALL;
 			}
-			else if( PAGE_ALL.equals(p)){
-				p = PAGE_UPLOAD;
+			else if( PAGE_ALL.equals(page)){
+				page = PAGE_UPLOAD;
 			}
 		}
 	}
@@ -94,19 +84,18 @@ public class UploadForm {
 		return false;
 	}
 
-	public String getP() {
-		return p;
+	public String getPage() {
+		return page;
 	}
 
-	public void setP(String p) {
-		this.p = cleanParam(p);
+	public void setPage(String page) {
+		this.page = cleanParam(page);
 	}
 
 	@Override
 	public String toString() {
 		return "UploadForm [description=" + description
-				+ ", l=" + l + ", p=" + p + ", id=" + id + ", form="
-				+ form  + "]";
+				+ ", view=" + view + ", page=" + page + ", id=" + id  + "]";
 	}
 
 

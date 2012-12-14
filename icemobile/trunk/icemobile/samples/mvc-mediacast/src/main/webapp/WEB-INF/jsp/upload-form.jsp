@@ -19,7 +19,7 @@
      
     <form:form id="uploadForm" method="POST" enctype="multipart/form-data" 
         htmlEscape="true" cssClass="form">
-        <input type="hidden" name="layout" value="${layout}"/>
+        <input type="hidden" name="view" value="${view}"/>
         <input type="hidden" name="fullPost" id="fullPost" value="false"/>
         <input type="hidden" name="operation" id="operation"/>
         <form:errors path="*" cssClass="errorblock" element="div" />
@@ -46,13 +46,13 @@
         <c:if test="${sessionScope['sxRegistered'] or enhanced}">
             <mobi:fieldsetGroup inset="true">
                  <mobi:fieldsetRow>
-                    <c:if test="${!desktop and empty sessionScope['sxPhotoUpload']}">
+                    <c:if test="${!desktop and !sxPhotoUploadReady}">
                         <mobi:camera id="camera"/>
                     </c:if>
-                    <c:if test="${!desktop and empty sessionScope['sxVideoUpload']}">
+                    <c:if test="${!desktop and !sxVideoUploadReady}">
                         <mobi:camcorder id="camcorder"/>
                     </c:if>
-                    <c:if test="${!desktop and empty sessionScope['sxAudioUpload']}">
+                    <c:if test="${!desktop and !sxAudioUploadReady}">
                         <mobi:microphone id="microphone" buttonLabel="Audio"/>
                     </c:if>
                  </mobi:fieldsetRow>  
@@ -60,13 +60,13 @@
                      <c:if test="${!sessionScope['sxRegistered']}">
                         <mobi:thumbnail for="camera"/>
                     </c:if>
-                    <c:if test="${not empty sxThumbnail and not empty sessionScope['sxPhotoUpload']}">
+                    <c:if test="${sxPhotoUploadReady and not empty sessionScope['sxPhotoUpload']}">
                         <img src='resources/uploads/${sxThumbnail.name}'/>
                     </c:if>
-                    <c:if test="${not empty sxVideoUpload}">
+                    <c:if test="${sxVideoUploadReady}">
                         <img src='resources/images/movieIcon.png' style="height:85px;width:81px"/>
                     </c:if>
-                    <c:if test="${not empty sxAudioUpload}">
+                    <c:if test="${sxAudioUploadReady}">
                         <img src='resources/images/soundIcon.png' style="height:85px;width:81px"/>
                     </c:if>
                  </mobi:fieldsetRow>     

@@ -40,7 +40,7 @@
                         <mobi:content>
                            <mobi:contentPane>
                                 <div id="carouselContainer">
-                                    <push:region group="photos" page="/carousel?l=t"/>
+                                    <push:region group="photos" page="/carousel?view=tablet"/>
                                  </div>
                                <%@ include file="/WEB-INF/jsp/upload-form.jsp" %>
                            </mobi:contentPane>

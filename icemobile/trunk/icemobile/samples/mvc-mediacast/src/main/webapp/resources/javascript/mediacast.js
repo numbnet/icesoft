@@ -29,7 +29,7 @@ function enhanceGet(link){
             cache:false,
             type:'GET',
             success:function (html) {
-                $(document.body).fadeOut
+                $('#ajaxloader').fadeOut();
                 $(document.body).html(html);
             },
             error:function(){
@@ -52,7 +52,7 @@ function enhanceForm(theForm,updateTarget)  {
             if (window.ice && ice.upload) {
                 window.ice.handleResponse = function (data) {
                     updateRegion.replaceWith(unescape(data));
-                }
+                };
                 console.log('ice.upload');
                 ice.upload($(this).attr("id"));
                 return false;
@@ -98,7 +98,7 @@ function enhanceForm(theForm,updateTarget)  {
 }
 
 function updateViewerPanel(id,action){
-    var url = 'viewer?id='+id+'&l=t';
+    var url = 'viewer?id='+id+'&view=tablet';
     if( action ){
         url += '&action='+action;
     }
@@ -154,7 +154,7 @@ function addResizeAfterUpdatesListener(elementId){
     
     var resizeHandler = function(updates) {
         resizeElementHeight(elementId);
-    }
+    };
 
     // resize height on first load
     resizeElementHeight(elementId);
@@ -222,7 +222,7 @@ function updateGalleryList(json){
             
             var galleryList = $('#galleryList').children();
             var found = false;
-            if( galleryList.length == 0 ){
+            if( galleryList.length === 0 ){
                 document.getElementById('galleryList').innerHTML = item;
                 found = true;
             }

@@ -30,7 +30,7 @@
                 </mobi:carousel>
             </div>
         </form:form>
-        <c:if test="${layout eq 't' }">
+        <c:if test="${view eq 'tablet' }">
             <script type="text/javascript">
             $('#recentMessagesCarousel').find("a").each(function(){
             	$(this).click(function(){
@@ -41,5 +41,11 @@
             
             </script>
         </c:if>
+         <c:if test="${view ne 'tablet' }">
+            <script type="text/javascript">
+            enhanceGet("#carouselForm a");
+            </script>
+        </c:if>
+        
      </c:if>
 </div>

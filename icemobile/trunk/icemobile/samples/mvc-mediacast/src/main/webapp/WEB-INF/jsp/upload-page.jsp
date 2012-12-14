@@ -25,13 +25,13 @@
             <mobi:pagePanel>
                 <mobi:pagePanelHeader>
                     <a id="backBtn"class="mobi-button mobi-button-default"
-                        href='<c:url value="/app?p=gallery&l=${layout}"/>'>Gallery</a>
+                        href='<c:url value="/app?page=gallery&view=${view}"/>'>Gallery</a>
                     <span>Mediacast</span>
                     <img src="./resources/images/icemobile.png" style="position: absolute;top: 10px;right: 2em;"/>
                 </mobi:pagePanelHeader>
                 <mobi:pagePanelBody>
                     <div id="carouselContainer">
-                      <push:region group="photos" page="/carousel?l=m"/>
+                      <push:region group="photos" page="/carousel?view=mobile"/>
                      </div>
                     <div style="clear:both;"></div>
                     

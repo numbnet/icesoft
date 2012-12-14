@@ -15,4 +15,4 @@
   --%>
 
 <%@ taglib uri="http://www.icemobile.org/tags" prefix="mobi" %>
-<mobi:viewSwitcher mobileView="app?l=m" tabletView="app?l=t"/>
+<mobi:viewSwitcher mobileView="app?view=mobile" tabletView="app?view=tablet"/>

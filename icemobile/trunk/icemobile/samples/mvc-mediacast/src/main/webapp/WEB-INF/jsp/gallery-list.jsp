@@ -20,21 +20,21 @@
         <mobi:outputListItem>
             <div id="${m.id}".0
              data-created="${m.created}">
-                <c:if test="${layout eq 'm'}">
-                    <a class="mediaLink" href='<c:url value="/app?p=viewer&l=${layout}&id=${m.id}"/>'>
+                <c:if test="${view eq 'mobile'}">
+                    <a class="mediaLink" href='<c:url value="/app?page=viewer&view=${view}&id=${m.id}"/>'>
                         <c:if test="${not empty m.smallPhoto}">
                             <img src='resources/uploads/${m.smallPhoto.name}' class="p"/>
                         </c:if>
                         <c:if test="${empty m.smallPhoto && not empty m.video}">
-                            <img src='resources/movieIconSmall.png' class="p"/>
+                            <img src='resources/images/movieIcon.png' class="p"/>
                         </c:if>
                         <c:if test="${empty m.smallPhoto && empty m.video && not empty m.audio}">
-                            <img src='resources/soundIconSmall.png' class="p"/>
+                            <img src='resources/images/soundIcon.png' class="p"/>
                         </c:if>
                         <span class="desc"><c:out value="${m.description}"/></span>
                     </a>
                 </c:if>
-                <c:if test="${layout ne 'm'}">
+                <c:if test="${view ne 'mobile'}">
                     <a class="mediaLink" href="#" onclick="updateViewerPanel('${m.id}');">
                         <c:if test="${not empty m.smallPhoto}">
                             <img src='resources/uploads/${m.smallPhoto.name}' class="p"/>
