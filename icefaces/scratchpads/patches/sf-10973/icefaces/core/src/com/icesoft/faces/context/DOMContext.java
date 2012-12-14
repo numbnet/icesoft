@@ -292,6 +292,19 @@ public class DOMContext implements java.io.Serializable {
     public Text createTextNode(String cData) {
         return document.createTextNode(cData);
     }
+	
+	/**
+     * <p/>
+     * Creates a <code>Text</code> node given the specified string. 
+     * The output is not escaped, so the calling code must be carefully
+     * audited to ensure that application data is not passed in directly.</p>
+     *
+     * @param cData The data for the node.
+     * @return The new <code>Text</code> object.
+     */
+    public Text createTextNodeUnescaped(String cData) {
+         return document.createTextNode(cData);
+     }
 
     /**
      * <p/>
