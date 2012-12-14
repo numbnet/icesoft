@@ -302,7 +302,7 @@ public class DateTimeEntryRenderer extends InputRenderer {
             Locale locale = dateTimeEntry.calculateLocale(context);
             SimpleDateFormat format = new SimpleDateFormat(dateTimeEntry.getPattern(), locale);
             format.setTimeZone(dateTimeEntry.calculateTimeZone());
-            format.setLenient(dateTimeEntry.isParsingLenient());
+            format.setLenient(dateTimeEntry.isLenientParsing());
             convertedValue = format.parse(submittedValue);
             
             return convertedValue;
