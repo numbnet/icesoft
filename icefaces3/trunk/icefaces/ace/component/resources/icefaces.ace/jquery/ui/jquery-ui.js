@@ -8597,11 +8597,13 @@
             if (inst.inline)
                 this._updateDatepicker(inst);
             else {
-                this._hideDatepicker();
-                this._lastInput = inst.input[0];
-                if (typeof(inst.input[0]) != 'object')
-                    inst.input.focus(); // restore focus
-                this._lastInput = null;
+                if (!inst.keepPopupShowing) { // ICE-8820
+                    this._hideDatepicker();
+                    this._lastInput = inst.input[0];
+                    if (typeof(inst.input[0]) != 'object')
+                        inst.input.focus(); // restore focus
+                    this._lastInput = null;
+                }
             }
         },
 
@@ -9089,6 +9091,13 @@
                     },
                     today: function () {
                         window['DP_jQuery_' + dpuuid].datepicker._gotoToday(id);
+                        // ICE-8820
+                        var sel = $('td.ui-datepicker-today:not(.' + $.datepicker._currentClass + ')', inst.dpDiv);
+                        if (sel[0]) {
+                            inst.keepPopupShowing = true;
+                            window['DP_jQuery_' + dpuuid].datepicker._selectDay(id, +sel[0].getAttribute('data-month'), +sel[0].getAttribute('data-year'), sel[0]);
+                            inst.keepPopupShowing = false;
+                        }
                     },
                     selectDay: function () {
                         window['DP_jQuery_' + dpuuid].datepicker._selectDay(id, +this.getAttribute('data-month'), +this.getAttribute('data-year'), this);
