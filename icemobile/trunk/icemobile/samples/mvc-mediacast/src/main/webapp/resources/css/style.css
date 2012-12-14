@@ -200,6 +200,7 @@ html.bberry .mobi-tabset-tabs > ul li {
 	}
     .imageViewer {
         width: 500px;
+        max-width:100%;
     }
     .mobi-view-switcher{
 	   text-align: center;
