@@ -132,6 +132,9 @@ public class RealityBean extends ExampleImpl<RealityBean> implements
             allMarkers.put((String) theMarker.get("label"), theMarker);
         }
 
+        markerList.set(0, allMarkers.get(selectedModel1));
+        markerList.set(1, allMarkers.get(selectedModel2));
+
     }
 
     public void processUploadedImage(ActionEvent event) {
