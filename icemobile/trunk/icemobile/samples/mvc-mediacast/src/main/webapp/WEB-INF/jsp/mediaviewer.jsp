@@ -84,23 +84,6 @@
 						<label>Altitude</label><span>${media.altitude}</span>
 						<label>Direction</label><span>${media.direction}</span>
 					</div>
-					<script src='<c:url value="/resources/javascript/openlayers/OpenLayers.mobile.js"/>'></script>
-					<div style="width:100%; height:200px; z-index:0;" id="map"></div>
-					<script type="text/javascript">
-					window.map = new OpenLayers.Map('map');
-					var wms = new OpenLayers.Layer.WMS("OpenLayers WMS",
-					  "http://vmap0.tiles.osgeo.org/wms/vmap0",
-					  {'layers':'basic'} );
-					map.addLayer(wms);
-					map.setCenter(new OpenLayers.LonLat(${media.longitude},${media.latitude}),3);
-					var vectorLayer = new OpenLayers.Layer.Vector("Overlay");
-					var feature = new OpenLayers.Feature.Vector(
-					 new OpenLayers.Geometry.Point(${media.longitude},${media.latitude}),
-					 {some:'data'},
-					 {externalGraphic: '<c:url value="/resources/images/icemobile_thumb.png"/>', graphicHeight: 21, graphicWidth: 16});
-					vectorLayer.addFeatures(feature);
-					map.addLayer(vectorLayer);
-					</script>
 				</mobi:fieldsetRow>
 				<mobi:fieldsetRow>
 					<label>Tags: </label>
