@@ -40,7 +40,6 @@ public class UploadForm {
 	
 	private String form;
 	
-	
 	public String getForm() {
 		return form;
 	}

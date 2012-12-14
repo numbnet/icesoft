@@ -78,13 +78,12 @@
                         placeholder="Description"/>
                  </mobi:fieldsetRow>
                  <mobi:fieldsetRow style="text-align:center;">
-                    <input type="submit" class="mobi-button"
+                    <mobi:commandButton id="cancelBtn"
                            value="Cancel" style="width:100px;margin-top:0;margin-bottom:0"
-                           onclick="$('#operation').val('cancel')"/>
-                    <input type="submit" class="mobi-button mobi-button-important"
-                           value="Share" style="float:none;width:100px;margin-top:0;margin-bottom:0;"
-                           onclick="$('#fullPost').val(true)" ${desktop ? "disabled='disabled'" : ""}/>
-                </mobi:fieldsetRow>
+                           />
+                    <mobi:commandButton value="Share" buttonType="important"
+                        style="float:none;width:100px;margin-top:0;margin-bottom:0;"/>
+                 </mobi:fieldsetRow>
             </mobi:fieldsetGroup>
         </c:if>
         <mobi:fieldsetGroup inset="true" style="padding:10px;">
@@ -96,6 +95,9 @@
     </form:form>
     <script type="text/javascript">
         enhanceForm("#uploadForm","#root");
+        $('#cancelBtn').click(function(e) {
+            $('#operation').val('cancel');
+        });
         window.onhashchange = function()  {
             if ("#icemobilesx" === window.location.hash)  {
                 window.location.hash = "";
