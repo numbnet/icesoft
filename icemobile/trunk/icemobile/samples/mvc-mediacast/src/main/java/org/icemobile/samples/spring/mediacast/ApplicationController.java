@@ -48,10 +48,13 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.multipart.MultipartFile;
 
 @Controller
-@SessionAttributes(value = {"desktop", "sxThumbnail", "enhanced",
+@SessionAttributes(value = {"desktop", "sxThumbnail", "enhanced", 
         ApplicationController.SX_VIDEO_UPLOAD_KEY,
         ApplicationController.SX_AUDIO_UPLOAD_KEY,
         ApplicationController.SX_PHOTO_UPLOAD_KEY,
+        ApplicationController.SX_VIDEO_UPLOAD_READY_KEY,
+        ApplicationController.SX_AUDIO_UPLOAD_READY_KEY,
+        ApplicationController.SX_PHOTO_UPLOAD_READY_KEY,
         TagUtil.USER_AGENT_COOKIE, TagUtil.CLOUD_PUSH_KEY},
         types=UploadForm.class)
 public class ApplicationController implements ServletContextAware {
@@ -75,13 +78,16 @@ public class ApplicationController implements ServletContextAware {
     private static final String PAGE_ALL = "all";
 
 
-    private static final String DESKTOP = "d";
-    private static final String MOBILE = "m";
-    private static final String TABLET = "t";
+    private static final String DESKTOP = "desktop";
+    private static final String MOBILE = "mobile";
+    private static final String TABLET = "tablet";
 
     public static final String SX_PHOTO_UPLOAD_KEY = "sxPhotoUpload";
     public static final String SX_VIDEO_UPLOAD_KEY = "sxVideoUpload";
     public static final String SX_AUDIO_UPLOAD_KEY = "sxAudioUpload";
+    public static final String SX_PHOTO_UPLOAD_READY_KEY = "sxPhotoUploadReady";
+    public static final String SX_VIDEO_UPLOAD_READY_KEY = "sxVideoUploadReady";
+    public static final String SX_AUDIO_UPLOAD_READY_KEY = "sxAudioUploadReady";
 
     @PostConstruct
     public void init(){
@@ -141,29 +147,29 @@ public class ApplicationController implements ServletContextAware {
             Model model, 
             @ModelAttribute("msg") String msg) {
         
-        log.debug("form="+form);
+        log.info("form="+form);
 
         String view = null;
-        if( TABLET.equals(form.getL()) ){
-            form.setP(PAGE_ALL);
+        if( TABLET.equals(form.getView()) ){
+            form.setPage(PAGE_ALL);
         }
         
-        addCommonModel(model,form.getL());
+        addCommonModel(model,form.getView());
 
-        if( PAGE_UPLOAD.equals(form.getP()) ){
-            addUploadViewModel(PAGE_UPLOAD, form.getL(), model);
+        if( PAGE_UPLOAD.equals(form.getPage()) ){
+            addUploadViewModel(PAGE_UPLOAD, form.getView(), model);
             view = "upload-page";
         }
-        else if( PAGE_GALLERY.equals(form.getP()) ){
+        else if( PAGE_GALLERY.equals(form.getPage()) ){
             view = "gallery-page";
         }
-        else if( PAGE_VIEWER.equals(form.getP())){
-            addViewerViewModel(form.getId(),form.getL(), model, false, false);
-            view = "viewer";
+        else if( PAGE_VIEWER.equals(form.getPage())){
+            addViewerViewModel(form.getId(), model, false, false);
+            view = "viewer-page";
         }
-        else if( PAGE_ALL.equals(form.getP())){
-            addUploadViewModel(PAGE_ALL, form.getL(), model);
-            addViewerViewModel(form.getId(), form.getL(), model, false, false);
+        else if( PAGE_ALL.equals(form.getPage())){
+            addUploadViewModel(PAGE_ALL, form.getView(), model);
+            addViewerViewModel(form.getId(), model, false, false);
             view = "tablet";
         }
         log.debug("forwarding to " + view);
@@ -174,8 +180,8 @@ public class ApplicationController implements ServletContextAware {
     @RequestMapping(value="/carousel")
     public String getCarouselContent(UploadForm form, Model model) {
         model.addAttribute("carouselItems", mediaService
-                .getMediaImageMarkup(form.getL()));
-        model.addAttribute("layout",form.getL());
+                .getMediaImageMarkup(form.getView()));
+        model.addAttribute("view",form.getView());
         return "carousel";
     }
     
@@ -186,14 +192,14 @@ public class ApplicationController implements ServletContextAware {
         String actionParam = form.cleanParam(action);
         boolean back = "back".equals(actionParam);
         boolean forward = "forward".equals(actionParam);
-        addCommonModel(model, form.getL());
-        addViewerViewModel(form.getId(), form.getL(), model, back, forward);
+        addCommonModel(model, form.getView());
+        addViewerViewModel(form.getId(), model, back, forward);
         return "viewer-panel";
     }
 
     @RequestMapping(value="/gallery-list", method=RequestMethod.GET)
     public String getGalleryListContent(UploadForm form, Model model){
-        addCommonModel(model, form.getL());
+        addCommonModel(model, form.getView());
         return "gallery-list";
     }
 
@@ -259,9 +265,13 @@ public class ApplicationController implements ServletContextAware {
         if( operation != null && "cancel".equals(operation)){
             log.info("redirecting on cancel");
             request.getSession().removeAttribute(SX_PHOTO_UPLOAD_KEY);
+            model.addAttribute(SX_PHOTO_UPLOAD_READY_KEY, false);
             request.getSession().removeAttribute(SX_AUDIO_UPLOAD_KEY);
+            model.addAttribute(SX_AUDIO_UPLOAD_READY_KEY, false);
             request.getSession().removeAttribute(SX_VIDEO_UPLOAD_KEY);
-            return "redirect:/" + "app?l=" + form.getL()+(MOBILE.equals(form.getL())?"p=upload":"");
+            model.addAttribute(SX_VIDEO_UPLOAD_READY_KEY, false);
+            
+            return "redirect:/" + "app?view=" + form.getView()+(MOBILE.equals(form.getView())?"&page=upload":"");
         }
         
         boolean hasUpload = cameraMultiPart != null || camcorderMultiPart != null || microphoneMultiPart != null;
@@ -275,21 +285,24 @@ public class ApplicationController implements ServletContextAware {
                 cameraMultiPart.transferTo(sxPhotoMasterFile);
                 request.getSession().setAttribute(SX_PHOTO_UPLOAD_KEY, sxPhotoMasterFile);
                 File sxThumbnail = mediaHelper.processSmallImage(sxPhotoMasterFile, "sx-"+sessionId);
-                model.addAttribute("sxThumbnail",sxThumbnail);
+                model.addAttribute("sxThumbnail", sxThumbnail);
+                model.addAttribute(SX_PHOTO_UPLOAD_READY_KEY, true);
             }
             else if( camcorderMultiPart != null ){
                 File sxVideoMasterFile = getOriginalVideoFile(sessionId);
                 camcorderMultiPart.transferTo(sxVideoMasterFile);
                 request.getSession().setAttribute(SX_VIDEO_UPLOAD_KEY, sxVideoMasterFile);
-                model.addAttribute(SX_VIDEO_UPLOAD_KEY,sxVideoMasterFile);
+                model.addAttribute(SX_VIDEO_UPLOAD_KEY, sxVideoMasterFile);
+                model.addAttribute(SX_VIDEO_UPLOAD_READY_KEY, true);
             }
             else if( microphoneMultiPart != null ){
                 File sxAudioMasterFile = getOriginalAudioFile(sessionId);
                 microphoneMultiPart.transferTo(sxAudioMasterFile);
                 request.getSession().setAttribute(SX_AUDIO_UPLOAD_KEY, sxAudioMasterFile);
-                model.addAttribute(SX_AUDIO_UPLOAD_KEY,sxAudioMasterFile);
+                model.addAttribute(SX_AUDIO_UPLOAD_KEY, sxAudioMasterFile);
+                model.addAttribute(SX_AUDIO_UPLOAD_READY_KEY, true);
             }
-            return postUploadFormResponseView(false, false, form.getL());
+            return postUploadFormResponseView(false, false, form.getView());
         }
 
         boolean success = false;
@@ -360,49 +373,52 @@ public class ApplicationController implements ServletContextAware {
             log.info("created new media: "+media);
     
             model.addAttribute("msg","Thank you, your files were uploaded successfully.");
+            model.addAttribute(SX_PHOTO_UPLOAD_READY_KEY, false);
+            model.addAttribute(SX_AUDIO_UPLOAD_READY_KEY, false);
+            model.addAttribute(SX_VIDEO_UPLOAD_READY_KEY, false);
             
             PushContext pc = PushContext.getInstance(servletContext);
             pc.push("photos");  
     
             success = true;
         }
-        addCommonModel(model, form.getL());
-        return postUploadFormResponseView(isAjaxRequest(request),success,form.getL());
+        addCommonModel(model, form.getView());
+        return postUploadFormResponseView(isAjaxRequest(request),success,form.getView());
     }
 
-    private String postUploadFormResponseView(boolean ajax, boolean redirect, String layout){
-        String view = null;
+    private String postUploadFormResponseView(boolean ajax, boolean redirect, String view){
+        String returnView = null;
         if( ajax ){
             redirect = false;
         }
         if( redirect ){
-            view = "redirect:/" + "app?l=" + layout
-                    +(MOBILE.equals(layout)?"p=upload":"");
+            returnView = "redirect:/" + "app?view=" + view
+                    +(MOBILE.equals(view)?"page=upload":"");
         }
-        else if( MOBILE.equals(layout)){
-            view = "upload-page";
+        else if( MOBILE.equals(view)){
+            returnView = "upload-page";
         }
         else {
-            view = "upload-form";
+            returnView = "upload-form";
         }
-        return view;
+        return returnView;
     }
 
-    private void addCommonModel(Model model, String layout){
+    private void addCommonModel(Model model, String view) {
         model.addAttribute("mediaService", mediaService);
-        model.addAttribute("layout",layout);
-        model.addAttribute("updated",System.currentTimeMillis());
+        model.addAttribute("view", view);
+        model.addAttribute("updated", System.currentTimeMillis());
     }
 
-    private void addUploadViewModel(String page, String layout, Model model){
-        if( PAGE_UPLOAD.equals(page) ){
+    private void addUploadViewModel(String page, String view, Model model) {
+        if (PAGE_UPLOAD.equals(page)) {
             page = PAGE_VIEWER;
         }
         model.addAttribute("carouselItems", mediaService
-                .getMediaImageMarkup(layout));
+                .getMediaImageMarkup(view));
     }
 
-    private void addViewerViewModel(String id, String layout, Model model, boolean back, boolean forward){
+    private void addViewerViewModel(String id, Model model, boolean back, boolean forward){
 
         MediaMessage msg = null;
         if( id != null ){

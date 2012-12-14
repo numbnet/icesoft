@@ -23,7 +23,7 @@
         <mobi:pagePanel>
             <mobi:pagePanelHeader>
                 <a id="backBtn" class="mobi-button mobi-button-default"
-                    href='<c:url value="/app?p=gallery&l=${layout}"/>'
+                    href='<c:url value="/app?page=gallery&view=${view}"/>'
                 >Gallery</a>
                 <span>Mediacast</span>
                 <img src="./resources/images/icemobile.png"
