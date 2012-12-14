@@ -197,5 +197,5 @@ public class DateTimeEntryMeta extends UIInputMeta {
 
     @Property(defaultValue = "true", tlddoc = "With lenient parsing, the Java date parser may use heuristics to interpret" +
             " inputs that do not precisely match this date's format. With strict parsing, inputs must match this date's format.")
-    private boolean parsingLenient;
+    private boolean lenientParsing;
 }
