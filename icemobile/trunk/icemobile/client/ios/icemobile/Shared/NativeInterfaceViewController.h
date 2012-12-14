@@ -28,5 +28,6 @@
 - (void) setThumbnail: (UIImage*)image at: (NSString *)thumbID;
 - (void) handleResponse:(NSString *)responseString;
 - (void) setProgress:(NSInteger)percent;
+- (void) setProgressLabel:(NSString*)labelText;
 
 @end

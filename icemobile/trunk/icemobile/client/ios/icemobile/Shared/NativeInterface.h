@@ -92,6 +92,7 @@
 - (void)recordDismiss;
 - (void)recordCancel;
 - (void)recordDone;
+- (void)setProgress:(NSInteger)percent withLabel:(NSString*)labelText;
 - (NSMutableDictionary*)parseQuery: (NSString*)queryString;
 - (void)showImagePicker: (UIImagePickerController*)picker;
 - (void)dismissImagePicker;

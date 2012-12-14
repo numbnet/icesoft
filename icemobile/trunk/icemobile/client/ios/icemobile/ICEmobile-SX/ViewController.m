@@ -169,6 +169,10 @@ NSLog(@"hideControls");
     LogDebug(@"Native progress display %d", percent);
 }
 
+- (void) setProgressLabel:(NSString*)labelText  {
+    uploadLabel.text = labelText;
+}
+
 - (void) handleResponse:(NSString *)responseString  {
     LogDebug(@"handleResponse received %@", responseString);
     [self reloadCurrentURL];

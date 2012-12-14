@@ -727,6 +727,11 @@ NSLog(@"Found record %@", result);
     self.motionManager = nil;
 }
 
+- (void)setProgress:(NSInteger)percent withLabel:(NSString*)labelText  {
+    [controller setProgressLabel:labelText];
+    [controller setProgress:percent];
+}
+
 - (BOOL)upload: (NSString*)formId  {
     if (self.uploading)  {
     LogInfo(@" already uploading, ignoring request");
@@ -735,6 +740,7 @@ NSLog(@"Found record %@", result);
     self.uploading = YES;
     self.activeDOMElementId = formId;
 
+    [controller setProgressLabel:@"Upload Progress"];
     [controller setProgress:0];
     NSString* actionURL = [controller prepareUpload:formId];
     NSDictionary *parts = [self parseQuery:[controller getFormData:formId]];
@@ -916,6 +922,7 @@ NSLog(@"Found record %@", result);
 - (void)connection:(NSURLConnection *)connection didSendBodyData:(NSInteger)bytesWritten totalBytesWritten:(NSInteger)totalBytesWritten totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite  {
     LogDebug(@"didSendBodyData %d bytes of %d",totalBytesWritten, totalBytesExpectedToWrite);
     NSInteger percentProgress = (totalBytesWritten * 100) / totalBytesExpectedToWrite;
+    [controller setProgressLabel:@"Upload Progress"];
     [controller setProgress:percentProgress];
 }
 
@@ -925,6 +932,7 @@ NSLog(@"Found record %@", result);
     NSString *responseString = [[NSString alloc] initWithData:receivedData
             encoding:NSUTF8StringEncoding];
 
+    [controller setProgressLabel:@"Upload Progress"];
     [controller setProgress:100];
     [controller handleResponse:responseString];
     [responseString release];
