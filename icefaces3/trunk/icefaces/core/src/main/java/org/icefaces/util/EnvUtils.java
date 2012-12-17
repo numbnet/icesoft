@@ -716,7 +716,7 @@ public class EnvUtils {
         for (Map.Entry entry : scopeMap.entrySet()) {
             String key = (String) entry.getKey();
             Object value = entry.getValue();
-            if (value.getClass().isAnnotationPresent(WindowDisposed.class)) {
+            if (value != null && value.getClass().isAnnotationPresent(WindowDisposed.class)) {
                 return true;
             }
         }
