@@ -323,7 +323,7 @@ public class PanelPopupRenderer extends GroupRenderer {
                 call = "Ice.modal.start('" + clientId + "', '" + iframeUrl
                         + "', '" + trigger + "'," + "manual".equalsIgnoreCase(autoPosition) + "," + positionOnLoadOnly + "," +
 						getIE8DisableModalFrame(facesContext) + ");" +
-                        "ice.onElementRemove('" + clientId + "',function() {Ice.modal.stop('" +
+                        "ice.onElementUpdate('" + clientId + "',function() {Ice.modal.stop('" +
                         clientId + "');});";
 
                 if (log.isTraceEnabled()) {
