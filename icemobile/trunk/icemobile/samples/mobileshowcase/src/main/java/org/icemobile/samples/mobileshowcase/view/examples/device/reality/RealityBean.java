@@ -113,19 +113,19 @@ public class RealityBean extends ExampleImpl<RealityBean> implements
         HashMap marker = new HashMap();
         marker.put("label", "puz1");
         marker.put("model", getBaseURL() + 
-                "/mobileshowcase/resources/3d/puz1.obj" );
+                "/resources/3d/puz1.obj" );
         markerList.add(marker);
 
         marker = new HashMap();
         marker.put("label", "puz2");
         marker.put("model", getBaseURL() +
-                "/mobileshowcase/resources/3d/puz2.obj" );
+                "/resources/3d/puz2.obj" );
         markerList.add(marker);
 
         marker = new HashMap();
         marker.put("label", "icemobile");
         marker.put("model", getBaseURL() +
-                "/mobileshowcase/resources/3d/icemobile.obj" );
+                "/resources/3d/icemobile.obj" );
         markerList.add(marker);
 
         for (HashMap theMarker : markerList)  {
@@ -272,6 +272,7 @@ public class RealityBean extends ExampleImpl<RealityBean> implements
             externalContext.getRequestServerPort();
         }
         String url = externalContext.getRequestScheme() + "://" + serverName;
+        url += "/" + externalContext.getRequestContextPath();
         return url;
     }
 
