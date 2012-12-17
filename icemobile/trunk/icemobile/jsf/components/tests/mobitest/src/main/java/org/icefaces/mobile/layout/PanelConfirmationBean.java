@@ -16,6 +16,8 @@
 
 package org.icefaces.mobile;
 
+import com.sun.tools.corba.se.idl.StringGen;
+
 import java.io.Serializable;
 import java.lang.String;
 import java.util.ArrayList;
@@ -32,11 +34,15 @@ import javax.faces.context.FacesContext;
 @ViewScoped
 public class PanelConfirmationBean implements Serializable {
     private String message ="original";
+    private String submitMesage="....working";
     private String acceptLabel="accept";
     private String cancelLabel="cancel";
     private boolean disabled = false;
     private String type="both";
     private int count = 0;
+    private String label = "not triggered";
+    private boolean menuButtonDisabled= false;
+    private String submitMessage="...working";
    
     public PanelConfirmationBean(){
 
@@ -87,4 +93,55 @@ public class PanelConfirmationBean implements Serializable {
     public void setType(String type) {
         this.type = type;
     }
+
+    public String getSubmitMesage() {
+        return submitMesage;
+    }
+
+    public void setSubmitMesage(String submitMesage) {
+        this.submitMesage = submitMesage;
+    }
+
+    public boolean isMenuButtonDisabled() {
+        return menuButtonDisabled;
+    }
+
+    public void setMenuButtonDisabled(boolean menuButtonDisabled) {
+        this.menuButtonDisabled = menuButtonDisabled;
+    }
+
+    public String getLabel() {
+        return label;
+    }
+
+    public void setLabel(String label) {
+        this.label = label;
+    }
+
+    public String getSubmitMessage() {
+        return submitMessage;
+    }
+
+    public void setSubmitMessage(String submitMessage) {
+        this.submitMessage = submitMessage;
+    }
+
+    public void actionMethod(ActionEvent ae){
+        try{
+            Thread.sleep(5000);
+            this.label="After actionMethod";
+        }  catch (Exception e){
+           System.out.println("exception in actionMethod") ;
+        }
+    }
+
+    public void actionMethod2(ActionEvent ae){
+        try{
+            Thread.sleep(5000);
+            this.label="After actionMethod2";
+        }  catch (Exception e){
+           System.out.println("exception in actionMethod2") ;
+        }
+    }
+
 }

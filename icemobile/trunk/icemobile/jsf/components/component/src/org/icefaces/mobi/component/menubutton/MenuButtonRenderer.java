@@ -123,6 +123,7 @@ public class MenuButtonRenderer extends BaseLayoutRenderer {
         }  else {
              //doing it with indiv menuButtonItem tag's
              renderChildren(facesContext, menu);
+             writer.endElement(HTML.SELECT_ELEM);
          }
          writer.endElement(HTML.DIV_ELEM);
          encodeScript(facesContext, uiComponent);
