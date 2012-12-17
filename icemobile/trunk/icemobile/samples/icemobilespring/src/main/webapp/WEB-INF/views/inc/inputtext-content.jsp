@@ -65,8 +65,8 @@
 	<mobi:commandButton buttonType='important' styleClass="submit"
 		value="Submit" type="submit" />
 
-	<h3 style="clear: both; margin-top: 10px;">Input Values</h3>
-	<mobi:fieldsetGroup>
+	<h3>Input Values</h3>
+	<mobi:fieldsetGroup styleClass="results">
 		<mobi:fieldsetRow>
 			<label>Text:</label>
 			<span>${inputTextBean.text}</span>
