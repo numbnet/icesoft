@@ -113,31 +113,31 @@ public class RealityBean extends ExampleImpl<RealityBean> implements
         HashMap marker = new HashMap();
         marker.put("label", "coffeecrisp");
         marker.put("model", getBaseURL() + 
-                "/mobileshowcase/resources/3d/coffeecrisp.obj" );
+                "/resources/3d/coffeecrisp.obj" );
         markerList.add(marker);
 
         marker = new HashMap();
         marker.put("label", "kitkat");
         marker.put("model", getBaseURL() +
-                "/mobileshowcase/resources/3d/kitkat.obj" );
+                "/resources/3d/kitkat.obj" );
         markerList.add(marker);
 
         marker = new HashMap();
         marker.put("label", "smarties");
         marker.put("model", getBaseURL() +
-                "/mobileshowcase/resources/3d/smarties.obj" );
+                "/resources/3d/smarties.obj" );
         markerList.add(marker);
 
         marker = new HashMap();
         marker.put("label", "aero");
         marker.put("model", getBaseURL() +
-                "/mobileshowcase/resources/3d/aero.obj" );
+                "/resources/3d/aero.obj" );
         markerList.add(marker);
 
         marker = new HashMap();
         marker.put("label", "icemobile");
         marker.put("model", getBaseURL() +
-                "/mobileshowcase/resources/3d/icemobile.obj" );
+                "/resources/3d/icemobile.obj" );
         markerList.add(marker);
 
         for (HashMap theMarker : markerList)  {
@@ -284,6 +284,7 @@ public class RealityBean extends ExampleImpl<RealityBean> implements
             externalContext.getRequestServerPort();
         }
         String url = externalContext.getRequestScheme() + "://" + serverName;
+        url += "/" + externalContext.getRequestContextPath();
         return url;
     }
 
