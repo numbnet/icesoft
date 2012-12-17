@@ -44,6 +44,7 @@ import org.icefaces.ace.util.collections.AnyPredicate;
 import org.icefaces.ace.util.collections.Predicate;
 import org.icefaces.ace.util.collections.PropertyConstraintPredicate;
 import org.icefaces.util.JavaScriptRunner;
+import org.icefaces.util.EnvUtils;
 
 import javax.el.ELContext;
 import javax.el.ELResolver;
@@ -467,7 +468,9 @@ public class DataTable extends DataTableBase implements Serializable {
     public void setRowIndex(int index) {
         Map<String, Object> requestMap = FacesContext.getCurrentInstance().getExternalContext().getRequestMap();
 
-        super.setRowIndex(index);
+        if (getRowIndex() != index) {
+            super.setRowIndex(index);
+        }
 
         if (index > -1 && isRowAvailable()) {
             requestMap.put(getRowStateVar(), getStateMap().get(getRowData()));
@@ -1584,10 +1587,12 @@ public class DataTable extends DataTableBase implements Serializable {
         // from incorrect getValue() results (I assume) causing it to
         // mistakenly contain 0 rows or the data of a previous ui:repeat
         // iteration.
-        setDataModel(null);
+        if (EnvUtils.isMyFaces()) {
+            setDataModel(null);
+            // Get / Regenerate cached data model.
+            getDataModel();
+        }
 
-        // Get / Regenerate cached data model.
-        Object model = getDataModel();
         PanelExpansion panelExpansion = getPanelExpansion();
         RowExpansion rowExpansion = getRowExpansion();
         boolean hasPanelExpansion = (panelExpansion != null);
@@ -2061,12 +2066,15 @@ public class DataTable extends DataTableBase implements Serializable {
         // from incorrect getValue() results (I assume) causing it to
         // mistakenly contain 0 rows or the data of a previous ui:repeat
         // iteration.
-        setDataModel(null);
-
+        if (EnvUtils.isMyFaces()) {
+            setDataModel(null);
+        }
         // Process each facet of this component exactly once
         setRowIndex(-1);
         // Regenerate data model (MyFaces has at times had a null model cached)
-        getDataModel();
+        if (EnvUtils.isMyFaces()) {
+            getDataModel();
+        }
         if (getFacetCount() > 0) {
             for (UIComponent facet : getFacets().values()) {
                 if (phaseId == PhaseId.APPLY_REQUEST_VALUES) {
