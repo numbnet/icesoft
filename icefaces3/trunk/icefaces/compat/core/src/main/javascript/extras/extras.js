@@ -992,9 +992,20 @@ Ice.modal = {
         if (Ice.modal.running.include(target)) {
             var iframe = document.getElementById('iceModalFrame' + target);
             if (iframe) {
+                function clearCallbacks(e) {
+                    e.onkeypress = null;
+                    e.onkeyup = null;
+                    e.onkeydown = null;
+                    e.onclick = null;
+                }
+
                 Event.stopObserving(window, "resize", iframe.resize);
                 Event.stopObserving(window, "scroll", iframe.resize);
                 iframe.resize = null;
+                //avoid memory leak in IE -- http://support.microsoft.com/kb/2714930
+                clearCallbacks(iframe.contentDocument || iframe.contentWindow.document);
+                clearCallbacks(iframe.contentWindow);
+
                 iframe.parentNode.removeChild(iframe.nextSibling);
                 iframe.parentNode.removeChild(iframe);
                 logger.debug('removed modal iframe for : ' + target);
