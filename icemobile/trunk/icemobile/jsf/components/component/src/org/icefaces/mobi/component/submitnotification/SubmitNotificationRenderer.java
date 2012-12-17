@@ -38,7 +38,6 @@ public class SubmitNotificationRenderer extends BaseLayoutRenderer {
     public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
         writeJavascriptFile(facesContext, component, JS_NAME, JS_MIN_NAME, JS_LIBRARY);
         encodeMarkup(facesContext, component);
-       // encodeScript(facesContext, component);
     }
 
     protected void encodeMarkup(FacesContext facesContext, UIComponent uiComponent) throws IOException {

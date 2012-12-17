@@ -19,6 +19,9 @@ import org.icefaces.ace.meta.annotation.Component;
 import org.icefaces.ace.meta.annotation.Property;
 import org.icefaces.ace.meta.baseMeta.UIPanelMeta;
 
+import javax.faces.application.ResourceDependencies;
+import javax.faces.application.ResourceDependency;
+
 @Component(
         tagName = "submitNotification",
         componentClass = "org.icefaces.mobi.component.submitnotification.SubmitNotification",
@@ -30,10 +33,14 @@ import org.icefaces.ace.meta.baseMeta.UIPanelMeta;
         componentFamily = "org.icefaces.SubmitNotification",
         tlddoc = "submitNoftification " +
                 "renders a panel, to be used with any mobi commandButton, which blocks any other submission until a response is recieved and the update completes.")
+
+@ResourceDependencies({
+        @ResourceDependency(library = "org.icefaces.component.util", name = "component.js")
+})
 public class SubmitNotificationMeta extends UIPanelMeta {
 
-    @Property(tlddoc = org.icefaces.mobi.utils.TLDConstants.TABINDEX)
-    private int tabindex;
+     @Property(tlddoc = org.icefaces.mobi.utils.TLDConstants.TABINDEX)
+     private int tabindex;
 
      @Property(tlddoc = org.icefaces.mobi.utils.TLDConstants.STYLE)
      private String style;
