@@ -76,6 +76,16 @@
 <c:if test="${!ajaxRequest}">
     <script type="text/javascript">
         MvcUtil.enhanceAllLinks("#sp_left",".ajaxzone");
+      //precache commonly used images
+        var preloaded = new Array();
+        preloaded[0] = document.createElement('img');
+        preloaded[0].setAttribute('src','./resources/auction/icebreaker.png');
+        preloaded[1] = document.createElement('img');
+        preloaded[1].setAttribute('src','./resources/auction/icecar.png');
+        preloaded[2] = document.createElement('img');
+        preloaded[2].setAttribute('src','./resources/auction/icesailer.png');
+        preloaded[3] = document.createElement('img');
+        preloaded[3].setAttribute('src','./resources/auction/iceskate.png');
     </script>
 </body>
 </html>
