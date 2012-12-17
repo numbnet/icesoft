@@ -7,20 +7,21 @@ import javax.faces.component.UIComponent;
 import javax.faces.component.UIViewRoot;
 import javax.faces.component.visit.VisitCallback;
 import javax.faces.component.visit.VisitContext;
+import javax.faces.component.visit.VisitHint;
 import javax.faces.component.visit.VisitResult;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.SystemEvent;
 import javax.faces.event.SystemEventListener;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class RestoreResourceDependencies implements SystemEventListener {
+    private static final Set HINTS = new HashSet(Arrays.asList(new VisitHint[] { VisitHint.SKIP_ITERATION }));
 
     public void processEvent(SystemEvent event) throws AbortProcessingException {
         final FacesContext facesContext = FacesContext.getCurrentInstance();
         UIViewRoot viewRoot = facesContext.getViewRoot();
-        VisitContext visitContext = VisitContext.createVisitContext(facesContext);
+        VisitContext visitContext = VisitContext.createVisitContext(facesContext, null, HINTS);
         viewRoot.visitTree(visitContext, new VisitCallback() {
             public VisitResult visit(VisitContext context, UIComponent target) {
                 VisitResult result = VisitResult.ACCEPT;
