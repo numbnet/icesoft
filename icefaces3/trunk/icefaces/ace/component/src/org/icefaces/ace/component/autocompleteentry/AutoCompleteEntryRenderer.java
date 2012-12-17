@@ -252,7 +252,7 @@ public class AutoCompleteEntryRenderer extends InputRenderer {
 		writer.writeAttribute("type", "text/javascript", null);
 		writer.writeText("(function() {", null);
 		writer.writeText("var instance = ice.ace.Autocompleters[\"" + clientId + "\"];", null);
-		writer.writeText("instance.updateField('" + value + "', " + focus + ");", null);
+		writer.writeText("instance.updateField('" + escapeBackslashes(value) + "', " + focus + ");", null);
 		writer.writeText("})();", null);
 		writer.endElement("script");
 		writer.endElement("span");
@@ -487,6 +487,10 @@ public class AutoCompleteEntryRenderer extends InputRenderer {
 
         return buffer.toString();
     }
+	
+	private static String escapeBackslashes(String str) {
+		return str.replace("\\", "\\\\");
+	}
 	
 	private String getTimestamp(FacesContext facesContext, AutoCompleteEntry autoCompleteEntry) {
 		Map requestMap = facesContext.getExternalContext().getRequestParameterMap();

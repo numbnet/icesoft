@@ -211,7 +211,7 @@ ice.ace.Autocompleter.prototype = {
 			var jqElement = ice.ace.jq(element);
 			var jqUpdate = ice.ace.jq(update);
 			var pos = jqElement.offset();
-			var autoUp = false;document.title=jqUpdate.height();
+			var autoUp = false;
 			if (this.direction == 'auto') {
 				var updateHeight = jqUpdate.height();
 				updateHeight = updateHeight > this.height ? this.height : updateHeight;
