@@ -100,8 +100,8 @@ public class RealityBean extends ExampleImpl<RealityBean> implements
     static int THUMBSIZE = 128;
     HashMap<String,HashMap> allMarkers = new HashMap();;
     List<HashMap> markerList;
-    private String selectedModel1 = "icemobile";
-    private String selectedModel2 = "icemobile";
+    private String selectedModel1 = "coffeecrisp";
+    private String selectedModel2 = "kitkat";
 
     // upload error message
     private String uploadMessage;
@@ -111,15 +111,27 @@ public class RealityBean extends ExampleImpl<RealityBean> implements
         markerList = new ArrayList();
 
         HashMap marker = new HashMap();
-        marker.put("label", "puz1");
+        marker.put("label", "coffeecrisp");
         marker.put("model", getBaseURL() + 
-                "/mobileshowcase/resources/3d/puz1.obj" );
+                "/mobileshowcase/resources/3d/coffeecrisp.obj" );
         markerList.add(marker);
 
         marker = new HashMap();
-        marker.put("label", "puz2");
+        marker.put("label", "kitkat");
         marker.put("model", getBaseURL() +
-                "/mobileshowcase/resources/3d/puz2.obj" );
+                "/mobileshowcase/resources/3d/kitkat.obj" );
+        markerList.add(marker);
+
+        marker = new HashMap();
+        marker.put("label", "smarties");
+        marker.put("model", getBaseURL() +
+                "/mobileshowcase/resources/3d/smarties.obj" );
+        markerList.add(marker);
+
+        marker = new HashMap();
+        marker.put("label", "aero");
+        marker.put("model", getBaseURL() +
+                "/mobileshowcase/resources/3d/aero.obj" );
         markerList.add(marker);
 
         marker = new HashMap();
