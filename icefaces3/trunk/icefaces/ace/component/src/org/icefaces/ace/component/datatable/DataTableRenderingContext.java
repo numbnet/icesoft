@@ -18,7 +18,6 @@ public class DataTableRenderingContext {
     private Integer pagPose;
     private Integer scrollHeight;
     private String rowStateVar;
-    private String rowStyleClass;
     private String selectionMode;
     private String var;
     private String paginatorPosition;
@@ -52,7 +51,6 @@ public class DataTableRenderingContext {
         rowToSelectedFieldsMap = table.getRowToSelectedFieldsMap();
         columns = table.getColumns();
         rowStateVar = table.getRowStateVar();
-        rowStyleClass = table.getRowStyleClass();
         selectionMode = table.getSelectionMode();
         resizableColumns = table.isResizableColumns();
         scrollHeight = table.getScrollHeight();
@@ -113,10 +111,6 @@ public class DataTableRenderingContext {
 
     public String getRowStateVar() {
         return rowStateVar;
-    }
-
-    public String getRowStyleClass() {
-        return rowStyleClass;
     }
 
     public String getSelectionMode() {

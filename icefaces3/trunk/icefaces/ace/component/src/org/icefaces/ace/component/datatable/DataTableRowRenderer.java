@@ -69,7 +69,7 @@ public class DataTableRowRenderer {
             List<Row> leadingRows = table.getConditionalRows(rowIndex, true);
             for (Row r : leadingRows) encodeConditionalRow(context, tableContext, r);
 
-            String userRowStyleClass = tableContext.getRowStyleClass();
+            String userRowStyleClass = table.getRowStyleClass();
             String expandedClass = expanded ? DataTableConstants.EXPANDED_ROW_CLASS : "";
             String unselectableClass = unselectable ? DataTableConstants.UNSELECTABLE_ROW_CLASS : "";
             String rowStyleClass = rowIndex % 2 == 0
