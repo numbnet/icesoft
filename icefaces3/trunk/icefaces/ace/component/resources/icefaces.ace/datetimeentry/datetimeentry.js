@@ -16,14 +16,13 @@
 /**
  *  Calendar Widget
  */
-(function($) {
 ice.ace.Calendar = function(id, cfg) {
     var behavior, altFieldVal;
     this.id = id;
     this.cfg = cfg;
     this.jqId = ice.ace.escapeClientId(id);
     this.jqElId = this.cfg.popup ? this.jqId + '_input' : this.jqId + '_inline';
-    this.jq = $(this.jqElId);
+    this.jq = ice.ace.jq(this.jqElId);
     this.cfg.formId = this.jq.parents('form:first').attr('id');
 
     //i18n and l7n
@@ -39,7 +38,7 @@ ice.ace.Calendar = function(id, cfg) {
 
     //Form field to use in inline mode
     if(!this.cfg.popup) {
-        this.cfg.altField = $(this.jqId + '_input');
+        this.cfg.altField = ice.ace.jq(this.jqId + '_input');
         altFieldVal = this.cfg.altField.val();
     }
 
@@ -59,24 +58,24 @@ ice.ace.Calendar = function(id, cfg) {
         if(hasTimePicker) {
             if (this.cfg.timeOnly) {
                 this.jq.timepicker(this.cfg);
-                this.jq.timepicker("setTime", $.trim(altFieldVal));
+                this.jq.timepicker("setTime", ice.ace.jq.trim(altFieldVal));
                 this.pickerFn = "timepicker";
             }
             else {
                 this.cfg.altFieldTimeOnly = false;
                 this.jq.datetimepicker(this.cfg);
                 this.pickerFn = "datetimepicker";
-                if (!this.cfg.popup && $.type(altFieldVal) === "string") {
+                if (!this.cfg.popup && ice.ace.jq.type(altFieldVal) === "string") {
 //                    this.cfg.altField.val(altFieldVal);
-                    this.jq.datetimepicker("setDate", $.trim(altFieldVal));
+                    this.jq.datetimepicker("setDate", ice.ace.jq.trim(altFieldVal));
                 }
             }
         }
         else {
             this.jq.datepicker(this.cfg);
             this.pickerFn = "datepicker";
-            if (!this.cfg.popup && $.type(altFieldVal) === "string") {
-                this.jq.datepicker("setDate", $.trim(altFieldVal));
+            if (!this.cfg.popup && ice.ace.jq.type(altFieldVal) === "string") {
+                this.jq.datepicker("setDate", ice.ace.jq.trim(altFieldVal));
             }
         }
     }
@@ -92,19 +91,6 @@ ice.ace.Calendar = function(id, cfg) {
             ice.ace.skinInput(this.jq);
         }
         behavior = this.cfg && this.cfg.behaviors && this.cfg.behaviors.dateTextChange;
-/*
-        if (behavior) {
-            this.jq.change(function() {
-                setFocus();
-                ice.ace.ab(behavior);
-            });
-        } else if (this.cfg.singleSubmit) {
-            this.jq.change(function(event) {
-                setFocus();
-                ice.se(event, cfg.clientId);
-            });
-        }
-*/
     }
 
     var widget = this;
@@ -187,66 +173,65 @@ ice.ace.Calendar.prototype.destroy = function() {
 };
 
 ice.ace.Calendar.init = function(options) {
-    $(function() {
-        var widgetVar = options.widgetVar, id = options.id;
-        var input = $(ice.ace.escapeClientId(id) + "_input");
-        var trigger = null, triggerClass = $.datepicker._triggerClass;
-        var defaults = $.datepicker._defaults;
-        var showOn = options.showOn || defaults.showOn;
-        var buttonText = options.buttonText || defaults.buttonText;
-        var buttonImage = options.buttonImage || defaults.buttonImage;
-        var buttonImageOnly = options.buttonImageOnly || defaults.buttonImageOnly;
-        var isRTL = options.isRTL || defaults.isRTL;
-        var initAndShow = function() {
-            if (window[widgetVar]) return;
-            if (trigger) trigger.remove();
-            window[widgetVar] = new ice.ace.Calendar(id, options);
-            if (!window[widgetVar].pickerFn) return;
-            window[widgetVar].jq[window[widgetVar].pickerFn]("show");
-        };
-        var initEltSet = $();
-        var behavior = options.behaviors && options.behaviors.dateTextChange;
+    var widgetVar = options.widgetVar, id = options.id;
+    var input = ice.ace.jq(ice.ace.escapeClientId(id) + "_input");
+    var trigger = null, triggerClass = ice.ace.jq.datepicker._triggerClass;
+    var defaults = ice.ace.jq.datepicker._defaults;
+    var showOn = options.showOn || defaults.showOn;
+    var buttonText = options.buttonText || defaults.buttonText;
+    var buttonImage = options.buttonImage || defaults.buttonImage;
+    var buttonImageOnly = options.buttonImageOnly || defaults.buttonImageOnly;
+    var isRTL = options.isRTL || defaults.isRTL;
+    var initAndShow = function() {
+        if (window[widgetVar]) return;
+        if (trigger) trigger.remove();
+        window[widgetVar] = new ice.ace.Calendar(id, options);
+        if (!window[widgetVar].pickerFn) return;
+        window[widgetVar].jq[window[widgetVar].pickerFn]("show");
+    };
+    var initEltSet = ice.ace.jq();
+    var behavior = options.behaviors && options.behaviors.dateTextChange;
 
-        if (!options.popup) {
-            window[widgetVar] = new ice.ace.Calendar(id, options);
-            return;
+    if (!options.popup) {
+        window[widgetVar] = new ice.ace.Calendar(id, options);
+        return;
+    }
+
+    input.bind("focus", function() {
+        if (behavior) {
+            input.bind('change', function() {
+                setFocus();
+                ice.ace.ab(behavior);
+            });
+        } else if (options.singleSubmit) {
+            input.bind('change', function(event) {
+                setFocus();
+                ice.se(event, id);
+            });
         }
+    });
 
-        input.one("focus.init", function() {
-            if (behavior) {
-                input.change(function() {
-                    setFocus();
-                    ice.ace.ab(behavior);
-                });
-            } else if (options.singleSubmit) {
-                input.change(function(event) {
-                    setFocus();
-                    ice.se(event, id);
-                });
-            }
-        });
+    initEltSet = initEltSet.add(input);
+
+    window[widgetVar] = null;
+    if (ice.ace.jq.inArray(showOn, ["button","both"]) >= 0) {
+        trigger = buttonImageOnly ?
+            ice.ace.jq('<img/>').addClass(triggerClass).
+                attr({ src: buttonImage, alt: buttonText, title: buttonText }) :
+            ice.ace.jq('<button type="button"></button>').addClass(triggerClass).
+                html(buttonImage == '' ? buttonText : ice.ace.jq('<img/>').attr(
+                { src:buttonImage, alt:buttonText, title:buttonText }));
+        input[isRTL ? 'before' : 'after'](trigger);
+        trigger.bind("click", initAndShow);
+        initEltSet = initEltSet.add(trigger);
+    }
+    if (ice.ace.jq.inArray(showOn, ["focus","both"]) >= 0) {
+        input.bind("focus", initAndShow);
         initEltSet = initEltSet.add(input);
+    }
 
-        window[widgetVar] = null;
-        if ($.inArray(showOn, ["button","both"]) >= 0) {
-            trigger = buttonImageOnly ?
-                $('<img/>').addClass(triggerClass).
-                    attr({ src: buttonImage, alt: buttonText, title: buttonText }) :
-                $('<button type="button"></button>').addClass(triggerClass).
-                    html(buttonImage == '' ? buttonText : $('<img/>').attr(
-                    { src:buttonImage, alt:buttonText, title:buttonText }));
-            input[isRTL ? 'before' : 'after'](trigger);
-            trigger.one("click.init", initAndShow);
-            initEltSet = initEltSet.add(trigger);
-        }
-        if ($.inArray(showOn, ["focus","both"]) >= 0) {
-            input.one("focus.init", initAndShow);
-//            initEltSet = initEltSet.add(input);
-        }
-
-        ice.onElementUpdate(id, function() {
-            initEltSet.unbind(".init");
-        });
+    ice.onElementUpdate(id, function() {
+        // .remove cleans jQuery state unlike .unbind
+       initEltSet.remove();
     });
 };
-}(ice.ace.jq));
