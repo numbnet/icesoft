@@ -117,8 +117,16 @@ ice.ace.Calendar.prototype.bindDateSelectListener = function() {
         this.cfg.onSelect = function(dateText, input) {
             var dateSelectBehavior = _self.cfg.behaviors['dateSelect'];
 
-            if (dateSelectBehavior)
+            if (dateSelectBehavior) {
+                var inputID = input.input[0].id;
+                dateSelectBehavior.oncomplete = function() {
+                    var inputElement= document.getElementById(inputID);
+                    $(inputElement).unbind('focus', $.datepicker._showDatepicker);
+                    inputElement.focus();
+                    $(inputElement).bind('focus', $.datepicker._showDatepicker);
+                };
                 ice.ace.ab.call(_self, dateSelectBehavior);
+            }
         };
     }
     if (!behavior && this.cfg.singleSubmit) {
