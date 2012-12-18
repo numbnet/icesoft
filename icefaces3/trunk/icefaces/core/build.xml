@@ -55,6 +55,11 @@
         <format property="build.time" pattern="yyyy-MM-dd hh:mm:ss"/>
     </tstamp>
 
+    <!-- Specifically formatted date for versioning of resources -->
+    <tstamp>
+        <format property="build.date" pattern="yyMMdd"/>
+    </tstamp>
+
     <patternset id="lib.compile">
         <include name="*.jar"/>
     </patternset>
@@ -100,6 +105,8 @@
             <replacefilter token="@version.tertiary@"  value="${version.tertiary}"/>
             <replacefilter token="@build.number@"      value="${build.number}"/>
             <replacefilter token="@revision@"          value="${revision}"/>
+            <replacefilter token="@build.date@"        value="${build.date}"/>
+            <replacefilter token="@version.patch@"     value="${version.patch}"/>
         </replace>
     </target>
 

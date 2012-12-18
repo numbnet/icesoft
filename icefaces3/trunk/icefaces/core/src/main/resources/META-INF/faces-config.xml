@@ -63,6 +63,7 @@
     <application>
         <navigation-handler>org.icefaces.impl.application.PropagatingNavigationHandler</navigation-handler>
         <navigation-handler>org.icefaces.impl.application.ReloadAfterNavigationFix</navigation-handler>
+        <resource-handler>org.icefaces.impl.application.VersioningResourceHandler</resource-handler>
         <resource-handler>org.icefaces.impl.push.servlet.ICEpushResourceHandler</resource-handler>
         <resource-handler>org.icefaces.impl.push.DynamicResourceDispatcher</resource-handler>
         <resource-handler>org.icefaces.application.ResourceRegistry</resource-handler>

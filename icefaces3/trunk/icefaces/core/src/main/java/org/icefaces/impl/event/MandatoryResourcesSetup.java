@@ -8,7 +8,6 @@ import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
 import javax.faces.application.ResourceHandler;
 import javax.faces.component.UIComponent;
-import javax.faces.component.UIOutput;
 import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AbortProcessingException;
@@ -21,7 +20,6 @@ import java.util.logging.Logger;
 
 public class MandatoryResourcesSetup implements SystemEventListener {
     private final static Logger log = Logger.getLogger(MandatoryResourcesSetup.class.getName());
-    private final static String JAVAX_FACES_RESOURCE_SCRIPT = "javax.faces.resource.Script";
 
     public boolean isListenerForSource(Object source) {
         if (!(source instanceof UIViewRoot)) {
@@ -47,17 +45,15 @@ public class MandatoryResourcesSetup implements SystemEventListener {
     public void processEvent(SystemEvent event) throws AbortProcessingException {
         FacesContext context = FacesContext.getCurrentInstance();
         Map collectedResourceComponents = new HashMap();
-        String version = EnvUtils.isUniqueResourceURLs(context) ? String.valueOf(hashCode()) : null;
-        ResourceHandler resourceHandler = context.getApplication().getResourceHandler();
         //make resource containers transient so that the removal and addition of resource is not track by the JSF state saving
         Collection<UIComponent> facets = context.getViewRoot().getFacets().values();
         for (UIComponent c: facets) {
             c.setInView(false);
         }
         //add mandatory resources, replace any resources previously added by JSF
-        addMandatoryResources(context, collectedResourceComponents, version);
+        addMandatoryResources(context, collectedResourceComponents);
         //jsf.js might be added already by a page or component
-        UIOutput jsfResource = new JavascriptResourceOutput(resourceHandler, "jsf.js", "javax.faces", version);
+        UIComponent jsfResource = ResourceOutputUtil.createTransientScriptResourceComponent("jsf.js", "javax.faces");
         //add jsf.js resource or replace it if already added by JSF
         addOrCollectReplacingResource(context, "jsf.js", "javax.faces", "head", jsfResource, collectedResourceComponents);
         //restore resource containers to non-transient state
@@ -67,8 +63,7 @@ public class MandatoryResourcesSetup implements SystemEventListener {
     }
 
     private void addMandatoryResources(FacesContext context,
-                                       Map collectedResourceComponents,
-                                       String version) {
+                                       Map collectedResourceComponents) {
         RenderKit rk = context.getRenderKit();
         if (rk instanceof DOMRenderKit) {
             DOMRenderKit drk = (DOMRenderKit) rk;
@@ -90,18 +85,18 @@ public class MandatoryResourcesSetup implements SystemEventListener {
                 try {
                     Class<UIComponent> compClass = (Class<UIComponent>) Class.forName(compClassName);
                     // Iterate over ResourceDependencies, ResourceDependency
-                    // annotations, creating ResourceOutput components for
+                    // annotations, creating components for
                     // each unique one, so they'll add the mandatory
                     // resources.
                     ResourceDependencies resourceDependencies = compClass.getAnnotation(ResourceDependencies.class);
                     if (resourceDependencies != null) {
                         for (ResourceDependency resDep : resourceDependencies.value()) {
-                            addMandatoryResourceDependency(context, compClassName, addedResourceDependencies, resDep, version, collectedResourceComponents);
+                            addMandatoryResourceDependency(context, compClassName, addedResourceDependencies, resDep, collectedResourceComponents);
                         }
                     }
                     ResourceDependency resourceDependency = compClass.getAnnotation(ResourceDependency.class);
                     if (resourceDependency != null) {
-                        addMandatoryResourceDependency(context, compClassName, addedResourceDependencies, resourceDependency, version, collectedResourceComponents);
+                        addMandatoryResourceDependency(context, compClassName, addedResourceDependencies, resourceDependency, collectedResourceComponents);
                     }
                 } catch (Exception e) {
                     if (log.isLoggable(Level.WARNING)) {
@@ -146,19 +141,18 @@ public class MandatoryResourcesSetup implements SystemEventListener {
             String compClassName,
             Set<ResourceDependency> addedResDeps,
             ResourceDependency resDep,
-            String version,
             Map collectedResourceComponents) {
         if (addedResDeps.contains(resDep)) {
             return;
         }
         addedResDeps.add(resDep);
         addMandatoryResource(facesContext, compClassName, resDep.name(),
-                resDep.library(), version, resDep.target(), collectedResourceComponents);
+                resDep.library(), resDep.target(), collectedResourceComponents);
     }
 
     private static void addMandatoryResource(FacesContext facesContext,
                                              String compClassName, String name,
-                                             String library, String version,
+                                             String library,
                                              String target,
                                              Map collectedResourceComponents) {
         if (target == null || target.length() == 0) {
@@ -174,7 +168,7 @@ public class MandatoryResourcesSetup implements SystemEventListener {
                         ". Resource name: " + name + ", library: " + library);
             }
         } else {
-            UIComponent component = newResourceOutput(resourceHandler, rendererType, name, library, version);
+            UIComponent component = ResourceOutputUtil.createResourceComponent(name, library, rendererType, true);
             addOrCollectReplacingResource(facesContext, name, library, target, component, collectedResourceComponents);
         }
     }
@@ -212,45 +206,8 @@ public class MandatoryResourcesSetup implements SystemEventListener {
         return name + ":" + library + ":" + target;
     }
 
-    private static UIComponent newResourceOutput(ResourceHandler resourceHandler,
-                                                 String rendererType,
-                                                 String name, String library,
-                                                 String version) {
-        if (JAVAX_FACES_RESOURCE_SCRIPT.endsWith(rendererType)) {
-            return new JavascriptResourceOutput(resourceHandler, name, library, version);
-        } else {
-            return new ResourceOutput(rendererType, name, library);
-        }
-    }
-
-
     private static String fixResourceParameter(String value) {
         return value == null || "".equals(value) ? null : value;
     }
 
-    public static class NonTransientJavascriptResourceOutput extends JavascriptResourceOutput {
-        private static String ScriptURL = "ScriptURL";
-
-        public NonTransientJavascriptResourceOutput() {
-        }
-
-        private NonTransientJavascriptResourceOutput(ResourceHandler resourceHandler,
-                                                     String name,
-                                                     String library,
-                                                     String version) {
-            super(resourceHandler, name, library, version);
-            //save the calculated URL so that it can be restored
-            Map attributes = getAttributes();
-            attributes.put(ScriptURL, script);
-
-            setTransient(false);
-        }
-
-        public void restoreState(FacesContext context, Object state) {
-            //call method from super-class to restore the component attributes first
-            super.restoreState(context, state);
-            Map attributes = getAttributes();
-            script = (String) attributes.get(ScriptURL);
-        }
-    }
 }

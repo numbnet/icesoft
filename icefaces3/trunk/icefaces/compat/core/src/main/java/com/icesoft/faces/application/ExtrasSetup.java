@@ -20,6 +20,7 @@ import com.icesoft.faces.context.effects.CurrentStyle;
 import com.icesoft.faces.renderkit.dom_html_basic.FormRenderer;
 import com.icesoft.faces.util.CoreUtils;
 import org.icefaces.impl.event.BridgeSetup;
+import org.icefaces.impl.event.ResourceOutputUtil;
 import org.icefaces.impl.event.UIOutputWriter;
 import org.icefaces.impl.util.FormEndRenderer;
 import org.icefaces.impl.util.FormEndRendering;
@@ -55,6 +56,8 @@ public class ExtrasSetup implements SystemEventListener {
     private String extraCompatResourceName;
     private boolean includeScrollOffsets;
 
+    private static final String ICE_COMPAT_LIB = "ice.compat";
+
     public ExtrasSetup() {
         FacesContext context = FacesContext.getCurrentInstance();
 
@@ -76,8 +79,8 @@ public class ExtrasSetup implements SystemEventListener {
         if (EnvUtils.isICEfacesView(context)) {
             UIViewRoot root = context.getViewRoot();
 
-            root.addComponentResource(context, new JavascriptResourceOutput(compatResourceName), "head");
-            root.addComponentResource(context, new JavascriptResourceOutput(extraCompatResourceName), "head");
+            root.addComponentResource(context, ResourceOutputUtil.createTransientScriptResourceComponent(compatResourceName, ICE_COMPAT_LIB), "head");
+            root.addComponentResource(context, ResourceOutputUtil.createTransientScriptResourceComponent(extraCompatResourceName, ICE_COMPAT_LIB), "head");
 
             UIOutput output = new UIOutputWriter() {
                 public void encode(ResponseWriter writer, FacesContext context) throws IOException {
@@ -153,14 +156,6 @@ public class ExtrasSetup implements SystemEventListener {
             root.addComponentResource(context, output, "body");
 
             FormEndRendering.addRenderer(context, FormHiddenInputFields);
-        }
-    }
-
-    public static class JavascriptResourceOutput extends UIOutput {
-        public JavascriptResourceOutput(String path) {
-            setRendererType("javax.faces.resource.Script");
-            getAttributes().put("name", path);
-            setTransient(true);
         }
     }
 

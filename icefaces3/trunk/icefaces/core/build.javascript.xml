@@ -18,9 +18,10 @@
 
 <project name="bridge" default="build">
     <property file="build.properties"/>
+    <property file="../build.properties"/>
     <property name="src.dir" location="${basedir}/src/main/javascript"/>
     <property name="lib.dir" location="${basedir}/src/main/javascript/lib"/>
-    <property name="build.dir" location="${basedir}/build/javascript/resources"/>
+    <property name="build.dir" location="${basedir}/build/javascript/resources/ice.core"/>
     <property name="tmp" value="${build.dir}/tmp.js"/>
 
     <target name="prepare" description="Collate bridge code">

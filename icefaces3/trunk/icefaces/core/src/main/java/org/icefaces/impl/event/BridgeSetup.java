@@ -43,6 +43,8 @@ import java.util.logging.Logger;
 public class BridgeSetup implements SystemEventListener {
     public final static String ViewState = BridgeSetup.class.getName() + "::ViewState";
     public final static String BRIDGE_SETUP = BridgeSetup.class.getName();
+    public final static String ICE_CORE_LIB = "ice.core";
+    public final static String ICE_PUSH_LIB = "ice.push";
     private final static Logger log = Logger.getLogger(BridgeSetup.class.getName());
 
     private final boolean standardFormSerialization;
@@ -112,15 +114,13 @@ public class BridgeSetup implements SystemEventListener {
 
     private List<UIComponent> getHeadResources(FacesContext context) {
         ArrayList<UIComponent> resources = new ArrayList();
-        ResourceHandler resourceHandler = context.getApplication().getResourceHandler();
-        String version = EnvUtils.isUniqueResourceURLs(context) ? String.valueOf(hashCode()) : null;
 
         //add ICEpush code only when needed
         if (EnvUtils.isICEpushPresent()) {
-            resources.add(new JavascriptResourceOutput(resourceHandler, icepushResourceName, null, version));
+            resources.add(ResourceOutputUtil.createTransientScriptResourceComponent(icepushResourceName, ICE_PUSH_LIB));
         }
         //always add ICEfaces bridge code
-        resources.add(new JavascriptResourceOutput(resourceHandler, bridgeResourceName, null, version));
+        resources.add(ResourceOutputUtil.createTransientScriptResourceComponent(bridgeResourceName, ICE_CORE_LIB));
         resources.add(new TestScript());
         resources.add(new CoreCSSOutput());
 
