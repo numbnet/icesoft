@@ -54,7 +54,7 @@ public class ContentMenuItemMeta extends UICommandMeta {
                 tlddoc = TLDConstants.DISABLED)
      private boolean disabled;
 
-     @Property(tlddoc = "The button label. ", required = Required.yes)
+     @Property(tlddoc = "The menu item label. ", required = Required.yes)
      private String label;
 
      @Property(tlddoc = "The contentPane id that will be displayed when selecting this button." +

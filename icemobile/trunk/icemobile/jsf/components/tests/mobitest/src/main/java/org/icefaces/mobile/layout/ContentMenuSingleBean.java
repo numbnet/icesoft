@@ -31,8 +31,6 @@ import java.util.Map;
 
 @ManagedBean(name="contentMenuBean")
 @SessionScoped
-
-
 public class ContentMenuSingleBean extends LayoutBean {
     private static final Logger logger =Logger.getLogger(ContentMenuSingleBean.class.toString());
     private static final String MENUPANE="mnuPanel";
@@ -50,6 +48,11 @@ public class ContentMenuSingleBean extends LayoutBean {
     private String selectedTabPane = FIRSTTABPANE;
     private String twoColSelectedPane=FIRSTPANE;
     private String thirdPane = THIRDPANE;
+    private String stackId="stack1";
+    private boolean accordion = false;
+    private boolean disabled = false;
+    private String styleClass;
+    private String style;
 
     public ContentMenuSingleBean(){
        this.menuCList.add(new MenuValue("Menu Example", null, true));
@@ -89,12 +92,20 @@ public class ContentMenuSingleBean extends LayoutBean {
     }
 
     public List getMenuCList() {
-         return menuCList;
-     }
+        return menuCList;
+    }
 
-     public void setMenuCList(List menuList) {
-         this.menuCList = menuList;
-     }
+    public void setMenuCList(List menuList) {
+        this.menuCList = menuList;
+    }
+
+    public boolean isAccordion() {
+        return accordion;
+    }
+
+    public void setAccordion(boolean accordion) {
+        this.accordion = accordion;
+    }
 
     public String getTwoColSelectedPane() {
         return twoColSelectedPane;
@@ -149,5 +160,37 @@ public class ContentMenuSingleBean extends LayoutBean {
     }
     public void testString(String abc){
         logger.info("test abc = "+abc);
+    }
+
+    public String getStackId() {
+        return stackId;
+    }
+
+    public void setStackId(String stackId) {
+        this.stackId = stackId;
+    }
+
+    public boolean isDisabled() {
+        return disabled;
+    }
+
+    public void setDisabled(boolean disabled) {
+        this.disabled = disabled;
+    }
+
+    public String getStyleClass() {
+        return styleClass;
+    }
+
+    public void setStyleClass(String styleClass) {
+        this.styleClass = styleClass;
+    }
+
+    public String getStyle() {
+        return style;
+    }
+
+    public void setStyle(String style) {
+        this.style = style;
     }
 }

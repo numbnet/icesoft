@@ -19,6 +19,7 @@ package org.icefaces.mobi.component.contentmenuitem;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Map;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.faces.component.UIComponent;
@@ -40,7 +41,7 @@ import org.icefaces.mobi.utils.HTML;
 import org.icefaces.mobi.utils.JSFUtils;
 
 
-public class ContentMenuItemRenderer extends BaseLayoutRenderer {
+public class  ContentMenuItemRenderer extends BaseLayoutRenderer {
        private static Logger logger = Logger.getLogger(ContentMenuItemRenderer.class.getName());
 
        public void decode(FacesContext facesContext, UIComponent uiComponent) {
@@ -109,7 +110,7 @@ public class ContentMenuItemRenderer extends BaseLayoutRenderer {
         if (item.isDisabled()){
             writer.writeAttribute("disabled", "disabled", null);
         }
-        if (item.getUrl() != null){
+        if (item.getUrl() != null && !item.isDisabled()){
             writer.writeAttribute("href", getResourceURL(facesContext,item.getUrl()), null);
         } else {
             if (stack!=null){
@@ -140,7 +141,11 @@ public class ContentMenuItemRenderer extends BaseLayoutRenderer {
                     if ( !item.isDisabled()){
                           writer.writeAttribute("onclick", sb.toString(), null);
                     }
-                    writer.write(item.getLabel());
+                    String label = item.getLabel();
+                    if (isLabelEmpty(label)){
+                        label= valId;  //make it the value if label is null
+                    }
+                    writer.write(label);
                     writer.endElement(HTML.ANCHOR_ELEM);
                     writer.endElement(HTML.DIV_ELEM);
                 }
@@ -163,6 +168,20 @@ public class ContentMenuItemRenderer extends BaseLayoutRenderer {
          String clientId = lmi.getClientId(facesContext);
          String contentStackId = parentMenu.getContentStackId();
          String stackClientId = null;
+         StringBuilder baseClass = new StringBuilder(ContentMenuItem.OUTPUTLISTITEMDEFAULT_CLASS);
+         StringBuilder disabledClass = new StringBuilder(ContentMenuItem.DISABLED_STYLE_CLASS);
+         StringBuilder groupClass = new StringBuilder(ContentMenuItem.OUTPUTLISTITEMGROUP_CLASS);
+         StringBuilder itemClass = new StringBuilder(ContentMenuItem.OUTPUTLISTITEM_CLASS);
+         String userDefClass = lmi.getStyleClass();
+         if (null != userDefClass){
+             baseClass.append(" ").append(userDefClass);
+             groupClass.append(" ").append(userDefClass);
+             disabledClass.append(" ").append(userDefClass);
+             itemClass.append(" ").append(userDefClass);
+         }
+         if (lmi.isDisabled()){
+
+         }
          boolean client = false;
          boolean accordion = parentMenu.isAccordion();
          String selId = null;
@@ -190,9 +209,14 @@ public class ContentMenuItemRenderer extends BaseLayoutRenderer {
              }
          }
          stackClientId = ((ContentStackMenu) parent).getStackClientId();
-         UIComponent stack = root.findComponent(stackClientId);
+         UIComponent stack = null;
+         if (stackClientId !=null){
+             stack = root.findComponent(stackClientId);
+         }else {
+             logger.warning(" Error:- Could not find contentStack for contentStackMenu id="+contentStackId);
+         }
          //find the clientId of the selected Pane
-         if (selId !=null){
+         if (null != stack && selId !=null){
              selClientId = findCompIntree(facesContext, stack,  selId);
              if (selClientId!=null ){
                  UIComponent pane = root.findComponent(selClientId);
@@ -205,35 +229,48 @@ public class ContentMenuItemRenderer extends BaseLayoutRenderer {
          }
     //     String icon = lmi.getIcon();
          String label = lmi.getLabel();
-         if (null==selId) {
+         String url = lmi.getUrl();
+         if (isLabelEmpty(label)){
+             if (selId!=null){
+                 label=selId;
+             }
+             else if (url!=null){
+                 label=lmi.getUrl();
+             }
+             else {
+                 label="MenuItem";
+             }
+         }
+         if (null==selId & url==null) {   // must be a heading or accordion label
              if (accordion){
                  this.writeTitleAsAccordionHandle(facesContext, uiComponent, parentMenu, label);
              }  else {
                  writeItemListStart(uiComponent, writer, clientId);
-                 writer.writeAttribute("class", ContentMenuItem.OUTPUTLISTITEMGROUP_CLASS, "class");
+                 writer.writeAttribute("class", groupClass, "class");
                  if (lmi.getStyle() !=null){
                      writer.writeAttribute(HTML.STYLE_ATTR, lmi.getStyle(), HTML.STYLE_ATTR);
                  }
                  writer.startElement(HTML.DIV_ELEM, uiComponent);
-                 writer.writeAttribute("class", ContentMenuItem.OUTPUTLISTITEMDEFAULT_CLASS, "class");
+                 writer.writeAttribute("class", baseClass, "class");
                  writer.write(label);
                  writer.endElement(HTML.DIV_ELEM);
                  writer.endElement(HTML.LI_ELEM);
              }
-         }else {
+         }else {  //otherwise has url or value
              writeItemListStart(uiComponent, writer, clientId);
-             writer.writeAttribute("class", ContentMenuItem.OUTPUTLISTITEM_CLASS, "class");
+             writer.writeAttribute("class", itemClass, "class");
              if (lmi.getStyle() !=null){
                      writer.writeAttribute(HTML.STYLE_ATTR, lmi.getStyle(), HTML.STYLE_ATTR);
              }
+             if (lmi.isDisabled()){
+                writer.writeAttribute("disabled", "true", null);
+                baseClass.append(" ").append(disabledClass);
+             }
              writer.startElement(HTML.DIV_ELEM, uiComponent);
-             writer.writeAttribute("class", ContentMenuItem.OUTPUTLISTITEMDEFAULT_CLASS, "class");
+             writer.writeAttribute("class", baseClass, "class");
              writer.startElement(HTML.ANCHOR_ELEM, uiComponent);;
              //verify location of panel and get proper id of the contentPane for onclick
              // if url or target then put that in the onclick  otherwise use the value lmi.getValue()
-             if (lmi.isDisabled()){
-                writer.writeAttribute("disabled", "disabled", null);
-             }
              if (!lmi.isDisabled() && lmi.getUrl() != null){
                  writer.writeAttribute("href", getResourceURL(facesContext,lmi.getUrl()), null);
              }
@@ -247,14 +284,14 @@ public class ContentMenuItemRenderer extends BaseLayoutRenderer {
                  sb.append(",client: ").append(client);
                  sb.append(", item: '").append(uiComponent.getClientId(facesContext)).append("'");
                  sb.append("});");
-                 if (stackClientId != null && !lmi.isDisabled()){
+                 if (stack !=null && stackClientId != null && !lmi.isDisabled()){
                     writer.writeAttribute("onclick", sb.toString(), null);
                  }
              }
         /*     if (icon !=null){
                 //TODO implementation of icon needs to be defined  --base64?
              } */
-             writer.write(lmi.getLabel());
+             writer.write(label);
              writer.endElement(HTML.ANCHOR_ELEM);
              writer.endElement(HTML.DIV_ELEM);
              writer.endElement(HTML.LI_ELEM);
@@ -328,23 +365,25 @@ public class ContentMenuItemRenderer extends BaseLayoutRenderer {
 
      }
 
-      private static class GetClientId implements VisitCallback {
-          private String _clientId=null;
-          String searchId;
+     private static class GetClientId implements VisitCallback {
+         private String _clientId=null;
+         String searchId;
 
-          private GetClientId(String searchId){
-              this.searchId = searchId;
-          }
-          public String getClientId(){
+         private GetClientId(String searchId){
+             this.searchId = searchId;
+         }
+         public String getClientId(){
               return _clientId;
-          }
-          public VisitResult visit( VisitContext visitContext, UIComponent uiComponent){
-              if (uiComponent instanceof ContentStack || uiComponent instanceof ContentPane){
-                  _clientId  = uiComponent.getId();
-                      return VisitResult.COMPLETE;
-
-              }
-              return VisitResult.ACCEPT;
-          }
-      }
+         }
+         public VisitResult visit( VisitContext visitContext, UIComponent uiComponent){
+             if (uiComponent instanceof ContentStack || uiComponent instanceof ContentPane){
+                 _clientId  = uiComponent.getId();
+                     return VisitResult.COMPLETE;
+             }
+             return VisitResult.ACCEPT;
+         }
+     }
+     private boolean isLabelEmpty(String label){
+         return (label==null || label.trim().equals("null") || label.length()<1);
+     }
 }

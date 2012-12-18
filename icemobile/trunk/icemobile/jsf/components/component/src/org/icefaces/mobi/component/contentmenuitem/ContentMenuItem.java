@@ -18,8 +18,9 @@ package org.icefaces.mobi.component.contentmenuitem;
 
 
 public class ContentMenuItem extends ContentMenuItemBase {
-    public static final String OUTPUTLISTITEM_CLASS = "mobi-list-item";
-    public static final String OUTPUTLISTITEMGROUP_CLASS="mobi-list-item mobi-list-item-group ";
-    public static final String OUTPUTLISTITEMDEFAULT_CLASS="mobi-list-item-default ";
+    public static final StringBuilder OUTPUTLISTITEM_CLASS = new StringBuilder("mobi-list-item");
+    public static final StringBuilder OUTPUTLISTITEMGROUP_CLASS= new StringBuilder("mobi-list-item mobi-list-item-group");
+    public static final StringBuilder OUTPUTLISTITEMDEFAULT_CLASS= new StringBuilder("mobi-list-item-default");
+    public static final StringBuilder DISABLED_STYLE_CLASS = new StringBuilder("mobi-list-item-dis");
 
 }
