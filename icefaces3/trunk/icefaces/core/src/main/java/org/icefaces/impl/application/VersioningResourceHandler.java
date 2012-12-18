@@ -7,7 +7,6 @@ import javax.faces.application.ResourceHandler;
 import javax.faces.application.ResourceHandlerWrapper;
 import javax.faces.application.ResourceWrapper;
 import javax.faces.context.FacesContext;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -37,14 +36,26 @@ public class VersioningResourceHandler extends ResourceHandlerWrapper {
             return rez;
         }
 
-        //We may want to do this at some point and only version files that actually include
+        //Only version the resource types that make sense
+        if (!isVersionableResource(rez)) {
+            if (log.isLoggable(Level.FINE)) {
+                log.fine("ignoring versioning for " +
+                        "\n  resource    : " + rez.getResourceName() +
+                        "\n  library     : " + rez.getLibraryName() +
+                        "\n  content type: " + rez.getContentType()
+                );
+            }
+            return rez;
+        }
+
+        //At some point we may only want to version files that actually include
         //a valid library name but since some of our resources aren't in libraries yet, we
         //can't exclude them.
 //        if( libraryName == null || libraryName.trim().length() == 0){
 //            return rez;
 //        }
 
-        if (log.isLoggable(Level.FINEST)) {
+        if (log.isLoggable(Level.FINE)) {
             log.fine("adding versioning for " +
                     "\n  resource    : " + resourceName +
                     "\n  library     : " + libraryName +
@@ -52,6 +63,30 @@ public class VersioningResourceHandler extends ResourceHandlerWrapper {
             );
         }
         return new VersionedResource(rez);
+    }
+
+    private boolean isVersionableResource(Resource rez) {
+
+        if( rez == null ){
+            return false;
+        }
+
+        String calculatedContentType = rez.getContentType();
+
+        if (calculatedContentType == null) {
+            return false;
+        }
+
+        if (calculatedContentType.equals("text/css") ||
+                calculatedContentType.equals("application/javascript")) {
+            return true;
+        }
+
+        if (calculatedContentType.startsWith("image")) {
+            return true;
+        }
+
+        return false;
     }
 }
 
