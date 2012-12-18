@@ -42,6 +42,9 @@ ice.ace.NotificationBar = function(id, cfg) {
     } else {
         ice.ace.jq(this.jq).css({'display':'none'});
     }
+    if (this.cfg.ariaEnabled) {
+        ice.ace.jq(this.jq).attr("aria-hidden", !this.cfg.visible);
+    }
 };
 
 ice.ace.NotificationBar.prototype.show = function() {
@@ -52,6 +55,9 @@ ice.ace.NotificationBar.prototype.show = function() {
     else if (this.cfg.effect === "none")
         ice.ace.jq(this.jq).show();
     this.cfg.visible = true;
+    if (this.cfg.ariaEnabled) {
+        ice.ace.jq(this.jq).attr("aria-hidden", !this.cfg.visible);
+    }
     var behaviour = this.cfg && this.cfg.behaviors && this.cfg.behaviors.display;
     if (behaviour) {
         ice.ace.ab(behaviour);
@@ -66,6 +72,9 @@ ice.ace.NotificationBar.prototype.hide = function() {
     else if (this.cfg.effect === "none")
         ice.ace.jq(this.jq).hide();
     this.cfg.visible = false;
+    if (this.cfg.ariaEnabled) {
+        ice.ace.jq(this.jq).attr("aria-hidden", !this.cfg.visible);
+    }
     var behaviour = this.cfg && this.cfg.behaviors && this.cfg.behaviors.close;
     if (behaviour) {
         ice.ace.ab(behaviour);
