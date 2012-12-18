@@ -36,6 +36,7 @@ import javax.faces.context.ResponseWriter;
 
 import org.icefaces.ace.renderkit.CoreRenderer;
 import org.icefaces.render.MandatoryResourceComponent;
+import org.icefaces.util.EnvUtils;
 
 @MandatoryResourceComponent(tagName="notificationPanel", value="org.icefaces.ace.component.notificationpanel.NotificationPanel")
 public class NotificationPanelRenderer extends CoreRenderer {
@@ -58,8 +59,11 @@ public class NotificationPanelRenderer extends CoreRenderer {
 		writer.writeAttribute("class", styleClass, null);
         String style = bar.getStyle();
         if(style != null) writer.writeAttribute("style", style, null);
-		
-		if(close != null) {
+        if (EnvUtils.isAriaEnabled(facesContext)) {
+            writer.writeAttribute("role", close == null ? "alert" : "alertdialog", null);
+        }
+
+        if(close != null) {
 			writer.startElement("span", null);
 			writer.writeAttribute("class", "ui-notificationbar-close", null);
 			writer.writeAttribute("onclick", this.resolveWidgetVar(bar) + ".hide()", null);
@@ -77,7 +81,7 @@ public class NotificationPanelRenderer extends CoreRenderer {
 	private void encodeScript(FacesContext facesContext, NotificationPanel bar) throws IOException {
 		ResponseWriter writer = facesContext.getResponseWriter();
 		String clientId = bar.getClientId(facesContext);
-		
+
 		writer.startElement("script", null);
 		writer.writeAttribute("type", "text/javascript", null);
 		
@@ -93,6 +97,7 @@ public class NotificationPanelRenderer extends CoreRenderer {
                 entry("effectSpeed", bar.getEffectSpeed());
 
                     json.entry("visible", bar.isVisible());
+                    json.entry("ariaEnabled", EnvUtils.isAriaEnabled(facesContext));
 
                 encodeClientBehaviors(facesContext, bar, json);
             json.endMap();
