@@ -48,9 +48,27 @@ public class ProductInfo {
 
     /**
      * The revision number retrieved from the repository for this build.
-     * This is substitued automatically by subversion.
+     * This is substituted automatically by subversion.
      */
     public static String REVISION = "@revision@";
+
+    /**
+     * The date that this build was done.
+     */
+    public static String BUILD_DATE = "@build.date@";
+
+    /**
+     * A configurable integer value used to uniquely identify a build.
+     */
+    public static String PATCH_NUMBER = "@version.patch@";
+
+    public static String RESOURCE_VERSION = PRIMARY + "_" + SECONDARY + "_" + TERTIARY + "_" + BUILD_DATE;
+    static{
+        if ((PATCH_NUMBER.length() > 0) &&
+                (PATCH_NUMBER.indexOf("version.patch") < 0)) {
+            RESOURCE_VERSION = RESOURCE_VERSION + "_" + PATCH_NUMBER;
+        }
+    }
 
     /**
      * Convenience method to get all the relevant product information.
@@ -74,9 +92,17 @@ public class ProductInfo {
 	        info.append(".");
 	        info.append(RELEASE_TYPE);
 	     }    
+        if ((PATCH_NUMBER.length() > 0) &&
+                (PATCH_NUMBER.indexOf("version.patch") < 0)) {
+            info.append("\nPatch: ");
+            info.append(PATCH_NUMBER);
+        }
         info.append( "\n" );
         info.append( "Build number: " );
         info.append( BUILD_NO );
+        info.append( "\n" );
+        info.append( "Build date: " );
+        info.append( BUILD_DATE );
         info.append( "\n" );
         info.append( "Revision: " );
         info.append( REVISION );

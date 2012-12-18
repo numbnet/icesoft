@@ -23,14 +23,15 @@
     <property name="prototype.dir" location="${src.dir}/prototype"/>
     <property name="scriptaculous.dir" location="${src.dir}/scriptaculous"/>
     <property name="lib.dir" location="${basedir}/src/main/javascript/lib"/>
-    <property name="build.dir" location="${basedir}/build/resources/META-INF/resources"/>
+    <property name="build.dir" location="${basedir}/build/"/>
+    <property name="build.res.dir" location="${build.dir}/resources/META-INF/resources/ice.compat"/>
     <property name="tmp" value="${build.dir}/tmp.js"/>
     <property name="tmp.extra" value="${build.dir}/tmp.extra.js"/>
 
     <target name="prepare" depends="build.icefaces.compat" description="Collate bridge code">
         <tstamp/>
         <echoproperties/>
-        <mkdir dir="${build.dir}"/>
+        <mkdir dir="${build.res.dir}"/>
         <delete file="${tmp}" failonerror="not"/>
         <loadfile property="functional.js" srcFile="${lib.dir}/functional.js"/>
         <loadfile property="oo.js" srcFile="${lib.dir}/oo.js"/>
@@ -62,7 +63,7 @@
     <target name="build.icefaces.compat" description="Collate compat components code">
         <tstamp/>
         <echoproperties/>
-        <mkdir dir="${build.dir}"/>
+        <mkdir dir="${build.res.dir}"/>
         <delete file="${tmp.extra}" failonerror="not"/>
         <concat destfile="${tmp.extra}" append="yes" fixlastline="yes">
             <header file="src/main/javascript/compat.header.js"/>
@@ -89,25 +90,25 @@
         <java jar="../../lib/yui-compressor.jar" fork="yes">
             <arg line="--preserve-semi"/>
             <arg value="-o"/>
-            <arg value="${build.dir}/compat.js"/>
+            <arg value="${build.res.dir}/compat.js"/>
             <arg value="${tmp}"/>
         </java>
         <java jar="../../lib/yui-compressor.jar" fork="yes">
             <arg line="--preserve-semi"/>
             <arg value="-o"/>
-            <arg value="${build.dir}/icefaces-compat.js"/>
+            <arg value="${build.res.dir}/icefaces-compat.js"/>
             <arg value="${tmp.extra}"/>
         </java>
     </target>
 
     <target name="build.bridge.uncompressed" depends="prepare">
-        <copy file="${tmp}" tofile="${build.dir}/compat.uncompressed.js" overwrite="yes">
+        <copy file="${tmp}" tofile="${build.res.dir}/compat.uncompressed.js" overwrite="yes">
             <filterchain>
                 <stripjavacomments/>
                 <ignoreblank/>
             </filterchain>
         </copy>
-        <copy file="${tmp.extra}" tofile="${build.dir}/icefaces-compat.uncompressed.js" overwrite="yes">
+        <copy file="${tmp.extra}" tofile="${build.res.dir}/icefaces-compat.uncompressed.js" overwrite="yes">
             <filterchain>
                 <!-- using built in 'stripjavacomments' for removing comments breaks Prototype code, one of
                 the regular expressions contains '/*' characters which are mistakenly interpreted as JS comments -->

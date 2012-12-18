@@ -16,6 +16,7 @@
 
 package org.icefaces.util;
 
+import org.icefaces.application.ProductInfo;
 import org.icefaces.bean.WindowDisposed;
 import org.icefaces.impl.application.AuxUploadResourceHandler;
 import org.icefaces.impl.push.servlet.ICEpushResourceHandler;
@@ -64,6 +65,7 @@ public class EnvUtils {
     public static String GENERATE_HEAD_UPDATE = "org.icefaces.generateHeadUpdate";
     public static String INCLUDE_SCROLL_OFFSETS = "org.icefaces.includeScrollOffsets";
     public static String RELOAD_ON_UPDATE_FAILURE = "org.icefaces.reloadOnUpdateFailure";
+    public static String RESOURCE_VERSION = "org.icefaces.resourceVersion";
 
 
     //Parameters configurable using context parameters but only in compatibility mode
@@ -81,7 +83,7 @@ public class EnvUtils {
     public static final String BODY_DETECTED = "org.icefaces.bodyDetected";
     private static String RESOURCE_PREFIX = "/javax.faces.resource/";
     private static String PATH_TEMPLATE = "org.icefaces.resource.pathTemplate";
-    private static String DUMMY_RESOURCE = "bridge.js";
+    private static String DUMMY_RESOURCE = "auxupload.txt";
     private static String USER_AGENT_COOKIE = "com.icesoft.user-agent";
     private static String HYPERBROWSER = "HyperBrowser";
     private static String[] DEFAULT_TEMPLATE = new String[]{RESOURCE_PREFIX, ".jsf"};
@@ -751,6 +753,10 @@ public class EnvUtils {
     public static boolean reloadOnUpdateFailure(FacesContext context) {
         return EnvConfig.getEnvConfig(context).reloadOnUpdateFailure;
     }
+
+    public static String getResourceVersion(FacesContext context) {
+        return EnvConfig.getEnvConfig(context).resourceVersion;
+    }
 }
 
 class EnvConfig {
@@ -780,6 +786,7 @@ class EnvConfig {
     public boolean fastBusyIndicator;
     boolean replayNavigationOnReload;
     boolean generateHeadUpdate;
+    String resourceVersion;
     public boolean includeScrollOffsets;
     public boolean focusManaged;
     public boolean reloadOnUpdateFailure;
@@ -817,6 +824,7 @@ class EnvConfig {
         disableDefaultErrorPopups = decodeBoolean(initMap, EnvUtils.DISABLE_DEFAULT_ERROR_POPUPS, false, info);
         fastBusyIndicator = decodeBoolean(initMap, EnvUtils.FAST_BUSY_INDICATOR, false, info);
         replayNavigationOnReload = decodeBoolean(initMap, EnvUtils.REPLAY_NAVIGATION_ON_RELOAD, false, info);
+        resourceVersion = decodeString(initMap, EnvUtils.RESOURCE_VERSION, ProductInfo.RESOURCE_VERSION, info);
 
         log.info("ICEfaces Configuration: \n" + info);
     }

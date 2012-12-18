@@ -66,7 +66,7 @@ public class RestoreResourceDependencies implements SystemEventListener {
         //add only if missing
         if (position == -1) {
             String rendererType = resourceHandler.getRendererTypeForResourceName(name);
-            viewRoot.addComponentResource(context, new ResourceOutput(rendererType, name, library), target);
+            viewRoot.addComponentResource(context, ResourceOutputUtil.createResourceComponent(name, library, rendererType, false), target);
         }
     }
 
