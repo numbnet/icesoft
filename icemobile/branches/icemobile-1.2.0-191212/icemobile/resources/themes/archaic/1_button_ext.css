@@ -1,0 +1,119 @@
+/***
+ * Copyright 2004-2012 ICEsoft Technologies Canada Corp.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the
+ * License. You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an "AS
+ * IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ * express or implied. See the License for the specific language
+ * governing permissions and limitations under the License.
+ */
+
+.mobi-button-group-vert .mobi-button, .mobi-button-group-hor .mobi-button {
+    border-radius:0; 
+}
+.mobi-button-group-vert .mobi-button:first-child{
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+}
+.mobi-button-group-vert .mobi-button:last-child {
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+.mobi-button-group-hor .mobi-button:first-child {
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+    background-origin: padding;
+    background-clip: border-box;
+}
+.mobi-button-group-hor .mobi-button:last-child {
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    background-origin: padding;
+    background-clip: border-box;
+}
+.mobi-button {
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorStr = '#8EA4C1', EndColorStr = '#4A6C9B');
+    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#8EA4C1', EndColorStr='#4A6C9B')";
+    background-color: #4A6C9B;
+    border: 1px solid #155678;
+    border-radius: 0.6em;
+    color: #FFFFFF;
+    font-weight: bold;
+    text-shadow: 0 -1px 1px #145072;
+}
+.mobi-button-unimportant {
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorStr = '#FEFEFE', EndColorStr = '#EEEEEE');
+    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#FEFEFE', EndColorStr='#EEEEEE')";
+    background-color: #f5f5f5;
+    border-color: #BEBEBE;
+    border-radius: 0.6em;
+    color: #444444;
+    font-weight: bold;
+    text-shadow:none;
+}
+.mobi-button-group .mobi-button{
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorStr = '#FEFEFE', EndColorStr = '#EEEEEE');
+    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#FEFEFE', EndColorStr='#EEEEEE')";
+    background-color: #f5f5f5;
+    border-color: #BEBEBE;
+    color: #444444;
+    font-weight: bold;
+    text-shadow:none;
+}
+.mobi-button-group .mobi-button-selected {
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorStr = '#6792E8', EndColorStr = '#2463DE');
+    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#6792E8', EndColorStr='#2463DE')";
+    background-color: #2463DE;
+    border-color: #155678;
+    color: #FFFFFF;
+    text-shadow: 0 -1px 1px #145072;
+}
+.mobi-button:active, .mobi-button[selected] {
+    /* 4286F5  194FDB */
+    background-color: #0099ff !important;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorStr = '#8EA4C1', EndColorStr = '#4A6C9B');
+    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#8EA4C1', EndColorStr='#4A6C9B')";
+    background-color: #4A6C9B;
+}
+
+.mobi-button-dis:active, .mobi-button-dis[selected] {
+    background-color: inherit;
+    background: none;
+}
+.mobi-button-important, .mobi-button-attention {
+    border: 1px solid #155678;
+    text-shadow: 0 -1px 1px #145072;
+    color: #FFFFFF;
+}
+.mobi-button-important {
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorStr = '#6792E8', EndColorStr = '#2463DE');
+    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#6792E8', EndColorStr='#2463DE')";
+    background-color: #2463DE;
+}
+.mobi-button-attention {
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorStr = '#DF9F9F', EndColorStr = '#BC3839');
+    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#DF9F9F', EndColorStr='#BC3839')";
+    background-color: #BC3839;
+}
+.mobi-button-back{
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorStr = '#8EA4C1', EndColorStr = '#4A6C9B');
+    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#8EA4C1', EndColorStr='#4A6C9B')";
+    border-top: 1px solid #155678;
+    border-right: 1px solid #155678;
+    border-bottom: 1px solid #155678;
+    color:#FFF;
+    font-weight:bold;
+}
+.mobi-button.mobi-button-dis, .mobi-button.mobi-button:disabled {
+    filter: alpha(opacity = 50);
+}
