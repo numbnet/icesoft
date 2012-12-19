@@ -17,6 +17,7 @@
 package com.icesoft.faces.component.ext.renderkit;
 
 import com.icesoft.faces.component.IceExtended;
+import com.icesoft.faces.renderkit.dom_html_basic.HTML;
 import org.w3c.dom.Element;
 
 import javax.faces.component.UIComponent;
@@ -44,17 +45,59 @@ public class MenuRenderer
                     (uiComponent instanceof HtmlSelectOneMenu) ||
                     (uiComponent instanceof HtmlSelectManyMenu);
             if (isSelectMenu) {
-                Number partialSubmitDelay = (Number)
-                        uiComponent.getAttributes().get("partialSubmitDelay");
-                root.setAttribute(getEventType(uiComponent),
-                        "setFocus('');Ice.selectChange(form,this,event,"+
-                        partialSubmitDelay+");");
+
             }
             else {
                 root.setAttribute(getEventType(uiComponent), "setFocus('');" +
                         ICESUBMITPARTIAL);
             }
             excludes.add(getEventType(uiComponent));
+        }
+    }
+	
+    protected void addJavaScriptOverride(FacesContext facesContext,
+                                 UIComponent uiComponent, Element root,
+                                 String currentValue, Set excludes) {
+        if (((IceExtended) uiComponent).getPartialSubmit()) {
+            if (uiComponent instanceof HtmlSelectOneMenu) {
+                Number partialSubmitDelay = (Number) uiComponent.getAttributes().get("partialSubmitDelay");
+                String script = ";if (this.previousValue != this.value){this.previousValue = this.value; Ice.selectChange(form,this,event," + partialSubmitDelay + ");} else {this.previousValue = this.value;}";
+                Boolean partialSubmitOnBlur = (Boolean) uiComponent.getAttributes().get("partialSubmitOnBlur");
+				if (partialSubmitOnBlur != null && partialSubmitOnBlur.booleanValue()) {
+					String originalOnblur = root.getAttribute(HTML.ONBLUR_ATTR);
+					originalOnblur = originalOnblur == null ? "" : originalOnblur;
+					root.setAttribute(HTML.ONBLUR_ATTR, originalOnblur + script);
+				} else {
+					String originalOnkeyup = root.getAttribute(HTML.ONKEYUP_ATTR);
+					originalOnkeyup = originalOnkeyup == null ? "" : originalOnkeyup;
+					root.setAttribute(HTML.ONKEYUP_ATTR, originalOnkeyup + script);
+					String originalOnmouseup = root.getAttribute(HTML.ONCLICK_ATTR);
+					originalOnmouseup = originalOnmouseup == null ? "" : originalOnmouseup;
+					root.setAttribute(HTML.ONCLICK_ATTR, originalOnmouseup + script);
+				}
+				String originalOnfocus = root.getAttribute(HTML.ONFOCUS_ATTR);
+				originalOnfocus = originalOnfocus == null ? "" : originalOnfocus;
+				root.setAttribute(HTML.ONFOCUS_ATTR, originalOnfocus + ";if (!this.previousValue) this.previousValue = this.value;");
+            } else if (uiComponent instanceof HtmlSelectManyMenu) {
+                Number partialSubmitDelay = (Number) uiComponent.getAttributes().get("partialSubmitDelay");
+                String script = ";var v = []; var o = this.options; for (var i = 0; i < o.length; i++) if (o[i].selected) v.push(i); var d = false; if (!this.p) d = true; else if (this.p.length != v.length) d = true; else for (var j = 0; j < v.length; j++) if (this.p[j] != v[j]) d = true; if (d) {this.p = v; Ice.selectChange(form,this,event," + partialSubmitDelay+"); } else this.p = v;";
+                Boolean partialSubmitOnBlur = (Boolean) uiComponent.getAttributes().get("partialSubmitOnBlur");
+				if (partialSubmitOnBlur != null && partialSubmitOnBlur.booleanValue()) {
+					String originalOnblur = root.getAttribute(HTML.ONBLUR_ATTR);
+					originalOnblur = originalOnblur == null ? "" : originalOnblur;
+					root.setAttribute(HTML.ONBLUR_ATTR, originalOnblur + script);
+				} else {
+					String originalOnkeyup = root.getAttribute(HTML.ONKEYUP_ATTR);
+					originalOnkeyup = originalOnkeyup == null ? "" : originalOnkeyup;
+					root.setAttribute(HTML.ONKEYUP_ATTR, originalOnkeyup + script);
+					String originalOnmouseup = root.getAttribute(HTML.ONCLICK_ATTR);
+					originalOnmouseup = originalOnmouseup == null ? "" : originalOnmouseup;
+					root.setAttribute(HTML.ONCLICK_ATTR, originalOnmouseup + script);
+				}
+				String originalOnfocus = root.getAttribute(HTML.ONFOCUS_ATTR);
+				originalOnfocus = originalOnfocus == null ? "" : originalOnfocus;
+				root.setAttribute(HTML.ONFOCUS_ATTR, originalOnfocus + ";if (!this.p) { var v = []; var o = this.options; for (var i = 0; i < o.length; i++) if (o[i].selected) v.push(i); this.p = v; }");
+			}
         }
     }
 }

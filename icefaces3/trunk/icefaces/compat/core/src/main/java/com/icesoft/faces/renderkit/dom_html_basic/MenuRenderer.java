@@ -379,8 +379,10 @@ public class MenuRenderer extends DomBasicInputRenderer {
 
         if (uiComponent instanceof HtmlSelectOneMenu) {
             PassThruAttributeRenderer.renderHtmlAttributes(facesContext, uiComponent, selectOneMenuPassThruAttributes);
+            addJavaScriptOverride(facesContext, uiComponent, root, currentValue.toString(), excludes);
         } else if (uiComponent instanceof HtmlSelectManyMenu) {
             PassThruAttributeRenderer.renderHtmlAttributes(facesContext, uiComponent, selectManyMenuPassThruAttributes);
+            addJavaScriptOverride(facesContext, uiComponent, root, currentValue.toString(), excludes);
         } else if (uiComponent instanceof HtmlSelectOneListbox) {
             PassThruAttributeRenderer.renderHtmlAttributes(facesContext, uiComponent, selectOneListboxPassThruAttributes);
         } else if (uiComponent instanceof HtmlSelectManyListbox) {
@@ -740,6 +742,12 @@ public class MenuRenderer extends DomBasicInputRenderer {
                                  String currentValue,
                                  Set excludes) {
     }
+
+    protected void addJavaScriptOverride(FacesContext facesContext,
+                                 UIComponent uiComponent, Element root,
+                                 String currentValue,
+                                 Set excludes) {
+    }	
 
     private boolean isConversionMatched(String sentinel, Object selectedValue) {
         boolean match = false;

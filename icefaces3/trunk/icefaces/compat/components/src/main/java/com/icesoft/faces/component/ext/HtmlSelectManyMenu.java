@@ -52,6 +52,7 @@ public class HtmlSelectManyMenu
     private Effect effect;
     private Boolean visible = null;
     private Integer partialSubmitDelay;
+	private Boolean partialSubmitOnBlur = null;
 
     private CurrentStyle currentStyle;
       private Effect onclickeffect;
@@ -170,6 +171,25 @@ public class HtmlSelectManyMenu
                 vb != null ? (Boolean) vb.getValue(getFacesContext()) : null;
         return boolVal != null ? boolVal.booleanValue() :
                Util.isParentPartialSubmit(this);
+    }
+	
+    /**
+     * <p>Set the value of the <code>partialSubmitOnBlur</code> property.</p>
+     */
+    public void setPartialSubmitOnBlur(boolean partialSubmitOnBlur) {
+        this.partialSubmitOnBlur = Boolean.valueOf(partialSubmitOnBlur);
+    }
+
+    /**
+     * <p>Return the value of the <code>partialSubmitOnBlur</code> property.</p>
+     */
+    public boolean getPartialSubmitOnBlur() {
+        if (partialSubmitOnBlur != null) {
+            return partialSubmitOnBlur.booleanValue();
+        }
+        ValueBinding vb = getValueBinding("partialSubmitOnBlur");
+        Boolean boolVal = vb != null ? (Boolean) vb.getValue(getFacesContext()) : null;
+		return boolVal != null ? boolVal.booleanValue() : false;
     }
 
     /**
@@ -521,7 +541,7 @@ public class HtmlSelectManyMenu
      * Object.</p>
      */
     public Object saveState(FacesContext context) {
-        Object values[] = new Object[21];
+        Object values[] = new Object[22];
         values[0] = super.saveState(context);
         values[1] = partialSubmit;
         values[2] = enabledOnUserRole;
@@ -543,6 +563,7 @@ public class HtmlSelectManyMenu
         values[18] = currentStyle;
         values[19] = visible;
         values[20] = partialSubmitDelay;
+		values[21] = partialSubmitOnBlur;
         return ((Object) (values));
     }
 
@@ -573,6 +594,7 @@ public class HtmlSelectManyMenu
         currentStyle = (CurrentStyle) values[18];
         visible = (Boolean) values[19];
         partialSubmitDelay = (Integer) values[20];
+		partialSubmitOnBlur = (Boolean) values[21];
     }
 }
 
