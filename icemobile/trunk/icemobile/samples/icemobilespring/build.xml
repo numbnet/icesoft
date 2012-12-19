@@ -23,7 +23,7 @@
     <property name="name" value="icemobilespring" />
 
     <patternset id="lib.distribute.application.mobi"
-                includes="${icepush.lib.name}.jar,icemobile-jsp.jar, mail.jar">
+                includes="${icepush.lib.name}.jar,${icemobile-jsp.lib.name}.jar, mail.jar">
     </patternset>
 
 </project>
