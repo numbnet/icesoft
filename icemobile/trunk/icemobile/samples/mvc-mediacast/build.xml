@@ -23,7 +23,7 @@
 	<property name="name" value="mvc-mediacast" />
 	<import file="../build/common.xml" />
 
-	<patternset id="lib.distribute.application.mobi" includes="${icepush.lib.name}.jar,icemobile-jsp.jar">
+	<patternset id="lib.distribute.application.mobi" includes="${icepush.lib.name}.jar,${icemobile-jsp.lib.name}.jar">
 	</patternset>
 	
 	<patternset id="lib.distribute.application.ext" includes="jaxb-api.jar,jaxb-impl.jar,activation.jar,jaxb1-impl.jar,jaxb-xjc.jar,jaxp-api-1.4.jar">
