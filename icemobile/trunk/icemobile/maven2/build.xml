@@ -20,10 +20,14 @@
     <property file="../build.properties"/>
     <property file="./build.properties"/>
     <property name="lib.dir" location="../lib"/>
+	<property name="maven.ant.version" value="2.0.10"/>
+	<property name="maven.ant.jar" value="maven-ant-tasks-${maven.ant.version}.jar"/>
+	<available property="maven.ant.task.available" file="${lib.dir}/${maven.ant.jar}"/>
+	
 
 
     <path id="maven-ant-tasks.classpath"
-          path="${lib.dir}/maven-ant-tasks-2.1.10.jar"/>
+          path="${lib.dir}/${maven.ant.jar}"/>
     <typedef resource="org/apache/maven/artifact/ant/antlib.xml"
              uri="antlib:org.apache.maven.artifact.ant"
              classpathref="maven-ant-tasks.classpath"/>
@@ -35,27 +39,27 @@
         <artifact:pom id="icepushPom" file="icepush.pom">
             <localRepository refid="local.repository"/>
         </artifact:pom>
-        <echo>installing icepush-${icepushPom.version} to local repository
+        <echo>installing ${icepush.lib.name}.jar to local repository
         </echo>
         <artifact:install file="${lib.dir}/${icepush.lib.name}.jar">
             <localRepository refid="local.repository"/>
             <pom refid="icepushPom"/>
         </artifact:install>
 
-        <artifact:pom id="glimmerPom" file="icefaces.pom">
+        <artifact:pom id="icefacesPom" file="icefaces.pom">
             <localRepository refid="local.repository"/>
         </artifact:pom>
-        <echo>installing icefaces-${glimmerPom.version} to local repository
+        <echo>installing ${icefaces.lib.name}.jar to local repository
         </echo>
         <artifact:install file="${lib.dir}/${icefaces.lib.name}.jar">
             <localRepository refid="local.repository"/>
-            <pom refid="glimmerPom"/>
+            <pom refid="icefacesPom"/>
         </artifact:install>
 
         <artifact:pom id="mobiPom" file="icefaces-mobi.pom">
             <localRepository refid="local.repository"/>
         </artifact:pom>
-        <echo>installing icefaces-mobi-${compatPom.version} to local
+        <echo>installing ${icefaces-mobi.lib.name}.jar to local
             repository
         </echo>
         <artifact:install file="${lib.dir}/${icefaces-mobi.lib.name}.jar">
@@ -66,7 +70,7 @@
         <artifact:pom id="jspPom" file="icemobile-jsp.pom">
             <localRepository refid="local.repository"/>
         </artifact:pom>
-        <echo>installing icefaces-jsp-${compatPom.version} to local
+        <echo>installing ${icemobile-jsp.lib.name}.jar to local
             repository
         </echo>
         <artifact:install file="${lib.dir}/${icemobile-jsp.lib.name}.jar">
@@ -76,10 +80,10 @@
         
     </target>
 
-    <target name="get-maven">
+    <target name="get-maven" unless="maven.ant.task.available">
         <echo message="lib.dir is ${lib.dir}"/>
-        <get src="http://repo1.maven.org/maven2/org/apache/maven/maven-ant-tasks/2.0.10/maven-ant-tasks-2.0.10.jar"
-             dest="${lib.dir}/maven-ant-tasks-2.1.10.jar"/>
+        <get src="http://repo1.maven.org/maven2/org/apache/maven/maven-ant-tasks/${maven.ant.version}/${maven.ant.jar}"
+             dest="${lib.dir}/${maven.ant.jar}"/>
     </target>
 </project>
 
