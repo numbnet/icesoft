@@ -52,3 +52,15 @@
     </property-extension>
 </property>
        
+<property>
+	<description>
+		<![CDATA[
+		When this attribute is set to 'true', partial submit (if enabled) will occur only when blurring the field. Otherwise, it will occur whenever a different value is selected in the listbox (either with the mouse or the keyboard). Default value is false.
+		]]>
+	</description>
+	<property-name>partialSubmitOnBlur</property-name>
+	<property-class>boolean</property-class>
+	<property-extension>
+		<category>ICE_COMPONENT</category>
+	</property-extension>
+</property>

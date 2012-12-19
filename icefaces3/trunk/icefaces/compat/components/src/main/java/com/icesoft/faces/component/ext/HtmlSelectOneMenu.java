@@ -57,6 +57,7 @@ public class HtmlSelectOneMenu
     private static final boolean DEFAULT_VISIBLE = true;
     private String styleClass = null;
     private Boolean partialSubmit = null;
+	private Boolean partialSubmitOnBlur = null;
     private String enabledOnUserRole = null;
     private String renderedOnUserRole = null;
     private Effect effect;
@@ -248,6 +249,25 @@ public class HtmlSelectOneMenu
                 vb != null ? (Boolean) vb.getValue(getFacesContext()) : null;
         return boolVal != null ? boolVal.booleanValue() :
                Util.isParentPartialSubmit(this);
+    }
+	
+    /**
+     * <p>Set the value of the <code>partialSubmitOnBlur</code> property.</p>
+     */
+    public void setPartialSubmitOnBlur(boolean partialSubmitOnBlur) {
+        this.partialSubmitOnBlur = Boolean.valueOf(partialSubmitOnBlur);
+    }
+
+    /**
+     * <p>Return the value of the <code>partialSubmitOnBlur</code> property.</p>
+     */
+    public boolean getPartialSubmitOnBlur() {
+        if (partialSubmitOnBlur != null) {
+            return partialSubmitOnBlur.booleanValue();
+        }
+        ValueBinding vb = getValueBinding("partialSubmitOnBlur");
+        Boolean boolVal = vb != null ? (Boolean) vb.getValue(getFacesContext()) : null;
+		return boolVal != null ? boolVal.booleanValue() : false;
     }
 
     /**
@@ -613,7 +633,7 @@ public class HtmlSelectOneMenu
      * Object.</p>
      */
     public Object saveState(FacesContext context) {
-        Object values[] = new Object[20];
+        Object values[] = new Object[21];
         values[0] = super.saveState(context);
         values[1] = partialSubmit;
         values[2] = enabledOnUserRole;
@@ -634,6 +654,7 @@ public class HtmlSelectOneMenu
         values[17] = autocomplete;
         values[18] = currentStyle;
         values[19] = visible;
+		values[20] = partialSubmitOnBlur;
         return ((Object) (values));
     }
 
@@ -663,6 +684,7 @@ public class HtmlSelectOneMenu
         autocomplete = (String) values[17];
         currentStyle = (CurrentStyle) values[18];
         visible = (Boolean) values[19];
+		partialSubmitOnBlur = (Boolean) values[20];
     }
     
 }
