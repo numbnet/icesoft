@@ -7,7 +7,7 @@ The following utilities are provided:
 
 1) In /maven2 an ant script is provided with the poms for the jars to install to whatever local repository you have specified in build.properties file (edit build. properties and set the location of the local repository you would like to install to).
 2) ant target "get-maven" will copy off the internet (make sure you have internet access)  the required jar to run maven from ant, to icemobile/lib
-3) ant target "install" will install icefaces-push, icefaces and icefaces-mobi jar and poms to your local repository.
+3) ant target "install" will install icepush, icefaces and icefaces-mobi jar and poms to your local repository.
 
 This really isn't necessary if you can use the releases repository at
 http://anonsvn.icefaces.org/repo/maven2/releases/
