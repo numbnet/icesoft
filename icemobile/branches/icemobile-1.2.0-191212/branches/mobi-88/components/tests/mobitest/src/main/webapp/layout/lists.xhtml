@@ -1,0 +1,100 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
+<h:head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport"
+          content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;"/>
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <meta name="apple-mobile-web-app-status-bar-style" content="black"/>
+    <title>MOBI-62 outputlist test</title>
+
+    <mobi:deviceStylesheet
+            name="#{themeSwitcher.theme}" media="screen" />
+
+</h:head>
+
+<h:body>
+
+    <p><a href="http://jira.icefaces.org/browse/MOBI-62" > MOBI-62 Test Case</a></p>
+
+
+    <mobi:outputList inset="false">
+        <mobi:outputListItem group="true">
+            Testing simple links
+        </mobi:outputListItem>
+        <mobi:outputListItem >
+            <h:link>Testing some content  1</h:link>
+        </mobi:outputListItem>
+        <mobi:outputListItem type="default" >
+            <h:link  >
+                <p class="mobi-list-item-aside"><strong>6:24</strong>PM</p>
+                <h3>Stephen Weber</h3>
+                <p ><strong>You've been invited to a meeting at Filament Group in Boston, MA</strong></p>
+                <p>Hey Stephen, if you're available at 10am tomorrow, we've got a meeting with the jQuery team.</p>
+            </h:link>
+        </mobi:outputListItem>
+        <mobi:outputListItem group="true">
+            Testing thumbnail
+        </mobi:outputListItem>
+        <mobi:outputListItem type="thumb" >
+            <h:link >
+                <img alt="" src="../images/album-af.jpg" />
+                <h3 >Broken Bells</h3>
+                <p >Broken Bells</p>
+            </h:link>
+        </mobi:outputListItem>
+    </mobi:outputList>
+
+     <mobi:outputList inset="true">
+        <mobi:outputListItem group="true">
+            Inset Testing simple links
+        </mobi:outputListItem>
+        <mobi:outputListItem >
+            <a href="#">Testing some content  1</a>
+        </mobi:outputListItem>
+        <mobi:outputListItem group="true">
+            Testing default layout flexibility
+        </mobi:outputListItem>
+        <mobi:outputListItem type="default" >
+            <h:link >
+                <p class="mobi-list-item-aside"><strong>6:24</strong>PM</p>
+                <h3>Stephen Weber</h3>
+                <p ><strong>You've been invited to a meeting at Filament Group in Boston, MA</strong></p>
+                <p>Hey Stephen, if you're available at 10am tomorrow, we've got a meeting with the jQuery team.</p>
+            </h:link>
+        </mobi:outputListItem>
+        <mobi:outputListItem group="true">
+            Testing thumbnail
+        </mobi:outputListItem>
+        <mobi:outputListItem type="thumb" >
+            <h:link >
+                <img alt="" src="../images/album-af.jpg" />
+                <h3 >Broken Bells</h3>
+                <p>Broken Bells</p>
+            </h:link>
+        </mobi:outputListItem>
+    </mobi:outputList>
+
+     <mobi:outputList inset="false" rendered="true">
+        <mobi:outputListItem >
+            testing some content  1
+        </mobi:outputListItem>
+        <mobi:outputListItem >
+            testing some content  2
+        </mobi:outputListItem>
+        <mobi:outputListItem >
+            testing some content  3
+        </mobi:outputListItem>
+    </mobi:outputList>
+
+     <br />
+     <a href="../layoutComponents.html">index page</a>
+
+</h:body>
+</html>

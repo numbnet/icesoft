@@ -1,0 +1,74 @@
+<!--
+  ~ Copyright 2004-2011 ICEsoft Technologies Canada Corp. (c)
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions an
+  ~ limitations under the License.
+  -->
+
+<ui:fragment xmlns="http://www.w3.org/1999/xhtml"
+             xmlns:h="http://java.sun.com/jsf/html"
+             xmlns:f="http://java.sun.com/jsf/core"
+             xmlns:ui="http://java.sun.com/jsf/facelets"
+             xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
+
+    <mobi:fieldsetGroup styleClass="message-details">
+
+
+        <mobi:fieldsetRow>
+            <label>Comment: </label>
+            <h:outputText
+                    value="#{uploadModel.selectedPhoto.comment}"/>
+        </mobi:fieldsetRow>
+
+
+        <mobi:fieldsetRow>
+          <h:panelGroup rendered="#{uploadModel.selectedPhoto.showPhoto}" >
+            <label>Image:</label>
+            <mobi:graphicImage
+                    value="#{uploadModel.selectedPhoto.largePhoto.data}"
+                    styleClass="imageViewer"
+                    style="margin-bottom:10px;"/>
+          </h:panelGroup>
+          <h:panelGroup rendered="#{uploadModel.selectedPhoto.showVideo}" >
+            <label>Video:</label>
+            <mobi:videoPlayer
+                    value="#{uploadModel.selectedPhoto.mediaURL}"
+                    styleClass="imageViewer"
+                    style="margin-bottom:10px;"/>
+            <br/>
+            <h:outputLink value="/mediacast/#{uploadModel.selectedPhoto.mediaURL}">
+                PLAY
+            </h:outputLink>
+          </h:panelGroup>
+          <h:panelGroup rendered="#{uploadModel.selectedPhoto.showAudio}" >
+            <label>Audio:</label>
+            <mobi:audio
+                    value="#{uploadModel.selectedPhoto.mediaURL}"
+                    styleClass="imageViewer"
+                    style="margin-bottom:10px;"/>
+            <br/>
+            <h:outputLink value="/mediacast/#{uploadModel.selectedPhoto.mediaURL}">
+                PLAY
+            </h:outputLink>
+          </h:panelGroup>
+        </mobi:fieldsetRow>
+        <mobi:fieldsetRow>
+            <h:form>
+                <mobi:commandButton value="Delete" type="attention"
+                        style="float:right"
+                        actionListener="#{mediaController.deleteCurrentMedia}"
+                        />
+            </h:form>
+        </mobi:fieldsetRow>
+    </mobi:fieldsetGroup>
+
+</ui:fragment>

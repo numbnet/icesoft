@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
+<h:head>
+	<title id="title">inputComponent Tests</title>
+	<meta http-equiv="Co ntent-Type" content="text/html; charset=utf-8"></meta>
+	<meta name="viewport"
+		content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;" />
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+
+    <h:outputScript type="application/javascript" library="js"
+		name="iscroll.js" />
+  <!--  deviceStylesheet tag with no properties will load default styles for mobile device based on useragent info -->
+    <mobi:deviceStylesheet />
+
+</h:head>
+
+<h:body>
+note still to test email, url, password, date
+ 
+    <h5>html5 input</h5>
+     <form id="inputForm">
+ 
+       <div>
+        <h:outputText value="mobi comp "/>
+        <mobi:inputText value="#{input.someText}" type="text" placeholder="#{input.placeholder}" title="basic text input"/>
+       </div>
+       <div>
+        <h:outputText value="plain html"/>
+        <input type="text" value="" placeholder="placeholder" title="basic text input"/> 
+       </div>
+         <div id="submittext">
+          <input type="submit" value="submitForm"/>
+       </div>
+  
+     </form>
+     <form id="inputPattern">
+       <h:panelGrid columns="2">
+       <div>
+        <h:outputText value="mobi using pattern and title"/>
+        <mobi:inputText value="#{input.patternTest}" type="text" pattern="[0-9][A-Z]{2}" title="pattern defined by single digit folled by 2 uppercase chars"/> 
+       </div>
+       <div>
+        <h:outputText value="plain html"/>
+        <input type="text" value="1" pattern="[0-9][A-Z]{2}" title="pattern defined by single digit folled by 2 uppercase chars"/> 
+       </div>
+      </h:panelGrid>
+      <div id="submitpattern">
+       <input type="submit" value="submitForm"/>
+      </div>
+     </form>form id="inputForm">
+     <h:form id="inputSearch">
+       <h5>search and required</h5>
+       <h:panelGrid columns="2">
+       <div>
+        <h:outputText value="mobi comp search->"/>
+        <mobi:inputText value="#{input.defaultInput}" type="search" required="true" placeholder="#{input.searchPlaceholder}"/>
+       </div>
+       <div>
+        <h:outputText value="plain html"/>
+        <input value="DefaultInput" type="search" required="true" placeholder="search placeholder"/> 
+       </div> 
+       </h:panelGrid>
+       <div id="submitsearch">
+           <input type="submit" value="submitForm"/>
+       </div>
+     </h:form>  
+    
+    <h:form id="telephoneForm">
+    <h5>telephone</h5>
+    <p>
+    mobi    <mobi:inputText id="telId" value="#{input.telephone}" type="telephone"/>
+    </p>
+    <br />
+    expected html5 code to test--should be same 
+    <input type="tel" value="1-403-860-2621" onchange="alert('onchange telephone')"/>
+    </h:form>
+    <h:form id="suggestionsForm">
+      <h5>suggestions and data  </h5>
+       mobi
+       <mobi:inputText type="text" value="#{input.selectedInp}" suggestions="Orange, Apple"></mobi:inputText>
+      <br />  html5
+        <input type="text" value="" list="dataList"/>
+        <datalist id="dataList">
+          <option value="Orange" label="Orange"/>
+          <option value="Apple" label="Apple"/>
+        </datalist>
+
+        <h5>search and data</h5>
+	     mobi
+	     <mobi:inputText type="search" value="#{input.name}" suggestions="#{input.nameList}"/>
+	     <h:outputText value="#{input.name}"/>
+	     <br />
+	     html5
+	     <input type="search" value="1" list="dataListName"/>
+	     <datalist id="dataListName">
+	        <option value="0" label="Jack"/>
+	        <option value="1" label="Ted"/>
+	        <option value="2" label="Patrick"/>
+	     </datalist>
+	     <div id="submitdiv">
+	       <input type="submit" value="submitForm"/>
+	   </div>
+    </h:form>
+	<li><a href="../index.html">index page</a>
+	</li>
+</h:body>
+</html>

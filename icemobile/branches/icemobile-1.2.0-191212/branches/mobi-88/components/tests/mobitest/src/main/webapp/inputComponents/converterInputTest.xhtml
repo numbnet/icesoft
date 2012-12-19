@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
+<h:head>
+	<title id="title">inputComponent Tests</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"></meta>
+	<meta name="viewport"
+		content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;" />
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+ 
+  <!--  deviceStylesheet tag with no properties will load default styles for mobile device based on useragent info -->
+  <mobi:deviceStylesheet />
+
+</h:head>
+
+<h:body>
+ 
+    <h3>html5 input types should bring up proper device keyboard</h3>
+
+    <h:form id="inputForm">
+    <h:messages style="color:red;margin:8px;" />
+      <p>
+       <h5>mobi number converter pattern</h5>
+         <h:outputText value="A. number"/>
+         <mobi:inputText id="numberId" value="#{input.converterVal}" type="number" 
+                       singleSubmit="true"  title="number field">
+            <f:convertNumber pattern="#0.00"/>
+         </mobi:inputText>
+          <h:message for="numberId" style="color:red"/>               
+       </p>
+       <p>
+       <h5>mobi input type is number with converter</h5>
+         <h:outputText value="B. number"/>
+         <mobi:inputText id="numberIdConv" value="#{input.numberInput2}" type="number" placeholder="9999"
+                       singleSubmit="true" title="number field">
+                   <f:convertNumber type="number"/>
+         </mobi:inputText>
+         <h:message for="numberIdConv"  style="color:red"/>           
+       </p>
+      <p>
+       <h5>mobi number converter currency symbol</h5>
+         <h:outputText value="C. number"/>
+         <mobi:inputText id="currencyId" value="#{input.doubleVal}" type="number" 
+                       singleSubmit="true"  title="number field">
+            <f:convertNumber currencySymbol="$" type="currency" />
+         </mobi:inputText>
+          <h:message for="currencyId"  style="color:red"/>               
+       </p>
+       <p>
+          <h5>ActionListener for buttons will change following field to reflect which button was pressed</h5>
+          <h:outputText value="#{input.eventString}"/>
+          
+       </p>
+       <mobi:commandButton  id="defaultTwo" type="default" value="defaultSSFalse" actionListener="#{input.defaultEvent}"/>
+
+    </h:form>
+    <h3>RESULTS</h3>
+    <h5>input field A</h5>
+    <h:outputText value="#{input.converterVal}"/>
+    <h5>input Field B</h5>
+    <h:outputText value="#{input.numberInput2}"/>
+    <h5>text field C</h5>
+    <h:outputText value="#{input.doubleVal}"/>
+ 
+	<li><a href="../inputComponents.html">index page</a>
+	</li>
+
+</h:body>
+</html>

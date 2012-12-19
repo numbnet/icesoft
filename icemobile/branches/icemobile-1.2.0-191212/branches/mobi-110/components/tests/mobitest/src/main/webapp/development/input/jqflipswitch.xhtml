@@ -1,0 +1,104 @@
+<!--
+  ~ Copyright 2004-2011 ICEsoft Technologies Canada Corp. (c)
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions an
+  ~ limitations under the License.
+  -->
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
+<h:head>
+	<title id="title">inputComponent Tests</title>
+	<meta http-equiv="Co ntent-Type" content="text/html; charset=utf-8"></meta>
+	<meta name="viewport"
+		content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;" />
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+<!--    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.0b1/jquery.mobile-1.0b1.min.css" />
+	<script type="text/javascript" src="http://code.jquery.com/jquery-1.6.1.min.js"></script>
+	<script type="text/javascript" src="http://code.jquery.com/mobile/1.0b1/jquery.mobile-1.0b1.min.js"></script> --> 
+	<h:outputStylesheet library="jquery.mobile-1.0b2" name="jquery.mobile-1.0b2.css" target="head"/> 
+	<h:outputScript library="jquery.mobile" name="jquery-1.6.1.js" target="head"/> 
+	<h:outputScript library="jquery.mobile-1.0b2" name="jquery.mobile-1.0b2.js" target="head"/> 
+	<h:outputScript library="org.icefaces.component.util" name="component.js" target="head"/> 
+  <!--  deviceStylesheet tag with no properties will load default styles for mobile device based on useragent info -->
+    <mobi:deviceStylesheet />
+
+</h:head>
+
+<h:body>
+<f:view contentType="text/html">
+<!--  <div data-theme="b" class="ui-page-active" data-role="page"> -->
+  <div data-role="page" id="testPage">
+     <div data-role="header">
+        <h3>flipswitch from jquery prototype</h3>
+     </div>
+   <!--    <h:form id="switchForm" >
+   
+     <div data-role="content"> -->
+
+      <!--  <h:outputText value="mobi comp flipswitch "/>
+         <mobi:flipswitch id="flipper" value="#{input.flipswitchVal}"/>  -->  
+       
+
+        
+  <!--    <h:outputText value="not component just markup"/>
+       <div data-role="fieldcontain">
+          <ul data-role="listview" data-inset="true" data-theme="c" data-dividertheme="b">
+              <li>Toggle Me <select name="mySlider" id="mySlider" data-role="slider" >
+                  <option value="off">Off</option>
+                  <option value="on">On</option>
+              </select>
+              </li>
+           </ul>                
+       </div>
+     </div>  
+ 
+     </h:form> --> 
+     <br />
+     <h:form id="slider2form">
+         <div data-role="content">
+            <h4>flipswitch without singleSubmit</h4>
+                <ul data-role="listview" data-inset="true" data-theme="c" data-dividertheme="b">
+                       <li>Flip switch  <select name="mySliderTwo" id="mySliderTwo" data-role="slider" >
+                            <option value="off">Off</option>
+                            <option value="on">On</option>
+                          </select>
+                       </li>              
+                </ul>
+         </div>
+         <h:commandButton value="submit" action="input/jqfipswitch.jsf"/>
+     </h:form>
+     <h3>Values of the flipswitches from backing beans</h3>
+     
+
+</div>
+<li><a href="../index.html">index page</a>
+    </li>
+</f:view>
+	
+</h:body>
+  <script type="text/javascript">
+  $('#mySlider').change(function() {
+        var myswitch = $(this);       
+        var value   = myswitch[0].selectedIndex == 1 ? 'on':'off';
+        mobi.flipjq.init('mySlider', value);
+    });
+  </script>  
+</html>
+

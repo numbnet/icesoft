@@ -1,0 +1,70 @@
+<!--
+  ~ Copyright 2004-2012 ICEsoft Technologies Canada Corp.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the
+  ~ License. You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an "AS
+  ~ IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+  ~ express or implied. See the License for the specific language
+  ~ governing permissions and limitations under the License.
+  -->
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:composite="http://java.sun.com/jsf/composite"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
+
+<head><title>(For validation only)</title></head>
+<body>
+
+<!--
+    Contruct to allow users ot view component documentation, source and a usage example.
+-->
+<composite:interface
+        displayName="View selector prototype component"
+        shortDescription="" >
+
+    <composite:attribute name="small"
+            displayName="Small layout view path"/>
+
+    <composite:attribute name="large"
+            displayName="Large layout view path"/>
+
+    <composite:attribute name="defaulType"
+            displayName="Set the default view type to use if sm/lg detection fails."/>
+
+</composite:interface>
+
+<composite:implementation >
+    <c:choose>
+        <!-- small screens are handheld devices,  iphone, anroid 1.x, 2.x -->
+        <c:when test="#{viewSelector.smallView}">
+            <ui:include src="#{cc.attrs.small}" />
+        </c:when>
+        <!-- large screens are full size tablets > 9", ipad, android 3.x -->
+        <c:when test="#{viewSelector.largeView}">
+            <ui:include src="#{cc.attrs.large}" />
+        </c:when>
+        <c:otherwise>
+            <c:choose>
+                <c:when test="#{viewSelector.defaulType eq 'small'}">
+                    <ui:include src="#{cc.attrs.small}" />
+                </c:when>
+                <c:otherwise>
+                    <ui:include src="#{cc.attrs.large}" />
+                </c:otherwise>
+            </c:choose>
+        </c:otherwise>
+    </c:choose>
+
+</composite:implementation>
+</body>
+</html>
