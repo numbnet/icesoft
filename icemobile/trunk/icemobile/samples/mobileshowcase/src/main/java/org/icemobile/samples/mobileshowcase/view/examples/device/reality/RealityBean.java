@@ -112,19 +112,19 @@ public class RealityBean extends ExampleImpl<RealityBean> implements
 
         HashMap marker = new HashMap();
         marker.put("label", "puz1");
-        marker.put("model", getBaseURL() + 
+        marker.put("model", getContextURL() + 
                 "/resources/3d/puz1.obj" );
         markerList.add(marker);
 
         marker = new HashMap();
         marker.put("label", "puz2");
-        marker.put("model", getBaseURL() +
+        marker.put("model", getContextURL() +
                 "/resources/3d/puz2.obj" );
         markerList.add(marker);
 
         marker = new HashMap();
         marker.put("label", "icemobile");
-        marker.put("model", getBaseURL() +
+        marker.put("model", getContextURL() +
                 "/resources/3d/icemobile.obj" );
         markerList.add(marker);
 
@@ -272,8 +272,13 @@ public class RealityBean extends ExampleImpl<RealityBean> implements
             externalContext.getRequestServerPort();
         }
         String url = externalContext.getRequestScheme() + "://" + serverName;
-        url += "/" + externalContext.getRequestContextPath();
         return url;
+    }
+
+    public String getContextURL()  {
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        ExternalContext externalContext = facesContext.getExternalContext();
+        return getBaseURL() + "/" + externalContext.getRequestContextPath();
     }
 
     private void scaleImage(File photoFile) throws IOException  {
