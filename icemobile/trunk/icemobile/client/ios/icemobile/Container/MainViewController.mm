@@ -287,6 +287,9 @@ NSLog(@"ICEmobile Container setProgress %d", percent);
     [self.webView stringByEvaluatingJavaScriptFromString: script];
 }
 
+- (void) setProgressLabel:(NSString *) labelText {
+}
+
 - (NSString *) getFormData:(NSString *)formID  {
     NSString *scriptTemplate;
     NSString *script; 
