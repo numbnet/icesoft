@@ -1,0 +1,137 @@
+<!--
+  ~ Copyright 2004-2011 ICEsoft Technologies Canada Corp. (c)
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions an
+  ~ limitations under the License.
+  -->
+
+<ui:fragment xmlns="http://www.w3.org/1999/xhtml"
+             xmlns:h="http://java.sun.com/jsf/html"
+             xmlns:f="http://java.sun.com/jsf/core"
+             xmlns:ui="http://java.sun.com/jsf/facelets"
+             xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component"
+             xmlns:mobic="http://www.icesoft.com/icefaces/mobile/composite">
+
+    <!-- diplay of uploaded images for all users, top 5 are shown. -->
+    <h:form>
+        <mobic:carousel count="#{mediaStore.carouselStackCount}">
+            <ui:repeat var="mediaMessage"
+                       value="#{mediaStore.carouselStack}">
+                <mobic:carouselItem>
+                    <div style="overflow:hidden;width:175px;height:98px;">
+                        <mobi:graphicImage
+                                width="#{mediaMessage.mediumPhoto.width}"
+                                height="#{mediaMessage.mediumPhoto.height}"
+                                value="#{mediaMessage.mediumPhoto.data}"/>
+                    </div>
+                    <h:commandLink
+                            action="#{mediaController.viewMediaDetail}"
+                            class="view-play-icon">
+                        <f:setPropertyActionListener
+                                target="#{uploadModel.selectedPhoto}"
+                                value="#{mediaMessage}"/>
+                        <h:graphicImage library="images"
+                                        name="view-icon.png"/>
+                    </h:commandLink>
+                </mobic:carouselItem>
+            </ui:repeat>
+        </mobic:carousel>
+    </h:form>
+
+    <div style="clear:both;"/>
+
+    <!-- upload components. -->
+    <h4>Send a Media Message</h4>
+    <h:form prependId="false" id="cform">
+
+        <!-- upload helper to help with desktop and mobile shared UI's -->
+        <mobi:uploadhelper/>
+
+        <mobic:fieldsetGroup>
+            <mobic:fieldsetRow rendered="#{uploadModel.showInputSelect}" >
+                <!-- show new message creation buttons, image, movie and soudn -->
+                <h:panelGroup style="display:inline-block;padding-bottom: 3px;" >
+                    <h:commandButton value="Photo"
+                                     styleClass="mobi-button mobi-button-default"
+                                     action="#{mediaController.chooseCamera}"/>
+                    <h:commandButton value="Video"
+                                     styleClass="mobi-button mobi-button-default"
+                                     action="#{mediaController.chooseCamcorder}"/>
+                    <h:commandButton value="Audio"
+                                     styleClass="mobi-button mobi-button-default"
+                                     action="#{mediaController.chooseMicrophone}"/>
+                </h:panelGroup>
+            </mobic:fieldsetRow>
+            <!-- upload/caputre for images. -->
+            <ui:fragment rendered="#{uploadModel.showCamera}" >
+                <mobic:fieldsetRow>
+                    <h:outputLabel value="Image Message" />
+                </mobic:fieldsetRow>
+                <mobic:fieldsetRow styleClass="vcentered">
+                    <mobi:camera id="camera" value="#{uploadModel.mediaMap}"/>
+                    <mobi:thumbnail style="height:70px" for="camera"/>
+                </mobic:fieldsetRow>
+            </ui:fragment>
+
+            <!-- upload/caputre for video. -->
+             <ui:fragment rendered="#{uploadModel.showCamcorder}" >
+                <mobic:fieldsetRow>
+                    <h:outputLabel value="Video Message" />
+                </mobic:fieldsetRow>
+                <mobic:fieldsetRow styleClass="vcentered" >
+                    <mobi:camcorder id="camcorder"
+                                    value="#{uploadModel.video}"/>
+                    <mobi:thumbnail style="height:70px" for="camcorder"/>
+                </mobic:fieldsetRow>
+            </ui:fragment>
+            <!-- upload/caputre for sound. -->
+            <ui:fragment rendered="#{uploadModel.showMicrophone}">
+                <mobic:fieldsetRow>
+                    <h:outputLabel value="Video Message" />
+                </mobic:fieldsetRow>
+                <mobic:fieldsetRow styleClass="vcentered" >
+                        <mobi:microphone id="mic" value="#{uploadModel.audio}"/>
+                </mobic:fieldsetRow>
+            </ui:fragment>
+            <mobic:fieldsetRow>
+                <h:outputLabel value="Comment:"/>
+                <mobi:inputText id="comment"
+                        placeholder="add comment"
+                        value="#{uploadModel.comment}"/>
+            </mobic:fieldsetRow>
+            <mobic:fieldsetRow>
+                <!--<h:messages  id="fileUploadMsg" />-->
+                <h:commandButton
+                        style="float:right;"
+                        disabled="#{uploadModel.showInputSelect}"
+                        styleClass="mobi-button mobi-button-important"
+                        actionListener="#{mediaController.upload}"
+                        value="Upload"/>
+            </mobic:fieldsetRow>
+        </mobic:fieldsetGroup>
+    </h:form>
+
+    <h:form>
+        <!-- linke to gallery of all uploaded media files. -->
+        <mobic:outputList>
+            <mobic:outputListItem group="false">
+                <h:commandLink
+                        value="Gallery"
+                        actionListener="#{navigationController.navigateToPage}">
+                    <f:param name="navigateTo"
+                             value="#{navigationModel.destinationGallery.key}"/>
+                </h:commandLink>
+            </mobic:outputListItem>
+        </mobic:outputList>
+    </h:form>
+
+</ui:fragment>

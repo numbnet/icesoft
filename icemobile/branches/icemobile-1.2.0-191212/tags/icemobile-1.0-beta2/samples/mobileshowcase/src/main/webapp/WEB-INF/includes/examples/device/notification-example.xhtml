@@ -1,0 +1,88 @@
+<!--
+  ~ Copyright 2004-2011 ICEsoft Technologies Canada Corp. (c)
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions an
+  ~ limitations under the License.
+  -->
+
+<ui:fragment xmlns="http://www.w3.org/1999/xhtml"
+             xmlns:h="http://java.sun.com/jsf/html"
+             xmlns:f="http://java.sun.com/jsf/core"
+             xmlns:ui="http://java.sun.com/jsf/facelets"
+             xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
+
+    <h:form prependId="false" enctype="multipart/form-data">
+
+        <h4>Send Notification</h4>
+        <mobi:fieldsetGroup>
+            <mobi:fieldsetRow>
+                <h:outputLabel value="Subject" for="subject"/>
+                <mobi:inputText id="subject"
+                                value="#{notificationBean.subject}"
+                                type="text"
+                                placeholder="subject" />
+            </mobi:fieldsetRow>
+            <mobi:fieldsetRow>
+                <h:outputLabel value="Message" for="message"/>
+                <mobi:inputText id="message"
+                                value="#{notificationBean.message}"
+                                type="text"
+                                placeholder="message" />
+            </mobi:fieldsetRow>
+            <mobi:fieldsetRow>
+                <h:outputLabel value="Message Delay" for="messageDelay"/>
+                <h:selectOneMenu id="messageDelay"
+                                 value="#{notificationBean.notificationDelay}"
+                                 type="textarea"
+                                 placeholder="message">
+                    <f:selectItem itemLabel="10 sec" itemValue="10"/>
+                    <f:selectItem itemLabel="15 sec" itemValue="15"/>
+                    <f:selectItem itemLabel="30 sec" itemValue="30"/>
+                </h:selectOneMenu>
+            </mobi:fieldsetRow>
+            <mobi:fieldsetRow>
+                <h:messages />
+                <mobi:commandButton style="float:right"
+                        value="Piority Push"
+                        type="attention"
+                        actionListener="#{notificationBean.sendPriorityPushMessage}"/>
+                <mobi:commandButton value="Simple Push" type="important"
+                                    style="float:right;"
+                                    actionListener="#{notificationBean.sendNormalPushMessage}"/>
+            </mobi:fieldsetRow>
+        </mobi:fieldsetGroup>
+    </h:form>
+
+    <h:form>
+        <h4>Notification Echo</h4>
+        <mobi:fieldsetGroup>
+            <mobi:fieldsetRow>
+                <h:outputLabel value="Subject" for="subject"/>
+                <h:outputText id="subject"
+                              styleClass="fr"
+                              value="#{notificationBean.echoedSubject}"
+                              placeholder="subject"/>
+            </mobi:fieldsetRow>
+            <mobi:fieldsetRow>
+                <h:outputLabel value="Message" for="message"/>
+                <h:outputText id="message"
+                                styleClass="fr"
+                                value="#{notificationBean.echoedMessage}"
+                                placeholder="message"/>
+            </mobi:fieldsetRow>
+        </mobi:fieldsetGroup>
+
+    </h:form>
+
+</ui:fragment>
+
+

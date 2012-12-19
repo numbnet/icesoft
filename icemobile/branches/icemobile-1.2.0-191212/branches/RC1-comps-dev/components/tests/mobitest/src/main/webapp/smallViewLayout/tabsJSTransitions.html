@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>css example for tabs</title>
+</head>
+<style type="text/css">
+.tabset {
+    list-style:  none;
+    height: 2em;
+    padding:  0;
+    margin:  0;
+    border:  none;
+}
+.tabset li {
+    float: left;
+/*    margin-right: 0.13em;  */
+    margin:0 2px 0 0;
+}
+.tabset li a {
+    display:block;
+    padding:0 1em;
+    text-decoration:none;
+    border:0.06em solid #300;
+    border-bottom:0;
+    font:bold 0.88em/2em arial,geneva,helvetica,sans-serif;
+    color:#300;
+    background-color:#ccc;
+
+    /* CSS 3 elements */
+    webkit-border-top-right-radius:0.50em;
+    -webkit-border-top-left-radius:0.50em;
+    -moz-border-radius-topright:0.50em;
+    -moz-border-radius-topleft:0.50em;
+    border-top-right-radius:0.50em;
+    border-top-left-radius:0.50em;
+}
+
+.tabset li a:hover {
+    background:#39C;
+    color:#fff;
+    text-decoration:none;
+}
+.tabset li#current a {
+    background-color: #577;
+    color: #577;
+    color: #fff;
+}
+.tabset li#current a:hover {
+    background: #336699;
+}
+h2{
+	margin-bottom:10px;
+}
+
+#wrapper{
+	margin:40px auto 0;
+}
+
+#wrapper h1{
+	color:#FFF;
+	text-align:center;
+	margin-bottom:20px;
+}
+
+#wrapper a{
+	display:block;
+	font-size:1.2em;
+	padding-top:20px;
+	color:#FFF;
+	text-decoration:none;
+	text-align:center;
+}
+.tabnav{
+	height:30px;
+}
+
+.tabnav  ul{
+	font: 1em;
+	list-style:none;
+}
+
+.tabnav ul li{
+	margin:0 2px 0 0;
+	padding:7px 10px;
+	display:block;
+	float:left;
+	color:#FFF;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	user-select: none;
+	-moz-border-radius-topleft: 4px;
+	-moz-border-radius-topright: 4px;
+	-moz-border-radius-bottomright: 0px;
+	-moz-border-radius-bottomleft: 0px;
+	border-top-left-radius:4px;
+	border-top-right-radius: 4px;
+	border-bottom-right-radius: 0px;
+	border-bottom-left-radius: 0px;
+	background: #C9C9C9; /* old browsers */
+    background:  -webkit-gradient(linear, left top, left bottom,
+                   color-stop(0%,#FFFFFF),
+                   color-stop(10%, #300),
+                   color-stop(50%, #3c3c3c),
+                   to(100%, #FFFFFF));
+    background: -moz-linear-gradient(top, #7d828c, #303749 50%, #121a2e 50%, #121a2e 100%);
+}
+
+.tabnav ul li:hover{
+	background: #FFFFFF; /* old browsers */
+	background: -moz-linear-gradient(top, #FFFFFF 0%, #F3F3F3 10%, #F3F3F3 50%, #FFFFFF 100%); /* firefox */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#FFFFFF), color-stop(10%,#F3F3F3), color-stop(50%,#F3F3F3), color-stop(100%,#FFFFFF)); /* webkit */
+	cursor:pointer;
+	color: #333;
+}
+
+.tabnav ul li.currentTab{
+	background: #FFFFFF; /* old browsers */
+	background: -moz-linear-gradient(top, #FFFFFF 0%, #F3F3F3 10%, #F3F3F3 50%, #FFFFFF 100%); /* firefox */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#FFFFFF), color-stop(10%,#F3F3F3), color-stop(50%,#F3F3F3), color-stop(100%,#FFFFFF)); /* webkit */
+	cursor:pointer;
+	color: #333;
+}
+#tabContainer {
+	padding:12px;
+	background-color:#49689d;
+	-moz-border-radius: 4px;
+	border-radius: 4px;
+}
+
+.contentPane {
+    visibility: hidden;
+    opacity:0;
+    transition: visibility 0s linear 0.5s, opacity 0.5s linear;
+}
+
+#tabscontent {
+	-moz-border-radius-topleft: 0px;
+	-moz-border-radius-topright: 4px;
+	-moz-border-radius-bottomright: 4px;
+	-moz-border-radius-bottomleft: 4px;
+	border-top-left-radius: 0px;
+	border-top-right-radius: 4px;
+	border-bottom-right-radius: 4px;
+	border-bottom-left-radius: 4px;
+	padding:10px 10px 25px;
+	background: #FFFFFF; /* old browsers */
+	background: -moz-linear-gradient(top, #FFFFFF 0%, #FFFFFF 90%, #e4e9ed 100%); /* firefox */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#FFFFFF), color-stop(90%,#FFFFFF), color-stop(100%,#e4e9ed)); /* webkit */
+	margin:0;
+	color:#333;
+}
+</style>
+<script type="text/javascript">
+    var duration = 3000; /* fade duration in ms */
+    var hideDelay = 2000; /* stays hidden for this long */
+    var visibleDelay = 2000; /* stays visible for this length of time */
+    var upperLimit = 1;
+    var incr = .01;
+    var prevPage = "tabpage_"+1;
+
+
+    window.onload=function() {
+
+          // setup tabContainer
+            var tabContainer = document.getElementById("tabContainer");
+            var tabContent = document.getElementById("tabscontent");
+            // set current tab
+            var navitem = document.getElementById("tabControl_1");
+
+            //store current tab
+            var ident = navitem.id.split("_")[1];
+            // set the index as an attribute
+            navitem.parentNode.setAttribute("data-current",ident);
+            //set current tab with class of activetabheader
+            navitem.setAttribute("class","currentTab");
+
+            //hide two tab contents we don't need
+             var pages = tabContent.getElementsByTagName("div");
+             for (var i = 1; i < pages.length; i++) {
+                 pages.item(i).style.opacity=0;
+             };
+            navitem.style.opacity = 1;
+            //this adds click event to tabs
+            var tabs = tabContainer.getElementsByTagName("li");
+            for (var i = 0; i < tabs.length; i++) {
+              tabs[i].onclick=switchPage;
+            }
+     }
+
+    function switchPage(){
+        var current = this.parentNode.getAttribute("data-current");
+        var currentId = "tabpage_"+current;
+        var tabIndex = this.id.split("_")[1];
+        document.getElementById("tabControl_" + current).removeAttribute("class");
+        var newId ="tabpage_"+tabIndex;
+        var prevPage = document.getElementById(currentId);
+        var nextPage = document.getElementById(newId);
+        fade(currentId, 100, 0, 50);
+        fade(newId, 0, 100, 50);
+    //    setTimeout("fade("+ currentId+ ")", (duration+hideDelay));
+     //   setTimeout("fadeIn("+ newId+ ")", (duration+visibleDelay));
+        this.parentNode.setAttribute("data-current",tabIndex);
+        this.setAttribute("class","currentTab");
+
+    }
+    function fade(eID, startOpacity, endOpacity, duration){
+       var speed = Math.round(duration / 100);
+       var timer = 0;
+        //fade in check first
+        if (startOpacity < endOpacity) {
+           for (var i=startOpacity; i<=endOpacity; i++) {
+           setTimeout("setOpacity('"+eID+"',"+i+")", timer * speed);
+           timer ++;
+           }
+           return;
+        }
+       for (var i=startOpacity; i>=endOpacity; i--) {//fade out
+          setTimeout("setOpacity('"+eID+"',"+i+")", timer * speed);
+          timer++;
+       }
+    }
+    function setOpacity(eid, value){
+       var elemStyle = document.getElementById(eid).style;
+        elemStyle.opacity = value / 100;
+        elemStyle.filter = 'alpha(opacity='+value;  //for ie
+    }
+
+// use onclick of each tab
+function showContent() {
+  var current = this.parentNode.getAttribute("data-current");
+  //remove class of activetabheader and hide old contents
+  document.getElementById("tabControl_" + current).removeAttribute("class");
+  document.getElementById("tabpage_" + current).style.opacity="0";
+
+  var tabIndex = this.id.split("_")[1];
+  //add class of activetabheader to new active tab and show contents
+  var newContent = document.getElementById("tabpage_"+tabIndex);
+  this.setAttribute("class","currentTab");
+  newContent.style.opacity=1;
+  this.parentNode.setAttribute("data-current",tabIndex);
+}
+</script>
+<body>
+<div>
+ <h3> just styling of tab buttons</h3>
+ <ul class="tabset">
+    <li><a href="#">Home</a></li>
+    <li id="current"><a href="#">Example</a></li>
+    <li><a href="#">Description</a></li>
+    <li><a href="#">Source</a></li>
+</ul>
+</div>
+  <br />
+<div id="wrapper">
+  <h1>tabset example</h1>
+  <div id="tabContainer">
+    <div id="tabs" class="tabnav" >
+      <ul data-current="3">
+        <li id="tabControl_1">Page 1</li>
+        <li id="tabControl_2">Page 2</li>
+        <li id="tabControl_3">Page 3</li>
+      </ul>
+    </div>
+    <div id="tabscontent" class="contentPanes">
+      <div class="tabpage" id="tabpage_1" >
+        <h2>Page 1</h2>
+        <p>Content page 1 </p>
+      </div>
+      <div class="tabpage" id="tabpage_2" >
+        <h2>Page 2</h2>
+        <p>Content page 2 </p>
+      </div>
+      <div class="tabpage" id="tabpage_3" >
+        <h2>Page 3</h2>
+       <p> content page 3</p>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0'/>
+    <title></title>
+    <style type="text/css">
+#accordion section,	#accordion .pointer, #accordion h1, #accordion p {
+	-webkit-transition: all 0.5s ease-in-out;
+	-moz-transition: all 0.5s ease-in-out;
+	-o-transition: all 0.5s ease-in-out;
+	-ms-transition: all 0.5s ease-in-out;
+	transition: all 0.5s ease-in-out;
+}
+#accordion {
+	margin-bottom:30px;
+}
+#accordion h1 {
+	font-size:20px;
+    background: -moz-linear-gradient(top, #f4f5f7, #a8acb9) repeat scroll 0 0 #a8acb9;
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0, #f4f5f7), color-stop(1, #a8acb9));
+    filter:  progid:DXImageTransform.Microsoft.gradient(startColorStr='#f4f5f7', EndColorStr='#a8acb9');
+    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#f4f5f7', EndColorStr='#a8acb9')";
+    -moz-user-select:none;
+	margin:0;
+	padding: 10px 10px 10px 30px;
+}
+
+#accordion h1 a {
+	color:black;
+}
+#accordion section {
+	overflow:hidden;
+	height:220px;
+	border:1px #333 solid;
+}
+#accordion p {
+	padding:0 10px;
+	color:black;
+}
+#accordion section.ac_hidden p:not(.pointer) {
+	color:#fff;
+}
+
+#accordion section.ac_hidden {
+	height:44px;
+}
+#accordion .pointer {
+	padding:0;
+	margin:10px 0 0 6px;
+	line-height:20px;
+	width:13px;
+	position:absolute;
+}
+#accordion section:not(.ac_hidden) h1 {
+	background-color:rgba(255,0,0,0.7);
+}
+
+/*    can use this for desktop browsers & iPad, but not iPhone as it makes it jerky  */
+#accordion section:not(.ac_hidden) .pointer {
+	display:block;
+	-webkit-transform:rotate(90deg);
+	-moz-transform:rotate(90deg);
+	-o-transform:rotate(90deg);
+	-ms-transform:rotate(90deg);
+	transform:rotate(90deg);
+	padding:0;
+}
+    </style>
+ <script type="text/javascript">
+      var openedPanel = 'item1';
+      var panelToClose = '';
+
+      function openPanel(containerId, clientId){
+            var openedId = clientId;
+            if(this.openedPanel == openedId) {
+                this.openedPanel='';
+                this.panelToClose=openedId;
+            } else {
+                this.panelToClose = openedPanel;
+                this.openedPanel = openedId;
+            }
+        //    alert('open='+openedPanel+' close='+panelToClose);
+            var openElem =  document.getElementById(this.openedPanel);
+            var closeElem = document.getElementById(this.panelToClose);
+            if (openElem){
+                removeClass(openElem, "ac_hidden");
+            }
+            if (closeElem){
+                addClass(closeElem, "ac_hidden");
+            }
+      }
+      function hasClass(ele,cls) {
+	       return ele.className.match(new RegExp('(\\s|^)'+cls+'(\\s|$)'));
+      }
+      function addClass(ele,cls) {
+            if (!this.hasClass(ele,cls)) ele.className =cls;
+      }
+      function removeClass(ele,cls) {
+         if (hasClass(ele,cls)) {
+            // var reg = new RegExp('(\\s|^)'+cls+'(\\s|$)');
+             ele.className=" ";
+         }
+      }
+ </script>
+
+</head>
+<body>
+ <div id="accordion">
+	<section id="item1">
+		<p class="pointer">&#9654;</p><h1><a href="#" onclick="openPanel('accordion',  'item1');">Layout And Navigation</a></h1>
+     <ul>
+        <li>Carousel</li>
+        <li>Device Themes</li>
+        <li>Fieldset</li>
+        <li>Lists</li>
+        <li>Confirmation Panel</li>
+        <li>Popup Panel</li>
+     </ul>
+	</section>
+	<section id="item2" class="ac_hidden">
+		<p class="pointer">&#9654;</p><h1><a href="#"  onclick="openPanel('accordion', 'item2');">Input and Selection</a></h1>
+	    <ul>
+        <li>Buttons</li>
+        <li>Flip Switch</li>
+        <li>Geolocation</li>
+        <li>HTML5 Input></li>
+        <li>Date and Time</li>
+        <li>Menu Button</li>
+        <li>Submit Notification</li>
+    </ul>
+	</section>
+	<section id="item3" class="ac_hidden"  onclick="openPanel('accordion',  'item3');">
+		<p class="pointer">&#9654;</p><h1><a href="#">Media Components</a></h1>
+       <ul>
+        <li>Audio</li>
+        <li>Image</li>
+        <li>Video</li>
+       </ul>
+	</section>
+    <section id="item4" class="ac_hidden"  onclick="openPanel('accordion',  'item4');">
+		<p class="pointer">&#9654;</p><h1><a href="#">Container Components</a></h1>
+        <ul>
+        <li>Camcorder</li>
+        <li>Camera</li>
+        <li>Microphone</li>
+        <li>Notification</li>
+        <li>QR Code</li>
+    </ul>
+	</section>
+</div>
+<footer>
+    <p> Footer area
+    <a href="../smallViewLayout.html">index page</a>
+    </p>
+</footer>
+</body>
+</html>

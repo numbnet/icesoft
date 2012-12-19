@@ -1,0 +1,62 @@
+<!--
+  ~ Copyright 2004-2011 ICEsoft Technologies Canada Corp. (c)
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions an
+  ~ limitations under the License.
+  -->
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
+<h:head>
+	<meta charset="UTF-8"></meta>
+	<title>audio</title>
+    <mobi:deviceStylesheet
+            name="#{themeSwitcher.theme}" media="screen" />
+</h:head>
+<h:body>
+  <h:panelGroup id="resourcebackedsamples">
+    <h3>fixed URL audio</h3>
+       <h:panelGroup id="mp3panelId" >
+            <h:outputText value="generic mp3 file:-"/>
+            <mobi:audio id="genericmp3" value="../audio/audio_clip.mp3"
+                            controls="true" preload="auto"/>
+       </h:panelGroup>
+       <br />
+       <h:panelGroup id="ipadpanel">
+            <h:outputText value="iPadSample file:-"/>
+            <mobi:audio id="ipadSample" value="../audio/sampleIPad.mp4"
+                            controls="true" preload="auto"/>
+       </h:panelGroup> 
+       <br />    
+       <h:panelGroup id="androidPanel">
+            <h:outputText value="android recorded audio file:-"/>
+            <mobi:audio id="androidSample" value="../audio/sampleAndroid.mp4"
+                            controls="true" preload="auto"/>
+       </h:panelGroup> 
+       <br />  
+       <h:panelGroup id="bberryPanel">
+            <h:outputText value="bberry audio file:-"/>
+            <mobi:audio id="bberrySample" value="../audio/sampleBberry.amr"
+                            controls="true" preload="auto"/>
+       </h:panelGroup>                 
+       
+  </h:panelGroup>
+ 
+	<li><a href="../resourceComponents.html">index page</a>
+	</li>
+</h:body>
+</html>
