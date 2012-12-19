@@ -96,6 +96,12 @@ class VersionedResource extends ResourceWrapper {
 
     VersionedResource(Resource wrapped) {
         this.wrapped = wrapped;
+
+        //Not sure why this is necessary but if we don't do this, the
+        //Content-Type response header may not make it back to the browser.
+        setResourceName(wrapped.getResourceName());
+        setLibraryName(wrapped.getLibraryName());
+        setContentType(wrapped.getContentType());
     }
 
     @Override
@@ -105,7 +111,7 @@ class VersionedResource extends ResourceWrapper {
 
     @Override
     public String getRequestPath() {
-        String requestPath = super.getRequestPath();
+        String requestPath = wrapped.getRequestPath();
 
         //In the unlikely event that the path is invalid or already has a 'v' parameter
         //then don't process this any further.
