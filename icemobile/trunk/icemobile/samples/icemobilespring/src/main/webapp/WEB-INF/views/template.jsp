@@ -83,7 +83,7 @@
         preloaded[1] = document.createElement('img');
         preloaded[1].setAttribute('src','./resources/auction/icecar.png');
         preloaded[2] = document.createElement('img');
-        preloaded[2].setAttribute('src','./resources/auction/icesailer.png');
+        preloaded[2].setAttribute('src','./resources/auction/icesailor.png');
         preloaded[3] = document.createElement('img');
         preloaded[3].setAttribute('src','./resources/auction/iceskate.png');
     </script>
