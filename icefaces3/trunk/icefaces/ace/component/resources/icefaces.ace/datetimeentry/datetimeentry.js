@@ -181,65 +181,67 @@ ice.ace.Calendar.prototype.destroy = function() {
 };
 
 ice.ace.Calendar.init = function(options) {
-    var widgetVar = options.widgetVar, id = options.id;
-    var input = ice.ace.jq(ice.ace.escapeClientId(id) + "_input");
-    var trigger = null, triggerClass = ice.ace.jq.datepicker._triggerClass;
-    var defaults = ice.ace.jq.datepicker._defaults;
-    var showOn = options.showOn || defaults.showOn;
-    var buttonText = options.buttonText || defaults.buttonText;
-    var buttonImage = options.buttonImage || defaults.buttonImage;
-    var buttonImageOnly = options.buttonImageOnly || defaults.buttonImageOnly;
-    var isRTL = options.isRTL || defaults.isRTL;
-    var initAndShow = function() {
-        if (window[widgetVar]) return;
-        if (trigger) trigger.remove();
-        window[widgetVar] = new ice.ace.Calendar(id, options);
-        if (!window[widgetVar].pickerFn) return;
-        window[widgetVar].jq[window[widgetVar].pickerFn]("show");
-    };
-    var initEltSet = ice.ace.jq();
-    var behavior = options.behaviors && options.behaviors.dateTextChange;
+    ice.ace.jq().ready(function() {
+        var widgetVar = options.widgetVar, id = options.id;
+        var input = ice.ace.jq(ice.ace.escapeClientId(id) + "_input");
+        var trigger = null, triggerClass = ice.ace.jq.datepicker._triggerClass;
+        var defaults = ice.ace.jq.datepicker._defaults;
+        var showOn = options.showOn || defaults.showOn;
+        var buttonText = options.buttonText || defaults.buttonText;
+        var buttonImage = options.buttonImage || defaults.buttonImage;
+        var buttonImageOnly = options.buttonImageOnly || defaults.buttonImageOnly;
+        var isRTL = options.isRTL || defaults.isRTL;
+        var initAndShow = function() {
+            if (window[widgetVar]) return;
+            if (trigger) trigger.remove();
+            window[widgetVar] = new ice.ace.Calendar(id, options);
+            if (!window[widgetVar].pickerFn) return;
+            window[widgetVar].jq[window[widgetVar].pickerFn]("show");
+        };
+        var initEltSet = ice.ace.jq();
+        var behavior = options.behaviors && options.behaviors.dateTextChange;
 
-    if (!options.popup) {
-        window[widgetVar] = new ice.ace.Calendar(id, options);
-        return;
-    }
-
-    input.bind("focus", function() {
-        if (behavior) {
-            input.bind('change', function() {
-                setFocus();
-                ice.ace.ab(behavior);
-            });
-        } else if (options.singleSubmit) {
-            input.bind('change', function(event) {
-                setFocus();
-                ice.se(event, id);
-            });
+        if (!options.popup) {
+            window[widgetVar] = new ice.ace.Calendar(id, options);
+            return;
         }
-    });
 
-    initEltSet = initEltSet.add(input);
+        input.one("focus", function() {
+            if (behavior) {
+                input.bind('change', function() {
+                    setFocus();
+                    ice.ace.ab(behavior);
+                });
+            } else if (options.singleSubmit) {
+                input.bind('change', function(event) {
+                    setFocus();
+                    ice.se(event, id);
+                });
+            }
+        });
 
-    window[widgetVar] = null;
-    if (ice.ace.jq.inArray(showOn, ["button","both"]) >= 0) {
-        trigger = buttonImageOnly ?
-            ice.ace.jq('<img/>').addClass(triggerClass).
-                attr({ src: buttonImage, alt: buttonText, title: buttonText }) :
-            ice.ace.jq('<button type="button"></button>').addClass(triggerClass).
-                html(buttonImage == '' ? buttonText : ice.ace.jq('<img/>').attr(
-                { src:buttonImage, alt:buttonText, title:buttonText }));
-        input[isRTL ? 'before' : 'after'](trigger);
-        trigger.bind("click", initAndShow);
-        initEltSet = initEltSet.add(trigger);
-    }
-    if (ice.ace.jq.inArray(showOn, ["focus","both"]) >= 0) {
-        input.bind("focus", initAndShow);
         initEltSet = initEltSet.add(input);
-    }
 
-    ice.onElementUpdate(id, function() {
-        // .remove cleans jQuery state unlike .unbind
-       initEltSet.remove();
+        window[widgetVar] = null;
+        if (ice.ace.jq.inArray(showOn, ["button","both"]) >= 0) {
+            trigger = buttonImageOnly ?
+                ice.ace.jq('<img/>').addClass(triggerClass).
+                    attr({ src: buttonImage, alt: buttonText, title: buttonText }) :
+                ice.ace.jq('<button type="button"></button>').addClass(triggerClass).
+                    html(buttonImage == '' ? buttonText : ice.ace.jq('<img/>').attr(
+                    { src:buttonImage, alt:buttonText, title:buttonText }));
+            input[isRTL ? 'before' : 'after'](trigger);
+            trigger.one("click", initAndShow);
+            initEltSet = initEltSet.add(trigger);
+        }
+        if (ice.ace.jq.inArray(showOn, ["focus","both"]) >= 0) {
+            input.one("focus", initAndShow);
+            initEltSet = initEltSet.add(input);
+        }
+
+        ice.onElementUpdate(id, function() {
+            // .remove cleans jQuery state unlike .unbind
+            initEltSet.remove();
+        });
     });
 };
