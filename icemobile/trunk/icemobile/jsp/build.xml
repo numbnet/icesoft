@@ -52,7 +52,7 @@
     </propertyset>
 
 	
-    <property name="jar.file.name" value="${ant.project.name}.jar"/>
+    <property name="jar.file.name" value="${icemobile-jsp.lib.name}.jar"/>
     <property name="doc" location="build/docs/"/>
     <property name="tld.doc" location="${doc}/tld"/>
     <!-- common theme location  -->
@@ -85,7 +85,7 @@
               value="${version.primary}.${version.secondary}.${version.tertiary}"/>
 	
 	<path id="core.classpath">
-        <fileset dir="${lib.dir}" includes="*.jar" excludes="**/javax.faces.jar,**/jsp-api.jar,**/javax.servlet.jsp.jar,**/icemobile-jsp.jar,**/icefaces-mobi.jar"/>
+        <fileset dir="${lib.dir}" includes="*.jar" excludes="**/javax.faces.jar,**/jsp-api.jar,**/javax.servlet.jsp.jar,**/${icemobile-jsp.lib.name}.jar,**/${icefaces-mobi-lib-name}.jar"/>
     </path>
 	
 	<path id="jsp.classpath">
