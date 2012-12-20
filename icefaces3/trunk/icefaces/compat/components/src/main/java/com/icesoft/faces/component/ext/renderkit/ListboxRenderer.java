@@ -37,11 +37,7 @@ public class ListboxRenderer
                     (uiComponent instanceof HtmlSelectOneListbox) ||
                     (uiComponent instanceof HtmlSelectManyListbox);
             if (isSelectListbox) {
-                Number partialSubmitDelay = (Number)
-                        uiComponent.getAttributes().get("partialSubmitDelay");
-                root.setAttribute(getEventType(uiComponent),
-                        "setFocus('');Ice.selectChange(form,this,event,"+
-                        partialSubmitDelay+");");
+
             }
             else {
                 root.setAttribute(getEventType(uiComponent), "setFocus('');" + ICESUBMITPARTIAL);
@@ -52,6 +48,44 @@ public class ListboxRenderer
                 excludes.add(HTML.ONBLUR_ATTR);
                 //root.setAttribute(HTML.ONBLUR_ATTR, this.ICESUBMITPARTIAL);
             }
+        }
+    }
+	
+    protected void addJavaScriptOverride(FacesContext facesContext,
+                                 UIComponent uiComponent, Element root,
+                                 String currentValue, Set excludes) {
+        if (((IceExtended) uiComponent).getPartialSubmit()) {
+            if (uiComponent instanceof HtmlSelectOneListbox) {
+                Number partialSubmitDelay = (Number) uiComponent.getAttributes().get("partialSubmitDelay");
+                Boolean partialSubmitOnBlur = (Boolean) uiComponent.getAttributes().get("partialSubmitOnBlur");
+				if (partialSubmitOnBlur != null && partialSubmitOnBlur.booleanValue()) {
+					String originalOnblur = root.getAttribute(HTML.ONBLUR_ATTR);
+					originalOnblur = originalOnblur == null ? "" : originalOnblur;
+					root.setAttribute(HTML.ONBLUR_ATTR, originalOnblur + ";if (this.previousValue != this.value){this.previousValue = this.value; Ice.selectChange(form,this,event," + partialSubmitDelay + ");} else {this.previousValue = this.value;}");
+					String originalOnmousedown = root.getAttribute(HTML.ONMOUSEDOWN_ATTR);
+					originalOnmousedown = originalOnmousedown == null ? "" : originalOnmousedown;
+					root.setAttribute(HTML.ONMOUSEDOWN_ATTR, originalOnmousedown + ";if (!this.previousValue) this.previousValue = this.value;");
+				} else {
+					String originalOnchange = root.getAttribute(HTML.ONCHANGE_ATTR);
+					originalOnchange = originalOnchange == null ? "" : originalOnchange;
+					root.setAttribute(HTML.ONCHANGE_ATTR, originalOnchange + ";setFocus('');Ice.selectChange(form,this,event,"+partialSubmitDelay+");");
+				}
+            } else if (uiComponent instanceof HtmlSelectManyListbox) {
+                Number partialSubmitDelay = (Number) uiComponent.getAttributes().get("partialSubmitDelay");
+                Boolean partialSubmitOnBlur = (Boolean) uiComponent.getAttributes().get("partialSubmitOnBlur");
+				if (partialSubmitOnBlur != null && partialSubmitOnBlur.booleanValue()) {
+					String originalOnblur = root.getAttribute(HTML.ONBLUR_ATTR);
+					originalOnblur = originalOnblur == null ? "" : originalOnblur;
+					root.setAttribute(HTML.ONBLUR_ATTR, originalOnblur + ";var v = []; var o = this.options; for (var i = 0; i < o.length; i++) if (o[i].selected) v.push(i); var d = false; if (!this.p) d = true; else if (this.p.length != v.length) d = true; else for (var j = 0; j < v.length; j++) if (this.p[j] != v[j]) d = true; if (d) {this.p = v; Ice.selectChange(form,this,event," + partialSubmitDelay+"); } else this.p = v;");
+					String originalOnmousedown = root.getAttribute(HTML.ONMOUSEDOWN_ATTR);
+					originalOnmousedown = originalOnmousedown == null ? "" : originalOnmousedown;
+					root.setAttribute(HTML.ONMOUSEDOWN_ATTR, originalOnmousedown + ";if (!this.p) { var v = []; var o = this.options; for (var i = 0; i < o.length; i++) if (o[i].selected) v.push(i); this.p = v; }");
+				} else {
+					String originalOnchange = root.getAttribute(HTML.ONCHANGE_ATTR);
+					originalOnchange = originalOnchange == null ? "" : originalOnchange;
+					root.setAttribute(HTML.ONCHANGE_ATTR, originalOnchange + "setFocus('');Ice.selectChange(form,this,event,"+partialSubmitDelay+");");
+				}			
+			}
         }
     }
 }
