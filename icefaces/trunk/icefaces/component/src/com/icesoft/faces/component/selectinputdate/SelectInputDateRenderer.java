@@ -86,6 +86,7 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
+import java.util.Iterator;
 
 import com.icesoft.util.pooling.CSSNamePool;
 
@@ -337,8 +338,10 @@ public class SelectInputDateRenderer
                 calendarButton.setAttribute(HTML.TYPE_ATTR, "image");
                 calendarButton.setAttribute(HTML.ONFOCUS_ATTR, "setFocus('');");
                 calendarButton.setAttribute(HTML.ONBLUR_ATTR, "setFocus('');");
+                calendarButton.setAttribute(HTML.ONMOUSEDOWN_ATTR, "if (Event.isLeftClick(event)) this.selfClick = true;");
+                calendarButton.setAttribute(HTML.ONKEYDOWN_ATTR, "if (event.keyCode == 13 || event.keyCode == 32) this.selfClick = true;");
                 // render onclick to set value of hidden field to true
-                String onClick = "document.forms['" +
+                String onClick = "if (!this.selfClick) return false; this.selfClick = false; document.forms['" +
                                  parentForm.getClientId(facesContext) + "']['" +
                                  this.getLinkId(facesContext, uiComponent) +
                                  "'].value='" + clientId + CALENDAR_BUTTON +
@@ -1590,6 +1593,9 @@ public class SelectInputDateRenderer
     * @see com.icesoft.faces.renderkit.dom_html_basic.DomBasicRenderer#decode(javax.faces.context.FacesContext, javax.faces.component.UIComponent)
     */
     public void decode(FacesContext facesContext, UIComponent component) {
+//        System.out.println("\nSelectInputDateRenderer.decode");
+//        System.out.println("component.getId() = " + component.getId());
+//        printParams();
         validateParameters(facesContext, component, SelectInputDate.class);
         SelectInputDate dateSelect = (SelectInputDate) component;
         Map requestParameterMap =
@@ -1983,4 +1989,23 @@ System.out.println("SIDR.decode()    link: " + checkStrings[check]);
         return o;
     }
     
+    public static void printParams() {
+        Map paramValuesMap = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterValuesMap();
+        Iterator it = paramValuesMap.entrySet().iterator();
+        Map.Entry entry;
+        String key;
+        String[] values;
+        while (it.hasNext()) {
+            entry = (Map.Entry) it.next();
+            key = (String) entry.getKey();
+            values = (String[]) entry.getValue();
+            System.out.print(key);
+            System.out.print(" = ");
+            for (int i = 0; i < values.length; i++) {
+                System.out.print(values[i]);
+                System.out.print(", ");
+            }
+            System.out.println();
+        }
+    }
 }
