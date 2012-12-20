@@ -355,7 +355,7 @@ if (!window.ice.icefaces) {
                             if (containsXMLData(xmlContent)) {
                                 if (containsHTMLData(xmlContent)) {
                                     //reload page when html markup is received instead of the partial update
-                                    document.location.reload();
+                                    document.location = document.location.href;
                                 } else {
                                     broadcast(perRequestOnBeforeUpdateListeners, [ xmlContent, submitElement ]);
                                 }
