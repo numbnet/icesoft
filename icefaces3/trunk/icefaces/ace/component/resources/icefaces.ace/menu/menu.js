@@ -98,10 +98,8 @@ ice.ace.Menubar = function(id, cfg) {
 				} else {
 					_myFirst = 'left ';
 					_atFirst = 'left ';
-					_collisionFirst = 'flip ';
 					_my = 'left ';
 					_at = 'right ';
-					_collision = 'flip ';				
 				}
 				// process vertical direction
 				if (_self.cfg.directionY == 'up') {
@@ -138,14 +136,16 @@ ice.ace.Menubar = function(id, cfg) {
 				
 				_this.css('list-style-type', 'none');
 				var _item = _this.parents('li:first');
-				if (_self.cfg.directionX == 'auto' && _self.cfg.directionY == 'auto') {
-					if (ice.ace.ContextMenu.shouldDisplayAbove(_item.offset().top, _this.height())) {
-						_collision = 'flip'; _collisionFirst = 'flip';
+				var offset = _item.offset();
+				if (_self.cfg.directionX == 'auto') {
+					if (ice.ace.ContextMenu.shouldDisplayLeft(offset.left, _this.width(), _item.width())) {
+						_collision = 'flip '; _collisionFirst = 'flip ';
 					} else {
-						_collision = 'none'; _collisionFirst = 'none';
+						_collision = 'none '; _collisionFirst = 'none ';
 					}
-				} else if (_self.cfg.directionY == 'auto') {
-					if (ice.ace.ContextMenu.shouldDisplayAbove(_item.offset().top, _this.height())) {
+				}
+				if (_self.cfg.directionY == 'auto') {
+					if (ice.ace.ContextMenu.shouldDisplayAbove(offset.top, _this.height())) {
 						_collision += 'flip'; _collisionFirst += 'flip';
 					} else {
 						_collision += 'none'; _collisionFirst += 'none';
@@ -330,7 +330,6 @@ ice.ace.ContextMenu = function(id, cfg) {
 				} else {
 					_my = 'left ';
 					_at = 'right ';
-					_collision = 'flip ';				
 				}
 				// process vertical direction
 				if (_self.cfg.directionY == 'up') {
@@ -350,10 +349,11 @@ ice.ace.ContextMenu = function(id, cfg) {
 			var _this = ice.ace.jq(this);
 			if (!_this.parent().get(0)) return;
 			if (_this.parent().get(0).id == _self.id) { // root menu
-				if (_self.cfg.directionX == 'auto' && _self.cfg.directionY == 'auto') {
-					if (ice.ace.ContextMenu.shouldDisplayAbove(ice.ace.ContextMenu.pageY, _this.height())) _collision = 'flip';
-					else _collision = 'none';
-				} else if (_self.cfg.directionY == 'auto') {
+				if (_self.cfg.directionX == 'auto') {
+					if (ice.ace.ContextMenu.shouldDisplayLeft(ice.ace.ContextMenu.pageX, _this.width(), 0)) _collision = 'flip ';
+					else _collision = 'none ';
+				}
+				if (_self.cfg.directionY == 'auto') {
 					if (ice.ace.ContextMenu.shouldDisplayAbove(ice.ace.ContextMenu.pageY, _this.height())) _collision += 'flip';
 					else _collision += 'none';
 				}
@@ -365,11 +365,13 @@ ice.ace.ContextMenu = function(id, cfg) {
 			} else { // submenus
 				_this.css('list-style-type', 'none');
 				var _item = _this.parents('li:first');
-				if (_self.cfg.directionX == 'auto' && _self.cfg.directionY == 'auto') {
-					if (ice.ace.ContextMenu.shouldDisplayAbove(_item.offset().top, _this.height())) _collision = 'flip';
-					else _collision = 'none';
-				} else if (_self.cfg.directionY == 'auto') {
-					if (ice.ace.ContextMenu.shouldDisplayAbove(_item.offset().top, _this.height())) _collision += 'flip';
+				var offset = _item.offset();
+				if (_self.cfg.directionX == 'auto') {
+					if (ice.ace.ContextMenu.shouldDisplayLeft(offset.left, _this.width(), _item.width())) _collision = 'flip ';
+					else _collision = 'none ';
+				}
+				if (_self.cfg.directionY == 'auto') {
+					if (ice.ace.ContextMenu.shouldDisplayAbove(offset.top, _this.height())) _collision += 'flip';
 					else _collision += 'none';
 				}
 				_this.position({
@@ -416,4 +418,18 @@ ice.ace.ContextMenu.shouldDisplayAbove = function(top, height) {
 			up = true;
 	}
 	return up;
+}
+
+ice.ace.ContextMenu.shouldDisplayLeft = function(left, width, itemWidth) {
+	var leftside = false;
+	var winWidth = ice.ace.jq(window).width();
+	var docWidth = ice.ace.jq(document).width();
+	var scrollLeft = ice.ace.jq(document).scrollLeft()
+	var lengthLeft = left - scrollLeft;
+	var lengthRight = scrollLeft + winWidth - left - itemWidth;
+	if (lengthRight < width) {
+		if (lengthLeft >= width)
+			leftside = true;
+	}
+	return leftside;
 }
