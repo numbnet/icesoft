@@ -385,8 +385,10 @@ public class MenuRenderer extends DomBasicInputRenderer {
             addJavaScriptOverride(facesContext, uiComponent, root, currentValue.toString(), excludes);
         } else if (uiComponent instanceof HtmlSelectOneListbox) {
             PassThruAttributeRenderer.renderHtmlAttributes(facesContext, uiComponent, selectOneListboxPassThruAttributes);
+			addJavaScriptOverride(facesContext, uiComponent, root, currentValue.toString(), excludes);
         } else if (uiComponent instanceof HtmlSelectManyListbox) {
             PassThruAttributeRenderer.renderHtmlAttributes(facesContext, uiComponent, selectManyListboxPassThruAttributes);
+			addJavaScriptOverride(facesContext, uiComponent, root, currentValue.toString(), excludes);
         }
         String[] attributes = new String[]{HTML.DISABLED_ATTR, HTML.READONLY_ATTR};
         Object attribute;

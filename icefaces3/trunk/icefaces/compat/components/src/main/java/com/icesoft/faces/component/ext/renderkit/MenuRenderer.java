@@ -71,9 +71,9 @@ public class MenuRenderer
 					String originalOnkeyup = root.getAttribute(HTML.ONKEYUP_ATTR);
 					originalOnkeyup = originalOnkeyup == null ? "" : originalOnkeyup;
 					root.setAttribute(HTML.ONKEYUP_ATTR, originalOnkeyup + script);
-					String originalOnmouseup = root.getAttribute(HTML.ONCLICK_ATTR);
-					originalOnmouseup = originalOnmouseup == null ? "" : originalOnmouseup;
-					root.setAttribute(HTML.ONCLICK_ATTR, originalOnmouseup + script);
+					String originalOnclick = root.getAttribute(HTML.ONCLICK_ATTR);
+					originalOnclick = originalOnclick == null ? "" : originalOnclick;
+					root.setAttribute(HTML.ONCLICK_ATTR, originalOnclick + script);
 				}
 				String originalOnfocus = root.getAttribute(HTML.ONFOCUS_ATTR);
 				originalOnfocus = originalOnfocus == null ? "" : originalOnfocus;
@@ -90,9 +90,9 @@ public class MenuRenderer
 					String originalOnkeyup = root.getAttribute(HTML.ONKEYUP_ATTR);
 					originalOnkeyup = originalOnkeyup == null ? "" : originalOnkeyup;
 					root.setAttribute(HTML.ONKEYUP_ATTR, originalOnkeyup + script);
-					String originalOnmouseup = root.getAttribute(HTML.ONCLICK_ATTR);
-					originalOnmouseup = originalOnmouseup == null ? "" : originalOnmouseup;
-					root.setAttribute(HTML.ONCLICK_ATTR, originalOnmouseup + script);
+					String originalOnclick = root.getAttribute(HTML.ONCLICK_ATTR);
+					originalOnclick = originalOnclick == null ? "" : originalOnclick;
+					root.setAttribute(HTML.ONCLICK_ATTR, originalOnclick + script);
 				}
 				String originalOnfocus = root.getAttribute(HTML.ONFOCUS_ATTR);
 				originalOnfocus = originalOnfocus == null ? "" : originalOnfocus;
