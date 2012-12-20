@@ -311,9 +311,11 @@ public class SelectInputDateRenderer
                         clientId + CALENDAR_BUTTON);
                 calendarButton.setAttribute(HTML.TYPE_ATTR, "image");
                 calendarButton.setAttribute(HTML.ONFOCUS_ATTR, "setFocus('');");
+                calendarButton.setAttribute(HTML.ONMOUSEDOWN_ATTR, "if (Event.isLeftClick(event)) this.selfClick = true;");
+                calendarButton.setAttribute(HTML.ONKEYDOWN_ATTR, "if (event.keyCode == 13 || event.keyCode == 32) this.selfClick = true;");
                 // render onclick to set value of hidden field to true
                 String formClientId = parentForm.getClientId(facesContext);
-                String hiddenValue1 = "document.forms['" +
+                String hiddenValue1 = "if (!this.selfClick) return false; this.selfClick = false; document.forms['" +
                         formClientId + "']['" +
                         this.getLinkId(facesContext, uiComponent) +
                         "'].value='";
