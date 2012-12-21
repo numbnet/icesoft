@@ -363,7 +363,7 @@ if (!window.ice.icefaces) {
                                 warn(logger, 'the response does not contain XML data');
                                 if (configurationOf(submitElement).reloadOnUpdateFailure) {
                                     warn(logger, 'reloading page ...');
-                                    document.location.reload();
+                                    document.location = document.location.href;
                                 }
                             }
                             break;
