@@ -7,6 +7,8 @@ import javax.faces.application.ResourceHandler;
 import javax.faces.application.ResourceHandlerWrapper;
 import javax.faces.application.ResourceWrapper;
 import javax.faces.context.FacesContext;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -15,6 +17,7 @@ public class VersioningResourceHandler extends ResourceHandlerWrapper {
     private static Logger log = Logger.getLogger(VersioningResourceHandler.class.getName());
 
     private ResourceHandler wrapped;
+    private List matchTypes, startsWithTypes, endsWithTypes;
 
     public VersioningResourceHandler(ResourceHandler wrapped) {
         this.wrapped = wrapped;
@@ -34,6 +37,10 @@ public class VersioningResourceHandler extends ResourceHandlerWrapper {
         //we add our versioning scheme to our resource URLs
         if(!EnvUtils.isUniqueResourceURLs(FacesContext.getCurrentInstance())){
             return rez;
+        }
+
+        if (matchTypes == null) {
+            createTypeLists();
         }
 
         //Only version the resource types that make sense
@@ -65,6 +72,32 @@ public class VersioningResourceHandler extends ResourceHandlerWrapper {
         return new VersionedResource(rez);
     }
 
+    private void createTypeLists() {
+
+        matchTypes = new ArrayList();
+        endsWithTypes = new ArrayList();
+        startsWithTypes = new ArrayList();
+
+        String versionableTypes = EnvUtils.getVersionableTypes(FacesContext.getCurrentInstance());
+
+
+        if (versionableTypes == null) {
+            return;
+        }
+
+        String[] types = versionableTypes.split("\\s");
+        for (int index = 0; index < types.length; index++) {
+            String type = types[index];
+            if (type.startsWith("*/")) {
+                endsWithTypes.add(type.substring(2));
+            } else if (type.endsWith("/*")) {
+                startsWithTypes.add(type.substring(0, type.length() - 2));
+            } else {
+                matchTypes.add(type);
+            }
+        }
+    }
+
     private boolean isVersionableResource(Resource rez) {
 
         if( rez == null ){
@@ -77,12 +110,22 @@ public class VersioningResourceHandler extends ResourceHandlerWrapper {
             return false;
         }
 
-        if (calculatedContentType.equals("text/css") ||
-                calculatedContentType.equals("application/javascript")) {
+        if (matchTypes.contains(calculatedContentType)) {
             return true;
         }
 
-        if (calculatedContentType.startsWith("image")) {
+        int slashIndex = calculatedContentType.indexOf("/");
+        if (slashIndex < 0) {
+            return false;
+        }
+
+        String prefix = calculatedContentType.substring(0, slashIndex);
+        if (startsWithTypes.contains(prefix)) {
+            return true;
+        }
+
+        String suffix = calculatedContentType.substring(slashIndex + 1);
+        if (endsWithTypes.contains(suffix)) {
             return true;
         }
 
