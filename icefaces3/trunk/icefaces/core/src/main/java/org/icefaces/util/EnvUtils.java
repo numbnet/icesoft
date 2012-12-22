@@ -66,6 +66,7 @@ public class EnvUtils {
     public static String INCLUDE_SCROLL_OFFSETS = "org.icefaces.includeScrollOffsets";
     public static String RELOAD_ON_UPDATE_FAILURE = "org.icefaces.reloadOnUpdateFailure";
     public static String RESOURCE_VERSION = "org.icefaces.resourceVersion";
+    public static String VERSIONABLE_TYPES = "org.icefaces.versionableTypes";
 
 
     //Parameters configurable using context parameters but only in compatibility mode
@@ -757,10 +758,16 @@ public class EnvUtils {
     public static String getResourceVersion(FacesContext context) {
         return EnvConfig.getEnvConfig(context).resourceVersion;
     }
+
+    public static String getVersionableTypes(FacesContext context) {
+        return EnvConfig.getEnvConfig(context).versionableTypes;
+    }
 }
 
 class EnvConfig {
     private static Logger log = Logger.getLogger(EnvConfig.class.getName());
+
+    private static final String DEFAULT_VERSIONABLE_TYPES = "*/javascript */css image/*";
 
     boolean autoRender;
     boolean autoId;
@@ -787,6 +794,7 @@ class EnvConfig {
     boolean replayNavigationOnReload;
     boolean generateHeadUpdate;
     String resourceVersion;
+    String versionableTypes;
     public boolean includeScrollOffsets;
     public boolean focusManaged;
     public boolean reloadOnUpdateFailure;
@@ -825,6 +833,7 @@ class EnvConfig {
         fastBusyIndicator = decodeBoolean(initMap, EnvUtils.FAST_BUSY_INDICATOR, false, info);
         replayNavigationOnReload = decodeBoolean(initMap, EnvUtils.REPLAY_NAVIGATION_ON_RELOAD, false, info);
         resourceVersion = decodeString(initMap, EnvUtils.RESOURCE_VERSION, ProductInfo.RESOURCE_VERSION, info);
+        versionableTypes = decodeString(initMap, EnvUtils.VERSIONABLE_TYPES, DEFAULT_VERSIONABLE_TYPES, info);
 
         log.info("ICEfaces Configuration: \n" + info);
     }
