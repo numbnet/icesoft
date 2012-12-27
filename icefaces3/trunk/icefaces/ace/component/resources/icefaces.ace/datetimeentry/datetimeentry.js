@@ -121,9 +121,9 @@ ice.ace.Calendar.prototype.bindDateSelectListener = function() {
                 var inputID = input.input[0].id;
                 dateSelectBehavior.oncomplete = function() {
                     var inputElement= document.getElementById(inputID);
-                    $(inputElement).unbind('focus', $.datepicker._showDatepicker);
+                    ice.ace.jq(inputElement).unbind('focus', ice.ace.jq.datepicker._showDatepicker);
                     inputElement.focus();
-                    $(inputElement).bind('focus', $.datepicker._showDatepicker);
+                    ice.ace.jq(inputElement).bind('focus', ice.ace.jq.datepicker._showDatepicker);
                 };
                 ice.ace.ab.call(_self, dateSelectBehavior);
             }
