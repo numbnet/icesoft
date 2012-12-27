@@ -32,25 +32,31 @@
 
 package com.icesoft.faces.webapp.http.servlet;
 
-import com.icesoft.faces.context.View;
+import com.icesoft.faces.webapp.http.common.Configuration;
+import com.icesoft.faces.webapp.http.common.standard.ResponseHandlerServer;
+import com.icesoft.faces.webapp.http.core.SessionExpiredResponse;
 
-import javax.servlet.http.HttpSession;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
-public class InterceptingServletSession extends ProxyHttpSession {
-    private final SessionDispatcher.Monitor sessionMonitor;
-    private final View view;
+public class BlockExpiredSessionRequests implements PseudoServlet {
+    private final PseudoServlet sessionDispatcher;
+    private BasicAdaptingServlet sessionExpiredServlet;
 
-    public InterceptingServletSession(HttpSession session, SessionDispatcher.Monitor sessionMonitor, View view) {
-        super(session);
-        this.sessionMonitor = sessionMonitor;
-        this.view = view;
+    public BlockExpiredSessionRequests(PseudoServlet sessionDispatcher, Configuration configuration) {
+        this.sessionDispatcher = sessionDispatcher;
+        this.sessionExpiredServlet = new BasicAdaptingServlet(new ResponseHandlerServer(SessionExpiredResponse.Handler), configuration);
     }
 
-    public void invalidate() {
-        //invalidate session right away!
-        //see ICE-2731 -- delaying session invalidation doesn't work since JBoss+Catalina resuses session objects and
-        //IDs which causes a lot of confusion in applications that have logout processes (invalidate session and
-        //immediately initiate new session)
-        sessionMonitor.shutdown();
+    public void service(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        if (request.isRequestedSessionIdValid()) {
+            sessionDispatcher.service(request, response);
+        } else {
+            sessionExpiredServlet.service(request, response);
+        }
+    }
+
+    public void shutdown() {
+        sessionDispatcher.shutdown();
     }
 }

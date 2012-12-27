@@ -40,6 +40,8 @@ import com.icesoft.faces.webapp.http.common.Request;
 import com.icesoft.faces.webapp.http.common.Server;
 import com.icesoft.faces.webapp.http.common.standard.FixedXMLContentHandler;
 import com.icesoft.faces.webapp.http.common.standard.NotFoundHandler;
+import com.icesoft.faces.webapp.http.common.standard.ResponseHandlerServer;
+import com.icesoft.faces.webapp.http.servlet.BasicAdaptingServlet;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -68,6 +70,8 @@ public class SendUpdates implements Server {
         } else {
             try {
                 request.respondWith(new Handler(commandQueues, request));
+            } catch (SessionExpiredException e) {
+                request.respondWith(SessionExpiredResponse.Handler);
             } catch (RuntimeException exception) {
                 if (LOG.isTraceEnabled()) {
                     LOG.trace("An error occurred while trying to respond: " + exception.getMessage(), exception);

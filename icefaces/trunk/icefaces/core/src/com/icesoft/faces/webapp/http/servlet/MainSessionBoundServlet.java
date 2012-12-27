@@ -206,8 +206,13 @@ public class MainSessionBoundServlet extends PathDispatcher implements PageTest 
                 //dispose all views
                 Iterator viewIterator = views.values().iterator();
                 while (viewIterator.hasNext()) {
-                    View view = (View) viewIterator.next();
-                    view.dispose();
+                    final View view = (View) viewIterator.next();
+                    //dispose view only after the lifecycle ended
+                    view.onRelease(new Runnable() {
+                        public void run() {
+                            view.dispose();
+                        }
+                    });
                 }
 
                 if (coreMessageService != null) {

@@ -43,6 +43,7 @@ import com.icesoft.faces.webapp.http.common.standard.ResponseHandlerServer;
 import com.icesoft.faces.webapp.http.core.DisposeBeans;
 import com.icesoft.faces.webapp.http.core.ResourceServer;
 import com.icesoft.faces.application.ProductInfo;
+import com.icesoft.faces.webapp.http.core.SessionExpiredResponse;
 import com.icesoft.jasper.Constants;
 import com.icesoft.net.messaging.MessageServiceClient;
 import com.icesoft.net.messaging.http.HttpAdapter;
@@ -150,7 +151,7 @@ public class MainServlet extends HttpServlet {
             monitorRunner = new MonitorRunner(configuration.getAttributeAsLong("monitorRunnerInterval", 10000));
             RenderManager.setServletConfig(servletConfig);
             PseudoServlet resourceServer = new BasicAdaptingServlet(new ResourceServer(configuration, mimeTypeMatcher, localFileLocator), configuration);
-            PseudoServlet sessionDispatcher;
+            final PseudoServlet sessionDispatcher;
             final Executor executor;
             if (!ServerUtility.isIPlanet(context)) {
                 executor = null;
@@ -183,7 +184,8 @@ public class MainServlet extends HttpServlet {
                         }
                     });
             dispatcher.dispatchOn(".*/ice-static/.*", resourceServer);
-            dispatcher.dispatchOn(".*(\\/$|block\\/|\\.iface($|;)|\\.jsf($|;)|\\.faces($|;)|\\.jsp($|;)|\\.jspx($|;)|\\.html($|;)|\\.xhtml($|;)|\\.seam($|;)|uploadHtml($|;)|/spring/)", sessionDispatcher);
+            dispatcher.dispatchOn(".*(\\/$|\\.iface($|;)|\\.jsf($|;)|\\.faces($|;)|\\.jsp($|;)|\\.jspx($|;)|\\.html($|;)|\\.xhtml($|;)|\\.seam($|;)|uploadHtml($|;)|/spring/)", sessionDispatcher);
+            dispatcher.dispatchOn(".*(block\\/)", new BlockExpiredSessionRequests(sessionDispatcher, configuration));
             dispatcher.dispatchOn(".*", resourceServer);
         } catch (Exception e) {
             throw new ServletException(e);

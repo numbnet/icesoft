@@ -32,11 +32,14 @@
 
 package com.icesoft.faces.webapp.http.servlet;
 
+import com.icesoft.faces.async.render.GroupAsyncRenderer;
 import com.icesoft.faces.context.View;
 import com.icesoft.faces.context.ViewStatus;
 import com.icesoft.faces.env.Authorization;
 import com.icesoft.faces.webapp.http.common.Configuration;
+import com.icesoft.faces.webapp.http.common.standard.ResponseHandlerServer;
 import com.icesoft.faces.webapp.http.core.SessionExpiredException;
+import com.icesoft.faces.webapp.http.core.SessionExpiredResponse;
 import com.icesoft.util.ThreadLocalUtility;
 
 import java.io.Externalizable;
@@ -77,6 +80,7 @@ public abstract class SessionDispatcher implements PseudoServlet {
     private final Map activeRequests = new HashMap();
     private final String sessionIdDelimiter;
     private final PseudoServlet notFoundServer;
+    private final PseudoServlet sessionExpiredServlet;
 
     private ServletContext context;
 
@@ -85,6 +89,7 @@ public abstract class SessionDispatcher implements PseudoServlet {
         this.context = context;
         this.sessionIdDelimiter = configuration.getAttribute("sessionIdDelimiter", null);
         this.notFoundServer = new BasicAdaptingServlet(new NotFoundServer(), configuration);
+        this.sessionExpiredServlet = new BasicAdaptingServlet(new ResponseHandlerServer(SessionExpiredResponse.Handler), configuration);
     }
 
     public void service(HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -103,6 +108,8 @@ public abstract class SessionDispatcher implements PseudoServlet {
             } else {
                 notFoundServer.service(request, response);
             }
+        } catch (SessionExpiredException e) {
+            sessionExpiredServlet.service(request, response);
         } finally {
             //remove the request from the active requests pool
             removeRequest(id, request);
