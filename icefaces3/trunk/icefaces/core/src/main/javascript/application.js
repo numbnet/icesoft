@@ -334,43 +334,50 @@ if (!window.ice.icefaces) {
             perRequestOnBeforeUpdateListeners = perRequestOnBeforeUpdateListeners || [];
             perRequestOnAfterUpdateListeners = perRequestOnAfterUpdateListeners || [];
             // Cache iceEnabled for 'success' event as submitElement may be detached from configParent
-            var iceEnabled = false;
+            var viewID;
             return function(submitEvent) {
                 var submitElement = submitEvent.source;
-                if (!iceEnabled) iceEnabled = viewIDOf(submitElement);
-
                 //if we have the submit element and the view ID set (ICEfaces render enabled) then the callbacks are invoked
-                if (submitElement && iceEnabled) {
-                    switch (submitEvent.status) {
-                        case 'begin':
-                            //Include parameter indicating if submission was triggered by client
-                            var isUserInitiatedRequest = false;
-                            if (submitElement.id != retrieveUpdateFormID(viewIDOf(submitElement))) {
-                                isUserInitiatedRequest = true;
-                            }
-                            broadcast(perRequestOnBeforeSubmitListeners, [ submitElement, isUserInitiatedRequest ]);
-                            break;
-                        case 'complete':
-                            var xmlContent = submitEvent.responseXML;
-                            if (containsXMLData(xmlContent)) {
-                                if (containsHTMLData(xmlContent)) {
-                                    //reload page when html markup is received instead of the partial update
-                                    document.location = document.location.href;
+                if (submitElement) {
+                    try {
+                        viewID = viewIDOf(submitElement);
+                    } catch (e) {
+                        //ignore failure to traverse parents when trying to find the configured viewID
+                        //assume that the traversal is done on a replaced DOM fragment
+                    }
+
+                    if (viewID) {
+                        switch (submitEvent.status) {
+                            case 'begin':
+                                //Include parameter indicating if submission was triggered by client
+                                var isUserInitiatedRequest = false;
+                                if (submitElement.id != retrieveUpdateFormID(viewIDOf(submitElement))) {
+                                    isUserInitiatedRequest = true;
+                                }
+                                broadcast(perRequestOnBeforeSubmitListeners, [ submitElement, isUserInitiatedRequest ]);
+                                break;
+                            case 'complete':
+                                var xmlContent = submitEvent.responseXML;
+                                if (containsXMLData(xmlContent)) {
+                                    if (containsHTMLData(xmlContent)) {
+                                        //reload page when html markup is received instead of the partial update
+                                        document.location = document.location.href;
+                                    } else {
+                                        broadcast(perRequestOnBeforeUpdateListeners, [ xmlContent, submitElement ]);
+                                    }
                                 } else {
-                                    broadcast(perRequestOnBeforeUpdateListeners, [ xmlContent, submitElement ]);
+                                    warn(logger, 'the response does not contain XML data');
+                                    if (configurationOf(submitElement).reloadOnUpdateFailure) {
+                                        warn(logger, 'reloading page ...');
+                                        document.location = document.location.href;
+                                    }
                                 }
-                            } else {
-                                warn(logger, 'the response does not contain XML data');
-                                if (configurationOf(submitElement).reloadOnUpdateFailure) {
-                                    warn(logger, 'reloading page ...');
-                                    document.location = document.location.href;
-                                }
-                            }
-                            break;
-                        case 'success':
-                            var xmlContent = submitEvent.responseXML;
-                            broadcast(perRequestOnAfterUpdateListeners, [ xmlContent, submitElement ]);
-                            break;
+                                break;
+                            case 'success':
+                                var xmlContent = submitEvent.responseXML;
+                                broadcast(perRequestOnAfterUpdateListeners, [ xmlContent, submitElement ]);
+                                break;
+                        }
                     }
                 } else {
                     warn(logger, 'Source element is undefined, cannot determine if this view is ICEfaces enabled.')
