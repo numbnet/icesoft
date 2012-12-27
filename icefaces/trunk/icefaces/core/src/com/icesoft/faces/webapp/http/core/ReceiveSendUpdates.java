@@ -33,11 +33,13 @@
 package com.icesoft.faces.webapp.http.core;
 
 import com.icesoft.faces.context.View;
+import com.icesoft.faces.util.CoreUtils;
 import com.icesoft.faces.webapp.http.common.Request;
 import com.icesoft.faces.webapp.http.common.Response;
 import com.icesoft.faces.webapp.http.common.ResponseHandler;
 import com.icesoft.faces.webapp.http.common.Server;
 import com.icesoft.faces.webapp.http.common.standard.NotFoundHandler;
+import com.icesoft.faces.webapp.http.servlet.CoreMessageService;
 import com.icesoft.faces.webapp.http.servlet.SessionDispatcher;
 import com.icesoft.util.pooling.CSSNamePool;
 import com.icesoft.util.pooling.ClientIdPool;
