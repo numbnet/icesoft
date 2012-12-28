@@ -130,6 +130,9 @@ var singleSubmit;
                     curry(append, onServerErrorListeners)
                 );
             }
+            if (deltaSubmit(element)) {
+                append(onAfterUpdateListeners, recalculateFormPreviousParameters(element, form));
+            }
 
             var requestScopedSubmitEventBroadcaster = submitEventBroadcaster(onBeforeSubmitListeners, onBeforeUpdateListeners, onAfterUpdateListeners);
             var requestScopedSubmitErrorBroadcaster = submitErrorBroadcaster(onNetworkErrorListeners, onServerErrorListeners);
