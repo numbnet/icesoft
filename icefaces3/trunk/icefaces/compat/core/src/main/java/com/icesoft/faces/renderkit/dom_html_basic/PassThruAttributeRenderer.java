@@ -20,7 +20,7 @@ import com.icesoft.faces.context.DOMContext;
 import com.icesoft.faces.context.effects.CurrentStyle;
 import com.icesoft.faces.context.effects.LocalEffectEncoder;
 import com.icesoft.faces.renderkit.RendererUtil;
-import com.icesoft.faces.webapp.parser.ImplementationUtil;
+import org.icefaces.util.EnvUtils;
 
 import org.w3c.dom.Element;
 
@@ -424,8 +424,7 @@ public class PassThruAttributeRenderer {
         }
         
         // For now, we just support accelerating h: component rendering
-        boolean stockAttribTracking =
-            ImplementationUtil.isStockAttributeTracking();
+        boolean stockAttribTracking = EnvUtils.isStockAttributeTracking();
         boolean attribTracking =
             stockAttribTracking &&
             uiComponent.getClass().getName().startsWith("javax.faces.component.");

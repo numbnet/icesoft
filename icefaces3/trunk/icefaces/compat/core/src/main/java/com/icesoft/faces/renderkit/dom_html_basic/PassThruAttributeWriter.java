@@ -22,7 +22,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import com.icesoft.faces.context.effects.CurrentStyle;
-import com.icesoft.faces.webapp.parser.ImplementationUtil;
+import org.icefaces.util.EnvUtils;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -383,7 +383,7 @@ public class PassThruAttributeWriter {
 
         // For now, we just support accelerating h: component rendering
         boolean stockAttribTracking =
-            ImplementationUtil.isStockAttributeTracking();
+            EnvUtils.isStockAttributeTracking();
         boolean attribTracking =
             stockAttribTracking &&
             uiComponent.getClass().getName().startsWith("javax.faces.component.");
