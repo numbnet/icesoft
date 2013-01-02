@@ -104,7 +104,6 @@ public class ViewSwitcherTag extends BaseSimpleTag{
 	private void setCookie(VIEW_TYPE view){
 		//detect mobile, tablet, or desktop
 		Cookie cookie = new Cookie(COOKIE_NAME, view.param);
-		cookie.setHttpOnly(false);
 		cookie.setPath("/");
 		getResponse().addCookie(cookie);
 	}
