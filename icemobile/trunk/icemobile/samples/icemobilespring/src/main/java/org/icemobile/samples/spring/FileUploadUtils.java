@@ -77,7 +77,7 @@ public class FileUploadUtils {
         String uuid = Long.toString(
                 Math.abs(UUID.randomUUID().getMostSignificantBits()), 32);
         String filename = "media/"+prefix+"-"+uuid+"."+suffix;
-        File newFile = new File(request.getServletContext().getRealPath("/" + filename));
+        File newFile = new File(request.getSession(true).getServletContext().getRealPath("/" + filename));
         
         if ((null != file) && !file.isEmpty()) {
             file.transferTo(newFile);

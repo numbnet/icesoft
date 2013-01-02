@@ -34,7 +34,6 @@ import org.icefaces.application.PortableRenderer;
 import org.icefaces.application.PushMessage;
 import org.icefaces.application.PushRenderer;
 import org.icefaces.mobi.utils.MobiJSFUtils;
-import org.icefaces.mobi.utils.Utils;
 import org.icemobile.samples.mediacast.navigation.NavigationModel;
 
 /**
