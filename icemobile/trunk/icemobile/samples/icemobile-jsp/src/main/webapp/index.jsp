@@ -14,7 +14,7 @@
   ~ governing permissions and limitations under the License.
   --%>
 
-<%@ taglib uri="http://java.sun.com/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://www.icemobile.org/tags" prefix="mobi" %>
 <!DOCTYPE html >
 <html>
