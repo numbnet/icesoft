@@ -15,6 +15,7 @@
  */
 package org.icemobile.util;
 
+import java.io.Serializable;
 import java.util.logging.Logger;
 
 import javax.servlet.ServletContext;
@@ -27,7 +28,7 @@ import javax.servlet.http.HttpSession;
  * Will detect the OS and 
  *
  */
-public class ClientDescriptor {
+public class ClientDescriptor implements Serializable{
     
     private final static String SESSION_KEY = "mobiClient";
     private final static String HEADER_ACCEPT = "Accept";
