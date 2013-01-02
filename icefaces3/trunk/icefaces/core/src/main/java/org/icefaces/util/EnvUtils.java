@@ -32,6 +32,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -147,6 +148,19 @@ public class EnvUtils {
             icepushPresent = true;
         } catch (ClassNotFoundException e) {
             icepushPresent = false;
+        }
+    }
+
+    /**
+     * Whether stock JSF components' set attributes are tracked.
+     */
+    private static boolean isStockAttributeTracking = false;
+
+    static {
+        try {
+            javax.faces.component.html.HtmlOutputText comp = new javax.faces.component.html.HtmlOutputText();
+            isStockAttributeTracking = isAttributeTracking(comp);
+        } catch (Throwable t) {
         }
     }
 
@@ -762,6 +776,51 @@ public class EnvUtils {
     public static String getVersionableTypes(FacesContext context) {
         return EnvConfig.getEnvConfig(context).versionableTypes;
     }
+
+    /**
+     * @return Whether stock JSF components' set attributes are tracked.
+     * @see #isAttributeTracking
+     */
+    public static boolean isStockAttributeTracking() {
+        return isStockAttributeTracking;
+    }
+
+    /**
+     * For stock JSF components, all setting of attributes, whether by setter
+     * methods, or by puts on the the attribute map (which can delegate to
+     * setter methods), result in List UIComponent.attributesThatAreSet, aka
+     * UIComponentBase.getAttributes().get(
+     *     "javax.faces.component.UIComponentBase.attributesThatAreSet")
+     * containing that attribute name, as of JSF RI 1.2_05. This optimisation
+     * is disabled for components not in javax.faces.component.* packages,
+     * even if the component extend the stock ones. Meaning that the stock
+     * attributes become decellerated in third party components. It's possible
+     * to create the attributesThatAreSet List for 3rd party components, and
+     * have it track attribute maps puts for attributes that do not have
+     * setter methods. But setter method tracking is only enabled as of
+     * //TODO// JSF RI 1.2_xx, so we need to ascertain that separately, for ICEfaces
+     * extended and custom component rendering.
+     *
+     * @param comp An arbitrary component whose attributes are known
+     * @return If the JSF implementation tracks this component's set attributes
+     */
+    private static boolean isAttributeTracking(javax.faces.component.html.HtmlOutputText comp) {
+        boolean tracked = false;
+        comp.setTitle("value");
+        comp.getAttributes().put("lang", "value");
+        comp.getAttributes().put("no_method", "value");
+        List attributesThatAreSet = (List) comp.getAttributes().get(
+            "javax.faces.component.UIComponentBase.attributesThatAreSet");
+
+        if (attributesThatAreSet != null &&
+            attributesThatAreSet.contains("title") &&
+            attributesThatAreSet.contains("lang") &&
+            attributesThatAreSet.contains("no_method")) {
+            tracked = true;
+        }
+        return tracked;
+    }
+
 }
 
 class EnvConfig {

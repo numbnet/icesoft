@@ -18,7 +18,7 @@ package com.icesoft.faces.component.ext.renderkit;
 
 import com.icesoft.faces.component.ext.HtmlCommandLink;
 import com.icesoft.faces.renderkit.dom_html_basic.HTML;
-import com.icesoft.faces.webapp.parser.ImplementationUtil;
+import org.icefaces.util.EnvUtils;
 import org.w3c.dom.Element;
 
 import javax.faces.FacesException;
@@ -67,7 +67,7 @@ public class CommandLinkRenderer extends com.icesoft.faces.renderkit.dom_html_ba
         String str2 = "";
         //myfaces queue does not serialize
         //until the request is sent, so we must delay
-        if (ImplementationUtil.isMyFaces()) {
+        if (EnvUtils.isMyFaces()) {
             str1 = "ice.onAfterUpdate(function() {";
             str2 = "});";
         }
@@ -82,7 +82,7 @@ public class CommandLinkRenderer extends com.icesoft.faces.renderkit.dom_html_ba
         String str2 = "";
         //myfaces queue does not serialize
         //until the request is sent, so we must delay
-        if (ImplementationUtil.isMyFaces()) {
+        if (EnvUtils.isMyFaces()) {
             str1 = "ice.onAfterUpdate(function() {";
             str2 = "});";
         }
