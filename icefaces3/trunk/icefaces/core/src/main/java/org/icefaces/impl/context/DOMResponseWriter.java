@@ -20,12 +20,8 @@ import com.sun.xml.fastinfoset.dom.DOMDocumentParser;
 import com.sun.xml.fastinfoset.dom.DOMDocumentSerializer;
 import org.icefaces.impl.util.DOMUtils;
 import org.icefaces.util.EnvUtils;
-import org.w3c.dom.Attr;
-import org.w3c.dom.CDATASection;
-import org.w3c.dom.DOMException;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
+import org.w3c.dom.*;
+import org.xml.sax.SAXException;
 
 import javax.faces.application.ProjectStage;
 import javax.faces.component.UIComponent;
@@ -34,11 +30,10 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.PartialViewContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.context.ResponseWriterWrapper;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.FilterWriter;
-import java.io.IOException;
-import java.io.Writer;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -47,6 +42,15 @@ import java.util.logging.Logger;
 
 public class DOMResponseWriter extends ResponseWriterWrapper {
     private static Logger log = Logger.getLogger("org.icefaces.impl.context.DOMResponseWriter");
+    private static final DocumentBuilderFactory DB_FACTORY = DocumentBuilderFactory.newInstance();
+    private static final DocumentBuilder DB_BUILDER;
+    static {
+        try {
+            DB_BUILDER = DB_FACTORY.newDocumentBuilder();
+        } catch (ParserConfigurationException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     public static final String DEFAULT_ENCODING = "UTF-8";
     private String encoding;
@@ -73,7 +77,6 @@ public class DOMResponseWriter extends ResponseWriterWrapper {
 
     // flag to indicate that we're writing a 'style' element
     private boolean isStyle;
-
 
     public DOMResponseWriter(Writer writer, String encoding, String contentType) {
         this.writer = writer;
@@ -198,7 +201,17 @@ public class DOMResponseWriter extends ResponseWriterWrapper {
                 CDATASection section = (CDATASection) cursor;
                 section.appendData(str);
             } else {
-                appendToCursor(document.createTextNode(str));
+                try {
+                    Document doc = DB_BUILDER.parse(new ByteArrayInputStream(("<root>" + str + "</root>").getBytes(DEFAULT_ENCODING)));
+                    NodeList children = doc.getDocumentElement().getChildNodes();
+                    for (int i = 0; i < children.getLength(); i++) {
+                        Node child = children.item(i);
+                        cursor.appendChild(document.importNode(child, true));
+                    }
+                } catch (Exception e) {
+                    //cannot parse the string, adding it as text node
+                    appendToCursor(document.createTextNode(str));
+                }
             }
         } catch (Exception e) {
             log.log(Level.SEVERE, "failed to write " + str, e);

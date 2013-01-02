@@ -276,7 +276,13 @@ public class DeltaSubmitPhaseListener implements PhaseListener {
                                 selectedOptions.add(option.getAttribute("value"));
                             }
                         }
-                        if (!selectedOptions.isEmpty()) {
+                        if (selectedOptions.isEmpty()) {
+                            if (options.getLength() > 0) {
+                                //select the first item if no option is marked as selected
+                                Element option = (Element) options.item(0);
+                                multiParameters.put(name, new String[] {option.getAttribute("value")});
+                            }
+                        } else {
                             multiParameters.put(name, selectedOptions.toArray(StringArray));
                         }
                     }
