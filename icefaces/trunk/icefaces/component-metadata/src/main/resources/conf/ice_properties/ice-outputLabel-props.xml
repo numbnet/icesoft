@@ -43,6 +43,7 @@
 &pass-thru-tabindex-props;
 &pass-thru-title-props;
 &converter-props;
+&escape-props;
 <property>
 	<description>The Javascript Effect</description>
 	<property-name>effect</property-name>

@@ -34,6 +34,7 @@ package com.icesoft.faces.renderkit.dom_html_basic;
 
 import com.icesoft.faces.component.AttributeConstants;
 import com.icesoft.faces.context.DOMContext;
+import com.icesoft.faces.util.DOMUtils;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.Text;
@@ -108,12 +109,15 @@ public class LabelRenderer extends DomBasicInputRenderer {
         }
         String currentValue = getValue(facesContext, uiComponent);
         if (currentValue != null && currentValue.length() != 0) {
+            if (DOMUtils.escapeIsRequired(uiComponent)) {
+                currentValue = DOMUtils.escapeAnsi(currentValue);
+            }
             Node firstChild = root.getFirstChild();
             if (firstChild != null && firstChild instanceof Text) {
                 ((Text) firstChild).setData(currentValue);
             } else {
                 root.appendChild(
-                        domContext.createTextNode(currentValue));
+                        domContext.createTextNodeUnescaped(currentValue));
             }
         }
 
