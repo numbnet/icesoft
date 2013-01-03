@@ -16,7 +16,6 @@
 
 package org.icefaces.mobile;
 
-import com.sun.tools.corba.se.idl.StringGen;
 
 import java.io.Serializable;
 import java.lang.String;
