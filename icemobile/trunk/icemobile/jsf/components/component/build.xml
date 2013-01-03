@@ -30,10 +30,13 @@
 	<property file="../build.properties" />
 	<property file="../../build.properties" />
 	<property file="../../../build.properties" />
+ 
+    <property name="product.info" value="org/icemobile/ProductInfo.java"/>
 
 
 	<property name="lib.dir" location="../../../lib" />
 	<property name="core.dir" location="../../../core/src/main/java"/>
+    <property name="conf.dir" location="./conf"/>
 	<property name="src" location="src" />
 	<property name="resources" location="resources" />
 	<property name="build" location="build" />
@@ -233,6 +236,7 @@
 		<mkdir dir="${build}/generated" />
 		<mkdir dir="${build}/generated/base" />
 		<mkdir dir="${build}/generated/support" />
+		<antcall target="product.info"/>
 	</target>
 
 	<target name="compile-meta">
@@ -322,6 +326,7 @@
 	<delete includes="**/*-min.js" dir="${resources}" />
 
 	<antcall target="clean-skins" />
+    <delete file="${src}/${product.info}"/>
 
 	<!--   <subant buildpath="${cssurlmapper.rootdir}" target="clean"/>   -->
 </target>
@@ -544,6 +549,20 @@
 			<ignoreblank />
 		</filterchain>
 	</move>
+</target>
+
+ <target name="product.info" description="update product information">
+    <copy file="${conf.dir}/${product.info}"
+          tofile="${src}/${product.info}"
+          overwrite="true"/>
+    <replace file="${src}/${product.info}" >
+        <replacefilter token="@release.type@"      value="${release.type}"/>
+        <replacefilter token="@version.primary@"   value="${version.primary}"/>
+        <replacefilter token="@version.secondary@" value="${version.secondary}"/>
+        <replacefilter token="@version.tertiary@"  value="${version.tertiary}"/>
+        <replacefilter token="@build.number@"      value="${build.number}"/>
+        <replacefilter token="@revision@"          value="${revision}"/>
+    </replace>
 </target>
 
 
