@@ -27,20 +27,11 @@
 
         <resource-bundle>
             <base-name>
-                org.icemobile.samples.mobileshowcase.view.resources.messages
+                 org.icemobile.samples.mobileshowcase.view.resources.messages
             </base-name>
             <var>mmsgs</var>
         </resource-bundle>
 
     </application>
-
-    <navigation-rule>
-        <from-view-id>*</from-view-id>
-        <navigation-case>
-            <from-outcome>refresh-redirect</from-outcome>
-            <to-view-id>/handheld.xhtml</to-view-id>
-            <redirect/>
-        </navigation-case>
-    </navigation-rule>
 
 </faces-config>
