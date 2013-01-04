@@ -181,7 +181,7 @@ ice.ace.Calendar.prototype.destroy = function() {
 };
 
 ice.ace.Calendar.init = function(options) {
-    ice.ace.jq().ready(function() {
+//    ice.ace.jq().ready(function() {
         var widgetVar = options.widgetVar, id = options.id;
         var input = ice.ace.jq(ice.ace.escapeClientId(id) + "_input");
         var trigger = null, triggerClass = ice.ace.jq.datepicker._triggerClass;
@@ -243,5 +243,5 @@ ice.ace.Calendar.init = function(options) {
             // .remove cleans jQuery state unlike .unbind
             initEltSet.remove();
         });
-    });
+//    });
 };
