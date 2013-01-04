@@ -3227,7 +3227,11 @@ ToolTipPanelPopup = Class.create({
             var positionedOffset = srcComp.positionedOffset();
             tooltip.style.top = this.y - tooltip.offsetHeight - 4 - cumulativeOffset.top + positionedOffset.top + "px";
             tooltip.style.left = this.x + 4 - cumulativeOffset.left + positionedOffset.left + "px";
-            ToolTipPanelPopupUtil.adjustPosition(tooltip, this.x, this.y);
+            if (tooltip.getOffsetParent().hasClassName("icePnlPop")) {
+                ToolTipPanelPopupUtil.adjustPositionInDialog(tooltip);
+            } else {
+                ToolTipPanelPopupUtil.adjustPosition(tooltip, this.x, this.y);
+            }
             Ice.iFrameFix.start(this.tooltipCompId, this.iFrameUrl);
         }
         this.addToVisibleList();
@@ -3428,6 +3432,32 @@ ToolTipPanelPopupUtil = {
             }
         }
         visibleTooltipList = newList;
+    },
+    adjustPositionInDialog: function(id) {
+        var element = $(id);
+        var viewportDimensions = document.viewport.getDimensions();
+        var viewportScrollOffsets = document.viewport.getScrollOffsets();
+        var elementDimensions = element.getDimensions();
+        var elementOffsets = element.cumulativeOffset();
+        var positionedOffset = element.positionedOffset();
+
+        var diff = 0;
+        if (elementOffsets.left < viewportScrollOffsets.left) {
+            diff = viewportScrollOffsets.left - elementOffsets.left;
+        } else if (elementOffsets.left + elementDimensions.width > viewportScrollOffsets.left + viewportDimensions.width) {
+            diff = (elementOffsets.left + elementDimensions.width) - (viewportScrollOffsets.left + viewportDimensions.width);
+            diff = - Math.min(diff, (elementOffsets.left - viewportScrollOffsets.left));
+        }
+        element.style.left = positionedOffset.left + diff + "px";
+
+        diff = 0;
+        if (elementOffsets.top < viewportScrollOffsets.top) {
+            diff = viewportScrollOffsets.top - elementOffsets.top;
+        } else if (elementOffsets.top + elementDimensions.height > viewportScrollOffsets.top + viewportDimensions.height) {
+            diff = (elementOffsets.top + elementDimensions.height) - (viewportScrollOffsets.top + viewportDimensions.height);
+            diff = - Math.min(diff, (elementOffsets.top - viewportScrollOffsets.top));
+        }
+        element.style.top = positionedOffset.top + diff + "px";
     },
     adjustPosition: function(id, x, y) {
         var element = $(id);
