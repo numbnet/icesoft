@@ -24,6 +24,10 @@
     <tlib-version>2.0.0</tlib-version>
     <short-name>icemobile</short-name>
     <uri>http://www.icemobile.org/tags</uri>
+    
+    <listener>
+        <listener-class>org.icemobile.jsp.servlet.ICEmobileServletContextListener</listener-class>
+    </listener>
 
     <tag>
         <description>Show augmented reality video overlay.</description>

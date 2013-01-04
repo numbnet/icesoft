@@ -20,12 +20,12 @@ public class ProductInfo {
     /**
      * The company that owns this product.
      */
-    public static String COMPANY = "@company@";
+    public static String COMPANY = "ICEsoft Technologies, Inc.";
 
     /**
      * The name of the product.
      */
-    public static String PRODUCT = "@product@";
+    public static String PRODUCT = "ICEmobile JSP Library";
 
     /**
      * The 3 levels of version identification, e.g. 1.0.0.
@@ -88,4 +88,5 @@ public class ProductInfo {
         ProductInfo app = new ProductInfo();
         System.out.println(app.toString());
     }
+	
 }
