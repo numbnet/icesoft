@@ -25,6 +25,7 @@
     <property name="java.dir" location="src/main/java"/>
     <property name="resources.dir" location="src/main/resources"/>
     <property file="${root.offset}/build.properties"/>
+	<property name="conf.dir" location="./conf"/>
     <property name="product.info" value="org/icemobile/ProductInfo.java"/>
 	<property name="build.resources" value="${build.dir}/resources"/>
 	<property name="build.meta" value="${build.resources}/META-INF"/>
@@ -100,12 +101,10 @@
 
     <target name="product.info" description="update product information">
         <!-- <buildnumber/>  -->
-        <copy file="conf/${product.info}"
+        <copy file="${conf.dir}/${product.info}"
               tofile="${java.dir}/${product.info}"
               overwrite="true"/>
         <replace file="${java.dir}/${product.info}">
-            <replacefilter token="@company@" value="${company}"/>
-            <replacefilter token="@product@" value="${product}"/>
             <replacefilter token="@release.type@" value="${release.type}"/>
             <replacefilter token="@version.primary@"
                            value="${version.primary}"/>
