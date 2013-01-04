@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<dependencies>
+    <resource name="bridge.uncompressed.js">
+        <depends-on>
+            <resource name="jsf.js" library="javax.faces"/>
+        </depends-on>
+    </resource>
+    <resource name="bridge.js">
+        <depends-on>
+            <resource name="jsf.js" library="javax.faces"/>
+        </depends-on>
+    </resource>
+    <resource name="icepush.uncompressed.js">
+        <depends-on>
+            <resource name="jsf.js" library="javax.faces"/>
+        </depends-on>
+    </resource>
+    <resource name="icepush.js">
+        <depends-on>
+            <resource name="jsf.js" library="javax.faces"/>
+        </depends-on>
+    </resource>
+    <resource name="JavaScriptRunnerSetup" target="body">
+        <depends-on>
+            <resource name="bridge.uncompressed.js"/>
+            <resource name="bridge.js"/>
+        </depends-on>
+    </resource>
+    <resource name="JavaScriptContextSetup" target="body">
+        <depends-on>
+            <resource name="bridge.uncompressed.js"/>
+            <resource name="bridge.js"/>
+        </depends-on>
+    </resource>
+    <resource name="TestScript">
+        <depends-on>
+            <resource name="bridge.uncompressed.js"/>
+            <resource name="bridge.js"/>
+        </depends-on>
+    </resource>
+    <resource name="CoreCSSOutput">
+        <depends-on>
+            <resource name="bridge.uncompressed.js"/>
+            <resource name="bridge.js"/>
+        </depends-on>
+    </resource>
+</dependencies>
