@@ -10,8 +10,8 @@
             <resource name="util/ace-yui.js" library="icefaces.ace"/>
             <resource name="util/ace-jquery.js" library="icefaces.ace"/>
             <resource name="util/combined.css"  library="icefaces.ace"/>
-            <resource name="bridge.uncompressed.js"/>
-            <resource name="bridge.js"/>
+            <resource name="bridge.uncompressed.js" library="ice.core"/>
+            <resource name="bridge.js" library="ice.core"/>
         </depends-on>
     </resource>
     <resource name="autocompleteentry/autocompleteentry.js" library="icefaces.ace">
@@ -45,7 +45,7 @@
             <resource name="fileentry/fileEntry.css" library="icefaces.ace"/>
         </depends-on>
     </resource>
-    <resource name="util/combined.css"  library="icefaces.ace">
+    <resource name="util/combined.css" library="icefaces.ace">
         <depends-on>
 				    <resource name="themes/rime/theme.css" library="icefaces.ace"/>
 				    <resource name="themes/sam/theme.css" library="icefaces.ace"/>

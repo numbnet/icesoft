@@ -1,47 +1,47 @@
 <?xml version="1.0"?>
 <dependencies>
-    <resource name="bridge.uncompressed.js">
+    <resource name="bridge.uncompressed.js" library="ice.core">
         <depends-on>
             <resource name="jsf.js" library="javax.faces"/>
         </depends-on>
     </resource>
-    <resource name="bridge.js">
+    <resource name="bridge.js" library="ice.core">
         <depends-on>
             <resource name="jsf.js" library="javax.faces"/>
         </depends-on>
     </resource>
-    <resource name="icepush.uncompressed.js">
+    <resource name="icepush.uncompressed.js" library="ice.push">
         <depends-on>
             <resource name="jsf.js" library="javax.faces"/>
         </depends-on>
     </resource>
-    <resource name="icepush.js">
+    <resource name="icepush.js" library="ice.push">
         <depends-on>
             <resource name="jsf.js" library="javax.faces"/>
         </depends-on>
     </resource>
     <resource name="JavaScriptRunnerSetup" target="body">
         <depends-on>
-            <resource name="bridge.uncompressed.js"/>
-            <resource name="bridge.js"/>
+            <resource name="bridge.uncompressed.js" library="ice.core"/>
+            <resource name="bridge.js" library="ice.core"/>
         </depends-on>
     </resource>
     <resource name="JavaScriptContextSetup" target="body">
         <depends-on>
-            <resource name="bridge.uncompressed.js"/>
-            <resource name="bridge.js"/>
+            <resource name="bridge.uncompressed.js" library="ice.core"/>
+            <resource name="bridge.js" library="ice.core"/>
         </depends-on>
     </resource>
     <resource name="TestScript">
         <depends-on>
-            <resource name="bridge.uncompressed.js"/>
-            <resource name="bridge.js"/>
+            <resource name="bridge.uncompressed.js" library="ice.core"/>
+            <resource name="bridge.js" library="ice.core"/>
         </depends-on>
     </resource>
     <resource name="CoreCSSOutput">
         <depends-on>
-            <resource name="bridge.uncompressed.js"/>
-            <resource name="bridge.js"/>
+            <resource name="bridge.uncompressed.js" library="ice.core"/>
+            <resource name="bridge.js" library="ice.core"/>
         </depends-on>
     </resource>
 </dependencies>
