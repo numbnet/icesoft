@@ -173,23 +173,28 @@ ice.ace.List.prototype.dragToHandler = function(event, ui) {
                         this.read('reorderings'),
                         idIndex);
 
-        if (index != this.startIndex) do {
+        // If item is in a new position
+        if (index != this.startIndex) {
+            // Alter selection state
             if (this.cfg.selection) {
                 this.deselectAll();
                 this.deselectConnectedLists();
                 this.addSelectedItem(item, idIndex);
             }
 
-            var record = [];
-            record.push(from.index());
-            record.push(to.index());
+            // Update ID indexes of all previous items
+            do {
+                var record = [];
+                record.push(from.index());
+                record.push(to.index());
 
-            swapRecords.splice(recordStart,0,record);
-            this.swapIdPrefix(from, to);
+                swapRecords.splice(recordStart,0,record);
+                this.swapIdPrefix(from, to);
 
-            to = from;
-            from = lower ? to.prev() : to.next();
-        } while (to.index() != this.startIndex);
+                to = from;
+                from = lower ? to.prev() : to.next();
+            } while (to.index() != this.startIndex);
+        }
 
         this.write('reorderings', swapRecords);
 
