@@ -747,6 +747,9 @@ public class EnvUtils {
             return null;
         }
         Map viewMap = viewRoot.getViewMap();
+        if(viewMap == null){
+            return null;
+        }
         return viewMap.get(name);
     }
 
