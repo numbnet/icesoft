@@ -608,13 +608,13 @@ ice.ace.List.prototype.swapIdPrefix = function(from, to) {
 };
 
 ice.ace.List.prototype.read = function(field) {
-    var contents = this.element.find(' > input[name="'+this.jqId.substr(1)+'_'+field+'"]').attr('value');
+    var contents = this.element.children('input[name="'+this.jqId.substr(1)+'_'+field+'"]').attr('value');
     if (contents != "") return JSON.parse(contents);
     else return [];
 };
 
 ice.ace.List.prototype.write= function(field, data) {
-    var element = this.element.find(' > input[name="'+this.jqId.substr(1)+'_'+field+'"]');
+    var element = this.element.children('input[name="'+this.jqId.substr(1)+'_'+field+'"]');
     element.attr('value', JSON.stringify(data));
 };
 
