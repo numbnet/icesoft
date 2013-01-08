@@ -189,6 +189,9 @@ public class BridgeSetup implements SystemEventListener {
                     writer.endElement("span");
                 }
             };
+            Map attributes = icefacesSetup.getAttributes();
+            attributes.put("name", "ICEfacesSetup");
+            attributes.put("library", "ice.core");
             icefacesSetup.setTransient(true);
             icefacesSetup.setId(viewID + "_icefaces_config");
             bodyResources.add(icefacesSetup);

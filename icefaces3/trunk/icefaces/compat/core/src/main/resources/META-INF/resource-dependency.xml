@@ -12,16 +12,19 @@
             <resource name="bridge.js" library="ice.core" target="head"/>
         </depends-on>
     </resource>
-    <resource name="icefaces-compat.uncompressed.js" library="" target="head">
+    <resource name="icefaces-compat.uncompressed.js" library="ice.compat" target="head">
         <depends-on>
-            <resource name="jsf.js" library="javax.faces" target="head"/>
-            <resource name="bridge.uncompressed.js" library="ice.core" target="head"/>
+            <resource name="compat.uncompressed.js" library="ice.compat" target="head"/>
         </depends-on>
     </resource>
     <resource name="icefaces-compat.js" library="ice.compat" target="head">
         <depends-on>
-            <resource name="jsf.js" library="javax.faces" target="head"/>
-            <resource name="bridge.js" library="ice.core" target="head"/>
+            <resource name="compat.js" library="ice.compat" target="head"/>
+        </depends-on>
+    </resource>
+    <resource name="ICEfacesCompatSetup" library="ice.compat" target="body">
+        <depends-on>
+            <resource name="ICEfacesSetup" library="ice.core" target="body"/>
         </depends-on>
     </resource>
 </dependencies>
