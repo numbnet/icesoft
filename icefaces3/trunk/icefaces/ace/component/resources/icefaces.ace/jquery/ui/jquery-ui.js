@@ -4418,6 +4418,7 @@
         _create: function() {
             var self = this,
                     options = self.options;
+            var ariaEnabled = this.options.ariaEnabled;
 
             self.running = 0;
 
@@ -4482,24 +4483,36 @@
             self.resize();
 
             // ARIA
+            if (ariaEnabled) {
             self.element.attr( "role", "tablist" );
+            self.element.attr( "aria-multiselectable", "true" );
+            }
 
             self.headers
-                    .attr( "role", "tab" )
                     .bind( "keydown.accordion", function( event ) {
                         return self._keydown( event );
-                    })
+                    });
+            if (ariaEnabled) {
+            self.headers
+                    .attr( "role", "tab" )
                     .next()
                     .attr( "role", "tabpanel" );
+                self.headers.attr("aria-controls", function () {
+                    return $(this).next().attr("id")
+                });
+                self.headers.next().attr("aria-labelledby", function () {
+                    return $(this).prev().attr("id")
+                });
+            }
 
             self.headers
                     .not( self.active || "" )
                     .attr({
-                        "aria-expanded": "false",
-                        "aria-selected": "false",
+                        "aria-expanded": function () { return ariaEnabled ? "false" : undefined; },
+                        "aria-selected": function () { return ariaEnabled ? "false" : undefined; },
                         tabIndex: -1
                     })
-                    .next()
+                    .next().attr("aria-hidden", function () { return ariaEnabled ? "true" : undefined; })
                     .hide();
 
             // make sure at least one header is in the tab order
@@ -4508,10 +4521,11 @@
             } else {
                 self.active
                         .attr({
-                    "aria-expanded": "true",
-                    "aria-selected": "true",
+                    "aria-expanded": function () { return ariaEnabled ? "true" : undefined; },
+                    "aria-selected": function () { return ariaEnabled ? "true" : undefined; },
                     tabIndex: 0
-                });
+                })
+                .next().attr("aria-hidden", function () { return ariaEnabled ? "false" : undefined; });
             }
 
             // only need links in tab order for Safari
@@ -4547,6 +4561,7 @@
 
         destroy: function() {
             var options = this.options;
+            var ariaEnabled = this.options.ariaEnabled;
 
             this.element
                     .removeClass( "ui-accordion ui-widget ui-helper-reset" )
@@ -4555,17 +4570,26 @@
             this.headers
                     .unbind( ".accordion" )
                     .removeClass( "ui-accordion-header ui-accordion-disabled ui-helper-reset ui-state-default ui-corner-all ui-state-active ui-state-disabled ui-corner-top" )
+                    .removeAttr( "tabIndex" );
+            if (ariaEnabled) {
+                this.headers
                     .removeAttr( "role" )
                     .removeAttr( "aria-expanded" )
                     .removeAttr( "aria-selected" )
-                    .removeAttr( "tabIndex" );
+                    .removeAttr( "aria-controls" );
+            }
 
             this.headers.find( "a" ).removeAttr( "tabIndex" );
             this._destroyIcons();
             var contents = this.headers.next()
                     .css( "display", "" )
-                    .removeAttr( "role" )
                     .removeClass( "ui-helper-reset ui-widget-content ui-corner-bottom ui-accordion-content ui-accordion-content-active ui-accordion-disabled ui-state-disabled" );
+            if (ariaEnabled) {
+                contents
+                    .removeAttr( "role" )
+                    .removeAttr( "aria-hidden" )
+                    .removeAttr( "aria-labelledby" );
+            }
             if ( options.autoHeight || options.fillHeight ) {
                 contents.css( "height", "" );
             }
@@ -4775,6 +4799,7 @@
         _toggle: function( toShow, toHide, data, clickedIsActive, down ) {
             var self = this,
                     options = self.options;
+            var ariaEnabled = this.options.ariaEnabled;
 
             self.toShow = toShow;
             self.toHide = toHide;
@@ -4859,17 +4884,23 @@
             }
 
             // TODO assert that the blur and focus triggers are really necessary, remove otherwise
+            if (ariaEnabled) {
+                toHide.attr({ "aria-hidden": "true" });
+            }
             toHide.prev()
                     .attr({
-                        "aria-expanded": "false",
-                        "aria-selected": "false",
+                        "aria-expanded": function () { return ariaEnabled ? "false" : undefined; },
+                        "aria-selected": function () { return ariaEnabled ? "false" : undefined; },
                         tabIndex: -1
                     })
                     .blur();
+            if (ariaEnabled) {
+                toShow.attr({ "aria-hidden": "false" });
+            }
             toShow.prev()
                     .attr({
-                        "aria-expanded": "true",
-                        "aria-selected": "true",
+                        "aria-expanded": function () { return ariaEnabled ? "true" : undefined; },
+                        "aria-selected": function () { return ariaEnabled ? "true" : undefined; },
                         tabIndex: 0
                     })
                     .focus();

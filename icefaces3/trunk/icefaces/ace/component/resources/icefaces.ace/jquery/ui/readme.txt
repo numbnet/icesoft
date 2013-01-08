@@ -12,3 +12,4 @@ ICE-8695: Added ARIA role and attributes to Dialog.
 ICE-8801: Add ARIA role and attributes to ProgressBar.
 ICE-8692: Add ARIA Roles for ace:dateTimeEntry.
 ICE-8820: ace:dateTimeEntry - Now and Today button functionality is inconsistent.
+ICE-8868: Add ARIA role and attributes to Accordion.
