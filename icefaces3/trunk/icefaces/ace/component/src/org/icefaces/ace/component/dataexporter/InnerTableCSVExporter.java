@@ -50,6 +50,8 @@ public class InnerTableCSVExporter extends CSVExporter {
 	
 	@Override
 	public String export(FacesContext facesContext, DataExporter component, DataTable table) throws IOException {
+		table.setModel(null);
+		table.getModel();
 		setUp(component, table);
 		StringBuilder builder = new StringBuilder();
 		List<UIColumn> columns = getColumnsToExport(table, excludeColumns);
