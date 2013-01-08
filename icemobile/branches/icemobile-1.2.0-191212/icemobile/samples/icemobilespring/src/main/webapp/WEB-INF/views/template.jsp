@@ -31,7 +31,7 @@
         <div class="ajaxzone">
             <mobi:pagePanel>
                 <mobi:pagePanelHeader>
-                    <a href="menu" id="menuLink" class="mobi-button ui-icon ui-icon-menu ui-icon-shadow"></a>
+                    <a href="<c:url value="/menu"/>" id="menuLink" class="mobi-button ui-icon ui-icon-menu ui-icon-shadow"></a>
                     ${param.demoTitle}
                 </mobi:pagePanelHeader>
                 <mobi:pagePanelBody noFooter="true">
@@ -79,13 +79,13 @@
       //precache commonly used images
         var preloaded = new Array();
         preloaded[0] = document.createElement('img');
-        preloaded[0].setAttribute('src','./resources/auction/icebreaker.png');
+        preloaded[0].setAttribute('src','<c:url value="/resources/auction/icebreaker.png"/>');
         preloaded[1] = document.createElement('img');
-        preloaded[1].setAttribute('src','./resources/auction/icecar.png');
+        preloaded[1].setAttribute('src','<c:url value="/resources/auction/icecar.png"/>');
         preloaded[2] = document.createElement('img');
-        preloaded[2].setAttribute('src','./resources/auction/icesailor.png');
+        preloaded[2].setAttribute('src','<c:url value="/resources/auction/icesailor.png"/>');
         preloaded[3] = document.createElement('img');
-        preloaded[3].setAttribute('src','./resources/auction/iceskate.png');
+        preloaded[3].setAttribute('src','<c:url value="/resources/auction/iceskate.png"/>');
     </script>
 </body>
 </html>
