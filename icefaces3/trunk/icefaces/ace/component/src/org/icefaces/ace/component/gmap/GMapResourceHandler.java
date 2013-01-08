@@ -133,6 +133,14 @@ public class GMapResourceHandler extends ResourceHandlerWrapper {
             this.mimeType = externalContext.getMimeType(localPath);
         }
 
+        public String getLibraryName() {
+            return ICEFACES_ACE_LIB;
+        }
+
+        public String getResourceName() {
+            return GMAP_API;
+        }
+
         public InputStream getInputStream() throws IOException {
             return new ByteArrayInputStream(content);
         }
