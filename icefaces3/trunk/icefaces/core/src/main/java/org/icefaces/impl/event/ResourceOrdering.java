@@ -131,13 +131,17 @@ public class ResourceOrdering implements SystemEventListener {
             }
         }
         //append the rest of the components that do not have dependency data
-        orderedChildren.addAll(resourceContainer.getChildren());
+        List<UIComponent> remainingChildren = new ArrayList<UIComponent>(resourceContainer.getChildren());
+        for (UIComponent next: remainingChildren) {
+            root.removeComponentResource(context, next, target);
+            orderedChildren.add(next);
+        }
 
         for (UIComponent componentResource : orderedChildren) {
             root.addComponentResource(context, componentResource, target);
         }
 
-        //restore reource container to non transient state
+        //restore resource container to non transient state
         resourceContainer.setInView(true);
     }
 
