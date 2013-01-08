@@ -26,7 +26,7 @@
                     href='<c:url value="/app?page=gallery&view=${view}"/>'
                 >Gallery</a>
                 <span>Mediacast</span>
-                <img src="./resources/images/icemobile.png"
+                <img src="<c:url value="/resources/images/icemobile.png"/>"
                     style="position: absolute; top: 10px; right: 2em;"
                 />
             </mobi:pagePanelHeader>

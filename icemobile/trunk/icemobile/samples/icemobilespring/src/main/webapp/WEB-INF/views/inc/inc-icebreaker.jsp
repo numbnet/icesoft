@@ -15,7 +15,7 @@
   --%>
 
 <div class="example">
-    <img src="resources/auction/icebreaker.png"/>
+    <img src="<c:url value="/resources/auction/icebreaker.png" />"/>
     <p><strong>ICEsoft Icebreaker</strong><br/>
         Used icebreaker with very few dents.</p>
 </div>
