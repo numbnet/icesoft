@@ -65,7 +65,7 @@ public class DeviceResourceTag extends BaseSimpleTag {
 	public static final String LINK_SHORTCUT_ICON = "<link href='%s/resources/images/favicon.ico' rel='shortcut icon' type='image/x-icon'/>";
 	public static final String LINK_FAV_ICON = "<link href='%s/resources/images/favicon.ico' rel='icon' type='image/x-icon'/>";
 	
-	public static final String SCRIPT_ICEPUSH = "<script type='text/javascript' src='code.icepush'></script>";
+	public static final String SCRIPT_ICEPUSH = "<script type='text/javascript' src='%s/code.icepush'></script>";
 	public static final String SCRIPT_ICEMOBILE = "<script type='text/javascript' src='%s%s/javascript/icemobile.js'></script>";
 	public static final String SCRIPT_ICEMOBILE_PROD = "<script type='text/javascript' src='%s%s/javascript/icemobile-min.js'></script>";
 	public static final String SCRIPT_SIMULATOR = "<script type='text/javascript' src='%s%s/javascript/simulator-interface.js'></script>";
@@ -133,7 +133,7 @@ public class DeviceResourceTag extends BaseSimpleTag {
 		}
 		
 		if( includePush ){
-			out.write(SCRIPT_ICEPUSH);
+			out.write(String.format(SCRIPT_ICEPUSH,contextRoot));
             String cloudPushId = Utils.getCloudPushId(getRequest());
             if (null != cloudPushId) {
                 out.write("<script type='text/javascript'>");
