@@ -9,6 +9,8 @@ import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
 import java.io.Serializable;
 
 /**
@@ -57,6 +59,7 @@ import java.io.Serializable;
 @CustomScoped(value = "#{window}")
 public class ChartExportBean extends ComponentExampleImpl<ChartExportBean> implements Serializable {
     public static final String BEAN_NAME = "chartExportBean";
+    boolean requestOldIE;
 
     public ChartExportBean() {
         super(ChartExportBean.class);
@@ -65,5 +68,13 @@ public class ChartExportBean extends ComponentExampleImpl<ChartExportBean> imple
     @PostConstruct
     public void initMetaData() {
         super.initMetaData();
+        FacesContext context = FacesContext.getCurrentInstance();
+        ExternalContext ec = context.getExternalContext();
+        String ua = ec.getRequestHeaderMap().get("user-agent");
+        requestOldIE = ua.contains("MSIE 7.0;") || ua.contains("MSIE 8.0;") ;
+    }
+
+    public boolean isRequestOldIE() {
+        return requestOldIE;
     }
 }
