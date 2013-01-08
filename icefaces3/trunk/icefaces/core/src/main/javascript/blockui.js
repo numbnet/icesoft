@@ -63,8 +63,8 @@
             var capturingElement = capturedBy(ev);
             cancel(ev);
             debug(logger, 'event [type: ' + evenType +
-                ', triggered by: ' + identifier(triggeringElement) || triggeringElement +
-                ', captured in: ' + identifier(capturingElement) || capturingElement + '] was discarded.');
+                ', triggered by: ' + (identifier(triggeringElement) || triggeringElement) +
+                ', captured in: ' + (identifier(capturingElement) || capturingElement) + '] was discarded.');
         }
     }
 
