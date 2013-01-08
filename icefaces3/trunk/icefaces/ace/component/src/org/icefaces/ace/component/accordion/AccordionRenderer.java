@@ -42,6 +42,7 @@ import org.icefaces.ace.renderkit.CoreRenderer;
 import org.icefaces.ace.util.ComponentUtils;
 import org.icefaces.ace.util.JSONBuilder;
 import org.icefaces.render.MandatoryResourceComponent;
+import org.icefaces.util.EnvUtils;
 
 @MandatoryResourceComponent(tagName="accordion", value="org.icefaces.ace.component.accordion.Accordion")
 public class AccordionRenderer extends CoreRenderer {
@@ -134,6 +135,8 @@ public class AccordionRenderer extends CoreRenderer {
             jb.entry("ajaxTabChange", true);
         }
         encodeClientBehaviors(context, acco, jb);
+        jb.entry("ariaEnabled", EnvUtils.isAriaEnabled(context));
+//        jb.entry("ariaEnabled", false);
 
         jb.endMap().endFunction();
 		writer.write(jb.toString());
@@ -162,9 +165,11 @@ public class AccordionRenderer extends CoreRenderer {
 			
 			if(kid.isRendered() && kid instanceof AccordionPane) {
 				AccordionPane tab = (AccordionPane) kid;
+                String clientId = kid.getClientId(context);
 				
 				//title
 				writer.startElement("h3", null);
+                writer.writeAttribute("id", clientId + "_header", null);
 				writer.startElement("a", null);
 				writer.writeAttribute("href", "#", null);
 				if(tab.getTitle() != null) {
@@ -172,8 +177,6 @@ public class AccordionRenderer extends CoreRenderer {
 				}
 				writer.endElement("a");
 				writer.endElement("h3");
-				
-				String clientId = kid.getClientId(context);
 				
 				//content
 				writer.startElement("div", null);
