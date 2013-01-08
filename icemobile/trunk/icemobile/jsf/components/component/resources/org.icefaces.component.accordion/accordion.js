@@ -181,6 +181,10 @@
                     if (openElem.className=="open"){
                         closePane(openElem, handleht);
                     } else {
+                        //contents may have changed so get new ones or may be single pane MOBI-611
+                        if (cached!=true){
+                            ice.se(null, clientId);
+                        }
                         openPane( openElem, fixedHeight);
                     }
                 }
