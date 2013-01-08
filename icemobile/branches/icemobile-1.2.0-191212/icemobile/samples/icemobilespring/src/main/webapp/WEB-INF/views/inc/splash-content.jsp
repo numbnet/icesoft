@@ -25,7 +25,7 @@
             <figure>
                 <img
                         style="width:125px;height:125px;"
-                        src="./resources/qrcode.png"/>
+                        src="<c:url value="/resources/qrcode.png"/>"/>
             </figure>
             <header>
                 <h3>ICEmobile Showcase</h3>
@@ -34,7 +34,7 @@
             </header>
             
             <mobi:smallView>
-                <a href="menu" id="menuLink2" style="margin:10px auto; display:block;">View the examples</a>
+                <a href="<c:url value="/menu"/>" id="menuLink2" style="margin:10px auto; display:block;">View the examples</a>
                 <script type="text/javascript">
                     MvcUtil.enhanceLink(document.getElementById('menuLink2'),"body");
                 </script>

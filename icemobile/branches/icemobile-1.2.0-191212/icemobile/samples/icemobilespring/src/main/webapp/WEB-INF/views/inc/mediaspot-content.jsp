@@ -92,7 +92,7 @@
 	<mobi:fieldsetGroup>
 		<mobi:fieldsetRow style="text-align:left">
             Print, cut-out, then view the <a
-				href="resources/images/markers.html"
+				href="<c:url value="/resources/images/markers.html"/>"
 				style="color: rgb(101, 149, 249); text-decoration: none">Augmented
 				Reality Markers</a> 
             with 3D overlays. (This is an alpha level feature on iOS only.
