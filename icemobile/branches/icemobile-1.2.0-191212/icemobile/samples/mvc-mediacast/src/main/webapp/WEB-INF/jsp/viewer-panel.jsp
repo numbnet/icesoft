@@ -31,13 +31,13 @@
         <c:if test="${not empty media.video}">
             <h3>Video</h3>
             <div>
-                <video src="resources/uploads/${media.video.name}" controls="controls"></video>
+                <video src="<c:url value="/resources/uploads/${media.video.name}"/>" controls="controls"></video>
             </div>
         </c:if>
         <c:if test="${not empty media.audio}">
             <h3>Audio</h3>
             <div>
-                <audio src="resources/uploads/${media.audio.name}" controls="controls"></audio>
+                <audio src="<c:url value="/resources/uploads/${media.audio.name}"/>" controls="controls"></audio>
             </div>
         </c:if>
     </c:if>
