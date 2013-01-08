@@ -22,7 +22,7 @@
     <mobi:pagePanel>
         <mobi:pagePanelHeader>
             
-            <img src="./resources/images/icemobile_thumb.png"/>
+            <img src="<c:url value="/resources/images/icemobile_thumb.png"/>"/>
             ICEmobile Mediacast
         </mobi:pagePanelHeader>
         <mobi:pagePanelBody>

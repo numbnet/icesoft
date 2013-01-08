@@ -27,7 +27,7 @@
     			<a id="backBtn" class="mobi-button mobi-button-default"
     				href='<c:url value="/app?page=upload&view=${view}"/>'>Upload</a>
     			<span>Mediacast</span>
-                <img src="./resources/images/icemobile.png" style="position: absolute;top: 10px;right: 2em;"/>
+                <img src="<c:url value="/resources/images/icemobile.png"/>" style="position: absolute;top: 10px;right: 2em;"/>
     		</mobi:pagePanelHeader>
     		<mobi:pagePanelBody>
     		    <%@ include file="/WEB-INF/jsp/gallery-list.jsp" %>
