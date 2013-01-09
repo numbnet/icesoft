@@ -46,6 +46,8 @@ public class GalleryView implements Serializable {
 	private List<MediaMessage> filteredMessages = new ArrayList<MediaMessage>();
 	private int filteredMessagesCount = 0;
 	
+	private Map<String,String> tagInCurrentFilters = new HashMap<String,String>();
+	
 	private static final Logger log =
             Logger.getLogger(GalleryView.class.toString());
 	
