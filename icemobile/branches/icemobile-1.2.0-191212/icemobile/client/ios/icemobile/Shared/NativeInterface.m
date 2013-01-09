@@ -528,7 +528,7 @@ NSLog(@"Found record %@", result);
 
 - (BOOL)aug: (NSString*)augId locations:(NSDictionary *)places {
     self.activeDOMElementId = augId;
-    LogTrace(@"NativeInterface aug ");
+    NSLog(@"NativeInterface aug ");
     if (nil == self.augController)  {
         if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)  {
             self.augController = [[ARViewController alloc] 
@@ -540,7 +540,7 @@ NSLog(@"Found record %@", result);
         augController.nativeInterface = self;
     }
     NSString *viewer = [places objectForKey:@"v"];
-    LogDebug(@"NativeInterface aug VIEWER %@", viewer);
+    NSLog(@"NativeInterface aug VIEWER %@", viewer);
     if ([viewer isEqualToString:@"vuforia"])  {
         [self augMarkerView:augId withMarkers:places];
         return YES;
@@ -634,9 +634,9 @@ NSLog(@"Found record %@", result);
 
 - (void)augMarkerView:(NSString*) augId withMarkers:(NSDictionary *)markers  {
 #ifdef USE_ARMARKER
-    LogTrace(@"NativeInterface augMarkerView");
+    NSLog(@"NativeInterface augMarkerView");
 
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)  {
+//    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)  {
 //        if (nil == self.augPopover)  {
 //            augPopover = [[UIPopoverController alloc]
 //                    initWithContentViewController:augController];
@@ -646,14 +646,15 @@ NSLog(@"Found record %@", result);
 //                                 inView:self.controller.view
 //               permittedArrowDirections:UIPopoverArrowDirectionAny 
 //                               animated:YES];
-    } else {
+//    } else {
         ARMarkerViewer *arMarkerViewer = [[ARMarkerViewer alloc] init];
         arMarkerViewer.nativeInterface = self;
         arMarkerViewer.arViewRect = [[UIScreen mainScreen] bounds];
         arMarkerViewer.markers = markers;
         [controller presentModalViewController:[arMarkerViewer arMarkerController] animated:YES];
-    }
-
+//    }
+#else
+    NSLog(@"NativeInterface not compiled for augMarkerView");
 #endif
 }
 
