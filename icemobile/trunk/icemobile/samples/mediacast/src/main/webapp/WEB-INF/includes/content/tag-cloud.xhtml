@@ -27,7 +27,7 @@
 			<ul class="weighted" style="font-size: 50%">
 				<ui:repeat var="tag" value="#{mediaStore.tags}">
 					<li>
-						<h:commandLink styleClass="#{galleryView.tagInCurrentFilters(tag) ? 'selected' : ''}"
+						<h:commandLink styleClass="#{not empty galleryView.tagInCurrentFilters[tag] ? 'selected' : ''}"
 							actionListener="#{galleryView.toggleFilter}"
 							style="font-size:#{mediaStore.tagWeightMap[tag]}pt">
 							<f:attribute name="tag" value="#{tag}"/>
