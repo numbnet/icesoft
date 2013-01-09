@@ -270,7 +270,8 @@ public class AutoCompleteEntryRenderer extends InputRenderer {
         } else {
             writer.startElement("div", null);
 			writer.writeAttribute("id", clientId + "_update", null);
-			encodeDynamicScript(facesContext, autoCompleteEntry, "");
+			String call = "ice.ace.Autocompleters[\"" + clientId + "\"].updateNOW('');";
+			encodeDynamicScript(facesContext, autoCompleteEntry, call);
 			writer.endElement("div");
 		}
     }
