@@ -1074,7 +1074,7 @@ ice.ace.DataTable.prototype.resizeScrolling = function () {
                 // Adjust last column size to stop prevent horizontal scrollbar / align vertical
                 if (i == 0) {
                     if (ie9) bodyColumnWidth = bodySingleColWidths[i] - 1;
-                    else if (firefox && !mac) bodyColumnWidth = bodySingleColWidths[i] + 1;
+                    else if (firefox && !mac) bodyColumnWidth = bodySingleColWidths[i];
                 }
 
                 // Set Duplicate Header Sizing to Body Columns
@@ -1084,7 +1084,7 @@ ice.ace.DataTable.prototype.resizeScrolling = function () {
                 // Adjust last column size to stop prevent horizontal scrollbar / align vertical
                 if (i == 0) {
                     if (ie9) bodyColumnWidth = bodySingleColWidths[i] - 2;
-                    else if (firefox && !mac) bodyColumnWidth = bodySingleColWidths[i] + 1;
+                    else if (firefox && !mac) bodyColumnWidth = bodySingleColWidths[i];
                     else bodyColumnWidth = bodySingleColWidths[i] - 1;
                 }
 
@@ -1099,7 +1099,7 @@ ice.ace.DataTable.prototype.resizeScrolling = function () {
 
                 if (i == 0) {
                     if (ie9) realHeadColumnWidth = realHeadColumnWidth - 1;
-                    else if (firefox && !mac) realHeadColumnWidth = realHeadColumnWidth + 1;
+                    else if (firefox && !mac) realHeadColumnWidth = realHeadColumnWidth;
                 }
 
                 // Set Duplicate Header Sizing to True Header Columns
@@ -1120,7 +1120,7 @@ ice.ace.DataTable.prototype.resizeScrolling = function () {
 
                 if (i == 0) {
                     if (ie9) realFootColumnWidth = realFootColumnWidth - 1;
-                    else if (firefox && !mac) realFootColumnWidth = realFootColumnWidth + 1;
+                    else if (firefox && !mac) realFootColumnWidth = realFootColumnWidth;
                 }
 
                 // Set Duplicate Header Sizing to True Header Columns
