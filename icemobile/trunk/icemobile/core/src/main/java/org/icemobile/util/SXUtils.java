@@ -20,6 +20,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Formatter;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -32,6 +33,7 @@ public class SXUtils {
     public final static String SESSION_KEY_SX_REGISTERED = "sxRegistered";
     public final static String USER_AGENT_SX_PART = "ICEmobile-SX";
     public final static String USER_AGENT_SX_FULL = "HyperBrowser-ICEmobile-SX/1.0";
+    public final static String COOKIE_FORMAT = "org.icemobile.cookieformat";
 
     /**
      * Get the SX Register URL.
@@ -45,6 +47,7 @@ public class SXUtils {
      */
     public static String getRegisterSXURL(HttpServletRequest request,
             String uploadPath) {
+        String sessionID = getSessionIdCookie(request);
         String redirectParm = "&r=" + Utils.getBaseURL(request);
         String forward = (String) request
                 .getAttribute("javax.servlet.forward.servlet_path");
@@ -64,7 +67,7 @@ public class SXUtils {
             }
         }
         redirectParm += forward + params;
-        String jsessionParam = "&JSESSIONID=" + request.getSession().getId();
+        String jsessionParam = "&JSESSIONID=" + sessionID;
         String uploadParam = "&u=" + Utils.getBaseURL(request)+uploadPath;
         String url = "icemobile://c=register" + redirectParm + jsessionParam
                 + uploadParam;
@@ -77,6 +80,7 @@ public class SXUtils {
      * @return The full upload URL
      */
     public static String getRegisterSXURL(HttpServletRequest request){
+        String sessionID = getSessionIdCookie(request);
         String redirectParm = "&r=" + Utils.getBaseURL(request);
         String forward = (String)request.getAttribute("javax.servlet.forward.servlet_path");
         if( forward == null ){
@@ -90,7 +94,7 @@ public class SXUtils {
             params = "?"+request.getQueryString();
         }
         redirectParm += forward + params;
-        String jsessionParam = "&JSESSIONID="+request.getSession().getId();
+        String jsessionParam = "&JSESSIONID=" + sessionID;
         String uploadParam = "&u="+Utils.getBaseURL(request) + "/icemobile";
         String url = "icemobile://c=register"+redirectParm+jsessionParam+uploadParam;
         return url;
@@ -211,11 +215,7 @@ public class SXUtils {
     }
 
     public static String getICEmobileRegisterSXScript(HttpServletRequest request, String uploadPath) {
-        String sessionID = null;
-        HttpSession httpSession = request.getSession(false);
-        if (null != httpSession) {
-            sessionID = httpSession.getId();
-        }
+        String sessionID = getSessionIdCookie(request);
         String uploadURL = Utils.getBaseURL(request)+uploadPath;
         return "ice.registerAuxUpload('" + sessionID + "','" + uploadURL
                 + "');";
@@ -227,7 +227,29 @@ public class SXUtils {
         }
         session.setAttribute(SX_UPLOAD_PROGRESS,Integer.valueOf(progress));
     }
-    
+
+    public static String getSessionIdCookie(HttpServletRequest request) {
+        String sessionID = null;
+        String cookieFormat = null;
+        HttpSession httpSession = request.getSession(false);
+        if (null != httpSession) {
+            sessionID = httpSession.getId();
+            cookieFormat = httpSession.getServletContext()
+                .getInitParameter(COOKIE_FORMAT);
+        } else {
+            return sessionID;
+        }
+
+        if (null == cookieFormat) {
+            return sessionID;
+        }
+        StringBuilder out = new StringBuilder();
+        Formatter cookieFormatter = new Formatter(out);
+        cookieFormatter.format(cookieFormat, sessionID);
+        cookieFormatter.close();
+        return out.toString();
+    }
+
     public static Map<String,File> getSXUploadThumbMap(HttpServletRequest request){
         @SuppressWarnings("unchecked")
         Map<String,File> map = (Map<String,File>)request.getSession().getAttribute(SX_THUMB_MAP);
