@@ -86,6 +86,7 @@ public class DataTable extends DataTableBase implements Serializable {
     transient protected SortState savedSortState;
     transient protected FilterState savedFilterState;
     transient protected PageState savedPageState;
+    transient protected boolean decoded = false;
 
     static {
         try {
@@ -424,6 +425,8 @@ public class DataTable extends DataTableBase implements Serializable {
 
     @Override
     public void processDecodes(FacesContext context) {
+        decoded = true;
+
         if (context == null) {
             throw new NullPointerException();
         }
@@ -1098,6 +1101,7 @@ public class DataTable extends DataTableBase implements Serializable {
             if (c.getValueExpression("groupBy") != null) {
                 if (priority != null && priority > highestGroupedPriority)
                     highestGroupedPriority = priority;
+
                 groupedColumns.add(c);
             }
             else if (priority != null && priority > 0 && c.getValueExpression("groupBy") == null) {

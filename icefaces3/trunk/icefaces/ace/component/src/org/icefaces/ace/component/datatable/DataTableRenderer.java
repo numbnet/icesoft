@@ -100,6 +100,18 @@ public class DataTableRenderer extends CoreRenderer {
         // Force regeneration of data model pre-render
         table.setModel(null);
 
+        // If table did not decode this lifecycle (just added to view)
+        // but has filters or sorting to process, do it now
+        if (!table.decoded) {
+            if (table.isApplyingSorts()) {
+                table.processSorting();
+            }
+
+            if (table.isApplyingFilters()) {
+                table.setFilteredData(table.processFilters(context));
+            }
+        }
+
         if (table.isScrollingRequest(context))
             encodeLiveRows(context, table);
         else
