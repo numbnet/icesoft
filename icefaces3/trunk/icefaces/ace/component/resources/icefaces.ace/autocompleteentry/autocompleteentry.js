@@ -787,7 +787,7 @@ ice.ace.Autocompleter.prototype = {
 
     updateNOW: function(text) {
 
-
+		if (!text) return;
         if (this.hidden) {
             this.hidden = false;
         }
