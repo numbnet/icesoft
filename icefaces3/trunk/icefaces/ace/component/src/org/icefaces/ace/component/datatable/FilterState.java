@@ -34,12 +34,14 @@ public class FilterState {
 
     public FilterState() {}
 
+    /* Create comprehensive current filter state */
     public FilterState(DataTable table) {
         List<Column> columnList = table.getColumns(true);
         for (Column column : columnList)
             saveState(column);
     }
 
+    /* Create delta state from incoming filter input */
     public FilterState(FacesContext context, DataTable table) {
         String clientId = table.getClientId(context);
         Map<String,String> params = context.getExternalContext().getRequestParameterMap();
@@ -64,7 +66,9 @@ public class FilterState {
     }
 
     private void restoreState(Column column) {
-        column.setFilterValue(valueMap.get(column));
+        String val = valueMap.get(column);
+        if (val != null)
+            column.setFilterValue(val);
     }
 
     public void restoreState(DataTable table) {
