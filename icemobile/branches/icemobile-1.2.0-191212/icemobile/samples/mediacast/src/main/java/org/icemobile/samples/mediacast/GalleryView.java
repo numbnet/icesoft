@@ -19,8 +19,10 @@ package org.icemobile.samples.mediacast;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
@@ -43,6 +45,8 @@ public class GalleryView implements Serializable {
 	
 	private List<MediaMessage> filteredMessages = new ArrayList<MediaMessage>();
 	private int filteredMessagesCount = 0;
+	
+	private Map<String,String> tagInCurrentFilters = new HashMap<String,String>();
 	
 	private static final Logger log =
             Logger.getLogger(GalleryView.class.toString());
@@ -95,19 +99,21 @@ public class GalleryView implements Serializable {
 		return filteredMessagesCount;
 	}
 	
-	public boolean tagInCurrentFilters(String tag){
-		return filters.contains(tag);
-	}
-	
 	public void toggleFilter(ActionEvent e){
 		String tag = (String)e.getComponent().getAttributes().get("tag");
 		filters = new ArrayList<String>(filters);
 		if( filters.contains(tag)){
 			filters.remove(tag);
+			tagInCurrentFilters.remove(tag);
 		}
 		else{
 			filters.add(tag);
+			tagInCurrentFilters.put(tag,tag);
 		}
+	}
+	
+	public Map<String,String> getTagInCurrentFilters(){
+		return tagInCurrentFilters;
 	}
 
 }
