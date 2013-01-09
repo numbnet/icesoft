@@ -13,7 +13,7 @@
  * express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-.ui-datatable { line-height: 1; display:inline-block; }
+.ui-datatable { line-height: 1; display:inline-block; width:100%; }
 .ui-datatable table {
     border-collapse:collapse;
     width:100%;
