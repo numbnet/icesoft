@@ -15,10 +15,9 @@ public class ResourceOutputUtil {
         res.setTransient(isTransient);
         Map attrs = res.getAttributes();
         attrs.put("name", name);
-        if(lib != null && lib.trim().length() == 0 ){
-            lib = null;
+        if (lib != null && lib.trim().length() > 0) {
+            attrs.put("library", lib);
         }
-        attrs.put("library", lib);
         attrs.put("version", "fubar");
         return res;
     }
