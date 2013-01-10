@@ -15,10 +15,11 @@
  */
 package org.icemobile.util;
 
+import java.io.Serializable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class UserAgentInfo {
+public class UserAgentInfo implements Serializable{
     
     private static Logger log = Logger.getLogger(UserAgentInfo.class.getName());
 
