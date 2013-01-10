@@ -23,35 +23,46 @@
     <html>
     <head>
         <title>ICEmobile | jQuery Microphone demo</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <mobi:deviceResource/>
         <link href="<c:url value="/resources/style.css" />" rel="stylesheet"
               type="text/css"/>
         <link rel="stylesheet"
               href="./resources/jquery.mobile-1.1.1/jquery.mobile-1.1.1.min.css"/>
         <script src="./resources/jquery/1.7.1/jquery-1.7.1.min.js"></script>
         <script src="./resources/jquery.mobile-1.1.1/jquery.mobile-1.1.1.min.js"></script>
-        <mobi:deviceResource/>
     </head>
     <body>
 </c:if>
+<div data-role="page" class="type-interior">
 <div id="micContent">
     <style>
         .recordstyle {
             background: red;
         }
+        .ui-body-c .mobi-button.mobi-button-important.ui-link{
+            color: white;
+        }
+        .mobi-button{
+            max-width:auto;
+        }
     </style>
-    <h4>Microphone</h4>
+    <div data-role="header" data-theme="c">
+        <h1>Microphone</h1>
+        
+    </div>
+    <div data-role="content">
+    
+    <h3>
+        jQuery ICEobile Microphone Demo
+    </h3>
 
-    <p>
-        jQuery ICEobile Microphone
-    </p>
     <fieldset>
         <mobi:getEnhanced/>
     </fieldset>
+    
     <form:form id="micform" method="POST" enctype="multipart/form-data"
                modelAttribute="microphoneBean">
         <div class="header">
-            <h4>Form</h4>
             <c:if test="${not empty message}">
                 <div id="message" class="success">${message}<br/>
                     <audio src="media/clip.mp4" controls="controls">
@@ -73,10 +84,16 @@
         </fieldset>
 
         <fieldset>
-            <mobi:microphone id="mic"/>
-            <audio style="float:right;" src="media/clip.mp4"
-                   controls="controls">
+            <mobi:microphone id="mic" buttonLabel="Record Audio" />
         </fieldset>
+        
+        <c:if test="${micUploadReady}">
+            <fieldset>
+                <audio style="float:right;" src="${micUpload}"
+                       controls="controls"></audio>
+            </fieldset>
+        </c:if>
+        
 
         <fieldset class="checkbox">
             <legend>Request Additional Info</legend>
@@ -133,6 +150,8 @@
         });
 
     </script>
+    </div>
+</div>
 </div>
 <c:if test="${!ajaxRequest}">
     </body>
