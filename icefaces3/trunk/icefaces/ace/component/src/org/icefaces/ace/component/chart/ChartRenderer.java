@@ -90,7 +90,10 @@ public class ChartRenderer extends CoreRenderer {
 
         writer.startElement(HTML.DIV_ELEM, chart);
         writer.writeAttribute(HTML.ID_ATTR, clientId, null);
-        encodeChartContainer(context, writer, clientId);
+        encodeChartContainer(context, writer, clientId,
+                chart.getHeight(),
+                chart.getWidth(),
+                chart.getStyle());
         encodeScript(context, writer, clientId, chart);
         writer.endElement(HTML.DIV_ELEM);
     }
@@ -260,9 +263,15 @@ public class ChartRenderer extends CoreRenderer {
         }
     }
 
-    private void encodeChartContainer(FacesContext context, ResponseWriter writer, String clientId) throws IOException {
+    private void encodeChartContainer(FacesContext context, ResponseWriter writer, String clientId, Integer height, Integer width, String userStyle) throws IOException {
         writer.startElement(HTML.DIV_ELEM, null);
         writer.writeAttribute(HTML.ID_ATTR, clientId + "_chart", null);
+
+        String style = (userStyle != null) ? userStyle : "";
+        if (height != null) style += "height:"+height+"px; ";
+        if (width != null) style += "width:"+width+"px; ";
+
+        writer.writeAttribute(HTML.STYLE_ATTR, style, null);
         writer.endElement(HTML.DIV_ELEM);
     }
 
