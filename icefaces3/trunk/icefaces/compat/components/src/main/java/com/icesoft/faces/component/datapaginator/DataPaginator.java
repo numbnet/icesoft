@@ -37,12 +37,13 @@ import javax.faces.event.ActionListener;
 import javax.faces.event.FacesEvent;
 import javax.faces.event.PhaseId;
 import java.sql.ResultSet;
+import java.io.Serializable;
 
 
 /**
  * 
  */
-public class DataPaginator extends HtmlPanelGroup implements ActionSource {
+public class DataPaginator extends HtmlPanelGroup implements ActionSource, Serializable {
     private final Log log = LogFactory.getLog(DataPaginator.class);
 
     private static final String FIRST_FACET_NAME = "first";
