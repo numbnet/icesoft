@@ -7,7 +7,6 @@ import org.icefaces.ace.model.chart.ChartSeries;
 import javax.el.MethodExpression;
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
-import java.util.List;
 
 @Component(
         tagName = "chart",
@@ -163,6 +162,15 @@ public class ChartMeta extends UIComponentBaseMeta {
 
     @Property(tlddoc = "Enable display of a legend regarding the coordinates of the cursor. The 'cursor' property must be enabled to use this property.")
     private Boolean showTooltip;
+
+    @Property(tlddoc = "Define the width of the entire chart region in pixels.")
+    private Integer width;
+
+    @Property(tlddoc = "Define the height of the entire chart region in pixels.")
+    private Integer height;
+
+    @Property(tlddoc = "Define CSS inline style for the chart container.")
+    private String style;
 
     @Property(expression = Expression.METHOD_EXPRESSION,
             methodExpressionArgument = "org.icefaces.ace.event.SeriesSelectionEvent",
