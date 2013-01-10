@@ -135,6 +135,14 @@ public class RichTextEntryResourceHandler extends ResourceHandlerWrapper {
             this.mimeType = externalContext.getMimeType(localPath);
         }
 
+        public String getLibraryName() {
+            return ICEFACES_ACE_LIB;
+        }
+
+        public String getResourceName() {
+            return localPath;
+        }
+
         public InputStream getInputStream() throws IOException {
             return new ELEvaluatingInputStream(FacesContext.getCurrentInstance(), new ByteArrayInputStream(content), ICEFACES_ACE_LIB);
         }

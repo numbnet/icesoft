@@ -231,6 +231,14 @@ public class InputRichTextResourceHandler extends ResourceHandlerWrapper {
             this.mimeType = externalContext.getMimeType(localPath);
         }
 
+        public String getResourceName() {
+            return localPath;
+        }
+
+        public String getLibraryName() {
+            return INPUTRICHTEXT_LIB;
+        }
+
         public InputStream getInputStream() throws IOException {
             return new ByteArrayInputStream(content);
         }
