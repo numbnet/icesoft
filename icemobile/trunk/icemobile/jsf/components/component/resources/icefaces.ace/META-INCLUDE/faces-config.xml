@@ -18,6 +18,11 @@
 <faces-config version="2.0" xmlns="http://java.sun.com/xml/ns/javaee"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_2_0.xsd">
+  <lifecycle>
+    <phase-listener>
+      org.icemobile.impl.application.PushBackOffPhaseListener
+    </phase-listener>
+  </lifecycle>
  <application>
     <resource-handler>org.icefaces.mobi.component.qrcode.generator.QRCodeResourceHandler</resource-handler>
     <system-event-listener>
