@@ -79,6 +79,7 @@ public class MobiJSFUtils {
         Part part = null;
         InputStream fileStream = null;
         String contentType = null;
+        Map auxMap = null;
         try {
             part = request.getPart(partUploadName);
         } catch (IOException e) {
@@ -89,12 +90,15 @@ public class MobiJSFUtils {
             // getPart API on Servlet 2.5
         }
         if (null == part) {
-            Map auxMap = AuxUploadResourceHandler.getAuxRequestMap();
+            auxMap = AuxUploadResourceHandler.getAuxRequestMap();
             part = (Part) auxMap.get(partUploadName);
         }
         if (null == part) {
-            Map commonsMeta = (Map) request.getAttribute("org.icemobile.file."
-                    + clientId);
+            Map commonsMeta = (Map) request.getAttribute("org.icemobile.file." + clientId);
+            if (null == commonsMeta) {
+                commonsMeta = (Map)
+                    auxMap.get("org.icemobile.file." + clientId);
+            }
             if (null != commonsMeta) {
                 contentType = (String) commonsMeta.get("contentType");
                 fileStream = (InputStream) commonsMeta.get("stream");
@@ -190,7 +194,9 @@ public class MobiJSFUtils {
         if (null == auxMap)  {
             return false;
         }
-        return auxMap.containsKey(clientId);
+        boolean inProgress = auxMap.containsKey(clientId) ||
+            auxMap.containsKey("org.icemobile.file." + clientId);
+        return inProgress;
     }
     
     public static String getICEmobileSXScript(String command,
