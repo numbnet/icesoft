@@ -123,14 +123,19 @@ public class FileEntryResourceHandler extends ResourceHandlerWrapper {
                 FacesMessage fm = FileEntryStatuses.PROBLEM_READING_MULTIPART.
                     getFacesMessage(facesContext, null, null);
                 facesContext.addMessage(null, fm);
-                log.log(Level.SEVERE, "Problem decoding upload", e);
+                if (facesContext.isProjectStage(ProjectStage.Development)) {
+                    log.log(Level.WARNING, "Problem reading multi-part form " +
+                        "upload, likely due to a file upload being cut off " +
+                        "from the client losing their network connection or " +
+                        "closing their browser tab or window.", e);
+                }
             }
             FileEntry.storeResultsForLaterInLifecycle(facesContext, clientId2Results);
             progressListenerResourcePusher.clear();
             clientId2Callbacks.clear();
             Arrays.fill(buffer, (byte) 0);
             buffer = null;
-            
+
             // Map<String, List<String>> parameterListMap = new HashMap<String, List<String>>();
             Map<String, String[]> parameterMap = new HashMap<String, String[]>(
                 ((parameterListMap.size() > 0) ? parameterListMap.size() : 1) );            
@@ -351,6 +356,9 @@ public class FileEntryResourceHandler extends ResourceHandlerWrapper {
                                 status = FileEntryStatuses.SUCCESS;
                             }
                         }
+                        catch(Exception e) {
+                            throw e;
+                        }
                         finally {
                             if (output != null) {
                                 output.flush();
@@ -374,7 +382,7 @@ public class FileEntryResourceHandler extends ResourceHandlerWrapper {
                 status = FileEntryStatuses.INVALID;
             }
             if (facesContext.isProjectStage(ProjectStage.Development)) {
-                log.log(Level.SEVERE, "Problem processing uploaded file", e);
+                log.log(Level.WARNING, "Problem processing uploaded file", e);
             }
         }
 
@@ -386,6 +394,7 @@ public class FileEntryResourceHandler extends ResourceHandlerWrapper {
         
 //System.out.println("File    Ending  status: " + status);
         if (results != null && fileInfo != null) {
+//System.out.println("File    Have results and fileInfo to fill-in");
             fileInfo.finish(file, fileSizeRead, status);
             results.addCompletedFile(fileInfo);
             if (callback != null) {

@@ -32,29 +32,61 @@ import javax.faces.context.FacesContext;
 
 public class MessageUtils {
     private static String DETAIL_SUFFIX = "_detail";
-    private static int SUMMARY = 0;
-    private static int DETAIL = 1;
+    static int SUMMARY = 0;
+    static int DETAIL = 1;
     private static String ICE_MESSAGES_BUNDLE =
         "org.icefaces.ace.resources.messages";
-    
-    public static FacesMessage getMessage(FacesContext facesContext, 
+
+    /**
+     * Uses DeferredLocaleFacesMessage
+     *
+     * @param sev The FacesMessage Severity
+     * @param messageId Either a key in the resource bundles for the summary
+     * and detail format strings, or a format string itself like the
+     * @param isKeyForResourceBundle If true, messageId is the key for getting
+     * at the summary and detail format strings in the resource bundles, else
+     * it is a format string itself like requiredMessage from UIData.
+     * @param params The parameters to the string formatting
+     */
+    public static FacesMessage getMessage(
+            FacesMessage.Severity sev, String messageId, boolean isKeyForResourceBundle, Object[] params) {
+        return new DeferredLocaleFacesMessage(sev, messageId, isKeyForResourceBundle, params);
+    }
+
+    /**
+     * Uses regular FacesMessage
+     */
+    public static FacesMessage getMessage(FacesContext facesContext,
             FacesMessage.Severity sev, String messageId, Object[] params) {
-//System.out.println("MessageUtils.getMessage()  messageId: " + messageId);
-        String messageInfo[] = new String[2];
         Locale locale = facesContext.getViewRoot().getLocale();
-//System.out.println("MessageUtils.getMessage()    locale: " + locale);
-        
+        String messageInfo[] = loadMessageStrings(facesContext, locale, messageId);
+        return getMessage(
+            locale, sev, messageInfo[SUMMARY], messageInfo[DETAIL], params);
+    }
+    
+    public static FacesMessage getMessage(Locale locale, 
+            FacesMessage.Severity sev, String summary, String detail,
+            Object[] params) {
+        summary = formatString(locale, summary, params);
+        detail = formatString(locale, detail, params);
+        return new FacesMessage(sev, summary, detail);
+    }
+
+    static String[] loadMessageStrings(FacesContext facesContext, Locale locale, String messageId) {
+//System.out.println("MessageUtils.loadMessageStrings()  messageId: " + messageId);
+//System.out.println("MessageUtils.loadMessageStrings()    locale: " + locale);
+        String messageInfo[] = new String[2];
         String bundleName = facesContext.getApplication().getMessageBundle();
-//System.out.println("MessageUtils.getMessage()    application bundleName: " + bundleName);
+//System.out.println("MessageUtils.loadMessageStrings()    application bundleName: " + bundleName);
         //see if the message has been overridden by the application
         if (bundleName != null) {
             try {
                 loadMessageInfo(bundleName, locale, messageId, messageInfo);
             } catch (Exception e)  {
-//System.out.println("MessageUtils.getMessage()    application bundle exception: " + e);
+//System.out.println("MessageUtils.loadMessageStrings()    application bundle exception: " + e);
             }
         }
-        
+
         //if not overridden then check in Icefaces message bundle.
         if (messageInfo[SUMMARY] == null && messageInfo[DETAIL]== null) {
             try {
@@ -64,23 +96,9 @@ public class MessageUtils {
 //System.out.println("MessageUtils.getMessage()    EXCEPTION  e: " + e);
             }
         }
-        
-        return getMessage(
-            locale, sev, messageInfo[SUMMARY], messageInfo[DETAIL], params);
+        return messageInfo;
     }
-    
-    public static FacesMessage getMessage(Locale locale, 
-            FacesMessage.Severity sev, String summary, String detail,
-            Object[] params) {
-//System.out.println("MessageUtils.getMessage()      summary  BEFORE: " + summary);
-        summary = formatString(locale, summary, params);
-//System.out.println("MessageUtils.getMessage()      summary   AFTER: " + summary);
-//System.out.println("MessageUtils.getMessage()      detail   BEFORE: " + summary);
-        detail = formatString(locale, detail, params);
-//System.out.println("MessageUtils.getMessage()      detail    AFTER: " + summary);
-        return new FacesMessage(sev, summary, detail);
-    }
-    
+
     private static void loadMessageInfo(String bundleName, 
                                 Locale locale,
                                 String messageId,  
@@ -95,7 +113,7 @@ public class MessageUtils {
         }
     }
     
-    private static String formatString(Locale locale, String pattern, Object[] params) {
+    static String formatString(Locale locale, String pattern, Object[] params) {
         if (pattern != null && params != null) {
             MessageFormat format = new MessageFormat(pattern, locale);
             pattern = format.format(params);
