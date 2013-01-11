@@ -284,8 +284,13 @@ ice.ace.InputMask = function(id, cfg) {
 		if (behaviors.blur) {
 			element.bind('blur', function() { setFocus(''); ice.ace.ab.call(element, behaviors.blur); });
 		}
-		if (behaviors.change)
+		if (behaviors.change) {
 			element.bind('change', function() { ice.ace.ab.call(element, behaviors.change); });
+			element.bind('keypress', function(e,ui) { if (e.keyCode == 13) { 
+				ice.ace.ab.call(element, behaviors.change);
+				e.stopPropagation();} 
+			});
+		}
     }
 
     //Visuals
