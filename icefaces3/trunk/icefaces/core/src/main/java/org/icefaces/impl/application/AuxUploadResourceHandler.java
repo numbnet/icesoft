@@ -152,10 +152,12 @@ public class AuxUploadResourceHandler extends ResourceHandlerWrapper  {
                 Map requestMap =
                         externalContext.getRequestMap();
                 for (Object keyObj : requestMap.keySet())  {
-                    String key = (String) keyObj;
-                    if (key.startsWith("org.icemobile.file."))  {
-                        auxRequestMap.put(
-                                key, requestMap.get(key) );
+                    if (keyObj instanceof String)  {
+                        String key = (String) keyObj;
+                        if (key.startsWith("org.icemobile.file."))  {
+                            auxRequestMap.put(
+                                    key, requestMap.get(key) );
+                        }
                     }
                 }
             }
