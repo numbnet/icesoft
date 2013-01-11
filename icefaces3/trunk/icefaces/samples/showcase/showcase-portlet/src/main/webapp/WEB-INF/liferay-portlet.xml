@@ -285,6 +285,11 @@
         <ajaxable>false</ajaxable>
     </portlet>
     <portlet>
+        <portlet-name>dataTablePinning</portlet-name>
+        <instanceable>false</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+    <portlet>
         <portlet-name>dataTableResizableColumns</portlet-name>
         <instanceable>false</instanceable>
         <ajaxable>false</ajaxable>
@@ -437,17 +442,35 @@
         <ajaxable>false</ajaxable>
     </portlet>
     <portlet>
+        <portlet-name>gMapAutocomplete</portlet-name>
+        <instanceable>false</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+
+    <portlet>
         <portlet-name>gMapBasic</portlet-name>
         <instanceable>false</instanceable>
         <ajaxable>false</ajaxable>
     </portlet>
     
     <portlet>
+        <portlet-name>gMapControl</portlet-name>
+        <instanceable>false</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+
+    <portlet>
         <portlet-name>gMapDirections</portlet-name>
         <instanceable>false</instanceable>
         <ajaxable>false</ajaxable>
     </portlet>
     
+    <portlet>
+        <portlet-name>gMapInfoWindow</portlet-name>
+        <instanceable>false</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+
     <portlet>
         <portlet-name>gMapLayer</portlet-name>
         <instanceable>false</instanceable>

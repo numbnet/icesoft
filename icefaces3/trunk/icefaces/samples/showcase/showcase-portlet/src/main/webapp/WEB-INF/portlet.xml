@@ -21,7 +21,7 @@
 	         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	         xsi:schemaLocation="http://java.sun.com/xml/ns/portlet/portlet-app_2_0.xsd http://java.sun.com/xml/ns/portlet/portlet-app_2_0.xsd">
 
-<portlet>
+    <portlet>
         <portlet-name>accordionPanel</portlet-name>
         <display-name>Accordion Panel</display-name>
         <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
@@ -1071,6 +1071,27 @@
         </portlet-info>
     </portlet>
     <portlet>
+        <portlet-name>dataTablePinning</portlet-name>
+        <display-name>Data Table Pinning</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/portlet-view.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/dataTable/dataTablePinning.xhtml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>Data Table Pinning</title>
+            <keywords>ICEfaces ACE Component Showcase Data Table Pinning</keywords>
+        </portlet-info>
+    </portlet>
+    <portlet>
         <portlet-name>dataTableResizableColumns</portlet-name>
         <display-name>Data Table Resizable Columns</display-name>
         <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
@@ -1701,6 +1722,29 @@
             <keywords>ICEfaces Component Suite Showcase ACE File Entry Validation</keywords>
         </portlet-info>
     </portlet>
+
+    <portlet>
+        <portlet-name>gMapAutocomplete</portlet-name>
+        <display-name>GMap Autocomplete</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/portlet-view.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/gMap/gMapAutocomplete.xhtml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>GMap Autocomplete</title>
+            <keywords>ICEfaces ACE Component Showcase GMap Autocomplete</keywords>
+        </portlet-info>
+    </portlet>
+
     <portlet>
         <portlet-name>gMapBasic</portlet-name>
         <display-name>GMap Basic</display-name>
@@ -1724,6 +1768,28 @@
     </portlet>
     
     <portlet>
+        <portlet-name>gMapControl</portlet-name>
+        <display-name>GMap Control</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/portlet-view.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/gMap/gMapControl.xhtml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>GMap Control</title>
+            <keywords>ICEfaces ACE Component Showcase GMap Control</keywords>
+        </portlet-info>
+    </portlet>
+
+    <portlet>
         <portlet-name>gMapDirections</portlet-name>
         <display-name>GMap Directions</display-name>
         <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
@@ -1745,6 +1811,28 @@
         </portlet-info>
     </portlet>
     
+    <portlet>
+        <portlet-name>gMapInfoWindow</portlet-name>
+        <display-name>GMap Info Window</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/portlet-view.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/gMap/gMapInfoWindow.xhtml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>GMap Info Window</title>
+            <keywords>ICEfaces ACE Component Showcase GMap Info Window</keywords>
+        </portlet-info>
+    </portlet>
+
     <portlet>
         <portlet-name>gMapLayer</portlet-name>
         <display-name>GMap Layer</display-name>

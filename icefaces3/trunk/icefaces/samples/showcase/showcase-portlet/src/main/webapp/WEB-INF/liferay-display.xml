@@ -87,6 +87,7 @@
                 <portlet id="dataTableMultiRowHeader"/>
                 <portlet id="dataTablePaginator"/>
                 <portlet id="dataTablePanelExpansion"/>
+                <portlet id="dataTablePinning"/>
                 <portlet id="dataTableResizableColumns"/>
                 <portlet id="dataTableRowEditing"/>
                 <portlet id="dataTableRowExpansion"/>
@@ -122,8 +123,11 @@
                 <portlet id="fileEntryValidation"/>
             </category>
             <category name="GMap">
+                <portlet id="gMapAutocomplete"/>
                 <portlet id="gMapBasic"/>
+                <portlet id="gMapControl"/>
                 <portlet id="gMapDirections"/>
+                <portlet id="gMapInfoWindow"/>
                 <portlet id="gMapLayer"/>
                 <portlet id="gMapMarker"/>
                 <portlet id="gMapOptions"/>
