@@ -146,8 +146,18 @@ public class AuxUploadResourceHandler extends ResourceHandlerWrapper  {
             Collection<Part> parts = new ArrayList();
             try {
                 parts = request.getParts();
-            } catch (Exception e)  {
-                log.log(Level.WARNING, "Failed to get auxUpload Parts", e);
+            } catch (Throwable t)  {
+                //If Servlet 3.0 Parts are not available fall back
+                //to ICEmobile uploads stored as Request attributes
+                Map requestMap =
+                        externalContext.getRequestMap();
+                for (Object keyObj : requestMap.keySet())  {
+                    String key = (String) keyObj;
+                    if (key.startsWith("org.icemobile.file."))  {
+                        auxRequestMap.put(
+                                key, requestMap.get(key) );
+                    }
+                }
             }
 
             for (Part part : parts) {
