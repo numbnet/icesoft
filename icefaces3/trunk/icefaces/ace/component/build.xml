@@ -179,7 +179,7 @@
     </macrodef>
 
     <target name="compile"
-            depends="prepare, generator-dist, compile-meta, generate, compile-base, compile-manual, compile-support, richtextentry-resources, res-js-compress, res-js-no-compress, res-css-combine, res-copy"
+            depends="prepare, generator-dist, compile-meta, generate, compile-base, compile-manual, compile-support, res-js-compress, res-js-no-compress, res-css-combine, res-copy"
             description="compile the source ">
     </target>
 
@@ -445,7 +445,7 @@
             description="Generate the icefaces-ace.jar">
     </target>
 
-    <target name="lib-js" depends="richtextentry-resources, res-js-compress, res-js-no-compress, res-copy, lib-jar"
+    <target name="lib-js" depends="res-js-compress, res-js-no-compress, res-copy, lib-jar"
             description="Update the Javascript and build the icefaces-ace.jar">
     </target>
 
@@ -526,7 +526,6 @@
         <delete dir="${build}"/>
         <delete dir="${dist}"/>
         <antcall target="clean-skins"/>
-        <antcall target="clean-richtextentry-resources"/>
         <subant buildpath="${cssurlmapper.rootdir}" target="clean"/>
 	 	<delete file="${ace-yui.js.uncompressed}" />
 	 	<delete file="${ace-yui.js}" />
@@ -681,13 +680,5 @@
     <target name="tlddoc"
             description="Generate the component TLD Documentation in HTML format.">
         <gen.tld.doc tld.file="${tld.file}"/>
-    </target>
-	
-    <target name="richtextentry-resources">
-        <ant antfile="src/org/icefaces/ace/component/richtextentry/build.xml"/>
-    </target>
-	
-    <target name="clean-richtextentry-resources">
-        <ant antfile="src/org/icefaces/ace/component/richtextentry/build.xml" target="clean-richtextentry-resources" />
     </target>
 </project>
