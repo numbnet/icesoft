@@ -89,12 +89,11 @@ public enum FileEntryStatuses implements FileEntryStatus {
             String pattern = (String) fileEntry.getAttributes().get(
                 "requiredMessage");
             if (pattern != null && pattern.length() > 0) {
-                Locale locale = facesContext.getViewRoot().getLocale();
-                return MessageUtils.getMessage(locale, sev, pattern, pattern, params);
+                return MessageUtils.getMessage(sev, pattern, false, params);
             }
             else {
                 String messageId = MESSAGE_KEY_PREFIX + name();
-                return MessageUtils.getMessage(facesContext, sev, messageId, params);
+                return MessageUtils.getMessage(sev, messageId, true, params);
             }
         }
     },
@@ -120,7 +119,7 @@ public enum FileEntryStatuses implements FileEntryStatus {
                 UIComponent fileEntry, FileEntryResults.FileInfo fi) {
             FacesMessage.Severity sev = getSeverity();
             String messageId = MESSAGE_KEY_PREFIX + name();
-            return MessageUtils.getMessage(facesContext, sev, messageId, null);
+            return MessageUtils.getMessage(sev, messageId, true, null);
         }
     };
     
@@ -147,7 +146,7 @@ public enum FileEntryStatuses implements FileEntryStatus {
         String messageId = MESSAGE_KEY_PREFIX + name();
 //System.out.println("FileEntryStatuses.getFacesMessage()  messageId: " + messageId);
         Object[] params = getParameters(facesContext, fileEntry, fi);
-        FacesMessage fm = MessageUtils.getMessage(facesContext, sev, messageId, params);
+        FacesMessage fm = MessageUtils.getMessage(sev, messageId, true, params);
 //System.out.println("FileEntryStatuses.getFacesMessage()  fm: " + fm);
         return fm;
     }
@@ -208,9 +207,8 @@ public enum FileEntryStatuses implements FileEntryStatus {
     protected FacesMessage getFacesMessage(
             FacesContext facesContext, UIComponent fileEntry,
             FileEntryResults.FileInfo fi, String pattern) {
-        Locale locale = facesContext.getViewRoot().getLocale();
         FacesMessage.Severity sev = getSeverity();
         Object[] params = getParameters(facesContext, fileEntry, fi);
-        return MessageUtils.getMessage(locale, sev, pattern, pattern, params);
+        return MessageUtils.getMessage(sev, pattern, false, params);
     }
 }    
