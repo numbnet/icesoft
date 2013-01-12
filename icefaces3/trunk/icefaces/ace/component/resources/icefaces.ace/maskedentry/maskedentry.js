@@ -145,6 +145,7 @@
 				};
 
 				function keypressEvent(e) {
+                    input.removeData("fromCharCode");
 					if (ignore) {
 						ignore = false;
 						//Fixes Mac FF bug on backspace
@@ -163,6 +164,7 @@
 							if (tests[p].test(c)) {
 								shiftR(p);
 								buffer[p] = c;
+                                input.data("fromCharCode", c);
 								writeBuffer();
 								var next = seekNext(p);
 								$(this).caret(next);
@@ -273,6 +275,9 @@ ice.ace.InputMask = function(id, cfg) {
     this.jq = ice.ace.jq(this.jqId).find('input[name="'+this.id+'_field"]');
 	this.jq.attr('id', this.id + '_field');
 
+    if (this.cfg.mask) {
+        this.cfg.mask = "?" + this.cfg.mask.replace(/\?/g, "");
+    }
     if (this.cfg.mask) // only add functionality if mask was provided, otherwise degrade to simple text input
 	this.jq.mask(this.cfg.mask, this.cfg);
 
@@ -289,6 +294,14 @@ ice.ace.InputMask = function(id, cfg) {
 			element.bind('keypress', function(e,ui) { if (e.keyCode == 13) { 
 				ice.ace.ab.call(element, behaviors.change);
 				e.stopPropagation();} 
+			});
+		}
+        if (behaviors.keypress) {
+            element.keypress(function (e) {
+                var $ = ice.ace.jq, char = $(this).data("fromCharCode");
+                if (char) {
+                    ice.ace.ab($.extend(true, {params: {char: char}}, behaviors.keypress));
+                }
 			});
 		}
     }
