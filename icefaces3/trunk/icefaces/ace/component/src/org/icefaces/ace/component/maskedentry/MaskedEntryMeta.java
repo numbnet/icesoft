@@ -49,6 +49,9 @@ import org.icefaces.ace.api.IceClientBehaviorHolder;
 @ClientBehaviorHolder(events = {
 	@ClientEvent(name="valueChange", javadoc="Fired every time the value of the text input changes (default event).", 
 	tlddoc="Fired every time the value of the text input changes (default event). When pressing the ENTER key on the text field, this event will be fired as well, even if the value didn't actually change.", defaultRender="@all", defaultExecute="@all"),
+    @ClientEvent(name = "keypress", defaultExecute = "@this", defaultRender = "@none", argumentClass = "org.icefaces.ace.event.KeyPressEvent",
+               tlddoc = "Fired on a keypress event. Use only to read input char. Don't re-render or do JS-like event handling.",
+              javadoc = "Fired on a keypress event. Use only to read input char. Don't re-render or do JS-like event handling."),
 	@ClientEvent(name="blur", javadoc="Fired any time the text input field loses focus.", 
 	tlddoc="Fired any time the text input field loses focus.", defaultRender="@all", defaultExecute="@all")
 }, defaultEvent="valueChange")
@@ -57,7 +60,7 @@ public class MaskedEntryMeta extends HtmlInputTextMeta {
 	@Property(tlddoc="Name of the widget variable to access client side api.")
     private String widgetVar;
 	
-	@Property(required=Required.yes, tlddoc="Masked input for separating input texts with given pattern. \nThese mask definitions can be used: \na - Represents an alpha character (A-Z,a-z) \n9 - Represents a numeric character (0-9) \n* - Represents an alphanumeric character (A-Z,a-z,0-9). Anything listed after \"?\" within the mask is considered optional user input. Any character not in the definitions list will be automatically entered for the user as they type.")
+	@Property(required=Required.yes, tlddoc="Masked input for separating input texts with given pattern. \nThese mask definitions can be used: \na - Represents an alpha character (A-Z,a-z) \n9 - Represents a numeric character (0-9) \n* - Represents an alphanumeric character (A-Z,a-z,0-9). All input is optional. Any character not in the definitions list will be automatically entered for the user as they type.")
 	private String mask;
 	
 	@Property(tlddoc="Separator and placeholder in input.")
