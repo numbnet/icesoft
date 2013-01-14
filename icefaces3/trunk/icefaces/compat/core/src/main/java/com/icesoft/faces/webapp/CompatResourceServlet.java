@@ -75,6 +75,15 @@ public class CompatResourceServlet extends HttpServlet {
         }
 
         String path = httpServletRequest.getPathInfo();
+
+        //ICE-8772: although very low risk, we validate the path to help prevent
+        //          Veracode from complaining about a potentially "crafted" value
+        if(path.contains("..")){
+            log.log(Level.WARNING, "resource path is potentially unsafe " + path);
+            httpServletResponse.setStatus(404, "Resource not found");
+            return;
+        }
+
         final InputStream in = loader.getResourceAsStream(BASE_PATH + path);
         if (null == in) {
             httpServletResponse.setStatus(404, "Resource not found");
