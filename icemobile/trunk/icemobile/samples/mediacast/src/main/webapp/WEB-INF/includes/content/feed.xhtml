@@ -29,10 +29,21 @@
 				<f:setPropertyActionListener target="#{navigationModel.currentTab}"
 					value="viewer" />
 
-				<mobi:graphicImage id="mediaThumbnail"
-					value="#{media.smallPhoto.data}" width="#{media.smallPhoto.width}"
-					height="#{media.smallPhoto.height}"
-					style="padding-right:5px;border:none;" />
+				<mobi:graphicImage style="padding-right:5px;border:none;"
+                                    width="#{media.mediumPhoto.width}"
+                                    height="#{media.mediumPhoto.height}"
+                                    value="#{media.mediumPhoto.data}"
+                                    rendered="#{not empty media.largePhoto}"/>
+                <mobi:graphicImage style="padding-right:5px;border:none;"
+                                    width="#{media.videoThumbnail.width}"
+                                    height="#{media.videoThumbnail.height}"
+                                    value="#{media.videoThumbnail.data}"
+                                    rendered="#{not empty media.video}"/>
+                <mobi:graphicImage style="padding-right:5px;border:none;"
+                                    width="#{mediaHelper.soundIcon.width}"
+                                    height="#{mediaHelper.soundIcon.height}"
+                                    value="#{mediaHelper.soundIcon.data}"
+                                    rendered="#{not empty media.audio}"/>
 
 				<h:outputText id="mediaTitle" value="#{media.title}" />
 

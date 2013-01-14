@@ -132,6 +132,7 @@
                 <mobi:inputText id="url"
                                 placeholder="URL"
                                 value="#{uploadModel.url}"
+                                type="url"
                                 styleClass="mobi-col mobi-weight1"/>
             </mobi:fieldsetRow>
             <mobi:fieldsetRow rendered="#{not empty uploadModel.currentMediaMessage.largePhoto or not empty uploadModel.currentMediaMessage.video or not empty uploadModel.currentMediaMessage.audio}">
