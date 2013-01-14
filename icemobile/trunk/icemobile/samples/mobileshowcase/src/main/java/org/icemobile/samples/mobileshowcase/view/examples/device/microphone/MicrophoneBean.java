@@ -135,9 +135,11 @@ public class MicrophoneBean extends ExampleImpl<MicrophoneBean> implements
 
     @PreDestroy
     public void disposeResources(){
-        boolean success = audioFile.delete();
-        if (!success && logger.isLoggable(Level.FINE)){
-            logger.fine("Could not dispose of media file" + audioFile.getAbsolutePath());
+        if( audioFile != null ){
+            boolean success = audioFile.delete();
+            if (!success && logger.isLoggable(Level.FINE)){
+                logger.fine("Could not dispose of media file" + audioFile.getAbsolutePath());
+            }
         }
     }
 

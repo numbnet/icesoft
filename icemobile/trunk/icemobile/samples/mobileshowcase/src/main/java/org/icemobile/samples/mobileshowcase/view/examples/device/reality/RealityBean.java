@@ -174,9 +174,11 @@ public class RealityBean extends ExampleImpl<RealityBean> implements
 
     @PreDestroy
     public void disposeResources(){
-        boolean success = cameraFile.delete();
-        if (!success && logger.isLoggable(Level.FINE)){
-            logger.fine("Could not dispose of media file" + cameraFile.getAbsolutePath());
+        if( cameraFile != null ){
+            boolean success = cameraFile.delete();
+            if (!success && logger.isLoggable(Level.FINE)){
+                logger.fine("Could not dispose of media file" + cameraFile.getAbsolutePath());
+            }
         }
     }
 
