@@ -20,7 +20,16 @@ ice.ace.List = function(id, cfg) {
     // Setup drag wrapped drag events
     this.appStartHandler = this.cfg.start;
     cfg.start = function(event, ui) {
+        var placeholder = ice.ace.jq(event.currentTarget).find('.if-list-plhld'),
+            li = ice.ace.jq(event.srcElement).closest('li'),
+            width = li.width(),
+            height = li.height();
+
+        // Copy size into placeholder while dragging element around
+        placeholder.width(width+"px").height(height+"px");
+
         self.dragFromHandler.call(self, event, ui);
+
         if (self.appStartHandler)
             return self.appStartHandler(event, ui);
         return true;
