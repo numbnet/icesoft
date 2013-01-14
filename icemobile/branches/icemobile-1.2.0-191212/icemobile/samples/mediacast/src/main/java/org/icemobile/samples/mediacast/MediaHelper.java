@@ -205,9 +205,7 @@ public class MediaHelper implements Serializable{
 			model.getCurrentMediaMessage()
 					.setVideoThumbnailMed(customMovieIcon);
 			model.getCurrentMediaMessage()
-					.addMediumPhoto(customMovieIcon);
-			model.getCurrentMediaMessage()
-					.addSmallPhoto(customMovieIconSmall);
+					.setVideoThumbnailSmall(customMovieIconSmall);
 		} catch (Exception e) {
 			// conversion fails, but we may proceed with original file
 			logger.log(Level.WARNING, "Error processing video.", e);
