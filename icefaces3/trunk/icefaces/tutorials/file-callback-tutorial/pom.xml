@@ -20,12 +20,12 @@
   <groupId>org.icefaces.tutorials.ace</groupId>
   <artifactId>file-callback-tutorial</artifactId>
   <packaging>war</packaging>
-  <version>3.0.0</version>
+  <version>3.2.0</version>
   <name>file-callback-tutorial</name>
   <url>http://icefaces.org</url>
       <properties>
-    <jsf.version>2.1.3</jsf.version>
-    <ice.version>3.0.0</ice.version>
+    <jsf.version>2.1.6</jsf.version>
+    <ice.version>3.2.0</ice.version>
       <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
      <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
             <netbeans.hint.deploy.server>Tomcat60</netbeans.hint.deploy.server>
