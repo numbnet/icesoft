@@ -298,9 +298,9 @@ ice.ace.InputMask = function(id, cfg) {
 		}
         if (behaviors.keypress) {
             element.keypress(function (e) {
-                var $ = ice.ace.jq, char = $(this).data("fromCharCode");
-                if (char) {
-                    ice.ace.ab($.extend(true, {params: {char: char}}, behaviors.keypress));
+                var $ = ice.ace.jq, character = $(this).data("fromCharCode");
+                if (character) {
+                    ice.ace.ab($.extend(true, {params: {"char": character}}, behaviors.keypress));
                 }
 			});
 		}
