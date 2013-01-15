@@ -18,6 +18,7 @@ package com.icesoft.faces.component.util;
 import com.icesoft.faces.renderkit.dom_html_basic.FormRenderer;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.icefaces.util.EnvUtils;
 
 import javax.faces.FacesException;
 import javax.faces.component.EditableValueHolder;
@@ -436,6 +437,11 @@ public class CustomComponentUtils {
         if (type == null) {
             throw new NullPointerException("type");
         }
+
+        if( !EnvUtils.isValidJavaIdentifier(type) ){
+            throw new ClassNotFoundException("not a valid identifier [" + type + "]");
+        }
+
         try {
             // Try WebApp ClassLoader first
             return Class.forName(type,
