@@ -1519,8 +1519,8 @@ ice.ace.DataTable.prototype.pinColumn = function(i) {
         if (!borderRightColor) borderRightColor = sibling.css('border-right-color');
         e.css('border-color', borderRightColor);
 
-        var siblingHeight = sibling.outerHeight(),
-            ownHeight = e.outerHeight();
+        var siblingHeight = sibling.height(),
+            ownHeight = e.height();
 
         if (siblingHeight < ownHeight) {
             e.siblings().css('height', ownHeight);
