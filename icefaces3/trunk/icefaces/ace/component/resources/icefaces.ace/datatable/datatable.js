@@ -1523,7 +1523,10 @@ ice.ace.DataTable.prototype.pinColumn = function(i) {
             ownHeight = e.height();
 
         if (siblingHeight < ownHeight) {
-            e.siblings().css('height', ownHeight);
+            if (e.parent().is(':last-child'))
+                e.css('height', ownHeight + ice.ace.jq.getScrollWidth());
+            else
+                e.siblings().css('height', ownHeight);
         } else {
             if (e.parent().is(':last-child'))
                 e.css('height', siblingHeight + ice.ace.jq.getScrollWidth());
