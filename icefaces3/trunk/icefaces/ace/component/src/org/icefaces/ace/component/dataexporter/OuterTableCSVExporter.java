@@ -39,6 +39,10 @@ public class OuterTableCSVExporter extends CSVExporter {
 
 	private String innerTableId;
 	private DataTable innerTable;
+
+	public OuterTableCSVExporter(String innerTableId) {
+		this.innerTableId = innerTableId;
+	}
 	
 	public OuterTableCSVExporter(String innerTableId, DataTable innerTable) {
 		this.innerTableId = innerTableId;
@@ -50,10 +54,11 @@ public class OuterTableCSVExporter extends CSVExporter {
 		setUp(component, table);
 		StringBuilder builder = new StringBuilder();
 		List<UIColumn> columns = getColumnsToExport(table, excludeColumns);
-		List<UIColumn> innerColumns = null;
-		if (this.innerTable != null) {
-			innerColumns = getColumnsToExport(this.innerTable, null);
+		if (this.innerTable == null) {
+			setInnerTable(table);
 		}
+		List<UIColumn> innerColumns = getColumnsToExport(this.innerTable, null);
+		List<UIColumn> innerTableHeaders = getInnerTableHeaders(innerColumns);
     	
     	if (includeHeaders) {
 			ColumnGroup columnGroup = getColumnGroupHeader(table);
@@ -68,8 +73,8 @@ public class OuterTableCSVExporter extends CSVExporter {
 					} else {
 						List<UIColumn> allColumns = new ArrayList<UIColumn>();
 						allColumns.addAll(rowColumns);
-						if (innerColumns != null) {
-							allColumns.addAll(innerColumns);
+						if (innerTableHeaders != null) {
+							allColumns.addAll(innerTableHeaders);
 						}
 						addFacetColumns(builder, allColumns, ColumnType.HEADER);
 					}
@@ -77,8 +82,8 @@ public class OuterTableCSVExporter extends CSVExporter {
 			} else {
 				List<UIColumn> allColumns = new ArrayList<UIColumn>();
 				allColumns.addAll(columns);
-				if (innerColumns != null) {
-					allColumns.addAll(innerColumns);
+				if (innerTableHeaders != null) {
+					allColumns.addAll(innerTableHeaders);
 				}
 				addFacetColumns(builder, allColumns, ColumnType.HEADER);
 			}
@@ -148,5 +153,41 @@ public class OuterTableCSVExporter extends CSVExporter {
 			}
 		}
 		return exportedInnerTables;
+	}
+	
+	private void setInnerTable(DataTable table) throws IOException {
+		try {
+			PanelExpansion pe = table.getPanelExpansion();
+			if (pe != null) {
+				for (UIComponent kid : pe.getChildren()) {
+					String id = kid.getId();
+					if (kid instanceof DataTable) {
+						if (this.innerTableId == null || "".equals(this.innerTableId) || this.innerTableId.equals(id)) {
+							this.innerTable = (DataTable) kid;
+							break;
+						}
+					}
+				}
+				if (this.innerTable == null) {
+					throw new NullPointerException("Required inner table not found in outer table with id '" + table.getId() + "'.");
+				}
+			} else {
+				throw new NullPointerException("Outer table with id '" + table.getId() + "' doesn't have required ace:panelExpansion.");
+			}
+		} catch (NullPointerException npe) {
+			npe.printStackTrace();
+		}
+	}
+	
+	private List<UIColumn> getInnerTableHeaders(List<UIColumn> innerColumns) {
+		ColumnGroup columnGroup = getColumnGroupHeader(this.innerTable);
+		if (columnGroup != null) {
+			ArrayList<Row> rows = (ArrayList<Row>) getRows(columnGroup);
+			int size = rows.size();
+			Row row = rows.get(size-1);
+			return getRowColumnsToExport(row, this.innerTable, new int[0]);
+		} else {
+			return innerColumns;
+		}
 	}
 }
