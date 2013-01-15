@@ -35,6 +35,7 @@ package com.icesoft.faces.application;
 import com.icesoft.faces.context.BridgeExternalContext;
 import com.icesoft.faces.context.BridgeFacesContext;
 import com.icesoft.faces.context.DOMResponseWriter;
+import com.icesoft.faces.webapp.http.common.Configuration;
 import com.icesoft.faces.webapp.http.servlet.ServletExternalContext;
 import com.icesoft.faces.webapp.parser.ImplementationUtil;
 import com.icesoft.faces.webapp.parser.JspPageToDocument;
@@ -106,6 +107,7 @@ public class D2DViewHandler extends ViewHandler {
 
     protected Parser parser;
     protected ViewHandler delegate;
+    private String contextPath;
 
     public D2DViewHandler() {
         try {
@@ -302,16 +304,31 @@ public class D2DViewHandler extends ViewHandler {
                             actionURLSuffix;
         }
 
-        return context.getExternalContext().getRequestContextPath() + viewId;
+        return getContextPath(context.getExternalContext()) + viewId;
     }
 
     public String getResourceURL(FacesContext context, String path) {
         ExternalContext extContext = context.getExternalContext();
         if (path.startsWith("/")) {
-            return (extContext.getRequestContextPath() + path);
+            return getContextPath(extContext) + path;
         } else {
             return path;
         }
+    }
+
+    private String getContextPath(ExternalContext extContext) {
+        if (contextPath == null) {
+            Configuration configuration = ((BridgeExternalContext) extContext).getConfiguration();
+            contextPath = configuration.getAttribute("publicContextPath", extContext.getRequestContextPath());
+            if (!contextPath.startsWith("/")) {
+                contextPath = "/" + contextPath;
+            }
+            if (contextPath.endsWith("/")) {
+                contextPath = contextPath.substring(0, contextPath.length() - 1);
+            }
+        }
+
+        return contextPath;
     }
 
     protected long getTimeAttribute(UIComponent root, String key) {
