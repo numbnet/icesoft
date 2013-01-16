@@ -762,6 +762,10 @@
         _mouseDelayMet: function(event) {
             return this.mouseDelayMet;
         },
+		
+		_setMouseHandled: function(value) { // ICE-8869
+			mouseHandled = value;
+		},
 
         // These are placeholder methods, to be overriden by extending plugin
         _mouseStart: function(event) {},
@@ -1132,7 +1136,14 @@
             (this.options.disabled && this.element.addClass("ui-draggable-disabled"));
 
             this._mouseInit();
-
+			// ICE-8869 prevent getting stuck forever when clicking on a scrollbar in Webkit and IE9 browsers
+			var self = this;
+			this.element.bind('mousedown.'+this.widgetName, function(event) {
+				if ((self.helper && self.helper.is(".ui-draggable-dragging")) || self.element.is(".ui-draggable-dragging")) {
+					self._mouseUp(event);
+					self._setMouseHandled(false);
+				}
+			});
         },
 
         destroy: function() {
