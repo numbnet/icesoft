@@ -252,8 +252,9 @@ public class  CommandButtonRenderer extends CoreRenderer {
                 }
                 noPanelConf.append("});");
             }
-            
-            writer.writeAttribute(HTML.ONCLICK_ATTR, noPanelConf.toString(), HTML.ONCLICK_ATTR);
+            if( noPanelConf != null ){
+                writer.writeAttribute(HTML.ONCLICK_ATTR, noPanelConf.toString(), HTML.ONCLICK_ATTR);
+			}
         }
         writer.endElement(HTML.INPUT_ELEM);
         
