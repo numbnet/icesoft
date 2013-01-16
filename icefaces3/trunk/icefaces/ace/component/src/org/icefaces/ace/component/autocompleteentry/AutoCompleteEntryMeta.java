@@ -50,7 +50,7 @@ import java.util.List;
 )
 @ResourceDependencies({
 	@ResourceDependency(library = "icefaces.ace", name = "util/ace-jquery.js"),
-	@ResourceDependency(library = "icefaces.ace", name = "autocompleteentry/autocompleteentry.js")
+	@ResourceDependency(library = "icefaces.ace", name="util/ace-components.js")
 })
 @ClientBehaviorHolder(events = {
 	@ClientEvent( name="submit",
