@@ -315,7 +315,7 @@ public class SelectInputDateRenderer
                 calendarButton.setAttribute(HTML.ONKEYDOWN_ATTR, "if (event.keyCode == 13 || event.keyCode == 32) this.selfClick = true;");
                 // render onclick to set value of hidden field to true
                 String formClientId = parentForm.getClientId(facesContext);
-                String hiddenValue1 = "if (!this.selfClick) return false; this.selfClick = false; document.forms['" +
+                String hiddenValue1 = "document.forms['" +
                         formClientId + "']['" +
                         this.getLinkId(facesContext, uiComponent) +
                         "'].value='";
@@ -323,7 +323,7 @@ public class SelectInputDateRenderer
                         formClientId + "']['" +
                         getHiddenFieldName(facesContext, uiComponent) +
                         "'].value='";
-                String onClick = hiddenValue1 + clientId + CALENDAR_BUTTON +
+                String onClick = "if (!this.selfClick) return false; this.selfClick = false; " + hiddenValue1 + clientId + CALENDAR_BUTTON +
                         "';"
                         + hiddenValue2 + "toggle';"
                         + "iceSubmitPartial( document.forms['" +
