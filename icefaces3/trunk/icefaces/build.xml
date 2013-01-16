@@ -252,11 +252,10 @@
             <fileset dir="${bundle.dir.bin}/ace/component" includes="build.xml"/>
         </subant>
         <move file="${bundle.dir.bin}/ace/component/build/doc/javadoc" tofile="${bundle.dir.bin}/docs/ace/api"/>
-
-        <subant target="javadoc">
-            <fileset dir="${bundle.dir.bin}/icepush/core" includes="build.xml"/>
-        </subant>
-        <move file="${bundle.dir.bin}/icepush/core/build/javadocs" tofile="${bundle.dir.bin}/docs/icepush/core/api"/>
+		
+       	<subant target="icepush-javadoc">
+            <fileset dir="${bundle.dir.bin}" includes="build.xml"/>
+       	</subant>
 
         <!-- Create the TLD docs for icecore, compat, ace move them to the docs directory -->
         <subant target="tlddoc">
@@ -332,6 +331,14 @@
         
         <!-- Not yet ready to distribute the Liferay Faces Bridge yet. -->
         <delete dir="${bundle.dir.src}/lib/portlets/liferayfaces"/>
+    </target>
+
+	<target name="icepush-javadoc" depends="checkIfEEBundle" if="isOSBundle" >
+		<!-- Only generate the icepush javadocs from icefaces/icepush/core if this is the OSBundle -->
+       	<subant target="javadoc">
+           	<fileset dir="./icepush/core" includes="build.xml"/>
+       	</subant>
+	    <move file="./icepush/core/build/javadocs" tofile="./docs/icepush/api"/>
     </target>
 
 </project>
