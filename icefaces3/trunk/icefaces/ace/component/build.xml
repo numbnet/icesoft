@@ -268,6 +268,7 @@
 				<file name="icefaces.ace/gmap/gmap.js"/>
                 <file name="icefaces.ace/tree/tree.js"/>
                 <file name="icefaces.ace/submitmonitor/submitmonitor.js"/>
+				<file name="icefaces.ace/autocompleteentry/autocompleteentry.js"/>
             </filelist>
         </concat>
         <!-- ace-chart.js -->
