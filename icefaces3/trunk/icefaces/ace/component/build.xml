@@ -185,7 +185,8 @@
 
     <target name="res-js-combine">
         <!-- ace-yui.js -->
-        <delete file="${ace-yui.js.uncompressed}" verbose="true"/>
+		<available file="${ace-yui.js.uncompressed}" property="ace-yui.js.uncompressed.present"/>
+        <delete file="${ace-yui.js.uncompressed}" verbose="${ace-yui.js.uncompressed.present}"/>
         <concat destfile="${ace-yui.js.uncompressed}" force="true" fixlastline="true">
             <filelist dir="${resources}">
                 <file name="yui/2_8_2/yahoo/yahoo.js"/>
@@ -203,7 +204,8 @@
             </filelist>
         </concat>
         <!-- ace-jquery.js -->
-        <delete file="${ace-jquery.js.uncompressed}" verbose="true"/>
+		<available file="${ace-jquery.js.uncompressed}" property="ace-jquery.js.uncompressed.present"/>
+        <delete file="${ace-jquery.js.uncompressed}" verbose="${ace-jquery.js.uncompressed.present}"/>
         <concat destfile="${ace-jquery.js.uncompressed}" force="true" fixlastline="true">
             <filelist dir="${resources}">
                 <file name="icefaces.ace/jquery/jquery.js"/>
@@ -214,7 +216,8 @@
             </filelist>
         </concat>
         <!-- ace-datatable.js -->
-        <delete file="${ace-datatable.js.uncompressed}" verbose="true"/>
+		<available file="${ace-datatable.js.uncompressed}" property="ace-datatable.js.uncompressed.present"/>
+        <delete file="${ace-datatable.js.uncompressed}" verbose="${ace-datatable.js.uncompressed.present}"/>
         <concat destfile="${ace-datatable.js.uncompressed}" force="true" fixlastline="true">
             <filelist dir="${resources}">
                 <file name="yui/2_8_2/yahoo/yahoo.js"/>
@@ -229,7 +232,8 @@
             </filelist>
         </concat>
         <!-- ace-menu.js -->
-        <delete file="${ace-menu.js.uncompressed}" verbose="true"/>
+		<available file="${ace-menu.js.uncompressed}" property="ace-menu.js.uncompressed.present"/>
+        <delete file="${ace-menu.js.uncompressed}" verbose="${ace-menu.js.uncompressed.present}"/>
         <concat destfile="${ace-menu.js.uncompressed}" force="true" fixlastline="true">
             <filelist dir="${resources}">
                 <file name="icefaces.ace/wijmo/wijmo.js"/>
@@ -237,7 +241,8 @@
             </filelist>
         </concat>
         <!-- ace-components.js -->
-        <delete file="${ace-components.js.uncompressed}" verbose="true"/>
+		<available file="${ace-components.js.uncompressed}" property="ace-components.js.uncompressed.present"/>
+        <delete file="${ace-components.js.uncompressed}" verbose="${ace-components.js.uncompressed.present}"/>
         <concat destfile="${ace-components.js.uncompressed}" force="true" fixlastline="true">
             <filelist dir="${resources}">
                 <file name="icefaces.ace/datetimeentry/jquery-ui-timepicker-addon.js"/>
@@ -266,7 +271,8 @@
             </filelist>
         </concat>
         <!-- ace-chart.js -->
-        <delete file="${ace-chart.js.uncompressed}" verbose="true"/>
+		<available file="${ace-chart.js.uncompressed}" property="ace-chart.js.uncompressed.present"/>
+        <delete file="${ace-chart.js.uncompressed}" verbose="${ace-chart.js.uncompressed.present}"/>
         <concat destfile="${ace-chart.js.uncompressed}" force="true" fixlastline="true">
             <filelist dir="${resources}">
                 <file name="icefaces.ace/chart/excanvas.js"/>
@@ -292,37 +298,42 @@
 
     <target name="res-js-compress" depends="res-js-combine"
             unless="no-compress">
-        <echo message="Compressing combined javascript code"/>
+        <echo message="Compressing ace-yui.js"/>
         <java jar="${lib.dir}/yui-compressor.jar" fork="yes">
             <arg line="--preserve-semi"/>
             <arg value="-o"/>
             <arg value="${ace-yui.js}"/>
             <arg value="${ace-yui.js.uncompressed}"/>
         </java>
+		<echo message="Compressing ace-jquery.js"/>
         <java jar="${lib.dir}/yui-compressor.jar" fork="yes">
             <arg line="--preserve-semi"/>
             <arg value="-o"/>
             <arg value="${ace-jquery.js}"/>
             <arg value="${ace-jquery.js.uncompressed}"/>
         </java>
+		<echo message="Compressing ace-datatable.js"/>
         <java jar="${lib.dir}/yui-compressor.jar" fork="yes">
             <arg line="--preserve-semi"/>
             <arg value="-o"/>
             <arg value="${ace-datatable.js}"/>
             <arg value="${ace-datatable.js.uncompressed}"/>
         </java>
+		<echo message="Compressing ace-menu.js"/>
         <java jar="${lib.dir}/yui-compressor.jar" fork="yes">
             <arg line="--preserve-semi"/>
             <arg value="-o"/>
             <arg value="${ace-menu.js}"/>
             <arg value="${ace-menu.js.uncompressed}"/>
         </java>
+		<echo message="Compressing ace-components.js"/>
         <java jar="${lib.dir}/yui-compressor.jar" fork="yes">
             <arg line="--preserve-semi"/>
             <arg value="-o"/>
             <arg value="${ace-components.js}"/>
             <arg value="${ace-components.js.uncompressed}"/>
         </java>
+		<echo message="Compressing ace-chart.js"/>
         <java jar="${lib.dir}/yui-compressor.jar" fork="yes">
             <arg line="--preserve-semi"/>
             <arg value="-o"/>
@@ -348,8 +359,9 @@
     </target>
 
     <target name="res-css-combine">
+		<available file="${resources}/icefaces.ace/util/combined.css" property="combined.css.present"/>
         <delete file="${resources}/icefaces.ace/util/combined.css"
-                verbose="true"/>
+                verbose="${combined.css.present}"/>
         <concat destfile="${resources}/icefaces.ace/util/combined.css"
                 force="true" fixlastline="true">
             <filelist dir="${resources}">
