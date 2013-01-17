@@ -159,15 +159,7 @@ public class OuterTableCSVExporter extends CSVExporter {
 		try {
 			PanelExpansion pe = table.getPanelExpansion();
 			if (pe != null) {
-				for (UIComponent kid : pe.getChildren()) {
-					String id = kid.getId();
-					if (kid instanceof DataTable) {
-						if (this.innerTableId == null || "".equals(this.innerTableId) || this.innerTableId.equals(id)) {
-							this.innerTable = (DataTable) kid;
-							break;
-						}
-					}
-				}
+				this.innerTable = findInnerTable(pe);
 				if (this.innerTable == null) {
 					throw new NullPointerException("Required inner table not found in outer table with id '" + table.getId() + "'.");
 				}
@@ -177,6 +169,24 @@ public class OuterTableCSVExporter extends CSVExporter {
 		} catch (NullPointerException npe) {
 			npe.printStackTrace();
 		}
+	}
+	
+	private DataTable findInnerTable(UIComponent component) throws IOException {
+		DataTable result = null;
+		for (UIComponent kid : component.getChildren()) {
+			String id = kid.getId();
+			if (kid instanceof DataTable) {
+				if (this.innerTableId == null || "".equals(this.innerTableId) || this.innerTableId.equals(id)) {
+					result = (DataTable) kid;
+					break;
+				}
+			}
+			if (kid.getChildren().size() > 0) {
+				result = findInnerTable(kid);
+				if (result != null) break;
+			}
+		}
+		return result;
 	}
 	
 	private List<UIColumn> getInnerTableHeaders(List<UIColumn> innerColumns) {
