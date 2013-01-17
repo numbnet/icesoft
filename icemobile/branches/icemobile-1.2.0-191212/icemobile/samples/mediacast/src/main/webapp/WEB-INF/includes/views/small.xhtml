@@ -29,9 +29,21 @@
 				<h:column>
 					<div style="overflow: hidden; height: 75px;">
 						<h:commandLink id="mediaLink">
-                            <mobi:graphicImage id="mediaImg" style="border:none;height:75px;"
-                                title="#{mediaMessage.title}"
-                                value="#{mediaMessage.mediumPhoto.data}" />
+                            <mobi:graphicImage style="border:none;"
+                                width="#{mediaMessage.mediumPhoto.width}"
+                                height="#{mediaMessage.mediumPhoto.height}"
+                                value="#{mediaMessage.mediumPhoto.data}"
+                                rendered="#{not empty mediaMessage.largePhoto}"/>
+                            <mobi:graphicImage style="border:none;"
+                                        width="#{mediaMessage.videoThumbnail.width}"
+                                        height="#{mediaMessage.videoThumbnail.height}"
+                                        value="#{mediaMessage.videoThumbnail.data}"
+                                        rendered="#{not empty mediaMessage.video}"/>
+                            <mobi:graphicImage style="border:none;"
+                                        width="#{mediaHelper.soundIcon.width}"
+                                        height="#{mediaHelper.soundIcon.height}"
+                                        value="#{mediaHelper.soundIcon.data}"
+                                        rendered="#{not empty mediaMessage.audio}"/>
                             <f:setPropertyActionListener target="#{mediaView.media}"
                                 value="#{mediaMessage}" />
                             <f:setPropertyActionListener
