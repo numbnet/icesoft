@@ -42,7 +42,7 @@ import org.icemobile.util.Utils;
 public class ResourceServlet extends HttpServlet{
 	
 	private final Date lastModified = new Date();
-	private final String STARTUP_TIME = Utils.HTTP_DATE.format(lastModified);
+	private String startupTime; 
 	private ClassLoader loader;
 	private ServletContext servletContext;
 	
@@ -52,6 +52,7 @@ public class ResourceServlet extends HttpServlet{
         super.init(servletConfig);
         this.loader = this.getClass().getClassLoader();
         this.servletContext = servletConfig.getServletContext();
+        this.startupTime = Utils.getHttpDateFormat().format(lastModified);
     }
 
 	
@@ -60,7 +61,7 @@ public class ResourceServlet extends HttpServlet{
                 .getHeader("If-Modified-Since");
         if (null != modifedHeader) {
             try {
-                Date modifiedSince = Utils.HTTP_DATE.parse(modifedHeader);
+                Date modifiedSince = Utils.getHttpDateFormat().parse(modifedHeader);
                 if (modifiedSince.getTime() + 1000 > lastModified.getTime()) {
                     //respond with a not-modifed
                     httpServletResponse.setStatus(304);
@@ -88,7 +89,7 @@ public class ResourceServlet extends HttpServlet{
         }
         String mimeType = servletContext.getMimeType(path);
         httpServletResponse.setHeader("Content-Type", mimeType);
-        httpServletResponse.setHeader("Last-Modified", STARTUP_TIME);
+        httpServletResponse.setHeader("Last-Modified", startupTime);
 
         OutputStream out = httpServletResponse.getOutputStream();
 
