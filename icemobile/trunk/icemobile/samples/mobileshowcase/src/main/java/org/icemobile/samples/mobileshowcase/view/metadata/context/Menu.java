@@ -34,6 +34,10 @@ public class Menu<T> implements ContextBase {
         this.parentClass = parentClass;
         menuLinks = new ArrayList<MenuLink>();
     }
+    
+    public Menu(){
+        //void ctor required for proper serialization
+    }
 
     public void initMetaData() {
 
