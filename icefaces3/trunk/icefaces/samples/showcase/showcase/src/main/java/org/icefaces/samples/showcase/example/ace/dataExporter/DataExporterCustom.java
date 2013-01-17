@@ -61,7 +61,6 @@ public class DataExporterCustom extends ComponentExampleImpl<DataExporterCustom>
 	public static final String BEAN_NAME = "dataExporterCustom";
 	
 	private static final String OUTER_TABLE_ID = "carTable";
-	private static final String INNER_TABLE_ID = "innerTable1"; // for header purposes only
 	
     public DataExporterCustom() { 
 		super(DataExporterCustom.class);
@@ -113,8 +112,7 @@ public class DataExporterCustom extends ComponentExampleImpl<DataExporterCustom>
 	}
 	
 	public Object getCustomExporter() {
-		DataTable innerTable = (DataTable) findComponentCustom(FacesContext.getCurrentInstance().getViewRoot(), INNER_TABLE_ID);
-		return new OuterTableCSVExporter(selectedItem, innerTable);
+		return new OuterTableCSVExporter(selectedItem);
 	}
 	
 	private UIComponent findComponentCustom(UIComponent base, String id) {
