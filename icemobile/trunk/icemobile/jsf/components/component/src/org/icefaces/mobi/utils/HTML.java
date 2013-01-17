@@ -16,6 +16,8 @@
 
 package org.icefaces.mobi.utils;
 
+import org.icemobile.util.ArrayUtils;
+
 /**
  * Constant declarations for HTML rendering.
  *
