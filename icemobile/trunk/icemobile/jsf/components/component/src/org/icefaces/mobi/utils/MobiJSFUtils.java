@@ -79,19 +79,18 @@ public class MobiJSFUtils {
         Part part = null;
         InputStream fileStream = null;
         String contentType = null;
-        Map auxMap = null;
+        Map auxMap = AuxUploadResourceHandler.getAuxRequestMap();
         try {
             part = request.getPart(partUploadName);
+            if (null == part) {
+                part = (Part) auxMap.get(partUploadName);
+            }
         } catch (IOException e) {
             throw e;
         } catch (Throwable t) {
             // ignore Throwable here since auxUpload is not multipart
             // and not-null part must be checked and we may not have
             // getPart API on Servlet 2.5
-        }
-        if (null == part) {
-            auxMap = AuxUploadResourceHandler.getAuxRequestMap();
-            part = (Part) auxMap.get(partUploadName);
         }
         if (null == part) {
             Map commonsMeta = (Map) request.getAttribute("org.icemobile.file." + clientId);
