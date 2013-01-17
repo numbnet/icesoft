@@ -903,13 +903,13 @@ ice.ace.DataTable.prototype.resizeScrolling = function () {
 
     // Reattempt resize in 100ms if I or a parent of mine is currently hidden.
     // Sizing will not be accurate if the table is not being displayed, like at tabset load.
-    if (!(this.cfg.nohidden) && (scrollableTable.width() == 0)) {
-        if (!this.cfg.disableHiddenSizing) {
-            var _self = this;
-            setTimeout(function () {
-                _self.resizeScrolling()
-            }, 100);
-        }
+    if (!this.cfg.nohidden && ((ie7 && scrollableTable.width() == 0) || (!ie7 && scrollableTable.is(':hidden')))
+            && !this.cfg.disableHiddenSizing) {
+        var _self = this;
+
+        setTimeout(function () {
+            _self.resizeScrolling()
+        }, 100);
     } else {
         var resizableTableParents = scrollableTable.parents('.ui-datatable-scrollable');
 
