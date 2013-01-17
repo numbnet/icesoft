@@ -88,14 +88,17 @@ public class Utils {
 
     public static void copyStream(InputStream in, OutputStream out)
             throws IOException {
-        byte[] buf = new byte[1000];
-        int l = 1;
-        while (l > 0) {
-            l = in.read(buf);
-            if (l > 0) {
-                out.write(buf, 0, l);
+        if( in != null && out != null ){
+            byte[] buf = new byte[1000];
+            int l = 1;
+            while (l > 0) {
+                l = in.read(buf);
+                if (l > 0) {
+                    out.write(buf, 0, l);
+                }
             }
         }
+        
     }
 
     public static int copyStream(InputStream in, OutputStream out, int start,
