@@ -71,7 +71,7 @@ public class ListBean extends ExampleImpl<ListBean> implements
         return cars;
     }
 
-    public class Car {
+    public class Car implements Serializable{
         private String title;
         private int cost;
 
