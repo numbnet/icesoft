@@ -60,6 +60,10 @@ public class ExampleImpl<T> implements Example, ExampleResources, ContextBase {
         tldResources = new ArrayList<ExampleResource>();
         externalResources = new ArrayList<ExampleResource>();
     }
+    
+    public ExampleImpl(){
+        //void ctr required for proper serialization
+    }
 
     @PostConstruct
     public void initMetaData() {
