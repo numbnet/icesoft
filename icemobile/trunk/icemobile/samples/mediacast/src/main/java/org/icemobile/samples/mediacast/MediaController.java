@@ -35,6 +35,7 @@ import org.icefaces.application.PushMessage;
 import org.icefaces.application.PushRenderer;
 import org.icefaces.mobi.utils.MobiJSFUtils;
 import org.icemobile.samples.mediacast.navigation.NavigationModel;
+import org.icemobile.util.Utils;
 
 /**
  * Controller which handles the media file uploads
@@ -73,9 +74,6 @@ public class MediaController implements Serializable {
 	
 	private boolean showHelpPopup = false;
 	
-	private static SimpleDateFormat dateFormat = 
-            new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss");
-
 	@PostConstruct
 	public void init() {
 		portableRenderer = PushRenderer.getPortableRenderer();
@@ -167,7 +165,7 @@ public class MediaController implements Serializable {
 			}
 			
 			if( StringUtils.isEmpty(msg.getTitle())){
-				msg.setTitle(dateFormat.format(new Date()));
+				msg.setTitle(Utils.getHttpDateFormat().format(new Date()));
 			}
 			
 			//add tags
