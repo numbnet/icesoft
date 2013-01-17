@@ -31,6 +31,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.icemobile.jsp.tags.TagUtil;
+import org.icemobile.util.ClientDescriptor;
 import org.icemobile.util.SXUtils;
 import org.icepush.PushContext;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -115,13 +116,13 @@ public class ApplicationController implements ServletContextAware {
     }
 
     @ModelAttribute
-    public void putAttributeDesktop(WebRequest request, Model model){
-        model.addAttribute("desktop", Utils.isDesktop(request.getHeader("User-Agent")));
+    public void putAttributeDesktop(HttpServletRequest request, Model model){
+        model.addAttribute("desktop", ClientDescriptor.getInstance(request).isDesktopBrowser());
     }
 
     @ModelAttribute
     public void putAttributeEnhanced(HttpServletRequest request, Model model){
-        boolean enhanced = Utils.isEnhanced(request);
+        boolean enhanced = ClientDescriptor.getInstance(request).isICEmobileContainer();
         if( !model.containsAttribute("enhanced") || enhanced){
             model.addAttribute("enhanced", enhanced);
         }
@@ -129,12 +130,13 @@ public class ApplicationController implements ServletContextAware {
     
 
     @ModelAttribute
-    public void putAttributeView(WebRequest request, Model model) {
+    public void putAttributeView(HttpServletRequest request, Model model) {
         String view = DESKTOP;
-        if( Utils.isMobileBrowser(request.getHeader("User-Agent"))){
+        ClientDescriptor client = ClientDescriptor.getInstance(request);
+        if( client.isHandheldBrowser() ){
             view = MOBILE;
         }
-        else if( Utils.isTabletBrowser(request.getHeader("User-Agent"))){
+        else if( client.isTabletBrowser()){
             view = TABLET;
         }
         model.addAttribute("view", view);
