@@ -64,12 +64,13 @@
             <c:if test="#{uploadModel.showCamera}">
                 <mobi:fieldsetRow><h:outputLabel value="Image Message"/></mobi:fieldsetRow>
                 <mobi:fieldsetRow style="min-height:20px;">
-                     <mobi:camera id="camera"
-                                   value="#{uploadModel.photoUploadMap}"/>
                       <h:panelGroup
                               style="display:inline-block;">
                           <mobi:thumbnail for="camera"/>
                       </h:panelGroup>
+                      <mobi:camera id="camera"
+                                   value="#{uploadModel.photoUploadMap}"/>
+                     
                  </mobi:fieldsetRow>
                  <mobi:fieldsetRow style="text-align:center;">
                       <mobi:commandButton id="uploadPhoto"
@@ -84,8 +85,8 @@
             <c:if test="#{uploadModel.showCamcorder}">
                 <mobi:fieldsetRow><h:outputLabel value="Video Message"/></mobi:fieldsetRow>
                 <mobi:fieldsetRow style="min-height:20px;">
-                      <mobi:camcorder id="camcorder" value="#{uploadModel.videoUploadMap}"/>
                       <mobi:thumbnail id="camcorderThumbnail" for="camcorder"/>
+                      <mobi:camcorder id="camcorder" value="#{uploadModel.videoUploadMap}"/>
                 </mobi:fieldsetRow>
                 <mobi:fieldsetRow style="text-align:center;">
                       <mobi:commandButton id="uploadVideo"
@@ -143,10 +144,10 @@
                                     value="#{uploadModel.currentMediaMessage.mediumPhoto.data}"
                                     rendered="#{not empty uploadModel.currentMediaMessage.largePhoto}"/>
                 <mobi:graphicImage style="border:none;"
-                    width="#{uploadModel.currentMediaMessage.videoThumbnail.width}"
-                    height="#{uploadModel.currentMediaMessage.videoThumbnail.height}"
-                    value="#{uploadModel.currentMediaMessage.videoThumbnail.data}"
-                    rendered="#{not empty uploadModel.currentMediaMessage.video}"/>
+                                    width="#{uploadModel.currentMediaMessage.videoThumbnail.width}"
+                                    height="#{uploadModel.currentMediaMessage.videoThumbnail.height}"
+                                    value="#{uploadModel.currentMediaMessage.videoThumbnail.data}"
+                                    rendered="#{not empty uploadModel.currentMediaMessage.video}"/>
                 <mobi:graphicImage style="border:none;"
                                     width="#{mediaHelper.soundIcon.width}"
                                     height="#{mediaHelper.soundIcon.height}"
