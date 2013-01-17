@@ -145,30 +145,6 @@ public class FacesUtils {
         return (String) event.getComponent().getAttributes().get(name);
     }
 
-    public static String getBuildAttribute(String name) {
-        if (buildProperties != null)
-            return buildProperties.getProperty(name, "unknown");
-        InputStream is = null;
-        try {
-            is = getServletContext().getResourceAsStream("/WEB-INF/buildversion.properties");
-            buildProperties = new java.util.Properties();
-            buildProperties.load(is);
-        } catch (Throwable e) {
-            is = null;
-            buildProperties = null;
-            return "unknown";
-        } finally {
-            if (is != null) {
-                try {
-                    is.close();
-                } catch (Throwable t) {
-                }
-            }
-        }
-        return buildProperties.getProperty(name, "unknown");
-    }
-
-
     /**
      * Gest parameter value from the the session scope.
      *
