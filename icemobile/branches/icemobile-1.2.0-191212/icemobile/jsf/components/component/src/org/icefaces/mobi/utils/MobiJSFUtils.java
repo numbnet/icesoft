@@ -79,11 +79,10 @@ public class MobiJSFUtils {
         Part part = null;
         InputStream fileStream = null;
         String contentType = null;
-        Map auxMap = null;
+        Map auxMap = AuxUploadResourceHandler.getAuxRequestMap();
         try {
             part = request.getPart(partUploadName);
             if (null == part) {
-                auxMap = AuxUploadResourceHandler.getAuxRequestMap();
                 part = (Part) auxMap.get(partUploadName);
             }
         } catch (IOException e) {
