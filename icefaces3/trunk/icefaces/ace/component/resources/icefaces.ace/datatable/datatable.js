@@ -903,8 +903,7 @@ ice.ace.DataTable.prototype.resizeScrolling = function () {
 
     // Reattempt resize in 100ms if I or a parent of mine is currently hidden.
     // Sizing will not be accurate if the table is not being displayed, like at tabset load.
-    if (!this.cfg.nohidden && ((ie7 && scrollableTable.width() == 0) || (!ie7 && scrollableTable.is(':hidden')))
-            && !this.cfg.disableHiddenSizing) {
+    if (!(this.cfg.nohidden) && ((ie7 && scrollableTable.width() == 0) || (!ie7 && scrollableTable.is(':hidden'))) && !this.cfg.disableHiddenSizing) {
         var _self = this;
 
         setTimeout(function () {
@@ -1391,9 +1390,7 @@ ice.ace.DataTable.prototype.ie7UnpinColumn = function(i) {
 
     // Send request
     if (this.behaviors && this.behaviors.unpin) {
-        var options = {
-            source: this.id
-        }
+        var options = { source: this.id }
         ice.ace.ab(ice.ace.extendAjaxArguments(this.behaviors.unpin, options));
     }
 }
@@ -1413,12 +1410,10 @@ ice.ace.DataTable.prototype.unpinColumn = function(i) {
     if (tbody.length == 0) tbody = ice.ace.jq(this.jqId + ' > div > table');
 
     var bodyCells = tbody.find(' > tbody > tr > td:nth-child('+i+')'),
-            headCells = thead.find(' > thead > tr > th:nth-child('+i+')'),
-            footCells = tfoot.find(' > tfoot > tr > td:nth-child('+i+')'),
-            offsetWidth = headCells.first().width(),
-            bodyContainer = tbody.parent();
-
-    if (safari || chrome) offsetWidth = offsetWidth + 1;
+        headCells = thead.find(' > thead > tr > th:nth-child('+i+')'),
+        footCells = tfoot.find(' > tfoot > tr > td:nth-child('+i+')'),
+        offsetWidth = headCells.first().width(),
+        bodyContainer = tbody.parent();
 
     if (this.columnPinScrollListener[i])
         tbody.parent().unbind('scroll', this.columnPinScrollListener[i]);
@@ -1432,7 +1427,10 @@ ice.ace.DataTable.prototype.unpinColumn = function(i) {
 
     this.fixPinnedColumnPositions(oldState);
 
-    bodyCells.add(footCells).add(headCells).css('position','').css('height','').css('top','').removeClass('pinned ui-widget-content');
+    bodyCells.add(footCells).add(headCells).css('position','').css('height','')
+            .css('top','').css('left','').removeClass('pinned ui-widget-content');
+
+    if (safari || chrome) offsetWidth = offsetWidth + 1;
 
     this.currentPinRegionOffset = this.currentPinRegionOffset - offsetWidth;
     bodyContainer.add(tfoot.parent()).add(thead.parent()).css('margin-left', this.currentPinRegionOffset);
@@ -1471,6 +1469,8 @@ ice.ace.DataTable.prototype.pinColumn = function(i) {
         headCells = thead.find(' > thead > tr > th:nth-child('+i+')'),
         footCells = tfoot.find(' > tfoot > tr > td:nth-child('+i+')'),
         cellWidth = bodyCells.eq(0).width();
+
+    if (safari || chrome) cellWidth++;
 
     // Exit if already pinned
     if (bodyCells.first().is('.pinned'))
