@@ -243,10 +243,13 @@ public class ProxyHttpServletRequest implements HttpServletRequest {
         return null;
     }
 
-    public  boolean isSecure()  {
-        log.severe("ProxyHttpServletRequest unsupported operation");
-        if (true) throw new UnsupportedOperationException();
-        return false;
+    public boolean isSecure() {
+        boolean isSecure = false;
+        Object result = getMethodAndInvoke(externalContext.getRequest(), "isSecure");
+        if (result != null) {
+            isSecure = ((Boolean) result).booleanValue();
+        }
+        return isSecure;
     }
 
     public  javax.servlet.RequestDispatcher getRequestDispatcher(java.lang.String dispatcher)  {
