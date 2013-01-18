@@ -26,6 +26,7 @@ import javax.servlet.jsp.JspException;
 import org.icemobile.component.IDevice;
 import org.icemobile.renderkit.DeviceCoreRenderer;
 import org.icemobile.util.ClientDescriptor;
+import org.icemobile.util.SXUtils;
 
 public abstract class DeviceTag extends BaseBodyTag implements IDevice{
     private static final String CONTAINER_ONCLICK = "ice.%s('%s');";
@@ -96,11 +97,7 @@ public abstract class DeviceTag extends BaseBodyTag implements IDevice{
         this.disabled = disabled;
     }
     public String getSessionId(){
-        HttpSession session = getRequest().getSession(false);
-        if (null == session)  {
-            return null;
-        }
-        return session.getId();
+        return SXUtils.getSessionIdCookie(getRequest());
     }
     public String getComponentType(){
           return command;
