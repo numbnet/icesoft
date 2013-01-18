@@ -33,12 +33,13 @@
                            singleSubmit="true"/>
             </mobi:fieldsetRow>
             <mobi:fieldsetRow>
-                <h:outputLabel value="QR Code: "/>
+                <h:outputLabel value="QR Code: " style="width:80px"/>
                 <em>
                 <h:outputText rendered="#{not qrCodeBean.qrScannerUrl}"
                               value="#{qrCodeBean.qrScanner}"/>
                 <h:outputLink value="#{qrCodeBean.qrScanner}"
-                              rendered="#{qrCodeBean.qrScannerUrl}">
+                              rendered="#{qrCodeBean.qrScannerUrl}"
+                              style="overflow:hidden;max-width:#{viewSize eq 'small' ? '190px' : '400px'};display:inline-block;text-overflow:ellipsis">
                         #{qrCodeBean.qrScanner}</h:outputLink>
                 </em>
             </mobi:fieldsetRow>
