@@ -53,8 +53,8 @@ public class MediaHelper implements Serializable{
 	private String audioConvertCommand;
 	private String thumbConvertCommand;
 	
-	private static Media brokenIcon;
-	private static Media soundIcon;
+    static Media brokenIcon;
+    static Media soundIcon;
 	private Media movieIcon;
 	private Media soundIconSmall;
 	private Media movieIconSmall;
@@ -362,7 +362,7 @@ public class MediaHelper implements Serializable{
         return brokenIcon;
     }
 
-	public static Media getSoundIcon() {
+	public Media getSoundIcon() {
 		return soundIcon;
 	}
 
