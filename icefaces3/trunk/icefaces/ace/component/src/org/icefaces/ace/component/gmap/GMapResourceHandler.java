@@ -80,7 +80,7 @@ public class GMapResourceHandler extends ResourceHandlerWrapper {
     public Resource createResource(String resourceName, String libraryName, String contentType) {
         if (GMAP_API.equals(resourceName) && gmapKey != null) {
             if (apiJS == null) {
-                if (!FacesContext.getCurrentInstance().getExternalContext().isSecure())
+                if (!EnvUtils.isSecure(FacesContext.getCurrentInstance()))
                     apiJS = recreateResource(super.createResource(resourceName, ICEFACES_ACE_LIB),
                             "http://maps.googleapis.com/maps/api/js?key=" + gmapKey + "&sensor=true");
                 else

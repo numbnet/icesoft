@@ -691,6 +691,21 @@ public class EnvUtils {
         return getSafeSession(fc, ProxySession.APPLICATION_SCOPE);
     }
 
+    public static boolean isSecure(FacesContext fc){
+        //ICE-8902
+        //The isSecure() method is only available in JSF 2.1 which causes problems with older
+        //versions of the two portlet bridges that don't override it.  In that case, ignore the
+        //exception and query the request via reflection to avoid any portlet runtime dependencies.
+
+        try {
+            return fc.getExternalContext().isSecure();
+        } catch (UnsupportedOperationException uoe) {
+            //If isSecure is not overridden, then ignore and use the request directly.
+        }
+
+       return getSafeRequest(fc).isSecure();
+    }
+
     public static boolean isPushRequest(FacesContext facesContext) {
         ExternalContext ec = facesContext.getExternalContext();
         String reqPath = ec.getRequestServletPath();
