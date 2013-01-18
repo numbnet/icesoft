@@ -160,6 +160,15 @@ public class AuxUploadResourceHandler extends ResourceHandlerWrapper  {
                         }
                     }
                 }
+
+                //must copy all parameters since they will not
+                //appear as untyped parts in this case
+                Map requestParameterMap =
+                        externalContext.getRequestParameterMap();
+                for (Object key : requestParameterMap.keySet())  {
+                    auxRequestMap.put(key, requestParameterMap.get(key) );
+                }
+            
             }
 
             for (Part part : parts) {
