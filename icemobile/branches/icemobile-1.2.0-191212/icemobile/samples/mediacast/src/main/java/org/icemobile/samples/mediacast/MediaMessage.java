@@ -116,8 +116,24 @@ public class MediaMessage implements Serializable {
         return urlPath;
     }*/
 
+    public Media getIcon()  {
+        Media iconMedia = null;
+        iconMedia = getMediumPhoto();
+        if (null != iconMedia)  {
+            return iconMedia;
+        }
+        iconMedia = getVideoThumbnail();
+        if (null != iconMedia)  {
+            return iconMedia;
+        }
+        if (null != getAudio())  {
+            return MediaHelper.getSoundIcon();
+        }
+        return MediaHelper.getBrokenIcon();
+    }
+
     public String getIconURL()  {
-        return getMediumPhoto().getData().getURL().toString();
+        return getIcon().getData().getURL().toString();
     }
 
     public double getLat()  {

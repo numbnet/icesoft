@@ -53,7 +53,8 @@ public class MediaHelper implements Serializable{
 	private String audioConvertCommand;
 	private String thumbConvertCommand;
 	
-	private Media soundIcon;
+	private static Media brokenIcon;
+	private static Media soundIcon;
 	private Media movieIcon;
 	private Media soundIconSmall;
 	private Media movieIconSmall;
@@ -86,6 +87,12 @@ public class MediaHelper implements Serializable{
 		ExternalContext externalContext = FacesContext.getCurrentInstance()
 				.getExternalContext();
 		try {
+
+			imageStream = externalContext
+					.getResourceAsStream("/resources/images/help.png");
+			image = ImageIO.read(imageStream);
+			brokenIcon = createPhoto(image, image.getWidth(), image.getHeight());
+
 			imageStream = externalContext
 					.getResourceAsStream("/resources/images/soundIcon.png");
 			image = ImageIO.read(imageStream);
@@ -351,8 +358,11 @@ public class MediaHelper implements Serializable{
 		return calculateImageSize(thumbSize, width, height);
 	}
 
+    public static Media getBrokenIcon()  {
+        return brokenIcon;
+    }
 
-	public Media getSoundIcon() {
+	public static Media getSoundIcon() {
 		return soundIcon;
 	}
 
