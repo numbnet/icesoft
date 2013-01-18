@@ -144,9 +144,11 @@ public class CamcorderBean extends ExampleImpl<CamcorderBean> implements
 
     @PreDestroy
     public void disposeResources(){
-        boolean success = camcorderFile.delete();
-        if (!success && logger.isLoggable(Level.FINE)){
-            logger.fine("Could not dispose of media file" + camcorderFile.getAbsolutePath());
+        if( camcorderFile != null ){
+            boolean success = camcorderFile.delete();
+            if (!success && logger.isLoggable(Level.FINE)){
+                logger.fine("Could not dispose of media file" + camcorderFile.getAbsolutePath());
+            }
         }
     }
 
