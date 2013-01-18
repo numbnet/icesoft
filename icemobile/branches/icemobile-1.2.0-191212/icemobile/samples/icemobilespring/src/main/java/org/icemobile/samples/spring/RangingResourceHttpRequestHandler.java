@@ -88,8 +88,11 @@ public class RangingResourceHttpRequestHandler extends ResourceHttpRequestHandle
             }
         }
         
-        response.setContentType( context.getServletContext()
-                .getMimeType(requestPath) );
+        String contentType = context.getServletContext()
+                .getMimeType(requestPath);
+        if( contentType != null ){
+            response.setContentType( contentType );
+        }
         response.setHeader("Accept-Ranges", "bytes");
 
         Resource theResource = context.getResource(requestPath);
