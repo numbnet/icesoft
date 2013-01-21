@@ -34,7 +34,7 @@ import org.icefaces.application.PortableRenderer;
 import org.icefaces.application.PushMessage;
 import org.icefaces.application.PushRenderer;
 import org.icefaces.mobi.utils.MobiJSFUtils;
-import org.icemobile.samples.mediacast.navigation.NavigationModel;
+import org.icemobile.util.Utils;
 
 /**
  * Controller which handles the media file uploads
@@ -50,7 +50,7 @@ public class MediaController implements Serializable {
 
 	public static final String MEDIA_FILE_KEY = "file";
 
-    private static Logger logger =
+    private static final Logger LOGGER =
             Logger.getLogger(MediaController.class.toString());
 
 	private static transient PortableRenderer portableRenderer;
@@ -61,21 +61,14 @@ public class MediaController implements Serializable {
     @ManagedProperty(value="#{mediaStore}")
     private MediaStore mediaStore;
     
-    @ManagedProperty(value="#{navigationModel}")
-    private NavigationModel navigationModel;
-
-    //static allows use from UploadServlet
-	@ManagedProperty(value="#{mediaHelper}")
-	private static MediaHelper mediaHelper;
+    @ManagedProperty(value="#{mediaHelper}")
+	private MediaHelper mediaHelper;
 
 	@ManagedProperty(value="#{mediaView}")
 	private MediaView mediaView;
 	
 	private boolean showHelpPopup = false;
 	
-	private static SimpleDateFormat dateFormat = 
-            new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss");
-
 	@PostConstruct
 	public void init() {
 		portableRenderer = PushRenderer.getPortableRenderer();
@@ -92,14 +85,14 @@ public class MediaController implements Serializable {
 		processUpload(uploadModel, mediaStore);
 	}
 	
-	public static void processUpload(UploadModel model, MediaStore store){
-		if( logger.isLoggable(Level.FINER)){
-			logger.finer("processUpload()");
+	public void processUpload(UploadModel model, MediaStore store){
+		if( LOGGER.isLoggable(Level.FINER)){
+			LOGGER.finer("processUpload()");
 		}
 		
 		String selectedMediaInput = model.getSelectedMediaInput();
-		logger.finer(model.toString());
-		logger.finer("selectedMediaInput=" + selectedMediaInput);
+		LOGGER.finer(model.toString());
+		LOGGER.finer("selectedMediaInput=" + selectedMediaInput);
 		
 		// check that we have a valid file type before processing.
 		String contentType = null;
@@ -122,13 +115,13 @@ public class MediaController implements Serializable {
 			}
 		}
 		model.setSelectedMediaInput(null);
-		logger.finer(model.getCurrentMediaMessage().toString());
+		LOGGER.finer(model.getCurrentMediaMessage().toString());
 
 		if( contentType == null ){
 			String errorMsg = "An error occurred while upload the "
 					+ selectedMediaInput + " file, please try again.";
 			model.setUploadFeedbackMessage(errorMsg);
-			logger.warning(errorMsg);
+			LOGGER.warning(errorMsg);
 		}
 	}
 
@@ -149,8 +142,8 @@ public class MediaController implements Serializable {
         uploadsCompleted(uploadModel, mediaStore);
     }
 
-	public static void uploadsCompleted(UploadModel model, MediaStore store) {
-		logger.finer("uploadsCompleted()");
+	public void uploadsCompleted(UploadModel model, MediaStore store) {
+		LOGGER.finer("uploadsCompleted()");
 		MediaMessage msg = model.getCurrentMediaMessage();
 		if (msg.isHasMedia()) {
 			if( StringUtils.isNotEmpty(model.getTags())){
@@ -167,7 +160,7 @@ public class MediaController implements Serializable {
 			}
 			
 			if( StringUtils.isEmpty(msg.getTitle())){
-				msg.setTitle(dateFormat.format(new Date()));
+				msg.setTitle(Utils.getHttpDateFormat().format(new Date()));
 			}
 			
 			//add tags
@@ -182,14 +175,14 @@ public class MediaController implements Serializable {
 			}
 			
 			store.addMedia(msg);
-			logger.finer("added new media message to store: " + msg);
+			LOGGER.finer("added new media message to store: " + msg);
 			try {
 				String body = msg.getTitle();
 				portableRenderer.render(RENDER_GROUP, new PushMessage(
 						"New Media Message", body));
 				model.clearCurrentMediaMessage();
 			} catch (Exception e) {
-				logger.log(Level.WARNING,
+				LOGGER.log(Level.WARNING,
 						"Media message was not sent to recipients.");
 			}
 			model
@@ -208,7 +201,7 @@ public class MediaController implements Serializable {
 
 	public String viewMediaDetail() {
 		if (uploadModel.getCurrentMediaMessage() != null) {
-			navigationModel.goForward("media");
+			mediaView.setCurrentTab("viewer");
 		}
 		return null;
 	}
@@ -227,7 +220,7 @@ public class MediaController implements Serializable {
 			else{
 				mediaView.setMedia(null);
 			}
-			navigationModel.goBack();
+			mediaView.setCurrentTab("feed");
 		}
 		return null;
 
@@ -241,7 +234,7 @@ public class MediaController implements Serializable {
 	 * @param ae ActionEvent
 	 */
 	public void chooseCamera(ActionEvent ae) {
-		logger.finer("chooseCamera()");
+		LOGGER.finer("chooseCamera()");
 		uploadModel.setSelectedMediaInput(MediaMessage.MEDIA_TYPE_PHOTO);
 		uploadModel.setUploadFeedbackMessage("");
 	}
@@ -252,7 +245,7 @@ public class MediaController implements Serializable {
 	 * @param ae ActionEvent
 	 */
 	public void chooseCamcorder(ActionEvent ae) {
-		logger.finer("chooseCamcorder()");
+		LOGGER.finer("chooseCamcorder()");
 		uploadModel.setSelectedMediaInput(MediaMessage.MEDIA_TYPE_VIDEO);
 		uploadModel.setUploadFeedbackMessage("");
 	}
@@ -263,7 +256,7 @@ public class MediaController implements Serializable {
 	 * @param ae ActionEvent
 	 */
 	public void chooseMicrophone(ActionEvent ae) {
-		logger.finer("chooseMicrophone()");
+		LOGGER.finer("chooseMicrophone()");
 		uploadModel.setSelectedMediaInput(MediaMessage.MEDIA_TYPE_AUDIO);
 		uploadModel.setUploadFeedbackMessage("");
 	}
@@ -274,10 +267,6 @@ public class MediaController implements Serializable {
     
     public void setMediaStore(MediaStore mediaStore){
     	this.mediaStore = mediaStore;
-    }
-    
-    public void setNavigationModel(NavigationModel navigationModel){
-    	this.navigationModel = navigationModel;
     }
     
     public void setMediaHelper(MediaHelper mediaHelper) {

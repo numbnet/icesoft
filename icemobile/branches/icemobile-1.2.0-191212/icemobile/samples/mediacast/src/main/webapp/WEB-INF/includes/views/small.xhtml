@@ -47,7 +47,7 @@
                             <f:setPropertyActionListener target="#{mediaView.media}"
                                 value="#{mediaMessage}" />
                             <f:setPropertyActionListener
-                                target="#{navigationModel.currentTab}" value="viewer" />
+                                target="#{mediaView.currentTab}" value="viewer" />
                         </h:commandLink>
 					</div>
 					
@@ -55,9 +55,9 @@
 			</mobi:carousel>
 		</div>
 		<mobi:tabSet style="padding-top:0;clear:both;" autoWidth="true"
-			orientation="top" currentId="#{navigationModel.currentTab}"
+			orientation="top" currentId="#{mediaView.currentTab}" id="tabSet"
 			singleSubmit="true">
-			<mobi:contentPane facelet="false" client="true" id="home"
+			<mobi:contentPane facelet="false" client="true" id="upload"
 				title="Upload">
 				<h4 style="text-align:center;">Share from your location:</h4>
 				<ui:include src="/WEB-INF/includes/content/message-upload.xhtml" />
@@ -76,6 +76,5 @@
 				<ui:include src="/WEB-INF/includes/content/media-viewer.xhtml" />
 			</mobi:contentPane>
 		</mobi:tabSet>
-		<!-- ui:include src="/WEB-INF/includes/content/session-tags.xhtml"/-->
 	</f:facet>
 </mobi:pagePanel>
