@@ -371,7 +371,7 @@ public class DataTableHeadRenderer {
                 Object itemVal = item.getValue();
 
                 if ((filterVal == null && itemVal == null)
-                        || itemVal.toString().equals(filterEvent)) {
+                        || itemVal.toString().equals(filterVal)) {
                     writer.writeAttribute("selected", "true", null);
                 }
 
