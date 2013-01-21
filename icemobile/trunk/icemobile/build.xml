@@ -32,12 +32,12 @@
               value="${product}-${version.primary}.${version.secondary}.${version.tertiary}${release.type.suffix}"/>
 
     <property name="bin.bundle.name" value="${bundle.name}-bin"/>
-    <property name="bin.bundle.prefix" value="${bin.bundle.name}/icemobile"/>
+    <property name="bin.bundle.prefix" value="${bin.bundle.name}/${bundle.dir.name}"/>
     <property name="bin.bundle.file"
               location="${dist.dir}/${bin.bundle.name}.zip"/>
 
     <property name="src.bundle.name" value="${bundle.name}-src"/>
-    <property name="src.bundle.prefix" value="${src.bundle.name}/icemobile"/>
+    <property name="src.bundle.prefix" value="${src.bundle.name}/${bundle.dir.name}"/>
     <property name="src.bundle.file"
               location="${dist.dir}/${src.bundle.name}.zip"/>
 
