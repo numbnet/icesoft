@@ -138,10 +138,12 @@ public class TextEntryRenderer extends InputRenderer {
         writer.startElement("script", null);
         writer.writeAttribute("type", "text/javascript", null);
 
-        writer.write(this.resolveWidgetVar(textEntry) + " = new ");
+        writer.write(this.resolveWidgetVar(textEntry) + " = ");
 
         JSONBuilder jb = JSONBuilder.create();
-        jb.beginFunction("ice.ace.TextEntry")
+        jb.beginFunction("ice.ace.create")
+            .item("TextEntry")
+            .beginArray()
             .item(clientId)
             .beginMap()
                 .entryNonNullValue("embeddedLabel", embeddedLabel);
@@ -156,7 +158,7 @@ public class TextEntryRenderer extends InputRenderer {
         sb.append(indicatorPosition).append(labelPosition);
         jb.entry("hashCode", sb.toString().hashCode());
 
-        jb.endMap().endFunction();
+        jb.endMap().endArray().endFunction();
         writer.write(jb.toString());
 
         writer.endElement("script");

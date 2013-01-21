@@ -70,22 +70,27 @@ public class MenuBarRenderer extends BaseMenuRenderer {
 		writer.writeAttribute("type", "text/javascript", null);
 
         JSONBuilder json = JSONBuilder.create();
-		writer.write(widgetVar + " = new ");
-        json.beginFunction("ice.ace.Menubar").
-            item(clientId).
-            beginMap().
+		writer.write(widgetVar + " = ");
+        json.beginFunction("ice.ace.create").
+        item("Menubar").
 
-                entry("autoSubmenuDisplay", menubar.isAutoSubmenuDisplay()).
-				entry("direction", menubar.getDirection()).
+        beginArray().
 
-                beginMap("animation").
-                    entry("animated", menubar.getEffect()).
-                    entry("duration", menubar.getEffectDuration()).
-                endMap().
+        item(clientId).
+        beginMap().
 
-                entryNonNullValue("styleClass", menubar.getStyleClass()).
-                entryNonNullValue("style", menubar.getStyle()).
-            endMap().
+        entry("autoSubmenuDisplay", menubar.isAutoSubmenuDisplay()).
+        entry("direction", menubar.getDirection()).
+        entryNonNullValue("styleClass", menubar.getStyleClass()).
+        entryNonNullValue("style", menubar.getStyle()).
+
+        beginMap("animation").
+        entry("animated", menubar.getEffect()).
+        entry("duration", menubar.getEffectDuration()).
+        endMap().
+
+        endMap().
+        endArray().
         endFunction();
 
         writer.write(json.toString());

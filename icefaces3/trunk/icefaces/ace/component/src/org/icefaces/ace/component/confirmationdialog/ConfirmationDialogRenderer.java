@@ -102,31 +102,33 @@ public class ConfirmationDialogRenderer extends CoreRenderer {
 		writer.writeAttribute("type", "text/javascript", null);
 		
 		JSONBuilder jb = JSONBuilder.create();
-		writer.write(this.resolveWidgetVar(dialog) + " = new ");
+		writer.write(this.resolveWidgetVar(dialog) + " = ");
 		
-		jb.beginFunction("ice.ace.ConfirmDialog")
-			.item(clientId)
-			.beginMap()
-				.entry("minHeight", 0);
+		jb.beginFunction("ice.ace.create")
+        .item("ConfirmDialog")
+        .beginArray()
+        .item(clientId)
+        .beginMap()
+        .entry("minHeight", 0);
 		
 		String styleClass = dialog.getStyleClass();
-		if(styleClass != null) jb.entry("dialogClass", styleClass);
-		int width = dialog.getWidth();
+        String showEffect = dialog.getShowEffect();
+        String hideEffect = dialog.getHideEffect();
+        int width = dialog.getWidth();
+        int height = dialog.getHeight();
+        int zIndex = dialog.getZindex();
+
+        if(styleClass != null) jb.entry("dialogClass", styleClass);
 		if(width != 300) jb.entry("width", width);
-		int height = dialog.getHeight();
 		if(height != Integer.MIN_VALUE) jb.entry("height", height);
 		if(!dialog.isDraggable()) jb.entry("draggable", false);
 		if(dialog.isModal()) jb.entry("modal", true);
-		int zIndex = dialog.getZindex();
 		if(zIndex != 1000) jb.entry("zIndex", zIndex);
-		String showEffect = dialog.getShowEffect();
 		if(showEffect != null) jb.entry("show", showEffect);
-		String hideEffect = dialog.getHideEffect();
 		if(hideEffect != null) jb.entry("hide", hideEffect);
 		if(!dialog.isCloseOnEscape()) jb.entry("closeOnEscape", false);
 		if(!dialog.isClosable()) jb.entry("closable", false);
-//        if(dialog.isAppendToBody()) jb.entry("appendToBody", true);
-		
+
 		//Position
 		String position = dialog.getPosition();	
 		if(position != null) {
@@ -137,9 +139,9 @@ public class ConfirmationDialogRenderer extends CoreRenderer {
 		}
 		
         jb.entry("ariaEnabled", ariaEnabled);
-        jb.endMap().endFunction();
-		writer.write(jb.toString());
+        jb.endMap().endArray().endFunction();
 
+        writer.write(jb.toString());
 		writer.endElement("script");
 	}
 

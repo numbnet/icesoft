@@ -276,7 +276,7 @@ public class ListControlRenderer extends CoreRenderer {
         cfgBuilder.entry("selector", control.getSelector(clientId.replace(":","\\:"), renderContext.dualListMode));
         cfgBuilder.endMap();
 
-        writer.write("var " + widgetVar + " = new ice.ace.ListControl('" + clientId + "', " + cfgBuilder +");");
+        writer.write("var " + widgetVar + " = new ice.ace.create('ListControl', ['" + clientId + "', " + cfgBuilder +"]);");
         writer.endElement(HTML.SCRIPT_ELEM);
         writer.endElement(HTML.SPAN_ELEM);
     }

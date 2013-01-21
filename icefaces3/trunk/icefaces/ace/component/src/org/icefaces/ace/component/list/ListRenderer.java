@@ -352,7 +352,7 @@ public class ListRenderer extends CoreRenderer {
 
         cfgBuilder.endMap();
 
-        writer.write("var " + widgetVar + " = new ice.ace.List('" + clientId + "', " + cfgBuilder +");");
+        writer.write("var " + widgetVar + " = new ice.ace.create('List', ['" + clientId + "', " + cfgBuilder +"]);");
         writer.endElement(HTML.SCRIPT_ELEM);
         writer.endElement(HTML.SPAN_ELEM);
     }

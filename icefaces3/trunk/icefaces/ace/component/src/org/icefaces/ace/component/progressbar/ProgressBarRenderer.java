@@ -118,9 +118,11 @@ public class ProgressBarRenderer extends CoreRenderer {
 
         writer.write("ice.ace.jq(function() {");
 
-        writer.write(this.resolveWidgetVar(progressBar) + " = new ");
+        writer.write(this.resolveWidgetVar(progressBar) + " = ");
         JSONBuilder json = JSONBuilder.create();
-        json.beginFunction("ice.ace.ProgressBar").
+        json.beginFunction("ice.ace.create").
+            item("ProgressBar").
+            beginArray().
             item(clientId).
             beginMap().
                 entry("value", progressBar.getValue());
@@ -139,7 +141,7 @@ public class ProgressBarRenderer extends CoreRenderer {
                 encodeClientBehaviors(facesContext, progressBar, json);
                 json.entry("ariaEnabled", ariaEnabled);
             json.endMap();
-        json.endFunction();
+        json.endArray().endFunction();
         writer.write(json.toString());
 
         writer.write("});");

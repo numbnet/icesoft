@@ -137,9 +137,13 @@ public class DateTimeEntryRenderer extends InputRenderer {
         }
 
         if(popup) {
-            if(!isValueBlank(styleClasses)) writer.writeAttribute("class", styleClasses, null);
-            if(dateTimeEntry.isReadOnlyInputText()) writer.writeAttribute("readonly", "readonly", null);
-            if(dateTimeEntry.isDisabled()) writer.writeAttribute("disabled", "disabled", null);
+            if(!isValueBlank(styleClasses))
+                writer.writeAttribute("class", styleClasses, null);
+            if(dateTimeEntry.isReadOnlyInputText())
+                writer.writeAttribute("readonly", "readonly", null);
+            if(dateTimeEntry.isDisabled())
+                writer.writeAttribute("disabled", "disabled", null);
+
             int size = dateTimeEntry.getSize();
             if (size <= 0) {
                 String formattedDate;
@@ -164,8 +168,6 @@ public class DateTimeEntryRenderer extends InputRenderer {
                 }};
                 writeAriaAttributes(ariaAttributes, labelAttributes);
             }
-
-//            renderPassThruAttributes(context, dateTimeEntry, HTML.INPUT_TEXT_ATTRS);
         }
 
         writer.endElement("input");
@@ -197,87 +199,88 @@ public class DateTimeEntryRenderer extends InputRenderer {
         JSONBuilder json = JSONBuilder.create();
 
         script.append("ice.ace.jq(function(){").append(resolveWidgetVar(dateTimeEntry)).append(" = new ");
-        json./*beginFunction("ice.ace.Calendar").
-            item(clientId).*/
-            beginMap().
-                entry("widgetVar", resolveWidgetVar(dateTimeEntry)).
-                entry("id", clientId).
-                entry("popup", dateTimeEntry.isPopup()).
-                entry("locale", dateTimeEntry.calculateLocale(context).toString());
-//                if(!isValueBlank(value) && !timeOnly && dateTimeEntry.isValid()) json.entry("defaultDate", value);
-                json.entryNonNullValue("pattern", DateTimeEntryUtils.convertPattern(dateTimeEntry.getPattern()));
-                if(dateTimeEntry.getPages() != 1) json.entry("numberOfMonths", dateTimeEntry.getPages());
-                json.entryNonNullValue("minDate", DateTimeEntryUtils.getDateAsString(dateTimeEntry, dateTimeEntry.getMindate())).
-                entryNonNullValue("maxDate", DateTimeEntryUtils.getDateAsString(dateTimeEntry, dateTimeEntry.getMaxdate()));
-                json.entryNonNullValue("showButtonPanel", dateTimeEntry.isShowButtonPanel());
-                if(dateTimeEntry.isShowWeek()) json.entry("showWeek", true);
-                if(dateTimeEntry.isDisabled()) json.entry("disabled", true);
-                json.entryNonNullValue("yearRange", dateTimeEntry.getYearRange());
-                if(dateTimeEntry.isNavigator()) {
-                    json.entry("changeMonth", true).
-                    entry("changeYear", true);
-                }
 
-                if(dateTimeEntry.getEffect() != null) {
-                    json.entry("showAnim", dateTimeEntry.getEffect()).
-                    entry("duration", dateTimeEntry.getEffectDuration());
-                }
-                if(!showOn.equalsIgnoreCase("focus")) {
-                    String iconSrc = dateTimeEntry.getPopupIcon() != null ? getResourceURL(context, dateTimeEntry.getPopupIcon()) : getResourceRequestPath(context, DateTimeEntry.POPUP_ICON);
+        json.beginMap().
+            entry("widgetVar", resolveWidgetVar(dateTimeEntry)).
+            entry("id", clientId).
+            entry("popup", dateTimeEntry.isPopup()).
+            entry("locale", dateTimeEntry.calculateLocale(context).toString()).
+            entryNonNullValue("pattern", DateTimeEntryUtils.convertPattern(dateTimeEntry.getPattern()));
 
-                    json.entry("showOn", showOn).
-                    entry("buttonImage", iconSrc).
-                    entry("buttonImageOnly", dateTimeEntry.isPopupIconOnly());
-                }
+        if(dateTimeEntry.getPages() != 1)
+            json.entry("numberOfMonths", dateTimeEntry.getPages());
 
-                if(dateTimeEntry.isShowOtherMonths()) {
-                    json.entry("showOtherMonths", true).
-                    entry("selectOtherMonths", dateTimeEntry.isSelectOtherMonths());
-                }
+        json.entryNonNullValue("minDate", DateTimeEntryUtils.getDateAsString(dateTimeEntry, dateTimeEntry.getMindate())).
+             entryNonNullValue("maxDate", DateTimeEntryUtils.getDateAsString(dateTimeEntry, dateTimeEntry.getMaxdate())).
+             entryNonNullValue("showButtonPanel", dateTimeEntry.isShowButtonPanel()).
+             entryNonNullValue("yearRange", dateTimeEntry.getYearRange());
 
-                //time
-                if(dateTimeEntry.hasTime()) {
-                    json.entry("timeOnly", timeOnly).
+        if(dateTimeEntry.isShowWeek())
+            json.entry("showWeek", true);
 
-                    //step
-                    entry("stepHour", dateTimeEntry.getStepHour()).
-                    entry("stepMinute", dateTimeEntry.getStepMinute()).
-                    entry("stepSecond", dateTimeEntry.getStepSecond()).
-                    
-                    //minmax
-                    entry("hourMin", dateTimeEntry.getMinHour()).
-                    entry("hourMax", dateTimeEntry.getMaxHour()).
-                    entry("minuteMin", dateTimeEntry.getMinMinute()).
-                    entry("minuteMax", dateTimeEntry.getMaxMinute()).
-                    entry("secondMin", dateTimeEntry.getMinSecond()).
-                    entry("secondMax", dateTimeEntry.getMaxSecond());
-                }
+        if(dateTimeEntry.isDisabled())
+            json.entry("disabled", true);
 
-                encodeClientBehaviors(context, dateTimeEntry, json);
+        if(dateTimeEntry.isNavigator()) {
+            json.entry("changeMonth", true).
+            entry("changeYear", true);
+        }
 
-                if(!themeForms()) {
-                    json.entry("theme", false);
-                }
-                json.entry("disableHoverStyling", dateTimeEntry.isDisableHoverStyling());
-                json.entry("showCurrentAtPos", 0 - dateTimeEntry.getLeftMonthOffset());
-                json.entry("clientId", clientId);
-                json.entryNonNullValue("inFieldLabel", (String) labelAttributes.get("inFieldLabel"));
-                json.entry("inFieldLabelStyleClass", IN_FIELD_LABEL_STYLE_CLASS);
-                json.entry("labelIsInField", (Boolean) labelAttributes.get("labelIsInField"));
-                json.entry("singleSubmit", dateTimeEntry.isSingleSubmit());
-                json.entry("withinSingleSubmit", Util.withinSingleSubmit(dateTimeEntry));
-                json.entry("buttonText", dateTimeEntry.getButtonText());
-                json.entry("ariaEnabled", EnvUtils.isAriaEnabled(context));
-            json.endMap();
-//        json.endFunction();
-        String initScript = "ice.ace.Calendar.init(" + json + ");";
-//        System.out.println(initScript);
-        writer.write(initScript);
+        if(dateTimeEntry.getEffect() != null) {
+            json.entry("showAnim", dateTimeEntry.getEffect()).
+            entry("duration", dateTimeEntry.getEffectDuration());
+        }
+        if(!showOn.equalsIgnoreCase("focus")) {
+            String iconSrc = dateTimeEntry.getPopupIcon() != null ? getResourceURL(context, dateTimeEntry.getPopupIcon()) : getResourceRequestPath(context, DateTimeEntry.POPUP_ICON);
 
-        script.append(json.toString()).append("});");
-//        System.out.println(script);
-//        writer.write(script.toString());
+            json.entry("showOn", showOn).
+            entry("buttonImage", iconSrc).
+            entry("buttonImageOnly", dateTimeEntry.isPopupIconOnly());
+        }
 
+        if(dateTimeEntry.isShowOtherMonths()) {
+            json.entry("showOtherMonths", true).
+            entry("selectOtherMonths", dateTimeEntry.isSelectOtherMonths());
+        }
+
+        //time
+        if(dateTimeEntry.hasTime()) {
+            json.entry("timeOnly", timeOnly).
+
+            //step
+            entry("stepHour", dateTimeEntry.getStepHour()).
+            entry("stepMinute", dateTimeEntry.getStepMinute()).
+            entry("stepSecond", dateTimeEntry.getStepSecond()).
+
+            //minmax
+            entry("hourMin", dateTimeEntry.getMinHour()).
+            entry("hourMax", dateTimeEntry.getMaxHour()).
+            entry("minuteMin", dateTimeEntry.getMinMinute()).
+            entry("minuteMax", dateTimeEntry.getMaxMinute()).
+            entry("secondMin", dateTimeEntry.getMinSecond()).
+            entry("secondMax", dateTimeEntry.getMaxSecond());
+        }
+
+        encodeClientBehaviors(context, dateTimeEntry, json);
+
+        if(!themeForms()) {
+            json.entry("theme", false);
+        }
+
+        json.entry("disableHoverStyling", dateTimeEntry.isDisableHoverStyling());
+        json.entry("showCurrentAtPos", 0 - dateTimeEntry.getLeftMonthOffset());
+        json.entry("clientId", clientId);
+        json.entryNonNullValue("inFieldLabel", (String) labelAttributes.get("inFieldLabel"));
+        json.entry("inFieldLabelStyleClass", IN_FIELD_LABEL_STYLE_CLASS);
+        json.entry("labelIsInField", (Boolean) labelAttributes.get("labelIsInField"));
+        json.entry("singleSubmit", dateTimeEntry.isSingleSubmit());
+        json.entry("withinSingleSubmit", Util.withinSingleSubmit(dateTimeEntry));
+        json.entry("buttonText", dateTimeEntry.getButtonText());
+        json.entry("ariaEnabled", EnvUtils.isAriaEnabled(context));
+
+        json.endMap();
+
+        writer.write("ice.ace.Calendar.init(" + json + ");");
         writer.endElement("script");
     }
 

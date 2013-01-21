@@ -95,75 +95,74 @@ public class AutoCompleteEntryRenderer extends InputRenderer {
 	}
 	
     public void encodeBegin(FacesContext facesContext, UIComponent uiComponent) throws IOException {
-
 		ResponseWriter writer = facesContext.getResponseWriter();
         String clientId = uiComponent.getClientId(facesContext);
         AutoCompleteEntry autoCompleteEntry = (AutoCompleteEntry) uiComponent;
+        int width = autoCompleteEntry.getWidth();
         boolean ariaEnabled = EnvUtils.isAriaEnabled(facesContext);
-		
-		// root
-        writer.startElement("div", null);
-		writer.writeAttribute("id", clientId, null);
-		writer.writeAttribute("class", autoCompleteEntry.getStyleClass(), null);
-
         Map paramMap = facesContext.getExternalContext().getRequestParameterMap();
         Map<String, Object> labelAttributes = getLabelAttributes(uiComponent);
-
-        String inFieldLabel = (String) labelAttributes.get("inFieldLabel"), inFieldLabelStyleClass = "";
+        String inFieldLabel = (String) labelAttributes.get("inFieldLabel");
+        String inFieldLabelStyleClass = "";
         String iceFocus = (String) paramMap.get("ice.focus");
         String value = (String) autoCompleteEntry.getValue();
-        boolean labelIsInField = false;
+        String mousedownScript = (String) uiComponent.getAttributes().get("onmousedown");
+        String onfocusCombinedValue = "setFocus(this.id);";
+        String onblurCombinedValue = "";
+        Object onfocusAppValue = uiComponent.getAttributes().get("onfocus");
+        Object onblurAppValue = uiComponent.getAttributes().get("onblur");
+        Object onchangeAppValue = uiComponent.getAttributes().get("onchange");
+
+
         if (isValueBlank(value)) value = null;
-		String inputClientId = clientId + "_input";
+        String inputClientId = clientId + "_input";
+        boolean labelIsInField = false;
+
         if (value == null && !isValueBlank(inFieldLabel) && !inputClientId.equals(iceFocus)) {
             value = inFieldLabel;
             inFieldLabelStyleClass = " " + IN_FIELD_LABEL_STYLE_CLASS;
             labelIsInField = true;
         }
 
+		// root
+        writer.startElement("div", null);
+		writer.writeAttribute("id", clientId, null);
+		writer.writeAttribute("class", autoCompleteEntry.getStyleClass(), null);
+
         writeLabelAndIndicatorBefore(labelAttributes);
+
         // text field
 		writer.startElement("input", null);
         writer.writeAttribute("type", "text", null);
 		writer.writeAttribute("name", inputClientId, null);
-        if (ariaEnabled) {
+        if (ariaEnabled)
             writer.writeAttribute("role", "textbox", null);
-        }
-        String mousedownScript = (String) uiComponent.getAttributes().get("onmousedown");
+
 		mousedownScript = mousedownScript == null ? "" : mousedownScript;
 		writer.writeAttribute("onmousedown", mousedownScript + "this.focus();", null);
-		int width = autoCompleteEntry.getWidth();
 		writer.writeAttribute("style", "width: " + width + "px;" + autoCompleteEntry.getStyle(), null);
-        writer.writeAttribute("class", "ui-inputfield ui-widget ui-state-default ui-corner-all" + getStateStyleClasses(autoCompleteEntry) + inFieldLabelStyleClass, null);
+        writer.writeAttribute("class", "ui-inputfield ui-widget ui-state-default ui-corner-all"
+                + getStateStyleClasses(autoCompleteEntry) + inFieldLabelStyleClass, null);
 		writer.writeAttribute("autocomplete", "off", null);
-        String onfocusCombinedValue = "setFocus(this.id);";
-        Object onfocusAppValue = uiComponent.getAttributes().get("onfocus");
-        if (onfocusAppValue != null) {
+
+        if (onfocusAppValue != null)
             onfocusCombinedValue += onfocusAppValue.toString();
-		}
+
         writer.writeAttribute("onfocus", onfocusCombinedValue, null);
-        String onblurCombinedValue = "";
-        Object onblurAppValue = uiComponent.getAttributes().get("onblur");
-        if (onblurAppValue != null) {
+
+        if (onblurAppValue != null)
             onblurCombinedValue += onblurAppValue.toString();
-		}
+
         writer.writeAttribute("onblur", onblurCombinedValue, null);
-        Object onchangeAppValue = uiComponent.getAttributes().get("onchange");
-        if (onchangeAppValue != null) {
+
+        if (onchangeAppValue != null)
             writer.writeAttribute("onchange", onchangeAppValue.toString(), null);
-		}
-        if (value != null) {
-			// if field is required and is now empty, avoid displaying the previous valid value
-			Object submittedValue = autoCompleteEntry.getSubmittedValue();
-			if (submittedValue != null) {
-				if ("".equals((String) submittedValue) && !"".equals(value) && autoCompleteEntry.isRequired()) value = "";
-			}
-			
-			//writer.writeAttribute("value", value, null);
-		} else {
-			//writer.writeAttribute("value", "", null);
-			value = "";
-		}
+
+        Object submittedValue = autoCompleteEntry.getSubmittedValue();
+        if ((value != null && submittedValue != null && "".equals((String) submittedValue) && !"".equals(value) && autoCompleteEntry.isRequired())
+                || value == null) {
+            value = "";
+        }
 
         if (ariaEnabled) {
             final AutoCompleteEntry compoent = (AutoCompleteEntry) uiComponent;
@@ -178,85 +177,98 @@ public class AutoCompleteEntryRenderer extends InputRenderer {
         }
 
         writer.endElement("input");
+
         writeLabelAndIndicatorAfter(labelAttributes);
 
-		// div
-		writer.startElement("div", null);
-		String divId = clientId + AUTOCOMPLETE_DIV;
-		writer.writeAttribute("id", clientId + AUTOCOMPLETE_DIV, null);
-		writer.writeAttribute("class", "ui-widget ui-widget-content ui-corner-all", null);
-		writer.writeAttribute("style", "display:none;z-index:500;", null);
-		writer.endElement("div");
+        String divId = clientId + AUTOCOMPLETE_DIV;
 
-		// script
-		writer.startElement("script", null);
-		writer.writeAttribute("type", "text/javascript", null);
-		String direction = autoCompleteEntry.getDirection();
-		direction = direction != null ? ("up".equalsIgnoreCase(direction) || "down".equalsIgnoreCase(direction) ? direction : "auto" ) : "auto";
-        boolean isEventSource = false;
-		Object sourceId = paramMap.get("ice.event.captured");
-        if (sourceId != null) {
-            if (sourceId.toString().equals(inputClientId)) {
-                isEventSource = true;
-            }
-        }
-		boolean isBlurEvent = false;
-		KeyEvent keyEvent = new KeyEvent(autoCompleteEntry, paramMap);
-		Object event = paramMap.get("javax.faces.behavior.event");
-		if (keyEvent.getKeyCode() == KeyEvent.TAB || (event != null && event.toString().equals("blur"))) {
-			isBlurEvent = true;
-        }
-		boolean focus = isEventSource && !isBlurEvent;
-		if (!autoCompleteEntry.isDisabled() && !autoCompleteEntry.isReadonly()) {
+        writer.startElement("div", null);
+        writer.writeAttribute("id", divId, null);
+        writer.writeAttribute("class", "ui-widget ui-widget-content ui-corner-all", null);
+        writer.writeAttribute("style", "display:none;z-index:500;", null);
+        writer.endElement("div");
+
+        encodeScript(facesContext, writer, clientId, autoCompleteEntry,
+                paramMap, inFieldLabel, value, inputClientId, labelIsInField);
+
+		writer.endElement("div");
+    }
+
+    private void encodeScript(FacesContext facesContext, ResponseWriter writer, String clientId, AutoCompleteEntry autoCompleteEntry, Map paramMap, String inFieldLabel, String value, String inputClientId, boolean labelIsInField) throws IOException {
+        String divId = clientId + AUTOCOMPLETE_DIV;
+        Object sourceId = paramMap.get("ice.event.captured");
+        boolean isEventSource = sourceId != null && sourceId.toString().equals(inputClientId);
+        KeyEvent keyEvent = new KeyEvent(autoCompleteEntry, paramMap);
+        Object event = paramMap.get("javax.faces.behavior.event");
+        boolean isBlurEvent = (keyEvent.getKeyCode() == KeyEvent.TAB || (event != null && event.toString().equals("blur")));
+        boolean focus = isEventSource && !isBlurEvent;
+        String direction = autoCompleteEntry.getDirection();
+        direction = direction != null ? ("up".equalsIgnoreCase(direction) || "down".equalsIgnoreCase(direction) ? direction : "auto" ) : "auto";
+
+        // script
+        writer.startElement("script", null);
+        writer.writeAttribute("type", "text/javascript", null);
+
+        if (!autoCompleteEntry.isDisabled() && !autoCompleteEntry.isReadonly()) {
 			JSONBuilder jb = JSONBuilder.create();
-			jb.beginFunction("ice.ace.Autocompleter")
-				.item(clientId)
-				.item(divId)
-				.item("ui-widget-content")
-				.item("ui-state-active")
-				.item(autoCompleteEntry.getDelay())
-				.item(autoCompleteEntry.getMinChars())
-				.item(autoCompleteEntry.getHeight())
-				.item(direction)
-				.beginMap()
-				.entry("p", ""); // dummy property
-				encodeClientBehaviors(facesContext, autoCompleteEntry, jb);
-			jb.endMap();
-            jb.beginMap()
-                .entryNonNullValue("inFieldLabel", inFieldLabel)
-                .entry("inFieldLabelStyleClass", IN_FIELD_LABEL_STYLE_CLASS)
-                .entry("labelIsInField", labelIsInField);
+
+            jb.beginFunction("ice.ace.create")
+            .item("Autocompleter")
+            .beginArray()
+            .item(clientId)
+            .item(divId)
+            .item("ui-widget-content")
+            .item("ui-state-active")
+            .item(autoCompleteEntry.getDelay())
+            .item(autoCompleteEntry.getMinChars())
+            .item(autoCompleteEntry.getHeight())
+            .item(direction)
+            .beginMap()
+            .entry("p", ""); // dummy property
+            encodeClientBehaviors(facesContext, autoCompleteEntry, jb);
+
             jb.endMap();
-			if (autoCompleteEntry.isClientSide()) {
+
+            jb.beginMap()
+            .entryNonNullValue("inFieldLabel", inFieldLabel)
+            .entry("inFieldLabelStyleClass", IN_FIELD_LABEL_STYLE_CLASS)
+            .entry("labelIsInField", labelIsInField);
+
+            jb.endMap();
+
+            if (autoCompleteEntry.isClientSide()) {
 				int rows = autoCompleteEntry.getRows();
 				if (rows == 0) rows = Integer.MAX_VALUE;
 				FilterMatchMode filterMatchMode = getFilterMatchMode(autoCompleteEntry);
-				jb.beginMap()
-					.entry("rows", rows)
-					.entry("filterMatchMode", filterMatchMode.toString())
-					.entry("caseSensitive", autoCompleteEntry.isCaseSensitive())
+
+                jb.beginMap()
+                .entry("rows", rows)
+                .entry("filterMatchMode", filterMatchMode.toString())
+                .entry("caseSensitive", autoCompleteEntry.isCaseSensitive())
 				.endMap();
 			} else {
 				jb.item("null", false);
 			}
-			jb.endFunction();
-			writer.writeText("new " + jb.toString(), null);
+
+			jb.endArray();
+            jb.endFunction();
+
+            writer.writeText(jb.toString(), null);
 		}
-		
-		writer.endElement("script");
-		
-		// field update script
-		writer.startElement("span", null);
-		writer.writeAttribute("id", clientId + "_fieldupdate", null);
-		writer.startElement("script", null);
-		writer.writeAttribute("type", "text/javascript", null);
-		writer.writeText("(function() {", null);
-		writer.writeText("var instance = ice.ace.Autocompleters[\"" + clientId + "\"];", null);
-		writer.writeText("instance.updateField('" + escapeBackslashes(value) + "', " + focus + ");", null);
-		writer.writeText("})();", null);
-		writer.endElement("script");
-		writer.endElement("span");
-		writer.endElement("div");
+
+        writer.endElement("script");
+
+        // field update script
+        writer.startElement("span", null);
+        writer.writeAttribute("id", clientId + "_fieldupdate", null);
+        writer.startElement("script", null);
+        writer.writeAttribute("type", "text/javascript", null);
+        writer.writeText("(function() {", null);
+        writer.writeText("var instance = ice.ace.Autocompleters[\"" + clientId + "\"];", null);
+        writer.writeText("instance.updateField('" + escapeBackslashes(value) + "', " + focus + ");", null);
+        writer.writeText("})();", null);
+        writer.endElement("script");
+        writer.endElement("span");
     }
 
     public void encodeChildren(FacesContext facesContext, UIComponent uiComponent) throws IOException {

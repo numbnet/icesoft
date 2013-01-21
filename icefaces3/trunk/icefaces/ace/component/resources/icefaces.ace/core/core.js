@@ -43,6 +43,22 @@ ice.ace.showWatermarks = function(){
     ice.ace.jq.watermark.showAll();
 };
 
+ice.ace.create = function(name, args) {
+    if (ice.ace.jq.isFunction(ice.ace[name])) {
+        var temp = function(){}, // constructor-less duplicate class
+            inst, ret;
+        temp.prototype = ice.ace[name].prototype;
+        inst = new temp; // init constructor-less class
+        ret = ice.ace[name].apply(inst, args); // apply original constructor
+        return Object(ret) === ret ? ret : inst;
+    }
+    else
+        throw 'Missing resources for "' + name + '" component. ' +
+              'See "http://www.icesoft.org/wiki/display/ICE/mandatoryResourceConfiguration" ' +
+              'for more details.';
+
+};
+
 ice.ace.addSubmitParam = function(parent, name, value) {
     ice.ace.jq(this.escapeClientId(parent)).append("<input type=\"hidden\" name=\"" + name + "\" value=\"" + value + "\"/>");
     return this;

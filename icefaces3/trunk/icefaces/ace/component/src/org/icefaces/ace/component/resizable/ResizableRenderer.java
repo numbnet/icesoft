@@ -78,10 +78,12 @@ public class ResizableRenderer extends CoreRenderer {
         else
             writer.write("ice.ace.jq(function(){");
 		
-		writer.write(this.resolveWidgetVar(resizable) + " = new ");
+		writer.write(this.resolveWidgetVar(resizable) + " = ");
 		
 		JSONBuilder jb = JSONBuilder.create();
-		jb.beginFunction("ice.ace.Resizable")
+		jb.beginFunction("ice.ace.create")
+            .item("Resizable")
+            .beginArray()
 			.item(clientId)
 			.beginMap()
 				.entry("target", targetId);
@@ -119,7 +121,7 @@ public class ResizableRenderer extends CoreRenderer {
         }
 		
         encodeClientBehaviors(context, resizable, jb);
-		jb.endMap().endFunction();
+		jb.endMap().endArray().endFunction();
 		writer.write(jb.toString());
 		
 		writer.write("});");

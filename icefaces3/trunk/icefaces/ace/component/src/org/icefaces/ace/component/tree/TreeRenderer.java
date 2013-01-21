@@ -154,7 +154,7 @@ public class TreeRenderer extends CoreRenderer {
 
         writer.startElement(HTML.SCRIPT_ELEM, null);
         writer.writeAttribute(HTML.TYPE_ATTR, "text/javascript", null);
-        writer.write("var " + widgetVar + " = new ice.ace.Tree("+confJson.toString()+");" );
+        writer.write("var " + widgetVar + " = new ice.ace.create('Tree', ["+confJson.toString()+"]);" );
         writer.endElement(HTML.SCRIPT_ELEM);
     }
 

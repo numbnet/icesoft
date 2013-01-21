@@ -383,7 +383,7 @@ public class DataTableRenderer extends CoreRenderer {
 
 		writer.startElement(HTML.SCRIPT_ELEM, table);
 		writer.writeAttribute(HTML.TYPE_ATTR, "text/javascript", null);        
-        writer.write("var " + widgetVar + " = new ice.ace.DataTable('" + clientId + "', " + json + ");");
+        writer.write("var " + widgetVar + " = ice.ace.create('DataTable', ['" + clientId + "', " + json + "]);");
 		writer.endElement(HTML.SCRIPT_ELEM);
 	}
 

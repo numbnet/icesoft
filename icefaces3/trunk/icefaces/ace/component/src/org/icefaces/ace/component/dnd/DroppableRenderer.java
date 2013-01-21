@@ -96,12 +96,14 @@ public class DroppableRenderer extends CoreRenderer {
 
         writer.write("ice.ace.jq(function() {");
 
-        writer.write(this.resolveWidgetVar(droppable) + " = new ");
+        writer.write(this.resolveWidgetVar(droppable) + " = ");
 		JSONBuilder jb = JSONBuilder.create();
-		jb.beginFunction("ice.ace.Droppable")
-			.item(clientId)
-			.beginMap()
-			.entry("target", target);
+		jb.beginFunction("ice.ace.create")
+        .item("Droppable")
+        .beginArray()
+        .item(clientId)
+        .beginMap()
+        .entry("target", target);
 
         if(droppable.isDisabled()) jb.entry("disabled", true);
         if(droppable.getHoverStyleClass() != null) jb.entry("hoverClass", droppable.getHoverStyleClass());
@@ -115,7 +117,7 @@ public class DroppableRenderer extends CoreRenderer {
         }
 
         encodeClientBehaviors(context, droppable, jb);
-        jb.endMap().endFunction();
+        jb.endMap().endArray().endFunction();
 		writer.write(jb.toString());
         writer.write("});");
 

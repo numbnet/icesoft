@@ -176,7 +176,7 @@ public class ChartRenderer extends CoreRenderer {
         cfgBuilder.endMap();
 
         // Call plot init
-        writer.write("var " + widgetVar + " = new ice.ace.Chart('" + clientId + "', " + dataBuilder + ", " + cfgBuilder +");");
+        writer.write("var " + widgetVar + " = ice.ace.create('Chart', ['" + clientId + "', " + dataBuilder + ", " + cfgBuilder +"]);");
 
         writer.endElement(HTML.SCRIPT_ELEM);
         writer.endElement(HTML.SPAN_ELEM);
