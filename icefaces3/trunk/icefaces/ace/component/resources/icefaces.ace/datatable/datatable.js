@@ -1225,22 +1225,21 @@ ice.ace.DataTable.prototype.initializePinningState = function() {
 ice.ace.DataTable.prototype.repairPinnedColumn = function(i) {
     var tbody = arguments[1] ? arguments[1]
                     : ice.ace.jq(this.jqId + ' > div.ui-datatable-scrollable-body > table'),
+        bodyCells = arguments[2] ? arguments[2]
+                : tbody.find(' > tbody > tr > td:nth-child('+i+')'),
 
-            bodyCells = arguments[2] ? arguments[2]
-                    : tbody.find(' > tbody > tr > td:nth-child('+i+')'),
+        headCells = arguments[3] ? arguments[3]
+                : ice.ace.jq(this.jqId + ' > div.ui-datatable-scrollable-header > table > thead > tr > th:nth-child('+i+')'),
 
-            headCells = arguments[3] ? arguments[3]
-                    : ice.ace.jq(this.jqId + ' > div.ui-datatable-scrollable-header > table > thead > tr > th:nth-child('+i+')'),
+        footCells = arguments[4] ? arguments[4]
+                : ice.ace.jq(this.jqId + ' > div.ui-datatable-scrollable-footer > table > tfoot > tr > td:nth-child('+i+')'),
 
-            footCells = arguments[4] ? arguments[4]
-                    : ice.ace.jq(this.jqId + ' > div.ui-datatable-scrollable-footer > table > tfoot > tr > td:nth-child('+i+')'),
-
-            cellWidth = bodyCells.eq(0).width(),
-            offset = this.columnPinPosition[i],
-            ie7 = ice.ace.jq.browser.msie && ice.ace.jq.browser.version == 7,
-            ie8 = ice.ace.jq.browser.msie && ice.ace.jq.browser.version == 8,
-            ie9 = ice.ace.jq.browser.msie && ice.ace.jq.browser.version == 9,
-            firefox = ice.ace.jq.browser.mozilla;
+        cellWidth = bodyCells.eq(0).width(),
+        offset = this.columnPinPosition[i],
+        ie7 = ice.ace.jq.browser.msie && ice.ace.jq.browser.version == 7,
+        ie8 = ice.ace.jq.browser.msie && ice.ace.jq.browser.version == 8,
+        ie9 = ice.ace.jq.browser.msie && ice.ace.jq.browser.version == 9,
+        firefox = ice.ace.jq.browser.mozilla;
 
     if (ie8 || ie9) {
         bodyCells.first().css('border-top','0px');
@@ -1418,8 +1417,13 @@ ice.ace.DataTable.prototype.unpinColumn = function(i) {
     if (this.columnPinScrollListener[i])
         tbody.parent().unbind('scroll', this.columnPinScrollListener[i]);
 
+    bodyCells.add(footCells).add(headCells).css('position','').css('height','')
+            .css('top','').css('left','').removeClass('pinned ui-widget-content')
+
+    if (safari || chrome) offsetWidth = offsetWidth + 1;
+
     // Remove col from pinning state
-    var oldState = { order : this.columnPinOrder[i - 1], offset : bodyCells.eq(i-1).outerWidth()};
+    var oldState = { order : this.columnPinOrder[i - 1], offset : offsetWidth};
     this.columnPinOrder[i - 1] = undefined;
     this.columnPinPosition[i] = undefined;
     this.columnPinScrollListener[i] = undefined;
@@ -1427,13 +1431,15 @@ ice.ace.DataTable.prototype.unpinColumn = function(i) {
 
     this.fixPinnedColumnPositions(oldState);
 
-    bodyCells.add(footCells).add(headCells).css('position','').css('height','')
-            .css('top','').css('left','').removeClass('pinned ui-widget-content');
-
-    if (safari || chrome) offsetWidth = offsetWidth + 1;
+    // Remove border if unpinned not the left most column
+    if (i != 1) {
+        bodyCells.add(footCells).add(headCells).css('border-left-width','0px');
+    }
 
     this.currentPinRegionOffset = this.currentPinRegionOffset - offsetWidth;
-    bodyContainer.add(tfoot.parent()).add(thead.parent()).css('margin-left', this.currentPinRegionOffset);
+
+    bodyContainer.add(tfoot.parent()).add(thead.parent()).css('margin-left',
+            this.currentPinRegionOffset > 0 ? this.currentPinRegionOffset : 0);
 
     // Send request
     if (this.behaviors && this.behaviors.unpin) {
