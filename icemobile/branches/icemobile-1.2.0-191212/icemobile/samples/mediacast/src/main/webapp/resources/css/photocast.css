@@ -140,55 +140,6 @@ img.branding{
 	background-position: 0 50%;
 	background-repeat: no-repeat;
 }
-/*
-.mobi-pagePanel-body-menu .mobi-list {
-    border-right: none;
-}
-.mobi-list-item-group {
-    background-image: -moz-linear-gradient(center top , #909FAA, #B8C1C8);
-    border-bottom: 1px solid #999FA5;
-    border-top: 1px solid #717D85;
-    color: #FFFFFF;
-    font-size: 20px;
-    font-weight: bold;
-    margin-bottom: -2px;
-    padding: 5px 10px;
-    text-shadow: 0 1px 0 #969FA6;
-}
-input.mobi-input-text, input.mobi-input-secret, textarea.mobi-input-text {
-	font-size:14px;
-	width: 100%;
-	-webkit-box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	-ms-box-sizing: border-box;
-	box-sizing: border-box;
-}
-.mobi-fieldset-row > input:last-child, 
-.mobi-fieldset-row > select:last-child, 
-.mobi-fieldset-row > textarea:last-child {
-	float: none;
-}
-.mobi-accordion .open{
-	height: auto;
-	max-height:none;
-}
-.mobi-button-group {
-	margin: 0.5em;
-}
-.mobi-tabset-tabs > ul li {
-	line-height: 32px;
-}
-.mobi-tabset-tabs-top .mobi-tabset-content {
-	padding-top: 34px;
-}
-.mobi-tabset-tabs{
-	z-index:2;
-}
-.mobi-panelpopup-container{
-	margin: 10px;
-	padding: 10px;
-}
-*/
 .mobi-tabset > .mobi-tabset-tabs{
     position:relative;
     top:0;
@@ -196,14 +147,6 @@ input.mobi-input-text, input.mobi-input-secret, textarea.mobi-input-text {
 textarea {
 	font-family: Helvetica, Arial, sans-serif;
 }
-/*
-.mobi-pagePanel-header {
-	position:relative;
-}
-.mobi-pagePanel-body {
-	padding: 0 0 48px 0;
-}
-*/
 .mobi-carousel, .mobi-carousel-scroller, .mobi-carousel-list, .mobi-carousel-list li{
 	height: 75px;
 }
@@ -245,15 +188,10 @@ textarea {
 	display: inline-block;
 	height: 23px;
 }
-/*
-.mobi-tabset {
-	position: relative;	
-}
-*/
 .subtitle{
     text-align:center;
 }
-@media all and (min-width: 450px){
+@media all and (min-width: 481px){
 	#sx > span{
 		margin: 10px 25px 0;
 		background: none repeat scroll 0 0 white;
@@ -285,12 +223,6 @@ textarea {
 		height: auto;
 		padding: 2px;
 	}
-	.helpIcon{
-		position: absolute;
-		right: 8px;
-		top: 5px;
-		z-index: 3;
-	}
 	.subtitle{
 		margin: 8px 10px -3px 28px;
 	}
@@ -299,19 +231,13 @@ textarea {
 	}
 	
 }
-@media all and (max-width: 449px){
+@media all and (max-width: 480px){
 	#sx{
 		margin: 0 0 -5px 10px;
 		display: inline-block;
 	}
 	.subtitle{
 		margin: 8px 10px -5px 10px;
-	}
-	.helpIcon{
-		float:right;
-		position: absolute;
-		top: 0;
-		right: 5px;
 	}
 	.session-tags{
        position: fixed; bottom: 0; width: 100%;text-align:center;

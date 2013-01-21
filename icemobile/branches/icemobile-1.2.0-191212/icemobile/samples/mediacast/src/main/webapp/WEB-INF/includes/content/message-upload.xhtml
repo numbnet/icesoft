@@ -23,16 +23,7 @@
              
    <div style="text-align:center;">
 
-    	<h:commandLink id="showHelpPopup" class="helpIcon">
-    		<f:setPropertyActionListener target="#{mediaController.showHelpPopup}"
-            		value="true"/>
-            <img src="#{facesContext.externalContext.requestContextPath}/resources/images/help.png"
-            	style="width:22px;"/>
-    	</h:commandLink>
-        
-        <ui:include src="/WEB-INF/includes/content/help-pane.xhtml"/>
-        
-        <mobi:uploadhelper/>
+    	<mobi:uploadhelper/>
         
         <mobi:getEnhanced/>
         
@@ -64,17 +55,15 @@
             <c:if test="#{uploadModel.showCamera}">
                 <mobi:fieldsetRow><h:outputLabel value="Image Message"/></mobi:fieldsetRow>
                 <mobi:fieldsetRow style="min-height:20px;">
-                      <h:panelGroup
-                              style="display:inline-block;">
-                          <mobi:thumbnail for="camera"/>
-                      </h:panelGroup>
+                      <mobi:thumbnail for="camera"/>
                       <mobi:camera id="camera"
-                                   value="#{uploadModel.photoUploadMap}"/>
+                                   value="#{uploadModel.photoUploadMap}"
+                                   style="width:50%"/>
                      
                  </mobi:fieldsetRow>
                  <mobi:fieldsetRow style="text-align:center;">
                       <mobi:commandButton id="uploadPhoto"
-                            style="float:none;"
+                            style="width:97%"
                             actionListener="#{mediaController.upload}"
                             value="Attach"/>
                             
@@ -157,7 +146,7 @@
             
             <mobi:fieldsetRow>    
                 <div style="padding:5px;">#{uploadModel.uploadFeedbackMessage}</div>
-                <div class="mobi-grid mobi-justify">
+                <div class="mobi-grid #{viewSize eq 'small' ? 'mobi-center' : 'mobi-right'}">
                     <mobi:commandButton id="cancelUploadBtn"
                             styleClass="mobi-col mobi-weight1"
                             buttonType="unimportant"
