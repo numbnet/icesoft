@@ -52,7 +52,7 @@
                     <include name="${icefaces-mobi.lib.name}.jar"/>
                     <include name="javax.faces.jar"/>
                     <include name="el-api-2.2.1-b03.jar"/>
-                    <include name="javax.servlet.jar"/>
+                    <include name="javax.servlet-api.jar"/>
 	            	<include name="javax.annotation.jar"/>
                  </fileset>
              </classpath>
