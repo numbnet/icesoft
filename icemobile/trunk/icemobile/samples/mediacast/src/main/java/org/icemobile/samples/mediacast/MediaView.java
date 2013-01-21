@@ -18,9 +18,12 @@ package org.icemobile.samples.mediacast;
 
 import java.io.Serializable;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
+
+import org.icefaces.application.PushRenderer;
 
 @ManagedBean
 @SessionScoped
@@ -30,6 +33,13 @@ public class MediaView implements Serializable{
 	
 	@ManagedProperty(value="#{mediaStore}")
 	private MediaStore mediaStore;
+	
+	private String currentTab = "upload";
+	
+	@PostConstruct
+	public void init(){
+	    PushRenderer.addCurrentSession(MediaController.RENDER_GROUP);
+	}
 
 	public MediaMessage getMedia() {
 		if( media == null ){
@@ -51,5 +61,14 @@ public class MediaView implements Serializable{
 	public void setMediaStore(MediaStore mediaStore) {
 		this.mediaStore = mediaStore;
 	}
+	
+    public String getCurrentTab() {
+        return currentTab;
+    }
+    
+    public void setCurrentTab(String currentTab) {
+        this.currentTab = currentTab;
+    }
+
 
 }
