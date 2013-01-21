@@ -16,6 +16,7 @@
 .mobi-fieldset {
     border-width: 1px;
     border-style: solid;
+    clear: both;
     padding: 0;
 }
 .mobi-fieldset-inset {
