@@ -77,7 +77,7 @@
                         autoCorrect="off"
                         placeholder="Description"/>
                  </mobi:fieldsetRow>
-                 <mobi:fieldsetRow style="text-align:center;">
+                 <mobi:fieldsetRow styleClass="mobi-center">
                     <mobi:commandButton id="cancelBtn"
                            value="Cancel" style="width:100px;margin-top:0;margin-bottom:0"
                            />
